@@ -1,6 +1,18 @@
 # Aktueller Stand – Gravuru 2027
 
-Stand: 30.09.2026. **Aktives nächstes Paket: G27-01 – getrennte lauffähige Grundlage.**
+Stand: 30.09.2026. **G27-01 lokal umgesetzt und geprüft. Nächstes Paket: G27-02.**
+
+## Aktuelle Umsetzung
+
+Aktive Anwendung: `app/`. Start: `LOKAL-STARTEN.md`. Vorschau: http://127.0.0.1:8961/?model=acryl. Der alte Vergleich auf Port 8951 bleibt getrennt. Dies ist eine lokale Entwicklungsgrundlage, keine installierte oder live bestellbare Shopify-App.
+
+Gezielt übernommen: Kundeneditor, Motive, Schriften, Acrylszene und sechs Sockel samt benötigter Laufzeitmodule. `app/REFERENCE-UI.json` dokumentiert die ursprünglichen Dateien/Prüfsummen; aktive Fassungen enthalten bewusste Änderungen. Neuer lokaler Server und Einstieg laden nur das Acrylmodell, keine alten Admin-/Bestell-/Produktionsrouten.
+
+Implementiert: gemeinsame versionierte Acrylpreisquelle, validierte Rechte fixer Vorlagenelemente, Fotozuordnung nur über eindeutige semantische Feldschlüssel. Kundenkorrekturen: physische mm-Schriftgrößen, runde Farbfelder/Farbwähler, deutlicher Fotoersatz, mobile direkte Texteingabe, Griffe vor dem Sockel, unpassende Reiter/Bedienelemente ausgeblendet. Das sind Teile von G27-02/G27-05, keine vollständige Abnahme dieser Pakete.
+
+Aktuelle Prüfung: **57 Tests bestanden**; Build mit **76 Ressourcen und einem Modell**. Reale Browserprüfung: alle Sockel, Größe/Preis/Text/Farbe, zweimal Fotoersatz, mobile Texteingabe, mm-Wert nach Fokuswechsel und Griffe vor dem Sockel. Unabhängige Astra-Prüfung mit hohem Denkaufwand: gefundene mm-/Fotoformfehler behoben und nachgeprüft. Details und Grenzen: `G27-01-PRUEFUNG.md`.
+
+Lokaler Aufgabenbranch: `task/g27-01-runnable-foundation`. Die lokale Git-Historie wurde aus dem Referenzstand initialisiert und ist nicht mit der Remote-Historie verbunden. **Nicht per Force-Push übertragen.** Connectorzugriff auf das neue private Repository und Git-Anmeldung waren nicht verfügbar. Ein Übergabearchiv ist ein separater Transportweg, kein gepushter Quellbranch.
 
 ## Abgeschlossen
 
@@ -12,7 +24,7 @@ Stand: 30.09.2026. **Aktives nächstes Paket: G27-01 – getrennte lauffähige G
 
 ## Keine Fertigbehauptung
 
-Die neue App ist noch nicht implementiert. Referenzarchive sind keine automatische Migration. Vollständige Admin-/Shopify-Installation, freie PDF/SVG-Konturen, neue Produktdatenbank, Excel-Stapelimport und Bestellproduktion sind noch umzusetzen bzw. durchgehend zu prüfen. Aktuelle Modellwahl wurde nicht geändert und kein neuer KI-Chat gestartet.
+Die erste lokale Kundenoberfläche ist implementiert. Vollständige Admin-/Shopify-Installation, freie PDF/SVG-Konturen, Produktdatenbank, Excel-Stapelimport und Bestellproduktion sind noch umzusetzen bzw. durchgehend zu prüfen. Endgültige Schriften und freigegebene Produktionsprofile bleiben offen. Referenzarchive sind keine automatische Migration.
 
 ## Neu berücksichtigt
 
@@ -20,7 +32,7 @@ Edelstahl, Schiefer, Leder und Holz gehören neben Acryl zur Grundlage. In der h
 
 ## Genau weiter so
 
-G27-01 aus `UMSETZUNGSPAKETE.md` bearbeiten. Die Referenzen anhand `QUELLEN-UND-START.md` prüfen, benötigte Module in einen neuen Arbeitsbereich übernehmen und einen bedienbaren lokalen Stand mit eigener Startanleitung zeigen. Danach gemeinsames Modell G27-02. Keine erneute vollständige Recherche oder Gesamtplanung.
+G27-02 aus `UMSETZUNGSPAKETE.md`: gemeinsames Produkt-/Varianten-/Designmodell mit stabilen IDs, Revisionen, Speicherung, Migrationen und Versionskonflikten. Vorhandene Acrylregeln wiederverwenden. Danach Verwaltung und Bestellproduktion gemäß Paketfolge. Keine erneute vollständige Recherche oder Gesamtplanung.
 
 ## Fortschritt pro Paket ergänzen
 

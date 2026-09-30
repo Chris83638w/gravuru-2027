@@ -2,7 +2,11 @@
 
 Die neue Master-Version für den Gravuru-Konfigurator und die Werkstattverwaltung: Shopify, personalisierbare Produkte, Druck, Gravur und Stapelverarbeitung.
 
-**Projektstart: 30. September 2026 · Status: geprüfte Referenzpakete und Übergabe zur Umsetzung.**
+**Projektstart: 30. September 2026 · Status: erste getrennte Kundenoberfläche lokal lauffähig und geprüft.**
+
+Lokal öffnen: http://127.0.0.1:8961/?model=acryl · [Startanleitung](LOKAL-STARTEN.md) · [Prüfergebnisse](G27-01-PRUEFUNG.md). Keine Live-Shopify-App; Verwaltung, Bestellung und Produktion folgen.
+
+**GitHub-Transport:** Solange der direkte Git-Zugriff fehlt, liegt die komplette aktive Anwendung im Übergabearchiv `GRAVURU-2027-G27-01.zip`. Dieses in einen neuen Ordner entpacken; darin liegen `app/`, `package.json` und die Startanleitung. Das Archiv stammt vom lokalen Commit `51d555e`; ein frisch daraus ausgeführter Build war erfolgreich. Dies ist kein gepushter Quellbaum. [Transportnachweis](G27-01-UEBERGABE.md).
 
 ## Hier beginnen
 
@@ -26,6 +30,6 @@ Details: [Master-Bauplan](NEUE-WERKSTATT-PLAN.md), [Wettbewerbsvergleich](KONFI-
 
 ## Umsetzungsstand
 
-Dieses Repository enthält Bauplan, Übergabe und vier eingefrorene Referenzarchive mit 294 Dateien. Die vorhandenen Motive, lokale Konfiguratorquellen, Acrylassets, zwölf Materialbilder und zwei ausgewählte UI-Entwürfe sind damit für die nächste KI greifbar. Die neue App ist hier noch nicht implementiert; der gesamte alte Shopify-/Werkstattstand ist nicht vollständig migriert. Fertige Funktionen und künftige Anforderungen sind getrennt bezeichnet.
+Die aktive Anwendung liegt unter `app/`: ein Acrylprodukt, sechs Sockel, Größen/Preise, Texte, Farben und Fotoersatz. 57 aktuelle Tests bestanden, zusätzliche Prüfung durch Astra und reale Desktop-/Mobilbedienung. Der gesamte alte Shopify-/Werkstattstand ist nicht migriert. Bauplan, Übergabe und vier eingefrorene Referenzarchive mit 294 Dateien bleiben als Herkunft erhalten.
 
-Nächster Umsetzungsschritt: G27-01, eine getrennte lauffähige Grundlage aus geeigneten Quellteilen. Danach gemeinsames Material-/Form-/Variantenmodell. Nur 2D, AR später.
+Nächster Umsetzungsschritt: G27-02, gemeinsames Material-/Form-/Variantenmodell mit Datenbank und Revisionen. Nur 2D, AR später. Konkrete Grenzen und Ablagestatus in `STATUS.md` beachten.

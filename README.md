@@ -2,13 +2,18 @@
 
 Die neue Master-Version für den Gravuru-Konfigurator und die Werkstattverwaltung: Shopify, personalisierbare Produkte, Druck, Gravur und Stapelverarbeitung.
 
-**Projektstart: 30. September 2026 · Status: Planung und geprüfte Grundlagen.**
+**Projektstart: 30. September 2026 · Status: geprüfte Referenzpakete und Übergabe zur Umsetzung.**
 
 ## Hier beginnen
 
 1. [Start und Übergabe für die nächste KI](START_HERE.md)
-2. [Master-Bauplan mit Anforderungen und Logikprüfung](NEUE-WERKSTATT-PLAN.md)
-3. [Wettbewerbsvergleich und spätere Erweiterungen](KONFI-VERGLEICH-UND-AR.md)
+2. [Aktueller Stand und nächster Schritt](STATUS.md)
+3. [Startauftrag für GPT-6.1 Sol](UEBERGABE-SOL-6.1.md)
+4. [Kleine Umsetzungspakete mit Abnahme](UMSETZUNGSPAKETE.md)
+5. [Quellenpakete, Prüfnachweise und Start](QUELLEN-UND-START.md)
+6. [Materialreferenzen: Edelstahl, Leder, Holz, Schiefer und Acryl](MATERIALREFERENZEN.md)
+
+Details: [Master-Bauplan](NEUE-WERKSTATT-PLAN.md), [Wettbewerbsvergleich](KONFI-VERGLEICH-UND-AR.md), [Arbeitsregeln](AGENTS.md).
 
 ## Aktuelle Entscheidungen
 
@@ -21,6 +26,6 @@ Die neue Master-Version für den Gravuru-Konfigurator und die Werkstattverwaltun
 
 ## Umsetzungsstand
 
-Dieses Repository enthält aktuell den Bauplan und die Übergabe. Die neue App ist hier noch nicht implementiert; auch der bestehende Konfiguratorcode ist noch nicht vollständig übernommen. Fertige Funktionen und künftige Anforderungen sind in den Unterlagen getrennt bezeichnet.
+Dieses Repository enthält Bauplan, Übergabe und vier eingefrorene Referenzarchive mit 294 Dateien. Die vorhandenen Motive, lokale Konfiguratorquellen, Acrylassets, zwölf Materialbilder und zwei ausgewählte UI-Entwürfe sind damit für die nächste KI greifbar. Die neue App ist hier noch nicht implementiert; der gesamte alte Shopify-/Werkstattstand ist nicht vollständig migriert. Fertige Funktionen und künftige Anforderungen sind getrennt bezeichnet.
 
-Nächster Umsetzungsschritt: vollständigen Ausgangsstand erfassen, geeignete Quellen und Ressourcen auswählen und in einer getrennten Testumgebung das gemeinsame Material-/Form-/Variantenmodell aufbauen.
+Nächster Umsetzungsschritt: G27-01, eine getrennte lauffähige Grundlage aus geeigneten Quellteilen. Danach gemeinsames Material-/Form-/Variantenmodell. Nur 2D, AR später.

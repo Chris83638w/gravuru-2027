@@ -1,0 +1,432 @@
+ABSCHLUSSPRÜFUNG CLOUD-MIGRATION – GRAVURU 2027
+
+Ich möchte jetzt NICHT nur eine Bestätigung von dir, dass alles hochgeladen
+wurde, sondern einen belastbaren Nachweis.
+
+Ich habe das aktuelle GitHub-Repository extern prüfen lassen.
+
+Aktuell sichtbar:
+
+Repository:
+Chris83638w/gravuru-2027
+
+main:
+3ff2c2f8e7cb2565f60bd016f73a99ff6520152b
+
+task/g27-01-package:
+36f7c16494feb24abc980f9813a1dec855cc4975
+
+task/g27-02-cloud:
+e8021251a3bf86590798b85dca1bbf001c1fa88c
+
+Der Branch task/g27-02-cloud liegt zwei Commits vor main.
+
+PR #1 ist noch offen, Draft und nicht gemergt.
+
+Außerdem wurde extern bestätigt:
+
+- auf main gibt es keinen app/-Quellbaum
+- auf task/g27-01-package gibt es keinen app/-Quellbaum
+- auf task/g27-02-cloud gibt es keinen app/-Quellbaum
+- es gibt keinen runtime/-Quellbaum
+- es gibt keine .github/workflows
+- die aktuelle Anwendung steckt derzeit in
+  GRAVURU-2027-G27-02.zip
+- CLOUD-START.md sagt, dass lokale .local-data-Datenbanken,
+  Zugangsdaten und Kundendaten nicht übertragen wurden
+- STATUS.md sagt ausdrücklich, dass lokale Datenbanken weiterhin
+  auf dem Laptop liegen
+- der Cloud-Commit sagt:
+  „Cloud execution and Shopify production are not yet active.“
+
+Deshalb möchte ich jetzt eine vollständige Nachprüfung.
+
+WICHTIG:
+Noch nichts produktiv deployen.
+Nichts löschen.
+Keine Secrets in GitHub hochladen.
+Keine Kundendaten unverschlüsselt hochladen.
+Kein Force-Push.
+Keine lokale Arbeit überschreiben.
+
+==================================================
+1. PRÜFE DEN LAPTOP JETZT ERNEUT
+==================================================
+
+Du hast auf diesem Laptop an Gravuru 2027 gearbeitet.
+
+Prüfe deshalb den tatsächlichen aktuellen Arbeitsstand:
+
+git status
+git branch
+git log
+git stash
+git worktree
+untracked files
+ignored projektbezogene Dateien
+nicht gepushte Commits
+lokale Branches
+lokale Archive
+Codex-/Astra-/Work-Arbeitsverzeichnisse
+projektbezogene Downloads und Exporte
+lokale Datenbanken
+.local-data
+Screenshots
+Designquellen
+PDF/SVG
+Motive
+Fonts
+Produktdaten
+Werkstattdaten
+Testdateien
+temporäre, aber einzigartige Arbeitsstände.
+
+Besonders:
+Suche nach allem, was seit dem Erstellen von
+GRAVURU-2027-G27-02.zip entstanden oder geändert wurde.
+
+==================================================
+2. BEWEISE, DASS DER AKTUELLE CODE ONLINE IST
+==================================================
+
+Das ZIP allein soll nicht der zukünftige normale Arbeitsmodus bleiben.
+
+Führe cloud_setup.py in einer FRISCHEN Cloud-/Testumgebung aus,
+nicht in der bisherigen lokalen Arbeitsumgebung.
+
+Danach:
+
+npm test
+npm run build
+
+Die Tests müssen dort erneut laufen.
+
+Wenn bestanden:
+
+Den tatsächlich entpackten aktiven Quellbaum sauber auf einem
+geeigneten GitHub-Branch einchecken.
+
+Ziel:
+Die aktiven Quellen sollen direkt als normale Dateien in GitHub liegen,
+nicht ausschließlich in einem ZIP.
+
+Das historische ZIP als geprüften Transport-/Sicherungsnachweis behalten.
+
+Keinen alten Stand überschreiben.
+
+==================================================
+3. VERGLEICHE CLOUDQUELLE MIT LOKALER QUELLE
+==================================================
+
+Vergleiche die aktive lokale Quelle Datei für Datei mit dem
+neu materialisierten Cloud-Quellbaum.
+
+Für relevante Dateien SHA-256 verwenden.
+
+Berichte:
+
+IDENTISCH
+NUR LOKAL
+NUR CLOUD
+ABWEICHEND
+
+Für jeden NUR-LOKAL- oder ABWEICHEND-Fund:
+Ursache bestimmen und sichern.
+
+Keinen einzigartigen lokalen Stand verlieren.
+
+==================================================
+4. LOKALE DATENBANKEN PRÜFEN
+==================================================
+
+Du hast selbst dokumentiert, dass lokale Datenbanken weiterhin
+auf dem Laptop liegen.
+
+Prüfe jetzt konkret:
+
+- welche Datenbanken?
+- Pfad
+- Größe
+- Inhalt/Zweck
+- letzter Änderungszeitpunkt
+- ob darin Informationen liegen, die nicht reproduzierbar sind
+- ob sie für nahtlose Weiterarbeit benötigt werden
+- ob sie nur Testdaten enthalten
+- ob sie bereits anderweitig auf Server/Cloud existieren
+
+Nicht einfach Datenbanken nach GitHub laden.
+
+Wenn relevante einzigartige Daten enthalten sind:
+konsistentes Backup erstellen und in eine geeignete private,
+verschlüsselte Cloud-/Serverablage sichern.
+
+Integrität prüfen.
+
+Im GitHub nur Backup-Metadaten dokumentieren:
+Name, Zweck, Datum, Größe, SHA-256, Wiederherstellungsweg.
+Keine Kundendaten.
+
+Wenn die Datenbank vollständig reproduzierbar und unwichtig ist:
+dies ausdrücklich beweisen und dokumentieren.
+
+==================================================
+5. SECRETS UND ZUGÄNGE
+==================================================
+
+Secrets gehören NICHT in GitHub.
+
+Prüfe aber, ob irgendein notwendiger Zugang derzeit ausschließlich
+auf diesem Laptop gespeichert ist.
+
+Zum Beispiel:
+
+Shopify
+GitHub
+Plesk
+Server/SSH
+Datenbank
+Cloudspeicher
+weitere APIs.
+
+Für jeden benötigten Zugang sicherstellen, dass er über einen
+dauerhaften Secret-/Passwortmanager oder einen vorgesehenen
+Cloud-Secret-Store wiederherstellbar ist.
+
+Nur Secret-NAMEN dokumentieren.
+
+Keine Werte in GitHub oder Chat ausgeben.
+
+==================================================
+6. SCREENSHOT-/CHATWISSEN
+==================================================
+
+Prüfe, ob die Entscheidungen, die Christopher mit dir anhand von
+Screenshots besprochen hat, inzwischen vollständig in der dauerhaften
+Projektdokumentation stehen.
+
+Nicht nur Screenshots speichern.
+
+Textlich dokumentieren:
+
+- was bestätigt wurde
+- was verworfen wurde
+- mobile Regeln
+- Desktop-Regeln
+- Konfiguratoraufbau
+- Reihenfolge
+- Design-/Text-/Foto-Regeln
+- gewünschte Bedienung
+- bekannte Fehler
+- offene Punkte.
+
+Wenn entscheidende Screenshots selbst benötigt werden:
+geeignet online sichern und aus der Dokumentation referenzieren.
+
+Wenn eine Entscheidung nicht mehr zweifelsfrei rekonstruierbar ist:
+UNGEKLÄRT statt erfinden.
+
+==================================================
+7. CLOUD-UMGEBUNG WIRKLICH TESTEN
+==================================================
+
+Ich möchte einen echten Test ohne lokale Laptopdateien.
+
+Neue Cloud-Arbeitsumgebung starten.
+
+Nur Zugriff auf:
+- GitHub
+- dokumentierte Cloudressourcen
+- vorgesehene Secrets
+
+KEIN Zugriff auf:
+C:\Users\...
+lokale Arbeitsordner
+lokale Datenbanken
+lokale Downloads.
+
+Dann:
+
+Repository klonen
+aktive Quellen herstellen
+Tests ausführen
+Build ausführen
+Anwendung starten
+eine sichere Vorschau prüfen.
+
+Wenn irgendein C:\-Pfad oder eine lokale Datei benötigt wird:
+Migration NICHT abgeschlossen.
+
+==================================================
+8. MEHRERE OPENAI-ACCOUNTS TESTEN
+==================================================
+
+Wir wollen Gravuru 2027 später von mehreren berechtigten
+OpenAI-Accounts bearbeiten.
+
+Nach erfolgreichem Cloud-Test:
+
+Konto A:
+liest GitHub-Einstieg und aktuellen Stand.
+
+Konto A erzeugt auf eigenem Testbranch eine kleine ungefährliche
+Änderung bzw. Testdatei.
+
+Konto B:
+öffnet dasselbe GitHub-Projekt,
+liest diesen Branch und Commit,
+führt einen ungefährlichen Test aus
+und bestätigt den identischen Stand.
+
+Kein gemeinsamer Chat darf dafür erforderlich sein.
+
+Keine Produktionsrechte für diesen Test.
+
+==================================================
+9. CI / GITHUB ACTIONS
+==================================================
+
+Prüfe, ob für unseren Aufbau GitHub Actions sinnvoll und verfügbar ist.
+
+Bereite mindestens eine sichere CI-Prüfung vor:
+
+- Checkout
+- passende Node-Version
+- gegebenenfalls Python
+- Tests
+- Build
+- keine Shopify-Mutation
+- kein Plesk-Deployment
+- keine Production-Secrets.
+
+Noch kein automatisches Production-Deployment.
+
+==================================================
+10. MAIN UND BRANCHSTRUKTUR
+==================================================
+
+Derzeit liegt der neue Stand nicht auf main.
+
+Prüfe den richtigen zukünftigen Workflow.
+
+NICHT eigenmächtig mergen.
+
+Dokumentiere zunächst eindeutig:
+
+- welcher Branch ist aktuell
+- welcher Stand ist der gültige Entwicklungsstand
+- welcher Branch ist Produktions-/Releasebasis
+- was PR #1 bedeutet
+- welcher Inhalt noch nicht integriert ist.
+
+Erst nach ausdrücklicher Freigabe dürfen wir mergen.
+
+==================================================
+11. TECHNISCHE SCHUTZREGELN
+==================================================
+
+Aktuell sind die GitHub-Branches nach externer Prüfung nicht geschützt.
+
+Prüfe den tatsächlich verfügbaren GitHub-Tarif und welche Schutzregeln
+für dieses private Repository verfügbar sind.
+
+Ziel:
+kein Force-Push auf wichtige Branches,
+keine versehentliche Löschung,
+später kein ungeprüftes Production-Deployment.
+
+Keine Tarifänderung ohne Zustimmung.
+
+==================================================
+12. ABSCHLUSSTEST
+==================================================
+
+Bevor du „fertig“ meldest, beantworte mit Belegen:
+
+A)
+Wenn dieser Laptop JETZT zerstört wird:
+Geht irgendeine einzigartige Projektdatei verloren?
+
+B)
+Wenn dieser aktuelle Chat JETZT verschwindet:
+Geht entscheidendes Projektwissen verloren?
+
+C)
+Kann ein frischer Cloud-Agent ohne Zugriff auf diesen Laptop
+das Projekt installieren, testen und sinnvoll weiterentwickeln?
+
+D)
+Kann ein anderer berechtigter OpenAI-Account den identischen
+GitHub-Stand übernehmen?
+
+E)
+Sind alle nicht in GitHub gehörenden wichtigen Daten an einem
+geeigneten Cloudziel gesichert und wiederherstellbar?
+
+F)
+Ist Production weiterhin gegen unbeabsichtigte Änderungen geschützt?
+
+==================================================
+13. ABSCHLUSSBERICHT
+==================================================
+
+Bitte keine allgemeine Aussage wie „alles ist online“.
+
+Ich will konkrete Zahlen und Nachweise:
+
+Repository:
+aktueller Branch:
+aktueller Commit:
+
+Anzahl geprüfter lokaler Projektdateien:
+Anzahl online verifizierter Dateien:
+Gesamtgröße:
+
+Nur-lokal-Dateien:
+Anzahl + Liste/Manifest
+
+Abweichende Dateien:
+Anzahl + Liste/Manifest
+
+Nicht gepushte Commits:
+Stashes:
+Untracked relevante Dateien:
+
+Lokale Datenbanken:
+welche + Sicherungsstatus
+
+Screenshots/Entscheidungen:
+gesichert / ungeklärt
+
+Cloud-Restore:
+BESTANDEN / NICHT BESTANDEN
+
+Cloud-Test:
+Anzahl Tests / Ergebnis
+
+Build:
+BESTANDEN / NICHT BESTANDEN
+
+Zweiter OpenAI-Account:
+GETESTET / NICHT GETESTET
+
+CI:
+AKTIV / VORBEREITET / NICHT VORHANDEN
+
+Produktionszugang:
+NICHT FREIGEGEBEN
+
+Am Ende exakt:
+
+LOCAL-ONLY CRITICAL FILES: X
+
+UNVERIFIED SOURCES: X
+
+UNINTEGRATED CHANGES: X
+
+LAPTOP KANN ENDGÜLTIG AUSGESCHALTET WERDEN:
+JA / NEIN
+
+Falls NEIN:
+nummerierte Restpunkte mit genau dem nächsten notwendigen Schritt.
+
+Keine Erfolgsaussage ohne tatsächliche Prüfung.

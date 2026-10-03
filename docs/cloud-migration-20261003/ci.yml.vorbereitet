@@ -1,0 +1,82 @@
+# VORBEREITET, NICHT AKTIVIERT ODER AUF GITHUB ACTIONS GETESTET.
+# Erst nach Freigabe als .github/workflows/ci.yml installieren.
+# workflow_dispatch setzt eine Workflow-Datei auf dem Default-Branch voraus.
+# Kein Merge, Branchwechsel oder Start wird durch diese Vorlage autorisiert.
+name: Gravuru development checks (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gravuru-development-checks-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    env:
+      CI: 'true'
+      GRAVURU_PYTHON: python3
+      PYTHONPATH: ${{ github.workspace }}/.local-data/python
+      PIP_DISABLE_PIP_VERSION_CHECK: '1'
+      PIP_NO_INPUT: '1'
+    steps:
+      - name: Read the selected immutable source commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+          allow-prereleases: false
+
+      - name: Require materialized source and the pinned PDF dependency
+        run: |
+          test -f package.json
+          test -f app/workshop/requirements-import.txt
+          test -f scripts/cloud-check.mjs
+          python3 - <<'PY'
+          from pathlib import Path
+          requirements = [line.strip() for line in Path('app/workshop/requirements-import.txt').read_text().splitlines() if line.strip() and not line.lstrip().startswith('#')]
+          assert requirements == ['PyMuPDF==1.28.2'], 'Review changed dependencies before running this template'
+          PY
+
+      - name: Install the approved PDF requirement
+        timeout-minutes: 5
+        run: python3 -m pip install --no-cache-dir --only-binary=:all: --target .local-data/python -r app/workshop/requirements-import.txt
+
+      # package.json currently has no npm dependencies; npm ci is not applicable.
+      # cloud-check validates references, PDF support, nonempty tests with zero
+      # failures/skips, then builds. The explicit npm commands below are also
+      # requested by the migration acceptance task.
+      - name: Verify cloud prerequisites, tests and build
+        run: node scripts/cloud-check.mjs
+
+      - name: Run the requested npm tests
+        run: npm test
+
+      - name: Run the requested npm build
+        run: npm run build
+
+# No custom secrets, environments, artifact uploads, cache writes or deployment.
+# GitHub supplies its read-only GITHUB_TOKEN for checkout; no production token.
+# References and official commit verification are in BRANCH-UND-ZUGANGSSTATUS.md.

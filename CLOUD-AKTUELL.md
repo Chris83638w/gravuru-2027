@@ -1,26 +1,19 @@
-# Aktueller Cloud-Auftrag – 03.10.2026
+# Gravuru 2027 – aktueller Cloud-Einstieg
 
-Dieser Branch übernimmt die bereits lokal implementierte Gravuru-App. Die Aussage auf dem alten `main`, die neue App existiere noch nicht, ist dort historisch und beschreibt nicht den aktuellen lokalen Stand.
+Stand 03.10.2026. **Weiterentwicklung vorbereitet; vollständige Cloud-Migration noch nicht abgenommen. Produktion NICHT FREIGEGEBEN.**
 
-Privates Repository: `Chris83638w/gravuru-2027` (ID 1397611510). Übertragungsbranch: `infra/gravuru-2027-cloud-20261003`. Main und Entwurfs-PR #1 nicht mergen oder überschreiben. Der neue Branch erbt die unveränderte Remote-Historie. Lokale Historie liegt zusätzlich im privaten Sicherungsbundle, nicht als Force-Push.
+Aktueller Entwicklungsbranch: `infra/gravuru-2027-cloud-20261003`. Geprüfter App-Code: `529c6e5218a3faa9b8786ace7025fe4370a7092f`; spätere Commits ergänzen Referenzbilder und Prüfunterlagen. Den aktuellen Commit mit `git rev-parse HEAD` festhalten. Main ist weiterhin der historische Stand, kein eigenmächtiger Merge.
 
-## Jetzt in einer frischen Cloud-Arbeitskopie
+1. [Abschlussprüfung mit Zahlen und offenen Grenzen](docs/cloud-migration-20261003/ABSCHLUSSBERICHT.md)
+2. [Nächster konkreter Cloud-/Accounttest](docs/cloud-migration-20261003/NAECHSTER-CLOUD-TEST.md)
+3. [34 Produkt-/Bedienentscheidungen und 11 Originalreferenzen](docs/cloud-migration-20261003/ENTSCHEIDUNGEN-REGISTER.md)
+4. [Private Sicherung und Wiederherstellung](docs/cloud-migration-20261003/WIEDERHERSTELLUNG.md)
+5. [Branches, Zugänge und vorbereitete CI](docs/cloud-migration-20261003/BRANCH-UND-ZUGANGSSTATUS.md)
 
-1. Diesen Branch abrufen. `cloud_setup.py --output /tmp/gravuru-2027-fresh` mit Python 3 ausführen. Das Ziel darf noch nicht existieren. Der Helfer prüft Transport-ZIP, jede der 215 aktuellen Quelldateien und die vier Referenzarchive. Keinen Laptop-Pfad verwenden.
-2. Im neuen Ziel Node 24 und Python 3 verwenden. `python3 -m pip install --no-cache-dir --target .local-data/python -r app/workshop/requirements-import.txt` und `GRAVURU_PYTHON=python3 node scripts/cloud-check.mjs`. Zusätzlich die ausdrücklich angeforderten `npm test` und `npm run build` dort ausführen, Ergebnisse sichern. Referenz lokal: 137 Tests bestanden, 0 übersprungen, 76 Build-Ressourcen/ein Modell. Ein Windows-Lauf ist kein Cloud-Beleg.
-3. Dateien anhand `CLOUD-SOURCE-MANIFEST.json` SHA-256-genau vergleichen. `CLOUD-SOURCE-COMPARISON.json` belegt Materialisierung, nicht die Übertragung der Datenbanken.
-4. Nur nach bestandenen Prüfungen den aktuellen `app/`-Quellbaum und passende Root-Dateien auf diesem Entwicklungsbranch als normale Git-Dateien einchecken. Vorher Git-Status prüfen; fremde Änderungen erhalten. Historisches Transport-ZIP und Referenzen behalten. Keine `.local-data`, Cachedateien, Zugangsdaten, Kunden- oder Datenbankinhalte in Git. Kein Force-Push, kein Merge, keine Produktionsveröffentlichung.
-5. Cloud-Installation auf diesen aktuellen Quellbaum umstellen. Vor Freigabe alle Tests erneut aus einer frischen veröffentlichten Entwicklungsumgebung belegen. Entwicklungsserver nur in geschützter Vorschau prüfen; keine öffentliche ungeschützte Werkstatt anbieten.
+Normaler Quellbaum unter `app/`, nicht nur ZIP. Erster frischer Cloud-Quelltest: **137 bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell**. 215-Dateien-Vergleich: 206 bytegleich, 6 nur Zeilenenden, 3 dokumentarische Ergänzungen, 0 fehlend. Historischer [Cloudlaufbericht](CLOUD-VALIDIERUNG-20261003.md).
 
-Die bisherigen 19 Cloud-Tests betrafen nur den alten Vergleichskonfigurator. Sie sind kein Nachweis für die neue Werkstatt. Die Behauptung einer vollständigen Migration ist bis zur zusätzlichen Datenübernahme falsch.
+**Privates Serverbackup geprüft:** 528.682.206 verschlüsselte Byte, 16 Teile vollständig zurückgelesen, Entschlüsselung/Manifeste und 3 SQLite-Restores bestanden. Der Restore lief lokal isoliert; drei DBs sind noch nicht in der Cloud-App integriert. Recovery-Key unabhängig gespeichert laut Nutzerbestätigung. Keine Zugangswerte oder Datenbanken im Repository.
 
-## Noch nicht übertragen / noch nicht nachgewiesen
+Cloud-Umgebung veröffentlicht („Nur ich“). Neuer Taskstart landete jedoch in Scratch ohne Repo. Der wirkliche Neustart dieser veröffentlichten Umgebung und Konto B („Chris Open AI“) sind offen. Nicht wieder eine falsche Umgebung als Erfolg zählen. GitHub Free/Branches ungeschützt; CI nur vorbereitet.
 
-- Lokales geprüftes Gesamtpaket mit drei SQLite-Backups: 365.154.964 Byte, SHA-256 `84caae721f88d409a54cea98692c4a21f28d3ff8db0ff163ffe88f3e18d7f434`. Sieben Produkte, 17 Revisionen, Profile, zwei unveränderte Originaldesignquellen und drei Vorschaudesigns müssen privat verschlüsselt und wiederherstellbar gesichert werden. Keine Datenbanken in Git.
-- Zusätzliche Bestandsprüfung: fünf Projektordner mit 358 Dateien. 67 Dateien sind gegen das erste Paket und dessen erste ZIP-Ebene noch nicht abgedeckt. Fünf weitere Downloadarchive sind vorhanden; darin teils historischer privater Datenbankinhalt. Keine pauschale Veröffentlichung. Vier besprochene Screenshots wurden lokal wiedergefunden.
-- Alle historischen Verzeichnisse, verschachtelte Archive, tatsächliche Serverdaten und nur browsergespeicherte Zustände sind noch nicht vollständig geprüft. Unklare Quellen ausdrücklich markieren.
-- Zweiter berechtigter OpenAI-Account und 24-Stunden-Test sind nicht geprüft. Geheimnisse niemals als Werte ausgeben; benötigte Namen und Wiederherstellbarkeit getrennt dokumentieren.
-- GitHub-Webhooks/Actions/Deployment-Umgebungen/Pages waren für dieses Repository nicht eingerichtet. Shopify-Themeübersicht war beim Zugriff nicht lesbar; tatsächliche Shopify-Verknüpfungen bleiben UNGEPRÜFT. Keine Production-Secrets oder Shopify-Mutationen verwenden.
-- Produktionsdruck, Gravur, Bestellungen und vollständige Shopify-Strecke sind fachlich noch nicht fertig; siehe aktuelle STATUS.md und UMSETZUNGSPAKETE.md nach Materialisierung.
-
-Verbindliche Abschlussfragen: lokale-only/abweichende Dateien, nicht gepushte Historie, Datenbank-Restore, entscheidendes Screenshotwissen, tatsächlicher Cloud-Lauf, Test durch zweiten Account, sichere CI und Branchschutz jeweils mit Beleg oder ausdrücklichem NICHT GEPRÜFT. Der Laptop darf erst nach vollständigem Nachweis als entbehrlich bezeichnet werden.
+Anschließend fachlich weiter: G27-02 Kundenfelder für importierte SVG/PDF-Designs, danach Material-/Form-/Bohrmodell. Bereits gebaute Werkstatt, Profile, XLSX und Designimport gezielt weiterverwenden. Druck-/Gravurexport, Shopify-Bestellstrecke und Livebetrieb bleiben eigene offene Abnahmen. AGENTS.md und UMSETZUNGSPAKETE.md beachten.

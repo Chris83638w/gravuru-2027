@@ -1,0 +1,56 @@
+[
+  {
+    "path": ".gitattributes",
+    "cloudSha256": "8bc5c48785ed267fd45fb381191b8ce549c58a4316e353885c3956fe2869c498",
+    "reason": "line-endings-only",
+    "cloudContent": "* text=auto\n*.mjs text eol=lf\n*.html text eol=lf\n*.css text eol=lf\n*.json text eol=lf\n*.md text eol=lf\n*.png binary\n*.jpg binary\n*.zip binary\n*.gz binary\n# Hash-verified source resources must retain their original bytes on every OS.\napp/designs/aosu-labrador/** -text\napp/references/** -text\n"
+  },
+  {
+    "path": ".gitignore",
+    "cloudSha256": "a6182f005113d8a2680238c91bd2198ba15762ba9a10f12f92e2c2254fc5b44c",
+    "reason": "line-endings-only",
+    "cloudContent": null
+  },
+  {
+    "path": "README.md",
+    "cloudSha256": "1194d22cb8a49053c954139e87658b6462ffc0d62ecbc15f49b595f556085f7a",
+    "reason": "content-change-review",
+    "cloudContent": null
+  },
+  {
+    "path": "START_HERE.md",
+    "cloudSha256": "ab88aa4d5defa30529ba45e3b53abd9a58ace3a0f53c5add8005356a71f85831",
+    "reason": "content-change-review",
+    "cloudContent": null
+  },
+  {
+    "path": "STATUS.md",
+    "cloudSha256": "37c66222e77939944f97fbbc8e9f73080821fe7b764e3d0a026a54a6d34974ae",
+    "reason": "content-change-review",
+    "cloudContent": null
+  },
+  {
+    "path": "app/platform/sources/assistant/static/gravuru-chat.js",
+    "cloudSha256": "4cc2ef063d572e1ceea9e3c80b71a3093b9fe19c242b3d05bf1f67b9457e4a8a",
+    "reason": "line-endings-only",
+    "cloudContent": null
+  },
+  {
+    "path": "app/workshop/design-converter.py",
+    "cloudSha256": "8e1ef076243c2c8144a222cb37df0c4175e481d2bf13baf7326bc16f27150036",
+    "reason": "line-endings-only",
+    "cloudContent": null
+  },
+  {
+    "path": "app/workshop/requirements-import.txt",
+    "cloudSha256": "cfdcc5d9b3435670047ec7af4ac296ac412e012821634b60ec6c2b4f11d01336",
+    "reason": "line-endings-only",
+    "cloudContent": null
+  },
+  {
+    "path": "scripts/prepare-cloud-handoff.py",
+    "cloudSha256": "700baf251d0628c286369d184c2d28bf42e8f0c22c849726100741767e36d099",
+    "reason": "line-endings-only",
+    "cloudContent": null
+  }
+]

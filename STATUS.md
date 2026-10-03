@@ -1,5 +1,11 @@
 # Aktueller Stand – Gravuru 2027
 
+## Aktueller Migrationsnachweis – 03.10.2026
+
+**Zuerst [CLOUD-AKTUELL.md](CLOUD-AKTUELL.md) und den [Abschlussbericht](docs/cloud-migration-20261003/ABSCHLUSSBERICHT.md) lesen.** Normaler app/-Quellbaum online; 137 Cloudtests/Build bestanden. Private Serversicherung vollständig zurückgeprüft, 3 SQLite-Restores lokal bestanden. Cloudruntime-Restore, Neustart der veröffentlichten Umgebung und zweiter Account noch offen. Produktion nicht freigegeben. Die folgenden früheren Abschnitte sind datierte Historie und überstimmen diesen Einstieg nicht.
+
+## Frühere Nachweise und ursprüngliche Übergabe
+
 ## Cloud-Übernahme geprüft (03.10.2026)
 
 Aktueller normaler Quellbaum unter `app/` auf `infra/gravuru-2027-cloud-20261003`, übernommen aus dem SHA-256-geprüften Transportstand `3b2ac03d213ac913bcc61520b595f97dde6aa072`. Ausgangsbranch tatsächlich abgerufen: `9ca2d1256c006b20d4a4ca238deca34426b1b2ff`. Die folgenden älteren lokalen/GitHub-Aussagen sind historische Nachweise.

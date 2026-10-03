@@ -1,0 +1,23 @@
+{
+  "capturedAtUtc": "2026-10-03T08:12:14.2257560Z",
+  "scope": "Five named work folders and five named Downloads ZIPs only; backup ZIPs read solely for coverage comparison",
+  "workFiles": 358,
+  "workBytes": 108828580.0,
+  "workAbsentFiles": 67,
+  "workAbsentBytes": 61269518.0,
+  "workAbsentDistinctHashes": 67,
+  "downloadArchives": 5,
+  "downloadArchiveBytes": 83623821.0,
+  "downloadFileEntries": 352,
+  "downloadUncompressedBytes": 184023468.0,
+  "downloadAbsentEntries": 280,
+  "downloadAbsentUncompressedBytes": 144076724.0,
+  "coverageComparison": "Exact SHA-256 against direct manifest files and first-level members of all eight manifest ZIPs; nested archives and source-history.bundle not decoded; these are candidate gaps, not proof of global uniqueness",
+  "git": "All five folders have no .git markers recursively; git rev-parse --show-toplevel exits 128 for each. No repository branches/stashes/untracked state applicable to these folders",
+  "sourcesEdited": false,
+  "uploaded": false,
+  "archiveScriptsExecuted": false,
+  "databaseConsistency": "Unverified. Archived SQLite bytes hashed, not restored or opened; zero-length archived WAL does not prove backup consistency",
+  "secretScan": "Bounded signatures only: private-key markers and common Shopify/GitHub/Stripe token prefixes; text files up to 5 MiB; path flags and email-like text do not prove secrets/customer data; no values reported",
+  "screenshots": "Four originals found, copied locally with matching SHA-256. Not visually reviewed for personal information."
+}

@@ -18,7 +18,7 @@ Material, Oberfläche/Stärke, Kontur, Bohrbild, Größe, Zubehör, Design, Kund
 
 Abnahme: gleiches aufgelöstes Modell für Einzelanlage, Vorschau, Preisprüfung und spätere Stapelanlage; Rechte auch serverseitig; keine stillen Fotozuordnungen bei wechselnden semantischen Feld-IDs. Ausdrücklich leer, geerbt und überschrieben bleiben bei Profilen unterscheidbar. Mehrfachkategorien erzeugen keine zufällige Profilwahl.
 
-**Feste Prüfdaten:** Acryl 150 × 200 × 3 mm = 1499 Cent; 200 × 266,7 × 3 mm = 1999 Cent. Kleine Sockel: Buche 899, Eiche 999, Nussbaum 1099, klar 399, satiniert 499, flach Nussbaumoptik 599. Große Sockel jeweils +100; ohne Sockel immer +0. Wandhalterung zusätzlich +599 in beiden Größen. Alle 42 Kombinationen aus 2 Größen × 7 Sockelauswahlen × Wandhalterung ja/nein prüfen. Beispiel groß/Eiche/Wand = 3697 Cent.
+**Feste Prüfdaten:** Acryl 150 × 200 × 3 mm = 1499 Cent; 200 × 266,7 × 3 mm = 1999 Cent. Kleine Sockel: Buche 899, Eiche 999, Nussbaum 1099, klar 399, satiniert 499, flach Nussbaumoptik 599. Große Sockel jeweils +100; ohne Sockel immer +0. Wandhalterung zusätzlich +599 in beiden Größen. Alle 28 Kombinationen aus 2 Größen × 7 Sockelauswahlen × Wandhalterung ja/nein prüfen. Beispiel groß/Eiche/Wand = 3697 Cent.
 
 ## G27-03 · Material und freie Formen
 

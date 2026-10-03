@@ -1,0 +1,40 @@
+:host,.ux-shell,.ux-preview,.stage-wrap,.stage,.plate-holder,.ux-editor,.ux-panel,.c-large-preview{background:#fff!important}
+.ux-preview .stage,.c-large-preview .stage,.ux-preview .plate-holder{background:#fff!important}
+.ux-selection-handles button::before{display:none!important}
+.ux-selection-handles .ux-handle-delete svg{background:transparent!important;fill:none!important;stroke:#fff!important;width:20px!important;height:20px!important}
+.ux-selection-handles .ux-handle-delete{display:grid;place-items:center;border-radius:10px!important}
+.artwork-check,.artwork-preview-check,.artwork-cart-hint{display:none!important}
+.ux-shell{--ux-border:#e3e8e5;--ux-green:#17634d;color:#20372d}
+.ux-editor{border:1px solid #e3e8e5!important;border-radius:20px!important;box-shadow:0 8px 32px #143d2810}
+.ux-tabs{background:#fff!important;border-bottom:1px solid #e6ebe8!important}
+.ux-tabs button{border-radius:12px!important;transition:background .15s,color .15s}
+.ux-tabs [aria-selected=true]{background:#eaf4ef!important;color:#165c45!important;box-shadow:none!important}
+.ux-selection-handles .ux-handle-delete,.ux-shell [data-ux=delete],.ux-dialog [data-ux=remove-content],.ux-remove-upload{background:#c92e3e!important;color:#fff!important;border-color:#c92e3e!important;box-shadow:0 3px 10px #aa203226}
+.ux-handle-delete svg,.ux-shell [data-ux=delete] svg{color:#fff!important;stroke:currentColor}
+.ux-selection-handles [data-ux-handle=scale]{background:#fff!important;color:#17634d!important;border:1px solid #bad3c5!important;box-shadow:0 2px 8px #15382a18}
+.ux-selection-handles [data-corner="-1,-1"] svg{transform:rotate(0deg)}
+.ux-selection-handles [data-corner="1,-1"] svg{transform:rotate(90deg)}
+.ux-selection-handles [data-corner="1,1"] svg{transform:rotate(180deg)}
+.ux-selection-handles [data-corner="-1,1"] svg{transform:rotate(270deg)}
+.ux-upload-drop{background:linear-gradient(145deg,#f4faf7,#fff)!important;border:1.5px dashed #abc9b9!important;border-radius:22px!important;padding:28px 20px!important;text-align:center;display:grid;justify-items:center;gap:12px}
+.ux-upload-drop>strong{font-size:20px;color:#213f32}.ux-upload-drop p{margin:0!important;color:#53695e}
+.ux-upload-symbol{display:grid;place-items:center;width:48px;height:48px;border-radius:16px;background:#e1f0e7;color:#17634d;font-size:30px;line-height:1}
+.ux-upload-drop .ux-file-select{border-radius:12px!important;background:#17634d!important;color:#fff!important;padding:12px 22px!important;border:none!important}
+.ux-upload-drop.is-dragover{background:#e5f5eb!important;border-color:#17634d!important}
+.ux-upload-row{border:1px solid #e1e9e4!important;border-radius:16px!important;background:white!important}
+.ux-multi-align{margin:16px 0;padding:14px;border:1px solid #dce8e0;border-radius:14px;background:#f8fbf9}
+.ux-multi-align button{width:100%;border-radius:10px}.ux-multi-align [aria-pressed=true]{background:#e1f1e7}
+[data-multi-body] p{font-size:13px;color:#516b5d}
+[data-multi-list],[data-font-targets]{display:grid;gap:8px;margin:12px 0}
+[data-multi-list] label,[data-font-targets] label{display:flex;gap:10px;align-items:center;padding:9px;background:white;border:1px solid #e3eae5;border-radius:9px;overflow-wrap:anywhere}
+[data-multi-list] input,[data-font-targets] input{width:18px;height:18px;flex-shrink:0;accent-color:#17634d}
+.ux-conflict-hints{display:grid;gap:10px;margin:12px 16px;font-size:13px}
+.ux-conflict{border:1px solid #ecd6ae;border-radius:14px;padding:14px;background:#fffbf2;text-align:left}
+.ux-conflict p{margin:7px 0;overflow-wrap:anywhere}.ux-conflict>div{display:flex;gap:8px;flex-wrap:wrap}
+.ux-conflict button{background:#fff;border:1px solid #decda9;border-radius:9px;padding:8px 12px;min-height:40px}
+.ux-dialog{border:1px solid #e0e8e2!important;border-radius:20px!important;box-shadow:0 20px 80px #16362630!important}
+.ux-dialog::backdrop{background:#16362755;backdrop-filter:blur(3px)}
+.ux-dialog button:focus-visible,.ux-shell button:focus-visible{outline:3px solid #78b49b;outline-offset:3px}
+.ux-conflict-hints[hidden],[data-multi-body][hidden]{display:none!important}
+.ux-center-proposal{margin:12px 16px;padding:14px;background:#eaf5ee;border-radius:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.ux-center-proposal[hidden]{display:none}.ux-center-proposal button{border:1px solid #b7d4c2;background:white;border-radius:9px;padding:9px}
+@media(max-width:600px){.ux-conflict-hints{margin:10px 4px}.ux-upload-drop{padding:20px 14px!important}.ux-editor{border-radius:16px!important}.ux-conflict>div button{flex:1}}

@@ -7,3 +7,10 @@ node_modules/
 .env.*
 !.env.example
 __pycache__/
+app/configurator/variant-m/.preview/
+.test-output/
+*.log
+.local-data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

@@ -1,0 +1,144 @@
+{
+  "verifiedAtUtc": "2026-10-03T09:28:44.957097+00:00",
+  "remoteDestination": "Plesk gravuru.de: /gravuru-manufaktur-app/backups (outside public webroot; parent permissions 700)",
+  "encryptedFile": "Gravuru-2027-Privatsicherung-20261003.zip.age",
+  "encryptedBytes": 528682206,
+  "encryptedSha256": "961cf4655e4a25c201324c72782df617acb61c34fb5a40f315549a8643d03a39",
+  "parts": [
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part001",
+      "bytes": 33554432,
+      "sha256": "27f65520e55e1d22d085b159e96d9652e3887b25122d2c4627dc745134e2ac08",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part002",
+      "bytes": 33554432,
+      "sha256": "1bee806df624e856741235c26566d5bfba399b1387ebfb5bac5e646582535869",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part003",
+      "bytes": 33554432,
+      "sha256": "89f26021136cb4a3d810cece1a88e092fae46edc377a87e96e5adf91abcf2744",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part004",
+      "bytes": 33554432,
+      "sha256": "41d491d0bebf2e99915d1ce8202cedf860befab04898ecd9fa84301b04c468d3",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part005",
+      "bytes": 33554432,
+      "sha256": "832534c300ff63796f9e795d655fceac512ffd7cf0d945bc19e2266a74920011",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part006",
+      "bytes": 33554432,
+      "sha256": "c8dd743a3b6c93a6144e5ae9e7153012684ee94eb085d0e781963e735325da75",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part007",
+      "bytes": 33554432,
+      "sha256": "ef6c060dad1e9784325bacb7aad7ff32e55480c11a9143257e4d6460c7064f04",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part008",
+      "bytes": 33554432,
+      "sha256": "9209ab4ad83e65193716bfeeeddcbd74e7a9ce467eb77ddeec059ba8529bd814",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part009",
+      "bytes": 33554432,
+      "sha256": "3e810e3e9a68f94b85b97ebcb808701e50aa63ff0406d34a602bf760859a7c33",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part010",
+      "bytes": 33554432,
+      "sha256": "22e85f74ebf9d080416b405beaf665704575803777515fe0358444dd077c99bf",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part011",
+      "bytes": 33554432,
+      "sha256": "2f68afbce7ea9380468d28c7b9425cc16f9778b4268ff92b303f10b15aa38c90",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part012",
+      "bytes": 33554432,
+      "sha256": "9c8a99a63c37e584a21610778034bfc77f24c67fa6e5e31bebaa00c63ae245ff",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part013",
+      "bytes": 33554432,
+      "sha256": "6f0f09f8888f04c8f661349807d61fbccffb839210c555049640fd2bc1221228",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part014",
+      "bytes": 33554432,
+      "sha256": "0fa902236a72cf631d81678955df568c479f58dd8446d728274ceede36d9d39a",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part015",
+      "bytes": 33554432,
+      "sha256": "ff98486af84bb9bcc03cf89c900dc38d51288ee2f06c535bc0042ec86583f14b",
+      "verified": true
+    },
+    {
+      "name": "Gravuru-2027-Privatsicherung-20261003.zip.age.part016",
+      "bytes": 25365726,
+      "sha256": "f0f8716c9d3deb57380732c23dde8da76f65faf86648a1d390904b0947295340",
+      "verified": true
+    }
+  ],
+  "recoveryMethod": "15 complete members from truncated server-created ZIP, CRC and SHA256 verified; final part downloaded separately via Plesk; concatenated complete encrypted payload SHA256 matched. Truncated ZIP itself NOT accepted as valid.",
+  "decrypt": "PASS",
+  "supplementManifestFiles": 99,
+  "historicalManifestFiles": 302,
+  "databases": [
+    {
+      "name": "workshop.sqlite",
+      "sha256": "c205c245a6fd57edbf37025ad69a02f80248e610fdb181e1193f5840a08ca88d",
+      "integrity": "ok",
+      "tableCounts": {
+        "products": 7,
+        "product_revisions": 17,
+        "import_items": 4
+      }
+    },
+    {
+      "name": "profiles.sqlite",
+      "sha256": "bf31afc26905a537bb3ca36faa8619c4bed0b641483d01b58ef87692f982aba1",
+      "integrity": "ok",
+      "tableCounts": {
+        "profiles": 2,
+        "profile_revisions": 2,
+        "profile_library_settings": 1,
+        "profile_settings_revisions": 5
+      }
+    },
+    {
+      "name": "design-assets.sqlite",
+      "sha256": "b1b89e8e6f6400057f841683186c06bef75b6c2b9e5a3e22b6e8c23b6d63f2a0",
+      "integrity": "ok",
+      "tableCounts": {
+        "design_sources": 2,
+        "design_assets": 3
+      }
+    }
+  ],
+  "restoreExecution": "Isolated local folder using only server-downloaded payload plus existing recovery key. NOT a cloud runtime database restore.",
+  "keyRecovery": "User confirmed independent password-manager storage; not independently inspected",
+  "productionTouched": false
+}

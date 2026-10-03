@@ -1,0 +1,13 @@
+* text=auto
+*.mjs text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.png binary
+*.jpg binary
+*.zip binary
+*.gz binary
+# Hash-verified source resources must retain their original bytes on every OS.
+app/designs/aosu-labrador/** -text
+app/references/** -text

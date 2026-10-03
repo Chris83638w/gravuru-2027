@@ -1,0 +1,1419 @@
+{
+  "schemaVersion": 1,
+  "kind": "universal-product",
+  "id": "hunde-gedenktafeln-300x200-foto-p01",
+  "name": "Hunde-Gedenktafel Schiefer 30 × 20 cm mit Fotogravur",
+  "revision": "2026-09-23-m1",
+  "geometry": {
+    "width": 300,
+    "height": 200,
+    "shape": "rect",
+    "cornerRadiusMm": 0,
+    "safeMarginMm": 10,
+    "holes": []
+  },
+  "material": {
+    "kind": "slate",
+    "color": "#343b3d",
+    "thicknessMm": 5,
+    "edge": "natural-broken",
+    "surface": "natural-black"
+  },
+  "processing": {
+    "profileId": "slate-engraving"
+  },
+  "designs": [
+    {
+      "id": "hund-schiefer-foto-01-pfoten-im-herzen",
+      "sourceId": "01-pfoten-im-herzen",
+      "name": "Pfoten im Herzen",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-01-pfoten-im-herzen-photo",
+          "type": "photoSlot",
+          "x": 72,
+          "y": 88,
+          "w": 102,
+          "h": 102,
+          "rotation": 0,
+          "photoShape": "circle",
+          "fieldKey": "photo-01",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-01-pfoten-im-herzen-photo-frame",
+          "type": "motif",
+          "motif": "circle",
+          "x": 72,
+          "y": 88,
+          "w": 109,
+          "h": 109,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "paw",
+          "x": 226,
+          "y": 54.4,
+          "w": 20.46,
+          "h": 23.76,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-01-pfoten-im-herzen-10",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 226,
+          "y": 92.8,
+          "size": 18,
+          "font": "Lora",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 36.126,
+          "h": 21.599999999999998,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-01-pfoten-im-herzen-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 226,
+          "y": 116.8,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-01-pfoten-im-herzen-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "line",
+          "x": 226,
+          "y": 129.6,
+          "w": 49.6,
+          "h": 4.32,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-01-pfoten-im-herzen-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Für immer in unserem Herzen",
+          "x": 226,
+          "y": 147.2,
+          "size": 5.04,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 69.43608,
+          "h": 6.048,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-01-pfoten-im-herzen-14",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-02-fotomedaillon",
+      "sourceId": "02-fotomedaillon",
+      "name": "Fotomedaillon",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-02-fotomedaillon-photo",
+          "type": "photoSlot",
+          "x": 76,
+          "y": 91,
+          "w": 108,
+          "h": 108,
+          "rotation": 0,
+          "photoShape": "circle",
+          "fieldKey": "photo-02",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-02-fotomedaillon-photo-frame",
+          "type": "motif",
+          "motif": "circle",
+          "x": 76,
+          "y": 91,
+          "w": 115,
+          "h": 115,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "circle",
+          "x": 200.48,
+          "y": 92.8,
+          "w": 68.82,
+          "h": 68,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-02-fotomedaillon-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 252.68,
+          "y": 70.4,
+          "size": 17.28,
+          "font": "Lora",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 34.68096,
+          "h": 20.736,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-02-fotomedaillon-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 252.68,
+          "y": 92.8,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-02-fotomedaillon-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Deine Spuren\nbleiben für immer.",
+          "x": 252.293,
+          "y": 120.8,
+          "size": 5.04,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 42.018480000000004,
+          "h": 12.096,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-02-fotomedaillon-14",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "paw",
+          "x": 252.68,
+          "y": 148,
+          "w": 11.16,
+          "h": 12.96,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-02-fotomedaillon-15",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-03-regenbogenbrucke",
+      "sourceId": "03-regenbogenbruecke",
+      "name": "Regenbogenbrücke",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-03-regenbogenbrucke-photo",
+          "type": "photoSlot",
+          "x": 76,
+          "y": 91,
+          "w": 108,
+          "h": 96,
+          "rotation": 0,
+          "photoShape": "rect",
+          "fieldKey": "photo-03",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-03-regenbogenbrucke-photo-frame",
+          "type": "motif",
+          "motif": "frame",
+          "x": 76,
+          "y": 91,
+          "w": 115,
+          "h": 103,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "rainbow",
+          "x": 226,
+          "y": 59.2,
+          "w": 42.78,
+          "h": 33.84,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-03-regenbogenbrucke-10",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 226,
+          "y": 100.8,
+          "size": 18.72,
+          "font": "Dancing Script",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 32.160959999999996,
+          "h": 22.464,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-03-regenbogenbrucke-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 226,
+          "y": 122.4,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-03-regenbogenbrucke-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Wir sehen uns wieder.",
+          "x": 226,
+          "y": 142.4,
+          "size": 5.76,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 58.10688,
+          "h": 6.912,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-03-regenbogenbrucke-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "paw",
+          "x": 203.573,
+          "y": 146.4,
+          "w": 9.92,
+          "h": 11.52,
+          "rotation": -20,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-03-regenbogenbrucke-14",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "paw",
+          "x": 248.427,
+          "y": 146.4,
+          "w": 9.92,
+          "h": 11.52,
+          "rotation": 20,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-03-regenbogenbrucke-15",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-04-unendliche-liebe",
+      "sourceId": "04-unendliche-liebe",
+      "name": "Unendliche Liebe",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-04-unendliche-liebe-photo",
+          "type": "photoSlot",
+          "x": 72,
+          "y": 92,
+          "w": 100,
+          "h": 112,
+          "rotation": 0,
+          "photoShape": "rect",
+          "fieldKey": "photo-04",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-04-unendliche-liebe-photo-frame",
+          "type": "motif",
+          "motif": "frame",
+          "x": 72,
+          "y": 92,
+          "w": 107,
+          "h": 119,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "infinity",
+          "x": 226,
+          "y": 56,
+          "w": 45.88,
+          "h": 26.64,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-04-unendliche-liebe-10",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 226,
+          "y": 95.2,
+          "size": 19.44,
+          "font": "Dancing Script",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 33.397920000000006,
+          "h": 23.328,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-04-unendliche-liebe-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 226,
+          "y": 117.6,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-04-unendliche-liebe-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Geliebt. Vermisst. Unvergessen.",
+          "x": 226,
+          "y": 143.2,
+          "size": 5.04,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 71.50752,
+          "h": 6.048,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-04-unendliche-liebe-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-05-sternenfreund",
+      "sourceId": "05-sternenfreund",
+      "name": "Sternenfreund",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-05-sternenfreund-photo",
+          "type": "photoSlot",
+          "x": 76,
+          "y": 88,
+          "w": 108,
+          "h": 108,
+          "rotation": 0,
+          "photoShape": "circle",
+          "fieldKey": "photo-05",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-05-sternenfreund-photo-frame",
+          "type": "motif",
+          "motif": "circle",
+          "x": 76,
+          "y": 88,
+          "w": 115,
+          "h": 115,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "star",
+          "x": 189.653,
+          "y": 56,
+          "w": 9.3,
+          "h": 10.8,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-05-sternenfreund-10",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "star",
+          "x": 262.733,
+          "y": 72,
+          "w": 6.2,
+          "h": 7.2,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-05-sternenfreund-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "star",
+          "x": 246.107,
+          "y": 43.2,
+          "w": 5.58,
+          "h": 6.48,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-05-sternenfreund-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "moon",
+          "x": 198.16,
+          "y": 120.8,
+          "w": 27.28,
+          "h": 31.68,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-05-sternenfreund-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 239.92,
+          "y": 84,
+          "size": 17.28,
+          "font": "Lora",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 34.68096,
+          "h": 20.736,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-05-sternenfreund-14",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 239.92,
+          "y": 106.4,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-05-sternenfreund-15",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Du leuchtest weiter\nin unseren Erinnerungen.",
+          "x": 239.92,
+          "y": 132.8,
+          "size": 5.04,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 59.144400000000005,
+          "h": 12.096,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-05-sternenfreund-16",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-06-stiller-begleiter",
+      "sourceId": "06-stiller-begleiter",
+      "name": "Stiller Begleiter",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-06-stiller-begleiter-photo",
+          "type": "photoSlot",
+          "x": 72,
+          "y": 90,
+          "w": 104,
+          "h": 104,
+          "rotation": 0,
+          "photoShape": "circle",
+          "fieldKey": "photo-06",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-06-stiller-begleiter-photo-frame",
+          "type": "motif",
+          "motif": "circle",
+          "x": 72,
+          "y": 90,
+          "w": 111,
+          "h": 111,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "dog",
+          "x": 196.227,
+          "y": 91.2,
+          "w": 48.36,
+          "h": 56.16,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-06-stiller-begleiter-10",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 245.72,
+          "y": 76,
+          "size": 18,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 41.13,
+          "h": 21.599999999999998,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-06-stiller-begleiter-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 245.72,
+          "y": 100.8,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-06-stiller-begleiter-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "line",
+          "x": 245.72,
+          "y": 116,
+          "w": 52.7,
+          "h": 3.6,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-06-stiller-begleiter-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Ein treuer Freund.\nEin Teil von uns.",
+          "x": 245.72,
+          "y": 136.8,
+          "size": 5.04,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 42.19992,
+          "h": 12.096,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-06-stiller-begleiter-14",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-07-blutenkranz",
+      "sourceId": "07-bluetenkranz",
+      "name": "Blütenkranz",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-07-blutenkranz-photo",
+          "type": "photoSlot",
+          "x": 76,
+          "y": 90,
+          "w": 106,
+          "h": 106,
+          "rotation": 0,
+          "photoShape": "circle",
+          "fieldKey": "photo-07",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-07-blutenkranz-photo-frame",
+          "type": "motif",
+          "motif": "circle",
+          "x": 76,
+          "y": 90,
+          "w": 113,
+          "h": 113,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "wreath",
+          "x": 226,
+          "y": 92,
+          "w": 82.46,
+          "h": 68,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-07-blutenkranz-10",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 226,
+          "y": 79.2,
+          "size": 18,
+          "font": "Dancing Script",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 30.924,
+          "h": 21.599999999999998,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-07-blutenkranz-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 226,
+          "y": 100,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-07-blutenkranz-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "paw",
+          "x": 226,
+          "y": 121.6,
+          "w": 15.5,
+          "h": 18,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-07-blutenkranz-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Danke für die gemeinsame Zeit",
+          "x": 226,
+          "y": 156.8,
+          "size": 4.68,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 65.85695999999999,
+          "h": 5.616,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-07-blutenkranz-14",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-08-gemeinsame-wege",
+      "sourceId": "08-gemeinsame-wege",
+      "name": "Gemeinsame Wege",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-08-gemeinsame-wege-photo",
+          "type": "photoSlot",
+          "x": 72,
+          "y": 90,
+          "w": 104,
+          "h": 112,
+          "rotation": 0,
+          "photoShape": "rect",
+          "fieldKey": "photo-08",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-08-gemeinsame-wege-photo-frame",
+          "type": "motif",
+          "motif": "frame",
+          "x": 72,
+          "y": 90,
+          "w": 111,
+          "h": 119,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "mountain",
+          "x": 226,
+          "y": 60.8,
+          "w": 59.52,
+          "h": 41.76,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-08-gemeinsame-wege-10",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 226,
+          "y": 105.6,
+          "size": 17.28,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 39.4848,
+          "h": 20.736,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-08-gemeinsame-wege-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 226,
+          "y": 125.6,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-08-gemeinsame-wege-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Jeder Weg mit dir war ein Geschenk.",
+          "x": 226,
+          "y": 148,
+          "size": 4.68,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 77.51483999999999,
+          "h": 5.616,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-08-gemeinsame-wege-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-09-foto-herz",
+      "sourceId": "09-foto-und-herz",
+      "name": "Foto & Herz",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-09-foto-herz-photo",
+          "type": "photoSlot",
+          "x": 76,
+          "y": 87,
+          "w": 108,
+          "h": 100,
+          "rotation": 0,
+          "photoShape": "rect",
+          "fieldKey": "photo-09",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-09-foto-herz-photo-frame",
+          "type": "motif",
+          "motif": "frame",
+          "x": 76,
+          "y": 87,
+          "w": 115,
+          "h": 107,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "motif",
+          "motif": "frame",
+          "x": 202.413,
+          "y": 89.6,
+          "w": 66.96,
+          "h": 68,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-09-foto-herz-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 251.133,
+          "y": 73.6,
+          "size": 18,
+          "font": "Dancing Script",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 30.924,
+          "h": 21.599999999999998,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-09-foto-herz-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 251.133,
+          "y": 95.2,
+          "size": 4.32,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 24.1488,
+          "h": 5.184,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-09-foto-herz-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "heart",
+          "x": 251.133,
+          "y": 123.2,
+          "w": 18.6,
+          "h": 21.6,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-09-foto-herz-14",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Für immer mein Freund",
+          "x": 226,
+          "y": 152,
+          "size": 5.76,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 62.86464,
+          "h": 6.912,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-09-foto-herz-15",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    },
+    {
+      "id": "hund-schiefer-foto-10-zeitlos",
+      "sourceId": "10-zeitlos",
+      "name": "Zeitlos",
+      "category": "Gedenktafeln für Hunde",
+      "collections": [
+        "Hunde",
+        "Fotogravur",
+        "Erinnerung"
+      ],
+      "photoEngraving": true,
+      "customerEditable": true,
+      "objects": [
+        {
+          "id": "hund-schiefer-foto-10-zeitlos-photo",
+          "type": "photoSlot",
+          "x": 72,
+          "y": 90,
+          "w": 104,
+          "h": 104,
+          "rotation": 0,
+          "photoShape": "circle",
+          "fieldKey": "photo-10",
+          "required": true,
+          "customerEditable": true,
+          "templateOrigin": true,
+          "color": "#e8e9e5"
+        },
+        {
+          "id": "hund-schiefer-foto-10-zeitlos-photo-frame",
+          "type": "motif",
+          "motif": "circle",
+          "x": 72,
+          "y": 90,
+          "w": 111,
+          "h": 111,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "includedInDesign": true,
+          "slateIncluded": true
+        },
+        {
+          "type": "text",
+          "text": "Balu",
+          "x": 226,
+          "y": 72,
+          "size": 23.76,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "name",
+          "w": 54.2916,
+          "h": 28.512,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-10-zeitlos-10",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "motif",
+          "motif": "line",
+          "x": 226,
+          "y": 96.8,
+          "w": 24.8,
+          "h": 2.88,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-10-zeitlos-11",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "2012 – 2026",
+          "x": 226,
+          "y": 112,
+          "size": 5.04,
+          "font": "Montserrat",
+          "bold": false,
+          "fieldKey": "dates",
+          "w": 28.173599999999997,
+          "h": 6.048,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-10-zeitlos-12",
+          "customerEditable": true,
+          "templateOrigin": true
+        },
+        {
+          "type": "text",
+          "text": "Du fehlst.",
+          "x": 226,
+          "y": 139.2,
+          "size": 7.92,
+          "font": "Lora Italic",
+          "bold": false,
+          "fieldKey": "quote",
+          "w": 33.858,
+          "h": 9.504,
+          "rotation": 0,
+          "color": "#263330",
+          "id": "hund-schiefer-foto-10-zeitlos-13",
+          "customerEditable": true,
+          "templateOrigin": true
+        }
+      ]
+    }
+  ],
+  "optionGroups": [
+    {
+      "id": "mounting",
+      "name": "Befestigung",
+      "required": true,
+      "values": [
+        {
+          "id": "OHNE",
+          "label": "Ohne Befestigung",
+          "priceCents": 0,
+          "currency": "EUR",
+          "holes": []
+        },
+        {
+          "id": "B02",
+          "label": "2 Bohrlöcher Ø 5 mm",
+          "priceCents": 299,
+          "currency": "EUR",
+          "holes": [
+            {
+              "x": 12,
+              "y": 100,
+              "diameter": 5
+            },
+            {
+              "x": 288,
+              "y": 100,
+              "diameter": 5
+            }
+          ]
+        },
+        {
+          "id": "B04",
+          "label": "4 Bohrlöcher Ø 5 mm",
+          "priceCents": 399,
+          "currency": "EUR",
+          "holes": [
+            {
+              "x": 12,
+              "y": 12,
+              "diameter": 5
+            },
+            {
+              "x": 288,
+              "y": 12,
+              "diameter": 5
+            },
+            {
+              "x": 288,
+              "y": 188,
+              "diameter": 5
+            },
+            {
+              "x": 12,
+              "y": 188,
+              "diameter": 5
+            }
+          ]
+        },
+        {
+          "id": "STKLAR",
+          "label": "Acrylglasständer klar",
+          "priceCents": 1299,
+          "currency": "EUR",
+          "holes": []
+        },
+        {
+          "id": "STSCHWARZ",
+          "label": "Acrylglasständer schwarz",
+          "priceCents": 1499,
+          "currency": "EUR",
+          "holes": []
+        },
+        {
+          "id": "SILIKON",
+          "label": "Silikon",
+          "priceCents": 499,
+          "currency": "EUR",
+          "holes": []
+        },
+        {
+          "id": "B02-AH02",
+          "label": "2 Bohrlöcher + 2 Abstandshalter",
+          "priceCents": 898,
+          "currency": "EUR",
+          "holes": [
+            {
+              "x": 12,
+              "y": 100,
+              "diameter": 5
+            },
+            {
+              "x": 288,
+              "y": 100,
+              "diameter": 5
+            }
+          ]
+        },
+        {
+          "id": "B04-AH04",
+          "label": "4 Bohrlöcher + 4 Abstandshalter",
+          "priceCents": 1398,
+          "currency": "EUR",
+          "holes": [
+            {
+              "x": 12,
+              "y": 12,
+              "diameter": 5
+            },
+            {
+              "x": 288,
+              "y": 12,
+              "diameter": 5
+            },
+            {
+              "x": 288,
+              "y": 188,
+              "diameter": 5
+            },
+            {
+              "x": 12,
+              "y": 188,
+              "diameter": 5
+            }
+          ]
+        }
+      ],
+      "defaultValueId": "OHNE"
+    }
+  ],
+  "pricing": {
+    "baseCents": 2999,
+    "includedPhotoCount": 1,
+    "extraMotifCents": 169,
+    "extraMotifBasis": "per-instance-per-sign",
+    "currency": "EUR"
+  },
+  "weightG": 854,
+  "productType": "Gedenktafel",
+  "frames": [
+    {
+      "key": "standard",
+      "name": "Produktansicht",
+      "acrylic": {
+        "x": 0,
+        "y": 0,
+        "width": 300,
+        "height": 200
+      }
+    }
+  ],
+  "mounting": {
+    "options": [
+      {
+        "key": "K00",
+        "name": "Keine Befestigung"
+      }
+    ]
+  },
+  "features": {
+    "motifsAllowed": true,
+    "orderEnabled": false,
+    "productionConfirmed": false
+  },
+  "binding": {
+    "kind": "local-review",
+    "productId": "test-slate-product"
+  },
+  "admin": {
+    "draftRevision": "2026-09-23-m1",
+    "publishedRevision": null
+  }
+}

@@ -1,0 +1,1295 @@
+{
+  "sourceCommit": "3b2ac03d213ac913bcc61520b595f97dde6aa072",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 305,
+      "sha256": "de34aad1aa64ceff6fa1f5823f93a763178bbe0bedecddb83dd8e902a2261423",
+      "gitBlob": "63f8fb0656c6756ad3ece2d7cfbcc2e2cbbc74cf"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 247,
+      "sha256": "ca5a2e4cba556d0cf7117a5204f09645d585dbb472a7ca62841b6fc8aa29f959",
+      "gitBlob": "131b579e3941429669284ed29b917df3f35c9c57"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 2701,
+      "sha256": "3bcd2217aec4dc3528f857b10bd30303ce8e4431c728104f2abaa3288486c4ba",
+      "gitBlob": "708f3d408a60992f6d443e0d8bdcb0f04388484c"
+    },
+    {
+      "path": "CLOUD-EINRICHTUNG.md",
+      "bytes": 4044,
+      "sha256": "941ed020b55960a17809ec08d6b2731147268d441ada14e191a7da04aac50623",
+      "gitBlob": "3d44712298d161200b21adbb0865f8cd874d4e6c"
+    },
+    {
+      "path": "CLOUD-SICHERUNG-PRUEFUNG.md",
+      "bytes": 4578,
+      "sha256": "ac189d63f9b3731ce983f4e451d717c8dc243416fbb04ea391e92f5abd95fb80",
+      "gitBlob": "92db50c6dc1d417c0c04de4815a19de599cca2fe"
+    },
+    {
+      "path": "CLOUD-UEBERGABE.md",
+      "bytes": 5679,
+      "sha256": "5c2af8dd9849023234dbe3aae8b4545b281f75650dcaf6fd75350ce2f6912ef2",
+      "gitBlob": "5e47a0a89f3b0e706a490fccaf42ea635853243d"
+    },
+    {
+      "path": "G27-01-PRUEFUNG.md",
+      "bytes": 3953,
+      "sha256": "03b97c3a472ebd7ee42d85918ee808b6c2e7f0d3654e97f54b885391de6d3a11",
+      "gitBlob": "96733fe4503bec378a111d5903e1efaaf0e33b1e"
+    },
+    {
+      "path": "G27-01-UEBERGABE.md",
+      "bytes": 1828,
+      "sha256": "cef99a68aac9c2db9186b72c5d3f42c69018f94e9a556d265e20cec84be0e53c",
+      "gitBlob": "1ea7401966c7a98642e3e4fee60f56ab80b7b725"
+    },
+    {
+      "path": "KONFI-VERGLEICH-UND-AR.md",
+      "bytes": 17034,
+      "sha256": "0a20e18c87b3d50ccd4e17465a9094971be1371e917faf75cb443a45b5f75d81",
+      "gitBlob": "977e100f0a7ebdc88c5f627851b0c200bc8614f6"
+    },
+    {
+      "path": "LOKAL-STARTEN.md",
+      "bytes": 4067,
+      "sha256": "aab3923b5b9d31c6c133ac5b44b36c2a1efa7764ced5e76e82bd84b14cabeb80",
+      "gitBlob": "ca55e4f7e61e80840440054e3e0f9d3c677aab03"
+    },
+    {
+      "path": "MATERIALREFERENZEN.md",
+      "bytes": 4518,
+      "sha256": "98ce4df6687e65fde3d6bb53271a512f7c140352194810a4e085920fc58770c7",
+      "gitBlob": "99da37aa1aa30f313dfaa6477158a8a9f7726da5"
+    },
+    {
+      "path": "NEUE-WERKSTATT-PLAN.md",
+      "bytes": 40485,
+      "sha256": "05fa468832744b16b8f96303da3b7cbd95177b3f5c50f6cb180cf28e93d22efd",
+      "gitBlob": "251a86839b648623f6670d3dfe40c7a735192b2c"
+    },
+    {
+      "path": "QUELLEN-MANIFEST.json",
+      "bytes": 124899,
+      "sha256": "d310f63e9f037d543ef576a6119e4bc8e2e2046a1304805398d1a030afb87d53",
+      "gitBlob": "c8939f08a1dd787fc0f8f7dec4fc8b08a0005fba"
+    },
+    {
+      "path": "QUELLEN-UND-START.md",
+      "bytes": 6990,
+      "sha256": "f88649390715d892ec11afa7dd63e4f267efbf0c24523c2f8f2833611f2fb5cb",
+      "gitBlob": "b0be2730b599d45372ede92381d4a169ec7973e2"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2817,
+      "sha256": "9e2aead85b10ae7e1c48f085d307438ae9054054514bfd88af3e5835a75589b4",
+      "gitBlob": "6b123cd6be913aba20a678110ce57c22b6d7f870"
+    },
+    {
+      "path": "START_HERE.md",
+      "bytes": 6334,
+      "sha256": "d1919c50e4cf5fdabc550bd61278b94c1b08994a0bc923bdd0828331fa2319cf",
+      "gitBlob": "db979cba6e42069c07e532b4f0e4bda5c858434a"
+    },
+    {
+      "path": "STATUS.md",
+      "bytes": 18056,
+      "sha256": "ab63fdf8bb24e55d6006ac651c7e77bdf23f84f2cce6f440a4fa192ed31fdecb",
+      "gitBlob": "08da1601c87a9fbcc5470e99b34aecfadcd89fbd"
+    },
+    {
+      "path": "UEBERGABE-SOL-6.1.md",
+      "bytes": 2777,
+      "sha256": "a57e35c690c04d1be59aa3cb33b876b254eec6da8f29582e988f3754c8b85394",
+      "gitBlob": "a7e61ed1d54d070a2f7a0d71b635db8cb6e9aeb8"
+    },
+    {
+      "path": "UMSETZUNGSPAKETE.md",
+      "bytes": 9094,
+      "sha256": "d8356c3a52c769760300d5dbe02dc71a0037f3b1e3c2f6b4251058dc14aeadcc",
+      "gitBlob": "c7cfef98b087441d441af996d7810e2870800310"
+    },
+    {
+      "path": "app/REFERENCE-UI.json",
+      "bytes": 36654,
+      "sha256": "b27ddca33f19c5684a15a905c46bbb0716170328a7bd74aaa9da8d7486dac4b3",
+      "gitBlob": "b46f3eb5ca3910e6b6e09b0909fe2c7771797355"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-base-anchors.mjs",
+      "bytes": 871,
+      "sha256": "b19e6ebed60abb1eedeca578ed4d7d4a7ef7826ef14c15cd2b5bdda450336679",
+      "gitBlob": "6f2d6492625ae8581196ae191e366929b53d947d"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-product.mjs",
+      "bytes": 6525,
+      "sha256": "965b8297ea41c7da2273258cf74b24d27a23a9739df4871ae517dd384d5aae1b",
+      "gitBlob": "cc98f127b777a851b39a7da1f035763e27751b04"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-product.test.mjs",
+      "bytes": 5578,
+      "sha256": "621cfba5c481e768f55e8dcba18301c506ca3a1d53b91ddea7d8aa67ad2b19be",
+      "gitBlob": "0b3ac1f5c8ee70a32ef638ca084cab0ed874d99d"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "bytes": 2663,
+      "sha256": "7df4fd9e235d433a5ff9f342e4a6018aec4ece21602c8d16dea9177dbfd24726",
+      "gitBlob": "69b58d9427a65f77f59131c49574139d318c2f0c"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.mjs",
+      "bytes": 11229,
+      "sha256": "fc0b48e91aa46674d8073119c5937a605d43ab1dcd130065014b2783a9d7cef3",
+      "gitBlob": "6e99943785428f53c2588b3033c0a4ecd54c0af8"
+    },
+    {
+      "path": "app/configurator/variant-m/adapter.mjs",
+      "bytes": 22131,
+      "sha256": "e75e8bbd5fd8610653bad14480bbdcd64a668f478a84a97f0ba54d414fedfa94",
+      "gitBlob": "24de79076e7dd8af0b19df2bf55061c3d8e45907"
+    },
+    {
+      "path": "app/configurator/variant-m/artwork-resource.mjs",
+      "bytes": 1459,
+      "sha256": "11b75cf83c6d893ba5260fa6211a93171dc4e9497868727071f8eb56e45f78a0",
+      "gitBlob": "04473b73a92ba8c4441edc84b1269b66591c9f27"
+    },
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "bytes": 8749,
+      "sha256": "32423c53c8769f63f8ef5e61948384994abcee1aa0f47b769803662400ca6688",
+      "gitBlob": "adb35a7a4d10dc8cf74ca65a1fea86030df056cd"
+    },
+    {
+      "path": "app/configurator/variant-m/commerce-export.mjs",
+      "bytes": 8648,
+      "sha256": "d54c39367bbc0482fe69fa7835382f6c00f25cb86181ec368581ae207095913d",
+      "gitBlob": "c718c63a8d5cd69877b04adf2a5869d5d74961e1"
+    },
+    {
+      "path": "app/configurator/variant-m/commerce-model.mjs",
+      "bytes": 2788,
+      "sha256": "4e6504b55fead0113f52e65a6e754d84d06ee38c618516e6da906ff75c6e1c58",
+      "gitBlob": "990f1374464e192a7d2c937786ca6f8888b7513d"
+    },
+    {
+      "path": "app/configurator/variant-m/commerce.mjs",
+      "bytes": 3587,
+      "sha256": "39648b82f487eaa1a2a9e1b65e0e6f72b3647d3d439cd554acef791333b07683",
+      "gitBlob": "ebcd711544fed4cdffc57d342ff6f003a0af0064"
+    },
+    {
+      "path": "app/configurator/variant-m/completion.css",
+      "bytes": 6483,
+      "sha256": "2c30cbcd58786dd18a94e1fe5df5b4506f05743c57e363d2e207b3de8d1696ef",
+      "gitBlob": "54cf402e4675bd8a852194fc6472547942fcb4e0"
+    },
+    {
+      "path": "app/configurator/variant-m/completion.mjs",
+      "bytes": 9894,
+      "sha256": "02144225e4e3af46e61c72616da9e7e52699ecd26108d8b4d0b7bc199b05706f",
+      "gitBlob": "4b5e0a68e42aa2b889225f384df787b7318a6c46"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "bytes": 15247,
+      "sha256": "8c5291d52b4c978245a1f8bbf9da8e52b8b7123b32d0a0910630757b3f4b7999",
+      "gitBlob": "8e1a325e196933b88c40260a5aafed984d951ee0"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.test.mjs",
+      "bytes": 8253,
+      "sha256": "8f0735509a6fa53cbf1be2ab664a522be7c6cf30ddbf951d3e395da96c035f21",
+      "gitBlob": "ce8295d99e3bf518c10468879e487d0f0daee4cb"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-rights.mjs",
+      "bytes": 8514,
+      "sha256": "0d7951cbb584190423014d726fa61128a81e608113533f24cd8f7894970f3818",
+      "gitBlob": "188a6da94177492f973ab229dacf567c7f3df580"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools-model.mjs",
+      "bytes": 3197,
+      "sha256": "0fe81f5a93b7d02de65fee22a02848a23b2c8a2d11770b423087028e6cf59d73",
+      "gitBlob": "6c489cddef0b9656903e57f2f43b3f4e05c8bb5c"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.css",
+      "bytes": 4571,
+      "sha256": "95209ed79095f824ae7105aff0e689d31d09aa1860053d12b8755e44d7c6c346",
+      "gitBlob": "499d27228d6ad0b6aac226d2acecce8fd485d4a0"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.mjs",
+      "bytes": 12084,
+      "sha256": "0fb2217e0d6a9f5ac03aaa3a0e8bde577333a6fc9fdd3d2175787994a44bc527",
+      "gitBlob": "47e420d881052dff6c741c21d8bb9276d0dc481a"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.test.mjs",
+      "bytes": 3196,
+      "sha256": "b456399782220c45ca8ec595538eb17c4f411a1158872c7b36c4f9dc121ff032",
+      "gitBlob": "5d50ceddd563e2fa2fcbe5e1e8cd02751edd22c7"
+    },
+    {
+      "path": "app/configurator/variant-m/design-edit.mjs",
+      "bytes": 1163,
+      "sha256": "628e4f4333eb79899281f57a494493fc3b1200b2a80d8cea5e7acd914e4f7c85",
+      "gitBlob": "dcb001818ab84f6d8595a18e47b3b4683126a9d3"
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "bytes": 2968,
+      "sha256": "d1a16e07da2914626ef2aeda930f0fac08fe042892263b46913186a10a949307",
+      "gitBlob": "3c8c07c1f3729771f3e75ccf4168fb1eb8cb855b"
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.test.mjs",
+      "bytes": 5110,
+      "sha256": "97fefa3599ee72166014e3f2a7542668e4407dc895e21558b6a8f5546d5bd28d",
+      "gitBlob": "5ab085ce15e4f237ad982c6273766e3eff5ae5cb"
+    },
+    {
+      "path": "app/configurator/variant-m/field-mapping.mjs",
+      "bytes": 2239,
+      "sha256": "a05236f46db3a60f0f8d3ceec4871c5d5275467aac2acac23629cf20ca0899ed",
+      "gitBlob": "433f1a5123bae3c4536ffaa14e12040625b2e289"
+    },
+    {
+      "path": "app/configurator/variant-m/field-mapping.test.mjs",
+      "bytes": 3670,
+      "sha256": "b1e385c9b4a48272a369f79a58241d5262390fe9e598e98277e6dee879485562",
+      "gitBlob": "93fff614b334bb5715b4de0834664b5dff36201b"
+    },
+    {
+      "path": "app/configurator/variant-m/fixtures/native-profile.json",
+      "bytes": 37087,
+      "sha256": "1fa675944b92e903464cecb6de15eb8c9b41e3dd526acbdb0488634f182ea67f",
+      "gitBlob": "9b27910105316cc6ee53459f43d07ff8f258fd0b"
+    },
+    {
+      "path": "app/configurator/variant-m/help.mjs",
+      "bytes": 9104,
+      "sha256": "7d3b58bfbccfd3bdd149aac57ebaa7a7d719b203868e1cd4dd6ba4126380b6d4",
+      "gitBlob": "09f932f5acd6e06170eefb2e71c2251085d5428f"
+    },
+    {
+      "path": "app/configurator/variant-m/image-processing.mjs",
+      "bytes": 1635,
+      "sha256": "5c710e5f285b57563e08407e236d42ed6fa094ff1504f099ad6ce516eaee3807",
+      "gitBlob": "e50b81d0cd83206a7aa5ee9844f702b4819c9ca8"
+    },
+    {
+      "path": "app/configurator/variant-m/image-processing.test.mjs",
+      "bytes": 1322,
+      "sha256": "63f2dbe9111f2e4cbcad84d1d929e5f7ed5ec0d651a142c148f165371279b9f2",
+      "gitBlob": "ce3520d548a7d901694b7491676f8531b097fe4a"
+    },
+    {
+      "path": "app/configurator/variant-m/index.html",
+      "bytes": 3206,
+      "sha256": "5c044fe5f8c56fd4921b446249f2ec08099e145a1df28b38fef07bc1af9a192b",
+      "gitBlob": "221f6c61c73111f950a98e02990eb10737e4baef"
+    },
+    {
+      "path": "app/configurator/variant-m/local-pilot.mjs",
+      "bytes": 3742,
+      "sha256": "68943dc7a966e3303d82cde604e73cb582c24a00ec6ad9e9d6061f790c3e4059",
+      "gitBlob": "0088390ef8080668c8079f50ceb584dd71e62df5"
+    },
+    {
+      "path": "app/configurator/variant-m/material-surface.mjs",
+      "bytes": 1523,
+      "sha256": "fa638375cd5bded58040963ff06f6eb6bc0513e54b1f709ea87686fcd3adad08",
+      "gitBlob": "0eefbe32978b18133c114809807a58b82341df4d"
+    },
+    {
+      "path": "app/configurator/variant-m/option-media.mjs",
+      "bytes": 3143,
+      "sha256": "8c4278fba799a06295a99051ca3c2b0682242f4086df407ce7546bf3daf401ef",
+      "gitBlob": "dc027fb46288565d7ac6ba884a239618b0409ce3"
+    },
+    {
+      "path": "app/configurator/variant-m/option-standard-images.mjs",
+      "bytes": 112882,
+      "sha256": "3eaa4a40b2d6c5f99f0516948cf2dcfeafc214c8a73ed02c934fbe7d60a523c7",
+      "gitBlob": "51c9995de4cf34a2c16c03cfd5fabd4664b6ddca"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-editor.mjs",
+      "bytes": 8198,
+      "sha256": "a48adf3ef540ba327f458d4c353f2b05ddefaf1501ab3c4ea6ce75bb5774e700",
+      "gitBlob": "ea7bf76f1795aa4cf85bf390c619483451ceaaf3"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-placeholder.mjs",
+      "bytes": 4090,
+      "sha256": "44b1a746cc79bed52291e1175f1e24d5f2ce702d56d9469a7bf235bba4160db7",
+      "gitBlob": "f3dbad260b5c79778bb26929dcee6ecd07ef97d0"
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.mjs",
+      "bytes": 1790,
+      "sha256": "e09f0f2c4ffe85159b9d15e7ad74bd34022bc0c10b5695c9cd2872d314e2f7c1",
+      "gitBlob": "33f8a8f69d0f7cbd46016c5e1cf774c222e598de"
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.test.mjs",
+      "bytes": 2792,
+      "sha256": "77219fe71871f63a743682b49f5a73ef485d0c70fdd1633c80dee5f6fcc38fc7",
+      "gitBlob": "2bc8261d208700c0855ee8e2f25eafa805b60413"
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.css",
+      "bytes": 23552,
+      "sha256": "e4528c2dc779b2fbf72254e5345f2337faf96b93634ac11bb4806ddb736873d0",
+      "gitBlob": "43551ae5be3c7d5e2466479c82880db8ae0d0a99"
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.mjs",
+      "bytes": 14047,
+      "sha256": "09df34128420c6877cbcdd24dbff68b629f9011276940a0e4c80e3d3115861d4",
+      "gitBlob": "262d90b142347eb567a16064b8d91853b369a3de"
+    },
+    {
+      "path": "app/configurator/variant-m/server.mjs",
+      "bytes": 5477,
+      "sha256": "809c5c502a07d8f0bc388ff23c7decf3b7afbe875e44cdac92cdfb6a7aa4ca57",
+      "gitBlob": "1ae48bc6d9b60820982b5a831e0680a8fbed3ba2"
+    },
+    {
+      "path": "app/configurator/variant-m/server.test.mjs",
+      "bytes": 2758,
+      "sha256": "f19ffd215e6377ffb3e664bc3b10c5d99dfad3c1136fa11e2a0eed618244bebd",
+      "gitBlob": "9a6f5168e94339485f23c1ce8f733091a0de3f8d"
+    },
+    {
+      "path": "app/configurator/variant-m/spacer-cap.mjs",
+      "bytes": 1730,
+      "sha256": "349ac8759b93ccbeed17c0a3e2f849ad8dfdb5ed214348b7ebd86bd16fa4b753",
+      "gitBlob": "e049aaf46c412f253223a82e7b95ed4571c883b2"
+    },
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "bytes": 9744,
+      "sha256": "f1825267c856d2fa18c8a8a08bcfccf42312a6a3b754a06c11bb5c9787cf1dbe",
+      "gitBlob": "9b112b0d0fc90cf0da7938d48ef38d2f56456883"
+    },
+    {
+      "path": "app/configurator/variant-m/usability-model.mjs",
+      "bytes": 3112,
+      "sha256": "e1d3aca7b0232c51b18214af002aa09b178b9ce78e6e9e4b772d9776e424256e",
+      "gitBlob": "9d31b88e677a2baa5a34cfd34474c1673330c3d6"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.css",
+      "bytes": 19833,
+      "sha256": "a9efa675ef812aed641ff4ca5fe597c59d6c650e5f2e0f5342a4b43e06add1d4",
+      "gitBlob": "6d249289efacad7f99f4ffc32fbf26c87ebead8b"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.mjs",
+      "bytes": 19804,
+      "sha256": "3944246583604343e84b9da07b135b30e99f66db469b6ce7d1017c4cbc4b2a6a",
+      "gitBlob": "f26521761e01d6bd169a4f034cdfe90a09d126d1"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.test.mjs",
+      "bytes": 2853,
+      "sha256": "c7a7ed057a7cd27b1508ce1cb5caf17da4cca2368d8394d3d2990328ab87133d",
+      "gitBlob": "1f355ed4090719c9bd2ee80bf727a6f74ebbde71"
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "bytes": 3987,
+      "sha256": "9ccbb6d5c00ff4a7943a7309996e858c6a97c09b476410d6f74e2e0ee8a4d3b5",
+      "gitBlob": "7edec731a92e44bd79427dc61215b7d662b3b4b0"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.css",
+      "bytes": 20710,
+      "sha256": "0bb4c2d48ae5ce1b6fb807ba6e2ae36c2a7ae752d0a3a362d093b3fe887dffa0",
+      "gitBlob": "4c47717ad33237ff892b88c60a322cdfa2f6f880"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "bytes": 49593,
+      "sha256": "3caa1deecbb00bf216ee9fdac609c4d825137f53e40c682e1bad9f74783dfec8",
+      "gitBlob": "2cb2c12b67446ff6be6fbd0de435cfef001d1e92"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow-model.mjs",
+      "bytes": 2547,
+      "sha256": "f4544edc2ff97ec05d6ff27dec7d88c9e81849df710cebd94131180290d100e1",
+      "gitBlob": "638877629a3bea13a3f9e119edf9373e221161a5"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.css",
+      "bytes": 2774,
+      "sha256": "10ebebc99125751284d10087f8e281342e742d48de89f98b13136ac112f3e8f5",
+      "gitBlob": "771c0f515d757982e1247fa4124e1d05738279fb"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "bytes": 14699,
+      "sha256": "88bfe99093d03816794bd0b808eb9154988d2ca35f72cf9ccbfadceaf58ea475",
+      "gitBlob": "ccc31271f23bde8bb8f05ee9cbdbed38676bc07f"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.test.mjs",
+      "bytes": 2340,
+      "sha256": "18c054ef8d9d0f793fa26233ff58d3b360804009dfa3cabdd4112cfb87ab0c0b",
+      "gitBlob": "b111864532c9302285cdd9436c12324a9c0e74c7"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-buche-v2.png",
+      "bytes": 355594,
+      "sha256": "4803dffa70e97d2d98c4e625442a59e594ed13df7879e87d2759413036fa8262",
+      "gitBlob": "5b6cc26a6afe0d5b0a0564985b88059f26f2aa75"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-buche.png",
+      "bytes": 826404,
+      "sha256": "8bf34797e3b0861e4423863f7fcc414e39846ddf97d3b4b211956b57bc9ae08c",
+      "gitBlob": "b3ed99da9f0b54270c4b055ab6f83c3e256c97d5"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-eiche-v2.png",
+      "bytes": 310200,
+      "sha256": "60751404e382c9fab41c475f2458fcf26290cd83d02e8d82ba7061bb3b5965b6",
+      "gitBlob": "419745028eb2d5e21871f24aae7bb5547103aaeb"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-eiche.png",
+      "bytes": 868156,
+      "sha256": "0c0becd76c41284e561634ef2ba05bcec25fbe31007ba240eb811524f6e4c566",
+      "gitBlob": "ede272cd534cc00c63d52f0757638f578fe0f24d"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-holz-flach-v2.png",
+      "bytes": 218123,
+      "sha256": "bafe3fe84800c9f9fbf0cc346267aa6748f56c3cbfe2324def0d17c587265d09",
+      "gitBlob": "2917eab4e41a3dc0620f3fc0b2b6e79255c0b514"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-holz-flach.png",
+      "bytes": 458165,
+      "sha256": "12e523f2f79d08a2448347e6eca153ce1d2ae6f222b2a156cfaa01cdf02549d4",
+      "gitBlob": "679a7e7b4f5560eacf327015d956bab6a65a1d58"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-klar-v2.png",
+      "bytes": 240812,
+      "sha256": "3c85ee8882f8c2b3778422b4e04b12943afa35018c0a55b18428cdcd308f08f1",
+      "gitBlob": "fa3e6ecda6f544c867c5ff02a42249c86d5b5ed6"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-klar.png",
+      "bytes": 465926,
+      "sha256": "d7eeffdb73e1aabc3830747a138f00a07e5efb86ffb527e480cbbfc8d802bb8d",
+      "gitBlob": "b81071445638b9c0dce4e15070f49b1703ef361d"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-nussbaum-v2.png",
+      "bytes": 374283,
+      "sha256": "32c06de5557bfdb31125399ab1d33c70a2ae9f92a186c053e2b3eace841293c0",
+      "gitBlob": "d1071812d6ca4053af6973277c81f0fa629fb67a"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-nussbaum.png",
+      "bytes": 917454,
+      "sha256": "d03754acfb972a415d4fd58148b39406fad56e640c45f0c5157bf55754183608",
+      "gitBlob": "8cb24b3481d8241fd6462bda40784a224054144c"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-satiniert-v2.png",
+      "bytes": 204381,
+      "sha256": "1ee601d7287ca59c62f13accbcb5c72512faac04cc716d13a7c2b4555a230b63",
+      "gitBlob": "331a609fde379b1d87b0248729a28359cb63064f"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-satiniert.png",
+      "bytes": 343556,
+      "sha256": "0b1ddf5062c04ebc0535f1e1047444fd4a53ba4a9cf21f7c76cce0e83912cfbd",
+      "gitBlob": "51d1fca4de8449836d214f042b8a97db36370a0d"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/reference.png",
+      "bytes": 1869856,
+      "sha256": "68b1000ddce2d1cd92446ed3565b75eab9e35680fea4d58a93d983447db44d74",
+      "gitBlob": "54bb04d7b66f9c8d155b9de0d41b604c659fae83"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/resources.json",
+      "bytes": 390206,
+      "sha256": "6b72446051190cb0b93f82774b84fd24c670c9df1d082e9995506898582571a6",
+      "gitBlob": "ab3e83de675ecce1f83ae26052364e2a3a5c7c5a"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/scene-empty-v2.png",
+      "bytes": 1259362,
+      "sha256": "0272e621528bb423ff699563061c940264fe9eeff3fa44bf1287658003ac1ca2",
+      "gitBlob": "0642a876adf40351a1127616b2ef82f1e3f1190b"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/scene-empty.png",
+      "bytes": 1212596,
+      "sha256": "9ff9869b6bd7853191bcccea47e4691e8cced9cfecaa12b00d527195e01a4324",
+      "gitBlob": "29b07bb5be5b78cba6744ba3037f5b1f657fc503"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/source.json",
+      "bytes": 169,
+      "sha256": "af25418642fcef37b55060dd9eb8f452aa9a7db7d47f42ad60a4c605a92c82b7",
+      "gitBlob": "ebf3598042499686e96268f2c99d0191679fbd88"
+    },
+    {
+      "path": "app/designs/aosu-labrador/.gitattributes",
+      "bytes": 68,
+      "sha256": "0c6bed3a365e88811bbdd87036d806d1e4871fa44fd8d7a20081734a4453ead1",
+      "gitBlob": "7c71a51515b5ef6712d2e11cfbb908401203cf33"
+    },
+    {
+      "path": "app/designs/aosu-labrador/.gitignore",
+      "bytes": 23,
+      "sha256": "2f02381d299b8434d3ee6d847c5be87961c624ce06cbf9f50fa65316efd67014",
+      "gitBlob": "0a013e756caf1113d62ac602981575fd0a4758da"
+    },
+    {
+      "path": "app/designs/aosu-labrador/README.md",
+      "bytes": 3297,
+      "sha256": "ce1dd7c6f933c7d34cee1255823b50302cd73a977e72d329f7bc04c1f261bd41",
+      "gitBlob": "25f3be98e132e524b00a1e5f38ae24f365fcdf96"
+    },
+    {
+      "path": "app/designs/aosu-labrador/RESOURCE-INVENTORY.json",
+      "bytes": 41276,
+      "sha256": "6d7a383c4796c5f1acc42750770ec0c5f5c8e156933e3fa7ebb801a9d8ddc01f",
+      "gitBlob": "b75bdce3905881a52c19fc9f1db0398a28cf6ee5"
+    },
+    {
+      "path": "app/designs/aosu-labrador/RIGHTS-AND-DEPENDENCIES.md",
+      "bytes": 3230,
+      "sha256": "6638ebe8bc2919c6fbe2cebe2b3d12fc0991d630ee0f573035323964fbac2ea9",
+      "gitBlob": "21a473a6237e62a235e54000ff37bc9f0c7006e1"
+    },
+    {
+      "path": "app/designs/aosu-labrador/SETUP.md",
+      "bytes": 4263,
+      "sha256": "f6009b29d8e6d813fc759a7340324c7458bffd5f348e3c82f76587bab838288c",
+      "gitBlob": "85a92d4e4f91d267b2fbdb26778aa053c3ad22c3"
+    },
+    {
+      "path": "app/designs/aosu-labrador/START-TEST.md",
+      "bytes": 3660,
+      "sha256": "458b98e2a325bf624542672b8345787820b21f760569609e9a0972167634613c",
+      "gitBlob": "abfebd89a2e57e466282d0fd7e904cef557b6153"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/Michroma-OFL.txt",
+      "bytes": 4395,
+      "sha256": "33c39ce59a45bfb0dae3280e98bdb46be59d6d68efc62d4dc5fae90a26d2f393",
+      "gitBlob": "2d0610cd97822b7b638c99f6e089ce664954de00"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/Michroma-Regular.ttf",
+      "bytes": 64344,
+      "sha256": "b62301163788bc5b7f8fcac0b74b184e34e1827e577b499ecb724da065098f87",
+      "gitBlob": "59e8c534349962143f45b48152f80524fe9045bc"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/labrador-solid.svg",
+      "bytes": 14707,
+      "sha256": "18f987a47a3081f36dc52c928da7dc319a84a5356db99945ccaf054b0925a054",
+      "gitBlob": "c0b424bb2be48b95768cfd4c94ec3ac465afcecf"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/michroma-vectors.json",
+      "bytes": 412085,
+      "sha256": "33edec2a4d4076d8faa21797dbdd69c5b05fdff86cca547bf012894ea4e999fc",
+      "gitBlob": "59ecd0c49ff9b7ac28ce9daeed7366750852c4ab"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/michroma-vectors.json.gz",
+      "bytes": 98265,
+      "sha256": "f22f0a0b809aef390f3480afc260c87692cc93b2dc7cb3c31ed7293539cf9f30",
+      "gitBlob": "1d2aeed7b71246fc4e12146f15ad18cfe43cb952"
+    },
+    {
+      "path": "app/designs/aosu-labrador/build-preview.py",
+      "bytes": 4677,
+      "sha256": "68d371d0641c0d74cf0a827f778d4807274c1992ed5c503aa97f0dc216bdef16",
+      "gitBlob": "4ef39890ac325e8e46fef5394bf94b040b484e60"
+    },
+    {
+      "path": "app/designs/aosu-labrador/design.json",
+      "bytes": 1003,
+      "sha256": "81af18dcbdc4dedd82d121f2d43c5e30b70fed71a567962e87ee12dc657623b4",
+      "gitBlob": "b503a2344e89f43d918dbda5fe0d4f898e4c3a35"
+    },
+    {
+      "path": "app/designs/aosu-labrador/image-source-verification.json",
+      "bytes": 1239,
+      "sha256": "c75a0ffc6be6d65234b15dbd3c07444089d6e5b18103a2d6d3fd988cab133094",
+      "gitBlob": "f15b29bd95d45fbf192788da7c4ae137d09ed8f1"
+    },
+    {
+      "path": "app/designs/aosu-labrador/motif.json",
+      "bytes": 15027,
+      "sha256": "42af28fe08b37b290efb84ec56888118a60a56dfb98831df61453f061f6407b3",
+      "gitBlob": "1816d533ae1c94032d1aec56c967a0501c62d2e1"
+    },
+    {
+      "path": "app/designs/aosu-labrador/refresh-inventory.py",
+      "bytes": 1577,
+      "sha256": "8d241e170ba3ba640c60f9bbb8c33a30260280184f982f6167c6fac5cd2ee72d",
+      "gitBlob": "4852eb348257e71ad96137fd2c94c886ee9cf05a"
+    },
+    {
+      "path": "app/designs/aosu-labrador/resource-provenance.json",
+      "bytes": 34301,
+      "sha256": "d36fb240f3ceb7e3714c4317c9f9f3dc72d57b0211b55bfc33f16d85339df6c4",
+      "gitBlob": "4aa4bea6cc9c5da40505fe0ef6bf6e58cde26d31"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-00.txt",
+      "bytes": 400357,
+      "sha256": "41ca6aa7e3c716b286bde5d3a2e5e37ca20aa78633d54b79d761c519df33c7d1",
+      "gitBlob": "cf15a0036add0aa719e73010e1787dd5ad17cf87"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-01.txt",
+      "bytes": 400313,
+      "sha256": "0ad228c3190277b9b6ef21d79b96294f0ab10e1dd926676e4d240f6556cec282",
+      "gitBlob": "a29e1a3fd4f52dcaa24e847e19000354cc430b60"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-02.txt",
+      "bytes": 400270,
+      "sha256": "a24a5cf16a81277543f85a76c5a505276d7054362333a9196083ed8963a4d376",
+      "gitBlob": "bc29200d87fac14978a2812d188dea53d7a2a3db"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-03.txt",
+      "bytes": 400242,
+      "sha256": "3cd34a225744b91224d1432ca2778ac8b93b564df6bdc780ef812755ee4da112",
+      "gitBlob": "c9356b9dadc17d0efac1f4a228cef4a8da1dc795"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-04.txt",
+      "bytes": 400237,
+      "sha256": "921d01c3f42006c8a4bb230bc147af52ea1dee20494dfbe7c7ad645f5707f001",
+      "gitBlob": "a84566bcc4c624dc395522729a88b4475242b17d"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-05.txt",
+      "bytes": 400170,
+      "sha256": "8917efe3458155cb0b7ee34ca76927f1c769a75c57cefbed5e524b227baa19a7",
+      "gitBlob": "e95a387be4000a06f086a21b88b62cb6638c1415"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-06.txt",
+      "bytes": 400158,
+      "sha256": "7d63c6ee2b23cace79bccec42d05de15a3080056db833a79812fe417c41e7e0d",
+      "gitBlob": "b8c0fc4b190c3d039844f13c79b4bbf73f8c938c"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-07.txt",
+      "bytes": 400200,
+      "sha256": "db7844f173cf2bf7c0d4781333c800342fded8dfb98e7bd8e875f83dd3c572bb",
+      "gitBlob": "7c96bd8ad446670e510c7fe4411fb0c729b23631"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-08.txt",
+      "bytes": 400370,
+      "sha256": "153fc0ee45bb21f42827f404fe692be19b71f5ec9990758ef26882477c1d68a8",
+      "gitBlob": "07215c4af70624dc36a0dbb631a23f7c8bd65430"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-09.txt",
+      "bytes": 400360,
+      "sha256": "51478afc8be6967f701688e2ceaf1c745106018016773f985a69f9b40c4e0316",
+      "gitBlob": "104c133c2aea28f609fe393086a9f48135be0b8a"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-10.txt",
+      "bytes": 400260,
+      "sha256": "b46c6a55a370ae75ee365e91c2c3b516153c8d0bbd3af3c2865e836c8ac4857a",
+      "gitBlob": "fe4dc9a6f24009c1a65556c0cf430078b179e3ef"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-11.txt",
+      "bytes": 400034,
+      "sha256": "88597258b9ad137a8eca9bcec8448500a32b7fe6e5eb333d47d059888ed482de",
+      "gitBlob": "349894bd00b9d27ddeb508c8d0cea12439fca878"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-12.txt",
+      "bytes": 400039,
+      "sha256": "9de06ab9a3e945fa3bdc0a1928d28af593dfa376cb5c7331b4721e492a7bc218",
+      "gitBlob": "0ad96d9abeac7d3da4466431c828f0c1acc9ce20"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-13.txt",
+      "bytes": 146960,
+      "sha256": "18534f167d8c940cdaaa3d58d1f4412a189c4915103bfa5e17a1ee3c035c0dd7",
+      "gitBlob": "4af13be3f4038efa7e8f295dffa54e128631ec0f"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52.json",
+      "bytes": 727,
+      "sha256": "d2720002076c3ad5c22f78840b5eb6de874c0dff26674a096d6f5154392e4e0d",
+      "gitBlob": "c27f5a1c7b79411ebfe9e54116323fffc985d85e"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-00.txt",
+      "bytes": 280000,
+      "sha256": "061eca7ca2f25ef716c6253ddde58d96fef4f538d1964f0f74ed6e739cb261e5",
+      "gitBlob": "2979b8427ca520d5fae65dcce1d6c1cdeaabc848"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-01.txt",
+      "bytes": 280000,
+      "sha256": "07f554e587abf48633a7fcd9d0b4fb712a722b6fdc35b5020c3f0dc2e2e4ec0e",
+      "gitBlob": "2e8330c0cbb254c1b7691f44a336dff5e788d8f1"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-02.txt",
+      "bytes": 280000,
+      "sha256": "f197fe1e37a2dfa8e906279da7be73dd2c71d80da202e8ac251a16010580c57f",
+      "gitBlob": "65a55f6e843d674519bb24083ffce317a9006a7f"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-03.txt",
+      "bytes": 280000,
+      "sha256": "ab84d5fe90857c9bad99a11a532ccc16437e99cd1a835dfa30286bd9a096a495",
+      "gitBlob": "12a3a4d3ebd6c8ca6c5dcca2b3439096c91ae055"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-04.txt",
+      "bytes": 280000,
+      "sha256": "b68aeebff4b448348105edfc84bab28e23117c5d4215830570f596b543a67421",
+      "gitBlob": "e81618305daa210d7d5da3d7b64f60f5fe65f36d"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-05.txt",
+      "bytes": 280000,
+      "sha256": "ebf1bb83c2517ea2bfcedd8ca9ddf44826ee4d2de70ae0b3c4cbcfa91ffdcf90",
+      "gitBlob": "be8a66c53127bc568ef71f43e44c6ceea9679af8"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-06.txt",
+      "bytes": 280000,
+      "sha256": "1726244a5f6a139acb529c823bb48dfda70a163364b290065d7d13ce24072b97",
+      "gitBlob": "6761d8b74990ab68b8ebed8e3265c6584c28b34e"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-07.txt",
+      "bytes": 280000,
+      "sha256": "1a33857fd1a9884401a27e229342d78fcff35cafdd647d032b690692196e5b22",
+      "gitBlob": "a741a92d2da606ec443b8af1cdd6554592ba0dd5"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-08.txt",
+      "bytes": 280000,
+      "sha256": "ffc59d95fa23959789c509cac367d3cda168914f631b80503cd106469b3e669a",
+      "gitBlob": "601aee88bb7007897963e0da0be88738cbd28ea7"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-09.txt",
+      "bytes": 280000,
+      "sha256": "14e21c002c9ca429317b1af4ae3f08225b9a2b35f5001f0f48137c1d02115192",
+      "gitBlob": "5125dc7629a7b23e096f0c3a538c794827c5213b"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-10.txt",
+      "bytes": 280000,
+      "sha256": "73db66138059bfc12decc39b85f05ce8c67cc18bb8f9efa2a9671fbed0b0c9d9",
+      "gitBlob": "4c9f32a068fa00b1ed7c381c5c4677a5b29a3aa6"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-11.txt",
+      "bytes": 280000,
+      "sha256": "abd086fda9438df80fcc2bae4ee7eec9944de1f11ef962de5a6a9bfe197a159a",
+      "gitBlob": "fb277ea961290f84f4dcdf818ae1a4b1d94fddf9"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-12.txt",
+      "bytes": 280000,
+      "sha256": "1b604c207cbcaf6cb313a8398f5b4f230dbe505dfd0721021bacaad11a6c8ac9",
+      "gitBlob": "d6010abbd03682b55be94d846d19c7fcb5ac98fa"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-13.txt",
+      "bytes": 280000,
+      "sha256": "eddb4c20147d129d199a78538057196837b6dd9c4052b7c818b186f353fbbfa7",
+      "gitBlob": "a625e2e59dad985c2d368430277d44eb03d2a2f7"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-14.txt",
+      "bytes": 280000,
+      "sha256": "b09a9f4b914fdfd3527085e933903edc8321118261ea7ceba32cbbe40c324117",
+      "gitBlob": "882aa797f017d3a240032e97f6c4709ffcc4b19e"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-15.txt",
+      "bytes": 161772,
+      "sha256": "9982ac0fa3f6046ff05858f92c5141532d2e58360f278d219b50db5c2f8588b2",
+      "gitBlob": "99d6df2bb71b9c914eaddd96f8ab2efdd98e6bec"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-00.txt",
+      "bytes": 280000,
+      "sha256": "29ffd3eeed62802e6b0afab65df29a8779c77fb60aceabf152172c86b54e82c5",
+      "gitBlob": "d0016dd228d2e94154ccee5d28d3615d073977fe"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-01.txt",
+      "bytes": 280000,
+      "sha256": "921f248b06f3ce3f4c6b5819ca710f25342d5a5310442b6534f432972f3e9196",
+      "gitBlob": "b16f7d39a5561372655907dc5c0e942aa8c4e534"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-02.txt",
+      "bytes": 280000,
+      "sha256": "9c8bf99180d91e9548169fd9b9fec3ce2601fe4b8397167d36857710e8a637be",
+      "gitBlob": "b7dcaef09e4c95861bd61f970bd4f0c45db9189b"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-03.txt",
+      "bytes": 280000,
+      "sha256": "d021966021773270dfe73684f146cb9374bf3b9bbc190cb77842b224ecc2b4c4",
+      "gitBlob": "b6cbc0e337beaeea4c5addc9673065b053dd198a"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-04.txt",
+      "bytes": 280000,
+      "sha256": "56779c9416366c4ef41dff5cb22f64f42391d45aa48045d806065f0fd129b40e",
+      "gitBlob": "d1a905e4792a09e21927f46a5ea71f8ba1bcd666"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-05.txt",
+      "bytes": 280000,
+      "sha256": "31b42bcfb313ab3d370096512f86339650b0168cce3d55f942416ec595e4760d",
+      "gitBlob": "c74e05dc79548c03e0b0e9f98c947e185f7deafb"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-06.txt",
+      "bytes": 280000,
+      "sha256": "f5b04f04a88c54e2592e3acae3ba28069c6b98754e758788d3474416e5e4442e",
+      "gitBlob": "836ecc96c0bb73050582c79a03262e95e4813633"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-07.txt",
+      "bytes": 280000,
+      "sha256": "7748ceb9bb849dc932b9c395fac2fdd100730cd05fb14f98ab570cca902915ed",
+      "gitBlob": "f8e4772e8fc9dc022561b1a295a147ab436540d7"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-08.txt",
+      "bytes": 280000,
+      "sha256": "d4647a9e3697aa90c9c9b30f60b580b01bdc601ded38c05a7b00897d78d9c334",
+      "gitBlob": "302c30529c44e5d0c658a7d3de92b6c51abd6f73"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-09.txt",
+      "bytes": 280000,
+      "sha256": "30f428a755761245c90214091d9357b353edef3db2cd0775c9f69ea0295e305c",
+      "gitBlob": "a9e345d87b7a1fefcf7b9e125c26c830cdc0374d"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-10.txt",
+      "bytes": 280000,
+      "sha256": "f2f46f0070ae1d5ac3abde743d9dde64732801d1b7ceb57bf488aa4c5a637c58",
+      "gitBlob": "686507535450be6f2007699e825d65c570f2bfbe"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-11.txt",
+      "bytes": 280000,
+      "sha256": "5ea005603a03a6ab590036fdd5f00c03ad4e9a3daac58d0a7709b9f5ca2c1aff",
+      "gitBlob": "b2392cf60c1e2f43547778160b4b330efcbe90c0"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-12.txt",
+      "bytes": 280000,
+      "sha256": "56bfd328ab83e807725404a01d380730a13d7f1c8644ee52c0118e7d29179f9c",
+      "gitBlob": "6137bd0236075e812c40013d983c7d1d6089060d"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-13.txt",
+      "bytes": 280000,
+      "sha256": "22ace9bbbb57616f5f4664d6085e415fa7a96353324785219d2af9ac2db542ea",
+      "gitBlob": "b9a4fa57dde586d9183258a03ddffb262a7e237f"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-14.txt",
+      "bytes": 280000,
+      "sha256": "ecaecc92606425f7500bdd159797a1114a78fcde968c9218d956876a1f0ec063",
+      "gitBlob": "1483940c13ade9acc1f95c0efbd1ad3dc73bdee9"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-15.txt",
+      "bytes": 280000,
+      "sha256": "f340b97eab6e1d6bfc0e2511663a42df68f66d3d2252fa91251e44c86168c9b9",
+      "gitBlob": "c03e197f8504d26c540b70d40425e1aabad34578"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-16.txt",
+      "bytes": 280000,
+      "sha256": "e1ae01a5f0d123a21d26ac711cb6bb0b4a4c0b7298e6ff97b06d0c7d45bbe8c7",
+      "gitBlob": "cfd98426dea760ba42b039c7eff157548c72d249"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-17.txt",
+      "bytes": 280000,
+      "sha256": "1e754764ea6f046809b9e9a9cb2f0a4a13a3a4d8e40c3b95d5c18d32e5770893",
+      "gitBlob": "aa27db70ebb5a9e312cd85edc9d881470187f9f3"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-18.txt",
+      "bytes": 280000,
+      "sha256": "18dd39b0f60ad4e3f0eb30258bc15d99e5426b34e578f6bb9dfb16896d754413",
+      "gitBlob": "5cca7dfc1f38de5887eca6c353ee111f2238845d"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-19.txt",
+      "bytes": 280000,
+      "sha256": "e8e23d9c83fcb65ab8563ff5a621acd52be41313a4322497a007973fdec6b24f",
+      "gitBlob": "e882dc289aeb2222653d7f862218b0397f67599f"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-20.txt",
+      "bytes": 150044,
+      "sha256": "bfaac98de786db2a4a2504c62d3b5cab82ccf97cacccf30edcc9ac7a03131a9d",
+      "gitBlob": "9431eee7d7b3cbe9ae884151e07096f6ea1c12fb"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/aosu-pro-v8p1ax11.png",
+      "bytes": 292592,
+      "sha256": "c29572815095b05a2f0e4fe25969599ba58c7faa5b873d5a253f4365da24d226",
+      "gitBlob": "58d3cd4fa5bfd5e36320ec384d0f708c996f8928"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png",
+      "bytes": 1440952,
+      "sha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6",
+      "gitBlob": "9df419d01b15f2707989a644ec2b07be6a4ee9e5"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.png",
+      "bytes": 2590743,
+      "sha256": "27f4c392b3891b1923791bfce9b429a876a43f9374418693b863c87c691905ae",
+      "gitBlob": "13a34b86ae2568dc1d5286a921640a85ea176394"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/licenses/gravuru-font-licenses.json",
+      "bytes": 19539,
+      "sha256": "f1312a3acb25f4f169502f9140dcb314a3705699ddab9a8ef1375bb4697c6a4e",
+      "gitBlob": "e8dcdfb5d319bf512593444020bb8a04ca49e2d4"
+    },
+    {
+      "path": "app/designs/aosu-labrador/start-preview.py",
+      "bytes": 2141,
+      "sha256": "03eac482e0d79af0529e0b53a6ea93cc5d26d0a474f0d4c97e4a4b5eba6aae52",
+      "gitBlob": "d2b9847b8fc0cec42f07a16b6499624ee6382ff5"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/design-content.mjs",
+      "bytes": 10705,
+      "sha256": "866876d9b845b033a71687e03b5bd7635c3259be1daa86dacf022313e88d4d57",
+      "gitBlob": "b9ccbbca5245efa962d11484de81a10580cb6fbc"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbell-preview.mjs",
+      "bytes": 3637,
+      "sha256": "3cea50522fc66afee54f1bfced58959c51b39a436c59daab9c9cff7df9f2decc",
+      "gitBlob": "865ee357aed902649780b2d98d9a7a42ff8fdf72"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbell-release.mjs",
+      "bytes": 2538,
+      "sha256": "acf56d71c97f11478b4d96ebbca03645221dafd4bd660d393d5d72b88ef62c30",
+      "gitBlob": "df00e3e396fad9ac6283da154ca095113d01249b"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbells.mjs",
+      "bytes": 9552,
+      "sha256": "8565b82ae0457c270af682606ba8b9e6e5438309f23e6f285b357b4965d9f2d0",
+      "gitBlob": "533225b852b1ba79c26dc9ea818420c1a7945a06"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/motifs.mjs",
+      "bytes": 4137,
+      "sha256": "afeac5688d2fe48a31bf72dff08ebf68f6804175e6a2da6d593ce574f5498547",
+      "gitBlob": "d22bedcefae544cd481a3fa74502797a79a54689"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/mounting-access.mjs",
+      "bytes": 2361,
+      "sha256": "12426c3c998479e38d2924b3dcdde61ce6dcbb7d57d3ceead0647a3d30f72e2b",
+      "gitBlob": "55d63dd2988c1fe129a91ba6aca35d15f67e92f0"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/processing-profiles.mjs",
+      "bytes": 2651,
+      "sha256": "9a3686ec5cbc081b4f2a0f7e9ed7a7885234b9d5377a1c3d930e6ce81f04c814",
+      "gitBlob": "829cfc5069bb8996ec5cd203a4c744b557a78c60"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/runtime-contract.mjs",
+      "bytes": 6363,
+      "sha256": "89195038cf8fdfe8a4603307bb3e692cd1c468c82c2ce7803201cb03c758f669",
+      "gitBlob": "b242c75e549766d03bba43c8e61509a0aebc09bd"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-products.mjs",
+      "bytes": 6907,
+      "sha256": "3875aae10b8579e9ee8fec9919d2129d5c87c222c6dc3e3da05aab5506d201bc",
+      "gitBlob": "b8e98fa50e2989ab7f03cb60fb3b459f7a0596b8"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-svg.mjs",
+      "bytes": 11378,
+      "sha256": "5c84c623083da32b9ff7f3ebf4ef1aa6f0cd8f362198361081283c7f2be1aa2b",
+      "gitBlob": "c622464a58d32d5d9834fb003372416d7d2fc22c"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/universal-elements.mjs",
+      "bytes": 4607,
+      "sha256": "b9237d7e1194b84778e38fc57850561cee7fefb2b49ce5a42f093b98f20b7d17",
+      "gitBlob": "a42229090ed496bf405809d6cc07ce7118a6499f"
+    },
+    {
+      "path": "app/platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "bytes": 90922,
+      "sha256": "b7ca4450b19559a1d50eb381adcee94b82449674be4cd17789d9beba7e6122a1",
+      "gitBlob": "82af0fdb655f00655d2da3354c4533744edcde6e"
+    },
+    {
+      "path": "app/platform/sources/assistant/static/gravuru-chat.js",
+      "bytes": 46580,
+      "sha256": "4edb8ba25dbaa867e7033180a45771b52ea0e261e58b77cfd5c3b9a451fb851a",
+      "gitBlob": "cc70ca35305c1f56d4b9be42cf1881200c4d6e32"
+    },
+    {
+      "path": "app/references/aosu-upgrade-2026-09-21/verification/editor-source.html",
+      "bytes": 461318,
+      "sha256": "fd716737e882098a636498817adfa7afac66103d8a4b4abafbccd337aef7adb2",
+      "gitBlob": "4b453369722422b81c34c583055062ad49560cc2"
+    },
+    {
+      "path": "app/references/aosu-upgrade-2026-09-21/verification/profile-source.json",
+      "bytes": 39735,
+      "sha256": "7648c2538462e6f92f3e227ead91548d5d1812cb879aba328a89a6e4b713df4d",
+      "gitBlob": "da8caecf6f80a7d5217568f25a23342bd2769329"
+    },
+    {
+      "path": "app/workshop/batch-assets.test.mjs",
+      "bytes": 17577,
+      "sha256": "4260cf5e59c7f5c637e6d1974d2b9bdac48e4649f32013c81299fffbfaef1c70",
+      "gitBlob": "c1d63d8a2a3e78b8c4d79c2503f99d19eb5693a9"
+    },
+    {
+      "path": "app/workshop/batch.mjs",
+      "bytes": 7753,
+      "sha256": "b13fc23a661e2927dac81af85c92bf91f444bcc1f7bdc450a73f78e8b3520a26",
+      "gitBlob": "88721d6eb72dfdb32fd084426032a41d65a1aa46"
+    },
+    {
+      "path": "app/workshop/batch.test.mjs",
+      "bytes": 5543,
+      "sha256": "a18fc87317ac5d0e27273679636024662d1f6f9c92b07ac1ba7df8a56a864d9c",
+      "gitBlob": "6bc0ab483fdb8711764979bcd0728a45666e00af"
+    },
+    {
+      "path": "app/workshop/catalog.mjs",
+      "bytes": 1899,
+      "sha256": "f755fb2712b4c1feb628bd003a015151fa472147966d24dda12b262d84c78adb",
+      "gitBlob": "ea25d7779822c85dcda87dfda7e99d3dbd2ff6ff"
+    },
+    {
+      "path": "app/workshop/design-assets.mjs",
+      "bytes": 7506,
+      "sha256": "decc57a78c65a5fd75c835e960863c9cc2fcd67b7d871511a543426e2e0e508f",
+      "gitBlob": "5e0daa36f633af12e96d89a9199d0f3e215def3c"
+    },
+    {
+      "path": "app/workshop/design-converter.py",
+      "bytes": 19708,
+      "sha256": "79084546afc0e0afc41fa68e437fc8cb6e2c9ad917f601a8075daa7026ed7986",
+      "gitBlob": "21f6ca5733f52266d7b0135f414eecf8e6822fe0"
+    },
+    {
+      "path": "app/workshop/design-converter.test.mjs",
+      "bytes": 7760,
+      "sha256": "30d2ee741e7e90f9745869420dd1585719287ac88e1d18928cbc2c79971b179b",
+      "gitBlob": "77eae29393ad9ff0743a90b13bdbb6f175cb2437"
+    },
+    {
+      "path": "app/workshop/design-import.mjs",
+      "bytes": 3759,
+      "sha256": "017455543514ffa5c6e92ad5dba9c7ea1a7de47de810afd178c21e0d64309899",
+      "gitBlob": "3b78c1c62015c6d487838520d39ae8a857429d03"
+    },
+    {
+      "path": "app/workshop/design-import.test.mjs",
+      "bytes": 19341,
+      "sha256": "dbe3ab557ebef515cc27e87ffb236cb8ebe2bb709e1ff8c1deec62a66a4e7ffd",
+      "gitBlob": "006c83410d600a0da633ea1045ccb578454fff39"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "bytes": 12834,
+      "sha256": "dc0617d3bced291f1f2b5cf66e1583b728aea2870d42e06e0d31672500bbcdd5",
+      "gitBlob": "724f4c74e0fde97f6f7c2400f2bf7f410ebbecad"
+    },
+    {
+      "path": "app/workshop/http.test.mjs",
+      "bytes": 8111,
+      "sha256": "a48532aa20e62531ccae4306cd2b77027a8e07554adec4248140a6c8518c1ead",
+      "gitBlob": "750cfa1c6554d29226dd949b97132b7095245109"
+    },
+    {
+      "path": "app/workshop/product-model.mjs",
+      "bytes": 11637,
+      "sha256": "5856338be31bde4a55b8afe66fcd0dbea69fde81f9be218e707d574244d0b8b5",
+      "gitBlob": "b4f6f1f482d99e9b2cff6b627ad2303e0b630f3e"
+    },
+    {
+      "path": "app/workshop/product-model.test.mjs",
+      "bytes": 9988,
+      "sha256": "23fcc0e86f02e548104bc16bf502075687720ff5b35db006ef1f7860352fc5bc",
+      "gitBlob": "3bcf10c5261c6aa3f3f68b2d08662604634eeae4"
+    },
+    {
+      "path": "app/workshop/profile-library.mjs",
+      "bytes": 14909,
+      "sha256": "47cb8ef37cd814c0417585a90df01e7fbbf797985f7c3ca0e2426282175b2f85",
+      "gitBlob": "fe66052ed58dede49ed93336a1b583a2c82de2f3"
+    },
+    {
+      "path": "app/workshop/profile-library.test.mjs",
+      "bytes": 11460,
+      "sha256": "16ca8427da72c16c121cac9747fc000386fd4b34f0b229809b77af5dfe8411f5",
+      "gitBlob": "294dbe59a127775068b4f358735aab42017641af"
+    },
+    {
+      "path": "app/workshop/repository.mjs",
+      "bytes": 14636,
+      "sha256": "c5d58b915c94b86692153371542562f697c96291a7cf5de0d6fdaa4e92748c75",
+      "gitBlob": "7b63f6e067d214053d41382e7b4d88839e5c8505"
+    },
+    {
+      "path": "app/workshop/repository.test.mjs",
+      "bytes": 18186,
+      "sha256": "e848d8c388b2f6bf5739511a3204a24193b10e0973a67429d273a722baf1e22f",
+      "gitBlob": "fd74769124ef5bfdbbe7892f82a1dafc8e8f8392"
+    },
+    {
+      "path": "app/workshop/requirements-import.txt",
+      "bytes": 94,
+      "sha256": "8cec66a073034f8a8bda0838fce2c52651a451fbdaf2bd7ccd958eb9a7e24a00",
+      "gitBlob": "89b27112029e8182c40250de5e83db087980677c"
+    },
+    {
+      "path": "app/workshop/templates/produktserie.xlsx",
+      "bytes": 12941,
+      "sha256": "b26107007752f85e79c3229d8d7a3943cb9d092619ea679b8e214344f5986da4",
+      "gitBlob": "04e43855e2ff655701ade83f4d5fc5236fa693ac"
+    },
+    {
+      "path": "app/workshop/ui/app.mjs",
+      "bytes": 32823,
+      "sha256": "cd0cc11a03b0a4d305dd9588667f5fc369f661f053a9032e956683b46dbbfb6e",
+      "gitBlob": "8b4dc39e01889e84c659be637d2f4cd90c7cd154"
+    },
+    {
+      "path": "app/workshop/ui/batch-reader.mjs",
+      "bytes": 5596,
+      "sha256": "9e536b0bc3012425c6fa8ef9a7eeba0b27fd0cb8a1e3187fb844d725cbe225cc",
+      "gitBlob": "7dcd6b9eb606e9169a7df8abf5df62b895ef3089"
+    },
+    {
+      "path": "app/workshop/ui/batch-ui.mjs",
+      "bytes": 8059,
+      "sha256": "7cc586602db8adf48dd5ad933b212cd0f68ee174d052d29b5dbded1b7bb1c337",
+      "gitBlob": "a149917f70476481d11364529fb09e97cc835896"
+    },
+    {
+      "path": "app/workshop/ui/batch.html",
+      "bytes": 3863,
+      "sha256": "32dd00cf35ed3738e9e6575314e5cbfd9ba0d96e29188552eb4b32049f605725",
+      "gitBlob": "d439568b7b2a373bacfa28f57ac0dc5f4376a349"
+    },
+    {
+      "path": "app/workshop/ui/design-import-ui.mjs",
+      "bytes": 7621,
+      "sha256": "0f02c0f67073176a12929a69e8c1e0531e3d67a4278ff35dc3c12b3167b5f493",
+      "gitBlob": "0d920cf4d3ae451aadabb67d6688af172d79e193"
+    },
+    {
+      "path": "app/workshop/ui/index.html",
+      "bytes": 8541,
+      "sha256": "c33d8bfe26d57dbc106c189670a2a8c72d32598dbe3dfeb8ff2168b0ac195a05",
+      "gitBlob": "5f6d92fe0efb0b3457da814149c050ecf775792f"
+    },
+    {
+      "path": "app/workshop/ui/profiles-ui.mjs",
+      "bytes": 17561,
+      "sha256": "9487e73f598ee8afa1358730977550ad543e6a50e089b6097fbf470647c443eb",
+      "gitBlob": "1f9e59cc1029d0faaf283ec7593496be7e63cc76"
+    },
+    {
+      "path": "app/workshop/ui/profiles.html",
+      "bytes": 7478,
+      "sha256": "81604c35c176a3f17c53f7a4e6678a5ad5177bca89e5bcd8908d48a6d173aa53",
+      "gitBlob": "8f238f9ef3699991627bbe56a5e57e69dad60f22"
+    },
+    {
+      "path": "app/workshop/ui/style.css",
+      "bytes": 21604,
+      "sha256": "73e83cc542c4613dec1c97cf37a558da60b1220a019668de5b449d58c0ff47b7",
+      "gitBlob": "4cfd71368f8c7cb1a6bf95b17f0e1c7399e4171f"
+    },
+    {
+      "path": "package.json",
+      "bytes": 346,
+      "sha256": "9646839a2ebe6cf02603decaedc0c6800f0c52d3c905157c2a1b38576b86aeae",
+      "gitBlob": "ea8eca33183dbc05b6f250ac9c8e6ea6d48e7c86"
+    },
+    {
+      "path": "scripts/build-product-series-template.mjs",
+      "bytes": 11133,
+      "sha256": "2f5cec1728bdb1502afc1a156dd3e223c7817f305051530cdde26f84f8829976",
+      "gitBlob": "420c8b7051d9face628c4d496cf6b9a8b7e5dc07"
+    },
+    {
+      "path": "scripts/cloud-check.mjs",
+      "bytes": 3215,
+      "sha256": "7d7e72bbbd9d90ca7e2430ad496cb348dc3f8b62237e4f9d58c6465dba25f230",
+      "gitBlob": "e39b6f62eabdcb8d7ea006ead8707c74cd17f680"
+    },
+    {
+      "path": "scripts/prepare-cloud-handoff.py",
+      "bytes": 11836,
+      "sha256": "c88ac4e396b891e96cb05caabd20594e45767fad81fd3fa5feda0985525666fc",
+      "gitBlob": "e0bf55d4577a39273f4b50aafb750274c3977011"
+    },
+    {
+      "path": "verify-reference.mjs",
+      "bytes": 1255,
+      "sha256": "5f4007a49ccbf26d8d921d751df0fa7b2337fd3a1b2bd072f9b06d712de8cd52",
+      "gitBlob": "e4d7503ace4a95c38970c27b3c9dd125173716d2"
+    }
+  ]
+}

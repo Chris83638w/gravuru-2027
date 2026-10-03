@@ -1,0 +1,52 @@
+[
+  {
+    "path": "C:\\Users\\Mikail Erdem\\Downloads\\Gravuru-private-Datenuebergabe-2026-09-23.zip",
+    "bytes": 23398513,
+    "sha256": "6eb02fa2bf3c59bc10e9ddfa6c7efd5b2fe2098b27c177fda36370706cd369ff",
+    "notDirectlyInManifest": true,
+    "fileEntries": 53,
+    "uncompressedBytes": 74584583.0,
+    "entriesNotDirectlyInManifest": 52,
+    "extraUncompressedBytes": 73143631.0
+  },
+  {
+    "path": "C:\\Users\\Mikail Erdem\\Downloads\\werkstatt-quellcode.zip",
+    "bytes": 42978944,
+    "sha256": "7ad948c3560c377d37ecef4647071b15a4fc93a100a041d04f085d5ed1989815",
+    "notDirectlyInManifest": true,
+    "fileEntries": 200,
+    "uncompressedBytes": 54335110.0,
+    "entriesNotDirectlyInManifest": 146,
+    "extraUncompressedBytes": 34840902.0
+  },
+  {
+    "path": "C:\\Users\\Mikail Erdem\\Downloads\\werkstatt-source.zip",
+    "bytes": 13976560,
+    "sha256": "0a171e8a5e30933ae60a3cf49b15d81e2f0779c847f776fab135ebd7d68138ef",
+    "notDirectlyInManifest": true,
+    "fileEntries": 10,
+    "uncompressedBytes": 51217359.0,
+    "entriesNotDirectlyInManifest": 10,
+    "extraUncompressedBytes": 51217359.0
+  },
+  {
+    "path": "C:\\Users\\Mikail Erdem\\Downloads\\gravuru_vektor_uebergabe_v1_geprueft.zip",
+    "bytes": 1331782,
+    "sha256": "f74556ad1fbb11a6feb7b62a9a4547a651157041b721ecd95d44229658596f38",
+    "notDirectlyInManifest": true,
+    "fileEntries": 43,
+    "uncompressedBytes": 1358665.0,
+    "entriesNotDirectlyInManifest": 43,
+    "extraUncompressedBytes": 1358665.0
+  },
+  {
+    "path": "C:\\Users\\Mikail Erdem\\Downloads\\gravuru_vektor_uebergabe_v2.zip",
+    "bytes": 1938022,
+    "sha256": "cddd6264afb96126b748716c6e6305dab82e5909370199bfc9e35b2a35d37f3d",
+    "notDirectlyInManifest": true,
+    "fileEntries": 46,
+    "uncompressedBytes": 2527751.0,
+    "entriesNotDirectlyInManifest": 46,
+    "extraUncompressedBytes": 2527751.0
+  }
+]

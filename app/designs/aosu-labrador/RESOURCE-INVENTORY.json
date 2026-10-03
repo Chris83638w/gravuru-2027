@@ -1,0 +1,730 @@
+[
+  {
+    "path": "continuation/werkstatt-source-20260923/.gitattributes",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 36,
+    "sha256": "b673083414eb2c8cfcda3a8c6603703105324a078f8bcd6aa279d375ac64af13"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/README.md",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 4543,
+    "sha256": "88a7ea4d87b7d18c99680ac8e8c22971c03e9c1f8379999da1059e0d3bf5a235"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/examples/aosu-labrador.local.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 9556,
+    "sha256": "a4e8076f4fbfbfff3aad0b7ebb11d599cfb459f2d42a9c6410a9483be0a1f4df"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/examples/local-settings.example.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 181,
+    "sha256": "58a75e5290a55991b4398ed2ded111b1ec33012f303c669ccd9b1a0c31807209"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/examples/static-media.empty.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 49,
+    "sha256": "a281f67363b9a098f63e96969c79e667befee2ad7959cb1fba58ce1330aa4dbf"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/extensions/app-home/src/pages/ProductLineTabs.jsx",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/extensions/app-home/src/pages/ProductLineTabs.jsx",
+    "bytes": 501,
+    "sha256": "4e4dece436ca67d9fee6d939d80d741bb51ee2633b21146b7079d246d6154f35"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/extensions/app-home/src/pages/StudioPage.jsx",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/extensions/app-home/src/pages/StudioPage.jsx",
+    "bytes": 45961,
+    "sha256": "bd3ae53f1b15676016d7637527f8ccd1a1aa6f1d3bd3579b700e1a80708ff480"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/configurator-contract.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/configurator-contract.mjs",
+    "bytes": 2991,
+    "sha256": "2f89fb3fc167d0eb0a7b5e6429dd8b5d9c44050c6a425fb0d986be84abf84481"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/design-content.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/design-content.mjs",
+    "bytes": 10810,
+    "sha256": "83ef1d376005ab535beac71b46192a524e89e6bb065fd6ad027032938f479feb"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/doorbell-preview.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/doorbell-preview.mjs",
+    "bytes": 3637,
+    "sha256": "3cea50522fc66afee54f1bfced58959c51b39a436c59daab9c9cff7df9f2decc"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/doorbell-release.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/doorbell-release.mjs",
+    "bytes": 2538,
+    "sha256": "acf56d71c97f11478b4d96ebbca03645221dafd4bd660d393d5d72b88ef62c30"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/doorbells.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/doorbells.mjs",
+    "bytes": 9186,
+    "sha256": "045bc179d26c40957f2a4467e0a26c48e14a008a30deb5a575062bf79c192c2c"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/media-client.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/media-client.mjs",
+    "bytes": 3409,
+    "sha256": "348cc6b6e629872531bab24e29d9b3cc01603eaffa80746848ef215e73dc2590"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/motifs.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/motifs.mjs",
+    "bytes": 4137,
+    "sha256": "afeac5688d2fe48a31bf72dff08ebf68f6804175e6a2da6d593ce574f5498547"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/navigation-guard.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/navigation-guard.mjs",
+    "bytes": 363,
+    "sha256": "9f293383c5a298c6b65a4a22719a728cb7686cc266d371f6dc5a17623276786d"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/processing-profiles.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/processing-profiles.mjs",
+    "bytes": 2648,
+    "sha256": "c34dcccac71b90243b099bd2b2b050b8bdcf292f174cd56486e65c770e74ecfb"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/product-lines.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/product-lines.mjs",
+    "bytes": 1346,
+    "sha256": "7a5f035cfbf97ac0257c8524c610e9af13c74188388acd4357e030689d048457"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/products.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/products.mjs",
+    "bytes": 5249,
+    "sha256": "8d7ee7a216dec16fa86102e5d0d340b9b92f3eaf251310788cd003907dbce448"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/runtime-contract.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/runtime-contract.mjs",
+    "bytes": 6363,
+    "sha256": "89195038cf8fdfe8a4603307bb3e692cd1c468c82c2ce7803201cb03c758f669"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/static-media-provider.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/static-media-provider.mjs",
+    "bytes": 4871,
+    "sha256": "b9669f228b5b6a582cfa8dcf9c2d4d7376b1b53f1b460478599b6d41fa93e55e"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/studio-products.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/studio-products.mjs",
+    "bytes": 6873,
+    "sha256": "54200368eab5ce4db04103507f134e6200c842cd73479b8bb9eff7d46a0288ce"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/studio-svg.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/studio-svg.mjs",
+    "bytes": 11358,
+    "sha256": "371666dd87ec06ce31cac4906052ab3e0f255c231b66f3bd1960c093c2aef870"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/models/universal-elements.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/models/universal-elements.mjs",
+    "bytes": 4279,
+    "sha256": "07c419b2caa7bd63d4f53de967d8afb48f72c02c0e7867b63bdd27246a49901a"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/preset.json",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/preset.json",
+    "bytes": 2694,
+    "sha256": "acfda86a5ba61f46e39012da064dbd6af39c32edd50d160d12238fde353ef90a"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/stainless-catalog.json",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/stainless-catalog.json",
+    "bytes": 53617,
+    "sha256": "cecaa4f4cf8606c1391109c4036790c2a57f90c26dd1ea574c7234f531934c1f"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/stainless-contract.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/stainless-contract.mjs",
+    "bytes": 1925,
+    "sha256": "8f8d615f7fef1a34f1c80fecef8eb0b7b62d538e3482f0b31a082f1c05ac12f9"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/vendor/fflate-0.8.3.mjs",
+    "purpose": "Separate local continuation reference; deployed revision NOT established",
+    "source": "local-app-source/shared/vendor/fflate-0.8.3.mjs",
+    "bytes": 90922,
+    "sha256": "b7ca4450b19559a1d50eb381adcee94b82449674be4cd17789d9beba7e6122a1"
+  },
+  {
+    "path": "continuation/werkstatt-source-20260923/shared/vendor/fflate-LICENSE.txt",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 1069,
+    "sha256": "0a1df3a083d0c010560aa342e87959c8c1070e6fd54545741f083f22d0c8b551"
+  },
+  {
+    "path": "designs/aosu-labrador/.gitattributes",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 68,
+    "sha256": "0c6bed3a365e88811bbdd87036d806d1e4871fa44fd8d7a20081734a4453ead1"
+  },
+  {
+    "path": "designs/aosu-labrador/.gitignore",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 23,
+    "sha256": "2f02381d299b8434d3ee6d847c5be87961c624ce06cbf9f50fa65316efd67014"
+  },
+  {
+    "path": "designs/aosu-labrador/README.md",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 3297,
+    "sha256": "ce1dd7c6f933c7d34cee1255823b50302cd73a977e72d329f7bc04c1f261bd41"
+  },
+  {
+    "path": "designs/aosu-labrador/RIGHTS-AND-DEPENDENCIES.md",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 3230,
+    "sha256": "6638ebe8bc2919c6fbe2cebe2b3d12fc0991d630ee0f573035323964fbac2ea9"
+  },
+  {
+    "path": "designs/aosu-labrador/SETUP.md",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 4263,
+    "sha256": "f6009b29d8e6d813fc759a7340324c7458bffd5f348e3c82f76587bab838288c"
+  },
+  {
+    "path": "designs/aosu-labrador/START-TEST.md",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 3660,
+    "sha256": "458b98e2a325bf624542672b8345787820b21f760569609e9a0972167634613c"
+  },
+  {
+    "path": "designs/aosu-labrador/assets/Michroma-OFL.txt",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 4395,
+    "sha256": "33c39ce59a45bfb0dae3280e98bdb46be59d6d68efc62d4dc5fae90a26d2f393"
+  },
+  {
+    "path": "designs/aosu-labrador/assets/Michroma-Regular.ttf",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 64344,
+    "sha256": "b62301163788bc5b7f8fcac0b74b184e34e1827e577b499ecb724da065098f87"
+  },
+  {
+    "path": "designs/aosu-labrador/assets/labrador-solid.svg",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 14707,
+    "sha256": "18f987a47a3081f36dc52c928da7dc319a84a5356db99945ccaf054b0925a054"
+  },
+  {
+    "path": "designs/aosu-labrador/assets/michroma-vectors.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 412085,
+    "sha256": "33edec2a4d4076d8faa21797dbdd69c5b05fdff86cca547bf012894ea4e999fc"
+  },
+  {
+    "path": "designs/aosu-labrador/assets/michroma-vectors.json.gz",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 98265,
+    "sha256": "f22f0a0b809aef390f3480afc260c87692cc93b2dc7cb3c31ed7293539cf9f30"
+  },
+  {
+    "path": "designs/aosu-labrador/build-preview.py",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 4677,
+    "sha256": "68d371d0641c0d74cf0a827f778d4807274c1992ed5c503aa97f0dc216bdef16"
+  },
+  {
+    "path": "designs/aosu-labrador/design.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 1003,
+    "sha256": "81af18dcbdc4dedd82d121f2d43c5e30b70fed71a567962e87ee12dc657623b4"
+  },
+  {
+    "path": "designs/aosu-labrador/image-source-verification.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 1239,
+    "sha256": "c75a0ffc6be6d65234b15dbd3c07444089d6e5b18103a2d6d3fd988cab133094"
+  },
+  {
+    "path": "designs/aosu-labrador/motif.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 15027,
+    "sha256": "42af28fe08b37b290efb84ec56888118a60a56dfb98831df61453f061f6407b3"
+  },
+  {
+    "path": "designs/aosu-labrador/refresh-inventory.py",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 1577,
+    "sha256": "8d241e170ba3ba640c60f9bbb8c33a30260280184f982f6167c6fac5cd2ee72d"
+  },
+  {
+    "path": "designs/aosu-labrador/resource-provenance.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 34301,
+    "sha256": "d36fb240f3ceb7e3714c4317c9f9f3dc72d57b0211b55bfc33f16d85339df6c4"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-00.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-00.txt",
+    "bytes": 400357,
+    "sha256": "41ca6aa7e3c716b286bde5d3a2e5e37ca20aa78633d54b79d761c519df33c7d1"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-01.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-01.txt",
+    "bytes": 400313,
+    "sha256": "0ad228c3190277b9b6ef21d79b96294f0ab10e1dd926676e4d240f6556cec282"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-02.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-02.txt",
+    "bytes": 400270,
+    "sha256": "a24a5cf16a81277543f85a76c5a505276d7054362333a9196083ed8963a4d376"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-03.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-03.txt",
+    "bytes": 400242,
+    "sha256": "3cd34a225744b91224d1432ca2778ac8b93b564df6bdc780ef812755ee4da112"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-04.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-04.txt",
+    "bytes": 400237,
+    "sha256": "921d01c3f42006c8a4bb230bc147af52ea1dee20494dfbe7c7ad645f5707f001"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-05.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-05.txt",
+    "bytes": 400170,
+    "sha256": "8917efe3458155cb0b7ee34ca76927f1c769a75c57cefbed5e524b227baa19a7"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-06.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-06.txt",
+    "bytes": 400158,
+    "sha256": "7d63c6ee2b23cace79bccec42d05de15a3080056db833a79812fe417c41e7e0d"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-07.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-07.txt",
+    "bytes": 400200,
+    "sha256": "db7844f173cf2bf7c0d4781333c800342fded8dfb98e7bd8e875f83dd3c572bb"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-08.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-08.txt",
+    "bytes": 400370,
+    "sha256": "153fc0ee45bb21f42827f404fe692be19b71f5ec9990758ef26882477c1d68a8"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-09.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-09.txt",
+    "bytes": 400360,
+    "sha256": "51478afc8be6967f701688e2ceaf1c745106018016773f985a69f9b40c4e0316"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-10.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-10.txt",
+    "bytes": 400260,
+    "sha256": "b46c6a55a370ae75ee365e91c2c3b516153c8d0bbd3af3c2865e836c8ac4857a"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-11.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-11.txt",
+    "bytes": 400034,
+    "sha256": "88597258b9ad137a8eca9bcec8448500a32b7fe6e5eb333d47d059888ed482de"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-12.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-12.txt",
+    "bytes": 400039,
+    "sha256": "9de06ab9a3e945fa3bdc0a1928d28af593dfa376cb5c7331b4721e492a7bc218"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-13.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52-part-13.txt",
+    "bytes": 146960,
+    "sha256": "18534f167d8c940cdaaa3d58d1f4412a189c4915103bfa5e17a1ee3c035c0dd7"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52.json",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-catalog-51fa7e857d52.json",
+    "bytes": 727,
+    "sha256": "d2720002076c3ad5c22f78840b5eb6de874c0dff26674a096d6f5154392e4e0d"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-00.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-00.txt",
+    "bytes": 280000,
+    "sha256": "061eca7ca2f25ef716c6253ddde58d96fef4f538d1964f0f74ed6e739cb261e5"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-01.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-01.txt",
+    "bytes": 280000,
+    "sha256": "07f554e587abf48633a7fcd9d0b4fb712a722b6fdc35b5020c3f0dc2e2e4ec0e"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-02.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-02.txt",
+    "bytes": 280000,
+    "sha256": "f197fe1e37a2dfa8e906279da7be73dd2c71d80da202e8ac251a16010580c57f"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-03.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-03.txt",
+    "bytes": 280000,
+    "sha256": "ab84d5fe90857c9bad99a11a532ccc16437e99cd1a835dfa30286bd9a096a495"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-04.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-04.txt",
+    "bytes": 280000,
+    "sha256": "b68aeebff4b448348105edfc84bab28e23117c5d4215830570f596b543a67421"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-05.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-05.txt",
+    "bytes": 280000,
+    "sha256": "ebf1bb83c2517ea2bfcedd8ca9ddf44826ee4d2de70ae0b3c4cbcfa91ffdcf90"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-06.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-06.txt",
+    "bytes": 280000,
+    "sha256": "1726244a5f6a139acb529c823bb48dfda70a163364b290065d7d13ce24072b97"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-07.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-07.txt",
+    "bytes": 280000,
+    "sha256": "1a33857fd1a9884401a27e229342d78fcff35cafdd647d032b690692196e5b22"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-08.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-08.txt",
+    "bytes": 280000,
+    "sha256": "ffc59d95fa23959789c509cac367d3cda168914f631b80503cd106469b3e669a"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-09.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-09.txt",
+    "bytes": 280000,
+    "sha256": "14e21c002c9ca429317b1af4ae3f08225b9a2b35f5001f0f48137c1d02115192"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-10.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-10.txt",
+    "bytes": 280000,
+    "sha256": "73db66138059bfc12decc39b85f05ce8c67cc18bb8f9efa2a9671fbed0b0c9d9"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-11.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-11.txt",
+    "bytes": 280000,
+    "sha256": "abd086fda9438df80fcc2bae4ee7eec9944de1f11ef962de5a6a9bfe197a159a"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-12.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-12.txt",
+    "bytes": 280000,
+    "sha256": "1b604c207cbcaf6cb313a8398f5b4f230dbe505dfd0721021bacaad11a6c8ac9"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-13.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-13.txt",
+    "bytes": 280000,
+    "sha256": "eddb4c20147d129d199a78538057196837b6dd9c4052b7c818b186f353fbbfa7"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-14.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-14.txt",
+    "bytes": 280000,
+    "sha256": "b09a9f4b914fdfd3527085e933903edc8321118261ea7ceba32cbbe40c324117"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-15.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-fonts-15.txt",
+    "bytes": 161772,
+    "sha256": "9982ac0fa3f6046ff05858f92c5141532d2e58360f278d219b50db5c2f8588b2"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-00.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-00.txt",
+    "bytes": 280000,
+    "sha256": "29ffd3eeed62802e6b0afab65df29a8779c77fb60aceabf152172c86b54e82c5"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-01.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-01.txt",
+    "bytes": 280000,
+    "sha256": "921f248b06f3ce3f4c6b5819ca710f25342d5a5310442b6534f432972f3e9196"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-02.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-02.txt",
+    "bytes": 280000,
+    "sha256": "9c8bf99180d91e9548169fd9b9fec3ce2601fe4b8397167d36857710e8a637be"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-03.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-03.txt",
+    "bytes": 280000,
+    "sha256": "d021966021773270dfe73684f146cb9374bf3b9bbc190cb77842b224ecc2b4c4"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-04.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-04.txt",
+    "bytes": 280000,
+    "sha256": "56779c9416366c4ef41dff5cb22f64f42391d45aa48045d806065f0fd129b40e"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-05.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-05.txt",
+    "bytes": 280000,
+    "sha256": "31b42bcfb313ab3d370096512f86339650b0168cce3d55f942416ec595e4760d"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-06.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-06.txt",
+    "bytes": 280000,
+    "sha256": "f5b04f04a88c54e2592e3acae3ba28069c6b98754e758788d3474416e5e4442e"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-07.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-07.txt",
+    "bytes": 280000,
+    "sha256": "7748ceb9bb849dc932b9c395fac2fdd100730cd05fb14f98ab570cca902915ed"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-08.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-08.txt",
+    "bytes": 280000,
+    "sha256": "d4647a9e3697aa90c9c9b30f60b580b01bdc601ded38c05a7b00897d78d9c334"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-09.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-09.txt",
+    "bytes": 280000,
+    "sha256": "30f428a755761245c90214091d9357b353edef3db2cd0775c9f69ea0295e305c"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-10.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-10.txt",
+    "bytes": 280000,
+    "sha256": "f2f46f0070ae1d5ac3abde743d9dde64732801d1b7ceb57bf488aa4c5a637c58"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-11.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-11.txt",
+    "bytes": 280000,
+    "sha256": "5ea005603a03a6ab590036fdd5f00c03ad4e9a3daac58d0a7709b9f5ca2c1aff"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-12.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-12.txt",
+    "bytes": 280000,
+    "sha256": "56bfd328ab83e807725404a01d380730a13d7f1c8644ee52c0118e7d29179f9c"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-13.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-13.txt",
+    "bytes": 280000,
+    "sha256": "22ace9bbbb57616f5f4664d6085e415fa7a96353324785219d2af9ac2db542ea"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-14.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-14.txt",
+    "bytes": 280000,
+    "sha256": "ecaecc92606425f7500bdd159797a1114a78fcde968c9218d956876a1f0ec063"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-15.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-15.txt",
+    "bytes": 280000,
+    "sha256": "f340b97eab6e1d6bfc0e2511663a42df68f66d3d2252fa91251e44c86168c9b9"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-16.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-16.txt",
+    "bytes": 280000,
+    "sha256": "e1ae01a5f0d123a21d26ac711cb6bb0b4a4c0b7298e6ff97b06d0c7d45bbe8c7"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-17.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-17.txt",
+    "bytes": 280000,
+    "sha256": "1e754764ea6f046809b9e9a9cb2f0a4a13a3a4d8e40c3b95d5c18d32e5770893"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-18.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-18.txt",
+    "bytes": 280000,
+    "sha256": "18dd39b0f60ad4e3f0eb30258bc15d99e5426b34e578f6bb9dfb16896d754413"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-19.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-19.txt",
+    "bytes": 280000,
+    "sha256": "e8e23d9c83fcb65ab8563ff5a621acd52be41313a4322497a007973fdec6b24f"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-20.txt",
+    "purpose": "Unmodified verified Variante M runtime library",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-entwurf-motive-20.txt",
+    "bytes": 150044,
+    "sha256": "bfaac98de786db2a4a2504c62d3b5cab82ccf97cacccf30edcc9ac7a03131a9d"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/images/aosu-pro-v8p1ax11.png",
+    "purpose": "AOSU model image; must match existing CDN image before use",
+    "source": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-model-aosu-pro-v8p1ax11.png?v=1789823893",
+    "bytes": 292592,
+    "sha256": "c29572815095b05a2f0e4fe25969599ba58c7faa5b873d5a253f4365da24d226"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png",
+    "purpose": "Existing Gravuru screw/material preview",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-edelstahl-feine-maserung-vorschau.png",
+    "bytes": 1440952,
+    "sha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.png",
+    "purpose": "Existing Gravuru screw/material preview",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/configurator/master-source/assets/gravuru-schraubenkopf-fotorealistisch.png",
+    "bytes": 2590743,
+    "sha256": "27f4c392b3891b1923791bfce9b429a876a43f9374418693b863c87c691905ae"
+  },
+  {
+    "path": "designs/aosu-labrador/runtime/licenses/gravuru-font-licenses.json",
+    "purpose": "Available historical font license texts; coverage not assumed",
+    "source": "GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21.zip!/GRAVURU-MASTER-PRE-STANDARDISIERUNG-2026-09-21/historical/admin-version-c/app-source/extensions/gravuru-storefront/assets/gravuru-font-licenses.json",
+    "bytes": 19539,
+    "sha256": "f1312a3acb25f4f169502f9140dcb314a3705699ddab9a8ef1375bb4697c6a4e"
+  },
+  {
+    "path": "designs/aosu-labrador/start-preview.py",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 2141,
+    "sha256": "03eac482e0d79af0529e0b53a6ea93cc5d26d0a474f0d4c97e4a4b5eba6aae52"
+  },
+  {
+    "path": "references/aosu-upgrade-2026-09-21/verification/editor-source.html",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 461318,
+    "sha256": "fd716737e882098a636498817adfa7afac66103d8a4b4abafbccd337aef7adb2"
+  },
+  {
+    "path": "references/aosu-upgrade-2026-09-21/verification/profile-source.json",
+    "purpose": "Reviewed specimen setup, documentation or retained source",
+    "source": "Git repository; see file documentation and history",
+    "bytes": 39735,
+    "sha256": "7648c2538462e6f92f3e227ead91548d5d1812cb879aba328a89a6e4b713df4d"
+  }
+]

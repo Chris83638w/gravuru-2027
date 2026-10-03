@@ -1,0 +1,870 @@
+{
+  "transportSha256": "87a5476f3ee6c192c894e7ad4c91cf9baaffac50614d7fabb8b96ab034e672a6",
+  "sourceCommit": "3b2ac03d213ac913bcc61520b595f97dde6aa072",
+  "files": 215,
+  "identical": 215,
+  "references": 4,
+  "comparison": [
+    {
+      "path": ".gitattributes",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": ".gitignore",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "AGENTS.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "CLOUD-EINRICHTUNG.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "CLOUD-SICHERUNG-PRUEFUNG.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "CLOUD-UEBERGABE.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "G27-01-PRUEFUNG.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "G27-01-UEBERGABE.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "KONFI-VERGLEICH-UND-AR.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "LOKAL-STARTEN.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "MATERIALREFERENZEN.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "NEUE-WERKSTATT-PLAN.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "QUELLEN-MANIFEST.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "QUELLEN-UND-START.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "README.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "START_HERE.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "STATUS.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "UEBERGABE-SOL-6.1.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "UMSETZUNGSPAKETE.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/REFERENCE-UI.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-base-anchors.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-product.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-product.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/adapter.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/artwork-resource.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/commerce-export.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/commerce-model.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/commerce.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/completion.css",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/completion.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-rights.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools-model.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.css",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/design-edit.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/field-mapping.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/field-mapping.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/fixtures/native-profile.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/help.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/image-processing.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/image-processing.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/index.html",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/local-pilot.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/material-surface.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/option-media.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/option-standard-images.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-editor.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-placeholder.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.css",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/server.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/server.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/spacer-cap.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/usability-model.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.css",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.css",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow-model.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.css",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-buche-v2.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-buche.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-eiche-v2.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-eiche.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-holz-flach-v2.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-holz-flach.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-klar-v2.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-klar.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-nussbaum-v2.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-nussbaum.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-satiniert-v2.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-satiniert.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/reference.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/resources.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/scene-empty-v2.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/scene-empty.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/source.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/.gitattributes",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/.gitignore",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/README.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/RESOURCE-INVENTORY.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/RIGHTS-AND-DEPENDENCIES.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/SETUP.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/START-TEST.md",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/Michroma-OFL.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/Michroma-Regular.ttf",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/labrador-solid.svg",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/michroma-vectors.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/michroma-vectors.json.gz",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/build-preview.py",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/design.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/image-source-verification.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/motif.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/refresh-inventory.py",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/resource-provenance.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-00.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-01.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-02.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-03.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-04.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-05.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-06.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-07.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-08.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-09.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-10.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-11.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-12.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-13.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-00.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-01.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-02.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-03.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-04.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-05.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-06.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-07.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-08.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-09.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-10.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-11.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-12.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-13.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-14.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-15.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-00.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-01.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-02.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-03.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-04.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-05.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-06.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-07.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-08.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-09.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-10.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-11.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-12.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-13.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-14.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-15.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-16.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-17.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-18.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-19.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-20.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/aosu-pro-v8p1ax11.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.png",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/licenses/gravuru-font-licenses.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/designs/aosu-labrador/start-preview.py",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/design-content.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbell-preview.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbell-release.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbells.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/motifs.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/mounting-access.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/processing-profiles.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/runtime-contract.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-products.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-svg.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/universal-elements.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/platform/sources/assistant/static/gravuru-chat.js",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/references/aosu-upgrade-2026-09-21/verification/editor-source.html",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/references/aosu-upgrade-2026-09-21/verification/profile-source.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/batch-assets.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/batch.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/batch.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/catalog.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/design-assets.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/design-converter.py",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/design-converter.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/design-import.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/design-import.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/http.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/product-model.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/product-model.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/profile-library.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/profile-library.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/repository.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/repository.test.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/requirements-import.txt",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/templates/produktserie.xlsx",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/app.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/batch-reader.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/batch-ui.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/batch.html",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/design-import-ui.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/index.html",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/profiles-ui.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/profiles.html",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "app/workshop/ui/style.css",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "package.json",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "scripts/build-product-series-template.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "scripts/cloud-check.mjs",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "scripts/prepare-cloud-handoff.py",
+      "status": "IDENTISCH"
+    },
+    {
+      "path": "verify-reference.mjs",
+      "status": "IDENTISCH"
+    }
+  ],
+  "scope": "Source restore only. No private database, customer data, secrets or cloud-runtime proof included."
+}

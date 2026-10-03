@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#183e35">
+  <title>Gravuru 2027 · Werkstatt</title>
+  <link rel="stylesheet" href="/workshop-ui/style.css">
+  <script type="module" src="/workshop-ui/app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt</a>
+  <div class="app-layout">
+    <aside class="sidebar" aria-label="Werkstattnavigation">
+      <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span>gravuru<small>WERKSTATT · 2027</small></span></a>
+      <p class="nav-group">Verwaltung</p>
+      <nav>
+        <a class="nav-item active" href="/werkstatt/" aria-current="page"><span aria-hidden="true">▦</span> Produkte</a>
+        <a class="nav-item" href="/werkstatt/profile/"><span aria-hidden="true">◇</span> Profile</a>
+        <a class="nav-item" href="/werkstatt/serien/"><span aria-hidden="true">≡</span> Serien</a>
+      </nav>
+      <div class="sidebar-bottom"><span class="online-dot"></span><div>Lokale Werkstatt<small>Shopify ist noch nicht verbunden.</small></div></div>
+    </aside>
+    <main id="main">
+      <header class="page-heading">
+        <div><p class="eyebrow">DEINE WERKSTATT</p><h1>Produkte, die persönlich werden.</h1><p>Konfigurationen verwalten. Vorlagen weiterentwickeln.</p></div>
+        <button class="primary" data-action="new" id="new-product"><span aria-hidden="true">＋</span> Neue Konfiguration</button>
+      </header>
+      <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
+      <div class="conflict-banner" id="conflict-banner" role="alert" hidden>
+        <div><strong>Inzwischen wurde ein neuer Stand gespeichert.</strong><p>Deine Änderungen sind weiterhin hier. Du kannst sie als neue Konfiguration sichern oder den aktuellen Stand laden.</p></div>
+        <div class="button-row"><button data-action="save-separate">Als neue Konfiguration sichern</button><button data-action="reload-record">Aktuellen Stand laden …</button></div>
+      </div>
+      <section class="overview" aria-label="Konfigurationen">
+        <div class="section-heading"><div><h2>Deine Konfigurationen <span class="count" id="product-count">–</span></h2><p>Einzelprodukte und wiederverwendbare Master an einem Ort.</p></div></div>
+        <div class="toolbar">
+          <label class="search"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Name oder Konfigurations-ID suchen" aria-label="Konfigurationen suchen"></label>
+          <label class="archive-filter"><input type="checkbox" id="include-archived"> Archivierte anzeigen</label>
+          <button class="quiet" data-action="refresh" aria-label="Konfigurationen aktualisieren">↻ Aktualisieren</button>
+        </div>
+        <div class="product-list" id="product-list" aria-live="polite"><p class="empty-state">Konfigurationen werden geladen …</p></div>
+      </section>
+      <section class="editor-section" id="editor-section" aria-label="Konfiguration bearbeiten" hidden>
+        <div class="editor-heading">
+          <div><p class="eyebrow" id="record-eyebrow">KONFIGURATION</p><h2 id="record-title">Konfiguration bearbeiten</h2><div class="record-meta"><span id="record-revision"></span><span id="save-indicator"></span></div></div>
+          <div class="button-row"><button data-action="copy" id="copy-product">Kopieren …</button><button class="primary" data-action="save" id="save-product" disabled>Änderungen speichern</button></div>
+        </div>
+        <div class="editor-layout">
+          <div class="editor-main">
+            <nav class="editor-tabs" aria-label="Bearbeitungsbereiche" role="tablist">
+              <button type="button" role="tab" id="tab-details" data-tab="details" aria-controls="panel-details" aria-selected="true">Übersicht</button>
+              <button type="button" role="tab" id="tab-prices" data-tab="prices" aria-controls="panel-prices" aria-selected="false" tabindex="-1">Preise</button>
+              <button type="button" role="tab" id="tab-designs" data-tab="designs" aria-controls="panel-designs" aria-selected="false" tabindex="-1">Designs & Texte</button>
+              <button type="button" role="tab" id="tab-profiles" data-tab="profiles" aria-controls="panel-profiles" aria-selected="false" tabindex="-1">Zuordnungen</button>
+              <button type="button" role="tab" id="tab-history" data-tab="history" aria-controls="panel-history" aria-selected="false" tabindex="-1">Verlauf</button>
+            </nav>
+            <form id="product-form" novalidate>
+              <section id="panel-details" class="editor-panel" role="tabpanel" aria-labelledby="tab-details"></section>
+              <section id="panel-prices" class="editor-panel" role="tabpanel" aria-labelledby="tab-prices" hidden></section>
+              <section id="panel-designs" class="editor-panel" role="tabpanel" aria-labelledby="tab-designs" hidden></section>
+              <section id="panel-profiles" class="editor-panel" role="tabpanel" aria-labelledby="tab-profiles" hidden></section>
+              <section id="panel-history" class="editor-panel" role="tabpanel" aria-labelledby="tab-history" hidden></section>
+            </form>
+          </div>
+          <aside class="record-aside" aria-label="Stand und Aktionen">
+            <div class="record-card identity-card"><p class="eyebrow">KONFIGURATIONS-ID</p><code id="record-id"></code><button class="text-button" data-action="copy-id">ID kopieren</button><p>Diese ID bleibt bestehen – auch wenn du Name, Preis oder Design änderst.</p></div>
+            <div class="record-card preview-card"><span class="preview-symbol" aria-hidden="true">↗</span><h3>Durch Kundenaugen.</h3><p>Öffne die aktuelle Kundenansicht.</p><a class="button" id="preview-link" target="_blank" rel="noopener">Vorschau öffnen ↗</a><small id="preview-note"></small></div>
+            <div class="record-card"><h3>Stand freigeben</h3><p>Eine Freigabe hält diese Konfiguration als festen Stand fest. Sie veröffentlicht kein Shopify-Produkt.</p><p class="release-status" id="release-status"></p><button data-action="publish" id="publish-product">Stand freigeben</button></div>
+            <div class="record-card archive-card"><h3>Aufräumen, ohne zu verlieren.</h3><p>Archivierte Konfigurationen bleiben mit ihrem Verlauf erhalten.</p><button class="text-button" data-action="archive" id="archive-product">Konfiguration archivieren</button></div>
+          </aside>
+        </div>
+      </section>
+      <footer class="page-footer">Gravuru 2027 <span>·</span> Produktverwaltung im Aufbau. SVG-/PDF-Designimport ist verfügbar. Kundenfelder, Druckexport und Shopify-Anbindung werden weiter ausgebaut.</footer>
+    </main>
+  </div>
+  <dialog id="create-dialog" aria-labelledby="create-title">
+    <form id="create-form">
+      <header class="dialog-header"><div><p class="eyebrow" id="create-kicker">NEU ANLEGEN</p><h2 id="create-title">Eine neue Konfiguration.</h2></div><button type="button" class="icon-button" data-action="close-dialog" aria-label="Fenster schließen">×</button></header>
+      <p id="create-description">Starte mit der geprüften Acrylglasvorlage. Alle Werte lassen sich anschließend bearbeiten.</p>
+      <label>Name<input id="create-name" required maxlength="200" autocomplete="off" placeholder="Zum Beispiel: Acrylglasbild · Lieblingsmensch"></label>
+      <label>Verwendung<select id="create-kind"><option value="product">Produktkonfiguration</option><option value="master">Mastervorlage für weitere Produkte</option></select></label>
+      <p class="field-help">Jede neue Konfiguration erhält eine eigene, dauerhaft auffindbare ID.</p>
+      <p id="create-error" class="form-error" role="alert" hidden></p>
+      <div class="dialog-actions"><button type="button" data-action="close-dialog">Abbrechen</button><button class="primary" id="create-submit" type="submit">Konfiguration anlegen</button></div>
+    </form>
+  </dialog>
+  <dialog id="discard-dialog" aria-labelledby="discard-title">
+    <form method="dialog">
+      <h2 id="discard-title">Änderungen noch nicht gespeichert.</h2>
+      <p id="discard-description">Wenn du fortfährst, werden die Änderungen in diesem Formular verworfen.</p>
+      <div class="dialog-actions"><button value="cancel">Hier bleiben</button><button class="danger" value="discard">Änderungen verwerfen</button></div>
+    </form>
+  </dialog>
+</body>
+</html>

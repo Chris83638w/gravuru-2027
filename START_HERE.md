@@ -1,6 +1,18 @@
 # Gravuru 2027 – Einstieg und Übergabe
 
-Stand: 30.09.2026. Auftraggeber: Mikail. Kurze deutsche Erläuterungen, sichtbare Ergebnisse und ehrliche Grenzen sind wichtig. Bereits festgelegte Produktangaben nicht erneut erfragen.
+## Cloud-Übernahme geprüft (03.10.2026)
+
+Aktueller normaler Quellbaum unter `app/` auf `infra/gravuru-2027-cloud-20261003`, übernommen aus dem SHA-256-geprüften Transportstand `3b2ac03d213ac913bcc61520b595f97dde6aa072`. Ausgangsbranch tatsächlich abgerufen: `9ca2d1256c006b20d4a4ca238deca34426b1b2ff`. Die folgenden älteren lokalen/GitHub-Aussagen sind historische Nachweise.
+
+Frisches Verzeichnis in der bestehenden Linux-Cloud-Maschine: 215/215 Quelldateien identisch, vier Referenzarchive korrekt. Node 24.19.0, Python 3.12.14, PyMuPDF 1.28.2. `cloud-check.mjs` und separat `npm test`: jeweils 137 bestanden, 0 Fehler, 0 Skips; `npm run build`: 76 Ressourcen, ein Modell. Kundenkonfi, Editor, Werkstatt/Profile/Serien und Produkt-/Modell-API per HTTP geprüft; fremder Host/Origin und Schreiben ohne CSRF werden mit 403 abgewiesen. Keine Browserabnahme dieses Cloud-Laufs.
+
+Nachweis: `CLOUD-VALIDIERUNG-20261003.md`, `CLOUD-SOURCE-COMPARISON.json`. Kein privater Datenbank-Restore; nur automatisch erzeugter synthetischer Entwicklungs-Master. Keine Produktivveröffentlichung, kein Main-Merge. Neu veröffentlichte Cloud-Maschine, zweiter Account, 24-Stunden-Laptop-aus-Test und vollständige private Sicherung bleiben NICHT GEPRÜFT. Nächster Schritt: Entwicklungsumgebung veröffentlichen und in einer neuen Aufgabe validieren; Datenmigration separat sicher vorbereiten.
+
+Stand: 02.10.2026. **Aktueller Auftrag: vollständige, geprüfte Sicherung und Cloud-Übergabe ohne Datenverlust vorbereiten (CLOUD-UEBERGABE.md).** Ein tatsächlicher Cloud-Lauf ist noch nicht bestätigt. Auftraggeber: Mikail. Kurze deutsche Erläuterungen, sichtbare Ergebnisse und ehrliche Grenzen sind wichtig. Bereits festgelegte Produktangaben nicht erneut erfragen. Der Nutzer erwartet die vollständige Umsetzung und hat ausdrücklich zu wenig sichtbaren Fortschritt kritisiert. Zwischenstände nicht als Ende des Auftrags behandeln.
+
+Aktueller Stand: 137 verschiedene Tests erfolgreich abgedeckt, einschließlich echter PDF-Konvertierung; Build mit 76 Ressourcen/einem Modell. Kundenprodukt `cfg_ad9a9754-9bf2-416c-a366-da9c996cb841` bleibt regulär bearbeitbar, Revision 10. Produktverwaltung, Kategorieprofile und XLSX-Stapelanlage bestehen. Neu: SVG/PDF ersetzt nach Vorschau genau ein ausgewähltes Design, Originaldateien und Revisionen bleiben gespeichert. Im Browser mit der vorhandenen Daria-PDF in einer separaten Kopie `cfg_a20d644c-1e4c-4158-8f7b-2be30049722b` geprüft. Importierte Vorlagen sind zunächst feste Grafiken; Kundenfelder werden nicht automatisch rekonstruiert. Der Excel-Stapelimport verknüpft jetzt Dateinamen/PDF-Seiten mit bis zu 100 Produktzeilen; Vorschau und echte Dreier-Testserie sind geprüft. Nächste Umsetzung: explizite Kundenfelder für importierte Designs; anschließend Material-/Form-/Bohrmodell. Shopify und Produktionsstrecke bleiben offen. Keine Wiederholung der abgeschlossenen Grundarbeiten und keine neue Sicherungssuche. Nach Rechnerneustart Anwendung laut `LOKAL-STARTEN.md` starten; URLs allein starten keinen Server.
+
+**Zuerst den neuen Abschnitt in STATUS.md lesen.** Aktive Anwendung unter `app/` auf Branch `task/g27-02-workshop`. Einstieg: http://127.0.0.1:8961/werkstatt/. Historische G27-01-Angaben unten sind kein aktueller Funktionsumfang. G27-02-Basis liegt als ZIP in GitHub-Entwurfs-PR #1; die neuen Designimport-Änderungen vom 02.10. sind bislang lokal. Kein Cloud-Auftrag läuft.
 
 ## Maßgeblicher Projektstand
 
@@ -8,12 +20,12 @@ Das neue Projekt heißt **Gravuru 2027**. Repository: https://github.com/Chris83
 
 Neueste Entscheidung hat Vorrang vor früheren Vorschlägen: **2D genügt zunächst; AR ist auf später verschoben.** Eine 2D-Darstellung eines Wandbilds in einem eigenen Raumfoto kann später ohne Live-AR umgesetzt werden. Ein verlässlicher Maßstab einer solchen Fotomontage benötigt eine bekannte Referenzgröße; diese Funktion wurde noch nicht gebaut.
 
-Die neue App befindet sich in der Ausarbeitung. Dieses Repository enthält Dokumentation und eingefrorene Referenzpakete mit 294 Dateien. Ein vorhandener Button, ein Screenshot oder eine Bildidee beweist keine funktionierende komplette Strecke.
+Die erste neue Kundenoberfläche ist lokal implementiert und geprüft. Aktive Dateien unter `app/`, Start über `LOKAL-STARTEN.md`, aktuelle Prüfung in `G27-01-PRUEFUNG.md`. Eingefrorene Referenzpakete mit 294 Dateien bleiben Herkunftsmaterial. Ein sichtbarer Button oder Screenshot beweist keine vollständige Bestellstrecke.
 
 ## Lesen und weiterarbeiten
 
 1. `STATUS.md` und `AGENTS.md`: konkreter Fortschritt und Arbeitsregeln.
-2. `UEBERGABE-SOL-6.1.md` und das aktive Paket **G27-01** in `UMSETZUNGSPAKETE.md`: Arbeitsauftrag mit Abnahme.
+2. Aktives nächstes Paket **G27-02** in `UMSETZUNGSPAKETE.md`. `UEBERGABE-SOL-6.1.md` ist der historische Startauftrag; bereits erledigtes G27-01 nicht wiederholen.
 3. `QUELLEN-UND-START.md`: Archive prüfen, Quellen gezielt öffnen, vorhandenen Build reproduzieren. `MATERIALREFERENZEN.md` sichert die Materialauswahl und ihre Grenzen.
 4. Passende Abschnitte in `NEUE-WERKSTATT-PLAN.md` nachschlagen: bestätigte Anforderungen, Preise und Befunde. `KONFI-VERGLEICH-UND-AR.md` ist ergänzender Hintergrund, keine Pflicht zur erneuten Recherche; AR bleibt vertagt.
 
@@ -29,12 +41,12 @@ Die neue App befindet sich in der Ausarbeitung. Dieses Repository enthält Dokum
 
 ## Geprüfter Bestand und Grenzen
 
-In der jetzigen Vorbereitung bestanden 19 Tests aus `contract.test.mjs` und `acrylic-product.test.mjs` erneut, aus der probeweise entpackten Kopie. Build mit 104 geprüften Ressourcen und 7 Modellen erfolgreich. Alle 294 Dateiprüfsummen stimmen. Ein zuvor synthetisch reproduziertes Fotozuordnungsrisiko und doppelte Preisregeln sind noch nicht behoben. Die Befunde stehen im Master-Bauplan.
+Historische Referenzprüfung: 19 Tests, 104 Ressourcen, 7 Modelle, 294 Dateiprüfsummen. **Aktuelle Anwendung: 137 Tests, 76 ausgewählte Ressourcen, ein Acrylmodell.** Fotozuordnung anhand eindeutiger Feldschlüssel und gemeinsame Acrylpreisregeln sind implementiert. Aktueller Umfang in `STATUS.md`; `G27-01-PRUEFUNG.md` beschreibt nur die erste Kundenoberfläche. Historische Befunde im Bauplan nicht als aktuellen Fehlerstand übernehmen.
 
-Produktverwaltung hat dateibasierte Teile; SQLite existiert bereits für Kundensitzungen und Gestaltungspakete. Keine dieser Aussagen bedeutet, dass die neue verknüpfte Produktdatenbank fertig ist. PDF-/Druckausgaben, freier Konturimport, Produktion, Shopify und neue Stapelabläufe benötigen ihre jeweiligen durchgehenden Abnahmen.
+Neue Produktverwaltung speichert in SQLite mit Revisionen/Metadaten und Migrationen. Bestehende historische Kundensitzungs-/Produktionsmodule sind noch nicht daran angeschlossen. PDF-/Druckausgaben, freier Konturimport, Produktion und Shopify benötigen ihre jeweiligen durchgehenden Abnahmen.
 
 Zwölf Materialbilder für Edelstahl, Leder, Holz und Acryl wurden wiedergefunden und unverändert gesichert. Schieferbeispiele liegen ebenfalls vor, die reine Rohlingreferenz ist noch nicht eindeutig zugeordnet. Keine neuen Uploads pauschal verlangen. Endgültige Schriftarten, unbestätigte Materialstärken und freigegebene Maschinen-/Farbprofile bleiben offene Voraussetzungen; Details im Materialregister und Bauplan.
 
 ## Als Nächstes
 
-G27-01: geeignete Bestandsmodule gezielt in eine getrennte lauffähige Grundlage übernehmen und lokal bedienbar zeigen. Danach G27-02: gemeinsames Modell für Material, Formkontur, Variante, Bohrbild, Design, Kundenfelder und Produktionsprofil. Beide Verfahren Druck und Gravur abdecken; Verwaltung und Stapelverarbeitung verwenden dieselben Regeln. Den Namen Gravuru 2027 konsequent verwenden. Modellumschaltung oder neuer Chat sind mit dieser Vorbereitung noch nicht erfolgt.
+G27-02: gemeinsames Modell für Material, Formkontur, Variante, Bohrbild, Design, Kundenfelder und Produktionsprofil samt Speicherung/Revisionen. Aktive Acrylregeln wiederverwenden. Druck und Gravur abdecken; Verwaltung und Stapelverarbeitung verwenden dieselben Regeln. Den Namen Gravuru 2027 konsequent verwenden. Aktueller lokaler Pilot: http://127.0.0.1:8961/?model=acryl. Git-Transportgrenzen in `STATUS.md` beachten.

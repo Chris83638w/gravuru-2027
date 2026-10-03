@@ -1,0 +1,90 @@
+import {readImport} from './batch-reader.mjs';
+const $=s=>document.querySelector(s),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false;
+const uploadCache=new WeakMap();
+async function api(path,data){
+  if(data&&!csrf)csrf=(await api('/api/workshop/session')).csrfToken;
+  const res=await fetch(path,{method:data?'POST':'GET',headers:data?{'Content-Type':'application/json','X-Gravuru-CSRF':csrf}:{},...(data?{body:JSON.stringify(data)}:{})});
+  const body=await res.json();if(!res.ok)throw Error(body.error?.message||'Aktion fehlgeschlagen.');return body;
+}
+function status(message,error=false){$('#status').textContent=message;$('#status').style.color=error?'#a32828':'#183e35';}
+function disabled(value){
+  busy=value;for(const id of ['check','master','file','design-files','skip-errors'])$('#'+id).disabled=value;
+  $('#import').disabled=value||!prepared||hasErrors&&!$('#skip-errors').checked;
+}
+function invalidate(){
+  prepared=null;hasErrors=false;$('#skip-errors').checked=false;$('#partial-label').hidden=true;$('#review').hidden=true;$('#result').hidden=true;$('#import').disabled=true;$('#upload-report').textContent='';status('');
+}
+const base64=file=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Die Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
+async function uploadDesigns(rows){
+  const files=Array.from($('#design-files').files),byName=new Map();
+  if(files.length>100)throw Error('Bitte höchstens 100 Design-Dateien auswählen.');
+  for(const file of files){if(byName.has(file.name))throw Error('Der Dateiname „'+file.name+'“ ist doppelt. Bitte die Dateien eindeutig benennen.');byName.set(file.name,file);}
+  const requests=new Map();
+  for(const row of rows){
+    const name=String(row.design_file||'').trim(),rawPage=String(row.design_page??'').trim()||'1';
+    if(name&&/^[1-9][0-9]*$/.test(rawPage)&&Number(rawPage)<=1000)requests.set(JSON.stringify([name,Number(rawPage)]),{name,page:Number(rawPage)});
+  }
+  const designFiles=[],issues=[];let index=0;
+  for(const {name,page} of requests.values()){
+    if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
+    status('Design '+(++index)+' von '+requests.size+' wird geprüft: '+name+' · Seite '+page);
+    const file=byName.get(name);if(!file)continue;
+    try{
+      if(file.size>15*1024*1024)throw Error('Die Datei ist größer als 15 MB.');
+      let pages=uploadCache.get(file);if(!pages){pages=new Map();uploadCache.set(file,pages);}
+      let asset=pages.get(page);
+      if(!asset){asset=await api('/api/workshop/design-assets/import',{name,bytes:await base64(file),page});pages.set(page,asset);}
+      designFiles.push({name,page,assetId:asset.assetId});
+    }catch(error){issues.push(name+', Seite '+page+': '+error.message);}
+  }
+  if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
+  const used=new Set(Array.from(requests.values(),r=>r.name)),unused=files.filter(f=>!used.has(f.name)).length;
+  $('#upload-report').replaceChildren();
+  for(const message of [designFiles.length+' Design-Seiten geprüft.'+(unused?' '+unused+' ausgewählte Dateien werden in der Tabelle nicht verwendet.':''),...issues]){
+    const line=document.createElement('p');line.textContent=message;$('#upload-report').append(line);
+  }
+  return designFiles;
+}
+const money=cents=>Number.isInteger(cents)?new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100):'–';
+function artworkCell(row){
+  const a=row.artwork;if(!a)return row.status==='error'?'–':'Masterdesign';
+  const url='/api/workshop/design-assets/'+a.assetId+'/preview.svg',mm=v=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(v);
+  return '<a href="'+url+'" target="_blank" rel="noopener" class="batch-preview"><img src="'+url+'" alt="Vorschau '+escape(a.name)+'" loading="lazy"></a><span>'+escape(a.name)+' · Seite '+a.page+'</span><small>'+escape(a.designName)+' · '+mm(a.placement.widthMm)+' × '+mm(a.placement.heightMm)+' mm</small><details><summary>Hinweise zur Vorlage</summary><ul>'+a.warnings.map(w=>'<li>'+escape(w)+'</li>').join('')+'</ul></details>';
+}
+$('#skip-errors').addEventListener('change',()=>disabled(busy));
+for(const id of ['file','master','design-files'])$('#'+id).addEventListener('change',invalidate);
+$('#cancel-check').addEventListener('click',()=>{cancelled=true;$('#cancel-check').disabled=true;status('Abbruch angefordert. Die laufende Datei wird noch abgeschlossen.');});
+$('#check').addEventListener('click',async()=>{
+  if(busy)return;invalidate();disabled(true);cancelled=false;$('#cancel-check').hidden=false;$('#cancel-check').disabled=false;
+  try{
+    const option=$('#master').selectedOptions[0];if(!option)throw Error('Bitte zuerst eine Mastervorlage anlegen.');
+    const rows=await readImport($('#file').files[0]),designFiles=await uploadDesigns(rows);
+    const data={rows,masterId:option.value,masterRevision:Number(option.dataset.revision),designFiles};
+    const plan=await api('/api/workshop/batch/plan',data);if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
+    $('#review').hidden=false;
+    const errors=plan.report.filter(r=>r.status==='error').length,existing=plan.report.filter(r=>r.status==='existing').length;
+    hasErrors=errors>0;$('#partial-label').hidden=!hasErrors||!plan.token;
+    $('#summary').textContent=plan.report.length+' Produkte · '+errors+' Fehler · '+existing+' bereits vorhanden';
+    $('#rows').innerHTML=plan.report.map(row=>'<tr><td>'+row.row+'</td><td><strong>'+escape(row.name)+'</strong><small>'+escape(row.key)+'</small></td><td>'+artworkCell(row)+'</td><td>'+money(row.prices?.small)+'</td><td>'+money(row.prices?.large)+'</td><td>'+escape(row.message||(row.status==='existing'?'Bereits angelegt':'Bereit'))+'</td></tr>').join('');
+    if(plan.token)prepared={...data,token:plan.token};
+    status(plan.valid?'Prüfung abgeschlossen. Kontrolliere die zugeordneten Designs und lege die Serie an.':'Noch nichts angelegt. Fehler korrigieren oder ausdrücklich nur gültige Datensätze anlegen.',!plan.valid);
+  }catch(error){status(error.message,true);}finally{$('#cancel-check').hidden=true;disabled(false);}
+});
+$('#import').addEventListener('click',async()=>{
+  if(busy||!prepared||hasErrors&&!$('#skip-errors').checked)return;disabled(true);
+  try{
+    const result=await api('/api/workshop/batch/commit',{...prepared,skipErrors:$('#skip-errors').checked});
+    $('#result').hidden=false;
+    $('#result-list').innerHTML=result.products.map(item=>'<p><a href="/werkstatt/?configuration='+encodeURIComponent(item.id)+'">'+escape(item.key)+'</a> · <code>'+escape(item.id)+'</code> · '+(item.created?'Neu angelegt':'Bereits vorhanden')+'</p>').join('');
+    const saved=new Map(result.products.map(item=>[item.key,item]));
+    for(const row of $('#rows').rows){const item=saved.get(row.cells[1]?.querySelector('small')?.textContent);if(item)row.cells[5].textContent=item.created?'Gespeichert':'Bereits angelegt';}
+    $('#summary').textContent=result.products.length+' Konfigurationen gespeichert · '+(result.errors?.length||0)+' Fehler';
+    status(result.products.filter(p=>p.created).length+' neue Konfigurationen gespeichert. '+(result.errors?.length||0)+' fehlerhafte Datensätze bleiben zur Korrektur offen.');prepared=null;
+  }catch(error){status(error.message,true);}finally{disabled(false);}
+});
+try{
+  const {products}=await api('/api/workshop/products');
+  $('#master').innerHTML=products.filter(p=>p.kind==='master').map(p=>'<option value="'+escape(p.id)+'" data-revision="'+p.revision+'">'+escape(p.name)+' · Stand '+p.revision+'</option>').join('');
+  if(!$('#master').options.length)status('Lege in der Produktverwaltung zunächst eine Mastervorlage an.',true);
+}catch(error){status(error.message,true);}

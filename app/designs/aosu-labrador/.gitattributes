@@ -1,0 +1,4 @@
+runtime/** -text
+assets/** -text
+design.json -text
+motif.json -text

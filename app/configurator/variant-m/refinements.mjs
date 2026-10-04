@@ -31,7 +31,7 @@ export async function installRefinements(api){
   const editPhoto=createPhotoEditor(api);
   installPhotoPosition(api);
   function updateSelection(){
-    const o=selected(),enabled=o&&o.type!=='photoSlot'&&!o.uxHidden&&!o.uxLocked&&!o.acrylicFixed;
+    const o=selected(),enabled=o&&!o.uxHidden&&!o.uxLocked&&(!o.acrylicFixed||el.uxCanPositionPhoto?.(o));
     handles.hidden=!enabled;
     if(enabled){const a=(o.rotation||0)*Math.PI/180,scene=$('.scene').getBoundingClientRect(),ph=stage.getBoundingClientRect();
       const point=(dx,dy)=>({x:(scene.left-ph.left)+(o.x+dx*Math.cos(a)-dy*Math.sin(a))*scene.width/el.state.width,y:(scene.top-ph.top)+(o.y+dx*Math.sin(a)+dy*Math.cos(a))*scene.height/el.state.height});

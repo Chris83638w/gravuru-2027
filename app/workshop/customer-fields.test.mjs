@@ -22,7 +22,7 @@ function native(){
   return config;
 }
 const fields=()=>[
-  {id:'customer-names',type:'text',label:'Namen',fieldKey:'names',text:'Anna & Lukas',font:'Garamond Acryl',size:4.5,color:'#731c19',allowColor:true,allowMove:false,x:75,y:155},
+  {id:'customer-names',type:'text',label:'Namen',fieldKey:'names',text:'Anna & Lukas',font:'Garamond Acryl',size:4.5,color:'#731c19',allowColor:true,allowMove:false,allowScale:false,allowDelete:false,x:75,y:155},
   {id:'customer-photo',type:'photoSlot',label:'Lieblingsfoto',fieldKey:'photo-main',x:75,y:65,widthMm:90,heightMm:80,shape:'rect',required:true}
 ];
 async function setup(t){
@@ -133,7 +133,7 @@ test('backend chooses fixed or movable text; source artwork remains locked after
  assert.doesNotThrow(()=>validateProductDesign(reopened.document,changed));
  const source=d.objects.find(o=>!o.id.startsWith('customer-'));assert.equal(reopened.document.elementRights[d.id][source.id].move,false);
  const forbidden=structuredClone(d);forbidden.objects.find(o=>o.id===source.id).x+=3;assert.throws(()=>validateProductDesign(reopened.document,forbidden));
- const fixed={...input,expectedRevision:saved.revision,fields:input.fields.map(f=>({...f,allowMove:false}))};
+ const fixed={...input,expectedRevision:saved.revision,fields:input.fields.map(f=>({...f,allowMove:false,allowScale:false,allowDelete:false}))};
  const checked=planCustomerFields(repository,assets,record.id,fixed),restored=applyCustomerFields(repository,assets,record.id,{...fixed,token:checked.token});
  assert.equal(restored.document.elementRights[d.id]['customer-names'].move,false);
  assert.throws(()=>validateProductDesign(restored.document,changed));
@@ -147,4 +147,23 @@ test('new text fields default to movable while an explicit fixed selection takes
  assert.equal(plan.document.elementRights[input.designId]['customer-names'].move,true);
  input.fields[0].allowMove=false;
  assert.equal(planCustomerFields(repository,assets,record.id,input).document.elementRights[input.designId]['customer-names'].move,false);
+});
+
+test('backend keeps normal size and remove controls by default and persists explicit restrictions',async t=>{
+ const {repository,assets,record,input}=await setup(t);
+ for(const key of ['allowMove','allowScale','allowDelete'])delete input.fields[0][key];
+ const plan=planCustomerFields(repository,assets,record.id,input),designId=input.designId;
+ assert.deepEqual(['move','scale','delete'].map(k=>plan.document.elementRights[designId]['customer-names'][k]),[true,true,true]);
+ const design=structuredClone(plan.document.config.profile.designs.find(d=>d.id===designId));
+ const text=design.objects.find(o=>o.id==='customer-names');text.size*=1.05;text.rotation=5;
+ assert.doesNotThrow(()=>validateProductDesign(plan.document,design));
+ design.objects=design.objects.filter(o=>o.id!=='customer-names');assert.doesNotThrow(()=>validateProductDesign(plan.document,design));
+ input.fields[0].allowScale=false;input.fields[0].allowDelete=false;
+ const checked=planCustomerFields(repository,assets,record.id,input);
+ const saved=applyCustomerFields(repository,assets,record.id,{...input,token:checked.token});
+ const reopened=repository.get(saved.id);
+ assert.equal(reopened.document.elementRights[designId]['customer-names'].move,true);
+ assert.equal(reopened.document.elementRights[designId]['customer-names'].scale,false);
+ assert.equal(reopened.document.elementRights[designId]['customer-names'].delete,false);
+ assert.throws(()=>validateProductDesign(reopened.document,design));
 });

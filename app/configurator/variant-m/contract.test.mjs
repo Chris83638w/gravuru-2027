@@ -102,3 +102,12 @@ test('photo background instructions roundtrip and reject invalid or misplaced va
  photo.uxPhotoBackground='unknown';assert.throws(()=>save(s),/Foto-Aufbereitung/);
  delete photo.uxPhotoBackground;const text=s.objects.find(o=>o.type==='text');text.uxPhotoBackground='remove';assert.throws(()=>save(s),/Foto-Aufbereitung/);
 });
+
+test('photo alignment survives the actual render/draft contract and rejects invalid payloads',()=>{
+ const s=state(),photo=s.objects.find(o=>o.type==='photoSlot');photo.uxUploadId='test-photo';photo.uxUploadKind='photo';
+ photo.uxPhotoCrop={zoom:1,x:.4,y:-.2,angle:15};
+ const loaded=readDraft(config,save(s),fonts,motifs);
+ assert.deepEqual(loaded.design.objects.find(o=>o.id===photo.id).uxPhotoCrop,photo.uxPhotoCrop);
+ for(const invalid of [{zoom:0,x:0,y:0},{zoom:1,x:2,y:0},{zoom:1,x:0,y:0,angle:'15'},{zoom:1,x:0,y:0,url:'untrusted'},null]){photo.uxPhotoCrop=invalid;assert.throws(()=>save(s),/Foto-Ausrichtung/);}
+ delete photo.uxPhotoCrop;s.objects.find(o=>o.type==='text').uxPhotoCrop={zoom:1,x:0,y:0};assert.throws(()=>save(s),/Foto-Ausrichtung/);
+});

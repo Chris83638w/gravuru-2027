@@ -52,8 +52,9 @@ export async function planPreparedDesign(repository,assets,id,input){
   }
   d.objects.push(o);table[o.id]=rights(layer.type);
   if(layer.type==='text'){
-   if(layer.allowMove!==undefined&&typeof layer.allowMove!=='boolean')fail('Positionsfreigabe muss ein Wahrheitswert sein.');
-   table[o.id].color=layer.allowColor;table[o.id].move=layer.allowMove!==false;
+   for(const key of ['allowScale','allowDelete'])if(layer[key]!==undefined&&typeof layer[key]!=='boolean')throw Object.assign(Error('Größen-/Löschfreigabe muss ein Wahrheitswert sein.'),{status:422});
+      if(layer.allowMove!==undefined&&typeof layer.allowMove!=='boolean')fail('Positionsfreigabe muss ein Wahrheitswert sein.');
+   table[o.id].color=layer.allowColor;table[o.id].move=layer.allowMove!==false;table[o.id].scale=layer.allowScale!==false;table[o.id].delete=layer.allowDelete!==false;
   }
  }
  if(!d.importedSource||!d.customerFields.length)fail('Grafik und Kundenfelder fehlen.');

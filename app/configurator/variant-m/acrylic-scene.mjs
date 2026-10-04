@@ -53,7 +53,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  function updateScene(){
    const choice=acrylicSelection(el.state.mOptions,config.acrylic.pricing),b=choice.base;
    for(const o of el.state.objects)if(isFixed(o))o.acrylicFixed=true;
-   stage.dataset.fixedSelected=String(isFixed(selected()));
+   stage.dataset.fixedSelected=String(isFixed(selected())&&!el.uxCanPositionPhoto?.(selected()));
    const mainPhoto=el.state.objects.find(o=>o.id==='photo-main');if(mainPhoto?.uxUploadId)mainPhoto.uxPhotoBackground='keep';
    const uploadCopy=$('#ux-panel-upload > p');if(uploadCopy)uploadCopy.textContent='Ein Foto inklusive. Neue Uploads ersetzen dein Foto. JPG, PNG oder WebP · bis 15 MB.';
    for(const layer of [base,baseBack])layer.hidden=!b.asset;
@@ -75,7 +75,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    const lines=$('[data-ux-price-lines]');if(lines)lines.textContent=`Acrylglas ${money(choice.size.basePriceCents)}${b.id==='none'?'':` + Sockel ${money(choice.baseCents)}`}${choice.wallCents?` + Wandhalterung ${money(choice.wallCents)}`:''}`;
    footer.textContent=`${choice.size.width/10} × ${(choice.size.height/10).toLocaleString('de-DE')} cm · 3 mm Acrylglas`;
    for(const option of all('select[data-m-option="base"] option')){const row=ACRYLIC_BASES.find(b=>b.id===option.value);if(row)option.textContent=row.label+(row.id==='none'?'':` · +${money(acrylicSelection({size:el.state.mOptions.size,base:row.id},config.acrylic.pricing).baseCents)}`);}
-   all('[data-ux=lock],[data-ux=remove-content]').forEach(n=>{if(fixedSource().some(o=>o.id===n.dataset.id))n.disabled=true;});
+   all('[data-ux=lock],[data-ux=remove-content]').forEach(n=>{if(fixedSource().some(o=>o.id===n.dataset.id)&&!(n.dataset.ux==='remove-content'&&el.uxCanPositionPhoto?.(el.state.objects.find(o=>o.id===n.dataset.id))))n.disabled=true;});
    all('[data-ux-content-prop]').forEach(n=>{if(isFixed(selected()))n.disabled=true;});
  }
  const sync=el.sync;el.sync=function(...args){const value=sync.apply(this,args);updateScene();return value;};

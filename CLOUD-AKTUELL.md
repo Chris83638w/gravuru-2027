@@ -2,7 +2,7 @@
 
 ## Aktueller Cloud-Übergabestand – 04.10.2026
 
-**Cloud-Neustart/Quellabnahme, isolierter Cloud-Restore und GitHub-Leseübergabe bestanden. Vollständige Migration und Produktion noch nicht freigegeben. Produktentwicklung bis zum Migrationsabschluss pausiert.**
+**Cloud-Neustart/Quellabnahme, isolierter Cloud-Restore und GitHub-Leseübergabe bestanden. Der Nutzer hat die Weiterentwicklung ausschließlich in Codex Cloud beauftragt. Eine gemeinsame Serverinstallation ist dafür keine Voraussetzung. Produktion bleibt ungeprüft und nicht freigegeben.**
 
 Fachliche GitHub-Basis: `infra/gravuru-2027-cloud-20261003`, Remote-HEAD am 04.10. geprüft: `f7c3f24db55003c28fec5274dfc5df2736926b6b`. Diese Dokumentübergabe liegt separat auf `infra/cloud-only-handoff-20261004`; kein Merge. Vor weiterer Arbeit aktuellen Remote-HEAD prüfen.
 
@@ -20,9 +20,19 @@ Alle mögliche Entwicklung und Ausführung erfolgt ausschließlich in Codex Clou
 
 Chris' restaurierte Dateien liegen privat nur in seiner laufenden Aufgabe und sind von Mikails Aufgabe nicht als erreichbar bestätigt. Die Cloud-VM ist keine dauerhafte gemeinsame Datenbank. Laut [offizieller Cloud-Dokumentation](https://learn.chatgpt.com/docs/environments/cloud-environments) besteht standardmäßig Wiederherstellbarkeit bis sieben Tage nach Aktivität; Computer-/Browserbedienung ist aktuell nicht unterstützt. Keine vollautomatische visuelle Abnahme versprechen. Der wiederherstellbare verschlüsselte Serversnapshot ist kein gemeinsamer laufender Schreibdatenbestand.
 
-**Genau nächster Migrationsschritt:** eine konkret benannte private, dauerhafte Datenquelle samt unterstütztem authentifiziertem Zugangsverfahren für beide Konten bereitstellen und deren Dauerhaftigkeit/Zugriff prüfen; danach alle drei DBs gemeinsam anbinden und die visuelle App-Abnahme durchführen. In Mikails aktueller Runtime (Revision 53) sind keine Secrets, Identitäten oder Runtimevariablen konfiguriert, keine Fähigkeiten ausgewiesen und keine benutzerdefinierten Hosts freigegeben. Vorhandene Cloud-Shellwerkzeuge curl/ssh/sftp ersetzen diese fehlende Zugangskonfiguration nicht. Ein dokumentiertes Werkzeug zum Anlegen/Freigeben einer gemeinsamen persistenten Datenablage ist hier nicht verfügbar. Keine Server-/Plesk-/Shopify-/Produktionsmutation zur Umgehung.
+**Aktueller Auftrag: Cloud-Entwicklung mit Work vorbereiten.** Die spätere Nutzerentscheidung hebt die bisherige Entwicklungspause auf. Die separate Planung auf `infra/private-runtime-preparation-20261004` wird nicht weiterverfolgt oder installiert. Für diesen Entwicklungseinstieg sind keine Änderungen an gravuru.de, der bestehenden Werkstatt, Plesk oder Shopify erforderlich. Eine dauerhaft gemeinsame private Datenablage bleibt eine separate offene Aufgabe; Entwicklung mit synthetischen Daten kann bereits in der vorhandenen Cloud erfolgen. Chris' private restaurierte Daten werden dabei nicht als hier verfügbar ausgegeben.
 
-Der Nutzerscreenshot zeigt den älteren G27-01-Stand mit 57 Tests (»Unser Anfang«, sechs Sockel, zwei Größen, Text/Farbe/Foto). Die spätere G27-02-Basis mit Werkstatt, Profilen, SVG/PDF-Designerersatz und Excel-Stapelanlage sowie 137 Tests bleibt maßgeblich; kein Rücksetzen auf G27-01. Exakte visuelle Gleichheit des restaurierten Standes zum Screenshot ist ungeprüft. Fachlich nach Migrationsabschluss: explizite Kundenfelder/Fotobereiche in importierten Designs. Beliebige Pfad-PDFs sind nicht automatisch editierbar. Materialien/Formen/Bohrbilder, vollständige Shopify- sowie Druck-/Gravurstrecke bleiben offen.
+### Einstieg für Work
+
+Repository: `Chris83638w/gravuru-2027`. Einstieg mit aktueller Übergabe: `infra/cloud-only-handoff-20261004`; dieser enthält den unveränderten G27-02-App-Code der geprüften Basis `f7c3f24db55003c28fec5274dfc5df2736926b6b`. Für fachliche Änderungen davon einen eigenen Aufgabenbranch ableiten. `main` ist noch der historische Stand.
+
+Gewünschte Aufteilung: Work für Gestaltung, Bilder und Abstimmung; Codex Cloud für Repository, Implementierung und Prüfungen. GitHub hält die gemeinsame dokumentierte Übergabe. Diese Zuordnung ist ein Arbeitsauftrag, noch kein Nachweis einer technischen Work-Verknüpfung. Die verfügbaren Werkzeuge dieses Chats können weder die Work-Quellenauswahl bedienen noch eine Work-Aufgabe an diese Cloud-Umgebung binden. Keine automatische Synchronisierung oder laptopunabhängige Ausführung allein aus einer ausgewählten Quelle ableiten.
+
+**Genau nächster Schritt:** in Work die tatsächlich angebotene Quellen-/Ausführungszuordnung prüfen und, sofern unterstützt, die bestehende Codex-Cloud-Umgebung verwenden. Vor Änderungen muss die ausführende Aufgabe Cloud-Laufzeit, Repository, Branch und vollständigen Commit bestätigen und AGENTS.md/START_HERE.md lesen. Falls Work nur lesenden Quellzugriff bietet, bleiben Implementierung und Tests in der bestehenden Codex-Cloud-Aufgabe; Entwürfe werden ausdrücklich übergeben. Kein neuer Server und keine neue Umgebung als Umweg.
+
+Nächstes fachliches Paket nach dieser Zuordnung: explizite Kundenfelder und austauschbare Fotobereiche für importierte Designs auf der vorhandenen G27-02-Basis. Bestehende Produkt-/Profilrevisionen, Einzel- und Serienimport erhalten. Unveränderte Funktionen nicht als neu gebaut oder neu geprüft ausgeben.
+
+Der Nutzerscreenshot zeigt den älteren G27-01-Stand mit 57 Tests (»Unser Anfang«, sechs Sockel, zwei Größen, Text/Farbe/Foto). Die spätere G27-02-Basis mit Werkstatt, Profilen, SVG/PDF-Designerersatz und Excel-Stapelanlage sowie 137 Tests bleibt maßgeblich; kein Rücksetzen auf G27-01. Exakte visuelle Gleichheit des restaurierten Standes zum Screenshot ist ungeprüft. Fachlich als nächstes Paket: explizite Kundenfelder/Fotobereiche in importierten Designs. Beliebige Pfad-PDFs sind nicht automatisch editierbar. Materialien/Formen/Bohrbilder, vollständige Shopify- sowie Druck-/Gravurstrecke bleiben offen.
 
 ## Historischer Cloud-Einstieg – 03.10.2026
 

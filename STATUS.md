@@ -2,7 +2,7 @@
 
 ## Aktueller Cloud-Übergabestand – 04.10.2026
 
-**Cloud-Neustart/Quellabnahme, isolierter Cloud-Restore und GitHub-Leseübergabe bestanden. Vollständige Migration und Produktion noch nicht freigegeben. Produktentwicklung bis zum Migrationsabschluss pausiert.**
+**Cloud-Neustart/Quellabnahme, isolierter Cloud-Restore und GitHub-Leseübergabe bestanden. Der Nutzer hat die Weiterentwicklung ausschließlich in Codex Cloud beauftragt. Eine gemeinsame Serverinstallation ist dafür keine Voraussetzung. Produktion bleibt ungeprüft und nicht freigegeben.**
 
 Fachliche GitHub-Basis: `infra/gravuru-2027-cloud-20261003`, Remote-HEAD am 04.10. geprüft: `f7c3f24db55003c28fec5274dfc5df2736926b6b`. Diese Dokumentübergabe liegt separat auf `infra/cloud-only-handoff-20261004`; kein Merge. Vor weiterer Arbeit aktuellen Remote-HEAD prüfen.
 
@@ -11,6 +11,12 @@ Fachliche GitHub-Basis: `infra/gravuru-2027-cloud-20261003`, Remote-HEAD am 04.1
 - Mikail hat den Nachweis am 04.10. gegen 14:25 direkt von GitHub gelesen und beide Remote-HEADs sowie AGENTS.md, CLOUD-AKTUELL.md und STATUS.md geprüft. Dokumentierte Wissensübergabe bestanden; kein Zugriff auf Chris' private Laufzeitdateien.
 
 Die vorstehenden Tests wurden für diese Dokumentübergabe nicht wiederholt. Alte Aussagen »Cloud-Restore/Neustart offen« sind für diese bestandenen isolierten Prüfungen überholt. Dauerhafte gemeinsame private Datenablage, Zugriff beider Konten, App-Anbindung und visuelle Abnahme bleiben offen.
+
+## Nutzerentscheidung: Cloud-Entwicklung fortsetzen
+
+Die spätere Nutzerentscheidung ersetzt die vorherige Entwicklungspause: ausschließlich in der vorhandenen Codex Cloud weiterentwickeln, GitHub als gesicherten Code-/Entscheidungsstand verwenden. Work soll Gestaltung und Bilder übernehmen; die technische Cloud-Verknüpfung ist noch zu bestätigen. Konkreter Einstieg und nächster Schritt: [CLOUD-AKTUELL.md](CLOUD-AKTUELL.md#einstieg-für-work). Keine neue Servereinrichtung als Voraussetzung. Die Vorbereitung auf `infra/private-runtime-preparation-20261004` bleibt separat und wird nicht installiert.
+
+Diese Änderung betrifft ausschließlich CLOUD-AKTUELL.md, START_HERE.md und STATUS.md. Dokumentdiffs geprüft; App-Code und Restorebericht nachweislich unverändert; kein neuer Test-/Build-/Restore-Nachweis. Private Daten aus Chris' Aufgabe sind hier weiterhin nicht verfügbar. Nächstes fachliches Paket: explizite Kundenfelder/Fotobereiche in importierten Designs; keine automatische Editierbarkeit beliebiger Pfad-PDFs.
 
 ## Frühere Nachweise und ursprüngliche Übergabe
 

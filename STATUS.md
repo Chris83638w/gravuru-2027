@@ -1,3 +1,5 @@
+Präzisierung Weiß am 04.10.2026: Standard nur unter bedruckten Motivflächen; freies Acryl bleibt transparent. Ersetzt die vorherige Vollflächen-Voreinstellung. Vollfläche ist ausdrücklich als „Gesamte Platte weiß hinterlegen“ gekennzeichnet.
+
 Exportvorgaben am 04.10.2026 angepasst: Nur PDF, Roland RDG_WHITE, Farbüberdruck 1 mm umlaufend, Weiß vollflächig innerhalb der Kontur, Weißüberdruck 0 mm. Frischer Browserstart geprüft; bestehende sechs Exporttests weiterhin bestanden.
 
 ## Aktuell: PDF-Druckdownload als Prüfexport – 04.10.2026

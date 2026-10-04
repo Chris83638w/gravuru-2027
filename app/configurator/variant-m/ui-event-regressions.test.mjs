@@ -39,9 +39,14 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
  await dispatch(r,'input',inertEvent(input));assert.equal(object.size,9,'denied scale right must reject the actual input handler');
  env.el.uxCanEdit=()=>true;
  vm.runInContext(line('ux.mjs',"if(e.target.dataset.uxText)delete"),env);
- input.value='stale';await dispatch(r,'focusout',inertEvent(input));assert.equal(Number(input.value),12);
- const fields=block('ux.mjs','  function updateFields(){','\n  }\n  function renderFontPage').replace('\n  function renderFontPage','');
- vm.runInContext(fields,env);input.value='stale';vm.runInContext('updateFields()',env);assert.equal(Number(input.value),12);
+  input.value='stale';await dispatch(r,'focusout',inertEvent(input));assert.equal(Number(input.value),12);
+  env.profile={designs:[{id:'test-design',customerFields:[{id:'name',label:'Namen'}]}]};
+  env.el.state.designId='test-design';
+  vm.runInContext(line('ux.mjs','const esc=value=>'),env);
+  vm.runInContext(line('ux.mjs','const fieldLabel='),env);
+  const fields=block('ux.mjs','  function updateFields(){','\n  }\n  function renderFontPage').replace('\n  function renderFontPage','');
+  vm.runInContext(fields,env);input.value='stale';vm.runInContext('updateFields()',env);assert.equal(Number(input.value),12);
+  assert.match(env.$('.ux-fields').innerHTML,/aria-label="Namen"/);
  Object.assign(env,{changing:false,known:new Set(['name']),rename(){},guides(){}});
  vm.runInContext(line('workflow.mjs','const sync=el.sync;el.sync=function'),env);
  input.value='stale';env.el.sync();assert.equal(Number(input.value),12);

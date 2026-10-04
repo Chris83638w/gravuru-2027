@@ -86,6 +86,16 @@ export function validateProductDocument(document){
   result.config=nativeAcrylicConfig(result.config);
   keys(result.elementRights,result.config.profile.designs.map(design=>design.id),'Designrechte');
   for(const design of result.config.profile.designs){
+    if(design.customerFields!==undefined){
+      if(!design.importedSource||!Array.isArray(design.customerFields)||design.customerFields.length>19)fail('Kundenfelder brauchen eine importierte Vorlage und höchstens 19 Zuordnungen.');
+      const seen=new Set();
+      for(const field of design.customerFields){
+        keys(field,['id','label'],'Kundenfeld');
+        const object=design.objects.find(o=>o.id===field.id);
+        if(!id(field.id)||seen.has(field.id)||!object||!['text','photoSlot'].includes(object.type)||!object.fieldKey)fail('Kundenfeld verweist auf kein eindeutiges Text- oder Fotoelement.');
+        text(field.label,1,80,'Kundenfeldname');seen.add(field.id);
+      }
+    }
     const designRights=result.elementRights[design.id];keys(designRights,design.objects.map(object=>object.id),'Elementrechte '+design.id);
     for(const object of design.objects){
       const rights=designRights[object.id],allowed=capability(object);keys(rights,RIGHTS,'Rechte '+object.id);

@@ -14,7 +14,7 @@ export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible
   const w=asset.widthMm*scale,h=asset.heightMm*scale;
   if(w>availableWidth+.001||h>availableHeight+.001)fail(422,'original_does_not_fit','Das Originalmaß passt nicht vollständig in die sichtbare Fläche. Wähle „Proportional einpassen“.');
   const object={id:'imported-artwork',type:'motif',motif:'artwork-'+assetId,x:(area.left+area.right)/2,y:(area.top+area.bottom)/2,w,h,rotation:0,color:'#000000',preserveColors:true,templateOrigin:true,customerEditable:false,locked:true,acrylicFixed:true};
-  design.objects=[object];design.marks=[];
+  design.objects=[object];design.marks=[];delete design.customerFields;
   design.importedSource={assetId,originalName,fit,scale};
   document.elementRights[designId]={[object.id]:{content:false,color:false,replace:false,move:false,scale:false,delete:false}};
   if(config.localResources.photoPlaceholders)config.localResources.photoPlaceholders=config.localResources.photoPlaceholders.filter(a=>a.designId!==designId);

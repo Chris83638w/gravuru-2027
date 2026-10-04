@@ -1,0 +1,36 @@
+{
+  "source": "SCREENSHOT-REFERENZEN-20261003.zip",
+  "originalsUnchanged": true,
+  "files": [
+    {
+      "path": "C01.png",
+      "bytes": 26489,
+      "sha256": "b6ad710b7c8798afee19fb5faad43fa913b35dcd0750f52b309460d3143c0212"
+    },
+    {
+      "path": "C02.png",
+      "bytes": 54196,
+      "sha256": "eed64e52776f726420d5bbf71710dc3059d882f4f5fd6ea93d7d829490f8893a"
+    },
+    {
+      "path": "C03.png",
+      "bytes": 78042,
+      "sha256": "1c4f5651ed5115b424f84c5d1949d2703e7a1cf5f219195cf80864d17994f3a5"
+    },
+    {
+      "path": "C04.png",
+      "bytes": 344442,
+      "sha256": "e16fa5cdf5a84a53d87b694233ed7dedf555713bf00aee065c52f335720ead49"
+    },
+    {
+      "path": "M01.png",
+      "bytes": 1808493,
+      "sha256": "997feb4bcb6000a899853e7f16f3979ea706d4dfe45227230a8587209d152650"
+    },
+    {
+      "path": "M02.png",
+      "bytes": 1391030,
+      "sha256": "2d7ec2887bbeb44286f2477493552fc43e3b4ed2fda357db7faf2f891d09bd68"
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import {planBatch,commitBatch} from './batch.mjs';
 import {makeProductDocument,validateProductDocument,resolveProduct,validateProductDesign} from './product-model.mjs';
 import {createDesignAssetStore,MAX_DESIGN_BYTES} from './design-assets.mjs';
 import {planDesignImport,applyDesignImport} from './design-import.mjs';
+import {planCustomerFields,applyCustomerFields} from './customer-fields.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(new Error(message),{status,code});};
 const sameToken=(actual,expected)=>typeof actual==='string'&&/^[a-f0-9]{64}$/.test(actual)&&timingSafeEqual(Buffer.from(actual),Buffer.from(expected));
@@ -75,6 +76,13 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
         if(record.status==='archived'||!record.document.config.profile.designs.some(d=>d.id===data.designId))fail(422,'invalid_import_target','Bitte ein aktives Design dieser Konfiguration auswählen.');
         const asset=data.assetId?assets.get(data.assetId):await assets.import({name:data.name,bytes:data.bytes,page:data.page});
         const {document,...plan}=planDesignImport(repository,assets,id,{...data,assetId:asset.assetId,originalName:data.name});
+        return json(res,200,plan);
+      }
+      const fieldMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/customer-fields\/(preview|apply)$/);
+      if(fieldMatch&&method==='POST'){
+        const data=await body(req);
+        if(fieldMatch[2]==='apply')return json(res,200,applyCustomerFields(repository,assets,fieldMatch[1],data));
+        const {document,...plan}=planCustomerFields(repository,assets,fieldMatch[1],data);
         return json(res,200,plan);
       }
       if(pathname==='/api/workshop/seed'&&method==='GET')return json(res,200,{document:structuredClone(seed)});

@@ -1,5 +1,13 @@
 # Gravuru 2027 – Einstieg und Übergabe
 
+## Aktuell: Dashboard-Neuaufbau fortgesetzt – 04.10.2026
+
+Maßgeblicher Einstieg: [CLOUD-HANDOVER.md](CLOUD-HANDOVER.md). Aktiver Aufgabenbranch `task/dashboard-customer-fields-20261004`, Basis `1b4626eab6cc2e7d22f815754583cc678e57d558`. Neu: ausdrückliche Text-/Fotofelder für importierte Designs mit Vorschau, mm-Einstellungen, runden Farben, Kundenrechten und unveränderlichen Produktrevisionen. 143 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; synthetischer Desktop-/Mobil-Browserablauf geprüft. [Nachweis und Bilder](docs/dashboard-20261004/PRUEFUNG.md).
+
+Der vorhandene G27-02-Neuaufbau bleibt Grundlage. M01/M02 und die dokumentierten Änderungen gelten gemeinsam; die Gesamtansichten sind noch nicht vollständig umgesetzt. Nächster fachlicher Schritt: bestehende Produktübersicht mit echten Konfigurationsvorschauen nach M01 weiterentwickeln. Keine neue Migrations-/Serverplanung und keine Work-Verknüpfung als Voraussetzung. Private Bestandsdaten sind hier weiterhin nicht angebunden und für dieses Teilstück nicht erforderlich.
+
+Die folgenden Übergabeabschnitte dokumentieren den vorherigen Stand; bei abweichenden nächsten Schritten gilt der aktuelle Einstieg oben.
+
 ## Aktueller Einstieg – 04.10.2026
 
 **Ab jetzt ausschließlich Codex Cloud weiterentwickeln; GitHub sichert Code und Entscheidungen. Work ist für Gestaltung und Bilder vorgesehen, seine Cloud-Verknüpfung muss noch bestätigt werden.** Zuerst [CLOUD-AKTUELL.md](CLOUD-AKTUELL.md), [STATUS.md](STATUS.md) und [AGENTS.md](AGENTS.md) lesen. Neue Mikail-Cloud-Abnahme (137/0/0, Build 76/1), Chris' isolierter Cloud-Restore und GitHub-Leseübergabe sind bestanden. [Restorebericht](docs/cloud-migration-20261003/CLOUD-RESTORE-NACHWEIS-20261004.md) unverändert aus `e624833aecf6382f9b5edb4c432eb4e7c81a5cb2` übernommen. Dauerhafte gemeinsame private Datenablage, Zugriff beider Konten, Anbindung und visuelle App-Abnahme bleiben offen. Keine Produktionsfreigabe.

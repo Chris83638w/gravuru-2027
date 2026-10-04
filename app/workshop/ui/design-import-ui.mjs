@@ -3,7 +3,7 @@ const mm=value=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(
 
 export function importedDesignInfo(design){
   const source=design.importedSource;if(!source)return '';
-  return `<div class="import-source"><strong>Importiertes Design · ${escape(source.originalName)}</strong><p>Feste Vorlage. Texte und Fotos innerhalb der Datei sind noch keine austauschbaren Kundenfelder.</p><a href="/api/workshop/design-assets/${escape(source.assetId)}/original" download>Originaldatei herunterladen ↓</a></div>`;
+  return `<div class="import-source"><strong>Importiertes Design · ${escape(source.originalName)}</strong><p>${design.customerFields?.length?escape(design.customerFields.length)+' ausdrücklich zugeordnete Kundenfelder.':'Noch keine Kundenfelder zugeordnet.'} Die Originalgrafik bleibt unverändert.</p><a href="/api/workshop/design-assets/${escape(source.assetId)}/original" download>Originaldatei herunterladen ↓</a></div>`;
 }
 
 export function installDesignImport({state,api,setBusy,onSaved,notify}){

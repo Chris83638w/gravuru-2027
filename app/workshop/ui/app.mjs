@@ -1,3 +1,4 @@
+import {installCustomerFields} from './customer-fields-ui.mjs';
 import {installDesignImport,importedDesignInfo} from './design-import-ui.mjs';
 const $=selector=>document.querySelector(selector);
 const $$=selector=>[...document.querySelectorAll(selector)];
@@ -107,7 +108,7 @@ function availableRights(object){
 function renderRights(design){
  return '<details class="design-rights"><summary>Was dürfen Kunden anpassen?</summary><p>Freigegebene Möglichkeiten lassen sich einzeln einschränken. Feste Vorlagenbereiche bleiben geschützt.</p>'+design.objects.map((object,index)=>{
   const allowed=availableRights(object),rights=state.draft.elementRights?.[design.id]?.[object.id]||{};
-  return '<fieldset class="rights-object"><legend>'+escape(objectLabel(object,index))+(object.acrylicFixed?'<span class="locked-label">Feste Position und Größe</span>':'')+'</legend><div class="rights-options">'+Object.entries(rightsLabels).map(([key,label])=>'<label class="right-option'+(!allowed[key]?' unavailable':'')+'"'+(!allowed[key]?' title="Für diesen Vorlagenbereich nicht freigebbar"':'')+'><input type="checkbox" data-element-right="'+key+'" data-design-id="'+escape(design.id)+'" data-object-id="'+escape(object.id)+'" data-right-allowed="'+String(allowed[key])+'" '+(rights[key]?'checked ':'')+(!allowed[key]?'disabled':'')+'>'+label+'</label>').join('')+'</div></fieldset>';
+  return '<fieldset class="rights-object"><legend>'+escape(design.customerFields?.find(f=>f.id===object.id)?.label||objectLabel(object,index))+(object.acrylicFixed?'<span class="locked-label">Feste Position und Größe</span>':'')+'</legend><div class="rights-options">'+Object.entries(rightsLabels).map(([key,label])=>'<label class="right-option'+(!allowed[key]?' unavailable':'')+'"'+(!allowed[key]?' title="Für diesen Vorlagenbereich nicht freigebbar"':'')+'><input type="checkbox" data-element-right="'+key+'" data-design-id="'+escape(design.id)+'" data-object-id="'+escape(object.id)+'" data-right-allowed="'+String(allowed[key])+'" '+(rights[key]?'checked ':'')+(!allowed[key]?'disabled':'')+'>'+label+'</label>').join('')+'</div></fieldset>';
  }).join('')+'</details>';
 }
 function designButton(design,action,label,extra=''){
@@ -115,12 +116,13 @@ function designButton(design,action,label,extra=''){
 }
 function renderDesigns(){
  const profile=state.draft.config?.profile,designs=profile?.designs||[];
- $('#panel-designs').innerHTML='<div class="design-heading"><h3>Designs und Beispieltexte <span class="count">'+designs.length+' / 60</span></h3><p>Die Reihenfolge hier entspricht der Auswahl im Konfigurator. Kopiere ein vorhandenes Design und passe Namen, Texte und Kundenrechte an. Änderungen werden mit der Konfiguration gespeichert.</p></div>'+designs.map((design,index)=>'<section class="design-block" data-design-card="'+escape(design.id)+'"><header><div><h3>Design '+(index+1)+(profile.defaultDesignId===design.id?' <span class="badge published">Standard</span>':'')+'</h3><span class="design-id">'+escape(design.id)+'</span></div><div class="design-order">'+designButton(design,'up','↑','aria-label="Design '+(index+1)+' nach oben" title="Nach oben"')+designButton(design,'down','↓','aria-label="Design '+(index+1)+' nach unten" title="Nach unten"')+'</div></header><div class="form-grid">'+field('Designname','config.profile.designs.'+index+'.name',design.name,{full:true,required:true})+(design.objects||[]).map((object,objectIndex)=>object.type==='text'?textArea(objectLabel(object,objectIndex),'config.profile.designs.'+index+'.objects.'+objectIndex+'.text',object.text,{rows:2,max:180}):'').join('')+'</div><p class="field-help">Prüfe längere Texte anschließend in der Kundenansicht.</p>'+renderRights(design)+importedDesignInfo(design)+'<div class="design-actions">'+designButton(design,'import','SVG / PDF ersetzen …')+designButton(design,'copy','Design kopieren')+designButton(design,'default','Als Standard verwenden')+designButton(design,'delete','Design entfernen','class="text-button design-delete" title="Mindestens ein Design muss erhalten bleiben"')+'</div></section>').join('');
+ $('#panel-designs').innerHTML='<div class="design-heading"><h3>Designs und Beispieltexte <span class="count">'+designs.length+' / 60</span></h3><p>Die Reihenfolge hier entspricht der Auswahl im Konfigurator. Kopiere ein vorhandenes Design und passe Namen, Texte und Kundenrechte an. Änderungen werden mit der Konfiguration gespeichert.</p></div>'+designs.map((design,index)=>'<section class="design-block" data-design-card="'+escape(design.id)+'"><header><div><h3>Design '+(index+1)+(profile.defaultDesignId===design.id?' <span class="badge published">Standard</span>':'')+'</h3><span class="design-id">'+escape(design.id)+'</span></div><div class="design-order">'+designButton(design,'up','↑','aria-label="Design '+(index+1)+' nach oben" title="Nach oben"')+designButton(design,'down','↓','aria-label="Design '+(index+1)+' nach unten" title="Nach unten"')+'</div></header><div class="form-grid">'+field('Designname','config.profile.designs.'+index+'.name',design.name,{full:true,required:true})+(design.objects||[]).map((object,objectIndex)=>object.type==='text'?textArea(design.customerFields?.find(f=>f.id===object.id)?.label||objectLabel(object,objectIndex),'config.profile.designs.'+index+'.objects.'+objectIndex+'.text',object.text,{rows:2,max:180}):'').join('')+'</div><p class="field-help">Prüfe längere Texte anschließend in der Kundenansicht.</p>'+renderRights(design)+importedDesignInfo(design)+'<div class="design-actions">'+designButton(design,'import','SVG / PDF ersetzen …')+(design.importedSource?designButton(design,'fields','Kundenfelder bearbeiten …'):'')+designButton(design,'copy','Design kopieren')+designButton(design,'default','Als Standard verwenden')+designButton(design,'delete','Design entfernen','class="text-button design-delete" title="Mindestens ein Design muss erhalten bleiben"')+'</div></section>').join('');
  syncControls();
 }
 function changeDesign(action,id){
  if(!state.draft||state.busy||state.record?.status==='archived')return;
  if(action==='import'){designImporter.open(id);return;}
+ if(action==='fields'){customerFields.open(id);return;}
  const config=state.draft.config,profile=config.profile,designs=profile.designs,index=designs.findIndex(design=>design.id===id);
  if(index<0)return;
  let focusId=id,message='';
@@ -272,6 +274,7 @@ $('.editor-tabs').addEventListener('keydown',event=>{
  if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();
  const tabs=$$('[data-tab]'),index=tabs.indexOf(event.target),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab,true);
 });
+const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 let searchTimer;
 $('#search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>loadList().catch(error=>notify(errorMessage(error),'error')),180);});

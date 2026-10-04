@@ -39,7 +39,7 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop}={}) {
       };
       if(workshop){fixed['/werkstatt']=[path.join(ROOT,'workshop/ui'),'index.html'];fixed['/werkstatt/']=fixed['/werkstatt'];for(const [route,file] of [['serien','batch.html'],['profile','profiles.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}}
       if(fixed[pathname])[base,relative]=fixed[pathname];
-      else if(workshop&&/^\/workshop-ui\/(app\.mjs|style\.css|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|design-import-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
+      else if(workshop&&/^\/workshop-ui\/(app\.mjs|style\.css|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
       else if(/^\/acrylic-assets\/[a-z0-9-]+\.png$/.test(pathname)){
         base=path.join(ROOT,'designs/acrylic-unser-anfang');relative=pathname.split('/').pop();
       } else {

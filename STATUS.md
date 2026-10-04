@@ -1,8 +1,16 @@
 # Aktueller Stand – Gravuru 2027
 
-## Aktueller Migrationsnachweis – 03.10.2026
+## Aktueller Cloud-Übergabestand – 04.10.2026
 
-**Zuerst [CLOUD-AKTUELL.md](CLOUD-AKTUELL.md) und den [Abschlussbericht](docs/cloud-migration-20261003/ABSCHLUSSBERICHT.md) lesen.** Normaler app/-Quellbaum online; 137 Cloudtests/Build bestanden. Private Serversicherung vollständig zurückgeprüft, 3 SQLite-Restores lokal bestanden. Cloudruntime-Restore, Neustart der veröffentlichten Umgebung und zweiter Account noch offen. Produktion nicht freigegeben. Die folgenden früheren Abschnitte sind datierte Historie und überstimmen diesen Einstieg nicht.
+**Cloud-Neustart/Quellabnahme, isolierter Cloud-Restore und GitHub-Leseübergabe bestanden. Vollständige Migration und Produktion noch nicht freigegeben. Produktentwicklung bis zum Migrationsabschluss pausiert.**
+
+Fachliche GitHub-Basis: `infra/gravuru-2027-cloud-20261003`, Remote-HEAD am 04.10. geprüft: `f7c3f24db55003c28fec5274dfc5df2736926b6b`. Diese Dokumentübergabe liegt separat auf `infra/cloud-only-handoff-20261004`; kein Merge. Vor weiterer Arbeit aktuellen Remote-HEAD prüfen.
+
+- [Neue Mikail-Cloud-Abnahme](https://github.com/Chris83638w/gravuru-2027/blob/5e40517a85a07d7226989b3863ce025f382aaa20/docs/cloud-migration-20261003/CLOUD-ACCOUNT-A-TEST.md), Marker `5e40517a85a07d7226989b3863ce025f382aaa20`: 137 bestanden, 0 Fehler, 0 Skips; Build 76 Ressourcen/1 Modell; geschützte HTTP-Routen sowie Host/Origin/CSRF geprüft. Die Auswahl Cloud → gravuru-2027 ist durch den Nutzerscreenshot belegt.
+- [Chris' isolierter Cloud-Restore](docs/cloud-migration-20261003/CLOUD-RESTORE-NACHWEIS-20261004.md), Originalnachweis `e624833aecf6382f9b5edb4c432eb4e7c81a5cb2`, abgeschlossen 04.10.2026 um 14:13 Europe/Berlin: 16 Teile, 528682206 verschlüsselte Bytes, Archiv-/Manifest-/DB-Prüfungen bestanden. Werkstatt: 7 Produkte/17 Revisionen/4 Importitems; Profile: 2 Profile/2 Profilrevisionen/1 Bibliothekseinstellung/5 Einstellungsrevisionen; Designressourcen: 2 Originalquellen/3 Assets. Keine alten WAL-/SHM-Dateien übernommen.
+- Mikail hat den Nachweis am 04.10. gegen 14:25 direkt von GitHub gelesen und beide Remote-HEADs sowie AGENTS.md, CLOUD-AKTUELL.md und STATUS.md geprüft. Dokumentierte Wissensübergabe bestanden; kein Zugriff auf Chris' private Laufzeitdateien.
+
+Die vorstehenden Tests wurden für diese Dokumentübergabe nicht wiederholt. Alte Aussagen »Cloud-Restore/Neustart offen« sind für diese bestandenen isolierten Prüfungen überholt. Dauerhafte gemeinsame private Datenablage, Zugriff beider Konten, App-Anbindung und visuelle Abnahme bleiben offen.
 
 ## Frühere Nachweise und ursprüngliche Übergabe
 

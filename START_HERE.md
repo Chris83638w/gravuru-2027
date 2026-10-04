@@ -1,8 +1,10 @@
 # Gravuru 2027 – Einstieg und Übergabe
 
-## Aktueller Migrationsnachweis – 03.10.2026
+## Aktueller Einstieg – 04.10.2026
 
-**Zuerst [CLOUD-AKTUELL.md](CLOUD-AKTUELL.md) und den [Abschlussbericht](docs/cloud-migration-20261003/ABSCHLUSSBERICHT.md) lesen.** Normaler app/-Quellbaum online; 137 Cloudtests/Build bestanden. Private Serversicherung vollständig zurückgeprüft, 3 SQLite-Restores lokal bestanden. Cloudruntime-Restore, Neustart der veröffentlichten Umgebung und zweiter Account noch offen. Produktion nicht freigegeben. Die folgenden früheren Abschnitte sind datierte Historie und überstimmen diesen Einstieg nicht.
+**Ab jetzt ausschließlich Codex Cloud. Produktentwicklung bis zum Migrationsabschluss pausiert.** Zuerst [CLOUD-AKTUELL.md](CLOUD-AKTUELL.md), [STATUS.md](STATUS.md) und [AGENTS.md](AGENTS.md) lesen. Neue Mikail-Cloud-Abnahme (137/0/0, Build 76/1), Chris' isolierter Cloud-Restore und GitHub-Leseübergabe sind bestanden. [Restorebericht](docs/cloud-migration-20261003/CLOUD-RESTORE-NACHWEIS-20261004.md) unverändert aus `e624833aecf6382f9b5edb4c432eb4e7c81a5cb2` übernommen. Dauerhafte gemeinsame private Datenablage, Zugriff beider Konten, Anbindung und visuelle App-Abnahme bleiben offen. Keine Produktionsfreigabe.
+
+Fester Einstieg: »Gravuru 2027 – Cloud – Mikail«, `01a101bb-342f-750b-b481-82c3c3a5c072`. GitHub-Basis `infra/gravuru-2027-cloud-20261003`, Remote-HEAD `f7c3f24db55003c28fec5274dfc5df2736926b6b`; Dokumentübergabe separat auf `infra/cloud-only-handoff-20261004`. Cloud-Arbeitsweise und genau nächster Schritt stehen in CLOUD-AKTUELL.md. Die folgenden Abschnitte bleiben historische Nachweise und überstimmen diesen Einstieg nicht.
 
 ## Frühere Nachweise und ursprüngliche Übergabe
 

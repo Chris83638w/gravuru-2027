@@ -22,3 +22,11 @@ Die bestehende obere linke Mobilvorschau zeigt die komplette Acrylszene mit Orig
 Kundeneingabe der Schriftgröße: ganze mm, Schrittweite 1; 8,7 wird zu 9. Interne Originalmaße bleiben beim Laden erhalten; eine Schriftgrößenänderung verändert weder Plattenformat noch Textinhalt/Position. Backend-Präzision bleibt getrennt.
 
 Nachtrag geprüft: 16 gezielte Quelltests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell. Chromium mobil 390 × 844: vollständiges Beispielfoto und Sockel sichtbar, Rahmen nur anfangs/kurz, stabile Vorschaugröße nach wiederholten Änderungen, Dezimaleingabe gerundet, Plattenmaße unverändert, kompakte Textbearbeitung weiterhin bedienbar. Keine Seitenfehler. Der frühere Gesamtlauf mit 169 Tests oben gehört zum CMYK-Paket; kein erneuter Gesamtlauf für diesen Nachtrag behauptet.
+
+## Korrektur 05.10.2026: Vollbild und sichtbare Änderungsrückmeldung
+
+Die Vollbild-Flexbox streckte die Acrylszene vertikal; prozentuale Sockelposition und unverzerrtes Sockelbild passten dadurch nicht mehr zusammen. Die Szene behält nun auch im Dialog ihr Seitenverhältnis 1086/1448 durch `flex: 0 0 auto`. Die vorhandenen Sockelanker und die 7-mm-Einstecktiefe bleiben maßgeblich.
+
+Der vorherige innenliegende Outline-Rahmen konnte unter der kopierten Vorschau verschwinden. Eine nicht anklickbare Rahmenebene liegt nun sichtbar darüber. Nach aktueller Nutzerkorrektur erscheint sie bei jeder Inhaltsänderung kurz (1,6 Sekunden, nach 250 ms Eingabepause), ohne Limit auf die ersten drei Änderungen. Sie gehört weder zum Design noch zum Export.
+
+Chromium bei 390 × 844 und 1512 × 1080: Nussbaumsockel vor/nach Vollbild geprüft, Seitenverhältnis 0,75, relative Sockelposition bleibt gleich (Abweichung <0,4 Prozentpunkte durch Rahmen). Fünf aufeinanderfolgende Textänderungen zeigen jeweils den sichtbaren oberen Rahmen; danach verschwindet er. Beide Zustände als Screenshots visuell geprüft, keine Seitenfehler. Build 76 Ressourcen/1 Modell. Keine erneute Gesamttest- oder Druckfreigabe behauptet.

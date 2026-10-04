@@ -1,3 +1,7 @@
+## 05.10.2026 – Sockel im Vollbild und sichtbarer Vorschauhinweis
+
+Branch `task/full-preview-base-20261005`, Basis `d127b5a9ee6f52f3aad69ae5061e8d48d5f7edf0`. Vollbild streckt die Acrylszene nicht mehr; vorhandene Sockelposition/7-mm-Regel bleibt erhalten. Oberer Hinweisrahmen jetzt als sichtbare Ebene nach jeder Inhaltsänderung für 1,6 Sekunden statt nur dreimal. Desktop-/Mobil-Browserprüfung mit Nussbaumsockel und je fünf Textänderungen bestanden, keine Seitenfehler; Build 76/1. Details: docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md. Nächster Schritt: Nutzer prüft dieselben Aktionen auf der aktualisierten privaten Testseite.
+
 ## 04.10.2026 – Vollständige Vorschau und ganze Schrift-mm
 
 Aufgabenbranch `task/cmyk-300dpi-20261004`, Basis `8a4da028feb1f5df49b3c0e9686e994f04361b73`. Große obere linke Mobilvorschau mit kompletter Acrylszene, proportional/bündig; kurzer Hinweisrahmen nur bei ersten Änderungen. Ganzzahlige Kundenschriftgröße (8,7 → 9 mm), keine Änderung des Plattenformats. 16 gezielte Tests / 0 Fehler / 0 Skips, Build 76/1; mobile Browserprüfung einschließlich kompakter Textbearbeitung erfolgreich. Details und historische CMYK-Prüfung: docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md. Nächster Schritt: Nutzerprüfung auf bestehender privater Testseite. Kein neuer RIP-/Corel-Nachweis.

@@ -41,3 +41,7 @@ Node >=24 und Python 3.12 verwenden. Python-Anforderung: `python3 -m pip install
 Für Entwicklung mit synthetischen Daten sind keine Produktivsecrets nötig. `.local-data/`, SQLite-Dateien, Schlüssel und private Originale nicht committen. Vor Konto-/Chatwechsel den Aufgabenbranch pushen und tatsächlichen Iststand dokumentieren; keine automatische Chat- oder Dateisynchronisierung voraussetzen.
 
 Genau nächster fachlicher Schritt: die bestehende Produktübersicht mit echten Konfigurationsvorschauen an M01 anpassen, ohne Beispiele aus dem Mockup als vorhandene Produkte auszugeben; die neue Kundenfeldbearbeitung dabei weiterverwenden.
+
+## Aktueller Folgeauftrag: UV-Designserie
+
+Der Nutzer hat den Pilot „18 – Unser kleines Glück“ zur automatisierten Umwandlung vorhandener UV-Designbeispiele bestätigt. Nach erfolgreicher Abnahme soll ein weiteres Modell die übrigen Designs im geprüften Format vorbereiten. Konkrete GitHub-Quellen, bereits vorhandene Ebenen, Abnahme und aktueller Downloadblocker stehen in [UV-DESIGN-PILOT.md](docs/dashboard-20261004/UV-DESIGN-PILOT.md). Dieser Folgeauftrag hat Vorrang vor der oben genannten M01-Übersicht. Keine neue Umwandlung als bereits bestanden ausgeben.

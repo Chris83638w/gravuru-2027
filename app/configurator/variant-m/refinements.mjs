@@ -88,7 +88,7 @@ export async function installRefinements(api){
   function checkMini(){const before=mini.hidden;mini.hidden=!matchMedia('(max-width:900px)').matches||stage.getBoundingClientRect().bottom>72||$('.c-large-preview').open;$('.ux-shell').dataset.miniVisible=String(!mini.hidden);if(before&&!mini.hidden)updateSelection();}
   window.addEventListener('scroll',checkMini,{passive:true});window.addEventListener('resize',()=>{updateSelection();checkMini();});new ResizeObserver(()=>{updateSelection();checkMini();}).observe(stage);mini.hidden=true;
   $('.c-large-preview').addEventListener('close',checkMini);
-  $('.c-large-preview').addEventListener('click',e=>{const d=e.currentTarget;if(e.target!==d)return;const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close();});
+  $('.c-large-preview').addEventListener('click',e=>{const d=e.currentTarget;if(e.target.closest('button,input,select,textarea,a,.fk-buy-dock,.stage'))return;const b=stage.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right)d.close();});
   // Keep the same exact option values and native change handlers.
   for(const s of all('.fk-options select'))s.classList.add('ux-readable-select');
   const category=$('[data-library-category]');

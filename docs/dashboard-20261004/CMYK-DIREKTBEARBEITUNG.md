@@ -40,3 +40,13 @@ Chromium bei 390 × 844 und 1512 × 1080: Nussbaumsockel vor/nach Vollbild gepr�
 - Vollbild: Klick außerhalb der weißen Dialogfläche schließt; Klick in deren weißen Innenbereich nicht.
 
 Prüfung: 172 Gesamttests bestanden / 0 Fehler / 0 Skips, anschließend gezielte Nachprüfung der finalen Platzsuche/Ereigniswege; Build 76 Ressourcen/1 Modell. Chromium Desktop 1512 × 1080 und Mobil 390 × 844: tatsächlicher Bildzuschnitt verändert Pixel, Graustufenkanäle gleich, erneutes Öffnen behält Zuschnitt und erlaubt Rückkehr zur Originalfarbe. Sichtbarer Bearbeiten-Button vor Ersetzen, Schriftwahl und beide Stilaktionen, Kursiv-Vektorpfade, Motivspalten/Platzsuche ohne Seitenfehler. Außen-/Innenklick am Desktop geprüft. Screenshots von Foto-/Texteditor visuell geprüft. Ausschließlich synthetisches Testfoto, keine Nutzerdatei in Git oder Site-Paket. Drucker-/Corel-Abnahme nicht erneut ausgeführt.
+
+## Neutrale Farben, Motivwerkzeuge und Löschfreigabe
+
+Branch `task/unlock-design-elements-20261005`, Basis `3d09c9428f1637db6ece5052af8efd471f473397`. Neutrale UI-Farben sind separat in `neutral-theme.css` gekapselt. Direkte Motivwerkzeuge ergänzen sechs runde Farbvorgaben, freie Farbe, Größenänderung und 15°-Drehung. Keine pauschale Umfärbung von Fotos oder Rasterdesigns.
+
+`template-deletion.mjs` schützt das Löschen von Vorlagenelementen bis zum bewussten Entsperren. Das persistierte Backend-Recht entscheidet, ob Entsperren angeboten wird. Bestehende Standardrechte ändern sich nicht; technische Sperren bleiben bestehen. Servervalidierung akzeptiert eine ausdrücklich erlaubte Löschung fester Vorlageobjekte, weiterhin keine unerlaubte Geometrieänderung. Die private statische Beispielkonfiguration gibt nichttechnische Vorlageobjekte ausdrücklich für diese Erprobung frei; keine private Werkstattdatenbank wurde verändert.
+
+Prüfung: vollständiger Quelltestlauf 173 bestanden/0 Fehler/0 Skips. Nach direkter Motivbedienung zusätzlich 21 gezielte Rechte-/UI-Regressionsprüfungen bestanden. Build: 76 geprüfte Ressourcen, 1 Modell. Chromium Desktop 1512 × 1080 und Mobil 390 × 844: Entsperren/Löschen/Rückgängig/Wiedersperren, Farbvorgabe und freie Motivfarbe, tatsächliche Drehung/Skalierung, keine Seitenfehler. Desktop: Klick auf weiße seitliche Fläche schließt die Vollbildvorschau. Mobil: Motivwerkzeuge in Vollbild bedient. Neutrale Schaltflächenkontraste zusätzlich visuell und anhand berechneter Farben geprüft.
+
+Originale bleiben erhalten. Bestellübernahme als neuer Produktentwurf, Kundenkonto und echter Shopbetrieb bleiben offen.

@@ -26,10 +26,10 @@ function capability(object){
   const editable=object.customerEditable!==false&&!object.technicalLocked&&!object.locked;
   const movable=editable&&!object.acrylicFixed;
   return {content:editable&&object.type==='text',color:editable&&['text','motif','graphic'].includes(object.type),
-    replace:editable&&(object.type==='photoSlot'||movable&&object.type==='motif'),move:movable,scale:movable,delete:movable};
+    replace:editable&&(object.type==='photoSlot'||movable&&object.type==='motif'),move:movable,scale:movable,delete:!object.technicalLocked};
 }
 function initialRights(config){
-  return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,capability(object)]))]));
+  return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,{...capability(object),delete:!object.acrylicFixed&&!object.locked&&!object.technicalLocked&&object.customerEditable!==false}]))]));
 }
 
 // This first document model deliberately supports the existing rectangular
@@ -125,7 +125,7 @@ export function validateProductDesign(document,design,{options={},fonts,motifs}=
   const source=config.profile.designs.find(item=>item.id===design?.id);
   if(!source||!Array.isArray(design.objects))fail('Kundendesign gehört zu keiner Produktvorlage.');
   const rights=product.elementRights[source.id];
-  const properties={content:['text','font','bold'],color:['color','preserveColors','opacity'],replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground'],move:['x','y','rotation'],scale:['w','h','size']};
+  const properties={content:['text','font','bold','italic'],color:['color','preserveColors','opacity'],replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground'],move:['x','y','rotation'],scale:['w','h','size']};
   const structural=['letterSpacing','type','fieldKey','photoShape','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed'];
   for(const original of source.objects){
     const matches=design.objects.filter(object=>object.id===original.id),current=matches[0],permission=rights[original.id];
@@ -141,7 +141,7 @@ export function validateProductDesign(document,design,{options={},fonts,motifs}=
     if(original.acrylicFixed&&current.acrylicFixed!==true)fail('Ein fester Vorlagenbereich darf nicht entsperrt werden.');
   }
   const fontLibrary=fonts??config.localResources?.fonts??{};
-  const validated=validateDesign(config,design,resolvedOptions(config,options),fontLibrary,motifs??config.localResources?.motifs??[]);
+  const validated=validateDesign({...config,workshopElementRights:product.elementRights},design,resolvedOptions(config,options),fontLibrary,motifs??config.localResources?.motifs??[]);
   const result={...structuredClone(validated),objects:validated.objects.map(cleanObject)};
   for(const object of result.objects.filter(item=>item.type==='text'))measureText(object,fontLibrary);
   return result;

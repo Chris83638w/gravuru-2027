@@ -1,0 +1,34 @@
+/* Interface colours only. Product artwork, photos and colour swatches retain their colours. */
+:host([data-ux-neutral]){--ux-ink:#292d32;--ux-green:#343a40;--ux-soft:#f1f2f4;--ux-border:#dce0e4;--ux-muted:#646b73;color:#292d32!important}
+:host([data-ux-neutral]) :is(.ux-brand,.ux-heading,.ux-mini,.ux-preview-caption,.ux-panel h2,.ux-panel h3,.ux-panel label,.fk-price-area strong,.ux-price-details,.ux-font-row strong,.ux-template-delete){color:#292d32!important}
+:host([data-ux-neutral]) :is(.ux-panel,.ux-dialog,.ux-color-palette,.ux-upload-row){border-color:#dce0e4!important}
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) button:where(:not([data-ux=swatch]):not(.ux-handle-delete)){color:#353b42!important;border-color:#d9dde2!important}
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview) button:not([data-ux=swatch]):hover{background:#eef0f2!important}
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview) button[aria-pressed=true]:not([data-ux=swatch]){background:#e9ecef!important;border-color:#616973!important}
+:host([data-ux-neutral]) :is(.ux-primary,.fk-buy-button,[data-direct-done],.ux-photo-quick-apply){background:#343a40!important;color:white!important;border-color:#343a40!important}
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) :is(.ux-primary,.fk-buy-button,[data-direct-done],.ux-photo-quick-apply):hover{background:#22272d!important;color:white!important}
+:host([data-ux-neutral]) :is(.ux-tabs button,.ux-tab-icon){background:#f3f4f5!important;color:#525a63!important}
+:host([data-ux-neutral]) .ux-tabs button[aria-selected=true]{background:#e9ecef!important;border-color:#444c55!important;color:#252b32!important}
+:host([data-ux-neutral]) .ux-tabs button[aria-selected=true] .ux-tab-icon{background:#444c55!important;color:white!important}
+:host([data-ux-neutral]) :is(select,.ux-readable-select,.ux-heading [data-ux=account],.ux-tip,.ux-upload-drop){background:#f5f6f7!important;color:#353b42!important;border-color:#bfc6ce!important}
+:host([data-ux-neutral]) :is(input,textarea){border-color:#cbd1d8!important;accent-color:#555e68}
+:host([data-ux-neutral]) .ux-text-row.is-selected textarea{border-color:#59636f!important;background:#fafbfc!important}
+:host([data-ux-neutral]) :is(button,input,textarea,select,summary):focus-visible{outline-color:#59636f!important}
+:host([data-ux-neutral]) :is(.ux-direct-edit,.ux-direct-input){color:#353b42!important;border-color:#b8c0c9!important}
+:host([data-ux-neutral]) .ux-direct-edit button{color:#353b42!important}
+:host([data-ux-neutral]) .ux-direct-edit button[aria-pressed=true]{background:#e3e7ec!important;color:#242b33!important}
+:host([data-ux-neutral]) .ux-direct-edit [data-direct-done]{background:#343a40!important;color:white!important}
+:host([data-ux-neutral]) .ux-selection-handles button::before{border-color:#68717d!important}
+:host([data-ux-neutral]) :is(.stage,[data-mini-art]).ux-preview-changed::after{border-color:#59636f!important}
+:host([data-ux-neutral]) :is(.ux-upload-actions .ux-remove-upload,.ux-handle-delete){background:#b63e36!important;color:white!important}
+:host([data-ux-neutral]) .ux-template-delete [data-template-delete]{color:#a43b36!important}
+
+:host([data-ux-neutral]) .ux-shell button.ux-primary,:host([data-ux-neutral]) .fk-buy-dock button.fk-buy-button{background:#343a40!important;color:#fff!important;border-color:#343a40!important}
+:host([data-ux-neutral]) :is(.ux-shell,.c-large-preview) .ux-direct-edit .ux-direct-presets button{background:var(--preset-color)!important}
+:host([data-ux-neutral]) .ux-color-palette :is(p,small,label){color:#646b73!important}
+:host([data-ux-neutral]) .scene rect[stroke="#64ae87"],:host([data-ux-neutral]) .scene rect[stroke="#198556"]{stroke:#68717d}
+
+:host([data-ux-neutral]) .fk-buy-dock button.completion-finish{background:#343a40!important;color:#fff!important;border-color:#343a40!important}
+:host([data-ux-neutral]) .ux-shell .ux-panel .ux-primary{color:#fff!important}
+
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) button:is(.ux-primary,.fk-buy-button,.completion-finish,[data-direct-done],.ux-photo-quick-apply){background:#343a40!important;color:#fff!important;border-color:#343a40!important}

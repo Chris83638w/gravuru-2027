@@ -21,3 +21,11 @@ Browserexport: randfreies, vollflächiges und nur rechts randberührendes synthe
 ## Ergänzung: Vorschau und Texteingabe
 
 Vollständiges Design oben links wie im Konfigurator, mit Foto/Texten/Sockel. Vorschau groß und Hinweisrahmen bündig; bei den ersten Änderungen kurz aufleuchten, nicht dauerhaft. Schriftgrößen im Kundeneditor nur in ganzen mm; Plattenformat bleibt unabhängig. Aktueller CMYK-/300-dpi-Stand und Prüfungen: [CMYK-DIREKTBEARBEITUNG.md](CMYK-DIREKTBEARBEITUNG.md); ältere RGB-/600-dpi-Aussagen oben sind historisch.
+
+## Ergänzung: neutrale Oberfläche und gezielte Elementfreigabe
+
+- Oberfläche in Weiß/Hellgrau/Graphit; Druckfarben, Fotos und Originaldesign bleiben farblich unabhängig.
+- Einzelne Vorlagenelemente bleiben zunächst gegen Löschen geschützt. Backend-Recht „Nach Entsperren löschbar“ erlaubt bewusstes Entsperren in der Kundensitzung; technische Elemente bleiben geschützt. Die Originalvorlage wird niemals gelöscht. Rückgängig stellt das Element wieder her und sperrt das Löschen erneut. Geometriesperren bleiben unabhängig. Neu hinzugefügte Motive bleiben direkt löschbar.
+- Beim ausgewählten, freigegebenen Motiv: runde Farbpunkte Schwarz, Weiß, Grau, Terrakotta, Dunkelgrün und Goldton plus freie Farbe; Verkleinern, Vergrößern und Drehen in 15°-Schritten nutzen vorhandene Bedienlogik/Rechte. Goldton ist eine normale Druckfarbe.
+- Vollbild schließt bei Klick auf die seitlichen weißen Flächen links/rechts außerhalb der Produktvorschau. Bedienelemente und das Produkt selbst lösen kein Schließen aus.
+- Eine gelungene Kundengestaltung später aus einer Bestellung als neuen Produktentwurf übernehmen: gewünschter Folgeschritt, noch keine angebundene Bestellfunktion oder automatische Veröffentlichung.

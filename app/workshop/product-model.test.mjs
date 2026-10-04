@@ -109,7 +109,7 @@ test('fixed elements receive explicit separate rights without losing permitted p
   assert.deepEqual(table['photo-main'],{content:false,color:false,replace:true,move:false,scale:false,delete:false});
   assert.deepEqual(table.heart,{content:false,color:true,replace:false,move:false,scale:false,delete:false});
   assert.deepEqual(table.names,{content:true,color:true,replace:false,move:true,scale:true,delete:true});
-  for(const key of ['move','scale','delete','replace']){
+  for(const key of ['move','scale','replace']){
     const broken=structuredClone(document);rights(broken).heart[key]=true;
     assert.throws(()=>validateProductDocument(broken),/Rechte/);
   }
@@ -150,4 +150,13 @@ test('repository relationships and metadata are explicit, bounded and not silent
     p=>{p.seo.description='X'.repeat(161);},p=>{p.id='repository-id';},
     p=>{p.config.profile.geometry.shape='ellipse';},p=>{p.config.acrylic.designHeight=201;}
   ]){const broken=structuredClone(document);change(broken);assert.throws(()=>validateProductDocument(broken));}
+});
+
+test('explicit backend delete permission removes fixed artwork without mutating source or permitting geometry edits',()=>{
+ const document=fixture(),source=structuredClone(document.config.profile.designs[0]);
+ rights(document).heart.delete=true;assert.doesNotThrow(()=>validateProductDocument(document));
+ assert.doesNotThrow(()=>checkedDesign(document,d=>{d.objects=d.objects.filter(o=>o.id!=='heart');}));
+ assert.deepEqual(document.config.profile.designs[0],source);
+ assert.throws(()=>checkedDesign(document,d=>{d.objects.find(o=>o.id==='heart').x+=4;}),/Recht|Vorlagenbereich/);
+ rights(document).heart.delete=false;assert.throws(()=>checkedDesign(document,d=>{d.objects=d.objects.filter(o=>o.id!=='heart');}),/entfernt/);
 });

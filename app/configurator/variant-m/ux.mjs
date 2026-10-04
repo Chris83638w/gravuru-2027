@@ -1,3 +1,4 @@
+import {installTemplateDeletion} from './template-deletion.mjs';
 import {installPreviewFeedback} from './preview-feedback.mjs';
 import {installFirstTextFocus} from './first-text-focus.mjs';
 import {installPrintExport} from './print-export.mjs';
@@ -85,6 +86,7 @@ export async function installUX(el,config,legacy){
   const design=()=>profile.designs.find(d=>d.id===el.state.designId);
   const say=message=>{$('[data-ux-status]').textContent=message;};
   const finishCustomerRights=beginCustomerRights({el,r,config,selected,select,say});
+  const finishTemplateDeletion=installTemplateDeletion({el,r,config,selected,mutate,say});
   const selectable=()=>selected()&&!selected().uxLocked&&!selected().uxHidden;
   function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden)key='text';activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(focus)$('#ux-tab-'+key).focus();}
   $('.ux-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=all('[data-ux-tab]').filter(b=>!b.hidden&&!b.disabled),i=tabs.indexOf(e.target);const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.uxTab,true);});
@@ -297,6 +299,7 @@ export async function installUX(el,config,legacy){
   if(config)installCommerce({el,config,files,pending:()=>uploadPending});
   if(config?.acrylic)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles});
   finishCustomerRights();
+  finishTemplateDeletion();
   installFirstTextFocus({el,r});
   function startUnselected(){r.activeElement?.blur();el.multiSelecting=false;el.state.selected=null;el.centerSuggestion=null;showTab(config?.productPreview?'design':'options');el.sync();}
   window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===window.parent&&e.data?.type==='gravuru-ux-open')startUnselected();});
@@ -305,6 +308,7 @@ export async function installUX(el,config,legacy){
   if(config?.workbench)window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===window.parent&&event.data?.type==='gravuru-workbench-saved')say(event.data.message);});
   installPrintExport({el,config,files});
   installPreviewFeedback({el,r});
+  const neutral=document.createElement('style');neutral.textContent=await fetch('/configurator/variant-m/neutral-theme.css').then(res=>{if(!res.ok)throw Error('Oberflächenstil fehlt');return res.text();});r.append(neutral);r.host.dataset.uxNeutral='true';
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   const assistant=document.createElement('script');assistant.src='/assistant.js';assistant.dataset.api=location.origin;document.body.append(assistant);
   return {showTab,update,isDirty:()=>dirty};

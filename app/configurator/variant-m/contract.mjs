@@ -1,3 +1,4 @@
+import {canDeleteTemplateElement} from './element-rights.mjs';
 import {validateOptionPresentation} from './option-media.mjs';
 import {validateStudio} from '../../platform/sources/app/shared/models/studio-products.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
@@ -117,13 +118,14 @@ export function validateDesign(config, design, options, fonts, motifs) {
     o.type==='image'&&o.uxUploadKind==='logo'&&o.uxUploadId&&config.logo?.enabled!==false
       ? {...o,type:'photoSlot'} : o)});
   if (JSON.stringify(design.marks || []) !== JSON.stringify(source.marks || [])) fail('Feste Gestaltungslinien wurden verändert.');
-  for(const raw of source.objects.filter(o=>o.type==='motif-raster'))if(!design.objects.some(o=>o.id===raw.id&&o.type==='motif-raster'&&o.assetId===raw.assetId&&o.locked===true))fail('Rastermotiv darf nicht entfernt oder ersetzt werden.');
+  for(const raw of source.objects.filter(o=>o.type==='motif-raster'&&!canDeleteTemplateElement(config,source.id,o)))if(!design.objects.some(o=>o.id===raw.id&&o.type==='motif-raster'&&o.assetId===raw.assetId&&o.locked===true))fail('Rastermotiv darf nicht entfernt oder ersetzt werden.');
   const p = selectedProfile(config, options);
   // Geometry locks are product rules, not just disabled drag handles. Colour
   // and an uploaded photograph may change without changing the fixed layout.
   const fixedKeys=['type','x','y','w','h','rotation','fieldKey','photoShape','shape','filled','strokeWidth','motif','assetId','required','acrylicFixed'];
   for(const raw of source.objects.filter(o=>o.acrylicFixed===true)){
     const matches=design.objects.filter(o=>o.id===raw.id),o=matches[0];
+    if(!matches.length&&canDeleteTemplateElement(config,source.id,raw))continue;
     if(matches.length!==1||o.uxHidden===true||fixedKeys.some(key=>o[key]!==raw[key]))fail('Ein fester Acrylglas-Vorlagenbereich wurde verändert.');
   }
   for (const raw of source.objects.filter(o => o.technicalLocked === true)) {

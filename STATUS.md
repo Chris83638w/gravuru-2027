@@ -1,3 +1,9 @@
+## Aktuell: neutrale Oberfläche, Motivfarben und gezieltes Löschen
+
+Aufgabenbranch `task/unlock-design-elements-20261005`, Basis `3d09c9428f1637db6ece5052af8efd471f473397`. Weiß/Grau/Graphit im Konfigurator; Motiv direkt mit sechs runden Farbvorgaben, freier Farbe, Größenänderung und Drehung bearbeiten. Vorlagenelemente nach Backend-Freigabe bewusst zum Löschen entsperren, Original und Rückgängig erhalten. Weiße Seitenflächen schließen die Vollbildvorschau.
+
+173 Quelltests bestanden, 0 Fehler/Skips; danach 21 gezielte Tests bestanden. Build 76 Ressourcen/1 Modell. Desktop-/Mobil-Bedienprüfung mit synthetischem Stand erfolgreich. Details und Grenzen: `docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md`. Nur private Testseite aktualisiert, keine private Datenbank oder Live-Shopänderung. Nächster Schritt: Nutzerprüfung der neuen Bedienung; Bestellung → neuer Produktentwurf bleibt separat offen.
+
 ## 05.10.2026 – Foto-/Textwerkzeuge und kompakte Motivwahl
 
 Branch `task/full-preview-base-20261005`, Weiterführung nach Sockel-/Rahmenkorrektur `8f507ddd66aedf19cf8ff9466f2a6388e37a680c`. Bearbeiten vor Ersetzen; Fotozuschnitt und Original/Graustufen/Sepia; direkte Schriftwahl, Fett und Kursiv; Motive in tatsächlich freie Flächen, kompaktere Übersicht (6 Desktop/4 Mobil). Außenklick schließt Vollbild, weißer Innenbereich nicht. 172 Gesamttests erfolgreich, finale gezielte Tests erfolgreich, Build 76/1, Desktop-/Mobil-Browserprüfung ohne Seitenfehler. Grenzen/Details in docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md. Nächster Schritt: Nutzerprüfung der aktualisierten privaten Testseite.

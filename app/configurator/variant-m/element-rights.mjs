@@ -47,3 +47,9 @@ export function restoreElementRights(source,objects,rights,previous=[]){
   }
   return {objects:result,blockedIds:[...blocked]};
 }
+
+export function canDeleteTemplateElement(config,designId,object){
+ if(!object||object.technicalLocked)return false;
+ if(config?.workshopElementRights)return config.workshopElementRights[designId]?.[object.id]?.delete===true;
+ return !object.acrylicFixed&&!object.locked&&object.type!=='motif-raster'&&object.customerEditable!==false;
+}

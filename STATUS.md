@@ -1,3 +1,5 @@
+Exportvorgaben am 04.10.2026 angepasst: Nur PDF, Roland RDG_WHITE, Farbüberdruck 1 mm umlaufend, Weiß vollflächig innerhalb der Kontur, Weißüberdruck 0 mm. Frischer Browserstart geprüft; bestehende sechs Exporttests weiterhin bestanden.
+
 ## Aktuell: PDF-Druckdownload als Prüfexport – 04.10.2026
 
 Aufgabenbranch `task/print-download-20261004`, Basis `7f6bd786ebf097ec8047d7d14ee9705d1ad7030a`. Standard nur PDF; Roland/Mimaki beim Download wählbar, optional ZIP aller verfügbaren Gestaltungsdaten und Originalfoto separat. Überdruck Farbe 0/1 mm, Weißumfang getrennt, Kontur unverändert. 165 Tests bestanden, Build 76/1, tatsächliche PDF- und Browserdownloads geprüft. [Umfang, Prüfung und Grenzen](docs/dashboard-20261004/DRUCKDOWNLOAD.md). PDF-Farbmotiv RGB/600 dpi; Kontur und Weiß Vektor. RIP-/ICC-/Produktionsfreigabe weiterhin offen. Statische private Testseite bleibt ohne dauerhafte Werkstattdaten. Keine Produktivveröffentlichung.

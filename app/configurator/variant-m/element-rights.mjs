@@ -1,5 +1,5 @@
 export const ELEMENT_RIGHT_FIELDS=Object.freeze({
-  content:['text','font','bold'], color:['color','preserveColors','opacity'],
+  content:['text','font','bold','italic'], color:['color','preserveColors','opacity'],
   replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground','uxPhotoCrop'],
   move:['x','y','rotation'], scale:['w','h','size'],
 });

@@ -1,3 +1,7 @@
+## 05.10.2026 – Foto-/Textwerkzeuge und kompakte Motivwahl
+
+Branch `task/full-preview-base-20261005`, Weiterführung nach Sockel-/Rahmenkorrektur `8f507ddd66aedf19cf8ff9466f2a6388e37a680c`. Bearbeiten vor Ersetzen; Fotozuschnitt und Original/Graustufen/Sepia; direkte Schriftwahl, Fett und Kursiv; Motive in tatsächlich freie Flächen, kompaktere Übersicht (6 Desktop/4 Mobil). Außenklick schließt Vollbild, weißer Innenbereich nicht. 172 Gesamttests erfolgreich, finale gezielte Tests erfolgreich, Build 76/1, Desktop-/Mobil-Browserprüfung ohne Seitenfehler. Grenzen/Details in docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md. Nächster Schritt: Nutzerprüfung der aktualisierten privaten Testseite.
+
 ## 05.10.2026 – Sockel im Vollbild und sichtbarer Vorschauhinweis
 
 Branch `task/full-preview-base-20261005`, Basis `d127b5a9ee6f52f3aad69ae5061e8d48d5f7edf0`. Vollbild streckt die Acrylszene nicht mehr; vorhandene Sockelposition/7-mm-Regel bleibt erhalten. Oberer Hinweisrahmen jetzt als sichtbare Ebene nach jeder Inhaltsänderung für 1,6 Sekunden statt nur dreimal. Desktop-/Mobil-Browserprüfung mit Nussbaumsockel und je fünf Textänderungen bestanden, keine Seitenfehler; Build 76/1. Details: docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md. Nächster Schritt: Nutzer prüft dieselben Aktionen auf der aktualisierten privaten Testseite.

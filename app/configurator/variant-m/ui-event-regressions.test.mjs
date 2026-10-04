@@ -99,7 +99,7 @@ test('fixed acrylic photo: actual editor apply keeps shape/geometry and remains 
  prepareConfig(config);
  const design=structuredClone(config.profile.designs[0]),object=design.objects.find(o=>o.id==='photo-main'),before=structuredClone(object),d=eventTarget(),files=new Map();
  let closed=false;d.close=()=>{closed=true;};
- const env={d,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
+ const env={d,angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
  vm.runInNewContext(block('photo-editor.mjs',"  d.addEventListener('click',async e=>{","\n  });"),env);
  const button={dataset:{ux:'photo-apply'},disabled:false};
  await dispatch(d,'click',inertEvent({closest:()=>button}));

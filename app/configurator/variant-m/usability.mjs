@@ -173,7 +173,7 @@ export async function installUsability(api) {
 
   const boundsCache=new Map();
   function textBounds(o){
-    const key=JSON.stringify([o.text,o.font,o.bold,o.size]);if(boundsCache.has(key))return boundsCache.get(key);
+    const key=JSON.stringify([o.text,o.font,o.bold,o.italic,o.size]);if(boundsCache.has(key))return boundsCache.get(key);
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
     svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';
     svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);

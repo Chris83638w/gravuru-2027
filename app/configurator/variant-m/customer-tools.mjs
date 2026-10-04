@@ -1,4 +1,4 @@
-import {editableTexts,centerTexts,mechanicalHints,hintKey,motifScore} from './customer-tools-model.mjs';
+import {showOverlapWarnings,editableTexts,centerTexts,mechanicalHints,hintKey,motifScore} from './customer-tools-model.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
 export async function installCustomerTools(api){
@@ -59,14 +59,14 @@ export async function installCustomerTools(api){
  const ignored=new Set();let hints=[],shown=null;
  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;const issue=mechanicalHints(profile,el.state)[0];if(!issue)return;e.preventDefault();e.stopImmediatePropagation();say(issue.message);},true);
  let requested='',timer,serial=0,checkError='';
- function scheduleCheck(){const key=JSON.stringify([el.state.width,el.state.height,el.state.objects]);if(key===requested)return;requested=key;checkError='';clearTimeout(timer);const run=++serial;
+ function scheduleCheck(){if(!showOverlapWarnings(config?.profile||profile)){clearTimeout(timer);serial++;checkError='';return;}const key=JSON.stringify([el.state.width,el.state.height,el.state.objects]);if(key===requested)return;requested=key;checkError='';clearTimeout(timer);const run=++serial;
   timer=setTimeout(async()=>{const objects=el.state.objects.map(o=>({...o})),w=el.state.width,h=el.state.height,scale=Math.min(12,1400/Math.max(w,h)),pw=Math.ceil(w*scale),ph=Math.ceil(h*scale);const svgs=objects.map(o=>`<svg xmlns="http://www.w3.org/2000/svg" width="${pw}" height="${ph}" viewBox="0 0 ${w} ${h}">${el.uxCollisionSVG(o)}</svg>`);
    try{const masks=[];for(const svg of svgs){if(run!==serial||!el.isConnected)return;const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));try{const img=new Image();img.src=url;await img.decode();const canvas=document.createElement('canvas');canvas.width=pw;canvas.height=ph;const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,pw,ph);masks.push(window.GravuruEditorRefinement.inkMask(ctx.getImageData(0,0,pw,ph).data));}finally{URL.revokeObjectURL(url);}}
     if(run!==serial)return;const pairs=window.GravuruEditorRefinement.collisions(masks,Math.max(4,Math.ceil(scale*scale*.015)));el.uxOverlapResult={key,ids:pairs.map(pair=>pair.map(i=>objects[i].id))};updateHints();
    }catch{if(run!==serial)return;checkError='Überlagerungen konnten nicht geprüft werden. Bitte die Vorschau kontrollieren.';updateHints();}
   },180);
  }
- function currentHints(){const key=JSON.stringify([el.state.width,el.state.height,el.state.objects]);const overlaps=el.uxOverlapResult?.key===key?el.uxOverlapResult.ids.filter(ids=>ids.every(id=>el.state.objects.some(o=>o.id===id&&!o.uxHidden))&&!(config?.acrylic&&ids.includes("photo-frame")&&ids.includes("photo-main"))).map(ids=>({code:'overlap',ids,message:'Die markierten Elemente überlagern sich. Ist das beabsichtigt, kannst du diesen Hinweis ignorieren.'})):[];
+ function currentHints(){const key=JSON.stringify([el.state.width,el.state.height,el.state.objects]);const overlaps=showOverlapWarnings(config?.profile||profile)&&el.uxOverlapResult?.key===key?el.uxOverlapResult.ids.filter(ids=>ids.every(id=>el.state.objects.some(o=>o.id===id&&!o.uxHidden))&&!(config?.acrylic&&ids.includes("photo-frame")&&ids.includes("photo-main"))).map(ids=>({code:'overlap',ids,message:'Die markierten Elemente überlagern sich. Ist das beabsichtigt, kannst du diesen Hinweis ignorieren.'})):[];
   return [...overlaps,...mechanicalHints(profile,el.state)].map(h=>({...h,key:hintKey(h,el.state.objects,[el.state.designId,el.state.fkFrame,el.state.fkMounting])}));}
  function draw(){const scene=$('.scene');scene?.querySelector('[data-customer-highlights]')?.remove();if(!scene)return;const ns='http://www.w3.org/2000/svg',group=document.createElementNS(ns,'g');group.dataset.customerHighlights='';group.setAttribute('pointer-events','none');
   const marked=new Set([...(multi?ids:[]),...(shown?.ids||[])]);

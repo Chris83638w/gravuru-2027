@@ -22,6 +22,49 @@ export function contourPath(g,offset=0){
  }
  return [outer,...(g.holes||[]).map(h=>ellipse(h.x,h.y,h.diameter/2,h.diameter/2))].join('\n');
 }
+// Point containment in physical mm. Used before vectorization so the motif white
+// layer contains only closed ink paths, not a full-page clipping container.
+export function insideContour(g,x,y,offset=0){
+ const w=g.width,h=g.height;
+ if(x < -offset || x > w+offset || y < -offset || y > h+offset)return false;
+ let inside;
+ if(g.shape==='ellipse')inside=((x-w/2)/(w/2+offset))**2+((y-h/2)/(h/2+offset))**2<=1;
+ else {const r=Math.max(0,(g.cornerRadiusMm||0)+offset),cx=Math.max(-offset+r,Math.min(w+offset-r,x)),cy=Math.max(-offset+r,Math.min(h+offset-r,y));inside=!r||(x-cx)**2+(y-cy)**2<=r*r;}
+ return inside&&!(g.holes||[]).some(h=>(x-h.x)**2+(y-h.y)**2<(h.diameter/2)**2);
+}
+// Check pixels at the actual outer contour, including round corners and ellipses.
+export function hasContourInk(rgba,w,h,g){
+ const sx=w/g.width,sy=h/g.height;
+ const ink=(x,y)=>x>=0&&x<w&&y>=0&&y<h&&rgba[(y*w+x)*4+3]>0;
+ for(let y=0;y<h;y++){
+  const mm=(y+.5)/sy,r=g.cornerRadiusMm||0;
+  let left=0;
+  if(g.shape==='ellipse')left=g.width/2*(1-Math.sqrt(Math.max(0,1-((mm-g.height/2)/(g.height/2))**2)));
+  else if(r&&mm<r)left=r-Math.sqrt(Math.max(0,r*r-(mm-r)**2));
+  else if(r&&mm>g.height-r)left=r-Math.sqrt(Math.max(0,r*r-(mm-(g.height-r))**2));
+  const first=Math.max(0,Math.ceil(left*sx-.5)),last=Math.min(w-1,Math.floor((g.width-left)*sx-.5));
+  if(ink(first,y)||ink(last,y))return true;
+  if(y===0||y===h-1)for(let x=first;x<=last;x++)if(ink(x,y))return true;
+ }
+ return false;
+}
+// Project an exterior pixel to the corresponding outer-contour ink sample.
+export function boundarySample(g,x,y){
+ if(g.shape==='ellipse'){const cx=g.width/2,cy=g.height/2,f=1/Math.sqrt(((x-cx)/cx)**2+((y-cy)/cy)**2);return [cx+(x-cx)*f,cy+(y-cy)*f];}
+ const r=g.cornerRadiusMm||0,cx=Math.max(r,Math.min(g.width-r,x)),cy=Math.max(r,Math.min(g.height-r,y)),d=Math.hypot(x-cx,y-cy);
+ return d?[cx+(x-cx)*r/d,cy+(y-cy)*r/d]:[x,y];
+}
+export function whiteMask(pixels,s){
+ const {width:w,height:h,alpha}=pixels,mask=new Uint8Array(w*h);
+ if(s.white==='none')return mask;
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+  const i=y*w+x;if(s.white==='motif'&&alpha[i]<128)continue;
+  let mx=(x+.5)*s.pageWidthMm/w-s.bleedMm;const my=(y+.5)*s.pageHeightMm/h-s.bleedMm;
+  if(s.mirror)mx=s.geometry.width-mx;
+  if(insideContour(s.geometry,mx,my,s.whiteBleedMm))mask[i]=255;
+ }
+ return mask;
+}
 // Binary 600-dpi silhouette, merged into closed vector rectangles. Not source vector reconstruction.
 export function maskRectangles(alpha,w,h){
  if(alpha.length!==w*h)throw Error('Ungültige Weißmaske.');
@@ -61,8 +104,8 @@ export async function printPDF({settings,pixels,kind='combined'}){
   let white;
   if(s.white==='full')white=`${geo}\n${contourPath(s.geometry,s.whiteBleedMm)} f*`;
   else{
-   const rects=maskRectangles(alpha,w,h); // alpha is already mirrored with the artwork.
-   white=`q ${geo}\n${contourPath(s.geometry,s.whiteBleedMm)} W* n\n${s.mirror?-1:1} 0 0 1 ${s.mirror?s.geometry.width+bleed:-bleed} ${-bleed} cm\n${W/w} 0 0 ${H/h} 0 0 cm\n${rects.map(r=>`${r.x} ${r.y} ${r.w} ${r.h} re`).join('\n')}\nf Q`;
+   const rects=maskRectangles(whiteMask(pixels,s),w,h); // Already mirrored and geometrically clipped.
+   white=`${W/w} 0 0 ${H/h} 0 0 cm\n${rects.map(r=>`${r.x} ${r.y} ${r.w} ${r.h} re`).join('\n')}\nf`;
   }
   const mimaki=s.profile==='mimaki';
   layer(kind==='white'||mimaki?'Weissersatz Vektor':'RDG_WHITE',(kind==='white'?'0 0 0 1 k':mimaki?'0 0 0 0 k':'/GSWhite gs /White cs 1 scn')+'\n'+white);

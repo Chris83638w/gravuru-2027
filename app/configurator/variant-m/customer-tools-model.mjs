@@ -1,3 +1,4 @@
+import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {mountingAccessIssues} from '../../platform/sources/app/shared/models/mounting-access.mjs';
 // Customer hints never change manufacturing validation or imply a production release.
 export const normalized = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ß/g,'ss');
@@ -33,3 +34,9 @@ export function mechanicalHints(profile,state){
 }
 export function hintKey(hint,objects,context){return JSON.stringify([hint.code,hint.ids.map(id=>objects.find(o=>o.id===id)).map(o=>o&&[o.id,o.x,o.y,o.w,o.h,o.rotation,o.text,o.font,o.uxHidden]),hint.hole||null,context]);}
 
+
+// Master rule: printed layers may intentionally overlap; mechanical warnings are independent.
+export function showOverlapWarnings(profile){
+ if(profile?.kind==='layered-doorbell'&&!profile.processing)return true;
+ try{return getProcessingProfile(profile).method==='engraving';}catch{return false;}
+}

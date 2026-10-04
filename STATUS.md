@@ -1,3 +1,7 @@
+## Aktuell: Master-Bedienregeln und Weißkanalprüfung – 04.10.2026
+
+Druck ohne Überlagerungswarnungen, Gravur weiterhin mit Hinweisen. Erstfokus markiert den gesamten Text. Ein-Design-Ausblendung bestätigt; zwei bestehende Designs erhalten. Kunden-Testansicht ohne Druckdownload; separater privater Werkstatt-Exporttest. Überdruck nur bei tatsächlichem Randdruck, Weißkanal-Vorschau und motivbezogene Weißvektoren ohne Seitenclip. 167 Tests, Build 76/1 und Browser-/PDF-Prüfung bestanden. Corel-Import und bezahlter Konto-Download nicht ausgeführt/angebunden. [Nachweis und nächste Prüfung](docs/dashboard-20261004/MASTER-BEDIENREGELN.md).
+
 Präzisierung Weiß am 04.10.2026: Standard nur unter bedruckten Motivflächen; freies Acryl bleibt transparent. Ersetzt die vorherige Vollflächen-Voreinstellung. Vollfläche ist ausdrücklich als „Gesamte Platte weiß hinterlegen“ gekennzeichnet.
 
 Exportvorgaben am 04.10.2026 angepasst: Nur PDF, Roland RDG_WHITE, Farbüberdruck 1 mm umlaufend, Weiß vollflächig innerhalb der Kontur, Weißüberdruck 0 mm. Frischer Browserstart geprüft; bestehende sechs Exporttests weiterhin bestanden.

@@ -1,0 +1,18 @@
+# Masterregeln für Konfigurator und Druck – 04.10.2026
+
+Aufgabenbranch `task/master-rules-print-20261004`, Basis `7a533ab133cf7a4a087498802bbc6000e849f335`.
+
+- **Druck:** Überlappungen sind erlaubt; keine Überlagerungswarnungen. **Gravur:** weiterhin Hinweise. Diese Masterregel folgt dem Bearbeitungsprofil, nicht einer einzelnen Vorlage. Mechanische Warnungen bleiben unabhängig davon aktiv.
+- **Texte:** Beim ersten Fokus je Textfeld/Design wird der gesamte Beispieltext markiert (Maus, Touch, Tastatur). Weitere Klicks erlauben normale Cursorplatzierung. Vorhandene Rechte und Originaltexte bleiben erhalten, bis der Nutzer etwas eingibt.
+- **Designauswahl:** Genau ein Design = keine Auswahlfläche und kein Designs-Tab. Die vorhandene Regel wurde im Browser bestätigt. Zwei Designs bleiben auswählbar. Das aktuelle Testprodukt enthält tatsächlich „Unser Anfang“ und „Unser kleines Glück“; keines wurde gelöscht.
+- **Downloads:** Druckexport ausschließlich Werkstatt/Backend. Auf der bestehenden owner-privaten Testseite zeigt `/` die Kundenansicht ohne Exportbutton; `/drucktest.html?model=acryl` ist der separate Operator-Test. Keine neue öffentliche Freigabe. Ein Kundenkonto-Download benötigt später authentifizierten Nutzer und serverseitig bestätigten, zugehörigen bezahlten Kauf. Diese Konto-/Bestellstrecke ist weiterhin NICHT angebunden; es wurde keine Downloadberechtigung durch einen bloßen Browserparameter simuliert.
+- **Weiß:** Standard nur unter gedruckten Flächen inklusive Text, Foto, festem Design und zusätzlichen Elementen. Freies Acryl und transparente Löcher bleiben frei. Die motivbezogene PDF-Weißebene enthält jetzt geometrisch beschnittene geschlossene Flächen ohne zusätzlichen seitenfüllenden Clip-Container. „Weißkanal prüfen“ zeigt im Dialog dieselbe Maske: Weiß = Weißdruck, kariert = transparent. Der normale weiße PDF-Seitenhintergrund ist davon zu unterscheiden.
+- **Überdruck:** Vorgabe bis 1 mm, tatsächlich nur bei Druckfarbe an der äußeren Kontur. Randfreies Motiv: kein Zusatzrand/Überdruck, 150 × 200 mm. Bei Randdruck: 152 × 202 mm bei weiterhin 150 × 200 mm Schnittmaß; Farbe wird nur an den tatsächlich bedruckten Randstellen fortgesetzt. Runde Ecken/Ellipsen werden bei der Prüfung berücksichtigt. Innenmotiv wird nicht skaliert. Weißüberdruck bleibt separat 0 mm als Default.
+
+## Prüfung
+
+167 Quelltests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell. Chromium: erster Namensfokus markiert alle 12 Zeichen; Tippen ersetzt den Text, späterer Klick positioniert den Cursor. Derselbe überlagernde Teststand zeigt im Druck keine Warnung und bei Gravur den Hinweis. Kundenansicht ohne Druckbutton. Ein-Design-Sicht ohne Auswahl; Zwei-Design-Sicht mit Auswahl. Keine Seitenfehler.
+
+Browserexport: randfreies, vollflächiges und nur rechts randberührendes synthetisches Motiv geprüft. Beim rechten Randdruck bleibt links die Alpha-Maske leer. Die tatsächlich erzeugte neue Roland-PDF des Designbeispiels hat 150 × 200 mm; isolierte Weißebene an freien Stellen Alpha 0 und im Foto Alpha 255. Weißebene ohne `W*`-Seitenclip. PNG-/PDF-Bildschirmdarstellungen allein wurden nicht als RIP-Nachweis gewertet.
+
+**CorelDRAW-Import weiterhin NICHT AUSGEFÜHRT:** Nutzer meldete dort Vollflächenweiß. Cloud-Dateiprüfung reproduziert kein Vollflächenweiß, Ursache im konkreten Corel-Import bisher unbestätigt. Die geänderte PDF-Struktur ist anhand der Datei geprüft, aber keine behauptete Corel-Kompatibilitätsfreigabe. Nächster Vergleich: Weißkanal-Vorschau und neu heruntergeladene PDF in CorelDRAW. Farbmotiv bleibt RGB/600-dpi-Raster, Weiß/Kontur Vektoren; RIP/ICC/Produktionsfreigabe offen.

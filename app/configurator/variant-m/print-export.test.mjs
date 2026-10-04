@@ -46,3 +46,12 @@ test('ZIP keeps original image bytes and readable member names',async()=>{
 z=zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read()));print(json.dumps({'names':z.namelist(),'bytes':list(z.read('Originalfoto-1.png')),'bad':z.testzip()}))`);
  assert.deepEqual(data.names,['Originalfoto-1.png','Einstellungen.json']);assert.deepEqual(data.bytes,[0,1,2,255]);assert.equal(data.bad,null);
 });
+
+test('motif white contains only ink rectangles, not a full-page clipping path',async()=>{
+ const px=pixels();px.alpha.fill(0);for(let y=30;y<70;y++)for(let x=40;x<80;x++)px.alpha[y*px.width+x]=255;
+ const pdf=await printPDF({settings:exportSettings(geometry,{white:'motif'}),pixels:px});
+ const data=await inspect(pdf,`import sys,json,fitz
+p=fitz.open(stream=sys.stdin.buffer.read(),filetype='pdf');layers=p.get_ocgs();white=[i for i,v in layers.items() if v['name']=='RDG_WHITE'];p.set_layer(-1,on=white,off=[i for i in layers if i not in white]);q=fitz.open(stream=p.tobytes(),filetype='pdf');pix=q[0].get_pixmap(alpha=True);content=p[0].read_contents().decode();section=content.split('/OC /L'+str(white[0])+' BDC')[1].split('EMC')[0]
+print(json.dumps({'empty':pix.pixel(20,20)[-1],'ink':pix.pixel(150,140)[-1],'clipping':'W*' in section or ' W ' in section,'rectangles':' re' in section}))`);
+ assert.equal(data.empty,0);assert.equal(data.ink,255);assert.equal(data.clipping,false);assert.equal(data.rectangles,true);
+});

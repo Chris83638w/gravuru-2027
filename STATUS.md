@@ -1,3 +1,11 @@
+# Aktuell: UV-Vorlagenimport umgesetzt – 04.10.2026
+
+Aufgabenbranch `task/uv-design-pilot-20261004`, auf `51841fda34a8e49f5f3d3634e77ef965720cdef7`. Nutzer-Masterpaket geprüft (17 Manifestdateien). Pilot „Unser kleines Glück“: neun Ebenen, vier Texte plus Bogenfoto. Wiederholbare Vorbereitung, zusätzlicher JSON-Import, unveränderte Bestandsdesigns/Preise, Fotoaustausch ohne Dublette und gespeicherte Kundenfelder. 150 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; echte Browserprüfung einschließlich Größenwechsel und serverseitiger Kundenvalidierung bestanden. Dateien, Befehle und Grenzen: [UV-PILOT-PRUEFUNG.md](docs/dashboard-20261004/UV-PILOT-PRUEFUNG.md).
+
+Nächster Schritt: einen weiteren vorhandenen Entwurf nach [VORLAGENFORMAT.md](docs/dashboard-20261004/VORLAGENFORMAT.md) vorbereiten; dafür fehlt hier noch dessen hochauflösende Quelldatei. Product-Design-Auftrag konkretisiert, aber kein weiterer Agent/Serienlauf gestartet. Beliebige flache Bildzerlegung, vollständige Fonts und Produktionsausgabe bleiben offen. Originalbilder/Pilotdatenbank privat außerhalb Git; keine dauerhafte gemeinsame Ablage behauptet. Nichts live veröffentlicht.
+
+Die folgenden Abschnitte sind historische Zwischenstände; insbesondere der dortige Masterpaket-Downloadblocker ist durch den Nutzerupload erledigt.
+
 # Aktuell: UV-Designpilot – 04.10.2026
 
 Nutzerpriorität: vorhandene UV-Designserie automatisiert als bearbeitbare Vorlagen übernehmen, zuerst „18 – Unser kleines Glück“. Sechs Originalvorschauen (13–18), Direktimportauftrag und private GitHub-Release-Pakete wiedergefunden. Vorschau tatsächlich gelesen; Masterpaket-Download in dieser Aufgabe mit Forbidden blockiert. Keine neue Konvertierung oder Druckprüfung behauptet. Nach bestandenem Pilot weitere Designs durch ein anderes Modell vorbereiten lassen. Quellen, Abnahme und genau fehlende Datei: [UV-DESIGN-PILOT.md](docs/dashboard-20261004/UV-DESIGN-PILOT.md). Codebasis 03fc8aa74df2714ae523fd8208ae2ad3d7327cfa; Aufgabenbranch task/uv-design-pilot-20261004. Nur Dokumentation geändert; keine erneuten Tests erforderlich.

@@ -4,7 +4,7 @@ Stand 04.10.2026. Nutzerauftrag: den gemeinsam erarbeiteten Neuaufbau der Gravur
 
 ## Maßgeblicher Stand
 
-Repository `Chris83638w/gravuru-2027`. Aktiver Aufgabenbranch `task/dashboard-customer-fields-20261004`, abgeleitet vom aktuell remote geprüften Übergabestand `1b4626eab6cc2e7d22f815754583cc678e57d558` auf `infra/cloud-only-handoff-20261004`. Nicht ungeprüft `main` verwenden. Vollständigen aktuellen Commit beim Einstieg mit `git rev-parse HEAD` erfassen; keine Rücksetzung auf eine ältere Referenz.
+Repository `Chris83638w/gravuru-2027`. Dashboard-Ausgangsbranch `task/dashboard-customer-fields-20261004`, abgeleitet vom aktuell remote geprüften Übergabestand `1b4626eab6cc2e7d22f815754583cc678e57d558` auf `infra/cloud-only-handoff-20261004`. Nicht ungeprüft `main` verwenden. Vollständigen aktuellen Commit beim Einstieg mit `git rev-parse HEAD` erfassen; keine Rücksetzung auf eine ältere Referenz.
 
 Vorhanden: aktiver G27-02-Quellbaum, Konfigurator mit Acryl-/Preisregeln, Produkt-/Masterverwaltung und Revisionen, Profilbibliothek, SVG/PDF-Designerersatz und Excel-Stapelanlage. Privatdaten sind davon getrennt. Dokumentierter Ausgangsstand: 137 Tests. Die neue Arbeit ergänzt diese Module, ohne sie durch die alte Pipeline zu ersetzen.
 
@@ -44,4 +44,10 @@ Genau nächster fachlicher Schritt: die bestehende Produktübersicht mit echten 
 
 ## Aktueller Folgeauftrag: UV-Designserie
 
-Der Nutzer hat den Pilot „18 – Unser kleines Glück“ zur automatisierten Umwandlung vorhandener UV-Designbeispiele bestätigt. Nach erfolgreicher Abnahme soll ein weiteres Modell die übrigen Designs im geprüften Format vorbereiten. Konkrete GitHub-Quellen, bereits vorhandene Ebenen, Abnahme und aktueller Downloadblocker stehen in [UV-DESIGN-PILOT.md](docs/dashboard-20261004/UV-DESIGN-PILOT.md). Dieser Folgeauftrag hat Vorrang vor der oben genannten M01-Übersicht. Keine neue Umwandlung als bereits bestanden ausgeben.
+Der Nutzer hat den Pilot „18 – Unser kleines Glück“ zur automatisierten Umwandlung vorhandener UV-Designbeispiele bestätigt. Nach erfolgreicher Abnahme soll ein weiteres Modell die übrigen Designs im geprüften Format vorbereiten. Konkrete GitHub-Quellen, bereits vorhandene Ebenen und aktueller Prüfstand stehen in [UV-DESIGN-PILOT.md](docs/dashboard-20261004/UV-DESIGN-PILOT.md). Dieser Folgeauftrag hat Vorrang vor der oben genannten M01-Übersicht. Keine neue Umwandlung als bereits bestanden ausgeben.
+
+## UV-Pilot umgesetzt (04.10.2026)
+
+Aktiver Folgebranch `task/uv-design-pilot-20261004`, Codebasis `03fc8aa74df2714ae523fd8208ae2ad3d7327cfa`. Nutzerupload des Master-ZIPs geprüft; neun Ebenen und fünf Kundenfelder aus der vorhandenen SVG automatisiert vorbereitet. Neuer zusätzlicher Designimport im bestehenden Dialog, Bogenfoto, Laufweite, wiederholter Fotoaustausch und Textbearbeitung geprüft. 150 Tests bestanden, 0 Fehler/Skips; Build 76/1; Desktop-/Mobilablauf geprüft. [Nachweis](docs/dashboard-20261004/UV-PILOT-PRUEFUNG.md) und [Vorlagenformat](docs/dashboard-20261004/VORLAGENFORMAT.md).
+
+Die privaten Originale und die isolierte Pilotdatenbank bleiben außerhalb von Git, nur in dieser laufenden Aufgabe. Nicht mit Chris' privaten Bestandsdaten oder gemeinsamer dauerhafter Datenablage gleichsetzen. Nächster Schritt ist die Vorbereitung eines weiteren tatsächlich verfügbaren Originaldesigns im geprüften Format; dazu fehlen hier noch dessen Quelldateien. Keine beliebige Bildrekonstruktion, vollständige Schriftabdeckung oder UV-Produktionsfreigabe behaupten.

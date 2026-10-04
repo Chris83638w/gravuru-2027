@@ -1,3 +1,4 @@
+import {photoShape} from './photo-shape.mjs';
 import {textPaths} from './doorbell-preview.mjs';
 import {escapeXml as esc} from './design-content.mjs';
 import {getProcessingProfile,elementColor} from './processing-profiles.mjs';
@@ -28,7 +29,7 @@ export function studioSvg(profile,design,fonts,{selected='',frameKey='',motifs=[
 function safeMediaUrl(value){
  try{const u=new URL(value);return ['https:','blob:'].includes(u.protocol)&&!u.username&&!u.password?u.href:null;}catch{return null;}
 }
-function objectShape(o){return o.type==='photoSlot'&&o.photoShape==='circle'?'<ellipse rx="'+o.w/2+'" ry="'+o.h/2+'"':'<rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'"';}
+function objectShape(o){return photoShape(o);}
 function placeholder(o,label,stroke){return objectShape(o)+' fill="#e2ebe3" stroke="#719783" stroke-width="'+stroke+'"/><text text-anchor="middle" dominant-baseline="central" fill="#42604e" font-family="Arial" font-size="'+Math.min(o.w/Math.max(label.length*.6,7),o.h/5)+'">'+esc(label)+'</text>';}
 function inkMatrix(ink,alpha='0 0 0 1 0'){const rgb=ink.slice(1).match(/../g).map(h=>parseInt(h,16)/255);return rgb.map(n=>'0 0 0 0 '+n).join(' ')+' '+alpha;}
 function universalMotif(item,o,ink,processing,filterId){

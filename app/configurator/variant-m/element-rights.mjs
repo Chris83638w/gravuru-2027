@@ -3,7 +3,7 @@ export const ELEMENT_RIGHT_FIELDS=Object.freeze({
   replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground'],
   move:['x','y','rotation'], scale:['w','h','size'],
 });
-const structural=['type','fieldKey','photoShape','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed'];
+const structural=['letterSpacing','type','fieldKey','photoShape','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed'];
 export const rightForProperty=key=>Object.entries(ELEMENT_RIGHT_FIELDS).find(([,fields])=>fields.includes(key))?.[0];
 
 export function canEditElement(config,designId,object,right){

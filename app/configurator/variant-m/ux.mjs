@@ -1,3 +1,4 @@
+import {photoShape} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {roundEdit,roundDesign,editorTextSize} from './design-edit.mjs';
 import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {quote,money} from './contract.mjs';
@@ -88,7 +89,7 @@ export async function installUX(el,config,legacy){
   el.guidedGo=function(step){showTab(({1:'design',2:'text',3:'motif',4:'options'})[step]||'text');};
   function mutate(fn){el.record();fn();dirty=true;el.state.showHero=false;el.normalize();el.sync();}
   function changeObject(key,value){if(!selectable())return say('Bitte das Element zuerst in „Ebenenverwaltung“ einblenden und entsperren.');const right=rightForProperty(key);if(right&&el.uxCanEdit?.(selected(),right)===false)return say('Diese Änderung ist für dieses Vorlagenelement nicht freigegeben.');mutate(()=>{const o=selected();if(key==='color'&&isPrint)applyPrintColor(o,value);else o[key]=config?.workbench?.embedded&&typeof value==='number'?roundEdit(value):value;if(o.type==='text'&&key==='size')o.size=config?.workbench?.embedded?editorTextSize(value):designTextSize(value,textScale());});}
-  const originalNormalize=el.normalize;el.normalize=function(...args){const requested=new Map(this.state.objects.filter(o=>o.type==='text').map(o=>[o.id,{size:config?.workbench?.embedded?editorTextSize(o.size):designTextSize(o.size*textScale(),textScale()),x:o.x,y:o.y}]));const v=originalNormalize.apply(this,args);for(const o of this.state.objects)if(o.type==='text'){Object.assign(o,requested.get(o.id));try{measureText(o,this.fontData);}catch{}}return v;};
+  const originalNormalize=el.normalize;el.normalize=function(...args){const requested=new Map(this.state.objects.filter(o=>o.type==='text').map(o=>[o.id,{size:el.uxCanEdit?.(o,'scale')===false?o.size:config?.workbench?.embedded?editorTextSize(o.size):designTextSize(o.size*textScale(),textScale()),x:o.x,y:o.y}]));const v=originalNormalize.apply(this,args);for(const o of this.state.objects)if(o.type==='text'){Object.assign(o,requested.get(o.id));try{measureText(o,this.fontData);}catch{}}return v;};
   const originalPhotoLayout=el.photoLayout;el.photoLayout=function(o){return o?.technicalLocked?originalPhotoLayout.call(this,o):null;};
   const originalObjectSVG=el.objectSVG;
   el.uxObjectSVG=o=>{
@@ -102,9 +103,9 @@ export async function installUX(el,config,legacy){
     const ink=isPrint?(o.color||'#202824'):config?getProcessingProfile(profile).ink:'#ffffff',rgb=ink.slice(1).match(/../g).map(h=>parseInt(h,16)/255),filterId='ux-logo-'+o.id;
     const tint=o.uxUploadKind==='logo'&&(!isPrint||o.uxLogoTint===true);
     const filter=tint?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="${rgb.map(n=>'0 0 0 0 '+n).join(' ')} -0.2126 -0.7152 -0.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`:'';
-    const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="xMidYMid meet" ${tint?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
-    const maskId='ux-mask-'+o.id,masked=o.photoShape==='circle'||o.photoShape==='ellipse';
-    const picture=masked?`<defs><clipPath id="${esc(maskId)}"><ellipse cx="0" cy="0" rx="${o.w/2}" ry="${o.h/2}"/></clipPath></defs><g clip-path="url(#${esc(maskId)})">${body}</g>`:body;
+    const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="${o.type==='photoSlot'?'xMidYMid slice':'xMidYMid meet'}" ${tint?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
+    const maskId='ux-mask-'+o.id,masked=['circle','ellipse','arch'].includes(o.photoShape);
+    const picture=masked?`<defs><clipPath id="${esc(maskId)}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${esc(maskId)})">${body}</g>`:body;
     return `<g data-object="${esc(o.id)}" transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/>${picture}${o.id===el.state.selected?`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="none" stroke="#64ae87" stroke-width=".7"/>`:''}</g>`;
   };
   el.objectSVG=function(o,...args){const custom=this.uxObjectSVG(o);if(custom!==undefined)return custom;let markup=originalObjectSVG.call(this,o,...args);if(!config&&o.type==='motif')markup=markup.replace(/(fill|stroke)="(?:#000000|#000|black|currentColor)"/gi,'$1="#ffffff"');return markup;};
@@ -252,11 +253,11 @@ export async function installUX(el,config,legacy){
   r.addEventListener('focusout',e=>{if(e.target.dataset.uxText)delete e.target.dataset.editStarted;if(e.target.id==='ux-size'&&selected()?.type==='text')e.target.value=displayTextSize(selected());});
   let uploadPending=false;
   async function acceptFiles(incoming,kind=uploadKind,replaceId=replacing){
-    if(config.acrylic&&kind==='photo')replaceId='photo-main';
+    if(config.acrylic&&kind==='photo'&&!replaceId){const slots=el.state.objects.filter(o=>o.type==='photoSlot');replaceId=slots.find(o=>o.fieldKey==='photo-main')?.id||(slots.length===1?slots[0].id:null);}
     if(!uploadAllowed(config,kind)||kind==='photo'&&!photoAvailableForDesign(config,el.state.designId)){say('Diese Vorlage hat noch keinen austauschbaren Fotobereich.');return;}
     if(uploadPending)return;uploadPending=true;let revealedId=null;
     try{for(const file of (replaceId?[...incoming].slice(0,1):[...incoming])){let url;
-      try{const prior=uploadTarget(el.state.objects,kind,replaceId,el.state.selected);if(prior&&el.uxCanEdit?.(prior,'replace')===false)throw Error('Dieses Foto ist Bestandteil des Designs und kann nicht ersetzt werden.');validateUpload(file,el.state.objects,prior?.uxUploadId);url=URL.createObjectURL(file);const image=new Image();image.src=url;await image.decode();if(image.naturalWidth*image.naturalHeight>40_000_000)throw Error('Bitte ein Bild mit höchstens 40 Megapixeln wählen.');
+      try{const prior=uploadTarget(el.state.objects,kind,replaceId,el.state.selected);if(replaceId&&!prior)throw Error('Der gewählte Fotobereich ist nicht mehr verfügbar. Bitte erneut auswählen.');if(prior&&el.uxCanEdit?.(prior,'replace')===false)throw Error('Dieses Foto ist Bestandteil des Designs und kann nicht ersetzt werden.');validateUpload(file,el.state.objects,prior?.uxUploadId);url=URL.createObjectURL(file);const image=new Image();image.src=url;await image.decode();if(image.naturalWidth*image.naturalHeight>40_000_000)throw Error('Bitte ein Bild mit höchstens 40 Megapixeln wählen.');
         if(prior&&!el.state.objects.includes(prior))throw Error('Das Design wurde gewechselt. Bitte das Foto erneut auswählen.');
         if(prior?.uxLocked)throw Error('Bitte den Fotobereich zuerst entsperren.');
         validateUpload(file,el.state.objects,prior?.uxUploadId);

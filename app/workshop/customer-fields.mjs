@@ -18,6 +18,7 @@ export function planCustomerFields(repository,assets,id,input){
   if(!Array.isArray(input.fields)||input.fields.length>19)fail('invalid_fields','Höchstens 19 Kundenfelder pro importiertem Design.');
   if(input.fields.length&&input.sourcePrepared!==true)fail('source_not_prepared','Bitte bestätigen: Die Originalgrafik enthält an diesen Stellen keine zu ersetzenden Texte oder Fotos.');
   const previous=new Set((design.customerFields||[]).map(f=>f.id));
+  const originalOrder=design.objects.map(o=>o.id);
   design.objects=design.objects.filter(o=>!previous.has(o.id));
   const designRights=document.elementRights[design.id];
   for(const old of previous)delete designRights[old];
@@ -34,7 +35,7 @@ export function planCustomerFields(repository,assets,id,input){
     if(field.type==='text'){
       if(typeof field.allowColor!=='boolean')fail('invalid_field_right','Farbfreigabe ausdrücklich festlegen.');
       if(!Object.hasOwn(document.config.localResources.fonts,field.font))fail('invalid_field_font','Bitte eine vorhandene Schrift auswählen.');
-      Object.assign(object,{text:field.text,font:field.font,size:field.size,color:field.color,bold:false,w:1,h:1});
+      Object.assign(object,{text:field.text,font:field.font,size:field.size,color:field.color,bold:false,w:1,h:1,...(field.letterSpacing!==undefined?{letterSpacing:field.letterSpacing}:{})});
       // Product validation checks text, font, colour and size before measuring.
     }else{
       if(!document.config.photo.enabled)fail('photo_disabled','Fotofunktion für dieses Produkt nicht freigegeben.');
@@ -46,6 +47,7 @@ export function planCustomerFields(repository,assets,id,input){
     design.customerFields.push({id:field.id,label:field.label.trim()});
     designRights[object.id]={...rights(object.type),color:object.type==='text'&&field.allowColor};
   }
+  if(design.preparedTemplate)design.objects.sort((a,b)=>{const rank=o=>{const i=originalOrder.indexOf(o.id);return i<0?originalOrder.length:i;};return rank(a)-rank(b);});
   let checked;
   try{
     checked=validateProductDocument(document);

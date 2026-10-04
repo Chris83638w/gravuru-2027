@@ -8,7 +8,7 @@ export function emptyPhotoMarkup(slot, ink, surface, asset) {
     return `<svg data-ux-placeholder="true" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" viewBox="${-w/2} ${-h/2} ${w} ${h}" overflow="visible" aria-hidden="true"><image x="${x}" y="${y}" width="${aw}" height="${ah}" href="${href}" preserveAspectRatio="none"/><circle r="${r}" fill="${surface}" fill-opacity=".36" stroke="${ink}" stroke-width="${Math.max(.5,r*.06)}"/><text y="${-r*.08}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${r*.37}" font-weight="bold" fill="${ink}">Foto-Upload</text><text y="${r*.37}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${r*.33}" fill="${ink}">hier klicken</text></svg>`;
   }
   const oval=slot.photoShape==='circle'||slot.photoShape==='ellipse';
-  const shape=oval?`<ellipse cx="50" cy="50" rx="49" ry="49"/>`:'<rect x="1" y="1" width="98" height="98" rx="4"/>';
+  const shape=slot.photoShape==='arch'?`<path d="M1 99V${1+49*w/h}a49 ${49*w/h} 0 0 1 98 0V99Z"/>`:oval?`<ellipse cx="50" cy="50" rx="49" ry="49"/>`:'<rect x="1" y="1" width="98" height="98" rx="4"/>';
   const id='ux-empty-photo-'+String(slot.id).replace(/[^a-zA-Z0-9_-]/g,'_');
   return `<svg data-ux-placeholder="true" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <defs><clipPath id="${id}">${shape}</clipPath></defs>

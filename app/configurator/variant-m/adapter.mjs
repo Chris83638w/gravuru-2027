@@ -209,7 +209,7 @@ export function installUniversal(configInput) {
       this.normalize();const result=sync.apply(this,args);update();return result;
     };
     $('[data-setting=guides]').checked=false;
-    el.state.objects=[];el.state.mOptions=clone(options);el.chooseDesign(p.designs[0].id);
+    el.state.objects=[];el.state.mOptions=clone(options);el.chooseDesign(p.defaultDesignId||p.designs[0].id);
     el.history=[];el.future=[];
     window.parent.postMessage({type:'gravuru-universal-ready',profileId:p.id},location.origin);
   };

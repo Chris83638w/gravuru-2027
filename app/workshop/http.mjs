@@ -1,3 +1,4 @@
+import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
 import {randomBytes,timingSafeEqual} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -66,6 +67,12 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
           'Content-Length':bytes.length,'Cache-Control':'private, max-age=31536000, immutable','X-Content-Type-Options':'nosniff',
           'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'none'; sandbox",
           ...(original?{'Content-Disposition':`attachment; filename="Gravuru-Original-${asset.sourceSha256.slice(0,12)}.${asset.format}"`}:{})}).end(bytes);return;
+      }
+      const preparedMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/prepared-design\/(preview|apply)$/);
+      if(preparedMatch&&method==='POST'){
+        const data=await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+65536);
+        if(preparedMatch[2]==='apply')return json(res,200,await applyPreparedDesign(repository,assets,preparedMatch[1],data));
+        const {document,...plan}=await planPreparedDesign(repository,assets,preparedMatch[1],data);return json(res,200,plan);
       }
       const importMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/design-import\/(preview|apply)$/);
       if(importMatch&&method==='POST'){

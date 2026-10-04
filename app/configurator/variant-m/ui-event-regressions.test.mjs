@@ -123,3 +123,16 @@ test('non-replaceable photo retains its artwork and is not redecorated as an unn
  el.uxCanEdit=()=>true;const editable=el.uxObjectSVG(object);
  assert.match(editable,/role="button"/);assert.match(editable,/aria-label="Eigenes Foto hochladen"/);assert.match(editable,/data-preview-only/);
 });
+
+test('imported acrylic photo: actual upload handler replaces semantic slot twice without appending an object',async()=>{
+ const {uploadTarget}=await import('./ux-model.mjs');
+ const slot={id:'customer-photo-main',fieldKey:'photo-main',type:'photoSlot',photoShape:'arch',w:120,h:140,acrylicFixed:true};
+ const objects=[slot],files=new Map();let count=0;
+ const env={config:{acrylic:{},photo:{enabled:true}},el:{state:{objects,selected:null},uxCanEdit:()=>true,normalize(){},sync(){}},uploadTarget,
+ uploadAllowed:()=>true,photoAvailableForDesign:()=>true,validateUpload(){},files,mutate:fn=>fn(),say(){},showTab(){},requestAnimationFrame(){},uploadKind:'photo',replacing:null,uploadPending:false,
+ URL:{createObjectURL:()=> 'blob:test',revokeObjectURL(){}},crypto:{randomUUID:()=>String(++count)},Image:class{naturalWidth=900;naturalHeight=1200;async decode(){}},all:()=>[]};
+ vm.createContext(env);vm.runInContext(block('ux.mjs','  async function acceptFiles(','\n  }\n  r.addEventListener').replace('\n  r.addEventListener',''),env);
+ await vm.runInContext('acceptFiles([{}],"photo",null)',env);const first=slot.uxUploadId;
+ await vm.runInContext('acceptFiles([{}],"photo","customer-photo-main")',env);
+ assert.equal(objects.length,1);assert.notEqual(slot.uxUploadId,first);assert.equal(slot.photoShape,'arch');assert.equal(slot.w,120);
+});

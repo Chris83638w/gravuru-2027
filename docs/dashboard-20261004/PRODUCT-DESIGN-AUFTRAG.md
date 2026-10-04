@@ -1,6 +1,6 @@
 # Kopierauftrag: Product Design – bestehende UV-Designserie vorbereiten
 
-Vorbereitet am 04.10.2026. **Noch nicht als Serienauftrag starten:** Der Pilot „18 – Unser kleines Glück“ muss zuerst technisch bestanden sein. Product Design unterstützt die visuelle Arbeit; es garantiert weder automatische Ebenenextraktion noch druckfertige Separationen. Die technische Übernahme und Abnahme verbleiben in der bestehenden Mikail-Codex-Cloud-Aufgabe.
+Vorbereitet am 04.10.2026. **Funktionspilot bestanden, Serienauftrag noch nicht gestartet:** Der Import und die Kundenbearbeitung von „18 – Unser kleines Glück“ sind geprüft; Druckausgabe und visuelle Nutzerfreigabe sind weiterhin offen. Product Design unterstützt die visuelle Arbeit; es garantiert weder automatische Ebenenextraktion noch druckfertige Separationen. Die technische Übernahme und Abnahme verbleiben in der bestehenden Mikail-Codex-Cloud-Aufgabe.
 
 ## Diesen Text nach bestandenem Pilot übergeben
 
@@ -25,6 +25,6 @@ Vorbereitet am 04.10.2026. **Noch nicht als Serienauftrag starten:** Der Pilot �
 
 ## Beizulegende Quellen
 
-- [Pilotstand und Quellennachweise](UV-DESIGN-PILOT.md), einschließlich bestätigter Designs 13–18 und noch fehlender Originaldateien in dieser Aufgabe.
-- Nach erfolgreichem Pilot: **tatsächlich erzeugtes und geprüftes** Referenzpaket, maschinenlesbares Importschema/Beispiel, genaue Feld-/Masken-/Schriftregeln und Prüfkommando. Diese Dateien bestehen derzeit noch nicht; keine erfundenen Pfade in den Auftrag einsetzen.
+- [Pilotstand und Quellennachweise](UV-DESIGN-PILOT.md), einschließlich bestätigter Designs 13–18, geprüftem Masterpaket für Design 18 und noch fehlenden weiteren Originaldateien.
+- [Geprüftes Vorlagenformat und Prüfkommando](VORLAGENFORMAT.md), [Rollenzuordnung für den Pilot](uv-pilot-mapping.json), `scripts/prepare-layered-design.py` und [tatsächlicher Prüfbericht](UV-PILOT-PRUEFUNG.md). Das erzeugte Referenzpaket enthält Originaldekoration und liegt deshalb ausschließlich privat in der laufenden Cloud-Aufgabe; es muss ausdrücklich privat übergeben oder aus dem Masterpaket reproduziert werden.
 - Originale über eine autorisierte private Cloud-Dateiübergabe, keine Vorschau als Original ausgeben. Die Übergabe zwischen Chats erfolgt ausdrücklich; kein automatisches gemeinsames Dateisystem oder Chatgedächtnis voraussetzen.

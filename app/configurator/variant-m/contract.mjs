@@ -145,7 +145,7 @@ export function validateDesign(config, design, options, fonts, motifs) {
 
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','motif','fieldKey',
-  'customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
+  'letterSpacing','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
   'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){

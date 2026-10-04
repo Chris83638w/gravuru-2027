@@ -1,0 +1,39 @@
+{
+  "designId": "uv-18-unser-kleines-glueck",
+  "name": "Unser kleines Glück",
+  "fonts": {
+    "Garamond": "Garamond Acryl",
+    "Freestyle Script": "Freestyle Acryl"
+  },
+  "photo": {
+    "layerId": "layer-1",
+    "fieldKey": "photo-main",
+    "label": "Dein Foto",
+    "x": 14,
+    "y": 5,
+    "width": 129,
+    "height": 139
+  },
+  "textLayers": {
+    "layer-5": {
+      "fieldKey": "title",
+      "label": "Überschrift",
+      "allowColor": true
+    },
+    "layer-6": {
+      "fieldKey": "names",
+      "label": "Namen",
+      "allowColor": true
+    },
+    "layer-7": {
+      "fieldKey": "date",
+      "label": "Datum",
+      "allowColor": true
+    },
+    "layer-9": {
+      "fieldKey": "message",
+      "label": "Spruch",
+      "allowColor": true
+    }
+  }
+}

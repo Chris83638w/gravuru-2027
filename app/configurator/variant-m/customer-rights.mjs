@@ -8,7 +8,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
   const objectById=id=>el.state.objects.find(object=>object.id===id);
   const can=(object,right)=>canEditElement(config,el.state.designId,object,right);
   el.uxCanEdit=can;
-  const uploadObject=()=>config.acrylic?objectById('photo-main'):el.state.objects.find(object=>object.type==='photoSlot'&&!object.uxUploadId);
+  const uploadObject=()=>config.acrylic?el.state.objects.find(o=>o.type==='photoSlot'&&o.fieldKey==='photo-main'):el.state.objects.find(object=>object.type==='photoSlot'&&!object.uxUploadId);
   const actionRights={fonts:'content','font-apply':'content',bold:'content',
     smaller:'scale',bigger:'scale','fit-text':'scale','object-smaller':'scale','object-bigger':'scale',
     left:'move',center:'move',right:'move','object-center':'move','object-turn':'move','layer-front':'move','layer-back':'move',

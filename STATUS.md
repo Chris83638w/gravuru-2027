@@ -1,3 +1,9 @@
+# Aktuell: Fotoausrichtung und Backend-Textfreigaben – 04.10.2026
+
+Branch `task/photo-position-20261004`, Basis `57ce8ff6a39fb5c78a6983af8f12c4bf0528b918`. Foto ohne grünen Rahmen, direkt hinter fester Maske verschieb-/zoombar. Neue Texte standardmäßig beweglich; im Backend je Textfeld „Festes Textfeld / Frei verschiebbar“ einstellbar und revisionsgesichert. Eigentliches Design bleibt fest. 157 Tests bestanden, 0 Fehler/Skips; Build 76/1. Echte Desktop-/Touchprüfung und Backend-Speichern/Neuöffnen mit synthetischen Daten bestanden. [Prüfung und Grenzen](docs/dashboard-20261004/FOTO-TEXT-AUSRICHTUNG.md).
+
+Private Testseite zeigt nur die Kundenansicht und speichert keine Werkstattdaten. Originaltreue/Produktion weiterhin offen. Nächster Schritt: Nutzer prüft Foto- und Textausrichtung. Folgende Einträge sind frühere Stände.
+
 # Aktuell: Beispielbild und Originalvorgaben korrigiert – 04.10.2026
 
 Nutzerkorrektur: Foto mit direktem Uploadhinweis erhalten; Pia & Rafael bleiben als vom Kunden änderbare Vorgabe. Massive Holzsockel verdecken unten 7 mm (bestätigt). Folgebranch `task/uv-original-preview-20261004`, Basis `8438bc2a4638c0a2017d98fc9670169661711a1c`. Separate geprüfte Beispielfotoressource, Hinweis nur in Bedienvorschau, direkter Klick/Enter, Fotoersatz und unveränderte Texte beim Neuladen geprüft. 152 Tests bestanden, 0 Fehler/Skips; Build 76/1; Desktop/Mobil geprüft.

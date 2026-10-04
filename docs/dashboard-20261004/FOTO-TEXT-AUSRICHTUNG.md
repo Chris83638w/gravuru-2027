@@ -1,0 +1,15 @@
+# Fotoausrichtung und Backend-Textfreigaben – 04.10.2026
+
+Aufgabenbranch `task/photo-position-20261004`, Basis `57ce8ff6a39fb5c78a6983af8f12c4bf0528b918`.
+
+Bestätigte Bedienregel: Das eigentliche Design (Dekoration, Linien, Fotomaske) bleibt fest. Kundenfotos bewegen sich innerhalb der Maske und lassen sich zoomen, ohne die Maske oder das Originalbild zu verändern. Texte und zusätzlich eingefügte Texte/Motive sollen standardmäßig frei beweglich sein. Backend-Freigaben bestimmen die Kundensicht; kein Kundenschalter zur Selbstfreigabe.
+
+Umgesetzt: grüner Foto-Auswahlrahmen entfernt; direkte Maus-/Touchbewegung, Zoom und Positionsregler, Pfeiltasten, Rücksetzen; Ausschnitt bleibt beim Größenwechsel und zugeordneten Designwechsel erhalten. Neue Uploads setzen den Ausschnitt zurück. Vorhandene Rechte für Fotoersatz gelten auch für die Ausschnittänderung. Designgeometrie, Preise, Beispieltexte und 7-mm-Sockeleinstecktiefe unverändert.
+
+Werkstatt: Designs → Kundenfelder bearbeiten → Textfeld wählen → Kundenbedienung. Auswahl „Festes Textfeld · nur Text ändern“ oder „Frei verschiebbar · Text ändern und ausrichten“. Neue Felder/Vorlagen standardmäßig beweglich, `allowMove:false` setzt eine feste Position. Bereits gespeicherte Rechte werden beim Öffnen übernommen. Vorschau und Speichern erzeugen wie bisher geprüfte Revisionen. Schriftgröße ist dadurch nicht automatisch freigegeben; die bestehenden Einzelrechte bleiben maßgeblich. Freie zusätzliche Elemente verwenden die bestehende Bedienung; keine neue Motivbibliothek freigeschaltet.
+
+Prüfung: `node --test --test-isolation=none app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs`: 157 bestanden, 0 Fehler, 0 Skips. `npm run build`: 76 verifizierte Ressourcen, 1 Modell. Ein vorheriger `npm test`-Lauf meldete Dateisubprozessfehler und gilt ausdrücklich nicht als bestanden; der vollständige abschließende Lauf wurde mit erlaubtem Loopback-Netzwerk und ohne Testprozessisolation ausgeführt. Echter Chromium-Test: Foto hochladen, Zoom, Ziehen, Tastatur, Touch, Textverschieben, feste Grafik, Größenwechsel, Rücksetzen, Fotoersatz. Backend separat mit synthetischem In-Memory-Bestand: Standard beweglich; fest speichern/neu öffnen; beweglich speichern/neu öffnen. Keine Browserfehler.
+
+Private Kundentestseite: https://gravuru-design-test-mika.gravur4you-cy.chatgpt.site/ – statischer Test, Eigentümerzugriff. Enthält den bestehenden Konfigurator und das ausdrücklich freigegebene Beispielmotiv; Texte im Pilot sind beweglich. Kein Werkstatt-Backend, keine dauerhafte Speicherung oder Bestellstrecke auf diesem Testlink. Backend-Code und Tests liegen im Projekt; Backend-Browserprüfung nur in isolierter Cloud-Laufzeit. Privatdaten, Datenbanken und Fotos nicht in GitHub aufgenommen. Keine Shopify-/Plesk-Mutation, kein Merge.
+
+Offen bleiben die bereits dokumentierten Abweichungen vom Originalmotiv (Linien/Schrift), die Produktionsstrecke und ein nutzerzugänglicher geschützter Backend-Test. Nächster Schritt: Nutzer prüft die Ausrichtung auf derselben privaten Kundentestseite.

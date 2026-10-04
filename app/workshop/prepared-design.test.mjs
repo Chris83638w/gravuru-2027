@@ -15,7 +15,7 @@ const artwork=Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="150mm"
 const pkg=()=>({schema:'gravuru-prepared-design/v1',designId:'uv-test',name:'Synthetischer Ebenentest',widthMm:150,heightMm:200,sourceSha256:'a'.repeat(64),layers:[
  {id:'customer-photo',type:'photoSlot',fieldKey:'photo-main',label:'Dein Foto',x:75,y:75,widthMm:120,heightMm:140,shape:'arch',required:true},
  {id:'decoration',type:'artwork',name:'Rahmen.svg',bytes:artwork},
- {id:'customer-names',type:'text',fieldKey:'names',label:'Namen',x:75,y:160,text:'Änne & Jörg',font:'Garamond Acryl',size:5,letterSpacing:.4,color:'#b76a45',allowColor:true}
+ {id:'customer-names',type:'text',fieldKey:'names',label:'Namen',x:75,y:160,text:'Änne & Jörg',font:'Garamond Acryl',size:5,letterSpacing:.4,color:'#b76a45',allowColor:true,allowMove:false}
 ]});
 function setup(t){
  const config=makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'b'.repeat(64));
@@ -56,7 +56,7 @@ test('customer replacement keeps arch and spacing, forbids mask/spacing tamperin
 test('re-editing customer fields retains artwork overlay order and tracking',async t=>{
  const ws=setup(t),input={expectedRevision:1,package:pkg()},p=await planPreparedDesign(ws.repository,ws.assets,ws.defaultId,input);
  const saved=await applyPreparedDesign(ws.repository,ws.assets,ws.defaultId,{...input,token:p.token}),d=saved.document.config.profile.designs[1];
- const fields=d.customerFields.map(f=>{const o=d.objects.find(o=>o.id===f.id);return {...o,label:f.label,allowColor:true,widthMm:o.w,heightMm:o.h,shape:o.photoShape};});
+ const fields=d.customerFields.map(f=>{const o=d.objects.find(o=>o.id===f.id);return {...o,label:f.label,allowColor:true,allowMove:false,widthMm:o.w,heightMm:o.h,shape:o.photoShape};});
  const req={expectedRevision:2,designId:d.id,fields,sourcePrepared:true};const review=planCustomerFields(ws.repository,ws.assets,ws.defaultId,req);
  const next=applyCustomerFields(ws.repository,ws.assets,ws.defaultId,{...req,token:review.token});
  assert.deepEqual(next.document.config.profile.designs[1].objects.map(o=>o.id),d.objects.map(o=>o.id));

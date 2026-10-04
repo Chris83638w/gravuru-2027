@@ -46,8 +46,8 @@ export function createPhotoEditor({el,r,dialog,button,files,selected,mutate,say}
       const o=selected();if(!o||o.id!==objectId||o.uxLocked||el.uxCanEdit?.(o,'replace')===false){$('[data-photo-status]').textContent='Bitte ein zum Bearbeiten freigegebenes Bild auswählen.';return;}
       const b=e.target.closest('button');b.disabled=true;
       try{const blob=await new Promise((resolve,reject)=>canvas.toBlob(v=>v?resolve(v):reject(Error('Bild konnte nicht erstellt werden.')),'image/png'));
-        const id=crypto.randomUUID(),url=URL.createObjectURL(blob);files.set(id,{file:source.file,url,originalUrl:source.originalUrl||source.url,blob,edited:true});
-        mutate(()=>{o.uxUploadId=id;if(!o.acrylicFixed){o.h=o.w*canvas.height/canvas.width;if(o.type==='photoSlot')o.photoShape=options().shape==='circle'?'circle':'rect';}});d.close();say('Bild übernommen. Das Original bleibt erhalten; Rückgängig stellt die vorige Version wieder her.');
+        const id=crypto.randomUUID(),url=URL.createObjectURL(blob);files.set(id,{file:source.file,url,originalUrl:source.originalUrl||source.url,blob,edited:true,width:canvas.width,height:canvas.height});
+        mutate(()=>{o.uxUploadId=id;delete o.uxPhotoCrop;if(!o.acrylicFixed){o.h=o.w*canvas.height/canvas.width;if(o.type==='photoSlot')o.photoShape=options().shape==='circle'?'circle':'rect';}});d.close();say('Bild übernommen. Das Original bleibt erhalten; Rückgängig stellt die vorige Version wieder her.');
       }catch(error){$('[data-photo-status]').textContent=error.message;}finally{b.disabled=false;}
     }
   });

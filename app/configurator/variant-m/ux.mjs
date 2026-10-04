@@ -1,3 +1,4 @@
+import {photoPlacement} from './photo-position-model.mjs';
 import {photoShape} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {roundEdit,roundDesign,editorTextSize} from './design-edit.mjs';
 import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -103,10 +104,11 @@ export async function installUX(el,config,legacy){
     const ink=isPrint?(o.color||'#202824'):config?getProcessingProfile(profile).ink:'#ffffff',rgb=ink.slice(1).match(/../g).map(h=>parseInt(h,16)/255),filterId='ux-logo-'+o.id;
     const tint=o.uxUploadKind==='logo'&&(!isPrint||o.uxLogoTint===true);
     const filter=tint?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="${rgb.map(n=>'0 0 0 0 '+n).join(' ')} -0.2126 -0.7152 -0.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`:'';
-    const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="${o.type==='photoSlot'?'xMidYMid slice':'xMidYMid meet'}" ${tint?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
-    const maskId='ux-mask-'+o.id,masked=['circle','ellipse','arch'].includes(o.photoShape);
+    const placement=photoPlacement(o,file);
+    const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${o.type==='photoSlot'?placement.x:-o.w/2}" y="${o.type==='photoSlot'?placement.y:-o.h/2}" width="${o.type==='photoSlot'?placement.w:o.w}" height="${o.type==='photoSlot'?placement.h:o.h}" preserveAspectRatio="xMidYMid meet" ${tint?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
+    const maskId='ux-mask-'+o.id,masked=o.type==='photoSlot';
     const picture=masked?`<defs><clipPath id="${esc(maskId)}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${esc(maskId)})">${body}</g>`:body;
-    return `<g data-object="${esc(o.id)}" transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/>${picture}${o.id===el.state.selected?`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="none" stroke="#64ae87" stroke-width=".7"/>`:''}</g>`;
+    return `<g data-object="${esc(o.id)}" transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/>${picture}${o.type!=='photoSlot'&&o.id===el.state.selected?`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="none" stroke="#64ae87" stroke-width=".7"/>`:''}</g>`;
   };
   el.objectSVG=function(o,...args){const custom=this.uxObjectSVG(o);if(custom!==undefined)return custom;let markup=originalObjectSVG.call(this,o,...args);if(!config&&o.type==='motif')markup=markup.replace(/(fill|stroke)="(?:#000000|#000|black|currentColor)"/gi,'$1="#ffffff"');return markup;};
   // Promote trusted template lines to editable design objects, without touching the source profile.
@@ -261,8 +263,8 @@ export async function installUX(el,config,legacy){
         if(prior&&!el.state.objects.includes(prior))throw Error('Das Design wurde gewechselt. Bitte das Foto erneut auswählen.');
         if(prior?.uxLocked)throw Error('Bitte den Fotobereich zuerst entsperren.');
         validateUpload(file,el.state.objects,prior?.uxUploadId);
-        const id=crypto.randomUUID();files.set(id,{file,url});url=null;
-        mutate(()=>{let o=prior;if(!o&&kind==='photo')o=el.state.objects.find(o=>o.type==='photoSlot'&&!o.uxUploadId);if(!o){o={id:el.id(),type:kind==='logo'?'image':'photoSlot',x:width/2,y:height*.35,w:Math.min(width*.3,50),h:Math.min(height*.25,50),rotation:0,customerEditable:true,uxPersonal:true};if(kind==='photo')Object.assign(o,{photoShape:'rect',fieldKey:'photo-'+crypto.randomUUID(),required:false});el.state.objects.push(o);}o.uxUploadId=id;o.uxUploadKind=kind;if(kind==='photo')o.uxPhotoBackground=o.uxPhotoBackground==='keep'?'keep':'remove';else delete o.uxPhotoBackground;o.uxHidden=false;delete o.preserveColors;el.state.selected=o.id;revealedId=o.id;});say('Bild übernommen.');
+        const id=crypto.randomUUID();files.set(id,{file,url,width:image.naturalWidth,height:image.naturalHeight});url=null;
+        mutate(()=>{let o=prior;if(!o&&kind==='photo')o=el.state.objects.find(o=>o.type==='photoSlot'&&!o.uxUploadId);if(!o){o={id:el.id(),type:kind==='logo'?'image':'photoSlot',x:width/2,y:height*.35,w:Math.min(width*.3,50),h:Math.min(height*.25,50),rotation:0,customerEditable:true,uxPersonal:true};if(kind==='photo')Object.assign(o,{photoShape:'rect',fieldKey:'photo-'+crypto.randomUUID(),required:false});el.state.objects.push(o);}o.uxUploadId=id;delete o.uxPhotoCrop;o.uxUploadKind=kind;if(kind==='photo')o.uxPhotoBackground=o.uxPhotoBackground==='keep'?'keep':'remove';else delete o.uxPhotoBackground;o.uxHidden=false;delete o.preserveColors;el.state.selected=o.id;revealedId=o.id;});say('Bild übernommen.');
       }catch(error){if(url)URL.revokeObjectURL(url);say(error.message);break;}
     }}finally{uploadPending=false;replacing=null;
       if(revealedId){showTab('upload');requestAnimationFrame(()=>{const target=all('[data-ux=select-upload]').find(b=>b.dataset.id===revealedId);if(!target)return;target.focus({preventScroll:true});target.closest('.ux-upload-row').scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});}

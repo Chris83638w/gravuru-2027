@@ -14,6 +14,7 @@ export function mapPersonalObjects(previous,next) {
     const reason=!key?'missing-field-key':sources.length>1||targets.length>1?'ambiguous-field-key':!target?'unmatched-field-key':target.customerEditable===false||target.technicalLocked===true?'read-only-field':target.uxUploadId&&target.uxUploadId!==source.uxUploadId?'occupied-field':null;
     if(reason){unmappedUploads.push({objectId:source.id,fieldKey:key,uploadId:source.uxUploadId,reason});continue;}
     Object.assign(target,{uxUploadId:source.uxUploadId,uxUploadKind:'photo',uxHidden:!!source.uxHidden});
+    if(source.uxPhotoCrop)target.uxPhotoCrop=structuredClone(source.uxPhotoCrop);
     if(['keep','remove'].includes(source.uxPhotoBackground))target.uxPhotoBackground=source.uxPhotoBackground;
   }
   // Only explicitly free customer elements travel independently of template

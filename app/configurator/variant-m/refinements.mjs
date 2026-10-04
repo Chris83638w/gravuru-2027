@@ -1,3 +1,4 @@
+import {installPhotoPosition} from './photo-position.mjs';
 import {scaleObject} from './image-processing.mjs';
 import {createPhotoEditor} from './photo-editor.mjs';
 import {installUsability} from './usability.mjs';
@@ -28,8 +29,9 @@ export async function installRefinements(api){
   const handles=document.createElement('div');handles.className='ux-selection-handles';stage.append(handles);
   handles.innerHTML=[[-1,-1],[1,-1],[-1,1],[1,1]].map(([x,y],i)=>`<button type="button" data-ux-handle="scale" data-corner="${x},${y}" aria-label="Elementgröße ziehen – Ecke ${i+1}" title="Zum Vergrößern ziehen">${icon('<path d="M5 14V5h9M5 5l14 14"/>')}</button>`).join('')+`<span class="ux-rotate-stem"></span><button type="button" data-ux-handle="rotate" aria-label="Element drehen – ziehen" title="Zum Drehen ziehen">↻</button>`+button('delete',icon('<path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/>'),'class="ux-handle-delete" aria-label="Ausgewähltes Element löschen"');
   const editPhoto=createPhotoEditor(api);
+  installPhotoPosition(api);
   function updateSelection(){
-    const o=selected(),enabled=o&&!o.uxHidden&&!o.uxLocked&&!o.acrylicFixed;
+    const o=selected(),enabled=o&&o.type!=='photoSlot'&&!o.uxHidden&&!o.uxLocked&&!o.acrylicFixed;
     handles.hidden=!enabled;
     if(enabled){const a=(o.rotation||0)*Math.PI/180,scene=$('.scene').getBoundingClientRect(),ph=stage.getBoundingClientRect();
       const point=(dx,dy)=>({x:(scene.left-ph.left)+(o.x+dx*Math.cos(a)-dy*Math.sin(a))*scene.width/el.state.width,y:(scene.top-ph.top)+(o.y+dx*Math.sin(a)+dy*Math.cos(a))*scene.height/el.state.height});
@@ -108,6 +110,6 @@ export async function installRefinements(api){
   await installUsability(api);
   await installCustomerTools(api);
   await installWorkflow(api);
-  $('.ux-uploads').nextElementSibling.textContent='Dein Bild wird direkt übernommen. Über „Bild bearbeiten“ kannst du es zuschneiden oder anpassen.';
+  $('#ux-panel-upload > p.ux-small').textContent='Dein Bild wird direkt übernommen. Über „Bild bearbeiten“ kannst du es zuschneiden oder anpassen.';
   updateSelection();
 }

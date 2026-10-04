@@ -56,7 +56,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
     const handle=event.target.closest('[data-ux-handle]');
     if(!handle&&!event.target.closest('.scene'))return;
     const right=['Delete','Backspace'].includes(event.key)?'delete':['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)?(handle?.dataset.uxHandle==='scale'?'scale':'move'):null;
-    if(right&&!can(selected(),right))blocked(event);
+    if(right&&!(selected()?.type==='photoSlot'&&selected()?.uxUploadId&&right==='move'&&can(selected(),'replace'))&&!can(selected(),right))blocked(event);
   },true);
   r.addEventListener('dblclick',event=>{const item=event.target.closest('[data-object]'),object=item&&objectById(item.dataset.object);if(object?.type==='text'&&!can(object,'content'))blocked(event);},true);
 

@@ -96,3 +96,5 @@
   .c-large-preview .stage-top>span{display:none!important}
 }
 
+
+.ux-photo-position{padding:14px 0;border-top:1px solid #ddd;margin-top:14px}.ux-photo-position[hidden]{display:none}.ux-photo-position h3{margin:0 0 8px}.ux-photo-position p{font-size:14px}.ux-photo-position label{display:flex;align-items:center;gap:8px;margin:12px 0;flex-wrap:wrap}.ux-photo-position input{flex:1;min-width:100px;min-height:32px;accent-color:#235f48}.ux-photo-position output{min-width:48px;text-align:right}

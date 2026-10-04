@@ -15,11 +15,11 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  const footer=document.createElement('div');footer.className='acryl-details';$('.ux-preview-caption').after(footer);
  const below=document.createElement('div');below.className='acryl-below';stage.after(below);
  for(const selector of ['.ux-preview-caption','.acryl-details','.ux-preview-tools']){const node=$(selector);if(node)below.append(node);}
- $('.ux-preview-help').textContent='Foto antippen zum Ersetzen. Texte und Farben rechts bearbeiten.';
+ $('.ux-preview-help').textContent='Eigenes Foto hochladen, dann direkt im Motiv verschieben. Zoom findest du unter Fotos.';
  const provenance=document.createElement('p');provenance.className='acryl-preview-note';provenance.textContent='Sockelansichten sind Visualisierungen. Gestaltung und Preis sind interaktiv.';$('.ux-preview').append(provenance);
  const rawSVG=el.uxObjectSVG;
  el.uxObjectSVG=function(o){
-   if(o.id!=='photo-main')return rawSVG(o);
+   if(o.id!=='photo-main'||files.has(o.uxUploadId))return rawSVG(o);
    if(o.uxHidden)return '';
    const asset=files.get(o.uxUploadId),url=asset?.url||ROOT+'reference.png';
    const src=String(url).replaceAll('&','&amp;').replaceAll('"','&quot;');

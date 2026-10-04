@@ -51,7 +51,10 @@ export async function planPreparedDesign(repository,assets,id,input){
    d.customerFields.push({id:o.id,label:layer.label});
   }
   d.objects.push(o);table[o.id]=rights(layer.type);
-  if(layer.type==='text')table[o.id].color=layer.allowColor;
+  if(layer.type==='text'){
+   if(layer.allowMove!==undefined&&typeof layer.allowMove!=='boolean')fail('Positionsfreigabe muss ein Wahrheitswert sein.');
+   table[o.id].color=layer.allowColor;table[o.id].move=layer.allowMove!==false;
+  }
  }
  if(!d.importedSource||!d.customerFields.length)fail('Grafik und Kundenfelder fehlen.');
  config.profile.designs.push(d);document.elementRights[d.id]=table;

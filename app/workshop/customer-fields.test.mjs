@@ -22,7 +22,7 @@ function native(){
   return config;
 }
 const fields=()=>[
-  {id:'customer-names',type:'text',label:'Namen',fieldKey:'names',text:'Anna & Lukas',font:'Garamond Acryl',size:4.5,color:'#731c19',allowColor:true,x:75,y:155},
+  {id:'customer-names',type:'text',label:'Namen',fieldKey:'names',text:'Anna & Lukas',font:'Garamond Acryl',size:4.5,color:'#731c19',allowColor:true,allowMove:false,x:75,y:155},
   {id:'customer-photo',type:'photoSlot',label:'Lieblingsfoto',fieldKey:'photo-main',x:75,y:65,widthMm:90,heightMm:80,shape:'rect',required:true}
 ];
 async function setup(t){
@@ -120,4 +120,31 @@ test('field HTTP routes require CSRF and persist fields into customer model',asy
   const current=await get(prefix);assert.equal(current.document.config.profile.designs[0].customerFields.length,2);
   assert.equal((await post(prefix+'/customer-fields/apply',{...input,token:preview.data.token})).status,409);
   assert.equal((await fetch(base+'/workshop-ui/customer-fields-ui.mjs')).status,200);
+});
+
+test('backend chooses fixed or movable text; source artwork remains locked after saving and reopening',async t=>{
+ const {repository,assets,record,input}=await setup(t);
+ input.fields[0].allowMove=true;
+ const plan=planCustomerFields(repository,assets,record.id,input);
+ const saved=applyCustomerFields(repository,assets,record.id,{...input,token:plan.token});
+ const reopened=repository.get(record.id),d=reopened.document.config.profile.designs.find(d=>d.id===input.designId);
+ assert.equal(reopened.document.elementRights[d.id]['customer-names'].move,true);
+ const changed=structuredClone(d);changed.objects.find(o=>o.id==='customer-names').x-=3;
+ assert.doesNotThrow(()=>validateProductDesign(reopened.document,changed));
+ const source=d.objects.find(o=>!o.id.startsWith('customer-'));assert.equal(reopened.document.elementRights[d.id][source.id].move,false);
+ const forbidden=structuredClone(d);forbidden.objects.find(o=>o.id===source.id).x+=3;assert.throws(()=>validateProductDesign(reopened.document,forbidden));
+ const fixed={...input,expectedRevision:saved.revision,fields:input.fields.map(f=>({...f,allowMove:false}))};
+ const checked=planCustomerFields(repository,assets,record.id,fixed),restored=applyCustomerFields(repository,assets,record.id,{...fixed,token:checked.token});
+ assert.equal(restored.document.elementRights[d.id]['customer-names'].move,false);
+ assert.throws(()=>validateProductDesign(restored.document,changed));
+ assert.throws(()=>planCustomerFields(repository,assets,record.id,{...fixed,expectedRevision:restored.revision,fields:fixed.fields.map(f=>({...f,allowMove:'yes'}))}),/Wahrheitswert/);
+});
+
+test('new text fields default to movable while an explicit fixed selection takes precedence',async t=>{
+ const {repository,assets,record,input}=await setup(t);
+ delete input.fields[0].allowMove;
+ const plan=planCustomerFields(repository,assets,record.id,input);
+ assert.equal(plan.document.elementRights[input.designId]['customer-names'].move,true);
+ input.fields[0].allowMove=false;
+ assert.equal(planCustomerFields(repository,assets,record.id,input).document.elementRights[input.designId]['customer-names'].move,false);
 });

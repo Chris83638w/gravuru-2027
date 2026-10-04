@@ -41,7 +41,7 @@ export function decorateEmptyPhotoSlots(root,objects,ink,surface,assets=[],desig
     const example=examples.find(e=>e.designId===designId&&e.slotId===slot.id);
     const markup=example?examplePhotoMarkup(slot,example.assetId):emptyPhotoMarkup(slot,ink,surface,asset);
     if(!hit||!markup||group.hasAttribute('data-ux-empty-photo-slot')||group.hasAttribute('data-ux-static-photo'))continue;
-    for(const child of [...group.children])if(child!==hit&&!child.hasAttribute('data-resize')&&child.getAttribute('stroke')!=='#16845d')child.remove();
+    for(const child of [...group.children])if(child!==hit)child.remove();
     const illustration=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+markup+'</svg>','image/svg+xml').documentElement.firstElementChild;
     group.insertBefore(group.ownerDocument.importNode(illustration,true),hit.nextSibling);
     group.setAttribute('data-ux-empty-photo-slot','true');

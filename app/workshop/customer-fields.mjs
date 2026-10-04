@@ -33,6 +33,7 @@ export function planCustomerFields(repository,assets,id,input){
     ids.add(field.id);keys.add(field.fieldKey);
     const object={id:field.id,fieldKey:field.fieldKey,type:field.type,x:field.x,y:field.y,rotation:0,customerEditable:true,templateOrigin:true};
     if(field.type==='text'){
+      if(field.allowMove!==undefined&&typeof field.allowMove!=='boolean')fail('invalid_field_right','Positionsfreigabe muss ein Wahrheitswert sein.');
       if(typeof field.allowColor!=='boolean')fail('invalid_field_right','Farbfreigabe ausdrücklich festlegen.');
       if(!Object.hasOwn(document.config.localResources.fonts,field.font))fail('invalid_field_font','Bitte eine vorhandene Schrift auswählen.');
       Object.assign(object,{text:field.text,font:field.font,size:field.size,color:field.color,bold:false,w:1,h:1,...(field.letterSpacing!==undefined?{letterSpacing:field.letterSpacing}:{})});
@@ -45,7 +46,7 @@ export function planCustomerFields(repository,assets,id,input){
     }
     design.objects.push(object);
     design.customerFields.push({id:field.id,label:field.label.trim()});
-    designRights[object.id]={...rights(object.type),color:object.type==='text'&&field.allowColor};
+    designRights[object.id]={...rights(object.type),color:object.type==='text'&&field.allowColor,move:object.type==='text'&&field.allowMove!==false};
   }
   if(design.preparedTemplate)design.objects.sort((a,b)=>{const rank=o=>{const i=originalOrder.indexOf(o.id);return i<0?originalOrder.length:i;};return rank(a)-rank(b);});
   if(document.config.localResources.photoExamples)document.config.localResources.photoExamples=document.config.localResources.photoExamples.filter(e=>e.designId!==design.id||design.objects.some(o=>o.id===e.slotId&&o.type==='photoSlot'));
@@ -61,7 +62,7 @@ export function planCustomerFields(repository,assets,id,input){
   const svg=studioSvg(checked.config.profile,current,checked.config.localResources.fonts,{motifs:checked.config.localResources.motifs,handles:false});
   const token=sha256(JSON.stringify({id,expectedRevision:input.expectedRevision,document:checked}));
   return {document:checked,designId:design.id,expectedRevision:record.revision,token,svg,fields:current.customerFields,
-    warnings:['Die Originalgrafik bleibt unverändert. Bereits enthaltene Texte und Fotos werden nicht entfernt oder automatisch editierbar.','Position und Größe sind für Kunden gesperrt. Textinhalt bzw. Fotoersatz werden ausdrücklich freigegeben.']};
+    warnings:['Die Originalgrafik bleibt unverändert. Bereits enthaltene Texte und Fotos werden nicht entfernt oder automatisch editierbar.','Die Originalgrafik und Fotomaske bleiben gesperrt. Textpositionen sind je Feld fest oder verschiebbar; Schriftgrößen bleiben vorgegeben.']};
 }
 
 export function applyCustomerFields(repository,assets,id,input){

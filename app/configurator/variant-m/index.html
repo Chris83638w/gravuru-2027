@@ -33,6 +33,11 @@
         if(!response.ok)throw Error('Produktauswahl nicht verfügbar.');
         const models=await response.json(),model=models.find(m=>m.key==='acryl');
         if(!model)throw Error('Acrylglasvorlage fehlt.');
+        if(params.get('druckexport')==='1'){
+          const session=await fetch('/api/workshop/session',{credentials:'same-origin'});
+          if(!session.ok||(await session.json()).scope!=='local-operator')throw Error('Druckexport benötigt eine Werkstattsitzung.');
+          window.GravuruOperatorExport=true;
+        }
         window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;
         const frame=document.createElement('iframe');frame.title='Acrylglasbild personalisieren';frame.src='/editor.html';
         editor.append(frame);intro.hidden=true;editor.hidden=false;status.textContent='';

@@ -1,3 +1,7 @@
+## Aktuell: PDF-Druckdownload als Prüfexport – 04.10.2026
+
+Aufgabenbranch `task/print-download-20261004`, Basis `7f6bd786ebf097ec8047d7d14ee9705d1ad7030a`. Standard nur PDF; Roland/Mimaki beim Download wählbar, optional ZIP aller verfügbaren Gestaltungsdaten und Originalfoto separat. Überdruck Farbe 0/1 mm, Weißumfang getrennt, Kontur unverändert. 165 Tests bestanden, Build 76/1, tatsächliche PDF- und Browserdownloads geprüft. [Umfang, Prüfung und Grenzen](docs/dashboard-20261004/DRUCKDOWNLOAD.md). PDF-Farbmotiv RGB/600 dpi; Kontur und Weiß Vektor. RIP-/ICC-/Produktionsfreigabe weiterhin offen. Statische private Testseite bleibt ohne dauerhafte Werkstattdaten. Keine Produktivveröffentlichung.
+
 # Aktuell: sichtbare Fotobewegung und normale Bedienelemente korrigiert – 04.10.2026
 
 Branch `task/configurator-controls-20261004`, Basis `5ddd3a1473c32da7682e47ddc6a0445472c4597e`. Die vorherige Ausrichtung wurde vor dem Rendern entfernt; der vorherige Test erkannte nur geänderte interne Werte. Jetzt bleibt der Ausschnitt im Vorschauvertrag und die tatsächlich gezeichnete Bildbewegung bei 100 % ist geprüft. Foto-/Textgriffe für Größe, Drehen und Entfernen erhalten; Design und Maske bleiben fest. Größen-/Löschfreigaben im Backend je Text einstellbar, neue Texte standardmäßig freigegeben. 159 Tests, Build 76/1, sichtbare Desktop-/Touchbedienung und Backend-Speichern/Neuöffnen bestanden. [Korrektur und Nachweis](docs/dashboard-20261004/KONFIGURATOR-BEDIENGRIFFE.md).

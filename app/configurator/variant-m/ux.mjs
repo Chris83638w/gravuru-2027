@@ -1,3 +1,4 @@
+import {installPrintExport} from './print-export.mjs';
 import {photoPlacement} from './photo-position-model.mjs';
 import {photoShape} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {roundEdit,roundDesign,editorTextSize} from './design-edit.mjs';
@@ -298,6 +299,7 @@ export async function installUX(el,config,legacy){
   addDecoration();el.normalize();startUnselected();if(config?.workbench?.embedded){showTab('text');for(const field of all('input[type=number]'))field.step='.01';if($('#ux-size'))$('#ux-size').min='1';r.addEventListener('focusout',e=>{if(e.target.type==='number'&&e.target.value!==''&&Number.isFinite(e.target.valueAsNumber))e.target.value=roundEdit(e.target.valueAsNumber);});previousCorrection=JSON.stringify(roundDesign({id:el.state.designId,objects:el.state.objects}));correctionReady=true;const s=document.createElement('style');s.textContent='.ux-cart-bar,.ux-bottom-bar,.ux-price-bar,.fk-buy-row{display:none!important}';r.append(s);}
   window.addEventListener('pagehide',()=>{for(const asset of files.values())URL.revokeObjectURL(asset.url);},{once:true});
   if(config?.workbench)window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===window.parent&&event.data?.type==='gravuru-workbench-saved')say(event.data.message);});
+  installPrintExport({el,config,files});
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   const assistant=document.createElement('script');assistant.src='/assistant.js';assistant.dataset.api=location.origin;document.body.append(assistant);
   return {showTab,update,isDirty:()=>dirty};

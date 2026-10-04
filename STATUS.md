@@ -1,5 +1,15 @@
 # Aktueller Stand – Gravuru 2027
 
+## Infrastrukturvorbereitung – 04.10.2026
+
+Branch `infra/private-runtime-preparation-20261004`: [privater zentraler Entwicklungsdienst](infra/private-runtime/README.md) vorbereitet. Vorhandene App-Module bleiben unverändert; neuer Startadapter verlangt alle drei privaten DB-Dateien außerhalb des Repositorys und verweigert einen leeren Produktbestand. Getrennte systemd-/TLS-Zugangsvorlagen sowie eine rein lesende Serverinventur liegen bei. Dies ist keine installierte gemeinsame Datenablage.
+
+Neu ausgeführt: sieben synthetische Startschutz-Prüfungen, sieben bestanden, null Fehler/Skips; JavaScript- und Shellsyntax geprüft. Die früheren 137 App-Tests und der Build wurden nicht wiederholt. Vorlagen weder auf gravuru.de installiert noch dort validiert. Keine private Datenbank gelesen oder übertragen. Keine produktiven Änderungen, kein Merge.
+
+Konkreter Blocker: Mikails Runtime hat weiterhin keine Server-Credentials oder gravuru.de-Netzwerkfreigabe und kein Konfigurations-Schreibwerkzeug. Chris' Restore-Chat ist von diesem Konto nicht abrufbar. Nächster Schritt ist ein tatsächlich eingerichteter autorisierter Servershell-/Verwaltungszugang zum vorhandenen Hosting; dann die vorbereitete Serverinventur ausführen und den privaten Dienst an die realen Voraussetzungen anpassen. Die Nutzerfreigabe für weitere Einrichtung liegt vor; technische Zugangsbereitstellung fehlt.
+
+Die inzwischen übermittelten Statusantworten ordnen Chris' drei Setup-Chats und Restore-Aufgaben derselben Chris-Konfiguration zu. Sie unterscheidet sich von Mikails Konfiguration; dieser Unterschied ist kein Fehlerbeweis. Keine neue Umgebung allein zum Angleichen von IDs anlegen.
+
 ## Aktueller Cloud-Übergabestand – 04.10.2026
 
 **Cloud-Neustart/Quellabnahme, isolierter Cloud-Restore und GitHub-Leseübergabe bestanden. Vollständige Migration und Produktion noch nicht freigegeben. Produktentwicklung bis zum Migrationsabschluss pausiert.**

@@ -1,0 +1,45 @@
+# TEMPLATE ONLY; not valid until every placeholder is replaced and nginx -t passes.
+# This belongs to a NEW private TLS vhost, not an existing storefront/Plesk vhost.
+# map directives belong in nginx's http context.
+map $http_origin $gravuru_origin_allowed {
+    default 0;
+    "" 1;
+    "https://PRIVATE_HOST" 1;
+}
+map $http_sec_fetch_site $gravuru_cross_site {
+    default 0;
+    "cross-site" 1;
+}
+
+server {
+    listen 443 ssl;
+    server_name PRIVATE_HOST;
+    ssl_certificate TLS_CERTIFICATE_PATH;
+    ssl_certificate_key TLS_PRIVATE_KEY_PATH;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    # Distinct credentials for Mikail and Chris, set privately by the operator.
+    auth_basic "Gravuru private development";
+    auth_basic_user_file PRIVATE_HTPASSWD_PATH;
+    # Avoid recording configuration IDs, request arguments or private content.
+    access_log off;
+    client_max_body_size 24m;
+
+    if ($host != "PRIVATE_HOST") { return 403; }
+    if ($gravuru_origin_allowed = 0) { return 403; }
+    if ($gravuru_cross_site = 1) { return 403; }
+
+    location / {
+        proxy_pass http://127.0.0.1:8961;
+        # The original external Origin is validated above BEFORE translation.
+        proxy_set_header Host "127.0.0.1:8961";
+        proxy_set_header Origin "http://127.0.0.1:8961";
+        # Basic credentials stop at the access gateway; CSRF is forwarded unchanged.
+        proxy_set_header Authorization "";
+        proxy_set_header Proxy-Authorization "";
+        proxy_set_header Sec-Fetch-Site $http_sec_fetch_site;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_cache off;
+    }
+}

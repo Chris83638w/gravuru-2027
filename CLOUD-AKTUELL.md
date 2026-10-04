@@ -1,5 +1,11 @@
 # Gravuru 2027 – aktueller Cloud-Einstieg
 
+## Nächste Einrichtung konkret vorbereitet – 04.10.2026
+
+Die [Infrastrukturvorbereitung](infra/private-runtime/README.md) auf `infra/private-runtime-preparation-20261004` enthält den privaten Startadapter, Dienst-/Zugangsvorlagen und lesende Serverinventur. Sie ist nicht installiert. Sieben neue synthetische Startschutz-Prüfungen bestanden; keine Wiederholung der 137 App-Tests oder des Builds. Der Zugang zur Serververwaltung fehlt in Mikails Aufgabe weiterhin. Nach Bereitstellung dieses Zugangs folgt die Serverinventur, danach die private Installation und gemeinsame Daten-/Browserabnahme. Produktentwicklung bleibt bis zum Migrationsabschluss pausiert.
+
+Chris' Setup- und Restore-Chats gehören laut übermittelten Statusantworten zu seiner Konfiguration; diese muss nicht dieselbe ID wie Mikails Cloud-Aufgabe haben. Ein solcher ID-Unterschied macht die bestandenen Nachweise nicht ungültig.
+
 ## Aktueller Cloud-Übergabestand – 04.10.2026
 
 **Cloud-Neustart/Quellabnahme, isolierter Cloud-Restore und GitHub-Leseübergabe bestanden. Vollständige Migration und Produktion noch nicht freigegeben. Produktentwicklung bis zum Migrationsabschluss pausiert.**

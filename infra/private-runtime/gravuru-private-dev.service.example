@@ -1,0 +1,29 @@
+# TEMPLATE ONLY. Paths, service account and executable locations require server inspection.
+# Do not install on a production application or reuse its writable state.
+[Unit]
+Description=Gravuru private shared development runtime
+After=network.target
+
+[Service]
+Type=simple
+User=gravuru-dev
+Group=gravuru-dev
+WorkingDirectory=/opt/gravuru-2027/current
+Environment=NODE_ENV=development
+Environment=GRAVURU_DATA_DIR=/var/lib/gravuru-2027-dev/state
+Environment=GRAVURU_PORT=8961
+Environment=GRAVURU_PYTHON=/opt/gravuru-2027/venv/bin/python3
+ExecStart=/usr/bin/flock --no-fork --nonblock /var/lib/gravuru-2027-dev/state/.runtime.lock /usr/bin/node /opt/gravuru-2027/current/infra/private-runtime/start.mjs
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/gravuru-2027-dev/state
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

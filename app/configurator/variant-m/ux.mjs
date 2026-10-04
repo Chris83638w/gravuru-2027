@@ -1,3 +1,4 @@
+import {installPreviewFeedback} from './preview-feedback.mjs';
 import {installFirstTextFocus} from './first-text-focus.mjs';
 import {installPrintExport} from './print-export.mjs';
 import {photoPlacement} from './photo-position-model.mjs';
@@ -91,7 +92,7 @@ export async function installUX(el,config,legacy){
   el.revealEditor=function(o){if(o?.type==='text')showTab('text');else if(o?.type==='photoSlot'||o?.uxUploadId)showTab('upload');};
   el.guidedGo=function(step){showTab(({1:'design',2:'text',3:'motif',4:'options'})[step]||'text');};
   function mutate(fn){el.record();fn();dirty=true;el.state.showHero=false;el.normalize();el.sync();}
-  function changeObject(key,value){if(!selectable())return say('Bitte das Element zuerst in „Ebenenverwaltung“ einblenden und entsperren.');const right=rightForProperty(key);if(right&&el.uxCanEdit?.(selected(),right)===false)return say('Diese Änderung ist für dieses Vorlagenelement nicht freigegeben.');mutate(()=>{const o=selected();if(key==='color'&&isPrint)applyPrintColor(o,value);else o[key]=config?.workbench?.embedded&&typeof value==='number'?roundEdit(value):value;if(o.type==='text'&&key==='size')o.size=config?.workbench?.embedded?editorTextSize(value):designTextSize(value,textScale());});}
+  function changeObject(key,value){if(!selectable())return say('Bitte das Element zuerst in „Ebenenverwaltung“ einblenden und entsperren.');const right=rightForProperty(key);if(right&&el.uxCanEdit?.(selected(),right)===false)return say('Diese Änderung ist für dieses Vorlagenelement nicht freigegeben.');mutate(()=>{const o=selected();if(key==='color'&&isPrint)applyPrintColor(o,value);else o[key]=config?.workbench?.embedded&&typeof value==='number'?roundEdit(value):value;if(o.type==='text'&&key==='size')o.size=config?.workbench?.embedded?editorTextSize(value):designTextSize(Math.round(value),textScale());});}
   const originalNormalize=el.normalize;el.normalize=function(...args){const requested=new Map(this.state.objects.filter(o=>o.type==='text').map(o=>[o.id,{size:el.uxCanEdit?.(o,'scale')===false?o.size:config?.workbench?.embedded?editorTextSize(o.size):designTextSize(o.size*textScale(),textScale()),x:o.x,y:o.y}]));const v=originalNormalize.apply(this,args);for(const o of this.state.objects)if(o.type==='text'){Object.assign(o,requested.get(o.id));try{measureText(o,this.fontData);}catch{}}return v;};
   const originalPhotoLayout=el.photoLayout;el.photoLayout=function(o){return o?.technicalLocked?originalPhotoLayout.call(this,o):null;};
   const originalObjectSVG=el.objectSVG;
@@ -302,6 +303,7 @@ export async function installUX(el,config,legacy){
   window.addEventListener('pagehide',()=>{for(const asset of files.values())URL.revokeObjectURL(asset.url);},{once:true});
   if(config?.workbench)window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===window.parent&&event.data?.type==='gravuru-workbench-saved')say(event.data.message);});
   installPrintExport({el,config,files});
+  installPreviewFeedback({el,r});
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   const assistant=document.createElement('script');assistant.src='/assistant.js';assistant.dataset.api=location.origin;document.body.append(assistant);
   return {showTab,update,isDirty:()=>dirty};

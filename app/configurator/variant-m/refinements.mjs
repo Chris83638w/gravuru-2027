@@ -1,3 +1,4 @@
+import {completePreviewMini} from './preview-feedback.mjs';
 import {installDirectEditing} from './direct-editing.mjs';
 import {installPhotoPosition} from './photo-position.mjs';
 import {scaleObject} from './image-processing.mjs';
@@ -41,8 +42,8 @@ export async function installRefinements(api){
       const gap=36*el.state.width/Math.max(1,scene.width),p=point(0,-o.h/2-gap);const h=handles.querySelector('[data-ux-handle=rotate]');h.style.left=p.x+'px';h.style.top=p.y+'px';
       const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=d.x+'px';remove.style.top=d.y+'px';
     }
-    // Clone only displayed SVG markup. No additional media requests or profile loading.
-    const scene=$('.scene');if(scene){const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('role');copy.removeAttribute('data-ux-namespace');copy.setAttribute('aria-hidden','true');copy.querySelectorAll('[data-object]').forEach(n=>n.removeAttribute('data-object'));$('[data-mini-art]').replaceChildren(copy);}
+    // Reuse the displayed scene and existing image URLs; no profile loading.
+    const scene=$('.scene');if(scene){const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('role');copy.removeAttribute('data-ux-namespace');copy.setAttribute('aria-hidden','true');copy.querySelectorAll('[data-object]').forEach(n=>n.removeAttribute('data-object'));$('[data-mini-art]').replaceChildren(api.config?.acrylic&&!mini.hidden?completePreviewMini(stage,$('[data-mini-art]')):copy);}
     for(const row of all('.ux-upload-row')){const id=row.querySelector('[data-ux=replace-upload]')?.dataset.id;if(id&&!row.querySelector('[data-ux=edit-upload]'))row.querySelector('.ux-upload-actions').insertAdjacentHTML('afterbegin',button('edit-upload','Bild bearbeiten',`data-id="${esc(id)}"`));}
   }
   const render=el.render;el.render=function(...args){const result=render.apply(this,args);updateSelection();return result;};
@@ -84,7 +85,7 @@ export async function installRefinements(api){
       if(key==='object-smaller'||key==='object-bigger')mutate(()=>Object.assign(o,scaleObject(o,key==='object-bigger'?1.1:1/1.1,el.uxTextScale?.()||1)));
     }
   });
-  function checkMini(){mini.hidden=!matchMedia('(max-width:900px)').matches||stage.getBoundingClientRect().bottom>72||$('.c-large-preview').open;$('.ux-shell').dataset.miniVisible=String(!mini.hidden);}
+  function checkMini(){const before=mini.hidden;mini.hidden=!matchMedia('(max-width:900px)').matches||stage.getBoundingClientRect().bottom>72||$('.c-large-preview').open;$('.ux-shell').dataset.miniVisible=String(!mini.hidden);if(before&&!mini.hidden)updateSelection();}
   window.addEventListener('scroll',checkMini,{passive:true});window.addEventListener('resize',()=>{updateSelection();checkMini();});new ResizeObserver(()=>{updateSelection();checkMini();}).observe(stage);mini.hidden=true;
   $('.c-large-preview').addEventListener('close',checkMini);
   // Keep the same exact option values and native change handlers.

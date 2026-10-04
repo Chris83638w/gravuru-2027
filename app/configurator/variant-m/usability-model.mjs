@@ -4,7 +4,7 @@ export function textSizeMm(value) {
 }
 
 export function physicalTextSize(object, physicalScale=1) {
-  return Math.round(object.size*physicalScale*100)/100;
+  return Math.round(object.size*physicalScale);
 }
 
 export function designTextSize(physicalMm, physicalScale=1) {

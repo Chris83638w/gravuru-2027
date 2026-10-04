@@ -1,3 +1,7 @@
+## 04.10.2026 – Vollständige Vorschau und ganze Schrift-mm
+
+Aufgabenbranch `task/cmyk-300dpi-20261004`, Basis `8a4da028feb1f5df49b3c0e9686e994f04361b73`. Große obere linke Mobilvorschau mit kompletter Acrylszene, proportional/bündig; kurzer Hinweisrahmen nur bei ersten Änderungen. Ganzzahlige Kundenschriftgröße (8,7 → 9 mm), keine Änderung des Plattenformats. 16 gezielte Tests / 0 Fehler / 0 Skips, Build 76/1; mobile Browserprüfung einschließlich kompakter Textbearbeitung erfolgreich. Details und historische CMYK-Prüfung: docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md. Nächster Schritt: Nutzerprüfung auf bestehender privater Testseite. Kein neuer RIP-/Corel-Nachweis.
+
 ## Aktuell: CMYK / 300 dpi und kompakte Direktbearbeitung (04.10.2026)
 
 Standard-PDF: echtes DeviceCMYK / 300 dpi, optional 600 dpi mit Feinheits-Hinweis. Kompakte Textleiste statt großem Formular. Masterbegriffe Motiv/Design in AGENTS.md festgehalten. 169 Tests bestanden, Build 76/1; tatsächliche CMYK-Downloads und Desktop-/Mobilbedienung geprüft. Keine druckerspezifische ICC-Konvertierung. [Nachweis](docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md).

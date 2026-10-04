@@ -17,3 +17,7 @@ Aufgabenbranch `task/master-rules-print-20261004`, Basis `7a533ab133cf7a4a087498
 Browserexport: randfreies, vollflächiges und nur rechts randberührendes synthetisches Motiv geprüft. Beim rechten Randdruck bleibt links die Alpha-Maske leer. Die tatsächlich erzeugte neue Roland-PDF des Designbeispiels hat 150 × 200 mm; isolierte Weißebene an freien Stellen Alpha 0 und im Foto Alpha 255. Weißebene ohne `W*`-Seitenclip. PNG-/PDF-Bildschirmdarstellungen allein wurden nicht als RIP-Nachweis gewertet.
 
 **CorelDRAW-Import weiterhin NICHT AUSGEFÜHRT:** Nutzer meldete dort Vollflächenweiß. Cloud-Dateiprüfung reproduziert kein Vollflächenweiß, Ursache im konkreten Corel-Import bisher unbestätigt. Die geänderte PDF-Struktur ist anhand der Datei geprüft, aber keine behauptete Corel-Kompatibilitätsfreigabe. Nächster Vergleich: Weißkanal-Vorschau und neu heruntergeladene PDF in CorelDRAW. Farbmotiv bleibt RGB/600-dpi-Raster, Weiß/Kontur Vektoren; RIP/ICC/Produktionsfreigabe offen.
+
+## Ergänzung: Vorschau und Texteingabe
+
+Vollständiges Design oben links wie im Konfigurator, mit Foto/Texten/Sockel. Vorschau groß und Hinweisrahmen bündig; bei den ersten Änderungen kurz aufleuchten, nicht dauerhaft. Schriftgrößen im Kundeneditor nur in ganzen mm; Plattenformat bleibt unabhängig. Aktueller CMYK-/300-dpi-Stand und Prüfungen: [CMYK-DIREKTBEARBEITUNG.md](CMYK-DIREKTBEARBEITUNG.md); ältere RGB-/600-dpi-Aussagen oben sind historisch.

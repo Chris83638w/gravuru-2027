@@ -143,3 +143,11 @@ test('example photo shows upload hint only in preview markup with the original a
  assert.match(markup,/<clipPath[^>]*><path d="M/);assert.match(markup,/\/api\/workshop\/design-assets\/[a-f0-9]{64}\/preview.svg/);
  assert.equal(examplePhotoMarkup({w:10,h:10},'https://foreign.invalid/photo'),'');
 });
+
+test('customer size entry rounds mm without changing the plate or other text properties',async()=>{
+ const {env,object,input,r}=textEnvironment();env.el.state.width=150;env.el.state.height=200;
+ vm.runInContext(line('ux.mjs',"const t=e.target,key=t.id==='ux-size'"),env);
+ input.value='8.7';await dispatch(r,'input',inertEvent(input));
+ assert.equal(object.size,9/(4/3));assert.equal(physicalTextSize(object,4/3),9);
+ assert.deepEqual([env.el.state.width,env.el.state.height,object.text,object.x,object.y],[150,200,'Anna',30,20]);
+});

@@ -4,6 +4,10 @@ Stand 04.10.2026. Aktueller Nutzerauftrag: die vorhandenen rund 18 UV-Druck-Desi
 
 Codebasis: `Chris83638w/gravuru-2027`, Commit `03fc8aa74df2714ae523fd8208ae2ad3d7327cfa`. Aufgabenbranch `task/uv-design-pilot-20261004`. Vorhandene Kundenfeldbearbeitung, Produktrevisionen, Importprüfung, Preise und Konfigurator wiederverwenden. Keine alte Pipeline übernehmen und keine privaten Quelldateien in Git aufnehmen.
 
+## Aktuelle Nutzerkorrektur: Originalfoto, Beispielnamen und 7 mm
+
+Das Beispielfoto bleibt als separate Vorschau mit direktem Uploadhinweis erhalten; die unveränderten Originaltexte sind Vorgaben, weiterhin personalisierbar. Massiver Holzsockel verdeckt unten 7 mm. [Korrektur und tatsächliche Grenzen](UV-ORIGINAL-KORREKTUR.md). Die folgenden Pilotnachweise bleiben historisch gültig; die visuelle 1:1-Abnahme ist ausdrücklich noch offen. Keine Serienvorbereitung vor diesem Abgleich.
+
 ## Jetzt direkt wiedergefundene Quellen
 
 Die historische Referenz liegt in `Chris83638w/gravuru-shopify`, Commit `084412b43204cf080764a0ef0becea8c251713fd`, Verzeichnis `PROJECT/ACRYLGLAS-150X200-20260929`. Dieses Repository ist nur Herkunft der Designs, kein Wechsel des Entwicklungsprojekts.

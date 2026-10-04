@@ -41,6 +41,12 @@ export async function planPreparedDesign(repository,assets,id,input){
    }else{
     if(!config.photo.enabled)fail('Fotofunktion nicht freigegeben.');
     Object.assign(o,{w:layer.widthMm*scale,h:layer.heightMm*scale,photoShape:layer.shape,required:layer.required,acrylicFixed:true});
+    if(layer.example){
+     const a=await assets.import(layer.example);
+     if(a.format!=='svg'||Math.abs(a.widthMm-layer.widthMm)>.001||Math.abs(a.heightMm-layer.heightMm)>.001)fail('Beispielfoto muss zur unveränderten Fotomaske passen.');
+     config.localResources.photoExamples??=[];
+     config.localResources.photoExamples.push({designId:d.id,slotId:o.id,assetId:a.assetId});
+    }
    }
    d.customerFields.push({id:o.id,label:layer.label});
   }
@@ -53,7 +59,7 @@ export async function planPreparedDesign(repository,assets,id,input){
  const checked=validateProductDocument(document);assets.validateDocument(checked);
  const design=checked.config.profile.designs.find(v=>v.id===d.id);validateProductDesign(checked,design);
  const token=sha256(JSON.stringify({id,expectedRevision:input.expectedRevision,document:checked}));
- return {document:checked,token,designId:d.id,name:d.name,fields:d.customerFields.length,layers:d.objects.length,scale,svg:studioSvg(checked.config.profile,design,config.localResources.fonts,{motifs:config.localResources.motifs,handles:false}),warnings:['Neues Design: bestehende Designs und Preise bleiben erhalten.','Das Beispielfoto ist nicht enthalten. Kunden laden ihr eigenes Foto hoch.','Vorbereitete Ebenen werden übernommen. Dies ist keine automatische Zerlegung beliebiger Bilder oder PDFs.','RGB-Vorschau: keine freigegebene Druckdatei.']};
+ return {document:checked,token,designId:d.id,name:d.name,fields:d.customerFields.length,layers:d.objects.length,scale,svg:studioSvg(checked.config.profile,design,config.localResources.fonts,{motifs:config.localResources.motifs,handles:false}),warnings:['Neues Design: bestehende Designs und Preise bleiben erhalten.',config.localResources.photoExamples?.some(e=>e.designId===d.id)?'Beispielfoto bleibt als anklickbare Vorschau. Kunden müssen ihr eigenes Foto hochladen.':'Kein Beispielfoto enthalten. Kunden laden ihr eigenes Foto hoch.','Vorbereitete Ebenen werden übernommen. Dies ist keine automatische Zerlegung beliebiger Bilder oder PDFs.','RGB-Vorschau: keine freigegebene Druckdatei.']};
 }
 export async function applyPreparedDesign(repository,assets,id,input){
  const plan=await planPreparedDesign(repository,assets,id,input);

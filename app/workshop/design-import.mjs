@@ -18,6 +18,7 @@ export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible
   design.importedSource={assetId,originalName,fit,scale};
   document.elementRights[designId]={[object.id]:{content:false,color:false,replace:false,move:false,scale:false,delete:false}};
   if(config.localResources.photoPlaceholders)config.localResources.photoPlaceholders=config.localResources.photoPlaceholders.filter(a=>a.designId!==designId);
+  if(config.localResources.photoExamples)config.localResources.photoExamples=config.localResources.photoExamples.filter(a=>a.designId!==designId);
   const used=new Set(config.profile.designs.flatMap(d=>d.objects.filter(o=>o.type==='motif').map(o=>o.motif)));
   config.localResources.motifs=config.localResources.motifs.filter(m=>!m.artwork||used.has(m.key)).map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
   if(!config.localResources.motifs.some(m=>m.key===object.motif))config.localResources.motifs.push(assets.resource(assetId));

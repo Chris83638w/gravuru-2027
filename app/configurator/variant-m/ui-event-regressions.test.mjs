@@ -8,7 +8,7 @@ import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {prepareConfig,validateDesign} from './contract.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {rightForProperty} from './element-rights.mjs';
-import {emptyPhotoMarkup,decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
+import {emptyPhotoMarkup,decorateEmptyPhotoSlots,examplePhotoMarkup} from './photo-placeholder.mjs';
 
 // Execute the actual registered handlers from the presentation modules with
 // deterministic DOM ports. This covers event routing without claiming browser QA.
@@ -135,4 +135,11 @@ test('imported acrylic photo: actual upload handler replaces semantic slot twice
  await vm.runInContext('acceptFiles([{}],"photo",null)',env);const first=slot.uxUploadId;
  await vm.runInContext('acceptFiles([{}],"photo","customer-photo-main")',env);
  assert.equal(objects.length,1);assert.notEqual(slot.uxUploadId,first);assert.equal(slot.photoShape,'arch');assert.equal(slot.w,120);
+});
+
+test('example photo shows upload hint only in preview markup with the original arch mask',()=>{
+ const markup=examplePhotoMarkup({id:'customer-photo',w:129,h:139,photoShape:'arch'},'a'.repeat(64));
+ assert.match(markup,/data-preview-only="true"/);assert.match(markup,/eigenes Foto hochladen/);
+ assert.match(markup,/<clipPath[^>]*><path d="M/);assert.match(markup,/\/api\/workshop\/design-assets\/[a-f0-9]{64}\/preview.svg/);
+ assert.equal(examplePhotoMarkup({w:10,h:10},'https://foreign.invalid/photo'),'');
 });

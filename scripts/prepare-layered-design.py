@@ -2,6 +2,7 @@
 
 A small explicit mapping defines text roles/fonts and the photo rectangle. The
 parser checks that the selected layer has the expected canonical arch mask.
+The sample photo is preserved separately for preview, never as a customer upload.
 Unmapped text/photos, transforms, scripts and unsupported masks fail closed.
 No source scripts are executed. No generated package belongs in Git.
 """
@@ -48,7 +49,12 @@ def prepare(source,mapping):
    r=pw/2;k=r*.5522847498307936
    expected=[x,y+ph,y+r,x,y+r-k,x+r-k,y,x+r,y,x+r+k,y,x+pw,y+r-k,x+pw,y+r,y+ph]
    c.require(commands==list('MVCCVZ') and len(values)==len(expected) and all(abs(a-b)<.002 for a,b in zip(values,expected)),'Die Bogenmaske weicht vom freigegebenen Format ab.')
-   layers.append(dict(id='customer-'+photo['fieldKey'],type='photoSlot',label=photo['label'],fieldKey=photo['fieldKey'],x=x+pw/2,y=y+ph/2,widthMm=pw,heightMm=ph,shape='arch',required=True))
+   # Keep the supplied example as a separate preview asset. It is never a customer upload.
+   example=ET.Element(NS+'svg',{'width':str(pw)+'mm','height':str(ph)+'mm','viewBox':f'{x} {y} {pw} {ph}'})
+   defs=ET.SubElement(example,NS+'defs');defs.append(copy.deepcopy(mask))
+   picture=ET.SubElement(example,NS+'g',{'clip-path':clip});picture.append(copy.deepcopy(image))
+   preview=c.sanitize_svg(ET.tostring(example))['svg']
+   layers.append(dict(id='customer-'+photo['fieldKey'],type='photoSlot',label=photo['label'],fieldKey=photo['fieldKey'],x=x+pw/2,y=y+ph/2,widthMm=pw,heightMm=ph,shape='arch',required=True,example={'name':'Beispielfoto.svg','bytes':base64.b64encode(preview.encode()).decode()}))
   elif layer_id in texts:
    found.add(layer_id);cfg=texts[layer_id]
    c.require(len(layer)==1 and layer[0].tag==NS+'text' and not len(layer[0]),'Textfeld muss ein einfacher Text sein.')

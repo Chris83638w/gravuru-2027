@@ -72,7 +72,7 @@ test('prepared HTTP route enforces CSRF, reviews and persists a new design',asyn
  assert.equal((await send('apply',{...data,token:plan.token})).status,200);assert.equal(ws.repository.get(ws.defaultId).revision,2);
 });
 
-test('layer preparer excludes sample photo bytes and rejects an unassigned text or altered arch',async()=>{
+test('layer preparer preserves sample in a separate preview and rejects an unassigned text or altered arch',async()=>{
  const {spawnSync}=await import('node:child_process');
  const script=String.raw`
 import importlib.util,tempfile,json,base64,struct,zlib
@@ -86,7 +86,10 @@ mapping={'designId':'test','name':'Test','fonts':{'Garamond':'Garamond Acryl'},'
 with tempfile.TemporaryDirectory() as tmp:
  p=Path(tmp)/'source.svg';p.write_text(svg);result=m.prepare(p,mapping)
  assert len(result['layers'])==3 and result['layers'][0]['shape']=='arch'
+ example=result['layers'][0].pop('example')
+ assert photo in base64.b64decode(example['bytes']).decode()
  assert photo not in json.dumps(result)
+ assert 'uxUploadId' not in json.dumps(result)
  for invalid in [svg.replace('33.877','30'),svg.replace('id="names"','id="unmapped"'),svg.replace('<g id="art">','<g id="art" transform="rotate(10)">')]:
   p.write_text(invalid)
   try:m.prepare(p,mapping)
@@ -95,4 +98,21 @@ with tempfile.TemporaryDirectory() as tmp:
 `;
  const result=spawnSync(process.env.GRAVURU_PYTHON||'python3',['-c',script],{cwd:new URL('../../',import.meta.url),encoding:'utf8'});
  assert.equal(result.status,0,result.stderr);
+});
+
+test('example is a separate checked resource, not a customer upload; original text stays intact',async t=>{
+ const ws=setup(t),p=pkg();
+ p.layers[0].example={name:'example.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="120mm" height="140mm"><path d="M10 10H100V120Z" fill="#123456"/></svg>').toString('base64')};
+ p.layers[2].text='Pia & Rafael';
+ const req={expectedRevision:1,package:p},plan=await planPreparedDesign(ws.repository,ws.assets,ws.defaultId,req);
+ const saved=await applyPreparedDesign(ws.repository,ws.assets,ws.defaultId,{...req,token:plan.token});
+ const d=saved.document.config.profile.designs[1],example=saved.document.config.localResources.photoExamples[0];
+ assert.equal(d.objects[2].text,'Pia & Rafael');assert.equal(d.objects[0].uxUploadId,undefined);
+ assert.equal(example.slotId,d.objects[0].id);assert.equal(ws.assets.get(example.assetId).widthMm,120);
+ assert.equal(saved.document.elementRights[d.id][d.objects[2].id].content,true);
+ const bad=structuredClone(saved.document);bad.config.localResources.photoExamples[0].assetId='e'.repeat(64);
+ assert.throws(()=>ws.assets.validateDocument(bad),/nicht gefunden/);
+ const {replaceDesignArtwork}=await import('./design-import.mjs');
+ const replaced=replaceDesignArtwork(saved.document,ws.assets,{designId:d.id,assetId:d.importedSource.assetId,fit:'visible',originalName:'Test.svg'});
+ assert.deepEqual(replaced.document.config.localResources.photoExamples,[]);
 });

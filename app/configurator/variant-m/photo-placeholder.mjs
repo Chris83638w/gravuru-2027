@@ -1,4 +1,11 @@
+import {photoShape} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 // Editor-only illustration. Never add this markup to a design or export source.
+export function examplePhotoMarkup(slot,assetId){
+  if(!/^[a-f0-9]{64}$/.test(assetId||'')||!(slot.w>0&&slot.h>0))return '';
+  const {w,h}=slot,clip='photo-example-'+String(slot.id).replace(/[^a-zA-Z0-9_-]/g,'_');
+  const buttonWidth=Math.min(w*.88,98),font=Math.min(4,w/27),y=-h*.24;
+  return `<g data-preview-only="true" data-ux-placeholder="true"><defs><clipPath id="${clip}">${photoShape(slot)}/></clipPath></defs><g clip-path="url(#${clip})"><image href="/api/workshop/design-assets/${assetId}/preview.svg" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="none"/><g transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="-7" width="${buttonWidth}" height="14" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" y="-.7" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">Hier tippen &amp; eigenes Foto hochladen</text><text text-anchor="middle" y="4" font-family="Arial,sans-serif" font-size="${font*.78}" fill="#52675c">Beispielfoto ersetzen</text></g></g></g>`;
+}
 export function emptyPhotoMarkup(slot, ink, surface, asset) {
   const w=Number(slot.w),h=Number(slot.h);
   if(!(w>0&&h>0)||!/^#[0-9a-f]{6}$/i.test(ink)||!/^#[0-9a-f]{6}$/i.test(surface))return '';
@@ -26,12 +33,13 @@ export function emptyPhotoMarkup(slot, ink, surface, asset) {
   </svg>`;
 }
 
-export function decorateEmptyPhotoSlots(root,objects,ink,surface,assets=[],designId=''){
+export function decorateEmptyPhotoSlots(root,objects,ink,surface,assets=[],designId='',examples=[]){
   for(const slot of objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId&&!o.uxHidden)){
     const group=root.querySelector('[data-object="'+CSS.escape(slot.id)+'"]');
     const hit=group?.querySelector(':scope > rect[fill="transparent"]');
     const asset=assets.find(a=>a.designId===designId&&a.slotId===slot.id);
-    const markup=emptyPhotoMarkup(slot,ink,surface,asset);
+    const example=examples.find(e=>e.designId===designId&&e.slotId===slot.id);
+    const markup=example?examplePhotoMarkup(slot,example.assetId):emptyPhotoMarkup(slot,ink,surface,asset);
     if(!hit||!markup||group.hasAttribute('data-ux-empty-photo-slot')||group.hasAttribute('data-ux-static-photo'))continue;
     for(const child of [...group.children])if(child!==hit&&!child.hasAttribute('data-resize')&&child.getAttribute('stroke')!=='#16845d')child.remove();
     const illustration=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+markup+'</svg>','image/svg+xml').documentElement.firstElementChild;

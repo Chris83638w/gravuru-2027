@@ -1,3 +1,9 @@
+# Aktuell: Beispielbild und Originalvorgaben korrigiert – 04.10.2026
+
+Nutzerkorrektur: Foto mit direktem Uploadhinweis erhalten; Pia & Rafael bleiben als vom Kunden änderbare Vorgabe. Massive Holzsockel verdecken unten 7 mm (bestätigt). Folgebranch `task/uv-original-preview-20261004`, Basis `8438bc2a4638c0a2017d98fc9670169661711a1c`. Separate geprüfte Beispielfotoressource, Hinweis nur in Bedienvorschau, direkter Klick/Enter, Fotoersatz und unveränderte Texte beim Neuladen geprüft. 152 Tests bestanden, 0 Fehler/Skips; Build 76/1; Desktop/Mobil geprüft.
+
+Die verlangte 1:1-Originaldarstellung ist noch NICHT bestanden: Linien/Schrift weichen ab, ZIP-Basis ist laut eigener Masteranleitung eine Rekonstruktion; bisherige 93-%-Einpassung bleibt. Vor weiteren Designs originale bearbeitbare Gestaltung/Schrift zum Mockup klären. Kein neues ZIP pauschal verlangen, keine Serienfreigabe behaupten. [Nachweis und präzise Lücke](docs/dashboard-20261004/UV-ORIGINAL-KORREKTUR.md). Die folgenden Ergebnisse sind historische Zwischenstände.
+
 # Aktuell: UV-Vorlagenimport umgesetzt – 04.10.2026
 
 Aufgabenbranch `task/uv-design-pilot-20261004`, auf `51841fda34a8e49f5f3d3634e77ef965720cdef7`. Nutzer-Masterpaket geprüft (17 Manifestdateien). Pilot „Unser kleines Glück“: neun Ebenen, vier Texte plus Bogenfoto. Wiederholbare Vorbereitung, zusätzlicher JSON-Import, unveränderte Bestandsdesigns/Preise, Fotoaustausch ohne Dublette und gespeicherte Kundenfelder. 150 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; echte Browserprüfung einschließlich Größenwechsel und serverseitiger Kundenvalidierung bestanden. Dateien, Befehle und Grenzen: [UV-PILOT-PRUEFUNG.md](docs/dashboard-20261004/UV-PILOT-PRUEFUNG.md).

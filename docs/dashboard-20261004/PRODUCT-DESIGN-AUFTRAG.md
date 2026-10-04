@@ -2,6 +2,10 @@
 
 Vorbereitet am 04.10.2026. **Funktionspilot bestanden, Serienauftrag noch nicht gestartet:** Der Import und die Kundenbearbeitung von „18 – Unser kleines Glück“ sind geprüft; Druckausgabe und visuelle Nutzerfreigabe sind weiterhin offen. Product Design unterstützt die visuelle Arbeit; es garantiert weder automatische Ebenenextraktion noch druckfertige Separationen. Die technische Übernahme und Abnahme verbleiben in der bestehenden Mikail-Codex-Cloud-Aufgabe.
 
+## Aktuelle Sperre für die Serienvorbereitung
+
+Nutzerkorrektur: 1:1 zum Originalmockup, Beispielbild und ursprüngliche Beispielnamen erhalten; Foto per Klick austauschen, Texte vom Kunden ändern. Untere 7 mm beim massiven Holzsockel verdeckt. Der aktuelle Funktionspilot erfüllt noch keine visuelle 1:1-Abnahme. ZIP-Basis enthält bereits rekonstruierte Teile und eine ähnliche Ersatzschrift; deshalb vor dem nächsten Design zuerst diese Abweichungen klären. Siehe [UV-ORIGINAL-KORREKTUR.md](UV-ORIGINAL-KORREKTUR.md).
+
 ## Diesen Text nach bestandenem Pilot übergeben
 
 > @Product Design

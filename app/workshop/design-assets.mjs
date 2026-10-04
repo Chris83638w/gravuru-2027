@@ -69,6 +69,10 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
     },get,resource,
     read(id,original=false){const r=row(id);return Buffer.from(original?db.prepare('SELECT bytes FROM design_sources WHERE sha256=?').get(r.source_sha256).bytes:r.preview);},
     validateDocument(document){
+      for(const example of document.config?.localResources?.photoExamples||[]){
+        const asset=get(example.assetId);
+        if(asset.format!=='svg')fail(422,'asset_mismatch','Beispielfoto muss als geprüfte SVG-Vorschau vorliegen.');
+      }
       const motifs=document.config?.localResources?.motifs||[];
       for(const item of motifs)if(item.artwork){const expected=resource(item.artwork.assetId);if(!isArtworkResource(item)||JSON.stringify(item.artwork)!==JSON.stringify(expected.artwork))fail(422,'asset_mismatch','Die Originaldatei des importierten Designs fehlt oder wurde verändert.');}
       for(const design of document.config?.profile?.designs||[])if(design.importedSource){

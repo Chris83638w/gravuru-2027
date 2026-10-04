@@ -4,6 +4,7 @@ Zuerst `START_HERE.md`, danach das aktive Paket in `UMSETZUNGSPAKETE.md` lesen. 
 
 - Eigenständige neue App; vorhandenen Kundeneditor und Ressourcen gezielt wiederverwenden. Die ZIPs enthalten eingefrorene Referenzen, keine fertige neue App. `legacy-reference/` unverändert zum Vergleich halten; aktive Änderungen in klar benannten neuen Modulen.
 - Ein Arbeitspaket mit überprüfbarem Ergebnis nach dem anderen. Keine neue Komplettplanung bei jeder Fortsetzung. Passende Quelldateien gezielt lesen; große Motiv-/Fontsegmente nicht als Text in den Kontext laden.
+- **Verbindliche Masterbegriffe (Nutzer, 04.10.2026):** „Motiv“ bezeichnet ein einzelnes hinzufügbares Element. „Design“ bezeichnet die gesamte Gestaltung einer Platte/eines Acrylglases einschließlich Foto, Texten und Motiven. Diese Unterscheidung gilt für Kommunikation, Oberfläche, Dokumentation und neue fachliche Benennungen. Bestehende technische Bezeichner nicht allein deshalb ungeprüft migrieren.
 - Nur 2D. AR ist vertagt. Neue Technikwahl begründen, ohne bereits beantwortete Produktfragen zu wiederholen.
 - Maße in mm, Preise in ganzen Cent. Vorschau, Preis, Variantenprüfung und Produktion beziehen sich auf denselben versionierten Produktstand. Keine zweite Preis-/Geometrielogik für Import oder Shopify.
 - Endgültige Schriften und echte Produktionsprofile nicht erfinden. Vorliegende Materialbilder können gestaltete Muster sein. `MATERIALREFERENZEN.md` beachten, besonders Edelstahl v4 und unbestätigte Musterstärken.

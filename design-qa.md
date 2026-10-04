@@ -1,13 +1,26 @@
-# Design QA – Kundenfeldbearbeitung, 04.10.2026
+# Visuelle Prüfung – kompakte Direktbearbeitung
+
+Source visual truth: Nutzerscreenshot im Chat vom 04.10.2026 (großes weißes Textformular über dem Acrylfoto). Auftrag ist ausdrücklich Verbesserung dieses Bereichs, keine identische Nachbildung des unerwünschten Formulars. Reproduzierte Baseline aus Commit 911874e: `/workspace/gravuru-uv-pilot-private/compact-before.png`.
+
+Implementation: `/workspace/gravuru-uv-pilot-private/compact-desktop.png`, `/workspace/gravuru-uv-pilot-private/compact-mobile.png`.
+
+Desktop: Quelle und Umsetzung 1512 × 1080 Pixel / CSS-Pixel, deviceScaleFactor 1. Gleiche Route, Original-Beispielfoto, ausgewählte Überschrift im Bearbeitungszustand. Beide Bilder gemeinsam in einem Tool-Ergebnis betrachtet; keine behauptete pixelgenaue Übereinstimmung mit dem anders beschnittenen Nutzerscreenshot. Mobil: 390 × 844, Faktor 1, zusätzliche responsive Kontrolle bei zum Editor gescrolltem Dokument.
+
+## Vergleich und Korrekturen
+
+- P1, Ausgangszustand: großes Formular verdeckt Gesicht und Foto. Ersetzt durch etwa 44 px hohe Werkzeugleiste am Vorschaurand und einzeilige Texteingabe am ursprünglichen Text. Nachweis Desktop Vorher/Nachher: Foto frei, restliches Design unverändert. Kein zusätzliches Bildmaterial erzeugt.
+- P2, erster Mobilvergleich: obere Werkzeugleiste überlappt Vollbild. Korrektur: mobile Leiste an den unteren Vorschaurand. Nachkontrolle im neuen Mobilbild: Schrift, Größe, Farbe und Abschluss sichtbar, Vollbild bleibt am oberen Rand. Keine horizontale Überbreite.
+
+## Fünf Prüfflächen
+
+- Typografie: kompakte UI-Schrift, lesbare 16-px-Minimaleingabe; die Texteingabe darf eine Ersatzschrift verwenden, die echte Designschrift bleibt im gerenderten Design und Export. Keine Änderung an Schriftdaten.
+- Abstände: Leiste außerhalb der Hauptfotofläche; kleine Inline-Eingabe statt Formularblock; Responsive-Lage geprüft. Der Nutzer kann unter der gewählten Stelle liegende Designteile während der Eingabe vorübergehend verdeckt sehen.
+- Farben: vorhandenes dunkles Grün, weiße Oberfläche, runder Farbpunkt; sichtbarer Fokus und selektierter Text. Keine neuen Markenfarben.
+- Bildqualität: Originalfoto, Linien und Dekoration aus bestehender Vorlage unverändert; keine Neugenerierung oder Rasterersetzung der Designassets.
+- Beschriftungen: Schrift, mm, Abbrechen/Fertig. Masterbegriffe dokumentiert. Ungefragte Neugestaltung der übrigen Designübersicht unterlassen.
+
+Browserinteraktionen: Desktop/Mobil; Textänderung live, Enter/Abbrechen, erster Auswahlbereich, Größe in ganzen mm, Fotoeditor und Doppelklick, Rechte, kein Uploadscroll, PDF-Download. Keine Konsolen-/Seitenfehler im geprüften Ablauf. Ausschnitte waren im voll aufgelösten gemeinsamen Vorher-/Nachhervergleich lesbar, deshalb kein zusätzlicher vergrößerter Crop nötig.
+
+P0/P1/P2 offen: keine im geprüften Bereich. Keine Aussage über Farbverbindlichkeit oder private Sitzungsdaten anderer Browser.
 
 final result: passed
-
-Geltungsbereich: das neue Teilstück „Kundenfelder festlegen“, nicht das gesamte Dashboard und keine pixelgleiche M02-Neuimplementierung. Der Nutzer beauftragt Wiederverwendung der bestehenden App. M02 gibt die bestätigte räumliche Aufteilung vor; zusätzlich gelten E08/E09 (mm/runde Farben), E15/E16 (Rechte/semantische Namen) und E21 (explizite Kundenfelder).
-
-Original M02 und aktuelle Chromium-Aufnahmen wurden geöffnet und visuell verglichen. Links Elementauswahl, mittig große Gestaltung, rechts Eigenschaften; bestehende grüne Werkstattfarben wiederverwendet. Der Vorlagenrahmen ist ein synthetischer Testfall. Die fotografische Gesamtgestaltung aus M02 bleibt eine gesonderte, noch offene Umsetzung.
-
-Geprüft: Desktop 1512×1080 und schmale Ansicht 390×844; Vorschau/Speichern/Abbrechen erreichbar; Eigenschaften und Elementliste bedienbar; schmaler Dialog ohne horizontalen Überlauf. Nach erster Aufnahme wurden die Speicheraktionen dauerhaft sichtbar gehalten, statt sie unterhalb der langen Eigenschaften zu verstecken. Danach erneut aufgenommen und geprüft.
-
-Bilder: [Desktop](docs/dashboard-20261004/customer-fields-desktop.png), [schmal](docs/dashboard-20261004/customer-fields-mobile.png), [Kundenansicht](docs/dashboard-20261004/customer-preview.png). Vorhandene Szene im Konfigurator weiterverwendet. Felder nach Neuladen erhalten, Namen editierbar, Schriftgröße gesperrt; Fotos im zugeordneten Feld austauschbar. Farben als echte runde 30×30-Pixel-Buttons geprüft.
-
-Offene Folgearbeiten außerhalb dieses Teilstücks: vollständige M01-Kartenansicht, durchgehende M02-Produktbearbeitung und direkte visuelle Platzierung per Ziehen. Feldpositionen werden aktuell über mm-Eingaben gesetzt. Kein unbestätigtes Stapellayout ausgewählt. Die beim Laden des übernommenen Kundeneditors beobachteten /undefined-Anfragen sind im Prüfbericht genannt.

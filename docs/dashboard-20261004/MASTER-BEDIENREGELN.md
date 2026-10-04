@@ -2,6 +2,7 @@
 
 Aufgabenbranch `task/master-rules-print-20261004`, Basis `7a533ab133cf7a4a087498802bbc6000e849f335`.
 
+- **Masterbegriffe:** „Motiv“ = einzelnes Element zum Hinzufügen. „Design“ = gesamte Gestaltung der Platte/des Acrylglases einschließlich Foto, Texten und hinzugefügten Motiven. Verbindliche Nutzerfestlegung vom 04.10.2026 für künftige Kommunikation, Oberfläche und Dokumentation. Kein Auftrag, vorhandene technische IDs oder Datenbestände umzubenennen.
 - **Druck:** Überlappungen sind erlaubt; keine Überlagerungswarnungen. **Gravur:** weiterhin Hinweise. Diese Masterregel folgt dem Bearbeitungsprofil, nicht einer einzelnen Vorlage. Mechanische Warnungen bleiben unabhängig davon aktiv.
 - **Texte:** Beim ersten Fokus je Textfeld/Design wird der gesamte Beispieltext markiert (Maus, Touch, Tastatur). Weitere Klicks erlauben normale Cursorplatzierung. Vorhandene Rechte und Originaltexte bleiben erhalten, bis der Nutzer etwas eingibt.
 - **Designauswahl:** Genau ein Design = keine Auswahlfläche und kein Designs-Tab. Die vorhandene Regel wurde im Browser bestätigt. Zwei Designs bleiben auswählbar. Das aktuelle Testprodukt enthält tatsächlich „Unser Anfang“ und „Unser kleines Glück“; keines wurde gelöscht.

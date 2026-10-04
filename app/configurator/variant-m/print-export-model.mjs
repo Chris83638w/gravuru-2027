@@ -5,9 +5,28 @@ export function exportSettings(geometry,input={}){
  const {width,height,shape='rect',cornerRadiusMm=0,holes=[]}=geometry;
  if(![width,height].every(v=>Number.isFinite(v)&&v>0&&v<=500)||!['rect','ellipse'].includes(shape)||!Number.isFinite(cornerRadiusMm)||cornerRadiusMm<0||cornerRadiusMm>Math.min(width,height)/2||!Array.isArray(holes)||holes.length>100)throw Error('Kontur oder Format wird vom Druckexport noch nicht unterstützt.');
  for(const h of holes)if(![h.x,h.y,h.diameter].every(Number.isFinite)||h.diameter<=0||h.x-h.diameter/2<0||h.y-h.diameter/2<0||h.x+h.diameter/2>width||h.y+h.diameter/2>height)throw Error('Ungültiges Bohrbild.');
- const o={profile:'roland',bleedMm:0,white:'motif',whiteBleedMm:0,mirror:false,...input};
- if(!['roland','mimaki'].includes(o.profile)||![0,1].includes(o.bleedMm)||![0,1].includes(o.whiteBleedMm)||!['motif','full','none'].includes(o.white)||typeof o.mirror!=='boolean'||o.whiteBleedMm>o.bleedMm)throw Error('Ungültige Exporteinstellungen. Weißüberdruck darf den Farbüberdruck nicht überschreiten.');
- return {...o,geometry:{width,height,shape,cornerRadiusMm,holes},pageWidthMm:width+2*o.bleedMm,pageHeightMm:height+2*o.bleedMm,dpi:600};
+ const o={profile:'roland',bleedMm:0,white:'motif',whiteBleedMm:0,mirror:false,dpi:300,...input};
+ if(![300,600].includes(o.dpi)||!['roland','mimaki'].includes(o.profile)||![0,1].includes(o.bleedMm)||![0,1].includes(o.whiteBleedMm)||!['motif','full','none'].includes(o.white)||typeof o.mirror!=='boolean'||o.whiteBleedMm>o.bleedMm)throw Error('Ungültige Exporteinstellungen. Weißüberdruck darf den Farbüberdruck nicht überschreiten.');
+ return {...o,geometry:{width,height,shape,cornerRadiusMm,holes},pageWidthMm:width+2*o.bleedMm,pageHeightMm:height+2*o.bleedMm,colorSpace:'DeviceCMYK'};
+}
+// Generic maximum-black separation. No measured printer/ink/media ICC transform.
+export function rgbToCmyk(rgb){
+ if(!(rgb instanceof Uint8Array)||rgb.length%3)throw Error('Ungültige RGB-Daten.');
+ const out=new Uint8Array(rgb.length/3*4);
+ for(let i=0,j=0;i<rgb.length;i+=3,j+=4){
+  const m=Math.max(rgb[i],rgb[i+1],rgb[i+2]);
+  out[j]=m?Math.round((m-rgb[i])*255/m):0;
+  out[j+1]=m?Math.round((m-rgb[i+1])*255/m):0;
+  out[j+2]=m?Math.round((m-rgb[i+2])*255/m):0;
+  out[j+3]=255-m;
+ }
+ return out;
+}
+// Advisory, not a complete fine-detail analysis of imported bitmap artwork.
+export function resolutionAdvice(objects,scale=1,marks=[]){
+ const smallText=objects.some(o=>!o.uxHidden&&o.type==='text'&&o.text?.trim()&&o.size*scale<5);
+ const thinLine=marks.some(m=>Number.isFinite(m.width)&&m.width>0&&m.width*scale<.25)||objects.some(o=>!o.uxHidden&&Number.isFinite(o.strokeWidth)&&o.strokeWidth>0&&o.strokeWidth*scale<.25);
+ return smallText||thinLine?'Kleine Schrift oder feine Linien erkannt: 600 dpi empfohlen. 300 dpi bleiben der Standard.':'';
 }
 // Closed physical contours, shared by clipping, white fill and cutting. Coordinates are mm, y down.
 export function contourPath(g,offset=0){
@@ -65,7 +84,7 @@ export function whiteMask(pixels,s){
  }
  return mask;
 }
-// Binary 600-dpi silhouette, merged into closed vector rectangles. Not source vector reconstruction.
+// Binary output-resolution silhouette, merged into closed vector rectangles. Not source vector reconstruction.
 export function maskRectangles(alpha,w,h){
  if(alpha.length!==w*h)throw Error('Ungültige Weißmaske.');
  const result=[],active=new Map();
@@ -96,7 +115,7 @@ export async function printPDF({settings,pixels,kind='combined'}){
  let image='';
  if(kind==='combined'||kind==='color'){
   const mask=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceGray /BitsPerComponent 8`,alpha);
-  const im=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /SMask ${mask} 0 R`,rgb);image=`/Art ${im} 0 R`;
+  const im=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceCMYK /BitsPerComponent 8 /SMask ${mask} 0 R`,rgbToCmyk(rgb));image=`/Art ${im} 0 R`;
   // Bitmap is already mirrored. Clip contour uses the same mirrored mechanical geometry.
   layer('Farbmotiv',`/GSWhite gs q ${geo}\n${contourPath(s.geometry,bleed)} W* n\n${s.mirror?-1:1} 0 0 1 ${s.mirror?s.geometry.width+bleed:-bleed} ${-bleed} cm\n${W} 0 0 ${-H} 0 ${H} cm /Art Do Q`);
  }

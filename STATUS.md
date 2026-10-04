@@ -1,3 +1,7 @@
+## Aktuell: CMYK / 300 dpi und kompakte Direktbearbeitung (04.10.2026)
+
+Standard-PDF: echtes DeviceCMYK / 300 dpi, optional 600 dpi mit Feinheits-Hinweis. Kompakte Textleiste statt großem Formular. Masterbegriffe Motiv/Design in AGENTS.md festgehalten. 169 Tests bestanden, Build 76/1; tatsächliche CMYK-Downloads und Desktop-/Mobilbedienung geprüft. Keine druckerspezifische ICC-Konvertierung. [Nachweis](docs/dashboard-20261004/CMYK-DIREKTBEARBEITUNG.md).
+
 ## Aktuell: Direktbearbeitung und ruhiger Foto-Upload (04.10.2026)
 
 Text am Auswahlrahmen live bearbeiten, Fotoeditor per Doppelklick, kein Upload-Scrollsprung; Download bleibt auf derselben privaten Testseite. Build 76/1, 167 Tests bestanden, danach 18 gezielte Tests sowie Desktop-/Mobil-/PDF-Browserprüfung bestanden. Details: [DIREKTBEARBEITUNG.md](docs/dashboard-20261004/DIREKTBEARBEITUNG.md).

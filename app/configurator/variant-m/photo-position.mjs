@@ -34,7 +34,7 @@ export function installPhotoPosition({el,r,files,selected,select,mutate,showTab,
     else {const factor=Math.hypot(p.x-o.x,p.y-o.y)/Math.max(.1,Math.hypot(drag.start.x-o.x,drag.start.y-o.y));o.uxPhotoCrop=photoCrop({...drag.crop,zoom:drag.crop.zoom*factor});}
     el.render();
   },true);
-  function finish(e,cancel=false){if(!drag||drag.id!==e.pointerId)return;e.preventDefault();e.stopImmediatePropagation();const old=drag;drag=null;if(stage.hasPointerCapture(e.pointerId))stage.releasePointerCapture(e.pointerId);if(cancel)el.state=old.old;else if(old.moved)el.record(old.old);el.sync();}
+  function finish(e,cancel=false){if(!drag||drag.id!==e.pointerId)return;e.preventDefault();e.stopImmediatePropagation();const old=drag;drag=null;if(stage.hasPointerCapture(e.pointerId))stage.releasePointerCapture(e.pointerId);if(cancel)el.state=old.old;else if(old.moved)el.record(old.old);el.sync();if(!cancel&&!old.moved&&old.kind==='move')el.uxPhotoTap?.(old.objectId);}
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);stage.addEventListener('lostpointercapture',e=>finish(e,true));
   r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]'),key=b?.dataset.ux,target=b?.dataset.id?el.state.objects.find(o=>o.id===b.dataset.id):selected();if(usable(target)&&['delete','remove-content','object-delete'].includes(key)){e.preventDefault();e.stopImmediatePropagation();removePhoto(target);return;}if(usable(find(e))){e.preventDefault();e.stopImmediatePropagation();select(find(e).id);showTab('upload');}},true);
   r.addEventListener('keydown',e=>{

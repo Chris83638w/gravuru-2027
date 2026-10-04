@@ -25,7 +25,7 @@ export async function installWorkflow(api){
  // Capture before the old gesture listeners, including blank SVG/plate areas.
  r.addEventListener('pointerdown',e=>{if(e.button!==0||!e.target.closest('.stage,.c-large-preview'))return;if(e.target.closest('[data-object],[data-ux-handle],button,input,label,select,textarea,a'))return;el.state.selected=null;activeGuides=false;el.sync();},true);
  document.addEventListener('pointerdown',e=>{if(e.composedPath().includes(el))return;el.state.selected=null;activeGuides=false;el.sync();});
- function editText(id){const o=el.state.objects.find(o=>o.id===id&&o.type==='text');if(!o||o.uxLocked)return;const full=$('.c-large-preview');if(full.open)full.close();showTab('text');el.state.selected=id;el.sync();const field=all('[data-ux-text]').find(f=>f.dataset.uxText===id);field?.scrollIntoView({block:'center',behavior:'smooth'});field?.focus({preventScroll:true});field?.setSelectionRange(0,field.value.length);}
+ function editText(id){if(el.uxEditText)return el.uxEditText(id);const o=el.state.objects.find(o=>o.id===id&&o.type==='text');if(!o||o.uxLocked)return;const full=$('.c-large-preview');if(full.open)full.close();showTab('text');el.state.selected=id;el.sync();const field=all('[data-ux-text]').find(f=>f.dataset.uxText===id);field?.scrollIntoView({block:'center',behavior:'smooth'});field?.focus({preventScroll:true});field?.setSelectionRange(0,field.value.length);}
  let tap=null;
  el.uxTextTap=id=>{const now=performance.now();if(tap?.id===id&&now-tap.time<900){tap=null;editText(id);}else tap={id,time:now};};
  r.addEventListener('dblclick',e=>{const id=e.target.closest('[data-object]')?.dataset.object||(e.target.closest('.plate-holder')?selected()?.id:null);if(id)editText(id);},true);

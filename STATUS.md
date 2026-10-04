@@ -1,3 +1,7 @@
+## Aktuell: Direktbearbeitung und ruhiger Foto-Upload (04.10.2026)
+
+Text am Auswahlrahmen live bearbeiten, Fotoeditor per Doppelklick, kein Upload-Scrollsprung; Download bleibt auf derselben privaten Testseite. Build 76/1, 167 Tests bestanden, danach 18 gezielte Tests sowie Desktop-/Mobil-/PDF-Browserprüfung bestanden. Details: [DIREKTBEARBEITUNG.md](docs/dashboard-20261004/DIREKTBEARBEITUNG.md).
+
 ## Aktuell: Master-Bedienregeln und Weißkanalprüfung – 04.10.2026
 
 Druck ohne Überlagerungswarnungen, Gravur weiterhin mit Hinweisen. Erstfokus markiert den gesamten Text. Ein-Design-Ausblendung bestätigt; zwei bestehende Designs erhalten. Kunden-Testansicht ohne Druckdownload; separater privater Werkstatt-Exporttest. Überdruck nur bei tatsächlichem Randdruck, Weißkanal-Vorschau und motivbezogene Weißvektoren ohne Seitenclip. 167 Tests, Build 76/1 und Browser-/PDF-Prüfung bestanden. Corel-Import und bezahlter Konto-Download nicht ausgeführt/angebunden. [Nachweis und nächste Prüfung](docs/dashboard-20261004/MASTER-BEDIENREGELN.md).

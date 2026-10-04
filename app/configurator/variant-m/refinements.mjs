@@ -1,3 +1,4 @@
+import {installDirectEditing} from './direct-editing.mjs';
 import {installPhotoPosition} from './photo-position.mjs';
 import {scaleObject} from './image-processing.mjs';
 import {createPhotoEditor} from './photo-editor.mjs';
@@ -110,6 +111,7 @@ export async function installRefinements(api){
   await installUsability(api);
   await installCustomerTools(api);
   await installWorkflow(api);
+  installDirectEditing({...api,editPhoto});
   $('#ux-panel-upload > p.ux-small').textContent='Dein Bild wird direkt übernommen. Über „Bild bearbeiten“ kannst du es zuschneiden oder anpassen.';
   updateSelection();
 }

@@ -1,3 +1,7 @@
+## Schnellzugriff: Muster Acrylglasbild – 05.10.2026
+
+[**Muster Acrylglasbild öffnen**](https://gravuru-design-test-mika.gravur4you-cy.chatgpt.site/?model=acryl&v=0608ef1) · [Gesicherte Version und Übergabe](docs/dashboard-20261004/MUSTER-ACRYLGLASBILD.md). Der aktuelle Konfiguratorstand ist als private Site-Version 12 archiviert. Entwicklungsbasis `f4c9a2068f7d159def5f88f2a841bf01c1a59bd8`; nicht auf frühere Einstiege zurücksetzen. Die folgenden Abschnitte dokumentieren frühere Arbeitspakete.
+
 # Gravuru 2027 – Einstieg und Übergabe
 
 ## Aktuell: Dashboard-Neuaufbau fortgesetzt – 04.10.2026

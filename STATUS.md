@@ -1,3 +1,7 @@
+## 05.10.2026 – Muster Acrylglasbild gesichert
+
+Bestehende private Site in „Muster Acrylglasbild“ umbenannt; Direktzugriff im START_HERE und [Musterregister](docs/dashboard-20261004/MUSTER-ACRYLGLASBILD.md). Native Version 12 samt Archiv und Produktcommit `f4c9a2068f7d159def5f88f2a841bf01c1a59bd8` tatsächlich geprüft. Keine neuen Tests/Builds oder Änderungen am Konfigurator. Folgeauftrag „mit dem anderen“: Rückfrage Dashboard/Werkstatt oder weitere UV-Designs gestellt; noch keine Zuordnung behauptet.
+
 ## Aktuell: neutrale Oberfläche, Motivfarben und gezieltes Löschen
 
 Aufgabenbranch `task/unlock-design-elements-20261005`, Basis `3d09c9428f1637db6ece5052af8efd471f473397`. Weiß/Grau/Graphit im Konfigurator; Motiv direkt mit sechs runden Farbvorgaben, freier Farbe, Größenänderung und Drehung bearbeiten. Vorlagenelemente nach Backend-Freigabe bewusst zum Löschen entsperren, Original und Rückgängig erhalten. Weiße Seitenflächen schließen die Vollbildvorschau.

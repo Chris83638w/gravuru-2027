@@ -78,6 +78,7 @@ export function whiteMask(pixels,s){
  if(s.white==='none')return mask;
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
   const i=y*w+x;if(s.white==='motif'&&alpha[i]<128)continue;
+  if(pixels.whiteAllowed){if(pixels.whiteAllowed.length!==w*h)throw Error('Ungültige Konturmaske.');if(pixels.whiteAllowed[i]>=128)mask[i]=255;continue;}
   let mx=(x+.5)*s.pageWidthMm/w-s.bleedMm;const my=(y+.5)*s.pageHeightMm/h-s.bleedMm;
   if(s.mirror)mx=s.geometry.width-mx;
   if(insideContour(s.geometry,mx,my,s.whiteBleedMm))mask[i]=255;
@@ -101,9 +102,10 @@ class PDF{
  async stream(dict,bytes){const data=await deflate(bytes);return this.add(new Blob([`<< ${dict} /Filter /FlateDecode /Length ${data.length} >>\nstream\n`,data,'\nendstream']));}
  finish(root){const parts=[b('%PDF-1.7\n')],offsets=[0];let count=parts[0].length;this.objects.forEach((value,i)=>{const blob=value instanceof Blob?value:new Blob([value]);const head=b(`${i+1} 0 obj\n`),tail=b('\nendobj\n');offsets.push(count);parts.push(head,blob,tail);count+=head.length+blob.size+tail.length;});parts.push(b(`xref\n0 ${offsets.length}\n0000000000 65535 f \n${offsets.slice(1).map(v=>String(v).padStart(10,'0')+' 00000 n \n').join('')}trailer\n<< /Size ${offsets.length} /Root ${root} 0 R >>\nstartxref\n${count}\n%%EOF`));return new Blob(parts,{type:'application/pdf'});}
 }
-export async function printPDF({settings,pixels,kind='combined'}){
+export async function printPDF({settings,pixels,kind='combined',paths=null}){
  const s=exportSettings(settings.geometry,settings),{width:w,height:h,rgb,alpha}=pixels;
  if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||w*h>50000000||rgb.length!==w*h*3||alpha.length!==w*h||!['combined','color','white','cut'].includes(kind))throw Error('Ungültige Druckdaten.');
+ if(paths){for(const key of ['cut','color','white'])if(typeof paths[key]!=='string'||paths[key].length>1000000||!paths[key].trim()||paths[key].replace(/-?\d+(?:\.\d+)?|[mlch]|\s/g,''))throw Error('Ungültige freie PDF-Kontur.');if(!pixels.whiteAllowed||pixels.whiteAllowed.length!==w*h)throw Error('Freie Kontur benötigt ihre Weißmaske.');}
  const pdf=new PDF(),catalog=pdf.add(''),pages=pdf.add(''),page=pdf.add('');
  const W=s.pageWidthMm,H=s.pageHeightMm,bleed=s.bleedMm;
  const transform=`${PT} 0 0 ${-PT} 0 ${n(H*PT)} cm`;
@@ -117,11 +119,11 @@ export async function printPDF({settings,pixels,kind='combined'}){
   const mask=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceGray /BitsPerComponent 8`,alpha);
   const im=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceCMYK /BitsPerComponent 8 /SMask ${mask} 0 R`,rgbToCmyk(rgb));image=`/Art ${im} 0 R`;
   // Bitmap is already mirrored. Clip contour uses the same mirrored mechanical geometry.
-  layer('Farbmotiv',`/GSWhite gs q ${geo}\n${contourPath(s.geometry,bleed)} W* n\n${s.mirror?-1:1} 0 0 1 ${s.mirror?s.geometry.width+bleed:-bleed} ${-bleed} cm\n${W} 0 0 ${-H} 0 ${H} cm /Art Do Q`);
+  layer('Farbmotiv',`/GSWhite gs q ${geo}\n${paths?.color||contourPath(s.geometry,bleed)} W* n\n${s.mirror?-1:1} 0 0 1 ${s.mirror?s.geometry.width+bleed:-bleed} ${-bleed} cm\n${W} 0 0 ${-H} 0 ${H} cm /Art Do Q`);
  }
  if((kind==='combined'||kind==='white')&&s.white!=='none'){
   let white;
-  if(s.white==='full')white=`${geo}\n${contourPath(s.geometry,s.whiteBleedMm)} f*`;
+  if(s.white==='full')white=`${geo}\n${paths?.white||contourPath(s.geometry,s.whiteBleedMm)} f*`;
   else{
    const rects=maskRectangles(whiteMask(pixels,s),w,h); // Already mirrored and geometrically clipped.
    white=`${W/w} 0 0 ${H/h} 0 0 cm\n${rects.map(r=>`${r.x} ${r.y} ${r.w} ${r.h} re`).join('\n')}\nf`;
@@ -130,7 +132,7 @@ export async function printPDF({settings,pixels,kind='combined'}){
   layer(kind==='white'||mimaki?'Weissersatz Vektor':'RDG_WHITE',(kind==='white'?'0 0 0 1 k':mimaki?'0 0 0 0 k':'/GSWhite gs /White cs 1 scn')+'\n'+white);
   if(kind==='combined'){const last=streams.pop();streams.unshift(last);} // Underprint before color; both use overprint, RIP validation remains required.
  }
- if(kind==='combined'||kind==='cut')layer('CutContour',`${geo}\n/Cut CS 1 SCN 0.05 w\n${contourPath(s.geometry)} S`);
+ if(kind==='combined'||kind==='cut')layer('CutContour',`${geo}\n/Cut CS 1 SCN 0.05 w\n${paths?.cut||contourPath(s.geometry)} S`);
  const content=await pdf.stream('',b(streams.join('\n'))),box=`[0 0 ${n(W*PT)} ${n(H*PT)}]`,trim=`[${n(bleed*PT)} ${n(bleed*PT)} ${n((W-bleed)*PT)} ${n((H-bleed)*PT)}]`;
  pdf.set(page,`<< /Type /Page /Parent ${pages} 0 R /MediaBox ${box} /BleedBox ${box} /TrimBox ${trim} /Resources << /XObject << ${image} >> /ColorSpace << ${s.profile==='roland'?`/White [/Separation /RDG_WHITE /DeviceCMYK ${fn} 0 R]`:''} /Cut [/Separation /CutContour /DeviceCMYK ${cutFn} 0 R] >> /ExtGState << /GSWhite << /Type /ExtGState /OP true /op true /OPM 1 >> >> /Properties << ${props.join(' ')} >> >> /Contents ${content} 0 R >>`);
  pdf.set(pages,`<< /Type /Pages /Kids [${page} 0 R] /Count 1 >>`);pdf.set(catalog,`<< /Type /Catalog /Pages ${pages} 0 R /OCProperties << /OCGs [${refs.join(' ')}] /D << /Order [${refs.join(' ')}] /ON [${refs.join(' ')}] >> >> >>`);return pdf.finish(catalog);

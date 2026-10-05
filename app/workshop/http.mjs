@@ -7,6 +7,7 @@ import {createFormCustomerStore} from './form-customer-store.mjs';
 import {initialFormCustomerState,resolveFormCustomer,customerPhotoMarkup} from './form-customer-model.mjs';
 import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
 import {prepareFormReview} from './form-review-snapshot.mjs';
+import {createFormPrintProof,formPrintSettings,formPrintKey} from './form-print-proof.mjs';
 import {createContourStore} from './contours.mjs';
 import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
@@ -45,7 +46,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
-  const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set();
+  const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set();let printing=false;
   function customerRecord(id,version){const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
   function customerResult(draft,token,state=draft.state){
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
@@ -84,10 +85,17 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const {token,...draft}=customerDrafts.create(record,design.id,initialFormCustomerState(design));return json(res,201,{...customerResult(draft,token),token});
       }
       if(pathname==='/api/workshop/review-snapshots'&&method==='GET')return json(res,200,{snapshots:customerDrafts.listSnapshots(),scope:'local-operator'});
-      const reviewMatch=pathname.match(/^\/api\/workshop\/review-snapshots\/(proof_[a-f0-9-]+)(?:\/(download))?$/);
+      const reviewMatch=pathname.match(/^\/api\/workshop\/review-snapshots\/(proof_[a-f0-9-]+)(?:\/(download|print))?$/);
       if(reviewMatch){
         if(!reviewMatch[2]&&method==='GET')return json(res,200,customerDrafts.review(reviewMatch[1]));
-        if(reviewMatch[2]&&method==='POST'){
+        if(reviewMatch[2]==='print'&&method==='POST'){
+          const data=await body(req);if(Object.keys(data).some(k=>!['settings','format'].includes(k))||!['pdf','zip'].includes(data.format||'pdf'))fail(422,'invalid_print_request','Bitte PDF oder ZIP und gültige Einstellungen auswählen.');
+          const id=reviewMatch[1],settings=formPrintSettings(data.settings),key=formPrintKey(settings);let output=customerDrafts.printProof(id,key);
+          if(!output){if(printing)fail(409,'print_busy','Eine Druckprüfung läuft bereits. Bitte anschließend erneut versuchen.');printing=true;try{const review=customerDrafts.review(id);output=await createFormPrintProof(customerDrafts.downloadSnapshot(id,'package'),review.manifest.packageSha256,settings);customerDrafts.savePrintProof(id,key,output);output=customerDrafts.printProof(id,key);}finally{printing=false;}}
+          const zip=data.format==='zip',bytes=zip?output.archive:output.pdf;
+          res.writeHead(200,{'Content-Type':zip?'application/zip':'application/pdf','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+id+'-druckpruefung.'+(zip?'zip':'pdf')+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-Print-Info':encodeURIComponent(JSON.stringify({dpi:output.metadata.settings.dpi,bleedMm:output.metadata.settings.bleedMm,white:output.metadata.settings.white,warnings:output.metadata.warnings.slice(0,3).map(w=>Array.from(w).slice(0,140).join(''))}))}).end(bytes);return;
+        }
+        if(reviewMatch[2]==='download'&&method==='POST'){
           const data=await body(req);if(!['package','contour','photos'].includes(data.kind))fail(422,'production_not_released','Für diesen Prüfstand ist keine Produktions-PDF freigegeben.');
           const bytes=customerDrafts.downloadSnapshot(reviewMatch[1],data.kind),suffix={package:'pruefpaket.zip',contour:'kontur-1zu1.pdf',photos:'originalfotos.zip'}[data.kind];
           res.writeHead(200,{'Content-Type':data.kind==='contour'?'application/pdf':'application/zip','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+reviewMatch[1]+'-'+suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;

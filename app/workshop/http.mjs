@@ -6,6 +6,7 @@ import {verifyFormDesignSources,addFormDesign,formDesignOverlay} from './form-de
 import {createFormCustomerStore} from './form-customer-store.mjs';
 import {initialFormCustomerState,resolveFormCustomer,customerPhotoMarkup} from './form-customer-model.mjs';
 import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
+import {prepareFormReview} from './form-review-snapshot.mjs';
 import {createContourStore} from './contours.mjs';
 import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
@@ -44,7 +45,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
-  const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set();
+  const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set();
   function customerRecord(id,version){const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
   function customerResult(draft,token,state=draft.state){
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
@@ -82,13 +83,33 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(!design||repository.get(record.id).status==='archived')fail(422,'customer_design_missing','Bitte ein aktives Produkt und gültiges Design wählen.');
         const {token,...draft}=customerDrafts.create(record,design.id,initialFormCustomerState(design));return json(res,201,{...customerResult(draft,token),token});
       }
-      const customerMatch=pathname.match(/^\/api\/workshop\/customer-drafts\/(draft_[a-f0-9-]+)(?:\/(preview|photos))?$/);
+      if(pathname==='/api/workshop/review-snapshots'&&method==='GET')return json(res,200,{snapshots:customerDrafts.listSnapshots(),scope:'local-operator'});
+      const reviewMatch=pathname.match(/^\/api\/workshop\/review-snapshots\/(proof_[a-f0-9-]+)(?:\/(download))?$/);
+      if(reviewMatch){
+        if(!reviewMatch[2]&&method==='GET')return json(res,200,customerDrafts.review(reviewMatch[1]));
+        if(reviewMatch[2]&&method==='POST'){
+          const data=await body(req);if(!['package','contour','photos'].includes(data.kind))fail(422,'production_not_released','Für diesen Prüfstand ist keine Produktions-PDF freigegeben.');
+          const bytes=customerDrafts.downloadSnapshot(reviewMatch[1],data.kind),suffix={package:'pruefpaket.zip',contour:'kontur-1zu1.pdf',photos:'originalfotos.zip'}[data.kind];
+          res.writeHead(200,{'Content-Type':data.kind==='contour'?'application/pdf':'application/zip','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+reviewMatch[1]+'-'+suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
+        }
+        fail(405,'method_not_allowed','Prüfstände können nicht überschrieben werden.');
+      }
+      const customerMatch=pathname.match(/^\/api\/workshop\/customer-drafts\/(draft_[a-f0-9-]+)(?:\/(preview|photos|review))?$/);
       if(customerMatch){
         const token=req.headers['x-gravuru-draft'],draft=customerDrafts.get(customerMatch[1],token),action=customerMatch[2];
         if(!action&&method==='GET')return json(res,200,customerResult(draft,token));
         if(!['POST','PATCH'].includes(method))fail(405,'method_not_allowed','Aktion nicht unterstützt.');
         const data=await body(req,action==='photos'?Math.ceil(MAX_CUSTOMER_PHOTO/3)*4+4096:2*1024*1024);
         if(data.expectedRevision!==draft.revision)fail(409,'stale_customer_draft','Der gespeicherte Entwurf wurde inzwischen geändert. Deine Eingaben bleiben erhalten.');
+        if(action==='review'&&method==='POST'){
+          if(Object.keys(data).length!==1)fail(422,'saved_draft_only','Gesichert wird ausschließlich der gespeicherte Entwurf. Bitte Änderungen zuerst speichern.');
+          const existing=customerDrafts.findSnapshot(draft.id,draft.revision);if(existing)return json(res,200,existing);
+          if(reviewJobs.size>=2||reviewJobs.has(draft.id))fail(409,'review_busy','Ein Prüfstand wird gerade gesichert. Bitte kurz warten.');
+          reviewJobs.add(draft.id);try{
+            const bundle=await prepareFormReview({record:customerRecord(draft.productId,draft.productRevision),draft,assets,contours,fonts:seed.config.localResources.fonts,media:id=>customerDrafts.photo(draft.id,token,id)});
+            return json(res,201,customerDrafts.capture(draft.id,token,data.expectedRevision,bundle));
+          }finally{reviewJobs.delete(draft.id);}
+        }
         if(action==='photos'&&method==='POST'){
           const source=customerRecord(draft.productId,draft.productRevision).document.designs.find(d=>d.id===draft.designId);
           if(!source.fields.some(f=>f.id===data.fieldId&&f.type==='photo'))fail(422,'photo_field_missing','Bitte einen vorgegebenen Fotobereich wählen.');

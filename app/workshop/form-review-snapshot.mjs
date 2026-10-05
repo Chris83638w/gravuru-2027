@@ -1,3 +1,4 @@
+import {formMotif} from './form-additions.mjs';
 import {randomUUID,createHash} from 'node:crypto';
 import {resolveFormCustomer,customerPhotoMarkup} from './form-customer-model.mjs';
 import {formProductPreview} from './form-product-preview.mjs';
@@ -28,6 +29,7 @@ export async function prepareFormReview({record,draft,assets,contours,fonts,medi
  const selectedFonts=Object.fromEntries([...new Set(design.fields.filter(f=>f.type==='text').map(f=>f.font))].map(name=>[name,fonts[name]]));
  add('produkt-und-gestaltung.json',json({schema:'gravuru-form-review-input/v1',product:record.document,customer:draft.state,designId:draft.designId}),'Gesicherter Produktstand und Kundenwerte; keine Zugangstoken.');
  if(record.metadata?.productionProfile)add('fertigungsprofil.json',json(record.metadata.productionProfile),'Unveränderlich gebundener Fertigungsprofilstand; keine Maschinenfreigabe.');
+ if(design.fields.some(f=>f.type==='motif'))add('motive.json',json(design.fields.filter(f=>f.type==='motif').map(f=>formMotif(f.motifKey,f.motifSha256))),'Verwendete unveränderliche Motivquellen mit SHA-256.');
  add('schriften.json',json(selectedFonts),'Verwendete Schriftpfade als eingefrorene Ressourcen.');
  add('quellen/design-original.'+source.format,assets.read(design.assetId,true),'Byteidentisches Designoriginal.');
  add('quellen/design-vorschau.svg',assets.read(design.assetId),'Geprüfte importierte Designvorschau.');

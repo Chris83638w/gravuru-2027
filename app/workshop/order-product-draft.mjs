@@ -19,20 +19,20 @@ export function planOrderProductDraft({line,archive,input,assets,contours,fonts}
   if(saved.schema!=='gravuru-form-review-input/v1'||saved.designId!==manifest.source.designId)fail('Der gesicherte Designbezug ist unvollständig.');
   const original=saved.product.designs?.find(d=>d.id===saved.designId);
   if(!original)fail('Das bestellte Design ist nicht im Prüfstand enthalten.');
-  for(const name of new Set(saved.customer.fields.filter(f=>f.font&&!f.deleted).map(f=>f.font))){
+  for(const name of new Set([...saved.customer.fields,...(saved.customer.additions||[])].filter(f=>f.font&&!f.deleted).map(f=>f.font))){
     if(!frozenFonts?.[name]||!fonts[name]||digest(JSON.stringify(frozenFonts[name]))!==digest(JSON.stringify(fonts[name])))fail('Eine gesicherte Schrift ist hier verändert oder nicht mehr verfügbar.');
   }
   // Only layout/state is reused. Private image bytes and draft access tokens never enter the product.
   const resolved=resolveFormCustomer(saved.product,saved.designId,saved.customer,{assets,fonts,media:()=>({})});
   const document=resolved.document,design=document.designs.find(d=>d.id===saved.designId);
-  if(input.textMode==='template')for(const field of design.fields.filter(f=>f.type==='text'))field.text=original.fields.find(f=>f.id===field.id).text;
+  if(input.textMode==='template')for(const field of design.fields.filter(f=>f.type==='text'))field.text=original.fields.find(f=>f.id===field.id)?.text||'Dein Text';
   document.name=input.name.trim();document.kind='product';document.masterId=null;document.seo={title:document.name.slice(0,70),description:''};
   document.designs=[design];document.defaultDesignId=design.id;
   const checked=verifyFormDesignSources(verifyFormSource(validateFormProduct(document),contours),assets,fonts);
   const origin={orderLineId:line.id,snapshotId:line.snapshotId,packageSha256:line.sourcePackageSha256,productId:line.product.id,productRevision:line.product.revision};
   const token=digest(JSON.stringify({recipe:'order-product-draft/v1',origin,document:checked,textMode:input.textMode}));
   return {document:checked,token,origin,textMode:input.textMode,photoCount:manifest.photos.length,
-    removedFields:original.fields.length-design.fields.length,
+    removedFields:original.fields.filter(f=>!design.fields.some(v=>v.id===f.id)).length,
     fields:design.fields.map(f=>({id:f.id,label:f.label,type:f.type,...(f.type==='text'?{text:f.text}:{})})),
     warnings:[...(manifest.photos.length?['Kundenfotos werden nicht als Produktbilder übernommen. Die Fotobereiche bleiben austauschbar.']:[]),
       input.textMode==='customer'?'Kundentexte werden als neue Beispieltexte übernommen. Vor Verwendung prüfen.':'Beispieltexte stammen aus der ursprünglichen Produktvorlage.',

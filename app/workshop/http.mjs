@@ -1,3 +1,4 @@
+import {additionPolicy,formMotifs} from './form-additions.mjs';
 import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './order-product-draft.mjs';
 import {prepareCartRequest} from './storefront-cart.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
@@ -63,7 +64,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
     const resolved=resolveFormCustomer(record.document,draft.designId,state,{assets,fonts:seed.config.localResources.fonts,media:id=>customerDrafts.photo(draft.id,token,id)});
     const surface=materialPreview(record.document),base=surface.svg||contours.preview(record.document.form.contourId).toString(),overlay=formDesignOverlay(resolved.document,seed.config.localResources.fonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id))});
-    return {draft:{...draft,state},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:record.document.basePriceCents,method:record.document.processingMethod,geometry:{widthMm:record.document.form.geometry.widthMm,heightMm:record.document.form.geometry.heightMm,holeCount:record.document.form.geometry.holeCount},designs:record.document.designs.map(d=>({id:d.id,name:d.name})),sourceFields:source.fields},svg:base.replace('</svg>',overlay+'</svg>'),warnings:resolved.warnings,ready:resolved.ready,photos:[...resolved.photos.values()].map(p=>({mediaId:p.mediaId,width:p.width,height:p.height})),surfaceAvailable:Boolean(surface.svg)};
+    return {draft:{...draft,state},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:record.document.basePriceCents,method:record.document.processingMethod,geometry:{widthMm:record.document.form.geometry.widthMm,heightMm:record.document.form.geometry.heightMm,holeCount:record.document.form.geometry.holeCount},designs:record.document.designs.map(d=>({id:d.id,name:d.name})),sourceFields:[...source.fields,...resolved.addedFields.map(f=>({...f,customerAdded:true}))],additions:additionPolicy(source)},svg:base.replace('</svg>',overlay+'</svg>'),artworkSvg:`<svg xmlns="http://www.w3.org/2000/svg" width="${record.document.form.geometry.widthMm}mm" height="${record.document.form.geometry.heightMm}mm" viewBox="0 0 ${record.document.form.geometry.widthMm} ${record.document.form.geometry.heightMm}">${formDesignOverlay(resolved.document,seed.config.localResources.fonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')})}</svg>`,contourPath:record.document.form.geometry.contours.map(c=>c.d+' Z').join(' '),warnings:resolved.warnings,ready:resolved.ready,photos:[...resolved.photos.values()].map(p=>({mediaId:p.mediaId,width:p.width,height:p.height})),surfaceAvailable:Boolean(surface.svg)};
   }
   function model(id,version){
     const record=repository.get(id,{revision:revision(version)});
@@ -193,6 +194,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         fail(405,'method_not_allowed','Aktion nicht unterstützt.');
       }
       if(pathname==='/api/workshop/form-materials'&&method==='GET')return json(res,200,{materials:FORM_MATERIALS});
+      if(pathname==='/api/workshop/form-motifs'&&method==='GET')return json(res,200,{motifs:formMotifs()});
       if(pathname==='/api/workshop/form-fonts'&&method==='GET')return json(res,200,{fonts:Object.entries(seed.config.localResources.fonts).map(([id,f])=>({id,bold:Boolean(f.bold)}))});
       if(pathname==='/api/workshop/design-assets'&&method==='GET')return json(res,200,{assets:assets.list()});
       const formImport=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/form-design-import$/);

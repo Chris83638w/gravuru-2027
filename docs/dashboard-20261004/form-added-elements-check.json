@@ -1,0 +1,55 @@
+{
+  "startedAt": "2026-10-05T18:33:46.115Z",
+  "platform": "linux",
+  "node": "v24.19.0",
+  "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+  "steps": [
+    {
+      "name": "python-pdf",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "references",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "tests",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS",
+  "tests": {
+    "count": 229,
+    "skipped": 0,
+    "failures": 0
+  },
+  "finishedAt": "2026-10-05T18:34:44.546Z",
+  "taskBranch": "task/form-added-elements-20261005",
+  "baseCommit": "5dd07c49da473c309281d6203e600ecca9577f4d",
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "browser": {
+    "viewports": [
+      1536,
+      390,
+      768
+    ],
+    "syntheticDataOnly": true,
+    "javascriptErrors": 0,
+    "overflow": false,
+    "touch": "add text, double tap, edit, apply, save",
+    "backend": "permission save/reload and pinned revision",
+    "noSpace": "full artwork rejects insertion without changing state"
+  }
+}

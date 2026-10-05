@@ -1,7 +1,7 @@
 import {installFormDesigns} from './form-design-ui.mjs';
 const $=s=>document.querySelector(s),clone=v=>structuredClone(v),esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const mm=n=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:3}).format(n)+' mm';
-const id=new URLSearchParams(location.search).get('configuration');let record,currentRevision,draft,materials=[],token='',busy=false,dirty=false,serial=0,timer,historical=false;
+const id=new URLSearchParams(location.search).get('configuration');let record,currentRevision,draft,materials=[],manufacturing=[],token='',busy=false,dirty=false,serial=0,timer,historical=false;
 let previewValue=null,previewMode='material',designer;
 function showPreview(){
  const surface=previewValue?.materialPreview,hasSurface=Boolean(surface?.svg||previewValue?.designSvg),showMaterial=previewMode==='material'&&hasSurface;
@@ -30,6 +30,14 @@ function sync(){
  const canPreview=record?.document.designs?.length&&!dirty&&record.status!=='archived';$('#customer-view').hidden=!canPreview;if(canPreview)$('#customer-view').href='/konfigurator/form/?configuration='+id+'&revision='+record.revision;$('#customer-view-note').textContent=dirty?'Zuerst Änderungen speichern.':canPreview?'Privaten Testentwurf aus diesem gespeicherten Stand öffnen. Keine Shopfreigabe.':record?.status==='archived'?'Zum Prüfen das Produkt zuerst wieder aktivieren.':'Zuerst ein Design zuordnen und speichern.';
  designer?.render();
 }
+function manufacturingChoices(){
+ const matches=p=>!p.document.archived&&p.document.method===draft.processingMethod&&p.document.materialId===draft.material.id&&p.document.thicknessMm===draft.material.thicknessMm;
+ const options=manufacturing.filter(matches),old=record.metadata?.productionProfile,ref=draft.productionProfile;
+ if(old&&ref?.id===old.id&&ref.revision===old.revision&&!options.some(p=>p.id===old.id&&p.revision===old.revision))options.push(old);
+ $('#production-profile').innerHTML='<option value="">Noch nicht zugeordnet</option>'+options.map(p=>`<option value="${p.id}:${p.revision}">${esc(p.document.name)} · Stand ${p.revision}${matches(p)?'':' · Zuordnung prüfen'}</option>`).join('');
+ $('#production-profile').value=ref?ref.id+':'+ref.revision:'';
+ $('#production-profile-note').textContent=ref?'Fester Profilstand. Änderungen am Profil werden nicht automatisch auf dieses Produkt übertragen.':'Angezeigt werden Profile für das gewählte Verfahren, Material und die tatsächliche Stärke.';
+}
 function reference(){const m=materials.find(m=>m.id===draft.material.id);$('#material-reference').textContent=m?.note||'Material wählen; fehlende Stärken bleiben ausdrücklich offen.';$('#material-summary').textContent=(m?.name||'Material noch offen')+' · '+(draft.material.thicknessMm===null?'Stärke noch offen':mm(draft.material.thicknessMm));}
 async function preview(){const ticket=++serial;try{const value=await api(url()+'/form-preview',{expectedRevision:currentRevision,document:draft,...(designer?.selected()?{designId:designer.selected()}:{})});if(ticket!==serial)return;acceptPreview(value);}catch(e){if(ticket===serial)failure(e);}}
 function failure(e){notice(e.message,true);if(e.status===409)$('#conflict').hidden=false;}
@@ -37,7 +45,7 @@ function render(next){
  const ticket=++serial;clearTimeout(timer);clearPreview();record=next;draft=clone(record.document);dirty=false;historical=record.revision!==currentRevision;
  $('#title').textContent=draft.name;$('#revision').textContent='Stand '+record.revision+(historical?' · historisch':record.status==='archived'?' · archiviert':' · gespeichert');
  $('#name').value=draft.name;$('#kind').value=draft.kind;$('#material').value=draft.material.id||'';$('#thickness').value=draft.material.thicknessMm??'';$('#method').value=draft.processingMethod||'';$('#surface').value=draft.material.surfaceNotes;$('#price').value=draft.basePriceCents===null?'':(draft.basePriceCents/100).toFixed(2).replace('.',',');
- const g=draft.form.geometry;$('#width').textContent=mm(g.widthMm);$('#height').textContent=mm(g.heightMm);$('#holes').textContent=g.holeCount;reference();
+ const g=draft.form.geometry;$('#width').textContent=mm(g.widthMm);$('#height').textContent=mm(g.heightMm);$('#holes').textContent=g.holeCount;reference();manufacturingChoices();
  $('#pdf').href=url()+'/contour.pdf?revision='+record.revision;$('#original').href='/api/workshop/contours/'+draft.form.contourId+'/original';$('#product-id').textContent='Produkt: '+id;$('#contour-id').textContent='Kontur: '+draft.form.contourId;$('#geometry-hash').textContent='Geometrie SHA-256: '+draft.form.geometrySha256;
  $('#archive').textContent=record.status==='archived'?'Wieder aktivieren':'Archivieren';$('#workspace').hidden=false;$('#conflict').hidden=true;sync();
  api(url()+'/form-preview?revision='+record.revision+'&designId='+encodeURIComponent(designer?.selected()||'')).then(value=>{if(ticket!==serial)return;acceptPreview(value);}).catch(e=>{if(ticket===serial)failure(e);});
@@ -47,9 +55,10 @@ async function current(){const r=await api(url());if(r.document?.schema!=='gravu
 function readInputs(){
  draft.name=$('#name').value;draft.kind=$('#kind').value;if(draft.kind==='master')draft.masterId=null;
  draft.material.id=$('#material').value||null;draft.material.thicknessMm=$('#thickness').value===''?null:Number($('#thickness').value);draft.material.surfaceNotes=$('#surface').value;draft.processingMethod=$('#method').value||null;
+ const selected=$('#production-profile').value;if(selected){const [id,rev]=selected.split(':');draft.productionProfile={id,revision:Number(rev)};}else draft.productionProfile=null;
  const price=$('#price').value.trim(),m=/^(\d+)(?:[.,](\d{1,2}))?$/.exec(price);draft.basePriceCents=price===''?null:m?Number(m[1])*100+Number((m[2]||'').padEnd(2,'0')):NaN;
 }
-$('#product-form').addEventListener('input',()=>{if(busy||historical||record.status==='archived')return;const previousMaterial=draft.material.id;readInputs();dirty=true;$('#title').textContent=draft.name;reference();sync();clearTimeout(timer);++serial;if(previousMaterial!==draft.material.id)clearPreview();if($('#product-form').checkValidity())timer=setTimeout(preview,300);});
+$('#product-form').addEventListener('input',()=>{if(busy||historical||record.status==='archived')return;const previousMaterial=draft.material.id;readInputs();dirty=true;$('#title').textContent=draft.name;reference();manufacturingChoices();sync();clearTimeout(timer);++serial;if(previousMaterial!==draft.material.id)clearPreview();if($('#product-form').checkValidity())timer=setTimeout(preview,300);});
 $('#product-form').addEventListener('submit',e=>e.preventDefault());
 $('#save').addEventListener('click',async()=>{if(busy||!$('#product-form').reportValidity())return;busy=true;sync();try{const r=await api(url(),{expectedRevision:currentRevision,document:draft},'PATCH');currentRevision=r.revision;render(r);await history();notice('Gespeichert. Stand '+r.revision+' ist jetzt verfügbar.');}catch(e){failure(e);}finally{busy=false;sync();}});
 $('#history').addEventListener('change',async()=>{if(dirty&&!confirm('Ungespeicherte Änderungen verwerfen und den gewählten Stand ansehen?')){$('#history').value=record.revision;return;}busy=true;sync();try{render(await api(url()+'?revision='+$('#history').value));notice(historical?'Historischer Stand: unveränderlich. Die PDF gehört genau zu diesem Stand.':'Aktueller Stand geladen.');}catch(e){failure(e);}finally{busy=false;sync();}});
@@ -60,4 +69,4 @@ $('#copy').addEventListener('click',async()=>{if(busy||dirty||historical)return;
 $('#archive').addEventListener('click',async()=>{if(busy||dirty||historical)return;busy=true;sync();try{const r=await api(url()+'/archive',{expectedRevision:currentRevision,archived:record.status!=='archived'});currentRevision=r.revision;render(r);await history();notice(r.status==='archived'?'Archiviert. Alle Stände bleiben erhalten.':'Wieder aktiviert.');}catch(e){failure(e);}finally{busy=false;sync();}});
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 designer=installFormDesigns({api,validateBase:()=>$('#product-form').reportValidity(),state:()=>({draft,record,revision:currentRevision,readOnly:busy||historical||record?.status==='archived'}),setBusy:value=>{busy=value;sync();},notify:notice,onSelect:()=>{clearPreview();preview();},onChange:async(next,designId)=>{clearTimeout(timer);++serial;const value=await api(url()+'/form-preview',{expectedRevision:currentRevision,document:next,...(designId?{designId}:{})});draft=next;dirty=true;acceptPreview(value);reference();sync();}});
-try{if(!/^cfg_[a-f0-9-]+$/.test(id||''))throw Error('Bitte ein Formprodukt aus der Werkstatt öffnen.');token=(await api('/api/workshop/session')).csrfToken;materials=(await api('/api/workshop/form-materials')).materials;$('#material').insertAdjacentHTML('beforeend',materials.map(m=>`<option value="${esc(m.id)}">${esc(m.name)}</option>`).join(''));await current();const v=new URLSearchParams(location.search).get('revision');if(v&&Number(v)!==currentRevision){render(await api(url()+'?revision='+encodeURIComponent(v)));$('#history').value=record.revision;}}catch(e){notice(e.message,true);}
+try{if(!/^cfg_[a-f0-9-]+$/.test(id||''))throw Error('Bitte ein Formprodukt aus der Werkstatt öffnen.');token=(await api('/api/workshop/session')).csrfToken;materials=(await api('/api/workshop/form-materials')).materials;manufacturing=(await api('/api/workshop/production-profiles')).profiles;$('#material').insertAdjacentHTML('beforeend',materials.map(m=>`<option value="${esc(m.id)}">${esc(m.name)}</option>`).join(''));await current();const v=new URLSearchParams(location.search).get('revision');if(v&&Number(v)!==currentRevision){render(await api(url()+'?revision='+encodeURIComponent(v)));$('#history').value=record.revision;}}catch(e){notice(e.message,true);}

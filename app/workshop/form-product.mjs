@@ -21,7 +21,7 @@ const keys=(v,k)=>{if(!object(v)||Object.keys(v).length!==k.length||k.some(n=>!O
 const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 export const isFormProduct=d=>d?.schema===FORM_PRODUCT_SCHEMA;
 export function validateFormProduct(input){
- keys(input,['schema','name','kind','masterId','categoryIds','seo','form','material','processingMethod','basePriceCents',...(Object.hasOwn(input||{},'designs')||Object.hasOwn(input||{},'defaultDesignId')?['designs','defaultDesignId']:[])]);
+ keys(input,['schema','name','kind','masterId','categoryIds','seo','form','material','processingMethod','basePriceCents',...(Object.hasOwn(input||{},'productionProfile')?['productionProfile']:[]),...(Object.hasOwn(input||{},'designs')||Object.hasOwn(input||{},'defaultDesignId')?['designs','defaultDesignId']:[])]);
  const d=structuredClone(input);
  if(!isFormProduct(d)||typeof d.name!=='string'||!d.name.trim()||d.name.length>200||!['product','master'].includes(d.kind)||!(d.masterId===null||/^cfg_[a-f0-9-]+$/.test(d.masterId)))fail('Ungültiger Formproduktname oder Vorlagenbezug.');
  d.name=d.name.trim();
@@ -36,6 +36,7 @@ export function validateFormProduct(input){
  if(typeof d.material.surfaceNotes!=='string'||d.material.surfaceNotes.length>1000)fail('Oberflächenhinweis ist zu lang.');
  if(![null,'print','engraving'].includes(d.processingMethod))fail('Verfahren ist unbekannt.');
  if(d.basePriceCents!==null&&(!Number.isSafeInteger(d.basePriceCents)||d.basePriceCents<0||d.basePriceCents>100000000))fail('Preis benötigt ganze Cent oder bleibt offen.');
+ if(d.productionProfile!==undefined&&d.productionProfile!==null){keys(d.productionProfile,['id','revision']);if(!/^mfg_[a-f0-9-]+$/.test(d.productionProfile.id)||!Number.isSafeInteger(d.productionProfile.revision)||d.productionProfile.revision<1)fail('Ungültiger Fertigungsprofilstand.');}
  validateFormDesigns(d);return d;
 }
 export function makeFormProduct(contour,name){

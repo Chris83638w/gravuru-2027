@@ -44,7 +44,7 @@ print(json.dumps({'rasterBlue':raster_blue,'text':text,'white':white,'fonts':p[0
 test('frozen multiline italic text remains identical vector outlines at 300/600 dpi with exact white paths and one mirror',async t=>{
  const {bundle}=await fixture(t,false,d=>Object.assign(d.designs[0].fields[0],{text:'Oa\nWi',heightMm:9,bold:false,italic:true,color:'#1267ac',sizeMm:3}));
  const a=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256),b=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,{dpi:600}),m=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,{mirror:true});const x=vectors(a.pdf),y=vectors(b.pdf),z=vectors(m.pdf);
- assert.equal(a.metadata.schema,'gravuru-form-print-proof/v2');assert.equal(a.metadata.vectorGlyphs,4);assert.equal(x.text.length,4);assert.deepEqual(x.fonts,[]);assert.deepEqual(x.text,y.text);assert.ok(x.isolated);for(const glyph of x.text)assert.ok(x.white.some(w=>w.items===glyph.items));
+ assert.equal(a.metadata.schema,'gravuru-form-print-proof/v3');assert.equal(a.metadata.vectorGlyphs,4);assert.equal(x.text.length,4);assert.deepEqual(x.fonts,[]);assert.deepEqual(x.text,y.text);assert.ok(x.isolated);for(const glyph of x.text)assert.ok(x.white.some(w=>w.items===glyph.items));
  const width=60*72/25.4;for(let i=0;i<x.text.length;i++){const r=x.text[i].bounds,q=z.text[i].bounds;assert.ok(Math.abs(q[0]-(width-r[2]))<.001);assert.ok(Math.abs(q[2]-(width-r[0]))<.001);assert.ok(Math.abs(q[1]-r[1])<.001);}
 });
 test('photo and vector text retain saved paint order without duplicate raster text',async t=>{

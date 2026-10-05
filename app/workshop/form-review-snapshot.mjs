@@ -18,15 +18,16 @@ export async function prepareFormReview({record,draft,assets,contours,fonts,medi
  if(originalDesign.fields.some(f=>f.type==='photo'&&f.required&&!draft.state.fields.find(v=>v.id===f.id)?.mediaId))throw Object.assign(Error('Bitte zuerst alle erforderlichen Fotos hinzufügen und den Entwurf speichern.'),{status:422});
  const document=resolved.document;document.defaultDesignId=draft.designId;
  const design=document.designs.find(d=>d.id===draft.designId),source=assets.get(design.assetId),contour=contours.get(document.form.contourId),g=document.form.geometry;
- const files=[],photos=[],warnings=[...resolved.warnings],blockers=['Ein freigegebenes Fertigungsprofil ist diesem Formprodukt noch nicht zugeordnet.'];
+ const files=[],photos=[],warnings=[...resolved.warnings],blockers=record.metadata?.productionProfile?[...record.metadata.productionProfile.blockers]:['Ein freigegebenes Fertigungsprofil ist diesem Formprodukt noch nicht zugeordnet.'];
  const add=(path,bytes,purpose)=>{const b=Buffer.from(bytes);files.push({path,bytes:b,purpose});return {path,bytes:b.length,sha256:sha(b),purpose};};
- if(document.processingMethod==='print')blockers.push('Gemessenes Druck-/Material-ICC-Profil und Maschinenabnahme fehlen.');
+ if(document.processingMethod==='print'&&!record.metadata?.productionProfile)blockers.push('Gemessenes Druck-/Material-ICC-Profil und Maschinenabnahme fehlen.');
  if(!document.processingMethod)blockers.push('Druck oder Gravur ist noch nicht festgelegt.');
  if(!document.material.id||document.material.thicknessMm===null)blockers.push('Material und tatsächliche Stärke müssen vollständig festgelegt werden.');
  if(document.basePriceCents===null)blockers.push('Der Preis ist noch nicht festgelegt.');
  const id='proof_'+randomUUID(),createdAt=new Date().toISOString();
  const selectedFonts=Object.fromEntries([...new Set(design.fields.filter(f=>f.type==='text').map(f=>f.font))].map(name=>[name,fonts[name]]));
  add('produkt-und-gestaltung.json',json({schema:'gravuru-form-review-input/v1',product:record.document,customer:draft.state,designId:draft.designId}),'Gesicherter Produktstand und Kundenwerte; keine Zugangstoken.');
+ if(record.metadata?.productionProfile)add('fertigungsprofil.json',json(record.metadata.productionProfile),'Unveränderlich gebundener Fertigungsprofilstand; keine Maschinenfreigabe.');
  add('schriften.json',json(selectedFonts),'Verwendete Schriftpfade als eingefrorene Ressourcen.');
  add('quellen/design-original.'+source.format,assets.read(design.assetId,true),'Byteidentisches Designoriginal.');
  add('quellen/design-vorschau.svg',assets.read(design.assetId),'Geprüfte importierte Designvorschau.');
@@ -46,7 +47,7 @@ export async function prepareFormReview({record,draft,assets,contours,fonts,medi
  add('gestaltung-vorschau.svg',Buffer.from(artwork),'Gestaltung ohne Material oder Bediengriffe. Fotos sind Vorschauen bis 1600 Pixel; keine CMYK-/Weißseparation.');
  const contourPdf=await formContourPdf(document,{id:record.id,revision:record.revision});
  add('kontur-1zu1.pdf',contourPdf,'1:1-Vektorkontur einschließlich Ausschnitten; kein Druckmotiv.');
- const manifest={schema:'gravuru-form-review/v1',id,createdAt,source:{draftId:draft.id,draftRevision:draft.revision,designId:draft.designId},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:record.document.basePriceCents,currency:'EUR',material:record.document.material,method:record.document.processingMethod,widthMm:g.widthMm,heightMm:g.heightMm},status:'review-only',order:null,payment:null,productionProfile:null,productionReady:false,blockers,warnings,photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
+ const manifest={schema:'gravuru-form-review/v1',id,createdAt,source:{draftId:draft.id,draftRevision:draft.revision,designId:draft.designId},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:record.document.basePriceCents,currency:'EUR',material:record.document.material,method:record.document.processingMethod,widthMm:g.widthMm,heightMm:g.heightMm},status:'review-only',order:null,payment:null,productionProfile:record.metadata?.productionProfile||null,productionReady:false,blockers,warnings,photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
  add('manifest.json',json(manifest),'Prüfsummen und Einordnung aller Nutzdateien.');
  const total=files.reduce((sum,f)=>sum+f.bytes.length,0);if(total>128*1024*1024)throw Object.assign(Error('Der Prüfstand überschreitet 128 MB. Bitte die Quelldateien prüfen.'),{status:413});
  const archive=await zip(files),photoArchive=await zip(files.filter(f=>f.path.startsWith('fotos/')));

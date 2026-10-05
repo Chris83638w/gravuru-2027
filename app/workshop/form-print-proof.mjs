@@ -4,7 +4,7 @@ import {readReviewPackage,digest} from './review-package.mjs';
 import {importEnvironment} from './design-assets.mjs';
 import {printPDF,exportSettings,zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'form_print_proof'});};
-export const FORM_PRINT_RECIPE='gravuru-form-print-proof/v2';
+export const FORM_PRINT_RECIPE='gravuru-form-print-proof/v3';
 export function formPrintSettings(input={}){
  if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['profile','dpi','white','bleedMm','whiteBleedMm','mirror'].includes(k)))fail('Ungültige Druckeinstellungen.');
  const s=exportSettings({width:1,height:1},input);
@@ -22,7 +22,7 @@ function rasterize(data){
  });
 }
 export async function createFormPrintProof(archive,archiveHash,input={}){
- const requested=formPrintSettings(input),{files,manifest}=readReviewPackage(archive,archiveHash);
+ const {files,manifest}=readReviewPackage(archive,archiveHash),requested=formPrintSettings({...manifest.productionProfile?.document.output,...input});
  if(manifest.product.method!=='print')fail('Diese Ausgabe ist nur für Druckprodukte bestimmt. Gravur benötigt eine eigene Ausgabe ohne Druckweiß.');
  const saved=JSON.parse(files.get('produkt-und-gestaltung.json')),g=saved.product.form.geometry,design=saved.product.designs.find(d=>d.id===saved.designId);
  const raw=await rasterize({svg:files.get('gestaltung-vorschau.svg').toString(),geometry:g,settings:requested,textFields:design.fields.filter(f=>f.type==='text').map(f=>f.id),photoFields:design.fields.filter(f=>f.type==='photo').map(f=>f.id),photos:manifest.photos.map(p=>({...p,bytes:files.get(p.path).toString('base64')}))});
@@ -34,7 +34,7 @@ export async function createFormPrintProof(archive,archiveHash,input={}){
  const pdf=Buffer.from(await (await printPDF({settings,pixels,paths:raw.paths,artwork})).arrayBuffer());
  const warnings=[...manifest.warnings];
  if(requested.bleedMm&&!raw.bleedMm)warnings.push('Kein Druck am Außenrand: Der angeforderte Überdruck wurde nicht hinzugefügt.');
- const metadata={schema:FORM_PRINT_RECIPE,snapshotId:manifest.id,sourcePackageSha256:archiveHash,requested,settings,geometrySha256:saved.product.form.geometrySha256,vectorGlyphs:raw.textVectors.length,pixelWidth:raw.width,pixelHeight:raw.height,edgeInk:raw.edgeInk,pdfSha256:digest(pdf),warnings,productionReady:false,colorConversion:'Generische DeviceCMYK-Separation, kein gemessenes ICC-Profil.',colorArtwork:'Explizite Textfelder als CMYK-Vektorpfade in ursprünglicher Reihenfolge; zugehöriges Weiß ebenfalls als Schriftpfade. Importierte Designquelle und Fotos gerastert; Schnittkontur als Vektor.'};
+ const metadata={schema:FORM_PRINT_RECIPE,productionProfile:manifest.productionProfile||null,profileSettingsOverridden:manifest.productionProfile?JSON.stringify(requested)!==JSON.stringify(formPrintSettings(manifest.productionProfile.document.output)):false,snapshotId:manifest.id,sourcePackageSha256:archiveHash,requested,settings,geometrySha256:saved.product.form.geometrySha256,vectorGlyphs:raw.textVectors.length,pixelWidth:raw.width,pixelHeight:raw.height,edgeInk:raw.edgeInk,pdfSha256:digest(pdf),warnings,productionReady:false,colorConversion:'Generische DeviceCMYK-Separation, kein gemessenes ICC-Profil.',colorArtwork:'Explizite Textfelder als CMYK-Vektorpfade in ursprünglicher Reihenfolge; zugehöriges Weiß ebenfalls als Schriftpfade. Importierte Designquelle und Fotos gerastert; Schnittkontur als Vektor.'};
  const extras=[{name:'technische-druckpruefung.pdf',blob:new Blob([pdf])},{name:'druckpruefung.json',blob:new Blob([JSON.stringify(metadata,null,2)])}];
  const archiveWithPrint=Buffer.from(await (await zipFiles([...files].map(([name,bytes])=>({name,blob:new Blob([bytes])})).concat(extras))).arrayBuffer());
  return {pdf,archive:archiveWithPrint,metadata};

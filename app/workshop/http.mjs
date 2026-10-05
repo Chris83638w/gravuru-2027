@@ -1,3 +1,4 @@
+import {createProductionProfiles,PRODUCTION_MACHINES} from './production-profiles.mjs';
 import {isFormProduct,makeFormProduct,verifyFormSource,formOverview,formReadiness,FORM_MATERIALS} from './form-product.mjs';
 import {formContourPdf} from './form-contour-pdf.mjs';
 import {materialPreview} from './material-preview.mjs';
@@ -39,10 +40,11 @@ const revision=value=>{if(value===null||value===undefined)return undefined;const
 export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter}){
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
+  const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite')});
   const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter});
   const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter});
-  const verifyForm=document=>verifyFormDesignSources(verifyFormSource(document,contours),assets,seed.config.localResources.fonts);
-  const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document))return verifyForm(document);profiles.resolve(document);assets.validateDocument(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document)}:({profiles:profiles.resolve(document)})});
+  const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,seed.config.localResources.fonts);productionProfiles.resolve(d);return d;};
+  const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document))return verifyForm(document);profiles.resolve(document);assets.validateDocument(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
@@ -79,6 +81,16 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!['GET','POST','PATCH'].includes(method))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});
+      if(pathname==='/api/workshop/production-profiles'){
+        if(method==='GET')return json(res,200,{profiles:productionProfiles.list(),machines:PRODUCTION_MACHINES});
+        if(method==='POST')return json(res,201,productionProfiles.create((await body(req)).document));
+      }
+      const manufacturingMatch=pathname.match(/^\/api\/workshop\/production-profiles\/(mfg_[a-f0-9-]+)(?:\/(history))?$/);
+      if(manufacturingMatch){
+        const id=manufacturingMatch[1];if(method==='GET')return json(res,200,manufacturingMatch[2]?{revisions:productionProfiles.history(id)}:productionProfiles.get(id,revision(url.searchParams.get('revision'))));
+        if(method==='PATCH'&&!manufacturingMatch[2]){const data=await body(req);return json(res,200,productionProfiles.save(id,data.document,data.expectedRevision));}
+        fail(405,'method_not_allowed','Diese Profilaktion ist nicht möglich.');
+      }
       if(pathname==='/api/workshop/customer-drafts'&&method==='POST'){
         const data=await body(req),record=customerRecord(data.productId,data.productRevision),design=record.document.designs.find(d=>d.id===(data.designId||record.document.defaultDesignId));
         if(!design||repository.get(record.id).status==='archived')fail(422,'customer_design_missing','Bitte ein aktives Produkt und gültiges Design wählen.');
@@ -90,7 +102,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(!reviewMatch[2]&&method==='GET')return json(res,200,customerDrafts.review(reviewMatch[1]));
         if(reviewMatch[2]==='print'&&method==='POST'){
           const data=await body(req);if(Object.keys(data).some(k=>!['settings','format'].includes(k))||!['pdf','zip'].includes(data.format||'pdf'))fail(422,'invalid_print_request','Bitte PDF oder ZIP und gültige Einstellungen auswählen.');
-          const id=reviewMatch[1],settings=formPrintSettings(data.settings),key=formPrintKey(settings);let output=customerDrafts.printProof(id,key);
+          const id=reviewMatch[1],frozen=customerDrafts.review(id).manifest.productionProfile,settings=formPrintSettings({...frozen?.document.output,...data.settings}),key=formPrintKey(settings);let output=customerDrafts.printProof(id,key);
           if(!output){if(printing)fail(409,'print_busy','Eine Druckprüfung läuft bereits. Bitte anschließend erneut versuchen.');printing=true;try{const review=customerDrafts.review(id);output=await createFormPrintProof(customerDrafts.downloadSnapshot(id,'package'),review.manifest.packageSha256,settings);customerDrafts.savePrintProof(id,key,output);output=customerDrafts.printProof(id,key);}finally{printing=false;}}
           const zip=data.format==='zip',bytes=zip?output.archive:output.pdf;
           res.writeHead(200,{'Content-Type':zip?'application/zip':'application/pdf','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+id+'-druckpruefung.'+(zip?'zip':'pdf')+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-Print-Info':encodeURIComponent(JSON.stringify({dpi:output.metadata.settings.dpi,bleedMm:output.metadata.settings.bleedMm,white:output.metadata.settings.white,warnings:output.metadata.warnings.slice(0,3).map(w=>Array.from(w).slice(0,140).join(''))}))}).end(bytes);return;
@@ -313,5 +325,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {repository,profiles,assets,contours,customerDrafts,handle,model,defaultId,close:()=>{repository.close();profiles.close();assets.close();contours.close();customerDrafts.close();}};
+  return {repository,profiles,productionProfiles,assets,contours,customerDrafts,handle,model,defaultId,close:()=>{repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
 }

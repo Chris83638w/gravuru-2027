@@ -72,3 +72,21 @@ test('workshop HTTP persists validated revisions and previews the exact saved co
   assert.equal((await mutation('/api/workshop/batch/commit',{...series,token:plan.data.token})).data.products[0].created,false);
   const template=await fetch(base+'/api/workshop/import-template');assert.equal(template.status,200);assert.match(template.headers.get('content-type'),/spreadsheet/);
 });
+
+test('dashboard summaries and previews follow saved revisions without changing the product',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-card-'));build({outputDirectory:dir});
+ const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json'),'utf8'))[0];
+ const workshop=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy});
+ const server=createPreviewServer({outputDirectory:dir,workshop});server.listen(0,'127.0.0.1');await once(server,'listening');
+ t.after(()=>{server.closeAllConnections();server.close();workshop.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const base='http://127.0.0.1:'+server.address().port;
+ const list=await (await fetch(base+'/api/workshop/products')).json(),item=list.products[0];
+ assert.equal(item.overview.method,'print');assert.equal(item.overview.widthMm,150);assert.equal(item.overview.designCount,1);assert.equal(item.document,undefined);
+ const before=workshop.repository.get(item.id),url=base+'/api/workshop/products/'+item.id+'/preview.svg';
+ const first=await fetch(url+'?revision=1');assert.equal(first.status,200);assert.match(first.headers.get('content-type'),/image\/svg\+xml/);
+ const svg=await first.text();assert.match(svg,/data:image\/jpeg;base64/);assert.doesNotMatch(svg,/data-resize|<script|Bild nicht verfügbar|blob:gravuru-workshop-reference/);assert.deepEqual(workshop.repository.get(item.id),before);
+ const changed=structuredClone(before.document);changed.config.profile.designs[0].objects.find(o=>o.id==='names').text='Mira & Lena';workshop.repository.save(item.id,changed,1);
+ assert.notEqual(await (await fetch(url)).text(),svg);assert.equal(await (await fetch(url+'?revision=1')).text(),svg);
+ assert.equal((await fetch(url+'?revision=9999')).status,404);assert.equal((await fetch(url,{headers:{Origin:'https://foreign.example'}})).status,403);
+ assert.equal((await fetch(base+'/workshop-ui/dashboard.css')).status,200);
+});

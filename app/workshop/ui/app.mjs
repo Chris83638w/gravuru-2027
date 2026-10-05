@@ -4,7 +4,7 @@ const $=selector=>document.querySelector(selector);
 const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
-const state={record:null,draft:null,products:[],dirty:false,busy:false,csrf:null,tab:'details',listRequest:0,recordRequest:0,createMode:'seed',history:[],profiles:[],profileSettings:null};
+const state={record:null,draft:null,products:[],dirty:false,busy:false,csrf:null,tab:'details',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],profiles:[],profileSettings:null};
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
 const pathValue=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],object);
@@ -50,15 +50,30 @@ function badge(product){
  return '<span class="badges">'+badges.join('')+'</span>';
 }
 function renderList(){
- $('#product-count').textContent=state.products.length;
- if(!state.products.length){$('#product-list').innerHTML=$('#search').value?'<div class="empty-state"><strong>Keine passende Konfiguration.</strong>Versuche einen anderen Namen oder eine Konfigurations-ID.</div>':'<div class="empty-state"><strong>Hier beginnt deine Produktserie.</strong>Lege deine erste Konfiguration aus der Acrylglasvorlage an.<br><button data-action="new">＋ Konfiguration anlegen</button></div>';return;}
- $('#product-list').innerHTML=state.products.map(product=>'<button type="button" class="product-row" data-product-id="'+escape(product.id)+'" aria-pressed="'+String(product.id===state.record?.id)+'"><span class="product-symbol" aria-hidden="true">'+(product.kind==='master'?'◇':'▯')+'</span><span><span class="product-name">'+escape(product.name)+'</span><span class="product-meta"><code>'+escape(product.id)+'</code><span>· Stand '+escape(product.revision)+'</span></span></span>'+badge(product)+'</button>').join('');
+ const scope=state.products.filter(p=>p.kind===(state.view==='masters'?'master':'product'));
+ const active=scope.filter(p=>p.status!=='archived');
+ const visible=scope.filter(p=>state.filter==='archived'?p.status==='archived':p.status!=='archived'&&(state.filter==='all'||p.overview?.method===state.filter));
+ $('#product-count').textContent=visible.length;
+ $('#overview-title').textContent=state.view==='masters'?'Deine Mastervorlagen':'Deine Konfi-Produkte';
+ $('#overview-scope').textContent=state.view==='masters'?'· wiederverwendbare Vorlagen':'';
+ for(const b of $$('[data-view]')){b.classList.toggle('active',b.dataset.view===state.view);b.setAttribute('aria-pressed',String(b.dataset.view===state.view));}
+ for(const b of $$('[data-filter]')){const key=b.dataset.filter;b.setAttribute('aria-pressed',String(key===state.filter));b.querySelector('span').textContent='('+ (key==='archived'?scope.length-active.length:key==='all'?active.length:active.filter(p=>p.overview?.method===key).length)+')';}
+ if(!visible.length){$('#product-list').innerHTML='<div class="empty-state"><strong>'+($('#search').value?'Keine passende Konfiguration.':state.filter==='archived'?'Das Archiv ist leer.':'Hier ist Platz für deine nächste Idee.')+'</strong><p>'+($('#search').value?'Versuche einen anderen Namen oder eine Konfigurations-ID.':'Wähle einen anderen Filter oder lege eine Konfiguration an.')+'</p><button data-action="new">Konfiguration anlegen</button></div>';syncControls();return;}
+ $('#product-list').innerHTML=visible.map(product=>{
+  const info=product.overview||{},method=info.method==='print'?'Druck':info.method==='engraving'?'Gravur':'Verfahren nicht hinterlegt';
+  return '<article class="product-card"><button class="card-image" data-product-id="'+escape(product.id)+'" aria-label="'+escape(product.name)+' bearbeiten"><img loading="lazy" src="/api/workshop/products/'+encodeURIComponent(product.id)+'/preview.svg?revision='+product.revision+'" alt="Designvorschau: '+escape(info.defaultDesignName)+'"><span class="image-error" hidden>Vorschau nicht verfügbar · Produkt öffnen</span></button><div class="card-content"><div class="card-heading"><h3>'+escape(product.name)+'</h3><button data-product-id="'+escape(product.id)+'">Bearbeiten</button></div><div class="card-status">'+badge(product)+'<small>Stand '+escape(product.revision)+'</small></div><dl><div><dt>Konfiguration</dt><dd><code>'+escape(product.id)+'</code></dd></div><div><dt>Verfahren</dt><dd>'+method+'</dd></div><div><dt>Format</dt><dd>'+escape(info.widthMm)+' × '+escape(info.heightMm)+' mm</dd></div><div><dt>Designs</dt><dd>'+escape(info.designCount)+'</dd></div></dl><a class="card-preview-link" href="/?'+new URLSearchParams({configuration:product.id,revision:product.revision})+'" target="_blank" rel="noopener">Kundenansicht öffnen</a></div></article>';
+ }).join('');
+ for(const img of $$('#product-list img'))img.addEventListener('error',()=>{img.hidden=true;img.nextElementSibling.hidden=false;});
  syncControls();
 }
 async function loadList(){
- const request=++state.listRequest,params=new URLSearchParams({query:$('#search').value.trim(),includeArchived:$('#include-archived').checked?'1':'0'});
+ const request=++state.listRequest,params=new URLSearchParams({query:$('#search').value.trim(),includeArchived:'1'});
  const data=await api('/api/workshop/products?'+params);if(request!==state.listRequest)return;
  state.products=data.products||[];renderList();
+}
+async function showOverview(view=state.view){
+ if(!await canDiscard())return false;
+ state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;renderList();history.replaceState(null,'','/werkstatt/?view='+view);return true;
 }
 async function canDiscard(){
  if(!state.dirty)return true;
@@ -67,7 +82,7 @@ async function canDiscard(){
 }
 function applyRecord(record){
  state.record=record;state.draft=clone(record.document);state.dirty=false;
- $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;
+ $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;$('.overview').hidden=true;$('.page-heading').hidden=true;
  renderEditor();renderList();syncControls();
  history.replaceState(null,'','/werkstatt/?configuration='+encodeURIComponent(record.id));
 }
@@ -207,10 +222,10 @@ async function save(){
 function openCreate(mode='seed'){
  if(state.busy)return;
  if(mode==='copy'&&state.dirty){notify('Speichere deine Änderungen zuerst. Die Kopie verwendet den gespeicherten Stand.','info');return;}
- state.createMode=mode;$('#create-error').hidden=true;
+ state.createMode=mode;$('#create-error').hidden=true;$('#master-choice-label').hidden=mode!=='master';
  $('#create-title').textContent=mode==='copy'?'Aus diesem Produkt entsteht Neues.':mode==='separate'?'Deine Änderungen separat sichern.':'Eine neue Konfiguration.';
  $('#create-description').textContent=mode==='copy'?'Die Kopie übernimmt die gespeicherte Konfiguration und erhält eine eigene ID.':mode==='separate'?'Deine aktuellen Formulareingaben werden unter einer neuen ID gesichert. Die zwischenzeitlich geänderte Konfiguration bleibt bestehen.':'Starte mit der geprüften Acrylglasvorlage. Alle Werte lassen sich anschließend bearbeiten.';
- $('#create-name').value=mode==='seed'?'':state.draft.name+' · Kopie';$('#create-kind').value=mode==='seed'?'product':state.draft.kind;
+ $('#create-name').value=['seed','master'].includes(mode)?'':state.draft.name+' · Kopie';$('#create-kind').value=['seed','master'].includes(mode)?(state.view==='masters'?'master':'product'):state.draft.kind;
  $('#create-submit').textContent=mode==='copy'?'Kopie anlegen':'Konfiguration anlegen';$('#create-dialog').showModal();$('#create-name').focus();
 }
 $('#create-form').addEventListener('submit',async event=>{
@@ -220,7 +235,8 @@ $('#create-form').addEventListener('submit',async event=>{
  try{
   const name=$('#create-name').value.trim(),kind=$('#create-kind').value;if(!name)throw Error('Bitte gib der Konfiguration einen Namen.');
   let result;
-  if(state.createMode==='copy')result=await api('/api/workshop/products/'+encodeURIComponent(state.record.id)+'/copy',{method:'POST',body:{expectedRevision:state.record.revision,name,kind}});
+  if(state.createMode==='master'){const id=$('#master-choice').value;const source=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(id)));result=await api('/api/workshop/products/'+encodeURIComponent(id)+'/copy',{method:'POST',body:{expectedRevision:source.revision,name,kind}});}
+  else if(state.createMode==='copy')result=await api('/api/workshop/products/'+encodeURIComponent(state.record.id)+'/copy',{method:'POST',body:{expectedRevision:state.record.revision,name,kind}});
   else{
    const document=state.createMode==='separate'?clone(state.draft):clone((await api('/api/workshop/seed')).document);
    document.name=name;document.kind=kind;if(kind==='master')document.masterId=null;if(document.config?.profile)document.config.profile.name=name;
@@ -251,6 +267,8 @@ $('#product-form').addEventListener('change',event=>{
  if(input.dataset.profileMode){const key=input.dataset.profileMode;state.draft.profileAssignments??={};state.draft.profileAssignments[key]={mode:input.value,profileId:input.value==='override'?state.draft.profileAssignments[key]?.profileId||null:null};const field=$('[data-profile-id="'+key+'"]');field.required=input.value==='override';field.value=state.draft.profileAssignments[key].profileId||'';markDirty();}
 });
 document.addEventListener('click',async event=>{
+ const view=event.target.closest('[data-view]');if(view){await showOverview(view.dataset.view);return;}
+ const filter=event.target.closest('[data-filter]');if(filter){state.filter=filter.dataset.filter;renderList();return;}
  const tab=event.target.closest('[data-tab]');if(tab){showTab(tab.dataset.tab);return;}
  const designAction=event.target.closest('[data-design-action]');if(designAction){if(!designAction.disabled)changeDesign(designAction.dataset.designAction,designAction.dataset.designId);return;}
  const product=event.target.closest('[data-product-id]');
@@ -259,6 +277,8 @@ document.addEventListener('click',async event=>{
  const button=event.target.closest('[data-action]');if(!button||button.disabled)return;
  try{
   const action=button.dataset.action;
+  if(action==='overview'){await showOverview();return;}
+  if(action==='from-master'){if(!await canDiscard())return;const all=await api('/api/workshop/products');const masters=all.products.filter(p=>p.kind==='master');if(!masters.length){notify('Lege zuerst eine Mastervorlage an.','info');await showOverview('masters');return;}$('#master-choice').innerHTML=masters.map(p=>'<option value="'+escape(p.id)+'">'+escape(p.name)+' · Stand '+p.revision+'</option>').join('');openCreate('master');$('#create-description').textContent='Wähle eine gespeicherte Mastervorlage. Das neue Produkt erhält eine eigene ID; die Vorlage bleibt erhalten.';return;}
   if(action==='new'){if(await canDiscard())openCreate('seed');}
   if(action==='copy')openCreate('copy');
   if(action==='save-separate')openCreate('separate');
@@ -280,6 +300,6 @@ const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:asy
 const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 let searchTimer;
 $('#search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>loadList().catch(error=>notify(errorMessage(error),'error')),180);});
-$('#include-archived').addEventListener('change',()=>loadList().catch(error=>notify(errorMessage(error),'error')));
+state.view=new URL(location.href).searchParams.get('view')==='masters'?'masters':'products';
 window.addEventListener('beforeunload',event=>{if(!state.dirty)return;event.preventDefault();event.returnValue='';});
 (async()=>{try{const [session]=await Promise.all([api('/api/workshop/session'),loadList(),loadProfiles().catch(error=>notify('Profilbibliothek noch nicht geladen: '+errorMessage(error),'info'))]);state.csrf=session.csrfToken;const id=new URL(location.href).searchParams.get('configuration');if(id)await loadRecord(id,{checkDirty:false});}catch(error){notify(errorMessage(error),'error');$('#product-list').innerHTML='<p class="empty-state">Die Werkstatt konnte noch nicht geladen werden. Über „Aktualisieren“ kannst du es erneut versuchen.</p>';}})();

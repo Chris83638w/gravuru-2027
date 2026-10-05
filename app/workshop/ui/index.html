@@ -6,25 +6,26 @@
   <meta name="theme-color" content="#183e35">
   <title>Gravuru 2027 · Werkstatt</title>
   <link rel="stylesheet" href="/workshop-ui/style.css">
+  <link rel="stylesheet" href="/workshop-ui/dashboard.css">
   <script type="module" src="/workshop-ui/app.mjs"></script>
 </head>
-<body>
+<body class="dashboard-page">
   <a class="skip-link" href="#main">Zum Inhalt</a>
   <div class="app-layout">
     <aside class="sidebar" aria-label="Werkstattnavigation">
       <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span>gravuru<small>WERKSTATT · 2027</small></span></a>
-      <p class="nav-group">Verwaltung</p>
-      <nav>
-        <a class="nav-item active" href="/werkstatt/" aria-current="page"><span aria-hidden="true">▦</span> Produkte</a>
-        <a class="nav-item" href="/werkstatt/profile/"><span aria-hidden="true">◇</span> Profile</a>
-        <a class="nav-item" href="/werkstatt/serien/"><span aria-hidden="true">≡</span> Serien</a>
+      <nav aria-label="Hauptnavigation">
+        <button class="nav-item active" data-view="products" aria-pressed="true">Produkte</button>
+        <button class="nav-item" data-view="masters" aria-pressed="false">Mastervorlagen</button>
+        <a class="nav-item" href="/werkstatt/serien/">Stapelverarbeitung</a>
+        <a class="nav-item" href="/werkstatt/profile/">Profile</a>
       </nav>
-      <div class="sidebar-bottom"><span class="online-dot"></span><div>Lokale Werkstatt<small>Shopify ist noch nicht verbunden.</small></div></div>
+      <a class="sample-link" href="https://gravuru-design-test-mika.gravur4you-cy.chatgpt.site/?model=acryl&amp;v=0608ef1" target="_blank" rel="noopener">Muster Acrylglasbild</a>
     </aside>
     <main id="main">
       <header class="page-heading">
-        <div><p class="eyebrow">DEINE WERKSTATT</p><h1>Produkte, die persönlich werden.</h1><p>Konfigurationen verwalten. Vorlagen weiterentwickeln.</p></div>
-        <button class="primary" data-action="new" id="new-product"><span aria-hidden="true">＋</span> Neue Konfiguration</button>
+        <div><p class="eyebrow">DEINE WERKSTATT</p><h1 id="overview-title">Deine Konfi-Produkte</h1><p>Verwalte deine personalisierten Gravur- und Druckprodukte.</p></div>
+        <div class="heading-actions"><button data-action="from-master">Aus Master erstellen</button><a class="button" href="/werkstatt/serien/">Stapelimport</a><button class="primary" data-action="new" id="new-product">Produkt anlegen</button></div>
       </header>
       <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
       <div class="conflict-banner" id="conflict-banner" role="alert" hidden>
@@ -32,15 +33,16 @@
         <div class="button-row"><button data-action="save-separate">Als neue Konfiguration sichern</button><button data-action="reload-record">Aktuellen Stand laden …</button></div>
       </div>
       <section class="overview" aria-label="Konfigurationen">
-        <div class="section-heading"><div><h2>Deine Konfigurationen <span class="count" id="product-count">–</span></h2><p>Einzelprodukte und wiederverwendbare Master an einem Ort.</p></div></div>
+        <p class="overview-summary"><span id="product-count">–</span> Konfigurationen <span id="overview-scope"></span></p>
         <div class="toolbar">
           <label class="search"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Name oder Konfigurations-ID suchen" aria-label="Konfigurationen suchen"></label>
-          <label class="archive-filter"><input type="checkbox" id="include-archived"> Archivierte anzeigen</label>
+          <div class="overview-filters" role="group" aria-label="Produkte filtern"><button data-filter="all" aria-pressed="true">Alle <span></span></button><button data-filter="print" aria-pressed="false">Druck <span></span></button><button data-filter="engraving" aria-pressed="false">Gravur <span></span></button><button data-filter="archived" aria-pressed="false">Archiv <span></span></button></div>
           <button class="quiet" data-action="refresh" aria-label="Konfigurationen aktualisieren">↻ Aktualisieren</button>
         </div>
         <div class="product-list" id="product-list" aria-live="polite"><p class="empty-state">Konfigurationen werden geladen …</p></div>
       </section>
       <section class="editor-section" id="editor-section" aria-label="Konfiguration bearbeiten" hidden>
+        <button class="overview-back" data-action="overview">← Zur Produktübersicht</button>
         <div class="editor-heading">
           <div><p class="eyebrow" id="record-eyebrow">KONFIGURATION</p><h2 id="record-title">Konfiguration bearbeiten</h2><div class="record-meta"><span id="record-revision"></span><span id="save-indicator"></span></div></div>
           <div class="button-row"><button data-action="copy" id="copy-product">Kopieren …</button><button class="primary" data-action="save" id="save-product" disabled>Änderungen speichern</button></div>
@@ -77,6 +79,7 @@
     <form id="create-form">
       <header class="dialog-header"><div><p class="eyebrow" id="create-kicker">NEU ANLEGEN</p><h2 id="create-title">Eine neue Konfiguration.</h2></div><button type="button" class="icon-button" data-action="close-dialog" aria-label="Fenster schließen">×</button></header>
       <p id="create-description">Starte mit der geprüften Acrylglasvorlage. Alle Werte lassen sich anschließend bearbeiten.</p>
+      <label id="master-choice-label" hidden>Mastervorlage<select id="master-choice"></select></label>
       <label>Name<input id="create-name" required maxlength="200" autocomplete="off" placeholder="Zum Beispiel: Acrylglasbild · Lieblingsmensch"></label>
       <label>Verwendung<select id="create-kind"><option value="product">Produktkonfiguration</option><option value="master">Mastervorlage für weitere Produkte</option></select></label>
       <p class="field-help">Jede neue Konfiguration erhält eine eigene, dauerhaft auffindbare ID.</p>

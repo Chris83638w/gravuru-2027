@@ -1,3 +1,7 @@
+## Aktueller Auftrag – Dashboard fortsetzen, 05.10.2026
+
+Nutzer hat „Dashboard“ ausdrücklich bestätigt. M01-Produktübersicht jetzt umgesetzt: [Stand und Abnahme](docs/dashboard-20261004/DASHBOARD-M01.md). Die UV-Serienvorbereitung ist derzeit nicht der nächste Schritt. „Muster Acrylglasbild“ bleibt separat [gesichert und direkt erreichbar](docs/dashboard-20261004/MUSTER-ACRYLGLASBILD.md). Weiter mit M02-Produktbearbeitung. Frühere Prioritäten unten sind historische Zwischenstände.
+
 # Gravuru 2027 – aktueller Neuaufbau in der Cloud
 
 Stand 04.10.2026. Nutzerauftrag: den gemeinsam erarbeiteten Neuaufbau der Gravur-Designwerkstatt fortsetzen. Bestehende funktionierende Module wiederverwenden; die alte Pipeline ist keine Ersatzvorgabe. Ausschließlich vorhandene Codex Cloud, keine neue Umgebung/Serverplanung, kein Live-Deployment.

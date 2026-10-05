@@ -1,3 +1,4 @@
+import {productOverview,productPreview} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
 import {randomBytes,timingSafeEqual} from 'node:crypto';
 import fs from 'node:fs';
@@ -68,6 +69,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
           'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'none'; sandbox",
           ...(original?{'Content-Disposition':`attachment; filename="Gravuru-Original-${asset.sourceSha256.slice(0,12)}.${asset.format}"`}:{})}).end(bytes);return;
       }
+      const cardMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/preview\.svg$/);
+      if(cardMatch&&method==='GET'){
+        const bytes=Buffer.from(productPreview(model(cardMatch[1],url.searchParams.get('revision'))));
+        res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}).end(bytes);return;
+      }
       const preparedMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/prepared-design\/(preview|apply)$/);
       if(preparedMatch&&method==='POST'){
         const data=await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+65536);
@@ -119,7 +125,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
       if(pathname==='/api/workshop/batch/commit'&&method==='POST')return json(res,200,commitBatch(repository,await body(req),assets));
       if(pathname==='/api/workshop/products'){
         if(method==='GET'){
-          const products=repository.list({query:url.searchParams.get('query')||'',includeArchived:url.searchParams.get('includeArchived')==='1'}).map(({document,...item})=>item);
+          const products=repository.list({query:url.searchParams.get('query')||'',includeArchived:url.searchParams.get('includeArchived')==='1'}).map(({document,...item})=>({...item,overview:productOverview(document)}));
           return json(res,200,{products});
         }
         if(method==='POST'){const data=await body(req);return json(res,201,repository.create(data.document));}

@@ -1,3 +1,9 @@
+## 05.10.2026 – Dashboard M01 umgesetzt
+
+Nutzerbestätigter Folgeauftrag „Dashboard“. Branch `task/dashboard-product-cards-20261005`, Basis `775557fef6933509d095b9e2756a5f799a7fd670`. Produktkarten mit revisionsbezogenen Vorschauen, Suche/Verfahrens-/Archivfilter, Masterübersicht und Kopie aus Master; vorhandener Editor und Schutz ungespeicherter Eingaben weiterverwendet. Muster Acrylglasbild unverändert separat erreichbar.
+
+174 Tests/0 Fehler/0 Skips, danach 2 HTTP-Tests erfolgreich; Build 76 Ressourcen/1 Modell. Desktop/Mobil mit synthetischen Daten tatsächlich geprüft. [Bilder, Umfang und Grenzen](docs/dashboard-20261004/DASHBOARD-M01.md). Kein zusätzlicher gehosteter Dashboard-Link; aktuelle Bedienprüfung im Cloud-Entwicklungsserver. Nächster Schritt: M02-Produktbearbeitung.
+
 ## 05.10.2026 – Muster Acrylglasbild gesichert
 
 Bestehende private Site in „Muster Acrylglasbild“ umbenannt; Direktzugriff im START_HERE und [Musterregister](docs/dashboard-20261004/MUSTER-ACRYLGLASBILD.md). Native Version 12 samt Archiv und Produktcommit `f4c9a2068f7d159def5f88f2a841bf01c1a59bd8` tatsächlich geprüft. Keine neuen Tests/Builds oder Änderungen am Konfigurator. Folgeauftrag „mit dem anderen“: Rückfrage Dashboard/Werkstatt oder weitere UV-Designs gestellt; noch keine Zuordnung behauptet.

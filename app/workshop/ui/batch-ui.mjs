@@ -1,6 +1,6 @@
 import {readImport} from './batch-reader.mjs';
 const $=s=>document.querySelector(s),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false;
+let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false,formKeys=new Set();
 const uploadCache=new WeakMap();
 async function api(path,data){
   if(data&&!csrf)csrf=(await api('/api/workshop/session')).csrfToken;
@@ -13,7 +13,7 @@ function disabled(value){
   $('#import').disabled=value||!prepared||hasErrors&&!$('#skip-errors').checked;
 }
 function invalidate(){
-  prepared=null;hasErrors=false;$('#skip-errors').checked=false;$('#partial-label').hidden=true;$('#review').hidden=true;$('#result').hidden=true;$('#import').disabled=true;$('#upload-report').textContent='';status('');
+  prepared=null;formKeys.clear();hasErrors=false;$('#skip-errors').checked=false;$('#partial-label').hidden=true;$('#review').hidden=true;$('#result').hidden=true;$('#import').disabled=true;$('#upload-report').textContent='';status('');
 }
 const base64=file=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Die Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
 async function uploadDesigns(rows){
@@ -62,11 +62,12 @@ $('#check').addEventListener('click',async()=>{
     const rows=await readImport($('#file').files[0]),designFiles=await uploadDesigns(rows);
     const data={rows,masterId:option.value,masterRevision:Number(option.dataset.revision),designFiles};
     const plan=await api('/api/workshop/batch/plan',data);if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
-    $('#review').hidden=false;
+    formKeys=new Set(plan.report.filter(r=>r.formProduct).map(r=>r.key));$('#review').hidden=false;
     const errors=plan.report.filter(r=>r.status==='error').length,existing=plan.report.filter(r=>r.status==='existing').length;
     hasErrors=errors>0;$('#partial-label').hidden=!hasErrors||!plan.token;
     $('#summary').textContent=plan.report.length+' Produkte · '+errors+' Fehler · '+existing+' bereits vorhanden';
-    $('#rows').innerHTML=plan.report.map(row=>'<tr><td>'+row.row+'</td><td><strong>'+escape(row.name)+'</strong><small>'+escape(row.key)+'</small></td><td>'+artworkCell(row)+'</td><td>'+money(row.prices?.small)+'</td><td>'+money(row.prices?.large)+'</td><td>'+escape(row.message||(row.status==='existing'?'Bereits angelegt':'Bereit'))+'</td></tr>').join('');
+    $('#rows').innerHTML=plan.report.map(row=>'<tr><td>'+row.row+'</td><td><strong>'+escape(row.name)+'</strong><small>'+escape(row.key)+'</small>'+ (row.formProduct?'<small>'+escape(row.material||'Material offen')+' · '+(row.method==='print'?'Druck':row.method==='engraving'?'Gravur':'Verfahren offen')+' · '+row.geometry.widthMm+' × '+row.geometry.heightMm+' mm</small>':'')+'</td><td>'+artworkCell(row)+'</td><td>'+money(row.formProduct?row.prices?.base:row.prices?.small)+'</td><td>'+money(row.prices?.large)+'</td><td>'+escape(row.message||(row.status==='existing'?'Bereits angelegt':'Bereit'))+'</td></tr>').join('');
+    for(const row of $('#rows').rows)Array.from(row.cells).forEach((cell,i)=>cell.dataset.label=['Datensatz','Produkt / Importschlüssel','Design','Grundpreis / klein','Acryl groß','Ergebnis'][i]);
     if(plan.token)prepared={...data,token:plan.token};
     status(plan.valid?'Prüfung abgeschlossen. Kontrolliere die zugeordneten Designs und lege die Serie an.':'Noch nichts angelegt. Fehler korrigieren oder ausdrücklich nur gültige Datensätze anlegen.',!plan.valid);
   }catch(error){status(error.message,true);}finally{$('#cancel-check').hidden=true;disabled(false);}
@@ -76,7 +77,7 @@ $('#import').addEventListener('click',async()=>{
   try{
     const result=await api('/api/workshop/batch/commit',{...prepared,skipErrors:$('#skip-errors').checked});
     $('#result').hidden=false;
-    $('#result-list').innerHTML=result.products.map(item=>'<p><a href="/werkstatt/?configuration='+encodeURIComponent(item.id)+'">'+escape(item.key)+'</a> · <code>'+escape(item.id)+'</code> · '+(item.created?'Neu angelegt':'Bereits vorhanden')+'</p>').join('');
+    $('#result-list').innerHTML=result.products.map(item=>'<p><a href="'+(formKeys.has(item.key)?'/werkstatt/formprodukt/':'/werkstatt/')+'?configuration='+encodeURIComponent(item.id)+'">'+escape(item.key)+'</a> · <code>'+escape(item.id)+'</code> · '+(item.created?'Neu angelegt':'Bereits vorhanden')+'</p>').join('');
     const saved=new Map(result.products.map(item=>[item.key,item]));
     for(const row of $('#rows').rows){const item=saved.get(row.cells[1]?.querySelector('small')?.textContent);if(item)row.cells[5].textContent=item.created?'Gespeichert':'Bereits angelegt';}
     $('#summary').textContent=result.products.length+' Konfigurationen gespeichert · '+(result.errors?.length||0)+' Fehler';
@@ -85,6 +86,6 @@ $('#import').addEventListener('click',async()=>{
 });
 try{
   const {products}=await api('/api/workshop/products');
-  $('#master').innerHTML=products.filter(p=>p.kind==='master'&&!p.overview?.formProduct).map(p=>'<option value="'+escape(p.id)+'" data-revision="'+p.revision+'">'+escape(p.name)+' · Stand '+p.revision+'</option>').join('');
+  $('#master').innerHTML=products.filter(p=>p.kind==='master'&&p.status!=='archived').map(p=>'<option value="'+escape(p.id)+'" data-revision="'+p.revision+'">'+escape(p.name)+(p.overview?.formProduct?' · Freie Form':' · Acrylvorlage')+' · Stand '+p.revision+'</option>').join('');
   if(!$('#master').options.length)status('Lege in der Produktverwaltung zunächst eine Mastervorlage an.',true);
 }catch(error){status(error.message,true);}

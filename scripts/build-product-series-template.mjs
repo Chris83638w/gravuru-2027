@@ -13,8 +13,8 @@ const repo=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const destination=path.join(repo,'app/workshop/templates/produktserie.xlsx');
 const scratch=path.resolve(process.env.TEMPLATE_PREVIEW_DIR||process.cwd());
 const headers=[...IMPORT_COLUMNS];
-assert.equal(headers.length,18);
-const example=['beispiel-001','Mein erstes Acrylglasbild',null,null,null,null,null,'Unser Anfang','Anna & Lukas','Am See in Hamburg','14.06.2020','Hier begann unser Wir.',null,null,null,null,null,null];
+assert.equal(headers.length,19);
+const example=['beispiel-001','Mein erstes Acrylglasbild',null,null,null,null,null,'Unser Anfang','Anna & Lukas','Am See in Hamburg','14.06.2020','Hier begann unser Wir.',null,null,null,null,null,null,null];
 const wb=Workbook.create();
 const products=wb.worksheets.add('Produkte');
 const guide=wb.worksheets.add('Anleitung');
@@ -22,9 +22,9 @@ const ink='#263C34',green='#245C48',amber='#FFF4D8',muted='#5A6860';
 
 products.showGridLines=false;
 products.tabColor=green;
-products.getRange('A1:R102').format={font:{name:'Arial',size:11,color:ink},verticalAlignment:'center',rowHeight:27};
-products.getRange('A1:R1').values=[headers];
-products.getRange('A2:R2').values=[example];
+products.getRange('A1:S102').format={font:{name:'Arial',size:11,color:ink},verticalAlignment:'center',rowHeight:27};
+products.getRange('A1:S1').values=[headers];
+products.getRange('A2:S2').values=[example];
 products.getRange('A2:E102').setNumberFormat('@');
 products.getRange('H2:N102').setNumberFormat('@');
 products.getRange('O2:O102').setNumberFormat('@');
@@ -32,15 +32,16 @@ products.getRange('P2:P102').setNumberFormat('0');
 products.getRange('P2:P102').format.horizontalAlignment='right';
 products.getRange('Q2:R102').setNumberFormat('@');
 products.getRange('F2:G102').setNumberFormat('0.00');
+products.getRange('S2:S102').setNumberFormat('0.00');
 products.getRange('F2:G102').format.horizontalAlignment='right';
-products.getRange('A2:R102').format.fill=amber;
-products.getRange('A2:R2').format.fill='#E3EEE7';
-products.getRange('A2:R2').format.rowHeight=44;
-products.getRange('A2:R102').format.wrapText=true;
-products.getRange('A1:R1').format={fill:green,font:{name:'Arial',size:11,bold:true,color:'#FFFFFF'},rowHeight:37,wrapText:false,horizontalAlignment:'center',verticalAlignment:'center',borders:{insideVertical:{style:'thin',color:'#FFFFFF'}}};
-const widths=[23,36,27,23,27,25,25,27,27,34,20,36,39,62,40,21,36,23];
+products.getRange('A2:S102').format.fill=amber;
+products.getRange('A2:S2').format.fill='#E3EEE7';
+products.getRange('A2:S2').format.rowHeight=44;
+products.getRange('A2:S102').format.wrapText=true;
+products.getRange('A1:S1').format={fill:green,font:{name:'Arial',size:11,bold:true,color:'#FFFFFF'},rowHeight:37,wrapText:false,horizontalAlignment:'center',verticalAlignment:'center',borders:{insideVertical:{style:'thin',color:'#FFFFFF'}}};
+const widths=[23,36,27,23,27,25,25,27,27,34,20,36,39,62,40,21,36,23,25];
 widths.forEach((width,i)=>{products.getRangeByIndexes(0,i,102,1).format.columnWidth=width;});
-const table=products.tables.add('A1:R102',true,'Produktserie');
+const table=products.tables.add('A1:S102',true,'Produktserie');
 table.style='TableStyleLight1';
 table.showFilterButton=true;
 products.freezePanes.freezeRows(1);
@@ -56,7 +57,7 @@ guide.getRange('A2').format.font={name:'Arial',size:17,bold:true,color:green};
 guide.getRange('A2:B2').format.rowHeight=33;
 guide.getRange('A3:B3').format.borders={bottom:{style:'thin',color:green}};
 const intro=[
- ['Prinzip','Jede ausgefüllte Zeile im Blatt Produkte legt ein neues Produkt mit den zwei bestehenden Acrylgrößen an.'],
+ ['Prinzip','Jede ausgefüllte Zeile legt ein neues Produkt aus dem Master an: freie Form mit Originalmaßen oder bestehende Acrylvorlage mit zwei Größen.'],
  ['Master übernehmen','Die ausgewählte Mastervorlage liefert Designs, Optionen, Schriften und unveränderte Inhalte. Sie muss vor dem Import gewählt werden.'],
  ['Beispiel & Eingabe','Zeile 2 ist ein ausgefülltes Beispiel. Vor der eigenen Serie ersetzen oder löschen. Zeilen 3–102 sind 100 leere Eingabezeilen; weitere Zeilen können ergänzt werden.'],
  ['Farben','Die grüne Zeile zeigt das Beispiel. Die hellgelben Zellen sind für eigene Eingaben vorgesehen.'],
@@ -89,17 +90,18 @@ const descriptions=[
  ['design_file','Optional. Exakter Dateiname einer im Serienimport ausgewählten SVG/PDF, zum Beispiel Motiv.svg. Groß-/Kleinschreibung beachten. Leer übernimmt alle Designs des Masters.'],
  ['design_page','Optional. PDF-Seite als ganze Zahl ab 1. Leer nimmt Seite 1. Für SVG immer 1. Dieselbe PDF kann in mehreren Produktzeilen mit unterschiedlichen Seiten verwendet werden.'],
  ['design_id','Optional. ID des zu ersetzenden Designs im Master. Leer verwendet dessen Standarddesign. Alle anderen Designs bleiben erhalten. Nur zusammen mit design_file ausfüllen.'],
- ['design_fit','Optional. visible (Standard/leer) passt das Design proportional in die sichtbare Fläche ein. original behält das Originalmaß in mm. Zu große Originalmaße werden als Zeilenfehler gemeldet.']
+ ['design_fit','Acrylvorlage: visible oder original. Freie Formen: original (Standard) oder contain (proportional einpassen). Vollflächiger Druck benötigt eine Datei im passenden Formmaß; freie Ränder werden nicht automatisch gefüllt.'],
+ ['price_eur','Freie Formprodukte: Grundpreis in Euro. Leer übernimmt den Master. Für die bisherige Acrylvorlage price_small_eur / price_large_eur verwenden.']
 ];
-guide.getRange('A14:B31').values=descriptions;
-guide.getRange('A14:A31').format.font={name:'Arial',size:11,bold:true,color:ink};
-guide.getRange('B14:B31').format.wrapText=true;
-guide.getRange('A14:B31').format.rowHeight=43;
-guide.getRange('A28:B31').format.rowHeight=56;
-for(let row=14;row<=31;row+=2)guide.getRange(`A${row}:B${row}`).format.fill='#F1F5F1';
+guide.getRange('A14:B32').values=descriptions;
+guide.getRange('A14:A32').format.font={name:'Arial',size:11,bold:true,color:ink};
+guide.getRange('B14:B32').format.wrapText=true;
+guide.getRange('A14:B32').format.rowHeight=43;
+guide.getRange('A28:B32').format.rowHeight=56;
+for(let row=14;row<=32;row+=2)guide.getRange(`A${row}:B${row}`).format.fill='#F1F5F1';
 guide.getRange('A33:B37').values=[
  ['Eurozahlen','Excel kann je nach Sprache 14,99 anzeigen. Der Zellwert bleibt eine Zahl in Euro; keine Centbeträge wie 1499 eintragen.'],
- ['Aktueller Umfang','Die Serie übernimmt den Acrylaufbau und die Varianten des Masters. Ohne design_file können Textwerte geändert werden. Mit design_file wird genau das gewählte Design ersetzt.'],
+ ['Aktueller Umfang','Freie Formprodukte übernehmen Kontur, Material, Stärke, Verfahren und Szene. price_eur ersetzt ihren Grundpreis. Alte Acrylvorlagen behalten ihre zwei Preise und Textspalten. Designersatz entfernt nur die Kundenfelder des ersetzten Formdesigns.'],
  ['Dateien auswählen','Im Serienimport neben der Excel-Tabelle alle benötigten SVG/PDF-Dateien gemeinsam auswählen. Dateinamen und PDF-Seiten aus der Tabelle müssen eindeutig zu diesen Dateien passen.'],
  ['Feste Gestaltung','Mit design_file die Spalten heading, names, place, date und slogan leer lassen. Sonst wird die Zeile abgelehnt. Texte und Fotos der importierten Datei werden nicht automatisch zu bearbeitbaren Kundenfeldern.'],
  ['Dateiquellen','Nur Dateinamen eintragen, keine lokalen Pfade oder Drive-Links. Dateien werden hier ausdrücklich ausgewählt und hochgeladen. Automatischer Abruf aus Ordnern oder Drive ist nicht enthalten.']
@@ -110,10 +112,10 @@ guide.getRange('B33:B37').format.wrapText=true;
 guide.getRange('A33:B37').format.rowHeight=56;
 
 wb.recalculate();
-assert.deepEqual(products.getRange('A1:R1').values[0],headers);
-assert.deepEqual(products.getRange('A2:R2').values[0],example);
-assert(products.getRange('A3:R102').values.flat().every(value=>value===null||value===''));
-assert(products.getRange('A1:R102').formulas.flat().every(value=>!value));
+assert.deepEqual(products.getRange('A1:S1').values[0],headers);
+assert.deepEqual(products.getRange('A2:S2').values[0],example);
+assert(products.getRange('A3:S102').values.flat().every(value=>value===null||value===''));
+assert(products.getRange('A1:S102').formulas.flat().every(value=>!value));
 console.log((await wb.inspect({kind:'table',range:'Produkte!O1:R3',include:'values,formulas',tableMaxRows:3,tableMaxCols:4,maxChars:1600})).ndjson);
 console.log((await wb.inspect({kind:'table',range:'Anleitung!A28:B37',include:'values,formulas',tableMaxRows:10,tableMaxCols:2,maxChars:4300})).ndjson);
 console.log((await wb.inspect({kind:'match',searchTerm:'#REF!|#DIV/0!|#VALUE!|#NAME\\?|#N/A|#NUM!',options:{useRegex:true,maxResults:10},maxChars:1200})).ndjson);

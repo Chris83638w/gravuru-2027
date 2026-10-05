@@ -1,0 +1,59 @@
+{
+  "startedAt": "2026-10-05T19:24:57.966Z",
+  "platform": "linux",
+  "node": "v24.19.0",
+  "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+  "steps": [
+    {
+      "name": "python-pdf",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "references",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "tests",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS",
+  "tests": {
+    "count": 235,
+    "skipped": 0,
+    "failures": 0
+  },
+  "finishedAt": "2026-10-05T19:25:59.760Z",
+  "browser": {
+    "result": "PASS",
+    "table": "actual XLSX with 19 columns",
+    "rows": 3,
+    "initialErrors": 1,
+    "initialCreated": 2,
+    "repeatedExisting": 2,
+    "correctedNew": 1,
+    "masterPreserved": true,
+    "formEditorLinks": true,
+    "viewports": [
+      1536,
+      390,
+      768
+    ],
+    "jsErrors": []
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "baseCommit": "fdbb5be293a0517767d2f0f20a56b6b2b0281620",
+  "branch": "task/form-batch-20261005"
+}

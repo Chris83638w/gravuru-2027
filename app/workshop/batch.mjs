@@ -1,8 +1,10 @@
+import {isFormProduct} from './form-product.mjs';
+import {prepareFormBatch} from './form-batch.mjs';
 import {createHash} from 'node:crypto';
 import {validateProductDocument} from './product-model.mjs';
 import {replaceDesignArtwork} from './design-import.mjs';
 
-export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit'];
+export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur'];
 const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const text=value=>value===undefined||value===null?'':String(value).trim();
 const fail=message=>{throw new Error(message);};
@@ -36,12 +38,13 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       if(!/^[1-9][0-9]*$/.test(String(version)))fail('Bitte einen gespeicherten Masterstand auswählen.');
       const master=repository.get(id,{revision:Number(version)}),current=repository.get(id);
       if(master.document.kind!=='master'||current.status==='archived'||current.document.kind!=='master')fail('Die Vorlage muss ein aktiver Master sein.');
-      if(master.document.schema==='gravuru-form-product/v1')fail('Formprodukte sind noch nicht für die Acryl-Stapelanlage freigegeben.');
+      const form=isFormProduct(master.document);if(!form&&text(row.price_eur))fail('price_eur gilt für freie Formprodukte. Für die Acrylvorlage price_small_eur / price_large_eur verwenden.');
       let document=structuredClone(master.document),artwork=null;
       document.kind='product';document.masterId=id;document.name=text(row.name);
       if(!document.name)fail('Produktname fehlt.');
       if(text(row.category_ids))document.categoryIds=[...new Set(text(row.category_ids).split(',').map(v=>v.trim()).filter(Boolean))];
-      for(const [column,size] of [['price_small_eur','small'],['price_large_eur','large']])if(text(row[column]))document.config.acrylic.pricing.sizes[size]=cents(row[column]);
+      if(form){if(text(row.price_eur))document.basePriceCents=cents(row.price_eur);prepareFormBatch(document,row);}
+      else for(const [column,size] of [['price_small_eur','small'],['price_large_eur','large']])if(text(row[column]))document.config.acrylic.pricing.sizes[size]=cents(row[column]);
       const filename=text(row.design_file);
       if(!filename&&['design_page','design_id','design_fit'].some(field=>text(row[field])))fail('Design-Einstellungen benötigen auch design_file.');
       if(filename){
@@ -52,9 +55,11 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
         if(!source)fail(`Design-Datei „${filename}“, Seite ${pageText}, fehlt. Bitte die zugehörige Datei auswählen und prüfen.`);
         const asset=assets.get(source.assetId);if(asset.page!==source.page||asset.format!==(filename.toLowerCase().endsWith('.pdf')?'pdf':'svg'))fail('Die gespeicherte Design-Datei passt nicht zu Dateityp oder Seite.');
         if(['heading','names','place','date','slogan'].some(field=>text(row[field])))fail('Importierte Gesamtmotive haben noch keine bearbeitbaren Textfelder. Die Textspalten in dieser Zeile leer lassen.');
+        if(form){const prepared=prepareFormBatch(document,row,{asset,filename});document=prepared.document;artwork=prepared.artwork;}else{
         const replacement=replaceDesignArtwork(document,assets,{designId:text(row.design_id)||document.config.profile.defaultDesignId,assetId:asset.assetId,fit:text(row.design_fit)||'visible',originalName:filename});
         document=replacement.document;
         artwork={name:filename,page:asset.page,assetId:asset.assetId,designId:replacement.designId,designName:replacement.designName,placement:replacement.placement,warnings:replacement.warnings};
+        }
       }
       for(const field of ['heading','names','place','date','slogan'])if(text(row[field])){
         let replaced=false;
@@ -63,13 +68,14 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       }
       for(const field of ['title','description'])if(text(row['seo_'+field]))document.seo[field]=text(row['seo_'+field]);
       const validated=validateProductDocument(document);
-      if(assets)assets.validateDocument(validated);
+      if(form){if(!assets&&validated.designs?.length)fail('Der Design-Dateispeicher ist für diesen Master erforderlich.');for(const design of validated.designs||[]){if(assets.get(design.assetId).sourceSha256!==design.sourceSha256)fail('Die Designquelle wurde verändert.');}repository.validate(validated);}
+      else if(assets)assets.validateDocument(validated);
       else if(validated.config.localResources.motifs.some(m=>m.artwork))fail('Der Design-Dateispeicher ist für diesen Master erforderlich.');
       const fingerprint=hash({masterId:id,masterRevision:Number(version),document:validated});
       const existing=repository.importItem(key);
       if(existing&&existing.fingerprint!==fingerprint)fail('Dieser Importschlüssel ist schon mit anderen Daten verknüpft. Neuen Schlüssel verwenden oder bestehenden Artikel bearbeiten.');
       entries.push({key,fingerprint,document:validated});
-      report.push({row:index+1,key,name:validated.name,status:existing?'existing':'ready',id:existing?.id,masterId:id,masterRevision:Number(version),prices:validated.config.acrylic.pricing.sizes,...(artwork?{artwork}:{})});
+      report.push({row:index+1,key,name:validated.name,status:existing?'existing':'ready',id:existing?.id,masterId:id,masterRevision:Number(version),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:validated.config.acrylic.pricing.sizes}),...(artwork?{artwork}:{})});
     }catch(error){report.push({row:index+1,key,name:text(row?.name),status:'error',message:error.message});}
   }
   const valid=report.every(row=>row.status!=='error');

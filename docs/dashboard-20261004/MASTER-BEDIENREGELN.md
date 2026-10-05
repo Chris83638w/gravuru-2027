@@ -29,3 +29,10 @@ Vollständiges Design oben links wie im Konfigurator, mit Foto/Texten/Sockel. Vo
 - Beim ausgewählten, freigegebenen Motiv: runde Farbpunkte Schwarz, Weiß, Grau, Terrakotta, Dunkelgrün und Goldton plus freie Farbe; Verkleinern, Vergrößern und Drehen in 15°-Schritten nutzen vorhandene Bedienlogik/Rechte. Goldton ist eine normale Druckfarbe.
 - Vollbild schließt bei Klick auf die seitlichen weißen Flächen links/rechts außerhalb der Produktvorschau. Bedienelemente und das Produkt selbst lösen kein Schließen aus.
 - Eine gelungene Kundengestaltung später aus einer Bestellung als neuen Produktentwurf übernehmen: gewünschter Folgeschritt, noch keine angebundene Bestellfunktion oder automatische Veröffentlichung.
+
+## Ergänzung 05.10.2026: Farbdruck, Matt/Hochglanz, UV-Marker
+
+- Farbiger, vollflächiger Druck ausdrücklich berücksichtigen. Farben erhalten, Kontur und Bohrungen einhalten; Weiß unter tatsächlich bedruckten Bereichen. Standard weiterhin ohne Überdruck, optional 1 mm nur bei Außenrandkontakt.
+- „Matt und Hochglanz“ ist angefragt; offen ist die Zuordnung zu Acryloberfläche oder Druck/Lack. Nicht automatisch einen Lackkanal oder eine tatsächlich verfügbare Maschinenfunktion annehmen.
+- „Typische UV-Druckmarker“ ist angefragt; Rückfrage offen: Passer-/Positioniermarken, feine UV-Druckpunkte in der Vorschau oder Weiß-/Lack-/Konturkanäle. Bestehende RDG_WHITE-/Kontur-/Mimaki-Weißersatzregeln bleiben gültig.
+- Farbprüfbeispiel und Formserien-Abnahme: [DASHBOARD-FORMSERIEN.md](DASHBOARD-FORMSERIEN.md). Keine Aussage über physische Druckqualität, Lack oder reale Maschinenabnahme daraus ableiten.

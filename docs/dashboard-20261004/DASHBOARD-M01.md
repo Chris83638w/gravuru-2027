@@ -1,3 +1,5 @@
+> Einordnung nach dem visuellen Abgleich vom 05.10.2026: Die technischen Prüfungen sind gültig, die M01-Produktkarten entsprechen jedoch noch nicht vollständig der ausgewählten fotografischen Referenz. M02 wurde anschließend als eigenes Paket angebunden: [aktueller Stand](DASHBOARD-M02.md).
+
 # Dashboard: Produktübersicht M01
 
 Umgesetzt am 05.10.2026 nach Nutzerbestätigung „Dashboard“. Aufgabenbranch `task/dashboard-product-cards-20261005`, Basis `775557fef6933509d095b9e2756a5f799a7fd670`.

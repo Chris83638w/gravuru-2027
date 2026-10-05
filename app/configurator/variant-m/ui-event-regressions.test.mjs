@@ -113,15 +113,20 @@ test('fixed acrylic photo: actual editor apply keeps shape/geometry and remains 
 });
 test('non-replaceable photo retains its artwork and is not redecorated as an unnamed upload button',()=>{
  const object={id:'photo-main',type:'photoSlot',x:75,y:60,w:100,h:90},el={uxCanEdit:()=>false};
- const env={el,files:new Map(),ROOT:'/acrylic-assets/',rawSVG:()=>undefined};
+ const env={el,config:{},files:new Map(),ROOT:'/acrylic-assets/',rawSVG:()=>undefined};
  vm.runInNewContext(block('acrylic-scene.mjs',' el.uxObjectSVG=function(o){','\n };'),env);
  const locked=el.uxObjectSVG(object);
  assert.match(locked,/reference\.png/);assert.match(locked,/aria-hidden="true"/);assert.match(locked,/tabindex="-1"/);
  assert.doesNotMatch(locked,/role="button"|data-preview-only|eigenes Foto hochladen/);
  const group={querySelector:()=>({}),hasAttribute:name=>name==='data-ux-static-photo',get children(){assert.fail('static artwork must never be removed by the placeholder decorator');}};
  vm.runInNewContext('('+decorateEmptyPhotoSlots.toString()+')(root,[object],"#000000","#ffffff")',{root:{querySelector:()=>group},object,CSS:{escape:value=>value},emptyPhotoMarkup});
+ el.state={designId:'example-design'};env.config.localResources={photoExamples:[{designId:'example-design',slotId:'photo-main',assetId:'a'.repeat(64)}]};
+ const replaced=el.uxObjectSVG(object);assert.match(replaced,/design-assets\/a{64}\/preview\.svg/);assert.match(replaced,/data-ux-static-photo/);assert.doesNotMatch(replaced,/role="button"/);
  el.uxCanEdit=()=>true;const editable=el.uxObjectSVG(object);
  assert.match(editable,/role="button"/);assert.match(editable,/aria-label="Eigenes Foto hochladen"/);assert.match(editable,/data-preview-only/);
+ env.config.photo={hints:[{designId:'example-design',slotId:'photo-main',text:'Foto <hier> & jetzt',enabled:true}]};
+ assert.match(el.uxObjectSVG(object),/Foto &lt;hier&gt; &amp; jetzt/);
+ env.config.photo.hints[0].enabled=false;assert.doesNotMatch(el.uxObjectSVG(object),/Beispielfoto ersetzen|Foto &lt;/);
 });
 
 test('imported acrylic photo: actual upload handler replaces semantic slot twice without appending an object',async()=>{

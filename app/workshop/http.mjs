@@ -69,9 +69,23 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
           'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'none'; sandbox",
           ...(original?{'Content-Disposition':`attachment; filename="Gravuru-Original-${asset.sourceSha256.slice(0,12)}.${asset.format}"`}:{})}).end(bytes);return;
       }
+      const editorMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/editor-preview$/);
+      if(editorMatch&&method==='POST'){
+        const data=await body(req),record=repository.get(editorMatch[1]);
+        if(data.expectedRevision!==record.revision)fail(409,'stale_revision','Der gespeicherte Stand wurde geändert. Bitte zuerst den Konflikt klären.');
+        const document=validateProductDocument(data.document);
+        profiles.resolve(document);assets.validateDocument(document);
+        const resolved=resolveProduct(document,{designId:data.designId,options:data.options});
+        const universal=structuredClone(resolved.config);
+        universal.profile.defaultDesignId=resolved.designId;
+        universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
+        const examples=(universal.localResources.photoExamples||[]).filter(e=>e.designId===resolved.designId).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
+        return json(res,200,{svg:productPreview({universal},{options:resolved.resolvedOptions,examples}),revision:record.revision,designId:resolved.designId});
+      }
       const cardMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/preview\.svg$/);
       if(cardMatch&&method==='GET'){
-        const bytes=Buffer.from(productPreview(model(cardMatch[1],url.searchParams.get('revision'))));
+        const m=model(cardMatch[1],url.searchParams.get('revision')),examples=(m.universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
+        const bytes=Buffer.from(productPreview(m,{designId:url.searchParams.get('designId'),examples}));
         res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}).end(bytes);return;
       }
       const preparedMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/prepared-design\/(preview|apply)$/);

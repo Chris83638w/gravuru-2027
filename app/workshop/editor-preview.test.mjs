@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {once} from 'node:events';
+import {build} from '../configurator/variant-m/build.mjs';
+import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {createWorkshop} from './http.mjs';
+
+test('M02 draft preview resolves chosen design and base without saving; protects CSRF and revisions',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-m02-'));build({outputDirectory:dir});
+ const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json'),'utf8'))[0];
+ const workshop=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy});
+ const server=createPreviewServer({outputDirectory:dir,workshop});server.listen(0,'127.0.0.1');await once(server,'listening');
+ const base=`http://127.0.0.1:${server.address().port}`;
+ t.after(async()=>{await new Promise(r=>server.close(r));workshop.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const initial=workshop.repository.get(workshop.defaultId),draft=structuredClone(initial.document);
+ const copy=structuredClone(draft.config.profile.designs[0]);copy.id='second-design';copy.name='Zweite Gestaltung';copy.objects.find(o=>o.id==='names').text='M02 Entwurf';draft.config.profile.designs.push(copy);draft.elementRights[copy.id]=structuredClone(draft.elementRights[draft.config.profile.defaultDesignId]);
+ const {csrfToken}=await fetch(base+'/api/workshop/session').then(r=>r.json());
+ const url=base+`/api/workshop/products/${initial.id}/editor-preview`;
+ const data={expectedRevision:initial.revision,document:draft,designId:copy.id,options:{size:'large',base:'eiche',wall:'none'}};
+ const send=(data,token=csrfToken,extra={})=>fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':token,...extra},body:JSON.stringify(data)});
+ const good=await send(data);assert.equal(good.status,200);const preview=await good.json();assert.equal(preview.designId,copy.id);assert.match(preview.svg,/editor-base-front/);assert.match(preview.svg,/data-object="names"/);assert.match(preview.svg,/data:image\/png;base64,/);
+ assert.deepEqual(workshop.repository.get(initial.id),initial);assert.equal(workshop.repository.history(initial.id).length,1);
+ const none=await send({...data,options:{size:'small',base:'none',wall:'none'}});assert.doesNotMatch((await none.json()).svg,/editor-base-front/);
+ assert.equal((await send(data,'invalid')).status,403);
+ assert.equal((await send(data,csrfToken,{Origin:'https://foreign.example'})).status,403);
+ assert.equal((await send({...data,expectedRevision:999})).status,409);
+ assert.equal((await send({...data,designId:'missing'})).status,422);
+ const hintDraft=structuredClone(draft);hintDraft.config.photo.hints=[{designId:copy.id,slotId:'photo-main',text:'Mein Foto einsetzen',enabled:true}];assert.equal((await send({...data,document:hintDraft})).status,200);
+ hintDraft.config.photo.hints[0].slotId='missing';assert.equal((await send({...data,document:hintDraft})).status,422);
+ const bad=structuredClone(draft);bad.elementRights[copy.id]['photo-main'].move=true;
+ assert.equal((await send({...data,document:bad})).status,422);
+ assert.deepEqual(workshop.repository.get(initial.id),initial);
+ for(const name of ['editor.css','product-editor-ui.mjs'])assert.equal((await fetch(base+'/workshop-ui/'+name)).status,200);
+});

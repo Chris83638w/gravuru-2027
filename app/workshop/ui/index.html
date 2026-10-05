@@ -7,18 +7,19 @@
   <title>Gravuru 2027 · Werkstatt</title>
   <link rel="stylesheet" href="/workshop-ui/style.css">
   <link rel="stylesheet" href="/workshop-ui/dashboard.css">
+  <link rel="stylesheet" href="/workshop-ui/editor.css">
   <script type="module" src="/workshop-ui/app.mjs"></script>
 </head>
 <body class="dashboard-page">
   <a class="skip-link" href="#main">Zum Inhalt</a>
   <div class="app-layout">
     <aside class="sidebar" aria-label="Werkstattnavigation">
-      <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span>gravuru<small>WERKSTATT · 2027</small></span></a>
+      <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span><em>gravuru</em>werkstatt</span></a>
       <nav aria-label="Hauptnavigation">
         <button class="nav-item active" data-view="products" aria-pressed="true">Produkte</button>
         <button class="nav-item" data-view="masters" aria-pressed="false">Mastervorlagen</button>
         <a class="nav-item" href="/werkstatt/serien/">Stapelverarbeitung</a>
-        <a class="nav-item" href="/werkstatt/profile/">Profile</a>
+        <span class="nav-item upcoming-orders" title="Bestellstrecke noch nicht angebunden">Bestellungen <small>folgt</small></span>
       </nav>
       <a class="sample-link" href="https://gravuru-design-test-mika.gravur4you-cy.chatgpt.site/?model=acryl&amp;v=0608ef1" target="_blank" rel="noopener">Muster Acrylglasbild</a>
     </aside>
@@ -42,26 +43,41 @@
         <div class="product-list" id="product-list" aria-live="polite"><p class="empty-state">Konfigurationen werden geladen …</p></div>
       </section>
       <section class="editor-section" id="editor-section" aria-label="Konfiguration bearbeiten" hidden>
-        <button class="overview-back" data-action="overview">← Zur Produktübersicht</button>
-        <div class="editor-heading">
+
+        <div class="editor-heading"><button class="overview-back" data-action="overview">← Produkte</button>
           <div><p class="eyebrow" id="record-eyebrow">KONFIGURATION</p><h2 id="record-title">Konfiguration bearbeiten</h2><div class="record-meta"><span id="record-revision"></span><span id="save-indicator"></span></div></div>
-          <div class="button-row"><button data-action="copy" id="copy-product">Kopieren …</button><button class="primary" data-action="save" id="save-product" disabled>Änderungen speichern</button></div>
+          <div class="button-row"><a class="button" id="customer-view" target="_blank" rel="noopener">Kundenansicht</a><button data-action="copy" id="copy-product">Kopieren …</button><button class="primary" data-action="save" id="save-product" disabled>Änderungen speichern</button></div>
         </div>
         <div class="editor-layout">
-          <div class="editor-main">
-            <nav class="editor-tabs" aria-label="Bearbeitungsbereiche" role="tablist">
-              <button type="button" role="tab" id="tab-details" data-tab="details" aria-controls="panel-details" aria-selected="true">Übersicht</button>
-              <button type="button" role="tab" id="tab-prices" data-tab="prices" aria-controls="panel-prices" aria-selected="false" tabindex="-1">Preise</button>
-              <button type="button" role="tab" id="tab-designs" data-tab="designs" aria-controls="panel-designs" aria-selected="false" tabindex="-1">Designs & Texte</button>
-              <button type="button" role="tab" id="tab-profiles" data-tab="profiles" aria-controls="panel-profiles" aria-selected="false" tabindex="-1">Zuordnungen</button>
-              <button type="button" role="tab" id="tab-history" data-tab="history" aria-controls="panel-history" aria-selected="false" tabindex="-1">Verlauf</button>
+          <aside class="editor-rail" aria-label="Bereiche und Elemente">
+            <nav class="editor-tabs" aria-label="Bearbeitungsbereiche" role="tablist" aria-orientation="vertical">
+              <button type="button" role="tab" id="tab-details" data-tab="details" aria-controls="panel-details" aria-selected="false">Produkt</button>
+              <button type="button" role="tab" id="tab-designs" data-tab="designs" aria-controls="panel-designs" aria-selected="true">Designs & Elemente</button>
+              <button type="button" role="tab" id="tab-prices" data-tab="prices" aria-controls="panel-prices" aria-selected="false">Optionen & Preise</button>
+              <button type="button" role="tab" id="tab-profiles" data-tab="profiles" aria-controls="panel-profiles" aria-selected="false">Schriften & Motive</button>
+              <button type="button" role="tab" id="tab-scene" data-tab="scene" aria-controls="panel-scene" aria-selected="false">Hintergrund & Szene</button>
+              <button type="button" role="tab" id="tab-production" data-tab="production" aria-controls="panel-production" aria-selected="false">Fertigung</button>
+              <button type="button" role="tab" id="tab-shopify" data-tab="shopify" aria-controls="panel-shopify" aria-selected="false">Shopify</button>
             </nav>
+            <div class="element-rail"><h3>Elemente</h3><div id="editor-elements"></div></div>
+            <div class="rail-secondary"><button type="button" data-tab="design-library" id="tab-design-library" aria-controls="panel-design-library">Designs verwalten</button><button type="button" data-tab="history" id="tab-history" aria-controls="panel-history">Gespeicherte Stände</button></div>
+          </aside>
+          <section class="editor-stage" aria-label="Produktvorschau">
+            <div class="stage-toolbar"><label>Ausführung<select id="stage-options"></select></label><span id="stage-status" role="status" aria-live="polite"></span></div>
+            <div id="editor-preview" aria-label="Designvorschau"></div>
+            <div id="editor-designs" aria-label="Design auswählen"></div>
+          </section>
+          <div class="editor-main">
             <form id="product-form" novalidate>
-              <section id="panel-details" class="editor-panel" role="tabpanel" aria-labelledby="tab-details"></section>
+              <section id="panel-details" class="editor-panel" role="tabpanel" aria-labelledby="tab-details" hidden></section>
               <section id="panel-prices" class="editor-panel" role="tabpanel" aria-labelledby="tab-prices" hidden></section>
-              <section id="panel-designs" class="editor-panel" role="tabpanel" aria-labelledby="tab-designs" hidden></section>
+              <section id="panel-designs" class="editor-panel" role="tabpanel" aria-labelledby="tab-designs"></section>
               <section id="panel-profiles" class="editor-panel" role="tabpanel" aria-labelledby="tab-profiles" hidden></section>
               <section id="panel-history" class="editor-panel" role="tabpanel" aria-labelledby="tab-history" hidden></section>
+              <section id="panel-design-library" class="editor-panel" aria-labelledby="tab-design-library" hidden></section>
+              <section id="panel-scene" class="editor-panel" role="tabpanel" aria-labelledby="tab-scene" hidden><h3>Hintergrund & Szene</h3><p>Die Vorschau verwendet die vorhandene Acrylglasszene. Wähle Größe und Sockel direkt über dem Produkt.</p><p class="field-help">Diese Ansicht dient der Kontrolle; sie ändert keine Produktvarianten. Eigene Szenenhintergründe sind noch nicht angebunden.</p></section>
+              <section id="panel-production" class="editor-panel" role="tabpanel" aria-labelledby="tab-production" hidden><h3>Fertigung</h3></section>
+              <section id="panel-shopify" class="editor-panel" role="tabpanel" aria-labelledby="tab-shopify" hidden><h3>Shopify</h3><p>Die Shop-Anbindung ist noch nicht eingerichtet. Produkt und Design kannst du hier bereits vorbereiten und speichern.</p><p>Es wird nichts im Shop veröffentlicht.</p></section>
             </form>
           </div>
           <aside class="record-aside" aria-label="Stand und Aktionen">

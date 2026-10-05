@@ -1,3 +1,9 @@
+## Aktuell: M02-Produktbearbeitung – 05.10.2026
+
+Branch `task/dashboard-m02-editor-20261005`, Basis `b51f7fb6fa5ef4f9ed2b53832858f2035fc283e4`. Große Entwurfsvorschau zwischen Bereichen/Elementen und Eigenschaften; Text/Schrift/mm/Farbe, Kundenrechte, Beispielfotoersatz und Uploadhinweis angebunden. Vorhandene Speicher-/Import-/Verlauffunktionen weiterverwendet. **175 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Desktop/Mobil mit synthetischen Daten in der bestehenden Cloud geprüft. [Ergebnis, Grenzen und Bilder](docs/dashboard-20261004/DASHBOARD-M02.md). Keine Dashboard-Veröffentlichung; Muster Acrylglasbild unverändert.
+
+**Nächster Schritt:** M01-Produktkarten entsprechend der ausgewählten fotografischen Übersicht korrigieren. Die älteren „fertig“-Aussagen sind keine vollständige Dashboard-Abnahme.
+
 ## Aktueller Auftrag – Dashboard fortsetzen, 05.10.2026
 
 Nutzer hat „Dashboard“ ausdrücklich bestätigt. M01-Produktübersicht jetzt umgesetzt: [Stand und Abnahme](docs/dashboard-20261004/DASHBOARD-M01.md). Die UV-Serienvorbereitung ist derzeit nicht der nächste Schritt. „Muster Acrylglasbild“ bleibt separat [gesichert und direkt erreichbar](docs/dashboard-20261004/MUSTER-ACRYLGLASBILD.md). Weiter mit M02-Produktbearbeitung. Frühere Prioritäten unten sind historische Zwischenstände.

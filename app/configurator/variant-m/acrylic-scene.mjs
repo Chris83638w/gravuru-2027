@@ -21,12 +21,15 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  el.uxObjectSVG=function(o){
    if(o.id!=='photo-main'||files.has(o.uxUploadId))return rawSVG(o);
    if(o.uxHidden)return '';
-   const asset=files.get(o.uxUploadId),url=asset?.url||ROOT+'reference.png';
+   const exampleResource=config.localResources?.photoExamples?.find(e=>e.designId===el.state.designId&&e.slotId===o.id);
+   const asset=files.get(o.uxUploadId),url=asset?.url||(exampleResource?'/api/workshop/design-assets/'+exampleResource.assetId+'/preview.svg':ROOT+'reference.png');
    const src=String(url).replaceAll('&','&amp;').replaceAll('"','&quot;');
    const example=!asset;
-   const picture=example?`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="130 101 827 708" preserveAspectRatio="xMidYMid slice"><image href="${src}" width="1086" height="1448"/></svg>`:`<image href="${src}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="xMidYMid slice"/>`;
+   const picture=example&&!exampleResource?`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="130 101 827 708" preserveAspectRatio="xMidYMid slice"><image href="${src}" width="1086" height="1448"/></svg>`:`<image href="${src}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="xMidYMid slice"/>`;
    const replaceable=el.uxCanEdit?.(o,'replace')!==false;
-   const hint=example&&replaceable?`<g data-preview-only="true" transform="translate(0 31)"><rect x="-53" y="-9" width="106" height="18" rx="3" fill="white" fill-opacity=".96"/><text text-anchor="middle" y="-.5" font-size="4.2" font-family="Arial" fill="#332d27">Hier tippen &amp; eigenes Foto hochladen</text><text text-anchor="middle" y="5.5" font-size="3.1" font-family="Arial" fill="#63564c">Beispielfoto ersetzen</text></g>`:'';
+   const hintSetting=config.photo?.hints?.find(h=>h.designId===el.state.designId&&h.slotId===o.id);
+   const hintText=String(hintSetting?.text||'Hier tippen & eigenes Foto hochladen').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+   const hint=example&&replaceable&&hintSetting?.enabled!==false?`<g data-preview-only="true" transform="translate(0 31)"><rect x="-53" y="-9" width="106" height="18" rx="3" fill="white" fill-opacity=".96"/><text text-anchor="middle" y="-.5" font-size="4.2" font-family="Arial" fill="#332d27">${hintText}</text><text text-anchor="middle" y="5.5" font-size="3.1" font-family="Arial" fill="#63564c">Beispielfoto ersetzen</text></g>`:'';
    return `<g data-object="${o.id}" ${replaceable?`data-ux-empty-photo-slot="true" role="button" tabindex="0" aria-label="${example?'Eigenes Foto hochladen':'Foto ersetzen'}"`:'data-ux-static-photo="true" aria-hidden="true" tabindex="-1" focusable="false"'} transform="translate(${o.x} ${o.y})"><defs><clipPath id="acryl-photo-clip"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2"/></clipPath></defs><g clip-path="url(#acryl-photo-clip)">${picture}</g>${hint}<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/></g>`;
  };
  // Keep native editor tools and event handling; only the scene and physical options are extended.

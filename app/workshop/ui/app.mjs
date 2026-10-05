@@ -1,10 +1,11 @@
+import {installProductEditor} from './product-editor-ui.mjs';
 import {installCustomerFields} from './customer-fields-ui.mjs';
 import {installDesignImport,importedDesignInfo} from './design-import-ui.mjs';
 const $=selector=>document.querySelector(selector);
 const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
-const state={record:null,draft:null,products:[],dirty:false,busy:false,csrf:null,tab:'details',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],profiles:[],profileSettings:null};
+const state={record:null,draft:null,products:[],dirty:false,busy:false,csrf:null,tab:'designs',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],profiles:[],profileSettings:null};
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
 const pathValue=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],object);
@@ -37,10 +38,11 @@ function syncControls(){
  $('#save-indicator').dataset.dirty=String(state.dirty);
  $('#save-product').textContent=state.busy?'Wird gespeichert …':'Änderungen speichern';
  $('#print-export-link').hidden=state.dirty||!state.record;
+ productEditor.sync();
  $('#preview-note').textContent='Gespeicherte Produktdaten mit aktuellen Profilzuordnungen.'+(state.dirty?' Deine ungespeicherten Änderungen sind noch nicht enthalten.':'');
 }
 function setBusy(value){state.busy=value;syncControls();}
-function markDirty(){state.dirty=true;syncControls();}
+function markDirty(){state.dirty=true;syncControls();productEditor.changed();}
 function badge(product){
  const badges=[];
  if(product.kind==='master')badges.push('<span class="badge master">Master</span>');
@@ -73,7 +75,7 @@ async function loadList(){
 }
 async function showOverview(view=state.view){
  if(!await canDiscard())return false;
- state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;renderList();history.replaceState(null,'','/werkstatt/?view='+view);return true;
+ state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;document.body.classList.remove('editing-product');renderList();history.replaceState(null,'','/werkstatt/?view='+view);return true;
 }
 async function canDiscard(){
  if(!state.dirty)return true;
@@ -81,7 +83,7 @@ async function canDiscard(){
  return await new Promise(resolve=>dialog.addEventListener('close',()=>resolve(dialog.returnValue==='discard'),{once:true}));
 }
 function applyRecord(record){
- state.record=record;state.draft=clone(record.document);state.dirty=false;
+ const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
  $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;$('.overview').hidden=true;$('.page-heading').hidden=true;
  renderEditor();renderList();syncControls();
  history.replaceState(null,'','/werkstatt/?configuration='+encodeURIComponent(record.id));
@@ -99,6 +101,7 @@ function moneyField(label,path){
  return '<label>'+escape(label)+'<span class="input-suffix"><input type="text" inputmode="decimal" data-money="'+escape(path)+'" value="'+escape(euro(cents))+'" pattern="[0-9]+([.,][0-9]{1,2})?" required aria-label="'+escape(label)+' in Euro"><span>€</span></span></label>';
 }
 function renderEditor(){
+ productEditor.prepare();
  const {record,draft}=state;
  $('#record-title').textContent=draft.name;
  $('#record-eyebrow').textContent=draft.kind==='master'?'MASTERVORLAGE':'PRODUKTKONFIGURATION';
@@ -106,9 +109,9 @@ function renderEditor(){
  $('#archive-product').textContent=record.status==='archived'?'Aus dem Archiv holen':'Konfiguration archivieren';
  $('#release-status').textContent=record.publishedRevision?'Freigegeben: Stand '+record.publishedRevision+(record.publishedRevision!==record.revision?' · weitere Änderungen vorhanden':''):'Noch kein Stand freigegeben.';
  $('#print-export-link').href='/?'+new URLSearchParams({configuration:record.id,revision:record.revision,druckexport:'1'});
- $('#preview-link').href='/?'+new URLSearchParams({configuration:record.id});
+ $('#preview-link').href='/?'+new URLSearchParams({configuration:record.id});$('#customer-view').href=$('#preview-link').href;
  $('#panel-details').innerHTML='<div class="form-section"><h3>Was ist das für eine Konfiguration?</h3><div class="form-grid">'+field('Name','name',draft.name,{full:true,required:true})+'<label>Verwendung<select data-path="kind"><option value="product" '+(draft.kind==='product'?'selected':'')+'>Produktkonfiguration</option><option value="master" '+(draft.kind==='master'?'selected':'')+'>Mastervorlage</option></select><p class="field-help">Master kannst du als Ausgangspunkt für weitere Produkte kopieren.</p></label><label>Kopiert aus<span class="static-value">'+escape(draft.masterId||'Eigenständige Konfiguration')+'</span></label>'+field('Kategorie-Zuordnungen','categoryIds',(draft.categoryIds||[]).join(', '),{full:true,help:'Mehrere Kategorie-IDs durch Komma trennen, zum Beispiel acrylglasbilder, geschenke.',max:1000})+'</div></div><div class="form-section"><h3>Für die spätere Produktseite</h3><p>Diese Angaben werden hier gespeichert. Die Übertragung zu Shopify folgt separat.</p><div class="form-grid">'+field('SEO-Titel','seo.title',draft.seo?.title||'',{full:true,max:70})+textArea('SEO-Beschreibung','seo.description',draft.seo?.description||'',{max:160,help:'Beschreibe das Produkt verständlich: Material, Personalisierung und Anlass.'})+'</div></div>';
- renderPrices();renderDesigns();renderProfiles();renderHistory();showTab(state.tab);
+ renderPrices();renderDesigns();renderProfiles();renderHistory();productEditor.render();showTab(state.tab);
 }
 function renderPrices(){
  if(!state.draft.config?.acrylic?.pricing){$('#panel-prices').innerHTML='<h3>Für dieses Produkt ist noch kein Preisprofil hinterlegt.</h3><p>Das vorliegende Preisformular verwaltet das Acrylglasprofil. Weitere Materialprofile werden gesondert ergänzt.</p>';return;}
@@ -133,7 +136,7 @@ function designButton(design,action,label,extra=''){
 }
 function renderDesigns(){
  const profile=state.draft.config?.profile,designs=profile?.designs||[];
- $('#panel-designs').innerHTML='<div class="design-heading"><h3>Designs und Beispieltexte <span class="count">'+designs.length+' / 60</span></h3><p>Die Reihenfolge hier entspricht der Auswahl im Konfigurator. Kopiere ein vorhandenes Design und passe Namen, Texte und Kundenrechte an. Änderungen werden mit der Konfiguration gespeichert.</p></div>'+designs.map((design,index)=>'<section class="design-block" data-design-card="'+escape(design.id)+'"><header><div><h3>Design '+(index+1)+(profile.defaultDesignId===design.id?' <span class="badge published">Standard</span>':'')+'</h3><span class="design-id">'+escape(design.id)+'</span></div><div class="design-order">'+designButton(design,'up','↑','aria-label="Design '+(index+1)+' nach oben" title="Nach oben"')+designButton(design,'down','↓','aria-label="Design '+(index+1)+' nach unten" title="Nach unten"')+'</div></header><div class="form-grid">'+field('Designname','config.profile.designs.'+index+'.name',design.name,{full:true,required:true})+(design.objects||[]).map((object,objectIndex)=>object.type==='text'?textArea(design.customerFields?.find(f=>f.id===object.id)?.label||objectLabel(object,objectIndex),'config.profile.designs.'+index+'.objects.'+objectIndex+'.text',object.text,{rows:2,max:180}):'').join('')+'</div><p class="field-help">Prüfe längere Texte anschließend in der Kundenansicht.</p>'+renderRights(design)+importedDesignInfo(design)+'<div class="design-actions">'+designButton(design,'import','Datei / Vorlagenpaket importieren …')+(design.importedSource?designButton(design,'fields','Kundenfelder bearbeiten …'):'')+designButton(design,'copy','Design kopieren')+designButton(design,'default','Als Standard verwenden')+designButton(design,'delete','Design entfernen','class="text-button design-delete" title="Mindestens ein Design muss erhalten bleiben"')+'</div></section>').join('');
+ $('#panel-design-library').innerHTML='<div class="design-heading"><h3>Designs und Beispieltexte <span class="count">'+designs.length+' / 60</span></h3><p>Die Reihenfolge hier entspricht der Auswahl im Konfigurator. Kopiere ein vorhandenes Design und passe Namen, Texte und Kundenrechte an. Änderungen werden mit der Konfiguration gespeichert.</p></div>'+designs.map((design,index)=>'<section class="design-block" data-design-card="'+escape(design.id)+'"><header><div><h3>Design '+(index+1)+(profile.defaultDesignId===design.id?' <span class="badge published">Standard</span>':'')+'</h3><span class="design-id">'+escape(design.id)+'</span></div><div class="design-order">'+designButton(design,'up','↑','aria-label="Design '+(index+1)+' nach oben" title="Nach oben"')+designButton(design,'down','↓','aria-label="Design '+(index+1)+' nach unten" title="Nach unten"')+'</div></header><div class="form-grid">'+field('Designname','config.profile.designs.'+index+'.name',design.name,{full:true,required:true})+(design.objects||[]).map((object,objectIndex)=>object.type==='text'?textArea(design.customerFields?.find(f=>f.id===object.id)?.label||objectLabel(object,objectIndex),'config.profile.designs.'+index+'.objects.'+objectIndex+'.text',object.text,{rows:2,max:180}):'').join('')+'</div><p class="field-help">Prüfe längere Texte anschließend in der Kundenansicht.</p>'+renderRights(design)+importedDesignInfo(design)+'<div class="design-actions">'+designButton(design,'import','Datei / Vorlagenpaket importieren …')+(design.importedSource?designButton(design,'fields','Kundenfelder bearbeiten …'):'')+designButton(design,'copy','Design kopieren')+designButton(design,'default','Als Standard verwenden')+designButton(design,'delete','Design entfernen','class="text-button design-delete" title="Mindestens ein Design muss erhalten bleiben"')+'</div></section>').join('');
  syncControls();
 }
 function changeDesign(action,id){
@@ -149,11 +152,15 @@ function changeDesign(action,id){
   designs.splice(index+1,0,copy);state.draft.elementRights[copy.id]=clone(state.draft.elementRights[id]);
   const placeholders=config.localResources?.photoPlaceholders;
   if(placeholders)placeholders.push(...placeholders.filter(asset=>asset.designId===id).map(asset=>({...clone(asset),designId:copy.id})));
+  if(config.photo.hints)config.photo.hints.push(...config.photo.hints.filter(h=>h.designId===id).map(h=>({...clone(h),designId:copy.id})));
+  if(config.localResources?.photoExamples)config.localResources.photoExamples.push(...config.localResources.photoExamples.filter(e=>e.designId===id).map(e=>({...clone(e),designId:copy.id})));
   focusId=copy.id;message='Design kopiert. Passe die Kopie an und speichere deine Änderungen.';
  }else if(action==='delete'){
   if(designs.length<=1)return;
   const removed=designs.splice(index,1)[0];delete state.draft.elementRights[id];
   if(config.localResources?.photoPlaceholders)config.localResources.photoPlaceholders=config.localResources.photoPlaceholders.filter(asset=>asset.designId!==id);
+  if(config.photo.hints)config.photo.hints=config.photo.hints.filter(h=>h.designId!==id);
+  if(config.localResources?.photoExamples)config.localResources.photoExamples=config.localResources.photoExamples.filter(e=>e.designId!==id);
   focusId=designs[Math.min(index,designs.length-1)].id;
   if(profile.defaultDesignId===id)profile.defaultDesignId=focusId;
   message='„'+removed.name+'“ aus dem Entwurf entfernt. Erst Speichern übernimmt die Änderung.';
@@ -163,7 +170,7 @@ function changeDesign(action,id){
  }else if(action==='default'){
   if(profile.defaultDesignId===id)return;profile.defaultDesignId=id;message='Dieses Design wird zuerst angezeigt. Änderungen noch speichern.';
  }else return;
- renderDesigns();markDirty();notify(message,'info');
+ renderDesigns();productEditor.render();markDirty();notify(message,'info');
  const card=$$('[data-design-card]').find(node=>node.dataset.designCard===focusId);
  card?.querySelector(action==='copy'?'[data-path]':'[data-design-action]')?.focus({preventScroll:true});card?.scrollIntoView({block:'nearest'});
 }
@@ -191,7 +198,8 @@ async function loadHistory(){
  state.history=data.revisions||[];renderHistory();syncControls();
 }
 function showTab(key,focus=false){
- if(!$('#tab-'+key))key='details';state.tab=key;
+ if(!$('#tab-'+key))key='designs';state.tab=key;
+ if(key==='design-library')renderDesigns();if(key==='designs')productEditor.inspect();
  for(const tab of $$('[data-tab]')){const active=tab.dataset.tab===key;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;if(active&&focus)tab.focus();}
  for(const panel of $$('.editor-panel'))panel.hidden=panel.id!=='panel-'+key;
 }
@@ -242,7 +250,7 @@ $('#create-form').addEventListener('submit',async event=>{
    document.name=name;document.kind=kind;if(kind==='master')document.masterId=null;if(document.config?.profile)document.config.profile.name=name;
    result=await api('/api/workshop/products',{method:'POST',body:{document}});
   }
-  $('#create-dialog').close();applyRecord(recordFrom(result));await Promise.all([loadList(),loadHistory()]);notify('Konfiguration angelegt. Deine neue ID: '+state.record.id);$('#editor-section').scrollIntoView({block:'start',behavior:'smooth'});
+  $('#create-dialog').close();applyRecord(recordFrom(result));await Promise.all([loadList(),loadHistory()]);notify('Konfiguration angelegt. Deine neue ID: '+state.record.id);window.scrollTo({top:0,behavior:'instant'});
  }catch(error){$('#create-error').textContent=errorMessage(error);$('#create-error').hidden=false;if(error.status===409)mutationError(error);}
  finally{setBusy(false);}
 });
@@ -272,7 +280,7 @@ document.addEventListener('click',async event=>{
  const tab=event.target.closest('[data-tab]');if(tab){showTab(tab.dataset.tab);return;}
  const designAction=event.target.closest('[data-design-action]');if(designAction){if(!designAction.disabled)changeDesign(designAction.dataset.designAction,designAction.dataset.designId);return;}
  const product=event.target.closest('[data-product-id]');
- if(product){try{await loadRecord(product.dataset.productId);$('#editor-section').scrollIntoView({block:'start',behavior:'smooth'});}catch(error){notify(errorMessage(error),'error');}return;}
+ if(product){try{await loadRecord(product.dataset.productId);window.scrollTo({top:0,behavior:'instant'});}catch(error){notify(errorMessage(error),'error');}return;}
  const restore=event.target.closest('[data-restore]');if(restore){await mutateRecord('restore',{revision:Number(restore.dataset.restore)});return;}
  const button=event.target.closest('[data-action]');if(!button||button.disabled)return;
  try{
@@ -293,9 +301,10 @@ document.addEventListener('click',async event=>{
  }catch(error){notify(errorMessage(error),'error');}
 });
 $('.editor-tabs').addEventListener('keydown',event=>{
- if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();
- const tabs=$$('[data-tab]'),index=tabs.indexOf(event.target),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab,true);
+ if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();
+ const tabs=$$('.editor-tabs [data-tab]'),index=tabs.indexOf(event.target),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab,true);
 });
+const productEditor=installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights});
 const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 let searchTimer;

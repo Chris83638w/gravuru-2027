@@ -1,3 +1,9 @@
+## Aktuell: M02-Produktbearbeitung – 05.10.2026
+
+Branch `task/dashboard-m02-editor-20261005`, Basis `b51f7fb6fa5ef4f9ed2b53832858f2035fc283e4`. Große Entwurfsvorschau zwischen Bereichen/Elementen und Eigenschaften; Text/Schrift/mm/Farbe, Kundenrechte, Beispielfotoersatz und Uploadhinweis angebunden. Vorhandene Speicher-/Import-/Verlauffunktionen weiterverwendet. **175 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Desktop/Mobil mit synthetischen Daten in der bestehenden Cloud geprüft. [Ergebnis, Grenzen und Bilder](docs/dashboard-20261004/DASHBOARD-M02.md). Keine Dashboard-Veröffentlichung; Muster Acrylglasbild unverändert.
+
+**Nächster Schritt:** M01-Produktkarten entsprechend der ausgewählten fotografischen Übersicht korrigieren. Die älteren „fertig“-Aussagen sind keine vollständige Dashboard-Abnahme.
+
 ## Schnellzugriff: Muster Acrylglasbild – 05.10.2026
 
 [**Muster Acrylglasbild öffnen**](https://gravuru-design-test-mika.gravur4you-cy.chatgpt.site/?model=acryl&v=0608ef1) · [Gesicherte Version und Übergabe](docs/dashboard-20261004/MUSTER-ACRYLGLASBILD.md). Der aktuelle Konfiguratorstand ist als private Site-Version 12 archiviert. Entwicklungsbasis `f4c9a2068f7d159def5f88f2a841bf01c1a59bd8`; nicht auf frühere Einstiege zurücksetzen. Die folgenden Abschnitte dokumentieren frühere Arbeitspakete.

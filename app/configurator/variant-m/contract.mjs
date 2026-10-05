@@ -51,6 +51,13 @@ export function prepareConfig(input) {
     if(!slot||exampleKeys.has(key)||!/^[a-f0-9]{64}$/.test(example.assetId||'')||Object.keys(example).some(k=>!['designId','slotId','assetId'].includes(k)))fail('Ungültige Beispielfoto-Zuordnung.');
     exampleKeys.add(key);
   }
+  const hints=config.photo.hints||[],hintKeys=new Set();
+  if(!Array.isArray(hints)||hints.length>1200)fail('Ungültige Fotohinweise.');
+  for(const h of hints){
+    const key=h.designId+'\0'+h.slotId,slot=p.designs.find(d=>d.id===h.designId)?.objects.find(o=>o.id===h.slotId&&o.type==='photoSlot');
+    if(!slot||hintKeys.has(key)||typeof h.text!=='string'||!h.text.trim()||h.text.length>100||typeof h.enabled!=='boolean'||Object.keys(h).some(k=>!['designId','slotId','text','enabled'].includes(k)))fail('Ungültiger Fotohinweis.');
+    hintKeys.add(key);
+  }
   getProcessingProfile(p);
   if(config.acrylic)acrylicSelection(resolvedOptions(config),config.acrylic.pricing);
   return config;

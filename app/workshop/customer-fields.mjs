@@ -50,6 +50,7 @@ export function planCustomerFields(repository,assets,id,input){
     designRights[object.id]={...rights(object.type),color:object.type==='text'&&field.allowColor,move:object.type==='text'&&field.allowMove!==false,scale:object.type==='text'&&field.allowScale!==false,delete:object.type==='text'&&field.allowDelete!==false};
   }
   if(design.preparedTemplate)design.objects.sort((a,b)=>{const rank=o=>{const i=originalOrder.indexOf(o.id);return i<0?originalOrder.length:i;};return rank(a)-rank(b);});
+  if(document.config.photo.hints)document.config.photo.hints=document.config.photo.hints.filter(h=>h.designId!==design.id||design.objects.some(o=>o.id===h.slotId&&o.type==='photoSlot'));
   if(document.config.localResources.photoExamples)document.config.localResources.photoExamples=document.config.localResources.photoExamples.filter(e=>e.designId!==design.id||design.objects.some(o=>o.id===e.slotId&&o.type==='photoSlot'));
   let checked;
   try{

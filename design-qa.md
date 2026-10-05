@@ -1,3 +1,38 @@
+# Visuelle Prüfung – M02 Produktbearbeitung, 05.10.2026
+
+Geltungsbereich: ausgewählte M02-Bearbeitungsansicht mit bestehender Produktszene und den nachträglich vereinbarten Kundenrechten. Keine Abnahme der gesamten Werkstatt oder von M01.
+
+Quelle: `docs/dashboard-20261004/referenzen/M02.png`, 1487 × 1058 Pixel. Gerenderte Umsetzung: `docs/dashboard-20261004/dashboard-m02-desktop.png`, gleiche CSS-/Pixelgröße und deviceScaleFactor 1. Zustand: „Designs & Elemente“, Foto ausgewählt, synthetisches Produkt mit Eichenblock. Beide Dateien nach der letzten Korrektur gemeinsam im Bild-Tool betrachtet; zusätzlich `dashboard-m02-inspector.png` als lesbarer Ausschnitt. Mobil: `dashboard-m02-mobile.png`, 390 × 844 CSS-Viewport, Ganzseitenerfassung; separate Textinteraktion `dashboard-m02-mobile-text.png`.
+
+## Vergleich und Korrekturen
+
+- P1 Ausgangsstand: bisheriger Formulareditor ohne zentrale Produktvorschau. Jetzt drei Spalten in M02-Proportionen (20,3 % / flexibel / 26,3 %), kontextbezogene Eigenschaften und große reale Vorschau. Bedienung per Elementliste und Produktklick überprüft.
+- P2 erste Umsetzung: Checkboxtexte klebten an den Eingaben, Produktbild-Auswahl wurde von einem transparenten Rahmen abgefangen, Symbole/Design-Miniaturen fehlten. Behoben: spezifische Flexabstände, dekorative Trefferflächen ohne Pointer-Ereignisse, lizenzierte Tabler-SVGs (3.35.0, MIT) und tatsächliche gespeicherte Designvorschauen.
+- P2 Zwischenstand: automatische Scrollbewegung schnitt in der Aufnahme die Hauptnavigation ab; Bereichsbuttons waren zentriert. Jetzt Öffnen am Seitenanfang und linksbündige Bereichsnavigation. Neu aufgenommen und zusammen mit M02 betrachtet.
+- P2 Fotospalte zu hoch durch redundante Erklärtexte. Gekürzt; Fotovorschau, Ersetzen, Rechte, Hinweis und Originalerhalt sind bei Desktop sichtbar. Eigenschaftenausschnitt erneut geprüft.
+
+## Fünf Prüfflächen
+
+- Typografie: vorhandener Systemschriftstack, 22-px-Titel, 21-px-Eigenschaftstitel, 15-px-Bereichsnavigation, 13–14-px-Eingaben. Gestaltungsschriften aus vorhandenen Fontressourcen; keine neuen Schriftdateien oder erfundenen Fontfreigaben.
+- Layout: durchgehende Dreispaltenstruktur, Vorschauhöhe 620 px, separater Designstreifen. Mobil keine abgeschnittenen Schaltflächen oder horizontale Überbreite. Rechteinschränkungen und zusätzliche Elemente führen zu mehr Einträgen als im Beispielmockup.
+- Farben: Grün/helle Flächen der M02-Referenz. Die frühere ungefragte Übertragung der grauen Konfiguratorfarbe auf das Dashboard wurde zurückgenommen. Kein Eingriff in die Konfiguratorfarbgestaltung.
+- Bilder: Originalressourcen und bestehender Designrenderer, inklusive bestehender Sockelbilder. Die echte native Szene liegt im Hochformat vor; sie bleibt proportional vollständig sichtbar und ist nicht das generierte Landschaftsfoto aus M02. Dies folgt der Nutzervorgabe zur Weiterverwendung vorhandener Produktarbeit, keine behauptete fotografische Pixelgleichheit. Beispielbild/Dateizuordnung auch nach Speichern geprüft.
+- Inhalte: echte Feldnamen/Revisionen/Rechte statt fiktiver Shopify-Zuordnungen. Positive Schalter „Frei verschiebbar“/„Größe veränderbar“ entsprechen den später vereinbarten Backend-Freigaben; feste Flächen sind gesperrt. Bestellungen sichtbar als „folgt“, freie Szenen und Shopify im jeweiligen Bereich als offen benannt.
+
+## Interaktionen und Grenzen
+
+Chromium/Playwright in der vorhandenen Cloud auf geschütztem Loopback 8973. Kein verfügbares natives In-App-Steuerungswerkzeug; keine behauptete Sites-Preview oder Veröffentlichung. Tests und die tatsächlich geprüften Browserhandlungen sind in `docs/dashboard-20261004/DASHBOARD-M02.md` aufgeführt. Keine JavaScript-Seitenfehler in den geprüften Abläufen. Keine vollständige Accessibility-/Shopify-/Produktionsabnahme.
+
+P3: Die Mobilanordnung ist ein umgesetzter Vorschlag, dessen persönliche Abnahme noch aussteht. Landschaftsszene aus dem generierten Mockup nicht als Originalasset vorhanden; bestehende native Szene bewusst erhalten. M01-Karten bleiben das folgende separate Paket.
+
+final result: passed
+
+---
+
+## Historische Prüfung; keine Gesamtfreigabe
+
+Der folgende frühere M01-Bericht wurde im anschließenden Abgleich korrigiert: „passed“ belegte nicht die vollständige Übereinstimmung mit M01/M02. Große fotografische M01-Karten waren weiterhin offen, M02 damals noch nicht angebunden.
+
 # Visuelle Prüfung – Dashboard M01, 05.10.2026
 
 Source visual truth: `docs/dashboard-20261004/referenzen/M01.png`, 1487 × 1058 Pixel. Bestätigte große Produktkarten und obere Navigation. Nutzerauftrag: vorhandenes Dashboard fortsetzen, funktionierende Komponenten und tatsächliche Produktdaten wiederverwenden. Keine Erzeugung der sechs fiktiven Mockup-Produkte.

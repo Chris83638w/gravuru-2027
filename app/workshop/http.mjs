@@ -80,7 +80,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
         universal.profile.defaultDesignId=resolved.designId;
         universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
         const examples=(universal.localResources.photoExamples||[]).filter(e=>e.designId===resolved.designId).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
-        return json(res,200,{svg:productPreview({universal},{options:resolved.resolvedOptions,examples}),revision:record.revision,designId:resolved.designId});
+        return json(res,200,{svg:productPreview({universal},{options:resolved.resolvedOptions,examples}),revision:record.revision,designId:resolved.designId,price:resolved.price});
       }
       const cardMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/preview\.svg$/);
       if(cardMatch&&method==='GET'){
@@ -112,6 +112,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
         const {document,...plan}=planCustomerFields(repository,assets,fieldMatch[1],data);
         return json(res,200,plan);
       }
+      if(pathname==='/api/workshop/variant-catalog'&&method==='GET')return json(res,200,{groups:structuredClone(seed.config.profile.optionGroups)});
       if(pathname==='/api/workshop/seed'&&method==='GET')return json(res,200,{document:structuredClone(seed)});
       if(pathname==='/api/workshop/import-template'&&method==='GET'){
         const bytes=fs.readFileSync(new URL('./templates/produktserie.xlsx',import.meta.url));

@@ -1,3 +1,21 @@
+# Visuelle und funktionale Ergänzungsprüfung – M02-Varianten, 05.10.2026
+
+Umfang: Variantensteuerung innerhalb der bestätigten M02-Struktur. Die Fotoansicht `docs/dashboard-20261004/dashboard-m02-continuation.png` wurde gemeinsam mit `referenzen/M02.png` bei 1487 × 1058 geprüft: Bereiche/Elemente links, vollständige vorhandene Szene mittig, Fotoeigenschaften rechts bleiben erhalten. Die neue Optionenansicht `dashboard-m02-options.png` ist eine funktionale Ergänzung, für deren genaue Felder kein separater ausgewählter Mockup vorliegt; sie übernimmt die bestehenden M02-Form-/Fokusregeln. Eigenschaftenausschnitt und Mobilaufnahme separat geprüft.
+
+- Typografie: bestehende Überschrift-/Feldhierarchie; Gruppentitel, Klartextlabels und explizit benannte Startauswahl. Keine neuen Fonts.
+- Layout: Dreispaltenstruktur bleibt; Varianten rechts über dem gemeinsamen Preisprofil. Lange Angaben umbrechbar, 390 px ohne Überlauf. Preis oberhalb des Produkts; kein Dialog verdeckt die Gestaltung.
+- Farben: unverändertes M02-Grün, helle Gruppenränder, klar markierte Checkboxen und Fokus. Letzte verbleibende Option ist deaktiviert, mit Erklärung zur Mindestanzahl.
+- Bilder: ursprüngliche Szene/Designs und Sockel unverändert; explizite Ausführung bestimmt den Sockel, Backend-Defaults bestimmen den ersten Vorschaustand. Keine Wandhalterszene erfunden.
+- Inhalte: tatsächlicher Katalog aus dem nativen Modell, eindeutige Freigabe und Startauswahl, sichtbarer Hinweis bei notwendigem Ersatz. Preis kommt aus der bestehenden serverseitigen Auflösung. Keine zweite Kalkulation.
+
+Browserablauf mit synthetischem Produkt: Auswahl reduzieren und erneut aktivieren, gültige Startauswahl, Entwurf/Speichern/Reload, Übernahme im echten Kundenrenderer, 36,97/14,99 Euro, Verlustschutz beim Verlassen und Mobil. Keine Seitenfehler. Kein vollständiger Screenreader- oder Fertigungsnachweis. Die Wandhalterung wird als Option/Preis verarbeitet, ohne neue Szenengrafik. Alle P1/P2-Befunde des geprüften Pakets behoben; persönliche visuelle Abnahme bleibt ausstehend.
+
+final result: passed
+
+---
+
+## Vorherige M01-Prüfung
+
 # Visuelle Prüfung – M01-Produktübersicht, 05.10.2026
 
 Geltungsbereich: M01-Übersicht und Verwaltungsaktionen für das vorhandene Acrylmodell. Referenz `docs/dashboard-20261004/referenzen/M01.png` und fertige Aufnahme `docs/dashboard-20261004/dashboard-m01-overview.png`, jeweils 1487 × 1058 Pixel und deviceScaleFactor 1. Beide Bilder nach der letzten Korrektur gemeinsam geöffnet und betrachtet. Ergänzend `dashboard-m01-overview-mobile.png` (390 × 844 CSS-Viewport, ganze Seite) und `dashboard-m01-selection-mobile.png`.

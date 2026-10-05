@@ -1,3 +1,4 @@
+import {installProductOptions} from './product-options-ui.mjs';
 import {productCards,installOverview} from './product-overview-ui.mjs';
 import {installProductEditor} from './product-editor-ui.mjs';
 import {installCustomerFields} from './customer-fields-ui.mjs';
@@ -7,7 +8,7 @@ const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
 const state={record:null,draft:null,products:[],dirty:false,busy:false,csrf:null,tab:'designs',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],profiles:[],profileSettings:null};
-let overview;
+let overview,productOptions;
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
 const pathValue=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],object);
@@ -40,7 +41,7 @@ function syncControls(){
  $('#save-indicator').dataset.dirty=String(state.dirty);
  $('#save-product').textContent=state.busy?'Wird gespeichert …':'Änderungen speichern';
  $('#print-export-link').hidden=state.dirty||!state.record;
- productEditor.sync();overview?.sync();
+ productEditor.sync();overview?.sync();productOptions?.sync();
  $('#preview-note').textContent='Gespeicherte Produktdaten mit aktuellen Profilzuordnungen.'+(state.dirty?' Deine ungespeicherten Änderungen sind noch nicht enthalten.':'');
 }
 function setBusy(value){state.busy=value;syncControls();}
@@ -116,7 +117,8 @@ function renderEditor(){
 function renderPrices(){
  if(!state.draft.config?.acrylic?.pricing){$('#panel-prices').innerHTML='<h3>Für dieses Produkt ist noch kein Preisprofil hinterlegt.</h3><p>Das vorliegende Preisformular verwaltet das Acrylglasprofil. Weitere Materialprofile werden gesondert ergänzt.</p>';return;}
  const root='config.acrylic.pricing.';
- $('#panel-prices').innerHTML='<div class="form-section"><h3>Grundpreise</h3><p>Alle Eingaben in Euro. Die Konfiguration speichert Preise centgenau.</p><div class="form-grid">'+moneyField('15 × 20 cm',root+'sizes.small')+moneyField('20 × 26,67 cm',root+'sizes.large')+'</div></div><div class="form-section"><h3>Sockel · Aufpreise für 15 × 20 cm</h3><div class="form-grid">'+[['Buche · massiv','buche'],['Eiche · massiv','eiche'],['Nussbaum · massiv','nussbaum'],['Acrylglas · klar','klar'],['Acrylglas · satiniert','satiniert'],['Holz · flach, Nussbaumoptik','holz-flach']].map(([label,id])=>moneyField(label,root+'bases.'+id)).join('')+'</div><p class="price-note">Ohne Sockel bleibt ohne Aufpreis. Beim größeren Format wird der folgende Zuschlag auf jeden gewählten Sockel addiert.</p></div><div class="form-section"><h3>Größenzuschlag & Zubehör</h3><div class="form-grid">'+moneyField('Sockelzuschlag · großes Format',root+'largeBaseExtraCents')+moneyField('Wandhalterung · beide Größen',root+'wallCents')+'</div><p class="field-help">Die Wandhalterung ist zusätzlich zu einem Sockel wählbar.</p></div>';
+ $('#panel-prices').innerHTML='<section id="product-options" class="form-section" aria-label="Verfügbare Varianten"></section><div class="form-section"><h3>Grundpreise</h3><p>Alle Eingaben in Euro. Die Konfiguration speichert Preise centgenau.</p><div class="form-grid">'+moneyField('15 × 20 cm',root+'sizes.small')+moneyField('20 × 26,67 cm',root+'sizes.large')+'</div></div><div class="form-section"><h3>Sockel · Aufpreise für 15 × 20 cm</h3><div class="form-grid">'+[['Buche · massiv','buche'],['Eiche · massiv','eiche'],['Nussbaum · massiv','nussbaum'],['Acrylglas · klar','klar'],['Acrylglas · satiniert','satiniert'],['Holz · flach, Nussbaumoptik','holz-flach']].map(([label,id])=>moneyField(label,root+'bases.'+id)).join('')+'</div><p class="price-note">Ohne Sockel bleibt ohne Aufpreis. Beim größeren Format wird der folgende Zuschlag auf jeden gewählten Sockel addiert.</p></div><div class="form-section"><h3>Größenzuschlag & Zubehör</h3><div class="form-grid">'+moneyField('Sockelzuschlag · großes Format',root+'largeBaseExtraCents')+moneyField('Wandhalterung · beide Größen',root+'wallCents')+'</div><p class="field-help">Die Wandhalterung ist zusätzlich zu einem Sockel wählbar.</p></div>';
+ productOptions?.render();
 }
 const rightsLabels={content:'Text ändern',color:'Farbe ändern',replace:'Ersetzen',move:'Verschieben',scale:'Skalieren',delete:'Nach Entsperren löschbar'};
 function objectLabel(object,index){return ({heading:'Überschrift',names:'Namen',place:'Ort',date:'Datum',slogan:'Spruch','photo-main':'Foto','photo-frame':'Fotorahmen','location-pin':'Ortssymbol',heart:'Herz'})[object.fieldKey||object.id]||({text:'Text',photoSlot:'Foto',motif:'Motiv',graphic:'Grafik','motif-raster':'Bildmotiv'})[object.type]+' '+(index+1);}
@@ -305,6 +307,7 @@ $('.editor-tabs').addEventListener('keydown',event=>{
  const tabs=$$('.editor-tabs [data-tab]'),index=tabs.indexOf(event.target),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab,true);
 });
 const productEditor=installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights});
+productOptions=installProductOptions({state,api,markDirty,syncControls,previewOptions:()=>productEditor.refreshOptions(true)});
 overview=installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate});
 const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});

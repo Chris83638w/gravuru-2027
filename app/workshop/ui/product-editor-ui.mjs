@@ -3,7 +3,7 @@ const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&
 const $=s=>document.querySelector(s);
 const presets=['#202824','#731c19','#17614f','#ffffff','#c49a50'];
 export function installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights}){
- let productId=null,designId=null,objectId=null,timer,serial=0,options={size:'small',base:'eiche',wall:'none'};
+ let productId=null,designId=null,objectId=null,timer,serial=0,options={};
  const icon=name=>`<img class="editor-icon" src="/workshop-ui/editor-icons/${name}.svg" alt="" aria-hidden="true">`;
  const icons={details:'cube',designs:'photo',prices:'tag',profiles:'typography',scene:'photo',production:'settings',shopify:'link'};
  for(const tab of document.querySelectorAll('.editor-tabs [data-tab]'))tab.insertAdjacentHTML('afterbegin',icon(icons[tab.dataset.tab]));
@@ -59,25 +59,31 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  async function preview(){
   if(!state.record||!design())return;
   const request=++serial,id=state.record.id;
-  $('#stage-status').textContent='Vorschau aktualisiert sich …';
+  $('#stage-status').textContent='Vorschau aktualisiert sich …';$('#stage-price').textContent='';
   try{
    const response=await api(`/api/workshop/products/${encodeURIComponent(id)}/editor-preview`,{method:'POST',body:{expectedRevision:state.record.revision,document:state.draft,designId,options}});
    if(request!==serial||id!==state.record?.id)return;
    $('#editor-preview').innerHTML=response.svg;highlight();photoThumbnail();
+   $('#stage-price').textContent=response.price?'Ausführung: '+new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(response.price.unitCents/100):'';
    $('#stage-status').textContent=state.dirty?'Entwurf · noch nicht gespeichert':'Gespeicherter Stand';
    $('#editor-preview').classList.remove('preview-updated');void $('#editor-preview').offsetWidth;
    if(state.dirty)$('#editor-preview').classList.add('preview-updated');
   }catch(e){if(request!==serial)return;$('#stage-status').textContent='Vorschau nicht aktuell: '+e.message;}
  }
- function changed(){clearTimeout(timer);++serial;$('#stage-status').textContent='Vorschau aktualisiert sich …';timer=setTimeout(preview,250);}
+ function changed(){clearTimeout(timer);++serial;$('#stage-status').textContent='Vorschau aktualisiert sich …';$('#stage-price').textContent='';timer=setTimeout(preview,250);}
+ function refreshOptions(useDefaults=false){
+  if(!state.draft)return;
+  const groups=state.draft.config.profile.optionGroups;
+  for(const g of groups)if(useDefaults||!g.values.some(v=>v.id===options[g.id]))options[g.id]=g.defaultValueId;
+  const [sizes,bases,walls]=['size','base','wall'].map(id=>groups.find(g=>g.id===id).values);
+  $('#stage-options').innerHTML=sizes.flatMap(s=>bases.flatMap(b=>walls.map(w=>`<option value="${escape(s.id+'|'+b.id+'|'+w.id)}" ${options.size===s.id&&options.base===b.id&&options.wall===w.id?'selected':''}>${escape(s.label+' · '+b.label+(w.id==='wall'?' · '+w.label:''))}</option>`))).join('');
+ }
  function render(){
   if(!state.record)return;
-  if(productId!==state.record.id){productId=state.record.id;designId=state.draft.config.profile.defaultDesignId;objectId=null;}
+  if(productId!==state.record.id){productId=state.record.id;designId=state.draft.config.profile.defaultDesignId;objectId=null;options={};}
   if(!design())designId=state.draft.config.profile.defaultDesignId;
   if(!selected())objectId=design()?.objects.find(o=>o.type==='photoSlot')?.id||design()?.objects[0]?.id;
-  const groups=state.draft.config.profile.optionGroups,sizes=groups.find(g=>g.id==='size').values,bases=groups.find(g=>g.id==='base').values;
-  if(!sizes.some(v=>v.id===options.size))options.size=sizes[0].id;if(!bases.some(v=>v.id===options.base))options.base=bases[0].id;
-  $('#stage-options').innerHTML=sizes.flatMap(s=>bases.map(b=>`<option value="${escape(s.id+'|'+b.id)}" ${options.size===s.id&&options.base===b.id?'selected':''}>${escape((s.id==='small'?'15 × 20 cm':'20 × 26,67 cm')+' · '+(b.label||b.id))}</option>`)).join('');
+  refreshOptions();
   $('#editor-designs').innerHTML=designs().map(d=>`<button type="button" data-editor-design="${escape(d.id)}" aria-pressed="${d.id===designId}"><img loading="lazy" src="/api/workshop/products/${encodeURIComponent(state.record.id)}/preview.svg?revision=${state.record.revision}&amp;designId=${encodeURIComponent(d.id)}" alt=""><span>${escape(d.name)}</span><small>${d.id===state.draft.config.profile.defaultDesignId?'Standarddesign':'Design'}</small></button>`).join('')+`<button type="button" class="import-design-tile" data-design-action="import" data-design-id="${escape(designId)}">PDF / SVG importieren</button>`;
   // Preserve every existing operation, relocating its card rather than replacing its logic.
   const cards=[...document.querySelectorAll('.record-aside .record-card')];
@@ -90,7 +96,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  $('#editor-preview').addEventListener('click',e=>{const n=e.target.closest('[data-object]');if(n&&!state.busy)select(n.dataset.object);});
  $('#editor-preview').addEventListener('keydown',e=>{const n=e.target.closest('[data-object]');if(n&&['Enter',' '].includes(e.key)&&!state.busy){e.preventDefault();select(n.dataset.object);}});
  $('#editor-designs').addEventListener('click',e=>{const b=e.target.closest('[data-editor-design]');if(!b||state.busy||!valid())return;designId=b.dataset.editorDesign;objectId=null;showTab('designs');render();});
- $('#stage-options').addEventListener('change',()=>{[options.size,options.base]=$('#stage-options').value.split('|');changed();});
+ $('#stage-options').addEventListener('change',()=>{[options.size,options.base,options.wall]=$('#stage-options').value.split('|');changed();});
  $('#panel-designs').addEventListener('input',e=>{
   const n=e.target,key=n.dataset.editorProp,o=selected();
   if(n.dataset.editorHint&&o&&!state.busy&&state.record.status!=='archived'){const d=design();state.draft.config.photo.hints??=[];let h=state.draft.config.photo.hints.find(h=>h.designId===d.id&&h.slotId===o.id);if(!h){h={designId:d.id,slotId:o.id,text:'Hier tippen & eigenes Foto hochladen',enabled:true};state.draft.config.photo.hints.push(h);}h[n.dataset.editorHint]=n.type==='checkbox'?n.checked:n.value;markDirty();return;}
@@ -116,5 +122,5 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   }catch(err){status.textContent=err.message;}finally{state.busy=false;syncControls();e.target.value='';}
  });
  $('#panel-designs').addEventListener('click',e=>{if(e.target.closest('[data-editor-photo]')){if(!state.busy&&state.record.status!=='archived')$('#editor-photo-file').click();return;}const b=e.target.closest('[data-editor-color]');if(!b||b.disabled)return;const n=$('[data-editor-prop="color"]');n.value=b.dataset.editorColor;n.dispatchEvent(new Event('input',{bubbles:true}));for(const c of document.querySelectorAll('[data-editor-color]'))c.setAttribute('aria-pressed',String(c===b));});
- return {render,changed,sync,inspect(){properties();photoThumbnail();},prepare(){for(const card of document.querySelectorAll("#product-form .record-card"))$(".record-aside").append(card);}};
+ return {render,changed,sync,refreshOptions,inspect(){properties();photoThumbnail();},prepare(){for(const card of document.querySelectorAll("#product-form .record-card"))$(".record-aside").append(card);}};
 }

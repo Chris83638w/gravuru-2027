@@ -44,3 +44,8 @@ body.editing-product main{padding:0;max-width:none}.editing-product .page-footer
 .editing-product .identity-card #copy-product{display:inline-flex;margin:10px 8px 10px 0;font-size:12px}
 .editing-product .editor-tabs button{justify-content:flex-start}
 .photo-hint-settings textarea{min-height:68px;height:68px}.editing-product .element-permissions{margin-top:22px}.editing-product .element-permissions .field-help{font-size:11px}
+/* Existing product variants, edited in the shared draft. */
+.variant-group{border:1px solid var(--line);border-radius:9px;padding:13px;margin:15px 0}.variant-group legend{font-weight:600;font-size:14px;padding:0 5px}
+.editing-product .editor-panel .variant-choice{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:400;margin:0;padding:7px 0}.variant-choice input{flex-shrink:0}.variant-default{margin:12px 0 0;font-size:12px}.variant-default select{font-size:13px;padding:8px;margin-top:5px}.variant-choice:has(input:disabled){color:#63706a}
+#product-options>p{font-size:13px;line-height:1.5}#variant-status{color:#17614f;min-height:20px;margin:12px 0 0;font-size:12px}
+#stage-price{font-size:12px;color:#53635c;text-align:center;min-height:18px;margin:0 14px 6px}.stage-toolbar label{min-width:0}.stage-toolbar select{max-width:100%;width:340px}

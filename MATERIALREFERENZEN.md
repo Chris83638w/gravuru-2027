@@ -39,3 +39,9 @@ Der jetzige Fund belegt vorhandene Dateien und die dokumentierten früheren Ents
 Eiche, Buche, Kirsche und braunes Leder haben jetzt eigene leere Oberflächen. `image_gen` hat aus den vier oben genannten Originalreferenzen einen 2×2-Atlas ohne Schrift/Motive/Rohlingumrandung erzeugt. Originalarchive unverändert. Versionierte Ableitung und Quellen-/Ausgabeprüfsummen: `app/workshop/ui/material-surfaces/provenance.json`. Die SVG-Materialvorschau wählt je Material genau ein Viertel und erhält Außenkontur/Bohrungen; Karten und gesicherte Vorschauen betten die verifizierten Bytes ein. Technische Produktmaße, Stärken und Produktionsdateien bleiben davon unabhängig.
 
 Sichtbar im Cloud-Browser geprüft, kein Herstellerfoto oder Nachweis einer realen Materialcharge. Schiefer, weitere Acrylflächen, Materialtiefe/Szenen bleiben als eigene offene Arbeit erhalten. Ergebnis: [Direktbearbeitung und Materialvorschauen](docs/dashboard-20261004/DASHBOARD-DIREKTBEARBEITUNG-ABSCHLUSS.md).
+
+## Ergänzung 05.10.2026: Acrylansichten im Formprodukt
+
+Vier originale Acrylmuster aus dem Referenzarchiv visuell angesehen und anhand ihrer Prüfsummen bestätigt. Klares, satiniertes, anthrazitfarbenes und schwarzes Acryl erscheinen jetzt als separate **prozedurale 2D-Näherung** auf der jeweiligen Originalkontur; keine Pixel oder bestehenden Motive der Muster wurden übernommen. [Herkunft und Grenzen](app/workshop/ui/material-surfaces/acrylic-provenance.json), [Prüfung und Ansichten](docs/dashboard-20261004/DASHBOARD-MATERIAL-SZENEN.md).
+
+Kantenprojektion verwendet nur die im Produkt eingetragene Stärke. Helles Studio/warmer Untergrund/ohne Hintergrund sind versionierte Vorschauoptionen. Keine Herstellerfotos, kalibrierten Materialfarben, physikalische Lichtbrechung oder Fertigungsfreigabe behauptet. Schiefer und tatsächliche freigegebene Produktszenen mit Befestigungen bleiben offen.

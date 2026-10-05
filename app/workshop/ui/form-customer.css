@@ -5,3 +5,5 @@
 #direct-editor [data-photo=edit],#direct-preview [data-action=edit]{display:none}
 
 #motif-library{margin-top:14px}#motif-library summary{cursor:pointer;font-size:13px;padding:12px 0;font-weight:600}#motif-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;max-height:330px;overflow:auto;padding:4px}#motif-grid button{min-width:0;padding:7px 5px;border-radius:10px}#motif-grid svg{display:block;width:100%;height:35px;fill:#35404a;pointer-events:none}#motif-grid span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;margin-top:5px}#more-motifs{margin-top:10px;width:100%}#add-own-text{width:100%}@media(max-width:420px){#motif-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+
+.product-stage:has([data-preview-scene="studio"]),#customer-preview:has([data-preview-scene="studio"]){background:#edf0f2}.product-stage:has([data-preview-scene="warm"]),#customer-preview:has([data-preview-scene="warm"]){background:#ebe2d5}

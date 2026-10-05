@@ -1,6 +1,7 @@
 import {createHash} from 'node:crypto';
 import {contourSvg} from './contours.mjs';
 import {validateFormDesigns} from './form-designs.mjs';
+import {MATERIAL_SCENES} from './material-presentation.mjs';
 export const FORM_PRODUCT_SCHEMA='gravuru-form-product/v1';
 // Reference inventory, not a supplier or production approval. Never infer thickness from filenames.
 export const FORM_MATERIALS=[
@@ -21,7 +22,7 @@ const keys=(v,k)=>{if(!object(v)||Object.keys(v).length!==k.length||k.some(n=>!O
 const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 export const isFormProduct=d=>d?.schema===FORM_PRODUCT_SCHEMA;
 export function validateFormProduct(input){
- keys(input,['schema','name','kind','masterId','categoryIds','seo','form','material','processingMethod','basePriceCents',...(Object.hasOwn(input||{},'productionProfile')?['productionProfile']:[]),...(Object.hasOwn(input||{},'designs')||Object.hasOwn(input||{},'defaultDesignId')?['designs','defaultDesignId']:[])]);
+ keys(input,['schema','name','kind','masterId','categoryIds','seo','form','material','processingMethod','basePriceCents',...(Object.hasOwn(input||{},'presentation')?['presentation']:[]),...(Object.hasOwn(input||{},'productionProfile')?['productionProfile']:[]),...(Object.hasOwn(input||{},'designs')||Object.hasOwn(input||{},'defaultDesignId')?['designs','defaultDesignId']:[])]);
  const d=structuredClone(input);
  if(!isFormProduct(d)||typeof d.name!=='string'||!d.name.trim()||d.name.length>200||!['product','master'].includes(d.kind)||!(d.masterId===null||/^cfg_[a-f0-9-]+$/.test(d.masterId)))fail('Ungültiger Formproduktname oder Vorlagenbezug.');
  d.name=d.name.trim();
@@ -37,12 +38,13 @@ export function validateFormProduct(input){
  if(![null,'print','engraving'].includes(d.processingMethod))fail('Verfahren ist unbekannt.');
  if(d.basePriceCents!==null&&(!Number.isSafeInteger(d.basePriceCents)||d.basePriceCents<0||d.basePriceCents>100000000))fail('Preis benötigt ganze Cent oder bleibt offen.');
  if(d.productionProfile!==undefined&&d.productionProfile!==null){keys(d.productionProfile,['id','revision']);if(!/^mfg_[a-f0-9-]+$/.test(d.productionProfile.id)||!Number.isSafeInteger(d.productionProfile.revision)||d.productionProfile.revision<1)fail('Ungültiger Fertigungsprofilstand.');}
+ if(d.presentation!==undefined){keys(d.presentation,['scene']);if(!MATERIAL_SCENES.includes(d.presentation.scene))fail('Unbekannte Vorschau-Szene.');}
  validateFormDesigns(d);return d;
 }
 export function makeFormProduct(contour,name){
  return validateFormProduct({schema:FORM_PRODUCT_SCHEMA,name,kind:'product',masterId:null,categoryIds:[],seo:{title:name.slice(0,70),description:''},
   form:{contourId:contour.id,sourceSha256:contour.sourceSha256,geometrySha256:contour.geometrySha256,geometry:structuredClone(contour.geometry)},
-  material:{id:null,thicknessMm:null,surfaceNotes:''},processingMethod:null,basePriceCents:null});
+  presentation:{scene:'studio'},material:{id:null,thicknessMm:null,surfaceNotes:''},processingMethod:null,basePriceCents:null});
 }
 export function verifyFormSource(document,contours){
  const d=validateFormProduct(document),source=contours.get(d.form.contourId);
@@ -55,5 +57,5 @@ export function formReadiness(d){
 export function formOverview(d){
  const g=d.form.geometry;
  return {sizes:[{widthMm:g.widthMm,heightMm:g.heightMm}],widthMm:g.widthMm,heightMm:g.heightMm,method:d.processingMethod,material:d.material.id,
-  designCount:d.designs?.length||0,defaultDesignName:d.designs?.find(a=>a.id===d.defaultDesignId)?.name||'Formkontur',previewLabel:(d.material.id==='steel'?'Edelstahl-Oberfläche':'Konturprüfung')+(d.designs?.length?' · Designvorschau':''),formProduct:true};
+  designCount:d.designs?.length||0,defaultDesignName:d.designs?.find(a=>a.id===d.defaultDesignId)?.name||'Formkontur',previewLabel:(d.material.id&&d.material.id!=='slate'?'Materialvorschau':'Konturprüfung')+(d.designs?.length?' · Designvorschau':''),formProduct:true};
 }

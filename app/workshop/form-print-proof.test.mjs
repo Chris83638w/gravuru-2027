@@ -56,3 +56,15 @@ test('photo and vector text retain saved paint order without duplicate raster te
  // fixture associates its photo by field ID, independently of the paint order.
  const a=await createFormPrintProof(under.bundle.package,under.bundle.manifest.packageSha256),b=await createFormPrintProof(over.bundle.package,over.bundle.manifest.packageSha256);const x=vectors(a.pdf),y=vectors(b.pdf);assert.equal(x.text.length,1);assert.equal(y.text.length,1);assert.equal(x.bluePhotoPixels,0);assert.ok(y.bluePhotoPixels>20);assert.equal(x.rasterBlue,0);assert.equal(y.rasterBlue,0);
 });
+
+test('acrylic scene, reflections and depth stay out of actual PDF ink and white separations',async t=>{
+ const {bundle}=await fixture(t,false,d=>{d.material={id:'acrylic-black',thicknessMm:5,surfaceNotes:'Synthetic fixture'};d.presentation={scene:'warm'};});
+ const {files}=readReviewPackage(bundle.package,bundle.manifest.packageSha256);
+ const preview=files.get('vorschau.svg').toString(),art=files.get('gestaltung-vorschau.svg').toString();
+ assert.match(preview,/data-preview-scene="warm"/);assert.match(preview,/data-preview-depth-mm="5"/);assert.match(preview,/data-preview-acrylic="acrylic-black"/);
+ assert.doesNotMatch(art,/material-scene|material-edge|material-acrylic|data-preview-/);
+ const printed=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256),samples=inspect(printed.pdf,[[2,2],[8,20],[50,35],[15,7]]);
+ assert.ok(Math.abs(samples.width-60)<.001);assert.ok(Math.abs(samples.height-40)<.001);
+ for(const i of [0,1,2]){assert.equal(samples.color[i][3],0);assert.equal(samples.white[i][3],0);}
+ assert.equal(samples.color[3][3],255);assert.equal(samples.white[3][3],255);
+});

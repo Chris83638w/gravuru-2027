@@ -1,0 +1,136 @@
+{
+  "startedAt": "2026-10-05T19:09:04.633Z",
+  "platform": "linux",
+  "node": "v24.19.0",
+  "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+  "steps": [
+    {
+      "name": "python-pdf",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "references",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "tests",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS",
+  "tests": {
+    "count": 231,
+    "skipped": 0,
+    "failures": 0
+  },
+  "finishedAt": "2026-10-05T19:10:06.534Z",
+  "browser": {
+    "result": "PASS",
+    "viewports": [
+      1536,
+      390,
+      768
+    ],
+    "jsErrors": [],
+    "checks": [
+      {
+        "material": "acrylic-clear",
+        "pixelCheck": {
+          "hole": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "front": [
+            216,
+            224,
+            224,
+            33
+          ]
+        }
+      },
+      {
+        "material": "acrylic-satin",
+        "pixelCheck": {
+          "hole": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "front": [
+            214,
+            219,
+            219,
+            199
+          ]
+        }
+      },
+      {
+        "material": "acrylic-anthracite",
+        "pixelCheck": {
+          "hole": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "front": [
+            43,
+            49,
+            53,
+            255
+          ]
+        }
+      },
+      {
+        "material": "acrylic-black",
+        "pixelCheck": {
+          "hole": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "front": [
+            12,
+            14,
+            15,
+            255
+          ]
+        }
+      }
+    ],
+    "scenePersistence": true,
+    "immutableHistory": true,
+    "customerEditing": true,
+    "fullscreen": true
+  },
+  "overviewBrowser": {
+    "cards": "PASS",
+    "embeddedImages": 4,
+    "mobileTouchDoubleTapAndCancel": "PASS",
+    "viewports": [
+      1536,
+      390,
+      768
+    ],
+    "horizontalOverflow": false
+  },
+  "branch": "task/form-material-scenes-20261005",
+  "baseCommit": "a407c4114f3914d26f3a58baa8de4628a96161b0",
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  }
+}

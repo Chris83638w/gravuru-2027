@@ -45,7 +45,7 @@ function failure(e){notice(e.message,true);if(e.status===409)$('#conflict').hidd
 function render(next){
  const ticket=++serial;clearTimeout(timer);clearPreview();record=next;draft=clone(record.document);dirty=false;historical=record.revision!==currentRevision;
  $('#title').textContent=draft.name;$('#revision').textContent='Stand '+record.revision+(historical?' · historisch':record.status==='archived'?' · archiviert':' · gespeichert');
- $('#seo-title').value=draft.seo.title;$('#seo-description').value=draft.seo.description;$('#name').value=draft.name;$('#kind').value=draft.kind;$('#material').value=draft.material.id||'';$('#thickness').value=draft.material.thicknessMm??'';$('#method').value=draft.processingMethod||'';$('#surface').value=draft.material.surfaceNotes;$('#price').value=draft.basePriceCents===null?'':(draft.basePriceCents/100).toFixed(2).replace('.',',');
+ $('#scene').value=draft.presentation?.scene||'transparent';$('#seo-title').value=draft.seo.title;$('#seo-description').value=draft.seo.description;$('#name').value=draft.name;$('#kind').value=draft.kind;$('#material').value=draft.material.id||'';$('#thickness').value=draft.material.thicknessMm??'';$('#method').value=draft.processingMethod||'';$('#surface').value=draft.material.surfaceNotes;$('#price').value=draft.basePriceCents===null?'':(draft.basePriceCents/100).toFixed(2).replace('.',',');
  const g=draft.form.geometry;$('#width').textContent=mm(g.widthMm);$('#height').textContent=mm(g.heightMm);$('#holes').textContent=g.holeCount;reference();manufacturingChoices();
  $('#pdf').href=url()+'/contour.pdf?revision='+record.revision;$('#original').href='/api/workshop/contours/'+draft.form.contourId+'/original';$('#product-id').textContent='Produkt: '+id;$('#contour-id').textContent='Kontur: '+draft.form.contourId;$('#geometry-hash').textContent='Geometrie SHA-256: '+draft.form.geometrySha256;
  $('#archive').textContent=record.status==='archived'?'Wieder aktivieren':'Archivieren';$('#workspace').hidden=false;$('#conflict').hidden=true;sync();
@@ -55,6 +55,7 @@ async function history(){const {revisions}=await api(url()+'/revisions');$('#his
 async function current(){const r=await api(url());if(r.document?.schema!=='gravuru-form-product/v1')throw Error('Dieses Produkt gehört zum bestehenden Acryl-Editor. Bitte über Produkte öffnen.');currentRevision=r.revision;render(r);await history();}
 function readInputs(){
  draft.seo={title:$('#seo-title').value,description:$('#seo-description').value};draft.name=$('#name').value;draft.kind=$('#kind').value;if(draft.kind==='master')draft.masterId=null;
+ const scene=$('#scene').value;if(draft.presentation||scene!=='transparent')draft.presentation={scene};
  draft.material.id=$('#material').value||null;draft.material.thicknessMm=$('#thickness').value===''?null:Number($('#thickness').value);draft.material.surfaceNotes=$('#surface').value;draft.processingMethod=$('#method').value||null;
  const selected=$('#production-profile').value;if(selected){const [id,rev]=selected.split(':');draft.productionProfile={id,revision:Number(rev)};}else draft.productionProfile=null;
  const price=$('#price').value.trim(),m=/^(\d+)(?:[.,](\d{1,2}))?$/.exec(price);draft.basePriceCents=price===''?null:m?Number(m[1])*100+Number((m[2]||'').padEnd(2,'0')):NaN;

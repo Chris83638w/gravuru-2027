@@ -1,3 +1,4 @@
+import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './order-product-draft.mjs';
 import {prepareCartRequest} from './storefront-cart.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createFormEngravingProof,formEngravingSettings,formEngravingKey,FORM_ENGRAVING_RECIPE} from './form-engraving-proof.mjs';
@@ -96,6 +97,16 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
       if(pathname==='/api/workshop/orders'&&method==='GET')return json(res,200,{orders:orderIntake.list(),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});
+      const orderProductMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/product-draft(?:\/(preview|apply))?$/);
+      if(orderProductMatch){
+        const line=orderIntake.get(orderProductMatch[1]),action=orderProductMatch[2];
+        if(method==='GET'&&!action)return json(res,200,{product:orderProductDraft(repository,line)});
+        if(method!=='POST'||!action)fail(405,'method_not_allowed','Bitte eine Vorschau prüfen oder übernehmen.');
+        const data=await body(req),plan=planOrderProductDraft({line,archive:customerDrafts.downloadSnapshot(line.snapshotId,'package'),input:data,assets,contours,fonts:seed.config.localResources.fonts});
+        productionProfiles.resolve(plan.document);
+        if(action==='apply')return json(res,201,applyOrderProductDraft(repository,plan,data.token));
+        const {document,...summary}=plan;return json(res,200,{...summary,preview:formProductPreview(document,{assets,contours,fonts:seed.config.localResources.fonts})});
+      }
       const orderMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)$/);if(orderMatch&&method==='GET')return json(res,200,orderIntake.get(orderMatch[1]));
       if(pathname==='/api/workshop/order-bindings'){
         if(method==='GET')return json(res,200,{bindings:orderIntake.bindings()});

@@ -11,9 +11,10 @@
 <label>Oberfläche / Materialhinweis<textarea id="surface" maxlength="1000" rows="3" placeholder="Zum Beispiel Bürstrichtung oder Lieferantenspezifikation"></textarea></label>
 <label>Grundpreis · €<input id="price" type="text" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="Noch offen"></label><p class="field-help">Eigener Preis für diese Form. Keine Übernahme von Acrylgrößen oder Sockelaufschlägen.</p>
 </fieldset></form></section>
-<section class="contour-detail"><div class="contour-detail-heading"><div><span class="contour-kicker">FORMPRÜFUNG · 1:1-GEOMETRIE</span><h2>Dein Bauteil</h2></div><span id="preview-state">Gespeichert</span></div>
+<section class="contour-detail"><div class="contour-detail-heading"><div><span class="contour-kicker">FORM & OBERFLÄCHE</span><h2>Dein Bauteil</h2></div><span id="preview-state">Gespeichert</span></div>
+<div class="preview-modes" role="group" aria-label="Vorschauansicht"><button id="show-material" type="button" aria-pressed="false" disabled>Materialansicht</button><button id="show-contour" type="button" aria-pressed="true">Kontur prüfen</button></div>
 <div id="preview" class="contour-canvas"></div><dl class="contour-metrics"><div><dt>Breite</dt><dd id="width"></dd></div><div><dt>Höhe</dt><dd id="height"></dd></div><div><dt>Ausschnitte</dt><dd id="holes"></dd></div></dl>
-<p id="material-summary"></p><p class="field-help">Die neutrale Formansicht zeigt Außenkontur und tatsächliche Ausschnitte. Sie ist noch keine Materialszene oder Kundengestaltung.</p>
+<p id="material-summary"></p><p id="surface-note" class="field-help" aria-live="polite"></p><p class="field-help">Ausschnitte bleiben offen. Oberflächen erscheinen nur in der Vorschau; die Kontur-PDF enthält keine Materialbilder.</p>
 <div class="form-export"><a class="button" id="pdf">Kontur-PDF · 1:1</a><a class="button" id="original">Originalkontur</a></div><p id="export-note" class="field-help">Download aus dem angegebenen gespeicherten Stand. Reine Konturprüfung ohne Farbe, Weißkanal oder Fertigungsfreigabe.</p>
 </section>
 <aside class="form-record"><section><h2>Bis zur Kundenansicht</h2><ul id="readiness"></ul><p class="field-help">Du kannst den Entwurf jederzeit sichern. Erst vollständige und geprüfte Zuordnungen erlauben eine spätere Freigabe.</p></section>

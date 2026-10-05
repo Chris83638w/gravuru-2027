@@ -1,5 +1,6 @@
 import {isFormProduct,makeFormProduct,verifyFormSource,formOverview,formReadiness,FORM_MATERIALS} from './form-product.mjs';
 import {formContourPdf} from './form-contour-pdf.mjs';
+import {materialPreview} from './material-preview.mjs';
 import {createContourStore} from './contours.mjs';
 import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
@@ -78,7 +79,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           if(data.expectedRevision!==record.revision)fail(409,'stale_revision','Der gespeicherte Stand wurde geändert. Bitte zuerst den Konflikt klären.');
           document=verifyFormSource(data.document,contours);
         }else if(method!=='GET')fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
-        if(formMatch[2]==='form-preview')return json(res,200,{svg:contours.preview(document.form.contourId).toString(),geometry:document.form.geometry,readiness:formReadiness(document),revision:record.revision});
+        if(formMatch[2]==='form-preview')return json(res,200,{svg:contours.preview(document.form.contourId).toString(),materialPreview:materialPreview(document),geometry:document.form.geometry,readiness:formReadiness(document),revision:record.revision});
         const bytes=await formContourPdf(document,record);
         res.writeHead(200,{'Content-Type':'application/pdf','Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Disposition':`attachment; filename="Gravuru-Kontur-${record.id}-v${record.revision}.pdf"`}).end(bytes);return;
       }

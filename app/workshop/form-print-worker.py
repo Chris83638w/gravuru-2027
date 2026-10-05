@@ -9,6 +9,8 @@ from cairosvg.url import fetch
 from scipy.spatial import cKDTree
 spec=importlib.util.spec_from_file_location('contour',Path(__file__).with_name('contour-converter.py'))
 c=importlib.util.module_from_spec(spec);spec.loader.exec_module(c);c.dependencies()
+text_spec=importlib.util.spec_from_file_location('print_text',Path(__file__).with_name('form-print-text.py'))
+text_module=importlib.util.module_from_spec(text_spec);text_spec.loader.exec_module(text_module)
 S='{http://www.w3.org/2000/svg}'
 ET.register_namespace('',S[1:-1])
 Image.MAX_IMAGE_PIXELS=20_000_000
@@ -60,6 +62,7 @@ def run(data):
  for parent in list(root.iter()):
   for child in list(parent):
    if child.get('data-field') in data['photoFields'] and child.get('data-field') not in photo_ids:parent.remove(child)
+ parts,text_vectors,nontext_root=text_module.split_artwork(root,set(data['textFields']),c.require,number)
  # Only the outer edge is expanded; original hole paths are never enlarged or filled.
  rings=g['contours'];outer=next(r for r in rings if r['role']=='outer');holes=[r for r in rings if r['role']=='hole'];plain=' '.join(r['d']+' Z' for r in rings)
  polygon=c.Polygon(c.flatten(c.parse_path(outer['d'])));expanded=polygon.buffer(1,quad_segs=32)
@@ -89,9 +92,28 @@ def run(data):
   rgba[:,:,3]=np.minimum(rgba[:,:,3],expanded_mask)
  white_bleed=s['whiteBleedMm'] if bleed else 0
  white_allowed=mask(' '.join(r['d']+' Z' for r in extended)) if white_bleed else original
+ # Render non-text batches separately so photos can cover earlier text fields.
+ def render_root(r):
+  r.set('viewBox',root.get('viewBox'));r.set('width',str(W));r.set('height',str(H))
+  a=np.array(raster(ET.tostring(r),W,H));a[:,:,3]=np.minimum(a[:,:,3],original);return a
+ enc=lambda a:base64.b64encode(np.ascontiguousarray(a).tobytes()).decode()
+ layers=[]
+ def bitmap(a):
+  ys,xs=np.nonzero(a[:,:,3]);
+  if not len(xs):return
+  x,y,x2,y2=int(xs.min()),int(ys.min()),int(xs.max())+1,int(ys.max())+1;b=a[y:y2,x:x2]
+  layers.append({'type':'raster','x':x*(mw+2*bleed)/W-bleed,'y':y*(mh+2*bleed)/H-bleed,'widthMm':(x2-x)*(mw+2*bleed)/W,'heightMm':(y2-y)*(mh+2*bleed)/H,'width':x2-x,'height':y2-y,'rgb':enc(b[:,:,:3]),'alpha':enc(b[:,:,3])})
+ white_alpha=render_root(nontext_root)[:,:,3].copy()
+ if bleed:
+  outside_ink=rgba.copy();outside_ink[:,:,3][original>0]=0;bitmap(outside_ink)
+  white_alpha=np.maximum(white_alpha,outside_ink[:,:,3])
+ for part in parts:
+  if 'vectors' in part:layers.append({'type':'text','paths':part['vectors']})
+  else:bitmap(render_root(part['root']))
+ if s['mirror']:white_alpha=np.flip(white_alpha,axis=1).copy()
  if s['mirror']:rgba=np.flip(rgba,axis=1).copy();white_allowed=np.flip(white_allowed,axis=1).copy()
  enc=lambda a:base64.b64encode(np.ascontiguousarray(a).tobytes()).decode()
- return {'width':W,'height':H,'rgb':enc(rgba[:,:,:3]),'alpha':enc(rgba[:,:,3]),'whiteAllowed':enc(white_allowed),'bleedMm':bleed,'whiteBleedMm':white_bleed,'edgeInk':touches,'paths':{'cut':pdf_path(rings),'color':pdf_path(extended if bleed else rings),'white':pdf_path(extended if white_bleed else rings)}}
+ return {'width':W,'height':H,'rgb':enc(rgba[:,:,:3]),'alpha':enc(rgba[:,:,3]),'whiteAllowed':enc(white_allowed),'whiteAlpha':enc(white_alpha),'artworkLayers':layers,'textVectors':text_vectors,'bleedMm':bleed,'whiteBleedMm':white_bleed,'edgeInk':touches,'paths':{'cut':pdf_path(rings),'color':pdf_path(extended if bleed else rings),'white':pdf_path(extended if white_bleed else rings)}}
 try:
  result=run(json.load(sys.stdin));print(json.dumps(result))
 except Exception as e:

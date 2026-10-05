@@ -1,10 +1,11 @@
 import {isFormProduct,makeFormProduct,verifyFormSource,formOverview,formReadiness,FORM_MATERIALS} from './form-product.mjs';
 import {formContourPdf} from './form-contour-pdf.mjs';
 import {materialPreview} from './material-preview.mjs';
+import {verifyFormDesignSources,addFormDesign,formDesignOverlay} from './form-designs.mjs';
 import {createContourStore} from './contours.mjs';
 import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
-import {randomBytes,timingSafeEqual} from 'node:crypto';
+import {randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createProductRepository} from './repository.mjs';
@@ -34,7 +35,8 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
   const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter});
   const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter});
-  const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document))return verifyFormSource(document,contours);profiles.resolve(document);assets.validateDocument(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document)}:({profiles:profiles.resolve(document)})});
+  const verifyForm=document=>verifyFormDesignSources(verifyFormSource(document,contours),assets,seed.config.localResources.fonts);
+  const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document))return verifyForm(document);profiles.resolve(document);assets.validateDocument(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document)}:({profiles:profiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
@@ -64,6 +66,18 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});
       if(pathname==='/api/workshop/form-materials'&&method==='GET')return json(res,200,{materials:FORM_MATERIALS});
+      if(pathname==='/api/workshop/form-fonts'&&method==='GET')return json(res,200,{fonts:Object.entries(seed.config.localResources.fonts).map(([id,f])=>({id,bold:Boolean(f.bold)}))});
+      if(pathname==='/api/workshop/design-assets'&&method==='GET')return json(res,200,{assets:assets.list()});
+      const formImport=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/form-design-import$/);
+      if(formImport&&method==='POST'){
+        const data=await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+2*1024*1024),record=repository.get(formImport[1]);
+        if(!isFormProduct(record.document)||record.status==='archived')fail(422,'invalid_import_target','Bitte ein aktives Formprodukt öffnen.');
+        if(data.expectedRevision!==record.revision)fail(409,'stale_revision','Der Produktstand wurde geändert. Eigene Eingaben bleiben erhalten.');
+        const draft=verifyForm(data.document);
+        const asset=data.assetId?{...assets.get(data.assetId),originalName:data.originalName}:await assets.import({name:data.name,bytes:data.bytes,page:data.page});
+        const document=verifyForm(addFormDesign(draft,asset,{name:data.designName,fit:data.fit,designId:'design-'+randomUUID()}));
+        return json(res,200,{document,asset,designId:document.designs.at(-1).id,warnings:[...asset.warnings,'Außerhalb der Kontur und in Ausschnitten wird die Gestaltung ausgeblendet.','Enthaltene Texte und Fotos bleiben Teil der Originalgrafik. Neue Kundenfelder benötigen dafür vorbereitete freie Bereiche.']});
+      }
       if(pathname==='/api/workshop/form-products'&&method==='POST'){
         const data=await body(req),source=contours.get(data.contourId);
         if(typeof data.name!=='string'||!data.name.trim()||data.name.length>200)fail(422,'name_required','Bitte einen Produktnamen eingeben.');
@@ -77,9 +91,15 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='POST'&&formMatch[2]==='form-preview'){
           const data=await body(req);
           if(data.expectedRevision!==record.revision)fail(409,'stale_revision','Der gespeicherte Stand wurde geändert. Bitte zuerst den Konflikt klären.');
-          document=verifyFormSource(data.document,contours);
+          document=verifyForm(data.document);
+          if(data.designId!==undefined&&!document.designs?.some(d=>d.id===data.designId))fail(422,'design_missing','Design gehört nicht zum Produkt.');
+          url.searchParams.set('designId',data.designId||document.defaultDesignId||'');
         }else if(method!=='GET')fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
-        if(formMatch[2]==='form-preview')return json(res,200,{svg:contours.preview(document.form.contourId).toString(),materialPreview:materialPreview(document),geometry:document.form.geometry,readiness:formReadiness(document),revision:record.revision});
+        if(formMatch[2]==='form-preview'){
+          verifyForm(document);
+          const svg=contours.preview(document.form.contourId).toString(),surface=materialPreview(document),overlay=formDesignOverlay(document,seed.config.localResources.fonts,url.searchParams.get('designId')||document.defaultDesignId);
+          return json(res,200,{svg,designSvg:overlay?svg.replace('</svg>',overlay+'</svg>'):null,materialPreview:{...surface,svg:surface.svg?.replace('</svg>',overlay+'</svg>')||null},geometry:document.form.geometry,readiness:formReadiness(document),revision:record.revision});
+        }
         const bytes=await formContourPdf(document,record);
         res.writeHead(200,{'Content-Type':'application/pdf','Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Disposition':`attachment; filename="Gravuru-Kontur-${record.id}-v${record.revision}.pdf"`}).end(bytes);return;
       }

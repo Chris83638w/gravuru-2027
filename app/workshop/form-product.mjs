@@ -1,5 +1,6 @@
 import {createHash} from 'node:crypto';
 import {contourSvg} from './contours.mjs';
+import {validateFormDesigns} from './form-designs.mjs';
 export const FORM_PRODUCT_SCHEMA='gravuru-form-product/v1';
 // Reference inventory, not a supplier or production approval. Never infer thickness from filenames.
 export const FORM_MATERIALS=[
@@ -20,7 +21,7 @@ const keys=(v,k)=>{if(!object(v)||Object.keys(v).length!==k.length||k.some(n=>!O
 const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 export const isFormProduct=d=>d?.schema===FORM_PRODUCT_SCHEMA;
 export function validateFormProduct(input){
- keys(input,['schema','name','kind','masterId','categoryIds','seo','form','material','processingMethod','basePriceCents']);
+ keys(input,['schema','name','kind','masterId','categoryIds','seo','form','material','processingMethod','basePriceCents',...(Object.hasOwn(input||{},'designs')||Object.hasOwn(input||{},'defaultDesignId')?['designs','defaultDesignId']:[])]);
  const d=structuredClone(input);
  if(!isFormProduct(d)||typeof d.name!=='string'||!d.name.trim()||d.name.length>200||!['product','master'].includes(d.kind)||!(d.masterId===null||/^cfg_[a-f0-9-]+$/.test(d.masterId)))fail('Ungültiger Formproduktname oder Vorlagenbezug.');
  d.name=d.name.trim();
@@ -35,7 +36,7 @@ export function validateFormProduct(input){
  if(typeof d.material.surfaceNotes!=='string'||d.material.surfaceNotes.length>1000)fail('Oberflächenhinweis ist zu lang.');
  if(![null,'print','engraving'].includes(d.processingMethod))fail('Verfahren ist unbekannt.');
  if(d.basePriceCents!==null&&(!Number.isSafeInteger(d.basePriceCents)||d.basePriceCents<0||d.basePriceCents>100000000))fail('Preis benötigt ganze Cent oder bleibt offen.');
- return d;
+ validateFormDesigns(d);return d;
 }
 export function makeFormProduct(contour,name){
  return validateFormProduct({schema:FORM_PRODUCT_SCHEMA,name,kind:'product',masterId:null,categoryIds:[],seo:{title:name.slice(0,70),description:''},
@@ -48,10 +49,10 @@ export function verifyFormSource(document,contours){
  return d;
 }
 export function formReadiness(d){
- return [...(d.material.id?[]:['Material auswählen']),...(d.material.thicknessMm===null?['Materialstärke festlegen']:[]),...(d.processingMethod?[]:['Druck oder Gravur festlegen']),...(d.basePriceCents===null?['Preis festlegen']:[]),'Design und Kundenfelder zuordnen','Fertigungsprofil prüfen und freigeben'];
+ return [...(d.material.id?[]:['Material auswählen']),...(d.material.thicknessMm===null?['Materialstärke festlegen']:[]),...(d.processingMethod?[]:['Druck oder Gravur festlegen']),...(d.basePriceCents===null?['Preis festlegen']:[]),d.designs?.length?'Kundenkonfigurator anbinden':'Design und Kundenfelder zuordnen','Fertigungsprofil prüfen und freigeben'];
 }
 export function formOverview(d){
  const g=d.form.geometry;
  return {sizes:[{widthMm:g.widthMm,heightMm:g.heightMm}],widthMm:g.widthMm,heightMm:g.heightMm,method:d.processingMethod,material:d.material.id,
-  designCount:0,defaultDesignName:'Formkontur',previewLabel:'Formprüfung · ohne Design',formProduct:true};
+  designCount:d.designs?.length||0,defaultDesignName:d.designs?.find(a=>a.id===d.defaultDesignId)?.name||'Formkontur',previewLabel:'Technische Formprüfung',formProduct:true};
 }

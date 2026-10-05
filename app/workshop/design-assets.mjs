@@ -67,6 +67,7 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
       try{db.prepare('INSERT OR IGNORE INTO design_sources VALUES (?,?)').run(sourceSha256,original);db.prepare('INSERT OR IGNORE INTO design_assets VALUES (?,?,?,?)').run(assetId,sourceSha256,preview,JSON.stringify(metadata));db.exec('COMMIT');}catch(error){db.exec('ROLLBACK');throw error;}
       return {...get(assetId),originalName:name};
     },get,resource,
+    list(){return db.prepare('SELECT metadata FROM design_assets ORDER BY rowid DESC LIMIT 300').all().map(r=>JSON.parse(r.metadata));},
     read(id,original=false){const r=row(id);return Buffer.from(original?db.prepare('SELECT bytes FROM design_sources WHERE sha256=?').get(r.source_sha256).bytes:r.preview);},
     validateDocument(document){
       for(const example of document.config?.localResources?.photoExamples||[]){

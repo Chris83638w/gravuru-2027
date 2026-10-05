@@ -1,3 +1,4 @@
+import {formEngravingSettings} from './form-engraving-proof.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {createHash,randomUUID} from 'node:crypto';
 import {FORM_MATERIALS} from './form-product.mjs';
@@ -11,7 +12,7 @@ export function productionProfileDocument(input){
  const d=structuredClone(input);d.name=text(d.name,160,true);d.machine=text(d.machine,200);d.rip=text(d.rip,200);d.notes=text(d.notes,2000);
  if(!['print','engraving'].includes(d.method)||typeof d.archived!=='boolean'||!FORM_MATERIALS.some(m=>m.id===d.materialId)||!Number.isFinite(d.thicknessMm)||d.thicknessMm<=0||d.thicknessMm>100)fail(422,'Verfahren, Material und tatsächliche Stärke sind erforderlich.');
  if(d.method==='print')d.output=formPrintSettings(d.output);
- else{exact(d.output,['mode','dpi','mirror']);if(!['raster','vector'].includes(d.output.mode)||![300,600].includes(d.output.dpi)||typeof d.output.mirror!=='boolean')fail(422,'Ungültige Gravurausgabe.');}
+ else{exact(d.output,['mode','dpi','mirror']);d.output=formEngravingSettings(d.output);}
  return d;
 }
 export function profileBlockers(profile){

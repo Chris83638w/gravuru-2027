@@ -40,9 +40,7 @@ def data_fetch(url,kind):
  return raw
 def raster(svg,w,h):
  return Image.open(io.BytesIO(PNGSurface.convert(bytestring=svg,output_width=w,output_height=h,url_fetcher=data_fetch))).convert('RGBA')
-def run(data):
- g,s=data['geometry'],data['settings'];mw,mh=g['widthMm'],g['heightMm'];dpi=s['dpi'];requested=s['bleedMm']
- c.require(g['schema']=='gravuru-contour/v1' and 0<mw<=500 and 0<mh<=500 and dpi in [300,600] and requested in [0,1],'Ungültiges Druckformat.')
+def prepare_svg(data):
  # Originals are decoded at their actual resolution; only the output raster has a DPI.
  root=ET.fromstring(data['svg']);c.require(root.tag==S+'svg','Ungültige Gestaltung.')
  photo_ids=set()
@@ -62,6 +60,11 @@ def run(data):
  for parent in list(root.iter()):
   for child in list(parent):
    if child.get('data-field') in data['photoFields'] and child.get('data-field') not in photo_ids:parent.remove(child)
+ return root
+def run(data):
+ g,s=data['geometry'],data['settings'];mw,mh=g['widthMm'],g['heightMm'];dpi=s['dpi'];requested=s['bleedMm']
+ c.require(g['schema']=='gravuru-contour/v1' and 0<mw<=500 and 0<mh<=500 and dpi in [300,600] and requested in [0,1],'Ungültiges Druckformat.')
+ root=prepare_svg(data)
  parts,text_vectors,nontext_root=text_module.split_artwork(root,set(data['textFields']),c.require,number)
  # Only the outer edge is expanded; original hole paths are never enlarged or filled.
  rings=g['contours'];outer=next(r for r in rings if r['role']=='outer');holes=[r for r in rings if r['role']=='hole'];plain=' '.join(r['d']+' Z' for r in rings)
@@ -114,8 +117,9 @@ def run(data):
  if s['mirror']:rgba=np.flip(rgba,axis=1).copy();white_allowed=np.flip(white_allowed,axis=1).copy()
  enc=lambda a:base64.b64encode(np.ascontiguousarray(a).tobytes()).decode()
  return {'width':W,'height':H,'rgb':enc(rgba[:,:,:3]),'alpha':enc(rgba[:,:,3]),'whiteAllowed':enc(white_allowed),'whiteAlpha':enc(white_alpha),'artworkLayers':layers,'textVectors':text_vectors,'bleedMm':bleed,'whiteBleedMm':white_bleed,'edgeInk':touches,'paths':{'cut':pdf_path(rings),'color':pdf_path(extended if bleed else rings),'white':pdf_path(extended if white_bleed else rings)}}
-try:
- result=run(json.load(sys.stdin));print(json.dumps(result))
-except Exception as e:
- message=str(e) if isinstance(e,c.Failure) else 'Der technische Druckexport konnte die gesicherten Daten nicht zuverlässig rendern.'
- print(json.dumps({'error':message}));sys.exit(1)
+if __name__=='__main__':
+ try:
+  result=run(json.load(sys.stdin));print(json.dumps(result))
+ except Exception as e:
+  message=str(e) if isinstance(e,c.Failure) else 'Der technische Druckexport konnte die gesicherten Daten nicht zuverlässig rendern.'
+  print(json.dumps({'error':message}));sys.exit(1)

@@ -1,7 +1,11 @@
 import {isFormProduct,makeFormProduct,verifyFormSource,formOverview,formReadiness,FORM_MATERIALS} from './form-product.mjs';
 import {formContourPdf} from './form-contour-pdf.mjs';
 import {materialPreview} from './material-preview.mjs';
+import {formProductPreview} from './form-product-preview.mjs';
 import {verifyFormDesignSources,addFormDesign,formDesignOverlay} from './form-designs.mjs';
+import {createFormCustomerStore} from './form-customer-store.mjs';
+import {initialFormCustomerState,resolveFormCustomer,customerPhotoMarkup} from './form-customer-model.mjs';
+import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
 import {createContourStore} from './contours.mjs';
 import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
@@ -40,6 +44,14 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
+  const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set();
+  function customerRecord(id,version){const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
+  function customerResult(draft,token,state=draft.state){
+    const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
+    const resolved=resolveFormCustomer(record.document,draft.designId,state,{assets,fonts:seed.config.localResources.fonts,media:id=>customerDrafts.photo(draft.id,token,id)});
+    const surface=materialPreview(record.document),base=surface.svg||contours.preview(record.document.form.contourId).toString(),overlay=formDesignOverlay(resolved.document,seed.config.localResources.fonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id))});
+    return {draft:{...draft,state},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:record.document.basePriceCents,method:record.document.processingMethod,geometry:{widthMm:record.document.form.geometry.widthMm,heightMm:record.document.form.geometry.heightMm,holeCount:record.document.form.geometry.holeCount},designs:record.document.designs.map(d=>({id:d.id,name:d.name})),sourceFields:source.fields},svg:base.replace('</svg>',overlay+'</svg>'),warnings:resolved.warnings,ready:resolved.ready,photos:[...resolved.photos.values()].map(p=>({mediaId:p.mediaId,width:p.width,height:p.height})),surfaceAvailable:Boolean(surface.svg)};
+  }
   function model(id,version){
     const record=repository.get(id,{revision:revision(version)});
     if(isFormProduct(record.document))fail(422,'form_not_configurable','Dieses Formprodukt ist noch ein Werkstattentwurf. Designs und Kundenkonfigurator folgen separat.');
@@ -65,6 +77,28 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!['GET','POST','PATCH'].includes(method))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});
+      if(pathname==='/api/workshop/customer-drafts'&&method==='POST'){
+        const data=await body(req),record=customerRecord(data.productId,data.productRevision),design=record.document.designs.find(d=>d.id===(data.designId||record.document.defaultDesignId));
+        if(!design||repository.get(record.id).status==='archived')fail(422,'customer_design_missing','Bitte ein aktives Produkt und gültiges Design wählen.');
+        const {token,...draft}=customerDrafts.create(record,design.id,initialFormCustomerState(design));return json(res,201,{...customerResult(draft,token),token});
+      }
+      const customerMatch=pathname.match(/^\/api\/workshop\/customer-drafts\/(draft_[a-f0-9-]+)(?:\/(preview|photos))?$/);
+      if(customerMatch){
+        const token=req.headers['x-gravuru-draft'],draft=customerDrafts.get(customerMatch[1],token),action=customerMatch[2];
+        if(!action&&method==='GET')return json(res,200,customerResult(draft,token));
+        if(!['POST','PATCH'].includes(method))fail(405,'method_not_allowed','Aktion nicht unterstützt.');
+        const data=await body(req,action==='photos'?Math.ceil(MAX_CUSTOMER_PHOTO/3)*4+4096:2*1024*1024);
+        if(data.expectedRevision!==draft.revision)fail(409,'stale_customer_draft','Der gespeicherte Entwurf wurde inzwischen geändert. Deine Eingaben bleiben erhalten.');
+        if(action==='photos'&&method==='POST'){
+          const source=customerRecord(draft.productId,draft.productRevision).document.designs.find(d=>d.id===draft.designId);
+          if(!source.fields.some(f=>f.id===data.fieldId&&f.type==='photo'))fail(422,'photo_field_missing','Bitte einen vorgegebenen Fotobereich wählen.');
+          if(photoJobs.size>=2||photoJobs.has(draft.id))fail(409,'photo_busy','Eine Fotoprüfung läuft bereits. Bitte kurz warten.');
+          photoJobs.add(draft.id);try{const photo=await prepareCustomerPhoto(data.bytes);if(customerDrafts.get(draft.id,token).revision!==data.expectedRevision)fail(409,'stale_customer_draft','Entwurf inzwischen geändert. Bitte neu laden.');return json(res,201,customerDrafts.addPhoto(draft.id,token,photo));}finally{photoJobs.delete(draft.id);}
+        }
+        if(action==='preview'&&method==='POST')return json(res,200,customerResult(draft,token,data.state));
+        if(!action&&method==='PATCH'){customerResult(draft,token,data.state);const saved=customerDrafts.save(draft.id,token,data.state,data.expectedRevision);return json(res,200,customerResult(saved,token));}
+        fail(405,'method_not_allowed','Aktion nicht unterstützt.');
+      }
       if(pathname==='/api/workshop/form-materials'&&method==='GET')return json(res,200,{materials:FORM_MATERIALS});
       if(pathname==='/api/workshop/form-fonts'&&method==='GET')return json(res,200,{fonts:Object.entries(seed.config.localResources.fonts).map(([id,f])=>({id,bold:Boolean(f.bold)}))});
       if(pathname==='/api/workshop/design-assets'&&method==='GET')return json(res,200,{assets:assets.list()});
@@ -146,7 +180,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       const cardMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/preview\.svg$/);
       if(cardMatch&&method==='GET'){
         const formRecord=repository.get(cardMatch[1],{revision:revision(url.searchParams.get('revision'))});
-        if(isFormProduct(formRecord.document)){const bytes=contours.preview(formRecord.document.form.contourId);res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','Content-Security-Policy':"default-src 'none'; sandbox"}).end(bytes);return;}
+        if(isFormProduct(formRecord.document)){verifyForm(formRecord.document);const bytes=Buffer.from(formProductPreview(formRecord.document,{assets,fonts:seed.config.localResources.fonts,contours}));res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; img-src data:; sandbox"}).end(bytes);return;}
         const m=model(cardMatch[1],url.searchParams.get('revision')),examples=(m.universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
         const bytes=Buffer.from(productPreview(m,{designId:url.searchParams.get('designId'),examples,...(url.searchParams.get('layout')==='card'?{layout:'card',options:overviewOptions(m.universal)}:{})}));
         res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}).end(bytes);return;
@@ -250,5 +284,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {repository,profiles,assets,contours,handle,model,defaultId,close:()=>{repository.close();profiles.close();assets.close();contours.close();}};
+  return {repository,profiles,assets,contours,customerDrafts,handle,model,defaultId,close:()=>{repository.close();profiles.close();assets.close();contours.close();customerDrafts.close();}};
 }

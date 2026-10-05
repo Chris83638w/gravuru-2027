@@ -49,10 +49,10 @@ export function verifyFormSource(document,contours){
  return d;
 }
 export function formReadiness(d){
- return [...(d.material.id?[]:['Material auswählen']),...(d.material.thicknessMm===null?['Materialstärke festlegen']:[]),...(d.processingMethod?[]:['Druck oder Gravur festlegen']),...(d.basePriceCents===null?['Preis festlegen']:[]),d.designs?.length?'Kundenkonfigurator anbinden':'Design und Kundenfelder zuordnen','Fertigungsprofil prüfen und freigeben'];
+ return [...(d.material.id?[]:['Material auswählen']),...(d.material.thicknessMm===null?['Materialstärke festlegen']:[]),...(d.processingMethod?[]:['Druck oder Gravur festlegen']),...(d.basePriceCents===null?['Preis festlegen']:[]),d.designs?.length?'Kundenentwurf visuell abnehmen':'Design und Kundenfelder zuordnen','Fertigungsprofil prüfen und freigeben'];
 }
 export function formOverview(d){
  const g=d.form.geometry;
  return {sizes:[{widthMm:g.widthMm,heightMm:g.heightMm}],widthMm:g.widthMm,heightMm:g.heightMm,method:d.processingMethod,material:d.material.id,
-  designCount:d.designs?.length||0,defaultDesignName:d.designs?.find(a=>a.id===d.defaultDesignId)?.name||'Formkontur',previewLabel:'Technische Formprüfung',formProduct:true};
+  designCount:d.designs?.length||0,defaultDesignName:d.designs?.find(a=>a.id===d.defaultDesignId)?.name||'Formkontur',previewLabel:(d.material.id==='steel'?'Edelstahl-Oberfläche':'Konturprüfung')+(d.designs?.length?' · Designvorschau':''),formProduct:true};
 }

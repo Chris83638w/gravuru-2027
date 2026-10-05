@@ -1,0 +1,2 @@
+# Private photo decoding and orientation-aware display previews. Originals stay unchanged.
+Pillow==12.3.0

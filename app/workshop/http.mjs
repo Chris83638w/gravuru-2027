@@ -40,7 +40,7 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Local operator surface only. This does not provide hosted merchant authentication. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null}){
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
   const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite')});
@@ -52,7 +52,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set();
-  const exportJobs=customerDrafts.exportJobs;
+  const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
   const exportWorker=createExportWorker({jobs:exportJobs,recipe:[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE],render:job=>{const review=customerDrafts.review(job.snapshotId);return (job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof)(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
   function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_ENGRAVING_RECIPE,recipeKey:formEngravingKey(settings),settings});exportWorker.kick();return job;}
   function enqueuePrint(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_PRINT_RECIPE,recipeKey:formPrintKey(settings),settings});exportWorker.kick();return job;}
@@ -86,7 +86,21 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     try{
       const pathname=url.pathname,method=req.method;
       if(!['GET','POST','PATCH'].includes(method))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      if(pathname==='/api/workshop/order-webhook'){
+        if(method!=='POST')fail(405,'method_not_allowed','Bestellnachrichten benötigen POST.');
+        if(!orderWebhook)fail(503,'orders_disabled','Test-Bestellanbindung ist nicht eingerichtet.');
+        if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'json_required','JSON erforderlich.');
+        let size=0;const chunks=[];for await(const chunk of req){size+=chunk.length;if(size>1024*1024)fail(413,'body_limit','Bestellnachricht zu groß.');chunks.push(chunk);}
+        return json(res,200,orderIntake.receive(Buffer.concat(chunks),req.headers,orderWebhook));
+      }
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/orders'&&method==='GET')return json(res,200,{orders:orderIntake.list(),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});
+      const orderMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)$/);if(orderMatch&&method==='GET')return json(res,200,orderIntake.get(orderMatch[1]));
+      if(pathname==='/api/workshop/order-bindings'){
+        if(method==='GET')return json(res,200,{bindings:orderIntake.bindings()});
+        if(method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['shopDomain','variantId','productId','productRevision'].includes(k)))fail(422,'binding_fields','Unbekannte Zuordnungsfelder.');if(data.productRevision===undefined)fail(422,'binding_revision','Gespeicherten Produktstand ausdrücklich angeben.');if(repository.get(data.productId).status==='archived')fail(422,'archived_product','Produkt zuerst wieder aktivieren.');const record=repository.get(data.productId,{revision:revision(data.productRevision)});return json(res,201,orderIntake.bind({...data,record}));}
+      }
+      if(pathname==='/api/workshop/order-offers'&&method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['bindingId','snapshotId','quantity'].includes(k)))fail(422,'offer_fields','Unbekannte Checkout-Felder.');return json(res,201,orderIntake.offer(data));}
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});
       if(pathname==='/api/workshop/production-profiles'){
         if(method==='GET')return json(res,200,{profiles:productionProfiles.list(),machines:PRODUCTION_MACHINES});
@@ -347,5 +361,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {repository,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,handle,model,defaultId,close:()=>{exportWorker.close();exportJobs.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
+  return {repository,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{exportWorker.close();exportJobs.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
 }

@@ -1,3 +1,4 @@
+import {createOrderIntake} from './order-intake.mjs';
 import {createExportJobStore} from './export-jobs.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {randomBytes,randomUUID,createHash,timingSafeEqual} from 'node:crypto';
@@ -24,7 +25,8 @@ export function createFormCustomerStore({filename}){
  function transaction(fn){db.exec('BEGIN IMMEDIATE');try{const result=fn();db.exec('COMMIT');return result;}catch(e){db.exec('ROLLBACK');throw e;}}
  const snapshot=(id,columns='manifest')=>{const r=typeof id==='string'&&db.prepare('SELECT '+columns+' FROM form_review_snapshots WHERE id=?').get(id);if(!r)fail(404,'Prüfstand nicht gefunden.');return r;};
  const summary=r=>{const m=JSON.parse(r.manifest);return {id:m.id,createdAt:m.createdAt,product:m.product,source:m.source,blockers:m.blockers,warnings:m.warnings,photoCount:m.photos.length,packageSha256:m.packageSha256};};
- return {exportJobs,
+ const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest)});
+ return {exportJobs,orderIntake,
   printProof(id,key){snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;},
   savePrintProof(id,key,result){return transaction(()=>{snapshot(id);db.prepare('INSERT OR IGNORE INTO form_print_proofs VALUES(?,?,?,?,?)').run(id,key,JSON.stringify(result.metadata),result.pdf,result.archive);});},
   findSnapshot:(draftId,version)=>{const r=db.prepare('SELECT manifest FROM form_review_snapshots WHERE draft_id=? AND draft_revision=?').get(draftId,version);return r?summary(r):null;},

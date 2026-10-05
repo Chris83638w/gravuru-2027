@@ -1,3 +1,4 @@
+import {prepareShopProduct} from './shop-preparation.mjs';
 import {createFormEngravingProof,formEngravingSettings,formEngravingKey,FORM_ENGRAVING_RECIPE} from './form-engraving-proof.mjs';
 import {createExportWorker} from './export-jobs.mjs';
 import {createProductionProfiles,PRODUCTION_MACHINES} from './production-profiles.mjs';
@@ -304,11 +305,12 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='POST'){const data=await body(req);return json(res,201,repository.create(data.document));}
         fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       }
-      const match=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)(?:\/(copy|archive|publish|revisions|restore|resolve|validate-design))?$/);
+      const match=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)(?:\/(copy|archive|publish|revisions|restore|resolve|validate-design|shop-preparation))?$/);
       if(!match)fail(404,'not_found','Werkstattfunktion nicht gefunden.');
       const [,id,action]=match;
       if(method==='GET'){
         if(!action)return json(res,200,repository.get(id,{revision:revision(url.searchParams.get('revision'))}));
+        if(action==='shop-preparation')return json(res,200,prepareShopProduct(repository.get(id,{revision:revision(url.searchParams.get('revision'))})));
         if(action==='revisions')return json(res,200,{revisions:repository.history(id).map(({document,...record})=>({...record,createdAt:record.updatedAt,name:document.name}))});
         fail(405,'method_not_allowed','Diese Aktion benötigt eine Eingabe.');
       }
@@ -316,7 +318,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       const current=repository.get(id);
       if(!action&&method==='PATCH'&&isFormProduct(current.document)!==isFormProduct(data.document))fail(422,'product_type_fixed','Der Produkttyp darf nicht ausgetauscht werden. Bitte ein eigenes Produkt anlegen.');
       if(!action&&method==='PATCH'&&current.status==='archived')fail(422,'archived_product','Archivierte Produkte bitte zuerst wieder aktivieren.');
-      if(isFormProduct(current.document)&&['publish','resolve','validate-design'].includes(action))fail(422,'form_incomplete','Formprodukt bleibt ein Entwurf: Design, Kundenkonfigurator und Fertigungsfreigabe sind noch offen.');
+      if(isFormProduct(current.document)&&['publish','resolve','validate-design'].includes(action))fail(422,'form_incomplete','Formprodukt bleibt ein Entwurf: Die Shop-/Bestellbindung und reale Fertigungsfreigabe stehen noch aus. Design, Kundenentwurf und technische Ausgaben können bereits geprüft werden.');
       if(!action&&method==='PATCH')return json(res,200,repository.save(id,data.document,data.expectedRevision));
       if(method!=='POST')fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(action==='copy')return json(res,201,repository.copy(id,data));

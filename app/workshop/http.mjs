@@ -1,3 +1,4 @@
+import {prepareCartRequest} from './storefront-cart.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createFormEngravingProof,formEngravingSettings,formEngravingKey,FORM_ENGRAVING_RECIPE} from './form-engraving-proof.mjs';
 import {createExportWorker} from './export-jobs.mjs';
@@ -99,6 +100,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/order-bindings'){
         if(method==='GET')return json(res,200,{bindings:orderIntake.bindings()});
         if(method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['shopDomain','variantId','productId','productRevision'].includes(k)))fail(422,'binding_fields','Unbekannte Zuordnungsfelder.');if(data.productRevision===undefined)fail(422,'binding_revision','Gespeicherten Produktstand ausdrücklich angeben.');if(repository.get(data.productId).status==='archived')fail(422,'archived_product','Produkt zuerst wieder aktivieren.');const record=repository.get(data.productId,{revision:revision(data.productRevision)});return json(res,201,orderIntake.bind({...data,record}));}
+      }
+      if(pathname==='/api/workshop/order-cart-preview'&&method==='POST'){
+        const data=await body(req);if(Object.keys(data).some(k=>!['bindingId','snapshotId','quantity'].includes(k)))fail(422,'cart_fields','Unbekannte Warenkorbfelder.');
+        const offer=orderIntake.offer(data),binding=orderIntake.bindings().find(b=>b.id===data.bindingId);
+        return json(res,201,{request:prepareCartRequest(offer),summary:{shopDomain:binding.shopDomain,variantId:offer.variantId,productId:binding.productId,productRevision:binding.productRevision,snapshotId:data.snapshotId,quantity:offer.quantity,unitCents:offer.unitCents,totalCents:offer.unitCents*offer.quantity,currency:offer.currency},sent:false,paymentConfirmed:false});
       }
       if(pathname==='/api/workshop/order-offers'&&method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['bindingId','snapshotId','quantity'].includes(k)))fail(422,'offer_fields','Unbekannte Checkout-Felder.');return json(res,201,orderIntake.offer(data));}
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});

@@ -1,3 +1,5 @@
+import {isFormProduct,makeFormProduct,verifyFormSource,formOverview,formReadiness,FORM_MATERIALS} from './form-product.mjs';
+import {formContourPdf} from './form-contour-pdf.mjs';
 import {createContourStore} from './contours.mjs';
 import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
@@ -31,12 +33,13 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
   const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter});
   const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter});
-  const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);profiles.resolve(document);assets.validateDocument(document);return document;},snapshotMetadata:document=>({profiles:profiles.resolve(document)})});
+  const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document))return verifyFormSource(document,contours);profiles.resolve(document);assets.validateDocument(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document)}:({profiles:profiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
   function model(id,version){
     const record=repository.get(id,{revision:revision(version)});
+    if(isFormProduct(record.document))fail(422,'form_not_configurable','Dieses Formprodukt ist noch ein Werkstattentwurf. Designs und Kundenkonfigurator folgen separat.');
     const resolved=resolveProduct(record.document);
     const shell=structuredClone(legacy);
     shell.designs=resolved.config.profile.designs;
@@ -59,6 +62,26 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!['GET','POST','PATCH'].includes(method))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});
+      if(pathname==='/api/workshop/form-materials'&&method==='GET')return json(res,200,{materials:FORM_MATERIALS});
+      if(pathname==='/api/workshop/form-products'&&method==='POST'){
+        const data=await body(req),source=contours.get(data.contourId);
+        if(typeof data.name!=='string'||!data.name.trim()||data.name.length>200)fail(422,'name_required','Bitte einen Produktnamen eingeben.');
+        return json(res,201,repository.create(makeFormProduct(source,data.name)));
+      }
+      const formMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/(form-preview|contour\.pdf)$/);
+      if(formMatch){
+        const record=repository.get(formMatch[1],{revision:method==='GET'?revision(url.searchParams.get('revision')):undefined});
+        if(!isFormProduct(record.document))fail(422,'not_form_product','Diese Aktion gehört zu einem Formprodukt.');
+        let document=record.document;
+        if(method==='POST'&&formMatch[2]==='form-preview'){
+          const data=await body(req);
+          if(data.expectedRevision!==record.revision)fail(409,'stale_revision','Der gespeicherte Stand wurde geändert. Bitte zuerst den Konflikt klären.');
+          document=verifyFormSource(data.document,contours);
+        }else if(method!=='GET')fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+        if(formMatch[2]==='form-preview')return json(res,200,{svg:contours.preview(document.form.contourId).toString(),geometry:document.form.geometry,readiness:formReadiness(document),revision:record.revision});
+        const bytes=await formContourPdf(document,record);
+        res.writeHead(200,{'Content-Type':'application/pdf','Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Disposition':`attachment; filename="Gravuru-Kontur-${record.id}-v${record.revision}.pdf"`}).end(bytes);return;
+      }
       if(pathname==='/api/workshop/contours'){
         if(method==='GET')return json(res,200,{contours:contours.list()});
         if(method==='POST')return json(res,201,await contours.import(await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+4096)));
@@ -101,6 +124,8 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       const cardMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/preview\.svg$/);
       if(cardMatch&&method==='GET'){
+        const formRecord=repository.get(cardMatch[1],{revision:revision(url.searchParams.get('revision'))});
+        if(isFormProduct(formRecord.document)){const bytes=contours.preview(formRecord.document.form.contourId);res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','Content-Security-Policy':"default-src 'none'; sandbox"}).end(bytes);return;}
         const m=model(cardMatch[1],url.searchParams.get('revision')),examples=(m.universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
         const bytes=Buffer.from(productPreview(m,{designId:url.searchParams.get('designId'),examples,...(url.searchParams.get('layout')==='card'?{layout:'card',options:overviewOptions(m.universal)}:{})}));
         res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}).end(bytes);return;
@@ -157,7 +182,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/batch/commit'&&method==='POST')return json(res,200,commitBatch(repository,await body(req),assets));
       if(pathname==='/api/workshop/products'){
         if(method==='GET'){
-          const products=repository.list({query:url.searchParams.get('query')||'',includeArchived:url.searchParams.get('includeArchived')==='1'}).map(({document,...item})=>({...item,overview:productOverview(document)}));
+          const products=repository.list({query:url.searchParams.get('query')||'',includeArchived:url.searchParams.get('includeArchived')==='1'}).map(({document,...item})=>({...item,overview:isFormProduct(document)?formOverview(document):productOverview(document)}));
           return json(res,200,{products});
         }
         if(method==='POST'){const data=await body(req);return json(res,201,repository.create(data.document));}
@@ -172,6 +197,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         fail(405,'method_not_allowed','Diese Aktion benötigt eine Eingabe.');
       }
       const data=await body(req);
+      const current=repository.get(id);
+      if(!action&&method==='PATCH'&&isFormProduct(current.document)!==isFormProduct(data.document))fail(422,'product_type_fixed','Der Produkttyp darf nicht ausgetauscht werden. Bitte ein eigenes Produkt anlegen.');
+      if(!action&&method==='PATCH'&&current.status==='archived')fail(422,'archived_product','Archivierte Produkte bitte zuerst wieder aktivieren.');
+      if(isFormProduct(current.document)&&['publish','resolve','validate-design'].includes(action))fail(422,'form_incomplete','Formprodukt bleibt ein Entwurf: Design, Kundenkonfigurator und Fertigungsfreigabe sind noch offen.');
       if(!action&&method==='PATCH')return json(res,200,repository.save(id,data.document,data.expectedRevision));
       if(method!=='POST')fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(action==='copy')return json(res,201,repository.copy(id,data));

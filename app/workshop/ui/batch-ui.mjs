@@ -85,6 +85,6 @@ $('#import').addEventListener('click',async()=>{
 });
 try{
   const {products}=await api('/api/workshop/products');
-  $('#master').innerHTML=products.filter(p=>p.kind==='master').map(p=>'<option value="'+escape(p.id)+'" data-revision="'+p.revision+'">'+escape(p.name)+' · Stand '+p.revision+'</option>').join('');
+  $('#master').innerHTML=products.filter(p=>p.kind==='master'&&!p.overview?.formProduct).map(p=>'<option value="'+escape(p.id)+'" data-revision="'+p.revision+'">'+escape(p.name)+' · Stand '+p.revision+'</option>').join('');
   if(!$('#master').options.length)status('Lege in der Produktverwaltung zunächst eine Mastervorlage an.',true);
 }catch(error){status(error.message,true);}

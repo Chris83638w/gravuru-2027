@@ -32,13 +32,14 @@
         <div id="contour-details" hidden>
           <dl class="contour-metrics"><div><dt>Breite</dt><dd id="contour-width"></dd></div><div><dt>Höhe</dt><dd id="contour-height"></dd></div><div><dt>Ausschnitte</dt><dd id="contour-holes"></dd></div></dl>
           <div class="contour-source"><span id="contour-name"></span><a id="contour-original" class="button">Original herunterladen</a></div>
+          <button class="primary" id="create-form-product" type="button">Produkt aus dieser Form anlegen</button>
           <p id="contour-source-size" class="field-help"></p><ul id="contour-warnings"></ul>
           <details class="contour-proof"><summary>Dateinachweis</summary><p>Original SHA-256</p><code id="contour-hash"></code></details>
         </div>
       </section>
     </div>
     <section class="contour-library" aria-labelledby="library-title"><div class="contour-library-heading"><div><span class="contour-kicker">DEINE FORMVORLAGEN</span><h2 id="library-title">Für später gespeichert</h2></div><span id="contour-count"></span></div><div id="contour-list" aria-live="polite"><p>Formkonturen werden geladen …</p></div></section>
-    <p class="contour-scope">Die Vorlagen bleiben unabhängig von deinen Designs. Die Zuordnung freier Formen zu Material, Produkt und Fertigung folgt im nächsten Schritt.</p>
+    <p class="contour-scope">Die Vorlagen bleiben unabhängig von deinen Designs. Lege aus einer Kontur ein Formprodukt an und ordne Material und Stärke zu. Design und Fertigungsfreigabe folgen separat.</p>
   </main>
 </div>
-</body></html>
+<dialog id="form-create-dialog" aria-labelledby="form-create-title"><form id="form-create-form"><h2 id="form-create-title">Aus deiner Form wird ein Produkt.</h2><p>Kontur und Originalmaß bleiben erhalten. Material, Stärke und Preis legst du anschließend fest.</p><label>Produktname<input id="form-create-name" maxlength="200" required></label><p id="form-create-error" role="alert"></p><div class="button-row"><button type="button" id="form-create-cancel">Abbrechen</button><button type="submit" class="primary" id="form-create-submit">Produkt anlegen</button></div></form></dialog></body></html>

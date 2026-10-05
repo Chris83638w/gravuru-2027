@@ -36,6 +36,7 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       if(!/^[1-9][0-9]*$/.test(String(version)))fail('Bitte einen gespeicherten Masterstand auswählen.');
       const master=repository.get(id,{revision:Number(version)}),current=repository.get(id);
       if(master.document.kind!=='master'||current.status==='archived'||current.document.kind!=='master')fail('Die Vorlage muss ein aktiver Master sein.');
+      if(master.document.schema==='gravuru-form-product/v1')fail('Formprodukte sind noch nicht für die Acryl-Stapelanlage freigegeben.');
       let document=structuredClone(master.document),artwork=null;
       document.kind='product';document.masterId=id;document.name=text(row.name);
       if(!document.name)fail('Produktname fehlt.');

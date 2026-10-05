@@ -1,0 +1,22 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Formprodukt · Gravuru Werkstatt</title><link rel="stylesheet" href="/workshop-ui/style.css"><link rel="stylesheet" href="/workshop-ui/dashboard.css"><link rel="stylesheet" href="/workshop-ui/contours.css"><link rel="stylesheet" href="/workshop-ui/form-product.css"><script type="module" src="/workshop-ui/form-product-ui.mjs"></script></head>
+<body class="dashboard-page contours-page"><a class="skip-link" href="#main">Zum Inhalt</a><main id="main">
+<header class="form-heading"><a class="button" href="/werkstatt/">← Produkte</a><div><span class="contour-kicker">FORMPRODUKT · ENTWURF</span><h1 id="title">Formprodukt laden …</h1><p id="revision"></p></div><button id="save" class="primary" disabled>Änderungen speichern</button></header>
+<p id="notice" role="status" aria-live="polite"></p><div id="conflict" hidden role="alert"><strong>Inzwischen wurde ein neuer Stand gespeichert.</strong><p>Deine Eingaben bleiben erhalten. Sichere sie unter einer neuen Produkt-ID oder lade bewusst den aktuellen Stand.</p><button id="save-separate">Als eigenes Produkt sichern</button><button id="reload">Aktuellen Stand laden</button></div>
+<div id="workspace" class="form-workspace" hidden>
+<section class="form-settings"><form id="product-form"><fieldset><legend>Produkt & Material</legend>
+<label>Produktname<input id="name" maxlength="200" required></label>
+<label>Verwendung<select id="kind"><option value="product">Produkt</option><option value="master">Mastervorlage</option></select></label>
+<label>Material<select id="material"><option value="">Noch offen</option></select></label><p id="material-reference" class="field-help"></p>
+<div class="form-pair"><label>Stärke · mm<input id="thickness" type="number" min="0.01" max="100" step="0.01" placeholder="Noch offen"></label><label>Verfahren<select id="method"><option value="">Noch offen</option><option value="print">Druck</option><option value="engraving">Gravur</option></select></label></div>
+<label>Oberfläche / Materialhinweis<textarea id="surface" maxlength="1000" rows="3" placeholder="Zum Beispiel Bürstrichtung oder Lieferantenspezifikation"></textarea></label>
+<label>Grundpreis · €<input id="price" type="text" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" placeholder="Noch offen"></label><p class="field-help">Eigener Preis für diese Form. Keine Übernahme von Acrylgrößen oder Sockelaufschlägen.</p>
+</fieldset></form></section>
+<section class="contour-detail"><div class="contour-detail-heading"><div><span class="contour-kicker">FORMPRÜFUNG · 1:1-GEOMETRIE</span><h2>Dein Bauteil</h2></div><span id="preview-state">Gespeichert</span></div>
+<div id="preview" class="contour-canvas"></div><dl class="contour-metrics"><div><dt>Breite</dt><dd id="width"></dd></div><div><dt>Höhe</dt><dd id="height"></dd></div><div><dt>Ausschnitte</dt><dd id="holes"></dd></div></dl>
+<p id="material-summary"></p><p class="field-help">Die neutrale Formansicht zeigt Außenkontur und tatsächliche Ausschnitte. Sie ist noch keine Materialszene oder Kundengestaltung.</p>
+<div class="form-export"><a class="button" id="pdf">Kontur-PDF · 1:1</a><a class="button" id="original">Originalkontur</a></div><p id="export-note" class="field-help">Download aus dem angegebenen gespeicherten Stand. Reine Konturprüfung ohne Farbe, Weißkanal oder Fertigungsfreigabe.</p>
+</section>
+<aside class="form-record"><section><h2>Bis zur Kundenansicht</h2><ul id="readiness"></ul><p class="field-help">Du kannst den Entwurf jederzeit sichern. Erst vollständige und geprüfte Zuordnungen erlauben eine spätere Freigabe.</p></section>
+<section><h2>Gespeicherte Stände</h2><label>Stand ansehen<select id="history"></select></label><button id="restore" hidden>Als neuen Stand übernehmen</button><p class="field-help">Frühere Stände bleiben unverändert. Eine Wiederherstellung erzeugt eine neue Revision.</p></section>
+<section><h2>Aktionen</h2><button id="copy">Gespeicherten Stand kopieren</button><button id="archive">Archivieren</button><details><summary>Zuordnung</summary><p id="product-id"></p><p id="contour-id"></p><p id="geometry-hash"></p></details></section>
+</aside></div></main></body></html>

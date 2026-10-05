@@ -1,3 +1,4 @@
+import {isFormProduct,validateFormProduct} from './form-product.mjs';
 import {prepareConfig,resolvedOptions,selectedProfile,quote,validateDesign,cleanObject} from '../configurator/variant-m/contract.mjs';
 import {ACRYLIC_BASES,ACRYLIC_SIZES,acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -67,7 +68,7 @@ export function makeProductDocument(nativeConfig,{name,kind='product',masterId=n
 }
 
 export function validateProductDocument(document){
-  jsonData(document);keys(document,DOCUMENT_KEYS,'Produktdokument');
+  jsonData(document);if(isFormProduct(document))return validateFormProduct(document);keys(document,DOCUMENT_KEYS,'Produktdokument');
   if(document.schema!==PRODUCT_SCHEMA)fail('Unbekannte Version des Produktdokuments.');
   const result=structuredClone(document);
   result.name=text(result.name,1,200,'Produktname');

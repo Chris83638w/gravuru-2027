@@ -2,12 +2,12 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const mm=n=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:3}).format(n)+' mm';
 const holes=n=>n+' '+(n===1?'Ausschnitt':'Ausschnitte');
-let token='',busy=false,selected='',serial=0;
+let token='',busy=false,selected='',selectedName='',serial=0;
 function status(message,error=false){$('#contour-status').textContent=message;$('#contour-status').classList.toggle('error',error);$('#contour-status').setAttribute('role',error?'alert':'status');}
-function controls(){ $('#contour-import').disabled=busy||!token||!$('#contour-file').files[0];$('#contour-file').disabled=busy;$('#contour-import').textContent=busy?'Kontur wird geprüft …':'Kontur prüfen und speichern';$('.contour-detail').setAttribute('aria-busy',String(busy));}
+function controls(){ $('#create-form-product').disabled=busy||!selected;$('#contour-import').disabled=busy||!token||!$('#contour-file').files[0];$('#contour-file').disabled=busy;$('#contour-import').textContent=busy?'Kontur wird geprüft …':'Kontur prüfen und speichern';$('.contour-detail').setAttribute('aria-busy',String(busy));}
 async function api(url,data){const r=await fetch(url,data?{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':token},body:JSON.stringify(data)}:{});const value=await r.json();if(!r.ok)throw Error(value.error?.message||'Die Anfrage ist fehlgeschlagen.');return value;}
 function show(record){
-  selected=record.id;const g=record.geometry;
+  selected=record.id;selectedName=record.name;const g=record.geometry;
   $('#preview-title').textContent=record.name;$('#contour-preview').src='/api/workshop/contours/'+record.id+'/preview.svg';$('#contour-preview').alt=`Formkontur ${mm(g.widthMm)} × ${mm(g.heightMm)}, ${holes(g.holeCount)}`;
   $('#contour-empty').hidden=true;$('#contour-preview').hidden=false;$('#contour-details').hidden=false;$('#contour-badge').hidden=false;
   $('#contour-width').textContent=mm(g.widthMm);$('#contour-height').textContent=mm(g.heightMm);$('#contour-holes').textContent=g.holeCount;
@@ -32,3 +32,8 @@ $('#contour-form').addEventListener('submit',async event=>{
 });
 $('#contour-list').addEventListener('click',async event=>{const button=event.target.closest('[data-contour]');if(!button||busy)return;const ticket=++serial;try{const record=await api('/api/workshop/contours/'+button.dataset.contour);if(ticket===serial)show(record);}catch(e){if(ticket===serial)status(e.message,true);}});
 try{token=(await api('/api/workshop/session')).csrfToken;const rows=await list();if(rows[0])show(await api('/api/workshop/contours/'+rows[0].id));}catch(e){status(e.message,true);}finally{controls();}
+
+$('#create-form-product').addEventListener('click',()=>{if(busy||!selected)return;$('#form-create-name').value=selectedName.replace(/\.(svg|pdf)$/i,'');$('#form-create-error').textContent='';$('#form-create-dialog').showModal();$('#form-create-name').focus();});
+$('#form-create-cancel').addEventListener('click',()=>{if(!busy)$('#form-create-dialog').close();});
+$('#form-create-dialog').addEventListener('cancel',e=>{if(busy)e.preventDefault();});
+$('#form-create-form').addEventListener('submit',async e=>{e.preventDefault();if(busy||!e.currentTarget.reportValidity())return;busy=true;controls();$('#form-create-submit').disabled=true;$('#form-create-cancel').disabled=true;try{const r=await api('/api/workshop/form-products',{name:$('#form-create-name').value.trim(),contourId:selected});location.href='/werkstatt/formprodukt/?configuration='+encodeURIComponent(r.id);}catch(e){$('#form-create-error').textContent=e.message;busy=false;controls();$('#form-create-submit').disabled=false;$('#form-create-cancel').disabled=false;}});

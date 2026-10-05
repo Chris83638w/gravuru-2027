@@ -84,6 +84,7 @@ async function canDiscard(){
  return await new Promise(resolve=>dialog.addEventListener('close',()=>resolve(dialog.returnValue==='discard'),{once:true}));
 }
 function applyRecord(record){
+ if(record.document.schema==='gravuru-form-product/v1'){location.href='/werkstatt/formprodukt/?configuration='+encodeURIComponent(record.id);return false;}
  const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
  $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;$('.overview').hidden=true;$('.page-heading').hidden=true;
  renderEditor();renderList();syncControls();
@@ -93,7 +94,7 @@ async function loadRecord(id,{checkDirty=true}={}){
  if(state.busy)return;if(checkDirty&&!await canDiscard())return;
  const request=++state.recordRequest;
  const record=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(id)));if(request!==state.recordRequest)return;
- applyRecord(record);await loadHistory();
+ if(applyRecord(record)===false)return;await loadHistory();
 }
 const field=(label,path,value,{help='',type='text',max=200,full=false,required=false}={})=>'<label'+(full?' class="full"':'')+'>'+escape(label)+'<input type="'+type+'" data-path="'+escape(path)+'" value="'+escape(value)+'" maxlength="'+max+'" '+(required?'required':'')+'>'+ (help?'<p class="field-help">'+escape(help)+'</p>':'')+'</label>';
 const textArea=(label,path,value,{help='',rows=3,max=500}={})=>'<label class="full">'+escape(label)+'<textarea data-path="'+escape(path)+'" rows="'+rows+'" maxlength="'+max+'">'+escape(value)+'</textarea>'+(help?'<p class="field-help">'+escape(help)+'</p>':'')+'</label>';
@@ -252,7 +253,7 @@ $('#create-form').addEventListener('submit',async event=>{
    document.name=name;document.kind=kind;if(kind==='master')document.masterId=null;if(document.config?.profile)document.config.profile.name=name;
    result=await api('/api/workshop/products',{method:'POST',body:{document}});
   }
-  $('#create-dialog').close();applyRecord(recordFrom(result));await Promise.all([loadList(),loadHistory()]);notify('Konfiguration angelegt. Deine neue ID: '+state.record.id);window.scrollTo({top:0,behavior:'instant'});
+  $('#create-dialog').close();if(applyRecord(recordFrom(result))===false)return;await Promise.all([loadList(),loadHistory()]);notify('Konfiguration angelegt. Deine neue ID: '+state.record.id);window.scrollTo({top:0,behavior:'instant'});
  }catch(error){$('#create-error').textContent=errorMessage(error);$('#create-error').hidden=false;if(error.status===409)mutationError(error);}
  finally{setBusy(false);}
 });

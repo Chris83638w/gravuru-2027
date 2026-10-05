@@ -16,7 +16,7 @@ export function productCards(products,badge){
    <div class="card-content"><div class="card-heading"><h3>${name}</h3><button data-product-id="${id}">${icon('pencil')}Bearbeiten</button></div>
    <div class="card-status">${badge(p)}<small>Stand ${p.revision} · ${info.designCount||0} ${(info.designCount||0)===1?'Design':'Designs'}</small></div>
    <dl>${row('tag','Konfigurations-ID',`<code title="${id}">${id}</code>`)}${row(info.method==='print'?'printer':'settings','Verfahren',info.method==='print'?'Druck':info.method==='engraving'?'Gravur':'Nicht hinterlegt')}${row('dimensions','Formate',escape(formats))}${row('link','Shopify','Shop-Anbindung ausstehend')}</dl>
-   <a class="card-preview-link" href="/?${new URLSearchParams({configuration:p.id,revision:p.revision})}" target="_blank" rel="noopener">${icon('eye')}Kundenansicht</a></div></article>`;
+   <a class="card-preview-link" href="${info.formProduct?'/werkstatt/formprodukt/':'/'}?${new URLSearchParams({configuration:p.id,revision:p.revision})}" target="_blank" rel="noopener">${icon('eye')}${info.formProduct?'Formprodukt öffnen':'Kundenansicht'}</a></div></article>`;
  }).join('');
 }
 export function installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate}){
@@ -68,6 +68,8 @@ export function installOverview({state,api,setBusy,notify,loadList,loadRecord,op
   const copy=e.target.closest('[data-card-copy]'),archive=e.target.closest('[data-card-archive]');if(!copy&&!archive)return;if(state.busy)return;
   e.target.closest('details')?.removeAttribute('open');
   if(archive){const p=visible.find(p=>p.id===archive.dataset.cardArchive);if(p)askArchive([p]);return;}
+  const chosen=visible.find(p=>p.id===copy.dataset.cardCopy);
+  if(chosen?.overview?.formProduct){copy.disabled=true;try{const r=await api('/api/workshop/products/'+encodeURIComponent(chosen.id)+'/copy',{method:'POST',body:{expectedRevision:chosen.revision,name:chosen.name+' · Kopie',kind:'product'}});await loadList();await loadRecord(r.id);}catch(error){copy.disabled=false;notify(error.message,'error');}return;}
   try{await loadRecord(copy.dataset.cardCopy);if(state.record?.id===copy.dataset.cardCopy)openCreate('copy');}catch(error){notify(error.message,'error');}
  });
  document.addEventListener('click',e=>{for(const menu of $$('.card-menu[open]'))if(!menu.contains(e.target))menu.open=false;});

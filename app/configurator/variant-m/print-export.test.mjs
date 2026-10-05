@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
+import {importEnvironment} from '../../workshop/design-assets.mjs';
 import {exportSettings,contourPath,maskRectangles,printPDF,zipFiles,rgbToCmyk,resolutionAdvice} from './print-export-model.mjs';
 const geometry={width:150,height:200,shape:'rect',cornerRadiusMm:2,holes:[]};
 function pixels(){const w=150,h=200,rgb=new Uint8Array(w*h*3),alpha=new Uint8Array(w*h).fill(255);for(let y=0;y<h;y++)for(let x=0;x<w;x++){rgb[(y*w+x)*3+(x<75?0:2)]=255;}return {width:w,height:h,rgb,alpha};}
-const inspect=async(blob,script)=>{const r=spawnSync(process.env.GRAVURU_PYTHON||'python3',['-c',script],{input:Buffer.from(await blob.arrayBuffer()),maxBuffer:5e6});assert.equal(r.status,0,r.stderr.toString());return JSON.parse(r.stdout);};
+const inspect=async(blob,script)=>{const r=spawnSync(process.env.GRAVURU_PYTHON||'python3',['-c',script],{input:Buffer.from(await blob.arrayBuffer()),maxBuffer:5e6,env:importEnvironment()});assert.equal(r.status,0,r.stderr.toString());return JSON.parse(r.stdout);};
 test('print settings keep cut size and independently bound color and white bleed',()=>{
  const s=exportSettings(geometry,{bleedMm:1});assert.equal(s.pageWidthMm,152);assert.equal(s.pageHeightMm,202);assert.deepEqual(s.geometry,geometry);assert.equal(s.whiteBleedMm,0);assert.equal(s.dpi,300);assert.equal(exportSettings(geometry,{dpi:600}).dpi,600);
  for(const bad of [{bleedMm:2},{whiteBleedMm:1},{profile:'unknown'},{white:'auto'},{mirror:'true'},{dpi:72},{dpi:'300'},{dpi:Infinity}])assert.throws(()=>exportSettings(geometry,bad));
@@ -20,14 +21,16 @@ test('white silhouette produces closed merged runs and preserves transparent hol
 });
 test('Roland PDF has real spot resources, cut paths, bleed/trim boxes and actual four-channel CMYK artwork',async()=>{
  const pdf=await printPDF({settings:exportSettings(geometry,{bleedMm:1,white:'full'}),pixels:pixels()});
- const data=await inspect(pdf,`import sys,json,fitz
+ const data=await inspect(pdf,`import sys,json
+import pymupdf as fitz
 p=fitz.open(stream=sys.stdin.buffer.read(),filetype='pdf');page=p[0];objects='\\n'.join(p.xref_object(i) for i in range(1,p.xref_length()));content=page.read_contents().decode();pix=page.get_pixmap()
 print(json.dumps({'size':[round(page.rect.width*25.4/72,3),round(page.rect.height*25.4/72,3)],'trim':[round(page.trimbox.width*25.4/72,3),round(page.trimbox.height*25.4/72,3)],'white':'/Separation /RDG_WHITE' in objects,'cut':'/Separation /CutContour' in objects,'layers':[x['name'] for x in p.get_ocgs().values()],'left':pix.pixel(100,200),'right':pix.pixel(300,200),'images':len(page.get_images()),'colorSpace':page.get_images()[0][5],'colorBytes':len(p.xref_stream(page.get_images()[0][0])),'firstCMYK':list(p.xref_stream(page.get_images()[0][0])[:4]),'rightCMYK':list(p.xref_stream(page.get_images()[0][0])[75*4:76*4]),'drawings':len(page.get_drawings()),'spotPaint':'/White cs 1 scn' in content,'cutPaint':'/Cut CS 1 SCN' in content}))`);
  assert.deepEqual(data.size,[152,202]);assert.deepEqual(data.trim,[150,200]);assert.equal(data.white,true);assert.equal(data.cut,true);assert.deepEqual(data.layers,['Farbmotiv','RDG_WHITE','CutContour']);assert.ok(data.left[0]>data.left[1]+100&&data.left[0]>data.left[2]+100);assert.ok(data.right[2]>data.right[0]+50&&data.right[2]>data.right[1]);assert.ok(data.drawings>=1);assert.equal(data.colorSpace,'DeviceCMYK');assert.equal(data.colorBytes,150*200*4);assert.deepEqual(data.firstCMYK,[0,255,255,0]);assert.deepEqual(data.rightCMYK,[255,255,0,0]);assert.equal(data.spotPaint,true);assert.equal(data.cutPaint,true);
 });
 test('Mimaki combined is one PDF page with white vector layer, no RDG_WHITE resource',async()=>{
  const pdf=await printPDF({settings:exportSettings(geometry,{profile:'mimaki',white:'motif'}),pixels:pixels()});
- const data=await inspect(pdf,`import sys,json,fitz
+ const data=await inspect(pdf,`import sys,json
+import pymupdf as fitz
 p=fitz.open(stream=sys.stdin.buffer.read(),filetype='pdf');page=p[0];objects='\\n'.join(p.xref_object(i) for i in range(1,p.xref_length()));pix=page.get_pixmap()
 print(json.dumps({'pages':len(p),'rdg':'RDG_WHITE' in objects,'layers':[x['name'] for x in p.get_ocgs().values()],'left':pix.pixel(100,200),'right':pix.pixel(300,200),'whiteVectors':sum(x.get('layer')=='Weissersatz Vektor' for x in page.get_drawings())}))`);
  assert.equal(data.pages,1);assert.equal(data.rdg,false);assert.ok(data.layers.includes('Weissersatz Vektor'));assert.ok(data.whiteVectors>0);assert.ok(data.left[0]>data.left[1]+100&&data.left[0]>data.left[2]+100);assert.ok(data.right[2]>data.right[0]+50&&data.right[2]>data.right[1]);
@@ -35,7 +38,8 @@ print(json.dumps({'pages':len(p),'rdg':'RDG_WHITE' in objects,'layers':[x['name'
 test('separate Mimaki white is vector-only; no-white removes actual white paint',async()=>{
  for(const white of ['motif','none']){
   const pdf=await printPDF({settings:exportSettings(geometry,{profile:'mimaki',white}),pixels:pixels(),kind:'white'});
-  const data=await inspect(pdf,`import sys,json,fitz
+  const data=await inspect(pdf,`import sys,json
+import pymupdf as fitz
 p=fitz.open(stream=sys.stdin.buffer.read(),filetype='pdf');print(json.dumps({'images':len(p[0].get_images()),'drawings':len(p[0].get_drawings())}))`);
   assert.equal(data.images,0);assert.equal(data.drawings,white==='none'?0:1);
  }
@@ -50,7 +54,8 @@ z=zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read()));print(json.dumps({'names'
 test('motif white contains only ink rectangles, not a full-page clipping path',async()=>{
  const px=pixels();px.alpha.fill(0);for(let y=30;y<70;y++)for(let x=40;x<80;x++)px.alpha[y*px.width+x]=255;
  const pdf=await printPDF({settings:exportSettings(geometry,{white:'motif'}),pixels:px});
- const data=await inspect(pdf,`import sys,json,fitz
+ const data=await inspect(pdf,`import sys,json
+import pymupdf as fitz
 p=fitz.open(stream=sys.stdin.buffer.read(),filetype='pdf');layers=p.get_ocgs();white=[i for i,v in layers.items() if v['name']=='RDG_WHITE'];p.set_layer(-1,on=white,off=[i for i in layers if i not in white]);q=fitz.open(stream=p.tobytes(),filetype='pdf');pix=q[0].get_pixmap(alpha=True);content=p[0].read_contents().decode();section=content.split('/OC /L'+str(white[0])+' BDC')[1].split('EMC')[0]
 print(json.dumps({'empty':pix.pixel(20,20)[-1],'ink':pix.pixel(150,140)[-1],'clipping':'W*' in section or ' W ' in section,'rectangles':' re' in section}))`);
  assert.equal(data.empty,0);assert.equal(data.ink,255);assert.equal(data.clipping,false);assert.equal(data.rectangles,true);

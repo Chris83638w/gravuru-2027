@@ -34,7 +34,7 @@ Abnahme: speichern, neu laden und Version wiederherstellen; konkurrierendes Spei
 
 ## G27-05 · Kundenkorrekturen vollständig übernehmen
 
-Keine Designauswahl bei höchstens einem passenden Design; Kategorien/Kollektionen nur ausdrücklich aktiviert. Designs untereinander. Schriftgröße in mm mit Dezimalwerten, runde Farbbuttons, „Ausgewählte Farbe“, Presets und Farbwähler. Kein Druckbutton oder Einstecktiefenhinweis beim Kunden. Mobiles Doppeltippen öffnet direkte Texteingabe. Griffe vor Szene/Sockel. Zoom nur bei brauchbarer Funktion. Beispielbild mit auffälligem, höher platziertem Fotoersatz-Button bleibt sichtbar. Fixe Motive unbeweglich, freigegebene Inhalte/Farben bearbeitbar.
+Keine Designauswahl bei höchstens einem passenden Design; Kategorien/Kollektionen nur ausdrücklich aktiviert. Designs untereinander. Schriftgröße ausschließlich in ganzen mm (aktuelle Nutzerfestlegung), runde Farbbuttons, „Ausgewählte Farbe“, Presets und Farbwähler. Kein Druckbutton oder Einstecktiefenhinweis beim Kunden. Mobiles Doppeltippen öffnet direkte Texteingabe. Griffe vor Szene/Sockel. Zoom nur bei brauchbarer Funktion. Beispielbild mit auffälligem, höher platziertem Fotoersatz-Button bleibt sichtbar. Fixe Motive unbeweglich, freigegebene Inhalte/Farben bearbeitbar.
 
 Abnahme: Desktop und Mobil in der normalen Produktansicht, nicht nur `review=1`. Tastatur/Fokus, Touch, Rückgängig und alle Sockel prüfen. Gestaltung bleibt außerhalb der Verdeckung sichtbar; Einsteckbereich 7/5 mm wird trotzdem bedruckt. Schrift-/Beleuchtungsabweichungen gegenüber Original sind laut vorhandener QA noch offen. Keine fotografische Echtheit ohne sichtbaren Vergleich behaupten.
 

@@ -33,3 +33,9 @@ Quelle: frühere Werkstattübergabe vom 23.09.2026, `application/ui-private/mate
 Material-Datensatz soll Originalreferenz und Herkunft, reale technische Angaben, Oberfläche/Stärke, Vorschauableitungen und zulässige Verfahren getrennt speichern. Referenzbild, neutrale Textur, Formkontur und Kundendesign sind unterschiedliche Rollen. Bereits eingearbeitete Schrift darf nicht als Hintergrund jedes neuen Schilds erscheinen. Referenzen unverändert erhalten; eine abgeleitete leere Oberfläche separat erstellen und sichtbar prüfen.
 
 Der jetzige Fund belegt vorhandene Dateien und die dokumentierten früheren Entscheidungen. Er belegt keine neue Lieferanten-/Materialfreigabe. Keine offenen Leder-/Holzstärken stillschweigend in technische Produktdaten übernehmen. Die bestätigten Maße und Preise des Acrylfoto-Produkts bleiben unabhängig davon gültig.
+
+## Ergänzung 05.10.2026: separate leere Vorschauableitungen
+
+Eiche, Buche, Kirsche und braunes Leder haben jetzt eigene leere Oberflächen. `image_gen` hat aus den vier oben genannten Originalreferenzen einen 2×2-Atlas ohne Schrift/Motive/Rohlingumrandung erzeugt. Originalarchive unverändert. Versionierte Ableitung und Quellen-/Ausgabeprüfsummen: `app/workshop/ui/material-surfaces/provenance.json`. Die SVG-Materialvorschau wählt je Material genau ein Viertel und erhält Außenkontur/Bohrungen; Karten und gesicherte Vorschauen betten die verifizierten Bytes ein. Technische Produktmaße, Stärken und Produktionsdateien bleiben davon unabhängig.
+
+Sichtbar im Cloud-Browser geprüft, kein Herstellerfoto oder Nachweis einer realen Materialcharge. Schiefer, weitere Acrylflächen, Materialtiefe/Szenen bleiben als eigene offene Arbeit erhalten. Ergebnis: [Direktbearbeitung und Materialvorschauen](docs/dashboard-20261004/DASHBOARD-DIREKTBEARBEITUNG-ABSCHLUSS.md).

@@ -9,8 +9,8 @@ function showPreview(){
  $('#show-material').disabled=!hasSurface;$('#show-material').setAttribute('aria-pressed',String(showMaterial));$('#show-contour').setAttribute('aria-pressed',String(!showMaterial));
  $('#preview').classList.toggle('material-canvas',showMaterial);
  $('#preview').innerHTML=showMaterial?(surface.svg||previewValue.designSvg):previewValue?.svg||'';
- $('#surface-note').textContent=showMaterial?surface.note:hasSurface?'Technische Konturprüfung ohne Oberfläche. Über „Materialansicht“ siehst du die vorhandene Edelstahlstruktur.':surface?.note||'Vorschau wird aktualisiert …';
- const picture=$('#preview image[href^="/_runtime/"]');if(picture)picture.addEventListener('error',()=>{surface.svg=null;surface.note='Die Materialstruktur konnte nicht geladen werden. Angezeigt wird die neutrale Formansicht.';showPreview();},{once:true});
+ $('#surface-note').textContent=showMaterial?surface.note:hasSurface?'Technische Konturprüfung ohne Oberfläche. Über „Materialansicht“ siehst du die zugeordnete Oberfläche.':surface?.note||'Vorschau wird aktualisiert …';
+ const picture=$('#preview image');if(picture)picture.addEventListener('error',()=>{surface.svg=null;surface.note='Die Materialstruktur konnte nicht geladen werden. Angezeigt wird die neutrale Formansicht.';showPreview();},{once:true});
  const artwork=$('#preview image[data-design-source]');if(artwork)artwork.addEventListener('error',()=>notice('Die Designvorschau konnte nicht geladen werden. Bitte neu laden; der gespeicherte Stand bleibt erhalten.',true),{once:true});
 }
 function acceptPreview(value){previewValue=value;showPreview();$('#readiness').innerHTML=value.readiness.map(t=>'<li>'+esc(t)+'</li>').join('');}

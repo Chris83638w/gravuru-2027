@@ -1,0 +1,15 @@
+VORSORGLICHE STARTNACHRICHT – aktuell nicht erforderlich: Der Nutzer meldete während der Sicherung, dass der bestehende Chat wieder sichtbar ist. Diese Nachricht nur verwenden, wenn später tatsächlich ein Folgechat benötigt wird.
+
+Du übernimmst Gravuru 2027 für Mikail / Account „mika“. Unser laufender Chat „Gravuru 2027 – Cloud – Mikail“ ist auf dem Laptop verschwunden; sein Link liefert 404. Beginne kein neues Projekt und keine neue allgemeine Migration.
+
+Lies zuerst die mitgegebene MIKAIL-PROJEKTUEBERGABE.md oder direkt im Repository Chris83638w/gravuru-2027 auf docs/chat-recovery-mika-20261005 die Datei docs/chat-recovery-20261005/MIKAIL-PROJEKTUEBERGABE.md. Danach AGENTS.md, den aktuellen Einstieg von START_HERE.md / STATUS.md und docs/dashboard-20261004/DASHBOARD-DIREKTBEARBEITUNG-ABSCHLUSS.md. Aktuellen Remote-Stand prüfen, kein Zurücksetzen.
+
+Gesicherter Produktbranch: task/form-direct-edit-20261005. Produktcommit: 0265ed5ad83c05fd3d7569ccb522b75e8b464e94. Der Rettungsbranch ergänzt nur Übergabedokumente. Die bisherige lokale SHA ef6468cf922316fc1cd7950f1a7d1357dca6c75c hat denselben Baum d08741d8057ba22959d272f96d9f00e3ee2ff235. Kein Wechsel auf main oder die alte 137-Test-Migrationsbasis.
+
+Ausschließlich in der vorhandenen Cloud arbeiten, kein Laptopzugriff, keine neue Umgebung/Serverplanung. Prüfe kurz tatsächlichen Cloud-Ausführungszugriff und Repository-/Checkout-Zuordnung; ein Quellenzugriff allein ist kein Shellnachweis. Fehlende Werkzeuge ehrlich nennen. Bestehende Änderungen erhalten. Keine privaten Daten/Secrets in Git, kein Force-Push, Merge oder Live-Publish.
+
+Stand: Dashboard/Produktverwaltung, Formprodukte, explizite Kundenfelder, Direktbearbeitung, Druck/Gravur, Profile und Ausgabeaufträge, synthetische Warenkorb-/Bestellstrecke, Produktentwurf aus Bestellung. Dokumentierter letzter Lauf 05.10.2026 15:32–15:33 UTC: 226 Tests / 0 Fehler / 0 Skips, Build 76 Ressourcen / 1 Modell. Keine frische Prüfung dieses neuen Chats daraus machen.
+
+Weiter am vorhandenen Neuaufbau arbeiten, funktionierende Teile wiederverwenden. Unabhängig mögliche Restarbeit: zusätzliche Motive/neue Felder und weitere Formprodukt-Parität. Echte Shopify- und Maschinenabnahme bleiben offen. Ich habe die verlangte Shopify-Adresse bereits in einem anderen Chat geschickt; falls du sie nicht lesen kannst, fehlt hier nur diese konkrete Adresse, kein Passwort. Nicht wieder von null anfangen oder private alte Datenbanken ohne Bedarf zum Hindernis machen.
+
+Bestätige zuerst knapp: gelesener Sicherungsstand, echter Cloud-/Checkout-Zugriff, tatsächlich nächster Arbeitsschritt. Dann eigenständig fortfahren, bis eine echte Entscheidung oder Zugangsvoraussetzung fehlt. Die aktuelle Übergabe enthält die verbindlichen Regeln für 7-mm-Sockelverdeckung, Design/Motiv, Backend-Rechte, ganze Schrift-mm, PDF/CMYK/300dpi, motivbezogenes Weiß, optionalen Randüberdruck und geschützte Downloads.

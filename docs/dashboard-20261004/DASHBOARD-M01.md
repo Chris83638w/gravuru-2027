@@ -1,3 +1,38 @@
+# M01-Produktübersicht – überprüfte Fortsetzung, 05.10.2026
+
+Branch `task/dashboard-m01-overview-20261005`, Ausgangscommit `8227eb7db836de5e30779e42fdd7bd36cb1a68f4` (M02). Ausführung in der bestehenden bestätigten Cloud; Kontoname mika bleibt Nutzerangabe. Keine neue Umgebung, kein Laptopzugriff.
+
+## Tatsächlich umgesetzt
+
+- Große fotografische Karten nach M01, aus der gespeicherten Produktrevision: vorhandene Originalszene, Foto, Texte und Designrenderer. Für das Querformat werden ausschließlich die leeren fotografischen Seitenränder der Szene verlängert. Platte und Gestaltung behalten ihre Proportionen und bleiben vollständig sichtbar. Keine ausgedachten Holz-/Schieferprodukte aus dem Referenzmockup.
+- Abgebildete Sockelausführung klar beschriftet: Eiche, sofern im Produkt erlaubt, sonst gespeicherte Standardauswahl. Diese reine Abbildung verändert weder Kundenstandard noch Preis, Design oder Historie. Historische Karten verwenden weiter genau ihre Revision.
+- Kompakte Angaben mit allen tatsächlich freigegebenen Größen, Konfigurations-ID, Designanzahl, Stand und Status. Suche nach Name/ID, Master-/Stapelzugang und Kundenansicht bleiben angebunden. Shopify ist ausdrücklich ausstehend; keine vorgetäuschten Bindungen oder Suche nach nicht vorhandenen Shopify-IDs.
+- Mehrmenü: Bearbeiten, Kopieren, Archivieren/Wiederaktivieren. Die vorhandene Kopierfunktion kann im Dialog auch eine neue Mastervorlage erzeugen.
+- Mehrfachauswahl und „Sichtbare auswählen“ mit Bestätigungsdialog und Liste der betroffenen Namen/Stände. Archivierung je Produkt über bestehende CSRF- und revisionsgeschützte API. Konflikte werden pro Produkt gemeldet; andere erfolgreiche Aktionen bleiben erhalten. Keine atomare Gruppenänderung behauptet, keine automatische Wiederholung mit fremder neuer Revision.
+- Filterwechsel nimmt versteckte Produkte aus der Auswahl. Nach Aktualisieren werden zwischenzeitlich geänderte Produkte abgewählt statt still auf die neue Revision umzuschalten. Tastatur/Escape, mobile Auswahl, leere Liste und Bildladefehler berücksichtigt.
+
+## Tatsächlich geprüft
+
+`npm test`: **176 Tests bestanden, 0 Fehler, 0 Skips**, 05.10.2026. Neuer HTTP-Test `app/workshop/product-overview.test.mjs`: vollständige Größen, erlaubte Sockel, historische Revision, keine Schreibnebenwirkung, separater Karten-/Portraitmodus. Der M02-Vorschautest bleibt bestanden. `npm run build`: **76 Ressourcen, 1 Modell**, Editor 461440 Bytes.
+
+Chromium/Playwright in derselben Cloud, geschützter Loopback-Port 8974; synthetische In-Memory-Daten für Werkstatt, Profile und Designassets. Tatsächlicher Browserablauf: Suche nach Name und vollständiger ID; Filter/Leerliste; Auswahl; Archivieren/Zurückholen; zweiter API-Schreiber ändert einen ausgewählten Stand bei geöffnetem Dialog (409 verhindert Überschreiben); Abbrechen; Tastatur/Escape; Kopie mit neuer ID und unveränderten Designs; geänderter Stand wird bei Refresh abgewählt; Masterzugang; Mobil 390 × 844; Bildladefehler bleibt bearbeitbar. Keine JavaScript-Seitenfehler. Keine privaten Datensätze verwendet.
+
+![M01 in der Cloud, synthetische Produkte](dashboard-m01-overview.png)
+
+[Mobilansicht](dashboard-m01-overview-mobile.png) · [Mobile Mehrfachauswahl](dashboard-m01-selection-mobile.png) · [Visueller Vergleich](../../design-qa.md)
+
+## Grenzen und nächster Schritt
+
+Die aktuelle Vorschau läuft ausschließlich in der bestehenden Cloud-Entwicklungsaufgabe, nicht unter dem privaten Muster-Link. Keine neue Site oder Veröffentlichung; Muster Acrylglasbild unverändert. Dieser Lauf schreibt keine privaten Datenbanken oder Server. Die In-Memory-Prüfprodukte sind keine dauerhafte Werkstattablage.
+
+M01-Struktur und Aktionen mit vorhandener Acrylszene geprüft, nicht bildidentisch zu den generierten Produktfotos im Mockup und keine Gesamtfreigabe der App. Bestellungen, echte Shopify-Bindungen, weitere Material-/Formadapter und RIP-/Maschinenabnahme bleiben offen. M02 ist aus dem Ausgangscommit erhalten.
+
+**Genau nächster Umsetzungsschritt:** In M02 unter „Optionen & Preise“ die verfügbaren Acrylgrößen, Sockel und jeweilige Startauswahl aus dem bestehenden Variantenmodell bearbeitbar machen; derzeit kann dort nur die Vorschauausführung gewählt und das Preisprofil geändert werden. Gemeinsame Modellprüfung/Revisionen nutzen, keinen zweiten Variantenstand anlegen.
+
+---
+
+## Historischer erster M01-Durchlauf
+
 > Einordnung nach dem visuellen Abgleich vom 05.10.2026: Die technischen Prüfungen sind gültig, die M01-Produktkarten entsprechen jedoch noch nicht vollständig der ausgewählten fotografischen Referenz. M02 wurde anschließend als eigenes Paket angebunden: [aktueller Stand](DASHBOARD-M02.md).
 
 # Dashboard: Produktübersicht M01

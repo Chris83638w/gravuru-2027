@@ -1,3 +1,4 @@
+import {productCards,installOverview} from './product-overview-ui.mjs';
 import {installProductEditor} from './product-editor-ui.mjs';
 import {installCustomerFields} from './customer-fields-ui.mjs';
 import {installDesignImport,importedDesignInfo} from './design-import-ui.mjs';
@@ -6,6 +7,7 @@ const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
 const state={record:null,draft:null,products:[],dirty:false,busy:false,csrf:null,tab:'designs',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],profiles:[],profileSettings:null};
+let overview;
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
 const pathValue=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],object);
@@ -38,7 +40,7 @@ function syncControls(){
  $('#save-indicator').dataset.dirty=String(state.dirty);
  $('#save-product').textContent=state.busy?'Wird gespeichert …':'Änderungen speichern';
  $('#print-export-link').hidden=state.dirty||!state.record;
- productEditor.sync();
+ productEditor.sync();overview?.sync();
  $('#preview-note').textContent='Gespeicherte Produktdaten mit aktuellen Profilzuordnungen.'+(state.dirty?' Deine ungespeicherten Änderungen sind noch nicht enthalten.':'');
 }
 function setBusy(value){state.busy=value;syncControls();}
@@ -60,12 +62,9 @@ function renderList(){
  $('#overview-scope').textContent=state.view==='masters'?'· wiederverwendbare Vorlagen':'';
  for(const b of $$('[data-view]')){b.classList.toggle('active',b.dataset.view===state.view);b.setAttribute('aria-pressed',String(b.dataset.view===state.view));}
  for(const b of $$('[data-filter]')){const key=b.dataset.filter;b.setAttribute('aria-pressed',String(key===state.filter));b.querySelector('span').textContent='('+ (key==='archived'?scope.length-active.length:key==='all'?active.length:active.filter(p=>p.overview?.method===key).length)+')';}
- if(!visible.length){$('#product-list').innerHTML='<div class="empty-state"><strong>'+($('#search').value?'Keine passende Konfiguration.':state.filter==='archived'?'Das Archiv ist leer.':'Hier ist Platz für deine nächste Idee.')+'</strong><p>'+($('#search').value?'Versuche einen anderen Namen oder eine Konfigurations-ID.':'Wähle einen anderen Filter oder lege eine Konfiguration an.')+'</p><button data-action="new">Konfiguration anlegen</button></div>';syncControls();return;}
- $('#product-list').innerHTML=visible.map(product=>{
-  const info=product.overview||{},method=info.method==='print'?'Druck':info.method==='engraving'?'Gravur':'Verfahren nicht hinterlegt';
-  return '<article class="product-card"><button class="card-image" data-product-id="'+escape(product.id)+'" aria-label="'+escape(product.name)+' bearbeiten"><img loading="lazy" src="/api/workshop/products/'+encodeURIComponent(product.id)+'/preview.svg?revision='+product.revision+'" alt="Designvorschau: '+escape(info.defaultDesignName)+'"><span class="image-error" hidden>Vorschau nicht verfügbar · Produkt öffnen</span></button><div class="card-content"><div class="card-heading"><h3>'+escape(product.name)+'</h3><button data-product-id="'+escape(product.id)+'">Bearbeiten</button></div><div class="card-status">'+badge(product)+'<small>Stand '+escape(product.revision)+'</small></div><dl><div><dt>Konfiguration</dt><dd><code>'+escape(product.id)+'</code></dd></div><div><dt>Verfahren</dt><dd>'+method+'</dd></div><div><dt>Format</dt><dd>'+escape(info.widthMm)+' × '+escape(info.heightMm)+' mm</dd></div><div><dt>Designs</dt><dd>'+escape(info.designCount)+'</dd></div></dl><a class="card-preview-link" href="/?'+new URLSearchParams({configuration:product.id,revision:product.revision})+'" target="_blank" rel="noopener">Kundenansicht öffnen</a></div></article>';
- }).join('');
- for(const img of $$('#product-list img'))img.addEventListener('error',()=>{img.hidden=true;img.nextElementSibling.hidden=false;});
+ if(!visible.length){$('#product-list').innerHTML='<div class="empty-state"><strong>'+($('#search').value?'Keine passende Konfiguration.':state.filter==='archived'?'Das Archiv ist leer.':'Hier ist Platz für deine nächste Idee.')+'</strong><p>'+($('#search').value?'Versuche einen anderen Namen oder eine Konfigurations-ID.':'Wähle einen anderen Filter oder lege eine Konfiguration an.')+'</p><button data-action="new">Konfiguration anlegen</button></div>';overview?.rendered([]);syncControls();return;}
+ $('#product-list').innerHTML=productCards(visible,badge);
+ overview?.rendered(visible);
  syncControls();
 }
 async function loadList(){
@@ -74,6 +73,7 @@ async function loadList(){
  state.products=data.products||[];renderList();
 }
 async function showOverview(view=state.view){
+ if(state.busy)return false;
  if(!await canDiscard())return false;
  state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;document.body.classList.remove('editing-product');renderList();history.replaceState(null,'','/werkstatt/?view='+view);return true;
 }
@@ -276,7 +276,7 @@ $('#product-form').addEventListener('change',event=>{
 });
 document.addEventListener('click',async event=>{
  const view=event.target.closest('[data-view]');if(view){await showOverview(view.dataset.view);return;}
- const filter=event.target.closest('[data-filter]');if(filter){state.filter=filter.dataset.filter;renderList();return;}
+ const filter=event.target.closest('[data-filter]');if(filter){if(state.busy)return;state.filter=filter.dataset.filter;renderList();return;}
  const tab=event.target.closest('[data-tab]');if(tab){showTab(tab.dataset.tab);return;}
  const designAction=event.target.closest('[data-design-action]');if(designAction){if(!designAction.disabled)changeDesign(designAction.dataset.designAction,designAction.dataset.designId);return;}
  const product=event.target.closest('[data-product-id]');
@@ -305,6 +305,7 @@ $('.editor-tabs').addEventListener('keydown',event=>{
  const tabs=$$('.editor-tabs [data-tab]'),index=tabs.indexOf(event.target),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab,true);
 });
 const productEditor=installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights});
+overview=installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate});
 const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 let searchTimer;

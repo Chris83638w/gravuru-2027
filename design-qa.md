@@ -1,3 +1,34 @@
+# Visuelle Prüfung – M01-Produktübersicht, 05.10.2026
+
+Geltungsbereich: M01-Übersicht und Verwaltungsaktionen für das vorhandene Acrylmodell. Referenz `docs/dashboard-20261004/referenzen/M01.png` und fertige Aufnahme `docs/dashboard-20261004/dashboard-m01-overview.png`, jeweils 1487 × 1058 Pixel und deviceScaleFactor 1. Beide Bilder nach der letzten Korrektur gemeinsam geöffnet und betrachtet. Ergänzend `dashboard-m01-overview-mobile.png` (390 × 844 CSS-Viewport, ganze Seite) und `dashboard-m01-selection-mobile.png`.
+
+## Vergleich und Korrekturen
+
+- P1 Ausgangsstand: kleines Portrait mit großen leeren Seitenflächen. Jetzt breite fotografische Komposition aus der echten vorhandenen Szene, vollständige Platte und vorhandener Sockel. Keine Generierung neuer Produktgestaltungen oder Austausch der Originalarbeit. Materialmischung und sechs Beispiele im M01-Mockup sind keine gespeicherten Produkte; drei ausdrücklich synthetische Acrylprodukte zeigen den tatsächlichen Adapterumfang.
+- P2 erste Umsetzung: Seitenstreifen/Tablettübergang versetzt, Suchsymbol über dem Feld. Korrigiert: nur äußerster leerer Szenenrand verlängert, unveränderte Mittelkomposition, keine vertikale Verschiebung; Suchsymbol korrekt im Feld. Platte und Sockel jetzt vollständig in der Kartenkomposition enthalten.
+- P2 fehlende Kartenaktionen: Mehrmenü, beschriftete Checkboxen, sichtbare Auswahlleiste und Archivbestätigung funktionieren über reale vorhandene API. Die Bestellstrecke bleibt sichtbar als „folgt“ gekennzeichnet.
+- P2 Kopf zu hoch: Navigation und oberer Abstand an M01 angeglichen. Zusätzliche Zeile für sichtbare Auswahl und Anzahl bewusst erhalten. Aktionsicons aus Tabler 3.35.0 (MIT), passend zur bereits eingesetzten M02-Bibliothek.
+
+## Fünf Prüfflächen
+
+- Typografie: bestehender Schriftstack; 32-px-Seitentitel, 18-px-Kartentitel, gut getrennte Detailzeilen. Stabile lange technische IDs werden nicht durch ausgedachte CFG-Nummern ersetzt; vollständiger Wert im Titelattribut und in der Bearbeitung kopierbar.
+- Layout: drei gleich breite Karten, 16-px-Abstände, Bild dominiert; kleinere Displays zwei/eine Spalte. Mobil 390 px ohne horizontalen Überlauf. Titel dürfen umbrechen; Aktionen bleiben bedienbar.
+- Farben: Dashboard-Grün aus ausgewähltem M01/M02, helle neutrale Flächen. Kundenkonfigurator-Farben nicht verändert. Auswahl und Fokus erkennbar.
+- Bilder: gespeicherte Revision, echter Renderer, Originalfoto/-design/-sockel. Querformat durch Verlängerung leerer Bildränder. Landschaftsfotos des generierten Mockups sind weiterhin keine gelieferten Produktionsassets. Keine behauptete Pixelgleichheit; fachliche Originaltreue hat gemäß Nutzer Vorrang.
+- Inhalt: echte gespeicherte Größen, Status, Stand und Designanzahl; Beispielnamen klar als Prüfprodukte. Shopify und Bestellungen werden nicht als angebunden ausgegeben. Fotoabbildung ist von Kundenstandard getrennt beschriftet.
+
+## Bedienprüfung und Grenzen
+
+Cloud-Chromium/Playwright mit In-Memory-Prüfbestand, einschließlich echter konkurrierender API-Änderung, Archivierung/Zurückholen, Kopieren, Suche, Filter, Auswahl, Tastatur, Mobil und Bildfehler. Keine Seitenfehler. Kein natives In-App-Browsersteuerungswerkzeug oder öffentliche Dashboard-URL behauptet; kein Sites-Publish. Vollständige Screenreader-, Bestell- oder Fertigungsabnahme ist nicht Teil dieses Pakets.
+
+P3: Die breite Szene bleibt optisch schlicht, da bestehende Originalressourcen weiterverwendet werden. Eine neue fotografische Umgebung wäre eine separate Gestaltungsauswahl. Persönliche Nutzerabnahme der neuen Karten und mobilen Anordnung bleibt ausstehend.
+
+final result: passed
+
+---
+
+## Vorherige M02-Prüfung (weiterhin gültig für ihren Geltungsbereich)
+
 # Visuelle Prüfung – M02 Produktbearbeitung, 05.10.2026
 
 Geltungsbereich: ausgewählte M02-Bearbeitungsansicht mit bestehender Produktszene und den nachträglich vereinbarten Kundenrechten. Keine Abnahme der gesamten Werkstatt oder von M01.

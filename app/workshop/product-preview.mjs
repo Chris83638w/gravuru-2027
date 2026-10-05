@@ -1,18 +1,24 @@
-import {acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
+import {ACRYLIC_SIZES,acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
 import {baseAnchors} from '../configurator/variant-m/acrylic-base-anchors.mjs';
 import fs from 'node:fs';
 import {studioSvg} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 
+// Illustration choice only; never writes a product option or customer default.
+export function overviewOptions(config){
+ return Object.fromEntries((config.profile.optionGroups||[]).map(g=>[g.id,g.id==='base'&&g.values.some(v=>v.id==='eiche')?'eiche':g.defaultValueId||g.values[0]?.id]));
+}
 export function productOverview(document){
- const p=document.config.profile;
- return {method:getProcessingProfile(p).method,material:p.material.kind,widthMm:p.geometry.width,heightMm:p.geometry.height,designCount:p.designs.length,defaultDesignName:(p.designs.find(d=>d.id===p.defaultDesignId)||p.designs[0])?.name||''};
+ const p=document.config.profile,options=overviewOptions(document.config);
+ const sizes=document.config.acrylic?(p.optionGroups.find(g=>g.id==='size')?.values||[]).map(v=>({widthMm:ACRYLIC_SIZES[v.id].width,heightMm:ACRYLIC_SIZES[v.id].height})):[{widthMm:p.geometry.width,heightMm:p.geometry.height}];
+ const previewLabel=p.optionGroups?.find(g=>g.id==='base')?.values.find(v=>v.id===options.base)?.label||'';
+ return {sizes,previewLabel,method:getProcessingProfile(p).method,material:p.material.kind,widthMm:p.geometry.width,heightMm:p.geometry.height,designCount:p.designs.length,defaultDesignName:(p.designs.find(d=>d.id===p.defaultDesignId)||p.designs[0])?.name||''};
 }
 const image=name=>'data:image/jpeg;base64,'+fs.readFileSync(new URL('./preview-assets/'+name,import.meta.url)).toString('base64');
 let backdrop,example;
 // Reuse the actual saved design, shared renderer and existing acrylic scene.
 // No customer uploads or scene are added to the saved product or print output.
-export function productPreview(model,{options={},examples=[],designId}={}){
+export function productPreview(model,{options={},examples=[],designId,layout='portrait'}={}){
  const c=model.universal,p=c.profile,d=structuredClone(p.designs.find(d=>d.id===(designId||p.defaultDesignId))||p.designs[0]);
  examples=examples.filter(e=>e.designId===d.id);
  const media=[];
@@ -36,5 +42,12 @@ export function productPreview(model,{options={},examples=[],designId}={}){
   const layer=clip=>'<g clip-path="url(#editor-base-'+clip+')"><image href="'+url+'" x="'+x+'" y="'+y+'" width="'+a.width*scale+'" height="'+a.height*scale+'"/></g>';
   back='<defs><clipPath id="editor-base-back"><rect x="0" y="'+(y+(a.bodyTop-8)*scale)+'" width="1086" height="'+(a.slot-a.bodyTop+8)*scale+'"/></clipPath><clipPath id="editor-base-front"><rect x="0" y="'+slot+'" width="1086" height="1448"/></clipPath></defs>'+layer('back');front=layer('front');
  }
- return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1086 1448"><image href="'+backdrop+'" width="1086" height="1448"/>'+back+svg+front+'</svg>';
+ const composition='<image href="'+backdrop+'" width="1086" height="1448"/>'+back+svg+front;
+ if(layout==='card'){
+  // Extend only the empty photographic edge strips of the existing scene.
+  // The complete plate, artwork and base keep their original proportions.
+  const edge=(x,width,left)=>'<svg x="'+x+'" width="'+width+'" height="1448" viewBox="'+left+' 0 1 1448" preserveAspectRatio="none"><image href="'+backdrop+'" width="1086" height="1448"/></svg>';
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 1448">'+edge(0,657,0)+edge(1743,657,1085)+'<g transform="translate(657 0)">'+composition+'</g></svg>';
+ }
+ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1086 1448">'+composition+'</svg>';
 }

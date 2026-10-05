@@ -26,7 +26,7 @@
     <main id="main">
       <header class="page-heading">
         <div><p class="eyebrow">DEINE WERKSTATT</p><h1 id="overview-title">Deine Konfi-Produkte</h1><p>Verwalte deine personalisierten Gravur- und Druckprodukte.</p></div>
-        <div class="heading-actions"><button data-action="from-master">Aus Master erstellen</button><a class="button" href="/werkstatt/serien/">Stapelimport</a><button class="primary" data-action="new" id="new-product">Produkt anlegen</button></div>
+        <div class="heading-actions"><button data-action="from-master"><img class="overview-icon" src="/workshop-ui/editor-icons/files.svg" alt="">Aus Master erstellen</button><a class="button" href="/werkstatt/serien/"><img class="overview-icon" src="/workshop-ui/editor-icons/upload.svg" alt="">Stapelimport</a><button class="primary" data-action="new" id="new-product"><img class="overview-icon" src="/workshop-ui/editor-icons/plus.svg" alt="">Produkt anlegen</button></div>
       </header>
       <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
       <div class="conflict-banner" id="conflict-banner" role="alert" hidden>
@@ -34,12 +34,14 @@
         <div class="button-row"><button data-action="save-separate">Als neue Konfiguration sichern</button><button data-action="reload-record">Aktuellen Stand laden …</button></div>
       </div>
       <section class="overview" aria-label="Konfigurationen">
-        <p class="overview-summary"><span id="product-count">–</span> Konfigurationen <span id="overview-scope"></span></p>
+
         <div class="toolbar">
-          <label class="search"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Name oder Konfigurations-ID suchen" aria-label="Konfigurationen suchen"></label>
+          <label class="search"><img class="overview-icon" src="/workshop-ui/editor-icons/search.svg" alt=""><input type="search" id="search" placeholder="Name oder Konfigurations-ID suchen" aria-label="Konfigurationen suchen"></label>
           <div class="overview-filters" role="group" aria-label="Produkte filtern"><button data-filter="all" aria-pressed="true">Alle <span></span></button><button data-filter="print" aria-pressed="false">Druck <span></span></button><button data-filter="engraving" aria-pressed="false">Gravur <span></span></button><button data-filter="archived" aria-pressed="false">Archiv <span></span></button></div>
-          <button class="quiet" data-action="refresh" aria-label="Konfigurationen aktualisieren">↻ Aktualisieren</button>
+          <button class="quiet" data-action="refresh" aria-label="Konfigurationen aktualisieren"><img class="overview-icon" src="/workshop-ui/editor-icons/refresh.svg" alt="">Aktualisieren</button>
         </div>
+        <div class="overview-summary"><label><input type="checkbox" id="select-visible"> Sichtbare auswählen</label><span><span id="product-count">–</span> Konfigurationen <span id="overview-scope"></span></span></div>
+        <div id="selection-bar" class="selection-bar" hidden><strong id="selection-count"></strong><button id="archive-selection" type="button">Auswahl archivieren</button><button id="clear-selection" type="button">Auswahl aufheben</button></div>
         <div class="product-list" id="product-list" aria-live="polite"><p class="empty-state">Konfigurationen werden geladen …</p></div>
       </section>
       <section class="editor-section" id="editor-section" aria-label="Konfiguration bearbeiten" hidden>
@@ -91,6 +93,9 @@
       <footer class="page-footer">Gravuru 2027 <span>·</span> Produktverwaltung im Aufbau. SVG-/PDF-Designimport ist verfügbar. Kundenfelder, Druckexport und Shopify-Anbindung werden weiter ausgebaut.</footer>
     </main>
   </div>
+  <dialog id="overview-archive-dialog" aria-labelledby="overview-archive-title" aria-describedby="overview-archive-description">
+    <form id="overview-archive-form"><h2 id="overview-archive-title"></h2><p id="overview-archive-description"></p><ul id="overview-archive-list"></ul><div class="button-row"><button type="button" id="cancel-overview-archive">Abbrechen</button><button class="primary" type="submit" id="confirm-overview-archive">Archivieren</button></div></form>
+  </dialog>
   <dialog id="create-dialog" aria-labelledby="create-title">
     <form id="create-form">
       <header class="dialog-header"><div><p class="eyebrow" id="create-kicker">NEU ANLEGEN</p><h2 id="create-title">Eine neue Konfiguration.</h2></div><button type="button" class="icon-button" data-action="close-dialog" aria-label="Fenster schließen">×</button></header>

@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {once} from 'node:events';
+import {build} from '../configurator/variant-m/build.mjs';
+import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {createWorkshop} from './http.mjs';
+import {overviewOptions,productOverview} from './product-preview.mjs';
+
+test('M01 card uses the saved revision and allowed sizes without changing customer defaults or history',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-m01-'));build({outputDirectory:dir});
+ const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json'),'utf8'))[0];
+ const workshop=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy});
+ const server=createPreviewServer({outputDirectory:dir,workshop});server.listen(0,'127.0.0.1');await once(server,'listening');
+ t.after(async()=>{await new Promise(r=>server.close(r));workshop.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const base=`http://127.0.0.1:${server.address().port}`,initial=workshop.repository.get(workshop.defaultId);
+ const options=overviewOptions(initial.document.config);
+ assert.equal(options.base,'eiche');
+ assert.equal(initial.document.config.profile.optionGroups.find(g=>g.id==='base').defaultValueId,'none');
+ const url=base+`/api/workshop/products/${initial.id}/preview.svg?revision=${initial.revision}`;
+ const original=await fetch(url+'&layout=card').then(r=>r.text());
+ assert.match(original,/viewBox="0 0 2400 1448"/);assert.match(original,/editor-base-front/);
+ const portrait=await fetch(url).then(r=>r.text());assert.match(portrait,/viewBox="0 0 1086 1448"/);assert.doesNotMatch(portrait,/editor-base-front/);
+ assert.deepEqual(workshop.repository.get(initial.id),initial);assert.equal(workshop.repository.history(initial.id).length,1);
+ const draft=structuredClone(initial.document);
+ draft.config.profile.optionGroups.find(g=>g.id==='size').values=draft.config.profile.optionGroups.find(g=>g.id==='size').values.filter(v=>v.id==='small');
+ draft.config.profile.optionGroups.find(g=>g.id==='base').values=draft.config.profile.optionGroups.find(g=>g.id==='base').values.filter(v=>v.id==='none');
+ const next=workshop.repository.save(initial.id,draft,initial.revision);
+ assert.deepEqual(productOverview(next.document).sizes,[{widthMm:150,heightMm:200}]);assert.equal(overviewOptions(next.document.config).base,'none');
+ const list=await fetch(base+'/api/workshop/products').then(r=>r.json());assert.deepEqual(list.products[0].overview.sizes,[{widthMm:150,heightMm:200}]);assert.equal(list.products[0].overview.previewLabel,'Ohne Sockel');
+ assert.equal(await fetch(url+'&layout=card').then(r=>r.text()),original);
+ const current=await fetch(base+`/api/workshop/products/${initial.id}/preview.svg?revision=${next.revision}&layout=card`).then(r=>r.text());assert.doesNotMatch(current,/editor-base-front/);
+ assert.equal(workshop.repository.history(initial.id).length,2);
+ assert.equal((await fetch(base+'/workshop-ui/product-overview-ui.mjs')).status,200);
+});

@@ -1,4 +1,4 @@
-import {productOverview,productPreview} from './product-preview.mjs';
+import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
 import {randomBytes,timingSafeEqual} from 'node:crypto';
 import fs from 'node:fs';
@@ -85,7 +85,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
       const cardMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/preview\.svg$/);
       if(cardMatch&&method==='GET'){
         const m=model(cardMatch[1],url.searchParams.get('revision')),examples=(m.universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
-        const bytes=Buffer.from(productPreview(m,{designId:url.searchParams.get('designId'),examples}));
+        const bytes=Buffer.from(productPreview(m,{designId:url.searchParams.get('designId'),examples,...(url.searchParams.get('layout')==='card'?{layout:'card',options:overviewOptions(m.universal)}:{})}));
         res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}).end(bytes);return;
       }
       const preparedMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/prepared-design\/(preview|apply)$/);

@@ -1,3 +1,4 @@
+import {createContourStore} from './contours.mjs';
 import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
 import {randomBytes,timingSafeEqual} from 'node:crypto';
@@ -25,10 +26,11 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Local operator surface only. This does not provide hosted merchant authentication. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter}){
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
   const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter});
+  const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter});
   const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);profiles.resolve(document);assets.validateDocument(document);return document;},snapshotMetadata:document=>({profiles:profiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
@@ -57,6 +59,21 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
       if(!['GET','POST','PATCH'].includes(method))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});
+      if(pathname==='/api/workshop/contours'){
+        if(method==='GET')return json(res,200,{contours:contours.list()});
+        if(method==='POST')return json(res,201,await contours.import(await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+4096)));
+        fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      }
+      const contourMatch=pathname.match(/^\/api\/workshop\/contours\/([a-f0-9]{64})(?:\/(preview\.svg|original))?$/);
+      if(contourMatch&&method==='GET'){
+        const record=contours.get(contourMatch[1]);
+        if(!contourMatch[2])return json(res,200,record);
+        const original=contourMatch[2]==='original',bytes=original?contours.original(record.id):contours.preview(record.id);
+        res.writeHead(200,{'Content-Type':original?(record.format==='pdf'?'application/pdf':'image/svg+xml'):'image/svg+xml',
+          'Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff',
+          'Content-Security-Policy':"default-src 'none'; sandbox",
+          ...(original?{'Content-Disposition':`attachment; filename="Gravuru-Kontur-${record.sourceSha256.slice(0,12)}.${record.format}"`}:{})}).end(bytes);return;
+      }
       if(pathname==='/api/workshop/design-assets/import'&&method==='POST'){
         const data=await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+4096);
         return json(res,201,await assets.import({name:data.name,bytes:data.bytes,page:data.page}));
@@ -183,5 +200,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter}){
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {repository,profiles,assets,handle,model,defaultId,close:()=>{repository.close();profiles.close();assets.close();}};
+  return {repository,profiles,assets,contours,handle,model,defaultId,close:()=>{repository.close();profiles.close();assets.close();contours.close();}};
 }

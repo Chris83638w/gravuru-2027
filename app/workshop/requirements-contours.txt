@@ -1,0 +1,4 @@
+# Separate physical-contour import. Topology validation does not alter the stored curves.
+PyMuPDF==1.28.2
+svgpathtools==1.7.2
+shapely==2.1.2

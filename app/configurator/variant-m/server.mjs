@@ -37,10 +37,10 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop}={}) {
         '/assistant.js':[outputDirectory,'assistant.js'],
         '/api/guides':[outputDirectory,'guides.json']
       };
-      if(workshop){fixed['/werkstatt']=[path.join(ROOT,'workshop/ui'),'index.html'];fixed['/werkstatt/']=fixed['/werkstatt'];for(const [route,file] of [['serien','batch.html'],['profile','profiles.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}}
+      if(workshop){fixed['/werkstatt']=[path.join(ROOT,'workshop/ui'),'index.html'];fixed['/werkstatt/']=fixed['/werkstatt'];for(const [route,file] of [['serien','batch.html'],['profile','profiles.html'],['konturen','contours.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}}
       if(fixed[pathname])[base,relative]=fixed[pathname];
       else if(workshop&&/^\/workshop-ui\/editor-icons\/[a-z0-9-]+\.svg$/.test(pathname)){base=path.join(ROOT,'workshop/ui/editor-icons');relative=pathname.split('/').pop();}
-      else if(workshop&&/^\/workshop-ui\/(app\.mjs|style\.css|dashboard\.css|editor\.css|product-editor-ui\.mjs|product-overview-ui\.mjs|product-options-ui\.mjs|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
+      else if(workshop&&/^\/workshop-ui\/(app\.mjs|style\.css|dashboard\.css|editor\.css|product-editor-ui\.mjs|product-overview-ui\.mjs|product-options-ui\.mjs|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|contours-ui\.mjs|contours\.css|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
       else if(/^\/acrylic-assets\/[a-z0-9-]+\.png$/.test(pathname)){
         base=path.join(ROOT,'designs/acrylic-unser-anfang');relative=pathname.split('/').pop();
       } else {

@@ -1,3 +1,11 @@
+## Aktuell: Shopify-Entwurfsübertragung mit Wiederholschutz – 06.10.2026
+
+Branch **`task/shop-draft-transfer-20261006`**, GitHub-Basis **`88d1536dc1411ee4ea9f4633a9fe4b00089834cb`**. Die Produktvorbereitung kann bei ausdrücklich eingerichteter Händleranbindung Titel, SEO und alle gespeicherten Grundausführungen als Shopify-Entwurf übertragen. Private Übertragungsaufzeichnung verhindert doppelte Anlage; nach unklaren Antworten erfolgt nur ein lesender Abgleich. Geprüfte Shopify-Varianten werden den unveränderten lokalen Preisen/Optionen zugeordnet. Neue Schaltflächen in der bestehenden Produktvorbereitung; standardmäßig deaktiviert.
+
+**58 gezielte Prüfungen bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Beide GraphQL-Operationen gegen das Shopify-Schema validiert. Shopantworten waren synthetisch; **keine echte Produktanlage oder visuelle Abnahme**. [Vertrag, Nachweise und Grenzen](docs/dashboard-20261004/SHOP-ENTWURFSUEBERTRAGUNG-20261006.md).
+
+Noch offen: sicherer Runtime-Appzugang und Host-/Kundenkontoanschluss, Produktbilder und Aktualisierung bestehender Shopprodukte, individuelle Aufpreise, Drive-/KI-Anwendungsdienste und reale Endabnahme. Die Domainfreigabe allein liefert keine App-Anmeldung. Keine neue Umgebung oder Serverplanung. Folgende Einträge sind historische Zwischenstände; insbesondere deren Aussage „Produktübertragung nicht implementiert“ ist für den oben beschriebenen Teilumfang überholt.
+
 ## Aktuell: Anmeldung und kaufgebundene Testdateien integriert – 06.10.2026
 
 Branch **`task/integrated-finish-20261006`**, GitHub-Basis **`548a69e0e4e1e1baeedf3ad03655bbff1b209852`**. Getrennte Shopify-Händler-/Kunden-Sitzungsprüfung, private Kundenbindung aus signierten Testzahlungen, widerrufbare Dateifreigabe mit festem SHA und Kundenkonto-Dateiliste/Download. Erstattung/Storno/fremdes Konto/geänderte Datei sperren den Zugriff. Der bestehende Bestellbildschirm enthält Ausgabe-/Formatwahl und Widerruf; Händler-Requests nutzen frische App-Bridge-Token, wenn der Host sie bereitstellt. Standardvorschau weiterhin ohne reale Shopify-Anbindung.

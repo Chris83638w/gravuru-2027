@@ -13,6 +13,7 @@ import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './
 import {prepareCartRequest} from './storefront-cart.mjs';
 import {createCartHttpGate} from './cart-http-gate.mjs';
 import {createShopifySessionVerifier} from './shopify-session.mjs';
+import {createShopDraftTransfer,createShopDraftTransport,shopDraftRequest} from './shop-draft-transfer.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createFormEngravingProof,formEngravingSettings,formEngravingKey,FORM_ENGRAVING_RECIPE} from './form-engraving-proof.mjs';
 import {createExportWorker} from './export-jobs.mjs';
@@ -56,9 +57,10 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Loopback preview; optional test session gate is not a public deployment. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null}){
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
   const verifySession=shopifySessions?createShopifySessionVerifier(shopifySessions):null;
+  if(shopDrafts&&(!verifySession||shopDrafts.config?.shopDomain!==shopifySessions.shopDomain||shopDrafts.config?.mode!=='draft-only'))fail(503,'shop_draft_config','Shop-Entwurfsanbindung benötigt dieselbe bestätigte Händler-Testanmeldung.');
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
   const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite')});
@@ -75,6 +77,8 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   // Explicit server configuration only; constructing the default preview never enables Shopify writes.
   let cartGate=null;
   const configuredCart=()=>cartGate??=createCartHttpGate({drafts:customerDrafts,repository,settings:storefront});
+  let transferGate=null;
+  const configuredTransfer=()=>transferGate??=createShopDraftTransfer({repository,orders:orderIntake,journal:customerDrafts.shopDraftTransfers,config:shopDrafts.config,transport:createShopDraftTransport(shopDrafts.config,shopDrafts.transportOptions)});
   const outputRecipes=[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE,ACRYLIC_PRINT_RECIPE,ACRYLIC_ENGRAVING_RECIPE];
   const exportWorker=createExportWorker({jobs:exportJobs,recipe:outputRecipes,render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_ENGRAVING_RECIPE?createAcrylicEngravingProof:job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
   function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const native=m.schema===ACRYLIC_REVIEW,settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings});exportWorker.kick();return job;}
@@ -138,6 +142,22 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      const shopTransferMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/shop-transfer$/);
+      if(shopTransferMatch){
+        if(method==='GET'){
+          if(!shopDrafts)return json(res,200,{enabled:false,transfer:null,mode:'draft-only'});
+          const record=repository.get(shopTransferMatch[1],{revision:revision(url.searchParams.get('revision'))}),request=shopDraftRequest(record,shopDrafts.config.shopDomain);
+          const transfer=customerDrafts.shopDraftTransfers.get(request.identity),bound=orderIntake.bindings().filter(b=>b.shopDomain===shopDrafts.config.shopDomain&&b.productId===record.id&&b.productRevision===record.revision);
+          const bindingsConfirmed=Boolean(transfer?.state==='completed'&&transfer.sourceSha256===request.sourceSha256&&transfer.result.mappings.every(m=>bound.some(b=>b.variantId===m.variantId)));
+          return json(res,200,{enabled:true,shopDomain:shopDrafts.config.shopDomain,transfer,bindingsConfirmed,mode:'draft-only'});
+        }
+        if(method!=='POST')fail(405,'method_not_allowed','Entwurfsübertragung benötigt POST.');
+        if(!shopDrafts)fail(503,'shop_draft_disabled','Shop-Entwurfsanbindung ist noch nicht eingerichtet.');
+        const data=await body(req,2048);if(Object.keys(data).some(k=>!['expectedRevision','sourceSha256','action'].includes(k)))fail(422,'shop_draft_fields','Nur gespeicherten Produktstand und Aktion angeben.');
+        const controller=new AbortController(),abort=()=>controller.abort();req.once('aborted',abort);res.once('close',abort);
+        try{return json(res,200,await configuredTransfer()({...data,productId:shopTransferMatch[1]},merchantSession,{signal:controller.signal}));}
+        finally{req.removeListener('aborted',abort);res.removeListener('close',abort);}
+      }
       const grantsMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/file-grants$/);
       if(grantsMatch){
         if(!merchantSession)fail(503,'customer_download_disabled','Händler-Testanmeldung für Dateifreigaben erforderlich.');

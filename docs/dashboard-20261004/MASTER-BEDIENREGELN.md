@@ -38,3 +38,7 @@ Vollständiges Design oben links wie im Konfigurator, mit Foto/Texten/Sockel. Vo
 - Farbprüfbeispiel und Formserien-Abnahme: [DASHBOARD-FORMSERIEN.md](DASHBOARD-FORMSERIEN.md). Keine Aussage über physische Druckqualität, Lack oder reale Maschinenabnahme daraus ableiten.
 
 Umsetzung für freie Formprodukte: [UV-Druckansicht](DASHBOARD-UV-DRUCKANSICHT.md).
+
+## Ergänzung 06.10.2026: Gravurfarbe ist keine Druckfarbe
+
+Bei Acryl und Verfahren Gravur keine bräunlichen/farbigen Drucklinien anzeigen. Die Materialansicht zeigt helle, angenäherte Gravur. Quellhelligkeit bestimmt die relative Stärke: dunkle Bereiche stärker, weiße/transparente Bereiche frei. Das erhält Fotoabstufungen statt ein gesamtes Foto weiß zu füllen. Originaldateien und echte Graustufen-/Vektorausgabe bleiben erhalten; die helle Vorschaufarbe ist kein RDG_WHITE und keine zusätzliche Weißseparation. Keine Laserleistungs- oder Maschinenfreigabe daraus ableiten. [Umsetzung und Prüfung](DASHBOARD-ACRYLGRAVUR-VORSCHAU.md).

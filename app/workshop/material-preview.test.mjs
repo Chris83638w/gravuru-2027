@@ -59,3 +59,13 @@ test('UV presentation is opt-in, validated and keeps front ink above glass and r
  d.material.id='acrylic-clear';delete d.presentation.printSurface;assert.equal(materialPreview(d).svg,original);
  d.presentation.printSurface='front';d.processingMethod='engraving';assert.doesNotMatch(composeMaterialPreview(materialPreview(d).svg,'<g/>'),/feTurbulence|data-preview-print-surface/);
 });
+
+test('all acrylic engraving previews use tonal light marks without mutating source or print views',async t=>{
+ const {composeMaterialPreview}=await import('./material-presentation.mjs');const store=createContourStore({filename:':memory:'});t.after(()=>store.close());
+ const c=await store.import({name:'Form.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60mm" height="40mm" viewBox="0 0 60 40"><rect width="60" height="40"/><circle cx="8" cy="20" r="2"/></svg>').toString('base64')});
+ for(const id of ['acrylic-clear','acrylic-satin','acrylic-anthracite','acrylic-black']){
+  const d=makeFormProduct(c,'Prüfung');d.material.id=id;d.processingMethod='engraving';const original=structuredClone(d),art='<path fill="#ab6034" d="M5 5H20V10H5Z"/>';
+  const result=materialPreview(d),svg=composeMaterialPreview(result.svg,art);assert.match(svg,/material-acrylic-engraving/);assert.ok(svg.includes(art));assert.match(result.note,/Weiß und Transparenz ohne Gravur/);assert.deepEqual(d,original);
+  d.processingMethod='print';assert.doesNotMatch(composeMaterialPreview(materialPreview(d).svg,art),/material-acrylic-engraving/);
+ }
+});

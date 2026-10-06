@@ -25,11 +25,12 @@ export function materialPreview(document){
  // The atlas is clipped to a single quadrant in the renderer, never painted over
  // other quadrants. The even-odd form clip preserves every physical opening.
  const fill=acrylic?acrylic.face:tile?`<defs><pattern id="material-texture" width="1" height="1" viewBox="${tile.x} ${tile.y} 1 1" preserveAspectRatio="xMidYMid slice"><image href="${href}" width="2" height="2"/></pattern></defs><path d="${d}" fill="url(#material-texture)" fill-rule="evenodd"/>`:`<image href="${href}" x="0" y="0" width="${g.widthMm}" height="${g.heightMm}" preserveAspectRatio="xMidYMid slice" clip-path="url(#material-form-clip)"/>`;
+ const engraving=document.processingMethod==='engraving'&&Boolean(acrylic);
  const printSurface=document.processingMethod==='print'?document.presentation?.printSurface:null;
  // Front ink sits above the glass reflection; reverse ink below it. No mirror:
  // this is the customer's front view, never the manufacturing orientation.
  const finish=acrylic?.finish||'';
  const artworkLayers=printSurface==='front'?finish+'<!--material-artwork-->':'<!--material-artwork-->'+finish;
- const svg=`<svg xmlns="http://www.w3.org/2000/svg" ${printSurface?`data-preview-print-surface="${printSurface}"`:""} viewBox="${layers.box.join(' ')}" role="img" aria-label="${acrylic?.label||tile?.label||'Edelstahl'}-Oberflächenvorschau mit ${g.holeCount} Ausschnitten"><defs><clipPath id="material-form-clip"><path d="${d}" clip-rule="evenodd"/></clipPath></defs>${layers.defs}${layers.backdrop}${layers.shadow}${layers.edge}${fill}<path d="${d}" fill="none" stroke="#6f7579" stroke-width="0.75" vector-effect="non-scaling-stroke"/>${artworkLayers}</svg>`;
- return {svg,surface,note:surface.note+' '+(layers.thickness?'Kante aus '+layers.thickness+' mm Produktstärke, perspektivisch angenähert.':'Stärke offen: keine Materialtiefe angenommen.')};
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" ${engraving?'data-preview-engraving="acrylic"':''} ${printSurface?`data-preview-print-surface="${printSurface}"`:""} viewBox="${layers.box.join(' ')}" role="img" aria-label="${acrylic?.label||tile?.label||'Edelstahl'}-Oberflächenvorschau mit ${g.holeCount} Ausschnitten"><defs><clipPath id="material-form-clip"><path d="${d}" clip-rule="evenodd"/></clipPath></defs>${layers.defs}${layers.backdrop}${layers.shadow}${layers.edge}${fill}<path d="${d}" fill="none" stroke="#6f7579" stroke-width="0.75" vector-effect="non-scaling-stroke"/>${artworkLayers}</svg>`;
+ return {svg,surface,note:surface.note+(engraving?' Helle Acrylgravur nach Quellhelligkeit: dunkle Bildstellen stärker, Weiß und Transparenz ohne Gravur. Angenäherte Ansicht, keine Laserleistungswerte.':'')+' '+(layers.thickness?'Kante aus '+layers.thickness+' mm Produktstärke, perspektivisch angenähert.':'Stärke offen: keine Materialtiefe angenommen.')};
 }

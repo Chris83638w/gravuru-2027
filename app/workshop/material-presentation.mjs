@@ -38,9 +38,14 @@ export function acrylicSurface(document){
 // Fine, deterministic preview texture. Composite against source alpha: never
 // add dots to clear glass, holes or outside the artwork. Preserve source alpha.
 export const UV_INK_FILTER=`<defs><filter id="material-uv-ink" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="8" numOctaves="1" seed="17" result="grain"/><feColorMatrix in="grain" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 .05"/><feComposite in2="SourceAlpha" operator="in" result="dots"/><feBlend in="SourceGraphic" in2="dots" mode="soft-light"/><feComposite in2="SourceGraphic" operator="atop"/></filter></defs>`;
+// Preview of frosted acrylic engraving: darkness becomes light engraving
+// strength. White means no engraving, matching the existing grayscale export.
+// Keep original alpha (including photos, holes and antialiasing) as a multiplier.
+export const ACRYLIC_ENGRAVING_FILTER=`<defs><filter id="material-acrylic-engraving" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 .94  0 0 0 0 .95  0 0 0 0 .94  -.2126 -.7152 -.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`;
 // Insert artwork at the selected print depth, keeping this ordering identical
 // in editor, customer view, product cards and saved review previews.
 export function composeMaterialPreview(svg,artwork){
+ if(svg.includes('data-preview-engraving="acrylic"'))artwork=ACRYLIC_ENGRAVING_FILTER+`<g data-preview-engraving-art="true" filter="url(#material-acrylic-engraving)">${artwork}</g>`;
  if(svg.includes('data-preview-print-surface="front"'))artwork=UV_INK_FILTER+`<g data-preview-uv-ink="matte" filter="url(#material-uv-ink)">${artwork}</g>`;
  return svg.includes('<!--material-artwork-->')?svg.replace('<!--material-artwork-->',artwork):svg.replace('</svg>',artwork+'</svg>');
 }

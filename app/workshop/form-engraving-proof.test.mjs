@@ -1,12 +1,12 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {execFileSync} from 'node:child_process';import {once} from 'node:events';
 import {build} from '../configurator/variant-m/build.mjs';import {createWorkshop} from './http.mjs';import {createPreviewServer} from '../configurator/variant-m/server.mjs';import {makeFormProduct} from './form-product.mjs';import {addFormDesign} from './form-designs.mjs';import {initialFormCustomerState} from './form-customer-model.mjs';import {prepareFormReview} from './form-review-snapshot.mjs';import {prepareCustomerPhoto} from './customer-photo.mjs';import {importEnvironment} from './design-assets.mjs';import {createFormEngravingProof,formEngravingSettings} from './form-engraving-proof.mjs';import {readReviewPackage,digest} from './review-package.mjs';
-async function fixture(t,photo=false,rasterSource=false){
+async function fixture(t,photo=false,rasterSource=false,customize=()=>{}){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-engrave-'));build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0],w=createWorkshop({filename:path.join(dir,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});t.after(()=>{w.close();fs.rmSync(dir,{recursive:true,force:true});});
  const contour=await w.contours.import({name:'Form.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60mm" height="40mm" viewBox="0 0 60 40"><path d="M0 0H60V30H40V40H0Z"/><circle cx="8" cy="20" r="2"/></svg>').toString('base64')});
  const embedded=rasterSource?execFileSync('python3',['-c',"from PIL import Image;import sys;Image.new('RGB',(10,10),'black').save(sys.stdout.buffer,format='PNG')"],{env:importEnvironment()}).toString('base64'):null;
  const asset=await w.assets.import({name:'Design.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60mm" height="40mm" viewBox="0 0 60 40"><rect x="3" y="3" width="14" height="20" fill="red"/><rect x="35" y="3" width="10" height="15" fill="blue"/>'+(embedded?'<image href="data:image/png;base64,'+embedded+'" x="20" y="25" width="8" height="8"/>':'')+'</svg>').toString('base64')});
  const d=addFormDesign(makeFormProduct(contour,'Gravurprüfung'),asset,{name:'Prüfdesign',designId:'design-engrave'});d.processingMethod='engraving';d.material={id:'steel',thicknessMm:1.5,surfaceNotes:''};d.basePriceCents=2999;d.designs[0].sourcePrepared=true;d.designs[0].fields=[{id:'text',type:'text',label:'Name',xMm:5,yMm:29,widthMm:30,heightMm:8,text:'Oa',font:Object.keys(seed.universal.localResources.fonts)[0],sizeMm:4,color:'#222222',bold:false,italic:false,allowMove:false,allowScale:false,allowDelete:false,allowColor:false},{id:'photo',type:'photo',label:'Foto',xMm:22,yMm:10,widthMm:10,heightMm:10,shape:'circle',required:false,allowMove:true,allowScale:true,allowDelete:true}];
- const record=w.repository.create(d),created=w.customerDrafts.create(record,d.defaultDesignId,initialFormCustomerState(d.designs[0]));let draft=created;
+ customize(d);const record=w.repository.create(d),created=w.customerDrafts.create(record,d.defaultDesignId,initialFormCustomerState(d.designs[0]));let draft=created;
  if(photo){const raw=execFileSync('python3',['-c',"from PIL import Image;import sys;im=Image.new('RGBA',(1200,1200),(0,0,0,255));im.paste((255,255,255,255),(600,0,1200,1200));im.save(sys.stdout.buffer,format='PNG')"],{env:importEnvironment()});const prepared=await prepareCustomerPhoto(raw.toString('base64')),media=w.customerDrafts.addPhoto(created.id,created.token,prepared),state=structuredClone(created.state);state.fields.find(f=>f.id==='photo').mediaId=media.mediaId;draft=w.customerDrafts.save(created.id,created.token,state,1);}
  const bundle=await prepareFormReview({record,draft,assets:w.assets,contours:w.contours,fonts:seed.universal.localResources.fonts,media:id=>w.customerDrafts.photo(created.id,created.token,id)});w.customerDrafts.capture(created.id,created.token,draft.revision,bundle);return {w,dir,bundle};
 }
@@ -31,4 +31,16 @@ test('engraving uses persistent jobs, method-specific validation and byte-identi
 
 test('embedded raster design is refused as vector and remains usable as raster engraving',async t=>{
  const {bundle}=await fixture(t,false,true);await assert.rejects(()=>createFormEngravingProof(bundle.package,bundle.manifest.packageSha256,{mode:'vector'}),/Rasterbilder|gerasterte Effekte/);const result=await createFormEngravingProof(bundle.package,bundle.manifest.packageSha256);assert.equal(result.metadata.settings.mode,'raster');assert.equal(inspect(result.pdf).images[0][2],'DeviceGray');
+});
+
+test('acrylic engraving appearance stays out of raster and vector output and preserves original photos',async t=>{
+ const steel=await fixture(t,true),acrylic=await fixture(t,true,false,d=>{d.material={id:'acrylic-black',thicknessMm:3,surfaceNotes:''};});
+ const files=readReviewPackage(acrylic.bundle.package,acrylic.bundle.manifest.packageSha256).files;
+ assert.match(files.get('vorschau.svg').toString(),/data-preview-engraving="acrylic"/);assert.match(files.get('vorschau.svg').toString(),/material-acrylic-engraving/);
+ assert.doesNotMatch(files.get('gestaltung-vorschau.svg').toString(),/material-acrylic-engraving|data-preview-engraving/);
+ const samples=[[2,2],[8,20],[6,6],[40,8],[24,15],[30,15],[50,35]],results=[];
+ for(const {bundle}of [steel,acrylic])results.push(inspect((await createFormEngravingProof(bundle.package,bundle.manifest.packageSha256)).pdf,samples));
+ assert.deepEqual(results[0],results[1]);assert.deepEqual(results[1].points[4],[0,0,0]);assert.deepEqual(results[1].points[5],[255,255,255]);assert.equal(results[1].white,false);
+ const vector=await fixture(t,false,false,d=>{d.material.id='acrylic-satin';});const proof=await createFormEngravingProof(vector.bundle.package,vector.bundle.manifest.packageSha256,{mode:'vector'}),v=inspect(proof.pdf,samples);
+ assert.equal(v.images.length,0);assert.equal(v.white,false);assert.ok(v.drawings>=4);
 });

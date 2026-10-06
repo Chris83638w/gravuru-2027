@@ -11,7 +11,7 @@ export function formPrintSettings(input={}){
  return Object.fromEntries(['profile','dpi','white','bleedMm','whiteBleedMm','mirror'].map(k=>[k,s[k]]));
 }
 export const formPrintKey=settings=>digest(JSON.stringify({recipe:FORM_PRINT_RECIPE,settings:formPrintSettings(settings)}));
-function rasterize(data){
+export function rasterizePrint(data){
  return new Promise((resolve,reject)=>{
   const child=spawn(process.env.GRAVURU_PYTHON||'python3',[fileURLToPath(new URL('./form-print-worker.py',import.meta.url))],{env:importEnvironment(),stdio:['pipe','pipe','pipe']});let done=false,size=0;const chunks=[];
   const end=(e,value)=>{if(done)return;done=true;clearTimeout(timer);e?reject(Object.assign(Error(e),{status:422,code:'form_print_failed'})):resolve(value);};
@@ -25,7 +25,7 @@ export async function createFormPrintProof(archive,archiveHash,input={}){
  const {files,manifest}=readReviewPackage(archive,archiveHash),requested=formPrintSettings({...manifest.productionProfile?.document.output,...input});
  if(manifest.product.method!=='print')fail('Diese Ausgabe ist nur für Druckprodukte bestimmt. Gravur benötigt eine eigene Ausgabe ohne Druckweiß.');
  const saved=JSON.parse(files.get('produkt-und-gestaltung.json')),g=saved.product.form.geometry,design=saved.product.designs.find(d=>d.id===saved.designId);
- const raw=await rasterize({svg:files.get('gestaltung-vorschau.svg').toString(),geometry:g,settings:requested,textFields:[...design.fields.filter(f=>f.type==='text').map(f=>f.id),...(saved.customer.additions||[]).filter(f=>f.type==='text'&&!f.deleted).map(f=>f.id)],photoFields:design.fields.filter(f=>f.type==='photo').map(f=>f.id),photos:manifest.photos.map(p=>({...p,bytes:files.get(p.path).toString('base64')}))});
+ const raw=await rasterizePrint({svg:files.get('gestaltung-vorschau.svg').toString(),geometry:g,settings:requested,textFields:[...design.fields.filter(f=>f.type==='text').map(f=>f.id),...(saved.customer.additions||[]).filter(f=>f.type==='text'&&!f.deleted).map(f=>f.id)],photoFields:design.fields.filter(f=>f.type==='photo').map(f=>f.id),photos:manifest.photos.map(p=>({...p,bytes:files.get(p.path).toString('base64')}))});
  if(!Number.isInteger(raw.width)||!Number.isInteger(raw.height)||raw.width<1||raw.height<1||raw.width*raw.height>32000000)fail('Ungültige Rastermaße.');
  const pixels={width:raw.width,height:raw.height,...Object.fromEntries(['rgb','alpha','whiteAllowed','whiteAlpha'].map(k=>[k,new Uint8Array(Buffer.from(raw[k],'base64'))]))};
  if(pixels.rgb.length!==raw.width*raw.height*3||pixels.alpha.length!==raw.width*raw.height||pixels.whiteAllowed.length!==raw.width*raw.height||pixels.whiteAlpha.length!==raw.width*raw.height)fail('Unvollständige Rasterdaten.');

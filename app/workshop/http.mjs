@@ -1,3 +1,4 @@
+import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicContourProof} from './acrylic-print-proof.mjs';
 import {ACRYLIC_REVIEW,prepareAcrylicReview} from './acrylic-review.mjs';
 import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
@@ -63,10 +64,9 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const csrfToken=randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
-  const checkOutputKind=id=>{if(customerDrafts.review(id).manifest.schema===ACRYLIC_REVIEW)fail(422,'acrylic_output_pending','Die Fertigungsausgabe aus dem gesicherten Acrylstand ist noch nicht angebunden.');};
-  const exportWorker=createExportWorker({jobs:exportJobs,recipe:[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE],render:job=>{const review=customerDrafts.review(job.snapshotId);return (job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof)(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
-  function enqueueOutput(id,overrides){checkOutputKind(id);const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_ENGRAVING_RECIPE,recipeKey:formEngravingKey(settings),settings});exportWorker.kick();return job;}
-  function enqueuePrint(id,overrides){checkOutputKind(id);const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_PRINT_RECIPE,recipeKey:formPrintKey(settings),settings});exportWorker.kick();return job;}
+  const exportWorker=createExportWorker({jobs:exportJobs,recipe:[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE,ACRYLIC_PRINT_RECIPE],render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
+  function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);if(m.schema===ACRYLIC_REVIEW)fail(422,'acrylic_engraving_pending','Die Gravurausgabe aus dem Acryl-Prüfstand ist noch nicht angebunden.');const settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_ENGRAVING_RECIPE,recipeKey:formEngravingKey(settings),settings});exportWorker.kick();return job;}
+  function enqueuePrint(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),native=m.schema===ACRYLIC_REVIEW,job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_PRINT_RECIPE:FORM_PRINT_RECIPE,recipeKey:native?acrylicPrintKey(settings):formPrintKey(settings),settings});exportWorker.kick();return job;}
   function customerRecord(id,version){const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
   function customerResult(draft,token,state=draft.state){
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
@@ -202,7 +202,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/review-snapshots'&&method==='GET')return json(res,200,{snapshots:customerDrafts.listSnapshots(),scope:'local-operator'});
       const reviewMatch=pathname.match(/^\/api\/workshop\/review-snapshots\/(proof_[a-f0-9-]+)(?:\/(download|print))?$/);
       if(reviewMatch){
-        if(!reviewMatch[2]&&method==='GET')return json(res,200,customerDrafts.review(reviewMatch[1]));
+        if(!reviewMatch[2]&&method==='GET'){const detail=customerDrafts.review(reviewMatch[1]);return json(res,200,{...detail,outputCapabilities:{print:detail.manifest.product.method==='print',contour:true,engraving:detail.manifest.schema!==ACRYLIC_REVIEW&&detail.manifest.product.method==='engraving'}});}
         if(reviewMatch[2]==='print'&&method==='POST'){
           const data=await body(req);if(Object.keys(data).some(k=>!['settings','format'].includes(k))||!['pdf','zip'].includes(data.format||'pdf'))fail(422,'invalid_print_request','Bitte PDF oder ZIP und gültige Einstellungen auswählen.');
           const id=reviewMatch[1],job=enqueuePrint(id,data.settings);await exportWorker.wait(job.id);const output=customerDrafts.printProof(id,job.recipeKey);
@@ -211,8 +211,9 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         }
         if(reviewMatch[2]==='download'&&method==='POST'){
           const data=await body(req);if(!['package','contour','photos'].includes(data.kind))fail(422,'production_not_released','Für diesen Prüfstand ist keine Produktions-PDF freigegeben.');
-          if(data.kind==='contour')checkOutputKind(reviewMatch[1]);
-          const bytes=customerDrafts.downloadSnapshot(reviewMatch[1],data.kind),suffix={package:'pruefpaket.zip',contour:'kontur-1zu1.pdf',photos:'originalfotos.zip'}[data.kind];
+          let nativeContour=null;const manifest=customerDrafts.review(reviewMatch[1]).manifest;
+          if(data.kind==='contour'&&manifest.schema===ACRYLIC_REVIEW){const key='acrylic-contour/v1';nativeContour=customerDrafts.printProof(reviewMatch[1],key)?.pdf;if(!nativeContour){const pdf=await acrylicContourProof(customerDrafts.downloadSnapshot(reviewMatch[1],'package'),manifest.packageSha256);customerDrafts.savePrintProof(reviewMatch[1],key,{pdf,archive:Buffer.alloc(0),metadata:{recipe:key}});nativeContour=customerDrafts.printProof(reviewMatch[1],key).pdf;}}
+          const bytes=nativeContour||customerDrafts.downloadSnapshot(reviewMatch[1],data.kind),suffix={package:'pruefpaket.zip',contour:'kontur-1zu1.pdf',photos:'originalfotos.zip'}[data.kind];
           res.writeHead(200,{'Content-Type':data.kind==='contour'?'application/pdf':'application/zip','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+reviewMatch[1]+'-'+suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
         }
         fail(405,'method_not_allowed','Prüfstände können nicht überschrieben werden.');

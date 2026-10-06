@@ -53,7 +53,7 @@ function photoMarkup(p,o,media,key,processing,stroke){
  const engraving=processing.method==='engraving'?'<feColorMatrix type="saturate" values="0"/>'+adjustment+'<feColorMatrix type="matrix" values="'+inkMatrix(elementColor(p,o),'-0.2126 -0.7152 -0.0722 0 1')+'"/><feComposite in2="SourceAlpha" operator="in"/>':'';
  return '<defs><clipPath id="'+key+'-clip" clipPathUnits="userSpaceOnUse">'+objectShape(o)+'/></clipPath><filter id="'+key+'-photo" color-interpolation-filters="sRGB">'+engraving+'</filter></defs><g clip-path="url(#'+key+'-clip)"><svg x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" viewBox="'+[crop.x*asset.width,crop.y*asset.height,crop.width*asset.width,crop.height*asset.height].join(' ')+'" preserveAspectRatio="xMidYMid slice" overflow="hidden"><image href="'+esc(url)+'" width="'+asset.width+'" height="'+asset.height+'" preserveAspectRatio="none"'+(processing.method==='engraving'?' filter="url(#'+key+'-photo)"':'')+'/></svg></g>';
 }
-function graphicMarkup(o,ink){
+export function graphicMarkup(o,ink){
  const stroke=o.strokeWidth||.5,w=Math.max(0,o.w-stroke),h=Math.max(0,o.h-stroke);
  const attrs=' fill="'+(o.filled&&o.shape!=='line'?ink:'none')+'" stroke="'+ink+'" stroke-width="'+stroke+'"';
  if(o.shape==='line')return '<line x1="'+(-w/2)+'" y1="0" x2="'+w/2+'" y2="0"'+attrs+'/>';

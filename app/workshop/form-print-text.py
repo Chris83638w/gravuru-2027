@@ -31,13 +31,18 @@ def text_paths(node,require,number):
  visit(node,np.eye(3),'#000000');return result
 
 def split_artwork(root,text_ids,require,number):
- groups=[n for n in root.iter(S+'g') if n.get('data-design')]
+ groups=[n for n in root.iter(S+'g') if n.get('data-design') or n.get('data-native-design')]
  require(len(groups)==1,'Gestaltungsebene fehlt.');group=groups[0]
- require(set(group.attrib)<= {'data-design','clip-path'},'Unbekannte Gestaltungstransformation.')
- children=list(group);require(len(children)==2 and children[0].tag==S+'image' and children[1].tag==S+'g','Unbekannter Aufbau der Gestaltung.')
- ordered=[children[0],*list(children[1])];parts=[];batch=[];vectors=[];nontext=[]
+ require(set(group.attrib)<= {'data-design','data-native-design','clip-path'},'Unbekannte Gestaltungstransformation.')
+ children=list(group)
+ if group.get('data-native-design'):
+  ordered=children
+ else:
+  require(len(children)==2 and children[0].tag==S+'image' and children[1].tag==S+'g','Unbekannter Aufbau der Gestaltung.')
+  ordered=[children[0],*list(children[1])]
+ parts=[];batch=[];vectors=[];nontext=[]
  def svg(nodes):
-  r=copy.deepcopy(root);g=next(n for n in r.iter(S+'g') if n.get('data-design'))
+  r=copy.deepcopy(root);g=next(n for n in r.iter(S+'g') if n.get('data-design') or n.get('data-native-design'))
   for child in list(g):g.remove(child)
   for child in nodes:g.append(copy.deepcopy(child))
   return r

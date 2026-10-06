@@ -1,0 +1,58 @@
+import {graphicMarkup} from '../platform/sources/app/shared/models/studio-svg.mjs';
+import {readReviewPackage,digest} from './review-package.mjs';
+import {ACRYLIC_REVIEW} from './acrylic-review.mjs';
+import {validateProductDesign} from './product-model.mjs';
+import {prepareCustomerPhoto} from './customer-photo.mjs';
+import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
+import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
+import {photoShape} from '../platform/sources/app/shared/models/photo-shape.mjs';
+import {textPaths} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {escapeXml as esc} from '../platform/sources/app/shared/models/design-content.mjs';
+import {elementColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
+const fail=message=>{throw Object.assign(Error(message),{status:422,code:'acrylic_artwork'});};
+const dataSvg=bytes=>'data:image/svg+xml;base64,'+bytes.toString('base64');
+const number=v=>Number(v.toFixed(8));
+export function nativeContour(g){
+ const w=g.width,h=g.height,r=g.cornerRadiusMm||0;
+ const ellipse=(x,y,rx,ry)=>`M${x-rx} ${y}a${rx} ${ry} 0 1 0 ${2*rx} 0a${rx} ${ry} 0 1 0 ${-2*rx} 0Z`;
+ const d=g.shape==='ellipse'?ellipse(w/2,h/2,w/2,h/2):r?`M${r} 0H${w-r}A${r} ${r} 0 0 1 ${w} ${r}V${h-r}A${r} ${r} 0 0 1 ${w-r} ${h}H${r}A${r} ${r} 0 0 1 0 ${h-r}V${r}A${r} ${r} 0 0 1 ${r} 0Z`:`M0 0H${w}V${h}H0Z`;
+ return {schema:'gravuru-contour/v1',widthMm:w,heightMm:h,holeCount:g.holes.length,contours:[{role:'outer',d},...g.holes.map(h=>({role:'hole',d:ellipse(h.x,h.y,h.diameter/2,h.diameter/2)}))]};
+}
+export async function acrylicArtwork(archive,archiveHash){
+ const {files,manifest}=readReviewPackage(archive,archiveHash,ACRYLIC_REVIEW),saved=JSON.parse(files.get('produkt-und-gestaltung.json')),config=JSON.parse(files.get('konfigurator-quellen.json')),state=saved.state;
+ if(saved.schema!=='gravuru-acrylic-review-input/v1'||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Acrylrevision ist nicht eindeutig.');
+ const design=validateProductDesign(saved.product,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
+ const viewport=artworkViewport(config,{mOptions:state.options}),geometry=nativeContour(viewport.geometry),parts=[],photos=[],textFields=[],photoFields=[];
+ if(geometry.widthMm!==manifest.product.widthMm||geometry.heightMm!==manifest.product.heightMm)fail('Das gesicherte Druckformat stimmt nicht überein.');
+ const transform=o=>`translate(${number(viewport.x)} ${number(viewport.y)}) scale(${number(viewport.scale)}) translate(${o.x} ${o.y}) rotate(${o.rotation||0})`;
+ for(const [index,o] of design.objects.entries()){
+  if(o.uxHidden)continue;const field='native-'+index,color=elementColor(config.profile,o);let body='';
+  if(o.type==='text'){body=textPaths(o,config.localResources.fonts);if(!body&&o.text.trim())fail('Gesicherte Schriftpfade fehlen.');textFields.push(field);}
+  else if(o.uxUploadId){
+   const entry=manifest.photos.find(p=>p.uploadId===o.uxUploadId);if(!entry)fail('Ein Originalbild fehlt im gesicherten Stand.');
+   const path=entry.edited?.path||entry.path,bytes=files.get(path);if(!bytes)fail('Die gespeicherte Bildfassung fehlt.');
+   const photo=await prepareCustomerPhoto(bytes.toString('base64')),p=photoPlacement(o,photo),clip='native-photo-'+index;
+   const image=`<g data-photo-pan="${field}"><image href="data:image/png;base64,${photo.preview.toString('base64')}" x="${o.type==='photoSlot'?p.x:-o.w/2}" y="${o.type==='photoSlot'?p.y:-o.h/2}" width="${o.type==='photoSlot'?p.w:o.w}" height="${o.type==='photoSlot'?p.h:o.h}" preserveAspectRatio="xMidYMid meet"${o.type==='photoSlot'?` transform="rotate(${p.angle} ${p.cx} ${p.cy})"`:''}/></g>`;
+   body=o.type==='photoSlot'?`<defs><clipPath id="${clip}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${clip})">${image}</g>`:image;
+   photos.push({fieldId:field,bytes:bytes.toString('base64'),width:photo.width,height:photo.height,tone:'original',...(o.uxUploadKind==='logo'&&o.uxLogoTint?{nativeTint:color}:{}),sourcePath:path});photoFields.push(field);
+  }else if(o.type==='photoSlot'){
+   const example=config.localResources.photoExamples?.find(e=>e.designId===design.id&&e.slotId===o.id);if(o.required&&!example)fail('Erforderliches eigenes Foto fehlt.');if(!example)continue;
+   const bytes=files.get('quellen/'+example.assetId+'-vorschau.svg');if(!bytes)fail('Beispielfoto fehlt im gesicherten Stand.');const clip='native-example-'+index;
+   body=`<defs><clipPath id="${clip}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${clip})"><image href="${dataSvg(bytes)}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g>`;
+  }else if(o.type==='graphic'){
+   body=graphicMarkup(o,color);
+   if(!body)fail('Unbekannte gespeicherte Grafikform.');
+  }else if(o.type==='motif'){
+   const motif=config.localResources.motifs.find(m=>m.key===o.motif);if(!motif)fail('Gesicherte Motivquelle fehlt.');let fragment=motif.svgFragment;
+   if(motif.artwork){
+    if(o.preserveColors===false)fail('Umgefärbte importierte Designbilder benötigen noch eine eigene Farbseparation.');
+    const bytes=files.get('quellen/'+motif.artwork.assetId+'-vorschau.svg');if(!bytes)fail('Gesicherte importierte Designquelle fehlt.');fragment=`<image href="${dataSvg(bytes)}" width="${motif.artwork.widthMm}" height="${motif.artwork.heightMm}" preserveAspectRatio="none"/>`;
+   }else if(o.preserveColors===false){fragment=fragment.replace(/(fill|stroke)="(?!none\b)[^"]*"/g,`$1="${color}"`);}
+   body=`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="${motif.bounds.join(' ')}" preserveAspectRatio="xMidYMid meet" color="${color}">${fragment}</svg>`;
+  }else fail('Dieser gespeicherte Elementtyp ist für die Acryl-Ausgabe noch nicht unterstützt: '+o.type);
+  parts.push(`<g data-field="${field}" transform="${transform(o)}" fill="${esc(color)}">${body}</g>`);
+ }
+ if(design.marks?.length)fail('Diese Vorlage enthält noch nicht übernommene Gestaltungslinien. Bitte vor der Fertigung prüfen.');
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${geometry.widthMm}mm" height="${geometry.heightMm}mm" viewBox="0 0 ${geometry.widthMm} ${geometry.heightMm}"><g data-native-design="true">${parts.join('')}</g></svg>`;
+ return {files,manifest,svg,geometry,geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields};
+}

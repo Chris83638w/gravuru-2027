@@ -1,3 +1,11 @@
+## Aktuell: Acryl-PDF aus dem unveränderlichen Prüfstand – 06.10.2026
+
+Branch `task/acrylic-snapshot-output-20261006`, Basis `7b071fc64c6604affbdb5190bb1814d3ebf38427`. Dashboard-Prüfstand erzeugt native Acryl-PDF serverseitig aus gesicherten Textpfaden, Design- und Fotoquellen. Standard: PDF, 300 dpi, CMYK, RDG_WHITE nur unter Druck, keine Randzugabe; Mimaki/ZIP optional. Konturdownload, Vollfläche mit optionalem 1-mm-Rand und einmalige Spiegelung geprüft. Originalfoto und alte Ausgabe bleiben erhalten.
+
+**270 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Echter Browser Desktop/Handy/Tablet mit bearbeitetem Foto, beiden Exporten und Vergleich zur Konfi-Gestaltung bestanden; bisherige Formprodukt-/Testbestellstrecke erneut bestanden. [Nachweis und PDF-Vorschau](docs/dashboard-20261004/ACRYL-FERTIGUNG-AUS-PRUEFSTAND-20261006.md).
+
+**Grenzen:** technische generische CMYK-Prüfung, noch keine ICC-/RIP-/Maschinenfreigabe oder echte Shopify-Bestellung. Native Acrylgravur und ausdrücklich nicht unterstützte Elementtypen werden abgewiesen. Keine Veröffentlichung; private Bestände bleiben außerhalb Git. Nächster Schritt: Preisparität der Acryl-Commerce-Zuordnung, danach native Bestellübergabe. Die folgenden Abschnitte sind historische Paketnachweise; die frühere Sperre der Acryl-Druck-PDF ist durch dieses Paket aufgehoben.
+
 ## Aktuell: Acryl-Konfi → unveränderlicher Werkstattprüfstand – 06.10.2026
 
 Branch `task/acrylic-review-handoff-20261006`, Basis `8cb741d67fb867faefc70f97117a5f741fc5b705` (Remote bestätigt). Im bestehenden Acryl-Konfi nach „Gestaltung fertig“ jetzt „Für die Werkstattprüfung sichern“: natives Design, unveränderte Originalbilder, bearbeitete Bildfassung, Produktrevision, Schrift-/Motivquellen, Ausführung, Geometrie und serverberechneter Preis. Dashboard zeigt die gesicherte Gestaltung und Ausführung; ZIP/Originalfotos herunterladbar. Spätere Bearbeitungen bleiben getrennt, Wiederholungen erzeugen keine Doppelstände. Keine Umwandlung in ein Formprodukt.

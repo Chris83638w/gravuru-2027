@@ -1,5 +1,5 @@
 """Private technical print rasterization; no external resource access or extraction."""
-import sys,json,base64,io,math,importlib.util
+import sys,json,base64,io,math,importlib.util,re
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import numpy as np
@@ -53,6 +53,9 @@ def prepare_svg(data):
    if p['tone']=='grayscale':im=ImageOps.grayscale(im).convert('RGBA');im.putalpha(alpha)
    elif p['tone']=='sepia':
     a=np.asarray(im);rgb=a[:,:,:3].astype(np.float32);rgb=np.clip(rgb @ np.array([[.393,.349,.272],[.769,.686,.534],[.189,.168,.131]],dtype=np.float32),0,255).astype(np.uint8);im=Image.fromarray(np.dstack((rgb,a[:,:,3])))
+   if p.get('nativeTint'):
+    c.require(bool(re.fullmatch('#[a-fA-F0-9]{6}',p['nativeTint'])),'Ungültige Logofarbe.')
+    a=np.asarray(im).copy();lum=a[:,:,:3].astype(np.float32) @ np.array([.2126,.7152,.0722],dtype=np.float32);a[:,:,3]=np.rint((1-lum/255)*a[:,:,3]).astype(np.uint8);a[:,:,:3]=[int(p['nativeTint'][i:i+2],16) for i in [1,3,5]];im=Image.fromarray(a)
    im.info.clear();out=io.BytesIO();im.save(out,format='PNG')
    nodes=[n for n in root.iter(S+'g') if n.get('data-photo-pan')==p['fieldId']];c.require(len(nodes)==1,'Fotobindung fehlt.')
    images=list(nodes[0].iter(S+'image'));c.require(len(images)==1,'Fotobindung ist nicht eindeutig.')

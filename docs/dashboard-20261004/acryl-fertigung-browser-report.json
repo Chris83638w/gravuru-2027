@@ -1,0 +1,74 @@
+{
+  "startedAt": "2026-10-06T08:03:31.217709+00:00",
+  "data": "synthetic only",
+  "result": "PASS",
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "output": {
+    "roland": {
+      "widthMm": 200.00000152587887,
+      "heightMm": 266.7,
+      "layers": [
+        "Farbmotiv",
+        "RDG_WHITE",
+        "CutContour"
+      ],
+      "photoGrayscale": true,
+      "whiteOnlyUnderInk": true
+    },
+    "mimaki": {
+      "widthMm": 200.00000152587887,
+      "heightMm": 266.7,
+      "layers": [
+        "Farbmotiv",
+        "Weissersatz Vektor",
+        "CutContour"
+      ],
+      "photoGrayscale": true,
+      "whiteOnlyUnderInk": true
+    },
+    "nativeSvgVsBrowserMeanAbsoluteError": 0.0017637860082304526,
+    "vectorGlyphs": 64,
+    "originalPhotoPreserved": true,
+    "editedPhotoPreserved": true,
+    "dpi": 300
+  },
+  "repeatPdfAfterCustomerEdit": "byte-identical",
+  "nativeEditor": true,
+  "originalPhotoHash": "e08ae779cbb9cfe15334dfc112a334ef2aad39d5788d6381a297473ccbafd880",
+  "immutableAfterEdit": true,
+  "secondEditCreatesSeparateSnapshot": true,
+  "price": {
+    "currency": "EUR",
+    "unitCents": 3697,
+    "totalCents": 3697,
+    "quantity": 1,
+    "additionalMotifs": 0,
+    "options": {
+      "size": "large",
+      "base": "eiche",
+      "wall": "wall"
+    },
+    "chargedUploads": 0,
+    "key": "[[\"base\",\"eiche\"],[\"size\",\"large\"],[\"wall\",\"wall\"]]"
+  },
+  "geometry": {
+    "widthMm": 200,
+    "heightMm": 266.7,
+    "thicknessMm": 3,
+    "insertionMm": 7
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "technicalPdfExport": true,
+  "productionApproved": false,
+  "finishedAt": "2026-10-06T08:03:50.941688+00:00"
+}

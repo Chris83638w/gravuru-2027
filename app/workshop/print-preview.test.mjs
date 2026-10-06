@@ -25,6 +25,27 @@ test('Mimaki preview uses the exact separate archived white PDF and full white i
  assert.equal(a.sourceSha256,motif.metadata.downloads.white.sha256);assert.equal(c.sourceSha256,motif.metadata.downloads.pdf.sha256);assert.equal(inspect(a.png).empty[3],0);assert.equal(inspect(b.png).empty[3],255);assert.deepEqual(inspect(a.png).center,[255,255,255,255]);
 });
 test('missing white, engraving, unknown modes and damaged PDFs fail instead of displaying an invented plate',async()=>{
- const r=await fixture('mimaki','none');await assert.rejects(()=>printPreview(r,'white'),/ohne Weiß/);await assert.rejects(()=>printPreview(r,'file:///tmp/private'),/vorhandene/);await assert.rejects(()=>printPreview({...r,metadata:{...r.metadata,settings:{mode:'vector'}}},'color'),/Druckauftrag/);
+ const r=await fixture('mimaki','none');await assert.rejects(()=>printPreview(r,'white'),/ohne Weiß/);await assert.rejects(()=>printPreview(r,'file:///tmp/private'),/vorhandene/);await assert.rejects(()=>printPreview({...r,metadata:{...r.metadata,settings:{mode:'vector'}}},'color'),/Druckaufträge/);
  await assert.rejects(()=>printPreview({...r,pdf:Buffer.from('%PDF-damaged')},'color'),/keine eindeutig/);
+});
+
+test('raster and vector engraving previews render the exact stored PDF on white without changing output or orientation',async()=>{
+ for(const mode of ['raster','vector']){
+  const pdf=execFileSync('python3',['-c',`import sys,pymupdf as p
+from PIL import Image
+import io
+d=p.open();page=d.new_page(width=100,height=200)
+if '${mode}'=='vector':page.draw_rect(p.Rect(10,50,40,150),color=None,fill=(0,0,0))
+else:
+ im=Image.new('L',(100,200),255)
+ for y in range(50,150):
+  for x in range(10,40):im.putpixel((x,y),80)
+ b=io.BytesIO();im.save(b,format='PNG');page.insert_image(page.rect,stream=b.getvalue())
+sys.stdout.buffer.write(d.tobytes())`],{env:importEnvironment()});
+  const before=digest(pdf),r={pdf,metadata:{settings:{mode},pdfSha256:before}},preview=await printPreview(r,'engraving');assert.equal(preview.sourceSha256,before);assert.equal(digest(pdf),before);assert.deepEqual(inspect(preview.png).empty,[255,255,255,255]);
+  const samples=JSON.parse(execFileSync('python3',['-c',"from PIL import Image;import sys,io,json;im=Image.open(io.BytesIO(sys.stdin.buffer.read())).convert('RGB');print(json.dumps([list(im.getpixel((100,500))),list(im.getpixel((400,500)))]))"],{input:preview.png,env:importEnvironment()}).toString());assert.deepEqual(samples,[[mode==='vector'?0:80,mode==='vector'?0:80,mode==='vector'?0:80],[255,255,255]]);
+  await assert.rejects(()=>printPreview(r,'white'),/Druckaufträge/);await assert.rejects(()=>printPreview({...r,metadata:{...r.metadata,pdfSha256:'0'.repeat(64)}},'engraving'),/Prüfsumme/);
+ }
+ const print=await fixture();await assert.rejects(()=>printPreview(print,'engraving'),/Gravuraufträge/);
+ await assert.rejects(()=>printPreview({...print,metadata:{settings:{mode:'vector'}}},'engraving'),/keine eindeutig/);
 });

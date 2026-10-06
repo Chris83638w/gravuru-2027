@@ -1,3 +1,9 @@
+## Aktuell: Gespeicherte Gravur-PDF direkt ansehen – 06.10.2026
+
+Branch `task/engraving-pdf-preview-20261006`, Basis `d7bf81fed4bad7a381eb4a43e0bdc4ce545d0d78`. Unter **Ausgaben → Gravur-PDF ansehen** wird die tatsächliche gesicherte Raster-/Vektorgravur auf Weiß dargestellt, einschließlich PDF-Prüfsumme. Keine zusätzliche Spiegelung, Umfärbung oder Änderung der Datei; Schnittkontur bleibt separat. **314 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Gravur-Browserablauf und Druckvorschau-Regression Desktop/Handy/Tablet bestanden.** [Nachweis und Ansicht](docs/dashboard-20261004/GRAVUR-PDF-VORSCHAU-20261006.md).
+
+Synthetische technische Abnahme, keine reale Probegravur oder Veröffentlichung. Vorhandene Druck-/Weißvorschau erhalten. Nächster fachlicher Schritt: reale Import-/Maschinenprüfung der gesicherten Dateien dokumentieren; bestätigte Maschinen-/Materialprofile separat hinterlegen. Echte Shop-/Betriebsabnahme bleibt offen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Feste Fertigungsprofile auch für native Acrylprodukte – 06.10.2026
 
 Branch `task/acrylic-production-profiles-20261006`, Basis `ece60315a8b016c5f6b741bfd6a226508ea0b13e`. Unter **Fertigung** einen passenden Profilstand auswählen und mit dem Acrylprodukt speichern. Neue gesicherte Gestaltungen übernehmen diesen festen Stand samt Druck-/Gravurvorgaben; spätere Profiländerungen ersetzen ihn nicht automatisch. Alte Produktrevisionen und Ausgaben bleiben erhalten. **313 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansicht](docs/dashboard-20261004/ACRYL-FERTIGUNGSPROFILE-20261006.md).

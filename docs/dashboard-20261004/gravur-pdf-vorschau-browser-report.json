@@ -1,0 +1,26 @@
+{
+  "startedAt": "2026-10-06T12:58:02.017243+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "published": false,
+  "machineApproved": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "csrfEnforced": true,
+  "wrongModesRejected": true,
+  "savedPdfSHAConfirmed": true,
+  "opaqueWhiteBackground": true,
+  "pdfBytesUnchanged": true,
+  "jobSwitchClearsImage": true,
+  "mirrorOutputSeparate": true,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T12:58:14.436458+00:00"
+}

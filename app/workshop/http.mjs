@@ -211,10 +211,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         }
         if(exportMatch[2]==='retry'&&method==='POST'){await body(req);const next=exportJobs.retry(id);exportWorker.kick();return json(res,202,next);}
         if(exportMatch[2]==='preview'&&method==='POST'){
-          const data=await body(req);if(Object.keys(data).some(k=>k!=='mode')||!['color','white'].includes(data.mode))fail(422,'preview_mode','Bitte Farbe oder Weiß wählen.');
+          const data=await body(req);if(Object.keys(data).some(k=>k!=='mode')||!['color','white','engraving'].includes(data.mode))fail(422,'preview_mode','Bitte Farbe, Weiß oder Gravur wählen.');
           if(job.status!=='completed')fail(409,'export_not_ready','Die Ausgabe ist noch nicht fertig.');
           const result=customerDrafts.printProof(job.snapshotId,job.recipeKey);if(!result)fail(409,'export_missing','Die gespeicherte PDF fehlt.');
-          if(printPreviewJobs.size>=2)fail(429,'preview_busy','Zwei Druckvorschauen werden bereits geladen. Bitte kurz warten.');
+          if(printPreviewJobs.size>=2)fail(429,'preview_busy','Zwei PDF-Vorschauen werden bereits geladen. Bitte kurz warten.');
           const request=randomUUID();printPreviewJobs.add(request);try{const preview=await printPreview(result,data.mode);res.writeHead(200,{'Content-Type':'image/png','Content-Length':preview.png.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-Source-SHA256':preview.sourceSha256,'X-Gravuru-Plate':preview.mode}).end(preview.png);return;}finally{printPreviewJobs.delete(request);}
         }
         if(exportMatch[2]==='download'&&method==='POST'){

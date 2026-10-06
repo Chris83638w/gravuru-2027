@@ -29,7 +29,7 @@ function sync(){
  $('#pdf').hidden=dirty;$('#original').hidden=dirty;$('#export-note').textContent=dirty?'Für die Kontur-PDF zuerst speichern. Dein bisheriger gespeicherter Stand bleibt erhalten.':'PDF aus Stand '+record?.revision+' · reine Konturprüfung ohne Farbe, Weißkanal oder Fertigungsfreigabe.';
  $('#shop-preparation').hidden=dirty;if(record)$('#shop-preparation').href='/werkstatt/shopvorbereitung/?configuration='+id+'&revision='+record.revision;
  $('#preview-state').textContent=dirty?'Entwurf':historical?'Historischer Stand':'Gespeichert';
- const canPreview=record?.document.designs?.length&&!dirty&&record.status!=='archived';$('#customer-view').hidden=!canPreview;if(canPreview)$('#customer-view').href='/konfigurator/form/?configuration='+id+'&revision='+record.revision;$('#customer-view-note').textContent=dirty?'Zuerst Änderungen speichern.':canPreview?'Privaten Testentwurf aus diesem gespeicherten Stand öffnen. Keine Shopfreigabe.':record?.status==='archived'?'Zum Prüfen das Produkt zuerst wieder aktivieren.':'Zuerst ein Design zuordnen und speichern.';
+ const canPreview=record?.document.designs?.length&&!dirty&&record.status!=='archived';$('#customer-view').hidden=!canPreview;if(canPreview)$('#customer-view').href='/?configuration='+id+'&revision='+record.revision;$('#customer-view-note').textContent=dirty?'Zuerst Änderungen speichern.':canPreview?'Privaten Testentwurf aus diesem gespeicherten Stand öffnen. Keine Shopfreigabe.':record?.status==='archived'?'Zum Prüfen das Produkt zuerst wieder aktivieren.':'Zuerst ein Design zuordnen und speichern.';
  designer?.render();
 }
 function manufacturingChoices(){

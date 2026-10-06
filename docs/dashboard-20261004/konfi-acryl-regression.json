@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-10-06T07:11:27.987924+00:00",
+  "data": "synthetic product, existing acrylic configurator",
+  "result": "PASS",
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "savedRevision": 2,
+  "laterRevision": 3,
+  "oldLinkKeepsRevision": true,
+  "unsavedPreviewHidden": true,
+  "existingIframeEditor": true,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T07:11:38.509307+00:00"
+}

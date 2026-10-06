@@ -50,7 +50,7 @@ export function createFormVariants({filename,repository}){
  function select(id,revision,variantId){
   version(revision);const group=options(id,revision,{customer:true}),v=group.variants.find(v=>v.id===(variantId??group.document.defaultVariantId));if(!v||!v.available)fail(422,'Diese Ausführung ist nicht verfügbar.');
   const record=repository.get(v.productId,{revision:v.productRevision});repository.validate(record.document);
-  return {groupId:id,groupRevision:revision,variantId:v.id,productId:v.productId,productRevision:v.productRevision,basePriceCents:record.document.basePriceCents,href:'/konfigurator/form/?configuration='+v.productId+'&revision='+v.productRevision};
+  return {groupId:id,groupRevision:revision,variantId:v.id,productId:v.productId,productRevision:v.productRevision,basePriceCents:record.document.basePriceCents,href:'/?'+new URLSearchParams({configuration:v.productId,revision:v.productRevision,group:id,groupRevision:revision,variant:v.id})};
  }
  const store={get,options,select,validate,
   importItem:key=>{const r=db.prepare('SELECT * FROM form_variant_imports WHERE import_key=?').get(key);return r?{fingerprint:r.fingerprint,id:r.set_id}:null;},

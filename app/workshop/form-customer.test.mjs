@@ -44,5 +44,10 @@ test('customer drafts enforce field rights and private photos, pin revisions, sa
  const engrave=await req('/api/workshop/customer-drafts',{productId:product.id,productRevision:2}),engraveState=structuredClone(engrave.data.draft.state);engraveState.fields[1].yMm=20;assert.ok((await req('/api/workshop/customer-drafts/'+engrave.data.draft.id+'/preview',{state:engraveState,expectedRevision:1},engrave.data.token)).data.warnings.some(w=>w.startsWith('Gravur prüfen')));
  assert.deepEqual(w.customerDrafts.photo(id,token,upload.data.mediaId).original,original);assert.equal(w.assets.list().length,1); // Customer photos never enter the design library.
  assert.equal((await fetch(base+'/konfigurator/form/?configuration='+product.id+'&revision=1')).status,200);
+ const entry=await fetch(base+'/models.json?configuration='+product.id+'&revision=1');assert.equal(entry.status,200);assert.deepEqual(await entry.json(),[{key:'form',name:'Kundenprüfung',configuration:{id:product.id,revision:1}}]);
+ assert.equal((await fetch(base+'/form-editor.html?configuration='+product.id+'&revision=1')).status,200);
+ assert.equal((await fetch(base+'/models.json?configuration='+product.id+'&revision=999')).status,404);
+ assert.equal((await fetch(base+'/models.json?configuration='+product.id+'&revision=1',{headers:{Origin:'https://foreign.invalid'}})).status,403);
+
  w.close();w=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy});assert.equal(w.customerDrafts.get(id,token).state.fields[0].text,'Familie Winter');assert.equal(w.customerDrafts.get(id,token).productRevision,1);assert.deepEqual(w.customerDrafts.photo(id,token,upload.data.mediaId).original,original);
 });

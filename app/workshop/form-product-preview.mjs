@@ -16,9 +16,9 @@ function materialImage(surface){
 }
 // Card images cannot load external SVG subresources. Embed only the known
 // material and immutable, sanitized design preview. Never customer draft media.
-export function formProductPreview(document,{assets,fonts,contours,photoMarkup}){
+export function formProductPreview(document,{assets,fonts,contours,photoMarkup,designId=document.defaultDesignId}){
  const surface=materialPreview(document);
  const base=surface.surface?.kind==='procedural'?surface.svg:surface.svg?surface.svg.replace(surface.surface.url+'?v='+surface.surface.sha256.slice(0,12),materialImage(surface.surface)):contours.preview(document.form.contourId).toString();
- const overlay=formDesignOverlay(document,fonts,document.defaultDesignId,{photoMarkup,sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')});
+ const overlay=formDesignOverlay(document,fonts,designId,{photoMarkup,sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')});
  return composeMaterialPreview(base,overlay);
 }

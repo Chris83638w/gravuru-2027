@@ -5,7 +5,7 @@ import argparse,json,os,subprocess,tempfile,time
 from datetime import datetime,timezone
 from pathlib import Path
 from openpyxl import Workbook,load_workbook
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright,expect
 import pymupdf
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -69,23 +69,25 @@ def main():
                 options=get('/api/workshop/variants/'+group+'/options?revision=1');assert [v['productRevision'] for v in options['variants']]==[2,2,2];assert [v['basePriceCents'] for v in options['variants']]==prices;report['checks']['groupFromExportedCatalog']={'groups':1,'variants':3,'productRevisions':[2,2,2]};save()
                 picker='/konfigurator/ausfuehrungen/?group='+group+'&revision=1'
                 for i,id in enumerate(ids):
-                    goto(picker);page.wait_for_selector('[data-variant]');page.click('[data-variant="v'+str(i)+'"]');page.click('#continue');page.wait_for_selector('#customer-workspace:not([hidden])');assert 'configuration='+id in page.url and 'revision=2' in page.url;assert page.locator('#customer-design').input_value()=='home';assert page.locator('#customer-design option').count()==2
-                    assert str(prices[i]//100)+','+str(prices[i]%100).zfill(2) in page.inner_text('#customer-price');assert str(masters[master_indices[i]]['width']) in page.inner_text('#product-size')
-                    page.locator('#customer-fields button').first.click();page.locator('#field-controls textarea').fill('Probe '+str(i));page.wait_for_function("!document.querySelector('#save-draft').disabled");page.click('#save-draft');page.wait_for_function("document.querySelector('#save-state').textContent==='Entwurf gespeichert'");saved_url=page.url;page.reload();page.wait_for_selector('#customer-workspace:not([hidden])');page.locator('#customer-fields button').first.click();assert page.locator('#field-controls textarea').input_value()=='Probe '+str(i)
-                    page.select_option('#customer-design','extra');page.wait_for_function("document.querySelector('#no-fields').hidden===false");page.select_option('#customer-design','home');page.wait_for_function("document.querySelector('#customer-fields button')!==null");page.locator('#customer-fields button').first.click();assert page.locator('#field-controls textarea').input_value()=='Probe '+str(i)
+                    goto(picker);page.wait_for_selector('[data-variant]');page.click('[data-variant="v'+str(i)+'"]');page.click('#continue');page.wait_for_selector('iframe');customer=page.frame_locator('iframe');expect(customer.locator('#customer-workspace')).to_be_visible()
+                    assert 'configuration='+id in page.url and 'revision=2' in page.url;assert customer.locator('#customer-design').input_value()=='home';assert customer.locator('#customer-design option').count()==2
+                    assert str(prices[i]//100)+','+str(prices[i]%100).zfill(2) in customer.locator('#customer-price').inner_text();assert str(masters[master_indices[i]]['width']) in customer.locator('#product-size').inner_text()
+                    customer.locator('#konfi-tab-text').click();customer.locator('#customer-fields button').first.click();customer.locator('#field-controls textarea').fill('Probe '+str(i));expect(customer.locator('#save-draft')).to_be_enabled();customer.locator('#save-draft').click();expect(customer.locator('#save-state')).to_have_text('Entwurf gespeichert')
+                    page.reload();expect(customer.locator('#customer-workspace')).to_be_visible();customer.locator('#konfi-tab-text').click();customer.locator('#customer-fields button').first.click();assert customer.locator('#field-controls textarea').input_value()=='Probe '+str(i)
+                    customer.locator('#konfi-tab-design').click();customer.locator('[data-design="extra"]').click();expect(customer.locator('#customer-design')).to_have_value('extra');customer.locator('[data-design="home"]').click();expect(customer.locator('#customer-design')).to_have_value('home');customer.locator('#konfi-tab-text').click();customer.locator('#customer-fields button').first.click();assert customer.locator('#field-controls textarea').input_value()=='Probe '+str(i)
                     assert get('/api/workshop/products/'+id)==before[i]
                 report['checks']['customerHandoff']={'openedVariants':3,'correctPricesAndDimensions':True,'editableFieldsSavedAndReloaded':True,'designSwitchRetainsOwnDraft':True,'productTemplatesUnchanged':True};save()
                 # Later backend changes cannot silently change a pinned group or old customer URL.
                 csrf=get('/api/workshop/session')['csrfToken'];changed=json.loads(json.dumps(before[0]['document']));changed['basePriceCents']=9999;changed['designs'][0]['name']='Späterer Name';r=page.request.patch(base+'/api/workshop/products/'+ids[0],headers={'X-Gravuru-CSRF':csrf},data={'document':changed,'expectedRevision':2});assert r.ok;assert r.json()['revision']==3
                 old=get('/api/workshop/variants/'+group+'/options?revision=1');assert old['variants'][0]['productRevision']==2 and old['variants'][0]['currentRevision']==3 and old['variants'][0]['basePriceCents']==1499
-                goto(picker);page.wait_for_selector('[data-variant]');page.click('[data-variant="v0"]');page.click('#continue');page.wait_for_selector('#customer-workspace:not([hidden])');assert '14,99' in page.inner_text('#customer-price');assert 'Persönliches Zuhause' in page.inner_text('#customer-design')
+                goto(picker);page.wait_for_selector('[data-variant]');page.click('[data-variant="v0"]');page.click('#continue');page.wait_for_selector('iframe');customer=page.frame_locator('iframe');expect(customer.locator('#customer-workspace')).to_be_visible();assert '14,99' in customer.locator('#customer-price').inner_text();assert 'Persönliches Zuhause' in customer.locator('#customer-design').inner_text()
                 report['checks']['laterBackendEditKeepsPinnedCustomerVersion']=True
                 page.screenshot(path=str(output/'customer-desktop.png'),full_page=True)
                 goto(picker);page.wait_for_selector('[data-variant]');page.screenshot(path=str(output/'variants-desktop.png'),full_page=True)
                 for width in [390,768]:
                     page.set_viewport_size({'width':width,'height':1050});assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
                     if width==390:page.screenshot(path=str(output/'variants-mobile.png'),full_page=True)
-                    page.click('[data-variant="v1"]');page.click('#continue');page.wait_for_selector('#customer-workspace:not([hidden])');assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');goto(picker);page.wait_for_selector('[data-variant]')
+                    page.click('[data-variant="v1"]');page.click('#continue');page.wait_for_selector('iframe');expect(page.frame_locator('iframe').locator('#customer-workspace')).to_be_visible();assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');goto(picker);page.wait_for_selector('[data-variant]')
                 report['viewports']=[1440,390,768];report['javascriptErrors']=errors;assert not errors,errors;browser.close()
             report['result']='PASS'
         except Exception as error:

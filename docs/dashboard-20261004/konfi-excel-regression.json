@@ -1,0 +1,47 @@
+{
+  "startedAt": "2026-10-06T07:08:49.056229+00:00",
+  "data": "fresh synthetic fixtures only",
+  "published": false,
+  "checks": {
+    "realXlsxSvgPdfCreationAndRepeat": {
+      "created": 3,
+      "repeatCreated": 0,
+      "designsPerProduct": 2
+    },
+    "designUpdate": {
+      "updated": 3,
+      "productRevision": 2,
+      "originalFieldRetained": true
+    },
+    "groupFromExportedCatalog": {
+      "groups": 1,
+      "variants": 3,
+      "productRevisions": [
+        2,
+        2,
+        2
+      ]
+    },
+    "customerHandoff": {
+      "openedVariants": 3,
+      "correctPricesAndDimensions": true,
+      "editableFieldsSavedAndReloaded": true,
+      "designSwitchRetainsOwnDraft": true,
+      "productTemplatesUnchanged": true
+    },
+    "laterBackendEditKeepsPinnedCustomerVersion": true
+  },
+  "result": "PASS",
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T07:09:09.951568+00:00"
+}

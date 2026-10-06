@@ -12,7 +12,7 @@
   <main id="intro">
     <p class="eyebrow">GRAVURU 2027</p>
     <h1>Dein Acrylglasbild. Deine Erinnerung.</h1>
-    <p>Gestalte „Unser Anfang“ mit deinem Foto, deinen Worten und deinen Farben.</p>
+    <p id="intro-description">Gestalte „Unser Anfang“ mit deinem Foto, deinen Worten und deinen Farben.</p>
     <button id="open" type="button">Jetzt gestalten</button>
     <p><a href="/werkstatt">Zur Werkstatt</a></p>
     <p id="status" role="status" aria-live="polite"></p>
@@ -27,12 +27,23 @@
       pending=true;button.disabled=true;status.textContent='Deine Gestaltung wird vorbereitet …';
       try{
         const params=new URL(location.href).searchParams,query=new URLSearchParams();
+        if(params.has('group')){
+          const selected=await fetch('/api/workshop/variants/'+encodeURIComponent(params.get('group'))+'/select?'+new URLSearchParams({revision:params.get('groupRevision')||params.get('revision')||'',...(params.has('variant')?{variant:params.get('variant')}:{})}));
+          const value=await selected.json();if(!selected.ok)throw Error(value.error?.message||'Ausführung nicht verfügbar.');
+          params.set('configuration',value.productId);params.set('revision',value.productRevision);params.set('groupRevision',value.groupRevision);params.set('variant',value.variantId);
+        }
         if(params.has('configuration'))query.set('configuration',params.get('configuration'));
         if(params.has('revision'))query.set('revision',params.get('revision'));
         const response=await fetch('/models.json'+(query.size?'?'+query:''));
         if(!response.ok)throw Error('Produktauswahl nicht verfügbar.');
-        const models=await response.json(),model=models.find(m=>m.key==='acryl');
-        if(!model)throw Error('Acrylglasvorlage fehlt.');
+        const models=await response.json(),model=models.find(m=>['acryl','form'].includes(m.key));
+        if(!model)throw Error('Produktvorlage fehlt.');
+        if(model.key==='form'){
+          intro.querySelector('h1').textContent=model.name;document.getElementById('intro-description').textContent='Gestalte dein Produkt mit deinen Texten, Fotos und Motiven.';editor.setAttribute('aria-label','Produkt gestalten');
+          const target=new URL('/form-editor.html',location.origin);target.searchParams.set('configuration',model.configuration.id);target.searchParams.set('revision',model.configuration.revision);
+          for(const key of ['design','group','groupRevision','variant'])if(params.has(key))target.searchParams.set(key,params.get(key));
+          const frame=document.createElement('iframe');frame.title='Produkt personalisieren';frame.src=target.pathname+target.search;editor.append(frame);intro.hidden=true;editor.hidden=false;status.textContent='';document.title=model.name+' · Gravuru';return;
+        }
         if(params.get('druckexport')==='1'){
           const session=await fetch('/api/workshop/session',{credentials:'same-origin'});
           if(!session.ok||(await session.json()).scope!=='local-operator')throw Error('Druckexport benötigt eine Werkstattsitzung.');
@@ -47,9 +58,12 @@
     button.addEventListener('click',open);
     window.addEventListener('message',event=>{
       if(event.origin!==location.origin||event.source!==editor.querySelector('iframe')?.contentWindow)return;
+      if(event.data?.type==='gravuru-form-location'){
+        const current=new URL(location.href);for(const key of ['configuration','revision','design','group','groupRevision','variant']){const value=event.data.params?.[key];if(typeof value==='string')current.searchParams.set(key,value);else current.searchParams.delete(key);}history.replaceState(null,'',current);return;
+      }
       if(event.data?.type==='gravuru-fk-close'){editor.hidden=true;intro.hidden=false;}
     });
-    if(new URL(location.href).searchParams.get('model')==='acryl'||new URL(location.href).searchParams.has('configuration'))open();
+    if(new URL(location.href).searchParams.get('model')==='acryl'||new URL(location.href).searchParams.has('configuration')||new URL(location.href).searchParams.has('group'))open();
   </script>
 </body>
 </html>

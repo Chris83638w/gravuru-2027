@@ -17,7 +17,7 @@ export function productCards(products,badge){
    <div class="card-content"><div class="card-heading"><h3>${name}</h3><button data-product-id="${id}">${icon('pencil')}Bearbeiten</button></div>
    <div class="card-status">${badge(p)}<small>Stand ${p.revision} · ${info.designCount||0} ${(info.designCount||0)===1?'Design':'Designs'}</small></div>
    <dl>${row('tag','Konfigurations-ID',`<code title="${id}">${id}</code>`)}${row(info.method==='print'?'printer':'settings','Verfahren',info.method==='print'?'Druck':info.method==='engraving'?'Gravur':'Nicht hinterlegt')}${row('dimensions','Formate',escape(formats))}${row('link','Shopify','Shop-Anbindung ausstehend')}</dl>
-   <a class="card-preview-link" href="${info.formProduct?(customerView?'/konfigurator/form/':'/werkstatt/formprodukt/'):'/'}?${new URLSearchParams({configuration:p.id,revision:p.revision})}" target="_blank" rel="noopener">${icon('eye')}${info.formProduct?(customerView?'Kundenentwurf prüfen':'Formprodukt öffnen'):'Kundenansicht'}</a></div></article>`;
+   <a class="card-preview-link" href="${info.formProduct?(customerView?'/':'/werkstatt/formprodukt/'):'/'}?${new URLSearchParams({configuration:p.id,revision:p.revision})}" target="_blank" rel="noopener">${icon('eye')}${info.formProduct?(customerView?'Kundenentwurf prüfen':'Formprodukt öffnen'):'Kundenansicht'}</a></div></article>`;
  }).join('');
 }
 export function installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate}){

@@ -1,3 +1,42 @@
+# Ergänzung: kontrollierter HTTP-Warenkorbanschluss
+
+Stand 06.10.2026, 17:05 UTC; Branch `task/cart-http-gate-20261006`. GitHub-Basis `6b944c1bab2d6219e5a585c3d979bd5eec8bf1b7`, Baum `90e27d980e6d0d4afc9a0198244fb10fa41299a1`. Lokaler gleichwertiger Ausgangscommit `566d9b3126483cae70898b12ea311699c7a26a7e`. Sicherung über GitHub-Connector mit identischem Dateibaum und anschließend geprüftem Remote-Branch; kein Force-Push/Merge.
+
+## Tatsächlich umgesetzt
+
+`POST /api/workshop/draft-cart` verbindet die bereits geprüften privaten Form-/Acrylentwürfe, gespeicherten Angebote, Shoptransport und Wiederholschutz. Der Body enthält ausschließlich `draftId`, `expectedRevision`, `snapshotId`, `offerId`, `offerToken`; begrenzt auf 16 KiB. `X-Gravuru-CSRF` und `X-Gravuru-Draft` sind getrennte erforderliche Berechtigungen. GET löst keine Anlage aus. Der äußere bestehende HTTP-Server prüft weiterhin Host, Origin und Sec-Fetch-Site.
+
+Der neue `cart-http-gate.mjs` prüft vor und nach asynchronen Schritten zusätzlich den aktuellen und festgehaltenen Produktstand: archivierte Produkte und Nicht-Produkte werden abgewiesen, auch für zwischengespeicherte Checkouts. Käuferkontextfehler werden ohne interne Details zurückgegeben. Ein bereits abgebrochener Request sendet nichts. Abbruch während der Übertragung wird an den bestehenden Transport weitergereicht; das Journal verhindert automatische Wiederholung bei unklarem Ergebnis. Es gibt keine automatische Weiterleitung oder Behauptung einer Zahlung.
+
+Die Standardkonstruktion `createWorkshop(...)` übergibt **keine** Storefront-Konfiguration und antwortet an dieser Route mit `503 cart_disabled`. Kein Secret wird automatisch gesucht oder aus Browser-/Chatinhalt übernommen. Eine spätere ausdrücklich bestätigte serverseitige Testanbindung kann das optionale Feld `storefront` verwenden:
+
+- `mode`: exakt `test-only`; diese Angabe ist kein technischer Nachweis, dass ein Shopify-Shop ein Entwicklungsstore ist. Die tatsächliche Shop-/Testfreigabe muss vorher separat geprüft werden.
+- `config`: festgelegte `shopDomain`, `apiVersion`, sicher bereitgestelltes `privateToken`; keine Werte im Repository oder Chat. Dieser Vertrag legt keine erfundene Cloud-Secretbindung an.
+- `resolveBuyerIp(request)`: explizite serverseitige Funktion aus vertrauenswürdigem Ingress. Kein automatisches Vertrauen in X-Forwarded-For, keine Käufer-IP aus Body/Browserwerten. Ungültige/fehlende Angaben verhindern Versand und Journalreservierung.
+- `transportOptions`: nur für interne Tests/Transportkonfiguration; die Tests verwenden synthetisches `fetchImpl`, keine echten Zugänge.
+
+Vorhandene Produktions-/Prüfblocker bleiben bestehen. Die lokale Betreiberoberfläche ist weiterhin keine gehostete Händler- oder Shopify-Kundenkontoauthentifizierung. Im Konfigurator wurde noch kein Kaufbutton aktiviert. Private Entwürfe/Angebote sind keine öffentlich zugänglichen Downloadlinks.
+
+## Tatsächlich ausgeführte Prüfung
+
+- `node app/workshop/cart-http-gate.test.mjs`: 9 neue Prüfungen bestanden. Umfasst standardmäßige Deaktivierung, äußere Host-/Origin-/Fetch-Site-Prüfung, CSRF, privaten Zugriff, Requestgrößenlimit, Manipulationsschutz, synthetischen erfolgreichen POST samt Wiederholung, Käuferkontext, Archivierung vor/während/nach Anfrage sowie Abbruch.
+- `node app/workshop/acrylic-draft-http.test.mjs`: 1 bestanden; bestehender privater Acryl-Sicherungsablauf mit echter Fotoprüfung weiter intakt.
+- `node app/workshop/draft-cart-handoff.test.mjs`: 13 bestanden.
+- `node app/workshop/cart-handoff-journal.test.mjs`: 18 bestanden.
+- Insgesamt **41 gezielte Prüfungen, 0 Fehler, 0 Skips**. Build: 76 Ressourcen, 1 Modell. `git diff --check`: bestanden.
+
+Die neuen Tests rufen den echten HTTP-Requestlistener direkt im Prozess mit Readable-/EventEmitter-Testobjekten auf. `server.address()` liefert im Test den festen Port für die Hostprüfung; es wird kein Socket gebunden. Daher keine Behauptung einer funktionierenden externen HTTP-Verbindung oder Browserabnahme. Alle Shopantworten synthetisch; keine echte Warenkorbanlage.
+
+## Aktuelle Laufzeitgrenze und nächster Schritt
+
+Erneuter Listener-Versuch tatsächlich fehlgeschlagen: `listen EPERM` an 127.0.0.1. Laufzeitstatus aktuell (Revision 337), Cloud verbunden, Netzwerk eingeschränkt auf Paketmanager, keine konfigurierten Secrets/Laufzeitvariablen/Identitäten. Die vom Nutzer veröffentlichte andere Konfiguration ist damit nicht als in dieser laufenden Aufgabe angewendet belegt. Keine erneute Einrichtung, kein Secretabruf und keine Serveränderung.
+
+**NICHT AUSGEFÜHRT:** sichtbare Browserabnahme, volle Netzwerk-Testsuite, echte Shopify-Anlage, Deployment. Nächste Integrationshandlung benötigt einen ausführbaren geschützten Vorschauzugriff und die bestätigte sichere Test-App-/Käuferkontextanbindung. Bis dahin keine Freischaltung durch Aufweichen des Hostschutzes, Übernahme von Browsercookies oder Eintragen von Secretwerten in Git. Unabhängige Codearbeit kann weitergehen.
+
+---
+
+Nachfolgende Ergänzungen dokumentieren die vorausgehenden Zwischenstände.
+
 # Ergänzung: private Acrylentwürfe und bestehender Sichern-Button
 
 Stand 06.10.2026, 16:48 UTC; Branch `task/acrylic-private-drafts-20261006`; GitHub-Basis `4fe1cf6b59f22ea25393b7b0d5d8860e74c2339c`, Baum `cb50ecb13c4708c5668c84fe15ed8cdd2335f9ba`. Lokaler Ausgangscommit `f6503655adad9c328dbc17732011133a3f111f35` hat denselben Baum. Die Sicherung erfolgt über den GitHub-Connector mit anschließendem Baum-/Branchabgleich; kein Merge oder Force-Push.

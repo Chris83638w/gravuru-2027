@@ -11,6 +11,7 @@ import {createFormVariants} from './form-variants.mjs';
 import {additionPolicy,formMotifs} from './form-additions.mjs';
 import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './order-product-draft.mjs';
 import {prepareCartRequest} from './storefront-cart.mjs';
+import {createCartHttpGate} from './cart-http-gate.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createFormEngravingProof,formEngravingSettings,formEngravingKey,FORM_ENGRAVING_RECIPE} from './form-engraving-proof.mjs';
 import {createExportWorker} from './export-jobs.mjs';
@@ -54,7 +55,7 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Local operator surface only. This does not provide hosted merchant authentication. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null}){
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
   const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite')});
@@ -68,6 +69,9 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const csrfToken=randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
+  // Explicit server configuration only; constructing the default preview never enables Shopify writes.
+  let cartGate=null;
+  const configuredCart=()=>cartGate??=createCartHttpGate({drafts:customerDrafts,repository,settings:storefront});
   const outputRecipes=[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE,ACRYLIC_PRINT_RECIPE,ACRYLIC_ENGRAVING_RECIPE];
   const exportWorker=createExportWorker({jobs:exportJobs,recipe:outputRecipes,render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_ENGRAVING_RECIPE?createAcrylicEngravingProof:job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
   function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const native=m.schema===ACRYLIC_REVIEW,settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings});exportWorker.kick();return job;}
@@ -114,6 +118,14 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         return json(res,200,orderIntake.receive(Buffer.concat(chunks),req.headers,orderWebhook));
       }
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/draft-cart'){
+        if(method!=='POST')fail(405,'method_not_allowed','Eine Warenkorbübergabe benötigt POST.');
+        if(!storefront)fail(503,'cart_disabled','Die bestätigte Test-Warenkorbanbindung ist nicht eingerichtet.');
+        const data=await body(req,16*1024),controller=new AbortController();
+        const abort=()=>controller.abort();req.once('aborted',abort);res.once('close',abort);
+        try{return json(res,200,await configuredCart()(data,{draftToken:req.headers['x-gravuru-draft'],request:req,signal:controller.signal}));}
+        finally{req.removeListener('aborted',abort);res.removeListener('close',abort);}
+      }
       if(pathname==='/api/workshop/orders'&&method==='GET'){const orders=orderIntake.list();return json(res,200,{orders,statuses:Object.fromEntries(orders.map(o=>[o.id,orderIntake.status(o.id)])),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});}
       const orderProductMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/product-draft(?:\/(preview|apply))?$/);
       if(orderProductMatch){

@@ -1,3 +1,9 @@
+## Aktuell: Farbe und Weiß aus der gespeicherten PDF prüfen – 06.10.2026
+
+Branch `task/dashboard-plate-preview-20261006`, Basis `ff8b4c5bb6a6eefd5879281126553f56eb051c3a`. Unter **Ausgaben** lassen sich Farbe und Weiß getrennt auf transparentem Karohintergrund ansehen. Quelle ist die tatsächlich gesicherte PDF, bei Mimaki die jeweilige separate Datei; Quellen-SHA sichtbar. Kein Weiß-Button bei Ausgabe ohne Weiß, kein altes Bild nach Auftragswechsel. PDFs/ZIPs bleiben unverändert. **304 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Handy/Tablet/Desktop bestanden.** [Nachweis und sichtbare Ansichten](docs/dashboard-20261004/DASHBOARD-DRUCKEBENEN-20261006.md).
+
+In der vorhandenen Cloud implementiert und geprüft, nicht veröffentlicht. Keine Maschinen-/ICC-Freigabe oder echte Shop-Verbindung daraus ableiten. Nächster Schritt: Mimaki-Importergebnis des Nutzers übernehmen und bei Bedarf mit der gespeicherten Druckebene vergleichen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Mimaki-Trennung im Dashboard – 06.10.2026
 
 Branch `task/dashboard-print-separations-20261006`, Basis `6ca4df1c7dd82a669eb72eca0348d72b9f35d3b1`. Neue Ausgabeaufträge liefern Mimaki-Farbe ohne RDG_WHITE und reine RDG_WHITE-Vektoren getrennt, beide einzeln im Prüfstand/unter „Ausgaben“ und im ZIP. Texte je Eingabe gruppiert; alte gespeicherte Dateien bleiben unverändert. **301 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet sowie MuPDF/Ghostscript bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/DASHBOARD-DRUCKTRENNUNG-20261006.md).

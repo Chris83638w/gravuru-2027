@@ -1,7 +1,7 @@
 import {unzipSync} from '/platform/sources/app/shared/vendor/fflate-0.8.3.mjs';
 const columns=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision'];
 const designColumns=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design'];
-function records(matrix,{allowed=columns,required=['import_key','name'],limit=100,optional=false}={}){
+export function records(matrix,{allowed=columns,required=['import_key','name'],limit=100,optional=false}={}){
   const headers=(matrix.shift()||[]).map(v=>String(v??'').replace(/^\uFEFF/,'').trim());
   if(required.some(h=>!headers.includes(h)))throw Error('Die erste Zeile muss '+required.join(', ')+' enthalten. Bitte die Vorlage verwenden.');
   if(new Set(headers).size!==headers.length||headers.some(v=>!allowed.includes(v)))throw Error('Spaltenüberschriften sind unbekannt oder doppelt. Bitte die Vorlage verwenden.');
@@ -33,7 +33,7 @@ export function parseCsv(source){
 }
 function xml(text){const doc=new DOMParser().parseFromString(text,'application/xml');if(doc.querySelector('parsererror')||/<!DOCTYPE|<!ENTITY/i.test(text))throw Error('Ungültige Excel-Struktur.');return doc;}
 const nodes=(parent,name)=>[...parent.getElementsByTagNameNS('*',name)];
-export function parseWorkbook(bytes){
+export function workbookSheets(bytes){
   let total=0;
   const files=unzipSync(bytes,{filter:file=>{
     const keep=/^xl\/(?:workbook\.xml|_rels\/workbook\.xml\.rels|sharedStrings\.xml|worksheets\/sheet[0-9]+\.xml)$/.test(file.name);
@@ -72,7 +72,11 @@ export function parseWorkbook(bytes){
   });
   return matrix;
   }
-  return {rows:records(matrixFor('Produkte',columns.length)),designRows:sheets.some(n=>n.getAttribute('name')==='Designs')?records(matrixFor('Designs',designColumns.length),{allowed:designColumns,required:['import_key','design_id','design_file'],limit:3000,optional:true}):[]};
+  return {matrixFor,hasSheet:name=>sheets.some(n=>n.getAttribute('name')===name)};
+}
+export function parseWorkbook(bytes){
+  const {matrixFor,hasSheet}=workbookSheets(bytes);
+  return {rows:records(matrixFor('Produkte',columns.length)),designRows:hasSheet('Designs')?records(matrixFor('Designs',designColumns.length),{allowed:designColumns,required:['import_key','design_id','design_file'],limit:3000,optional:true}):[]};
 }
 export function parseXlsx(bytes){return parseWorkbook(bytes).rows;}
 export async function readBatchImport(file){

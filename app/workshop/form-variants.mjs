@@ -1,3 +1,4 @@
+import {planVariantBatch} from './variant-batch.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {randomUUID,createHash} from 'node:crypto';
 import {isFormProduct,FORM_MATERIALS} from './form-product.mjs';
@@ -9,6 +10,7 @@ export function createFormVariants({filename,repository}){
  const db=new DatabaseSync(filename);db.exec(`PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;
  CREATE TABLE IF NOT EXISTS form_variant_sets(id TEXT PRIMARY KEY,revision INTEGER NOT NULL);
  CREATE TABLE IF NOT EXISTS form_variant_revisions(set_id TEXT NOT NULL REFERENCES form_variant_sets(id),revision INTEGER NOT NULL,document TEXT NOT NULL CHECK(json_valid(document)),sha256 TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(set_id,revision));
+ CREATE TABLE IF NOT EXISTS form_variant_imports(import_key TEXT PRIMARY KEY,fingerprint TEXT NOT NULL,set_id TEXT NOT NULL REFERENCES form_variant_sets(id),created_at TEXT NOT NULL);
  CREATE TABLE IF NOT EXISTS form_variant_members(set_id TEXT NOT NULL,revision INTEGER NOT NULL,variant_id TEXT NOT NULL,product_id TEXT NOT NULL,product_revision INTEGER NOT NULL,PRIMARY KEY(set_id,revision,variant_id),FOREIGN KEY(set_id,revision) REFERENCES form_variant_revisions(set_id,revision));
  CREATE TRIGGER IF NOT EXISTS form_variant_immutable BEFORE UPDATE ON form_variant_revisions BEGIN SELECT RAISE(ABORT,'Variant revisions are immutable');END;
  CREATE TRIGGER IF NOT EXISTS form_variant_no_delete BEFORE DELETE ON form_variant_revisions BEGIN SELECT RAISE(ABORT,'Variant revisions are immutable');END;
@@ -50,9 +52,22 @@ export function createFormVariants({filename,repository}){
   const record=repository.get(v.productId,{revision:v.productRevision});repository.validate(record.document);
   return {groupId:id,groupRevision:revision,variantId:v.id,productId:v.productId,productRevision:v.productRevision,basePriceCents:record.document.basePriceCents,href:'/konfigurator/form/?configuration='+v.productId+'&revision='+v.productRevision};
  }
- return {get,options,select,list:()=>db.prepare('SELECT id FROM form_variant_sets ORDER BY rowid DESC').all().map(r=>get(r.id)),
+ const store={get,options,select,validate,
+  importItem:key=>{const r=db.prepare('SELECT * FROM form_variant_imports WHERE import_key=?').get(key);return r?{fingerprint:r.fingerprint,id:r.set_id}:null;},
+  plan:input=>planVariantBatch(store,input),
+  commit:input=>tx(()=>{
+   const plan=planVariantBatch(store,input);if(!plan.entries.length||!plan.valid&&input.skipErrors!==true)fail(422,'Die Tabelle enthält Fehler. Korrigieren oder ausdrücklich nur gültige Gruppen übernehmen.');
+   if(!input.token||input.token!==plan.token)fail(409,'Importdaten geändert. Bitte erneut prüfen.');
+   const groups=plan.entries.map(e=>{const prior=store.importItem(e.key);if(prior)return {key:e.key,id:prior.id,created:false,updated:false};
+    const id=e.groupId||'variants_'+randomUUID(),rev=e.action==='update'?e.expectedRevision+1:1;
+    if(e.action==='create')db.prepare('INSERT INTO form_variant_sets VALUES(?,1)').run(id);else db.prepare('UPDATE form_variant_sets SET revision=? WHERE id=?').run(rev,id);
+    append(id,rev,e.document);db.prepare('INSERT INTO form_variant_imports VALUES(?,?,?,?)').run(e.key,e.fingerprint,id,new Date().toISOString());return {key:e.key,id,revision:rev,created:e.action==='create',updated:e.action==='update'};
+   });return {groups,errors:plan.report.filter(r=>r.status==='error')};
+  }),
+  list:()=>db.prepare('SELECT id FROM form_variant_sets ORDER BY rowid DESC').all().map(r=>get(r.id)),
   history:id=>{get(id);return db.prepare('SELECT revision FROM form_variant_revisions WHERE set_id=? ORDER BY revision DESC').all(id).map(r=>get(id,r.revision));},
   create:input=>tx(()=>{const d=validate(input),id='variants_'+randomUUID();db.prepare('INSERT INTO form_variant_sets VALUES(?,1)').run(id);return append(id,1,d);}),
   save:(id,input,expected)=>tx(()=>{const old=get(id);version(expected);if(old.revision!==expected)fail(409,'Ausführungsgruppe inzwischen geändert. Eingaben bleiben erhalten; bitte aktuellen Stand laden.');const d=validate(input);db.prepare('UPDATE form_variant_sets SET revision=? WHERE id=?').run(old.revision+1,id);return append(id,old.revision+1,d);}),
   close:()=>db.close()};
+ return store;
 }

@@ -1,3 +1,9 @@
+## Aktuell: Ausführungsgruppen per Excel zuordnen – 06.10.2026
+
+Branch `task/variant-excel-20261006`, Basis `35e3cae6b34d6ef0daee099e0ada0f81bb63358d`. Neue XLSX-Vorlage mit **Gruppen**, **Varianten**, **Anleitung** und Oberfläche unter Ausführungen → Excel-Zuordnung. Vorschau, explizite Teilübernahme, gezielte Updates und Wiederaufnahme ohne doppelte Gruppen. Feste Produktrevisionen; ungenannte Ausführungen bleiben erhalten. **259 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell. Echter Excel-Upload/Download und Browserprüfung Desktop/Handy/Tablet bestanden.** [Vorlage, Bedienung und Nachweis](docs/dashboard-20261004/DASHBOARD-AUSFUEHRUNGEN-EXCEL.md).
+
+Nächster Schritt: vorhandene Gruppen und Produktreferenzen als befüllbare Excel-Datei exportieren, damit IDs/Revisionen nicht abgetippt werden müssen. Dieser Import verwendet bereits gespeicherte Produkte; keine automatische Größen-/Kundenfeldumrechnung. Kein Publish/Deploy, Merge, PR oder Zugriff auf private Bestände; separate Acryl-Testseite unverändert. Nachfolgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Größen-/Materialausführungen verbinden – 06.10.2026
 
 Branch `task/form-variants-20261006`, Basis `67205fa26b8b48fa02f5a0e3959a3f1dcddc91ed`. Backend verbindet vorbereitete freie Formprodukte zu einer gemeinsamen Kundenauswahl mit Standardausführung. Jede Größe/Materialkombination verweist ausdrücklich auf ihre Produktrevision mit passender Kontur, Bohrungen, Preis und Designs. Historie, Konflikte und Archivierung geprüft; alte Gruppenlinks übernehmen spätere Preise nicht still. **254 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Browserprüfung Desktop/Handy/Tablet einschließlich Kundenwechsel und Konflikt.** [Bedienung und Nachweis](docs/dashboard-20261004/DASHBOARD-AUSFUEHRUNGEN.md).

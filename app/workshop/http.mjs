@@ -122,6 +122,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         return json(res,201,{request:prepareCartRequest(offer),summary:{shopDomain:binding.shopDomain,variantId:offer.variantId,productId:binding.productId,productRevision:binding.productRevision,snapshotId:data.snapshotId,quantity:offer.quantity,unitCents:offer.unitCents,totalCents:offer.unitCents*offer.quantity,currency:offer.currency},sent:false,paymentConfirmed:false});
       }
       if(pathname==='/api/workshop/order-offers'&&method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['bindingId','snapshotId','quantity'].includes(k)))fail(422,'offer_fields','Unbekannte Checkout-Felder.');return json(res,201,orderIntake.offer(data));}
+      if(pathname==='/api/workshop/variant-import-template'&&method==='GET'){
+        const bytes=fs.readFileSync(new URL('./templates/ausfuehrungen.xlsx',import.meta.url));res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Ausfuehrungen.xlsx"','Cache-Control':'no-store'}).end(bytes);return;
+      }
+      if(pathname==='/api/workshop/variants/batch/plan'&&method==='POST'){const {entries,...plan}=variants.plan(await body(req));return json(res,200,plan);}
+      if(pathname==='/api/workshop/variants/batch/commit'&&method==='POST')return json(res,200,variants.commit(await body(req)));
       if(pathname==='/api/workshop/variants'){
         if(method==='GET')return json(res,200,{groups:variants.list()});
         if(method==='POST')return json(res,201,variants.create((await body(req)).document));

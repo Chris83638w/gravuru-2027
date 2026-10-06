@@ -1,0 +1,67 @@
+{
+  "branch": "task/variant-excel-20261006",
+  "baseCommit": "35e3cae6b34d6ef0daee099e0ada0f81bb63358d",
+  "cloudCheck": {
+    "startedAt": "2026-10-06T05:59:15.030Z",
+    "platform": "linux",
+    "node": "v24.19.0",
+    "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+    "steps": [
+      {
+        "name": "python-pdf",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "references",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "tests",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "build",
+        "exitCode": 0,
+        "result": "PASS"
+      }
+    ],
+    "result": "PASS",
+    "tests": {
+      "count": 259,
+      "skipped": 0,
+      "failures": 0
+    },
+    "finishedAt": "2026-10-06T06:00:32.128Z"
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "browser": {
+    "actualTemplateDownload": true,
+    "templateSha256": "d08a280a277378362aacb8339d4bc47f6a6d81b800b271ac035fc474ff511fec",
+    "formulaAndOrphanRejected": true,
+    "initialGroups": 3,
+    "firstCreated": 2,
+    "retryCreated": 0,
+    "correctedCreated": 1,
+    "updatePreservesUnmentionedVariant": true,
+    "repeatUpdates": 0,
+    "existingProductTemplateParsed": {
+      "rows": 1,
+      "designRows": 0
+    },
+    "viewports": [
+      1440,
+      390,
+      768
+    ],
+    "javascriptErrors": []
+  },
+  "onlySyntheticData": true,
+  "published": false
+}

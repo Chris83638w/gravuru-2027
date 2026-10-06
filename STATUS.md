@@ -1,3 +1,9 @@
+## Aktuell: Alte fehlgeschlagene Ausgaben ohne Wiederholungsschleife – 06.10.2026
+
+Branch `task/obsolete-output-recovery-20261006`, Basis `56a7467b4407455f2870066a3cd31916c08875bb`. Alte fehlgeschlagene Ausgabeversionen erhalten unter **Ausgaben** die Aktion **Mit aktueller Ausgabeversion neu anlegen**. Gesicherte Gestaltung und Einstellungen bleiben erhalten; alter Auftrag/Verlauf unverändert, Wiederholung ohne Duplikate, Bestellbezug erhalten. Neue PDF ausdrücklich erneut prüfen. **316 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; synthetischer Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansicht](docs/dashboard-20261004/AUSGABE-NEUANLAGE-20261006.md).
+
+Keine automatische Neuberechnung bestehender Dateien, keine Veröffentlichung oder Maschinenfreigabe. Aktuelle fehlgeschlagene Aufträge behalten ihren normalen Wiederholweg. Nächste externe Abnahme: reales Import-/Probedruckergebnis der bereitgestellten Dateien und bestätigte Fertigungsvorgaben dokumentieren. Test-App-/Betriebsanbindung separat offen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Fertigungsprofil bei Bestellgestaltung → Produkt erhalten – 06.10.2026
 
 Branch `task/order-product-profile-20261006`, Basis `928c071ec8a777e10494ba1bbe2d8698735629ea`. Neue Acrylproduktentwürfe aus gesicherten Bestellungen übernehmen jetzt den festen Fertigungsprofilstand, statt auf Standardwerte zurückzufallen. Referenzen und Hash geprüft; neuere Profile nicht automatisch übernommen. Private Kundenbilder, ursprüngliche Bestellung und Shopbindungen bleiben unverändert. **315 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; durchgehender synthetischer Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansicht](docs/dashboard-20261004/BESTELLPRODUKT-PROFIL-20261006.md).

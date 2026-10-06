@@ -1,5 +1,6 @@
 // Local synthetic order fixture. Never opens an existing/private customer database.
 import fs from 'node:fs';import path from 'node:path';import {randomBytes} from 'node:crypto';import {execFileSync} from 'node:child_process';
+import {formPrintSettings} from '../../app/workshop/form-print-proof.mjs';
 import {build} from '../../app/configurator/variant-m/build.mjs';
 import {createWorkshop} from '../../app/workshop/http.mjs';
 import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
@@ -22,5 +23,12 @@ let bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});
 const artwork=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256);input.preview=execFileSync('python3',['-c',"import sys,cairosvg;sys.stdout.buffer.write(cairosvg.svg2png(bytestring=sys.stdin.buffer.read(),output_width=450,output_height=600))"],{input:artwork.svg,env:importEnvironment()}).toString('base64');
 bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});const snapshot=w.customerDrafts.captureAcrylicReview('synthetic-order-fixture',bundle);
 if(profile)w.productionProfiles.save(profile.id,{...profile.document,archived:true,output:{...profile.document.output,profile:'roland',mirror:false}},1);
-const server=createPreviewServer({workshop:w,outputDirectory:directory});server.listen(0,'127.0.0.1',()=>fs.writeFileSync(path.join(directory,'ready.json'),JSON.stringify({url:'http://127.0.0.1:'+server.address().port,productId:record.id,snapshotId:snapshot.id,built,webhook,profile}),{mode:0o600}));
+let obsolete=null;
+if(process.argv[3]==='obsolete-output'){
+ const settings=formPrintSettings({profile:'mimaki',white:'motif',mirror:true});
+ obsolete=w.exportJobs.enqueue({snapshotId:snapshot.id,recipe:'gravuru-acrylic-print-proof/v3',recipeKey:'synthetic-obsolete-output',settings});w.exportWorker.kick();
+ try{await w.exportWorker.wait(obsolete.id);throw Error('Obsolete fixture unexpectedly succeeded');}catch(error){if(w.exportJobs.get(obsolete.id).status!=='failed')throw error;}
+ obsolete=w.exportJobs.get(obsolete.id);
+}
+const server=createPreviewServer({workshop:w,outputDirectory:directory});server.listen(0,'127.0.0.1',()=>fs.writeFileSync(path.join(directory,'ready.json'),JSON.stringify({url:'http://127.0.0.1:'+server.address().port,productId:record.id,snapshotId:snapshot.id,built,webhook,profile,obsolete}),{mode:0o600}));
 process.on('SIGTERM',()=>server.close(()=>{w.close();process.exit(0);}));

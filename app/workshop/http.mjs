@@ -67,7 +67,8 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const csrfToken=randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
-  const exportWorker=createExportWorker({jobs:exportJobs,recipe:[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE,ACRYLIC_PRINT_RECIPE,ACRYLIC_ENGRAVING_RECIPE],render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_ENGRAVING_RECIPE?createAcrylicEngravingProof:job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
+  const outputRecipes=[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE,ACRYLIC_PRINT_RECIPE,ACRYLIC_ENGRAVING_RECIPE];
+  const exportWorker=createExportWorker({jobs:exportJobs,recipe:outputRecipes,render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_ENGRAVING_RECIPE?createAcrylicEngravingProof:job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
   function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const native=m.schema===ACRYLIC_REVIEW,settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings});exportWorker.kick();return job;}
   function enqueuePrint(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),native=m.schema===ACRYLIC_REVIEW,job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_PRINT_RECIPE:FORM_PRINT_RECIPE,recipeKey:native?acrylicPrintKey(settings):formPrintKey(settings),settings});exportWorker.kick();return job;}
   function customerRecord(id,version){const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
@@ -197,9 +198,9 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='GET')return json(res,200,{jobs:exportJobs.list()});
         if(method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['snapshotId','settings'].includes(k)))fail(422,'invalid_export_request','Ungültiger Ausgabeauftrag.');const job=enqueueOutput(data.snapshotId,data.settings);return json(res,job.status==='completed'?200:202,job);}
       }
-      const exportMatch=pathname.match(/^\/api\/workshop\/export-jobs\/(job_[a-f0-9-]+)(?:\/(retry|download|preview|checks))?$/);
+      const exportMatch=pathname.match(/^\/api\/workshop\/export-jobs\/(job_[a-f0-9-]+)(?:\/(retry|recreate|download|preview|checks))?$/);
       if(exportMatch){
-        const id=exportMatch[1],job=exportJobs.get(id);if(!exportMatch[2]&&method==='GET')return json(res,200,{...job,events:exportJobs.events(id),downloadFormats:job.status==='completed'?outputFormats(customerDrafts.printProof(job.snapshotId,job.recipeKey)):[]});
+        const id=exportMatch[1],job=exportJobs.get(id);if(!exportMatch[2]&&method==='GET')return json(res,200,{...job,retryAvailable:job.status==='failed'&&outputRecipes.includes(job.recipe),recreateAvailable:job.status==='failed'&&!outputRecipes.includes(job.recipe),events:exportJobs.events(id),downloadFormats:job.status==='completed'?outputFormats(customerDrafts.printProof(job.snapshotId,job.recipeKey)):[]});
         if(exportMatch[2]==='checks'){
           if(job.status!=='completed')fail(409,'export_not_ready','Nur eine fertig gespeicherte Ausgabe kann geprüft werden.');
           const result=customerDrafts.printProof(job.snapshotId,job.recipeKey);if(!result)fail(409,'export_missing','Die gespeicherte Ausgabe fehlt.');
@@ -209,7 +210,12 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           if(method==='POST'){const data=await body(req,8192),file=files.find(f=>f.format===data.format);if(!file)fail(422,'check_file','Bitte eine vorhandene PDF auswählen.');return json(res,201,exportJobs.checks.add(id,data,file));}
           fail(405,'method_not_allowed','Prüfvermerke nur lesen oder ergänzen.');
         }
-        if(exportMatch[2]==='retry'&&method==='POST'){await body(req);const next=exportJobs.retry(id);exportWorker.kick();return json(res,202,next);}
+        if(exportMatch[2]==='recreate'&&method==='POST'){
+          const data=await body(req);if(Object.keys(data).length)fail(422,'recreate_settings','Die Neuanlage übernimmt ausschließlich den gesicherten Auftrag und seine Einstellungen.');
+          if(job.status!=='failed'||outputRecipes.includes(job.recipe))fail(409,'recreate_unavailable','Nur fehlgeschlagene Aufträge mit alter Ausgabeversion hier neu anlegen.');
+          const next=enqueueOutput(job.snapshotId,job.settings);return json(res,next.status==='completed'?200:202,{...next,recreatedFrom:id});
+        }
+        if(exportMatch[2]==='retry'&&method==='POST'){await body(req);if(job.status==='failed'&&!outputRecipes.includes(job.recipe))fail(409,'recipe_obsolete','Diese Ausgabeversion ist nicht mehr ausführbar. Mit aktueller Ausgabeversion neu anlegen; der alte Auftrag bleibt erhalten.');const next=exportJobs.retry(id);exportWorker.kick();return json(res,202,next);}
         if(exportMatch[2]==='preview'&&method==='POST'){
           const data=await body(req);if(Object.keys(data).some(k=>k!=='mode')||!['color','white','engraving'].includes(data.mode))fail(422,'preview_mode','Bitte Farbe, Weiß oder Gravur wählen.');
           if(job.status!=='completed')fail(409,'export_not_ready','Die Ausgabe ist noch nicht fertig.');

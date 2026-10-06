@@ -1,0 +1,26 @@
+{
+  "startedAt": "2026-10-06T13:24:13.263960+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "shopifyRequestSent": false,
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "oldRetryHidden": true,
+  "settingsUnchanged": true,
+  "snapshotUnchanged": true,
+  "oldJobAndEventsUnchanged": true,
+  "repeatedActionDeduplicated": true,
+  "orderContextPreserved": true,
+  "whitePDFDownloaded": true,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T13:24:22.406122+00:00"
+}

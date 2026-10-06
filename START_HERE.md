@@ -1,3 +1,9 @@
+## Aktuell: Vollständiger und filterbarer Prüfverlauf – 06.10.2026
+
+Branch `task/output-check-history-20261006`, Basis `7ca26dfcbdecd4301c72b05004e0d7fb3cf434ca`. Unter **Ausgaben** ältere Prüfvermerke nachladen und nach PDF/Weiß-PDF sowie Import/Druckprobe filtern. Frühere 200-Einträge-Grenze aufgehoben; neue Einträge beim Blättern erzeugen keine Duplikate oder Lücken. Erfassungsformular bleibt erhalten, Ausgabewechsel setzt Kontext zurück. **321 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; neuer Browserablauf und bestehender Journalablauf auf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/AUSGABE-PRUEFVERLAUF-20261006.md).
+
+Keine Veröffentlichung oder reale Maschinenabnahme; PDFs und bestehende Einträge unverändert. Nächster externer Schritt: tatsächliches Corel-/Mimaki-Import-/Druckergebnis der bereitgestellten Dateien dokumentieren. Shop-Bestellstrecke, dauerhafte private Betriebsanbindung und gemessenes ICC separat offen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Gesicherte Ausgabeeinstellungen vergleichen – 06.10.2026
 
 Branch `task/output-specification-20261006`, Basis `962d10c4725a74e3725818731dcf9819375c813d`. Unter **Ausgaben** zeigt der neue Vergleich die angeforderten und im Erstellungsnachweis gespeicherten Einstellungen einschließlich Spiegelung, Weiß und effektivem Überdruck. Fester Profilstand und Abweichungen sichtbar; fehlende historische Angaben bleiben ausdrücklich unbekannt. PDF-Erzeugung und vorhandene Druckdateien unverändert. **319 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; synthetischer Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/AUSGABE-EINSTELLUNGEN-20261006.md).

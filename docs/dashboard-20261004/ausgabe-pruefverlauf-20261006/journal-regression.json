@@ -1,0 +1,35 @@
+{
+  "startedAt": "2026-10-06T13:56:43.099547+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "shopifyRequestSent": false,
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "csrfEnforced": true,
+  "wrongHashRejected": true,
+  "zipRejected": true,
+  "machineRequiredForPrint": true,
+  "importAndPrintSeparate": true,
+  "appendOnlyHistory": true,
+  "retryDeduplicated": true,
+  "retryConflictRejected": true,
+  "htmlNotesEscaped": true,
+  "formSurvivesPolling": true,
+  "checkHistorySurvivesReload": true,
+  "downloadHashUnchanged": true,
+  "jobSwitchClearsFormAndHistory": true,
+  "orderUnchanged": true,
+  "productionReady": false,
+  "customerDownloadAllowed": false,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T13:57:02.025979+00:00"
+}

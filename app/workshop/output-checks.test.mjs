@@ -15,3 +15,20 @@ test('unfinished jobs, wrong file hash, ZIP and invalid or incomplete observatio
  for(const change of [{sha256:'b'.repeat(64)},{format:'zip'},{stage:'approval'},{result:'approved'},{stage:'print',machine:''},{software:''},{result:'failed',notes:''},{notes:'x'.repeat(2001)},{productionReady:true},{requestId:'-'.repeat(36)}])assert.throws(()=>f.jobs.checks.add(f.job.id,{...f.input,...change},f.file));
  assert.equal(f.jobs.checks.list(f.job.id).total,0);assert.throws(()=>f.jobs.checks.add('missing',f.input,f.file),e=>e.status===404);
 });
+test('complete history pages remain ordered and duplicate-free when a newer observation is added',t=>{
+ const f=setup(t);f.finish();const expected=[];
+ for(let i=0;i<207;i++)expected.unshift(f.jobs.checks.add(f.job.id,{...f.input,requestId:randomUUID(),notes:'Synthetic '+i},f.file).id);
+ let page=f.jobs.checks.list(f.job.id);assert.equal(page.checks.length,50);assert.equal(page.total,207);const found=page.checks.map(c=>c.id);
+ const newer=f.jobs.checks.add(f.job.id,{...f.input,requestId:randomUUID(),notes:'New observation while paging'},f.file);
+ while(page.nextBefore){page=f.jobs.checks.list(f.job.id,{before:page.nextBefore});found.push(...page.checks.map(c=>c.id));}
+ assert.deepEqual(found,expected);assert.equal(new Set(found).size,207);assert.equal(f.jobs.checks.list(f.job.id).checks[0].id,newer.id);assert.equal(page.total,208);
+});
+test('file and stage filters apply before pagination and reject invalid or foreign cursors',t=>{
+ const f=setup(t);f.finish();const white={...f.file,format:'white-pdf',name:'white.pdf',sha256:'b'.repeat(64)},expected=[];
+ for(let i=0;i<61;i++)expected.unshift(f.jobs.checks.add(f.job.id,{...f.input,requestId:randomUUID(),format:white.format,sha256:white.sha256,stage:'print',machine:'Synthetic printer'},white).id);
+ for(let i=0;i<205;i++)f.jobs.checks.add(f.job.id,{...f.input,requestId:randomUUID()},f.file);
+ const options={format:'white-pdf',stage:'print'},first=f.jobs.checks.list(f.job.id,options),second=f.jobs.checks.list(f.job.id,{...options,before:first.nextBefore});
+ assert.equal(first.total,61);assert.equal(first.checks.length,50);assert.deepEqual([...first.checks,...second.checks].map(c=>c.id),expected);assert.equal(second.nextBefore,null);assert.equal(f.jobs.checks.list(f.job.id,{format:'white-pdf',stage:'import'}).total,0);
+ for(const options of [{format:'zip'},{stage:'approved'},{before:'bad'},{before:123},{before:'check_'+randomUUID()}])assert.throws(()=>f.jobs.checks.list(f.job.id,options),e=>e.status===422);
+ assert.throws(()=>f.jobs.checks.list('different-job',{before:first.checks[0].id}),e=>e.status===422);
+});

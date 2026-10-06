@@ -17,7 +17,16 @@ export function createOutputChecks(db){
  CREATE TRIGGER IF NOT EXISTS export_output_check_no_delete BEFORE DELETE ON export_output_checks BEGIN SELECT RAISE(ABORT,'Output checks are immutable');END;`);
  const read=row=>({id:row.id,jobId:row.job_id,createdAt:row.created_at,...JSON.parse(row.document)});
  return {
-  list(jobId){return {checks:db.prepare('SELECT * FROM export_output_checks WHERE job_id=? ORDER BY rowid DESC LIMIT 200').all(jobId).map(read),total:db.prepare('SELECT count(*) AS total FROM export_output_checks WHERE job_id=?').get(jobId).total};},
+  list(jobId,{format='',stage='',before=''}={}){
+   if(!['','pdf','white-pdf'].includes(format)||!['','import','print'].includes(stage)||typeof before!=='string'||before&&!/^check_[a-f0-9-]{36}$/.test(before))fail(422,'Ungültiger Prüfverlaufsfilter.');
+   const where=['job_id=?'],params=[jobId];
+   if(format){where.push("json_extract(document,'$.format')=?");params.push(format);}
+   if(stage){where.push("json_extract(document,'$.stage')=?");params.push(stage);}
+   const total=db.prepare('SELECT count(*) AS total FROM export_output_checks WHERE '+where.join(' AND ')).get(...params).total;
+   if(before){const cursor=db.prepare('SELECT rowid FROM export_output_checks WHERE id=? AND job_id=?').get(before,jobId);if(!cursor)fail(422,'Der Prüfverlaufsverweis gehört nicht zu dieser Ausgabe.');where.push('rowid<?');params.push(cursor.rowid);}
+   const rows=db.prepare('SELECT * FROM export_output_checks WHERE '+where.join(' AND ')+' ORDER BY rowid DESC LIMIT 51').all(...params),page=rows.slice(0,50);
+   return {checks:page.map(read),total,nextBefore:rows.length>50?page.at(-1).id:null};
+  },
   add(jobId,input,file){
    const job=db.prepare('SELECT status FROM form_export_jobs WHERE id=?').get(jobId);if(!job)fail(404,'Ausgabeauftrag nicht gefunden.');if(job.status!=='completed')fail(409,'Nur eine fertig gespeicherte Ausgabe kann geprüft werden.');
    const document=JSON.stringify(clean(input,file)),old=db.prepare('SELECT * FROM export_output_checks WHERE job_id=? AND request_id=?').get(jobId,input.requestId);

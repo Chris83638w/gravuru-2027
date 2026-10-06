@@ -1,3 +1,9 @@
+## Aktuell: Sichtprüfung und Excel direkt verfügbar – 06.10.2026
+
+Branch `docs/dashboard-review-pack-20261006`, geprüfter Produktcode `f9f1fba6bb5560183c25ddc15b7d97f898eb5290`. Frische Aufnahmen der tatsächlichen Cloud-Oberfläche mit synthetischen Daten: Produktübersicht, Acryl-Editor, Excel, Prüfstand, Bildqualität und Gravur. [PDF, HTML, Excel und genaue Grenzen](docs/dashboard-20261004/DASHBOARD-SICHTPRUEFUNG-20261006.md).
+
+Browseraufnahme am 06.10.2026 um 11:20 Uhr Europe/Berlin erfolgreich, keine JavaScript-Fehler; Build 76 Ressourcen/1 Modell. Die 289 Tests des vorherigen Pakets wurden nicht erneut ausgeführt. Produktcode unverändert. Kein Deploy: Der bestehende private Muster-Link ist weiterhin Site-Version 12 und enthält kein Werkstatt-Backend. Für interaktiven Dashboard-Zugriff fehlt in dieser Aufgabe eine authentifizierte Browser-/Portfreigabe der bestehenden Node-/SQLite-/Python-Laufzeit; nicht durch eine statische Nachbildung ersetzen. Shopify-/Maschinenabnahme bleiben separat offen. Folgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Fotofenster-Abdeckung im Dashboard – 06.10.2026
 
 Branch `task/acrylic-photo-coverage-20261006`, Basis `537730a2ac659f2d8cd244d5efa1037a0e07ef5c` (Remote bestätigt). Neue Acryl-Prüfstände zeigen pro Foto, ob seine Bildfläche die tatsächliche Maske vollständig abdeckt. Rechteck, Kreis, Ellipse und Bogen einschließlich Fotozoom, Versatz und Drehung geprüft. Bewusst freie Stellen bleiben erlaubt; keine Exportblockade, automatische Verschiebung oder neue Druck-Überlappungswarnung.

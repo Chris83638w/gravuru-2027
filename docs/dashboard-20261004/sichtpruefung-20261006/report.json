@@ -1,0 +1,46 @@
+{
+  "startedAt": "2026-10-06T09:20:31.698290+00:00",
+  "sourceCommit": "f9f1fba6bb5560183c25ddc15b7d97f898eb5290",
+  "data": "synthetic only",
+  "published": false,
+  "result": "PASS",
+  "screens": [
+    {
+      "file": "01-produkte.png",
+      "title": "Produkt\u00fcbersicht",
+      "note": "Echte Werkstatt mit frisch angelegten synthetischen Pr\u00fcfprodukten. Kein privater Produktbestand."
+    },
+    {
+      "file": "02-editor.png",
+      "title": "Produkt bearbeiten",
+      "note": "Vorhandener Acryl-Produkteditor. Die Aufnahme zeigt den aktuellen Code; es wurde kein Produkt ver\u00f6ffentlicht."
+    },
+    {
+      "file": "03-excel.png",
+      "title": "Produktserien und Excel",
+      "note": "Echte Importoberfl\u00e4che. Die beiden mitgelieferten Excel-Dateien sind leere Vorlagen f\u00fcr eure eigenen Daten."
+    },
+    {
+      "file": "04-pruefstand.png",
+      "title": "Gesicherte Gestaltung",
+      "note": "Unver\u00e4nderlicher Pr\u00fcfstand mit Ausf\u00fchrung, Preis und Originaldateien. Das blaue Bild ist ein k\u00fcnstliches Testfoto."
+    },
+    {
+      "file": "05-bildpruefung.png",
+      "title": "Fotoqualit\u00e4t und Ausschnitt",
+      "note": "Gepr\u00fcfte Pixeldichte und Abdeckung des Fotofensters. Freies Ausrichten bleibt m\u00f6glich; die Anzeige blockiert keine Ausgabe."
+    },
+    {
+      "file": "06-gravur.png",
+      "title": "Gravurausgabe",
+      "note": "PDF mit 300 dpi als Standard; ZIP mit separater Kontur optional. Noch keine realen Maschinenparameter freigegeben."
+    }
+  ],
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T09:20:35.365015+00:00"
+}

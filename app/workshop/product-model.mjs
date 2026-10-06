@@ -68,7 +68,8 @@ export function makeProductDocument(nativeConfig,{name,kind='product',masterId=n
 }
 
 export function validateProductDocument(document){
-  jsonData(document);if(isFormProduct(document))return validateFormProduct(document);keys(document,DOCUMENT_KEYS,'Produktdokument');
+  jsonData(document);if(isFormProduct(document))return validateFormProduct(document);keys(document,[...DOCUMENT_KEYS,...(Object.hasOwn(document,'productionProfile')?['productionProfile']:[])],'Produktdokument');
+  if(document.productionProfile!==undefined&&document.productionProfile!==null){keys(document.productionProfile,['id','revision'],'Fertigungsprofil');if(!id(document.productionProfile.id)||!Number.isSafeInteger(document.productionProfile.revision)||document.productionProfile.revision<1)fail('Ungültiger Fertigungsprofilstand.');}
   if(document.schema!==PRODUCT_SCHEMA)fail('Unbekannte Version des Produktdokuments.');
   const result=structuredClone(document);
   result.name=text(result.name,1,200,'Produktname');

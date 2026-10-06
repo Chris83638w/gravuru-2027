@@ -1,3 +1,9 @@
+## Aktuell: Feste Fertigungsprofile auch für native Acrylprodukte – 06.10.2026
+
+Branch `task/acrylic-production-profiles-20261006`, Basis `ece60315a8b016c5f6b741bfd6a226508ea0b13e`. Unter **Fertigung** einen passenden Profilstand auswählen und mit dem Acrylprodukt speichern. Neue gesicherte Gestaltungen übernehmen diesen festen Stand samt Druck-/Gravurvorgaben; spätere Profiländerungen ersetzen ihn nicht automatisch. Alte Produktrevisionen und Ausgaben bleiben erhalten. **313 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansicht](docs/dashboard-20261004/ACRYL-FERTIGUNGSPROFILE-20261006.md).
+
+Prüfung mit synthetischen Profilen/Daten, keine reale Maschinenfreigabe oder Veröffentlichung. Weiß-PDF vektoriell mit RDG_WHITE und CutContour bestätigt; bisherige private Corel-Dateien per SHA unverändert. Nächster fachlicher Schritt: reales Import-/Probedruckergebnis zu den bereitgestellten Dateien im Prüfprotokoll erfassen und bestätigte Fertigungsvorgaben hinterlegen. Echte Shop-/Betriebsabnahme separat offen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Prüfvermerke zur konkreten Ausgabedatei – 06.10.2026
 
 Branch `task/output-check-journal-20261006`, Basis `26907140e0de3486e8a7bf04368913d7d556b146`. Unter **Ausgaben** können Dateiimport und Probedruck/Probegravur getrennt zur konkreten PDF-SHA dokumentiert werden. Unveränderlicher Verlauf, Wiederholschutz und Korrekturen als neue Einträge; PDFs, Aufträge und Berechtigungen bleiben unverändert. **310 Tests bestanden, 0 Fehler/Skips; Build 76/1; tatsächlicher Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/AUSGABE-PRUEFVERMERKE-20261006.md).

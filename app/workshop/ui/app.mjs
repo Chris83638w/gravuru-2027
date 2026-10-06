@@ -1,3 +1,4 @@
+import {installNativeProduction} from './native-production-ui.mjs';
 import {installProductOptions} from './product-options-ui.mjs';
 import {productCards,installOverview} from './product-overview-ui.mjs';
 import {installProductEditor} from './product-editor-ui.mjs';
@@ -8,7 +9,7 @@ const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
 const state={record:null,draft:null,products:[],dirty:false,busy:false,csrf:null,tab:'designs',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],profiles:[],profileSettings:null};
-let overview,productOptions;
+let overview,productOptions,nativeProduction;
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
 const pathValue=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],object);
@@ -42,7 +43,7 @@ function syncControls(){
  $('#save-product').textContent=state.busy?'Wird gespeichert …':'Änderungen speichern';
  $('#print-export-link').hidden=state.dirty||!state.record;
  for(const id of ['preview-link','customer-view']){const link=$('#'+id);link.hidden=state.dirty||!state.record||archived;link.title=state.record?'Bestehenden Konfigurator mit gespeichertem Stand '+state.record.revision+' öffnen':'';}
- productEditor.sync();overview?.sync();productOptions?.sync();
+ productEditor.sync();overview?.sync();productOptions?.sync();nativeProduction?.sync();
  $('#preview-note').textContent='Vorschau des gespeicherten Produktstands einschließlich seiner Profilzuordnungen.'+(state.dirty?' Speichere deine Änderungen, um die Vorschau zu öffnen.':'');
 }
 function setBusy(value){state.busy=value;syncControls();}
@@ -114,7 +115,7 @@ function renderEditor(){
  $('#print-export-link').href='/?'+new URLSearchParams({configuration:record.id,revision:record.revision,druckexport:'1'});
  $('#preview-link').href='/?'+new URLSearchParams({configuration:record.id,revision:record.revision});$('#customer-view').href=$('#preview-link').href;
  $('#panel-details').innerHTML='<div class="form-section"><h3>Was ist das für eine Konfiguration?</h3><div class="form-grid">'+field('Name','name',draft.name,{full:true,required:true})+'<label>Verwendung<select data-path="kind"><option value="product" '+(draft.kind==='product'?'selected':'')+'>Produktkonfiguration</option><option value="master" '+(draft.kind==='master'?'selected':'')+'>Mastervorlage</option></select><p class="field-help">Master kannst du als Ausgangspunkt für weitere Produkte kopieren.</p></label><label>Kopiert aus<span class="static-value">'+escape(draft.masterId||'Eigenständige Konfiguration')+'</span></label>'+field('Kategorie-Zuordnungen','categoryIds',(draft.categoryIds||[]).join(', '),{full:true,help:'Mehrere Kategorie-IDs durch Komma trennen, zum Beispiel acrylglasbilder, geschenke.',max:1000})+'</div></div><div class="form-section"><h3>Für die spätere Produktseite</h3><p>Diese Angaben werden hier gespeichert. Die Übertragung zu Shopify folgt separat.</p><div class="form-grid">'+field('SEO-Titel','seo.title',draft.seo?.title||'',{full:true,max:70})+textArea('SEO-Beschreibung','seo.description',draft.seo?.description||'',{max:160,help:'Beschreibe das Produkt verständlich: Material, Personalisierung und Anlass.'})+'</div></div>';
- renderPrices();renderDesigns();renderProfiles();renderHistory();productEditor.render();showTab(state.tab);
+ renderPrices();renderDesigns();renderProfiles();renderHistory();productEditor.render();nativeProduction?.render();showTab(state.tab);
 }
 function renderPrices(){
  if(!state.draft.config?.acrylic?.pricing){$('#panel-prices').innerHTML='<h3>Für dieses Produkt ist noch kein Preisprofil hinterlegt.</h3><p>Das vorliegende Preisformular verwaltet das Acrylglasprofil. Weitere Materialprofile werden gesondert ergänzt.</p>';return;}
@@ -309,6 +310,7 @@ $('.editor-tabs').addEventListener('keydown',event=>{
  const tabs=$$('.editor-tabs [data-tab]'),index=tabs.indexOf(event.target),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab,true);
 });
 const productEditor=installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights});
+nativeProduction=installNativeProduction({state,api,markDirty});
 productOptions=installProductOptions({state,api,markDirty,syncControls,previewOptions:()=>productEditor.refreshOptions(true)});
 overview=installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate});
 const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});

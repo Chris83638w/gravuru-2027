@@ -1,0 +1,25 @@
+{
+  "startedAt": "2026-10-06T12:29:15.715113+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "incompatibleProfilesHidden": true,
+  "saveReload": true,
+  "newerRevisionRequiresExplicitSelection": true,
+  "oldReviewUnchanged": true,
+  "profileDefaultsInReview": true,
+  "colorAndWhiteDownloaded": true,
+  "unbindSupported": true,
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T12:29:23.993790+00:00"
+}

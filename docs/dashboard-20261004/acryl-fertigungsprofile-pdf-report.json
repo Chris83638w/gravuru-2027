@@ -1,0 +1,18 @@
+{
+  "farbe.pdf": {
+    "pages": 1,
+    "repaired": false,
+    "images": 2,
+    "drawings": 6,
+    "RDG_WHITE": false,
+    "CutContour": true
+  },
+  "weiss.pdf": {
+    "pages": 1,
+    "repaired": false,
+    "images": 0,
+    "drawings": 7,
+    "RDG_WHITE": true,
+    "CutContour": true
+  }
+}

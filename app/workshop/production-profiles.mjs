@@ -1,3 +1,4 @@
+import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {formEngravingSettings} from './form-engraving-proof.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {createHash,randomUUID} from 'node:crypto';
@@ -18,6 +19,14 @@ export function productionProfileDocument(input){
 export function profileBlockers(profile){
  const d=profile.document;return [...(!d.machine?['Die konkrete Maschine ist noch nicht eingetragen.']:[]),...(d.method==='print'?['Gemessenes Druck-/Material-ICC-Profil ist noch nicht angebunden.']:[]),'Reale Maschinenprobe und Fertigungsfreigabe stehen aus.'];
 }
+// The native product contract is the existing clear-acrylic pilot, not arbitrary acrylic materials.
+export function productionSubject(document){
+ if(document.schema==='gravuru-product/v1'){
+  if(document.config?.acrylic?.version!==1||document.config.profile?.material?.kind!=='acrylic')fail(422,'Dieses native Produkt unterstützt keine Fertigungsprofilzuordnung.');
+  return {method:getProcessingProfile(document.config.profile).method,materialId:'acrylic-clear',thicknessMm:document.config.profile.material.thicknessMm};
+ }
+ return {method:document.processingMethod,materialId:document.material?.id,thicknessMm:document.material?.thicknessMm};
+}
 export function createProductionProfiles({filename}){
  const db=new DatabaseSync(filename);db.exec(`PRAGMA busy_timeout=5000;
  CREATE TABLE IF NOT EXISTS manufacturing_profiles(id TEXT PRIMARY KEY,revision INTEGER NOT NULL);
@@ -35,5 +44,5 @@ export function createProductionProfiles({filename}){
   history:id=>{get(id);return db.prepare('SELECT revision FROM manufacturing_profile_revisions WHERE profile_id=? ORDER BY revision DESC').all(id).map(r=>get(id,r.revision));},
   create:input=>{const d=productionProfileDocument(input);return tx(()=>{const id='mfg_'+randomUUID();db.prepare('INSERT INTO manufacturing_profiles VALUES(?,1)').run(id);return append(id,1,d);});},
   save:(id,input,expected)=>{const d=productionProfileDocument(input);return tx(()=>{const old=get(id);if(!Number.isSafeInteger(expected)||old.revision!==expected)fail(409,'Profil inzwischen geändert. Deine Eingaben bleiben erhalten; bitte aktuellen Stand prüfen.');if(old.document.method!==d.method)fail(422,'Für ein anderes Verfahren bitte ein eigenes Profil anlegen.');db.prepare('UPDATE manufacturing_profiles SET revision=? WHERE id=?').run(old.revision+1,id);return append(id,old.revision+1,d);});},
-  resolve:document=>{const ref=document.productionProfile;if(!ref)return null;exact(ref,['id','revision']);const p=get(ref.id,ref.revision),d=p.document;if(d.archived||d.method!==document.processingMethod||d.materialId!==document.material.id||d.thicknessMm!==document.material.thicknessMm)fail(422,'Profilstand passt nicht zu Verfahren, Material oder Stärke beziehungsweise ist archiviert.');return p;},close:()=>db.close()};
+  resolve:document=>{const ref=document.productionProfile;if(!ref)return null;exact(ref,['id','revision']);const p=get(ref.id,ref.revision),d=p.document,subject=productionSubject(document);if(d.archived||d.method!==subject.method||d.materialId!==subject.materialId||d.thicknessMm!==subject.thicknessMm)fail(422,'Profilstand passt nicht zu Verfahren, Material oder Stärke beziehungsweise ist archiviert.');return p;},close:()=>db.close()};
 }

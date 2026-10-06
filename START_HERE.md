@@ -1,3 +1,9 @@
+## Aktuell: Spätere Bestellstatusmeldungen – 06.10.2026
+
+Branch `task/order-status-20261006`, Basis `95788388cb853a7a76c3bb2ff723e334be25caa4`. Dashboard zeigt Teil-/Vollerstattung und Storno zusätzlich zum unveränderten ursprünglichen Bestellstand; verspätete Meldungen und Wiederholungen geprüft. **296 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet bestanden.** [Nachweis und Handyansicht](docs/dashboard-20261004/BESTELLSTATUS-20261006.md).
+
+Nur signierte synthetische Testereignisse, keine Shop-Mutation oder Veröffentlichung. Positionsbezogene Rückzahlungen, echte Test-App-Zustellung und Kunden-Downloads bleiben offen. Neue kombinierte Corel-PDF-1.3-Probe besteht MuPDF und Ghostscript; Nutzerabnahme steht aus. Frühere EINE-DATEI-Kompatibilitätsprobe hatte einen reproduzierbaren Lesefehler und ist ersetzt. Die folgenden Abschnitte sind historische Nachweise.
+
 ## Aktuell: Importfarbe und RDG_WHITE-Vektorregel – 06.10.2026
 
 Branch `task/acrylic-import-tint-20261006`, Basis `e70aeb2b10bc7d441bebfa4509205a655a7fb283`. Eingefärbte SVG-/PDF-Importe jetzt auch in der nativen Ausgabe mit erhaltener Transparenz. **292 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser/Desktop/Handy/Tablet bestanden.** RDG_WHITE verbindlich immer Vektor und echte Sonderfarbe, zusätzlich gezielt geprüft. [Nachweis, Foto-Druckproben und offene Importdiagnose](docs/dashboard-20261004/ACRYL-IMPORTFARBE-WEISSVEKTOR-20261006.md).

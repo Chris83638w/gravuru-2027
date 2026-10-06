@@ -110,7 +110,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         return json(res,200,orderIntake.receive(Buffer.concat(chunks),req.headers,orderWebhook));
       }
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
-      if(pathname==='/api/workshop/orders'&&method==='GET')return json(res,200,{orders:orderIntake.list(),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});
+      if(pathname==='/api/workshop/orders'&&method==='GET'){const orders=orderIntake.list();return json(res,200,{orders,statuses:Object.fromEntries(orders.map(o=>[o.id,orderIntake.status(o.id)])),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});}
       const orderProductMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/product-draft(?:\/(preview|apply))?$/);
       if(orderProductMatch){
         const line=orderIntake.get(orderProductMatch[1]),action=orderProductMatch[2];
@@ -121,6 +121,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(action==='apply')return json(res,201,applyOrderProductDraft(repository,plan,data.token));
         const {document,...summary}=plan;let preview;if(isFormProduct(document))preview=formProductPreview(document,{assets,contours,fonts:seed.config.localResources.fonts});else{profiles.resolve(document);assets.validateDocument(document);const r=resolveProduct(document),universal=structuredClone(r.config);universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);const examples=(universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));preview=productPreview({universal},{options:r.resolvedOptions,examples});}return json(res,200,{...summary,preview});
       }
+      const orderStatusMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/status$/);if(orderStatusMatch&&method==='GET')return json(res,200,orderIntake.status(orderStatusMatch[1]));
       const orderMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)$/);if(orderMatch&&method==='GET')return json(res,200,orderIntake.get(orderMatch[1]));
       if(pathname==='/api/workshop/order-bindings'){
         if(method==='GET')return json(res,200,{bindings:orderIntake.bindings()});

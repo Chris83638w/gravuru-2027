@@ -27,3 +27,30 @@ test('configured HTTP receiver requires HMAC instead of browser CSRF; default ru
  async function start(enabled){const w=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy,...(enabled?{orderWebhook:config}:{})}),server=createPreviewServer({workshop:w,outputDirectory:dir});server.listen(0,'127.0.0.1');await once(server,'listening');instances.push({server,w});return 'http://127.0.0.1:'+server.address().port;}
  const base=await start(true),disabled=await start(false),payload={id:101,test:true,financial_status:'paid',currency:'EUR',line_items:[]},message=sign(payload);const request=(origin,headers=message.headers)=>fetch(origin+'/api/workshop/order-webhook',{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:message.raw});assert.equal((await request(base,{})).status,401);assert.equal((await request(base)).status,200);assert.equal((await request(disabled)).status,503);assert.equal((await fetch(base+'/api/workshop/order-offers',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).status,403);assert.equal((await fetch(base+'/werkstatt/bestellungen/')).status,200);assert.deepEqual((await (await fetch(disabled+'/api/workshop/orders')).json()).integration,{enabled:false,mode:'test-only'});
 });
+
+const statusMessage=(token,status,time='2026-10-06T12:00:00Z',event='status-event-1234',extra={})=>sign({...order(token),financial_status:status,updated_at:time,...extra},event,{'x-shopify-topic':extra.cancelled_at?'orders/cancelled':'orders/updated'});
+test('status updates report partial/full refunds while preserving paid line, private package and restart state',t=>{
+ const f=setup(t),o=f.offer(),paid=receive(f.intake,sign(order(o.property.value))).lines[0],before=JSON.stringify(f.intake.get(paid.id));
+ const partial=statusMessage(o.property.value,'partially_refunded');assert.equal(receive(f.intake,partial).matchedLines,1);assert.equal(f.intake.status(paid.id).state,'partially_refunded');assert.equal(f.intake.status(paid.id).scope,'order-wide');assert.equal(f.intake.status(paid.id).customerDownloadAllowed,false);assert.equal(receive(f.intake,partial).duplicate,true);
+ receive(f.intake,statusMessage(o.property.value,'refunded','2026-10-06T13:00:00Z','refund-event-1234'));assert.equal(f.intake.status(paid.id).state,'refunded');f.reopen();assert.equal(f.intake.status(paid.id).state,'refunded');assert.equal(JSON.stringify(f.intake.get(paid.id)),before);
+ const rows=JSON.stringify(f.db.prepare('SELECT * FROM form_order_status_events').all());for(const privateValue of [o.property.value,'private-fixture@example.invalid',config.secret])assert.ok(!rows.includes(privateValue));assert.throws(()=>f.db.exec("UPDATE form_order_status_events SET financial_status='paid'"),/immutable/);
+});
+test('status may precede paid delivery; stale and duplicate paid events cannot erase a later refund',t=>{
+ const f=setup(t),o=f.offer();assert.equal(receive(f.intake,statusMessage(o.property.value,'refunded','2026-10-06T14:00:00Z')).matchedLines,0);
+ const payload={...order(o.property.value),updated_at:'2026-10-06T10:00:00Z'},signed=sign(payload),paid=receive(f.intake,signed).lines[0];assert.equal(f.intake.status(paid.id).state,'refunded');assert.equal(receive(f.intake,signed).duplicate,true);
+ receive(f.intake,statusMessage(o.property.value,'paid','2026-10-06T11:00:00Z','old-event-1234'));assert.equal(f.intake.status(paid.id).state,'refunded');assert.deepEqual(f.intake.get(paid.id),paid);
+});
+test('cancellation remains visible with a later refund; conflicting equal timestamps require review',t=>{
+ const f=setup(t),o=f.offer(),paid=receive(f.intake,sign(order(o.property.value))).lines[0];
+ receive(f.intake,statusMessage(o.property.value,'paid','2026-10-06T12:00:00Z','cancel-event-1234',{cancelled_at:'2026-10-06T11:59:00Z'}));assert.equal(f.intake.status(paid.id).state,'cancelled');
+ receive(f.intake,statusMessage(o.property.value,'refunded','2026-10-06T13:00:00Z','refunded-event-1234'));assert.equal(f.intake.status(paid.id).state,'cancelled');assert.equal(f.intake.status(paid.id).financialStatus,'refunded');
+ receive(f.intake,statusMessage(o.property.value,'paid','2026-10-06T13:00:00Z','conflict-event-1234'));assert.equal(f.intake.status(paid.id).conflict,true);assert.equal(f.intake.status(paid.id).requiresReview,true);
+});
+test('status authentication, live rejection, currency, times and event collisions leave no partial rows',t=>{
+ const f=setup(t),o=f.offer(),p=order(o.property.value);receive(f.intake,sign(p));
+ for(const extra of [{test:false},{currency:'USD'},{updated_at:'bad'},{cancelled_at:'2026-10-06T13:00:00Z'},{financial_status:'invented'}])assert.throws(()=>receive(f.intake,statusMessage(o.property.value,'paid','2026-10-06T12:00:00Z','status-bad-1234',extra)));
+ const bad=statusMessage(o.property.value,'refunded');bad.headers['x-shopify-hmac-sha256']='a'.repeat(43)+'=';assert.throws(()=>receive(f.intake,bad),/nicht bestätigt/);
+ assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_status_events').get().n,0);
+ assert.throws(()=>receive(f.intake,statusMessage(o.property.value,'refunded','2026-10-06T12:00:00Z','test-event-1234')),/Zahlungsnachricht/);
+ const valid=statusMessage(o.property.value,'refunded');receive(f.intake,valid);assert.throws(()=>receive(f.intake,statusMessage(o.property.value,'paid')),/anderem Inhalt/);assert.throws(()=>receive(f.intake,sign(p,'status-event-1234')),/Statusnachricht/);
+});

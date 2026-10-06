@@ -16,6 +16,39 @@ import {merchantDownload} from './ui/merchant-downloads.mjs';
 const config={mode:'embedded-test',origin:'https://workshop.example',shopDomain:'fixture.myshopify.com',clientId:'fixture-client'};
 const sessions={mode:'test-only',shopDomain:config.shopDomain,clientId:config.clientId,secret:randomBytes(32).toString('hex')};
 
+test('assignment impact preview uses the write guards while remaining read-only until confirmation',async t=>{
+  const {request,workshop}=setup(t),authorization=jwt();
+  const session=JSON.parse((await request('/api/workshop/session',{headers:{authorization}})).bytes);
+  const headers={authorization,'content-type':'application/json','x-gravuru-csrf':session.csrfToken,origin:config.origin};
+  const profile=workshop.profiles.create({name:'Farben',type:'colors',items:['#ffffff']}),data={type:'colors',assignment:{mode:'override',profileId:profile.id},expectedRevision:1};
+  const route='/api/workshop/profile-settings';
+  for(const patch of [{authorization:''},{'x-gravuru-csrf':'wrong'},{origin:'https://foreign.invalid'}])assert.ok([401,403].includes((await request(route+'/impact',{method:'POST',headers:{...headers,...patch},data})).status));
+  const result=await request(route+'/impact',{method:'POST',headers,data});assert.equal(result.status,200,result.bytes.toString());assert.equal(workshop.profiles.settings().revision,1);
+  const review=JSON.parse(result.bytes);assert.equal(review.total,1);assert.match(result.headers['cache-control'],/no-store/);
+  const saved=await request(route,{method:'POST',headers,data:{...data,impactToken:review.token}});assert.equal(saved.status,200);assert.equal(JSON.parse(saved.bytes).revision,2);
+  assert.equal((await request(route,{method:'POST',headers,data:{...data,impactToken:review.token}})).status,409);
+  assert.equal(workshop.profiles.settings().revision,2);
+});
+
+test('profile impact preview is authenticated, read-only and rejects a changed review before saving',async t=>{
+  const {request,workshop}=setup(t),authorization=jwt();
+  const session=JSON.parse((await request('/api/workshop/session',{headers:{authorization}})).bytes);
+  const headers={authorization,'content-type':'application/json','x-gravuru-csrf':session.csrfToken,origin:config.origin};
+  const profile=workshop.profiles.create({name:'Testfarben',type:'colors',items:['#ffffff']}),data={document:{name:'Testfarben',type:'colors',items:['#000000']},expectedRevision:1};
+  workshop.profiles.setDefault('colors',{mode:'override',profileId:profile.id},1);
+  const route='/api/workshop/profiles/'+profile.id,history=workshop.repository.history(workshop.defaultId);
+  for(const patch of [{authorization:''},{'x-gravuru-csrf':'wrong'},{origin:'https://foreign.invalid'},{host:'foreign.invalid'}])assert.ok([401,403].includes((await request(route+'/impact',{method:'POST',headers:{...headers,...patch},data})).status));
+  assert.equal((await request(route+'/impact',{headers})).status,405);
+  const preview=await request(route+'/impact',{method:'POST',headers,data});assert.equal(preview.status,200,preview.bytes.toString());assert.match(preview.headers['cache-control'],/no-store/);
+  const review=JSON.parse(preview.bytes);assert.equal(review.total,1);assert.equal(review.changed,1);assert.equal(workshop.profiles.get(profile.id).revision,1);assert.deepEqual(workshop.repository.history(workshop.defaultId),history);
+  workshop.profiles.setDefault('colors',{mode:'empty',profileId:null},2);
+  const rejected=await request(route,{method:'PATCH',headers,data:{...data,impactToken:review.token}});assert.equal(rejected.status,409);assert.equal(workshop.profiles.get(profile.id).revision,1);
+  const fresh=JSON.parse((await request(route+'/impact',{method:'POST',headers,data})).bytes);
+  assert.equal((await request(route,{method:'PATCH',headers,data:{...data,impactToken:fresh.token}})).status,200);
+  assert.equal(workshop.profiles.get(profile.id).revision,2);assert.deepEqual(workshop.repository.history(workshop.defaultId),history);
+  assert.equal((await request('/workshop-ui/profile-impact-ui.mjs',{headers})).status,200);
+});
+
 test('product revision comparison requires merchant access, serves both editor assets and never writes history',async t=>{
   const {request,workshop}=setup(t),authorization=jwt(),headers={authorization};
   const first=workshop.repository.list()[0],doc=structuredClone(first.document);doc.name='Geänderter Produktname';

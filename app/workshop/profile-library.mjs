@@ -122,43 +122,49 @@ export function createProfileLibrary({filename,catalog}){
     if(!row)throw failure(404,'settings_revision_not_found','Version der Profilzuordnungen nicht gefunden.');
     return {revision:row.revision,...JSON.parse(row.document),updatedAt:row.updated_at};
   }
-  function assignmentReference(type,input){
+  function assignmentReference(type,input,previewProfileId=null){
     const assignment=assignmentValue(input);
     if(assignment.mode==='override'){
       const row=profileRow(assignment.profileId);
       if(row.type!==type)fail('profile_type_mismatch','Das gewählte Profil gehört zu einer anderen Art.');
       const saved=profileRecord(row);
-      profileData({name:saved.name,type:saved.type,items:saved.items});
+      // A correction preview must be able to show the old, unavailable item.
+      // Only the edited profile is exempt here; the proposed items are validated.
+      if(row.id!==previewProfileId)profileData({name:saved.name,type:saved.type,items:saved.items});
     }
     return assignment;
   }
-  function setAssignment(categoryId,type,input,expectedRevision){
+  function proposedAssignment(categoryId,type,input,expectedRevision){
     typeValue(type);
     if(categoryId!==null&&!validReference(categoryId))fail('invalid_category','Ungültige Kategorie-ID.');
+    const current=settings();checkExpected(current.revision,expectedRevision);
+    const assignment=assignmentReference(type,input);
+    if(categoryId===null)current.defaults[type]=assignment;
+    else{
+      if(!Object.hasOwn(current.categories,categoryId))Object.defineProperty(current.categories,categoryId,{value:emptyAssignments(),enumerable:true,writable:true,configurable:true});
+      current.categories[categoryId][type]=assignment;
+    }
+    return current;
+  }
+  function setAssignment(categoryId,type,input,expectedRevision){
     return transaction(()=>{
-      const current=settings();checkExpected(current.revision,expectedRevision);
-      const assignment=assignmentReference(type,input);
-      if(categoryId===null)current.defaults[type]=assignment;
-      else{
-        if(!Object.hasOwn(current.categories,categoryId))Object.defineProperty(current.categories,categoryId,{value:emptyAssignments(),enumerable:true,writable:true,configurable:true});
-        current.categories[categoryId][type]=assignment;
-      }
+      const current=proposedAssignment(categoryId,type,input,expectedRevision);
       const document=JSON.stringify({defaults:current.defaults,categories:current.categories}),revision=current.revision+1,now=new Date().toISOString();
       db.prepare('UPDATE profile_library_settings SET revision=?,document=?,updated_at=? WHERE id=1').run(revision,document,now);
       db.prepare('INSERT INTO profile_settings_revisions(revision,document,created_at) VALUES(?,?,?)').run(revision,document,now);
       return settings();
     });
   }
-  function resolve(document){
+  function resolve(document,profileOverride=null,previewProfileId=null,settingsOverride=null){
     if(!record(document)||!Array.isArray(document.categoryIds)||document.categoryIds.length>100||document.categoryIds.some(id=>!validReference(id))||new Set(document.categoryIds).size!==document.categoryIds.length)fail('invalid_categories','Produktkategorien müssen als geordnete Liste eindeutiger IDs vorliegen.');
     exactKeys(document.profileAssignments,PROFILE_TYPES,'Produkt-Profilzuordnungen');
-    const current=settings(),selections={},sources={},warnings=[];
+    const current=settingsOverride||settings(),selections={},sources={},warnings=[];
     for(const type of PROFILE_TYPES){
       selections[type]=null;sources[type]={level:'unbound',categoryId:null,mode:'inherit',profileId:null,profileRevision:null};
       const apply=(raw,level,categoryId=null)=>{
-        const assignment=assignmentReference(type,raw);
+        const assignment=assignmentReference(type,raw,previewProfileId);
         if(assignment.mode==='inherit')return;
-        const profile=assignment.mode==='override'?profileRecord(profileRow(assignment.profileId)):null;
+        const profile=assignment.mode==='override'?(profileOverride?.id===assignment.profileId?profileOverride:profileRecord(profileRow(assignment.profileId))):null;
         selections[type]=profile?[...profile.items]:[];
         sources[type]={level,categoryId,mode:assignment.mode,profileId:profile?.id??null,profileRevision:profile?.revision??null};
       };
@@ -200,6 +206,21 @@ export function createProfileLibrary({filename,catalog}){
         db.prepare('UPDATE profiles SET revision=?,name=?,updated_at=? WHERE id=?').run(row.revision+1,document.name,new Date().toISOString(),id);
         return appendProfile(profileRow(id),document);
       });
+    },
+    previewSave(id,input,expectedRevision,documents){
+      return transaction(()=>{
+        const row=profileRow(id);checkExpected(row.revision,expectedRevision);
+        const document=profileData(input);
+        if(document.type!==row.type)fail('profile_type_change','Die Profilart bleibt unverändert. Für eine andere Art bitte ein neues Profil anlegen.');
+        const proposed={id,revision:row.revision+1,...document};
+        return {profile:{id,type:row.type,name:document.name,fromRevision:row.revision,toRevision:proposed.revision},settingsRevision:settings().revision,comparisons:documents.map(product=>({before:resolve(product,null,id),after:resolve(product,proposed,id)}))};
+      },{readOnly:true});
+    },
+    previewAssignment(categoryId,type,input,expectedRevision,documents){
+      return transaction(()=>{
+        const proposed=proposedAssignment(categoryId,type,input,expectedRevision);
+        return {settingsRevision:proposed.revision,type,categoryId,comparisons:documents.map(document=>({before:resolve(document),after:resolve(document,null,null,proposed)}))};
+      },{readOnly:true});
     },
     setDefault:(type,assignment,expectedRevision)=>setAssignment(null,type,assignment,expectedRevision),
     setCategory:(categoryId,type,assignment,expectedRevision)=>setAssignment(categoryId,type,assignment,expectedRevision),

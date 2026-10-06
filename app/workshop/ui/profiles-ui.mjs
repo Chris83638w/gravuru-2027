@@ -1,4 +1,5 @@
 import {merchantRequest as fetch} from './merchant-request.mjs';
+import {confirmProfileImpact} from './profile-impact-ui.mjs';
 const $=selector=>document.querySelector(selector),$$=selector=>[...document.querySelectorAll(selector)];
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const labels={fonts:'Schriften',motifs:'Motive',colors:'Farben',bestsellers:'Bestseller'};
@@ -8,7 +9,7 @@ async function api(path,{method='GET',body}={}){
  if(method!=='GET'&&!state.csrf)state.csrf=(await api('/api/workshop/session')).csrfToken;
  const response=await fetch(path,{method,credentials:'same-origin',headers:{Accept:'application/json',...(body===undefined?{}:{'Content-Type':'application/json'}),...(method==='GET'?{}:{'X-Gravuru-CSRF':state.csrf})},...(body===undefined?{}:{body:JSON.stringify(body)})});
  let data;try{data=await response.json();}catch{throw Error('Die Werkstatt hat keine gültige Antwort gesendet. Bitte erneut versuchen.');}
- if(!response.ok){const error=new Error(data.error?.message||data.message||(typeof data.error==='string'?data.error:'Die Aktion konnte nicht abgeschlossen werden.'));error.status=response.status;throw error;}return data;
+ if(!response.ok){const error=new Error(data.error?.message||data.message||(typeof data.error==='string'?data.error:'Die Aktion konnte nicht abgeschlossen werden.'));error.status=response.status;error.code=data.error?.code;throw error;}return data;
 }
 function controls(){
  for(const node of $$('button,input,select'))node.disabled=state.busy;
@@ -80,9 +81,15 @@ async function saveProfile(asCopy=false){
  if(state.busy||!state.draft||!$('#profile-form').reportValidity())return;busy(true);
  try{
   const document={...state.draft,name:state.draft.name.trim()},existing=state.record&&!asCopy;
-  const record=await api('/api/workshop/profiles'+(existing?'/'+encodeURIComponent(state.record.id):''),{method:existing?'PATCH':'POST',body:existing?{expectedRevision:state.record.revision,document}:document});
+  let impactToken;
+  if(existing){
+    const review=await api('/api/workshop/profiles/'+encodeURIComponent(state.record.id)+'/impact',{method:'POST',body:{expectedRevision:state.record.revision,document}});
+    if(!await confirmProfileImpact(review,state.catalog)){busy(false);$('#save-profile').focus();return;}
+    impactToken=review.token;
+  }
+  const record=await api('/api/workshop/profiles'+(existing?'/'+encodeURIComponent(state.record.id):''),{method:existing?'PATCH':'POST',body:existing?{expectedRevision:state.record.revision,document,impactToken}:document});
   openEditor(record);await loadLibrary();notice('Profil „'+record.name+'“ gespeichert. Stand '+record.revision+'.');
- }catch(error){if(error.status===409)$('#profile-conflict').hidden=false;notice(error.status===409?'Das Profil wurde inzwischen geändert. Deine Auswahl bleibt erhalten.':error.message,'error');}finally{busy(false);}
+ }catch(error){if(error.status===409&&error.code!=='profile_impact_changed')$('#profile-conflict').hidden=false;notice(error.code==='profile_impact_changed'?error.message:error.status===409?'Das Profil wurde inzwischen geändert. Deine Auswahl bleibt erhalten.':error.message,'error');}finally{busy(false);}
 }
 $('#new-profile').addEventListener('click',async()=>{if(!state.busy&&await discard()){openEditor();$('#profile-editor').scrollIntoView({block:'start'});$('#profile-name').focus();}});
 $('#profile-search').addEventListener('input',renderList);$('#profile-filter').addEventListener('change',renderList);
@@ -115,13 +122,15 @@ $('#assignment-form').addEventListener('submit',async event=>{
  if(!['default','category'].includes(s.scope)||!Object.hasOwn(labels,s.type)){notice('Bitte Ziel und Profilart auswählen.','error');return;}
  if(s.scope==='category'&&!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(s.categoryId)){notice('Bitte eine gültige Kategorie-ID angeben. Die Zuordnung wurde nicht gespeichert.','error');$('#assignment-category').focus();return;}
  if(!event.currentTarget.reportValidity())return;
- const body={expectedRevision:state.assignmentRevision,type:s.type,assignment:{mode,profileId:mode==='override'?$('#assignment-profile').value:null},...(s.scope==='category'?{categoryId:s.categoryId}:{})};state.selection=s;busy(true);
- try{
-  const settings=await api('/api/workshop/profile-settings',{method:'POST',body}),saved=s.scope==='category'?settings.categories?.[s.categoryId]?.[s.type]:settings.defaults?.[s.type];
+  const body={expectedRevision:state.assignmentRevision,type:s.type,assignment:{mode,profileId:mode==='override'?$('#assignment-profile').value:null},...(s.scope==='category'?{categoryId:s.categoryId}:{})};state.selection=s;busy(true);
+  try{
+  const review=await api('/api/workshop/profile-settings/impact',{method:'POST',body});
+  if(!await confirmProfileImpact(review,state.catalog)){busy(false);$('#save-assignment').focus();return;}
+  const settings=await api('/api/workshop/profile-settings',{method:'POST',body:{...body,impactToken:review.token}}),saved=s.scope==='category'?settings.categories?.[s.categoryId]?.[s.type]:settings.defaults?.[s.type];
   if(!saved||saved.mode!==body.assignment.mode||saved.profileId!==body.assignment.profileId)throw Error('Die Antwort bestätigt die gewählte Zuordnung nicht. Bitte den gespeicherten Stand prüfen.');
   state.settings=settings;loadAssignment();renderAssignmentOverview();$('#known-categories').innerHTML=Object.keys(state.settings.categories).map(id=>'<option value="'+esc(id)+'"></option>').join('');notice(assignmentTarget(s)+' gespeichert.');
  }
- catch(error){notice(error.status===409?'Die Zuordnungen wurden inzwischen geändert. Deine Eingaben bleiben erhalten. Lade den gespeicherten Stand, bevor du erneut speicherst.':error.message,'error');}finally{busy(false);}
+ catch(error){notice(error.code==='profile_impact_changed'?error.message:error.status===409?'Die Zuordnungen wurden inzwischen geändert. Deine Eingaben bleiben erhalten. Lade den gespeicherten Stand, bevor du erneut speicherst.':error.message,'error');}finally{busy(false);}
 });
 window.addEventListener('beforeunload',event=>{if(state.dirty||state.assignmentDirty){event.preventDefault();event.returnValue='';}});
 window.addEventListener('pageshow',event=>{if(!event.persisted&&state.settings&&!state.assignmentDirty)loadAssignment();});

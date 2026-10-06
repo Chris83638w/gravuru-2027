@@ -1,4 +1,5 @@
 import {compareProductRevisions} from './product-revision-compare.mjs';
+import {profileChangeImpact,saveReviewedProfile,assignmentChangeImpact,saveReviewedAssignment} from './profile-impact.mjs';
 import {outputSpecification} from './output-specification.mjs';
 import {printPreview} from './print-preview.mjs';
 import {outputDownload,outputFormats} from './print-delivery.mjs';
@@ -511,17 +512,22 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='POST')return json(res,201,profiles.create(await body(req)));
         fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       }
-      const profileMatch=pathname.match(/^\/api\/workshop\/profiles\/(prf_[a-f0-9-]+)$/);
+      const profileMatch=pathname.match(/^\/api\/workshop\/profiles\/(prf_[a-f0-9-]+)(?:\/(impact))?$/);
       if(profileMatch){
+        if(profileMatch[2]){
+          if(method!=='POST')fail(405,'method_not_allowed','Die Profilvorschau benötigt POST.');
+          const data=await body(req);return json(res,200,profileChangeImpact(repository,profiles,profileMatch[1],data.document,data.expectedRevision));
+        }
         if(method==='GET')return json(res,200,profiles.get(profileMatch[1]));
-        if(method==='PATCH'){const data=await body(req);return json(res,200,profiles.save(profileMatch[1],data.document,data.expectedRevision));}
+        if(method==='PATCH'){const data=await body(req);return json(res,200,saveReviewedProfile(repository,profiles,profileMatch[1],data));}
         fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       }
       if(pathname==='/api/workshop/profile-settings'&&method==='POST'){
         const data=await body(req);
         if(Object.hasOwn(data,'categoryId')&&(typeof data.categoryId!=='string'||!data.categoryId.trim()))fail(422,'category_required','Bitte eine Kategorie-ID angeben.');
-        return json(res,200,Object.hasOwn(data,'categoryId')?profiles.setCategory(data.categoryId,data.type,data.assignment,data.expectedRevision):profiles.setDefault(data.type,data.assignment,data.expectedRevision));
+        return json(res,200,saveReviewedAssignment(repository,profiles,data));
       }
+      if(pathname==='/api/workshop/profile-settings/impact'&&method==='POST')return json(res,200,assignmentChangeImpact(repository,profiles,await body(req)));
       if(pathname==='/api/workshop/batch/export'&&method==='POST'){
         const bytes=await designWorkbook(designExportData(repository,await body(req)));
         res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Designzuordnungen.xlsx"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;

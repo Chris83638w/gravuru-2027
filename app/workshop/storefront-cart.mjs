@@ -25,7 +25,7 @@ export function verifyCartResponse(response, offer, shopDomain) {
   const expected = prepareCartRequest(offer).variables.input.lines[0];
   if (typeof shopDomain !== 'string' || !/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(shopDomain)) fail('Shop nicht bestätigt.');
   const result = response?.data?.cartCreate;
-  if (response?.errors?.length || !result || !Array.isArray(result.userErrors) || result.userErrors.length ||
+  if (response?.errors !== undefined && (!Array.isArray(response.errors) || response.errors.length) || !result || !Array.isArray(result.userErrors) || result.userErrors.length ||
       !Array.isArray(result.warnings) || result.warnings.length) fail('Shop-Warenkorb benötigt eine Prüfung; keine Weiterleitung.');
   const cart = result.cart, lines = cart?.lines?.nodes;
   if (typeof cart?.id !== 'string' || !cart.id.startsWith('gid://shopify/Cart/') || !Array.isArray(lines) || lines.length !== 1 ||
@@ -33,8 +33,8 @@ export function verifyCartResponse(response, offer, shopDomain) {
   const line = lines[0], attributes = Array.isArray(line?.attributes) ? line.attributes.filter(a=>a?.key==='_gravuru_offer') : [];
   if (line?.merchandise?.id !== expected.merchandiseId || line.quantity !== offer.quantity ||
       attributes?.length !== 1 || attributes[0].value !== offer.property.value ||
-      cents(line.cost?.amountPerQuantity) !== offer.unitCents ||
-      cents(line.cost?.totalAmount) !== offer.unitCents * offer.quantity) fail('Shop-Warenkorb weicht bei Gestaltung, Variante, Menge oder Preis ab.');
+      cents(line?.cost?.amountPerQuantity) !== offer.unitCents ||
+      cents(line?.cost?.totalAmount) !== offer.unitCents * offer.quantity) fail('Shop-Warenkorb weicht bei Gestaltung, Variante, Menge oder Preis ab.');
   let url; try { url = new URL(cart.checkoutUrl); } catch { fail('Checkout-Adresse nicht bestätigt.'); }
   if (url.protocol !== 'https:' || url.hostname !== shopDomain || url.port || url.username || url.password) fail('Checkout-Adresse gehört nicht zum bestätigten Shop.');
   return {cartId:cart.id, checkoutUrl:url.href, quantity:offer.quantity,

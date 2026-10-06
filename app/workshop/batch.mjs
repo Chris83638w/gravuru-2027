@@ -54,6 +54,7 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       key=text(row.import_key);
       if(!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(key)||keys.has(key)||counts.get(key)>1)fail('Importschlüssel fehlt, ist ungültig oder kommt mehrfach vor.');
       keys.add(key);
+      if(typeof row.date==='number')fail('Das Datum ist Designtext. Bitte die Datumsspalte als Text formatieren, zum Beispiel 14.06.2020.');
       const action=text(row.action)||'create';if(!['create','update'].includes(action))fail('action muss create oder update sein.');
       const updating=action==='update';let id,version,master,current;
       if(updating){

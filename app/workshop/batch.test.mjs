@@ -49,6 +49,14 @@ test('explicit partial import preserves 97 valid drafts and returns 3 errors wit
   const duplicate={...input,rows:[{import_key:'same',name:'Eins'},{import_key:'same',name:'Zwei'}]};assert.ok(planBatch(f.store,duplicate).report.every(p=>p.status==='error'));
 });
 
+test('numeric Excel dates are row errors and cannot become unintended printed serial numbers through the API',t=>{
+ const f=fixture(t),input={masterId:f.master.id,masterRevision:1,rows:[{import_key:'excel-date',name:'Datum',date:46301},{import_key:'excel-zero',name:'Null',date:0},{import_key:'text-date',name:'Textdatum',date:'06.10.2026'}]};
+ const plan=planBatch(f.store,input);assert.equal(plan.valid,false);assert.deepEqual(plan.report.map(r=>r.status),['error','error','ready']);assert.match(plan.report[0].message,/Datumsspalte als Text/);
+ assert.throws(()=>commitBatch(f.store,{...input,token:plan.token}));assert.equal(f.store.list().length,1);
+ const partial=commitBatch(f.store,{...input,token:plan.token,skipErrors:true});assert.equal(partial.products.length,1);assert.equal(partial.errors.length,2);const saved=f.store.get(partial.products[0].id);assert.equal(saved.document.config.profile.designs[0].objects.find(o=>o.fieldKey==='date').text,'06.10.2026');
+ input.rows[0].date='07.10.2026';input.rows[1].date='08.10.2026';const corrected=planBatch(f.store,input);assert.equal(corrected.valid,true);assert.equal(corrected.report[2].status,'existing');const result=commitBatch(f.store,{...input,token:corrected.token});assert.equal(result.products.filter(p=>p.created).length,2);assert.equal(f.store.list().length,4);
+});
+
 
 test('explicit updates preserve IDs, historical revisions and omitted content; retry after restart never overwrites later edits',t=>{
  const f=fixture(t),p=f.store.copy(f.master.id,{expectedRevision:1,name:'Bestand'}),input={rows:[{import_key:'change-1',action:'update',product_id:p.id,expected_revision:1,name:'',price_small_eur:'12,99'}]};

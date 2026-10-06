@@ -87,6 +87,8 @@ $('#import').addEventListener('click',async()=>{
     for(const row of $('#rows').rows){const item=saved.get(row.cells[1]?.querySelector('small')?.textContent);if(item)row.cells[5].textContent=item.created?'Neu gespeichert':item.updated?'Aktualisiert · Stand '+item.revision:'Bereits ausgeführt';}
     $('#summary').textContent=result.products.length+' Konfigurationen gespeichert · '+(result.errors?.length||0)+' Fehler';
     status(result.products.filter(p=>p.created).length+' neue Konfigurationen · '+result.products.filter(p=>p.updated).length+' Aktualisierungen gespeichert. '+(result.errors?.length||0)+' fehlerhafte Datensätze bleiben zur Korrektur offen.');prepared=null;
+    try{setupDesignExport((await api('/api/workshop/products')).products);$('#export-status').textContent='Produktauswahl nach der Übernahme aktualisiert.';}
+    catch(error){$('#export-status').textContent='Die Tabelle wurde gespeichert. Die Produktauswahl konnte nicht aktualisiert werden: '+error.message+' Bitte die Seite neu laden.';}
   }catch(error){status(error.message,true);}finally{disabled(false);}
 });
 try{
@@ -100,8 +102,9 @@ try{
 function selectedProducts(){return [...document.querySelectorAll('#export-products input:checked')].map(el=>el.value);}
 function countExport(){const count=selectedProducts().length;$('#export-count').textContent=count+' Produkte ausgewählt · bis zu 100 möglich';$('#export-designs').disabled=exportBusy||count<1||count>100;}
 function setupDesignExport(products){
+ const selected=new Set(selectedProducts());
  const forms=products.filter(p=>p.kind==='product'&&p.status!=='archived'&&p.overview?.formProduct);
- $('#export-products').innerHTML=forms.length?forms.map(p=>'<label class="export-choice"><input type="checkbox" value="'+escape(p.id)+'"><span><strong>'+escape(p.name)+'</strong><small>Stand '+p.revision+'</small></span></label>').join(''):'<p>Noch keine aktiven Formprodukte vorhanden.</p>';
+ $('#export-products').innerHTML=forms.length?forms.map(p=>'<label class="export-choice"><input type="checkbox" value="'+escape(p.id)+'"'+(selected.has(p.id)?' checked':'')+'><span><strong>'+escape(p.name)+'</strong><small>Stand '+p.revision+'</small></span></label>').join(''):'<p>Noch keine aktiven Formprodukte vorhanden.</p>';
  $('#export-products').onchange=countExport;countExport();
 }
 $('#export-select-all').onclick=()=>{const inputs=[...document.querySelectorAll('#export-products input')],check=inputs.some(i=>!i.checked);inputs.forEach(i=>i.checked=check);countExport();};

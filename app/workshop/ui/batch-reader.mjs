@@ -10,7 +10,6 @@ export function records(matrix,{allowed=columns,required=['import_key','name'],l
     if(!row.some(v=>String(v??'').trim()))continue;
     if(row.length>headers.length&&row.slice(headers.length).some(v=>String(v??'').trim()))throw Error('Eine Zeile enthält mehr Daten als Spaltenüberschriften.');
     const item=Object.fromEntries(headers.map((key,index)=>[key,row[index]??'']));
-    if(typeof item.date==='number')throw Error('Das Datum ist Designtext. Bitte die Datumsspalte als Text formatieren, zum Beispiel 14.06.2020.');
     result.push(item);
   }
   if((!optional&&!result.length)||result.length>limit)throw Error('Bitte '+(optional?'0':'1')+' bis '+limit+' ausgefüllte Zeilen verwenden.');

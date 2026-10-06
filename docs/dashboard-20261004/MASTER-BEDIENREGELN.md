@@ -1,5 +1,11 @@
 # Masterregeln für Konfigurator und Druck – 04.10.2026
 
+## Verbindliche Ergänzung vom 06.10.2026: RDG_WHITE immer als Vektor
+
+Geschlossene gefüllte Vektorflächen in der echten Sonderfarbe `RDG_WHITE`, auch unter Fotos und importierten Rastermotiven. Keine Bitmap, Bildmaske oder Softmask als Weißdruckobjekt. Transparente Bereiche bleiben frei; das Farbfoto darf weiterhin Raster sein. Aus Pixelalpha abgeleitete Vektorflächen sind keine Rekonstruktion ursprünglicher Bézierkurven. Maschinen-/Corel-Kompatibilität separat prüfen.
+
+## Bisherige Festlegungen und historische Nachweise
+
 Aufgabenbranch `task/master-rules-print-20261004`, Basis `7a533ab133cf7a4a087498802bbc6000e849f335`.
 
 - **Masterbegriffe:** „Motiv“ = einzelnes Element zum Hinzufügen. „Design“ = gesamte Gestaltung der Platte/des Acrylglases einschließlich Foto, Texten und hinzugefügten Motiven. Verbindliche Nutzerfestlegung vom 04.10.2026 für künftige Kommunikation, Oberfläche und Dokumentation. Kein Auftrag, vorhandene technische IDs oder Datenbestände umzubenennen.

@@ -1,3 +1,9 @@
+## Aktuell: Importfarbe und RDG_WHITE-Vektorregel – 06.10.2026
+
+Branch `task/acrylic-import-tint-20261006`, Basis `e70aeb2b10bc7d441bebfa4509205a655a7fb283`. Eingefärbte SVG-/PDF-Importe jetzt auch in der nativen Ausgabe mit erhaltener Transparenz. **292 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser/Desktop/Handy/Tablet bestanden.** RDG_WHITE verbindlich immer Vektor und echte Sonderfarbe, zusätzlich gezielt geprüft. [Nachweis, Foto-Druckproben und offene Importdiagnose](docs/dashboard-20261004/ACRYL-IMPORTFARBE-WEISSVEKTOR-20261006.md).
+
+Keine Veröffentlichung. Nutzer-Probedruck meldet ein Weißproblem; PDF-Struktur ist Vektor, konkreter Corel-/RIP-Import noch ungeklärt. Nächster Schritt: separate RDG_WHITE-Vektordatei im betroffenen Programm vergleichen. Folgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Sichtprüfung und Excel direkt verfügbar – 06.10.2026
 
 Branch `docs/dashboard-review-pack-20261006`, geprüfter Produktcode `f9f1fba6bb5560183c25ddc15b7d97f898eb5290`. Frische Aufnahmen der tatsächlichen Cloud-Oberfläche mit synthetischen Daten: Produktübersicht, Acryl-Editor, Excel, Prüfstand, Bildqualität und Gravur. [PDF, HTML, Excel und genaue Grenzen](docs/dashboard-20261004/DASHBOARD-SICHTPRUEFUNG-20261006.md).

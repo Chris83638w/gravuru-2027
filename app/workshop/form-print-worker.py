@@ -40,9 +40,27 @@ def data_fetch(url,kind):
  return raw
 def raster(svg,w,h):
  return Image.open(io.BytesIO(PNGSurface.convert(bytestring=svg,output_width=w,output_height=h,url_fetcher=data_fetch))).convert('RGBA')
+def tint_imported_artwork(root,dpi):
+ # Match the preview's constant RGB filter while preserving source alpha.
+ # Rasterize at placed size/output DPI, never at the browser thumbnail size.
+ for image in root.iter(S+'image'):
+  ink=image.get('data-native-tint')
+  if ink is None:continue
+  c.require(bool(re.fullmatch('#[a-fA-F0-9]{6}',ink)),'Ungültige Designfarbe.')
+  mw,mh=[float(image.get(k,'0')) for k in ['data-raster-width-mm','data-raster-height-mm']]
+  c.require(all(math.isfinite(v) and 0<v<=2000 for v in [mw,mh]),'Ungültiges Maß der eingefärbten Designquelle.')
+  w,h=math.ceil(mw*dpi/25.4),math.ceil(mh*dpi/25.4)
+  c.require(w*h<=32_000_000,'Eingefärbte Designquelle überschreitet 32 Megapixel. Bitte 300 dpi oder kleiner platzieren.')
+  href=image.get('href','');c.require(href.startswith('data:image/svg+xml;base64,'),'Eingefärbte Designquelle muss im Prüfstand liegen.')
+  rgba=raster(data_fetch(href,'image/svg+xml'),w,h);alpha=rgba.getchannel('A')
+  tinted=Image.new('RGBA',(w,h),tuple(int(ink[i:i+2],16) for i in [1,3,5])+(255,));tinted.putalpha(alpha)
+  out=io.BytesIO();tinted.save(out,format='PNG');image.set('href','data:image/png;base64,'+base64.b64encode(out.getvalue()).decode())
+  for key in ['data-native-tint','data-raster-width-mm','data-raster-height-mm']:image.attrib.pop(key,None)
+
 def prepare_svg(data):
  # Originals are decoded at their actual resolution; only the output raster has a DPI.
  root=ET.fromstring(data['svg']);c.require(root.tag==S+'svg','Ungültige Gestaltung.')
+ tint_imported_artwork(root,data['settings']['dpi'])
  photo_ids=set()
  for p in data['photos']:
   photo_ids.add(p['fieldId']);raw=base64.b64decode(p['bytes'],validate=True)

@@ -1,0 +1,57 @@
+{
+  "startedAt": "2026-10-06T05:08:28.497Z",
+  "platform": "linux",
+  "node": "v24.19.0",
+  "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+  "steps": [
+    {
+      "name": "python-pdf",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "references",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "tests",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS",
+  "tests": {
+    "count": 245,
+    "skipped": 0,
+    "failures": 0
+  },
+  "finishedAt": "2026-10-06T05:09:39.178Z",
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "browser": {
+    "realXlsxColumns": 22,
+    "initialValid": 2,
+    "initialErrors": 1,
+    "firstUpdates": 2,
+    "retryUpdates": 0,
+    "correctedUpdates": 1,
+    "retainedIdHistoryGeometryFields": true,
+    "viewports": [
+      1536,
+      390,
+      768
+    ],
+    "errors": []
+  },
+  "branch": "task/batch-update-20261006",
+  "sourceBase": "5dc75f9e84db992e139cfc17ce43527601e07ea3"
+}

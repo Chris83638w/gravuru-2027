@@ -49,3 +49,25 @@ test('explicit partial import preserves 97 valid drafts and returns 3 errors wit
   const duplicate={...input,rows:[{import_key:'same',name:'Eins'},{import_key:'same',name:'Zwei'}]};assert.ok(planBatch(f.store,duplicate).report.every(p=>p.status==='error'));
 });
 
+
+test('explicit updates preserve IDs, historical revisions and omitted content; retry after restart never overwrites later edits',t=>{
+ const f=fixture(t),p=f.store.copy(f.master.id,{expectedRevision:1,name:'Bestand'}),input={rows:[{import_key:'change-1',action:'update',product_id:p.id,expected_revision:1,name:'',price_small_eur:'12,99'}]};
+ const plan=planBatch(f.store,input);assert.equal(plan.valid,true,JSON.stringify(plan.report));assert.equal(plan.report[0].action,'update');const result=commitBatch(f.store,{...input,token:plan.token});assert.equal(result.products[0].updated,true);assert.equal(result.products[0].created,false);assert.equal(result.products[0].id,p.id);
+ const saved=f.store.get(p.id);assert.equal(saved.revision,2);assert.equal(saved.document.name,'Bestand');assert.equal(saved.document.config.acrylic.pricing.sizes.small,1299);assert.equal(saved.document.config.acrylic.pricing.sizes.large,p.document.config.acrylic.pricing.sizes.large);assert.deepEqual(f.store.get(p.id,{revision:1}).document,p.document);
+ const later=structuredClone(saved.document);later.name='Manuell geändert';f.store.save(p.id,later,2);f.restart();const again=commitBatch(f.store,{...input,token:plan.token});assert.equal(again.products[0].updated,undefined);assert.equal(f.store.get(p.id).revision,3);assert.equal(f.store.get(p.id).document.name,'Manuell geändert');
+ input.rows[0].price_small_eur='13,99';assert.equal(planBatch(f.store,input).valid,false);
+});
+test('updates reject missing intent, duplicate targets, master targets, no-ops and stale revisions; atomic rollback retains journal and old products',t=>{
+ const f=fixture(t),a=f.store.copy(f.master.id,{expectedRevision:1,name:'A'}),b=f.store.copy(f.master.id,{expectedRevision:1,name:'B'}),row={import_key:'update-a',action:'update',product_id:a.id,expected_revision:1,name:'Neu A'};
+ for(const change of [{action:''},{expected_revision:''},{product_id:f.master.id},{master_id:f.master.id},{name:''},{expected_revision:100}])assert.equal(planBatch(f.store,{rows:[{...row,...change}]}).valid,false);
+ assert.ok(planBatch(f.store,{rows:[row,{...row,import_key:'duplicate'}]}).report.every(r=>r.status==='error'));
+ const input={rows:[row,{...row,product_id:b.id,import_key:'update-b',name:'Neu B'}]},plan=planBatch(f.store,input);const raw=new DatabaseSync(f.filename);raw.exec("CREATE TRIGGER update_failure BEFORE INSERT ON import_items WHEN NEW.import_key='update-b' BEGIN SELECT RAISE(ABORT,'failure'); END");raw.close();assert.throws(()=>commitBatch(f.store,{...input,token:plan.token}));assert.equal(f.store.get(a.id).revision,1);assert.equal(f.store.importItem('update-a'),null);
+ const changed=structuredClone(a.document);changed.name='Zwischenzeitlich';f.store.save(a.id,changed,1);assert.throws(()=>commitBatch(f.store,{...input,token:plan.token}));assert.equal(f.store.get(b.id).revision,1);
+ assert.throws(()=>f.store.importBatch(plan.entries),/zwischenzeitlich/);assert.equal(f.store.get(a.id).document.name,'Zwischenzeitlich');
+});
+test('100 update rows permit explicit 97-row application and correcting only the remaining three',t=>{
+ const f=fixture(t),products=Array.from({length:100},(_,i)=>f.store.copy(f.master.id,{expectedRevision:1,name:'Produkt '+i}));
+ const input={rows:products.map((p,i)=>({import_key:'update-100-'+i,action:'update',product_id:p.id,expected_revision:1,name:'Neu '+i,price_small_eur:i<3?'bad':'12.99'}))},plan=planBatch(f.store,input);assert.equal(plan.report.filter(r=>r.status==='error').length,3);assert.throws(()=>commitBatch(f.store,{...input,token:plan.token}));assert.equal(f.store.get(products[4].id).revision,1);
+ assert.equal(commitBatch(f.store,{...input,token:plan.token,skipErrors:true}).products.filter(p=>p.updated).length,97);
+ for(let i=0;i<3;i++)input.rows[i].price_small_eur='12.99';const fixed=planBatch(f.store,input);assert.equal(fixed.valid,true);assert.equal(commitBatch(f.store,{...input,token:fixed.token}).products.filter(p=>p.updated).length,3);assert.ok(products.every(p=>f.store.get(p.id).revision===2));
+});

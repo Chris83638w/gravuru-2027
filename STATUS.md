@@ -1,3 +1,9 @@
+## Aktuell: Vorhandene Produkte per Excel/CSV aktualisieren – 06.10.2026
+
+Branch `task/batch-update-20261006`, Basis `5dc75f9e84db992e139cfc17ce43527601e07ea3`. Serienimport unterstützt ausdrücklich `action=update` mit Produkt-ID und erwartetem Stand. Leere Felder behalten Bestand; eigene Geometrie/Designrechte bleiben erhalten, kein Master wird neu darüberkopiert. Neue Revision unter gleicher ID; Wiederholung und zwischenzeitliche Bearbeitung gegen Überschreiben geschützt. **245 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; echte 22-Spalten-XLSX in Desktop/Handy/Tablet geprüft.** [Bedienung und Nachweis](docs/dashboard-20261004/DASHBOARD-TABELLENAKTUALISIERUNG.md).
+
+Nächster Schritt: offene Varianten-/Designzuordnung aus separaten Tabellen mit dem bestehenden Modell abgleichen. Kein Publish/Deploy, Merge oder Zugriff auf private Bestandsdaten. Folgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Materialgerechte Gravur für Edelstahl, Holz und Leder – 06.10.2026
 
 Branch `task/material-engraving-preview-20261006`, Basis `725a7c62b9be6536f9bdd2cd502547424228e867`. Vorhandene fünf Materialreferenzen erneut angesehen; Gravur wirkt auf Edelstahl dunkel/neutral, auf Eiche/Buche/Kirsche/Leder dunkelbraun, abgestuft nach Quellhelligkeit/Alpha. Druck bewahrt Originalfarben. Backend, Produktkarten, Kundenbearbeitung und unveränderliche Ausgaben geprüft. **241 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Browser Desktop/Handy/Tablet.** [Vergleichsbild und Nachweis](docs/dashboard-20261004/DASHBOARD-MATERIALGRAVUR.md).

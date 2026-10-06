@@ -1,5 +1,5 @@
 import {unzipSync} from '/platform/sources/app/shared/vendor/fflate-0.8.3.mjs';
-const columns=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur'];
+const columns=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision'];
 function records(matrix){
   const headers=(matrix.shift()||[]).map(v=>String(v??'').replace(/^\uFEFF/,'').trim());
   if(!headers.includes('import_key')||!headers.includes('name'))throw Error('Die erste Zeile muss import_key und name enthalten. Bitte die Vorlage verwenden.');

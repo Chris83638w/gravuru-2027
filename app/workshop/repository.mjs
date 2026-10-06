@@ -211,20 +211,28 @@ export function createProductRepository({ filename, validateDocument = (value) =
     importBatch(entries) {
       if(!Array.isArray(entries)||entries.length<1||entries.length>100)throw failure(422,'invalid_batch','Eine Serie umfasst 1 bis 100 Produkte.');
       return transact(()=>{
-        const keys=new Set();
+        const keys=new Set(),targets=new Set();
         const validated=entries.map(entry=>{
           if(!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(entry.key)||keys.has(entry.key))throw failure(422,'invalid_import_key','Jede Zeile benötigt einen eindeutigen Importschlüssel.');
           keys.add(entry.key);
           if(!/^[a-f0-9]{64}$/.test(entry.fingerprint))throw failure(422,'invalid_fingerprint','Ungültiger Importstand.');
           const prior=db.prepare('SELECT * FROM import_items WHERE import_key = ?').get(entry.key);
           if(prior&&prior.fingerprint!==entry.fingerprint)throw failure(409,'import_key_conflict',`Importschlüssel ${entry.key} wurde bereits für andere Daten verwendet.`);
+          if(entry.action!==undefined&&entry.action!=='update')throw failure(422,'invalid_action','Unbekannte Importaktion.');
+          if(entry.action==='update'){
+            if(targets.has(entry.productId))throw failure(422,'duplicate_target','Produkt mehrfach in einer Tabelle.');targets.add(entry.productId);
+            const target=product(entry.productId);positiveRevision(entry.expectedRevision);
+            if(prior&&prior.product_id!==entry.productId)throw failure(409,'import_key_conflict','Importschlüssel gehört zu einem anderen Produkt.');
+            if(!prior){expected(target,entry.expectedRevision);if(target.archived||target.kind!=='product')throw failure(409,'inactive_target','Nur aktive Produkte können aktualisiert werden.');}
+          }
           return {...entry,prior,document:documentValue(entry.document)};
         });
         return validated.map(entry=>{
           if(entry.prior)return {key:entry.key,id:entry.prior.product_id,created:false};
-          const item=createInside(entry.document);
+          const updating=entry.action==='update';
+          const item=updating?append(product(entry.productId),entry.document):createInside(entry.document);
           db.prepare('INSERT INTO import_items VALUES (?, ?, ?, ?)').run(entry.key,entry.fingerprint,item.id,new Date().toISOString());
-          return {key:entry.key,id:item.id,created:true};
+          return {key:entry.key,id:item.id,created:!updating,...(updating?{updated:true,revision:item.revision}:{})};
         });
       });
     },

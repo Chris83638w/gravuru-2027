@@ -40,3 +40,5 @@ Matt/Hochglanz ist als Nutzerwunsch aufgenommen. Die Rückfrage, ob Acryloberfl�
 Dieses Paket legt Serien an. Es bietet noch keine generische Aktualisierung bestehender Produkte per Tabellenspalte, keine neuen Kontur-/Materialvarianten aus einer Kindtabelle und keinen automatischen Drive-/KI-Abruf. Echte Shopify-Anbindung und physische RIP-/Maschinenfreigabe bleiben getrennt offen. Nächster Schritt: Matt/Hochglanz und UV-Marker nach Nutzerzuordnung als passende Vorschau-/Fertigungseinstellungen konkretisieren.
 
 **Nachtrag 06.10.2026:** Die unten/oben als offen dokumentierten Matt-/Glanz- und Markerfragen sind inzwischen beantwortet: Vorderdruck matt mit feinen UV-Druckpunkten, Hinterdruck durch klares Acryl glänzend. [Umsetzung und neuer Nachweis](DASHBOARD-UV-DRUCKANSICHT.md).
+
+**Nachtrag 06.10.2026:** Explizite Aktualisierungen bestehender Produkte sind jetzt umgesetzt: [Bedienung und Abnahme](DASHBOARD-TABELLENAKTUALISIERUNG.md). Die Aussage „noch keine generische Aktualisierung“ oben beschreibt ausschließlich das frühere Paket. Separate Varianten-Kindtabellen bleiben offen.

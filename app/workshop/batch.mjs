@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {validateProductDocument} from './product-model.mjs';
 import {replaceDesignArtwork} from './design-import.mjs';
 
-export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur'];
+export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision'];
 const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const text=value=>value===undefined||value===null?'':String(value).trim();
 const fail=message=>{throw new Error(message);};
@@ -25,6 +25,7 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
   }
   const keys=new Set(), entries=[],report=[];
   const counts=new Map();for(const row of rows){const key=text(row?.import_key);counts.set(key,(counts.get(key)||0)+1);}
+  const targets=new Map();for(const row of rows){const id=text(row?.product_id);if(id)targets.set(id,(targets.get(id)||0)+1);}
   for(const [index,row] of rows.entries()){
     let key='';
     try{
@@ -33,14 +34,27 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       key=text(row.import_key);
       if(!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(key)||keys.has(key)||counts.get(key)>1)fail('Importschlüssel fehlt, ist ungültig oder kommt mehrfach vor.');
       keys.add(key);
-      if(text(row.master_id)&&text(row.master_id)!==masterId&&!text(row.master_revision))fail('Bei einer anderen Master-ID muss auch deren Masterversion angegeben werden.');
-      const id=text(row.master_id)||masterId,version=text(row.master_revision)||masterRevision;
-      if(!/^[1-9][0-9]*$/.test(String(version)))fail('Bitte einen gespeicherten Masterstand auswählen.');
-      const master=repository.get(id,{revision:Number(version)}),current=repository.get(id);
-      if(master.document.kind!=='master'||current.status==='archived'||current.document.kind!=='master')fail('Die Vorlage muss ein aktiver Master sein.');
+      const action=text(row.action)||'create';if(!['create','update'].includes(action))fail('action muss create oder update sein.');
+      const updating=action==='update';let id,version,master,current;
+      if(updating){
+        id=text(row.product_id);version=text(row.expected_revision);
+        if(!/^cfg_[a-f0-9-]+$/.test(id)||!Number.isSafeInteger(Number(version))||!/^[1-9][0-9]*$/.test(version))fail('Aktualisieren benötigt product_id und expected_revision.');
+        if(targets.get(id)>1)fail('Ein Produkt darf innerhalb einer Tabelle nur einmal aktualisiert werden.');
+        if(text(row.master_id)||text(row.master_revision))fail('Beim Aktualisieren keine Master-ID/-Version angeben; der vorhandene Produktstand ist die Grundlage.');
+        master=repository.get(id,{revision:Number(version)});current=repository.get(id);
+        if(master.document.kind!=='product'||current.document.kind!=='product')fail('Tabellen aktualisieren nur Produkte, keine Mastervorlagen.');
+      }else{
+        if(text(row.product_id)||text(row.expected_revision))fail('Bestehende Produkt-ID benötigt ausdrücklich action=update.');
+        if(text(row.master_id)&&text(row.master_id)!==masterId&&!text(row.master_revision))fail('Bei einer anderen Master-ID muss auch deren Masterversion angegeben werden.');
+        id=text(row.master_id)||masterId;version=text(row.master_revision)||masterRevision;
+        if(!/^[1-9][0-9]*$/.test(String(version)))fail('Bitte einen gespeicherten Masterstand auswählen.');
+        master=repository.get(id,{revision:Number(version)});current=repository.get(id);
+        if(master.document.kind!=='master'||current.status==='archived'||current.document.kind!=='master')fail('Die Vorlage muss ein aktiver Master sein.');
+      }
       const form=isFormProduct(master.document);if(!form&&text(row.price_eur))fail('price_eur gilt für freie Formprodukte. Für die Acrylvorlage price_small_eur / price_large_eur verwenden.');
       let document=structuredClone(master.document),artwork=null;
-      document.kind='product';document.masterId=id;document.name=text(row.name);
+      if(!updating){document.kind='product';document.masterId=id;document.name=text(row.name);}
+      else if(text(row.name))document.name=text(row.name);
       if(!document.name)fail('Produktname fehlt.');
       if(text(row.category_ids))document.categoryIds=[...new Set(text(row.category_ids).split(',').map(v=>v.trim()).filter(Boolean))];
       if(form){if(text(row.price_eur))document.basePriceCents=cents(row.price_eur);prepareFormBatch(document,row);}
@@ -71,11 +85,15 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       if(form){if(!assets&&validated.designs?.length)fail('Der Design-Dateispeicher ist für diesen Master erforderlich.');for(const design of validated.designs||[]){if(assets.get(design.assetId).sourceSha256!==design.sourceSha256)fail('Die Designquelle wurde verändert.');}repository.validate(validated);}
       else if(assets)assets.validateDocument(validated);
       else if(validated.config.localResources.motifs.some(m=>m.artwork))fail('Der Design-Dateispeicher ist für diesen Master erforderlich.');
-      const fingerprint=hash({masterId:id,masterRevision:Number(version),document:validated});
+      const fingerprint=hash(updating?{action,productId:id,expectedRevision:Number(version),document:validated}:{masterId:id,masterRevision:Number(version),document:validated});
       const existing=repository.importItem(key);
       if(existing&&existing.fingerprint!==fingerprint)fail('Dieser Importschlüssel ist schon mit anderen Daten verknüpft. Neuen Schlüssel verwenden oder bestehenden Artikel bearbeiten.');
-      entries.push({key,fingerprint,document:validated});
-      report.push({row:index+1,key,name:validated.name,status:existing?'existing':'ready',id:existing?.id,masterId:id,masterRevision:Number(version),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:validated.config.acrylic.pricing.sizes}),...(artwork?{artwork}:{})});
+      if(updating&&!existing&&(current.revision!==Number(version)||current.status==='archived'))fail('Das Produkt wurde zwischenzeitlich geändert oder archiviert. Aktuellen Stand prüfen und expected_revision anpassen.');
+      if(updating&&existing&&existing.id!==id)fail('Importschlüssel gehört zu einem anderen Produkt.');
+      if(updating&&JSON.stringify(validated)===JSON.stringify(master.document))fail('Die Zeile enthält keine Änderung.');
+      const update=updating?{action,productId:id,expectedRevision:Number(version)}:{};
+      entries.push({key,fingerprint,document:validated,...update});
+      report.push({row:index+1,key,name:validated.name,status:existing?'existing':'ready',id:existing?.id,...(updating?{...update,changes:Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:validated.config.acrylic.pricing.sizes}),...(artwork?{artwork}:{})});
     }catch(error){report.push({row:index+1,key,name:text(row?.name),status:'error',message:error.message});}
   }
   const valid=report.every(row=>row.status!=='error');

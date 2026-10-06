@@ -1,3 +1,11 @@
+## Aktuell: Native Acryl-Bestellübergabe lokal geprüft – 06.10.2026
+
+Branch `task/acrylic-order-handoff-20261006`, Basis `a6d4e18a50d0b5ee97dde1ee0231c81f59274e54`. Gesicherte Acryl-Ausführung und Menge jetzt im Dashboard an die vorgesehene Shop-Variante binden und Übergabe lokal prüfen. Optionen/Revisionspreis unveränderlich; gleich teure andere Ausführungen und falsche Mengen werden abgewiesen. Signierte synthetische Testbestellung übernimmt 36,97 € × 2 = 73,94 € samt festem Stand; Wiederholung bleibt ohne Doppelbestellung.
+
+**278 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Echte Dashboardbedienung Desktop/Handy/Tablet bestanden. [Nachweis und Bilder](docs/dashboard-20261004/ACRYL-BESTELLUEBERGABE-20261006.md). Keine echte Shopify-Anfrage, Zahlung, Veröffentlichung oder Kundenfreigabe. Nur neue synthetische Datenbanken; private Bestände unverändert.
+
+Nächster Code-Schritt: native Acrylgestaltung aus Testbestellung als neuen privaten Produktentwurf übernehmen, ohne Kundenfotos. Reale Store-/App-Anbindung und ICC-/Maschinenabnahme bleiben offen. Die folgenden Abschnitte sind historische Nachweise.
+
 ## Aktuell: Gleiche Acrylpreise in Konfi und Commerce-Zuordnung – 06.10.2026
 
 Branch `task/acrylic-commerce-prices-20261006`, Basis `91541d6d331cb976196942b7c3ea2feb75117a4c` (Remote bestätigt). Die Commerce-Prüfung verwendet jetzt die bestehende versionierte Kalkulation statt einer zweiten Summe der Optionspreise. Damit werden große Sockel korrekt mit +100 Cent berücksichtigt: große Platte/Eiche/Wandhalterung **36,97 €**. Veraltete Preisbindungen werden auch direkt vor der Auswahl abgewiesen; Zusatzmotive/-fotos bleiben ohne bestätigte Aufpreis-Anbindung gesperrt.

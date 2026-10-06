@@ -5,6 +5,16 @@ const sign=(payload,eventId='test-event-1234',overrides={})=>{const raw=Buffer.f
 const order=token=>({id:101,test:true,financial_status:'paid',currency:'EUR',cancelled_at:null,customer:{email:'private-fixture@example.invalid'},line_items:[{id:201,variant_id:301,quantity:2,price:'29.99',properties:[{name:'_gravuru_offer',value:token}]}]});
 function setup(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-')),filename=path.join(dir,'private.sqlite');let db=new DatabaseSync(filename),now=Date.now(),m={id:'proof_synthetic',packageSha256:'a'.repeat(64),product:{id:'cfg_synthetic',revision:2,name:'Synthetisches Schild',basePriceCents:2999,currency:'EUR'},productionProfile:{id:'mfg_synthetic',revision:3,sha256:'b'.repeat(64)}};const create=()=>createOrderIntake({database:db,snapshot:id=>{assert.equal(id,m.id);return structuredClone(m);},clock:()=>now});let intake=create();const record={id:m.product.id,revision:2,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:2999,designs:[{}]}};const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record});const offer=()=>intake.offer({bindingId:binding.id,snapshotId:m.id,quantity:2});t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});return {get db(){return db;},get intake(){return intake;},offer,binding,record,changeTime:delta=>now+=delta,changeHash:()=>m.packageSha256='f'.repeat(64),reopen:()=>{db.close();db=new DatabaseSync(filename);intake=create();}};}
 const receive=(intake,message)=>intake.receive(message.raw,message.headers,config);
+test('cart offer resolution uses saved values and refuses changed snapshot hashes',t=>{
+ const f=setup(t),o=f.offer(),input={offerId:o.id,offerToken:o.property.value,snapshotId:'proof_synthetic',shopDomain:config.shopDomain};
+ assert.deepEqual(f.intake.resolveCartOffer(input),o);
+ f.reopen();assert.deepEqual(f.intake.resolveCartOffer(input),o);
+ f.changeHash();assert.throws(()=>f.intake.resolveCartOffer(input),/stimmt nicht/);
+});
+test('cart offer capability cannot be combined with another offer ID or snapshot',t=>{
+ const f=setup(t),a=f.offer(),b=f.offer(),input={offerId:a.id,offerToken:a.property.value,snapshotId:'proof_synthetic',shopDomain:config.shopDomain};
+ for(const patch of [{offerId:b.id},{offerToken:b.property.value},{snapshotId:'proof_other'},{shopDomain:'other.myshopify.com'}])assert.throws(()=>f.intake.resolveCartOffer({...input,...patch}),e=>e.status===404);
+});
 test('webhook authenticates exact raw bytes and rejects forged signatures, wrong shops/versions/topics, unpaid and live orders',()=>{
  const payload=order('a'.repeat(64)),s=sign(payload);assert.equal(verifyPaidWebhook(s.raw,s.headers,config).orderId,'101');assert.throws(()=>verifyPaidWebhook(s.raw,s.headers,null),/nicht eingerichtet/);
  assert.throws(()=>verifyPaidWebhook(Buffer.concat([s.raw,Buffer.from(' ')]),s.headers,config),/nicht bestätigt/);

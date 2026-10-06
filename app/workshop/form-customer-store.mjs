@@ -6,7 +6,7 @@ import {randomBytes,randomUUID,createHash,timingSafeEqual} from 'node:crypto';
 import {chmodSync} from 'node:fs';
 const hash=v=>createHash('sha256').update(v).digest('hex');
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'customer_draft'});};
-export function createFormCustomerStore({filename}){
+export function createFormCustomerStore({filename,clock=Date.now}){
  const db=new DatabaseSync(filename);
  if(filename!==':memory:')chmodSync(filename,0o600);
  db.exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
@@ -28,7 +28,7 @@ export function createFormCustomerStore({filename}){
  function transaction(fn){db.exec('BEGIN IMMEDIATE');try{const result=fn();db.exec('COMMIT');return result;}catch(e){db.exec('ROLLBACK');throw e;}}
  const snapshot=(id,columns='manifest')=>{const r=typeof id==='string'&&db.prepare('SELECT '+columns+' FROM form_review_snapshots WHERE id=?').get(id);if(!r)fail(404,'Prüfstand nicht gefunden.');return r;};
  const summary=r=>{const m=JSON.parse(r.manifest);return {id:m.id,createdAt:m.createdAt,product:m.product,source:m.source,blockers:m.blockers,warnings:m.warnings,photoCount:m.photos.length,packageSha256:m.packageSha256};};
- const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest)});
+ const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock});
  return {exportJobs,orderIntake,cartHandoffs,
   findAcrylicReview(key){const r=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);return r?summary(snapshot(r.snapshot_id)):null;},
   captureAcrylicReview(key,bundle){return transaction(()=>{const old=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);if(old)return summary(snapshot(old.snapshot_id));const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,1,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);db.prepare('INSERT INTO acrylic_review_requests VALUES(?,?)').run(key,m.id);return summary(snapshot(m.id));});},

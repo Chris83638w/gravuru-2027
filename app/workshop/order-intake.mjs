@@ -86,6 +86,19 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
    });
   },
   offer({bindingId,snapshotId,quantity}){return tx(()=>{const b=binding(bindingId),m=snapshot(snapshotId);if(!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(422,'Menge: 1 bis 99.');if(m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==b.unit_cents||m.product.currency!=='EUR')fail(422,'Prüfstand und Shop-/Preisbindung stimmen nicht überein.');const chosen=selection(b.id);if(m.schema===ACRYLIC_REVIEW){if(!chosen||optionKey(chosen)!==optionKey(m.selection?.options))fail(422,'Die Acryl-Ausführung passt nicht zur Shop-Variante.');if(quantity!==m.selection.price.quantity)fail(422,'Die Menge gehört zum gesicherten Acrylstand. Für eine andere Menge bitte neu sichern.');}else if(chosen)fail(422,'Diese Bindung benötigt einen Acryl-Prüfstand.');const id='offer_'+randomUUID(),token=randomBytes(32).toString('hex');db.prepare('INSERT INTO form_order_offers VALUES(?,?,?,?,?,?,?,?)').run(id,sha(token),bindingId,snapshotId,m.packageSha256,quantity,at(),clock()+7*86400000);return {id,property:{name:'_gravuru_offer',value:token},variantId:b.variant_id,quantity,unitCents:b.unit_cents,currency:'EUR',scope:'test-checkout-only'};});},
+  // Resolve only a previously saved offer. Price, quantity and variant are never
+  // accepted from a browser here. Callers must additionally authenticate its draft.
+  resolveCartOffer({offerId,offerToken,snapshotId,shopDomain}){
+   if(typeof offerId!=='string'||typeof offerToken!=='string'||!/^[a-f0-9]{64}$/.test(offerToken)||typeof snapshotId!=='string'||!domain(shopDomain))fail(404,'Dieses Angebot ist nicht zugänglich.');
+   const o=db.prepare('SELECT * FROM form_order_offers WHERE id=? AND token_hash=? AND snapshot_id=?').get(offerId,sha(offerToken),snapshotId);
+   if(!o)fail(404,'Dieses Angebot ist nicht zugänglich.');const b=binding(o.binding_id);
+   if(b.shop!==shopDomain)fail(404,'Dieses Angebot ist nicht zugänglich.');
+   if(o.expires_at<=clock())fail(409,'Dieses Angebot ist abgelaufen.');
+   if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=?').get(o.id))fail(409,'Dieses Angebot gehört bereits zu einer Bestellung.');
+   const m=snapshot(o.snapshot_id);
+   if(m.packageSha256!==o.package_sha256||m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==b.unit_cents||m.product.currency!=='EUR')fail(409,'Der gesicherte Angebotsstand stimmt nicht überein.');
+   return {id:o.id,property:{name:'_gravuru_offer',value:offerToken},variantId:b.variant_id,quantity:o.quantity,unitCents:b.unit_cents,currency:'EUR',scope:'test-checkout-only'};
+  },
   receive(raw,headers,config){
    if(['orders/updated','orders/cancelled'].includes(headers['x-shopify-topic'])){
     const v=verifyOrderWebhook(raw,headers,config,['orders/updated','orders/cancelled']);

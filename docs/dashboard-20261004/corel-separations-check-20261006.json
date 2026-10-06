@@ -1,0 +1,41 @@
+{
+  "sourceSha256": "2a5f60faded9bb1c6d0ac0c6fc896cb2778dfd8a34bcff4042bb151cb65f0552",
+  "result": "PASS",
+  "outputs": [
+    {
+      "file": "Roland-Textfelder-gruppiert.pdf",
+      "sha256": "536bd455bb1ffaff6f8db867fcc434ef6469413836b58106bfa847e74a4ca534",
+      "muPDFRepair": false,
+      "ghostscript": "PASS",
+      "samePageBoxes": true,
+      "textGroups": 4,
+      "pixelIdenticalAtDpi": [
+        150,
+        300
+      ]
+    },
+    {
+      "file": "Mimaki-NUR-RDG_WHITE.pdf",
+      "sha256": "2a657b4117c5134d6354cdfebd00e85cd529aa47df706e8344e7814409905990",
+      "muPDFRepair": false,
+      "ghostscript": "PASS",
+      "samePageBoxes": true,
+      "vectorOnly": true,
+      "whiteStreamUnchanged": true
+    },
+    {
+      "file": "Mimaki-FARBE-ohne-RDG_WHITE.pdf",
+      "sha256": "74d6fc4402d0a521ceaf29c88c36efc9fc977202d24d2e1ea45d04db15ae19cc",
+      "muPDFRepair": false,
+      "ghostscript": "PASS",
+      "samePageBoxes": true,
+      "textGroups": 4,
+      "pixelIdenticalAtDpi": [
+        150,
+        300
+      ]
+    }
+  ],
+  "overwriteRefused": true,
+  "unsupportedInputRefused": true
+}

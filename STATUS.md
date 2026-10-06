@@ -1,3 +1,9 @@
+## Aktuell: Roland bestätigt, Mimaki getrennt – 06.10.2026
+
+Branch `task/print-separations-20261006`, Basis `9a05d1b0d4641ae2a395493ae7a87cc5190964f5`. Nutzer bestätigt die korrigierte PDF als für Roland gut. Vier Texteingaben in einer neuen Kopie zu je einem Vektorobjekt zusammengefasst; Mimaki erhält zwei separate Dateien: nur RDG_WHITE-Vektoren sowie CMYK-Farbe ohne RDG_WHITE. Quelle erhalten, Formate und Platzierung identisch. **Alle drei Dateien mit MuPDF/Ghostscript geprüft; Farbansichten bei 150/300 dpi pixelidentisch.** [Nachweis und Ablauf](docs/dashboard-20261004/COREL-MIMAKI-TRENNDATEIEN-20261006.md).
+
+Private PDFs außerhalb Git bereitgestellt. Separate reproduzierbare Nachverarbeitung, noch keine Änderung des Dashboard-Downloads. Nächster Schritt: Mimaki-/Corel-Gruppierungsabnahme, dann bestätigte Ausgabe in den normalen Download integrieren. App-Tests/Build nicht wiederholt; vorherige 300/0/0 und 76/1 bleiben historische Ergebnisse. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Gemeinsame Varianten-Zuordnung – 06.10.2026
 
 Branch `task/shop-variant-mapping-20261006`, Basis `8b4bacf38e39a3a3b4285115c10c96252e1322a3`. In **Shop vorbereiten** lassen sich jetzt alle 28 Acryl-Ausführungen zusammen vorhandenen Varianten-IDs zuordnen. Serverpreise aus gespeichertem Produktstand, gemeinsames Speichern mit vollständigem Zurückrollen bei Fehler, erhaltene historische Bindungen und Anschluss an gesicherte Kundenentwürfe. **300 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/SHOP-VARIANTENZUORDNUNG-20261006.md).

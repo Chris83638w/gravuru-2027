@@ -1,5 +1,10 @@
 # Masterregeln für Konfigurator und Druck – 04.10.2026
 
+## Aktuelle Ergänzung 06.10.2026: Dateitrennung und Textgruppen
+
+Nutzer bestätigt die korrigierte kombinierte Corel-PDF als für Roland gut. Für Roland weiterhin eine kombinierte Datei. Texte je Texteingabe zusammenfassen, als Vektor erhalten. Für den neuen Mimaki-Ablauf zwei separate PDFs: vollständige vorhandene Weißseparation als echte RDG_WHITE-Vektoren und normale CMYK-Farbe ohne RDG_WHITE. Beide Dateien mit identischem Seitenformat/Nullpunkt und Spiegelstand; freie Acrylbereiche bleiben ohne Weiß. Die Trennung ersetzt für diesen Ablauf die ältere kombinierte Mimaki-Weißersatz-Empfehlung. [Konkrete Dateien, Prüfung und noch offene Dashboard-Integration](COREL-MIMAKI-TRENNDATEIEN-20261006.md).
+
+
 ## Verbindliche Ergänzung vom 06.10.2026: RDG_WHITE immer als Vektor
 
 Geschlossene gefüllte Vektorflächen in der echten Sonderfarbe `RDG_WHITE`, auch unter Fotos und importierten Rastermotiven. Keine Bitmap, Bildmaske oder Softmask als Weißdruckobjekt. Transparente Bereiche bleiben frei; das Farbfoto darf weiterhin Raster sein. Aus Pixelalpha abgeleitete Vektorflächen sind keine Rekonstruktion ursprünglicher Bézierkurven. Maschinen-/Corel-Kompatibilität separat prüfen.

@@ -1,3 +1,4 @@
+import {installWorkshopReview} from './workshop-review.mjs';
 export async function installCompletion(api){
  const {el,r,profile,config,button,esc,mutate,dialog}=api,$=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/completion.css').then(v=>{if(!v.ok)throw Error('Abschlussoberfläche fehlt');return v.text();});r.append(style);
@@ -18,6 +19,7 @@ export async function installCompletion(api){
  const buy=$('.fk-buy-button'),finish=document.createElement('button');finish.type='button';finish.className='completion-finish';finish.textContent='Gestaltung fertig – weiter';buy.hidden=true;buy.after(finish);
  const review=dialog('completion','Deine Gestaltung im Überblick','<p>Prüfe deine Auswahl. Du kannst jederzeit weiter bearbeiten.</p><div class="completion-review"><div data-review-art></div><dl data-review-details></dl></div><section data-review-warnings></section><div class="completion-review-footer"><strong data-review-total></strong>'+button('review-edit','Weiter bearbeiten')+'<button type="button" disabled>In den Warenkorb</button><p>Testansicht: Der Warenkorb ist noch nicht verbunden.</p></div>');
  const reviewBody=document.createElement('div');reviewBody.className='completion-review-body';const footer=review.querySelector('.completion-review-footer');for(const child of [...review.children])if(child.tagName!=='HEADER'&&child!==footer)reviewBody.append(child);review.insertBefore(reviewBody,footer);
+ installWorkshopReview(api,footer);
  if(config&&window.parent.GravuruCommerce){
   footer.querySelector('button[disabled]').replaceWith(buy);buy.hidden=false;
   footer.querySelector('p').remove();footer.append($('.fk-order-status'));
@@ -31,4 +33,3 @@ export async function installCompletion(api){
  r.addEventListener('change',e=>{const id=e.target.dataset.photoBackground;if(!id)return;const value=e.target.value;if(!['remove','keep'].includes(value))return;mutate(()=>{const o=el.state.objects.find(o=>o.id===id);if(o?.uxUploadKind==='photo')o.uxPhotoBackground=value;});});
  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);for(const c of all('[data-mount]'))c.setAttribute('aria-pressed',String(c.dataset.mount===mount?.value));photos();marks();return result;};photos();marks();
 }
-

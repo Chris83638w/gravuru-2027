@@ -3,7 +3,7 @@ export const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 const fail=()=>{throw Object.assign(Error('Die gesicherte Paketprüfung ist fehlgeschlagen.'),{status:422});};
 // Read only the uncompressed, UTF-8 ZIP format written by our existing zipFiles.
 // No extraction to disk, filenames never become filesystem paths.
-export function readReviewPackage(bytes,expectedHash){
+export function readReviewPackage(bytes,expectedHash,expectedSchema='gravuru-form-review/v1'){
  if(bytes.length>128*1024*1024||digest(bytes)!==expectedHash)fail();
  const files=new Map();let p=0;
  while(p+30<=bytes.length&&bytes.readUInt32LE(p)===0x04034b50){
@@ -13,7 +13,7 @@ export function readReviewPackage(bytes,expectedHash){
   files.set(name,bytes.subarray(start,end));p=end;
  }
  if(!files.has('manifest.json'))fail();let manifest;try{manifest=JSON.parse(files.get('manifest.json'));}catch{fail();}
- if(manifest.schema!=='gravuru-form-review/v1'||!Array.isArray(manifest.files))fail();
+ if(manifest.schema!==expectedSchema||!Array.isArray(manifest.files))fail();
  for(const f of manifest.files){const content=files.get(f.path);if(!content||content.length!==f.bytes||digest(content)!==f.sha256)fail();}
  return {files,manifest};
 }

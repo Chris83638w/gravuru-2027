@@ -49,6 +49,7 @@
           if(!session.ok||(await session.json()).scope!=='local-operator')throw Error('Druckexport benötigt eine Werkstattsitzung.');
           window.GravuruOperatorExport=true;
         }
+        window.GravuruWorkshopReview=model.configuration?{productId:model.configuration.id,productRevision:model.configuration.revision}:null;
         window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;
         const frame=document.createElement('iframe');frame.title='Acrylglasbild personalisieren';frame.src='/editor.html';
         editor.append(frame);intro.hidden=true;editor.hidden=false;status.textContent='';

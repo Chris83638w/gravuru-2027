@@ -289,7 +289,7 @@ export async function installUX(el,config,legacy){
   dialogs.help.addEventListener('close',()=>window.speechSynthesis?.cancel());
   // A portable draft payload is provided to the future authenticated server adapter, not downloaded.
   el.uxDraft=()=>customerDraft(el.state,profile);
-  await installRefinements({el,r,profile,config,files,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles,changeObject});
+  await installRefinements({el,r,profile,config,files,pending:()=>uploadPending,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles,changeObject});
   if(el.uxMotifChoiceIds?.length===0){
     const entry=$('.workflow-motif-entry');
     if(entry){const note=document.createElement('p');note.textContent='Für dieses Produkt sind keine zusätzlichen Motive freigegeben. Die Motive im Design bleiben erhalten.';entry.append(note);entry.querySelector('[data-ux=discover-motifs]').hidden=true;entry.querySelector('.completion-motif-nav')?.setAttribute('hidden','');}

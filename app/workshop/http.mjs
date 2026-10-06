@@ -1,3 +1,5 @@
+import {ACRYLIC_REVIEW,prepareAcrylicReview} from './acrylic-review.mjs';
+import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
 import {variantExportData,variantWorkbook} from './variant-export.mjs';
 import {createFormVariants} from './form-variants.mjs';
@@ -61,9 +63,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const csrfToken=randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
+  const checkOutputKind=id=>{if(customerDrafts.review(id).manifest.schema===ACRYLIC_REVIEW)fail(422,'acrylic_output_pending','Die Fertigungsausgabe aus dem gesicherten Acrylstand ist noch nicht angebunden.');};
   const exportWorker=createExportWorker({jobs:exportJobs,recipe:[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE],render:job=>{const review=customerDrafts.review(job.snapshotId);return (job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof)(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
-  function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_ENGRAVING_RECIPE,recipeKey:formEngravingKey(settings),settings});exportWorker.kick();return job;}
-  function enqueuePrint(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_PRINT_RECIPE,recipeKey:formPrintKey(settings),settings});exportWorker.kick();return job;}
+  function enqueueOutput(id,overrides){checkOutputKind(id);const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_ENGRAVING_RECIPE,recipeKey:formEngravingKey(settings),settings});exportWorker.kick();return job;}
+  function enqueuePrint(id,overrides){checkOutputKind(id);const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:FORM_PRINT_RECIPE,recipeKey:formPrintKey(settings),settings});exportWorker.kick();return job;}
   function customerRecord(id,version){const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
   function customerResult(draft,token,state=draft.state){
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
@@ -164,6 +167,18 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='PATCH'&&!manufacturingMatch[2]){const data=await body(req);return json(res,200,productionProfiles.save(id,data.document,data.expectedRevision));}
         fail(405,'method_not_allowed','Diese Profilaktion ist nicht möglich.');
       }
+      if(pathname==='/api/workshop/acrylic-reviews'&&method==='POST'){
+        if(reviewJobs.size>=2)fail(409,'review_busy','Eine Gestaltung wird gerade gesichert. Bitte kurz warten.');
+        const job=randomUUID();reviewJobs.add(job);try{
+          const data=await body(req,100*1024*1024);
+          if(!Number.isSafeInteger(data.productRevision)||data.productRevision<1)fail(422,'revision_required','Eine feste Produktrevision ist erforderlich.');
+          const record=repository.get(data.productId,{revision:data.productRevision});
+          if(isFormProduct(record.document)||record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Bitte ein aktives Acrylprodukt verwenden.');
+          const key=createHash('sha256').update(JSON.stringify(data)).digest('hex'),old=customerDrafts.findAcrylicReview(key);if(old)return json(res,200,old);
+          const bundle=await prepareAcrylicReview({record,config:model(record.id,record.revision).universal,input:data,assets});
+          return json(res,201,customerDrafts.captureAcrylicReview(key,bundle));
+        }finally{reviewJobs.delete(job);}
+      }
       if(pathname==='/api/workshop/customer-drafts'&&method==='POST'){
         const data=await body(req),record=customerRecord(data.productId,data.productRevision),design=record.document.designs.find(d=>d.id===(data.designId||record.document.defaultDesignId));
         if(!design||repository.get(record.id).status==='archived')fail(422,'customer_design_missing','Bitte ein aktives Produkt und gültiges Design wählen.');
@@ -196,6 +211,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         }
         if(reviewMatch[2]==='download'&&method==='POST'){
           const data=await body(req);if(!['package','contour','photos'].includes(data.kind))fail(422,'production_not_released','Für diesen Prüfstand ist keine Produktions-PDF freigegeben.');
+          if(data.kind==='contour')checkOutputKind(reviewMatch[1]);
           const bytes=customerDrafts.downloadSnapshot(reviewMatch[1],data.kind),suffix={package:'pruefpaket.zip',contour:'kontur-1zu1.pdf',photos:'originalfotos.zip'}[data.kind];
           res.writeHead(200,{'Content-Type':data.kind==='contour'?'application/pdf':'application/zip','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+reviewMatch[1]+'-'+suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
         }

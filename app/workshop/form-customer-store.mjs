@@ -15,6 +15,7 @@ export function createFormCustomerStore({filename}){
  CREATE TABLE IF NOT EXISTS form_customer_photos(id TEXT PRIMARY KEY,draft_id TEXT NOT NULL,source_sha256 TEXT NOT NULL,original BLOB NOT NULL,preview BLOB NOT NULL,width INTEGER NOT NULL,height INTEGER NOT NULL);
  CREATE TRIGGER IF NOT EXISTS form_customer_photo_immutable BEFORE UPDATE ON form_customer_photos BEGIN SELECT RAISE(ABORT,'Customer originals are immutable'); END;
  CREATE TABLE IF NOT EXISTS form_review_snapshots(id TEXT PRIMARY KEY,draft_id TEXT NOT NULL,draft_revision INTEGER NOT NULL,manifest TEXT NOT NULL,preview BLOB NOT NULL,contour_pdf BLOB NOT NULL,package BLOB NOT NULL,photos BLOB NOT NULL,UNIQUE(draft_id,draft_revision));
+ CREATE TABLE IF NOT EXISTS acrylic_review_requests(request_hash TEXT PRIMARY KEY,snapshot_id TEXT NOT NULL);
  CREATE TRIGGER IF NOT EXISTS form_review_snapshot_immutable BEFORE UPDATE ON form_review_snapshots BEGIN SELECT RAISE(ABORT,'Review snapshots are immutable'); END;
  CREATE TRIGGER IF NOT EXISTS form_review_snapshot_no_delete BEFORE DELETE ON form_review_snapshots BEGIN SELECT RAISE(ABORT,'Review snapshots require an explicit retention migration'); END;
  CREATE TABLE IF NOT EXISTS form_print_proofs(snapshot_id TEXT NOT NULL,recipe_key TEXT NOT NULL,metadata TEXT NOT NULL,pdf BLOB NOT NULL,archive BLOB NOT NULL,PRIMARY KEY(snapshot_id,recipe_key));
@@ -27,6 +28,8 @@ export function createFormCustomerStore({filename}){
  const summary=r=>{const m=JSON.parse(r.manifest);return {id:m.id,createdAt:m.createdAt,product:m.product,source:m.source,blockers:m.blockers,warnings:m.warnings,photoCount:m.photos.length,packageSha256:m.packageSha256};};
  const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest)});
  return {exportJobs,orderIntake,
+  findAcrylicReview(key){const r=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);return r?summary(snapshot(r.snapshot_id)):null;},
+  captureAcrylicReview(key,bundle){return transaction(()=>{const old=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);if(old)return summary(snapshot(old.snapshot_id));const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,1,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);db.prepare('INSERT INTO acrylic_review_requests VALUES(?,?)').run(key,m.id);return summary(snapshot(m.id));});},
   printProof(id,key){snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;},
   savePrintProof(id,key,result){return transaction(()=>{snapshot(id);db.prepare('INSERT OR IGNORE INTO form_print_proofs VALUES(?,?,?,?,?)').run(id,key,JSON.stringify(result.metadata),result.pdf,result.archive);});},
   findSnapshot:(draftId,version)=>{const r=db.prepare('SELECT manifest FROM form_review_snapshots WHERE draft_id=? AND draft_revision=?').get(draftId,version);return r?summary(r):null;},

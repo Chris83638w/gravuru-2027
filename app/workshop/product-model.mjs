@@ -126,14 +126,14 @@ export function validateProductDesign(document,design,{options={},fonts,motifs}=
   const source=config.profile.designs.find(item=>item.id===design?.id);
   if(!source||!Array.isArray(design.objects))fail('Kundendesign gehört zu keiner Produktvorlage.');
   const rights=product.elementRights[source.id];
-  const properties={content:['text','font','bold','italic'],color:['color','preserveColors','opacity'],replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground'],move:['x','y','rotation'],scale:['w','h','size']};
+  const properties={content:['text','font','bold','italic'],color:['color','preserveColors','opacity'],replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground','uxPhotoCrop'],move:['x','y','rotation'],scale:['w','h','size']};
   const structural=['letterSpacing','type','fieldKey','photoShape','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed'];
   for(const original of source.objects){
     const matches=design.objects.filter(object=>object.id===original.id),current=matches[0],permission=rights[original.id];
     if(matches.length>1||(!permission.delete&&(!current||current.uxHidden===true&&original.uxHidden!==true||current.opacity===0&&original.opacity!==0)))fail('Element '+original.id+' darf nicht entfernt oder dupliziert werden.');
     if(!current)continue;
     if(structural.some(key=>current[key]!==original[key]))fail('Element '+original.id+' darf seine Feldzuordnung oder Vorlageneigenschaften nicht ändern.');
-    for(const [right,fields] of Object.entries(properties))if(!permission[right]&&fields.some(key=>current[key]!==original[key])){
+    for(const [right,fields] of Object.entries(properties))if(!permission[right]&&fields.some(key=>JSON.stringify(current[key])!==JSON.stringify(original[key]))){
       // Width and height of text are measured from its content; allowing a text
       // edit must not force stale dimensions when font size remains unchanged.
       if(right==='scale'&&original.type==='text'&&permission.content&&current.size===original.size)continue;

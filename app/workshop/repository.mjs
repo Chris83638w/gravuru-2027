@@ -255,6 +255,18 @@ export function createProductRepository({ filename, validateDocument = (value) =
         .filter((row) => !term || row.name.toLowerCase().includes(term) || row.id.toLowerCase().includes(term))
         .map((row) => ({ ...record(row), name: row.name, kind: row.kind, masterId: row.master_id }));
     },
+    productionProfileUsage(profileId) {
+      if(typeof profileId!=='string'||!/^mfg_[a-f0-9-]+$/.test(profileId))throw failure(422,'invalid_profile','Ungültiges Fertigungsprofil.');
+      // Inspect current and internally activated revisions, not every historical snapshot.
+      return db.prepare(`SELECT p.id,p.revision AS head,p.published_revision,p.archived,r.revision,
+        json_extract(r.document,'$.name') AS name,json_extract(r.document,'$.kind') AS kind,
+        json_extract(r.document,'$.schema') AS schema,json_extract(r.document,'$.productionProfile.revision') AS profileRevision
+        FROM products p JOIN product_revisions r ON r.product_id=p.id
+        AND (r.revision=p.revision OR r.revision=p.published_revision)
+        WHERE json_extract(r.document,'$.productionProfile.id')=? ORDER BY p.name COLLATE NOCASE,p.id,r.revision DESC`).all(profileId)
+        .map(r=>({id:r.id,name:r.name,kind:r.kind,schema:r.schema,revision:r.revision,profileRevision:r.profileRevision,
+          current:r.revision===r.head,activated:r.revision===r.published_revision,archived:Boolean(r.archived)}));
+    },
     save(id, document, expectedRevision) {
       return transact(() => {
         const row = product(id);

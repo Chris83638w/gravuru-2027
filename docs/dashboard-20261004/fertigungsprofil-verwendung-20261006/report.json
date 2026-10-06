@@ -1,0 +1,27 @@
+{
+  "startedAt": "2026-10-06T14:07:01.782238+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "productCount": 2,
+  "productRevisions": 3,
+  "activatedAndCurrentSeparated": true,
+  "archivedMasterIncluded": true,
+  "historicalProfileReadable": true,
+  "unsavedEditsPreserved": true,
+  "profileSaveDoesNotRebindProducts": true,
+  "currentProductLinkVerified": true,
+  "emptyUsageDoesNotDenyHistoricalUse": true,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T14:07:04.858508+00:00"
+}

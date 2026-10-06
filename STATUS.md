@@ -1,3 +1,9 @@
+## Aktuell: Verwendung von Fertigungsprofilen sichtbar – 06.10.2026
+
+Branch `task/production-profile-usage-20261006`, Basis `8f2a0539923d5f2e9adb7914b095ce1464be382e`. **Fertigungsprofile → Verwendung in Produkten** zeigt aktuelle und intern aktivierte Produktstände samt gebundener Profilrevision, einschließlich archivierter Master. Neue Profilrevisionen ändern keine bestehenden Zuordnungen. Direkter Link zum aktuellen Acryl-/Formprodukteditor; historische Bestellungen/Prüfstände ausdrücklich außerhalb der Liste. **322 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; synthetischer Browserablauf auf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/FERTIGUNGSPROFIL-VERWENDUNG-20261006.md).
+
+Keine Veröffentlichung oder Maschinenfreigabe. Reale Corel-/Mimaki-Druckabnahme und bestätigte Fertigungsvorgaben bleiben offen; nächster externer Schritt ist das Ergebnis der bereitgestellten PDFs zur konkreten Datei zu dokumentieren. Tatsächliche Shop-/Betriebsanbindung und gemessenes ICC separat offen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Vollständiger und filterbarer Prüfverlauf – 06.10.2026
 
 Branch `task/output-check-history-20261006`, Basis `7ca26dfcbdecd4301c72b05004e0d7fb3cf434ca`. Unter **Ausgaben** ältere Prüfvermerke nachladen und nach PDF/Weiß-PDF sowie Import/Druckprobe filtern. Frühere 200-Einträge-Grenze aufgehoben; neue Einträge beim Blättern erzeugen keine Duplikate oder Lücken. Erfassungsformular bleibt erhalten, Ausgabewechsel setzt Kontext zurück. **321 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; neuer Browserablauf und bestehender Journalablauf auf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/AUSGABE-PRUEFVERLAUF-20261006.md).

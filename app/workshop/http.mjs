@@ -172,9 +172,9 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='GET')return json(res,200,{profiles:productionProfiles.list(),machines:PRODUCTION_MACHINES});
         if(method==='POST')return json(res,201,productionProfiles.create((await body(req)).document));
       }
-      const manufacturingMatch=pathname.match(/^\/api\/workshop\/production-profiles\/(mfg_[a-f0-9-]+)(?:\/(history))?$/);
+      const manufacturingMatch=pathname.match(/^\/api\/workshop\/production-profiles\/(mfg_[a-f0-9-]+)(?:\/(history|usage))?$/);
       if(manufacturingMatch){
-        const id=manufacturingMatch[1];if(method==='GET')return json(res,200,manufacturingMatch[2]?{revisions:productionProfiles.history(id)}:productionProfiles.get(id,revision(url.searchParams.get('revision'))));
+        const id=manufacturingMatch[1];if(method==='GET'&&manufacturingMatch[2]==='usage'){productionProfiles.get(id);return json(res,200,{products:repository.productionProfileUsage(id),scope:'current-and-activated-product-revisions'});}if(method==='GET')return json(res,200,manufacturingMatch[2]?{revisions:productionProfiles.history(id)}:productionProfiles.get(id,revision(url.searchParams.get('revision'))));
         if(method==='PATCH'&&!manufacturingMatch[2]){const data=await body(req);return json(res,200,productionProfiles.save(id,data.document,data.expectedRevision));}
         fail(405,'method_not_allowed','Diese Profilaktion ist nicht möglich.');
       }

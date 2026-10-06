@@ -352,3 +352,15 @@ for (const version of [1, 2]) test(`migration from schema ${version} preserves h
     assert.equal(inspect.prepare('PRAGMA foreign_key_check').all().length, 0);
   } finally { inspect.close(); }
 });
+
+test('manufacturing usage separates current and activated product revisions, includes archives, excludes history-only references',t=>{
+ const {repository:r}=fixture(t),profileId='mfg_1234',other='mfg_5678',doc=document('Synthetisches Acryl',{productionProfile:{id:profileId,revision:1}});
+ let a=r.create(doc);a=r.publish(a.id,{expectedRevision:a.revision});const activated=a.revision;
+ assert.equal(r.productionProfileUsage(profileId).length,1);assert.equal(r.productionProfileUsage(profileId)[0].current,true);assert.equal(r.productionProfileUsage(profileId)[0].activated,true);
+ a=r.save(a.id,{...doc,productionProfile:{id:profileId,revision:2}},a.revision);
+ let rows=r.productionProfileUsage(profileId);assert.deepEqual(rows.map(x=>[x.revision,x.profileRevision,x.current,x.activated]),[[a.revision,2,true,false],[activated,1,false,true]]);
+ a=r.save(a.id,{...doc,productionProfile:{id:other,revision:1}},a.revision);rows=r.productionProfileUsage(profileId);assert.equal(rows.length,1);assert.equal(rows[0].revision,activated);
+ const b=r.create(document('Synthetischer Master',{kind:'master',schema:'gravuru-form-product/v1',productionProfile:{id:profileId,revision:2}}));r.setArchived(b.id,{expectedRevision:b.revision,archived:true});
+ rows=r.productionProfileUsage(profileId);assert.equal(rows.length,2);assert.equal(rows.find(x=>x.id===b.id).archived,true);assert.equal(rows.find(x=>x.id===b.id).kind,'master');assert.ok(rows.every(x=>!Object.hasOwn(x,'document')&&!Object.hasOwn(x,'metadata')));
+ const before=r.history(a.id);r.productionProfileUsage(profileId);assert.deepEqual(r.history(a.id),before);assert.deepEqual(r.productionProfileUsage('mfg_ffff'),[]);assert.throws(()=>r.productionProfileUsage("x' OR 1=1"));
+});

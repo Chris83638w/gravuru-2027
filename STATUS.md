@@ -1,3 +1,9 @@
+## Aktuell: Größen-/Materialausführungen verbinden – 06.10.2026
+
+Branch `task/form-variants-20261006`, Basis `67205fa26b8b48fa02f5a0e3959a3f1dcddc91ed`. Backend verbindet vorbereitete freie Formprodukte zu einer gemeinsamen Kundenauswahl mit Standardausführung. Jede Größe/Materialkombination verweist ausdrücklich auf ihre Produktrevision mit passender Kontur, Bohrungen, Preis und Designs. Historie, Konflikte und Archivierung geprüft; alte Gruppenlinks übernehmen spätere Preise nicht still. **254 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Browserprüfung Desktop/Handy/Tablet einschließlich Kundenwechsel und Konflikt.** [Bedienung und Nachweis](docs/dashboard-20261004/DASHBOARD-AUSFUEHRUNGEN.md).
+
+Nächster Schritt: Excel-Kindtabelle an diese geprüfte Ausführungszuordnung anschließen (noch offen). Keine automatische Größen-/Kundenfeldumrechnung. Kein Publish/Deploy, Merge, PR oder Zugriff auf private Bestände; separate Acryl-Testseite unverändert. Nachfolgende Abschnitte dokumentieren historische Pakete.
+
 ## Aktuell: Mehrere Designs je Formprodukt per Excel – 06.10.2026
 
 Branch `task/batch-design-sheet-20261006`, Basis `d24d8297d8a751f7961d6b4c989b092783dca3a1`. Optionales Blatt **Designs** verbindet mehrere SVG/PDF-Seiten mit einer Produktzeile, ergänzt/ersetzt gezielte Designs und wählt ein Standarddesign. Bis 30 Designs pro Formprodukt; unberührte Kundenfelder/Rechte bleiben erhalten. Fehler blockieren das betroffene Produkt; Wiederholung und Updates bleiben revisionsgeschützt. **249 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell. Echte XLSX mit SVG und zwei PDF-Seiten, Desktop/Handy/Tablet und Kunden-Designwechsel geprüft.** [Bedienung, Aufnahmen und Nachweis](docs/dashboard-20261004/DASHBOARD-DESIGNTABELLE.md).

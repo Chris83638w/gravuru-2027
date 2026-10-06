@@ -1,0 +1,96 @@
+{
+  "branch": "task/form-variants-20261006",
+  "baseCommit": "67205fa26b8b48fa02f5a0e3959a3f1dcddc91ed",
+  "cloudCheck": {
+    "startedAt": "2026-10-06T05:49:34.596Z",
+    "platform": "linux",
+    "node": "v24.19.0",
+    "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+    "steps": [
+      {
+        "name": "python-pdf",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "references",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "tests",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "build",
+        "exitCode": 0,
+        "result": "PASS"
+      }
+    ],
+    "result": "PASS",
+    "tests": {
+      "count": 254,
+      "skipped": 0,
+      "failures": 0
+    },
+    "finishedAt": "2026-10-06T05:50:46.723Z"
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "browser": {
+    "createSaveReload": true,
+    "variants": 2,
+    "defaultSelection": "Eiche 160x80",
+    "customerPricesCents": [
+      1499,
+      2499
+    ],
+    "customerMatchingDesigns": [
+      "home-120",
+      "home-160"
+    ],
+    "singleDesignPickerHidden": true,
+    "oldGroupRetainsOldPrice": true,
+    "explicitReferenceUpdate": true,
+    "staleGroupSaveRejectedAndInputRetained": true,
+    "viewports": [
+      1440,
+      1280,
+      390,
+      768
+    ],
+    "javascriptErrors": []
+  },
+  "earlierFailedRun": {
+    "startedAt": "2026-10-06T05:47:04.107Z",
+    "platform": "linux",
+    "node": "v24.19.0",
+    "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+    "steps": [
+      {
+        "name": "python-pdf",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "references",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "tests",
+        "exitCode": 1,
+        "result": "FAIL"
+      }
+    ],
+    "result": "FAIL",
+    "error": "Fremd-Host-Test verwendete fetch, das den Host-Header nicht übernahm; korrigiert auf node:http, Erwartung 403 unverändert.",
+    "finishedAt": "2026-10-06T05:48:16.880Z"
+  },
+  "onlySyntheticData": true,
+  "published": false
+}

@@ -1,3 +1,4 @@
+import {createFormVariants} from './form-variants.mjs';
 import {additionPolicy,formMotifs} from './form-additions.mjs';
 import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './order-product-draft.mjs';
 import {prepareCartRequest} from './storefront-cart.mjs';
@@ -53,6 +54,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,seed.config.localResources.fonts);productionProfiles.resolve(d);return d;};
   const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document))return verifyForm(document);profiles.resolve(document);assets.validateDocument(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
+  const variants=createFormVariants({filename,repository});
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set();
@@ -120,6 +122,22 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         return json(res,201,{request:prepareCartRequest(offer),summary:{shopDomain:binding.shopDomain,variantId:offer.variantId,productId:binding.productId,productRevision:binding.productRevision,snapshotId:data.snapshotId,quantity:offer.quantity,unitCents:offer.unitCents,totalCents:offer.unitCents*offer.quantity,currency:offer.currency},sent:false,paymentConfirmed:false});
       }
       if(pathname==='/api/workshop/order-offers'&&method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['bindingId','snapshotId','quantity'].includes(k)))fail(422,'offer_fields','Unbekannte Checkout-Felder.');return json(res,201,orderIntake.offer(data));}
+      if(pathname==='/api/workshop/variants'){
+        if(method==='GET')return json(res,200,{groups:variants.list()});
+        if(method==='POST')return json(res,201,variants.create((await body(req)).document));
+      }
+      const variantsMatch=pathname.match(/^\/api\/workshop\/variants\/(variants_[a-f0-9-]+)(?:\/(history|options|select))?$/);
+      if(variantsMatch){
+        const id=variantsMatch[1],action=variantsMatch[2],rev=revision(url.searchParams.get('revision'));
+        if(method==='GET'){
+          if(action==='history')return json(res,200,{revisions:variants.history(id)});
+          if(action==='select')return json(res,200,variants.select(id,rev,url.searchParams.get('variant')??undefined));
+          if(action==='options')return json(res,200,variants.options(id,rev,{customer:true}));
+          if(!action)return json(res,200,variants.options(id,rev));
+        }
+        if(method==='PATCH'&&!action){const data=await body(req);return json(res,200,variants.save(id,data.document,data.expectedRevision));}
+        fail(405,'method_not_allowed','Diese Ausführungsaktion ist nicht möglich.');
+      }
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});
       if(pathname==='/api/workshop/production-profiles'){
         if(method==='GET')return json(res,200,{profiles:productionProfiles.list(),machines:PRODUCTION_MACHINES});
@@ -381,5 +399,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {repository,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{exportWorker.close();exportJobs.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
+  return {repository,variants,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
 }

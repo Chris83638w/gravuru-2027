@@ -1,3 +1,9 @@
+## Aktuell: Bestehenden Konfi angebunden geprüft – 06.10.2026
+
+Branch `task/existing-konfi-binding-20261006`, Basis `84f649eab669486428c9450483605bbfd459660b`. Acryl-Dashboard öffnet den bestehenden Kundenkonfigurator; beide Editor-Vorschaulinks jetzt auf die gespeicherte Revision festgelegt und bei ungespeicherten Änderungen verborgen. Echter Browserlauf mit Dashboardänderung, späterer Revision und Neuladen des alten Links bestanden; Desktop/Handy/Tablet, keine JavaScript-Fehler. Fixture-Build **76 Ressourcen/1 Modell**. Die **268 Tests** des vorigen Pakets sind ein historischer Nachweis und wurden hier nicht wiederholt. [Prüfung und Grenzen](docs/dashboard-20261004/DASHBOARD-BESTEHENDER-KONFI.md).
+
+**Nächster Schritt:** Freie Formprodukte in den vorhandenen Konfigurator einbinden; ihre bisherige separate Kunden-Testansicht ist dafür noch keine Abnahme. Danach durchgehender Kundenentwurf → Werkstatt → PDF/ZIP. Muster Acrylglasbild und separate Testseite unverändert; keine Veröffentlichung. Nachfolgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Excel bis Kundenkonfigurator zusammenhängend geprüft – 06.10.2026
 
 Branch `task/excel-customer-flow-20261006`, Basis `e57a7defee4ff8e554f4f17c5beb0442120e224b`. Echte XLSX-/SVG-/PDF-Importe → drei Formprodukte → Design-Excel-Update → Gruppe aus Produktkatalog → alle drei Kundenausführungen, Texte speichern/neuladen und Designs wechseln. Spätere Preis-/Designänderung übernimmt ein alter Gruppenlink nicht still. Gefundene PDF-Rundungsabweichung bei maßgleicher Platzierung korrigiert, Originalmaß unverändert. **268 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; durchgehender Browserlauf Desktop/Handy/Tablet bestanden.** [Ergebnis, Bilder und wiederholbarer Ablauf](docs/dashboard-20261004/DASHBOARD-EXCEL-KUNDENABLAUF.md).

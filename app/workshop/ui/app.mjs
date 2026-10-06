@@ -41,8 +41,9 @@ function syncControls(){
  $('#save-indicator').dataset.dirty=String(state.dirty);
  $('#save-product').textContent=state.busy?'Wird gespeichert …':'Änderungen speichern';
  $('#print-export-link').hidden=state.dirty||!state.record;
+ for(const id of ['preview-link','customer-view']){const link=$('#'+id);link.hidden=state.dirty||!state.record||archived;link.title=state.record?'Bestehenden Konfigurator mit gespeichertem Stand '+state.record.revision+' öffnen':'';}
  productEditor.sync();overview?.sync();productOptions?.sync();
- $('#preview-note').textContent='Gespeicherte Produktdaten mit aktuellen Profilzuordnungen.'+(state.dirty?' Deine ungespeicherten Änderungen sind noch nicht enthalten.':'');
+ $('#preview-note').textContent='Vorschau des gespeicherten Produktstands einschließlich seiner Profilzuordnungen.'+(state.dirty?' Speichere deine Änderungen, um die Vorschau zu öffnen.':'');
 }
 function setBusy(value){state.busy=value;syncControls();}
 function markDirty(){state.dirty=true;syncControls();productEditor.changed();}
@@ -111,7 +112,7 @@ function renderEditor(){
  $('#archive-product').textContent=record.status==='archived'?'Aus dem Archiv holen':'Konfiguration archivieren';
  $('#release-status').textContent=record.publishedRevision?'Freigegeben: Stand '+record.publishedRevision+(record.publishedRevision!==record.revision?' · weitere Änderungen vorhanden':''):'Noch kein Stand freigegeben.';
  $('#print-export-link').href='/?'+new URLSearchParams({configuration:record.id,revision:record.revision,druckexport:'1'});
- $('#preview-link').href='/?'+new URLSearchParams({configuration:record.id});$('#customer-view').href=$('#preview-link').href;
+ $('#preview-link').href='/?'+new URLSearchParams({configuration:record.id,revision:record.revision});$('#customer-view').href=$('#preview-link').href;
  $('#panel-details').innerHTML='<div class="form-section"><h3>Was ist das für eine Konfiguration?</h3><div class="form-grid">'+field('Name','name',draft.name,{full:true,required:true})+'<label>Verwendung<select data-path="kind"><option value="product" '+(draft.kind==='product'?'selected':'')+'>Produktkonfiguration</option><option value="master" '+(draft.kind==='master'?'selected':'')+'>Mastervorlage</option></select><p class="field-help">Master kannst du als Ausgangspunkt für weitere Produkte kopieren.</p></label><label>Kopiert aus<span class="static-value">'+escape(draft.masterId||'Eigenständige Konfiguration')+'</span></label>'+field('Kategorie-Zuordnungen','categoryIds',(draft.categoryIds||[]).join(', '),{full:true,help:'Mehrere Kategorie-IDs durch Komma trennen, zum Beispiel acrylglasbilder, geschenke.',max:1000})+'</div></div><div class="form-section"><h3>Für die spätere Produktseite</h3><p>Diese Angaben werden hier gespeichert. Die Übertragung zu Shopify folgt separat.</p><div class="form-grid">'+field('SEO-Titel','seo.title',draft.seo?.title||'',{full:true,max:70})+textArea('SEO-Beschreibung','seo.description',draft.seo?.description||'',{max:160,help:'Beschreibe das Produkt verständlich: Material, Personalisierung und Anlass.'})+'</div></div>';
  renderPrices();renderDesigns();renderProfiles();renderHistory();productEditor.render();showTab(state.tab);
 }

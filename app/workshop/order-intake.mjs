@@ -32,6 +32,9 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
  CREATE TRIGGER IF NOT EXISTS form_binding_selection_no_delete BEFORE DELETE ON form_shop_binding_selections BEGIN SELECT RAISE(ABORT,'Selections are immutable');END;
  CREATE TABLE IF NOT EXISTS form_order_offers(id TEXT PRIMARY KEY,token_hash TEXT NOT NULL UNIQUE,binding_id TEXT NOT NULL,snapshot_id TEXT NOT NULL,package_sha256 TEXT NOT NULL,quantity INTEGER NOT NULL,created_at TEXT NOT NULL,expires_at INTEGER NOT NULL);
  CREATE TABLE IF NOT EXISTS form_order_events(shop TEXT NOT NULL,event_id TEXT NOT NULL,body_sha256 TEXT NOT NULL,order_id TEXT NOT NULL,created_at TEXT NOT NULL,PRIMARY KEY(shop,event_id));
+ CREATE TABLE IF NOT EXISTS form_order_customers(shop TEXT NOT NULL,order_id TEXT NOT NULL,customer_id TEXT,PRIMARY KEY(shop,order_id));
+ CREATE TRIGGER IF NOT EXISTS form_order_customer_fixed BEFORE UPDATE ON form_order_customers BEGIN SELECT RAISE(ABORT,'Order customers are immutable');END;
+ CREATE TRIGGER IF NOT EXISTS form_order_customer_keep BEFORE DELETE ON form_order_customers BEGIN SELECT RAISE(ABORT,'Order customers are immutable');END;
  CREATE TABLE IF NOT EXISTS form_order_lines(id TEXT PRIMARY KEY,shop TEXT NOT NULL,order_id TEXT NOT NULL,line_id TEXT NOT NULL,offer_id TEXT NOT NULL UNIQUE,document TEXT NOT NULL,created_at TEXT NOT NULL,UNIQUE(shop,order_id,line_id));
  CREATE TRIGGER IF NOT EXISTS form_shop_binding_fixed BEFORE UPDATE ON form_shop_bindings BEGIN SELECT RAISE(ABORT,'Bindings are immutable');END;
  CREATE TRIGGER IF NOT EXISTS form_order_offer_fixed BEFORE UPDATE ON form_order_offers BEGIN SELECT RAISE(ABORT,'Offers are immutable');END;
@@ -44,7 +47,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
  const safeBinding=r=>({id:r.id,shopDomain:r.shop,variantId:r.variant_id,productId:r.product_id,productRevision:r.product_revision,unitCents:r.unit_cents,...(selection(r.id)?{options:selection(r.id)}:{})});
  const statuses=createOrderStatus({database:db,clock});
  const get=id=>{const r=db.prepare('SELECT document FROM form_order_lines WHERE id=?').get(id);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
- return {get,status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
+ return {get,customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
   // Caller supplies the actual saved product record, never a browser price.
   bind({shopDomain,variantId,record,snapshotId,options:selected}){
    if(!domain(shopDomain))fail(422,'Bitte die myshopify.com-Domain des Entwicklungsstores angeben.');variantId=identifier(variantId);
@@ -125,6 +128,13 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
     if(o.expires_at<clock())fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');const m=snapshot(o.snapshot_id);if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
     const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity:o.quantity,unitCents:b.unit_cents,totalCents:b.unit_cents*o.quantity,currency:'EUR',status:'test-paid-event-recorded',test:true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
     db.prepare('INSERT INTO form_order_lines VALUES(?,?,?,?,?,?,?)').run(id,shop,orderId,lineId,o.id,JSON.stringify(document),at());result.push(document);
+   }
+   if(result.length){
+    const customerId=payload.customer?.id==null?null:'gid://shopify/Customer/'+identifier(payload.customer.id);
+    const owner=db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(shop,orderId);
+    if(owner&&owner.customer_id!==customerId)fail(409,'Bestellung darf ihre Kundenbindung nicht wechseln.');
+    // Older paid lines remain unbound: a later delivery cannot silently claim them.
+    if(!owner&&!db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND order_id=?').get(shop,orderId))db.prepare('INSERT INTO form_order_customers VALUES(?,?,?)').run(shop,orderId,customerId);
    }
    if(payload.updated_at)statuses.record(verified);
    db.prepare('INSERT INTO form_order_events VALUES(?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at());return {duplicate:false,lines:result};

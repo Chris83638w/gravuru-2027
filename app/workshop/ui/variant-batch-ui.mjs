@@ -1,3 +1,4 @@
+import {merchantRequest as fetch} from './merchant-request.mjs';
 import {readVariantImport} from './variant-batch-reader.mjs';
 const $=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let csrf='',prepared=null,busy=false,hasErrors=false;

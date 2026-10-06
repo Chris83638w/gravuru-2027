@@ -1,3 +1,4 @@
+import {merchantRequest as fetch} from './merchant-request.mjs';
 export function createOrderProductDraftUI(){
  const $=s=>document.querySelector(s),form=$('#product-draft-form');let line=null,plan=null,csrf='',busy=false,serial=0,url=null;
  async function api(path,data){if(data&&!csrf){const r=await fetch('/api/workshop/session');csrf=(await r.json()).csrfToken;}const r=await fetch(path,data?{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrf},body:JSON.stringify(data)}:{}),v=await r.json();if(!r.ok)throw Error(v.error?.message||'Übernahme nicht möglich.');return v;}

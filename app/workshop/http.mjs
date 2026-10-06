@@ -12,6 +12,7 @@ import {additionPolicy,formMotifs} from './form-additions.mjs';
 import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './order-product-draft.mjs';
 import {prepareCartRequest} from './storefront-cart.mjs';
 import {createCartHttpGate} from './cart-http-gate.mjs';
+import {createShopifySessionVerifier} from './shopify-session.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createFormEngravingProof,formEngravingSettings,formEngravingKey,FORM_ENGRAVING_RECIPE} from './form-engraving-proof.mjs';
 import {createExportWorker} from './export-jobs.mjs';
@@ -54,8 +55,10 @@ async function body(req,limit=2*1024*1024){
 }
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
-/** Local operator surface only. This does not provide hosted merchant authentication. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null}){
+/** Loopback preview; optional test session gate is not a public deployment. */
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null}){
+  if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
+  const verifySession=shopifySessions?createShopifySessionVerifier(shopifySessions):null;
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
   const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite')});
@@ -117,7 +120,40 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         let size=0;const chunks=[];for await(const chunk of req){size+=chunk.length;if(size>1024*1024)fail(413,'body_limit','Bestellnachricht zu groß.');chunks.push(chunk);}
         return json(res,200,orderIntake.receive(Buffer.concat(chunks),req.headers,orderWebhook));
       }
+      const customerFile=pathname.match(/^\/api\/workshop\/customer-files\/(grant_[a-f0-9-]+)$/);
+      if(pathname==='/api/workshop/customer-files'){
+        if(!verifySession)fail(503,'customer_download_disabled','Kundenkonto-Testanbindung ist nicht eingerichtet.');
+        if(method!=='GET')fail(405,'method_not_allowed','Dateiliste benötigt GET.');
+        const principal=verifySession(req.headers.authorization,'customer'),before=url.searchParams.get('before');
+        if(before!==null&&!/^[1-9][0-9]*$/.test(before))fail(422,'customer_download_fields','Ungültige Fortsetzung.');
+        return json(res,200,customerDrafts.customerDownloads.available(principal,before===null?undefined:Number(before)));
+      }
+      if(customerFile){
+        if(!verifySession)fail(503,'customer_download_disabled','Kundenkonto-Testanbindung ist nicht eingerichtet.');
+        if(method!=='POST')fail(405,'method_not_allowed','Dateizugriff benötigt POST.');
+        const principal=verifySession(req.headers.authorization,'customer'),data=await body(req,1024);
+        if(Object.keys(data).length)fail(422,'customer_download_fields','Für den Download sind keine Kundendaten nötig.');
+        const file=customerDrafts.customerDownloads.download(customerFile[1],principal);
+        return res.writeHead(200,{'Content-Type':file.mime,'Content-Length':file.bytes.length,'Content-Disposition':'attachment; filename="'+customerFile[1]+(file.mime==='application/zip'?'.zip':'.pdf')+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(file.bytes);
+      }
+      const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      const grantsMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/file-grants$/);
+      if(grantsMatch){
+        if(!merchantSession)fail(503,'customer_download_disabled','Händler-Testanmeldung für Dateifreigaben erforderlich.');
+        if(method==='GET')return json(res,200,{grants:customerDrafts.customerDownloads.list(grantsMatch[1],merchantSession)});
+        if(method!=='POST')fail(405,'method_not_allowed','Freigabe benötigt POST.');
+        const data=await body(req,2048);
+        if(Object.keys(data).some(k=>!['jobId','format'].includes(k)))fail(422,'customer_download_fields','Nur Ausgabeauftrag und Dateiformat angeben.');
+        return json(res,201,customerDrafts.customerDownloads.grant({...data,lineId:grantsMatch[1]},merchantSession));
+      }
+      const revokeMatch=pathname.match(/^\/api\/workshop\/file-grants\/(grant_[a-f0-9-]+)\/revoke$/);
+      if(revokeMatch){
+        if(!merchantSession)fail(503,'customer_download_disabled','Händler-Testanmeldung für Dateifreigaben erforderlich.');
+        if(method!=='POST')fail(405,'method_not_allowed','Widerruf benötigt POST.');
+        const data=await body(req,1024);if(Object.keys(data).length)fail(422,'customer_download_fields','Widerruf benötigt keine Zusatzdaten.');
+        return json(res,200,customerDrafts.customerDownloads.revoke(revokeMatch[1],merchantSession));
+      }
       if(pathname==='/api/workshop/draft-cart'){
         if(method!=='POST')fail(405,'method_not_allowed','Eine Warenkorbübergabe benötigt POST.');
         if(!storefront)fail(503,'cart_disabled','Die bestätigte Test-Warenkorbanbindung ist nicht eingerichtet.');
@@ -179,7 +215,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='PATCH'&&!action){const data=await body(req);return json(res,200,variants.save(id,data.document,data.expectedRevision));}
         fail(405,'method_not_allowed','Diese Ausführungsaktion ist nicht möglich.');
       }
-      if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:'local-operator'});
+      if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:merchantSession?'shopify-merchant-test':'local-operator'});
       if(pathname==='/api/workshop/production-profiles'){
         if(method==='GET')return json(res,200,{profiles:productionProfiles.list(),machines:PRODUCTION_MACHINES});
         if(method==='POST')return json(res,201,productionProfiles.create((await body(req)).document));

@@ -1,3 +1,4 @@
+import {merchantRequest as fetch} from './merchant-request.mjs';
 const $=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let current=null,members=[],defaultId='',products=[],csrf='',busy=false,dirty=false;
 const money=v=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(v/100);

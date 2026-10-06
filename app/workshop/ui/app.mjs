@@ -1,3 +1,4 @@
+import {merchantRequest as fetch} from './merchant-request.mjs';
 import {installNativeProduction} from './native-production-ui.mjs';
 import {installProductOptions} from './product-options-ui.mjs';
 import {productCards,installOverview} from './product-overview-ui.mjs';

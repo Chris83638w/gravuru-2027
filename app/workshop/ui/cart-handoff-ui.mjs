@@ -1,3 +1,4 @@
+import {merchantRequest as fetch} from './merchant-request.mjs';
 const $=s=>document.querySelector(s),euro=n=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n/100);
 let snapshots=[],bindings=[],token='',busy=false,serial=0,previewUrl=null,detail=null;
 const current=()=>snapshots.find(s=>s.id===$('#snapshot').value);

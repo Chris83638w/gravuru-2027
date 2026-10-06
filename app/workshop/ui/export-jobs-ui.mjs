@@ -1,3 +1,4 @@
+import {merchantRequest as fetch} from './merchant-request.mjs';
 import {showOutputSpecification} from './output-specification.mjs';
 import {installOutputChecks} from './output-checks-ui.mjs';
 import {outputLabel,jobLink} from './output-summary.mjs';

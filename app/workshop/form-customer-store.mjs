@@ -1,4 +1,5 @@
 import {createOrderIntake} from './order-intake.mjs';
+import {createCustomerDownloads} from './customer-downloads.mjs';
 import {createExportJobStore} from './export-jobs.mjs';
 import {createCartHandoffJournal} from './cart-handoff-journal.mjs';
 import {createAcrylicDraftStore} from './acrylic-draft-store.mjs';
@@ -31,10 +32,12 @@ export function createFormCustomerStore({filename,clock=Date.now}){
  const summary=r=>{const m=JSON.parse(r.manifest);return {id:m.id,createdAt:m.createdAt,product:m.product,source:m.source,blockers:m.blockers,warnings:m.warnings,photoCount:m.photos.length,packageSha256:m.packageSha256};};
  const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock});
  const acrylicDrafts=createAcrylicDraftStore({database:db,capture(bundle){const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,m.source.draftRevision,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);}});
- return {exportJobs,orderIntake,cartHandoffs,acrylicDrafts,
+ const printProof=(id,key)=>{snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;};
+ const customerDownloads=createCustomerDownloads({database:db,orders:orderIntake,jobs:exportJobs,printProof,clock});
+ return {exportJobs,orderIntake,cartHandoffs,acrylicDrafts,customerDownloads,
   findAcrylicReview(key){const r=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);return r?summary(snapshot(r.snapshot_id)):null;},
   captureAcrylicReview(key,bundle){return transaction(()=>{const old=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);if(old)return summary(snapshot(old.snapshot_id));const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,1,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);db.prepare('INSERT INTO acrylic_review_requests VALUES(?,?)').run(key,m.id);return summary(snapshot(m.id));});},
-  printProof(id,key){snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;},
+  printProof,
   savePrintProof(id,key,result){return transaction(()=>{snapshot(id);db.prepare('INSERT OR IGNORE INTO form_print_proofs VALUES(?,?,?,?,?)').run(id,key,JSON.stringify(result.metadata),result.pdf,result.archive);});},
   findSnapshot:(draftId,version)=>{const r=db.prepare('SELECT manifest FROM form_review_snapshots WHERE draft_id=? AND draft_revision=?').get(draftId,version);return r?summary(r):null;},
   capture(id,token,expectedRevision,bundle){return transaction(()=>{const r=auth(id,token);if(r.revision!==expectedRevision||bundle.manifest.source.draftRevision!==r.revision||bundle.manifest.source.draftId!==r.id||bundle.manifest.product.id!==r.product_id||bundle.manifest.product.revision!==r.product_revision)fail(409,'Der Entwurf wurde inzwischen geändert. Bitte den neuen Stand prüfen und erneut sichern.');const old=db.prepare('SELECT manifest FROM form_review_snapshots WHERE draft_id=? AND draft_revision=?').get(id,r.revision);if(old)return summary(old);db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(bundle.manifest.id,id,r.revision,JSON.stringify(bundle.manifest),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);return summary(snapshot(bundle.manifest.id));});},

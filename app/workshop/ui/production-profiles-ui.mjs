@@ -1,3 +1,4 @@
+import {merchantRequest as fetch} from './merchant-request.mjs';
 const $=s=>document.querySelector(s),form=$('#profile-form'),field=n=>form.elements.namedItem(n),esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let usageSerial=0;
 let token='',rows=[],materials=[],current=null,head=0,busy=false,dirty=false;

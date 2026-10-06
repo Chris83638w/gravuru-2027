@@ -1,5 +1,7 @@
 # Gemeinsamer Abschlussabgleich – 06.10.2026
 
+**Ergänzung 17:27 UTC:** Der weitergeführte Stand für Anmeldung, Bestell-Kundenbindung, Dateifreigabe und Händleroberflächen steht im [integrierten Abschlussnachweis](INTEGRIERTER-ABSCHLUSS-20261006.md). Die folgenden 355-Test-/Browserergebnisse bleiben historische Nachweise ihres damaligen Commits. Neue Sitzungstests sind keine echte Shopify-Anmeldung; weitere Code- und Betriebsarbeiten bleiben ausdrücklich offen.
+
 ## Gesicherter Entwicklungsstand
 
 Repository **Chris83638w/gravuru-2027**, Cloud-Aufgabenbranch **task/completion-pass-20261006**, Ausgangscommit **4b296b28e2d2c7b6f76e82c98589188c40d2af30**. Bestehender Dashboard-Neuaufbau und Kundenkonfigurator weitergeführt, keine Rückkehr zur alten Pipeline. Parallelagenten vom Nutzer ausdrücklich beauftragt. Vier Teilprüfungen und eigene Kundenentwurfskorrektur gemeinsam integriert. Anschließend den bislang fehlenden serverseitigen Storefront-HTTP-Transport ergänzt.

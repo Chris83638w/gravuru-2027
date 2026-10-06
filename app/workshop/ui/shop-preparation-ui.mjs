@@ -1,3 +1,4 @@
+import {merchantRequest as fetch} from './merchant-request.mjs';
 const $=s=>document.querySelector(s),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),euro=n=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n/100);
 let data=null,products=[],bindings=[],serial=0;
 async function api(url){const r=await fetch(url),v=await r.json();if(!r.ok)throw Error(v.error?.message||'Produkt nicht erreichbar.');return v;}

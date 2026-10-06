@@ -1,6 +1,7 @@
 import {readBatchImport} from './batch-reader.mjs';
 const $=s=>document.querySelector(s),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false,formKeys=new Set();
+let exportBusy=false;
 const uploadCache=new WeakMap();
 async function api(path,data){
   if(data&&!csrf)csrf=(await api('/api/workshop/session')).csrfToken;
@@ -49,6 +50,7 @@ async function uploadDesigns(rows){
 }
 const money=cents=>Number.isInteger(cents)?new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100):'–';
 function artworkCell(row){
+  if(row.designAssignments?.length)return '<ul>'+row.designAssignments.map(d=>'<li>'+escape(d.name)+(d.designId===row.defaultDesignId?' · Standard':'')+'<small>Original und Kundenfelder bleiben erhalten</small></li>').join('')+'</ul>'+(row.artworks?.length?artworkCell({...row,designAssignments:[]}):'');
   if(row.artworks?.length)return '<strong>'+row.designCount+' Designs im Produkt</strong><small>Standard: '+escape(row.defaultDesignName)+'</small><details open><summary>'+row.artworks.length+' Designzuordnungen</summary><div class="batch-design-list">'+row.artworks.map(a=>'<div class="batch-design-item">'+artworkCell({artwork:a})+(a.default?'<strong>Standarddesign</strong>':'')+'</div>').join('')+'</div></details>';
   const a=row.artwork;if(!a)return row.status==='error'?'–':row.action==='update'?'Vorhandenes Design bleibt':'Masterdesign';
   const url='/api/workshop/design-assets/'+a.assetId+'/preview.svg',mm=v=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(v);
@@ -69,10 +71,10 @@ $('#check').addEventListener('click',async()=>{
     const errors=plan.report.filter(r=>r.status==='error').length,existing=plan.report.filter(r=>r.status==='existing').length;
     hasErrors=errors>0;$('#partial-label').hidden=!hasErrors||!plan.token;
     $('#summary').textContent=plan.report.length+' Produkte · '+errors+' Fehler · '+existing+' bereits ausgeführt · '+updates+' Aktualisierungen';
-    $('#rows').innerHTML=plan.report.map(row=>'<tr><td>'+row.row+'</td><td><strong>'+escape(row.name)+'</strong><small>'+escape(row.key)+'</small>'+(row.action==='update'?'<small>Aktualisieren · '+escape(row.productId)+' · Stand '+row.expectedRevision+' → '+(row.expectedRevision+1)+'</small><small>Felder: '+escape(row.changes.join(', '))+'</small>':'')+ (row.formProduct?'<small>'+escape(row.material||'Material offen')+' · '+(row.method==='print'?'Druck':row.method==='engraving'?'Gravur':'Verfahren offen')+' · '+row.geometry.widthMm+' × '+row.geometry.heightMm+' mm</small>':'')+'</td><td>'+artworkCell(row)+'</td><td>'+money(row.formProduct?row.prices?.base:row.prices?.small)+'</td><td>'+money(row.prices?.large)+'</td><td>'+escape(row.message||(row.status==='existing'?'Bereits ausgeführt':row.action==='update'?'Aktualisierung bereit':'Neuanlage bereit'))+'</td></tr>').join('');
+    $('#rows').innerHTML=plan.report.map(row=>'<tr><td>'+row.row+'</td><td><strong>'+escape(row.name)+'</strong><small>'+escape(row.key)+'</small>'+(row.action==='update'?'<small>'+(row.status==='unchanged'?'Unverändert · ':'Aktualisieren · ')+escape(row.productId)+' · Stand '+row.expectedRevision+' → '+(row.status==='unchanged'?row.expectedRevision:row.expectedRevision+1)+'</small><small>Felder: '+escape(row.changes.join(', '))+'</small>':'')+ (row.formProduct?'<small>'+escape(row.material||'Material offen')+' · '+(row.method==='print'?'Druck':row.method==='engraving'?'Gravur':'Verfahren offen')+' · '+row.geometry.widthMm+' × '+row.geometry.heightMm+' mm</small>':'')+'</td><td>'+artworkCell(row)+'</td><td>'+money(row.formProduct?row.prices?.base:row.prices?.small)+'</td><td>'+money(row.prices?.large)+'</td><td>'+escape(row.message||(row.status==='existing'?'Bereits ausgeführt':row.status==='unchanged'?'Unverändert · wird übersprungen':row.action==='update'?'Aktualisierung bereit':'Neuanlage bereit'))+'</td></tr>').join('');
     for(const row of $('#rows').rows)Array.from(row.cells).forEach((cell,i)=>cell.dataset.label=['Datensatz','Produkt / Importschlüssel','Design','Grundpreis / klein','Acryl groß','Ergebnis'][i]);
     if(plan.token)prepared={...data,token:plan.token};
-    status(plan.valid?'Prüfung abgeschlossen. Kontrolliere Neuanlagen und Aktualisierungen, bevor du die Tabelle anwendest.':'Noch nichts geändert. Fehler korrigieren oder ausdrücklich nur gültige Datensätze anwenden.',!plan.valid);
+    status(plan.valid?(plan.token?'Prüfung abgeschlossen. Kontrolliere Neuanlagen und Aktualisierungen, bevor du die Tabelle anwendest.':'Alles unverändert. Keine Übernahme erforderlich.'):'Noch nichts geändert. Fehler korrigieren oder ausdrücklich nur gültige Datensätze anwenden.',!plan.valid);
   }catch(error){status(error.message,true);}finally{$('#cancel-check').hidden=true;disabled(false);}
 });
 $('#import').addEventListener('click',async()=>{
@@ -89,6 +91,23 @@ $('#import').addEventListener('click',async()=>{
 });
 try{
   const {products}=await api('/api/workshop/products');
+  setupDesignExport(products);
   $('#master').innerHTML=products.filter(p=>p.kind==='master'&&p.status!=='archived').map(p=>'<option value="'+escape(p.id)+'" data-revision="'+p.revision+'">'+escape(p.name)+(p.overview?.formProduct?' · Freie Form':' · Acrylvorlage')+' · Stand '+p.revision+'</option>').join('');
   if(!$('#master').options.length)status('Für Neuanlagen zuerst einen Master anlegen. Bestehende Produkte können mit action=update auch ohne Master aktualisiert werden.',true);
 }catch(error){status(error.message,true);}
+
+
+function selectedProducts(){return [...document.querySelectorAll('#export-products input:checked')].map(el=>el.value);}
+function countExport(){const count=selectedProducts().length;$('#export-count').textContent=count+' Produkte ausgewählt · bis zu 100 möglich';$('#export-designs').disabled=exportBusy||count<1||count>100;}
+function setupDesignExport(products){
+ const forms=products.filter(p=>p.kind==='product'&&p.status!=='archived'&&p.overview?.formProduct);
+ $('#export-products').innerHTML=forms.length?forms.map(p=>'<label class="export-choice"><input type="checkbox" value="'+escape(p.id)+'"><span><strong>'+escape(p.name)+'</strong><small>Stand '+p.revision+'</small></span></label>').join(''):'<p>Noch keine aktiven Formprodukte vorhanden.</p>';
+ $('#export-products').onchange=countExport;countExport();
+}
+$('#export-select-all').onclick=()=>{const inputs=[...document.querySelectorAll('#export-products input')],check=inputs.some(i=>!i.checked);inputs.forEach(i=>i.checked=check);countExport();};
+$('#export-designs').onclick=async()=>{if(exportBusy)return;exportBusy=true;countExport();$('#export-status').textContent='Excel-Datei wird erstellt …';try{
+ if(!csrf)csrf=(await api('/api/workshop/session')).csrfToken;
+ const res=await fetch('/api/workshop/batch/export',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrf},body:JSON.stringify({productIds:selectedProducts()})});
+ if(!res.ok)throw Error((await res.json()).error?.message||'Export fehlgeschlagen.');
+ const href=URL.createObjectURL(await res.blob()),a=document.createElement('a');a.href=href;a.download='Gravuru-Designzuordnungen.xlsx';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),60000);$('#export-status').textContent='Datei bereit. Bearbeiten und unten zur Prüfung auswählen. Es wurden keine Produkte verändert.';
+ }catch(e){$('#export-status').textContent=e.message;}finally{exportBusy=false;countExport();}};

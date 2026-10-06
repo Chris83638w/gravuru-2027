@@ -97,3 +97,5 @@
 .batch-page p code { display:inline; overflow-wrap:anywhere; }
 
 .batch-design-item{padding:12px 0;border-bottom:1px solid #dbe4df;overflow-wrap:anywhere}.batch-design-item:last-child{border:0}.batch-design-item>strong{display:block;margin-top:6px}.batch-design-list{max-height:420px;overflow:auto;padding-right:8px}
+
+.design-export{margin-bottom:24px}.design-export details{margin:16px 0}#export-products{max-height:300px;overflow:auto}.export-choice{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid #e1e4e8}.export-choice input{width:auto;margin:0}.export-choice span{min-width:0;overflow-wrap:anywhere}.export-choice small{display:block;margin-top:4px;color:#63717c}#export-status{font-size:13px}

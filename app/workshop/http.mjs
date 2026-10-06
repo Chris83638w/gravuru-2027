@@ -1,3 +1,4 @@
+import {designExportData,designWorkbook} from './design-export.mjs';
 import {variantExportData,variantWorkbook} from './variant-export.mjs';
 import {createFormVariants} from './form-variants.mjs';
 import {additionPolicy,formMotifs} from './form-additions.mjs';
@@ -354,6 +355,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const data=await body(req);
         if(Object.hasOwn(data,'categoryId')&&(typeof data.categoryId!=='string'||!data.categoryId.trim()))fail(422,'category_required','Bitte eine Kategorie-ID angeben.');
         return json(res,200,Object.hasOwn(data,'categoryId')?profiles.setCategory(data.categoryId,data.type,data.assignment,data.expectedRevision):profiles.setDefault(data.type,data.assignment,data.expectedRevision));
+      }
+      if(pathname==='/api/workshop/batch/export'&&method==='POST'){
+        const bytes=await designWorkbook(designExportData(repository,await body(req)));
+        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Designzuordnungen.xlsx"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
       }
       if(pathname==='/api/workshop/batch/plan'&&method==='POST'){
         const {entries,...plan}=planBatch(repository,await body(req),assets);return json(res,200,plan);

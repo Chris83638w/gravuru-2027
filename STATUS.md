@@ -1,3 +1,9 @@
+## Aktuell: Designzuordnungen aus Excel bearbeiten – 06.10.2026
+
+Branch `task/design-excel-export-20261006`, Basis `a06bab0cb0f3ec1eb1ef220992f4d39d1e6aa2e8`. Produktserien exportiert vorhandene Formprodukte mit Designnamen, IDs und Standardauswahl. Ohne neue Grafik bleiben Original, Platzierung, Kundenfelder und Rechte erhalten. Unveränderte Formprodukte werden übersprungen; Konflikte und Wiederaufnahme bleiben geprüft. **267 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; echter Download/Bearbeitung/Reimport, Desktop/Handy/Tablet geprüft.** [Bedienung und Nachweis](docs/dashboard-20261004/DASHBOARD-DESIGNZUORDNUNGEN-EXPORT.md).
+
+Nächster Schritt: Tabellenablauf Produktanlage → Designzuordnung → Ausführungsgruppe → Kundenkonfigurator zusammenhängend prüfen. Keine privaten Bestände verwendet, keine Veröffentlichung, kein Merge/PR. Separate Acryl-Testseite unverändert. Nachfolgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Ausführungen als ausgefüllte Excel bearbeiten – 06.10.2026
 
 Branch `task/variant-excel-export-20261006`, Basis `61903f9ae655116f3c8b8e7ae774a7f19c0e96ea`. Ausführungen → Excel-Zuordnung exportiert ausgewählte Gruppen samt festen Produktständen und zusätzlicher Produktliste. Herunterladen → bearbeiten → prüfen → übernehmen im Browser geprüft; unveränderte Gruppen werden ohne neue Revision übersprungen. **263 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Desktop/Handy/Tablet geprüft.** [Bedienung, Installation und Nachweis](docs/dashboard-20261004/DASHBOARD-AUSFUEHRUNGEN-EXPORT.md).

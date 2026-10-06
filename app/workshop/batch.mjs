@@ -72,7 +72,7 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
         if(master.document.kind!=='master'||current.status==='archived'||current.document.kind!=='master')fail('Die Vorlage muss ein aktiver Master sein.');
       }
       const form=isFormProduct(master.document);if(!form&&text(row.price_eur))fail('price_eur gilt für freie Formprodukte. Für die Acrylvorlage price_small_eur / price_large_eur verwenden.');
-      let document=structuredClone(master.document),artwork=null,artworks=[];
+      let document=structuredClone(master.document),artwork=null,artworks=[],designAssignments=[];
       const children=designGroups.get(key)||[];
       if(children.length&&!form)fail('Das Blatt Designs unterstützt freie Formprodukte. Die bisherige Acrylvorlage verwendet design_file im Blatt Produkte.');
       if(children.length>30)fail('Pro Produkt sind höchstens 30 Designzeilen möglich.');
@@ -103,7 +103,14 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
           childIds.add(designId);
           if(!['','0','1'].includes(flag))fail('default_design muss leer, 0 oder 1 sein.');
           if(flag==='1'){if(chosenDefault)fail('Nur ein Standarddesign pro Produkt mit default_design=1 markieren.');chosenDefault=designId;}
-          if(!text(child.design_file))fail('design_file ist im Blatt Designs erforderlich.');
+          if(!text(child.design_file)){
+            const existingDesign=document.designs.find(d=>d.id===designId);
+            if(!updating||!existingDesign)fail('Ein neues Design benötigt design_file. Ohne Datei kann nur ein vorhandenes Design im Update bearbeitet werden.');
+            if(text(child.design_page)||text(child.design_fit))fail('design_page und design_fit benötigen eine neue design_file.');
+            if(text(child.design_name))existingDesign.name=text(child.design_name);
+            designAssignments.push({designId,name:existingDesign.name,sourcePreserved:true});
+            continue;
+          }
           const asset=resolveSource(child),prepared=prepareFormBatch(document,child,{asset,filename:text(child.design_file),allowNewDesign:true,designName:text(child.design_name)});
           document=prepared.document;artworks.push(prepared.artwork);
         }catch(error){fail('Designs, Datensatz '+line+': '+error.message);}
@@ -125,10 +132,11 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       if(existing&&existing.fingerprint!==fingerprint)fail('Dieser Importschlüssel ist schon mit anderen Daten verknüpft. Neuen Schlüssel verwenden oder bestehenden Artikel bearbeiten.');
       if(updating&&!existing&&(current.revision!==Number(version)||current.status==='archived'))fail('Das Produkt wurde zwischenzeitlich geändert oder archiviert. Aktuellen Stand prüfen und expected_revision anpassen.');
       if(updating&&existing&&existing.id!==id)fail('Importschlüssel gehört zu einem anderen Produkt.');
-      if(updating&&JSON.stringify(validated)===JSON.stringify(master.document))fail('Die Zeile enthält keine Änderung.');
+      const unchanged=updating&&!existing&&JSON.stringify(validated)===JSON.stringify(master.document);
+      if(unchanged&&!form)fail('Die Zeile enthält keine Änderung.');
       const update=updating?{action,productId:id,expectedRevision:Number(version)}:{};
-      entries.push({key,fingerprint,document:validated,...update});
-      report.push({row:index+1,key,name:validated.name,status:existing?'existing':'ready',id:existing?.id,...(updating?{...update,changes:[...Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),...(children.length?['Designs']:[])],previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:validated.config.acrylic.pricing.sizes}),...(artwork?{artwork}:{}),...(artworks.length?{artworks,designCount:validated.designs.length,defaultDesignId:validated.defaultDesignId,defaultDesignName:validated.designs.find(d=>d.id===validated.defaultDesignId)?.name}:{})});
+      if(!unchanged)entries.push({key,fingerprint,document:validated,...update});
+      report.push({row:index+1,key,name:validated.name,status:existing?'existing':unchanged?'unchanged':'ready',id:existing?.id,...(updating?{...update,changes:[...Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),...(children.length?['Designs']:[])],previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:validated.config.acrylic.pricing.sizes}),...(designAssignments.length?{designAssignments,defaultDesignId:validated.defaultDesignId}:{}),...(artwork?{artwork}:{}),...(artworks.length?{artworks,designCount:validated.designs.length,defaultDesignId:validated.defaultDesignId,defaultDesignName:validated.designs.find(d=>d.id===validated.defaultDesignId)?.name}:{})});
     }catch(error){report.push({row:index+1,key,name:text(row?.name),status:'error',message:error.message});}
   }
   const valid=report.every(row=>row.status!=='error');

@@ -77,3 +77,34 @@ test('an empty form master takes the first child design as default and legacy ac
  const plan=planBatch(f.w.repository,input,f.w.assets);assert.equal(plan.valid,true,JSON.stringify(plan.report));assert.equal(plan.entries[0].document.defaultDesignId,'first');assert.equal(plan.report[0].artworks[0].default,true);
  const legacy=f.w.repository.list().find(p=>p.kind==='master'&&p.id!==master.id&&p.id!==f.master.id);assert(legacy);assert.match(planBatch(f.w.repository,{...input,masterId:legacy.id,masterRevision:legacy.revision},f.w.assets).report[0].message,/freie Formprodukte/);
 });
+
+import {designExportData,designWorkbook} from './design-export.mjs';
+function readDesignExcel(bytes){return JSON.parse(execFileSync('python3',['-c',`import sys,io,json
+from openpyxl import load_workbook
+w=load_workbook(io.BytesIO(sys.stdin.buffer.read()))
+def records(name):
+ rows=list(w[name].values);return [dict(zip(rows[0],r)) for r in rows[1:] if any(v is not None for v in r)]
+print(json.dumps({'rows':records('Produkte'),'designRows':records('Designs'),'references':records('Designliste'),'sheets':w.sheetnames,'formulas':sum(c.data_type=='f' for s in w for r in s for c in r),'links':len(w._external_links)}))`],{input:bytes,env:importEnvironment(),maxBuffer:8*1024*1024}).toString());}
+test('filled design Excel roundtrip edits names/defaults without exposing or altering source fields, rights or geometry',async t=>{
+ const f=await fixture(t),p=f.w.repository.copy(f.master.id,{expectedRevision:1,name:'=Literal name'}),other=f.w.repository.copy(f.master.id,{expectedRevision:1,name:'Unberührt'}),data=designExportData(f.w.repository,{productIds:[p.id,other.id]}),file=readDesignExcel(await designWorkbook(data));
+ assert.equal(file.formulas,0);assert.equal(file.links,0);assert.deepEqual(file.sheets,['Produkte','Designs','Designliste','Anleitung']);assert.equal(file.rows[0].name,'=Literal name');assert.equal(file.designRows.length,4);assert(!JSON.stringify(file).includes('Hallo'));assert(!JSON.stringify(data).includes('sourceSha256'));assert(file.designRows.every(r=>!r.design_file));
+ const input={rows:file.rows,designRows:file.designRows};let plan=planBatch(f.w.repository,input,f.w.assets);assert.equal(plan.valid,true,JSON.stringify(plan.report));assert.equal(plan.token,null);assert(plan.report.every(r=>r.status==='unchanged'));
+ input.designRows[0].design_name='Neuer Designname';input.designRows[0].default_design=0;input.designRows[1].default_design=1;plan=planBatch(f.w.repository,input,f.w.assets);assert.equal(plan.valid,true);assert.equal(plan.entries.length,1);const saved=commitBatch(f.w.repository,{...input,token:plan.token},f.w.assets);assert.equal(saved.products.length,1);const expected=structuredClone(p.document);expected.designs[0].name='Neuer Designname';expected.defaultDesignId='design-two';assert.deepEqual(f.w.repository.get(p.id).document,expected);assert.deepEqual(f.w.repository.get(other.id),other);assert.deepEqual(f.w.repository.get(p.id,{revision:1}),p);
+ assert(!commitBatch(f.w.repository,{...input,token:plan.token},f.w.assets).products[0].updated);const fresh=designExportData(f.w.repository,{productIds:[p.id]});assert.notEqual(fresh.rows[0].import_key,data.rows[0].import_key);assert.equal(fresh.rows[0].expected_revision,2);
+});
+test('metadata-only design updates reject new IDs, file settings, duplicate defaults, stale revisions and master copies',async t=>{
+ const f=await fixture(t),p=f.w.repository.copy(f.master.id,{expectedRevision:1,name:'Produkt'}),base=designExportData(f.w.repository,{productIds:[p.id]});
+ for(const mutate of [d=>d.designRows[0].design_id='not-existing',d=>d.designRows[0].design_page=2,d=>d.designRows[0].design_fit='contain',d=>d.designRows[1].default_design=1,d=>d.designRows[0].design_name='x'.repeat(300)]){const input=structuredClone(base);mutate(input);assert.equal(planBatch(f.w.repository,input,f.w.assets).valid,false);assert.equal(f.w.repository.get(p.id).revision,1);}
+ const create={...f.input([{import_key:'new',name:'Kopie'}]),designRows:[{import_key:'new',design_id:'design-color',design_name:'Kein Upload'}]};assert.equal(planBatch(f.w.repository,create,f.w.assets).valid,false);
+ const first=structuredClone(base);first.designRows[0].design_name='Änderung';const planned=planBatch(f.w.repository,first,f.w.assets);const changed=structuredClone(first);changed.designRows[0].design_name='Nicht geprüft';assert.throws(()=>commitBatch(f.w.repository,{...changed,token:planned.token},f.w.assets),e=>e.status===409);
+ f.w.repository.save(p.id,{...p.document,name:'Parallel geändert'},1);assert.match(planBatch(f.w.repository,first,f.w.assets).report[0].message,/zwischenzeitlich/);
+});
+test('design export rejects invalid selection and supports 100 products with 30 design references each',async t=>{
+ const f=await fixture(t);for(const input of [{},{productIds:[]},{productIds:[f.master.id]},{productIds:['absent']},{productIds:[],other:true}])assert.throws(()=>designExportData(f.w.repository,input));
+ const d=structuredClone(f.master.document);d.kind='product';d.designs=Array.from({length:30},(_,i)=>({...structuredClone(d.designs[0]),id:'design-'+i,name:'Design '+i}));d.defaultDesignId='design-0';const ids=Array.from({length:100},(_,i)=>f.w.repository.create({...d,name:'Testprodukt '+i}).id);assert.throws(()=>designExportData(f.w.repository,{productIds:[ids[0],ids[0]]}));assert.throws(()=>designExportData(f.w.repository,{productIds:[...ids,ids[0]]}));
+ const file=readDesignExcel(await designWorkbook(designExportData(f.w.repository,{productIds:ids})));assert.equal(file.rows.length,100);assert.equal(file.designRows.length,3000);assert.equal(file.references.length,3000);assert.equal(new Set(file.rows.map(r=>r.import_key)).size,100);
+ f.w.repository.setArchived(ids[0],{expectedRevision:1,archived:true});assert.throws(()=>designExportData(f.w.repository,{productIds:[ids[0]]}),/aktive freie/);
+});
+test('mixed design metadata edits and explicit graphic replacement preserve only the untouched source fields',async t=>{
+ const f=await fixture(t),p=f.w.repository.copy(f.master.id,{expectedRevision:1,name:'Produkt'}),input=designExportData(f.w.repository,{productIds:[p.id]});input.designRows[0].design_name='Nur umbenannt';Object.assign(input.designRows[1],{design_file:'Farbe.svg',design_page:1,design_fit:'contain'});input.designFiles=[{name:'Farbe.svg',page:1,assetId:f.asset.assetId}];const plan=planBatch(f.w.repository,input,f.w.assets);assert.equal(plan.valid,true);assert.equal(plan.report[0].artworks.length,1);assert.equal(plan.report[0].designAssignments.length,1);commitBatch(f.w.repository,{...input,token:plan.token},f.w.assets);const saved=f.w.repository.get(p.id);assert.deepEqual(saved.document.designs[0],{...p.document.designs[0],name:'Nur umbenannt'});assert.equal(saved.document.designs[1].sourcePrepared,false);assert.deepEqual(saved.document.form,p.document.form);
+});

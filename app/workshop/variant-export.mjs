@@ -24,9 +24,9 @@ export function variantExportData(store,repository,input){
  for(const record of repository.list())if(isFormProduct(record.document)&&record.document.kind==='product')addProduct(record);
  return {rows,variantRows,products:[...catalog.values()]};
 }
-export function variantWorkbook(data){
+export function variantWorkbook(data,workerUrl=new URL('./variant-export.py',import.meta.url)){
  return new Promise((resolve,reject)=>{
-  const child=spawn(process.env.GRAVURU_PYTHON||(process.platform==='win32'?'python':'python3'),[fileURLToPath(new URL('./variant-export.py',import.meta.url))],{env:importEnvironment(),windowsHide:true,stdio:['pipe','pipe','pipe']});
+  const child=spawn(process.env.GRAVURU_PYTHON||(process.platform==='win32'?'python':'python3'),[fileURLToPath(workerUrl)],{env:importEnvironment(),windowsHide:true,stdio:['pipe','pipe','pipe']});
   let done=false,size=0;const chunks=[];
   const finish=(error,value)=>{if(done)return;done=true;clearTimeout(timer);error?reject(Object.assign(Error(error),{status:422,code:'variant_export'})):resolve(value);};
   const timer=setTimeout(()=>{child.kill();finish('Excel-Export hat zu lange gedauert.');},30000);

@@ -1,0 +1,61 @@
+{
+  "branch": "task/design-excel-export-20261006",
+  "baseCommit": "a06bab0cb0f3ec1eb1ef220992f4d39d1e6aa2e8",
+  "cloudCheck": {
+    "startedAt": "2026-10-06T06:21:41.916Z",
+    "platform": "linux",
+    "node": "v24.19.0",
+    "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+    "steps": [
+      {
+        "name": "python-pdf",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "references",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "tests",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "build",
+        "exitCode": 0,
+        "result": "PASS"
+      }
+    ],
+    "result": "PASS",
+    "tests": {
+      "count": 267,
+      "skipped": 0,
+      "failures": 0
+    },
+    "finishedAt": "2026-10-06T06:23:05.285Z"
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "browser": {
+    "actualDownloadAndReimport": true,
+    "csrfAndOriginRejected": true,
+    "unchangedSkipped": true,
+    "updatedProducts": 1,
+    "untouchedProductRevision": 1,
+    "repeatUpdates": 0,
+    "sourceAndFieldsPreserved": true,
+    "viewports": [
+      1440,
+      390,
+      768
+    ],
+    "javascriptErrors": []
+  },
+  "onlySyntheticFixtures": true,
+  "published": false
+}

@@ -1,3 +1,9 @@
+## Aktuell: Bestehende Shopify-App identifiziert – 06.10.2026
+
+**Gravuru Konfigurator** ist im Shop `gravuru-design.myshopify.com` direkt über Shopify bestätigt: Entwickler gravuru GmbH, eingebettete App, ID `423276544001`. Produkt-/Dateiberechtigungen vorhanden, `read_orders` nicht in der gelesenen Installation enthalten. [App-Zuordnung und genaue Grenzen](docs/dashboard-20261004/SHOPIFY-APP-ZUORDNUNG-20261006.md). Die Frage nach dem App-Namen ist erledigt; keine Neuanlage nötig. Nächster Schritt: vorhandene App im angemeldeten Dev Dashboard öffnen und Verwaltungslink/App-Konfiguration zuordnen, danach sichere Laufzeit-/Backendanbindung prüfen. Keine Secrets im Chat, keine bestehende App ungeprüft umstellen.
+
+Dokumentationsbranch `task/shopify-app-identity-20261006`, Basis `b8a82328e127901d95dbbc269a9f4c30ec7d2fb1`. Keine Codeänderung oder neue Testbehauptung; letzter vollständiger Stand355/0/0, Build76/1 bleibt gültiger historischer Nachweis. Shopify-Connector nutzbar; separater App Builder hier trotz genauem Verweis nicht auflösbar. Folgende Einträge sind frühere Prüfstände.
+
 ## Aktuell: Gemeinsamer Abschlussabgleich und Storefront-Transport – 06.10.2026
 
 Branch **`task/completion-pass-20261006`**, Basis **`4b296b28e2d2c7b6f76e82c98589188c40d2af30`**. Dashboard-/Kundenentwürfe gegen verlorene Eingaben und verspätete Antworten abgesichert, Fotoeditor erhält die verfügbare Originalauflösung des Zuschnitts, Excel verarbeitet gültige Zeilen trotz einzelner Datumsfehler. Neuer serverseitiger Storefront-Warenkorbtransport mit Preis-/Variantenprüfung, festen Zielen, Timeout und ohne automatische Wiederholung; noch ohne App-/UI-Anschluss. **355 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Vier echte synthetische Browserabläufe auf Desktop/Handy/Tablet bestanden. [Gesamtstand, Nachweise und genaue Grenzen](docs/dashboard-20261004/ABSCHLUSSABGLEICH-20261006.md).

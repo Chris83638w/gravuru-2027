@@ -99,7 +99,7 @@ test('fixed acrylic photo: actual editor apply keeps shape/geometry and remains 
  prepareConfig(config);
  const design=structuredClone(config.profile.designs[0]),object=design.objects.find(o=>o.id==='photo-main'),before=structuredClone(object),d=eventTarget(),files=new Map();
  let closed=false;d.close=()=>{closed=true;};
- const env={d,angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
+ const env={productionImage:()=>({canvas:env.canvas,limited:false}),d,angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
  vm.runInNewContext(block('photo-editor.mjs',"  d.addEventListener('click',async e=>{","\n  });"),env);
  const button={dataset:{ux:'photo-apply'},disabled:false};
  await dispatch(d,'click',inertEvent({closest:()=>button}));
@@ -155,4 +155,12 @@ test('customer size entry rounds mm without changing the plate or other text pro
  input.value='8.7';await dispatch(r,'input',inertEvent(input));
  assert.equal(object.size,9/(4/3));assert.equal(physicalTextSize(object,4/3),9);
  assert.deepEqual([env.el.state.width,env.el.state.height,object.text,object.x,object.y],[150,200,'Anna',30,20]);
+});
+
+test('photo apply rejects an oversized edited PNG before changing the object or media',async()=>{
+ const object={id:'photo',type:'photoSlot',uxUploadId:'original',w:100,h:100},before=structuredClone(object),files=new Map(),d=eventTarget(),status={textContent:''};let closed=false;
+ d.close=()=>{closed=true;};const env={d,objectId:object.id,selected:()=>object,el:{uxCanEdit:()=>true},files,productionImage:()=>({canvas:{toBlob:cb=>cb({size:15*1024*1024+1})}}),$:()=>status};
+ vm.runInNewContext(block('photo-editor.mjs',"  d.addEventListener('click',async e=>{","\n  });"),env);
+ const button={dataset:{ux:'photo-apply'},disabled:false};await dispatch(d,'click',inertEvent({closest:()=>button}));
+ assert.deepEqual(object,before);assert.equal(files.size,0);assert.equal(closed,false);assert.equal(button.disabled,false);assert.match(status.textContent,/15 MB/);
 });

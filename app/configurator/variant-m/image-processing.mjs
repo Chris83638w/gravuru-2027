@@ -21,3 +21,13 @@ export function scaleObject(object,factor,physicalScale=1){
   if(object.type==='text')return {...object,size:designTextSize(object.size*factor*physicalScale,physicalScale)};
   const safe=Math.max(.05,Math.min(20,factor));return {...object,w:Math.max(1,object.w*safe),h:Math.max(1,object.h*safe)};
 }
+
+// Preserve available crop pixels without inventing resolution. Safety matches the
+// 20-MP photo intake; very long edges are bounded for browser canvas support.
+export function editedPhotoSize(width,height,{aspect=width/height,zoom=1,angle=0}={}){
+  if(![width,height,aspect,zoom,angle].every(Number.isFinite)||width<=0||height<=0||aspect<=0||zoom<1||zoom>4||angle%90!==0)throw Error('Ungültiger Fotozuschnitt.');
+  const rotated=Math.abs(angle%180)===90,sw=rotated?height:width,sh=rotated?width:height;
+  const availableHeight=Math.min(sh,sw/aspect)/zoom,availableWidth=availableHeight*aspect;
+  const scale=Math.min(1,8192/Math.max(availableWidth,availableHeight),Math.sqrt(20_000_000/(availableWidth*availableHeight)));
+  return {width:Math.max(1,Math.floor(availableWidth*scale)),height:Math.max(1,Math.floor(availableHeight*scale)),limited:scale<1};
+}

@@ -1,0 +1,34 @@
+{
+  "startedAt": "2026-10-06T14:25:50.437927+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "sourcePixels": [
+    4000,
+    3000
+  ],
+  "previewPixels": {
+    "width": 1200,
+    "height": 1022
+  },
+  "editedPixels": [
+    2817,
+    2400
+  ],
+  "originalSha256": "907ab6896ab70bdf259fae7cdb4357bb4bcab3bf89881edc7082796153774fb1",
+  "originalByteIdentical": true,
+  "cropAndGrayscaleChecked": true,
+  "reopenResetUndoByteIdentical": true,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T14:26:02.533114+00:00"
+}

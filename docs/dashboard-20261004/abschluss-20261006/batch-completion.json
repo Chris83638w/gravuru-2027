@@ -1,0 +1,29 @@
+{
+  "startedAt": "2026-10-06T14:34:35.079445+00:00",
+  "data": "fresh synthetic fixtures only",
+  "published": false,
+  "result": "PASS",
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "xlsxRows": 100,
+  "initialErrors": 3,
+  "firstCreated": 97,
+  "correctedCreated": 3,
+  "repeatedCreated": 0,
+  "stableProductIds": true,
+  "selectionRetained": true,
+  "downloadedProducts": 100,
+  "downloadedDesigns": 100,
+  "parallelEditPreserved": true,
+  "otherProductsUnchanged": true,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T14:34:40.738789+00:00"
+}

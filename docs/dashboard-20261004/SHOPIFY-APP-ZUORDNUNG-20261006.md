@@ -42,3 +42,13 @@ Am 06.10.2026 hat der Nutzer die Detailangaben der aktiven Version aus dem Dev D
 Die laufende Werkstatt hat damit ein bekanntes Ziel. Bestehende Version/Function/Theme-Erweiterung unverändert erhalten. Unsere neue Cloud-Werkstatt ist damit noch nicht an Shopify angeschlossen. Der aktuelle Entwicklungsserver lässt `/produktanlage.html` ausdrücklich mit404 unbelegt; sein Werkstatteinstieg ist `/werkstatt/`. Daher keine blinde Umstellung der App-URL auf eine Vorschauseite.
 
 Nächster Schritt: bestehende App-Konfiguration über authentifizierte Shopify-CLI in eine getrennte Cloud-Arbeitsablage übernehmen und anhand der Originalquellen prüfen. Vorhandene Browseranmeldung ist keine CLI-Anmeldung. Keine neue Version veröffentlichen, `app dev` nicht ungeprüft auf der installierten App starten und keine bestehenden URLs/Scopes ändern.
+
+## Cloud-CLI vorbereitet; Anmeldung am Netz blockiert
+
+06.10.2026: offizielle Shopify-CLI **4.8.5** separat unter `/workspace/.tools/shopify-cli` installiert, Version und Hilfe für `auth login` / `app config link` tatsächlich ausgeführt. Der erste Installationsversuch mit Umgebungs-Prefix scheiterte am vorgegebenen `/home/agent/.local/lib`; explizites `--prefix /workspace/.tools/shopify-cli` war erfolgreich. Kein Projektpaket geändert. Private XDG-Konfigurations-/Cache-/Daten-/Statusverzeichnisse außerhalb des Repositorys mit `umask077` vorbereitet; keine vorhandenen Credentials gesucht oder ausgegeben.
+
+`shopify auth login` scheiterte vor Ausgabe eines Anmeldelinks beim Zugriff auf `https://accounts.shopify.com/oauth/device_authorization` mit DNS-Fehler `EAI_AGAIN`. Anschließende Prüfung des vorgesehenen Cloud-Proxys mit curl: **CONNECT tunnel failed, response403**, keine Ziel-HTTP-Antwort. Aktueller Runtime-Status: `observations_current=true`, Spezifikation308, Netzwerk `restricted/enforced`, nur Paketmanager-Preset, `allowed_hosts=[]`; keine konfigurierten Secrets/Identitäten/Laufzeitvariablen.
+
+Damit ist keine CLI-Anmeldung bestätigt und kein App-Konfigurationsabruf erfolgt. Normale Browseranmeldung und Shopify-Connector-Anmeldung sind davon getrennt. Kein Versuch, die Netzsperre zu umgehen.
+
+**Konkreter nächster Schritt:** in der bestehenden Cloud-Konfiguration `accounts.shopify.com` als erlaubtes HTTPS-Ziel ergänzen und die freigegebene Konfiguration anwenden. Diese Aufgabe bietet nur Runtime-Statuslesen, keinen Konfigurationseditor. Danach aktuellen Status prüfen und CLI über den geerbten Cloud-Proxy erneut anmelden; dessen Proxyunterstützung benötigt gegebenenfalls die dokumentierte Global-Agent-Proxykonfiguration. Weitere tatsächlich benötigte Shopify-Ziele erst aus dem folgenden Konfigurationsabruf bestimmen. Keine neue Umgebung, kein Serverumbau, keine App-Veröffentlichung.

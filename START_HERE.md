@@ -1,3 +1,7 @@
+## Aktuell: Shopify-CLI bereit, Anmeldeziel noch gesperrt – 06.10.2026
+
+Shopify-CLI4.8.5 separat in der bestehenden Cloud installiert. Aktive App-Konfiguration vom Nutzer gesichert. **CLI-Anmeldung noch nicht erfolgt:** `accounts.shopify.com` wird vom Cloud-Proxy mit403 gesperrt; aktuelle Netzrichtlinie nur Paketmanager, keine zusätzlichen erlaubten Hosts. [Konkreter Befund](docs/dashboard-20261004/SHOPIFY-APP-ZUORDNUNG-20261006.md). Nächster notwendiger Schritt: diese Domain über die bestehende Cloud-Konfiguration freigeben/anwenden; danach Anmeldung und getrennten Konfigurationsabruf fortsetzen. Browseranmeldung ist keine CLI-Anmeldung. Keine neue App, keine App-/Shopänderung.
+
 ## Aktuell: Aktive Shopify-Konfiguration zugeordnet – 06.10.2026
 
 Vom Nutzer übergebene aktive Version `1146632241153` / `variante-m-embedded-motifs-20260928`: App-URL **https://gravuru-designwerkstatt.de/produktanlage.html**, bestehende Preis-Function und Theme-Erweiterung vorhanden. `gravuru.de/shopify-designwerkstatt-20260920/` steht zusätzlich in den erlaubten Authentifizierungsrückleitungen. [Vollständige Zuordnung und Herkunft](docs/dashboard-20261004/SHOPIFY-APP-ZUORDNUNG-20261006.md). App-/Dev-Dashboard-Link nicht erneut erfragen. Nächster Anschluss: CLI-Verfügbarkeit und eigene Cloud-Anmeldung, danach getrennte Übernahme der bestehenden Konfiguration/Quellen. Laufende App-URLs und Erweiterungen nicht ungeprüft ändern. Keine neue Live-Abnahme oder Codeprüfung behauptet.

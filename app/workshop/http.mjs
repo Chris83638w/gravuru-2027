@@ -178,6 +178,26 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='PATCH'&&!manufacturingMatch[2]){const data=await body(req);return json(res,200,productionProfiles.save(id,data.document,data.expectedRevision));}
         fail(405,'method_not_allowed','Diese Profilaktion ist nicht möglich.');
       }
+      const acrylicDraftMatch=pathname.match(/^\/api\/workshop\/acrylic-drafts\/(adraft_[a-f0-9-]+)$/);
+      if(pathname==='/api/workshop/acrylic-drafts'||acrylicDraftMatch){
+        const token=req.headers['x-gravuru-draft'],draft=acrylicDraftMatch?customerDrafts.acrylicDrafts.get(acrylicDraftMatch[1],token):null;
+        if(draft&&method==='GET')return json(res,200,{draft,review:customerDrafts.review(draft.snapshotId).manifest});
+        if(method!=='POST')fail(405,'method_not_allowed','Acrylentwürfe mit POST sichern oder einen privaten Entwurf lesen.');
+        if(reviewJobs.size>=2)fail(409,'review_busy','Eine Gestaltung wird gerade gesichert. Bitte kurz warten.');
+        const job=randomUUID();reviewJobs.add(job);try{
+          const data=await body(req,100*1024*1024),allowed=draft?['input','expectedRevision']:['input'];
+          if(Object.keys(data).some(k=>!allowed.includes(k))||!data.input||typeof data.input!=='object'||Array.isArray(data.input))fail(422,'acrylic_draft_fields','Bitte die vollständige Gestaltung übergeben.');
+          if(draft&&data.expectedRevision!==draft.revision)fail(409,'stale_customer_draft','Der Acrylentwurf wurde inzwischen geändert.');
+          const input=data.input;
+          if(!Number.isSafeInteger(input.productRevision)||input.productRevision<1)fail(422,'revision_required','Eine feste Produktrevision ist erforderlich.');
+          if(draft&&(input.productId!==draft.productId||input.productRevision!==draft.productRevision||input.designId!==draft.designId))fail(409,'acrylic_draft_identity','Produktstand und Design gehören zu diesem festen Entwurf.');
+          const record=repository.get(input.productId,{revision:input.productRevision});
+          if(isFormProduct(record.document)||record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Bitte ein aktives Acrylprodukt verwenden.');
+          const bundle=await prepareAcrylicReview({record,config:model(record.id,record.revision).universal,input,assets});
+          const saved=draft?customerDrafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):customerDrafts.acrylicDrafts.create(bundle);
+          return json(res,draft?200:201,saved);
+        }finally{reviewJobs.delete(job);}
+      }
       if(pathname==='/api/workshop/acrylic-reviews'&&method==='POST'){
         if(reviewJobs.size>=2)fail(409,'review_busy','Eine Gestaltung wird gerade gesichert. Bitte kurz warten.');
         const job=randomUUID();reviewJobs.add(job);try{

@@ -1,5 +1,6 @@
 import {cleanObject} from './contract.mjs';
 import {printArtwork} from './print-export.mjs';
+import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
 
 const base64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Die Bilddatei konnte nicht gelesen werden.'));reader.readAsDataURL(blob);});
 async function referencePng(svg,geometry){
@@ -13,7 +14,7 @@ export function installWorkshopReview(api,footer){
  if(!binding||!api.config?.acrylic)return;
  const button=document.createElement('button'),status=document.createElement('p'),link=document.createElement('a');
  button.type='button';button.textContent='Für die Werkstattprüfung sichern';button.dataset.acrylicReview='';status.setAttribute('role','status');status.setAttribute('aria-live','polite');link.textContent='Gesicherten Stand im Dashboard öffnen →';link.target='_blank';link.rel='noopener';link.hidden=true;link.dataset.acrylicReviewLink='';
- footer.append(button,status,link);let busy=false;
+ footer.append(button,status,link);let busy=false,savePrivate;
  button.onclick=async()=>{
   if(busy)return;busy=true;button.disabled=true;link.hidden=true;status.textContent='Gestaltung und Originalbilder werden gesichert …';
   try{
@@ -23,10 +24,10 @@ export function installWorkshopReview(api,footer){
    const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:Number(api.r.querySelector('[data-fk-quantity]').value||1),media,preview:await referencePng(art.svg,art.geometry)};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut sichern.');
    const session=await fetch('/api/workshop/session'),credentials=await session.json();if(!session.ok||credentials.scope!=='local-operator')throw Error('Die Werkstattprüfung benötigt eine geschützte Werkstattsitzung.');
-   const response=await fetch('/api/workshop/acrylic-reviews',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':credentials.csrfToken},body:JSON.stringify(payload)}),result=await response.json();
-   if(!response.ok)throw Error(result.error?.message||'Die Gestaltung konnte nicht gesichert werden.');
+   savePrivate??=createAcrylicDraftClient({storage:sessionStorage});
+   const result=await savePrivate(payload,credentials.csrfToken);
    link.href='/werkstatt/pruefstaende/?snapshot='+encodeURIComponent(result.id);link.hidden=false;
-   status.textContent='Gestaltung mit Originalbildern gesichert. Spätere Änderungen erhalten einen eigenen Prüfstand. Dies ist noch keine Bestellung.';
+   status.textContent='Gestaltung mit Originalbildern als Revision '+result.revision+' gesichert. Frühere Prüfstände bleiben erhalten. Dies ist noch keine Bestellung.'+(result.accessStored?'':' Der private Zugriff bleibt nur bis zum Schließen dieser Seite verfügbar; bitte den Dashboard-Link geöffnet lassen.');
   }catch(error){status.textContent=error.message;}finally{busy=false;button.disabled=false;}
  };
 }

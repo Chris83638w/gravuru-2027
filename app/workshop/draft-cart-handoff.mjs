@@ -1,4 +1,4 @@
-// Server-side composition for private, persisted form drafts. Deliberately not
+// Server-side composition for private, persisted form/acrylic drafts. Deliberately not
 // a public HTTP route or Shopify customer-account authentication. The HTTP caller
 // must enforce its host/origin/CSRF policy and derive buyerIp from trusted ingress.
 import {createPersistentCartHandoff} from './cart-handoff-journal.mjs';
@@ -25,11 +25,13 @@ export function createDraftCartHandoff({drafts, config}, transportOptions = {}) 
     // Copy before awaiting transport: caller mutations cannot switch ownership.
     const request = Object.freeze(Object.fromEntries(fields.map(key => [key, input[key]])));
     function resolve() {
-      const draft = drafts.get(request.draftId, draftToken);
+      const acrylic = request.draftId.startsWith('adraft_');
+      const draft = acrylic ? drafts.acrylicDrafts.get(request.draftId, draftToken) : drafts.get(request.draftId, draftToken);
       if (draft.revision !== request.expectedRevision) fail(409, 'cart_stale', 'Entwurf inzwischen geändert. Bitte den aktuellen Stand sichern.');
       const {manifest: m} = drafts.review(request.snapshotId);
-      if (m.schema !== 'gravuru-form-review/v1' || m.source?.draftId !== draft.id ||
-          m.source?.draftRevision !== draft.revision || m.source?.designId !== draft.designId ||
+      const ownsSnapshot = acrylic ? draft.snapshotId === request.snapshotId :
+        m.source?.draftId === draft.id && m.source?.draftRevision === draft.revision;
+      if (m.schema !== (acrylic ? 'gravuru-acrylic-review/v1' : 'gravuru-form-review/v1') || !ownsSnapshot || m.source?.designId !== draft.designId ||
           m.product?.id !== draft.productId || m.product?.revision !== draft.productRevision) {
         fail(404, 'cart_private', 'Dieser Prüfstand gehört nicht zum zugänglichen Entwurf.');
       }

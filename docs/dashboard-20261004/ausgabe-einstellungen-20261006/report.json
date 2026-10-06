@@ -1,0 +1,25 @@
+{
+  "startedAt": "2026-10-06T13:44:26.607638+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "requestedBleed": 1,
+  "effectiveBleed": 0,
+  "frozenProfileRevision": 1,
+  "currentProfileRevision": 2,
+  "profileOverrideShown": true,
+  "switchClearsPreviousSettings": true,
+  "snapshotUnchanged": true,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T13:44:49.863765+00:00"
+}

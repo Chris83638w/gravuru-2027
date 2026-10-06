@@ -1,3 +1,9 @@
+## Aktuell: Gesicherte Ausgabeeinstellungen vergleichen – 06.10.2026
+
+Branch `task/output-specification-20261006`, Basis `962d10c4725a74e3725818731dcf9819375c813d`. Unter **Ausgaben** zeigt der neue Vergleich die angeforderten und im Erstellungsnachweis gespeicherten Einstellungen einschließlich Spiegelung, Weiß und effektivem Überdruck. Fester Profilstand und Abweichungen sichtbar; fehlende historische Angaben bleiben ausdrücklich unbekannt. PDF-Erzeugung und vorhandene Druckdateien unverändert. **319 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; synthetischer Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/AUSGABE-EINSTELLUNGEN-20261006.md).
+
+Keine Veröffentlichung oder Maschinenfreigabe. Nächste externe Abnahme: reales Corel-/Mimaki-Import-/Probedruckergebnis der bereitgestellten Dateien im Prüfjournal festhalten. Echte Test-App-/Betriebsanbindung und gemessenes ICC separat offen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Alte fehlgeschlagene Ausgaben ohne Wiederholungsschleife – 06.10.2026
 
 Branch `task/obsolete-output-recovery-20261006`, Basis `56a7467b4407455f2870066a3cd31916c08875bb`. Alte fehlgeschlagene Ausgabeversionen erhalten unter **Ausgaben** die Aktion **Mit aktueller Ausgabeversion neu anlegen**. Gesicherte Gestaltung und Einstellungen bleiben erhalten; alter Auftrag/Verlauf unverändert, Wiederholung ohne Duplikate, Bestellbezug erhalten. Neue PDF ausdrücklich erneut prüfen. **316 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; synthetischer Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansicht](docs/dashboard-20261004/AUSGABE-NEUANLAGE-20261006.md).

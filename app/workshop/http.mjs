@@ -1,3 +1,4 @@
+import {outputSpecification} from './output-specification.mjs';
 import {printPreview} from './print-preview.mjs';
 import {outputDownload,outputFormats} from './print-delivery.mjs';
 import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
@@ -200,7 +201,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       const exportMatch=pathname.match(/^\/api\/workshop\/export-jobs\/(job_[a-f0-9-]+)(?:\/(retry|recreate|download|preview|checks))?$/);
       if(exportMatch){
-        const id=exportMatch[1],job=exportJobs.get(id);if(!exportMatch[2]&&method==='GET')return json(res,200,{...job,retryAvailable:job.status==='failed'&&outputRecipes.includes(job.recipe),recreateAvailable:job.status==='failed'&&!outputRecipes.includes(job.recipe),events:exportJobs.events(id),downloadFormats:job.status==='completed'?outputFormats(customerDrafts.printProof(job.snapshotId,job.recipeKey)):[]});
+        const id=exportMatch[1],job=exportJobs.get(id);if(!exportMatch[2]&&method==='GET'){const result=job.status==='completed'?customerDrafts.printProof(job.snapshotId,job.recipeKey):null;return json(res,200,{...job,outputSpecification:outputSpecification(result),retryAvailable:job.status==='failed'&&outputRecipes.includes(job.recipe),recreateAvailable:job.status==='failed'&&!outputRecipes.includes(job.recipe),events:exportJobs.events(id),downloadFormats:result?outputFormats(result):[]});}
         if(exportMatch[2]==='checks'){
           if(job.status!=='completed')fail(409,'export_not_ready','Nur eine fertig gespeicherte Ausgabe kann geprüft werden.');
           const result=customerDrafts.printProof(job.snapshotId,job.recipeKey);if(!result)fail(409,'export_missing','Die gespeicherte Ausgabe fehlt.');

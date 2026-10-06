@@ -13,3 +13,13 @@ test('graceful worker close releases a job and a later worker resumes without th
  const filename=fixture(t),jobs=createExportJobStore({filename});let resolve;const worker=createExportWorker({jobs,recipe:'recipe/v1',intervalMs:10000,render:()=>new Promise(r=>resolve=r)});const j=jobs.enqueue(input);worker.kick();assert.equal(jobs.get(j.id).status,'running');worker.close();assert.equal(jobs.get(j.id).status,'queued');const next=createExportWorker({jobs,recipe:'recipe/v1',intervalMs:10,render:async()=>result});t.after(()=>{next.close();jobs.close();});await waitFor(()=>jobs.get(j.id).status==='completed');resolve({...result,pdf:Buffer.from('old worker')});await new Promise(r=>setTimeout(r,20));const db=new DatabaseSync(filename);assert.equal(Buffer.from(db.prepare('SELECT pdf FROM form_print_proofs').get().pdf).toString(),result.pdf.toString());db.close();
  const obsolete=jobs.enqueue({...input,recipe:'retired/v0',recipeKey:'old'});next.kick();await waitFor(()=>jobs.get(obsolete.id).status==='failed');assert.match(jobs.get(obsolete.id).error,/Rezeptversion/);
 });
+
+test('position outputs filter by immutable snapshot before the global 200-job limit, never by product or recency',t=>{
+ const filename=fixture(t),jobs=createExportJobStore({filename});t.after(()=>jobs.close());
+ const first=jobs.enqueue(input),db=new DatabaseSync(filename);db.prepare('INSERT INTO form_review_snapshots VALUES(?)').run('proof-other');db.close();
+ for(let i=0;i<205;i++)jobs.enqueue({...input,snapshotId:'proof-other',recipeKey:'other-'+i});
+ assert.equal(jobs.list().some(j=>j.id===first.id),false);
+ assert.deepEqual(jobs.forSnapshot(input.snapshotId),{jobs:[first],total:1});
+ const other=jobs.forSnapshot('proof-other');assert.equal(other.total,205);assert.equal(other.jobs.length,200);assert.ok(other.jobs.every(j=>j.snapshotId==='proof-other'));
+ assert.deepEqual(jobs.forSnapshot('unknown'),{jobs:[],total:0});
+});

@@ -1,0 +1,29 @@
+{
+  "startedAt": "2026-10-06T11:46:08.210230+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "shopifyRequestSent": false,
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "orderSnapshotOutputRoundtrip": true,
+  "pairedMimakiDownloads": true,
+  "wrongSnapshotExcluded": true,
+  "mismatchedJobBlocked": true,
+  "orderContextClearedOnOtherSnapshot": true,
+  "cancellationVisibleInOutputs": true,
+  "unchangedDownloadAfterCancellation": true,
+  "sourceOrderUnchanged": true,
+  "snapshotUnchanged": true,
+  "customerDownloadAllowed": false,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T11:46:18.224076+00:00"
+}

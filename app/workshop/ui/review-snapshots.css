@@ -5,3 +5,5 @@
 #saved-selection{display:flex;flex-wrap:wrap;gap:12px 28px;margin:18px 0}#saved-selection dt{margin:0;font-size:12px;color:#617083}#saved-selection dd{font-size:14px}
 
 #photo-quality{margin:22px 0;padding:18px 20px;border:1px solid #dfe4e8;border-radius:12px;background:#f7f9fa}#photo-resolution{padding-left:18px;font-size:13px;overflow-wrap:anywhere}#photo-resolution li+li{margin-top:12px}
+
+#order-context{padding:12px 20px;border:1px solid #d5dce2;border-radius:14px;background:#fff;margin:0 0 24px;overflow-wrap:anywhere}#order-context p{margin:8px 0}#order-context [data-order-status]{font-size:13px;color:#596a78}#order-context [data-order-status].error{color:#873b29}

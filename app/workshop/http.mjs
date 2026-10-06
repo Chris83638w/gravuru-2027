@@ -123,6 +123,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(action==='apply')return json(res,201,applyOrderProductDraft(repository,plan,data.token));
         const {document,...summary}=plan;let preview;if(isFormProduct(document))preview=formProductPreview(document,{assets,contours,fonts:seed.config.localResources.fonts});else{profiles.resolve(document);assets.validateDocument(document);const r=resolveProduct(document),universal=structuredClone(r.config);universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);const examples=(universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));preview=productPreview({universal},{options:r.resolvedOptions,examples});}return json(res,200,{...summary,preview});
       }
+      const orderOutputsMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/outputs$/);
+      if(orderOutputsMatch&&method==='GET'){
+        const line=orderIntake.get(orderOutputsMatch[1]);
+        return json(res,200,{positionId:line.id,orderId:line.orderId,snapshotId:line.snapshotId,product:line.product,quantity:line.quantity,status:orderIntake.status(line.id),...exportJobs.forSnapshot(line.snapshotId),scope:'local-operator'});
+      }
       const orderStatusMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/status$/);if(orderStatusMatch&&method==='GET')return json(res,200,orderIntake.status(orderStatusMatch[1]));
       const orderMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)$/);if(orderMatch&&method==='GET')return json(res,200,orderIntake.get(orderMatch[1]));
       if(pathname==='/api/workshop/order-bindings'){

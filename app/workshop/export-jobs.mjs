@@ -13,8 +13,10 @@ export function createExportJobStore({filename,database,clock=Date.now}){
  const publicRow=r=>({id:r.id,snapshotId:r.snapshot_id,recipeKey:r.recipe_key,recipe:r.recipe,settings:JSON.parse(r.settings),status:r.status,attempts:r.attempts,error:r.error,createdAt:r.created_at,updatedAt:r.updated_at});
  const event=(id,status,message)=>db.prepare('INSERT INTO form_export_events(job_id,status,at,message) VALUES(?,?,?,?)').run(id,status,clock(),message);
  const get=id=>publicRow(row(id));
+ const snapshotJobs=db.prepare('SELECT * FROM form_export_jobs WHERE snapshot_id=? ORDER BY created_at DESC,rowid DESC LIMIT 200');
+ const snapshotCount=db.prepare('SELECT count(*) AS total FROM form_export_jobs WHERE snapshot_id=?');
  const owned=(r,token)=>r.status==='running'&&r.lease_token===token;
- return {get,list:()=>db.prepare('SELECT * FROM form_export_jobs ORDER BY created_at DESC,rowid DESC LIMIT 200').all().map(publicRow),events:id=>{row(id);return db.prepare('SELECT status,at,message FROM form_export_events WHERE job_id=? ORDER BY id').all(id);},
+ return {get,forSnapshot(snapshotId){return {jobs:snapshotJobs.all(snapshotId).map(publicRow),total:snapshotCount.get(snapshotId).total};},list:()=>db.prepare('SELECT * FROM form_export_jobs ORDER BY created_at DESC,rowid DESC LIMIT 200').all().map(publicRow),events:id=>{row(id);return db.prepare('SELECT status,at,message FROM form_export_events WHERE job_id=? ORDER BY id').all(id);},
   enqueue({snapshotId,recipeKey,recipe,settings}){return tx(()=>{
    if(!db.prepare('SELECT 1 FROM form_review_snapshots WHERE id=?').get(snapshotId))fail(404,'Prüfstand nicht gefunden.');
    const old=db.prepare('SELECT * FROM form_export_jobs WHERE snapshot_id=? AND recipe_key=?').get(snapshotId,recipeKey);if(old)return publicRow(old);

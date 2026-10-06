@@ -1,3 +1,9 @@
+## Aktuell: Bestellposition direkt mit ihren Ausgaben verbunden – 06.10.2026
+
+Branch `task/order-output-complete-20261006`, Basis `b64494f3fec7e46af9f5e9f12473b2d066e86294` einschließlich Vektor-/Mimaki-Konturkorrektur. Testbestellung → gesicherte Gestaltung → Ausgabe → PDF/ZIP mit erhaltenem Bestellbezug. Dateien gehören zur festen Prüfstand-ID; andere Gestaltung desselben Produkts ausgeschlossen. Storno/Erstattung sichtbar, Originale und Berechtigungen unverändert. **307 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/BESTELLUNG-AUSGABEN-20261006.md).
+
+Keine Veröffentlichung, echte Shopify-Anfrage oder private DB verwendet. Neue Corel-Testdateien als direkte Vektortexte und Mimaki-RDG_WHITE samt Kontur technisch geprüft; realer Import-/Drucktest steht aus. Nächste Betriebsabnahme: bestätigte Test-App-Verbindung und sicher erreichbares dauerhaftes Backend. Keine erneute Cloud-Migration oder allgemeine Serverplanung. Nachfolgende Nachweise sind historisch.
+
 ## Aktuell: Vektor-Texte und Mimaki-Außenkontur – 06.10.2026
 
 Branch `task/pdf-vector-contour-fix-20261006`, Basis `8745c9873942647796927d5680b9eb66ee14510e`. Texte als zusammengesetzte Vektorpfade ohne zusätzliche Text-Formhüllen; Mimaki-Weißdatei enthält nun auch die maßgleiche CutContour. Neue private PDF-1.3-Testdateien bereitgestellt, normale Backend-Rezepte v5/v3 korrigiert; ältere gespeicherte Ausgaben erhalten. **306 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet und MuPDF/Ghostscript bestanden.** [Dateinachweis und Grenzen](docs/dashboard-20261004/PDF-VEKTOREN-KONTUR-20261006.md).

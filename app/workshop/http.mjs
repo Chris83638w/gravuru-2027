@@ -560,5 +560,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {repository,variants,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
+  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,variants,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
 }

@@ -1,3 +1,9 @@
+## Aktuell: Vorbereiteter Shopify-Händlerstart – 06.10.2026
+
+Branch **`task/shopify-admin-bootstrap-20261006`**, GitHub-Basis **`a4ccb954cfe3d35bac680a6d3cca2d81adc5dabf`**. Der bestehende Server unterstützt jetzt ausdrücklich konfigurierten `embedded-test`-Betrieb für einen festen Shop/HTTPS-Origin mit App-Bridge-Start, passender Händler-Sitzungsprüfung und exakter CSP-Einbettungsfreigabe. Excel-/Dateilinks verwenden den authentifizierten Händler-Request statt unautorisierter Browsernavigation. Fehlende App Bridge führt nicht zu anonymen API-Anfragen. Der Standardscriptstart bleibt unverändert.
+
+**75 gezielte Prüfungen bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Synthetische HTTP-Aufrufe im Prozess, keine reale Shopify-Browserabnahme. [Anschlussfelder und verbleibende Voraussetzungen](docs/dashboard-20261004/SHOPIFY-HAENDLERSTART-20261006.md). Kein Deployment, keine neue App, keine Änderung der vorhandenen App-URL. Für die weitere Codearbeit ist gerade keine Nutzeraktion nötig; vor echter Integration müssen sichere Runtime-Zugänge und die Zieladresse bestätigt sein. Private Bild-/SVG-Unterressourcen, öffentliche Kundenrouten und Kundenkonto-Erweiterung sind noch nicht vollständig angeschlossen. Historische Stände folgen.
+
 ## Aktuell: Shopify-Entwurfsübertragung mit Wiederholschutz – 06.10.2026
 
 Branch **`task/shop-draft-transfer-20261006`**, GitHub-Basis **`88d1536dc1411ee4ea9f4633a9fe4b00089834cb`**. Die Produktvorbereitung kann bei ausdrücklich eingerichteter Händleranbindung Titel, SEO und alle gespeicherten Grundausführungen als Shopify-Entwurf übertragen. Private Übertragungsaufzeichnung verhindert doppelte Anlage; nach unklaren Antworten erfolgt nur ein lesender Abgleich. Geprüfte Shopify-Varianten werden den unveränderten lokalen Preisen/Optionen zugeordnet. Neue Schaltflächen in der bestehenden Produktvorbereitung; standardmäßig deaktiviert.

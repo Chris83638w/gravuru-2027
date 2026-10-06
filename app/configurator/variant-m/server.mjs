@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {build,HERE,ROOT,OUTPUT} from './build.mjs';
+import {createShopifyAdminHost} from '../../workshop/shopify-admin-host.mjs';
 import {createWorkshop} from '../../workshop/http.mjs';
 
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.gz':'application/gzip'};
@@ -10,15 +11,21 @@ const csp="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'un
 
 // Loopback application. Workshop writes require an explicit repository + CSRF token.
 // No hosted authentication, checkout or production release is implied.
-export function createPreviewServer({outputDirectory=OUTPUT,workshop}={}) {
+export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp=null}={}) {
+  const adminHost=embeddedApp?createShopifyAdminHost(embeddedApp,workshop?.sessionContext):null;
   const server=http.createServer(async (req,res)=>{
     const fail=status=>res.writeHead(status,{'Cache-Control':'no-store'}).end();
     try {
       const port=server.address()?.port;
-      if(![`127.0.0.1:${port}`,`localhost:${port}`].includes(req.headers.host))return fail(403);
-      const origin='http://'+req.headers.host;
-      if((req.headers.origin&&req.headers.origin!==origin)||req.headers['sec-fetch-site']==='cross-site')return fail(403);
+      if(!adminHost&&![`127.0.0.1:${port}`,`localhost:${port}`].includes(req.headers.host))return fail(403);
+      const origin=adminHost?.origin||'http://'+req.headers.host;
+      if(!adminHost&&((req.headers.origin&&req.headers.origin!==origin)||req.headers['sec-fetch-site']==='cross-site'))return fail(403);
       const url=new URL(req.url,origin),pathname=decodeURIComponent(url.pathname);
+      if(adminHost){
+        res.setHeader('Content-Security-Policy',adminHost.csp);res.setHeader('Referrer-Policy','no-referrer');res.setHeader('X-Content-Type-Options','nosniff');
+        if(!adminHost.authorize(req,pathname))return fail(403);
+        if(!adminHost.allows(pathname))return fail(404);
+      }
       if(pathname.includes('\\')||pathname.includes('\0')||pathname.split('/').some(p=>p==='..'||p.startsWith('.')))return fail(404);
       if(workshop&&pathname.startsWith('/api/workshop/'))return await workshop.handle(req,res,url);
       if(!['GET','HEAD'].includes(req.method))return fail(405);
@@ -41,7 +48,7 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop}={}) {
       if(fixed[pathname])[base,relative]=fixed[pathname];
       else if(workshop&&pathname==='/workshop-ui/material-surfaces/wood-leather-derived-v1.png'){base=path.join(ROOT,'workshop/ui/material-surfaces');relative='wood-leather-derived-v1.png';}
       else if(workshop&&/^\/workshop-ui\/editor-icons\/[a-z0-9-]+\.svg$/.test(pathname)){base=path.join(ROOT,'workshop/ui/editor-icons');relative=pathname.split('/').pop();}
-      else if(workshop&&/^\/workshop-ui\/(shop-transfer-ui\.mjs|merchant-request\.mjs|order-file-grants-ui\.mjs|variant-batch-reader\.mjs|variant-batch-ui\.mjs|form-variants-ui\.mjs|form-variant-picker\.mjs|form-variants\.css|app\.mjs|style\.css|dashboard\.css|editor\.css|product-editor-ui\.mjs|product-overview-ui\.mjs|product-options-ui\.mjs|native-production-ui\.mjs|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|production-profiles-ui\.mjs|export-jobs-ui\.mjs|output-checks-ui\.mjs|output-summary\.mjs|output-specification\.mjs|order-output-context\.mjs|shop-preparation-ui\.mjs|orders-ui\.mjs|order-product-ui\.mjs|cart-handoff-ui\.mjs|production-profiles\.css|contours-ui\.mjs|form-product-ui\.mjs|form-design-ui\.mjs|review-snapshots-ui\.mjs|review-snapshots\.css|form-customer-ui\.mjs|form-interaction\.mjs|form-customer\.css|form-product\.css|contours\.css|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
+      else if(workshop&&/^\/workshop-ui\/(merchant-downloads\.mjs|shop-transfer-ui\.mjs|merchant-request\.mjs|order-file-grants-ui\.mjs|variant-batch-reader\.mjs|variant-batch-ui\.mjs|form-variants-ui\.mjs|form-variant-picker\.mjs|form-variants\.css|app\.mjs|style\.css|dashboard\.css|editor\.css|product-editor-ui\.mjs|product-overview-ui\.mjs|product-options-ui\.mjs|native-production-ui\.mjs|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|production-profiles-ui\.mjs|export-jobs-ui\.mjs|output-checks-ui\.mjs|output-summary\.mjs|output-specification\.mjs|order-output-context\.mjs|shop-preparation-ui\.mjs|orders-ui\.mjs|order-product-ui\.mjs|cart-handoff-ui\.mjs|production-profiles\.css|contours-ui\.mjs|form-product-ui\.mjs|form-design-ui\.mjs|review-snapshots-ui\.mjs|review-snapshots\.css|form-customer-ui\.mjs|form-interaction\.mjs|form-customer\.css|form-product\.css|contours\.css|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
       else if(/^\/acrylic-assets\/[a-z0-9-]+\.png$/.test(pathname)){
         base=path.join(ROOT,'designs/acrylic-unser-anfang');relative=pathname.split('/').pop();
       } else {
@@ -54,8 +61,9 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop}={}) {
       const realBase=fs.realpathSync(base),file=fs.realpathSync(path.resolve(base,relative));
       const within=path.relative(realBase,file);
       if(within.startsWith('..')||path.isAbsolute(within)||!fs.statSync(file).isFile())return fail(404);
-      const bytes=fs.readFileSync(file);
-      res.writeHead(200,{'Content-Type':types[path.extname(file)]||'application/octet-stream','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':csp});
+      let bytes=fs.readFileSync(file);
+      if(adminHost&&path.extname(file)==='.html')bytes=adminHost.html(bytes,pathname);
+      res.writeHead(200,{'Content-Type':types[path.extname(file)]||'application/octet-stream','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':adminHost?.csp||csp});
       res.end(req.method==='HEAD'?undefined:bytes);
     } catch {if(!res.headersSent)fail(404);else res.end();}
   });

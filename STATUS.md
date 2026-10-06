@@ -1,3 +1,9 @@
+## Aktuell: Fertigungsprofil bei Bestellgestaltung → Produkt erhalten – 06.10.2026
+
+Branch `task/order-product-profile-20261006`, Basis `928c071ec8a777e10494ba1bbe2d8698735629ea`. Neue Acrylproduktentwürfe aus gesicherten Bestellungen übernehmen jetzt den festen Fertigungsprofilstand, statt auf Standardwerte zurückzufallen. Referenzen und Hash geprüft; neuere Profile nicht automatisch übernommen. Private Kundenbilder, ursprüngliche Bestellung und Shopbindungen bleiben unverändert. **315 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; durchgehender synthetischer Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansicht](docs/dashboard-20261004/BESTELLPRODUKT-PROFIL-20261006.md).
+
+Keine Veröffentlichung, echte Zahlung oder Maschinenfreigabe. Bereits zuvor angelegte Produktentwürfe werden nicht nachträglich verändert. Nächste externe Abnahme: reales Import-/Probedruckergebnis und bestätigte Fertigungsvorgaben dokumentieren; echte Test-App-/Betriebsanbindung separat offen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Gespeicherte Gravur-PDF direkt ansehen – 06.10.2026
 
 Branch `task/engraving-pdf-preview-20261006`, Basis `d7bf81fed4bad7a381eb4a43e0bdc4ce545d0d78`. Unter **Ausgaben → Gravur-PDF ansehen** wird die tatsächliche gesicherte Raster-/Vektorgravur auf Weiß dargestellt, einschließlich PDF-Prüfsumme. Keine zusätzliche Spiegelung, Umfärbung oder Änderung der Datei; Schnittkontur bleibt separat. **314 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Gravur-Browserablauf und Druckvorschau-Regression Desktop/Handy/Tablet bestanden.** [Nachweis und Ansicht](docs/dashboard-20261004/GRAVUR-PDF-VORSCHAU-20261006.md).

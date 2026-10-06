@@ -28,6 +28,14 @@ export function planAcrylicOrderProduct({line,archive,input,assets}){
  if(config.localResources.photoPlaceholders)config.localResources.photoPlaceholders=config.localResources.photoPlaceholders.filter(e=>e.designId===design.id&&design.objects.some(o=>o.id===e.slotId));
  if(config.photo.hints)config.photo.hints=config.photo.hints.filter(h=>h.designId===design.id&&design.objects.some(o=>o.id===h.slotId));
  const document=makeProductDocument(config,{name:input.name.trim(),kind:'product'});
+ const ref=saved.product.productionProfile,profile=manifest.productionProfile;
+ if(ref||profile||line.productionProfile){
+  let bundled;try{bundled=JSON.parse(files.get('fertigungsprofil.json'));}catch{fail('Der gesicherte Fertigungsprofilstand fehlt im Bestellpaket.');}
+  if(!ref||!profile||!line.productionProfile||profile.id!==ref.id||profile.revision!==ref.revision||line.productionProfile.id!==ref.id||line.productionProfile.revision!==ref.revision||line.productionProfile.sha256!==profile.sha256||digest(JSON.stringify(profile.document))!==profile.sha256||JSON.stringify(bundled)!==JSON.stringify(profile))fail('Bestellposition, Produkt und gesichertes Fertigungsprofil stimmen nicht überein.');
+  // Preserve the exact manufacturing revision; no lookup of a newer profile here.
+  document.productionProfile=structuredClone(ref);
+ }
+
  // Freeze the bundled resource choice rather than inheriting a later global profile.
  for(const value of Object.values(document.profileAssignments)){value.mode='empty';value.profileId=null;}
  for(const o of document.config.profile.designs[0].objects){const old=saved.product.elementRights[design.id]?.[o.id],next=document.elementRights[design.id][o.id];if(old)for(const key of Object.keys(next))next[key]=next[key]&&old[key];}
@@ -36,5 +44,5 @@ export function planAcrylicOrderProduct({line,archive,input,assets}){
  const token=digest(JSON.stringify({recipe:'acrylic-order-product/v1',origin,document:checked,textMode:input.textMode}));
  return {document:checked,token,origin,textMode:input.textMode,photoCount:manifest.photos.length,removedFields:source.objects.filter(o=>!design.objects.some(v=>v.id===o.id)).length,
   fields:checked.config.profile.designs[0].objects.filter(o=>['text','photoSlot'].includes(o.type)).map(o=>({id:o.id,label:o.fieldKey||o.id,type:o.type,...(o.type==='text'?{text:o.text}:{})})),
-  warnings:['Kundenfotos und ihre Bearbeitungs-/Uploaddaten werden nicht übernommen. Fotobereiche bleiben austauschbar.',...(removedUploads?[removedUploads+' zusätzlich hochgeladene Bildelemente werden entfernt.']:[]),input.textMode==='customer'?'Kundentexte werden ausdrücklich als neue Beispieltexte übernommen. Vor Verwendung prüfen.':'Beispieltexte stammen aus der ursprünglichen Vorlage; neue Textfelder erhalten „Dein Text“.','Die ausgewählte Ausführung wird vorausgewählt; alle ursprünglichen kaufbaren Ausführungen bleiben erhalten.','Neuer privater Acrylentwurf mit gesicherten Schriften/Motiven, ohne Shop-Verknüpfung oder Veröffentlichung.']};
+  warnings:[...(profile?['Fertigungsprofil „'+profile.document.name+'“ · Stand '+profile.revision+' wird übernommen. Keine automatische Maschinenfreigabe.']:[]),'Kundenfotos und ihre Bearbeitungs-/Uploaddaten werden nicht übernommen. Fotobereiche bleiben austauschbar.',...(removedUploads?[removedUploads+' zusätzlich hochgeladene Bildelemente werden entfernt.']:[]),input.textMode==='customer'?'Kundentexte werden ausdrücklich als neue Beispieltexte übernommen. Vor Verwendung prüfen.':'Beispieltexte stammen aus der ursprünglichen Vorlage; neue Textfelder erhalten „Dein Text“.','Die ausgewählte Ausführung wird vorausgewählt; alle ursprünglichen kaufbaren Ausführungen bleiben erhalten.','Neuer privater Acrylentwurf mit gesicherten Schriften/Motiven, ohne Shop-Verknüpfung oder Veröffentlichung.']};
 }

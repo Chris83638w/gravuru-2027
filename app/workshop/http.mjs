@@ -8,6 +8,7 @@ import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
 import {batchReportData,batchReportWorkbook} from './batch-report.mjs';
 import {createBatchJobs} from './batch-jobs.mjs';
+import {createVariantBatchJobs,variantBatchReportData,variantBatchReportWorkbook} from './variant-batch-report.mjs';
 import {variantExportData,variantWorkbook} from './variant-export.mjs';
 import {createFormVariants} from './form-variants.mjs';
 import {additionPolicy,formMotifs} from './form-additions.mjs';
@@ -73,6 +74,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const variants=createFormVariants({filename,repository});
   const batchJobs=createBatchJobs({filename,repository,assets});
+  const variantBatchJobs=createVariantBatchJobs({filename,variants});
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
@@ -219,6 +221,25 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       if(pathname==='/api/workshop/variant-import-template'&&method==='GET'){
         const bytes=fs.readFileSync(new URL('./templates/ausfuehrungen.xlsx',import.meta.url));res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Ausfuehrungen.xlsx"','Cache-Control':'no-store'}).end(bytes);return;
+      }
+      if(pathname==='/api/workshop/variants/batch/report'&&method==='POST'){
+        const data=variantBatchReportData(variants,await body(req)),bytes=await variantBatchReportWorkbook(data);
+        const filename=data.mode==='errors'?'Gravuru-Ausfuehrungen-Korrektur.xlsx':'Gravuru-Ausfuehrungen-Pruefbericht.xlsx';
+        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${filename}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
+      }
+      if(pathname==='/api/workshop/variants/batch/jobs'){
+        if(method==='GET')return json(res,200,{jobs:variantBatchJobs.list()});
+        if(method==='POST')return json(res,201,variantBatchJobs.create(await body(req)));
+        fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      }
+      const variantJobMatch=pathname.match(/^\/api\/workshop\/variants\/batch\/jobs\/(imp_[a-f0-9-]{36})(\/remove)?$/);
+      if(variantJobMatch){
+        if(!variantJobMatch[2]&&method==='GET')return json(res,200,variantBatchJobs.review(variantJobMatch[1]));
+        if(variantJobMatch[2]&&method==='POST'){
+          if(Object.keys(await body(req)).length)fail(422,'batch_job','Entfernen benötigt keine zusätzlichen Daten.');
+          return json(res,200,variantBatchJobs.remove(variantJobMatch[1]));
+        }
+        fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       }
       if(pathname==='/api/workshop/variants/batch/plan'&&method==='POST'){const {entries,...plan}=variants.plan(await body(req));return json(res,200,plan);}
       if(pathname==='/api/workshop/variants/batch/commit'&&method==='POST')return json(res,200,variants.commit(await body(req)));
@@ -582,5 +603,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,variants,batchJobs,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
+  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
 }

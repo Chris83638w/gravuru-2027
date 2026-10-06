@@ -15,6 +15,27 @@ import {merchantDownload} from './ui/merchant-downloads.mjs';
 
 const config={mode:'embedded-test',origin:'https://workshop.example',shopDomain:'fixture.myshopify.com',clientId:'fixture-client'};
 const sessions={mode:'test-only',shopDomain:config.shopDomain,clientId:config.clientId,secret:randomBytes(32).toString('hex')};
+
+test('variant report and saved checks require merchant authorization and preserve product snapshot separation',async t=>{
+ const {request,workshop}=setup(t),authorization=jwt(),session=JSON.parse((await request('/api/workshop/session',{headers:{authorization}})).bytes);
+ const headers={authorization,'x-gravuru-csrf':session.csrfToken,'content-type':'application/json',origin:config.origin},base='/api/workshop/variants/batch/';
+ const input={rows:[{import_key:'missing-members',name:'Noch unvollständig'}],variantRows:[]},data={name:'Private Prüfung',input},before=workshop.repository.list();
+ assert.equal((await request(base+'jobs')).status,401);
+ for(const route of ['jobs','report']){
+  const body=route==='jobs'?data:{...input,mode:'errors'};
+  assert.equal((await request(base+route,{method:'POST',data:body,headers:{...headers,authorization:''}})).status,401);
+  assert.equal((await request(base+route,{method:'POST',data:body,headers:{...headers,'x-gravuru-csrf':'wrong'}})).status,403);
+  assert.equal((await request(base+route,{method:'POST',data:body,headers:{...headers,origin:'https://foreign.invalid'}})).status,403);
+ }
+ const response=await request(base+'report',{method:'POST',data:{...input,mode:'errors'},headers});assert.equal(response.status,200,response.bytes.toString());assert.equal(response.bytes.subarray(0,2).toString(),'PK');assert.match(response.headers['cache-control'],/private, no-store/);
+ const saved=await request(base+'jobs',{method:'POST',data,headers});assert.equal(saved.status,201,saved.bytes.toString());const {id}=JSON.parse(saved.bytes);
+ assert.equal((await request('/api/workshop/batch/jobs/'+id,{headers})).status,404);
+ assert.equal((await request(base+'jobs/'+id)).status,401);
+ const loaded=await request(base+'jobs/'+id,{headers});assert.equal(loaded.status,200);assert.equal(JSON.parse(loaded.bytes).plan.report[0].status,'error');
+ assert.equal((await request(base+'jobs/'+id+'/remove',{method:'POST',data:{},headers:{...headers,'x-gravuru-csrf':'wrong'}})).status,403);
+ assert.equal((await request(base+'jobs/'+id+'/remove',{method:'POST',data:{},headers})).status,200);
+ assert.deepEqual(workshop.repository.list(),before);assert.equal(workshop.variants.list().length,0);
+});
 function setup(t,embedded=true){
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-admin-host-'));build({outputDirectory:dir});
   const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];

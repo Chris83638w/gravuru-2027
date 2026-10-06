@@ -1,3 +1,11 @@
+## Aktuell: Ausführungsgruppen aus Excel wiederaufnehmen – 06.10.2026
+
+Branch **`task/variant-import-resume-20261006`**, bestätigte GitHub-Basis **`2828939c24f83115e56392f312e89b87fc7ebec8`**. Auch die vorhandene Ausführungsgruppen-Ansicht kann geprüfte Tabellen privat speichern, frisch wieder öffnen und gezielte Excel-Korrekturen samt allen zugehörigen Varianten herunterladen. Produktserien und Ausführungsgruppen bleiben getrennt; beide verwenden dieselbe geprüfte Speicherfunktion. Preise, Maße und Designs kommen weiterhin aus den unveränderten gespeicherten Produktständen.
+
+**47 unterschiedliche gezielte Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Belegt sind 97 erhaltene Gruppen plus gezielte Korrektur von drei Gruppen, Wiederholung ohne Duplikate, Revisions-/Archivkonflikte, unveränderte Produktdaten und authentifizierte Downloads. [Umfang, Befehle und Grenzen](docs/dashboard-20261004/EXCEL-FEHLERKORREKTUR-20261006.md#ausfuehrungsgruppen-excel-und-wiederaufnahme).
+
+Keine Veröffentlichung und keine reale Browserabnahme. Neue private Tabelle `variant_batch_jobs` in derselben `workshop.sqlite`; kein zusätzlicher Server und keine neue Datenbankdatei. Nächster Abnahmeschritt bleibt die sichtbare Bedienprüfung beider Importansichten in einer ausführbaren geschützten Vorschau. Die aktuelle Runtime besitzt weiterhin keine konfigurierten App-Secrets; das blockierte diese Codearbeit nicht. Historische Zwischenstände folgen.
+
 ## Aktuell: Private Serienprüfung speichern und wiederaufnehmen – 06.10.2026
 
 Branch **`task/batch-resume-20261006`**, GitHub-Basis **`336c9d74ff2d580e0670bce559eaa6449bcd4e0b`**. Zusätzlich zum Excel-Prüfbericht kann die bestehende Serienansicht geprüfte Importdaten privat speichern, auflisten, erneut öffnen und bewusst entfernen. Beim Öffnen wird ein neuer Prüfplan aus dem aktuellen Produktstand erstellt. Bereits ausgeführte Zeilen werden aus dem dauerhaften Importjournal erkannt, auch wenn die ursprüngliche Browserantwort verloren ging. Gespeicherte Designverknüpfungen funktionieren nach Neustart ohne erneutes Hochladen, solange dieselbe private Ablage vorhanden ist.

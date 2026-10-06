@@ -1,6 +1,49 @@
 import http from 'node:http';
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {once} from 'node:events';import {DatabaseSync} from 'node:sqlite';
 import {createWorkshop} from './http.mjs';import {makeFormProduct} from './form-product.mjs';import {addFormDesign} from './form-designs.mjs';import {build} from '../configurator/variant-m/build.mjs';import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {variantBatchReportData,variantBatchReportWorkbook} from './variant-batch-report.mjs';
+import {execFile as asyncExecFile} from 'node:child_process';
+import {promisify} from 'node:util';
+async function readCorrection(bytes,dir){
+ const filename=path.join(dir,'variant-correction.xlsx');fs.writeFileSync(filename,bytes);
+ const {stdout}=await promisify(asyncExecFile)('python3',['-c',`import json,sys
+from openpyxl import load_workbook
+w=load_workbook(sys.argv[1])
+def rows(name):
+ r=list(w[name].values);return [dict(zip(r[0],[v if v is not None else '' for v in row])) for row in r[1:]]
+print(json.dumps({'rows':rows('Gruppen'),'variantRows':rows('Varianten'),'report':rows('Pruefbericht'),'sheets':w.sheetnames,'formulas':sum(c.data_type=='f' for s in w for row in s for c in row)}))`,filename],{timeout:15000});return JSON.parse(stdout);
+}
+
+test('saved variant checks and correction workbook resume only three failed groups with all their members',async t=>{
+ const f=await fixture(t),input=batchInput(f,100),before=f.w.repository.list();for(const i of [0,1,2])input.variantRows[i*2].product_revision=99;
+ const job=f.w.variantBatchJobs.create({name:'100 Ausführungsgruppen',input}),same=f.w.variantBatchJobs.create({name:'Wiederholung',input});assert.equal(same.id,job.id);assert.equal(same.existing,true);
+ const opened=f.w.variantBatchJobs.review(job.id);assert.equal(opened.plan.report.filter(r=>r.status==='error').length,3);assert.equal(f.w.variants.commit({...opened.input,token:opened.plan.token,skipErrors:true}).groups.length,97);
+ f.restart();const resumed=f.w.variantBatchJobs.review(job.id);assert.equal(resumed.plan.report.filter(r=>r.status==='existing').length,97);assert.equal(resumed.plan.report.filter(r=>r.status==='error').length,3);
+ const data=variantBatchReportData(f.w.variants,{...resumed.input,mode:'errors'}),file=await readCorrection(await variantBatchReportWorkbook(data),f.dir);
+ assert.deepEqual(file.sheets,['Gruppen','Varianten','Pruefbericht','Anleitung']);assert.equal(file.rows.length,3);assert.equal(file.variantRows.length,6);assert.equal(file.report.length,100);assert.equal(file.formulas,0);assert.equal(file.report[3].correction_excel_row,'');assert.equal(file.report[1].correction_excel_row,3);
+ for(const member of file.variantRows)member.product_revision=1;
+ const corrected={rows:file.rows,variantRows:file.variantRows},next=f.w.variantBatchJobs.create({name:'Drei korrigiert',input:corrected}),review=f.w.variantBatchJobs.review(next.id);
+ assert.equal(review.plan.valid,true,JSON.stringify(review.plan.report));const result=f.w.variants.commit({...review.input,token:review.plan.token});assert.equal(result.groups.filter(g=>g.created).length,3);assert.equal(f.w.variants.list().length,100);
+ assert.equal(f.w.variants.commit({...review.input,token:review.plan.token}).groups.filter(g=>g.created).length,0);assert.deepEqual(f.w.repository.list(),before);
+ for(const group of result.groups){const d=f.w.variants.get(group.id).document;assert.equal(d.variants.length,2);assert.equal(d.defaultVariantId,'large');assert.equal(f.w.variants.select(group.id,1,'small').basePriceCents,1499);}
+ f.w.variantBatchJobs.remove(job.id);assert.equal(f.w.variants.list().length,100);assert.equal(f.w.variantBatchJobs.review(next.id).plan.report[0].status,'existing');
+});
+test('saved variant review keeps group revisions and reports newly archived products without altering references',async t=>{
+ const f=await fixture(t),group=f.w.variants.create(f.input()),input={rows:[{import_key:'update-later',action:'update',group_id:group.id,expected_revision:1,name:'Tabellenänderung'}],variantRows:[]};
+ const job=f.w.variantBatchJobs.create({name:'Update',input});f.w.variants.save(group.id,{...group.document,name:'Parallel geändert'},1);f.restart();
+ const resumed=f.w.variantBatchJobs.review(job.id);assert.equal(resumed.plan.valid,false);assert.equal(resumed.input.rows[0].expected_revision,1);assert.match(resumed.plan.report[0].message,/inzwischen/);
+ const correction=variantBatchReportData(f.w.variants,{...resumed.input,mode:'errors'});assert.equal(correction.rows[0].group_id,group.id);assert.equal(correction.rows[0].expected_revision,1);
+ const pending=f.w.variantBatchJobs.create({name:'Neue Zuordnung',input:batchInput(f)});f.w.repository.setArchived(f.products[0].id,{expectedRevision:1,archived:true});assert.equal(f.w.variantBatchJobs.review(pending.id).plan.valid,false);assert.equal(f.w.variants.get(group.id).document.name,'Parallel geändert');
+});
+test('variant reports preserve literal labels, isolate snapshot types and reject ambiguous workbook data',async t=>{
+ const f=await fixture(t),input=batchInput(f);input.rows[0].name='=HYPERLINK("https://example.invalid")';input.variantRows[0].label='+123';
+ const before=f.w.variants.list(),file=await readCorrection(await variantBatchReportWorkbook(variantBatchReportData(f.w.variants,{...input,mode:'report'})),f.dir);assert.equal(file.formulas,0);assert.equal(file.rows[0].name,input.rows[0].name);assert.equal(file.variantRows[0].label,'+123');assert.deepEqual(f.w.variants.list(),before);
+ const job=f.w.variantBatchJobs.create({name:'Getrennt',input});assert.throws(()=>f.w.batchJobs.review(job.id),/nicht gefunden/);assert.equal(f.w.batchJobs.list().length,0);
+ assert.throws(()=>variantBatchReportData(f.w.variants,{...input,mode:'errors'}),/keine fehlerhaften/);
+ assert.throws(()=>f.w.variantBatchJobs.create({name:'Token',input:{...input,token:'not-to-store'}}),/Gruppen/);
+ for(const patch of [{name:'x'.repeat(32768)},{extra:'column'},{name:'bad\u0000text'}])assert.throws(()=>variantBatchReportData(f.w.variants,{...input,rows:[{...input.rows[0],...patch}],mode:'report'}),/Zellen|Spalten/);
+ const orphan=structuredClone(input);orphan.variantRows[0].import_key='orphan';assert.throws(()=>f.w.variantBatchJobs.create({name:'Verwaist',input:orphan}),/keiner Gruppe/);
+});
 async function fixture(t){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-variants-'));build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0],filename=path.join(dir,'workshop.sqlite');let w=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy});t.after(()=>{w.close();fs.rmSync(dir,{recursive:true,force:true});});const products=[];
  for(const [width,material,price] of [[120,'acrylic-clear',1499],[160,'oak',2499]]){

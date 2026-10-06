@@ -67,3 +67,40 @@ Ein erster Test verwendete versehentlich einen kleinen Acrylpreis oberhalb des G
 Keine privaten Bestandsdaten geöffnet, kein Restore, keine Liveänderung. Tests fanden mit temporären synthetischen Daten statt. Noch keine tatsächliche Browserabnahme und keine Aktualisierung der veröffentlichten Vorschau. Nächster Abnahmeschritt ist die sichtbare Bedienprüfung der gespeicherten Serie in einer ausführbaren geschützten Vorschau.
 
 Die neue Speichermöglichkeit ist appseitige Persistenz in derselben privaten Datenbank. Sie garantiert weder dauerhafte Cloud-VM-Verfügbarkeit noch eine gemeinsame Ablage zwischen Konten. Zugriff von einem anderen Gerät setzt denselben App-Datenbestand und die passende Händleranmeldung voraus.
+
+
+## Ausfuehrungsgruppen: Excel und Wiederaufnahme
+
+Stand 06.10.2026, 19:09 UTC. Branch `task/variant-import-resume-20261006`, bestätigte Remote-Basis `2828939c24f83115e56392f312e89b87fc7ebec8`. Bestehende Cloud-Laufzeit und bestehender Checkout; keine neue Umgebung, kein Laptopzugriff.
+
+### Bedienung
+
+In **Ausführungen aus Excel** gibt es nun dieselben Arbeitsschritte wie in Produktserien:
+
+1. Tabelle prüfen, Namen vergeben und **Prüfung privat speichern**.
+2. Unter **Gespeicherte Ausführungsprüfungen** später **Öffnen und erneut prüfen** wählen. Eine gespeicherte Prüfung führt keine Gruppenanlage automatisch aus.
+3. **Prüfbericht als Excel** enthält alle eingereichten Gruppen samt Varianten und einen frisch ermittelten Bericht. **Nur fehlerhafte Gruppen herunterladen** enthält ausschließlich offene Fehler, jeweils mit sämtlichen zugehörigen Variantenzeilen.
+4. Korrektur in den Blättern `Gruppen` und `Varianten` vornehmen, Datei erneut prüfen und ausdrücklich anwenden. Erfolgreiche Gruppen bleiben erhalten.
+5. Eine gespeicherte Prüfung kann nach Bestätigung entfernt werden. Gruppen, Produkte, Designs und Importhistorie werden dadurch nicht gelöscht.
+
+`Pruefbericht` und `Anleitung` gehören zur XLSX-Datei. Der Bericht nennt ursprünglichen Datensatz, Zeile der Korrekturdatei, Importschlüssel, Status, Fehler und vorhandene Gruppen-ID/erwartete Revision. Literal gespeicherte Namen und Variantenbezeichnungen werden nicht als Excel-Formeln interpretiert.
+
+### Umsetzung und Schutz
+
+`variant-batch-report.mjs` nutzt den vorhandenen Variantenplaner und die bestehenden Excel-Spaltenschemata. Keine zweite Preis-, Geometrie- oder Produktvalidierung. Alle Kindzeilen der fehlerhaften Gruppe bleiben zusammen; unbekannte Gruppenzuordnungen werden vor der Speicherung abgewiesen. `product_revision` und `expected_revision` werden nie automatisch angehoben. Neue Archivierungen und parallele Gruppenänderungen werden beim Öffnen sichtbar.
+
+Die bisherige Speicherfunktion aus `batch-jobs.mjs` ist als `import-job-store.mjs` wiederverwendbar. Bestehende Produkttabelle `batch_jobs` und neue Gruppentabelle `variant_batch_jobs` bleiben getrennt, einschließlich getrennten Listen und Zugriff auf gespeicherte IDs. Tabellenname ist eine feste interne Allowlist, kein Requestparameter. Alte Produktspeicherstände werden nicht umgeschrieben. Je Importart bis 100 Prüfungen mit höchstens 2 MB pro Stand; gleiche Eingaben werden wiedererkannt. Unveränderliche Eingaben und Fortschritt aus dem vorhandenen Importjournal sichern die Wiederaufnahme nach verlorener Browserantwort.
+
+Neue Händler-Endpunkte unter `/api/workshop/variants/batch/report` und `/api/workshop/variants/batch/jobs` verwenden den bestehenden Session-/Host-/Origin-/CSRF-Schutz. Excel wird mit `private, no-store` ausgeliefert. Gespeichert werden nur erlaubte Importspalten und Referenzen, keine Sitzungstokens oder Originalfotos. Die zusätzliche Tabelle befindet sich in der privaten `workshop.sqlite`; es bleibt bei denselben Datenbankdateien.
+
+### Tatsächliche Tests
+
+47 unterschiedliche gezielte Tests bestanden, 0 Fehler/Skips:
+
+- `node --test --test-isolation=none app/workshop/batch-jobs.test.mjs app/workshop/batch-report.test.mjs` — 10 bestanden. Regression für vorhandene Produktserien nach Wiederverwendung der Speicher-/Excel-Funktion.
+- `node --test --test-isolation=none --test-name-pattern='saved variant|variant reports preserve|variant report and saved' app/workshop/form-variants.test.mjs app/workshop/shopify-admin-host.test.mjs` — 4 bestanden. Neue Gruppenspeicherung nach Neustart, XLSX-Inhalte mit openpyxl, 100/97/3 und alle Kindzeilen, Wiederholschutz, feste Preise/Produktstände, Konflikte, neue Archivierung, Formelvermeidung, Trennung von Produktprüfungen und geschützter HTTP-Zugriff.
+- `node --test --test-isolation=none --test-name-pattern='Excel group batches|100 Excel groups|Excel update merges|Excel rejects orphan|failed group member' app/workshop/form-variants.test.mjs` — 5 bestanden. Vorhandene Transaktions-, Update-, Rollback- und Zuordnungsregeln unverändert.
+- `node --test --test-isolation=none app/workshop/shopify-admin-host.test.mjs app/workshop/shopify-runtime-config.test.mjs` — 29 bestanden. HTTP-Handler-/Laufzeitregression nach zusätzlicher privater Datenbankverbindung; enthält den neuen HTTP-Test erneut, daher insgesamt 47 statt 48 unterschiedliche Tests.
+- `npm run build` — 76 Ressourcen, 1 Modell, Editor 461440 Bytes. Syntaxprüfungen, Python-Kompilierung, `git diff --check` und statischer Abgleich der 24 direkt referenzierten UI-Element-IDs bestanden.
+
+Keine neue vollständige Testsuite und keine echte Browserabnahme behauptet. SQLite-/SVG-/Excel-Tests verwenden synthetische Daten; HTTP-Tests laufen mit echten Handlern im Prozess und synthetischen Sitzungen, ohne Netzwerklistener. Keine Server-, Shopify- oder Plesk-Mutation; kein Restore, Merge oder Deployment. Die veröffentlichte Vorschau wird durch die GitHub-Sicherung nicht aktualisiert. Appseitige Persistenz in derselben privaten Datenbank ist weiterhin keine Zusage dauerhaft geteilter Cloud-VM-Daten.

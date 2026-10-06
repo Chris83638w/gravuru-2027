@@ -10,8 +10,13 @@ from openpyxl.utils import get_column_letter
 def export(data):
     book = Workbook()
     book.remove(book.active)
+    variants = data.get('kind') == 'variants'
+    main_name = 'Gruppen' if variants else 'Produkte'
+    child_name = 'Varianten' if variants else 'Designs'
     report_columns = ['source_record', 'correction_excel_row', 'import_key', 'name', 'status', 'message', 'product_id', 'expected_revision', 'master_id', 'master_revision']
-    for name, columns, rows in [('Produkte', data['columns'], data['rows']), ('Designs', data['designColumns'], data['designRows']), ('Pruefbericht', report_columns, data['report'])]:
+    if variants:
+        report_columns = ['source_record', 'correction_excel_row', 'import_key', 'name', 'status', 'message', 'group_id', 'expected_revision']
+    for name, columns, rows in [(main_name, data['columns'], data['rows']), (child_name, data['designColumns'], data['variantRows'] if variants else data['designRows']), ('Pruefbericht', report_columns, data['report'])]:
         sheet = book.create_sheet(name)
         sheet.append(columns)
         sheet.freeze_panes = 'C2'
@@ -28,10 +33,10 @@ def export(data):
             cell.font = Font(name='Arial', bold=True, color='FFFFFF')
             cell.fill = PatternFill('solid', fgColor='3E4B57')
         for index, key in enumerate(columns, 1):
-            sheet.column_dimensions[get_column_letter(index)].width = 70 if key == 'message' else 42 if key in ['import_key', 'name', 'design_name', 'product_id', 'master_id'] else 24
+            sheet.column_dimensions[get_column_letter(index)].width = 70 if key == 'message' else 42 if key in ['import_key', 'name', 'design_name', 'product_id', 'master_id', 'group_id'] else 24
         sheet.auto_filter.ref = sheet.dimensions
     guide = book.create_sheet('Anleitung')
-    for row in [
+    rules = [
         ('Stand', data['createdAt']),
         ('Umfang', 'Produkte enthält nur die aktuell fehlerhaften Datensätze.' if data['mode'] == 'errors' else 'Produkte enthält alle eingereichten Datensätze, auch bereits ausgeführte.'),
         ('Pruefbericht', 'Aktuelle erneute Prüfung beim Download. source_record ist die ursprüngliche Datensatznummer; correction_excel_row die Zeile im Blatt Produkte dieser Datei. Leer bedeutet: nicht in dieser Korrektur enthalten. Der Bericht wird nicht importiert.'),
@@ -41,8 +46,21 @@ def export(data):
         ('Konflikte', 'Doppelte/fehlende Importschlüssel und veraltete expected_revision bewusst prüfen. Revisionen werden nicht automatisch erhöht; zwischenzeitliche Änderungen bleiben geschützt.'),
         ('Master', 'Verwendete Master-ID und Revision stehen in den Produktzeilen. Ungültige Angaben bleiben zur Korrektur erhalten. Die Auswahl eines anderen Masters im Dashboard überschreibt diese Angaben nicht.'),
         ('Datum', 'Numerische Datumswerte bleiben als Fehler erkennbar. Datum als gewünschten Text eingeben, beispielsweise 06.10.2026. Keine Formeln verwenden.'),
-        ('Privat', 'Diese Datei enthält die eingereichten Produktdaten. Privat aufbewahren. Kein dauerhafter Importauftrag: Nach Schließen des Tabs diese Datei und die benötigten Design-Dateien erneut auswählen.'),
-    ]:
+        ('Privat', 'Diese Datei enthält die eingereichten Produktdaten. Privat aufbewahren. Für spätere Wiederaufnahme die Prüfung im Dashboard privat speichern oder diese Datei und die benötigten Design-Dateien erneut auswählen.'),
+    ]
+    if variants:
+        rules = [
+            ('Stand', data['createdAt']),
+            ('Umfang', 'Gruppen enthält nur aktuell fehlerhafte Gruppen.' if data['mode'] == 'errors' else 'Gruppen enthält alle eingereichten Gruppen.'),
+            ('Pruefbericht', 'Frische Prüfung beim Download. source_record ist der ursprüngliche Datensatz; correction_excel_row die Zeile im Blatt Gruppen dieser Datei. Der Bericht wird nicht importiert.'),
+            ('Korrektur', 'Fehler im Blatt Gruppen oder Varianten korrigieren, speichern und erneut prüfen. Alle zugehörigen Varianten einer fehlerhaften Gruppe bleiben enthalten. Es wird nichts automatisch angewendet.'),
+            ('Produktstände', 'product_id und product_revision bleiben exakt erhalten. Preise, Materialien, Maße und Designs stammen weiterhin aus diesen gespeicherten Produktständen. Es werden keine Produktdaten neu berechnet.'),
+            ('Wiederholung', 'Importschlüssel bei Wiederholung behalten. Für neue Änderungen bereits übernommener Gruppen neuen Importschlüssel sowie action=update, group_id und expected_revision verwenden.'),
+            ('Konflikte', 'Veraltete Gruppenrevisionen, archivierte Produkte und ungültige Zuordnungen bewusst korrigieren. Keine automatischen Revisionssprünge. Je Gruppe höchstens eine Standardausführung.'),
+            ('Grenzen', '1 bis 100 Gruppen, höchstens 50 Ausführungen je Gruppe und 5000 Ausführungszeilen insgesamt. Keine Formeln. Entfernen erfolgt bewusst in der Gruppenverwaltung.'),
+            ('Privat', 'Diese Datei enthält eingereichte Gruppendaten und Produktzuordnungen. Privat aufbewahren. Gruppen- und Produktserien sind getrennte Importstrecken.'),
+        ]
+    for row in rules:
         guide.append(row)
     guide.column_dimensions['A'].width = 28
     guide.column_dimensions['B'].width = 110

@@ -35,3 +35,5 @@ export function batchReportData(repository,input,assets){
   return {mode:input.mode,createdAt:new Date().toISOString(),columns:IMPORT_COLUMNS,designColumns:DESIGN_COLUMNS,rows,designRows,report};
 }
 export const batchReportWorkbook=data=>variantWorkbook(data,new URL('./batch-report.py',import.meta.url));
+
+export {cells as validateWorkbookRows};

@@ -5,7 +5,7 @@ import {readReviewPackage,digest} from './review-package.mjs';
 import {importEnvironment} from './design-assets.mjs';
 import {exportSettings,zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'form_print_proof'});};
-export const FORM_PRINT_RECIPE='gravuru-form-print-proof/v4';
+export const FORM_PRINT_RECIPE='gravuru-form-print-proof/v5';
 export function formPrintSettings(input={}){
  if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['profile','dpi','white','bleedMm','whiteBleedMm','mirror'].includes(k)))fail('Ungültige Druckeinstellungen.');
  const s=exportSettings({width:1,height:1},input);

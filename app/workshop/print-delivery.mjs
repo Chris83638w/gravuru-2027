@@ -8,7 +8,7 @@ export async function printDelivery(input){
  const name=mimaki?'Mimaki-FARBE-ohne-RDG_WHITE.pdf':'Roland-RDG_WHITE-CutContour.pdf';
  const downloads={pdf:{name,sha256:digest(pdf)}},extras=[];
  if(mimaki&&input.settings.white!=='none'){
-  const white=Buffer.from(await (await printPDF({...input,kind:'white-spot'})).arrayBuffer());
+  const white=Buffer.from(await (await printPDF({...input,kind:'white-spot-cut'})).arrayBuffer());
   downloads.white={name:'Mimaki-NUR-RDG_WHITE.pdf',sha256:digest(white)};
   extras.push({name:downloads.white.name,blob:new Blob([white])});
  }

@@ -25,19 +25,28 @@ def check(source, destination):
         objects = '\n'.join(doc.xref_object(i) for i in range(1, doc.xref_length()))
         assert not any(tag in objects for tag in ['/SMask', '/Transparency', '/OCProperties'])
         assert ('/RDG_WHITE' in objects) == (kind != 'color')
-        assert ('/CutContour' in objects) == (kind != 'white')
-        item = {'file': name, 'sha256': hashlib.sha256(file.read_bytes()).hexdigest(), 'muPDFRepair': False, 'ghostscript': 'PASS', 'samePageBoxes': True}
+        assert '/CutContour' in objects
+        item = {'file': name, 'sha256': hashlib.sha256(file.read_bytes()).hexdigest(), 'muPDFRepair': False, 'ghostscript': 'PASS', 'samePageBoxes': True, 'cutContourPresent': True}
         if kind == 'white':
             assert not doc[0].get_images() and not doc[0].get_xobjects()
             assert not re.search(rb'\bDo\b', doc[0].read_contents())
-            assert splitter.blocks(doc[0].read_contents().decode('ascii')) == [original_parts[0]]
+            assert splitter.blocks(doc[0].read_contents().decode('ascii')) == [original_parts[0], original_parts[2]]
             item.update(vectorOnly=True, whiteStreamUnchanged=True)
         else:
-            text_forms = [x for x in doc[0].get_xobjects() if x[1].startswith('TextEntry')]
-            assert len(text_forms) == len(expected_groups)
-            for x in text_forms:
-                assert len(re.findall(rb'(?<!\S)f(?!\S)', doc.xref_stream(x[0]))) == 1
-            item['textGroups'] = len(text_forms)
+            forms = doc[0].get_xobjects()
+            assert len(forms) == 1 and forms[0][1] == 'Artwork'
+            entries = splitter.blocks(doc.xref_stream(forms[0][0]).decode('ascii'))
+            text_entries = [entry for entry in entries if not re.search(r'\bDo\b', entry)]
+            assert len(text_entries) == len(expected_groups)
+            for entry in text_entries:
+                assert len(re.findall(r'(?<!\S)f(?!\S)', entry)) == 1
+                assert not re.search(r'\b(?:Do|BI)\b', entry)
+            item['compoundVectorTextEntries'] = len(text_entries)
+            # Existing image payloads are byte-identical, no text group became a bitmap.
+            def image_payloads(document):
+                return sorted(hashlib.sha256(document.xref_stream(image[0])).hexdigest() for image in document[0].get_images())
+            assert image_payloads(doc) == image_payloads(baseline)
+            item['imagePayloadsUnchanged'] = True
             expected = pdf.open(source)
             if kind == 'color':
                 x = expected.get_new_xref()

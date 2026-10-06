@@ -36,9 +36,9 @@ with tempfile.TemporaryDirectory(prefix='g27-acrylic-order-browser-') as tmp:
    for name in ['farbe.pdf','weiss.pdf']:
     doc=fitz.open(out/name);objects='\n'.join(doc.xref_object(i) for i in range(1,doc.xref_length()));assert not doc.is_repaired;assert not doc[0].get_fonts();assert abs(doc[0].rect.width*25.4/72-200)<.001 and abs(doc[0].rect.height*25.4/72-266.7)<.001
     if name=='weiss.pdf':
-     assert '/RDG_WHITE' in objects and '/CutContour' not in objects and not doc[0].get_images();pix=doc[0].get_pixmap(alpha=True);k=72/25.4;assert pix.pixel(round(2*k),round(2*k))[-1]==0 and pix.pixel(round(100*k),round(80*k))[-1]==255
+     assert '/RDG_WHITE' in objects and '/CutContour' in objects and not doc[0].get_images();pix=doc[0].get_pixmap(alpha=True);k=72/25.4;assert pix.pixel(round(2*k),round(2*k))[-1]==0 and pix.pixel(round(100*k),round(80*k))[-1]==255
     else:
-     assert '/RDG_WHITE' not in objects and '/CutContour' in objects;assert any(x[1].startswith('TextEntry') for x in doc[0].get_xobjects());doc[0].get_pixmap().save(out/'farb-vorschau.png')
+     assert '/RDG_WHITE' not in objects and '/CutContour' in objects;assert not any(x[1].startswith('TextEntry') for x in doc[0].get_xobjects());assert any(d['type']=='f' and d.get('layer')=='Farbmotiv' for d in doc[0].get_drawings());doc[0].get_pixmap().save(out/'farb-vorschau.png')
     run=subprocess.run(['gs','-q','-dSAFER','-dBATCH','-dNOPAUSE','-dPDFSTOPONERROR','-sDEVICE=nullpage',str(out/name)],capture_output=True);assert run.returncode==0,run.stderr.decode();files[name]={'sha256':hashlib.sha256((out/name).read_bytes()).hexdigest(),'ghostscript':'PASS'}
    form.locator('[name=white]').select_option('none');expect(form.locator('[name=format] [value="white-pdf"]')).to_have_attribute('disabled','');form.locator('[name=white]').select_option('motif')
    href=page.locator('#active-export-job').get_attribute('href');page.goto(base+href);expect(page.locator('[data-format="white-pdf"]')).to_be_visible();expect(page.locator('[data-format="pdf"]')).to_contain_text('Farb-PDF');page.reload();expect(page.locator('[data-format="white-pdf"]')).to_be_enabled()
@@ -59,7 +59,7 @@ with tempfile.TemporaryDirectory(prefix='g27-acrylic-order-browser-') as tmp:
     page.set_viewport_size({'width':width,'height':1000});assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');page.screenshot(path=str(out/('druckebenen-'+str(width)+'.png')),full_page=True)
    page.goto(base+'/werkstatt/pruefstaende/?snapshot='+f['snapshotId']);expect(form.locator('[name=profile]')).to_have_value('roland');expect(form.locator('[name=format] [value="white-pdf"]')).to_have_attribute('disabled','')
    form.locator('[name=profile]').select_option('mimaki');page.screenshot(path=str(out/'getrennte-auswahl-mobil.png'),full_page=True)
-   assert not errors;report.update(result='PASS',jobSwitchClearsPreview=True,noWhitePreviewForNoWhiteJob=True,colorAndWhitePreview=True,previewSourceHashesMatchDownloads=True,whiteCheckerboardVisible=True,separateDownloads=True,zipContainsSamePDFs=True,reloadedWhiteIdentical=True,noWhiteOptionWithoutUnderbase=True,whiteVectorOnly=True,colorWithoutRDGWhite=True,textFieldsGrouped=True,files=files,viewports=[1440,390,768],javascriptErrors=errors);browser.close()
+   assert not errors;report.update(result='PASS',jobSwitchClearsPreview=True,noWhitePreviewForNoWhiteJob=True,colorAndWhitePreview=True,previewSourceHashesMatchDownloads=True,whiteCheckerboardVisible=True,separateDownloads=True,zipContainsSamePDFs=True,reloadedWhiteIdentical=True,noWhiteOptionWithoutUnderbase=True,whiteVectorOnly=True,colorWithoutRDGWhite=True,textFieldsCompoundVectors=True,whiteIncludesCutContour=True,files=files,viewports=[1440,390,768],javascriptErrors=errors);browser.close()
  except Exception as e:report.update(result='FAIL',error=str(e));raise
  finally:
   report['finishedAt']=datetime.now(timezone.utc).isoformat();(out/'report.json').write_text(json.dumps(report,indent=2)+'\n');server.terminate()

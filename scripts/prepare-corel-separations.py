@@ -77,15 +77,11 @@ def prepare(source, destination):
             continue
         grouped, glyphs = compound_text(block)
         index = len(groups) + 1
-        xref = doc.get_new_xref()
-        bbox = doc.xref_get_key(form, 'BBox')[1]
-        graphics = doc.xref_get_key(form, 'Resources/ExtGState')[1]
-        resources = f'<< /ExtGState {graphics} >>'
-        doc.update_object(xref, f'<< /Type /XObject /Subtype /Form /BBox {bbox} /Resources {resources} >>')
-        doc.update_stream(xref, grouped.encode('ascii'))
+        # Keep each text entry as one compound filled vector path directly in
+        # the already accepted artwork stream. Do not introduce nested PDF
+        # Form groups: importers may flatten such wrappers during conversion.
+        paint.append(grouped)
         name = f'TextEntry{index}'
-        doc.xref_set_key(form, 'Resources/XObject/' + name, f'{xref} 0 R')
-        paint.append('q /' + name + ' Do Q')
         groups.append({'group': name, 'glyphPaths': glyphs, 'compoundVectorPaths': 1})
     if not groups:
         raise ValueError('No explicit text fields found')
@@ -94,20 +90,20 @@ def prepare(source, destination):
     destination.mkdir(parents=True, exist_ok=True, mode=0o700)
     result = {'sourceSha256': hashlib.sha256(original).hexdigest(), 'textGroups': groups,
               'pageMm': [round(page.rect.width*25.4/72, 4), round(page.rect.height*25.4/72, 4)],
-              'whiteCoverage': 'unchanged from source, not full-page', 'outputs': []}
+              'whiteCoverage': 'unchanged from source, not full-page', 'cutContourInAllFiles': True, 'textRepresentation': 'compound filled paths, no nested text forms', 'outputs': []}
     for name, selection in zip(names, ['combined', 'white', 'color']):
         out = pdf.open(stream=grouped_bytes, filetype='pdf')
         p = out[0]
         if selection != 'combined':
             streams = blocks(p.read_contents().decode('ascii'))
-            content = streams[0] if selection == 'white' else streams[1] + '\n' + streams[2]
+            content = (streams[0] if selection == 'white' else streams[1]) + '\n' + streams[2]
             xref = out.get_new_xref()
             out.update_object(xref, '<<>>')
             out.update_stream(xref, content.encode('ascii'))
             p.set_contents(xref)
             # Prune unused resources physically, not merely by hiding a layer.
             if selection == 'white':
-                for key in ['Resources/XObject', 'Resources/ColorSpace/Cut']:
+                for key in ['Resources/XObject']:
                     out.xref_set_key(p.xref, key, 'null')
             else:
                 out.xref_set_key(p.xref, 'Resources/ColorSpace/White', 'null')

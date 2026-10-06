@@ -1,3 +1,9 @@
+## Aktuell: Vektor-Texte und Mimaki-Außenkontur – 06.10.2026
+
+Branch `task/pdf-vector-contour-fix-20261006`, Basis `8745c9873942647796927d5680b9eb66ee14510e`. Texte als zusammengesetzte Vektorpfade ohne zusätzliche Text-Formhüllen; Mimaki-Weißdatei enthält nun auch die maßgleiche CutContour. Neue private PDF-1.3-Testdateien bereitgestellt, normale Backend-Rezepte v5/v3 korrigiert; ältere gespeicherte Ausgaben erhalten. **306 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet und MuPDF/Ghostscript bestanden.** [Dateinachweis und Grenzen](docs/dashboard-20261004/PDF-VEKTOREN-KONTUR-20261006.md).
+
+Nutzer meldete Bitmap-Gruppen in Corel; die frühere PDF-Struktur enthielt Vektorpfade in Form-XObjects. Neue direkte Pfade technisch geprüft; tatsächlicher Corel-/Mimaki-Import bleibt ausstehend. Kein Deploy. Nächster unabhängiger Code-Schritt: erhaltene Bestell-/Ausgaben-Verknüpfung fertigstellen. Nachfolgende Nachweise sind historisch.
+
 ## Aktuell: Farbe und Weiß aus der gespeicherten PDF prüfen – 06.10.2026
 
 Branch `task/dashboard-plate-preview-20261006`, Basis `ff8b4c5bb6a6eefd5879281126553f56eb051c3a`. Unter **Ausgaben** lassen sich Farbe und Weiß getrennt auf transparentem Karohintergrund ansehen. Quelle ist die tatsächlich gesicherte PDF, bei Mimaki die jeweilige separate Datei; Quellen-SHA sichtbar. Kein Weiß-Button bei Ausgabe ohne Weiß, kein altes Bild nach Auftragswechsel. PDFs/ZIPs bleiben unverändert. **304 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Handy/Tablet/Desktop bestanden.** [Nachweis und sichtbare Ansichten](docs/dashboard-20261004/DASHBOARD-DRUCKEBENEN-20261006.md).

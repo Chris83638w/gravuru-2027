@@ -1,5 +1,9 @@
 # Masterregeln für Konfigurator und Druck – 04.10.2026
 
+## Verbindliche Korrektur vom 06.10.2026: Vektoren und Mimaki-Außenkontur
+
+Texteingaben zusammenfassen, dabei **gefüllte Vektorpfade erhalten**. Keine Rasterung zur Gruppierung. Zusätzliche verschachtelte PDF-Formgruppen für Texte entfallen; zusammenhängende gleichfarbige Glyphen werden direkt als zusammengesetzter Pfad geschrieben. RDG_WHITE bleibt ausschließlich Vektor, auch unter Rasterfotos. Die getrennte Mimaki-Weißdatei enthält zusätzlich die maßgleiche **CutContour** einschließlich Außenkontur/Bohrungen. Farb- und Weißdatei haben identisches Format, Nullpunkt und Spiegelstand. Schnittkontur ist eine eigene Sonderfarbe, keine Weiß-Vollfläche. Alte gespeicherte Ausgaben nicht überschreiben. [Korrektur und konkrete Grenzen](PDF-VEKTOREN-KONTUR-20261006.md).
+
 ## Umsetzung 06.10.2026: automatischer Dashboard-Download
 
 Neue Form-/Acryl-Ausgabeaufträge erzeugen die getrennten Mimaki-Farb-/RDG_WHITE-PDFs automatisch und bieten beide einzeln im Prüfstand sowie unter „Ausgaben“ an. ZIP enthält beide; ohne Weißunterlegung keine Weißdatei. Texte je Eingabe als Vektorgruppe, gleichfarbige Glyphen als zusammengesetzter Pfad. Bestehende gespeicherte Ausgaben unverändert. [Umsetzung, aktuelle Prüfung und Grenzen](DASHBOARD-DRUCKTRENNUNG-20261006.md).

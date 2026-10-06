@@ -1,3 +1,4 @@
+import {planAcrylicOrderProduct} from './acrylic-order-product.mjs';
 import {readReviewPackage,digest} from './review-package.mjs';
 import {resolveFormCustomer} from './form-customer-model.mjs';
 import {verifyFormSource,validateFormProduct} from './form-product.mjs';
@@ -13,6 +14,7 @@ export function orderProductDraft(repository,line){
 export function planOrderProductDraft({line,archive,input,assets,contours,fonts}){
   if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['name','textMode','token'].includes(k)) ||
      typeof input.name!=='string'||!input.name.trim()||input.name.length>200||!['template','customer'].includes(input.textMode))fail('Produktname und Textübernahme bitte ausdrücklich festlegen.');
+  if(line.sourceSchema==='gravuru-acrylic-review/v1')return planAcrylicOrderProduct({line,archive,input,assets});
   const {files,manifest}=readReviewPackage(archive,line.sourcePackageSha256);
   if(manifest.id!==line.snapshotId||manifest.product.id!==line.product.id||manifest.product.revision!==line.product.revision)fail('Bestellposition und gesicherte Gestaltung stimmen nicht überein.');
   let saved,frozenFonts;try{saved=JSON.parse(files.get('produkt-und-gestaltung.json'));frozenFonts=JSON.parse(files.get('schriften.json'));}catch{fail('Der gesicherte Produktstand ist unvollständig.');}

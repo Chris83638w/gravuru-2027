@@ -1,3 +1,11 @@
+## Aktuell: Acryl-Bestellgestaltung als neuer Produktentwurf – 06.10.2026
+
+Branch `task/acrylic-order-product-20261006`, Basis `5f97ce4a964b4e80907bd4a4608c53d4599fcdcf` (Remote bestätigt). Im Dashboard: Testbestellung → Gestaltung als neues Produkt → Vorschau → privater Acrylentwurf im vorhandenen Editor. Layout/Farben/Schriftgestaltung und Löschungen bleiben erhalten; standardmäßig ursprüngliche Beispieltexte, Kundentexte nur ausdrücklich. Kundenfotos/Logos und Uploaddaten werden entfernt. Bestellung, Ausgangsprodukt und Shopbindungen bleiben unverändert; Wiederholung erzeugt keinen Doppelentwurf.
+
+**280 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Browserablauf einschließlich neuem Produkt Desktop/Handy/Tablet geprüft. [Nachweis, Bilder und Verlauf der vier Pakete](docs/dashboard-20261004/ACRYL-BESTELLUNG-NEUES-PRODUKT-20261006.md).
+
+Damit technisch lokal geprüft: bestehender Acryl-Konfi → fester Prüfstand → CMYK-PDF/ZIP → lokale Variantenbindung → signierte synthetische Testbestellung → neuer privater Produktentwurf. **Keine echte Shopify-Zahlung/Kundenkontofreigabe, kein Live-Deploy und keine Maschinen-/ICC-Abnahme.** Nächste externe Voraussetzung: bestätigte Test-Store-/App-Anbindung mit passenden Acrylvarianten; bekannter Schieferartikel bleibt unberührt. Private Bestände wurden nicht verwendet. Folgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Native Acryl-Bestellübergabe lokal geprüft – 06.10.2026
 
 Branch `task/acrylic-order-handoff-20261006`, Basis `a6d4e18a50d0b5ee97dde1ee0231c81f59274e54`. Gesicherte Acryl-Ausführung und Menge jetzt im Dashboard an die vorgesehene Shop-Variante binden und Übergabe lokal prüfen. Optionen/Revisionspreis unveränderlich; gleich teure andere Ausführungen und falsche Mengen werden abgewiesen. Signierte synthetische Testbestellung übernimmt 36,97 € × 2 = 73,94 € samt festem Stand; Wiederholung bleibt ohne Doppelbestellung.

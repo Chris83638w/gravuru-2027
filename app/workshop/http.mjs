@@ -118,7 +118,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const data=await body(req),plan=planOrderProductDraft({line,archive:customerDrafts.downloadSnapshot(line.snapshotId,'package'),input:data,assets,contours,fonts:seed.config.localResources.fonts});
         productionProfiles.resolve(plan.document);
         if(action==='apply')return json(res,201,applyOrderProductDraft(repository,plan,data.token));
-        const {document,...summary}=plan;return json(res,200,{...summary,preview:formProductPreview(document,{assets,contours,fonts:seed.config.localResources.fonts})});
+        const {document,...summary}=plan;let preview;if(isFormProduct(document))preview=formProductPreview(document,{assets,contours,fonts:seed.config.localResources.fonts});else{profiles.resolve(document);assets.validateDocument(document);const r=resolveProduct(document),universal=structuredClone(r.config);universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);const examples=(universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));preview=productPreview({universal},{options:r.resolvedOptions,examples});}return json(res,200,{...summary,preview});
       }
       const orderMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)$/);if(orderMatch&&method==='GET')return json(res,200,orderIntake.get(orderMatch[1]));
       if(pathname==='/api/workshop/order-bindings'){

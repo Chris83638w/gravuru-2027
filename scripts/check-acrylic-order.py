@@ -5,14 +5,14 @@ import base64,hashlib,hmac,json,os,subprocess,tempfile,time
 from datetime import datetime,timezone
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
-ROOT=Path(__file__).resolve().parents[1];out=ROOT/'.test-output/acrylic-order';out.mkdir(parents=True,exist_ok=True)
+ROOT=Path(__file__).resolve().parents[1];out=ROOT/'.test-output/acrylic-order-product';out.mkdir(parents=True,exist_ok=True)
 report={'startedAt':datetime.now(timezone.utc).isoformat(),'result':'RUNNING','data':'synthetic only','shopifyRequestSent':False,'realPayment':False,'published':False}
 with tempfile.TemporaryDirectory(prefix='g27-acrylic-order-browser-') as tmp:
  folder=Path(tmp);(folder/'synthetic-acrylic-order-only').touch();env=dict(os.environ);env['PYTHONPATH']=str(ROOT/'.local-data/python')+os.pathsep+env.get('PYTHONPATH','');log=(folder/'server.log').open('w');server=subprocess.Popen(['node',str(ROOT/'scripts/fixtures/acrylic-order.mjs'),str(folder)],cwd=ROOT,env=env,stdout=log,stderr=log)
  try:
   deadline=time.monotonic()+60
   while not (folder/'ready.json').exists():
-   if server.poll() is not None or time.monotonic()>deadline:raise RuntimeError('Synthetic fixture failed')
+   if server.poll() is not None or time.monotonic()>deadline:raise RuntimeError('Synthetic fixture failed: '+(folder/'server.log').read_text()[-1800:])
    time.sleep(.1)
   f=json.loads((folder/'ready.json').read_text());base=f['url'];report['build']=f['built'];errors=[]
   with sync_playwright() as pw:
@@ -31,7 +31,12 @@ with tempfile.TemporaryDirectory(prefix='g27-acrylic-order-browser-') as tmp:
    r=post('order-cart-preview',{'bindingId':binding['id'],'snapshotId':f['snapshotId'],'quantity':2});assert r.ok;cart=r.json();assert cart['sent'] is False and cart['paymentConfirmed'] is False and cart['summary']['totalCents']==7394
    r=post('order-offers',{'bindingId':binding['id'],'snapshotId':f['snapshotId'],'quantity':2});assert r.ok;offer=r.json();payload={'id':101,'test':True,'financial_status':'paid','currency':'EUR','line_items':[{'id':201,'variant_id':301,'quantity':2,'price':'36.97','properties':[offer['property']]}]};raw=json.dumps(payload,separators=(',',':')).encode();headers={'Content-Type':'application/json','x-shopify-hmac-sha256':base64.b64encode(hmac.new(f['webhook']['secret'].encode(),raw,hashlib.sha256).digest()).decode(),'x-shopify-shop-domain':f['webhook']['shopDomain'],'x-shopify-api-version':f['webhook']['apiVersion'],'x-shopify-topic':'orders/paid','x-shopify-webhook-id':'native-browser-event'}
    r=page.request.post(base+'/api/workshop/order-webhook',headers=headers,data=raw);assert r.ok;line=r.json()['lines'][0];assert line['totalCents']==7394 and line['quantity']==2 and line['selection']['geometry']['insertionMm']==7 and not line['customerDownloadAllowed'];assert page.request.post(base+'/api/workshop/order-webhook',headers=headers,data=raw).json()['duplicate']
-   page.goto(base+'/werkstatt/bestellungen/?position='+line['id']);expect(page.locator('#price')).to_contain_text('73,94');expect(page.locator('#summary')).to_contain_text('Eiche');expect(page.locator('#product-draft-form')).to_be_hidden();expect(page.locator('#draft-status')).to_contain_text('Acrylstand');page.locator('#snapshot').click();expect(page.locator('#product-name')).to_contain_text('synthetische Bestellprüfung');assert get('review-snapshots/'+f['snapshotId'])['manifest']['packageSha256']==line['sourcePackageSha256']
+   page.goto(base+'/werkstatt/bestellungen/?position='+line['id']);expect(page.locator('#price')).to_contain_text('73,94');expect(page.locator('#summary')).to_contain_text('Eiche');expect(page.locator('#product-draft-form')).to_be_visible();page.locator('#draft-name').fill('Acryl · neuer Produktentwurf');page.locator('#product-draft-form [type=submit]').click();expect(page.locator('#draft-preview')).to_be_visible();expect(page.locator('#draft-changes')).to_contain_text('Kundenfotos');page.screenshot(path=str(out/'acryl-neues-produkt-vorschau.png'),full_page=True)
+   for width in [1440,390,768]:
+    page.set_viewport_size({'width':width,'height':1000});assert page.evaluate('document.documentElement.scrollWidth<=innerWidth');expect(page.locator('#draft-create')).to_be_visible()
+    if width==390:page.screenshot(path=str(out/'acryl-neues-produkt-mobil.png'),full_page=True)
+   page.locator('#draft-create').click();expect(page.locator('#existing-product-link')).to_be_visible();expect(page.locator('#draft-status')).to_contain_text('Neuer Produktentwurf');draft=get('orders/'+line['id']+'/product-draft')['product'];assert draft['id']!=f['productId'] and draft['status']=='draft' and draft['publishedRevision'] is None;data=json.dumps(draft['document']);assert 'Mika & Chris' not in data and 'synthetic-photo' not in data and 'uxUploadId' not in data;assert len(get('order-bindings')['bindings'])==1
+   page.locator('#existing-product-link').click();assert '/werkstatt/?configuration=' in page.url;expect(page.locator('#editor-section')).to_be_visible();page.screenshot(path=str(out/'acryl-neues-produkt-editor.png'),full_page=True);page.goto(base+'/werkstatt/bestellungen/?position='+line['id']);expect(page.locator('#existing-product-link')).to_be_visible();assert get('orders/'+line['id'])==line;report['newNativeDraft']={'created':True,'privatePhotoExcluded':True,'templateTextDefault':True,'reopenedInExistingDashboard':True,'sourceOrderUnchanged':True,'noNewShopBinding':True};page.locator('#snapshot').click();expect(page.locator('#product-name')).to_contain_text('synthetische Bestellprüfung');assert get('review-snapshots/'+f['snapshotId'])['manifest']['packageSha256']==line['sourcePackageSha256']
    assert not errors;report.update(result='PASS',unitCents=3697,quantity=2,totalCents=7394,options=binding['options'],fixedQuantity=True,reloadBinding=True,signedSyntheticOrder=True,duplicateDelivery=True,sourcePackageUnchanged=True,customerDownloadAllowed=False,viewports=[1440,390,768],javascriptErrors=errors);browser.close()
  except Exception as e:report.update(result='FAIL',error=str(e));raise
  finally:

@@ -1,0 +1,42 @@
+{
+  "startedAt": "2026-10-06T08:35:07.688320+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "shopifyRequestSent": false,
+  "realPayment": false,
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "newNativeDraft": {
+    "created": true,
+    "privatePhotoExcluded": true,
+    "templateTextDefault": true,
+    "reopenedInExistingDashboard": true,
+    "sourceOrderUnchanged": true,
+    "noNewShopBinding": true
+  },
+  "unitCents": 3697,
+  "quantity": 2,
+  "totalCents": 7394,
+  "options": {
+    "size": "large",
+    "base": "eiche",
+    "wall": "wall"
+  },
+  "fixedQuantity": true,
+  "reloadBinding": true,
+  "signedSyntheticOrder": true,
+  "duplicateDelivery": true,
+  "sourcePackageUnchanged": true,
+  "customerDownloadAllowed": false,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T08:35:15.089536+00:00"
+}

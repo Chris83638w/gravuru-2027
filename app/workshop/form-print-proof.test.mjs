@@ -68,3 +68,15 @@ test('acrylic scene, reflections and depth stay out of actual PDF ink and white 
  for(const i of [0,1,2]){assert.equal(samples.color[i][3],0);assert.equal(samples.white[i][3],0);}
  assert.equal(samples.color[3][3],255);assert.equal(samples.white[3][3],255);
 });
+
+ test('front UV texture and reverse gloss leave identical production pixels, white and geometry',async t=>{
+ const results=[];
+ for(const printSurface of ['front','reverse']){
+  const {bundle}=await fixture(t,false,d=>{d.material={id:'acrylic-clear',thicknessMm:3,surfaceNotes:''};d.presentation={scene:'studio',printSurface};});
+  const {files}=readReviewPackage(bundle.package,bundle.manifest.packageSha256);
+  assert.match(files.get('vorschau.svg').toString(),new RegExp('data-preview-print-surface="'+printSurface+'"'));
+  assert.doesNotMatch(files.get('gestaltung-vorschau.svg').toString(),/material-uv-ink|data-preview-|feTurbulence/);
+  const pdf=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256);results.push(inspect(pdf.pdf,[[2,2],[15,7],[8,20],[29,12],[44,12]]));
+ }
+ assert.deepEqual(results[0],results[1]);assert.equal(results[0].color[0][3],0);assert.equal(results[0].white[0][3],0);assert.equal(results[0].color[2][3],0);assert.equal(results[0].white[2][3],0);
+ });

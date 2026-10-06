@@ -1,4 +1,5 @@
 // Presentation only: these choices never define production colors or geometry.
+export const PRINT_SURFACES=Object.freeze(['front','reverse']);
 export const MATERIAL_SCENES=Object.freeze(['transparent','studio','warm']);
 export const ACRYLIC_SURFACES=Object.freeze({
  'acrylic-clear':{label:'Klares Acrylglas',colors:['#edf6f6','#cedddb','#ffffff'],opacity:.13,edge:'#a4b6b5',gloss:true},
@@ -34,8 +35,12 @@ export function acrylicSurface(document){
  const finish=`<g data-preview-finish="acrylic" pointer-events="none" clip-path="url(#material-form-clip)">${a.gloss?`<path d="${d}" fill="url(#material-reflection)" fill-rule="evenodd"/>`:''}<path d="${d}" fill="none" stroke="url(#material-rim)" stroke-width=".55"/><path d="${d}" fill="none" stroke="${a.edge}" stroke-opacity=".7" stroke-width=".1"/></g>`;
  return {label:a.label,face,finish};
 }
-// Insert artwork before the front reflection, keeping this ordering identical
+// Fine, deterministic preview texture. Composite against source alpha: never
+// add dots to clear glass, holes or outside the artwork. Preserve source alpha.
+export const UV_INK_FILTER=`<defs><filter id="material-uv-ink" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="8" numOctaves="1" seed="17" result="grain"/><feColorMatrix in="grain" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 .05"/><feComposite in2="SourceAlpha" operator="in" result="dots"/><feBlend in="SourceGraphic" in2="dots" mode="soft-light"/><feComposite in2="SourceGraphic" operator="atop"/></filter></defs>`;
+// Insert artwork at the selected print depth, keeping this ordering identical
 // in editor, customer view, product cards and saved review previews.
 export function composeMaterialPreview(svg,artwork){
+ if(svg.includes('data-preview-print-surface="front"'))artwork=UV_INK_FILTER+`<g data-preview-uv-ink="matte" filter="url(#material-uv-ink)">${artwork}</g>`;
  return svg.includes('<!--material-artwork-->')?svg.replace('<!--material-artwork-->',artwork):svg.replace('</svg>',artwork+'</svg>');
 }

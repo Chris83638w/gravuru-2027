@@ -1,7 +1,7 @@
 import {createHash} from 'node:crypto';
 import {contourSvg} from './contours.mjs';
 import {validateFormDesigns} from './form-designs.mjs';
-import {MATERIAL_SCENES} from './material-presentation.mjs';
+import {MATERIAL_SCENES,PRINT_SURFACES} from './material-presentation.mjs';
 export const FORM_PRODUCT_SCHEMA='gravuru-form-product/v1';
 // Reference inventory, not a supplier or production approval. Never infer thickness from filenames.
 export const FORM_MATERIALS=[
@@ -38,7 +38,7 @@ export function validateFormProduct(input){
  if(![null,'print','engraving'].includes(d.processingMethod))fail('Verfahren ist unbekannt.');
  if(d.basePriceCents!==null&&(!Number.isSafeInteger(d.basePriceCents)||d.basePriceCents<0||d.basePriceCents>100000000))fail('Preis benötigt ganze Cent oder bleibt offen.');
  if(d.productionProfile!==undefined&&d.productionProfile!==null){keys(d.productionProfile,['id','revision']);if(!/^mfg_[a-f0-9-]+$/.test(d.productionProfile.id)||!Number.isSafeInteger(d.productionProfile.revision)||d.productionProfile.revision<1)fail('Ungültiger Fertigungsprofilstand.');}
- if(d.presentation!==undefined){keys(d.presentation,['scene']);if(!MATERIAL_SCENES.includes(d.presentation.scene))fail('Unbekannte Vorschau-Szene.');}
+ if(d.presentation!==undefined){keys(d.presentation,['scene',...(Object.hasOwn(d.presentation||{},'printSurface')?['printSurface']:[])]);if(d.presentation.printSurface!==undefined&&!PRINT_SURFACES.includes(d.presentation.printSurface))fail('Unbekannte UV-Druckansicht.');if(d.processingMethod==='print'&&d.presentation.printSurface==='reverse'&&d.material.id!=='acrylic-clear')fail('Die glänzende Hinterdruckansicht benötigt klares Acrylglas.');if(!MATERIAL_SCENES.includes(d.presentation.scene))fail('Unbekannte Vorschau-Szene.');}
  validateFormDesigns(d);return d;
 }
 export function makeFormProduct(contour,name){

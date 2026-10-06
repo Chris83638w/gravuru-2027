@@ -33,6 +33,8 @@ Vollständiges Design oben links wie im Konfigurator, mit Foto/Texten/Sockel. Vo
 ## Ergänzung 05.10.2026: Farbdruck, Matt/Hochglanz, UV-Marker
 
 - Farbiger, vollflächiger Druck ausdrücklich berücksichtigen. Farben erhalten, Kontur und Bohrungen einhalten; Weiß unter tatsächlich bedruckten Bereichen. Standard weiterhin ohne Überdruck, optional 1 mm nur bei Außenrandkontakt.
-- „Matt und Hochglanz“ ist angefragt; offen ist die Zuordnung zu Acryloberfläche oder Druck/Lack. Nicht automatisch einen Lackkanal oder eine tatsächlich verfügbare Maschinenfunktion annehmen.
-- „Typische UV-Druckmarker“ ist angefragt; Rückfrage offen: Passer-/Positioniermarken, feine UV-Druckpunkte in der Vorschau oder Weiß-/Lack-/Konturkanäle. Bestehende RDG_WHITE-/Kontur-/Mimaki-Weißersatzregeln bleiben gültig.
+- Bestätigt am 06.10.2026: Vorderseitiger UV-Aufdruck wirkt matt mit feinen Druckpunkten. Hinterdruck wird durch die glatte, klare Acrylvorderseite betrachtet und wirkt glänzend. Keine Lackfunktion daraus ableiten.
+- „Typische UV-Druckmarker“ meint feine Druckpunkte/Stippchen, keine Passermarken. Sie gehören ausschließlich zur Materialvorschau innerhalb der bedruckten Fläche, niemals als künstliche Rasterstruktur in die Druckdatei. Bestehende RDG_WHITE-/Kontur-/Mimaki-Weißersatzregeln bleiben gültig.
 - Farbprüfbeispiel und Formserien-Abnahme: [DASHBOARD-FORMSERIEN.md](DASHBOARD-FORMSERIEN.md). Keine Aussage über physische Druckqualität, Lack oder reale Maschinenabnahme daraus ableiten.
+
+Umsetzung für freie Formprodukte: [UV-Druckansicht](DASHBOARD-UV-DRUCKANSICHT.md).

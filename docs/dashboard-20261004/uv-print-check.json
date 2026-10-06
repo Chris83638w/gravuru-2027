@@ -1,0 +1,70 @@
+{
+  "startedAt": "2026-10-06T04:01:33.928Z",
+  "platform": "linux",
+  "node": "v24.19.0",
+  "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+  "steps": [
+    {
+      "name": "python-pdf",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "references",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "tests",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS",
+  "tests": {
+    "count": 237,
+    "skipped": 0,
+    "failures": 0
+  },
+  "finishedAt": "2026-10-06T04:02:37.864Z",
+  "browser": {
+    "backendSaveReload": [
+      "front",
+      "reverse"
+    ],
+    "customer": "reverse",
+    "viewports": [
+      1536,
+      390,
+      768
+    ],
+    "errors": []
+  },
+  "alphaSamples": [
+    [
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      157,
+      110,
+      63,
+      255
+    ],
+    [
+      159,
+      114,
+      66,
+      128
+    ]
+  ],
+  "sourceBase": "0a0a7bf3d018ed00e687227724bf57810181298a",
+  "branch": "task/uv-print-surface-20261006"
+}

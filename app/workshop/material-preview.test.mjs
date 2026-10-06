@@ -43,3 +43,19 @@ test('acrylic presentations preserve exact geometry, optional historical setting
   for(const p of [{scene:'file:///tmp/private'},{scene:'studio',background:'injected'},null]){const bad=structuredClone(d);bad.presentation=p;assert.throws(()=>validateFormProduct(bad));}
  }
 });
+
+test('UV presentation is opt-in, validated and keeps front ink above glass and reverse ink below',async t=>{
+ const {validateFormProduct}=await import('./form-product.mjs');const {composeMaterialPreview}=await import('./material-presentation.mjs');
+ const store=createContourStore({filename:':memory:'});t.after(()=>store.close());
+ const c=await store.import({name:'Form.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60mm" height="40mm" viewBox="0 0 60 40"><rect width="60" height="40"/><circle cx="8" cy="20" r="2"/></svg>').toString('base64')});
+ const d=makeFormProduct(c,'Druck');d.material.id='acrylic-clear';d.processingMethod='print';const original=materialPreview(d).svg;
+ for(const printSurface of ['front','reverse']){
+  d.presentation.printSurface=printSurface;assert.deepEqual(validateFormProduct(d),d);
+  const svg=composeMaterialPreview(materialPreview(d).svg,'<g data-art="true"/>');
+  assert.equal(svg.indexOf('data-art')>svg.indexOf('data-preview-finish'),printSurface==='front');assert.equal(svg.includes('feTurbulence'),printSurface==='front');
+ }
+ d.presentation.printSurface='bad';assert.throws(()=>validateFormProduct(d));d.presentation.printSurface='reverse';d.material.id='acrylic-black';assert.throws(()=>validateFormProduct(d),/klares Acrylglas/);
+ d.processingMethod='engraving';assert.deepEqual(validateFormProduct(d),d);d.processingMethod='print';
+ d.material.id='acrylic-clear';delete d.presentation.printSurface;assert.equal(materialPreview(d).svg,original);
+ d.presentation.printSurface='front';d.processingMethod='engraving';assert.doesNotMatch(composeMaterialPreview(materialPreview(d).svg,'<g/>'),/feTurbulence|data-preview-print-surface/);
+});

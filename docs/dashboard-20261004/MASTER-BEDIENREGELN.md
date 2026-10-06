@@ -1,5 +1,9 @@
 # Masterregeln für Konfigurator und Druck – 04.10.2026
 
+## Umsetzung 06.10.2026: automatischer Dashboard-Download
+
+Neue Form-/Acryl-Ausgabeaufträge erzeugen die getrennten Mimaki-Farb-/RDG_WHITE-PDFs automatisch und bieten beide einzeln im Prüfstand sowie unter „Ausgaben“ an. ZIP enthält beide; ohne Weißunterlegung keine Weißdatei. Texte je Eingabe als Vektorgruppe, gleichfarbige Glyphen als zusammengesetzter Pfad. Bestehende gespeicherte Ausgaben unverändert. [Umsetzung, aktuelle Prüfung und Grenzen](DASHBOARD-DRUCKTRENNUNG-20261006.md).
+
 ## Aktuelle Ergänzung 06.10.2026: Dateitrennung und Textgruppen
 
 Nutzer bestätigt die korrigierte kombinierte Corel-PDF als für Roland gut. Für Roland weiterhin eine kombinierte Datei. Texte je Texteingabe zusammenfassen, als Vektor erhalten. Für den neuen Mimaki-Ablauf zwei separate PDFs: vollständige vorhandene Weißseparation als echte RDG_WHITE-Vektoren und normale CMYK-Farbe ohne RDG_WHITE. Beide Dateien mit identischem Seitenformat/Nullpunkt und Spiegelstand; freie Acrylbereiche bleiben ohne Weiß. Die Trennung ersetzt für diesen Ablauf die ältere kombinierte Mimaki-Weißersatz-Empfehlung. [Konkrete Dateien, Prüfung und noch offene Dashboard-Integration](COREL-MIMAKI-TRENNDATEIEN-20261006.md).

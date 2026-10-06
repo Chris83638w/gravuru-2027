@@ -104,7 +104,7 @@ class PDF{
 }
 export async function printPDF({settings,pixels,kind='combined',paths=null,artwork=null}){
  const s=exportSettings(settings.geometry,settings),{width:w,height:h,rgb,alpha}=pixels;
- if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||w*h>50000000||rgb.length!==w*h*3||alpha.length!==w*h||!['combined','color','white','cut'].includes(kind))throw Error('Ungültige Druckdaten.');
+ if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||w*h>50000000||rgb.length!==w*h*3||alpha.length!==w*h||!['combined','color','color-cut','white','white-spot','cut'].includes(kind))throw Error('Ungültige Druckdaten.');
  if(paths){for(const key of ['cut','color','white'])if(typeof paths[key]!=='string'||paths[key].length>1000000||!paths[key].trim()||paths[key].replace(/-?\d+(?:\.\d+)?|[mlch]|\s/g,''))throw Error('Ungültige freie PDF-Kontur.');if(!pixels.whiteAllowed||pixels.whiteAllowed.length!==w*h)throw Error('Freie Kontur benötigt ihre Weißmaske.');}
  if(artwork){
   const validPath=p=>typeof p==='string'&&p.length<=1000000&&p.trim()&&!p.replace(/-?\d+(?:\.\d+)?|[mlch]|\s/g,'');
@@ -123,13 +123,16 @@ export async function printPDF({settings,pixels,kind='combined',paths=null,artwo
  const props=[],streams=[],refs=[];
  const layer=(name,body)=>{const id=pdf.add(`<< /Type /OCG /Name (${name}) >>`);props.push(`/L${id} ${id} 0 R`);refs.push(`${id} 0 R`);streams.push(`/OC /L${id} BDC\nq\n${transform}\n${body}\nQ\nEMC`);};
  let image='';
- if(kind==='combined'||kind==='color'){
+ if(kind==='combined'||kind==='color'||kind==='color-cut'){
   if(artwork){
    const images=[],paint=[];
    for(const l of artwork){
     if(l.type==='text'){
-     const ink=l.paths.map(p=>`${[...rgbToCmyk(new Uint8Array(p.rgb))].map(v=>n(v/255)).join(' ')} k\n${p.path} f`).join('\n');
-     if(ink)paint.push(`q /GSArt gs ${geo}\n${paths.cut} W* n\n${ink} Q`);
+     // Each explicit text field stays one selectable form; same-color glyphs
+     // become one compound vector path, preserving contiguous paint order.
+     const runs=[];for(const p of l.paths){const color=[...rgbToCmyk(new Uint8Array(p.rgb))].map(v=>n(v/255)).join(' '),last=runs.at(-1);if(last?.color===color)last.paths.push(p.path);else runs.push({color,paths:[p.path]});}
+     const ink=runs.map(r=>`${r.color} k\n${r.paths.join('\n')} f`).join('\n');
+     if(ink){const name='TextEntry'+images.length,form=await pdf.stream(`/Type /XObject /Subtype /Form /BBox [0 0 ${n(W)} ${n(H)}] /Resources << >>`,b(ink));images.push(`/${name} ${form} 0 R`);paint.push(`q /GSArt gs ${geo}\n${paths.cut} W* n\n/${name} Do Q`);}
     }else{
      const mask=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${l.width} /Height ${l.height} /ColorSpace /DeviceGray /BitsPerComponent 8`,l.alpha);
      const im=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${l.width} /Height ${l.height} /ColorSpace /DeviceCMYK /BitsPerComponent 8 /SMask ${mask} 0 R`,rgbToCmyk(l.rgb)),name='Art'+images.length;images.push(`/${name} ${im} 0 R`);
@@ -147,21 +150,21 @@ export async function printPDF({settings,pixels,kind='combined',paths=null,artwo
   layer('Farbmotiv',`/GSWhite gs q ${geo}\n${paths?.color||contourPath(s.geometry,bleed)} W* n\n${s.mirror?-1:1} 0 0 1 ${s.mirror?s.geometry.width+bleed:-bleed} ${-bleed} cm\n${W} 0 0 ${-H} 0 ${H} cm /Art Do Q`);
   }
  }
- if((kind==='combined'||kind==='white')&&s.white!=='none'){
+ if((kind==='combined'||kind==='white'||kind==='white-spot')&&s.white!=='none'){
   let white;
   if(s.white==='full')white=`${geo}\n${paths?.white||contourPath(s.geometry,s.whiteBleedMm)} f*`;
   else{
    const rects=maskRectangles(whiteMask(pixels,s),w,h); // Already mirrored and geometrically clipped.
    white=`q ${W/w} 0 0 ${H/h} 0 0 cm\n${rects.map(r=>`${r.x} ${r.y} ${r.w} ${r.h} re`).join('\n')}\nf Q`;
-   if(artwork)white+=`\nq ${geo}\n${paths.cut} W* n\n${artwork.filter(l=>l.type==='text').flatMap(l=>l.paths).map(p=>p.path+' f').join('\n')}\nQ`;
+   if(artwork)white+=`\nq ${geo}\n${paths.cut} W* n\n${artwork.filter(l=>l.type==='text').filter(l=>l.paths.length).map(l=>l.paths.map(p=>p.path).join('\n')+' f').join('\n')}\nQ`;
   }
-  const mimaki=s.profile==='mimaki';
+  const mimaki=s.profile==='mimaki'&&kind!=='white-spot';
   layer(kind==='white'||mimaki?'Weissersatz Vektor':'RDG_WHITE',(kind==='white'?'0 0 0 1 k':mimaki?'0 0 0 0 k':'/GSWhite gs /White cs 1 scn')+'\n'+white);
   if(kind==='combined'){const last=streams.pop();streams.unshift(last);} // Underprint before color; both use overprint, RIP validation remains required.
  }
- if(kind==='combined'||kind==='cut')layer('CutContour',`${geo}\n/Cut CS 1 SCN 0.05 w\n${paths?.cut||contourPath(s.geometry)} S`);
+ if(kind==='combined'||kind==='color-cut'||kind==='cut')layer('CutContour',`${geo}\n/Cut CS 1 SCN 0.05 w\n${paths?.cut||contourPath(s.geometry)} S`);
  const content=await pdf.stream('',b(streams.join('\n'))),box=`[0 0 ${n(W*PT)} ${n(H*PT)}]`,trim=`[${n(bleed*PT)} ${n(bleed*PT)} ${n((W-bleed)*PT)} ${n((H-bleed)*PT)}]`;
- pdf.set(page,`<< /Type /Page /Parent ${pages} 0 R /MediaBox ${box} /BleedBox ${box} /TrimBox ${trim} /Resources << /XObject << ${image} >> /ColorSpace << ${s.profile==='roland'?`/White [/Separation /RDG_WHITE /DeviceCMYK ${fn} 0 R]`:''} /Cut [/Separation /CutContour /DeviceCMYK ${cutFn} 0 R] >> /ExtGState << /GSWhite << /Type /ExtGState /OP true /op true /OPM 1 >> >> /Properties << ${props.join(' ')} >> >> /Contents ${content} 0 R >>`);
+ pdf.set(page,`<< /Type /Page /Parent ${pages} 0 R /MediaBox ${box} /BleedBox ${box} /TrimBox ${trim} /Resources << /XObject << ${image} >> /ColorSpace << ${((s.profile==='roland'&&kind==='combined'&&s.white!=='none')||kind==='white-spot')?`/White [/Separation /RDG_WHITE /DeviceCMYK ${fn} 0 R]`:''} ${['combined','color-cut','cut'].includes(kind)?`/Cut [/Separation /CutContour /DeviceCMYK ${cutFn} 0 R]`:''} >> /ExtGState << /GSWhite << /Type /ExtGState /OP true /op true /OPM 1 >> >> /Properties << ${props.join(' ')} >> >> /Contents ${content} 0 R >>`);
  pdf.set(pages,`<< /Type /Pages /Kids [${page} 0 R] /Count 1 >>`);pdf.set(catalog,`<< /Type /Catalog /Pages ${pages} 0 R /OCProperties << /OCGs [${refs.join(' ')}] /D << /Order [${refs.join(' ')}] /ON [${refs.join(' ')}] >> >> >>`);return pdf.finish(catalog);
 }
 const crcTable=Array.from({length:256},(_,v)=>{for(let k=0;k<8;k++)v=v&1?0xedb88320^(v>>>1):v>>>1;return v>>>0;});

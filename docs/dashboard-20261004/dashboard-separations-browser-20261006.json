@@ -1,0 +1,37 @@
+{
+  "startedAt": "2026-10-06T11:05:30.928938+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "shopifyRequestSent": false,
+  "realPayment": false,
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "separateDownloads": true,
+  "zipContainsSamePDFs": true,
+  "reloadedWhiteIdentical": true,
+  "noWhiteOptionWithoutUnderbase": true,
+  "whiteVectorOnly": true,
+  "colorWithoutRDGWhite": true,
+  "textFieldsGrouped": true,
+  "files": {
+    "farbe.pdf": {
+      "sha256": "a6fb2c886dc0ae19bcba1e74bdaf9c1fd642ac51453704140f18646a52d09cc9",
+      "ghostscript": "PASS"
+    },
+    "weiss.pdf": {
+      "sha256": "bcdcfe165120e82aae27c3b8a333c9f3dfba65bfe3661bfa06cedcfbb5bc7e2e",
+      "ghostscript": "PASS"
+    }
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T11:05:42.041194+00:00"
+}

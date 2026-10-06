@@ -1,3 +1,9 @@
+## Aktuell: Mimaki-Trennung im Dashboard – 06.10.2026
+
+Branch `task/dashboard-print-separations-20261006`, Basis `6ca4df1c7dd82a669eb72eca0348d72b9f35d3b1`. Neue Ausgabeaufträge liefern Mimaki-Farbe ohne RDG_WHITE und reine RDG_WHITE-Vektoren getrennt, beide einzeln im Prüfstand/unter „Ausgaben“ und im ZIP. Texte je Eingabe gruppiert; alte gespeicherte Dateien bleiben unverändert. **301 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet sowie MuPDF/Ghostscript bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/DASHBOARD-DRUCKTRENNUNG-20261006.md).
+
+In der vorhandenen Cloud umgesetzt und geprüft, kein Deploy oder Shop-Schreibzugriff. Nutzerfreigabe betrifft weiterhin die konkrete frühere Roland-PDF-1.3-Probe; der reguläre Renderer erhält PDF-1.7-Transparenzen. Nächster Schritt: Mimaki-/Corel-Test der bereitgestellten Dateien übernehmen; automatische Ausgabe bei Bedarf im selben Importer vergleichen. Echte Maschinen-/ICC-Abnahme, Backend-Hosting und Shop-Verbindung bleiben separat offen. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Roland bestätigt, Mimaki getrennt – 06.10.2026
 
 Branch `task/print-separations-20261006`, Basis `9a05d1b0d4641ae2a395493ae7a87cc5190964f5`. Nutzer bestätigt die korrigierte PDF als für Roland gut. Vier Texteingaben in einer neuen Kopie zu je einem Vektorobjekt zusammengefasst; Mimaki erhält zwei separate Dateien: nur RDG_WHITE-Vektoren sowie CMYK-Farbe ohne RDG_WHITE. Quelle erhalten, Formate und Platzierung identisch. **Alle drei Dateien mit MuPDF/Ghostscript geprüft; Farbansichten bei 150/300 dpi pixelidentisch.** [Nachweis und Ablauf](docs/dashboard-20261004/COREL-MIMAKI-TRENNDATEIEN-20261006.md).

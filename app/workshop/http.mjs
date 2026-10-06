@@ -1,3 +1,4 @@
+import {outputDownload,outputFormats} from './print-delivery.mjs';
 import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicContourProof} from './acrylic-print-proof.mjs';
 import {ACRYLIC_REVIEW,prepareAcrylicReview} from './acrylic-review.mjs';
@@ -192,12 +193,12 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       const exportMatch=pathname.match(/^\/api\/workshop\/export-jobs\/(job_[a-f0-9-]+)(?:\/(retry|download))?$/);
       if(exportMatch){
-        const id=exportMatch[1],job=exportJobs.get(id);if(!exportMatch[2]&&method==='GET')return json(res,200,{...job,events:exportJobs.events(id)});
+        const id=exportMatch[1],job=exportJobs.get(id);if(!exportMatch[2]&&method==='GET')return json(res,200,{...job,events:exportJobs.events(id),downloadFormats:job.status==='completed'?outputFormats(customerDrafts.printProof(job.snapshotId,job.recipeKey)):[]});
         if(exportMatch[2]==='retry'&&method==='POST'){await body(req);const next=exportJobs.retry(id);exportWorker.kick();return json(res,202,next);}
         if(exportMatch[2]==='download'&&method==='POST'){
-          const data=await body(req);if(!['pdf','zip'].includes(data.format))fail(422,'invalid_format','Bitte PDF oder ZIP auswählen.');if(job.status!=='completed')fail(409,'export_not_ready','Diese Ausgabe ist noch nicht fertig.');
-          const result=customerDrafts.printProof(job.snapshotId,job.recipeKey);if(!result)fail(409,'export_missing','Die gespeicherte Ausgabedatei fehlt.');const zip=data.format==='zip',bytes=zip?result.archive:result.pdf;
-          res.writeHead(200,{'Content-Type':zip?'application/zip':'application/pdf','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+job.id+'-pruefausgabe.'+data.format+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-Print-Info':encodeURIComponent(JSON.stringify({mode:result.metadata.settings.mode,dpi:result.metadata.settings.dpi,bleedMm:result.metadata.settings.bleedMm,white:result.metadata.settings.white,warnings:result.metadata.warnings.slice(0,3).map(w=>Array.from(w).slice(0,140).join(''))}))}).end(bytes);return;
+          const data=await body(req);if(!['pdf','white-pdf','zip'].includes(data.format))fail(422,'invalid_format','Bitte PDF oder ZIP auswählen.');if(job.status!=='completed')fail(409,'export_not_ready','Diese Ausgabe ist noch nicht fertig.');
+          const result=customerDrafts.printProof(job.snapshotId,job.recipeKey);if(!result)fail(409,'export_missing','Die gespeicherte Ausgabedatei fehlt.');const download=outputDownload(result,data.format),bytes=download.bytes;
+          res.writeHead(200,{'Content-Type':download.mime,'Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+job.id+'-'+download.suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-Print-Info':encodeURIComponent(JSON.stringify({mode:result.metadata.settings.mode,dpi:result.metadata.settings.dpi,bleedMm:result.metadata.settings.bleedMm,white:result.metadata.settings.white,warnings:result.metadata.warnings.slice(0,3).map(w=>Array.from(w).slice(0,140).join(''))}))}).end(bytes);return;
         }
         fail(405,'method_not_allowed','Diese Ausgabeaktion ist nicht möglich.');
       }
@@ -206,10 +207,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(reviewMatch){
         if(!reviewMatch[2]&&method==='GET'){const detail=customerDrafts.review(reviewMatch[1]);return json(res,200,{...detail,outputCapabilities:{cart:true,print:detail.manifest.product.method==='print',contour:true,engraving:detail.manifest.product.method==='engraving'}});}
         if(reviewMatch[2]==='print'&&method==='POST'){
-          const data=await body(req);if(Object.keys(data).some(k=>!['settings','format'].includes(k))||!['pdf','zip'].includes(data.format||'pdf'))fail(422,'invalid_print_request','Bitte PDF oder ZIP und gültige Einstellungen auswählen.');
+          const data=await body(req);if(Object.keys(data).some(k=>!['settings','format'].includes(k))||!['pdf','white-pdf','zip'].includes(data.format||'pdf'))fail(422,'invalid_print_request','Bitte PDF oder ZIP und gültige Einstellungen auswählen.');
           const id=reviewMatch[1],job=enqueuePrint(id,data.settings);await exportWorker.wait(job.id);const output=customerDrafts.printProof(id,job.recipeKey);
-          const zip=data.format==='zip',bytes=zip?output.archive:output.pdf;
-          res.writeHead(200,{'Content-Type':zip?'application/zip':'application/pdf','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+id+'-druckpruefung.'+(zip?'zip':'pdf')+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-Print-Info':encodeURIComponent(JSON.stringify({dpi:output.metadata.settings.dpi,bleedMm:output.metadata.settings.bleedMm,white:output.metadata.settings.white,warnings:output.metadata.warnings.slice(0,3).map(w=>Array.from(w).slice(0,140).join(''))}))}).end(bytes);return;
+          const download=outputDownload(output,data.format||'pdf'),bytes=download.bytes;
+          res.writeHead(200,{'Content-Type':download.mime,'Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+id+'-'+download.suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-Print-Info':encodeURIComponent(JSON.stringify({dpi:output.metadata.settings.dpi,bleedMm:output.metadata.settings.bleedMm,white:output.metadata.settings.white,warnings:output.metadata.warnings.slice(0,3).map(w=>Array.from(w).slice(0,140).join(''))}))}).end(bytes);return;
         }
         if(reviewMatch[2]==='download'&&method==='POST'){
           const data=await body(req);if(!['package','contour','photos'].includes(data.kind))fail(422,'production_not_released','Für diesen Prüfstand ist keine Produktions-PDF freigegeben.');

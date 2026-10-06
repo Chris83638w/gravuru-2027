@@ -1,3 +1,11 @@
+## Aktuell: Bildauflösung im Acryl-Prüfstand – 06.10.2026
+
+Branch `task/acrylic-photo-quality-20261006`, Basis `ef36ab0106be85baae2eef58997cb02e8792461b` (Remote bestätigt). Das Dashboard zeigt die Pixeldichte hochgeladener Bilder in ihrer gespeicherten Platzierung, einschließlich Plattengröße, Zoom und bearbeiteter Bildfassung. Unter 300 dpi gibt es einen konkreten Hinweis; höherer Export-dpi-Wert ersetzt keine fehlenden Bilddetails. Werte sind im Prüfstand/ZIP gesichert. Alte Stände und Originalbilder bleiben unverändert.
+
+**286 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Browserprüfung Desktop/Handy/Tablet mit Anzeige, PDF/ZIP und Wiederholungsdownload bestanden. [Nachweis und Bilder](docs/dashboard-20261004/ACRYL-BILDAUFLOESUNG-20261006.md).
+
+Prüfung der verfügbaren Pixel, keine automatische Schärfeprüfung; Beispielbilder/importierte Designquellen nicht bewertet. Kein Deploy oder privater Datenbestand. Reale Shopify-Test-App-Anbindung und Maschinenabnahme bleiben externe Voraussetzungen. Nachfolgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Acryl-Gravur aus dem gesicherten Prüfstand – 06.10.2026
 
 Branch `task/acrylic-engraving-output-20261006`, Basis `f5ea76d2fa266d37dfe5d4d2569fd33dc92bc1cf` (Remote bestätigt). Das vorhandene Dashboard erzeugt jetzt auch aus nativen Acryl-Gravurständen eine Graustufen-PDF für Fotos oder eine Vektor-PDF für reine Pfade. Standard 300 dpi, ohne Druckweiß; Schnittkontur separat im ZIP. Helle Gravur-Vorschaufarben werden für Schrift und Bibliotheksmotive als schwarze Gravurflächen ausgegeben. Originalfotos und eingefrorene Gestaltung bleiben erhalten.

@@ -44,3 +44,14 @@ test('acrylic engraving appearance stays out of raster and vector output and pre
  const vector=await fixture(t,false,false,d=>{d.material.id='acrylic-satin';});const proof=await createFormEngravingProof(vector.bundle.package,vector.bundle.manifest.packageSha256,{mode:'vector'}),v=inspect(proof.pdf,samples);
  assert.equal(v.images.length,0);assert.equal(v.white,false);assert.ok(v.drawings>=4);
 });
+
+test('wood and leather preview tones do not alter photo originals or actual grayscale engraving pixels',async t=>{
+ let expected;
+ for(const id of ['steel','oak','beech','cherry','leather-brown']){
+  const {bundle}=await fixture(t,true,false,d=>{d.material.id=id;});const files=readReviewPackage(bundle.package,bundle.manifest.packageSha256).files;
+  assert.match(files.get('vorschau.svg').toString(),/material-dark-engraving/);assert.doesNotMatch(files.get('gestaltung-vorschau.svg').toString(),/material-dark-engraving|data-preview-engraving/);
+  const proof=await createFormEngravingProof(bundle.package,bundle.manifest.packageSha256),result=inspect(proof.pdf,[[2,2],[8,20],[6,6],[40,8],[24,15],[30,15]]);
+  if(expected)assert.deepEqual(result,expected);else expected=result;
+  assert.equal(result.white,false);assert.deepEqual(result.points[0],[255,255,255]);assert.deepEqual(result.points[1],[255,255,255]);
+ }
+});

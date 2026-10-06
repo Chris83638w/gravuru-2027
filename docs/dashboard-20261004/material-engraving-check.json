@@ -1,0 +1,253 @@
+{
+  "startedAt": "2026-10-06T04:47:19.426Z",
+  "platform": "linux",
+  "node": "v24.19.0",
+  "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+  "steps": [
+    {
+      "name": "python-pdf",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "references",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "tests",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS",
+  "tests": {
+    "count": 241,
+    "skipped": 0,
+    "failures": 0
+  },
+  "finishedAt": "2026-10-06T04:48:25.725Z",
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "browser": {
+    "materials": [
+      "steel",
+      "oak",
+      "beech",
+      "cherry",
+      "leather-brown"
+    ],
+    "backendSaveReload": true,
+    "customerDirectTextEditing": true,
+    "productCardSvg": true,
+    "printSwitch": true,
+    "viewports": [
+      1536,
+      390,
+      768
+    ],
+    "alphaSamples": {
+      "steel": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          14,
+          15,
+          15,
+          255
+        ],
+        [
+          14,
+          16,
+          16,
+          127
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          14,
+          16,
+          16,
+          128
+        ],
+        [
+          14,
+          15,
+          15,
+          201
+        ]
+      ],
+      "oak": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          51,
+          24,
+          9,
+          255
+        ],
+        [
+          50,
+          24,
+          8,
+          127
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          52,
+          24,
+          8,
+          128
+        ],
+        [
+          51,
+          24,
+          9,
+          201
+        ]
+      ],
+      "beech": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          51,
+          24,
+          9,
+          255
+        ],
+        [
+          50,
+          24,
+          8,
+          127
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          52,
+          24,
+          8,
+          128
+        ],
+        [
+          51,
+          24,
+          9,
+          201
+        ]
+      ],
+      "cherry": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          51,
+          24,
+          9,
+          255
+        ],
+        [
+          50,
+          24,
+          8,
+          127
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          52,
+          24,
+          8,
+          128
+        ],
+        [
+          51,
+          24,
+          9,
+          201
+        ]
+      ],
+      "leather-brown": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          31,
+          14,
+          6,
+          255
+        ],
+        [
+          30,
+          14,
+          6,
+          127
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          30,
+          14,
+          6,
+          128
+        ],
+        [
+          30,
+          14,
+          6,
+          201
+        ]
+      ]
+    },
+    "errors": []
+  },
+  "sourceBase": "725a7c62b9be6536f9bdd2cd502547424228e867",
+  "branch": "task/material-engraving-preview-20261006"
+}

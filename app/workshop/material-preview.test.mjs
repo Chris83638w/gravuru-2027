@@ -69,3 +69,15 @@ test('all acrylic engraving previews use tonal light marks without mutating sour
   d.processingMethod='print';assert.doesNotMatch(composeMaterialPreview(materialPreview(d).svg,art),/material-acrylic-engraving/);
  }
 });
+
+test('steel, wood and leather have material-specific engraving tones without changing print sources or geometry',async t=>{
+ const {composeMaterialPreview,DARK_ENGRAVING_TONES}=await import('./material-presentation.mjs');const store=createContourStore({filename:':memory:'});t.after(()=>store.close());
+ const c=await store.import({name:'Form.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60mm" height="40mm" viewBox="0 0 60 40"><rect width="60" height="40"/><circle cx="8" cy="20" r="2"/></svg>').toString('base64')});
+ const art='<path fill="#ff0000" d="M5 5H20V10H5Z"/>';
+ for(const id of Object.keys(DARK_ENGRAVING_TONES)){
+  const d=makeFormProduct(c,'Materialprüfung');d.material.id=id;d.processingMethod='engraving';const before=structuredClone(d),preview=materialPreview(d),svg=composeMaterialPreview(preview.svg,art);
+  assert.match(svg,/material-dark-engraving/);assert.ok(svg.includes(art));assert.match(preview.note,/Weiß und Transparenz ohne Gravur/);assert.deepEqual(d,before);for(const ring of c.geometry.contours)assert.ok(svg.includes(ring.d+' Z'));
+  d.processingMethod='print';assert.doesNotMatch(composeMaterialPreview(materialPreview(d).svg,art),/material-dark-engraving/);
+ }
+ const d=makeFormProduct(c,'Unbekannte Oberfläche');d.material.id='slate';d.processingMethod='engraving';assert.equal(materialPreview(d).svg,null);
+});

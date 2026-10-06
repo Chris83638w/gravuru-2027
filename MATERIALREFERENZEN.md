@@ -49,3 +49,7 @@ Kantenprojektion verwendet nur die im Produkt eingetragene Stärke. Helles Studi
 ## Ergänzung 06.10.2026: helle Acrylgravur
 
 Die vorhandenen weißen Gravurmuster für Anthrazit, Schwarz und satiniertes Acryl bestimmen die Richtung der neuen Gravuransicht. Sie werden nicht als Rohlingpixel kopiert. Das gleiche helle Gravurprinzip wird als ausdrücklich angenäherte Darstellung auch auf klares Acryl angewendet; dafür ist kein zusätzlicher realer Gravurmustervergleich behauptet. Nur bei Verfahren Gravur, abgestuft nach Originalhelligkeit/Alpha. Farben der Druckansicht und gesicherte Quell-/Fertigungsdaten bleiben unabhängig. [Vergleichsbilder und Prüfung](docs/dashboard-20261004/DASHBOARD-ACRYLGRAVUR-VORSCHAU.md).
+
+## Ergänzung 06.10.2026: dunkle Gravur auf Edelstahl, Holz und Leder
+
+Die fünf vorhandenen Referenzen (Edelstahl v4, Eiche, Buche, Kirsche, braunes Leder) wurden erneut direkt aus dem eingefrorenen Archiv gelesen und angesehen. Sie zeigen dunkle neutrale Markierungen auf Edelstahl sowie dunkle Braunwirkung auf Holz/Leder. Die gemeinsame Materialvorschau verwendet dafür angenäherte feste Oberflächentöne, mit Gravurstärke aus Originalhelligkeit und Alpha. Kein Farbwert ist als kalibrierte reale Gravurfarbe behauptet; keine Struktur, Stärke oder Produktionsfreigabe neu erfunden. Die bereits vorhandenen Rohmaterial-Vorschauen und Originalmuster bleiben unverändert. Schiefer weiterhin ohne bestätigte leere Rohlingreferenz. [Abgleich und Bilder](docs/dashboard-20261004/DASHBOARD-MATERIALGRAVUR.md).

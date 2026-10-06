@@ -42,10 +42,26 @@ export const UV_INK_FILTER=`<defs><filter id="material-uv-ink" x="0" y="0" width
 // strength. White means no engraving, matching the existing grayscale export.
 // Keep original alpha (including photos, holes and antialiasing) as a multiplier.
 export const ACRYLIC_ENGRAVING_FILTER=`<defs><filter id="material-acrylic-engraving" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 .94  0 0 0 0 .95  0 0 0 0 .94  -.2126 -.7152 -.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`;
+// Approximate engraving tones from the frozen material references; no
+// machine calibration, material thickness or production color is inferred.
+export const DARK_ENGRAVING_TONES=Object.freeze({
+ steel:{rgb:[.055,.06,.06],label:'Dunkle Edelstahlgravur'},
+ oak:{rgb:[.20,.095,.035],label:'Dunkelbraune Holzgravur'},
+ beech:{rgb:[.20,.095,.035],label:'Dunkelbraune Holzgravur'},
+ cherry:{rgb:[.20,.095,.035],label:'Dunkelbraune Holzgravur'},
+ 'leather-brown':{rgb:[.12,.055,.025],label:'Dunkle Ledergravur'}
+});
+export function darkEngravingFilter(materialId){
+ const tone=DARK_ENGRAVING_TONES[materialId];if(!tone)return '';
+ const [r,g,b]=tone.rgb;
+ return `<defs><filter id="material-dark-engraving" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 ${r}  0 0 0 0 ${g}  0 0 0 0 ${b}  -.2126 -.7152 -.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`;
+}
 // Insert artwork at the selected print depth, keeping this ordering identical
 // in editor, customer view, product cards and saved review previews.
 export function composeMaterialPreview(svg,artwork){
  if(svg.includes('data-preview-engraving="acrylic"'))artwork=ACRYLIC_ENGRAVING_FILTER+`<g data-preview-engraving-art="true" filter="url(#material-acrylic-engraving)">${artwork}</g>`;
+ const dark=Object.keys(DARK_ENGRAVING_TONES).find(id=>svg.includes(`data-preview-engraving="${id}"`));
+ if(dark)artwork=darkEngravingFilter(dark)+`<g data-preview-engraving-art="true" filter="url(#material-dark-engraving)">${artwork}</g>`;
  if(svg.includes('data-preview-print-surface="front"'))artwork=UV_INK_FILTER+`<g data-preview-uv-ink="matte" filter="url(#material-uv-ink)">${artwork}</g>`;
  return svg.includes('<!--material-artwork-->')?svg.replace('<!--material-artwork-->',artwork):svg.replace('</svg>',artwork+'</svg>');
 }

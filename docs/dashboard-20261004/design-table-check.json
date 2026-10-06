@@ -1,0 +1,64 @@
+{
+  "baseCommit": "d24d8297d8a751f7961d6b4c989b092783dca3a1",
+  "branch": "task/batch-design-sheet-20261006",
+  "cloudCheck": {
+    "startedAt": "2026-10-06T05:25:57.276Z",
+    "platform": "linux",
+    "node": "v24.19.0",
+    "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+    "steps": [
+      {
+        "name": "python-pdf",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "references",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "tests",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "build",
+        "exitCode": 0,
+        "result": "PASS"
+      }
+    ],
+    "result": "PASS",
+    "tests": {
+      "count": 249,
+      "skipped": 0,
+      "failures": 0
+    },
+    "finishedAt": "2026-10-06T05:27:06.606Z"
+  },
+  "browser": {
+    "realWorkbook": true,
+    "sheets": [
+      "Produkte",
+      "Designs",
+      "Anleitung"
+    ],
+    "uploadedSources": 2,
+    "pages": 3,
+    "designsInOneProduct": 4,
+    "default": "warm",
+    "preservedCustomerFields": true,
+    "formulaOrphanDuplicateDefaultMissingFileRejected": true,
+    "legacyWorkbookAccepted": true,
+    "repeatCreated": 0,
+    "viewports": [
+      1536,
+      390,
+      768
+    ],
+    "errors": []
+  },
+  "customerDefaultAndSwitchVerified": true,
+  "onlySyntheticData": true,
+  "published": false
+}

@@ -1,9 +1,10 @@
 import {unzipSync} from '/platform/sources/app/shared/vendor/fflate-0.8.3.mjs';
 const columns=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision'];
-function records(matrix){
+const designColumns=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design'];
+function records(matrix,{allowed=columns,required=['import_key','name'],limit=100,optional=false}={}){
   const headers=(matrix.shift()||[]).map(v=>String(v??'').replace(/^\uFEFF/,'').trim());
-  if(!headers.includes('import_key')||!headers.includes('name'))throw Error('Die erste Zeile muss import_key und name enthalten. Bitte die Vorlage verwenden.');
-  if(new Set(headers).size!==headers.length||headers.some(v=>!columns.includes(v)))throw Error('Spaltenüberschriften sind unbekannt oder doppelt. Bitte die Vorlage verwenden.');
+  if(required.some(h=>!headers.includes(h)))throw Error('Die erste Zeile muss '+required.join(', ')+' enthalten. Bitte die Vorlage verwenden.');
+  if(new Set(headers).size!==headers.length||headers.some(v=>!allowed.includes(v)))throw Error('Spaltenüberschriften sind unbekannt oder doppelt. Bitte die Vorlage verwenden.');
   const result=[];
   for(const row of matrix){
     if(!row.some(v=>String(v??'').trim()))continue;
@@ -12,7 +13,7 @@ function records(matrix){
     if(typeof item.date==='number')throw Error('Das Datum ist Designtext. Bitte die Datumsspalte als Text formatieren, zum Beispiel 14.06.2020.');
     result.push(item);
   }
-  if(!result.length||result.length>100)throw Error('Bitte 1 bis 100 ausgefüllte Produktzeilen verwenden.');
+  if((!optional&&!result.length)||result.length>limit)throw Error('Bitte '+(optional?'0':'1')+' bis '+limit+' ausgefüllte Zeilen verwenden.');
   return result;
 }
 export function parseCsv(source){
@@ -32,7 +33,7 @@ export function parseCsv(source){
 }
 function xml(text){const doc=new DOMParser().parseFromString(text,'application/xml');if(doc.querySelector('parsererror')||/<!DOCTYPE|<!ENTITY/i.test(text))throw Error('Ungültige Excel-Struktur.');return doc;}
 const nodes=(parent,name)=>[...parent.getElementsByTagNameNS('*',name)];
-export function parseXlsx(bytes){
+export function parseWorkbook(bytes){
   let total=0;
   const files=unzipSync(bytes,{filter:file=>{
     const keep=/^xl\/(?:workbook\.xml|_rels\/workbook\.xml\.rels|sharedStrings\.xml|worksheets\/sheet[0-9]+\.xml)$/.test(file.name);
@@ -40,14 +41,18 @@ export function parseXlsx(bytes){
     return keep;
   }});
   const decoder=new TextDecoder(),read=key=>{if(!files[key])throw Error('Excel-Tabelle unvollständig: '+key);return xml(decoder.decode(files[key]));};
-  const book=read('xl/workbook.xml'),sheet=nodes(book,'sheet').find(n=>n.getAttribute('name')==='Produkte');
-  if(!sheet)throw Error('Das Excel-Blatt muss „Produkte“ heißen.');
+  const book=read('xl/workbook.xml'),sheets=nodes(book,'sheet');
+  const shared=files['xl/sharedStrings.xml']?nodes(read('xl/sharedStrings.xml'),'si').map(si=>nodes(si,'t').map(n=>n.textContent).join('')):[];
+  function matrixFor(name,maxColumns){
+  const matching=sheets.filter(n=>n.getAttribute('name')===name);
+  if(matching.length!==1)throw Error('Excel-Blatt „'+name+'“ fehlt oder ist doppelt.');
+  const sheet=matching[0];
   const relId=sheet.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');
   const rel=nodes(read('xl/_rels/workbook.xml.rels'),'Relationship').find(n=>n.getAttribute('Id')===relId);
   if(!rel||rel.getAttribute('TargetMode')==='External')throw Error('Externe Tabellen werden nicht unterstützt.');
   const target=rel.getAttribute('Target').replace(/^\//,'').replace(/^xl\//,'');
   if(!/^worksheets\/sheet[0-9]+\.xml$/.test(target))throw Error('Nicht unterstützte Excel-Tabellenreferenz.');
-  const shared=files['xl/sharedStrings.xml']?nodes(read('xl/sharedStrings.xml'),'si').map(si=>nodes(si,'t').map(n=>n.textContent).join('')):[];
+
   const rows=nodes(read('xl/'+target),'row');
   if(rows.length>10000)throw Error('Die Tabelle ist zu groß.');
   const matrix=rows.map(row=>{
@@ -60,16 +65,21 @@ export function parseXlsx(bytes){
       let value=type==='s'?shared[Number(raw)]:type==='inlineStr'?nodes(cell,'t').map(n=>n.textContent).join(''):type==='e'?(()=>{throw Error('Eine Excel-Zelle enthält einen Fehler.');})():raw;
       if(value===undefined)throw Error('Ungültiger Excel-Textverweis.');
       if(type!=='s'&&type!=='inlineStr'&&type!=='str'&&value!==''&&!Number.isNaN(Number(value)))value=Number(value);
-      if(index>=columns.length){if(String(value).trim())throw Error('Daten außerhalb der vorgesehenen Spalten.');continue;}
+      if(index>=maxColumns){if(String(value).trim())throw Error('Daten außerhalb der vorgesehenen Spalten.');continue;}
       result[index]=value;
     }
     return result;
   });
-  return records(matrix);
+  return matrix;
+  }
+  return {rows:records(matrixFor('Produkte',columns.length)),designRows:sheets.some(n=>n.getAttribute('name')==='Designs')?records(matrixFor('Designs',designColumns.length),{allowed:designColumns,required:['import_key','design_id','design_file'],limit:3000,optional:true}):[]};
 }
-export async function readImport(file){
+export function parseXlsx(bytes){return parseWorkbook(bytes).rows;}
+export async function readBatchImport(file){
   if(!file||file.size>5*1024*1024)throw Error('Bitte eine Excel- oder CSV-Datei bis 5 MB auswählen.');
-  if(/\.xlsx$/i.test(file.name))return parseXlsx(new Uint8Array(await file.arrayBuffer()));
-  if(/\.(csv|tsv)$/i.test(file.name))return parseCsv(await file.text());
+  if(/\.xlsx$/i.test(file.name))return parseWorkbook(new Uint8Array(await file.arrayBuffer()));
+  if(/\.(csv|tsv)$/i.test(file.name))return {rows:parseCsv(await file.text()),designRows:[]};
   throw Error('Unterstützt werden .xlsx, .csv und .tsv.');
 }
+
+export async function readImport(file){return (await readBatchImport(file)).rows;}

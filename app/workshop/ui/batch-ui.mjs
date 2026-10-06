@@ -1,4 +1,4 @@
-import {readImport} from './batch-reader.mjs';
+import {readBatchImport} from './batch-reader.mjs';
 const $=s=>document.querySelector(s),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false,formKeys=new Set();
 const uploadCache=new WeakMap();
@@ -25,6 +25,7 @@ async function uploadDesigns(rows){
     const name=String(row.design_file||'').trim(),rawPage=String(row.design_page??'').trim()||'1';
     if(name&&/^[1-9][0-9]*$/.test(rawPage)&&Number(rawPage)<=1000)requests.set(JSON.stringify([name,Number(rawPage)]),{name,page:Number(rawPage)});
   }
+  if(requests.size>100)throw Error('Bitte höchstens 100 verschiedene Datei-/Seitenzuordnungen verwenden.');
   const designFiles=[],issues=[];let index=0;
   for(const {name,page} of requests.values()){
     if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
@@ -48,6 +49,7 @@ async function uploadDesigns(rows){
 }
 const money=cents=>Number.isInteger(cents)?new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100):'–';
 function artworkCell(row){
+  if(row.artworks?.length)return '<strong>'+row.designCount+' Designs im Produkt</strong><small>Standard: '+escape(row.defaultDesignName)+'</small><details open><summary>'+row.artworks.length+' Designzuordnungen</summary><div class="batch-design-list">'+row.artworks.map(a=>'<div class="batch-design-item">'+artworkCell({artwork:a})+(a.default?'<strong>Standarddesign</strong>':'')+'</div>').join('')+'</div></details>';
   const a=row.artwork;if(!a)return row.status==='error'?'–':row.action==='update'?'Vorhandenes Design bleibt':'Masterdesign';
   const url='/api/workshop/design-assets/'+a.assetId+'/preview.svg',mm=v=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(v);
   return '<a href="'+url+'" target="_blank" rel="noopener" class="batch-preview"><img src="'+url+'" alt="Vorschau '+escape(a.name)+'" loading="lazy"></a><span>'+escape(a.name)+' · Seite '+a.page+'</span><small>'+escape(a.designName)+' · '+mm(a.placement.widthMm)+' × '+mm(a.placement.heightMm)+' mm</small><details><summary>Hinweise zur Vorlage</summary><ul>'+a.warnings.map(w=>'<li>'+escape(w)+'</li>').join('')+'</ul></details>';
@@ -59,8 +61,8 @@ $('#check').addEventListener('click',async()=>{
   if(busy)return;invalidate();disabled(true);cancelled=false;$('#cancel-check').hidden=false;$('#cancel-check').disabled=false;
   try{
     const option=$('#master').selectedOptions[0];
-    const rows=await readImport($('#file').files[0]);if(!option&&rows.some(r=>String(r.action||'create').trim()!=='update'&&!r.master_id))throw Error('Für neue Produkte eine Mastervorlage auswählen. Aktualisierungen benötigen keinen Master.');const designFiles=await uploadDesigns(rows);
-    const data={rows,masterId:option?.value,masterRevision:option?Number(option.dataset.revision):undefined,designFiles};
+    const {rows,designRows}=await readBatchImport($('#file').files[0]);if(!option&&rows.some(r=>String(r.action||'create').trim()!=='update'&&!r.master_id))throw Error('Für neue Produkte eine Mastervorlage auswählen. Aktualisierungen benötigen keinen Master.');const designFiles=await uploadDesigns([...rows,...designRows]);
+    const data={rows,designRows,masterId:option?.value,masterRevision:option?Number(option.dataset.revision):undefined,designFiles};
     const plan=await api('/api/workshop/batch/plan',data);if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
     formKeys=new Set(plan.report.filter(r=>r.formProduct).map(r=>r.key));$('#review').hidden=false;
     const updates=plan.report.filter(r=>r.action==='update'&&r.status==='ready').length;

@@ -95,3 +95,5 @@
 
 /* Table column names remain readable within the batch instructions. */
 .batch-page p code { display:inline; overflow-wrap:anywhere; }
+
+.batch-design-item{padding:12px 0;border-bottom:1px solid #dbe4df;overflow-wrap:anywhere}.batch-design-item:last-child{border:0}.batch-design-item>strong{display:block;margin-top:6px}.batch-design-list{max-height:420px;overflow:auto;padding-right:8px}

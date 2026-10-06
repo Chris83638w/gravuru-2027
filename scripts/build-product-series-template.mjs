@@ -5,7 +5,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import assert from 'node:assert/strict';
-import {IMPORT_COLUMNS} from '../app/workshop/batch.mjs';
+import {IMPORT_COLUMNS,DESIGN_COLUMNS} from '../app/workshop/batch.mjs';
 
 const require=createRequire(path.join(process.cwd(),'package.json'));
 const {Workbook,SpreadsheetFile}=await import(pathToFileURL(require.resolve('@oai/artifact-tool')).href);
@@ -17,6 +17,16 @@ assert.equal(headers.length,22);
 const example=['beispiel-001','Mein erstes Acrylglasbild',null,null,null,null,null,'Unser Anfang','Anna & Lukas','Am See in Hamburg','14.06.2020','Hier begann unser Wir.',null,null,null,null,null,null,null,null,null,null];
 const wb=Workbook.create();
 const products=wb.worksheets.add('Produkte');
+const designs=wb.worksheets.add('Designs');
+designs.showGridLines=false;
+designs.getRange('A1:G101').format={font:{name:'Arial',size:11,color:'#263C34'},rowHeight:28,wrapText:true,fill:'#FFF4D8'};
+designs.getRange('A1:G1').values=[[...DESIGN_COLUMNS]];
+designs.getRange('A1:G1').format={fill:'#245C48',font:{name:'Arial',size:11,bold:true,color:'#FFFFFF'}};
+designs.getRange('A2:G101').setNumberFormat('@');
+designs.getRange('E2:E101').setNumberFormat('0');designs.getRange('G2:G101').setNumberFormat('0');
+[26,28,36,40,18,22,22].forEach((width,i)=>designs.getRangeByIndexes(0,i,101,1).format.columnWidth=width);
+designs.freezePanes.freezeRows(1);designs.freezePanes.freezeColumns(2);
+designs.tables.add('A1:G101',true,'Designzuordnungen').style='TableStyleLight1';
 const guide=wb.worksheets.add('Anleitung');
 const ink='#263C34',green='#245C48',amber='#FFF4D8',muted='#5A6860';
 
@@ -115,6 +125,8 @@ guide.getRange('B36:B40').format.font={name:'Arial',size:11,color:muted};
 guide.getRange('B36:B40').format.wrapText=true;
 guide.getRange('A36:B40').format.rowHeight=56;
 
+guide.getRange('A43:B48').values=[["Designs · Zuordnung", "Optionales Blatt für mehrere Designs innerhalb eines freien Formprodukts. import_key muss im Blatt Produkte vorhanden sein. Höchstens 30 Designs pro Produkt (einschließlich erhaltener Designs)."], ["Designs · Felder", "design_id ist erforderlich: vorhandene ID ersetzen, neue ID ergänzen. design_name ist optional. design_file benötigt den exakten ausgewählten SVG/PDF-Dateinamen. design_page ist ab 1, leer = 1. design_fit original oder contain."], ["Designs · Standard", "default_design: leer/0 oder genau einmal 1 pro Produkt. Ohne 1 bleibt das bisherige Standarddesign erhalten, bei leerer Vorlage wird das erste neue Design verwendet."], ["Designs · Bestand", "Nicht zugeordnete Designs bleiben erhalten. Kundenfelder nur des ersetzten Designs entfallen und müssen ausdrücklich neu zugeordnet werden. Keine automatische Text-/Fotoerkennung."], ["Designs · Prüfung", "Die Designspalten im Blatt Produkte für dieses Produkt leer lassen. Fehler einer Designzeile blockieren das gesamte zugehörige Produkt. Unbekannte import_key stoppen die Prüfung. Bis 3000 Designzeilen und insgesamt 100 eindeutige Datei-/Seitenzuordnungen."], ["Designs · Grenzen", "Nur freie Formprodukte. Keine neue Material-/Größenvariante; alle Designs gehören zur gleichen Produktkontur. CSV unterstützt weiterhin die einzelne Dateizuordnung im Blatt Produkte."]];
+guide.getRange('A43:B48').format={font:{name:'Arial',size:11,color:ink},wrapText:true,rowHeight:66};
 wb.recalculate();
 assert.deepEqual(products.getRange('A1:V1').values[0],headers);
 assert.deepEqual(products.getRange('A2:V2').values[0],example);
@@ -137,4 +149,4 @@ await (await SpreadsheetFile.exportXlsx(wb)).save(scratchExport);
 await fs.copyFile(scratchExport,destination);
 const deliverable=process.env.TEMPLATE_DELIVERABLE;
 if(deliverable){await fs.mkdir(path.dirname(deliverable),{recursive:true});await fs.copyFile(scratchExport,deliverable);}
-console.log(JSON.stringify({destination,deliverable,columns:headers.length,blankInputRows:100,sheets:2,exampleRows:1,formulas:0}));
+console.log(JSON.stringify({destination,deliverable,columns:headers.length,blankInputRows:100,sheets:3,exampleRows:1,formulas:0}));

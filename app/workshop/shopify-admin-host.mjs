@@ -13,7 +13,7 @@ export function createShopifyAdminHost(config, sessionContext) {
       sessionContext?.mode !== 'test-only' || sessionContext.shopDomain !== config.shopDomain || sessionContext.clientId !== config.clientId) reject();
   const appOrigin = origin.origin, host = origin.host, shopOrigin = 'https://' + config.shopDomain;
   const csp = `default-src 'self'; script-src 'self' ${bridgeURL}; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors ${shopOrigin} https://admin.shopify.com`;
-  const bootstrap = `<meta name="shopify-api-key" content="${config.clientId}"><meta name="gravuru-merchant-auth" content="required"><meta name="shopify-disabled-features" content="fetch"><script src="${bridgeURL}"></script><script type="module" src="/workshop-ui/merchant-downloads.mjs"></script>`;
+  const bootstrap = `<meta name="shopify-api-key" content="${config.clientId}"><meta name="gravuru-merchant-auth" content="required"><meta name="shopify-disabled-features" content="fetch"><script src="${bridgeURL}"></script><script type="module" src="/workshop-ui/merchant-media.mjs"></script><script type="module" src="/workshop-ui/merchant-downloads.mjs"></script>`;
   const merchantPage = pathname => pathname === '/werkstatt' || pathname.startsWith('/werkstatt/');
   return Object.freeze({origin:appOrigin, csp,
     authorize(req, pathname) {
@@ -25,7 +25,7 @@ export function createShopifyAdminHost(config, sessionContext) {
       // URL host/shop parameters and forwarded headers never select a trust target.
       return true;
     },
-    allows(pathname) {return merchantPage(pathname) || pathname.startsWith('/api/workshop/') || pathname.startsWith('/workshop-ui/') || pathname.startsWith('/platform/sources/app/shared/');},
+    allows(pathname) {return pathname==='/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png' || merchantPage(pathname) || pathname.startsWith('/api/workshop/') || pathname.startsWith('/workshop-ui/') || pathname.startsWith('/platform/sources/app/shared/');},
     html(bytes, pathname) {
       if (!merchantPage(pathname)) reject();
       const text = bytes.toString('utf8'); if (!/<head(?:\s[^>]*)?>/i.test(text)) reject();

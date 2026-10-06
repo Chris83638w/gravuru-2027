@@ -12,7 +12,7 @@ export function createMerchantRequest({fetchImpl = globalThis.fetch, bridge = ()
       if (typeof token !== 'string' || !token || /[\r\n]/.test(token)) throw Error('Shopify-Anmeldung nicht verfügbar.');
       headers.set('Authorization', 'Bearer ' + token);
     }
-    return fetchImpl(path, {...options, headers, credentials: 'same-origin', redirect: 'error'});
+    return fetchImpl(path, {...options, headers, credentials: 'same-origin', redirect: 'error', cache: 'no-store'});
   };
 }
 export const merchantRequest = createMerchantRequest();

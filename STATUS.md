@@ -1,3 +1,11 @@
+## Aktuell: Private Händlerbilder und ausführbarer Teststart – 06.10.2026
+
+Branch **`task/merchant-runtime-20261006`**, GitHub-Basis **`2104489fb9dea722081e847be60728e9ade6128c`**. Private Produkt-/Design-/Konturvorschauen laden im Händlerdashboard jetzt mit frischem Shopify-Token; Bildwechsel, entfernte Elemente und abgebrochene Antworten sind abgesichert. Ursprüngliche SVG-Bytes bleiben erhalten. Separater `npm run shopify:test`-Einstieg mit vorgeschalteter `npm run shopify:check`-Prüfung; keine automatische Aktivierung im normalen Start.
+
+**58 gezielte Prüfungen bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Die öffentliche Client-ID der bestehenden App wurde direkt von Shopify gelesen und fest zugeordnet. [Teststart, genaue sichere Bereitstellung und Grenzen](docs/dashboard-20261004/SHOPIFY-TESTSTART-20261006.md). Eine leere private Testablage außerhalb des Projekt-Checkouts ist vorbereitet. Kein Restore und kein dauerhafter gemeinsamer Datenbestand.
+
+**Aktueller externer Blocker für den echten Händlertest:** geschützter App-Client-Schlüssel und bestätigter HTTPS-Origin fehlen dieser Laufzeit. `shopify:check` meldet genau diese beiden Felder, wenn die vorbereitete Testablage angegeben wird. Für eine tatsächliche Produktanlage ist zusätzlich der Admin-API-Zugang nötig. Keine reale Einbettungsabnahme oder Veröffentlichung erfolgt. Kundenkonto/öffentliche Kundenstrecke, Produktmedien/-updates, Drive-/KI-Dienste und Produktionsabnahmen bleiben offen; das Gesamtprojekt ist noch nicht abgeschlossen. Historische Zwischenstände folgen.
+
 ## Aktuell: Vorbereiteter Shopify-Händlerstart – 06.10.2026
 
 Branch **`task/shopify-admin-bootstrap-20261006`**, GitHub-Basis **`a4ccb954cfe3d35bac680a6d3cca2d81adc5dabf`**. Der bestehende Server unterstützt jetzt ausdrücklich konfigurierten `embedded-test`-Betrieb für einen festen Shop/HTTPS-Origin mit App-Bridge-Start, passender Händler-Sitzungsprüfung und exakter CSP-Einbettungsfreigabe. Excel-/Dateilinks verwenden den authentifizierten Händler-Request statt unautorisierter Browsernavigation. Fehlende App Bridge führt nicht zu anonymen API-Anfragen. Der Standardscriptstart bleibt unverändert.

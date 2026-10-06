@@ -1,3 +1,4 @@
+import {merchantImageAttribute} from './merchant-media.mjs';
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
 const escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -10,7 +11,7 @@ export function productCards(products,badge){
   const formats=sizes.map(s=>number(s.widthMm/10)+' × '+number(s.heightMm/10)).join(' · ')+' cm';
   const row=(glyph,label,value)=>`<div>${icon(glyph)}<dt class="sr-only">${label}</dt><dd>${value}</dd></div>`;
   return `<article class="product-card" data-card-id="${id}">
-   <div class="card-visual"><button class="card-image" data-product-id="${id}" aria-label="${name} bearbeiten"><img class="product-image" loading="lazy" src="/api/workshop/products/${encodeURIComponent(p.id)}/preview.svg?revision=${p.revision}&layout=card" alt="${escape(info.defaultDesignName)}${info.previewLabel?' · '+escape(info.previewLabel):''}"><span class="image-error" hidden>Vorschau nicht verfügbar · Produkt öffnen</span></button>
+   <div class="card-visual"><button class="card-image" data-product-id="${id}" aria-label="${name} bearbeiten"><img class="product-image" loading="lazy" ${merchantImageAttribute(`/api/workshop/products/${encodeURIComponent(p.id)}/preview.svg?revision=${p.revision}&layout=card`)} alt="${escape(info.defaultDesignName)}${info.previewLabel?' · '+escape(info.previewLabel):''}"><span class="image-error" hidden>Vorschau nicht verfügbar · Produkt öffnen</span></button>
    <label class="card-select"><input type="checkbox" data-select-product="${id}" aria-label="${name} auswählen"></label>
    <details class="card-menu"><summary aria-label="Aktionen für ${name}">${icon('dots')}</summary><div class="card-menu-items"><button data-product-id="${id}">Bearbeiten</button><button data-card-copy="${id}">Kopieren …</button><button data-card-archive="${id}">${icon('archive')}${p.status==='archived'?'Wieder aktivieren …':'Archivieren …'}</button></div></details>
    ${info.previewLabel?`<span class="card-scene-label">Abbildung: ${escape(info.previewLabel)}</span>`:''}</div>

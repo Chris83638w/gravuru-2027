@@ -88,3 +88,16 @@ test('downloads reject errors/JSON and sanitize filenames rather than exposing u
   for(const response of [new Response('private-upstream',{status:403}),Response.json({private:'data'})])await assert.rejects(merchantDownload('/api/workshop/file',{request:async()=>response}),e=>!e.message.includes('private'));
   const response=new Response('pdf',{headers:{'Content-Type':'application/pdf','Content-Disposition':'attachment; filename="../secret.pdf"'}});assert.equal((await merchantDownload('/api/workshop/file',{request:async()=>response})).filename,null);
 });
+
+test('private dashboard preview passes through actual authenticated host and preserves self-contained SVG bytes',async t=>{
+  const {createMerchantMediaLoader}=await import('./ui/merchant-media.mjs');
+  const {request,workshop}=setup(t),route='/api/workshop/products/'+workshop.defaultId+'/preview.svg?revision=1&layout=card';
+  assert.equal((await request(route)).status,401);
+  const raw=await request(route,{headers:{authorization:jwt()}});assert.equal(raw.status,200);assert.match(raw.bytes.toString(),/editor-base-front/);assert.match(raw.bytes.toString(),/data:image\//);
+  let captured;const client=createMerchantRequest({required:()=>true,bridge:()=>({idToken:async()=>jwt().slice(7)}),fetchImpl:async(url,opts)=>{const r=await request(url,{headers:Object.fromEntries(opts.headers)});return new Response(r.bytes,{status:r.status,headers:r.headers});}});
+  const loader=createMerchantMediaLoader({request:client,createURL:blob=>{captured=blob;return 'blob:private-preview';},revokeURL:()=>{}}),attrs=new Map(),element={localName:'img',isConnected:true,getAttribute:k=>attrs.get(k),setAttribute:(k,v)=>attrs.set(k,v),removeAttribute:k=>attrs.delete(k),dispatchEvent:()=>{}};
+  assert.equal(await loader.load(element,route),true);assert.deepEqual(Buffer.from(await captured.arrayBuffer()),raw.bytes);assert.equal(attrs.get('src'),'blob:private-preview');loader.dispose();
+  assert.equal((await request('/workshop-ui/merchant-media.mjs')).status,200);
+  assert.equal((await request('/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png')).status,200);
+  assert.equal((await request('/_runtime/other-file.json')).status,404);
+});

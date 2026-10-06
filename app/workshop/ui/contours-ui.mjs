@@ -1,3 +1,4 @@
+import {merchantImageAttribute, setMerchantImage} from './merchant-media.mjs';
 import {merchantRequest as fetch} from './merchant-request.mjs';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -9,7 +10,7 @@ function controls(){ $('#create-form-product').disabled=busy||!selected;$('#cont
 async function api(url,data){const r=await fetch(url,data?{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':token},body:JSON.stringify(data)}:{});const value=await r.json();if(!r.ok)throw Error(value.error?.message||'Die Anfrage ist fehlgeschlagen.');return value;}
 function show(record){
   selected=record.id;selectedName=record.name;const g=record.geometry;
-  $('#preview-title').textContent=record.name;$('#contour-preview').src='/api/workshop/contours/'+record.id+'/preview.svg';$('#contour-preview').alt=`Formkontur ${mm(g.widthMm)} × ${mm(g.heightMm)}, ${holes(g.holeCount)}`;
+  $('#preview-title').textContent=record.name;setMerchantImage($('#contour-preview'),'/api/workshop/contours/'+record.id+'/preview.svg');$('#contour-preview').alt=`Formkontur ${mm(g.widthMm)} × ${mm(g.heightMm)}, ${holes(g.holeCount)}`;
   $('#contour-empty').hidden=true;$('#contour-preview').hidden=false;$('#contour-details').hidden=false;$('#contour-badge').hidden=false;
   $('#contour-width').textContent=mm(g.widthMm);$('#contour-height').textContent=mm(g.heightMm);$('#contour-holes').textContent=g.holeCount;
   $('#contour-name').textContent=record.format.toUpperCase()+' · unverändertes Original';$('#contour-original').href='/api/workshop/contours/'+record.id+'/original';
@@ -17,7 +18,7 @@ function show(record){
   $('#contour-hash').textContent=record.sourceSha256;$('#contour-warnings').innerHTML=g.warnings.map(w=>'<li>'+esc(w)+'</li>').join('');
   for(const button of document.querySelectorAll('[data-contour]'))button.setAttribute('aria-pressed',String(button.dataset.contour===selected));
 }
-async function list(){const {contours}=await api('/api/workshop/contours');$('#contour-count').textContent=contours.length+' '+(contours.length===1?'Vorlage':'Vorlagen');$('#contour-list').innerHTML=contours.length?contours.map(c=>`<button type="button" class="contour-card" data-contour="${c.id}" aria-pressed="${c.id===selected}"><img src="/api/workshop/contours/${c.id}/preview.svg" alt="" loading="lazy"><span><strong>${esc(c.name)}</strong><small>${esc(mm(c.widthMm))} × ${esc(mm(c.heightMm))} · ${holes(c.holeCount)}</small></span><span class="contour-format">${esc(c.format.toUpperCase())}</span></button>`).join(''):'<p class="contour-no-files">Noch keine Formvorlagen gespeichert. Lade deine erste Kontur oben hoch.</p>';return contours;}
+async function list(){const {contours}=await api('/api/workshop/contours');$('#contour-count').textContent=contours.length+' '+(contours.length===1?'Vorlage':'Vorlagen');$('#contour-list').innerHTML=contours.length?contours.map(c=>`<button type="button" class="contour-card" data-contour="${c.id}" aria-pressed="${c.id===selected}"><img ${merchantImageAttribute(`/api/workshop/contours/${c.id}/preview.svg`)} alt="" loading="lazy"><span><strong>${esc(c.name)}</strong><small>${esc(mm(c.widthMm))} × ${esc(mm(c.heightMm))} · ${holes(c.holeCount)}</small></span><span class="contour-format">${esc(c.format.toUpperCase())}</span></button>`).join(''):'<p class="contour-no-files">Noch keine Formvorlagen gespeichert. Lade deine erste Kontur oben hoch.</p>';return contours;}
 $('#contour-file').addEventListener('change',()=>{$('#contour-filename').textContent=$('#contour-file').files[0]?.name||'Noch keine Datei ausgewählt';status('');controls();});
 $('#contour-form').addEventListener('submit',async event=>{
   event.preventDefault();if(busy)return;const file=$('#contour-file').files[0];if(!file)return;

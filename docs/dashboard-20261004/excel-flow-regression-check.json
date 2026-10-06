@@ -1,0 +1,45 @@
+{
+  "branch": "task/excel-customer-flow-20261006",
+  "baseCommit": "e57a7defee4ff8e554f4f17c5beb0442120e224b",
+  "cloudCheck": {
+    "startedAt": "2026-10-06T06:30:09.861Z",
+    "platform": "linux",
+    "node": "v24.19.0",
+    "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+    "steps": [
+      {
+        "name": "python-pdf",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "references",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "tests",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "build",
+        "exitCode": 0,
+        "result": "PASS"
+      }
+    ],
+    "result": "PASS",
+    "tests": {
+      "count": 268,
+      "skipped": 0,
+      "failures": 0
+    },
+    "finishedAt": "2026-10-06T06:31:31.621Z"
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "published": false
+}

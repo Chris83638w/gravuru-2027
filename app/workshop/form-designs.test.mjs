@@ -43,3 +43,17 @@ test('form designs reuse immutable SVG/PDF assets, preserve geometry, validate e
  assert.deepEqual(workshop.repository.get(workshop.defaultId),acrylic);
  workshop.close();workshop=createWorkshop({filename:path.join(dir,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});assert.equal(workshop.repository.get(original.id).document.designs[0].fields[0].text,'Familie Sommer');assert.equal(workshop.repository.get(original.id,{revision:3}).document.designs.length,2);assert.equal(workshop.assets.read(a.assetId,true).toString(),svg);
 });
+
+import {createDesignAssetStore} from './design-assets.mjs';
+import {createContourStore} from './contours.mjs';
+import {makeFormProduct} from './form-product.mjs';
+import {addFormDesign,validateFormDesigns} from './form-designs.mjs';
+test('exact-size PDF placement tolerates point rounding without rescaling or admitting oversized art',async t=>{
+ const assets=createDesignAssetStore({filename:':memory:'}),contours=createContourStore({filename:':memory:'});t.after(()=>{assets.close();contours.close();});
+ const c=await contours.import({name:'Form.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="160mm" height="100mm" viewBox="0 0 160 100"><rect width="160" height="100"/></svg>').toString('base64')}),product=makeFormProduct(c,'Rundungstest');
+ const pdf=execFileSync('python3',['-c',"import pymupdf as f,sys;d=f.open();p=d.new_page(width=160*72/25.4,height=100*72/25.4);p.draw_rect(f.Rect(30,30,380,230),color=(0,0,0));sys.stdout.buffer.write(d.tobytes())"],{env:importEnvironment()});
+ const asset=await assets.import({name:'Massgleich.pdf',page:1,bytes:pdf.toString('base64')}),next=addFormDesign(product,asset,{name:'Originalmaß',designId:'exact',fit:'original'}),a=next.designs[0];
+ assert.equal(a.widthMm,asset.widthMm);assert.equal(a.heightMm,asset.heightMm);assert(a.xMm>=0&&a.yMm>=0);assert(Math.abs(a.widthMm-160)<.001);assert(Math.abs(a.heightMm-100)<.001);assert.deepEqual(next.form,product.form);assert.deepEqual(assets.read(asset.assetId,true),pdf);
+ for(const widthMm of [160.002,160.02,161])assert.throws(()=>addFormDesign(product,{...asset,widthMm},{name:'Zu groß',designId:'oversize',fit:'original'}),/Platzierung/);
+ const invalid=structuredClone(next);invalid.designs[0].xMm=-.0001;assert.throws(()=>validateFormDesigns(invalid),/Platzierung/);
+});

@@ -49,7 +49,9 @@ export function addFormDesign(d,asset,{name,fit='original',designId}){
  if(!['original','contain'].includes(fit))fail('Ungültige Platzierung.');
  const g=d.form.geometry,scale=fit==='original'?1:Math.min(g.widthMm/asset.widthMm,g.heightMm/asset.heightMm);
  const widthMm=asset.widthMm*scale,heightMm=asset.heightMm*scale;
- const a={id:designId,name,assetId:asset.assetId,sourceSha256:asset.sourceSha256,originalName:asset.originalName,xMm:(g.widthMm-widthMm)/2,yMm:(g.heightMm-heightMm)/2,widthMm,heightMm,sourcePrepared:false,fields:[],additions:defaultAdditions()};
+// PDF point-to-mm rounding can put a matching page microscopically outside zero.
+ // Keep its original dimensions; box() still rejects oversize beyond the existing 0.001 mm tolerance.
+ const a={id:designId,name,assetId:asset.assetId,sourceSha256:asset.sourceSha256,originalName:asset.originalName,xMm:Math.max(0,(g.widthMm-widthMm)/2),yMm:Math.max(0,(g.heightMm-heightMm)/2),widthMm,heightMm,sourcePrepared:false,fields:[],additions:defaultAdditions()};
  const next=structuredClone(d);next.designs=[...(d.designs||[]),a];next.defaultDesignId=d.defaultDesignId||a.id;validateFormDesigns(next);return next;
 }
 

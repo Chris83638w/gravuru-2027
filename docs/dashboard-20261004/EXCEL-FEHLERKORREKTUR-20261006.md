@@ -30,8 +30,40 @@ Private Designvorschaubilder in der Serienansicht verwenden denselben authentifi
 
 Die ersten XLSX-Lesetests scheiterten an synchroner Python-Prozesskommunikation dieser Runtime (`spawnSync EPERM`; ein früherer stdin-Aufruf hing). Die neuen Testleser verwenden nun einen asynchronen Python-Aufruf auf eine temporäre Datei und prüfen deren tatsächlichen Inhalt mit openpyxl. Keine Fehler wurden durch geänderte Sollwerte übergangen. Der produktive XLSX-Exporter verwendete bereits asynchrone Prozesse.
 
-## Grenzen und nächste Arbeit
+## Grenzen des ersten Teilschritts (vor gespeicherter Wiederaufnahme)
 
 Keine Installation, kein Restore, keine privaten Bestandsdaten, keine Server-/Shopify-Mutation, kein Merge oder Deployment. Tests mit synthetischen Produktdaten sind keine reale Browser-/Produktionsabnahme. Die bestehende veröffentlichte Vorschau ist durch diesen GitHub-Commit nicht aktualisiert.
 
 Noch keine dauerhaft gespeicherte Importauftrag-Historie: Diese Korrekturdatei erlaubt die Wiederaufnahme durch erneuten Upload. Automatischer Dateiabruf, Fortschritt über Geräte hinweg und ein dauerhaft gemeinsamer privater Datenbestand bleiben getrennte Aufgaben. Nächster sinnvoller Dashboard-Schritt ist ein privater Importauftrag mit nachvollziehbarem Status und frischer Prüfung nach Wiederaufnahme; keine automatische Anwendung eines veralteten Prüfplans.
+
+
+## Wiederaufnahme im Dashboard: zweiter Teilschritt
+
+06.10.2026; Branch `task/batch-resume-20261006`, bestätigte GitHub-Basis `336c9d74ff2d580e0670bce559eaa6449bcd4e0b` (Excel-Bericht und Korrektur). Die oben dokumentierte fehlende gespeicherte Wiederaufnahme ist mit diesem zweiten Teilschritt im Code umgesetzt.
+
+Nach der Tabellenprüfung einen Namen vergeben und **Prüfung privat speichern** wählen. Unter **Gespeicherte Importprüfungen** lässt sich diese Serie später mit **Öffnen und erneut prüfen** laden. Tabelle und bereits importierte Designquellen müssen nicht erneut vom Laptop ausgewählt werden. Alle Produktzeilen werden frisch geprüft; Anwendung bleibt ausdrücklich erforderlich. Fehler können weiterhin als Excel-Korrekturdatei heruntergeladen werden.
+
+### Speicherung und Konfliktschutz
+
+- Unveränderliche Eingabestände in der neuen Tabelle `batch_jobs` innerhalb derselben privaten `workshop.sqlite`. Keine vierte Datenbank, keine Speicherung in Git, keine Originalbilder als eingebetteter Jobinhalt. Designverweise zeigen auf die vorhandene private Assetablage.
+- Master-ID/-Version werden pro Zeile festgehalten. Produkt-ID, erwartete Revision und Importschlüssel bleiben bestehen. Keine gespeicherten Sitzungstokens, Prüfpläne oder abgeleiteten Produktdokumente.
+- Fortschritt wird bei Wiederaufnahme aus dem vorhandenen transaktionalen Importjournal ermittelt. Es gibt keinen zweiten, möglicherweise veralteten Erfolgszähler. Auch nach erfolgreicher Datenbankübernahme mit verlorener Browserantwort werden keine Produkte doppelt angelegt.
+- Derselbe Eingabestand wird beim Speichern wiedererkannt. Geänderte Eingaben erzeugen einen neuen Stand; alte werden nicht überschrieben. Bis zu 100 gespeicherte Prüfungen, jeweils höchstens 2 MB. Bei Erreichen der Grenze erscheint eine klare Meldung; keine automatische Löschung.
+- **Gespeicherte Prüfung entfernen** verlangt eine Bestätigung und löscht nur den Eingabestand. Produkte, Originaldesigns und Importjournal bleiben bestehen.
+- Auflistung enthält nur Namen, Zeitpunkt und Zeilenanzahl; Eingaben werden erst beim Öffnen an den angemeldeten Händler geliefert. Alle API-Zugriffe nutzen den bestehenden Händlerschutz, Schreibaktionen zusätzlich CSRF und Originprüfung.
+- Korrigieren erfolgt weiterhin in Excel; keine neue konkurrierende Tabellen-/Preislogik im Dashboard. Eine geänderte Produktrevision wird als Konflikt gemeldet, nicht automatisch übernommen.
+
+### Prüfung des zweiten Teilschritts
+
+34 unterschiedliche gezielte Tests bestanden, keine offenen Fehler/Skips:
+
+- `node --test --test-isolation=none app/workshop/batch-jobs.test.mjs` — 5 bestanden. Neustart und Teilübernahme, neue Masterversion, verlorene Browserantwort, Wiederholung, Revisionskonflikt, zwei Datenbankverbindungen, unveränderliche Stände, sichere Entfernung, Größen-/Anzahlgrenze und SQLite-Integrität.
+- `node --test --test-isolation=none --test-name-pattern='saved form import|saved import checks' app/workshop/form-batch.test.mjs app/workshop/shopify-admin-host.test.mjs` — 2 bestanden. Reale SVG-Designquelle nach Neustart verfügbar; Händlerzugriff und Entfernung im HTTP-Handler geprüft.
+- `node --test --test-isolation=none app/workshop/shopify-admin-host.test.mjs app/workshop/shopify-runtime-config.test.mjs` — 28 bestanden. Enthält den gerade genannten HTTP-Test erneut; deshalb insgesamt 34 statt 35 unterschiedliche Tests. Anlass für den Regressionstest war die zusätzliche Datenbankverbindung im Workshop-Lebenszyklus.
+- `npm run build` — 76 Ressourcen, 1 Modell, Editor 461440 Bytes. JS-Syntax und `git diff --check` bestanden.
+
+Ein erster Test verwendete versehentlich einen kleinen Acrylpreis oberhalb des Großpreises und wurde korrekt von der bestehenden Fachvalidierung abgewiesen. Der Test verwendet nun einen zulässigen geänderten Masterpreis; die Produktionsvalidierung blieb unverändert.
+
+Keine privaten Bestandsdaten geöffnet, kein Restore, keine Liveänderung. Tests fanden mit temporären synthetischen Daten statt. Noch keine tatsächliche Browserabnahme und keine Aktualisierung der veröffentlichten Vorschau. Nächster Abnahmeschritt ist die sichtbare Bedienprüfung der gespeicherten Serie in einer ausführbaren geschützten Vorschau.
+
+Die neue Speichermöglichkeit ist appseitige Persistenz in derselben privaten Datenbank. Sie garantiert weder dauerhafte Cloud-VM-Verfügbarkeit noch eine gemeinsame Ablage zwischen Konten. Zugriff von einem anderen Gerät setzt denselben App-Datenbestand und die passende Händleranmeldung voraus.

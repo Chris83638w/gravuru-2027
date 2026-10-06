@@ -13,13 +13,16 @@ async function api(path,data){
 }
 function status(message,error=false){$('#status').textContent=message;$('#status').style.color=error?'#a32828':'#183e35';}
 function disabled(value){
-  busy=value;for(const id of ['check','master','file','design-files','skip-errors'])$('#'+id).disabled=value;
+  busy=value;for(const id of ['check','master','file','design-files','skip-errors','job-name','saved-jobs'])$('#'+id).disabled=value;
   $('#import').disabled=value||!prepared||hasErrors&&!$('#skip-errors').checked;
   $('#download-report').disabled=value||!checkedInput;
   $('#download-errors').disabled=value||!checkedInput||!hasErrors;
+  $('#save-job').disabled=value||!checkedInput;
+  $('#open-job').disabled=value||!$('#saved-jobs').value;
+  $('#remove-job').disabled=value||!$('#saved-jobs').value;
 }
 function invalidate(){
-  checkedInput=null;$('#download-report').disabled=true;$('#download-errors').disabled=true;$('#report-status').textContent='';
+  checkedInput=null;$('#save-job').disabled=true;$('#download-report').disabled=true;$('#download-errors').disabled=true;$('#report-status').textContent='';
   prepared=null;formKeys.clear();hasErrors=false;$('#skip-errors').checked=false;$('#partial-label').hidden=true;$('#review').hidden=true;$('#result').hidden=true;$('#import').disabled=true;$('#upload-report').textContent='';status('');
 }
 const base64=file=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Die Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
@@ -65,13 +68,7 @@ function artworkCell(row){
 $('#skip-errors').addEventListener('change',()=>disabled(busy));
 for(const id of ['file','master','design-files'])$('#'+id).addEventListener('change',invalidate);
 $('#cancel-check').addEventListener('click',()=>{cancelled=true;$('#cancel-check').disabled=true;status('Abbruch angefordert. Die laufende Datei wird noch abgeschlossen.');});
-$('#check').addEventListener('click',async()=>{
-  if(busy)return;invalidate();disabled(true);cancelled=false;$('#cancel-check').hidden=false;$('#cancel-check').disabled=false;
-  try{
-    const option=$('#master').selectedOptions[0];
-    const {rows,designRows}=await readBatchImport($('#file').files[0]);if(!option&&rows.some(r=>String(r.action||'create').trim()!=='update'&&!r.master_id))throw Error('Für neue Produkte eine Mastervorlage auswählen. Aktualisierungen benötigen keinen Master.');const designFiles=await uploadDesigns([...rows,...designRows]);
-    const data={rows,designRows,masterId:option?.value,masterRevision:option?Number(option.dataset.revision):undefined,designFiles};
-    const plan=await api('/api/workshop/batch/plan',data);if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
+function renderPlan(data,plan){
     checkedInput=data;
     formKeys=new Set(plan.report.filter(r=>r.formProduct).map(r=>r.key));$('#review').hidden=false;
     const updates=plan.report.filter(r=>r.action==='update'&&r.status==='ready').length;
@@ -82,6 +79,15 @@ $('#check').addEventListener('click',async()=>{
     for(const row of $('#rows').rows)Array.from(row.cells).forEach((cell,i)=>cell.dataset.label=['Datensatz','Produkt / Importschlüssel','Design','Grundpreis / klein','Acryl groß','Ergebnis'][i]);
     if(plan.token)prepared={...data,token:plan.token};
     status(plan.valid?(plan.token?'Prüfung abgeschlossen. Kontrolliere Neuanlagen und Aktualisierungen, bevor du die Tabelle anwendest.':'Alles unverändert. Keine Übernahme erforderlich.'):'Noch nichts geändert. Fehler korrigieren oder ausdrücklich nur gültige Datensätze anwenden.',!plan.valid);
+}
+$('#check').addEventListener('click',async()=>{
+  if(busy)return;invalidate();disabled(true);cancelled=false;$('#cancel-check').hidden=false;$('#cancel-check').disabled=false;
+  try{
+    const option=$('#master').selectedOptions[0];
+    const {rows,designRows}=await readBatchImport($('#file').files[0]);if(!option&&rows.some(r=>String(r.action||'create').trim()!=='update'&&!r.master_id))throw Error('Für neue Produkte eine Mastervorlage auswählen. Aktualisierungen benötigen keinen Master.');const designFiles=await uploadDesigns([...rows,...designRows]);
+    const data={rows,designRows,masterId:option?.value,masterRevision:option?Number(option.dataset.revision):undefined,designFiles};
+    const plan=await api('/api/workshop/batch/plan',data);if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
+    renderPlan(data,plan);$('#job-name').value=$('#file').files[0]?.name||'Produktserie';
   }catch(error){status(error.message,true);}finally{$('#cancel-check').hidden=true;disabled(false);}
 });
 $('#import').addEventListener('click',async()=>{
@@ -137,3 +143,33 @@ for(const [id,mode] of [['download-report','report'],['download-errors','errors'
     $('#report-status').textContent=mode==='errors'?'Korrekturdatei bereit. Fehler im Blatt Produkte oder Designs korrigieren und erneut prüfen. Benötigte SVG-/PDF-Dateien zusätzlich auswählen.':'Prüfbericht bereit. Der Download verändert keine Produkte.';
   }catch(error){$('#report-status').textContent=error.message;}finally{disabled(false);}
 });
+
+
+async function refreshJobs(selected=$('#saved-jobs').value){
+  const {jobs}=await api('/api/workshop/batch/jobs');
+  $('#saved-jobs').innerHTML='<option value="">Gespeicherte Prüfung auswählen</option>'+jobs.map(job=>'<option value="'+escape(job.id)+'">'+escape(job.name)+' · '+job.rowCount+' Produkte · '+escape(new Date(job.createdAt).toLocaleString('de-DE'))+'</option>').join('');
+  if(jobs.some(job=>job.id===selected))$('#saved-jobs').value=selected;
+  disabled(busy);
+}
+$('#saved-jobs').addEventListener('change',()=>disabled(busy));
+$('#save-job').addEventListener('click',async()=>{
+  if(busy||!checkedInput)return;disabled(true);
+  try{
+    const job=await api('/api/workshop/batch/jobs',{name:$('#job-name').value,input:checkedInput});
+    await refreshJobs(job.id);$('#job-status').textContent=job.existing?'Diese Importprüfung ist bereits gespeichert.':'Importprüfung privat gespeichert. Nach dem Öffnen wird erneut geprüft; Produkte wurden dadurch nicht angelegt.';
+  }catch(error){$('#job-status').textContent=error.message;}finally{disabled(false);}
+});
+$('#open-job').addEventListener('click',async()=>{
+  const id=$('#saved-jobs').value;if(busy||!id)return;disabled(true);
+  try{
+    const job=await api('/api/workshop/batch/jobs/'+encodeURIComponent(id));
+    invalidate();$('#file').value='';$('#design-files').value='';renderPlan(job.input,job.plan);$('#job-name').value=job.name;
+    $('#job-status').textContent='Gespeicherte Prüfung geöffnet und aktuell geprüft. Bereits ausgeführte Zeilen werden erkannt. Verknüpfte Design-Dateien kommen aus dieser privaten Ablage.';
+  }catch(error){$('#job-status').textContent=error.message;}finally{disabled(false);}
+});
+$('#remove-job').addEventListener('click',async()=>{
+  const id=$('#saved-jobs').value;if(busy||!id||!window.confirm('Nur diese gespeicherte Importprüfung entfernen? Produkte, Designs und bereits ausgeführte Importe bleiben erhalten.'))return;disabled(true);
+  try{await api('/api/workshop/batch/jobs/'+encodeURIComponent(id)+'/remove',{});await refreshJobs('');$('#job-status').textContent='Gespeicherte Importprüfung entfernt. Produkte und Designs bleiben erhalten.';}
+  catch(error){$('#job-status').textContent=error.message;}finally{disabled(false);}
+});
+try{await refreshJobs();}catch(error){$('#job-status').textContent='Gespeicherte Prüfungen konnten nicht geladen werden: '+error.message;}

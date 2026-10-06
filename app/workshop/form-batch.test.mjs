@@ -82,6 +82,11 @@ import {designExportData,designWorkbook} from './design-export.mjs';
 import {batchReportData,batchReportWorkbook} from './batch-report.mjs';
 import {execFile as asyncExecFile} from 'node:child_process';
 import {promisify} from 'node:util';
+test('saved form import resumes with private design assets after reopen without uploading originals again',async t=>{
+ const f=await fixture(t),input={...f.input([{import_key:'saved-designs',name:'Gespeicherte Serie'}]),designRows:[{import_key:'saved-designs',design_id:'added',design_file:'Farbe.svg',default_design:'1'}],designFiles:[{name:'Farbe.svg',page:1,assetId:f.asset.assetId}]};
+ const job=f.w.batchJobs.create({name:'Designserie',input});f.restart();const opened=f.w.batchJobs.review(job.id);assert.equal(opened.plan.valid,true,JSON.stringify(opened.plan.report));assert.equal(opened.plan.report[0].artworks[0].assetId,f.asset.assetId);
+ const saved=commitBatch(f.w.repository,{...opened.input,token:opened.plan.token},f.w.assets);assert.equal(saved.products.length,1);assert.equal(f.w.repository.get(saved.products[0].id).document.defaultDesignId,'added');f.restart();assert.equal(f.w.batchJobs.review(job.id).plan.report[0].status,'existing');
+});
 test('correction workbook retains every child design of a failed product and excludes successful siblings',async t=>{
  const f=await fixture(t),input={...f.input([{import_key:'failed',name:'Korrektur',price_eur:'bad'},{import_key:'good',name:'Schon fertig'}]),designRows:[{import_key:'failed',design_id:'design-color',design_file:'Farbe.svg',design_name:'Originalname'},{import_key:'failed',design_id:'added',design_file:'Farbe.svg',default_design:'1'},{import_key:'good',design_id:'design-two',design_file:'Farbe.svg'}],designFiles:[{name:'Farbe.svg',page:1,assetId:f.asset.assetId}]};
  const plan=planBatch(f.w.repository,input,f.w.assets),first=commitBatch(f.w.repository,{...input,token:plan.token,skipErrors:true},f.w.assets);assert.equal(first.products.length,1);

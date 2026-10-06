@@ -1,3 +1,11 @@
+## Aktuell: Private Serienprüfung speichern und wiederaufnehmen – 06.10.2026
+
+Branch **`task/batch-resume-20261006`**, GitHub-Basis **`336c9d74ff2d580e0670bce559eaa6449bcd4e0b`**. Zusätzlich zum Excel-Prüfbericht kann die bestehende Serienansicht geprüfte Importdaten privat speichern, auflisten, erneut öffnen und bewusst entfernen. Beim Öffnen wird ein neuer Prüfplan aus dem aktuellen Produktstand erstellt. Bereits ausgeführte Zeilen werden aus dem dauerhaften Importjournal erkannt, auch wenn die ursprüngliche Browserantwort verloren ging. Gespeicherte Designverknüpfungen funktionieren nach Neustart ohne erneutes Hochladen, solange dieselbe private Ablage vorhanden ist.
+
+**34 unterschiedliche gezielte Prüfungen bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Echte temporäre SQLite-Datenbanken und echte SVG-Quelle; Händler-/CSRF-/Origin-/Hostschutz im Prozess geprüft. [Bedienung, Speichermodell und Grenzen](docs/dashboard-20261004/EXCEL-FEHLERKORREKTUR-20261006.md#wiederaufnahme-im-dashboard-zweiter-teilschritt).
+
+Kein Deployment und keine neue visuelle Browserabnahme. Speicherung erfolgt in einer zusätzlichen Tabelle der privaten `workshop.sqlite`, nicht in Git oder einem öffentlichen Snapshot. Dies macht die Cloud-VM nicht zu einer dauerhaften gemeinsamen Datenablage. Nächster Abnahmeschritt: gespeicherte Serie in der geschützten Dashboard-Vorschau öffnen und Bedienung prüfen, sobald die Vorschau ausführbar ist. Die Codearbeit benötigte keinen Laptop, keine neuen Secrets und keine weitere Nutzerentscheidung. Historische Zwischenstände folgen.
+
 ## Aktuell: Excel-Prüfbericht und gezielte Fehlerkorrektur – 06.10.2026
 
 Branch **`task/batch-correction-20261006`**, GitHub-Basis **`4976bee6fa1785d23f8476c4bcb2b30b3261c0a3`**. Die bestehende Serienansicht bietet jetzt einen vollständigen Excel-Prüfbericht und eine separate Korrekturdatei nur für fehlerhafte Produktzeilen einschließlich ihrer Designzuordnungen. Der Server prüft beim Download erneut; keine Produktänderung durch den Export. Masterstand, Importschlüssel und erwartete Revision bleiben erhalten. Private Designbilder dieser Ansicht verwenden nun ebenfalls den authentifizierten Medienabruf.

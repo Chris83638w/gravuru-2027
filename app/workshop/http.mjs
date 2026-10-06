@@ -7,6 +7,7 @@ import {ACRYLIC_REVIEW,prepareAcrylicReview} from './acrylic-review.mjs';
 import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
 import {batchReportData,batchReportWorkbook} from './batch-report.mjs';
+import {createBatchJobs} from './batch-jobs.mjs';
 import {variantExportData,variantWorkbook} from './variant-export.mjs';
 import {createFormVariants} from './form-variants.mjs';
 import {additionPolicy,formMotifs} from './form-additions.mjs';
@@ -71,6 +72,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document))return verifyForm(document);profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const variants=createFormVariants({filename,repository});
+  const batchJobs=createBatchJobs({filename,repository,assets});
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
   const csrfToken=randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
@@ -502,6 +504,20 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const bytes=await designWorkbook(designExportData(repository,await body(req)));
         res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Designzuordnungen.xlsx"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
       }
+      if(pathname==='/api/workshop/batch/jobs'){
+        if(method==='GET')return json(res,200,{jobs:batchJobs.list()});
+        if(method==='POST')return json(res,201,batchJobs.create(await body(req)));
+        fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      }
+      const batchJobMatch=pathname.match(/^\/api\/workshop\/batch\/jobs\/(imp_[a-f0-9-]{36})(\/remove)?$/);
+      if(batchJobMatch){
+        if(!batchJobMatch[2]&&method==='GET')return json(res,200,batchJobs.review(batchJobMatch[1]));
+        if(batchJobMatch[2]&&method==='POST'){
+          if(Object.keys(await body(req)).length)fail(422,'batch_job','Entfernen benötigt keine zusätzlichen Daten.');
+          return json(res,200,batchJobs.remove(batchJobMatch[1]));
+        }
+        fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      }
       if(pathname==='/api/workshop/batch/plan'&&method==='POST'){
         const {entries,...plan}=planBatch(repository,await body(req),assets);return json(res,200,plan);
       }
@@ -566,5 +582,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,variants,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
+  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,variants,batchJobs,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
 }

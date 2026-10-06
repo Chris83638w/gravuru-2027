@@ -16,6 +16,7 @@ const record=w.repository.create(makeProductDocument(sourceConfig,{name:'Acrylgr
 const photo=execFileSync('python3',['-c',"from PIL import Image;import sys;Image.new('RGBA',(300,400),(130,160,190,255)).save(sys.stdout.buffer,format='PNG')"],{env:importEnvironment()}).toString('base64');
 const input={productId:record.id,productRevision:1,designId:source.id,objects:structuredClone(source.objects),options:{size:'large',base:'eiche',wall:'wall'},quantity:2,media:[{id:'synthetic-photo',original:photo}],preview:photo};Object.assign(input.objects.find(o=>o.type==='photoSlot'),{uxUploadId:'synthetic-photo',uxUploadKind:'photo'});
 input.objects.find(o=>o.id==='names').text='Mika & Chris';
+if(process.argv[3]==='uncovered-photo')input.objects.find(o=>o.type==='photoSlot').uxPhotoCrop={zoom:.5,x:.4,y:0,angle:25};
 let bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});
 const artwork=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256,{engraving:true});input.preview=execFileSync('python3',['-c',"import sys,cairosvg;sys.stdout.buffer.write(cairosvg.svg2png(bytestring=sys.stdin.buffer.read(),output_width=450,output_height=600))"],{input:artwork.svg,env:importEnvironment()}).toString('base64');
 bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});const snapshot=w.customerDrafts.captureAcrylicReview('synthetic-order-fixture',bundle);

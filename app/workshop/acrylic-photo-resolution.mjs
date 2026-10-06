@@ -1,3 +1,4 @@
+import {photoFrameCovered} from './photo-frame-coverage.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
 
 // Match cover + crop for photo slots and xMidYMid meet for other uploads.
@@ -13,5 +14,6 @@ export function acrylicPhotoResolution(object,photo,scale){
  return {objectId:object.id,uploadId:photo.uploadId,label:object.label||object.name||(object.type==='photoSlot'?'Foto':'Hinzugefügtes Bild'),
   source:photo.edited?'edited':'original',path:source.path,width:source.width,height:source.height,
   placedWidthMm:Number(widthMm.toFixed(3)),placedHeightMm:Number(heightMm.toFixed(3)),
+  frameCovered:photoFrameCovered(object,source),
   effectiveDpi:Math.floor(Math.min(source.width/widthMm,source.height/heightMm)*25.4)};
 }

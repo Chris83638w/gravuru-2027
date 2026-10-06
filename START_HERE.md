@@ -1,3 +1,11 @@
+## Aktuell: Fotofenster-Abdeckung im Dashboard – 06.10.2026
+
+Branch `task/acrylic-photo-coverage-20261006`, Basis `537730a2ac659f2d8cd244d5efa1037a0e07ef5c` (Remote bestätigt). Neue Acryl-Prüfstände zeigen pro Foto, ob seine Bildfläche die tatsächliche Maske vollständig abdeckt. Rechteck, Kreis, Ellipse und Bogen einschließlich Fotozoom, Versatz und Drehung geprüft. Bewusst freie Stellen bleiben erlaubt; keine Exportblockade, automatische Verschiebung oder neue Druck-Überlappungswarnung.
+
+**289 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Beide Browserfälle (vollständig bedeckt/teilweise frei) mit PDF/ZIP auf Desktop/Handy/Tablet bestanden. [Nachweis und Bilder](docs/dashboard-20261004/ACRYL-FOTOFENSTER-20261006.md).
+
+Abdeckung betrifft die Bildfläche, nicht transparente Pixel innerhalb der Datei. Alte Prüfstände bleiben unverändert. Keine Veröffentlichung oder privaten Daten. Nächste externe Abnahme bleibt die bestätigte Shopify-Test-App-Anbindung und reale Maschinenprobe. Nachfolgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Bildauflösung im Acryl-Prüfstand – 06.10.2026
 
 Branch `task/acrylic-photo-quality-20261006`, Basis `ef36ab0106be85baae2eef58997cb02e8792461b` (Remote bestätigt). Das Dashboard zeigt die Pixeldichte hochgeladener Bilder in ihrer gespeicherten Platzierung, einschließlich Plattengröße, Zoom und bearbeiteter Bildfassung. Unter 300 dpi gibt es einen konkreten Hinweis; höherer Export-dpi-Wert ersetzt keine fehlenden Bilddetails. Werte sind im Prüfstand/ZIP gesichert. Alte Stände und Originalbilder bleiben unverändert.

@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-10-06T09:13:08.788656+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "published": false,
+  "machineApproved": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "widthMm": 200,
+  "heightMm": 266.7,
+  "dpi": 300,
+  "deviceGray": true,
+  "noPrintWhite": true,
+  "separateContour": true,
+  "originalPreserved": true,
+  "vectorWithPhotoRejected": true,
+  "repeatPdfByteIdentical": true,
+  "photoQualityVisible": true,
+  "photoFrameCovered": true,
+  "photoEffectiveDpi": 42,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-06T09:13:19.025232+00:00"
+}

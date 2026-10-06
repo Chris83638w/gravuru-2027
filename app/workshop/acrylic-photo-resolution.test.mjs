@@ -15,7 +15,7 @@ test('native photo density follows physical scale and crop zoom, not pan or rota
 test('edited image pixels and each placement determine density; originals remain intact',()=>{
  const edited={...photo,edited:{path:'fotos/edited.png',width:200,height:200}};
  const result=measure(slot,edited,1);
- assert.equal(result.source,'edited');assert.equal(result.effectiveDpi,50);
+ assert.equal(result.frameCovered,true);assert.equal(measure({...slot,uxPhotoCrop:{zoom:.5}},edited,1).frameCovered,false);assert.equal(result.source,'edited');assert.equal(result.effectiveDpi,50);
  assert.equal(result.placedHeightMm,101.6);assert.equal(result.path,'fotos/edited.png');
  assert.equal(photo.width,1200);assert.equal(edited.width,1200);
  assert.equal(measure({...slot,w:50.8,h:25.4},edited,1).effectiveDpi,100);

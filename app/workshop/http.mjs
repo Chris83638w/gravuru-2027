@@ -395,7 +395,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='POST'){const data=await body(req);return json(res,201,repository.create(data.document));}
         fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       }
-      const match=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)(?:\/(copy|archive|publish|revisions|restore|resolve|validate-design|shop-preparation))?$/);
+      const match=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)(?:\/(copy|archive|publish|revisions|restore|resolve|validate-design|shop-preparation|shop-bindings))?$/);
       if(!match)fail(404,'not_found','Werkstattfunktion nicht gefunden.');
       const [,id,action]=match;
       if(method==='GET'){
@@ -411,6 +411,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(isFormProduct(current.document)&&['publish','resolve','validate-design'].includes(action))fail(422,'form_incomplete','Formprodukt bleibt ein Entwurf: Die Shop-/Bestellbindung und reale Fertigungsfreigabe stehen noch aus. Design, Kundenentwurf und technische Ausgaben können bereits geprüft werden.');
       if(!action&&method==='PATCH')return json(res,200,repository.save(id,data.document,data.expectedRevision));
       if(method!=='POST')fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      if(action==='shop-bindings'){
+        if(Object.keys(data).some(k=>!['expectedRevision','shopDomain','mappings'].includes(k)))fail(422,'binding_fields','Unbekannte Zuordnungsfelder.');
+        if(current.revision!==data.expectedRevision)fail(409,'version_conflict','Der Produktstand wurde geändert. Bitte neu laden.');
+        return json(res,200,orderIntake.bindVariants({record:current,shopDomain:data.shopDomain,mappings:data.mappings}));
+      }
       if(action==='copy')return json(res,201,repository.copy(id,data));
       if(action==='archive')return json(res,200,repository.setArchived(id,data));
       if(action==='publish')return json(res,200,repository.publish(id,data));

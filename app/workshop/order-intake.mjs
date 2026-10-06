@@ -1,3 +1,4 @@
+import {prepareShopProduct} from './shop-preparation.mjs';
 import {createOrderStatus} from './order-status.mjs';
 import {resolveProduct,PRODUCT_SCHEMA} from './product-model.mjs';
 import {createHash,createHmac,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
@@ -37,7 +38,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
  CREATE TRIGGER IF NOT EXISTS form_order_line_fixed BEFORE UPDATE ON form_order_lines BEGIN SELECT RAISE(ABORT,'Order lines are immutable');END;
  CREATE TRIGGER IF NOT EXISTS form_order_line_no_delete BEFORE DELETE ON form_order_lines BEGIN SELECT RAISE(ABORT,'Order lines require explicit retention');END;
  CREATE TRIGGER IF NOT EXISTS form_order_event_fixed BEFORE UPDATE ON form_order_events BEGIN SELECT RAISE(ABORT,'Order events are immutable');END;`);
- const tx=fn=>{db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}},at=()=>new Date(clock()).toISOString();
+ const tx=fn=>{if(db.isTransaction)return fn();db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}},at=()=>new Date(clock()).toISOString();
  const binding=id=>{const r=db.prepare('SELECT * FROM form_shop_bindings WHERE id=?').get(id);if(!r)fail(404,'Shop-Zuordnung nicht gefunden.');return r;};
  const selection=id=>{const r=db.prepare('SELECT options FROM form_shop_binding_selections WHERE binding_id=?').get(id);return r?JSON.parse(r.options):null;};
  const safeBinding=r=>({id:r.id,shopDomain:r.shop,variantId:r.variant_id,productId:r.product_id,productRevision:r.product_revision,unitCents:r.unit_cents,...(selection(r.id)?{options:selection(r.id)}:{})});
@@ -45,21 +46,43 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
  const get=id=>{const r=db.prepare('SELECT document FROM form_order_lines WHERE id=?').get(id);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
  return {get,status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
   // Caller supplies the actual saved product record, never a browser price.
-  bind({shopDomain,variantId,record,snapshotId}){
+  bind({shopDomain,variantId,record,snapshotId,options:selected}){
    if(!domain(shopDomain))fail(422,'Bitte die myshopify.com-Domain des Entwicklungsstores angeben.');variantId=identifier(variantId);
    const d=record.document;let options=null,unit=d.basePriceCents;
    if(d.kind!=='product'||record.status==='archived')fail(422,'Ein aktives eigenes Produkt ist erforderlich.');
    if(d.schema===PRODUCT_SCHEMA){
-    if(!snapshotId)fail(422,'Für Acryl bitte zuerst einen festen Prüfstand auswählen.');const m=snapshot(snapshotId);
-    if(m.schema!==ACRYLIC_REVIEW||m.product.id!==record.id||m.product.revision!==record.revision||!m.selection)fail(422,'Acryl-Prüfstand und Produktstand stimmen nicht überein.');
-    const resolved=resolveProduct(d,{options:m.selection.options});options=resolved.resolvedOptions;unit=resolved.price.unitCents;
-    if(m.selection.price.unitCents!==unit)fail(422,'Zusätzliche kostenpflichtige Elemente benötigen zuerst eine bestätigte Shop-Aufpreisbindung.');
+    if(selected!==undefined){
+     if(snapshotId||!selected||typeof selected!=='object'||Array.isArray(selected))fail(422,'Ausführung nicht eindeutig.');
+     const resolved=resolveProduct(d,{options:selected});options=resolved.resolvedOptions;unit=resolved.price.unitCents;
+     if(optionKey(options)!==optionKey(selected))fail(422,'Die vollständige gespeicherte Ausführung angeben.');
+    }else{
+     if(!snapshotId)fail(422,'Für Acryl bitte zuerst einen festen Prüfstand auswählen.');const m=snapshot(snapshotId);
+     if(m.schema!==ACRYLIC_REVIEW||m.product.id!==record.id||m.product.revision!==record.revision||!m.selection)fail(422,'Acryl-Prüfstand und Produktstand stimmen nicht überein.');
+     const resolved=resolveProduct(d,{options:m.selection.options});options=resolved.resolvedOptions;unit=resolved.price.unitCents;
+     if(m.selection.price.unitCents!==unit)fail(422,'Zusätzliche kostenpflichtige Elemente benötigen zuerst eine bestätigte Shop-Aufpreisbindung.');
+    }
    }else if(d.schema!=='gravuru-form-product/v1'||unit===null||!d.designs?.length)fail(422,'Ein Produkt mit Design und Preis ist erforderlich.');
    return tx(()=>{
     const old=db.prepare('SELECT * FROM form_shop_bindings WHERE shop=? AND variant_id=? AND product_id=? AND product_revision=?').get(shopDomain,variantId,record.id,record.revision);
     if(old){if(optionKey(selection(old.id))!==optionKey(options)||old.unit_cents!==unit)fail(409,'Diese Shop-Variante ist bereits einer anderen Ausführung zugeordnet.');return safeBinding(old);}
     const id='binding_'+randomUUID();db.prepare('INSERT INTO form_shop_bindings VALUES(?,?,?,?,?,?,?)').run(id,shopDomain,variantId,record.id,record.revision,unit,at());
     if(options)db.prepare('INSERT INTO form_shop_binding_selections VALUES(?,?)').run(id,JSON.stringify(options));return safeBinding(binding(id));
+   });
+  },
+  bindVariants({record,shopDomain,mappings}){
+   const plan=prepareShopProduct(record);
+   if(!plan.sourceReady)fail(422,'Produkt, Designs, Material und Grundpreise zuerst vollständig vorbereiten.');
+   if(!domain(shopDomain)||!Array.isArray(mappings)||!mappings.length||mappings.length>plan.variants.length)fail(422,'Shop und mindestens eine gültige Ausführung angeben.');
+   const keys=new Set(),ids=new Set(),mapped=mappings.map(m=>{
+    if(!m||Object.keys(m).some(k=>!['key','variantId'].includes(k)))fail(422,'Nur Ausführung und Varianten-ID angeben; Preise kommen aus dem Produktstand.');
+    const variant=plan.variants.find(v=>v.key===m.key),variantId=identifier(m.variantId);
+    if(!variant||keys.has(m.key)||ids.has(variantId))fail(422,'Ausführung oder Shop-Variante fehlt oder wurde doppelt zugeordnet.');keys.add(m.key);ids.add(variantId);return {variant,variantId};
+   });
+   return tx(()=>{
+    const before=this.bindings().filter(b=>b.shopDomain===shopDomain&&b.productId===record.id&&b.productRevision===record.revision);
+    for(const {variant,variantId} of mapped)if(before.some(b=>optionKey(b.options)===optionKey(variant.options)&&b.variantId!==variantId))fail(409,'Diese Ausführung ist bereits anders zugeordnet. Bestehende Bindungen bleiben erhalten; Änderungen benötigen einen neuen Produktstand.');
+    const bindings=mapped.map(({variant,variantId})=>this.bind({record,shopDomain,variantId,...(record.document.schema===PRODUCT_SCHEMA?{options:variant.options}:{})}));
+    return {bindings,created:bindings.filter(b=>!before.some(old=>old.id===b.id)).length,configuration:plan.configuration,sourceSha256:plan.sha256,shopVerified:false,sent:false};
    });
   },
   offer({bindingId,snapshotId,quantity}){return tx(()=>{const b=binding(bindingId),m=snapshot(snapshotId);if(!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(422,'Menge: 1 bis 99.');if(m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==b.unit_cents||m.product.currency!=='EUR')fail(422,'Prüfstand und Shop-/Preisbindung stimmen nicht überein.');const chosen=selection(b.id);if(m.schema===ACRYLIC_REVIEW){if(!chosen||optionKey(chosen)!==optionKey(m.selection?.options))fail(422,'Die Acryl-Ausführung passt nicht zur Shop-Variante.');if(quantity!==m.selection.price.quantity)fail(422,'Die Menge gehört zum gesicherten Acrylstand. Für eine andere Menge bitte neu sichern.');}else if(chosen)fail(422,'Diese Bindung benötigt einen Acryl-Prüfstand.');const id='offer_'+randomUUID(),token=randomBytes(32).toString('hex');db.prepare('INSERT INTO form_order_offers VALUES(?,?,?,?,?,?,?,?)').run(id,sha(token),bindingId,snapshotId,m.packageSha256,quantity,at(),clock()+7*86400000);return {id,property:{name:'_gravuru_offer',value:token},variantId:b.variant_id,quantity,unitCents:b.unit_cents,currency:'EUR',scope:'test-checkout-only'};});},

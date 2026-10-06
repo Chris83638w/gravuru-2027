@@ -1,3 +1,9 @@
+## Aktuell: Gemeinsame Varianten-Zuordnung – 06.10.2026
+
+Branch `task/shop-variant-mapping-20261006`, Basis `8b4bacf38e39a3a3b4285115c10c96252e1322a3`. In **Shop vorbereiten** lassen sich jetzt alle 28 Acryl-Ausführungen zusammen vorhandenen Varianten-IDs zuordnen. Serverpreise aus gespeichertem Produktstand, gemeinsames Speichern mit vollständigem Zurückrollen bei Fehler, erhaltene historische Bindungen und Anschluss an gesicherte Kundenentwürfe. **300 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/SHOP-VARIANTENZUORDNUNG-20261006.md).
+
+Nur lokale Vorbereitung mit synthetischen Daten: Variantenexistenz und Shoppreise noch nicht online bestätigt; nichts an Shopify gesendet oder veröffentlicht. Nächster Schritt: echte Varianten-/Preisprüfung nach bestätigter Test-App-Anbindung. Corel-Probe bleibt unabhängig beim Nutzer zur Abnahme. Nachfolgende Abschnitte sind historische Nachweise.
+
 ## Aktuell: Spätere Bestellstatusmeldungen – 06.10.2026
 
 Branch `task/order-status-20261006`, Basis `95788388cb853a7a76c3bb2ff723e334be25caa4`. Dashboard zeigt Teil-/Vollerstattung und Storno zusätzlich zum unveränderten ursprünglichen Bestellstand; verspätete Meldungen und Wiederholungen geprüft. **296 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet bestanden.** [Nachweis und Handyansicht](docs/dashboard-20261004/BESTELLSTATUS-20261006.md).

@@ -1,3 +1,4 @@
+import {openRevisionCompare} from './revision-compare-ui.mjs';
 import {merchantRequest as fetch} from './merchant-request.mjs';
 import {installFormDesigns} from './form-design-ui.mjs';
 const $=s=>document.querySelector(s),clone=v=>structuredClone(v),esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -22,6 +23,7 @@ function notice(text,error=false){$('#notice').textContent=text;$('#notice').cla
 async function api(url,body,method='POST'){const r=await fetch(url,body?{method,headers:{'Content-Type':'application/json','X-Gravuru-CSRF':token},body:JSON.stringify(body)}:{});const value=await r.json();if(!r.ok)throw Object.assign(Error(value.error?.message||'Anfrage fehlgeschlagen.'),{status:r.status});return value;}
 const url=()=>'/api/workshop/products/'+encodeURIComponent(id);
 function sync(){
+ $('#compare-revisions').hidden=!historical;$('#compare-revisions').disabled=busy;
  const readOnly=busy||historical||record?.status==='archived';
  $('#print-surface-options').hidden=draft?.processingMethod!=='print';
  for(const input of document.querySelectorAll('#product-form input,#product-form select,#product-form textarea'))input.disabled=readOnly;
@@ -66,6 +68,7 @@ $('#product-form').addEventListener('input',()=>{if(busy||historical||record.sta
 $('#product-form').addEventListener('submit',e=>e.preventDefault());
 $('#save').addEventListener('click',async()=>{if(busy||!$('#product-form').reportValidity())return;busy=true;sync();try{const r=await api(url(),{expectedRevision:currentRevision,document:draft},'PATCH');currentRevision=r.revision;render(r);await history();notice('Gespeichert. Stand '+r.revision+' ist jetzt verfügbar.');}catch(e){failure(e);}finally{busy=false;sync();}});
 $('#history').addEventListener('change',async()=>{if(dirty&&!confirm('Ungespeicherte Änderungen verwerfen und den gewählten Stand ansehen?')){$('#history').value=record.revision;return;}busy=true;sync();try{render(await api(url()+'?revision='+$('#history').value));notice(historical?'Historischer Stand: unveränderlich. Die PDF gehört genau zu diesem Stand.':'Aktueller Stand geladen.');}catch(e){failure(e);}finally{busy=false;sync();}});
+$('#compare-revisions').addEventListener('click',()=>{if(!busy&&historical)void openRevisionCompare({id,from:record.revision,to:currentRevision});});
 $('#restore').addEventListener('click',async()=>{if(busy||!historical)return;busy=true;sync();try{const r=await api(url()+'/restore',{expectedRevision:currentRevision,revision:record.revision});currentRevision=r.revision;render(r);await history();notice('Früheren Stand als neue Revision '+r.revision+' übernommen.');}catch(e){failure(e);}finally{busy=false;sync();}});
 $('#reload').addEventListener('click',async()=>{if(dirty&&!confirm('Deine ungespeicherten Eingaben verwerfen und aktuellen Stand laden?'))return;busy=true;sync();try{await current();notice('Aktueller Stand geladen.');}catch(e){failure(e);}finally{busy=false;sync();}});
 $('#save-separate').addEventListener('click',async()=>{if(busy||!$('#product-form').reportValidity())return;busy=true;sync();try{const r=await api('/api/workshop/products',{document:draft});dirty=false;location.href='/werkstatt/formprodukt/?configuration='+encodeURIComponent(r.id);}catch(e){failure(e);busy=false;sync();}});

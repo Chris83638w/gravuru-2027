@@ -16,6 +16,23 @@ import {merchantDownload} from './ui/merchant-downloads.mjs';
 const config={mode:'embedded-test',origin:'https://workshop.example',shopDomain:'fixture.myshopify.com',clientId:'fixture-client'};
 const sessions={mode:'test-only',shopDomain:config.shopDomain,clientId:config.clientId,secret:randomBytes(32).toString('hex')};
 
+test('product revision comparison requires merchant access, serves both editor assets and never writes history',async t=>{
+  const {request,workshop}=setup(t),authorization=jwt(),headers={authorization};
+  const first=workshop.repository.list()[0],doc=structuredClone(first.document);doc.name='Geänderter Produktname';
+  const second=workshop.repository.save(first.id,doc,first.revision),route=`/api/workshop/products/${first.id}/compare?from=${first.revision}&to=${second.revision}`;
+  const history=workshop.repository.history(first.id);
+  assert.equal((await request(route)).status,401);
+  assert.equal((await request(route,{headers:{authorization,host:'foreign.invalid'}})).status,403);
+  assert.equal((await request(route,{headers:{authorization,origin:'https://foreign.invalid'}})).status,403);
+  const result=await request(route,{headers});assert.equal(result.status,200,result.bytes.toString());assert.match(result.headers['cache-control'],/no-store/);
+  const value=JSON.parse(result.bytes);assert.equal(value.from.revision,first.revision);assert.equal(value.to.revision,second.revision);assert.ok(value.changes.some(c=>c.path.join('.')==='document.name'&&c.after.text===doc.name));
+  for(const query of ['from=1','from=1&to=0','from=1&to=1.5'])assert.equal((await request(`/api/workshop/products/${first.id}/compare?${query}`,{headers})).status,422);
+  assert.equal((await request(`/api/workshop/products/${first.id}/compare?from=1&to=999`,{headers})).status,404);
+  for(const asset of ['revision-compare-ui.mjs','revision-compare.css'])assert.equal((await request('/workshop-ui/'+asset,{headers})).status,200);
+  const form=await request('/werkstatt/formprodukt/',{headers});assert.ok(form.bytes.toString().includes('id="compare-revisions"'));
+  assert.deepEqual(workshop.repository.history(first.id),history);
+});
+
 test('variant report and saved checks require merchant authorization and preserve product snapshot separation',async t=>{
  const {request,workshop}=setup(t),authorization=jwt(),session=JSON.parse((await request('/api/workshop/session',{headers:{authorization}})).bytes);
  const headers={authorization,'x-gravuru-csrf':session.csrfToken,'content-type':'application/json',origin:config.origin},base='/api/workshop/variants/batch/';

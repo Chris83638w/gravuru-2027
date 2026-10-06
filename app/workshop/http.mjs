@@ -1,3 +1,4 @@
+import {compareProductRevisions} from './product-revision-compare.mjs';
 import {outputSpecification} from './output-specification.mjs';
 import {printPreview} from './print-preview.mjs';
 import {outputDownload,outputFormats} from './print-delivery.mjs';
@@ -556,12 +557,13 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='POST'){const data=await body(req);return json(res,201,repository.create(data.document));}
         fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       }
-      const match=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)(?:\/(copy|archive|publish|revisions|restore|resolve|validate-design|shop-preparation|shop-bindings))?$/);
+      const match=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)(?:\/(copy|archive|publish|revisions|compare|restore|resolve|validate-design|shop-preparation|shop-bindings))?$/);
       if(!match)fail(404,'not_found','Werkstattfunktion nicht gefunden.');
       const [,id,action]=match;
       if(method==='GET'){
         if(!action)return json(res,200,repository.get(id,{revision:revision(url.searchParams.get('revision'))}));
         if(action==='shop-preparation')return json(res,200,prepareShopProduct(repository.get(id,{revision:revision(url.searchParams.get('revision'))})));
+        if(action==='compare')return json(res,200,compareProductRevisions(repository,id,revision(url.searchParams.get('from')),revision(url.searchParams.get('to'))));
         if(action==='revisions')return json(res,200,{revisions:repository.history(id).map(({document,...record})=>({...record,createdAt:record.updatedAt,name:document.name}))});
         fail(405,'method_not_allowed','Diese Aktion benötigt eine Eingabe.');
       }

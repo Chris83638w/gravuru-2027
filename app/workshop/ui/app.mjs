@@ -1,3 +1,4 @@
+import {openRevisionCompare} from './revision-compare-ui.mjs';
 import {merchantRequest as fetch} from './merchant-request.mjs';
 import {installNativeProduction} from './native-production-ui.mjs';
 import {installProductOptions} from './product-options-ui.mjs';
@@ -26,6 +27,7 @@ async function api(path,{method='GET',body}={}){
 }
 function recordFrom(data){const record=data.record||data;if(!record?.id||!Number.isInteger(record.revision)||!record.document)throw Error('Die gespeicherte Konfiguration ist unvollständig.');return record;}
 function syncControls(){
+ for(const button of $$('[data-compare-revision]'))button.disabled=state.busy||state.loadingRecord||Number(button.dataset.compareRevision)===state.record?.revision;
  const archived=state.record?.status==='archived';
  $('#save-product').disabled=state.busy||!state.dirty||archived;
  $('#copy-product').disabled=state.busy||!state.record||state.dirty;
@@ -203,7 +205,7 @@ function renderProfiles(){
  }).join('');
 }
 function renderHistory(){
- $('#panel-history').innerHTML='<h3>Gespeicherte Stände</h3><p>Die historische Vorschau öffnet genau den gespeicherten Stand mit seinen damaligen Profilzuordnungen. Die Wiederherstellung erzeugt einen neuen Stand; der Verlauf bleibt erhalten.</p>'+(!state.history.length?'<p class="empty-state">'+escape(state.historyError||'Verlauf wird geladen …')+'</p>'+(state.historyError?'<button type="button" data-action="reload-history">Verlauf erneut laden</button>':''):state.history.map(item=>'<div class="revision-row"><span class="revision-number">'+escape(item.revision)+'</span><div><strong>'+escape(item.name||'Konfiguration')+(item.revision===state.record.revision?' · Aktuell':'')+'</strong><small>'+escape(date(item.createdAt))+'</small><a class="historical-preview" data-preview-revision="'+escape(item.revision)+'" href="/?'+escape(new URLSearchParams({configuration:state.record.id,revision:String(item.revision)}))+'" target="_blank" rel="noopener">Historische Vorschau ↗</a></div><button type="button" data-restore="'+escape(item.revision)+'" '+(item.revision===state.record.revision?'disabled':'')+'>Stand wiederherstellen</button></div>').join(''));
+ $('#panel-history').innerHTML='<h3>Gespeicherte Stände</h3><p>Die historische Vorschau öffnet genau den gespeicherten Stand mit seinen damaligen Profilzuordnungen. Die Wiederherstellung erzeugt einen neuen Stand; der Verlauf bleibt erhalten.</p>'+(!state.history.length?'<p class="empty-state">'+escape(state.historyError||'Verlauf wird geladen …')+'</p>'+(state.historyError?'<button type="button" data-action="reload-history">Verlauf erneut laden</button>':''):state.history.map(item=>'<div class="revision-row"><span class="revision-number">'+escape(item.revision)+'</span><div><strong>'+escape(item.name||'Konfiguration')+(item.revision===state.record.revision?' · Aktuell':'')+'</strong><small>'+escape(date(item.createdAt))+'</small><a class="historical-preview" data-preview-revision="'+escape(item.revision)+'" href="/?'+escape(new URLSearchParams({configuration:state.record.id,revision:String(item.revision)}))+'" target="_blank" rel="noopener">Historische Vorschau ↗</a></div><div class="revision-actions"><button type="button" data-compare-revision="'+escape(item.revision)+'" '+(item.revision===state.record.revision?'disabled':'')+'>Mit aktuellem Stand vergleichen</button><button type="button" data-restore="'+escape(item.revision)+'" '+(item.revision===state.record.revision?'disabled':'')+'>Stand wiederherstellen</button></div></div>').join(''));
 }
 async function loadHistory(){
  if(!state.record)return;const id=state.record.id,ticket=++state.historyRequest;
@@ -301,6 +303,7 @@ document.addEventListener('click',async event=>{
  const designAction=event.target.closest('[data-design-action]');if(designAction){if(!designAction.disabled)changeDesign(designAction.dataset.designAction,designAction.dataset.designId);return;}
  const product=event.target.closest('[data-product-id]');
  if(product){try{await loadRecord(product.dataset.productId);window.scrollTo({top:0,behavior:'instant'});}catch(error){notify(errorMessage(error),'error');}return;}
+ const compare=event.target.closest('[data-compare-revision]');if(compare){if(!state.busy&&!state.loadingRecord&&state.record)await openRevisionCompare({id:state.record.id,from:Number(compare.dataset.compareRevision),to:state.record.revision});return;}
  const restore=event.target.closest('[data-restore]');if(restore){await mutateRecord('restore',{revision:Number(restore.dataset.restore)});return;}
  const button=event.target.closest('[data-action]');if(!button||button.disabled)return;
  try{

@@ -1,4 +1,25 @@
-## Aktuell: Ausführungsgruppen aus Excel wiederaufnehmen – 06.10.2026
+## Aktuell: Gespeicherte Produktstände vergleichen – 06.10.2026
+
+Branch **`task/product-revision-compare-20261006`**, bestätigte GitHub-Basis **`f1ef6976906d1eba8e40ffea3cb0a98d3b4fff20`**. In der Acryl-Werkstatt unter „Gespeicherte Stände“ und im Formprodukt beim Ansehen eines historischen Standes gibt es jetzt **„Mit aktuellem Stand vergleichen“**. Das Fenster zeigt die beiden exakten Revisionsnummern und Änderungen an Produktdaten, Texten, Preisen, Elementrechten sowie gesicherten Profil-/Fertigungszuordnungen. Kein automatisches Übernehmen oder Zurücksetzen; ungespeicherte Eingaben gehören ausdrücklich nicht zum Vergleich. Das bisherige Wechseln eines Formproduktstandes behält seine Rückfrage bei ungespeicherten Eingaben.
+
+**41 gezielte Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell (461440 Editor-Bytes).** Reale temporäre SQLite-Datenbanken, synthetische Produktdaten und tatsächlicher HTTP-Handler im Prozess. Geprüft: stabile Element-IDs, hinzugefügt/entfernt/umgeordnet, unveränderte Historie, historische Profilbindung, ungültige/fehlende Revisionen, Zugriff ohne Händlersitzung, Fremd-Host/Origin, Auslieferung beider neuen UI-Dateien. Große Inhalte bleiben zusammengefasst, höchstens 200 Änderungen werden angezeigt; eine längere Liste wird ausdrücklich gekennzeichnet. Vergleich ausschließlich gespeicherter Produktstände einschließlich ihrer Metadaten, keine Prüfung externer Quelldateien, aktueller Shop-Daten oder Bestellungen.
+
+Dateien: `app/workshop/product-revision-compare.mjs`, zugehöriger Test, gemeinsame UI `revision-compare-ui.mjs`/`revision-compare.css`, Einbindung in beide vorhandenen Editoren und geschützten HTTP-Handler. Keine Datenbankmigration und keine private Datei im Commit.
+
+Ausgeführt:
+
+```sh
+node --test --test-isolation=none app/workshop/product-revision-compare.test.mjs app/workshop/repository.test.mjs app/workshop/shopify-admin-host.test.mjs
+node --check app/workshop/ui/revision-compare-ui.mjs
+node --check app/workshop/ui/app.mjs
+node --check app/workshop/ui/form-product-ui.mjs
+npm run build
+git diff --check
+```
+
+**Grenze:** Keine neue Browser-/Touch-Abnahme, kein Deployment. Die bestehende veröffentlichte Testseite wird durch diesen GitHub-Stand nicht verändert. Nächster Abnahmeschritt: In einer ausführbaren geschützten Vorschau beide Vergleichseinstiege öffnen, Scrollen/Schließen/Fokus prüfen und bestätigen, dass ein ungespeicherter Acryl-Entwurf erhalten bleibt. Die bereits dokumentierte Laufzeitblockade für Listener/Browser ist durch diese Tests nicht aufgehoben. Historische Zwischenstände folgen.
+
+## Historisch: Ausführungsgruppen aus Excel wiederaufnehmen – 06.10.2026
 
 Branch **`task/variant-import-resume-20261006`**, bestätigte GitHub-Basis **`2828939c24f83115e56392f312e89b87fc7ebec8`**. Auch die vorhandene Ausführungsgruppen-Ansicht kann geprüfte Tabellen privat speichern, frisch wieder öffnen und gezielte Excel-Korrekturen samt allen zugehörigen Varianten herunterladen. Produktserien und Ausführungsgruppen bleiben getrennt; beide verwenden dieselbe geprüfte Speicherfunktion. Preise, Maße und Designs kommen weiterhin aus den unveränderten gespeicherten Produktständen.
 

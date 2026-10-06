@@ -8,7 +8,7 @@ const $=selector=>document.querySelector(selector);
 const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
-const state={record:null,draft:null,products:[],dirty:false,busy:false,csrf:null,tab:'designs',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],profiles:[],profileSettings:null};
+const state={record:null,draft:null,products:[],dirty:false,busy:false,loadingRecord:false,csrf:null,tab:'designs',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],historyError:null,historyRequest:0,historyLoading:false,profiles:[],profileSettings:null};
 let overview,productOptions,nativeProduction;
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
@@ -31,6 +31,8 @@ function syncControls(){
  $('#publish-product').disabled=state.busy||!state.record||state.dirty||archived||state.record.publishedRevision===state.record.revision;
  $('#archive-product').disabled=state.busy||!state.record||state.dirty;
  $('#new-product').disabled=state.busy;
+ for(const button of $$('[data-action=overview],[data-action=reload-record],[data-view]'))button.disabled=state.busy;
+ for(const button of $$('[data-action=reload-history]'))button.disabled=state.busy||state.historyLoading;
  $('#create-submit').disabled=state.busy;
  for(const button of $$('[data-product-id],[data-restore]'))button.disabled=state.busy||(button.dataset.restore!==undefined&&(state.dirty||archived||Number(button.dataset.restore)===state.record?.revision));
  for(const button of $$('[data-design-action]')){
@@ -38,9 +40,9 @@ function syncControls(){
   button.disabled=state.busy||archived||index<0||(action==='copy'&&designs.length>=60)||(action==='delete'&&designs.length<=1)||(action==='up'&&index===0)||(action==='down'&&index===designs.length-1)||(action==='default'&&designs[index]?.id===state.draft.config.profile.defaultDesignId);
  }
  for(const field of $$('#product-form input,#product-form select,#product-form textarea'))field.disabled=state.busy||archived||field.dataset.rightAllowed==='false'||(field.dataset.profileId!==undefined&&state.draft?.profileAssignments?.[field.dataset.profileId]?.mode!=='override');
- $('#save-indicator').textContent=state.busy?'Wird gespeichert …':state.dirty?'Ungespeicherte Änderungen':'Alle Änderungen gespeichert';
+ $('#save-indicator').textContent=state.loadingRecord?'Produkt wird geladen …':state.busy?'Wird gespeichert …':state.dirty?'Ungespeicherte Änderungen':'Alle Änderungen gespeichert';
  $('#save-indicator').dataset.dirty=String(state.dirty);
- $('#save-product').textContent=state.busy?'Wird gespeichert …':'Änderungen speichern';
+ $('#save-product').textContent=state.loadingRecord?'Wird geladen …':state.busy?'Wird gespeichert …':'Änderungen speichern';
  $('#print-export-link').hidden=state.dirty||!state.record;
  for(const id of ['preview-link','customer-view']){const link=$('#'+id);link.hidden=state.dirty||!state.record||archived;link.title=state.record?'Bestehenden Konfigurator mit gespeichertem Stand '+state.record.revision+' öffnen':'';}
  productEditor.sync();overview?.sync();productOptions?.sync();nativeProduction?.sync();
@@ -87,16 +89,21 @@ async function canDiscard(){
 }
 function applyRecord(record){
  if(record.document.schema==='gravuru-form-product/v1'){location.href='/werkstatt/formprodukt/?configuration='+encodeURIComponent(record.id);return false;}
- const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
+ const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;state.history=[];state.historyError=null;++state.historyRequest;state.historyLoading=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
  $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;$('.overview').hidden=true;$('.page-heading').hidden=true;
  renderEditor();renderList();syncControls();
  history.replaceState(null,'','/werkstatt/?configuration='+encodeURIComponent(record.id));
 }
 async function loadRecord(id,{checkDirty=true}={}){
  if(state.busy)return;if(checkDirty&&!await canDiscard())return;
+ // The discard decision precedes the request. Do not allow a new edit or another
+ // record operation during the response, which would silently replace that edit.
+ if(state.busy)return;state.loadingRecord=true;setBusy(true);
  const request=++state.recordRequest;
- const record=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(id)));if(request!==state.recordRequest)return;
- if(applyRecord(record)===false)return;await loadHistory();
+ try{
+  const record=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(id)));if(request!==state.recordRequest)return;
+  if(applyRecord(record)===false)return;await loadHistory();
+ }finally{state.loadingRecord=false;setBusy(false);}
 }
 const field=(label,path,value,{help='',type='text',max=200,full=false,required=false}={})=>'<label'+(full?' class="full"':'')+'>'+escape(label)+'<input type="'+type+'" data-path="'+escape(path)+'" value="'+escape(value)+'" maxlength="'+max+'" '+(required?'required':'')+'>'+ (help?'<p class="field-help">'+escape(help)+'</p>':'')+'</label>';
 const textArea=(label,path,value,{help='',rows=3,max=500}={})=>'<label class="full">'+escape(label)+'<textarea data-path="'+escape(path)+'" rows="'+rows+'" maxlength="'+max+'">'+escape(value)+'</textarea>'+(help?'<p class="field-help">'+escape(help)+'</p>':'')+'</label>';
@@ -195,12 +202,19 @@ function renderProfiles(){
  }).join('');
 }
 function renderHistory(){
- $('#panel-history').innerHTML='<h3>Gespeicherte Stände</h3><p>Die historische Vorschau öffnet genau den gespeicherten Stand mit seinen damaligen Profilzuordnungen. Die Wiederherstellung erzeugt einen neuen Stand; der Verlauf bleibt erhalten.</p>'+(!state.history.length?'<p class="empty-state">Verlauf wird geladen …</p>':state.history.map(item=>'<div class="revision-row"><span class="revision-number">'+escape(item.revision)+'</span><div><strong>'+escape(item.name||'Konfiguration')+(item.revision===state.record.revision?' · Aktuell':'')+'</strong><small>'+escape(date(item.createdAt))+'</small><a class="historical-preview" data-preview-revision="'+escape(item.revision)+'" href="/?'+escape(new URLSearchParams({configuration:state.record.id,revision:String(item.revision)}))+'" target="_blank" rel="noopener">Historische Vorschau ↗</a></div><button type="button" data-restore="'+escape(item.revision)+'" '+(item.revision===state.record.revision?'disabled':'')+'>Stand wiederherstellen</button></div>').join(''));
+ $('#panel-history').innerHTML='<h3>Gespeicherte Stände</h3><p>Die historische Vorschau öffnet genau den gespeicherten Stand mit seinen damaligen Profilzuordnungen. Die Wiederherstellung erzeugt einen neuen Stand; der Verlauf bleibt erhalten.</p>'+(!state.history.length?'<p class="empty-state">'+escape(state.historyError||'Verlauf wird geladen …')+'</p>'+(state.historyError?'<button type="button" data-action="reload-history">Verlauf erneut laden</button>':''):state.history.map(item=>'<div class="revision-row"><span class="revision-number">'+escape(item.revision)+'</span><div><strong>'+escape(item.name||'Konfiguration')+(item.revision===state.record.revision?' · Aktuell':'')+'</strong><small>'+escape(date(item.createdAt))+'</small><a class="historical-preview" data-preview-revision="'+escape(item.revision)+'" href="/?'+escape(new URLSearchParams({configuration:state.record.id,revision:String(item.revision)}))+'" target="_blank" rel="noopener">Historische Vorschau ↗</a></div><button type="button" data-restore="'+escape(item.revision)+'" '+(item.revision===state.record.revision?'disabled':'')+'>Stand wiederherstellen</button></div>').join(''));
 }
 async function loadHistory(){
- if(!state.record)return;const id=state.record.id;
- const data=await api('/api/workshop/products/'+encodeURIComponent(id)+'/revisions');if(state.record?.id!==id)return;
- state.history=data.revisions||[];renderHistory();syncControls();
+ if(!state.record)return;const id=state.record.id,ticket=++state.historyRequest;
+ state.historyLoading=true;syncControls();
+ try{
+  const data=await api('/api/workshop/products/'+encodeURIComponent(id)+'/revisions');if(state.record?.id!==id||ticket!==state.historyRequest)return;
+  state.history=data.revisions||[];state.historyError=null;renderHistory();syncControls();
+ }catch(error){
+  if(state.record?.id!==id||ticket!==state.historyRequest)return;
+  state.history=[];state.historyError='Verlauf konnte nicht geladen werden. Bitte erneut versuchen.';renderHistory();syncControls();
+  throw error;
+ }finally{if(ticket===state.historyRequest){state.historyLoading=false;syncControls();}}
 }
 function showTab(key,focus=false){
  if(!$('#tab-'+key))key='designs';state.tab=key;
@@ -298,6 +312,7 @@ document.addEventListener('click',async event=>{
   if(action==='close-dialog')button.closest('dialog')?.close();
   if(action==='save')await save();
   if(action==='refresh')await loadList();
+  if(action==='reload-history'){if(state.busy||state.historyLoading)return;await loadHistory();}
   if(action==='refresh-profiles'){await loadProfiles();notify('Profilbibliothek aktualisiert. Deine Produktänderungen bleiben erhalten.');}
   if(action==='reload-record'){if(await canDiscard()){await loadRecord(state.record.id,{checkDirty:false});notify('Aktueller gespeicherter Stand geladen.');}}
   if(action==='publish')await mutateRecord('publish',{});

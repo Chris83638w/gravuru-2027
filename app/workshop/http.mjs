@@ -197,9 +197,18 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='GET')return json(res,200,{jobs:exportJobs.list()});
         if(method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['snapshotId','settings'].includes(k)))fail(422,'invalid_export_request','Ungültiger Ausgabeauftrag.');const job=enqueueOutput(data.snapshotId,data.settings);return json(res,job.status==='completed'?200:202,job);}
       }
-      const exportMatch=pathname.match(/^\/api\/workshop\/export-jobs\/(job_[a-f0-9-]+)(?:\/(retry|download|preview))?$/);
+      const exportMatch=pathname.match(/^\/api\/workshop\/export-jobs\/(job_[a-f0-9-]+)(?:\/(retry|download|preview|checks))?$/);
       if(exportMatch){
         const id=exportMatch[1],job=exportJobs.get(id);if(!exportMatch[2]&&method==='GET')return json(res,200,{...job,events:exportJobs.events(id),downloadFormats:job.status==='completed'?outputFormats(customerDrafts.printProof(job.snapshotId,job.recipeKey)):[]});
+        if(exportMatch[2]==='checks'){
+          if(job.status!=='completed')fail(409,'export_not_ready','Nur eine fertig gespeicherte Ausgabe kann geprüft werden.');
+          const result=customerDrafts.printProof(job.snapshotId,job.recipeKey);if(!result)fail(409,'export_missing','Die gespeicherte Ausgabe fehlt.');
+          const formats=outputFormats(result).filter(f=>f!=='zip');
+          const files=formats.map(format=>{const f=outputDownload(result,format),sha256=createHash('sha256').update(f.bytes).digest('hex'),expected=format==='pdf'?(result.metadata.downloads?.pdf?.sha256||result.metadata.pdfSha256):result.metadata.downloads?.white?.sha256;if(expected&&sha256!==expected)fail(409,'export_changed','Die PDF weicht vom gesicherten Dateinachweis ab.');return {format,name:f.suffix,sha256};});
+          if(method==='GET')return json(res,200,{...exportJobs.checks.list(id),files,machines:PRODUCTION_MACHINES,productionReady:false});
+          if(method==='POST'){const data=await body(req,8192),file=files.find(f=>f.format===data.format);if(!file)fail(422,'check_file','Bitte eine vorhandene PDF auswählen.');return json(res,201,exportJobs.checks.add(id,data,file));}
+          fail(405,'method_not_allowed','Prüfvermerke nur lesen oder ergänzen.');
+        }
         if(exportMatch[2]==='retry'&&method==='POST'){await body(req);const next=exportJobs.retry(id);exportWorker.kick();return json(res,202,next);}
         if(exportMatch[2]==='preview'&&method==='POST'){
           const data=await body(req);if(Object.keys(data).some(k=>k!=='mode')||!['color','white'].includes(data.mode))fail(422,'preview_mode','Bitte Farbe oder Weiß wählen.');

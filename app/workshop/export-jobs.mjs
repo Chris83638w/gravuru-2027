@@ -1,3 +1,4 @@
+import {createOutputChecks} from './output-checks.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {randomUUID} from 'node:crypto';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'export_job'});};
@@ -8,6 +9,7 @@ export function createExportJobStore({filename,database,clock=Date.now}){
  CREATE TRIGGER IF NOT EXISTS form_export_request_immutable BEFORE UPDATE OF snapshot_id,recipe_key,recipe,settings ON form_export_jobs BEGIN SELECT RAISE(ABORT,'Export requests are immutable');END;
  CREATE TRIGGER IF NOT EXISTS form_export_event_immutable BEFORE UPDATE ON form_export_events BEGIN SELECT RAISE(ABORT,'Export events are immutable');END;
  CREATE TRIGGER IF NOT EXISTS form_export_event_no_delete BEFORE DELETE ON form_export_events BEGIN SELECT RAISE(ABORT,'Export events are immutable');END;`);
+ const checks=createOutputChecks(db);
  const tx=fn=>{db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}};
  const row=id=>{const r=db.prepare('SELECT * FROM form_export_jobs WHERE id=?').get(id);if(!r)fail(404,'Ausgabeauftrag nicht gefunden.');return r;};
  const publicRow=r=>({id:r.id,snapshotId:r.snapshot_id,recipeKey:r.recipe_key,recipe:r.recipe,settings:JSON.parse(r.settings),status:r.status,attempts:r.attempts,error:r.error,createdAt:r.created_at,updatedAt:r.updated_at});
@@ -16,7 +18,7 @@ export function createExportJobStore({filename,database,clock=Date.now}){
  const snapshotJobs=db.prepare('SELECT * FROM form_export_jobs WHERE snapshot_id=? ORDER BY created_at DESC,rowid DESC LIMIT 200');
  const snapshotCount=db.prepare('SELECT count(*) AS total FROM form_export_jobs WHERE snapshot_id=?');
  const owned=(r,token)=>r.status==='running'&&r.lease_token===token;
- return {get,forSnapshot(snapshotId){return {jobs:snapshotJobs.all(snapshotId).map(publicRow),total:snapshotCount.get(snapshotId).total};},list:()=>db.prepare('SELECT * FROM form_export_jobs ORDER BY created_at DESC,rowid DESC LIMIT 200').all().map(publicRow),events:id=>{row(id);return db.prepare('SELECT status,at,message FROM form_export_events WHERE job_id=? ORDER BY id').all(id);},
+ return {get,checks,forSnapshot(snapshotId){return {jobs:snapshotJobs.all(snapshotId).map(publicRow),total:snapshotCount.get(snapshotId).total};},list:()=>db.prepare('SELECT * FROM form_export_jobs ORDER BY created_at DESC,rowid DESC LIMIT 200').all().map(publicRow),events:id=>{row(id);return db.prepare('SELECT status,at,message FROM form_export_events WHERE job_id=? ORDER BY id').all(id);},
   enqueue({snapshotId,recipeKey,recipe,settings}){return tx(()=>{
    if(!db.prepare('SELECT 1 FROM form_review_snapshots WHERE id=?').get(snapshotId))fail(404,'Prüfstand nicht gefunden.');
    const old=db.prepare('SELECT * FROM form_export_jobs WHERE snapshot_id=? AND recipe_key=?').get(snapshotId,recipeKey);if(old)return publicRow(old);

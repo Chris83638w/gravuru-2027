@@ -1,3 +1,9 @@
+## Aktuell: Prüfvermerke zur konkreten Ausgabedatei – 06.10.2026
+
+Branch `task/output-check-journal-20261006`, Basis `26907140e0de3486e8a7bf04368913d7d556b146`. Unter **Ausgaben** können Dateiimport und Probedruck/Probegravur getrennt zur konkreten PDF-SHA dokumentiert werden. Unveränderlicher Verlauf, Wiederholschutz und Korrekturen als neue Einträge; PDFs, Aufträge und Berechtigungen bleiben unverändert. **310 Tests bestanden, 0 Fehler/Skips; Build 76/1; tatsächlicher Browserablauf Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/AUSGABE-PRUEFVERMERKE-20261006.md).
+
+Nur synthetische Prüfvermerke zur technischen Abnahme. Keine echte Maschinenprüfung behauptet, kein Deploy/Shopify-Schreibzugriff. Neue private Corel-Testdateien unverändert; deren Nutzerabnahme steht aus. Nächster fachlicher Anschluss: gespeicherte Fertigungsprofile auch dem nativen Acrylprodukt zuordnen (bisher nur Formprodukte); keine Ersatz-Druckparameter erfinden. Externe Betriebs-/Shop-Abnahme separat offen. Nachfolgende Nachweise sind historisch.
+
 ## Aktuell: Bestellposition direkt mit ihren Ausgaben verbunden – 06.10.2026
 
 Branch `task/order-output-complete-20261006`, Basis `b64494f3fec7e46af9f5e9f12473b2d066e86294` einschließlich Vektor-/Mimaki-Konturkorrektur. Testbestellung → gesicherte Gestaltung → Ausgabe → PDF/ZIP mit erhaltenem Bestellbezug. Dateien gehören zur festen Prüfstand-ID; andere Gestaltung desselben Produkts ausgeschlossen. Storno/Erstattung sichtbar, Originale und Berechtigungen unverändert. **307 Tests bestanden, 0 Fehler/Skips; Build 76/1; Browser Desktop/Handy/Tablet bestanden.** [Nachweis und Ansichten](docs/dashboard-20261004/BESTELLUNG-AUSGABEN-20261006.md).

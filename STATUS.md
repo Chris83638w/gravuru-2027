@@ -1,3 +1,11 @@
+## Aktuell: Acryl-Gravur aus dem gesicherten Prüfstand – 06.10.2026
+
+Branch `task/acrylic-engraving-output-20261006`, Basis `f5ea76d2fa266d37dfe5d4d2569fd33dc92bc1cf` (Remote bestätigt). Das vorhandene Dashboard erzeugt jetzt auch aus nativen Acryl-Gravurständen eine Graustufen-PDF für Fotos oder eine Vektor-PDF für reine Pfade. Standard 300 dpi, ohne Druckweiß; Schnittkontur separat im ZIP. Helle Gravur-Vorschaufarben werden für Schrift und Bibliotheksmotive als schwarze Gravurflächen ausgegeben. Originalfotos und eingefrorene Gestaltung bleiben erhalten.
+
+**283 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell.** Browserprüfung mit PDF/ZIP, Fehlerfall Foto im Vektormodus und Wiederholungsdownload auf Desktop/Handy/Tablet bestanden. [Nachweis und Beispiel](docs/dashboard-20261004/ACRYL-GRAVUR-AUS-PRUEFSTAND-20261006.md).
+
+Die frühere Sperre der nativen Acryl-Gravurausgabe ist damit aufgehoben. Technische Prüfung mit synthetischen Daten; keine Laserparameter-/Probegravurfreigabe, echte Shopify-Zahlung oder Veröffentlichung. Nächster externer Schritt bleibt die bestätigte Test-Store-/App-Anbindung; reale Maschinenabnahme separat. Nachfolgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Acryl-Bestellgestaltung als neuer Produktentwurf – 06.10.2026
 
 Branch `task/acrylic-order-product-20261006`, Basis `5f97ce4a964b4e80907bd4a4608c53d4599fcdcf` (Remote bestätigt). Im Dashboard: Testbestellung → Gestaltung als neues Produkt → Vorschau → privater Acrylentwurf im vorhandenen Editor. Layout/Farben/Schriftgestaltung und Löschungen bleiben erhalten; standardmäßig ursprüngliche Beispieltexte, Kundentexte nur ausdrücklich. Kundenfotos/Logos und Uploaddaten werden entfernt. Bestellung, Ausgangsprodukt und Shopbindungen bleiben unverändert; Wiederholung erzeugt keinen Doppelentwurf.

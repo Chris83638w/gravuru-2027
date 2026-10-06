@@ -1,0 +1,23 @@
+// Local synthetic order fixture. Never opens an existing/private customer database.
+import fs from 'node:fs';import path from 'node:path';import {execFileSync} from 'node:child_process';
+import {makeProductDocument} from '../../app/workshop/product-model.mjs';
+import {build} from '../../app/configurator/variant-m/build.mjs';
+import {createWorkshop} from '../../app/workshop/http.mjs';
+import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
+import {acrylicArtwork} from '../../app/workshop/acrylic-artwork.mjs';
+import {prepareAcrylicReview} from '../../app/workshop/acrylic-review.mjs';
+import {importEnvironment} from '../../app/workshop/design-assets.mjs';
+const directory=path.resolve(process.argv[2]||'');
+if(!process.argv[2]||!fs.existsSync(path.join(directory,'synthetic-acrylic-engraving-only'))||fs.existsSync(path.join(directory,'workshop.sqlite')))throw Error('Fresh marked fixture required.');
+const built=build({outputDirectory:directory}),seed=JSON.parse(fs.readFileSync(path.join(directory,'models.json')))[0];
+const w=createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
+const sourceConfig=structuredClone(seed.universal);sourceConfig.profile.processing.profileId='acrylic-engraving';
+const record=w.repository.create(makeProductDocument(sourceConfig,{name:'Acrylgravur · synthetische Prüfung',kind:'product'})),config=w.model(record.id,1).universal,source=config.profile.designs[0];
+const photo=execFileSync('python3',['-c',"from PIL import Image;import sys;Image.new('RGBA',(300,400),(130,160,190,255)).save(sys.stdout.buffer,format='PNG')"],{env:importEnvironment()}).toString('base64');
+const input={productId:record.id,productRevision:1,designId:source.id,objects:structuredClone(source.objects),options:{size:'large',base:'eiche',wall:'wall'},quantity:2,media:[{id:'synthetic-photo',original:photo}],preview:photo};Object.assign(input.objects.find(o=>o.type==='photoSlot'),{uxUploadId:'synthetic-photo',uxUploadKind:'photo'});
+input.objects.find(o=>o.id==='names').text='Mika & Chris';
+let bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});
+const artwork=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256,{engraving:true});input.preview=execFileSync('python3',['-c',"import sys,cairosvg;sys.stdout.buffer.write(cairosvg.svg2png(bytestring=sys.stdin.buffer.read(),output_width=450,output_height=600))"],{input:artwork.svg,env:importEnvironment()}).toString('base64');
+bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});const snapshot=w.customerDrafts.captureAcrylicReview('synthetic-order-fixture',bundle);
+const server=createPreviewServer({workshop:w,outputDirectory:directory});server.listen(0,'127.0.0.1',()=>fs.writeFileSync(path.join(directory,'ready.json'),JSON.stringify({url:'http://127.0.0.1:'+server.address().port,productId:record.id,snapshotId:snapshot.id,built}),{mode:0o600}));
+process.on('SIGTERM',()=>server.close(()=>{w.close();process.exit(0);}));

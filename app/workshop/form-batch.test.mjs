@@ -79,6 +79,21 @@ test('an empty form master takes the first child design as default and legacy ac
 });
 
 import {designExportData,designWorkbook} from './design-export.mjs';
+import {batchReportData,batchReportWorkbook} from './batch-report.mjs';
+import {execFile as asyncExecFile} from 'node:child_process';
+import {promisify} from 'node:util';
+test('correction workbook retains every child design of a failed product and excludes successful siblings',async t=>{
+ const f=await fixture(t),input={...f.input([{import_key:'failed',name:'Korrektur',price_eur:'bad'},{import_key:'good',name:'Schon fertig'}]),designRows:[{import_key:'failed',design_id:'design-color',design_file:'Farbe.svg',design_name:'Originalname'},{import_key:'failed',design_id:'added',design_file:'Farbe.svg',default_design:'1'},{import_key:'good',design_id:'design-two',design_file:'Farbe.svg'}],designFiles:[{name:'Farbe.svg',page:1,assetId:f.asset.assetId}]};
+ const plan=planBatch(f.w.repository,input,f.w.assets),first=commitBatch(f.w.repository,{...input,token:plan.token,skipErrors:true},f.w.assets);assert.equal(first.products.length,1);
+ const data=batchReportData(f.w.repository,{...input,mode:'errors'},f.w.assets);assert.equal(data.rows.length,1);assert.deepEqual(data.designRows,input.designRows.slice(0,2));
+ const bytes=await batchReportWorkbook(data),filePath=path.join(path.dirname(f.filename),'correction.xlsx');fs.writeFileSync(filePath,bytes);const file=JSON.parse((await promisify(asyncExecFile)('python3',['-c',`import io,json,sys
+from openpyxl import load_workbook
+w=load_workbook(sys.argv[1])
+def rows(name):
+ r=list(w[name].values);return [dict(zip(r[0],v)) for v in r[1:]]
+print(json.dumps({'rows':rows('Produkte'),'designRows':rows('Designs')}))`,filePath],{timeout:15000,env:importEnvironment()})).stdout);
+ file.rows[0].price_eur='24,99';file.designFiles=input.designFiles;const retry=planBatch(f.w.repository,file,f.w.assets);assert.equal(retry.valid,true,JSON.stringify(retry.report));const next=commitBatch(f.w.repository,{...file,token:retry.token},f.w.assets);assert.equal(next.products.length,1);const product=f.w.repository.get(next.products[0].id).document;assert.equal(product.designs.length,3);assert.equal(product.defaultDesignId,'added');assert.equal(product.designs[0].name,'Originalname');assert.equal(f.w.repository.get(first.products[0].id).revision,1);
+});
 function readDesignExcel(bytes){return JSON.parse(execFileSync('python3',['-c',`import sys,io,json
 from openpyxl import load_workbook
 w=load_workbook(io.BytesIO(sys.stdin.buffer.read()))

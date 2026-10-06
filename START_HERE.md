@@ -1,3 +1,11 @@
+## Aktuell: Excel-Prüfbericht und gezielte Fehlerkorrektur – 06.10.2026
+
+Branch **`task/batch-correction-20261006`**, GitHub-Basis **`4976bee6fa1785d23f8476c4bcb2b30b3261c0a3`**. Die bestehende Serienansicht bietet jetzt einen vollständigen Excel-Prüfbericht und eine separate Korrekturdatei nur für fehlerhafte Produktzeilen einschließlich ihrer Designzuordnungen. Der Server prüft beim Download erneut; keine Produktänderung durch den Export. Masterstand, Importschlüssel und erwartete Revision bleiben erhalten. Private Designbilder dieser Ansicht verwenden nun ebenfalls den authentifizierten Medienabruf.
+
+**15 unterschiedliche gezielte Prüfungen bestanden, 0 offene Fehler/Skips; Build 76 Ressourcen/1 Modell.** Belegt: 97 erfolgreiche Produkte bleiben nach Neustart erhalten, die drei korrigierten Zeilen ergänzen nur drei Produkte; wiederholter Import erzeugt keine Duplikate. [Bedienung, Prüfungen und Grenzen](docs/dashboard-20261004/EXCEL-FEHLERKORREKTUR-20261006.md).
+
+Keine neue Nutzerentscheidung für dieses Paket nötig. Keine Veröffentlichung oder reale Browserabnahme; GitHub-Sicherung allein aktualisiert die gehostete Vorschau nicht. Die Datei ermöglicht Wiederaufnahme durch erneutes Auswählen, ist noch kein dauerhaft gespeicherter Importauftrag im Dashboard. Nächster eigenständig umsetzbarer Dashboard-Schritt: private Importauftrag-Historie mit erneutem Prüfplan nach Wiederaufnahme. Shopify-Zugänge und Druckabnahme bleiben separat offen. Historische Zwischenstände folgen.
+
 ## Aktuell: Private Händlerbilder und ausführbarer Teststart – 06.10.2026
 
 Branch **`task/merchant-runtime-20261006`**, GitHub-Basis **`2104489fb9dea722081e847be60728e9ade6128c`**. Private Produkt-/Design-/Konturvorschauen laden im Händlerdashboard jetzt mit frischem Shopify-Token; Bildwechsel, entfernte Elemente und abgebrochene Antworten sind abgesichert. Ursprüngliche SVG-Bytes bleiben erhalten. Separater `npm run shopify:test`-Einstieg mit vorgeschalteter `npm run shopify:check`-Prüfung; keine automatische Aktivierung im normalen Start.

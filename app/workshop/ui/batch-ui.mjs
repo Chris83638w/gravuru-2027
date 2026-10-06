@@ -1,8 +1,10 @@
 import {merchantRequest as fetch} from './merchant-request.mjs';
 import {readBatchImport} from './batch-reader.mjs';
+import {merchantImageAttribute} from './merchant-media.mjs';
 const $=s=>document.querySelector(s),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false,formKeys=new Set();
 let exportBusy=false;
+let checkedInput=null;
 const uploadCache=new WeakMap();
 async function api(path,data){
   if(data&&!csrf)csrf=(await api('/api/workshop/session')).csrfToken;
@@ -13,8 +15,11 @@ function status(message,error=false){$('#status').textContent=message;$('#status
 function disabled(value){
   busy=value;for(const id of ['check','master','file','design-files','skip-errors'])$('#'+id).disabled=value;
   $('#import').disabled=value||!prepared||hasErrors&&!$('#skip-errors').checked;
+  $('#download-report').disabled=value||!checkedInput;
+  $('#download-errors').disabled=value||!checkedInput||!hasErrors;
 }
 function invalidate(){
+  checkedInput=null;$('#download-report').disabled=true;$('#download-errors').disabled=true;$('#report-status').textContent='';
   prepared=null;formKeys.clear();hasErrors=false;$('#skip-errors').checked=false;$('#partial-label').hidden=true;$('#review').hidden=true;$('#result').hidden=true;$('#import').disabled=true;$('#upload-report').textContent='';status('');
 }
 const base64=file=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Die Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
@@ -55,7 +60,7 @@ function artworkCell(row){
   if(row.artworks?.length)return '<strong>'+row.designCount+' Designs im Produkt</strong><small>Standard: '+escape(row.defaultDesignName)+'</small><details open><summary>'+row.artworks.length+' Designzuordnungen</summary><div class="batch-design-list">'+row.artworks.map(a=>'<div class="batch-design-item">'+artworkCell({artwork:a})+(a.default?'<strong>Standarddesign</strong>':'')+'</div>').join('')+'</div></details>';
   const a=row.artwork;if(!a)return row.status==='error'?'–':row.action==='update'?'Vorhandenes Design bleibt':'Masterdesign';
   const url='/api/workshop/design-assets/'+a.assetId+'/preview.svg',mm=v=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:2}).format(v);
-  return '<a href="'+url+'" target="_blank" rel="noopener" class="batch-preview"><img src="'+url+'" alt="Vorschau '+escape(a.name)+'" loading="lazy"></a><span>'+escape(a.name)+' · Seite '+a.page+'</span><small>'+escape(a.designName)+' · '+mm(a.placement.widthMm)+' × '+mm(a.placement.heightMm)+' mm</small><details><summary>Hinweise zur Vorlage</summary><ul>'+a.warnings.map(w=>'<li>'+escape(w)+'</li>').join('')+'</ul></details>';
+  return '<a href="'+url+'" target="_blank" rel="noopener" class="batch-preview"><img '+merchantImageAttribute(url)+' alt="Vorschau '+escape(a.name)+'" loading="lazy"></a><span>'+escape(a.name)+' · Seite '+a.page+'</span><small>'+escape(a.designName)+' · '+mm(a.placement.widthMm)+' × '+mm(a.placement.heightMm)+' mm</small><details><summary>Hinweise zur Vorlage</summary><ul>'+a.warnings.map(w=>'<li>'+escape(w)+'</li>').join('')+'</ul></details>';
 }
 $('#skip-errors').addEventListener('change',()=>disabled(busy));
 for(const id of ['file','master','design-files'])$('#'+id).addEventListener('change',invalidate);
@@ -67,6 +72,7 @@ $('#check').addEventListener('click',async()=>{
     const {rows,designRows}=await readBatchImport($('#file').files[0]);if(!option&&rows.some(r=>String(r.action||'create').trim()!=='update'&&!r.master_id))throw Error('Für neue Produkte eine Mastervorlage auswählen. Aktualisierungen benötigen keinen Master.');const designFiles=await uploadDesigns([...rows,...designRows]);
     const data={rows,designRows,masterId:option?.value,masterRevision:option?Number(option.dataset.revision):undefined,designFiles};
     const plan=await api('/api/workshop/batch/plan',data);if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
+    checkedInput=data;
     formKeys=new Set(plan.report.filter(r=>r.formProduct).map(r=>r.key));$('#review').hidden=false;
     const updates=plan.report.filter(r=>r.action==='update'&&r.status==='ready').length;
     const errors=plan.report.filter(r=>r.status==='error').length,existing=plan.report.filter(r=>r.status==='existing').length;
@@ -87,6 +93,7 @@ $('#import').addEventListener('click',async()=>{
     const saved=new Map(result.products.map(item=>[item.key,item]));
     for(const row of $('#rows').rows){const item=saved.get(row.cells[1]?.querySelector('small')?.textContent);if(item)row.cells[5].textContent=item.created?'Neu gespeichert':item.updated?'Aktualisiert · Stand '+item.revision:'Bereits ausgeführt';}
     $('#summary').textContent=result.products.length+' Konfigurationen gespeichert · '+(result.errors?.length||0)+' Fehler';
+    hasErrors=(result.errors?.length||0)>0;
     status(result.products.filter(p=>p.created).length+' neue Konfigurationen · '+result.products.filter(p=>p.updated).length+' Aktualisierungen gespeichert. '+(result.errors?.length||0)+' fehlerhafte Datensätze bleiben zur Korrektur offen.');prepared=null;
     try{setupDesignExport((await api('/api/workshop/products')).products);$('#export-status').textContent='Produktauswahl nach der Übernahme aktualisiert.';}
     catch(error){$('#export-status').textContent='Die Tabelle wurde gespeichert. Die Produktauswahl konnte nicht aktualisiert werden: '+error.message+' Bitte die Seite neu laden.';}
@@ -115,3 +122,18 @@ $('#export-designs').onclick=async()=>{if(exportBusy)return;exportBusy=true;coun
  if(!res.ok)throw Error((await res.json()).error?.message||'Export fehlgeschlagen.');
  const href=URL.createObjectURL(await res.blob()),a=document.createElement('a');a.href=href;a.download='Gravuru-Designzuordnungen.xlsx';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),60000);$('#export-status').textContent='Datei bereit. Bearbeiten und unten zur Prüfung auswählen. Es wurden keine Produkte verändert.';
  }catch(e){$('#export-status').textContent=e.message;}finally{exportBusy=false;countExport();}};
+
+
+for(const [id,mode] of [['download-report','report'],['download-errors','errors']])$('#'+id).addEventListener('click',async()=>{
+  if(busy||!checkedInput)return;
+  disabled(true);$('#report-status').textContent='Aktueller Importstand wird geprüft und als Excel-Datei vorbereitet …';
+  try{
+    if(!csrf)csrf=(await api('/api/workshop/session')).csrfToken;
+    const res=await fetch('/api/workshop/batch/report',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrf},body:JSON.stringify({...checkedInput,mode})});
+    if(!res.ok)throw Error((await res.json()).error?.message||'Bericht konnte nicht erstellt werden.');
+    if(!(res.headers.get('content-type')||'').startsWith('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))throw Error('Keine gültige Excel-Antwort erhalten.');
+    const href=URL.createObjectURL(await res.blob()),a=document.createElement('a');a.href=href;a.download=mode==='errors'?'Gravuru-Fehlerkorrektur.xlsx':'Gravuru-Pruefbericht.xlsx';
+    document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),60000);
+    $('#report-status').textContent=mode==='errors'?'Korrekturdatei bereit. Fehler im Blatt Produkte oder Designs korrigieren und erneut prüfen. Benötigte SVG-/PDF-Dateien zusätzlich auswählen.':'Prüfbericht bereit. Der Download verändert keine Produkte.';
+  }catch(error){$('#report-status').textContent=error.message;}finally{disabled(false);}
+});

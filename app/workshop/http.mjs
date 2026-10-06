@@ -6,6 +6,7 @@ import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicCont
 import {ACRYLIC_REVIEW,prepareAcrylicReview} from './acrylic-review.mjs';
 import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
+import {batchReportData,batchReportWorkbook} from './batch-report.mjs';
 import {variantExportData,variantWorkbook} from './variant-export.mjs';
 import {createFormVariants} from './form-variants.mjs';
 import {additionPolicy,formMotifs} from './form-additions.mjs';
@@ -503,6 +504,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       if(pathname==='/api/workshop/batch/plan'&&method==='POST'){
         const {entries,...plan}=planBatch(repository,await body(req),assets);return json(res,200,plan);
+      }
+      if(pathname==='/api/workshop/batch/report'&&method==='POST'){
+        const data=batchReportData(repository,await body(req),assets),bytes=await batchReportWorkbook(data);
+        const filename=data.mode==='errors'?'Gravuru-Fehlerkorrektur.xlsx':'Gravuru-Pruefbericht.xlsx';
+        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${filename}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
       }
       if(pathname==='/api/workshop/batch/commit'&&method==='POST')return json(res,200,commitBatch(repository,await body(req),assets));
       if(pathname==='/api/workshop/products'){

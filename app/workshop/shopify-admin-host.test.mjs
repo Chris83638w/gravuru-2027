@@ -30,6 +30,22 @@ function setup(t,embedded=true){
 }
 function jwt(patch={}){const now=Math.floor(Date.now()/1000),p={aud:sessions.clientId,dest:'https://'+sessions.shopDomain,iss:'https://'+sessions.shopDomain+'/admin',sub:'123',iat:now,nbf:now,exp:now+60,jti:randomUUID(),...patch};const text=[{alg:'HS256'},p].map(v=>Buffer.from(JSON.stringify(v)).toString('base64url')).join('.');return 'Bearer '+text+'.'+createHmac('sha256',sessions.secret).update(text).digest('base64url');}
 
+test('batch correction download requires merchant session, CSRF and trusted origin and changes no products',async t=>{
+  const {request,workshop}=setup(t),authorization=jwt();
+  const session=JSON.parse((await request('/api/workshop/session',{headers:{authorization}})).bytes);
+  const master=workshop.repository.list().find(p=>p.kind==='master');assert(master);
+  const data={mode:'errors',masterId:master.id,masterRevision:master.revision,rows:[{import_key:'correction',name:'Fehler',price_small_eur:'invalid'}]};
+  const headers={authorization,'x-gravuru-csrf':session.csrfToken,'content-type':'application/json',origin:config.origin};
+  const route='/api/workshop/batch/report',before=workshop.repository.list();
+  assert.equal((await request(route,{method:'POST',data,headers:{...headers,authorization:''}})).status,401);
+  assert.equal((await request(route,{method:'POST',data,headers:{...headers,'x-gravuru-csrf':'wrong'}})).status,403);
+  assert.equal((await request(route,{method:'POST',data,headers:{...headers,origin:'https://foreign.invalid'}})).status,403);
+  assert.equal((await request(route,{method:'POST',data,headers:{...headers,host:'foreign.invalid'}})).status,403);
+  const response=await request(route,{method:'POST',data,headers});assert.equal(response.status,200,response.bytes.toString());
+  assert.equal(response.bytes.subarray(0,2).toString(),'PK');assert.match(response.headers['cache-control'],/no-store/);assert.match(response.headers['content-disposition'],/Gravuru-Fehlerkorrektur.xlsx/);
+  assert.deepEqual(workshop.repository.list(),before);
+});
+
 test('explicit fixed HTTPS host requires matching authenticated workshop before startup',()=>{
   for(const patch of [{origin:'http://workshop.example'},{origin:'https://workshop.example/'},{origin:'https://user:pw@workshop.example'},{origin:'https://workshop.example?x=1'},{origin:'https://127.0.0.1'},{origin:'https://localhost'},{shopDomain:'*.myshopify.com'},{clientId:'"><script>'},{mode:'public'}])assert.throws(()=>createShopifyAdminHost({...config,...patch},sessions));
   for(const context of [null,{...sessions,shopDomain:'other.myshopify.com'},{...sessions,clientId:'other'},{...sessions,mode:'public'}])assert.throws(()=>createShopifyAdminHost(config,context));

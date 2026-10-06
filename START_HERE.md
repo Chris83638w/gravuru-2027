@@ -1,3 +1,9 @@
+## Aktuell: Gleiche Acrylpreise in Konfi und Commerce-Zuordnung – 06.10.2026
+
+Branch `task/acrylic-commerce-prices-20261006`, Basis `91541d6d331cb976196942b7c3ea2feb75117a4c` (Remote bestätigt). Die Commerce-Prüfung verwendet jetzt die bestehende versionierte Kalkulation statt einer zweiten Summe der Optionspreise. Damit werden große Sockel korrekt mit +100 Cent berücksichtigt: große Platte/Eiche/Wandhalterung **36,97 €**. Veraltete Preisbindungen werden auch direkt vor der Auswahl abgewiesen; Zusatzmotive/-fotos bleiben ohne bestätigte Aufpreis-Anbindung gesperrt.
+
+**275 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell**, Cloud-Check 06.10.2026, 10:17–10:18 Uhr Europe/Berlin. [Prüfbericht](docs/dashboard-20261004/acryl-commerce-preise-cloud-report.json). Fünf gezielte neue Tests prüfen alle 28 Kombinationen, Mengen, geänderte Preisrevisionen, generische Produkte und gesperrte Aufpreise. Keine Shop-Verbindung oder Mutation; kein neuer Kundendialog. Nächster Schritt: native Acryl-Prüfstände in die lokale Warenkorb-/Testbestellprüfung übernehmen. Die folgenden Abschnitte sind historische Nachweise.
+
 ## Aktuell: Acryl-PDF aus dem unveränderlichen Prüfstand – 06.10.2026
 
 Branch `task/acrylic-snapshot-output-20261006`, Basis `7b071fc64c6604affbdb5190bb1814d3ebf38427`. Dashboard-Prüfstand erzeugt native Acryl-PDF serverseitig aus gesicherten Textpfaden, Design- und Fotoquellen. Standard: PDF, 300 dpi, CMYK, RDG_WHITE nur unter Druck, keine Randzugabe; Mimaki/ZIP optional. Konturdownload, Vollfläche mit optionalem 1-mm-Rand und einmalige Spiegelung geprüft. Originalfoto und alte Ausgabe bleiben erhalten.

@@ -1,0 +1,35 @@
+{
+  "startedAt": "2026-10-06T08:17:26.060Z",
+  "platform": "linux",
+  "node": "v24.19.0",
+  "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+  "steps": [
+    {
+      "name": "python-pdf",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "references",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "tests",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS",
+  "tests": {
+    "count": 275,
+    "skipped": 0,
+    "failures": 0
+  },
+  "finishedAt": "2026-10-06T08:18:57.340Z"
+}

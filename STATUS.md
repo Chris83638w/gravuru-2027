@@ -1,3 +1,7 @@
+## Aktuell: Aktive Shopify-Konfiguration zugeordnet – 06.10.2026
+
+Vom Nutzer übergebene aktive Version `1146632241153` / `variante-m-embedded-motifs-20260928`: App-URL **https://gravuru-designwerkstatt.de/produktanlage.html**, bestehende Preis-Function und Theme-Erweiterung vorhanden. `gravuru.de/shopify-designwerkstatt-20260920/` steht zusätzlich in den erlaubten Authentifizierungsrückleitungen. [Vollständige Zuordnung und Herkunft](docs/dashboard-20261004/SHOPIFY-APP-ZUORDNUNG-20261006.md). App-/Dev-Dashboard-Link nicht erneut erfragen. Nächster Anschluss: CLI-Verfügbarkeit und eigene Cloud-Anmeldung, danach getrennte Übernahme der bestehenden Konfiguration/Quellen. Laufende App-URLs und Erweiterungen nicht ungeprüft ändern. Keine neue Live-Abnahme oder Codeprüfung behauptet.
+
 ## Aktuell: Bestehende Shopify-App identifiziert – 06.10.2026
 
 **Gravuru Konfigurator** ist im Shop `gravuru-design.myshopify.com` direkt über Shopify bestätigt: Entwickler gravuru GmbH, eingebettete App, ID `423276544001`. Produkt-/Dateiberechtigungen vorhanden, `read_orders` nicht in der gelesenen Installation enthalten. [App-Zuordnung und genaue Grenzen](docs/dashboard-20261004/SHOPIFY-APP-ZUORDNUNG-20261006.md). Die Frage nach dem App-Namen ist erledigt; keine Neuanlage nötig. Nächster Schritt: vorhandene App im angemeldeten Dev Dashboard öffnen und Verwaltungslink/App-Konfiguration zuordnen, danach sichere Laufzeit-/Backendanbindung prüfen. Keine Secrets im Chat, keine bestehende App ungeprüft umstellen.

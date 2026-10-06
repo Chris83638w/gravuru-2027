@@ -1,3 +1,9 @@
+## Aktuell: Ausführungen als ausgefüllte Excel bearbeiten – 06.10.2026
+
+Branch `task/variant-excel-export-20261006`, Basis `61903f9ae655116f3c8b8e7ae774a7f19c0e96ea`. Ausführungen → Excel-Zuordnung exportiert ausgewählte Gruppen samt festen Produktständen und zusätzlicher Produktliste. Herunterladen → bearbeiten → prüfen → übernehmen im Browser geprüft; unveränderte Gruppen werden ohne neue Revision übersprungen. **263 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell; Desktop/Handy/Tablet geprüft.** [Bedienung, Installation und Nachweis](docs/dashboard-20261004/DASHBOARD-AUSFUEHRUNGEN-EXPORT.md).
+
+Neue Python-Anforderung für dynamische XLSX: `python3 -m pip install --target .local-data/python -r app/workshop/requirements-excel.txt`. Nächster Schritt: Designzuordnungen aus bestehenden Formprodukten für den Tabellenabgleich bereitstellen, ohne private Bilddateien oder Kundeninhalte zu exportieren. Kein Publish/Deploy, Merge, PR oder Zugriff auf private Bestände; bisherige Acryl-Testseite unverändert. Nachfolgende Abschnitte sind historische Paketnachweise.
+
 ## Aktuell: Ausführungsgruppen per Excel zuordnen – 06.10.2026
 
 Branch `task/variant-excel-20261006`, Basis `35e3cae6b34d6ef0daee099e0ada0f81bb63358d`. Neue XLSX-Vorlage mit **Gruppen**, **Varianten**, **Anleitung** und Oberfläche unter Ausführungen → Excel-Zuordnung. Vorschau, explizite Teilübernahme, gezielte Updates und Wiederaufnahme ohne doppelte Gruppen. Feste Produktrevisionen; ungenannte Ausführungen bleiben erhalten. **259 Tests bestanden, 0 Fehler/Skips; Build 76 Ressourcen/1 Modell. Echter Excel-Upload/Download und Browserprüfung Desktop/Handy/Tablet bestanden.** [Vorlage, Bedienung und Nachweis](docs/dashboard-20261004/DASHBOARD-AUSFUEHRUNGEN-EXCEL.md).

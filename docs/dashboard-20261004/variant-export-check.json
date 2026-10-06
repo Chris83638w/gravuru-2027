@@ -1,0 +1,61 @@
+{
+  "branch": "task/variant-excel-export-20261006",
+  "baseCommit": "61903f9ae655116f3c8b8e7ae774a7f19c0e96ea",
+  "cloudCheck": {
+    "startedAt": "2026-10-06T06:12:55.490Z",
+    "platform": "linux",
+    "node": "v24.19.0",
+    "scope": "Development checks only; no cloud execution, data restore, visual acceptance or production release implied.",
+    "steps": [
+      {
+        "name": "python-pdf",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "references",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "tests",
+        "exitCode": 0,
+        "result": "PASS"
+      },
+      {
+        "name": "build",
+        "exitCode": 0,
+        "result": "PASS"
+      }
+    ],
+    "result": "PASS",
+    "tests": {
+      "count": 263,
+      "skipped": 0,
+      "failures": 0
+    },
+    "finishedAt": "2026-10-06T06:14:14.327Z"
+  },
+  "build": {
+    "resources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "browser": {
+    "blankWorkbookWithProductCatalog": true,
+    "actualDownloadReimport": true,
+    "unchangedSkipped": true,
+    "updatedGroups": 1,
+    "untouchedGroupRevision": 1,
+    "repeatUpdates": 0,
+    "newExportNewKeys": true,
+    "viewports": [
+      1440,
+      390,
+      768
+    ],
+    "javascriptErrors": []
+  },
+  "data": "synthetic isolated fixtures only",
+  "published": false
+}

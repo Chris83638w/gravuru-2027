@@ -38,10 +38,11 @@ export function planVariantBatch(store,{rows,variantRows=[]}={}){
    if(prior&&prior.fingerprint!==fingerprint)fail('Importschlüssel ist bereits mit anderen Daten verknüpft. Für eine neue Änderung einen neuen Schlüssel verwenden.');
    if(!prior){
     if(current&&(current.revision!==expectedRevision||current.document.archived))fail('Gruppe inzwischen geändert oder archiviert. Aktuellen Stand prüfen und expected_revision anpassen.');
-    document=store.validate(document);if(previous&&JSON.stringify(document)===JSON.stringify(previous.document))fail('Die Zeile enthält keine Änderung.');
+    document=store.validate(document);
    }
-   entries.push({key,fingerprint,action,groupId,expectedRevision,document});
-   report.push({row:i+1,key,name:document.name,action,status:prior?'existing':'ready',groupId:prior?.id||groupId,expectedRevision,variants:document.variants,changedIds:[...ids],defaultVariantId:document.defaultVariantId});
+   const unchanged=!prior&&previous&&JSON.stringify(document)===JSON.stringify(previous.document);
+   if(!unchanged)entries.push({key,fingerprint,action,groupId,expectedRevision,document});
+   report.push({row:i+1,key,name:document.name,action,status:prior?'existing':unchanged?'unchanged':'ready',groupId:prior?.id||groupId,expectedRevision,variants:document.variants,changedIds:[...ids],defaultVariantId:document.defaultVariantId});
   }catch(e){report.push({row:i+1,key,name:text(r?.name),status:'error',message:e.message});}
  }
  return {valid:report.every(r=>r.status!=='error'),entries,report,token:entries.length?variantBatchHash({rows,variantRows,entries:entries.map(e=>({key:e.key,fingerprint:e.fingerprint}))}):null};

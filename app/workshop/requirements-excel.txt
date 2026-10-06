@@ -1,0 +1,2 @@
+# Editable XLSX export and template generation; no macros or formulas are generated.
+openpyxl==3.1.5

@@ -1,3 +1,4 @@
+import {variantExportData,variantWorkbook} from './variant-export.mjs';
 import {createFormVariants} from './form-variants.mjs';
 import {additionPolicy,formMotifs} from './form-additions.mjs';
 import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './order-product-draft.mjs';
@@ -122,6 +123,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         return json(res,201,{request:prepareCartRequest(offer),summary:{shopDomain:binding.shopDomain,variantId:offer.variantId,productId:binding.productId,productRevision:binding.productRevision,snapshotId:data.snapshotId,quantity:offer.quantity,unitCents:offer.unitCents,totalCents:offer.unitCents*offer.quantity,currency:offer.currency},sent:false,paymentConfirmed:false});
       }
       if(pathname==='/api/workshop/order-offers'&&method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['bindingId','snapshotId','quantity'].includes(k)))fail(422,'offer_fields','Unbekannte Checkout-Felder.');return json(res,201,orderIntake.offer(data));}
+      if(pathname==='/api/workshop/variants/batch/export'&&method==='POST'){
+        const data=variantExportData(variants,repository,await body(req)),bytes=await variantWorkbook(data);
+        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Ausfuehrungen-Bestand.xlsx"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
+      }
       if(pathname==='/api/workshop/variant-import-template'&&method==='GET'){
         const bytes=fs.readFileSync(new URL('./templates/ausfuehrungen.xlsx',import.meta.url));res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Ausfuehrungen.xlsx"','Cache-Control':'no-store'}).end(bytes);return;
       }

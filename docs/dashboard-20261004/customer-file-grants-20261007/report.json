@@ -1,0 +1,26 @@
+{
+  "startedAt": "2026-10-07T16:25:23.318412+00:00",
+  "result": "PASS",
+  "data": "synthetic sessions, orders and file bytes only",
+  "published": false,
+  "shopifyRequestSent": false,
+  "checks": {
+    "explicitDefaultPdfIdempotentCorrectCustomerAndHash": true,
+    "explicitZipOnlyAndUnavailableWhiteRejected": true,
+    "revocationSurvivesReloadAndKeepsOtherFormat": true,
+    "positionSwitchIgnoresStaleGrantRead": true,
+    "refundBlocksGrantAndCustomerDownloadWithoutChangingOrder": true
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T16:25:28.638634+00:00"
+}

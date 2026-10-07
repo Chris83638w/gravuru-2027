@@ -1,3 +1,11 @@
+## Aktuell: Test-Dateifreigabe und Widerruf sichtbar abgenommen – 07.10.2026
+
+Branch `test/customer-file-grants-ui-20261007`, bestätigte GitHub-Basis **`cc2e7d8812a4c2036e3f381e918707660e77bc1e`** (Excel-Paket). Als nächstes unabhängiges Paket die bestehende Händlerbedienung der kaufgebundenen Test-Dateifreigaben im Browser geprüft: PDF-Standard und Wiederholschutz, ausdrückliches ZIP, fehlende Weißdatei, Widerruf/Neuöffnen, Positionswechsel mit verspäteter Antwort und Sperre nach synthetischer Erstattung. Richtiger Kunde erhält identische Dateibytes, fremdes Konto nicht; ursprüngliche Bestellung bleibt erhalten. Produktcode unverändert.
+
+Fünf gezielte Ablaufgruppen PASS, Desktop/390/768 ohne Überlauf und JavaScript-Fehler, zwei Screenshots gesichtet. Ausschließlich synthetische Händler-/Kundentokens, Testbestellungen und Zugriffsprüfdateien; keine echte Shopify-Anmeldung oder neue Druckabnahme. [Prüfbericht und Grenzen](docs/dashboard-20261004/TEST-DATEIFREIGABE-ABNAHME-20261007.md).
+
+Plesk-Einrichtung bleibt pausiert. Echte Shopify-Appanmeldung, geschütztes HTTPS-Testbackend, reale Testvariantenbindung und Testbestellung sind weiterhin offene Folgeaufgaben. Der nächste reale Anschluss benötigt diese Voraussetzungen; keine Live-Veröffentlichung und keine Änderungen an der laufenden Werkstatt.
+
 ## Aktuell: Gespeicherte Excel-Serien und Ausführungsgruppen abgenommen – 07.10.2026
 
 Branch `test/saved-excel-resume-20261007`, bestätigte Basis `79c570061141c8c432e90962c19ed8845cad62b5`. Beide Importarten im Browser mit echten Excel-Dateien geprüft: Speichern/Wiederöffnen, Teilübernahme, verlorene Serverantwort, Prozess-/SQLite-Neustart, gezielte Korrektur und Wiederholung ohne Duplikate. Designs, Varianten, Produktstände und erfolgreiche Geschwister unverändert erhalten. Revisionskonflikte ausdrücklich in Excel korrigiert; Entfernen einer Prüfung löscht keine Produkte/Gruppen.

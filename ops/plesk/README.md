@@ -8,6 +8,8 @@ Dieses Paket enthält den aktuellen Neuaufbau einschließlich ZIP-Import, gemein
 
 LiteSpeed ersetzt `http.Server.listen()` und `address()` für den öffentlichen Anwendungssocket. Der interne Werkstattserver verwendet deshalb ausdrücklich die unveränderten Methoden von `net.Server` für einen eigenen Loopback-Socket. Nur der äußere, passwortgeschützte Server gelangt an den LiteSpeed-Listener. Passenger behält seinen eigenen Startweg. Einzelprozess- und Neustartverhalten auf dem jeweiligen Hosting weiterhin bestätigen; Passenger-Direktiven gelten nicht automatisch für LiteSpeed.
 
+LiteSpeed kann einen inaktiven Prozess erneuern, während eine Editorseite geöffnet bleibt. Der private Teststart bindet den CSRF-Token deshalb kryptografisch an Testadresse und Testzugang. Normale Prozessneustarts verwerfen keine offenen Eingaben; ein Passwort-, Benutzer- oder Adresswechsel erneuert die Sitzung. Nach einer solchen Zugangsänderung die Test-App neu starten und Browserseiten neu anmelden. Private Entwurfstokens werden erst nach erfolgreicher Basic-Anmeldung weitergereicht. Die Shopify-Sitzungsprüfung und der normale lokale Start behalten ihre eigene unveränderte Anmeldung.
+
 ## 1. Einmalige Voraussetzungen in Plesk bestätigen
 
 Eine Person mit funktionierendem Plesk-Browserzugriff richtet ausschließlich den neuen Testbereich ein. Plesk-API, SSH und VPN werden nicht benötigt. Die folgenden Namen sind **Vorschläge**, keine bereits eingerichteten Adressen/Pfade:

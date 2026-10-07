@@ -24,10 +24,12 @@ OUT.mkdir(parents=True, exist_ok=True)
 parser = argparse.ArgumentParser()
 parser.add_argument('archive', type=Path)
 parser.add_argument('--litespeed', action='store_true', help='Model LiteSpeed HTTP listen/address interception')
+parser.add_argument('--private-config', action='store_true', help='Plesk npm runner without app environment variables')
 args = parser.parse_args()
 report = {'startedAt': datetime.now(timezone.utc).isoformat(), 'result': 'RUNNING', 'checks': {},
           'scope': 'extracted package; synthetic loopback proxy, not real Plesk or public TLS', 'published': False}
 report['httpListener'] = 'simulated LiteSpeed interception' if args.litespeed else 'plain Node.js'
+report['configuration'] = 'private file, no app variables in process' if args.private_config else 'environment'
 
 
 def unused_port():
@@ -61,6 +63,16 @@ with tempfile.TemporaryDirectory(prefix='g27-plesk-package-') as temporary:
                GRAVURU_TEST_USERNAME='synthetic-test', GRAVURU_TEST_PASSWORD=secrets.token_hex(24),
                GRAVURU_TEST_PORT=str(port), PIP_NO_INDEX='1')
     authorization = 'Basic ' + base64.b64encode((env['GRAVURU_TEST_USERNAME'] + ':' + env['GRAVURU_TEST_PASSWORD']).encode()).decode()
+    runtime_env = env.copy()
+    if args.private_config:
+        keys = ['GRAVURU_TEST_ORIGIN', 'GRAVURU_PRIVATE_DATA_DIR', 'GRAVURU_TEST_PYTHON_DIR',
+                'GRAVURU_BOOTSTRAP_PYTHON', 'GRAVURU_TEST_USERNAME', 'GRAVURU_TEST_PASSWORD']
+        private_dir = folder / 'private'
+        private_dir.mkdir(mode=0o700)
+        config_file = private_dir / 'application-config.json'
+        config_file.write_text(json.dumps({'schema': 1, 'purpose': 'private-test-runtime',
+                                          'values': {key: runtime_env.pop(key) for key in keys}}))
+        config_file.chmod(0o600)
     runtime_command = ['node', 'app.cjs']
     if args.litespeed:
         # lsnode.js captures the first HTTP listener and replaces address() for
@@ -80,14 +92,14 @@ http.Server.prototype.listen = function () {
         runtime_command = ['node', '--require', str(preload), 'app.cjs']
 
     def run(command, override=None, ok=True):
-        result = subprocess.run(command, cwd=application, env={**env, **(override or {})}, capture_output=True, text=True, timeout=120)
+        result = subprocess.run(command, cwd=application, env={**runtime_env, **(override or {})}, capture_output=True, text=True, timeout=120)
         assert env['GRAVURU_TEST_PASSWORD'] not in result.stdout + result.stderr
         assert (result.returncode == 0) == ok, result.stdout + result.stderr
         return result
 
     # The test venv reuses already installed dependencies, without a second network installation.
     # The actual prepare command still runs pip against its isolated environment.
-    init = "const {testConfig,markerValue,PYTHON_MARKER}=await import('./ops/plesk/config.mjs');const {initializeDirectory}=await import('./ops/plesk/prepare.mjs');const c=testConfig(process.env);initializeDirectory(c.pythonDir,PYTHON_MARKER,markerValue(c,'test-python'));"
+    init = "const {testConfig,privateTestEnvironment,markerValue,PYTHON_MARKER}=await import('./ops/plesk/config.mjs');const {initializeDirectory}=await import('./ops/plesk/prepare.mjs');const c=testConfig(privateTestEnvironment(process.env));initializeDirectory(c.pythonDir,PYTHON_MARKER,markerValue(c,'test-python'));"
     run(['node', '--input-type=module', '-e', init])
     run([sys.executable, '-m', 'venv', '--system-site-packages', str(python_dir)])
     site = Path(run([str(python_dir / 'bin/python'), '-c', 'import site; print(site.getsitepackages()[0])']).stdout.strip())
@@ -122,7 +134,7 @@ http.Server.prototype.listen = function () {
     proxy = None
 
     def start():
-        process = subprocess.Popen(runtime_command, cwd=application, env=env, stdout=log, stderr=log)
+        process = subprocess.Popen(runtime_command, cwd=application, env=runtime_env, stdout=log, stderr=log)
         deadline = time.monotonic() + 25
         while time.monotonic() < deadline:
             if process.poll() is not None:

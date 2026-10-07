@@ -7,6 +7,29 @@ export const DATA_MARKER='.gravuru-private-test.json';
 export const PYTHON_MARKER='.gravuru-test-python.json';
 export const fail=message=>{throw Error(message);};
 const within=(root,file)=>file===root||file.startsWith(root+path.sep);
+const PRIVATE_ENV_KEYS=['GRAVURU_TEST_ORIGIN','GRAVURU_PRIVATE_DATA_DIR','GRAVURU_TEST_PYTHON_DIR','GRAVURU_BOOTSTRAP_PYTHON','GRAVURU_TEST_USERNAME','GRAVURU_TEST_PASSWORD'];
+// Plesk's npm runner does not inherit application variables. A separately
+// uploaded private file lets that runner and the app use the same configuration.
+export function privateTestEnvironment(env){
+  const file=env.GRAVURU_TEST_CONFIG_FILE||path.join(path.dirname(APP_ROOT),'private',path.basename(APP_ROOT)+'-config.json');
+  if(!fs.existsSync(file)&&!env.GRAVURU_TEST_CONFIG_FILE)return env;
+  externalPath(file,'Private Testkonfiguration');
+  let fd;
+  try{
+    const parent=fs.lstatSync(path.dirname(file)),uid=process.getuid();
+    if(!parent.isDirectory()||parent.mode&0o077||parent.uid!==uid)throw Error();
+    fd=fs.openSync(file,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW);
+    const stat=fs.fstatSync(fd);
+    if(!stat.isFile()||stat.mode&0o077||stat.uid!==uid||stat.size>16384)throw Error();
+    const record=JSON.parse(fs.readFileSync(fd,'utf8'));
+    if(record.schema!==1||record.purpose!=='private-test-runtime'||!record.values||Array.isArray(record.values))throw Error();
+    const keys=Object.keys(record.values);
+    if(keys.length!==PRIVATE_ENV_KEYS.length||keys.some(key=>!PRIVATE_ENV_KEYS.includes(key)||typeof record.values[key]!=='string'||record.values[key].length>512))throw Error();
+    if(keys.some(key=>env[key]!==undefined&&env[key]!==record.values[key]))throw Error();
+    return {...env,...record.values};
+  }catch{fail('Private Testkonfiguration fehlt oder ist ungültig: eigener Ordner 0700, Datei 0600, keine Symlinks; keine Werte protokollieren.');}
+  finally{if(fd!==undefined)fs.closeSync(fd);}
+}
 export function externalPath(value,label){
   if(typeof value!=='string'||!path.isAbsolute(value)||path.resolve(value)!==value||value==='/'||within(APP_ROOT,value)||within(value,APP_ROOT)||value.split(path.sep).includes('gravuru-werkstatt'))fail(label+': separaten absoluten Testpfad außerhalb der Anwendung wählen.');
   for(let p=value;;p=path.dirname(p)){

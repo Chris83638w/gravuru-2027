@@ -7,13 +7,13 @@ import {createHash,timingSafeEqual} from 'node:crypto';
 import {build,OUTPUT} from '../../app/configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
 import {createWorkshop} from '../../app/workshop/http.mjs';
-import {testConfig,verifyStorage,verifyDirectory,PYTHON_MARKER,markerValue} from './config.mjs';
+import {testConfig,privateTestEnvironment,verifyStorage,verifyDirectory,PYTHON_MARKER,markerValue} from './config.mjs';
 import {lockTestData} from './lock.mjs';
 
 const digest=value=>createHash('sha256').update(value).digest();
 // Private operator test only. No Shopify sessions, credentials, webhook or transfer transport.
 export async function createPrivateTestRuntime(env){
-  const config=testConfig(env);verifyStorage(config);
+  const config=testConfig(privateTestEnvironment(env));verifyStorage(config);
   verifyDirectory(config.pythonDir,PYTHON_MARKER,markerValue(config,'test-python'));
   fs.accessSync(config.python,fs.constants.X_OK);
   process.umask(0o077);process.env.GRAVURU_PYTHON=config.python;

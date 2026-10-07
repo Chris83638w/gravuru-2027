@@ -49,9 +49,11 @@ Ohne diese Möglichkeiten die Einrichtung an dieser Stelle an die Hostingverwalt
 
 7. Request-Limit für den Test-VHost mindestens **25 MiB** und Proxy-Zeitlimit mindestens **120 Sekunden**, soweit im Hosting nötig. Das ZIP wird lokal im Browser entpackt, einzelne SVG/PDF-Seiten werden als JSON hochgeladen. Kein globales Limit anderer Anwendungen verändern.
 
-## 3. Werte sicher in der neuen Node-Anwendung setzen
+## 3. Werte sicher für Vorbereitung und Node-Anwendung setzen
 
-Unter **Node.js → Custom environment variables / Benutzerdefinierte Umgebungsvariablen** nur für die Test-Subdomain eintragen:
+**Auf dem vorhandenen Plesk bestätigt:** Weder die npm-Konsole noch **Skript ausführen** erben die benutzerdefinierten App-Variablen. Für dieses Hosting eine private Konfigurationsdatei verwenden: `/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-config.json`. Der übergeordnete Ordner muss bereits **0700**, die Datei **0600** haben und dem Test-App-Systembenutzer gehören. Kein Symlink, kein Git-Ordner, kein Webroot. Die Datei ausschließlich über den angemeldeten Plesk-Dateimanager verwalten; sie gehört nicht in das ZIP.
+
+Dateiformat: JSON-Objekt mit `schema: 1`, `purpose: "private-test-runtime"` und einem Objekt `values`, das genau diese sechs Zeichenketten enthält:
 
 | Name | Wert / Bedeutung |
 | --- | --- |
@@ -62,7 +64,9 @@ Unter **Node.js → Custom environment variables / Benutzerdefinierte Umgebungsv
 | `GRAVURU_TEST_USERNAME` | Eigener Testbenutzer, z. B. `gravuru-test` |
 | `GRAVURU_TEST_PASSWORD` | Neues starkes Testpasswort aus dem Passwortmanager, 24–200 druckbare ASCII-Zeichen |
 
-Das Passwort ausschließlich im Passwortmanager und im geschützten Plesk-Eingabefeld verwalten. Nicht in Chat, Paket, Repository, Screenshot oder Befehlsargumente schreiben. Es ist unabhängig von Plesk-/Server-/Shopify-Zugangsdaten. Keine `GRAVURU_SHOPIFY_*`-Werte aus dem Live-System übernehmen.
+Das Passwort ausschließlich im Passwortmanager und in dieser privaten Serverdatei verwalten. Nicht in Chat, Paket, Repository, Screenshot, npm-Befehl oder Befehlsargumente schreiben. Es ist unabhängig von Plesk-/Server-/Shopify-Zugangsdaten. Keine `GRAVURU_SHOPIFY_*`-Werte aus dem Live-System übernehmen.
+
+Der Standardpfad ist `<übergeordneter App-Ordner>/private/<App-Ordnername>-config.json`. Vorbereitung, Prüfung und App lesen dieselbe Datei. Abweichender Pfad nur ausdrücklich über `GRAVURU_TEST_CONFIG_FILE`, weiterhin privat und außerhalb der Anwendung. Unzulässige Rechte, fremder Besitzer, Symlinks, unbekannte Felder und widersprüchliche gleichnamige App-Variablen sperren den Start. Auf diesem Server deshalb keine zweite Kopie der sechs Werte unter **Benutzerdefinierte Umgebungsvariablen** behalten. Andere Installationen ohne private Datei können weiterhin die vollständigen sicheren Laufzeitvariablen verwenden.
 
 `GRAVURU_PYTHON` wird vom Teststart auf `<GRAVURU_TEST_PYTHON_DIR>/bin/python` gesetzt. Kein globales `PYTHONPATH`, keine gemeinsame Live-Python-Installation verändern. `GRAVURU_TEST_PORT` ist nur für lokale Prüfungen ohne Passenger vorgesehen und muss in Plesk nicht gesetzt werden.
 

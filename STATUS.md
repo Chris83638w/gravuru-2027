@@ -1,3 +1,7 @@
+## Ergänzende Chat-Übergabe – 07.10.2026
+
+[Gesammelte Entscheidungen, aktueller Einstieg und Dateiinventar](docs/dashboard-20261004/UEBERGABE-NEUER-CHAT-20261007.md). Produktbasis: `dd42faf55df44686d3b6185807c35497ceba8df0` (Ordnerimport fertig); nächstes Paket: ZIP-Designquelle. Plesk pausiert, echte Shopify-Anbindung offen. Diese Ergänzung ändert keine Produktfunktionen. Bei neuerem Arbeitsstand nur ergänzend lesen, nicht zurücksetzen.
+
 ## Aktuell: Design-Ordner im Serienimport umgesetzt – 07.10.2026
 
 Branch `feat/design-folder-import-20261007`, bestätigte GitHub-Basis **`72b70416ecf16040b19ab774b43f5f5a67d5680d`**. Nächstes offenes unabhängiges Funktionspaket aus G27-07: lokalen Design-Ordner bewusst auswählen und SVG/PDF über genaue relative Unterordnerpfade zuordnen. Gleichnamige Dateien bleiben getrennt; nur referenzierte Dateien werden beim Prüfen hochgeladen. Vorhandene Konvertierung, Produktprüfung und private Originalablage wiederverwendet; keine Migration. Excel-Vorlage/Generator ergänzt.

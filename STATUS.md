@@ -1,4 +1,12 @@
-## Aktuell: Dashboard bis Druckdatei in wiederaufgenommener Cloud geprüft – 07.10.2026
+## Aktuell: Sicherung und Übergabe an vorhandene funktionierende Cloud-Aufgabe – 07.10.2026
+
+Die zuvor nur lokal bestätigten Druckprüfungen sind jetzt auf GitHub gesichert: Branch `test/dashboard-print-acceptance-20261007`, Remote-Commit **`d1bc7ffbf61b708899fee1c9a74cc15c9fb6f746`**, Vergleich `identical`. Sein Git-Baum `3533dce4ab42e36a7e5df070d0c7e01ea333c798` stimmt exakt mit dem lokalen Prüfstand überein. Produktcode unverändert; beide Testpakete vom 06./07.10. erhalten.
+
+Die vom Nutzer benannte vorhandene Zielaufgabe **„gravuru-2027 NEU“ (`01a115b2-0173-7419-9c03-1af745f5c07c`)** hat GitHub/Shopify per HTTPS erreicht. Dort liegt noch der alte Commit `3ff2c2f8e7cb2565f60bd016f73a99ff6520152b` auf `work`; die dortige Aussage „neue App noch nicht implementiert“ gilt nur für diesen alten Checkout. Nicht bei G27-01 neu anfangen. Sie nutzt dieselbe Umgebungskonfiguration, aber eine neuere Version und andere Instanz als dieser alte Chat mit Proxyfehler. Kein belegter Accountfehler. [Verbindliche Fortsetzung, Grenzen und einmaliger Übergabeauftrag](docs/dashboard-20261004/CLOUD-FORTSETZUNG-20261007.md). Übergabebranch `task/cloud-runtime-handoff-20261007`; die tatsächliche Fortsetzung im Zielchat ist noch nicht bestätigt. Kein verfügbares Werkzeug zum direkten Nachrichtensenden an den Zielchat. Nächster Schritt dort: aktuellen Übergabestand übernehmen und geschützte sichtbare Dashboard-/Konfigurator-Abnahme mit synthetischen Daten durchführen, soweit Werkzeuge verfügbar. Keine neue Umgebung oder Serverplanung.
+
+Für diese Übergabe nur Dokumentdiffs, Archiv-/Secretmusterprüfung und Remote-Abgleich durchgeführt; keine neuen fachlichen Tests, keine Produkt- oder Liveänderungen. Die folgenden Ausführungsnachweise bleiben historisch erhalten.
+
+## Nachweis: Dashboard bis Druckdatei in wiederaufgenommener Cloud geprüft – 07.10.2026
 
 Branch **`test/dashboard-print-acceptance-20261007`**, Produktcode unverändert auf bestätigtem GitHub-Stand **`f28dfc032c6d374d7d0967fe8eb8f37895d2a8f2`**. Der wiederhergestellte Checkout enthielt bereits den lokalen Prüfcommit `b86e4994b9c650638b2c83dbdcfaa01d9473e62b` vom 06.10.; dessen Remote-Testbranch war nicht abrufbar (404). Seine Dateien bleiben erhalten und werden mit dieser Abnahme gesichert. Frühere Ergebnisse wurden nicht als neue Ausführung ausgegeben.
 

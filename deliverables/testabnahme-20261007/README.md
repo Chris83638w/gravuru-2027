@@ -20,7 +20,7 @@ Diese Dateien stammen aus dem aktuellen gesicherten Backend-Ausgabepfad mit synt
 
 ## Noch notwendiger Anschluss
 
-In dieser Laufzeit fehlt Browsersteuerung mit Plesk-Anmeldung. Die bereits angefragte manuelle Prüfung lautet: unter `https://gravuru.highspeed.cloud:8443` → **Websites & Domains** vorhandene Testbereiche, Node 24+, Python/Cairo und unterstützten Einzelprozessbetrieb bestätigen. Danach nur diesen Testbereich nach Installationsanleitung einrichten. Adresse und nicht geheime Ergebnisfelder von `plesk:prepare`/`plesk:check` mitteilen; keine Passwörter im Chat.
+In dieser Laufzeit fehlt Browsersteuerung mit Plesk-Anmeldung. Der Nutzer hat inzwischen den Link `https://gravuru.highspeed.cloud/admin/domain/list?context=domains` geteilt; das belegt noch keinen Testbereich und überträgt keine angemeldete Sitzung. Die sichtbaren Domain-/Subdomainnamen sind als nächster einzelner Bedienungsschritt angefragt. Die bereits angefragte manuelle Prüfung lautet: unter `https://gravuru.highspeed.cloud:8443` → **Websites & Domains** vorhandene Testbereiche, Node 24+, Python/Cairo und unterstützten Einzelprozessbetrieb bestätigen. Danach nur diesen Testbereich nach Installationsanleitung einrichten. Adresse und nicht geheime Ergebnisfelder von `plesk:prepare`/`plesk:check` mitteilen; keine Passwörter im Chat.
 
 Für anschließende automatisierte HTTPS-Prüfungen den separaten Testbenutzer und das Testpasswort sicher als angeforderte persönliche Cloud-Umgebungsvariablen `GRAVURU_TEST_USERNAME` und `GRAVURU_TEST_PASSWORD` binden; `GRAVURU_TEST_ORIGIN` ist die bestätigte Adresse. Persönlicher Tresor → Umgebungsvariable → Umgebung `gravuru-2027`; dieselben Namen müssen unter deren Umgebungsvariablen ausdrücklich angefordert sein. Keine Plesk- oder Live-Shopify-Schlüssel dafür verwenden. Eine Plesk-Variableneingabe allein bindet nichts an die Cloud-Aufgabe.
 
@@ -41,4 +41,3 @@ Der Nutzer bestätigt: Für Drive existiert noch kein OAuth-Zugang/Google-Cloud-
 | Kaufgebundene Dateifreigabe | [Synthetische Abnahme](../../docs/dashboard-20261004/TEST-DATEIFREIGABE-ABNAHME-20261007.md) | Reale Shopify-Kundenanmeldung/Bestellung offen |
 | Roland-/Mimaki-Dateien | Neue synthetische PDF-Lieferung technisch geprüft | Serverexport sowie reale RIP-/Maschinen-/ICC-Abnahme offen |
 | Installation, Passwortschutz, private Dateien, Neustart | [Aktuelles ZIP entpackt geprüft](../../docs/dashboard-20261004/plesk-profile-package-20261007/report.json), Headerproxy nur lokal simuliert | HTTPS/Passenger/Serverdaten noch nicht geprüft |
-

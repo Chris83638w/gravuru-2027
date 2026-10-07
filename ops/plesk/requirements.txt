@@ -1,0 +1,5 @@
+-r ../../app/workshop/requirements-import.txt
+-r ../../app/workshop/requirements-contours.txt
+-r ../../app/workshop/requirements-photos.txt
+-r ../../app/workshop/requirements-excel.txt
+-r ../../app/workshop/requirements-print.txt

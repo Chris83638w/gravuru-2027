@@ -1,0 +1,7 @@
+{
+  "result": "FAIL",
+  "scope": "synthetic local photo; delayed real preview response",
+  "checks": {},
+  "error": "Locator expected to be disabled\nActual value: enabled \n",
+  "finishedAt": "2026-10-07T21:25:47.587333+00:00"
+}

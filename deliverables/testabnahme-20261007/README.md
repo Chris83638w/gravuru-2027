@@ -1,43 +1,29 @@
-# Testlieferung – 07.10.2026
+# Testlieferung · 07.10.2026
 
-**Lokale technische Lieferung, keine vollständige Server-/Shopify-/Maschinenabnahme.** Nur synthetische Beispiele, keine Kundendaten oder Schlüssel.
+**[Geschütztes Test-Dashboard](https://test-2027.gravuru-designwerkstatt.de/werkstatt/)** · [Zugang, Bedienung, Betrieb und Abnahmestand](../../docs/dashboard-20261004/HTTPS-TESTABNAHME-20261007.md)
 
-- [Produktserien-Vorlage](produktserie.xlsx): neue Spalten `font_profile`, `motif_profile`, `production_profile_id`, `production_profile_revision`; siehe [Bedienung und Prüfung](../../docs/dashboard-20261004/EXCEL-PROFILE-20261007.md).
-- [Ausführungsgruppen-Vorlage](ausfuehrungen.xlsx): vorhandene Vorlage unverändert mitgeliefert.
-- [Aktuelles Installationspaket · 25,9 MiB](../plesk-private-test-profiles-20261007/gravuru-2027-private-test.zip) · [SHA-256 und Quellstand](../plesk-private-test-profiles-20261007/README.md). Diese aktualisierte Fassung enthält die Excel-Profile.
-- [Plesk-Installation und Betrieb](../../ops/plesk/README.md): zuerst vorhandenen Testbereich prüfen, getrennte Pfade/Node 24+/Python 3.11+/Cairo/Einzelprozess bestätigen, Paket entpacken, `plesk:prepare`, `plesk:check`, nur Test-App neu starten. Die größere Projektsicherung ist kein Installationspaket.
+- [Aktuelles Installationspaket · 25,9 MiB](../plesk-private-test-accepted-20261007/gravuru-2027-private-test.zip) · [Quellcommit und SHA-256](../plesk-private-test-accepted-20261007/README.md). Die größere Projektsicherung ist kein Installationspaket.
+- [Excel-Vorlage Produktserien](produktserie.xlsx): einschließlich Quellordnern, Schrift-/Motiv- und Fertigungsprofilen.
+- [Excel-Vorlage Ausführungsgruppen](ausfuehrungen.xlsx).
+- [Plesk-Installation](../../ops/plesk/README.md). Die Testinstanz ist bereits eingerichtet; keine zweite Instanz über die Live-Werkstatt legen.
 
-## Synthetische PDF-Proben
+## Auf dem echten Testserver erzeugte Druckproben
 
-| Vorlage | Roland kombiniert | Mimaki Farbe | Mimaki Weiß |
+| Synthetisches Beispiel | Roland kombiniert | Mimaki Farbe | Mimaki Weiß |
 | --- | --- | --- | --- |
-| Acryl 150 × 200 mm | [PDF](drucktests/Acryl-Test-roland-pdf.pdf) | [PDF](drucktests/Acryl-Test-mimaki-pdf.pdf) | [PDF](drucktests/Acryl-Test-mimaki-white-pdf.pdf) |
-| Form 80 × 60 mm | [PDF](drucktests/Transparent-roland-pdf.pdf) | [PDF](drucktests/Transparent-mimaki-pdf.pdf) | [PDF](drucktests/Transparent-mimaki-white-pdf.pdf) |
+| Acryl 150 × 200 mm | [PDF](server-drucktests/Server-Acryl-Roland.pdf) | [PDF](server-drucktests/Server-Acryl-Mimaki-Farbe.pdf) | [PDF](server-drucktests/Server-Acryl-Mimaki-Weiss.pdf) |
+| Form 100 × 80 mm, eigener Text/Motiv/Graustufenfoto | [PDF](server-drucktests/Server-Form-Roland.pdf) | [PDF](server-drucktests/Server-Form-Mimaki-Farbe.pdf) | [PDF](server-drucktests/Server-Form-Mimaki-Weiss.pdf) |
 
-Das jeweilige Mimaki-Paar seitenbezogen mit identischem Ursprung **1:1** überlagern; nicht auf sichtbare Objekte beschneiden/zentrieren oder erneut spiegeln. Mimaki-Weiß enthält `RDG_WHITE` und CutContour; der RIP muss Weiß ausdrücklich passend zuordnen. Farb-PDF ohne `RDG_WHITE`; Roland kombiniert CMYK, Vektortexte, Vektorweiß und CutContour. Kein Text als Bitmap, keine Fontobjekte, keine Bildobjekte in der reinen Weiß-PDF. Fotos bleiben Raster. Maße, Quellen, Weiß- und Konturpfade sowie SHA-256 stehen in den benachbarten `.pdf.json`-Prüfdateien. Alle PDFs ohne Reparatur lesbar.
+Jeweilige Mimaki-Paare **1:1 mit identischem Ursprung** überlagern; nicht unabhängig beschneiden/zentrieren oder erneut spiegeln. Weiß enthält `RDG_WHITE` und `CutContour`, Farbe kein `RDG_WHITE`. Roland kombiniert beide Separationen. Schriftpfade, Kontur und Vektorweiß vorhanden; keine Fontobjekte, keine Bilder in reiner Weiß-PDF. Fotos bleiben Raster. Benachbarte `.pdf.json`-Dateien nennen Maße, Hashes und Prüfergebnisse; sechs PDFs ohne Reparatur lesbar und mit Ghostscript geprüft. Graustufenfoto der Form in der Schwarzseparation bestätigt. Diese Dateianalyse erfolgte lokal an den tatsächlichen Serverdownloads.
 
-Diese Dateien stammen aus dem aktuellen gesicherten Backend-Ausgabepfad mit synthetischem Foto und Namen. PDF 1.7, kein gemessenes Maschinen-ICC. Nicht mit den historisch bestätigten privaten Corel-PDF-1.3-Proben gleichsetzen; diese Dateien stehen hier nicht zur Verfügung. Im echten RIP bleiben Import, Deckungsgleichheit, Weißdruck, Konturzuweisung, Spiegelung und Material-/Farbwirkung physisch zu bestätigen. Keine Produktionsauslösung durch diese Lieferung.
+Diese Dateien sind technische Proben, keine physische Maschinenfreigabe und kein freigegebenes Produktions-ICC. Im echten RIP müssen Zuordnung von Weiß/Konturen, Deckung, Spiegelung und Materialwirkung bestätigt werden. Keine Druckmaschine angesteuert.
 
-## Noch notwendiger Anschluss
+Die [früheren lokalen PDF-Proben](drucktests/) bleiben als Vergleich erhalten. Die neue Tabelle oben bezeichnet ausschließlich tatsächlich auf dem Testserver erzeugte Dateien.
 
-**Aktualisierte Zugangslage:** Der Cloud-Browser Chromium/Playwright erreicht die Plesk-Anmeldeseite auf Port 8443 mit gültiger TLS-Prüfung (HTTP 200). Der geteilte Link ohne Port liefert 404. Es fehlt die sichere Anmeldung; `GRAVURU_PLESK_USERNAME` und `GRAVURU_PLESK_PASSWORD` sind nicht an die Laufzeit gebunden. [Nachweis und konkreter Einbindungsschritt](../../docs/dashboard-20261004/PLESK-BROWSERZUGANG-20261007.md). Nach Bereitstellung kann die Browsersteuerung vorhandene Testbereiche und Voraussetzungen lesen und die freigegebene getrennte Testinstanz einrichten. Die manuelle Installationsanleitung bleibt als Bedienungsreferenz nutzbar. Keine Zugangsdaten im Chat.
+## Abnahme und offene Anschlüsse
 
-Für anschließende automatisierte HTTPS-Prüfungen den separaten Testbenutzer und das Testpasswort sicher als angeforderte persönliche Cloud-Umgebungsvariablen `GRAVURU_TEST_USERNAME` und `GRAVURU_TEST_PASSWORD` binden; `GRAVURU_TEST_ORIGIN` ist die bestätigte Adresse. Persönlicher Tresor → Umgebungsvariable → Umgebung `gravuru-2027`; dieselben Namen müssen unter deren Umgebungsvariablen ausdrücklich angefordert sein. Keine Plesk- oder Live-Shopify-Schlüssel dafür verwenden. Eine Plesk-Variableneingabe allein bindet nichts an die Cloud-Aufgabe.
+Auf dem Server geprüft: Passwort-/Dateischutz, Neustart mit Daten- und Sitzungserhalt, Dashboard, vorhandener Acryl-Konfigurator, freie Design-/Motiv-/Text-/Fotobearbeitung, private Form-Entwürfe, Excel-/Ordner-/ZIP-Import, Korrektur und Ausführungsgruppen ohne Duplikate. Desktop/390/768, keine JavaScript-Fehler in den aufgeführten Abläufen. [Einzelheiten und Grenzen](../../docs/dashboard-20261004/HTTPS-TESTABNAHME-20261007.md).
 
-Erst nach echtem Serverstart sind HTTPS/TLS, anonymer Passwortschutz, private Dateisperren und Datenerhalt nach **manuellem Neustart dieser Test-App** abnehmbar. Ein funktionierender Testlink ist derzeit nicht bestätigt.
+Eigener Serverprozess konnte sich mit dem vorhandenen App-Schlüssel bei Shopify anmelden und lesend Shop/App/Produkte/Varianten prüfen. Der private Paketstart aktiviert diese Verbindung noch nicht. `read_orders`, bestätigte Testvarianten und ein Weg ohne echte Belastung/Produktionsauslösung fehlen; der geprüfte Shop ist reguläres Shopify Plus. Keine echte Bestellung, keine Live-App-Konfigurationsänderung und keine kaufgebundene Kundenkonto-Abnahme behauptet.
 
-Shopify bleibt ein eigener Anschluss: Das private Plesk-Paket aktiviert weder Shop-Login noch Warenkorb/Webhooks. Erforderlich sind bestehendes App-Secret sicher am Testprozess, bestätigtes HTTPS-Ziel, authentifizierter API-Zugriff samt freigegebenen Testvarianten und ein bestätigter Testzahlungsweg ohne Belastung/Produktion. Öffentlich erreichbare signierte Webhooks und Kundenkonto-Anmeldung benötigen die gesonderte Laufzeitintegration; ein Secret allein schaltet sie nicht frei. Vor jeder Änderung an URL/Weiterleitungen/Abonnements der laufenden App: konkrete Werte und alten Stand sichern, Änderung mit Rückweg vorlegen und Freigabe abwarten. Keine zweite Shopify-App erzeugen, keine globalen Zahlungs-/Servereinstellungen ändern.
-
-Der Nutzer bestätigt: Für Drive existiert noch kein OAuth-Zugang/Google-Cloud-Projekt. Der eigene Drive-Dienst bleibt offen. Für den automatisierten KI-Designassistenten der App fehlen Anbieter und Kostenobergrenzen; die Rückfrage betraf kostenpflichtige API-Aufträge, nicht normale Entwicklung oder Unterstützung in diesem Chat. Es wurde kein Anbieter gewählt und kein KI-Auftrag ausgelöst. Reale Anmeldung, Testbestellung, Drive-/KI-Dienst und physischer Druck sind keine bestandenen Prüfungen.
-
-
-## Abnahmestand nach Bereich
-
-| Bereich | Vorliegender Beleg | Auf dem echten Testserver |
-| --- | --- | --- |
-| Dashboard, bestehender Konfigurator, Design-/Motivbearbeitung, Fotos, Texte, Entwürfe | [Bestandene Cloud-Browserabnahme](../../docs/dashboard-20261004/CLOUD-BROWSER-ABNAHME-20261007.md), aktuelle Änderungen zusätzlich gezielt geprüft | Offen |
-| Gespeicherte Excel-Serien und Ausführungsgruppen | [Vorhandene Abnahme](../../docs/dashboard-20261004/GESPEICHERTE-EXCEL-ABNAHME-20261007.md); Profilimport neu geprüft | Offen |
-| Ordner-/ZIP-Import und Korrektur | [Ordner](../../docs/dashboard-20261004/DESIGN-ORDNERIMPORT-20261007.md), [ZIP](../../docs/dashboard-20261004/DESIGN-ZIPIMPORT-20261007.md); keine unveränderten Gesamtabnahmen wiederholt | Offen |
-| Kaufgebundene Dateifreigabe | [Synthetische Abnahme](../../docs/dashboard-20261004/TEST-DATEIFREIGABE-ABNAHME-20261007.md) | Reale Shopify-Kundenanmeldung/Bestellung offen |
-| Roland-/Mimaki-Dateien | Neue synthetische PDF-Lieferung technisch geprüft | Serverexport sowie reale RIP-/Maschinen-/ICC-Abnahme offen |
-| Installation, Passwortschutz, private Dateien, Neustart | [Aktuelles ZIP entpackt geprüft](../../docs/dashboard-20261004/plesk-profile-package-20261007/report.json), Headerproxy nur lokal simuliert | HTTPS/Passenger/Serverdaten noch nicht geprüft |
+Für Drive fehlt die eigene Google-Autorisierung. Für den automatisierten KI-Designassistenten der App fehlen Anbieter und Kostenrahmen. Keine kostenpflichtige Nutzung gestartet. Physische Druck-/Geräteabnahme und spätere Produktivumschaltung bleiben getrennte Schritte.

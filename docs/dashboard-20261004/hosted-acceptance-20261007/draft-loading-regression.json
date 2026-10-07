@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-10-07T21:26:48.766004+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "reloadLocksInputs": true,
+  "stalePreviewIgnored": true,
+  "newerRevisionSaved": true,
+  "failedDesignLoadKeepsPreviousCredential": true,
+  "otherDraftUnchanged": true,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T21:26:59.583048+00:00"
+}

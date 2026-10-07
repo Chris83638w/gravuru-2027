@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "scope": "synthetic local photo; delayed real preview response",
+  "checks": {
+    "controlsLockedWhileUploadPreviewPending": true,
+    "grayscaleSavedAndReopened": true
+  },
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T21:26:41.749615+00:00"
+}

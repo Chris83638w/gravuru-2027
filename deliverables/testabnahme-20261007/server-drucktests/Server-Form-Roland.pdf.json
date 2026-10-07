@@ -1,0 +1,12 @@
+{
+  "sha256": "dcb403d5493da1e77ed80cd0048f482a900804abff4198898cc96d46b219c082",
+  "widthMm": 100,
+  "heightMm": 80,
+  "fontObjects": 0,
+  "vectorPaths": 4,
+  "imageObjects": 2,
+  "RDG_WHITE": true,
+  "CutContour": true,
+  "ghostscript": "PASS",
+  "grayscalePhotoInBlackSeparation": true
+}

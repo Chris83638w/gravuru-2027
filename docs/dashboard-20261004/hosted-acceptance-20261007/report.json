@@ -1,0 +1,264 @@
+{
+  "startedAt": "2026-10-07T20:54:11.900975+00:00",
+  "origin": "https://test-2027.gravuru-designwerkstatt.de",
+  "scope": "real separate Plesk HTTPS test instance; synthetic data only",
+  "checks": {
+    "https_auth_and_private_paths": {
+      "unauthenticated": {
+        "/__test/health": 401,
+        "/api/workshop/products": 401,
+        "/werkstatt/": 401
+      },
+      "privatePaths": {
+        "/.env": 403,
+        "/PACKAGE-MANIFEST.json": 404,
+        "/ops/plesk/config.mjs": 404,
+        "/private/": 404,
+        "/gravuru-2027-runtime-test.zip": 404
+      },
+      "missingCsrf": 403,
+      "foreignOrigin": 403
+    },
+    "zip_excel_partial_import": {
+      "passed": true,
+      "products": 2,
+      "jobId": "imp_204531d6-4187-4694-aeb4-ba2b3da4cfd1",
+      "originalBytesPreserved": true,
+      "pdfPage": 2
+    },
+    "zip_reopen_correction_repeat": {
+      "passed": true,
+      "createdAfterCorrection": 3,
+      "existingProductsUnchanged": true,
+      "repeatCreated": 0
+    },
+    "folder_import": {
+      "passed": true,
+      "totalProducts": 4
+    },
+    "execution_groups": {
+      "passed": true,
+      "groups": 1,
+      "variants": 2,
+      "jobId": "imp_6fa2ae55-570f-4b6d-b304-0e73e7948428",
+      "repeatCreated": 0
+    },
+    "dashboard_native_configurator": {
+      "passed": true,
+      "productId": "cfg_d13516ea-c1d7-4f3c-9324-44d10a1d7801",
+      "revision": 2,
+      "existingIframeEditor": true,
+      "firstLoadExceeded30Seconds": true
+    },
+    "native_photo_text_review": {
+      "passed": true,
+      "snapshotId": "proof_c50bddfa-07c2-4222-9d1e-b989cf92c5e4",
+      "originalPhotoByteIdentical": true,
+      "grayscaleAndCropApplied": true,
+      "packageSha256": "722e0e5971961dea6c631a2237c6d731b80aa6d9358a41eaf190c3cf92652eb2"
+    },
+    "server_acrylic_print_generation": {
+      "passed": true,
+      "formats": [
+        "Roland combined PDF",
+        "Mimaki color PDF",
+        "Mimaki white PDF"
+      ],
+      "savedWhiteBytesIdentical": true,
+      "exportHref": "/werkstatt/ausgaben/?job=job_23f6c293-7ff3-4db6-9055-58291432406a"
+    },
+    "real_server_restart": {
+      "passed": true,
+      "products": 5,
+      "groups": 1,
+      "savedJobs": 2,
+      "singleAppProcess": true,
+      "pidChanged": true,
+      "privateDraftStatusAfterFix": 200
+    },
+    "private_draft_proxy_fix": {
+      "beforeStatus": 404,
+      "afterStatus": 200,
+      "tokenValuesLogged": false
+    },
+    "form_text_motif_photo_draft": {
+      "passed": true,
+      "productId": "cfg_7a8d04f3-c3f9-49dd-95dd-ff22875bc945",
+      "revision": 3,
+      "draftReloadUnchanged": true,
+      "addedTextAndMotif": true,
+      "photoGrayscale": true,
+      "noSpacePlacementRejected": true
+    },
+    "open_editor_survives_actual_restart": {
+      "passed": true,
+      "pageReloaded": false,
+      "savedExactlyOneRevision": true
+    },
+    "server_form_print_generation": {
+      "passed": true,
+      "snapshotId": "proof_59214cae-c044-425c-b9d6-efc43d63e383",
+      "formats": 3,
+      "photoTone": "grayscale"
+    },
+    "hosted_concurrency_and_lock": {
+      "passed": true,
+      "parallelReads": 20,
+      "allHttp200": true,
+      "secondProcessRejected": true
+    },
+    "photo_upload_controls": {
+      "passed": true,
+      "heldPreviewControlsDisabled": true,
+      "grayscaleSavedAndReloaded": true
+    },
+    "native_saved_product_revision_reopened": true,
+    "group_customer_handoff": {
+      "passed": true,
+      "variants": 2,
+      "productRevision": 1,
+      "priceCents": 1499
+    }
+  },
+  "shopifyConnected": false,
+  "physicalPrintAcceptance": false,
+  "updatedAt": "2026-10-07T21:38:29.292181+00:00",
+  "installedSourceCommit": "e157a865327aea859d8e9e91cd6c04cd6a87c8ff",
+  "pdfChecks": {
+    "Server-Acryl-Roland.pdf": {
+      "sha256": "9d8a237d0425afdc6d40deda012c51330309d4cc858593d787358b070b42d730",
+      "widthMm": 150,
+      "heightMm": 200,
+      "fontObjects": 0,
+      "vectorPaths": 12,
+      "imageObjects": 2,
+      "RDG_WHITE": true,
+      "CutContour": true,
+      "ghostscript": "PASS"
+    },
+    "Server-Acryl-Mimaki-Farbe.pdf": {
+      "sha256": "72b41741fc5a47c3cb4397c717f78ef329c3bc321313ddbfb9709e9ace0c2d45",
+      "widthMm": 150,
+      "heightMm": 200,
+      "fontObjects": 0,
+      "vectorPaths": 6,
+      "imageObjects": 2,
+      "RDG_WHITE": false,
+      "CutContour": true,
+      "ghostscript": "PASS"
+    },
+    "Server-Acryl-Mimaki-Weiss.pdf": {
+      "sha256": "09f26d1917dcf7f723e850567cb72a8a48df1247418a82adad8d62b785e55465",
+      "widthMm": 150,
+      "heightMm": 200,
+      "fontObjects": 0,
+      "vectorPaths": 7,
+      "imageObjects": 0,
+      "RDG_WHITE": true,
+      "CutContour": true,
+      "ghostscript": "PASS"
+    },
+    "Server-Form-Roland.pdf": {
+      "sha256": "dcb403d5493da1e77ed80cd0048f482a900804abff4198898cc96d46b219c082",
+      "widthMm": 100,
+      "heightMm": 80,
+      "fontObjects": 0,
+      "vectorPaths": 4,
+      "imageObjects": 2,
+      "RDG_WHITE": true,
+      "CutContour": true,
+      "ghostscript": "PASS",
+      "grayscalePhotoInBlackSeparation": true
+    },
+    "Server-Form-Mimaki-Farbe.pdf": {
+      "sha256": "2656cc907ab8c533ebabc06ac53da7096cedad33c8381f6f90b8aec14d9e0d5e",
+      "widthMm": 100,
+      "heightMm": 80,
+      "fontObjects": 0,
+      "vectorPaths": 2,
+      "imageObjects": 2,
+      "RDG_WHITE": false,
+      "CutContour": true,
+      "ghostscript": "PASS",
+      "grayscalePhotoInBlackSeparation": true
+    },
+    "Server-Form-Mimaki-Weiss.pdf": {
+      "sha256": "d7858e3e84f0a67deb74eedc549133fe8c0914182b29a9daa5dc9acdc4f8d399",
+      "widthMm": 100,
+      "heightMm": 80,
+      "fontObjects": 0,
+      "vectorPaths": 3,
+      "imageObjects": 0,
+      "RDG_WHITE": true,
+      "CutContour": true,
+      "ghostscript": "PASS",
+      "grayscalePhotoInBlackSeparation": false
+    }
+  },
+  "shopifyReadProbe": {
+    "shopifyReadProbe": true,
+    "tokenHttpStatus": 200,
+    "authenticated": true,
+    "shopMutationSent": false,
+    "credentialsPrinted": false,
+    "graphqlHttpStatus": 200,
+    "graphqlErrors": 0,
+    "shopDomain": "gravuru-design.myshopify.com",
+    "appId": "gid://shopify/App/423276544001",
+    "appTitle": "Gravuru Konfigurator",
+    "grantedScopes": [
+      "read_files",
+      "read_metaobjects",
+      "read_products",
+      "read_publications",
+      "write_files",
+      "write_metaobjects",
+      "write_products",
+      "write_publications",
+      "write_cart_transforms",
+      "read_cart_transforms"
+    ]
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "shopifyTestCandidates": {
+    "authenticated": true,
+    "apiVersion": "2026-07",
+    "shopPlan": {
+      "partnerDevelopment": false,
+      "displayName": "Shopify Plus"
+    },
+    "currency": "EUR",
+    "returnedCandidates": 12,
+    "moreCandidates": true,
+    "testVariantAssigned": false,
+    "testPaymentPathConfirmed": false,
+    "shopMutationSent": false
+  },
+  "result": "PASS_FOR_RECORDED_SERVER_SCOPE",
+  "runtime": {
+    "plesk": "18.0.81",
+    "webServer": "LiteSpeed 6.3.7",
+    "node": "24.21.0",
+    "python": "3.11.16",
+    "cairo": true,
+    "prepareExit": 0,
+    "checkExit": 0,
+    "testSiteId": 19,
+    "productionChanged": false
+  },
+  "finishedAt": "2026-10-07T21:38:29.292181+00:00",
+  "openFunctions": {
+    "shopifyEmbeddedAndCustomerLogin": true,
+    "shopifyOrderAndPaidFileGrant": true,
+    "acrylicCustomerAccountDraftRestore": true,
+    "driveAuthorization": true,
+    "aiProviderAndBudget": true,
+    "physicalPrintAndDeviceAcceptance": true
+  },
+  "pdfAnalysisEnvironment": "Local analysis of PDFs generated and downloaded from the actual Plesk test instance"
+}

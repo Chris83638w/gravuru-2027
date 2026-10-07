@@ -1,0 +1,32 @@
+{
+  "startedAt": "2026-10-07T21:16:46.091462+00:00",
+  "result": "PASS",
+  "checks": {
+    "manifestAndCurrentZipSourceSettingsVerifiedNoDatabases": true,
+    "prepareCheckCairoAndForeignLivePublicPathGuards": true,
+    "passwordHostOriginHttpsCsrfPrivatePathsAndSingleProcessGuard": true,
+    "privateDraftReadSaveReopenAndWrongTokenDenied": true,
+    "openDraftCanSaveAfterProcessRestartWithoutPageReload": true,
+    "testPasswordRotationInvalidatesOldLoginAndCsrf": true,
+    "bootstrapRestartRetainsSeed": true
+  },
+  "scope": "extracted package; synthetic loopback proxy, not real Plesk or public TLS",
+  "published": false,
+  "httpListener": "simulated LiteSpeed interception",
+  "configuration": "private file, no app variables in process",
+  "sourceCommit": "2b0a8fb19a56bb3ca303f14f89a05e5051a2be8b",
+  "archiveSha256": "e33d5e7d34f22830f8745562351b6a0e3d1d7cb56a419d251c9d3b1fa6470407",
+  "runtimeCheck": {
+    "configured": true,
+    "node": "24.19.0",
+    "sqlite": true,
+    "python": "3.12.14",
+    "dependencies": true,
+    "cairo": true,
+    "credentialsVerified": false,
+    "httpsVerified": false,
+    "shopifyConnected": false
+  },
+  "unchangedBrowserFlowsRepeated": false,
+  "finishedAt": "2026-10-07T21:16:53.678832+00:00"
+}

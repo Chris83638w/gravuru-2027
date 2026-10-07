@@ -4,6 +4,10 @@ Dieses Paket enthält den aktuellen Neuaufbau einschließlich ZIP-Import, gemein
 
 **Ziel:** separate, passwortgeschützte HTTPS-Testinstanz für genau einen App-Prozess. Kein Shopify-Login, keine Shop-Schreibzugriffe, kein Deployment über dieses Dokument ausgelöst. Der bisherige Shopify-Start bleibt im Quellcode vorhanden, wird von diesem Paketstart aber nicht verwendet. Änderungen an der bestehenden Shopify-App sind nicht erforderlich.
 
+**Hostingbefund 07.10.2026:** Der vorhandene Server verwendet LiteSpeed 6.3.7 (Apache nicht aktiv), Plesk 18.0.81 und Node 24.21.0. Die getrennte Subdomain `test-2027.gravuru-designwerkstatt.de` wurde angelegt und mit gültiger TLS-Prüfung erreicht. `/usr/bin/python3.12` meldet Python 3.12.14 und findet `libcairo.so.2`; `/usr/bin/python3` ist hier dagegen noch 3.6.8. Deshalb den Bootstrap-Interpreter ausdrücklich setzen. Dies allein ist noch keine App-Abnahme.
+
+LiteSpeed ersetzt `http.Server.listen()` und `address()` für den öffentlichen Anwendungssocket. Der interne Werkstattserver verwendet deshalb ausdrücklich die unveränderten Methoden von `net.Server` für einen eigenen Loopback-Socket. Nur der äußere, passwortgeschützte Server gelangt an den LiteSpeed-Listener. Passenger behält seinen eigenen Startweg. Einzelprozess- und Neustartverhalten auf dem jeweiligen Hosting weiterhin bestätigen; Passenger-Direktiven gelten nicht automatisch für LiteSpeed.
+
 ## 1. Einmalige Voraussetzungen in Plesk bestätigen
 
 Eine Person mit funktionierendem Plesk-Browserzugriff richtet ausschließlich den neuen Testbereich ein. Plesk-API, SSH und VPN werden nicht benötigt. Die folgenden Namen sind **Vorschläge**, keine bereits eingerichteten Adressen/Pfade:
@@ -34,7 +38,7 @@ Ohne diese Möglichkeiten die Einrichtung an dieser Stelle an die Hostingverwalt
 2. Im **Dateimanager** das ZIP in den neuen Application Root hochladen und dort entpacken. Direkt dort müssen `app.cjs`, `package.json`, `PACKAGE-MANIFEST.json`, `app/`, `ops/` und `public/` liegen. Keine zusätzliche äußere ZIP-Verzeichnisebene verwenden.
 3. ZIP nach Entpacken aus dem Server-Testordner entfernen oder außerhalb des Document Root privat ablegen. Der **Document Root muss `public/` sein**, niemals der Application Root. `public/` enthält nur `robots.txt`; Quellcode und Manifest gehören nicht in den Webroot.
 4. Falls nötig den übergeordneten Ordner `private/` per Dateimanager anlegen. Die beiden letzten Verzeichnisse für Daten/Python noch leer lassen oder noch nicht anlegen. Keine vorhandenen Bestandsordner auswählen. Der Vorbereitungsbefehl kennzeichnet nur neue/leere Testordner und setzt dort Rechte **0700**; Dateien erhalten **0600**.
-5. Unter **Node.js** für genau diese Subdomain einstellen: Node-Version **24+**, Modus **production**, Application Root wie oben, Document Root `public`, Startup File **`app.cjs`**. Die Node-Erweiterung nutzt Passenger; kein öffentlich freigegebener zusätzlicher Node-Port erforderlich. Den normalen Loopback-Start `app/configurator/variant-m/server.mjs` nicht als Plesk-Startdatei wählen.
+5. Unter **Node.js** für genau diese Subdomain einstellen: Node-Version **24+**, Modus **production**, Application Root wie oben, Document Root `public`, Startup File **`app.cjs`**. Je nach aktivem Webserver übernimmt Passenger oder LiteSpeed den Anwendungssocket; kein öffentlich freigegebener zusätzlicher Node-Port erforderlich. Den normalen Loopback-Start `app/configurator/variant-m/server.mjs` nicht als Plesk-Startdatei wählen.
 6. In den **Apache & nginx-Einstellungen** ausschließlich dieser Test-Subdomain in den zusätzlichen **HTTPS-Apache-Direktiven** setzen:
 
    ```apache

@@ -23,9 +23,11 @@ OUT = ROOT / '.test-output/plesk-package'
 OUT.mkdir(parents=True, exist_ok=True)
 parser = argparse.ArgumentParser()
 parser.add_argument('archive', type=Path)
+parser.add_argument('--litespeed', action='store_true', help='Model LiteSpeed HTTP listen/address interception')
 args = parser.parse_args()
 report = {'startedAt': datetime.now(timezone.utc).isoformat(), 'result': 'RUNNING', 'checks': {},
           'scope': 'extracted package; synthetic loopback proxy, not real Plesk or public TLS', 'published': False}
+report['httpListener'] = 'simulated LiteSpeed interception' if args.litespeed else 'plain Node.js'
 
 
 def unused_port():
@@ -59,6 +61,23 @@ with tempfile.TemporaryDirectory(prefix='g27-plesk-package-') as temporary:
                GRAVURU_TEST_USERNAME='synthetic-test', GRAVURU_TEST_PASSWORD=secrets.token_hex(24),
                GRAVURU_TEST_PORT=str(port), PIP_NO_INDEX='1')
     authorization = 'Basic ' + base64.b64encode((env['GRAVURU_TEST_USERNAME'] + ':' + env['GRAVURU_TEST_PASSWORD']).encode()).decode()
+    runtime_command = ['node', 'app.cjs']
+    if args.litespeed:
+        # lsnode.js captures the first HTTP listener and replaces address() for
+        # every HTTP server. A private inner listener must not reach that hook.
+        preload = folder / 'litespeed-listener.cjs'
+        preload.write_text('''const http = require('node:http');
+const nativeListen = http.Server.prototype.listen;
+let captured = false;
+http.Server.prototype.realListen = nativeListen;
+http.Server.prototype.address = function () { return '/synthetic/lsnode.sock'; };
+http.Server.prototype.listen = function () {
+  if (captured) throw Error('LiteSpeed listener was captured more than once');
+  captured = true;
+  return nativeListen.call(this, Number(process.env.GRAVURU_TEST_PORT), '127.0.0.1');
+};
+''')
+        runtime_command = ['node', '--require', str(preload), 'app.cjs']
 
     def run(command, override=None, ok=True):
         result = subprocess.run(command, cwd=application, env={**env, **(override or {})}, capture_output=True, text=True, timeout=120)
@@ -103,7 +122,7 @@ with tempfile.TemporaryDirectory(prefix='g27-plesk-package-') as temporary:
     proxy = None
 
     def start():
-        process = subprocess.Popen(['node', 'app.cjs'], cwd=application, env=env, stdout=log, stderr=log)
+        process = subprocess.Popen(runtime_command, cwd=application, env=env, stdout=log, stderr=log)
         deadline = time.monotonic() + 25
         while time.monotonic() < deadline:
             if process.poll() is not None:
@@ -131,7 +150,7 @@ with tempfile.TemporaryDirectory(prefix='g27-plesk-package-') as temporary:
         for path in ['/.env', '/PACKAGE-MANIFEST.json', '/ops/plesk/config.mjs', '/private/']:
             assert request(path, {'Authorization': authorization})[0] == 404
         assert request('/api/workshop/products', {'Authorization': authorization}, '{}', 'POST')[0] == 403
-        second = run(['node', 'app.cjs'], {'GRAVURU_TEST_PORT': str(unused_port())}, ok=False)
+        second = run(runtime_command, {'GRAVURU_TEST_PORT': str(unused_port())}, ok=False)
         assert request('/__test/health', {'Authorization': authorization})[0] == 200
         report['checks']['passwordHostOriginHttpsCsrfPrivatePathsAndSingleProcessGuard'] = True
 

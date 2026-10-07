@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import http from 'node:http';
+import net from 'node:net';
 import path from 'node:path';
 import {once} from 'node:events';
 import {createHash,timingSafeEqual} from 'node:crypto';
@@ -23,7 +24,10 @@ export async function createPrivateTestRuntime(env){
     build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
     workshop=createWorkshop({filename:path.join(config.data,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
     inner=createPreviewServer({workshop});inner.once('close',()=>{workshop.close();lock.stdin.end();});
-    inner.listen(0,'127.0.0.1');await once(inner,'listening');
+    // LiteSpeed replaces HTTP listen/address to capture the public app socket.
+    // This private server must keep a real loopback socket and its own address.
+    inner.address=net.Server.prototype.address;
+    net.Server.prototype.listen.call(inner,0,'127.0.0.1');await once(inner,'listening');
   }catch(error){workshop?.close();lock.stdin.end();throw error;}
   const port=inner.address().port,expected=digest(config.username+':'+config.password);
   const server=http.createServer((req,res)=>{

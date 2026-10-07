@@ -1,0 +1,27 @@
+{
+  "startedAt": "2026-10-07T10:52:12.559520+00:00",
+  "result": "PASS",
+  "data": "synthetic only",
+  "shopifyRequestSent": false,
+  "published": false,
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "separateLineValues": true,
+  "missingIsNotZero": true,
+  "duplicateNotAdded": true,
+  "staleDetailsLabelled": true,
+  "conflictHidesTotals": true,
+  "originalOrderAndSnapshotUnchanged": true,
+  "paymentNotClaimed": true,
+  "customerDownloadAllowed": false,
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T10:52:20.060382+00:00"
+}

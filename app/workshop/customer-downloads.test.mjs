@@ -65,6 +65,26 @@ for (const status of ['refunded', 'partially_refunded', 'pending']) test(status 
   assert.throws(() => f.store.customerDownloads.download(grant.id, customer), e => e.status === 409);
   assert.throws(() => f.grant(), e => e.status === 409);
 });
+test('line refund allocation blocks granted files even while the order-wide status still says paid', t => {
+  const f=setup(t),grant=f.grant();
+  f.status('paid',{refunds:[{id:501,refund_line_items:[{line_item_id:201,quantity:1,subtotal:'10.00',total_tax:'1.90'}]}]});
+  assert.equal(f.store.orderIntake.status(f.line.id).state,'paid');
+  assert.equal(f.store.orderIntake.status(f.line.id).refunds.subtotalCents,1000);
+  assert.throws(()=>f.store.customerDownloads.download(grant.id,customer),e=>e.status===409);
+  assert.deepEqual(f.store.customerDownloads.available(customer).files,[]);
+  f.reopen();assert.throws(()=>f.grant(),e=>e.status===409);
+});
+test('stale or contradictory line refund reports cannot restore customer access', t => {
+  const f=setup(t),grant=f.grant();
+  f.status('paid',{refunds:[{id:501,refund_line_items:[{line_item_id:201,quantity:1,subtotal:'10.00',total_tax:'1.90'}]}]});
+  f.status('paid',{updated_at:'2026-10-06T14:00:00Z'});
+  assert.equal(f.store.orderIntake.status(f.line.id).refunds.stale,true);
+  assert.throws(()=>f.store.customerDownloads.download(grant.id,customer),e=>e.status===409);
+  f.status('paid',{updated_at:'2026-10-06T15:00:00Z',refunds:[]});
+  assert.equal(f.store.orderIntake.status(f.line.id).refunds.conflict,true);
+  assert.throws(()=>f.grant(),e=>e.status===409);
+  assert.deepEqual(f.store.customerDownloads.available(customer).files,[]);
+});
 test('cancellation and explicit revocation cannot be bypassed by restart or old paid notifications', t => {
   const f = setup(t), grant = f.grant(); f.store.customerDownloads.revoke(grant.id, merchant); f.reopen();
   assert.throws(() => f.store.customerDownloads.download(grant.id, customer), e => e.status === 404);

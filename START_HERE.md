@@ -1,3 +1,11 @@
+## Aktuell: Positionsbezogene Erstattungsanzeige umgesetzt – 07.10.2026
+
+Fortsetzung ausschließlich in dieser Aufgabe auf `task/order-line-refunds-20261007`, Basis `c19cbd8606258860848608938965536286d90519`; übernommener Neuaufbau und Browserabnahme `0202493f715d53316eb893e94fb672c4ac8eeb04` bleiben erhalten. Das Testbestell-Dashboard zeigt jetzt gemeldete Erstattungsmengen, Warenwerte und Steueranteile je Position. Fehlende/ältere/widersprüchliche Angaben werden kenntlich gemacht; doppelte/verspätete Nachrichten summieren nichts zusätzlich. Kein berechneter Auszahlungserfolg. Ursprüngliche Bestell-/Produktionsstände unverändert; betroffene Kunden-Dateifreigaben bleiben gesperrt.
+
+39 unterschiedliche gezielte Node-Prüfungen bestanden (12 neu), neue Browserprüfung Desktop/390/768 ohne JavaScript-Fehler; Fixture-Build 76 Ressourcen/1 Modell/461440 Editor-Bytes. Keine Wiederholung der allgemeinen Browserabnahme. [Änderungen, Befehle, Screenshots und Grenzen](docs/dashboard-20261004/POSITIONSERSTATTUNGEN-20261007.md).
+
+Nutzerergänzung: Der Shopify-Connector konnte im alten Chat am 07.10. authentifiziert Shop-/Produkt-/Variantendaten lesen; keine Testvariante zugeordnet und nichts im Shop geändert. Dies ersetzt keine Anmeldung unseres App-Prozesses. Plesk/HTTPS-Testbackend und sichere Laufzeitbindung bleiben offen; nur abhängige Arbeit pausiert. Keine Live-Veröffentlichung. Nächster unabhängiger Schritt: gespeicherte Excel-Serien/Ausführungsgruppen mit gezielter Fehlerkorrektur sichtbar abnehmen.
+
 ## Aktuell: Übergabe übernommen, fünf Browserabläufe bestanden – 07.10.2026
 
 Die vorhandene Zielinstanz hat den Remote-Stand `task/cloud-runtime-handoff-20261007` auf **`8b2d3885e684425d43ccada3045b65ffabfb7806`** übernommen und per Remote-Abgleich bestätigt. Alter Branch `work` unverändert erhalten, keine ungesicherten Änderungen vorhanden gewesen. Der Neuaufbau unter `app/` ist maßgeblich; nicht bei G27-01 anfangen.

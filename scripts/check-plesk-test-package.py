@@ -25,6 +25,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('archive', type=Path)
 parser.add_argument('--litespeed', action='store_true', help='Model LiteSpeed HTTP listen/address interception')
 parser.add_argument('--private-config', action='store_true', help='Plesk npm runner without app environment variables')
+parser.add_argument('--startup-only', action='store_true', help='Verify changed bootstrap without repeating unchanged browser flows')
 args = parser.parse_args()
 report = {'startedAt': datetime.now(timezone.utc).isoformat(), 'result': 'RUNNING', 'checks': {},
           'scope': 'extracted package; synthetic loopback proxy, not real Plesk or public TLS', 'published': False}
@@ -165,6 +166,17 @@ http.Server.prototype.listen = function () {
         second = run(runtime_command, {'GRAVURU_TEST_PORT': str(unused_port())}, ok=False)
         assert request('/__test/health', {'Authorization': authorization})[0] == 200
         report['checks']['passwordHostOriginHttpsCsrfPrivatePathsAndSingleProcessGuard'] = True
+
+        if args.startup_only:
+            state = json.loads(request('/api/workshop/products', {'Authorization': authorization})[1])
+            stop(server)
+            server = start()
+            assert json.loads(request('/api/workshop/products', {'Authorization': authorization})[1]) == state
+            report['checks']['bootstrapRestartRetainsSeed'] = True
+            report['unchangedBrowserFlowsRepeated'] = False
+            report['result'] = 'PASS'
+            print('Plesk extracted package bootstrap: PASS')
+            sys.exit(0)
 
         class Proxy(BaseHTTPRequestHandler):
             def log_message(self, *args):

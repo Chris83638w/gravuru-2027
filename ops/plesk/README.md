@@ -4,7 +4,7 @@ Dieses Paket enthält den aktuellen Neuaufbau einschließlich ZIP-Import, gemein
 
 **Ziel:** separate, passwortgeschützte HTTPS-Testinstanz für genau einen App-Prozess. Kein Shopify-Login, keine Shop-Schreibzugriffe, kein Deployment über dieses Dokument ausgelöst. Der bisherige Shopify-Start bleibt im Quellcode vorhanden, wird von diesem Paketstart aber nicht verwendet. Änderungen an der bestehenden Shopify-App sind nicht erforderlich.
 
-**Hostingbefund 07.10.2026:** Der vorhandene Server verwendet LiteSpeed 6.3.7 (Apache nicht aktiv), Plesk 18.0.81 und Node 24.21.0. Die getrennte Subdomain `test-2027.gravuru-designwerkstatt.de` wurde angelegt und mit gültiger TLS-Prüfung erreicht. `/usr/bin/python3.12` meldet Python 3.12.14 und findet `libcairo.so.2`; `/usr/bin/python3` ist hier dagegen noch 3.6.8. Deshalb den Bootstrap-Interpreter ausdrücklich setzen. Dies allein ist noch keine App-Abnahme.
+**Hostingbefund 07.10.2026:** Der vorhandene Server verwendet LiteSpeed 6.3.7 (Apache nicht aktiv), Plesk 18.0.81 und Node 24.21.0. Die getrennte Subdomain `test-2027.gravuru-designwerkstatt.de` wurde angelegt und mit gültiger TLS-Prüfung erreicht. Die npm-Konsole sieht `/usr/bin/python3.12` (3.12.14), die geschützte Node-Weblaufzeit jedoch nicht: dort schlug die Auflösung des venv-Interpreters mit `ENOENT` fehl. `/opt/alt/python311/bin/python3` ist in beiden Laufzeiten ausführbar; die Konsole meldet dafür 3.11.16. Diesen vorhandenen Interpreter für die private Umgebung verwenden. `/usr/bin/python3` ist in der Konsole noch 3.6.8 und reicht nicht aus. Keine Interpreter oder Systembibliotheken als Umweg in die geschützte Laufzeit kopieren und keine globalen Sicherheitsgrenzen ändern. Eine bestandene npm-Prüfung allein ist noch keine Web-Abnahme.
 
 LiteSpeed ersetzt `http.Server.listen()` und `address()` für den öffentlichen Anwendungssocket. Der interne Werkstattserver verwendet deshalb ausdrücklich die unveränderten Methoden von `net.Server` für einen eigenen Loopback-Socket. Nur der äußere, passwortgeschützte Server gelangt an den LiteSpeed-Listener. Passenger behält seinen eigenen Startweg. Einzelprozess- und Neustartverhalten auf dem jeweiligen Hosting weiterhin bestätigen; Passenger-Direktiven gelten nicht automatisch für LiteSpeed.
 
@@ -18,7 +18,7 @@ Eine Person mit funktionierendem Plesk-Browserzugriff richtet ausschließlich de
 | Application Root | `/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-test` |
 | Document Root | `/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-test/public` |
 | Private Daten | `/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-data` |
-| Eigenes Python | `/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python` |
+| Eigenes Python | `/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python311` |
 
 Der bisherige Ordner `/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-werkstatt` bleibt unberührt. Auch dessen `private/product-data`, Runtime-Auswahl, Python-Umgebung, App-Secret, Startdateien und Datenbanken nicht kopieren, verschieben oder als Testpfad verwenden.
 
@@ -60,7 +60,7 @@ Dateiformat: JSON-Objekt mit `schema: 1`, `purpose: "private-test-runtime"` und 
 | `GRAVURU_TEST_ORIGIN` | Tatsächliche neue HTTPS-Adresse, ohne Pfad oder abschließenden `/` |
 | `GRAVURU_PRIVATE_DATA_DIR` | Absoluter neuer Datenpfad aus Schritt 1 |
 | `GRAVURU_TEST_PYTHON_DIR` | Absoluter neuer Python-Verzeichnispfad aus Schritt 1 |
-| `GRAVURU_BOOTSTRAP_PYTHON` | Vorhandener Python-3.11+-Interpreter; Standard `/usr/bin/python3`, gegebenenfalls von der Hostingverwaltung bestätigen lassen |
+| `GRAVURU_BOOTSTRAP_PYTHON` | In npm **und Weblaufzeit** verfügbarer Python-3.11+-Interpreter; hier `/opt/alt/python311/bin/python3` |
 | `GRAVURU_TEST_USERNAME` | Eigener Testbenutzer, z. B. `gravuru-test` |
 | `GRAVURU_TEST_PASSWORD` | Neues starkes Testpasswort aus dem Passwortmanager, 24–200 druckbare ASCII-Zeichen |
 
@@ -92,7 +92,7 @@ Diese Prüfung betrifft die **neue Bereitstellung**, nicht eine Wiederholung der
 4. Nur diese Testanwendung neu starten. Testprodukt muss erhalten bleiben; anschließend keine neue/duplizierte Übernahme. Vor Produktions- oder Massentests die Zielserver-Abnahme dokumentieren.
 5. Ohne Anmeldung darf kein `/api/workshop/products` erreichbar sein. `/.env`, `/PACKAGE-MANIFEST.json`, `/ops/plesk/config.mjs` und `/private/` dürfen auch angemeldet keine Dateien liefern. Die Datenablage liegt ohnehin außerhalb des Webroot.
 
-Bei 403 zuerst exakten Host und das nur im HTTPS-VHost gesetzte Proxy-Protokoll prüfen; keine Schutzprüfung abschalten. Bei zweitem App-Prozess Einzelprozesskonfiguration klären. Bei Python-/Speicherfehlern private Pfade und Servervoraussetzungen prüfen. Browser-Basic-Anmeldung kann bis zum Schließen des privaten Fensters gespeichert bleiben; dieses Fenster danach schließen.
+Bei 403 zuerst exakten Host und das nur im HTTPS-VHost gesetzte Proxy-Protokoll prüfen; keine Schutzprüfung abschalten. Bei zweitem App-Prozess Einzelprozesskonfiguration klären. Bei Python-/Speicherfehlern private Pfade und Servervoraussetzungen prüfen. Der Startfehlerbericht nennt ausschließlich festgelegte Fehlercodes, bekannte Quelldateien mit Zeilennummern und bei `ENOENT` die Verfügbarkeit festgelegter Python-Pfade; keine Fehlermeldungen mit Eingabewerten. Die Konsole kann andere Interpreter sehen als die Weblaufzeit. Browser-Basic-Anmeldung kann bis zum Schließen des privaten Fensters gespeichert bleiben; dieses Fenster danach schließen.
 
 ## 6. Grenzen, spätere Shopify-Anmeldung und Rücknahme
 

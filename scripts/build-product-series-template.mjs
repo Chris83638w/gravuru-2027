@@ -98,7 +98,7 @@ const descriptions=[
  ['slogan','Optional. Spruch im Design, zum Beispiel Hier begann unser Wir. Leer übernimmt die Vorlage.'],
  ['seo_title','Optional. SEO-Titel für das neue Produkt. Leer übernimmt den Wert der Mastervorlage.'],
  ['seo_description','Optional. SEO-Beschreibung für das neue Produkt. Leer übernimmt den Wert der Mastervorlage.'],
- ['design_file','Optional. Exakter SVG-/PDF-Dateiname oder Pfad innerhalb des ausgewählten Design-Ordners, z. B. klein/Design.svg. Hauptordner weglassen; Groß-/Kleinschreibung beachten. Leer übernimmt die Designs des Masters.'],
+ ['design_file','Optional. Exakter SVG-/PDF-Dateiname oder relativer Pfad im ausgewählten Ordner/ZIP, z. B. klein/Design.svg. Bei Ordnerauswahl Hauptordner weglassen; im ZIP enthaltene Hauptordner beibehalten. Groß-/Kleinschreibung beachten.'],
  ['design_page','Optional. PDF-Seite als ganze Zahl ab 1. Leer nimmt Seite 1. Für SVG immer 1. Dieselbe PDF kann in mehreren Produktzeilen mit unterschiedlichen Seiten verwendet werden.'],
  ['design_id','Optional. ID des zu ersetzenden Designs im Master. Leer verwendet dessen Standarddesign. Alle anderen Designs bleiben erhalten. Nur zusammen mit design_file ausfüllen.'],
  ['design_fit','Acrylvorlage: visible oder original. Freie Formen: original (Standard) oder contain (proportional einpassen). Vollflächiger Druck benötigt eine Datei im passenden Formmaß; freie Ränder werden nicht automatisch gefüllt.'],
@@ -116,9 +116,9 @@ for(let row=14;row<=35;row+=2)guide.getRange(`A${row}:B${row}`).format.fill='#F1
 guide.getRange('A36:B40').values=[
  ['Eurozahlen','Excel kann je nach Sprache 14,99 anzeigen. Der Zellwert bleibt eine Zahl in Euro; keine Centbeträge wie 1499 eintragen.'],
  ['Aktueller Umfang','Freie Formprodukte übernehmen Kontur, Material, Stärke, Verfahren und Szene. price_eur ersetzt ihren Grundpreis. Alte Acrylvorlagen behalten ihre zwei Preise und Textspalten. Designersatz entfernt nur die Kundenfelder des ersetzten Formdesigns.'],
- ['Dateien auswählen','Benötigte SVG/PDF-Dateien einzeln oder einen Design-Ordner auswählen. Unterordner in design_file mit / angeben. Nur referenzierte Dateien werden beim Prüfen hochgeladen; bis 100 Design-Dateien, jeweils 15 MB.'],
+ ['Dateien auswählen','SVG/PDF-Dateien einzeln, als Ordner oder ZIP auswählen. Pfade in design_file mit / angeben. Nur referenzierte Designs werden beim Prüfen hochgeladen. Bis 100 Designs je 15 MB; ZIP bis 50 MB, insgesamt 150 MB entpackt.'],
  ['Feste Gestaltung','Mit design_file die Spalten heading, names, place, date und slogan leer lassen. Sonst wird die Zeile abgelehnt. Texte und Fotos der importierten Datei werden nicht automatisch zu bearbeitbaren Kundenfeldern.'],
- ['Dateiquellen','Relative Pfade innerhalb des ausgewählten Ordners verwenden. Keine absoluten Pfade, .. oder Links. Gleiche Dateinamen in verschiedenen Unterordnern bleiben getrennt. Kein automatischer Ordner-/Drive-Abruf.']
+ ['Dateiquellen','Relative Pfade verwenden; keine absoluten Pfade, .. oder Links. ZIP ohne Passwort, Standardkompression und UTF-8-Namen. Gleiche vollständige Pfade aus mehreren Quellen werden abgewiesen. Kein automatischer Ordner-/Drive-Abruf.']
 ];
 guide.getRange('A36:A40').format.font={name:'Arial',size:11,bold:true,color:muted};
 guide.getRange('B36:B40').format.font={name:'Arial',size:11,color:muted};
@@ -127,7 +127,8 @@ guide.getRange('A36:B40').format.rowHeight=56;
 
 guide.getRange('A43:B48').values=[["Designs · Zuordnung", "Optionales Blatt für mehrere Designs innerhalb eines freien Formprodukts. import_key muss im Blatt Produkte vorhanden sein. Höchstens 30 Designs pro Produkt (einschließlich erhaltener Designs)."], ["Designs · Felder", "design_id ist erforderlich: vorhandene ID ersetzen, neue ID ergänzen. design_name ist optional. design_file ist der exakte SVG/PDF-Dateiname oder relative Unterordnerpfad. design_page ab 1, leer = 1; design_fit original oder contain."], ["Designs · Standard", "default_design: leer/0 oder genau einmal 1 pro Produkt. Ohne 1 bleibt das bisherige Standarddesign erhalten, bei leerer Vorlage wird das erste neue Design verwendet."], ["Designs · Bestand", "Nicht zugeordnete Designs bleiben erhalten. Kundenfelder nur des ersetzten Designs entfallen und müssen ausdrücklich neu zugeordnet werden. Keine automatische Text-/Fotoerkennung."], ["Designs · Prüfung", "Die Designspalten im Blatt Produkte für dieses Produkt leer lassen. Fehler einer Designzeile blockieren das gesamte zugehörige Produkt. Unbekannte import_key stoppen die Prüfung. Bis 3000 Designzeilen und insgesamt 100 eindeutige Datei-/Seitenzuordnungen."], ["Designs · Grenzen", "Nur freie Formprodukte. Keine neue Material-/Größenvariante; alle Designs gehören zur gleichen Produktkontur. CSV unterstützt weiterhin die einzelne Dateizuordnung im Blatt Produkte."]];
 guide.getRange('A43:B48').format={font:{name:'Arial',size:11,color:ink},wrapText:true,rowHeight:66};
-for(const row of [28,38,40,44])guide.getRange(`A${row}:B${row}`).format.rowHeight=76;
+for(const row of [28,38,40])guide.getRange(`A${row}:B${row}`).format.rowHeight=88;
+guide.getRange("A44:B44").format.rowHeight=76;
 wb.recalculate();
 assert.deepEqual(products.getRange('A1:V1').values[0],headers);
 assert.deepEqual(products.getRange('A2:V2').values[0],example);

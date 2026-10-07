@@ -1,9 +1,10 @@
 // Relative import references only. Never used as filesystem paths or fetch URLs.
-export function isDesignSourcePath(value) {
-  if(typeof value!=='string'||value.length>512||value!==value.trim()||/[\x00-\x1f\x7f\\:%?#]/.test(value)||!/\.(svg|pdf)$/i.test(value))return false;
+export function isRelativeSourcePath(value) {
+  if(typeof value!=='string'||value.length>512||value!==value.trim()||/[\x00-\x1f\x7f\\:%?#]/.test(value))return false;
   const parts=value.split('/');
   return parts.length<=16&&parts.every(part=>part&&part!=='.'&&part!=='..'&&part===part.trim()&&part.length<=200);
 }
+export const isDesignSourcePath=value=>isRelativeSourcePath(value)&&/\.(svg|pdf)$/i.test(value);
 export const designSourceName=value=>value.split('/').at(-1);
 
 /** Index user-selected files without reading bytes or guessing by basename. */

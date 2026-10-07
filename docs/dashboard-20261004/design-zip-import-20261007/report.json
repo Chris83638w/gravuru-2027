@@ -1,0 +1,25 @@
+{
+  "startedAt": "2026-10-07T17:22:45.219837+00:00",
+  "result": "PASS",
+  "data": "fresh synthetic ZIP/XLSX and loopback database",
+  "published": false,
+  "checks": {
+    "zipInventoryExactUnicodePathsPdfPageAndOnlyReferencedUploads": true,
+    "savedZipInputReopensWithoutArchiveOrUpload": true,
+    "zipCorrectionCreatesOnlyMissingProductAndRepeatCreatesNone": true,
+    "unsafeAndCorruptZipBlockedWithoutStaleFallbackOrProductChanges": true,
+    "zipFolderCollisionRejectedAndClearRecovers": true
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T17:22:52.396562+00:00"
+}

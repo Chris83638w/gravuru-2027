@@ -1,3 +1,11 @@
+## Aktuell: ZIP-Designquelle umgesetzt – 07.10.2026
+
+Branch `feat/design-zip-import-20261007`, Produktbasis **`dd42faf55df44686d3b6185807c35497ceba8df0`** plus ergänzende Übergabe **`dc941043c7184dfe6775c3e995989a8c70b13fd6`**. Übergabe gelesen und erhalten, kein älterer Produktstand übernommen. ZIP bewusst auswählen, exakte Archivpfade in Excel zuordnen, nur referenzierte SVG/PDF-Dateien nach Prüfung hochladen. Vorhandene private Originalablage und Produktprüfung wiederverwendet. Begrenzte Entpackung, Größen-/CRC-/Headerprüfung; unsichere, doppelte oder kollidierende Referenzen und beschädigte Archive blockiert. Excel-Vorlage aktualisiert.
+
+10 gezielte Node-Tests (7 neu) und neuer Browserablauf mit 5 Prüfgruppen bestanden. SVG, Unicode-Pfade, PDF-Seite 2, Originalbytes, Wiederaufnahme ohne ZIP, Korrektur und Wiederholung ohne Duplikate geprüft. Desktop/390/768 ohne Überlauf oder JavaScript-Fehler. [Bedienung, Formate, Grenzen und Nachweise](docs/dashboard-20261004/DESIGN-ZIPIMPORT-20261007.md).
+
+Lokale Datei-/Ordner-/ZIP-Quellen fertig. Nächster offener Quellenanschluss: eigene autorisierte Google-Drive-Anbindung mit Datei-IDs und revisionsgebundener Originalkopie; Chat-Connector ersetzt sie nicht. KI benötigt Provider-/Kostenfestlegung. Plesk bleibt pausiert; echte Shopify-Anbindung samt HTTPS-Testbackend und Testbestellung ausdrücklich offen. Keine Live-Veröffentlichung oder Änderung der laufenden Werkstatt.
+
 ## Ergänzende Chat-Übergabe – 07.10.2026
 
 [Gesammelte Entscheidungen, aktueller Einstieg und Dateiinventar](docs/dashboard-20261004/UEBERGABE-NEUER-CHAT-20261007.md). Produktbasis: `dd42faf55df44686d3b6185807c35497ceba8df0` (Ordnerimport fertig); nächstes Paket: ZIP-Designquelle. Plesk pausiert, echte Shopify-Anbindung offen. Diese Ergänzung ändert keine Produktfunktionen. Bei neuerem Arbeitsstand nur ergänzend lesen, nicht zurücksetzen.

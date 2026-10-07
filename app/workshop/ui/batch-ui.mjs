@@ -2,10 +2,12 @@ import {merchantRequest as fetch} from './merchant-request.mjs';
 import {readBatchImport} from './batch-reader.mjs';
 import {merchantImageAttribute} from './merchant-media.mjs';
 import {indexDesignSources,designSourceName} from './design-source-path.mjs';
+import {readDesignZip,ZIP_LIMITS} from './design-zip.mjs';
 const $=s=>document.querySelector(s),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false,formKeys=new Set();
 let exportBusy=false;
 let checkedInput=null;
+let zipFiles=[],zipIgnored=0,zipError='';
 const uploadCache=new WeakMap();
 async function api(path,data){
   if(data&&!csrf)csrf=(await api('/api/workshop/session')).csrfToken;
@@ -17,6 +19,7 @@ function disabled(value){
   busy=value;for(const id of ['check','master','file','design-files','skip-errors','job-name','saved-jobs'])$('#'+id).disabled=value;
   $('#design-folder').disabled=value||!('webkitdirectory' in $('#design-folder'));
   $('#clear-design-folder').disabled=value||!$('#design-folder').files.length;
+  $('#design-zip').disabled=value;$('#clear-design-zip').disabled=value||!$('#design-zip').files.length;
   $('#import').disabled=value||!prepared||hasErrors&&!$('#skip-errors').checked;
   $('#download-report').disabled=value||!checkedInput;
   $('#download-errors').disabled=value||!checkedInput||!hasErrors;
@@ -30,7 +33,7 @@ function invalidate(){
 }
 const base64=file=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Die Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
 async function uploadDesigns(rows){
-  const {sources:byName}=indexDesignSources(Array.from($('#design-files').files),Array.from($('#design-folder').files));
+  const {sources:byName}=selectedSources();
   const requests=new Map();
   for(const row of rows){
     const name=String(row.design_file||'').trim(),rawPage=String(row.design_page??'').trim()||'1';
@@ -68,17 +71,35 @@ function artworkCell(row){
 }
 $('#skip-errors').addEventListener('change',()=>disabled(busy));
 for(const id of ['file','master'])$('#'+id).addEventListener('change',invalidate);
+function selectedSources(){
+  if(zipError)throw Error(zipError);
+  return indexDesignSources([...$('#design-files').files,...zipFiles],[...$('#design-folder').files]);
+}
 function showSources(){
   $('#source-paths').replaceChildren();
   try{
-    const {sources,ignored}=indexDesignSources([...$('#design-files').files],[...$('#design-folder').files]);
-    $('#source-summary').textContent=sources.size+' SVG-/PDF-Dateien ausgewählt.'+(ignored?' '+ignored+' andere Dateien im Ordner werden ignoriert.':'')+' Hochgeladen werden erst beim Prüfen die in der Tabelle verwendeten Dateien.';
+    const {sources,ignored}=selectedSources();
+    $('#source-summary').textContent=sources.size+' SVG-/PDF-Dateien ausgewählt.'+(ignored?' '+ignored+' andere Dateien im Ordner werden ignoriert.':'')+(zipIgnored?' '+zipIgnored+' andere Dateien im ZIP werden ignoriert.':'')+' Hochgeladen werden erst beim Prüfen die in der Tabelle verwendeten Dateien.';
     for(const name of sources.keys()){const item=document.createElement('li');item.textContent=name;$('#source-paths').append(item);}
   }catch(error){$('#source-summary').textContent=error.message;}
   $('#clear-design-folder').disabled=busy||!$('#design-folder').files.length;
+  $('#clear-design-zip').disabled=busy||!$('#design-zip').files.length;
 }
 for(const id of ['design-files','design-folder'])$('#'+id).addEventListener('change',()=>{invalidate();showSources();});
 $('#clear-design-folder').onclick=()=>{if(busy)return;$('#design-folder').value='';invalidate();showSources();};
+$('#design-zip').onchange=async()=>{
+  if(busy)return;invalidate();zipFiles=[];zipIgnored=0;zipError='';disabled(true);
+  $('#source-paths').replaceChildren();$('#source-summary').textContent='ZIP wird im Browser geprüft …';
+  try{
+    const file=$('#design-zip').files[0];
+    if(file){
+      if(!/\.zip$/i.test(file.name)||file.size>ZIP_LIMITS.archive)throw Error('ZIP: Bitte ein ZIP bis 50 MB auswählen.');
+      const result=await readDesignZip(new Uint8Array(await file.arrayBuffer()));zipFiles=result.files;zipIgnored=result.ignored;
+    }
+  }catch(error){zipError=error.message;}
+  finally{disabled(false);showSources();}
+};
+$('#clear-design-zip').onclick=()=>{if(busy)return;$('#design-zip').value='';zipFiles=[];zipIgnored=0;zipError='';invalidate();showSources();};
 if(!('webkitdirectory' in $('#design-folder'))){$('#design-folder').disabled=true;$('#source-summary').textContent='Dieser Browser unterstützt keine Ordnerauswahl. SVG-/PDF-Dateien einzeln auswählen.';}
 $('#cancel-check').addEventListener('click',()=>{cancelled=true;$('#cancel-check').disabled=true;status('Abbruch angefordert. Die laufende Datei wird noch abgeschlossen.');});
 function renderPlan(data,plan){
@@ -176,7 +197,7 @@ $('#open-job').addEventListener('click',async()=>{
   const id=$('#saved-jobs').value;if(busy||!id)return;prepared=null;disabled(true);
   try{
     const job=await api('/api/workshop/batch/jobs/'+encodeURIComponent(id));
-    invalidate();$('#file').value='';$('#design-files').value='';$('#design-folder').value='';showSources();renderPlan(job.input,job.plan);$('#job-name').value=job.name;
+    invalidate();$('#file').value='';$('#design-files').value='';$('#design-folder').value='';$('#design-zip').value='';zipFiles=[];zipIgnored=0;zipError='';showSources();renderPlan(job.input,job.plan);$('#job-name').value=job.name;
     $('#job-status').textContent='Gespeicherte Prüfung geöffnet und aktuell geprüft. Bereits ausgeführte Zeilen werden erkannt. Verknüpfte Design-Dateien kommen aus dieser privaten Ablage.';
   }catch(error){$('#job-status').textContent=error.message+' Die bisherigen Eingaben bleiben erhalten. Vor der Übernahme die gespeicherte Prüfung erneut öffnen oder die Tabelle erneut prüfen.';status('Öffnen fehlgeschlagen. Übernahme bis zur erneuten Prüfung gesperrt.',true);}finally{disabled(false);}
 });

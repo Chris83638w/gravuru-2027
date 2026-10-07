@@ -38,4 +38,4 @@ Syntax der geänderten JavaScript-Dateien und `git diff --check` erfolgreich. Vo
 
 ## Externe Abnahme weiterhin offen
 
-Kein erreichbarer Plesk-Testhost bestätigt, kein Serverstart/HTTPS-/Neustartnachweis. Manuelle Plesk-Bedienung ist angefragt; keine weitere SSH-/VPN-/API-Schleife. Shopify-Login, reale Varianten-/Warenkorb-/Bestell-/Kundenkontostrecke, Drive-Autorisierung und KI-Anbieter/Kostenrahmen bleiben offen. Maschinen-/RIP-/ICC-Abnahme ist eine separate externe Prüfung. Keine Live-Werkstatt oder Shopify-App-Konfiguration geändert.
+Kein erreichbarer Plesk-Testhost bestätigt, kein Serverstart/HTTPS-/Neustartnachweis. Manuelle Plesk-Bedienung ist angefragt; keine weitere SSH-/VPN-/API-Schleife. Shopify-Login, reale Varianten-/Warenkorb-/Bestell-/Kundenkontostrecke, Drive-Autorisierung und KI-Anbieter/Kostenrahmen bleiben offen. Der Nutzer bestätigt, dass Drive noch nicht eingerichtet ist; zur KI-Rückfrage wurden die möglichen separaten API-Kosten erklärt, keine kostenpflichtige Anbindung freigegeben. Maschinen-/RIP-/ICC-Abnahme ist eine separate externe Prüfung. Keine Live-Werkstatt oder Shopify-App-Konfiguration geändert.

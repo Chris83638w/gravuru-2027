@@ -1,3 +1,11 @@
+## Aktuell: Aktualisiertes Installationspaket lokal abgenommen – 07.10.2026
+
+Neuer Produkt-/Quellcommit **`2c46b7fc3b93a6d9f601a37b3c46ee881f38bec3`**, Branch `feat/excel-profile-assignments-20261007`, bereits auf GitHub gesichert. Enthält Stand a2af162, ZIP-Import und die neue Excel-/Formprofilbindung. [Aktuelles Installationspaket](deliverables/plesk-private-test-profiles-20261007/README.md): **25,9 MiB**, SHA-256 `9d08a8bba5a6ddb7de5ea6adeee523ab4778e296415ebb0b752e9bbea25ddca0`. [Excel-Vorlagen, sechs synthetische PDFs, Bedienung und Abnahmestand](deliverables/testabnahme-20261007/README.md).
+
+Produktpaket: **50 gezielte Node-Prüfungen und 5 neue Browsergruppen bestanden**. Aktualisiertes ZIP zusätzlich tatsächlich entpackt: **5 lokale Paketprüfgruppen PASS**, darunter prepare/check/Cairo, Schutzgrenzen, SQLite und Neustart ohne Duplikate. Keine echte HTTPS-/Plesk-/Passenger-Abnahme; keine physische Maschinenfreigabe.
+
+**Nächster zwingender Schritt:** manuelle Plesk-Bedienung unter Websites & Domains: zuerst vorhandenen geeigneten Testbereich und Servervoraussetzungen bestätigen, dann nur diesen Bereich nach `ops/plesk/README.md` einrichten. Kein angemeldeter Browserzugriff oder bestätigter Testlink in dieser Laufzeit. Danach sichere Testzugangsbindung und neue echte Serverabnahme. SSH/VPN/API-Einrichtung bleibt zurückgestellt. Drive noch nicht eingerichtet (Nutzer bestätigt); KI-Anbieter/Kostenrahmen unentschieden, keine kostenpflichtigen Aufträge. Reale Shopify-Anmeldung/Varianten-/Warenkorb-/Bestell-/Kundenkontostrecke offen; Änderungen an laufender App erst konkret mit Rückweg freigeben lassen. Keine Live-Veröffentlichung oder Serveränderung erfolgt.
+
 ## Aktuell: Excel-Profilzuordnungen und lokale Testlieferung – 07.10.2026
 
 Branch `feat/excel-profile-assignments-20261007`, Basis **`a2af162edd3a1dfa2106212c9f4b76c7ae351b70`** erhalten. ZIP-/Ordner-/Excel-Wiederaufnahme unverändert fortgeführt. Optionale Schrift-/Motiv- und feste Fertigungsprofilzuordnung im Serienimport; geänderte Auswahlrevisionen verlangen erneute Prüfung. Formprodukte mit ausdrücklicher Profilregel, serverseitig begrenzter Kundenauswahl und eingefrorener Auswahl je Produkt-/Entwurfsstand. Keine Migration.

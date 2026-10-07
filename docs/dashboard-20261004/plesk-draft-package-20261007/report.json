@@ -1,0 +1,30 @@
+{
+  "startedAt": "2026-10-07T21:04:48.380618+00:00",
+  "result": "PASS",
+  "checks": {
+    "manifestAndCurrentZipSourceSettingsVerifiedNoDatabases": true,
+    "prepareCheckCairoAndForeignLivePublicPathGuards": true,
+    "passwordHostOriginHttpsCsrfPrivatePathsAndSingleProcessGuard": true,
+    "privateDraftReadSaveReopenAndWrongTokenDenied": true,
+    "bootstrapRestartRetainsSeed": true
+  },
+  "scope": "extracted package; synthetic loopback proxy, not real Plesk or public TLS",
+  "published": false,
+  "httpListener": "simulated LiteSpeed interception",
+  "configuration": "private file, no app variables in process",
+  "sourceCommit": "89924ba70d8d052460ec1c0014f2e7fdbafd5a06",
+  "archiveSha256": "458b4c2dcd8db4bfd060236f70e8c165b03e26a407cb52a15728dbc3c27e6f65",
+  "runtimeCheck": {
+    "configured": true,
+    "node": "24.19.0",
+    "sqlite": true,
+    "python": "3.12.14",
+    "dependencies": true,
+    "cairo": true,
+    "credentialsVerified": false,
+    "httpsVerified": false,
+    "shopifyConnected": false
+  },
+  "unchangedBrowserFlowsRepeated": false,
+  "finishedAt": "2026-10-07T21:04:56.468468+00:00"
+}

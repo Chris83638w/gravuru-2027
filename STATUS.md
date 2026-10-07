@@ -1,3 +1,11 @@
+## Aktuell: Plesk-Browserweg bestätigt, sichere Anmeldung fehlt – 07.10.2026
+
+**Korrektur der bisherigen Zugangseinschätzung:** Chromium/Playwright in dieser Cloud kann die Plesk-Anmeldeseite tatsächlich bedienen. Auf `https://gravuru.highspeed.cloud:8443` über vorgesehenen Proxy mit gültiger TLS-Prüfung **HTTP 200**, Plesk Obsidian 18.0.81; der Nutzerlink ohne Port liefert 404. Keine Verbindung zur bereits angemeldeten Nutzersitzung. Keine Serveränderung.
+
+**Nächster erforderlicher Schritt:** bestehende Plesk-Anmeldedaten ausschließlich sicher als angeforderte persönliche Laufzeitvariablen `GRAVURU_PLESK_USERNAME` und `GRAVURU_PLESK_PASSWORD` für `gravuru-2027` binden. Cloud-Revision 36 meldet keine Bindungen. Danach kann die vorhandene Browsersteuerung zuerst Testbereiche und Servervoraussetzungen prüfen und die bereits freigegebene separate Testinstanz einrichten. Kein erneutes Erfragen technischer Serverdaten beim Nutzer nötig, sobald Anmeldung verfügbar. [Prüfnachweis und sichere Einbindung](docs/dashboard-20261004/PLESK-BROWSERZUGANG-20261007.md).
+
+Produktcode, Installationspaket und lokale Abnahmen bleiben unverändert; echte Server-/Shopify-/Maschinenabnahme weiterhin offen. SSH/VPN/API-Einrichtung bleibt zurückgestellt. Die folgenden älteren Hinweise auf fehlende Browsersteuerung sind damit ersetzt.
+
 ## Aktuell: Aktualisiertes Installationspaket lokal abgenommen – 07.10.2026
 
 Neuer Produkt-/Quellcommit **`2c46b7fc3b93a6d9f601a37b3c46ee881f38bec3`**, Branch `feat/excel-profile-assignments-20261007`, bereits auf GitHub gesichert. Enthält Stand a2af162, ZIP-Import und die neue Excel-/Formprofilbindung. [Aktuelles Installationspaket](deliverables/plesk-private-test-profiles-20261007/README.md): **25,9 MiB**, SHA-256 `9d08a8bba5a6ddb7de5ea6adeee523ab4778e296415ebb0b752e9bbea25ddca0`. [Excel-Vorlagen, sechs synthetische PDFs, Bedienung und Abnahmestand](deliverables/testabnahme-20261007/README.md).

@@ -1,3 +1,9 @@
+## Aktuell: Shopify-Anschluss vorbereitet, HTTPS-Testhost noch offen – 07.10.2026
+
+Auf `task/shopify-test-preparation-20261007`, Basis `0202493f715d53316eb893e94fb672c4ac8eeb04`: private leere Testablage `/workspace/gravuru-private/shopify-admin-test-20261007` mit 0700 außerhalb von Git vorbereitet; Schreibprobe bestanden. Anschlusscheck mit diesem Pfad nennt nur noch App-Secret und HTTPS-Origin als fehlend. Keine Browser-/Fachtests wiederholt.
+
+Vorhandene private Site `gravuru-design-test-mika.gravur4you-cy.chatgpt.site` per HTTPS erreichbar (anonym 401), dokumentiert jedoch statisch ohne Werkstatt-Backend. Nutzer bestätigt Plesk für die laufende Werkstatt und keine bestätigte Test-Subdomain. Kein authentifizierter Plesk-Zugang und kein Cloud-HTTPS-Preview-Werkzeug hier verfügbar. Live-Adresse/Hosting unverändert. Die wertfreie Anforderung des direkten App-Secrets konnte wegen `draft_not_editable` nicht gespeichert werden; alter Entwurf unverändert. [Vorbereitung, persönlicher Tresor und konkrete nächste Schritte](docs/dashboard-20261004/SHOPIFY-ANSCHLUSS-VORBEREITUNG-20261007.md). Nächster Schritt: vorhandene getrennte HTTPS-Möglichkeit in Plesk authentifiziert nur lesen und sichere direkte Secret-Bereitstellung der gewählten Testlaufzeit herstellen. Keine neue Umgebung und keine Veröffentlichung.
+
 ## Aktuell: Übergabe übernommen, fünf Browserabläufe bestanden – 07.10.2026
 
 Die vorhandene Zielinstanz hat den Remote-Stand `task/cloud-runtime-handoff-20261007` auf **`8b2d3885e684425d43ccada3045b65ffabfb7806`** übernommen und per Remote-Abgleich bestätigt. Alter Branch `work` unverändert erhalten, keine ungesicherten Änderungen vorhanden gewesen. Der Neuaufbau unter `app/` ist maßgeblich; nicht bei G27-01 anfangen.

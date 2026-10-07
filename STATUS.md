@@ -1,4 +1,12 @@
-## Aktuell: Sicherung und Übergabe an vorhandene funktionierende Cloud-Aufgabe – 07.10.2026
+## Aktuell: Übergabe übernommen, fünf Browserabläufe bestanden – 07.10.2026
+
+Die vorhandene Zielinstanz hat den Remote-Stand `task/cloud-runtime-handoff-20261007` auf **`8b2d3885e684425d43ccada3045b65ffabfb7806`** übernommen und per Remote-Abgleich bestätigt. Alter Branch `work` unverändert erhalten, keine ungesicherten Änderungen vorhanden gewesen. Der Neuaufbau unter `app/` ist maßgeblich; nicht bei G27-01 anfangen.
+
+Fortsetzung auf **`test/cloud-browser-acceptance-20261007`**: Loopback-Listener und Chromium funktionieren. Fünf aktuelle Browserabläufe bestanden: Versionsvergleich/Profil-Auswirkung/Zuordnungen mit Abbrechen und Speichern; Dashboard zum bestehenden Acryl-Konfigurator mit festem Revisionslink; Fotozuschnitt/Graustufen mit Originalerhalt; private Kundenentwürfe unter Ladefehlern; getrennte Mimaki-PDFs und Ebenenvorschau. Desktop/390/768 Pixel, Versionsdialog zusätzlich Touch-Emulation. Keine JavaScript-Fehler, Fixture-Builds 76 Ressourcen/1 Modell/461440 Editor-Bytes. Keine Produktcodeänderung. Neues Prüfskript, Berichte und fünf gesichtete Screenshots: [Cloud-Browser-Abnahme](docs/dashboard-20261004/CLOUD-BROWSER-ABNAHME-20261007.md).
+
+Nur temporäre synthetische Daten, Loopback-/Host-/Origin-/CSRF-Schutz geprüft; keine gehostete Händleranmeldung. `shopify:check` meldet fehlende Felder `GRAVURU_SHOPIFY_CLIENT_SECRET`, `GRAVURU_SHOPIFY_APP_ORIGIN`, `GRAVURU_PRIVATE_DATA_DIR`. Kein geschützter Handy-Vorschau-Link verfügbar, keine Live-Veröffentlichung. Nächster Schritt: zusätzliche Nutzerübergabe und sichere bestehende App-/Testshop-Anbindung samt privater Ablage, danach reale authentifizierte Testbestellstrecke. Physischer Touch- und RIP-/Maschinen-/ICC-Nachweis bleiben offen. Historische Nachweise folgen.
+
+## Historisch: Sicherung und Übergabe an vorhandene funktionierende Cloud-Aufgabe – 07.10.2026
 
 Die zuvor nur lokal bestätigten Druckprüfungen sind jetzt auf GitHub gesichert: Branch `test/dashboard-print-acceptance-20261007`, Remote-Commit **`d1bc7ffbf61b708899fee1c9a74cc15c9fb6f746`**, Vergleich `identical`. Sein Git-Baum `3533dce4ab42e36a7e5df070d0c7e01ea333c798` stimmt exakt mit dem lokalen Prüfstand überein. Produktcode unverändert; beide Testpakete vom 06./07.10. erhalten.
 

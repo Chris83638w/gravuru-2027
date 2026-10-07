@@ -1,0 +1,158 @@
+{
+  "sourceCommit": "8b2d3885e684425d43ccada3045b65ffabfb7806",
+  "branch": "test/cloud-browser-acceptance-20261007",
+  "scope": "Loopback local-operator; synthetic temporary databases; Chromium with mobile touch emulation; no hosted login",
+  "runs": {
+    "cloud-handoff": {
+      "startedAt": "2026-10-07T09:50:49.031893+00:00",
+      "result": "PASS",
+      "data": "synthetic only",
+      "published": false,
+      "checks": {
+        "hostOriginCsrfDenied": true,
+        "revisionComparePreservesUnsavedDraftAndFocus": true,
+        "profileImpactCancelAndSave": true,
+        "defaultAssignmentCancelAndSave": true,
+        "categoryAssignmentCancelAndSave": true,
+        "touchEmulatedRevisionDialog": true
+      },
+      "build": {
+        "verifiedResources": 76,
+        "models": 1,
+        "editorBytes": 461440
+      },
+      "javascriptErrors": [],
+      "finishedAt": "2026-10-07T09:51:00.541996+00:00"
+    },
+    "existing-konfi": {
+      "startedAt": "2026-10-07T09:49:06.025158+00:00",
+      "data": "synthetic product, existing acrylic configurator",
+      "result": "PASS",
+      "published": false,
+      "build": {
+        "verifiedResources": 76,
+        "models": 1,
+        "editorBytes": 461440
+      },
+      "savedRevision": 2,
+      "laterRevision": 3,
+      "oldLinkKeepsRevision": true,
+      "unsavedPreviewHidden": true,
+      "existingIframeEditor": true,
+      "viewports": [
+        1440,
+        390,
+        768
+      ],
+      "javascriptErrors": [],
+      "finishedAt": "2026-10-07T09:49:18.032775+00:00"
+    },
+    "photo-resolution": {
+      "startedAt": "2026-10-07T09:50:27.731557+00:00",
+      "result": "PASS",
+      "data": "synthetic only",
+      "published": false,
+      "build": {
+        "verifiedResources": 76,
+        "models": 1,
+        "editorBytes": 461440
+      },
+      "sourcePixels": [
+        4000,
+        3000
+      ],
+      "previewPixels": {
+        "width": 1200,
+        "height": 1022
+      },
+      "editedPixels": [
+        2817,
+        2400
+      ],
+      "originalSha256": "907ab6896ab70bdf259fae7cdb4357bb4bcab3bf89881edc7082796153774fb1",
+      "originalByteIdentical": true,
+      "cropAndGrayscaleChecked": true,
+      "reopenResetUndoByteIdentical": true,
+      "viewports": [
+        1440,
+        390,
+        768
+      ],
+      "javascriptErrors": [],
+      "finishedAt": "2026-10-07T09:50:54.497735+00:00"
+    },
+    "customer-draft-loading": {
+      "startedAt": "2026-10-07T09:50:27.715923+00:00",
+      "result": "PASS",
+      "data": "synthetic only",
+      "published": false,
+      "build": {
+        "verifiedResources": 76,
+        "models": 1,
+        "editorBytes": 461440
+      },
+      "reloadLocksInputs": true,
+      "stalePreviewIgnored": true,
+      "newerRevisionSaved": true,
+      "failedDesignLoadKeepsPreviousCredential": true,
+      "otherDraftUnchanged": true,
+      "viewports": [
+        1440,
+        390,
+        768
+      ],
+      "javascriptErrors": [],
+      "finishedAt": "2026-10-07T09:50:42.466296+00:00"
+    },
+    "dashboard-plate-preview": {
+      "startedAt": "2026-10-07T09:50:27.806767+00:00",
+      "result": "PASS",
+      "data": "synthetic only",
+      "shopifyRequestSent": false,
+      "realPayment": false,
+      "published": false,
+      "build": {
+        "verifiedResources": 76,
+        "models": 1,
+        "editorBytes": 461440
+      },
+      "jobSwitchClearsPreview": true,
+      "noWhitePreviewForNoWhiteJob": true,
+      "colorAndWhitePreview": true,
+      "previewSourceHashesMatchDownloads": true,
+      "whiteCheckerboardVisible": true,
+      "separateDownloads": true,
+      "zipContainsSamePDFs": true,
+      "reloadedWhiteIdentical": true,
+      "noWhiteOptionWithoutUnderbase": true,
+      "whiteVectorOnly": true,
+      "colorWithoutRDGWhite": true,
+      "textFieldsCompoundVectors": true,
+      "whiteIncludesCutContour": true,
+      "files": {
+        "farbe.pdf": {
+          "sha256": "d42f91c275d3d76cd77e79dd7b250a37841f0e7d992fd75a6e41e99abafb3b1a",
+          "ghostscript": "PASS"
+        },
+        "weiss.pdf": {
+          "sha256": "7d6d7ff9fcd56a0131ec4a56a6a9ef14bc9d6e8a46d859b1eaaf587418c32b63",
+          "ghostscript": "PASS"
+        }
+      },
+      "viewports": [
+        1440,
+        390,
+        768
+      ],
+      "javascriptErrors": [],
+      "finishedAt": "2026-10-07T09:50:55.118501+00:00"
+    }
+  },
+  "screenshots": {
+    "profile-impact-desktop.png": "e240db78ee284648de1898e34bbf7ad6b2e4bc3a30dfbd9adad2da7026880fd5",
+    "revision-touch.png": "42ac378abf515f18b0c1962bd3f931dfea00869a418b7e2e030c60792f3a1dfc",
+    "konfigurator-mobile.png": "7f64b9e1ad8c8e6ae592933f188c847c192b456eb384b2b46d02a231c3c62b56",
+    "photo-editor-mobile.png": "f846af82b7b6f461a79f791b8fd0e801d8213e94e4d8e27a6d8b4d185669e779",
+    "pdf-white-mobile.png": "07dc1b70447c95c4da55bd23bedbd51fff8f6de4fadef9751e72844392148323"
+  }
+}

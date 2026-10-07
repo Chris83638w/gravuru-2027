@@ -35,6 +35,20 @@ def export(data):
         for index, key in enumerate(columns, 1):
             sheet.column_dimensions[get_column_letter(index)].width = 70 if key == 'message' else 42 if key in ['import_key', 'name', 'design_name', 'product_id', 'master_id', 'group_id'] else 24
         sheet.auto_filter.ref = sheet.dimensions
+    if not variants:
+        settings = book.create_sheet('Einstellungen')
+        settings.append(['key', 'value'])
+        for key, value in data.get('settings', {'schema_version': '1', 'design_root': ''}).items():
+            cell = settings.cell(settings.max_row + 1, 1, key)
+            target = settings.cell(cell.row, 2, value)
+            target.data_type = 's'
+            target.number_format = '@'
+        settings.column_dimensions['A'].width = 26
+        settings.column_dimensions['B'].width = 70
+        settings.freeze_panes = 'B2'
+        for cell in settings[1]:
+            cell.font = Font(name='Arial', bold=True, color='FFFFFF')
+            cell.fill = PatternFill('solid', fgColor='3E4B57')
     guide = book.create_sheet('Anleitung')
     rules = [
         ('Stand', data['createdAt']),
@@ -42,6 +56,7 @@ def export(data):
         ('Pruefbericht', 'Aktuelle erneute Prüfung beim Download. source_record ist die ursprüngliche Datensatznummer; correction_excel_row die Zeile im Blatt Produkte dieser Datei. Leer bedeutet: nicht in dieser Korrektur enthalten. Der Bericht wird nicht importiert.'),
         ('Korrigieren', 'Fehler im Blatt Produkte oder Designs korrigieren, Datei speichern und im Dashboard erneut prüfen. Es wird nichts automatisch angewendet.'),
         ('Design-Dateien', 'Die betroffenen Designzuordnungen bleiben vollständig erhalten. Zugehörige PDF-/SVG-Dateien beim erneuten Prüfen zusätzlich auswählen. Diese Excel-Datei enthält keine Originalbilder.'),
+        ('Quellordner', 'Einstellungen: design_root bleibt als gemeinsamer Ordner erhalten. design_folder in Produkte oder Designs ersetzt ihn nur für diese Zeile; leer übernimmt ihn, . verwendet die Auswahlwurzel. design_file wird daran angehängt. Kein automatischer Zugriff auf lokale Pfade oder Drive.'),
         ('Wiederholung', 'Importschlüssel bei Wiederholung beibehalten. Bereits angewendete unveränderte Zeilen werden nicht doppelt ausgeführt. Eine neue Änderung an einem bereits importierten Produkt braucht einen neuen Importschlüssel und action=update mit product_id und expected_revision.'),
         ('Konflikte', 'Doppelte/fehlende Importschlüssel und veraltete expected_revision bewusst prüfen. Revisionen werden nicht automatisch erhöht; zwischenzeitliche Änderungen bleiben geschützt.'),
         ('Master', 'Verwendete Master-ID und Revision stehen in den Produktzeilen. Ungültige Angaben bleiben zur Korrektur erhalten. Die Auswahl eines anderen Masters im Dashboard überschreibt diese Angaben nicht.'),

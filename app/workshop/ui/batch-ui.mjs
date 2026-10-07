@@ -1,7 +1,7 @@
 import {merchantRequest as fetch} from './merchant-request.mjs';
 import {readBatchImport} from './batch-reader.mjs';
 import {merchantImageAttribute} from './merchant-media.mjs';
-import {indexDesignSources,designSourceName} from './design-source-path.mjs';
+import {indexDesignSources,designSourceName,designSourceSettings,resolveDesignSourcePath} from './design-source-path.mjs';
 import {readDesignZip,ZIP_LIMITS} from './design-zip.mjs';
 const $=s=>document.querySelector(s),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false,formKeys=new Set();
@@ -28,15 +28,16 @@ function disabled(value){
   $('#remove-job').disabled=value||!$('#saved-jobs').value;
 }
 function invalidate(){
-  checkedInput=null;$('#save-job').disabled=true;$('#download-report').disabled=true;$('#download-errors').disabled=true;$('#report-status').textContent='';
+  checkedInput=null;$('#import-settings').textContent='';$('#save-job').disabled=true;$('#download-report').disabled=true;$('#download-errors').disabled=true;$('#report-status').textContent='';
   prepared=null;formKeys.clear();hasErrors=false;$('#skip-errors').checked=false;$('#partial-label').hidden=true;$('#review').hidden=true;$('#result').hidden=true;$('#import').disabled=true;$('#upload-report').textContent='';status('');
 }
 const base64=file=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Die Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
-async function uploadDesigns(rows){
+async function uploadDesigns(rows,settings){
   const {sources:byName}=selectedSources();
   const requests=new Map();
   for(const row of rows){
-    const name=String(row.design_file||'').trim(),rawPage=String(row.design_page??'').trim()||'1';
+    let name;try{name=resolveDesignSourcePath(row,settings);}catch{continue;} // Planner reports invalid paths per product.
+    const rawPage=String(row.design_page??'').trim()||'1';
     if(name&&/^[1-9][0-9]*$/.test(rawPage)&&Number(rawPage)<=1000)requests.set(JSON.stringify([name,Number(rawPage)]),{name,page:Number(rawPage)});
   }
   if(requests.size>100)throw Error('Bitte höchstens 100 verschiedene Datei-/Seitenzuordnungen verwenden.');
@@ -104,6 +105,8 @@ if(!('webkitdirectory' in $('#design-folder'))){$('#design-folder').disabled=tru
 $('#cancel-check').addEventListener('click',()=>{cancelled=true;$('#cancel-check').disabled=true;status('Abbruch angefordert. Die laufende Datei wird noch abgeschlossen.');});
 function renderPlan(data,plan){
     checkedInput=data;
+    const settings=designSourceSettings(data.settings);
+    $('#import-settings').textContent='Gemeinsamer Design-Ordner: '+(settings.design_root||'Auswahlwurzel')+'. Eine ausgefüllte design_folder-Zelle ersetzt ihn für genau diese Zeile; . verwendet die Auswahlwurzel.';
     formKeys=new Set(plan.report.filter(r=>r.formProduct).map(r=>r.key));$('#review').hidden=false;
     const updates=plan.report.filter(r=>r.action==='update'&&r.status==='ready').length;
     const errors=plan.report.filter(r=>r.status==='error').length,existing=plan.report.filter(r=>r.status==='existing').length;
@@ -118,8 +121,8 @@ $('#check').addEventListener('click',async()=>{
   if(busy)return;invalidate();disabled(true);cancelled=false;$('#cancel-check').hidden=false;$('#cancel-check').disabled=false;
   try{
     const option=$('#master').selectedOptions[0];
-    const {rows,designRows}=await readBatchImport($('#file').files[0]);if(!option&&rows.some(r=>String(r.action||'create').trim()!=='update'&&!r.master_id))throw Error('Für neue Produkte eine Mastervorlage auswählen. Aktualisierungen benötigen keinen Master.');const designFiles=await uploadDesigns([...rows,...designRows]);
-    const data={rows,designRows,masterId:option?.value,masterRevision:option?Number(option.dataset.revision):undefined,designFiles};
+    const {rows,designRows,settings}=await readBatchImport($('#file').files[0]);if(!option&&rows.some(r=>String(r.action||'create').trim()!=='update'&&!r.master_id))throw Error('Für neue Produkte eine Mastervorlage auswählen. Aktualisierungen benötigen keinen Master.');const designFiles=await uploadDesigns([...rows,...designRows],settings);
+    const data={rows,designRows,settings,masterId:option?.value,masterRevision:option?Number(option.dataset.revision):undefined,designFiles};
     const plan=await api('/api/workshop/batch/plan',data);if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
     renderPlan(data,plan);$('#job-name').value=$('#file').files[0]?.name||'Produktserie';
   }catch(error){status(error.message,true);}finally{$('#cancel-check').hidden=true;disabled(false);}

@@ -1,0 +1,25 @@
+{
+  "startedAt": "2026-10-07T17:37:38.406010+00:00",
+  "result": "PASS",
+  "data": "fresh synthetic source folders/XLSX/ZIP and loopback database",
+  "published": false,
+  "checks": {
+    "defaultOverrideAndRootResolveExactOriginalsBeforeCommit": true,
+    "savedDefaultsAndOverridesResumeWithoutReselectingArchive": true,
+    "correctionRetainsDefaultsAndOnlyCreatesMissingProductOnce": true,
+    "invalidSettingsBlockBeforeUploadsAndInvalidatePriorReview": true,
+    "csvRowOverrideAndShippedTemplateRemainUsable": true
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T17:37:46.298170+00:00"
+}

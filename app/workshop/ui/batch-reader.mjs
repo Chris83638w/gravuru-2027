@@ -1,6 +1,7 @@
 import {unzipSync} from '/platform/sources/app/shared/vendor/fflate-0.8.3.mjs';
-const columns=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision'];
-const designColumns=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design'];
+import {designSourceSettings} from './design-source-path.mjs';
+const columns=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision','design_folder'];
+const designColumns=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design','design_folder'];
 export function records(matrix,{allowed=columns,required=['import_key','name'],limit=100,optional=false}={}){
   const headers=(matrix.shift()||[]).map(v=>String(v??'').replace(/^\uFEFF/,'').trim());
   if(required.some(h=>!headers.includes(h)))throw Error('Die erste Zeile muss '+required.join(', ')+' enthalten. Bitte die Vorlage verwenden.');
@@ -75,7 +76,14 @@ export function workbookSheets(bytes){
 }
 export function parseWorkbook(bytes){
   const {matrixFor,hasSheet}=workbookSheets(bytes);
-  return {rows:records(matrixFor('Produkte',columns.length)),designRows:hasSheet('Designs')?records(matrixFor('Designs',designColumns.length),{allowed:designColumns,required:['import_key','design_id','design_file'],limit:3000,optional:true}):[]};
+  const settings={};
+  if(hasSheet('Einstellungen')){
+    for(const row of records(matrixFor('Einstellungen',2),{allowed:['key','value'],required:['key','value'],limit:2,optional:true})){
+      if(!['schema_version','design_root'].includes(row.key)||Object.hasOwn(settings,row.key))throw Error('Einstellungen: unbekannter oder doppelter Schlüssel.');
+      settings[row.key]=row.value;
+    }
+  }
+  return {settings:designSourceSettings(settings),rows:records(matrixFor('Produkte',columns.length)),designRows:hasSheet('Designs')?records(matrixFor('Designs',designColumns.length),{allowed:designColumns,required:['import_key','design_id','design_file'],limit:3000,optional:true}):[]};
 }
 export function parseXlsx(bytes){return parseWorkbook(bytes).rows;}
 export async function readBatchImport(file){

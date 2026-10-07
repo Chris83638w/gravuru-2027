@@ -15,6 +15,8 @@ import {createDesignAssetStore,importEnvironment,sha256} from './design-assets.m
 import {planDesignImport,applyDesignImport} from './design-import.mjs';
 import {planBatch,commitBatch} from './batch.mjs';
 import {createWorkshop} from './http.mjs';
+import {createBatchJobs} from './batch-jobs.mjs';
+import {batchReportData} from './batch-report.mjs';
 
 const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url),'utf8'));
 function native(){
@@ -38,6 +40,46 @@ async function upload(f,name,bytes=svg(),page=1){return f.assets.import({name,by
 const file=(name,asset)=>({name,page:asset.page,assetId:asset.assetId});
 const batch=(f,rows,designFiles=[])=>({masterId:f.master.id,masterRevision:1,rows,designFiles});
 const statuses=plan=>plan.report.map(row=>row.status);
+
+test('source folder settings bind exact originals, isolate bad rows and invalidate changed review tokens',async t=>{
+  const f=fixture(t),red=await upload(f,'Design.svg',svg('#ff0000')),blue=await upload(f,'Design.svg',svg('#0000ff'));
+  const input={...batch(f,[{import_key:'default',name:'Vorgabe',design_file:'klein/Design.svg'},
+    {import_key:'override',name:'Abweichung',design_file:'Design.svg',design_folder:'Andere'},
+    {import_key:'root',name:'Wurzel',design_file:'Design.svg',design_folder:'.'},
+    {import_key:'bad',name:'Ungültig',design_file:'Design.svg',design_folder:'../Andere'}],
+    [file('Kollektion/klein/Design.svg',red),file('Andere/Design.svg',blue),file('Design.svg',red)]),settings:{schema_version:'1',design_root:'Kollektion'}};
+  const plan=planBatch(f.repository,input,f.assets);assert.deepEqual(statuses(plan),['ready','ready','ready','error']);
+  assert.deepEqual(plan.report.slice(0,3).map(r=>r.artwork.name),['Kollektion/klein/Design.svg','Andere/Design.svg','Design.svg']);
+  assert.match(plan.report[3].message,/design_folder/);
+  // A changed global default must require review even when explicit rows keep the same originals.
+  const explicit={...input,rows:[input.rows[1]]},checked=planBatch(f.repository,explicit,f.assets);
+  assert.throws(()=>commitBatch(f.repository,{...explicit,settings:{design_root:'Changed'},token:checked.token},f.assets),e=>e.code==='batch_changed');
+  const saved=commitBatch(f.repository,{...input,token:plan.token,skipErrors:true},f.assets);assert.equal(saved.products.length,3);
+  for(const [i,asset] of [[0,red],[1,blue],[2,red]])assert.equal(f.repository.get(saved.products[i].id).document.config.profile.designs[0].importedSource.assetId,asset.assetId);
+  f.restart();assert.deepEqual(statuses(planBatch(f.repository,input,f.assets)),['existing','existing','existing','error']);
+  const wrong=structuredClone(input);wrong.rows=[{import_key:'no-fallback',name:'Kein Ersatz',design_file:'Design.svg'}];
+  assert.match(planBatch(f.repository,wrong,f.assets).report[0].message,/Kollektion\/Design.svg.*fehlt/);
+  assert.deepEqual(f.repository.get(f.master.id),f.master);
+});
+
+test('source settings survive private snapshots and correction reports without duplicating legacy snapshots',async t=>{
+  const f=fixture(t),asset=await upload(f,'Design.svg'),input={...batch(f,[{import_key:'source-job',name:'Gesichert',design_file:'Design.svg'}],[file('Kollektion/Design.svg',asset)]),settings:{schema_version:'1',design_root:'Kollektion'}};
+  let jobs=createBatchJobs({filename:f.filename,repository:f.repository,assets:f.assets});
+  t.after(()=>jobs.close());
+  const job=jobs.create({name:'Ordner',input});
+  const legacy=batch(f,[{import_key:'legacy',name:'Ohne Einstellungen'}]);
+  const old=jobs.create({name:'Alt',input:legacy});
+  assert.equal(Object.hasOwn(jobs.review(old.id).input,'settings'),false);
+  assert.equal(jobs.create({name:'Gleich',input:{...legacy,settings:{schema_version:'1',design_root:''}}}).id,old.id);
+  jobs.close();f.restart();jobs=createBatchJobs({filename:f.filename,repository:f.repository,assets:f.assets});
+  const opened=jobs.review(job.id);assert.deepEqual(opened.input.settings,input.settings);assert.equal(opened.plan.report[0].artwork.assetId,asset.assetId);
+  commitBatch(f.repository,{...opened.input,token:opened.plan.token},f.assets);
+  assert.equal(jobs.review(job.id).plan.report[0].status,'existing');
+  const failed={...input,rows:[{import_key:'correct',name:'Offen',design_file:'Design.svg',design_folder:'Fehlt'}]};
+  const correction=batchReportData(f.repository,{...failed,mode:'errors'},f.assets);
+  assert.deepEqual(correction.settings,input.settings);assert.equal(correction.rows[0].design_folder,'Fehlt');assert.equal(correction.rows[0].master_revision,1);
+  assert.throws(()=>jobs.create({name:'Falsch',input:{...input,settings:{design_root:'../secret'}}}),/Einstellungen/);
+});
 
 test('relative folder references resolve identical basenames to distinct immutable sources in acrylic imports',async t=>{
   const f=fixture(t),redBytes=svg('#cc2211'),blueBytes=svg('#2244cc');

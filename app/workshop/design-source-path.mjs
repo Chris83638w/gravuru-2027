@@ -7,6 +7,27 @@ export function isRelativeSourcePath(value) {
 export const isDesignSourcePath=value=>isRelativeSourcePath(value)&&/\.(svg|pdf)$/i.test(value);
 export const designSourceName=value=>value.split('/').at(-1);
 
+/** Workbook defaults only describe selected sources; they never grant file access. */
+export function designSourceSettings(value={}) {
+  if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).some(key=>!['schema_version','design_root'].includes(key)))throw Error('Einstellungen: Nur schema_version und design_root sind erlaubt.');
+  const version=String(value.schema_version??'1').trim();
+  if(version!=='1')throw Error('Einstellungen: schema_version muss 1 sein.');
+  const root=value.design_root??'';
+  if(typeof root!=='string'||root!==''&&!isRelativeSourcePath(root))throw Error('Einstellungen: design_root benötigt einen relativen Ordnerpfad mit / oder bleibt leer. Keine Links, absoluten oder übergeordneten Pfade.');
+  return {schema_version:'1',design_root:root};
+}
+
+export function resolveDesignSourcePath(row,settings={}) {
+  const defaults=designSourceSettings(settings),folder=row.design_folder??'';
+  if(typeof folder!=='string'||folder!==''&&folder!=='.'&&!isRelativeSourcePath(folder))throw Error('design_folder benötigt einen relativen Ordnerpfad, . für die Auswahlwurzel oder bleibt leer für den gemeinsamen Ordner.');
+  const file=String(row.design_file??'').trim();
+  if(!file){if(folder)throw Error('design_folder benötigt auch design_file.');return '';}
+  if(!isDesignSourcePath(file))throw Error('design_file benötigt einen SVG-/PDF-Dateinamen oder relativen Unterordnerpfad mit /. Keine absoluten Pfade, übergeordneten Ordner oder Links.');
+  const root=folder==='.'?'':folder||defaults.design_root,path=root?root+'/'+file:file;
+  if(!isDesignSourcePath(path))throw Error('Der zusammengesetzte Designpfad ist zu lang oder enthält zu viele Unterordner.');
+  return path;
+}
+
 /** Index user-selected files without reading bytes or guessing by basename. */
 export function indexDesignSources(files=[],folderFiles=[]) {
   if(files.length+folderFiles.length>5000)throw Error('Bitte einen kleineren Ordner mit höchstens 5000 Einträgen auswählen.');

@@ -3,10 +3,10 @@ import {prepareFormBatch} from './form-batch.mjs';
 import {createHash} from 'node:crypto';
 import {validateProductDocument} from './product-model.mjs';
 import {replaceDesignArtwork} from './design-import.mjs';
-import {isDesignSourcePath,designSourceName} from './design-source-path.mjs';
+import {isDesignSourcePath,designSourceName,designSourceSettings,resolveDesignSourcePath} from './design-source-path.mjs';
 
-export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision'];
-export const DESIGN_COLUMNS=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design'];
+export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision','design_folder'];
+export const DESIGN_COLUMNS=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design','design_folder'];
 const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const text=value=>value===undefined||value===null?'':String(value).trim();
 const fail=message=>{throw new Error(message);};
@@ -17,7 +17,8 @@ function cents(value){
   if(!Number.isSafeInteger(result)||result>10000000)fail('Preis außerhalb des erlaubten Bereichs.');
   return result;
 }
-export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[],designRows=[]}={},assets){
+export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[],designRows=[],settings}={},assets){
+  const sourceSettings=designSourceSettings(settings);
   if(!Array.isArray(rows)||!rows.length||rows.length>100)fail('Bitte 1 bis 100 Produktzeilen auswählen.');
   if(!Array.isArray(designFiles)||designFiles.length>100)fail('Bitte höchstens 100 Design-Dateizuordnungen verwenden.');
   if(!Array.isArray(designRows)||designRows.length>3000)fail('Bitte höchstens 3000 Zeilen im Blatt Designs verwenden.');
@@ -35,7 +36,7 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
     const key=JSON.stringify([entry.name,entry.page]);if(sources.has(key))fail('Design-Dateiname und Seite sind mehrfach zugeordnet.');sources.set(key,entry);
   }
   function resolveSource(row){
-    const filename=text(row.design_file);
+    const filename=resolveDesignSourcePath(row,sourceSettings);
     if(!assets)fail('Der Design-Dateispeicher ist nicht verfügbar.');
     if(!isDesignSourcePath(filename))fail('design_file benötigt einen SVG-/PDF-Dateinamen oder relativen Unterordnerpfad mit /. Keine absoluten Pfade, übergeordneten Ordner oder Links.');
     const pageText=text(row.design_page)||'1';if(!/^[1-9][0-9]*$/.test(pageText)||Number(pageText)>1000)fail('design_page muss eine gültige Seitennummer sein.');
@@ -78,14 +79,14 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       const children=designGroups.get(key)||[];
       if(children.length&&!form)fail('Das Blatt Designs unterstützt freie Formprodukte. Die bisherige Acrylvorlage verwendet design_file im Blatt Produkte.');
       if(children.length>30)fail('Pro Produkt sind höchstens 30 Designzeilen möglich.');
-      if(children.length&&['design_file','design_page','design_id','design_fit'].some(k=>text(row[k])))fail('Designzuordnung entweder im Blatt Produkte oder im Blatt Designs ausfüllen, nicht gleichzeitig.');
+      if(children.length&&['design_file','design_page','design_id','design_fit','design_folder'].some(k=>text(row[k])))fail('Designzuordnung entweder im Blatt Produkte oder im Blatt Designs ausfüllen, nicht gleichzeitig.');
       if(!updating){document.kind='product';document.masterId=id;document.name=text(row.name);}
       else if(text(row.name))document.name=text(row.name);
       if(!document.name)fail('Produktname fehlt.');
       if(text(row.category_ids))document.categoryIds=[...new Set(text(row.category_ids).split(',').map(v=>v.trim()).filter(Boolean))];
       if(form){if(text(row.price_eur))document.basePriceCents=cents(row.price_eur);prepareFormBatch(document,row);}
       else for(const [column,size] of [['price_small_eur','small'],['price_large_eur','large']])if(text(row[column]))document.config.acrylic.pricing.sizes[size]=cents(row[column]);
-      const filename=text(row.design_file);
+      const filename=resolveDesignSourcePath(row,sourceSettings);
       if(!filename&&['design_page','design_id','design_fit'].some(field=>text(row[field])))fail('Design-Einstellungen benötigen auch design_file.');
       if(filename){
         const asset=resolveSource(row);
@@ -105,7 +106,8 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
           childIds.add(designId);
           if(!['','0','1'].includes(flag))fail('default_design muss leer, 0 oder 1 sein.');
           if(flag==='1'){if(chosenDefault)fail('Nur ein Standarddesign pro Produkt mit default_design=1 markieren.');chosenDefault=designId;}
-          if(!text(child.design_file)){
+          const childFilename=resolveDesignSourcePath(child,sourceSettings);
+          if(!childFilename){
             const existingDesign=document.designs.find(d=>d.id===designId);
             if(!updating||!existingDesign)fail('Ein neues Design benötigt design_file. Ohne Datei kann nur ein vorhandenes Design im Update bearbeitet werden.');
             if(text(child.design_page)||text(child.design_fit))fail('design_page und design_fit benötigen eine neue design_file.');
@@ -113,8 +115,8 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
             designAssignments.push({designId,name:existingDesign.name,sourcePreserved:true});
             continue;
           }
-          const asset=resolveSource(child),prepared=prepareFormBatch(document,child,{asset,filename:designSourceName(text(child.design_file)),allowNewDesign:true,designName:text(child.design_name)});
-          prepared.artwork.name=text(child.design_file);
+          const asset=resolveSource(child),prepared=prepareFormBatch(document,child,{asset,filename:designSourceName(childFilename),allowNewDesign:true,designName:text(child.design_name)});
+          prepared.artwork.name=childFilename;
           document=prepared.document;artworks.push(prepared.artwork);
         }catch(error){fail('Designs, Datensatz '+line+': '+error.message);}
       }
@@ -143,7 +145,7 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
     }catch(error){report.push({row:index+1,key,name:text(row?.name),status:'error',message:error.message});}
   }
   const valid=report.every(row=>row.status!=='error');
-  return {valid,report,token:entries.length?hash({rows,masterId,masterRevision,designFiles,...(designRows.length?{designRows}:{}),entries:entries.map(e=>({key:e.key,fingerprint:e.fingerprint}))}):null,entries};
+  return {valid,report,token:entries.length?hash({rows,masterId,masterRevision,designFiles,...(settings?{settings:sourceSettings}:{}),...(designRows.length?{designRows}:{}),entries:entries.map(e=>({key:e.key,fingerprint:e.fingerprint}))}):null,entries};
 }
 export function commitBatch(repository,input,assets){
   const plan=planBatch(repository,input,assets);

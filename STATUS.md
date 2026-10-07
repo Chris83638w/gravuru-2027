@@ -1,3 +1,13 @@
+## Aktuell: Getrennter Plesk-Testbereich eingerichtet, Installation läuft – 07.10.2026
+
+Plesk-Browserzugang ist jetzt authentifiziert. Vorhandene Bereiche geprüft; neue separate Subdomain **test-2027.gravuru-designwerkstatt.de** (Site 19) angelegt, DNS und gültiges HTTPS bestätigt. Die bestehende Werkstatt und ihre Daten wurden nicht geändert. Tatsächlich aktiv: LiteSpeed 6.3.7, Plesk 18.0.81, Node 24.21.0, Python 3.12.14 und libcairo.
+
+Zwei konkret vor Ort erkannte Hostingunterschiede behoben: LiteSpeed übernimmt nur den äußeren geschützten Listener; Plesk-npm-Skripte und App lesen eine getrennte Konfiguration aus einer privaten Datei (0700/0600, keine Geheimnisse im Git/ZIP). Quellcommit **47ffda076a870bf1085f16a3449dfc2cece7655c**, bisheriger Produktstand vollständig erhalten. [Aktuelles Installationspaket](deliverables/plesk-private-test-hosted-20261007/README.md), **25,9 MiB**, SHA-256 `b41590bb66e211594979e857bab843a1824f9941f6891973b1410612fe031785`.
+
+**5 neue Node-Prüfungen und 5 gezielte Paketgruppen PASS**, einschließlich simulierter LiteSpeed-Übernahme, echter privater Konfigurationsdatei ohne App-Variablen, Imports, Zugriffsschutz und Neustart. Alle manifestierten Dateien des neuen Pakets auf dem Server unverändert bestätigt. Neue private Daten-/Python-Pfade angelegt; Installation läuft noch. Test-App bis erfolgreichem Vorabcheck deaktiviert; kein fertiger App-Link oder echte Server-Gesamtabnahme behauptet.
+
+**Nächster konkreter Schritt:** `plesk:prepare` abschließen, `plesk:check`, nur Test-App starten und tatsächliches HTTPS-/Passwort-/Prozess-/Neustartverhalten abnehmen. Shopify-/Drive-/KI-Anschluss und physische Druckabnahme bleiben offen. Keine Produktionsumschaltung, keine globalen Serveränderungen, keine SSH/VPN/API-Schleife. Frühere Aussagen über fehlende Browseranmeldung sind überholt.
+
 ## Aktuell: Plesk-Browserweg bestätigt, sichere Anmeldung fehlt – 07.10.2026
 
 **Korrektur der bisherigen Zugangseinschätzung:** Chromium/Playwright in dieser Cloud kann die Plesk-Anmeldeseite tatsächlich bedienen. Auf `https://gravuru.highspeed.cloud:8443` über vorgesehenen Proxy mit gültiger TLS-Prüfung **HTTP 200**, Plesk Obsidian 18.0.81; der Nutzerlink ohne Port liefert 404. Keine Verbindung zur bereits angemeldeten Nutzersitzung. Keine Serveränderung.

@@ -1,3 +1,11 @@
+## Aktuell: Excel-Profilzuordnungen und lokale Testlieferung – 07.10.2026
+
+Branch `feat/excel-profile-assignments-20261007`, Basis **`a2af162edd3a1dfa2106212c9f4b76c7ae351b70`** erhalten. ZIP-/Ordner-/Excel-Wiederaufnahme unverändert fortgeführt. Optionale Schrift-/Motiv- und feste Fertigungsprofilzuordnung im Serienimport; geänderte Auswahlrevisionen verlangen erneute Prüfung. Formprodukte mit ausdrücklicher Profilregel, serverseitig begrenzter Kundenauswahl und eingefrorener Auswahl je Produkt-/Entwurfsstand. Keine Migration.
+
+**50 gezielte Node-Prüfungen (6 neu), 5 neue Browsergruppen PASS**, Desktop/390/768 ohne Überlauf oder JavaScript-Fehler. Zwei sichtbare Nachweise gesichtet. Sechs synthetische aktuelle Roland-/Mimaki-PDFs und beide Excel-Vorlagen bereit. [Umfang und Nachweise](docs/dashboard-20261004/EXCEL-PROFILE-20261007.md) · [Testlieferung und offene Anschlussbedingungen](deliverables/testabnahme-20261007/README.md).
+
+**Nächster konkreter Schritt:** aktualisiertes privates Installationspaket aus diesem Quellstand erstellen und verifizieren; parallel auf notwendige Plesk-Bedienung warten. Kein Plesk-Testhost/HTTPS-Link bestätigt; keine Serverprüfung, reale Shopify-Testbestellung oder physische Druckabnahme behauptet. Einrichtung nur der getrennten Testinstanz ist jetzt freigegeben; SSH/VPN/Plesk-API bleiben zurückgestellt. Drive-Autorisierung und KI-Anbieter/Kostenrahmen angefragt. Keine Live-Veröffentlichung, keine Änderung der laufenden App oder Werkstatt.
+
 ## Aktuell: Privates Plesk-Testpaket vorbereitet – 07.10.2026
 
 Auf Wunsch des Nutzers jetzt Upload über den vorhandenen Plesk-Dateimanager vorbereiten; keine weitere SSH-/VPN-/Plesk-API-Einrichtung. Branch `feat/plesk-private-test-package-20261007`, unveränderte Produktbasis **`74a1e8b61b564b1fa9421b153d3d7da7c7999b0a`**, Paket-Laufzeitcommit **`ec4ecf105c94576008bf477080a6f3689da68f19`**. ZIP-Import, gemeinsame Quellordner und alle neueren Produktänderungen enthalten. [Testpaket mit SHA-256](deliverables/plesk-private-test-20261007/) · [Konkrete Plesk-Anleitung](ops/plesk/README.md).

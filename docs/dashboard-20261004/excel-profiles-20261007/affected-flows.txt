@@ -1,0 +1,28 @@
+✔ saved input survives reopening, pins the master and derives partial progress from the durable product journal (1201.972244ms)
+✔ resuming an update obtains a fresh conflict report without incrementing revision or applying stale data (283.27965ms)
+✔ identical saved input deduplicates across connections; removing a snapshot leaves products and import history intact (261.434921ms)
+✔ snapshot storage rejects credentials/arbitrary payload and cannot rewrite immutable inputs (162.812451ms)
+✔ saved checks have an explicit capacity and reject oversized data instead of removing older work (1835.837676ms)
+✔ 97 successful products survive restart; correction workbook imports only the three fixed failures (14620.567671ms)
+✔ full report is a read-only fresh assessment and user formulas remain literal editable text (786.939742ms)
+✔ a correction export never refreshes a conflicting expected revision or changes the target ID (719.649377ms)
+✔ invalid explicit master references remain visible for correction instead of inheriting another default (96.709288ms)
+✔ duplicate and missing import keys are preserved as errors; values outside workbook limits fail explicitly (103.352707ms)
+✔ added text/motifs cannot override fixed fields, permissions, limits, resources or geometry; historical policies stay pinned (1531.867568ms)
+✔ added elements survive frozen proof and CMYK/PDF white export; order reuse never leaks new private texts by default (3881.280704ms)
+✔ HTTP preview/save rejects forged additions and CSRF; original product stays unchanged (1070.27144ms)
+✔ private photo decoding preserves original bytes, respects EXIF and rejects active or invalid files (596.306787ms)
+✔ customer drafts enforce field rights and private photos, pin revisions, save conflicts and survive SQLite reopen (2429.647728ms)
+✔ form product retains immutable source geometry and keeps unconfirmed material and prices open (918.267112ms)
+✔ contour PDF uses the saved geometry in millimetres, with separate vector holes and no artwork (3730.194515ms)
+✔ form HTTP lifecycle shares product revisions, protects old acrylic products and binds PDF to history (5487.023251ms)
+✔ PDF cubic conversion follows rotated SVG ellipse arcs, including the complete curve (5226.226694ms)
+✔ review snapshots retain private originals and exact downloads across edits, retries, source removal and SQLite reopen (4252.253488ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50382.873247

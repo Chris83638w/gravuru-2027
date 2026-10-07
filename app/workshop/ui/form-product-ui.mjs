@@ -3,7 +3,7 @@ import {merchantRequest as fetch} from './merchant-request.mjs';
 import {installFormDesigns} from './form-design-ui.mjs';
 const $=s=>document.querySelector(s),clone=v=>structuredClone(v),esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const mm=n=>new Intl.NumberFormat('de-DE',{maximumFractionDigits:3}).format(n)+' mm';
-const id=new URLSearchParams(location.search).get('configuration');let record,currentRevision,draft,materials=[],manufacturing=[],token='',busy=false,dirty=false,serial=0,timer,historical=false;
+const id=new URLSearchParams(location.search).get('configuration');let record,currentRevision,draft,materials=[],manufacturing=[],choiceProfiles=[],token='',busy=false,dirty=false,serial=0,timer,historical=false;
 let previewValue=null,previewMode='material',designer;
 function showPreview(){
  const surface=previewValue?.materialPreview,hasSurface=Boolean(surface?.svg||previewValue?.designSvg),showMaterial=previewMode==='material'&&hasSurface;
@@ -35,6 +35,13 @@ function sync(){
  const canPreview=record?.document.designs?.length&&!dirty&&record.status!=='archived';$('#customer-view').hidden=!canPreview;if(canPreview)$('#customer-view').href='/?configuration='+id+'&revision='+record.revision;$('#customer-view-note').textContent=dirty?'Zuerst Änderungen speichern.':canPreview?'Privaten Testentwurf aus diesem gespeicherten Stand öffnen. Keine Shopfreigabe.':record?.status==='archived'?'Zum Prüfen das Produkt zuerst wieder aktivieren.':'Zuerst ein Design zuordnen und speichern.';
  designer?.render();
 }
+const choiceTypes={fonts:'Schriften',motifs:'Motive',colors:'Farben',bestsellers:'Bestseller'};
+function renderChoiceProfiles(){
+ $('#choice-profiles-enabled').checked=Boolean(draft.profileAssignments);$('#choice-profiles').hidden=!draft.profileAssignments;
+ $('#category-ids').value=draft.categoryIds.join(',');
+ $('#choice-profiles').innerHTML=Object.entries(choiceTypes).map(([type,label])=>`<label>${label}<select data-choice-profile="${type}"><option value="inherit">Vererben</option><option value="empty">Ausdrücklich leer</option>${choiceProfiles.filter(p=>p.type===type).map(p=>`<option value="${esc(p.id)}">${esc(p.name)} · Stand ${p.revision}</option>`).join('')}</select></label>`).join('');
+ for(const el of $('#choice-profiles').querySelectorAll('select')){const a=draft.profileAssignments?.[el.dataset.choiceProfile];el.value=a?.mode==='override'?a.profileId:a?.mode||'inherit';}
+}
 function manufacturingChoices(){
  const matches=p=>!p.document.archived&&p.document.method===draft.processingMethod&&p.document.materialId===draft.material.id&&p.document.thicknessMm===draft.material.thicknessMm;
  const options=manufacturing.filter(matches),old=record.metadata?.productionProfile,ref=draft.productionProfile;
@@ -50,7 +57,7 @@ function render(next){
  const ticket=++serial;clearTimeout(timer);clearPreview();record=next;draft=clone(record.document);dirty=false;historical=record.revision!==currentRevision;
  $('#title').textContent=draft.name;$('#revision').textContent='Stand '+record.revision+(historical?' · historisch':record.status==='archived'?' · archiviert':' · gespeichert');
  $('#scene').value=draft.presentation?.scene||'transparent';$('#print-surface').value=draft.presentation?.printSurface||'';$('#seo-title').value=draft.seo.title;$('#seo-description').value=draft.seo.description;$('#name').value=draft.name;$('#kind').value=draft.kind;$('#material').value=draft.material.id||'';$('#thickness').value=draft.material.thicknessMm??'';$('#method').value=draft.processingMethod||'';$('#surface').value=draft.material.surfaceNotes;$('#price').value=draft.basePriceCents===null?'':(draft.basePriceCents/100).toFixed(2).replace('.',',');
- const g=draft.form.geometry;$('#width').textContent=mm(g.widthMm);$('#height').textContent=mm(g.heightMm);$('#holes').textContent=g.holeCount;reference();manufacturingChoices();
+ const g=draft.form.geometry;$('#width').textContent=mm(g.widthMm);$('#height').textContent=mm(g.heightMm);$('#holes').textContent=g.holeCount;reference();manufacturingChoices();renderChoiceProfiles();
  $('#pdf').href=url()+'/contour.pdf?revision='+record.revision;$('#original').href='/api/workshop/contours/'+draft.form.contourId+'/original';$('#product-id').textContent='Produkt: '+id;$('#contour-id').textContent='Kontur: '+draft.form.contourId;$('#geometry-hash').textContent='Geometrie SHA-256: '+draft.form.geometrySha256;
  $('#archive').textContent=record.status==='archived'?'Wieder aktivieren':'Archivieren';$('#workspace').hidden=false;$('#conflict').hidden=true;sync();
  api(url()+'/form-preview?revision='+record.revision+'&designId='+encodeURIComponent(designer?.selected()||'')).then(value=>{if(ticket!==serial)return;acceptPreview(value);}).catch(e=>{if(ticket===serial)failure(e);});
@@ -58,6 +65,9 @@ function render(next){
 async function history(){const {revisions}=await api(url()+'/revisions');$('#history').innerHTML=revisions.map(r=>`<option value="${r.revision}">Stand ${r.revision}${r.revision===currentRevision?' · aktuell':''}</option>`).join('');$('#history').value=record.revision;}
 async function current(){const r=await api(url());if(r.document?.schema!=='gravuru-form-product/v1')throw Error('Dieses Produkt gehört zum bestehenden Acryl-Editor. Bitte über Produkte öffnen.');currentRevision=r.revision;render(r);await history();}
 function readInputs(){
+ draft.categoryIds=[...new Set($('#category-ids').value.split(',').map(v=>v.trim()).filter(Boolean))];
+ if($('#choice-profiles-enabled').checked)draft.profileAssignments=Object.fromEntries([...$('#choice-profiles').querySelectorAll('select')].map(el=>[el.dataset.choiceProfile,['inherit','empty'].includes(el.value)?{mode:el.value,profileId:null}:{mode:'override',profileId:el.value}]));else delete draft.profileAssignments;
+ $('#choice-profiles').hidden=!draft.profileAssignments;
  draft.seo={title:$('#seo-title').value,description:$('#seo-description').value};draft.name=$('#name').value;draft.kind=$('#kind').value;if(draft.kind==='master')draft.masterId=null;
  const scene=$('#scene').value,printSurface=$('#print-surface').value;if(draft.presentation||scene!=='transparent'||printSurface)draft.presentation={scene,...(printSurface?{printSurface}:{})};
  draft.material.id=$('#material').value||null;draft.material.thicknessMm=$('#thickness').value===''?null:Number($('#thickness').value);draft.material.surfaceNotes=$('#surface').value;draft.processingMethod=$('#method').value||null;
@@ -76,4 +86,4 @@ $('#copy').addEventListener('click',async()=>{if(busy||dirty||historical)return;
 $('#archive').addEventListener('click',async()=>{if(busy||dirty||historical)return;busy=true;sync();try{const r=await api(url()+'/archive',{expectedRevision:currentRevision,archived:record.status!=='archived'});currentRevision=r.revision;render(r);await history();notice(r.status==='archived'?'Archiviert. Alle Stände bleiben erhalten.':'Wieder aktiviert.');}catch(e){failure(e);}finally{busy=false;sync();}});
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 designer=installFormDesigns({api,validateBase:()=>$('#product-form').reportValidity(),state:()=>({draft,record,revision:currentRevision,readOnly:busy||historical||record?.status==='archived'}),setBusy:value=>{busy=value;sync();},notify:notice,onSelect:()=>{clearPreview();preview();},onChange:async(next,designId)=>{clearTimeout(timer);++serial;const value=await api(url()+'/form-preview',{expectedRevision:currentRevision,document:next,...(designId?{designId}:{})});draft=next;dirty=true;acceptPreview(value);reference();sync();}});
-try{if(!/^cfg_[a-f0-9-]+$/.test(id||''))throw Error('Bitte ein Formprodukt aus der Werkstatt öffnen.');token=(await api('/api/workshop/session')).csrfToken;materials=(await api('/api/workshop/form-materials')).materials;manufacturing=(await api('/api/workshop/production-profiles')).profiles;$('#material').insertAdjacentHTML('beforeend',materials.map(m=>`<option value="${esc(m.id)}">${esc(m.name)}</option>`).join(''));await current();const v=new URLSearchParams(location.search).get('revision');if(v&&Number(v)!==currentRevision){render(await api(url()+'?revision='+encodeURIComponent(v)));$('#history').value=record.revision;}}catch(e){notice(e.message,true);}
+try{if(!/^cfg_[a-f0-9-]+$/.test(id||''))throw Error('Bitte ein Formprodukt aus der Werkstatt öffnen.');token=(await api('/api/workshop/session')).csrfToken;materials=(await api('/api/workshop/form-materials')).materials;manufacturing=(await api('/api/workshop/production-profiles')).profiles;choiceProfiles=(await api('/api/workshop/profiles')).profiles;$('#material').insertAdjacentHTML('beforeend',materials.map(m=>`<option value="${esc(m.id)}">${esc(m.name)}</option>`).join(''));await current();const v=new URLSearchParams(location.search).get('revision');if(v&&Number(v)!==currentRevision){render(await api(url()+'?revision='+encodeURIComponent(v)));$('#history').value=record.revision;}}catch(e){notice(e.message,true);}

@@ -13,7 +13,7 @@ def export(data):
     variants = data.get('kind') == 'variants'
     main_name = 'Gruppen' if variants else 'Produkte'
     child_name = 'Varianten' if variants else 'Designs'
-    report_columns = ['source_record', 'correction_excel_row', 'import_key', 'name', 'status', 'message', 'product_id', 'expected_revision', 'master_id', 'master_revision']
+    report_columns = ['source_record', 'correction_excel_row', 'import_key', 'name', 'status', 'message', 'product_id', 'expected_revision', 'master_id', 'master_revision', 'profile_bindings']
     if variants:
         report_columns = ['source_record', 'correction_excel_row', 'import_key', 'name', 'status', 'message', 'group_id', 'expected_revision']
     for name, columns, rows in [(main_name, data['columns'], data['rows']), (child_name, data['designColumns'], data['variantRows'] if variants else data['designRows']), ('Pruefbericht', report_columns, data['report'])]:
@@ -56,6 +56,7 @@ def export(data):
         ('Pruefbericht', 'Aktuelle erneute Prüfung beim Download. source_record ist die ursprüngliche Datensatznummer; correction_excel_row die Zeile im Blatt Produkte dieser Datei. Leer bedeutet: nicht in dieser Korrektur enthalten. Der Bericht wird nicht importiert.'),
         ('Korrigieren', 'Fehler im Blatt Produkte oder Designs korrigieren, Datei speichern und im Dashboard erneut prüfen. Es wird nichts automatisch angewendet.'),
         ('Design-Dateien', 'Die betroffenen Designzuordnungen bleiben vollständig erhalten. Zugehörige PDF-/SVG-Dateien beim erneuten Prüfen zusätzlich auswählen. Diese Excel-Datei enthält keine Originalbilder.'),
+        ('Profile', 'font_profile/motif_profile: leer erhält die Vorlage, inherit vererbt Kategorie/Standard, empty sperrt neue Auswahl, sonst Profil-ID. production_profile_id zusammen mit fester production_profile_revision; empty ohne Revision entfernt die Fertigungszuordnung. Erneute Prüfung bindet die zu diesem Zeitpunkt gültigen Auswahlprofile; gespeicherte Produktrevisionen bleiben unverändert.'),
         ('Quellordner', 'Einstellungen: design_root bleibt als gemeinsamer Ordner erhalten. design_folder in Produkte oder Designs ersetzt ihn nur für diese Zeile; leer übernimmt ihn, . verwendet die Auswahlwurzel. design_file wird daran angehängt. Kein automatischer Zugriff auf lokale Pfade oder Drive.'),
         ('Wiederholung', 'Importschlüssel bei Wiederholung beibehalten. Bereits angewendete unveränderte Zeilen werden nicht doppelt ausgeführt. Eine neue Änderung an einem bereits importierten Produkt braucht einen neuen Importschlüssel und action=update mit product_id und expected_revision.'),
         ('Konflikte', 'Doppelte/fehlende Importschlüssel und veraltete expected_revision bewusst prüfen. Revisionen werden nicht automatisch erhöht; zwischenzeitliche Änderungen bleiben geschützt.'),

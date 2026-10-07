@@ -1,7 +1,7 @@
 import {createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 
-const currentProducts=repository=>repository.list({includeArchived:true}).filter(row=>row.document.schema!=='gravuru-form-product/v1');
+const currentProducts=repository=>repository.list({includeArchived:true}).filter(row=>row.document.schema!=='gravuru-form-product/v1'||row.document.profileAssignments);
 const reviewToken=(records,review,input)=>createHash('sha256').update(JSON.stringify({input,review,products:records.map(row=>({id:row.id,revision:row.revision,status:row.status}))})).digest('hex');
 function checkToken(actual,expected){
   if(typeof actual!=='string'||!/^[a-f0-9]{64}$/.test(actual))throw Object.assign(Error('Ungültige Bestätigung der Profilvorschau.'),{status:422,code:'invalid_impact_token'});
@@ -23,7 +23,7 @@ export function profileChangeImpact(repository,profiles,id,document,expectedRevi
     products.push(productChange(records[index],before,after,review.profile.type));
   });
   const token=reviewToken(records,review,{id,document,expectedRevision});
-  return {profile:review.profile,settingsRevision:review.settingsRevision,token,products,total:products.length,changed:products.filter(row=>row.selectionChanged).length,scope:'current-acrylic-product-selections'};
+  return {profile:review.profile,settingsRevision:review.settingsRevision,token,products,total:products.length,changed:products.filter(row=>row.selectionChanged).length,scope:'current-product-selections'};
 }
 
 export function saveReviewedProfile(repository,profiles,id,{document,expectedRevision,impactToken}){
@@ -42,7 +42,7 @@ export function assignmentChangeImpact(repository,profiles,input){
     const product=productChange(records[index],before,after,type);
     if(product.selectionChanged||!isDeepStrictEqual(before.sources[type],after.sources[type]))products.push(product);
   });
-  return {kind:'assignment',profile:{type,name:categoryId===null?'Standardzuordnung':`Kategorie „${categoryId}“`},settingsRevision:review.settingsRevision,token:reviewToken(records,review,{type,assignment,expectedRevision,categoryId}),products,total:products.length,changed:products.filter(row=>row.selectionChanged).length,scope:'current-acrylic-product-selections'};
+  return {kind:'assignment',profile:{type,name:categoryId===null?'Standardzuordnung':`Kategorie „${categoryId}“`},settingsRevision:review.settingsRevision,token:reviewToken(records,review,{type,assignment,expectedRevision,categoryId}),products,total:products.length,changed:products.filter(row=>row.selectionChanged).length,scope:'current-product-selections'};
 }
 
 export function saveReviewedAssignment(repository,profiles,input){

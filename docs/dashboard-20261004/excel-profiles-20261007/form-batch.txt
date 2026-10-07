@@ -1,0 +1,12 @@
+✔ form series inherits exact material/geometry/fields and replaces only the selected whole design after review (1347.319064ms)
+✔ form table updates retain custom geometry, rights and presentation instead of copying a master again (961.263717ms)
+✔ saved form import resumes with private design assets after reopen without uploading originals again (917.927318ms)
+✔ correction workbook retains every child design of a failed product and excludes successful siblings (1403.858798ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4805.308125

@@ -32,7 +32,7 @@ export function batchReportData(repository,input,assets){
   cells(rows,IMPORT_COLUMNS);
   const designRows=(input.designRows||[]).filter(row=>keys.has(text(row.import_key))).map(row=>structuredClone(row));
   const positions=new Map(selected.map((row,index)=>[row.row,index+2]));
-  const report=plan.report.map(item=>({source_record:item.row,correction_excel_row:positions.get(item.row)??'',import_key:item.key,name:item.name,status:labels[item.status],message:item.message||'',product_id:item.id||item.productId||'',expected_revision:item.expectedRevision??'',master_id:item.masterId??'',master_revision:item.masterRevision??''}));
+  const report=plan.report.map(item=>({source_record:item.row,correction_excel_row:positions.get(item.row)??'',import_key:item.key,name:item.name,status:labels[item.status],message:item.message||'',profile_bindings:JSON.stringify({profiles:item.profiles||null,productionProfile:item.productionProfile?{id:item.productionProfile.id,revision:item.productionProfile.revision}:null}),product_id:item.id||item.productId||'',expected_revision:item.expectedRevision??'',master_id:item.masterId??'',master_revision:item.masterRevision??''}));
   return {settings:designSourceSettings(input.settings),mode:input.mode,createdAt:new Date().toISOString(),columns:IMPORT_COLUMNS,designColumns:DESIGN_COLUMNS,rows,designRows,report};
 }
 export const batchReportWorkbook=data=>variantWorkbook(data,new URL('./batch-report.py',import.meta.url));

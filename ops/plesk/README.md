@@ -1,6 +1,6 @@
 # Privates Plesk-Testpaket – Gravuru 2027
 
-Dieses Paket enthält den aktuellen Neuaufbau einschließlich ZIP-Import und gemeinsamen Excel-Quellordnern. `PACKAGE-MANIFEST.json` nennt den vollständigen Quellcommit und SHA-256 jeder enthaltenen Datei. Die nebenliegende `.sha256` gilt für das gesamte ZIP. Keine vorhandenen Datenbanken, Secrets, virtuellen Python-Umgebungen oder historischen Installationspakete enthalten.
+Dieses Paket enthält den aktuellen Neuaufbau einschließlich ZIP-Import, gemeinsamen Excel-Quellordnern und Schrift-/Motiv-/Fertigungsprofilzuordnung. `PACKAGE-MANIFEST.json` nennt den vollständigen Quellcommit und SHA-256 jeder enthaltenen Datei. Die nebenliegende `.sha256` gilt für das gesamte ZIP. Keine vorhandenen Datenbanken, Secrets, virtuellen Python-Umgebungen oder historischen Installationspakete enthalten.
 
 **Ziel:** separate, passwortgeschützte HTTPS-Testinstanz für genau einen App-Prozess. Kein Shopify-Login, keine Shop-Schreibzugriffe, kein Deployment über dieses Dokument ausgelöst. Der bisherige Shopify-Start bleibt im Quellcode vorhanden, wird von diesem Paketstart aber nicht verwendet. Änderungen an der bestehenden Shopify-App sind nicht erforderlich.
 
@@ -30,7 +30,7 @@ Ohne diese Möglichkeiten die Einrichtung an dieser Stelle an die Hostingverwalt
 
 ## 2. Ausschließlich den neuen Testbereich vorbereiten
 
-1. Unter **Websites & Domains** eine eigene Test-Subdomain mit den obigen getrennten Verzeichnissen anlegen. Vorhandene Live-Domain nicht umstellen. HTTPS-Zertifikat zuordnen und HTTPS-Weiterleitung aktivieren.
+1. Unter **Websites & Domains** zuerst vorhandene Testbereiche prüfen. Einen vorhandenen Bereich nur verwenden, wenn seine Nutzung für diesen Test bestätigt ist, er keine fremde Anwendung überschreibt und seine App-/Datenpfade die Trennung erfüllen. Andernfalls eine eigene Test-Subdomain mit den obigen getrennten Verzeichnissen anlegen. Vorhandene Live-Domain nicht umstellen. HTTPS-Zertifikat zuordnen und HTTPS-Weiterleitung aktivieren.
 2. Im **Dateimanager** das ZIP in den neuen Application Root hochladen und dort entpacken. Direkt dort müssen `app.cjs`, `package.json`, `PACKAGE-MANIFEST.json`, `app/`, `ops/` und `public/` liegen. Keine zusätzliche äußere ZIP-Verzeichnisebene verwenden.
 3. ZIP nach Entpacken aus dem Server-Testordner entfernen oder außerhalb des Document Root privat ablegen. Der **Document Root muss `public/` sein**, niemals der Application Root. `public/` enthält nur `robots.txt`; Quellcode und Manifest gehören nicht in den Webroot.
 4. Falls nötig den übergeordneten Ordner `private/` per Dateimanager anlegen. Die beiden letzten Verzeichnisse für Daten/Python noch leer lassen oder noch nicht anlegen. Keine vorhandenen Bestandsordner auswählen. Der Vorbereitungsbefehl kennzeichnet nur neue/leere Testordner und setzt dort Rechte **0700**; Dateien erhalten **0600**.

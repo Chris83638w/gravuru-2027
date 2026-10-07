@@ -1,0 +1,15 @@
+{
+  "startedAt": "2026-10-07T19:02:03.116397+00:00",
+  "scope": "synthetic local changed flows only",
+  "checks": {
+    "xlsxAssignmentsCorrectionAndSavedResume": true,
+    "shippedTemplateParsesWithFourNewColumns": true,
+    "merchantAssignmentsSaveAndReopen": true,
+    "customerFrozenSelectionAfterProfileChange": true,
+    "explicitEmptyKeepsOriginalFieldsAndBlocksNewChoices": true
+  },
+  "serverAcceptance": false,
+  "physicalPrintAcceptance": false,
+  "javascriptErrors": [],
+  "result": "PASS"
+}

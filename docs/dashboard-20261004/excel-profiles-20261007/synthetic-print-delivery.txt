@@ -1,0 +1,10 @@
+✔ dashboard PDF-to-print flow: transparent design with customer text and photo (16896.057246ms)
+✔ existing acrylic configurator keeps selected base, wall option, customer media and vector white through the same export queue (10200.636101ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 27320.586348

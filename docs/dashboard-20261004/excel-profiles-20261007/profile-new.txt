@@ -1,0 +1,13 @@
+✔ Excel choice profiles apply to forms and native acrylic; omitted values preserve masters and ordered inheritance (1411.31777ms)
+✔ wrong profile types and revisions fail per row; partial correction and restart preserve successful products (998.809033ms)
+✔ profile edits invalidate pending approval but a completed import remains idempotent with its original binding (902.717279ms)
+✔ form customer enforcement and review retain frozen fonts/motifs/colors while original template fields remain editable (1783.296751ms)
+✔ manufacturing assignments pin an existing revision, check material compatibility, and remove explicitly without touching old revisions (880.894956ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6149.304294

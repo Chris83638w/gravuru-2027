@@ -5,7 +5,7 @@ export function confirmProfileImpact(review,catalog){
   const dialog=node('dialog');dialog.className='revision-compare';dialog.setAttribute('aria-labelledby','profile-impact-title');
   const heading=node('h2','Auswirkungen der Änderung');heading.id='profile-impact-title';
   const summary=node('p',`„${review.profile.name}“ · ${review.total} zugeordnete Produkte/Master. Bei ${review.changed} ändert sich die angebotene Auswahl.`);
-  const note=node('p','Die Änderung gilt für die aktuelle Profilauswahl im Konfigurator. Gespeicherte historische Produktstände und Bestellungen bleiben erhalten. Archivierte Produkte sind gesondert markiert. Formprodukte verwenden diese Auswahlprofile nicht.');
+  const note=node('p','Die Änderung gilt für die aktuelle Acryl-Auswahl und die nächste gespeicherte Fassung von Formprodukten mit aktiven Profilregeln. Gespeicherte Produktstände, Kundenentwürfe und Bestellungen behalten ihre Auswahl. Archivierte Produkte sind gesondert markiert.');
   const list=node('div');
   const names=Object.fromEntries(['fonts','motifs'].map(type=>[type,new Map((catalog[type]||[]).map(item=>[item.id,item.name]))]));
   const selection=(type,items)=>{if(items===null)return 'Produktauswahl beibehalten';if(!items.length)return 'Keine';const labels=items.slice(0,20).map(id=>names[type==='bestsellers'?'motifs':type]?.get(id)||id);return labels.join(', ')+(items.length>20?` … (${items.length} insgesamt)`:'');};

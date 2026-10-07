@@ -1,3 +1,4 @@
+import {validateProfileAssignments} from './product-profile-assignments.mjs';
 import {createHash} from 'node:crypto';
 import {contourSvg} from './contours.mjs';
 import {validateFormDesigns} from './form-designs.mjs';
@@ -22,8 +23,9 @@ const keys=(v,k)=>{if(!object(v)||Object.keys(v).length!==k.length||k.some(n=>!O
 const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
 export const isFormProduct=d=>d?.schema===FORM_PRODUCT_SCHEMA;
 export function validateFormProduct(input){
- keys(input,['schema','name','kind','masterId','categoryIds','seo','form','material','processingMethod','basePriceCents',...(Object.hasOwn(input||{},'presentation')?['presentation']:[]),...(Object.hasOwn(input||{},'productionProfile')?['productionProfile']:[]),...(Object.hasOwn(input||{},'designs')||Object.hasOwn(input||{},'defaultDesignId')?['designs','defaultDesignId']:[])]);
+ keys(input,['schema','name','kind','masterId','categoryIds','seo','form','material','processingMethod','basePriceCents',...(Object.hasOwn(input||{},'profileAssignments')?['profileAssignments']:[]),...(Object.hasOwn(input||{},'presentation')?['presentation']:[]),...(Object.hasOwn(input||{},'productionProfile')?['productionProfile']:[]),...(Object.hasOwn(input||{},'designs')||Object.hasOwn(input||{},'defaultDesignId')?['designs','defaultDesignId']:[])]);
  const d=structuredClone(input);
+ if(d.profileAssignments!==undefined)validateProfileAssignments(d.profileAssignments);
  if(!isFormProduct(d)||typeof d.name!=='string'||!d.name.trim()||d.name.length>200||!['product','master'].includes(d.kind)||!(d.masterId===null||/^cfg_[a-f0-9-]+$/.test(d.masterId)))fail('Ungültiger Formproduktname oder Vorlagenbezug.');
  d.name=d.name.trim();
  if(!Array.isArray(d.categoryIds)||d.categoryIds.length>100||d.categoryIds.some(id=>typeof id!=='string'||!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(id))||new Set(d.categoryIds).size!==d.categoryIds.length)fail('Ungültige Kategorien.');

@@ -1,0 +1,26 @@
+✔ 100 products import atomically, inherit both sizes, preserve IDs across restart and repeated import (25819.386515ms)
+✔ a bad row prevents all writes; review token binds content and master revision (384.680922ms)
+✔ database failure during batch rolls back products and import keys together; v1 migration preserves data (259.49812ms)
+✔ explicit partial import preserves 97 valid drafts and returns 3 errors without duplicate keys (18798.31886ms)
+✔ numeric Excel dates are row errors and cannot become unintended printed serial numbers through the API (473.767129ms)
+✔ explicit updates preserve IDs, historical revisions and omitted content; retry after restart never overwrites later edits (324.089717ms)
+✔ updates reject missing intent, duplicate targets, master targets, no-ops and stale revisions; atomic rollback retains journal and old products (491.980015ms)
+✔ 100 update rows permit explicit 97-row application and correcting only the remaining three (25108.60891ms)
+✔ impact follows effective default, ordered category and product choices and respects explicit empty (30.508958ms)
+✔ motif changes include their consequences for filtered bestseller selections (7.465834ms)
+✔ rename-only and reordered selections are distinguished; archives and masters are identified, forms excluded (8.244246ms)
+✔ confirmed profile update preserves immutable product/profile snapshots and requires fresh preview after concurrent changes (11.671842ms)
+✔ changed library assignment or a newly affected product invalidates the saved preview (6.00215ms)
+✔ preview rejects invalid edits and stale revisions using the same validation as saving (5.127285ms)
+✔ a profile containing a removed font can be reviewed and repaired without allowing it in normal resolution (13.040887ms)
+✔ assignment preview excludes overridden products and shows inherit versus deliberately empty (14.649326ms)
+✔ assignment confirmation detects a changed target profile and product, without modifying settings (7.084167ms)
+✔ assignment preview reports source-only changes and validates malformed category and assignment input (4.357599ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 71899.556316

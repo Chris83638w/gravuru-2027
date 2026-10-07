@@ -1,3 +1,4 @@
+import {applyBatchProfiles} from './product-profile-assignments.mjs';
 import {isFormProduct} from './form-product.mjs';
 import {prepareFormBatch} from './form-batch.mjs';
 import {createHash} from 'node:crypto';
@@ -5,7 +6,7 @@ import {validateProductDocument} from './product-model.mjs';
 import {replaceDesignArtwork} from './design-import.mjs';
 import {isDesignSourcePath,designSourceName,designSourceSettings,resolveDesignSourcePath} from './design-source-path.mjs';
 
-export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision','design_folder'];
+export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision','design_folder','font_profile','motif_profile','production_profile_id','production_profile_revision'];
 export const DESIGN_COLUMNS=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design','design_folder'];
 const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const text=value=>value===undefined||value===null?'':String(value).trim();
@@ -128,24 +129,29 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
         if(!replaced)fail(`Der Master besitzt kein Textfeld „${field}“.`);
       }
       for(const field of ['title','description'])if(text(row['seo_'+field]))document.seo[field]=text(row['seo_'+field]);
+      applyBatchProfiles(document,row);
       const validated=validateProductDocument(document);
-      if(form){if(!assets&&validated.designs?.length)fail('Der Design-Dateispeicher ist für diesen Master erforderlich.');for(const design of validated.designs||[]){if(assets.get(design.assetId).sourceSha256!==design.sourceSha256)fail('Die Designquelle wurde verändert.');}repository.validate(validated);}
+      if(form){if(!assets&&validated.designs?.length)fail('Der Design-Dateispeicher ist für diesen Master erforderlich.');for(const design of validated.designs||[]){if(assets.get(design.assetId).sourceSha256!==design.sourceSha256)fail('Die Designquelle wurde verändert.');}}
       else if(assets)assets.validateDocument(validated);
       else if(validated.config.localResources.motifs.some(m=>m.artwork))fail('Der Design-Dateispeicher ist für diesen Master erforderlich.');
+      repository.validate(validated);
       const fingerprint=hash(updating?{action,productId:id,expectedRevision:Number(version),document:validated}:{masterId:id,masterRevision:Number(version),document:validated});
       const existing=repository.importItem(key);
       if(existing&&existing.fingerprint!==fingerprint)fail('Dieser Importschlüssel ist schon mit anderen Daten verknüpft. Neuen Schlüssel verwenden oder bestehenden Artikel bearbeiten.');
       if(updating&&!existing&&(current.revision!==Number(version)||current.status==='archived'))fail('Das Produkt wurde zwischenzeitlich geändert oder archiviert. Aktuellen Stand prüfen und expected_revision anpassen.');
       if(updating&&existing&&existing.id!==id)fail('Importschlüssel gehört zu einem anderen Produkt.');
-      const unchanged=updating&&!existing&&JSON.stringify(validated)===JSON.stringify(master.document);
+      const metadata=existing?repository.get(existing.id,{revision:updating?Number(version)+1:1}).metadata:repository.previewMetadata(validated);
+      const profileBinding={profiles:metadata.profiles||null,productionProfile:metadata.productionProfile||null};
+      const priorBinding={profiles:master.metadata?.profiles||null,productionProfile:master.metadata?.productionProfile||null};
+      const unchanged=updating&&!existing&&JSON.stringify(validated)===JSON.stringify(master.document)&&JSON.stringify(profileBinding)===JSON.stringify(priorBinding);
       if(unchanged&&!form)fail('Die Zeile enthält keine Änderung.');
       const update=updating?{action,productId:id,expectedRevision:Number(version)}:{};
-      if(!unchanged)entries.push({key,fingerprint,document:validated,...update});
-      report.push({row:index+1,key,name:validated.name,status:existing?'existing':unchanged?'unchanged':'ready',id:existing?.id,...(updating?{...update,changes:[...Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),...(children.length?['Designs']:[])],previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:validated.config.acrylic.pricing.sizes}),...(designAssignments.length?{designAssignments,defaultDesignId:validated.defaultDesignId}:{}),...(artwork?{artwork}:{}),...(artworks.length?{artworks,designCount:validated.designs.length,defaultDesignId:validated.defaultDesignId,defaultDesignName:validated.designs.find(d=>d.id===validated.defaultDesignId)?.name}:{})});
+      if(!unchanged)entries.push({key,fingerprint,profileBinding,document:validated,...update});
+      report.push({row:index+1,key,name:validated.name,...profileBinding,status:existing?'existing':unchanged?'unchanged':'ready',id:existing?.id,...(updating?{...update,changes:[...Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),...(children.length?['Designs']:[])],previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:validated.config.acrylic.pricing.sizes}),...(designAssignments.length?{designAssignments,defaultDesignId:validated.defaultDesignId}:{}),...(artwork?{artwork}:{}),...(artworks.length?{artworks,designCount:validated.designs.length,defaultDesignId:validated.defaultDesignId,defaultDesignName:validated.designs.find(d=>d.id===validated.defaultDesignId)?.name}:{})});
     }catch(error){report.push({row:index+1,key,name:text(row?.name),status:'error',message:error.message});}
   }
   const valid=report.every(row=>row.status!=='error');
-  return {valid,report,token:entries.length?hash({rows,masterId,masterRevision,designFiles,...(settings?{settings:sourceSettings}:{}),...(designRows.length?{designRows}:{}),entries:entries.map(e=>({key:e.key,fingerprint:e.fingerprint}))}):null,entries};
+  return {valid,report,token:entries.length?hash({rows,masterId,masterRevision,designFiles,...(settings?{settings:sourceSettings}:{}),...(designRows.length?{designRows}:{}),entries:entries.map(e=>({key:e.key,fingerprint:e.fingerprint,profileBinding:e.profileBinding}))}):null,entries};
 }
 export function commitBatch(repository,input,assets){
   const plan=planBatch(repository,input,assets);

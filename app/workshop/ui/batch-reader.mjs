@@ -1,6 +1,6 @@
 import {unzipSync} from '/platform/sources/app/shared/vendor/fflate-0.8.3.mjs';
 import {designSourceSettings} from './design-source-path.mjs';
-const columns=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision','design_folder'];
+const columns=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision','design_folder','font_profile','motif_profile','production_profile_id','production_profile_revision'];
 const designColumns=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design','design_folder'];
 export function records(matrix,{allowed=columns,required=['import_key','name'],limit=100,optional=false}={}){
   const headers=(matrix.shift()||[]).map(v=>String(v??'').replace(/^\uFEFF/,'').trim());

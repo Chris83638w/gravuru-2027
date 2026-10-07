@@ -204,6 +204,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
   return {
     // The dry-run uses the same pure validation as the transactional write.
     validate(document) { return documentValue(document); },
+    previewMetadata(document) { return JSON.parse(JSON.stringify(snapshotMetadata(JSON.parse(JSON.stringify(document))))); },
     importItem(key) {
       const row=db.prepare('SELECT * FROM import_items WHERE import_key = ?').get(key);
       return row ? {key:row.import_key,fingerprint:row.fingerprint,id:row.product_id} : null;

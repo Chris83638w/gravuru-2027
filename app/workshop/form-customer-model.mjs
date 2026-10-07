@@ -6,7 +6,7 @@ const exact=(o,keys)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.keys
 const common=['id','deleted','xMm','yMm','widthMm','heightMm'];
 const extraValues=f=>f.type==='text'?{text:f.text,font:f.font,sizeMm:f.sizeMm,color:f.color,bold:f.bold,italic:f.italic}:f.type==='motif'?{motifKey:f.motifKey,motifSha256:f.motifSha256,color:f.color,rotation:f.rotation}:{mediaId:null,crop:{zoom:1,x:0,y:0,angle:0},tone:'original'};
 export function initialFormCustomerState(design){return {fields:design.fields.map(f=>({id:f.id,deleted:false,xMm:f.xMm,yMm:f.yMm,widthMm:f.widthMm,heightMm:f.heightMm,...extraValues(f)}))};}
-export function resolveFormCustomer(document,designId,input,{assets,fonts,media}){
+export function resolveFormCustomer(document,designId,input,{assets,fonts,media,profiles}){
  const source=document.designs?.find(d=>d.id===designId);if(!source)fail('Design gehört nicht zu diesem Produktstand.');
  exact(input,['fields',...(Object.hasOwn(input||{},'additions')?['additions']:[])]);if(!Array.isArray(input.fields)||input.fields.length!==source.fields.length)fail('Die vorgegebenen Felder dürfen nicht ausgetauscht werden.');
  const ids=new Set(),copy=structuredClone(document),design=copy.designs.find(d=>d.id===designId),photos=new Map(),warnings=[];
@@ -21,6 +21,10 @@ const values=[...input.fields,...(input.additions||[])];
   if(!f.allowMove&&(value.xMm!==f.xMm||value.yMm!==f.yMm))fail('Die Position dieses Felds ist fest vorgegeben.');
   if(!f.allowScale&&(value.widthMm!==f.widthMm||value.heightMm!==f.heightMm||f.type==='text'&&value.sizeMm!==f.sizeMm))fail('Die Größe dieses Felds ist fest vorgegeben.');
   if(['text','motif'].includes(f.type)&&!f.allowColor&&typeof value.color==='string'&&value.color.toLowerCase()!==f.color.toLowerCase())fail('Die Textfarbe ist fest vorgegeben.');
+  const choices=profiles?.selections,isAdded=added.some(a=>a.id===f.id);
+  if(f.type==='text'&&choices?.fonts!==null&&choices?.fonts!==undefined&&(isAdded||value.font!==f.font)&&!choices.fonts.includes(value.font))fail('Diese Schrift ist für diesen Produktstand nicht freigegeben.');
+  if(f.type==='motif'&&isAdded&&choices?.motifs!==null&&choices?.motifs!==undefined&&!choices.motifs.includes(value.motifKey))fail('Dieses Motiv ist für diesen Produktstand nicht freigegeben.');
+  if(['text','motif'].includes(f.type)&&choices?.colors!==null&&choices?.colors!==undefined&&(isAdded||value.color?.toLowerCase()!==f.color.toLowerCase())&&!choices.colors.includes(value.color?.toLowerCase()))fail('Diese Farbe ist für diesen Produktstand nicht freigegeben.');
   for(const key of ['xMm','yMm','widthMm','heightMm',...(f.type==='text'?['text','font','sizeMm','color','bold','italic']:f.type==='motif'?['color','rotation']:[])])f[key]=value[key];
   if(f.type==='photo'){
    exact(value.crop,['zoom','x','y','angle']);const c=value.crop;

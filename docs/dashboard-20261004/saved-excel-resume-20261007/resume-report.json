@@ -1,0 +1,37 @@
+{
+  "startedAt": "2026-10-07T16:19:32.029235+00:00",
+  "result": "PASS",
+  "data": "fresh synthetic loopback fixtures",
+  "published": false,
+  "checks": {
+    "productsSavedReopenedAfterLostResponseAndProcessRestart": {
+      "created": 2,
+      "errors": 1
+    },
+    "productCorrectionRetainsDesignRowsAndExistingProducts": {
+      "totalProducts": 3,
+      "repeatCreated": 0
+    },
+    "groupsSavedReopenedAfterLostResponseAndProcessRestart": {
+      "created": 2,
+      "errors": 1
+    },
+    "groupCorrectionRetainsAllVariantsAndProductRevisions": {
+      "totalGroups": 3,
+      "repeatCreated": 0
+    },
+    "removeSnapshotCancelAndConfirmPreservesProductsAndGroups": true
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T16:19:46.228446+00:00"
+}

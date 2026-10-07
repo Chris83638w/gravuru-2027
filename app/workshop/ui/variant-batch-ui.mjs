@@ -61,10 +61,10 @@ $('#save-job').onclick=async()=>{if(busy||!checkedInput)return;lock(true);try{
  const job=await api('jobs',{name:$('#job-name').value,input:checkedInput});await refreshJobs(job.id);
  $('#job-status').textContent=job.existing?'Diese Prüfung ist bereits gespeichert.':'Ausführungsprüfung privat gespeichert. Gruppen und Produkte wurden dadurch nicht verändert.';
 }catch(e){$('#job-status').textContent=e.message;}finally{lock(false);}};
-$('#open-job').onclick=async()=>{const id=$('#saved-jobs').value;if(busy||!id)return;lock(true);try{
+$('#open-job').onclick=async()=>{const id=$('#saved-jobs').value;if(busy||!id)return;prepared=null;lock(true);try{
  const job=await api('jobs/'+encodeURIComponent(id));invalidate();lock(true);$('#file').value='';renderPlan(job.input,job.plan);$('#job-name').value=job.name;
  $('#job-status').textContent='Gespeicherte Zuordnungen frisch geprüft. Bereits ausgeführte Gruppen und zwischenzeitliche Änderungen werden berücksichtigt.';
-}catch(e){$('#job-status').textContent=e.message;}finally{lock(false);}};
+}catch(e){$('#job-status').textContent=e.message+' Die bisherigen Eingaben bleiben erhalten. Vor der Übernahme die gespeicherte Prüfung erneut öffnen oder die Tabelle erneut prüfen.';notice('Öffnen fehlgeschlagen. Übernahme bis zur erneuten Prüfung gesperrt.',true);}finally{lock(false);}};
 $('#remove-job').onclick=async()=>{const id=$('#saved-jobs').value;if(busy||!id||!window.confirm('Nur diese gespeicherte Prüfung entfernen? Ausführungsgruppen, Produkte und Importhistorie bleiben erhalten.'))return;lock(true);try{
  await api('jobs/'+encodeURIComponent(id)+'/remove',{});await refreshJobs('');$('#job-status').textContent='Prüfung entfernt. Gruppen und Produkte bleiben erhalten.';
 }catch(e){$('#job-status').textContent=e.message;}finally{lock(false);}};

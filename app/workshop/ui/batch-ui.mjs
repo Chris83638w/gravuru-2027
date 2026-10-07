@@ -160,12 +160,12 @@ $('#save-job').addEventListener('click',async()=>{
   }catch(error){$('#job-status').textContent=error.message;}finally{disabled(false);}
 });
 $('#open-job').addEventListener('click',async()=>{
-  const id=$('#saved-jobs').value;if(busy||!id)return;disabled(true);
+  const id=$('#saved-jobs').value;if(busy||!id)return;prepared=null;disabled(true);
   try{
     const job=await api('/api/workshop/batch/jobs/'+encodeURIComponent(id));
     invalidate();$('#file').value='';$('#design-files').value='';renderPlan(job.input,job.plan);$('#job-name').value=job.name;
     $('#job-status').textContent='Gespeicherte Prüfung geöffnet und aktuell geprüft. Bereits ausgeführte Zeilen werden erkannt. Verknüpfte Design-Dateien kommen aus dieser privaten Ablage.';
-  }catch(error){$('#job-status').textContent=error.message;}finally{disabled(false);}
+  }catch(error){$('#job-status').textContent=error.message+' Die bisherigen Eingaben bleiben erhalten. Vor der Übernahme die gespeicherte Prüfung erneut öffnen oder die Tabelle erneut prüfen.';status('Öffnen fehlgeschlagen. Übernahme bis zur erneuten Prüfung gesperrt.',true);}finally{disabled(false);}
 });
 $('#remove-job').addEventListener('click',async()=>{
   const id=$('#saved-jobs').value;if(busy||!id||!window.confirm('Nur diese gespeicherte Importprüfung entfernen? Produkte, Designs und bereits ausgeführte Importe bleiben erhalten.'))return;disabled(true);

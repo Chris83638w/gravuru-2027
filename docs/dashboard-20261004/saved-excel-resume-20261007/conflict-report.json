@@ -1,0 +1,18 @@
+{
+  "startedAt": "2026-10-07T16:19:23.346563+00:00",
+  "result": "PASS",
+  "data": "fresh synthetic loopback fixtures",
+  "published": false,
+  "checks": {
+    "productsConflictCorrectionPreservesOtherFields": true,
+    "groupsConflictCorrectionPreservesOtherFields": true
+  },
+  "findings": [],
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T16:19:30.364331+00:00"
+}

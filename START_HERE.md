@@ -1,3 +1,11 @@
+## Aktuell: Gespeicherte Excel-Serien und Ausführungsgruppen abgenommen – 07.10.2026
+
+Branch `test/saved-excel-resume-20261007`, bestätigte Basis `79c570061141c8c432e90962c19ed8845cad62b5`. Beide Importarten im Browser mit echten Excel-Dateien geprüft: Speichern/Wiederöffnen, Teilübernahme, verlorene Serverantwort, Prozess-/SQLite-Neustart, gezielte Korrektur und Wiederholung ohne Duplikate. Designs, Varianten, Produktstände und erfolgreiche Geschwister unverändert erhalten. Revisionskonflikte ausdrücklich in Excel korrigiert; Entfernen einer Prüfung löscht keine Produkte/Gruppen.
+
+Ein Bedienfehler in beiden Importoberflächen behoben: Nach fehlgeschlagenem Öffnen bleibt der alte Prüfplan jetzt gesperrt, bis erneut erfolgreich geprüft wurde; Eingaben bleiben erhalten. Zwei gezielte Browserläufe PASS, sieben Ablaufgruppen, Desktop/390/768, keine JavaScript-Fehler. Keine Wiederholung der allgemeinen Abnahmen oder Backend-Lastprüfungen. [Prüfbericht, Befehle und Screenshots](docs/dashboard-20261004/GESPEICHERTE-EXCEL-ABNAHME-20261007.md).
+
+Plesk-Einrichtung auf Nutzerwunsch pausiert. Echte Shopify-Appanmeldung, HTTPS-Testbackend, Testvariantenbindung und Testbestellung bleiben offen. Keine Live-Veröffentlichung. Nächstes unabhängiges vereinbartes Paket: Händlerbedienung der kaufgebundenen Test-Dateifreigabe und Widerruf sichtbar mit synthetischer Anmeldung abnehmen; keine echte Kundenkontoanbindung behaupten.
+
 ## Aktuell: Positionsbezogene Erstattungsanzeige umgesetzt – 07.10.2026
 
 Fortsetzung ausschließlich in dieser Aufgabe auf `task/order-line-refunds-20261007`, Basis `c19cbd8606258860848608938965536286d90519`; übernommener Neuaufbau und Browserabnahme `0202493f715d53316eb893e94fb672c4ac8eeb04` bleiben erhalten. Das Testbestell-Dashboard zeigt jetzt gemeldete Erstattungsmengen, Warenwerte und Steueranteile je Position. Fehlende/ältere/widersprüchliche Angaben werden kenntlich gemacht; doppelte/verspätete Nachrichten summieren nichts zusätzlich. Kein berechneter Auszahlungserfolg. Ursprüngliche Bestell-/Produktionsstände unverändert; betroffene Kunden-Dateifreigaben bleiben gesperrt.

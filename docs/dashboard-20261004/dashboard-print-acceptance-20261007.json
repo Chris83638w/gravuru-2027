@@ -1,0 +1,215 @@
+{
+  "tested_at_utc": "2026-10-07T02:40:10.422417+00:00",
+  "product_code_commit": "f28dfc032c6d374d7d0967fe8eb8f37895d2a8f2",
+  "test_sha256": "867baf3a24b369b1e5b72dfb02b0f5e839510616d5307ddb1eb3e8c29a3959fc",
+  "synthetic": true,
+  "flows_passed": 3,
+  "failures": 0,
+  "skips": 0,
+  "profile_changed_before_export_verified": true,
+  "browser_verified": false,
+  "real_shopify_order_verified": false,
+  "rip_verified": false,
+  "color_conversion": "Generic DeviceCMYK; no measured ICC profile",
+  "build": {
+    "resources": 76,
+    "models": 1,
+    "editor_bytes": 461440
+  },
+  "files": [
+    {
+      "file": "Acryl-Test-mimaki-pdf.pdf",
+      "bytes": 91981,
+      "sha256": "807cc0a43f46877bce26e06ddac8e0a51efa0a84653b8472e370486f1473fcd8",
+      "repaired": false,
+      "widthMm": 149.99999576144748,
+      "heightMm": 200.00000152587887,
+      "layers": [
+        "Farbmotiv",
+        "CutContour"
+      ],
+      "whiteSpot": false,
+      "cutSpot": true,
+      "images": [
+        "DeviceCMYK",
+        "DeviceCMYK"
+      ],
+      "fonts": 0,
+      "whitePaths": 0,
+      "textPaths": 5,
+      "cutPathCount": 1
+    },
+    {
+      "file": "Acryl-Test-mimaki-white-pdf.pdf",
+      "bytes": 67696,
+      "sha256": "007e1d221e3dedb2dad93b5db2b57206dc0f793fb07c8d460ad4c63830d95a3a",
+      "repaired": false,
+      "widthMm": 149.99999576144748,
+      "heightMm": 200.00000152587887,
+      "layers": [
+        "RDG_WHITE",
+        "CutContour"
+      ],
+      "whiteSpot": true,
+      "cutSpot": true,
+      "images": [],
+      "fonts": 0,
+      "whitePaths": 6,
+      "textPaths": 0,
+      "cutPathCount": 1
+    },
+    {
+      "file": "Acryl-Test-roland-pdf.pdf",
+      "bytes": 158218,
+      "sha256": "4523c50d8a016e76ccc902398b6072cbff68ca9725f846304da07e71748f8d0b",
+      "repaired": false,
+      "widthMm": 149.99999576144748,
+      "heightMm": 200.00000152587887,
+      "layers": [
+        "Farbmotiv",
+        "RDG_WHITE",
+        "CutContour"
+      ],
+      "whiteSpot": true,
+      "cutSpot": true,
+      "images": [
+        "DeviceCMYK",
+        "DeviceCMYK"
+      ],
+      "fonts": 0,
+      "whitePaths": 6,
+      "textPaths": 5,
+      "cutPathCount": 1
+    },
+    {
+      "file": "Transparent-mimaki-pdf.pdf",
+      "bytes": 14433,
+      "sha256": "580386c1aa2d1ce7f89812e488d46b63847f46a498ae51873b441ca9e1fe9d6c",
+      "repaired": false,
+      "widthMm": 79.99999953375921,
+      "heightMm": 59.99999830457899,
+      "layers": [
+        "Farbmotiv",
+        "CutContour"
+      ],
+      "whiteSpot": false,
+      "cutSpot": true,
+      "images": [
+        "DeviceCMYK",
+        "DeviceCMYK"
+      ],
+      "fonts": 0,
+      "whitePaths": 0,
+      "textPaths": 1,
+      "cutPathCount": 1
+    },
+    {
+      "file": "Transparent-mimaki-white-pdf.pdf",
+      "bytes": 11382,
+      "sha256": "be4f9ce1cebcb53a583ac33ae4aecd759d33d328fda50da7cc4b84d01f49adba",
+      "repaired": false,
+      "widthMm": 79.99999953375921,
+      "heightMm": 59.99999830457899,
+      "layers": [
+        "RDG_WHITE",
+        "CutContour"
+      ],
+      "whiteSpot": true,
+      "cutSpot": true,
+      "images": [],
+      "fonts": 0,
+      "whitePaths": 2,
+      "textPaths": 0,
+      "cutPathCount": 1
+    },
+    {
+      "file": "Transparent-roland-pdf.pdf",
+      "bytes": 24331,
+      "sha256": "457651d4b889e54743fe66b7213c75327bfc5d08cdaf6107d00869a5d15258d0",
+      "repaired": false,
+      "widthMm": 79.99999953375921,
+      "heightMm": 59.99999830457899,
+      "layers": [
+        "Farbmotiv",
+        "RDG_WHITE",
+        "CutContour"
+      ],
+      "whiteSpot": true,
+      "cutSpot": true,
+      "images": [
+        "DeviceCMYK",
+        "DeviceCMYK"
+      ],
+      "fonts": 0,
+      "whitePaths": 2,
+      "textPaths": 1,
+      "cutPathCount": 1
+    },
+    {
+      "file": "Vollflaeche-mimaki-pdf.pdf",
+      "bytes": 41048,
+      "sha256": "1868538096ee2b2e7c56cf6083118ba6aeebc8289c0287abfa621da9bd436e78",
+      "repaired": false,
+      "widthMm": 82.00000127156575,
+      "heightMm": 62.000000042385516,
+      "layers": [
+        "Farbmotiv",
+        "CutContour"
+      ],
+      "whiteSpot": false,
+      "cutSpot": true,
+      "images": [
+        "DeviceCMYK",
+        "DeviceCMYK",
+        "DeviceCMYK"
+      ],
+      "fonts": 0,
+      "whitePaths": 0,
+      "textPaths": 1,
+      "cutPathCount": 1
+    },
+    {
+      "file": "Vollflaeche-mimaki-white-pdf.pdf",
+      "bytes": 11712,
+      "sha256": "c315e0bd3433688725f0d8b1962b4429c46b7a2443b92325554d4b7b5208eac1",
+      "repaired": false,
+      "widthMm": 82.00000127156575,
+      "heightMm": 62.000000042385516,
+      "layers": [
+        "RDG_WHITE",
+        "CutContour"
+      ],
+      "whiteSpot": true,
+      "cutSpot": true,
+      "images": [],
+      "fonts": 0,
+      "whitePaths": 2,
+      "textPaths": 0,
+      "cutPathCount": 1
+    },
+    {
+      "file": "Vollflaeche-roland-pdf.pdf",
+      "bytes": 51275,
+      "sha256": "43953ef4eceb80e69d9c21d7184e39b237942f97242b65037f88c8914a634ed2",
+      "repaired": false,
+      "widthMm": 82.00000127156575,
+      "heightMm": 62.000000042385516,
+      "layers": [
+        "Farbmotiv",
+        "RDG_WHITE",
+        "CutContour"
+      ],
+      "whiteSpot": true,
+      "cutSpot": true,
+      "images": [
+        "DeviceCMYK",
+        "DeviceCMYK",
+        "DeviceCMYK"
+      ],
+      "fonts": 0,
+      "whitePaths": 2,
+      "textPaths": 1,
+      "cutPathCount": 1
+    }
+  ]
+}

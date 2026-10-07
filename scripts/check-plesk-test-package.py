@@ -26,6 +26,7 @@ parser.add_argument('archive', type=Path)
 parser.add_argument('--litespeed', action='store_true', help='Model LiteSpeed HTTP listen/address interception')
 parser.add_argument('--private-config', action='store_true', help='Plesk npm runner without app environment variables')
 parser.add_argument('--startup-only', action='store_true', help='Verify changed bootstrap without repeating unchanged browser flows')
+parser.add_argument('--draft-access', action='store_true', help='Verify private customer draft credentials through the packaged proxy')
 args = parser.parse_args()
 report = {'startedAt': datetime.now(timezone.utc).isoformat(), 'result': 'RUNNING', 'checks': {},
           'scope': 'extracted package; synthetic loopback proxy, not real Plesk or public TLS', 'published': False}
@@ -166,6 +167,41 @@ http.Server.prototype.listen = function () {
         second = run(runtime_command, {'GRAVURU_TEST_PORT': str(unused_port())}, ok=False)
         assert request('/__test/health', {'Authorization': authorization})[0] == 200
         report['checks']['passwordHostOriginHttpsCsrfPrivatePathsAndSingleProcessGuard'] = True
+
+        if args.draft_access:
+            session = json.loads(request('/api/workshop/session', {'Authorization': authorization})[1])
+            headers = {'Authorization': authorization, 'Content-Type': 'application/json',
+                       'X-Gravuru-CSRF': session['csrfToken']}
+
+            def mutation(route, value, method='POST', extra=None):
+                status, raw, _ = request('/api/workshop/' + route, {**headers, **(extra or {})}, json.dumps(value), method)
+                assert status in [200, 201], (route, status)
+                return json.loads(raw)
+
+            source = base64.b64encode(b'<svg xmlns="http://www.w3.org/2000/svg" width="100mm" height="80mm" viewBox="0 0 100 80"><rect width="100" height="80"/></svg>').decode()
+            contour = mutation('contours', {'name': 'Synthetic.svg', 'bytes': source})
+            product = mutation('form-products', {'contourId': contour['id'], 'name': 'Synthetic private draft'})
+            imported = mutation('products/' + product['id'] + '/form-design-import', {
+                'expectedRevision': product['revision'], 'document': product['document'],
+                'name': 'Synthetic.svg', 'bytes': source, 'designName': 'Synthetic', 'fit': 'original'})
+            product = mutation('products/' + product['id'], {
+                'expectedRevision': product['revision'], 'document': imported['document']}, 'PATCH')
+            created = mutation('customer-drafts', {'productId': product['id'], 'productRevision': product['revision']})
+            route = '/api/workshop/customer-drafts/' + created['draft']['id']
+            credential = {'X-Gravuru-Draft': created['token']}
+            assert request(route, credential)[0] == 401
+            assert request(route, {**headers, 'X-Gravuru-Draft': 'invalid'})[0] == 404
+            assert request(route, headers)[0] == 404
+            status, raw, _ = request(route, {**headers, **credential})
+            assert status == 200, ('authorized private draft reload', status)
+            assert json.loads(raw)['draft'] == created['draft']
+            saved = mutation('customer-drafts/' + created['draft']['id'], {
+                'expectedRevision': created['draft']['revision'], 'state': created['draft']['state']}, 'PATCH', credential)
+            assert saved['draft']['revision'] == created['draft']['revision'] + 1
+            assert request(route, {**headers, **credential, 'Origin': 'https://foreign.example'})[0] == 403
+            reopened = json.loads(request(route, {**headers, **credential})[1])
+            assert reopened['draft'] == saved['draft']
+            report['checks']['privateDraftReadSaveReopenAndWrongTokenDenied'] = True
 
         if args.startup_only:
             state = json.loads(request('/api/workshop/products', {'Authorization': authorization})[1])

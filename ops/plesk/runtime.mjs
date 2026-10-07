@@ -42,7 +42,7 @@ export async function createPrivateTestRuntime(env){
       res.setHeader('Content-Type','application/json');return res.end(req.method==='HEAD'?undefined:JSON.stringify({ready:true,scope:'private-operator-test',shopifyConnected:false}));
     }
     const headers={host:'127.0.0.1:'+port};
-    for(const name of ['accept','accept-language','content-type','content-length','cookie','x-gravuru-csrf','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[name]!==undefined)headers[name]=req.headers[name];
+    for(const name of ['accept','accept-language','content-type','content-length','cookie','x-gravuru-csrf','x-gravuru-draft','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[name]!==undefined)headers[name]=req.headers[name];
     if(req.headers.origin)headers.origin='http://127.0.0.1:'+port;
     // Only after authentication and exact external Host/Origin checks use the existing loopback contract.
     const upstream=http.request({hostname:'127.0.0.1',port,path:req.url,method:req.method,headers},response=>{

@@ -11,7 +11,7 @@ Die Excel-Vorlage enthält zusätzlich das optionale Blatt **Designs**. Eine Pro
 | `import_key` | Verbindet diese Designzeile mit einer Zeile im Blatt Produkte. |
 | `design_id` | Pflicht: vorhandene ID ersetzt dieses Design, neue ID ergänzt ein Design. |
 | `design_name` | Optionaler Anzeigename; leer behält bisherigen Namen bzw. verwendet den Dateinamen bei Neuanlage. |
-| `design_file` | Exakter Name einer zusätzlich ausgewählten SVG/PDF; keine Pfade oder URLs. |
+| `design_file` | Exakter Name einer zusätzlich ausgewählten SVG/PDF. Seit 07.10. auch relativer Unterordnerpfad innerhalb eines bewusst ausgewählten Design-Ordners; keine absoluten Pfade oder URLs. [Ordnerimport](DESIGN-ORDNERIMPORT-20261007.md). |
 | `design_page` | PDF-Seite ab 1; leer = 1, SVG immer 1. |
 | `design_fit` | `original` (Standard, physisches Originalmaß) oder `contain` (proportional innerhalb der Formmaße). |
 | `default_design` | Leer/0 oder bei genau einem Design je Produkt `1`. Ohne 1 bleibt der bisherige Standard bestehen, bei leerem Master wird das erste neue Design gewählt. |

@@ -1,0 +1,25 @@
+{
+  "startedAt": "2026-10-07T16:56:49.570788+00:00",
+  "result": "PASS",
+  "data": "fresh synthetic folder and loopback database",
+  "published": false,
+  "checks": {
+    "directoryInventoryNoUploadUntilCheckAndExactPaths": true,
+    "privateSnapshotAndReportRetainPathsAndOriginalHashes": true,
+    "explicitPathCorrectionCreatesOnlyMissingProduct": true,
+    "changedFolderCannotReplaceSavedSourcesOrProducts": true,
+    "duplicateExactReferenceRejectedBeforeUploadAndClearInvalidatesPlan": true
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 461440
+  },
+  "viewports": [
+    1440,
+    390,
+    768
+  ],
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T16:56:59.346288+00:00"
+}

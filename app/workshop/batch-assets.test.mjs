@@ -39,6 +39,32 @@ const file=(name,asset)=>({name,page:asset.page,assetId:asset.assetId});
 const batch=(f,rows,designFiles=[])=>({masterId:f.master.id,masterRevision:1,rows,designFiles});
 const statuses=plan=>plan.report.map(row=>row.status);
 
+test('relative folder references resolve identical basenames to distinct immutable sources in acrylic imports',async t=>{
+  const f=fixture(t),redBytes=svg('#cc2211'),blueBytes=svg('#2244cc');
+  const red=await upload(f,'Design.svg',redBytes),blue=await upload(f,'Design.svg',blueBytes);
+  const input=batch(f,[{import_key:'folder-red',name:'Rot',design_file:'klein/Design.svg'},
+    {import_key:'folder-blue',name:'Blau',design_file:'gross/Design.svg'},
+    {import_key:'folder-ambiguous',name:'Unklar',design_file:'Design.svg'}],
+    [file('klein/Design.svg',red),file('gross/Design.svg',blue)]);
+  const plan=planBatch(f.repository,input,f.assets);assert.deepEqual(statuses(plan),['ready','ready','error']);assert.match(plan.report[2].message,/fehlt/);
+  assert.deepEqual(plan.report.slice(0,2).map(r=>r.artwork.name),['klein/Design.svg','gross/Design.svg']);
+  const result=commitBatch(f.repository,{...input,token:plan.token,skipErrors:true},f.assets);
+  for(const [i,asset] of [[0,red],[1,blue]]){const d=f.repository.get(result.products[i].id).document.config.profile.designs[0];assert.equal(d.importedSource.assetId,asset.assetId);assert.equal(d.importedSource.originalName,'Design.svg');}
+  f.restart();assert.deepEqual(f.assets.read(red.assetId,true),redBytes);assert.deepEqual(f.assets.read(blue.assetId,true),blueBytes);
+  const again=planBatch(f.repository,input,f.assets);assert.deepEqual(statuses(again),['existing','existing','error']);
+  assert.ok(commitBatch(f.repository,{...input,token:again.token,skipErrors:true},f.assets).products.every(p=>!p.created));
+  assert.deepEqual(f.repository.get(f.master.id),f.master);
+});
+
+test('folder aliases cannot use external, absolute or traversal references in mappings or table rows',async t=>{
+  const f=fixture(t),asset=await upload(f,'Design.svg');
+  for(const name of ['../Design.svg','/Design.svg','file:///Design.svg','https://host/Design.svg','C:/Design.svg','folder\\Design.svg','a//Design.svg']){
+    assert.throws(()=>planBatch(f.repository,batch(f,[{import_key:'bad',name:'Ungültig',design_file:name}],[file(name,asset)]),f.assets),/Ungültige Design-Dateizuordnung/);
+    const plan=planBatch(f.repository,batch(f,[{import_key:'bad',name:'Ungültig',design_file:name}],[file('Design.svg',asset)]),f.assets);assert.equal(plan.report[0].status,'error');assert.equal(plan.token,null);
+  }
+  assert.equal(f.repository.list().length,1);
+});
+
 test('linked SVG rows retain originals across restart, replace only chosen designs and remain idempotent',async t=>{
   const f=fixture(t),aBytes=svg(),bBytes=svg('#143ad0',40,120),a=await upload(f,'Rot.svg',aBytes),b=await upload(f,'Blau.svg',bBytes);
   const [first,second]=f.master.document.config.profile.designs;

@@ -1,6 +1,7 @@
 import {merchantRequest as fetch} from './merchant-request.mjs';
 import {readBatchImport} from './batch-reader.mjs';
 import {merchantImageAttribute} from './merchant-media.mjs';
+import {indexDesignSources,designSourceName} from './design-source-path.mjs';
 const $=s=>document.querySelector(s),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let prepared=null,csrf=null,busy=false,hasErrors=false,cancelled=false,formKeys=new Set();
 let exportBusy=false;
@@ -14,6 +15,8 @@ async function api(path,data){
 function status(message,error=false){$('#status').textContent=message;$('#status').style.color=error?'#a32828':'#183e35';}
 function disabled(value){
   busy=value;for(const id of ['check','master','file','design-files','skip-errors','job-name','saved-jobs'])$('#'+id).disabled=value;
+  $('#design-folder').disabled=value||!('webkitdirectory' in $('#design-folder'));
+  $('#clear-design-folder').disabled=value||!$('#design-folder').files.length;
   $('#import').disabled=value||!prepared||hasErrors&&!$('#skip-errors').checked;
   $('#download-report').disabled=value||!checkedInput;
   $('#download-errors').disabled=value||!checkedInput||!hasErrors;
@@ -27,9 +30,7 @@ function invalidate(){
 }
 const base64=file=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=()=>reject(Error('Die Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
 async function uploadDesigns(rows){
-  const files=Array.from($('#design-files').files),byName=new Map();
-  if(files.length>100)throw Error('Bitte höchstens 100 Design-Dateien auswählen.');
-  for(const file of files){if(byName.has(file.name))throw Error('Der Dateiname „'+file.name+'“ ist doppelt. Bitte die Dateien eindeutig benennen.');byName.set(file.name,file);}
+  const {sources:byName}=indexDesignSources(Array.from($('#design-files').files),Array.from($('#design-folder').files));
   const requests=new Map();
   for(const row of rows){
     const name=String(row.design_file||'').trim(),rawPage=String(row.design_page??'').trim()||'1';
@@ -45,12 +46,12 @@ async function uploadDesigns(rows){
       if(file.size>15*1024*1024)throw Error('Die Datei ist größer als 15 MB.');
       let pages=uploadCache.get(file);if(!pages){pages=new Map();uploadCache.set(file,pages);}
       let asset=pages.get(page);
-      if(!asset){asset=await api('/api/workshop/design-assets/import',{name,bytes:await base64(file),page});pages.set(page,asset);}
+      if(!asset){asset=await api('/api/workshop/design-assets/import',{name:designSourceName(name),bytes:await base64(file),page});pages.set(page,asset);}
       designFiles.push({name,page,assetId:asset.assetId});
     }catch(error){issues.push(name+', Seite '+page+': '+error.message);}
   }
   if(cancelled)throw Error('Prüfung abgebrochen. Es wurden keine Produkte angelegt.');
-  const used=new Set(Array.from(requests.values(),r=>r.name)),unused=files.filter(f=>!used.has(f.name)).length;
+  const used=new Set(Array.from(requests.values(),r=>r.name)),unused=[...byName.keys()].filter(name=>!used.has(name)).length;
   $('#upload-report').replaceChildren();
   for(const message of [designFiles.length+' Design-Seiten geprüft.'+(unused?' '+unused+' ausgewählte Dateien werden in der Tabelle nicht verwendet.':''),...issues]){
     const line=document.createElement('p');line.textContent=message;$('#upload-report').append(line);
@@ -66,7 +67,19 @@ function artworkCell(row){
   return '<a href="'+url+'" target="_blank" rel="noopener" class="batch-preview"><img '+merchantImageAttribute(url)+' alt="Vorschau '+escape(a.name)+'" loading="lazy"></a><span>'+escape(a.name)+' · Seite '+a.page+'</span><small>'+escape(a.designName)+' · '+mm(a.placement.widthMm)+' × '+mm(a.placement.heightMm)+' mm</small><details><summary>Hinweise zur Vorlage</summary><ul>'+a.warnings.map(w=>'<li>'+escape(w)+'</li>').join('')+'</ul></details>';
 }
 $('#skip-errors').addEventListener('change',()=>disabled(busy));
-for(const id of ['file','master','design-files'])$('#'+id).addEventListener('change',invalidate);
+for(const id of ['file','master'])$('#'+id).addEventListener('change',invalidate);
+function showSources(){
+  $('#source-paths').replaceChildren();
+  try{
+    const {sources,ignored}=indexDesignSources([...$('#design-files').files],[...$('#design-folder').files]);
+    $('#source-summary').textContent=sources.size+' SVG-/PDF-Dateien ausgewählt.'+(ignored?' '+ignored+' andere Dateien im Ordner werden ignoriert.':'')+' Hochgeladen werden erst beim Prüfen die in der Tabelle verwendeten Dateien.';
+    for(const name of sources.keys()){const item=document.createElement('li');item.textContent=name;$('#source-paths').append(item);}
+  }catch(error){$('#source-summary').textContent=error.message;}
+  $('#clear-design-folder').disabled=busy||!$('#design-folder').files.length;
+}
+for(const id of ['design-files','design-folder'])$('#'+id).addEventListener('change',()=>{invalidate();showSources();});
+$('#clear-design-folder').onclick=()=>{if(busy)return;$('#design-folder').value='';invalidate();showSources();};
+if(!('webkitdirectory' in $('#design-folder'))){$('#design-folder').disabled=true;$('#source-summary').textContent='Dieser Browser unterstützt keine Ordnerauswahl. SVG-/PDF-Dateien einzeln auswählen.';}
 $('#cancel-check').addEventListener('click',()=>{cancelled=true;$('#cancel-check').disabled=true;status('Abbruch angefordert. Die laufende Datei wird noch abgeschlossen.');});
 function renderPlan(data,plan){
     checkedInput=data;
@@ -163,7 +176,7 @@ $('#open-job').addEventListener('click',async()=>{
   const id=$('#saved-jobs').value;if(busy||!id)return;prepared=null;disabled(true);
   try{
     const job=await api('/api/workshop/batch/jobs/'+encodeURIComponent(id));
-    invalidate();$('#file').value='';$('#design-files').value='';renderPlan(job.input,job.plan);$('#job-name').value=job.name;
+    invalidate();$('#file').value='';$('#design-files').value='';$('#design-folder').value='';showSources();renderPlan(job.input,job.plan);$('#job-name').value=job.name;
     $('#job-status').textContent='Gespeicherte Prüfung geöffnet und aktuell geprüft. Bereits ausgeführte Zeilen werden erkannt. Verknüpfte Design-Dateien kommen aus dieser privaten Ablage.';
   }catch(error){$('#job-status').textContent=error.message+' Die bisherigen Eingaben bleiben erhalten. Vor der Übernahme die gespeicherte Prüfung erneut öffnen oder die Tabelle erneut prüfen.';status('Öffnen fehlgeschlagen. Übernahme bis zur erneuten Prüfung gesperrt.',true);}finally{disabled(false);}
 });

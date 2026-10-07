@@ -3,6 +3,7 @@ import {prepareFormBatch} from './form-batch.mjs';
 import {createHash} from 'node:crypto';
 import {validateProductDocument} from './product-model.mjs';
 import {replaceDesignArtwork} from './design-import.mjs';
+import {isDesignSourcePath,designSourceName} from './design-source-path.mjs';
 
 export const IMPORT_COLUMNS=['import_key','name','master_id','master_revision','category_ids','price_small_eur','price_large_eur','heading','names','place','date','slogan','seo_title','seo_description','design_file','design_page','design_id','design_fit','price_eur','action','product_id','expected_revision'];
 export const DESIGN_COLUMNS=['import_key','design_id','design_name','design_file','design_page','design_fit','default_design'];
@@ -30,13 +31,13 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
   }
   const sources=new Map();
   for(const entry of designFiles){
-    if(!entry||typeof entry.name!=='string'||entry.name.length>200||/[\x00-\x1f\\/]/.test(entry.name)||!/\.(svg|pdf)$/i.test(entry.name)||!Number.isInteger(entry.page)||entry.page<1||entry.page>1000||!/^[a-f0-9]{64}$/.test(entry.assetId||''))fail('Ungültige Design-Dateizuordnung. Dateiname, Seite und gespeicherte Datei sind erforderlich.');
+    if(!entry||!isDesignSourcePath(entry.name)||!Number.isInteger(entry.page)||entry.page<1||entry.page>1000||!/^[a-f0-9]{64}$/.test(entry.assetId||''))fail('Ungültige Design-Dateizuordnung. Relativer SVG-/PDF-Pfad, Seite und gespeicherte Datei sind erforderlich.');
     const key=JSON.stringify([entry.name,entry.page]);if(sources.has(key))fail('Design-Dateiname und Seite sind mehrfach zugeordnet.');sources.set(key,entry);
   }
   function resolveSource(row){
     const filename=text(row.design_file);
     if(!assets)fail('Der Design-Dateispeicher ist nicht verfügbar.');
-    if(/[\x00-\x1f\\/]/.test(filename)||!/\.(svg|pdf)$/i.test(filename))fail('design_file benötigt einen SVG-/PDF-Dateinamen, keinen Pfad oder Link.');
+    if(!isDesignSourcePath(filename))fail('design_file benötigt einen SVG-/PDF-Dateinamen oder relativen Unterordnerpfad mit /. Keine absoluten Pfade, übergeordneten Ordner oder Links.');
     const pageText=text(row.design_page)||'1';if(!/^[1-9][0-9]*$/.test(pageText)||Number(pageText)>1000)fail('design_page muss eine gültige Seitennummer sein.');
     const source=sources.get(JSON.stringify([filename,Number(pageText)]));
     if(!source)fail(`Design-Datei „${filename}“, Seite ${pageText}, fehlt. Bitte die zugehörige Datei auswählen und prüfen.`);
@@ -89,8 +90,8 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       if(filename){
         const asset=resolveSource(row);
         if(['heading','names','place','date','slogan'].some(field=>text(row[field])))fail('Importierte Gesamtmotive haben noch keine bearbeitbaren Textfelder. Die Textspalten in dieser Zeile leer lassen.');
-        if(form){const prepared=prepareFormBatch(document,row,{asset,filename});document=prepared.document;artwork=prepared.artwork;}else{
-        const replacement=replaceDesignArtwork(document,assets,{designId:text(row.design_id)||document.config.profile.defaultDesignId,assetId:asset.assetId,fit:text(row.design_fit)||'visible',originalName:filename});
+        if(form){const prepared=prepareFormBatch(document,row,{asset,filename:designSourceName(filename)});document=prepared.document;artwork={...prepared.artwork,name:filename};}else{
+        const replacement=replaceDesignArtwork(document,assets,{designId:text(row.design_id)||document.config.profile.defaultDesignId,assetId:asset.assetId,fit:text(row.design_fit)||'visible',originalName:designSourceName(filename)});
         document=replacement.document;
         artwork={name:filename,page:asset.page,assetId:asset.assetId,designId:replacement.designId,designName:replacement.designName,placement:replacement.placement,warnings:replacement.warnings};
         }
@@ -112,7 +113,8 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
             designAssignments.push({designId,name:existingDesign.name,sourcePreserved:true});
             continue;
           }
-          const asset=resolveSource(child),prepared=prepareFormBatch(document,child,{asset,filename:text(child.design_file),allowNewDesign:true,designName:text(child.design_name)});
+          const asset=resolveSource(child),prepared=prepareFormBatch(document,child,{asset,filename:designSourceName(text(child.design_file)),allowNewDesign:true,designName:text(child.design_name)});
+          prepared.artwork.name=text(child.design_file);
           document=prepared.document;artworks.push(prepared.artwork);
         }catch(error){fail('Designs, Datensatz '+line+': '+error.message);}
       }

@@ -1,3 +1,11 @@
+## Aktuell: Design-Ordner im Serienimport umgesetzt – 07.10.2026
+
+Branch `feat/design-folder-import-20261007`, bestätigte GitHub-Basis **`72b70416ecf16040b19ab774b43f5f5a67d5680d`**. Nächstes offenes unabhängiges Funktionspaket aus G27-07: lokalen Design-Ordner bewusst auswählen und SVG/PDF über genaue relative Unterordnerpfade zuordnen. Gleichnamige Dateien bleiben getrennt; nur referenzierte Dateien werden beim Prüfen hochgeladen. Vorhandene Konvertierung, Produktprüfung und private Originalablage wiederverwendet; keine Migration. Excel-Vorlage/Generator ergänzt.
+
+29 gezielte Node-Tests (5 neu) und neuer Browserablauf mit 5 Prüfgruppen bestanden. Originalbytes, feste Quellzuordnung, gesicherte Pfade, gezielte Korrektur, Wiederaufnahme und Konflikt bei späterer lokaler Änderung geprüft. Desktop/390/768 ohne Überlauf oder JavaScript-Fehler. [Bedienung, Grenzen und Nachweise](docs/dashboard-20261004/DESIGN-ORDNERIMPORT-20261007.md).
+
+Nächstes unabhängiges Teilpaket: ZIP als bewusst ausgewählte Designquelle mit denselben Pfad-/Quellenregeln und begrenzter Entpackung. Plesk bleibt pausiert; echte Shopify-Anbindung samt HTTPS-Testbackend und Testbestellung ausdrücklich offen. Keine Live-Veröffentlichung oder Änderungen an der laufenden Werkstatt.
+
 ## Aktuell: Test-Dateifreigabe und Widerruf sichtbar abgenommen – 07.10.2026
 
 Branch `test/customer-file-grants-ui-20261007`, bestätigte GitHub-Basis **`cc2e7d8812a4c2036e3f381e918707660e77bc1e`** (Excel-Paket). Als nächstes unabhängiges Paket die bestehende Händlerbedienung der kaufgebundenen Test-Dateifreigaben im Browser geprüft: PDF-Standard und Wiederholschutz, ausdrückliches ZIP, fehlende Weißdatei, Widerruf/Neuöffnen, Positionswechsel mit verspäteter Antwort und Sperre nach synthetischer Erstattung. Richtiger Kunde erhält identische Dateibytes, fremdes Konto nicht; ursprüngliche Bestellung bleibt erhalten. Produktcode unverändert.

@@ -208,6 +208,29 @@ http.Server.prototype.listen = function () {
             stop(server)
             server = start()
             assert json.loads(request('/api/workshop/products', {'Authorization': authorization})[1]) == state
+            if args.draft_access:
+                assert json.loads(request('/api/workshop/session', headers)[1])['csrfToken'] == session['csrfToken']
+                resumed = mutation('customer-drafts/' + created['draft']['id'], {
+                    'expectedRevision': saved['draft']['revision'], 'state': saved['draft']['state']}, 'PATCH', credential)
+                assert resumed['draft']['revision'] == saved['draft']['revision'] + 1
+                assert request(route, {**headers, **credential, 'X-Gravuru-CSRF': 'invalid'}, '{}', 'PATCH')[0] == 403
+                report['checks']['openDraftCanSaveAfterProcessRestartWithoutPageReload'] = True
+                stop(server)
+                rotated_password = secrets.token_hex(24)
+                if args.private_config:
+                    private_record = json.loads(config_file.read_text())
+                    private_record['values']['GRAVURU_TEST_PASSWORD'] = rotated_password
+                    config_file.write_text(json.dumps(private_record))
+                else:
+                    runtime_env['GRAVURU_TEST_PASSWORD'] = rotated_password
+                server = start()
+                assert request('/api/workshop/session', headers)[0] == 401
+                rotated_auth = 'Basic ' + base64.b64encode((env['GRAVURU_TEST_USERNAME'] + ':' + rotated_password).encode()).decode()
+                rotated_session = json.loads(request('/api/workshop/session', {'Authorization': rotated_auth})[1])
+                assert rotated_session['csrfToken'] != session['csrfToken']
+                assert request(route, {**headers, **credential, 'Authorization': rotated_auth}, '{}', 'PATCH')[0] == 403
+                assert rotated_password not in (folder / 'runtime.log').read_text()
+                report['checks']['testPasswordRotationInvalidatesOldLoginAndCsrf'] = True
             report['checks']['bootstrapRestartRetainsSeed'] = True
             report['unchangedBrowserFlowsRepeated'] = False
             report['result'] = 'PASS'

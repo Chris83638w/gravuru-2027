@@ -3,7 +3,7 @@ import http from 'node:http';
 import net from 'node:net';
 import path from 'node:path';
 import {once} from 'node:events';
-import {createHash,timingSafeEqual} from 'node:crypto';
+import {createHash,createHmac,timingSafeEqual} from 'node:crypto';
 import {build,OUTPUT} from '../../app/configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
 import {createWorkshop} from '../../app/workshop/http.mjs';
@@ -22,7 +22,11 @@ export async function createPrivateTestRuntime(env){
   const lock=await lockTestData(config);let workshop,inner;
   try{
     build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
-    workshop=createWorkshop({filename:path.join(config.data,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
+    // LiteSpeed may recycle an idle process while a protected editor stays open.
+    // Bind its CSRF token to this private login, not the short-lived process.
+    // Password/user/origin changes rotate it; Basic auth remains mandatory.
+    const operatorCsrfToken=createHmac('sha256',config.password).update(JSON.stringify(['gravuru-private-test-csrf/v1',config.origin,config.username])).digest('hex');
+    workshop=createWorkshop({filename:path.join(config.data,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,operatorCsrfToken});
     inner=createPreviewServer({workshop});inner.once('close',()=>{workshop.close();lock.stdin.end();});
     // LiteSpeed replaces HTTP listen/address to capture the public app socket.
     // This private server must keep a real loopback socket and its own address.

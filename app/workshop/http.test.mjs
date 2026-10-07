@@ -9,6 +9,11 @@ import {createWorkshop} from './http.mjs';
 import {build} from '../configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 
+test('fixed private operator token cannot be malformed or used for Shopify sessions',()=>{
+  for(const operatorCsrfToken of ['', 'short', 'g'.repeat(64), 123])assert.throws(()=>createWorkshop({operatorCsrfToken}),{code:'operator_session_config'});
+  assert.throws(()=>createWorkshop({operatorCsrfToken:'a'.repeat(64),shopifySessions:{mode:'test-only'}}),{code:'operator_session_config'});
+});
+
 test('workshop HTTP persists validated revisions and previews the exact saved configuration',async t=>{
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-http-'));
   build({outputDirectory:dir});

@@ -62,7 +62,8 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Loopback preview; optional test session gate is not a public deployment. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null}){
+  if(operatorCsrfToken!==null&&(shopifySessions||typeof operatorCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(operatorCsrfToken)))fail(503,'operator_session_config','Ungültige private Werkstattsitzung.');
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
   const verifySession=shopifySessions?createShopifySessionVerifier(shopifySessions):null;
   if(shopDrafts&&(!verifySession||shopDrafts.config?.shopDomain!==shopifySessions.shopDomain||shopDrafts.config?.mode!=='draft-only'))fail(503,'shop_draft_config','Shop-Entwurfsanbindung benötigt dieselbe bestätigte Händler-Testanmeldung.');
@@ -79,7 +80,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const batchJobs=createBatchJobs({filename,repository,assets});
   const variantBatchJobs=createVariantBatchJobs({filename,variants});
   const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
-  const csrfToken=randomBytes(32).toString('hex');
+  const csrfToken=operatorCsrfToken??randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
   // Explicit server configuration only; constructing the default preview never enables Shopify writes.

@@ -82,6 +82,8 @@ Falls Plesk zum Aktivieren der npm-Skriptliste zunächst **NPM install** verlang
 
 `plesk:prepare` darf bei unterbrochener Installation dieselben gekennzeichneten Testordner weiterverwenden. Es darf **nicht** gegen einen Bestands-/Live-Ordner laufen. Fremde, nicht leere Verzeichnisse werden abgewiesen. Fehlerausgaben nennen die fehlende Voraussetzung; Zugangsdaten nicht in Fehlerberichte kopieren.
 
+Die erstmalige Paketinstallation kann auf diesem Hosting länger als fünf Minuten dauern. Der private Installationsschritt hat deshalb ein begrenztes Zeitfenster von 15 Minuten; der normale Web-Request erhält dadurch kein höheres Limit. Bei abgebrochener Browserverbindung zuerst laufende Installer und den privaten Abschlussstatus prüfen, bevor dieselbe Vorbereitung erneut gestartet wird. Keine parallelen pip-Installationen in derselben Testumgebung ausführen. Eine begonnene Installation oder ein alter Status `running` ist kein Erfolgsnachweis; maßgeblich sind Exitcode 0, `prepared: true` und die anschließende Prüfung.
+
 ## 5. Neue Hosting-Abnahme im Browser
 
 Diese Prüfung betrifft die **neue Bereitstellung**, nicht eine Wiederholung der abgeschlossenen Produktabnahmen:

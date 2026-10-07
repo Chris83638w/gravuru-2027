@@ -70,7 +70,7 @@ with tempfile.TemporaryDirectory(prefix='g27-plesk-package-') as temporary:
     # The actual prepare command still runs pip against its isolated environment.
     init = "const {testConfig,markerValue,PYTHON_MARKER}=await import('./ops/plesk/config.mjs');const {initializeDirectory}=await import('./ops/plesk/prepare.mjs');const c=testConfig(process.env);initializeDirectory(c.pythonDir,PYTHON_MARKER,markerValue(c,'test-python'));"
     run(['node', '--input-type=module', '-e', init])
-    run([sys.executable, '-m', 'venv', str(python_dir)])
+    run([sys.executable, '-m', 'venv', '--system-site-packages', str(python_dir)])
     site = Path(run([str(python_dir / 'bin/python'), '-c', 'import site; print(site.getsitepackages()[0])']).stdout.strip())
     (site / 'synthetic-test-dependencies.pth').write_text(str(ROOT / '.local-data/python') + '\n')
     foreign = folder / 'foreign'

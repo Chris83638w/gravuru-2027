@@ -1,0 +1,28 @@
+{
+  "startedAt": "2026-10-07T18:16:55.714832+00:00",
+  "result": "PASS",
+  "checks": {
+    "manifestAndCurrentZipSourceSettingsVerifiedNoDatabases": true,
+    "prepareCheckCairoAndForeignLivePublicPathGuards": true,
+    "passwordHostOriginHttpsCsrfPrivatePathsAndSingleProcessGuard": true,
+    "packagedBrowserSvgPythonExcelAndSqliteFlow": true,
+    "restartReleasesLockRetainsDataAndDoesNotDuplicate": true
+  },
+  "scope": "extracted package; synthetic loopback proxy, not real Plesk or public TLS",
+  "published": false,
+  "sourceCommit": "ec4ecf105c94576008bf477080a6f3689da68f19",
+  "archiveSha256": "ba72d27ac67690440a8795cb760f6cb39b30aa8fa39b3efcb6fe78a57b423b36",
+  "runtimeCheck": {
+    "configured": true,
+    "node": "24.19.0",
+    "sqlite": true,
+    "python": "3.12.14",
+    "dependencies": true,
+    "cairo": true,
+    "credentialsVerified": false,
+    "httpsVerified": false,
+    "shopifyConnected": false
+  },
+  "javascriptErrors": [],
+  "finishedAt": "2026-10-07T18:17:10.626029+00:00"
+}

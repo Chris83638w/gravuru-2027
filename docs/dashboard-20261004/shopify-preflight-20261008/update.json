@@ -1,0 +1,16 @@
+{
+  "preflightUpdate": true,
+  "exit": 0,
+  "sourceCommit": "583ad9a3aa68b8369f8cfa82b6fdd4f67971622b",
+  "verifiedFiles": 364,
+  "changedFiles": [
+    "INSTALLATION.md",
+    "app/workshop/shopify-admin-readonly.mjs",
+    "app/workshop/shopify-variant-preflight.mjs",
+    "ops/plesk/README.md",
+    "ops/plesk/shopify-preflight.mjs",
+    "package.json",
+    "PACKAGE-MANIFEST.json"
+  ],
+  "testDataModified": false
+}

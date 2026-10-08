@@ -1,0 +1,65 @@
+{
+  "serverPreflight": true,
+  "checkedAt": "2026-10-08T17:36:11.854Z",
+  "sourceCommit": "583ad9a3aa68b8369f8cfa82b6fdd4f67971622b",
+  "node": "v24.21.0",
+  "cliExitCode": 2,
+  "report": {
+    "schema": "gravuru-shopify-variant-preflight/v1",
+    "configuration": {
+      "id": "cfg_d13516ea-c1d7-4f3c-9324-44d10a1d7801",
+      "revision": 2,
+      "status": "draft"
+    },
+    "sourceSha256": "4ee7528ab04a6a6b3da021e6f2b7c8ed27d2a310ce4002f09d3226ede4312b83",
+    "shopifyProductId": "gid://shopify/Product/15927621124476",
+    "installation": {
+      "shopDomain": "gravuru-design.myshopify.com",
+      "appId": "gid://shopify/App/423276544001",
+      "apiVersion": "2026-07",
+      "currency": "EUR",
+      "partnerDevelopment": false,
+      "scopes": [
+        "read_cart_transforms",
+        "read_files",
+        "read_metaobjects",
+        "read_products",
+        "read_publications",
+        "write_cart_transforms",
+        "write_files",
+        "write_metaobjects",
+        "write_products",
+        "write_publications"
+      ],
+      "scope": "admin-readonly",
+      "merchantLoginVerified": false,
+      "customerLoginVerified": false,
+      "safeCheckoutVerified": false
+    },
+    "rows": [
+      {
+        "key": "[[\"base\",\"none\"],[\"size\",\"small\"],[\"wall\",\"none\"]]",
+        "variantId": "gid://shopify/ProductVariant/56510851907964",
+        "expectedPriceCents": 1499,
+        "actualPriceCents": 4000,
+        "status": "ACTIVE",
+        "matches": false,
+        "issues": [
+          "price_mismatch",
+          "options_mismatch"
+        ]
+      }
+    ],
+    "matches": false,
+    "complete": false,
+    "extrasRequireSeparateBinding": false,
+    "bindingSaved": false,
+    "checkoutReady": false,
+    "published": false
+  },
+  "privateSecretCopied": false,
+  "shopWrites": false,
+  "localBindingsWritten": false,
+  "appConfigurationChanged": false,
+  "physicalAcceptance": false
+}

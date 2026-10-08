@@ -1,5 +1,7 @@
 # Testlieferung · 07.10.2026
 
+Aktuelles Installationspaket: [08.10.2026, mit lesender Shopify-Vorprüfung](../plesk-shopify-preflight-20261008/README.md). Vorhandene Excel-Vorlagen und Drucktest-PDFs unverändert.
+
 **[Geschütztes Test-Dashboard](https://test-2027.gravuru-designwerkstatt.de/werkstatt/)** · [Zugang, Bedienung, Betrieb und Abnahmestand](../../docs/dashboard-20261004/HTTPS-TESTABNAHME-20261007.md)
 
 - [Aktuelles Installationspaket · 25,9 MiB](../plesk-private-test-accepted-20261007/gravuru-2027-private-test.zip) · [Quellcommit und SHA-256](../plesk-private-test-accepted-20261007/README.md). Die größere Projektsicherung ist kein Installationspaket.

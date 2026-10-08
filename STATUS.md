@@ -1,4 +1,12 @@
-## Aktuell: Geschützte HTTPS-Testinstanz und echte Serverprüfung – 07.10.2026
+## Aktuell: Lesende Shopify-Vorprüfung – 08.10.2026
+
+Quellcommit **`583ad9a3aa68b8369f8cfa82b6fdd4f67971622b`**, auf `d8a0944` fortgeführt, Branch `feat/excel-profile-assignments-20261007`. Neuer eigener Client-Credentials-Anschluss mit Token-Erneuerung, festen lesenden Admin-Abfragen und revisionsbezogener Varianten-/Preisprüfung. Keine Webstart-/Shopify-App-Konfiguration verändert. **29 gezielte neue Tests bestanden**; keine unveränderte Gesamtabnahme wiederholt.
+
+Auf [der getrennten HTTPS-Testinstanz](https://test-2027.gravuru-designwerkstatt.de/werkstatt/) installiert, 364 Paketdateien verifiziert. Der echte CLI-Aufruf bestätigt App/Shop und weist den unpassenden Lesekandidaten korrekt ab: **40,00 € statt 14,99 € und andere Optionen**, Exitcode 2; keine Zuordnung, Shopmutation oder Bestellung. [Prüfbericht](docs/dashboard-20261004/SHOPIFY-VORPRUEFUNG-20261008.md) · [aktuelles Installationspaket](deliverables/plesk-shopify-preflight-20261008/README.md).
+
+**Nächster Anschluss:** bestätigten Shopify-Testweg und passende explizite Variante klären; vor Änderungen an laufender App konkrete Änderung/Rückweg freigeben lassen. GitHub-Anmeldung dieser Cloud-Sitzung fehlt: lokal committet und auf Testserver installiert, **noch nicht zu GitHub gepusht**; sichere Wiederverbindung angefragt. Danach normalen Push prüfen. Drive/KI-Autorisierung bzw. Kosten, Kundenkonto-/Bestellstrecke und physische Druckabnahme bleiben offen. Keine Live-Veröffentlichung.
+
+## Historisch: Geschützte HTTPS-Testinstanz und echte Serverprüfung – 07.10.2026
 
 **[Test-Dashboard öffnen](https://test-2027.gravuru-designwerkstatt.de/werkstatt/)** · [Zugang, Bedienung und vollständiger Prüfbericht](docs/dashboard-20261004/HTTPS-TESTABNAHME-20261007.md) · [Installationspaket 25,9 MiB](deliverables/plesk-private-test-accepted-20261007/README.md) · [Excel-Vorlagen und Server-Druckproben](deliverables/testabnahme-20261007/README.md).
 

@@ -106,3 +106,19 @@ Bei 403 zuerst exakten Host und das nur im HTTPS-VHost gesetzte Proxy-Protokoll 
 - Für Rücknahme ausschließlich die neue Testanwendung deaktivieren. Private Testdaten separat behalten/sichern; nicht in die laufende Werkstatt zurückspielen. SQLite-Sicherungen nur bei gestoppter Testanwendung konsistent mit allen zusammengehörigen Dateien durchführen. Updates und Datenübernahme sind kein automatischer Teil dieses Erstinstallationspakets.
 
 Technische Grundlage für Passenger-Einstellungen: [offizielle Apache-Konfigurationsreferenz](https://www.phusionpassenger.com/docs/references/config_reference/apache/#passengermaxinstances), geprüft am 07.10.2026. Die verfügbare Plesk-Oberfläche, Erweiterungen und konkreten Berechtigungen vor Ort bleiben zu bestätigen.
+
+## 7. Separater lesender Shopify-Prüfbefehl
+
+Der private Webstart bleibt unverändert ohne Shopify-Verbindung. Zusätzlich kann eine angemeldete Bedienperson in **der Test-Site 19** den eigenen Node-Prozess prüfen. Der Befehl verwendet die bestehende App „Gravuru Konfigurator“ und ausschließlich zwei feste lesende Admin-GraphQL-Abfragen. Er ändert keine App-Konfiguration, Produkte, Bindungen, Bestellungen oder Webhooks.
+
+In „Node.js-Befehle ausführen“ (`npm` ist bereits vorangestellt):
+
+```text
+run shopify:preflight -- --secret-file /var/www/vhosts/gravuru-designwerkstatt.de/gravuru-werkstatt/private/shopify-app-secret
+```
+
+Der bereits vorhandene Schlüssel wird auf dem Server aus seiner geschützten Datei gelesen: reguläre Datei 0600, gleicher Eigentümer, keine Symlinks, außerhalb dieser App und jedes Git-Verzeichnisses. Weder Inhalt noch Token werden ausgegeben oder kopiert. Der Token bleibt nur im Arbeitsspeicher; bei längerer Nutzung erneuert der Adapter ihn vor Ablauf. Keine automatische Wiederholung fehlgeschlagener HTTP-Anfragen. HTTPS-Prüfung bleibt aktiv; Weiterleitungen werden abgelehnt. Dieser CLI-Zugriff ist getrennt von den sechs bisherigen privaten Webstart-Einstellungen; dort kein Shopify-Secret ergänzen.
+
+Für eine **explizit vorgeschlagene**, noch nicht gespeicherte Variantenbindung unterstützt derselbe Befehl zusätzlich `--binding-request /absoluter/privater/pfad.json`. Die private Datei enthält genau `record` (vollständiger unveränderter Produktdatensatz mit Revision aus der Werkstatt), `shopifyProductId` (Shopify-Produkt-GID) und `mappings` (`key` aus der bestehenden Shopvorbereitung, numerische `variantId` als Text). Keine Preise/Optionen per Hand ergänzen: Sie werden aus dem gemeinsamen Produktmodell ermittelt. Der Befehl liest nur die angegebenen Varianten und vergleicht Produkt, physische Optionen, Preis und Euro-Währung. Er sucht keine Produkte nach ähnlichem Namen und speichert keine Zuordnung.
+
+Exitcode 0 = Prüfung erfolgreich ausgeführt, bei Varianten alle angefragten Zeilen passend. `complete` zeigt zusätzlich, ob alle Ausführungen enthalten sind. Exitcode 2 = fachliche Abweichung; Exitcode 1 = unbestätigte Verbindung/Eingabe. **Auch bei `matches: true` bleiben `bindingSaved`, `checkoutReady` und `published` falsch.** Admin-Preisprüfung bestätigt weder Storefront-Verfügbarkeit noch Aufpreise, Zahlung, Kundenanmeldung oder Bestellannahme. Regulärer Plus-Shop ist kein bestätigter Testzahlungsweg. Vor jeder späteren Bindung erneut gegen den aktuellen gespeicherten Produktstand prüfen; diesen Bericht nicht als dauerhafte Freigabe verwenden.

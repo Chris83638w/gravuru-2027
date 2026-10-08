@@ -41,7 +41,8 @@ def package(commit, destination):
     files['app.cjs'] = b"require('./ops/plesk/app.cjs');\n"
     files['package.json'] = (json.dumps({'name': 'gravuru-2027-private-test', 'version': '0.1.0', 'private': True,
         'type': 'module', 'engines': {'node': '>=24'}, 'scripts': {'start': 'node app.cjs',
-        'plesk:prepare': 'node ops/plesk/prepare.mjs', 'plesk:check': 'node ops/plesk/check.mjs'}}, indent=2) + '\n').encode()
+        'plesk:prepare': 'node ops/plesk/prepare.mjs', 'plesk:check': 'node ops/plesk/check.mjs',
+        'shopify:preflight': 'node ops/plesk/shopify-preflight.mjs'}}, indent=2) + '\n').encode()
     files['public/robots.txt'] = b'User-agent: *\nDisallow: /\n'
     files['INSTALLATION.md'] = files['ops/plesk/README.md']
     manifest = {'schema': 1, 'sourceCommit': commit, 'scope': 'private-operator-test', 'shopifyConnected': False,

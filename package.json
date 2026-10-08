@@ -9,6 +9,7 @@
     "shopify:check": "node app/workshop/shopify-admin-test-server.mjs --check",
     "shopify:test": "node app/workshop/shopify-admin-test-server.mjs",
     "build": "node app/configurator/variant-m/build.mjs",
-    "test": "node --test app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs"
+    "test": "node --test app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs",
+    "shopify:preflight": "node ops/plesk/shopify-preflight.mjs"
   }
 }

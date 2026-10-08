@@ -1,4 +1,12 @@
-## Aktuell: Lesende Shopify-Vorprüfung – 08.10.2026
+## Aktuell: Shopify-Veröffentlichung freigegeben, Kontozugang fehlt – 08.10.2026
+
+Nutzerauftrag: **„dann setz es live“ → „alles bei shopify online“**. Die bestehende App **Gravuru Konfigurator** soll angeschlossen/veröffentlicht werden; keine neue App, keine automatische Veröffentlichung synthetischer Testprodukte. Die frühere allgemeine Veröffentlichungssperre ist damit für diesen Auftrag aufgehoben. Aktuelle Produkt-/Paketbasis `583ad9a`, lokale Dokumentationssicherung `d6af150` erhalten.
+
+Shopify-Browserzugriff führt zur Kontenanmeldung; kein angemeldeter Shopify-/Dev-Dashboard-Zugang in dieser Sitzung. Der vorhandene App-Schlüssel ist für Admin-Daten nutzbar, ersetzt aber keinen CLI-Veröffentlichungszugang. Eine **leere private Token-Datei mit 0600** auf dem vorhandenen Plesk-Server vorbereitet. Der Kontoinhaber wurde um den einmaligen App-Automation-Token für **dieselbe App** gebeten; sichere Ablage/Bedienung: [konkrete Anleitung](ops/shopify/README.md). Shopify CLI 4.9.0 privat installiert; Version und beide benötigten Lese-Befehlshilfen auf dem Server mit Exitcode 0 geprüft. Keine Schlüssel im Chat. Kein Shopify-Release oder Live-App-Wechsel behauptet.
+
+Nach Hinterlegung zuerst tatsächliche aktuelle App-Konfiguration, aktive Rückkehrversion und Erweiterungen sichern; erst daraus den gezielten Anschluss erstellen. Händler-/Kunden-/Bestellstrecke ist noch nicht vollständig produktiv angeschlossen; der vorhandene Webstart bleibt geschützter Operator-Test. Physische Druckabnahme, Drive/KI und sicherer Testzahlungsweg bleiben gesondert offen. GitHub-Anmeldung auch nach Cloud-Revision 45 weiter nicht verfügbar; kein erfolgreicher Push.
+
+## Historisch: Lesende Shopify-Vorprüfung – 08.10.2026
 
 Quellcommit **`583ad9a3aa68b8369f8cfa82b6fdd4f67971622b`**, auf `d8a0944` fortgeführt, Branch `feat/excel-profile-assignments-20261007`. Neuer eigener Client-Credentials-Anschluss mit Token-Erneuerung, festen lesenden Admin-Abfragen und revisionsbezogener Varianten-/Preisprüfung. Keine Webstart-/Shopify-App-Konfiguration verändert. **29 gezielte neue Tests bestanden**; keine unveränderte Gesamtabnahme wiederholt.
 

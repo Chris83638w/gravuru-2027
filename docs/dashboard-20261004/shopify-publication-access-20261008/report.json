@@ -1,0 +1,49 @@
+{
+  "schema": "gravuru-shopify-publication-access/v1",
+  "checkedAt": "2026-10-08T18:23:07.761528+00:00",
+  "publicationAuthorized": true,
+  "target": "existing Shopify App Gravuru Konfigurator",
+  "shopifyBrowserAuthenticated": false,
+  "shopifyBrowserLoginHost": "accounts.shopify.com",
+  "automationTokenSlot": {
+    "automationTokenSlot": true,
+    "created": true,
+    "configured": false,
+    "mode": "600",
+    "contentsPrinted": false
+  },
+  "cliInstallation": {
+    "version": "4.9.0",
+    "exit": 0,
+    "globalInstallation": false
+  },
+  "cliVerification": {
+    "shopifyCliVerified": true,
+    "runs": [
+      {
+        "command": "version",
+        "exit": 0,
+        "version": "4.9.0",
+        "requiredFlags": null
+      },
+      {
+        "command": "app config link --help",
+        "exit": 0,
+        "version": null,
+        "requiredFlags": true
+      },
+      {
+        "command": "app versions list --help",
+        "exit": 0,
+        "version": null,
+        "requiredFlags": true
+      }
+    ],
+    "tokenUsed": false,
+    "shopifyMutation": false
+  },
+  "activeAppVersionCaptured": false,
+  "shopifyReleasePerformed": false,
+  "liveWorkshopChanged": false,
+  "productPublicationPerformed": false
+}

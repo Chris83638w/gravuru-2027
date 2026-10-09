@@ -1,0 +1,17 @@
+{
+  "cliVersion": "4.9.0",
+  "inspectedCommand": "app import dashboard-extensions --help",
+  "implementationChunk": "chunk-MVVHISCR.js",
+  "implementationSha256": "381b17f84247df12ab18f077a219c6b79ac4316fa4e6f973548c4a241b660544",
+  "supportedGroups": [
+    "Payments",
+    "Flow",
+    "Marketing Activity",
+    "Subscription Link",
+    "Admin Link"
+  ],
+  "themeAndFunctionSourceImportSupported": false,
+  "importExecuted": false,
+  "deploymentExecuted": false,
+  "reason": "Supported extension-type list excludes theme and function sources. Import does not resolve the missing existing extension source package."
+}

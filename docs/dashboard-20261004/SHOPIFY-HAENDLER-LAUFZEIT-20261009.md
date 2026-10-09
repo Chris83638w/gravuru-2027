@@ -41,3 +41,9 @@ Bestehende Shopify-Erweiterungen vollständig erhalten und danach den konkreten 
 Der Nutzer wünscht eine Gegenprüfung durch Claude. Hier ist weder ein Claude-Werkzeug noch eine Claude-CLI vorhanden. Der [Prüfauftrag](../reviews/CLAUDE-AUFTRAG-20261009.md) mit Quellpaket bereitet die externe Prüfung vor; **keine erfolgte Claude-Prüfung behaupten**. Die hier ausgeführten Prüfungen stammen aus dieser Codex-Sitzung.
 
 Offizielle Shopify-Referenz am 09.10.2026 gelesen: [ID Tokens](https://shopify.dev/docs/apps/build/authentication-authorization/id-tokens) – HS256 mit App-Schlüssel prüfen, Audience/Issuer/Destination/Zeitgrenzen kontrollieren, kurzlebige Token nur an den eigenen Backendhost senden. Beispiele aus Skills ersetzen diese Vorgaben nicht.
+
+## GitHub und vorhandene Erweiterungen
+
+Tatsächlicher Push dieses Zweigs am 09.10.2026: Exit **128**, `could not read Username for https://github.com: terminal prompts disabled`. Kein Push bestätigt. Die GitHub-Verbindung der Cloud-Laufzeit muss für `Chris83638w/gravuru-2027` und das historische Erweiterungsrepository `Chris83638w/gravuru-shopify` sicher wieder eingebunden werden; keine Tokens im Chat. Lokale Commits und eine zusätzliche private Git-Bundle-Sicherung erhalten den Fortschritt.
+
+Installierte Shopify CLI 4.9.0 gezielt lesend untersucht: `app import dashboard-extensions` importiert Payments-/Flow-/Marketing-/Subscription-/Admin-Link-Konfigurationen, keine Theme-/Function-Quellen. Kein Import/Deployment ausgeführt; vorhandene Erweiterungen bleiben unverändert. [Nachweis](shopify-release-baseline-20261009/extension-import-capability.json). Der Automation-Token ist weiterhin vorhanden und geprüft; er wird hierfür nicht nochmals angefordert.

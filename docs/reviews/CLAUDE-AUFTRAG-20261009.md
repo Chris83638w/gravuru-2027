@@ -23,7 +23,7 @@
 - Aktive Shopify-App zeigt weiterhin auf die bisherige Produktanlage. Neuer Händlerhost `app-2027.gravuru-designwerkstatt.de` ist getrennt installiert. Echte HTTPS-/Sperr-/Neustartprüfungen mit synthetischer Identität sind in `docs/dashboard-20261004/merchant-runtime-20261009/server-*.json` dokumentiert. Kein echter Shopify-Login; direkter anonymer Browseraufruf meldet fehlenden Shopify-Kontext. Auf beide Hosts nicht zugreifen.
 - App-Automation-Token ist sicher hinterlegt und per CLI geprüft; eigene Admin-Leseauthentifizierung ebenfalls nachgewiesen. Das ersetzt keine echte Händler-/Kunden-/Bestellabnahme.
 - `read_orders`, komplette Bestellstrecke, sichere Testzahlung und Erweiterungsquellen bleiben offen. Kundenansicht ist am Händlerhost absichtlich noch nicht freigegeben.
-- GitHub-Anmeldung der Codex-Laufzeit fehlte zuletzt. Lokaler Commit ist kein behaupteter GitHub-Push.
+- GitHub-Push am 09.10.2026 erneut mit Exit 128 wegen fehlender HTTPS-Anmeldung gescheitert. Lokaler Commit ist kein behaupteter GitHub-Push. CLI-Import für dashboardverwaltete Erweiterungen unterstützt keine Theme-/Function-Quellen; kein Import durchgeführt.
 - Drive-OAuth ist noch nicht eingerichtet, KI-Anbieter/Kosten unentschieden. Keine kostenpflichtigen Aufträge oder automatische externe Datenübertragung autorisiert.
 - Das Quellpaket enthält Appcode, zugehörige Tests, Betriebsskripte, Anforderungen und ausgewählte echte Prüfberichte. Keine privaten Serverdateien, Schlüssel, Kundendatenbanken oder Git-Historie. `REVIEW-MANIFEST.json` enthält Dateien und SHA-256-Werte.
 

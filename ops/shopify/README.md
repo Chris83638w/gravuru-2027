@@ -40,3 +40,13 @@ Die Token-Hinterlegung ermöglicht zunächst den tatsächlichen App-Konfiguratio
 - [CLI-Deployment, `--no-release`, Versionen und Entfernung fehlender Erweiterungen](https://shopify.dev/docs/apps/launch/deployment/deploy-in-ci-cd-pipeline)
 - [Bestehende Konfiguration abrufen](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
 - [App-Versionen auflisten](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
+
+## Automatischer lesender Abruf · 09.10.2026
+
+`read-baseline.mjs` ist der separate Betriebshelfer für die bestehende App. Er wird privat neben der installierten CLI abgelegt; er verändert weder das Werkstatt-Installationspaket noch den laufenden Webprozess. Auf dem Server kann der eigene Node-Prozess ihn nach Token-Hinterlegung ohne weitere Argumente ausführen. Er liest den Token direkt aus der oben genannten 0600-Datei; keine Werte in Befehlsargumenten.
+
+Der Helfer verwendet ausschließlich `app config link` und `app versions list` für die feste Client-ID, ohne App-Neuanlage, `--force`, `--reset`, Deployment oder Release. Jeder Versuch bekommt ein neues privates Verzeichnis `gravuru-release-baseline-*`. Zwei Konfigurationsabrufe und zwei Versionslisten müssen beim Konfigurationshash und der aktiven Version übereinstimmen. Erst dann wird `BASELINE.json` als Abschlussnachweis geschrieben. Ein fehlender Token beendet den Vorgang vor CLI-Aufruf und Sicherungsverzeichnisanlage. Fehlerantworten werden nicht roh ausgegeben, deaktivierte TLS-Prüfung wird abgewiesen.
+
+Gesichert werden die beiden Konfigurationsdateien, eine Versionsliste ohne Mitarbeiternamen/Freitextmeldungen und die aktive Versionskennung samt Tag. Die eigentlichen Erweiterungsquellen sind damit **noch nicht** vollständig gesichert: `extensionsSourceBackupComplete: false`, `deploymentReady: false`, `released: false` bleiben ausdrücklich im Ergebnis. Erst die vollständige Erweiterungsinventur und der tatsächliche Händler-/Kundenanschluss erlauben den nächsten Veröffentlichungsschritt.
+
+Gezielte neue Prüfung: `node --test ops/shopify/read-baseline.test.mjs`. Die bestehende Produkt-/Browser-/Druckabnahme wird durch diesen eigenständigen Betriebshelfer nicht geändert.

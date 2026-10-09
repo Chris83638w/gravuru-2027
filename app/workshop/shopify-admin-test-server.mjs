@@ -8,7 +8,7 @@ import {shopifyRuntimeConfig,checkShopifyRuntime} from './shopify-runtime-config
 
 // Explicit alternate entry point; npm start continues to use loopback defaults.
 // HTTPS must already terminate at a trusted host preserving the configured Host.
-export function createShopifyTestRuntime(env){
+export function createShopifyTestRuntime(env,{merchantCsrfToken=null}={}){
   const config=shopifyRuntimeConfig(env),directory=config.dataDirectory;
   const fail=()=>{throw Error('Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.');};
   // Do not create, chmod, migrate or choose a private directory implicitly.
@@ -19,7 +19,7 @@ export function createShopifyTestRuntime(env){
     const file=path.join(directory,name);if(fs.existsSync(file)&&(fs.lstatSync(file).isSymbolicLink()||!fs.statSync(file).isFile()))fail();
   }
   build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
-  const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts});
+  const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts,merchantCsrfToken});
   let server;try{server=createPreviewServer({workshop,embeddedApp:config.embeddedApp});}catch(e){workshop.close();throw e;}
   server.once('close',()=>workshop.close());return {server,port:config.port};
 }

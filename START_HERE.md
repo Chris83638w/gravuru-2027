@@ -1,4 +1,10 @@
-## Aktuell: Shopify-Token bestätigt und Rückkehrversion gesichert – 09.10.2026
+## Aktuell: Getrennter Shopify-Händlerstart lokal geprüft – 09.10.2026
+
+Auf `a46af00` fortgeführt: eigener Plesk-Händlerstart mit privater Konfiguration/Datenablage, echter JWT-Prüfung, Host-/HTTPS-/CSRF-Grenzen und exklusivem Prozess-Lock. Neustart erhält gespeicherte Arbeit und offene Sitzung; Schlüsselwechsel sperrt alte Sitzungen. **6 neue Prüfgruppen + 16 gezielte bestehende Prüfungen bestanden.** Browser: synthetisches Produkt anlegen/wiederöffnen, private Vorschau, Desktop/Mobil PASS; echte Shopify-Anmeldung und neuer HTTPS-Host damit noch nicht bestätigt. [Prüfbericht](docs/dashboard-20261004/SHOPIFY-HAENDLER-LAUFZEIT-20261009.md) · [getrennte Installation](ops/plesk/MERCHANT-README.md).
+
+Nutzer wünscht Claude-Gegenprüfung. Hier kein Claude-Werkzeug/CLI vorhanden; [konkreter Prüfauftrag](docs/reviews/CLAUDE-AUFTRAG-20261009.md) und exportierbares Quellpaket vorbereitet. **Keine erfolgte Claude-Prüfung behaupten.** Nächster Schritt: getrennten Plesk-Bereich prüfen/installieren und reale Host-Abnahme; vorhandene Erweiterungen sichern, Checkout-Fehler und Bestellstrecke anschließen. Bisherige Live-/Operator-Instanz und App-Konfiguration unverändert. GitHub-Zugang bleibt ein eigener offener Anschluss.
+
+## Historisch: Shopify-Token bestätigt und Rückkehrversion gesichert – 09.10.2026
 
 Token durch Nutzer sicher auf Plesk hinterlegt; echter Konfigurations-/Versionsabruf **Exitcode 0**. Aktive Version **`variante-m-embedded-motifs-20260928`**, ID `gid://shopify/Version/1146632241153`, Originalkonfigurationen privat gesichert. CLI-Flagkonflikt und wechselnde TOML-Reihenfolge im Helfer behoben; **15 gezielte Tests** und erfolgreicher Serverlauf. [Nachweis und offene Anschlüsse](docs/dashboard-20261004/SHOPIFY-ZUGRIFF-BESTAETIGT-20261009.md).
 

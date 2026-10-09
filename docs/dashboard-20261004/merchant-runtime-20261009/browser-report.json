@@ -1,0 +1,87 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "realMerchantUiLoaded": true,
+    "freshSyntheticBearerUsed": true,
+    "productCreatedAndReopened": true,
+    "authenticatedPreviewLoaded": true,
+    "mobileOverflow": false,
+    "privateBackendDataRequiresBearer": true
+  },
+  "apiRequests": [
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/seed",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 201,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/variant-catalog",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_a6723f57-297c-45ee-92e4-c1c1cfc8518d/editor-preview",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_a6723f57-297c-45ee-92e4-c1c1cfc8518d/revisions",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_a6723f57-297c-45ee-92e4-c1c1cfc8518d/preview.svg",
+      "status": 200,
+      "authenticated": true
+    }
+  ],
+  "javascriptErrors": []
+}

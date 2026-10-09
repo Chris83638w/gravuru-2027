@@ -14,7 +14,9 @@ def git(*args):
     return subprocess.check_output(['git', *args], cwd=ROOT)
 
 
-def package(commit, destination):
+def package(commit, destination, runtime='private-operator-test'):
+    if runtime not in ['private-operator-test', 'shopify-merchant-test']:
+        raise ValueError('Unknown runtime')
     commit = git('rev-parse', '--verify', commit + '^{commit}').decode().strip()
     files = {}
     tree = git('ls-tree', '-rz', '--full-tree', commit, 'app', 'ops/plesk')
@@ -38,14 +40,20 @@ def package(commit, destination):
     for required in ['ops/plesk/app.cjs', 'ops/plesk/README.md', 'app/workshop/design-zip.mjs', 'app/workshop/design-source-path.mjs']:
         if required not in files:
             raise ValueError('Required committed runtime file missing: ' + required)
-    files['app.cjs'] = b"require('./ops/plesk/app.cjs');\n"
-    files['package.json'] = (json.dumps({'name': 'gravuru-2027-private-test', 'version': '0.1.0', 'private': True,
+    entry = 'merchant-app.cjs' if runtime == 'shopify-merchant-test' else 'app.cjs'
+    installation = 'ops/plesk/MERCHANT-README.md' if runtime == 'shopify-merchant-test' else 'ops/plesk/README.md'
+    if 'ops/plesk/' + entry not in files or installation not in files:
+        raise ValueError('Required runtime entry or installation guide missing')
+    files['app.cjs'] = ("require('./ops/plesk/" + entry + "');\n").encode()
+    files['package.json'] = (json.dumps({'name': 'gravuru-2027-merchant-test' if runtime == 'shopify-merchant-test' else 'gravuru-2027-private-test', 'version': '0.1.0', 'private': True,
         'type': 'module', 'engines': {'node': '>=24'}, 'scripts': {'start': 'node app.cjs',
         'plesk:prepare': 'node ops/plesk/prepare.mjs', 'plesk:check': 'node ops/plesk/check.mjs',
-        'shopify:preflight': 'node ops/plesk/shopify-preflight.mjs'}}, indent=2) + '\n').encode()
+        'shopify:preflight': 'node ops/plesk/shopify-preflight.mjs',
+        'plesk:merchant:prepare': 'node ops/plesk/merchant-manage.mjs prepare',
+        'plesk:merchant:check': 'node ops/plesk/merchant-manage.mjs check'}}, indent=2) + '\n').encode()
     files['public/robots.txt'] = b'User-agent: *\nDisallow: /\n'
-    files['INSTALLATION.md'] = files['ops/plesk/README.md']
-    manifest = {'schema': 1, 'sourceCommit': commit, 'scope': 'private-operator-test', 'shopifyConnected': False,
+    files['INSTALLATION.md'] = files[installation]
+    manifest = {'schema': 1, 'sourceCommit': commit, 'scope': runtime, 'shopifyConnected': False,
                 'files': [{'path': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()} for name, data in sorted(files.items())]}
     files['PACKAGE-MANIFEST.json'] = (json.dumps(manifest, indent=2) + '\n').encode()
     if destination.exists():
@@ -71,5 +79,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--commit', default='HEAD')
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--runtime', choices=['private-operator-test', 'shopify-merchant-test'], default='private-operator-test')
     args = parser.parse_args()
-    package(args.commit, args.output.resolve())
+    package(args.commit, args.output.resolve(), args.runtime)

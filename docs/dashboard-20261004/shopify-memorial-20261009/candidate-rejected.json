@@ -1,0 +1,24 @@
+{
+  "preservedVersionPrepared": false,
+  "versionTag": "gravuru-2027-merchant-home-20261009",
+  "released": false,
+  "fullPublicationReady": false,
+  "validationErrors": [
+    {
+      "field": [
+        "bundle"
+      ],
+      "category": "invalid",
+      "message": "Only assets, blocks, snippets, locales directories are allowed"
+    },
+    {
+      "field": [
+        "base"
+      ],
+      "category": "invalid",
+      "message": "Wasm file is not present"
+    }
+  ],
+  "errorCode": "candidate_validation",
+  "privateDirectory": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-preserved-candidate-D19GUx"
+}

@@ -1,0 +1,30 @@
+{
+  "themeRecovery": true,
+  "privateDirectory": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-theme-recovered-65VDmX",
+  "inlineFiles": 5,
+  "exactAssetCount": 0,
+  "totalAssets": 14,
+  "matchingAssets": [],
+  "missingAssets": [
+    "gravuru-admin-runtime-v1.js",
+    "gravuru-font-licenses.json",
+    "gravuru-loader.js",
+    "gravuru-personalizer.js",
+    "gravuru-profile-aosu-pro-v8p1ax11-16x28.js",
+    "gravuru-engine.js",
+    "gravuru-variante-m-pdp.css",
+    "gravuru-model-launcher-live-v5.js",
+    "thumbs-up.png",
+    "gravuru-readiness.js",
+    "gravuru-stainless-fine.png",
+    "gravuru-catalog.json",
+    "gravuru-variante-m-pdp.js",
+    "gravuru-model-editor-live.js"
+  ],
+  "sourceRoots": [
+    "gravuru-werkstatt"
+  ],
+  "maxDepth": 7,
+  "sourceModified": false,
+  "fullExtensionRecovered": false
+}

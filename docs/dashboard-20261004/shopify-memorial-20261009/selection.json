@@ -1,0 +1,174 @@
+{
+  "schema": "gravuru-memorial-selection/v1",
+  "source": "existing-shopify-product-and-app-metafield",
+  "productId": "gid://shopify/Product/16138083107196",
+  "title": "Gedenktafel aus Schiefer mit Foto",
+  "handle": "gedenktafel-fuer-menschen-220x140",
+  "currency": "EUR",
+  "legacyConfiguration": {
+    "id": "P-f087d73f-b29e-43f8-ba1e-543d1daa95a8",
+    "revision": 30,
+    "sha256": "d5eb8fec7ce20a016907c444d5d88a7520c1b850942b2ad353aa11878c93b230"
+  },
+  "pricingSha256": "65a03e26fb0ecf23c98c1b0bff9353e835fbd6e8a143082ba019f3a72d7ee1cd",
+  "widthMm": 220,
+  "heightMm": 140,
+  "designs": [
+    {
+      "id": "GTD8B5-1",
+      "source": "cdff6851c0393b482ede57348d5555659eda9d5a57fed92246b84041c74f4c2d"
+    }
+  ],
+  "defaultDesignId": "GTD8B5-1",
+  "variants": [
+    {
+      "optionId": "OHNE",
+      "label": "Ohne Befestigung",
+      "variantId": "gid://shopify/ProductVariant/57509812633980",
+      "priceCents": 2299,
+      "holes": []
+    },
+    {
+      "optionId": "B02",
+      "label": "Zwei Bohrungen",
+      "variantId": "gid://shopify/ProductVariant/57509812666748",
+      "priceCents": 2598,
+      "holes": [
+        {
+          "x": 12,
+          "y": 70,
+          "diameter": 5
+        },
+        {
+          "x": 208,
+          "y": 70,
+          "diameter": 5
+        }
+      ]
+    },
+    {
+      "optionId": "B04",
+      "label": "Vier Bohrungen",
+      "variantId": "gid://shopify/ProductVariant/57509812699516",
+      "priceCents": 2698,
+      "holes": [
+        {
+          "x": 12,
+          "y": 12,
+          "diameter": 5
+        },
+        {
+          "x": 208,
+          "y": 12,
+          "diameter": 5
+        },
+        {
+          "x": 208,
+          "y": 128,
+          "diameter": 5
+        },
+        {
+          "x": 12,
+          "y": 128,
+          "diameter": 5
+        }
+      ]
+    },
+    {
+      "optionId": "B02-AH02",
+      "label": "Zwei Bohrungen mit Abstandshaltern · Silber",
+      "variantId": "gid://shopify/ProductVariant/57509812732284",
+      "priceCents": 3197,
+      "holes": [
+        {
+          "x": 12,
+          "y": 70,
+          "diameter": 5
+        },
+        {
+          "x": 208,
+          "y": 70,
+          "diameter": 5
+        }
+      ]
+    },
+    {
+      "optionId": "B02-AH02-BLACK",
+      "label": "Zwei Bohrungen mit Abstandshaltern · Schwarz",
+      "variantId": "gid://shopify/ProductVariant/57509812765052",
+      "priceCents": 3297,
+      "holes": [
+        {
+          "x": 12,
+          "y": 70,
+          "diameter": 5
+        },
+        {
+          "x": 208,
+          "y": 70,
+          "diameter": 5
+        }
+      ]
+    },
+    {
+      "optionId": "B04-AH04",
+      "label": "Vier Bohrungen mit Abstandshaltern · Silber",
+      "variantId": "gid://shopify/ProductVariant/57509812797820",
+      "priceCents": 3697,
+      "holes": [
+        {
+          "x": 12,
+          "y": 12,
+          "diameter": 5
+        },
+        {
+          "x": 208,
+          "y": 12,
+          "diameter": 5
+        },
+        {
+          "x": 208,
+          "y": 128,
+          "diameter": 5
+        },
+        {
+          "x": 12,
+          "y": 128,
+          "diameter": 5
+        }
+      ]
+    },
+    {
+      "optionId": "STKLAR",
+      "label": "Acrylglasständer klar",
+      "variantId": "gid://shopify/ProductVariant/57509812830588",
+      "priceCents": 3598,
+      "holes": []
+    },
+    {
+      "optionId": "STSCHWARZ",
+      "label": "Acrylglasständer schwarz",
+      "variantId": "gid://shopify/ProductVariant/57509812863356",
+      "priceCents": 3798,
+      "holes": []
+    },
+    {
+      "optionId": "SILIKON",
+      "label": "Silikon",
+      "variantId": "gid://shopify/ProductVariant/57509812896124",
+      "priceCents": 2798,
+      "holes": []
+    }
+  ],
+  "extraMotifCents": 169,
+  "extraPhotoCents": 999,
+  "existingPricesAndOptionsMatch": true,
+  "newWorkshopConfigurationId": null,
+  "bindingSaved": false,
+  "checkoutReady": false,
+  "published": false,
+  "checkedAt": "2026-10-09T08:00:20.095Z",
+  "apiVersion": "2026-07",
+  "shop": "gravuru-design.myshopify.com",
+  "onlineStoreUrl": null
+}

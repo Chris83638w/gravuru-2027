@@ -1,4 +1,12 @@
-## Aktuell: Getrennter Händlerhost auf Plesk geprüft – 09.10.2026
+## Aktuell: Gedenktafel ausgewählt; Versionsversuch abgewiesen – 09.10.2026
+
+Nutzer erlaubt Auswahl einer bestehenden Gedenktafel. Gewählt: **Gedenktafel aus Schiefer mit Foto für Menschen, 220 × 140 mm**, Shopify `16138083107196`. Eigener authentifizierter Leseabruf erfolgreich; alle **neun Befestigungen/Preise** stimmen mit bestehendem App-Metafeld Revision 30 überein, ab 22,99 €, Aufpreise 1,69 €/Motiv und 9,99 €/Foto erfasst. Auswahl gesichert, noch keine neue Werkstattrevision oder operative Bindung. Öffentliche Produktadresse aktuell 404 trotz Status ACTIVE. [Nachweis und Anschlüsse](docs/dashboard-20261004/SHOPIFY-GEDENKTAFEL-20261009.md).
+
+Alle sieben vorhandenen App-Module privat gesichert. Unveröffentlichter Kandidat mit alleiniger App-URL-Änderung wurde von Shopify wegen unvollständigem Theme-Bundle und fehlender WASM-Datei abgewiesen. **Keine Kandidatenversion und kein Release; alle sieben aktiven Module nachweislich unverändert.** Fünf eingebettete Theme-Dateien wiedergewonnen; externe Assets/Function-Build weiterhin unvollständig. Token funktioniert, keine erneute Hinterlegung anfordern. GitHub-Authentifizierung fehlt auch in Revision 78; kein Push behaupten.
+
+**6 neue lokale Tests bestanden**, tatsächliche Produktzuordnung gelesen/abgeglichen, Syntax/Diff geprüft. Keine unveränderte Gesamtabnahme wiederholt. Händlerdatenbank enthält bisher nur Acryl-Master; Schiefer-Adapter mit Befestigungen/Bohrbildern und Designübernahme ist noch nötig. Nächster Anschluss: ursprüngliches Theme-/Function-Projekt über wieder autorisierten GitHub-Zugang beschaffen und passenden Produktadapter vorbereiten; danach reale Händler-/Kunden-/Bestellstrecke. Installierte Weblaufzeit und beide bestehenden Werkstätten unverändert, keine Bestellung ausgelöst.
+
+## Historisch: Getrennter Händlerhost auf Plesk geprüft – 09.10.2026
 
 `https://app-2027.gravuru-designwerkstatt.de/werkstatt/` ist mit gültigem TLS erreichbar. Separat angelegt (Site 20), Paketquelle `5884f3e5becbb3226691fd0dc98beb5d8440306e`, 369 Dateien geprüft, Node 24.21.0, vorhandenes privates Python/Cairo ohne Änderungen verwendet. Vorbereitung/Prüfung erfolgreich; APIs ohne Händleridentität 401, private Dateien 403/404, CSRF-Sperre wirksam. Synthetisches Profil über echten HTTPS-Aufruf gespeichert, nach beobachtetem Prozesswechsel exakt erhalten und unter derselben ID weiterbearbeitet. Ein App-Prozess beobachtet; zweiter Sperrzugriff abgewiesen. [Servernachweise](docs/dashboard-20261004/merchant-runtime-20261009/server-installation.json).
 

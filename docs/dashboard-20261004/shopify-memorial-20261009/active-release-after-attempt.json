@@ -1,0 +1,26 @@
+{
+  "activeModulesRead": true,
+  "released": false,
+  "activeVersionId": "gid://shopify/Version/1146632241153",
+  "activeVersionTag": "variante-m-embedded-motifs-20260928",
+  "releaseId": "gid://shopify/Release/1137137745921",
+  "appUrl": "https://gravuru-designwerkstatt.de/produktanlage.html",
+  "allModulesUnchanged": true,
+  "moduleCount": 7,
+  "candidatePresent": false,
+  "merchantProductReadOnlyInventory": [
+    {
+      "id": "cfg_4feac68f-6ead-4d58-8f9f-dc857292f1a3",
+      "kind": "master",
+      "revision": 1,
+      "publishedRevision": null,
+      "schema": "gravuru-product/v1",
+      "material": "acrylic",
+      "geometry": {
+        "widthMm": 150,
+        "heightMm": 200
+      }
+    }
+  ],
+  "checkedAt": "2026-10-09T08:01:55.852Z"
+}

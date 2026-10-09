@@ -1,0 +1,24 @@
+{
+  "exactSources": {
+    "gravuru-admin-runtime-v1.js": [],
+    "gravuru-font-licenses.json": [
+      "app/designs/aosu-labrador/runtime/licenses/gravuru-font-licenses.json",
+      "REFERENZ-MOTIVE-UND-ACRYL-20260930.zip::legacy-reference/designs/aosu-labrador/runtime/licenses/gravuru-font-licenses.json",
+      "Gravuru-2027-Quellstand-20261003.zip::app/designs/aosu-labrador/runtime/licenses/gravuru-font-licenses.json"
+    ],
+    "gravuru-loader.js": [],
+    "gravuru-personalizer.js": [],
+    "gravuru-profile-aosu-pro-v8p1ax11-16x28.js": [],
+    "gravuru-engine.js": [],
+    "gravuru-variante-m-pdp.css": [],
+    "gravuru-model-launcher-live-v5.js": [],
+    "thumbs-up.png": [],
+    "gravuru-readiness.js": [],
+    "gravuru-stainless-fine.png": [],
+    "gravuru-catalog.json": [],
+    "gravuru-variante-m-pdp.js": [],
+    "gravuru-model-editor-live.js": []
+  },
+  "matched": 1,
+  "total": 14
+}

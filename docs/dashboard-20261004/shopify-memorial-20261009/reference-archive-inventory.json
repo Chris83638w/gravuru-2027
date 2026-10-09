@@ -1,0 +1,41 @@
+[
+  {
+    "archive": "REFERENZ-MATERIALIEN-20260930.zip",
+    "entries": 17,
+    "extensionArtifacts": [],
+    "totalMatches": 0
+  },
+  {
+    "archive": "REFERENZ-MOTIVE-UND-ACRYL-20260930.zip",
+    "entries": 92,
+    "extensionArtifacts": [],
+    "totalMatches": 0
+  },
+  {
+    "archive": "REFERENZ-OBERFLAECHE-20260930.zip",
+    "entries": 2,
+    "extensionArtifacts": [],
+    "totalMatches": 0
+  },
+  {
+    "archive": "REFERENZ-QUELLCODE-20260930.zip",
+    "entries": 183,
+    "extensionArtifacts": [
+      "legacy-reference/continuation/werkstatt-source-20260923/extensions/app-home/src/pages/ProductLineTabs.jsx",
+      "legacy-reference/continuation/werkstatt-source-20260923/extensions/app-home/src/pages/StudioPage.jsx"
+    ],
+    "totalMatches": 2
+  },
+  {
+    "archive": "Gravuru-2027-Quellstand-20261003.zip",
+    "entries": 216,
+    "extensionArtifacts": [],
+    "totalMatches": 0
+  },
+  {
+    "archive": "SCREENSHOT-REFERENZEN-20261003.zip",
+    "entries": 12,
+    "extensionArtifacts": [],
+    "totalMatches": 0
+  }
+]

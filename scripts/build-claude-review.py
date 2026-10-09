@@ -8,6 +8,9 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+def credential_content(data):
+    # A source-code check containing a quoted marker is not itself a key block.
+    return re.search(rb'(?m)^-----BEGIN (?:OPENSSH |RSA |EC )?PRIVATE KEY-----\r?\n|\b(?:gh[pousr]_|shp(?:at|ca|pa|ss)_)[A-Za-z0-9]{24,}', data) is not None
 SELECTED = ['app', 'ops', 'scripts', 'package.json', 'AGENTS.md', 'START_HERE.md', 'STATUS.md',
             'UMSETZUNGSPAKETE.md', 'NEUE-WERKSTATT-PLAN.md', 'MATERIALREFERENZEN.md',
             'docs/reviews/CLAUDE-AUFTRAG-20261009.md',
@@ -39,7 +42,7 @@ def build(commit, destination):
         if any(p in ['.git', '.local-data', '.test-output', 'node_modules', '__pycache__'] or p.startswith('.env') for p in parts) or name.endswith(('.sqlite', '.db', '.sqlite-wal', '.sqlite-shm', '.pem', '.key', '.log')):
             raise ValueError('Private/generated file selected: ' + name)
         data = git('cat-file', 'blob', oid)
-        if re.search(rb'-----BEGIN (?:OPENSSH |RSA |EC )?PRIVATE KEY-----|\b(?:gh[pousr]_|shp(?:at|ca|pa|ss)_)[A-Za-z0-9]{24,}', data):
+        if credential_content(data):
             raise ValueError('Credential-shaped content needs review; file only: ' + name)
         files[name] = data
     brief = 'docs/reviews/CLAUDE-AUFTRAG-20261009.md'

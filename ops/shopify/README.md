@@ -50,3 +50,5 @@ Der Helfer verwendet ausschließlich `app config link` und `app versions list` f
 Gesichert werden die beiden Konfigurationsdateien, eine Versionsliste ohne Mitarbeiternamen/Freitextmeldungen und die aktive Versionskennung samt Tag. Die eigentlichen Erweiterungsquellen sind damit **noch nicht** vollständig gesichert: `extensionsSourceBackupComplete: false`, `deploymentReady: false`, `released: false` bleiben ausdrücklich im Ergebnis. Erst die vollständige Erweiterungsinventur und der tatsächliche Händler-/Kundenanschluss erlauben den nächsten Veröffentlichungsschritt.
 
 Gezielte neue Prüfung: `node --test ops/shopify/read-baseline.test.mjs`. Die bestehende Produkt-/Browser-/Druckabnahme wird durch diesen eigenständigen Betriebshelfer nicht geändert.
+
+Installierter privater Helfer: `gravuru-shopify-deploy-tools/read-baseline-3996475.mjs`. [Prüfbericht und tatsächlicher Serverstatus vom 09.10.2026](../../docs/dashboard-20261004/SHOPIFY-RELEASE-VORBEREITUNG-20261009.md).

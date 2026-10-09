@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-09T04:13:18.635416+00:00",
+  "sourceCommit": "3996475c88cf5d27b8affbbeacbf723ec1ce70fe",
+  "tokenMetadata": {
+    "publicationAccessCheck": true,
+    "present": true,
+    "privateFile": true,
+    "tokenConfigured": false
+  },
+  "releaseBaselineRun": true,
+  "installedSha256": "a9e60311e4ed3dfb007579fc09d7a49f93d8f0bfe7a0f3078afd7c6dc6c7249b",
+  "exit": 1,
+  "result": {
+    "ok": false,
+    "code": "automation_token_missing_or_private_file",
+    "released": false
+  },
+  "appRuntimeModified": false,
+  "shopifyPublicationPerformed": false
+}

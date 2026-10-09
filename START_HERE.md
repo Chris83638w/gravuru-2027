@@ -1,4 +1,12 @@
-## Aktuell: Shopify-Veröffentlichung freigegeben, Kontozugang fehlt – 08.10.2026
+## Aktuell: Sicherungsabruf für Shopify vorbereitet – 09.10.2026
+
+Nutzer bestätigt **„alles komplett live setzen“**; keine erneute allgemeine Freigabe anfragen. Neuer eigener Betriebshelfer auf Quellcommit `3996475c88cf5d27b8affbbeacbf723ec1ce70fe`: vorhandene Shopify-App-Konfiguration und aktive Rückkehrversion rein lesend und mit Konsistenzprüfung sichern. **13 neue lokale Tests bestanden**. Über Plesk privat installiert und SHA-256 bestätigt; Produkt-/Weblaufzeit und Paketquelle `583ad9a` unverändert.
+
+**Konkreter Blocker heute:** vorbereitete App-Automation-Token-Datei vorhanden, privat, aber weiterhin leer. Echter Helferaufruf endet deshalb mit Exitcode 1 vor Shopify-Zugriff. Keine App-Konfiguration/Rückkehrversion abgerufen und kein Release erfolgt. Kontoinhaber zur sicheren Token-Hinterlegung in Plesk aufgefordert. [Nachweis und genauer nächster Schritt](docs/dashboard-20261004/SHOPIFY-RELEASE-VORBEREITUNG-20261009.md) · [Zugangsanleitung](ops/shopify/README.md).
+
+Nach Hinterlegung tatsächliche Version/Konfiguration und vorhandene Erweiterungen sichern, anschließend den Händler-/Kunden-/Bestellanschluss umsetzen. Sichere Testbestellung, passende Preis-/Variantenbindung und weitere externe Abnahmen bleiben offen. GitHub-Authentifizierung in Laufzeitrevision 64 weiterhin fehlend: lokale Sicherung vorhanden, kein Push behaupten. Keine neuen Gesamtprüfungen, keine Produktionsdaten-Ersetzung und keine Veröffentlichung synthetischer Produkte.
+
+## Historisch: Shopify-Veröffentlichung freigegeben, Kontozugang fehlt – 08.10.2026
 
 Nutzerauftrag: **„dann setz es live“ → „alles bei shopify online“**. Die bestehende App **Gravuru Konfigurator** soll angeschlossen/veröffentlicht werden; keine neue App, keine automatische Veröffentlichung synthetischer Testprodukte. Die frühere allgemeine Veröffentlichungssperre ist damit für diesen Auftrag aufgehoben. Aktuelle Produkt-/Paketbasis `583ad9a`, lokale Dokumentationssicherung `d6af150` erhalten.
 

@@ -1,0 +1,26 @@
+{
+  "extensionFileInventory": true,
+  "topDirectories": [
+    "dev",
+    "error_docs",
+    "etc",
+    "gravuru-2027-test",
+    "gravuru-ai-hub",
+    "gravuru-assistent",
+    "gravuru-migration-2026-09-20",
+    "gravuru-team",
+    "gravuru-werkstatt",
+    "httpdocs",
+    "logs",
+    "lscache",
+    "nodejs_error_docs",
+    "private",
+    "tmp",
+    "usr",
+    "var"
+  ],
+  "files": [],
+  "visited": 4882,
+  "unreadableDirectories": 0,
+  "truncated": false
+}

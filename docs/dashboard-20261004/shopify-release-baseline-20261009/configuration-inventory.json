@@ -1,0 +1,36 @@
+{
+  "configurationInventory": true,
+  "clientId": "9640dd7a6907f0c73e7013ea8c24869b",
+  "applicationUrl": "https://gravuru-designwerkstatt.de/produktanlage.html",
+  "embedded": true,
+  "scopes": {
+    "scopes": "read_files,read_metaobjects,read_products,read_publications,write_files,write_metaobjects,write_products,write_publications",
+    "optional_scopes": [
+      "write_cart_transforms"
+    ]
+  },
+  "adminAccess": {
+    "admin": {
+      "direct_api_mode": "online",
+      "embedded_app_direct_api_access": true
+    }
+  },
+  "redirectUrls": [
+    "https://gravuru.de/shopify-designwerkstatt-20260920/",
+    "https://gravuru-designwerkstatt.de/produktanlage.html"
+  ],
+  "webhookApiVersion": "2026-07",
+  "webhookSubscriptionCount": 0,
+  "appProxyConfigured": false,
+  "productMetafields": {
+    "app": {
+      "personalization": {
+        "type": "json",
+        "name": "Gravuru Personalisierungspreise",
+        "access": {
+          "admin": "merchant_read"
+        }
+      }
+    }
+  }
+}

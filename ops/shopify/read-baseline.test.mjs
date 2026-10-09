@@ -17,19 +17,24 @@ function fixture(t, alter = () => {}) {
     assert.equal(command, process.execPath); assert.equal(options.env.SHOPIFY_APP_AUTOMATION_TOKEN, token);
     assert.equal(options.env.CI, 'true'); assert.equal(options.stdio[0], 'ignore'); assert.equal(options.shell, undefined);
     assert.ok(!args.join(' ').includes(token)); assert.ok(!args.includes('--force')); assert.ok(!args.includes('--reset'));
-    assert.equal(args[args.indexOf('--client-id') + 1], CLIENT_ID);
+    // Real CLI parser rejects these flags together, before any network call.
+    assert.ok(!(args.includes('--client-id') && args.includes('--config')), 'CLI app selectors must be exclusive');
     calls.push({args, work: options.cwd}); const index = calls.length;
     const result = {status: 0, stdout: '', stderr: ''};
     if (args[2] === 'config') {
+      assert.equal(args[args.indexOf('--client-id') + 1], CLIENT_ID);
       assert.deepEqual(args.slice(1, 4), ['app', 'config', 'link']); const name = args[args.indexOf('--file-name') + 1];
       fs.writeFileSync(path.join(options.cwd, 'shopify.app.' + name + '.toml'), `client_id = "${CLIENT_ID}"\napplication_url = "https://fixture.invalid/werkstatt/"\nembedded = true\n`, {mode: 0o600});
     } else {
       assert.deepEqual(args.slice(1, 4), ['app', 'versions', 'list']);
+      const name = args[args.indexOf('--config') + 1];
+      assert.ok(['before', 'confirmed'].includes(name));
+      assert.match(fs.readFileSync(path.join(options.cwd, 'shopify.app.' + name + '.toml'), 'utf8'), new RegExp('^client_id = "' + CLIENT_ID + '"', 'm'));
       result.stdout = JSON.stringify([{versionId: 'gid://shopify/AppVersion/42', versionTag: 'version-42', status: 'active', createdBy: 'private person', message: 'private release message'}]);
     }
     alter({args, options, result, index}); return result;
   };
-  return {directory, tokenFile, cli, calls, run, execute: () => readReleaseBaseline({directory}, {run})};
+  return {directory, tokenFile, cli, calls, run, execute: () => readReleaseBaseline({directory, python: 'python3'}, {run})};
 }
 test('captures only the fixed app, keeps two matching configs and a real rollback version, without release or leaked token', t => {
   const f = fixture(t), result = f.execute();
@@ -58,7 +63,7 @@ test('Git directories and unexpected CLI versions are rejected before network', 
 for (const mode of ['release_changed', 'config_changed', 'wrong_app', 'no_active_version', 'duplicate_active_version']) test(mode + ' cannot produce a completion marker', t => {
   const f = fixture(t, ({args, options, result, index}) => {
     if (mode === 'wrong_app' && index === 1) fs.writeFileSync(path.join(options.cwd, 'shopify.app.before.toml'), 'client_id = "other_app"\n');
-    if (mode === 'config_changed' && index === 3) fs.appendFileSync(path.join(options.cwd, 'shopify.app.confirmed.toml'), '# remote change\n');
+    if (mode === 'config_changed' && index === 3) fs.appendFileSync(path.join(options.cwd, 'shopify.app.confirmed.toml'), 'new_setting = true\n');
     if (index === 4 && ['release_changed', 'no_active_version', 'duplicate_active_version'].includes(mode)) {
       const rows = JSON.parse(result.stdout);
       if (mode === 'release_changed') rows[0].versionTag = 'version-43';
@@ -68,6 +73,24 @@ for (const mode of ['release_changed', 'config_changed', 'wrong_app', 'no_active
     }
   });
   assert.throws(f.execute); assert.ok(f.calls.every(c => !fs.existsSync(path.join(c.work, 'BASELINE.json'))));
+});
+test('TOML ordering and comments may differ while all original files and semantic values remain verified', t => {
+  const f = fixture(t, ({options, index}) => {
+    if (index === 3) fs.writeFileSync(path.join(options.cwd, 'shopify.app.confirmed.toml'), `# Different serialization, same configuration\nembedded = true\napplication_url = "https://fixture.invalid/werkstatt/"\nclient_id = "${CLIENT_ID}"\n`);
+  });
+  const result = f.execute();
+  assert.equal(result.stableAcrossCapture, true);
+  assert.equal(result.configurationHashFormat, 'sorted-json-values-v1');
+  assert.notEqual(result.rawConfigurationSha256['shopify.app.before.toml'], result.rawConfigurationSha256['shopify.app.confirmed.toml']);
+});
+test('invalid TOML and configuration changes by a CLI invocation cannot complete a baseline', t => {
+  for (const stage of [1, 2]) {
+    const f = fixture(t, ({options, index}) => {
+      if (index === stage) fs.appendFileSync(path.join(options.cwd, 'shopify.app.before.toml'), stage === 1 ? 'broken = [\n' : 'changed_by_cli = true\n');
+    });
+    assert.throws(f.execute, {code: stage === 1 ? 'configuration_parse' : 'local_configuration_changed'});
+    assert.ok(f.calls.every(c => !fs.existsSync(path.join(c.work, 'BASELINE.json'))));
+  }
 });
 test('upstream error, timeout and token echo are never printed or stored as successful capture', t => {
   for (const patch of [r => {r.status = 1; r.stderr = token;}, r => {r.status = null; r.error = Error(token);}, r => {r.stdout = token;}]) {

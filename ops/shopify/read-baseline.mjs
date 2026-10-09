@@ -10,6 +10,15 @@ export const PRIVATE_DIRECTORY = '/var/www/vhosts/gravuru-designwerkstatt.de/pri
 class BaselineError extends Error {}
 const fail = code => {throw Object.assign(new BaselineError('Shopify-Konfigurationssicherung nicht bestätigt.'), {code});};
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+function canonicalConfiguration(bytes, python) {
+  // Shopify may reorder TOML tables between otherwise identical reads.
+  // Parse values with the server's existing Python 3.11+ standard library;
+  // retain both original files separately and compare all semantic values.
+  const code = 'import sys,json,tomllib\nprint(json.dumps(tomllib.loads(sys.stdin.read()),sort_keys=True,separators=(",",":"),ensure_ascii=True,allow_nan=False))';
+  const r = spawnSync(python, ['-I', '-c', code], {input: bytes, encoding: 'utf8', timeout: 10000, maxBuffer: 2 * 1024 * 1024, stdio: ['pipe', 'pipe', 'pipe']});
+  if (r.status !== 0 || r.error || typeof r.stdout !== 'string') fail('configuration_parse');
+  return r.stdout.trim();
+}
 function privateDirectory(directory) {
   try {
     const s = fs.lstatSync(directory);
@@ -48,7 +57,7 @@ function versionsFrom(output, token) {
 
 // Only configuration reads and version-list reads. No deploy/release, product
 // mutation, token creation or interactive login. Each attempt gets new storage.
-export function readReleaseBaseline({directory = PRIVATE_DIRECTORY} = {}, {run = spawnSync} = {}) {
+export function readReleaseBaseline({directory = PRIVATE_DIRECTORY, python = '/opt/alt/python311/bin/python3'} = {}, {run = spawnSync} = {}) {
   if (process.env.NODE_TLS_REJECT_UNAUTHORIZED === '0') fail('tls_verification_disabled');
   privateDirectory(directory);
   let token;
@@ -79,14 +88,18 @@ export function readReleaseBaseline({directory = PRIVATE_DIRECTORY} = {}, {run =
       const filename = 'shopify.app.' + name + '.toml', bytes = readFile(path.join(work, filename)), text = bytes.toString('utf8');
       const root = text.split(/^\s*\[/m)[0], identities = [...root.matchAll(/^\s*client_id\s*=\s*"([a-zA-Z0-9_-]+)"\s*(?:#.*)?$/gm)];
       if (identities.length !== 1 || identities[0][1] !== CLIENT_ID || text.includes(token)) fail('config_identity');
-      const result = versionsFrom(execute(['app', 'versions', 'list', '--client-id', CLIENT_ID, '--config', name, '--path', work, '--json'], 'versions_read'), token);
-      return {filename, bytes, ...result};
+      // CLI 4.9 rejects --client-id together with --config. The just-read
+      // configuration has already been checked against the fixed client ID.
+      const result = versionsFrom(execute(['app', 'versions', 'list', '--config', name, '--path', work, '--json'], 'versions_read'), token);
+      if (sha(bytes) !== sha(readFile(path.join(work, filename)))) fail('local_configuration_changed');
+      return {filename, bytes, canonical: canonicalConfiguration(bytes, python), ...result};
     };
     const first = capture('before'), second = capture('confirmed');
-    if (sha(first.bytes) !== sha(second.bytes) || JSON.stringify(first.active) !== JSON.stringify(second.active)) fail('remote_changed_during_capture');
+    if (first.canonical !== second.canonical || JSON.stringify(first.active) !== JSON.stringify(second.active)) fail('remote_changed_during_capture');
     save('versions.json', JSON.stringify(second.versions, null, 2) + '\n');
     const report = {schema: 'gravuru-shopify-release-baseline/v1', capturedAt: new Date().toISOString(), clientId: CLIENT_ID, cliVersion: CLI_VERSION,
-      activeVersion: second.active, versionCount: second.versions.length, configurationSha256: sha(first.bytes), stableAcrossCapture: true,
+      activeVersion: second.active, versionCount: second.versions.length, configurationSha256: sha(first.canonical), configurationHashFormat: 'sorted-json-values-v1',
+      rawConfigurationSha256: {[first.filename]: sha(first.bytes), [second.filename]: sha(second.bytes)}, stableAcrossCapture: true,
       configurationFiles: [first.filename, second.filename], extensionsSourceBackupComplete: false,
       deploymentReady: false, released: false};
     // Write this completion marker last. Failed captures never get one.

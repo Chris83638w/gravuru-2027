@@ -1,0 +1,30 @@
+{
+  "existingFunctionInventory": true,
+  "httpStatus": 200,
+  "apiVersion": "2026-07",
+  "functions": {
+    "nodes": [
+      {
+        "id": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01",
+        "title": "gravuru-personalization-price",
+        "apiType": "cart_transform"
+      }
+    ],
+    "pageInfo": {
+      "hasNextPage": false
+    }
+  },
+  "cartTransforms": {
+    "nodes": [
+      {
+        "id": "gid://shopify/CartTransform/172523900",
+        "functionId": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01",
+        "blockOnFailure": true
+      }
+    ],
+    "pageInfo": {
+      "hasNextPage": false
+    }
+  },
+  "readOnly": true
+}

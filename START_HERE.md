@@ -1,4 +1,10 @@
-## Aktuell: Sicherungsabruf für Shopify vorbereitet – 09.10.2026
+## Aktuell: Shopify-Token bestätigt und Rückkehrversion gesichert – 09.10.2026
+
+Token durch Nutzer sicher auf Plesk hinterlegt; echter Konfigurations-/Versionsabruf **Exitcode 0**. Aktive Version **`variante-m-embedded-motifs-20260928`**, ID `gid://shopify/Version/1146632241153`, Originalkonfigurationen privat gesichert. CLI-Flagkonflikt und wechselnde TOML-Reihenfolge im Helfer behoben; **15 gezielte Tests** und erfolgreicher Serverlauf. [Nachweis und offene Anschlüsse](docs/dashboard-20261004/SHOPIFY-ZUGRIFF-BESTAETIGT-20261009.md).
+
+Bestehende Preisfunktion `gravuru-personalization-price` mit `blockOnFailure: true` lesend bestätigt. Erweiterungsquellen fehlen in aktuellem Projekt und durchsuchter Serverablage; kein vollständiges Erweiterungs-Backup und kein Blind-Deployment. Nächster Schritt: vorhandene Erweiterungen erhalten, Checkout-Fehler klären und Händler-/Kunden-/Bestellanschluss umsetzen. Die Veröffentlichungsfreigabe gilt; kein erneuter Token-Auftrag nötig. Laufende App/Produktionsdaten unverändert, Paketbasis `583ad9a`. GitHub-Anmeldung fehlt weiterhin in Cloud-Revision 70; lokale Sicherung getrennt vom nicht erfolgten Push ausweisen.
+
+## Historisch: Sicherungsabruf für Shopify vorbereitet – 09.10.2026
 
 Nutzer bestätigt **„alles komplett live setzen“**; keine erneute allgemeine Freigabe anfragen. Neuer eigener Betriebshelfer auf Quellcommit `3996475c88cf5d27b8affbbeacbf723ec1ce70fe`: vorhandene Shopify-App-Konfiguration und aktive Rückkehrversion rein lesend und mit Konsistenzprüfung sichern. **13 neue lokale Tests bestanden**. Über Plesk privat installiert und SHA-256 bestätigt; Produkt-/Weblaufzeit und Paketquelle `583ad9a` unverändert.
 

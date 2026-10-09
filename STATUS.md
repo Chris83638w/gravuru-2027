@@ -1,4 +1,10 @@
-## Aktuell: Getrennter Shopify-Händlerstart lokal geprüft – 09.10.2026
+## Aktuell: Getrennter Händlerhost auf Plesk geprüft – 09.10.2026
+
+`https://app-2027.gravuru-designwerkstatt.de/werkstatt/` ist mit gültigem TLS erreichbar. Separat angelegt (Site 20), Paketquelle `5884f3e5becbb3226691fd0dc98beb5d8440306e`, 369 Dateien geprüft, Node 24.21.0, vorhandenes privates Python/Cairo ohne Änderungen verwendet. Vorbereitung/Prüfung erfolgreich; APIs ohne Händleridentität 401, private Dateien 403/404, CSRF-Sperre wirksam. Synthetisches Profil über echten HTTPS-Aufruf gespeichert, nach beobachtetem Prozesswechsel exakt erhalten und unter derselben ID weiterbearbeitet. Ein App-Prozess beobachtet; zweiter Sperrzugriff abgewiesen. [Servernachweise](docs/dashboard-20261004/merchant-runtime-20261009/server-installation.json).
+
+**Noch keine echte Shopify-Händleranmeldung und keine vollständige Live-Umschaltung.** Der direkte Browseraufruf zeigt erwartungsgemäß die fehlende Shopify-Anmeldung; App Bridge meldet ohne Shopify-Kontext ein fehlendes `shop`-Feld. Bestehende Werkstatt, Operator-Testinstanz, Shopify-App-Konfiguration und globale Servereinstellungen unverändert. Claude wurde nicht ausgeführt; das externe Quell-/Prüfpaket enthält die neuen Servernachweise. GitHub-Push weiterhin getrennt nachweisen.
+
+## Historisch: Getrennter Shopify-Händlerstart lokal geprüft – 09.10.2026
 
 Auf `a46af00` fortgeführt: eigener Plesk-Händlerstart mit privater Konfiguration/Datenablage, echter JWT-Prüfung, Host-/HTTPS-/CSRF-Grenzen und exklusivem Prozess-Lock. Neustart erhält gespeicherte Arbeit und offene Sitzung; Schlüsselwechsel sperrt alte Sitzungen. **6 neue Prüfgruppen + 16 gezielte bestehende Prüfungen bestanden.** Browser: synthetisches Produkt anlegen/wiederöffnen, private Vorschau, Desktop/Mobil PASS; echte Shopify-Anmeldung und neuer HTTPS-Host damit noch nicht bestätigt. [Prüfbericht](docs/dashboard-20261004/SHOPIFY-HAENDLER-LAUFZEIT-20261009.md) · [getrennte Installation](ops/plesk/MERCHANT-README.md).
 

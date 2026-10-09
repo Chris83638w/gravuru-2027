@@ -1,0 +1,46 @@
+{
+  "scope": "separate hosted merchant test runtime",
+  "sourceCommit": "5884f3e5becbb3226691fd0dc98beb5d8440306e",
+  "origin": "https://app-2027.gravuru-designwerkstatt.de",
+  "pleskSiteId": 20,
+  "subscriptionId": 14,
+  "node": "24.21.0",
+  "existingPython": "3.11.16; private interpreter reused without installation",
+  "packageBytes": 27204504,
+  "packageSha256": "50de25951d7e3ab0bbebacac9cd87b42ddbb17219d7e42f77adc6b48b21af105",
+  "manifestFilesVerified": 369,
+  "privateConfigMode": "0600",
+  "privateParentMode": "0700",
+  "prepareExit": 0,
+  "checkExit": 0,
+  "npmPrepare": true,
+  "npmCheck": true,
+  "publicCurl": {
+    "httpsShell": 200,
+    "tlsVerifyResult": 0,
+    "anonymousApi": 401,
+    "privateManifest": 404,
+    "httpStatus": 301,
+    "httpRedirect": "https://app-2027.gravuru-designwerkstatt.de/werkstatt/"
+  },
+  "httpsProxyHeader": "site 20 only: RequestHeader set X-Forwarded-Proto \"https\"",
+  "oldRuntimeChanges": false,
+  "globalServerChanges": false,
+  "shopifyConfigChanges": false,
+  "actualShopifyLoginVerified": false,
+  "physicalPrintAcceptance": false,
+  "claudeExecuted": false,
+  "privateDataPreservedAfterObservedProcessChange": true,
+  "references": [
+    "server-before-v2.json",
+    "server-after.json",
+    "server-process-before.json",
+    "server-process-after.json",
+    "server-public-browser.json"
+  ],
+  "notes": [
+    "Initial probe expected 404 for /.env; Plesk correctly returned 403. V2 accepts either denial; no product/security change. Initial evidence retained.",
+    "Anonymous browser outside Shopify reports missing App Bridge shop context; no authenticated UI acceptance is claimed.",
+    "Synthetic short-lived JWT created only in server memory for own new test host; no keys or bearer values exported."
+  ]
+}

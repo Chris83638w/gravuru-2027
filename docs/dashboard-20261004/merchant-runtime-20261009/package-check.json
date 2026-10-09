@@ -1,0 +1,30 @@
+{
+  "scope": "unpacked committed merchant package; local HTTP with simulated trusted HTTPS ingress",
+  "realHTTPS": false,
+  "realShopifyLogin": false,
+  "sourceCommit": "5884f3e5becbb3226691fd0dc98beb5d8440306e",
+  "packageSha256": "50de25951d7e3ab0bbebacac9cd87b42ddbb17219d7e42f77adc6b48b21af105",
+  "plesk:merchant:prepare": {
+    "ok": true,
+    "action": "prepare",
+    "scope": "shopify-merchant-test",
+    "merchantLoginVerified": false,
+    "shopMutationsEnabled": false,
+    "checkoutEnabled": false
+  },
+  "plesk:merchant:check": {
+    "ok": true,
+    "action": "check",
+    "scope": "shopify-merchant-test",
+    "merchantLoginVerified": false,
+    "shopMutationsEnabled": false,
+    "checkoutEnabled": false
+  },
+  "result": "PASS",
+  "manifestFilesVerified": 369,
+  "anonymousApiStatus": 401,
+  "authenticatedApiStatus": 200,
+  "privateManifestStatus": 404,
+  "realPackageEntryStarted": true,
+  "restartPreservedRecords": true
+}

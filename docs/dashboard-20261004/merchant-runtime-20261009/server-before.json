@@ -1,0 +1,38 @@
+{
+  "merchantHttpsProbe": true,
+  "phase": "before",
+  "at": "2026-10-09T06:38:39.662Z",
+  "origin": "https://app-2027.gravuru-designwerkstatt.de",
+  "identity": "synthetic JWT signed in server memory; not a Shopify login",
+  "tlsVerification": true,
+  "followRedirects": false,
+  "checks": [
+    {
+      "name": "application shell",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "name": "anonymous /api/workshop/products",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "name": "anonymous /__shopify/health",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "name": "private /.env",
+      "status": 403,
+      "expected": 404,
+      "pass": false
+    }
+  ],
+  "shopifyIframePolicy": true,
+  "ok": false,
+  "errorCode": "status_check_private /.env"
+}

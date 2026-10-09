@@ -20,7 +20,7 @@
 ## Grenzen und hilfreiche Nachweise
 
 - Bestehender Testhost: `https://test-2027.gravuru-designwerkstatt.de/werkstatt/`, privat. Keine Zugangsdaten im Paket; nicht darauf zugreifen.
-- Aktive Shopify-App zeigt weiterhin auf die bisherige Produktanlage. Neuer Händlerhost ist beim Quellabschluss vorbereitet; ein vorhandener separater Serverbericht bestimmt einen eventuell späteren Installationsstand.
+- Aktive Shopify-App zeigt weiterhin auf die bisherige Produktanlage. Neuer Händlerhost `app-2027.gravuru-designwerkstatt.de` ist getrennt installiert. Echte HTTPS-/Sperr-/Neustartprüfungen mit synthetischer Identität sind in `docs/dashboard-20261004/merchant-runtime-20261009/server-*.json` dokumentiert. Kein echter Shopify-Login; direkter anonymer Browseraufruf meldet fehlenden Shopify-Kontext. Auf beide Hosts nicht zugreifen.
 - App-Automation-Token ist sicher hinterlegt und per CLI geprüft; eigene Admin-Leseauthentifizierung ebenfalls nachgewiesen. Das ersetzt keine echte Händler-/Kunden-/Bestellabnahme.
 - `read_orders`, komplette Bestellstrecke, sichere Testzahlung und Erweiterungsquellen bleiben offen. Kundenansicht ist am Händlerhost absichtlich noch nicht freigegeben.
 - GitHub-Anmeldung der Codex-Laufzeit fehlte zuletzt. Lokaler Commit ist kein behaupteter GitHub-Push.

@@ -1,0 +1,45 @@
+{
+  "merchantHttpsProbe": true,
+  "phase": "after",
+  "at": "2026-10-09T06:41:01.962Z",
+  "origin": "https://app-2027.gravuru-designwerkstatt.de",
+  "identity": "synthetic JWT signed in server memory; not a Shopify login",
+  "tlsVerification": true,
+  "followRedirects": false,
+  "checks": [
+    {
+      "name": "profile after restart",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "name": "session after restart",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "name": "continue after restart",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "name": "profiles after continuation",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    }
+  ],
+  "persistedExactly": true,
+  "openPageCsrfRetained": true,
+  "sameProfileId": true,
+  "nextRevision": true,
+  "profileListShape": [
+    "profiles",
+    "catalog",
+    "settings"
+  ],
+  "ok": true
+}

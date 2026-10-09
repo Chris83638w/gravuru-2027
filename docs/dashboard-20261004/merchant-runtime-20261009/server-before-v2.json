@@ -1,0 +1,120 @@
+{
+  "merchantHttpsProbe": true,
+  "phase": "before",
+  "at": "2026-10-09T06:39:38.203Z",
+  "origin": "https://app-2027.gravuru-designwerkstatt.de",
+  "identity": "synthetic JWT signed in server memory; not a Shopify login",
+  "tlsVerification": true,
+  "followRedirects": false,
+  "checks": [
+    {
+      "name": "application shell",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "name": "anonymous /api/workshop/products",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "name": "anonymous /__shopify/health",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "name": "private /.env",
+      "status": 403,
+      "expected": [
+        403,
+        404
+      ],
+      "pass": true
+    },
+    {
+      "name": "private /private/gravuru-2027-merchant-shopify.json",
+      "status": 404,
+      "expected": [
+        403,
+        404
+      ],
+      "pass": true
+    },
+    {
+      "name": "private /PACKAGE-MANIFEST.json",
+      "status": 404,
+      "expected": [
+        403,
+        404
+      ],
+      "pass": true
+    },
+    {
+      "name": "private /app.cjs",
+      "status": 404,
+      "expected": [
+        403,
+        404
+      ],
+      "pass": true
+    },
+    {
+      "name": "private /gravuru-2027-merchant-test.zip",
+      "status": 404,
+      "expected": [
+        403,
+        404
+      ],
+      "pass": true
+    },
+    {
+      "name": "invalid bearer",
+      "status": 401,
+      "expected": 401,
+      "pass": true
+    },
+    {
+      "name": "authenticated health",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "name": "authenticated session",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "name": "write without csrf",
+      "status": 403,
+      "expected": 403,
+      "pass": true
+    },
+    {
+      "name": "initial profiles",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "name": "synthetic profile create",
+      "status": 201,
+      "expected": 201,
+      "pass": true
+    },
+    {
+      "name": "synthetic profile reopen",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    }
+  ],
+  "shopifyIframePolicy": true,
+  "shopMutationsEnabled": false,
+  "checkoutEnabled": false,
+  "ok": true
+}

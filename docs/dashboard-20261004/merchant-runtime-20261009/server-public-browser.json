@@ -1,0 +1,28 @@
+{
+  "realHttps": true,
+  "tlsVerification": true,
+  "authentication": "none",
+  "status": 200,
+  "title": "Gravuru 2027 · Werkstatt",
+  "headings": [
+    "Deine Konfi-Produkte",
+    "Konfiguration bearbeiten",
+    "",
+    "Eine neue Konfiguration.",
+    "Änderungen noch nicht gespeichert.",
+    "Kundenfelder festlegen",
+    "Deine Datei, im Konfigurator."
+  ],
+  "visibleMessages": [
+    "Profilbibliothek noch nicht geladen: Shopify-Anmeldung nicht verfügbar. Bitte in Shopify öffnen oder neu laden.",
+    "\n        Inzwischen wurde ein neuer Stand gespeichert.Deine Änderungen sind weiterhin hier. Du kannst sie als neue Konfiguration sichern oder den aktuellen Stand laden.\n        Als neue Konfiguration sichernAktuellen Stand laden …\n      ",
+    "",
+    "",
+    ""
+  ],
+  "pageErrors": [
+    "App Bridge Next: missing required configuration fields: shop"
+  ],
+  "screenshot": "server-anonymous-desktop.png",
+  "realShopifyLogin": false
+}

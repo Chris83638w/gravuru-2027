@@ -1,3 +1,4 @@
+import {setMerchantImage} from '/workshop-ui/merchant-media.mjs';
 // Form-mode presentation for the existing configurator entry. Drafts, rights,
 // geometry and production remain owned by the shared form engine.
 const $=s=>document.querySelector(s);
@@ -39,7 +40,7 @@ export function installFormPanels({getResult,getSources,getSelected,changeDesign
   const selected=getSelected();$('#field-editor').hidden=!selected||selected.deleted||sources.find(s=>s.id===selected.id)?.type!==active;
   $('#material-summary').textContent=(p.materialName||'')+' · '+p.geometry.widthMm+' × '+p.geometry.heightMm+' mm'+(p.thicknessMm?' · '+p.thicknessMm+' mm stark':'')+' · '+(p.method==='print'?'UV-Druck':'Gravur');
   const nextKey=p.id+':'+p.revision+':'+p.designs.map(d=>d.id).join(',');
-  if(designKey!==nextKey){designKey=nextKey;cards.replaceChildren();for(const d of p.designs){const b=document.createElement('button');b.dataset.design=d.id;const img=document.createElement('img');img.src='/api/workshop/products/'+p.id+'/preview.svg?'+new URLSearchParams({revision:p.revision,designId:d.id});img.alt='';const label=document.createElement('span');label.textContent=d.name;b.append(img,label);cards.append(b);}}
+  if(designKey!==nextKey){designKey=nextKey;cards.replaceChildren();for(const d of p.designs){const b=document.createElement('button');b.dataset.design=d.id;const img=document.createElement('img');setMerchantImage(img,'/api/workshop/products/'+p.id+'/preview.svg?'+new URLSearchParams({revision:p.revision,designId:d.id}));img.alt='';const label=document.createElement('span');label.textContent=d.name;b.append(img,label);cards.append(b);}}
   for(const b of cards.children)b.setAttribute('aria-pressed',String(b.dataset.design===r.draft.designId));
  }
  return {sync,selectType:type=>choose(type)};

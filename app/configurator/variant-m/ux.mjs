@@ -1,3 +1,4 @@
+import {previewResourceURL} from './preview-resource.mjs';
 import {installTemplateDeletion} from './template-deletion.mjs';
 import {installPreviewFeedback} from './preview-feedback.mjs';
 import {installFirstTextFocus} from './first-text-focus.mjs';
@@ -26,7 +27,7 @@ const button=(key,label,extra='')=>`<button type="button" data-ux="${key}" ${ext
 const names={text:'Text',motif:'Motiv','motif-raster':'Rastermotiv',photoSlot:'Fotobereich',image:'Logo',graphic:'Grafik'};
 export function rasterMarkup(o,raster,selected=false){
  if(o.type!=='motif-raster'||raster?.assetId!==o.assetId||!raster.url)return '';
- return `<g data-object="${esc(o.id)}" transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><image href="${esc(raster.url)}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none" opacity="${o.opacity??1}" style="mix-blend-mode:screen"/>${selected?`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="none" stroke="#64ae87" stroke-width=".7"/>`:''}</g>`;
+ return `<g data-object="${esc(o.id)}" transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><image href="${esc(previewResourceURL(raster.url))}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none" opacity="${o.opacity??1}" style="mix-blend-mode:screen"/>${selected?`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="none" stroke="#64ae87" stroke-width=".7"/>`:''}</g>`;
 }
 
 // Presentation adapter. Ordering requires a separately validated parent commerce binding.

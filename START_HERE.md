@@ -1,3 +1,9 @@
+## Aktuell: Geschützte Kundenvorschau im Händlerhost – 10.10.2026
+
+Auf `2662ddd` weitergeführt: Acryl-/Schiefer-Renderer und freie Gestaltung mit angemeldeten API-Aufrufen, festgelegter Produktrevision, privaten Bildern und Entwurfssicherung verbunden. 40 gezielte Node-Tests und tatsächliche Desktop-/Mobilbedienung mit synthetischer Händleridentität bestanden. [Abnahme](docs/releases/20261010/MERCHANT-PREVIEW.md). Breite Prüfung: 655 Tests, zunächst ein fehlender Browserkontext im Kartentest; korrigiert und 16 betroffene Folgeprüfungen bestanden. Zusätzlich 5 Prüfungen für den gesperrten, gesicherten Installationswechsel bestanden.
+
+Zahlungs-Testmodus vom Nutzer bestätigt. Noch keine echte Bestellung oder App-Umschaltung. Nächster Schritt: versioniertes Händlerpaket mit privater Bestandssicherung installieren; danach Shopify-App-Anschluss und operative Bestellprüfung. Die vorhandene Kundenwerkstatt bleibt bis zum geprüften Anschluss erhalten.
+
 ## Aktuell: Schieferprodukt, Originalressourcen und private Prüfstrecke – 10.10.2026
 
 Auf `c628d88` weiterentwickelt: idempotente Schieferübernahme, neun Befestigungen, Original-Schrift-/Motiv-/Materialressourcen, Preisformular und Kunden-Prüfstand. 616 Tests bestanden, keine Fehler/Überspringungen. Tatsächlicher Desktop-/Mobilbrowser mit der wiedergewonnenen Gedenktafel: alle neun Preise, Textänderung und private Sicherung bestanden; daraus maßhaltige Vektor-Gravur-PDF erzeugt. [Abnahme und Grenzen](docs/releases/20261010/SLATE-ADAPTER.md).

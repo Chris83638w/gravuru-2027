@@ -1,5 +1,5 @@
 import {merchantRequest} from './merchant-request.mjs';
-const required = () => globalThis.document?.querySelector('meta[name=gravuru-merchant-auth]')?.content === 'required';
+const required=()=>{try{if(globalThis.window&&window.parent!==window&&typeof window.parent.GravuruMerchantRequest==='function')return true;}catch{}return globalThis.document?.querySelector('meta[name=gravuru-merchant-auth]')?.content==='required';};
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function merchantImageAttribute(url, svg=false, authenticated=required()) {
   return `${authenticated?'data-merchant-src':svg?'href':'src'}="${escape(url)}"`;
@@ -41,7 +41,7 @@ export function createMerchantMediaLoader({request=merchantRequest,createURL=URL
   return {load,release,prune(){for(const element of active.keys())if(!element.isConnected)release(element);},dispose(){for(const element of active.keys())release(element);}};
 }
 export function installMerchantMedia(doc=globalThis.document) {
-  if(!doc?.querySelector('meta[name=gravuru-merchant-auth]'))return;
+  if(!doc||!required())return;
   const loader=createMerchantMediaLoader(),waiting=new Set();
   const load=element=>loader.load(element,element.getAttribute('data-merchant-src')).catch(()=>element.setAttribute('data-media-error','Bildquelle nicht verfügbar.'));
   const visibility=typeof IntersectionObserver==='undefined'?null:new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){waiting.delete(entry.target);visibility.unobserve(entry.target);load(entry.target);}},{rootMargin:'240px'});

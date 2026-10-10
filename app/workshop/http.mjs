@@ -98,7 +98,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   function customerResult(draft,token,state=draft.state){
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
     const resolved=resolveFormCustomer(record.document,draft.designId,state,{assets,fonts:formFonts,profiles:record.metadata.profiles,media:id=>customerDrafts.photo(draft.id,token,id)});
-    const surface=materialPreview(record.document),base=surface.svg||contours.preview(record.document.form.contourId).toString(),overlay=formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id))});
+    const surface=materialPreview(record.document),base=surface.svg||contours.preview(record.document.form.contourId).toString(),overlay=formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')});
     return {draft:{...draft,state},product:{id:record.id,revision:record.revision,profiles:record.metadata.profiles||null,name:record.document.name,materialName:FORM_MATERIALS.find(m=>m.id===record.document.material.id)?.name||record.document.material.id,thicknessMm:record.document.material.thicknessMm,basePriceCents:record.document.basePriceCents,method:record.document.processingMethod,geometry:{widthMm:record.document.form.geometry.widthMm,heightMm:record.document.form.geometry.heightMm,holeCount:record.document.form.geometry.holeCount},designs:record.document.designs.map(d=>({id:d.id,name:d.name})),sourceFields:[...source.fields,...resolved.addedFields.map(f=>({...f,customerAdded:true}))],additions:additionPolicy(source)},svg:composeMaterialPreview(base,overlay),artworkSvg:`<svg xmlns="http://www.w3.org/2000/svg" width="${record.document.form.geometry.widthMm}mm" height="${record.document.form.geometry.heightMm}mm" viewBox="0 0 ${record.document.form.geometry.widthMm} ${record.document.form.geometry.heightMm}">${formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')})}</svg>`,contourPath:record.document.form.geometry.contours.map(c=>c.d+' Z').join(' '),warnings:resolved.warnings,ready:resolved.ready,photos:[...resolved.photos.values()].map(p=>({mediaId:p.mediaId,width:p.width,height:p.height})),surfaceAvailable:Boolean(surface.svg)};
   }
   function embedMaterialSurface(config){
@@ -275,6 +275,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         fail(405,'method_not_allowed','Diese Ausführungsaktion ist nicht möglich.');
       }
       if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:merchantSession?'shopify-merchant-test':'local-operator'});
+      const customerModel=pathname.match(/^\/api\/workshop\/customer-model\/(cfg_[a-f0-9-]{36})$/);
+      if(customerModel&&method==='GET'){
+        if(!url.searchParams.has('revision'))fail(422,'revision_required','Eine feste Produktrevision ist erforderlich.');
+        return json(res,200,model(customerModel[1],url.searchParams.get('revision')));
+      }
       if(pathname==='/api/workshop/production-profiles'){
         if(method==='GET')return json(res,200,{profiles:productionProfiles.list(),machines:PRODUCTION_MACHINES});
         if(method==='POST')return json(res,201,productionProfiles.create((await body(req)).document));
@@ -436,7 +441,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         }else if(method!=='GET')fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
         if(formMatch[2]==='form-preview'){
           verifyForm(document);
-          const svg=contours.preview(document.form.contourId).toString(),surface=materialPreview(document),overlay=formDesignOverlay(document,formFonts,url.searchParams.get('designId')||document.defaultDesignId);
+          const svg=contours.preview(document.form.contourId).toString(),surface=materialPreview(document),overlay=formDesignOverlay(document,formFonts,url.searchParams.get('designId')||document.defaultDesignId,{sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')});
           return json(res,200,{svg,designSvg:overlay?svg.replace('</svg>',overlay+'</svg>'):null,materialPreview:{...surface,svg:surface.svg?composeMaterialPreview(surface.svg,overlay):null},geometry:document.form.geometry,readiness:formReadiness(document),revision:record.revision});
         }
         const bytes=await formContourPdf(document,record);

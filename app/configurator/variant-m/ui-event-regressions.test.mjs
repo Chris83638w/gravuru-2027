@@ -1,3 +1,4 @@
+import {previewResourceURL} from './preview-resource.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -113,7 +114,7 @@ test('fixed acrylic photo: actual editor apply keeps shape/geometry and remains 
 });
 test('non-replaceable photo retains its artwork and is not redecorated as an unnamed upload button',()=>{
  const object={id:'photo-main',type:'photoSlot',x:75,y:60,w:100,h:90},el={uxCanEdit:()=>false};
- const env={el,config:{},files:new Map(),ROOT:'/acrylic-assets/',rawSVG:()=>undefined};
+ const env={el,config:{},files:new Map(),ROOT:'/acrylic-assets/',rawSVG:()=>undefined,previewResourceURL};
  vm.runInNewContext(block('acrylic-scene.mjs',' el.uxObjectSVG=function(o){','\n };'),env);
  const locked=el.uxObjectSVG(object);
  assert.match(locked,/reference\.png/);assert.match(locked,/aria-hidden="true"/);assert.match(locked,/tabindex="-1"/);

@@ -15,4 +15,8 @@ export function createMerchantRequest({fetchImpl = globalThis.fetch, bridge = ()
     return fetchImpl(path, {...options, headers, credentials: 'same-origin', redirect: 'error', cache: 'no-store'});
   };
 }
-export const merchantRequest = createMerchantRequest();
+const directRequest=createMerchantRequest();
+export const merchantRequest=(path,options)=>{
+ let parent;try{if(globalThis.window&&window.parent!==window)parent=window.parent.GravuruMerchantRequest;}catch{}
+ return typeof parent==='function'?parent(path,options):directRequest(path,options);
+};

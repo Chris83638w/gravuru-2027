@@ -206,3 +206,16 @@ test('private dashboard preview passes through actual authenticated host and pre
   assert.equal((await request('/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png')).status,200);
   assert.equal((await request('/_runtime/other-file.json')).status,404);
 });
+
+test('merchant customer preview protects revision data and confines legacy script permissions to its renderer',async t=>{
+ const {request,workshop}=setup(t),headers={authorization:jwt()},route='/api/workshop/customer-model/'+workshop.defaultId;
+ assert.equal((await request(route+'?revision=1')).status,401);
+ assert.equal((await request(route,{headers})).status,422);
+ assert.equal((await request(route+'?revision=1',{headers:{...headers,origin:'https://foreign.invalid'}})).status,403);
+ const model=await request(route+'?revision=1',{headers});assert.equal(model.status,200,model.bytes.toString());assert.match(model.headers['cache-control'],/no-store/);assert.equal(JSON.parse(model.bytes).configuration.revision,1);assert.ok(!model.bytes.includes(sessions.secret));
+ for(const route of ['/werkstatt/kundenansicht/','/workshop-ui/customer-preview.mjs','/workshop-ui/customer-preview.css']){const response=await request(route);assert.equal(response.status,200,route);assert.ok(!response.headers['content-security-policy'].includes('unsafe-eval'));}
+ const legacy=await request('/_merchant-editor.html');assert.equal(legacy.status,200);assert.match(legacy.headers['content-security-policy'],/frame-ancestors 'self'/);assert.match(legacy.headers['content-security-policy'],/unsafe-eval/);assert.ok(!legacy.bytes.includes('shopify-api-key'));
+ const form=await request('/_merchant-form-editor.html');assert.equal(form.status,200);assert.match(form.headers['content-security-policy'],/frame-ancestors 'self'/);assert.ok(!form.headers['content-security-policy'].includes('unsafe-eval'));
+ assert.equal((await request('/_merchant-editor.html',{headers:{'sec-fetch-site':'cross-site'}})).status,403);
+ assert.equal((await request('/models.json',{headers})).status,404);
+});

@@ -1,3 +1,5 @@
+// The merchant preview provides a same-origin request broker with fresh App Bridge tokens.
+const request=(()=>{try{return window.parent.GravuruMerchantRequest||globalThis.fetch;}catch{return globalThis.fetch;}})();
 import {installFormPanels} from '/configurator/variant-m/form-panels.mjs';
 import {emptyPixelPosition} from '/configurator/variant-m/motif-placement.mjs';
 import {resizeField,scopedSvg} from './form-interaction.mjs';
@@ -12,7 +14,7 @@ const fields=()=>[...(state?.fields||[]),...(state?.additions||[])];
 const sources=()=>[...(result?.product.sourceFields||[]).filter(f=>!f.customerAdded),...(state?.additions||[]).map(f=>({...f,label:f.type==='text'?'Eigener Text':motifs.find(m=>m.key===f.motifKey)?.name||'Motiv',customerAdded:true,allowMove:true,allowScale:true,allowDelete:true,allowColor:true}))];
 const value=()=>fields().find(f=>f.id===selected),source=()=>sources().find(f=>f.id===selected);
 function notice(message,error=false){$('#customer-status').textContent=message;$('#customer-status').classList.toggle('error',error);$('#direct-status').textContent=message;$('#direct-status').classList.toggle('error',error);}
-async function api(url,data,method='POST',privateRequest=false,access=credential){const headers={...(privateRequest?{'X-Gravuru-Draft':access.token}:{}),...(data?{'Content-Type':'application/json','X-Gravuru-CSRF':csrf}:{})};const r=await fetch(url,{headers,...(data?{method,body:JSON.stringify(data)}:{})}),v=await r.json();if(!r.ok)throw Object.assign(Error(v.error?.message||'Anfrage fehlgeschlagen.'),{status:r.status});return v;}
+async function api(url,data,method='POST',privateRequest=false,access=credential){const headers={...(privateRequest?{'X-Gravuru-Draft':access.token}:{}),...(data?{'Content-Type':'application/json','X-Gravuru-CSRF':csrf}:{})};const r=await request(url,{headers,...(data?{method,body:JSON.stringify(data)}:{})}),v=await r.json();if(!r.ok)throw Object.assign(Error(v.error?.message||'Anfrage fehlgeschlagen.'),{status:r.status});return v;}
 function sync(){for(const e of document.querySelectorAll('button,input,select,textarea'))e.disabled=busy;$('#save-draft').disabled=busy||!dirty||!valid;$('#apply-direct').disabled=busy||!valid;$('#capture-review').disabled=busy||!valid||!result;$('#undo').disabled=busy||!history.length;$('#save-state').textContent=dirty?'Ungespeicherte Änderungen':'Entwurf gespeichert';if(!busy){applyRights();syncAdditions();}panels?.sync();}
 const choices=()=>result?.product.profiles?.selections;
 function availableFonts(){const ids=choices()?.fonts;return ids==null?fonts:ids.map(id=>fonts.find(f=>f.id===id)).filter(Boolean);}

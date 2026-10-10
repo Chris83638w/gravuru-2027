@@ -1,3 +1,4 @@
+import {previewResourceURL} from './preview-resource.mjs';
 import {ACRYLIC_BASES,acrylicSelection,containAcrylicObject} from './acrylic-product.mjs';
 import {money} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
@@ -22,7 +23,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    if(o.id!=='photo-main'||files.has(o.uxUploadId))return rawSVG(o);
    if(o.uxHidden)return '';
    const exampleResource=config.localResources?.photoExamples?.find(e=>e.designId===el.state.designId&&e.slotId===o.id);
-   const asset=files.get(o.uxUploadId),url=asset?.url||(exampleResource?'/api/workshop/design-assets/'+exampleResource.assetId+'/preview.svg':ROOT+'reference.png');
+   const asset=files.get(o.uxUploadId),url=asset?.url||(exampleResource?previewResourceURL('/api/workshop/design-assets/'+exampleResource.assetId+'/preview.svg'):ROOT+'reference.png');
    const src=String(url).replaceAll('&','&amp;').replaceAll('"','&quot;');
    const example=!asset;
    const picture=example&&!exampleResource?`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="130 101 827 708" preserveAspectRatio="xMidYMid slice"><image href="${src}" width="1086" height="1448"/></svg>`:`<image href="${src}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="xMidYMid slice"/>`;

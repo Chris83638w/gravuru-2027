@@ -1,3 +1,4 @@
+import {previewResourceURL} from './preview-resource.mjs';
 import {photoShape} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {selectedProfile,designFromState} from './contract.mjs';
@@ -13,7 +14,7 @@ export async function printArtwork({el,config,files}){
   el.state.selected=null;
   for(const o of el.state.objects){if(o.uxHidden)continue;if(o.type==='photoSlot'&&!o.uxUploadId){
     const example=config.localResources?.photoExamples?.find(e=>e.designId===el.state.designId&&e.slotId===o.id);
-    if(example){const clip='print-example-'+example.assetId;markup.push(`<g transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><defs><clipPath id="${clip}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${clip})"><image href="/api/workshop/design-assets/${example.assetId}/preview.svg" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g></g>`);examplePhotos.push(o.id);}
+    if(example){const clip='print-example-'+example.assetId;markup.push(`<g transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><defs><clipPath id="${clip}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${clip})"><image href="${previewResourceURL('/api/workshop/design-assets/'+example.assetId+'/preview.svg')}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g></g>`);examplePhotos.push(o.id);}
     else{const picture=el.uxObjectSVG(o);if(!picture&&o.required)throw Error('Bitte für den benötigten Fotobereich ein Foto hochladen.');markup.push(picture||'');if(picture)examplePhotos.push(o.id);}continue;
    }if(o.uxUploadId&&!files.has(o.uxUploadId))throw Error('Ein hochgeladenes Bild fehlt. Bitte erneut auswählen.');if(o.type==='text')markup.push(`<g transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})" fill="${esc(o.color||'#202824')}">${textPaths(o,el.fontData)}</g>`);else markup.push(el.objectSVG(o)||'');}
  }finally{el.state.selected=selection;}
@@ -28,7 +29,7 @@ export async function printArtwork({el,config,files}){
   const href=image.getAttribute('href')||image.getAttributeNS('http://www.w3.org/1999/xlink','href');if(!href)throw Error('Bildquelle fehlt.');
   if(!cache.has(href)){
    const u=new URL(href,location.href);if(!['data:','blob:'].includes(u.protocol)&&u.origin!==location.origin)throw Error('Externe Bildquelle wird nicht exportiert.');
-   const known=[...files.values()].find(f=>f.url===href),blob=known?(known.blob||known.file):await fetch(href,{credentials:'same-origin'}).then(r=>{if(!r.ok)throw Error('Motivbild fehlt.');return r.blob();});
+   const known=[...files.values()].find(f=>f.url===href),blob=known?(known.blob||known.file):await ((u.origin===location.origin&&u.pathname.startsWith('/api/workshop/')&&window.parent.GravuruMerchantRequest)?window.parent.GravuruMerchantRequest(u.pathname+u.search):fetch(href,{credentials:'same-origin'})).then(r=>{if(!r.ok)throw Error('Motivbild fehlt.');return r.blob();});
    cache.set(href,await blobURL(blob));
   }
   image.removeAttributeNS('http://www.w3.org/1999/xlink','href');image.setAttribute('href',cache.get(href));

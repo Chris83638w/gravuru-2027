@@ -13,6 +13,7 @@ import tempfile
 import time
 from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright, expect
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / '.test-output/merchant-host'
@@ -22,6 +23,7 @@ report = {'result': 'RUNNING', 'scope': 'local real runtime; simulated HTTPS ing
 with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
     folder = Path(tmp)
     (folder / '.synthetic-merchant-runtime').touch()
+    photo=folder/'synthetic.png';Image.new('RGB',(600,800),'#748da4').save(photo)
     log = (folder / 'fixture.log').open('w')
     server = subprocess.Popen(['node', str(ROOT / 'scripts/fixtures/merchant-host.mjs'), str(folder)],
                               cwd=ROOT, env=dict(os.environ), stdout=log, stderr=log)
@@ -72,18 +74,45 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             page.locator('#create-submit').click()
             expect(page.locator('#create-dialog')).not_to_be_visible(timeout=30000)
             page.goto(ready['origin'] + '/werkstatt/')
-            expect(page.locator('#product-count')).to_have_text('1', timeout=30000)
+            expect(page.locator('#product-count')).to_have_text('2', timeout=30000)
             expect(page.locator('#product-list')).to_contain_text('Synthetischer Händlerstart')
             page.wait_for_function("() => [...document.querySelectorAll('#product-list img')].some(img => img.src.startsWith('blob:') && img.complete && img.naturalWidth > 0)", timeout=30000)
             page.screenshot(path=str(OUT / 'merchant-desktop.png'), full_page=True)
+            page.locator('#product-list .product-card').filter(has_text='Synthetischer Händlerstart').locator('[data-product-id]').first.click()
+            expect(page.locator('#customer-view')).to_be_visible(timeout=30000)
+            page.locator('#customer-view').click()
+            expect(page.locator('#editor iframe')).to_be_visible(timeout=30000)
+            frame = page.frame_locator('#editor iframe')
+            expect(frame.locator('.completion-finish')).to_be_visible(timeout=30000)
+            frame.locator('[data-ux-file]').set_input_files(str(photo))
+            expect(frame.locator('.ux-upload-thumb')).to_be_visible(timeout=30000)
+            frame.locator('.completion-finish').click()
+            frame.locator('[data-acrylic-review]').click()
+            expect(frame.locator('[data-acrylic-review-link]')).to_be_visible(timeout=30000)
+            page.screenshot(path=str(OUT / 'merchant-customer-desktop.png'), full_page=True)
             page.set_viewport_size({'width': 390, 'height': 844})
             page.screenshot(path=str(OUT / 'merchant-mobile.png'), full_page=True)
             overflow = page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
             assert not overflow and not errors
-            assert api_checks and all(c['authenticated'] and c['status'] < 400 for c in api_checks), 'Authenticated UI requests must succeed'
+            page.goto(ready['origin']+'/werkstatt/formprodukt/?configuration='+ready['form']['id'])
+            expect(page.locator('#customer-view')).to_be_visible(timeout=30000)
+            page.locator('#customer-view').click()
+            form_frame=page.frame_locator('#editor iframe')
+            expect(form_frame.locator('#customer-workspace')).to_be_visible(timeout=30000)
+            expect(form_frame.locator('#customer-title')).to_have_text('Synthetische Händlerform')
+            form_frame.locator('#capture-review').click()
+            expect(form_frame.locator('#review-receipt')).to_contain_text('gesichert',timeout=30000)
+            page.screenshot(path=str(OUT/'merchant-form-mobile.png'),full_page=True)
+            assert not page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
+            assert not errors
+
+            report.update(apiRequests=api_checks,javascriptErrors=errors)
+            assert api_checks and all(c['authenticated'] and c['status'] < 400 for c in api_checks), 'Authenticated UI requests must succeed: '+str([c for c in api_checks if not c['authenticated'] or c['status']>=400])
             report.update(result='PASS', apiRequests=api_checks, javascriptErrors=errors,
                           checks={'realMerchantUiLoaded': True, 'freshSyntheticBearerUsed': True,
                                   'productCreatedAndReopened': True, 'authenticatedPreviewLoaded': True,
+                                  'customerEditorLoaded': True, 'privateCustomerSnapshotSaved': True,
+                                  'freeFormCustomerEditorLoaded': True, 'freeFormSnapshotSaved': True,
                                   'mobileOverflow': False, 'privateBackendDataRequiresBearer': True})
             context.unroute_all(behavior='wait')
             browser.close()

@@ -27,7 +27,7 @@ def fresh_path(value):
     return p
 
 
-def validated_archive(archive, digest):
+def validated_archive(archive, digest, scope='private-operator-test'):
     with archive.open('rb') as stream:
         actual = hashlib.file_digest(stream, 'sha256').hexdigest()
     if not re.fullmatch('[0-9a-f]{64}', digest) or actual != digest:
@@ -45,7 +45,7 @@ def validated_archive(archive, digest):
             if any(part in {'.git', '.local-data', 'node_modules', '__pycache__'} or part.startswith('.env') for part in p.parts) or p.suffix in {'.db', '.sqlite', '.key', '.pem'}:
                 raise ValueError('Private/generated archive entry')
         manifest = json.loads(z.read('PACKAGE-MANIFEST.json'))
-        if manifest['scope'] != 'private-operator-test' or manifest['shopifyConnected'] is not False:
+        if manifest['scope'] != scope or manifest['shopifyConnected'] is not False:
             raise ValueError('This installer requires the separate operator-test package')
         records = manifest['files']
         if len({v['path'] for v in records}) != len(records) or set(names) != {v['path'] for v in records} | {'PACKAGE-MANIFEST.json'}:

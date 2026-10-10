@@ -3,10 +3,9 @@ import {ensureOrderSubscription,ORDER_WEBHOOK_URI,ORDER_FIELDS,matchesOrderSubsc
 function fixture({scope=true,identity=true,conflict=false,prior=false,uncertain=false}={}){
  let entries=conflict?[{uri:ORDER_WEBHOOK_URI,id:'other'}]:[],mutations=0,attempts=0,reads=0;
  const item={id:'gid://shopify/WebhookSubscription/901',uri:ORDER_WEBHOOK_URI,topic:'ORDERS_PAID',format:'JSON',filter:'test:true',includeFields:[...ORDER_FIELDS],apiVersion:{handle:'2026-07'}};
- const input={secret:'synthetic_private_secret',priorAttempt:prior,beforeCreate:()=>{attempts++;},fetchImpl:async(url,o)=>{
+ const input={secret:'synthetic_private_secret',priorAttempt:prior,beforeCreate:()=>{attempts++;},probeImpl:async()=>({status:401}),fetchImpl:async(url,o)=>{
   assert.equal(o.redirect,'error');
   if(url.endsWith('/access_token'))return Response.json({access_token:'synthetic_private_access_token'});
-  if(url===ORDER_WEBHOOK_URI){assert.equal(o.body,'{}');return new Response('{}',{status:401});}
   assert.equal(url,'https://gravuru-design.myshopify.com/admin/api/2026-07/graphql.json');
   const {query,variables}=JSON.parse(o.body);let data;
   if(query.includes('Identity'))data={shop:{myshopifyDomain:'gravuru-design.myshopify.com'},currentAppInstallation:{app:{id:identity?'gid://shopify/App/423276544001':'other'},accessScopes:scope?[{handle:'read_orders'}]:[]}};

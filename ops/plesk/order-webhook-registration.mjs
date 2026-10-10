@@ -1,5 +1,5 @@
-import {ORDER_WEBHOOK_PATH} from '../../app/workshop/shopify-order-webhook.mjs';
-export const ORDER_WEBHOOK_URI='https://app-2027.gravuru-designwerkstatt.de'+ORDER_WEBHOOK_PATH;
+import {ORDER_WEBHOOK_URI,probeOrderWebhook} from './order-webhook-probe.mjs';
+export {ORDER_WEBHOOK_URI} from './order-webhook-probe.mjs';
 export const ORDER_FIELDS=Object.freeze(['id','test','financial_status','cancelled_at','currency','updated_at','line_items.id','line_items.variant_id','line_items.quantity','line_items.price','line_items.properties','customer.id']);
 export const ORDER_QUERY='query GravuruOrderWebhookSubscriptions { webhookSubscriptions(first: 100, topics: [ORDERS_PAID]) { nodes { id topic uri format filter includeFields apiVersion { handle } } pageInfo { hasNextPage } } }';
 export const ORDER_MUTATION='mutation GravuruCreateOrderWebhook($subscription: WebhookSubscriptionInput!) { webhookSubscriptionCreate(topic: ORDERS_PAID, webhookSubscription: $subscription) { webhookSubscription { id topic uri format filter includeFields apiVersion { handle } } userErrors { field message } } }';
@@ -9,7 +9,7 @@ const shop='gravuru-design.myshopify.com',clientId='9640dd7a6907f0c73e7013ea8c24
 export function matchesOrderSubscription(v){return v?.topic==='ORDERS_PAID'&&v.uri===ORDER_WEBHOOK_URI&&v.format==='JSON'&&v.filter==='test:true'&&v.apiVersion?.handle==='2026-07'&&Array.isArray(v.includeFields)&&JSON.stringify([...v.includeFields].sort())===JSON.stringify([...ORDER_FIELDS].sort())&&/^gid:\/\/shopify\/WebhookSubscription\/[0-9]+$/.test(v.id);}
 // Operator-only fixed action. Uses the owning app; cannot register arbitrary
 // endpoints, access orders, edit products, or issue payments/fulfillments.
-export async function ensureOrderSubscription({secret,priorAttempt=false,beforeCreate,fetchImpl=globalThis.fetch}){
+export async function ensureOrderSubscription({secret,priorAttempt=false,beforeCreate,fetchImpl=globalThis.fetch,probeImpl=probeOrderWebhook}){
  if(typeof secret!=='string'||!/^[A-Za-z0-9_-]{16,256}$/.test(secret)||typeof beforeCreate!=='function')fail('registration_config');
  let token;
  async function request(url,options,{version=false}={}){
@@ -34,8 +34,8 @@ export async function ensureOrderSubscription({secret,priorAttempt=false,beforeC
  if(priorAttempt)fail('subscription_outcome_unresolved');
  // An unsigned request must fail at the deployed signature gate before any
  // subscription mutation. No synthetic payment is sent to the real service.
- let probe;try{probe=await fetchImpl(ORDER_WEBHOOK_URI,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}',redirect:'error',signal:AbortSignal.timeout(10000)});}catch{fail('endpoint_unavailable');}
- if(probe.status!==401)fail('endpoint_not_verified');await probe.body?.cancel();
+ let probe;try{probe=await probeImpl();}catch{fail('endpoint_unavailable');}
+ if(probe.status!==401)fail('endpoint_not_verified');
  const subscription={uri:ORDER_WEBHOOK_URI,format:'JSON',filter:'test:true',includeFields:[...ORDER_FIELDS]};
  await beforeCreate({schema:'gravuru-order-webhook-attempt/v1',uri:ORDER_WEBHOOK_URI,topic:'ORDERS_PAID',state:'sending'});
  const result=(await graphql(ORDER_MUTATION,{subscription})).webhookSubscriptionCreate;

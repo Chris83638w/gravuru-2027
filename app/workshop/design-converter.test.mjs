@@ -108,3 +108,15 @@ sys.stdout.buffer.write(doc.tobytes())`],{windowsHide:true,env});
   assert.equal(result.error?.code,'pdf_font_not_embedded');
   assert.match(result.error.message,/Text in Pfade/);
 });
+
+svgTest('PDF layer annotations are removed without relaxing visual or executable SVG restrictions',()=>{
+ const annotated=body=>`<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="120mm" height="80mm" viewBox="0 0 120 80">${body}</svg>`;
+ const result=convert(annotated('<g inkscape:groupmode="layer" inkscape:label="PDF layer"><path d="M1 1H20V20Z" fill="#123456"/></g>'));
+ assert.equal(result.error,undefined);assert.match(result.svg,/fill="#123456"/);assert.match(result.svg,/M1 1H20V20Z/);assert.doesNotMatch(result.svg,/inkscape|groupmode|PDF layer/);
+ for(const body of ['<g inkscape:groupmode="other"/>','<g inkscape:onload="bad"/>','<g inkscape:groupmode="layer"><image href="https://foreign.invalid/a.png"/></g>'])assert.ok(convert(annotated(body)).error);
+});
+
+test('layered PDF keeps its selected physical page and vector artwork',{skip:!pdfAvailable?'PyMuPDF optional dependency unavailable':false},()=>{
+ const source=spawnSync(python,['-c','import pymupdf,sys; d=pymupdf.open(); p=d.new_page(width=220*72/25.4,height=140*72/25.4); layer=d.add_ocg("Synthetic design layer"); p.draw_rect(pymupdf.Rect(10,10,80,60),color=(0,0,0),oc=layer); sys.stdout.buffer.write(d.tobytes())'],{env,maxBuffer:1024*1024});assert.equal(source.status,0);
+ const result=convert(source.stdout,'pdf');assert.equal(result.error,undefined);assert.ok(Math.abs(result.widthMm-220)<.001);assert.ok(Math.abs(result.heightMm-140)<.001);assert.match(result.svg,/<(?:\w+:)?path/);assert.doesNotMatch(result.svg,/inkscape|groupmode/);
+});

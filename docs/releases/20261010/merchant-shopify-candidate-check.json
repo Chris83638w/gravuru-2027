@@ -1,0 +1,22 @@
+{
+  "moduleCount": 7,
+  "exactConfigurationPreservation": false,
+  "changedFields": [
+    "app_home.app_url",
+    "function.module_id",
+    "function.module_metadata.module_wasm_size_bytes"
+  ],
+  "released": false,
+  "themeFilesUnchanged": true,
+  "scopesUnchanged": true,
+  "webhooksUnchanged": true,
+  "functionQueryAndSettingsUnchanged": true,
+  "function": {
+    "previousModuleId": "e9c44f49-9a32-4548-a11b-87e89d798757",
+    "nextModuleId": "e4c70506-3181-4f79-b641-c21ba8794d53",
+    "previousBytes": 3332,
+    "bytes": 3294,
+    "wasmSha256": "f9360588df38eb108ec77ecd0276f46f4524841949c15a76d9789f332adb7890"
+  },
+  "rollbackVersionId": "gid://shopify/Version/1146632241153"
+}

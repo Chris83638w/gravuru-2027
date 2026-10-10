@@ -140,6 +140,12 @@ def sanitize_svg(raw):
                 continue
             if key == '{' + XLINK_NS + '}href':
                 key = 'href'
+            elif key in ('{http://www.inkscape.org/namespaces/inkscape}groupmode', '{http://www.inkscape.org/namespaces/inkscape}label'):
+                # MuPDF annotates PDF optional-content layers. These editor-only
+                # labels do not affect geometry, color, visibility or rendering.
+                if key.endswith('}groupmode'):
+                    require(value == 'layer', 'Unbekannte SVG-Ebenenannotation.')
+                continue
             elif key == '{' + XML_NS + '}space':
                 require(value in ('preserve', 'default'), 'Ungültiger XML-Abstandswert.')
                 continue

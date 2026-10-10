@@ -1,3 +1,9 @@
+## Aktuell: Serverinstallation und PDF-Originale – 10.10.2026
+
+Händlerpaket `2d86c73` auf dem getrennten HTTPS-Host installiert und geprüft; bisherige Startdatei, Code und alle drei Händlerdatenbanken auf dem Server sowie privat in dieser Cloud gesichert, Prüfsummen/SQLite-Integrität bestanden. Bestehende Kundenwerkstatt unverändert. Shopify-Kandidat mit sieben Modulen erstellt, noch nicht freigegeben; Theme/Berechtigungen/Webhooks unverändert, reproduzierte Preisfunktion separat geprüft.
+
+Beim anschließenden Import der Original-PDFs gefunden: MuPDF-Ebenenannotation wurde korrekt sicherheitshalber abgewiesen. Nicht darstellungswirksame `groupmode=layer`-/Label-Angaben werden jetzt entfernt; 19 Tests und alle 16 tatsächlichen Original-PDFs bestanden. Originalbytes bleiben unverändert. Nächster Schritt: korrigiertes Paket installieren, Originalbibliothek übernehmen und geprüfte Händleradresse in Shopify freigeben. Echte Händleranmeldung und bestätigte Testbestellung bleiben gesonderte Nachweise.
+
 ## Aktuell: Geschützte Kundenvorschau im Händlerhost – 10.10.2026
 
 Auf `2662ddd` weitergeführt: Acryl-/Schiefer-Renderer und freie Gestaltung mit angemeldeten API-Aufrufen, festgelegter Produktrevision, privaten Bildern und Entwurfssicherung verbunden. 40 gezielte Node-Tests und tatsächliche Desktop-/Mobilbedienung mit synthetischer Händleridentität bestanden. [Abnahme](docs/releases/20261010/MERCHANT-PREVIEW.md). Breite Prüfung: 655 Tests, zunächst ein fehlender Browserkontext im Kartentest; korrigiert und 16 betroffene Folgeprüfungen bestanden. Zusätzlich 5 Prüfungen für den gesperrten, gesicherten Installationswechsel bestanden.

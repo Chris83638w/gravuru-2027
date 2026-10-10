@@ -1,0 +1,25 @@
+{
+  "serverBackupAndPrivateCloudCopy": true,
+  "databases": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 741376,
+      "hashVerified": true,
+      "quickCheck": "ok"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "hashVerified": true,
+      "quickCheck": "ok"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 28672,
+      "hashVerified": true,
+      "quickCheck": "ok"
+    }
+  ],
+  "runtimeArchiveHashVerified": true,
+  "privateContentsCommitted": false
+}

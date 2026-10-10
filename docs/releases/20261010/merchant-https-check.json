@@ -1,0 +1,57 @@
+{
+  "sourceCommit": "2d86c73b055a6832febdb02970cbf7024436ddb1",
+  "checks": [
+    {
+      "path": "/werkstatt/",
+      "status": 200,
+      "bytes": 13881,
+      "sha256": "ab85d6cc02738eb3b893b3383808590bd1423f8a8de88b385ea353d3dffac0e6",
+      "tlsVerified": true,
+      "redirected": false,
+      "merchantAuthRequired": true,
+      "csp": "default-src 'self'; script-src 'self' https://cdn.shopify.com/shopifycloud/app-bridge.js; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors https://gravuru-design.myshopify.com https://admin.shopify.com"
+    },
+    {
+      "path": "/werkstatt/kundenansicht/",
+      "status": 200,
+      "bytes": 1004,
+      "sha256": "e49b5b707f7ba807d98e64f9da15ef6f0c4939a6a069aef032fa0b052bef303b",
+      "tlsVerified": true,
+      "redirected": false
+    },
+    {
+      "path": "/workshop-ui/customer-preview.mjs",
+      "status": 200,
+      "bytes": 2819,
+      "sha256": "3846d541b20c778c6ebefd087a4814215e471437bca2e82e0153afaa55fe7eeb",
+      "tlsVerified": true,
+      "redirected": false,
+      "matchesSourceCommit": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 401,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tlsVerified": true,
+      "redirected": false
+    },
+    {
+      "path": "/models.json",
+      "status": 404,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tlsVerified": true,
+      "redirected": false
+    },
+    {
+      "path": "/PACKAGE-MANIFEST.json",
+      "status": 404,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tlsVerified": true,
+      "redirected": false
+    }
+  ],
+  "realMerchantLoginVerified": false
+}

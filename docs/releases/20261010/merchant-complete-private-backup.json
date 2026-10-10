@@ -1,0 +1,28 @@
+{
+  "schema": "gravuru-merchant-private-snapshot/v1",
+  "runtimeLockHeld": true,
+  "databases": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 1249280,
+      "sha256": "0114a412d4e0f786bf861d1c44fe11c9e178134b8c0a7b358b9872c2c5e5c1c9",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 15228928,
+      "sha256": "ca61d87380019f122d1fc6645ca226679ef63a59afe5a65c7c4f88a80af1fc49",
+      "quickCheck": "ok"
+    }
+  ],
+  "privateDataChanged": false,
+  "privateCloudCopyVerified": true,
+  "privateContentsCommitted": false,
+  "includesImportedOriginalLibrary": true
+}

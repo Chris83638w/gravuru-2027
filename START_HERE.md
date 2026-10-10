@@ -1,3 +1,13 @@
+## Aktuell: Händlerwerkstatt in Shopify veröffentlicht – 10.10.2026
+
+**Veröffentlichter Quellstand `21f9922`**, App-Version `gravuru-2027-merchant-20261010-build1` (`1162554900481`). Shopify-App „Gravuru Konfigurator“ öffnet jetzt `https://app-2027.gravuru-designwerkstatt.de/werkstatt/`. Alle sieben Module erhalten; Theme, Berechtigungen und Webhooks unverändert. Die Preisfunktion wurde aus gesicherten Quellen reproduziert und geprüft. Vorhandene Kundenwerkstatt unverändert.
+
+Versioniertes ZIP mit SHA-256 und isoliert geprüfter Installation gesichert. Alle 16 PDF-Originale privat importiert; ein ursprüngliches Design als bearbeitbare native Gedenktafel mit neun Befestigungen übernommen. Alle drei Händlerdatenbanken inklusive Originalbibliothek konsistent auf Plesk und privat in der Cloud gesichert, Prüfsummen und Integrität bestanden.
+
+[Veröffentlichungsbericht](docs/releases/20261010/RELEASE.md) · [Installationspaket](deliverables/merchant-originals-20261010/README.md) · [Shopify-Nachweis](docs/releases/20261010/merchant-publication.json).
+
+**Noch offen:** echte Händleranmeldung durch den Nutzer bestätigen; neue Warenkorb-/Bestellstrecke anschließen und im bestätigten Zahlungs-Testmodus abnehmen. Keine Testbestellung oder Maschinenabnahme behaupten. Historische Abschnitte darunter sind frühere Zustände.
+
 ## Aktuell: Serverinstallation und PDF-Originale – 10.10.2026
 
 Händlerpaket `2d86c73` auf dem getrennten HTTPS-Host installiert und geprüft; bisherige Startdatei, Code und alle drei Händlerdatenbanken auf dem Server sowie privat in dieser Cloud gesichert, Prüfsummen/SQLite-Integrität bestanden. Bestehende Kundenwerkstatt unverändert. Shopify-Kandidat mit sieben Modulen erstellt, noch nicht freigegeben; Theme/Berechtigungen/Webhooks unverändert, reproduzierte Preisfunktion separat geprüft.

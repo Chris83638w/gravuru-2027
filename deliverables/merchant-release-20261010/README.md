@@ -2,7 +2,7 @@
 
 Version **0.1.0-recovery.20261010+2d86c73b055a**, Quellcommit `2d86c73b055a6832febdb02970cbf7024436ddb1`.
 
-[ZIP](gravuru-merchant-live-20261010.zip) · [SHA-256](SHA256SUMS) · [Isolierte Installationsprüfung](../../docs/releases/20261010/merchant-package-install.json) · [Browserprüfung](../../docs/releases/20261010/MERCHANT-PREVIEW.md)
+[ZIP](gravuru-merchant-live-20261010.zip) · [SHA-256](SHA256SUMS) · [Isolierte Installationsprüfung](../../docs/releases/20261010/merchant-package-install-2d86c73.json) · [Browserprüfung](../../docs/releases/20261010/MERCHANT-PREVIEW.md)
 
 27.222.344 Bytes, 381 geprüfte Nutzdateien plus Manifest. SHA-256:
 

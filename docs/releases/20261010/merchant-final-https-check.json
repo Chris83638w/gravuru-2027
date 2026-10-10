@@ -1,0 +1,20 @@
+{
+  "sourceCommit": "21f9922b49ab20bbd28f6c2e55f2d6278da0cef1",
+  "checks": [
+    {
+      "path": "/werkstatt/",
+      "status": 200,
+      "tlsVerified": true
+    },
+    {
+      "path": "/werkstatt/kundenansicht/",
+      "status": 200,
+      "tlsVerified": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 401,
+      "tlsVerified": true
+    }
+  ]
+}

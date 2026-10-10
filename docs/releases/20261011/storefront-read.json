@@ -1,0 +1,9 @@
+{
+  "apiVersion": "2026-07",
+  "authentication": "tokenless",
+  "httpStatus": 200,
+  "productAvailable": false,
+  "productResult": null,
+  "mutationSent": false,
+  "source": "https://shopify.dev/docs/api/storefront/2026-07#tokenless-access"
+}

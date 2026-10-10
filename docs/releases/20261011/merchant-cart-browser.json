@@ -1,0 +1,304 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "realMerchantUiLoaded": true,
+    "freshSyntheticBearerUsed": true,
+    "productCreatedAndReopened": true,
+    "authenticatedPreviewLoaded": true,
+    "customerEditorLoaded": true,
+    "privateCustomerSnapshotSaved": true,
+    "freeFormCustomerEditorLoaded": true,
+    "freeFormSnapshotSaved": true,
+    "cartPreparationAndSavedBindingReuse": true,
+    "mobileOverflow": false,
+    "privateBackendDataRequiresBearer": true
+  },
+  "apiRequests": [
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/seed",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/variant-catalog",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/variant-catalog",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/customer-model/cfg_SYNTHETIC",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/acrylic-drafts",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/form-materials",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/form-preview",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/customer-model/cfg_SYNTHETIC",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/form-fonts",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/form-motifs",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/customer-drafts",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_SYNTHETIC/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/customer-drafts/draft_SYNTHETIC/review",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/review-snapshots",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/order-bindings",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/review-snapshots/proof_SYNTHETIC",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/review-snapshots/proof_SYNTHETIC",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/order-bindings",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/order-cart-preview",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/order-cart-preview",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    }
+  ],
+  "javascriptErrors": []
+}

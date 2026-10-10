@@ -1,0 +1,74 @@
+{
+  "result": "PASS",
+  "variantsChecked": 9,
+  "pricingRevision": "30",
+  "checks": [
+    {
+      "unitCents": 2299,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    },
+    {
+      "unitCents": 2598,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    },
+    {
+      "unitCents": 2698,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    },
+    {
+      "unitCents": 3197,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    },
+    {
+      "unitCents": 3297,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    },
+    {
+      "unitCents": 3697,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    },
+    {
+      "unitCents": 3598,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    },
+    {
+      "unitCents": 3798,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    },
+    {
+      "unitCents": 2798,
+      "functionPriceMatches": true,
+      "privateDraftOwnershipAccepted": true,
+      "unapprovedProductionStillBlocked": true
+    }
+  ],
+  "privateSourceCopied": true,
+  "sourceDataChanged": false,
+  "fontChange": {
+    "font": "Cormorant Garamond",
+    "changedTextElements": 2,
+    "productRevision": 2,
+    "originalRevisionPreserved": true
+  },
+  "bindingBatchAtomic": true,
+  "bindingBatchIdempotent": true,
+  "realShopifyRequests": 0,
+  "testOrderPlaced": false,
+  "productionApproved": false
+}

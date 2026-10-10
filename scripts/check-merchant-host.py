@@ -60,7 +60,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
                 headers = {**req.all_headers(), 'host': 'merchant.example', 'x-forwarded-proto': 'https'}
                 response = context.request.fetch(target, method=req.method, headers=headers, data=req.post_data_buffer)
                 if url.path.startswith('/api/workshop/'):
-                    api_checks.append({'path': url.path, 'status': response.status,
+                    api_checks.append({'path': url.path, 'status': response.status, 'method': req.method,
                                        'authenticated': headers.get('authorization', '').startswith('Bearer ')})
                 route.fulfill(status=response.status, headers=response.headers, body=response.body())
             context.route('**/*', route_request)
@@ -106,6 +106,22 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             assert not page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
             assert not errors
 
+            page.goto(ready['origin']+'/werkstatt/warenkorbpruefung/')
+            expect(page.locator('#prepare')).to_be_enabled(timeout=30000)
+            options=page.locator('#snapshot option').evaluate_all('(items)=>items.map(o=>({value:o.value,label:o.textContent}))')
+            form_snapshot=next(o['value'] for o in options if 'Synthetische Händlerform' in o['label'])
+            page.locator('#snapshot').select_option(form_snapshot)
+            expect(page.locator('#prepare')).to_be_enabled(timeout=30000)
+            page.locator('#shop').fill('gravuru-design.myshopify.com')
+            page.locator('#variant').fill('301')
+            page.locator('#prepare').click()
+            expect(page.locator('#notice')).to_contain_text('nichts an Shopify gesendet',timeout=30000)
+            expect(page.locator('#result-total')).to_contain_text('14,99')
+            page.locator('#prepare').click()
+            expect(page.locator('#notice')).to_contain_text('nichts an Shopify gesendet',timeout=30000)
+            assert sum(c['path']=='/api/workshop/order-bindings' and c['method']=='POST' for c in api_checks)==1
+            page.screenshot(path=str(OUT/'merchant-cart-mobile.png'),full_page=True)
+
             report.update(apiRequests=api_checks,javascriptErrors=errors)
             assert api_checks and all(c['authenticated'] and c['status'] < 400 for c in api_checks), 'Authenticated UI requests must succeed: '+str([c for c in api_checks if not c['authenticated'] or c['status']>=400])
             report.update(result='PASS', apiRequests=api_checks, javascriptErrors=errors,
@@ -113,6 +129,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
                                   'productCreatedAndReopened': True, 'authenticatedPreviewLoaded': True,
                                   'customerEditorLoaded': True, 'privateCustomerSnapshotSaved': True,
                                   'freeFormCustomerEditorLoaded': True, 'freeFormSnapshotSaved': True,
+                                  'cartPreparationAndSavedBindingReuse': True,
                                   'mobileOverflow': False, 'privateBackendDataRequiresBearer': True})
             context.unroute_all(behavior='wait')
             browser.close()

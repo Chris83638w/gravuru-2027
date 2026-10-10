@@ -1,3 +1,13 @@
+## Aktuell: Schiefer-Warenkorb und Preisvertrag geprüft – 11.10.2026
+
+Neuer Entwicklungsschritt: native Schiefer-Prüfstände werden für unveränderliche Testbestellzuordnungen erkannt. Aufpreise und Entwurfsreferenz bleiben durch Angebot, Warenkorbjournal, Shopify-Anfrage, Antwortprüfung und signierten Testbestelleingang erhalten. Expliziter tokenloser Storefront-Modus ergänzt; bestehende private Token-Konfiguration bleibt gültig. Bestehende Zuordnung wird in der Warenkorb-Vorbereitung wiederverwendet.
+
+119 gezielte Prüfungen und Händler-Browserprüfung mit synthetischer Identität bestanden. Alle neun Ausführungen aus einer privaten Kopie der tatsächlich installierten Gedenktafel gegen die archivierte Shopify-Preisfunktion geprüft; Original-Sicherungen unverändert. Eigene Shopify-App bestätigt Preisrevision 30, neun Varianten und Aufpreise. Das Produkt ist noch nicht im Onlineshop veröffentlicht. Kein Warenkorb oder Kauf im echten Shop erzeugt.
+
+Neu gefundene Grenze: PDF-EdwardianScriptITC-eb1411f1 enthält nur 24 Zeichen, z. B. kein großes T. Nutzer wählt eine vorhandene vollständige Werkstatt-Schrift: Cormorant Garamond mit Umlauten und † geprüft, neue Revision und atomare/idempotente neun Preisbindungen in privater Kopie bestanden. Produktions-/Warenkorbsperren bleiben bestehen; Bestell-Webhook ist nicht angeschlossen. Veröffentlichter Server weiterhin `21f9922`, bis ein neuer Aktivierungsnachweis vorliegt.
+
+[Prüfbericht](docs/releases/20261011/CART-INTEGRATION.md). Nächster Schritt: geprüfte Shop-Zuordnungen übernehmen und Testbestellstrecke mit tatsächlichem Bestelleingang anschließen. Historische Abschnitte folgen.
+
 ## Aktuell: Händlerwerkstatt in Shopify veröffentlicht – 10.10.2026
 
 **Veröffentlichter Quellstand `21f9922`**, App-Version `gravuru-2027-merchant-20261010-build1` (`1162554900481`). Shopify-App „Gravuru Konfigurator“ öffnet jetzt `https://app-2027.gravuru-designwerkstatt.de/werkstatt/`. Alle sieben Module erhalten; Theme, Berechtigungen und Webhooks unverändert. Die Preisfunktion wurde aus gesicherten Quellen reproduziert und geprüft. Vorhandene Kundenwerkstatt unverändert.

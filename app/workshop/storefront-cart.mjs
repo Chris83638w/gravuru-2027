@@ -1,4 +1,5 @@
 // Request preparation only. No network calls, payment or shop mutation.
+import {personalizationAttributes} from './cart-personalization.mjs';
 export const CART_CREATE = "mutation GravuruCartCreate($input: CartInput!) {\n  cartCreate(input: $input) {\n    cart {\n      id\n      checkoutUrl\n      lines(first: 2) {\n        nodes {\n          id\n          quantity\n          attributes { key value }\n          merchandise { ... on ProductVariant { id } }\n          cost { amountPerQuantity { amount currencyCode } totalAmount { amount currencyCode } }\n        }\n        pageInfo { hasNextPage }\n      }\n    }\n    userErrors { field message code }\n    warnings { code message }\n  }\n}";
 const fail = message => { throw Object.assign(Error(message), {status:422, code:'cart_handoff'}); };
 const cents = money => {
@@ -16,7 +17,7 @@ export function prepareCartRequest(offer) {
   return {query:CART_CREATE, variables:{input:{lines:[{
     merchandiseId:'gid://shopify/ProductVariant/'+offer.variantId,
     quantity:offer.quantity,
-    attributes:[{key:offer.property.name, value:offer.property.value}]
+    attributes:[{key:offer.property.name, value:offer.property.value}, ...personalizationAttributes(offer.personalization)]
   }]}}};
 }
 // A future transport must pass this check before presenting checkoutUrl.
@@ -31,6 +32,10 @@ export function verifyCartResponse(response, offer, shopDomain) {
   if (typeof cart?.id !== 'string' || !cart.id.startsWith('gid://shopify/Cart/') || !Array.isArray(lines) || lines.length !== 1 ||
       cart.lines.pageInfo?.hasNextPage !== false) fail('Shop-Warenkorb ist nicht vollständig bestätigt.');
   const line = lines[0], attributes = Array.isArray(line?.attributes) ? line.attributes.filter(a=>a?.key==='_gravuru_offer') : [];
+  for (const expectedAttribute of expected.attributes) {
+    const actual = Array.isArray(line?.attributes) ? line.attributes.filter(a=>a?.key===expectedAttribute.key) : [];
+    if (actual.length !== 1 || actual[0].value !== expectedAttribute.value) fail('Shop-Warenkorb hat die gesicherte Entwurfs- oder Preiszuordnung verändert.');
+  }
   if (line?.merchandise?.id !== expected.merchandiseId || line.quantity !== offer.quantity ||
       attributes?.length !== 1 || attributes[0].value !== offer.property.value ||
       cents(line?.cost?.amountPerQuantity) !== offer.unitCents ||

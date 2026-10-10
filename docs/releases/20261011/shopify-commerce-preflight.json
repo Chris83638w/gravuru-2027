@@ -1,0 +1,50 @@
+{
+  "installation": {
+    "shopDomain": "gravuru-design.myshopify.com",
+    "appId": "gid://shopify/App/423276544001",
+    "apiVersion": "2026-07",
+    "currency": "EUR",
+    "partnerDevelopment": false,
+    "scopes": [
+      "read_cart_transforms",
+      "read_files",
+      "read_metaobjects",
+      "read_products",
+      "read_publications",
+      "write_cart_transforms",
+      "write_files",
+      "write_metaobjects",
+      "write_products",
+      "write_publications"
+    ],
+    "scope": "admin-readonly",
+    "merchantLoginVerified": false,
+    "customerLoginVerified": false,
+    "safeCheckoutVerified": false
+  },
+  "product": {
+    "id": "gid://shopify/Product/16138083107196",
+    "status": "ACTIVE",
+    "publishedToOnlineStore": false,
+    "pricing": {
+      "schema": "gravuru-personalization-pricing/v1",
+      "enabled": true,
+      "productId": "gid://shopify/Product/16138083107196",
+      "revision": "30",
+      "currency": "EUR",
+      "extraMotifCents": 169,
+      "extraPhotoCents": 999,
+      "variants": {
+        "57509812633980": 2299,
+        "57509812666748": 2598,
+        "57509812699516": 2698,
+        "57509812732284": 3197,
+        "57509812765052": 3297,
+        "57509812797820": 3697,
+        "57509812830588": 3598,
+        "57509812863356": 3798,
+        "57509812896124": 2798
+      }
+    }
+  }
+}

@@ -11,7 +11,7 @@ import time
 import urllib.request
 
 ROOT=Path(__file__).resolve().parents[1]
-p=argparse.ArgumentParser();p.add_argument('archive',type=Path);args=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('archive',type=Path);p.add_argument('--report',type=Path,default=ROOT/'docs/releases/20261010/merchant-package-install.json');args=p.parse_args()
 archive=args.archive.resolve();sha=hashlib.sha256(archive.read_bytes()).hexdigest()
 with tempfile.TemporaryDirectory(prefix='gravuru-merchant-install-') as temporary:
  root=Path(temporary);fixture=root/'fixture';fixture.mkdir(mode=0o700);(fixture/'.synthetic-merchant-runtime').touch()
@@ -47,4 +47,4 @@ with tempfile.TemporaryDirectory(prefix='gravuru-merchant-install-') as temporar
    except urllib.error.HTTPError as error:assert error.code==401;checks['anonymousApiDenied']=True
   finally:process.terminate();process.wait(timeout=15)
  receipt.update(isolatedRuntimeStarted=True,syntheticDataOnly=True,checks=checks,result='PASS')
- output=ROOT/'docs/releases/20261010/merchant-package-install.json';output.write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt))
+ output=args.report;output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt))

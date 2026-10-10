@@ -1,0 +1,10 @@
+{
+  "targeted": {
+    "tests": 119,
+    "pass": 119,
+    "fail": 0,
+    "skipped": 0
+  },
+  "initialEnvironmentFailure": "Sandbox denied loopback listeners with EPERM; rerun with network permission passed.",
+  "scope": "Local tests; no real payment, order or production"
+}

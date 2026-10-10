@@ -7,6 +7,8 @@ const fields = `shop { myshopifyDomain currencyCode plan { partnerDevelopment } 
 const installationQuery = `query GravuruInstallationPreflight { ${fields} }`;
 const variantsQuery = `query GravuruVariantPreflight($ids: [ID!]!) { ${fields}
   nodes(ids: $ids) { ... on ProductVariant { id price selectedOptions { name value } product { id status } } } }`;
+const pricingQuery = `query GravuruProductPricingPreflight($id: ID!) { ${fields}
+  product(id: $id) { id status onlineStoreUrl pricing: metafield(namespace: "$app", key: "personalization") { jsonValue } } }`;
 const variantId = /^gid:\/\/shopify\/ProductVariant\/[1-9][0-9]{0,19}$/;
 const productId = /^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/;
 class ReadonlyError extends Error {}
@@ -14,7 +16,7 @@ export const preflightFailure = code => Object.assign(new ReadonlyError('Shopify
 const fail = code => {throw preflightFailure(code);};
 const tokenPattern = /^[\x21-\x7e]{16,4096}$/;
 
-// Only two fixed GraphQL queries are exposed. No arbitrary query, mutation,
+// Only fixed GraphQL queries are exposed. No arbitrary query, mutation,
 // access token getter, redirect, persistence or automatic HTTP retry.
 export function createShopifyAdminReadonly({readSecret}, {fetchImpl = globalThis.fetch, now = Date.now, timeoutMs = 20000} = {}) {
   if (typeof readSecret !== 'function' || typeof fetchImpl !== 'function' || typeof now !== 'function' || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) fail('configuration');
@@ -77,6 +79,18 @@ export function createShopifyAdminReadonly({readSecret}, {fetchImpl = globalThis
   }
   return Object.freeze({
     async checkInstallation() {return (await execute(installationQuery, {})).installation;},
+    async inspectProductPricing(id) {
+      if(typeof id!=='string'||!productId.test(id))fail('product_id');
+      const {data,installation}=await execute(pricingQuery,{id});
+      if(!installation.scopes.some(s=>s==='read_products'||s==='write_products'))fail('products_scope');
+      const product=data.product;
+      if(product===null)return {installation,product:null};
+      if(product?.id!==id||!['ACTIVE','DRAFT','ARCHIVED','UNLISTED'].includes(product.status)||
+          product.onlineStoreUrl!==null&&typeof product.onlineStoreUrl!=='string'||
+          product.pricing!==null&&(!product.pricing||!Object.hasOwn(product.pricing,'jsonValue')))fail('product_response');
+      return {installation,product:{id,status:product.status,publishedToOnlineStore:product.onlineStoreUrl!==null,
+        pricing:product.pricing===null?null:structuredClone(product.pricing.jsonValue)}};
+    },
     async inspectVariants(ids) {
       if (!Array.isArray(ids) || !ids.length || ids.length > 100 || ids.some(id => typeof id !== 'string' || !variantId.test(id)) || new Set(ids).size !== ids.length) fail('variant_ids');
       const requested = [...ids], {data, installation} = await execute(variantsQuery, {ids: requested});

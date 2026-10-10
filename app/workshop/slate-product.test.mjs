@@ -14,6 +14,7 @@ import {acrylicArtwork} from './acrylic-artwork.mjs';
 import {createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
 import {readReviewPackage,digest} from './review-package.mjs';
 import {importNativeSlate} from './slate-import.mjs';
+import {replaceNativeFont,bundledWorkshopFont} from './native-font-replacement.mjs';
 
 const resources = JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json', import.meta.url)));
 function fixture() {
@@ -113,4 +114,35 @@ test('legacy import is hash-bound and idempotent, and never overwrites a newer w
  config.basePriceCents+=1;const other=Buffer.from(JSON.stringify(config));await assert.rejects(importNativeSlate({repository},{sourceBytes:other,sourceSha256:digest(other)}),/anderen Inhalten/);
  config.workbench.revision=31;config.profile.revision='31';config.materialSurface='/api/product-workbench/assets/'+'a'.repeat(64)+'.png';const missing=Buffer.from(JSON.stringify(config));
  await assert.rejects(importNativeSlate({repository},{sourceBytes:missing,sourceSha256:digest(missing)}),/Materialoberfläche fehlt/);
+});
+
+
+test('approved complete font replacement fits whole-mm text and preserves original revisions and prices',t=>{
+ const repository=createProductRepository({filename:':memory:',validateDocument:validateProductDocument});t.after(()=>repository.close());
+ const source=fixture(),originalFont=source.profile.designs[0].objects[0].font;
+ const record=repository.create(makeProductDocument(source));
+ const chosen=originalFont==='Garamond Acryl'?'Freestyle Acryl':'Garamond Acryl';
+ const change=replaceNativeFont(record.document,{from:originalFont,to:chosen,font:resources.fonts[chosen]});
+ assert.equal(change.changedTextElements,1);assert.deepEqual(record.document.config,repository.get(record.id).document.config);
+ const text=change.document.config.profile.designs[0].objects[0],old=record.document.config.profile.designs[0].objects[0];
+ assert.equal(text.font,chosen);assert.ok(Number.isInteger(text.size));assert.ok(text.w<=old.w+.001&&text.h<=old.h+.001);
+ assert.equal(text.x,old.x);assert.equal(text.y,old.y);assert.equal(text.text,old.text);
+ assert.deepEqual(change.document.elementRights,record.document.elementRights);
+ assert.equal(resolveProduct(change.document,{options:{mounting:'two'}}).price.unitCents,2598);
+ const saved=repository.save(record.id,change.document,record.revision);assert.equal(saved.revision,2);
+ assert.deepEqual(repository.get(record.id,{revision:1}).document,record.document);
+ assert.throws(()=>repository.save(record.id,change.document,1));
+ const incomplete=structuredClone(resources.fonts[chosen]);delete incomplete.regular.glyphs.T;
+ assert.throws(()=>replaceNativeFont(record.document,{from:originalFont,to:chosen,font:incomplete}),/Grundzeichensatz/);
+});
+
+test('bundled Cormorant preserves German alphabet and original memorial cross without remote fonts',()=>{
+ const font=bundledWorkshopFont('Cormorant Garamond');
+ for(const c of 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÄÖÜäöüß0123456789†')assert.ok(font.regular.glyphs[c]);
+ assert.equal(Object.keys(font.regular.glyphs).length,327);
+ assert.throws(()=>bundledWorkshopFont('Unbekannte Schrift'));
+ const source=fixture(),old=source.profile.designs[0].objects[0].font;
+ const result=replaceNativeFont(makeProductDocument(source),{from:old,to:'Cormorant Garamond',font});
+ const design=structuredClone(result.document.config.profile.designs[0]);design.objects[0].text='T ÄÖÜ †';
+ assert.equal(validateProductDesign(result.document,design).objects[0].text,'T ÄÖÜ †');
 });

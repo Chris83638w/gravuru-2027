@@ -21,8 +21,28 @@ function fixture({respond, tokenRespond, timeoutMs = 500} = {}) {
 test('fixed read-only installation confirms own app, preserves limits and never exposes a token', async () => {
   const f = fixture(), result = await f.client.checkInstallation();
   assert.equal(result.appId, identity.appId); assert.equal(result.safeCheckoutVerified, false); assert.equal(result.partnerDevelopment, false);
-  assert.deepEqual(result.scopes, ['read_products']); assert.deepEqual(Object.keys(f.client), ['checkInstallation', 'inspectVariants']);
+  assert.deepEqual(result.scopes, ['read_products']); assert.deepEqual(Object.keys(f.client), ['checkInstallation', 'inspectProductPricing', 'inspectVariants']);
   assert.ok(!JSON.stringify(result).includes(accessToken)); assert.ok(!JSON.stringify(result).includes(secret));
+});
+test('pricing read uses the owning app namespace and preserves explicit absent pricing without authorizing checkout',async()=>{
+  for(const product of [null,{id:'gid://shopify/Product/9',status:'ACTIVE',onlineStoreUrl:null,pricing:null},
+    {id:'gid://shopify/Product/9',status:'ACTIVE',onlineStoreUrl:'https://gravuru-design.myshopify.com/products/synthetic',pricing:{jsonValue:{schema:'gravuru-personalization-pricing/v1',revision:30}}}]){
+    const f=fixture({respond:request=>{
+      assert.equal(request.variables.id,'gid://shopify/Product/9');assert.match(request.query,/namespace: "\$app"/);
+      return Response.json({data:{...data(),product}},{headers:{'x-shopify-api-version':'2026-07'}});
+    }});
+    const result=await f.client.inspectProductPricing('gid://shopify/Product/9');
+    assert.equal(result.installation.safeCheckoutVerified,false);
+    assert.equal(result.product?.pricing?.revision,product?.pricing?.jsonValue?.revision);
+    assert.equal(result.product?.publishedToOnlineStore,product===null?undefined:product.onlineStoreUrl!==null);
+  }
+});
+test('pricing read rejects wrong identity, malformed product, missing scopes and IDs without leaking credentials',async()=>{
+  const empty=fixture();await assert.rejects(empty.client.inspectProductPricing('9'),{code:'product_id'});assert.equal(empty.tokens,0);
+  for(const patch of [d=>d.product.id='gid://shopify/Product/10',d=>delete d.product.pricing,d=>d.product.onlineStoreUrl=3,d=>d.product.status='unknown',d=>d.currentAppInstallation.accessScopes=[]]){
+    const f=fixture({respond:()=>{const d={...data(),product:{id:'gid://shopify/Product/9',status:'ACTIVE',onlineStoreUrl:null,pricing:null}};patch(d);return Response.json({data:d},{headers:{'x-shopify-api-version':'2026-07'}});}});
+    await assert.rejects(f.client.inspectProductPricing('gid://shopify/Product/9'),e=>['product_response','products_scope'].includes(e.code)&&!String(e).includes(accessToken));
+  }
 });
 test('concurrent calls share token exchange and renew before expiry', async () => {
   const f = fixture(); await Promise.all(Array.from({length: 5}, () => f.client.checkInstallation())); assert.equal(f.tokens, 1);

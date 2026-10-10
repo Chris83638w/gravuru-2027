@@ -3,6 +3,7 @@
 // must enforce its host/origin/CSRF policy and derive buyerIp from trusted ingress.
 import {createPersistentCartHandoff} from './cart-handoff-journal.mjs';
 import {createStorefrontCartTransport} from './storefront-transport.mjs';
+import {isNativeReviewSchema} from './native-review-schema.mjs';
 
 const fail = (status, code, message) => {
   throw Object.assign(new Error(message), {status, code, retryable: false, paymentConfirmed: false});
@@ -31,7 +32,7 @@ export function createDraftCartHandoff({drafts, config}, transportOptions = {}) 
       const {manifest: m} = drafts.review(request.snapshotId);
       const ownsSnapshot = acrylic ? draft.snapshotId === request.snapshotId :
         m.source?.draftId === draft.id && m.source?.draftRevision === draft.revision;
-      if (m.schema !== (acrylic ? 'gravuru-acrylic-review/v1' : 'gravuru-form-review/v1') || !ownsSnapshot || m.source?.designId !== draft.designId ||
+      if (!(acrylic ? isNativeReviewSchema(m.schema) : m.schema === 'gravuru-form-review/v1') || !ownsSnapshot || m.source?.designId !== draft.designId ||
           m.product?.id !== draft.productId || m.product?.revision !== draft.productRevision) {
         fail(404, 'cart_private', 'Dieser Prüfstand gehört nicht zum zugänglichen Entwurf.');
       }

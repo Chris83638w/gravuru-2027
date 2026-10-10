@@ -83,7 +83,8 @@ export function createPersistentCartHandoff({journal, transport, shopDomain, api
     // never enter the journal. The raw offer token is stored only as a hash.
     const fixed = Object.freeze({scope: offer.scope, variantId: offer.variantId, quantity: offer.quantity,
       unitCents: offer.unitCents, currency: offer.currency,
-      property: Object.freeze({name: offer.property.name, value: offer.property.value})});
+      property: Object.freeze({name: offer.property.name, value: offer.property.value}),
+      ...(offer.personalization?{personalization:Object.freeze({...offer.personalization})}:{})});
     let ticket;
     try {
       ticket = journal.claim({offerKey: hash(JSON.stringify([shopDomain, fixed.property.value])),

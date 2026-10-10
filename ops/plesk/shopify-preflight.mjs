@@ -5,7 +5,7 @@ import {createShopifyAdminReadonly, preflightFailure} from '../../app/workshop/s
 import {preflightVariantBindings} from '../../app/workshop/shopify-variant-preflight.mjs';
 const appRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
-export function readPrivateFile(file, limit = 1024) {
+export function readPrivateFile(file, limit = 1024, encoding = 'utf8') {
   let fd;
   try {
     if (typeof file !== 'string' || !path.isAbsolute(file) || path.resolve(file) !== file || file === appRoot || file.startsWith(appRoot + path.sep) || fs.realpathSync(file) !== file) throw Error();
@@ -16,7 +16,7 @@ export function readPrivateFile(file, limit = 1024) {
     fd = fs.openSync(file, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW);
     const stat = fs.fstatSync(fd);
     if (!stat.isFile() || stat.uid !== process.getuid() || stat.mode & 0o077 || stat.size < 1 || stat.size > limit) throw Error();
-    return fs.readFileSync(fd, 'utf8');
+    return fs.readFileSync(fd, encoding);
   } catch {throw preflightFailure('private_file');}
   finally {if (fd !== undefined) fs.closeSync(fd);}
 }

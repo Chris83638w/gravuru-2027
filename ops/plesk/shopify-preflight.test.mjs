@@ -11,6 +11,7 @@ test('private existing secret is read without rewriting or exposing metadata/con
   const root = fixture(t), file = path.join(root, 'secret'); fs.writeFileSync(file, 'synthetic_private_content', {mode: 0o600});
   const before = fs.statSync(file); assert.equal(readPrivateFile(file), 'synthetic_private_content');
   assert.equal(fs.statSync(file).mtimeMs, before.mtimeMs);
+  const bytes=Buffer.from([0,128,255,65]);fs.writeFileSync(file,bytes);assert.deepEqual(readPrivateFile(file,1024,null),bytes);
   fs.chmodSync(file, 0o644); assert.throws(() => readPrivateFile(file), e => e.code === 'private_file' && !String(e).includes(root));
 });
 test('symlink, symlink parent, Git content and oversized files are rejected', t => {

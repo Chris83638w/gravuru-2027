@@ -1,0 +1,600 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "repository": "Chris83638w/gravuru-2027",
+  "backup_branch": "backup/account-recovery-20261010",
+  "source_tree_commit": "a2af162edd3a1dfa2106212c9f4b76c7ae351b70",
+  "source_tree_sha": "5f412a74c21e786da180d0a008916097f04d96f1",
+  "branch_count": 112,
+  "git_ref_count": 116,
+  "scope": "Archive checkpoint preserving all listed remote branch, tag and pull-request commit histories through commit parents. The product tree is the source_tree_commit plus this inventory; no feature branches are merged into the product.",
+  "excluded": [
+    "uncommitted or unpushed Cloud task files",
+    "ChatGPT chat transcripts and generated attachments not pushed to GitHub",
+    "credentials and account sessions",
+    "private databases, uploads and customer data outside GitHub",
+    "installed services and server configuration"
+  ],
+  "refs": [
+    {
+      "ref": "refs/heads/docs/chat-recovery-mika-20261005",
+      "object_type": "commit",
+      "sha": "5dd07c49da473c309281d6203e600ecca9577f4d"
+    },
+    {
+      "ref": "refs/heads/docs/continuation-handoff-20261007",
+      "object_type": "commit",
+      "sha": "dc941043c7184dfe6775c3e995989a8c70b13fd6"
+    },
+    {
+      "ref": "refs/heads/docs/dashboard-review-pack-20261006",
+      "object_type": "commit",
+      "sha": "e70aeb2b10bc7d441bebfa4509205a655a7fb283"
+    },
+    {
+      "ref": "refs/heads/feat/design-folder-import-20261007",
+      "object_type": "commit",
+      "sha": "dd42faf55df44686d3b6185807c35497ceba8df0"
+    },
+    {
+      "ref": "refs/heads/feat/design-source-settings-20261007",
+      "object_type": "commit",
+      "sha": "74a1e8b61b564b1fa9421b153d3d7da7c7999b0a"
+    },
+    {
+      "ref": "refs/heads/feat/design-zip-import-20261007",
+      "object_type": "commit",
+      "sha": "dfd8c0f59a04a205a23dfb0c86d7a9850ca868f9"
+    },
+    {
+      "ref": "refs/heads/feat/excel-profile-assignments-20261007",
+      "object_type": "commit",
+      "sha": "d8a09447dba5acdce285f0f6584ee2eb067a0de8"
+    },
+    {
+      "ref": "refs/heads/feat/plesk-private-test-package-20261007",
+      "object_type": "commit",
+      "sha": "a2af162edd3a1dfa2106212c9f4b76c7ae351b70"
+    },
+    {
+      "ref": "refs/heads/infra/cloud-only-handoff-20261004",
+      "object_type": "commit",
+      "sha": "1b4626eab6cc2e7d22f815754583cc678e57d558"
+    },
+    {
+      "ref": "refs/heads/infra/gravuru-2027-cloud-20261003",
+      "object_type": "commit",
+      "sha": "f7c3f24db55003c28fec5274dfc5df2736926b6b"
+    },
+    {
+      "ref": "refs/heads/infra/private-runtime-preparation-20261004",
+      "object_type": "commit",
+      "sha": "fefe4a93a3daf53a199cefd81ab317adeae916ac"
+    },
+    {
+      "ref": "refs/heads/main",
+      "object_type": "commit",
+      "sha": "3ff2c2f8e7cb2565f60bd016f73a99ff6520152b"
+    },
+    {
+      "ref": "refs/heads/task/access-preflight-20261007",
+      "object_type": "commit",
+      "sha": "fe1086192b4c5efbce3486ce55f100c9c12746db"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-commerce-prices-20261006",
+      "object_type": "commit",
+      "sha": "a6d4e18a50d0b5ee97dde1ee0231c81f59274e54"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-engraving-output-20261006",
+      "object_type": "commit",
+      "sha": "ef36ab0106be85baae2eef58997cb02e8792461b"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-engraving-preview-20261006",
+      "object_type": "commit",
+      "sha": "725a7c62b9be6536f9bdd2cd502547424228e867"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-import-tint-20261006",
+      "object_type": "commit",
+      "sha": "95788388cb853a7a76c3bb2ff723e334be25caa4"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-order-handoff-20261006",
+      "object_type": "commit",
+      "sha": "5f97ce4a964b4e80907bd4a4608c53d4599fcdcf"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-order-product-20261006",
+      "object_type": "commit",
+      "sha": "f5ea76d2fa266d37dfe5d4d2569fd33dc92bc1cf"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-photo-coverage-20261006",
+      "object_type": "commit",
+      "sha": "f9f1fba6bb5560183c25ddc15b7d97f898eb5290"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-photo-quality-20261006",
+      "object_type": "commit",
+      "sha": "537730a2ac659f2d8cd244d5efa1037a0e07ef5c"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-private-drafts-20261006",
+      "object_type": "commit",
+      "sha": "6b944c1bab2d6219e5a585c3d979bd5eec8bf1b7"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-production-profiles-20261006",
+      "object_type": "commit",
+      "sha": "d7bf81fed4bad7a381eb4a43e0bdc4ce545d0d78"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-review-handoff-20261006",
+      "object_type": "commit",
+      "sha": "7b071fc64c6604affbdb5190bb1814d3ebf38427"
+    },
+    {
+      "ref": "refs/heads/task/acrylic-snapshot-output-20261006",
+      "object_type": "commit",
+      "sha": "91541d6d331cb976196942b7c3ea2feb75117a4c"
+    },
+    {
+      "ref": "refs/heads/task/batch-correction-20261006",
+      "object_type": "commit",
+      "sha": "336c9d74ff2d580e0670bce559eaa6449bcd4e0b"
+    },
+    {
+      "ref": "refs/heads/task/batch-design-sheet-20261006",
+      "object_type": "commit",
+      "sha": "67205fa26b8b48fa02f5a0e3959a3f1dcddc91ed"
+    },
+    {
+      "ref": "refs/heads/task/batch-resume-20261006",
+      "object_type": "commit",
+      "sha": "2828939c24f83115e56392f312e89b87fc7ebec8"
+    },
+    {
+      "ref": "refs/heads/task/batch-update-20261006",
+      "object_type": "commit",
+      "sha": "d24d8297d8a751f7961d6b4c989b092783dca3a1"
+    },
+    {
+      "ref": "refs/heads/task/cart-draft-access-20261006",
+      "object_type": "commit",
+      "sha": "4fe1cf6b59f22ea25393b7b0d5d8860e74c2339c"
+    },
+    {
+      "ref": "refs/heads/task/cart-handoff-journal-20261006",
+      "object_type": "commit",
+      "sha": "20f970dbda089f037ed8f35d38fbc69ad27da475"
+    },
+    {
+      "ref": "refs/heads/task/cart-http-gate-20261006",
+      "object_type": "commit",
+      "sha": "548a69e0e4e1e1baeedf3ad03655bbff1b209852"
+    },
+    {
+      "ref": "refs/heads/task/checkout-handoff-20261005",
+      "object_type": "commit",
+      "sha": "7786a685bb8d4e876805a5196f88280abdca601c"
+    },
+    {
+      "ref": "refs/heads/task/cloud-runtime-handoff-20261007",
+      "object_type": "commit",
+      "sha": "8b2d3885e684425d43ccada3045b65ffabfb7806"
+    },
+    {
+      "ref": "refs/heads/task/cmyk-300dpi-20261004",
+      "object_type": "commit",
+      "sha": "d127b5a9ee6f52f3aad69ae5061e8d48d5f7edf0"
+    },
+    {
+      "ref": "refs/heads/task/completion-pass-20261006",
+      "object_type": "commit",
+      "sha": "b8a82328e127901d95dbbc269a9f4c30ec7d2fb1"
+    },
+    {
+      "ref": "refs/heads/task/configurator-controls-20261004",
+      "object_type": "commit",
+      "sha": "7f6bd786ebf097ec8047d7d14ee9705d1ad7030a"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-contour-import-20261005",
+      "object_type": "commit",
+      "sha": "7943804ad30a4e94e023c880d24ef9cec5d899a2"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-customer-fields-20261004",
+      "object_type": "commit",
+      "sha": "03fc8aa74df2714ae523fd8208ae2ad3d7327cfa"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-form-designs-20261005",
+      "object_type": "commit",
+      "sha": "cb878ffaaf1f794f2aadb226b47dcc0f4f2091b6"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-form-products-20261005",
+      "object_type": "commit",
+      "sha": "3d0d60480c283c19945ea8c534693f35830b5b19"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-m01-overview-20261005",
+      "object_type": "commit",
+      "sha": "092228adb0fbc6a14b0850cdeccee947c2c17a45"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-m02-editor-20261005",
+      "object_type": "commit",
+      "sha": "8227eb7db836de5e30779e42fdd7bd36cb1a68f4"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-material-preview-20261005",
+      "object_type": "commit",
+      "sha": "34bb395cfacba140a486bb987c8f90a98a90a736"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-options-20261005",
+      "object_type": "commit",
+      "sha": "138dc8bbc3dc7f742d40f86fa813fc706a41ec26"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-plate-preview-20261006",
+      "object_type": "commit",
+      "sha": "8745c9873942647796927d5680b9eb66ee14510e"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-print-separations-20261006",
+      "object_type": "commit",
+      "sha": "ff8b4c5bb6a6eefd5879281126553f56eb051c3a"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-product-cards-20261005",
+      "object_type": "commit",
+      "sha": "b51f7fb6fa5ef4f9ed2b53832858f2035fc283e4"
+    },
+    {
+      "ref": "refs/heads/task/dashboard-readiness-20261005",
+      "object_type": "commit",
+      "sha": "a06d821bd5389016d92d0ff0087c7f066c4f864a"
+    },
+    {
+      "ref": "refs/heads/task/design-excel-export-20261006",
+      "object_type": "commit",
+      "sha": "e57a7defee4ff8e554f4f17c5beb0442120e224b"
+    },
+    {
+      "ref": "refs/heads/task/design-skills-20261009",
+      "object_type": "commit",
+      "sha": "3ff2c2f8e7cb2565f60bd016f73a99ff6520152b"
+    },
+    {
+      "ref": "refs/heads/task/design-tab-rule-20261005",
+      "object_type": "commit",
+      "sha": "3d09c9428f1637db6ece5052af8efd471f473397"
+    },
+    {
+      "ref": "refs/heads/task/direct-edit-test-download-20261004",
+      "object_type": "commit",
+      "sha": "911874efc3532f7bd77a72fbef9eafa6072d6d3c"
+    },
+    {
+      "ref": "refs/heads/task/engraving-pdf-preview-20261006",
+      "object_type": "commit",
+      "sha": "928c071ec8a777e10494ba1bbe2d8698735629ea"
+    },
+    {
+      "ref": "refs/heads/task/excel-customer-flow-20261006",
+      "object_type": "commit",
+      "sha": "84f649eab669486428c9450483605bbfd459660b"
+    },
+    {
+      "ref": "refs/heads/task/existing-konfi-binding-20261006",
+      "object_type": "commit",
+      "sha": "3ddb7c4d6ba26f686a74bec0f680cec6b1354f36"
+    },
+    {
+      "ref": "refs/heads/task/export-queue-20261005",
+      "object_type": "commit",
+      "sha": "6a23acc56a7f98f629107dd4f8769a901a2af164"
+    },
+    {
+      "ref": "refs/heads/task/form-added-elements-20261005",
+      "object_type": "commit",
+      "sha": "a407c4114f3914d26f3a58baa8de4628a96161b0"
+    },
+    {
+      "ref": "refs/heads/task/form-batch-20261005",
+      "object_type": "commit",
+      "sha": "0a0a7bf3d018ed00e687227724bf57810181298a"
+    },
+    {
+      "ref": "refs/heads/task/form-customer-editor-20261005",
+      "object_type": "commit",
+      "sha": "280c773c72b55aefecdc0d5d6680fdd0cd07d663"
+    },
+    {
+      "ref": "refs/heads/task/form-direct-edit-20261005",
+      "object_type": "commit",
+      "sha": "0265ed5ad83c05fd3d7569ccb522b75e8b464e94"
+    },
+    {
+      "ref": "refs/heads/task/form-engraving-20261005",
+      "object_type": "commit",
+      "sha": "82db3b5798ae9b27443e041f94c4517fd3b2f0a7"
+    },
+    {
+      "ref": "refs/heads/task/form-material-scenes-20261005",
+      "object_type": "commit",
+      "sha": "fdbb5be293a0517767d2f0f20a56b6b2b0281620"
+    },
+    {
+      "ref": "refs/heads/task/form-print-proof-20261005",
+      "object_type": "commit",
+      "sha": "886a7573b91f7c25edbe491205435af8e2401416"
+    },
+    {
+      "ref": "refs/heads/task/form-production-snapshots-20261005",
+      "object_type": "commit",
+      "sha": "2b2d75a2ecf1061275feffa76c7da9f90a3d9ba0"
+    },
+    {
+      "ref": "refs/heads/task/form-variants-20261006",
+      "object_type": "commit",
+      "sha": "35e3cae6b34d6ef0daee099e0ada0f81bb63358d"
+    },
+    {
+      "ref": "refs/heads/task/form-vector-text-20261005",
+      "object_type": "commit",
+      "sha": "62243a23ad8734a28c30f9f9552dfe0f1730b865"
+    },
+    {
+      "ref": "refs/heads/task/full-preview-base-20261005",
+      "object_type": "commit",
+      "sha": "92a16c33616542a51f3b112a828f7c07cd2610a4"
+    },
+    {
+      "ref": "refs/heads/task/g27-01-package",
+      "object_type": "commit",
+      "sha": "36f7c16494feb24abc980f9813a1dec855cc4975"
+    },
+    {
+      "ref": "refs/heads/task/g27-02-cloud",
+      "object_type": "commit",
+      "sha": "e8021251a3bf86590798b85dca1bbf001c1fa88c"
+    },
+    {
+      "ref": "refs/heads/task/integrated-finish-20261006",
+      "object_type": "commit",
+      "sha": "88d1536dc1411ee4ea9f4633a9fe4b00089834cb"
+    },
+    {
+      "ref": "refs/heads/task/konfi-form-completion-20261006",
+      "object_type": "commit",
+      "sha": "8cb741d67fb867faefc70f97117a5f741fc5b705"
+    },
+    {
+      "ref": "refs/heads/task/master-rules-print-20261004",
+      "object_type": "commit",
+      "sha": "111f3ed95c7bad23ce130208f64c7ca3dcf77e78"
+    },
+    {
+      "ref": "refs/heads/task/material-engraving-preview-20261006",
+      "object_type": "commit",
+      "sha": "5dc75f9e84db992e139cfc17ce43527601e07ea3"
+    },
+    {
+      "ref": "refs/heads/task/merchant-runtime-20261006",
+      "object_type": "commit",
+      "sha": "4976bee6fa1785d23f8476c4bcb2b30b3261c0a3"
+    },
+    {
+      "ref": "refs/heads/task/muster-acrylglasbild-20261005",
+      "object_type": "commit",
+      "sha": "775557fef6933509d095b9e2756a5f799a7fd670"
+    },
+    {
+      "ref": "refs/heads/task/obsolete-output-recovery-20261006",
+      "object_type": "commit",
+      "sha": "962d10c4725a74e3725818731dcf9819375c813d"
+    },
+    {
+      "ref": "refs/heads/task/order-intake-20261005",
+      "object_type": "commit",
+      "sha": "0785d0fe7bfe2f6266996382b09220139ddfd642"
+    },
+    {
+      "ref": "refs/heads/task/order-line-refunds-20261007",
+      "object_type": "commit",
+      "sha": "79c570061141c8c432e90962c19ed8845cad62b5"
+    },
+    {
+      "ref": "refs/heads/task/order-output-complete-20261006",
+      "object_type": "commit",
+      "sha": "26907140e0de3486e8a7bf04368913d7d556b146"
+    },
+    {
+      "ref": "refs/heads/task/order-product-drafts-20261005",
+      "object_type": "commit",
+      "sha": "2c932f013332f827ec7471aab1b8bbb42186ae6a"
+    },
+    {
+      "ref": "refs/heads/task/order-product-profile-20261006",
+      "object_type": "commit",
+      "sha": "56a7467b4407455f2870066a3cd31916c08875bb"
+    },
+    {
+      "ref": "refs/heads/task/order-status-20261006",
+      "object_type": "commit",
+      "sha": "8b4bacf38e39a3a3b4285115c10c96252e1322a3"
+    },
+    {
+      "ref": "refs/heads/task/output-check-history-20261006",
+      "object_type": "commit",
+      "sha": "8f2a0539923d5f2e9adb7914b095ce1464be382e"
+    },
+    {
+      "ref": "refs/heads/task/output-check-journal-20261006",
+      "object_type": "commit",
+      "sha": "ece60315a8b016c5f6b741bfd6a226508ea0b13e"
+    },
+    {
+      "ref": "refs/heads/task/output-specification-20261006",
+      "object_type": "commit",
+      "sha": "7ca26dfcbdecd4301c72b05004e0d7fb3cf434ca"
+    },
+    {
+      "ref": "refs/heads/task/pdf-vector-contour-fix-20261006",
+      "object_type": "commit",
+      "sha": "b64494f3fec7e46af9f5e9f12473b2d066e86294"
+    },
+    {
+      "ref": "refs/heads/task/photo-position-20261004",
+      "object_type": "commit",
+      "sha": "5ddd3a1473c32da7682e47ddc6a0445472c4597e"
+    },
+    {
+      "ref": "refs/heads/task/print-download-20261004",
+      "object_type": "commit",
+      "sha": "7a533ab133cf7a4a087498802bbc6000e849f335"
+    },
+    {
+      "ref": "refs/heads/task/print-separations-20261006",
+      "object_type": "commit",
+      "sha": "6ca4df1c7dd82a669eb72eca0348d72b9f35d3b1"
+    },
+    {
+      "ref": "refs/heads/task/product-revision-compare-20261006",
+      "object_type": "commit",
+      "sha": "3f0572542878971ee29945234a915f0ab2b929fe"
+    },
+    {
+      "ref": "refs/heads/task/production-profile-usage-20261006",
+      "object_type": "commit",
+      "sha": "4b296b28e2d2c7b6f76e82c98589188c40d2af30"
+    },
+    {
+      "ref": "refs/heads/task/production-profiles-20261005",
+      "object_type": "commit",
+      "sha": "720d0d1243375109cc237dac4ef9d7d87e416f0a"
+    },
+    {
+      "ref": "refs/heads/task/profile-impact-preview-20261006",
+      "object_type": "commit",
+      "sha": "f28dfc032c6d374d7d0967fe8eb8f37895d2a8f2"
+    },
+    {
+      "ref": "refs/heads/task/shop-draft-transfer-20261006",
+      "object_type": "commit",
+      "sha": "a4ccb954cfe3d35bac680a6d3cca2d81adc5dabf"
+    },
+    {
+      "ref": "refs/heads/task/shop-variant-mapping-20261006",
+      "object_type": "commit",
+      "sha": "9a05d1b0d4641ae2a395493ae7a87cc5190964f5"
+    },
+    {
+      "ref": "refs/heads/task/shopify-admin-bootstrap-20261006",
+      "object_type": "commit",
+      "sha": "2104489fb9dea722081e847be60728e9ade6128c"
+    },
+    {
+      "ref": "refs/heads/task/shopify-app-identity-20261006",
+      "object_type": "commit",
+      "sha": "6c935a24b7657a6dca4333c2cf9eb6ed4c4f1d63"
+    },
+    {
+      "ref": "refs/heads/task/shopify-test-preparation-20261007",
+      "object_type": "commit",
+      "sha": "c19cbd8606258860848608938965536286d90519"
+    },
+    {
+      "ref": "refs/heads/task/unlock-design-elements-20261005",
+      "object_type": "commit",
+      "sha": "f4c9a2068f7d159def5f88f2a841bf01c1a59bd8"
+    },
+    {
+      "ref": "refs/heads/task/uv-design-pilot-20261004",
+      "object_type": "commit",
+      "sha": "8438bc2a4638c0a2017d98fc9670169661711a1c"
+    },
+    {
+      "ref": "refs/heads/task/uv-original-preview-20261004",
+      "object_type": "commit",
+      "sha": "57ce8ff6a39fb5c78a6983af8f12c4bf0528b918"
+    },
+    {
+      "ref": "refs/heads/task/uv-print-surface-20261006",
+      "object_type": "commit",
+      "sha": "150aa8ea5344f8577686b1ffdff5d40b8e77851f"
+    },
+    {
+      "ref": "refs/heads/task/variant-excel-20261006",
+      "object_type": "commit",
+      "sha": "61903f9ae655116f3c8b8e7ae774a7f19c0e96ea"
+    },
+    {
+      "ref": "refs/heads/task/variant-excel-export-20261006",
+      "object_type": "commit",
+      "sha": "a06bab0cb0f3ec1eb1ef220992f4d39d1e6aa2e8"
+    },
+    {
+      "ref": "refs/heads/task/variant-import-resume-20261006",
+      "object_type": "commit",
+      "sha": "f1ef6976906d1eba8e40ffea3cb0a98d3b4fff20"
+    },
+    {
+      "ref": "refs/heads/test/cloud-account-a-20261003-1230",
+      "object_type": "commit",
+      "sha": "5e40517a85a07d7226989b3863ce025f382aaa20"
+    },
+    {
+      "ref": "refs/heads/test/cloud-browser-acceptance-20261007",
+      "object_type": "commit",
+      "sha": "0202493f715d53316eb893e94fb672c4ac8eeb04"
+    },
+    {
+      "ref": "refs/heads/test/cloud-restore-20261004",
+      "object_type": "commit",
+      "sha": "e624833aecf6382f9b5edb4c432eb4e7c81a5cb2"
+    },
+    {
+      "ref": "refs/heads/test/customer-file-grants-ui-20261007",
+      "object_type": "commit",
+      "sha": "72b70416ecf16040b19ab774b43f5f5a67d5680d"
+    },
+    {
+      "ref": "refs/heads/test/dashboard-print-acceptance-20261007",
+      "object_type": "commit",
+      "sha": "d1bc7ffbf61b708899fee1c9a74cc15c9fb6f746"
+    },
+    {
+      "ref": "refs/heads/test/saved-excel-resume-20261007",
+      "object_type": "commit",
+      "sha": "cc2e7d8812a4c2036e3f381e918707660e77bc1e"
+    },
+    {
+      "ref": "refs/pull/1/head",
+      "object_type": "commit",
+      "sha": "e8021251a3bf86590798b85dca1bbf001c1fa88c"
+    },
+    {
+      "ref": "refs/pull/1/merge",
+      "object_type": "commit",
+      "sha": "151347409d4d1acb22386b9b76dae6c1b7979149"
+    },
+    {
+      "ref": "refs/pull/2/head",
+      "object_type": "commit",
+      "sha": "f7c3f24db55003c28fec5274dfc5df2736926b6b"
+    },
+    {
+      "ref": "refs/pull/2/merge",
+      "object_type": "commit",
+      "sha": "dd6fb23b46f5ab60add05c1388af29aabe5d58e8"
+    }
+  ]
+}

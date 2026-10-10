@@ -1,0 +1,15 @@
+{
+  "sourceCommit": "260ada3aaa0173c3492d0249fc0c055c8b5a726a",
+  "applicationCodeCommit": "6f384f4da4f0e5f43f67de73f6f89e596dd6ccd3",
+  "tests": 607,
+  "pass": 607,
+  "fail": 0,
+  "skipped": 0,
+  "durationMs": 206222.508637,
+  "command": "node --test app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs",
+  "logSha256": "29e1743bfad4a367ed0ddd4675d782fe0ac1077ba55a393fa8e473d2358848be",
+  "limitations": [
+    "Configured private Python dependencies and loopback network permission required",
+    "Automated tests; not an actual Shopify purchase or physical production approval"
+  ]
+}

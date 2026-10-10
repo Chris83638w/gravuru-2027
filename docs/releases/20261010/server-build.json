@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "archiveSha256": "5c447d58a9b35d935d5155db108afcb1d9975b6f2cb67f0ca80f1534e1e2c904",
+  "released": false,
+  "wholeApplicationReady": false,
+  "checks": [
+    {
+      "name": "lockedDependencies",
+      "exitCode": 0
+    },
+    {
+      "name": "configuration",
+      "exitCode": 0
+    },
+    {
+      "name": "build",
+      "exitCode": 0
+    }
+  ],
+  "environment": "Plesk 18.0.81 / Node 24.21.0 / Shopify CLI 4.9.0"
+}

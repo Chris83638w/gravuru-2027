@@ -1,3 +1,11 @@
+## Aktuell: Gesamtprüfung und Weiterentwicklung zur Veröffentlichung – 10.10.2026
+
+Nutzerauftrag bestätigt: den gesamten erreichten Stand prüfen, fehlende Anschlüsse weiterentwickeln und anschließend veröffentlichen; vorhandenen Shopify-Shop direkt für Integrationsprüfungen nutzen. Frühere Entwicklungspausen sind überholt. **Noch keine neue App-Version veröffentlicht.**
+
+607 aktuelle Node-Tests bestanden, keine Fehler/Überspringungen. Vollständiges Shopify-Erweiterungspaket wiederhergestellt, alle 19 Theme-Dateien mit aktiver Version identisch; Quell-/WASM-Prüfungen und isolierte Installation samt echtem Shopify-Build auf Plesk bestanden. Originale aller 16 Gedenktafel-Designs privat gesichert. [Aktueller Prüfbericht](docs/releases/20261010/REVIEW.md) · [Versioniertes Erweiterungspaket](deliverables/shopify-extension-build-20261010/README.md).
+
+Branch `task/live-release-20261010`, Basis `260ada3`. Weiter: Schieferprodukt mit Originalelementen in die neue Werkstatt übernehmen, danach Kunden-/Warenkorb-/Bestellanschluss und echte Integrationsabnahme. Zahlungsanbieter ist verbunden; abbuchungsfreier Testmodus noch nicht bestätigt. Historische Abschnitte sind keine aktuelle Freigabe- oder Zugangsaussage.
+
 ## Aktuell: Vollständige erreichbare Sicherung und Installationsprüfung – 10.10.2026
 
 Neuere Arbeit bis **`6f384f4`** aus dem verifizierten Plesk-Git-Bundle wiederhergestellt, danach letzte vollständige Dokumentationsdiffs aus dem verlorenen Chat rekonstruiert. Alle erfassten GitHub-Branchhistorien bleiben erhalten; keine Rücksetzung auf `a2af162`. Zusätzliche Theme-/Preisfunktionsquellen aus dem älteren Repository gesichert. **Live-Werkstatt unverändert.**

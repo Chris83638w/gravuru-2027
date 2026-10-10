@@ -1,0 +1,26 @@
+{
+  "schema": "gravuru-shopify-release-baseline/v1",
+  "capturedAt": "2026-10-10T20:43:59.435Z",
+  "clientId": "9640dd7a6907f0c73e7013ea8c24869b",
+  "cliVersion": "4.9.0",
+  "activeVersion": {
+    "versionId": "gid://shopify/Version/1146632241153",
+    "versionTag": "variante-m-embedded-motifs-20260928",
+    "status": "active"
+  },
+  "versionCount": 20,
+  "configurationSha256": "911735a81806235fddc2b0fee3b6c26020ac91bacd6438f2bb49a7e2ad02a39c",
+  "configurationHashFormat": "sorted-json-values-v1",
+  "rawConfigurationSha256": {
+    "shopify.app.before.toml": "00226b919f82ed5650219e278f013ca5beec57af999d3aff14008b35204bb028",
+    "shopify.app.confirmed.toml": "6ceb7905378ad0da60edb51e3276bde987c5a3b45e7d9dde4229cfedef2cc178"
+  },
+  "stableAcrossCapture": true,
+  "configurationFiles": [
+    "shopify.app.before.toml",
+    "shopify.app.confirmed.toml"
+  ],
+  "extensionsSourceBackupComplete": false,
+  "deploymentReady": false,
+  "released": false
+}

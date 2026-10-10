@@ -38,7 +38,7 @@ export function proposeMerchantHome(snapshot, activeVersionId) {
   const proposed = structuredClone(modules);
   proposed.find(m => m.registrationId === home.registrationId).config.app_url = NEW_HOME;
   const manifest = {name: snapshot.version.name, handle: '', modules: proposed.map(m => ({
-    type: m.type, handle: m.registrationTitle, uid: m.registrationId, uuid: m.registrationUuid,
+    type: m.type, handle: m.registrationTitle, uid: m.registrationId, uuid: m.registrationUuid, assets: m.registrationId,
     ...(m.target ? {target: m.target} : {}), config: m.config
   }))};
   return {manifest, proposed, beforeHash: digest(modules), proposedHash: digest(proposed),

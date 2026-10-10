@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "environment": "isolated local browser with original captured slate configuration",
+  "variants": [
+    {
+      "variant": "OHNE",
+      "priceCents": 2299
+    },
+    {
+      "variant": "B02",
+      "priceCents": 2598
+    },
+    {
+      "variant": "B04",
+      "priceCents": 2698
+    },
+    {
+      "variant": "B02-AH02",
+      "priceCents": 3197
+    },
+    {
+      "variant": "B02-AH02-BLACK",
+      "priceCents": 3297
+    },
+    {
+      "variant": "B04-AH04",
+      "priceCents": 3697
+    },
+    {
+      "variant": "STKLAR",
+      "priceCents": 3598
+    },
+    {
+      "variant": "STSCHWARZ",
+      "priceCents": 3798
+    },
+    {
+      "variant": "SILIKON",
+      "priceCents": 2798
+    }
+  ],
+  "textEdit": true,
+  "mobileWidth": 390,
+  "horizontalOverflow": false,
+  "privateSnapshotCreated": true,
+  "shopifyOrderCreated": false,
+  "productionApproved": false
+}

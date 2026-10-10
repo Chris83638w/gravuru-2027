@@ -5,7 +5,8 @@ import {printPreview} from './print-preview.mjs';
 import {outputDownload,outputFormats} from './print-delivery.mjs';
 import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicContourProof} from './acrylic-print-proof.mjs';
-import {ACRYLIC_REVIEW,prepareAcrylicReview} from './acrylic-review.mjs';
+import {prepareAcrylicReview} from './acrylic-review.mjs';
+import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
 import {batchReportData,batchReportWorkbook} from './batch-report.mjs';
@@ -91,14 +92,19 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const configuredTransfer=()=>transferGate??=createShopDraftTransfer({repository,orders:orderIntake,journal:customerDrafts.shopDraftTransfers,config:shopDrafts.config,transport:createShopDraftTransport(shopDrafts.config,shopDrafts.transportOptions)});
   const outputRecipes=[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE,ACRYLIC_PRINT_RECIPE,ACRYLIC_ENGRAVING_RECIPE];
   const exportWorker=createExportWorker({jobs:exportJobs,recipe:outputRecipes,render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_ENGRAVING_RECIPE?createAcrylicEngravingProof:job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings);}});
-  function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const native=m.schema===ACRYLIC_REVIEW,settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings});exportWorker.kick();return job;}
-  function enqueuePrint(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),native=m.schema===ACRYLIC_REVIEW,job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_PRINT_RECIPE:FORM_PRINT_RECIPE,recipeKey:native?acrylicPrintKey(settings):formPrintKey(settings),settings});exportWorker.kick();return job;}
+  function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const native=isNativeReviewSchema(m.schema),settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings});exportWorker.kick();return job;}
+  function enqueuePrint(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),native=isNativeReviewSchema(m.schema),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_PRINT_RECIPE:FORM_PRINT_RECIPE,recipeKey:native?acrylicPrintKey(settings):formPrintKey(settings),settings});exportWorker.kick();return job;}
   function customerRecord(id,version){const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
   function customerResult(draft,token,state=draft.state){
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
     const resolved=resolveFormCustomer(record.document,draft.designId,state,{assets,fonts:formFonts,profiles:record.metadata.profiles,media:id=>customerDrafts.photo(draft.id,token,id)});
     const surface=materialPreview(record.document),base=surface.svg||contours.preview(record.document.form.contourId).toString(),overlay=formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id))});
     return {draft:{...draft,state},product:{id:record.id,revision:record.revision,profiles:record.metadata.profiles||null,name:record.document.name,materialName:FORM_MATERIALS.find(m=>m.id===record.document.material.id)?.name||record.document.material.id,thicknessMm:record.document.material.thicknessMm,basePriceCents:record.document.basePriceCents,method:record.document.processingMethod,geometry:{widthMm:record.document.form.geometry.widthMm,heightMm:record.document.form.geometry.heightMm,holeCount:record.document.form.geometry.holeCount},designs:record.document.designs.map(d=>({id:d.id,name:d.name})),sourceFields:[...source.fields,...resolved.addedFields.map(f=>({...f,customerAdded:true}))],additions:additionPolicy(source)},svg:composeMaterialPreview(base,overlay),artworkSvg:`<svg xmlns="http://www.w3.org/2000/svg" width="${record.document.form.geometry.widthMm}mm" height="${record.document.form.geometry.heightMm}mm" viewBox="0 0 ${record.document.form.geometry.widthMm} ${record.document.form.geometry.heightMm}">${formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')})}</svg>`,contourPath:record.document.form.geometry.contours.map(c=>c.d+' Z').join(' '),warnings:resolved.warnings,ready:resolved.ready,photos:[...resolved.photos.values()].map(p=>({mediaId:p.mediaId,width:p.width,height:p.height})),surfaceAvailable:Boolean(surface.svg)};
+  }
+  function embedMaterialSurface(config){
+    const match=config.materialSurface?.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
+    if(match)config.materialSurface='data:image/png;base64,'+assets.materialSurface(match[1]).toString('base64');
+    return config;
   }
   function model(id,version){
     const record=repository.get(id,{revision:revision(version)});
@@ -113,7 +119,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     shell.purchasing.basePriceCents=resolved.config.basePriceCents;
     shell.purchasing.bellModel=record.document.name;
     shell.features={...shell.features,orderEnabled:false,productionConfirmed:false};
-    const universal=structuredClone(resolved.config);
+    const universal=embedMaterialSurface(structuredClone(resolved.config));
+    // The legacy workbench ID is provenance in the saved document, not a write
+    // destination for the new customer editor. Its parent supplies this store's
+    // pinned review binding separately.
+    delete universal.workbench;
     universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
     universal.workshopElementRights=structuredClone(record.document.elementRights);
     universal.workshopProfiles=version!==null&&version!==undefined?(record.metadata.profiles||{selections:{fonts:null,motifs:null,colors:null,bestsellers:null},sources:{},settingsRevision:0}):profiles.resolve(record.document);
@@ -361,7 +371,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(reviewMatch[2]==='download'&&method==='POST'){
           const data=await body(req);if(!['package','contour','photos'].includes(data.kind))fail(422,'production_not_released','Für diesen Prüfstand ist keine Produktions-PDF freigegeben.');
           let nativeContour=null;const manifest=customerDrafts.review(reviewMatch[1]).manifest;
-          if(data.kind==='contour'&&manifest.schema===ACRYLIC_REVIEW){const key='acrylic-contour/v1';nativeContour=customerDrafts.printProof(reviewMatch[1],key)?.pdf;if(!nativeContour){const pdf=await acrylicContourProof(customerDrafts.downloadSnapshot(reviewMatch[1],'package'),manifest.packageSha256);customerDrafts.savePrintProof(reviewMatch[1],key,{pdf,archive:Buffer.alloc(0),metadata:{recipe:key}});nativeContour=customerDrafts.printProof(reviewMatch[1],key).pdf;}}
+          if(data.kind==='contour'&&isNativeReviewSchema(manifest.schema)){const key='acrylic-contour/v1';nativeContour=customerDrafts.printProof(reviewMatch[1],key)?.pdf;if(!nativeContour){const pdf=await acrylicContourProof(customerDrafts.downloadSnapshot(reviewMatch[1],'package'),manifest.packageSha256);customerDrafts.savePrintProof(reviewMatch[1],key,{pdf,archive:Buffer.alloc(0),metadata:{recipe:key}});nativeContour=customerDrafts.printProof(reviewMatch[1],key).pdf;}}
           const bytes=nativeContour||customerDrafts.downloadSnapshot(reviewMatch[1],data.kind),suffix={package:'pruefpaket.zip',contour:'kontur-1zu1.pdf',photos:'originalfotos.zip'}[data.kind];
           res.writeHead(200,{'Content-Type':data.kind==='contour'?'application/pdf':'application/zip','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+reviewMatch[1]+'-'+suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
         }
@@ -452,6 +462,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         return json(res,201,await assets.import({name:data.name,bytes:data.bytes,page:data.page}));
       }
       const assetMatch=pathname.match(/^\/api\/workshop\/design-assets\/([a-f0-9]{64})\/(preview\.svg|original)$/);
+      const surfaceMatch=pathname.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
+      if(surfaceMatch&&method==='GET'){
+        const bytes=assets.materialSurface(surfaceMatch[1]);
+        return res.writeHead(200,{'Content-Type':'image/png','Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}).end(bytes);
+      }
       if(assetMatch&&method==='GET'){
         const asset=assets.get(assetMatch[1]),original=assetMatch[2]==='original',bytes=assets.read(asset.assetId,original);
         res.writeHead(200,{'Content-Type':original?(asset.format==='pdf'?'application/pdf':'image/svg+xml'):'image/svg+xml',
@@ -466,7 +481,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const document=validateProductDocument(data.document);
         profiles.resolve(document);assets.validateDocument(document);
         const resolved=resolveProduct(document,{designId:data.designId,options:data.options});
-        const universal=structuredClone(resolved.config);
+        const universal=embedMaterialSurface(structuredClone(resolved.config));
         universal.profile.defaultDesignId=resolved.designId;
         universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
         const examples=(universal.localResources.photoExamples||[]).filter(e=>e.designId===resolved.designId).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));

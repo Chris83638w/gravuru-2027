@@ -76,6 +76,9 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   if(!state.draft)return;
   const groups=state.draft.config.profile.optionGroups;
   for(const g of groups)if(useDefaults||!g.values.some(v=>v.id===options[g.id]))options[g.id]=g.defaultValueId;
+  if(state.draft.config.profile.material.kind==='slate'){
+   $('#stage-options').innerHTML=groups[0].values.map(v=>`<option value="${escape(v.id)}" ${options.mounting===v.id?'selected':''}>${escape(v.label)}</option>`).join('');return;
+  }
   const [sizes,bases,walls]=['size','base','wall'].map(id=>groups.find(g=>g.id===id).values);
   $('#stage-options').innerHTML=sizes.flatMap(s=>bases.flatMap(b=>walls.map(w=>`<option value="${escape(s.id+'|'+b.id+'|'+w.id)}" ${options.size===s.id&&options.base===b.id&&options.wall===w.id?'selected':''}>${escape(s.label+' · '+b.label+(w.id==='wall'?' · '+w.label:''))}</option>`))).join('');
  }
@@ -97,7 +100,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  $('#editor-preview').addEventListener('click',e=>{const n=e.target.closest('[data-object]');if(n&&!state.busy)select(n.dataset.object);});
  $('#editor-preview').addEventListener('keydown',e=>{const n=e.target.closest('[data-object]');if(n&&['Enter',' '].includes(e.key)&&!state.busy){e.preventDefault();select(n.dataset.object);}});
  $('#editor-designs').addEventListener('click',e=>{const b=e.target.closest('[data-editor-design]');if(!b||state.busy||!valid())return;designId=b.dataset.editorDesign;objectId=null;showTab('designs');render();});
- $('#stage-options').addEventListener('change',()=>{[options.size,options.base,options.wall]=$('#stage-options').value.split('|');changed();});
+ $('#stage-options').addEventListener('change',()=>{if(state.draft.config.profile.material.kind==='slate')options={mounting:$('#stage-options').value};else [options.size,options.base,options.wall]=$('#stage-options').value.split('|');changed();});
  $('#panel-designs').addEventListener('input',e=>{
   const n=e.target,key=n.dataset.editorProp,o=selected();
   if(n.dataset.editorHint&&o&&!state.busy&&state.record.status!=='archived'){const d=design();state.draft.config.photo.hints??=[];let h=state.draft.config.photo.hints.find(h=>h.designId===d.id&&h.slotId===o.id);if(!h){h={designId:d.id,slotId:o.id,text:'Hier tippen & eigenes Foto hochladen',enabled:true};state.draft.config.photo.hints.push(h);}h[n.dataset.editorHint]=n.type==='checkbox'?n.checked:n.value;markDirty();return;}

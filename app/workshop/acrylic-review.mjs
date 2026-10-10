@@ -1,4 +1,5 @@
 import {acrylicPhotoResolution} from './acrylic-photo-resolution.mjs';
+import {NATIVE_REVIEW} from './native-review-schema.mjs';
 import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {randomUUID,createHash} from 'node:crypto';
@@ -20,7 +21,7 @@ const keys=(o,allowed)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.ke
 // explicitly not server-verified artwork or a production file.
 export function validateAcrylicReview(record,config,input){
  keys(input,['productId','productRevision','designId','objects','options','quantity','media','preview']);
- if(!config.acrylic||input.productId!==record.id||input.productRevision!==record.revision)fail('Produkt und feste Revision stimmen nicht überein.');
+ if((!config.acrylic&&config.profile?.material?.kind!=='slate')||input.productId!==record.id||input.productRevision!==record.revision)fail('Produkt und feste Revision stimmen nicht überein.');
  if(!Number.isSafeInteger(input.quantity)||input.quantity<1||input.quantity>99)fail('Menge: 1 bis 99.');
  if(!Array.isArray(input.objects)||input.objects.length>120)fail('Ungültiger Elementumfang.');
  const source=config.profile.designs.find(d=>d.id===input.designId);if(!source)fail('Design gehört nicht zum Produkt.');
@@ -41,7 +42,7 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  if(ref?(!productionProfile||productionProfile.id!==ref.id||productionProfile.revision!==ref.revision):!!productionProfile)fail('Der gesicherte Fertigungsprofilstand fehlt oder passt nicht zur Produktrevision.');
  if(productionProfile)add('fertigungsprofil.json',json(productionProfile),'Unveränderlicher Fertigungsprofilstand; keine Maschinenfreigabe.');
  // No ephemeral upload URLs or tokens are accepted from the browser.
- add('produkt-und-gestaltung.json',json({schema:'gravuru-acrylic-review-input/v1',product:record.document,state,profileRevision:config.profile.revision,profileSelections:config.workshopProfiles}),'Gespeichertes natives Produkt, Kundenwerte und serverberechneter Preis.');
+ add('produkt-und-gestaltung.json',json({schema:config.acrylic?'gravuru-acrylic-review-input/v1':'gravuru-native-review-input/v1',product:record.document,state,profileRevision:config.profile.revision,profileSelections:config.workshopProfiles}),'Gespeichertes natives Produkt, Kundenwerte und serverberechneter Preis.');
  add('konfigurator-quellen.json',json(frozen),'Feste Konfiguratorrevision mit Schriftpfaden und Motivquellen.');
  for(const [i,m] of input.media.entries()){
   const original=await preparePhoto(m.original),extension=original.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':original.original.subarray(1,4).toString()==='PNG'?'png':'webp';
@@ -64,7 +65,7 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  const image=await preparePhoto(input.preview);add('gestaltung-referenz.png',image.preview,'Vom Browser übermittelte Gestaltungsvorschau; kein serverseitiger Fertigungsnachweis.');
  const preview=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${image.width} ${image.height}"><image width="${image.width}" height="${image.height}" href="data:image/png;base64,${image.preview.toString('base64')}"/></svg>`);
  const method=getProcessingProfile(config.profile).method;
- const id='proof_'+randomUUID(),manifest={schema:ACRYLIC_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:config.profile.material,method,widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:state.options,labels:config.profile.optionGroups.map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,capabilities:{contour:true,print:method==='print',engraving:method==='engraving',cart:false},blockers:[method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
+ const id='proof_'+randomUUID(),manifest={schema:config.acrylic?ACRYLIC_REVIEW:NATIVE_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:config.profile.material,method,widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:state.options,labels:config.profile.optionGroups.map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,capabilities:{contour:true,print:method==='print',engraving:method==='engraving',cart:false},blockers:[method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
  add('manifest.json',json(manifest),'Prüfsummen und Geltungsgrenzen.');
  const archive=await zip(files);return {manifest:{...manifest,packageSha256:sha(archive)},preview,contourPdf:Buffer.alloc(0),package:archive,photos:await zip(files.filter(f=>f.path.startsWith('fotos/')&&f.path.includes('-original.')))};
 }

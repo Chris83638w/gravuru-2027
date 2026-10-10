@@ -230,6 +230,7 @@ export async function installUX(el,config,legacy){
     const font=e.target.closest('[data-ux-font]');if(font){if(font.disabled||!availableFonts().includes(font.dataset.uxFont))return;fontChoice=font.dataset.uxFont;for(const b of all('[data-ux-font]'))b.setAttribute('aria-pressed',String(b===font));$('[data-ux=font-apply]').disabled=false;return;}
     const b=e.target.closest('[data-ux]');if(!b||b.disabled)return;const action=b.dataset.ux;
     if(action==='back'){window.parent.postMessage({type:'gravuru-fk-close'},location.origin);return;}
+    if(action==='account'&&window.parent.GravuruWorkshopReview){$('.completion-finish')?.click();return;}
     if(action==='account'&&config?.workbench){
       if(el.state.objects.some(o=>o.uxUploadId))return say('Testfotos zuerst entfernen. Die Vorlage speichert Fotofelder; Kundenfotos gehören zur Bestellung.');
       window.parent.postMessage({type:'gravuru-workbench-save',designId:el.state.designId,objects:roundDesign({objects:el.state.objects}).objects},location.origin);return;

@@ -51,7 +51,8 @@
         }
         window.GravuruWorkshopReview=model.configuration?{productId:model.configuration.id,productRevision:model.configuration.revision}:null;
         window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;
-        const frame=document.createElement('iframe');frame.title='Acrylglasbild personalisieren';frame.src='/editor.html';
+        document.title=model.name+' · Gravuru';editor.setAttribute('aria-label',model.name+' gestalten');
+        const frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src='/editor.html';
         editor.append(frame);intro.hidden=true;editor.hidden=false;status.textContent='';
       }catch(error){status.textContent='Vorschau konnte nicht geladen werden: '+error.message;}
       finally{pending=false;button.disabled=false;}

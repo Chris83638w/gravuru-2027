@@ -75,7 +75,8 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
         master=repository.get(id,{revision:Number(version)});current=repository.get(id);
         if(master.document.kind!=='master'||current.status==='archived'||current.document.kind!=='master')fail('Die Vorlage muss ein aktiver Master sein.');
       }
-      const form=isFormProduct(master.document);if(!form&&text(row.price_eur))fail('price_eur gilt für freie Formprodukte. Für die Acrylvorlage price_small_eur / price_large_eur verwenden.');
+      const form=isFormProduct(master.document),slate=master.document.config?.profile?.material?.kind==='slate';if(!form&&!slate&&text(row.price_eur))fail('price_eur gilt für freie Formprodukte und Schiefer. Für die Acrylvorlage price_small_eur / price_large_eur verwenden.');
+      if(slate&&['price_small_eur','price_large_eur'].some(k=>text(row[k])))fail('Schiefer verwendet price_eur; Acryl-Größenpreise sind hier nicht zulässig.');
       let document=structuredClone(master.document),artwork=null,artworks=[],designAssignments=[];
       const children=designGroups.get(key)||[];
       if(children.length&&!form)fail('Das Blatt Designs unterstützt freie Formprodukte. Die bisherige Acrylvorlage verwendet design_file im Blatt Produkte.');
@@ -86,6 +87,7 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       if(!document.name)fail('Produktname fehlt.');
       if(text(row.category_ids))document.categoryIds=[...new Set(text(row.category_ids).split(',').map(v=>v.trim()).filter(Boolean))];
       if(form){if(text(row.price_eur))document.basePriceCents=cents(row.price_eur);prepareFormBatch(document,row);}
+      else if(slate){if(text(row.price_eur))document.config.basePriceCents=cents(row.price_eur);}
       else for(const [column,size] of [['price_small_eur','small'],['price_large_eur','large']])if(text(row[column]))document.config.acrylic.pricing.sizes[size]=cents(row[column]);
       const filename=resolveDesignSourcePath(row,sourceSettings);
       if(!filename&&['design_page','design_id','design_fit'].some(field=>text(row[field])))fail('Design-Einstellungen benötigen auch design_file.');
@@ -147,7 +149,7 @@ export function planBatch(repository,{rows,masterId,masterRevision,designFiles=[
       if(unchanged&&!form)fail('Die Zeile enthält keine Änderung.');
       const update=updating?{action,productId:id,expectedRevision:Number(version)}:{};
       if(!unchanged)entries.push({key,fingerprint,profileBinding,document:validated,...update});
-      report.push({row:index+1,key,name:validated.name,...profileBinding,status:existing?'existing':unchanged?'unchanged':'ready',id:existing?.id,...(updating?{...update,changes:[...Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),...(children.length?['Designs']:[])],previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:validated.config.acrylic.pricing.sizes}),...(designAssignments.length?{designAssignments,defaultDesignId:validated.defaultDesignId}:{}),...(artwork?{artwork}:{}),...(artworks.length?{artworks,designCount:validated.designs.length,defaultDesignId:validated.defaultDesignId,defaultDesignName:validated.designs.find(d=>d.id===validated.defaultDesignId)?.name}:{})});
+      report.push({row:index+1,key,name:validated.name,...profileBinding,status:existing?'existing':unchanged?'unchanged':'ready',id:existing?.id,...(updating?{...update,changes:[...Object.keys(row).filter(k=>!['action','product_id','expected_revision','import_key','master_id','master_revision'].includes(k)&&text(row[k])),...(children.length?['Designs']:[])],previousName:master.document.name}:{masterId:id,masterRevision:Number(version)}),...(form?{formProduct:true,geometry:{widthMm:validated.form.geometry.widthMm,heightMm:validated.form.geometry.heightMm,holeCount:validated.form.geometry.holeCount},material:validated.material.id,method:validated.processingMethod,prices:{base:validated.basePriceCents}}:{prices:slate?{base:validated.config.basePriceCents}:validated.config.acrylic.pricing.sizes}),...(designAssignments.length?{designAssignments,defaultDesignId:validated.defaultDesignId}:{}),...(artwork?{artwork}:{}),...(artworks.length?{artworks,designCount:validated.designs.length,defaultDesignId:validated.defaultDesignId,defaultDesignName:validated.designs.find(d=>d.id===validated.defaultDesignId)?.name}:{})});
     }catch(error){report.push({row:index+1,key,name:text(row?.name),status:'error',message:error.message});}
   }
   const valid=report.every(row=>row.status!=='error');

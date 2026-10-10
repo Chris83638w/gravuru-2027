@@ -1,0 +1,10 @@
+{
+  "tests": 616,
+  "pass": 616,
+  "fail": 0,
+  "skipped": 0,
+  "durationMs": 218225.292737,
+  "command": "node --test app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs",
+  "logSha256": "448dae46cc1ea53708430964a9b38589300912a12e06d77f9134d1f54108c7a3",
+  "scope": "automated local regression; not a Shopify order"
+}

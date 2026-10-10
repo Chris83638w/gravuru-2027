@@ -3,7 +3,7 @@ import {fileURLToPath} from 'node:url';
 import {importEnvironment} from './design-assets.mjs';
 export const MAX_CUSTOMER_PHOTO=15*1024*1024;
 export function prepareCustomerPhoto(bytes){
- if(typeof bytes!=='string'||bytes.length>Math.ceil(MAX_CUSTOMER_PHOTO/3)*4||!bytes.length||!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(bytes))throw Object.assign(Error('Ungültiges Foto oder größer als 15 MB.'),{status:422});
+ if(typeof bytes!=='string'||bytes.length>Math.ceil(MAX_CUSTOMER_PHOTO/3)*4||!bytes.length||bytes.length%4!==0||!/^[A-Za-z0-9+/]*={0,2}$/.test(bytes)||Buffer.from(bytes,'base64').toString('base64')!==bytes)throw Object.assign(Error('Ungültiges Foto oder größer als 15 MB.'),{status:422});
  return new Promise((resolve,reject)=>{
   const child=spawn(process.env.GRAVURU_PYTHON||'python3',[fileURLToPath(new URL('./photo-import.py',import.meta.url))],{env:importEnvironment(),stdio:['pipe','pipe','pipe']});let done=false,size=0;const chunks=[];
   const end=(error,result)=>{if(done)return;done=true;clearTimeout(timer);error?reject(Object.assign(Error(error),{status:422,code:'invalid_customer_photo'})):resolve(result);};

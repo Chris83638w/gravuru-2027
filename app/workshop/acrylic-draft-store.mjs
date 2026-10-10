@@ -1,4 +1,5 @@
 import {createHash, randomBytes, randomUUID, timingSafeEqual} from 'node:crypto';
+import {isNativeReviewSchema} from './native-review-schema.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const fail = (status, message) => {throw Object.assign(new Error(message), {status, code: 'acrylic_draft'});};
@@ -36,7 +37,7 @@ export function createAcrylicDraftStore({database: db, capture}) {
     designId: row.design_id, revision: row.revision, snapshotId: row.snapshot_id});
   function validate(bundle) {
     const m = bundle?.manifest;
-    if (m?.schema !== 'gravuru-acrylic-review/v1' || typeof m.id !== 'string' ||
+    if (!isNativeReviewSchema(m?.schema) || typeof m.id !== 'string' ||
         typeof m.product?.id !== 'string' || !Number.isSafeInteger(m.product.revision) || m.product.revision < 1 ||
         typeof m.source?.designId !== 'string' || !Buffer.isBuffer(bundle.package) || hash(bundle.package) !== m.packageSha256) {
       fail(422, 'Ein vollständiger serverseitig geprüfter Acrylstand ist erforderlich.');

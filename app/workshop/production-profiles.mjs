@@ -22,6 +22,7 @@ export function profileBlockers(profile){
 // The native product contract is the existing clear-acrylic pilot, not arbitrary acrylic materials.
 export function productionSubject(document){
  if(document.schema==='gravuru-product/v1'){
+  if(document.config?.profile?.material?.kind==='slate'&&document.config.profile.processing?.profileId==='slate-engraving')return {method:'engraving',materialId:'slate',thicknessMm:document.config.profile.material.thicknessMm};
   if(document.config?.acrylic?.version!==1||document.config.profile?.material?.kind!=='acrylic')fail(422,'Dieses native Produkt unterstützt keine Fertigungsprofilzuordnung.');
   return {method:getProcessingProfile(document.config.profile).method,materialId:'acrylic-clear',thicknessMm:document.config.profile.material.thicknessMm};
  }

@@ -193,7 +193,7 @@ export function installUniversal(configInput) {
       for(const select of picks.querySelectorAll('select'))select.value=options[select.dataset.mOption];
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
       try{
-        const price=config.reviewOnly?null:quote(config,el.state.objects,el.state.designId,options,quantity);
+        const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';
         $('[data-fk-breakdown]').textContent=price?.additionalMotifs ? price.additionalMotifs+' zusätzliche Motive · '+money(price.additionalMotifs*config.extraMotifCents) : '';
         saveDraft(config,el.state,options,el.fontData,motifs()); issue.textContent='';

@@ -11,7 +11,7 @@ async function referencePng(svg,geometry){
 
 export function installWorkshopReview(api,footer){
  const binding=window.parent.GravuruWorkshopReview;
- if(!binding||!api.config?.acrylic)return;
+ if(!binding||(!api.config?.acrylic&&api.config?.profile?.material?.kind!=='slate'))return;
  const button=document.createElement('button'),status=document.createElement('p'),link=document.createElement('a');
  button.type='button';button.textContent='Für die Werkstattprüfung sichern';button.dataset.acrylicReview='';status.setAttribute('role','status');status.setAttribute('aria-live','polite');link.textContent='Gesicherten Stand im Dashboard öffnen →';link.target='_blank';link.rel='noopener';link.hidden=true;link.dataset.acrylicReviewLink='';
  footer.append(button,status,link);let busy=false,savePrivate;

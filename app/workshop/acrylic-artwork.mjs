@@ -1,6 +1,6 @@
 import {graphicMarkup} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {readReviewPackage,digest} from './review-package.mjs';
-import {ACRYLIC_REVIEW} from './acrylic-review.mjs';
+import {NATIVE_REVIEW,NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {validateProductDesign} from './product-model.mjs';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
@@ -19,8 +19,9 @@ export function nativeContour(g){
  return {schema:'gravuru-contour/v1',widthMm:w,heightMm:h,holeCount:g.holes.length,contours:[{role:'outer',d},...g.holes.map(h=>({role:'hole',d:ellipse(h.x,h.y,h.diameter/2,h.diameter/2)}))]};
 }
 export async function acrylicArtwork(archive,archiveHash,{engraving=false}={}){
- const {files,manifest}=readReviewPackage(archive,archiveHash,ACRYLIC_REVIEW),saved=JSON.parse(files.get('produkt-und-gestaltung.json')),config=JSON.parse(files.get('konfigurator-quellen.json')),state=saved.state;
- if(saved.schema!=='gravuru-acrylic-review-input/v1'||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Acrylrevision ist nicht eindeutig.');
+ const {files,manifest}=readReviewPackage(archive,archiveHash,NATIVE_REVIEW_SCHEMAS),saved=JSON.parse(files.get('produkt-und-gestaltung.json')),config=JSON.parse(files.get('konfigurator-quellen.json')),state=saved.state;
+ const native=manifest.schema===NATIVE_REVIEW;
+ if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(config.profile.material.kind==='slate')||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
  const design=validateProductDesign(saved.product,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  const viewport=artworkViewport(config,{mOptions:state.options}),geometry=nativeContour(viewport.geometry),parts=[],photos=[],textFields=[],photoFields=[];
  if(geometry.widthMm!==manifest.product.widthMm||geometry.heightMm!==manifest.product.heightMm)fail('Das gesicherte Druckformat stimmt nicht überein.');

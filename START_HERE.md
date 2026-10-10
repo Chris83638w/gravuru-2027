@@ -1,3 +1,9 @@
+## Aktuell: Schieferprodukt, Originalressourcen und private Prüfstrecke – 10.10.2026
+
+Auf `c628d88` weiterentwickelt: idempotente Schieferübernahme, neun Befestigungen, Original-Schrift-/Motiv-/Materialressourcen, Preisformular und Kunden-Prüfstand. 616 Tests bestanden, keine Fehler/Überspringungen. Tatsächlicher Desktop-/Mobilbrowser mit der wiedergewonnenen Gedenktafel: alle neun Preise, Textänderung und private Sicherung bestanden; daraus maßhaltige Vektor-Gravur-PDF erzeugt. [Abnahme und Grenzen](docs/releases/20261010/SLATE-ADAPTER.md).
+
+Der Nutzer hat den Zahlungs-Testmodus im bestehenden Shop bestätigt. Noch keine Shopify-Testbestellung oder neue Live-Veröffentlichung. Nächster Schritt: vollständige Kunden-Vorschau aus dem authentifizierten Händlerhost, dann operative Warenkorb-/Bestellzuordnung. Die vorhandene Werkstatt und ihre Daten sind unverändert; neue Original-/Testdaten bleiben privat.
+
 ## Aktuell: Gesamtprüfung und Weiterentwicklung zur Veröffentlichung – 10.10.2026
 
 Nutzerauftrag bestätigt: den gesamten erreichten Stand prüfen, fehlende Anschlüsse weiterentwickeln und anschließend veröffentlichen; vorhandenen Shopify-Shop direkt für Integrationsprüfungen nutzen. Frühere Entwicklungspausen sind überholt. **Noch keine neue App-Version veröffentlicht.**

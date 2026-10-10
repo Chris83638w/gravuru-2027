@@ -1,4 +1,5 @@
 import {isFormProduct,validateFormProduct} from './form-product.mjs';
+import {nativeSlateConfig} from './slate-product.mjs';
 import {prepareConfig,resolvedOptions,selectedProfile,quote,validateDesign,cleanObject} from '../configurator/variant-m/contract.mjs';
 import {ACRYLIC_BASES,ACRYLIC_SIZES,acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -61,8 +62,10 @@ function nativeAcrylicConfig(input){
   return validated;
 }
 
-export function makeProductDocument(nativeConfig,{name,kind='product',masterId=null}={}){
-  const config=nativeAcrylicConfig(nativeConfig),title=text(name??config.profile.name,1,200,'Produktname');
+const nativeConfig = input => input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
+
+export function makeProductDocument(input,{name,kind='product',masterId=null}={}){
+  const config=nativeConfig(input),title=text(name??config.profile.name,1,200,'Produktname');
   return validateProductDocument({schema:PRODUCT_SCHEMA,name:title,kind,masterId,categoryIds:[],seo:{title:title.slice(0,70),description:''},
     profileAssignments:Object.fromEntries(PROFILE_TYPES.map(type=>[type,{mode:'inherit',profileId:null}])),elementRights:initialRights(config),config});
 }
@@ -85,7 +88,7 @@ export function validateProductDocument(document){
   }
   if(!record(result.config)||!record(result.config.profile))fail('Die native Produktvorlage fehlt.');
   result.config.profile.name=result.name;
-  result.config=nativeAcrylicConfig(result.config);
+  result.config=nativeConfig(result.config);
   keys(result.elementRights,result.config.profile.designs.map(design=>design.id),'Designrechte');
   for(const design of result.config.profile.designs){
     if(design.customerFields!==undefined){
@@ -112,11 +115,12 @@ export function resolveProduct(document,{options={},designId}={}){
   const resolved=resolvedOptions(config,options),chosenId=designId===undefined?config.profile.defaultDesignId:designId;
   const design=config.profile.designs.find(item=>item.id===chosenId);
   if(!design)fail('Das gewählte Design gehört nicht zu diesem Produkt.');
-  const profile=selectedProfile(config,resolved),selection=acrylicSelection(resolved,config.acrylic.pricing);
+  const profile=selectedProfile(config,resolved),selection=config.acrylic?acrylicSelection(resolved,config.acrylic.pricing):null;
+  const width=config.acrylic?.designWidth??profile.geometry.width,height=config.acrylic?.designHeight??profile.geometry.height;
   return {config,profile,designId:chosenId,design:structuredClone(design),resolvedOptions:resolved,
     price:quote(config,design.objects,chosenId,resolved),
-    physical:{widthMm:selection.size.width,heightMm:selection.size.height,thicknessMm:profile.material.thicknessMm,insertionMm:selection.base.insertionMm},
-    designSpace:{widthMm:config.acrylic.designWidth,heightMm:config.acrylic.designHeight,scaleX:selection.size.width/config.acrylic.designWidth,scaleY:selection.size.height/config.acrylic.designHeight},
+    physical:{widthMm:selection?.size.width??width,heightMm:selection?.size.height??height,thicknessMm:profile.material.thicknessMm,insertionMm:selection?.base.insertionMm??0},
+    designSpace:{widthMm:width,heightMm:height,scaleX:selection?selection.size.width/width:1,scaleY:selection?selection.size.height/height:1},
     elementRights:structuredClone(product.elementRights[chosenId])};
 }
 

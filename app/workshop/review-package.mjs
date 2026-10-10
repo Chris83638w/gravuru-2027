@@ -13,7 +13,7 @@ export function readReviewPackage(bytes,expectedHash,expectedSchema='gravuru-for
   files.set(name,bytes.subarray(start,end));p=end;
  }
  if(!files.has('manifest.json'))fail();let manifest;try{manifest=JSON.parse(files.get('manifest.json'));}catch{fail();}
- if(manifest.schema!==expectedSchema||!Array.isArray(manifest.files))fail();
+ if(!(Array.isArray(expectedSchema)?expectedSchema.includes(manifest.schema):manifest.schema===expectedSchema)||!Array.isArray(manifest.files))fail();
  for(const f of manifest.files){const content=files.get(f.path);if(!content||content.length!==f.bytes||digest(content)!==f.sha256)fail();}
  return {files,manifest};
 }

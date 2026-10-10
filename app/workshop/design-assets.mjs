@@ -46,11 +46,25 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
     CREATE TABLE IF NOT EXISTS design_sources (sha256 TEXT PRIMARY KEY, bytes BLOB NOT NULL);
     CREATE TABLE IF NOT EXISTS design_assets (id TEXT PRIMARY KEY, source_sha256 TEXT NOT NULL REFERENCES design_sources(sha256), preview BLOB NOT NULL, metadata TEXT NOT NULL);
     CREATE TRIGGER IF NOT EXISTS design_source_immutable BEFORE UPDATE ON design_sources BEGIN SELECT RAISE(ABORT,'immutable source'); END;
-    CREATE TRIGGER IF NOT EXISTS design_asset_immutable BEFORE UPDATE ON design_assets BEGIN SELECT RAISE(ABORT,'immutable asset'); END;`);
+    CREATE TRIGGER IF NOT EXISTS design_asset_immutable BEFORE UPDATE ON design_assets BEGIN SELECT RAISE(ABORT,'immutable asset'); END;
+    CREATE TABLE IF NOT EXISTS material_surfaces (sha256 TEXT PRIMARY KEY, original BLOB NOT NULL, preview BLOB NOT NULL);
+    CREATE TRIGGER IF NOT EXISTS material_surface_immutable BEFORE UPDATE ON material_surfaces BEGIN SELECT RAISE(ABORT,'immutable surface'); END;`);
   function row(id){if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'asset_missing','Designressource nicht gefunden.');const r=db.prepare('SELECT * FROM design_assets WHERE id=?').get(id);if(!r)fail(404,'asset_missing','Designressource nicht gefunden.');return r;}
   function get(id){return JSON.parse(row(id).metadata);}
   function resource(id){const a=get(id);return {key:'artwork-'+id,name:'Importiertes Design',category:'Vorlagen',bounds:[0,0,a.widthMm,a.heightMm],embeddedOnly:true,svgFragment:artworkFragment(id,a.widthMm,a.heightMm),artwork:a};}
   return {
+    async importMaterialSurface(bytes){
+      const {prepareCustomerPhoto}=await import('./customer-photo.mjs');
+      const image=await prepareCustomerPhoto(bytes),id=sha256(image.original);
+      db.prepare('INSERT OR IGNORE INTO material_surfaces VALUES (?,?,?)').run(id,image.original,image.preview);
+      return {sha256:id,url:'/api/workshop/material-surfaces/'+id+'.png'};
+    },
+    materialSurface(id,original=false){
+      if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'surface_missing','Materialoberfläche fehlt.');
+      const r=db.prepare('SELECT original,preview FROM material_surfaces WHERE sha256=?').get(id);
+      if(!r)fail(404,'surface_missing','Materialoberfläche fehlt.');
+      return Buffer.from(original?r.original:r.preview);
+    },
     async import({name,bytes,page=1}){
       if(typeof name!=='string'||name.length>200||/[\x00-\x1f\\/]/.test(name)||!/\.(svg|pdf)$/i.test(name))fail(422,'file_type','Bitte eine SVG- oder PDF-Datei auswählen.');
       if(typeof bytes!=='string'||!bytes.length||bytes.length>Math.ceil(MAX_DESIGN_BYTES/3)*4||!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(bytes))fail(413,'file_limit','Ungültige oder zu große Datei. Höchstens 15 MB sind möglich.');
@@ -70,6 +84,8 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
     list(){return db.prepare('SELECT metadata FROM design_assets ORDER BY rowid DESC LIMIT 300').all().map(r=>JSON.parse(r.metadata));},
     read(id,original=false){const r=row(id);return Buffer.from(original?db.prepare('SELECT bytes FROM design_sources WHERE sha256=?').get(r.source_sha256).bytes:r.preview);},
     validateDocument(document){
+      const surface=document.config?.materialSurface?.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
+      if(surface&&!db.prepare('SELECT 1 FROM material_surfaces WHERE sha256=?').get(surface[1]))fail(422,'surface_missing','Die gespeicherte Materialoberfläche fehlt.');
       for(const example of document.config?.localResources?.photoExamples||[]){
         const asset=get(example.assetId);
         if(asset.format!=='svg')fail(422,'asset_mismatch','Beispielfoto muss als geprüfte SVG-Vorschau vorliegen.');

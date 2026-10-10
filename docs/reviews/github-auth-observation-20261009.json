@@ -1,0 +1,19 @@
+{
+  "schema": "gravuru-github-auth-observation/v1",
+  "observedOn": "2026-10-09",
+  "source": "reconstructed from complete command recorded in previous chat; no raw HTTP transcript exported",
+  "cloudRevisions": ["81", "82"],
+  "tokenVariable": "GH_TOKEN",
+  "tokenPresent": true,
+  "tokenValueExported": false,
+  "repositoryApiChecks": [
+    {"repository": "Chris83638w/gravuru-2027", "httpStatus": 401},
+    {"repository": "Chris83638w/gravuru-shopify", "httpStatus": 401}
+  ],
+  "identityApiCheck": {"endpoint": "https://api.github.com/user", "httpStatus": 401, "githubRequestIdHeaderPresent": true, "messageMatchedExactly": "Bad credentials"},
+  "transport": {"tlsVerification": true, "redirectsFollowed": false},
+  "gitHelper": {"scope": "repository-local, https://github.com", "beforeConfigured": false, "afterValues": ["", "!gh auth git-credential"], "tokenStoredInConfig": false, "globalSettingsChanged": false},
+  "gitAfterHelper": {"operation": "git ls-remote origin HEAD", "exitCode": 128, "classification": "authentication rejected"},
+  "notEstablished": ["who created or configured the token", "when it was created", "whether it expired or was revoked", "cause of invalidity"],
+  "githubPushed": false
+}

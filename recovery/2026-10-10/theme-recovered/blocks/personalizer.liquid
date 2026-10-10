@@ -1,0 +1,25 @@
+{% if request.page_type == 'product' %}
+  {% assign editor_url = product.metafields.gravuru_workbench.preview_url.value %}
+  {% assign source_id = product.metafields.gravuru_workbench.source_id.value %}
+  {% assign manifest = product.metafields.gravuru_workbench.manifest.value %}
+  {% if editor_url != blank or source_id != blank %}
+    <div data-gravuru-m hidden>
+      <script type="application/json" data-gravuru-binding>
+        {"productId":{{ product.id | append: '' | json }},"ready":{% if manifest.customerEnabled and editor_url != blank %}true{% else %}false{% endif %},"url":{{ editor_url | json }},"variants":[{% for variant in product.variants %}{{ variant.id | append: '' | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]}
+      </script>
+      {% if manifest.customerEnabled and editor_url != blank %}
+        <button type="button">Jetzt personalisieren</button>
+        <p role="status">Design auswählen, Text gestalten und eigenes Foto hochladen.</p>
+      {% else %}
+        <button type="button" disabled>Konfigurator wird vorbereitet …</button>
+        <p role="status">Die Produktübertragung läuft noch. Der Konfigurator erscheint hier automatisch, sobald er bereit ist.</p>
+      {% endif %}
+    </div>
+    <script src="{{ 'gravuru-readiness.js' | asset_url }}" defer></script>
+    <script src="{{ 'gravuru-personalizer.js' | asset_url }}" defer></script>
+  {% endif %}
+{% endif %}
+{%- render 'gravuru-variante-m' -%}
+{% schema %}
+{"name":"Gravuru Personalisieren","target":"body","settings":[]}
+{% endschema %}

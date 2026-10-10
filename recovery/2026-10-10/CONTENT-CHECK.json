@@ -1,0 +1,122 @@
+{
+  "files": 1093,
+  "bytes": 388376857,
+  "byTopLevel": {
+    "(root)": 34,
+    "app": 436,
+    "deliverables": 50,
+    "docs": 489,
+    "ops": 26,
+    "scripts": 58
+  },
+  "uniqueContentsScanned": 1439,
+  "archives": [
+    {
+      "path": "Gravuru-2027-Quellstand-20261003.zip!app/workshop/templates/produktserie.xlsx",
+      "entries": 11,
+      "crcVerified": true
+    },
+    {
+      "path": "Gravuru-2027-Quellstand-20261003.zip",
+      "entries": 216,
+      "crcVerified": true
+    },
+    {
+      "path": "REFERENZ-MATERIALIEN-20260930.zip",
+      "entries": 17,
+      "crcVerified": true
+    },
+    {
+      "path": "REFERENZ-MOTIVE-UND-ACRYL-20260930.zip",
+      "entries": 92,
+      "crcVerified": true
+    },
+    {
+      "path": "REFERENZ-OBERFLAECHE-20260930.zip",
+      "entries": 2,
+      "crcVerified": true
+    },
+    {
+      "path": "REFERENZ-QUELLCODE-20260930.zip",
+      "entries": 183,
+      "crcVerified": true
+    },
+    {
+      "path": "SCREENSHOT-REFERENZEN-20261003.zip",
+      "entries": 12,
+      "crcVerified": true
+    },
+    {
+      "path": "app/workshop/templates/ausfuehrungen.xlsx",
+      "entries": 15,
+      "crcVerified": true
+    },
+    {
+      "path": "app/workshop/templates/produktserie.xlsx",
+      "entries": 16,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/claude-review-20261009/gravuru-2027-claude-review.zip",
+      "entries": 554,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/plesk-private-test-20261007/gravuru-2027-private-test.zip!app/workshop/templates/produktserie.xlsx",
+      "entries": 16,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/plesk-private-test-20261007/gravuru-2027-private-test.zip",
+      "entries": 360,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/plesk-private-test-accepted-20261007/gravuru-2027-private-test.zip",
+      "entries": 362,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/plesk-private-test-drafts-20261007/gravuru-2027-private-test.zip",
+      "entries": 362,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/plesk-private-test-hosted-20261007/gravuru-2027-private-test.zip",
+      "entries": 361,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/plesk-private-test-profiles-20261007/gravuru-2027-private-test.zip",
+      "entries": 361,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/plesk-shopify-preflight-20261008/gravuru-2027-private-test.zip",
+      "entries": 365,
+      "crcVerified": true
+    },
+    {
+      "path": "deliverables/shopify-merchant-20261009/gravuru-2027-merchant-test.zip",
+      "entries": 370,
+      "crcVerified": true
+    },
+    {
+      "path": "docs/dashboard-20261004/dashboard-print-acceptance-20261007.zip",
+      "entries": 11,
+      "crcVerified": true
+    },
+    {
+      "path": "docs/dashboard-20261004/dashboard-print-flow-20261006.zip",
+      "entries": 11,
+      "crcVerified": true
+    },
+    {
+      "path": "docs/dashboard-20261004/sichtpruefung-20261006/Gravuru-Produktserie.xlsx",
+      "entries": 15,
+      "crcVerified": true
+    }
+  ],
+  "findings": [],
+  "limitations": "Pattern and SQLite-signature checks do not prove absence of every possible secret or personal datum. Known private server data/configuration excluded without reading."
+}

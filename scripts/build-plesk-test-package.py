@@ -18,6 +18,7 @@ def package(commit, destination, runtime='private-operator-test'):
     if runtime not in ['private-operator-test', 'shopify-merchant-test']:
         raise ValueError('Unknown runtime')
     commit = git('rev-parse', '--verify', commit + '^{commit}').decode().strip()
+    version = '0.1.0-recovery.20261010+' + commit[:12]
     files = {}
     tree = git('ls-tree', '-rz', '--full-tree', commit, 'app', 'ops/plesk')
     for item in tree.split(b'\0'):
@@ -45,7 +46,7 @@ def package(commit, destination, runtime='private-operator-test'):
     if 'ops/plesk/' + entry not in files or installation not in files:
         raise ValueError('Required runtime entry or installation guide missing')
     files['app.cjs'] = ("require('./ops/plesk/" + entry + "');\n").encode()
-    files['package.json'] = (json.dumps({'name': 'gravuru-2027-merchant-test' if runtime == 'shopify-merchant-test' else 'gravuru-2027-private-test', 'version': '0.1.0', 'private': True,
+    files['package.json'] = (json.dumps({'name': 'gravuru-2027-merchant-test' if runtime == 'shopify-merchant-test' else 'gravuru-2027-private-test', 'version': version, 'private': True,
         'type': 'module', 'engines': {'node': '>=24'}, 'scripts': {'start': 'node app.cjs',
         'plesk:prepare': 'node ops/plesk/prepare.mjs', 'plesk:check': 'node ops/plesk/check.mjs',
         'shopify:preflight': 'node ops/plesk/shopify-preflight.mjs',
@@ -53,7 +54,7 @@ def package(commit, destination, runtime='private-operator-test'):
         'plesk:merchant:check': 'node ops/plesk/merchant-manage.mjs check'}}, indent=2) + '\n').encode()
     files['public/robots.txt'] = b'User-agent: *\nDisallow: /\n'
     files['INSTALLATION.md'] = files[installation]
-    manifest = {'schema': 1, 'sourceCommit': commit, 'scope': runtime, 'shopifyConnected': False,
+    manifest = {'schema': 1, 'version': version, 'sourceCommit': commit, 'scope': runtime, 'shopifyConnected': False,
                 'files': [{'path': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()} for name, data in sorted(files.items())]}
     files['PACKAGE-MANIFEST.json'] = (json.dumps(manifest, indent=2) + '\n').encode()
     if destination.exists():
@@ -61,7 +62,7 @@ def package(commit, destination, runtime='private-operator-test'):
     destination.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(destination, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for name, data in sorted(files.items()):
-            info = zipfile.ZipInfo(name, (2026, 10, 7, 0, 0, 0))
+            info = zipfile.ZipInfo(name, (2026, 10, 10, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o100600 << 16
             archive.writestr(info, data)

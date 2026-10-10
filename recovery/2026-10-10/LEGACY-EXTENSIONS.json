@@ -1,0 +1,181 @@
+{
+  "sourceRepository": "Chris83638w/gravuru-shopify",
+  "sourceCommit": "b564422edadaf56a27a09f99e1140a546e5e7145",
+  "archive": "legacy-extension-sources-b564422.zip",
+  "bytes": 3248590,
+  "sha256": "55c61071c0c03a062ff36c35a2f92ecc36c88cc2e13c529c555b3c797bd76fef",
+  "liveVersionIdentityVerified": false,
+  "compiledWasmAvailable": false,
+  "files": [
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/.gitignore",
+      "bytes": 14,
+      "sha256": "22f2f70f002775cf45ac3d514b80ed5696f14ad7e077c12c432fb2709c0e61e4"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/locales/en.default.json",
+      "bytes": 96,
+      "sha256": "146deb5ac12db0f247e7bdb04c04439c54a22314bf31fbe109969f6ede36049e"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/package.json",
+      "bytes": 832,
+      "sha256": "71dcf24ccbc0b23dc12c279f62e25168f2a233b2ed733014d022c5e6e7881824"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/schema.graphql",
+      "bytes": 95131,
+      "sha256": "4f5024326918113b836e52af66991ca0fd69884e18ca74a07a92fd57e64c2789"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/shopify.extension.toml",
+      "bytes": 462,
+      "sha256": "eac01e9511f171ca8201c8621ec71bab5ddec71402a62c14ad415c9c254c8b48"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/src/cart_transform_run.graphql",
+      "bytes": 499,
+      "sha256": "76ac337b0c4e73a763b6dcc2ea167c641b1d09428753f3a0292118eec9c0d735"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/src/cart_transform_run.js",
+      "bytes": 1417,
+      "sha256": "f8249a49cd6c3317d9e1b959401aed4b8595116d5ff877d470fc08ad7082e426"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/src/cart_transform_run.test.js",
+      "bytes": 2773,
+      "sha256": "dc951535f18b3a0f25c39d93e4d0e7b178cd07464ef5e1c31fde660ddd9b42d3"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/src/index.js",
+      "bytes": 38,
+      "sha256": "f77bb82382a41d47f16627ea423953b0c3543c7abdeeb94ddbffe02156b56189"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/tests/default.test.js",
+      "bytes": 1811,
+      "sha256": "a9e34c0c02ec9ae1376d10e6bf338b8fa96620eb2cfe18c5ea79f58142092875"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/tests/fixtures/no-operations.json",
+      "bytes": 879,
+      "sha256": "30d33c1ab68007cbae611d6de9bf89579b8edc3cbe3a1331e625ee523cdef0cf"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/tests/fixtures/photo-and-motifs.json",
+      "bytes": 1730,
+      "sha256": "e6391832ad2c1b431031ff844abf6e5261716897a99f82bf7f88a3777d514784"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/vite.config.js",
+      "bytes": 50,
+      "sha256": "59d4a4ed9b8afbf23167616714c64da6b728444a805474d613d94c2e5d19604a"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-personalization-price/vitest.config.js",
+      "bytes": 117,
+      "sha256": "62783db9202ab01d511c99c47f594297bb0f16dac578fee048a121227a554b98"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-admin-runtime-v1.js",
+      "bytes": 3153,
+      "sha256": "4fe5f3baa52b69d807a0be5524acd727ab0fd67309afdf55cc7bfaa802b377a7"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-catalog.json",
+      "bytes": 5349970,
+      "sha256": "92e772e0389a169d4ce074c3e740d9c36bf0ed64ea245b29519b735c7cd0b1d0"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-engine.js",
+      "bytes": 174896,
+      "sha256": "34f57efcbd7b6057310a40b71c032c60e029ceaef22ec8f380760f1de9390c02"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-font-licenses.json",
+      "bytes": 19539,
+      "sha256": "f1312a3acb25f4f169502f9140dcb314a3705699ddab9a8ef1375bb4697c6a4e"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-loader.js",
+      "bytes": 946,
+      "sha256": "01ecb9dde4301ab8d1e0ab2896a1a86f050f0db3e9883e2f7e5e653f2c8bbe7f"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-model-editor-live.js",
+      "bytes": 479608,
+      "sha256": "8efed07d490482bfbb1d07649c355c0f586582a32959076df1aa0cdd9580cd4c"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-model-launcher-live-v5.js",
+      "bytes": 21898,
+      "sha256": "15690706886b964b15825b896a0b67a170de08e5369ce9daeefbc3faa2f700a9"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-personalizer.js",
+      "bytes": 7131,
+      "sha256": "92e4bbf3cf3e9899e58617bb612a33ea2bfed3cfe4ccf698cf27f33184a75332"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-profile-aosu-pro-v8p1ax11-16x28.js",
+      "bytes": 21405,
+      "sha256": "b11f20872aa13b251259ab068a43eab1a51becb763f108d7971260d15da6a543"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-readiness.js",
+      "bytes": 1283,
+      "sha256": "e663e02a97faa9fa52bc027b6b42318bcbc242a0e9d2bbe55a5c93ec858952ec"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-stainless-fine.png",
+      "bytes": 1761854,
+      "sha256": "c18810f8217d9102be9d5a091ec036247dba9f1b9e2eece4cae4e1328a69f036"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-variante-m-pdp.css",
+      "bytes": 34002,
+      "sha256": "cf86f429db99e28b48859280ebc007fcf7e32727fe82a0c87c68bf91585c92dd"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/gravuru-variante-m-pdp.js",
+      "bytes": 47289,
+      "sha256": "3d5b8f59adc98f8353bce17df6b23de719781dd877f8b2cf6e53bc308619b4eb"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/assets/thumbs-up.png",
+      "bytes": 18051,
+      "sha256": "2953fff9f2199828d6348097d70dd07380478d2fae984ce8fa75818d265e5b6e"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/blocks/configurator.liquid",
+      "bytes": 2358,
+      "sha256": "c81ab80ac279e38a517e5ffcbcc31eb035765c12da3ad98f762e38707ebe7049"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/blocks/personalizer.liquid",
+      "bytes": 1553,
+      "sha256": "9c54364a04821d11ff787a73e41e70e146240d1c5e46f92a441047f09d810bbd"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/locales/de.json",
+      "bytes": 231,
+      "sha256": "6db7627c6e3562a8889c6ff595fc35e463b28d25ce7979184d703b87895cde6b"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/locales/en.default.json",
+      "bytes": 230,
+      "sha256": "84287b7ce207e3956418e93145a44c8edf911864e5d7517814ae24d2ddf2e929"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/shopify.extension.toml",
+      "bytes": 99,
+      "sha256": "261fd25adfb3b56e09cd3135641b87434152ceb9afbdc3943b31285de6325f98"
+    },
+    {
+      "path": "platform/sources/app/extensions/gravuru-storefront/snippets/gravuru-variante-m.liquid",
+      "bytes": 1062,
+      "sha256": "a6ce2b99920a442d703a0330c373f5c03babad6fbae236478fd6b9c05811b790"
+    }
+  ]
+}

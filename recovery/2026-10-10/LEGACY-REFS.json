@@ -1,0 +1,141 @@
+{
+  "repository": "Chris83638w/gravuru-shopify",
+  "head": "b564422edadaf56a27a09f99e1140a546e5e7145",
+  "refs": [
+    {
+      "ref": "refs/heads/backup/account-recovery-20261010",
+      "sha": "d34535968b40ad4dfed496e081b9241059a6863f",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/design/aosu-labrador-2026-09-23",
+      "sha": "eb5b7dc83062b5181d083a3dff3db892fabdd0df",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/docs/acrylglas-corel-fpd-handover-20260929",
+      "sha": "084412b43204cf080764a0ef0becea8c251713fd",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/feat/product-pipeline-sol-terra-20260923",
+      "sha": "723eff50c833f09a0e49af88689242a133d6ad18",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/feat/variante-m-profile-20260924",
+      "sha": "b564422edadaf56a27a09f99e1140a546e5e7145",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/import/master-2026-09-21",
+      "sha": "36f152fe0dcfd727b1c9b9f8b09917d06d28180e",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/main",
+      "sha": "ff2cdfde42217109aba5636a2d4273c8beb7e448",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/review/aosu-upgrade-2026-09-21",
+      "sha": "4f9db01e679c37a97d05ccc379cd92369df8630d",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/standardisierung/gravuru-v1",
+      "sha": "8f8ca87055474a140b78bde57c88d30c461c4a2d",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/task/acrylglas-konfigurator-20260929",
+      "sha": "e34dffaa6f9c90edd2cfcce58fa1e08541731092",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/task/edelstahl-pilot-2026-09-22",
+      "sha": "790fa296c164a7d35a9d604ed260327387df98a0",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/task/edelstahl-verkaufsstart-2026-09-23",
+      "sha": "a91f105bc8ff8edda2a669869658ce873e7697eb",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/task/konfigurator-bedienung-20260927",
+      "sha": "d299ddfa139971130ec59996cc6365709435d3e5",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/task/serien-motivgroesse-2026-09-23",
+      "sha": "cf072f745567183208b16ff35b277f3be5268124",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/heads/task/werkstatt-uebergabe-2026-09-23",
+      "sha": "771ead19412979e8782e302262e13127dee044da",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/1/head",
+      "sha": "36f152fe0dcfd727b1c9b9f8b09917d06d28180e",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/2/head",
+      "sha": "4f9db01e679c37a97d05ccc379cd92369df8630d",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/2/merge",
+      "sha": "31bbf70754af55a2ee8e6cb6f10d8b9db4f5de2f",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/4/head",
+      "sha": "790fa296c164a7d35a9d604ed260327387df98a0",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/4/merge",
+      "sha": "628bb6e3dd9007e0f4ecc275af93ec102df32a9f",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/5/head",
+      "sha": "eb5b7dc83062b5181d083a3dff3db892fabdd0df",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/5/merge",
+      "sha": "ff6165baf7f8a76dd458f26817101fc286f35d5a",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/6/head",
+      "sha": "084412b43204cf080764a0ef0becea8c251713fd",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/pull/6/merge",
+      "sha": "fc0464303e91877dffebc92dcb6069c61dfa7b22",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/tags/master-pre-standardisierung-2026-09-21",
+      "sha": "ff2cdfde42217109aba5636a2d4273c8beb7e448",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/tags/resources-acrylglas-150x200-20260929",
+      "sha": "eb64231b6232b9c6b74bb67556be76be57119465",
+      "inOriginalBackup": true
+    },
+    {
+      "ref": "refs/tags/resources-doorbell-originals-20260923",
+      "sha": "6e7a33447b9dd64759e756755d9f4af2f48cb191",
+      "inOriginalBackup": true
+    }
+  ]
+}

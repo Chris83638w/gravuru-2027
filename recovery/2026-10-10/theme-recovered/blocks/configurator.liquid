@@ -1,0 +1,43 @@
+{% assign configuration = product.metafields.gravuru.configurator.value %}
+{% if product != blank and configuration.enabled == true %}
+  <div {{ block.shopify_attributes }}>
+    <gravuru-configurator data-engine-src="{{ 'gravuru-engine.js' | asset_url }}">
+      <script type="application/json" data-configuration>
+        {
+          "demo": false,
+          "productId": {{ product.id | prepend: 'gid://shopify/Product/' | json }},
+          "productHandle": {{ product.handle | json | replace: '<', '\u003c' }},
+          "assignment": {{ configuration | json | replace: '<', '\u003c' }},
+          "catalogUrl": {{ 'gravuru-catalog.json' | asset_url | json }},
+          "materialUrl": {{ 'gravuru-stainless-fine.png' | asset_url | json }},
+          "cartAddUrl": {{ routes.cart_add_url | json }},
+          "title": {{ block.settings.heading | default: product.title | json | replace: '<', '\u003c' }},
+          "hero": {% if product.featured_image %}{{ product.featured_image | image_url: width: 1200 | json | replace: '<', '\u003c' }}{% else %}null{% endif %},
+          "width": {{ configuration.widthMm | json }},
+          "height": {{ configuration.heightMm | json }},
+          "orderEnabled": false,
+          "variant": {{ product.selected_or_first_available_variant.id | append: '' | json }},
+          "variants": [
+            {% for variant in product.variants limit: 250 %}
+              {"id":{{ variant.id | append: '' | json }},"sku":{{ variant.sku | json | replace: '<', '\u003c' }},"title":{{ variant.title | json | replace: '<', '\u003c' }},"available":{{ variant.available | json }},"priceLabel":{{ variant.price | money_with_currency | strip_html | json | replace: '<', '\u003c' }}}
+              {% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          ],
+          "labels": {}
+        }
+      </script>
+      <noscript>{{ 'configurator.enable_js' | t }}</noscript>
+    </gravuru-configurator>
+  </div>
+{% elsif request.design_mode %}
+  <div {{ block.shopify_attributes }}>{{ 'configurator.assignment_needed' | t }}</div>
+{% endif %}
+{% schema %}
+{
+  "name": "Produktkonfigurator",
+  "target": "section",
+  "enabled_on": {"templates":["product"]},
+  "javascript": "gravuru-loader.js",
+  "settings": [{"type":"text","id":"heading","label":"Überschrift","default":"Dein Schild gestalten"}]
+}
+{% endschema %}

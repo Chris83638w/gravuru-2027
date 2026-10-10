@@ -13,7 +13,15 @@ def credential_content(data):
     return re.search(rb'(?m)^-----BEGIN (?:OPENSSH |RSA |EC )?PRIVATE KEY-----\r?\n|\b(?:gh[pousr]_|shp(?:at|ca|pa|ss)_)[A-Za-z0-9]{24,}', data) is not None
 SELECTED = ['app', 'ops', 'scripts', 'package.json', 'AGENTS.md', 'START_HERE.md', 'STATUS.md',
             'UMSETZUNGSPAKETE.md', 'NEUE-WERKSTATT-PLAN.md', 'MATERIALREFERENZEN.md',
-            'docs/reviews/CLAUDE-AUFTRAG-20261009.md',
+            'README.md', 'LOKAL-STARTEN.md', 'QUELLEN-UND-START.md', 'QUELLEN-MANIFEST.json',
+            'CLOUD-AKTUELL.md', 'CLOUD-EINRICHTUNG.md', 'CLOUD-HANDOVER.md',
+            'CLOUD-SICHERUNG-PRUEFUNG.md', 'CLOUD-UEBERGABE.md', 'CLOUD-VALIDIERUNG-20261003.md',
+            'CLOUD-SOURCE-COMPARISON.json', 'CLOUD-SOURCE-MANIFEST.json', 'cloud_setup.py',
+            'G27-01-PRUEFUNG.md', 'G27-01-UEBERGABE.md', 'UEBERGABE-SOL-6.1.md',
+            'KONFI-VERGLEICH-UND-AR.md', 'design-qa.md',
+            'docs/reviews',
+            'docs/dashboard-20261004/SHOPIFY-GEDENKTAFEL-20261009.md',
+            'docs/dashboard-20261004/shopify-memorial-20261009',
             'docs/dashboard-20261004/SHOPIFY-HAENDLER-LAUFZEIT-20261009.md',
             'docs/dashboard-20261004/merchant-runtime-20261009',
             'docs/dashboard-20261004/SHOPIFY-ZUGRIFF-BESTAETIGT-20261009.md',
@@ -51,7 +59,7 @@ def build(commit, destination):
     files['ZUERST-LESEN.md'] = files[brief]
     manifest = {'schema': 'gravuru-independent-review/v1', 'sourceCommit': commit,
                 'scope': 'committed source, requirements and selected evidence; no server access',
-                'claudeExecuted': False, 'uncommittedFilesIncluded': False,
+                'claudeExecuted': False, 'independentReviewExecuted': False, 'uncommittedFilesIncluded': False,
                 'files': [{'path': name, 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()}
                           for name, data in sorted(files.items())]}
     files['REVIEW-MANIFEST.json'] = (json.dumps(manifest, indent=2) + '\n').encode()

@@ -1,4 +1,10 @@
-## Aktuell: Gedenktafel ausgewählt; Versionsversuch abgewiesen – 09.10.2026
+## Aktuell: Entwicklung für unabhängige Gegenprüfung angehalten – 09.10.2026
+
+Nutzer wünscht wegen der Fehler und fehlenden Gesamtfertigstellung eine andere KI zur Prüfung. Weitere Entwicklung und Server-/Shopänderungen angehalten. Produktcode bei `6f384f4da4f0e5f43f67de73f6f89e596dd6ccd3` erhalten. Nur lokales Prüfbriefing, Beobachtungsnachweise und Exportauswahl aktualisiert. [Prüfauftrag](docs/reviews/CLAUDE-AUFTRAG-20261009.md) · [Änderungen und Prüflücken](docs/reviews/AENDERUNGEN-UND-PRUEFLUECKEN-20261009.md). Noch keine unabhängige Prüfung und kein Claude-Aufruf erfolgt. Nutzer entscheidet nach dem Befund über weitere Korrekturen.
+
+Aktuelle GitHub-Diagnose: `GH_TOKEN` vorhanden, GitHub selbst antwortet 401 / `Bad credentials`. Repository-lokalen GitHub-Credential-Helper verbunden, normaler Git-Aufruf weiterhin Exit 128 / Anmeldung abgewiesen. Kein Tokenwert gespeichert; Ursache/Verantwortlichkeit der Token-Ungültigkeit nicht ermittelt. Shopify-Token funktioniert davon unabhängig. Kein GitHub-Push oder Live-Release behaupten.
+
+## Historisch: Gedenktafel ausgewählt; Versionsversuch abgewiesen – 09.10.2026
 
 Nutzer erlaubt Auswahl einer bestehenden Gedenktafel. Gewählt: **Gedenktafel aus Schiefer mit Foto für Menschen, 220 × 140 mm**, Shopify `16138083107196`. Eigener authentifizierter Leseabruf erfolgreich; alle **neun Befestigungen/Preise** stimmen mit bestehendem App-Metafeld Revision 30 überein, ab 22,99 €, Aufpreise 1,69 €/Motiv und 9,99 €/Foto erfasst. Auswahl gesichert, noch keine neue Werkstattrevision oder operative Bindung. Öffentliche Produktadresse aktuell 404 trotz Status ACTIVE. [Nachweis und Anschlüsse](docs/dashboard-20261004/SHOPIFY-GEDENKTAFEL-20261009.md).
 

@@ -1,0 +1,16 @@
+{%- comment -%}
+  Variante M (AOSU-Upgrade-Konfigurator) – Laufzeit aus der Theme-App-Extension statt aus dem
+  unveröffentlichten Theme /t/40/. Rendert nur auf Produktseiten, deren Beschreibung den
+  Konfigurator-Host enthält. Die Produktbeschreibung selbst enthält keine <script>/<style> mehr
+  (siehe produktbeschreibung-variante-m-bereinigt.html); der Launcher lädt Editor, Profil und
+  Admin-Runtime relativ zu seinem eigenen Asset-Pfad nach.
+{%- endcomment -%}
+{%- if request.page_type == 'product' and product != blank -%}
+  {%- assign gv_desc = product.description | default: '' -%}
+  {%- if gv_desc contains 'gravuru-funkklingel-product' or gv_desc contains 'gravuru-model-product' -%}
+    <link rel="stylesheet" href="{{ 'gravuru-variante-m-pdp.css' | asset_url }}">
+    <script src="{{ 'gravuru-variante-m-pdp.js' | asset_url }}" defer></script>
+    <script src="{{ 'gravuru-model-launcher-live-v5.js' | asset_url }}" defer></script>
+    {{ 'gravuru-model-editor-live.js' | asset_url | preload_tag: as: 'script' }}
+  {%- endif -%}
+{%- endif -%}

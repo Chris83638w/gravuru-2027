@@ -1,0 +1,32 @@
+[
+  {
+    "path": "blocks/personalizer.liquid",
+    "bytes": 1553,
+    "sha256": "9c54364a04821d11ff787a73e41e70e146240d1c5e46f92a441047f09d810bbd"
+  },
+  {
+    "path": "blocks/configurator.liquid",
+    "bytes": 2358,
+    "sha256": "c81ab80ac279e38a517e5ffcbcc31eb035765c12da3ad98f762e38707ebe7049"
+  },
+  {
+    "path": "snippets/gravuru-variante-m.liquid",
+    "bytes": 1062,
+    "sha256": "a6ce2b99920a442d703a0330c373f5c03babad6fbae236478fd6b9c05811b790"
+  },
+  {
+    "path": "locales/de.json",
+    "bytes": 231,
+    "sha256": "6db7627c6e3562a8889c6ff595fc35e463b28d25ce7979184d703b87895cde6b"
+  },
+  {
+    "path": "locales/en.default.json",
+    "bytes": 230,
+    "sha256": "84287b7ce207e3956418e93145a44c8edf911864e5d7517814ae24d2ddf2e929"
+  },
+  {
+    "path": "RECOVERY.json",
+    "bytes": 704,
+    "sha256": "4d7c811b0d92ea6940671ae95cabbbf9342d5a250ba049584079bf1ca0c410c1"
+  }
+]

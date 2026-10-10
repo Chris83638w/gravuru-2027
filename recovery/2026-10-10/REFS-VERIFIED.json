@@ -1,0 +1,680 @@
+[
+  {
+    "ref": "refs/remotes/origin/backup/account-recovery-20261010",
+    "sha": "0b095e82345249e5af7915bb111d25c1246f18f0",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/docs/chat-recovery-mika-20261005",
+    "sha": "5dd07c49da473c309281d6203e600ecca9577f4d",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/docs/continuation-handoff-20261007",
+    "sha": "dc941043c7184dfe6775c3e995989a8c70b13fd6",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/docs/dashboard-review-pack-20261006",
+    "sha": "e70aeb2b10bc7d441bebfa4509205a655a7fb283",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/feat/design-folder-import-20261007",
+    "sha": "dd42faf55df44686d3b6185807c35497ceba8df0",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/feat/design-source-settings-20261007",
+    "sha": "74a1e8b61b564b1fa9421b153d3d7da7c7999b0a",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/feat/design-zip-import-20261007",
+    "sha": "dfd8c0f59a04a205a23dfb0c86d7a9850ca868f9",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/feat/excel-profile-assignments-20261007",
+    "sha": "d8a09447dba5acdce285f0f6584ee2eb067a0de8",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/feat/plesk-private-test-package-20261007",
+    "sha": "a2af162edd3a1dfa2106212c9f4b76c7ae351b70",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/infra/cloud-only-handoff-20261004",
+    "sha": "1b4626eab6cc2e7d22f815754583cc678e57d558",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/infra/gravuru-2027-cloud-20261003",
+    "sha": "f7c3f24db55003c28fec5274dfc5df2736926b6b",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/infra/private-runtime-preparation-20261004",
+    "sha": "fefe4a93a3daf53a199cefd81ab317adeae916ac",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/main",
+    "sha": "3ff2c2f8e7cb2565f60bd016f73a99ff6520152b",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/access-preflight-20261007",
+    "sha": "fe1086192b4c5efbce3486ce55f100c9c12746db",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-commerce-prices-20261006",
+    "sha": "a6d4e18a50d0b5ee97dde1ee0231c81f59274e54",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-engraving-output-20261006",
+    "sha": "ef36ab0106be85baae2eef58997cb02e8792461b",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-engraving-preview-20261006",
+    "sha": "725a7c62b9be6536f9bdd2cd502547424228e867",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-import-tint-20261006",
+    "sha": "95788388cb853a7a76c3bb2ff723e334be25caa4",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-order-handoff-20261006",
+    "sha": "5f97ce4a964b4e80907bd4a4608c53d4599fcdcf",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-order-product-20261006",
+    "sha": "f5ea76d2fa266d37dfe5d4d2569fd33dc92bc1cf",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-photo-coverage-20261006",
+    "sha": "f9f1fba6bb5560183c25ddc15b7d97f898eb5290",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-photo-quality-20261006",
+    "sha": "537730a2ac659f2d8cd244d5efa1037a0e07ef5c",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-private-drafts-20261006",
+    "sha": "6b944c1bab2d6219e5a585c3d979bd5eec8bf1b7",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-production-profiles-20261006",
+    "sha": "d7bf81fed4bad7a381eb4a43e0bdc4ce545d0d78",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-review-handoff-20261006",
+    "sha": "7b071fc64c6604affbdb5190bb1814d3ebf38427",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/acrylic-snapshot-output-20261006",
+    "sha": "91541d6d331cb976196942b7c3ea2feb75117a4c",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/batch-correction-20261006",
+    "sha": "336c9d74ff2d580e0670bce559eaa6449bcd4e0b",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/batch-design-sheet-20261006",
+    "sha": "67205fa26b8b48fa02f5a0e3959a3f1dcddc91ed",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/batch-resume-20261006",
+    "sha": "2828939c24f83115e56392f312e89b87fc7ebec8",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/batch-update-20261006",
+    "sha": "d24d8297d8a751f7961d6b4c989b092783dca3a1",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/cart-draft-access-20261006",
+    "sha": "4fe1cf6b59f22ea25393b7b0d5d8860e74c2339c",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/cart-handoff-journal-20261006",
+    "sha": "20f970dbda089f037ed8f35d38fbc69ad27da475",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/cart-http-gate-20261006",
+    "sha": "548a69e0e4e1e1baeedf3ad03655bbff1b209852",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/checkout-handoff-20261005",
+    "sha": "7786a685bb8d4e876805a5196f88280abdca601c",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/cloud-runtime-handoff-20261007",
+    "sha": "8b2d3885e684425d43ccada3045b65ffabfb7806",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/cmyk-300dpi-20261004",
+    "sha": "d127b5a9ee6f52f3aad69ae5061e8d48d5f7edf0",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/completion-pass-20261006",
+    "sha": "b8a82328e127901d95dbbc269a9f4c30ec7d2fb1",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/configurator-controls-20261004",
+    "sha": "7f6bd786ebf097ec8047d7d14ee9705d1ad7030a",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-contour-import-20261005",
+    "sha": "7943804ad30a4e94e023c880d24ef9cec5d899a2",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-customer-fields-20261004",
+    "sha": "03fc8aa74df2714ae523fd8208ae2ad3d7327cfa",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-form-designs-20261005",
+    "sha": "cb878ffaaf1f794f2aadb226b47dcc0f4f2091b6",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-form-products-20261005",
+    "sha": "3d0d60480c283c19945ea8c534693f35830b5b19",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-m01-overview-20261005",
+    "sha": "092228adb0fbc6a14b0850cdeccee947c2c17a45",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-m02-editor-20261005",
+    "sha": "8227eb7db836de5e30779e42fdd7bd36cb1a68f4",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-material-preview-20261005",
+    "sha": "34bb395cfacba140a486bb987c8f90a98a90a736",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-options-20261005",
+    "sha": "138dc8bbc3dc7f742d40f86fa813fc706a41ec26",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-plate-preview-20261006",
+    "sha": "8745c9873942647796927d5680b9eb66ee14510e",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-print-separations-20261006",
+    "sha": "ff8b4c5bb6a6eefd5879281126553f56eb051c3a",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-product-cards-20261005",
+    "sha": "b51f7fb6fa5ef4f9ed2b53832858f2035fc283e4",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/dashboard-readiness-20261005",
+    "sha": "a06d821bd5389016d92d0ff0087c7f066c4f864a",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/design-excel-export-20261006",
+    "sha": "e57a7defee4ff8e554f4f17c5beb0442120e224b",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/design-skills-20261009",
+    "sha": "3ff2c2f8e7cb2565f60bd016f73a99ff6520152b",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/design-tab-rule-20261005",
+    "sha": "3d09c9428f1637db6ece5052af8efd471f473397",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/direct-edit-test-download-20261004",
+    "sha": "911874efc3532f7bd77a72fbef9eafa6072d6d3c",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/engraving-pdf-preview-20261006",
+    "sha": "928c071ec8a777e10494ba1bbe2d8698735629ea",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/excel-customer-flow-20261006",
+    "sha": "84f649eab669486428c9450483605bbfd459660b",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/existing-konfi-binding-20261006",
+    "sha": "3ddb7c4d6ba26f686a74bec0f680cec6b1354f36",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/export-queue-20261005",
+    "sha": "6a23acc56a7f98f629107dd4f8769a901a2af164",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-added-elements-20261005",
+    "sha": "a407c4114f3914d26f3a58baa8de4628a96161b0",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-batch-20261005",
+    "sha": "0a0a7bf3d018ed00e687227724bf57810181298a",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-customer-editor-20261005",
+    "sha": "280c773c72b55aefecdc0d5d6680fdd0cd07d663",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-direct-edit-20261005",
+    "sha": "0265ed5ad83c05fd3d7569ccb522b75e8b464e94",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-engraving-20261005",
+    "sha": "82db3b5798ae9b27443e041f94c4517fd3b2f0a7",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-material-scenes-20261005",
+    "sha": "fdbb5be293a0517767d2f0f20a56b6b2b0281620",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-print-proof-20261005",
+    "sha": "886a7573b91f7c25edbe491205435af8e2401416",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-production-snapshots-20261005",
+    "sha": "2b2d75a2ecf1061275feffa76c7da9f90a3d9ba0",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-variants-20261006",
+    "sha": "35e3cae6b34d6ef0daee099e0ada0f81bb63358d",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/form-vector-text-20261005",
+    "sha": "62243a23ad8734a28c30f9f9552dfe0f1730b865",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/full-preview-base-20261005",
+    "sha": "92a16c33616542a51f3b112a828f7c07cd2610a4",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/g27-01-package",
+    "sha": "36f7c16494feb24abc980f9813a1dec855cc4975",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/g27-02-cloud",
+    "sha": "e8021251a3bf86590798b85dca1bbf001c1fa88c",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/integrated-finish-20261006",
+    "sha": "88d1536dc1411ee4ea9f4633a9fe4b00089834cb",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/konfi-form-completion-20261006",
+    "sha": "8cb741d67fb867faefc70f97117a5f741fc5b705",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/master-rules-print-20261004",
+    "sha": "111f3ed95c7bad23ce130208f64c7ca3dcf77e78",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/material-engraving-preview-20261006",
+    "sha": "5dc75f9e84db992e139cfc17ce43527601e07ea3",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/merchant-runtime-20261006",
+    "sha": "4976bee6fa1785d23f8476c4bcb2b30b3261c0a3",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/muster-acrylglasbild-20261005",
+    "sha": "775557fef6933509d095b9e2756a5f799a7fd670",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/obsolete-output-recovery-20261006",
+    "sha": "962d10c4725a74e3725818731dcf9819375c813d",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/order-intake-20261005",
+    "sha": "0785d0fe7bfe2f6266996382b09220139ddfd642",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/order-line-refunds-20261007",
+    "sha": "79c570061141c8c432e90962c19ed8845cad62b5",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/order-output-complete-20261006",
+    "sha": "26907140e0de3486e8a7bf04368913d7d556b146",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/order-product-drafts-20261005",
+    "sha": "2c932f013332f827ec7471aab1b8bbb42186ae6a",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/order-product-profile-20261006",
+    "sha": "56a7467b4407455f2870066a3cd31916c08875bb",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/order-status-20261006",
+    "sha": "8b4bacf38e39a3a3b4285115c10c96252e1322a3",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/output-check-history-20261006",
+    "sha": "8f2a0539923d5f2e9adb7914b095ce1464be382e",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/output-check-journal-20261006",
+    "sha": "ece60315a8b016c5f6b741bfd6a226508ea0b13e",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/output-specification-20261006",
+    "sha": "7ca26dfcbdecd4301c72b05004e0d7fb3cf434ca",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/pdf-vector-contour-fix-20261006",
+    "sha": "b64494f3fec7e46af9f5e9f12473b2d066e86294",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/photo-position-20261004",
+    "sha": "5ddd3a1473c32da7682e47ddc6a0445472c4597e",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/print-download-20261004",
+    "sha": "7a533ab133cf7a4a087498802bbc6000e849f335",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/print-separations-20261006",
+    "sha": "6ca4df1c7dd82a669eb72eca0348d72b9f35d3b1",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/product-revision-compare-20261006",
+    "sha": "3f0572542878971ee29945234a915f0ab2b929fe",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/production-profile-usage-20261006",
+    "sha": "4b296b28e2d2c7b6f76e82c98589188c40d2af30",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/production-profiles-20261005",
+    "sha": "720d0d1243375109cc237dac4ef9d7d87e416f0a",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/profile-impact-preview-20261006",
+    "sha": "f28dfc032c6d374d7d0967fe8eb8f37895d2a8f2",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/shop-draft-transfer-20261006",
+    "sha": "a4ccb954cfe3d35bac680a6d3cca2d81adc5dabf",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/shop-variant-mapping-20261006",
+    "sha": "9a05d1b0d4641ae2a395493ae7a87cc5190964f5",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/shopify-admin-bootstrap-20261006",
+    "sha": "2104489fb9dea722081e847be60728e9ade6128c",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/shopify-app-identity-20261006",
+    "sha": "6c935a24b7657a6dca4333c2cf9eb6ed4c4f1d63",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/shopify-test-preparation-20261007",
+    "sha": "c19cbd8606258860848608938965536286d90519",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/unlock-design-elements-20261005",
+    "sha": "f4c9a2068f7d159def5f88f2a841bf01c1a59bd8",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/uv-design-pilot-20261004",
+    "sha": "8438bc2a4638c0a2017d98fc9670169661711a1c",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/uv-original-preview-20261004",
+    "sha": "57ce8ff6a39fb5c78a6983af8f12c4bf0528b918",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/uv-print-surface-20261006",
+    "sha": "150aa8ea5344f8577686b1ffdff5d40b8e77851f",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/variant-excel-20261006",
+    "sha": "61903f9ae655116f3c8b8e7ae774a7f19c0e96ea",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/variant-excel-export-20261006",
+    "sha": "a06bab0cb0f3ec1eb1ef220992f4d39d1e6aa2e8",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/task/variant-import-resume-20261006",
+    "sha": "f1ef6976906d1eba8e40ffea3cb0a98d3b4fff20",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/test/cloud-account-a-20261003-1230",
+    "sha": "5e40517a85a07d7226989b3863ce025f382aaa20",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/test/cloud-browser-acceptance-20261007",
+    "sha": "0202493f715d53316eb893e94fb672c4ac8eeb04",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/test/cloud-restore-20261004",
+    "sha": "e624833aecf6382f9b5edb4c432eb4e7c81a5cb2",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/test/customer-file-grants-ui-20261007",
+    "sha": "72b70416ecf16040b19ab774b43f5f5a67d5680d",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/test/dashboard-print-acceptance-20261007",
+    "sha": "d1bc7ffbf61b708899fee1c9a74cc15c9fb6f746",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  },
+  {
+    "ref": "refs/remotes/origin/test/saved-excel-resume-20261007",
+    "sha": "cc2e7d8812a4c2036e3f381e918707660e77bc1e",
+    "inOriginalBackup": true,
+    "inRecoveredHistory": true
+  }
+]

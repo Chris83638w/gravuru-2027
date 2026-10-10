@@ -107,3 +107,23 @@ test('stable merchant CSRF cannot enable unauthenticated operator mode', () => {
 test('successful execution alone cannot make an arbitrary executable pass the Python check', () => {
   assert.throws(() => checkMerchantPython({python: '/bin/true'}), {code: 'merchant_python'});
 });
+
+test('explicit test-order endpoint authenticates Shopify bytes without weakening merchant access, and persists duplicate detection',async t=>{
+ const f=fixture(t);prepareMerchantStorage(f.config());let runtime=await start(f);t.after(()=>runtime.close());
+ const route='/webhooks/shopify/orders-paid',payload={id:901,test:true,financial_status:'paid',currency:'EUR',line_items:[]};
+ const headers={'x-shopify-hmac-sha256':createHmac('sha256',f.secret).update(JSON.stringify(payload)).digest('base64'),'x-shopify-shop-domain':SHOPIFY_IDENTITY.shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'synthetic-runtime-delivery-901'};
+ assert.equal((await runtime.request(route,{method:'POST',headers,data:payload})).status,404);
+ await runtime.close();
+ for(const value of ['true','live','test-only-2026-10']){f.values.GRAVURU_SHOPIFY_ORDER_WEBHOOK=value;f.save();assert.throws(f.config,{code:'merchant_config'});}
+ f.values.GRAVURU_SHOPIFY_ORDER_WEBHOOK='test-only-2026-07';f.save();runtime=await start(f);
+ assert.equal((await runtime.request(route,{method:'POST',data:payload})).status,401);
+ assert.equal((await runtime.request(route,{method:'POST',headers:{...headers,'x-forwarded-proto':'http'},data:payload})).status,403);
+ const first=await runtime.request(route,{method:'POST',headers,data:payload});assert.equal(first.status,200);assert.equal(JSON.parse(first.bytes).duplicate,false);
+ assert.equal((await runtime.request('/api/workshop/orders')).status,401);
+ assert.equal((await runtime.request('/api/workshop/order-webhook',{method:'POST',headers,data:payload})).status,401);
+ const auth={authorization:token(f.secret)};
+ const orders=await runtime.request('/api/workshop/orders',{headers:auth});assert.equal(JSON.parse(orders.bytes).integration.enabled,true);
+ assert.equal(JSON.parse((await runtime.request('/__shopify/health',{headers:auth})).bytes).orderWebhookEnabled,true);
+ await runtime.close();runtime=await start(f);
+ const duplicate=await runtime.request(route,{method:'POST',headers,data:payload});assert.equal(duplicate.status,200);assert.equal(JSON.parse(duplicate.bytes).duplicate,true);
+});

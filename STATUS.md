@@ -1,3 +1,7 @@
+## In Arbeit: signierter Testbestelleingang – 11.10.2026
+
+Auf `78fffe3` weitergeführt: separater, ausdrücklich aktivierbarer Shopify-Eingang für bezahlte Testbestellungen, unveränderliche Zuordnung und Duplikaterkennung. HTTP-/Händlerlaufzeit-/Registrierungsprüfungen bestanden. Minimale zusätzliche Berechtigung `read_orders` und ein auf `test:true` beschränktes Abonnement vorbereitet; vorhandene sieben App-Module bleiben erhalten. [Details](docs/releases/20261011/orders/IMPLEMENTATION.md). Noch keine neue Veröffentlichung aus diesem Abschnitt ableiten; aktiver Server weiterhin `77b0472`, Gedenktafel Revision 2.
+
 ## Aktuell: Cormorant Garamond und Preisbindungen veröffentlicht – 11.10.2026
 
 Händlerlaufzeit auf Quellstand **`77b0472`** installiert und HTTPS-geprüft. Gedenktafel **Revision 2** verwendet auf Nutzerwunsch die vorhandene vollständige Schrift **Cormorant Garamond** (327 Zeichen, Umlaute und †). Zwei Textfelder innerhalb ihrer bisherigen Bereiche in ganzen Millimetern eingepasst; Revision 1 unverändert erhalten. Alle neun Ausführungen mit realen Shopify-Optionsnamen und Preisen abgeglichen und unveränderlich an Shopify-Preisrevision 30 gebunden. Shopify-Produkt, App-Module und bisherige Kundenwerkstatt unverändert.

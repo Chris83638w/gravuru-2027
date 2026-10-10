@@ -1,15 +1,16 @@
 {
-  "files": 1093,
-  "bytes": 388376857,
+  "files": 1112,
+  "bytes": 391993197,
   "byTopLevel": {
     "(root)": 34,
     "app": 436,
     "deliverables": 50,
-    "docs": 489,
-    "ops": 26,
-    "scripts": 58
+    "docs": 491,
+    "ops": 27,
+    "recovery": 15,
+    "scripts": 59
   },
-  "uniqueContentsScanned": 1439,
+  "uniqueContentsScanned": 1484,
   "archives": [
     {
       "path": "Gravuru-2027-Quellstand-20261003.zip!app/workshop/templates/produktserie.xlsx",
@@ -114,6 +115,11 @@
     {
       "path": "docs/dashboard-20261004/sichtpruefung-20261006/Gravuru-Produktserie.xlsx",
       "entries": 15,
+      "crcVerified": true
+    },
+    {
+      "path": "recovery/2026-10-10/legacy-extension-sources-b564422.zip",
+      "entries": 48,
       "crcVerified": true
     }
   ],

@@ -1,0 +1,22 @@
+{
+  "baselineCommit": "d8a09447dba5acdce285f0f6584ee2eb067a0de8",
+  "baselineTests": 588,
+  "baselineInitialPass": 587,
+  "baselineInitialFail": 1,
+  "baselineFailure": "Sandbox-generated .git markers caused the real private-path guard to reject temporary data",
+  "isolatedConfigRetest": {
+    "tests": 5,
+    "pass": 5,
+    "fail": 0
+  },
+  "recoveredCommit": "6f384f4da4f0e5f43f67de73f6f89e596dd6ccd3",
+  "targetedRecoveredTests": {
+    "tests": 66,
+    "pass": 66,
+    "fail": 0
+  },
+  "testCountsOverlap": true,
+  "productCodeChanged": false,
+  "actualShopifyLoginVerified": false,
+  "physicalPrintAcceptance": false
+}

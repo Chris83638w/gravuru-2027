@@ -1,3 +1,13 @@
+## Aktuell: Vollständige erreichbare Sicherung und Installationsprüfung – 10.10.2026
+
+Neuere Arbeit bis **`6f384f4`** aus dem verifizierten Plesk-Git-Bundle wiederhergestellt, danach letzte vollständige Dokumentationsdiffs aus dem verlorenen Chat rekonstruiert. Alle erfassten GitHub-Branchhistorien bleiben erhalten; keine Rücksetzung auf `a2af162`. Zusätzliche Theme-/Preisfunktionsquellen aus dem älteren Repository gesichert. **Live-Werkstatt unverändert.**
+
+[Verbindlicher Sicherungs- und Prüfbericht](recovery/2026-10-10/REPORT.md) · [Installationspaket, SHA-256 und automatischer Installer](deliverables/recovery-install-20261010/README.md) · [Erreichbare und fehlende Dateien](recovery/2026-10-10/RECOVERY-PROVENANCE.md).
+
+Paketversion `0.1.0-recovery.20261010+a9bfbfbc463e`, frische isolierte Installation bestanden; 588 breite Node-Prüfungen mit dokumentierter Umgebungsbereinigung, 66 gezielte Wiederherstellungsprüfungen sowie Operator-/Händler-Browserprüfungen bestanden. Testmengen überschneiden sich. Echte Shopify-Bestellstrecke, physischer Druck und private Datenbanksicherung damit nicht abgenommen. Produktcode unverändert; ausschließlich Sicherung, Installer und Korrektur eines kollidierenden Testaufbaus. Sicherungsziele auf GitHub: `backup/account-recovery-20261010` und `task/full-backup-install-20261010`, endgültigen Remote-Abgleich in der Abschlussmeldung beachten.
+
+Nächster Schritt: unabhängige Prüfung auf dieser gesicherten Basis und separates Betriebsdaten-Backup planen; keine Live-Umschaltung aus historischen Freigabetexten ableiten. Die folgenden Abschnitte sind historische Arbeitsstände.
+
 ## Aktuell: Getrennter Shopify-Händlerstart lokal geprüft – 09.10.2026
 
 Auf `a46af00` fortgeführt: eigener Plesk-Händlerstart mit privater Konfiguration/Datenablage, echter JWT-Prüfung, Host-/HTTPS-/CSRF-Grenzen und exklusivem Prozess-Lock. Neustart erhält gespeicherte Arbeit und offene Sitzung; Schlüsselwechsel sperrt alte Sitzungen. **6 neue Prüfgruppen + 16 gezielte bestehende Prüfungen bestanden.** Browser: synthetisches Produkt anlegen/wiederöffnen, private Vorschau, Desktop/Mobil PASS; echte Shopify-Anmeldung und neuer HTTPS-Host damit noch nicht bestätigt. [Prüfbericht](docs/dashboard-20261004/SHOPIFY-HAENDLER-LAUFZEIT-20261009.md) · [getrennte Installation](ops/plesk/MERCHANT-README.md).

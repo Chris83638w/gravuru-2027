@@ -1,0 +1,13 @@
+✔ private file supplies npm runner and app without exposing values (4.090115ms)
+✔ unsafe file and parent permissions are rejected (1.220999ms)
+✔ symlink and absent explicitly configured file are rejected (1.126932ms)
+✔ invalid, oversized and unexpected content fails without logging content (2.876341ms)
+✔ conflicting Plesk and file configuration fails closed (0.88827ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 78.718191

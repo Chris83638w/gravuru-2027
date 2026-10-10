@@ -277,10 +277,17 @@ http.Server.prototype.listen = function () {
             page.click('#check')
             expect(page.locator('#summary')).to_contain_text('0 Fehler')
             expect(page.locator('#import')).to_be_enabled()
+            before_import = json.loads(request('/api/workshop/products', {'Authorization': authorization})[1])
             page.click('#import')
             expect(page.locator('#result')).to_be_visible()
             state = json.loads(request('/api/workshop/products', {'Authorization': authorization})[1])
-            assert len(state['products']) == 2
+            # --draft-access creates its own product before this independent CSV flow.
+            # Exactly one imported row must be added; every existing product stays intact.
+            old_products = {item['id']: item for item in before_import['products']}
+            current_products = {item['id']: item for item in state['products']}
+            assert len(current_products) == len(old_products) + 1
+            assert all(current_products[key] == value for key, value in old_products.items())
+            report['csvProductCounts'] = {'before': len(old_products), 'after': len(current_products)}
             with page.expect_download() as download:
                 page.click('#download-report')
             download.value.save_as(str(folder / 'report.xlsx'))

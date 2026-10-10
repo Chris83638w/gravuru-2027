@@ -1,3 +1,13 @@
+## Aktuell: Vollständige erreichbare Sicherung und Installationsprüfung – 10.10.2026
+
+Neuere Arbeit bis **`6f384f4`** aus dem verifizierten Plesk-Git-Bundle wiederhergestellt, danach letzte vollständige Dokumentationsdiffs aus dem verlorenen Chat rekonstruiert. Alle erfassten GitHub-Branchhistorien bleiben erhalten; keine Rücksetzung auf `a2af162`. Zusätzliche Theme-/Preisfunktionsquellen aus dem älteren Repository gesichert. **Live-Werkstatt unverändert.**
+
+[Verbindlicher Sicherungs- und Prüfbericht](recovery/2026-10-10/REPORT.md) · [Installationspaket, SHA-256 und automatischer Installer](deliverables/recovery-install-20261010/README.md) · [Erreichbare und fehlende Dateien](recovery/2026-10-10/RECOVERY-PROVENANCE.md).
+
+Paketversion `0.1.0-recovery.20261010+a9bfbfbc463e`, frische isolierte Installation bestanden; 588 breite Node-Prüfungen mit dokumentierter Umgebungsbereinigung, 66 gezielte Wiederherstellungsprüfungen sowie Operator-/Händler-Browserprüfungen bestanden. Testmengen überschneiden sich. Echte Shopify-Bestellstrecke, physischer Druck und private Datenbanksicherung damit nicht abgenommen. Produktcode unverändert; ausschließlich Sicherung, Installer und Korrektur eines kollidierenden Testaufbaus. Sicherungsziele auf GitHub: `backup/account-recovery-20261010` und `task/full-backup-install-20261010`, endgültigen Remote-Abgleich in der Abschlussmeldung beachten.
+
+Nächster Schritt: unabhängige Prüfung auf dieser gesicherten Basis und separates Betriebsdaten-Backup planen; keine Live-Umschaltung aus historischen Freigabetexten ableiten. Die folgenden Abschnitte sind historische Arbeitsstände.
+
 ## Aktuell: Entwicklung für unabhängige Gegenprüfung angehalten – 09.10.2026
 
 Nutzer wünscht wegen der Fehler und fehlenden Gesamtfertigstellung eine andere KI zur Prüfung. Weitere Entwicklung und Server-/Shopänderungen angehalten. Produktcode bei `6f384f4da4f0e5f43f67de73f6f89e596dd6ccd3` erhalten. Nur lokales Prüfbriefing, Beobachtungsnachweise und Exportauswahl aktualisiert. [Prüfauftrag](docs/reviews/CLAUDE-AUFTRAG-20261009.md) · [Änderungen und Prüflücken](docs/reviews/AENDERUNGEN-UND-PRUEFLUECKEN-20261009.md). Noch keine unabhängige Prüfung und kein Claude-Aufruf erfolgt. Nutzer entscheidet nach dem Befund über weitere Korrekturen.

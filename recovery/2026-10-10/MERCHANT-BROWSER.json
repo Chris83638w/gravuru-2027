@@ -1,0 +1,92 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "realMerchantUiLoaded": true,
+    "freshSyntheticBearerUsed": true,
+    "productCreatedAndReopened": true,
+    "authenticatedPreviewLoaded": true,
+    "mobileOverflow": false,
+    "privateBackendDataRequiresBearer": true
+  },
+  "apiRequests": [
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/seed",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 201,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/variant-catalog",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_40f06867-8d7a-41e0-996f-8b3fad07335a/revisions",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_40f06867-8d7a-41e0-996f-8b3fad07335a/editor-preview",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_40f06867-8d7a-41e0-996f-8b3fad07335a/preview.svg",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_40f06867-8d7a-41e0-996f-8b3fad07335a/preview.svg",
+      "status": 200,
+      "authenticated": true
+    }
+  ],
+  "javascriptErrors": []
+}

@@ -1,6 +1,6 @@
 {
   "sourceCommit": "6f384f4da4f0e5f43f67de73f6f89e596dd6ccd3",
-  "inventoryTreeCommit": "e6debd2743362c2780ab8a6818ff61ac3c491f25",
+  "inventoryTreeCommit": "a9bfbfbc463e8eb54903097873f6e240a3c8a392",
   "files": [
     {
       "path": ".gitattributes",
@@ -166,9 +166,9 @@
     },
     {
       "path": "STATUS.md",
-      "bytes": 169079,
-      "gitBlob": "4960955b6c4100dedc2ead5641a5e3fc64fae6b5",
-      "sha256": "43cab40e8d50c01133acbbf987b6dfc59f53cea3a1aa731f24d2383832075c27"
+      "bytes": 170150,
+      "gitBlob": "8fca68a83a0ec256ef00dda53034f467d3f3b164",
+      "sha256": "ed12ff9d6e5378c09f1aa16dd5232607b4382a13db88ae64db10636eaf7a3bb8"
     },
     {
       "path": "UEBERGABE-SOL-6.1.md",
@@ -6039,10 +6039,22 @@
       "sha256": "9587287aed9fa0fa1d672240226973d22f3eb4732f58253ec39890f8f4936d0b"
     },
     {
+      "path": "docs/reviews/AENDERUNGEN-UND-PRUEFLUECKEN-20261009.md",
+      "bytes": 7101,
+      "gitBlob": "eb6476d5a653dda88a671fe2aa98a97f29799c53",
+      "sha256": "c9209a6342e11e529c8337ee2e8df53f9f71eab8f75baad3d39e47e2b857de6c"
+    },
+    {
       "path": "docs/reviews/CLAUDE-AUFTRAG-20261009.md",
-      "bytes": 6063,
-      "gitBlob": "84641189815a1cc323b8ccf9b478381cb16ff423",
-      "sha256": "c8f7cd87c855702be408640b94f9cccc1adcc20379822612ce5bcfb45b83a45e"
+      "bytes": 9429,
+      "gitBlob": "a2b61714010873d51bde2fb39d728fedee223fc6",
+      "sha256": "3da31193a152daac407f54750dfb7c7ed91ecd9e97b2a5e62fc5a40b4afc1f64"
+    },
+    {
+      "path": "docs/reviews/github-auth-observation-20261009.json",
+      "bytes": 1217,
+      "gitBlob": "d2c174b2043bc9c1a525461eeb29323b9e34fd80",
+      "sha256": "1e32c92035770d9131ae83ea6a5c3fd2a6a96496de3ef87b79028f94dfce1f6f"
     },
     {
       "path": "ops/plesk/MERCHANT-README.md",
@@ -6091,6 +6103,12 @@
       "bytes": 852,
       "gitBlob": "0ad6c96b24e9c9a89ee764a16a200fde0fe3eb07",
       "sha256": "9421a2567f5bc8101efe105fc7557e9190013870469f522b704b5f4f8376843c"
+    },
+    {
+      "path": "ops/plesk/install-archive.py",
+      "bytes": 6812,
+      "gitBlob": "f967d4dc032789e9899427990fa41fb576e983f4",
+      "sha256": "79883edb2758b8275d9eb951639e74305064d19ba3f78a28cd798d20a341b856"
     },
     {
       "path": "ops/plesk/lock.mjs",
@@ -6207,16 +6225,106 @@
       "sha256": "f246c656080dbbbcafa7ccbdf191a4faca7d2b1c3055640249283f4abccda160"
     },
     {
+      "path": "recovery/2026-10-10/CONTENT-CHECK.json",
+      "bytes": 3336,
+      "gitBlob": "fabcc90d65eaa50806f6e07a096f418bca98c2cd",
+      "sha256": "b18b466ca3e7964cafec9362e619b8eea77200b9adb7a004f2e9b0afdac62c9b"
+    },
+    {
+      "path": "recovery/2026-10-10/LEGACY-EXTENSIONS.json",
+      "bytes": 7724,
+      "gitBlob": "5919de5022c21c516ef9db328c8608c9f9f4097a",
+      "sha256": "d69c55d46e6c8aa2903aac84043a99c23ff2499b1e9686260ab2c8db20f708b7"
+    },
+    {
+      "path": "recovery/2026-10-10/LEGACY-REFS.json",
+      "bytes": 4234,
+      "gitBlob": "eeef0b9789b8c01a9e52835627c2c76207dd11a7",
+      "sha256": "8ce81304f6ebd455e66231fc8868a4253185b9f6550c96a3194e8ca56f6d68a6"
+    },
+    {
+      "path": "recovery/2026-10-10/RECOVERY-PROVENANCE.md",
+      "bytes": 7489,
+      "gitBlob": "bcfdbf26447df4b97663cc5415bc510d25303bee",
+      "sha256": "c51321fe099fb1499cba6d564c8cdd2dd5dd53cda5660ac23dd11f610891a6f7"
+    },
+    {
+      "path": "recovery/2026-10-10/REFS-VERIFIED.json",
+      "bytes": 21816,
+      "gitBlob": "593dbbca31653e365a71daa8bd85033b5145bb00",
+      "sha256": "0f6821d49f31f876a96288dfac6c546835e85ca90bfed41d5f95c20588d563cf"
+    },
+    {
+      "path": "recovery/2026-10-10/REMOTE-REFS-original.json",
+      "bytes": 19466,
+      "gitBlob": "410e3100f99f167782428702f5c0713668f291ee",
+      "sha256": "afc1772448b53fe82e7401b0fa8600c9498e4cb3eb9a81a51415c91727492e79"
+    },
+    {
+      "path": "recovery/2026-10-10/SOURCE-FILES.json",
+      "bytes": 269381,
+      "gitBlob": "9b99c9be896f28e5e71c6b8d10d17624bef3cc6d",
+      "sha256": "e0ecff81da99534459332be09403d254f2c4205401fc7938dcd010bb300baea1"
+    },
+    {
+      "path": "recovery/2026-10-10/legacy-extension-sources-b564422.zip",
+      "bytes": 3248590,
+      "gitBlob": "affde1e957dc781ef1766ff3fe8f3ce6df692c3b",
+      "sha256": "55c61071c0c03a062ff36c35a2f92ecc36c88cc2e13c529c555b3c797bd76fef"
+    },
+    {
+      "path": "recovery/2026-10-10/theme-download-receipt.json",
+      "bytes": 887,
+      "gitBlob": "0e05239006056ba8dce880524244a2935bb2249d",
+      "sha256": "a832b8928e68862f61ba896eb37a1c51f9274bfc6ba5009e7b258e7e67c34dff"
+    },
+    {
+      "path": "recovery/2026-10-10/theme-recovered/RECOVERY.json",
+      "bytes": 704,
+      "gitBlob": "c2b17880768c65d510e97046cdbb5dcbaf3bdd2d",
+      "sha256": "4d7c811b0d92ea6940671ae95cabbbf9342d5a250ba049584079bf1ca0c410c1"
+    },
+    {
+      "path": "recovery/2026-10-10/theme-recovered/blocks/configurator.liquid",
+      "bytes": 2358,
+      "gitBlob": "05c68ee49812c813e36d304dd32d3f3061d4e431",
+      "sha256": "c81ab80ac279e38a517e5ffcbcc31eb035765c12da3ad98f762e38707ebe7049"
+    },
+    {
+      "path": "recovery/2026-10-10/theme-recovered/blocks/personalizer.liquid",
+      "bytes": 1553,
+      "gitBlob": "829483def56cc77fb7394c3fe1cd729f2b75f466",
+      "sha256": "9c54364a04821d11ff787a73e41e70e146240d1c5e46f92a441047f09d810bbd"
+    },
+    {
+      "path": "recovery/2026-10-10/theme-recovered/locales/de.json",
+      "bytes": 231,
+      "gitBlob": "a4bd37233c2fabbd42c14e2632884bb01c7a4f4d",
+      "sha256": "6db7627c6e3562a8889c6ff595fc35e463b28d25ce7979184d703b87895cde6b"
+    },
+    {
+      "path": "recovery/2026-10-10/theme-recovered/locales/en.default.json",
+      "bytes": 230,
+      "gitBlob": "229d607a022943da9d5f761e0389cc267136811c",
+      "sha256": "84287b7ce207e3956418e93145a44c8edf911864e5d7517814ae24d2ddf2e929"
+    },
+    {
+      "path": "recovery/2026-10-10/theme-recovered/snippets/gravuru-variante-m.liquid",
+      "bytes": 1062,
+      "gitBlob": "7a5aa7f690868a71fc74eb1dbf349b469bf5aace",
+      "sha256": "a6ce2b99920a442d703a0330c373f5c03babad6fbae236478fd6b9c05811b790"
+    },
+    {
       "path": "scripts/build-claude-review.py",
-      "bytes": 4700,
-      "gitBlob": "f88e296d6b36ab6d036d3970abdac1ea75631df9",
-      "sha256": "e119ebaf497115664b066bb9bc006a7993d8e4d8ef15b9ae6259d380960fb3ff"
+      "bytes": 5344,
+      "gitBlob": "46772b9869f4767d93fa0d658257ddc87fc54eae",
+      "sha256": "4878d05d4854cf03c2964e69411ff4b9367b058db412e7dda9db3d1431951044"
     },
     {
       "path": "scripts/build-plesk-test-package.py",
-      "bytes": 4968,
-      "gitBlob": "9cfca2116becc457a921affcd71d6aae4abf6685",
-      "sha256": "da1ef1f61b29941582677b7a8385d2f0ff55c3ef86618553a6b5e1f139244b77"
+      "bytes": 5044,
+      "gitBlob": "4eead25911254395bb297cb5875c2ca2ba3a6185",
+      "sha256": "f29d08903995462f5c121c4de80e564ec5e9bf699418a2fccec70ff46a6c89bb"
     },
     {
       "path": "scripts/build-product-series-template.mjs",
@@ -6433,6 +6541,12 @@
       "bytes": 4882,
       "gitBlob": "dfee5bea192151cc3b03f08bf758bce3ae33e2b8",
       "sha256": "424bb682140aba2f0dc1c4bd5812de2f1dcca96d8947bab322b4c40f6272f969"
+    },
+    {
+      "path": "scripts/check-recovery-install.py",
+      "bytes": 6992,
+      "gitBlob": "7618c6bdd4b61368e59c83c5e06b219a84e20ffe",
+      "sha256": "3b621e9e10a9afc6fed469c418300feae799701d033e23a5bcd25ad923b183cc"
     },
     {
       "path": "scripts/check-saved-excel-conflicts.py",

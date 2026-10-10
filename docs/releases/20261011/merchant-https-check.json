@@ -1,0 +1,25 @@
+{
+  "sourceCommit": "77b0472fb5fc5adc82dd3af4bccdf6787900b1ba",
+  "tlsVerified": true,
+  "checks": [
+    {
+      "path": "/werkstatt/serien/",
+      "status": 200
+    },
+    {
+      "path": "/werkstatt/kundenansicht/",
+      "status": 200
+    },
+    {
+      "path": "/workshop-ui/cart-handoff-ui.mjs",
+      "status": 200,
+      "matchesReleasedSource": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 401
+    }
+  ],
+  "merchantUserLoginVerified": false,
+  "realCheckoutTested": false
+}

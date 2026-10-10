@@ -1,3 +1,11 @@
+## Aktuell: Cormorant Garamond und Preisbindungen veröffentlicht – 11.10.2026
+
+Händlerlaufzeit auf Quellstand **`77b0472`** installiert und HTTPS-geprüft. Gedenktafel **Revision 2** verwendet auf Nutzerwunsch die vorhandene vollständige Schrift **Cormorant Garamond** (327 Zeichen, Umlaute und †). Zwei Textfelder innerhalb ihrer bisherigen Bereiche in ganzen Millimetern eingepasst; Revision 1 unverändert erhalten. Alle neun Ausführungen mit realen Shopify-Optionsnamen und Preisen abgeglichen und unveränderlich an Shopify-Preisrevision 30 gebunden. Shopify-Produkt, App-Module und bisherige Kundenwerkstatt unverändert.
+
+Versioniertes Installations-ZIP mit SHA-256, 385 Manifestdateien, getrenntem Installations-/Laufzeittest und vollständigem Übernahmetest gesichert. Vorher-/Nachher-Sicherung aller drei privaten Datenbanken auf dem Server; neuer Stand zusätzlich privat in dieser Cloud, SHA-256 und SQLite-Integrität bestätigt. Keine privaten Daten in GitHub. 119 gezielte Warenkorbprüfungen, ergänzende Schrift-/Binärdateiprüfungen, alle neun Varianten samt atomarer/idempotenter Bindungsanlage sowie Desktop-/Mobil-Browserprüfung bestanden; Testmengen überschneiden sich.
+
+[Veröffentlichung und Sicherung](docs/releases/20261011/RELEASE.md) · [Paket und Ablauf](deliverables/merchant-font-cart-20261011/README.md). **Offen:** echte Händleranmeldung als Nutzer abnehmen, neue öffentliche Kunden-/Checkout-Strecke, Bestelleingang mit erforderlicher Shopify-Berechtigung und tatsächlicher Testkauf im bestätigten Testmodus. Das Produkt ist noch nicht im Onlineshop veröffentlicht. Keine Zahlung oder Produktion ausgelöst. Nächster Schritt: Bestellanschluss und Checkout gemeinsam prüfen, ohne offene Maschinen-/Materialabnahmen als erledigt auszugeben. Historische Abschnitte folgen.
+
 ## Aktuell: Schiefer-Warenkorb und Preisvertrag geprüft – 11.10.2026
 
 Neuer Entwicklungsschritt: native Schiefer-Prüfstände werden für unveränderliche Testbestellzuordnungen erkannt. Aufpreise und Entwurfsreferenz bleiben durch Angebot, Warenkorbjournal, Shopify-Anfrage, Antwortprüfung und signierten Testbestelleingang erhalten. Expliziter tokenloser Storefront-Modus ergänzt; bestehende private Token-Konfiguration bleibt gültig. Bestehende Zuordnung wird in der Warenkorb-Vorbereitung wiederverwendet.

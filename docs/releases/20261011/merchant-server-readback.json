@@ -1,0 +1,12 @@
+{
+  "sourceCommit": "77b0472fb5fc5adc82dd3af4bccdf6787900b1ba",
+  "entrySha256": "6f2a9a9ee6f58e525183d42b4313bbb8dffb64c087ac675f04b35b37d21c8f28",
+  "productRevision": 2,
+  "fonts": [
+    "Cormorant Garamond"
+  ],
+  "variantBindings": 9,
+  "quickCheck": {
+    "quick_check": "ok"
+  }
+}

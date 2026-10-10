@@ -1,0 +1,29 @@
+{
+  "databases": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 2281472,
+      "sha256": "e7bf4c38b4a73cfbefc76ffecf891a0dd261db79c42a399613013df5741354a3",
+      "quickCheck": "ok",
+      "cloudCopyVerified": true
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok",
+      "cloudCopyVerified": true
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 15228928,
+      "sha256": "ca61d87380019f122d1fc6645ca226679ef63a59afe5a65c7c4f88a80af1fc49",
+      "quickCheck": "ok",
+      "cloudCopyVerified": true
+    }
+  ],
+  "originalProductRevisionUnchanged": true,
+  "newProductRevision": 2,
+  "variantBindings": 9,
+  "secretsOrDatabasesInGit": false
+}

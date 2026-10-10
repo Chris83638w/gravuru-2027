@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "alreadyApplied": false,
+  "fontName": "Cormorant Garamond",
+  "changedTextElements": 2,
+  "productRevision": 2,
+  "previousRevision": 1,
+  "previousRevisionPreserved": true,
+  "variantBindings": 9,
+  "pricesAndOptionsVerified": true,
+  "shopifyPricingRevision": "30",
+  "shopifyChanged": false,
+  "checkoutEnabled": false,
+  "productionReady": false
+}

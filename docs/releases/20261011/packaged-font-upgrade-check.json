@@ -1,0 +1,37 @@
+{
+  "result": "PASS",
+  "sourceCommit": "77b0472fb5fc5adc82dd3af4bccdf6787900b1ba",
+  "isolatedPrivateCopy": true,
+  "realNetworkRequests": 0,
+  "firstRun": {
+    "ok": true,
+    "alreadyApplied": false,
+    "fontName": "Cormorant Garamond",
+    "changedTextElements": 2,
+    "productRevision": 2,
+    "previousRevision": 1,
+    "previousRevisionPreserved": true,
+    "variantBindings": 9,
+    "pricesAndOptionsVerified": true,
+    "shopifyPricingRevision": "30",
+    "shopifyChanged": false,
+    "checkoutEnabled": false,
+    "productionReady": false
+  },
+  "secondRun": {
+    "ok": true,
+    "alreadyApplied": true,
+    "fontName": "Cormorant Garamond",
+    "changedTextElements": 2,
+    "productRevision": 2,
+    "previousRevision": 1,
+    "previousRevisionPreserved": true,
+    "variantBindings": 9,
+    "pricesAndOptionsVerified": true,
+    "shopifyPricingRevision": "30",
+    "shopifyChanged": false,
+    "checkoutEnabled": false,
+    "productionReady": false
+  },
+  "newerProductRevisionPreserved": true
+}

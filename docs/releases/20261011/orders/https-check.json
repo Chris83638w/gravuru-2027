@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-10-10T23:30:19.424324+00:00",
+  "host": "https://app-2027.gravuru-designwerkstatt.de",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/werkstatt/serien/",
+      "browserOrigin": false,
+      "status": 200,
+      "expected": 200,
+      "bytes": 11511,
+      "pass": true
+    },
+    {
+      "method": "GET",
+      "path": "/werkstatt/kundenansicht/",
+      "browserOrigin": false,
+      "status": 200,
+      "expected": 200,
+      "bytes": 1004,
+      "pass": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/workshop/orders",
+      "browserOrigin": false,
+      "status": 401,
+      "expected": 401,
+      "bytes": 0,
+      "pass": true
+    },
+    {
+      "method": "POST",
+      "path": "/webhooks/shopify/orders-paid",
+      "browserOrigin": false,
+      "status": 401,
+      "expected": 401,
+      "bytes": 18,
+      "pass": true
+    },
+    {
+      "method": "GET",
+      "path": "/webhooks/shopify/orders-paid",
+      "browserOrigin": false,
+      "status": 405,
+      "expected": 405,
+      "bytes": 18,
+      "pass": true
+    },
+    {
+      "method": "POST",
+      "path": "/webhooks/shopify/orders-paid",
+      "browserOrigin": true,
+      "status": 403,
+      "expected": 403,
+      "bytes": 18,
+      "pass": true
+    }
+  ],
+  "realOrderCreated": false
+}

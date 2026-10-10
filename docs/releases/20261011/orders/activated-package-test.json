@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "sourceCommit": "d16b3ceb5be4671b32b37db282f0135dc7c3ba46",
+  "syntheticPrivateStorageOnly": true,
+  "offlineEnable": [
+    {
+      "enabled": true,
+      "alreadyEnabled": false,
+      "mode": "test-only",
+      "apiVersion": "2026-07",
+      "sourceCommit": "d16b3ceb5be4671b32b37db282f0135dc7c3ba46",
+      "configSha256": "fb5fd9225d7c302f6a3a7fcdba7f25bdc2958a2ecdd3b9ce131ea8104ee6b4a0",
+      "shopifySubscriptionChanged": false,
+      "checkoutEnabled": false
+    },
+    {
+      "enabled": true,
+      "alreadyEnabled": true,
+      "mode": "test-only",
+      "apiVersion": "2026-07",
+      "sourceCommit": "d16b3ceb5be4671b32b37db282f0135dc7c3ba46",
+      "configSha256": "fb5fd9225d7c302f6a3a7fcdba7f25bdc2958a2ecdd3b9ce131ea8104ee6b4a0",
+      "shopifySubscriptionChanged": false,
+      "checkoutEnabled": false
+    }
+  ],
+  "concurrentConfigPreserved": true,
+  "merchantApiStillProtected": true,
+  "signedDeliveryAccepted": true,
+  "duplicateAfterRestart": true,
+  "realShopifyOrder": false
+}

@@ -1,6 +1,12 @@
-## In Arbeit: signierter Testbestelleingang – 11.10.2026
+## Aktuell: Testbestelleingang und Shopify-Version veröffentlicht – 11.10.2026
 
-Auf `78fffe3` weitergeführt: separater, ausdrücklich aktivierbarer Shopify-Eingang für bezahlte Testbestellungen, unveränderliche Zuordnung und Duplikaterkennung. HTTP-/Händlerlaufzeit-/Registrierungsprüfungen bestanden. Minimale zusätzliche Berechtigung `read_orders` und ein auf `test:true` beschränktes Abonnement vorbereitet; vorhandene sieben App-Module bleiben erhalten. [Details](docs/releases/20261011/orders/IMPLEMENTATION.md). Noch keine neue Veröffentlichung aus diesem Abschnitt ableiten; aktiver Server weiterhin `77b0472`, Gedenktafel Revision 2.
+Händlerlaufzeit **`ca4f6cd`**, Version `0.1.0-recovery.20261010+ca4f6cd5b5d2`, auf dem getrennten Händlerhost installiert. Signierter Eingang für bezahlte Testbestellungen aktiv; bestehende JWT-/CSRF-Grenzen bleiben erhalten. Shopify-Version **`gravuru-2027-orders-20261011-build2`** (`1162598875137`) veröffentlicht und nachgelesen: ausschließlich `read_orders` zusätzlich, sieben Module und 19 Theme-Dateien erhalten, Preisfunktion bytegleich. Gedenktafel Revision 2 und neun Preisbindungen unverändert.
+
+**Abonnement noch offen:** Eigene App meldet nach Veröffentlichung `orders_scope_missing`; Shop-Berechtigung muss in Shopify bestätigt werden. Keine Abonnement-Mutation, echte Bestellung, Zahlung oder Produktion ausgelöst. Nutzer um erneutes Öffnen der App und Bestätigung der angezeigten Zusatzberechtigung gebeten; weitere Mutation erst nach tatsächlicher Scope-Gewährung. Checkout-Gesamtstrecke und echte Nutzeranmeldung bleiben eigene Abnahmen.
+
+Versioniertes v2-Paket mit SHA-256 und 390 Manifestdateien; getrennte Installation, vollständige Aktivierung und Neustart mit synthetischen Daten bestanden. HTTP-, Händler-, Bestell-/Preis- und Abonnementprüfungen bestanden (überlappende Testmengen). Reale Probe fand Node-fetch-Browser-Metadaten: auf native HTTPS-Probe korrigiert, Browsersperre unverändert. Privater Datenbestand vor Wechsel gesichert; keine Geheimnisse/Datenbanken in GitHub. [Bericht und Grenzen](docs/releases/20261011/orders/RELEASE.md) · [Installationspaket](deliverables/merchant-orders-20261011/README.md).
+
+Nächster Schritt: Shop-Scope nach Nutzerbestätigung lesen, festes `ORDERS_PAID`-Abonnement mit `test:true` anlegen/nachlesen; danach Kunden-/Checkout-Strecke verbinden und echte Testbestellung im bestätigten Testmodus ausführen. Ältere Abschnitte darunter dokumentieren historische Stände.
 
 ## Aktuell: Cormorant Garamond und Preisbindungen veröffentlicht – 11.10.2026
 

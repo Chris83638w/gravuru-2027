@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "alreadyEnabled": false,
+  "mode": "test-only",
+  "apiVersion": "2026-07",
+  "sourceCommit": "d16b3ceb5be4671b32b37db282f0135dc7c3ba46",
+  "configSha256": "0cc0f464ee2ae81c4f4610d443f7080ec834dc10112abbcb9e15da04ed132498",
+  "shopifySubscriptionChanged": false,
+  "checkoutEnabled": false
+}

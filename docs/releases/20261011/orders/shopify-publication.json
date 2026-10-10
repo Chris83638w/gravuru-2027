@@ -1,0 +1,28 @@
+{
+  "state": "released",
+  "tag": "gravuru-2027-orders-20261011-build2",
+  "versionId": "gid://shopify/Version/1162598875137",
+  "releaseId": "gid://shopify/Release/1153042612225",
+  "sourceCommit": "d16b3ceb5be4671b32b37db282f0135dc7c3ba46",
+  "verification": {
+    "addedScopes": [
+      "read_orders"
+    ],
+    "removedScopes": [],
+    "moduleCount": 7,
+    "themeUnchanged": true,
+    "functionUnchanged": true,
+    "appHomeUnchanged": true,
+    "webhooksUnchanged": true,
+    "rollbackVersionId": "gid://shopify/Version/1162554900481",
+    "released": true,
+    "functionBinarySha256": "f9360588df38eb108ec77ecd0276f46f4524841949c15a76d9789f332adb7890",
+    "previousFunctionModuleId": "e4c70506-3181-4f79-b641-c21ba8794d53",
+    "functionModuleId": "e4c70506-3181-4f79-b641-c21ba8794d53",
+    "functionBinaryUnchanged": true
+  },
+  "appHome": "https://app-2027.gravuru-designwerkstatt.de/werkstatt/",
+  "realOrderCreated": false,
+  "checkoutConnected": false,
+  "operatorSourceCommit": "ca4f6cd5b5d2d0255485fb2bf3d73de339d485fc"
+}

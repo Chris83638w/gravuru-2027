@@ -1,0 +1,37 @@
+{
+  "http": {
+    "pass": 4,
+    "fail": 0
+  },
+  "merchantRuntime": {
+    "pass": 7,
+    "fail": 0
+  },
+  "regression": {
+    "pass": 16,
+    "fail": 0
+  },
+  "subscription": {
+    "pass": 3,
+    "fail": 0
+  },
+  "realShopifyOrder": false,
+  "rebuiltVersion": {
+    "pass": 3,
+    "fail": 0,
+    "overlapsRegression": 2
+  },
+  "nativeHttpsProbe": {
+    "pass": 2,
+    "fail": 0
+  },
+  "finalTargetedRegression": {
+    "pass": 8,
+    "fail": 0,
+    "overlaps": [
+      "nativeHttpsProbe",
+      "subscription",
+      "rebuiltVersion"
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "copiesAlreadyPresent": true,
+  "source": "previous private cloud snapshot; bytes equal all new activation backups",
+  "privateFilesExcludedFromGit": true,
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 2281472,
+      "sha256": "e7bf4c38b4a73cfbefc76ffecf891a0dd261db79c42a399613013df5741354a3",
+      "quickCheck": "ok",
+      "cloudCopyMatchesActivationBackup": true
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok",
+      "cloudCopyMatchesActivationBackup": true
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 15228928,
+      "sha256": "ca61d87380019f122d1fc6645ca226679ef63a59afe5a65c7c4f88a80af1fc49",
+      "quickCheck": "ok",
+      "cloudCopyMatchesActivationBackup": true
+    }
+  ],
+  "matchesFinalActivationSourceCommit": "ca4f6cd5b5d2d0255485fb2bf3d73de339d485fc"
+}

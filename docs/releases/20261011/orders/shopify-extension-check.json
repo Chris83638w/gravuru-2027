@@ -1,0 +1,114 @@
+{
+  "schema": "gravuru-extension-release-check/v1",
+  "activeRelease": "gid://shopify/Release/1153001947137",
+  "clientId": "9640dd7a6907f0c73e7013ea8c24869b",
+  "moduleCount": 7,
+  "themeFiles": [
+    {
+      "path": "assets/gravuru-admin-runtime-v1.js",
+      "bytes": 3153,
+      "sha256": "4fe5f3baa52b69d807a0be5524acd727ab0fd67309afdf55cc7bfaa802b377a7"
+    },
+    {
+      "path": "assets/gravuru-catalog.json",
+      "bytes": 5349970,
+      "sha256": "92e772e0389a169d4ce074c3e740d9c36bf0ed64ea245b29519b735c7cd0b1d0"
+    },
+    {
+      "path": "assets/gravuru-engine.js",
+      "bytes": 174896,
+      "sha256": "34f57efcbd7b6057310a40b71c032c60e029ceaef22ec8f380760f1de9390c02"
+    },
+    {
+      "path": "assets/gravuru-font-licenses.json",
+      "bytes": 19539,
+      "sha256": "f1312a3acb25f4f169502f9140dcb314a3705699ddab9a8ef1375bb4697c6a4e"
+    },
+    {
+      "path": "assets/gravuru-loader.js",
+      "bytes": 946,
+      "sha256": "01ecb9dde4301ab8d1e0ab2896a1a86f050f0db3e9883e2f7e5e653f2c8bbe7f"
+    },
+    {
+      "path": "assets/gravuru-model-editor-live.js",
+      "bytes": 479608,
+      "sha256": "8efed07d490482bfbb1d07649c355c0f586582a32959076df1aa0cdd9580cd4c"
+    },
+    {
+      "path": "assets/gravuru-model-launcher-live-v5.js",
+      "bytes": 21898,
+      "sha256": "15690706886b964b15825b896a0b67a170de08e5369ce9daeefbc3faa2f700a9"
+    },
+    {
+      "path": "assets/gravuru-personalizer.js",
+      "bytes": 7131,
+      "sha256": "92e4bbf3cf3e9899e58617bb612a33ea2bfed3cfe4ccf698cf27f33184a75332"
+    },
+    {
+      "path": "assets/gravuru-profile-aosu-pro-v8p1ax11-16x28.js",
+      "bytes": 21405,
+      "sha256": "b11f20872aa13b251259ab068a43eab1a51becb763f108d7971260d15da6a543"
+    },
+    {
+      "path": "assets/gravuru-readiness.js",
+      "bytes": 1283,
+      "sha256": "e663e02a97faa9fa52bc027b6b42318bcbc242a0e9d2bbe55a5c93ec858952ec"
+    },
+    {
+      "path": "assets/gravuru-stainless-fine.png",
+      "bytes": 1761854,
+      "sha256": "c18810f8217d9102be9d5a091ec036247dba9f1b9e2eece4cae4e1328a69f036"
+    },
+    {
+      "path": "assets/gravuru-variante-m-pdp.css",
+      "bytes": 34002,
+      "sha256": "cf86f429db99e28b48859280ebc007fcf7e32727fe82a0c87c68bf91585c92dd"
+    },
+    {
+      "path": "assets/gravuru-variante-m-pdp.js",
+      "bytes": 47289,
+      "sha256": "3d5b8f59adc98f8353bce17df6b23de719781dd877f8b2cf6e53bc308619b4eb"
+    },
+    {
+      "path": "assets/thumbs-up.png",
+      "bytes": 18051,
+      "sha256": "2953fff9f2199828d6348097d70dd07380478d2fae984ce8fa75818d265e5b6e"
+    },
+    {
+      "path": "blocks/configurator.liquid",
+      "bytes": 2358,
+      "sha256": "c81ab80ac279e38a517e5ffcbcc31eb035765c12da3ad98f762e38707ebe7049"
+    },
+    {
+      "path": "blocks/personalizer.liquid",
+      "bytes": 1553,
+      "sha256": "9c54364a04821d11ff787a73e41e70e146240d1c5e46f92a441047f09d810bbd"
+    },
+    {
+      "path": "locales/de.json",
+      "bytes": 231,
+      "sha256": "6db7627c6e3562a8889c6ff595fc35e463b28d25ce7979184d703b87895cde6b"
+    },
+    {
+      "path": "locales/en.default.json",
+      "bytes": 230,
+      "sha256": "84287b7ce207e3956418e93145a44c8edf911864e5d7517814ae24d2ddf2e929"
+    },
+    {
+      "path": "snippets/gravuru-variante-m.liquid",
+      "bytes": 1062,
+      "sha256": "a6ce2b99920a442d703a0330c373f5c03babad6fbae236478fd6b9c05811b790"
+    }
+  ],
+  "themeMatchesActive": true,
+  "function": {
+    "bytes": 3294,
+    "sha256": "f9360588df38eb108ec77ecd0276f46f4524841949c15a76d9789f332adb7890",
+    "activeModuleId": "e4c70506-3181-4f79-b641-c21ba8794d53",
+    "activeBinarySize": 3294,
+    "activeBinaryEqualityVerified": true,
+    "equalityEvidence": "SHA-256 equals archived released binary f9360588df38eb108ec77ecd0276f46f4524841949c15a76d9789f332adb7890"
+  },
+  "released": false,
+  "wholeApplicationReady": false
+}

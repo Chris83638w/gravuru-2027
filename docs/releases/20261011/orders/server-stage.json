@@ -1,0 +1,11 @@
+{
+  "schema": "gravuru-merchant-stage/v1",
+  "sourceCommit": "d16b3ceb5be4671b32b37db282f0135dc7c3ba46",
+  "version": "0.1.0-recovery.20261010+d16b3ceb5be4",
+  "archiveSha256": "6b233c85bd1a7787be42de248f35ccfe318b426973ec3ff505f7dd2cb724537d",
+  "filesVerified": 389,
+  "built": true,
+  "runtimeConfigurationChecked": true,
+  "privateDataChanged": false,
+  "activated": false
+}

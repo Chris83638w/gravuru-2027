@@ -4,7 +4,7 @@
   <h1 id="g-collection-title-{{ section.id }}">{{ section.settings.heading | default: collection.title | escape }}</h1>
   {% if section.settings.text != blank %}<div class="rte g-collection-intro__text">{{ section.settings.text }}</div>{% elsif section.settings.show_description %}<div class="rte g-collection-intro__text">{{ collection.description }}</div>{% endif %}
   {% if section.blocks.size > 0 %}<nav class="g-collection-chips" aria-label="{{ section.settings.links_label | escape }}">{% for block in section.blocks %}{% assign target = block.settings.link | default: block.settings.collection.url %}{% if target != blank %}<a href="{% render 'gravuru-local-url', target: target %}" {{ block.shopify_attributes }}>{{ block.settings.title | default: block.settings.collection.title | escape }}</a>{% endif %}{% endfor %}</nav>{% endif %}
-  {% if collection.products_count == 0 %}<div class="g-collection-request"><h2>{{ section.settings.empty_heading | escape }}</h2><div class="rte">{{ section.settings.empty_text }}</div><a class="g-button" href="{% render 'gravuru-local-url', target: section.settings.contact_link %}">{{ section.settings.contact_label | escape }}</a></div>{% endif %}
+  {% if collection.all_products_count == 0 %}<div class="g-collection-request"><h2>{{ section.settings.empty_heading | escape }}</h2><div class="rte">{{ section.settings.empty_text }}</div><a class="g-button" href="{% render 'gravuru-local-url', target: section.settings.contact_link %}">{{ section.settings.contact_label | escape }}</a></div>{% endif %}
 </section>
 {% stylesheet %}
   .g-collection-intro { padding-block:36px 12px; }

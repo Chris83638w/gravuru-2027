@@ -1,8 +1,8 @@
 ## Live: PDF-Kundenansicht und bearbeitbare Gedenktafel · 11.10.2026
 
-Quellstand **cdb840d** veröffentlicht und HTTPS-geprüft. Gedenktafel **Revision 4** mit zwei bearbeitbaren Texten, echtem Musterfoto/Fotofeld und Motiv; Originalrevision 3 erhalten. Vollständige Schriftwahl, Rückgängig/Wiederholen und Speichern der PDF-Kundengestaltung korrigiert. 652 Regressionen, 29 gezielte Folgeprüfungen, erweiterter Händler-Browser, tatsächliche PDF in privater Kopie sowie Paketinstallation/Neustart bestanden. 46 Tabellen auf Erhalt geprüft; private Vorher-/Nachher-Sicherungen auf Server und in Cloud verifiziert.
+Quellstand **c2d4069** veröffentlicht und HTTPS-geprüft. Gedenktafel **Revision 4** mit zwei bearbeitbaren Texten, echtem Musterfoto/Fotofeld und Motiv; Originalrevision 3 erhalten. Vollständige Schriftwahl, Rückgängig/Wiederholen und Speichern der PDF-Kundengestaltung korrigiert. 652 Regressionen, 29 gezielte Folgeprüfungen, erweiterter Händler-Browser, tatsächliche PDF in privater Kopie sowie Paketinstallation/Neustart bestanden. 46 Tabellen auf Erhalt geprüft; private Vorher-/Nachher-Sicherungen auf Server und in Cloud verifiziert.
 
-[Bedienung, Release und offene Grenzen](docs/releases/20261011/completion/RELEASE.md) · [Versioniertes Installationspaket](deliverables/merchant-completion-20261011/README.md). Noch offen: nicht blockierender alter Renderer-Bildabruf, Bestellfreigabe neuer Produktrevisionen, externe Drive/KI- und Maschinenabnahmen. Der folgende Inhalt beschreibt historische Stände.
+[Bedienung, Release und offene Grenzen](docs/releases/20261011/completion/RELEASE.md) · [Versioniertes Installationspaket](deliverables/merchant-completion-20261011-v2/README.md). Keine fehlenden Bildabrufe im abschließenden tatsächlichen PDF-Browsertest. Noch offen: Bestellfreigabe neuer Produktrevisionen, externe Drive/KI- und Maschinenabnahmen. Der folgende Inhalt beschreibt historische Stände.
 
 ## Live: Auswahl, PDF-Bearbeitung und echtes Musterfoto · 11.10.2026
 

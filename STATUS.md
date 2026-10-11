@@ -1,6 +1,6 @@
 ## 11.10.2026 · Geprüfte Händlerkorrekturen veröffentlicht
 
-Runtime **cdb840d**, Version `0.1.0-recovery.20261010+cdb840ddbac0`, Produktrevision **4** aktiv. Isoliertes Paket, Zielserver, HTTPS und vollständiger Originalerhalt in 46 Tabellen geprüft. Neue private Datenbanksicherungen heruntergeladen; Prüfsummen und Integrität stimmen. Details unter `docs/releases/20261011/completion/RELEASE.md`. Kein neuer echter Kauf, keine Fertigungsfreigabe. Nächster Schritt: verbleibenden initialen Renderer-Bildabruf bereinigen und neue revisionsgebundene Bestellfassung samt unveränderter Foto-Aufpreisregel abnehmen; externe Voraussetzungen getrennt offen.
+Runtime **c2d4069**, Version `0.1.0-recovery.20261010+c2d40692ce56`, Produktrevision **4** aktiv. Isoliertes Paket, Zielserver, HTTPS und vollständiger Originalerhalt in 46 Tabellen geprüft. Neue private Datenbanksicherungen heruntergeladen; Prüfsummen und Integrität stimmen. Details unter `docs/releases/20261011/completion/RELEASE.md`. Kein neuer echter Kauf, keine Fertigungsfreigabe. Initialer Renderer-Bildabruf abschließend behoben, tatsächliche PDF-Prüfung ohne fehlende Bilder bestanden. Nächster Schritt: neue revisionsgebundene Bestellfassung samt unveränderter Foto-Aufpreisregel abnehmen; externe Voraussetzungen getrennt offen.
 
 ## 11.10.2026 · Werkstatt-Abschluss: Bedienung und PDF-Kundenansicht
 

@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "changedEntries": [
+    "PACKAGE-MANIFEST.json",
+    "app/configurator/variant-m/build.mjs",
+    "package.json"
+  ],
+  "packageJsonOnlyVersionChanged": true,
+  "backendAndInstallerByteIdentical": true,
+  "orderPackageProof": "package-orders.json"
+}

@@ -1,11 +1,11 @@
 # Abschluss der gemeldeten Werkstatt-Bedienfehler
 
-11.10.2026. Quellstand **`cdb840ddbac077c234daa53dc7eca288f920b79e`** ist auf dem getrennten Händlerhost `https://app-2027.gravuru-designwerkstatt.de` aktiviert und per HTTPS geprüft. Ausgangsstand `8486800`, zuvor laufender Quellstand `4d8042f`. Keine Behauptung, der gesamte historische Master-Bauplan einschließlich externer Integrationen und Maschinenabnahme sei abgeschlossen.
+11.10.2026. Quellstand **`c2d40692ce56b934baccb6b93e29f65890175d56`** ist auf dem getrennten Händlerhost `https://app-2027.gravuru-designwerkstatt.de` aktiviert und per HTTPS geprüft. Ausgangsstand `8486800`, zuvor laufender Quellstand `4d8042f`. Keine Behauptung, der gesamte historische Master-Bauplan einschließlich externer Integrationen und Maschinenabnahme sei abgeschlossen.
 
 ## Veröffentlichung und Sicherung
 
 - Gedenktafel als **Revision 4** übernommen: zwei native Werkstatttexte, Fotofeld mit echtem Musterfoto und Motiv. Die tatsächliche Serverumgebung hat die fünf vorbereiteten Ressourcen erneut geprüft; Originalrevision 3 unverändert. Preise und Optionen unverändert, inklusive bisheriger Fotopreisregel (+9,99 € bei diesem Produkt).
-- Version `0.1.0-recovery.20261010+cdb840ddbac0`, ZIP mit SHA-256 `bc9f3a9994c05f7b14d2d1f2f3f91c495652b428c5822ed90c846b5347cec78b`, 27.264.680 Bytes und 398 Manifestdateien. [Paket und automatischer Ablauf](../../../../deliverables/merchant-completion-20261011/README.md). Isolierte Installation, Aktivierung/Neustart und synthetischer Bestelleingang bestanden.
+- Version `0.1.0-recovery.20261010+c2d40692ce56`, ZIP mit SHA-256 `1457d4c4ac11a0bf0df453d67d6a2dbf840001fae10c0278cda82e5b7610191b`, 27.264.804 Bytes und 398 Manifestdateien. [Paket und automatischer Ablauf](../../../../deliverables/merchant-completion-20261011-v2/README.md). Isolierte Installation, Aktivierung/Neustart und synthetischer Bestelleingang bestanden.
 - 46 Datenbanktabellen abgeglichen: alle ursprünglichen Zeilen erhalten; ausschließlich der erwartete aktuelle Produktzeiger von Revision 3 auf 4 samt Änderungszeit fortgeschrieben. Neue Revision und fünf Ressourcen angefügt.
 - Vorherige Laufzeit, Startdatei, private Konfiguration und drei Datenbanken auf dem Server gesichert. Neue drei Datenbanksicherungen zusätzlich privat in dieser Cloud, SHA-256 und SQLite-Integrität bestätigt (28.327.936 Bytes). Keine Kundendaten oder Geheimnisse im Git-Paket. Bestehende alte Kundenwerkstatt unverändert.
 - Tatsächliche Arbeitsumgebung: verwaltete Codex-Linux-Cloud, `/workspace/gravuru-restored`, Repository `Chris83638w/gravuru-2027`, Branch `task/live-release-20261010`. Produktbasis `a2af162edd3a1dfa2106212c9f4b76c7ae351b70` bleibt Vorfahr; neuere Arbeit wurde erhalten.
@@ -41,7 +41,7 @@ Der Nutzer bestätigt, dass er die App über Shopify erreicht. Dies belegt keine
 
 ## Abschließende Renderer-Korrektur
 
-Die verbleibenden Bildanfragen an `/undefined` kamen vom ungeprüften Klingelbild im alten Renderer-Unterbau. Native Produkte haben dieses Bauteil nicht. Der optionale Bildaufruf wird jetzt erst bei vorhandener Bildquelle erzeugt. Der erneute tatsächliche PDF-Ablauf ist bestanden: keine fehlenden Bilddateien; ausschließlich die absichtlich getestete HTTP-422-Ablehnung des zu langen Textes. Anschließende Korrektur und private Speicherung bestanden. Veröffentlichung des abschließenden Pakets wird unten vermerkt.
+Die verbleibenden Bildanfragen an `/undefined` kamen vom ungeprüften Klingelbild im alten Renderer-Unterbau. Native Produkte haben dieses Bauteil nicht. Der optionale Bildaufruf wird jetzt erst bei vorhandener Bildquelle erzeugt. Der erneute tatsächliche PDF-Ablauf ist bestanden: keine fehlenden Bilddateien; ausschließlich die absichtlich getestete HTTP-422-Ablehnung des zu langen Textes. Anschließende Korrektur und private Speicherung bestanden. V2 ist auf dem Händlerhost aktiviert. Erneute isolierte Installation und vollständiger Datenvergleich bestanden: alle 46 Tabellen gegenüber der unmittelbar vorherigen Fassung unverändert; drei neue private Serversicherungen sind bytegleich mit den bereits heruntergeladenen Cloudkopien. Ausschließlich Builddatei und Versionsmetadaten unterscheiden sich vom ersten Paket. Die Bestell-/Neustartprüfung des ersten Pakets gilt für das bytegleiche Backend; sie wurde nicht als neuer V2-Testlauf gezählt.
 
 ## Weiterhin getrennte Voraussetzungen
 

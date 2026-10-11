@@ -49,7 +49,11 @@ export function build({outputDirectory=OUTPUT}={}){
   const urls=JSON.parse(source.match(/<script[^>]*id="preview-urls"[^>]*>([\s\S]*?)<\/script>/)[1]);
   for(const [key,value] of Object.entries(urls))urls[key]=Array.isArray(value)?value.map(u=>'/_runtime/'+u.split('/').pop()):'/_runtime/'+value.split('/').pop();
   source=source.replace(/(<script[^>]*id="preview-urls"[^>]*>)[\s\S]*?(<\/script>)/,(_,a,b)=>a+JSON.stringify(urls)+b);
-  replaceOnce('<base href="/" target="_top">','<base href="/" target="_self">');
+  replaceOnce('<base href="/" target="_top">','');
+  // Native workshop designs receive their SVG thumbnails after mounting.
+  // The legacy gallery must not request a literal /undefined in between.
+  replaceOnce('<img src="${esc(d.preview)}" alt="" loading="lazy">',
+    '<img${d.preview?\' src="\'+esc(d.preview)+\'"\':\'\'} alt="" loading="lazy">');
   // The internal editor belongs to its immediate workshop host. Shopify may wrap
   // that host in a cross-origin frame, and private runtime assets need its cookie.
   source=source.replaceAll('window.top','window.parent')
@@ -70,9 +74,9 @@ export function build({outputDirectory=OUTPUT}={}){
   replaceOnce("ranked.length?'Die meistgenutzten Motive für Türschilder.':'Unsere Startauswahl für Türschilder.'",
     "window.parent.UniversalConfig?.workshopProfiles?.selections?.bestsellers!=null?'Unsere Auswahl für dieses Produkt.':ranked.length?'Die meistgenutzten Motive.':'Unsere Startauswahl.'");
   replaceOnce('await customElements.whenDefined(\'gravuru-configurator\');',
-    "window.GravuruProfileChoices=await import('/configurator/variant-m/profile-selection.mjs');const adapter=await import('/configurator/variant-m/adapter.mjs');if(window.parent.UniversalConfig)adapter.installUniversal(window.parent.UniversalConfig);await customElements.whenDefined('gravuru-configurator');");
+    "window.GravuruProfileChoices=await import('/configurator/variant-m/profile-selection.mjs');window.GravuruPreviewResource=await import('/configurator/variant-m/preview-resource.mjs');const adapter=await import('/configurator/variant-m/adapter.mjs');if(window.parent.UniversalConfig)adapter.installUniversal(window.parent.UniversalConfig);await customElements.whenDefined('gravuru-configurator');");
   replaceOnce('prepareMotifGeometry(entries);',
-    'if(!window.parent.UniversalConfig){Object.assign(catalog.fonts,window.parent.LabradorFonts);entries.unshift(window.parent.LabradorMotif);}const localResources=window.parent.UniversalConfig?.localResources;if(localResources)Object.assign(catalog.fonts,localResources.fonts);prepareMotifGeometry(entries);if(localResources)entries.unshift(...localResources.motifs);window.GravuruTemplateOnlyMotifKeys=new Set((localResources?.motifs||[]).filter(m=>m.embeddedOnly===true||localResources.motive_in_bibliothek===false).map(m=>m.key));window.GravuruMotifCategories=window.GravuruProfileChoices.motifChoices(entries,window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys).map(({key,name,category})=>({key,name,category}));');
+    'if(!window.parent.UniversalConfig){Object.assign(catalog.fonts,window.parent.LabradorFonts);entries.unshift(window.parent.LabradorMotif);}const localResources=window.parent.UniversalConfig?.localResources;if(localResources)Object.assign(catalog.fonts,localResources.fonts);prepareMotifGeometry(entries);if(localResources)entries.unshift(...localResources.motifs.map(m=>({...m,svgFragment:window.GravuruPreviewResource.previewResourceMarkup(m.svgFragment)})));window.GravuruTemplateOnlyMotifKeys=new Set((localResources?.motifs||[]).filter(m=>m.embeddedOnly===true||localResources.motive_in_bibliothek===false).map(m=>m.key));window.GravuruMotifCategories=window.GravuruProfileChoices.motifChoices(entries,window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys).map(({key,name,category})=>({key,name,category}));');
   replaceOnce('await mount(form.value);',
     "await mount(form.value);const specimen=host.querySelector('gravuru-configurator');if(!window.parent.UniversalConfig){specimen.chooseDesign('FK-LABRADOR-MICHROMA-01');adapter.hardenDoorbell(specimen);}specimen.$('[data-setting=guides]').checked=false;specimen.cfg.orderEnabled=false;specimen.cfg.demo=true;specimen.sync();const ux=await import('/configurator/variant-m/ux.mjs');await ux.installUX(specimen,window.parent.UniversalConfig,window.parent.GravuruModelProfile);");
   for(const item of read('designs/aosu-labrador/image-source-verification.json'))source=source.replaceAll(item.url,'/_runtime/images/'+item.name);

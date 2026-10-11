@@ -9,6 +9,12 @@
 - Rückgängig/Wiederholen umfasst direkte Text-, Farb-, Größen-, Namens-, Hinweis- und Kundenrechte-Änderungen sowie Bild-/Rohlingersatz und Elementaktionen. Zusammenhängende Eingabe wird gruppiert. Strg/⌘ Z und Umschalt Z außerhalb von Eingabefeldern; native Textfeldbedienung bleibt erhalten. Verlauf bis 20 Schritte, nach Speichern gilt der unveränderliche Revisionsverlauf. Unabhängige Produkt-/Profiländerungen verwerfen den flüchtigen Gestaltungsverlauf, damit ältere Ganzdokument-Snapshots diese nicht stillschweigend zurücksetzen.
 - Jeder neue PDF/SVG-Import startet mit aktivierter Aufbereitung, unabhängig von einer früher abgewählten Einstellung.
 
+## Behobene Fehler in der Kundenansicht
+
+- Geschützte PDF-Bildadressen werden nur im vorübergehenden Renderkatalog aufgelöst. Das geprüfte Produktmodell und seine unveränderlichen Originalnachweise bleiben unverändert; dadurch startet die Kundenansicht importierter PDFs wieder.
+- Der Prüfexport verwendet bereits eingebettete Bildbytes direkt. Die strenge Verbindungssperre bleibt erhalten; der bisherige unnötige Daten-URL-Abruf verursachte „Failed to fetch“.
+- Importierte Tonwertinformationen bleiben auch im Kundenrenderer verfügbar. Die lokale Hilfedatei ist erreichbar; überflüssige Basis- und zunächst undefinierte Vorschaubildadressen sind entfernt.
+
 ## Vorhandene PDF als tatsächlicher Prüffall
 
 Private Kopie der aktuellen Gedenktafel Revision 3: vier erkannte Bestandteile, davon zwei Schriftkonturgruppen, ein Fotobereich und ein Motiv. Die besondere Ligatur im Namen wurde anhand der sichtbaren Original-PDF geprüft; nur dieser konkrete Text wurde berichtigt. Beide Textbereiche verwenden die zuvor vom Nutzer gewünschte vollständige vorhandene Werkstatt-Schrift. Das Foto enthält nun das saubere vorhandene Acryl-Musterfoto mit eigenem Uploadhinweis. Ein bereits in das Originalbild eingebrannter Hinweis wird nicht als entfernbarer PDF-Text ausgegeben. Der neue Fotobereich ist rechteckig und kann im Editor auch oval oder als Bogen gestaltet werden; die ursprüngliche Kreuz-Bildgestaltung bleibt in Revision 3 erhalten. Name im rechten Bereich eingepasst, ohne Überlappung mit dem Musterfoto. Kein Umschreiben der Originaldatei.
@@ -17,7 +23,7 @@ Private Dokumente, Fotos, Datenbanken, Testbilder der echten Vorlage und Zugangs
 
 ## Abnahmeumfang
 
-Erweiterter Händler-Browserablauf mit synthetischer App-Bridge-Identität bestanden: importierte PDF bearbeiten, zuvor nicht eingebundene hochgeladene Schrift wählen, Text/Bild/Hinweis/Kundenrecht zurücknehmen und wiederholen, speichern und erneut öffnen. Außerdem die bisherigen Maus-/Touch-/Rohling-/Schriftgruppen-/Master- und Kundenprüfungen. 21 gezielte Quelltests bestanden. Die vorausgehenden 650 Regressionen sind im [vorherigen Release](../selection-pdf/RELEASE.md) dokumentiert; nicht als neu ausgeführter Komplettlauf ausgeben.
+Erweiterter Händler-Browserablauf mit synthetischer App-Bridge-Identität bestanden: importierte PDF bearbeiten, zuvor nicht eingebundene hochgeladene Schrift wählen, Text/Bild/Hinweis/Kundenrecht zurücknehmen und wiederholen, speichern und erneut öffnen. Außerdem die bisherigen Maus-/Touch-/Rohling-/Schriftgruppen-/Master- und Kundenprüfungen. 21 gezielte Quelltests bestanden. Zusätzlich 652 Regressionen nach der Modellkorrektur und 29 gezielte Prüfungen nach der Export-/Hostkorrektur bestanden. Testmengen überschneiden sich. Der tatsächliche PDF-Ablauf wurde in einer privaten Datenkopie einschließlich Texteingabe, Fotoersatz und gesichertem Prüfstand getestet. Zu langer Text wird weiterhin abgewiesen; nach Korrektur lässt sich der Stand speichern. Vorlagen-Schriftgröße und Kundenrechte werden nicht stillschweigend aufgeweicht.
 
 Der Nutzer bestätigt, dass er die App über Shopify erreicht. Dies belegt keine durch den Agenten fernbediente echte Nutzeranmeldung oder Abnahme sämtlicher Schaltflächen.
 

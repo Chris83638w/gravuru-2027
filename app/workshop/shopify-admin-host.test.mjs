@@ -205,6 +205,7 @@ test('private dashboard preview passes through actual authenticated host and pre
   assert.equal((await request('/workshop-ui/merchant-media.mjs')).status,200);
   assert.equal((await request('/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png')).status,200);
   assert.equal((await request('/_runtime/other-file.json')).status,404);
+  assert.equal((await request('/assistant.js')).status,200);
 });
 
 test('merchant customer preview protects revision data and confines legacy script permissions to its renderer',async t=>{

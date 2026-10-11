@@ -18,7 +18,7 @@ export function installUniversal(configInput) {
   const thumbnails=new WeakMap();
   const current = () => designFromState(config, el.state);
   const profile = () => selectedProfile(config, options);
-  const motifs = () => {const embedded=new Set((config.localResources?.motifs||[]).filter(m=>m.embeddedOnly===true).map(m=>m.key));return Object.entries(el.motifs).map(([key, svgFragment]) => ({key, svgFragment, bounds:el.catalog.motif_bounds?.[key] || [0,0,100,100],embeddedOnly:embedded.has(key)}));};
+  const motifs = () => {const local=new Map((config.localResources?.motifs||[]).map(m=>[m.key,m]));return Object.entries(el.motifs).map(([key, svgFragment]) => ({key, svgFragment, bounds:el.catalog.motif_bounds?.[key] || [0,0,100,100],embeddedOnly:local.get(key)?.embeddedOnly===true,...(local.get(key)?.artwork?{artwork:local.get(key).artwork}:{})}));};
   const svg = (design, {guides=false, selected='', handles=false} = {}) => {
     const visible={...design,objects:design.objects.filter(o=>!o.uxHidden)};
     let result=surfacePreview(studioSvg(profile(), visible, el.fontData,{motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);

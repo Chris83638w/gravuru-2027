@@ -420,6 +420,18 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             report['checks']['pdfTextUsesPreviouslyUnembeddedUploadedFont']=True
             report['checks']['undoRedoTextPhotoHintAndCustomerRights']=True
             report['checks']['editableImportDefaultRestoredOnReopen']=True
+            pdf_editor_url=page.url
+            page.locator('#customer-view').click()
+            frame=page.frame_locator('#editor iframe')
+            expect(frame.locator('.completion-finish')).to_be_visible(timeout=30000)
+            frame.locator('[data-ux-file]').set_input_files(str(photo))
+            expect(frame.locator('.ux-upload-thumb')).to_be_visible(timeout=30000)
+            frame.locator('.completion-finish').click()
+            frame.locator('[data-acrylic-review]').click()
+            expect(frame.locator('[data-acrylic-review-link]')).to_be_visible(timeout=30000)
+            report['checks']['importedPdfCustomerEditorAndSavedPhotoSnapshot']=True
+            page.goto(pdf_editor_url)
+            expect(page.locator('#editor-elements button')).to_have_count(3,timeout=30000)
             page.locator('[data-view="masters"]').click()
             page.locator('#new-product').click()
             page.locator('#create-name').fill('Geprüfte Mastervorlage')

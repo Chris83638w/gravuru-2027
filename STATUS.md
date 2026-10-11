@@ -1,3 +1,7 @@
+## 11.10.2026 · Werkstatt-Abschluss: Bedienung und PDF-Kundenansicht
+
+PDF-Schriftwahl über vollständige Bibliothek, Rückgängig/Wiederholen und standardmäßige Importaufbereitung ergänzt. Tatsächlicher PDF-Test deckte zwei Kundenansichtsfehler auf: veränderte immutable Ressourcendeskriptoren und unnötiger CSP-blockierter Daten-URL-Abruf. Beide korrigiert; private echte Vorlage bis gesichertem Kundenprüfstand getestet. 652 Regressionen, 29 gezielte Folgeprüfungen, erweiterter synthetischer Händler-Browserablauf bestanden. Versionierte Paket-/Live-Abnahme folgt in `docs/releases/20261011/completion/RELEASE.md`. Private Daten bleiben außerhalb Git; bestehende Originalrevisionen erhalten. Nächster Schritt: Paket isoliert installieren, serverseitige private Produktkopie prüfen, dann autorisierte Veröffentlichung.
+
 ## Live: Auswahl, PDF-Bearbeitung und echtes Musterfoto · 11.10.2026
 
 Quellstand **4d8042f** läuft auf dem getrennten Händlerhost: sichtbare Auswahlgriffe, Maus/Touch, abbrechbare Vorschau; PDF/SVG standardmäßig in getrennte Bestandteile aufbereiten, Originaltexte gezielt in native Werkstatttexte umwandeln; echte Musterfotos mit lesbarem Hinweis. 650 Regressionstests, 21 abschließende gezielte Prüfungen und Browserablauf mit synthetischer Shopify-Identität bestanden. Alle 20 erreichbaren Original-PDFs aufbereitbar. Versioniertes Paket getrennt installiert, 398 Serverdateien und HTTPS geprüft. Alle ursprünglichen Zeilen in 46 Anwendungstabellen nach Veröffentlichung unverändert; drei private Datenbanksicherungen auf Server und in Cloud geprüft.

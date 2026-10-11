@@ -28,9 +28,14 @@ export async function printArtwork({el,config,files}){
  for(const image of doc.querySelectorAll('image')){
   const href=image.getAttribute('href')||image.getAttributeNS('http://www.w3.org/1999/xlink','href');if(!href)throw Error('Bildquelle fehlt.');
   if(!cache.has(href)){
+   // Authenticated previews are already embedded image bytes. Fetching a data
+   // URL is a new connection under CSP and is correctly blocked by connect-src.
+   if(/^data:image\/(?:svg\+xml|png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(href)){cache.set(href,href);}
+   else{
    const u=new URL(href,location.href);if(!['data:','blob:'].includes(u.protocol)&&u.origin!==location.origin)throw Error('Externe Bildquelle wird nicht exportiert.');
    const known=[...files.values()].find(f=>f.url===href),blob=known?(known.blob||known.file):await ((u.origin===location.origin&&u.pathname.startsWith('/api/workshop/')&&window.parent.GravuruMerchantRequest)?window.parent.GravuruMerchantRequest(u.pathname+u.search):fetch(href,{credentials:'same-origin'})).then(r=>{if(!r.ok)throw Error('Motivbild fehlt.');return r.blob();});
    cache.set(href,await blobURL(blob));
+   }
   }
   image.removeAttributeNS('http://www.w3.org/1999/xlink','href');image.setAttribute('href',cache.get(href));
  }

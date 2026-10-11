@@ -1,0 +1,9 @@
+{
+  "result": "PASS",
+  "tests": 29,
+  "pass": 29,
+  "fail": 0,
+  "skipped": 0,
+  "command": "node --test app/configurator/variant-m/preview-resource.test.mjs app/configurator/variant-m/print-export.test.mjs app/workshop/shopify-admin-host.test.mjs",
+  "durationMs": 9063.42569
+}

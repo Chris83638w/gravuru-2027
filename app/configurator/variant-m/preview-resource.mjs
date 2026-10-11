@@ -4,3 +4,7 @@ export function previewResourceURL(url){
  try{const value=globalThis.window?.parent?.GravuruPreviewResources?.[url];if(typeof value==='string'&&/^data:image\/(?:svg\+xml|png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(value))return value;}catch{}
  return url;
 }
+
+export function previewResourceMarkup(fragment){
+ return String(fragment).replace(/\/api\/workshop\/design-assets\/[a-f0-9]{64}\/preview\.svg/g,previewResourceURL);
+}

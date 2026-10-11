@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "tests": 652,
+  "pass": 652,
+  "fail": 0,
+  "skipped": 0,
+  "durationMs": 221698.714323,
+  "command": "npm test",
+  "scope": "Complete source suite after immutable-preview correction; subsequent export and host fixes verified separately"
+}

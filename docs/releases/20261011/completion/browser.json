@@ -19,6 +19,7 @@
     "pdfTextUsesPreviouslyUnembeddedUploadedFont": true,
     "undoRedoTextPhotoHintAndCustomerRights": true,
     "editableImportDefaultRestoredOnReopen": true,
+    "importedPdfCustomerEditorAndSavedPhotoSnapshot": true,
     "masterCreated": true,
     "slatePdfImportedAndReopened": true,
     "fontUploadedAndGrouped": true,
@@ -64,13 +65,13 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -106,21 +107,9 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/revisions",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/revisions",
       "status": 200,
       "method": "GET",
-      "authenticated": true
-    },
-    {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
-      "status": 200,
-      "method": "GET",
-      "authenticated": true
-    },
-    {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/editor-preview",
-      "status": 200,
-      "method": "POST",
       "authenticated": true
     },
     {
@@ -148,25 +137,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -184,25 +173,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/revisions",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/editor-preview",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/customer-model/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac",
+      "path": "/api/workshop/customer-model/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -244,25 +233,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/form-preview",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/form-preview",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/revisions",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/customer-model/cfg_3f446009-e371-4743-980d-19d16a7fdc8b",
+      "path": "/api/workshop/customer-model/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -292,13 +281,13 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/customer-drafts/draft_80e55e7d-4ad5-4077-8141-45e6260b8994/review",
+      "path": "/api/workshop/customer-drafts/draft_b8a491af-f911-43da-ba3d-73684282b614/review",
       "status": 201,
       "method": "POST",
       "authenticated": true
@@ -322,13 +311,13 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/review-snapshots/proof_75bd08f7-a2d3-4153-9f89-3cbfa586b406",
+      "path": "/api/workshop/review-snapshots/proof_2aa199f5-bc85-4fcb-a87c-e529536541c1",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/review-snapshots/proof_75bd08f7-a2d3-4153-9f89-3cbfa586b406",
+      "path": "/api/workshop/review-snapshots/proof_2aa199f5-bc85-4fcb-a87c-e529536541c1",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -376,19 +365,19 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -466,25 +455,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -496,19 +485,19 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
@@ -520,7 +509,7 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
@@ -532,13 +521,13 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "PATCH",
       "authenticated": true
@@ -556,19 +545,19 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
@@ -598,25 +587,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -628,43 +617,43 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/design-import/preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/design-import/preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/design-assets/0dc51777670e3310fcb551be9913708aa29420054a24254f4104ac5b9960d70c/preview.svg",
+      "path": "/api/workshop/design-assets/26f2352e7d68480bd593119d16fc6b2b58e7f80144b31f019ba165e74169a438/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/design-import/apply",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/design-import/apply",
       "status": 200,
       "method": "POST",
       "authenticated": true
@@ -682,19 +671,19 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
@@ -724,25 +713,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -754,67 +743,61 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
-      "status": 200,
-      "method": "POST",
-      "authenticated": true
-    },
-    {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -826,9 +809,15 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/design-assets/26f2352e7d68480bd593119d16fc6b2b58e7f80144b31f019ba165e74169a438/preview.svg",
+      "status": 200,
+      "method": "GET",
       "authenticated": true
     },
     {
@@ -838,25 +827,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/design-assets/0dc51777670e3310fcb551be9913708aa29420054a24254f4104ac5b9960d70c/preview.svg",
+      "path": "/api/workshop/design-assets/26f2352e7d68480bd593119d16fc6b2b58e7f80144b31f019ba165e74169a438/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -874,31 +863,31 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/design-assets/0dc51777670e3310fcb551be9913708aa29420054a24254f4104ac5b9960d70c/preview.svg",
+      "path": "/api/workshop/design-assets/26f2352e7d68480bd593119d16fc6b2b58e7f80144b31f019ba165e74169a438/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -922,19 +911,19 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -946,19 +935,19 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -970,67 +959,67 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "PATCH",
       "authenticated": true
@@ -1048,25 +1037,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
@@ -1096,25 +1085,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -1126,103 +1115,103 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "PATCH",
       "authenticated": true
@@ -1240,43 +1229,43 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/design-import/preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/design-import/preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/design-import/apply",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/design-import/apply",
       "status": 200,
       "method": "POST",
       "authenticated": true
@@ -1294,115 +1283,115 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -1414,67 +1403,67 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "PATCH",
       "authenticated": true
@@ -1492,25 +1481,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
@@ -1540,25 +1529,25 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_835cd7ef-aa02-4483-91cf-a854188bb0ac/preview.svg",
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_3f446009-e371-4743-980d-19d16a7fdc8b/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -1570,43 +1559,175 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/revisions",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/editor-preview",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_338e53e8-32e2-4686-aa59-6028ed8adeb3/preview.svg",
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_af3d61e4-eef4-4458-b6eb-3db883a8324f/preview.svg",
+      "path": "/api/workshop/customer-model/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/design-assets/f49113a042a5edec9ab1075c58f99f9ff5e1019da9bc641d131862ada5d3d14c/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/design-assets/a2fad1051f0a96bcffa449965993ad50a10af0420b3ddd1c4307b3e2e43fdcf7/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/design-assets/f0bd35ba0c727aecb61a141ac9f319752ff6a52ea56cfed2e5f1185e32970a8b/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/design-assets/a04af2e9fdcb79ee82bd14ecfff596bcc511aa88eebaeebc484d58be9287587c/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/design-assets/b866bcb02e266cb7ef1e79bc36e685ac775cfd3c2783182f8cb4ff33f8b408f9/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/design-assets/03008c7ba5037f79e042353e79dd8dd5ad71c15279ad18e9ecce3d50e89333db/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/acrylic-drafts",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/font-library",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d5b71b72-6a1d-45d9-8a1d-569f63e4c674/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_cad688fc-6c64-4d33-9f31-a846295c7ca5/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_877d66f0-a84d-4857-91c5-956f60f12006/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_b2d406e3-5487-42d8-a849-c39cfb4b76d5/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
@@ -1642,19 +1763,19 @@
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_1a55b70d-82a2-482c-9af8-4ae5f58a34b9/revisions",
+      "path": "/api/workshop/products/cfg_f011d777-5a06-4ac3-b63a-09d83fc1dc87/revisions",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_1a55b70d-82a2-482c-9af8-4ae5f58a34b9/preview.svg",
+      "path": "/api/workshop/products/cfg_f011d777-5a06-4ac3-b63a-09d83fc1dc87/preview.svg",
       "status": 200,
       "method": "GET",
       "authenticated": true
     },
     {
-      "path": "/api/workshop/products/cfg_1a55b70d-82a2-482c-9af8-4ae5f58a34b9/editor-preview",
+      "path": "/api/workshop/products/cfg_f011d777-5a06-4ac3-b63a-09d83fc1dc87/editor-preview",
       "status": 200,
       "method": "POST",
       "authenticated": true

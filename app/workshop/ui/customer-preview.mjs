@@ -12,7 +12,8 @@ try{
   for(const match of JSON.stringify(model.universal).matchAll(/\/api\/workshop\/design-assets\/[a-f0-9]{64}\/preview\.svg/g))urls.add(match[0]);
   for(const item of model.universal.localResources?.photoExamples||[])urls.add('/api/workshop/design-assets/'+item.assetId+'/preview.svg');
   for(const url of urls){const result=await merchantRequest(url);if(!result.ok)throw Error('Eine private Designressource konnte nicht geladen werden.');const blob=await result.blob();resources[url]=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});}
-  for(const motif of model.universal.localResources?.motifs||[])if(motif.svgFragment)for(const [url,data]of Object.entries(resources))motif.svgFragment=motif.svgFragment.replaceAll(url,data);
+  // Keep the immutable source descriptors valid. Only the renderer catalog
+  // resolves authenticated preview bytes after the product has been validated.
  }
  window.GravuruPreviewResources=resources;
  window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;

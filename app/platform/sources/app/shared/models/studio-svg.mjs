@@ -43,7 +43,11 @@ function universalMotif(item,o,ink,processing,filterId){
  // An imported PDF/SVG can contain an opaque photograph. Keep its tonal
  // information instead of turning every nontransparent pixel into solid ink.
  const tonal=processing.method==='engraving'&&Boolean(item.artwork);
- const paint=tonal?'<feColorMatrix type="matrix" values="'+inkMatrix(ink,'-0.2126 -0.7152 -0.0722 0 1')+'"/><feComposite in2="SourceAlpha" operator="in"/>':'<feColorMatrix type="matrix" values="'+inkMatrix(ink)+'"/>';
+ // Solid steel vectors use black ink; white knockout areas stay unengraved.
+ // Raster/mixed artwork keeps its photo tones. This never rewrites the source.
+ const solid=tonal&&processing.materialKind==='steel'&&item.vectorOnly===true;
+ const threshold=solid?'<feComponentTransfer><feFuncA type="discrete" tableValues="0 '+Array(255).fill('1').join(' ')+'"/></feComponentTransfer>':'';
+ const paint=tonal?'<feColorMatrix type="matrix" values="'+inkMatrix(ink,'-0.2126 -0.7152 -0.0722 0 1')+'"/>'+threshold+'<feComposite in2="SourceAlpha" operator="in"/>':'<feColorMatrix type="matrix" values="'+inkMatrix(ink)+'"/>';
  return '<svg x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" viewBox="'+box.join(' ')+'" preserveAspectRatio="xMidYMid meet" color="'+ink+'">'+(flatten?'<defs><filter id="'+filterId+'" color-interpolation-filters="sRGB">'+paint+'</filter></defs>':'')+'<g'+(flatten?' filter="url(#'+filterId+')"':'')+'>'+item.svgFragment+'</g></svg>';
 }
 function photoMarkup(p,o,media,key,processing,stroke){

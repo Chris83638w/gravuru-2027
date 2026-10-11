@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "materialCategoryListAndBulkAssignment": true,
+    "workspaceTabsKeyboardAndDesignSearch": true,
+    "ovalSizePriceSceneGuidesSaveReloadCustomerReview": true,
+    "pdfFitZeroMarginBlackVectorSaveAndMobileTabs": true,
+    "allAuthenticatedApisSucceeded": true
+  },
+  "apiRequests": 120
+}

@@ -1,3 +1,9 @@
+## In Prüfung: Edelstahlgravur und Produkt-/Designtabs · 11.10.2026
+
+Schwarze Vektorgravur, ausdrücklich wählbarer Importabstand (Vorgabe 0 mm), „Ohne Rand neu einpassen“ und Tabs Hauptprodukt/Designs mit Suche umgesetzt. Browserprüfung mit 120 lokalen API-Anfragen sowie Pixelprüfung bestanden. Aktuelles Edelstahlprodukt Revision 3 in privater Kopie geprüft; Originale und Live-Datensätze unverändert. [Nachweise](docs/releases/20261011/steel-ink-tabs/RELEASE.md).
+
+**Nächster Schritt:** vollständige Regression abschließen, versioniertes Paket isoliert installieren und neue Händlerlaufzeit aktivieren.
+
 ## 11.10.2026 · Hilfslinien, Formate, PDF-Einpassung und Katalog
 
 Implementiert im Aufgabenbranch `task/steel-formats-catalog-20261011`: Geometrie/Import, Editorhilfen, getrennte Hintergründe, kompakter paginierter Produktindex, Kategorien sowie geschützte Shopify-Entwurfsanmeldung. 726 Regressionen, 29 abschließende gezielte Prüfungen und 38 Original-PDF-Konturprüfungen bestanden; Browserabnahme mit synthetischer Shopify-Identität. Drei aktuelle Datenbanken außerhalb Git auf Server/Cloud geprüft gesichert; Edelstahl Revision 2 und zusätzliche SVGs erhalten.

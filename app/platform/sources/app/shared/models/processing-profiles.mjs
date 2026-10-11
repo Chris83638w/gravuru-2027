@@ -1,6 +1,6 @@
 // Display profiles are not machine settings. Thickness remains product-specific.
 export const PROCESSING_PROFILES=Object.freeze([
- {id:'steel-engraving',name:'Gravur auf Edelstahl',method:'engraving',materialKind:'steel',ink:'#191919',colorMode:'monochrome'},
+ {id:'steel-engraving',name:'Gravur auf Edelstahl',method:'engraving',materialKind:'steel',ink:'#000000',colorMode:'monochrome'},
  {id:'wood-engraving',name:'Gravur auf Holz',method:'engraving',materialKind:'wood',ink:'#49301d',colorMode:'monochrome'},
  {id:'slate-engraving',name:'Gravur auf Schiefer',method:'engraving',materialKind:'slate',ink:'#e8e9e5',colorMode:'monochrome'},
  {id:'acrylic-engraving',name:'Gravur auf Acrylglas',method:'engraving',materialKind:'acrylic',ink:'#e1e4e5',colorMode:'monochrome'},

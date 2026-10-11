@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "privateCopyOnly": true,
+  "sourceProductRevision": 3,
+  "designCount": 2,
+  "importedVectorElements": 9,
+  "blackFilters": 9,
+  "zeroMarginRefitValid": true,
+  "originalSha256": "484cd008686aa9057657ad9b920914959d743f70e0de2ade3139b831f9171866",
+  "sourceDocumentUnchanged": true,
+  "liveWrites": false
+}

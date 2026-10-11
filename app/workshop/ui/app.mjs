@@ -231,7 +231,7 @@ async function loadHistory(){
  }finally{if(ticket===state.historyRequest){state.historyLoading=false;syncControls();}}
 }
 function showTab(key,focus=false){
- if(!$('#tab-'+key))key='designs';state.tab=key;
+ if(!$('#tab-'+key))key='designs';state.tab=key;productEditor.workspaceTab(key);
  if(key==='design-library')renderDesigns();if(key==='designs')productEditor.inspect();
  for(const tab of $$('[data-tab]')){const active=tab.dataset.tab===key;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;if(active&&focus)tab.focus();}
  for(const panel of $$('.editor-panel'))panel.hidden=panel.id!=='panel-'+key;

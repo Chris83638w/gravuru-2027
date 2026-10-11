@@ -53,7 +53,7 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
     CREATE TRIGGER IF NOT EXISTS material_surface_immutable BEFORE UPDATE ON material_surfaces BEGIN SELECT RAISE(ABORT,'immutable surface'); END;`);
   function row(id){if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'asset_missing','Designressource nicht gefunden.');const r=db.prepare('SELECT * FROM design_assets WHERE id=?').get(id);if(!r)fail(404,'asset_missing','Designressource nicht gefunden.');return r;}
   function get(id){return JSON.parse(row(id).metadata);}
-  function resource(id){const a=get(id);return {key:'artwork-'+id,name:'Importiertes Design',category:'Vorlagen',bounds:[0,0,a.widthMm,a.heightMm],embeddedOnly:true,svgFragment:artworkFragment(id,a.widthMm,a.heightMm),artwork:a};}
+  function resource(id){const a=get(id);return {key:'artwork-'+id,name:'Importiertes Design',category:'Vorlagen',bounds:[0,0,a.widthMm,a.heightMm],embeddedOnly:true,vectorOnly:!/<(?:[\w-]+:)?image\b/i.test(Buffer.from(row(id).preview).toString('utf8')),svgFragment:artworkFragment(id,a.widthMm,a.heightMm),artwork:a};}
   return {
     async importPhotoExample({bytes,widthMm,heightMm,monochrome=false}){
       if(![widthMm,heightMm].every(n=>Number.isFinite(n)&&n>0&&n<=2000))fail(422,'photo_size','Ungültige Fotofeldmaße.');

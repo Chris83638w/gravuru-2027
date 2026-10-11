@@ -29,7 +29,7 @@ test('five native processing profiles stay independent from photo setting',()=>{
   fixture.profile.material.kind=processing.materialKind||'other';
   assert.equal(getProcessingProfile(prepareConfig(fixture).profile).id,processing.id);
  }
- assert.equal(getProcessingProfile({...config.profile,material:{kind:'steel'},processing:{profileId:'steel-engraving'}}).ink,'#191919');
+ assert.equal(getProcessingProfile({...config.profile,material:{kind:'steel'},processing:{profileId:'steel-engraving'}}).ink,'#000000');
 });
 test('photo disabled only exposes templates without photo slots',()=>{
  const mixed=structuredClone(config);mixed.profile.designs.push({...structuredClone(config.profile.designs[0]),id:'plain',objects:[structuredClone(config.profile.designs[0].objects.find(o=>o.type==='text'))]});

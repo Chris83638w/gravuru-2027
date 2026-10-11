@@ -1,0 +1,78 @@
+{
+  "result": "PASS",
+  "syntheticOnly": true,
+  "pixels": {
+    "vector": {
+      "paint": [
+        0,
+        0,
+        0
+      ],
+      "whiteKnockout": [
+        255,
+        255,
+        255
+      ]
+    },
+    "vector-print": {
+      "paint": [
+        153,
+        153,
+        153
+      ],
+      "whiteKnockout": [
+        255,
+        255,
+        255
+      ]
+    },
+    "vector-pdf": {
+      "paint": [
+        0,
+        0,
+        0
+      ],
+      "whiteKnockout": [
+        255,
+        255,
+        255
+      ]
+    },
+    "vector-pdf-print": {
+      "paint": [
+        153,
+        153,
+        153
+      ],
+      "whiteKnockout": [
+        255,
+        255,
+        255
+      ]
+    },
+    "photo": {
+      "paint": [
+        153,
+        153,
+        153
+      ],
+      "whiteKnockout": [
+        153,
+        153,
+        153
+      ]
+    },
+    "photo-print": {
+      "paint": [
+        153,
+        153,
+        153
+      ],
+      "whiteKnockout": [
+        153,
+        153,
+        153
+      ]
+    }
+  }
+}

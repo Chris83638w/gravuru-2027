@@ -1,3 +1,9 @@
+## In Prüfung: Edelstahlgravur und Produkt-/Designtabs · 11.10.2026
+
+Schwarze Vektorgravur, ausdrücklich wählbarer Importabstand (Vorgabe 0 mm), „Ohne Rand neu einpassen“ und Tabs Hauptprodukt/Designs mit Suche umgesetzt. Browserprüfung mit 120 lokalen API-Anfragen sowie Pixelprüfung bestanden. Aktuelles Edelstahlprodukt Revision 3 in privater Kopie geprüft; Originale und Live-Datensätze unverändert. [Nachweise](docs/releases/20261011/steel-ink-tabs/RELEASE.md).
+
+**Nächster Schritt:** vollständige Regression abschließen, versioniertes Paket isoliert installieren und neue Händlerlaufzeit aktivieren.
+
 ## Live: Hilfslinien, Edelstahlformate und strukturierter Katalog · 11.10.2026
 
 Hilfslinien/Einrasten beim Ziehen, Grundmaß/Form, zusätzliche gleichproportionale Größen mit eigenen Preisen, getrennte Rohling-/Szenenbilder, konturrichtiger PDF-Import und paginierter Katalog implementiert. 726 Regressionstests plus 29 gezielte Abschlussprüfungen bestanden. 19 erreichbare Original-PDFs auf aktuellem Edelstahlprodukt in zwei Konturen geprüft; echte private Originalstände erhalten. [Prüfungen und Grenzen](docs/releases/20261011/formats/RELEASE.md).

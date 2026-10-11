@@ -3,11 +3,16 @@ import {validateProductDocument} from './product-model.mjs';
 import {sha256} from './design-assets.mjs';
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 
-export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible',originalName}){
+export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible',originalName,marginMm}){
   if(!['visible','original'].includes(fit))fail(422,'invalid_fit','Bitte eine gültige Platzierung auswählen.');
   const document=structuredClone(input),config=document.config,design=config.profile.designs.find(d=>d.id===designId);
   if(!design)fail(422,'design_missing','Dieses Design gehört nicht zur Konfiguration.');
   if(typeof originalName!=='string'||originalName.length>200||/[\x00-\x1f\\/]/.test(originalName))fail(422,'invalid_name','Ungültiger Dateiname.');
+  if(marginMm!==undefined){
+    const p=config.profile,g=p.geometry;
+    if(config.doorbell||p.material.kind!=='steel'||!Number.isFinite(marginMm)||marginMm<0||marginMm*2>=Math.min(g.width,g.height))fail(422,'invalid_margin','Bitte einen gültigen Randabstand für das Edelstahlschild eingeben.');
+    g.safeMarginMm=marginMm;
+  }
   const asset=assets.get(assetId),{x,y,w,h,scale}=fittedArtwork(config,asset.widthMm,asset.heightMm,{original:fit==='original'});
   const object={id:'imported-artwork',type:'motif',motif:'artwork-'+assetId,x,y,w,h,rotation:0,color:'#000000',preserveColors:true,templateOrigin:true,customerEditable:false,locked:true,acrylicFixed:true};
   design.objects=[object];design.marks=[];delete design.customerFields;
@@ -20,14 +25,14 @@ export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible
   config.localResources.motifs=config.localResources.motifs.filter(m=>!m.artwork||used.has(m.key)).map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
   if(!config.localResources.motifs.some(m=>m.key===object.motif))config.localResources.motifs.push(assets.resource(assetId));
   const checked=validateProductDocument(document);assets.validateDocument(checked);
-  return {document:checked,asset,designId,designName:design.name,originalName,fit,placement:{x:object.x,y:object.y,widthMm:w,heightMm:h,scale},warnings:[...asset.warnings,'Die importierte Datei ist ein festes Design. Texte und Fotos darin sind noch keine einzeln bearbeitbaren Kundenfelder.'],editableFields:0};
+  return {document:checked,asset,designId,designName:design.name,originalName,fit,...(marginMm!==undefined?{marginMm}:{}),placement:{x:object.x,y:object.y,widthMm:w,heightMm:h,scale},warnings:[...asset.warnings,'Die importierte Datei ist ein festes Design. Texte und Fotos darin sind noch keine einzeln bearbeitbaren Kundenfelder.'],editableFields:0};
 }
 
-export function planDesignImport(repository,assets,id,{expectedRevision,designId,assetId,fit='visible',originalName}){
+export function planDesignImport(repository,assets,id,{expectedRevision,designId,assetId,fit='visible',originalName,marginMm}){
   const record=repository.get(id);
   if(record.revision!==expectedRevision)fail(409,'stale_revision','Die Konfiguration wurde geändert. Bitte den aktuellen Stand laden.');
   if(record.status==='archived')fail(422,'archived_product','Bitte die Konfiguration zuerst wieder aktivieren.');
-  const plan=replaceDesignArtwork(record.document,assets,{designId,assetId,fit,originalName});
+  const plan=replaceDesignArtwork(record.document,assets,{designId,assetId,fit,originalName,marginMm});
   const token=sha256(JSON.stringify({id,expectedRevision,designId,assetId,fit,originalName,document:plan.document}));
   return {...plan,token,expectedRevision};
 }

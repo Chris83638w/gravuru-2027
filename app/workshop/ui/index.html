@@ -62,9 +62,11 @@
             <div class="rail-secondary"><button type="button" data-tab="design-library" id="tab-design-library" aria-controls="panel-design-library">Designs verwalten</button><button type="button" data-tab="history" id="tab-history" aria-controls="panel-history">Gespeicherte Stände</button></div>
           </aside>
           <section class="editor-stage" aria-label="Produktvorschau">
+            <nav class="workspace-tabs" role="tablist" aria-label="Produkt und Designs"><button type="button" role="tab" id="workspace-product-tab" data-workspace="product" aria-controls="workspace-product" aria-selected="false" tabindex="-1">Hauptprodukt</button><button type="button" role="tab" id="workspace-designs-tab" data-workspace="designs" aria-controls="workspace-designs" aria-selected="true">Designs <span id="workspace-design-count"></span></button></nav>
             <div class="stage-toolbar"><label>Ausführung<select id="stage-options"></select></label><span id="stage-status" role="status" aria-live="polite"></span></div>
             <p id="stage-price" aria-live="polite"></p><div id="editor-preview" aria-label="Designvorschau"></div>
-            <div id="editor-designs" aria-label="Design auswählen"></div>
+            <section id="workspace-product" role="tabpanel" aria-labelledby="workspace-product-tab" hidden></section>
+            <section id="workspace-designs" role="tabpanel" aria-labelledby="workspace-designs-tab"><div class="design-gallery-heading"><h3>Mögliche Designs</h3><label>Design suchen<input id="editor-design-search" type="search" placeholder="Designname …"></label></div><div id="editor-designs" aria-label="Design auswählen"></div><p id="editor-design-empty" hidden>Kein passendes Design.</p><div id="editor-design-actions" class="design-gallery-actions"></div></section>
           </section>
           <div class="editor-main">
             <form id="product-form" novalidate>

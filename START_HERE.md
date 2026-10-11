@@ -1,3 +1,9 @@
+## In Abnahme: Hilfslinien, Edelstahlformate und strukturierter Katalog · 11.10.2026
+
+Hilfslinien/Einrasten beim Ziehen, Grundmaß/Form, zusätzliche gleichproportionale Größen mit eigenen Preisen, getrennte Rohling-/Szenenbilder, konturrichtiger PDF-Import und paginierter Katalog implementiert. 726 Regressionstests plus 29 gezielte Abschlussprüfungen bestanden. 19 erreichbare Original-PDFs auf aktuellem Edelstahlprodukt in zwei Konturen geprüft; echte private Originalstände erhalten. [Prüfungen und Grenzen](docs/releases/20261011/formats/RELEASE.md).
+
+**Nächster Schritt:** versioniertes Paket isoliert installieren, auf gesichertem Händlerhost aktivieren und Laufzeit/Shopify-Entwurfsanmeldung bestätigen. Öffentliche neue Verkaufsbindung bleibt separat; vorherige Live-Stände folgen.
+
 ## Live: vorhandene Acryl- und Edelstahlmuster · 11.10.2026
 
 Händlerlaufzeit **732850e**, Version `0.1.0-recovery.20261010+732850e06919`. AOSU/Labrador und Edelstahl/Heimathafen jeweils als Master plus Produktkopie angelegt; drei vorhandene Produktstände einschließlich Acrylmaster/-produkt unverändert. Native Texte/Motive bearbeitbar, 40 AOSU-Ausführungen und Preislogik übernommen. Originalbild Charlotte Groner v4 als gesonderte Referenz, keine identische native Quelldatei gefunden.

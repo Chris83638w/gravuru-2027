@@ -4,6 +4,7 @@ import {nativeSpecimenConfig} from './specimen-product.mjs';
 import {prepareConfig,resolvedOptions,selectedProfile,quote,validateDesign,cleanObject} from '../configurator/variant-m/contract.mjs';
 import {ACRYLIC_BASES,ACRYLIC_SIZES,acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
 
 export const PRODUCT_SCHEMA='gravuru-product/v1';
 const PROFILE_TYPES=['fonts','motifs','colors','bestsellers'];
@@ -118,10 +119,11 @@ export function resolveProduct(document,{options={},designId}={}){
   if(!design)fail('Das gewählte Design gehört nicht zu diesem Produkt.');
   const profile=selectedProfile(config,resolved),selection=config.acrylic?acrylicSelection(resolved,config.acrylic.pricing):null;
   const width=config.acrylic?.designWidth??profile.geometry.width,height=config.acrylic?.designHeight??profile.geometry.height;
+  const physical=physicalGeometry(config,{mOptions:resolved});
   return {config,profile,designId:chosenId,design:structuredClone(design),resolvedOptions:resolved,
     price:quote(config,design.objects,chosenId,resolved),
-    physical:{widthMm:selection?.size.width??width,heightMm:selection?.size.height??height,thicknessMm:profile.material.thicknessMm,insertionMm:selection?.base.insertionMm??0},
-    designSpace:{widthMm:width,heightMm:height,scaleX:selection?selection.size.width/width:1,scaleY:selection?selection.size.height/height:1},
+    physical:{widthMm:physical.width,heightMm:physical.height,thicknessMm:profile.material.thicknessMm,insertionMm:selection?.base.insertionMm??0},
+    designSpace:{widthMm:width,heightMm:height,scaleX:physical.width/width,scaleY:physical.height/height},
     elementRights:structuredClone(product.elementRights[chosenId])};
 }
 

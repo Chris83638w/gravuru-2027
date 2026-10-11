@@ -1,7 +1,9 @@
 import {selectedProfile} from './contract.mjs';
 import {acrylicSelection} from './acrylic-product.mjs';
+import {steelPhysicalGeometry} from './steel-formats.mjs';
 export function physicalGeometry(config,state){
  const g=structuredClone(selectedProfile(config,state.mOptions).geometry);
+ if(config.steelFormats)return steelPhysicalGeometry({...config,profile:{...config.profile,geometry:g}},state.mOptions);
  if(config.acrylic){const size=acrylicSelection(state.mOptions,config.acrylic.pricing).size;g.width=size.width;g.height=size.height;}
  return g;
 }

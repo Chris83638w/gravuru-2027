@@ -84,14 +84,14 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter});
   const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter});
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,formFonts);productionProfiles.resolve(d);return d;};
-  const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
-  if(repository.list({includeArchived:true}).length===0)repository.create(seed);
+  const repository=createProductRepository({filename,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
+  if(!repository.firstId())repository.create(seed);
   const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider,imageProvider:aiDesign?.imageProvider,assets});
   const aiBatches=createAiBatchJobs({filename,repository,aiJobs});
   const variants=createFormVariants({filename,repository});
   const batchJobs=createBatchJobs({filename,repository,assets});
   const variantBatchJobs=createVariantBatchJobs({filename,variants});
-  const defaultId=repository.list({includeArchived:true}).sort((a,b)=>a.createdAt.localeCompare(b.createdAt)||a.id.localeCompare(b.id))[0].id;
+  const defaultId=repository.firstId();
   const csrfToken=operatorCsrfToken??merchantCsrfToken??randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
@@ -117,8 +117,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     return productPreview(model,options).replace(/href="\/api\/workshop\/design-assets\/([a-f0-9]{64})\/preview\.svg"/g,(_,id)=>'href="data:image/svg+xml;base64,'+assets.read(id).toString('base64')+'"');
   }
   function embedMaterialSurface(config){
-    const match=config.materialSurface?.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
-    if(match)config.materialSurface='data:image/png;base64,'+assets.materialSurface(match[1]).toString('base64');
+    for(const key of ['materialSurface','sceneBackground']){
+      const match=config[key]?.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
+      if(match)config[key]='data:image/png;base64,'+assets.materialSurface(match[1]).toString('base64');
+    }
     return config;
   }
   function model(id,version){
@@ -685,6 +687,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/batch/commit'&&method==='POST')return json(res,200,commitBatch(repository,await body(req),assets));
       if(pathname==='/api/workshop/products'){
         if(method==='GET'){
+          if(url.searchParams.get('catalog')==='1')return json(res,200,repository.catalog(Object.fromEntries(['query','kind','filter','material','category','sort','page','pageSize'].filter(k=>url.searchParams.has(k)).map(k=>[k,['page','pageSize'].includes(k)?Number(url.searchParams.get(k)):url.searchParams.get(k)]))));
           const products=repository.list({query:url.searchParams.get('query')||'',includeArchived:url.searchParams.get('includeArchived')==='1'}).map(({document,...item})=>({...item,overview:isFormProduct(document)?formOverview(document):productOverview(document)}));
           return json(res,200,{products});
         }

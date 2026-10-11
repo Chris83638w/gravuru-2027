@@ -1,0 +1,71 @@
+✔ merchant creates a separate design, edits native text/motif/photo, and preserves the original and prices (724.667485ms)
+✔ merchant can remove fixed imported artwork after adding an element without relaxing customer locks (66.920989ms)
+✔ merchant movement stays inside actual plate dimensions including rotation (0.407388ms)
+✔ only imported artwork receives tonal engraving; original vector paint and source stay unchanged (25.341799ms)
+✔ photo examples accept WebP, keep the exact original privately and survive restart (775.890422ms)
+✔ canonical plan preserves all 28 physical options/prices and creates no design variants or publication (1440.78548ms)
+✔ verified draft response binds all exact variants and repeats after restart without network or new product (2103.835367ms)
+✔ lost mutation response recovers by read-only reconciliation and never resends creation (1694.45449ms)
+✔ concurrent attempts reserve exactly one mutation; missing recovery result never permits resend (2394.022155ms)
+✔ changed local revision or archive during lookup prevents mutation (1609.827299ms)
+✔ local change after remote creation retains result but does not bind a stale product (1378.853501ms)
+✔ manual existing variant binding blocks a second product before any network call (1168.828552ms)
+✔ local binding failure retains remote IDs and retries only local binding (1861.805073ms)
+✔ remote mismatch is never accepted: price (850.625957ms)
+✔ remote mismatch is never accepted: count (1255.071756ms)
+✔ remote mismatch is never accepted: options (1028.443419ms)
+✔ remote mismatch is never accepted: ids (858.484251ms)
+✔ remote mismatch is never accepted: status (893.432563ms)
+✔ remote mismatch is never accepted: tag (822.034917ms)
+✔ remote mismatch is never accepted: handle (863.01345ms)
+✔ remote mismatch is never accepted: seo (866.350422ms)
+✔ wrong shop, currency and API version cannot reach creation (1911.145191ms)
+✔ wrong principal, source hash, stale revision and early cancellation leave no attempts (1310.083887ms)
+✔ actual HTTP requires merchant/CSRF, ignores no browser prices and keeps host/origin checks (2057.32496ms)
+✔ default preview keeps transmission disabled and serves the new UI module (417.061197ms)
+✔ transport rejects HTTP, GraphQL, user errors, redirects, malformed/oversized responses and never leaks upstream details (630.814772ms)
+✔ expired network deadline and aborted lookup cannot trigger automatic retry (688.898434ms)
+✔ draft token requires granted write_products, is shared in memory and refreshed before expiry (42.408284ms)
+✔ token failures never leak credentials and do not retry automatically (2.551894ms)
+✔ readiness reports exact missing field names without values or pretending authenticated access (3.872371ms)
+✔ complete config wires matching host/session and keeps transfer disabled without optional token (1.288188ms)
+✔ optional Admin token enables only draft transfer in fixed shop and API version, without probing network (0.741074ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_SHOP_DOMAIN (0.700813ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_CLIENT_ID (0.262399ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_CLIENT_SECRET (0.253369ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_APP_ORIGIN (0.307916ms)
+✔ invalid runtime configuration cannot start: GRAVURU_PRIVATE_DATA_DIR (0.313154ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_TEST_PORT (0.290519ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN (1.113931ms)
+✔ private directory must already exist and have private permissions; check never creates storage (2.970126ms)
+✔ symlinked database or WAL is rejected before any build/database opening (4.034065ms)
+✔ explicit runtime constructs the real authenticated server with isolated private storage, no listener or shop writes (592.159992ms)
+✔ private storage inside another Git checkout is rejected without touching its files (1.244203ms)
+✔ verified public identity needs no user-provided key and never silently switches apps (0.258218ms)
+✔ steel resizing retains composition, rights and prices across rectangular, rounded, oval and circular shapes (1874.921749ms)
+✔ oversized vector design fits actual steel contour before editable decomposition, without touching other designs (1095.151727ms)
+✔ alignment chooses nearest edges and centers, supports unsnapped drag and rotated bounds (0.933846ms)
+✔ private configuration accepts only explicit separate merchant settings and never prints secrets (10.368632ms)
+✔ preparation only initializes empty private storage and preserves foreign or symlinked data (4075.105238ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+{"event":"merchant_session_rejected","reason":"signature"}
+{"event":"merchant_session_rejected","reason":"claims"}
+{"event":"merchant_session_rejected","reason":"not_yet_valid"}
+✔ real two-listener merchant runtime enforces host, HTTPS, bearer, CSRF and private-file boundaries (1654.241416ms)
+{"event":"merchant_session_rejected","reason":"signature"}
+✔ concurrent start is refused; persisted data and open-page CSRF survive restart, key rotation invalidates old sessions (1642.909903ms)
+✔ stable merchant CSRF cannot enable unauthenticated operator mode (0.498104ms)
+✔ successful execution alone cannot make an arbitrary executable pass the Python check (6.447046ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+✔ explicit test-order endpoint authenticates Shopify bytes without weakening merchant access, and persists duplicate detection (1648.03166ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+✔ merchant test cart is explicitly pinned and needs JWT, origin, CSRF and private draft capability (1392.245743ms)
+✔ private revision pin is strict, requires enabled test cart and cannot be overridden by environment (8.390365ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 56
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28320.321198

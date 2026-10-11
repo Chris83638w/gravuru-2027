@@ -54,7 +54,7 @@ export async function createMerchantRuntime(env,{aiDesign:aiDesignOverride}={}) 
       if (!['GET', 'HEAD'].includes(req.method)) return reject(405);
       if (req.headers.origin && req.headers.origin !== config.origin || req.headers['sec-fetch-site'] && !['same-origin', 'none'].includes(req.headers['sec-fetch-site'])) return reject(403);
       res.setHeader('Content-Type', 'application/json');
-      return res.end(req.method === 'HEAD' ? undefined : JSON.stringify({ready: true, scope: 'shopify-merchant-test', shopMutationsEnabled: false, checkoutEnabled: false, merchantTestCartEnabled:Boolean(config.merchantTestCart), orderWebhookEnabled:Boolean(orderWebhookHandler)}));
+      return res.end(req.method === 'HEAD' ? undefined : JSON.stringify({ready: true, scope: 'shopify-merchant-test', shopMutationsEnabled: Boolean(config.runtime.shopDrafts), shopDraftTransfersEnabled: Boolean(config.runtime.shopDrafts), checkoutEnabled: false, merchantTestCartEnabled:Boolean(config.merchantTestCart), orderWebhookEnabled:Boolean(orderWebhookHandler)}));
     }
     const headers = {host: config.host};
     for (const name of ['authorization', 'accept', 'accept-language', 'content-type', 'content-length', 'origin', 'x-gravuru-csrf', 'x-gravuru-draft', 'sec-fetch-site', 'sec-fetch-mode', 'sec-fetch-dest']) if (req.headers[name] !== undefined) headers[name] = req.headers[name];

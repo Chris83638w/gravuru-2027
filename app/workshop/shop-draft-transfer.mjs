@@ -43,15 +43,16 @@ function verifyProduct(product, request) {
 }
 
 export function createShopDraftTransport(config, {fetchImpl = globalThis.fetch, timeoutMs = 15000} = {}) {
-  if (!config || !shopPattern.test(config.shopDomain || '') || config.apiVersion !== '2026-07' || typeof config.accessToken !== 'string' || !/^[\x21-\x7e]{16,4096}$/.test(config.accessToken) || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) fail(503, 'Shop-Entwurfsanbindung ist nicht eingerichtet.');
+  if (!config || !shopPattern.test(config.shopDomain || '') || config.apiVersion !== '2026-07' || !(typeof config.getAccessToken==='function'||typeof config.accessToken==='string'&&/^[\x21-\x7e]{16,4096}$/.test(config.accessToken)) || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) fail(503, 'Shop-Entwurfsanbindung ist nicht eingerichtet.');
   const endpoint = `https://${config.shopDomain}/admin/api/${config.apiVersion}/graphql.json`;
   async function execute(query, variables, signal) {
     const controller = new AbortController(), combined = signal ? AbortSignal.any([signal, controller.signal]) : controller.signal;
     const timer = setTimeout(() => controller.abort(), timeoutMs); let reader;
     try {
       if (combined.aborted) fail(409, 'Übertragung abgebrochen.');
+      const accessToken=config.getAccessToken?await config.getAccessToken():config.accessToken;
       const response = await fetchImpl(endpoint, {method: 'POST', redirect: 'manual', cache: 'no-store', signal: combined,
-        headers: {'Content-Type': 'application/json', Accept: 'application/json', 'X-Shopify-Access-Token': config.accessToken}, body: JSON.stringify({query, variables})});
+        headers: {'Content-Type': 'application/json', Accept: 'application/json', 'X-Shopify-Access-Token': accessToken}, body: JSON.stringify({query, variables})});
       if (!response.ok || response.redirected || response.headers.get('x-shopify-api-version') !== config.apiVersion || !/^application\/json(?:;|$)/i.test(response.headers.get('content-type') || '') || !response.body) fail(502, 'Shop-Antwort nicht bestätigt. Status prüfen; keine automatische Wiederholung.');
       reader = response.body.getReader(); const chunks = []; let size = 0;
       for (;;) {const {value, done} = await reader.read(); if (combined.aborted) fail(409, 'Übertragung abgebrochen.'); if (done) break; size += value.byteLength; if (size > 1024 * 1024) fail(502, 'Shop-Antwort zu groß.'); chunks.push(Buffer.from(value));}

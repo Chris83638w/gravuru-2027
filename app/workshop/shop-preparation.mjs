@@ -24,7 +24,7 @@ export function prepareShopProduct(record){
  check('seo',Boolean(d.seo?.title?.trim()&&d.seo?.description?.trim()),'Titel und Beschreibung für die Produktseite'+(d.seo?.title?.trim()&&d.seo?.description?.trim()?' sind vorbereitet.':' noch ergänzen.'));
  const extras=form?{motifCents:0,photoCents:0}:{motifCents:d.config.extraMotifCents||0,photoCents:d.config.photo?.extraPriceCents||0};
  check('pricingConnection',false,extras.motifCents||extras.photoCents?'Zusätzliche Motive/Fotos benötigen eine serverseitig geprüfte Shopify-Aufpreisbindung. Die Tabelle enthält nur die Grundausführungen.':'Shopify-Varianten und Preise müssen noch mit den gespeicherten Ausführungen verbunden werden.');
- check('store',false,'Entwicklungsstore und App-Anbindung sind in dieser Anwendung noch nicht eingerichtet.');
+ check('store',false,'Der Entwurfsanschluss wird unten für diesen Shop geprüft. Eine öffentliche Produktfreigabe mit Konfigurator ist ein eigener Schritt.');
  check('orders',false,'Bestelleingang, Zahlung, unveränderliche Position und Kundenkonto-Download müssen noch durchgängig angebunden werden.');
  check('production',false,'Technische Ausgaben ersetzen keine Material-/RIP-/Maschinenabnahme.');
  const profile=record.metadata?.productionProfile;

@@ -18,6 +18,12 @@ test('optional Admin token enables only draft transfer in fixed shop and API ver
  const input={...env(),GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN:randomBytes(24).toString('hex')},config=shopifyRuntimeConfig(input);
  assert.equal(config.shopDrafts.config.mode,'draft-only');assert.equal(config.shopDrafts.config.apiVersion,'2026-07');assert.equal(config.shopDrafts.config.shopDomain,config.embeddedApp.shopDomain);assert.equal(checkShopifyRuntime(input).draftTransferConfigured,true);assert.ok(!JSON.stringify(checkShopifyRuntime(input)).includes(input.GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN));
 });
+test('explicit organization credential mode uses existing secret privately and enables drafts only',()=>{
+ const input={...env(),GRAVURU_SHOPIFY_DRAFT_TRANSFER:'draft-only'},config=shopifyRuntimeConfig(input);
+ assert.equal(config.shopDrafts.config.mode,'draft-only');assert.equal(typeof config.shopDrafts.config.getAccessToken,'function');assert.equal(config.shopDrafts.config.accessToken,undefined);
+ assert.equal(checkShopifyRuntime(input).draftTransferConfigured,true);assert.ok(!JSON.stringify(config.shopDrafts).includes(input.GRAVURU_SHOPIFY_CLIENT_SECRET));
+ assert.throws(()=>shopifyRuntimeConfig({...input,GRAVURU_SHOPIFY_DRAFT_TRANSFER:'publish'}));
+});
 for(const [key,value]of Object.entries({GRAVURU_SHOPIFY_SHOP_DOMAIN:'other.myshopify.com',GRAVURU_SHOPIFY_CLIENT_ID:'"><script>',GRAVURU_SHOPIFY_CLIENT_SECRET:'short',GRAVURU_SHOPIFY_APP_ORIGIN:'http://workshop.example',GRAVURU_PRIVATE_DATA_DIR:process.cwd(),GRAVURU_SHOPIFY_TEST_PORT:'80',GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN:'token\nheader'}))test('invalid runtime configuration cannot start: '+key,()=>{
  const input={...env(),[key]:value};assert.equal(checkShopifyRuntime(input).error,'invalid_configuration');assert.throws(()=>shopifyRuntimeConfig(input),e=>!e.message.includes(value));
 });

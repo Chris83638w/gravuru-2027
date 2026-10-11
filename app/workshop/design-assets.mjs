@@ -107,8 +107,10 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
     list(){return db.prepare('SELECT metadata FROM design_assets ORDER BY rowid DESC LIMIT 300').all().map(r=>JSON.parse(r.metadata));},
     read(id,original=false){const r=row(id);return Buffer.from(original?db.prepare('SELECT bytes FROM design_sources WHERE sha256=?').get(r.source_sha256).bytes:r.preview);},
     validateDocument(document){
-      const surface=document.config?.materialSurface?.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
-      if(surface&&!db.prepare('SELECT 1 FROM material_surfaces WHERE sha256=?').get(surface[1]))fail(422,'surface_missing','Die gespeicherte Materialoberfläche fehlt.');
+      for(const key of ['materialSurface','sceneBackground']){
+        const surface=document.config?.[key]?.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
+        if(surface&&!db.prepare('SELECT 1 FROM material_surfaces WHERE sha256=?').get(surface[1]))fail(422,'surface_missing','Das gespeicherte Rohling- oder Szenenbild fehlt.');
+      }
       for(const example of document.config?.localResources?.photoExamples||[]){
         const asset=get(example.assetId);
         if(asset.format!=='svg')fail(422,'asset_mismatch','Beispielfoto muss als geprüfte SVG-Vorschau vorliegen.');

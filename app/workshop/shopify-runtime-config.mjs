@@ -3,6 +3,7 @@ import {fileURLToPath} from 'node:url';
 import {createShopifySessionVerifier} from './shopify-session.mjs';
 import {createShopifyAdminHost} from './shopify-admin-host.mjs';
 import {createShopDraftTransport} from './shop-draft-transfer.mjs';
+import {createDraftTokenProvider} from './shopify-draft-token.mjs';
 const repository=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
 // Public identity read from Shopify App 423276544001 on 2026-10-06; not a secret.
 export const SHOPIFY_IDENTITY=Object.freeze({shopDomain:'gravuru-design.myshopify.com',clientId:'9640dd7a6907f0c73e7013ea8c24869b'});
@@ -19,6 +20,8 @@ export function shopifyRuntimeConfig(env){
   const shopifySessions={mode:'test-only',shopDomain,clientId,secret},embeddedApp={mode:'embedded-test',shopDomain,clientId,origin:env.GRAVURU_SHOPIFY_APP_ORIGIN};
   try{createShopifySessionVerifier(shopifySessions);createShopifyAdminHost(embeddedApp,shopifySessions);}catch{invalid();}
   let shopDrafts=null;
+  if(env.GRAVURU_SHOPIFY_DRAFT_TRANSFER!==undefined&&env.GRAVURU_SHOPIFY_DRAFT_TRANSFER!=='draft-only')invalid();
+  if(env.GRAVURU_SHOPIFY_DRAFT_TRANSFER==='draft-only')shopDrafts={config:{mode:'draft-only',shopDomain,apiVersion:'2026-07',getAccessToken:createDraftTokenProvider({shopDomain,clientId,clientSecret:secret})}};
   if(env.GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN){
     const config={mode:'draft-only',shopDomain,apiVersion:'2026-07',accessToken:env.GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN};
     try{createShopDraftTransport(config);}catch{invalid();}shopDrafts={config};

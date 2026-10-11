@@ -19,7 +19,7 @@ export function productCards(products,badge,{merchantTestCart}={}){
    ${info.previewLabel?`<span class="card-scene-label">Abbildung: ${escape(info.previewLabel)}</span>`:''}</div>
    <div class="card-content"><div class="card-heading"><h3>${name}</h3><button data-product-id="${id}">${icon('pencil')}Bearbeiten</button></div>
    <div class="card-status">${badge(p)}<small>Stand ${p.revision} · ${info.designCount||0} ${(info.designCount||0)===1?'Design':'Designs'}</small></div>
-   <dl>${row('tag','Konfigurations-ID',`<code title="${id}">${id}</code>`)}${row(info.method==='print'?'printer':'settings','Verfahren',info.method==='print'?'Druck':info.method==='engraving'?'Gravur':'Nicht hinterlegt')}${row('dimensions','Formate',escape(formats))}${row('link','Shopify',merchantTestCart?.productId===p.id?'Händler-Testkauf · Stand '+merchantTestCart.productRevision:'Öffentliche Shop-Freigabe ausstehend')}</dl>
+   <div class="card-categories">${(p.categoryIds||[]).map(id=>`<span>${escape(id.replaceAll('-',' '))}</span>`).join('')}</div><dl>${row('tag','Konfigurations-ID',`<code title="${id}">${id}</code>`)}${row(info.method==='print'?'printer':'settings','Verfahren',info.method==='print'?'Druck':info.method==='engraving'?'Gravur':'Nicht hinterlegt')}${row('dimensions','Formate',escape(formats))}${row('link','Shopify',merchantTestCart?.productId===p.id?'Händler-Testkauf · Stand '+merchantTestCart.productRevision:'Öffentliche Shop-Freigabe ausstehend')}</dl>
    <a class="card-preview-link" href="${escape(preview.href)}" target="${preview.target}" rel="noopener">${icon('eye')}${info.formProduct?(customerView?'Kundenentwurf prüfen':'Formprodukt öffnen'):'Kundenansicht'}</a></div></article>`;
  }).join('');
 }

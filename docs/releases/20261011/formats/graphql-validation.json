@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "operations": [
+    "GravuruDraftLookup",
+    "GravuruDraftCreate"
+  ],
+  "validator": "Shopify connector validate_graphql_codeblocks",
+  "requiredScopes": [
+    "read_products",
+    "write_products"
+  ],
+  "newShopifyMutationExecuted": false
+}

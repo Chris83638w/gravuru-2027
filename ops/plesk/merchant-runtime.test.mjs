@@ -174,3 +174,10 @@ test('private revision pin is strict, requires enabled test cart and cannot be o
  for(const value of [4,null,'','1','0','04','4.0','4e0',' 4','4 ','-4','9007199254740992']){f.values[key]=value;f.save();assert.throws(f.config,{code:'merchant_config'});}
  delete f.values[key];f.save();assert.equal(f.config().merchantTestCart.productRevision,2);
 });
+
+test('draft-only connection uses existing app credentials, rejects unknown activation and preserves checkout gate',t=>{
+ const f=fixture(t);f.values.GRAVURU_SHOPIFY_DRAFT_TRANSFER='draft-only';f.save();
+ const c=f.config();assert.equal(typeof c.runtime.shopDrafts.config.getAccessToken,'function');assert.equal(c.runtime.shopDrafts.config.accessToken,undefined);assert.equal(c.runtimeEnv.GRAVURU_SHOPIFY_DRAFT_TRANSFER,'draft-only');
+ assert.throws(()=>merchantConfig({...f.env,GRAVURU_SHOPIFY_DRAFT_TRANSFER:'live'}),{code:'merchant_config'});
+ f.values.GRAVURU_SHOPIFY_DRAFT_TRANSFER='live';f.save();assert.throws(f.config,{code:'merchant_config'});
+});

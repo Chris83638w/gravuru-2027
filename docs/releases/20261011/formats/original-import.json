@@ -1,0 +1,504 @@
+{
+  "result": "PASS",
+  "originalCount": 19,
+  "checks": [
+    {
+      "sourceSha256": "81e8223fceb3375528f03361a184979096d770aa0b733673d6d8c1a533145a24",
+      "shape": "rect",
+      "parts": 9,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83650459553607,
+        "scale": 0.3895281521838729
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "81e8223fceb3375528f03361a184979096d770aa0b733673d6d8c1a533145a24",
+      "shape": "ellipse",
+      "parts": 9,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37035904778983,
+        "heightMm": 39.131813673881695,
+        "scale": 0.2779707274272837
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "298a305b6c3e1b2e9f054a4024feb14ed62243840cefb71b729b04668986d071",
+      "shape": "rect",
+      "parts": 7,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83650824812718,
+        "scale": 0.38952758234620394
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "298a305b6c3e1b2e9f054a4024feb14ed62243840cefb71b729b04668986d071",
+      "shape": "ellipse",
+      "parts": 7,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37035704768332,
+        "heightMm": 39.1318150050674,
+        "scale": 0.27797031172683023
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "cdff6851c0393b482ede57348d5555659eda9d5a57fed92246b84041c74f4c2d",
+      "shape": "rect",
+      "parts": 4,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83635485192917,
+        "scale": 0.38952708848823936
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "cdff6851c0393b482ede57348d5555659eda9d5a57fed92246b84041c74f4c2d",
+      "shape": "ellipse",
+      "parts": 4,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37044104529526,
+        "heightMm": 39.131759099758256,
+        "scale": 0.2779703397629419
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "9a6e906c6426d70d2dcd1cce858f8c0327089477296d1c6353f1c02f7e9e88b3",
+      "shape": "rect",
+      "parts": 8,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83650459553607,
+        "scale": 0.3895281521838729
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "9a6e906c6426d70d2dcd1cce858f8c0327089477296d1c6353f1c02f7e9e88b3",
+      "shape": "ellipse",
+      "parts": 8,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37035904778983,
+        "heightMm": 39.131813673881695,
+        "scale": 0.2779707274272837
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "f6dc7cbcd5bcb452b8f2c1b143015e49a7e81b8eebe0c8560f26319891160ead",
+      "shape": "rect",
+      "parts": 4,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83648150817473,
+        "scale": 0.38952739240068474
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "f6dc7cbcd5bcb452b8f2c1b143015e49a7e81b8eebe0c8560f26319891160ead",
+      "shape": "ellipse",
+      "parts": 4,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37037169009917,
+        "heightMm": 39.1318052596969,
+        "scale": 0.2779702425012225
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "8c0765b8c3e288799922403f9357d7adf30816a5f027f73559bdb92caf665618",
+      "shape": "rect",
+      "parts": 10,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83397356604451,
+        "scale": 0.389511513610339
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "8c0765b8c3e288799922403f9357d7adf30816a5f027f73559bdb92caf665618",
+      "shape": "ellipse",
+      "parts": 10,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.371745018372984,
+        "heightMm": 39.13089120976149,
+        "scale": 0.2779651313373749
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "56ac42d3e128fcc6b56a6854d41cc7e860cccb75b87b6451c1b5801359a45eaa",
+      "shape": "rect",
+      "parts": 7,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83650824812718,
+        "scale": 0.38952758234620394
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "56ac42d3e128fcc6b56a6854d41cc7e860cccb75b87b6451c1b5801359a45eaa",
+      "shape": "ellipse",
+      "parts": 7,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37035704768332,
+        "heightMm": 39.1318150050674,
+        "scale": 0.27797031172683023
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "8ecd9a165945aa287196a4c904194aae86e59d1cab34010827ebe0fef89850b9",
+      "shape": "rect",
+      "parts": 4,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83416227134476,
+        "scale": 0.389511513610339
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "8ecd9a165945aa287196a4c904194aae86e59d1cab34010827ebe0fef89850b9",
+      "shape": "ellipse",
+      "parts": 4,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.3716416838857,
+        "heightMm": 39.13095998782575,
+        "scale": 0.27796466331443825
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "b3e2c33bfef4f9cb58060d786ce2d0a2e954cccde02520954f8ed26b30300e51",
+      "shape": "rect",
+      "parts": 8,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83648150817473,
+        "scale": 0.38952739240068474
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "b3e2c33bfef4f9cb58060d786ce2d0a2e954cccde02520954f8ed26b30300e51",
+      "shape": "ellipse",
+      "parts": 8,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37037169009917,
+        "heightMm": 39.1318052596969,
+        "scale": 0.2779702425012225
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "208cbb1cc18210df87b8c0ba36e1c5b5d9bf83b22e492df86562b1134a23ce6b",
+      "shape": "rect",
+      "parts": 7,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83650824812718,
+        "scale": 0.38952758234620394
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "208cbb1cc18210df87b8c0ba36e1c5b5d9bf83b22e492df86562b1134a23ce6b",
+      "shape": "ellipse",
+      "parts": 7,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37035704768332,
+        "heightMm": 39.1318150050674,
+        "scale": 0.27797031172683023
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "484cd008686aa9057657ad9b920914959d743f70e0de2ade3139b831f9171866",
+      "shape": "rect",
+      "parts": 9,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83648150817473,
+        "scale": 0.38952739240068474
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "484cd008686aa9057657ad9b920914959d743f70e0de2ade3139b831f9171866",
+      "shape": "ellipse",
+      "parts": 9,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37037169009917,
+        "heightMm": 39.1318052596969,
+        "scale": 0.2779702425012225
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "019fb0df08dd07dec13a1d77011e5eccf975dd4f7b72ec67f7317f24faacc730",
+      "shape": "rect",
+      "parts": 6,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83648150817473,
+        "scale": 0.38952739240068474
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "019fb0df08dd07dec13a1d77011e5eccf975dd4f7b72ec67f7317f24faacc730",
+      "shape": "ellipse",
+      "parts": 6,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37037169009917,
+        "heightMm": 39.1318052596969,
+        "scale": 0.2779702425012225
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "a7f170a97e548b20cc7ad013680ee4936f054b9ce07423b855f336bb411e14df",
+      "shape": "rect",
+      "parts": 11,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.836546694110694,
+        "scale": 0.38953008964441826
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "a7f170a97e548b20cc7ad013680ee4936f054b9ce07423b855f336bb411e14df",
+      "shape": "ellipse",
+      "parts": 11,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.370335995218035,
+        "heightMm": 39.13182901668647,
+        "scale": 0.2779720056014576
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "95feaeb93450a697fe6a50af67a3b7e20b0f51d9a67b4ec7f7b0e4e67471d68c",
+      "shape": "rect",
+      "parts": 7,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83425852730029,
+        "scale": 0.38951219735932646
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "95feaeb93450a697fe6a50af67a3b7e20b0f51d9a67b4ec7f7b0e4e67471d68c",
+      "shape": "ellipse",
+      "parts": 7,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.371588974462114,
+        "heightMm": 39.130995070428696,
+        "scale": 0.2779649125218157
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "26989cfbee5bfeff6be47887ed906c131885edfdbe70f8249169329aff4fcfeb",
+      "shape": "rect",
+      "parts": 11,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83636966880942,
+        "scale": 0.38952826615160674
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "26989cfbee5bfeff6be47887ed906c131885edfdbe70f8249169329aff4fcfeb",
+      "shape": "ellipse",
+      "parts": 11,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37043293177409,
+        "heightMm": 39.1317644997865,
+        "scale": 0.27797114340566775
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "6db5ce0dcf39c9471cd48d52228ac18618d2a95f8b4d047aef8f374129ff435d",
+      "shape": "rect",
+      "parts": 12,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83650824812718,
+        "scale": 0.38952758234620394
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "6db5ce0dcf39c9471cd48d52228ac18618d2a95f8b4d047aef8f374129ff435d",
+      "shape": "ellipse",
+      "parts": 12,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37035704768332,
+        "heightMm": 39.1318150050674,
+        "scale": 0.27797031172683023
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "0d3ccf9d99f45fa8ccbb97fd9d37dd492d3e6abdc245f8b54f4958c99cf58f66",
+      "shape": "rect",
+      "parts": 12,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83648150817473,
+        "scale": 0.38952739240068474
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "0d3ccf9d99f45fa8ccbb97fd9d37dd492d3e6abdc245f8b54f4958c99cf58f66",
+      "shape": "ellipse",
+      "parts": 12,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37037169009917,
+        "heightMm": 39.1318052596969,
+        "scale": 0.2779702425012225
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "a1a431c08cc0b4f4c5110bb8e7c80be5879a917f3cd779c6400e9f6baa57a6b6",
+      "shape": "rect",
+      "parts": 14,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83650824812718,
+        "scale": 0.38952758234620394
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "a1a431c08cc0b4f4c5110bb8e7c80be5879a917f3cd779c6400e9f6baa57a6b6",
+      "shape": "ellipse",
+      "parts": 14,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37035704768332,
+        "heightMm": 39.1318150050674,
+        "scale": 0.27797031172683023
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "a36016bce561f492d35fe9b9eb2bedec32a50790afee6c79a1c0cb4cd8646cf5",
+      "shape": "rect",
+      "parts": 11,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 86,
+        "heightMm": 54.83650824812718,
+        "scale": 0.38952758234620394
+      },
+      "result": "PASS"
+    },
+    {
+      "sourceSha256": "a36016bce561f492d35fe9b9eb2bedec32a50790afee6c79a1c0cb4cd8646cf5",
+      "shape": "ellipse",
+      "parts": 11,
+      "placement": {
+        "x": 45,
+        "y": 30,
+        "widthMm": 61.37035704768332,
+        "heightMm": 39.1318150050674,
+        "scale": 0.27797031172683023
+      },
+      "result": "PASS"
+    }
+  ],
+  "sourceProductRevision": 2,
+  "sourceProductUntouched": true,
+  "source": "private backup, actual latest steel product; recovered PDFs; no live writes",
+  "exactScreenshotFilenameAvailable": false
+}

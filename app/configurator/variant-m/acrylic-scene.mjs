@@ -9,7 +9,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  const css=document.createElement('style');css.textContent=await fetch('/configurator/variant-m/acrylic-scene.css').then(r=>r.text());r.append(css);
  r.host.dataset.acrylicScene='true';
  const stage=$('.stage');stage.classList.add('acryl-scene');
- const scene=document.createElement('img');scene.className='acryl-backdrop';scene.src=ROOT+'scene-empty-v2.png';scene.alt='Acrylglas vor hellem, warmem Hintergrund';
+ const scene=document.createElement('img');scene.className='acryl-backdrop';scene.src=config.sceneBackground||ROOT+'scene-empty-v2.png';scene.alt='Szenenhintergrund der Produktvorschau';
  const base=document.createElement('img');base.className='acryl-base';base.alt='Gewählter Sockel';base.hidden=true;
  const baseBack=base.cloneNode();baseBack.classList.add('acryl-base-back');baseBack.alt='';baseBack.setAttribute('aria-hidden','true');
  stage.prepend(scene);stage.append(baseBack,base);

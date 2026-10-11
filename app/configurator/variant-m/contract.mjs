@@ -7,6 +7,8 @@ import {validateUniversalElements} from '../../platform/sources/app/shared/model
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {localFontIds} from './local-pilot.mjs';
 import {acrylicSelection} from './acrylic-product.mjs';
+import {validSurface} from './material-surface.mjs';
+import {validateSteelFormats} from './steel-formats.mjs';
 
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
@@ -20,6 +22,8 @@ export const money = cents => new Intl.NumberFormat('de-DE', {style:'currency', 
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
   const config = clone(input), p = config.profile;
+  if(config.sceneBackground!==undefined&&!validSurface(config.sceneBackground))fail('Ungültiges Szenenbild.');
+  if(config.steelFormats){if(p.material?.kind!=='steel')fail('Edelstahlgrößen gehören zu einem Edelstahlschild.');validateSteelFormats(config);}
   const extraFontIds=localFontIds(config);
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
@@ -107,7 +111,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
     if (included.get(o.id) === o.motif && !seen.has(o.id)) seen.add(o.id);
     else additionalMotifs++;
   }
-  let unitCents = config.acrylic ? acrylicSelection(options,config.acrylic.pricing).totalCents : config.basePriceCents;
+  let unitCents = config.acrylic ? acrylicSelection(options,config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
   if(!config.acrylic)for (const group of config.profile.optionGroups || []) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
   unitCents += additionalMotifs * config.extraMotifCents;
   if (!Number.isSafeInteger(unitCents) || !Number.isSafeInteger(unitCents * quantity)) fail('Ungültiger Gesamtpreis.');

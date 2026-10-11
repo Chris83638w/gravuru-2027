@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/workshop-ui/style.css">
   <link rel="stylesheet" href="/workshop-ui/dashboard.css">
   <link rel="stylesheet" href="/workshop-ui/editor.css">
+  <link rel="stylesheet" href="/workshop-ui/catalog.css">
   <script type="module" src="/workshop-ui/app.mjs"></script>
 <link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><script type="module" src="/workshop-ui/workshop-shell.mjs"></script></head>
 <body class="dashboard-page">
@@ -34,9 +35,11 @@
           <div class="overview-filters" role="group" aria-label="Produkte filtern"><button data-filter="all" aria-pressed="true">Alle <span></span></button><button data-filter="print" aria-pressed="false">Druck <span></span></button><button data-filter="engraving" aria-pressed="false">Gravur <span></span></button><button data-filter="archived" aria-pressed="false">Archiv <span></span></button></div>
           <button class="quiet" data-action="refresh" aria-label="Konfigurationen aktualisieren"><img class="overview-icon" src="/workshop-ui/editor-icons/refresh.svg" alt="">Aktualisieren</button>
         </div>
-        <div class="overview-summary"><label><input type="checkbox" id="select-visible"> Sichtbare auswählen</label><span><span id="product-count">–</span> Konfigurationen <span id="overview-scope"></span></span></div>
+        <div class="catalog-controls"><label>Material<select id="catalog-material"><option value="">Alle Materialien</option></select></label><label>Kategorie<select id="catalog-category"><option value="">Alle Kategorien</option></select></label><label>Sortieren<select id="catalog-sort"><option value="updated">Zuletzt bearbeitet</option><option value="name">Name A–Z</option><option value="oldest">Älteste zuerst</option></select></label><label>Ansicht<select id="catalog-layout"><option value="list">Kompakte Liste</option><option value="cards">Bildkarten</option></select></label><label>Pro Seite<select id="catalog-page-size"><option value="24">24</option><option value="48">48</option><option value="96">96</option></select></label></div>
+        <div class="overview-summary"><label><input type="checkbox" id="select-visible"> Diese Seite auswählen</label><span><span id="product-count">–</span> Konfigurationen <span id="overview-scope"></span></span></div>
         <div id="selection-bar" class="selection-bar" hidden><strong id="selection-count"></strong><button id="ai-batch-selection" type="button">Auswahl mit KI gestalten</button><button id="archive-selection" type="button">Auswahl archivieren</button><button id="clear-selection" type="button">Auswahl aufheben</button></div>
-        <div class="product-list" id="product-list" aria-live="polite"><p class="empty-state">Konfigurationen werden geladen …</p></div>
+        <div class="product-list" id="product-list" data-layout="list" aria-live="polite"><p class="empty-state">Konfigurationen werden geladen …</p></div>
+        <nav class="catalog-pagination" aria-label="Produktseiten"><button id="catalog-previous" type="button">← Zurück</button><span id="catalog-page-status" role="status"></span><button id="catalog-next" type="button">Weiter →</button></nav>
       </section>
       <section class="editor-section" id="editor-section" aria-label="Konfiguration bearbeiten" hidden>
 

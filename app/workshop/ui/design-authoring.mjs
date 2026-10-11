@@ -7,6 +7,11 @@ export function fitPosition(object,geometry){
  const a=(object.rotation||0)*Math.PI/180,halfW=(Math.abs(object.w*Math.cos(a))+Math.abs(object.h*Math.sin(a)))/2,halfH=(Math.abs(object.w*Math.sin(a))+Math.abs(object.h*Math.cos(a)))/2,m=geometry.safeMarginMm??2;
  if(halfW*2>geometry.width-2*m+.001||halfH*2>geometry.height-2*m+.001)throw Error('Das Element ist zu groß. Bitte Breite, Höhe oder Schriftgröße verkleinern.');
  object.x=Math.max(m+halfW,Math.min(geometry.width-m-halfW,object.x));object.y=Math.max(m+halfH,Math.min(geometry.height-m-halfH,object.y));
+ if(geometry.shape==='ellipse'||geometry.cornerRadiusMm>m){
+  const profile={kind:'universal-product',geometry},center={...object,x:geometry.width/2,y:geometry.height/2};
+  if(objectIssue(center,profile))throw Error('Das Element ist für diese Kontur zu groß. Bitte verkleinern.');
+  if(objectIssue(object,profile)){let low=0,high=1;const x=object.x,y=object.y;for(let i=0;i<55;i++){const v=(low+high)/2,test={...object,x:center.x+(x-center.x)*v,y:center.y+(y-center.y)*v};if(objectIssue(test,profile))high=v;else low=v;}object.x=center.x+(x-center.x)*low;object.y=center.y+(y-center.y)*low;}
+ }
  return object;
 }
 function cleanup(document,design){

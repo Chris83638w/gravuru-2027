@@ -24,7 +24,7 @@ export function createShopTransferUI({onBound = () => {}} = {}) {
     const transfer = state.transfer;
     status.textContent = !transfer ? 'Ziel: ' + state.shopDomain + '. Erst die Schaltfläche legt einen Entwurf an.' : transfer.state === 'completed' ? 'Shopify-Entwurf bestätigt. Gespeicherte IDs werden bei Wiederholung verwendet.' : 'Übertragung begonnen, Ergebnis noch unbestätigt. „Status prüfen“ liest den Shop; es legt kein zweites Produkt an.';
     if(transfer?.state==='completed'&&!state.bindingsConfirmed)status.textContent='Shopify-Entwurf bestätigt; lokale Varianten noch nicht vollständig zugeordnet. Gespeicherte IDs übernehmen, ohne erneut zu senden.';
-    if (transfer?.result) result.textContent = transfer.result.shopifyProductId + ' · ' + transfer.result.mappings.length + ' Ausführungen · nicht veröffentlicht';
+    if (transfer?.result) {result.textContent = transfer.result.mappings.length + ' Ausführungen · Shopify-Entwurf · nicht veröffentlicht. ';const id=transfer.result.shopifyProductId.match(/^gid:\/\/shopify\/Product\/([0-9]+)$/)?.[1];if(id){const link=document.createElement('a');link.href='https://admin.shopify.com/store/'+state.shopDomain.replace('.myshopify.com','')+'/products/'+id;link.target='_blank';link.rel='noopener';link.textContent='Entwurf in Shopify öffnen →';result.append(link);}}
     if (transfer && transfer.sourceSha256 !== plan.sha256) status.textContent = 'Für dieses Produkt besteht ein anderer Übertragungsstand. Eine neue Revision wird nicht als zweites Produkt angelegt oder ungeprüft darübergeschrieben.';
   }
   async function run(action) {

@@ -3,6 +3,7 @@ import {measureText} from '../../platform/sources/app/shared/models/doorbell-pre
 import {artworkFragment} from '../../configurator/variant-m/artwork-resource.mjs';
 import {merchantImageAttribute} from './merchant-media.mjs';
 import {drawSelection} from './editor-selection.mjs';
+import {alignedPosition,drawGuides,clearGuides} from './editor-guides.mjs';
 // M02 view adapter. The existing draft, revision API and rights remain authoritative.
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
@@ -117,6 +118,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   const c=state.draft.config,slate=c.profile.material.kind==='slate',steel=c.profile.material.kind==='steel',g=c.profile.geometry;
   $('#panel-scene').innerHTML=slate||steel?`<h3>${slate?'Schieferplatte':'Edelstahlplatte'}</h3><p>Rohling: ${escape(g.width)} × ${escape(g.height)} mm</p><label>Rohlingbild austauschen<input id="material-surface-file" type="file" accept="image/png,image/jpeg,image/webp"></label><p class="field-help">Wähle ein Foto der ungestalteten Platte. Das Bild füllt die vorhandenen Produktmaße. Design, Bohrungen und Preise bleiben erhalten.</p><p id="material-surface-status" role="status"></p>`:c.doorbell?'<h3>AOSU-Klingelschild</h3><p>Edelstahl 1,5 mm mit Acrylglasauflage 3 mm. Rahmen, Farbe und Befestigung wählst du über dem Produkt. Die Ausschnitte für die Klingel bleiben erhalten.</p>':'<h3>Hintergrund & Szene</h3><p>Wähle Acrylglasgröße und Sockel über dem Produkt.</p>';
   if(steel)$('#panel-scene').insertAdjacentHTML('beforeend','<details><summary>Frühere Edelstahl-Materialreferenz</summary><p>Erhaltenes Musterbild „Charlotte Groner“, Originalfassung v4. Dieses Foto ist eine Referenz. Die beiden bearbeitbaren Heimathafen-Designs stammen aus dem früheren Vorlagenkatalog.</p><img src="/workshop-ui/material-surfaces/steel-reference-v4.png" alt="Früheres Edelstahlmuster mit Leuchtturm und Charlotte Groner" style="width:100%;height:auto"></details>');
+  $('#panel-scene').insertAdjacentHTML('beforeend','<section class="form-section"><h3>Hintergrund der Vorschau</h3><label>Szenenbild austauschen<input id="scene-background-file" type="file" accept="image/png,image/jpeg,image/webp"></label><button type="button" id="scene-background-reset">Standardhintergrund verwenden</button><p class="field-help">Dieses Bild liegt hinter dem Schild. Es gehört nur zur Vorschau und wird nicht graviert oder gedruckt.</p><p id="scene-background-status" role="status"></p></section>');
   properties();clearTimeout(timer);preview();
  }
  const loadFonts=()=>api('/api/workshop/font-library').then(data=>{libraryFonts=data.fonts;if(selected())properties();}).catch(()=>{});
@@ -128,16 +130,17 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  $('#editor-preview').addEventListener('keydown',e=>{const n=e.target.closest('[data-object]');if(n&&['Enter',' '].includes(e.key)&&!state.busy){e.preventDefault();select(n.dataset.object);}});
  $('#editor-designs').addEventListener('click',e=>{const b=e.target.closest('[data-editor-design]');if(!b||state.busy||!valid())return;designId=b.dataset.editorDesign;objectId=null;showTab('designs');render();});
  $('#stage-options').addEventListener('change',()=>{if(!state.draft.config.acrylic){const values=$('#stage-options').value.split('|');options=Object.fromEntries(state.draft.config.profile.optionGroups.map((g,i)=>[g.id,values[i]]));}else [options.size,options.base,options.wall]=$('#stage-options').value.split('|');changed();});
+ $('#panel-scene').addEventListener('click',e=>{if(e.target.id==='scene-background-reset'&&!state.busy&&state.record.status!=='archived'){remember();delete state.draft.config.sceneBackground;markDirty();$('#scene-background-status').textContent='Standardhintergrund wiederhergestellt. Bitte speichern.';}});
  $('#panel-scene').addEventListener('change',async e=>{
-  if(e.target.id!=='material-surface-file'||state.busy||state.record.status==='archived')return;
+  if(!['material-surface-file','scene-background-file'].includes(e.target.id)||state.busy||state.record.status==='archived')return;
   const file=e.target.files?.[0];if(!file)return;
-  const status=$('#material-surface-status');state.busy=true;syncControls();
+  const scene=e.target.id==='scene-background-file',status=$(scene?'#scene-background-status':'#material-surface-status');state.busy=true;syncControls();
   try{
    if(file.size>15*1024*1024)throw Error('Bitte ein Bild bis 15 MB auswählen.');
-   status.textContent='Rohlingbild wird geprüft …';
+   status.textContent='Bild wird geprüft …';
    const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
    const surface=await api('/api/workshop/material-surfaces',{method:'POST',body:{bytes:data}});
-   remember();state.draft.config.materialSurface=surface.url;markDirty();status.textContent='Rohlingbild ausgetauscht. Bitte Produkt speichern.';
+   remember();state.draft.config[scene?'sceneBackground':'materialSurface']=surface.url;markDirty();status.textContent=(scene?'Szenenbild':'Rohlingbild')+' ausgetauscht. Bitte Produkt speichern.';
   }catch(error){status.textContent=error.message;}finally{state.busy=false;syncControls();e.target.value='';}
  });
  $('#panel-designs').addEventListener('input',async e=>{
@@ -181,6 +184,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  const toolbar=document.createElement('div');toolbar.className='authoring-tools';
  toolbar.innerHTML='<button type="button" data-editor-action="text">+ Text</button><button type="button" data-editor-action="motif">+ Motiv</button><button type="button" data-editor-action="photo">+ Fotofeld</button><button type="button" data-authoring-undo title="Strg/⌘ Z außerhalb eines Textfelds">Rückgängig</button><button type="button" data-authoring-redo title="Strg/⌘ Umschalt Z">Wiederholen</button><p id="authoring-status" role="status"></p>';
  $('#editor-elements').before(toolbar);
+ toolbar.insertAdjacentHTML('beforeend','<label class="editor-guide-toggle"><input type="checkbox" id="editor-guides-enabled" checked> Hilfslinien</label><label class="editor-guide-toggle"><input type="checkbox" id="editor-snap-enabled" checked> Einrasten</label>');
  const modal=document.createElement('dialog');modal.className='authoring-dialog';document.body.append(modal);
  let motifMode='motif';
  const say=message=>{$('#authoring-status').textContent=message;};
@@ -308,6 +312,12 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
     else {next.w=original.w*scale;next.h=original.h*scale;}
    }else {next.x=original.x+dx;next.y=original.y+dy;}
    fitPosition(next,state.draft.config.profile.geometry);
+   if(!drag.resize&&$('#editor-guides-enabled').checked){
+    const matrix=drag.node.parentNode.getScreenCTM(),threshold=4/Math.max(.01,Math.hypot(matrix.a,matrix.b));
+    const aligned=alignedPosition(next,state.draft.config.profile.geometry,design().objects,{threshold,snap:$('#editor-snap-enabled').checked&&!e.altKey});
+    Object.assign(next,aligned.object);fitPosition(next,state.draft.config.profile.geometry);
+    drawGuides(stage,drag.node.parentNode,state.draft.config.profile.geometry,aligned.lines);
+   }else clearGuides(stage);
    if(!drag.moved){remember();drag.moved=true;}
    Object.assign(drag.object,next);
    drag.node.setAttribute('transform',`translate(${next.x} ${next.y}) rotate(${next.rotation||0}) scale(${next.w/original.w} ${next.h/original.h})`);
@@ -316,7 +326,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    $('#stage-status').textContent=drag.resize?'Größe ändern · loslassen zum Übernehmen':'Verschieben · loslassen zum Übernehmen';
   }catch(error){$('#stage-status').textContent=error.message;}
  });
- function finishDrag(e){if(!drag||drag.pointer!==e.pointerId)return;const moved=drag.moved,cancelled=e.type==='pointercancel';if(cancelled){Object.assign(drag.object,drag.original);if(moved)undo.pop();}drag=null;if(moved&&!cancelled)markDirty();else changed();properties();}
+ function finishDrag(e){if(!drag||drag.pointer!==e.pointerId)return;clearGuides(stage);const moved=drag.moved,cancelled=e.type==='pointercancel';if(cancelled){Object.assign(drag.object,drag.original);if(moved)undo.pop();}drag=null;if(moved&&!cancelled)markDirty();else changed();properties();}
  stage.addEventListener('pointerup',finishDrag);stage.addEventListener('pointercancel',finishDrag);stage.addEventListener('lostpointercapture',finishDrag);
  stage.addEventListener('keydown',e=>{
   if(e.target!==stage||state.busy)return;

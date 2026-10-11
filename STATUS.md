@@ -1,3 +1,9 @@
+## 11.10.2026 · Hilfslinien, Formate, PDF-Einpassung und Katalog
+
+Implementiert im Aufgabenbranch `task/steel-formats-catalog-20261011`: Geometrie/Import, Editorhilfen, getrennte Hintergründe, kompakter paginierter Produktindex, Kategorien sowie geschützte Shopify-Entwurfsanmeldung. 726 Regressionen, 29 abschließende gezielte Prüfungen und 38 Original-PDF-Konturprüfungen bestanden; Browserabnahme mit synthetischer Shopify-Identität. Drei aktuelle Datenbanken außerhalb Git auf Server/Cloud geprüft gesichert; Edelstahl Revision 2 und zusätzliche SVGs erhalten.
+
+**Genau nächster Schritt:** Installationspaket und sichere Händleraktivierung mit anschließenden HTTPS-/Laufzeitnachweisen. Öffentliche personalisierte Bestellstrecke und feste AOSU-Konstruktion separat. [Detailbericht](docs/releases/20261011/formats/RELEASE.md).
+
 ## Live: vorhandene Acryl- und Edelstahlmuster · 11.10.2026
 
 Händlerlaufzeit **732850e**, Version `0.1.0-recovery.20261010+732850e06919`. AOSU/Labrador und Edelstahl/Heimathafen jeweils als Master plus Produktkopie angelegt; drei vorhandene Produktstände einschließlich Acrylmaster/-produkt unverändert. Native Texte/Motive bearbeitbar, 40 AOSU-Ausführungen und Preislogik übernommen. Originalbild Charlotte Groner v4 als gesonderte Referenz, keine identische native Quelldatei gefunden.

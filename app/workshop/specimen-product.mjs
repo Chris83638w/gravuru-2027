@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import {prepareConfig} from '../configurator/variant-m/contract.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {workshopResources} from './catalog.mjs';
+import {validateSteelFormats} from '../configurator/variant-m/steel-formats.mjs';
 
 const read=p=>JSON.parse(fs.readFileSync(new URL(p,import.meta.url),'utf8'));
 const original=read('../references/aosu-upgrade-2026-09-21/verification/profile-source.json');
@@ -22,7 +23,10 @@ export function nativeSpecimenConfig(input){
   if(!equal(p.admin,{imageUrl:image('aosu-pro-v8p1ax11.png'),steelImageUrl:image('gravuru-edelstahl-feine-maserung-vorschau.png')}))fail('AOSU: Original-Vorschaubilder fehlen.');
   const choices={frame:p.frames.map(v=>v.key),color:p.materials.acrylic.colors.map(v=>v.key),mounting:p.mounting.options.map(v=>v.key)};
   if(p.optionGroups.length!==3||p.optionGroups.some(g=>!choices[g.id]||!equal(g.values.map(v=>v.id),choices[g.id])))fail('AOSU: Originalausführungen fehlen.');
- }else if(p.kind!=='universal-product'||p.material?.kind!=='steel'||p.material.thicknessMm!==1.5||p.processing?.profileId!=='steel-engraving'||p.geometry?.shape!=='rect'||p.optionGroups?.length!==1||p.optionGroups[0].id!=='mounting')fail('Edelstahlmuster benötigt ein vollständiges natives Rechteck mit Befestigungsauswahl.');
+ }else {
+  if(p.kind!=='universal-product'||p.material?.kind!=='steel'||p.material.thicknessMm!==1.5||p.processing?.profileId!=='steel-engraving'||!['rect','ellipse'].includes(p.geometry?.shape)||!Array.isArray(p.optionGroups)||p.optionGroups.length!==(c.steelFormats?2:1)||p.optionGroups.some(g=>!['mounting',...(c.steelFormats?['size']:[])].includes(g.id)))fail('Edelstahlschild benötigt eine native Kontur und vollständige Ausführungen.');
+  validateSteelFormats(c);
+ }
  if(!p.designs?.some(d=>d.id===p.defaultDesignId))fail('Das Standarddesign fehlt.');
  for(const d of p.designs)for(const o of d.objects)if(o.type==='text')measureText(o,c.localResources.fonts);
  const validated=prepareConfig(c);

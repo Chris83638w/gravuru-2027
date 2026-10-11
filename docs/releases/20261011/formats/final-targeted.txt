@@ -1,0 +1,44 @@
+✔ readiness reports exact missing field names without values or pretending authenticated access (8.03823ms)
+✔ complete config wires matching host/session and keeps transfer disabled without optional token (1.231092ms)
+✔ optional Admin token enables only draft transfer in fixed shop and API version, without probing network (0.842712ms)
+✔ explicit organization credential mode uses existing secret privately and enables drafts only (3.423779ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_SHOP_DOMAIN (0.745177ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_CLIENT_ID (0.449726ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_CLIENT_SECRET (0.395554ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_APP_ORIGIN (0.429137ms)
+✔ invalid runtime configuration cannot start: GRAVURU_PRIVATE_DATA_DIR (0.255395ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_TEST_PORT (0.300753ms)
+✔ invalid runtime configuration cannot start: GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN (0.520519ms)
+✔ private directory must already exist and have private permissions; check never creates storage (20.172097ms)
+✔ symlinked database or WAL is rejected before any build/database opening (13.322223ms)
+✔ explicit runtime constructs the real authenticated server with isolated private storage, no listener or shop writes (1362.234111ms)
+✔ private storage inside another Git checkout is rejected without touching its files (1.192242ms)
+✔ verified public identity needs no user-provided key and never silently switches apps (0.391165ms)
+✔ steel resizing retains composition, rights and prices across rectangular, rounded, oval and circular shapes (5529.152757ms)
+✔ oversized vector design fits actual steel contour before editable decomposition, without touching other designs (3461.02054ms)
+✔ alignment chooses nearest edges and centers, supports unsnapped drag and rotated bounds (2.252493ms)
+✔ private configuration accepts only explicit separate merchant settings and never prints secrets (11.249999ms)
+✔ preparation only initializes empty private storage and preserves foreign or symlinked data (10139.945068ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+{"event":"merchant_session_rejected","reason":"signature"}
+{"event":"merchant_session_rejected","reason":"claims"}
+{"event":"merchant_session_rejected","reason":"not_yet_valid"}
+✔ real two-listener merchant runtime enforces host, HTTPS, bearer, CSRF and private-file boundaries (3272.844484ms)
+{"event":"merchant_session_rejected","reason":"signature"}
+✔ concurrent start is refused; persisted data and open-page CSRF survive restart, key rotation invalidates old sessions (2889.729349ms)
+✔ stable merchant CSRF cannot enable unauthenticated operator mode (0.962484ms)
+✔ successful execution alone cannot make an arbitrary executable pass the Python check (7.196268ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+✔ explicit test-order endpoint authenticates Shopify bytes without weakening merchant access, and persists duplicate detection (1897.251912ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+✔ merchant test cart is explicitly pinned and needs JWT, origin, CSRF and private draft capability (2104.716067ms)
+✔ private revision pin is strict, requires enabled test cart and cannot be overridden by environment (22.146585ms)
+✔ draft-only connection uses existing app credentials, rejects unknown activation and preserves checkout gate (5.834473ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20996.630975

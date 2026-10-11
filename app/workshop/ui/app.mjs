@@ -1,3 +1,5 @@
+import {installCatalog} from './catalog-ui.mjs';
+import {installSteelOptions} from './steel-options-ui.mjs';
 import {installAiBatch} from './ai-batch-ui.mjs';
 import {installAiDesign} from './ai-design-ui.mjs';
 import {merchantNavigation} from './merchant-navigation.mjs';
@@ -15,7 +17,7 @@ const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
 const state={record:null,draft:null,products:[],dirty:false,busy:false,loadingRecord:false,csrf:null,tab:'designs',view:new URLSearchParams(location.search).get('view')==='masters'?'masters':'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],historyError:null,historyRequest:0,historyLoading:false,profiles:[],profileSettings:null};
-let overview,productOptions,nativeProduction;
+let overview,productOptions,nativeProduction,steelOptions,catalogUI;
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
 const pathValue=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],object);
@@ -69,25 +71,25 @@ function renderList(){
  const scope=state.products.filter(p=>p.kind===(state.view==='masters'?'master':'product'));
  const active=scope.filter(p=>p.status!=='archived');
  const visible=scope.filter(p=>state.filter==='archived'?p.status==='archived':p.status!=='archived'&&(state.filter==='all'||p.overview?.method===state.filter));
- $('#product-count').textContent=visible.length;
+ $('#product-count').textContent=state.catalog?.total??visible.length;catalogUI?.render();
  $('#overview-title').textContent=state.view==='masters'?'Deine Mastervorlagen':'Deine Konfi-Produkte';
  $('#overview-scope').textContent=state.view==='masters'?'· wiederverwendbare Vorlagen':'';
  for(const b of $$('[data-view]')){b.classList.toggle('active',b.dataset.view===state.view);b.setAttribute('aria-pressed',String(b.dataset.view===state.view));}
- for(const b of $$('[data-filter]')){const key=b.dataset.filter;b.setAttribute('aria-pressed',String(key===state.filter));b.querySelector('span').textContent='('+ (key==='archived'?scope.length-active.length:key==='all'?active.length:active.filter(p=>p.overview?.method===key).length)+')';}
+ for(const b of $$('[data-filter]')){const key=b.dataset.filter;b.setAttribute('aria-pressed',String(key===state.filter));b.querySelector('span').textContent='('+ (state.catalog?.counts[key]??(key==='archived'?scope.length-active.length:key==='all'?active.length:active.filter(p=>p.overview?.method===key).length))+')';}
  if(!visible.length){$('#product-list').innerHTML='<div class="empty-state"><strong>'+($('#search').value?'Keine passende Konfiguration.':state.filter==='archived'?'Das Archiv ist leer.':'Hier ist Platz für deine nächste Idee.')+'</strong><p>'+($('#search').value?'Versuche einen anderen Namen oder eine Konfigurations-ID.':'Wähle einen anderen Filter oder lege eine Konfiguration an.')+'</p><button data-action="new">Konfiguration anlegen</button></div>';overview?.rendered([]);syncControls();return;}
  $('#product-list').innerHTML=productCards(visible,badge,state.session);
  overview?.rendered(visible);
  syncControls();
 }
 async function loadList(){
- const request=++state.listRequest,params=new URLSearchParams({query:$('#search').value.trim(),includeArchived:'1'});
+ const request=++state.listRequest,params=new URLSearchParams({catalog:'1',query:$('#search').value.trim(),kind:state.view==='masters'?'master':'product',filter:state.filter,...state.catalogFilters});
  const data=await api('/api/workshop/products?'+params);if(request!==state.listRequest)return;
- state.products=data.products||[];renderList();
+ state.products=data.products||[];state.catalog=data;renderList();
 }
 async function showOverview(view=state.view){
  if(state.busy)return false;
  if(!await canDiscard())return false;
- state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;document.body.classList.remove('editing-product');renderList();history.replaceState(null,'',merchantNavigation('/werkstatt/?view='+view,location.href));return true;
+ state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;state.catalogFilters.page=1;await loadList();$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;document.body.classList.remove('editing-product');renderList();history.replaceState(null,'',merchantNavigation('/werkstatt/?view='+view,location.href));return true;
 }
 async function canDiscard(){
  if(!state.dirty)return true;
@@ -96,7 +98,7 @@ async function canDiscard(){
 }
 function applyRecord(record){
  if(record.document.schema==='gravuru-form-product/v1'){location.href=merchantNavigation('/werkstatt/formprodukt/?configuration='+encodeURIComponent(record.id),location.href);return false;}
- const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;state.history=[];state.historyError=null;++state.historyRequest;state.historyLoading=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
+ steelOptions?.reset();const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;state.history=[];state.historyError=null;++state.historyRequest;state.historyLoading=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
  $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;$('.overview').hidden=true;$('.page-heading').hidden=true;
  renderEditor();renderList();syncControls();
  history.replaceState(null,'',merchantNavigation('/werkstatt/?configuration='+encodeURIComponent(record.id),location.href));
@@ -129,12 +131,13 @@ function renderEditor(){
  $('#print-export-link').href='/?'+new URLSearchParams({configuration:record.id,revision:record.revision,druckexport:'1'});
  const preview=customerPreviewLink(record.id,record.revision);for(const link of [$('#preview-link'),$('#customer-view')]){link.href=preview.href;link.target=preview.target;}
  $('#panel-details').innerHTML='<div class="form-section"><h3>Was ist das für eine Konfiguration?</h3><div class="form-grid">'+field('Name','name',draft.name,{full:true,required:true})+'<label>Verwendung<select data-path="kind"><option value="product" '+(draft.kind==='product'?'selected':'')+'>Produktkonfiguration</option><option value="master" '+(draft.kind==='master'?'selected':'')+'>Mastervorlage</option></select><p class="field-help">Master kannst du als Ausgangspunkt für weitere Produkte kopieren.</p></label><label>Kopiert aus<span class="static-value">'+escape(draft.masterId||'Eigenständige Konfiguration')+'</span></label>'+field('Kategorie-Zuordnungen','categoryIds',(draft.categoryIds||[]).join(', '),{full:true,help:'Mehrere Kategorie-IDs durch Komma trennen, zum Beispiel acrylglasbilder, geschenke.',max:1000})+'</div></div><div class="form-section"><h3>Für die spätere Produktseite</h3><p>Diese Angaben werden hier gespeichert. Die Übertragung zu Shopify folgt separat.</p><div class="form-grid">'+field('SEO-Titel','seo.title',draft.seo?.title||'',{full:true,max:70})+textArea('SEO-Beschreibung','seo.description',draft.seo?.description||'',{max:160,help:'Beschreibe das Produkt verständlich: Material, Personalisierung und Anlass.'})+'</div></div>';
- renderPrices();renderDesigns();renderProfiles();renderHistory();productEditor.render();nativeProduction?.render();showTab(state.tab);
+ $('#panel-shopify').innerHTML='<h3>Produkt zu Shopify übertragen</h3><ol><li>Größen, Preise und Gestaltung festlegen und speichern.</li><li>Den gespeicherten Stand unter „Shop vorbereiten“ prüfen und als Shopify-Entwurf anlegen.</li><li>Produktbilder, öffentliche Konfigurator-Verknüpfung und individuelle Aufpreise vollständig verbinden und prüfen; erst danach im Onlineshop veröffentlichen.</li></ol><p><a id="product-shop-preparation" href="'+escape(merchantNavigation('/werkstatt/shopvorbereitung/?configuration='+record.id+'&revision='+record.revision,location.href))+'">Diesen Produktstand für Shopify vorbereiten →</a></p><p class="field-help">„Änderungen speichern“ und die interne Werkstatt-Freigabe veröffentlichen kein Verkaufsprodukt in Shopify.</p>';
+ renderPrices();steelOptions?.render();renderDesigns();renderProfiles();renderHistory();productEditor.render();nativeProduction?.render();showTab(state.tab);
 }
 function renderPrices(){
  if(state.draft.config&&!state.draft.config.acrylic){
   const c=state.draft.config;
-  $('#panel-prices').innerHTML='<div class="form-section"><h3>Preise</h3><p>Alle Eingaben in Euro. Aufpreise werden zum Grundpreis addiert.</p><div class="form-grid">'+moneyField('Grundpreis','config.basePriceCents')+moneyField('Zusätzliches Motiv','config.extraMotifCents')+moneyField('Zusätzliches Foto','config.photo.extraPriceCents')+'</div></div>'+c.profile.optionGroups.map((g,j)=>'<div class="form-section"><h3>'+escape(g.name)+'</h3><div class="form-grid">'+g.values.map((v,i)=>moneyField(v.label,'config.profile.optionGroups.'+j+'.values.'+i+'.priceCents')).join('')+'</div></div>').join('');return;
+  $('#panel-prices').innerHTML='<div class="form-section"><h3>Preise</h3><p>Alle Eingaben in Euro. Aufpreise werden zum Grundpreis addiert.</p><div class="form-grid">'+(c.profile.material.kind==='steel'?'':moneyField('Grundpreis','config.basePriceCents'))+moneyField('Zusätzliches Motiv','config.extraMotifCents')+moneyField('Zusätzliches Foto','config.photo.extraPriceCents')+'</div></div>'+c.profile.optionGroups.map((g,j)=>g.id==='size'?'':'<div class="form-section"><h3>'+escape(g.name)+'</h3><div class="form-grid">'+g.values.map((v,i)=>moneyField(v.label,'config.profile.optionGroups.'+j+'.values.'+i+'.priceCents')).join('')+'</div></div>').join('');return;
  }
  if(!state.draft.config?.acrylic?.pricing){$('#panel-prices').innerHTML='<h3>Für dieses Produkt ist noch kein Preisprofil hinterlegt.</h3><p>Das vorliegende Preisformular verwaltet das Acrylglasprofil. Weitere Materialprofile werden gesondert ergänzt.</p>';return;}
  const root='config.acrylic.pricing.';
@@ -253,8 +256,8 @@ async function mutateRecord(action,body){
  }catch(error){mutationError(error);}finally{setBusy(false);}
 }
 async function save(){
- if(!state.record||state.busy||!state.dirty||!validateEditor())return;setBusy(true);
- try{const record=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(state.record.id),{method:'PATCH',body:{expectedRevision:state.record.revision,document:state.draft}}));applyRecord(record);await Promise.all([loadList(),loadHistory()]);notify('Gespeichert. Stand '+record.revision+' ist jetzt in der Vorschau verfügbar.');}
+ if(!state.record||state.busy||!state.dirty)return;setBusy(true);
+ try{await steelOptions?.applyPending();if(!validateEditor())return;const record=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(state.record.id),{method:'PATCH',body:{expectedRevision:state.record.revision,document:state.draft}}));applyRecord(record);await Promise.all([loadList(),loadHistory()]);notify('Gespeichert. Stand '+record.revision+' ist jetzt in der Vorschau verfügbar.');}
  catch(error){mutationError(error);}finally{setBusy(false);}
 }
 function openCreate(mode='seed'){
@@ -306,7 +309,7 @@ $('#product-form').addEventListener('change',event=>{
 });
 document.addEventListener('click',async event=>{
  const view=event.target.closest('[data-view]');if(view){await showOverview(view.dataset.view);return;}
- const filter=event.target.closest('[data-filter]');if(filter){if(state.busy)return;state.filter=filter.dataset.filter;renderList();return;}
+ const filter=event.target.closest('[data-filter]');if(filter){if(state.busy)return;state.filter=filter.dataset.filter;state.catalogFilters.page=1;await loadList();return;}
  const tab=event.target.closest('[data-tab]');if(tab){showTab(tab.dataset.tab);return;}
  const designAction=event.target.closest('[data-design-action]');if(designAction){if(!designAction.disabled)changeDesign(designAction.dataset.designAction,designAction.dataset.designId);return;}
  const product=event.target.closest('[data-product-id]');
@@ -337,15 +340,17 @@ $('.editor-tabs').addEventListener('keydown',event=>{
  const tabs=$$('.editor-tabs [data-tab]'),index=tabs.indexOf(event.target),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab,true);
 });
 const productEditor=installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights});
+steelOptions=installSteelOptions({state,api,markDirty,renderEditor,notify});
 nativeProduction=installNativeProduction({state,api,markDirty});
 productOptions=installProductOptions({state,api,markDirty,syncControls,previewOptions:()=>productEditor.refreshOptions(true)});
 overview=installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate});
+catalogUI=installCatalog({state,loadList,notify,api,selection:()=>overview.selection(),setBusy});
 installAiBatch({api,selection:()=>overview.selection(),onSaved:loadList});
 const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 installAiDesign({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 let searchTimer;
-$('#search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>loadList().catch(error=>notify(errorMessage(error),'error')),180);});
+$('#search').addEventListener('input',()=>{clearTimeout(searchTimer);state.catalogFilters.page=1;searchTimer=setTimeout(()=>loadList().catch(error=>notify(errorMessage(error),'error')),180);});
 state.view=new URL(location.href).searchParams.get('view')==='masters'?'masters':'products';
 window.addEventListener('beforeunload',event=>{if(!state.dirty)return;event.preventDefault();event.returnValue='';});
 document.addEventListener('workshop-session-restored',async event=>{

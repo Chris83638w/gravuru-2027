@@ -2,6 +2,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { randomUUID } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
+import {createProductCatalog} from './product-catalog.mjs';
 
 const OWNED_FIELDS = ['id', 'revision', 'publishedRevision', 'status', 'createdAt', 'updatedAt', 'metadata'];
 
@@ -10,7 +11,7 @@ function failure(status, code, message) {
 }
 
 /** A local, synchronous SQLite store. Documents are immutable JSON snapshots. */
-export function createProductRepository({ filename, validateDocument = (value) => value, snapshotMetadata = () => ({}) }) {
+export function createProductRepository({ filename, validateDocument = (value) => value, snapshotMetadata = () => ({}),catalogOverview=()=>({}) }) {
   if (typeof filename !== 'string' || !filename) throw new TypeError('A database filename is required.');
   if (typeof snapshotMetadata !== 'function') throw new TypeError('snapshotMetadata must be a synchronous function.');
   if (filename !== ':memory:') mkdirSync(dirname(filename), { recursive: true });
@@ -78,6 +79,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     throw error;
   }
 
+  const catalog=transact(()=>createProductCatalog(db,catalogOverview));
   function product(id) {
     const row = typeof id === 'string' ? db.prepare('SELECT * FROM products WHERE id = ?').get(id) : null;
     if (!row) throw failure(404, 'not_found', 'Konfiguration nicht gefunden.');
@@ -169,6 +171,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     db.prepare(`INSERT INTO product_revisions
       (product_id, revision, document, published_revision, status, created_at, metadata) VALUES (?, ?, ?, ?, ?, ?, ?)`)
       .run(row.id, row.revision, JSON.stringify(document), row.published_revision, state(row), row.updated_at, metadata);
+    catalog.update(row,document);
   }
 
   function createInside(document) {
@@ -202,6 +205,8 @@ export function createProductRepository({ filename, validateDocument = (value) =
   }
 
   return {
+    firstId:()=>db.prepare('SELECT id FROM products ORDER BY created_at,id LIMIT 1').get()?.id||null,
+    catalog:options=>catalog.list(options),
     // The dry-run uses the same pure validation as the transactional write.
     validate(document) { return documentValue(document); },
     previewMetadata(document) { return JSON.parse(JSON.stringify(snapshotMetadata(JSON.parse(JSON.stringify(document))))); },

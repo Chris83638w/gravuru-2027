@@ -3,6 +3,7 @@ from pathlib import Path
 import hashlib
 import json
 import zipfile
+import sys
 
 ROOT = Path(__file__).resolve().parent
 THEME = ROOT / 'theme'
@@ -19,7 +20,10 @@ for file in FILES:
 manifest = [{'path': file.relative_to(THEME).as_posix(), 'bytes': file.stat().st_size,
              'sha256': hashlib.sha256(file.read_bytes()).hexdigest()} for file in FILES]
 (ROOT / 'theme-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
-archive = ROOT / 'gravuru-salbei-0.1.0.zip'
+version = sys.argv[1] if len(sys.argv) > 1 else '0.2.0'
+if not all(c.isdigit() or c == '.' for c in version):
+    raise SystemExit('Version must contain only digits and dots')
+archive = ROOT / f'gravuru-salbei-{version}.zip'
 with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as target:
     for file in FILES:
         entry = zipfile.ZipInfo(file.relative_to(THEME).as_posix(), date_time=(2026, 10, 11, 0, 0, 0))

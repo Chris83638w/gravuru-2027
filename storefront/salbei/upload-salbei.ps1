@@ -7,8 +7,8 @@ $salbeiStore = 'gravuru-design.myshopify.com'
 $salbeiName = 'gravuru Salbei Entwicklung 2026-10-11'
 $salbeiRoot = $PSScriptRoot
 . (Join-Path $salbeiRoot 'shopify-output.ps1')
-$salbeiZip = Join-Path $salbeiRoot 'gravuru-salbei-0.1.0.zip'
-$salbeiExpectedHash = '2d783ef0e69d639a1bf79b03f73f24b27a19de19fad1cf22632e5e869930e99c'
+$salbeiZip = Join-Path $salbeiRoot 'gravuru-salbei-0.2.0.zip'
+$salbeiExpectedHash = 'd9ecb188c0dae3cd8ea5e54cc84cecfaee38f90ba20a21f77fe6f5704957cb1a'
 
 if ((Get-FileHash -LiteralPath $salbeiZip -Algorithm SHA256).Hash.ToLowerInvariant() -ne $salbeiExpectedHash) {
     throw 'Das ZIP stimmt nicht mit dem geprueften Paket ueberein. Upload abgebrochen.'

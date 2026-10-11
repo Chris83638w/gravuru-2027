@@ -3,6 +3,8 @@
   "base_commit": "258f00f64365e2018ca4c62778a6bf55a5d3cd18",
   "project_repository": "Chris83638w/gravuru-2027",
   "task_branch": "task/salbei-shopify-theme-20261011",
-  "visual": "gravuru — Salbei, approved 2026-10-11",
-  "scope": "Unpublished Shopify theme pilot. Public configurator checkout and B2B configuration are separate acceptance steps."
+  "visual": "gravuru \u2014 Salbei, approved 2026-10-11",
+  "scope": "Complete unpublished storefront theme. Public configurator checkout, catalogue release, translations and company-specific B2B terms remain acceptance gates.",
+  "theme_id": "190064427388",
+  "package_version": "0.2.0"
 }

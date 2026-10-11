@@ -1,45 +1,39 @@
-# gravuru Salbei – Shopify-Theme-Pilot
+# gravuru Salbei – Shopify-Shop
 
-Stand: 11.10.2026. Ein Shop für das gesamte Sortiment, später wiederverwendbar für weitere Shopify-Shops. Dies ist ein entwickelter Theme-Pilot; Shopify-Import und visuelle Browserabnahme sind noch offen. Kein bestehendes Theme wurde geändert oder veröffentlicht.
+Stand: 11.10.2026. Vollständiger Storefront-Aufbau auf Dawn im unveröffentlichten Theme **190064427388**. Der bestehende Live-Shop wurde nicht veröffentlicht oder verändert.
 
-## Inhalt
+[Shop-Vorschau öffnen](https://gravuru-design.myshopify.com/?preview_theme_id=190064427388)
 
-- Vollständige Dawn-Basis, fest auf Shopify/dawn Commit `258f00f64365e2018ca4c62778a6bf55a5d3cd18` gesetzt. Shopify-Lizenz in `theme/LICENSE.md` und `theme/assets/dawn-license.txt` erhalten. Kein Code aus Hyper oder Prestige übernommen.
-- Eine Primärfarbe: Salbei `#354C3B`, neutrale Flächen und Cormorant/Assistant aus Shopifys Schriftwahl. Typografie und Farben sind im Theme-Editor einstellbar.
-- Startseite mit einem Titelbild und drei Themenkacheln. Alle sieben Produktwelten sind im Mega-Menü erreichbar.
-- Eigenes Mega-Menü mit drei Spalten, optionalem Materialbild, Shopify-Menüzuordnungen oder einzeln bearbeitbaren Links. Native Links, Formulare und aufklappbare Menüs bleiben ohne eigenes JavaScript benutzbar.
-- Native Dawn-Kollektions-, Such-, Warenkorb- und Kundenkontoseiten. Eigene Produktsektion auf Dawn mit Variantenwahl und vorsichtigem Einstieg in die vorhandene gravuru-Produktbindung.
-- Sprachwahl für tatsächlich veröffentlichte Shop-Sprachen; eigene Systemtexte für DE, EN, FR, NL, ES, IT und TR. Die Übersetzung von Katalog und redaktionellen Theme-Inhalten sowie Veröffentlichung der Sprachen erfolgen separat.
-- Bearbeitbarer B2B-Einstieg. Firmenfreigaben, Kataloge, Mengenstaffeln, Zahlungsbedingungen und Zugriffsregeln sind noch nicht eingerichtet oder geprüft.
+## Enthalten
 
-## Im Shopify-Editor selbst ändern
+Acht Startseitenbereiche, sieben Themenwelten, Mega-Menü, echte Katalogprodukte, Produktdetails, Suche, Filter, Warenkorb, Kundenkonto, Beratung, FAQ, bestehende Informationsseiten, Rechtsnavigation und das vorhandene B2B-Registrierungsformular. Die vorhandenen FPD-App-Blöcke und Theme-App-Einbindungen sind im neuen Theme eingebunden. Es wurde kein Code aus Hyper oder Prestige übernommen.
 
-1. **Theme-Einstellungen → gravuru – Design:** Primärfarbe und neutrale Flächen ändern. **Typografie** wählt Überschriften- und Textschrift.
-2. **Kopfzeile → gravuru – Kopfzeile:** Logo/Markenname, Sprachwahl, B2B-Ziel und Mega-Menü-Bild einstellen. Navigationsblöcke umsortieren. Pro Spalte ein vorhandenes Shopify-Menü auswählen oder die enthaltenen Mega-Menü-Linkblöcke bearbeiten und einer Kollektion zuordnen.
-3. **Startseite → gravuru – Titelbild:** Bild, Überschrift, Beschreibung und Buttonziel ändern. **Themenwelten:** Bilder, Titel, Kollektionen und Reihenfolge ändern; neue Kacheln hinzufügen oder entfernen. Zusätzliche Dawn-Sections lassen sich regulär hinzufügen.
-4. **Produkte → Standardprodukt / salbei:** vorhandene Produktdaten und Medien pflegen, Blöcke in der Produktsektion umsortieren. Die Personalisierung muss mit dem bestehenden Konfigurator separat abgenommen werden.
+Die Primärfarbe ist Salbei `#354C3B`, ergänzt um warme neutrale Flächen. Die fünf mitgelieferten Entwurfsillustrationen sind keine bestätigten Produktfotos. Produktkarten zeigen die tatsächlichen Katalogbilder. Bilder können im Editor ersetzt werden.
 
-## Paket verwenden
+## Ohne KI bearbeiten
 
-`gravuru-salbei-0.1.0.zip` ist für **Onlineshop → Themes → Theme hinzufügen → ZIP-Datei hochladen** vorgesehen. Als unveröffentlichtes Theme prüfen. Danach im Editor Produktbilder, Navigation, Übersetzungen, App-Einbindungen und Kontoziele kontrollieren. Das Paket wurde strukturell geprüft, aber noch nicht von Shopify importiert; eine akzeptierte Installation wird damit nicht behauptet.
+1. In Shopify unter **Onlineshop > Themes** beim Salbei-Entwurf **Anpassen** öffnen.
+2. Startseitenbereiche umsortieren und Texte, Bilder, Buttons oder Kollektionen direkt ändern.
+3. In der **Kopfzeile** Mega-Menü-Blöcke pflegen; in der **Fußzeile** bestehende Shopify-Menüs auswählen.
+4. In **Theme-Einstellungen** Farben und Typografie ändern.
+5. Unter **Produkte** die vorhandenen Produktvorlagen und App-Blöcke bearbeiten. B2B verwendet die Seitenvorlage **registration** und das vorhandene Shopify-Forms-Formular 648263.
 
-Alle fünf mitgelieferten PNG-Motive sind eigens erzeugte Entwurfsillustrationen und keine bestätigten Produktfotos. Für den Shop freigegebene Bilder über die Bildauswahl einsetzen. Diese nutzt responsive Shopify-CDN-Größen; die mitgelieferten PNG-Fallbacks sind noch nicht für die endgültige Ladezeit optimiert.
+Die sieben Themenwelt-Vorlagen werden über `?view=salbei-home`, `salbei-photo`, `salbei-memory`, `salbei-horse`, `salbei-kids`, `salbei-wedding` und `salbei-christening` verwendet. Gemeinsame Kollektionszuordnungen des Live-Shops bleiben erhalten.
 
-## Konfigurator und Checkout
+## Vor dem Verkaufsstart noch abzunehmen
 
-Die neue Produktsektion erkennt `gravuru.configurator.enabled` und die vorhandene `gravuru_workbench`-Bindung. Für so gebundene Produkte wird der native Direktkauf in dieser Sektion ausgeblendet. Ein vorhandener HTTPS-Vorschaulink wird nur bei `manifest.customerEnabled == true` angeboten. Andernfalls erscheint ein Verfügbarkeitshinweis. Es wird kein eigener Preis, kein Warenkorbvertrag und keine neue Produktionsfreigabe erfunden.
+- Mehrere Geschenk-Kategorien enthalten derzeit keine aktiven Artikel. Vorhandene Entwürfe wurden nicht global freigegeben.
+- Deutsch ist die einzige veröffentlichte Shop-Sprache. Systemtexte für EN/FR/NL/ES/IT/TR sind vorbereitet; vollständige Übersetzungen von Katalog, Seiten und redaktionellen Inhalten fehlen noch.
+- Die neue Gravuru-Werkstatt besitzt noch keine bestätigte öffentliche Checkout-Freigabe. Ihre vorhandene Kundenfreigabe bleibt Voraussetzung; ein interner Vorschaulink wird nicht als fertiger Bestellweg ausgegeben.
+- B2B-Firmenfreigaben, individuelle Kataloge, Preislisten und Zahlungsbedingungen wurden nicht neu eingerichtet.
+- Visuelle Desktop-/Mobilprüfung und Ende-zu-Ende-Prüfung der Designer-, Warenkorb- und Bestellstrecke sind offen. Die verfügbare Browserumgebung konnte nicht gestartet werden.
 
-Das ist keine serverseitige Kaufsperre und noch keine vollständige Konfiguratorintegration. Andere/alte Produktbindungen, App-Blöcke, Vorschau-URL-Vertrag, Variantenübergabe, Warenkorb und Bestellung müssen mit dem bestehenden System geprüft werden. Die aktuelle öffentliche Checkout-Freigabe und Fertigungsfreigabe bleiben separate Schritte. Vor dem Live-Einsatz auch Datenschutz-/Consent- und sonstige benötigte App-Einbindungen im neuen Theme prüfen.
+## Prüfungen und Paket
 
-## Entwicklung und Nachweis
+Alle 60 neuen/geänderten Theme-Dateien wurden über Shopify gespeichert und anschließend ausgelesen. 413 Dateien befinden sich im Gesamtpaket `gravuru-salbei-0.2.0.zip`. Lokale Strukturprüfung: 111 JSON-Dateien, 48 Section-Schemas, 0 Fehler. JavaScript-Syntax und offizieller Shopify Theme Check bestanden; Theme Check meldet 0 Fehler und 11 Warnungen. Details stehen in [STORE-STATUS.md](STORE-STATUS.md).
 
-- `configure_theme.py`: bewusster Neuaufbau der Pilot-Konfiguration aus der lokalen Dawn-Basis; überschreibt eigene redaktionelle Einstellungen. Nicht gegen ein bereits vom Händler bearbeitetes Theme ausführen.
-- `finalize_theme.py`: anschließend ausführen; ergänzt sprachabhängige interne Links und den deutschen Footertext.
-- `node validate_theme.mjs`: strukturelle JSON-/Schema-/Referenzprüfung.
-- `node --check theme/assets/gravuru-salbei.js`: JavaScript-Syntaxprüfung.
-- `python package_theme.py`: ZIP und vollständiges SHA-256-Dateimanifest erstellen; temporäre Übertragungsdateien werden nicht eingepackt.
-- `design-qa.md` und `theme_validation_report.md`: tatsächlich ausgeführte Prüfungen und offene Grenzen.
-- Der offizielle Shopify Theme Check hat im GitHub-Prüflauf bestanden: 0 Fehler, 11 Warnungen. Er veröffentlicht oder installiert kein Theme. Nachweis und Grenzen stehen im Prüfbericht.
-- Die übrigen von Dawn mitgelieferten Sprachen verwenden für die neuen gravuru-Systemtexte einen expliziten englischen Rückfalltext. Sie gelten damit nicht als vollständig übersetzte gravuru-Shop-Sprachen.
+Die Vorschau ist bereits aktualisiert; ein erneuter Upload ist nicht nötig. `upload-salbei.ps1` verweist für einen späteren kontrollierten Neu-Upload auf Version 0.2.0 und prüft deren Hash und Manifest. Es veröffentlicht kein Theme. `python package_theme.py 0.2.0` erzeugt das Paket erneut aus den Theme-Quelldateien.
 
-Nächster Schritt: ZIP als neues unveröffentlichtes Theme importieren, Desktop-/Mobil- und Editorabläufe prüfen; anschließend bestehende Konfiguratorstrecke, B2B und Übersetzungen verbinden und abnehmen.
+`configure_theme.py`, `complete_store.py`, `finish_store.py` und die Korrekturskripte dokumentieren den Erstaufbau. Nicht gegen ein inzwischen im Editor bearbeitetes Theme ausführen; sie überschreiben redaktionelle Einstellungen. Maßgeblich sind die finalen Dateien unter `theme/`.
+
+Dawn-Basis: Shopify/dawn Commit `258f00f64365e2018ca4c62778a6bf55a5d3cd18`. Die Lizenz bleibt in `theme/LICENSE.md` und `theme/assets/dawn-license.txt` erhalten.

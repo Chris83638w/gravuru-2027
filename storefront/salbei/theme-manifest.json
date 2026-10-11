@@ -155,7 +155,7 @@
     "sha256": "3f410b86e057623c20741b9a6bb7ca24cb900a3fbe46fd3dd53e8abba4b75e40"
   },
   {
-    "path": "assets/component-newsletter.css",
+   "path": "assets/component-newsletter.css",
     "bytes": 1409,
     "sha256": "ba352e757771d36e43ed885ef66afd26cbb6d422cdb1b2b35b10085784a2d19e"
   },
@@ -316,8 +316,8 @@
   },
   {
     "path": "assets/gravuru-salbei.css",
-    "bytes": 10271,
-    "sha256": "7b15141330c0f6e1a8ab3b31af67e774e5d3dd1053a6f30fa717e754a07c9168"
+    "bytes": 11374,
+    "sha256": "49c1561f2c744bc4a2a9026c334e20693e8ee6060fd88012731cb28a3bd0e35d"
   },
   {
     "path": "assets/gravuru-salbei.js",
@@ -991,8 +991,8 @@
   },
   {
     "path": "config/settings_data.json",
-    "bytes": 8987,
-    "sha256": "de08c2f496b70036c12362289327ea002c498eeed9ea9d21f3e4cbe945ddd9c3"
+    "bytes": 10697,
+    "sha256": "7150f7dda67c2292f8edffab585c3443004c67b04c5a18d322dee67ee923c718"
   },
   {
     "path": "config/settings_schema.json",
@@ -1356,13 +1356,33 @@
   },
   {
     "path": "sections/footer-group.json",
-    "bytes": 690,
-    "sha256": "e949fa8fd333b7ee4b5b7b32b0bf8e3aee38100a75f236403fb8e6ee66d68a3a"
+    "bytes": 1480,
+    "sha256": "f8cc2848786271bd5962d3a7b4f27cd7465e5242f4c335dc85e0cd56da93b055"
   },
   {
     "path": "sections/footer.liquid",
     "bytes": 20925,
     "sha256": "827f2114402578a3b97b8f75ff7ad0a8881efc14f49d28bb0c0f0edae6fe36c3"
+  },
+  {
+    "path": "sections/gravuru-benefits.liquid",
+    "bytes": 3093,
+    "sha256": "7bd8975da3e68174b0394c716338d0998bc3891647d9842d514c93d6a73dbe96"
+  },
+  {
+    "path": "sections/gravuru-categories.liquid",
+    "bytes": 3442,
+    "sha256": "5fde5860a7607500a9b06b67f506ffe945d61ff2a246d2f626dfd16ac709e8c4"
+  },
+  {
+    "path": "sections/gravuru-collection-intro.liquid",
+    "bytes": 4088,
+    "sha256": "f2221af5ead50002978f09bc20b0031c774d4d567b4fca832b0d94d0573b71a9"
+  },
+  {
+    "path": "sections/gravuru-faq.liquid",
+    "bytes": 5544,
+    "sha256": "4f4bfb5033d95b5ee7df0523de6f47273be5ca6469bbe240cf7bdd82556d6041"
   },
   {
     "path": "sections/gravuru-header.liquid",
@@ -1375,9 +1395,19 @@
     "sha256": "547ac707fcbd97ba1c76eaeb8bac03b8fe2c39ad283249bc36e713c3b63503c5"
   },
   {
+    "path": "sections/gravuru-product-details.liquid",
+    "bytes": 4490,
+    "sha256": "7f1f9c321b6d3e030d61992786d6747803a2b6d41acfb3b84a345fc16a1d3f23"
+  },
+  {
     "path": "sections/gravuru-product.liquid",
     "bytes": 105085,
     "sha256": "5fc09b8c71e6472a6b302bf08fe5ab2383ce17c2387cddbec9c1b453362bea72"
+  },
+  {
+    "path": "sections/gravuru-story.liquid",
+    "bytes": 5840,
+    "sha256": "95334fd097b6af2b4cf0bb955ecb22defd427a8ea9e4b8d649a0578c3b94cc88"
   },
   {
     "path": "sections/gravuru-worlds.liquid",
@@ -1386,8 +1416,8 @@
   },
   {
     "path": "sections/header-group.json",
-    "bytes": 4333,
-    "sha256": "86b3220c63a5fda3ec852f032705290b373e74681f78ec852bca031ca3bcb80a"
+    "bytes": 4920,
+    "sha256": "d21689fdd3b5db574fbb242fc200e0e5f71d7b6321cf5a5efe05d11498a3a97d"
   },
   {
     "path": "sections/header.liquid",
@@ -1436,8 +1466,8 @@
   },
   {
     "path": "sections/main-collection-product-grid.liquid",
-    "bytes": 15295,
-    "sha256": "fe75e4971d87ed8fcde68c7498d4e85163ee1cfac0872bf9e32a32117ef18fa0"
+    "bytes": 15931,
+    "sha256": "90adb47ae298d38afba4c0bad8742ebc6fbd15db5859161603af5484ee10e368"
   },
   {
     "path": "sections/main-list-collections.liquid",
@@ -1566,8 +1596,8 @@
   },
   {
     "path": "snippets/facets.liquid",
-    "bytes": 48468,
-    "sha256": "78b48562d1f15da028252ee81f8304a84c09ff6603d6ed186fcab000437f1b5f"
+    "bytes": 50095,
+    "sha256": "c6ba0d9246c561ae94b334ece5de7a600219e96644f7f326be05944b3037c051"
   },
   {
     "path": "snippets/gift-card-recipient-form.liquid",
@@ -1770,9 +1800,99 @@
     "sha256": "7956b500bdb69b6225763413495009737a82aefa2da45fcbfd611db73e1596c7"
   },
   {
+    "path": "templates/collection.fuer-wen.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-acryl.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-edelstahl.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-hausnummern.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-klingeln.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-ring.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-schiefer.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-turschilder.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-video.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.gravuru-weitere.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
     "path": "templates/collection.json",
-    "bytes": 872,
-    "sha256": "88e8c2c0d9f69ee083579da174d7a224e3b61a5be89998c0a9b0f679a7d76eb3"
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
+  },
+  {
+    "path": "templates/collection.salbei-christening.json",
+    "bytes": 2632,
+    "sha256": "f2653736878a379c2ebab6a053205127cd3f21b3645f9c6874b324066a8a7bf7"
+  },
+  {
+    "path": "templates/collection.salbei-home.json",
+    "bytes": 3081,
+    "sha256": "6c4dc2db860f896f4f59161c10eeb39c0f60f2786d44c8caa59ae1496483c26f"
+  },
+  {
+    "path": "templates/collection.salbei-horse.json",
+    "bytes": 2678,
+    "sha256": "bf7a7e56ccd90ea89047e037982153205f83dc442feaf493d98a9aab45742fe1"
+  },
+  {
+    "path": "templates/collection.salbei-kids.json",
+    "bytes": 2850,
+    "sha256": "32ae3d52a9f8e2254f5fae5fde556c89a33e86f596da7f5225ed5a4aacd79384"
+  },
+  {
+    "path": "templates/collection.salbei-memory.json",
+    "bytes": 3024,
+    "sha256": "f3c1481bf571ad72f8f48a37cfd4406c072d0450ab08e10bbe7517bb514e55c7"
+  },
+  {
+    "path": "templates/collection.salbei-photo.json",
+    "bytes": 2907,
+    "sha256": "dc9536baa35fb2cfaa60a57cfb12df7e4530c4e8cbe9b0d115f62bc4c9e480f1"
+  },
+  {
+    "path": "templates/collection.salbei-wedding.json",
+    "bytes": 2844,
+    "sha256": "7287b10b3b867f7118277543542debd7ac0c9e84801dad2ab1b7f9187055e6f7"
+  },
+  {
+    "path": "templates/collection.video-tuerklingel.json",
+    "bytes": 865,
+    "sha256": "08fae27396aa0fb81095fb567dc801b693475d214a549576ab0328e72729c5f3"
   },
   {
     "path": "templates/gift_card.liquid",
@@ -1781,13 +1901,28 @@
   },
   {
     "path": "templates/index.json",
-    "bytes": 1462,
-    "sha256": "e30a0f4d963656a085c0364d1768c726eef2e30beaa3e856be22043dbec7203c"
+    "bytes": 10837,
+    "sha256": "cf420aba6c5ee268d69e60dcb74a3039f0893b2d59206eff9802a90e0ea3323b"
   },
   {
     "path": "templates/list-collections.json",
-    "bytes": 298,
-    "sha256": "ab1236c43f9e5a14640988bbf5e76678a8f243318d899f93f5ff947f71e84731"
+    "bytes": 3718,
+    "sha256": "55012ca9f1696145931f74c61f61892738aaa0035e745dfa9c7b99abd33a6b9b"
+  },
+  {
+    "path": "templates/page.about.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.acrylglas.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.bewertungen.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
   },
   {
     "path": "templates/page.contact.json",
@@ -1795,9 +1930,109 @@
     "sha256": "4eb8225eb55241d8856630bb3c094c580c8ddc83718ad05f6a1f9a917c1d540e"
   },
   {
+    "path": "templates/page.customer-care.json",
+    "bytes": 4249,
+    "sha256": "7f7bf0ec8c9ad7b7bf851420ae92ea17076960720daf24e924b2b9c41b366177"
+  },
+  {
+    "path": "templates/page.edelstahl.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.faq.json",
+    "bytes": 4249,
+    "sha256": "7f7bf0ec8c9ad7b7bf851420ae92ea17076960720daf24e924b2b9c41b366177"
+  },
+  {
+    "path": "templates/page.find-a-store.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.holz.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.inspiration.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.jobs.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
     "path": "templates/page.json",
     "bytes": 185,
     "sha256": "82024659771d0cf3d2757c546eb71cd758dadc3d3aba6c37277873229620e693"
+  },
+  {
+    "path": "templates/page.materialien.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.mengenrabatte.json",
+    "bytes": 472,
+    "sha256": "cfd6fd9c803bb986711092207a3f66f82e5c823a9b2b0dc50ca122df9147cd8b"
+  },
+  {
+    "path": "templates/page.modellfinder.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.page.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.personalisierung.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.pflege-montage.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.qualitat-herstellung.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.rechtliches.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.registration.json",
+    "bytes": 3343,
+    "sha256": "54e647f6efea271c541b18a3c78117ab1524a78eae70f695a9f67cb2e933ffcc"
+  },
+  {
+    "path": "templates/page.reklamation.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.schiefer.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.swym.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
+  },
+  {
+    "path": "templates/page.versand-lieferung.json",
+    "bytes": 198,
+    "sha256": "5a6d9453c5df61a6fa3a215d3b14cbc6847bd4348419a4f90fa304cfff972a8c"
   },
   {
     "path": "templates/password.json",
@@ -1806,13 +2041,23 @@
   },
   {
     "path": "templates/product.json",
-    "bytes": 1626,
-    "sha256": "8a456825190527f884512d4e8ebc98d59c657987e9d0ed5b7e4bf76f9f546ef0"
+    "bytes": 3243,
+    "sha256": "17a1cd34e9dd986666d0a3fd861057a54667074ef875de503a472b419a150ad6"
+  },
+  {
+    "path": "templates/product.kitchen-sink.json",
+    "bytes": 19512,
+    "sha256": "67959ade02e8a3bc5b80d7931ada365ecff5662d537bfa49bdc0a0e296f80c42"
   },
   {
     "path": "templates/product.salbei.json",
-    "bytes": 1626,
-    "sha256": "8a456825190527f884512d4e8ebc98d59c657987e9d0ed5b7e4bf76f9f546ef0"
+    "bytes": 3243,
+    "sha256": "17a1cd34e9dd986666d0a3fd861057a54667074ef875de503a472b419a150ad6"
+  },
+  {
+    "path": "templates/product.test-temp-svenja-grid.json",
+    "bytes": 20662,
+    "sha256": "142c1c525b4ed47821a0a92b3fd19c1f80d7adca92ccd0427b24157b287b3526"
   },
   {
     "path": "templates/search.json",

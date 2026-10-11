@@ -27,7 +27,9 @@ Die neue Gravuru-Werkstatt ist laut aktuellem App-Projekt noch nicht für den ö
 
 - Lokale Strukturprüfung: 111 JSON-Dateien, 48 Section-Schemas, 0 Fehler.
 - JavaScript-Syntaxprüfung: bestanden.
-- Offizieller Theme Check, Shopify-Upload und anschließendes Auslesen: Ergebnisse werden nach Ausführung ergänzt.
+- Offizieller Shopify Theme Check: bestanden, 0 Fehler / 11 Warnungen. Letzter Lauf nach der Linkkorrektur: https://github.com/Chris83638w/gravuru-2027/actions/runs/38157210296
+- Shopify-Upload: alle 60 neuen/geänderten Dateien angenommen. Zwei zunächst abgelehnte Schema-URL-Vorgaben wurden korrigiert und erneut erfolgreich gespeichert.
+- Anschließend alle 60 Dateien aus Theme 190064427388 gelesen: keine fehlenden Dateien. Inhalte stimmen überein; Shopify ergänzt lediglich leere `settings`-Objekte in zwölf nativen Produktblöcken. Startseite enthält bestätigt acht Sections, Theme bleibt UNPUBLISHED.
 - Browserprüfung derzeit durch Fehler beim Start der verfügbaren Browserumgebung blockiert. Deshalb keine behauptete Sichtprüfung, Formularübermittlung, echte Bestellung oder Produktionsfreigabe.
 
 ## Bearbeitung im Theme-Editor

@@ -1,15 +1,41 @@
-# Strukturprüfung – gravuru Salbei
+# gravuru Salbei – vollständiger Shopaufbau
 
-11.10.2026. `node validate_theme.mjs` meldet nach den Korrekturen: **68 JSON-Dateien, 42 Abschnittsschemas, 0 gefundene Fehler**.
+Stand: 11.10.2026. Ziel ist das unveröffentlichte Shopify-Theme 190064427388. Das Live-Theme 185833718140 wird nicht verändert oder veröffentlicht.
 
-Geprüft: JSON-Syntax, doppelte Setting-IDs und Blocktypen, Standardwerte für Bereiche und Auswahlfelder, Preset-Einstellungsnamen, Abschnitts- und Blockverweise, gespeicherte Bereichs-/Auswahlwerte einschließlich der globalen Einstellungen, vorhandene Abschnittsreihenfolgen und vollständige Blockreihenfolgen. Der Validator setzt bei Fehlern einen ungleich null Exit-Code und ist ohne fest codierten Arbeitsplatzpfad wieder ausführbar.
+## Umgesetzt
 
-Zwei ungültige globale Radiuswerte wurden von 3 auf 4 geändert, passend zu Shopifys 2er-Schritten. Der nicht bestätigte Schrift-Handle `cormorant_garamond_n4` wurde auf den in Shopifys Schriftliste enthaltenen Handle `cormorant_n4` korrigiert. `node --check theme/assets/gravuru-salbei.js` bestand.
+- Startseite mit Titelbild, drei visuellen Einstiegen, Vorteilen, echten Katalogprodukten, sieben Themenwelten, Fertigungs-/Gestaltungsablauf, B2B-Einstieg und FAQ.
+- Sieben eigene Themenwelt-Vorlagen für Zuhause, Fotogeschenke, Andenken, Pferdeschilder, Kinder, Hochzeit und Taufe. Ruhige Textnavigation ergänzt die Bilder. Filter und Sortierung erhalten die ausgewählte Vorlage.
+- Produktseiten mit Varianten, Preisen, Produktgalerie, Warenkorb-Einstieg, tatsächlichen Produkt-/Material-/Montageinformationen und verwandten Produkten. Keine erfundenen Preise, Bewertungen oder Lieferzusagen.
+- Eigene Produktvorlagen für die vorhandenen Bindungen `kitchen-sink` und `test-temp-svenja-grid`. Vorhandene FPD-App-Blöcke übernommen; FPD-App-Embed im neuen Theme aktiviert. Kein Code aus dem bezahlten alten Theme übernommen.
+- Alle vorhandenen Kollektions- und veröffentlichten Seitenvorlagen auf Dawn abgebildet. Bestehende Seiteninhalte bleiben erhalten; Beratung, FAQ und Mengenanfrage ergänzt.
+- B2B-Registrierung über das vorhandene Shopify-Forms-Formular 648263; vorhandene App-Einbindungen für Consent und weitere Store-Funktionen übernommen.
+- Footer mit Unternehmens-, Service- und Rechtsnavigation aus dem Shop. Native Suche, Kundenkonto, Warenkorb und Shopify-Checkout bleiben erhalten.
+- Neue Sections und Inhalte über den Theme-Editor ohne KI bearbeitbar.
 
-`package_theme.py` prüft ZIP-Integrität, Dateianzahl und SHA-256 jeder eingepackten Datei. Das Paket enthält nur Theme-Dateien aus den vorgesehenen Ordnern; Base64-Übertragungsdateien sind ausgeschlossen. Das Dawn-Lizenzdokument ist im Quellbaum und als Asset enthalten.
+## Tatsächliche Datenlage und offene Freigaben
 
-Der erste offizielle Shopify Theme Check fand fehlende eigene Übersetzungsschlüssel in den übrigen Dawn-Sprachen. Diese haben jetzt einen expliziten englischen Rückfalltext; die sieben Zielsprachen behalten ihre Übersetzungen. Der lokale Validator prüft zusätzlich die Vollständigkeit der eigenen Übersetzungsschlüssel.
+Der Shop hat 1.110 aktive und 83 als Entwurf gespeicherte Produkte. Mehrere Geschenk-Kollektionen sind leer oder enthalten nur Entwürfe. Diese Produkte wurden nicht global veröffentlicht. Die Themenwelt-Seiten zeigen bei leerem Sortiment Beratung und passende Weiterführungen.
 
-Der erneute offizielle **Shopify Theme Check bestand: 0 Fehler, 11 Warnungen** auf Commit `f5e49829371a58c243bbf34f40524470d4a3af7b`. Die Warnungen betreffen Dawn-Bausteine sowie dieselben übernommenen Stellen in `gravuru-product.liquid`. Es wurde keine Prüfvorschrift abgeschaltet oder herabgestuft. [Tatsächlicher GitHub-Prüflauf](https://github.com/Chris83638w/gravuru-2027/actions/runs/38151897163), strukturierter Bericht in `theme-check-result.json`.
+Deutsch ist die einzige aktivierte und veröffentlichte Shop-Sprache. Die Theme-Systemtexte sind für DE/EN/FR/NL/ES/IT/TR vorbereitet. Katalog, Seiten und redaktionelle Theme-Inhalte sind noch nicht vollständig übersetzt; weitere Sprachen wurden nicht ungeprüft veröffentlicht.
 
-Grenzen: Ein statischer Theme Check ersetzt weder einen Shopify-Liquid-Renderlauf noch eine Browserprüfung. Der Shopify-Import und der Bild-CDN-Upload sind technisch gescheitert. Vollständige Details in `design-qa.md`.
+B2B-Registrierung ist eingebunden. Firmenfreigaben, firmenspezifische Kataloge, Preislisten und Zahlungsbedingungen wurden nicht neu erfunden oder geändert. Deren Ende-zu-Ende-Abnahme ist offen.
+
+Die neue Gravuru-Werkstatt ist laut aktuellem App-Projekt noch nicht für den öffentlichen Checkout freigegeben. Vorhandene Metafeld-Bindungen und `customerEnabled`-Prüfung bleiben erhalten. Ein vorhandener FPD-Produktweg ersetzt nicht den Nachweis für die neue Werkstatt.
+
+## Prüfnachweise
+
+- Lokale Strukturprüfung: 111 JSON-Dateien, 48 Section-Schemas, 0 Fehler.
+- JavaScript-Syntaxprüfung: bestanden.
+- Offizieller Shopify Theme Check: bestanden, 0 Fehler / 11 Warnungen. Letzter Lauf nach der Linkkorrektur: https://github.com/Chris83638w/gravuru-2027/actions/runs/38157210296
+- Shopify-Upload: alle 60 neuen/geänderten Dateien angenommen. Zwei zunächst abgelehnte Schema-URL-Vorgaben wurden korrigiert und erneut erfolgreich gespeichert.
+- Anschließend alle 60 Dateien aus Theme 190064427388 gelesen: keine fehlenden Dateien. Inhalte stimmen überein; Shopify ergänzt lediglich leere `settings`-Objekte in zwölf nativen Produktblöcken. Startseite enthält bestätigt acht Sections, Theme bleibt UNPUBLISHED.
+- Browserprüfung derzeit durch Fehler beim Start der verfügbaren Browserumgebung blockiert. Deshalb keine behauptete Sichtprüfung, Formularübermittlung, echte Bestellung oder Produktionsfreigabe.
+
+## Bearbeitung im Theme-Editor
+
+Im Theme 190064427388 „Anpassen“ öffnen. Startseiten-Sections lassen sich hinzufügen, entfernen und umsortieren. Überschriften, Texte, Bilder, Kollektionen und Buttons sind direkt bearbeitbar. Unter Kopfzeile werden Mega-Menü-Blöcke und unter Fußzeile die vorhandenen Shopify-Menüs gepflegt. Farbwelt und Typografie stehen in den Theme-Einstellungen.
+
+Die sieben Themenwelten verwenden `?view=salbei-…`, sodass keine gemeinsamen Kollektionszuordnungen des Live-Shops überschrieben werden.
+
+FPD-Anbieterhinweis zur notwendigen App-Einbindung: https://fpd-doc.ganymede-apps.net/en/article/the-customize-button-isnt-showing-enable-the-app-embed-1rt20ef/

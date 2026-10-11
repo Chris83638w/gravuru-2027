@@ -1,6 +1,6 @@
 # Werkstatt: Auswahl, bearbeitbare PDFs und echtes Musterfoto
 
-11.10.2026. Veröffentlichungskandidat; der Live-Nachweis folgt nach Aktivierung. Die bisherigen Behauptungen zur vollständigen Werkstattbedienung waren zu weitgehend. Dieser Stand behebt konkret reproduzierte Probleme; der gesamte Master-Bauplan ist damit nicht automatisch abgeschlossen.
+11.10.2026. **Quellstand `4d8042f9412179e8ef1aad16b90d4e83ae8f5b6d` ist auf dem getrennten Händlerhost veröffentlicht und über HTTPS geprüft.** Die bisherigen Behauptungen zur vollständigen Werkstattbedienung waren zu weitgehend. Dieser Stand behebt konkret reproduzierte Probleme; der gesamte Master-Bauplan ist damit nicht automatisch abgeschlossen.
 
 ## Änderungen
 
@@ -20,3 +20,15 @@ Echte Shopify-Nutzeranmeldung ist hier weiterhin nicht fernsteuerbar. Öffentlic
 Vor der Veröffentlichung: drei konsistente private SQLite-Online-Sicherungen auf dem Server, Prüfsummen und Integrität bestätigt; identische Cloudkopien privat gesichert. Die Veröffentlichung des Codes überschreibt keine bestehende Produktrevision, insbesondere nicht die letzte vom Nutzer gespeicherte PDF.
 
 Weiterhin gesondert abzunehmen: reale Shopify-Anmeldung und Benutzerablauf im angemeldeten Shop, sämtliche tatsächlich verwendeten Designs einschließlich Schrift-/Fotoformwahl, Maschinen-/Materialfreigabe und die übrigen offenen Master-Bauplan-Erweiterungen. Excel-Stapelverarbeitung ist bereits als Code mit Regressionen vorhanden; Drive-/KI-Integration ist dadurch nicht als eingerichtet belegt.
+
+## Veröffentlichung, Paket und Sicherung
+
+Version `0.1.0-recovery.20261010+4d8042f94121`, Paket-SHA-256 `31654d1895239829224d2ab86ad96d3b7bb7dee22487733e4602baa4a90578d7`. [ZIP, Prüfsumme und automatisierter Installationsablauf](../../../../deliverables/merchant-selection-pdf-20261011/README.md). Frische getrennte Installation, Start, geschützte API und synthetischer Bestelleingang einschließlich Duplikat nach Neustart bestanden. 398 Manifestdateien sowohl im Paket als auch auf dem Server geprüft. Die gelieferten UI-Module stimmen über HTTPS bytegenau mit dem Quellstand überein; drei Werkstattseiten liefern den Shopify-Anmelde-Bootstrap, anonyme private API-Aufrufe bleiben mit 401 gesperrt. Das ist kein echter Nutzerlogin-Nachweis.
+
+Vor Aktivierung wurden bisherige Startdatei, Laufzeit, private Konfiguration und drei konsistente SQLite-Sicherungen auf dem Server abgelegt. Die Datenbanksicherungen stimmen mit den separat privaten Cloudkopien überein. Nach Neustart sämtliche 46 Anwendungstabellen mit der Sicherung verglichen: alle ursprünglichen Zeilen unverändert, insbesondere fünf Produktrevisionen, zwei Profilrevisionen, 20 Originalquellen und 20 abgeleitete Designressourcen, Rohling sowie bestehende Testbestell- und Variantenbindungen. Aktuelle Gedenktafel bleibt Revision 3; die neun bisherigen Testwarenkorb-Bindungen gehören weiterhin Revision 2. Es wurde kein Entwurf automatisch umgeschrieben, keine neue Bestellung ausgelöst und keine Shopify-App-/Theme-Version geändert. Die alte Kundenwerkstatt bleibt unangetastet.
+
+Reproduktionsbelege: `regression.json` (650 Tests), `final-targeted.json` (21 abschließende Tests), `browser.json` (248 API-Anfragen, synthetische Identität), `original-pdf-check.json`, `package-install.json`, `order-package.json`, `server-stage.json`, `server-activation.json`, `server-runtime.json`, `https.json`, `preservation-all-tables.json`, `private-cloud-backup.json` und `package-content-check.json`. Testmengen überschneiden sich; Zahlen nicht als unabhängige Gesamtsumme addieren.
+
+Tatsächlicher Arbeitsplatz: verwaltete Codex-Cloud, `/workspace/gravuru-restored`, Repository `Chris83638w/gravuru-2027`, Branch `task/live-release-20261010`; Produktbasis `a2af162edd3a1dfa2106212c9f4b76c7ae351b70` bleibt Vorfahr. Ursprünglicher Checkout `/workspace/gravuru-2027` bleibt erhalten. Vor dieser Korrektur war der Arbeitsbaum auf `68f9d0a` sauber. Neue Codeänderungen liegen in `9b216f5`, abschließende Quell-/Prüfdokumentation in `4d8042f`; Paket und Veröffentlichungsbelege werden danach separat gesichert.
+
+Weiterhin nicht erreichbar: frühere verlorene Cloud-Arbeitsverzeichnisse, nicht hochgeladene lokale Windows-Dateien/Anhänge und das ursprüngliche historische Prüf-ZIP zu `c64c197`. Rekonstruktionen bleiben als solche bezeichnet. Siehe [Inventar und genaue Herkunft](../../../../recovery/2026-10-10/RECOVERY-PROVENANCE.md) und [historischen Wiederherstellungsbericht](../../../../recovery/2026-10-10/REPORT.md). Diese Veröffentlichung behauptet keine Wiederherstellung nicht zugänglicher Dateien.

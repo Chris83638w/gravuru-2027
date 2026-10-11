@@ -1,8 +1,8 @@
-## Aktuell: Auswahl, PDF-Bearbeitung und Musterfoto korrigiert · 11.10.2026
+## Live: Auswahl, PDF-Bearbeitung und echtes Musterfoto · 11.10.2026
 
-Veröffentlichungskandidat: sichtbare Auswahlgriffe, Maus/Touch, abbrechbare Vorschau; PDF/SVG standardmäßig in getrennte Bestandteile aufbereiten, Originaltexte gezielt in native Werkstatttexte umwandeln; echte Musterfotos mit lesbarem Hinweis. 650 Regressionstests und 21 abschließende gezielte Prüfungen bestanden. Browserablauf mit synthetischer Shopify-Identität bestanden, alle 20 erreichbaren Original-PDFs aufbereitbar. Private Datenbanken vor Veröffentlichung auf Server und in Cloud gesichert. Kein vollständiger Abschluss des Master-Bauplans oder echter Nutzerlogin behauptet.
+Quellstand **4d8042f** läuft auf dem getrennten Händlerhost: sichtbare Auswahlgriffe, Maus/Touch, abbrechbare Vorschau; PDF/SVG standardmäßig in getrennte Bestandteile aufbereiten, Originaltexte gezielt in native Werkstatttexte umwandeln; echte Musterfotos mit lesbarem Hinweis. 650 Regressionstests, 21 abschließende gezielte Prüfungen und Browserablauf mit synthetischer Shopify-Identität bestanden. Alle 20 erreichbaren Original-PDFs aufbereitbar. Versioniertes Paket getrennt installiert, 398 Serverdateien und HTTPS geprüft. Alle ursprünglichen Zeilen in 46 Anwendungstabellen nach Veröffentlichung unverändert; drei private Datenbanksicherungen auf Server und in Cloud geprüft.
 
-[Bericht, Bedienung und Grenzen](docs/releases/20261011/selection-pdf/RELEASE.md). Nächster Schritt: Paket isoliert installieren, getrennten Händlerhost aktualisieren und HTTPS/Datenerhalt prüfen. Folgende Abschnitte sind historische Stände.
+[Bericht, Bedienung und Grenzen](docs/releases/20261011/selection-pdf/RELEASE.md) · [Installationspaket und Prüfsumme](deliverables/merchant-selection-pdf-20261011/README.md). Bestehende PDFs im Editor über „PDF / SVG in Elemente aufbereiten“ vorbereiten, prüfen und speichern. Echte Nutzeranmeldung, tatsächliche Design-/Maschinenabnahme und übrige Master-Bauplan-Erweiterungen bleiben gesondert offen. Folgende Abschnitte sind historische Stände.
 
 ## Live: eigene Designs, Texte, Motive und Musterfotos · 11.10.2026
 

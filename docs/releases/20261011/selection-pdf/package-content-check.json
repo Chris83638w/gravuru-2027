@@ -1,0 +1,9 @@
+{
+  "result": "PASS",
+  "archiveSha256": "31654d1895239829224d2ab86ad96d3b7bb7dee22487733e4602baa4a90578d7",
+  "bytes": 27263378,
+  "entries": 399,
+  "crcVerified": true,
+  "sqliteOrKnownTokenPatternsFound": false,
+  "scope": "Known token prefixes, private-key headers and SQLite signatures; not proof against unknown secret forms"
+}

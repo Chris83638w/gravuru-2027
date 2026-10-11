@@ -1,0 +1,33 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-10-11T08:44:39.987056+00:00",
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 9617408,
+      "sha256": "51e4463b1c35161f70786fb2cc07eaf34f765a0d68829c30907f356d2665dc23",
+      "quickCheck": "ok",
+      "privateCloudCopyMatchesActivationBackup": true,
+      "privatePermissions": "0o600"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok",
+      "privateCloudCopyMatchesActivationBackup": true,
+      "privatePermissions": "0o600"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 16756736,
+      "sha256": "6837a11321b8d403ad8459bf186c5105c14dcfbbcf1aa97f85e67eb425b45d9f",
+      "quickCheck": "ok",
+      "privateCloudCopyMatchesActivationBackup": true,
+      "privatePermissions": "0o600"
+    }
+  ],
+  "liveTablesChecked": 46,
+  "allOriginalRowsUnchanged": true,
+  "customerDataInRepository": false
+}

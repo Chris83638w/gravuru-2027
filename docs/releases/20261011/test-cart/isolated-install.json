@@ -1,0 +1,18 @@
+{
+  "schema": "gravuru-merchant-stage/v1",
+  "sourceCommit": "ffdd150c8cd983b1bdae553a378b8720b29dff79",
+  "version": "0.1.0-recovery.20261010+ffdd150c8cd9",
+  "archiveSha256": "d42efe985f031d245af4e18967c11fabea45038d4734d4d04e13a49fa3471b7a",
+  "filesVerified": 392,
+  "built": true,
+  "runtimeConfigurationChecked": true,
+  "privateDataChanged": false,
+  "activated": false,
+  "isolatedRuntimeStarted": true,
+  "syntheticDataOnly": true,
+  "checks": {
+    "installedCustomerPreview": true,
+    "anonymousApiDenied": true
+  },
+  "result": "PASS"
+}

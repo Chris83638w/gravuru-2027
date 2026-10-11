@@ -1,0 +1,67 @@
+{
+  "result": "PASS",
+  "sourceCommit": "732850e06919b7bbae1656c2de02b4144d65d6cb",
+  "existingProductRevisionsUnchanged": true,
+  "records": [
+    {
+      "key": "specimens-20261011:aosu-labrador:master",
+      "id": "cfg_d8ac86e1-a8ec-4fff-918d-63c474293e28",
+      "kind": "master",
+      "revision": 1,
+      "designs": [
+        {
+          "id": "FK-LABRADOR-MICHROMA-01",
+          "elements": 4
+        }
+      ],
+      "originalAssetsVerified": true
+    },
+    {
+      "key": "specimens-20261011:aosu-labrador:product",
+      "id": "cfg_bdb17aec-beb9-4b1c-9a34-260602d661b8",
+      "kind": "product",
+      "revision": 1,
+      "designs": [
+        {
+          "id": "FK-LABRADOR-MICHROMA-01",
+          "elements": 4
+        }
+      ],
+      "originalAssetsVerified": true
+    },
+    {
+      "key": "specimens-20261011:steel-heimathafen:master",
+      "id": "cfg_d555df63-6f0e-4295-bfa2-7fe1fd5860cd",
+      "kind": "master",
+      "revision": 1,
+      "designs": [
+        {
+          "id": "RE-90X60-HOC-08",
+          "elements": 4
+        },
+        {
+          "id": "RE-90X60-EIN-10",
+          "elements": 4
+        }
+      ],
+      "originalAssetsVerified": true
+    },
+    {
+      "key": "specimens-20261011:steel-heimathafen:product",
+      "id": "cfg_0483b058-e47a-4727-ac65-3560ee3dc975",
+      "kind": "product",
+      "revision": 1,
+      "designs": [
+        {
+          "id": "RE-90X60-HOC-08",
+          "elements": 4
+        },
+        {
+          "id": "RE-90X60-EIN-10",
+          "elements": 4
+        }
+      ],
+      "originalAssetsVerified": true
+    }
+  ]
+}

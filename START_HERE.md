@@ -1,8 +1,10 @@
-## Musterübernahme in Prüfung · 11.10.2026
+## Live: vorhandene Acryl- und Edelstahlmuster · 11.10.2026
 
-AOSU/Labrador und zwei native Edelstahl-Heimathafen-Designs angebunden. 63 gezielte Prüfungen, Browserablauf mit 95 API-Anfragen und wiederholter Import in privater Sicherungskopie bestanden; alle historischen Zeilen in 49 Tabellen erhalten. Acrylmaster und bestehende Produkte bleiben unangetastet. [Nachweise und Grenzen](docs/releases/20261011/specimens/RELEASE.md).
+Händlerlaufzeit **732850e**, Version `0.1.0-recovery.20261010+732850e06919`. AOSU/Labrador und Edelstahl/Heimathafen jeweils als Master plus Produktkopie angelegt; drei vorhandene Produktstände einschließlich Acrylmaster/-produkt unverändert. Native Texte/Motive bearbeitbar, 40 AOSU-Ausführungen und Preislogik übernommen. Originalbild Charlotte Groner v4 als gesonderte Referenz, keine identische native Quelldatei gefunden.
 
-**Nächster Schritt:** versioniertes Paket getrennt installieren, gesichert auf dem Händlerhost aktivieren und Muster importieren. Noch keine Veröffentlichung dieses Pakets behaupten.
+**63 gezielte Tests**, isolierter Browser mit 95 authentifizierten API-Anfragen, wiederholter Import in privater Datenkopie, getrennte Paketinstallation und 11 HTTPS-Prüfungen bestanden. Aktiver neuer Händlerprozess und tatsächliche Serverdatensätze/Originalressourcen bestätigt. Alle ursprünglichen Zeilen in 49 Tabellen erhalten; drei Datenbanken auf Server und in Cloud privat mit SHA-256 und SQLite-Integrität gesichert. Keine KI-Kosten oder Änderungen an der bisherigen Kundenwerkstatt. [Nachweise und Grenzen](docs/releases/20261011/specimens/RELEASE.md) · [Installationspaket](deliverables/merchant-specimens-20261011/README.md).
+
+**Nächster Schritt:** mit den importierten Mustern weitergestalten, den getrennten AOSU-Fertigungsexport anbinden und neue Shopify-Verkaufsbindungen separat abnehmen. Eine Veröffentlichung als Verkaufsartikel ist nicht Teil dieser Musterübernahme.
 
 ## Live: Shopify-Verbindung wiederhergestellt · 11.10.2026
 

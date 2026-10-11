@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "existingProductsUnchanged": 3,
+  "imported": [
+    {
+      "key": "aosu-labrador",
+      "master": {
+        "key": "specimens-20261011:aosu-labrador:master",
+        "id": "cfg_d8ac86e1-a8ec-4fff-918d-63c474293e28",
+        "created": true
+      },
+      "product": {
+        "key": "specimens-20261011:aosu-labrador:product",
+        "id": "cfg_bdb17aec-beb9-4b1c-9a34-260602d661b8",
+        "created": true
+      }
+    },
+    {
+      "key": "steel-heimathafen",
+      "master": {
+        "key": "specimens-20261011:steel-heimathafen:master",
+        "id": "cfg_d555df63-6f0e-4295-bfa2-7fe1fd5860cd",
+        "created": true
+      },
+      "product": {
+        "key": "specimens-20261011:steel-heimathafen:product",
+        "id": "cfg_0483b058-e47a-4727-ac65-3560ee3dc975",
+        "created": true
+      }
+    }
+  ]
+}

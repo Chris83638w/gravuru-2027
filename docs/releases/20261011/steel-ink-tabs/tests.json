@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "fullRun": {
+    "tests": 727,
+    "passedBeforeExpectedColorUpdate": 726,
+    "failedBeforeExpectedColorUpdate": 1,
+    "failure": "Legacy assertion expected #191919; requested black is #000000"
+  },
+  "targetedRerun": {
+    "tests": 19,
+    "passed": 19,
+    "failed": 0,
+    "files": [
+      "app/configurator/variant-m/contract.test.mjs",
+      "app/workshop/steel-import-margin.test.mjs"
+    ]
+  },
+  "remainingFailures": 0,
+  "browserApiRequests": 120,
+  "pixelCases": 6
+}

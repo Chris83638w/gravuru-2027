@@ -13,7 +13,7 @@ Hauptprodukt und Designs sind eigene Tabs. Produkteinstellungen sind zusammen er
 - 120 authentifizierte lokale API-Anfragen im Browserablauf, synthetische App-Bridge-Anmeldung. Kein echter Shopify-Browserlogin behauptet.
 - Pixelprüfung mit realem Browser: graue Vektor-PDF/SVG schwarz (RGB 0/0/0), weiße Aussparung frei, Rasterfoto und Druckfarben unverändert.
 - Tatsächliches Edelstahlprodukt Revision 3 in privater Kopie: neun importierte Vektorelemente, randloses Einpassen und Originalerhalt geprüft. Keine Produktrevision live verändert.
-- 18 anfängliche gezielte Tests sowie 19 abschließende Vertrags-/Randtests bestanden; Mengen überschneiden sich. Vollständiger Regressionslauf läuft noch.
+- 18 anfängliche gezielte Tests sowie 19 abschließende Vertrags-/Randtests bestanden; Mengen überschneiden sich. Vollständiger Lauf: 727 Prüfungen, zunächst 726 bestanden und ein veralteter Farb-Sollwert. Nach Anpassung von Dunkelgrau auf das ausdrücklich verlangte Schwarz bestanden alle 19 Prüfungen des betroffenen Vertrags-/Randbereichs. Keine offenen Testfehler.
 
 ## Sicherung und Veröffentlichung
 

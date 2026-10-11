@@ -1,0 +1,95 @@
+{
+  "result": "PASS",
+  "sourceCommit": "7a168bc66adc9718bc9b0fefad97c338e546c57d",
+  "checkedAt": "2026-10-11T19:46:39.418485+00:00",
+  "tlsVerified": true,
+  "checks": [
+    {
+      "path": "/werkstatt/",
+      "status": 200,
+      "shopifyContextPresent": true,
+      "productAndDesignTabsPresent": true
+    },
+    {
+      "path": "/workshop-ui/merchant-request.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/workshop-shell.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/app.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/product-editor-ui.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/native-production-ui.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/review-snapshots-ui.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/editor-guides.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/editor.css",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/design-import-ui.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/steel-options-ui.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/catalog-ui.mjs",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/workshop-ui/catalog.css",
+      "status": 200,
+      "matchesInstalledSource": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 401,
+      "structuredAuthenticationError": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 401,
+      "structuredAuthenticationError": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 401,
+      "structuredAuthenticationError": true
+    },
+    {
+      "path": "/api/workshop/ai-batches",
+      "status": 401,
+      "structuredAuthenticationError": true
+    }
+  ],
+  "realMerchantLoginVerified": false
+}

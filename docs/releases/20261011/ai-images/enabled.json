@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "sourceCommit": "5698c5fbf10c55e47e0b3b4eb40fb566de3cbe9e",
+  "aiEnabled": true,
+  "imagesEnabled": true,
+  "imageModel": "gpt-image-1.5",
+  "monthlyLimitCents": 10000,
+  "pricingValidUntil": "2026-11-10T12:38:17.385Z",
+  "otherAiSettingsUnchanged": true,
+  "configSha256": "9f3d4c71d2002c897654745ee4f79c64e55c5783342cd57fb86d3091b69662ae",
+  "restartRequired": true,
+  "checkedAt": "2026-10-11T14:03:06.962Z"
+}

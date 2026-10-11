@@ -1,6 +1,12 @@
-## In Prüfung: KI-Motive und Musterfotos · 11.10.2026
+## Live: KI-Motive und Musterfotos · 11.10.2026
 
-Zwei Bildaktionen im vorhandenen KI-Fenster ergänzt, gemeinsame 100-EUR-Monatsgrenze. Originale, Fotomaske, Texte, Preise und alte Versionen erhalten. **688 Tests** und Desktop-/Mobilbrowser mit synthetischer Händleridentität bestanden. [Arbeitsnachweis](docs/releases/20261011/ai-images/RELEASE.md). Live weiterhin `060a10b`, bis Paket-, echte API- und Serverprüfung abgeschlossen sind. Nächster Schritt: Paket isoliert installieren, echte Bildaufrufe budgetiert prüfen und aktivieren.
+Installierter Quellstand **5698c5f**: Produkt → Designs & Elemente → **Mit KI gestalten** → neues Motiv erzeugen oder ausgewähltes Musterfoto bearbeiten. Native Gestaltung, Originalmaske, Preise und Versionsschutz erhalten. Neues Gravurmotiv nach echter Sichtprüfung korrigiert: Alpha als technische Gravurmaske, Original-PNG bytegleich erhalten.
+
+**688 Regressionstests**, **34 gezielte Folgeprüfungen**, Desktop-/Mobilablauf (86 API-Aufrufe, synthetische Shopify-Identität), getrennte v2-Paketinstallation und HTTPS bestanden. Genau zwei echte Bild-API-Aufträge: **9 + 23 Cent**; einschließlich früherem Texttest **33 Cent im Werkstattbudget**, 99,67 EUR verfügbar. 100-EUR-Monatsgrenze und Freigabe bis **10.11.2026, 12:38 UTC** unverändert. Echte Gedenktafel weiterhin Revision 5; Tests nur in privater Kopie übernommen.
+
+Aktiver neuer Händlerprozess bestätigt. Alle historischen Zeilen in 47 Tabellen erhalten; drei private Datenbanken auf Server und in Cloud geprüft gesichert. Code, Dokumentation und v2-Paket auf GitHub. [Release, Bedienung und Grenzen](docs/releases/20261011/ai-images/RELEASE.md) · [Paket mit Prüfsumme](deliverables/merchant-ai-images-20261011/README.md).
+
+**Genau nächster Schritt:** Stapel-KI als prüfbare Aufträge für ausgewählte kompatible Produkte unter demselben Budget. Echte Shopify-Anmeldung als vollständiger Klickablauf, öffentliche neue Kunden-/Checkout-Strecke, Drive, allgemeine Shopify-Produktübertragung und Maschinenabnahme bleiben eigene offene Arbeitspakete. Die folgenden Abschnitte sind historische Nachweise.
 
 ## Live: OpenAI verbunden und mit echter Antwort geprüft · 11.10.2026
 

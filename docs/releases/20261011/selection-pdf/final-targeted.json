@@ -1,6 +1,7 @@
 {
   "result": "PASS",
-  "tests": 19,
+  "tests": 21,
   "failed": 0,
-  "scope": "Final import, editable PDF, prepared slate dimensions and editor preview; overlaps full regression"
+  "scope": "Final photo hint, customer-photo controls, editable PDF, prepared slate dimensions and editor preview; overlaps full regression",
+  "testAdjustment": "Photo hint text now spans multiple SVG tspans; assertion checks visible text rather than contiguous XML"
 }

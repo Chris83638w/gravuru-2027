@@ -145,7 +145,7 @@ test('imported acrylic photo: actual upload handler replaces semantic slot twice
 
 test('example photo shows upload hint only in preview markup with the original arch mask',()=>{
  const markup=examplePhotoMarkup({id:'customer-photo',w:129,h:139,photoShape:'arch'},'a'.repeat(64));
- assert.match(markup,/data-preview-only="true"/);assert.match(markup,/eigenes Foto hochladen/);
+ assert.match(markup,/data-preview-only="true"/);assert.match(markup.replace(/<[^>]*>/g,''),/eigenes Foto hochladen/);
  assert.match(markup,/<clipPath[^>]*><path d="M/);assert.match(markup,/\/api\/workshop\/design-assets\/[a-f0-9]{64}\/preview.svg/);
  assert.equal(examplePhotoMarkup({w:10,h:10},'https://foreign.invalid/photo'),'');
 });

@@ -1,3 +1,9 @@
+## Aktuell: Auswahl, PDF-Bearbeitung und Musterfoto korrigiert · 11.10.2026
+
+Veröffentlichungskandidat: sichtbare Auswahlgriffe, Maus/Touch, abbrechbare Vorschau; PDF/SVG standardmäßig in getrennte Bestandteile aufbereiten, Originaltexte gezielt in native Werkstatttexte umwandeln; echte Musterfotos mit lesbarem Hinweis. 650 Regressionstests und 21 abschließende gezielte Prüfungen bestanden. Browserablauf mit synthetischer Shopify-Identität bestanden, alle 20 erreichbaren Original-PDFs aufbereitbar. Private Datenbanken vor Veröffentlichung auf Server und in Cloud gesichert. Kein vollständiger Abschluss des Master-Bauplans oder echter Nutzerlogin behauptet.
+
+[Bericht, Bedienung und Grenzen](docs/releases/20261011/selection-pdf/RELEASE.md). Nächster Schritt: Paket isoliert installieren, getrennten Händlerhost aktualisieren und HTTPS/Datenerhalt prüfen. Folgende Abschnitte sind historische Stände.
+
 ## Aktuell: vollständige Händlergestaltung veröffentlicht · 11.10.2026
 
 Quellstand **74e7670** läuft auf dem getrennten Händlerhost. Eigene Designs, Texte, Bibliotheks-/Uploadmotive, Fotofelder, Verschieben/Entfernen/Reihenfolge und sichtbare Tonwerte in importierten Fotos. Kundenrechte getrennt; neue Produktrevision 3 und sämtliche Originale erhalten. **649 Tests**, anschließende gezielte Originalprüfungen, Desktop-/Mobilbedienung mit **207 authentifizierten API-Aufrufen**, isolierte Paketinstallation/Neustart und HTTPS bestanden. Browseranmeldung synthetisch; keine echte Shopify-Nutzeranmeldung oder Maschinenabnahme behaupten.

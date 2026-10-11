@@ -3,3 +3,5 @@
 -r ../../app/workshop/requirements-photos.txt
 -r ../../app/workshop/requirements-excel.txt
 -r ../../app/workshop/requirements-print.txt
+
+fonttools==4.61.1

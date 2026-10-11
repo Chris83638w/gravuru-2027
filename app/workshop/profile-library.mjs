@@ -182,6 +182,10 @@ export function createProfileLibrary({filename,catalog}){
   }
 
   return {
+    registerFonts(rows){
+      const checked=readCatalog({fonts:rows,motifs:[]}).fonts;
+      for(const row of checked)if(!catalogIds.fonts.has(row.id)){catalogRows.fonts.push(row);catalogIds.fonts.add(row.id);}
+    },
     catalog:()=>structuredClone(catalogRows),settings,
     list({type,query=''}={}){
       if(type!==undefined)typeValue(type);

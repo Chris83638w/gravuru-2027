@@ -54,7 +54,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
                 req = route.request
                 url = urlsplit(req.url)
                 if req.url == 'https://cdn.shopify.com/shopifycloud/app-bridge.js':
-                    return route.fulfill(content_type='text/javascript', body='window.shopify={idToken:()=>window.__syntheticIdToken()};')
+                    return route.fulfill(content_type='text/javascript', body="if(!document.querySelector('meta[name=shopify-shop]'))throw Error('Missing Shopify context');setTimeout(()=>{window.shopify={idToken:()=>window.__syntheticIdToken()};},100);")
                 if url.scheme != 'https' or url.netloc != 'merchant.example':
                     return route.abort()
                 target = 'http://127.0.0.1:' + str(ready['port']) + url.path + ('?' + url.query if url.query else '')
@@ -85,7 +85,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             page.locator('#create-submit').click()
             expect(page.locator('#create-dialog')).not_to_be_visible(timeout=30000)
             page.goto(ready['origin'] + '/werkstatt/')
-            expect(page.locator('#product-count')).to_have_text('2', timeout=30000)
+            expect(page.locator('#product-count')).to_have_text('3', timeout=30000)
             expect(page.locator('#product-list')).to_contain_text('Synthetischer Händlerstart')
             page.wait_for_function("() => [...document.querySelectorAll('#product-list img')].some(img => img.src.startsWith('blob:') && img.complete && img.naturalWidth > 0)", timeout=30000)
             page.screenshot(path=str(OUT / 'merchant-desktop.png'), full_page=True)
@@ -151,10 +151,76 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             assert sum(c['path']=='/api/workshop/order-bindings' and c['method']=='POST' for c in api_checks)==1
             page.screenshot(path=str(OUT/'merchant-cart-mobile.png'),full_page=True)
 
+            page.set_viewport_size({'width':1440,'height':1000})
+            page.goto(ready['origin']+'/werkstatt/?shop=gravuru-design.myshopify.com&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvZ3JhdnVydS1kZXNpZ24=&embedded=1')
+            expect(page.locator('#product-count')).to_have_text('3',timeout=30000)
+            page.locator('a[href="/werkstatt/profile/"]').first.click()
+            expect(page.locator('#profile-count')).to_have_text('0',timeout=30000)
+            expect(page.locator('#new-profile')).to_be_enabled(timeout=30000)
+            assert parse_qs(urlsplit(page.url).query)['embedded']==['1']
+            page.locator('#font-upload-file').set_input_files('/usr/share/fonts/truetype/open-sans/OpenSans-Regular.ttf')
+            expect(page.locator('#font-upload-status')).to_contain_text('883 Zeichen',timeout=30000)
+            page.locator('#new-profile').click()
+            page.locator('#profile-name').fill('Prüfung Schriftgruppe')
+            page.locator('#catalog-search').fill('e64e508b2aa2')
+            page.locator('#catalog-list input').check()
+            font_id=page.locator('#catalog-list input').get_attribute('data-catalog-id')
+            page.locator('#save-profile').click()
+            expect(page.locator('#profile-notice')).to_contain_text('gespeichert',timeout=30000)
+            page.reload()
+            expect(page.locator('#profile-list')).to_contain_text('Prüfung Schriftgruppe',timeout=30000)
+            page.screenshot(path=str(OUT/'merchant-font-library.png'),full_page=True)
+            page.locator('a.nav-item').filter(has_text='Produkte').click()
+            expect(page.locator('#product-count')).to_have_text('3',timeout=30000)
+            page.locator('[data-product-id="'+ready['slate']['id']+'"]').first.click()
+            expect(page.locator('#editor-preview > svg')).to_be_visible(timeout=30000)
+            page.locator('[data-editor-object="motif"]').click()
+            before=page.locator('#editor-preview').screenshot()
+            page.locator('[data-editor-object="name"]').click()
+            after=page.locator('#editor-preview').screenshot()
+            assert before==after,'Selecting an element must not paint any new frame into the product preview'
+            page.locator('[data-editor-prop="font"]').select_option(font_id)
+            expect(page.locator('#stage-status')).to_contain_text('Entwurf',timeout=30000)
+            page.locator('[data-tab="scene"]').click()
+            page.locator('#material-surface-file').set_input_files(str(photo))
+            expect(page.locator('#material-surface-status')).to_contain_text('ausgetauscht',timeout=30000)
+            expect(page.locator('#editor-preview image[data-material-surface]')).to_have_attribute('href',__import__('re').compile(r'^data:image/png;base64,'),timeout=30000)
+            page.locator('#save-product').click()
+            expect(page.locator('#stage-status')).to_contain_text('Gespeicherter Stand',timeout=30000)
+            page.reload()
+            expect(page.locator('#editor-preview image[data-material-surface]')).to_have_attribute('href',__import__('re').compile(r'^data:image/png;base64,'),timeout=30000)
+            page.locator('[data-editor-object="name"]').click()
+            expect(page.locator('[data-editor-prop="font"]')).to_have_value(font_id)
+            page.screenshot(path=str(OUT/'merchant-slate-repaired.png'),full_page=True)
+            import pymupdf
+            pdf=folder/'synthetic-design.pdf'
+            document=pymupdf.open();pdfpage=document.new_page(width=100*72/25.4,height=200*72/25.4)
+            pdfpage.draw_rect(pymupdf.Rect(10,10,90,190),color=(0,0,0));document.save(pdf);document.close()
+            page.locator('.import-design-tile').click()
+            page.locator('#design-import-file').set_input_files(str(pdf))
+            page.locator('#design-import-check').click()
+            expect(page.locator('#design-import-apply')).to_be_enabled(timeout=30000)
+            expect(page.locator('#design-import-review svg').first).to_have_attribute('viewBox','0 0 220 140')
+            page.locator('#design-import-apply').click()
+            expect(page.locator('.design-import-dialog')).not_to_be_visible(timeout=30000)
+            expect(page.locator('#stage-status')).to_contain_text('Gespeicherter Stand',timeout=30000)
+            page.reload()
+            expect(page.locator('#editor-preview [data-object="imported-artwork"]')).to_be_visible(timeout=30000)
+            page.locator('[data-view="masters"]').click()
+            page.locator('#new-product').click()
+            page.locator('#create-name').fill('Geprüfte Mastervorlage')
+            expect(page.locator('#create-kind')).to_have_value('master')
+            page.locator('#create-submit').click()
+            expect(page.locator('#create-dialog')).not_to_be_visible(timeout=30000)
+            expect(page.locator('#record-title')).to_contain_text('Geprüfte Mastervorlage',timeout=30000)
+            repair_checks={'masterCreated':True,'slatePdfImportedAndReopened':True,'fontUploadedAndGrouped':True,'fontGroupSurvivesReload':True,'navigationKeepsEmbedding':True,'selectionDoesNotChangeArtworkPixels':True,'slateMaterialAndFontSavedAndReopened':True}
+
+            page.wait_for_load_state('networkidle')
+            assert not errors
             report.update(apiRequests=api_checks,javascriptErrors=errors)
             assert api_checks and all(c['authenticated'] and c['status'] < 400 for c in api_checks), 'Authenticated UI requests must succeed: '+str([c for c in api_checks if not c['authenticated'] or c['status']>=400])
             report.update(result='PASS', apiRequests=api_checks, javascriptErrors=errors,
-                          checks={'merchantTestCartUiSyntheticResponse':True,'changedQuantityBlocksStaleCheckout':True,'realMerchantUiLoaded': True, 'freshSyntheticBearerUsed': True,
+                          checks={**repair_checks,'merchantTestCartUiSyntheticResponse':True,'changedQuantityBlocksStaleCheckout':True,'realMerchantUiLoaded': True, 'freshSyntheticBearerUsed': True,
                                   'productCreatedAndReopened': True, 'authenticatedPreviewLoaded': True,
                                   'customerEditorLoaded': True, 'privateCustomerSnapshotSaved': True,
                                   'freeFormCustomerEditorLoaded': True, 'freeFormSnapshotSaved': True,
@@ -163,7 +229,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             context.unroute_all(behavior='wait')
             browser.close()
     except Exception as error:
-        report.update(result='FAIL', error=str(error).split('Call log:')[0][:500])
+        report.update(result='FAIL', javascriptErrors=errors if 'errors' in locals() else [], error=str(error).split('Call log:')[0][:500])
         raise
     finally:
         (OUT / 'report.json').write_text(json.dumps(report, indent=2) + '\n')

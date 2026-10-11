@@ -56,7 +56,7 @@ test('workshop HTTP persists validated revisions and previews the exact saved co
   assert.equal(wrongHost,403);
   assert.equal((await fetch(base+'/api/workshop/products',{method:'POST',headers:{'Content-Type':'text/plain','X-Gravuru-CSRF':csrfToken},body:'{}'})).status,415);
   assert.equal((await fetch(base+'/api/workshop/products',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrfToken},body:'bad'})).status,400);
-  assert.equal((await fetch(base+'/api/workshop/products',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrfToken},body:JSON.stringify({padding:'x'.repeat(2*1024*1024)})})).status,413);
+  assert.equal((await fetch(base+'/api/workshop/products',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrfToken},body:JSON.stringify({padding:'x'.repeat(16*1024*1024)})})).status,413);
   assert.equal((await fetch(base+'/.local-data/workshop.sqlite')).status,404);
   assert.equal((await fetch(base+'/models.json?configuration=invalid')).status,404);
   const library=await get('/api/workshop/profiles');assert.ok(library.catalog.fonts.some(f=>f.id==='Montserrat'));assert.ok(library.catalog.motifs.length>700);

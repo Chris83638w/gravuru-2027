@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "cdnSha256": "25da58b49ad13dc7ed9b713119f713c33421e1a284d897a09a525892a334781a",
+  "realMerchantLogin": false,
+  "scope": "Actual Shopify CDN bootstrap with cleared storage, no host/shop URL parameters; simulated parent frame",
+  "cases": [
+    {
+      "shopMeta": false,
+      "bridge": "undefined",
+      "idToken": "undefined",
+      "errors": [
+        "App Bridge Next: missing required configuration fields: shop"
+      ]
+    },
+    {
+      "shopMeta": true,
+      "bridge": "object",
+      "idToken": "function",
+      "errors": []
+    }
+  ]
+}

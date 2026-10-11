@@ -1,3 +1,4 @@
+import {merchantNavigation} from './merchant-navigation.mjs';
 import {customerPreviewLink} from './customer-preview-link.mjs';
 import {openRevisionCompare} from './revision-compare-ui.mjs';
 import {merchantRequest as fetch} from './merchant-request.mjs';
@@ -84,7 +85,7 @@ async function loadList(){
 async function showOverview(view=state.view){
  if(state.busy)return false;
  if(!await canDiscard())return false;
- state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;document.body.classList.remove('editing-product');renderList();history.replaceState(null,'','/werkstatt/?view='+view);return true;
+ state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;document.body.classList.remove('editing-product');renderList();history.replaceState(null,'',merchantNavigation('/werkstatt/?view='+view,location.href));return true;
 }
 async function canDiscard(){
  if(!state.dirty)return true;
@@ -92,11 +93,11 @@ async function canDiscard(){
  return await new Promise(resolve=>dialog.addEventListener('close',()=>resolve(dialog.returnValue==='discard'),{once:true}));
 }
 function applyRecord(record){
- if(record.document.schema==='gravuru-form-product/v1'){location.href='/werkstatt/formprodukt/?configuration='+encodeURIComponent(record.id);return false;}
+ if(record.document.schema==='gravuru-form-product/v1'){location.href=merchantNavigation('/werkstatt/formprodukt/?configuration='+encodeURIComponent(record.id),location.href);return false;}
  const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;state.history=[];state.historyError=null;++state.historyRequest;state.historyLoading=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
  $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;$('.overview').hidden=true;$('.page-heading').hidden=true;
  renderEditor();renderList();syncControls();
- history.replaceState(null,'','/werkstatt/?configuration='+encodeURIComponent(record.id));
+ history.replaceState(null,'',merchantNavigation('/werkstatt/?configuration='+encodeURIComponent(record.id),location.href));
 }
 async function loadRecord(id,{checkDirty=true}={}){
  if(state.busy)return;if(checkDirty&&!await canDiscard())return;

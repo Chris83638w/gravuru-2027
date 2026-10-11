@@ -8,7 +8,8 @@ export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible
   const document=structuredClone(input),config=document.config,design=config.profile.designs.find(d=>d.id===designId);
   if(!design)fail(422,'design_missing','Dieses Design gehört nicht zur Konfiguration.');
   if(typeof originalName!=='string'||originalName.length>200||/[\x00-\x1f\\/]/.test(originalName))fail(422,'invalid_name','Ungültiger Dateiname.');
-  const asset=assets.get(assetId),area=ACRYLIC_SAFE_AREA;
+  const asset=assets.get(assetId),geometry=config.profile.geometry,margin=geometry.safeMarginMm??2;
+  const area=config.profile.material.kind==='slate'?{left:margin,top:margin,right:geometry.width-margin,bottom:geometry.height-margin}:ACRYLIC_SAFE_AREA;
   const availableWidth=area.right-area.left,availableHeight=area.bottom-area.top;
   const scale=fit==='original'?1:Math.min(availableWidth/asset.widthMm,availableHeight/asset.heightMm);
   const w=asset.widthMm*scale,h=asset.heightMm*scale;

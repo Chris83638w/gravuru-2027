@@ -27,7 +27,10 @@ const design=await workshop.assets.import({name:'Testdesign.svg',bytes:Buffer.fr
 let document=addFormDesign(makeFormProduct(contour,'Synthetische Händlerform'),design,{name:'Testdesign',designId:'memory'});
 document.kind='product';document.material={id:'oak',thicknessMm:3,surfaceNotes:'Synthetisches Prüfmuster'};document.basePriceCents=1499;document.processingMethod='engraving';document.presentation={scene:'studio'};document.designs[0].sourcePrepared=true;
 document.designs[0].fields=[{id:'name',type:'text',label:'Dein Name',xMm:20,yMm:20,widthMm:75,heightMm:12,text:'Unser Zuhause',font:Object.keys(seed.universal.localResources.fonts)[0],sizeMm:4,color:'#222222',bold:false,italic:false,allowMove:true,allowScale:true,allowDelete:true,allowColor:true}];
-const form=workshop.repository.create(document);workshop.close();
+const form=workshop.repository.create(document);
+const {syntheticSlate}=await import('./slate-config.mjs');
+const {makeProductDocument}=await import('../../app/workshop/product-model.mjs');
+const slate=workshop.repository.create(makeProductDocument(syntheticSlate(seed.universal),{name:'Synthetische Schieferplatte',kind:'product'}));workshop.close();
 const server = await createMerchantRuntime(env); server.listen(0, '127.0.0.1'); await once(server, 'listening');
-fs.writeFileSync(path.join(root, 'ready.json'), JSON.stringify({port: server.address().port, origin: 'https://merchant.example',form:{id:form.id,revision:form.revision}}));
+fs.writeFileSync(path.join(root, 'ready.json'), JSON.stringify({port: server.address().port, origin: 'https://merchant.example',form:{id:form.id,revision:form.revision},slate:{id:slate.id,revision:slate.revision}}));
 for (const signal of ['SIGTERM', 'SIGINT']) process.once(signal, async () => {server.close(); server.closeAllConnections(); await server.runtimeClosed;});

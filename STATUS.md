@@ -1,3 +1,9 @@
+## Werkstattfehler korrigiert, Veröffentlichung in Prüfung · 11.10.2026
+
+Shopify-Start ohne URL-Kontext, Navigation/History, Schiefer-PDF-Import und Vorschaubilder korrigiert. Auswahl verändert die Grafik nicht mehr. Rohlingbild- und vollständiger TTF/OTF-Upload mit Schriftgruppen ergänzt. Neue Schrift und Rohlingbild samt Wiederöffnung, PDF-Import und Masteranlage in echter lokaler Laufzeit mit synthetischer Händleridentität per Browser bestanden. 19 private Original-PDFs geprüft. [Nachweise und Grenzen](docs/releases/20261011/workshop-repair/RELEASE.md).
+
+Nächster Schritt: vollständigen Regressionstest abschließen, versioniertes Paket isoliert installieren, getrennten Händlerhost gesichert aktualisieren und GitHub-Sicherungszweige fortschreiben. Echte Händleranmeldung bleibt gesondert zu bestätigen.
+
 ## Live: Händler-Testbestellung erfolgreich · 11.10.2026
 
 Händlerhost läuft auf **ffdd150**, Version `0.1.0-recovery.20261010+ffdd150c8cd9`. Gedenktafel Revision 2 mit geschütztem Testwarenkorb und vorhandener vollständiger Schrift live. Echte Shopify-Testbestellung abgeschlossen: 22,99 EUR + 4,99 EUR Versand, Gateway `bogus`, `test: true`, `PAID`, `UNFULFILLED`. Signierter Eingang ordnet genau eine Position dem gespeicherten Entwurf zu. Fertigung/Kundendownload gesperrt; alte Kundenwerkstatt unverändert.

@@ -4,7 +4,7 @@ const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&
 const $=s=>document.querySelector(s);
 const presets=['#202824','#731c19','#17614f','#ffffff','#c49a50'];
 export function installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights}){
- let productId=null,designId=null,objectId=null,timer,serial=0,options={};
+ let productId=null,designId=null,objectId=null,timer,serial=0,options={},libraryFonts=[];
  const icon=name=>`<img class="editor-icon" src="/workshop-ui/editor-icons/${name}.svg" alt="" aria-hidden="true">`;
  const icons={details:'cube',designs:'photo',prices:'tag',profiles:'typography',scene:'photo',production:'settings',shopify:'link'};
  for(const tab of document.querySelectorAll('.editor-tabs [data-tab]'))tab.insertAdjacentHTML('afterbegin',icon(icons[tab.dataset.tab]));
@@ -24,14 +24,14 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   $('#editor-elements').innerHTML=(design()?.objects||[]).map((o,i)=>`<button type="button" data-editor-object="${escape(o.id)}" aria-pressed="${o.id===objectId}">${icon(o.type==='text'?'typography':o.type==='photoSlot'?'photo':o.type==='graphic'?'rectangle':'heart')}<span>${escape(label(o,i))}</span>${o.acrylicFixed||o.locked?'<small>fest</small>':''}</button>`).join('');
  }
  function properties(){
-  const o=selected(),d=design();elements();
+  const o=selected(),d=design(),geometry=state.draft.config.profile.geometry;elements();
   if(!o){$('#panel-designs').innerHTML='<h3>Designs & Elemente</h3><p>Wähle links ein Element aus.</p>';return;}
   const rights=state.draft.elementRights[d.id][o.id],allowed=availableRights(o);
   const check=(key,text)=>`<label class="element-check"><input type="checkbox" data-element-right="${key}" data-design-id="${escape(d.id)}" data-object-id="${escape(o.id)}" data-right-allowed="${allowed[key]}" ${rights[key]?'checked':''} ${!allowed[key]?'disabled':''}>${text}</label>`;
   let body=`<h3>${escape(label(o,d.objects.indexOf(o)))}</h3>`;
   if(o.type==='text'){
-   const fonts=Object.keys(state.draft.config.localResources.fonts);
-   body+=`<label>Beispieltext<textarea data-editor-prop="text" rows="3" maxlength="180" required>${escape(o.text)}</textarea></label><label>Schriftart<select data-editor-prop="font">${fonts.map(f=>`<option ${f===o.font?'selected':''}>${escape(f)}</option>`).join('')}</select></label><div class="element-pair">${input('Schriftgröße · mm','size',Math.round(o.size),{step:1,min:1,max:100})}<div class="font-styles"><label><input type="checkbox" data-editor-prop="bold" ${o.bold?'checked':''}> Fett</label><label><input type="checkbox" data-editor-prop="italic" ${o.italic?'checked':''}> Kursiv</label></div></div>`;
+   const fonts=[...new Set([...Object.keys(state.draft.config.localResources.fonts),...libraryFonts.map(f=>f.id)])];
+   body+=`<label>Beispieltext<textarea data-editor-prop="text" rows="3" maxlength="180" required>${escape(o.text)}</textarea></label><label>Schriftart<select data-editor-prop="font">${fonts.map(f=>`<option value="${escape(f)}" ${f===o.font?'selected':''}>${escape(libraryFonts.find(row=>row.id===f)?.name||f.replace(/ · [a-f0-9]{12}$/,''))}</option>`).join('')}</select></label><div class="element-pair">${input('Schriftgröße · mm','size',Math.round(o.size),{step:1,min:1,max:100})}<div class="font-styles"><label><input type="checkbox" data-editor-prop="bold" ${o.bold?'checked':''}> Fett</label><label><input type="checkbox" data-editor-prop="italic" ${o.italic?'checked':''}> Kursiv</label></div></div>`;
   }
   if(['text','motif','graphic'].includes(o.type))body+=`<label class="element-color-label">Ausgewählte Farbe<input type="color" data-editor-prop="color" value="${escape(o.color||'#202824')}"></label><div class="element-colors" role="group" aria-label="Farbvorschläge">${presets.map(c=>`<button type="button" data-editor-color="${c}" style="background:${c}" aria-label="Farbe ${c}" aria-pressed="${c===o.color}"></button>`).join('')}</div>`;
   if(o.type==='photoSlot')body+=`<div class="photo-example-controls"><div id="selected-photo-preview"></div><button type="button" data-editor-photo>Bild ersetzen</button><input id="editor-photo-file" type="file" accept="image/png,image/jpeg,image/webp" hidden></div><p id="photo-upload-status" role="status"></p>`;
@@ -40,7 +40,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    const hint=state.draft.config.photo.hints?.find(h=>h.designId===d.id&&h.slotId===o.id)||{text:'Hier tippen & eigenes Foto hochladen',enabled:true};
    body+=`<div class="photo-hint-settings"><label>Hinweis im Konfigurator<textarea data-editor-hint="text" maxlength="100" rows="2" required>${escape(hint.text)}</textarea></label><label class="element-check"><input type="checkbox" data-editor-hint="enabled" ${hint.enabled?'checked':''}>Beim Beispielfoto anzeigen</label></div>`;
   }
-  body+=`<details class="element-geometry"><summary>Position im Design · mm</summary><div class="element-pair">${input('Mitte X','x',o.x,{min:0,max:150})}${input('Mitte Y','y',o.y,{min:0,max:200})}</div>${o.type!=='text'?`<div class="element-pair">${input('Breite','w',o.w,{min:.1,max:150})}${input('Höhe','h',o.h,{min:.1,max:200})}</div>`:''}<p class="field-help">Backend-Vorgabe für die Vorlage. Kundenrechte werden oben getrennt eingestellt.</p></details><div class="source-preserved"><strong>Original und Verlauf erhalten</strong><p>Änderungen gelten für dieses Produkt. Speichern legt einen neuen Stand an; die Mastervorlage bleibt erhalten.</p></div>`;
+  body+=`<details class="element-geometry"><summary>Position im Design · mm</summary><div class="element-pair">${input('Mitte X','x',o.x,{min:0,max:geometry.width})}${input('Mitte Y','y',o.y,{min:0,max:geometry.height})}</div>${o.type!=='text'?`<div class="element-pair">${input('Breite','w',o.w,{min:.1,max:geometry.width})}${input('Höhe','h',o.h,{min:.1,max:geometry.height})}</div>`:''}<p class="field-help">Backend-Vorgabe für die Vorlage. Kundenrechte werden oben getrennt eingestellt.</p></details><div class="source-preserved"><strong>Original und Verlauf erhalten</strong><p>Änderungen gelten für dieses Produkt. Speichern legt einen neuen Stand an; die Mastervorlage bleibt erhalten.</p></div>`;
   $('#panel-designs').innerHTML=body;syncControls();
  }
  function photoThumbnail(){
@@ -52,9 +52,9 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  function highlight(){
   for(const n of $('#editor-preview').querySelectorAll('[data-object]')){
    const chosen=n.dataset.object===objectId;n.classList.toggle('selected-element',chosen);
-   n.style.cursor='pointer';n.setAttribute('role','button');n.setAttribute('tabindex','0');
+   n.style.cursor='pointer';n.removeAttribute('tabindex');n.removeAttribute('role');
    const o=design()?.objects.find(o=>o.id===n.dataset.object);if(o)n.setAttribute('aria-label',label(o,design().objects.indexOf(o))+' auswählen');
-   n.setAttribute('aria-pressed',String(chosen));
+   n.removeAttribute('aria-pressed');
   }
  }
  async function preview(){
@@ -92,8 +92,11 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   // Preserve every existing operation, relocating its card rather than replacing its logic.
   const cards=[...document.querySelectorAll('.record-aside .record-card')];
   for(const card of cards){const target=card.querySelector('#print-export-link')?'#panel-production':'#panel-details';$(target).append(card);}
+  const slate=state.draft.config.profile.material.kind==='slate',g=state.draft.config.profile.geometry;
+  $('#panel-scene').innerHTML=slate?`<h3>Schieferplatte</h3><p>Rohling: ${escape(g.width)} × ${escape(g.height)} mm</p><label>Rohlingbild austauschen<input id="material-surface-file" type="file" accept="image/png,image/jpeg,image/webp"></label><p class="field-help">Wähle ein Foto der ungestalteten Platte. Das Bild füllt die vorhandenen Produktmaße. Design, Bohrungen und Preise bleiben erhalten.</p><p id="material-surface-status" role="status"></p>`:'<h3>Hintergrund & Szene</h3><p>Wähle Acrylglasgröße und Sockel über dem Produkt.</p>';
   properties();clearTimeout(timer);preview();
  }
+ api('/api/workshop/font-library').then(data=>{libraryFonts=data.fonts;if(selected())properties();}).catch(()=>{});
  const valid=()=>[...$('#panel-designs').querySelectorAll('input,textarea,select')].every(n=>n.disabled||n.reportValidity());
  function select(id){if(!valid())return;objectId=id;showTab('designs');properties();highlight();photoThumbnail();}
  $('#editor-elements').addEventListener('click',e=>{const b=e.target.closest('[data-editor-object]');if(b&&!state.busy)select(b.dataset.editorObject);});
@@ -101,11 +104,29 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  $('#editor-preview').addEventListener('keydown',e=>{const n=e.target.closest('[data-object]');if(n&&['Enter',' '].includes(e.key)&&!state.busy){e.preventDefault();select(n.dataset.object);}});
  $('#editor-designs').addEventListener('click',e=>{const b=e.target.closest('[data-editor-design]');if(!b||state.busy||!valid())return;designId=b.dataset.editorDesign;objectId=null;showTab('designs');render();});
  $('#stage-options').addEventListener('change',()=>{if(state.draft.config.profile.material.kind==='slate')options={mounting:$('#stage-options').value};else [options.size,options.base,options.wall]=$('#stage-options').value.split('|');changed();});
- $('#panel-designs').addEventListener('input',e=>{
+ $('#panel-scene').addEventListener('change',async e=>{
+  if(e.target.id!=='material-surface-file'||state.busy||state.record.status==='archived')return;
+  const file=e.target.files?.[0];if(!file)return;
+  const status=$('#material-surface-status');state.busy=true;syncControls();
+  try{
+   if(file.size>15*1024*1024)throw Error('Bitte ein Bild bis 15 MB auswählen.');
+   status.textContent='Rohlingbild wird geprüft …';
+   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
+   const surface=await api('/api/workshop/material-surfaces',{method:'POST',body:{bytes:data}});
+   state.draft.config.materialSurface=surface.url;markDirty();status.textContent='Rohlingbild ausgetauscht. Bitte Produkt speichern.';
+  }catch(error){status.textContent=error.message;}finally{state.busy=false;syncControls();e.target.value='';}
+ });
+ $('#panel-designs').addEventListener('input',async e=>{
   const n=e.target,key=n.dataset.editorProp,o=selected();
   if(n.dataset.editorHint&&o&&!state.busy&&state.record.status!=='archived'){const d=design();state.draft.config.photo.hints??=[];let h=state.draft.config.photo.hints.find(h=>h.designId===d.id&&h.slotId===o.id);if(!h){h={designId:d.id,slotId:o.id,text:'Hier tippen & eigenes Foto hochladen',enabled:true};state.draft.config.photo.hints.push(h);}h[n.dataset.editorHint]=n.type==='checkbox'?n.checked:n.value;markDirty();return;}
   if(!key||!o||state.busy||state.record.status==='archived'||o.technicalLocked)return;
   if(n.type==='number'&&(!Number.isFinite(n.valueAsNumber)||!n.checkValidity()))return;
+  if(key==='font'&&!Object.hasOwn(state.draft.config.localResources.fonts,n.value)){
+   state.busy=true;syncControls();
+   try{const result=await api('/api/workshop/font-library?id='+encodeURIComponent(n.value));state.draft.config.localResources.fonts[result.id]=result.font;}
+   catch(error){$('#stage-status').textContent=error.message;n.value=o.font;return;}
+   finally{state.busy=false;syncControls();}
+  }
   o[key]=n.type==='checkbox'?n.checked:n.type==='number'?n.valueAsNumber:n.value;
   if(key==='color'&&o.type==='motif')o.preserveColors=false;
   markDirty();

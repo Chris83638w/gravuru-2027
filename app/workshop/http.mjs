@@ -1,3 +1,4 @@
+import {createFontLibrary,MAX_FONT_BYTES} from './font-library.mjs';
 import {compareProductRevisions} from './product-revision-compare.mjs';
 import {profileChangeImpact,saveReviewedProfile,assignmentChangeImpact,saveReviewedAssignment} from './profile-impact.mjs';
 import {outputSpecification} from './output-specification.mjs';
@@ -71,8 +72,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const verifySession=shopifySessions?createShopifySessionVerifier(shopifySessions):null;
   if(shopDrafts&&(!verifySession||shopDrafts.config?.shopDomain!==shopifySessions.shopDomain||shopDrafts.config?.mode!=='draft-only'))fail(503,'shop_draft_config','Shop-Entwurfsanbindung benötigt dieselbe bestätigte Händler-Testanmeldung.');
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
-  const formFonts={...seed.config.localResources.fonts,...workshopResources(seed.config.localResources).fonts};
+  const fonts=createFontLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite')});
+  const formFonts={...seed.config.localResources.fonts,...workshopResources(seed.config.localResources).fonts,...fonts.resources()};
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
+  profiles.registerFonts(fonts.list());
   const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite')});
   const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter});
   const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter});
@@ -104,6 +107,9 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     const surface=materialPreview(record.document),base=surface.svg||contours.preview(record.document.form.contourId).toString(),overlay=formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')});
     return {draft:{...draft,state},product:{id:record.id,revision:record.revision,profiles:record.metadata.profiles||null,name:record.document.name,materialName:FORM_MATERIALS.find(m=>m.id===record.document.material.id)?.name||record.document.material.id,thicknessMm:record.document.material.thicknessMm,basePriceCents:record.document.basePriceCents,method:record.document.processingMethod,geometry:{widthMm:record.document.form.geometry.widthMm,heightMm:record.document.form.geometry.heightMm,holeCount:record.document.form.geometry.holeCount},designs:record.document.designs.map(d=>({id:d.id,name:d.name})),sourceFields:[...source.fields,...resolved.addedFields.map(f=>({...f,customerAdded:true}))],additions:additionPolicy(source)},svg:composeMaterialPreview(base,overlay),artworkSvg:`<svg xmlns="http://www.w3.org/2000/svg" width="${record.document.form.geometry.widthMm}mm" height="${record.document.form.geometry.heightMm}mm" viewBox="0 0 ${record.document.form.geometry.widthMm} ${record.document.form.geometry.heightMm}">${formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')})}</svg>`,contourPath:record.document.form.geometry.contours.map(c=>c.d+' Z').join(' '),warnings:resolved.warnings,ready:resolved.ready,photos:[...resolved.photos.values()].map(p=>({mediaId:p.mediaId,width:p.width,height:p.height})),surfaceAvailable:Boolean(surface.svg)};
   }
+  function privateProductPreview(model,options){
+    return productPreview(model,options).replace(/href="\/api\/workshop\/design-assets\/([a-f0-9]{64})\/preview\.svg"/g,(_,id)=>'href="data:image/svg+xml;base64,'+assets.read(id).toString('base64')+'"');
+  }
   function embedMaterialSurface(config){
     const match=config.materialSurface?.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
     if(match)config.materialSurface='data:image/png;base64,'+assets.materialSurface(match[1]).toString('base64');
@@ -130,6 +136,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
     universal.workshopElementRights=structuredClone(record.document.elementRights);
     universal.workshopProfiles=version!==null&&version!==undefined?(record.metadata.profiles||{selections:{fonts:null,motifs:null,colors:null,bestsellers:null},sources:{},settingsRevision:0}):profiles.resolve(record.document);
+    for(const id of universal.workshopProfiles.selections?.fonts||[])if(!Object.hasOwn(universal.localResources.fonts,id)&&Object.hasOwn(formFonts,id))universal.localResources.fonts[id]=structuredClone(formFonts[id]);
     universal.profile.name=record.document.name;
     universal.profile.id=record.id;
     universal.profile.binding={kind:'local-review',productId:record.id};
@@ -221,7 +228,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const data=await body(req),plan=planOrderProductDraft({line,archive:customerDrafts.downloadSnapshot(line.snapshotId,'package'),input:data,assets,contours,fonts:formFonts});
         productionProfiles.resolve(plan.document);
         if(action==='apply')return json(res,201,applyOrderProductDraft(repository,plan,data.token));
-        const {document,...summary}=plan;let preview;if(isFormProduct(document))preview=formProductPreview(document,{assets,contours,fonts:formFonts});else{profiles.resolve(document);assets.validateDocument(document);const r=resolveProduct(document),universal=structuredClone(r.config);universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);const examples=(universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));preview=productPreview({universal},{options:r.resolvedOptions,examples});}return json(res,200,{...summary,preview});
+        const {document,...summary}=plan;let preview;if(isFormProduct(document))preview=formProductPreview(document,{assets,contours,fonts:formFonts});else{profiles.resolve(document);assets.validateDocument(document);const r=resolveProduct(document),universal=structuredClone(r.config);universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);const examples=(universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));preview=privateProductPreview({universal},{options:r.resolvedOptions,examples});}return json(res,200,{...summary,preview});
       }
       const orderOutputsMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/outputs$/);
       if(orderOutputsMatch&&method==='GET'){
@@ -420,7 +427,20 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       if(pathname==='/api/workshop/form-materials'&&method==='GET')return json(res,200,{materials:FORM_MATERIALS});
       if(pathname==='/api/workshop/form-motifs'&&method==='GET')return json(res,200,{motifs:formMotifs()});
-      if(pathname==='/api/workshop/form-fonts'&&method==='GET')return json(res,200,{fonts:Object.entries(formFonts).map(([id,f])=>({id,bold:Boolean(f.bold)}))});
+      if(pathname==='/api/workshop/font-library'){
+        if(method==='POST'){
+          const imported=await fonts.import(await body(req,Math.ceil(MAX_FONT_BYTES/3)*4+4096));
+          Object.assign(formFonts,fonts.resources());profiles.registerFonts(fonts.list());
+          return json(res,201,imported);
+        }
+        if(method==='GET'){
+          const id=url.searchParams.get('id');
+          if(id){if(!Object.hasOwn(formFonts,id))fail(404,'font_missing','Schrift nicht gefunden.');return json(res,200,{id,font:formFonts[id]});}
+          const names=new Map(fonts.list().map(row=>[row.id,row.name]));
+          return json(res,200,{fonts:Object.entries(formFonts).map(([id,font])=>({id,name:names.get(id)||id,bold:Boolean(font.bold)}))});
+        }
+      }
+      if(pathname==='/api/workshop/form-fonts' &&method==='GET')return json(res,200,{fonts:Object.entries(formFonts).map(([id,f])=>({id,bold:Boolean(f.bold)}))});
       if(pathname==='/api/workshop/design-assets'&&method==='GET')return json(res,200,{assets:assets.list()});
       const formImport=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/form-design-import$/);
       if(formImport&&method==='POST'){
@@ -476,6 +496,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const data=await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+4096);
         return json(res,201,await assets.import({name:data.name,bytes:data.bytes,page:data.page}));
       }
+      if(pathname==='/api/workshop/material-surfaces'&&method==='POST'){
+        const data=await body(req,Math.ceil(MAX_CUSTOMER_PHOTO/3)*4+4096);
+        return json(res,201,await assets.importMaterialSurface(data.bytes));
+      }
       const assetMatch=pathname.match(/^\/api\/workshop\/design-assets\/([a-f0-9]{64})\/(preview\.svg|original)$/);
       const surfaceMatch=pathname.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
       if(surfaceMatch&&method==='GET'){
@@ -491,7 +515,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       const editorMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/editor-preview$/);
       if(editorMatch&&method==='POST'){
-        const data=await body(req),record=repository.get(editorMatch[1]);
+        const data=await body(req,16*1024*1024),record=repository.get(editorMatch[1]);
         if(data.expectedRevision!==record.revision)fail(409,'stale_revision','Der gespeicherte Stand wurde geändert. Bitte zuerst den Konflikt klären.');
         const document=validateProductDocument(data.document);
         profiles.resolve(document);assets.validateDocument(document);
@@ -500,14 +524,14 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         universal.profile.defaultDesignId=resolved.designId;
         universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
         const examples=(universal.localResources.photoExamples||[]).filter(e=>e.designId===resolved.designId).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
-        return json(res,200,{svg:productPreview({universal},{options:resolved.resolvedOptions,examples}),revision:record.revision,designId:resolved.designId,price:resolved.price});
+        return json(res,200,{svg:privateProductPreview({universal},{options:resolved.resolvedOptions,examples}),revision:record.revision,designId:resolved.designId,price:resolved.price});
       }
       const cardMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/preview\.svg$/);
       if(cardMatch&&method==='GET'){
         const formRecord=repository.get(cardMatch[1],{revision:revision(url.searchParams.get('revision'))});
         if(isFormProduct(formRecord.document)){verifyForm(formRecord.document);const bytes=Buffer.from(formProductPreview(formRecord.document,{assets,fonts:formFonts,contours,designId:url.searchParams.get('designId')||formRecord.document.defaultDesignId}));res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; img-src data:; sandbox"}).end(bytes);return;}
         const m=model(cardMatch[1],url.searchParams.get('revision')),examples=(m.universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
-        const bytes=Buffer.from(productPreview(m,{designId:url.searchParams.get('designId'),examples,...(url.searchParams.get('layout')==='card'?{layout:'card',options:overviewOptions(m.universal)}:{})}));
+        const bytes=Buffer.from(privateProductPreview(m,{designId:url.searchParams.get('designId'),examples,...(url.searchParams.get('layout')==='card'?{layout:'card',options:overviewOptions(m.universal)}:{})}));
         res.writeHead(200,{'Content-Type':'image/svg+xml','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}).end(bytes);return;
       }
       const preparedMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/prepared-design\/(preview|apply)$/);
@@ -593,7 +617,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           const products=repository.list({query:url.searchParams.get('query')||'',includeArchived:url.searchParams.get('includeArchived')==='1'}).map(({document,...item})=>({...item,overview:isFormProduct(document)?formOverview(document):productOverview(document)}));
           return json(res,200,{products});
         }
-        if(method==='POST'){const data=await body(req);return json(res,201,repository.create(data.document));}
+        if(method==='POST'){const data=await body(req,16*1024*1024);return json(res,201,repository.create(data.document));}
         fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       }
       const match=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)(?:\/(copy|archive|publish|revisions|compare|restore|resolve|validate-design|shop-preparation|shop-bindings))?$/);
@@ -635,7 +659,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           if(object.type==='text'&&object.font!==original?.font&&Array.isArray(selection?.fonts)&&!selection.fonts.includes(object.font))fail(422,'font_not_allowed','Diese Schrift ist für das Produkt nicht freigegeben.');
           if(object.type==='motif'&&object.motif!==original?.motif&&Array.isArray(selection?.motifs)&&!selection.motifs.includes(object.motif))fail(422,'motif_not_allowed','Dieses Motiv ist für das Produkt nicht freigegeben.');
         }
-        const result=validateProductDesign(record.document,data.design,{options:data.options,...workshopResources(record.document.config.localResources)});
+        const result=validateProductDesign(record.document,data.design,{options:data.options,...workshopResources(record.document.config.localResources),fonts:{...formFonts,...record.document.config.localResources.fonts}});
         return json(res,200,{valid:true,id,revision:record.revision,result});
       }
       fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
@@ -644,5 +668,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();contours.close();customerDrafts.close();}};
+  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }

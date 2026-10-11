@@ -12,7 +12,7 @@ async function api(path,{method='GET',body}={}){
  if(!response.ok){const error=new Error(data.error?.message||data.message||(typeof data.error==='string'?data.error:'Die Aktion konnte nicht abgeschlossen werden.'));error.status=response.status;error.code=data.error?.code;throw error;}return data;
 }
 function controls(){
- for(const node of $$('button,input,select'))node.disabled=state.busy;
+ for(const node of $$('button,input,select'))node.disabled=state.busy||(!state.settings&&node.id!=='refresh-profiles');
  $('#profile-type').disabled=state.busy||!!state.record;
  $('#save-profile').disabled=state.busy||!state.draft||(!!state.record&&!state.dirty);
  $('#save-assignment').disabled=state.busy||!state.settings||!state.assignmentDirty;
@@ -32,7 +32,7 @@ async function discard(kind='profile'){
 }
 function renderList(){
  const term=$('#profile-search').value.trim().toLocaleLowerCase('de'),type=$('#profile-filter').value,rows=state.profiles.filter(row=>(!type||row.type===type)&&[row.name,row.id].join(' ').toLocaleLowerCase('de').includes(term));
- $('#profile-count').textContent=rows.length;
+ $('#profile-count').textContent=state.settings?rows.length:'–';
  $('#profile-list').innerHTML=rows.length?rows.map(row=>'<button type="button" class="product-row" data-profile-open="'+esc(row.id)+'" aria-pressed="'+String(row.id===state.record?.id)+'"><span class="product-symbol" aria-hidden="true">'+({fonts:'Aa',motifs:'◇',colors:'●',bestsellers:'☆'})[row.type]+'</span><span><span class="product-name">'+esc(row.name)+'</span><span class="product-meta">'+labels[row.type]+' · '+row.items.length+' Einträge · Stand '+row.revision+'</span></span><span class="badge">Öffnen ↗</span></button>').join(''):'<p class="empty-state">'+(term||type?'Keine passenden Profile gefunden.':'Noch keine Profile angelegt. Beginne mit einer Auswahl für deine Produkte.')+'</p>';
  controls();
 }
@@ -135,3 +135,15 @@ $('#assignment-form').addEventListener('submit',async event=>{
 window.addEventListener('beforeunload',event=>{if(state.dirty||state.assignmentDirty){event.preventDefault();event.returnValue='';}});
 window.addEventListener('pageshow',event=>{if(!event.persisted&&state.settings&&!state.assignmentDirty)loadAssignment();});
 (async()=>{busy(true);try{const [session]=await Promise.all([api('/api/workshop/session'),loadLibrary()]);state.csrf=session.csrfToken;}catch(error){notice(error.message,'error');$('#profile-list').innerHTML='<p class="empty-state">Bibliothek konnte nicht geladen werden. Bitte „Aktualisieren“ versuchen.</p>';}finally{busy(false);}})();
+
+$('#font-upload-file').addEventListener('change',async event=>{
+ const file=event.target.files?.[0];if(!file||state.busy)return;busy(true);
+ const status=$('#font-upload-status');
+ try{
+  if(file.size>8*1024*1024)throw Error('Bitte eine TTF- oder OTF-Schrift bis 8 MB auswählen.');
+  status.textContent='Schrift und Zeichen werden geprüft …';
+  const bytes=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
+  const font=await api('/api/workshop/font-library',{method:'POST',body:{name:file.name,bytes}});
+  await loadLibrary();status.textContent='„'+font.name+'“ hochgeladen · '+font.glyphCount+' Zeichen. Du kannst die Schrift jetzt in einem Schriftprofil auswählen.';
+ }catch(error){status.textContent=error.message;}finally{busy(false);event.target.value='';}
+});

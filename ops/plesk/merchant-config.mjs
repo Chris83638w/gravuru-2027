@@ -59,7 +59,7 @@ export function verifyMerchantStorage(config) {
   } catch {fail('merchant_storage');}
 }
 export function checkMerchantPython(config) {
-  const r = spawnSync(config.python, ['-I', '-c', 'import sys,sqlite3,fcntl,cairosvg,PIL,openpyxl,pymupdf,shapely,svgpathtools,numpy,scipy; assert sys.version_info >= (3,11); assert cairosvg.svg2pdf(bytestring=b\'<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>\').startswith(b"%PDF"); print("GRAVURU_MERCHANT_PYTHON_OK")'], {encoding: 'utf8', timeout: 30000, maxBuffer: 1024 * 1024});
+  const r = spawnSync(config.python, ['-I', '-c', 'import sys,sqlite3,fcntl,cairosvg,PIL,openpyxl,fontTools,pymupdf,shapely,svgpathtools,numpy,scipy; assert sys.version_info >= (3,11); assert cairosvg.svg2pdf(bytestring=b\'<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>\').startswith(b"%PDF"); print("GRAVURU_MERCHANT_PYTHON_OK")'], {encoding: 'utf8', timeout: 30000, maxBuffer: 1024 * 1024});
   if (r.status !== 0 || r.error || r.stdout.trim() !== 'GRAVURU_MERCHANT_PYTHON_OK') fail('merchant_python');
 }
 export function prepareMerchantStorage(config) {

@@ -1,3 +1,4 @@
+import {merchantNavigation} from './merchant-navigation.mjs';
 import {merchantImageAttribute, setMerchantImage} from './merchant-media.mjs';
 import {merchantRequest as fetch} from './merchant-request.mjs';
 const $=s=>document.querySelector(s);
@@ -38,4 +39,4 @@ try{token=(await api('/api/workshop/session')).csrfToken;const rows=await list()
 $('#create-form-product').addEventListener('click',()=>{if(busy||!selected)return;$('#form-create-name').value=selectedName.replace(/\.(svg|pdf)$/i,'');$('#form-create-error').textContent='';$('#form-create-dialog').showModal();$('#form-create-name').focus();});
 $('#form-create-cancel').addEventListener('click',()=>{if(!busy)$('#form-create-dialog').close();});
 $('#form-create-dialog').addEventListener('cancel',e=>{if(busy)e.preventDefault();});
-$('#form-create-form').addEventListener('submit',async e=>{e.preventDefault();if(busy||!e.currentTarget.reportValidity())return;busy=true;controls();$('#form-create-submit').disabled=true;$('#form-create-cancel').disabled=true;try{const r=await api('/api/workshop/form-products',{name:$('#form-create-name').value.trim(),contourId:selected});location.href='/werkstatt/formprodukt/?configuration='+encodeURIComponent(r.id);}catch(e){$('#form-create-error').textContent=e.message;busy=false;controls();$('#form-create-submit').disabled=false;$('#form-create-cancel').disabled=false;}});
+$('#form-create-form').addEventListener('submit',async e=>{e.preventDefault();if(busy||!e.currentTarget.reportValidity())return;busy=true;controls();$('#form-create-submit').disabled=true;$('#form-create-cancel').disabled=true;try{const r=await api('/api/workshop/form-products',{name:$('#form-create-name').value.trim(),contourId:selected});location.href=merchantNavigation('/werkstatt/formprodukt/?configuration='+encodeURIComponent(r.id),location.href);}catch(e){$('#form-create-error').textContent=e.message;busy=false;controls();$('#form-create-submit').disabled=false;$('#form-create-cancel').disabled=false;}});

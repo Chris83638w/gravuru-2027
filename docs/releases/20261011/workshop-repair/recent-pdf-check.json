@@ -1,0 +1,41 @@
+{
+  "result": "PASS",
+  "revision": 2,
+  "unchangedSavedDatabase": true,
+  "checkedOriginals": 3,
+  "checks": [
+    {
+      "name": "latest-upload-0d3ccf9d99f45fa8ccbb97fd9d37dd492d3e6abdc245f8b54f4958c99cf58f66.pdf",
+      "sourceSha256": "0d3ccf9d99f45fa8ccbb97fd9d37dd492d3e6abdc245f8b54f4958c99cf58f66",
+      "placement": {
+        "x": 110,
+        "y": 70,
+        "widthMm": 219.56186226508973,
+        "heightMm": 140,
+        "scale": 0.9944809264971942
+      }
+    },
+    {
+      "name": "latest-upload-a1a431c08cc0b4f4c5110bb8e7c80be5879a917f3cd779c6400e9f6baa57a6b6.pdf",
+      "sourceSha256": "a1a431c08cc0b4f4c5110bb8e7c80be5879a917f3cd779c6400e9f6baa57a6b6",
+      "placement": {
+        "x": 110,
+        "y": 70,
+        "widthMm": 219.561755200035,
+        "heightMm": 140,
+        "scale": 0.9944809264971942
+      }
+    },
+    {
+      "name": "latest-upload-a36016bce561f492d35fe9b9eb2bedec32a50790afee6c79a1c0cb4cd8646cf5.pdf",
+      "sourceSha256": "a36016bce561f492d35fe9b9eb2bedec32a50790afee6c79a1c0cb4cd8646cf5",
+      "placement": {
+        "x": 110,
+        "y": 70,
+        "widthMm": 219.561755200035,
+        "heightMm": 140,
+        "scale": 0.9944809264971942
+      }
+    }
+  ]
+}

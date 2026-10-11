@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-11T05:03:24.968Z",
+  "received": true,
+  "matchingLines": 1,
+  "authenticatedPaidEvents": 1,
+  "shopifyReadback": true,
+  "test": true,
+  "financialStatus": "PAID",
+  "fulfillmentStatus": "UNFULFILLED",
+  "paymentGatewayNames": [
+    "bogus"
+  ],
+  "productRevision": 2,
+  "quantity": 1,
+  "unitCents": 2299,
+  "productionReady": false,
+  "customerDownloadAllowed": false,
+  "checkoutTotalCents": 2798,
+  "shippingCents": 499,
+  "realMoneyCharged": false
+}

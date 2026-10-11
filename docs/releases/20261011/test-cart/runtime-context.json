@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-10-11",
+  "cloudEnvironmentId": "ccarenv_b64_Y2NhcmVudl8xNjQ2ZWNjZjE3NmM4MTkxYjM3ZDhhMzgzMmM2Yzk0MA",
+  "cloudProvider": "cloud",
+  "managedEnvironmentObservedRunning": true,
+  "observationsCurrent": true,
+  "workspace": "/workspace",
+  "repositoryDirectory": "/workspace/gravuru-restored",
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "task/live-release-20261010",
+  "installedSourceCommit": "ffdd150c8cd983b1bdae553a378b8720b29dff79",
+  "productBase": "a2af162edd3a1dfa2106212c9f4b76c7ae351b70",
+  "productBaseIsAncestor": true,
+  "newerCommitsPreserved": true,
+  "initialBackupCommit": "cada907948a1da9374ef1a1e17738a892fd9f975",
+  "initialUncommittedChanges": "Merchant test cart work resumed and included in ffdd150",
+  "separateMerchantSiteId": 20,
+  "legacySiteIdsUnchanged": [
+    14,
+    19
+  ],
+  "actualCheckoutTestGateway": "bogus",
+  "privateDataInRepository": false
+}

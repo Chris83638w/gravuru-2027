@@ -1,0 +1,31 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "path": "/werkstatt/",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "/werkstatt/serien/",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "/werkstatt/kundenansicht/",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "/api/workshop/merchant-test-cart",
+      "status": 401,
+      "expected": 401
+    },
+    {
+      "path": "/webhooks/shopify/orders-paid",
+      "status": 401,
+      "expected": 401
+    }
+  ],
+  "tlsVerified": true
+}

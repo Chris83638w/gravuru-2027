@@ -1,8 +1,10 @@
-## Händler-Testwarenkorb geprüft · 11.10.2026
+## Live: Händler-Testbestellung erfolgreich · 11.10.2026
 
-Geschützter Testweg für Gedenktafel Revision 2 implementiert: private Entwurfsbindung, feste neun Varianten, serverseitige Preise und idempotentes Warenkorbjournal. Produktionssperren und öffentliche Checkout-Sperre bleiben erhalten. 65 gezielte Tests, acht Laufzeitprüfungen, Desktop-/Mobilbedienung sowie neun reale Varianten in privater Kopie bestanden; Shopify-Antworten dabei simuliert. Produkt im Onlineshop veröffentlicht und Preise/Kanäle nachgelesen. Noch keine tatsächliche Testbestellung.
+Händlerhost läuft auf **ffdd150**, Version `0.1.0-recovery.20261010+ffdd150c8cd9`. Gedenktafel Revision 2 mit geschütztem Testwarenkorb und vorhandener vollständiger Schrift live. Echte Shopify-Testbestellung abgeschlossen: 22,99 EUR + 4,99 EUR Versand, Gateway `bogus`, `test: true`, `PAID`, `UNFULFILLED`. Signierter Eingang ordnet genau eine Position dem gespeicherten Entwurf zu. Fertigung/Kundendownload gesperrt; alte Kundenwerkstatt unverändert.
 
-[Bericht](docs/releases/20261011/test-cart/RELEASE.md). Nächster Schritt: versioniertes Paket isoliert installieren, Händlerhost gesichert aktualisieren und echten Testcheckout prüfen.
+Versioniertes ZIP mit SHA-256, isolierter Installations-/Neustartprüfung, 65 gezielten Tests, acht Laufzeitprüfungen, Desktop-/Mobilbedienung und neun tatsächlichen Varianten in privater Kopie gesichert. Private Daten vor Wechsel auf Server und in Cloud geprüft; echte Bestelldaten/Checkout-Zugänge bleiben außerhalb Git. [Vollständiger Bericht](docs/releases/20261011/test-cart/RELEASE.md) · [Installationspaket](deliverables/merchant-test-cart-20261011/README.md).
+
+Nächster Schritt: öffentliche neue Kundenstrecke weiterführen. Produktions-/Maschinenabnahme und echte Nutzeranmeldung bleiben separate Abnahmen. Historische Abschnitte folgen.
 
 ## Aktuell: Testbestelleingang und Shopify-Version veröffentlicht – 11.10.2026
 

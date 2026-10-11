@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-11T05:04:39.387Z",
+  "sourceCommit": "ffdd150c8cd983b1bdae553a378b8720b29dff79",
+  "method": "SQLite online backup; each database consistent",
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 8609792,
+      "sha256": "f698332d059d94b992302408e6cea9d8a4534d9e9cb3a507113ffd9ae2a23c48",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 15228928,
+      "sha256": "ca61d87380019f122d1fc6645ca226679ef63a59afe5a65c7c4f88a80af1fc49",
+      "quickCheck": "ok"
+    }
+  ],
+  "entrySha256": "ba10bb51d2e5434ce83a2443b2fce3a4a6bc610f62dba45b0faaca9eb5628fcc",
+  "cloudCopiesVerified": true,
+  "cloudPrivateDirectory": "/workspace/recovery-private/merchant-after-test-20261011"
+}

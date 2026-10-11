@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "alreadyEnabled": false,
+  "mode": "merchant-test-only",
+  "apiVersion": "2026-07",
+  "sourceCommit": "ffdd150c8cd983b1bdae553a378b8720b29dff79",
+  "configSha256": "0d3ec5df715284d89b0ee13c2cd51c6ba2d169c2f85dc6559d0c13de54e2b9c8",
+  "shopifySubscriptionChanged": false,
+  "checkoutEnabled": false,
+  "merchantTestCartEnabled": true
+}

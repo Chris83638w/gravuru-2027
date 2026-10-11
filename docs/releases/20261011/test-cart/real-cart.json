@@ -1,0 +1,13 @@
+{
+  "created": true,
+  "checkedAt": "2026-10-11T04:58:35.709Z",
+  "sourceCommit": "ffdd150c8cd983b1bdae553a378b8720b29dff79",
+  "productRevision": 2,
+  "quantity": 1,
+  "unitCents": 2299,
+  "totalCents": 2299,
+  "paymentConfirmed": false,
+  "productionReady": false,
+  "duplicateReused": true,
+  "requests": 1
+}

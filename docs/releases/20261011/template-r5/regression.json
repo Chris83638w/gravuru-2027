@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "tests": 654,
+  "failed": 0,
+  "skipped": 0,
+  "concurrency": 4,
+  "durationMs": 221957.088102,
+  "initialAttempt": "Full run reached 180-second harness deadline; rerun with bounded concurrency completed.",
+  "targetedMaskTest": "Import, immutable photo mask, customer rights, self-contained output and Cairo pixels passed."
+}

@@ -1,3 +1,28 @@
+# 11.10.2026 · Vorlagenabgleich: Originalfotomaske und M01/M02-Navigation
+
+Umfang dieses Durchlaufs: bewahrte Fotoform, verständliche Elemente, Hauptnavigation und wahrheitsgemäße Verbindungs-/Bestellanzeigen. Keine vollständige visuelle Abnahme aller historischen Produktdesigns.
+
+**Belege und Zustand:** Quelle `/workspace/recovery-private/reference-check/design-reference/produktuebersicht-variante-2.png` und `produktbearbeitung-variante-2.png` (je 1487 × 1058). Browseraufnahme bei 1440 × 1000 CSS-Pixeln, deviceScaleFactor 1, zusätzliche Mobilprüfung 390 × 844. Quelle proportional auf 1440 px Breite normalisiert; Umsetzung für gemeinsamen Vergleich auf die ersten 1025 px beschnitten. Kombinierte Eingaben `/workspace/recovery-private/template-r5-navigation/dashboard-comparison.png` und `editor-comparison.png` (2880 × 1055). Einzelaufnahmen `overview.png`, `editor-photo.png`, `profiles.png`, `profiles-mobile.png`, `overview-mobile.png` im selben privaten Verzeichnis. Gesamtaufnahmen inklusive Bild-/Eigenschaftenbereich geöffnet; Foto-/Eigenschaftenausschnitt und Kopfzeile darin lesbar. Private Produktbilder bleiben außerhalb Git.
+
+Die Quelle zeigt Acrylglas und sechs illustrative Produkte; der geprüfte Bestand zeigt die tatsächlichen zwei Konfigurationen, im Editor eine Schiefer-Gedenktafel mit gewähltem Foto. Diese Unterschiede sind Daten-/Materialzustände, keine fehlenden vier Produkte. Referenz dient hier dem gemeinsamen Aufbau, nicht einem vorgetäuschten identischen Produktzustand.
+
+**Vergleichsverlauf:**
+
+- P1: Foto nach PDF-Aufbereitung rechteckig statt originaler Kreuzmaske. Quelle `GT-S-2_2.PDF`, unveränderliche Assetquelle privat vorhanden. Korrigiert durch eigene Originalmasken-Ressource in Import, Vorschau, Kundenansicht und Ausgabepaket; tatsächliche Browseransicht und Gravur-PDF geöffnet. Echte Musteraufnahme und Uploadhinweis bleiben sichtbar. Vollständige Cormorant Garamond entspricht der ausdrücklich gewählten Schriftalternative.
+- P2: Zweizeilige überladene Hauptnavigation und widersprüchliche Verbindungs-/Bestelltexte. Vier primäre Wege nach M01/M02 wiederhergestellt, Zusatzwerkzeuge unter Verwaltung; Status aus Sitzung bzw. gespeicherten Bestellungen. Neue Kopfzeile und offene Profilseite in Desktop/Mobil geprüft.
+- Erste neue Aufnahme zeigte fehlende Shell-Ressourcen. Statische Auslieferung ergänzt; erneut aufgenommen, keine 404 oder Konsolenfehler. Schriftupload über Verwaltung erreichbar; Master-Link öffnet Masteransicht. Die CSP bleibt strikt.
+- P2: Technische Elementnamen und unlesbare Koordinaten. Elementnamen bearbeitbar; aktuelle Vorlage verwendet Kontur/Lebensdaten/Foto/Name. Anzeige auf zwei Dezimalstellen begrenzt, gespeicherte Originalgeometrie unverändert.
+
+**Fünf Prüfflächen:** Typografie nutzt bestehende Schrift-/Feldhierarchie; kein neuer Markenfont erfunden. Abstand/Grid folgt vierteiliger Kopfzeile und dreispaltigem Editor; zusätzliche echte Bearbeitungsfunktionen brauchen rechts Scrollraum. Grüntöne, helle Flächen und Fokusmarkierung erhalten. Tatsächliche Material-/Fotobilder scharf und ohne Ersatzzeichnungen; Maske aus Originaldaten, keine Nachzeichnung. Texte unterscheiden lokale Sitzung, Shopify-Testbetrieb und öffentliche Freigabe.
+
+**Bedienung:** Foto ersetzen, Text ändern, Auswahl/Ziehen, Speichern/Neuladen, Schriftupload/Gruppe und Rückgängig/Wiederholen im umfassenden Händlerbrowser bestanden. Gesonderte Navigation bei 390 px ohne Überlauf. Authentifizierung synthetisch; echte Shopify-Händlersitzung dadurch nicht bewiesen. Der blaue dünne Auswahlgriff ist reine Bedienoberfläche und wird nicht ausgegeben.
+
+**Nachlauf:** Keine P0/P1/P2-Abweichung im abgegrenzten Paket offen. Ein pixelgleicher Nachbau sämtlicher Motive, Produktfotos und historischem PDF-Schriftsatz ist nicht behauptet. Externe Anschlüsse und Maschinenabnahme siehe Releasebericht.
+
+final result: passed
+
+---
+
 # Visuelle und funktionale Ergänzungsprüfung – M02-Varianten, 05.10.2026
 
 Umfang: Variantensteuerung innerhalb der bestätigten M02-Struktur. Die Fotoansicht `docs/dashboard-20261004/dashboard-m02-continuation.png` wurde gemeinsam mit `referenzen/M02.png` bei 1487 × 1058 geprüft: Bereiche/Elemente links, vollständige vorhandene Szene mittig, Fotoeigenschaften rechts bleiben erhalten. Die neue Optionenansicht `dashboard-m02-options.png` ist eine funktionale Ergänzung, für deren genaue Felder kein separater ausgewählter Mockup vorliegt; sie übernimmt die bestehenden M02-Form-/Fokusregeln. Eigenschaftenausschnitt und Mobilaufnahme separat geprüft.

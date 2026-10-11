@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "fourPrimaryRoutes": true,
+    "fontUploadReachable": true,
+    "profileMobileNoOverflow": true,
+    "masterNavigation": true,
+    "overviewMobileNoOverflow": true,
+    "maskPreview": true
+  },
+  "javascriptErrors": []
+}

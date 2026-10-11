@@ -1,3 +1,11 @@
+## Live: OpenAI verbunden und mit echter Antwort geprüft · 11.10.2026
+
+Geschützter eigener Schlüssel eingerichtet, `gpt-4.1-2025-04-14` erreichbar. **Ein echter Gestaltungsauftrag bestanden:** gewünschte Textposition geändert, sonstige Elemente/Preise/Rechte erhalten. 1.194 Eingabe-/102 Ausgabetokens, **1 Cent im Werkstattbudget**, 99,99 EUR verfügbar. Übernahme/Wiederholung in privater Kopie geprüft; echtes Produkt bleibt Revision 5. Installierter Quellstand weiterhin **060a10b**.
+
+Aktiver Händlerprozess nach Konfigurationsänderung und HTTPS geprüft. Bedienung: App neu laden → Produkt → Designs & Elemente → **Mit KI gestalten**. Freigabe aktuell bis **10.11.2026, 12:38 UTC**; danach Tarifprüfung erneuern. Alle historischen Zeilen in 47 Tabellen erhalten. [Prüfung, Konfiguration und Sicherung](docs/releases/20261011/openai-active/RELEASE.md).
+
+**Nächster Ausbau:** neue KI-Bilder/Motive und Fotobearbeitung unter demselben Kostenrahmen ergänzen; Stapel-KI ebenfalls offen. Echte Shopify-Anmeldung des Browserlaufs und neue öffentliche Kunden-/Checkout-Strecke bleiben gesonderte Abnahmen. Die folgenden Abschnitte sind historische Nachweise.
+
 ## Live: vorbereitete OpenAI-Gestaltung mit Kostenkontrolle · 11.10.2026
 
 Installierter Quellstand **060a10b**, Version `0.1.0-recovery.20261010+060a10b9d923`. Produkt → Designs & Elemente → **Mit KI gestalten**: native Texte/Layout/Farben/vorhandene Motive; Vorschlag prüfen und ausdrücklich als neue Revision übernehmen. 100-EUR-Monatsgrenze mit dauerhafter Reserve und befristeter Tarifprüfung. **Generierung ohne geschützten eigenen API-Schlüssel deaktiviert; kein echter OpenAI-Aufruf und noch keine reale Antwortabnahme.** Neue KI-Bilder, Fotobearbeitung und Stapel-KI bleiben offen.

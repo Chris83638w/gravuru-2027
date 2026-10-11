@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-10-11T12:42:05.199795+00:00",
+  "tlsVerified": true,
+  "checks": [
+    {
+      "path": "/werkstatt/",
+      "status": 200
+    },
+    {
+      "path": "/workshop-ui/ai-design-ui.mjs",
+      "status": 200
+    },
+    {
+      "path": "/api/workshop/ai-design/status",
+      "status": 401
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 401
+    }
+  ]
+}

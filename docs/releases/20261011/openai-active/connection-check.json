@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "apiCalled": true,
+  "httpStatus": 200,
+  "modelAvailable": true,
+  "model": "gpt-4.1-2025-04-14",
+  "merchantConfigSha256": "de847ac2c8a36bb33ac94f45fbe465ee365ac978e4a9fd4a976c7a9b86f8660b",
+  "aiConfigAlreadyPresent": false,
+  "keyProtected": true,
+  "keyPrinted": false,
+  "paidRequests": 0
+}

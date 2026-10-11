@@ -1,0 +1,46 @@
+{
+  "stage": "configuration",
+  "result": "PASS",
+  "sourceCommit": "060a10b9d9238574d05feb4e28e7f72077199fa1",
+  "paidCalls": 1,
+  "realMerchantLoginVerified": false,
+  "productAppliedLive": false,
+  "newPaidCalls": 0,
+  "evidence": "Persisted completed OpenAI response with token usage; installed provider makes no automatic retries.",
+  "jobStatus": "review",
+  "chargedCents": 1,
+  "reservedCents": 426,
+  "budget": {
+    "enabled": true,
+    "reason": "",
+    "model": "gpt-4.1-2025-04-14",
+    "month": "2026-10",
+    "limitCents": 10000,
+    "accountedCents": 1,
+    "availableCents": 9999,
+    "reservationCents": 426,
+    "pricingValidUntil": "2026-11-10T12:38:17.385Z",
+    "scope": "Diese Werkstatt; vorsichtige EUR-Bewertung, keine OpenAI-Rechnung.",
+    "capabilities": [
+      "editable-text",
+      "layout",
+      "existing-motifs"
+    ]
+  },
+  "liveProductRevision": 5,
+  "copyApplyAndDuplicateCheck": true,
+  "nativePreviewRendered": true,
+  "onlyRequestedPositionChanged": true,
+  "duplicateRequestDidNotResend": true,
+  "aiConfigured": true,
+  "restartRequired": true,
+  "model": "gpt-4.1-2025-04-14",
+  "pricingValidUntil": "2026-11-10T12:38:17.385Z",
+  "monthlyLimitCents": 10000,
+  "configSha256": "4a381c6a2cb0755e8e342514e545939aee1f4e75d34315a8bd04a9279c43e411",
+  "usage": {
+    "inputTokens": 1194,
+    "outputTokens": 102
+  },
+  "checkedAt": "2026-10-11T12:41:05.637Z"
+}

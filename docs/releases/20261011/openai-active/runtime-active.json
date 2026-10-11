@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-10-11T12:47:34.325Z",
+  "aiEnabled": true,
+  "limitCents": 10000,
+  "pricingValidUntil": "2026-11-10T12:38:17.385Z",
+  "keyProtected": true,
+  "otherMerchantSettingsUnchanged": true,
+  "activeMerchantProcesses": 1,
+  "startedAfterConfiguration": true,
+  "startedAt": "2026-10-11T12:46:35.130Z",
+  "jobs": [
+    {
+      "status": "review",
+      "reservedCents": 426,
+      "chargedCents": 1,
+      "usage": {
+        "inputTokens": 1194,
+        "outputTokens": 102
+      }
+    }
+  ],
+  "realMerchantLoginVerified": false
+}

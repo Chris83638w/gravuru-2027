@@ -6,6 +6,7 @@ $ErrorActionPreference = 'Stop'
 $salbeiStore = 'gravuru-design.myshopify.com'
 $salbeiName = 'gravuru Salbei Entwicklung 2026-10-11'
 $salbeiRoot = $PSScriptRoot
+. (Join-Path $salbeiRoot 'shopify-output.ps1')
 $salbeiZip = Join-Path $salbeiRoot 'gravuru-salbei-0.1.0.zip'
 $salbeiExpectedHash = '2d783ef0e69d639a1bf79b03f73f24b27a19de19fad1cf22632e5e869930e99c'
 
@@ -32,13 +33,9 @@ if (-not $salbeiCli) { $salbeiCli = Get-Command shopify -ErrorAction SilentlyCon
 if (-not $salbeiCli) { throw 'Shopify CLI nicht gefunden. Installation: npm install -g @shopify/cli' }
 
 Write-Host ('Ziel: ' + $salbeiStore + '. Falls verlangt, Shopify-Anmeldung im Browser abschliessen.')
-$salbeiListOutput = & $salbeiCli.Source theme list --store $salbeiStore --json
-if ($LASTEXITCODE -ne 0) { throw 'Shopify-Themeliste nicht erreichbar. Kein Upload ausgefuehrt.' }
-$salbeiList = ($salbeiListOutput -join [Environment]::NewLine) | ConvertFrom-Json
+$salbeiList = Get-SalbeiThemeList -Cli $salbeiCli.Source -Store $salbeiStore
 # Refuse an ambiguous response or a same-name existing theme; retries cannot overwrite it.
-if ($salbeiList -is [array]) { $salbeiThemes = @($salbeiList) }
-elseif ($null -ne $salbeiList.themes) { $salbeiThemes = @($salbeiList.themes) }
-else { throw 'Unerwartete Shopify-Antwort. Kein Upload ausgefuehrt.' }
+$salbeiThemes = $salbeiList.Themes
 $salbeiExisting = @($salbeiThemes | Where-Object { $_.name -eq $salbeiName })
 if ($salbeiExisting.Count -gt 0) {
     $salbeiExisting | Select-Object id, name, role | Format-Table
@@ -47,6 +44,13 @@ if ($salbeiExisting.Count -gt 0) {
 }
 
 Write-Host ('Erstelle unveroeffentlichtes Theme: ' + $salbeiName)
-& $salbeiCli.Source theme push --store $salbeiStore --path $salbeiUploadPath --unpublished --theme $salbeiName --strict --json
+& $salbeiCli.Source theme push --store $salbeiStore --path $salbeiUploadPath --unpublished --theme $salbeiName --strict --json |
+    Tee-Object -Variable salbeiPushOutput | Out-Host
 if ($LASTEXITCODE -ne 0) { throw 'Shopify meldet einen Uploadfehler. Ausgabe oben pruefen; ein eventuell teilweise angelegtes Theme nicht veroeffentlichen.' }
-Write-Host 'Upload beendet. Editor- und Vorschau-Link stehen in der Shopify-Ausgabe oben.'
+try {
+    $salbeiUploaded = Confirm-SalbeiThemePush -Text ($salbeiPushOutput -join [Environment]::NewLine) -Store $salbeiStore -Name $salbeiName
+}
+catch { throw 'Upload nicht bestaetigt. Ausgabe oben und Shopify-Themes pruefen. Kein automatischer Upload-Wiederholungsversuch.' }
+Write-Host ('Upload bestaetigt. Theme-ID: ' + $salbeiUploaded.id)
+Write-Host ('Editor: ' + $salbeiUploaded.editor_url)
+Write-Host ('Vorschau: ' + $salbeiUploaded.preview_url)

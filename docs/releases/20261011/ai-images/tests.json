@@ -7,5 +7,11 @@
   "scope": "variant-m, workshop, AI private config, merchant runtime; synthetic tests",
   "elapsedMs": 226253.930589,
   "targetedImageAndAiTests": 25,
-  "testSetsOverlap": true
+  "testSetsOverlap": true,
+  "postVisualCorrection": {
+    "tests": 34,
+    "passed": 34,
+    "failed": 0,
+    "elapsedMs": 17409.887445
+  }
 }

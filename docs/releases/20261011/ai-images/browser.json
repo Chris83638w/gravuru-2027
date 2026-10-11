@@ -13,7 +13,7 @@
     "photoPreviewAndApply": true,
     "embeddedPrivateImages": true
   },
-  "apiRequests": 85,
+  "apiRequests": 86,
   "consoleErrors": [],
   "provider": "synthetic; no OpenAI requests",
   "privateData": "synthetic products only"

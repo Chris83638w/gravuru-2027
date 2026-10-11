@@ -19,6 +19,12 @@ try:
         image = ImageOps.exif_transpose(image).convert('RGBA')
         width, height = image.size
         image.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+        if data.get('monochrome') is True:
+            # A newly generated engraving motif uses its alpha as the ink mask.
+            # Keep original PNG bytes separately; print and photo edits stay RGB.
+            alpha = image.getchannel('A')
+            image = Image.new('RGBA', image.size, (0, 0, 0, 0))
+            image.putalpha(alpha)
         image.info.clear()
         out = io.BytesIO()
         image.save(out, format='PNG')

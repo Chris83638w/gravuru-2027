@@ -55,10 +55,10 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
   function get(id){return JSON.parse(row(id).metadata);}
   function resource(id){const a=get(id);return {key:'artwork-'+id,name:'Importiertes Design',category:'Vorlagen',bounds:[0,0,a.widthMm,a.heightMm],embeddedOnly:true,svgFragment:artworkFragment(id,a.widthMm,a.heightMm),artwork:a};}
   return {
-    async importPhotoExample({bytes,widthMm,heightMm}){
+    async importPhotoExample({bytes,widthMm,heightMm,monochrome=false}){
       if(![widthMm,heightMm].every(n=>Number.isFinite(n)&&n>0&&n<=2000))fail(422,'photo_size','Ungültige Fotofeldmaße.');
       const {prepareCustomerPhoto}=await import('./customer-photo.mjs');
-      const photo=await prepareCustomerPhoto(bytes),originalHash=sha256(photo.original);
+      const photo=await prepareCustomerPhoto(bytes,{monochrome}),originalHash=sha256(photo.original);
       const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${widthMm}mm" height="${heightMm}mm" viewBox="0 0 ${widthMm} ${heightMm}"><image href="data:image/png;base64,${photo.preview.toString('base64')}" width="${widthMm}" height="${heightMm}" preserveAspectRatio="xMidYMid slice"/></svg>`;
       const asset=await this.import({name:'Beispielfoto.svg',bytes:Buffer.from(svg).toString('base64')});
       db.exec('BEGIN IMMEDIATE');try{

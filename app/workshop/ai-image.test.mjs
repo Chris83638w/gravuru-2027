@@ -56,3 +56,13 @@ test('inconsistent usage, arbitrary URLs and network errors never produce an app
  const bad=createOpenAiImageProvider({apiKey:'synthetic-key-never-real',fetchImpl:async()=>Response.json({usage:{input_tokens:10,input_tokens_details:{text_tokens:1,image_tokens:1},output_tokens:1,total_tokens:11}})});await assert.rejects(bad({kind:'image_generate',instruction:'x'},{}),{code:'ai_usage_unconfirmed'});
  const url=createOpenAiImageProvider({apiKey:'synthetic-key-never-real',fetchImpl:async()=>Response.json({usage:{input_tokens:0,input_tokens_details:{text_tokens:0,image_tokens:0},output_tokens:1056,total_tokens:1056},data:[{url:'https://untrusted.example/image.png'}]})});assert.equal((await url({kind:'image_generate',instruction:'x'},{})).image,null);
 });
+
+test('engraving image derives black ink from alpha while retaining exact colored original and RGB photo behavior',async t=>{
+ const assets=createDesignAssetStore({filename:':memory:'});t.after(()=>assets.close());
+ const mono=await assets.importPhotoExample({bytes:png,widthMm:40,heightMm:40,monochrome:true});const rgb=await assets.importPhotoExample({bytes:png,widthMm:40,heightMm:40});
+ assert.equal(assets.photoExampleImage(mono.assetId).toString('base64'),png);assert.equal(assets.photoExampleImage(rgb.assetId).toString('base64'),png);assert.notEqual(mono.assetId,rgb.assetId);
+ for(const [a,expected] of [[mono,[0,0,0,180]],[rgb,[40,130,70,180]]]){
+  const svg=assets.read(a.assetId).toString(),embedded=svg.match(/data:image\/png;base64,([A-Za-z0-9+/=]+)/)[1];
+  const r=spawnSync(process.env.GRAVURU_PYTHON||'python3',['-c',"from PIL import Image;import io,base64,sys,json;im=Image.open(io.BytesIO(base64.b64decode(sys.stdin.read())));print(json.dumps(list(im.convert('RGBA').getpixel((200,200)))))"],{input:embedded,encoding:'utf8'});assert.equal(r.status,0);assert.deepEqual(JSON.parse(r.stdout),expected);
+ }
+});

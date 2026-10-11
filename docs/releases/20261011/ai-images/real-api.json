@@ -1,0 +1,53 @@
+{
+  "result": "PASS",
+  "sourceCommit": "f46937331d382e519994aadd80915b674a4dac63",
+  "stage": "complete",
+  "paidCalls": 2,
+  "tests": [
+    {
+      "kind": "image_generate",
+      "paidCalls": 1,
+      "liveReservationRecorded": true,
+      "httpStatus": 200,
+      "status": "review",
+      "chargedCents": 9,
+      "reservedCents": 426,
+      "usage": {
+        "inputTokens": 80,
+        "textTokens": 80,
+        "imageTokens": 0,
+        "outputTokens": 1310,
+        "model": "gpt-image-1.5"
+      },
+      "duplicateDidNotResend": true,
+      "nativePreviewVerified": true
+    },
+    {
+      "kind": "photo_edit",
+      "paidCalls": 1,
+      "liveReservationRecorded": true,
+      "httpStatus": 200,
+      "status": "review",
+      "chargedCents": 23,
+      "reservedCents": 426,
+      "usage": {
+        "inputTokens": 6679,
+        "textTokens": 116,
+        "imageTokens": 6563,
+        "outputTokens": 1920,
+        "model": "gpt-image-1.5"
+      },
+      "duplicateDidNotResend": true,
+      "nativePreviewVerified": true,
+      "copyApplyAndDuplicateVerified": true
+    }
+  ],
+  "productAppliedLive": false,
+  "realMerchantLoginVerified": false,
+  "accountedCents": 33,
+  "model": "gpt-image-1.5",
+  "liveProductRevision": 5,
+  "originalProductUnchanged": true,
+  "configUnchanged": true,
+  "checkedAt": "2026-10-11T13:48:45.360Z"
+}

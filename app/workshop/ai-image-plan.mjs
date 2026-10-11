@@ -2,6 +2,7 @@ import {aiFail} from './ai-design-plan.mjs';
 import {imagePrompt} from './openai-image-provider.mjs';
 import {authorDesign} from './ui/design-authoring.mjs';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
+import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 
 export function aiImageContext(record,request,assets){
  const c=record.document.config,d=c?.profile?.designs.find(d=>d.id===request.designId);
@@ -38,8 +39,9 @@ export async function applyAiImage(original,request,result,assets){
  }
  const g=c.profile.geometry,max=Math.min(40,(g.width-2*(g.safeMarginMm??2))/2,(g.height-2*(g.safeMarginMm??2))/2);
  const scale=max/Math.max(photo.width,photo.height);
- const asset=await assets.importPhotoExample({bytes:result.image,widthMm:photo.width*scale,heightMm:photo.height*scale});
+ const engraving=getProcessingProfile(c.profile).method==='engraving';
+ const asset=await assets.importPhotoExample({bytes:result.image,widthMm:photo.width*scale,heightMm:photo.height*scale,monochrome:engraving});
  const motif=assets.resource(asset.assetId);motif.name='KI-Motiv';motif.category='Eigene Motive';
  const authored=authorDesign(document,d.id,'motif',{motif});
- return {document:authored.document,summary:'Neues KI-Motiv als einzelnes verschiebbares Bildelement ergänzt. Bestehende Texte, Fotos und Motive bleiben erhalten.',changes:[{action:'image_generate',objectId:authored.objectId,assetId:asset.assetId}]};
+ return {document:authored.document,summary:'Neues KI-Motiv als einzelnes verschiebbares Bildelement ergänzt. '+(engraving?'Die Transparenz bildet die einfarbige Gravurmaske. ':'')+'Bestehende Texte, Fotos und Motive bleiben erhalten.',changes:[{action:'image_generate',objectId:authored.objectId,assetId:asset.assetId}]};
 }

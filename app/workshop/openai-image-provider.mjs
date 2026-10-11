@@ -8,7 +8,7 @@ export const imageCost=(text,image,output)=>Math.ceil((text*5+image*8+output*32)
 export function imagePrompt(context){
  const prefix=context.kind==='photo_edit'
   ? 'Bearbeite nur dieses einzelne Musterfoto nach dem Auftrag. Erhalte Personen, Motiv und Bildaufbau soweit nicht ausdrücklich anders verlangt. Keine Beschriftung, Produktplatte oder Bedienhinweise hinzufügen. '
-  : 'Erzeuge ein einzelnes freistehendes Motiv auf transparentem Hintergrund für eine Produktgestaltung. Keine Produktplatte, Szene, Beschriftung oder Bedienhinweise. Das Motiv soll vollständig sichtbar sein. ';
+  : 'Erzeuge ein einzelnes freistehendes Motiv auf transparentem Hintergrund für eine Produktgestaltung. Keine Produktplatte, Szene, Beschriftung, Bedienhinweise, Schatten oder Leuchteffekte. Klare deckende Motivflächen; außerhalb des Motivs vollständig transparent. Das Motiv soll vollständig sichtbar sein. ';
  const prompt=prefix+context.instruction;
  if(Buffer.byteLength(prompt)>16384)throw aiFail(422,'ai_context_large','Der Bildauftrag ist zu lang.');
  return prompt;

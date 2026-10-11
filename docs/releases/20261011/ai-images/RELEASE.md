@@ -15,3 +15,7 @@ Gemeinsame 100-EUR-Monatsgrenze und dasselbe private Kostenjournal; keine zweite
 ## Noch ausstehend in diesem Zwischenstand
 
 Paketinstallation, echter Generierungs-/Fotobearbeitungsauftrag, Serveraktivierung und abschließende Bestandssicherung. Die vorhandene Live-Laufzeit bleibt bis zur bestandenen Prüfung auf `060a10b`. Echte Shopify-Nutzeranmeldung, öffentliche Kunden-/Checkout-Strecke, Drive, allgemeine Shopify-Übertragung, Stapel-KI und Maschinen-/Material-/ICC-Abnahme sind nicht durch synthetische Tests erledigt.
+
+## Sichtprüfung und Korrektur vor Veröffentlichung
+
+Beide echten API-Aufträge bestanden technisch (9 Cent Motiv, 23 Cent Foto; mit früherem Texttest insgesamt 33 Cent). Keine Live-Produktübernahme. Sichtprüfung fand ein zu schwaches weißes Gravurmotiv: die bestehende Graustufenabbildung macht weiße Pixel transparent. Neue KI-Gravurmotive werden deshalb ausdrücklich aus der Transparenz als technische schwarze Gravurmaske abgeleitet. Das Original-PNG bleibt bytegleich erhalten; Druckmotive und Fotobearbeitung behalten RGB. 34 gezielte Folgeprüfungen einschließlich echter Bilddecodierung, Originalerhalt und Gravur-Ausgabe bestanden. Erneute Vorschau mit demselben echten KI-Ergebnis, kein weiterer kostenpflichtiger Aufruf. Fotobearbeitung verändert sichtbare Bilddetails/Ausschnitt; deshalb ausdrücklich vor Übernahme prüfen, keine Identitäts- oder Rekonstruktionsgarantie.

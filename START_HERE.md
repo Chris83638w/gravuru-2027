@@ -6,6 +6,8 @@ Installierter Quellstand **060a10b**, Version `0.1.0-recovery.20261010+060a10b9d
 
 [Release, Bedienung und genaue Grenzen](docs/releases/20261011/ai-design/RELEASE.md) · [Paket und Prüfsumme](deliverables/merchant-ai-design-20261011/README.md) · [Geschützte OpenAI-Einrichtung](ops/plesk/AI-DESIGN.md). **Nächster Schritt:** eigenen OpenAI-Projektschlüssel geschützt serverseitig hinterlegen, Verbindung und einen kleinen echten Auftrag abnehmen. Öffentliche neue Kunden-/Checkout-Strecke, allgemeine Shopify-Übertragung, eigene Drive-Autorisierung und Maschinenabnahme bleiben separate offene Anschlüsse. Die folgenden Abschnitte sind historische Nachweise.
 
+**Anschlussfortschritt:** Nutzer hat den API-Schlüssel erstellt. Geschützte leere Datei `private/gravuru-openai-api-key.txt` auf dem Händler-Server angelegt und Eigentümerrechte geprüft; Inhalt nicht gelesen, keine Aktivierung. Nächste Nutzereingabe: Schlüssel dort im Plesk-Dateimanager speichern; danach serverseitig verbinden und echten Auftrag prüfen.
+
 ## Live: Original-Fotomaske und vollständiger Testkauf · 11.10.2026
 
 Installierter Quellstand **9b77eb1**, Gedenktafel **Revision 5**. Originalmaske der PDF bleibt beim Fotoaustausch in Händleransicht, Kundenansicht und technischem Ausgabepaket erhalten; verständliche Elementnamen und M01/M02-Navigation. **654 Regressionstests**, Desktop-/Mobilabläufe, isolierte Paketinstallation und **25 HTTPS-Prüfungen** bestanden. Tatsächliche Shopify-Testbestellung mit Foto: **32,98 EUR + 4,99 EUR Versand**, Testgateway, bezahlt, nicht erfüllt; genau eine Position zugeordnet, keine Fertigungsfreigabe.

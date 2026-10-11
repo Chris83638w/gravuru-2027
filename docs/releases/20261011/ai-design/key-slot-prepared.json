@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "created": true,
+  "keyFile": "private/gravuru-openai-api-key.txt",
+  "empty": true,
+  "ownerOnly": true,
+  "contentRead": false,
+  "merchantConfigChanged": false,
+  "apiActivated": false
+}

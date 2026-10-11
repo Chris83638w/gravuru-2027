@@ -1,10 +1,12 @@
-## KI-Stapel geprüft · 11.10.2026
+## Live: KI-Stapelgestaltung · 11.10.2026
 
-Ausgewählte kompatible Produkte gemeinsam mit KI gestalten: Layout, einzelne neue Motive oder ausdrücklich zugeordnete Musterfotos. Dauerhafte serielle Warteschlange, Budgetpause, Abbruch und Fortsetzen nach Neustart; Vorschläge einzeln vergleichen und als neue Version übernehmen. Bestehende Einzel-KI und 100-EUR-Grenze wiederverwendet.
+Installierter Quellstand **0b64e87**. Ausgewählte kompatible Produkte gemeinsam mit KI gestalten: Layout, einzelne neue Motive oder ausdrücklich zugeordnete Musterfotos. Dauerhafte serielle Warteschlange, Budgetpause, Abbruch und Fortsetzen nach Neustart; Vorschläge einzeln vergleichen und als neue Version übernehmen. Bestehende Einzel-KI und 100-EUR-Grenze wiederverwendet.
 
 597 Regressionstests nach gezielter Korrektur des Zugriffstests bestanden; Browser mit synthetischer Shopify-Identität und 68 API-Aufrufen auf Desktop/Mobil bestanden. 100 Produkte mit 3 parallelen Änderungen: 97 Entwürfe, 3 Konflikte. Keine bezahlten API-Anfragen. [Nachweise](docs/releases/20261011/ai-batch/RELEASE.md).
 
-**Nächster Schritt in diesem Paket:** versioniertes Installationspaket getrennt installieren, Händlerlaufzeit nach Sicherung aktivieren und Live-Auslieferung prüfen. Die folgenden Abschnitte sind historische Nachweise.
+**Installation und Auslieferung:** ZIP mit Version/Prüfsumme getrennt installiert, auf dem Server aufgebaut und nach privater Sicherung aktiviert. HTTPS, bytegleiche Oberfläche, geschützte API und neuer Händlerprozess bestätigt. Vorherige KI-Kosten unverändert 34 Cent von 100 EUR; keine zusätzliche Anfrage durch diese Prüfungen. Alle historischen Zeilen in 47 Tabellen erhalten. Drei Datenbanken privat auf Server und in Cloud mit SHA-256 und SQLite-Integrität geprüft. Code, Berichte und Paket auf Aufgaben-/Recovery-Branches gesichert.
+
+**Genau nächster Schritt:** allgemeine Shopify-Produktübertragung als überprüfbare Entwürfe für weitere Werkstattprodukte abschließen. Echte Händleranmeldung als vollständiger Klicknachweis, öffentliche neue Kunden-/Checkout-Strecke, eigene Drive-Anbindung und Maschinenabnahme bleiben ausdrücklich offen. Die folgenden Abschnitte sind historische Nachweise.
 
 ## Live: KI-Motive und Musterfotos · 11.10.2026
 

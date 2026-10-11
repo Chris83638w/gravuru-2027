@@ -1,0 +1,65 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-10-11T15:47:14.005Z",
+  "aiEnabled": true,
+  "imagesEnabled": true,
+  "imageModel": "gpt-image-1.5",
+  "sourceCommit": "0b64e8751d51e04560490825a610df9674de79d3",
+  "limitCents": 10000,
+  "pricingValidUntil": "2026-11-10T12:38:17.385Z",
+  "keyProtected": true,
+  "otherMerchantSettingsUnchanged": true,
+  "activeMerchantProcesses": 1,
+  "startedAfterConfiguration": true,
+  "startedAt": "2026-10-11T15:47:09.330Z",
+  "batchQueueInstalled": true,
+  "batchTables": {
+    "batches": 0,
+    "items": 0
+  },
+  "jobs": [
+    {
+      "status": "review",
+      "reservedCents": 426,
+      "chargedCents": 1,
+      "usage": {
+        "inputTokens": 1194,
+        "outputTokens": 102
+      }
+    },
+    {
+      "status": "discarded",
+      "reservedCents": 426,
+      "chargedCents": 9,
+      "usage": {
+        "inputTokens": 80,
+        "textTokens": 80,
+        "imageTokens": 0,
+        "outputTokens": 1310,
+        "model": "gpt-image-1.5"
+      }
+    },
+    {
+      "status": "discarded",
+      "reservedCents": 426,
+      "chargedCents": 23,
+      "usage": {
+        "inputTokens": 6679,
+        "textTokens": 116,
+        "imageTokens": 6563,
+        "outputTokens": 1920,
+        "model": "gpt-image-1.5"
+      }
+    },
+    {
+      "status": "invalid",
+      "reservedCents": 426,
+      "chargedCents": 1,
+      "usage": {
+        "inputTokens": 1128,
+        "outputTokens": 124
+      }
+    }
+  ],
+  "realMerchantLoginVerified": false
+}

@@ -1,0 +1,24 @@
+{
+  "result": "READY",
+  "jobs": [
+    {
+      "status": "discarded",
+      "count": 2,
+      "cents": 32
+    },
+    {
+      "status": "invalid",
+      "count": 1,
+      "cents": 1
+    },
+    {
+      "status": "review",
+      "count": 1,
+      "cents": 1
+    }
+  ],
+  "entrySha256": "ac89cbfa3f7a779e0be6865f77429daffd12ee5f540fb3a81d8c9fe7e192b1fc",
+  "configSha256": "4a381c6a2cb0755e8e342514e545939aee1f4e75d34315a8bd04a9279c43e411",
+  "aiConfigSha256": "9f3d4c71d2002c897654745ee4f79c64e55c5783342cd57fb86d3091b69662ae",
+  "keyCopied": false
+}

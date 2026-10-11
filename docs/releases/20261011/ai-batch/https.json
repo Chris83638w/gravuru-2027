@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "sourceCommit": "0b64e8751d51e04560490825a610df9674de79d3",
+  "checkedAt": "2026-10-11T15:47:14.024440+00:00",
+  "tlsVerified": true,
+  "checks": [
+    {
+      "path": "/werkstatt/",
+      "status": 200,
+      "shopifyContextPresent": true
+    },
+    {
+      "path": "/workshop-ui/ai-batch-ui.mjs",
+      "status": 200,
+      "matchesInstalledSource": true,
+      "imageAndPhotoActions": true
+    },
+    {
+      "path": "/api/workshop/ai-design/status",
+      "status": 401
+    },
+    {
+      "path": "/api/workshop/ai-batches",
+      "status": 401
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 401
+    }
+  ],
+  "realMerchantLoginVerified": false
+}

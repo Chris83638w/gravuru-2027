@@ -1,8 +1,10 @@
+import {aiImageContext,prepareAiImageContext,applyAiImage} from './ai-image-plan.mjs';
+import {AI_IMAGE_MODEL} from './openai-image-provider.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {aiFail,aiDigest,aiRequest,aiContext,applyAiPlan} from './ai-design-plan.mjs';
 import {AI_MODEL,AI_MONTHLY_CENTS,AI_RESERVE_CENTS,openAiBody} from './openai-design-provider.mjs';
 const monthAt=date=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Berlin',year:'numeric',month:'2-digit'}).format(date);
-export function createAiDesignJobs({filename,repository,config=null,provider=null,clock=()=>new Date()}){
+export function createAiDesignJobs({filename,repository,config=null,provider=null,imageProvider=null,assets=null,clock=()=>new Date()}){
  const db=new DatabaseSync(filename);let closed=false;const running=new Map();
  db.exec(`PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS ai_design_jobs (
  id TEXT PRIMARY KEY, product_id TEXT NOT NULL, base_revision INTEGER NOT NULL, design_id TEXT NOT NULL,
@@ -16,7 +18,7 @@ export function createAiDesignJobs({filename,repository,config=null,provider=nul
  db.prepare("UPDATE ai_design_jobs SET status='uncertain',message=?,updated_at=? WHERE status='running'").run('Auftrag beim Neustart unterbrochen. Kostenreserve bleibt erhalten; keine automatische Wiederholung.',clock().toISOString());
  const transaction=fn=>{db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}};
  const row=id=>{const r=db.prepare('SELECT * FROM ai_design_jobs WHERE id=?').get(id);if(!r)throw aiFail(404,'ai_job_missing','KI-Auftrag nicht gefunden.');return r;};
- const publicJob=r=>({id:r.id,productId:r.product_id,expectedRevision:r.base_revision,designId:r.design_id,status:r.status,instruction:JSON.parse(r.request).instruction,summary:r.summary||'',changes:r.changes?JSON.parse(r.changes):[],reservedCents:r.reserved_cents,chargedCents:r.charged_cents,message:r.message||'',appliedRevision:r.applied_revision,createdAt:r.created_at});
+ const publicJob=r=>({id:r.id,productId:r.product_id,expectedRevision:r.base_revision,designId:r.design_id,status:r.status,kind:JSON.parse(r.request).kind||'layout',instruction:JSON.parse(r.request).instruction,summary:r.summary||'',changes:r.changes?JSON.parse(r.changes):[],reservedCents:r.reserved_cents,chargedCents:r.charged_cents,message:r.message||'',appliedRevision:r.applied_revision,createdAt:r.created_at});
  function status(){
   const month=monthAt(clock()),used=db.prepare('SELECT COALESCE(SUM(COALESCE(charged_cents,reserved_cents)),0) n FROM ai_design_jobs WHERE month=?').get(month).n;
   let reason=config?.disabledReason||'OpenAI-Zugang und Kostenfreigabe sind noch nicht eingerichtet.';
@@ -24,20 +26,23 @@ export function createAiDesignJobs({filename,repository,config=null,provider=nul
   if(enabled&&(!Number.isSafeInteger(config.monthlyLimitCents)||config.monthlyLimitCents<AI_RESERVE_CENTS||config.monthlyLimitCents>AI_MONTHLY_CENTS||!Number.isFinite(Date.parse(config.pricingValidUntil))||Date.parse(config.pricingValidUntil)<=clock().getTime())){enabled=false;reason='Die befristete Preis- und Kostenprüfung muss erneuert werden.';}
   if(db.prepare("SELECT 1 FROM ai_design_jobs WHERE status='cost_review' LIMIT 1").get()){enabled=false;reason='Ein Kostenbeleg muss geprüft werden, bevor weitere KI-Aufträge möglich sind.';}
   const limit=config?.monthlyLimitCents||AI_MONTHLY_CENTS;
-  return {enabled,reason:enabled?'':reason,model:AI_MODEL,month,limitCents:limit,accountedCents:used,availableCents:Math.max(0,limit-used),reservationCents:AI_RESERVE_CENTS,pricingValidUntil:config?.pricingValidUntil||null,scope:'Diese Werkstatt; vorsichtige EUR-Bewertung, keine OpenAI-Rechnung.',capabilities:['editable-text','layout','existing-motifs']};
+  return {enabled,reason:enabled?'':reason,model:AI_MODEL,month,limitCents:limit,accountedCents:used,availableCents:Math.max(0,limit-used),reservationCents:AI_RESERVE_CENTS,pricingValidUntil:config?.pricingValidUntil||null,scope:'Diese Werkstatt; vorsichtige EUR-Bewertung, keine OpenAI-Rechnung.',imageEnabled:Boolean(enabled&&config?.imagesEnabled&&imageProvider&&assets),imageModel:AI_IMAGE_MODEL,capabilities:['editable-text','layout','existing-motifs',...(enabled&&config?.imagesEnabled&&imageProvider&&assets?['image-generation','photo-edit']:[])]};
  }
  async function generate(id,context){
-  const controller=new AbortController();running.set(id,controller);const timer=setTimeout(()=>controller.abort(),90000);
+  const controller=new AbortController();running.set(id,controller);const timer=setTimeout(()=>controller.abort(),context.kind?240000:90000);
   try{
-   const result=await provider(context,{signal:controller.signal});if(closed)return;
+   let prepared=context;
+   if(context.kind){try{prepared=await prepareAiImageContext(context);}catch{if(!closed&&row(id).status==='running')db.prepare("UPDATE ai_design_jobs SET status='invalid',charged_cents=0,message=?,updated_at=? WHERE id=?").run('Das Musterfoto konnte nicht gelesen werden. Kein OpenAI-Aufruf ausgeführt.',clock().toISOString(),id);return;}}
+   if(closed||row(id).status!=='running')return;
+   const result=await (context.kind?imageProvider:provider)(prepared,{signal:controller.signal});if(closed)return;
    const current=row(id);if(current.status!=='running')return;
    if(!Number.isSafeInteger(result.chargedCents)||result.chargedCents<0||result.chargedCents>current.reserved_cents)throw aiFail(502,'ai_usage_unconfirmed','Die KI-Kosten konnten nicht bestätigt werden.');
    db.prepare('UPDATE ai_design_jobs SET charged_cents=?,usage=?,updated_at=? WHERE id=?').run(result.chargedCents,JSON.stringify(result.usage),clock().toISOString(),id);
    try{
     const request=JSON.parse(current.request),original=repository.get(current.product_id,{revision:current.base_revision});
-    const candidate=applyAiPlan(original.document,request,result.plan);const checked=repository.validate(candidate.document);
+    const candidate=context.kind?await applyAiImage(original.document,request,result,assets):applyAiPlan(original.document,request,result.plan);if(closed||row(id).status!=='running')return;const checked=repository.validate(candidate.document);
     db.prepare("UPDATE ai_design_jobs SET status='review',candidate=?,summary=?,changes=?,updated_at=? WHERE id=?").run(JSON.stringify(checked),candidate.summary,JSON.stringify(candidate.changes),clock().toISOString(),id);
-   }catch(e){db.prepare("UPDATE ai_design_jobs SET status='invalid',message=?,updated_at=? WHERE id=?").run(e.code==='ai_plan_invalid'?e.message:'Der Vorschlag erfüllt die Produktprüfung nicht. Bitte den Auftrag präzisieren.',clock().toISOString(),id);}
+   }catch(e){if(closed||row(id).status!=='running')return;db.prepare("UPDATE ai_design_jobs SET status='invalid',message=?,updated_at=? WHERE id=?").run(e.code==='ai_plan_invalid'?e.message:'Der Vorschlag erfüllt die Produktprüfung nicht. Bitte den Auftrag präzisieren.',clock().toISOString(),id);}
   }catch(e){if(!closed&&row(id).status==='running')db.prepare('UPDATE ai_design_jobs SET status=?,message=?,updated_at=? WHERE id=?').run(e.code==='ai_usage_unconfirmed'?'cost_review':'uncertain','Keine vollständig bestätigte Antwort. Die Kostenreserve bleibt erhalten; keine automatische Wiederholung.',clock().toISOString(),id);}
   finally{clearTimeout(timer);running.delete(id);}
  }
@@ -51,7 +56,9 @@ export function createAiDesignJobs({filename,repository,config=null,provider=nul
    const prior=db.prepare('SELECT * FROM ai_design_jobs WHERE id=?').get(request.requestId);
    if(prior){if(prior.fingerprint!==fingerprint)throw aiFail(409,'ai_request_reused','Diese Auftragskennung gehört zu einem anderen Auftrag.');return {...publicJob(prior),duplicate:true};}
    const record=repository.get(productId);if(record.revision!==request.expectedRevision)throw aiFail(409,'ai_stale','Bitte zuerst den aktuellen Produktstand laden.');
-   const context=aiContext(record,request);openAiBody(context);
+   const imageJob=['image_generate','photo_edit'].includes(request.kind);
+   if(imageJob&&!status().imageEnabled)throw aiFail(503,'ai_images_disabled','Bildgestaltung ist noch nicht freigeschaltet. Die vorhandene Text- und Layoutgestaltung bleibt verfügbar.');
+   const context=imageJob?aiImageContext(record,request,assets):aiContext(record,request);if(!imageJob)openAiBody(context);
    transaction(()=>{
     const s=status();if(!s.enabled)throw aiFail(503,'ai_disabled',s.reason);
     if(s.availableCents<AI_RESERVE_CENTS)throw aiFail(409,'ai_budget_exhausted','Das Monatsbudget reicht nicht für die erforderliche Kostenreserve.');

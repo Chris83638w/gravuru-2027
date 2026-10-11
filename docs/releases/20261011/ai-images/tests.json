@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "tests": 688,
+  "passed": 688,
+  "failed": 0,
+  "skipped": 0,
+  "scope": "variant-m, workshop, AI private config, merchant runtime; synthetic tests",
+  "elapsedMs": 226253.930589,
+  "targetedImageAndAiTests": 25,
+  "testSetsOverlap": true
+}

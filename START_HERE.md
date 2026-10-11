@@ -1,3 +1,7 @@
+## In Prüfung: KI-Motive und Musterfotos · 11.10.2026
+
+Zwei Bildaktionen im vorhandenen KI-Fenster ergänzt, gemeinsame 100-EUR-Monatsgrenze. Originale, Fotomaske, Texte, Preise und alte Versionen erhalten. **688 Tests** und Desktop-/Mobilbrowser mit synthetischer Händleridentität bestanden. [Arbeitsnachweis](docs/releases/20261011/ai-images/RELEASE.md). Live weiterhin `060a10b`, bis Paket-, echte API- und Serverprüfung abgeschlossen sind. Nächster Schritt: Paket isoliert installieren, echte Bildaufrufe budgetiert prüfen und aktivieren.
+
 ## Live: OpenAI verbunden und mit echter Antwort geprüft · 11.10.2026
 
 Geschützter eigener Schlüssel eingerichtet, `gpt-4.1-2025-04-14` erreichbar. **Ein echter Gestaltungsauftrag bestanden:** gewünschte Textposition geändert, sonstige Elemente/Preise/Rechte erhalten. 1.194 Eingabe-/102 Ausgabetokens, **1 Cent im Werkstattbudget**, 99,99 EUR verfügbar. Übernahme/Wiederholung in privater Kopie geprüft; echtes Produkt bleibt Revision 5. Installierter Quellstand weiterhin **060a10b**.

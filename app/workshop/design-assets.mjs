@@ -73,6 +73,15 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
       db.prepare('INSERT OR IGNORE INTO material_surfaces VALUES (?,?,?)').run(id,image.original,image.preview);
       return {sha256:id,url:'/api/workshop/material-surfaces/'+id+'.png'};
     },
+    photoExampleImage(id){
+      row(id);
+      const source=db.prepare('SELECT s.bytes FROM photo_example_sources p JOIN design_sources s ON s.sha256=p.source_sha256 WHERE p.asset_id=? ORDER BY p.rowid LIMIT 1').get(id);
+      if(source)return Buffer.from(source.bytes);
+      // Older PDF examples store the extracted photo in a validated SVG wrapper.
+      const images=[...this.read(id).toString('utf8').matchAll(/<(?:\w+:)?image\b[^>]*\b(?:href|xlink:href)=["']data:image\/(?:png|jpeg);base64,([A-Za-z0-9+/=]+)["']/g)];
+      if(images.length===1)return Buffer.from(images[0][1],'base64');
+      fail(422,'ai_photo_source_missing','Für dieses Muster fehlt eine eindeutige Fotodatei. Bitte zuerst ein eigenes Musterfoto speichern.');
+    },
     materialSurface(id,original=false){
       if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'surface_missing','Materialoberfläche fehlt.');
       const r=db.prepare('SELECT original,preview FROM material_surfaces WHERE sha256=?').get(id);

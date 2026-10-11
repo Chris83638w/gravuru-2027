@@ -85,7 +85,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,formFonts);productionProfiles.resolve(d);return d;};
   const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
-  const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider});
+  const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider,imageProvider:aiDesign?.imageProvider,assets});
   const variants=createFormVariants({filename,repository});
   const batchJobs=createBatchJobs({filename,repository,assets});
   const variantBatchJobs=createVariantBatchJobs({filename,variants});

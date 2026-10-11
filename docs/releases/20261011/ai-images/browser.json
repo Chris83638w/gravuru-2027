@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "sideBySideNativePreview": true,
+    "mobileNoHorizontalOverflow": true,
+    "applyAndReload": true,
+    "durableHistory": true,
+    "cancelRetainsReservation": true,
+    "newImagePreviewAndApply": true,
+    "photoPreviewAndApply": true,
+    "embeddedPrivateImages": true
+  },
+  "apiRequests": 85,
+  "consoleErrors": [],
+  "provider": "synthetic; no OpenAI requests",
+  "privateData": "synthetic products only"
+}

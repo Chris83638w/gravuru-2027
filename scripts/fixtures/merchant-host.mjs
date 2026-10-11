@@ -30,9 +30,12 @@ document.designs[0].fields=[{id:'name',type:'text',label:'Dein Name',xMm:20,yMm:
 const form=workshop.repository.create(document);
 const {syntheticSlate}=await import('./slate-config.mjs');
 const {makeProductDocument}=await import('../../app/workshop/product-model.mjs');
-const slate=workshop.repository.create(makeProductDocument(syntheticSlate(seed.universal),{name:'Synthetische Schieferplatte',kind:'product'}));workshop.close();
+let slateDoc=makeProductDocument(syntheticSlate(seed.universal),{name:'Synthetische Schieferplatte',kind:'product'});
+if(process.argv[3]==='ai'){const {authorDesign}=await import('../../app/workshop/ui/design-authoring.mjs');const asset=await workshop.assets.importPhotoExample({bytes:fs.readFileSync(path.join(root,'synthetic.png')).toString('base64'),widthMm:25,heightMm:35});slateDoc=authorDesign(slateDoc,'slate-test','photo',{exampleAssetId:asset.assetId}).document;}
+const slate=workshop.repository.create(slateDoc);workshop.close();
 const aiDesign=process.argv[3]==='ai'?{
- config:{enabled:true,monthlyLimitCents:10000,pricingValidUntil:new Date(Date.now()+86400000).toISOString()},
+ config:{enabled:true,imagesEnabled:true,monthlyLimitCents:10000,pricingValidUntil:new Date(Date.now()+86400000).toISOString()},
+ imageProvider:async(context)=>{await new Promise(r=>setTimeout(r,120));return {image:fs.readFileSync(path.join(root,'synthetic-ai.png')).toString('base64'),chargedCents:9,usage:{model:'synthetic'}};},
  provider:async(context,{signal})=>{
   await new Promise((resolve,reject)=>{const timer=setTimeout(resolve,context.instruction.includes('LANGSAM')?20000:120);signal.addEventListener('abort',()=>{clearTimeout(timer);reject(Error('synthetic abort'));},{once:true});});
   const text=context.design.objects.find(o=>o.type==='text'&&!o.technicalLocked);

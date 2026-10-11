@@ -16,7 +16,7 @@ import urllib.error
 from types import SimpleNamespace
 from urllib.parse import urlsplit, parse_qs
 from playwright.sync_api import sync_playwright, expect, Error as PlaywrightError
-from PIL import Image
+from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / '.test-output/ai-design'
@@ -27,6 +27,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
     folder = Path(tmp)
     (folder / '.synthetic-merchant-runtime').touch()
     photo=folder/'synthetic.png';Image.new('RGB',(600,800),'#748da4').save(photo)
+    sample=Image.new('RGBA',(512,512),(0,0,0,0));draw=ImageDraw.Draw(sample);draw.ellipse((80,50,432,400),fill='#256f51');draw.rectangle((240,270,273,480),fill='#6d4b33');sample.save(folder/'synthetic-ai.png')
     log = (folder / 'fixture.log').open('w')
     server = subprocess.Popen(['node', str(ROOT / 'scripts/fixtures/merchant-host.mjs'), str(folder), 'ai'],
                               cwd=ROOT, env=dict(os.environ), stdout=log, stderr=log)
@@ -125,8 +126,39 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             page.locator('#ai-close').click()
             page.locator('[data-ai-design]').click()
             expect(page.locator('#ai-jobs')).to_contain_text('Antwort unbestätigt')
+            page.locator('#ai-kind').select_option('image_generate')
+            expect(page.locator('#ai-preserve-controls')).not_to_be_visible()
+            page.locator('#ai-instruction').fill('Erzeuge einen einzelnen Baum als Motiv.')
+            page.locator('#ai-generate').click()
+            expect(page.locator('#ai-summary')).to_contain_text('Neues KI-Motiv',timeout=30000)
+            expect(page.locator('#ai-after image')).not_to_have_count(0)
+            assert '/api/workshop/design-assets/' not in page.locator('#ai-after').inner_html()
+            assert page.locator('#ai-design-dialog').evaluate('(el)=>el.scrollWidth<=el.clientWidth+1')
+            page.locator('#ai-review').scroll_into_view_if_needed()
+            page.screenshot(path=str(OUT/'image-mobile.png'))
+            page.set_viewport_size({'width':1440,'height':1000})
+            page.screenshot(path=str(OUT/'image-desktop.png'))
+            page.locator('#ai-apply').click()
+            expect(page.locator('#ai-design-dialog')).not_to_be_visible(timeout=30000)
+            page.reload()
+            expect(page.locator('#editor-section')).to_be_visible(timeout=30000)
+            page.locator('[data-ai-design]').click()
+            expect(page.locator('#ai-connection')).to_have_text('OpenAI-Zugang ist eingerichtet.')
+            page.locator('#ai-kind').select_option('photo_edit')
+            expect(page.locator('#ai-photo-target')).to_be_visible()
+            assert page.locator('#ai-photo-slot').input_value()
+            page.locator('#ai-instruction').fill('Bearbeite das ausgewählte Musterfoto.')
+            page.locator('#ai-generate').click()
+            expect(page.locator('#ai-summary')).to_contain_text('Musterfoto bearbeitet',timeout=30000)
+            assert page.locator('#ai-before').inner_html()!=page.locator('#ai-after').inner_html()
+            page.locator('#ai-review').scroll_into_view_if_needed()
+            page.screenshot(path=str(OUT/'photo-desktop.png'))
+            page.locator('#ai-apply').click()
+            expect(page.locator('#ai-design-dialog')).not_to_be_visible(timeout=30000)
+            page.reload()
+            expect(page.locator('#editor-section')).to_be_visible(timeout=30000)
             assert not errors,errors
-            report.update(result='PASS',apiRequests=len(api_checks),consoleErrors=errors,checks={'sideBySideNativePreview':True,'mobileNoHorizontalOverflow':True,'applyAndReload':True,'durableHistory':True,'cancelRetainsReservation':True},provider='synthetic; no OpenAI requests',privateData='synthetic products only')
+            report.update(result='PASS',apiRequests=len(api_checks),consoleErrors=errors,checks={'sideBySideNativePreview':True,'mobileNoHorizontalOverflow':True,'applyAndReload':True,'durableHistory':True,'cancelRetainsReservation':True,'newImagePreviewAndApply':True,'photoPreviewAndApply':True,'embeddedPrivateImages':True},provider='synthetic; no OpenAI requests',privateData='synthetic products only')
             (OUT/'report.json').write_text(json.dumps(report,indent=2)+'\n')
             print(json.dumps(report))
             browser.close()

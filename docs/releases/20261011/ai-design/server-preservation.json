@@ -1,0 +1,353 @@
+{
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 24109056,
+      "sha256": "94777daf2576c189ccdbaf8ab3dc9d31062717df322658e711ebbfc523bcbd02",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 17743872,
+      "sha256": "891d6fa68050524949b98be409a10ef7c92c7ed56f0b0b4626e509d985a5e0e9",
+      "quickCheck": "ok"
+    }
+  ],
+  "historicalTables": [
+    {
+      "database": "workshop.sqlite",
+      "table": "products",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "product_revisions",
+      "historicalRows": 7,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "import_items",
+      "historicalRows": 1,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_variant_sets",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_variant_revisions",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_variant_imports",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_variant_members",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "batch_jobs",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "variant_batch_jobs",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_customer_drafts",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_customer_revisions",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_customer_photos",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_review_snapshots",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "acrylic_review_requests",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_print_proofs",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_export_jobs",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_export_events",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "export_output_checks",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "storefront_cart_handoffs",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_shop_bindings",
+      "historicalRows": 27,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_shop_binding_selections",
+      "historicalRows": 27,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_order_offers",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_order_events",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_order_customers",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_order_lines",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_order_status_events",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_order_refund_reports",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "acrylic_customer_drafts",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "acrylic_customer_revisions",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "customer_file_grants",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "customer_file_revocations",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "shop_draft_transfers",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_shop_binding_personalization",
+      "historicalRows": 27,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "workshop.sqlite",
+      "table": "form_offer_personalization",
+      "historicalRows": 3,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "profiles.sqlite",
+      "table": "profiles",
+      "historicalRows": 1,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "profiles.sqlite",
+      "table": "profile_revisions",
+      "historicalRows": 2,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "profiles.sqlite",
+      "table": "profile_library_settings",
+      "historicalRows": 1,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "profiles.sqlite",
+      "table": "profile_settings_revisions",
+      "historicalRows": 1,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "profiles.sqlite",
+      "table": "manufacturing_profiles",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "profiles.sqlite",
+      "table": "manufacturing_profile_revisions",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "design_sources",
+      "historicalRows": 26,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "design_assets",
+      "historicalRows": 26,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "form_contours",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "material_surfaces",
+      "historicalRows": 1,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "workshop_fonts",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "photo_example_sources",
+      "historicalRows": 0,
+      "preserved": true,
+      "addedRows": 0
+    }
+  ],
+  "aiJobs": 0,
+  "result": "PASS",
+  "sourceCommit": "060a10b9d9238574d05feb4e28e7f72077199fa1",
+  "aiEnabled": false,
+  "privateConfigUnchanged": true,
+  "startupForwarderUnchanged": true,
+  "checkedAt": "2026-10-11T11:56:53.139Z"
+}

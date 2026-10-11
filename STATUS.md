@@ -1,8 +1,10 @@
-## In Prüfung: OpenAI-Gestaltung auf vorhandener Werkstattlogik · 11.10.2026
+## Live: vorbereitete OpenAI-Gestaltung mit Kostenkontrolle · 11.10.2026
 
-Aufgabenbranch `task/openai-designer-20261011`: native Texte/Layout/Farben/vorhandene Motive, Vorher/Nachher, ausdrückliche neue Revision und dauerhafte Auftrags-/Kostenhistorie. 100-EUR-Monatsgrenze mit atomarer Reserve und befristeter Tarifprüfung. Gezielte Prüfungen und synthetische Desktop-/Mobilabläufe bestanden; Gesamtregression/Paketveröffentlichung folgen. **Kein echter OpenAI-Aufruf, kein API-Schlüssel; Generierung bleibt deaktiviert.**
+Installierter Quellstand **060a10b**, Version `0.1.0-recovery.20261010+060a10b9d923`. Produkt → Designs & Elemente → **Mit KI gestalten**: native Texte/Layout/Farben/vorhandene Motive; Vorschlag prüfen und ausdrücklich als neue Revision übernehmen. 100-EUR-Monatsgrenze mit dauerhafter Reserve und befristeter Tarifprüfung. **Generierung ohne geschützten eigenen API-Schlüssel deaktiviert; kein echter OpenAI-Aufruf und noch keine reale Antwortabnahme.** Neue KI-Bilder, Fotobearbeitung und Stapel-KI bleiben offen.
 
-[Umfang, Prüfung und Grenzen](docs/releases/20261011/ai-design/RELEASE.md) · [Geschützte Einrichtung](ops/plesk/AI-DESIGN.md). Nächster Schritt: Abschlussprüfungen, Sicherung und Händler-Veröffentlichung, anschließend geschützter OpenAI-Zugang und echter kleiner Abnahmelauf. Die folgenden Abschnitte sind historische Nachweise.
+**671 Regressionstests**, gezielte Anmelde-/CSRF-Prüfungen, synthetische Desktop-/Mobilabläufe, isolierte ZIP-Installation/Neustart sowie **28 HTTPS-Prüfungen** bestanden. 407 Serverdateien geprüft. Sämtliche historischen Zeilen in 46 Tabellen erhalten; nur leere KI-Tabelle ergänzt. Private Konfiguration, Startweiterleiter und Gedenktafel Revision 5 unverändert. Code und versioniertes ZIP auf GitHub einschließlich Recovery-Branch gesichert; private Daten separat.
+
+[Release, Bedienung und genaue Grenzen](docs/releases/20261011/ai-design/RELEASE.md) · [Paket und Prüfsumme](deliverables/merchant-ai-design-20261011/README.md) · [Geschützte OpenAI-Einrichtung](ops/plesk/AI-DESIGN.md). **Nächster Schritt:** eigenen OpenAI-Projektschlüssel geschützt serverseitig hinterlegen, Verbindung und einen kleinen echten Auftrag abnehmen. Öffentliche neue Kunden-/Checkout-Strecke, allgemeine Shopify-Übertragung, eigene Drive-Autorisierung und Maschinenabnahme bleiben separate offene Anschlüsse. Die folgenden Abschnitte sind historische Nachweise.
 
 ## Live: Original-Fotomaske und vollständiger Testkauf · 11.10.2026
 

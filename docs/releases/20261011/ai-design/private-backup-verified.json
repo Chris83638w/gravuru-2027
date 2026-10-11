@@ -1,0 +1,30 @@
+{
+  "result": "PASS",
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 24109056,
+      "sha256": "94777daf2576c189ccdbaf8ab3dc9d31062717df322658e711ebbfc523bcbd02",
+      "quickCheck": "ok",
+      "cloudCopyMatches": true
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok",
+      "cloudCopyMatches": true
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 17743872,
+      "sha256": "891d6fa68050524949b98be409a10ef7c92c7ed56f0b0b4626e509d985a5e0e9",
+      "quickCheck": "ok",
+      "cloudCopyMatches": true
+    }
+  ],
+  "bytes": 41897984,
+  "privateOnly": true,
+  "sourceCommit": "060a10b9d9238574d05feb4e28e7f72077199fa1",
+  "serverHistoricalTablesPreserved": 46
+}

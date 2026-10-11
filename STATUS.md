@@ -1,8 +1,8 @@
-## In Prüfung: vollständige Händlergestaltung · 11.10.2026
+## Live: eigene Designs, Texte, Motive und Musterfotos · 11.10.2026
 
 Aktuelles Paket ergänzt eigene Designs, native Texte/Fotofelder, Bibliotheks-/Uploadmotive, Ersetzen/Entfernen/Reihenfolge und direktes Verschieben. Foto-Tonwerte in importierten Designs erhalten; JPG/PNG/WebP-Beispielfotos samt privaten Originalen. Kundenrechte bleiben getrennt, Originale und bestehende Revisionen erhalten. Aktuelle private Produktrevision 3 vor Änderung gesichert.
 
-649 Regressionstests, fünf anschließende Prüfungen der Originalzuordnung und vollständiger Desktop-/Mobil-Browserablauf mit synthetischer Identität bestanden. Aktuelle Original-PDF separat sichtbar geprüft; 766 statt eines einzigen Farbwerts im Fotobereich. Noch nicht veröffentlicht. [Paketbericht](docs/releases/20261011/design-authoring/RELEASE.md). Nächster Schritt: Prüfung abschließen, versioniertes Paket isoliert installieren und auf dem getrennten Händlerhost veröffentlichen.
+649 Regressionstests, fünf anschließende Prüfungen der Originalzuordnung und vollständiger Desktop-/Mobil-Browserablauf mit synthetischer Identität bestanden. Aktuelle Original-PDF separat sichtbar geprüft; 766 statt eines einzigen Farbwerts im Fotobereich. Quellstand `74e7670` auf dem getrennten Händlerhost veröffentlicht; 396 Manifestdateien und HTTPS bestätigt. Paketinstallation/Neustart mit synthetischen Daten bestanden. Neuere Revision 3 und sämtliche bestehenden Originalzeilen erhalten; private Sicherung vor/nach Wechsel. [Paketbericht](docs/releases/20261011/design-authoring/RELEASE.md). Nächster Schritt: mit eigenen nativen Designs weiterarbeiten; importierte PDF-Inhalte werden nicht automatisch zu Feldern. Echte Nutzeranmeldung und Maschinenabnahme bleiben getrennte Nachweise.
 
 ## Live: Werkstattfehler behoben und gesichert · 11.10.2026
 

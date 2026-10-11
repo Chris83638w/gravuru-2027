@@ -1,3 +1,9 @@
+## Aktuell: vollständige Händlergestaltung veröffentlicht · 11.10.2026
+
+Quellstand **74e7670** läuft auf dem getrennten Händlerhost. Eigene Designs, Texte, Bibliotheks-/Uploadmotive, Fotofelder, Verschieben/Entfernen/Reihenfolge und sichtbare Tonwerte in importierten Fotos. Kundenrechte getrennt; neue Produktrevision 3 und sämtliche Originale erhalten. **649 Tests**, anschließende gezielte Originalprüfungen, Desktop-/Mobilbedienung mit **207 authentifizierten API-Aufrufen**, isolierte Paketinstallation/Neustart und HTTPS bestanden. Browseranmeldung synthetisch; keine echte Shopify-Nutzeranmeldung oder Maschinenabnahme behaupten.
+
+[Release und Bedienung](docs/releases/20261011/design-authoring/RELEASE.md) · [Installationspaket mit Prüfsumme](deliverables/merchant-authoring-20261011/README.md). Nächster Schritt: eigene native Gestaltungen weiterführen; PDF-Grafiken werden nicht automatisch zerlegt. Die folgenden Abschnitte sind historische Stände.
+
 ## Live: Händler-Testbestellung erfolgreich · 11.10.2026
 
 Händlerhost läuft auf **ffdd150**, Version `0.1.0-recovery.20261010+ffdd150c8cd9`. Gedenktafel Revision 2 mit geschütztem Testwarenkorb und vorhandener vollständiger Schrift live. Echte Shopify-Testbestellung abgeschlossen: 22,99 EUR + 4,99 EUR Versand, Gateway `bogus`, `test: true`, `PAID`, `UNFULFILLED`. Signierter Eingang ordnet genau eine Position dem gespeicherten Entwurf zu. Fertigung/Kundendownload gesperrt; alte Kundenwerkstatt unverändert.

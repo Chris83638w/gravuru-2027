@@ -1,0 +1,41 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "database": "workshop.sqlite",
+      "table": "product_revisions",
+      "originalRows": 5,
+      "currentRows": 5,
+      "originalRowsUnchanged": true
+    },
+    {
+      "database": "profiles.sqlite",
+      "table": "profile_revisions",
+      "originalRows": 2,
+      "currentRows": 2,
+      "originalRowsUnchanged": true
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "design_sources",
+      "originalRows": 20,
+      "currentRows": 20,
+      "originalRowsUnchanged": true
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "design_assets",
+      "originalRows": 20,
+      "currentRows": 20,
+      "originalRowsUnchanged": true
+    },
+    {
+      "database": "design-assets.sqlite",
+      "table": "material_surfaces",
+      "originalRows": 1,
+      "currentRows": 1,
+      "originalRowsUnchanged": true
+    }
+  ],
+  "privateContentsPrinted": false
+}

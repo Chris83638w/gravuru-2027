@@ -1,0 +1,72 @@
+{
+  "result": "PASS",
+  "sourceCommit": "74e767062ff6b45e9ddde07f8283924c4379f218",
+  "checkedAt": "2026-10-11T07:05:14.698537+00:00",
+  "tlsVerified": true,
+  "realMerchantLoginVerified": false,
+  "checks": [
+    {
+      "path": "/werkstatt/",
+      "status": 200,
+      "shopBootstrap": true,
+      "framePolicy": "default-src 'self'; script-src 'self' https://cdn.shopify.com/shopifycloud/app-bridge.js; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors https://gravuru-design.myshopify.com https://admin.shopify.com"
+    },
+    {
+      "path": "/werkstatt/profile/",
+      "status": 200,
+      "shopBootstrap": true,
+      "framePolicy": "default-src 'self'; script-src 'self' https://cdn.shopify.com/shopifycloud/app-bridge.js; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors https://gravuru-design.myshopify.com https://admin.shopify.com"
+    },
+    {
+      "path": "/werkstatt/serien/",
+      "status": 200,
+      "shopBootstrap": true,
+      "framePolicy": "default-src 'self'; script-src 'self' https://cdn.shopify.com/shopifycloud/app-bridge.js; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors https://gravuru-design.myshopify.com https://admin.shopify.com"
+    },
+    {
+      "path": "/workshop-ui/product-editor-ui.mjs",
+      "status": 200,
+      "sourceHashMatches": true
+    },
+    {
+      "path": "/workshop-ui/design-authoring.mjs",
+      "status": 200,
+      "sourceHashMatches": true
+    },
+    {
+      "path": "/workshop-ui/editor.css",
+      "status": 200,
+      "sourceHashMatches": true
+    },
+    {
+      "path": "/platform/sources/app/shared/models/studio-svg.mjs",
+      "status": 200,
+      "sourceHashMatches": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "method": "GET",
+      "unauthenticatedStatus": 401
+    },
+    {
+      "path": "/api/workshop/products",
+      "method": "GET",
+      "unauthenticatedStatus": 401
+    },
+    {
+      "path": "/api/workshop/photo-examples",
+      "method": "POST",
+      "unauthenticatedStatus": 401
+    },
+    {
+      "path": "/api/workshop/design-assets/import",
+      "method": "POST",
+      "unauthenticatedStatus": 401
+    },
+    {
+      "path": "/webhooks/shopify/orders-paid",
+      "method": "POST",
+      "unauthenticatedStatus": 401
+    }
+  ]
+}

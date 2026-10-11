@@ -1,0 +1,5 @@
+{
+  "firstAttempt": "Stopped before writes because the previous merchant runtime still held its exclusive data lock.",
+  "resolution": "Verified the exact merchant lock owner, parent executable, UID and application directory; terminated only that merchant process before activation.",
+  "managementRequestTimeout": "55-second HTTP timeout during runtime backup; separate read-only process/receipt inspection used instead of repeating activation."
+}

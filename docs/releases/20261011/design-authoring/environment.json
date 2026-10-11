@@ -1,0 +1,15 @@
+{
+  "provider": "managed Codex cloud",
+  "environmentId": "ccarenv_b64_Y2NhcmVudl8xNjQ2ZWNjZjE3NmM4MTkxYjM3ZDhhMzgzMmM2Yzk0MA",
+  "observedRevision": 28,
+  "workingDirectory": "/workspace/gravuru-restored",
+  "os": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "node": "v24.19.0",
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "task/live-release-20261010",
+  "runtimeSourceCommit": "74e767062ff6b45e9ddde07f8283924c4379f218",
+  "worktreeInitiallyClean": true,
+  "baseAncestorVerified": "a2af162edd3a1dfa2106212c9f4b76c7ae351b70",
+  "privateFilesOutsideRepository": true,
+  "historicalUnavailableFiles": "See recovery/2026-10-10/RECOVERY-PROVENANCE.md"
+}

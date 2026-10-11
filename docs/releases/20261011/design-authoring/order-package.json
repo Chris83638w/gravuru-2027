@@ -1,0 +1,56 @@
+{
+  "result": "PASS",
+  "sourceCommit": "74e767062ff6b45e9ddde07f8283924c4379f218",
+  "syntheticPrivateStorageOnly": true,
+  "offlineEnable": [
+    {
+      "enabled": true,
+      "alreadyEnabled": false,
+      "mode": "test-only",
+      "apiVersion": "2026-07",
+      "sourceCommit": "74e767062ff6b45e9ddde07f8283924c4379f218",
+      "configSha256": "198961e08489e354e8cf10b89136262600d58bc7f640846c2dbc60b7084dd540",
+      "shopifySubscriptionChanged": false,
+      "checkoutEnabled": false
+    },
+    {
+      "enabled": true,
+      "alreadyEnabled": true,
+      "mode": "test-only",
+      "apiVersion": "2026-07",
+      "sourceCommit": "74e767062ff6b45e9ddde07f8283924c4379f218",
+      "configSha256": "198961e08489e354e8cf10b89136262600d58bc7f640846c2dbc60b7084dd540",
+      "shopifySubscriptionChanged": false,
+      "checkoutEnabled": false
+    }
+  ],
+  "offlineTestCartEnable": [
+    {
+      "enabled": true,
+      "alreadyEnabled": false,
+      "mode": "merchant-test-only",
+      "apiVersion": "2026-07",
+      "sourceCommit": "74e767062ff6b45e9ddde07f8283924c4379f218",
+      "configSha256": "ab0365c166ffc130a627134668a2f789c2822db439d600df51b2e2ff0979701f",
+      "shopifySubscriptionChanged": false,
+      "checkoutEnabled": false,
+      "merchantTestCartEnabled": true
+    },
+    {
+      "enabled": true,
+      "alreadyEnabled": true,
+      "mode": "merchant-test-only",
+      "apiVersion": "2026-07",
+      "sourceCommit": "74e767062ff6b45e9ddde07f8283924c4379f218",
+      "configSha256": "ab0365c166ffc130a627134668a2f789c2822db439d600df51b2e2ff0979701f",
+      "shopifySubscriptionChanged": false,
+      "checkoutEnabled": false,
+      "merchantTestCartEnabled": true
+    }
+  ],
+  "concurrentConfigPreserved": true,
+  "merchantApiStillProtected": true,
+  "signedDeliveryAccepted": true,
+  "duplicateAfterRestart": true,
+  "realShopifyOrder": false
+}

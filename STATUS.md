@@ -4,7 +4,7 @@ Implementiert im Aufgabenbranch `task/steel-formats-catalog-20261011`: Geometrie
 
 Quellstand **880f124** aktiviert. Versioniertes ZIP getrennt installiert, 425 Manifestdateien und 15 HTTPS-Prüfungen bestanden; neuer Prozess und echte Shopify-Entwurfsanmeldung bestätigt. Keine Shopify-Mutation oder zusätzliche KI-Kosten.
 
-Alle bisherigen Zeilen in 49 Tabellen erhalten; drei private Datenbanken nach Wechsel auf Server und Cloud mit SHA-256/Integrität gesichert. Alle 7 Produkt-/Masterstände aktuell im Katalogindex. Code, Prüfnachweise und versioniertes Paket für GitHub vorbereitet.
+Alle bisherigen Zeilen in 49 Tabellen erhalten; drei private Datenbanken nach Wechsel auf Server und Cloud mit SHA-256/Integrität gesichert. Alle 7 Produkt-/Masterstände aktuell im Katalogindex. Code, Prüfnachweise und versioniertes Paket auf GitHub im Aufgabenbranch sowie auf `backup/account-recovery-20261010` und `task/full-backup-install-20261010` gesichert.
 
 **Genau nächster Schritt:** öffentliche personalisierte Bestellstrecke samt Testbestellung abnehmen; feste AOSU-Konstruktion separat. [Detailbericht](docs/releases/20261011/formats/RELEASE.md).
 

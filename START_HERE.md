@@ -4,7 +4,7 @@ Hilfslinien/Einrasten beim Ziehen, Grundmaß/Form, zusätzliche gleichproportion
 
 Quellstand **880f124** auf Händlerhost aktiviert; versioniertes ZIP getrennt installiert, 425 Manifestdateien und 15 HTTPS-Prüfungen bestanden. Neuer Prozess und tatsächliche Shopify-Entwurfsanmeldung bestätigt, keine Shopify-Mutation, keine neuen KI-Kosten.
 
-Alle bisherigen Zeilen in 49 Tabellen erhalten; drei private Datenbanken nach Wechsel auf Server und Cloud mit SHA-256/Integrität gesichert. Alle 7 Produkt-/Masterstände aktuell im Katalogindex. Code, Prüfnachweise und versioniertes Paket für GitHub vorbereitet.
+Alle bisherigen Zeilen in 49 Tabellen erhalten; drei private Datenbanken nach Wechsel auf Server und Cloud mit SHA-256/Integrität gesichert. Alle 7 Produkt-/Masterstände aktuell im Katalogindex. Code, Prüfnachweise und versioniertes Paket auf GitHub im Aufgabenbranch sowie auf `backup/account-recovery-20261010` und `task/full-backup-install-20261010` gesichert.
 
 **Nächster Schritt:** öffentliche neue Verkaufsbindung samt Testbestellung separat abnehmen. Vorherige Live-Stände folgen.
 

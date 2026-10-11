@@ -8,8 +8,8 @@ import {merchantConfig, verifyMerchantStorage} from './merchant-config.mjs';
 import {ORDER_WEBHOOK_PATH} from '../../app/workshop/shopify-order-webhook.mjs';
 import {lockTestData} from './lock.mjs';
 
-// Separate, authenticated merchant acceptance runtime. No Shopify writes,
-// storefront transport or Basic-auth fallback. Optional signed test-order input.
+// Separate authenticated merchant runtime. Optional signed test-order input and
+// explicitly pinned merchant test cart; public checkout remains disabled.
 export async function createMerchantRuntime(env) {
   const config = merchantConfig(env); verifyMerchantStorage(config);
   process.umask(0o077); process.env.GRAVURU_PYTHON = config.python; delete process.env.PYTHONPATH;
@@ -17,7 +17,7 @@ export async function createMerchantRuntime(env) {
   try {
     const merchantCsrfToken = createHmac('sha256', config.runtime.shopifySessions.secret)
       .update(JSON.stringify(['gravuru-merchant-test-csrf/v1', config.origin, config.runtime.shopifySessions.clientId])).digest('hex');
-    ({server: inner,orderWebhookHandler} = createShopifyTestRuntime(config.runtimeEnv, {merchantCsrfToken,orderWebhook:config.orderWebhook}));
+    ({server: inner,orderWebhookHandler} = createShopifyTestRuntime(config.runtimeEnv, {merchantCsrfToken,orderWebhook:config.orderWebhook,merchantTestCart:config.merchantTestCart}));
     inner.once('close', () => lock.stdin.end());
     // Only the outer server may be claimed by LiteSpeed/Passenger.
     inner.address = net.Server.prototype.address;
@@ -42,7 +42,7 @@ export async function createMerchantRuntime(env) {
       if (!['GET', 'HEAD'].includes(req.method)) return reject(405);
       if (req.headers.origin && req.headers.origin !== config.origin || req.headers['sec-fetch-site'] && !['same-origin', 'none'].includes(req.headers['sec-fetch-site'])) return reject(403);
       res.setHeader('Content-Type', 'application/json');
-      return res.end(req.method === 'HEAD' ? undefined : JSON.stringify({ready: true, scope: 'shopify-merchant-test', shopMutationsEnabled: false, checkoutEnabled: false, orderWebhookEnabled:Boolean(orderWebhookHandler)}));
+      return res.end(req.method === 'HEAD' ? undefined : JSON.stringify({ready: true, scope: 'shopify-merchant-test', shopMutationsEnabled: false, checkoutEnabled: false, merchantTestCartEnabled:Boolean(config.merchantTestCart), orderWebhookEnabled:Boolean(orderWebhookHandler)}));
     }
     const headers = {host: config.host};
     for (const name of ['authorization', 'accept', 'accept-language', 'content-type', 'content-length', 'origin', 'x-gravuru-csrf', 'x-gravuru-draft', 'sec-fetch-site', 'sec-fetch-mode', 'sec-fetch-dest']) if (req.headers[name] !== undefined) headers[name] = req.headers[name];

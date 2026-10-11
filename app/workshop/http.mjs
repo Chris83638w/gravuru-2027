@@ -17,6 +17,7 @@ import {createFormVariants} from './form-variants.mjs';
 import {additionPolicy,formMotifs} from './form-additions.mjs';
 import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './order-product-draft.mjs';
 import {prepareCartRequest} from './storefront-cart.mjs';
+import {createMerchantTestCart} from './merchant-test-cart.mjs';
 import {createCartHttpGate} from './cart-http-gate.mjs';
 import {createShopifySessionVerifier} from './shopify-session.mjs';
 import {createShopDraftTransfer,createShopDraftTransport,shopDraftRequest} from './shop-draft-transfer.mjs';
@@ -63,7 +64,7 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Loopback preview; optional test session gate is not a public deployment. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null}){
   if(operatorCsrfToken!==null&&(shopifySessions||typeof operatorCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(operatorCsrfToken)))fail(503,'operator_session_config','Ungültige private Werkstattsitzung.');
   if(merchantCsrfToken!==null&&(!shopifySessions||operatorCsrfToken!==null||typeof merchantCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(merchantCsrfToken)))fail(503,'merchant_session_config','Ungültige Händler-Werkstattsitzung.');
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
@@ -88,6 +89,8 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   // Explicit server configuration only; constructing the default preview never enables Shopify writes.
   let cartGate=null;
   const configuredCart=()=>cartGate??=createCartHttpGate({drafts:customerDrafts,repository,settings:storefront});
+  let merchantCart=null;
+  const configuredMerchantCart=()=>merchantCart??=createMerchantTestCart({drafts:customerDrafts,repository,settings:merchantTestCart});
   let transferGate=null;
   const configuredTransfer=()=>transferGate??=createShopDraftTransfer({repository,orders:orderIntake,journal:customerDrafts.shopDraftTransfers,config:shopDrafts.config,transport:createShopDraftTransport(shopDrafts.config,shopDrafts.transportOptions)});
   const outputRecipes=[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE,ACRYLIC_PRINT_RECIPE,ACRYLIC_ENGRAVING_RECIPE];
@@ -202,6 +205,13 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         try{return json(res,200,await configuredCart()(data,{draftToken:req.headers['x-gravuru-draft'],request:req,signal:controller.signal}));}
         finally{req.removeListener('aborted',abort);res.removeListener('close',abort);}
       }
+      if(pathname==='/api/workshop/merchant-test-cart'){
+        if(!merchantSession||!merchantTestCart)fail(503,'test_cart_disabled','Der geschützte Händler-Testkauf ist nicht eingerichtet.');
+        if(method!=='POST')fail(405,'method_not_allowed','Ein Test-Warenkorb benötigt POST.');
+        const data=await body(req,2048),controller=new AbortController(),abort=()=>controller.abort();req.once('aborted',abort);res.once('close',abort);
+        try{return json(res,200,await configuredMerchantCart()(data,{draftToken:req.headers['x-gravuru-draft'],signal:controller.signal}));}
+        finally{req.removeListener('aborted',abort);res.removeListener('close',abort);}
+      }
       if(pathname==='/api/workshop/orders'&&method==='GET'){const orders=orderIntake.list();return json(res,200,{orders,statuses:Object.fromEntries(orders.map(o=>[o.id,orderIntake.status(o.id)])),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});}
       const orderProductMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/product-draft(?:\/(preview|apply))?$/);
       if(orderProductMatch){
@@ -274,7 +284,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='PATCH'&&!action){const data=await body(req);return json(res,200,variants.save(id,data.document,data.expectedRevision));}
         fail(405,'method_not_allowed','Diese Ausführungsaktion ist nicht möglich.');
       }
-      if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:merchantSession?'shopify-merchant-test':'local-operator'});
+      if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:merchantSession?'shopify-merchant-test':'local-operator',merchantTestCart:merchantSession&&merchantTestCart?{productId:merchantTestCart.productId,productRevision:merchantTestCart.productRevision}:null});
       const customerModel=pathname.match(/^\/api\/workshop\/customer-model\/(cfg_[a-f0-9-]{36})$/);
       if(customerModel&&method==='GET'){
         if(!url.searchParams.has('revision'))fail(422,'revision_required','Eine feste Produktrevision ist erforderlich.');

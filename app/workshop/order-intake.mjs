@@ -100,7 +100,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
     return {bindings,created:bindings.filter(b=>!before.some(old=>old.id===b.id)).length,configuration:plan.configuration,sourceSha256:plan.sha256,shopVerified:false,sent:false};
    });
   },
-  offer({bindingId,snapshotId,quantity}){return tx(()=>{
+  offer({bindingId,snapshotId,quantity}, {stableToken}={}){return tx(()=>{
    const b=binding(bindingId),m=snapshot(snapshotId),contract=pricing(bindingId);
    const extra=contract?personalizationForSnapshot(contract,m):null,unit=extra?.unitCents??b.unit_cents;
    if(!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(422,'Menge: 1 bis 99.');
@@ -110,7 +110,17 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
     if(!chosen||optionKey(chosen)!==optionKey(m.selection?.options))fail(422,'Die Ausführung passt nicht zur Shop-Variante.');
     if(quantity!==m.selection.price.quantity)fail(422,'Die Menge gehört zum gesicherten Stand. Für eine andere Menge bitte neu sichern.');
    }else if(chosen||contract)fail(422,'Diese Bindung benötigt einen nativen Prüfstand.');
-   const id='offer_'+randomUUID(),token=randomBytes(32).toString('hex');
+   // Optional server-derived capability makes one private test-draft revision
+   // idempotent across lost responses/restarts. HTTP input never sets this option.
+   if(stableToken!==undefined){
+    if(typeof stableToken!=='string'||!/^[a-f0-9]{64}$/.test(stableToken))fail(422,'Ungültige private Angebotskennung.');
+    const existing=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=?').get(sha(stableToken));
+    if(existing){
+     if(existing.binding_id!==bindingId||existing.snapshot_id!==snapshotId||existing.quantity!==quantity)fail(409,'Die private Angebotskennung gehört zu einem anderen Stand.');
+     return this.resolveCartOffer({offerId:existing.id,offerToken:stableToken,snapshotId,shopDomain:b.shop});
+    }
+   }
+   const id='offer_'+randomUUID(),token=stableToken??randomBytes(32).toString('hex');
    db.prepare('INSERT INTO form_order_offers VALUES(?,?,?,?,?,?,?,?)').run(id,sha(token),bindingId,snapshotId,m.packageSha256,quantity,at(),clock()+7*86400000);
    if(extra)db.prepare('INSERT INTO form_offer_personalization VALUES(?,?)').run(id,JSON.stringify(extra));
    return {id,property:{name:'_gravuru_offer',value:token},variantId:b.variant_id,quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{})};

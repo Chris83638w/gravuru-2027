@@ -4,9 +4,11 @@ import {spawnSync} from 'node:child_process';
 import {APP_ROOT, externalPath} from './config.mjs';
 import {readPrivateFile} from './shopify-preflight.mjs';
 import {shopifyRuntimeConfig, SHOPIFY_IDENTITY} from '../../app/workshop/shopify-runtime-config.mjs';
+import {MEMORIAL_TEST_CART} from '../../app/workshop/merchant-test-cart.mjs';
 
 export const MERCHANT_MARKER = '.gravuru-shopify-merchant-test.json';
 const webhookKey='GRAVURU_SHOPIFY_ORDER_WEBHOOK';
+const cartKey='GRAVURU_SHOPIFY_TEST_CART';
 const keys = ['GRAVURU_SHOPIFY_APP_ORIGIN', 'GRAVURU_PRIVATE_DATA_DIR', 'GRAVURU_SHOPIFY_CLIENT_SECRET_FILE', 'GRAVURU_SHOPIFY_PYTHON'];
 export const merchantFailure = code => Object.assign(Error('Shopify-Händlerstart nicht bestätigt.'), {code});
 const fail = code => {throw merchantFailure(code);};
@@ -21,7 +23,8 @@ export function merchantConfig(env) {
     const record = JSON.parse(readPrivateFile(file, 16384));
     if (record.schema !== 1 || record.purpose !== 'shopify-merchant-test-runtime' || !record.values || Array.isArray(record.values)) fail('merchant_config');
     values = record.values;
-    if (Object.keys(values).some(k=>!keys.includes(k)&&k!==webhookKey) || (values[webhookKey]!==undefined&&values[webhookKey]!=='test-only-2026-07') || (env[webhookKey]!==undefined&&env[webhookKey]!==values[webhookKey]) || keys.some(k => typeof values[k] !== 'string' || !values[k] || values[k].length > 1024 || env[k] !== undefined && env[k] !== values[k])) fail('merchant_config');
+    if (Object.keys(values).some(k=>!keys.includes(k)&&k!==webhookKey&&k!==cartKey) || (values[webhookKey]!==undefined&&values[webhookKey]!=='test-only-2026-07') || (env[webhookKey]!==undefined&&env[webhookKey]!==values[webhookKey]) || keys.some(k => typeof values[k] !== 'string' || !values[k] || values[k].length > 1024 || env[k] !== undefined && env[k] !== values[k])) fail('merchant_config');
+    if((values[cartKey]!==undefined&&(values[cartKey]!=='memorial-r2-tokenless-2026-07'||values[webhookKey]!=='test-only-2026-07'||values.GRAVURU_SHOPIFY_APP_ORIGIN!=='https://app-2027.gravuru-designwerkstatt.de'))||(env[cartKey]!==undefined&&env[cartKey]!==values[cartKey]))fail('merchant_config');
     if (env.GRAVURU_SHOPIFY_CLIENT_SECRET || env.GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN) fail('merchant_config');
     if (env.GRAVURU_SHOPIFY_CLIENT_ID !== undefined && env.GRAVURU_SHOPIFY_CLIENT_ID !== SHOPIFY_IDENTITY.clientId || env.GRAVURU_SHOPIFY_SHOP_DOMAIN !== undefined && env.GRAVURU_SHOPIFY_SHOP_DOMAIN !== SHOPIFY_IDENTITY.shopDomain) fail('merchant_config');
     externalPath(values.GRAVURU_PRIVATE_DATA_DIR, 'Daten');
@@ -38,6 +41,7 @@ export function merchantConfig(env) {
   let runtime; try {runtime = shopifyRuntimeConfig(runtimeEnv);} catch {fail('merchant_config');}
   return {data: runtime.dataDirectory, origin: runtime.embeddedApp.origin, host: new URL(runtime.embeddedApp.origin).host,
     python: values.GRAVURU_SHOPIFY_PYTHON, runtime, runtimeEnv,
+    merchantTestCart:values[cartKey]===undefined?null:MEMORIAL_TEST_CART,
     orderWebhook:values[webhookKey]===undefined?null:{mode:'test-only',apiVersion:'2026-07',shopDomain:SHOPIFY_IDENTITY.shopDomain,secret}};
 }
 const markerFor = c => ({schema: 1, purpose: 'shopify-merchant-test-data', origin: c.origin});

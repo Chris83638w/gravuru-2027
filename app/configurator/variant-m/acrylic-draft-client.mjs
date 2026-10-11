@@ -25,6 +25,6 @@ export function createAcrylicDraftClient({fetchImpl = globalThis.fetch, storage}
     known.set(key, credential);
     let accessStored = true;
     try {storage.setItem(key, JSON.stringify(credential));} catch {accessStored = false;}
-    return {id: result.snapshotId, draftId: credential.id, revision: credential.revision, accessStored};
+    return {id: result.snapshotId, draftId: credential.id, revision: credential.revision, accessStored, draftToken:credential.token};
   };
 }

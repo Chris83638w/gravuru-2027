@@ -11,18 +11,20 @@ const failure=(code,message,sent=false)=>Object.assign(new StorefrontTransportEr
 });
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 export function createStorefrontCartTransport(config,{fetchImpl=globalThis.fetch,timeoutMs=10000}={}){
- if(!record(config)||Object.keys(config).some(k=>!['shopDomain','apiVersion','privateToken','authentication'].includes(k)))throw failure('storefront_config','Storefront-Konfiguration ist unvollständig oder ungültig.');
+ if(!record(config)||Object.keys(config).some(k=>!['shopDomain','apiVersion','privateToken','authentication','requestContext'].includes(k)))throw failure('storefront_config','Storefront-Konfiguration ist unvollständig oder ungültig.');
  const {shopDomain,apiVersion,privateToken}=config;
  const authentication=config.authentication??'private-token';
  if(typeof shopDomain!=='string'||!/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.myshopify\.com$/.test(shopDomain)||
   typeof apiVersion!=='string'||!/^20\d{2}-(01|04|07|10)$/.test(apiVersion)||
   !['private-token','tokenless'].includes(authentication)||
+  (config.requestContext!==undefined&&(config.requestContext!=='merchant-test'||authentication!=='tokenless'))||
   (authentication==='tokenless'?Object.hasOwn(config,'privateToken'):
     typeof privateToken!=='string'||privateToken.length<16||privateToken.length>4096||/[^\x21-\x7e]/.test(privateToken))||
   typeof fetchImpl!=='function'||!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>60000)throw failure('storefront_config','Storefront-Konfiguration ist unvollständig oder ungültig.');
  const endpoint=`https://${shopDomain}/api/${apiVersion}/graphql.json`;
  return async function createCart(offer,{buyerIp,signal}={}){
-  if(typeof buyerIp!=='string'||!isIP(buyerIp)||buyerIp.includes('%'))throw failure('storefront_buyer','Eine bestätigte Käufer-IP aus dem vertrauenswürdigen Anfragekontext ist erforderlich.');
+  const operatorRequest=config.requestContext==='merchant-test'&&buyerIp===undefined;
+  if(!operatorRequest&&(typeof buyerIp!=='string'||!isIP(buyerIp)||buyerIp.includes('%')))throw failure('storefront_buyer','Eine bestätigte Käufer-IP aus dem vertrauenswürdigen Anfragekontext ist erforderlich.');
   if(signal!==undefined&&!(signal instanceof AbortSignal))throw failure('storefront_input','Ungültiges Abbruchsignal.');
   if(signal?.aborted)throw failure('storefront_cancelled','Warenkorbanfrage vor dem Versand abgebrochen.');
   // Never serialize caller-supplied objects outside the established request model.
@@ -32,7 +34,7 @@ export function createStorefrontCartTransport(config,{fetchImpl=globalThis.fetch
   const timer=setTimeout(()=>controller.abort(),timeoutMs);let reader;
   try{
    const response=await fetchImpl(endpoint,{method:'POST',redirect:'manual',cache:'no-store',signal:combined,
-    headers:{'Content-Type':'application/json','Accept':'application/json',...(authentication==='private-token'?{'Shopify-Storefront-Private-Token':privateToken}:{}),'Shopify-Storefront-Buyer-IP':buyerIp},body});
+    headers:{'Content-Type':'application/json','Accept':'application/json',...(authentication==='private-token'?{'Shopify-Storefront-Private-Token':privateToken}:{}),...(!operatorRequest?{'Shopify-Storefront-Buyer-IP':buyerIp}:{})},body});
    if(combined.aborted)throw failure('storefront_interrupted','Warenkorbergebnis nach Abbruch oder Zeitüberschreitung unklar. Nicht automatisch erneut anlegen.',true);
    if(!response.ok||response.redirected)throw failure('storefront_http','Shop-Antwort nicht erfolgreich. Warenkorbstatus unbestätigt; keine automatische Wiederholung.',true);
    const version=response.headers.get('x-shopify-api-version');

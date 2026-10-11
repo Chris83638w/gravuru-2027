@@ -1,3 +1,9 @@
+## Händler-Testwarenkorb geprüft · 11.10.2026
+
+Geschützter Testweg für Gedenktafel Revision 2 implementiert: private Entwurfsbindung, feste neun Varianten, serverseitige Preise und idempotentes Warenkorbjournal. Produktionssperren und öffentliche Checkout-Sperre bleiben erhalten. 65 gezielte Tests, acht Laufzeitprüfungen, Desktop-/Mobilbedienung sowie neun reale Varianten in privater Kopie bestanden; Shopify-Antworten dabei simuliert. Produkt im Onlineshop veröffentlicht und Preise/Kanäle nachgelesen. Noch keine tatsächliche Testbestellung.
+
+[Bericht](docs/releases/20261011/test-cart/RELEASE.md). Nächster Schritt: versioniertes Paket isoliert installieren, Händlerhost gesichert aktualisieren und echten Testcheckout prüfen.
+
 ## Aktuell: Testbestelleingang und Shopify-Version veröffentlicht – 11.10.2026
 
 Händlerlaufzeit **`ca4f6cd`**, Version `0.1.0-recovery.20261010+ca4f6cd5b5d2`, auf dem getrennten Händlerhost installiert. Signierter Eingang für bezahlte Testbestellungen aktiv; bestehende JWT-/CSRF-Grenzen bleiben erhalten. Shopify-Version **`gravuru-2027-orders-20261011-build2`** (`1162598875137`) veröffentlicht und nachgelesen: ausschließlich `read_orders` zusätzlich, sieben Module und 19 Theme-Dateien erhalten, Preisfunktion bytegleich. Gedenktafel Revision 2 und neun Preisbindungen unverändert.

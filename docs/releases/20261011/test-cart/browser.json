@@ -1,0 +1,306 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "merchantTestCartUiSyntheticResponse": true,
+    "changedQuantityBlocksStaleCheckout": true,
+    "realMerchantUiLoaded": true,
+    "freshSyntheticBearerUsed": true,
+    "productCreatedAndReopened": true,
+    "authenticatedPreviewLoaded": true,
+    "customerEditorLoaded": true,
+    "privateCustomerSnapshotSaved": true,
+    "freeFormCustomerEditorLoaded": true,
+    "freeFormSnapshotSaved": true,
+    "cartPreparationAndSavedBindingReuse": true,
+    "mobileOverflow": false,
+    "privateBackendDataRequiresBearer": true
+  },
+  "apiRequests": [
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_09ef08f2-2b8c-4652-a949-009dce89fed3/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/seed",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/variant-catalog",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_348c6e72-b12d-4462-a160-5a7782219d70/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_348c6e72-b12d-4462-a160-5a7782219d70/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_348c6e72-b12d-4462-a160-5a7782219d70/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_09ef08f2-2b8c-4652-a949-009dce89fed3/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_348c6e72-b12d-4462-a160-5a7782219d70",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/variant-catalog",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_348c6e72-b12d-4462-a160-5a7782219d70/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_348c6e72-b12d-4462-a160-5a7782219d70/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_348c6e72-b12d-4462-a160-5a7782219d70/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/customer-model/cfg_348c6e72-b12d-4462-a160-5a7782219d70",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/acrylic-drafts",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/form-materials",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_09ef08f2-2b8c-4652-a949-009dce89fed3",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_09ef08f2-2b8c-4652-a949-009dce89fed3/form-preview",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_09ef08f2-2b8c-4652-a949-009dce89fed3/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/customer-model/cfg_09ef08f2-2b8c-4652-a949-009dce89fed3",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/form-fonts",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/form-motifs",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/customer-drafts",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_09ef08f2-2b8c-4652-a949-009dce89fed3/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/customer-drafts/draft_0cce7339-59dc-4a4b-8a58-c4a42586ebe9/review",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/review-snapshots",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/order-bindings",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/review-snapshots/proof_246d6add-8919-4455-bac3-54bb555d29f9",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/review-snapshots/proof_246d6add-8919-4455-bac3-54bb555d29f9",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/order-bindings",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/order-cart-preview",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/order-cart-preview",
+      "status": 201,
+      "method": "POST",
+      "authenticated": true
+    }
+  ],
+  "javascriptErrors": []
+}

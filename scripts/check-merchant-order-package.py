@@ -17,6 +17,10 @@ with tempfile.TemporaryDirectory(prefix='gravuru-orders-package-') as temp:
   v=json.loads(run(['node','ops/plesk/enable-order-webhook.mjs',str(backup)]));assert v['enabled'] and v['alreadyEnabled']==expected;results.append(v)
  enabled=config.read_bytes();changed=json.loads(enabled);alternate=private/'alternate-secret';alternate.write_text(secret);changed['values']['GRAVURU_SHOPIFY_CLIENT_SECRET_FILE']=str(alternate);config.write_text(json.dumps(changed))
  r=subprocess.run(['node','ops/plesk/enable-order-webhook.mjs',str(backup)],cwd=release,env=env,capture_output=True,text=True);assert r.returncode==1 and json.loads(r.stdout)['reason']=='concurrent_config_change';config.write_bytes(enabled)
+ cart_backup=private/'cart-backup';cart_backup.mkdir();shutil.copyfile(config,cart_backup/'previous-config.json');shutil.copyfile(backup/'ACTIVATION-RECEIPT.json',cart_backup/'ACTIVATION-RECEIPT.json')
+ cart_results=[]
+ for expected in [False,True]:
+  v=json.loads(run(['node','ops/plesk/enable-merchant-test-cart.mjs',str(cart_backup)]));assert v['enabled'] and v['alreadyEnabled']==expected and v['merchantTestCartEnabled'];cart_results.append(v)
  with socket.socket() as sock:sock.bind(('127.0.0.1',0));port=sock.getsockname()[1]
  env['GRAVURU_SHOPIFY_TEST_PORT']=str(port);url=f'http://127.0.0.1:{port}'
  host={'Host':'app-2027.gravuru-designwerkstatt.de','X-Forwarded-Proto':'https'}
@@ -36,8 +40,9 @@ with tempfile.TemporaryDirectory(prefix='gravuru-orders-package-') as temp:
      except urllib.error.URLError:
       assert process.poll() is None and time.monotonic()<deadline,'startup_failed';time.sleep(.1)
     assert request('/api/workshop/orders',host)[0]==401
+    assert request('/api/workshop/merchant-test-cart',host,b'{}')[0]==401
     assert request('/webhooks/shopify/orders-paid',host,b'{}')[0]==415
     status,body=request('/webhooks/shopify/orders-paid',signed,payload);assert status==200 and json.loads(body)['duplicate']==duplicate
    finally:process.terminate();process.wait(timeout=15)
- result={'result':'PASS','sourceCommit':manifest['sourceCommit'],'syntheticPrivateStorageOnly':True,'offlineEnable':results,'concurrentConfigPreserved':True,'merchantApiStillProtected':True,'signedDeliveryAccepted':True,'duplicateAfterRestart':True,'realShopifyOrder':False}
+ result={'result':'PASS','sourceCommit':manifest['sourceCommit'],'syntheticPrivateStorageOnly':True,'offlineEnable':results,'offlineTestCartEnable':cart_results,'concurrentConfigPreserved':True,'merchantApiStillProtected':True,'signedDeliveryAccepted':True,'duplicateAfterRestart':True,'realShopifyOrder':False}
  report.parent.mkdir(parents=True,exist_ok=True);report.write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))

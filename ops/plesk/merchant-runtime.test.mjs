@@ -36,7 +36,7 @@ async function start(f) {
   const runtime = {server, close: async () => {server.close(); server.closeAllConnections(); await server.runtimeClosed; f.runtimes.delete(runtime);},
     request: (route, {headers = {}, method = 'GET', data} = {}) => new Promise((resolve, reject) => {
       const req = http.request({hostname: '127.0.0.1', port: server.address().port, path: route, method,
-        headers: {host: 'merchant.example', 'x-forwarded-proto': 'https', ...(data ? {'content-type': 'application/json'} : {}), ...headers}}, res => {
+        headers: {host: f.config().host, 'x-forwarded-proto': 'https', ...(data ? {'content-type': 'application/json'} : {}), ...headers}}, res => {
         const parts = []; res.on('data', b => parts.push(b)); res.on('end', () => resolve({status: res.statusCode, headers: res.headers, bytes: Buffer.concat(parts)}));
       }); req.on('error', reject); req.end(data ? JSON.stringify(data) : undefined);
     })}; f.runtimes.add(runtime); return runtime;
@@ -126,4 +126,26 @@ test('explicit test-order endpoint authenticates Shopify bytes without weakening
  assert.equal(JSON.parse((await runtime.request('/__shopify/health',{headers:auth})).bytes).orderWebhookEnabled,true);
  await runtime.close();runtime=await start(f);
  const duplicate=await runtime.request(route,{method:'POST',headers,data:payload});assert.equal(duplicate.status,200);assert.equal(JSON.parse(duplicate.bytes).duplicate,true);
+});
+
+
+test('merchant test cart is explicitly pinned and needs JWT, origin, CSRF and private draft capability',async t=>{
+ const f=fixture(t);
+ f.values.GRAVURU_SHOPIFY_TEST_CART='memorial-r2-tokenless-2026-07';f.save();assert.throws(f.config,{code:'merchant_config'});
+ f.values.GRAVURU_SHOPIFY_ORDER_WEBHOOK='test-only-2026-07';f.save();assert.throws(f.config,{code:'merchant_config'});
+ f.values.GRAVURU_SHOPIFY_APP_ORIGIN='https://app-2027.gravuru-designwerkstatt.de';f.save();
+ assert.equal(f.config().merchantTestCart.productRevision,2);prepareMerchantStorage(f.config());const runtime=await start(f);t.after(runtime.close);
+ const route='/api/workshop/merchant-test-cart',data={draftId:'adraft_11111111-1111-4111-8111-111111111111',expectedRevision:1};
+ assert.equal((await runtime.request(route,{method:'POST',data})).status,401);
+ const headers={authorization:token(f.secret),origin:f.values.GRAVURU_SHOPIFY_APP_ORIGIN};
+ assert.equal((await runtime.request(route,{method:'POST',headers,data})).status,403);
+ const session=JSON.parse((await runtime.request('/api/workshop/session',{headers})).bytes);
+ assert.equal(session.merchantTestCart.productRevision,2);headers['x-gravuru-csrf']=session.csrfToken;
+ assert.equal((await runtime.request(route,{headers})).status,405);
+ assert.equal((await runtime.request(route,{method:'POST',headers,data})).status,404);
+ assert.equal((await runtime.request(route,{method:'POST',headers:{...headers,origin:'https://other.example'},data})).status,403);
+ assert.equal((await runtime.request(route,{method:'POST',headers,data:{...data,price:1}})).status,422);
+ const health=JSON.parse((await runtime.request('/__shopify/health',{headers})).bytes);assert.equal(health.merchantTestCartEnabled,true);assert.equal(health.checkoutEnabled,false);
+ await runtime.close();delete f.values.GRAVURU_SHOPIFY_TEST_CART;f.save();const disabled=await start(f);t.after(disabled.close);
+ assert.equal((await disabled.request(route,{method:'POST',headers,data})).status,503);
 });

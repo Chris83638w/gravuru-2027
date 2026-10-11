@@ -9,7 +9,7 @@ import {shopifyRuntimeConfig,checkShopifyRuntime} from './shopify-runtime-config
 
 // Explicit alternate entry point; npm start continues to use loopback defaults.
 // HTTPS must already terminate at a trusted host preserving the configured Host.
-export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhook=null}={}){
+export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhook=null,merchantTestCart=null}={}){
   const config=shopifyRuntimeConfig(env),directory=config.dataDirectory;
   const fail=()=>{throw Error('Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.');};
   // Do not create, chmod, migrate or choose a private directory implicitly.
@@ -20,7 +20,7 @@ export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhoo
     const file=path.join(directory,name);if(fs.existsSync(file)&&(fs.lstatSync(file).isSymbolicLink()||!fs.statSync(file).isFile()))fail();
   }
   build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
-  const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts,merchantCsrfToken,orderWebhook});
+  const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts,merchantCsrfToken,orderWebhook,merchantTestCart});
   let server,orderWebhookHandler;try{
     orderWebhookHandler=orderWebhook?createOrderWebhookHandler({intake:workshop.orderIntake,config:orderWebhook}):null;
     server=createPreviewServer({workshop,embeddedApp:config.embeddedApp});

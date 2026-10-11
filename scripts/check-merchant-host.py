@@ -11,7 +11,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import time
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, parse_qs
 from playwright.sync_api import sync_playwright, expect
 from PIL import Image
 
@@ -49,6 +49,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             context = browser.new_context(ignore_https_errors=False, viewport={'width': 1440, 'height': 1000})
             context.expose_function('__syntheticIdToken', id_token)
             api_checks, errors = [], []
+            cart_fixture = {'productId': None, 'productRevision': None, 'calls': 0}
             def route_request(route):
                 req = route.request
                 url = urlsplit(req.url)
@@ -58,10 +59,20 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
                     return route.abort()
                 target = 'http://127.0.0.1:' + str(ready['port']) + url.path + ('?' + url.query if url.query else '')
                 headers = {**req.all_headers(), 'host': 'merchant.example', 'x-forwarded-proto': 'https'}
+                if url.path.startswith('/api/workshop/customer-model/'):
+                    cart_fixture.update(productId=url.path.rsplit('/',1)[1], productRevision=int(parse_qs(url.query)['revision'][0]))
+                if url.path == '/api/workshop/merchant-test-cart':
+                    assert headers.get('authorization','').startswith('Bearer ') and len(headers.get('x-gravuru-draft','')) == 64 and len(headers.get('x-gravuru-csrf','')) == 64
+                    assert set(json.loads(req.post_data)) == {'draftId','expectedRevision'}
+                    cart_fixture['calls'] += 1
+                    return route.fulfill(json={'checkoutUrl':'https://gravuru-design.myshopify.com/checkout/synthetic','testOnly':True,'productionReady':False,'paymentConfirmed':False,'totalCents':1499})
                 response = context.request.fetch(target, method=req.method, headers=headers, data=req.post_data_buffer)
                 if url.path.startswith('/api/workshop/'):
                     api_checks.append({'path': url.path, 'status': response.status, 'method': req.method,
                                        'authenticated': headers.get('authorization', '').startswith('Bearer ')})
+                if url.path == '/api/workshop/session' and response.status == 200:
+                    data=response.json();data['merchantTestCart']={k:cart_fixture[k] for k in ['productId','productRevision']}
+                    return route.fulfill(status=200,json=data)
                 route.fulfill(status=response.status, headers=response.headers, body=response.body())
             context.route('**/*', route_request)
             page = context.new_page()
@@ -89,9 +100,27 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             frame.locator('.completion-finish').click()
             frame.locator('[data-acrylic-review]').click()
             expect(frame.locator('[data-acrylic-review-link]')).to_be_visible(timeout=30000)
+            expect(frame.locator('[data-merchant-test-cart]')).to_be_visible()
+            expect(frame.locator('button[data-unconnected-cart]')).not_to_be_visible()
+            frame.locator('[data-merchant-test-cart]').click()
+            expect(frame.locator('[data-merchant-test-checkout]')).to_be_visible()
+            expect(frame.locator('[data-acrylic-review] + [role=status]')).to_contain_text('Keine Fertigung freigegeben.')
+            assert cart_fixture['calls']==1
             page.screenshot(path=str(OUT / 'merchant-customer-desktop.png'), full_page=True)
             page.set_viewport_size({'width': 390, 'height': 844})
             page.screenshot(path=str(OUT / 'merchant-mobile.png'), full_page=True)
+            frame.locator('[data-ux=review-edit]').click()
+            quantity=frame.locator('[data-fk-quantity]')
+            quantity.fill(str(int(quantity.input_value())+1))
+            quantity.press('Tab')
+            frame.locator('.completion-finish').click()
+            frame.locator('[data-merchant-test-checkout]').click()
+            expect(frame.locator('[data-merchant-test-checkout]')).not_to_be_visible()
+            frame.locator('[data-merchant-test-cart]').click()
+            expect(frame.locator('[data-acrylic-review] + [role=status]')).to_contain_text('Bitte zuerst erneut sichern.')
+            assert cart_fixture['calls']==1
+            report['checks']['merchantTestCartUiSyntheticResponse']=True
+            report['checks']['changedQuantityBlocksStaleCheckout']=True
             overflow = page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
             assert not overflow and not errors
             page.goto(ready['origin']+'/werkstatt/formprodukt/?configuration='+ready['form']['id'])
@@ -125,7 +154,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             report.update(apiRequests=api_checks,javascriptErrors=errors)
             assert api_checks and all(c['authenticated'] and c['status'] < 400 for c in api_checks), 'Authenticated UI requests must succeed: '+str([c for c in api_checks if not c['authenticated'] or c['status']>=400])
             report.update(result='PASS', apiRequests=api_checks, javascriptErrors=errors,
-                          checks={'realMerchantUiLoaded': True, 'freshSyntheticBearerUsed': True,
+                          checks={'merchantTestCartUiSyntheticResponse':True,'changedQuantityBlocksStaleCheckout':True,'realMerchantUiLoaded': True, 'freshSyntheticBearerUsed': True,
                                   'productCreatedAndReopened': True, 'authenticatedPreviewLoaded': True,
                                   'customerEditorLoaded': True, 'privateCustomerSnapshotSaved': True,
                                   'freeFormCustomerEditorLoaded': True, 'freeFormSnapshotSaved': True,

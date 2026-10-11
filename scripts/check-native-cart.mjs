@@ -11,6 +11,7 @@ import {build} from '../app/configurator/variant-m/build.mjs';
 import {createWorkshop} from '../app/workshop/http.mjs';
 import {prepareShopProduct} from '../app/workshop/shop-preparation.mjs';
 import {prepareAcrylicReview} from '../app/workshop/acrylic-review.mjs';
+import {createMerchantTestCart,MEMORIAL_TEST_CART} from '../app/workshop/merchant-test-cart.mjs';
 import {createDraftCartHandoff} from '../app/workshop/draft-cart-handoff.mjs';
 import {prepareCartRequest} from '../app/workshop/storefront-cart.mjs';
 import {replaceNativeFont,bundledWorkshopFont} from '../app/workshop/native-font-replacement.mjs';
@@ -78,8 +79,14 @@ try {
     assert.equal(transformed.operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,(offer.unitCents/100).toFixed(2));
     const submit=createDraftCartHandoff({drafts:w.customerDrafts,config:{shopDomain:receipt.installation.shopDomain,apiVersion:'2026-07',authentication:'tokenless'}},{fetchImpl:async()=>{sends++;throw Error('Unexpected network request');}});
     await assert.rejects(submit({draftId:draft.id,snapshotId:draft.snapshotId,expectedRevision:1,offerId:offer.id,offerToken:offer.property.value},{draftToken:draft.token,buyerIp:'192.0.2.5'}),e=>e.code==='cart_blocked');
+    const testCart=createMerchantTestCart({drafts:w.customerDrafts,repository:w.repository,settings:MEMORIAL_TEST_CART},{fetchImpl:async(url,request)=>{
+      const sent=JSON.parse(request.body).variables.input.lines[0];assert.equal(sent.merchandiseId,line.merchandiseId);assert.deepEqual(sent.attributes.filter(a=>a.key!=='_gravuru_offer'),line.attributes.filter(a=>a.key!=='_gravuru_offer'));
+      const amount=(offer.unitCents/100).toFixed(2);
+      return Response.json({data:{cartCreate:{userErrors:[],warnings:[],cart:{id:'gid://shopify/Cart/synthetic',checkoutUrl:'https://gravuru-design.myshopify.com/checkout/synthetic',lines:{pageInfo:{hasNextPage:false},nodes:[{quantity:1,attributes:sent.attributes,merchandise:{id:sent.merchandiseId},cost:{amountPerQuantity:{amount,currencyCode:'EUR'},totalAmount:{amount,currencyCode:'EUR'}}}]}}}}});
+    }});
+    const accepted=await testCart({draftId:draft.id,expectedRevision:1},{draftToken:draft.token});assert.equal(accepted.testOnly,true);assert.equal(accepted.productionReady,false);assert.equal(accepted.totalCents,offer.unitCents);
     assert.equal(bundle.manifest.productionReady,false);assert.ok(bundle.manifest.blockers.length);
-    checks++;results.push({unitCents:offer.unitCents,functionPriceMatches:true,privateDraftOwnershipAccepted:true,unapprovedProductionStillBlocked:true});
+    checks++;results.push({unitCents:offer.unitCents,functionPriceMatches:true,privateDraftOwnershipAccepted:true,unapprovedProductionStillBlocked:true,merchantTestCartMockAccepted:true});
   }
   assert.equal(sends,0);
   console.log(JSON.stringify({result:'PASS',variantsChecked:checks,pricingRevision:String(pricing.revision),checks:results,

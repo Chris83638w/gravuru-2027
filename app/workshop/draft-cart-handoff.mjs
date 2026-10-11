@@ -10,7 +10,7 @@ const fail = (status, code, message) => {
 };
 const fields = ['draftId', 'snapshotId', 'offerId', 'offerToken', 'expectedRevision'];
 
-export function createDraftCartHandoff({drafts, config}, transportOptions = {}) {
+export function createDraftCartHandoff({drafts, config,reviewPolicy=null}, transportOptions = {}) {
   const transport = createStorefrontCartTransport(config, transportOptions);
   const handoff = createPersistentCartHandoff({journal: drafts.cartHandoffs, transport,
     shopDomain: config.shopDomain, apiVersion: config.apiVersion});
@@ -36,7 +36,8 @@ export function createDraftCartHandoff({drafts, config}, transportOptions = {}) 
           m.product?.id !== draft.productId || m.product?.revision !== draft.productRevision) {
         fail(404, 'cart_private', 'Dieser Prüfstand gehört nicht zum zugänglichen Entwurf.');
       }
-      if (!Array.isArray(m.blockers) || m.blockers.length) fail(409, 'cart_blocked', 'Die offenen Punkte dieses Prüfstands zuerst klären.');
+      if(reviewPolicy)reviewPolicy(m);
+      else if (!Array.isArray(m.blockers) || m.blockers.length) fail(409, 'cart_blocked', 'Die offenen Punkte dieses Prüfstands zuerst klären.');
       return drafts.orderIntake.resolveCartOffer({...request, shopDomain});
     }
     const offer = resolve();

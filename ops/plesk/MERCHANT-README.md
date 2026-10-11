@@ -56,3 +56,8 @@ GRAVURU_MERCHANT_TEST_PYTHON=/absoluter/pfad/zur/geprueften/python-umgebung/bin/
 ```
 
 Die Browserprüfung verwendet eine synthetische Identität und einen simulierten HTTPS-Eingang. Sie ist ausdrücklich keine echte Shopify-/HTTPS-Serverabnahme. Claude wurde hier nicht ausgeführt; ein separates Prüfbriefing bezeichnet klar die tatsächlichen und noch fehlenden Nachweise.
+
+
+### Begrenzter Händler-Testwarenkorb
+
+Nach geprüftem Paketwechsel und vorhandener Testbestell-Webhook-Konfiguration kann der Operator bei gestoppter Händlerlaufzeit `node ops/plesk/enable-merchant-test-cart.mjs /absoluter/privater/aktivierungsbackup` aus dem neuen Release ausführen. Der Helfer prüft Aktivierungsbeleg, Quellcommit, unveränderte Konfiguration und exklusive Datensperre. Er setzt ausschließlich `GRAVURU_SHOPIFY_TEST_CART=memorial-r2-tokenless-2026-07`; eine identische Wiederholung bleibt ohne Änderung. Danach Händlerlaufzeit starten. Nur Gedenktafel Revision 2 auf dem festgelegten Händlerhost ist zulässig. Der Shopify-Zahlungstestmodus muss aktiv sein. Keine Produktionsfreigabe und kein öffentlicher Kundencheckout.

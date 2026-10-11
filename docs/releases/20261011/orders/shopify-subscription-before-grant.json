@@ -1,0 +1,7 @@
+{
+  "registered": false,
+  "code": "orders_scope_missing",
+  "subscriptionMutationAttempted": false,
+  "requiredScope": "read_orders",
+  "newShopifyVersion": "gid://shopify/Version/1162598875137"
+}

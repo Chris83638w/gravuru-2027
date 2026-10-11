@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-11T04:28:10.327Z",
+  "shop": "gravuru-design.myshopify.com",
+  "appId": "gid://shopify/App/423276544001",
+  "scopes": [
+    "read_cart_transforms",
+    "read_files",
+    "read_metaobjects",
+    "read_orders",
+    "read_products",
+    "read_publications",
+    "write_cart_transforms",
+    "write_files",
+    "write_metaobjects",
+    "write_products",
+    "write_publications"
+  ],
+  "ordersScopeGranted": true,
+  "mutationAttempted": false
+}

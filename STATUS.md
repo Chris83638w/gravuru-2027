@@ -2,11 +2,11 @@
 
 Händlerlaufzeit **`ca4f6cd`**, Version `0.1.0-recovery.20261010+ca4f6cd5b5d2`, auf dem getrennten Händlerhost installiert. Signierter Eingang für bezahlte Testbestellungen aktiv; bestehende JWT-/CSRF-Grenzen bleiben erhalten. Shopify-Version **`gravuru-2027-orders-20261011-build2`** (`1162598875137`) veröffentlicht und nachgelesen: ausschließlich `read_orders` zusätzlich, sieben Module und 19 Theme-Dateien erhalten, Preisfunktion bytegleich. Gedenktafel Revision 2 und neun Preisbindungen unverändert.
 
-**Abonnement noch offen:** Eigene App meldet nach Veröffentlichung `orders_scope_missing`; Shop-Berechtigung muss in Shopify bestätigt werden. Keine Abonnement-Mutation, echte Bestellung, Zahlung oder Produktion ausgelöst. Nutzer um erneutes Öffnen der App und Bestätigung der angezeigten Zusatzberechtigung gebeten; weitere Mutation erst nach tatsächlicher Scope-Gewährung. Checkout-Gesamtstrecke und echte Nutzeranmeldung bleiben eigene Abnahmen.
+**Bestellabonnement verbunden:** `read_orders` jetzt tatsächlich gewährt und in erneuter Abfrage mit eigener App lesend bestätigt. `ORDERS_PAID`-Abonnement **`2149402706300`** mit Filter `test:true`, API 2026-07, festem HTTPS-Ziel und begrenzten Feldern einmal angelegt und nachgelesen. Keine echte Bestellung, Zahlung oder Produktion ausgelöst. Checkout-Gesamtstrecke und echte Nutzeranmeldung bleiben eigene Abnahmen.
 
 Versioniertes v2-Paket mit SHA-256 und 390 Manifestdateien; getrennte Installation, vollständige Aktivierung und Neustart mit synthetischen Daten bestanden. HTTP-, Händler-, Bestell-/Preis- und Abonnementprüfungen bestanden (überlappende Testmengen). Reale Probe fand Node-fetch-Browser-Metadaten: auf native HTTPS-Probe korrigiert, Browsersperre unverändert. Privater Datenbestand vor Wechsel gesichert; keine Geheimnisse/Datenbanken in GitHub. [Bericht und Grenzen](docs/releases/20261011/orders/RELEASE.md) · [Installationspaket](deliverables/merchant-orders-20261011/README.md).
 
-Nächster Schritt: Shop-Scope nach Nutzerbestätigung lesen, festes `ORDERS_PAID`-Abonnement mit `test:true` anlegen/nachlesen; danach Kunden-/Checkout-Strecke verbinden und echte Testbestellung im bestätigten Testmodus ausführen. Ältere Abschnitte darunter dokumentieren historische Stände.
+Nächster Schritt: Kunden-/Checkout-Strecke verbinden und echte Testbestellung im bestätigten Testmodus einschließlich des jetzt angeschlossenen Bestelleingangs prüfen. Ältere Abschnitte darunter dokumentieren historische Stände.
 
 ## Aktuell: Cormorant Garamond und Preisbindungen veröffentlicht – 11.10.2026
 

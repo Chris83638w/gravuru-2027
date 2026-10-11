@@ -1,7 +1,33 @@
 {
-  "registered": false,
-  "code": "orders_scope_missing",
-  "subscriptionMutationAttempted": false,
-  "requiredScope": "read_orders",
-  "newShopifyVersion": "gid://shopify/Version/1162598875137"
+  "registered": true,
+  "alreadyPresent": false,
+  "subscription": {
+    "id": "gid://shopify/WebhookSubscription/2149402706300",
+    "topic": "ORDERS_PAID",
+    "uri": "https://app-2027.gravuru-designwerkstatt.de/webhooks/shopify/orders-paid",
+    "format": "JSON",
+    "filter": "test:true",
+    "includeFields": [
+      "id",
+      "test",
+      "financial_status",
+      "cancelled_at",
+      "currency",
+      "updated_at",
+      "line_items.id",
+      "line_items.variant_id",
+      "line_items.quantity",
+      "line_items.price",
+      "line_items.properties",
+      "customer.id"
+    ],
+    "apiVersion": {
+      "handle": "2026-07"
+    }
+  },
+  "testOnly": true,
+  "confirmedAt": "2026-10-11T04:29:31.749914+00:00",
+  "readbackVerified": true,
+  "operatorSourceCommit": "ca4f6cd5b5d2d0255485fb2bf3d73de339d485fc",
+  "realShopifyOrderCreated": false
 }

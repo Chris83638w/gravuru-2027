@@ -14,7 +14,7 @@ export function overviewOptions(config){
 export function productOverview(document){
  const p=document.config.profile,options=overviewOptions(document.config);
  const sizes=document.config.acrylic?(p.optionGroups.find(g=>g.id==='size')?.values||[]).map(v=>({widthMm:ACRYLIC_SIZES[v.id].width,heightMm:ACRYLIC_SIZES[v.id].height})):[{widthMm:p.geometry.width,heightMm:p.geometry.height}];
- const previewLabel=p.optionGroups?.find(g=>g.id==='base')?.values.find(v=>v.id===options.base)?.label||'';
+ const previewLabel=document.config.doorbell?'Edelstahl 1,5 mm · Acrylglas 3 mm':p.optionGroups?.find(g=>g.id==='base')?.values.find(v=>v.id===options.base)?.label||'';
  return {sizes,previewLabel,method:getProcessingProfile(p).method,material:p.material.kind,widthMm:p.geometry.width,heightMm:p.geometry.height,designCount:p.designs.length,defaultDesignName:(p.designs.find(d=>d.id===p.defaultDesignId)||p.designs[0])?.name||''};
 }
 const image=name=>'data:image/jpeg;base64,'+fs.readFileSync(new URL('./preview-assets/'+name,import.meta.url)).toString('base64');
@@ -45,7 +45,7 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
   }
   return '';
  };
- let svg=studioSvg(p,d,c.localResources.fonts,{motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
+ let svg=studioSvg(p,d,c.localResources.fonts,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');
  for(const e of examples)svg=svg.replaceAll('href="blob:workshop-'+e.assetId+'"','href="'+e.url+'"');
  if(!c.acrylic)return surfacePreview(svg,c.materialSurface,p.geometry);

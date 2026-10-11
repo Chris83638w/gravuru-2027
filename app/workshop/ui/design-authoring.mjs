@@ -45,6 +45,7 @@ export function authorDesign(input,designId,action,value={}){
    (c.photo.hints??=[]).push({designId:design.id,slotId:id,text:'Hier eigenes Foto hochladen',enabled:true});
   }
   if(action==='motif')setMotif(c,object,value.motif);
+  if(p.kind==='layered-doorbell')object.y=g.bell.y/2;
   fitPosition(object,g);design.objects.push(object);
   rights[id]={content:action==='text',color:false,replace:action==='photo',move:false,scale:false,delete:false};selectedId=id;
  }else if(action==='textify'){

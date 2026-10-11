@@ -96,8 +96,9 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   if(!state.draft)return;
   const groups=state.draft.config.profile.optionGroups;
   for(const g of groups)if(useDefaults||!g.values.some(v=>v.id===options[g.id]))options[g.id]=g.defaultValueId;
-  if(state.draft.config.profile.material.kind==='slate'){
-   $('#stage-options').innerHTML=groups[0].values.map(v=>`<option value="${escape(v.id)}" ${options.mounting===v.id?'selected':''}>${escape(v.label)}</option>`).join('');return;
+  if(!state.draft.config.acrylic){
+   const combinations=groups.reduce((rows,g)=>rows.flatMap(row=>g.values.map(v=>[...row,v])),[[]]);
+   $('#stage-options').innerHTML=combinations.map(row=>`<option value="${escape(row.map(v=>v.id).join('|'))}" ${row.every((v,i)=>options[groups[i].id]===v.id)?'selected':''}>${escape(row.map(v=>v.label).join(' · '))}</option>`).join('');return;
   }
   const [sizes,bases,walls]=['size','base','wall'].map(id=>groups.find(g=>g.id===id).values);
   $('#stage-options').innerHTML=sizes.flatMap(s=>bases.flatMap(b=>walls.map(w=>`<option value="${escape(s.id+'|'+b.id+'|'+w.id)}" ${options.size===s.id&&options.base===b.id&&options.wall===w.id?'selected':''}>${escape(s.label+' · '+b.label+(w.id==='wall'?' · '+w.label:''))}</option>`))).join('');
@@ -113,8 +114,9 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   // Preserve every existing operation, relocating its card rather than replacing its logic.
   const cards=[...document.querySelectorAll('.record-aside .record-card')];
   for(const card of cards){const target=card.querySelector('#print-export-link')?'#panel-production':'#panel-details';$(target).append(card);}
-  const slate=state.draft.config.profile.material.kind==='slate',g=state.draft.config.profile.geometry;
-  $('#panel-scene').innerHTML=slate?`<h3>Schieferplatte</h3><p>Rohling: ${escape(g.width)} × ${escape(g.height)} mm</p><label>Rohlingbild austauschen<input id="material-surface-file" type="file" accept="image/png,image/jpeg,image/webp"></label><p class="field-help">Wähle ein Foto der ungestalteten Platte. Das Bild füllt die vorhandenen Produktmaße. Design, Bohrungen und Preise bleiben erhalten.</p><p id="material-surface-status" role="status"></p>`:'<h3>Hintergrund & Szene</h3><p>Wähle Acrylglasgröße und Sockel über dem Produkt.</p>';
+  const c=state.draft.config,slate=c.profile.material.kind==='slate',steel=c.profile.material.kind==='steel',g=c.profile.geometry;
+  $('#panel-scene').innerHTML=slate||steel?`<h3>${slate?'Schieferplatte':'Edelstahlplatte'}</h3><p>Rohling: ${escape(g.width)} × ${escape(g.height)} mm</p><label>Rohlingbild austauschen<input id="material-surface-file" type="file" accept="image/png,image/jpeg,image/webp"></label><p class="field-help">Wähle ein Foto der ungestalteten Platte. Das Bild füllt die vorhandenen Produktmaße. Design, Bohrungen und Preise bleiben erhalten.</p><p id="material-surface-status" role="status"></p>`:c.doorbell?'<h3>AOSU-Klingelschild</h3><p>Edelstahl 1,5 mm mit Acrylglasauflage 3 mm. Rahmen, Farbe und Befestigung wählst du über dem Produkt. Die Ausschnitte für die Klingel bleiben erhalten.</p>':'<h3>Hintergrund & Szene</h3><p>Wähle Acrylglasgröße und Sockel über dem Produkt.</p>';
+  if(steel)$('#panel-scene').insertAdjacentHTML('beforeend','<details><summary>Frühere Edelstahl-Materialreferenz</summary><p>Erhaltenes Musterbild „Charlotte Groner“, Originalfassung v4. Dieses Foto ist eine Referenz. Die beiden bearbeitbaren Heimathafen-Designs stammen aus dem früheren Vorlagenkatalog.</p><img src="/workshop-ui/material-surfaces/steel-reference-v4.png" alt="Früheres Edelstahlmuster mit Leuchtturm und Charlotte Groner" style="width:100%;height:auto"></details>');
   properties();clearTimeout(timer);preview();
  }
  const loadFonts=()=>api('/api/workshop/font-library').then(data=>{libraryFonts=data.fonts;if(selected())properties();}).catch(()=>{});
@@ -125,7 +127,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  $('#editor-preview').addEventListener('click',e=>{const n=e.target.closest('[data-object]');if(n&&!state.busy&&!drag)select(n.dataset.object);});
  $('#editor-preview').addEventListener('keydown',e=>{const n=e.target.closest('[data-object]');if(n&&['Enter',' '].includes(e.key)&&!state.busy){e.preventDefault();select(n.dataset.object);}});
  $('#editor-designs').addEventListener('click',e=>{const b=e.target.closest('[data-editor-design]');if(!b||state.busy||!valid())return;designId=b.dataset.editorDesign;objectId=null;showTab('designs');render();});
- $('#stage-options').addEventListener('change',()=>{if(state.draft.config.profile.material.kind==='slate')options={mounting:$('#stage-options').value};else [options.size,options.base,options.wall]=$('#stage-options').value.split('|');changed();});
+ $('#stage-options').addEventListener('change',()=>{if(!state.draft.config.acrylic){const values=$('#stage-options').value.split('|');options=Object.fromEntries(state.draft.config.profile.optionGroups.map((g,i)=>[g.id,values[i]]));}else [options.size,options.base,options.wall]=$('#stage-options').value.split('|');changed();});
  $('#panel-scene').addEventListener('change',async e=>{
   if(e.target.id!=='material-surface-file'||state.busy||state.record.status==='archived')return;
   const file=e.target.files?.[0];if(!file)return;

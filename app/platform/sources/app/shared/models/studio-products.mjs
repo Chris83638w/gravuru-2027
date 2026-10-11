@@ -6,7 +6,7 @@ import {validateUniversalElements,validateOptionGroups} from './universal-elemen
 export function dimensions(p){return p.kind==='layered-doorbell'?{width:160,height:280,margin:10,shape:'rect'}:{width:p.geometry.width,height:p.geometry.height,margin:p.geometry.safeMarginMm??2,shape:p.geometry.shape||'rect',radius:p.geometry.cornerRadiusMm||0};}
 export function validateStudio(p,original,{extraFontIds=[]}={}){
  if(!p||!original)throw Error('Ungültige Produktvorlage.');
- if(p.kind==='layered-doorbell')return validateProfile(p,original);
+ if(p.kind==='layered-doorbell'){validateOptionGroups(p.optionGroups);return validateProfile(p,original,{extraFontIds});}
  if(p.kind!=='universal-product'||!validContentId(p.id)||p.id!==original.id||JSON.stringify(p.binding)!==JSON.stringify(original.binding))throw Error('Ungültige Produktzuordnung.');
  if(typeof p.name!=='string'||!p.name.trim()||p.name.length>200)throw Error('Bitte einen Produktnamen eingeben.');
  if(!p.geometry||!p.material)throw Error('Produktgeometrie oder Material fehlt.');

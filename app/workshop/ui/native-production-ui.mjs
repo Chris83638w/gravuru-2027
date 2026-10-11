@@ -11,6 +11,7 @@ export function installNativeProduction({state,api,markDirty}){
  }
  async function render(){
   const ticket=++serial,record=state.record,draft=state.draft;if(!record||!draft?.config)return;
+  if(draft.config.doorbell){loading=false;host.innerHTML='<h3>Zweilagiges Klingelschild</h3><p>Edelstahlträger 1,5 mm und gravierte Acrylglasauflage 3 mm. Originalausschnitte sind gesichert. Die getrennte Fertigungsausgabe für diesen Aufbau wird noch angebunden; Gestaltungen können gespeichert und in der Kundenansicht geprüft werden.</p>';return;}
   loading=true;host.innerHTML='<h3>Fertigungsprofil</h3><p>Profilstände werden geladen …</p>';
   try{
    const data=await api('/api/workshop/production-profiles'),ref=draft.productionProfile;
@@ -18,10 +19,10 @@ export function installNativeProduction({state,api,markDirty}){
    if(ref&&!pinned)pinned=await api('/api/workshop/production-profiles/'+encodeURIComponent(ref.id)+'?revision='+ref.revision);
    if(ticket!==serial||state.draft!==draft||state.record!==record)return;
    const profile=draft.config.profile,method=profile.processing?.profileId==='color-print'?'print':'engraving',thickness=profile.material.thicknessMm;
-   const slate=profile.material.kind==='slate',materialId=slate?'slate':'acrylic-clear';
+   const slate=profile.material.kind==='slate',steel=profile.material.kind==='steel',materialId=slate?'slate':steel?'steel':'acrylic-clear';
    choices=data.profiles.filter(p=>!p.document.archived&&p.document.method===method&&p.document.materialId===materialId&&p.document.thicknessMm===thickness);
    if(pinned&&!choices.some(p=>key(p)===key(pinned)))choices.unshift(pinned);
-   host.innerHTML='<h3>Fertigungsprofil</h3><p>'+(slate?'Schiefer · ':'Acrylglas · klar · ')+esc(thickness)+' mm · '+(method==='print'?'UV-Druck':'Gravur')+'</p><label>Gesicherter Profilstand<select id="native-production-profile"><option value="">Standardwerte ohne Profilzuordnung</option>'+choices.map(p=>'<option value="'+esc(key(p))+'" '+(ref&&key(p)===key(ref)?'selected':'')+'>'+esc(p.document.name)+' · Stand '+p.revision+(p===pinned&&!data.profiles.some(c=>key(c)===key(p))?' · bisher gebunden':'')+'</option>').join('')+'</select></label><p data-profile-summary role="status"></p><p class="field-help">Die Zuordnung wird mit dem Produkt gespeichert. Bereits gesicherte Gestaltungen behalten ihren Profilstand. Ein neuerer Profilstand wird nur durch deine Auswahl übernommen; echte Druck-/Gravurfreigaben bleiben separat.</p><p><button type="button" data-profile-reload>Profile neu laden</button> <a href="/werkstatt/fertigung/" target="_blank" rel="noopener">Fertigungsprofile verwalten</a></p>';
+   host.innerHTML='<h3>Fertigungsprofil</h3><p>'+(slate?'Schiefer · ':steel?'Edelstahl · ':'Acrylglas · klar · ')+esc(thickness)+' mm · '+(method==='print'?'UV-Druck':'Gravur')+'</p><label>Gesicherter Profilstand<select id="native-production-profile"><option value="">Standardwerte ohne Profilzuordnung</option>'+choices.map(p=>'<option value="'+esc(key(p))+'" '+(ref&&key(p)===key(ref)?'selected':'')+'>'+esc(p.document.name)+' · Stand '+p.revision+(p===pinned&&!data.profiles.some(c=>key(c)===key(p))?' · bisher gebunden':'')+'</option>').join('')+'</select></label><p data-profile-summary role="status"></p><p class="field-help">Die Zuordnung wird mit dem Produkt gespeichert. Bereits gesicherte Gestaltungen behalten ihren Profilstand. Ein neuerer Profilstand wird nur durch deine Auswahl übernommen; echte Druck-/Gravurfreigaben bleiben separat.</p><p><button type="button" data-profile-reload>Profile neu laden</button> <a href="/werkstatt/fertigung/" target="_blank" rel="noopener">Fertigungsprofile verwalten</a></p>';
    summary();
   }catch(e){if(ticket===serial&&state.draft===draft)host.innerHTML='<h3>Fertigungsprofil</h3><p role="alert">'+esc(e.message)+'</p><button type="button" data-profile-reload>Erneut laden</button>';}
   finally{if(ticket===serial){loading=false;sync();}}

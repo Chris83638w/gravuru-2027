@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "aosu-labradorEditorOptionsDragSaveReloadCustomer": true,
+    "steel-heimathafenEditorOptionsDragSaveReloadCustomer": true,
+    "allAuthenticatedApisSucceeded": true
+  },
+  "apiRequests": 95
+}

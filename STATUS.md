@@ -1,3 +1,9 @@
+## Musterübernahme in Prüfung · 11.10.2026
+
+AOSU/Labrador und zwei native Edelstahl-Heimathafen-Designs angebunden. 63 gezielte Prüfungen, Browserablauf mit 95 API-Anfragen und wiederholter Import in privater Sicherungskopie bestanden; alle historischen Zeilen in 49 Tabellen erhalten. Acrylmaster und bestehende Produkte bleiben unangetastet. [Nachweise und Grenzen](docs/releases/20261011/specimens/RELEASE.md).
+
+**Nächster Schritt:** versioniertes Paket getrennt installieren, gesichert auf dem Händlerhost aktivieren und Muster importieren. Noch keine Veröffentlichung dieses Pakets behaupten.
+
 ## Live: Shopify-Verbindung wiederhergestellt · 11.10.2026
 
 Installierter Quellstand **f1bc2bc**. Shopify-Zeitabweichung korrigiert, verständliche Anmeldemeldungen und bedienbare Wiederverbindung ohne Verlust ungespeicherter Gestaltung. **Nutzer bestätigt nach Neuladen die Produktanzeige**; 19 erfolgreiche authentifizierte Zugriffe auf Sitzung, Produkte, Profile, Schriften und Vorschauen im Serverprotokoll.

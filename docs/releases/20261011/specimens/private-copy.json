@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "scope": "private backup copy with synthetic credentials",
+  "historicalTablesUnchanged": 49,
+  "existingProductsUnchanged": 3,
+  "newMasters": 2,
+  "newProducts": 2,
+  "repeatCreatedNothing": true,
+  "sqliteQuickChecks": "ok",
+  "liveDataModified": false
+}

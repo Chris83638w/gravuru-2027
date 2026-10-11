@@ -1,0 +1,34 @@
+✔ private renderer uses authenticated parent image bytes and keeps unresolved resources unchanged (2.383883ms)
+✔ render catalog embeds private artwork without invalidating immutable product descriptors (1.026579ms)
+✔ missing/null keeps choices, empty disables new choices, explicit order is preserved (3.363353ms)
+✔ library choices omit embedded template motifs without deleting their resource or object (0.559165ms)
+✔ bestsellers respect configured order, empty and allowed motif intersection (0.550367ms)
+✔ preset colors normalize/dedupe while null inherits and empty has no presets (0.693716ms)
+✔ merchant creates a separate design, edits native text/motif/photo, and preserves the original and prices (899.137486ms)
+✔ merchant can remove fixed imported artwork after adding an element without relaxing customer locks (68.549537ms)
+✔ merchant movement stays inside actual plate dimensions including rotation (0.227155ms)
+✔ only imported artwork receives tonal engraving; original vector paint and source stay unchanged (14.152296ms)
+✔ photo examples accept WebP, keep the exact original privately and survive restart (1298.551509ms)
+✔ M02 draft preview resolves chosen design and base without saving; protects CSRF and revisions (1231.929905ms)
+✔ material preview uses the existing verified steel surface and preserves the original inner and outer geometry (1444.567337ms)
+✔ derived wood and leather previews use their documented atlas tile, keep holes and never change technical material data (1291.673061ms)
+✔ acrylic presentations preserve exact geometry, optional historical settings and explicit thickness (1326.160785ms)
+✔ UV presentation is opt-in, validated and keeps front ink above glass and reverse ink below (789.644954ms)
+✔ all acrylic engraving previews use tonal light marks without mutating source or print views (874.816329ms)
+✔ steel, wood and leather have material-specific engraving tones without changing print sources or geometry (810.583731ms)
+✔ slate retains editable native resources, physical geometry and option prices without mutating input (76.551835ms)
+✔ invalid nondefault holes, missing defaults, unsupported material and release flags fail closed (18.134231ms)
+✔ saved customer element rights still protect slate original text (63.787844ms)
+✔ same repository preserves slate revisions and batch uses its native cent source (112.058579ms)
+✔ slate customer snapshot preserves private ownership and produces original-scale engraving with holes (2272.775347ms)
+✔ legacy import is hash-bound and idempotent, and never overwrites a newer workshop revision (152.34918ms)
+✔ approved complete font replacement fits whole-mm text and preserves original revisions and prices (129.876039ms)
+✔ bundled Cormorant preserves German alphabet and original memorial cross without remote fonts (265.184781ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6786.581629

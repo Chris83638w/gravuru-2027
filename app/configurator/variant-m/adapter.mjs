@@ -21,7 +21,7 @@ export function installUniversal(configInput) {
   const motifs = () => {const local=new Map((config.localResources?.motifs||[]).map(m=>[m.key,m]));return Object.entries(el.motifs).map(([key, svgFragment]) => ({key, svgFragment, bounds:el.catalog.motif_bounds?.[key] || [0,0,100,100],embeddedOnly:local.get(key)?.embeddedOnly===true,...(local.get(key)?.artwork?{artwork:local.get(key).artwork}:{})}));};
   const svg = (design, {guides=false, selected='', handles=false} = {}) => {
     const visible={...design,objects:design.objects.filter(o=>!o.uxHidden)};
-    let result=surfacePreview(studioSvg(profile(), visible, el.fontData,{motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
+    let result=surfacePreview(studioSvg(profile(), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     return spacerPreview(result,profile());
@@ -170,12 +170,12 @@ export function installUniversal(configInput) {
     const qty=$('[data-fk-quantity]');qty.addEventListener('input',()=>{quantity=Number(qty.value);update();});
     function update(){
       const d=current(), visible=new Set(filteredDesigns(p.designs,filters).map(d=>d.id));
-      $('.stage-top>span').textContent=processing.name.replace('Gravur auf ','')+' · '+p.geometry.width+' × '+p.geometry.height+' mm';
+      $('.stage-top>span').textContent=(config.doorbell?'Edelstahl mit Acrylglasauflage':processing.name.replace('Gravur auf ',''))+' · '+p.geometry.width+' × '+p.geometry.height+' mm';
       $('.c-preview-caption>span').textContent='';
       $('.c-preview-caption').nextElementSibling.textContent='Klicke einen Text oder ein Motiv an, um es zu gestalten.';
       $('.c-section-heading small').textContent=p.designs.length+' Vorlagen';
       $('.fk-scroll-hint').textContent='Wähle dein Design';
-      $('.fk-material-note').textContent=processing.name+' · '+p.material.thicknessMm+' mm';
+      $('.fk-material-note').textContent=config.doorbell?'Edelstahl 1,5 mm · Gravur auf Acrylglas 3 mm':processing.name+' · '+p.material.thicknessMm+' mm';
       $('.fk-options>[data-fk-mount-note]')?.setAttribute('hidden','');
       const thumbnailKey=JSON.stringify(options);
       for(const card of r.querySelectorAll('[data-c-design]')){

@@ -1,0 +1,44 @@
+✔ native geometry, revisions and input remain unchanged (7.251353ms)
+✔ five native processing profiles stay independent from photo setting (15.840078ms)
+✔ photo disabled only exposes templates without photo slots (18.017833ms)
+✔ photo disabled does not silently publish mandatory-photo-only designs (1.854903ms)
+✔ all ten existing photo designs roundtrip with exact product binding (39.732905ms)
+✔ modified text remains editable in saved draft (6.169416ms)
+✔ Local tinted logo keeps its upload reference without pretending to be published media (7.101982ms)
+✔ new elements use actual product dimensions and native fonts, never doorbell coordinates (2.50443ms)
+✔ private data and transient UI state excluded from draft (5.667475ms)
+✔ foreign product, profile or revision fails closed (2.645515ms)
+✔ customer photo placement may move or be deleted; technical geometry stays in profile (6.014934ms)
+✔ unknown motif, option, malformed quantity and geometry rejected (21.926425ms)
+✔ template motifs included once, extra copy costs 169 cents (0.689488ms)
+✔ configured add-ons and quantity calculated in cents (0.606879ms)
+✔ selected holes preserve given diameter and coordinates without mutating source (2.97326ms)
+✔ upload accepts only explicit raster types and positive sizes within limit (0.346738ms)
+✔ photo background instructions roundtrip and reject invalid or misplaced values (3.992959ms)
+✔ photo alignment survives the actual render/draft contract and rejects invalid payloads (6.269538ms)
+✔ native profile binding validates material, thickness, method and reference while preserving legacy documents (1486.556447ms)
+✔ native print snapshot and output retain pinned profile defaults after profile edits and archive (10539.63028ms)
+✔ native engraving uses the fixed vector/mirror profile and explicit output overrides (2504.521734ms)
+✔ native acrylic handoff pins rights, all 28 prices, originals and immutable snapshots; rejects forged requests (19603.259505ms)
+✔ native full-area print extends only inked outer edges, keeps white inside and mirrors once (4309.12596ms)
+✔ native pilot becomes a cloneable document without inventing repository IDs or changing the source (64.182901ms)
+✔ inherit, explicitly empty and override remain distinct and missing assignments are rejected (58.539257ms)
+✔ unknown design, option and rights references fail instead of falling back (347.879556ms)
+✔ persisted authoritative cent prices are required; invalid money cannot enter a revision (122.809009ms)
+✔ compatibility price mirrors are derived from the single persisted pricing source (25.830773ms)
+✔ all 28 pilot variants resolve the same dimensions and prices as the existing configurator (288.16737ms)
+✔ fixed elements receive explicit separate rights without losing permitted photo or colour changes (74.165989ms)
+✔ server-side design validator enforces each individually restricted right (396.825576ms)
+✔ server validation preserves editable text and measures it when scaling is disallowed (53.321424ms)
+✔ repository relationships and metadata are explicit, bounded and not silently invented (48.164362ms)
+✔ explicit backend delete permission removes fixed artwork without mutating source or permitting geometry edits (62.032146ms)
+✔ manufacturing profiles retain revisions and hashes across changes, conflicts, archival and reopen (21.450576ms)
+✔ profile HTTP and immutable product/review binding use the saved output defaults after later profile edits (9042.005232ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24178.495188

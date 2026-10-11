@@ -132,9 +132,9 @@ function renderEditor(){
  renderPrices();renderDesigns();renderProfiles();renderHistory();productEditor.render();nativeProduction?.render();showTab(state.tab);
 }
 function renderPrices(){
- if(state.draft.config?.profile?.material?.kind==='slate'){
+ if(state.draft.config&&!state.draft.config.acrylic){
   const c=state.draft.config;
-  $('#panel-prices').innerHTML='<div class="form-section"><h3>Schiefer · Preise</h3><p>Alle Eingaben in Euro. Befestigungen werden zum Grundpreis addiert.</p><div class="form-grid">'+moneyField('Grundpreis','config.basePriceCents')+moneyField('Zusätzliches Motiv','config.extraMotifCents')+moneyField('Zusätzliches Foto','config.photo.extraPriceCents')+'</div></div><div class="form-section"><h3>Befestigungen</h3><div class="form-grid">'+c.profile.optionGroups[0].values.map((v,i)=>moneyField(v.label,'config.profile.optionGroups.0.values.'+i+'.priceCents')).join('')+'</div></div>';return;
+  $('#panel-prices').innerHTML='<div class="form-section"><h3>Preise</h3><p>Alle Eingaben in Euro. Aufpreise werden zum Grundpreis addiert.</p><div class="form-grid">'+moneyField('Grundpreis','config.basePriceCents')+moneyField('Zusätzliches Motiv','config.extraMotifCents')+moneyField('Zusätzliches Foto','config.photo.extraPriceCents')+'</div></div>'+c.profile.optionGroups.map((g,j)=>'<div class="form-section"><h3>'+escape(g.name)+'</h3><div class="form-grid">'+g.values.map((v,i)=>moneyField(v.label,'config.profile.optionGroups.'+j+'.values.'+i+'.priceCents')).join('')+'</div></div>').join('');return;
  }
  if(!state.draft.config?.acrylic?.pricing){$('#panel-prices').innerHTML='<h3>Für dieses Produkt ist noch kein Preisprofil hinterlegt.</h3><p>Das vorliegende Preisformular verwaltet das Acrylglasprofil. Weitere Materialprofile werden gesondert ergänzt.</p>';return;}
  const root='config.acrylic.pricing.';

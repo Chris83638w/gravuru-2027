@@ -527,6 +527,22 @@
       "expanded": "禮品卡收件人表單已展開",
       "collapsed": "禮品卡收件人表單已收合"
     }
+  },
+  "gravuru": {
+    "navigation": {
+      "menu": "Open menu",
+      "main": "Main navigation",
+      "apply": "Apply",
+      "view_all": "View all: {{ title }}"
+    },
+    "images": {
+      "hero": "Illustrative acrylic photo gift with wooden base and a stainless steel nameplate",
+      "materials": "Material samples: stainless steel, slate, acrylic, wood and leather"
+    },
+    "product": {
+      "personalize": "Personalize now",
+      "pending": "Personalization is not yet available for this product.",
+      "editor_hint": "Add the appropriate gravuru app block in the theme editor and verify the released product binding."
+    }
   }
 }
-

@@ -26,3 +26,15 @@ data = json.loads(footer.read_text(encoding='utf-8'))
 data['sections']['footer']['settings']['newsletter_heading'] = 'Neue Ideen für besondere Menschen'
 footer.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 print('Locale-aware internal links and German footer applied.')
+
+# Preserve Dawn's other locale files with explicit English fallback for custom keys.
+# The requested seven locales keep their actual translations.
+english = json.loads((THEME / 'locales/en.default.json').read_text(encoding='utf-8'))['gravuru']
+for locale in (THEME / 'locales').glob('*.json'):
+    if locale.name.endswith('.schema.json'):
+        continue
+    content = json.loads(locale.read_text(encoding='utf-8'))
+    if 'gravuru' not in content:
+        content['gravuru'] = english
+        locale.write_text(json.dumps(content, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+print('Custom locale keys complete; non-target languages use English fallback.')

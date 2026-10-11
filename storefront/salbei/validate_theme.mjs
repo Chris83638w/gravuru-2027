@@ -24,5 +24,12 @@ for (const [file, data] of parsed) {
     if (blocks.length !== order.length || new Set(order).size !== order.length || order.some(key => !blocks.includes(key))) err('BLOCK ORDER', rel(file), id);
   }
 }
+function leafKeys(value, prefix='') { return Object.entries(value ?? {}).flatMap(([key, item]) => typeof item === 'object' && item !== null ? leafKeys(item, `${prefix}${key}.`) : [`${prefix}${key}`]); }
+const expectedCustomKeys = leafKeys(parsed.get(path.join(root, 'locales/en.default.json'))?.gravuru);
+for (const [file, data] of parsed) {
+  if (!file.includes(`${path.sep}locales${path.sep}`) || file.endsWith('.schema.json')) continue;
+  const actual = new Set(leafKeys(data.gravuru));
+  for (const key of expectedCustomKeys) if (!actual.has(key)) err('MISSING CUSTOM TRANSLATION', rel(file), key);
+}
 console.log(`JSON files: ${jsonFiles.length}; section schemas: ${Object.keys(schemas).length}; issues: ${errors.length}`); for(const e of errors)console.log(e);
 process.exitCode = errors.length ? 1 : 0;

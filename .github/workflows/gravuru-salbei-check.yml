@@ -24,3 +24,4 @@ jobs:
         uses: Shopify/theme-check-action@58fd69afdfc30110f997ba9e212b302671e00d3b
         with:
           theme_root: storefront/salbei/theme
+          flags: '--output json'

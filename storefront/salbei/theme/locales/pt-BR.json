@@ -539,6 +539,22 @@
       "expanded": "Formulário de destinatário do cartão-presente expandido",
       "collapsed": "Formulário de destinatário do cartão-presente recolhido"
     }
+  },
+  "gravuru": {
+    "navigation": {
+      "menu": "Open menu",
+      "main": "Main navigation",
+      "apply": "Apply",
+      "view_all": "View all: {{ title }}"
+    },
+    "images": {
+      "hero": "Illustrative acrylic photo gift with wooden base and a stainless steel nameplate",
+      "materials": "Material samples: stainless steel, slate, acrylic, wood and leather"
+    },
+    "product": {
+      "personalize": "Personalize now",
+      "pending": "Personalization is not yet available for this product.",
+      "editor_hint": "Add the appropriate gravuru app block in the theme editor and verify the released product binding."
+    }
   }
 }
-

@@ -40,5 +40,6 @@ Das ist keine serverseitige Kaufsperre und noch keine vollständige Konfigurator
 - `python package_theme.py`: ZIP und vollständiges SHA-256-Dateimanifest erstellen; temporäre Übertragungsdateien werden nicht eingepackt.
 - `design-qa.md` und `theme_validation_report.md`: tatsächlich ausgeführte Prüfungen und offene Grenzen.
 - Auf dem Aufgabenbranch ist ein begrenzter GitHub-Prüflauf vorgesehen, der den offiziellen Shopify Theme Check ausführt. Er veröffentlicht oder installiert kein Theme.
+- Die übrigen von Dawn mitgelieferten Sprachen verwenden für die neuen gravuru-Systemtexte einen expliziten englischen Rückfalltext. Sie gelten damit nicht als vollständig übersetzte gravuru-Shop-Sprachen.
 
 Nächster Schritt: ZIP als neues unveröffentlichtes Theme importieren, Shopify Theme Check sowie Desktop-/Mobil- und Editorabläufe prüfen; anschließend bestehende Konfiguratorstrecke, B2B und Übersetzungen verbinden und abnehmen.

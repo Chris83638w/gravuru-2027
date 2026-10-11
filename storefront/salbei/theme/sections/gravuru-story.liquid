@@ -1,0 +1,79 @@
+<section class="g-story g-shell{% if section.settings.image != blank %} g-story--with-image{% endif %}" aria-labelledby="g-story-title-{{ section.id }}" style="--g-story-space: {{ section.settings.spacing }}px;">
+  <div class="g-story__copy">
+    {% if section.settings.eyebrow != blank %}<p class="g-story__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+    {% if section.settings.heading != blank %}<h2 id="g-story-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>{% endif %}
+    {% if section.settings.text != blank %}<div class="g-story__text rte">{{ section.settings.text }}</div>{% endif %}
+    {% if section.blocks.size > 0 %}
+      <ol class="g-story__steps">
+        {% for block in section.blocks %}
+          <li class="g-story__step" {{ block.shopify_attributes }}>
+            <span class="g-story__number" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+            <div>
+              {% if block.settings.title != blank %}<h3>{{ block.settings.title | escape }}</h3>{% endif %}
+              {% if block.settings.text != blank %}<p>{{ block.settings.text | escape }}</p>{% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+    {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+      <a class="g-story__button" href="{% render 'gravuru-local-url', target: section.settings.button_link %}">{{ section.settings.button_label | escape }}<span aria-hidden="true">↗</span></a>
+    {% endif %}
+  </div>
+  {% if section.settings.image != blank %}
+    <div class="g-story__media">
+      {{ section.settings.image | image_url: width: 1400 | image_tag: widths: '480, 750, 1000, 1200, 1400', sizes: '(min-width: 990px) 42vw, 100vw', loading: 'lazy', class: 'g-story__image' }}
+    </div>
+  {% endif %}
+</section>
+
+{% stylesheet %}
+  .g-story { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; padding-block: var(--g-story-space); }
+  .g-story--with-image { grid-template-columns: minmax(0, 1fr) minmax(0, .82fr); }
+  .g-story__copy { max-width: 680px; padding-block: 12px; }
+  .g-story__eyebrow { margin: 0 0 14px; color: var(--g-primary); font-size: 11px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; }
+  .g-story h2 { max-width: 18ch; margin: 0; color: var(--g-primary); font-size: clamp(34px, 4vw, 52px); font-weight: 400; line-height: 1.08; }
+  .g-story__text { max-width: 58ch; margin-top: 18px; font-size: 16px; line-height: 1.65; }
+  .g-story__text p { margin: 0; }
+  .g-story__steps { display: grid; gap: 0; margin: 26px 0 0; padding: 0; list-style: none; border-top: 1px solid rgba(53, 76, 59, .16); }
+  .g-story__step { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 14px; padding: 17px 0; border-bottom: 1px solid rgba(53, 76, 59, .16); }
+  .g-story__number { color: var(--g-primary); font-size: 12px; line-height: 1.5; }
+  .g-story__step h3 { margin: 0 0 4px; color: var(--g-primary); font-size: 17px; line-height: 1.4; font-weight: 500; }
+  .g-story__step p { margin: 0; font-size: 14px; line-height: 1.55; }
+  .g-story__button { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-height: 44px; margin-top: 22px; padding: 8px 0; color: var(--g-primary); font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 5px; }
+  .g-story__button:focus-visible { outline: 2px solid var(--g-primary); outline-offset: 4px; }
+  .g-story__media { min-width: 0; background: var(--g-surface); }
+  .g-story__image { display: block; width: 100%; max-height: 620px; aspect-ratio: 4 / 5; object-fit: cover; }
+  @media (max-width: 749px) { .g-story--with-image { grid-template-columns: minmax(0, 1fr); } .g-story__media { grid-row: 1; } .g-story__image { aspect-ratio: 1.25; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "gravuru | Geschichte",
+  "tag": "div",
+  "class": "g-story-section",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Kleine Überschrift", "default": "So entsteht dein Stück" },
+    { "type": "text", "id": "heading", "label": "Überschrift", "default": "Deine Idee bekommt Gestalt." },
+    { "type": "richtext", "id": "text", "label": "Einleitung", "default": "<p>Wähle ein Produkt und ergänze deine Personalisierung direkt auf der Produktseite. Welche Angaben und Gestaltungsoptionen verfügbar sind, siehst du dort vor dem Hinzufügen zum Warenkorb.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Optionales Bild" },
+    { "type": "text", "id": "button_label", "label": "Optionaler Linktext" },
+    { "type": "url", "id": "button_link", "label": "Optionales Linkziel" },
+    { "type": "range", "id": "spacing", "label": "Abstand oben und unten", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    { "type": "step", "name": "Schritt", "settings": [
+      { "type": "text", "id": "title", "label": "Titel", "default": "Wähle dein Produkt" },
+      { "type": "text", "id": "text", "label": "Beschreibung", "default": "Entdecke die verfügbaren Produkte und ihre Details." }
+    ] }
+  ],
+  "presets": [
+    { "name": "gravuru | Geschichte", "blocks": [
+      { "type": "step", "settings": { "title": "Wähle dein Produkt", "text": "Entdecke die verfügbaren Produkte und ihre Details." } },
+      { "type": "step", "settings": { "title": "Ergänze deine Angaben", "text": "Die Personalisierungsfelder und Hinweise findest du auf der jeweiligen Produktseite." } },
+      { "type": "step", "settings": { "title": "Prüfe deine Auswahl", "text": "Kontrolliere deine Angaben und Produktdetails, bevor du bestellst." } }
+    ] }
+  ]
+}
+{% endschema %}

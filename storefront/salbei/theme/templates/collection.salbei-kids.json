@@ -1,0 +1,108 @@
+{
+  "sections": {
+    "banner": {
+      "type": "gravuru-collection-intro",
+      "settings": {
+        "show_description": false,
+        "contact_link": "/pages/contact",
+        "heading": "Kinder & Schule",
+        "text": "<p>Für kleine Entdecker und große erste Schritte.</p>"
+      },
+      "blocks": {
+        "0": {
+          "type": "link",
+          "settings": {
+            "title": "Kinder & Schule",
+            "collection": "kinder-schule"
+          }
+        },
+        "1": {
+          "type": "link",
+          "settings": {
+            "title": "Stundenpläne",
+            "collection": "stundenplane"
+          }
+        },
+        "2": {
+          "type": "link",
+          "settings": {
+            "title": "Brotdosen & Trinkflaschen",
+            "collection": "brotdosen-trinkflaschen"
+          }
+        }
+      },
+      "block_order": [
+        "0",
+        "1",
+        "2"
+      ]
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "help": {
+      "type": "rich-text",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "content_alignment": "left",
+        "desktop_content_position": "left",
+        "full_width": false,
+        "padding_top": 48,
+        "padding_bottom": 48
+      },
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Gemeinsam finden wir die passende Idee.",
+            "heading_size": "h1"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Du suchst eine bestimmte Ausführung oder möchtest mehrere Produkte gestalten? Erzähl uns von deinem Vorhaben.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Kontakt & Beratung",
+            "button_link": "/pages/contact",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": true
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ]
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid",
+    "help"
+  ]
+}

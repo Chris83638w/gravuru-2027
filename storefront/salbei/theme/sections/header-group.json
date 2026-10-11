@@ -7,11 +7,11 @@
       "settings": {
         "wordmark": "gravuru",
         "show_language": true,
-        "b2b_link": "/account",
+        "b2b_link": "/pages/registrierung",
         "b2b_label": "Für Geschäftskunden",
         "show_image": true,
-        "image_link": "/collections",
-        "image_label": "Materialien entdecken"
+        "image_link": "/pages/materialien",
+        "image_label": "Materialien kennenlernen"
       },
       "blocks": {
         "products": {
@@ -25,21 +25,21 @@
           "type": "navigation",
           "settings": {
             "title": "Geschenke & Anlässe",
-            "link": "/collections/fotogeschenke"
+            "link": "/collections/fotogeschenke?view=salbei-photo"
           }
         },
         "home": {
           "type": "navigation",
           "settings": {
             "title": "Rund ums Haus",
-            "link": "/collections/turschilder-namensschilder"
+            "link": "/collections/turschilder-namensschilder?view=salbei-home"
           }
         },
         "remembrance": {
           "type": "navigation",
           "settings": {
             "title": "Gedenken",
-            "link": "/collections/gedenktafeln"
+            "link": "/collections/gedenktafeln?view=salbei-memory"
           }
         },
         "mega_photo": {
@@ -47,7 +47,8 @@
           "settings": {
             "title": "Fotogeschenke",
             "collection": "fotogeschenke",
-            "column": "one"
+            "column": "one",
+            "link": "/collections/fotogeschenke?view=salbei-photo"
           }
         },
         "mega_house": {
@@ -55,7 +56,8 @@
           "settings": {
             "title": "Rund ums Haus",
             "collection": "turschilder-namensschilder",
-            "column": "one"
+            "column": "one",
+            "link": "/collections/turschilder-namensschilder?view=salbei-home"
           }
         },
         "mega_horse": {
@@ -63,7 +65,8 @@
           "settings": {
             "title": "Pferdeschilder",
             "collection": "boxenschilder-stalltafeln-fur-pferde",
-            "column": "one"
+            "column": "one",
+            "link": "/collections/boxenschilder-stalltafeln-fur-pferde?view=salbei-horse"
           }
         },
         "mega_kids": {
@@ -71,7 +74,8 @@
           "settings": {
             "title": "Kindersachen",
             "collection": "kinder-schule",
-            "column": "one"
+            "column": "one",
+            "link": "/collections/kinder-schule?view=salbei-kids"
           }
         },
         "mega_memory": {
@@ -79,7 +83,8 @@
           "settings": {
             "title": "Gedenken & Andenken",
             "collection": "gedenktafeln",
-            "column": "one"
+            "column": "one",
+            "link": "/collections/gedenktafeln?view=salbei-memory"
           }
         },
         "mega_wedding": {
@@ -87,7 +92,8 @@
           "settings": {
             "title": "Hochzeitsgeschenke",
             "collection": "hochzeit",
-            "column": "two"
+            "column": "two",
+            "link": "/collections/hochzeit?view=salbei-wedding"
           }
         },
         "mega_christening": {
@@ -95,7 +101,8 @@
           "settings": {
             "title": "Taufgeschenke",
             "collection": "taufe",
-            "column": "two"
+            "column": "two",
+            "link": "/collections/taufe?view=salbei-christening"
           }
         },
         "mega_steel": {

@@ -1,0 +1,67 @@
+<section class="g-faq g-shell" aria-labelledby="g-faq-title-{{ section.id }}" style="--g-faq-space: {{ section.settings.spacing }}px;">
+  <div class="g-faq__intro">
+    {% if section.settings.eyebrow != blank %}<p class="g-faq__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+    {% if section.settings.heading != blank %}<h2 id="g-faq-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>{% endif %}
+    {% if section.settings.text != blank %}<div class="g-faq__intro-text rte">{{ section.settings.text }}</div>{% endif %}
+  </div>
+  <div class="g-faq__list">
+    {% for block in section.blocks %}
+      <details class="g-faq__item" {{ block.shopify_attributes }}>
+        <summary><span>{{ block.settings.question | escape }}</span><span class="g-faq__toggle" aria-hidden="true"></span></summary>
+        <div class="g-faq__answer rte">{{ block.settings.answer }}</div>
+      </details>
+    {% endfor %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .g-faq { display: grid; grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); gap: clamp(32px, 8vw, 112px); padding-block: var(--g-faq-space); }
+  .g-faq__intro { align-self: start; }
+  .g-faq__eyebrow { margin: 0 0 14px; color: var(--g-primary); font-size: 11px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; }
+  .g-faq h2 { margin: 0; color: var(--g-primary); font-size: clamp(34px, 4vw, 50px); font-weight: 400; line-height: 1.08; }
+  .g-faq__intro-text { max-width: 36ch; margin-top: 16px; font-size: 15px; line-height: 1.6; }
+  .g-faq__intro-text p { margin: 0; }
+  .g-faq__list { border-top: 1px solid rgba(53, 76, 59, .2); }
+  .g-faq__item { border-bottom: 1px solid rgba(53, 76, 59, .2); }
+  .g-faq__item summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 64px; padding: 14px 0; color: var(--g-primary); font-size: 17px; line-height: 1.4; font-weight: 500; cursor: pointer; list-style: none; }
+  .g-faq__item summary::-webkit-details-marker { display: none; }
+  .g-faq__item summary:focus-visible { outline: 2px solid var(--g-primary); outline-offset: 4px; }
+  .g-faq__toggle { position: relative; flex: 0 0 20px; width: 20px; height: 20px; }
+  .g-faq__toggle::before,.g-faq__toggle::after { position: absolute; top: 50%; left: 50%; width: 14px; height: 1px; background: var(--g-primary); content: ""; transform: translate(-50%, -50%); }
+  .g-faq__toggle::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .g-faq__item[open] .g-faq__toggle::after { transform: translate(-50%, -50%); }
+  .g-faq__answer { max-width: 66ch; padding: 0 36px 20px 0; color: var(--g-text); font-size: 15px; line-height: 1.65; }
+  .g-faq__answer p { margin: 0 0 10px; }
+  .g-faq__answer p:last-child { margin-bottom: 0; }
+  @media (max-width: 749px) { .g-faq { grid-template-columns: minmax(0, 1fr); gap: 26px; } .g-faq__item summary { min-height: 60px; font-size: 16px; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "gravuru | Häufige Fragen",
+  "tag": "div",
+  "class": "g-faq-section",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Kleine Überschrift", "default": "Gut zu wissen" },
+    { "type": "text", "id": "heading", "label": "Überschrift", "default": "Häufige Fragen" },
+    { "type": "richtext", "id": "text", "label": "Einleitung", "default": "<p>Hier findest du Hinweise zu Personalisierung, Produktdetails und deiner Bestellung.</p>" },
+    { "type": "range", "id": "spacing", "label": "Abstand oben und unten", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    { "type": "question", "name": "Frage", "settings": [
+      { "type": "text", "id": "question", "label": "Frage", "default": "Welche Personalisierung ist möglich?" },
+      { "type": "richtext", "id": "answer", "label": "Antwort", "default": "<p>Die Optionen können je nach Produkt unterschiedlich sein. Alle verfügbaren Personalisierungsfelder und Hinweise werden auf der jeweiligen Produktseite angezeigt.</p>" }
+    ] }
+  ],
+  "presets": [
+    { "name": "gravuru | Häufige Fragen", "blocks": [
+      { "type": "question", "settings": { "question": "Welche Personalisierung ist möglich?", "answer": "<p>Die Optionen können je nach Produkt unterschiedlich sein. Alle verfügbaren Personalisierungsfelder und Hinweise werden auf der jeweiligen Produktseite angezeigt.</p>" } },
+      { "type": "question", "settings": { "question": "Welche Fotos eignen sich?", "answer": "<p>Beachte die Hinweise beim gewünschten Produkt. Ein scharfes, gut beleuchtetes Bild mit gut erkennbaren Motiven ist in der Regel eine gute Ausgangsbasis.</p>" } },
+      { "type": "question", "settings": { "question": "Welches Material passt zu meinem Einsatz?", "answer": "<p>Material, Eigenschaften und Hinweise zur Verwendung findest du in den Details des jeweiligen Produkts. Prüfe diese Angaben vor der Auswahl.</p>" } },
+      { "type": "question", "settings": { "question": "Wann wird meine Bestellung geliefert?", "answer": "<p>Die aktuell geltenden Lieferangaben findest du auf der Produktseite und auf der Versandseite. Bitte prüfe diese Informationen vor deiner Bestellung.</p>" } },
+      { "type": "question", "settings": { "question": "Ich habe eine Anfrage für mein Unternehmen. Was kann ich tun?", "answer": "<p>Für eine Anfrage zu größeren oder geschäftlichen Bestellungen kannst du über die Kontaktseite mit uns sprechen. Ein Rabatt oder Sonderpreis wird dadurch nicht automatisch angewendet.</p>" } }
+    ] }
+  ]
+}
+{% endschema %}

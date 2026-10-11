@@ -127,3 +127,16 @@ h1,h2,h3,h4,h5,h6 { letter-spacing: -.025em; }
  .footer { margin-top: 40px; }
 }
 @media(prefers-reduced-motion: reduce) { .g-world__image img,.g-button { transition: none; } }
+
+/* Shared catalogue, service and checkout-entry styling. */
+.collection .title,.collection__title .title,.main-page-title,.title--primary { color:var(--g-primary); font-weight:400; }
+.card__heading { font-family:var(--font-body-family); font-size:16px; line-height:1.4; font-weight:500; }
+.card__information { padding-top:18px; }
+.card-information .price { font-size:15px; color:var(--g-primary); }
+.card__inner { background:var(--g-surface); }
+.facets__summary,.facet-filters__label,.product-count__text { color:var(--g-text); }
+.footer-block__heading { font-size:20px; font-weight:500; }
+.footer-block__details-content .list-menu__item--link { line-height:1.65; }
+.rich-text__heading { color:var(--g-primary); font-weight:400; }
+.g-product-help a:focus-visible,.g-detail summary:focus-visible { outline:2px solid var(--g-primary); outline-offset:4px; }
+@media(max-width:749px) { .card__heading { font-size:14px; } .g-product-details h2 { font-size:32px; } }

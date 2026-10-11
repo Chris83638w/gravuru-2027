@@ -1,18 +1,121 @@
 {
   "sections": {
-    "main": {
-      "type": "main-list-collections",
+    "intro": {
+      "type": "rich-text",
       "settings": {
-        "title": "Collections",
-        "sort": "alphabetical",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "columns_mobile": "2"
-      }
+        "color_scheme": "scheme-1",
+        "content_alignment": "left",
+        "desktop_content_position": "left",
+        "full_width": false,
+        "padding_top": 48,
+        "padding_bottom": 48
+      },
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Für dein Leben. Für besondere Menschen.",
+            "heading_size": "h1"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Finde deine persönliche Idee in unseren sieben Themenwelten.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text"
+      ]
+    },
+    "worlds": {
+      "type": "gravuru-categories",
+      "settings": {
+        "eyebrow": "Für das, was dir wichtig ist",
+        "heading": "Unsere Produktwelten",
+        "spacing": 48,
+        "text": "<p>Geschenke, Schilder und Erinnerungen. Entdecke, was zu deinem Moment passt.</p>"
+      },
+      "blocks": {
+        "home": {
+          "type": "category",
+          "settings": {
+            "title": "Rund ums Haus",
+            "text": "Schilder, Hausnummern und ein Eingang, der zu dir passt.",
+            "collection": "turschilder-namensschilder",
+            "link": "/collections/turschilder-namensschilder?view=salbei-home"
+          }
+        },
+        "photo": {
+          "type": "category",
+          "settings": {
+            "title": "Fotogeschenke",
+            "text": "Deine liebsten Bilder. Ein persönliches Geschenk.",
+            "collection": "fotogeschenke",
+            "link": "/collections/fotogeschenke?view=salbei-photo"
+          }
+        },
+        "memory": {
+          "type": "category",
+          "settings": {
+            "title": "Gedenken & Andenken",
+            "text": "Erinnerungen bewahren und Verbundenheit ausdrücken.",
+            "collection": "gedenktafeln",
+            "link": "/collections/gedenktafeln?view=salbei-memory"
+          }
+        },
+        "horse": {
+          "type": "category",
+          "settings": {
+            "title": "Pferdeschilder",
+            "text": "Ein persönlicher Platz für dein Pferd.",
+            "collection": "boxenschilder-stalltafeln-fur-pferde",
+            "link": "/collections/boxenschilder-stalltafeln-fur-pferde?view=salbei-horse"
+          }
+        },
+        "kids": {
+          "type": "category",
+          "settings": {
+            "title": "Kinder & Schule",
+            "text": "Für kleine Entdecker und große erste Schritte.",
+            "collection": "kinder-schule",
+            "link": "/collections/kinder-schule?view=salbei-kids"
+          }
+        },
+        "wedding": {
+          "type": "category",
+          "settings": {
+            "title": "Hochzeitsgeschenke",
+            "text": "Persönliche Ideen für einen gemeinsamen Anfang.",
+            "collection": "hochzeit",
+            "link": "/collections/hochzeit?view=salbei-wedding"
+          }
+        },
+        "christening": {
+          "type": "category",
+          "settings": {
+            "title": "Taufgeschenke",
+            "text": "Ein Name. Ein Datum. Eine bleibende Erinnerung.",
+            "collection": "taufe",
+            "link": "/collections/taufe?view=salbei-christening"
+          }
+        }
+      },
+      "block_order": [
+        "home",
+        "photo",
+        "memory",
+        "horse",
+        "kids",
+        "wedding",
+        "christening"
+      ]
     }
   },
   "order": [
-    "main"
+    "intro",
+    "worlds"
   ]
 }
-

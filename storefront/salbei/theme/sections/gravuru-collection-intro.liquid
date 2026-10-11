@@ -1,0 +1,23 @@
+<section class="g-collection-intro g-shell" aria-labelledby="g-collection-title-{{ section.id }}">
+  <a class="g-collection-back" href="{{ routes.root_url }}">{{ 'general.continue_shopping' | t }}</a>
+  {% if section.settings.eyebrow != blank %}<p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+  <h1 id="g-collection-title-{{ section.id }}">{{ section.settings.heading | default: collection.title | escape }}</h1>
+  {% if section.settings.text != blank %}<div class="rte g-collection-intro__text">{{ section.settings.text }}</div>{% elsif section.settings.show_description %}<div class="rte g-collection-intro__text">{{ collection.description }}</div>{% endif %}
+  {% if section.blocks.size > 0 %}<nav class="g-collection-chips" aria-label="{{ section.settings.links_label | escape }}">{% for block in section.blocks %}{% assign target = block.settings.link | default: block.settings.collection.url %}{% if target != blank %}<a href="{% render 'gravuru-local-url', target: target %}" {{ block.shopify_attributes }}>{{ block.settings.title | default: block.settings.collection.title | escape }}</a>{% endif %}{% endfor %}</nav>{% endif %}
+  {% if collection.products_count == 0 %}<div class="g-collection-request"><h2>{{ section.settings.empty_heading | escape }}</h2><div class="rte">{{ section.settings.empty_text }}</div><a class="g-button" href="{% render 'gravuru-local-url', target: section.settings.contact_link %}">{{ section.settings.contact_label | escape }}</a></div>{% endif %}
+</section>
+{% stylesheet %}
+  .g-collection-intro { padding-block:36px 12px; }
+  .g-collection-back { display:inline-flex; min-height:44px; align-items:center; color:var(--g-primary); font-size:13px; text-underline-offset:4px; margin-bottom:20px; }
+  .g-collection-intro h1 { margin:0 0 18px; font-size:clamp(38px,4.8vw,64px); line-height:1.1; color:var(--g-primary); font-weight:400; }
+  .g-collection-intro__text { max-width:760px; font-size:17px; line-height:1.65; }
+  .g-collection-chips { display:flex; flex-wrap:wrap; gap:10px; margin-block:24px; }
+  .g-collection-chips a { display:inline-flex; align-items:center; min-height:44px; padding:10px 18px; border:1px solid rgba(53,76,59,.24); border-radius:3px; text-decoration:none; color:var(--g-primary); font-size:14px; }
+  .g-collection-chips a:hover { background:var(--g-surface); }
+  .g-collection-request { padding:32px; margin-block:28px; background:var(--g-surface); max-width:860px; }
+  .g-collection-request h2 { margin-top:0; font-size:32px; font-weight:400; }
+  .g-collection-request .g-button { margin-top:16px; }
+{% endstylesheet %}
+{% schema %}
+{"name":"gravuru | Kollektion","tag":"div","enabled_on":{"templates":["collection"]},"max_blocks":8,"settings":[{"type":"text","id":"eyebrow","label":"Kleine Überschrift","default":"Persönlich. Von gravuru."},{"type":"text","id":"heading","label":"Überschrift statt Kollektionstitel"},{"type":"richtext","id":"text","label":"Einleitung"},{"type":"checkbox","id":"show_description","label":"Kollektionsbeschreibung verwenden","default":false},{"type":"text","id":"links_label","label":"Bezeichnung Unterkategorien","default":"Weiter entdecken"},{"type":"text","id":"empty_heading","label":"Überschrift bei leerer Kollektion","default":"Deine Idee ist der Anfang."},{"type":"richtext","id":"empty_text","label":"Text bei leerer Kollektion","default":"<p>Aktuell sind hier keine Artikel zur direkten Bestellung verfügbar. Beschreibe uns deinen Wunsch – wir prüfen die passende Umsetzung für dich.</p>"},{"type":"text","id":"contact_label","label":"Kontaktbutton","default":"Persönlich beraten lassen"},{"type":"url","id":"contact_link","label":"Kontaktziel","default":"/pages/contact"}],"blocks":[{"type":"link","name":"Unterkategorie","settings":[{"type":"text","id":"title","label":"Titel"},{"type":"collection","id":"collection","label":"Kollektion"},{"type":"url","id":"link","label":"Alternatives Linkziel"}]}],"presets":[{"name":"gravuru | Kollektion"}]}
+{% endschema %}

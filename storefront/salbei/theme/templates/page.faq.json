@@ -1,0 +1,111 @@
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "content_alignment": "left",
+        "desktop_content_position": "left",
+        "full_width": false,
+        "padding_top": 48,
+        "padding_bottom": 48
+      },
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Hilfe für dein persönliches Produkt.",
+            "heading_size": "h1"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Von der ersten Idee bis zur Lieferung: Hier findest du Antworten und den direkten Weg zu uns.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "button_label": "Kontakt aufnehmen",
+            "button_link": "/pages/contact",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": true
+          }
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ]
+    },
+    "faq": {
+      "type": "gravuru-faq",
+      "settings": {
+        "eyebrow": "Gut zu wissen",
+        "heading": "Noch eine Frage?",
+        "text": "<p>Die wichtigsten Antworten für dein persönliches Lieblingsstück.</p>",
+        "spacing": 48
+      },
+      "blocks": {
+        "question0": {
+          "type": "question",
+          "settings": {
+            "question": "Wie gestalte ich mein Produkt?",
+            "answer": "<p>Wähle dein Produkt und die angebotene Ausführung. Auf der Produktseite findest du die verfügbaren Möglichkeiten zur Personalisierung. Prüfe Texte, Bilder und Optionen vor der Bestellung.</p>"
+          }
+        },
+        "question1": {
+          "type": "question",
+          "settings": {
+            "question": "Welches Material passt zu meiner Idee?",
+            "answer": "<p>Edelstahl wirkt klar und metallisch, Schiefer zeigt eine natürliche Struktur, Acrylglas bringt Farbe und Kontrast ins Spiel. Die passende Ausführung hängt auch vom Einsatzort ab. <a href=\"/pages/materialien\">Materialien vergleichen</a>.</p>"
+          }
+        },
+        "question2": {
+          "type": "question",
+          "settings": {
+            "question": "Wann wird meine Bestellung geliefert?",
+            "answer": "<p>Produktionszeit und Versandlaufzeit sind unterschiedlich. Maßgeblich sind die aktuellen Angaben am Artikel und im Bestellprozess. <a href=\"/pages/versand-zahlung\">Mehr zu Versand und Lieferung</a>.</p>"
+          }
+        },
+        "question3": {
+          "type": "question",
+          "settings": {
+            "question": "Kann ich ein eigenes Foto oder Logo verwenden?",
+            "answer": "<p>Wenn das ausgewählte Produkt einen Upload anbietet, kannst du deine eigene Datei verwenden. Nutze eine möglichst scharfe Originaldatei und achte darauf, dass du die erforderlichen Nutzungsrechte besitzt.</p>"
+          }
+        },
+        "question4": {
+          "type": "question",
+          "settings": {
+            "question": "Kann ich für mein Unternehmen bestellen?",
+            "answer": "<p>Für Serien, einheitliche Beschilderung und individuelle Zuschnitte kannst du uns Material, Maße, Stückzahl und Wunschtermin nennen. <a href=\"/pages/mengenrabatte\">Projekt anfragen</a> oder <a href=\"/pages/registrierung\">als Geschäftskunde registrieren</a>.</p>"
+          }
+        },
+        "question5": {
+          "type": "question",
+          "settings": {
+            "question": "Ich habe eine Frage zu meiner Bestellung.",
+            "answer": "<p>Schreib uns über die <a href=\"/pages/contact\">Kontaktseite</a> und nenne deine Bestellnummer. Bei einer sichtbaren Abweichung beschreibe bitte den betroffenen Artikel und das Problem.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question0",
+        "question1",
+        "question2",
+        "question3",
+        "question4",
+        "question5"
+      ]
+    }
+  },
+  "order": [
+    "intro",
+    "faq"
+  ]
+}

@@ -4,12 +4,45 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "brand": {
+          "type": "brand_information",
+          "settings": {
+            "show_social": true
+          }
+        },
+        "company": {
+          "type": "link_list",
+          "settings": {
+            "heading": "gravuru",
+            "menu": "footer"
+          }
+        },
+        "service": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Wir helfen dir",
+            "menu": "footer-menu-service"
+          }
+        },
+        "legal": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Gut informiert",
+            "menu": "footer-menu-rechtliches"
+          }
+        }
+      },
+      "block_order": [
+        "brand",
+        "company",
+        "service",
+        "legal"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "newsletter_enable": true,
-        "newsletter_heading": "Neue Ideen für besondere Menschen",
+        "newsletter_heading": "Persönliche Ideen für besondere Menschen",
         "enable_follow_on_shop": true,
         "show_social": true,
         "enable_country_selector": true,
@@ -17,8 +50,8 @@
         "payment_enable": true,
         "show_policy": true,
         "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 56,
+        "padding_bottom": 32
       }
     }
   },

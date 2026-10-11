@@ -16,7 +16,7 @@
     "cart_type": "page",
     "animations_reveal_on_scroll": false,
     "brand_headline": "Persönlich. Von gravuru.",
-    "brand_description": "<p>Persönliche Schilder, Geschenke und Erinnerungen.</p>",
+    "brand_description": "<p>Persönliche Schilder, Geschenke und Erinnerungen aus unserer Fertigung in Bielefeld.</p>",
     "color_schemes": {
       "scheme-1": {
         "settings": {
@@ -73,7 +73,52 @@
           "shadow": "#354c3b"
         }
       }
-    }
+    },
+    "blocks": {
+      "13324117676663250413": {
+        "type": "shopify://apps/delivery-estimator/blocks/app-embed-block/2be8f45f-2937-4f60-b6b3-7488e231d668",
+        "disabled": false,
+        "settings": {}
+      },
+      "7079518687644006178": {
+        "type": "shopify://apps/checkout-blocks/blocks/app-embed/b0024ca5-9de8-4bf0-a92f-cd0783877ae2",
+        "disabled": false,
+        "settings": {
+          "utm_id": true,
+          "utm_source": true,
+          "utm_medium": true,
+          "utm_campaign": true,
+          "utm_term": true,
+          "ref": true
+        }
+      },
+      "13768625480086291342": {
+        "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
+        "disabled": false,
+        "settings": {}
+      },
+      "2153490007123654574": {
+        "type": "shopify://apps/consentmo-gdpr/blocks/gdpr_cookie_consent/4fbe573f-a377-4fea-9801-3ee0858cae41",
+        "disabled": false,
+        "settings": {}
+      },
+      "15048993943116965467": {
+        "type": "shopify://apps/consentmo-gdpr/blocks/ada_compliance/4fbe573f-a377-4fea-9801-3ee0858cae41",
+        "disabled": false,
+        "settings": {}
+      },
+      "14978386893901210175": {
+        "type": "shopify://apps/gravuru-konfigurator/blocks/personalizer/01a0a0cf-2297-7e23-a744-816adacfb837",
+        "disabled": false,
+        "settings": {}
+      },
+      "14798151083105868428": {
+        "type": "shopify://apps/fancy-product-designer/blocks/app-embed-block/14c187f6-fd0a-44c3-a764-166220a05b7d",
+        "disabled": false,
+        "settings": {}
+      }
+    },
+    "predictive_search_enabled": true
   },
   "presets": {
     "Dawn": {

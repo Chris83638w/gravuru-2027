@@ -1,0 +1,26 @@
+<section class="g-categories g-shell" aria-labelledby="g-categories-{{ section.id }}" style="--g-section-space: {{ section.settings.spacing }}px">
+  <div class="g-section-heading"><div>{% if section.settings.eyebrow != blank %}<p class="g-eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}<h2 id="g-categories-{{ section.id }}">{{ section.settings.heading | escape }}</h2></div>{% if section.settings.text != blank %}<div class="rte">{{ section.settings.text }}</div>{% endif %}</div>
+  <div class="g-categories__grid">
+    {% for block in section.blocks %}
+      {% assign target = block.settings.link | default: block.settings.collection.url | default: routes.collections_url %}
+      <a class="g-category-link" href="{% render 'gravuru-local-url', target: target %}" {{ block.shopify_attributes }}><span class="g-category-link__number" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span><span><h3>{{ block.settings.title | escape }}</h3>{% if block.settings.text != blank %}<p>{{ block.settings.text | escape }}</p>{% endif %}</span><span class="g-icon" aria-hidden="true">{{ 'icon-arrow.svg' | inline_asset_content }}</span></a>
+    {% endfor %}
+  </div>
+</section>
+{% stylesheet %}
+  .g-categories { padding-block: var(--g-section-space); }
+  .g-section-heading { display:flex; justify-content:space-between; gap:36px; align-items:end; margin-bottom:28px; }
+  .g-section-heading h2 { margin:0; font-size:clamp(32px,3.4vw,48px); font-weight:400; line-height:1.15; color:var(--g-primary); }
+  .g-section-heading .rte { max-width:420px; font-size:16px; }
+  .g-categories__grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:52px; }
+  .g-category-link { display:grid; grid-template-columns:24px minmax(0,1fr) 20px; align-items:center; gap:20px; color:var(--g-text); text-decoration:none; padding:23px 0; border-top:1px solid rgba(53,76,59,.18); min-height:100px; }
+  .g-category-link__number { font-size:12px; color:var(--g-primary); align-self:start; padding-top:8px; }
+  .g-category-link h3 { font-size:27px; font-weight:400; margin:0; color:var(--g-primary); }
+  .g-category-link p { margin:5px 0 0; font-size:14px; line-height:1.5; }
+  .g-category-link:hover h3 { text-decoration:underline; text-underline-offset:5px; }
+  .g-category-link:focus-visible { outline:2px solid var(--g-primary); outline-offset:5px; }
+  @media(max-width:749px) { .g-categories__grid { grid-template-columns:1fr; } .g-section-heading { display:block; } .g-category-link { gap:12px; min-height:88px; } }
+{% endstylesheet %}
+{% schema %}
+{"name":"gravuru | Produktwelten","tag":"div","max_blocks":12,"settings":[{"type":"text","id":"eyebrow","label":"Kleine Überschrift","default":"Für das, was dir wichtig ist"},{"type":"text","id":"heading","label":"Überschrift","default":"Deine Welt. Dein Lieblingsstück."},{"type":"richtext","id":"text","label":"Einleitung"},{"type":"range","id":"spacing","label":"Abstand","min":0,"max":100,"step":4,"default":48,"unit":"px"}],"blocks":[{"type":"category","name":"Themenwelt","settings":[{"type":"text","id":"title","label":"Titel","default":"Themenwelt"},{"type":"text","id":"text","label":"Kurzbeschreibung"},{"type":"collection","id":"collection","label":"Kollektion"},{"type":"url","id":"link","label":"Alternatives Linkziel"}]}],"presets":[{"name":"gravuru | Produktwelten","blocks":[{"type":"category"},{"type":"category"},{"type":"category"}]}]}
+{% endschema %}

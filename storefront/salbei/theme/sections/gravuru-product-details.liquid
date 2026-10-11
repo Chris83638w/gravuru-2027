@@ -1,0 +1,48 @@
+<section class="g-product-details g-shell" aria-labelledby="g-details-{{ section.id }}">
+  <h2 id="g-details-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+  <div class="g-product-details__grid"><div>
+    {% for block in section.blocks %}
+      {% liquid
+        assign content = blank
+        case block.settings.source
+          when 'description'
+            assign content = product.description
+          when 'material'
+            if product.metafields.custom.material_zusammensetzung != blank
+              assign content = product.metafields.custom.material_zusammensetzung | metafield_tag
+            endif
+          when 'mounting'
+            if product.metafields.custom.montage != blank
+              assign content = product.metafields.custom.montage | metafield_tag
+            endif
+          when 'safety'
+            if product.metafields.custom.sicherheitshinweise != blank
+              assign content = product.metafields.custom.sicherheitshinweise | metafield_tag
+            endif
+          when 'custom'
+            assign content = block.settings.text
+        endcase
+      %}
+      {% if content != blank %}<details class="g-detail" {{ block.shopify_attributes }}{% if forloop.first %} open{% endif %}><summary>{{ block.settings.title | escape }}<span aria-hidden="true">+</span></summary><div class="rte">{{ content }}</div></details>{% endif %}
+    {% endfor %}
+    {% for faq in product.metafields.custom.faqs.value %}{% if faq.answer != blank %}<details class="g-detail"><summary>{{ faq.question.value | default: faq.name_intern.value | escape }}<span aria-hidden="true">+</span></summary><div class="rte">{{ faq.answer | metafield_tag }}</div></details>{% endif %}{% endfor %}
+  </div><aside class="g-product-help"><h3>{{ section.settings.help_heading | escape }}</h3><div class="rte">{{ section.settings.help_text }}</div><a href="{% render 'gravuru-local-url', target: section.settings.help_link %}">{{ section.settings.help_label | escape }}</a></aside></div>
+</section>
+{% stylesheet %}
+  .g-product-details { padding-block:40px 64px; }
+  .g-product-details h2 { font-size:38px; font-weight:400; color:var(--g-primary); }
+  .g-product-details__grid { display:grid; grid-template-columns:minmax(0,2fr) minmax(230px,1fr); gap:64px; align-items:start; }
+  .g-detail { border-top:1px solid rgba(53,76,59,.18); }
+  .g-detail summary { display:flex; justify-content:space-between; gap:16px; cursor:pointer; min-height:60px; align-items:center; padding:16px 0; font-size:18px; list-style:none; }
+  .g-detail summary::-webkit-details-marker { display:none; }
+  .g-detail[open] summary span { transform:rotate(45deg); }
+  .g-detail .rte { padding:0 0 24px; line-height:1.7; }
+  .g-detail .rte h2,.g-detail .rte h3 { font-size:23px; }
+  .g-product-help { background:var(--g-surface); padding:28px; }
+  .g-product-help h3 { margin-top:0; font-size:27px; font-weight:400; }
+  .g-product-help a { display:inline-flex; min-height:44px; align-items:center; color:var(--g-primary); text-underline-offset:5px; }
+  @media(max-width:749px) { .g-product-details__grid { grid-template-columns:1fr; gap:24px; } }
+{% endstylesheet %}
+{% schema %}
+{"name":"gravuru | Produktdetails","enabled_on":{"templates":["product"]},"settings":[{"type":"text","id":"heading","label":"Überschrift","default":"Alles über dein Produkt"},{"type":"text","id":"help_heading","label":"Beratungstitel","default":"Noch eine Frage?"},{"type":"richtext","id":"help_text","label":"Beratungstext","default":"<p>Du bist bei Material, Gestaltung oder Befestigung unsicher? Wir helfen dir, die passende Ausführung zu finden.</p>"},{"type":"text","id":"help_label","label":"Beratungslink","default":"Kontakt & Beratung"},{"type":"url","id":"help_link","label":"Linkziel","default":"/pages/contact"}],"blocks":[{"type":"detail","name":"Detailbereich","settings":[{"type":"text","id":"title","label":"Titel","default":"Produktdetails"},{"type":"select","id":"source","label":"Inhalt","default":"description","options":[{"value":"description","label":"Produktbeschreibung"},{"value":"material","label":"Metafeld Material"},{"value":"mounting","label":"Metafeld Montage"},{"value":"safety","label":"Metafeld Sicherheitshinweise"},{"value":"custom","label":"Eigener Text"}]},{"type":"richtext","id":"text","label":"Eigener Text"}]}],"presets":[{"name":"gravuru | Produktdetails"}]}
+{% endschema %}

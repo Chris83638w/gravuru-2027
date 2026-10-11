@@ -40,6 +40,7 @@
         id="FacetFiltersForm"
         class="{% if filter_type == 'horizontal' %}facets__form{% else %}facets__form-vertical{% endif %}"
       >
+        {% if template.name == 'collection' and template.suffix contains 'salbei-' %}<input type="hidden" name="view" value="{{ template.suffix | escape }}">{% endif %}
         {%- if results.terms -%}
           <input type="hidden" name="q" value="{{ results.terms | escape }}">
           <input name="options[prefix]" type="hidden" value="last">
@@ -477,6 +478,7 @@
       </summary>
       <facet-filters-form>
         <form id="FacetFiltersFormMobile" class="mobile-facets">
+        {% if template.name == 'collection' and template.suffix contains 'salbei-' %}<input type="hidden" name="view" value="{{ template.suffix | escape }}">{% endif %}
           <div class="mobile-facets__inner gradient">
             <div class="mobile-facets__header">
               <div class="mobile-facets__header-inner">
@@ -831,6 +833,7 @@
   {%- if enable_sorting and filter_type == 'drawer' -%}
     <facet-filters-form class="facets small-hide">
       <form id="FacetSortDrawerForm" class="facets__form">
+        {% if template.name == 'collection' and template.suffix contains 'salbei-' %}<input type="hidden" name="view" value="{{ template.suffix | escape }}">{% endif %}
         <div class="facet-filters sorting caption small-hide">
           <div class="facet-filters__field">
             <h2 class="facet-filters__label caption-large text-body">
@@ -900,6 +903,7 @@
   {%- if filter_type == 'drawer' -%}
     <facet-filters-form class="facets facets-pill small-hide">
       <form id="FacetFiltersPillsForm" class="facets__form">
+        {% if template.name == 'collection' and template.suffix contains 'salbei-' %}<input type="hidden" name="view" value="{{ template.suffix | escape }}">{% endif %}
         <div class="active-facets active-facets-desktop">
           {%- for filter in results.filters -%}
             {%- for value in filter.active_values -%}

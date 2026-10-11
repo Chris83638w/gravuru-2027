@@ -8,7 +8,7 @@ const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&
 const $=s=>document.querySelector(s);
 const presets=['#202824','#731c19','#17614f','#ffffff','#c49a50'];
 export function installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights}){
- let productId=null,designId=null,objectId=null,timer,serial=0,options={},libraryFonts=[],libraryMotifs=null,undo=[],drag=null,previewController,previewPending=false,wasBusy=false;
+ let productId=null,recordRevision=null,designId=null,objectId=null,timer,serial=0,options={},libraryFonts=[],libraryMotifs=null,undo=[],redo=[],editControl=null,drag=null,previewController,previewPending=false,wasBusy=false;
  const icon=name=>`<img class="editor-icon" src="/workshop-ui/editor-icons/${name}.svg" alt="" aria-hidden="true">`;
  const icons={details:'cube',designs:'photo',prices:'tag',profiles:'typography',scene:'photo',production:'settings',shopify:'link'};
  for(const tab of document.querySelectorAll('.editor-tabs [data-tab]'))tab.insertAdjacentHTML('afterbegin',icon(icons[tab.dataset.tab]));
@@ -26,6 +26,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   const disabled=state.busy||state.record?.status==='archived';
   for(const n of document.querySelectorAll('[data-editor-prop],[data-editor-color],[data-editor-photo],[data-editor-hint],[data-editor-action],[data-authoring-undo],[data-new-design],[data-editor-name],[data-prepare-editable],[data-edit-pdf-text]'))n.disabled=disabled||(n.matches('[data-editor-prop],[data-editor-photo],[data-editor-color]')&&selected()?.technicalLocked===true);
   const undoButton=$('[data-authoring-undo]');if(undoButton)undoButton.disabled=disabled||!undo.length;
+  const redoButton=$('[data-authoring-redo]');if(redoButton)redoButton.disabled=disabled||!redo.length;
   for(const n of document.querySelectorAll('[data-editor-object],[data-editor-design]'))n.disabled=state.busy;
   if(!drag)highlight();
  }
@@ -102,7 +103,8 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  }
  function render(){
   if(!state.record)return;
-  if(productId!==state.record.id){productId=state.record.id;designId=state.draft.config.profile.defaultDesignId;objectId=null;options={};undo=[];}
+  if(productId!==state.record.id){productId=state.record.id;designId=state.draft.config.profile.defaultDesignId;objectId=null;options={};resetHistory();}
+  if(recordRevision!==state.record.revision){recordRevision=state.record.revision;resetHistory();}
   if(!design())designId=state.draft.config.profile.defaultDesignId;
   if(!selected())objectId=design()?.objects.find(o=>o.type==='photoSlot')?.id||design()?.objects[0]?.id;
   refreshOptions();
@@ -131,13 +133,13 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    status.textContent='Rohlingbild wird geprüft …';
    const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
    const surface=await api('/api/workshop/material-surfaces',{method:'POST',body:{bytes:data}});
-   state.draft.config.materialSurface=surface.url;markDirty();status.textContent='Rohlingbild ausgetauscht. Bitte Produkt speichern.';
+   remember();state.draft.config.materialSurface=surface.url;markDirty();status.textContent='Rohlingbild ausgetauscht. Bitte Produkt speichern.';
   }catch(error){status.textContent=error.message;}finally{state.busy=false;syncControls();e.target.value='';}
  });
  $('#panel-designs').addEventListener('input',async e=>{
   const n=e.target,key=n.dataset.editorProp,o=selected();
-  if(n.hasAttribute('data-editor-name')&&!state.busy&&n.value.trim()){design().name=n.value;markDirty();return;}
-  if(n.dataset.editorHint&&o&&!state.busy&&state.record.status!=='archived'){const d=design();state.draft.config.photo.hints??=[];let h=state.draft.config.photo.hints.find(h=>h.designId===d.id&&h.slotId===o.id);if(!h){h={designId:d.id,slotId:o.id,text:'Hier eigenes Foto hochladen',enabled:true};state.draft.config.photo.hints.push(h);}h[n.dataset.editorHint]=n.type==='checkbox'?n.checked:n.value;markDirty();return;}
+  if(n.hasAttribute('data-editor-name')&&!state.busy&&state.record.status!=='archived'&&n.value.trim()){rememberInput(n);design().name=n.value;markDirty();return;}
+  if(n.dataset.editorHint&&o&&!state.busy&&state.record.status!=='archived'){rememberInput(n);const d=design();state.draft.config.photo.hints??=[];let h=state.draft.config.photo.hints.find(h=>h.designId===d.id&&h.slotId===o.id);if(!h){h={designId:d.id,slotId:o.id,text:'Hier eigenes Foto hochladen',enabled:true};state.draft.config.photo.hints.push(h);}h[n.dataset.editorHint]=n.type==='checkbox'?n.checked:n.value;markDirty();return;}
   if(!key||!o||state.busy||state.record.status==='archived'||o.technicalLocked)return;
   n.setCustomValidity('');
   if(n.type==='number'&&(!Number.isFinite(n.valueAsNumber)||!n.checkValidity()))return;
@@ -147,11 +149,12 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    catch(error){$('#stage-status').textContent=error.message;n.value=o.font;return;}
    finally{state.busy=false;syncControls();}
   }
-  const previous=structuredClone(o);
-  o[key]=n.type==='checkbox'?n.checked:n.type==='number'?n.valueAsNumber:n.value;
-  try{if(o.type==='text')measureText(o,state.draft.config.localResources.fonts);fitPosition(o,state.draft.config.profile.geometry);n.setCustomValidity('');}
-  catch(error){Object.assign(o,previous);n.setCustomValidity(error.message);n.reportValidity();return;}
-  if(key==='color'&&o.type==='motif')o.preserveColors=false;
+  const next=structuredClone(o);
+  next[key]=n.type==='checkbox'?n.checked:n.type==='number'?n.valueAsNumber:n.value;
+  try{if(next.type==='text')measureText(next,state.draft.config.localResources.fonts);fitPosition(next,state.draft.config.profile.geometry);n.setCustomValidity('');}
+  catch(error){n.setCustomValidity(error.message);n.reportValidity();return;}
+  if(key==='color'&&next.type==='motif')next.preserveColors=false;
+  rememberInput(n);Object.assign(o,next);
   markDirty();
  });
  $('#panel-designs').addEventListener('change',async e=>{
@@ -164,19 +167,41 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    if(width<1||height<1||width*height>80000000)throw Error('Die Bildabmessungen sind zu groß.');
    const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});
    const asset=await api('/api/workshop/photo-examples',{method:'POST',body:{bytes:data.split(',')[1],widthMm:o.w,heightMm:o.h}});
-   const resources=state.draft.config.localResources;resources.photoExamples=(resources.photoExamples||[]).filter(v=>v.designId!==d.id||v.slotId!==o.id);
+   remember();const resources=state.draft.config.localResources;resources.photoExamples=(resources.photoExamples||[]).filter(v=>v.designId!==d.id||v.slotId!==o.id);
    resources.photoExamples.push({designId:d.id,slotId:o.id,assetId:asset.assetId});markDirty();status.textContent='Beispielfoto übernommen. Änderungen noch speichern.';
   }catch(err){status.textContent=err.message;}finally{state.busy=false;syncControls();e.target.value='';}
  });
  $('#panel-designs').addEventListener('click',e=>{if(e.target.closest('[data-editor-photo]')){if(!state.busy&&state.record.status!=='archived')$('#editor-photo-file').click();return;}const b=e.target.closest('[data-editor-color]');if(!b||b.disabled)return;const n=$('[data-editor-prop="color"]');n.value=b.dataset.editorColor;n.dispatchEvent(new Event('input',{bubbles:true}));for(const c of document.querySelectorAll('[data-editor-color]'))c.setAttribute('aria-pressed',String(c===b));});
 
  const toolbar=document.createElement('div');toolbar.className='authoring-tools';
- toolbar.innerHTML='<button type="button" data-editor-action="text">+ Text</button><button type="button" data-editor-action="motif">+ Motiv</button><button type="button" data-editor-action="photo">+ Fotofeld</button><button type="button" data-authoring-undo>Elementaktion zurücknehmen</button><p id="authoring-status" role="status"></p>';
+ toolbar.innerHTML='<button type="button" data-editor-action="text">+ Text</button><button type="button" data-editor-action="motif">+ Motiv</button><button type="button" data-editor-action="photo">+ Fotofeld</button><button type="button" data-authoring-undo title="Strg/⌘ Z außerhalb eines Textfelds">Rückgängig</button><button type="button" data-authoring-redo title="Strg/⌘ Umschalt Z">Wiederholen</button><p id="authoring-status" role="status"></p>';
  $('#editor-elements').before(toolbar);
  const modal=document.createElement('dialog');modal.className='authoring-dialog';document.body.append(modal);
  let motifMode='motif';
  const say=message=>{$('#authoring-status').textContent=message;};
- function remember(){undo.push({document:structuredClone(state.draft),designId,objectId});if(undo.length>12)undo.shift();}
+ const snapshot=()=>({document:structuredClone(state.draft),designId,objectId});
+ function resetHistory(){undo=[];redo=[];editControl=null;}
+ function remember(){undo.push(snapshot());if(undo.length>20)undo.shift();redo=[];editControl=null;}
+ function rememberInput(control){if(editControl!==control)remember();editControl=control.type==='checkbox'||control.tagName==='SELECT'?null:control;}
+ function restoreEdit(repeat=false){
+  const from=repeat?redo:undo,to=repeat?undo:redo;
+  if(state.busy||drag||state.record?.status==='archived'||!from.length)return;
+  to.push(snapshot());const last=from.pop();state.draft=last.document;designId=last.designId;objectId=last.objectId;editControl=null;
+  markDirty();render();say(repeat?'Gestaltung wiederholt.':'Gestaltung zurückgenommen.');
+ }
+ $('#panel-designs').addEventListener('focusout',()=>{editControl=null;});
+ $('#product-form').addEventListener('change',event=>{
+  const n=event.target;if(state.busy||!state.draft||state.record?.status==='archived')return;
+  if(n.dataset.elementRight&&n.dataset.rightAllowed==='true')rememberInput(n);
+ },true);
+ // An unrelated product/profile edit must never be silently overwritten by an
+ // older composition snapshot. Saved revisions have their own durable history.
+ $('#product-form').addEventListener('input',event=>{const n=event.target;if(!state.busy&&(n.dataset.path||n.dataset.money))resetHistory();},true);
+ $('#product-form').addEventListener('change',event=>{const n=event.target;if(!state.busy&&(n.dataset.profileId||n.dataset.profileMode))resetHistory();},true);
+ document.addEventListener('keydown',event=>{
+  if(!state.record||$('#editor-section').hidden||document.querySelector('dialog[open]')||event.target.closest('input,textarea,select,[contenteditable="true"]'))return;
+  if((event.ctrlKey||event.metaKey)&&!event.altKey&&['z','y'].includes(event.key.toLowerCase())){event.preventDefault();restoreEdit(event.shiftKey||event.key.toLowerCase()==='y');}
+ });
  async function apply(action,value={}){
   if(state.busy||state.record.status==='archived')return;
   state.busy=true;syncControls();
@@ -185,6 +210,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
     const fonts=state.draft.config.localResources.fonts;
     value.font??=['Cormorant Garamond','Open Sans','Montserrat',...Object.keys(fonts)].find(id=>fonts[id]?.regular&&[...'Dein Text'].every(c=>fonts[id].regular.glyphs[c]));
     if(!value.font){const found=await api('/api/workshop/font-library?id='+encodeURIComponent('Open Sans'));fonts[found.id]=found.font;value.font=found.id;}
+    if(!Object.hasOwn(fonts,value.font)){const found=await api('/api/workshop/font-library?id='+encodeURIComponent(value.font));fonts[found.id]=found.font;}
    }
    if(action==='photo')value.exampleAssetId=(state.draft.config.localResources.photoExamples||[])[0]?.assetId||(await api('/api/workshop/photo-examples/default',{method:'POST',body:{}})).assetId;
    if(value.motif&&!state.draft.config.localResources.motifs.some(m=>m.key===value.motif.key)&&!value.motif.artwork){
@@ -213,13 +239,15 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  document.addEventListener('click',e=>{
   if(e.target.closest('[data-prepare-editable]')){prepareEditable();return;}
   if(e.target.closest('[data-edit-pdf-text]')&&!state.busy){
-   const source=design().sourceElements.find(e=>e.id===objectId),fonts=Object.keys(state.draft.config.localResources.fonts);
-   modal.innerHTML=`<div class="authoring-heading"><h3>PDF-Text bearbeiten</h3><button type="button" data-authoring-close aria-label="Schließen">×</button></div><label>Text prüfen<textarea id="pdf-edit-text" rows="3" maxlength="180">${escape(source.text)}</textarea></label><label>Werkstatt-Schrift<select id="pdf-edit-font">${fonts.map(f=>`<option value="${escape(f)}">${escape(f)}</option>`).join('')}</select></label><p>Die gewählte Schrift ersetzt die PDF-Konturen nur in diesem Entwurf. Größe und Position kannst du anschließend ändern.</p><p role="status"></p><button type="button" data-pdf-text-apply>Als bearbeitbaren Text übernehmen</button>`;modal.showModal();return;
+   const source=design().sourceElements.find(e=>e.id===objectId),fonts=[...new Set([...Object.keys(state.draft.config.localResources.fonts),...libraryFonts.map(f=>f.id)])];
+   const unrecognized=/[\uE000-\uF8FF\uFFFD]/u.test(source.text||'');
+   modal.innerHTML=`<div class="authoring-heading"><h3>PDF-Text bearbeiten</h3><button type="button" data-authoring-close aria-label="Schließen">×</button></div><label>Text prüfen<textarea id="pdf-edit-text" rows="3" maxlength="180">${escape(source.text)}</textarea></label>${unrecognized?'<p role="note">Diese PDF verwendet besondere Schriftzeichen oder Ligaturen. Bitte den Text anhand der Originalvorschau vollständig prüfen und unlesbare Zeichen durch die richtigen Buchstaben ersetzen.</p>':''}<label>Werkstatt-Schrift<select id="pdf-edit-font">${fonts.map(f=>`<option value="${escape(f)}">${escape(libraryFonts.find(row=>row.id===f)?.name||f)}</option>`).join('')}</select></label><p>Die gewählte Schrift ersetzt die PDF-Konturen nur in diesem Entwurf. Größe und Position kannst du anschließend ändern.</p><p role="status"></p><button type="button" data-pdf-text-apply>Als bearbeitbaren Text übernehmen</button>`;modal.showModal();return;
   }
   const action=e.target.closest('[data-editor-action]');
   if(action&&!state.busy){if(['motif','replace'].includes(action.dataset.editorAction))chooseMotif(action.dataset.editorAction);else apply(action.dataset.editorAction);}
   if(e.target.closest('[data-new-design]')&&!state.busy){modal.innerHTML='<div class="authoring-heading"><h3>Eigenes Design anlegen</h3><button type="button" data-authoring-close aria-label="Schließen">×</button></div><p>Die vorhandenen Designs bleiben erhalten. Dein neues Standarddesign beginnt mit einem bearbeitbaren Textfeld.</p><label>Designname<input id="authoring-name" maxlength="200" value="Eigenes Design" required></label><p role="status"></p><button type="button" data-authoring-create>Design anlegen</button>';modal.showModal();}
-  if(e.target.closest('[data-authoring-undo]')&&!state.busy&&undo.length){const last=undo.pop();state.draft=last.document;designId=last.designId;objectId=last.objectId;markDirty();render();say('Elementaktion zurückgenommen.');}
+  if(e.target.closest('[data-authoring-undo]'))restoreEdit();
+  if(e.target.closest('[data-authoring-redo]'))restoreEdit(true);
  });
  async function prepareEditable(){
   if(state.busy)return;

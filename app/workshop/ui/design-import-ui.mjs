@@ -67,7 +67,7 @@ export function installDesignImport({state,api,setBusy,onSaved,notify}){
     if(state.busy||!state.record||state.record.status==='archived')return;
     if(state.dirty){notify('Bitte zuerst deine Änderungen speichern. Danach kannst du ein Design ersetzen.','info');return;}
     const design=state.draft.config.profile.designs.find(d=>d.id===designId);if(!design)return;
-    target={productId:state.record.id,revision:state.record.revision,designId,label:`Ersetzt „${design.name}“ in „${state.record.document.name}“.`};file.value='';page.value='1';page.max='1000';fit.value='visible';resetReview();working(false);
+    target={productId:state.record.id,revision:state.record.revision,designId,label:`Ersetzt „${design.name}“ in „${state.record.document.name}“.`};file.value='';page.value='1';page.max='1000';fit.value='visible';$('#design-import-editable').checked=true;resetReview();working(false);
     $('#design-import-target').textContent=`Ersetzt „${design.name}“ in „${state.record.document.name}“.`;
     mode();dialog.showModal();file.focus();
   }};

@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "tests": 21,
+  "failed": 0,
+  "scope": [
+    "editable-design",
+    "merchant-request",
+    "merchant-media",
+    "merchant-repair"
+  ],
+  "log": "/tmp/merchant-completion-targeted.log"
+}

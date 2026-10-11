@@ -329,6 +329,27 @@ def editable_parts(result):
         layer.set('viewBox',f'{x} {y} {w} {h}')
         layer.set('width',f'{w*mmx}mm');layer.set('height',f'{h*mmy}mm')
         part={'kind':kind,'xMm':(x-box[0])*mmx,'yMm':(y-box[1])*mmy,'widthMm':w*mmx,'heightMm':h*mmy,'svg':sanitize_svg(ET.tostring(layer))['svg']}
+        if kind == 'photo':
+            # Preserve original clips, transforms and soft masks. Only the
+            # visible photograph becomes white, with its original alpha. No
+            # tracing, thresholding or rasterization of the template contour.
+            mask_layer = copy.deepcopy(layer)
+            def whiten(node):
+                if node.tag == ns+'defs':
+                    return
+                if node.tag == ns+'image':
+                    key = 'href' if 'href' in node.attrib else '{'+XLINK_NS+'}href'
+                    raw_image = base64.b64decode(node.get(key).split(',',1)[1])
+                    with Image.open(io.BytesIO(raw_image)) as img:
+                        alpha = img.convert('RGBA').getchannel('A')
+                        white = Image.new('RGBA', img.size, 'white')
+                        white.putalpha(alpha)
+                        output = io.BytesIO(); white.save(output,format='PNG')
+                    node.set(key, 'data:image/png;base64,'+base64.b64encode(output.getvalue()).decode())
+                for child in node:
+                    whiten(child)
+            whiten(mask_layer)
+            part['maskSvg'] = sanitize_svg(ET.tostring(mask_layer))['svg']
         if kind=='text':
             part['text']=''.join(n.get('data-text','') for n in nodes)
         parts.append(part)

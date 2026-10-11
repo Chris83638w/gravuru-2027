@@ -23,7 +23,8 @@ export async function prepareEditableDesign(document,assets,designId){
   const id='pdf-element-'+(i+1),sx=original.w/a.widthMm,sy=original.h/a.heightMm;
   const o={id,type:part.kind==='photo'?'photoSlot':'motif',x:original.x-original.w/2+(part.xMm+part.widthMm/2)*sx,y:original.y-original.h/2+(part.yMm+part.heightMm/2)*sy,w:part.widthMm*sx,h:part.heightMm*sy,rotation:0,templateOrigin:true,customerEditable:true};
   if(o.type==='photoSlot'){
-   Object.assign(o,{fieldKey:'photo-'+id,photoShape:'rect',required:true});c.photo.enabled=true;
+   const mask=part.maskSvg?await assets.import({name:`PDF-Fotomaske-${i+1}.svg`,bytes:Buffer.from(part.maskSvg).toString('base64')}):null;
+   Object.assign(o,{fieldKey:'photo-'+id,photoShape:mask?'template':'rect',...(mask?{photoMaskAssetId:mask.assetId}:{}),required:true});c.photo.enabled=true;
    (c.localResources.photoExamples??=[]).push({designId:d.id,slotId:id,assetId:asset.assetId});
    (c.photo.hints??=[]).push({designId:d.id,slotId:id,text:'Hier eigenes Foto hochladen',enabled:true});
   }else{

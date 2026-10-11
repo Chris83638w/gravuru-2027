@@ -4,21 +4,14 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#183e35">
   <title>Profile · Gravuru 2027 Werkstatt</title>
   <link rel="stylesheet" href="/workshop-ui/style.css"><link rel="stylesheet" href="/workshop-ui/revision-compare.css"><script type="module" src="/workshop-ui/profiles-ui.mjs"></script>
-</head>
-<body>
+<link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><script type="module" src="/workshop-ui/workshop-shell.mjs"></script></head>
+<body class="library-page">
 <a class="skip-link" href="#main">Zum Inhalt</a>
 <div class="app-layout">
   <aside class="sidebar" aria-label="Werkstattnavigation">
     <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span>gravuru<small>WERKSTATT · 2027</small></span></a>
-    <p class="nav-group">Verwaltung</p><nav>
-      <a class="nav-item" href="/werkstatt/ausgaben/">Ausgaben</a>
-<a class="nav-item" href="/werkstatt/fertigung/">Fertigungsprofile</a>
-<a class="nav-item" href="/werkstatt/"><span aria-hidden="true">▦</span> Produkte</a>
-      <a class="nav-item active" href="/werkstatt/profile/" aria-current="page"><span aria-hidden="true">◇</span> Profile</a>
-      <a class="nav-item" href="/werkstatt/serien/"><span aria-hidden="true">≡</span> Serien</a>
-    </nav>
-    <div class="sidebar-bottom"><span class="online-dot"></span><div>Lokale Werkstatt<small>Shopify ist noch nicht verbunden.</small></div></div>
-  </aside>
+<nav aria-label="Hauptnavigation"><a class="nav-item" href="/werkstatt/"><img src="/workshop-ui/editor-icons/cube.svg" alt="" aria-hidden="true">Produkte</a><a class="nav-item" href="/werkstatt/?view=masters"><img src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Mastervorlagen</a><a class="nav-item" href="/werkstatt/serien/"><img src="/workshop-ui/editor-icons/stack-2.svg" alt="" aria-hidden="true">Stapelverarbeitung</a><a class="nav-item" href="/werkstatt/bestellungen/"><img src="/workshop-ui/editor-icons/shopping-cart.svg" alt="" aria-hidden="true">Bestellungen</a></nav><div class="workshop-tools"><span data-workshop-session role="status">Verbindung wird geprüft …</span><details class="management-menu"><summary>Verwaltung</summary><nav aria-label="Verwaltung"><a href="/werkstatt/profile/" aria-current="page">Schriften &amp; Profile</a><a href="/werkstatt/ausgaben/">Ausgaben</a><a href="/werkstatt/fertigung/">Fertigungsprofile</a><a href="/werkstatt/ausfuehrungen/">Ausführungen</a><a href="/werkstatt/konturen/">Formkonturen</a><a href="/werkstatt/pruefstaende/">Prüfstände</a><a href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a></nav></details></div>
+</aside>
   <main id="main">
     <header class="page-heading"><div><p class="eyebrow">DEINE PROFILBIBLIOTHEK</p><h1>Die passende Auswahl. Für jedes Produkt.</h1><p>Schriften, Motive, Farben und Bestseller einmal zusammenstellen und gezielt zuordnen.</p></div><button class="primary" id="new-profile" type="button" disabled>＋ Neues Profil</button></header>
     <div id="profile-notice" class="notice" role="status" aria-live="polite" hidden></div>

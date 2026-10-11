@@ -1,3 +1,9 @@
+## 11.10.2026 · Originalmaske und Navigation als geprüfter Kandidat
+
+Original-Fotomaske statt pauschalem Rechteck, unveränderliche Maskenreferenz bis ins Produktionspaket, bearbeitbare Elementnamen und Navigation nach M01/M02 umgesetzt. Tatsächliche PDF in privater Kopie als Revision 5 aufbereitet; Fotoaustausch/Speichern und technische Gravur-PDF geprüft. Vollständige Regression und isolierte Installation laufen. Live weiterhin `971c57d`, Produktrevision 4; keine neue Veröffentlichung behauptet. [Arbeitsnachweis](docs/releases/20261011/template-r5/RELEASE.md).
+
+Nächster Schritt: Abnahme abschließen, privaten Bestand sichern und den freigegebenen Händlerstand veröffentlichen; historische Bestellungen unverändert erhalten.
+
 ## 11.10.2026 · Händler-Testbestellung mit Foto erfolgreich
 
 Installierter Quellstand **971c57d**, Version `0.1.0-recovery.20261010+971c57dea374`. Revisionsfestlegung für Gedenktafel 4, neun tatsächliche Shopify-Ausführungen samt Fotoaufpreis geprüft und gebunden. Echter Testkauf: 32,98 EUR plus 4,99 EUR Versand, Gateway `bogus`, `test: true`, `PAID`, `UNFULFILLED`; signierter Eingang ordnet genau eine Position dem gespeicherten Stand zu. Fertigung/Kundendownload und öffentlicher neuer Checkout bleiben gesperrt.

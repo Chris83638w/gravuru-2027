@@ -58,6 +58,7 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
   const motif=config.localResources.motifs.find(m=>m.key===o.motif);
   if(motif?.artwork?.assetId)referenced.add(motif.artwork.assetId);
   if(o.assetId)referenced.add(o.assetId);
+  if(o.photoMaskAssetId)referenced.add(o.photoMaskAssetId);
   const example=config.localResources.photoExamples?.find(e=>e.designId===state.design.id&&e.slotId===o.id&&!o.uxUploadId);if(example)referenced.add(example.assetId);
  }
  for(const id of referenced){const a=assets.get(id);add('quellen/'+id+'-original.'+a.format,assets.read(id,true),'Byteidentische importierte Designquelle.');add('quellen/'+id+'-vorschau.svg',assets.read(id),'Geprüfte Designvorschau.');}

@@ -36,10 +36,64 @@ def data_fetch(url,kind):
  c.require(str(url).startswith('data:'),'Externe Quellen sind im Prüfexport nicht erlaubt.')
  raw=fetch(url,kind)
  if str(url).startswith('data:image/svg'):
-  c.require(not any(n.tag.split('}')[-1]=='mask' for n in ET.fromstring(raw).iter()),'SVG-Masken werden in dieser technischen Druckausgabe noch nicht unterstützt. Bitte die Designquelle ohne Masken vorbereiten.')
+  root=ET.fromstring(raw)
+  # PDF layers share a defs block. Unreferenced definitions are not artwork
+  # and must not block an otherwise mask-free motif. Follow nested references.
+  definitions={n.get('id'):n for defs in root.iter(S+'defs') for n in defs.iter() if n.get('id')}
+  def refs(node):
+   values=[]
+   for n in node.iter():
+    for key,value in n.attrib.items():
+     values.extend(re.findall(r'url\(#([^)]*)\)',value))
+     if key.split('}')[-1]=='href' and value.startswith('#'):values.append(value[1:])
+   return values
+  used=set()
+  def visible(node):
+   if node.tag==S+'defs':return
+   for value in node.attrib.values():used.update(re.findall(r'url\(#([^)]*)\)',value))
+   for key,value in node.attrib.items():
+    if key.split('}')[-1]=='href' and value.startswith('#'):used.add(value[1:])
+   for child in node:visible(child)
+  visible(root);pending=list(used)
+  while pending:
+   key=pending.pop()
+   if key not in definitions:continue
+   for ref in refs(definitions[key]):
+    if ref not in used:used.add(ref);pending.append(ref)
+  for defs in root.iter(S+'defs'):
+   for node in list(defs):
+    if not any(n.get('id') in used for n in node.iter()):defs.remove(node)
+  c.require(not any(n.tag==S+'mask' for n in root.iter()),'SVG-Masken werden in dieser technischen Druckausgabe noch nicht unterstützt. Bitte die Designquelle ohne Masken vorbereiten.')
+  raw=ET.tostring(root)
  return raw
 def raster(svg,w,h):
  return Image.open(io.BytesIO(PNGSurface.convert(bytestring=svg,output_width=w,output_height=h,url_fetcher=data_fetch))).convert('RGBA')
+def template_photo_masks(root,dpi):
+ # Cairo applies alpha masks, whereas PDF soft masks use luminance. Convert
+ # only the generated immutable photo masks; arbitrary artwork stays guarded.
+ for mask in root.iter(S+'mask'):
+  if mask.get('data-template-photo-mask')!='true':continue
+  images=list(mask);c.require(len(images)==1 and images[0].tag==S+'image','Ungültige Original-Fotomaske.')
+  image=images[0];href=image.get('href','');c.require(href.startswith('data:image/svg+xml;base64,'),'Original-Fotomaske muss im Prüfstand liegen.')
+  source=ET.fromstring(base64.b64decode(href.split(',',1)[1],validate=True))
+  for inner in source.iter(S+'mask'):
+   c.require(all(n.tag in [S+'mask',S+'g',S+'image'] for n in inner.iter()),'Diese Fotomaske enthält noch nicht unterstützte Maskenformen. Original vor der Ausgabe prüfen.')
+   for n in inner.iter(S+'image'):
+    key='href' if 'href' in n.attrib else '{http://www.w3.org/1999/xlink}href'
+    uri=n.get(key,'');c.require(uri.startswith('data:image/png;base64,'),'Unbekannte Bildmaske.')
+    with Image.open(io.BytesIO(base64.b64decode(uri.split(',',1)[1],validate=True))) as raw:
+     c.require(raw.width*raw.height<=20_000_000,'Bildmaske zu groß.')
+     rgba=np.array(raw.convert('RGBA'));lum=rgba[:,:,:3].astype(np.float32) @ np.array([.2126,.7152,.0722],dtype=np.float32)
+     if inner.get('mask-type')!='alpha':rgba[:,:,3]=np.rint(lum*rgba[:,:,3]/255).astype(np.uint8)
+     rgba[:,:,:3]=255;out=io.BytesIO();Image.fromarray(rgba).save(out,format='PNG');n.set(key,'data:image/png;base64,'+base64.b64encode(out.getvalue()).decode())
+   inner.set('mask-type','alpha')
+  # Match the placed physical size. Curves/transforms are rendered at output DPI.
+  scale=float(mask.get('data-mask-scale','1'));c.require(math.isfinite(scale) and 0<scale<=100,'Ungültiger Maskenmaßstab.')
+  w,h=[math.ceil(float(image.get(k))*dpi*scale/25.4) for k in ['width','height']]
+  c.require(0<w and 0<h and w*h<=32_000_000,'Original-Fotomaske überschreitet die Ausgabegröße.')
+  rgba=raster(ET.tostring(source),w,h)
+  out=io.BytesIO();rgba.save(out,format='PNG');image.set('href','data:image/png;base64,'+base64.b64encode(out.getvalue()).decode())
+  mask.set('mask-type','alpha')
 def tint_imported_artwork(root,dpi):
  # Match the preview's constant RGB filter while preserving source alpha.
  # Rasterize at placed size/output DPI, never at the browser thumbnail size.
@@ -60,6 +114,7 @@ def tint_imported_artwork(root,dpi):
 def prepare_svg(data):
  # Originals are decoded at their actual resolution; only the output raster has a DPI.
  root=ET.fromstring(data['svg']);c.require(root.tag==S+'svg','Ungültige Gestaltung.')
+ template_photo_masks(root,data['settings']['dpi'])
  tint_imported_artwork(root,data['settings']['dpi'])
  photo_ids=set()
  for p in data['photos']:

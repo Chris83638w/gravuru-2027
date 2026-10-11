@@ -5,7 +5,7 @@ import {validateProductDesign} from './product-model.mjs';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
-import {photoShape} from '../platform/sources/app/shared/models/photo-shape.mjs';
+import {photoShape,photoClip,photoMaskURL} from '../platform/sources/app/shared/models/photo-shape.mjs';
 import {textPaths} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc} from '../platform/sources/app/shared/models/design-content.mjs';
 import {elementColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
@@ -25,6 +25,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false}={}){
  const design=validateProductDesign(saved.product,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  const viewport=artworkViewport(config,{mOptions:state.options}),geometry=nativeContour(viewport.geometry),parts=[],photos=[],textFields=[],photoFields=[];
  if(geometry.widthMm!==manifest.product.widthMm||geometry.heightMm!==manifest.product.heightMm)fail('Das gesicherte Druckformat stimmt nicht überein.');
+ const maskFor=(o,id)=>{const bytes=o.photoMaskAssetId&&files.get('quellen/'+o.photoMaskAssetId+'-vorschau.svg');if(o.photoShape==='template'&&!bytes)fail('Original-Fotomaske fehlt im gesicherten Stand.');const clip=photoClip(o,id,bytes?dataSvg(bytes):undefined);clip.defs=clip.defs.replace('<mask ',`<mask data-mask-scale="${viewport.scale}" `);return clip;};
  const transform=o=>`translate(${number(viewport.x)} ${number(viewport.y)}) scale(${number(viewport.scale)}) translate(${o.x} ${o.y}) rotate(${o.rotation||0})`;
  for(const [index,o] of design.objects.entries()){
   if(o.uxHidden)continue;const field='native-'+index,color=engraving?'#000000':elementColor(config.profile,o);let body='';
@@ -34,12 +35,13 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false}={}){
    const path=entry.edited?.path||entry.path,bytes=files.get(path);if(!bytes)fail('Die gespeicherte Bildfassung fehlt.');
    const photo=await prepareCustomerPhoto(bytes.toString('base64')),p=photoPlacement(o,photo),clip='native-photo-'+index;
    const image=`<g data-photo-pan="${field}"><image href="data:image/png;base64,${photo.preview.toString('base64')}" x="${o.type==='photoSlot'?p.x:-o.w/2}" y="${o.type==='photoSlot'?p.y:-o.h/2}" width="${o.type==='photoSlot'?p.w:o.w}" height="${o.type==='photoSlot'?p.h:o.h}" preserveAspectRatio="xMidYMid meet"${o.type==='photoSlot'?` transform="rotate(${p.angle} ${p.cx} ${p.cy})"`:''}/></g>`;
-   body=o.type==='photoSlot'?`<defs><clipPath id="${clip}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${clip})">${image}</g>`:image;
+   const mask=maskFor(o,clip);
+   body=o.type==='photoSlot'?`<defs>${mask.defs}</defs><g ${mask.attribute}>${image}</g>`:image;
    photos.push({fieldId:field,bytes:bytes.toString('base64'),width:photo.width,height:photo.height,tone:'original',...(o.uxUploadKind==='logo'&&o.uxLogoTint?{nativeTint:color}:{}),sourcePath:path});photoFields.push(field);
   }else if(o.type==='photoSlot'){
    const example=config.localResources.photoExamples?.find(e=>e.designId===design.id&&e.slotId===o.id);if(o.required&&!example)fail('Erforderliches eigenes Foto fehlt.');if(!example)continue;
-   const bytes=files.get('quellen/'+example.assetId+'-vorschau.svg');if(!bytes)fail('Beispielfoto fehlt im gesicherten Stand.');const clip='native-example-'+index;
-   body=`<defs><clipPath id="${clip}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${clip})"><image href="${dataSvg(bytes)}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g>`;
+   const bytes=files.get('quellen/'+example.assetId+'-vorschau.svg');if(!bytes)fail('Beispielfoto fehlt im gesicherten Stand.');const clip='native-example-'+index,mask=maskFor(o,clip);
+   body=`<defs>${mask.defs}</defs><g ${mask.attribute}><image href="${dataSvg(bytes)}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g>`;
   }else if(o.type==='graphic'){
    body=graphicMarkup(o,color);
    if(!body)fail('Unbekannte gespeicherte Grafikform.');

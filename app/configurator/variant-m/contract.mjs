@@ -129,7 +129,7 @@ export function validateDesign(config, design, options, fonts, motifs) {
   const p = selectedProfile(config, options);
   // Geometry locks are product rules, not just disabled drag handles. Colour
   // and an uploaded photograph may change without changing the fixed layout.
-  const fixedKeys=['type','x','y','w','h','rotation','fieldKey','photoShape','shape','filled','strokeWidth','motif','assetId','required','acrylicFixed'];
+  const fixedKeys=['type','x','y','w','h','rotation','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','motif','assetId','required','acrylicFixed'];
   for(const raw of source.objects.filter(o=>o.acrylicFixed===true)){
     const matches=design.objects.filter(o=>o.id===raw.id),o=matches[0];
     if(!matches.length&&canDeleteTemplateElement(config,source.id,raw))continue;
@@ -165,7 +165,7 @@ export function validateDesign(config, design, options, fonts, motifs) {
 
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','italic','motif','fieldKey',
-  'letterSpacing','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
+  'letterSpacing','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
   'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){

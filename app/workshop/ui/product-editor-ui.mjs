@@ -18,13 +18,13 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  const design=()=>designs().find(d=>d.id===designId);
  const selected=()=>design()?.objects.find(o=>o.id===objectId);
  const label=(o,i)=>design()?.sourceElements?.find(f=>f.id===o.id)?.label||design()?.customerFields?.find(f=>f.id===o.id)?.label||objectLabel(o,i);
- const input=(title,key,value,{type='number',step='any',min,max}={})=>`<label>${title}<input data-editor-prop="${key}" type="${type}" ${type==='number'?`step="${step}"`:''} ${min!==undefined?`min="${min}"`:''} ${max!==undefined?`max="${max}"`:''} value="${escape(value)}" required></label>`;
+ const input=(title,key,value,{type='number',step='any',min,max}={})=>`<label>${title}<input data-editor-prop="${key}" type="${type}" ${type==='number'?`step="${step}"`:''} ${min!==undefined?`min="${min}"`:''} ${max!==undefined?`max="${max}"`:''} value="${escape(type==='number'&&Number.isFinite(value)?Number(value.toFixed(2)):value)}" required></label>`;
  function sync(){
   if(state.busy&&!wasBusy)stopPreview();
   if(!state.busy&&wasBusy&&previewPending)timer=setTimeout(preview,0);
   wasBusy=state.busy;
   const disabled=state.busy||state.record?.status==='archived';
-  for(const n of document.querySelectorAll('[data-editor-prop],[data-editor-color],[data-editor-photo],[data-editor-hint],[data-editor-action],[data-authoring-undo],[data-new-design],[data-editor-name],[data-prepare-editable],[data-edit-pdf-text]'))n.disabled=disabled||(n.matches('[data-editor-prop],[data-editor-photo],[data-editor-color]')&&selected()?.technicalLocked===true);
+  for(const n of document.querySelectorAll('[data-editor-prop],[data-editor-color],[data-editor-photo],[data-editor-hint],[data-editor-action],[data-authoring-undo],[data-new-design],[data-editor-name],[data-element-label],[data-prepare-editable],[data-edit-pdf-text]'))n.disabled=disabled||(n.matches('[data-editor-prop],[data-editor-photo],[data-editor-color]')&&selected()?.technicalLocked===true);
   const undoButton=$('[data-authoring-undo]');if(undoButton)undoButton.disabled=disabled||!undo.length;
   const redoButton=$('[data-authoring-redo]');if(redoButton)redoButton.disabled=disabled||!redo.length;
   for(const n of document.querySelectorAll('[data-editor-object],[data-editor-design]'))n.disabled=state.busy;
@@ -39,6 +39,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   const rights=state.draft.elementRights[d.id][o.id],allowed=availableRights(o);
   const check=(key,text)=>`<label class="element-check"><input type="checkbox" data-element-right="${key}" data-design-id="${escape(d.id)}" data-object-id="${escape(o.id)}" data-right-allowed="${allowed[key]}" ${rights[key]?'checked':''} ${!allowed[key]?'disabled':''}>${text}</label>`;
   let body=`<label>Designname<input data-editor-name value="${escape(d.name)}" maxlength="200" required></label>${d.importedSource?'<button type="button" data-prepare-editable>PDF / SVG in Elemente aufbereiten</button><p class="field-help">Texte, Bilder und Vektormotive getrennt bearbeiten. Das Original bleibt erhalten; die Aufbereitung wird zuerst als Entwurf angezeigt.</p>':''}<h3>${escape(label(o,d.objects.indexOf(o)))}</h3>`;
+  body+=`<label>Elementname<input data-element-label maxlength="80" value="${escape(label(o,d.objects.indexOf(o)))}" required></label>`;
   if(o.type==='motif'&&d.sourceElements?.find(e=>e.id===o.id)?.kind==='text')body+='<button type="button" data-edit-pdf-text>Text bearbeiten</button><p class="field-help">Die Originalschrift liegt als Kontur vor. Zum Ändern eine vollständige Werkstatt-Schrift wählen.</p>';
   if(o.type==='text'){
    const fonts=[...new Set([...Object.keys(state.draft.config.localResources.fonts),...libraryFonts.map(f=>f.id)])];
@@ -46,7 +47,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   }
   if(['text','motif','graphic'].includes(o.type))body+=`<label class="element-color-label">Ausgewählte Farbe<input type="color" data-editor-prop="color" value="${escape(o.color||'#202824')}"></label><div class="element-colors" role="group" aria-label="Farbvorschläge">${presets.map(c=>`<button type="button" data-editor-color="${c}" style="background:${c}" aria-label="Farbe ${c}" aria-pressed="${c===o.color}"></button>`).join('')}</div>`;
   if(o.type==='motif')body+=`<button type="button" data-editor-action="replace">Motiv ersetzen</button>`;
-  if(o.type==='photoSlot')body+=`<label>Fotoform<select data-editor-prop="photoShape">${[['rect','Rechteck'],['circle','Oval / Kreis'],['arch','Bogen']].map(([id,name])=>`<option value="${id}" ${o.photoShape===id?'selected':''}>${name}</option>`).join('')}</select></label><div class="photo-example-controls"><div id="selected-photo-preview"></div><button type="button" data-editor-photo>Bild ersetzen</button><input id="editor-photo-file" type="file" accept="image/png,image/jpeg,image/webp" hidden></div><p id="photo-upload-status" role="status"></p>`;
+  if(o.type==='photoSlot')body+=`<label>Fotoform<select data-editor-prop="photoShape">${[...(o.photoMaskAssetId?[['template','Originalform aus Vorlage']]:[]),['rect','Rechteck'],['circle','Oval / Kreis'],['arch','Bogen']].map(([id,name])=>`<option value="${id}" ${o.photoShape===id?'selected':''}>${name}</option>`).join('')}</select></label><div class="photo-example-controls"><div id="selected-photo-preview"></div><button type="button" data-editor-photo>Bild ersetzen</button><input id="editor-photo-file" type="file" accept="image/png,image/jpeg,image/webp" hidden></div><p id="photo-upload-status" role="status"></p>`;
   body+=`<div class="element-permissions"><h4>Freigaben für Kunden</h4><p class="field-help">Hier in der Werkstatt kannst du Position und Größe unabhängig davon bearbeiten.</p>${o.type==='text'?check('content','Kunde darf Text ändern'):''}${o.type==='photoSlot'?check('replace','Kunde darf Foto ersetzen'):''}${allowed.color?check('color','Kunde darf Farbe ändern'):''}${check('move','Frei verschiebbar')}${check('scale','Größe veränderbar')}${check('delete','Nach Entsperren löschbar')}${o.acrylicFixed||o.locked?'<p class="field-help">Dieses Vorlagenelement bleibt für Kunden fest. Du kannst es hier bearbeiten oder entfernen.</p>':'<p class="field-help">Für ein festes Textfeld „Frei verschiebbar“ und „Größe veränderbar“ ausschalten. Der Inhalt bleibt nach Freigabe bearbeitbar.</p>'}</div>`;
   if(o.type==='photoSlot'){
    const hint=state.draft.config.photo.hints?.find(h=>h.designId===d.id&&h.slotId===o.id)||{text:'Hier eigenes Foto hochladen',enabled:true};
@@ -139,6 +140,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  $('#panel-designs').addEventListener('input',async e=>{
   const n=e.target,key=n.dataset.editorProp,o=selected();
   if(n.hasAttribute('data-editor-name')&&!state.busy&&state.record.status!=='archived'&&n.value.trim()){rememberInput(n);design().name=n.value;markDirty();return;}
+  if(n.hasAttribute('data-element-label')&&o&&!state.busy&&state.record.status!=='archived'&&n.value.trim()){rememberInput(n);const d=design();d.sourceElements??=[];let entry=d.sourceElements.find(e=>e.id===o.id);if(!entry){entry={id:o.id,kind:o.type==='photoSlot'?'photo':o.type};d.sourceElements.push(entry);}entry.label=n.value.trim();elements();markDirty();return;}
   if(n.dataset.editorHint&&o&&!state.busy&&state.record.status!=='archived'){rememberInput(n);const d=design();state.draft.config.photo.hints??=[];let h=state.draft.config.photo.hints.find(h=>h.designId===d.id&&h.slotId===o.id);if(!h){h={designId:d.id,slotId:o.id,text:'Hier eigenes Foto hochladen',enabled:true};state.draft.config.photo.hints.push(h);}h[n.dataset.editorHint]=n.type==='checkbox'?n.checked:n.value;markDirty();return;}
   if(!key||!o||state.busy||state.record.status==='archived'||o.technicalLocked)return;
   n.setCustomValidity('');

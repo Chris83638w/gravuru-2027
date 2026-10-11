@@ -1,5 +1,5 @@
 import {previewResourceURL} from './preview-resource.mjs';
-import {photoShape} from '../../platform/sources/app/shared/models/photo-shape.mjs';
+import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {selectedProfile,designFromState} from './contract.mjs';
 import {acrylicSelection} from './acrylic-product.mjs';
@@ -14,7 +14,7 @@ export async function printArtwork({el,config,files}){
   el.state.selected=null;
   for(const o of el.state.objects){if(o.uxHidden)continue;if(o.type==='photoSlot'&&!o.uxUploadId){
     const example=config.localResources?.photoExamples?.find(e=>e.designId===el.state.designId&&e.slotId===o.id);
-    if(example){const clip='print-example-'+example.assetId;markup.push(`<g transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><defs><clipPath id="${clip}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${clip})"><image href="${previewResourceURL('/api/workshop/design-assets/'+example.assetId+'/preview.svg')}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g></g>`);examplePhotos.push(o.id);}
+    if(example){const clip='print-example-'+o.id,mask=photoClip(o,clip,previewResourceURL(photoMaskURL(o)));markup.push(`<g transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><defs>${mask.defs}</defs><g ${mask.attribute}><image href="${previewResourceURL('/api/workshop/design-assets/'+example.assetId+'/preview.svg')}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g></g>`);examplePhotos.push(o.id);}
     else{const picture=el.uxObjectSVG(o);if(!picture&&o.required)throw Error('Bitte für den benötigten Fotobereich ein Foto hochladen.');markup.push(picture||'');if(picture)examplePhotos.push(o.id);}continue;
    }if(o.uxUploadId&&!files.has(o.uxUploadId))throw Error('Ein hochgeladenes Bild fehlt. Bitte erneut auswählen.');if(o.type==='text')markup.push(`<g transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})" fill="${esc(o.color||'#202824')}">${textPaths(o,el.fontData)}</g>`);else markup.push(el.objectSVG(o)||'');}
  }finally{el.state.selected=selection;}

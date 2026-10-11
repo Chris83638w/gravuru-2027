@@ -2,7 +2,7 @@ import {acrylicArtwork} from './acrylic-artwork.mjs';
 import {renderEngraving,formEngravingSettings} from './form-engraving-proof.mjs';
 import {digest} from './review-package.mjs';
 import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
-export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v2';
+export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v3';
 export const acrylicEngravingKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_ENGRAVING_RECIPE,settings:formEngravingSettings(settings)}));
 export async function createAcrylicEngravingProof(archive,archiveHash,input={}){
  const a=await acrylicArtwork(archive,archiveHash,{engraving:true});

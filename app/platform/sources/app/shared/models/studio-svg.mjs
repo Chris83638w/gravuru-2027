@@ -1,4 +1,4 @@
-import {photoShape} from './photo-shape.mjs';
+import {photoShape,photoClip,photoMaskURL} from './photo-shape.mjs';
 import {textPaths} from './doorbell-preview.mjs';
 import {escapeXml as esc} from './design-content.mjs';
 import {getProcessingProfile,elementColor} from './processing-profiles.mjs';
@@ -55,7 +55,8 @@ function photoMarkup(p,o,media,key,processing,stroke){
  const slope=brightness*contrast*(invert?-1:1),intercept=(.5-.5*contrast)*(invert?-1:1)+(invert?1:0);
  const adjustment='<feComponentTransfer>'+['R','G','B'].map(c=>'<feFunc'+c+' type="linear" slope="'+slope+'" intercept="'+intercept+'"/>').join('')+'</feComponentTransfer>';
  const engraving=processing.method==='engraving'?'<feColorMatrix type="saturate" values="0"/>'+adjustment+'<feColorMatrix type="matrix" values="'+inkMatrix(elementColor(p,o),'-0.2126 -0.7152 -0.0722 0 1')+'"/><feComposite in2="SourceAlpha" operator="in"/>':'';
- return '<defs><clipPath id="'+key+'-clip" clipPathUnits="userSpaceOnUse">'+objectShape(o)+'/></clipPath><filter id="'+key+'-photo" color-interpolation-filters="sRGB">'+engraving+'</filter></defs><g clip-path="url(#'+key+'-clip)"><svg x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" viewBox="'+[crop.x*asset.width,crop.y*asset.height,crop.width*asset.width,crop.height*asset.height].join(' ')+'" preserveAspectRatio="xMidYMid slice" overflow="hidden"><image href="'+esc(url)+'" width="'+asset.width+'" height="'+asset.height+'" preserveAspectRatio="none"'+(processing.method==='engraving'?' filter="url(#'+key+'-photo)"':'')+'/></svg></g>';
+ const mask=photoClip(o,key+'-clip');
+ return '<defs>'+mask.defs+'<filter id="'+key+'-photo" color-interpolation-filters="sRGB">'+engraving+'</filter></defs><g '+mask.attribute+'><svg x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" viewBox="'+[crop.x*asset.width,crop.y*asset.height,crop.width*asset.width,crop.height*asset.height].join(' ')+'" preserveAspectRatio="xMidYMid slice" overflow="hidden"><image href="'+esc(url)+'" width="'+asset.width+'" height="'+asset.height+'" preserveAspectRatio="none"'+(processing.method==='engraving'?' filter="url(#'+key+'-photo)"':'')+'/></svg></g>';
 }
 export function graphicMarkup(o,ink){
  const stroke=o.strokeWidth||.5,w=Math.max(0,o.w-stroke),h=Math.max(0,o.h-stroke);

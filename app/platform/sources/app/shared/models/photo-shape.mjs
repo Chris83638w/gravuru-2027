@@ -11,3 +11,14 @@ export function photoShape(o){
  }
  return ['circle','ellipse'].includes(o.photoShape)?`<ellipse rx="${w/2}" ry="${h/2}"`:`<rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}"`;
 }
+
+// A source mask is an immutable, sanitized SVG asset, never customer photo data.
+export const photoMaskURL=o=>'/api/workshop/design-assets/'+o.photoMaskAssetId+'/preview.svg';
+export function photoClip(o,id,url=photoMaskURL(o)){
+ if(o.photoShape==='template'){
+  if(!/^[a-f0-9]{64}$/.test(o.photoMaskAssetId||''))throw Error('Die Original-Fotomaske fehlt.');
+  const href=String(url).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
+  return {defs:`<mask id="${id}" data-template-photo-mask="true" maskUnits="userSpaceOnUse" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" mask-type="luminance"><image href="${href}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></mask>`,attribute:`mask="url(#${id})"`};
+ }
+ return {defs:`<clipPath id="${id}">${photoShape(o)}/></clipPath>`,attribute:`clip-path="url(#${id})"`};
+}

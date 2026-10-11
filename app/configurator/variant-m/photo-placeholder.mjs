@@ -1,5 +1,5 @@
 import {previewResourceURL} from './preview-resource.mjs';
-import {photoShape} from '../../platform/sources/app/shared/models/photo-shape.mjs';
+import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 // Editor-only illustration. Never add this markup to a design or export source.
 export function examplePhotoMarkup(slot,assetId,hint,sourceUrl){
   if(!/^[a-f0-9]{64}$/.test(assetId||'')||!(slot.w>0&&slot.h>0))return '';
@@ -10,7 +10,8 @@ export function examplePhotoMarkup(slot,assetId,hint,sourceUrl){
   const url=typeof sourceUrl==='string'&&/^data:image\/(?:svg\+xml|png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(sourceUrl)?sourceUrl:previewResourceURL('/api/workshop/design-assets/'+assetId+'/preview.svg');
   const buttonWidth=Math.min(w*.9,98),font=Math.min(4.5,w/12),height=lines.length*font*1.25+4,y=-h*.24;
   const text=lines.map((line,i)=>`<tspan x="0" y="${-height/2+2+font+i*font*1.25}">${escape(line)}${i<lines.length-1?' ':''}</tspan>`).join('');
-  return `<g data-preview-only="true" data-ux-placeholder="true"><defs><clipPath id="${clip}">${photoShape(slot)}/></clipPath></defs><g clip-path="url(#${clip})"><image href="${url}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/>${hint?.enabled===false?'':`<g transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="${-height/2}" width="${buttonWidth}" height="${height}" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">${text}</text></g>`}</g></g>`;
+  const mask=photoClip(slot,clip,previewResourceURL(photoMaskURL(slot)));
+  return `<g data-preview-only="true" data-ux-placeholder="true"><defs>${mask.defs}</defs><g ${mask.attribute}><image href="${url}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/>${hint?.enabled===false?'':`<g transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="${-height/2}" width="${buttonWidth}" height="${height}" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">${text}</text></g>`}</g></g>`;
 }
 export function emptyPhotoMarkup(slot, ink, surface, asset) {
   const w=Number(slot.w),h=Number(slot.h);

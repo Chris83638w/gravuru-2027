@@ -12,7 +12,7 @@ const $=selector=>document.querySelector(selector);
 const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
-const state={record:null,draft:null,products:[],dirty:false,busy:false,loadingRecord:false,csrf:null,tab:'designs',view:'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],historyError:null,historyRequest:0,historyLoading:false,profiles:[],profileSettings:null};
+const state={record:null,draft:null,products:[],dirty:false,busy:false,loadingRecord:false,csrf:null,tab:'designs',view:new URLSearchParams(location.search).get('view')==='masters'?'masters':'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],historyError:null,historyRequest:0,historyLoading:false,profiles:[],profileSettings:null};
 let overview,productOptions,nativeProduction;
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
@@ -73,7 +73,7 @@ function renderList(){
  for(const b of $$('[data-view]')){b.classList.toggle('active',b.dataset.view===state.view);b.setAttribute('aria-pressed',String(b.dataset.view===state.view));}
  for(const b of $$('[data-filter]')){const key=b.dataset.filter;b.setAttribute('aria-pressed',String(key===state.filter));b.querySelector('span').textContent='('+ (key==='archived'?scope.length-active.length:key==='all'?active.length:active.filter(p=>p.overview?.method===key).length)+')';}
  if(!visible.length){$('#product-list').innerHTML='<div class="empty-state"><strong>'+($('#search').value?'Keine passende Konfiguration.':state.filter==='archived'?'Das Archiv ist leer.':'Hier ist Platz für deine nächste Idee.')+'</strong><p>'+($('#search').value?'Versuche einen anderen Namen oder eine Konfigurations-ID.':'Wähle einen anderen Filter oder lege eine Konfiguration an.')+'</p><button data-action="new">Konfiguration anlegen</button></div>';overview?.rendered([]);syncControls();return;}
- $('#product-list').innerHTML=productCards(visible,badge);
+ $('#product-list').innerHTML=productCards(visible,badge,state.session);
  overview?.rendered(visible);
  syncControls();
 }
@@ -344,4 +344,4 @@ let searchTimer;
 $('#search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>loadList().catch(error=>notify(errorMessage(error),'error')),180);});
 state.view=new URL(location.href).searchParams.get('view')==='masters'?'masters':'products';
 window.addEventListener('beforeunload',event=>{if(!state.dirty)return;event.preventDefault();event.returnValue='';});
-(async()=>{try{const [session]=await Promise.all([api('/api/workshop/session'),loadList(),loadProfiles().catch(error=>notify('Profilbibliothek noch nicht geladen: '+errorMessage(error),'info'))]);state.csrf=session.csrfToken;const id=new URL(location.href).searchParams.get('configuration');if(id)await loadRecord(id,{checkDirty:false});}catch(error){notify(errorMessage(error),'error');$('#product-list').innerHTML='<p class="empty-state">Die Werkstatt konnte noch nicht geladen werden. Über „Aktualisieren“ kannst du es erneut versuchen.</p>';}})();
+(async()=>{try{const [session]=await Promise.all([api('/api/workshop/session'),loadList(),loadProfiles().catch(error=>notify('Profilbibliothek noch nicht geladen: '+errorMessage(error),'info'))]);state.csrf=session.csrfToken;state.session=session;renderList();const id=new URL(location.href).searchParams.get('configuration');if(id)await loadRecord(id,{checkDirty:false});}catch(error){notify(errorMessage(error),'error');$('#product-list').innerHTML='<p class="empty-state">Die Werkstatt konnte noch nicht geladen werden. Über „Aktualisieren“ kannst du es erneut versuchen.</p>';}})();

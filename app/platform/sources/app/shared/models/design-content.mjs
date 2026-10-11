@@ -72,10 +72,11 @@ export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
    if(o.bold!==undefined&&typeof o.bold!=='boolean')throw Error('Ungültiger Schriftschnitt.');
   }
   if(o.letterSpacing!==undefined&&(o.type!=='text'||!Number.isFinite(o.letterSpacing)||o.letterSpacing<0||o.letterSpacing>10))throw Error('Ungültiger Zeichenabstand.');
+  if((o.photoMaskAssetId!==undefined&&!/^[a-f0-9]{64}$/.test(o.photoMaskAssetId))||(o.photoShape==='template'&&!o.photoMaskAssetId))throw Error('Ungültige Original-Fotomaske.');
   if(o.photoShape==='arch'&&o.h<o.w/2)throw Error('Bogenfoto braucht mindestens eine halbe Breite als Höhe.');
   if(o.customerEditable!==undefined&&typeof o.customerEditable!=='boolean')throw Error('Ungültige Ebenenfreigabe.');
   if(o.type==='motif'&&(typeof o.motif!=='string'||!/^[\w-]{1,120}$/.test(o.motif)))throw Error('Motivkennung fehlt.');
-  if(o.type==='photoSlot'&&(!['rect','circle','arch'].includes(o.photoShape)||!/^photo-[\w-]+$/.test(o.fieldKey)||typeof o.required!=='boolean'))throw Error('Ungültiger Fotobereich.');
+  if(o.type==='photoSlot'&&(!['rect','circle','arch','template'].includes(o.photoShape)||!/^photo-[\w-]+$/.test(o.fieldKey)||typeof o.required!=='boolean'))throw Error('Ungültiger Fotobereich.');
   if(o.type==='photoSlot'&&d.objects.filter(v=>v.fieldKey===o.fieldKey).length!==1)throw Error('Jeder Fotobereich benötigt eine eindeutige Kennung.');
  }
 }

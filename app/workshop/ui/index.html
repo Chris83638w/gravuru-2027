@@ -9,27 +9,14 @@
   <link rel="stylesheet" href="/workshop-ui/dashboard.css">
   <link rel="stylesheet" href="/workshop-ui/editor.css">
   <script type="module" src="/workshop-ui/app.mjs"></script>
-</head>
+<link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><script type="module" src="/workshop-ui/workshop-shell.mjs"></script></head>
 <body class="dashboard-page">
   <a class="skip-link" href="#main">Zum Inhalt</a>
   <div class="app-layout">
     <aside class="sidebar" aria-label="Werkstattnavigation">
       <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span><em>gravuru</em>werkstatt</span></a>
-      <nav aria-label="Hauptnavigation">
-        <button class="nav-item active" data-view="products" aria-pressed="true">Produkte</button>
-        <button class="nav-item" data-view="masters" aria-pressed="false">Mastervorlagen</button>
-        <a class="nav-item" href="/werkstatt/profile/">Schriften &amp; Profile</a>
-        <a class="nav-item" href="/werkstatt/ausgaben/">Ausgaben</a>
-<a class="nav-item" href="/werkstatt/fertigung/">Fertigungsprofile</a>
-<a class="nav-item" href="/werkstatt/ausfuehrungen/">Ausführungen</a>
-<a class="nav-item" href="/werkstatt/serien/">Stapelverarbeitung</a>
-        <a class="nav-item" href="/werkstatt/konturen/">Formkonturen</a>
-        <a class="nav-item" href="/werkstatt/pruefstaende/">Prüfstände</a>
-        <a class="nav-item" href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a>
-        <a class="nav-item" href="/werkstatt/bestellungen/">Testbestellungen</a>
-      </nav>
-      <a class="sample-link" href="https://gravuru-design-test-mika.gravur4you-cy.chatgpt.site/?model=acryl&amp;v=0608ef1" target="_blank" rel="noopener">Muster Acrylglasbild</a>
-    </aside>
+<nav aria-label="Hauptnavigation"><button class="nav-item active" data-view="products" aria-pressed="true">Produkte</button><button class="nav-item" data-view="masters" aria-pressed="false">Mastervorlagen</button><a class="nav-item" href="/werkstatt/serien/">Stapelverarbeitung</a><a class="nav-item" href="/werkstatt/bestellungen/">Bestellungen</a></nav><div class="workshop-tools"><span data-workshop-session role="status">Verbindung wird geprüft …</span><details class="management-menu"><summary>Verwaltung</summary><nav aria-label="Verwaltung"><a href="/werkstatt/profile/">Schriften &amp; Profile</a><a href="/werkstatt/ausgaben/">Ausgaben</a><a href="/werkstatt/fertigung/">Fertigungsprofile</a><a href="/werkstatt/ausfuehrungen/">Ausführungen</a><a href="/werkstatt/konturen/">Formkonturen</a><a href="/werkstatt/pruefstaende/">Prüfstände</a><a href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a></nav></details></div>
+</aside>
     <main id="main">
       <header class="page-heading">
         <div><p class="eyebrow">DEINE WERKSTATT</p><h1 id="overview-title">Deine Konfi-Produkte</h1><p>Verwalte deine personalisierten Gravur- und Druckprodukte.</p></div>
@@ -86,7 +73,7 @@
               <section id="panel-design-library" class="editor-panel" aria-labelledby="tab-design-library" hidden></section>
               <section id="panel-scene" class="editor-panel" role="tabpanel" aria-labelledby="tab-scene" hidden><h3>Hintergrund & Szene</h3><p>Die Vorschau verwendet die vorhandene Acrylglasszene. Wähle Größe und Sockel direkt über dem Produkt.</p><p class="field-help">Diese Ansicht dient der Kontrolle; sie ändert keine Produktvarianten. Eigene Szenenhintergründe sind noch nicht angebunden.</p></section>
               <section id="panel-production" class="editor-panel" role="tabpanel" aria-labelledby="tab-production" hidden><h3>Fertigung</h3></section>
-              <section id="panel-shopify" class="editor-panel" role="tabpanel" aria-labelledby="tab-shopify" hidden><h3>Shopify</h3><p>Die Shop-Anbindung ist noch nicht eingerichtet. Produkt und Design kannst du hier bereits vorbereiten und speichern.</p><p>Es wird nichts im Shop veröffentlicht.</p></section>
+              <section id="panel-shopify" class="editor-panel" role="tabpanel" aria-labelledby="tab-shopify" hidden><h3>Shopify</h3><p>Die Verbindung und Preiszuordnung dieses Produktstands prüfst du unter „Shop vorbereiten“.</p><p><a href="/werkstatt/shopvorbereitung/">Shop-Zuordnung öffnen</a> · <a href="/werkstatt/bestellungen/">Testbestellungen ansehen</a></p><p>Eine öffentliche Shop-Freigabe erfolgt gesondert.</p></section>
             </form>
           </div>
           <aside class="record-aside" aria-label="Stand und Aktionen">
@@ -97,7 +84,7 @@
           </aside>
         </div>
       </section>
-      <footer class="page-footer">Gravuru 2027 <span>·</span> Produktverwaltung im Aufbau. SVG-/PDF-Designimport ist verfügbar. Kundenfelder, Druckexport und Shopify-Anbindung werden weiter ausgebaut.</footer>
+      <footer class="page-footer">Gravuru 2027 <span>·</span> Designs bearbeiten, Kundenansicht prüfen und gespeicherte Produktstände verwalten.</footer>
     </main>
   </div>
   <dialog id="overview-archive-dialog" aria-labelledby="overview-archive-title" aria-describedby="overview-archive-description">

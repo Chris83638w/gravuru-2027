@@ -4,7 +4,7 @@ import {installPreviewFeedback} from './preview-feedback.mjs';
 import {installFirstTextFocus} from './first-text-focus.mjs';
 import {installPrintExport} from './print-export.mjs';
 import {photoPlacement} from './photo-position-model.mjs';
-import {photoShape} from '../../platform/sources/app/shared/models/photo-shape.mjs';
+import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {roundEdit,roundDesign,editorTextSize} from './design-edit.mjs';
 import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {quote,money} from './contract.mjs';
@@ -114,7 +114,8 @@ export async function installUX(el,config,legacy){
     const placement=photoPlacement(o,file);
     const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${o.type==='photoSlot'?placement.x:-o.w/2}" y="${o.type==='photoSlot'?placement.y:-o.h/2}" width="${o.type==='photoSlot'?placement.w:o.w}" height="${o.type==='photoSlot'?placement.h:o.h}" preserveAspectRatio="xMidYMid meet" ${o.type==='photoSlot'?`transform="rotate(${placement.angle} ${placement.cx} ${placement.cy})"`:''} ${tint?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
     const maskId='ux-mask-'+o.id,masked=o.type==='photoSlot';
-    const picture=masked?`<defs><clipPath id="${esc(maskId)}">${photoShape(o)}/></clipPath></defs><g clip-path="url(#${esc(maskId)})">${body}</g>`:body;
+    const mask=masked?photoClip(o,esc(maskId),previewResourceURL(photoMaskURL(o))):null;
+    const picture=masked?`<defs>${mask.defs}</defs><g ${mask.attribute}>${body}</g>`:body;
     return `<g data-object="${esc(o.id)}" transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/>${picture}${o.type!=='photoSlot'&&o.id===el.state.selected?`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="none" stroke="#64ae87" stroke-width=".7"/>`:''}</g>`;
   };
   el.objectSVG=function(o,...args){const custom=this.uxObjectSVG(o);if(custom!==undefined)return custom;let markup=originalObjectSVG.call(this,o,...args);if(!config&&o.type==='motif')markup=markup.replace(/(fill|stroke)="(?:#000000|#000|black|currentColor)"/gi,'$1="#ffffff"');return markup;};

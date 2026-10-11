@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "navigationTokensExamined": 16,
+  "credentialsExported": false,
+  "fixedSignedNavigationExamples": [
+    {
+      "acceptedByFixedVerifierAtArrival": true,
+      "navigationTime": "2026-10-11T15:23:16.000Z",
+      "acceptedByPreviousVerifierAtArrival": false,
+      "signatureMatches": true,
+      "audienceMatches": true,
+      "shopMatches": true,
+      "issuerMatches": true,
+      "issuedDeltaSeconds": 2,
+      "notBeforeDeltaSeconds": 2,
+      "expiryRemainingSeconds": 62,
+      "hasNonce": true
+    }
+  ],
+  "actualFailedApiBearerWasNotLogged": true
+}

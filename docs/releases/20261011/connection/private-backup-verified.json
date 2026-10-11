@@ -1,0 +1,33 @@
+{
+  "result": "PASS",
+  "location": "private cloud directory outside Git",
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 25145344,
+      "sha256": "9362f50d479a370a0daedf8830fbed4b3cd20a8e163b5f1140d1ddd423f5f0c2",
+      "quickCheck": "ok",
+      "downloadVerified": true,
+      "privateMode": "0600"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok",
+      "downloadVerified": true,
+      "privateMode": "0600"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 17743872,
+      "sha256": "891d6fa68050524949b98be409a10ef7c92c7ed56f0b0b4626e509d985a5e0e9",
+      "quickCheck": "ok",
+      "downloadVerified": true,
+      "privateMode": "0600"
+    }
+  ],
+  "totalBytes": 42934272,
+  "keyCopied": false,
+  "historicalTablesPreserved": 49
+}

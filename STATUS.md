@@ -1,10 +1,10 @@
-## Verbindungskorrektur zur Veröffentlichung vorbereitet · 11.10.2026
+## Live: Shopify-Verbindung wiederhergestellt · 11.10.2026
 
-Sporadische Shopify-401-Ablehnungen untersucht: gültiges signiertes Token mit zwei Sekunden Zeitvorlauf gefunden. Händlerprüfung übernimmt Shopifys zehn Sekunden Toleranz; Authentifizierung bleibt verpflichtend. Klare Fehlermeldung und bedienbare Wiederverbindung ohne Verlust ungespeicherter Gestaltung ergänzt.
+Installierter Quellstand **f1bc2bc**. Shopify-Zeitabweichung korrigiert, verständliche Anmeldemeldungen und bedienbare Wiederverbindung ohne Verlust ungespeicherter Gestaltung. **Nutzer bestätigt nach Neuladen die Produktanzeige**; 19 erfolgreiche authentifizierte Zugriffe auf Sitzung, Produkte, Profile, Schriften und Vorschauen im Serverprotokoll.
 
-65 Regressionstests und Browser mit synthetischer Shopify-Identität (49 API-Anfragen, Desktop/Mobil) bestanden. Produkte, Profile, Bilder und Schriftbibliothek wiederherstellbar; Speichern und erneutes Öffnen nach Verbindungsabbruch geprüft. [Befund und Prüfungen](docs/releases/20261011/connection/RELEASE.md).
+65 Regressionstests, synthetischer Desktop-/Mobilablauf mit 49 API-Anfragen, isolierte Paketinstallation und neun HTTPS-Prüfungen bestanden. 411 Manifestdateien auf dem Server geprüft, neuer Händlerprozess bestätigt. Alle historischen Zeilen in 49 Tabellen erhalten; drei Datenbanken mit SHA-256/SQLite-Prüfung privat auf Server und Cloud gesichert. Keine neuen KI-Kosten; bisherige Kundenwerkstatt unverändert. [Nachweise und Grenzen](docs/releases/20261011/connection/RELEASE.md) · [Paket](deliverables/merchant-connection-20261011/README.md).
 
-**Genau nächster Schritt:** versioniertes Paket getrennt installieren, Händlerlaufzeit privat sichern und Korrektur veröffentlichen; anschließend echte Anmeldung anhand des Nutzeraufrufs bestätigen. Bisherige Kundenwerkstatt bleibt unberührt. Die folgenden Abschnitte sind historische Nachweise.
+**Genau nächster Schritt (neuer Nutzerauftrag):** vorhandene ausgearbeitete Edelstahl- und Acrylschild-Vorlagen in diese Werkstatt übernehmen. Öffentliche neue Kunden-/Checkout-Strecke, allgemeine Shopify-Produktübertragung, Drive und Maschinenabnahme bleiben eigene offene Pakete. Folgende Abschnitte sind historische Nachweise.
 
 ## Live: KI-Stapelgestaltung · 11.10.2026
 

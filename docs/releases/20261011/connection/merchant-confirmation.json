@@ -1,0 +1,122 @@
+{
+  "result": "PASS",
+  "userConfirmedProductsDisplayed": true,
+  "serverObservedSuccessfulRequests": [
+    {
+      "at": "2026-10-11T16:26:42.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/font-library",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:42.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/session",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:42.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/profiles",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:42.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/session",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:42.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:42.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products/:product",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:42.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products/:product/preview.svg",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:42.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products/:product/preview.svg",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:43.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/production-profiles",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:43.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products/:product/revisions",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:44.000Z",
+      "method": "POST",
+      "endpoint": "/api/workshop/products/:product/editor-preview",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:46.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products/:product/preview.svg",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:53.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/font-library",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:53.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/session",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:53.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/profiles",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:53.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/session",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:53.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:53.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products/:product/preview.svg",
+      "status": 200
+    },
+    {
+      "at": "2026-10-11T16:26:53.000Z",
+      "method": "GET",
+      "endpoint": "/api/workshop/products/:product/preview.svg",
+      "status": 200
+    }
+  ],
+  "previous401sWereFourDeliberateAnonymousChecks": true,
+  "entireShopifyJourneyVerified": false
+}

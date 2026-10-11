@@ -1,6 +1,6 @@
 import {createHmac, timingSafeEqual} from 'node:crypto';
 
-const reject = () => {throw Object.assign(Error('Shopify-Anmeldung nicht bestätigt.'), {status: 401, code: 'shopify_session'});};
+const reject = (reason='malformed') => {throw Object.assign(Error('Shopify-Anmeldung nicht bestätigt.'), {status: 401, code: 'shopify_session', reason});};
 const decode = value => {
   if (!/^[A-Za-z0-9_-]+$/.test(value)) reject();
   const bytes = Buffer.from(value, 'base64url');
@@ -21,9 +21,15 @@ export function createShopifySessionVerifier({shopDomain, clientId, secret, cloc
     if (header.alg !== 'HS256' || (header.typ !== undefined && header.typ !== 'JWT') || header.crit !== undefined || header.b64 !== undefined) reject();
     const signature = Buffer.from(signatureText, 'base64url');
     if (signature.length !== 32 || signature.toString('base64url') !== signatureText ||
-        !timingSafeEqual(signature, createHmac('sha256', secret).update(headerText + '.' + payloadText).digest())) reject();
+        !timingSafeEqual(signature, createHmac('sha256', secret).update(headerText + '.' + payloadText).digest())) reject('signature');
     const p = decode(payloadText), now = Math.floor(clock() / 1000);
-    if (p.aud !== clientId || ![p.exp, p.nbf, p.iat].every(Number.isSafeInteger) || p.exp <= now || p.nbf > now || p.iat > now || p.exp <= p.iat || p.nbf > p.exp || p.exp - p.iat > 300 || typeof p.jti !== 'string' || !p.jti || p.jti.length > 256) reject();
+    // Shopify's official Admin session verifier permits ten seconds of clock
+    // skew. Signed real navigation tokens here were observed two seconds ahead.
+    // Customer-account verification keeps its existing strict time boundary.
+    const tolerance=role==='merchant'?10:0;
+    if (p.aud !== clientId || ![p.exp, p.nbf, p.iat].every(Number.isSafeInteger) || p.exp <= p.iat || p.nbf > p.exp || p.exp - p.iat > 300 || typeof p.jti !== 'string' || !p.jti || p.jti.length > 256) reject('claims');
+    if(p.exp<=now-tolerance)reject('expired');
+    if(p.nbf>now+tolerance||p.iat>now+tolerance)reject('not_yet_valid');
     if (role === 'merchant') {
       if (p.dest !== 'https://' + shopDomain || p.iss !== 'https://' + shopDomain + '/admin' || typeof p.sub !== 'string' || !/^[1-9][0-9]{0,19}$/.test(p.sub)) reject();
     } else {

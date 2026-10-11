@@ -1,0 +1,311 @@
+{
+  "result": "PASS",
+  "scope": "local real runtime; simulated HTTPS ingress and App Bridge",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "signedTokensTwoSecondsAheadLoadProductsAndProfiles": true,
+    "overviewRecoversWithoutPageReload": true,
+    "authenticatedProductImagesLoadedAfterReconnect": true,
+    "reconnectionKeepsUnsavedEditorName": true,
+    "explicitSaveAndReopenAfterReconnect": true
+  },
+  "apiRequests": [
+    {
+      "path": "/api/workshop/font-library",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_4a277405-de26-4b31-b047-a95050ed6523/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/font-library",
+      "status": 401,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 401,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 401,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 401,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 401,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/font-library",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_4a277405-de26-4b31-b047-a95050ed6523/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 401,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/font-library",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54",
+      "status": 200,
+      "method": "PATCH",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/font-library",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_4a277405-de26-4b31-b047-a95050ed6523/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_4a277405-de26-4b31-b047-a95050ed6523/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/production-profiles",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/revisions",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/preview.svg",
+      "status": 200,
+      "method": "GET",
+      "authenticated": true
+    },
+    {
+      "path": "/api/workshop/products/cfg_d23714da-e1cd-4ca9-8df9-16f36484ac54/editor-preview",
+      "status": 200,
+      "method": "POST",
+      "authenticated": true
+    }
+  ],
+  "javascriptErrors": [],
+  "cancelledIntercepts": []
+}

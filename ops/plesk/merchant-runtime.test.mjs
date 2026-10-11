@@ -76,6 +76,15 @@ test('real two-listener merchant runtime enforces host, HTTPS, bearer, CSRF and 
   assert.match(page.headers['content-security-policy'], /frame-ancestors https:\/\/gravuru-design\.myshopify\.com https:\/\/admin.shopify.com/);
   for (const route of ['/.env', '/private/app-secret', '/PACKAGE-MANIFEST.json', '/models.json', '/form-editor.html']) assert.equal((await runtime.request(route)).status, 404);
   const session = await runtime.request('/api/workshop/session', {headers: auth}); assert.equal(session.status, 200);
+  const rejected = await runtime.request('/api/workshop/session');
+  assert.match(rejected.headers['content-type'], /application\/json/);
+  assert.equal(JSON.parse(rejected.bytes).error.code, 'shopify_session');
+  const now = Math.floor(Date.now() / 1000);
+  const ahead = await runtime.request('/api/workshop/session', {headers: {authorization: token(f.secret, {iat: now + 2, nbf: now + 2, exp: now + 62})}});
+  assert.equal(ahead.status, 200, 'Both listeners must accept Shopify clock skew');
+  const tooFarAhead = await runtime.request('/api/workshop/session', {headers: {authorization: token(f.secret, {iat: now + 30, nbf: now + 30, exp: now + 90})}});
+  assert.equal(tooFarAhead.status, 401);
+  assert.equal(JSON.parse(tooFarAhead.bytes).error.code, 'shopify_session');
   const csrf = JSON.parse(session.bytes).csrfToken;
   const aiStatus=JSON.parse((await runtime.request('/api/workshop/ai-design/status',{headers:auth})).bytes);
   assert.equal(aiStatus.enabled,false);assert.equal(aiStatus.accountedCents,0);

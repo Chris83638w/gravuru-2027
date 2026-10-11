@@ -25,10 +25,17 @@ export async function createMerchantRuntime(env,{aiDesign:aiDesignOverride}={}) 
     if (lock.exitCode !== null || lock.signalCode !== null) throw Error('Händler-Datensperre verloren.');
   } catch (error) {inner?.close(); lock.stdin.end(); await released; throw error;}
   const port = inner.address().port, verify = createShopifySessionVerifier(config.runtime.shopifySessions);
+  const rejectionLog=new Map();
   const server = http.createServer((req, res) => {
     res.setHeader('Cache-Control', 'private, no-store'); res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
     res.setHeader('Referrer-Policy', 'no-referrer'); res.setHeader('X-Content-Type-Options', 'nosniff');
-    const reject = status => res.writeHead(status).end();
+    const reject = status => {
+      if(req.url.startsWith('/api/workshop/')){
+        res.setHeader('Content-Type','application/json; charset=utf-8');
+        return res.writeHead(status).end(JSON.stringify({error:{code:status===401?'shopify_session':'merchant_request',message:status===401?'Shopify-Anmeldung nicht bestätigt. Bitte die Verbindung erneut prüfen.':'Die Werkstattanfrage konnte nicht bestätigt werden.'}}));
+      }
+      return res.writeHead(status).end();
+    };
     if (req.headers.host !== config.host || req.headers['x-forwarded-proto'] !== 'https' || !req.url.startsWith('/') || req.url.startsWith('//')) return reject(403);
     let pathname; try {pathname = decodeURIComponent(new URL(req.url, config.origin).pathname);} catch {return reject(400);}
     if (pathname===ORDER_WEBHOOK_PATH) {
@@ -36,7 +43,12 @@ export async function createMerchantRuntime(env,{aiDesign:aiDesignOverride}={}) 
       return void orderWebhookHandler(req,res);
     }
     if (pathname.startsWith('/api/workshop/') || pathname === '/__shopify/health') {
-      try {verify(req.headers.authorization, 'merchant');} catch {return reject(401);}
+      try {verify(req.headers.authorization, 'merchant');} catch(e) {
+        // Log only a bounded reason code, never a token, URL, user or payload.
+        const reason=['signature','claims','expired','not_yet_valid'].includes(e.reason)?e.reason:'malformed';
+        if(Date.now()-(rejectionLog.get(reason)||0)>60000){console.warn(JSON.stringify({event:'merchant_session_rejected',reason}));rejectionLog.set(reason,Date.now());}
+        return reject(401);
+      }
     }
     if (pathname === '/__shopify/health') {
       if (!['GET', 'HEAD'].includes(req.method)) return reject(405);

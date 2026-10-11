@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "tests": 65,
+  "failed": 0,
+  "files": [
+    "app/workshop/shopify-session.test.mjs",
+    "app/workshop/merchant-request.test.mjs",
+    "app/workshop/shopify-admin-host.test.mjs",
+    "app/workshop/merchant-repair.test.mjs",
+    "app/workshop/merchant-media.test.mjs",
+    "ops/plesk/merchant-runtime.test.mjs"
+  ],
+  "scope": "synthetic credentials, isolated local runtimes"
+}

@@ -348,4 +348,9 @@ let searchTimer;
 $('#search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>loadList().catch(error=>notify(errorMessage(error),'error')),180);});
 state.view=new URL(location.href).searchParams.get('view')==='masters'?'masters':'products';
 window.addEventListener('beforeunload',event=>{if(!state.dirty)return;event.preventDefault();event.returnValue='';});
+document.addEventListener('workshop-session-restored',async event=>{
+ state.csrf=event.detail.csrfToken;state.session=event.detail;
+ if(state.busy){notify('Verbindung wiederhergestellt. Deine Eingaben bleiben erhalten.','info');return;}
+ try{await Promise.all([loadList(),loadProfiles()]);notify('Verbindung wiederhergestellt. Produkte und Profile sind geladen.');}catch(error){notify(errorMessage(error),'error');}
+});
 (async()=>{try{const [session]=await Promise.all([api('/api/workshop/session'),loadList(),loadProfiles().catch(error=>notify('Profilbibliothek noch nicht geladen: '+errorMessage(error),'info'))]);state.csrf=session.csrfToken;state.session=session;renderList();const id=new URL(location.href).searchParams.get('configuration');if(id)await loadRecord(id,{checkDirty:false});}catch(error){notify(errorMessage(error),'error');$('#product-list').innerHTML='<p class="empty-state">Die Werkstatt konnte noch nicht geladen werden. Über „Aktualisieren“ kannst du es erneut versuchen.</p>';}})();

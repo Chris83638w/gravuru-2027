@@ -16,3 +16,17 @@ test('plain loopback preview works without App Bridge and cannot inject a bearer
   const request = createMerchantRequest({bridge: () => undefined, fetchImpl: async (_, options) => {assert.equal(options.headers.has('Authorization'), false); return Response.json({});}});
   await request('/api/workshop/session', {headers: {Authorization: 'untrusted'}});
 });
+test('401 read renews once with a different token and preserves target and options',async()=>{
+ let count=0;const seen=[];const request=createMerchantRequest({bridge:()=>({idToken:async()=>++count===1?'old':'fresh'}),fetchImpl:async(path,o)=>{seen.push([path,o.headers.get('Authorization')]);return seen.length===1?new Response(null,{status:401}):Response.json({ok:true});}});
+ assert.equal((await request('/api/workshop/products')).status,200);assert.deepEqual(seen,[['/api/workshop/products','Bearer old'],['/api/workshop/products','Bearer fresh']]);
+});
+test('unchanged tokens, failed renewal, writes and network errors are never automatically replayed',async()=>{
+ for(const mode of ['same','failed','write','network']){
+  let calls=0,tokens=0;const request=createMerchantRequest({bridge:()=>({idToken:async()=>{tokens++;if(mode==='failed'&&tokens>1)throw Error();return mode==='write'?'new-'+tokens:'same';}}),fetchImpl:async()=>{calls++;if(mode==='network')throw Error('network');return new Response(null,{status:401});}});
+  await assert.rejects(request('/api/workshop/products',{method:mode==='write'?'POST':'GET',body:mode==='write'?'{}':undefined}));assert.equal(calls,1);
+ }
+});
+test('two rejected reads stop with actionable authentication error, never a JSON parse error',async()=>{
+ let calls=0,tokens=0;const request=createMerchantRequest({bridge:()=>({idToken:async()=>String(++tokens)}),fetchImpl:async()=>{calls++;return new Response(null,{status:401});}});
+ await assert.rejects(request('/api/workshop/session'),e=>e.status===401&&e.message.includes('Verbindung prüfen'));assert.equal(calls,2);
+});

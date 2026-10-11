@@ -29,3 +29,11 @@ test('admin issuer and destination are exact, config fails closed', () => {
   for (const patch of [{iss: 'https://other.myshopify.com/admin'}, {dest: config.shopDomain}, {sub: 'gid://shopify/Customer/456'}]) assert.throws(() => verify(token({...claims('merchant'), ...patch}), 'merchant'));
   for (const patch of [{secret: ''}, {clientId: ''}, {shopDomain: 'https://fixture.myshopify.com'}]) assert.throws(() => createShopifySessionVerifier({...config, ...patch}), e => e.status === 503);
 });
+test('merchant tokens tolerate Shopify clock skew but enforce the exact ten-second boundary',()=>{
+ for(const seconds of [1,2,9,10])assert.equal(verify(token({...claims('merchant'),iat:now+seconds,nbf:now+seconds,exp:now+60+seconds}),'merchant').role,'merchant');
+ for(const seconds of [11,60])assert.throws(()=>verify(token({...claims('merchant'),iat:now+seconds,nbf:now+seconds,exp:now+60+seconds}),'merchant'),e=>e.reason==='not_yet_valid');
+ assert.equal(verify(token({...claims('merchant'),iat:now-60,nbf:now-60,exp:now-9}),'merchant').role,'merchant');
+ assert.throws(()=>verify(token({...claims('merchant'),iat:now-60,nbf:now-60,exp:now-10}),'merchant'),e=>e.reason==='expired');
+ assert.throws(()=>verify(token({...claims('merchant'),iat:now+2,nbf:now+2,exp:now+62},undefined,'foreign-key'),'merchant'),e=>e.reason==='signature');
+ assert.throws(()=>verify(token({...claims('merchant'),iat:now+2,nbf:now+2,exp:now+62,aud:'other-app'}),'merchant'));
+});

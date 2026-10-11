@@ -117,7 +117,8 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   $('#panel-scene').innerHTML=slate?`<h3>Schieferplatte</h3><p>Rohling: ${escape(g.width)} × ${escape(g.height)} mm</p><label>Rohlingbild austauschen<input id="material-surface-file" type="file" accept="image/png,image/jpeg,image/webp"></label><p class="field-help">Wähle ein Foto der ungestalteten Platte. Das Bild füllt die vorhandenen Produktmaße. Design, Bohrungen und Preise bleiben erhalten.</p><p id="material-surface-status" role="status"></p>`:'<h3>Hintergrund & Szene</h3><p>Wähle Acrylglasgröße und Sockel über dem Produkt.</p>';
   properties();clearTimeout(timer);preview();
  }
- api('/api/workshop/font-library').then(data=>{libraryFonts=data.fonts;if(selected())properties();}).catch(()=>{});
+ const loadFonts=()=>api('/api/workshop/font-library').then(data=>{libraryFonts=data.fonts;if(selected())properties();}).catch(()=>{});
+ document.addEventListener('workshop-session-restored',loadFonts);void loadFonts();
  const valid=()=>[...$('#panel-designs').querySelectorAll('input,textarea,select')].every(n=>n.disabled||n.reportValidity());
  function select(id){if(!valid())return;objectId=id;showTab('designs');properties();highlight();photoThumbnail();}
  $('#editor-elements').addEventListener('click',e=>{const b=e.target.closest('[data-editor-object]');if(b&&!state.busy)select(b.dataset.editorObject);});

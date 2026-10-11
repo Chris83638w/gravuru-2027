@@ -1,3 +1,11 @@
+## Verbindungskorrektur zur Veröffentlichung vorbereitet · 11.10.2026
+
+Sporadische Shopify-401-Ablehnungen untersucht: gültiges signiertes Token mit zwei Sekunden Zeitvorlauf gefunden. Händlerprüfung übernimmt Shopifys zehn Sekunden Toleranz; Authentifizierung bleibt verpflichtend. Klare Fehlermeldung und bedienbare Wiederverbindung ohne Verlust ungespeicherter Gestaltung ergänzt.
+
+65 Regressionstests und Browser mit synthetischer Shopify-Identität (49 API-Anfragen, Desktop/Mobil) bestanden. Produkte, Profile, Bilder und Schriftbibliothek wiederherstellbar; Speichern und erneutes Öffnen nach Verbindungsabbruch geprüft. [Befund und Prüfungen](docs/releases/20261011/connection/RELEASE.md).
+
+**Genau nächster Schritt:** versioniertes Paket getrennt installieren, Händlerlaufzeit privat sichern und Korrektur veröffentlichen; anschließend echte Anmeldung anhand des Nutzeraufrufs bestätigen. Bisherige Kundenwerkstatt bleibt unberührt. Die folgenden Abschnitte sind historische Nachweise.
+
 ## Live: KI-Stapelgestaltung · 11.10.2026
 
 Installierter Quellstand **0b64e87**. Ausgewählte kompatible Produkte gemeinsam mit KI gestalten: Layout, einzelne neue Motive oder ausdrücklich zugeordnete Musterfotos. Dauerhafte serielle Warteschlange, Budgetpause, Abbruch und Fortsetzen nach Neustart; Vorschläge einzeln vergleichen und als neue Version übernehmen. Bestehende Einzel-KI und 100-EUR-Grenze wiederverwendet.

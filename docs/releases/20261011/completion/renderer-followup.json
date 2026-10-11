@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "scope": "Private copy of actual revision 3, prepared as revision 4; synthetic authentication only",
+  "shopifyMerchantLoginVerified": false,
+  "httpsVerified": false,
+  "checks": {
+    "actualPdfFourEditableElements": true,
+    "twoNativeTextFields": true,
+    "fullExistingFont": true,
+    "cleanRealSamplePhoto": true,
+    "merchantSavedAndReopened": true,
+    "customerTextEdited": true,
+    "customerPhotoReplaced": true,
+    "customerSnapshotSaved": true,
+    "oversizedTextRejectedThenCorrected": true,
+    "originalDatabaseUntouched": true
+  },
+  "apiRequestCount": 38,
+  "javascriptErrors": [],
+  "missingImages": [],
+  "expectedOversizeValidationHttpStatus": 422
+}

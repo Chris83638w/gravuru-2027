@@ -50,6 +50,10 @@ export function build({outputDirectory=OUTPUT}={}){
   for(const [key,value] of Object.entries(urls))urls[key]=Array.isArray(value)?value.map(u=>'/_runtime/'+u.split('/').pop()):'/_runtime/'+value.split('/').pop();
   source=source.replace(/(<script[^>]*id="preview-urls"[^>]*>)[\s\S]*?(<\/script>)/,(_,a,b)=>a+JSON.stringify(urls)+b);
   replaceOnce('<base href="/" target="_top">','');
+  // The shared legacy shell can render once before its optional doorbell image
+  // has loaded. Native products have no such component or image at all.
+  replaceOnce('function bell(){const b=geometry.bellImageBounds||geometry.bell;',
+    'function bell(){if(!window.FunkklingelImage)return "";const b=geometry.bellImageBounds||geometry.bell;');
   // Native workshop designs receive their SVG thumbnails after mounting.
   // The legacy gallery must not request a literal /undefined in between.
   replaceOnce('<img src="${esc(d.preview)}" alt="" loading="lazy">',

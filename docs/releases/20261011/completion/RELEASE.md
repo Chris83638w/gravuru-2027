@@ -39,9 +39,9 @@ Erweiterter Händler-Browserablauf mit synthetischer App-Bridge-Identität besta
 
 Der Nutzer bestätigt, dass er die App über Shopify erreicht. Dies belegt keine durch den Agenten fernbediente echte Nutzeranmeldung oder Abnahme sämtlicher Schaltflächen.
 
-## Noch beobachtete technische Grenze
+## Abschließende Renderer-Korrektur
 
-Der tatsächliche Kundenablauf und die gespeicherten Bilder sind geprüft. Beim kurzzeitigen Aufbau des alten Renderer-Unterbaus wurden weiterhin sieben Bildanfragen an `/undefined` beobachtet (404); kein fehlendes sichtbares Produkt-/Musterfoto und kein blockierter Speicherablauf im geprüften Fall. Die genaue verbliebene Aufrufquelle ist noch nicht abschließend geklärt. Deshalb keine Behauptung einer vollständig fehlerfreien Browserkonsole.
+Die verbleibenden Bildanfragen an `/undefined` kamen vom ungeprüften Klingelbild im alten Renderer-Unterbau. Native Produkte haben dieses Bauteil nicht. Der optionale Bildaufruf wird jetzt erst bei vorhandener Bildquelle erzeugt. Der erneute tatsächliche PDF-Ablauf ist bestanden: keine fehlenden Bilddateien; ausschließlich die absichtlich getestete HTTP-422-Ablehnung des zu langen Textes. Anschließende Korrektur und private Speicherung bestanden. Veröffentlichung des abschließenden Pakets wird unten vermerkt.
 
 ## Weiterhin getrennte Voraussetzungen
 

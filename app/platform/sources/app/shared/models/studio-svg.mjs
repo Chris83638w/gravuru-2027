@@ -38,7 +38,11 @@ function universalMotif(item,o,ink,processing,filterId){
  // Paint is flattened by a filter, including named colors, styles and strokes;
  // transparent areas remain transparent. Print keeps the sanitized source paints.
  const flatten=processing.method==='engraving'||o.preserveColors===false;
- return '<svg x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" viewBox="'+box.join(' ')+'" preserveAspectRatio="xMidYMid meet" color="'+ink+'">'+(flatten?'<defs><filter id="'+filterId+'" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+inkMatrix(ink)+'"/></filter></defs>':'')+'<g'+(flatten?' filter="url(#'+filterId+')"':'')+'>'+item.svgFragment+'</g></svg>';
+ // An imported PDF/SVG can contain an opaque photograph. Keep its tonal
+ // information instead of turning every nontransparent pixel into solid ink.
+ const tonal=processing.method==='engraving'&&Boolean(item.artwork);
+ const paint=tonal?'<feColorMatrix type="matrix" values="'+inkMatrix(ink,'-0.2126 -0.7152 -0.0722 0 1')+'"/><feComposite in2="SourceAlpha" operator="in"/>':'<feColorMatrix type="matrix" values="'+inkMatrix(ink)+'"/>';
+ return '<svg x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" viewBox="'+box.join(' ')+'" preserveAspectRatio="xMidYMid meet" color="'+ink+'">'+(flatten?'<defs><filter id="'+filterId+'" color-interpolation-filters="sRGB">'+paint+'</filter></defs>':'')+'<g'+(flatten?' filter="url(#'+filterId+')"':'')+'>'+item.svgFragment+'</g></svg>';
 }
 function photoMarkup(p,o,media,key,processing,stroke){
  const asset=o.media&&media.find(m=>m.mediaId===o.media.mediaId&&m.revisionId===o.media.revisionId);

@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "tests": 649,
+  "passed": 649,
+  "failed": 0,
+  "skipped": 0,
+  "durationMs": 231346.489953,
+  "finalPhotoOriginalAssociationTests": 5,
+  "testSetsOverlap": true
+}

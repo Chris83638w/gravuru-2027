@@ -11,8 +11,11 @@ from pathlib import Path
 import subprocess
 import tempfile
 import time
+import urllib.request
+import urllib.error
+from types import SimpleNamespace
 from urllib.parse import urlsplit, parse_qs
-from playwright.sync_api import sync_playwright, expect
+from playwright.sync_api import sync_playwright, expect, Error as PlaywrightError
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,7 +51,8 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             browser = pw.chromium.launch(executable_path='/usr/bin/chromium', args=['--no-sandbox'])
             context = browser.new_context(ignore_https_errors=False, viewport={'width': 1440, 'height': 1000})
             context.expose_function('__syntheticIdToken', id_token)
-            api_checks, errors = [], []
+            api_checks, errors, cancelled_previews = [], [], []
+            loopback = urllib.request.build_opener(urllib.request.ProxyHandler({}))
             cart_fixture = {'productId': None, 'productRevision': None, 'calls': 0}
             def route_request(route):
                 req = route.request
@@ -66,14 +70,27 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
                     assert set(json.loads(req.post_data)) == {'draftId','expectedRevision'}
                     cart_fixture['calls'] += 1
                     return route.fulfill(json={'checkoutUrl':'https://gravuru-design.myshopify.com/checkout/synthetic','testOnly':True,'productionReady':False,'paymentConfirmed':False,'totalCents':1499})
-                response = context.request.fetch(target, method=req.method, headers=headers, data=req.post_data_buffer)
+                try:
+                    upstream=loopback.open(urllib.request.Request(target,method=req.method,headers=headers,data=req.post_data_buffer),timeout=45)
+                except urllib.error.HTTPError as error:
+                    upstream=error
+                payload=upstream.read()
+                response=SimpleNamespace(status=upstream.status,headers=dict(upstream.headers),body=lambda:payload,json=lambda:json.loads(payload))
+                upstream.close()
                 if url.path.startswith('/api/workshop/'):
                     api_checks.append({'path': url.path, 'status': response.status, 'method': req.method,
                                        'authenticated': headers.get('authorization', '').startswith('Bearer ')})
                 if url.path == '/api/workshop/session' and response.status == 200:
                     data=response.json();data['merchantTestCart']={k:cart_fixture[k] for k in ['productId','productRevision']}
                     return route.fulfill(status=200,json=data)
-                route.fulfill(status=response.status, headers=response.headers, body=response.body())
+                try:
+                    route.fulfill(status=response.status, headers=response.headers, body=response.body())
+                except PlaywrightError as error:
+                    # Navigation can cancel an intercepted thumbnail/preview while
+                    # its real backend response is in flight. Never mask API errors.
+                    if 'Route is already handled' not in str(error):
+                        raise
+                    cancelled_previews.append(url.path)
             context.route('**/*', route_request)
             page = context.new_page()
             page.on('pageerror', lambda e: errors.append(str(e).splitlines()[0][:180]))
@@ -206,6 +223,93 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             expect(page.locator('#stage-status')).to_contain_text('Gespeicherter Stand',timeout=30000)
             page.reload()
             expect(page.locator('#editor-preview [data-object="imported-artwork"]')).to_be_visible(timeout=30000)
+            # Complete merchant composition, using real HTTP/resources and a WebP original.
+            page.locator('[data-new-design]').click()
+            page.locator('#authoring-name').fill('Eigene Texte Motive Fotos')
+            page.locator('[data-authoring-create]').click()
+            expect(page.locator('.authoring-dialog')).not_to_be_visible(timeout=30000)
+            expect(page.locator('[data-editor-prop="text"]')).to_be_visible()
+            text_id=page.locator('#editor-elements [aria-pressed="true"]').get_attribute('data-editor-object')
+            page.locator('[data-editor-prop="text"]').fill('Unser eigenes Design')
+            page.locator('[data-editor-prop="x"]').fill('145')
+            page.locator('[data-editor-prop="y"]').fill('35')
+            page.locator('[data-editor-action="motif"]').click()
+            page.locator('#authoring-search').fill('Herz')
+            page.locator('[data-authoring-motif="heart"]').click()
+            expect(page.locator('.authoring-dialog')).not_to_be_visible(timeout=30000)
+            motif_id=page.locator('#editor-elements [aria-pressed="true"]').get_attribute('data-editor-object')
+            page.locator('[data-editor-action="replace"]').click()
+            page.locator('#authoring-search').fill('Baum')
+            page.locator('[data-authoring-motif="tree"]').click()
+            expect(page.locator('.authoring-dialog')).not_to_be_visible(timeout=30000)
+            page.locator('[data-editor-prop="x"]').fill('145')
+            page.locator('[data-editor-prop="y"]').fill('90')
+            page.locator('[data-editor-prop="w"]').fill('35')
+            page.locator('[data-editor-prop="h"]').fill('40')
+            expect(page.locator('#stage-status')).to_contain_text('Entwurf',timeout=30000)
+            node=page.locator('#editor-preview [data-object="'+motif_id+'"]')
+            expect(node).to_have_attribute('transform',__import__('re').compile(r'translate\(145 90\)'))
+            box=node.bounding_box();page.mouse.move(box['x']+box['width']/2,box['y']+box['height']/2)
+            page.mouse.down();page.mouse.move(box['x']+box['width']/2+20,box['y']+box['height']/2-15,steps=5);page.mouse.up()
+            assert float(page.locator('[data-editor-prop="x"]').input_value())>145
+            custom_svg=folder/'own-motif.svg'
+            custom_svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="20mm" height="20mm" viewBox="0 0 20 20"><path d="M10 1L19 19H1Z" fill="black"/></svg>')
+            page.locator('[data-editor-action="replace"]').click()
+            page.locator('#authoring-motif-file').set_input_files(str(custom_svg))
+            expect(page.locator('.authoring-dialog')).not_to_be_visible(timeout=30000)
+            page.locator('[data-editor-action="photo"]').click()
+            photo_id=page.locator('#editor-elements [aria-pressed="true"]').get_attribute('data-editor-object')
+            page.locator('[data-editor-prop="x"]').fill('55')
+            page.locator('[data-editor-prop="y"]').fill('70')
+            page.locator('[data-editor-prop="w"]').fill('65')
+            page.locator('[data-editor-prop="h"]').fill('80')
+            sample=Image.new('RGB',(400,500));sample.putdata([(int(x/399*255),int(y/499*255),90) for y in range(500) for x in range(400)])
+            sample_path=folder/'sample.webp';sample.save(sample_path)
+            page.locator('#editor-photo-file').set_input_files(str(sample_path))
+            expect(page.locator('#photo-upload-status')).to_contain_text('übernommen',timeout=30000)
+            expect(page.locator('#editor-preview [data-object="'+photo_id+'"] image')).to_have_attribute('href',__import__('re').compile(r'^data:image/svg\+xml;base64,'),timeout=30000)
+            page.locator('[data-editor-prop="photoShape"]').select_option('arch')
+            page.locator('[data-editor-action="back"]').click()
+            expect(page.locator('#editor-elements button').first).to_have_attribute('data-editor-object',photo_id)
+            page.locator('[data-editor-action="remove"]').click()
+            expect(page.locator('[data-editor-object="'+photo_id+'"]')).to_have_count(0)
+            page.locator('[data-authoring-undo]').click()
+            expect(page.locator('[data-editor-object="'+photo_id+'"]')).to_have_count(1)
+            page.locator('#save-product').click()
+            expect(page.locator('#stage-status')).to_contain_text('Gespeicherter Stand',timeout=30000)
+            page.reload()
+            expect(page.locator('[data-editor-object="'+photo_id+'"]')).to_have_count(1,timeout=30000)
+            expect(page.locator('#editor-elements button')).to_have_count(3)
+            expect(page.locator('#editor-designs [data-editor-design]')).to_have_count(2)
+            page.locator('[data-editor-object="'+text_id+'"]').click()
+            expect(page.locator('[data-editor-prop="text"]')).to_have_value('Unser eigenes Design')
+            expect(page.locator('#stage-status')).to_contain_text('Gespeicherter Stand',timeout=30000)
+            image_bytes=page.locator('#editor-preview [data-object="'+photo_id+'"] image').screenshot()
+            import io
+            colors=Image.open(io.BytesIO(image_bytes)).convert('RGB').getcolors(1000000)
+            assert colors and len(colors)>100,'Photo must contain tonal detail, not a solid color'
+            page.screenshot(path=str(OUT/'merchant-authoring-desktop.png'),full_page=True)
+            page.set_viewport_size({'width':390,'height':844})
+            assert not page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
+            page.screenshot(path=str(OUT/'merchant-authoring-mobile.png'),full_page=True)
+            page.set_viewport_size({'width':1440,'height':1000})
+            # Delete the old fixed PDF only in the current draft, then undo it.
+            old_design=page.locator('#editor-designs [data-editor-design]').first
+            old_design.click()
+            page.locator('[data-editor-action="text"]').click()
+            page.locator('[data-editor-object="imported-artwork"]').click()
+            page.locator('[data-editor-action="remove"]').click()
+            expect(page.locator('[data-editor-object="imported-artwork"]')).to_have_count(0)
+            page.locator('[data-authoring-undo]').click()
+            expect(page.locator('[data-editor-object="imported-artwork"]')).to_have_count(1)
+            page.locator('#save-product').click()
+            expect(page.locator('#stage-status')).to_contain_text('Gespeicherter Stand',timeout=30000)
+            report['checks']['merchantCompositionSavedReopened']=True
+            report['checks']['originalDesignPreserved']=True
+            report['checks']['motifAddedReplacedAndDragged']=True
+            report['checks']['ownSvgMotifUploadedAndReplaced']=True
+            report['checks']['webpPhotoVisibleWithTonalDetails']=True
+            report['checks']['removeUndoFixedSourceAndPhoto']=True
             page.locator('[data-view="masters"]').click()
             page.locator('#new-product').click()
             page.locator('#create-name').fill('Geprüfte Mastervorlage')
@@ -217,10 +321,10 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
 
             page.wait_for_load_state('networkidle')
             assert not errors
-            report.update(apiRequests=api_checks,javascriptErrors=errors)
+            report.update(apiRequests=api_checks,javascriptErrors=errors,cancelledIntercepts=cancelled_previews)
             assert api_checks and all(c['authenticated'] and c['status'] < 400 for c in api_checks), 'Authenticated UI requests must succeed: '+str([c for c in api_checks if not c['authenticated'] or c['status']>=400])
             report.update(result='PASS', apiRequests=api_checks, javascriptErrors=errors,
-                          checks={**repair_checks,'merchantTestCartUiSyntheticResponse':True,'changedQuantityBlocksStaleCheckout':True,'realMerchantUiLoaded': True, 'freshSyntheticBearerUsed': True,
+                          checks={**report['checks'],**repair_checks,'merchantTestCartUiSyntheticResponse':True,'changedQuantityBlocksStaleCheckout':True,'realMerchantUiLoaded': True, 'freshSyntheticBearerUsed': True,
                                   'productCreatedAndReopened': True, 'authenticatedPreviewLoaded': True,
                                   'customerEditorLoaded': True, 'privateCustomerSnapshotSaved': True,
                                   'freeFormCustomerEditorLoaded': True, 'freeFormSnapshotSaved': True,

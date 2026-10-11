@@ -496,6 +496,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const data=await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+4096);
         return json(res,201,await assets.import({name:data.name,bytes:data.bytes,page:data.page}));
       }
+      if(pathname==='/api/workshop/photo-examples'&&method==='POST'){
+        const data=await body(req,Math.ceil(MAX_CUSTOMER_PHOTO/3)*4+4096);
+        return json(res,201,await assets.importPhotoExample(data));
+      }
       if(pathname==='/api/workshop/material-surfaces'&&method==='POST'){
         const data=await body(req,Math.ceil(MAX_CUSTOMER_PHOTO/3)*4+4096);
         return json(res,201,await assets.importMaterialSurface(data.bytes));

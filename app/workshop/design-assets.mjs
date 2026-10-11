@@ -48,11 +48,25 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
     CREATE TRIGGER IF NOT EXISTS design_source_immutable BEFORE UPDATE ON design_sources BEGIN SELECT RAISE(ABORT,'immutable source'); END;
     CREATE TRIGGER IF NOT EXISTS design_asset_immutable BEFORE UPDATE ON design_assets BEGIN SELECT RAISE(ABORT,'immutable asset'); END;
     CREATE TABLE IF NOT EXISTS material_surfaces (sha256 TEXT PRIMARY KEY, original BLOB NOT NULL, preview BLOB NOT NULL);
+    CREATE TABLE IF NOT EXISTS photo_example_sources (asset_id TEXT NOT NULL REFERENCES design_assets(id), source_sha256 TEXT NOT NULL REFERENCES design_sources(sha256), PRIMARY KEY (asset_id,source_sha256));
+    CREATE TRIGGER IF NOT EXISTS photo_example_source_immutable BEFORE UPDATE ON photo_example_sources BEGIN SELECT RAISE(ABORT,'immutable photo original'); END;
     CREATE TRIGGER IF NOT EXISTS material_surface_immutable BEFORE UPDATE ON material_surfaces BEGIN SELECT RAISE(ABORT,'immutable surface'); END;`);
   function row(id){if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'asset_missing','Designressource nicht gefunden.');const r=db.prepare('SELECT * FROM design_assets WHERE id=?').get(id);if(!r)fail(404,'asset_missing','Designressource nicht gefunden.');return r;}
   function get(id){return JSON.parse(row(id).metadata);}
   function resource(id){const a=get(id);return {key:'artwork-'+id,name:'Importiertes Design',category:'Vorlagen',bounds:[0,0,a.widthMm,a.heightMm],embeddedOnly:true,svgFragment:artworkFragment(id,a.widthMm,a.heightMm),artwork:a};}
   return {
+    async importPhotoExample({bytes,widthMm,heightMm}){
+      if(![widthMm,heightMm].every(n=>Number.isFinite(n)&&n>0&&n<=2000))fail(422,'photo_size','Ungültige Fotofeldmaße.');
+      const {prepareCustomerPhoto}=await import('./customer-photo.mjs');
+      const photo=await prepareCustomerPhoto(bytes),originalHash=sha256(photo.original);
+      const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${widthMm}mm" height="${heightMm}mm" viewBox="0 0 ${widthMm} ${heightMm}"><image href="data:image/png;base64,${photo.preview.toString('base64')}" width="${widthMm}" height="${heightMm}" preserveAspectRatio="xMidYMid slice"/></svg>`;
+      const asset=await this.import({name:'Beispielfoto.svg',bytes:Buffer.from(svg).toString('base64')});
+      db.exec('BEGIN IMMEDIATE');try{
+        db.prepare('INSERT OR IGNORE INTO design_sources VALUES (?,?)').run(originalHash,photo.original);
+        db.prepare('INSERT OR IGNORE INTO photo_example_sources VALUES (?,?)').run(asset.assetId,originalHash);db.exec('COMMIT');
+      }catch(error){db.exec('ROLLBACK');throw error;}
+      return asset;
+    },
     async importMaterialSurface(bytes){
       const {prepareCustomerPhoto}=await import('./customer-photo.mjs');
       const image=await prepareCustomerPhoto(bytes),id=sha256(image.original);

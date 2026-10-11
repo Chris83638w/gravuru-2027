@@ -1,3 +1,9 @@
+## In Prüfung: vollständige Händlergestaltung · 11.10.2026
+
+Aktuelles Paket ergänzt eigene Designs, native Texte/Fotofelder, Bibliotheks-/Uploadmotive, Ersetzen/Entfernen/Reihenfolge und direktes Verschieben. Foto-Tonwerte in importierten Designs erhalten; JPG/PNG/WebP-Beispielfotos samt privaten Originalen. Kundenrechte bleiben getrennt, Originale und bestehende Revisionen erhalten. Aktuelle private Produktrevision 3 vor Änderung gesichert.
+
+649 Regressionstests, fünf anschließende Prüfungen der Originalzuordnung und vollständiger Desktop-/Mobil-Browserablauf mit synthetischer Identität bestanden. Aktuelle Original-PDF separat sichtbar geprüft; 766 statt eines einzigen Farbwerts im Fotobereich. Noch nicht veröffentlicht. [Paketbericht](docs/releases/20261011/design-authoring/RELEASE.md). Nächster Schritt: Prüfung abschließen, versioniertes Paket isoliert installieren und auf dem getrennten Händlerhost veröffentlichen.
+
 ## Live: Werkstattfehler behoben und gesichert · 11.10.2026
 
 Getrennter Händlerhost auf **0754445**, Version `0.1.0-recovery.20261010+0754445b6249`. Shopify-Start ohne URL-Kontext und Navigation/History korrigiert. Schiefer-PDF-Import und geschützte Vorschaubilder korrigiert; Auswahl verändert die Grafik nicht mehr. Unter **Hintergrund & Szene** Rohlingbild austauschen; unter **Schriften & Profile** TTF/OTF hochladen und in Schriftprofilen gruppieren.

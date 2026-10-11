@@ -17,7 +17,7 @@ Ziel: die gewählte Salbei-Richtung mit einer Primärfarbe, ruhiger Bildführung
 1. Der Browserlauncher startet nicht: `MXC launcher: cannot locate required Windows platform directory: HRESULT 0x80070003`. Kein Browser-Screenshot und keine bestandene visuelle Prüfung werden behauptet.
 2. Zwei schema-gültige `themeCreate`-Aufrufe mit öffentlichen, fest versionierten Dawn-ZIP-Quellen scheiterten mit `Src is empty (source)`. Beide lieferten `theme: null`. Es gibt daher keine erzeugte Theme-ID und keinen verifizierten Vorschau-Link.
 3. Der Upload eines lokal gespeicherten Hero-Bildes über den Shopify-Bildupload schlug mit internem Fehler fehl. Kein CDN-Upload wurde als erfolgreich gewertet.
-4. Shopify CLI konnte in der verfügbaren lokalen Umgebung nicht ausgeführt werden. Vollständiger Theme Check und Shopify-Liquid-Laufzeitprüfung stehen aus.
+4. Shopify CLI konnte lokal nicht ausgeführt werden. Der offizielle Theme Check wurde deshalb in GitHub ausgeführt und nach Ergänzung fehlender Übersetzungsschlüssel bestanden: 0 Fehler, 11 Warnungen, Commit `f5e49829371a58c243bbf34f40524470d4a3af7b`, Run `38151897163`. Shopify-Liquid-Laufzeitprüfung und visuelle Abnahme stehen weiterhin aus.
 
 ## Noch abnehmen
 

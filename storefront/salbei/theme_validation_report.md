@@ -8,4 +8,8 @@ Zwei ungültige globale Radiuswerte wurden von 3 auf 4 geändert, passend zu Sho
 
 `package_theme.py` prüft ZIP-Integrität, Dateianzahl und SHA-256 jeder eingepackten Datei. Das Paket enthält nur Theme-Dateien aus den vorgesehenen Ordnern; Base64-Übertragungsdateien sind ausgeschlossen. Das Dawn-Lizenzdokument ist im Quellbaum und als Asset enthalten.
 
-Grenzen: Diese Strukturprüfung ersetzt keinen Shopify Theme Check, keinen Liquid-Renderlauf und keine Browserprüfung. Shopify CLI konnte lokal nicht gestartet werden. Ein separater GitHub-Prüflauf mit Shopifys offizieller Action wird vorbereitet; sein Erfolg wird erst nach tatsächlichem Ergebnis berichtet. Der Shopify-Import und der Bild-CDN-Upload sind technisch gescheitert. Vollständige Details in `design-qa.md`.
+Der erste offizielle Shopify Theme Check fand fehlende eigene Übersetzungsschlüssel in den übrigen Dawn-Sprachen. Diese haben jetzt einen expliziten englischen Rückfalltext; die sieben Zielsprachen behalten ihre Übersetzungen. Der lokale Validator prüft zusätzlich die Vollständigkeit der eigenen Übersetzungsschlüssel.
+
+Der erneute offizielle **Shopify Theme Check bestand: 0 Fehler, 11 Warnungen** auf Commit `f5e49829371a58c243bbf34f40524470d4a3af7b`. Die Warnungen betreffen Dawn-Bausteine sowie dieselben übernommenen Stellen in `gravuru-product.liquid`. Es wurde keine Prüfvorschrift abgeschaltet oder herabgestuft. [Tatsächlicher GitHub-Prüflauf](https://github.com/Chris83638w/gravuru-2027/actions/runs/38151897163), strukturierter Bericht in `theme-check-result.json`.
+
+Grenzen: Ein statischer Theme Check ersetzt weder einen Shopify-Liquid-Renderlauf noch eine Browserprüfung. Der Shopify-Import und der Bild-CDN-Upload sind technisch gescheitert. Vollständige Details in `design-qa.md`.

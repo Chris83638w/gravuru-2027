@@ -1,0 +1,180 @@
+{
+  "commit": "f5e49829371a58c243bbf34f40524470d4a3af7b",
+  "run_url": "https://github.com/Chris83638w/gravuru-2027/actions/runs/38151897163",
+  "result": "success",
+  "errors": 0,
+  "warnings": 11,
+  "files": [
+    {
+      "path": "snippets/quick-order-product-row.liquid",
+      "offenses": [
+        {
+          "check": "OrphanedSnippet",
+          "severity": "warning",
+          "start_row": 0,
+          "start_column": 0,
+          "end_row": 0,
+          "end_column": 1,
+          "message": "This snippet is not referenced by any other files"
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 1,
+      "infoCount": 0
+    },
+    {
+      "path": "sections/main-list-collections.liquid",
+      "offenses": [
+        {
+          "check": "VariableName",
+          "severity": "warning",
+          "start_row": 19,
+          "start_column": 11,
+          "end_row": 19,
+          "end_column": 71,
+          "message": "The variable 'moduloResult' uses wrong naming format"
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 1,
+      "infoCount": 0
+    },
+    {
+      "path": "sections/main-article.liquid",
+      "offenses": [
+        {
+          "check": "VariableName",
+          "severity": "warning",
+          "start_row": 101,
+          "start_column": 21,
+          "end_row": 101,
+          "end_column": 66,
+          "message": "The variable 'anchorId' uses wrong naming format"
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 1,
+      "infoCount": 0
+    },
+    {
+      "path": "sections/main-search.liquid",
+      "offenses": [
+        {
+          "check": "UnusedAssign",
+          "severity": "warning",
+          "start_row": 273,
+          "start_column": 24,
+          "end_row": 273,
+          "end_column": 56,
+          "message": "The variable 'product_settings' is assigned but not used"
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 1,
+      "infoCount": 0
+    },
+    {
+      "path": "snippets/facets.liquid",
+      "offenses": [
+        {
+          "check": "LiquidComplexity",
+          "severity": "warning",
+          "start_row": 864,
+          "start_column": 8,
+          "end_row": 864,
+          "end_column": 63,
+          "message": "Liquid complexity is 136, which exceeds the maximum of 120. The decision at line 865 pushed it over the limit. Consider simplifying conditional logic, or moving self-contained decision logic into snippets with the render tag."
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 1,
+      "infoCount": 0
+    },
+    {
+      "path": "sections/main-product.liquid",
+      "offenses": [
+        {
+          "check": "UnusedAssign",
+          "severity": "warning",
+          "start_row": 744,
+          "start_column": 10,
+          "end_row": 744,
+          "end_column": 51,
+          "message": "The variable 'seo_media' is assigned but not used"
+        },
+        {
+          "check": "UndefinedObject",
+          "severity": "warning",
+          "start_row": 600,
+          "start_column": 46,
+          "end_row": 600,
+          "end_column": 54,
+          "message": "Unknown object 'continue' used."
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 2,
+      "infoCount": 0
+    },
+    {
+      "path": "sections/gravuru-product.liquid",
+      "offenses": [
+        {
+          "check": "UnusedAssign",
+          "severity": "warning",
+          "start_row": 755,
+          "start_column": 10,
+          "end_row": 755,
+          "end_column": 51,
+          "message": "The variable 'seo_media' is assigned but not used"
+        },
+        {
+          "check": "UndefinedObject",
+          "severity": "warning",
+          "start_row": 611,
+          "start_column": 46,
+          "end_row": 611,
+          "end_column": 54,
+          "message": "Unknown object 'continue' used."
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 2,
+      "infoCount": 0
+    },
+    {
+      "path": "layout/password.liquid",
+      "offenses": [
+        {
+          "check": "UndefinedObject",
+          "severity": "warning",
+          "start_row": 39,
+          "start_column": 35,
+          "end_row": 39,
+          "end_column": 49,
+          "message": "Unknown object 'scheme_classes' used."
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 1,
+      "infoCount": 0
+    },
+    {
+      "path": "layout/theme.liquid",
+      "offenses": [
+        {
+          "check": "UndefinedObject",
+          "severity": "warning",
+          "start_row": 81,
+          "start_column": 35,
+          "end_row": 81,
+          "end_column": 49,
+          "message": "Unknown object 'scheme_classes' used."
+        }
+      ],
+      "errorCount": 0,
+      "warningCount": 1,
+      "infoCount": 0
+    }
+  ]
+}

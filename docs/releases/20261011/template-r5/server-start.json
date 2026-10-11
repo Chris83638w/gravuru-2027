@@ -1,0 +1,13 @@
+{
+  "entry": "start-r5.cjs",
+  "forwardsTo": "app.cjs",
+  "sha256": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd",
+  "releaseEntrySha256": "fc31867b5433e335dd2bd6b409ecf6b979eb535f5c715fb05cda2e494dd716a1",
+  "preservesFutureAtomicActivation": true,
+  "result": "PASS",
+  "domainId": 20,
+  "webserverError": "503 after disable/enable; direct Node runtime succeeded; no merchant lock owner",
+  "recovery": "Reconfigured only site 20 startup to start-r5.cjs, then replaced it with a stable forwarder to app.cjs; HTTPS succeeded",
+  "exactWebserverRootCauseConfirmed": false,
+  "legacySitesChanged": false
+}

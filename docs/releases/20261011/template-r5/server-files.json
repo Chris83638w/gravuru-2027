@@ -1,0 +1,14 @@
+{
+  "maskPreserved": true,
+  "filesVerified": 401,
+  "sourceCommit": "9b77eb16d8ec7453f58590becf66d829ffe9f2c8",
+  "entrySha256": "fc31867b5433e335dd2bd6b409ecf6b979eb535f5c715fb05cda2e494dd716a1",
+  "productRevision": 5,
+  "fonts": [
+    "Cormorant Garamond"
+  ],
+  "variantBindings": 9,
+  "quickCheck": {
+    "quick_check": "ok"
+  }
+}

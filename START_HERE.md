@@ -1,3 +1,11 @@
+## Live: Original-Fotomaske und vollständiger Testkauf · 11.10.2026
+
+Installierter Quellstand **9b77eb1**, Gedenktafel **Revision 5**. Originalmaske der PDF bleibt beim Fotoaustausch in Händleransicht, Kundenansicht und technischem Ausgabepaket erhalten; verständliche Elementnamen und M01/M02-Navigation. **654 Regressionstests**, Desktop-/Mobilabläufe, isolierte Paketinstallation und **25 HTTPS-Prüfungen** bestanden. Tatsächliche Shopify-Testbestellung mit Foto: **32,98 EUR + 4,99 EUR Versand**, Testgateway, bezahlt, nicht erfüllt; genau eine Position zugeordnet, keine Fertigungsfreigabe.
+
+Händlerhost läuft nach Behebung einer Webserver-Startstörung. Plesk-Site 20 startet `start-r5.cjs` als stabilen Weiterleiter auf `app.cjs`; künftige Aktivierungen ändern weiterhin `app.cjs`. Alle drei privaten Datenbanken nach Testkauf auf Server und in Cloud mit Prüfsummen/Integrität gesichert; historische Daten in 46 Tabellen erhalten. Alte Kundenwerkstatt unverändert. [Release, Bedienung und Sicherung](docs/releases/20261011/template-r5/RELEASE.md) · [Installationspaket mit Prüfsumme](deliverables/merchant-template-r5-20261011/README.md).
+
+**Nächste offenen Anschlüsse:** öffentliche neue Kunden-/Checkout-Strecke und allgemeine Shopify-Produktübertragung; eigene Drive-Autorisierung samt Ordner; OpenAI-Anbindung mit tatsächlich durchgesetztem Budget. Nutzer nennt „100“, als 100 EUR/Monat erläutert; keine kostenpflichtige API aktiviert. Maschinen-/Material-/ICC-Abnahme bleibt offen. Die folgenden Abschnitte sind historische Nachweise.
+
 ## Live: Händler-Testbestellung mit Foto · 11.10.2026
 
 Gedenktafel **Revision 4** ist im Händler-Testweg bestellbar. Installierter Quellstand **971c57d**; alle neun Varianten und der Foto-Aufpreis mit Shopify abgeglichen. Tatsächlicher Testkauf einschließlich Foto erfolgreich: **32,98 EUR + 4,99 EUR Versand**, `test: true`, `PAID`, `UNFULFILLED`, genau eine zugeordnete Position. Keine echte Abbuchung, keine Fertigungsfreigabe. Öffentliche neue Kundenstrecke und Maschinenabnahme bleiben offen.

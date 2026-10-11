@@ -1,0 +1,13 @@
+{
+  "expectedRevision": 4,
+  "newRevision": 5,
+  "onlyChangedPaths": [
+    "/config/profile/designs/0/objects/2/photoShape",
+    "/config/profile/designs/0/objects/2/photoMaskAssetId",
+    "/config/profile/designs/0/sourceElements/0/label",
+    "/config/profile/designs/0/sourceElements/1/label",
+    "/config/profile/designs/0/sourceElements/2/label",
+    "/config/profile/designs/0/sourceElements/3/label"
+  ],
+  "pricesGeometryContentAndRightsPreserved": true
+}

@@ -134,18 +134,28 @@ test('merchant test cart is explicitly pinned and needs JWT, origin, CSRF and pr
  f.values.GRAVURU_SHOPIFY_TEST_CART='memorial-r2-tokenless-2026-07';f.save();assert.throws(f.config,{code:'merchant_config'});
  f.values.GRAVURU_SHOPIFY_ORDER_WEBHOOK='test-only-2026-07';f.save();assert.throws(f.config,{code:'merchant_config'});
  f.values.GRAVURU_SHOPIFY_APP_ORIGIN='https://app-2027.gravuru-designwerkstatt.de';f.save();
- assert.equal(f.config().merchantTestCart.productRevision,2);prepareMerchantStorage(f.config());const runtime=await start(f);t.after(runtime.close);
+ assert.equal(f.config().merchantTestCart.productRevision,2);f.values.GRAVURU_SHOPIFY_TEST_CART_REVISION='4';f.save();prepareMerchantStorage(f.config());const runtime=await start(f);t.after(runtime.close);
  const route='/api/workshop/merchant-test-cart',data={draftId:'adraft_11111111-1111-4111-8111-111111111111',expectedRevision:1};
  assert.equal((await runtime.request(route,{method:'POST',data})).status,401);
  const headers={authorization:token(f.secret),origin:f.values.GRAVURU_SHOPIFY_APP_ORIGIN};
  assert.equal((await runtime.request(route,{method:'POST',headers,data})).status,403);
  const session=JSON.parse((await runtime.request('/api/workshop/session',{headers})).bytes);
- assert.equal(session.merchantTestCart.productRevision,2);headers['x-gravuru-csrf']=session.csrfToken;
+ assert.equal(session.merchantTestCart.productRevision,4);headers['x-gravuru-csrf']=session.csrfToken;
  assert.equal((await runtime.request(route,{headers})).status,405);
  assert.equal((await runtime.request(route,{method:'POST',headers,data})).status,404);
  assert.equal((await runtime.request(route,{method:'POST',headers:{...headers,origin:'https://other.example'},data})).status,403);
  assert.equal((await runtime.request(route,{method:'POST',headers,data:{...data,price:1}})).status,422);
  const health=JSON.parse((await runtime.request('/__shopify/health',{headers})).bytes);assert.equal(health.merchantTestCartEnabled,true);assert.equal(health.checkoutEnabled,false);
- await runtime.close();delete f.values.GRAVURU_SHOPIFY_TEST_CART;f.save();const disabled=await start(f);t.after(disabled.close);
+ await runtime.close();delete f.values.GRAVURU_SHOPIFY_TEST_CART;delete f.values.GRAVURU_SHOPIFY_TEST_CART_REVISION;f.save();const disabled=await start(f);t.after(disabled.close);
  assert.equal((await disabled.request(route,{method:'POST',headers,data})).status,503);
+});
+
+test('private revision pin is strict, requires enabled test cart and cannot be overridden by environment',t=>{
+ const f=fixture(t),key='GRAVURU_SHOPIFY_TEST_CART_REVISION';f.values[key]='4';f.save();assert.throws(f.config,{code:'merchant_config'});
+ f.values.GRAVURU_SHOPIFY_TEST_CART='memorial-r2-tokenless-2026-07';f.values.GRAVURU_SHOPIFY_ORDER_WEBHOOK='test-only-2026-07';f.values.GRAVURU_SHOPIFY_APP_ORIGIN='https://app-2027.gravuru-designwerkstatt.de';f.save();
+ assert.equal(f.config().merchantTestCart.productRevision,4);
+ assert.throws(()=>merchantConfig({...f.env,[key]:'5'}),{code:'merchant_config'});
+ assert.equal(merchantConfig({...f.env,[key]:'4'}).merchantTestCart.productRevision,4);
+ for(const value of [4,null,'','1','0','04','4.0','4e0',' 4','4 ','-4','9007199254740992']){f.values[key]=value;f.save();assert.throws(f.config,{code:'merchant_config'});}
+ delete f.values[key];f.save();assert.equal(f.config().merchantTestCart.productRevision,2);
 });

@@ -1,0 +1,83 @@
+{
+  "result": "PASS",
+  "productRevision": 4,
+  "actualPrivateProductCopy": true,
+  "shopifyPricesReadOnlyVerified": true,
+  "cartResponsesSimulated": true,
+  "webhookSynthetic": true,
+  "sourceDatabasesUnchanged": true,
+  "checks": [
+    {
+      "variantId": "57509812633980",
+      "baseCents": 2299,
+      "photoCents": 999,
+      "totalCents": 3298,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    },
+    {
+      "variantId": "57509812666748",
+      "baseCents": 2598,
+      "photoCents": 999,
+      "totalCents": 3597,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    },
+    {
+      "variantId": "57509812699516",
+      "baseCents": 2698,
+      "photoCents": 999,
+      "totalCents": 3697,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    },
+    {
+      "variantId": "57509812732284",
+      "baseCents": 3197,
+      "photoCents": 999,
+      "totalCents": 4196,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    },
+    {
+      "variantId": "57509812765052",
+      "baseCents": 3297,
+      "photoCents": 999,
+      "totalCents": 4296,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    },
+    {
+      "variantId": "57509812797820",
+      "baseCents": 3697,
+      "photoCents": 999,
+      "totalCents": 4696,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    },
+    {
+      "variantId": "57509812830588",
+      "baseCents": 3598,
+      "photoCents": 999,
+      "totalCents": 4597,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    },
+    {
+      "variantId": "57509812863356",
+      "baseCents": 3798,
+      "photoCents": 999,
+      "totalCents": 4797,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    },
+    {
+      "variantId": "57509812896124",
+      "baseCents": 2798,
+      "photoCents": 999,
+      "totalCents": 3797,
+      "duplicateReused": true,
+      "signedSyntheticOrderMatched": true
+    }
+  ]
+}

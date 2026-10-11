@@ -1,3 +1,7 @@
+## 11.10.2026 · Testwarenkorb für bearbeitbare Gedenktafel vorbereitet
+
+Explizite private Revisionsfestlegung statt fest verdrahteter Revision 2; bisherige Einstellung bleibt rückwärtskompatibel. Neues Offline-Werkzeug prüft Aktivierungssicherung, unveränderten Produktstand und alle tatsächlichen Shopify-Varianten samt Aufpreisvertrag vor Übernahme. 44 gezielte Warenkorb-/Bestell-/Laufzeittests bestanden. Tatsächliche Revision 4 in privater Kopie: neun Varianten mit Originalfoto, 999 Cent Foto-Aufpreis, Wiederholschutz und synthetisch signiertem Bestelleingang bestanden. Shopify-Preisrevision 30 lesend bestätigt. Keine Fertigungsfreigabe. Paketinstallation und echter Testkauf sind noch nachzuweisen.
+
 ## 11.10.2026 · Geprüfte Händlerkorrekturen veröffentlicht
 
 Runtime **c2d4069**, Version `0.1.0-recovery.20261010+c2d40692ce56`, Produktrevision **4** aktiv. Isoliertes Paket, Zielserver, HTTPS und vollständiger Originalerhalt in 46 Tabellen geprüft. Neue private Datenbanksicherungen heruntergeladen; Prüfsummen und Integrität stimmen. Details unter `docs/releases/20261011/completion/RELEASE.md`. Kein neuer echter Kauf, keine Fertigungsfreigabe. Initialer Renderer-Bildabruf abschließend behoben, tatsächliche PDF-Prüfung ohne fehlende Bilder bestanden. Nächster Schritt: neue revisionsgebundene Bestellfassung samt unveränderter Foto-Aufpreisregel abnehmen; externe Voraussetzungen getrennt offen.

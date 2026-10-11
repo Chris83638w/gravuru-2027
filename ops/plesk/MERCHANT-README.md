@@ -61,3 +61,16 @@ Die Browserprüfung verwendet eine synthetische Identität und einen simulierten
 ### Begrenzter Händler-Testwarenkorb
 
 Nach geprüftem Paketwechsel und vorhandener Testbestell-Webhook-Konfiguration kann der Operator bei gestoppter Händlerlaufzeit `node ops/plesk/enable-merchant-test-cart.mjs /absoluter/privater/aktivierungsbackup` aus dem neuen Release ausführen. Der Helfer prüft Aktivierungsbeleg, Quellcommit, unveränderte Konfiguration und exklusive Datensperre. Er setzt ausschließlich `GRAVURU_SHOPIFY_TEST_CART=memorial-r2-tokenless-2026-07`; eine identische Wiederholung bleibt ohne Änderung. Danach Händlerlaufzeit starten. Nur Gedenktafel Revision 2 auf dem festgelegten Händlerhost ist zulässig. Der Shopify-Zahlungstestmodus muss aktiv sein. Keine Produktionsfreigabe und kein öffentlicher Kundencheckout.
+
+### Geprüfte Revision für den Händler-Testkauf festlegen
+
+Der vorhandene Aktivierungsschlüssel `memorial-r2-tokenless-2026-07` bleibt aus Kompatibilitätsgründen erhalten. Ohne zusätzliche Einstellung gilt weiterhin Revision 2. `GRAVURU_SHOPIFY_TEST_CART_REVISION` in der privaten JSON-Konfiguration legt genau einen positiv geprüften Stand der bestehenden Gedenktafel fest; es gibt kein automatisches Nachziehen beim Speichern. Die Variable muss eine ganzzahlige Zeichenfolge ab 2 sein. Sie setzt den aktivierten Händler-Testwarenkorb und Testbestelleingang voraus.
+
+Nach Paketprüfung, Aktivierung mit vollständiger privater Sicherung und bei gestoppter Händlerlaufzeit:
+
+```sh
+GRAVURU_SHOPIFY_CONFIG_FILE=/absoluter/privater/pfad/config.json \
+  node ops/plesk/pin-merchant-test-cart.mjs /absoluter/privater/pfad/aktivierungsbackup 4
+```
+
+Das Werkzeug prüft Aktivierungsbeleg und Datenbankprüfsummen, fordert den unveränderten aktuellen Produktstand aus der Sicherung, vergleicht alle Varianten/Optionen und Aufpreise lesend mit Shopify und ergänzt unveränderliche Preisbindungen. Erst danach wird die Revision in der privaten Konfiguration gesetzt. Wiederholung derselben geprüften Übernahme erzeugt keine zusätzlichen Bindungen. Abweichende Konfiguration oder Produktänderung stoppt die Übernahme. Vorherige Bestellstände bleiben erhalten. Anschließend Händlerlaufzeit neu starten und Testwarenkorb, Checkout und signierten Bestelleingang prüfen. Die Festlegung ist keine Fertigungsfreigabe und öffnet keinen öffentlichen Checkout.

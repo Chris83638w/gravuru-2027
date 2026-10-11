@@ -30,14 +30,15 @@ function fixture() {
   return c;
 }
 
-function setup(t,patch={}){
+function setup(t,patch={},settings=MEMORIAL_TEST_CART){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-merchant-cart-')),filename=path.join(dir,'private.sqlite');
  let store=createFormCustomerStore({filename}),calls=0,duringSend,unit='22.99',line;
  const config=fixture();
- const record={id:MEMORIAL_TEST_CART.productId,revision:2,status:'draft',document:makeProductDocument(config,{kind:'product'})};
+ const record={id:MEMORIAL_TEST_CART.productId,revision:settings.productRevision,status:'draft',document:makeProductDocument(config,{kind:'product'})};
  const resolved=resolveProduct(record.document,{quantity:1});
  const bytes=Buffer.from('synthetic review package'),manifest={schema:'gravuru-native-review/v1',id:'review_synthetic',createdAt:new Date().toISOString(),source:{draftId:'synthetic-source',draftRevision:1,designId:resolved.design.id},product:{id:record.id,revision:2,method:'engraving',material:{kind:'slate'},currency:'EUR',basePriceCents:2299},selection:{options:{mounting:'none'},price:resolved.price},status:'review-only',productionReady:false,order:null,payment:null,capabilities:{cart:false},blockers:['Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],packageSha256:createHash('sha256').update(bytes).digest('hex'),...patch};
  const bundle={manifest,package:bytes,preview:Buffer.from('<svg/>'),contourPdf:bytes,photos:bytes};
+ manifest.product.revision=settings.productRevision;
  const draft=store.acrylicDrafts.create(bundle),binding=store.orderIntake.bind({shopDomain:MEMORIAL_TEST_CART.shopDomain,variantId:'57509812633980',record,options:{mounting:'none'}});
  const repository={get:()=>record};
  const fetchImpl=async(url,options)=>{
@@ -47,7 +48,7 @@ function setup(t,patch={}){
   if(duringSend)await duringSend();
   return Response.json({data:{cartCreate:{userErrors:[],warnings:[],cart:{id:'gid://shopify/Cart/synthetic',checkoutUrl:'https://gravuru-design.myshopify.com/checkout/synthetic?key=synthetic',lines:{pageInfo:{hasNextPage:false},nodes:[{quantity:1,attributes:line.attributes,merchandise:{id:line.merchandiseId},cost:{amountPerQuantity:{amount:unit,currencyCode:'EUR'},totalAmount:{amount:unit,currencyCode:'EUR'}}}]}}}}});
  };
- const submit=(input={draftId:draft.id,expectedRevision:1},context={draftToken:draft.token})=>createMerchantTestCart({drafts:store,repository,settings:MEMORIAL_TEST_CART},{fetchImpl})(input,context);
+ const submit=(input={draftId:draft.id,expectedRevision:1},context={draftToken:draft.token})=>createMerchantTestCart({drafts:store,repository,settings},{fetchImpl})(input,context);
  t.after(()=>{store.close();fs.rmSync(dir,{recursive:true,force:true});});
  return {draft,record,manifest,bundle,binding,submit,filename,get store(){return store;},get calls(){return calls;},get line(){return line;},during(fn){duringSend=fn;},wrongPrice(){unit='0.01';},reopen(){store.close();store=createFormCustomerStore({filename});}};
 }
@@ -91,4 +92,17 @@ test('signed paid test order consumes the offer while production and customer do
  const result=f.store.orderIntake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(raw).digest('base64'),'x-shopify-shop-domain':MEMORIAL_TEST_CART.shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'synthetic-merchant-cart-event'},{...MEMORIAL_TEST_CART,secret});
  assert.equal(result.lines.length,1);assert.equal(result.lines[0].productionReady,false);assert.equal(result.lines[0].customerDownloadAllowed,false);
  await assert.rejects(f.submit(),/bereits zu einer Bestellung/);assert.equal(f.calls,1);
+});
+
+test('explicit revision pin enables only the checked product revision and survives restart',async t=>{
+ const settings={...MEMORIAL_TEST_CART,productRevision:4},f=setup(t,{},settings);
+ assert.throws(()=>assertMemorialTestReview(f.manifest),e=>e.code==='test_cart_review');
+ assert.doesNotThrow(()=>assertMemorialTestReview(f.manifest,4));
+ const result=await f.submit();assert.equal(result.testOnly,true);assert.equal(result.totalCents,2299);
+ f.reopen();assert.equal((await f.submit()).duplicate,true);assert.equal(f.calls,1);
+ settings.productRevision=5;await assert.rejects(f.submit(),e=>e.code==='test_cart_product');assert.equal(f.calls,1);
+ for(const productRevision of [undefined,null,'4',0,1,2.5,Infinity,Number.MAX_SAFE_INTEGER+1])
+  assert.throws(()=>createMerchantTestCart({settings:{...MEMORIAL_TEST_CART,productRevision}}),e=>e.code==='test_cart_disabled');
+ for(const patch of [{shopDomain:'other.myshopify.com'},{apiVersion:'2026-10'},{productId:'other'},{anything:true}])
+  assert.throws(()=>createMerchantTestCart({settings:{...MEMORIAL_TEST_CART,productRevision:4,...patch}}),e=>e.code==='test_cart_disabled');
 });

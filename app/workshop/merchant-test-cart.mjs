@@ -7,17 +7,27 @@ const variants=new Set(['57509812633980','57509812666748','57509812699516','5750
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code,retryable:false,paymentConfirmed:false});};
 const key=options=>JSON.stringify(Object.entries(options||{}).sort());
 
+// Pin one checked revision in private runtime configuration. Saving a product
+// never moves this pin or enables a newly created revision for test checkout.
+export function memorialTestCartSettings(productRevision=2){
+ if(!Number.isSafeInteger(productRevision)||productRevision<2)fail(503,'test_cart_disabled','Der Händler-Testkauf benötigt einen ausdrücklich geprüften Produktstand.');
+ return Object.freeze({...MEMORIAL_TEST_CART,productRevision});
+}
+
 // A merchant-only test purchase is separate from manufacturing approval.
 // No blocker is removed from the immutable package, no output is released, and
 // the public/default draft handoff continues to reject unapproved production.
-export function assertMemorialTestReview(m){
+export function assertMemorialTestReview(m,productRevision=2){
+ memorialTestCartSettings(productRevision);
  const expected=['Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'];
- if(m?.schema!==NATIVE_REVIEW||m.product?.id!==MEMORIAL_TEST_CART.productId||m.product.revision!==2||m.product.method!=='engraving'||m.product.material?.kind!=='slate'||m.product.currency!=='EUR'||m.status!=='review-only'||m.productionReady!==false||m.order!==null||m.payment!==null||m.capabilities?.cart!==false||JSON.stringify(m.blockers)!==JSON.stringify(expected))fail(409,'test_cart_review','Dieser Stand ist nicht für den begrenzten Händler-Testkauf geeignet.');
+ if(m?.schema!==NATIVE_REVIEW||m.product?.id!==MEMORIAL_TEST_CART.productId||m.product.revision!==productRevision||m.product.method!=='engraving'||m.product.material?.kind!=='slate'||m.product.currency!=='EUR'||m.status!=='review-only'||m.productionReady!==false||m.order!==null||m.payment!==null||m.capabilities?.cart!==false||JSON.stringify(m.blockers)!==JSON.stringify(expected))fail(409,'test_cart_review','Dieser Stand ist nicht für den begrenzten Händler-Testkauf geeignet.');
 }
 
 export function createMerchantTestCart({drafts,repository,settings},transportOptions={}){
- if(!settings||JSON.stringify(Object.entries(settings).sort())!==JSON.stringify(Object.entries(MEMORIAL_TEST_CART).sort()))fail(503,'test_cart_disabled','Der Händler-Testkauf ist nicht eingerichtet.');
- const submit=createDraftCartHandoff({drafts,config:{shopDomain:settings.shopDomain,apiVersion:settings.apiVersion,authentication:'tokenless',requestContext:'merchant-test'},reviewPolicy:assertMemorialTestReview},transportOptions);
+ if(!settings||!Number.isSafeInteger(settings.productRevision)||JSON.stringify(Object.entries(settings).sort())!==JSON.stringify(Object.entries(memorialTestCartSettings(settings.productRevision)).sort()))fail(503,'test_cart_disabled','Der Händler-Testkauf ist nicht eingerichtet.');
+ settings=memorialTestCartSettings(settings.productRevision);
+ const reviewPolicy=m=>assertMemorialTestReview(m,settings.productRevision);
+ const submit=createDraftCartHandoff({drafts,config:{shopDomain:settings.shopDomain,apiVersion:settings.apiVersion,authentication:'tokenless',requestContext:'merchant-test'},reviewPolicy},transportOptions);
  return async(input,{draftToken,signal}={})=>{
   if(!input||Array.isArray(input)||Object.keys(input).some(k=>!['draftId','expectedRevision'].includes(k))||!/^adraft_[a-f0-9-]{36}$/.test(input.draftId||'')||!Number.isSafeInteger(input.expectedRevision)||input.expectedRevision<1)fail(422,'test_cart_fields','Einen gespeicherten privaten Entwurf und seine Revision angeben.');
   const fixed={...input};
@@ -25,7 +35,7 @@ export function createMerchantTestCart({drafts,repository,settings},transportOpt
    const draft=drafts.acrylicDrafts.get(fixed.draftId,draftToken);
    if(draft.revision!==fixed.expectedRevision)fail(409,'test_cart_stale','Die Gestaltung wurde geändert. Bitte erneut sichern.');
    if(draft.productId!==settings.productId||draft.productRevision!==settings.productRevision||repository.get(draft.productId).status==='archived'||repository.get(draft.productId,{revision:draft.productRevision}).status==='archived')fail(409,'test_cart_product','Dieses Produkt ist nicht für den Händler-Testkauf freigegeben.');
-   const {manifest}=drafts.review(draft.snapshotId);assertMemorialTestReview(manifest);
+   const {manifest}=drafts.review(draft.snapshotId);reviewPolicy(manifest);
    const matches=drafts.orderIntake.bindings().filter(b=>b.shopDomain===settings.shopDomain&&b.productId===draft.productId&&b.productRevision===draft.productRevision&&key(b.options)===key(manifest.selection?.options)&&variants.has(b.variantId));
    if(matches.length!==1)fail(409,'test_cart_binding','Eine eindeutige geprüfte Shop-Zuordnung fehlt.');
    return {draft,manifest,binding:matches[0]};

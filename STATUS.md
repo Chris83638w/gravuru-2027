@@ -1,8 +1,10 @@
-## Werkstattfehler korrigiert, Veröffentlichung in Prüfung · 11.10.2026
+## Live: Werkstattfehler behoben und gesichert · 11.10.2026
 
-Shopify-Start ohne URL-Kontext, Navigation/History, Schiefer-PDF-Import und Vorschaubilder korrigiert. Auswahl verändert die Grafik nicht mehr. Rohlingbild- und vollständiger TTF/OTF-Upload mit Schriftgruppen ergänzt. Neue Schrift und Rohlingbild samt Wiederöffnung, PDF-Import und Masteranlage in echter lokaler Laufzeit mit synthetischer Händleridentität per Browser bestanden. 19 private Original-PDFs geprüft. [Nachweise und Grenzen](docs/releases/20261011/workshop-repair/RELEASE.md).
+Getrennter Händlerhost auf **0754445**, Version `0.1.0-recovery.20261010+0754445b6249`. Shopify-Start ohne URL-Kontext und Navigation/History korrigiert. Schiefer-PDF-Import und geschützte Vorschaubilder korrigiert; Auswahl verändert die Grafik nicht mehr. Unter **Hintergrund & Szene** Rohlingbild austauschen; unter **Schriften & Profile** TTF/OTF hochladen und in Schriftprofilen gruppieren.
 
-Nächster Schritt: vollständigen Regressionstest abschließen, versioniertes Paket isoliert installieren, getrennten Händlerhost gesichert aktualisieren und GitHub-Sicherungszweige fortschreiben. Echte Händleranmeldung bleibt gesondert zu bestätigen.
+644 Tests, 130 authentifizierte API-Aufrufe in synthetischer Browser-Klickfolge, reale CDN-Initialisierung und 19 private Original-PDFs bestanden. Versioniertes Paket getrennt installiert und neu gestartet. 395 Serverdateien und tatsächliches HTTPS geprüft. Originalrevisionen, Ressourcen und Rohlingbild unverändert; Gedenktafel Revision 2 und neun Variantenbindungen erhalten. Drei private Datenbanken serverseitig und in Cloud hash-/integritätsgeprüft. Alte Kundenwerkstatt unverändert. [Bericht und Grenzen](docs/releases/20261011/workshop-repair/RELEASE.md) · [Installationspaket](deliverables/merchant-repair-20261011/README.md).
+
+Nächster Schritt: vorhandene Shopify-App vollständig neu laden und die echte Händleranmeldung sowie die gemeldeten Bedienwege im Nutzerbrowser bestätigen. Dieser Browser ist nicht fernsteuerbar; eine echte Händleranmeldung wird nicht aus synthetischen Sitzungen abgeleitet. Historische Abschnitte folgen.
 
 ## Live: Händler-Testbestellung erfolgreich · 11.10.2026
 

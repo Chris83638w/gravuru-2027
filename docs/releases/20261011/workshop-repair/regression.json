@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "command": "GRAVURU_PYTHON=<isolated Python> npm test",
+  "tests": 644,
+  "passed": 644,
+  "failed": 0,
+  "skipped": 0,
+  "durationMs": 214086.612944,
+  "privateOriginalPdfs": 19,
+  "sourceCommit": "0754445b624961be390286f7575bfaefa080aa70",
+  "merchantLoginVerified": false
+}

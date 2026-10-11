@@ -1,0 +1,67 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-10-11T06:07:45.401400+00:00",
+  "sourceCommit": "0754445b624961be390286f7575bfaefa080aa70",
+  "tlsVerified": true,
+  "merchantLoginVerified": false,
+  "checks": [
+    {
+      "path": "/werkstatt/",
+      "status": 200,
+      "fixedShopBootstrap": true,
+      "framePolicy": "default-src 'self'; script-src 'self' https://cdn.shopify.com/shopifycloud/app-bridge.js; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors https://gravuru-design.myshopify.com https://admin.shopify.com"
+    },
+    {
+      "path": "/werkstatt/profile/",
+      "status": 200,
+      "fixedShopBootstrap": true,
+      "framePolicy": "default-src 'self'; script-src 'self' https://cdn.shopify.com/shopifycloud/app-bridge.js; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors https://gravuru-design.myshopify.com https://admin.shopify.com"
+    },
+    {
+      "path": "/werkstatt/serien/",
+      "status": 200,
+      "fixedShopBootstrap": true,
+      "framePolicy": "default-src 'self'; script-src 'self' https://cdn.shopify.com/shopifycloud/app-bridge.js; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors https://gravuru-design.myshopify.com https://admin.shopify.com"
+    },
+    {
+      "asset": "merchant-navigation.mjs",
+      "sourceSha256Matches": true
+    },
+    {
+      "asset": "merchant-request.mjs",
+      "sourceSha256Matches": true
+    },
+    {
+      "asset": "product-editor-ui.mjs",
+      "sourceSha256Matches": true
+    },
+    {
+      "asset": "design-import-ui.mjs",
+      "sourceSha256Matches": true
+    },
+    {
+      "asset": "profiles-ui.mjs",
+      "sourceSha256Matches": true
+    },
+    {
+      "asset": "editor.css",
+      "sourceSha256Matches": true
+    },
+    {
+      "path": "/api/workshop/products",
+      "anonymousStatus": 401
+    },
+    {
+      "path": "/api/workshop/font-library",
+      "anonymousStatus": 401
+    },
+    {
+      "path": "/api/workshop/session",
+      "anonymousStatus": 401
+    },
+    {
+      "path": "/webhooks/shopify/orders-paid",
+      "unsignedStatus": 401
+    }
+  ]
+}

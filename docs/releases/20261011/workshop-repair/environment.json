@@ -1,0 +1,14 @@
+{
+  "executionEnvironment": "managed Codex cloud, Linux",
+  "workspace": "/workspace/gravuru-restored",
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "task/live-release-20261010",
+  "sourceCommit": "0754445b624961be390286f7575bfaefa080aa70",
+  "node": "v24.19.0",
+  "kernel": "6.18.44",
+  "baseCommit": "a2af162edd3a1dfa2106212c9f4b76c7ae351b70",
+  "baseIsAncestor": true,
+  "deployment": "Separate Plesk Node.js merchant site 20, Node 24.21.0",
+  "merchantOrigin": "https://app-2027.gravuru-designwerkstatt.de",
+  "legacyWorkshopModified": false
+}

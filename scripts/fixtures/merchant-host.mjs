@@ -31,9 +31,9 @@ const form=workshop.repository.create(document);
 const {syntheticSlate}=await import('./slate-config.mjs');
 const {makeProductDocument}=await import('../../app/workshop/product-model.mjs');
 let slateDoc=makeProductDocument(syntheticSlate(seed.universal),{name:'Synthetische Schieferplatte',kind:'product'});
-if(process.argv[3]==='ai'){const {authorDesign}=await import('../../app/workshop/ui/design-authoring.mjs');const asset=await workshop.assets.importPhotoExample({bytes:fs.readFileSync(path.join(root,'synthetic.png')).toString('base64'),widthMm:25,heightMm:35});slateDoc=authorDesign(slateDoc,'slate-test','photo',{exampleAssetId:asset.assetId}).document;}
-const slate=workshop.repository.create(slateDoc);workshop.close();
-const aiDesign=process.argv[3]==='ai'?{
+if(['ai','ai-batch'].includes(process.argv[3])){const {authorDesign}=await import('../../app/workshop/ui/design-authoring.mjs');const asset=await workshop.assets.importPhotoExample({bytes:fs.readFileSync(path.join(root,'synthetic.png')).toString('base64'),widthMm:25,heightMm:35});slateDoc=authorDesign(slateDoc,'slate-test','photo',{exampleAssetId:asset.assetId}).document;}
+const slate=workshop.repository.create(slateDoc);const batchSlates=process.argv[3]==='ai-batch'?[slate,...[2,3].map(n=>workshop.repository.create({...slateDoc,name:'Synthetische Schieferplatte '+n}))]:[];workshop.close();
+const aiDesign=['ai','ai-batch'].includes(process.argv[3])?{
  config:{enabled:true,imagesEnabled:true,monthlyLimitCents:10000,pricingValidUntil:new Date(Date.now()+86400000).toISOString()},
  imageProvider:async(context)=>{await new Promise(r=>setTimeout(r,120));return {image:fs.readFileSync(path.join(root,'synthetic-ai.png')).toString('base64'),chargedCents:9,usage:{model:'synthetic'}};},
  provider:async(context,{signal})=>{
@@ -43,5 +43,5 @@ const aiDesign=process.argv[3]==='ai'?{
  }
 }:undefined;
 const server = await createMerchantRuntime(env,{aiDesign}); server.listen(0, '127.0.0.1'); await once(server, 'listening');
-fs.writeFileSync(path.join(root, 'ready.json'), JSON.stringify({port: server.address().port, origin: 'https://merchant.example',form:{id:form.id,revision:form.revision},slate:{id:slate.id,revision:slate.revision}}));
+fs.writeFileSync(path.join(root, 'ready.json'), JSON.stringify({port: server.address().port, origin: 'https://merchant.example',form:{id:form.id,revision:form.revision},slate:{id:slate.id,revision:slate.revision},batchSlates:batchSlates.map(r=>({id:r.id,revision:r.revision}))}));
 for (const signal of ['SIGTERM', 'SIGINT']) process.once(signal, async () => {server.close(); server.closeAllConnections(); await server.runtimeClosed;});

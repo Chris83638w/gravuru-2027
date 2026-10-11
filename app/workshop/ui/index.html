@@ -20,7 +20,7 @@
     <main id="main">
       <header class="page-heading">
         <div><p class="eyebrow">DEINE WERKSTATT</p><h1 id="overview-title">Deine Konfi-Produkte</h1><p>Verwalte deine personalisierten Gravur- und Druckprodukte.</p></div>
-        <div class="heading-actions"><button data-action="from-master"><img class="overview-icon" src="/workshop-ui/editor-icons/files.svg" alt="">Aus Master erstellen</button><a class="button" href="/werkstatt/serien/"><img class="overview-icon" src="/workshop-ui/editor-icons/upload.svg" alt="">Stapelimport</a><button class="primary" data-action="new" id="new-product"><img class="overview-icon" src="/workshop-ui/editor-icons/plus.svg" alt="">Produkt anlegen</button></div>
+        <div class="heading-actions"><button type="button" id="ai-batch-history">KI-Stapel</button><button data-action="from-master"><img class="overview-icon" src="/workshop-ui/editor-icons/files.svg" alt="">Aus Master erstellen</button><a class="button" href="/werkstatt/serien/"><img class="overview-icon" src="/workshop-ui/editor-icons/upload.svg" alt="">Stapelimport</a><button class="primary" data-action="new" id="new-product"><img class="overview-icon" src="/workshop-ui/editor-icons/plus.svg" alt="">Produkt anlegen</button></div>
       </header>
       <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
       <div class="conflict-banner" id="conflict-banner" role="alert" hidden>
@@ -35,7 +35,7 @@
           <button class="quiet" data-action="refresh" aria-label="Konfigurationen aktualisieren"><img class="overview-icon" src="/workshop-ui/editor-icons/refresh.svg" alt="">Aktualisieren</button>
         </div>
         <div class="overview-summary"><label><input type="checkbox" id="select-visible"> Sichtbare auswählen</label><span><span id="product-count">–</span> Konfigurationen <span id="overview-scope"></span></span></div>
-        <div id="selection-bar" class="selection-bar" hidden><strong id="selection-count"></strong><button id="archive-selection" type="button">Auswahl archivieren</button><button id="clear-selection" type="button">Auswahl aufheben</button></div>
+        <div id="selection-bar" class="selection-bar" hidden><strong id="selection-count"></strong><button id="ai-batch-selection" type="button">Auswahl mit KI gestalten</button><button id="archive-selection" type="button">Auswahl archivieren</button><button id="clear-selection" type="button">Auswahl aufheben</button></div>
         <div class="product-list" id="product-list" aria-live="polite"><p class="empty-state">Konfigurationen werden geladen …</p></div>
       </section>
       <section class="editor-section" id="editor-section" aria-label="Konfiguration bearbeiten" hidden>

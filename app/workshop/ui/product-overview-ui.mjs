@@ -78,5 +78,5 @@ export function installOverview({state,api,setBusy,notify,loadList,loadRecord,op
  });
  document.addEventListener('click',e=>{for(const menu of $$('.card-menu[open]'))if(!menu.contains(e.target))menu.open=false;});
  document.addEventListener('keydown',e=>{if(e.key==='Escape')for(const menu of $$('.card-menu[open]')){menu.open=false;menu.querySelector('summary').focus();}});
- return {rendered,sync};
+ return {rendered,sync,selection:()=>[...selected.values()].map(p=>({productId:p.id,expectedRevision:p.revision}))};
 }

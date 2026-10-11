@@ -46,7 +46,17 @@ export function createAiDesignJobs({filename,repository,config=null,provider=nul
   }catch(e){if(!closed&&row(id).status==='running')db.prepare('UPDATE ai_design_jobs SET status=?,message=?,updated_at=? WHERE id=?').run(e.code==='ai_usage_unconfirmed'?'cost_review':'uncertain','Keine vollständig bestätigte Antwort. Die Kostenreserve bleibt erhalten; keine automatische Wiederholung.',clock().toISOString(),id);}
   finally{clearTimeout(timer);running.delete(id);}
  }
+ function preflight(productId,input){
+   const request=aiRequest(input),record=repository.get(productId);
+   if(record.revision!==request.expectedRevision)throw aiFail(409,'ai_stale','Bitte zuerst den aktuellen Produktstand laden.');
+   const imageJob=['image_generate','photo_edit'].includes(request.kind),s=status();
+   if(!s.enabled)throw aiFail(503,'ai_disabled',s.reason);
+   if(imageJob&&!s.imageEnabled)throw aiFail(503,'ai_images_disabled','Bildgestaltung ist noch nicht freigeschaltet. Die vorhandene Text- und Layoutgestaltung bleibt verfügbar.');
+   const context=imageJob?aiImageContext(record,request,assets):aiContext(record,request);if(!imageJob)openAiBody(context);
+   return {request,record,context};
+ }
  return {
+  preflight,
   status,
   list(productId){return db.prepare('SELECT * FROM ai_design_jobs WHERE product_id=? ORDER BY created_at DESC,rowid DESC LIMIT 20').all(productId).map(publicJob);},
   get(id){return publicJob(row(id));},
@@ -55,10 +65,7 @@ export function createAiDesignJobs({filename,repository,config=null,provider=nul
    const request=aiRequest(input),fingerprint=aiDigest({productId,request});
    const prior=db.prepare('SELECT * FROM ai_design_jobs WHERE id=?').get(request.requestId);
    if(prior){if(prior.fingerprint!==fingerprint)throw aiFail(409,'ai_request_reused','Diese Auftragskennung gehört zu einem anderen Auftrag.');return {...publicJob(prior),duplicate:true};}
-   const record=repository.get(productId);if(record.revision!==request.expectedRevision)throw aiFail(409,'ai_stale','Bitte zuerst den aktuellen Produktstand laden.');
-   const imageJob=['image_generate','photo_edit'].includes(request.kind);
-   if(imageJob&&!status().imageEnabled)throw aiFail(503,'ai_images_disabled','Bildgestaltung ist noch nicht freigeschaltet. Die vorhandene Text- und Layoutgestaltung bleibt verfügbar.');
-   const context=imageJob?aiImageContext(record,request,assets):aiContext(record,request);if(!imageJob)openAiBody(context);
+   const {record,context}=preflight(productId,request);
    transaction(()=>{
     const s=status();if(!s.enabled)throw aiFail(503,'ai_disabled',s.reason);
     if(s.availableCents<AI_RESERVE_CENTS)throw aiFail(409,'ai_budget_exhausted','Das Monatsbudget reicht nicht für die erforderliche Kostenreserve.');

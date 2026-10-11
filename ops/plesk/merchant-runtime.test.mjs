@@ -64,7 +64,7 @@ test('preparation only initializes empty private storage and preserves foreign o
 test('real two-listener merchant runtime enforces host, HTTPS, bearer, CSRF and private-file boundaries', async t => {
   const f = fixture(t); prepareMerchantStorage(f.config()); const runtime = await start(f); t.after(runtime.close);
   const auth = {authorization: token(f.secret), origin: f.values.GRAVURU_SHOPIFY_APP_ORIGIN};
-  for (const route of ['/api/workshop/products', '/__shopify/health', '/api/workshop/ai-design/status', '/api/workshop/ai-design/air_00000000-0000-0000-0000-000000000000']) {
+  for (const route of ['/api/workshop/products', '/__shopify/health', '/api/workshop/ai-design/status', '/api/workshop/ai-batches', '/api/workshop/ai-batches/aib_00000000-0000-0000-0000-000000000000', '/api/workshop/ai-design/air_00000000-0000-0000-0000-000000000000']) {
     assert.equal((await runtime.request(route)).status, 401);
     for (const authorization of ['Basic Zm9vOmJhcg==', token('wrong-secret'), token(f.secret, {exp: 1}), token(f.secret, {aud: 'other-app'}), token(f.secret, {dest: SHOPIFY_IDENTITY.shopDomain, sub: 'gid://shopify/Customer/123'})]) {
       assert.equal((await runtime.request(route, {headers: {authorization}})).status, 401);
@@ -79,7 +79,7 @@ test('real two-listener merchant runtime enforces host, HTTPS, bearer, CSRF and 
   const csrf = JSON.parse(session.bytes).csrfToken;
   const aiStatus=JSON.parse((await runtime.request('/api/workshop/ai-design/status',{headers:auth})).bytes);
   assert.equal(aiStatus.enabled,false);assert.equal(aiStatus.accountedCents,0);
-  for(const route of ['/api/workshop/products/cfg_00000000-0000-0000-0000-000000000000/ai-design','/api/workshop/ai-design/air_00000000-0000-0000-0000-000000000000/apply','/api/workshop/ai-design/air_00000000-0000-0000-0000-000000000000/cancel']) {
+  for(const route of ['/api/workshop/ai-batches','/api/workshop/ai-batches/prepare','/api/workshop/ai-batches/aib_00000000-0000-0000-0000-000000000000/resume','/api/workshop/ai-batches/aib_00000000-0000-0000-0000-000000000000/cancel','/api/workshop/products/cfg_00000000-0000-0000-0000-000000000000/ai-design','/api/workshop/ai-design/air_00000000-0000-0000-0000-000000000000/apply','/api/workshop/ai-design/air_00000000-0000-0000-0000-000000000000/cancel']) {
     assert.equal((await runtime.request(route,{method:'POST',data:{}})).status,401);
     assert.equal((await runtime.request(route,{method:'POST',headers:auth,data:{}})).status,403);
   }

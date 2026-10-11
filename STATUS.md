@@ -1,3 +1,11 @@
+## KI-Stapel geprüft · 11.10.2026
+
+Ausgewählte kompatible Produkte gemeinsam mit KI gestalten: Layout, einzelne neue Motive oder ausdrücklich zugeordnete Musterfotos. Dauerhafte serielle Warteschlange, Budgetpause, Abbruch und Fortsetzen nach Neustart; Vorschläge einzeln vergleichen und als neue Version übernehmen. Bestehende Einzel-KI und 100-EUR-Grenze wiederverwendet.
+
+597 Regressionstests nach gezielter Korrektur des Zugriffstests bestanden; Browser mit synthetischer Shopify-Identität und 68 API-Aufrufen auf Desktop/Mobil bestanden. 100 Produkte mit 3 parallelen Änderungen: 97 Entwürfe, 3 Konflikte. Keine bezahlten API-Anfragen. [Nachweise](docs/releases/20261011/ai-batch/RELEASE.md).
+
+**Nächster Schritt in diesem Paket:** versioniertes Installationspaket getrennt installieren, Händlerlaufzeit nach Sicherung aktivieren und Live-Auslieferung prüfen. Die folgenden Abschnitte sind historische Nachweise.
+
 ## Live: KI-Motive und Musterfotos · 11.10.2026
 
 Installierter Quellstand **5698c5f**: Produkt → Designs & Elemente → **Mit KI gestalten** → neues Motiv erzeugen oder ausgewähltes Musterfoto bearbeiten. Native Gestaltung, Originalmaske, Preise und Versionsschutz erhalten. Neues Gravurmotiv nach echter Sichtprüfung korrigiert: Alpha als technische Gravurmaske, Original-PNG bytegleich erhalten.

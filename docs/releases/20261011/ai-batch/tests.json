@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "uniqueTests": 597,
+  "initialSuite": {
+    "passed": 596,
+    "failed": 1,
+    "reason": "Malformed test invocation while extending protected-route coverage; corrected."
+  },
+  "targetedFollowup": {
+    "passed": 9,
+    "failed": 0,
+    "includedInUniqueCount": true
+  },
+  "queueCases": [
+    "100 products: 97 drafts and 3 preserved concurrent edits",
+    "durable idempotency",
+    "single concurrency",
+    "restart without paid retries",
+    "cancel retains reviews",
+    "shared budget pause",
+    "unconfirmed costs block",
+    "revision conflict"
+  ],
+  "browser": {
+    "apiRequests": 68,
+    "javascriptErrors": 0,
+    "syntheticShopifyIdentity": true,
+    "provider": "synthetic; no paid calls",
+    "teardownNote": "Playwright emitted two cancelled route callbacks during browser shutdown; all assertions and app console checks passed."
+  },
+  "localEnvironmentNote": "First focused runtime rerun used system Python; corrected to configured image-processing Python. No product code weakened."
+}

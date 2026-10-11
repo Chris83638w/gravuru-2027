@@ -15,6 +15,7 @@ import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
 import {batchReportData,batchReportWorkbook} from './batch-report.mjs';
 import {createBatchJobs} from './batch-jobs.mjs';
+import {createAiBatchJobs} from './ai-batch-jobs.mjs';
 import {createVariantBatchJobs,variantBatchReportData,variantBatchReportWorkbook} from './variant-batch-report.mjs';
 import {variantExportData,variantWorkbook} from './variant-export.mjs';
 import {createFormVariants} from './form-variants.mjs';
@@ -86,6 +87,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
   const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider,imageProvider:aiDesign?.imageProvider,assets});
+  const aiBatches=createAiBatchJobs({filename,repository,aiJobs});
   const variants=createFormVariants({filename,repository});
   const batchJobs=createBatchJobs({filename,repository,assets});
   const variantBatchJobs=createVariantBatchJobs({filename,variants});
@@ -185,6 +187,17 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
       if(pathname==='/api/workshop/ai-design/status'&&method==='GET')return json(res,200,aiJobs.status());
+      if(pathname==='/api/workshop/ai-batches/prepare'&&method==='POST'){const data=await body(req,32768);if(Object.keys(data).join(',')!=='products')fail(422,'ai_batch_invalid','Ungültige Produktauswahl.');return json(res,200,aiBatches.prepare(data.products));}
+      if(pathname==='/api/workshop/ai-batches'){
+        if(method==='GET')return json(res,200,{batches:aiBatches.list(),budget:aiJobs.status()});
+        if(method==='POST')return json(res,202,aiBatches.start(await body(req,65536)));
+      }
+      const aiBatch=pathname.match(/^\/api\/workshop\/ai-batches\/(aib_[a-f0-9-]{36})(?:\/(resume|cancel))?$/);
+      if(aiBatch){
+        if(method==='GET'&&!aiBatch[2])return json(res,200,aiBatches.get(aiBatch[1]));
+        if(method==='POST'&&aiBatch[2]&&!Object.keys(await body(req,1024)).length)return json(res,200,aiBatches[aiBatch[2]](aiBatch[1]));
+        fail(422,'ai_batch_invalid','Ungültige Stapelaktion.');
+      }
       const aiProduct=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/ai-design$/);
       if(aiProduct){
         repository.get(aiProduct[1]);
@@ -726,5 +739,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }

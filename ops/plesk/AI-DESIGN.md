@@ -67,3 +67,13 @@ Keine Auftragsdaten in GitHub übernehmen. Datenbank-Rollbacks nach echten API-A
 - https://developers.openai.com/api/docs/models/gpt-image-1.5
 - https://developers.openai.com/api/docs/guides/image-generation
 - https://developers.openai.com/api/reference/resources/images/methods/edit
+
+## Stapelgestaltung
+
+Die Produktübersicht bietet **Auswahl mit KI gestalten** und **KI-Stapel** für den Verlauf. Bis zu 100 aktive native Produkte pro Auftrag; Material, Stärke, Formgeometrie und Verfahren müssen übereinstimmen. Design und bei Fotobearbeitung Musterfotofeld werden pro Produkt gewählt. Layout, Bilderzeugung und Musterfotobearbeitung verwenden unverändert die Einzelauftrag-Provider und ihr gemeinsames Monatsbudget.
+
+`POST /api/workshop/ai-batches/prepare` nimmt `{products:[{productId,expectedRevision}]}` entgegen; `POST /api/workshop/ai-batches` speichert geprüften Auftrag und stabile Kindkennungen atomar. `GET /api/workshop/ai-batches`, `GET /api/workshop/ai-batches/:id`, `POST .../:id/resume` und `POST .../:id/cancel` benötigen Händler-JWT; Schreibzugriffe zusätzlich CSRF. Vorschau und Übernahme verwenden die bestehenden Einzelauftrag-Endpunkte.
+
+Eine dauerhafte serielle Warteschlange reserviert nur vor der jeweiligen Anfrage. Die im Dialog angezeigte maximale Gesamtsumme ist keine zusätzliche Budgetfreigabe. Bei fehlender Reserve, abgelaufener Preisprüfung oder unbestätigter Antwort hält der Stapel an. Neustart führt ebenfalls zu Pause, niemals zu automatischem Wiederholen eines versendeten Auftrags. Fortsetzen betrifft nur ungestartete Produkte. Abbruch erhält bereits fertige Vorschläge. Ein unbestätigter Kostenbeleg blockiert weiterhin alle neuen KI-Aufträge.
+
+Vor einem Release laufende `ai_design_jobs` und aktive `ai_design_batches` nur lesend prüfen. Keine zweite Instanz des Einzelauftrag-Stores an der laufenden Datenbank öffnen; dessen Neustartbehandlung würde laufende Anfragen unterbrechen. Alle Stapel- und Anbieterinformationen bleiben in der privaten Datenbank und deren konsistenter Sicherung.

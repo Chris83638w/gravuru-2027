@@ -1,3 +1,4 @@
+import {installAiBatch} from './ai-batch-ui.mjs';
 import {installAiDesign} from './ai-design-ui.mjs';
 import {merchantNavigation} from './merchant-navigation.mjs';
 import {customerPreviewLink} from './customer-preview-link.mjs';
@@ -339,6 +340,7 @@ const productEditor=installProductEditor({state,api,markDirty,syncControls,showT
 nativeProduction=installNativeProduction({state,api,markDirty});
 productOptions=installProductOptions({state,api,markDirty,syncControls,previewOptions:()=>productEditor.refreshOptions(true)});
 overview=installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate});
+installAiBatch({api,selection:()=>overview.selection(),onSaved:loadList});
 const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 installAiDesign({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});

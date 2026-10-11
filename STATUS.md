@@ -1,3 +1,7 @@
+## 11.10.2026 · Salbei-Upload per PowerShell vorbereitet
+
+Auf Nutzerwunsch Shell-Weg geprüft: Shopify CLI ist installiert, aber `theme list --store gravuru-design.myshopify.com --json` scheitert in der verwalteten lokalen Shell bereits beim Start mit `EPERM` auf dem Sandbox-Temp-Verzeichnis. Kein Upload erfolgt. `storefront/salbei/upload-salbei.ps1` prüft das freigegebene ZIP und alle 364 Dateihashes, entpackt ausschließlich das saubere Paket, prüft vorhandene The­men und erzeugt ausschließlich ein neues unveröffentlichtes Theme. Lokaler `-PrepareOnly`-Lauf mit 364 Dateien bestanden. Der vollständige Upload benötigt eine normal funktionsfähige PowerShell-/Shopify-Anmeldung; keine Zugriffsregeln verändert. Theme Check des unveränderten Theme-Codes bleibt 0 Fehler / 11 Warnungen. Bestehender Live-Shop unverändert.
+
 ## 11.10.2026 · Salbei-Shopify-Theme als eigener Pilot
 
 Unter `storefront/salbei/` liegt ein vollständiger Dawn-basierter Theme-Pilot für einen gemeinsamen gravuru-Shop: eine Salbei-Primärfarbe, bearbeitbare Hero-/Themenwelt-/Kopfzeilen-Sections, Mega-Menü für alle sieben Produktwelten, responsive Navigation, Sprachwahl und vorbereiteter B2B-Einstieg. Keine Hyper-/Prestige-Dateien übernommen. Produktsektion mit bestehender gravuru-Bindung vorbereitet; Konfigurator-, Checkout- und B2B-Gesamtstrecke bleiben gesondert offen.

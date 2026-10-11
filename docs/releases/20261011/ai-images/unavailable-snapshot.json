@@ -1,0 +1,11 @@
+{
+  "result": "BLOCKED",
+  "apiCalled": true,
+  "httpStatus": 404,
+  "providerCode": "model_not_found",
+  "merchantConfigSha256": "4a381c6a2cb0755e8e342514e545939aee1f4e75d34315a8bd04a9279c43e411",
+  "aiConfigAlreadyPresent": true,
+  "keyProtected": true,
+  "keyPrinted": false,
+  "paidRequests": 0
+}

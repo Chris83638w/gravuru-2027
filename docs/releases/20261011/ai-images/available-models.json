@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "apiCalled": true,
+  "httpStatus": 200,
+  "availableImageModels": [
+    "gpt-image-1",
+    "gpt-image-1-mini",
+    "gpt-image-1.5",
+    "gpt-image-2",
+    "gpt-image-2-2026-04-21",
+    "gpt-image-2.5-flare",
+    "gpt-image-2.5-flare-2026-09-08",
+    "gpt-image-2.5-sunburst",
+    "gpt-image-2.5-sunburst-2026-09-08"
+  ],
+  "merchantConfigSha256": "4a381c6a2cb0755e8e342514e545939aee1f4e75d34315a8bd04a9279c43e411",
+  "aiConfigAlreadyPresent": true,
+  "keyProtected": true,
+  "keyPrinted": false,
+  "paidRequests": 0
+}

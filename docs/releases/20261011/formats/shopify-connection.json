@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-10-11T17:59:52.064Z",
+  "sourceProductRevision": 2,
+  "actualAppTokenExchangeVerified": true,
+  "writeProductsScopeConfirmed": true,
+  "shopAndEurConfirmed": true,
+  "existingDraftFound": false,
+  "shopifyMutations": 0,
+  "tokenPersisted": false,
+  "newScopesRequested": false
+}

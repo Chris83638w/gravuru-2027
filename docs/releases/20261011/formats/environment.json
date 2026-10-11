@@ -1,0 +1,15 @@
+{
+  "environment": "managed Codex cloud execution environment",
+  "operatingSystem": "Linux",
+  "shell": "bash",
+  "cwd": "/workspace/gravuru-restored",
+  "repository": "https://github.com/Chris83638w/gravuru-2027",
+  "branch": "task/steel-formats-catalog-20261011",
+  "sourceCommit": "880f124948c7e884a8a36d5636bff0a99fbbd2ee",
+  "node": "v24.19.0",
+  "productBase": "a2af162edd3a1dfa2106212c9f4b76c7ae351b70",
+  "productBasePreserved": true,
+  "initialHead": "74bbf3a93b6f281b048fe1e5d821c82484deaf3b",
+  "initialWorkingTreeClean": true,
+  "liveMerchantSourceBefore": "732850e06919b7bbae1656c2de02b4144d65d6cb"
+}

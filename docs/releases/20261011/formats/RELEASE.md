@@ -23,4 +23,28 @@ AOSU besitzt eine feste, zweilagige technische Konstruktion; diese allgemeine Fo
 
 Shopify-Produktentwurf ist noch keine öffentliche personalisierte Bestellstrecke. Medienübertragung, neue Verkaufsbindungen, öffentlicher Checkout, AOSU-Fertigungsexport und Maschinenabnahme bleiben getrennte offene Arbeitspakete. Bisherige Kundenwerkstatt und Shopify-Theme werden durch dieses Paket nicht verändert.
 
-Nächster Schritt: geprüften Paketstand gesichert aktivieren und tatsächlich ausgelieferte Laufzeit bestätigen; anschließend öffentliche Verkaufsbindung samt Testbestellung als eigenes Paket.
+Nächster Schritt: öffentliche Verkaufsbindung samt Testbestellung als eigenes Paket.
+
+## Aktivierter Stand
+
+Händlerhost läuft seit 11.10.2026, 18:04 UTC auf Quellstand `880f124948c7e884a8a36d5636bff0a99fbbd2ee`, Version `0.1.0-recovery.20261010+880f124948c7`. [Installationspaket und SHA-256](../../../../deliverables/merchant-formats-20261011/README.md). Frisch getrennt installiert, gebaut, Kundenansicht geladen und anonyme private API gesperrt. 425 Manifestdateien auf Paket und Server geprüft. Gesicherte Aktivierung ersetzte nur den Einstieg des Händlerhosts; laufender neuer Prozess nach Konfigurationswechsel bestätigt. 15 HTTPS-Prüfungen bestanden, UI-Module bytegleich, geschützte APIs liefern strukturierte 401-Antworten.
+
+Tatsächlicher Tokenaustausch der vorhandenen eigenen App, bereits gewährtes `write_products` und lesende Shopify-Produktabfrage mit Shop-/Europrüfung bestanden. Entwurfsanschluss über geschützte Konfiguration aktiviert. Keine Shopify-Mutation ausgeführt, kein neuer Artikel veröffentlicht. 34 Cent bisherige KI-Kosten unverändert; kein bezahlter KI-Auftrag durch diese Prüfungen.
+
+Browserabnahme: 112 authentifizierte lokale API-Anfragen erfolgreich, synthetische Shopify-Identität. Das belegt keinen vollständigen Klickablauf mit der echten Shopify-Nutzeranmeldung. [Hilfslinien](drag-guides.png), [Katalog](catalog.png), [Mobil](catalog-mobile.png).
+
+Bedienung nach vollständigem Neuladen der Shopify-App:
+
+1. Produkte → Bearbeiten → Designs & Elemente: Element ziehen. **Hilfslinien** und **Einrasten** stehen unter der Elementwerkzeugleiste.
+2. Produkt → **Schildgröße & Form**: Grundmaße und Form wählen; Designs werden als zusammenhängende Gestaltung eingepasst. Optionen & Preise → **Verfügbare Schildgrößen** für Kundenformate/Preise.
+3. Hintergrund & Szene: **Rohlingbild austauschen** oder **Szenenbild austauschen**. Danach speichern.
+4. Produktübersicht: **Material**, **Kategorie**, **Sortieren** und **Ansicht**; aktuelle Seite auswählen → **Kategorie zuweisen**.
+5. Gespeichertes Produkt → **Shopify** → Vorbereitung für diesen Stand öffnen → prüfen → als Shopify-Entwurf übertragen. Öffentlichen personalisierten Verkauf erst nach eigener Kunden-/Checkout-Bindung freigeben.
+
+## Sicherung nach Aktivierung
+
+Alle bisherigen Zeilen in 49 Tabellen sind unverändert erhalten, einschließlich 7 Produkt-/Masterdatensätzen, 12 Produktrevisionen, 31 Designressourcen und bestehender Bestellstände. Der neue abgeleitete Katalogindex enthält alle 7 aktuellen Datensätze ohne fehlende oder veraltete Revision. Keine Gestaltung wurde durch die Installation neu gespeichert.
+
+Drei Datenbanken nach Aktivierung auf dem Server und zusätzlich außerhalb Git in dieser Cloud gesichert; SHA-256 stimmt jeweils mit dem Serverbeleg überein, SQLite-Integrität geprüft. Private Cloudablage: `/workspace/recovery-private/merchant-after-formats-20261011`; vorheriger Stand separat unter `merchant-before-formats-20261011`. Aktivierungssicherung enthält darüber hinaus frühere Laufzeit und geschützte Konfiguration auf dem Server. Kein privater Datenbestand im Installations-ZIP oder Repository.
+
+Berichte: `regression-tests.txt`, `final-targeted.txt`, `browser.json`, `original-import.json`, `package-install.json`, `package-content-check.json`, `server-stage.json`, `server-activation.json`, `server-runtime.json`, `https.json`, `shopify-connection.json`, `shopify-draft-activation.json`, `preservation-all-tables.json`, `private-cloud-before.json`, `private-cloud-after.json`, `live-catalog.json` und `environment.json`.

@@ -1,0 +1,31 @@
+{
+  "result": "PASS",
+  "privateOutsideRepository": true,
+  "serverReceiptMatched": true,
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 44888064,
+      "sha256": "283290b050e9cd4aefc7fe0c4bd6dd908b6e56c868650ff357ed65f922cfe017",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 18354176,
+      "sha256": "03804040487a011be4dd23bb2dc3a74d83eef3289965bbfca721dfad8cef4551",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "BACKUP-RECEIPT.json",
+      "bytes": 8779,
+      "sha256": "330393fc3d71b886a8a257fbe65c929517cfbd1011422c7b9840158170cc5bc7",
+      "quickCheck": "JSON"
+    }
+  ]
+}

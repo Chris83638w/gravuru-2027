@@ -2,7 +2,11 @@
 
 Implementiert im Aufgabenbranch `task/steel-formats-catalog-20261011`: Geometrie/Import, Editorhilfen, getrennte Hintergründe, kompakter paginierter Produktindex, Kategorien sowie geschützte Shopify-Entwurfsanmeldung. 726 Regressionen, 29 abschließende gezielte Prüfungen und 38 Original-PDF-Konturprüfungen bestanden; Browserabnahme mit synthetischer Shopify-Identität. Drei aktuelle Datenbanken außerhalb Git auf Server/Cloud geprüft gesichert; Edelstahl Revision 2 und zusätzliche SVGs erhalten.
 
-**Genau nächster Schritt:** Installationspaket und sichere Händleraktivierung mit anschließenden HTTPS-/Laufzeitnachweisen. Öffentliche personalisierte Bestellstrecke und feste AOSU-Konstruktion separat. [Detailbericht](docs/releases/20261011/formats/RELEASE.md).
+Quellstand **880f124** aktiviert. Versioniertes ZIP getrennt installiert, 425 Manifestdateien und 15 HTTPS-Prüfungen bestanden; neuer Prozess und echte Shopify-Entwurfsanmeldung bestätigt. Keine Shopify-Mutation oder zusätzliche KI-Kosten.
+
+Alle bisherigen Zeilen in 49 Tabellen erhalten; drei private Datenbanken nach Wechsel auf Server und Cloud mit SHA-256/Integrität gesichert. Alle 7 Produkt-/Masterstände aktuell im Katalogindex. Code, Prüfnachweise und versioniertes Paket für GitHub vorbereitet.
+
+**Genau nächster Schritt:** öffentliche personalisierte Bestellstrecke samt Testbestellung abnehmen; feste AOSU-Konstruktion separat. [Detailbericht](docs/releases/20261011/formats/RELEASE.md).
 
 ## Live: vorhandene Acryl- und Edelstahlmuster · 11.10.2026
 

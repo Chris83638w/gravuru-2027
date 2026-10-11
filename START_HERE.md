@@ -1,8 +1,12 @@
-## In Abnahme: Hilfslinien, Edelstahlformate und strukturierter Katalog · 11.10.2026
+## Live: Hilfslinien, Edelstahlformate und strukturierter Katalog · 11.10.2026
 
 Hilfslinien/Einrasten beim Ziehen, Grundmaß/Form, zusätzliche gleichproportionale Größen mit eigenen Preisen, getrennte Rohling-/Szenenbilder, konturrichtiger PDF-Import und paginierter Katalog implementiert. 726 Regressionstests plus 29 gezielte Abschlussprüfungen bestanden. 19 erreichbare Original-PDFs auf aktuellem Edelstahlprodukt in zwei Konturen geprüft; echte private Originalstände erhalten. [Prüfungen und Grenzen](docs/releases/20261011/formats/RELEASE.md).
 
-**Nächster Schritt:** versioniertes Paket isoliert installieren, auf gesichertem Händlerhost aktivieren und Laufzeit/Shopify-Entwurfsanmeldung bestätigen. Öffentliche neue Verkaufsbindung bleibt separat; vorherige Live-Stände folgen.
+Quellstand **880f124** auf Händlerhost aktiviert; versioniertes ZIP getrennt installiert, 425 Manifestdateien und 15 HTTPS-Prüfungen bestanden. Neuer Prozess und tatsächliche Shopify-Entwurfsanmeldung bestätigt, keine Shopify-Mutation, keine neuen KI-Kosten.
+
+Alle bisherigen Zeilen in 49 Tabellen erhalten; drei private Datenbanken nach Wechsel auf Server und Cloud mit SHA-256/Integrität gesichert. Alle 7 Produkt-/Masterstände aktuell im Katalogindex. Code, Prüfnachweise und versioniertes Paket für GitHub vorbereitet.
+
+**Nächster Schritt:** öffentliche neue Verkaufsbindung samt Testbestellung separat abnehmen. Vorherige Live-Stände folgen.
 
 ## Live: vorhandene Acryl- und Edelstahlmuster · 11.10.2026
 

@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "products": 7,
+  "indexedCurrentProducts": 7,
+  "missingOrStaleIndexEntries": 0,
+  "source": "actual server backup after activation"
+}

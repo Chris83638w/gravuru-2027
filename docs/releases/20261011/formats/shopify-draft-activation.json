@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-10-11T18:03:38.516Z",
+  "mode": "draft-only",
+  "privateConfigSha256": "a3bc47d2e4b3e87748c75de1e2fbd333f3ac10df997a34df352d369a9f918cb5",
+  "previousConfigSha256": "4a381c6a2cb0755e8e342514e545939aee1f4e75d34315a8bd04a9279c43e411",
+  "oldConfigurationBackedUp": true,
+  "otherSettingsPreserved": true,
+  "shopifyMutationExecuted": false
+}

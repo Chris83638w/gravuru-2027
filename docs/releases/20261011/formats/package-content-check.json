@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "sourceCommit": "880f124948c7e884a8a36d5636bff0a99fbbd2ee",
+  "filesVerified": 425,
+  "privateFilesIncluded": false,
+  "requiredModulesIncluded": [
+    "app/workshop/ui/editor-guides.mjs",
+    "app/workshop/ui/steel-options-ui.mjs",
+    "app/workshop/ui/catalog-ui.mjs",
+    "app/configurator/variant-m/design-area.mjs"
+  ]
+}

@@ -1,8 +1,10 @@
-## In Prüfung: Edelstahlgravur und Produkt-/Designtabs · 11.10.2026
+## Live: schwarze Edelstahlgravur und Produkt-/Designtabs · 11.10.2026
 
-Schwarze Vektorgravur, ausdrücklich wählbarer Importabstand (Vorgabe 0 mm), „Ohne Rand neu einpassen“ und Tabs Hauptprodukt/Designs mit Suche umgesetzt. Browserprüfung mit 120 lokalen API-Anfragen sowie Pixelprüfung bestanden. Aktuelles Edelstahlprodukt Revision 3 in privater Kopie geprüft; Originale und Live-Datensätze unverändert. [Nachweise](docs/releases/20261011/steel-ink-tabs/RELEASE.md).
+Quellstand **7a168bc**, Version `0.1.0-recovery.20261010+7a168bc66adc`: schwarze Vektorgravur, sichtbarer Importabstand mit Vorgabe 0 mm, „Ohne Rand neu einpassen“ sowie Tabs **Hauptprodukt / Designs** mit Suche. Bestehende Designs werden nur auf ausdrückliche Übernahme angepasst.
 
-**Nächster Schritt:** vollständige Regression abschließen, versioniertes Paket isoliert installieren und neue Händlerlaufzeit aktivieren.
+727 Regressionen abgedeckt; ein veralteter Farb-Sollwert korrigiert und alle 19 betroffenen Vertrags-/Randtests bestanden. Browser mit 120 lokalen API-Anfragen, sechs Pixelproben und aktuelles Edelstahlprodukt Revision 3 in privater Kopie geprüft. Isolierte Paketinstallation, 425 Manifestdateien, 17 HTTPS-Prüfungen und neuer Händlerprozess bestätigt. Originale/Revisionen und alle Zeilen in 50 Tabellen unverändert; drei private Datenbanken auf Server und in Cloud mit SHA-256/SQLite geprüft. Code, Berichte und versioniertes ZIP auf GitHub einschließlich beider Sicherungsbranches.
+
+[Nachweise und Grenzen](docs/releases/20261011/steel-ink-tabs/RELEASE.md) · [Installationspaket](deliverables/merchant-steel-ink-tabs-20261011/README.md). **Nächster Schritt:** Gestaltung mit der neuen Produkt-/Designstruktur fortsetzen. Öffentliche Verkaufsbindung und Maschinenabnahme bleiben separate Abnahmen. Vor dem Neuladen der App ungespeicherte Browseränderungen speichern.
 
 ## Live: Hilfslinien, Edelstahlformate und strukturierter Katalog · 11.10.2026
 

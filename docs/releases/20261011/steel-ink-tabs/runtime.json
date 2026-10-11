@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "checkedAt": "2026-10-11T19:46:39.134Z",
+  "aiEnabled": true,
+  "imagesEnabled": true,
+  "imageModel": "gpt-image-1.5",
+  "sourceCommit": "7a168bc66adc9718bc9b0fefad97c338e546c57d",
+  "limitCents": 10000,
+  "pricingValidUntil": "2026-11-10T12:38:17.385Z",
+  "keyProtected": true,
+  "otherMerchantSettingsUnchanged": true,
+  "draftOnlyTransferEnabled": true,
+  "activeMerchantProcesses": 1,
+  "startedAfterConfiguration": true,
+  "startedAt": "2026-10-11T19:46:32.070Z",
+  "batchQueueInstalled": true,
+  "batchTables": {
+    "batches": 0,
+    "items": 0
+  },
+  "realMerchantLoginVerified": false,
+  "aiJobCount": 4,
+  "chargedCents": 34
+}

@@ -1,6 +1,10 @@
-## 11.10.2026 · Testwarenkorb für bearbeitbare Gedenktafel vorbereitet
+## 11.10.2026 · Händler-Testbestellung mit Foto erfolgreich
 
-Explizite private Revisionsfestlegung statt fest verdrahteter Revision 2; bisherige Einstellung bleibt rückwärtskompatibel. Neues Offline-Werkzeug prüft Aktivierungssicherung, unveränderten Produktstand und alle tatsächlichen Shopify-Varianten samt Aufpreisvertrag vor Übernahme. 44 gezielte Warenkorb-/Bestell-/Laufzeittests bestanden. Tatsächliche Revision 4 in privater Kopie: neun Varianten mit Originalfoto, 999 Cent Foto-Aufpreis, Wiederholschutz und synthetisch signiertem Bestelleingang bestanden. Shopify-Preisrevision 30 lesend bestätigt. Keine Fertigungsfreigabe. Paketinstallation und echter Testkauf sind noch nachzuweisen.
+Installierter Quellstand **971c57d**, Version `0.1.0-recovery.20261010+971c57dea374`. Revisionsfestlegung für Gedenktafel 4, neun tatsächliche Shopify-Ausführungen samt Fotoaufpreis geprüft und gebunden. Echter Testkauf: 32,98 EUR plus 4,99 EUR Versand, Gateway `bogus`, `test: true`, `PAID`, `UNFULFILLED`; signierter Eingang ordnet genau eine Position dem gespeicherten Stand zu. Fertigung/Kundendownload und öffentlicher neuer Checkout bleiben gesperrt.
+
+44 gezielte Tests, neun anschließende Laufzeitprüfungen (überlappende Testmengen), alle neun Varianten in privater Kopie, isolierte Paketinstallation/Neustart sowie 20 HTTPS-Prüfungen bestanden. 399 Paketdateien auf Server verifiziert. Vorherige Laufzeit, Konfiguration und drei Datenbanken gesichert; nach Testkauf neue Server-/Cloud-Sicherung aller Datenbanken verifiziert. Ursprüngliche Zeilen in 46 Tabellen und Originalfoto im Bestellpaket byteidentisch erhalten. [Release und Grenzen](docs/releases/20261011/cart-r4/RELEASE.md) · [Installationspaket](deliverables/merchant-cart-r4-20261011/README.md).
+
+Nächster Schritt: neue öffentliche Kundenstrecke mit denselben unveränderlichen Entwurfs-/Preisbindungen; physische Fertigungsabnahme gesondert. Ältere Abschnitte dokumentieren frühere Stände.
 
 ## 11.10.2026 · Geprüfte Händlerkorrekturen veröffentlicht
 

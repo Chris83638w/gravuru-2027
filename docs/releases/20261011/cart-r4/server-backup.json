@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-11T10:17:39.421291+00:00",
+  "sourceCommit": "971c57dea37488926026919f6ab410c43a28e5ff",
+  "method": "SQLite incremental online backup; each database consistent",
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 16801792,
+      "sha256": "a525bd74be0ec9a77ba81c769447c50634907a3555be2ff72d02d3de0e27329b",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 17653760,
+      "sha256": "4c1c94d2b237fd3a367734fd2545072679faf2331ad7ebe655045268b6e9addc",
+      "quickCheck": "ok"
+    }
+  ],
+  "entrySha256": "74aa412c9074a55ae2ba7200ed9c172e35ffc1df3c60e16f26431603ce26c62d"
+}

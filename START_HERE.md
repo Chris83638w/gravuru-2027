@@ -1,3 +1,9 @@
+## Live: Händler-Testbestellung mit Foto · 11.10.2026
+
+Gedenktafel **Revision 4** ist im Händler-Testweg bestellbar. Installierter Quellstand **971c57d**; alle neun Varianten und der Foto-Aufpreis mit Shopify abgeglichen. Tatsächlicher Testkauf einschließlich Foto erfolgreich: **32,98 EUR + 4,99 EUR Versand**, `test: true`, `PAID`, `UNFULFILLED`, genau eine zugeordnete Position. Keine echte Abbuchung, keine Fertigungsfreigabe. Öffentliche neue Kundenstrecke und Maschinenabnahme bleiben offen.
+
+[Prüfbericht, Bedienung und Sicherung](docs/releases/20261011/cart-r4/RELEASE.md) · [Installationspaket](deliverables/merchant-cart-r4-20261011/README.md). Die folgenden Abschnitte sind historische Nachweise.
+
 ## Live: PDF-Kundenansicht und bearbeitbare Gedenktafel · 11.10.2026
 
 Quellstand **c2d4069** veröffentlicht und HTTPS-geprüft. Gedenktafel **Revision 4** mit zwei bearbeitbaren Texten, echtem Musterfoto/Fotofeld und Motiv; Originalrevision 3 erhalten. Vollständige Schriftwahl, Rückgängig/Wiederholen und Speichern der PDF-Kundengestaltung korrigiert. 652 Regressionen, 29 gezielte Folgeprüfungen, erweiterter Händler-Browser, tatsächliche PDF in privater Kopie sowie Paketinstallation/Neustart bestanden. 46 Tabellen auf Erhalt geprüft; private Vorher-/Nachher-Sicherungen auf Server und in Cloud verifiziert.

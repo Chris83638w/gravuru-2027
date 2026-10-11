@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "revision": 4,
+  "variants": 9,
+  "photoExtraCents": 999,
+  "pricing": {
+    "schema": "gravuru-personalization-pricing/v1",
+    "enabled": true,
+    "productId": "gid://shopify/Product/16138083107196",
+    "revision": "30",
+    "currency": "EUR",
+    "extraMotifCents": 169,
+    "extraPhotoCents": 999,
+    "variants": {
+      "57509812633980": 2299,
+      "57509812666748": 2598,
+      "57509812699516": 2698,
+      "57509812732284": 3197,
+      "57509812765052": 3297,
+      "57509812797820": 3697,
+      "57509812830588": 3598,
+      "57509812863356": 3798,
+      "57509812896124": 2798
+    }
+  },
+  "mutationAttempted": false
+}

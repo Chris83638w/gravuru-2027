@@ -1,3 +1,9 @@
+## 11.10.2026 · Salbei-Shopify-Theme als eigener Pilot
+
+Unter `storefront/salbei/` liegt ein vollständiger Dawn-basierter Theme-Pilot für einen gemeinsamen gravuru-Shop: eine Salbei-Primärfarbe, bearbeitbare Hero-/Themenwelt-/Kopfzeilen-Sections, Mega-Menü für alle sieben Produktwelten, responsive Navigation, Sprachwahl und vorbereiteter B2B-Einstieg. Keine Hyper-/Prestige-Dateien übernommen. Produktsektion mit bestehender gravuru-Bindung vorbereitet; Konfigurator-, Checkout- und B2B-Gesamtstrecke bleiben gesondert offen.
+
+Lokale Strukturprüfung: 68 JSON-Dateien und 42 Abschnittsschemas, nach Korrektur der globalen Radiuswerte keine gefundenen Fehler. JavaScript-Syntax und ZIP-Datei-/Hashprüfung bestanden. Automatischer Shopify-Import scheitert mit `Src is empty`, Bild-Upload mit internem Fehler; Browserstart technisch blockiert. Kein Theme installiert, verändert oder veröffentlicht. GitHub Theme Check auf dem Aufgabenbranch vorbereitet, Ergebnis zunächst offen. [Bedienung und Umfang](storefront/salbei/README.md) · [Prüfgrenzen](storefront/salbei/design-qa.md). Nächster Schritt: unveröffentlicht importieren, Shopify-/Browserprüfung und vorhandene Konfigurator-/B2B-Anschlüsse abnehmen. Historische Laufzeitstände darunter bleiben unverändert.
+
 ## 11.10.2026 · Händler-Testbestellung mit Foto erfolgreich
 
 Installierter Quellstand **971c57d**, Version `0.1.0-recovery.20261010+971c57dea374`. Revisionsfestlegung für Gedenktafel 4, neun tatsächliche Shopify-Ausführungen samt Fotoaufpreis geprüft und gebunden. Echter Testkauf: 32,98 EUR plus 4,99 EUR Versand, Gateway `bogus`, `test: true`, `PAID`, `UNFULFILLED`; signierter Eingang ordnet genau eine Position dem gespeicherten Stand zu. Fertigung/Kundendownload und öffentlicher neuer Checkout bleiben gesperrt.

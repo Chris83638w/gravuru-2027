@@ -1,0 +1,45 @@
+<section class="g-worlds g-shell" aria-label="{{ section.settings.heading | escape }}" style="--g-world-space: {{ section.settings.spacing }}px;">
+  {% if section.settings.show_heading %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}
+  <div class="g-worlds__grid">
+    {% for block in section.blocks %}
+      {% liquid
+        assign target = block.settings.link
+        if target == blank and block.settings.collection != blank
+          assign target = block.settings.collection.url
+        endif
+        if target == blank
+          assign target = routes.collections_url
+        endif
+      %}
+      <a class="g-world" href="{% render 'gravuru-local-url', target: target %}" {{ block.shopify_attributes }}>
+        <div class="g-world__image">
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | image_url: width: 1200 | image_tag: widths: '360, 540, 750, 1000, 1200', sizes: '(min-width: 750px) 33vw, 100vw', loading: 'lazy', alt: '' }}
+          {% else %}
+            {% assign asset = 'gravuru-' | append: block.settings.illustration | append: '.png' %}
+            <img src="{{ asset | asset_url }}" alt="" width="1200" height="800" loading="lazy">
+          {% endif %}
+        </div>
+        <div class="g-world__caption"><h3>{{ block.settings.title | escape }}</h3><span class="g-icon" aria-hidden="true">{{ 'icon-arrow.svg' | inline_asset_content }}</span></div>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+{
+ "name":"gravuru · Themenwelten","tag":"div","class":"g-worlds-section","max_blocks":6,
+ "settings":[
+  {"type":"text","id":"heading","label":"Überschrift","default":"Für die besonderen Momente"},
+  {"type":"checkbox","id":"show_heading","label":"Überschrift anzeigen","default":false},
+  {"type":"range","id":"spacing","label":"Abstand oben und unten","min":0,"max":80,"step":4,"unit":"px","default":12}
+ ],
+ "blocks":[{"type":"world","name":"Themenwelt","settings":[
+  {"type":"text","id":"title","label":"Titel","default":"Themenwelt"},
+  {"type":"collection","id":"collection","label":"Kollektion"},
+  {"type":"url","id":"link","label":"Alternatives Linkziel","info":"Hat Vorrang vor der gewählten Kollektion."},
+  {"type":"image_picker","id":"image","label":"Bild"},
+  {"type":"select","id":"illustration","label":"Entwurfsbild bei leerem Bildfeld","options":[{"value":"home","label":"Zuhause"},{"value":"gift","label":"Geschenk"},{"value":"remembrance","label":"Erinnerung"}],"default":"gift"}
+ ]}],
+ "presets":[{"name":"gravuru · Themenwelten","blocks":[{"type":"world","settings":{"title":"Für dein Zuhause","illustration":"home"}},{"type":"world","settings":{"title":"Zum Verschenken","illustration":"gift"}},{"type":"world","settings":{"title":"Zum Erinnern","illustration":"remembrance"}}]}]
+}
+{% endschema %}

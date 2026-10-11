@@ -1,0 +1,17 @@
+{% if menu.links != blank %}
+  {% render 'gravuru-menu-links', menu: menu %}
+{% else %}
+  <ul class="g-menu-links" role="list">
+    {% for item in section.blocks %}
+      {% if item.type == 'mega_link' and item.settings.column == column %}
+        {% liquid
+          assign destination = item.settings.link
+          if destination == blank and item.settings.collection != blank
+            assign destination = item.settings.collection.url
+          endif
+        %}
+        {% if destination != blank %}<li {{ item.shopify_attributes }}><a href="{% render 'gravuru-local-url', target: destination %}">{{ item.settings.title | escape }}</a></li>{% endif %}
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}

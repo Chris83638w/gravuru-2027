@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "hero": {
+      "type": "gravuru-hero",
+      "settings": {
+        "eyebrow": "PERSÖNLICH. VON GRAVURU.",
+        "heading": "Aus deinen Ideen.\nFür dein Leben.",
+        "text": "<p>Persönliche Schilder, Geschenke und Erinnerungen aus unserer Fertigung.</p>",
+        "button_label": "Produkte entdecken",
+        "button_link": "/collections/all",
+        "spacing": 56
+      }
+    },
+    "worlds": {
+      "type": "gravuru-worlds",
+      "settings": {
+        "heading": "Für die besonderen Momente",
+        "show_heading": false,
+        "spacing": 12
+      },
+      "blocks": {
+        "home": {
+          "type": "world",
+          "settings": {
+            "title": "Für dein Zuhause",
+            "collection": "turschilder-namensschilder",
+            "illustration": "home"
+          }
+        },
+        "gift": {
+          "type": "world",
+          "settings": {
+            "title": "Zum Verschenken",
+            "collection": "fotogeschenke",
+            "illustration": "gift"
+          }
+        },
+        "memory": {
+          "type": "world",
+          "settings": {
+            "title": "Zum Erinnern",
+            "collection": "gedenktafeln",
+            "illustration": "remembrance"
+          }
+        }
+      },
+      "block_order": [
+        "home",
+        "gift",
+        "memory"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "worlds"
+  ]
+}

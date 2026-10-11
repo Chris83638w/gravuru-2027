@@ -1,0 +1,26 @@
+name: gravuru Salbei theme check
+on:
+  push:
+    branches: [task/salbei-shopify-theme-20261011]
+    paths:
+      - 'storefront/salbei/**'
+      - '.github/workflows/gravuru-salbei-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  theme-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Validate theme structure
+        run: node storefront/salbei/validate_theme.mjs
+      - name: Validate interaction syntax
+        run: node --check storefront/salbei/theme/assets/gravuru-salbei.js
+      - name: Shopify Theme Check
+        uses: Shopify/theme-check-action@58fd69afdfc30110f997ba9e212b302671e00d3b
+        with:
+          theme_root: storefront/salbei/theme

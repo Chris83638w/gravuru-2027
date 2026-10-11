@@ -1,0 +1,249 @@
+<gravuru-header class="g-header" data-section-id="{{ section.id }}">
+  <div class="g-header__inner g-shell">
+    <details class="g-mobile-menu" data-g-mobile>
+      <summary class="g-icon-button" aria-label="{{ 'gravuru.navigation.menu' | t }}"><span class="g-icon" aria-hidden="true">{{ 'icon-hamburger.svg' | inline_asset_content }}</span></summary>
+      <nav class="g-mobile-panel" aria-label="{{ 'gravuru.navigation.main' | t }}">{% render 'gravuru-navigation', section: section %}</nav>
+    </details>
+    <a class="g-wordmark" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {% if section.settings.logo != blank %}{{ section.settings.logo | image_url: width: 400 | image_tag: widths: '160, 240, 320, 400', sizes: '160px', class: 'g-logo', loading: 'eager' }}{% else %}{{ section.settings.wordmark | escape }}{% endif %}
+    </a>
+    <nav class="g-desktop-nav" aria-label="{{ 'gravuru.navigation.main' | t }}">{% render 'gravuru-navigation', section: section %}</nav>
+    <div class="g-header__tools">
+      {% if section.settings.b2b_link != blank %}<a class="g-b2b-link" href="{% render 'gravuru-local-url', target: section.settings.b2b_link %}">B2B</a>{% endif %}
+      {% if section.settings.show_language and localization.available_languages.size > 1 %}
+        <details class="g-language" data-g-menu>
+          <summary>{{ localization.language.iso_code | upcase }}<span class="g-icon" aria-hidden="true">{{ 'icon-caret.svg' | inline_asset_content }}</span></summary>
+          {% assign localization_id = 'G-Language-' | append: section.id %}
+          {% form 'localization', id: localization_id, class: 'g-language-form' %}
+            <label for="{{ localization_id }}-select">{{ 'localization.language_label' | t }}</label>
+            <select id="{{ localization_id }}-select" name="locale_code">{% for language in localization.available_languages %}<option value="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} selected{% endif %}>{{ language.endonym_name | capitalize }}</option>{% endfor %}</select>
+            <button class="g-button" type="submit">{{ 'gravuru.navigation.apply' | t }}</button>
+          {% endform %}
+        </details>
+      {% endif %}
+      <a class="g-icon-button" href="{{ routes.search_url }}" aria-label="{{ 'general.search.search' | t }}"><span class="g-icon" aria-hidden="true">{{ 'icon-search.svg' | inline_asset_content }}</span></a>
+      {% if shop.customer_accounts_enabled %}<a class="g-icon-button g-account" href="{{ routes.account_url }}" aria-label="{{ 'customer.account.title' | t }}"><span class="g-icon" aria-hidden="true">{{ 'icon-account.svg' | inline_asset_content }}</span></a>{% endif %}
+      <a class="g-icon-button g-cart" href="{{ routes.cart_url }}" id="cart-icon-bubble" aria-label="{{ 'templates.cart.cart' | t }}"><span class="g-icon" aria-hidden="true">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>{% if cart.item_count > 0 %}<span class="g-cart-count">{{ cart.item_count }}</span>{% endif %}</a>
+    </div>
+  </div>
+</gravuru-header>
+{% schema %}
+{
+  "name": "gravuru · Kopfzeile",
+  "tag": "header",
+  "class": "g-header-section",
+  "limit": 1,
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "max_blocks": 30,
+  "settings": [
+    {
+      "type": "text",
+      "id": "wordmark",
+      "label": "Markenname",
+      "default": "gravuru"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo statt Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_language",
+      "label": "Sprachwahl anzeigen",
+      "default": true,
+      "info": "Zeigt die im Shop veröffentlichten Sprachen."
+    },
+    {
+      "type": "url",
+      "id": "b2b_link",
+      "label": "Link zum B2B-Bereich"
+    },
+    {
+      "type": "text",
+      "id": "b2b_label",
+      "label": "B2B-Linktext im Menü",
+      "default": "Für Geschäftskunden"
+    },
+    {
+      "type": "header",
+      "content": "Mega-Menü"
+    },
+    {
+      "type": "text",
+      "id": "heading_one",
+      "label": "Überschrift Spalte 1",
+      "default": "Unsere Produktwelten"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_one",
+      "label": "Menü Spalte 1"
+    },
+    {
+      "type": "text",
+      "id": "heading_two",
+      "label": "Überschrift Spalte 2",
+      "default": "Geschenke & Anlässe"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_two",
+      "label": "Menü Spalte 2"
+    },
+    {
+      "type": "text",
+      "id": "heading_three",
+      "label": "Überschrift Spalte 3",
+      "default": "Materialien"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_three",
+      "label": "Menü Spalte 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Materialbild anzeigen",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Materialbild"
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Link am Materialbild"
+    },
+    {
+      "type": "text",
+      "id": "image_label",
+      "label": "Text am Materialbild",
+      "default": "Materialien entdecken"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "navigation",
+      "name": "Menüpunkt",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Menüpunkt"
+        },
+        {
+          "type": "select",
+          "id": "mode",
+          "label": "Darstellung",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link oder Untermenü"
+            },
+            {
+              "value": "mega",
+              "label": "Mega-Menü"
+            }
+          ],
+          "default": "link"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Linkziel"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Untermenü",
+          "info": "Optional. Öffnet sich statt des Linkziels."
+        }
+      ]
+    },
+    {
+      "type": "mega_link",
+      "name": "Mega-Menü-Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titel",
+          "default": "Menülink"
+        },
+        {
+          "type": "select",
+          "id": "column",
+          "label": "Spalte",
+          "options": [
+            {
+              "value": "one",
+              "label": "Produktwelten"
+            },
+            {
+              "value": "two",
+              "label": "Anlässe"
+            },
+            {
+              "value": "three",
+              "label": "Materialien"
+            }
+          ],
+          "default": "one"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Kollektion"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Alternatives Linkziel",
+          "info": "Hat Vorrang vor der Kollektion."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "gravuru · Kopfzeile",
+      "blocks": [
+        {
+          "type": "navigation",
+          "settings": {
+            "title": "Alle Produkte",
+            "mode": "mega"
+          }
+        },
+        {
+          "type": "navigation",
+          "settings": {
+            "title": "Geschenke & Anlässe"
+          }
+        },
+        {
+          "type": "navigation",
+          "settings": {
+            "title": "Rund ums Haus"
+          }
+        },
+        {
+          "type": "navigation",
+          "settings": {
+            "title": "Gedenken"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

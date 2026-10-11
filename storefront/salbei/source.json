@@ -1,0 +1,8 @@
+{
+  "base_repository": "Shopify/dawn",
+  "base_commit": "258f00f64365e2018ca4c62778a6bf55a5d3cd18",
+  "project_repository": "Chris83638w/gravuru-2027",
+  "task_branch": "task/salbei-shopify-theme-20261011",
+  "visual": "gravuru — Salbei, approved 2026-10-11",
+  "scope": "Unpublished Shopify theme pilot. Public configurator checkout and B2B configuration are separate acceptance steps."
+}

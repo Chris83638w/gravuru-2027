@@ -1,0 +1,16 @@
+{% comment %}Uses existing published workbench binding only. No independent price or checkout logic.{% endcomment %}
+{% if requires_design %}
+  {% liquid
+    assign manifest = product.metafields.gravuru_workbench.manifest.value
+    assign editor_url = product.metafields.gravuru_workbench.preview_url.value
+    assign protocol = editor_url | slice: 0, 8
+  %}
+  <div class="g-personalizer" {{ block.shopify_attributes }}>
+    {% if manifest.customerEnabled == true and protocol == 'https://' %}
+      <a class="g-button" href="{{ editor_url | escape }}">{{ 'gravuru.product.personalize' | t }}</a>
+    {% else %}
+      <p class="g-personalizer-note" role="status">{{ 'gravuru.product.pending' | t }}</p>
+      {% if request.design_mode %}<p class="g-personalizer-note">{{ 'gravuru.product.editor_hint' | t }}</p>{% endif %}
+    {% endif %}
+  </div>
+{% endif %}

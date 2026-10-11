@@ -1,0 +1,165 @@
+{
+  "name": "gravuru Kopfzeile",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "gravuru-header",
+      "settings": {
+        "wordmark": "gravuru",
+        "show_language": true,
+        "b2b_link": "/account",
+        "b2b_label": "Für Geschäftskunden",
+        "show_image": true,
+        "image_link": "/collections",
+        "image_label": "Materialien entdecken"
+      },
+      "blocks": {
+        "products": {
+          "type": "navigation",
+          "settings": {
+            "title": "Alle Produkte",
+            "mode": "mega"
+          }
+        },
+        "gifts": {
+          "type": "navigation",
+          "settings": {
+            "title": "Geschenke & Anlässe",
+            "link": "/collections/fotogeschenke"
+          }
+        },
+        "home": {
+          "type": "navigation",
+          "settings": {
+            "title": "Rund ums Haus",
+            "link": "/collections/turschilder-namensschilder"
+          }
+        },
+        "remembrance": {
+          "type": "navigation",
+          "settings": {
+            "title": "Gedenken",
+            "link": "/collections/gedenktafeln"
+          }
+        },
+        "mega_photo": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Fotogeschenke",
+            "collection": "fotogeschenke",
+            "column": "one"
+          }
+        },
+        "mega_house": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Rund ums Haus",
+            "collection": "turschilder-namensschilder",
+            "column": "one"
+          }
+        },
+        "mega_horse": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Pferdeschilder",
+            "collection": "boxenschilder-stalltafeln-fur-pferde",
+            "column": "one"
+          }
+        },
+        "mega_kids": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Kindersachen",
+            "collection": "kinder-schule",
+            "column": "one"
+          }
+        },
+        "mega_memory": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Gedenken & Andenken",
+            "collection": "gedenktafeln",
+            "column": "one"
+          }
+        },
+        "mega_wedding": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Hochzeitsgeschenke",
+            "collection": "hochzeit",
+            "column": "two"
+          }
+        },
+        "mega_christening": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Taufgeschenke",
+            "collection": "taufe",
+            "column": "two"
+          }
+        },
+        "mega_steel": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Edelstahl",
+            "collection": "edelstahl-schilder",
+            "column": "three"
+          }
+        },
+        "mega_slate": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Schiefer",
+            "collection": "schiefer-schilder",
+            "column": "three"
+          }
+        },
+        "mega_acryl": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Acryl",
+            "link": "/search?type=product&q=Acryl",
+            "column": "three"
+          }
+        },
+        "mega_holz": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Holz",
+            "link": "/search?type=product&q=Holz",
+            "column": "three"
+          }
+        },
+        "mega_leder": {
+          "type": "mega_link",
+          "settings": {
+            "title": "Leder",
+            "link": "/search?type=product&q=Leder",
+            "column": "three"
+          }
+        }
+      },
+      "block_order": [
+        "products",
+        "gifts",
+        "home",
+        "remembrance",
+        "mega_photo",
+        "mega_house",
+        "mega_horse",
+        "mega_kids",
+        "mega_memory",
+        "mega_wedding",
+        "mega_christening",
+        "mega_steel",
+        "mega_slate",
+        "mega_acryl",
+        "mega_holz",
+        "mega_leder"
+      ]
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

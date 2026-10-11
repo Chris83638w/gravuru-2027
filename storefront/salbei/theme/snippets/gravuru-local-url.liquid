@@ -1,0 +1,14 @@
+{%- liquid
+  assign destination = target | default: fallback | default: routes.all_products_collection_url
+  assign first_character = destination | slice: 0, 1
+  assign first_two = destination | slice: 0, 2
+  if routes.root_url != '/' and first_character == '/' and first_two != '//'
+    assign localized_prefix = routes.root_url | append: '/'
+    assign prefix_length = localized_prefix | size
+    assign destination_prefix = destination | slice: 0, prefix_length
+    unless destination == routes.root_url or destination_prefix == localized_prefix
+      assign destination = routes.root_url | append: destination
+    endunless
+  endif
+-%}
+{{- destination | escape -}}

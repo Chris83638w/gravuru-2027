@@ -1,0 +1,18 @@
+{% style %}
+  :root {
+    --g-primary: {{ settings.gravuru_primary | default: '#354c3b' }};
+    --g-background: {{ settings.gravuru_background | default: '#faf9f5' }};
+    --g-surface: {{ settings.gravuru_surface | default: '#f2efe8' }};
+    --g-text: {{ settings.gravuru_text | default: '#343833' }};
+    --g-primary-rgb: {{ settings.gravuru_primary.red }}, {{ settings.gravuru_primary.green }}, {{ settings.gravuru_primary.blue }};
+    --g-max: {{ settings.page_width | default: 1320 }}px;
+  }
+  :root, [class*='color-scheme-'] {
+    --color-button: {{ settings.gravuru_primary.red }}, {{ settings.gravuru_primary.green }}, {{ settings.gravuru_primary.blue }};
+    --color-button-text: 255, 255, 255;
+    --color-link: {{ settings.gravuru_primary.red }}, {{ settings.gravuru_primary.green }}, {{ settings.gravuru_primary.blue }};
+    --color-secondary-button-text: {{ settings.gravuru_primary.red }}, {{ settings.gravuru_primary.green }}, {{ settings.gravuru_primary.blue }};
+  }
+{% endstyle %}
+{{ 'gravuru-salbei.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'gravuru-salbei.js' | asset_url }}" defer="defer"></script>

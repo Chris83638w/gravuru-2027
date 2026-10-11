@@ -1,0 +1,30 @@
+{% for block in section.blocks %}
+{% if block.type == 'navigation' %}
+  <div class="g-nav-item" {{ block.shopify_attributes }}>
+    {% if block.settings.mode == 'mega' or block.settings.menu != blank %}
+      <details class="g-nav-details" data-g-menu>
+        <summary>{{ block.settings.title | escape }}<span class="g-icon" aria-hidden="true">{{ 'icon-caret.svg' | inline_asset_content }}</span></summary>
+        <div class="g-menu-panel{% if block.settings.mode == 'mega' %} g-menu-panel--mega{% endif %}">
+          {% if block.settings.mode == 'mega' %}
+            <div class="g-mega-grid">
+              <div><h2>{{ section.settings.heading_one | escape }}</h2>{% render 'gravuru-menu-column', section: section, menu: section.settings.menu_one, column: 'one' %}</div>
+              <div><h2>{{ section.settings.heading_two | escape }}</h2>{% render 'gravuru-menu-column', section: section, menu: section.settings.menu_two, column: 'two' %}</div>
+              <div><h2>{{ section.settings.heading_three | escape }}</h2>{% render 'gravuru-menu-column', section: section, menu: section.settings.menu_three, column: 'three' %}</div>
+              {% if section.settings.show_image %}<div class="g-menu-image">
+                {% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 800 | image_tag: widths: '360, 540, 800', sizes: '300px', loading: 'lazy' }}
+                {% else %}<img src="{{ 'gravuru-materials.png' | asset_url }}" alt="{{ 'gravuru.images.materials' | t | escape }}" width="1000" height="800" loading="lazy">{% endif %}
+                {% if section.settings.image_link != blank %}<a href="{% render 'gravuru-local-url', target: section.settings.image_link %}">{{ section.settings.image_label | escape }}<span class="g-icon" aria-hidden="true">{{ 'icon-arrow.svg' | inline_asset_content }}</span></a>{% endif %}
+              </div>{% endif %}
+            </div>
+            {% if section.settings.b2b_link != blank %}<div class="g-mega-bottom"><a href="{% render 'gravuru-local-url', target: section.settings.b2b_link %}">{{ section.settings.b2b_label | escape }}<span class="g-icon" aria-hidden="true">{{ 'icon-arrow.svg' | inline_asset_content }}</span></a></div>{% endif %}
+          {% else %}
+            {% render 'gravuru-menu-links', menu: block.settings.menu %}
+          {% endif %}
+        </div>
+      </details>
+    {% else %}
+      <a class="g-nav-link" href="{% render 'gravuru-local-url', target: block.settings.link %}">{{ block.settings.title | escape }}</a>
+    {% endif %}
+  </div>
+{% endif %}
+{% endfor %}

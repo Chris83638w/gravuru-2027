@@ -1,0 +1,21 @@
+<ul class="g-menu-links" role="list">
+  {% for link in menu.links %}
+    <li>
+      {% if link.links != blank %}
+        <details class="g-submenu">
+          <summary>{{ link.title | escape }}<span class="g-icon" aria-hidden="true">{{ 'icon-caret.svg' | inline_asset_content }}</span></summary>
+          <ul role="list">
+            <li><a href="{{ link.url }}">{{ 'gravuru.navigation.view_all' | t: title: link.title | escape }}</a></li>
+            {% for child in link.links %}
+              <li><a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+                {% if child.links != blank %}<ul role="list">{% for grandchild in child.links %}<li><a href="{{ grandchild.url }}"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>{% endfor %}</ul>{% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </details>
+      {% else %}
+        <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>

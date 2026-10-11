@@ -110,6 +110,7 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
         const item=motifs.find(m=>m.artwork?.assetId===design.importedSource.assetId);
         if(!item||!design.objects.some(o=>o.motif===item.key&&o.locked===true&&o.customerEditable===false))fail(422,'asset_mismatch','Die Zuordnung zum importierten Design ist unvollständig.');
       }
+      for(const design of document.config?.profile?.designs||[])if(design.editableSource)get(design.editableSource.assetId);
       return document;
     },close:()=>db.close()
   };

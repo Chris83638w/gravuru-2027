@@ -5,6 +5,7 @@ No inferred editable fields and no raster fallback. SVG uses only Python stdlib;
 PDF additionally requires PyMuPDF. Run in a subprocess with timeout/output limits.
 """
 import base64
+import copy
 import binascii
 import io
 import json
@@ -251,6 +252,90 @@ def sanitize_svg(raw):
             'pageCount': 1, 'page': 1, 'hasText': False, 'warnings': warnings}
 
 
+def editable_parts(result):
+    """Separate renderer objects without guessing text hidden inside bitmaps.
+
+    Glyph outlines retain their appearance until the merchant explicitly replaces
+    them with an available font. Masks, clipping and ancestor transforms survive.
+    Rasterization is used ONLY to measure bounds, never as replacement artwork.
+    """
+    import pymupdf
+    from PIL import Image
+    root = ET.fromstring(result['svg'])
+    ns = '{' + SVG_NS + '}'
+    defs = [copy.deepcopy(n) for n in root if n.tag == ns+'defs']
+    groups = []
+    def walk(parent, ancestors):
+        run = []
+        run_key = None
+        def flush():
+            nonlocal run, run_key
+            if run:
+                groups.append(('text', list(run), ancestors))
+                run = []
+                run_key = None
+        for n in parent:
+            tag = n.tag.removeprefix(ns)
+            if tag in ('defs', 'title', 'desc'):
+                continue
+            if tag == 'use' and n.get('data-text'):
+                matrix = re.findall(NUMBER, n.get('transform', ''))
+                key = tuple(matrix[:4]+matrix[5:6])+ (n.get('fill'),)
+                if run and key != run_key:
+                    flush()
+                run_key = key
+                run.append(n)
+                continue
+            flush()
+            if tag == 'g' and not any(k in n.attrib for k in ('mask', 'opacity')):
+                shell = ET.Element(n.tag, n.attrib)
+                walk(n, ancestors+[shell])
+            else:
+                kind = 'photo' if any(e.tag == ns+'image' for e in n.iter()) else 'motif'
+                groups.append((kind, [n], ancestors))
+        flush()
+    walk(root, [])
+    require(0 < len(groups) <= 20, 'Diese Datei enthält mehr als 20 getrennte Bestandteile. Bitte Motive in der Quelldatei gruppieren.', 'parts_limit')
+    box = list(map(float, root.get('viewBox').split()))
+    factor = min(2, 1400/max(box[2:]))
+    parts = []
+    for kind, nodes, ancestors in groups:
+        layer = ET.Element(root.tag, root.attrib)
+        for d in defs:
+            layer.append(copy.deepcopy(d))
+        tip = layer
+        for ancestor in ancestors:
+            shell = copy.deepcopy(ancestor)
+            tip.append(shell)
+            tip = shell
+        for n in nodes:
+            tip.append(copy.deepcopy(n))
+        # MuPDF SVG uses CSS px for physical dimensions. Explicit pixel sizing
+        # makes the measuring raster align exactly with the source viewBox.
+        measuring = copy.deepcopy(layer)
+        measuring.set('width', str(box[2])+'px')
+        measuring.set('height', str(box[3])+'px')
+        with pymupdf.open(stream=ET.tostring(measuring), filetype='svg') as doc:
+            pix = doc[0].get_pixmap(matrix=pymupdf.Matrix(factor, factor), alpha=True)
+            bounds = Image.frombytes('RGBA', (pix.width, pix.height), pix.samples).getchannel('A').getbbox()
+        if not bounds:
+            continue
+        x0,y0,x1,y1 = bounds
+        # One pixel of transparent padding prevents antialiasing being clipped.
+        x=max(box[0], box[0]+(x0-1)/factor); y=max(box[1],box[1]+(y0-1)/factor)
+        right=min(box[0]+box[2],box[0]+(x1+1)/factor); bottom=min(box[1]+box[3],box[1]+(y1+1)/factor)
+        w=right-x;h=bottom-y
+        mmx=result['widthMm']/box[2];mmy=result['heightMm']/box[3]
+        layer.set('viewBox',f'{x} {y} {w} {h}')
+        layer.set('width',f'{w*mmx}mm');layer.set('height',f'{h*mmy}mm')
+        part={'kind':kind,'xMm':(x-box[0])*mmx,'yMm':(y-box[1])*mmy,'widthMm':w*mmx,'heightMm':h*mmy,'svg':sanitize_svg(ET.tostring(layer))['svg']}
+        if kind=='text':
+            part['text']=''.join(n.get('data-text','') for n in nodes)
+        parts.append(part)
+    require(parts, 'Keine getrennt sichtbaren Bestandteile gefunden.', 'parts_missing')
+    return parts
+
+
 def convert(request):
     require(isinstance(request, dict) and request.get('kind') in ('svg', 'pdf'), 'Bitte SVG oder PDF auswählen.', 'invalid_request')
     encoded = request.get('bytes')
@@ -264,7 +349,10 @@ def convert(request):
     require(type(page_number) is int and page_number > 0, 'Bitte eine gültige Seitennummer angeben.', 'invalid_page')
     if request['kind'] == 'svg':
         require(page_number == 1, 'SVG besitzt nur eine Seite.', 'invalid_page')
-        return sanitize_svg(raw)
+        result = sanitize_svg(raw)
+        if request.get('parts') is True:
+            result['parts'] = editable_parts(result)
+        return result
     require(raw.startswith(b'%PDF-'), 'Ungültiger PDF-Dateikopf.', 'invalid_pdf')
     try:
         import pymupdf
@@ -310,6 +398,8 @@ def convert(request):
                 result['warnings'].append('Nicht eingebettete PDF-Standardschriften wurden mit der Standardschriftdarstellung des PDF-Renderers in Pfade umgesetzt. Darstellung mit dem Original vergleichen.')
             if document.page_count > 1:
                 result['warnings'].append('Nur Seite ' + str(page_number) + ' von ' + str(document.page_count) + ' wurde übernommen.')
+            if request.get('parts') is True:
+                result['parts'] = editable_parts(result)
             return result
     except ImportFailure:
         raise

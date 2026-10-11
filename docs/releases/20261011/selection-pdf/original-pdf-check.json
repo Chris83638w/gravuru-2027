@@ -1,0 +1,292 @@
+{
+  "checked": 20,
+  "passed": 20,
+  "parts": [
+    {
+      "assetId": "436636efc9f7a73a25723175a8fdb42b927a8bec855e907487b3e64d2e31dc17",
+      "count": 8,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "c6fd9ad5a1c1c1cf302b6fd8e4d69273e1be86056f6656789625d33d5ef873d8",
+      "count": 9,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "motif",
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "5e660e9ee928e9cc4d98807762329f85c0955bdccc9c5b26d25ec7438d0a8860",
+      "count": 8,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "motif",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "ab38664f171ac49960a02517e35d0186e8d169c725d9308ef82a765a60f20a8d",
+      "count": 7,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "b69b3eeb1114ea311c38ef57afd1b8893475df7fcf9221a2f18b42922583854a",
+      "count": 10,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "4b2e90263ae63520505b099592b33a0af032803cd83fc8b475b25d7108cedc20",
+      "count": 4,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "019447b2fab3ccf028796f4659afef62bf7b88c8e67a794fec6ec937ebfded68",
+      "count": 12,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "motif",
+        "motif",
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "cdc78332a2a48faa1f9e712635f0a10e733fc8cf8abe3d21bfb508476a380682",
+      "count": 11,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "motif",
+        "motif",
+        "motif",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "c7cf961da4b898397fa1f0f35e4e394018a7677a3735f1779d4223d5d01dbe9f",
+      "count": 11,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "motif",
+        "motif",
+        "motif",
+        "motif",
+        "motif",
+        "motif",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "20dddab0311fb048e4fd7a2fb25af161f47c8974ebe05ddb902f96fa58468cd4",
+      "count": 7,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "motif",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "4029098caeab2390b34f4d27ee43be98130584b198415fcfebcd3dc6bfeef36c",
+      "count": 6,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "da92a09f466b7297d51822e01a07710da81d264702fe1dd0b88f010a2360824d",
+      "count": 7,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "motif",
+        "text"
+      ]
+    },
+    {
+      "assetId": "11394c76b5abc3c2d0a52054561f6f6b70cef0e83b0047841678b2e9ae1ee12b",
+      "count": 9,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "7fc388a201e53c26ee9badbb68453a1c97be0916ecbc6f1ac80902d3307ca8b1",
+      "count": 4,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "motif"
+      ]
+    },
+    {
+      "assetId": "45fb916dee272945267ceb2df88aa4a28a2750b6681b9efe3839a09d57982c5a",
+      "count": 4,
+      "types": [
+        "motif",
+        "motif",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "77a6be42c6ca5aa2172be5d9dbb8deea520fc7158434cc37e695bbb33c223daf",
+      "count": 7,
+      "types": [
+        "motif",
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "9fcc77b97c00144021165471a3863618b4dd9c66f21ed5a3fc22dee68a201d4b",
+      "count": 14,
+      "types": [
+        "motif",
+        "text",
+        "photo",
+        "text",
+        "text",
+        "text",
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "89c02e73088783f288dbbeb4ad118fa87af2e1029f9c38e542f032741b60938c",
+      "count": 11,
+      "types": [
+        "motif",
+        "text",
+        "text",
+        "photo",
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "1978e152295af1f3554bb9f2ffc80777183a06dbfa8f4847c57ce7e0bd232887",
+      "count": 12,
+      "types": [
+        "motif",
+        "motif",
+        "motif",
+        "motif",
+        "motif",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text",
+        "text"
+      ]
+    },
+    {
+      "assetId": "ff2dcd2682a368d51e65c85d13a858abf9db44074f3ccbb67bbfac459e5dec8b",
+      "count": 4,
+      "types": [
+        "motif",
+        "text",
+        "photo",
+        "text"
+      ]
+    }
+  ],
+  "scope": "Read-only original PDF extraction, no existing product revision changed; no arbitrary flattened-image text recognition claimed"
+}

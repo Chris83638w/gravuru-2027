@@ -11,8 +11,8 @@ function selectionMarkup(o,units){
  const u=Number.isFinite(units)&&units>0?units:.4,grip=12*u,hit=24*u,offset=4*u;
  return '<rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="none" stroke="#16845d" stroke-width="'+u+'" pointer-events="none"/>'+[[-1,-1],[1,-1],[-1,1],[1,1]].map(([x,y])=>'<g data-resize="'+esc(o.id)+'" transform="translate('+(x*(o.w/2+offset))+' '+(y*(o.h/2+offset))+')" style="cursor:'+(x===y?'nwse':'nesw')+'-resize"><title>Ziehen zum Vergrößern oder Verkleinern</title><rect x="'+(-hit/2)+'" y="'+(-hit/2)+'" width="'+hit+'" height="'+hit+'" fill="transparent" pointer-events="all"/><rect x="'+(-grip/2)+'" y="'+(-grip/2)+'" width="'+grip+'" height="'+grip+'" rx="'+2*u+'" fill="#fff" stroke="#196347" stroke-width="'+1.5*u+'" pointer-events="none"/></g>').join('');
 }
-export function studioSvg(profile,design,fonts,{selected='',frameKey='',motifs=[],media=[],guides=false,id='studio',color='schwarz',handles=true,handleUnits}={}){
- if(profile.kind==='universal-product')return universalSvg(profile,design,fonts,{selected,motifs,media,guides,id,handles,handleUnits});
+export function studioSvg(profile,design,fonts,{selected='',frameKey='',motifs=[],media=[],guides=false,id='studio',color='schwarz',handles=true,handleUnits,photoExampleMarkup}={}){
+ if(profile.kind==='universal-product')return universalSvg(profile,design,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup});
  const a=(profile.frames.find(f=>f.key===frameKey)||profile.frames[0]).acrylic,b=profile.geometry.bellImageBounds||profile.geometry.bell;
  const image=profile.admin?.imageUrl;
  const items=design.objects.map(o=>{let inside='';
@@ -65,7 +65,7 @@ export function graphicMarkup(o,ink){
  if(o.shape==='rect')return '<rect x="'+(-w/2)+'" y="'+(-h/2)+'" width="'+w+'" height="'+h+'"'+attrs+'/>';
  return placeholder(o,'Unbekannte Grafik',.3);
 }
-function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleUnits}){
+function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup}){
  const {width:w,height:h,shape,cornerRadiusMm:radius=0}=p.geometry,pad=Math.max(w,h)*.035,stroke=Math.max(w,h)*.002;
  const safeId='studio-'+String(id).replace(/[^a-zA-Z0-9_-]/g,'_');
  const processing=getProcessingProfile(p),ink=processing.ink;
@@ -74,7 +74,7 @@ function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleU
   const key=safeId+'-element-'+index,color=elementColor(p,o);let content;
   if(o.type==='text')content=textPaths(o,fonts)||placeholder(o,'Schrift fehlt',stroke);
   else if(o.type==='motif')content=universalMotif(motifs.find(m=>m.key===o.motif),o,color,processing,key+'-ink');
-  else if(o.type==='image'||o.type==='photoSlot')content=photoMarkup(p,o,media,key,processing,stroke);
+  else if(o.type==='image'||o.type==='photoSlot')content=(o.type==='photoSlot'&&photoExampleMarkup?.(o))||photoMarkup(p,o,media,key,processing,stroke);
   else if(o.type==='graphic')content=graphicMarkup(o,color);
   else content=placeholder(o,'Unbekanntes Element: '+o.type,stroke);
   if(handles&&o.id===selected)content+=selectionMarkup(o,handleUnits??(w+pad*2)/365);

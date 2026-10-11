@@ -37,6 +37,8 @@ body.editing-product main{padding:0;max-width:none}.editing-product .page-footer
 .editor-icon{display:inline-block;width:21px;height:21px;vertical-align:middle;flex:none;margin-right:10px}.editing-product .editor-tabs button{display:flex;align-items:center}.editing-product .editor-tabs .editor-icon{margin-right:17px}#editor-elements button{justify-content:flex-start}#editor-elements button small{margin-left:auto}#editor-elements .editor-icon{margin:0 9px 0 0;width:20px;height:20px}.dashboard-page .nav-item .editor-icon{width:20px;height:20px}.dashboard-page .sidebar .nav-item{display:flex;align-items:center;justify-content:center}.upcoming-orders{font-size:14px}.editor-heading .button .editor-icon{width:18px;height:18px}#save-product .editor-icon{width:18px;height:18px}
 @media(max-width:760px){.editor-icon{width:17px;height:17px;margin-right:6px}.editing-product .editor-tabs .editor-icon{width:17px;height:17px;margin-right:8px}.editing-product .brand{font-size:21px}}
 #editor-preview>svg>image,#editor-preview>svg>g:not([data-object]),#editor-preview>svg>svg>rect{pointer-events:none}
+#editor-preview{touch-action:none;user-select:none}
+#editor-preview:focus-visible{outline:2px solid #087bce;outline-offset:-2px}
 #editor-preview [data-object="photo-frame"]>rect:first-of-type{pointer-events:none}
 .photo-hint-settings{border-top:1px solid var(--line);padding-top:24px;margin-top:24px}.dashboard-page .sidebar .nav-item{font-size:15px;font-weight:500}.editing-product .editor-panel .photo-hint-settings .element-check{font-size:13px}.photo-example-controls label:focus-within{outline:2px solid #17614f;outline-offset:3px}
 @media(max-width:760px){.dashboard-page .sidebar .nav-item{font-size:12px}}

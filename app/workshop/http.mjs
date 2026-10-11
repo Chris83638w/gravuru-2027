@@ -1,4 +1,6 @@
 import {createFontLibrary,MAX_FONT_BYTES} from './font-library.mjs';
+import {prepareEditableDesign} from './editable-design.mjs';
+import {defaultPhotoSvg} from './product-preview.mjs';
 import {compareProductRevisions} from './product-revision-compare.mjs';
 import {profileChangeImpact,saveReviewedProfile,assignmentChangeImpact,saveReviewedAssignment} from './profile-impact.mjs';
 import {outputSpecification} from './output-specification.mjs';
@@ -48,7 +50,7 @@ import {createProfileLibrary} from './profile-library.mjs';
 import {workshopCatalog,workshopResources} from './catalog.mjs';
 import {planBatch,commitBatch} from './batch.mjs';
 import {makeProductDocument,validateProductDocument,resolveProduct,validateProductDesign} from './product-model.mjs';
-import {createDesignAssetStore,MAX_DESIGN_BYTES} from './design-assets.mjs';
+import {createDesignAssetStore,MAX_DESIGN_BYTES,sha256} from './design-assets.mjs';
 import {planDesignImport,applyDesignImport} from './design-import.mjs';
 import {planCustomerFields,applyCustomerFields} from './customer-fields.mjs';
 
@@ -496,6 +498,18 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const data=await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+4096);
         return json(res,201,await assets.import({name:data.name,bytes:data.bytes,page:data.page}));
       }
+      const editableMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/editable-design$/);
+      if(editableMatch&&method==='POST'){
+        const data=await body(req,4096),record=repository.get(editableMatch[1]);
+        if(record.revision!==data.expectedRevision)fail(409,'stale_revision','Der gespeicherte Stand wurde geändert. Bitte neu laden.');
+        if(record.status==='archived')fail(422,'archived_product','Archivierte Produkte können nicht bearbeitet werden.');
+        return json(res,200,await prepareEditableDesign(record.document,assets,data.designId));
+      }
+      if(pathname==='/api/workshop/photo-examples/default'&&method==='POST'){
+        await body(req,4096);
+        const svg=defaultPhotoSvg();
+        return json(res,201,await assets.import({name:'Werkstatt-Musterfoto.svg',bytes:Buffer.from(svg).toString('base64')}));
+      }
       if(pathname==='/api/workshop/photo-examples'&&method==='POST'){
         const data=await body(req,Math.ceil(MAX_CUSTOMER_PHOTO/3)*4+4096);
         return json(res,201,await assets.importPhotoExample(data));
@@ -547,12 +561,23 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       const importMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/design-import\/(preview|apply)$/);
       if(importMatch&&method==='POST'){
         const [,id,action]=importMatch,data=await body(req,action==='preview'?Math.ceil(MAX_DESIGN_BYTES/3)*4+4096:2*1024*1024);
-        if(action==='apply')return json(res,200,applyDesignImport(repository,assets,id,data));
+        if(action==='apply'&&data.editable!==true)return json(res,200,applyDesignImport(repository,assets,id,data));
         const record=repository.get(id);
         if(record.revision!==data.expectedRevision)fail(409,'stale_revision','Die Konfiguration wurde geändert. Bitte den aktuellen Stand laden.');
         if(record.status==='archived'||!record.document.config.profile.designs.some(d=>d.id===data.designId))fail(422,'invalid_import_target','Bitte ein aktives Design dieser Konfiguration auswählen.');
         const asset=data.assetId?assets.get(data.assetId):await assets.import({name:data.name,bytes:data.bytes,page:data.page});
-        const {document,...plan}=planDesignImport(repository,assets,id,{...data,assetId:asset.assetId,originalName:data.name});
+        let {document,...plan}=planDesignImport(repository,assets,id,{...data,assetId:asset.assetId,originalName:action==='apply'?data.originalName:data.name});
+        if(data.editable===true){
+          const prepared=await prepareEditableDesign(document,assets,data.designId);document=prepared.document;
+          plan={...plan,editable:true,editableFields:prepared.parts.length,parts:prepared.parts,warnings:prepared.warnings,token:sha256(JSON.stringify({originalToken:plan.token,document}))};
+          if(action==='apply'){
+            if(plan.token!==data.token)fail(409,'review_changed','Die aufbereitete Vorschau wurde geändert. Bitte erneut prüfen.');
+            return json(res,200,repository.save(id,document,data.expectedRevision));
+          }
+          const universal=embedMaterialSurface(structuredClone(document.config));
+          const examples=(universal.localResources.photoExamples||[]).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
+          plan.editableSvg=privateProductPreview({universal},{designId:data.designId,examples});
+        }
         return json(res,200,plan);
       }
       const fieldMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/customer-fields\/(preview|apply)$/);

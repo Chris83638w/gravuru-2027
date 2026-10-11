@@ -14,6 +14,7 @@ function cleanup(document,design){
  for(const key of ['photoExamples','photoPlaceholders'])if(config.localResources[key])config.localResources[key]=config.localResources[key].filter(e=>e.designId!==design.id||has(e.slotId));
  if(config.photo.hints)config.photo.hints=config.photo.hints.filter(e=>e.designId!==design.id||has(e.slotId));
  if(design.customerFields)design.customerFields=design.customerFields.filter(f=>design.objects.some(o=>o.id===f.id));
+ if(design.sourceElements)design.sourceElements=design.sourceElements.filter(f=>design.objects.some(o=>o.id===f.id));
  // The original is immutable in the asset store and older revisions. Removing
  // its artwork deliberately ends the fixed-source composition in this draft.
  if(design.importedSource&&!design.objects.some(o=>o.motif==='artwork-'+design.importedSource.assetId)){
@@ -24,7 +25,7 @@ export function authorDesign(input,designId,action,value={}){
  const document=structuredClone(input),c=document.config,p=c.profile;
  let design=p.designs.find(d=>d.id===designId);if(!design)throw Error('Design nicht gefunden.');
  let object=design.objects.find(o=>o.id===value.objectId),selectedId=object?.id;
- if(['remove','replace','back','front'].includes(action)&&(!object||object.technicalLocked))throw Error('Dieses technische Element kann hier nicht geändert werden.');
+ if(['remove','replace','back','front','textify'].includes(action)&&(!object||object.technicalLocked))throw Error('Dieses technische Element kann hier nicht geändert werden.');
  if(action==='new'){
   const name=value.name?.trim();if(!name||name.length>200)throw Error('Bitte einen Designnamen eingeben.');
   design={id:uid('design'),name,objects:[],marks:[]};p.designs.push(design);p.defaultDesignId=design.id;document.elementRights[design.id]={};action='text';
@@ -40,10 +41,20 @@ export function authorDesign(input,designId,action,value={}){
   }
   if(action==='photo'){
    Object.assign(object,{fieldKey:uid('photo'),photoShape:'rect',required:true});delete object.color;c.photo.enabled=true;
+   if(value.exampleAssetId)(c.localResources.photoExamples??=[]).push({designId:design.id,slotId:id,assetId:value.exampleAssetId});
+   (c.photo.hints??=[]).push({designId:design.id,slotId:id,text:'Hier eigenes Foto hochladen',enabled:true});
   }
   if(action==='motif')setMotif(c,object,value.motif);
   fitPosition(object,g);design.objects.push(object);
   rights[id]={content:action==='text',color:false,replace:action==='photo',move:false,scale:false,delete:false};selectedId=id;
+ }else if(action==='textify'){
+  const font=c.localResources.fonts[value.font];
+  if(!value.text?.trim()||!font?.regular||[...value.text].some(ch=>!font.regular.glyphs[ch]))throw Error('Bitte den Text prüfen und eine vollständige Schrift mit allen benötigten Zeichen auswählen.');
+  const target={w:object.w,h:object.h},replacement={id:object.id,type:'text',text:value.text,font:value.font,size:Math.max(1,Math.min(100,Math.round(object.h))),x:object.x,y:object.y,w:1,h:1,rotation:object.rotation,fieldKey:object.id,color:object.color||'#000000',templateOrigin:true,customerEditable:true,bold:false,italic:false};
+  measureText(replacement,c.localResources.fonts);
+  while(replacement.size>1&&(replacement.w>target.w||replacement.h>target.h)){replacement.size--;measureText(replacement,c.localResources.fonts);}
+  fitPosition(replacement,p.geometry);design.objects[design.objects.indexOf(object)]=replacement;object=replacement;
+  rights[object.id]={content:true,color:false,replace:false,move:false,scale:false,delete:false};
  }else if(action==='remove'){
   if(design.objects.length===1)throw Error('Füge zuerst ein Text-, Motiv- oder Fotofeld hinzu, bevor du das letzte Element entfernst.');
   design.objects=design.objects.filter(o=>o!==object);delete rights[object.id];selectedId=design.objects.at(-1).id;cleanup(document,design);

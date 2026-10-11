@@ -192,10 +192,13 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             page.locator('[data-product-id="'+ready['slate']['id']+'"]').first.click()
             expect(page.locator('#editor-preview > svg')).to_be_visible(timeout=30000)
             page.locator('[data-editor-object="motif"]').click()
-            before=page.locator('#editor-preview').screenshot()
+            expect(page.locator('[data-editor-selection=motif]')).to_be_visible()
+            before=page.locator('#editor-preview [data-object]').evaluate_all('(nodes)=>nodes.map(n=>n.innerHTML)')
             page.locator('[data-editor-object="name"]').click()
-            after=page.locator('#editor-preview').screenshot()
-            assert before==after,'Selecting an element must not paint any new frame into the product preview'
+            after=page.locator('#editor-preview [data-object]').evaluate_all('(nodes)=>nodes.map(n=>n.innerHTML)')
+            assert before==after,'Selection controls must not alter artwork content'
+            expect(page.locator('[data-editor-selection=name]')).to_be_visible()
+            expect(page.locator('[data-editor-resize]')).to_have_count(4)
             page.locator('[data-editor-prop="font"]').select_option(font_id)
             expect(page.locator('#stage-status')).to_contain_text('Entwurf',timeout=30000)
             page.locator('[data-tab="scene"]').click()
@@ -215,6 +218,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             pdfpage.draw_rect(pymupdf.Rect(10,10,90,190),color=(0,0,0));document.save(pdf);document.close()
             page.locator('.import-design-tile').click()
             page.locator('#design-import-file').set_input_files(str(pdf))
+            page.locator('#design-import-editable').uncheck()
             page.locator('#design-import-check').click()
             expect(page.locator('#design-import-apply')).to_be_enabled(timeout=30000)
             expect(page.locator('#design-import-review svg').first).to_have_attribute('viewBox','0 0 220 140')
@@ -223,6 +227,22 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             expect(page.locator('#stage-status')).to_contain_text('Gespeicherter Stand',timeout=30000)
             page.reload()
             expect(page.locator('#editor-preview [data-object="imported-artwork"]')).to_be_visible(timeout=30000)
+            # A full-page imported design can be selected and shrunk via a real
+            # corner handle, then moved. Customer locking must not disable authoring.
+            handle=page.locator('[data-editor-resize="1,1"]')
+            expect(handle).to_be_visible()
+            old_width=float(page.locator('[data-editor-prop="w"]').input_value())
+            box=handle.bounding_box();x=box['x']+box['width']/2;y=box['y']+box['height']/2
+            page.mouse.move(x,y);page.mouse.down();page.mouse.move(x-30,y-40,steps=8);page.mouse.up()
+            expect(page.locator('#stage-status')).to_contain_text('Entwurf',timeout=30000)
+            assert float(page.locator('[data-editor-prop="w"]').input_value())<old_width
+            before_x=float(page.locator('[data-editor-prop="x"]').input_value())
+            page.locator('#editor-preview').focus();page.keyboard.press('ArrowRight')
+            assert float(page.locator('[data-editor-prop="x"]').input_value())>before_x
+            page.locator('[data-authoring-undo]').click()
+            page.locator('[data-authoring-undo]').click()
+            assert float(page.locator('[data-editor-prop="w"]').input_value())==old_width
+            report['checks']['fullPageImportResizeKeyboardUndo']=True
             # Complete merchant composition, using real HTTP/resources and a WebP original.
             page.locator('[data-new-design]').click()
             page.locator('#authoring-name').fill('Eigene Texte Motive Fotos')
@@ -258,7 +278,12 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             page.locator('#authoring-motif-file').set_input_files(str(custom_svg))
             expect(page.locator('.authoring-dialog')).not_to_be_visible(timeout=30000)
             page.locator('[data-editor-action="photo"]').click()
+            expect(page.locator('[data-editor-prop="photoShape"]')).to_be_visible(timeout=30000)
             photo_id=page.locator('#editor-elements [aria-pressed="true"]').get_attribute('data-editor-object')
+            expect(page.locator('#editor-preview [data-object="'+photo_id+'"] image')).to_have_attribute('href',__import__('re').compile(r'^data:image/svg\+xml;base64,'),timeout=30000)
+            expect(page.locator('#editor-preview [data-object="'+photo_id+'"]')).to_contain_text('eigenes Foto hochladen')
+            report['checks']['newPhotoStartsWithRealSampleAndUploadHint']=True
+            page.locator('#editor-preview').screenshot(path=str(OUT/'merchant-default-sample.png'))
             page.locator('[data-editor-prop="x"]').fill('55')
             page.locator('[data-editor-prop="y"]').fill('70')
             page.locator('[data-editor-prop="w"]').fill('65')
@@ -292,6 +317,22 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             page.set_viewport_size({'width':390,'height':844})
             assert not page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
             page.screenshot(path=str(OUT/'merchant-authoring-mobile.png'),full_page=True)
+            # Actual touch events in Chromium: drag a photo slot without scrolling
+            # the page, even though customer movement permission is disabled.
+            page.locator('[data-editor-object="'+photo_id+'"]').click()
+            page.locator('#editor-preview').scroll_into_view_if_needed()
+            touch=page.context.new_cdp_session(page)
+            touch.send('Emulation.setTouchEmulationEnabled',{'enabled':True})
+            page.evaluate("window.pointerTrace=[];for(const t of ['pointerdown','pointermove','pointerup','pointercancel'])document.addEventListener(t,e=>pointerTrace.push({type:t,target:e.target.tagName,object:e.target.closest('[data-object]')?.dataset.object,button:e.button}),true)")
+            node=page.locator('#editor-preview [data-object="'+photo_id+'"]')
+            box=node.bounding_box();tx=box['x']+box['width']/2;ty=box['y']+box['height']/2
+            old_x=float(page.locator('[data-editor-prop="x"]').input_value())
+            touch.send('Input.dispatchTouchEvent',{'type':'touchStart','touchPoints':[{'x':tx,'y':ty}]})
+            touch.send('Input.dispatchTouchEvent',{'type':'touchMove','touchPoints':[{'x':tx+16,'y':ty+8}]})
+            touch.send('Input.dispatchTouchEvent',{'type':'touchEnd','touchPoints':[]})
+            assert float(page.locator('[data-editor-prop="x"]').input_value())>old_x, str(page.evaluate('pointerTrace'))
+            report['checks']['touchDraggingWithCustomerMoveDisabled']=True
+
             page.set_viewport_size({'width':1440,'height':1000})
             # Delete the old fixed PDF only in the current draft, then undo it.
             old_design=page.locator('#editor-designs [data-editor-design]').first
@@ -310,6 +351,44 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             report['checks']['ownSvgMotifUploadedAndReplaced']=True
             report['checks']['webpPhotoVisibleWithTonalDetails']=True
             report['checks']['removeUndoFixedSourceAndPhoto']=True
+            # Import a structured PDF through the dashboard, prepare it, change
+            # its existing text and photo, save and reopen the separated elements.
+            layered=folder/'layered.pdf'
+            doc=pymupdf.open();pg=doc.new_page(width=300,height=200)
+            pg.insert_text((125,55),'My name',fontsize=18)
+            pg.draw_rect(pymupdf.Rect(125,85,250,110),color=(0,0,0))
+            pg.insert_image(pymupdf.Rect(10,10,100,150),filename=str(photo))
+            doc.save(layered);doc.close()
+            page.locator('.import-design-tile').click()
+            page.locator('#design-import-file').set_input_files(str(layered))
+            page.locator('#design-import-editable').check()
+            page.locator('#design-import-check').click()
+            expect(page.locator('#design-import-apply')).to_be_enabled(timeout=30000)
+            page.locator('#design-import-apply').click()
+            expect(page.locator('.design-import-dialog')).not_to_be_visible(timeout=30000)
+            expect(page.locator('#editor-elements button')).to_have_count(3,timeout=30000)
+            expect(page.locator('#editor-elements button')).to_have_count(3)
+            page.locator('#editor-elements button').filter(has_text='PDF-Text').click()
+            page.locator('[data-edit-pdf-text]').click()
+            expect(page.locator('#pdf-edit-text')).to_have_value('My name')
+            page.locator('#pdf-edit-text').fill('Unser Name')
+            page.locator('[data-pdf-text-apply]').click()
+            expect(page.locator('.authoring-dialog')).not_to_be_visible(timeout=30000)
+            expect(page.locator('[data-editor-prop="text"]')).to_have_value('Unser Name')
+            page.locator('#editor-elements button').filter(has_text='Musterfoto').click()
+            expect(page.locator('#editor-preview [data-preview-only]')).to_contain_text('eigenes Foto hochladen')
+            page.locator('#editor-photo-file').set_input_files(str(sample_path))
+            expect(page.locator('#photo-upload-status')).to_contain_text('übernommen',timeout=30000)
+            page.locator('#save-product').click()
+            expect(page.locator('#stage-status')).to_contain_text('Gespeicherter Stand',timeout=30000)
+            page.reload()
+            expect(page.locator('#editor-designs [data-editor-design]')).to_have_count(2,timeout=30000)
+            page.locator('#editor-designs [data-editor-design]').first.click()
+            expect(page.locator('#editor-elements button')).to_have_count(3,timeout=30000)
+            page.locator('#editor-elements button').filter(has_text='PDF-Text').click()
+            expect(page.locator('[data-editor-prop="text"]')).to_have_value('Unser Name')
+            page.screenshot(path=str(OUT/'merchant-editable-pdf.png'),full_page=True)
+            report['checks']['uploadedPdfTextAndPhotoEditedSavedReopened']=True
             page.locator('[data-view="masters"]').click()
             page.locator('#new-product').click()
             page.locator('#create-name').fill('Geprüfte Mastervorlage')
@@ -317,7 +396,7 @@ with tempfile.TemporaryDirectory(prefix='g27-merchant-browser-') as tmp:
             page.locator('#create-submit').click()
             expect(page.locator('#create-dialog')).not_to_be_visible(timeout=30000)
             expect(page.locator('#record-title')).to_contain_text('Geprüfte Mastervorlage',timeout=30000)
-            repair_checks={'masterCreated':True,'slatePdfImportedAndReopened':True,'fontUploadedAndGrouped':True,'fontGroupSurvivesReload':True,'navigationKeepsEmbedding':True,'selectionDoesNotChangeArtworkPixels':True,'slateMaterialAndFontSavedAndReopened':True}
+            repair_checks={'masterCreated':True,'slatePdfImportedAndReopened':True,'fontUploadedAndGrouped':True,'fontGroupSurvivesReload':True,'navigationKeepsEmbedding':True,'selectionControlsSeparateFromArtwork':True,'slateMaterialAndFontSavedAndReopened':True}
 
             page.wait_for_load_state('networkidle')
             assert not errors

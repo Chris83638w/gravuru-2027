@@ -10,6 +10,8 @@ import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
 import {planCustomerFields,applyCustomerFields} from './customer-fields.mjs';
 import {validateProductDesign,resolveProduct} from './product-model.mjs';
+import {makeProductDocument} from './product-model.mjs';
+import {syntheticSlate} from '../../scripts/fixtures/slate-config.mjs';
 const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));
 const artwork=Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="150mm" height="200mm" viewBox="0 0 150 200"><path d="M10 140V65C10 30 40 5 75 5" fill="none" stroke="#b76a45"/></svg>').toString('base64');
 const pkg=()=>({schema:'gravuru-prepared-design/v1',designId:'uv-test',name:'Synthetischer Ebenentest',widthMm:150,heightMm:200,sourceSha256:'a'.repeat(64),layers:[
@@ -22,6 +24,14 @@ function setup(t){
  for(const o of config.profile.designs[0].objects.filter(o=>o.type==='text')){measureText(o,resources.fonts);if(o.id==='names'){o.size*=118/o.w;measureText(o,resources.fonts);}}
  const ws=createWorkshop({filename:':memory:',seedConfig:config,legacy:{purchasing:{},features:{}}});t.after(()=>ws.close());return ws;
 }
+test('prepared layers fit the actual slate area instead of using acrylic dimensions',async t=>{
+ const ws=setup(t),source=ws.repository.get(ws.defaultId).document.config;
+ const record=ws.repository.create(makeProductDocument(syntheticSlate(source)));
+ const result=await planPreparedDesign(ws.repository,ws.assets,record.id,{expectedRevision:1,package:pkg()});
+ const design=result.document.config.profile.designs.find(d=>d.id==='uv-test');
+ for(const o of design.objects){assert.ok(o.x-o.w/2>=2-.001);assert.ok(o.x+o.w/2<=218+.001);assert.ok(o.y-o.h/2>=2-.001);assert.ok(o.y+o.h/2<=138+.001);}
+ assert.equal(result.document.config.basePriceCents,2299);
+});
 test('prepared import adds reviewed design, retains history, layers, all 28 prices and rejects duplicate import',async t=>{
  const ws=setup(t),before=ws.repository.get(ws.defaultId),input={expectedRevision:1,package:pkg(),makeDefault:true};
  const plan=await planPreparedDesign(ws.repository,ws.assets,ws.defaultId,input);

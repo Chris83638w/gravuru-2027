@@ -1,0 +1,6 @@
+{
+  "result": "PASS",
+  "tests": 650,
+  "failed": 0,
+  "scope": "Full regression, followed by targeted checks for final import-preview changes; local synthetic data"
+}

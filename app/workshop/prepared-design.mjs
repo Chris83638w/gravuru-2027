@@ -18,7 +18,8 @@ export async function planPreparedDesign(repository,assets,id,input){
  const document=structuredClone(record.document),config=document.config;
  if(config.profile.designs.some(d=>d.id===p.designId))fail('Diese Design-ID ist bereits vorhanden. Eine vorhandene Vorlage wird nicht überschrieben.',409);
  if(config.profile.designs.length>=60)fail('Höchstens 60 Designs pro Produkt.');
- const area=ACRYLIC_SAFE_AREA,scale=Math.min((area.right-area.left)/p.widthMm,(area.bottom-area.top)/p.heightMm);
+ const geometry=config.profile.geometry,margin=geometry.safeMarginMm??2;
+ const area=config.profile.material.kind==='slate'?{left:margin,top:margin,right:geometry.width-margin,bottom:geometry.height-margin}:ACRYLIC_SAFE_AREA,scale=Math.min((area.right-area.left)/p.widthMm,(area.bottom-area.top)/p.heightMm);
  const ox=(area.left+area.right-p.widthMm*scale)/2,oy=(area.top+area.bottom-p.heightMm*scale)/2;
  const d={id:p.designId,name:p.name,objects:[],marks:[],customerFields:[],preparedTemplate:{schema:p.schema,sourceSha256:p.sourceSha256,packageSha256:sha256(JSON.stringify(p)),scale}};
  const table={},seen=new Set();

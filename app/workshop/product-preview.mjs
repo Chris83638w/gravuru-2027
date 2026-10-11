@@ -5,6 +5,7 @@ import {studioSvg} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {surfacePreview} from '../configurator/variant-m/material-surface.mjs';
+import {examplePhotoMarkup} from '../configurator/variant-m/photo-placeholder.mjs';
 
 // Illustration choice only; never writes a product option or customer default.
 export function overviewOptions(config){
@@ -18,6 +19,12 @@ export function productOverview(document){
 }
 const image=name=>'data:image/jpeg;base64,'+fs.readFileSync(new URL('./preview-assets/'+name,import.meta.url)).toString('base64');
 let backdrop,example;
+export function defaultPhotoSvg(){
+ example??=image('reference.jpg');
+ // Only the photograph inside the existing acrylic reference. Explicit clipping
+ // prevents the reference's caption/plate border leaking into square photo slots.
+ return `<svg xmlns="http://www.w3.org/2000/svg" width="81mm" height="69mm" viewBox="0 0 810 690" preserveAspectRatio="xMidYMid slice" overflow="hidden"><defs><clipPath id="sample-photo-crop"><rect width="810" height="690"/></clipPath></defs><g clip-path="url(#sample-photo-crop)"><image href="${example}" x="-140" y="-110" width="1086" height="1448"/></g></svg>`;
+}
 // Reuse the actual saved design, shared renderer and existing acrylic scene.
 // No customer uploads or scene are added to the saved product or print output.
 export function productPreview(model,{options={},examples=[],designId,layout='portrait'}={}){
@@ -29,7 +36,16 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
   if(photo&&!d.importedSource){example??=image('reference.jpg');photo.media={mediaId:'reference',revisionId:'1'};photo.crop={x:130/1086,y:101/1448,width:827/1086,height:708/1448};media.push({mediaId:'reference',revisionId:'1',url:'blob:gravuru-workshop-reference',width:1086,height:1448});}
  }
  for(const e of examples){const slot=d.objects.find(o=>o.id===e.slotId&&o.type==='photoSlot');if(!slot)continue;slot.media={mediaId:e.assetId,revisionId:'1'};slot.crop={x:0,y:0,width:1,height:1};media.push({mediaId:e.assetId,revisionId:'1',url:'blob:workshop-'+e.assetId,width:slot.w,height:slot.h});}
- let svg=studioSvg(p,d,c.localResources.fonts,{motifs:c.localResources.motifs,media,handles:false,id:'product-card'});
+ const photoExampleMarkup=o=>{
+  const e=examples.find(e=>e.slotId===o.id),hint=c.photo.hints?.find(h=>h.designId===d.id&&h.slotId===o.id);
+  if(e)return examplePhotoMarkup(o,e.assetId,hint,e.url);
+  if(c.acrylic&&o.id==='photo-main'&&!d.importedSource){
+   const photo=defaultPhotoSvg();
+   return examplePhotoMarkup(o,'0'.repeat(64),hint,'data:image/svg+xml;base64,'+Buffer.from(photo).toString('base64'));
+  }
+  return '';
+ };
+ let svg=studioSvg(p,d,c.localResources.fonts,{motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');
  for(const e of examples)svg=svg.replaceAll('href="blob:workshop-'+e.assetId+'"','href="'+e.url+'"');
  if(!c.acrylic)return surfacePreview(svg,c.materialSurface,p.geometry);

@@ -20,9 +20,9 @@ const pathValue=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],
 function writePath(object,path,value){const parts=path.split('.'),last=parts.pop();let target=object;for(const key of parts)target=target[key]??={};target[last]=value;}
 function notify(message,tone='success'){const node=$('#notice');node.textContent=message;node.dataset.tone=tone;node.hidden=!message;}
 function errorMessage(error){return error?.message||'Die Aktion konnte nicht abgeschlossen werden.';}
-async function api(path,{method='GET',body}={}){
+async function api(path,{method='GET',body,signal}={}){
  if(method!=='GET'&&!state.csrf){const session=await api('/api/workshop/session');state.csrf=session.csrfToken;if(!state.csrf)throw Error('Die Werkstattsitzung konnte nicht gestartet werden. Bitte die Seite neu laden.');}
- const response=await fetch(path,{method,credentials:'same-origin',headers:{Accept:'application/json',...(body===undefined?{}:{'Content-Type':'application/json'}),...(method==='GET'?{}:{'X-Gravuru-CSRF':state.csrf})},...(body===undefined?{}:{body:JSON.stringify(body)})});
+ const response=await fetch(path,{method,signal,credentials:'same-origin',headers:{Accept:'application/json',...(body===undefined?{}:{'Content-Type':'application/json'}),...(method==='GET'?{}:{'X-Gravuru-CSRF':state.csrf})},...(body===undefined?{}:{body:JSON.stringify(body)})});
  let data;try{data=await response.json();}catch{throw Error('Die Werkstatt hat keine gültige Antwort gesendet. Bitte die Verbindung prüfen.');}
  if(!response.ok){const error=new Error(typeof data.error==='string'?data.error:data.error?.message||data.message||'Die Aktion konnte nicht abgeschlossen werden.');error.status=response.status;error.details=data;throw error;}
  return data;

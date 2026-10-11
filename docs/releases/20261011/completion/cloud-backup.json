@@ -1,0 +1,28 @@
+{
+  "result": "PASS",
+  "sourceCommit": "cdb840ddbac077c234daa53dc7eca288f920b79e",
+  "privateCopiesOutsideGit": true,
+  "files": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 10629120,
+      "sha256": "0d1f397294b7f8eb2afa3b12ba9fa755de77545141c7b5ca7bb2ecfeadfdff05",
+      "quickCheck": "ok",
+      "cloudSha256Matches": true
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok",
+      "cloudSha256Matches": true
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 17653760,
+      "sha256": "4c1c94d2b237fd3a367734fd2545072679faf2331ad7ebe655045268b6e9addc",
+      "quickCheck": "ok",
+      "cloudSha256Matches": true
+    }
+  ]
+}

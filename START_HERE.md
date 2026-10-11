@@ -1,3 +1,9 @@
+## Live: PDF-Kundenansicht und bearbeitbare Gedenktafel · 11.10.2026
+
+Quellstand **cdb840d** veröffentlicht und HTTPS-geprüft. Gedenktafel **Revision 4** mit zwei bearbeitbaren Texten, echtem Musterfoto/Fotofeld und Motiv; Originalrevision 3 erhalten. Vollständige Schriftwahl, Rückgängig/Wiederholen und Speichern der PDF-Kundengestaltung korrigiert. 652 Regressionen, 29 gezielte Folgeprüfungen, erweiterter Händler-Browser, tatsächliche PDF in privater Kopie sowie Paketinstallation/Neustart bestanden. 46 Tabellen auf Erhalt geprüft; private Vorher-/Nachher-Sicherungen auf Server und in Cloud verifiziert.
+
+[Bedienung, Release und offene Grenzen](docs/releases/20261011/completion/RELEASE.md) · [Versioniertes Installationspaket](deliverables/merchant-completion-20261011/README.md). Noch offen: nicht blockierender alter Renderer-Bildabruf, Bestellfreigabe neuer Produktrevisionen, externe Drive/KI- und Maschinenabnahmen. Der folgende Inhalt beschreibt historische Stände.
+
 ## Live: Auswahl, PDF-Bearbeitung und echtes Musterfoto · 11.10.2026
 
 Quellstand **4d8042f** läuft auf dem getrennten Händlerhost: sichtbare Auswahlgriffe, Maus/Touch, abbrechbare Vorschau; PDF/SVG standardmäßig in getrennte Bestandteile aufbereiten, Originaltexte gezielt in native Werkstatttexte umwandeln; echte Musterfotos mit lesbarem Hinweis. 650 Regressionstests, 21 abschließende gezielte Prüfungen und Browserablauf mit synthetischer Shopify-Identität bestanden. Alle 20 erreichbaren Original-PDFs aufbereitbar. Versioniertes Paket getrennt installiert, 398 Serverdateien und HTTPS geprüft. Alle ursprünglichen Zeilen in 46 Anwendungstabellen nach Veröffentlichung unverändert; drei private Datenbanksicherungen auf Server und in Cloud geprüft.

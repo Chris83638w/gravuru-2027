@@ -16,5 +16,7 @@
     "originalDatabaseUntouched": true
   },
   "apiRequestCount": 38,
-  "javascriptErrors": []
+  "javascriptErrors": [],
+  "nonBlockingUndefinedImageRequests": 7,
+  "oversizeValidationHttpStatus": 422
 }

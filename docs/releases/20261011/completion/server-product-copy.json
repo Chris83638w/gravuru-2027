@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "mode": "private-copy",
+  "sourceCommit": "cdb840ddbac077c234daa53dc7eca288f920b79e",
+  "previousRevision": 3,
+  "productRevision": 4,
+  "alreadyApplied": false,
+  "editableObjects": [
+    "motif",
+    "text",
+    "photoSlot",
+    "text"
+  ],
+  "importedResources": 5,
+  "previousRevisionPreserved": true,
+  "shopifyChanged": false,
+  "checkoutEnabled": false,
+  "productionReady": false
+}

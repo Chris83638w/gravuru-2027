@@ -1,0 +1,33 @@
+{
+  "schema": "gravuru-merchant-activation/v1",
+  "sourceCommit": "cdb840ddbac077c234daa53dc7eca288f920b79e",
+  "version": "0.1.0-recovery.20261010+cdb840ddbac0",
+  "archiveSha256": "bc9f3a9994c05f7b14d2d1f2f3f91c495652b428c5822ed90c846b5347cec78b",
+  "entrySha256": "99254743982180aaea6403bc39bf44a15d0a0881ea314e49ffcbcdd4f58d6e03",
+  "previousEntrySha256": "b62730202752046f72edd107a84d7e214f1a2ca921eed6be91a9440656af2edb",
+  "sqliteBackups": [
+    {
+      "file": "workshop.sqlite",
+      "bytes": 9617408,
+      "sha256": "51e4463b1c35161f70786fb2cc07eaf34f765a0d68829c30907f356d2665dc23",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c",
+      "quickCheck": "ok"
+    },
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 16756736,
+      "sha256": "6837a11321b8d403ad8459bf186c5105c14dcfbbcf1aa97f85e67eb425b45d9f",
+      "quickCheck": "ok"
+    }
+  ],
+  "runtimeBackupSha256": "e3e199915a45d1e62abda06b3d471be47d6f74c5aef4d16bf23d628f682c4f2f",
+  "entryActivated": true,
+  "serviceStarted": false,
+  "shopifyChanged": false,
+  "legacyWorkshopChanged": false
+}

@@ -268,6 +268,20 @@ export function createProductRepository({ filename, validateDocument = (value) =
         .map(r=>({id:r.id,name:r.name,kind:r.kind,schema:r.schema,revision:r.revision,profileRevision:r.profileRevision,
           current:r.revision===r.head,activated:r.revision===r.published_revision,archived:Boolean(r.archived)}));
     },
+    // Reuse the existing atomic import journal for a reviewed, exactly-once save.
+    saveOnce(id, document, expectedRevision, key, fingerprint) {
+      if(!/^ai:air_[a-f0-9-]{36}$/.test(key)||! /^[a-f0-9]{64}$/.test(fingerprint))throw failure(422,'invalid_save_key','Ungültiger geprüfter Auftrag.');
+      return transact(()=>{
+        const prior=db.prepare('SELECT * FROM import_items WHERE import_key=?').get(key);
+        positiveRevision(expectedRevision);
+        if(prior){if(prior.product_id!==id||prior.fingerprint!==fingerprint)throw failure(409,'save_key_conflict','Der Auftrag wurde für andere Daten verwendet.');return record(product(id),expectedRevision+1);}
+        const row=product(id);expected(row,expectedRevision);
+        if(row.archived)throw failure(409,'archived_product','Archivierte Produkte können nicht geändert werden.');
+        const saved=append(row,documentValue(document));
+        db.prepare('INSERT INTO import_items VALUES (?,?,?,?)').run(key,fingerprint,id,new Date().toISOString());
+        return saved;
+      });
+    },
     save(id, document, expectedRevision) {
       return transact(() => {
         const row = product(id);

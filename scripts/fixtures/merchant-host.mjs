@@ -31,6 +31,14 @@ const form=workshop.repository.create(document);
 const {syntheticSlate}=await import('./slate-config.mjs');
 const {makeProductDocument}=await import('../../app/workshop/product-model.mjs');
 const slate=workshop.repository.create(makeProductDocument(syntheticSlate(seed.universal),{name:'Synthetische Schieferplatte',kind:'product'}));workshop.close();
-const server = await createMerchantRuntime(env); server.listen(0, '127.0.0.1'); await once(server, 'listening');
+const aiDesign=process.argv[3]==='ai'?{
+ config:{enabled:true,monthlyLimitCents:10000,pricingValidUntil:new Date(Date.now()+86400000).toISOString()},
+ provider:async(context,{signal})=>{
+  await new Promise((resolve,reject)=>{const timer=setTimeout(resolve,context.instruction.includes('LANGSAM')?20000:120);signal.addEventListener('abort',()=>{clearTimeout(timer);reject(Error('synthetic abort'));},{once:true});});
+  const text=context.design.objects.find(o=>o.type==='text'&&!o.technicalLocked);
+  return {chargedCents:2,usage:{inputTokens:100,outputTokens:100},plan:{summary:'Synthetischer Layoutvorschlag: Name etwas tiefer.',operations:[{action:'move',objectId:text.id,text:null,font:null,size:null,x:text.x,y:text.y+5,w:null,h:null,color:null,motifKey:null}]}};
+ }
+}:undefined;
+const server = await createMerchantRuntime(env,{aiDesign}); server.listen(0, '127.0.0.1'); await once(server, 'listening');
 fs.writeFileSync(path.join(root, 'ready.json'), JSON.stringify({port: server.address().port, origin: 'https://merchant.example',form:{id:form.id,revision:form.revision},slate:{id:slate.id,revision:slate.revision}}));
 for (const signal of ['SIGTERM', 'SIGINT']) process.once(signal, async () => {server.close(); server.closeAllConnections(); await server.runtimeClosed;});

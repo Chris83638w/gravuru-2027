@@ -24,7 +24,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   if(!state.busy&&wasBusy&&previewPending)timer=setTimeout(preview,0);
   wasBusy=state.busy;
   const disabled=state.busy||state.record?.status==='archived';
-  for(const n of document.querySelectorAll('[data-editor-prop],[data-editor-color],[data-editor-photo],[data-editor-hint],[data-editor-action],[data-authoring-undo],[data-new-design],[data-editor-name],[data-element-label],[data-prepare-editable],[data-edit-pdf-text]'))n.disabled=disabled||(n.matches('[data-editor-prop],[data-editor-photo],[data-editor-color]')&&selected()?.technicalLocked===true);
+  for(const n of document.querySelectorAll('[data-editor-prop],[data-editor-color],[data-editor-photo],[data-editor-hint],[data-editor-action],[data-authoring-undo],[data-new-design],[data-ai-design],[data-editor-name],[data-element-label],[data-prepare-editable],[data-edit-pdf-text]'))n.disabled=disabled||(n.matches('[data-editor-prop],[data-editor-photo],[data-editor-color]')&&selected()?.technicalLocked===true);
   const undoButton=$('[data-authoring-undo]');if(undoButton)undoButton.disabled=disabled||!undo.length;
   const redoButton=$('[data-authoring-redo]');if(redoButton)redoButton.disabled=disabled||!redo.length;
   for(const n of document.querySelectorAll('[data-editor-object],[data-editor-design]'))n.disabled=state.busy;
@@ -109,7 +109,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   if(!design())designId=state.draft.config.profile.defaultDesignId;
   if(!selected())objectId=design()?.objects.find(o=>o.type==='photoSlot')?.id||design()?.objects[0]?.id;
   refreshOptions();
-  $('#editor-designs').innerHTML=designs().map(d=>`<button type="button" data-editor-design="${escape(d.id)}" aria-pressed="${d.id===designId}"><img loading="lazy" ${merchantImageAttribute(`/api/workshop/products/${encodeURIComponent(state.record.id)}/preview.svg?revision=${state.record.revision}&designId=${encodeURIComponent(d.id)}`)} alt=""><span>${escape(d.name)}</span><small>${d.id===state.draft.config.profile.defaultDesignId?'Standarddesign':'Design'}</small></button>`).join('')+`<button type="button" class="import-design-tile" data-design-action="import" data-design-id="${escape(designId)}">PDF / SVG importieren</button><button type="button" data-new-design>Eigenes Design anlegen</button>`;
+  $('#editor-designs').innerHTML=designs().map(d=>`<button type="button" data-editor-design="${escape(d.id)}" aria-pressed="${d.id===designId}"><img loading="lazy" ${merchantImageAttribute(`/api/workshop/products/${encodeURIComponent(state.record.id)}/preview.svg?revision=${state.record.revision}&designId=${encodeURIComponent(d.id)}`)} alt=""><span>${escape(d.name)}</span><small>${d.id===state.draft.config.profile.defaultDesignId?'Standarddesign':'Design'}</small></button>`).join('')+`<button type="button" class="import-design-tile" data-design-action="import" data-design-id="${escape(designId)}">PDF / SVG importieren</button><button type="button" data-new-design>Eigenes Design anlegen</button><button type="button" data-ai-design="${escape(designId)}">Mit KI gestalten</button>`;
   // Preserve every existing operation, relocating its card rather than replacing its logic.
   const cards=[...document.querySelectorAll('.record-aside .record-card')];
   for(const card of cards){const target=card.querySelector('#print-export-link')?'#panel-production':'#panel-details';$(target).append(card);}

@@ -10,14 +10,14 @@ import {lockTestData} from './lock.mjs';
 
 // Separate authenticated merchant runtime. Optional signed test-order input and
 // explicitly pinned merchant test cart; public checkout remains disabled.
-export async function createMerchantRuntime(env) {
+export async function createMerchantRuntime(env,{aiDesign:aiDesignOverride}={}) {
   const config = merchantConfig(env); verifyMerchantStorage(config);
   process.umask(0o077); process.env.GRAVURU_PYTHON = config.python; delete process.env.PYTHONPATH;
   const lock = await lockTestData(config), released = once(lock, 'exit'); let inner,orderWebhookHandler;
   try {
     const merchantCsrfToken = createHmac('sha256', config.runtime.shopifySessions.secret)
       .update(JSON.stringify(['gravuru-merchant-test-csrf/v1', config.origin, config.runtime.shopifySessions.clientId])).digest('hex');
-    ({server: inner,orderWebhookHandler} = createShopifyTestRuntime(config.runtimeEnv, {merchantCsrfToken,orderWebhook:config.orderWebhook,merchantTestCart:config.merchantTestCart}));
+    ({server: inner,orderWebhookHandler} = createShopifyTestRuntime(config.runtimeEnv, {merchantCsrfToken,orderWebhook:config.orderWebhook,merchantTestCart:config.merchantTestCart,aiDesign:aiDesignOverride??config.aiDesign}));
     inner.once('close', () => lock.stdin.end());
     // Only the outer server may be claimed by LiteSpeed/Passenger.
     inner.address = net.Server.prototype.address;

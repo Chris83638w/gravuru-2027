@@ -1,3 +1,4 @@
+import {installAiDesign} from './ai-design-ui.mjs';
 import {merchantNavigation} from './merchant-navigation.mjs';
 import {customerPreviewLink} from './customer-preview-link.mjs';
 import {openRevisionCompare} from './revision-compare-ui.mjs';
@@ -339,6 +340,7 @@ nativeProduction=installNativeProduction({state,api,markDirty});
 productOptions=installProductOptions({state,api,markDirty,syncControls,previewOptions:()=>productEditor.refreshOptions(true)});
 overview=installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate});
 const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
+installAiDesign({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 let searchTimer;
 $('#search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>loadList().catch(error=>notify(errorMessage(error),'error')),180);});

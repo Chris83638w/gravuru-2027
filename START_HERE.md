@@ -1,3 +1,9 @@
+## In Prüfung: OpenAI-Gestaltung auf vorhandener Werkstattlogik · 11.10.2026
+
+Aufgabenbranch `task/openai-designer-20261011`: native Texte/Layout/Farben/vorhandene Motive, Vorher/Nachher, ausdrückliche neue Revision und dauerhafte Auftrags-/Kostenhistorie. 100-EUR-Monatsgrenze mit atomarer Reserve und befristeter Tarifprüfung. Gezielte Prüfungen und synthetische Desktop-/Mobilabläufe bestanden; Gesamtregression/Paketveröffentlichung folgen. **Kein echter OpenAI-Aufruf, kein API-Schlüssel; Generierung bleibt deaktiviert.**
+
+[Umfang, Prüfung und Grenzen](docs/releases/20261011/ai-design/RELEASE.md) · [Geschützte Einrichtung](ops/plesk/AI-DESIGN.md). Nächster Schritt: Abschlussprüfungen, Sicherung und Händler-Veröffentlichung, anschließend geschützter OpenAI-Zugang und echter kleiner Abnahmelauf. Die folgenden Abschnitte sind historische Nachweise.
+
 ## Live: Original-Fotomaske und vollständiger Testkauf · 11.10.2026
 
 Installierter Quellstand **9b77eb1**, Gedenktafel **Revision 5**. Originalmaske der PDF bleibt beim Fotoaustausch in Händleransicht, Kundenansicht und technischem Ausgabepaket erhalten; verständliche Elementnamen und M01/M02-Navigation. **654 Regressionstests**, Desktop-/Mobilabläufe, isolierte Paketinstallation und **25 HTTPS-Prüfungen** bestanden. Tatsächliche Shopify-Testbestellung mit Foto: **32,98 EUR + 4,99 EUR Versand**, Testgateway, bezahlt, nicht erfüllt; genau eine Position zugeordnet, keine Fertigungsfreigabe.

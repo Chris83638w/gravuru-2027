@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "regression": {
+    "tests": 671,
+    "pass": 671,
+    "fail": 0,
+    "skipped": 0,
+    "durationMs": 481641.392111
+  },
+  "targeted": {
+    "tests": 49,
+    "pass": 49,
+    "overlapsRegression": true
+  },
+  "merchantAuthAfterExtension": {
+    "tests": 9,
+    "pass": 9,
+    "overlapsTargeted": true
+  },
+  "realOpenAiCalls": 0
+}

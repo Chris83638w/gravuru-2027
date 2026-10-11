@@ -1,3 +1,4 @@
+import {createAiDesignJobs} from './ai-design-jobs.mjs';
 import {createFontLibrary,MAX_FONT_BYTES} from './font-library.mjs';
 import {prepareEditableDesign} from './editable-design.mjs';
 import {defaultPhotoSvg} from './product-preview.mjs';
@@ -67,7 +68,7 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Loopback preview; optional test session gate is not a public deployment. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null}){
   if(operatorCsrfToken!==null&&(shopifySessions||typeof operatorCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(operatorCsrfToken)))fail(503,'operator_session_config','Ungültige private Werkstattsitzung.');
   if(merchantCsrfToken!==null&&(!shopifySessions||operatorCsrfToken!==null||typeof merchantCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(merchantCsrfToken)))fail(503,'merchant_session_config','Ungültige Händler-Werkstattsitzung.');
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
@@ -84,6 +85,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,formFonts);productionProfiles.resolve(d);return d;};
   const repository=createProductRepository({filename,validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(repository.list({includeArchived:true}).length===0)repository.create(seed);
+  const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider});
   const variants=createFormVariants({filename,repository});
   const batchJobs=createBatchJobs({filename,repository,assets});
   const variantBatchJobs=createVariantBatchJobs({filename,variants});
@@ -145,6 +147,14 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     universal.profile.revision=`${record.id}:${record.revision}`;
     return {key:'acryl',name:record.document.name,legacy:shell,universal,configuration:{id:record.id,revision:record.revision,publishedRevision:record.publishedRevision}};
   }
+  function editorPreview(input,designId,options){
+    const document=validateProductDocument(input);profiles.resolve(document);assets.validateDocument(document);
+    const resolved=resolveProduct(document,{designId,options});
+    const universal=embedMaterialSurface(structuredClone(resolved.config));universal.profile.defaultDesignId=resolved.designId;
+    universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
+    const examples=(universal.localResources.photoExamples||[]).filter(e=>e.designId===resolved.designId).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
+    return {svg:privateProductPreview({universal},{options:resolved.resolvedOptions,examples}),designId:resolved.designId,price:resolved.price};
+  }
   async function handle(req,res,url){
     try{
       const pathname=url.pathname,method=req.method;
@@ -174,6 +184,32 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/ai-design/status'&&method==='GET')return json(res,200,aiJobs.status());
+      const aiProduct=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/ai-design$/);
+      if(aiProduct){
+        repository.get(aiProduct[1]);
+        if(method==='GET')return json(res,200,{jobs:aiJobs.list(aiProduct[1]),budget:aiJobs.status()});
+        if(method==='POST')return json(res,202,{job:aiJobs.start(aiProduct[1],await body(req,16384))});
+        fail(405,'method_not_allowed','Diese KI-Aktion wird nicht unterstützt.');
+      }
+      const aiJob=pathname.match(/^\/api\/workshop\/ai-design\/(air_[a-f0-9-]{36})(?:\/(apply|cancel))?$/);
+      if(aiJob){
+        if(method==='GET'&&!aiJob[2]){
+          const job=aiJobs.get(aiJob[1]),result={job,budget:aiJobs.status()};
+          if(['review','applied'].includes(job.status)){
+            const old=repository.get(job.productId,{revision:job.expectedRevision});
+            result.before=editorPreview(old.document,job.designId).svg;
+            result.after=editorPreview(aiJobs.candidate(job.id),job.designId).svg;
+          }
+          return json(res,200,result);
+        }
+        if(method==='POST'){
+          const data=await body(req,1024);
+          if(aiJob[2]==='apply'&&Object.keys(data).length===1&&Object.hasOwn(data,'expectedRevision'))return json(res,200,aiJobs.apply(aiJob[1],data.expectedRevision));
+          if(aiJob[2]==='cancel'&&!Object.keys(data).length)return json(res,200,{job:aiJobs.cancel(aiJob[1])});
+        }
+        fail(422,'ai_action_invalid','Ungültige KI-Aktion.');
+      }
       const shopTransferMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/shop-transfer$/);
       if(shopTransferMatch){
         if(method==='GET'){
@@ -535,14 +571,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(editorMatch&&method==='POST'){
         const data=await body(req,16*1024*1024),record=repository.get(editorMatch[1]);
         if(data.expectedRevision!==record.revision)fail(409,'stale_revision','Der gespeicherte Stand wurde geändert. Bitte zuerst den Konflikt klären.');
-        const document=validateProductDocument(data.document);
-        profiles.resolve(document);assets.validateDocument(document);
-        const resolved=resolveProduct(document,{designId:data.designId,options:data.options});
-        const universal=embedMaterialSurface(structuredClone(resolved.config));
-        universal.profile.defaultDesignId=resolved.designId;
-        universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
-        const examples=(universal.localResources.photoExamples||[]).filter(e=>e.designId===resolved.designId).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
-        return json(res,200,{svg:privateProductPreview({universal},{options:resolved.resolvedOptions,examples}),revision:record.revision,designId:resolved.designId,price:resolved.price});
+        return json(res,200,{...editorPreview(data.document,data.designId,data.options),revision:record.revision});
       }
       const cardMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/preview\.svg$/);
       if(cardMatch&&method==='GET'){
@@ -697,5 +726,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }

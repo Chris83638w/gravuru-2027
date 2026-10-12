@@ -1,3 +1,7 @@
+## Projektüberblick und Claude-Prüfauftrag · 12.10.2026
+
+Für die unabhängige Prüfung zuerst die [vollständige Übersicht](docs/reviews/PROJEKTUEBERBLICK-CLAUDE-20261012.md) und das [aktuelle Prüfpaket](deliverables/claude-review-20261012/README.md) verwenden. Quellenbasis `9d388e3`, installierter Code `7a168bc`; `main` ist älter. Ziele, Umsetzung, Testarten, Sicherungen und offene Shopify-/Fertigungsabnahmen sind getrennt beschrieben. Heute 17 lesende HTTPS-Prüfungen bestanden; keine Anwendung oder Live-Daten für diese Übergabe geändert. Die nachfolgenden Abschnitte sind datierte Veröffentlichungsnachweise.
+
 ## Live: schwarze Edelstahlgravur und Produkt-/Designtabs · 11.10.2026
 
 Quellstand **7a168bc**, Version `0.1.0-recovery.20261010+7a168bc66adc`: schwarze Vektorgravur, sichtbarer Importabstand mit Vorgabe 0 mm, „Ohne Rand neu einpassen“ sowie Tabs **Hauptprodukt / Designs** mit Suche. Bestehende Designs werden nur auf ausdrückliche Übernahme angepasst.

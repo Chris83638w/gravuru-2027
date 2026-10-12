@@ -1,0 +1,232 @@
+{
+  "kind": "read-only project handover verification, not independent audit",
+  "checkedAt": "2026-10-12T09:59:52.887086+00:00",
+  "sourceCommit": "9d388e3e9f8e7cb5aa63e7a50d163cf1ca7d5e3a",
+  "deployedSourceCommit": "7a168bc66adc9718bc9b0fefad97c338e546c57d",
+  "workspace": "/workspace/gravuru-restored",
+  "initialBranch": "task/steel-ink-product-tabs-20261011",
+  "initialWorkingTreeClean": true,
+  "documentationBranch": "task/claude-overview-20261012",
+  "base": "a2af162edd3a1dfa2106212c9f4b76c7ae351b70",
+  "baseIsAncestor": true,
+  "reachableCommitsAfterBase": 100,
+  "remoteRefsObservedAt": "2026-10-12T09:50Z",
+  "remoteRefs": {
+    "task/steel-ink-product-tabs-20261011": "9d388e3e9f8e7cb5aa63e7a50d163cf1ca7d5e3a",
+    "backup/account-recovery-20261010": "9d388e3e9f8e7cb5aa63e7a50d163cf1ca7d5e3a",
+    "task/full-backup-install-20261010": "9d388e3e9f8e7cb5aa63e7a50d163cf1ca7d5e3a"
+  },
+  "remoteMain": "3ff2c2f8e7cb2565f60bd016f73a99ff6520152b",
+  "http": {
+    "checkedAt": "2026-10-12T09:51:49.607595+00:00",
+    "origin": "https://app-2027.gravuru-designwerkstatt.de",
+    "readOnly": true,
+    "tlsVerified": true,
+    "realShopifyLogin": false,
+    "sourceCommit": "7a168bc66adc9718bc9b0fefad97c338e546c57d",
+    "passed": true,
+    "checks": [
+      {
+        "path": "/werkstatt/",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8",
+        "tabsPresent": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/merchant-request.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/app.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/product-editor-ui.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/native-production-ui.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/review-snapshots-ui.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/editor-guides.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/editor.css",
+        "status": 200,
+        "contentType": "text/css; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/design-import-ui.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/steel-options-ui.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/catalog-ui.mjs",
+        "status": 200,
+        "contentType": "text/javascript; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/workshop-ui/catalog.css",
+        "status": 200,
+        "contentType": "text/css; charset=utf-8",
+        "matchesSource": true,
+        "passed": true
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 401,
+        "contentType": "application/json; charset=utf-8",
+        "structuredAuthenticationError": true,
+        "passed": true
+      },
+      {
+        "path": "/api/workshop/products",
+        "status": 401,
+        "contentType": "application/json; charset=utf-8",
+        "structuredAuthenticationError": true,
+        "passed": true
+      },
+      {
+        "path": "/api/workshop/profiles",
+        "status": 401,
+        "contentType": "application/json; charset=utf-8",
+        "structuredAuthenticationError": true,
+        "passed": true
+      },
+      {
+        "path": "/api/workshop/ai-batches",
+        "status": 401,
+        "contentType": "application/json; charset=utf-8",
+        "structuredAuthenticationError": true,
+        "passed": true
+      }
+    ]
+  },
+  "package": {
+    "path": "deliverables/merchant-steel-ink-tabs-20261011/gravuru-merchant-steel-ink-tabs-20261011.zip",
+    "bytes": 28666379,
+    "sha256": "bbe80f53cc2148323ecfb978051c145fc64d05847d5ec01a285abf9f2209ca51"
+  },
+  "privateDatabasePresenceOnly": true,
+  "liveDatabaseReadToday": false,
+  "newApplicationTestsRun": false,
+  "paidRequests": 0,
+  "liveMutations": 0,
+  "limitations": [
+    "No fresh authenticated Shopify browser audit",
+    "No fresh server process or database inventory",
+    "Historical test reports are first-party Codex evidence, not independent review"
+  ],
+  "accessFailureAndChange": "Initial sandbox network could not reach configured proxy; reran using supported per-command network permission with existing proxy and TLS trust. No proxy bypass or TLS disable.",
+  "trackedTreeInventory": {
+    "(root)": {
+      "files": 34,
+      "bytes": 82749440
+    },
+    "app": {
+      "files": 494,
+      "bytes": 38478618
+    },
+    "deliverables": {
+      "files": 120,
+      "bytes": 826796408
+    },
+    "docs": {
+      "files": 809,
+      "bytes": 54050745
+    },
+    "ops": {
+      "files": 56,
+      "bytes": 246830
+    },
+    "recovery": {
+      "files": 30,
+      "bytes": 4111084
+    },
+    "scripts": {
+      "files": 74,
+      "bytes": 551271
+    }
+  },
+  "privateBackupsPresent": [
+    {
+      "path": "/workspace/recovery-private/merchant-before-steel-ink-20261011-v2",
+      "databases": [
+        {
+          "file": "design-assets.sqlite",
+          "bytes": 20066304
+        },
+        {
+          "file": "profiles.sqlite",
+          "bytes": 45056
+        },
+        {
+          "file": "workshop.sqlite",
+          "bytes": 49651712
+        }
+      ]
+    },
+    {
+      "path": "/workspace/recovery-private/merchant-after-steel-ink-20261011",
+      "databases": [
+        {
+          "file": "design-assets.sqlite",
+          "bytes": 20066304
+        },
+        {
+          "file": "profiles.sqlite",
+          "bytes": 45056
+        },
+        {
+          "file": "workshop.sqlite",
+          "bytes": 49651712
+        }
+      ]
+    }
+  ]
+}

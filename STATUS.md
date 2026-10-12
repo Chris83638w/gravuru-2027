@@ -1,3 +1,11 @@
+## Übergabe zur unabhängigen Claude-Prüfung · 12.10.2026
+
+[Vollständige Projektübersicht](docs/reviews/PROJEKTUEBERBLICK-CLAUDE-20261012.md): Ziele, verbindliche Entscheidungen, Soll/Ist, tatsächliche Architektur, gemeldete Fehler/Korrekturen, Produktvorlagen, Shopify/KI/Fertigung, Sicherungen und offene Abnahmen. [Prüfpaket](deliverables/claude-review-20261012/README.md) mit Quellenbasis `9d388e3`, neuen Übergabedateien und 1.200 per SHA-256 geprüften Dateien; private Daten/Schlüssel ausgeschlossen, fehlende Dokumentmedien im Manifest benannt. Keine unabhängige Prüfung bereits erfolgt.
+
+Heute 17 lesende HTTPS-Prüfungen bestanden: HTML/Tabs, zwölf quellgleiche JS-/CSS-Dateien, vier geschützte JSON-APIs. Drei Remote-Branches vor Übergabe auf `9d388e3` bestätigt; `main` bleibt auf `3ff2c2f`. Aktuelles Installations-ZIP erneut auf SHA-256 geprüft. Letzter vollständiger Server-/Datenbankbeleg bleibt 11.10., 19:46 UTC; heute kein echter angemeldeter Shopify-Klickablauf und keine neue Datenbankinventur. Quellen siehe [Abgleich](docs/reviews/overview-20261012-checks.json).
+
+Eigener Dokumentationsbranch `task/claude-overview-20261012`; Anwendungscode, Live-App, Produkte, Bestellungen, KI-Konfiguration und private Daten nicht geändert. Keine erneute Regression für diese Dokumentationsarbeit. Nächster Schritt: unabhängige Prüfung mit konkreten Befunden und echte Bedien-/Verkaufs-/Fertigungsabnahmen entsprechend der Übersicht.
+
 ## Live: schwarze Edelstahlgravur und Produkt-/Designtabs · 11.10.2026
 
 Quellstand **7a168bc**, Version `0.1.0-recovery.20261010+7a168bc66adc`: schwarze Vektorgravur, sichtbarer Importabstand mit Vorgabe 0 mm, „Ohne Rand neu einpassen“ sowie Tabs **Hauptprodukt / Designs** mit Suche. Bestehende Designs werden nur auf ausdrückliche Übernahme angepasst.

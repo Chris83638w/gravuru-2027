@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "sourceCommit": "9d388e3e9f8e7cb5aa63e7a50d163cf1ca7d5e3a",
+  "bytes": 30329664,
+  "sha256": "96727232c0dec58f9f35cc80cea8c6cd34fcb03f21eda2ee96bba35a6a6a893b",
+  "manifestFiles": 1200,
+  "zipEntries": 1201,
+  "allEntryHashesVerified": true,
+  "crcVerified": true,
+  "privateDatabaseFilesIncluded": false,
+  "knownSecretMarkersFound": false,
+  "applicationChanged": false,
+  "testsRerunForDocumentation": false,
+  "excludedDocumentMediaCount": 249
+}

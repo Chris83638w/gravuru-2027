@@ -132,6 +132,34 @@ ${f.briefingNotes.trim()||'Noch keine Stilnotizen hinterlegt.'}
 `;
 }
 
+
+// Fields a family owns in a generated product. Designs, customer rights, SEO,
+// categories and photos stay untouched when family changes are applied.
+const euroText=c=>(c/100).toFixed(2).replace('.',',')+' €';
+const mountingText=values=>values.map(v=>v.label+(v.holes?.length?' ('+v.holes.map(h=>h.x+'|'+h.y).join(', ')+')':'')+(v.priceCents?' +'+euroText(v.priceCents):'')).join('; ');
+const productName=(f,s)=>f.name+' · '+f.groups.find(g=>g.key===s.groupKey).name+' '+s.label;
+export function familySyncTarget(document,f,s,revision){
+ const t=familyProductConfig(f,s,revision),doc=structuredClone(document),p=doc.config.profile,mount=t.profile.optionGroups.find(g=>g.id==='mounting');
+ doc.name=productName(f,s);doc.config.basePriceCents=t.basePriceCents;p.name=t.profile.name;p.revision=t.profile.revision;
+ p.geometry={...p.geometry,width:t.profile.geometry.width,height:t.profile.geometry.height,shape:t.profile.geometry.shape,cornerRadiusMm:t.profile.geometry.cornerRadiusMm,safeMarginMm:t.profile.geometry.safeMarginMm};
+ const old=p.optionGroups.find(g=>g.id==='mounting'),group=structuredClone(mount);if(old&&group.values.some(v=>v.id===old.defaultValueId))group.defaultValueId=old.defaultValueId;
+ p.optionGroups=p.optionGroups.map(g=>g.id==='mounting'?group:g);if(!old)p.optionGroups.push(group);
+ return doc;
+}
+export function familyChanges(before,after){
+ const a=before.config,b=after.config,ga=a.profile.geometry,gb=b.profile.geometry,changes=[];
+ const add=(field,label,x,y)=>{if(JSON.stringify(x)!==JSON.stringify(y))changes.push({field,label,before:x,after:y});};
+ add('name','Name',before.name,after.name);
+ add('price','Grundpreis',euroText(a.basePriceCents),euroText(b.basePriceCents));
+ add('size','Maße',ga.width+' × '+ga.height+' mm',gb.width+' × '+gb.height+' mm');
+ add('shape','Form',(ga.shape==='ellipse'?'oval':'eckig')+(ga.cornerRadiusMm?' R'+ga.cornerRadiusMm:''),(gb.shape==='ellipse'?'oval':'eckig')+(gb.cornerRadiusMm?' R'+gb.cornerRadiusMm:''));
+ add('margin','Gestaltungsrand',(ga.safeMarginMm??2)+' mm',gb.safeMarginMm+' mm');
+ const mv=d=>d.config.profile.optionGroups.find(g=>g.id==='mounting')?.values||[];
+ add('mounting','Befestigung',mountingText(mv(before)),mountingText(mv(after)));
+ const keep=d=>JSON.stringify(mv(d).map(v=>v.mountingRule?.keepoutMm));add('keepout','Schutzzone',keep(before),keep(after));
+ return changes;
+}
+
 export function createProductFamilies({filename,repository}){
  if(filename!==':memory:')mkdirSync(dirname(filename),{recursive:true});
  const db=new DatabaseSync(filename);
@@ -162,6 +190,35 @@ export function createProductFamilies({filename,repository}){
     results.push(...repository.importBatch(entries).map((r,j)=>({sizeKey:wanted[i+j].key,productId:r.id,created:r.created})));
    }
    return {familyId:fid,familyRevision:rec.revision,created:results.filter(r=>r.created).length,existing:results.filter(r=>!r.created).length,products:results};
+  },
+  // Shows per generated product what a family revision would change. Nothing
+  // is written; the token binds the exact plan to apply().
+  planSync(fid){
+   const rec=this.get(fid),f=rec.document,items=[];
+   for(const s of f.sizes){
+    const item=repository.importItem(productKey(f,s));if(!item)continue;
+    const current=repository.get(item.id);let entry={sizeKey:s.key,label:productName(f,s),productId:item.id,productRevision:current.revision};
+    try{const target=familySyncTarget(current.document,f,s,rec.revision),changes=familyChanges(current.document,target);
+     if(!changes.length)entry={...entry,status:'same',changes};
+     else{repository.validate(target);entry={...entry,status:'change',changes,targetSha256:sha(JSON.stringify(target))};}
+    }catch(e){entry={...entry,status:'error',message:e.message==='Element ragt über die Gestaltungsfläche hinaus.'||/ragt|Kontur|Gestaltungsfläche/.test(e.message)?'Ein Design passt nicht in die neue Form oder Größe. Bitte das Produkt im Editor anpassen. ('+e.message+')':e.message};}
+    items.push(entry);
+   }
+   const orphaned=[];
+   for(const r of db.prepare('SELECT document FROM product_family_revisions WHERE family_id=?').all(fid))for(const s of JSON.parse(r.document).sizes)if(!f.sizes.some(x=>x.key===s.key)&&!orphaned.some(o=>o.sizeKey===s.key)){const item=repository.importItem('family:'+fid+':'+s.key);if(item)orphaned.push({sizeKey:s.key,productId:item.id});}
+   const token=sha(JSON.stringify({fid,revision:rec.revision,items:items.filter(i=>i.status==='change').map(i=>[i.productId,i.productRevision,i.targetSha256])}));
+   return {familyId:fid,familyRevision:rec.revision,token,changed:items.filter(i=>i.status==='change').length,unchanged:items.filter(i=>i.status==='same').length,errors:items.filter(i=>i.status==='error').length,items,orphaned};
+  },
+  applySync(fid,{expectedRevision,token}){
+   const plan=this.planSync(fid);
+   if(plan.familyRevision!==expectedRevision||plan.token!==token)fail(409,'family_sync_changed','Familie oder Produkte wurden seit der Vorschau geändert. Bitte die Vorschau neu laden.');
+   const f=this.get(fid).document,results=[];
+   for(const item of plan.items.filter(i=>i.status==='change')){
+    const s=f.sizes.find(x=>x.key===item.sizeKey);
+    try{const target=familySyncTarget(repository.get(item.productId).document,f,s,plan.familyRevision),saved=repository.save(item.productId,target,item.productRevision);results.push({sizeKey:item.sizeKey,productId:item.productId,revision:saved.revision,ok:true});}
+    catch(e){results.push({sizeKey:item.sizeKey,productId:item.productId,ok:false,message:e.status===409?'Produkt wurde inzwischen geändert und nicht überschrieben.':e.message});}
+   }
+   return {familyId:fid,familyRevision:plan.familyRevision,updated:results.filter(r=>r.ok).length,failed:results.filter(r=>!r.ok).length,results};
   },
   template(fid,sizeKey){const f=this.get(fid).document,s=f.sizes.find(s=>s.key===sizeKey);if(!s)fail(404,'size_missing','Größe nicht gefunden.');return familyTemplate(f,s);},
   async briefing(fid){

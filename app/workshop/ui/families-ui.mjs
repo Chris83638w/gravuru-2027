@@ -56,3 +56,115 @@ $('#family-briefing').addEventListener('click',async()=>{
  catch(e){notice(e.message,'error');}finally{busy(false);}
 });
 void load();
+
+// ---- Bearbeiten -----------------------------------------------------------
+// The draft is a full copy of the family document. Saving sends it with the
+// expected revision; the server validates everything and keeps every revision.
+const LAYOUTS={'left-right':['mittig links/rechts',2],'top-bottom':['mittig oben/unten',2],'corners':['vier Ecken',4],'top-center':['oben mittig',1]};
+const cents=v=>{const n=Number(String(v).trim().replace(/\s|€/g,'').replace(/\.(?=\d{3}(\D|$))/g,'').replace(',','.'));return Number.isFinite(n)&&n>=0?Math.round(n*100):NaN;};
+const money=c=>(c/100).toFixed(2).replace('.',',');
+const num=v=>Number(String(v).replace(',','.'));
+const skuFor=(g,w,h)=>`GR-ES-${g}-${String(w).replace('.','P')}X${String(h).replace('.','P')}-T15`;
+let fontChoices=null;
+async function editStart(){
+ if(!state.record)return;
+ if(!fontChoices){try{fontChoices=(await api('/api/workshop/font-library')).fonts.map(f=>f.id);}catch{fontChoices=[];}}
+ state.draft=structuredClone(state.record.document);state.draftBase=state.record.revision;state.removed=new Set();state.editGroup='';
+ renderEditor();$('#family-editor').hidden=false;$('#family-editor').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function used(kind,id){const d=state.draft;return kind==='group'?d.sizes.some(s=>s.groupKey===id&&!state.removed.has(s.key)):d.sizes.some(s=>s.mounting.includes(id)&&!state.removed.has(s.key));}
+function renderEditor(conflict=''){
+ const d=state.draft,groupOptions=k=>d.groups.map(g=>`<option value="${esc(g.key)}"${g.key===k?' selected':''}>${esc(g.name)}</option>`).join('');
+ const sizes=d.sizes.map((s,i)=>({s,i})).filter(({s})=>!state.editGroup||s.groupKey===state.editGroup);
+ $('#family-editor').innerHTML=`<form class="family-edit" id="family-edit-form" novalidate>
+ <div class="editor-heading"><div><p class="eyebrow">BEARBEITEN · AUSGANGSSTAND ${state.draftBase}</p><h2 id="family-editor-title">${esc(d.name)} bearbeiten</h2><small>Speichern legt einen neuen Familienstand an. Erzeugte Produkte ändern sich erst über „Auf Produkte übernehmen“.</small></div>
+ <div class="button-row"><button type="button" id="family-edit-cancel">Verwerfen</button><button type="submit" class="primary">Als neuen Stand speichern</button></div></div>
+ ${conflict?`<div class="conflict-banner" role="alert"><strong>${esc(conflict)}</strong><div class="button-row"><button type="button" id="family-edit-reload">Aktuellen Stand laden (eigene Änderungen verwerfen)</button></div></div>`:''}
+ <fieldset><legend>Allgemein</legend><div class="grid">
+  <label>Name<input type="text" data-f="name" value="${esc(d.name)}" maxlength="120" required></label>
+  <label>Materialbezeichnung<input type="text" data-f="material.label" value="${esc(d.material.label)}" maxlength="80"></label>
+  <label>Gestaltungsrand (mm)<input type="number" step="0.5" min="0" max="30" data-f="designArea.marginMm" value="${d.designArea.marginMm}"></label>
+  <label>Schutzzone um Bohrlöcher (mm)<input type="number" step="0.5" min="0" max="20" data-f="designArea.keepoutMm" value="${d.designArea.keepoutMm}"></label>
+  <label style="align-self:end"><input type="checkbox" data-f="withoutMounting"${d.withoutMounting?' checked':''}> „Ohne Bohrung“ anbieten</label>
+ </div>
+ <p><strong>Zugelassene Schriften</strong></p><div class="fonts">${[...new Set([...d.fonts,...fontChoices])].map(f=>`<label><input type="checkbox" data-font="${esc(f)}"${d.fonts.includes(f)?' checked':''}> ${esc(f)}</label>`).join('')}</div>
+ <label style="display:block;margin-top:12px">Stilnotizen für das Briefing<textarea data-f="briefingNotes" rows="3" maxlength="8000" style="width:100%">${esc(d.briefingNotes)}</textarea></label></fieldset>
+ <fieldset><legend>Formgruppen</legend><table class="family-table"><thead><tr><th>Kürzel</th><th>Name</th><th>Form</th><th>Eckenradius (mm)</th><th></th></tr></thead><tbody>
+ ${d.groups.map((g,i)=>`<tr><td>${g.isNew?`<input type="text" data-g="${i}" data-k="key" value="${esc(g.key)}" maxlength="10" placeholder="z. B. HE">`:esc(g.key)}</td><td><input type="text" data-g="${i}" data-k="name" value="${esc(g.name)}"></td><td><select data-g="${i}" data-k="shape"><option value="rect"${g.shape==='rect'?' selected':''}>eckig</option><option value="ellipse"${g.shape==='ellipse'?' selected':''}>oval</option></select></td><td><input type="number" step="0.5" min="0" data-g="${i}" data-k="cornerRadiusMm" value="${g.cornerRadiusMm}"${g.shape==='ellipse'?' disabled':''}></td><td><button type="button" data-remove-group="${i}"${used('group',g.key)?' disabled title="Wird von Größen verwendet"':''}>Entfernen</button></td></tr>`).join('')}
+ </tbody></table><button type="button" id="add-group">＋ Formgruppe</button></fieldset>
+ <fieldset><legend>Bohrbilder</legend><p class="field-help">Löcher werden für jede Größe aus der Regel berechnet. Randabstand = Rand bis Bohrlochmitte.</p><table class="family-table"><thead><tr><th>Bezeichnung</th><th>Lage</th><th>Ø mm</th><th>Randabstand mm</th><th>Aufpreis €</th><th>SKU-Endung</th><th></th></tr></thead><tbody>
+ ${d.mountingRules.map((r,i)=>`<tr><td><input type="text" data-r="${i}" data-k="label" value="${esc(r.label)}"></td><td><select data-r="${i}" data-k="layout">${Object.entries(LAYOUTS).map(([k,[l]])=>`<option value="${k}"${k===r.layout?' selected':''}>${l}</option>`).join('')}</select></td><td><input type="number" step="0.5" min="1" max="12" data-r="${i}" data-k="diameterMm" value="${r.diameterMm}"></td><td><input type="number" step="0.5" min="1" data-r="${i}" data-k="edgeMm" value="${r.edgeMm}"></td><td><input type="text" inputmode="decimal" data-r="${i}" data-k="priceCents" value="${money(r.priceCents)}"></td><td><input type="text" data-r="${i}" data-k="skuSuffix" value="${esc(r.skuSuffix)}" maxlength="8"></td><td><button type="button" data-remove-rule="${i}"${used('rule',r.id)?' disabled title="Wird von Größen verwendet"':''}>Entfernen</button></td></tr>`).join('')}
+ </tbody></table><button type="button" id="add-rule">＋ Bohrbild</button></fieldset>
+ <fieldset><legend>Größen <span class="count">${d.sizes.length-state.removed.size}</span></legend>
+ <div class="toolbar"><label>Formgruppe<select id="edit-group"><option value="">Alle Formen</option>${groupOptions(state.editGroup)}</select></label><button type="button" id="add-size">＋ Größe</button></div>
+ <div style="overflow-x:auto"><table class="family-table"><thead><tr><th>Bezeichnung</th><th>Form</th><th>Breite mm</th><th>Höhe mm</th><th>Grundpreis €</th><th>Befestigung</th><th>SKU</th><th></th></tr></thead><tbody>
+ ${sizes.map(({s,i})=>{const gone=state.removed.has(s.key);return `<tr class="${gone?'removed':''}"><td><input type="text" data-s="${i}" data-k="label" value="${esc(s.label)}"${gone?' disabled':''}></td><td><select data-s="${i}" data-k="groupKey"${gone?' disabled':''}>${groupOptions(s.groupKey)}</select></td><td><input type="number" step="0.1" min="10" data-s="${i}" data-k="widthMm" value="${s.widthMm}"${gone?' disabled':''}></td><td><input type="number" step="0.1" min="10" data-s="${i}" data-k="heightMm" value="${s.heightMm}"${gone?' disabled':''}></td><td><input type="text" inputmode="decimal" data-s="${i}" data-k="baseCents" value="${money(s.baseCents)}"${gone?' disabled':''}></td><td><div class="mounts">${d.mountingRules.map(r=>`<label><input type="checkbox" data-mount="${i}" value="${esc(r.id)}"${s.mounting.includes(r.id)?' checked':''}${gone?' disabled':''}> ${esc(r.skuSuffix)} · ${r.edgeMm} mm</label>`).join('')}</div></td><td><small>${s.isNew?'neu: '+esc(skuFor(s.groupKey,s.widthMm,s.heightMm)):esc(s.key)}</small></td><td><button type="button" data-remove-size="${esc(s.key)}">${gone?'Behalten':'Entfernen'}</button></td></tr>`;}).join('')}
+ </tbody></table></div><p class="field-help">Entfernte Größen verschwinden aus der Familie. Bereits erzeugte Produkte dazu bleiben bestehen.</p></fieldset></form>`;
+}
+function readEditor(){
+ const d=state.draft,form=$('#family-edit-form');
+ for(const n of form.querySelectorAll('[data-f]')){const path=n.dataset.f.split('.'),target=path.length>1?d[path[0]]:d,key=path.at(-1);target[key]=n.type==='checkbox'?n.checked:n.type==='number'?num(n.value):n.value;}
+ d.fonts=[...form.querySelectorAll('[data-font]')].filter(n=>n.checked).map(n=>n.dataset.font);
+ for(const n of form.querySelectorAll('[data-g]')){const g=d.groups[n.dataset.g];g[n.dataset.k]=n.type==='number'?num(n.value):n.value;if(g.shape==='ellipse')g.cornerRadiusMm=0;}
+ for(const n of form.querySelectorAll('[data-r]')){const r=d.mountingRules[n.dataset.r],k=n.dataset.k;r[k]=k==='priceCents'?cents(n.value):n.type==='number'?num(n.value):n.value;if(k==='layout')r.count=LAYOUTS[r.layout][1];}
+ for(const n of form.querySelectorAll('[data-s]')){const s=d.sizes[n.dataset.s],k=n.dataset.k;s[k]=k==='baseCents'?cents(n.value):n.type==='number'?num(n.value):n.value;}
+ for(const s of d.sizes.map((s,i)=>i))if(form.querySelector(`[data-mount="${s}"]`))d.sizes[s].mounting=[...form.querySelectorAll(`[data-mount="${s}"]`)].filter(n=>n.checked).map(n=>n.value);
+}
+function documentForSave(){
+ const d=structuredClone(state.draft);
+ d.sizes=d.sizes.filter(s=>!state.removed.has(s.key));
+ for(const s of d.sizes)if(s.isNew){s.key=skuFor(s.groupKey,s.widthMm,s.heightMm);delete s.isNew;}
+ for(const g of d.groups)delete g.isNew;
+ for(const r of d.mountingRules){if(r.isNew){r.id=r.skuSuffix+'-E'+String(r.edgeMm).replace('.','P')+'-D'+String(r.diameterMm).replace('.','P');delete r.isNew;}}
+ const bad=[...d.sizes.filter(s=>!Number.isSafeInteger(s.baseCents)).map(s=>s.label),...d.mountingRules.filter(r=>!Number.isSafeInteger(r.priceCents)).map(r=>r.label)];
+ if(bad.length)throw Error('Bitte gültige Eurobeträge eingeben: '+bad.join(', '));
+ return d;
+}
+document.addEventListener('click',e=>{
+ if(!state.draft||!e.target.closest('#family-editor'))return;
+ const t=e.target;
+ if(t.id==='family-edit-cancel'){state.draft=null;$('#family-editor').hidden=true;return;}
+ if(t.id==='family-edit-reload'){editStart();return;}
+ readEditor();
+ if(t.id==='add-group')state.draft.groups.push({key:'',name:'Neue Form',shape:'rect',cornerRadiusMm:0,isNew:true});
+ else if(t.id==='add-rule')state.draft.mountingRules.push({id:'neu-'+Date.now(),label:'2 Bohrlöcher Ø 4 mm',layout:'left-right',count:2,diameterMm:4,edgeMm:6,priceCents:0,skuSuffix:'B02',isNew:true});
+ else if(t.id==='add-size'){const g=state.editGroup||state.draft.groups[0].key;state.draft.sizes.push({key:'neu-'+Date.now(),isNew:true,groupKey:g,label:'Neue Größe',widthMm:100,heightMm:50,baseCents:0,mounting:[]});}
+ else if(t.dataset.removeGroup!==undefined)state.draft.groups.splice(Number(t.dataset.removeGroup),1);
+ else if(t.dataset.removeRule!==undefined)state.draft.mountingRules.splice(Number(t.dataset.removeRule),1);
+ else if(t.dataset.removeSize){const k=t.dataset.removeSize,s=state.draft.sizes.find(x=>x.key===k);if(s?.isNew)state.draft.sizes=state.draft.sizes.filter(x=>x!==s);else state.removed.has(k)?state.removed.delete(k):state.removed.add(k);}
+ else return;
+ renderEditor();
+});
+document.addEventListener('change',e=>{if(e.target.id==='edit-group'){readEditor();state.editGroup=e.target.value;renderEditor();}else if(e.target.closest('#family-editor')&&(e.target.dataset.k==='shape'||e.target.dataset.k==='layout')){readEditor();renderEditor();}});
+document.addEventListener('submit',async e=>{
+ if(e.target.id!=='family-edit-form')return;e.preventDefault();readEditor();
+ let document_;try{document_=documentForSave();}catch(err){notice(err.message,'error');return;}
+ busy(true);
+ try{const rec=await api('/api/workshop/families/'+encodeURIComponent(state.record.id),{method:'PATCH',body:{expectedRevision:state.draftBase,document:document_}});
+  state.draft=null;$('#family-editor').hidden=true;busy(false);await open(rec.id);await load();
+  notice(rec.revision===state.draftBase?'Keine Änderungen gefunden.':`Gespeichert als Stand ${rec.revision}. Erzeugte Produkte sind unverändert. Über „Auf Produkte übernehmen …“ siehst du, was sich dort ändern würde.`);}
+ catch(err){busy(false);if(err.status===409)renderEditor('Die Familie wurde inzwischen von jemand anderem geändert. Deine Eingaben wurden nicht gespeichert.');else notice(err.message,'error');}
+});
+$('#family-edit').addEventListener('click',()=>editStart());
+
+// ---- Auf Produkte übernehmen ------------------------------------------------
+async function syncPreview(){
+ busy(true);try{const plan=await api(`/api/workshop/families/${encodeURIComponent(state.record.id)}/sync`);state.syncPlan=plan;renderSync();}catch(e){notice(e.message,'error');}finally{busy(false);}
+}
+function renderSync(result){
+ const p=state.syncPlan,panel=$('#family-sync-panel');panel.hidden=false;
+ const rows=p.items.filter(i=>i.status!=='same').map(i=>`<li><a href="/werkstatt/?configuration=${encodeURIComponent(i.productId)}">${esc(i.label)}</a> · ${i.status==='error'?`<strong>nicht übernehmbar:</strong> ${esc(i.message)}`:`<ul class="sync-change">${i.changes.map(c=>`<li>${esc(c.label)}: ${esc(c.before)} → <strong>${esc(c.after)}</strong></li>`).join('')}</ul>`}</li>`).join('');
+ panel.innerHTML=`<div class="editor-heading"><div><p class="eyebrow">AUF PRODUKTE ÜBERNEHMEN · FAMILIENSTAND ${p.familyRevision}</p><h2>Vorschau der Änderungen</h2><small>${p.changed} Produkte mit Änderungen · ${p.unchanged} bereits aktuell · ${p.errors} nicht übernehmbar${p.orphaned.length?' · '+p.orphaned.length+' Produkte zu entfernten Größen bleiben unverändert':''}</small></div>
+ <div class="button-row"><button type="button" id="sync-close">Schließen</button><button type="button" class="primary" id="sync-apply"${p.changed?'':' disabled'}>${p.changed} Produkte aktualisieren</button></div></div>
+ ${result?`<div class="notice" data-tone="${result.failed?'error':'success'}">${result.updated} Produkte aktualisiert${result.failed?', '+result.failed+' nicht: '+esc(result.results.filter(r=>!r.ok).map(r=>r.sizeKey+' – '+r.message).join('; ')):''}. Jedes Produkt hat dafür einen neuen Stand; Designs und Kundenfreigaben bleiben erhalten.</div>`:''}
+ ${rows?`<ul>${rows}</ul>`:'<p class="empty-state">Alle erzeugten Produkte entsprechen diesem Familienstand.</p>'}`;
+ panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('#family-sync').addEventListener('click',()=>syncPreview());
+document.addEventListener('click',async e=>{
+ if(e.target.id==='sync-close'){$('#family-sync-panel').hidden=true;return;}
+ if(e.target.id!=='sync-apply')return;
+ const p=state.syncPlan;if(!confirm(`${p.changed} Produkte auf Familienstand ${p.familyRevision} aktualisieren? Jedes Produkt erhält einen neuen Stand; der bisherige bleibt im Verlauf. Nichts wird im Shop veröffentlicht.`))return;
+ busy(true);try{const r=await api(`/api/workshop/families/${encodeURIComponent(state.record.id)}/sync`,{method:'POST',body:{expectedRevision:p.familyRevision,token:p.token}});state.syncPlan=await api(`/api/workshop/families/${encodeURIComponent(state.record.id)}/sync`);renderSync(r);}
+ catch(err){notice(err.status===409?'Seit der Vorschau hat sich etwas geändert. Die Vorschau wurde neu geladen.':err.message,'error');if(err.status===409)await syncPreview();}finally{busy(false);}
+});

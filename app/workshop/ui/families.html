@@ -13,6 +13,15 @@
 .family-link{all:unset;cursor:pointer;color:#1d5c4b;font-weight:600;text-decoration:underline}
 .family-link:focus-visible{outline:2px solid #1d5c4b;outline-offset:2px}
 @media (max-width:900px){.family-layout{grid-template-columns:1fr!important}}
+.family-edit input[type=text],.family-edit input[type=number],.family-edit select{width:100%;min-width:0;padding:6px 8px;font:inherit;font-size:14px}
+.family-edit fieldset{border:1px solid #dce4e0;border-radius:12px;padding:14px 16px;margin:0 0 18px}
+.family-edit legend{font-weight:700;padding:0 6px}
+.family-edit .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.family-edit .fonts{display:flex;flex-wrap:wrap;gap:6px 16px}
+.family-edit .mounts{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:13px}
+.family-edit tr.removed{opacity:.45;text-decoration:line-through}
+.sync-change{font-size:13px;color:#3d4c46}
+.conflict-banner{background:#fff4e5;border:1px solid #f0c27b;border-radius:12px;padding:12px 16px;margin:0 0 16px}
 </style>
 </head>
 <body class="library-page">
@@ -32,7 +41,7 @@
     </section>
     <section id="family-detail" class="overview library-editor" hidden aria-live="polite">
       <div class="editor-heading"><div><p class="eyebrow" id="family-meta"></p><h2 id="family-title"></h2><small id="family-summary"></small></div>
-        <div class="button-row"><button type="button" id="family-briefing">Briefing herunterladen</button><button type="button" class="primary" id="family-generate">Produkte erzeugen</button></div></div>
+        <div class="button-row"><button type="button" id="family-edit">Bearbeiten</button><button type="button" id="family-sync">Auf Produkte übernehmen …</button><button type="button" id="family-briefing">Briefing herunterladen</button><button type="button" class="primary" id="family-generate">Produkte erzeugen</button></div></div>
       <p class="field-help" id="family-rules"></p>
       <div class="toolbar"><label>Formgruppe<select id="family-group"><option value="">Alle Formen</option></select></label></div>
       <div class="family-layout" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,340px);gap:20px;align-items:start">
@@ -40,6 +49,8 @@
         <figure style="margin:0"><div id="family-template" style="background:#fff;border:1px solid #dce4e0;border-radius:12px;padding:12px;min-height:120px"></div><figcaption class="field-help" id="family-template-caption">Größe wählen, um die Gestaltungsschablone zu sehen: Kontur, Bohrlöcher und gestrichelte Schutzzone. Nur Zeichenhilfe, wird nicht graviert.</figcaption></figure>
       </div>
     </section>
+    <section id="family-sync-panel" class="overview library-editor" hidden aria-live="polite"></section>
+    <section id="family-editor" class="overview library-editor" hidden aria-labelledby="family-editor-title"></section>
     <footer class="page-footer">Gravuru 2027 <span>·</span> Eine neue Familienrevision ändert bereits erzeugte Produkte nicht automatisch.</footer>
   </main>
 </div>

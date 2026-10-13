@@ -36,6 +36,26 @@ with sync_playwright() as pw:
     holes = pg.evaluate("(()=>{const s=document.querySelector('#editor-preview svg').outerHTML;return (s.match(/<circle[^>]*r=\"2\"/g)||[]).length})()")
     checks['editorShowsHoles'] = holes >= 2
     pg.screenshot(path=str(OUT / 'editor-oval-b02.png'))
+    # Edit the family directly: change the oval 9 x 6 price, save, preview and apply to the product.
+    pg.goto(BASE + '/werkstatt/familien/'); pg.wait_for_selector('[data-family]'); pg.click('[data-family]'); pg.wait_for_selector('#family-sizes tr')
+    pg.click('#family-edit'); pg.wait_for_selector('#family-edit-form')
+    pg.select_option('#edit-group', 'OV'); pg.wait_for_timeout(300)
+    row = pg.locator('#family-edit-form tbody tr', has=pg.locator('input[data-k="label"][value="9 × 6 cm"]')).first
+    row.locator('input[data-k="baseCents"]').fill('11,99')
+    pg.click('#family-edit-form button[type=submit]'); pg.wait_for_selector('#family-editor', state='hidden'); pg.wait_for_timeout(500)
+    checks['savedAsRevision2'] = 'Stand 2' in pg.inner_text('#family-notice')
+    pg.click('#family-sync'); pg.wait_for_selector('#family-sync-panel:not([hidden]) #sync-apply')
+    panel = pg.inner_text('#family-sync-panel')
+    checks['syncPreviewShowsPrice'] = '10,99 € → 11,99 €' in panel and '1 Produkte mit Änderungen' in panel
+    pg.click('#sync-apply'); pg.wait_for_timeout(1500)
+    checks['syncApplied'] = '1 Produkte aktualisiert' in pg.inner_text('#family-sync-panel')
+    # Conflict: someone else saves while the editor is open -> no overwrite, clear message.
+    pg.click('#family-edit'); pg.wait_for_selector('#family-edit-form')
+    pg.evaluate("""async()=>{const s=await (await fetch('/api/workshop/session')).json();const f=await (await fetch('/api/workshop/families/steel-door-signs')).json();f.document.briefingNotes='Andere Person';await fetch('/api/workshop/families/steel-door-signs',{method:'PATCH',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':s.csrfToken},body:JSON.stringify({expectedRevision:f.revision,document:f.document})});}""")
+    pg.fill('[data-f="name"]', 'Edelstahl-Türschilder (meine Änderung)')
+    pg.click('#family-edit-form button[type=submit]'); pg.wait_for_selector('.conflict-banner')
+    checks['conflictNotOverwritten'] = 'inzwischen' in pg.inner_text('.conflict-banner')
+    pg.screenshot(path=str(OUT / 'family-edit-conflict.png'))
     checks['noPageErrors'] = not errors
     browser.close()
 report = {'result': 'PASS' if all(checks.values()) else 'FAIL', 'checks': checks, 'errors': errors}

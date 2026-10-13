@@ -96,3 +96,28 @@ test('family HTTP routes require the session CSRF token and deliver template and
  const zip=await send('families/steel-door-signs/briefing',{});assert.equal(zip.status,200);assert.equal(zip.headers.get('content-type'),'application/zip');
  assert.equal((await fetch(url+'families/steel-door-signs/template/..%2Fetc')).status,404);
 });
+
+test('family changes reach generated products only after preview and confirmation; designs are kept',async t=>{
+ const {repository,families}=stores(t),rec=families.create(family());
+ const SMALL='GR-ES-RE-50X20-T15',made=families.generate(rec.id,{expectedRevision:1,sizeKeys:[OVAL,SMALL]}),ovalId=made.products[0].productId;
+ const designBefore=repository.get(ovalId).document.config.profile.designs;
+ assert.equal(families.planSync(rec.id).changed,0);
+ const changed=family();changed.sizes.find(s=>s.key===OVAL).baseCents=1199;changed.mountingRules.find(r=>r.id==='B02-E6-D4').priceCents=150;
+ const small=changed.sizes.find(s=>s.key===SMALL);small.widthMm=30;small.heightMm=12;
+ families.save(rec.id,changed,1);
+ const plan=families.planSync(rec.id),oval=plan.items.find(i=>i.sizeKey===OVAL),tiny=plan.items.find(i=>i.sizeKey===SMALL);
+ assert.equal(repository.get(ovalId).revision,1,'preview writes nothing');
+ assert.equal(oval.status,'change');assert.ok(oval.changes.some(c=>c.label==='Grundpreis'&&c.before==='10,99 €'&&c.after==='11,99 €'));
+ assert.equal(tiny.status,'error');assert.match(tiny.message,/passt nicht/);
+ assert.throws(()=>families.applySync(rec.id,{expectedRevision:2,token:'0'.repeat(64)}),e=>e.status===409);
+ const applied=families.applySync(rec.id,{expectedRevision:2,token:plan.token});assert.equal(applied.updated,1);
+ const after=repository.get(ovalId);assert.equal(after.revision,2);assert.equal(after.document.config.basePriceCents,1199);
+ assert.equal(resolveProduct(after.document,{options:{mounting:'B02'}}).price.totalCents,1349);
+ assert.deepEqual(after.document.config.profile.designs,designBefore,'designs untouched');
+ assert.equal(repository.get(ovalId,{revision:1}).document.config.basePriceCents,1099,'old revision kept');
+ assert.equal(families.planSync(rec.id).items.find(i=>i.sizeKey===OVAL).status,'same');
+ // A product edited in the meantime is not overwritten.
+ const again=family();again.sizes.find(s=>s.key===OVAL).baseCents=1299;families.save(rec.id,again,2);
+ const p3=families.planSync(rec.id),doc=repository.get(ovalId).document;doc.seo.description='Händler hat geändert';repository.save(ovalId,doc,2);
+ assert.throws(()=>families.applySync(rec.id,{expectedRevision:3,token:p3.token}),e=>e.status===409);
+});

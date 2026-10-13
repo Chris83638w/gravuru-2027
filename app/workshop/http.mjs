@@ -495,13 +495,15 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           return json(res,201,families.create(data.document));
         }
       }
-      const familyMatch=pathname.match(/^\/api\/workshop\/families\/([A-Za-z0-9][A-Za-z0-9_.:-]{0,79})(?:\/(history|products|briefing|template\/([A-Za-z0-9][A-Za-z0-9_.:-]{0,79})))?$/);
+      const familyMatch=pathname.match(/^\/api\/workshop\/families\/([A-Za-z0-9][A-Za-z0-9_.:-]{0,79})(?:\/(history|products|briefing|sync|template\/([A-Za-z0-9][A-Za-z0-9_.:-]{0,79})))?$/);
       if(familyMatch){
         const [,familyId,action,sizeKey]=familyMatch;
         if(!action&&method==='GET')return json(res,200,families.get(familyId,{revision:revision(url.searchParams.get('revision'))}));
         if(!action&&method==='PATCH'){const data=await body(req,4*1024*1024);if(Object.keys(data).sort().join(',')!=='document,expectedRevision')fail(422,'family_invalid','Familie und erwarteten Stand angeben.');return json(res,200,families.save(familyId,data.document,data.expectedRevision));}
         if(action==='history'&&method==='GET')return json(res,200,{history:families.history(familyId)});
         if(action==='products'&&method==='POST'){const data=await body(req,65536);if(Object.keys(data).some(k=>!['expectedRevision','sizeKeys'].includes(k))||(data.sizeKeys!==undefined&&(!Array.isArray(data.sizeKeys)||!data.sizeKeys.length||data.sizeKeys.length>500)))fail(422,'family_invalid','Größenauswahl prüfen.');return json(res,200,families.generate(familyId,data));}
+        if(action==='sync'&&method==='GET')return json(res,200,families.planSync(familyId));
+        if(action==='sync'&&method==='POST'){const data=await body(req,4096);if(Object.keys(data).sort().join(',')!=='expectedRevision,token')fail(422,'family_invalid','Vorschau-Schlüssel und Familienstand angeben.');return json(res,200,families.applySync(familyId,data));}
         if(action==='briefing'&&method==='POST'){const bytes=await families.briefing(familyId);return res.writeHead(200,{'Content-Type':'application/zip','Content-Length':bytes.length,'Content-Disposition':'attachment; filename="Briefing-'+familyId+'.zip"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);}
         if(sizeKey&&method==='GET'){const bytes=Buffer.from(families.template(familyId,sizeKey));return res.writeHead(200,{'Content-Type':'image/svg+xml; charset=utf-8','Content-Length':bytes.length,'Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'",'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);}
         fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');

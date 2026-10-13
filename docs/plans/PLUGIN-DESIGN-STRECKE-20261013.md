@@ -19,10 +19,31 @@ Designs entstehen im ChatGPT-Plugin **Product Design**. Alles danach läuft ohne
 | Motive über Bohrlöchern | **Erlaubt**, ohne Hinweis. | Nutzer 13.10. |
 | Texte über Bohrlöchern | **Hinweis**, keine Sperre. | Nutzer 13.10. |
 | Fotos über Bohrlöchern | Erlaubt, ohne Hinweis (dort wird ohnehin gebohrt). | Claude |
+| Schutzzone | **1 mm** um den Lochrand. | Nutzer 13.10. |
+| Bohrungspreise | Aus den vorhandenen Stammdaten übernehmen: dort ist die Bohrung (B02/B04) eine eigene SKU **ohne Aufpreis**. | Nutzer 13.10. (Preise liegen vor), Stammdaten |
+| Stammdaten-Excel | Wird später vom Nutzer erstellt. Bis dahin dienen die vorhandenen Stammdaten (s. Abschnitt 2a) als Testgrundlage. | Nutzer 13.10. |
+| Testmaterial | Edelstahl-Türschilder für Familie/Bohrbild/Veröffentlichung; die sechs vorhandenen Plugin-Designs 13–18 (Acryl UV) für die Plugin-Strecke. | Claude |
 | Wissensablage | **Eine** Werkstatt-Datenbank mit **Produktfamilien** als eigener Ebene. Pro Familie ein automatisch erzeugtes **Familien-Briefing** für eigene Chats/Projekte. Keine getrennten Datenbanken pro Familie. | Nutzer-Anregung 13.10., Entscheidung Claude |
 | Veröffentlichung | Shopify-Veröffentlichung und Fertigungsfreigabe bleiben je ein bewusster Klick. Alles andere ohne Doppeleingabe. | Claude |
 | Reihenfolge | Erst **eine** Familie vollständig durchziehen (Edelstahl-Türschilder), dann die anderen Familien. Formprodukte und AOSU-Fertigung zurückgestellt. | Claude |
 | KI-Budget der Werkstatt | Für diese Strecke nicht nötig. Separat vereinfachen (Paket H). | Claude |
+
+## 2a. Bereits vorhandene Grundlagen (13.10. geprüft)
+
+**Edelstahl-Stammdaten:** `Chris83638w/gravuru-shopify`, `platform/sources/workshop-seed/import.json` (Stand `b564422`):
+- 61 Edelstahlschilder 1,5 mm in fünf Formgruppen: Rechteck 27, Ecken R5 10, Oval 10, Quadrat 7, Ellipse 7.
+- Je Produkt Maße, Eckenradius, Grundpreis in Cent, SKU (`GR-ES-OV-90X60-T15`) und Bohrbild als Regel (`count`, `edgeMm`, Ø 4 mm, SKU-Endung `-B02`/`-B04`), z. B. Oval 90 × 60: 2 Löcher, 6 mm Randabstand, 10,99 €.
+- Randabstände 4/6/8/15 mm je nach Größe; Großformate 4 Löcher.
+- Dazu 148 native Designs und 721 Motive.
+- Kein Bohrungsaufpreis in den Daten. Zum Vergleich: Schiefer B02 2,99 €, B04 3,99 €; Edelstahl-Gedenktafel 30 × 20 vier Löcher 2,99 € (`steel-builder/PREISE.md`).
+
+**Plugin-Designs:** Privates Release `resources-acrylglas-150x200-20260929` im selben Repository, beide ZIPs am 13.10. heruntergeladen, SHA-256 identisch mit Dokumentation, nur privat außerhalb Git entpackt:
+- Sechs Acryl-UV-Designs 13–18 (150 × 200 mm) als PDF mit **benannten PDF-Ebenen**: `02 Foto - austauschbar`, `03 Rahmen und Schmuck`, `04 Botanische Dekoration`, `05 Titel - editierbarer Text`, `06 Namen - editierbarer Text`, `07 Datum - editierbarer Text`, `08 Spruch - editierbarer Text`, teils `01 Farbflächen`/`01 Namensfeld`.
+- Texte sind **echter Text** (z. B. „Jule & Finn"), Foto und Dekoration getrennt als PNG mit Alpha, Vorschau-PNG je Design.
+- Design 18 zusätzlich als bearbeitbare SVG (bisheriger Pilot).
+- Schriften im PDF nur als Teilmengen: Garamond, Segoe Script, Georgia Bold, Calibri. Für Kundentexte werden vollständige Werkstatt-Schriften zugeordnet (vorhanden: Garamond Acryl, Freestyle Acryl). Segoe Script, Georgia und Calibri sind Microsoft-Schriften; Nutzungsrechte für die Werkstatt sind nicht belegt. Ersatz wird ausdrücklich gekennzeichnet.
+
+Folge: Die Exportvorgabe (Paket D) übernimmt **dieses vorhandene Ebenenschema** statt ein neues zu erfinden. Der Serienlauf (Paket E) liest PDF-Ebenen direkt.
 
 **Warum eine Datenbank statt mehrerer:** Familien teilen Schriften, Motive, Profile, Bestellungen und Shopify-Bindungen. Getrennte Datenbanken würden diese Daten doppeln, Sicherung und Wiederherstellung vervielfachen und familienübergreifende Suche unmöglich machen. Die Trennung, die du willst („nicht immer neu erklären"), entsteht über die Familie als Datensatz plus das daraus erzeugte Briefing. Die Familie wird **einmal** gepflegt, Chats, Plugin, Importer und Konfigurator lesen alle dieselbe Quelle.
 
@@ -97,7 +118,7 @@ Diese vier Fehler liegen direkt auf der Strecke und werden **vor** Paket A behob
 **Produkte** verweisen auf ihre Familie (`familyId`, `familyRevision`). Eine neue Familienrevision ändert bestehende Produkte **nicht** automatisch. Die Werkstatt zeigt „Familie geändert: übernehmen?" mit Vorschau der Auswirkung (vorhandene Profil-Auswirkungsprüfung wiederverwenden).
 
 **Anlegen der Familie:**
-- Aus vorhandenen Stammdaten: Heimathafen-Quelle `source.json` (enthält bereits 90 × 60, `B02`, Ø 4 mm, 6 mm Randabstand) und die Stammdaten-Excel der Edelstahlschilder.
+- Aus den vorhandenen Stammdaten (Abschnitt 2a, 61 Produkte) per Import-Skript mit festem Schlüssel je SKU. Später aus der Stammdaten-Excel des Nutzers (gleiches Feldschema, Abgleich statt Duplikat).
 - Oberfläche: Verwaltung → Produktfamilien (Liste, Bearbeiten, Revisionen).
 - Aus einer Familie lassen sich **Produkte erzeugen**: Form × Größe → je ein Werkstattprodukt mit Befestigungsoptionen als Varianten. Wiederholtes Erzeugen erzeugt keine Duplikate (fester Schlüssel je Form/Größe).
 
@@ -121,7 +142,7 @@ Dieses Paket legst du einmal in ein **ChatGPT-Projekt „Edelstahl-Türschilder"
 
 ```json
 { "id": "B02", "label": "2 Bohrlöcher links/rechts", "layout": "left-right",
-  "diameterMm": 4, "edgeMm": 6, "keepoutMm": 3, "priceCents": 0,
+  "diameterMm": 4, "edgeMm": 6, "keepoutMm": 1, "priceCents": 0,
   "spacers": false }
 ```
 
@@ -138,7 +159,7 @@ Dieses Paket legst du einmal in ein **ChatGPT-Projekt „Edelstahl-Türschilder"
 - Serverprüfung: Loch vollständig in der Kontur (vorhanden), Mindestabstand zwischen Löchern, Durchmesser 2–10 mm.
 - Abstandshalter (vorhandene Vorschau mit Kappen und Farbaufpreis) hängen an der Regel.
 
-**Heimathafen-Korrektur:** Neue Revision des Edelstahl-Produkts mit K00 und B02 aus den Originaldaten. Bestehende Revision 3 bleibt erhalten, keine Designänderung. **Aufpreis B02 ist in den Quelldaten nicht enthalten, Preis vom Nutzer nötig.**
+**Heimathafen-Korrektur:** Neue Revision des Edelstahl-Produkts mit K00 und B02 (Ø 4, 6 mm, ohne Aufpreis laut Stammdaten). Bestehende Revision 3 bleibt erhalten, keine Designänderung.
 
 **Abnahme B** (Prüfdaten aus G27-03 plus Nutzerbeispiel):
 - 90 × 60 Oval, B02, Ø 4, 6 mm → Löcher bei (6 | 30) und (84 | 30).
@@ -149,7 +170,7 @@ Dieses Paket legst du einmal in ein **ChatGPT-Projekt „Edelstahl-Türschilder"
 
 ### Paket C · Darstellung für Kunde und Händler
 
-- **Bohrlöcher** als echte Aussparung (vorhanden), zusätzlich **Schutzzone** als dezenter gestrichelter Ring (Lochrand + `keepoutMm`), nur in der Vorschau.
+- **Bohrlöcher** als echte Aussparung (vorhanden), zusätzlich **Schutzzone** als dezenter gestrichelter Ring (Lochrand + `keepoutMm`, Vorgabe **1 mm**), nur in der Vorschau.
 - Beim **Ziehen** eines Elements werden die Schutzzonen deutlicher eingeblendet.
 - **Texte:** Berührt ein Text eine Schutzzone, erscheint ein Hinweis: „Dieser Text liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen." Keine Sperre. Der Hinweis erscheint einmal zusätzlich vor „In den Warenkorb".
 - **Motive und Fotos:** kein Hinweis.
@@ -161,7 +182,11 @@ Dieses Paket legst du einmal in ein **ChatGPT-Projekt „Edelstahl-Türschilder"
 
 ### Paket D · Exportvorgabe für das Plugin
 
-Eine feste, kopierbare Anweisung (Teil des Familien-Briefings). Jedes Design kommt als Ordner:
+Eine feste, kopierbare Anweisung (Teil des Familien-Briefings). **Grundlage ist das Ebenenschema, das das Plugin bei 13–18 bereits verwendet hat** (Abschnitt 2a). Zwei gleichwertige Lieferformen:
+
+**Form 1 – PDF mit benannten Ebenen (bereits vorhanden):** eine Seite in Endmaß, PDF-Ebenen `NN Rolle - …`: `Foto - austauschbar` → Fotofeld, `<Name> - editierbarer Text` → Kundentextfeld, alle übrigen → feste Dekoration/Motiv. Foto und Dekoration zusätzlich als PNG mit Alpha (wie `Einzelobjekte/`).
+
+**Form 2 – SVG-Ordner** (für Gravur und neue Designs):
 
 ```
 <design-id>/
@@ -188,7 +213,7 @@ Eine feste, kopierbare Anweisung (Teil des Familien-Briefings). Jedes Design kom
 - Gravurprodukte: Motive einfarbig schwarz auf transparent, keine Graustufenflächen.
 - Schutzzonen der Schablone für Texte freihalten. Motive dürfen darüber.
 
-**Abnahme D:** Zwei echte Plugin-Ausgaben nach dieser Vorgabe laufen ohne Nacharbeit durch Paket E.
+**Abnahme D:** Die sechs vorhandenen Designs 13–18 (Form 1) und mindestens ein neues Edelstahl-Design (Form 2) laufen ohne Nacharbeit durch Paket E.
 
 ### Paket E · Automatische Vorbereitung und Serienlauf
 
@@ -196,6 +221,7 @@ Eine feste, kopierbare Anweisung (Teil des Familien-Briefings). Jedes Design kom
 - Zuordnungsdatei wird optional. Rollen werden aus den Ebenennamen (Paket D) abgeleitet. Die bisherige explizite Zuordnung bleibt für Altfälle (Design 18) gültig.
 - Fotomasken Rechteck und Kreis zusätzlich zum bestehenden Bogen.
 - Textfelder erhalten `fieldKey`/`label` aus dem Namen (`text-namen` → „Namen").
+- **Neuer Eingang PDF-Ebenen** (Form 1): Ebenen über die PDF-Ebenenstruktur (OCG) einzeln rendern bzw. auslesen; Text mit Position, Größe, Farbe, Ausrichtung aus dem Textlayer; Foto aus der Fotoebene mit Maske; übrige Ebenen als Dekoration. Schriftteilmengen werden **nicht** übernommen, sondern über eine Zuordnungstabelle Familie → Werkstatt-Schrift ersetzt und im Bericht als Abweichung genannt.
 
 **Neues Kommando `scripts/prepare-design-series.py`:**
 
@@ -227,7 +253,7 @@ Erzeugt:
 
 Rote Designs erzeugen kein Paket. Wiederholter Lauf mit gleichen Dateien erzeugt gleiche Pakete (Prüfsumme), ohne Duplikate.
 
-**Abnahme E:** Design 18 (Altzuordnung) unverändert reproduziert; zwei Plugin-Designs ohne Zuordnungsdatei; ein absichtlich fehlerhaftes Design (Text in Deko, fehlendes ß, 150 dpi) liefert die erwarteten Rot/Gelb-Meldungen; Übersicht sichtbar geprüft.
+**Abnahme E:** Design 18 (Altzuordnung) unverändert reproduziert; Designs 13–17 aus den PDF-Ebenen ohne Zuordnungsdatei; ein absichtlich fehlerhaftes Design (Text in Deko, fehlendes ß, 150 dpi) liefert die erwarteten Rot/Gelb-Meldungen; Übersicht sichtbar geprüft.
 
 ### Paket F · Import in die Werkstatt
 
@@ -275,13 +301,11 @@ Rote Designs erzeugen kein Paket. Wiederholter Lauf mit gleichen Dateien erzeugt
 
 Jedes Paket: eigener Commit, Tests für den **Nutzerablauf** (nicht nur die Funktion), Browserprüfung, `STATUS.md` fortschreiben, keine Live-Änderung ohne deine Freigabe.
 
-## 7. Was ich von dir brauche
+## 7. Noch offen beim Nutzer
 
-1. **Aufpreise** für Befestigungen (B02, B04, Abstandshalter) bei Edelstahl, falls nicht in der Stammdaten-Excel.
-2. **Stammdaten-Excel Edelstahlschilder** (Formen, Größen, Preise, Bohrbilder, SKUs) als Datei.
-3. **Schutzzonen-Maß:** Mein Vorschlag sind 3 mm um den Lochrand (passt zu üblichen Schraubenköpfen bis ca. Ø 10 mm). Abweichung nennen, sonst gilt das.
-4. **Zwei echte Plugin-Ausgaben** als Originaldateien (für Abnahme D/E) und, falls vorhanden, die Originale weiterer UV-Designs.
-5. Bestätigung, dass **Edelstahl-Türschilder** die erste Familie ist.
+1. **Stammdaten-Excel Edelstahl:** kommt später; bis dahin Test mit den vorhandenen Stammdaten.
+2. **Bohrungsaufpreis:** aus Stammdaten ohne Aufpreis übernommen. Falls Edelstahl-Türschilder doch einen Aufpreis haben, genügt eine Zahl.
+3. **Schriftersatz** für Segoe Script, Georgia Bold, Calibri: Vorschlag folgt mit Vergleich im Serienbericht; Entscheidung dann dort.
 
 ## 8. Bewusst nicht in diesem Plan
 

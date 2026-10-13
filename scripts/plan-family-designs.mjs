@@ -19,7 +19,10 @@
 //  - Text in einer Bohrloch-Schutzzone (je Befestigung der Zielgröße)     → „prüfen“
 //
 // Aufruf:
-//   node scripts/plan-family-designs.mjs --designs /PRIVAT/import.json \
+//   node scripts/plan-family-designs.mjs --designs /PRIVAT/import.json [--family a.json …] --out /PRIVAT/design-plan/
+//   Ohne --family werden alle mitgelieferten Familien geprüft (app/designs/steel-door-signs,
+//   app/designs/gedenktafeln-30x20). Offene Stammdaten (null) werden vermerkt, nicht geraten.
+//   Beispiel mit eigener Auswahl: --designs … \
 //        --family app/designs/steel-door-signs/family.json [--family weitere.json …] \
 //        --out /PRIVAT/design-plan/
 // --designs: Datei mit {designs:[{id,title,category,productId,state:{objects}}]}.
@@ -32,13 +35,17 @@ import {measureText} from '../app/platform/sources/app/shared/models/doorbell-pr
 import {holesFor} from '../app/platform/sources/app/shared/models/mounting-rules.mjs';
 import {textsNearHoles} from '../app/platform/sources/app/shared/models/hole-proximity.mjs';
 import {workshopResources} from '../app/workshop/catalog.mjs';
+import {validateFamily,familyGaps,ruleComplete} from '../app/workshop/product-families.mjs';
 
 const args=process.argv.slice(2),values=name=>args.flatMap((v,i)=>v==='--'+name&&args[i+1]?[args[i+1]]:[]);
 const designsPath=values('designs')[0]||values('seed')[0],out=values('out')[0];
-const familyPaths=values('family').length?values('family'):['app/designs/steel-door-signs/family.json'];
+// Ohne --family: alle mitgelieferten Familien (Türschilder und Gedenktafeln aller Materialien).
+const bundledDir=new URL('../app/designs/',import.meta.url);
+const bundled=()=>['steel-door-signs/family.json',...fs.readdirSync(new URL('gedenktafeln-30x20/',bundledDir)).filter(n=>n.endsWith('.json')).sort().map(n=>'gedenktafeln-30x20/'+n)].map(n=>new URL(n,bundledDir).pathname);
+const familyPaths=values('family').length?values('family'):bundled();
 if(!designsPath||!out)throw Error('Bitte --designs und --out angeben.');
 const source=JSON.parse(fs.readFileSync(designsPath,'utf8'));
-const families=familyPaths.map(p=>JSON.parse(fs.readFileSync(p,'utf8')));
+const families=familyPaths.map(p=>validateFamily(JSON.parse(fs.readFileSync(p,'utf8'))));
 const {fonts}=workshopResources();
 
 // Motive stehen in einem quadratischen Rahmen (viewBox 0 0 100 100). Schmale
@@ -75,7 +82,8 @@ const shapeClass=g=>g.shape==='ellipse'?'oval':'eckig';
 // Every size of every family, with everything the checks need.
 const targets=families.flatMap(f=>{const groups=new Map(f.groups.map(g=>[g.key,g])),rules=new Map(f.mountingRules.map(r=>[r.id,r]));
  return f.sizes.map(s=>{const g=groups.get(s.groupKey);return {family:f,size:s,group:g,process:process_(f),shape:shapeClass(g),ratio:s.widthMm/s.heightMm,
-  geometry:{width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:g.cornerRadiusMm,safeMarginMm:f.designArea.marginMm,holes:[]},
+  // Offener Gestaltungsrand: geprüft wird ohne Rand, die Zeile trägt einen Vermerk.
+  geometry:{width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:g.cornerRadiusMm,safeMarginMm:f.designArea.marginMm??0,holes:[]},marginOpen:f.designArea.marginMm===null,
   mountings:s.mounting.map(id=>rules.get(id)),keepoutMm:f.designArea.keepoutMm};});});
 const bySku=new Map(targets.map(t=>[t.size.key,t]));
 
@@ -102,7 +110,9 @@ for(const design of source.designs){
   const outside=objects.map(o=>[o,objectIssue(visible(o),{kind:'universal-product',geometry:to.geometry})]).filter(([,issue])=>issue);
   if(outside.length){rows.push({...base,status:'passt nicht',note:outside.map(([o,issue])=>label(o)+': '+issue).join(' · ')});continue;}
   const notes=[];
+  if(to.marginOpen)notes.push('Gestaltungsrand der Familie noch offen');
   for(const r of to.mountings){
+   if(!ruleComplete(r)){notes.push(r.skuSuffix+': Bohrbild offen, Abstand zu Texten nicht prüfbar');continue;}
    const holes=holesFor(to.geometry,r),near=textsNearHoles({objects},{geometry:{...to.geometry,holes}},null,to.keepoutMm);
    if(near.length)notes.push(r.skuSuffix+' ('+r.edgeMm+' mm Rand): Text am Bohrloch – '+near.map(n=>'„'+n.text+'“').join(', '));
   }
@@ -113,10 +123,11 @@ for(const design of source.designs){
 // Report
 fs.mkdirSync(out,{recursive:true});
 const cell=v=>'"'+String(v??'').replaceAll('"','""')+'"',name=t=>t?t.group.name+' '+t.size.label:'';
-const header=['Design-ID','Titel','Kategorie','Ausgang','Material / Familie','Zielgröße','SKU','Skalierung','Status','Hinweis'];
-const csv=[header,...rows.map(r=>[r.design.id,r.design.title,r.design.category,name(r.from),r.to?.family.name,name(r.to),r.to?.size.key,r.scale?r.scale.toFixed(3).replace('.',','):'',r.status,r.note])].map(l=>l.map(cell).join(';')).join('\n');
+const gapText=new Map(families.map(f=>[f,familyGaps(f).join(' · ')]));
+const header=['Design-ID','Titel','Kategorie','Ausgang','Familie','Material','Gravur','Zielgröße','SKU','Skalierung','Status','Hinweis','Offene Stammdaten der Familie'];
+const csv=[header,...rows.map(r=>[r.design.id,r.design.title,r.design.category,name(r.from),r.to?.family.name,r.to?.family.material.label,r.to?(r.to.family.material.kind==='steel'?'dunkel':'hell'):'',name(r.to),r.to?.size.key,r.scale?r.scale.toFixed(3).replace('.',','):'',r.status,r.note,r.to?gapText.get(r.to.family):''])].map(l=>l.map(cell).join(';')).join('\n');
 fs.writeFileSync(path.join(out,'design-plan.csv'),'﻿'+csv);
-const perSize=targets.map(t=>{const own=rows.filter(r=>r.to===t);return {family:t.family.id,familyName:t.family.name,sku:t.size.key,label:name(t),passt:own.filter(r=>r.status==='passt').length,pruefen:own.filter(r=>r.status==='prüfen').length,passtNicht:own.filter(r=>r.status==='passt nicht').length};});
+const perSize=targets.map(t=>{const own=rows.filter(r=>r.to===t);return {family:t.family.id,familyName:t.family.name,material:t.family.material.label,sku:t.size.key,label:name(t),passt:own.filter(r=>r.status==='passt').length,pruefen:own.filter(r=>r.status==='prüfen').length,passtNicht:own.filter(r=>r.status==='passt nicht').length};});
 fs.writeFileSync(path.join(out,'design-plan.json'),JSON.stringify({families:families.map(f=>({id:f.id,name:f.name,source:f.source?.sha256})),designs:source.designs.length,perSize,rows:rows.map(r=>({design:r.design.id,title:r.design.title,category:r.design.category,from:r.from?.size.key,family:r.to?.family.id,to:r.to?.size.key,scale:r.scale,status:r.status,note:r.note}))},null,1));
 
 const count=s=>rows.filter(r=>r.status===s).length;
@@ -124,8 +135,9 @@ console.log(`Designs: ${source.designs.length} · Familien: ${families.map(f=>f.
 console.log(`Zuordnungen: ${rows.length} · passt ${count('passt')} · prüfen ${count('prüfen')} · passt nicht ${count('passt nicht')} · übersprungen ${count('übersprungen')}`);
 for(const f of families){
  const sizes=perSize.filter(s=>s.family===f.id),covered=sizes.filter(s=>s.passt+s.pruefen>0);
- console.log(`\n${f.name}: ${covered.length} von ${sizes.length} Größen mit Designs`);
+ const gaps=familyGaps(f);
+ console.log(`\n${f.name} (${f.material.label}): ${covered.length} von ${sizes.length} Größen mit Designs${gaps.length?'\n  Offen: '+gaps.join(' · '):''}`);
  for(const s of covered)console.log(`  ${s.label.padEnd(34)} passt ${String(s.passt).padStart(3)} · prüfen ${String(s.pruefen).padStart(3)} · passt nicht ${String(s.passtNicht).padStart(3)}`);
- console.log(`  Ohne Design: ${sizes.length-covered.length} Größen → neue Designs mit dem Plugin (Schablonen im Briefing).`);
+ if(sizes.length>covered.length)console.log(`  Ohne Design: ${sizes.length-covered.length} Größen → neue Designs mit dem Plugin (Schablonen im Briefing).`);
 }
 console.log(`\nBericht: ${path.join(out,'design-plan.csv')}`);

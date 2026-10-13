@@ -147,3 +147,36 @@ test('resizing a family product keeps drill holes at the same edge distance in m
  const legacy=structuredClone(doc);delete legacy.config.profile.optionGroups[0].values[1].mountingRule;
  assert.throws(()=>resizeSteelDocument(legacy,{width:120,height:80}),/festem Bohrbild/,'fixed coordinates without rule stay blocked');
 });
+
+// Materialübergreifende Familien (v2): offene Stammdaten bleiben null, nichts wird geraten.
+const memorial=k=>JSON.parse(fs.readFileSync(new URL('../designs/gedenktafeln-30x20/'+k+'.json',import.meta.url)));
+test('memorial families 30 × 20: all materials validate, open values block generation with plain reasons',async t=>{
+ for(const k of ['edelstahl','schiefer-natur','schiefer-premium','acryl-schwarz','acryl-anthrazit'])validateFamily(memorial(k));
+ const {repository,families}=stores(t);
+ const slate=families.create(memorial('schiefer-natur'));
+ assert.equal(slate.readiness.ready,true);
+ const made=families.generate(slate.id,{expectedRevision:slate.revision});
+ assert.equal(made.created,1);
+ const doc=repository.get(made.products[0].productId).document,p=doc.config.profile;
+ assert.equal(p.material.kind,'slate');assert.equal(p.processing.profileId,'slate-engraving');assert.equal(doc.config.basePriceCents,2999);
+ assert.deepEqual(p.optionGroups[0].values.map(v=>[v.id,v.priceCents,v.holes.map(h=>[h.x,h.y,h.diameter])]),[['K00',0,[]],['B02',299,[[12,100,5],[288,100,5]]],['B04',399,[[12,12,5],[288,12,5],[12,188,5],[288,188,5]]]]);
+ const acryl=families.create(memorial('acryl-schwarz'));
+ assert.equal(acryl.readiness.ready,false);assert.match(acryl.readiness.reason,/Acrylglas-Gravurplatten .* noch nicht/);
+ assert.throws(()=>families.generate(acryl.id,{expectedRevision:acryl.revision}),e=>e.status===422);
+ const steel=families.create(memorial('edelstahl'));
+ assert.deepEqual(steel.readiness.gaps,['Materialstärke','Gestaltungsrand','Bohrbild „4 Bohrlöcher“: Durchmesser und Randabstand']);
+ assert.throws(()=>families.generate(steel.id,{expectedRevision:steel.revision}),/Stammdaten unvollständig/);
+ assert.match(families.template(steel.id,'GT-ES-RE-300X200'),/Bohrbild offen/);
+ const zip=await families.briefing(steel.id);assert.ok(zip.length>100);
+ // filling in the open values makes the same family generate
+ const filled=structuredClone(steel.document);filled.material.thicknessMm=1.5;filled.designArea.marginMm=0;Object.assign(filled.mountingRules[0],{diameterMm:4,edgeMm:8});
+ const saved=families.save(steel.id,filled,steel.revision);assert.equal(saved.readiness.ready,true);
+ assert.equal(families.generate(steel.id,{expectedRevision:saved.revision}).created,1);
+});
+test('family validation: wrong process for a material and half-open drill rules are rejected',()=>{
+ const f=memorial('schiefer-natur');
+ assert.throws(()=>validateFamily({...f,material:{...f.material,processingProfileId:'steel-engraving'}}),/slate-engraving/);
+ const half=structuredClone(f);half.mountingRules[0].edgeMm=null;assert.throws(()=>validateFamily(half),/gemeinsam/);
+ const v1=family();assert.equal(v1.schema,'gravuru-product-family/v1');validateFamily(v1);
+ assert.throws(()=>validateFamily({...memorial('acryl-schwarz'),schema:'gravuru-product-family/v1'}),/v1/);
+});

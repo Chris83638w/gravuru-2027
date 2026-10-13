@@ -296,7 +296,7 @@ Rote Designs erzeugen kein Paket. Wiederholter Lauf mit gleichen Dateien erzeugt
 | 5 | Paket F | Mehrfachimport in alle passenden Edelstahlprodukte |
 | 6 | Deine Bedienabnahme | feste Checkliste auf echtem Shopify-Zugang |
 | 7 | Paket G + Gravurprobe | erstes öffentlich bestellbares Produkt |
-| 8 | Nächste Familien | Acryl, Schiefer … nach demselben Muster |
+| 8 | Nächste Familien | **Begonnen 13.10.:** Format v2 für Edelstahl/Acryl/Schiefer, Gedenktafel 30 × 20 in fünf Materialien, offene Stammdaten als „offen“. Naturschiefer erzeugbar; Acryl braucht noch ein natives Gravurprodukt. Siehe `docs/releases/20261013/material-families/RELEASE.md` |
 | parallel | Paket H | KI-Budget ohne Sperrfallen |
 
 Jedes Paket: eigener Commit, Tests für den **Nutzerablauf** (nicht nur die Funktion), Browserprüfung, `STATUS.md` fortschreiben, keine Live-Änderung ohne deine Freigabe.

@@ -1,0 +1,58 @@
+{
+ "schema": "gravuru-product-family/v2",
+ "id": "gedenktafel-30x20-acryl-schwarz",
+ "name": "Gedenktafel 30 × 20 · Acrylglas schwarz",
+ "material": {
+  "kind": "acrylic",
+  "label": "Acrylglas schwarz",
+  "thicknessMm": null,
+  "processingProfileId": "acrylic-engraving",
+  "variant": "schwarz"
+ },
+ "designArea": {
+  "marginMm": null,
+  "keepoutMm": 1
+ },
+ "groups": [
+  {
+   "key": "RE",
+   "name": "Rechteck",
+   "shape": "rect",
+   "cornerRadiusMm": 0
+  }
+ ],
+ "mountingRules": [],
+ "sizes": [
+  {
+   "key": "GT-AS-RE-300X200",
+   "groupKey": "RE",
+   "label": "30 × 20 cm",
+   "widthMm": 300,
+   "heightMm": 200,
+   "baseCents": null,
+   "mounting": []
+  }
+ ],
+ "withoutMounting": true,
+ "fonts": [
+  "Montserrat",
+  "Great Vibes",
+  "Cinzel",
+  "Cormorant Garamond",
+  "Allura",
+  "Lora",
+  "Parisienne",
+  "Josefin Sans",
+  "Dancing Script",
+  "Lora Italic",
+  "Caveat",
+  "Kalam",
+  "Oswald"
+ ],
+ "briefingNotes": "Gedenktafel 30 × 20 cm: ruhige, würdige Gestaltung. Name groß, Lebensdaten klar lesbar, Spruch zurückhaltend; Motive dezent. Ein Design gilt für alle Materialien dieser Größe – nur schwarz auf weiß gestalten, die Werkstatt zeigt die Gravur je Material.",
+ "sizeKeyPrefix": "GT-AS",
+ "sizeKeySuffix": "",
+ "source": {
+  "note": "Nur Größe 30 × 20 cm vom Nutzer genannt. Offen: Stärke (3 mm nur aus Bildname, nicht bestätigt), Ecken, Rand, Grundpreis, Bohrbilder mit Preisen. Produkterzeugung für Acryl-Gravurplatten noch nicht angeschlossen."
+ }
+}

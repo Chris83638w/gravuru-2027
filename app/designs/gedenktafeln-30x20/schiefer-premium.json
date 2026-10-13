@@ -1,0 +1,58 @@
+{
+ "schema": "gravuru-product-family/v2",
+ "id": "gedenktafel-30x20-schiefer-premium",
+ "name": "Gedenktafel 30 × 20 · Premium-Schiefer",
+ "material": {
+  "kind": "slate",
+  "label": "Premium-Schiefer",
+  "thicknessMm": null,
+  "processingProfileId": "slate-engraving",
+  "variant": "premium"
+ },
+ "designArea": {
+  "marginMm": null,
+  "keepoutMm": 1
+ },
+ "groups": [
+  {
+   "key": "RE",
+   "name": "Rechteck",
+   "shape": "rect",
+   "cornerRadiusMm": 0
+  }
+ ],
+ "mountingRules": [],
+ "sizes": [
+  {
+   "key": "GT-SP-RE-300X200",
+   "groupKey": "RE",
+   "label": "30 × 20 cm",
+   "widthMm": 300,
+   "heightMm": 200,
+   "baseCents": null,
+   "mounting": []
+  }
+ ],
+ "withoutMounting": true,
+ "fonts": [
+  "Montserrat",
+  "Great Vibes",
+  "Cinzel",
+  "Cormorant Garamond",
+  "Allura",
+  "Lora",
+  "Parisienne",
+  "Josefin Sans",
+  "Dancing Script",
+  "Lora Italic",
+  "Caveat",
+  "Kalam",
+  "Oswald"
+ ],
+ "briefingNotes": "Gedenktafel 30 × 20 cm: ruhige, würdige Gestaltung. Name groß, Lebensdaten klar lesbar, Spruch zurückhaltend; Motive dezent. Ein Design gilt für alle Materialien dieser Größe – nur schwarz auf weiß gestalten, die Werkstatt zeigt die Gravur je Material.",
+ "sizeKeyPrefix": "GT-SP",
+ "sizeKeySuffix": "",
+ "source": {
+  "note": "Nur Größe 30 × 20 cm vom Nutzer genannt. Offen: Stärke, Kante/Rand, Grundpreis, Bohrbilder mit Preisen."
+ }
+}

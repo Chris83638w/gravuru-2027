@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "scope": "lokaler Vorschauserver, Chromium",
+  "checks": {
+    "acrylShowsNotConnected": true,
+    "acrylGenerateDisabled": true,
+    "acrylListShowsOpenCount": true,
+    "acrylTemplateRenders": true,
+    "steelListsGaps": true,
+    "steelReadyAfterEdit": true,
+    "slateReady": true,
+    "slateProductOpensInEditor": true,
+    "slateMountingOptions": true
+  }
+}

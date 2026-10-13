@@ -59,7 +59,9 @@ import {planCustomerFields,applyCustomerFields} from './customer-fields.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(new Error(message),{status,code});};
 // Master data shipped with the app (provenance inside each file). Loaded only on explicit request.
-const BUNDLED_FAMILIES=[{id:'steel-door-signs',name:'Edelstahl-Türschilder (vorhandene Stammdaten)',load:()=>JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url),'utf8'))}];
+const bundledFile=path=>()=>JSON.parse(fs.readFileSync(new URL('../designs/'+path,import.meta.url),'utf8'));
+const BUNDLED_FAMILIES=[{id:'steel-door-signs',name:'Edelstahl-Türschilder (vorhandene Stammdaten)',load:bundledFile('steel-door-signs/family.json')},
+ ...[['edelstahl','Edelstahl','Stammdaten teils offen'],['schiefer-natur','Naturschiefer','Werte aus Testdaten, bitte bestätigen'],['schiefer-premium','Premium-Schiefer','Stammdaten offen'],['acryl-schwarz','Acrylglas schwarz','Stammdaten offen'],['acryl-anthrazit','Acrylglas anthrazit','Stammdaten offen']].map(([k,n,state])=>({id:'gedenktafel-30x20-'+k,name:'Gedenktafel 30 × 20 · '+n+' ('+state+')',load:bundledFile('gedenktafeln-30x20/'+k+'.json')}))];
 const sameToken=(actual,expected)=>typeof actual==='string'&&/^[a-f0-9]{64}$/.test(actual)&&timingSafeEqual(Buffer.from(actual),Buffer.from(expected));
 const json=(res,status,value)=>{const bytes=Buffer.from(JSON.stringify(value));res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);};
 async function body(req,limit=2*1024*1024){

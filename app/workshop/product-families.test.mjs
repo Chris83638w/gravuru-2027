@@ -121,3 +121,29 @@ test('family changes reach generated products only after preview and confirmatio
  const p3=families.planSync(rec.id),doc=repository.get(ovalId).document;doc.seo.description='Händler hat geändert';repository.save(ovalId,doc,2);
  assert.throws(()=>families.applySync(rec.id,{expectedRevision:3,token:p3.token}),e=>e.status===409);
 });
+
+test('order snapshot keeps a production note when the customer leaves a text in a drill-hole zone',async t=>{
+ const {prepareAcrylicReview}=await import('./acrylic-review.mjs');
+ const {repository,families}=stores(t),rec=families.create(family());
+ const id=families.generate(rec.id,{expectedRevision:1,sizeKeys:[OVAL]}).products[0].productId,record=repository.get(id);
+ const config=structuredClone(record.document.config);config.profile.id=record.id;config.profile.revision=record.id+':1';
+ const objects=structuredClone(config.profile.designs[0].objects),preview=fs.readFileSync(new URL('./preview-assets/reference.jpg',import.meta.url)).toString('base64');
+ const snapshot=async(options,x)=>{objects[0].x=x;return (await prepareAcrylicReview({record,config,input:{productId:id,productRevision:1,designId:'start',objects:structuredClone(objects),options,quantity:1,media:[],preview}})).manifest;};
+ const near=await snapshot({mounting:'B02'},32);
+ assert.ok(near.warnings.some(w=>/Prüfvermerk Bohrloch: Text „Familie Muster“ liegt im Schutzbereich des Bohrlochs bei 6 \| 30 mm/.test(w)),near.warnings.join('\n'));
+ assert.equal(near.productionReady,false);
+ assert.ok(!(await snapshot({mounting:'B02'},45)).warnings.some(w=>/Bohrloch/.test(w)),'centred text: no note');
+ assert.ok(!(await snapshot({mounting:'K00'},32)).warnings.some(w=>/Bohrloch/.test(w)),'no holes: no note');
+});
+
+test('resizing a family product keeps drill holes at the same edge distance in mm',async t=>{
+ const {resizeSteelDocument}=await import('../configurator/variant-m/steel-formats.mjs');
+ const {repository,families}=stores(t),rec=families.create(family());
+ const doc=repository.get(families.generate(rec.id,{expectedRevision:1,sizeKeys:[OVAL]}).products[0].productId).document;
+ const resized=resizeSteelDocument(doc,{width:120,height:80});
+ const b02=resized.config.profile.optionGroups.find(g=>g.id==='mounting').values.find(v=>v.id==='B02');
+ assert.deepEqual(b02.holes,[{x:6,y:40,diameter:4},{x:114,y:40,diameter:4}],'6 mm edge distance kept, not scaled to 8 mm');
+ validateProductDocument(resized);
+ const legacy=structuredClone(doc);delete legacy.config.profile.optionGroups[0].values[1].mountingRule;
+ assert.throws(()=>resizeSteelDocument(legacy,{width:120,height:80}),/festem Bohrbild/,'fixed coordinates without rule stay blocked');
+});

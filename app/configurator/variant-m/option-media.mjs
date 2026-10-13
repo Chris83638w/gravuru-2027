@@ -43,3 +43,12 @@ export function spacerPreview(svg,profile){
   return end<0?svg:svg.slice(0,end)+`<g data-m-spacers="true" aria-label="Abstandshalter" pointer-events="none">${caps}</g>`+svg.slice(end);
 }
 
+
+// Drill-hole protection zones: preview aid only, never part of production files.
+export function keepoutPreview(svg,profile,{show=true,emphasis=false}={}){
+  const holes=profile.geometry?.holes||[];if(!show||!holes.length)return svg;
+  const k=profile.mountingPreview?.keepoutMm??0,stroke=emphasis?'#c0392b':'#d0453a',width=emphasis?0.4:0.3,dash=emphasis?'1 0.6':'0.8 0.6';
+  const rings=holes.map(h=>'<circle cx="'+Number(h.x)+'" cy="'+Number(h.y)+'" r="'+(Number(h.diameter)/2+k)+'" fill="'+(emphasis?'rgba(192,57,43,.08)':'none')+'" stroke="'+stroke+'" stroke-width="'+width+'" stroke-dasharray="'+dash+'"/>').join('');
+  const end=svg.lastIndexOf('</svg>');
+  return end<0?svg:svg.slice(0,end)+'<g data-m-keepout="true" aria-hidden="true" pointer-events="none">'+rings+'</g>'+svg.slice(end);
+}

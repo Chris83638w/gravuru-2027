@@ -94,8 +94,9 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    const response=await api(`/api/workshop/products/${encodeURIComponent(id)}/editor-preview`,{method:'POST',signal:previewController.signal,body:{expectedRevision:state.record.revision,document:state.draft,designId,options}});
    if(request!==serial||id!==state.record?.id)return;
    $('#editor-preview').innerHTML=response.svg;highlight();photoThumbnail();
+   let hint=$('#editor-hole-hint');if(!hint){hint=document.createElement('p');hint.id='editor-hole-hint';hint.setAttribute('role','status');hint.style.cssText='background:#fff4e5;border:1px solid #f0c27b;border-radius:10px;padding:10px 12px;font-size:14px;margin:10px 16px';$('#editor-preview').after(hint);}hint.textContent=response.holeHint||'';hint.hidden=!response.holeHint;
    const tile=[...$('#editor-designs').querySelectorAll('[data-editor-design]')].find(n=>n.dataset.editorDesign===designId),old=tile?.querySelector('img');
-   if(old){const img=document.createElement('img');img.alt='';img.src='data:image/svg+xml;base64,'+btoa(Array.from(new TextEncoder().encode(response.svg),b=>String.fromCharCode(b)).join(''));old.replaceWith(img);}
+   if(old){const img=document.createElement('img');img.alt='';img.src='data:image/svg+xml;base64,'+btoa(Array.from(new TextEncoder().encode(response.svg.replace(/<g data-m-keepout="true"[\s\S]*?<\/g>/,'')),b=>String.fromCharCode(b)).join(''));old.replaceWith(img);}
    $('#stage-price').textContent=response.price?'Ausführung: '+new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(response.price.unitCents/100):'';
    $('#stage-status').textContent=state.dirty?'Entwurf · noch nicht gespeichert':'Gespeicherter Stand';
    $('#editor-preview').classList.remove('preview-updated');void $('#editor-preview').offsetWidth;

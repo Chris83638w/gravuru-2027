@@ -1,3 +1,7 @@
+## Familie bearbeiten, Übernahme auf Produkte, Bohrloch-Schutzzone (nicht installiert) · 13.10.2026
+
+Produktfamilien direkt bearbeitbar (Formen, Größen, Preise, Bohrbilder, Schutzzone, Schriften) mit Revisions- und Konfliktschutz; Änderungen per Vorschau und Bestätigung auf erzeugte Produkte übertragbar, Designs bleiben erhalten. Konfigurator und Händler-Editor zeigen die 1-mm-Schutzzone und einen Hinweis für Texte am Bohrloch; Prüfvermerk im Bestellstand. Größenänderung hält Bohrloch-Randabstand in mm. `npm test` 721/721, Ops 55/55 + 13 Python, Browserprüfungen 12/12 und 7/7. [Nachweis](docs/releases/20261013/hole-zones/RELEASE.md). **Nächster Schritt:** Exportvorgabe + Serienlauf für Plugin-Designs (Pakete D/E), danach Mehrfachimport (F). Installation aller Pakete erst nach Nutzerfreigabe.
+
 ## Paket A Produktfamilien umgesetzt (nicht installiert) · 13.10.2026
 
 Verwaltung → Produktfamilien: Edelstahl-Türschilder aus vorhandenen Stammdaten (61 Größen, 5 Formen, 7 Bohrbild-Regeln; alle 63 Bohrbilder exakt reproduziert), Gestaltungsschablonen mit 1 mm Schutzzone, Produktentwürfe je Größe ohne Duplikate, Briefing-ZIP für das ChatGPT-Projekt. `npm test` 715/715, Ops 55/55, Browserprüfung PASS. [Nachweis und Grenzen](docs/releases/20261013/families/RELEASE.md). **Nächster Schritt:** Paket C (Schutzzone und Text-Hinweis im Konfigurator) und Rest von Paket B (Größenwechsel per Regel).

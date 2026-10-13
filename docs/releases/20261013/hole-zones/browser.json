@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "checks": {
+    "merchantZoneShown": true,
+    "merchantHint": true,
+    "customerZoneShown": true,
+    "customerHint": true,
+    "customerDesignValid": true,
+    "customerNoHolesNoHint": true,
+    "noPageErrors": true
+  },
+  "errors": []
+}

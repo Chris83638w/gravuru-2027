@@ -1,4 +1,5 @@
-import {spacerPreview} from './option-media.mjs';
+import {spacerPreview,keepoutPreview} from './option-media.mjs';
+import {textsNearHoles,holeHintText} from '../../platform/sources/app/shared/models/hole-proximity.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {surfacePreview,embedSurface,scenePreview} from './material-surface.mjs';
@@ -21,12 +22,12 @@ export function installUniversal(configInput) {
   const current = () => designFromState(config, el.state);
   const profile = () => selectedProfile(config, options);
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
-  const svg = (design, {guides=false, selected='', handles=false} = {}) => {
+  const svg = (design, {guides=false, selected='', handles=false, keepout=false} = {}) => {
     const visible={...design,objects:design.objects.filter(o=>!o.uxHidden)};
     let result=surfacePreview(studioSvg(profile(), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
-    return scenePreview(spacerPreview(result,profile()),config.sceneBackground);
+    return scenePreview(keepoutPreview(spacerPreview(result,profile()),profile(),{show:keepout,emphasis:guides}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
 
@@ -46,7 +47,7 @@ export function installUniversal(configInput) {
     };
     el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]})).querySelector('[data-object]')?.outerHTML || '';
     el.svgBody = function(preview=true, guides=false) {
-      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview}));
+      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview}));
       if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[]);for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
       return doc.documentElement.innerHTML;
     };
@@ -130,6 +131,7 @@ export function installUniversal(configInput) {
     $('.fk-font-section').append(colorControl);
     colorControl.addEventListener('input',e=>{const o=el.selected();if(o&&!locked(o)){el.record();o.color=e.target.value;el.sync();}});
     const issue=document.createElement('p');issue.dataset.mInvalid='';issue.setAttribute('role','status');$('.guided-download').before(issue);
+    const holeHint=document.createElement('p');holeHint.dataset.mHoleHint='';holeHint.setAttribute('role','status');holeHint.hidden=true;holeHint.style.cssText='background:#fff4e5;border:1px solid #f0c27b;border-radius:10px;padding:10px 12px;font-size:14px;margin:10px 16px';($('.stage-wrap')||$('.guided-download').parentElement).append(holeHint);
     const exports=$('.export-type');exports.replaceChildren(new Option('Produktvorschau · PNG','png'),new Option('Vektorentwurf ohne Foto · SVG 1:1','vectors'));
     el.export=async function(){
       try{
@@ -196,6 +198,8 @@ export function installUniversal(configInput) {
       $('[data-setting=guides]').closest('.check-guide').hidden=false;
       for(const select of picks.querySelectorAll('select'))select.value=options[select.dataset.mOption];
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
+      // Independent of validity: the drill-hole hint must also show while another issue is open.
+      try{const hint=holeHintText(textsNearHoles(current(),profile(),el.fontData));holeHint.textContent=hint;holeHint.hidden=!hint;}catch{holeHint.hidden=true;}
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';

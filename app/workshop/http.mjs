@@ -42,7 +42,7 @@ import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
 import {prepareFormReview} from './form-review-snapshot.mjs';
 import {createFormPrintProof,formPrintSettings,formPrintKey,FORM_PRINT_RECIPE} from './form-print-proof.mjs';
 import {createContourStore} from './contours.mjs';
-import {productOverview,productPreview,overviewOptions} from './product-preview.mjs';
+import {productOverview,productPreview,overviewOptions,previewHoleHint} from './product-preview.mjs';
 import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
 import {createProductFamilies} from './product-families.mjs';
 import {randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
@@ -163,7 +163,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     const universal=embedMaterialSurface(structuredClone(resolved.config));universal.profile.defaultDesignId=resolved.designId;
     universal.localResources.motifs=universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
     const examples=(universal.localResources.photoExamples||[]).filter(e=>e.designId===resolved.designId).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
-    return {svg:privateProductPreview({universal},{options:resolved.resolvedOptions,examples}),designId:resolved.designId,price:resolved.price};
+    return {svg:privateProductPreview({universal},{options:resolved.resolvedOptions,examples,keepout:true}),designId:resolved.designId,price:resolved.price,holeHint:previewHoleHint(universal,{options:resolved.resolvedOptions,designId:resolved.designId})};
   }
   async function handle(req,res,url){
     try{

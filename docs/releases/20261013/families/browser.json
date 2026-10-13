@@ -8,6 +8,10 @@
     "generated": true,
     "briefingDownload": true,
     "editorShowsHoles": true,
+    "savedAsRevision2": true,
+    "syncPreviewShowsPrice": true,
+    "syncApplied": true,
+    "conflictNotOverwritten": true,
     "noPageErrors": true
   },
   "errors": []

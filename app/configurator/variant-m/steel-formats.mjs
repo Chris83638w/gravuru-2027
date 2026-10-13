@@ -1,5 +1,6 @@
 import {objectIssue,validateGeometryHoles} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {holesFor} from '../../platform/sources/app/shared/models/mounting-rules.mjs';
 
 const fail=message=>{throw Error(message);};
 export const steelSizeGroup=c=>c.profile.optionGroups.find(g=>g.id==='size');
@@ -7,7 +8,10 @@ export function validateSteelFormats(c){
  if(c.steelFormats===undefined)return;
  if(c.steelFormats?.version!==1||Object.keys(c.steelFormats).length!==1)fail('Unbekannte Edelstahl-Formatversion.');
  const g=c.profile.geometry,group=steelSizeGroup(c);
- if(g.holes.length||c.profile.optionGroups.some(group=>group.values.some(v=>v.holes?.length)))fail('Größenänderungen mit festem Bohrbild benötigen eine gesonderte Freigabe.');
+ // Drill patterns stored as rules (product families) follow every resize in
+ // millimetres. Fixed coordinates or several sizes with holes stay blocked.
+ const holeValues=c.profile.optionGroups.flatMap(group=>group.values.filter(v=>v.holes?.length));
+ if(g.holes.length||holeValues.some(v=>!v.mountingRule)||(holeValues.length&&group?.values?.length>1))fail('Größenänderungen mit festem Bohrbild benötigen eine gesonderte Freigabe. Bohrbilder aus einer Produktfamilie passen sich bei einer einzelnen Schildgröße automatisch an.');
  if(!group?.values?.length||!group.values.some(v=>v.id===group.defaultValueId))fail('Mindestens eine Schildgröße und eine Startauswahl sind erforderlich.');
  for(const v of group.values){
   if(![v.widthMm,v.heightMm].every(n=>Number.isFinite(n)&&n>=10&&n<=2000)||Math.abs(v.widthMm/g.width-v.heightMm/g.height)>1e-6)fail('Die Größen eines Schilds müssen dieselben Proportionen haben. Die Grundform unter „Schildgröße & Form“ ändern.');
@@ -40,7 +44,7 @@ export function resizeSteelDocument(input,geometry){
  enableSteelFormats(c);validateSteelFormats(c);
  g.holes=old.holes.map(h=>({...h,x:h.x/old.width*g.width,y:h.y/old.height*g.height}));
  p.geometry=g;validateGeometryHoles(p);
- for(const group of p.optionGroups)for(const v of group.values)if(v.holes){v.holes=v.holes.map(h=>({...h,x:h.x/old.width*g.width,y:h.y/old.height*g.height}));validateGeometryHoles({...p,geometry:{...g,holes:v.holes}});}
+ for(const group of p.optionGroups)for(const v of group.values)if(v.holes){v.holes=v.mountingRule?holesFor(g,v.mountingRule):v.holes.map(h=>({...h,x:h.x/old.width*g.width,y:h.y/old.height*g.height}));validateGeometryHoles({...p,geometry:{...g,holes:v.holes}});}
  for(const design of p.designs){
   const original=structuredClone(design.objects);
   const maximum=Math.min((g.width-2*g.safeMarginMm)/(old.width-2*(old.safeMarginMm??2)),(g.height-2*g.safeMarginMm)/(old.height-2*(old.safeMarginMm??2)),...original.filter(o=>o.type==='text').map(o=>100/o.size));

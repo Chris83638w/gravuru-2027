@@ -88,7 +88,7 @@ export function selectedProfile(config, values = {}) {
     if (value.holes !== undefined) {
       if (holeSelection) fail('Mehrere Optionen bestimmen gleichzeitig das Bohrbild.');
       profile.geometry.holes = clone(value.holes); holeSelection = true;
-      profile.mountingPreview={spacers:value.spacers===true,diameter:12,finish:value.spacerFinish||'silver'};
+      profile.mountingPreview={spacers:value.spacers===true,diameter:12,finish:value.spacerFinish||'silver',...(Number.isFinite(value.mountingRule?.keepoutMm)?{keepoutMm:value.mountingRule.keepoutMm}:{})};
     }
   }
   return profile;

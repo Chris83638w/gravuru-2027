@@ -1,3 +1,13 @@
+## Product-Design-Rezept und wiederverwendbare Arbeitskopien · 13.10.2026
+
+Aufgabenbranch `task/product-design-recipe-20261013`. [Kompakter Einstieg](design/product-design/START.md), geprüfte Quellenregistrierung, portable Kontextvorlage und `scripts/product-design-session.py` eingerichtet. `AGENTS.md` verweist bei künftigen Gestaltungsaufträgen direkt auf das Rezept. Product Design übernimmt die Gestaltung; der Helfer erstellt private Arbeitskopien mit separat wiederverwendeten Bildern, kurzen Aufträgen und maßhaltigen Konturreferenzen für Rechteck, gerundetes Rechteck, Kreis, Ellipse und Bogen.
+
+**12 gezielte Tests bestanden.** Echte Vorlage 18 zusätzlich mit unveränderter Übernahme und gezielter Namensänderung geprüft: Original und beide Bilddateien unverändert; nur die beauftragte Textebene geändert. Arbeits-SVG etwa 2,5 KB statt 4,5 MB eingebetteter Quelldaten, Gestaltungsauftrag etwa 1,1 KB. [Prüfnachweis](design/product-design/verification.json). Keine Bildgenerierung oder API-Anfrage für diese Einrichtung.
+
+Grenzen: globale Product-Design-Kontextablage ist in dieser Cloud schreibgeschützt; die Kontextdatei im Projekt wurde mit dem offiziellen Preflight gelesen (zwei Einträge). Sie gilt als Projektgrundlage, nicht als automatische Erinnerung in beliebigen Chats. Die bekannte bearbeitbare Vorlage 18 ist eine historische Rekonstruktion mit dokumentierten Abweichungen vom damaligen Mockup. Die technischen Prüfungen sind keine neue visuelle Gestaltung, Kontur-Inhaltsprüfung, Import- oder Fertigungsfreigabe. Frühere ungesicherte Importarbeiten bleiben separat erhalten und wurden nicht fortgesetzt.
+
+**Genau nächster Schritt:** einen kurzen Variantenauftrag mit diesem Rezept in Product Design gestalten; Arbeitskopie prüfen und Vorschau zeigen. Werkstattübernahme bleibt ein gesonderter Schritt über den vorhandenen Importer.
+
 ## Übergabe zur unabhängigen Claude-Prüfung · 12.10.2026
 
 [Vollständige Projektübersicht](docs/reviews/PROJEKTUEBERBLICK-CLAUDE-20261012.md): Ziele, verbindliche Entscheidungen, Soll/Ist, tatsächliche Architektur, gemeldete Fehler/Korrekturen, Produktvorlagen, Shopify/KI/Fertigung, Sicherungen und offene Abnahmen. [Prüfpaket](deliverables/claude-review-20261012/README.md) mit Quellenbasis `9d388e3`, neuen Übergabedateien und 1.200 per SHA-256 geprüften Dateien; private Daten/Schlüssel ausgeschlossen, fehlende Dokumentmedien im Manifest benannt. Keine unabhängige Prüfung bereits erfolgt.

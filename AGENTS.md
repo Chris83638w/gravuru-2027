@@ -16,3 +16,7 @@ Zuerst `START_HERE.md`, danach das aktive Paket in `UMSETZUNGSPAKETE.md` lesen. 
 - Nach jedem Paket `STATUS.md` knapp fortschreiben: Dateien/Commit, ausgeführte Prüfungen, offene Grenzen, genau nächster Schritt. Kurze deutsche Updates, nutzbare Links und sichtbare Ergebnisse für Mikail.
 
 Diese Regeln beantragen keine selbstständigen Parallelagenten und ändern keine Modellwahl. Der Nutzer legt fest, welches Modell arbeitet.
+
+## Wiederkehrende Gestaltung mit Product Design
+
+Bei neuen Gravuru-Designs oder Varianten zuerst `design/product-design/START.md` lesen. Dieser kompakte Einstieg enthält die geltenden Gestaltungsregeln und verweist gezielt auf die benötigte Vorlage. Vorhandene Ebenen und Bildressourcen wiederverwenden; nur beauftragte Teile ändern. Gestaltung über das Product-Design-Plugin, keine eigenen Generierungs-API-Aufrufe und kein Modelltraining. Die Projektdateien sind der dauerhafte Kontext; ein globaler Plugin-Speicher darf nur als eingerichtet bezeichnet werden, wenn er tatsächlich beschreibbar und gespeichert ist.

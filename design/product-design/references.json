@@ -1,0 +1,39 @@
+{
+  "schema": "gravuru-product-design-references/v1",
+  "references": {
+    "acryl-18": {
+      "name": "Acrylglasbild 18 · Unser kleines Glück",
+      "sourceSha256": "f6be9bb3b2526ab829dcd9c2419060147c95d0a0d94d79e404f2eaaea413b43b",
+      "sourceFile": "02-Bearbeitbare-Basis/Pia-und-Rafael-150x200-editierbar.svg",
+      "archive": "Master-Acrylglas-Roland-mit-Beispiel.zip",
+      "archiveSha256": "f49918022cb88612ea001935d8ec6db5397cfb393c0989999e1b4da684ab8f36",
+      "release": "https://github.com/Chris83638w/gravuru-shopify/releases/tag/resources-acrylglas-150x200-20260929",
+      "sourceCommit": "084412b43204cf080764a0ef0becea8c251713fd",
+      "widthMm": 150,
+      "heightMm": 200,
+      "shape": "rectangle",
+      "layers": {
+        "layer-1": "Austauschbares Bogenfoto",
+        "layer-2": "Terrakotta-Vektorbogen",
+        "layer-3": "Rosé-Vektorbogen",
+        "layer-4": "Olivenzweig mit Transparenz",
+        "layer-5": "Überschrift",
+        "layer-6": "Namen",
+        "layer-7": "Datum",
+        "layer-8": "Zierlinien",
+        "layer-9": "Spruch"
+      },
+      "fields": {
+        "layer-1": {"kind": "photo", "key": "photo-main"},
+        "layer-5": {"kind": "text", "key": "title"},
+        "layer-6": {"kind": "text", "key": "names"},
+        "layer-7": {"kind": "text", "key": "date"},
+        "layer-9": {"kind": "text", "key": "message"}
+      },
+      "fonts": {"Garamond": "Garamond Acryl", "Freestyle Script": "Freestyle Acryl"},
+      "visualStatus": "Bearbeitbare historische Rekonstruktion; keine abgenommene 1:1-Kopie des damaligen Mockups. Foto, Namensschrift und Zweig weichen ab.",
+      "importCompatibility": "Bekannter Adapter: eine kanonische Bogenfotomaske und einfache mittig verankerte Texte. Produktkontur und Import-Skalierung danach im bestehenden Importer prüfen."
+    }
+  },
+  "inventoryNote": "Im wiedergefundenen Sammelarchiv sind Beispiele 13–18 enthalten. Beispiele 1–12 wurden damit nicht wiedergefunden. Diese Datei registriert zunächst ausschließlich die konkret untersuchte bearbeitbare Vorlage 18."
+}

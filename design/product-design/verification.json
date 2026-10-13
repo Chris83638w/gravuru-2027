@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-13",
+  "result": "PASS",
+  "reference": "acryl-18",
+  "sourceSha256": "f6be9bb3b2526ab829dcd9c2419060147c95d0a0d94d79e404f2eaaea413b43b",
+  "originalBytes": 4517032,
+  "workSvgBytes": 2490,
+  "briefBytes": 1107,
+  "imageAssets": 2,
+  "changedLayers": [
+    "layer-6"
+  ],
+  "otherLayersUnchanged": 9,
+  "originalUnchanged": true,
+  "bitmapBytesUnchanged": true,
+  "unitTests": 12,
+  "visualReview": "not_performed",
+  "productionReleased": false,
+  "nativePluginMemory": "not_writable",
+  "projectContext": "present; official preflight parsed two entries"
+}

@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "widthMm": 150,
+  "heightMm": 200,
+  "changedField": "names",
+  "onlyChangeInNameBand": true,
+  "changedPixelBounds": [
+    143,
+    628,
+    439,
+    699
+  ],
+  "javascriptErrors": [],
+  "renderFonts": "existing Garamond Acryl / Freestyle Acryl glyph outlines",
+  "reference": "editable historical reconstruction, not original mockup",
+  "importedToWorkshop": false,
+  "productionApproved": false,
+  "date": "2026-10-13",
+  "technicalChecks": "product-design-session.py check: PASS",
+  "comparisonMethod": "Two SVGs rendered at the same viewport origin; comparison board inspected separately",
+  "visualInspection": "Name remains readable and centered; photo, decoration and other text preserved",
+  "editableOutputSha256": "ee935c784a931d7394c391b55d1b0ea592562b9596538b1098a9fedd2b05d7b0"
+}

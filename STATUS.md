@@ -1,3 +1,7 @@
+## Sichtbarer Product-Design-Test · 13.10.2026
+
+Muster 18 mit dem gespeicherten Rezept als private Arbeitskopie verwendet: ausschließlich Namen in „Anna & Ben“ geändert. Technischer Check bestanden; Vorher-/Nachher-Vorschau mit vorhandenen Werkstatt-Schriftpfaden geprüft. Bei gleicher Renderposition unterscheiden sich nur Pixel im Namensbereich; Foto, Motive, übrige Texte und 150 × 200 mm erhalten. Bearbeitbare Texte bleiben in der geprüften SVG bestehen, Pfade werden nur für die Darstellung benutzt. [Nachweis](design/product-design/test-01-visual.json). Private Bilder/Arbeitsdateien bleiben außerhalb Git. Keine Werkstattübernahme oder Produktionsfreigabe. Nächster Schritt: einen gewünschten Gestaltungs- oder Formwechsel mit demselben Rezept beauftragen.
+
 ## Product-Design-Rezept und wiederverwendbare Arbeitskopien · 13.10.2026
 
 Aufgabenbranch `task/product-design-recipe-20261013`. [Kompakter Einstieg](design/product-design/START.md), geprüfte Quellenregistrierung, portable Kontextvorlage und `scripts/product-design-session.py` eingerichtet. `AGENTS.md` verweist bei künftigen Gestaltungsaufträgen direkt auf das Rezept. Product Design übernimmt die Gestaltung; der Helfer erstellt private Arbeitskopien mit separat wiederverwendeten Bildern, kurzen Aufträgen und maßhaltigen Konturreferenzen für Rechteck, gerundetes Rechteck, Kreis, Ellipse und Bogen.

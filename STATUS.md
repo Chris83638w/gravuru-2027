@@ -1,3 +1,13 @@
+## Getrenntes Designstudio und eingewiesenes Team · 13.10.2026
+
+Auf Nutzerauftrag einen eigenständigen privaten Projektordner `/workspace/gravuru-designstudio` mit Koordination, drei Designern und unabhängigem Prüfer vorbereitet und alle fünf Unteragenten tatsächlich gestartet/eingewiesen. [Einstieg und neuer Chat-Auftrag](design/product-design/studio/START-HIER.md). Bestätigte Korrektur: **Drei Designs brauchen eigenständige Kompositionen und Motivideen.** Die bisherigen ACR-001–003 sind Farb-/Textvarianten und erfüllen diesen Gestaltungsauftrag nicht.
+
+Kontext Version 2, Rollen, Quellenregister und Einweisungsfälle dauerhaft als Dateien gesichert. Alle Agenten haben die fünf Pflichtdateien gelesen, deren Prüfsummen dokumentiert, die Original-SVG mit 150 × 200 mm und vorhandene Glyphdaten geprüft sowie die drei Verständnisfälle beantwortet. Die privaten Vorlagen, bisherigen Ergebnisse und Prüfung des Kontextdatenbank-Vorschlags sind Teil der separaten Übergabe. Keine neue Gestaltung, Bildgenerierung, Modellgewichtsänderung, Datenbankimplementierung oder Werkstatt-/Live-Änderung.
+
+Unabhängige Gesamtprüfung: **5/5 Rollen, 25/25 Pflichtdatei-Prüfsummen, 15/15 Verständnisantworten und 61/61 historische Dateiprüfsummen bestanden.** [Bereinigter Nachweis](design/product-design/studio/EINWEISUNG-NACHWEIS.json); vollständige Rollenberichte liegen im privaten Projektordner.
+
+**App-Grenze:** Die verfügbaren Werkzeuge können hier keinen neuen Chat und kein neues App-Projekt erstellen. Der neue Ordner ist keine behauptete neue App-Unterhaltung. Der nächste Chat lädt den gespeicherten Startauftrag, erstellt seine fünf Agenten selbst und prüft erneut den tatsächlichen Quellenzugriff; laufende Agenten sind nicht zwischen Chats übertragbar. Neue Gestaltung wird erst dort konkret beauftragt. Vorhandene uncommittete Importarbeiten bleiben unverändert.
+
 ## Erstes paralleles Designteam ausgeführt · 13.10.2026
 
 Auf Nutzerauftrag drei Designer-Unteragenten gestartet: ACR-001 (Anna & Ben), ACR-002 (Unser gemeinsamer Weg) und ACR-003 (Salbei/Sand · Mia & Leon). Alle verwenden dieselbe registrierte Acrylvorlage in getrennten privaten Arbeitskopien. [Nachweis](design/product-design/team/test-run-01.json).

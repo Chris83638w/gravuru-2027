@@ -1,0 +1,17 @@
+{
+  "schema": "gravuru-designstudio-agents/v1",
+  "contextVersion": 2,
+  "stage": "setup_only",
+  "generateDesignsNow": false,
+  "modelPolicy": "Vom Nutzer gewähltes bzw. geerbtes Modell; keine eigenmächtige Modelländerung.",
+  "roles": [
+    {"id": "koordination", "role": "Koordination", "instructions": "ROLLEN.md#koordination"},
+    {"id": "design-a", "role": "Designer A", "instructions": "ROLLEN.md#designer-a-b-c"},
+    {"id": "design-b", "role": "Designer B", "instructions": "ROLLEN.md#designer-a-b-c"},
+    {"id": "design-c", "role": "Designer C", "instructions": "ROLLEN.md#designer-a-b-c"},
+    {"id": "pruefung", "role": "Unabhängige Prüfung", "instructions": "ROLLEN.md#pruefung"}
+  ],
+  "designDiversityRule": "Eigenständige Kompositionen und Motivideen; Farb-/Textvarianten zählen nicht als verschiedene Designs.",
+  "sharedWrites": "Nur die Koordination übernimmt bestätigte Regeln und schreibt das gemeinsame Auftragsregister.",
+  "threadPersistence": "Rollen sind dauerhaft gespeichert; laufende Unteragenten sind sitzungsgebunden. Neuer Chat muss eigene Agenten starten und einweisen."
+}

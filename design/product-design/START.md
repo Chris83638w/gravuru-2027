@@ -4,6 +4,7 @@
 
 ## Verbindliche Regeln
 
+- **Nutzerkorrektur vom 13.10.2026:** Wenn mehrere unterschiedliche Designs bestellt werden, sind eigenständige Gestaltungskonzepte mit deutlich verschiedener Komposition und Motividee gemeint. Bloße Namens-, Text- oder Farbwechsel zählen als Varianten desselben Designs. Die bisherigen ACR-001 bis ACR-003 waren ein Wiederverwendungstest. Neue Gestaltung erfolgt im getrennten Designstudio; dessen Einstieg ist `studio/START-HIER.md`.
 - Gestaltung ausschließlich mit **Product Design**. Keine eigenen OpenAI-/Bild-API-Aufrufe, kein zusätzliches Modelltraining. Das Plugin nutzt Kontext und Referenzen; es erlernt diese Regeln nicht durch dauerhaft veränderte Modellgewichte.
 - **Festgelegter Umfang (13.10.2026): Hier nur Designs erstellen.** Material, Produktgrößen, Formvarianten, Befestigung, Bohrbilder, Zubehör und Preise werden im Produktkonfigurator hinterlegt. Die gewählten Maße, Kontur und bekannten Bohrpositionen dienen beim Gestalten als Vorgabe. Löcher nicht als Motiv oder Druckelement in das Design zeichnen; technische Hilfen getrennt halten. Ein Design kann mehrere passende Produktausführungen bedienen. Keine automatische Produktanlage, Werkstattänderung oder Veröffentlichung als Nebenwirkung eines Designauftrags.
 - „Design“ = gesamte Gestaltung eines Produkts; „Motiv“ = einzelnes Element.

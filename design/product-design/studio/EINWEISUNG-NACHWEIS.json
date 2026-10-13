@@ -1,0 +1,92 @@
+{
+  "schema": "gravuru-designstudio-setup-verification/v1",
+  "checkedAtUtc": "2026-10-13T10:07:05.508919+00:00",
+  "contextVersion": 2,
+  "verdict": "passed_setup_review",
+  "scope": "Unabhängige Gesamtprüfung der fünf Einweisungen und Integritätsprüfung der manifestierten historischen Dateien; keine Gestaltung.",
+  "summary": {
+    "rolesExpected": 5,
+    "rolesReviewed": 5,
+    "rolesPassed": 5,
+    "mandatoryHashComparisons": 25,
+    "mandatoryHashComparisonsPassed": 25,
+    "sourceAndDimensionsComparisonsPassed": 5,
+    "glyphHashComparisonsPassed": 5,
+    "knowledgeCaseAnswersReviewed": 15,
+    "knowledgeCaseAnswersPassed": 15,
+    "manifestEntries": 61,
+    "manifestEntriesPassed": 61,
+    "blockingDeviations": 0,
+    "newAppChatCreated": false,
+    "newDesignsCreated": false,
+    "productionApproved": false
+  },
+  "criteria": {
+    "R1": "Alle fünf Pflichtdateien vollständig vertreten und berichtete SHA-256 gleich aktuell selbst berechneter SHA-256; Rolle, Sitzungskennung und Kontextversion korrekt.",
+    "S1": "Berichteter Quellenpfad löst zur registrierten Original-SVG auf, berichtete und registrierte SHA-256 entsprechen tatsächlicher Datei; SVG hat 150mm × 200mm und viewBox 0 0 150 200.",
+    "G1": "Glyphdatei vorhanden, lokal lesbar und gültiges JSON; berichtete Hashes entsprechen tatsächlicher Datei.",
+    "C1": "ACR-001/002/003 ausdrücklich als Varianten derselben Gestaltung einordnen, keine drei eigenständigen Designideen behaupten.",
+    "C2": "Neue Konzeptkarten müssen eigenständige Komposition UND eigenständige Motividee erklären; bloße Farb-, Namens- oder Spruchwechsel reichen nicht.",
+    "C3": "Preise, Befestigung und weitere Produktoptionen gehören in den Produktkonfigurator; kein eigenmächtig erfundener pauschaler Sicherheitsrand.",
+    "L1": "Kontext ist dateibasiert; neue Sitzung muss neu laden, keine garantierte automatische Erinnerung.",
+    "L2": "Keine Gewichtsanpassung bzw. kein Modelltraining behaupten.",
+    "L3": "Projektordner/Unteragenten nicht als neuen App-Chat ausgeben; fehlendes Erstellungswerkzeug korrekt einordnen.",
+    "L4": "Historische Rekonstruktion und unvollständige Gesamtmustersammlung benennen.",
+    "H1": "Für jeden Manifest-Eintrag lokale Byteanzahl und SHA-256 selbst berechnen, auf fehlende/zusätzliche Dateien, Duplikate und abweichende Pfadauflösung prüfen."
+  },
+  "mandatoryFiles": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "5fb96751fce6a7a9c4bee8891ab19fa13544f87565e358a2ba6c2ee29465a635"
+    },
+    {
+      "path": "KONTEXT.md",
+      "sha256": "4dbc584fb8bf90e9dd25c0c411ad817f493bfd9b93a0b898d113c8771ed0ceae"
+    },
+    {
+      "path": "AGENTEN.json",
+      "sha256": "a9b02bc12e39bc07ae2f7f5cc017788ddb243fbbc00fe9344446e03f29185182"
+    },
+    {
+      "path": "ROLLEN.md",
+      "sha256": "f67f15f8bb33822edd0a727a3b4b78dd0dc90465d2ec9786a864fda31511a8ef"
+    },
+    {
+      "path": "QUELLEN.json",
+      "sha256": "5b62d39ab02c7046961908949d812bd330e18d31284c71cab3bbd22566a8598f"
+    }
+  ],
+  "roles": [
+    {
+      "roleId": "koordination",
+      "status": "pass",
+      "reportSha256": "caf65ad5dd7d9a13112fb0ce5affce3332385ad8ca34f74291eceef1b02df520"
+    },
+    {
+      "roleId": "design-a",
+      "status": "pass",
+      "reportSha256": "eba3561d2ed87784cdd570609c13999b32d81959e4f03b63698a9e4b46651945"
+    },
+    {
+      "roleId": "design-b",
+      "status": "pass",
+      "reportSha256": "dc2383e864359f4589d6614eb1b93ba5f90c40fdeef5ef108b6bab3c930dc3c9"
+    },
+    {
+      "roleId": "design-c",
+      "status": "pass",
+      "reportSha256": "ac9bc40a65d36081a735393273c33b2ab9094119278fc4e3b05434a8784820fe"
+    },
+    {
+      "roleId": "pruefung",
+      "status": "pass",
+      "reportSha256": "fd527faa0fa7639b8e8a8047e726ddc94a21adb7b42c1eb01e922963d28509bc"
+    }
+  ],
+  "privateReviewSha256": "229eb877acea2f940be6b85664ece1765a2579432be38638994a4b5950255c6e",
+  "limitations": [
+    "Kein neuer App-Chat und kein neues App-Projekt erstellt; Werkzeug fehlt.",
+    "Unteragenten sind sitzungsgebunden. Ein neuer Chat lädt Kontext und erstellt eigene Agenten.",
+    "Keine neue Gestaltung, kein Modelltraining, kein Werkstattimport oder Produktionsnachweis."
+  ]
+}

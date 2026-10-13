@@ -1,0 +1,27 @@
+{
+  "schema": "gravuru-designstudio-sources/v1",
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "task/product-design-recipe-20261013",
+  "privateFilesInGit": false,
+  "reference": {
+    "id": "acryl-18",
+    "source": "private/history/designteam-run-20261013-01/ACR-001/source.svg",
+    "sourceSha256": "f6be9bb3b2526ab829dcd9c2419060147c95d0a0d94d79e404f2eaaea413b43b",
+    "widthMm": 150,
+    "heightMm": 200,
+    "preview": "private/history/designteam-run-20261013-01/vorlage-vorschau.png",
+    "fonts": "private/history/designteam-run-20261013-01/resources/fonts.json",
+    "status": "Historische bearbeitbare Rekonstruktion; bekannte Abweichungen zum alten Mockup.",
+    "recoveryRelease": "https://github.com/Chris83638w/gravuru-shopify/releases/tag/resources-acrylglas-150x200-20260929",
+    "recoveryArchive": "Master-Acrylglas-Roland-mit-Beispiel.zip",
+    "recoveryArchiveSha256": "f49918022cb88612ea001935d8ec6db5397cfb393c0989999e1b4da684ab8f36",
+    "sourceWithinArchive": "02-Bearbeitbare-Basis/Pia-und-Rafael-150x200-editierbar.svg"
+  },
+  "history": {
+    "directory": "private/history/designteam-run-20261013-01",
+    "classification": "Drei Varianten eines Layouts; kein Nachweis für drei eigenständige Designkonzepte.",
+    "importedToWorkshop": false,
+    "productionApproved": false
+  },
+  "availabilityRule": "Pfad und Prüfsumme bei jedem neuen Arbeitsbereich verifizieren; GitHub enthält nicht automatisch die privaten Projektdateien."
+}

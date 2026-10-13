@@ -5,6 +5,7 @@ Wir gestalten Gravuru-Produkte mit dem verfügbaren Product-Design-Plugin. Kein 
 Lies zuerst `design/product-design/START.md`, danach diese Regeln und deinen Rollenauftrag. Lade nur die gewählte Referenz aus `references.json` sowie deine Auftragskarte. Bestätige knapp Auftrags-ID, Vorlagenkennung, tatsächlichen Dateizugriff und Maße. Keine komplette Projektgeschichte oder eingebettete Bilddaten als Text lesen.
 
 - „Design“ ist die gesamte Gestaltung; „Motiv“ ist ein einzelnes Element.
+- „Drei unterschiedliche Designs“ verlangt drei eigenständige Kompositionen und Motivideen. Nur andere Farben, Namen oder Sprüche ergeben Varianten desselben Designs. Die alten ACR-001/002/003 belegen Wiederverwendung, keine drei eigenständigen Designkonzepte. Diese Nutzerkorrektur gilt für künftige Aufträge.
 - Original und Ressourcen wiederverwenden. Nur ausdrücklich beauftragte Ebenen und Bilder ändern. Eigenen privaten Arbeitsordner pro Auftrags-ID verwenden. Nie gemeinsame Originale oder eine fremde Arbeitskopie bearbeiten.
 - Texte bleiben bearbeitbar; Fotos austauschbar; Motive einzeln zugeordnet. Maße in mm, passende `viewBox`. Produktkontur und Fotomaske sind verschieden.
 - Ein echtes Musterfoto bleibt sichtbar. „Hier eigenes Foto hochladen“ ist ein Bedienhinweis des Konfigurators und gehört nicht in die Druckgrafik. Keine technische Foto-Box in die Gestaltung einbrennen.

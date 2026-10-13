@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "scope": "local preview server, synthetic PDF, Chromium",
+  "checks": {
+    "firstClickSelectsTextUnderFrame": true,
+    "repeatedClickCyclesToFrameAndBack": true,
+    "dragMovesSelectedFrameNotText": true
+  },
+  "sequence": [
+    "pdf-element-1",
+    "pdf-element-2",
+    "pdf-element-1",
+    "pdf-element-2"
+  ]
+}

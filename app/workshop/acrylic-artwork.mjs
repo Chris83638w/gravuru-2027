@@ -50,7 +50,10 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false}={}){
    const motif=config.localResources.motifs.find(m=>m.key===o.motif);if(!motif)fail('Gesicherte Motivquelle fehlt.');let fragment=motif.svgFragment;
    if(motif.artwork){
     const bytes=files.get('quellen/'+motif.artwork.assetId+'-vorschau.svg');if(!bytes)fail('Gesicherte importierte Designquelle fehlt.');const fit=Math.min(o.w/motif.artwork.widthMm,o.h/motif.artwork.heightMm)*viewport.scale;
-    const tint=engraving||o.preserveColors===false?` data-native-tint="${esc(color)}" data-raster-width-mm="${number(motif.artwork.widthMm*fit)}" data-raster-height-mm="${number(motif.artwork.heightMm*fit)}"`:'';
+    // Engraving uses the preview rule: coverage = 1 − luminance (white stays
+    // unengraved, photos keep tones); steel vectors are solid ink.
+    const tonal=engraving?(config.profile.material.kind==='steel'&&motif.vectorOnly===true?'solid':'tone'):'flat';
+    const tint=engraving||o.preserveColors===false?` data-native-tint="${esc(color)}" data-native-tonal="${tonal}" data-raster-width-mm="${number(motif.artwork.widthMm*fit)}" data-raster-height-mm="${number(motif.artwork.heightMm*fit)}"`:'';
     fragment=`<image href="${dataSvg(bytes)}" width="${motif.artwork.widthMm}" height="${motif.artwork.heightMm}" preserveAspectRatio="none"${tint}/>`;
    }else if(engraving||o.preserveColors===false){fragment=fragment.replace(/(fill|stroke)="(?!none\b)[^"]*"/g,`$1="${color}"`);}
    body=`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="${motif.bounds.join(' ')}" preserveAspectRatio="xMidYMid meet" color="${color}">${fragment}</svg>`;

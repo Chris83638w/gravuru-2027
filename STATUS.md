@@ -1,3 +1,7 @@
+## P1-Korrekturen umgesetzt (nicht installiert) · 13.10.2026
+
+Alle vier P1-Befunde behoben: Plugin-/Vorlagenpakete auf Stahl und Acryl 1:1 bzw. konturgerecht (P1-4), Stahl-Vektorgravur auch in der Kundenansicht schwarz (P1-3), Gravurdatei folgt der Vorschau und lässt Weiß frei (P1-1), überlagerte Elemente per Klick und Folgeklick erreichbar (P1-2). `npm test` 709/709, Ops 55/55 + 13 Python, Browserprüfung mit Gegenprobe. [Nachweis und Grenzen](docs/releases/20261013/p1-fixes/RELEASE.md). Live-App und Daten unverändert. **Nächster Schritt:** Paket A (Produktfamilie Edelstahl-Türschilder aus vorhandenen Stammdaten) gemäß [Plan](docs/plans/PLUGIN-DESIGN-STRECKE-20261013.md); Installation der Korrekturen erst nach Nutzerfreigabe.
+
 ## Claude-Prüfung und Umsetzungsplan Plugin-Strecke · 13.10.2026
 
 [Claude-Prüfbericht](docs/reviews/CLAUDE-PRUEFBERICHT-20261012.md) zu `4e2713b` (Anwendungscode = installierter `7a168bc`): 769 Tests in isolierter Umgebung bestanden; 4 P1-, 15 P2-, ca. 12 P3-Befunde mit Datei, Nachweis und kleinster Korrektur. [Umsetzungsplan](docs/plans/PLUGIN-DESIGN-STRECKE-20261013.md): Produktfamilien als Datensatz mit Familien-Briefing, Bohrbild als Regel (Motive über Bohrloch erlaubt, Texte mit Hinweis), Exportvorgabe für ChatGPT „Product Design", Serienlauf ohne KI, Mehrfachimport 1:1, Shopify-Veröffentlichung für die erste Familie Edelstahl-Türschilder.

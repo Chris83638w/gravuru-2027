@@ -42,6 +42,10 @@ export function objectIssue(o,profile){
  if(!o||!['x','y','w','h','rotation'].every(k=>Number.isFinite(o[k]))||o.w<=0||o.h<=0||Math.abs(o.rotation)>DESIGN_LIMITS.maxRotation)return 'Ungültige Maße.';
  const a=o.rotation*Math.PI/180,w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a)),b=profile.geometry.bell;
  const doorbell=profile.kind==='layered-doorbell',width=doorbell?160:profile.geometry.width,height=doorbell?280:profile.geometry.height,margin=doorbell?10:profile.geometry.safeMarginMm??2;
+ // A merchant-fixed template canvas drawn exactly in plate size (prepared 1:1
+ // import) is clipped by the plate contour itself: transparent corners of an
+ // oval or rounded plate are not ink. Only without margin; never customer content.
+ if(!doorbell&&margin<=0&&o.type==='motif'&&o.acrylicFixed===true&&o.templateOrigin===true&&!o.rotation&&[o.x-width/2,o.y-height/2,o.w-width,o.h-height].every(v=>Math.abs(v)<.01))return '';
  if(o.x-w/2<margin-.001||o.x+w/2>width-margin+.001||o.y-h/2<margin-.001||o.y+h/2>height-margin+.001)return 'Element ragt über die Gestaltungsfläche hinaus.';
  if(b&&Math.min(o.x+w/2,b.x+b.width)-Math.max(o.x-w/2,b.x)>.1&&Math.min(o.y+h/2,b.y+b.height)-Math.max(o.y-h/2,b.y)>.1)return 'Element liegt unter der Klingel.';
  // An ellipse with reduced axes is not a constant-distance inset. Check the

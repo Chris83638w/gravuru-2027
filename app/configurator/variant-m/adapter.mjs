@@ -1,4 +1,5 @@
 import {spacerPreview} from './option-media.mjs';
+import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {surfacePreview,embedSurface,scenePreview} from './material-surface.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
@@ -19,7 +20,7 @@ export function installUniversal(configInput) {
   const thumbnails=new WeakMap();
   const current = () => designFromState(config, el.state);
   const profile = () => selectedProfile(config, options);
-  const motifs = () => {const local=new Map((config.localResources?.motifs||[]).map(m=>[m.key,m]));return Object.entries(el.motifs).map(([key, svgFragment]) => ({key, svgFragment, bounds:el.catalog.motif_bounds?.[key] || [0,0,100,100],embeddedOnly:local.get(key)?.embeddedOnly===true,...(local.get(key)?.artwork?{artwork:local.get(key).artwork}:{})}));};
+  const motifs = () => customerMotifs(config, el.motifs, el.catalog);
   const svg = (design, {guides=false, selected='', handles=false} = {}) => {
     const visible={...design,objects:design.objects.filter(o=>!o.uxHidden)};
     let result=surfacePreview(studioSvg(profile(), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);

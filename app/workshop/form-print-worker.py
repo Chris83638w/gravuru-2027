@@ -106,10 +106,17 @@ def tint_imported_artwork(root,dpi):
   w,h=math.ceil(mw*dpi/25.4),math.ceil(mh*dpi/25.4)
   c.require(w*h<=32_000_000,'Eingefärbte Designquelle überschreitet 32 Megapixel. Bitte 300 dpi oder kleiner platzieren.')
   href=image.get('href','');c.require(href.startswith('data:image/svg+xml;base64,'),'Eingefärbte Designquelle muss im Prüfstand liegen.')
+  mode=image.get('data-native-tonal','flat');c.require(mode in ['flat','tone','solid'],'Ungültige Gravurdarstellung.')
   rgba=raster(data_fetch(href,'image/svg+xml'),w,h);alpha=rgba.getchannel('A')
+  if mode!='flat':
+   # Same rule as the studio preview filter: coverage 1-luminance times source
+   # alpha; 'solid' thresholds any non-white coverage to full ink (steel vectors).
+   a=np.asarray(rgba).astype(np.float32);cover=1-(a[:,:,:3] @ np.array([.2126,.7152,.0722],dtype=np.float32))/255
+   if mode=='solid':cover=(cover*256>=1).astype(np.float32)
+   alpha=Image.fromarray(np.rint(np.clip(cover,0,1)*a[:,:,3]).astype(np.uint8),'L')
   tinted=Image.new('RGBA',(w,h),tuple(int(ink[i:i+2],16) for i in [1,3,5])+(255,));tinted.putalpha(alpha)
   out=io.BytesIO();tinted.save(out,format='PNG');image.set('href','data:image/png;base64,'+base64.b64encode(out.getvalue()).decode())
-  for key in ['data-native-tint','data-raster-width-mm','data-raster-height-mm']:image.attrib.pop(key,None)
+  for key in ['data-native-tint','data-native-tonal','data-raster-width-mm','data-raster-height-mm']:image.attrib.pop(key,None)
 
 def prepare_svg(data):
  # Originals are decoded at their actual resolution; only the output raster has a DPI.

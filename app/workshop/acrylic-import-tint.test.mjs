@@ -18,6 +18,26 @@ test('tinted SVG import preserves alpha, original bytes and motif-only white in 
 test('imported PDF tint is included in the technical CMYK output without replacing its source',async t=>{
  const f=await setup(t,'pdf'),s=await f.snapshot(),p=await createAcrylicPrintProof(s.bundle.package,s.bundle.manifest.packageSha256),pixels=samples(p.pdf);assert.ok(pixels[0][1]>pixels[0][0]);assert.equal(pixels[3][3],0);assert.deepEqual(readReviewPackage(s.bundle.package,s.bundle.manifest.packageSha256,'gravuru-acrylic-review/v1').files.get('quellen/'+f.asset.assetId+'-original.pdf'),f.bytes);
 });
-test('imported engraving flattens source alpha to dark output and does not claim vectorization',async t=>{
- const f=await setup(t),s=await f.snapshot({engraving:true,preserveColors:true}),p=await createAcrylicEngravingProof(s.bundle.package,s.bundle.manifest.packageSha256),pixels=samples(p.pdf);assert.deepEqual(pixels[0],[0,0,0,255]);assert.deepEqual(pixels[2],[0,0,0,255]);assert.ok(pixels[1][0]>=125&&pixels[1][0]<=130);assert.deepEqual(pixels[3],[255,255,255,255]);await assert.rejects(()=>createAcrylicEngravingProof(s.bundle.package,s.bundle.manifest.packageSha256,{mode:'vector'}),/Rasterbilder/);
+test('imported engraving follows the preview: white stays unengraved, colours become tones, no vectorization claim (P1-1)',async t=>{
+ const f=await setup(t),s=await f.snapshot({engraving:true,preserveColors:true}),p=await createAcrylicEngravingProof(s.bundle.package,s.bundle.manifest.packageSha256),pixels=samples(p.pdf);
+ // red (luminance .2126) → coverage .787; white rectangle → no engraving; half-transparent blue → coverage ≈ .46
+ assert.ok(pixels[0][0]>=45&&pixels[0][0]<=65,String(pixels[0]));assert.deepEqual(pixels[2],[255,255,255,255]);assert.ok(pixels[1][0]>=125&&pixels[1][0]<=150,String(pixels[1]));assert.deepEqual(pixels[3],[255,255,255,255]);await assert.rejects(()=>createAcrylicEngravingProof(s.bundle.package,s.bundle.manifest.packageSha256,{mode:'vector'}),/Rasterbilder/);
+});
+test('steel vector engraving is solid black, white knockout stays free; tone and flat modes stay distinct',()=>{
+ const script=`import importlib.util,base64,io,json
+import xml.etree.ElementTree as ET
+from PIL import Image
+s=importlib.util.spec_from_file_location('w','app/workshop/form-print-worker.py');w=importlib.util.module_from_spec(s);s.loader.exec_module(w)
+src=b'<svg xmlns="http://www.w3.org/2000/svg" width="20mm" height="10mm" viewBox="0 0 20 10"><rect width="20" height="10" fill="#ffffff"/><rect x="5" y="2" width="10" height="6" fill="#808080"/></svg>'
+out={}
+for mode in ['solid','tone','flat']:
+ root=ET.fromstring('<svg xmlns="http://www.w3.org/2000/svg"><image href="data:image/svg+xml;base64,'+base64.b64encode(src).decode()+'" data-native-tint="#000000" data-native-tonal="'+mode+'" data-raster-width-mm="20" data-raster-height-mm="10"/></svg>')
+ w.tint_imported_artwork(root,254)
+ img=next(root.iter('{http://www.w3.org/2000/svg}image'));assert 'data-native-tonal' not in img.attrib
+ im=Image.open(io.BytesIO(base64.b64decode(img.get('href').split(',',1)[1]))).convert('RGBA')
+ out[mode]=[im.getpixel((10,10))[3],im.getpixel((100,50))[3]]
+print(json.dumps(out))`;
+ const r=execFileSync(process.env.GRAVURU_PYTHON||'python3',['-c',script],{cwd:new URL('../../',import.meta.url),env:importEnvironment()}).toString();
+ const v=JSON.parse(r);
+ assert.deepEqual(v.solid,[0,255]);assert.equal(v.tone[0],0);assert.ok(v.tone[1]>120&&v.tone[1]<135,String(v.tone));assert.deepEqual(v.flat,[255,255]);
 });

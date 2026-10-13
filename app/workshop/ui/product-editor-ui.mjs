@@ -141,7 +141,9 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  const valid=()=>[...$('#panel-designs').querySelectorAll('input,textarea,select')].every(n=>n.disabled||n.reportValidity());
  function select(id){if(!valid())return;objectId=id;showTab('designs');properties();highlight();photoThumbnail();}
  $('#editor-elements').addEventListener('click',e=>{const b=e.target.closest('[data-editor-object]');if(b&&!state.busy)select(b.dataset.editorObject);});
- $('#editor-preview').addEventListener('click',e=>{const n=e.target.closest('[data-object]');if(n&&!state.busy&&!drag)select(n.dataset.object);});
+ // Selection happens on pointerdown (see candidatesAt). A repeated click on the
+ // same spot without dragging selects the next element underneath.
+ $('#editor-preview').addEventListener('click',e=>{if(state.busy||drag||!pick?.repeat||pick.ids.length<2)return;const i=pick.ids.indexOf(objectId);if(i>=0)select(pick.ids[(i+1)%pick.ids.length]);});
  $('#editor-preview').addEventListener('keydown',e=>{const n=e.target.closest('[data-object]');if(n&&['Enter',' '].includes(e.key)&&!state.busy){e.preventDefault();select(n.dataset.object);}});
  $('#editor-designs').addEventListener('click',e=>{const b=e.target.closest('[data-editor-design]');if(!b||state.busy||!valid())return;designId=b.dataset.editorDesign;objectId=null;showTab('designs');render();});
  $('#stage-options').addEventListener('change',()=>{if(!state.draft.config.acrylic){const values=$('#stage-options').value.split('|');options=Object.fromEntries(state.draft.config.profile.optionGroups.map((g,i)=>[g.id,values[i]]));}else [options.size,options.base,options.wall]=$('#stage-options').value.split('|');changed();});
@@ -302,12 +304,22 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   if(motif)await apply(motifMode,{motif});
  });
  const stage=$('#editor-preview');
- stage.tabIndex=0;stage.setAttribute('aria-label','Gestaltungsfläche. Element anklicken und ziehen. Eckgriffe ändern die Größe. Pfeiltasten verschieben die Auswahl um einen Millimeter.');
+ let pick=null;
+ function candidatesAt(x,y){const d=design();if(!d)return [];const ids=[...new Set(document.elementsFromPoint(x,y).map(n=>n.closest?.('[data-object]')).filter(n=>n&&stage.contains(n)).map(n=>n.dataset.object))];return ids.map(id=>d.objects.find(o=>o.id===id)).filter(o=>o&&!o.technicalLocked).sort((a,b)=>a.w*a.h-b.w*b.h);}
+ stage.tabIndex=0;stage.setAttribute('aria-label','Gestaltungsfläche. Element anklicken und ziehen. Eckgriffe ändern die Größe. Pfeiltasten verschieben die Auswahl um einen Millimeter. Liegen Elemente übereinander, wählt ein weiterer Klick an derselben Stelle das darunterliegende.');
  new ResizeObserver(()=>highlight()).observe(stage);
  stage.addEventListener('pointerdown',e=>{
   if(e.button!==0||state.busy||state.record.status==='archived'||!valid())return;
   const handle=e.target.closest('[data-editor-resize]');
-  const node=handle?[...stage.querySelectorAll('[data-object]')].find(n=>n.dataset.object===objectId):e.target.closest('[data-object]'),o=node&&design()?.objects.find(o=>o.id===node.dataset.object);if(!o||o.technicalLocked)return;
+  // Every element under the pointer is a candidate, not only the topmost one.
+  // The smallest wins (a text above a full-size frame); a repeated click on the
+  // same spot moves on to the next larger one, so the frame stays reachable.
+  // Pressing again on the same spot keeps the current element (to drag it);
+  // only a click without dragging moves on (see the click handler).
+  const list=handle?[]:candidatesAt(e.clientX,e.clientY),repeat=Boolean(pick&&Math.hypot(e.clientX-pick.x,e.clientY-pick.y)<4&&list.some(o=>o.id===objectId));
+  const chosen=handle?objectId:repeat?objectId:list[0]?.id;
+  pick=handle?null:{x:e.clientX,y:e.clientY,ids:list.map(o=>o.id),repeat};
+  const node=chosen&&[...stage.querySelectorAll('[data-object]')].find(n=>n.dataset.object===chosen),o=node&&design()?.objects.find(o=>o.id===chosen);if(!o||o.technicalLocked)return;
   select(o.id);const matrix=node.parentNode.getScreenCTM()?.inverse();if(!matrix)return;
   const point=new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix);
   // Invalidate pending preview responses immediately: replacing the SVG during
@@ -341,7 +353,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    $('#stage-status').textContent=drag.resize?'Größe ändern · loslassen zum Übernehmen':'Verschieben · loslassen zum Übernehmen';
   }catch(error){$('#stage-status').textContent=error.message;}
  });
- function finishDrag(e){if(!drag||drag.pointer!==e.pointerId)return;clearGuides(stage);const moved=drag.moved,cancelled=e.type==='pointercancel';if(cancelled){Object.assign(drag.object,drag.original);if(moved)undo.pop();}drag=null;if(moved&&!cancelled)markDirty();else changed();properties();}
+ function finishDrag(e){if(!drag||drag.pointer!==e.pointerId)return;clearGuides(stage);const moved=drag.moved,cancelled=e.type==='pointercancel';if(cancelled){Object.assign(drag.object,drag.original);if(moved)undo.pop();}drag=null;if(moved)pick=null;if(moved&&!cancelled)markDirty();else changed();properties();}
  stage.addEventListener('pointerup',finishDrag);stage.addEventListener('pointercancel',finishDrag);stage.addEventListener('lostpointercapture',finishDrag);
  stage.addEventListener('keydown',e=>{
   if(e.target!==stage||state.busy)return;

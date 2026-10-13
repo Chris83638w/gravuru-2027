@@ -58,9 +58,9 @@ test('customer replacement keeps arch and spacing, forbids mask/spacing tamperin
  const ws=setup(t),input={expectedRevision:1,package:pkg()},p=await planPreparedDesign(ws.repository,ws.assets,ws.defaultId,input);
  const d=structuredClone(p.document.config.profile.designs[1]);d.objects[0].uxUploadId='local-photo';d.objects[0].uxUploadKind='photo';d.objects[0].uxPhotoBackground='keep';d.objects[2].text='Änne & Jörg – Grüße';
  assert.throws(()=>validateProductDesign(p.document,d),/Zeichen.*–.*nicht/);d.objects[2].text='Änne & Jörg: Grüße';
- const checked=validateProductDesign(p.document,d);assert.equal(checked.objects[0].photoShape,'arch');assert.equal(checked.objects[2].letterSpacing,.4*.93);
+ const checked=validateProductDesign(p.document,d);assert.equal(checked.objects[0].photoShape,'arch');assert.equal(checked.objects[2].letterSpacing,.4);
  for(const change of [d=>d.objects[0].photoShape='rect',d=>d.objects[2].letterSpacing=0]){const v=structuredClone(d);change(v);assert.throws(()=>validateProductDesign(p.document,v));}
- assert.match(photoShape(d.objects[0]),/^<path d="M/);assert.match(p.svg,/<path d="M-55/);
+ assert.match(photoShape(d.objects[0]),/^<path d="M/);assert.match(p.svg,/<path d="M-60 /);
  const o={font:'Garamond Acryl',text:'AA',size:5},a=measureText({...o},resources.fonts),b=measureText({...o,letterSpacing:.4},resources.fonts);assert.ok(Math.abs(b.w-a.w-.4)<1e-9);assert.notEqual(textPaths(a,resources.fonts),textPaths(b,resources.fonts));
 });
 test('re-editing customer fields retains artwork overlay order and tracking',async t=>{

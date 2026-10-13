@@ -1,3 +1,7 @@
+## Einstieg für neue Designchats · 13.10.2026
+
+[Kopierfertiger Startauftrag](design/product-design/NEUER-CHAT.md) ergänzt. Nutzerentscheidung im Rezept und Projektkontext festgehalten: Hier ausschließlich Designs, technische Produktoptionen im Produktkonfigurator. Maße/Kontur/Bohrpositionen sind Gestaltungsvorgaben; keine Löcher in die Druckgrafik zeichnen. Neue Chats laden gezielt Rezept und erreichbare Originalquelle. Keine behauptete Übertragung privater Cloud-Dateien oder globaler Plugin-Erinnerung. Nur Dokumentation geändert; keine erneute Anwendungsregression erforderlich.
+
 ## Sichtbarer Product-Design-Test · 13.10.2026
 
 Muster 18 mit dem gespeicherten Rezept als private Arbeitskopie verwendet: ausschließlich Namen in „Anna & Ben“ geändert. Technischer Check bestanden; Vorher-/Nachher-Vorschau mit vorhandenen Werkstatt-Schriftpfaden geprüft. Bei gleicher Renderposition unterscheiden sich nur Pixel im Namensbereich; Foto, Motive, übrige Texte und 150 × 200 mm erhalten. Bearbeitbare Texte bleiben in der geprüften SVG bestehen, Pfade werden nur für die Darstellung benutzt. [Nachweis](design/product-design/test-01-visual.json). Private Bilder/Arbeitsdateien bleiben außerhalb Git. Keine Werkstattübernahme oder Produktionsfreigabe. Nächster Schritt: einen gewünschten Gestaltungs- oder Formwechsel mit demselben Rezept beauftragen.

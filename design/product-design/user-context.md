@@ -6,7 +6,7 @@
 
 Gravuru-Designrezept im Repository Chris83638w/gravuru-2027
 - Date Added: 2026-10-13.
-- Useful Context: Maßhaltige bearbeitbare SVG-Vorlagen, getrennte Foto-/Text-/Motivebenen, unveränderte Ressourcen wiederverwenden. Gestaltung nur mit Product Design; keine eigenen Generierungs-API-Aufrufe, kein Modelltraining.
+- Useful Context: Hier ausschließlich Designs mit Product Design erstellen: maßhaltige bearbeitbare SVG-Vorlagen, getrennte Foto-/Text-/Motivebenen und wiederverwendete Ressourcen. Produktgrößen, Formvarianten, Befestigung, Bohrungen, Zubehör und Preise bleiben im Produktkonfigurator. Bekannte Produktmaße und Bohrpositionen beim Gestalten berücksichtigen; keine eigenen Generierungs-API-Aufrufe, kein Modelltraining.
 - Future Use: Im geöffneten Repository zuerst design/product-design/START.md lesen, dann die benötigte Referenz aus design/product-design/references.json und den kurzen Variantenauftrag. Keine erneute Rekonstruktion der ganzen Projektgeschichte.
 
 Projektkontext statt behauptetem globalen Plugin-Speicher

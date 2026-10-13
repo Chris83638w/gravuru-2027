@@ -5,6 +5,7 @@
 ## Verbindliche Regeln
 
 - Gestaltung ausschließlich mit **Product Design**. Keine eigenen OpenAI-/Bild-API-Aufrufe, kein zusätzliches Modelltraining. Das Plugin nutzt Kontext und Referenzen; es erlernt diese Regeln nicht durch dauerhaft veränderte Modellgewichte.
+- **Festgelegter Umfang (13.10.2026): Hier nur Designs erstellen.** Material, Produktgrößen, Formvarianten, Befestigung, Bohrbilder, Zubehör und Preise werden im Produktkonfigurator hinterlegt. Die gewählten Maße, Kontur und bekannten Bohrpositionen dienen beim Gestalten als Vorgabe. Löcher nicht als Motiv oder Druckelement in das Design zeichnen; technische Hilfen getrennt halten. Ein Design kann mehrere passende Produktausführungen bedienen. Keine automatische Produktanlage, Werkstattänderung oder Veröffentlichung als Nebenwirkung eines Designauftrags.
 - „Design“ = gesamte Gestaltung eines Produkts; „Motiv“ = einzelnes Element.
 - Bearbeitbare SVG als Grundlage, physische Maße in **mm**, `viewBox="0 0 Breite Höhe"`. Maßhaltigkeit entsteht durch Koordinaten und Prüfung, nicht durch die Pixel eines generierten Musterbilds.
 - Produktkontur, Fotomaske und Motiv sind verschieden. Rechteck, gerundetes Rechteck, Kreis, Ellipse und Bogen sind mögliche Produktformen. Formwechsel erfordert bewusste Layoutanpassung; keine automatische Verzerrung, kein stilles Abschneiden.
@@ -28,3 +29,5 @@
 > Product Design: Neues Acrylglasbild nach dem Gravuru-Rezept. Grundlage Muster 18, rund mit 200 mm Durchmesser, Thema Hochzeit. Foto austauschbar, Namen und Datum bearbeitbar. Vorhandene Motive zunächst wiederverwenden.
 
 Der Assistent übersetzt diesen Satz in den Variantenauftrag. Der Nutzer muss keine JSON-Dateien oder Skriptparameter pflegen. Eine Referenz mit bekannten Abweichungen bleibt als solche gekennzeichnet.
+
+Für einen neuen Chat: [kopierfertiger Startauftrag](NEUER-CHAT.md).

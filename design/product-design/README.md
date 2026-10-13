@@ -1,5 +1,7 @@
 # Varianten erstellen, ohne die Grundlage neu zu bauen
 
+Mehrere Designs parallel: [Team-Anleitung mit kopierfertigen Agentenaufträgen](team/README.md).
+
 Für den Nutzer genügt der kurze Auftrag aus [START.md](START.md). Die folgenden Befehle führt der Assistent aus. Python 3 genügt; der Helfer benötigt keine zusätzlichen Pakete, API-Zugänge oder laufende Werkstatt.
 
 ## Bestehende Vorlage weiterverwenden

@@ -1,3 +1,9 @@
+## Anleitung für parallele Designaufträge · 13.10.2026
+
+[Team-Anleitung](design/product-design/team/README.md) mit gemeinsamen Regeln, Koordination, Designer-/Prüferauftrag, drei ausdrücklich als Beispiele gekennzeichneten Startkarten und optionalem Kontextspeicher-Auftrag erstellt. Fünf separate Chats mit eigenen Auftrags-IDs und privaten Arbeitskopien; keine behauptete automatische Synchronisation. Kein Agent gestartet, keine Datenbankfunktion oder neue Gestaltung implementiert.
+
+Privates Start-ZIP außerhalb Git: Anleitungen, vorhandener Helfer, registrierte Acrylvorlage 18, historische Vorschau und vorhandene Schrift-Glyphdaten. **23 Dateiprüfsummen, ZIP-Integrität und Start/Check nach Entpacken in einem getrennten Verzeichnis bestanden.** Keine neue Sicht-, Import- oder Fertigungsabnahme. Anwendung, Live-Daten und frühere uncommittete Importarbeiten unverändert. Nächster Schritt: Rollenaufträge in den gewünschten Chats starten und die getrennten Ergebnisse zur unabhängigen Prüfung geben.
+
 ## Einstieg für neue Designchats · 13.10.2026
 
 [Kopierfertiger Startauftrag](design/product-design/NEUER-CHAT.md) ergänzt. Nutzerentscheidung im Rezept und Projektkontext festgehalten: Hier ausschließlich Designs, technische Produktoptionen im Produktkonfigurator. Maße/Kontur/Bohrpositionen sind Gestaltungsvorgaben; keine Löcher in die Druckgrafik zeichnen. Neue Chats laden gezielt Rezept und erreichbare Originalquelle. Keine behauptete Übertragung privater Cloud-Dateien oder globaler Plugin-Erinnerung. Nur Dokumentation geändert; keine erneute Anwendungsregression erforderlich.

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#183e35">
+  <title>Produktfamilien · Gravuru 2027 Werkstatt</title>
+  <link rel="stylesheet" href="/workshop-ui/style.css"><script type="module" src="/workshop-ui/families-ui.mjs"></script>
+<link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><script type="module" src="/workshop-ui/workshop-shell.mjs"></script><style>
+.family-row{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;text-align:left;padding:14px 16px;border:1px solid #dce4e0;border-radius:12px;background:#fff;cursor:pointer}
+.family-row span{font-size:13px;color:#5b6b64}
+.family-table th,.family-table td{padding:8px 10px;border-bottom:1px solid #e6ece9;vertical-align:top;text-align:left;font-size:14px}
+.family-table th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#5b6b64}
+.family-table .num{text-align:right;white-space:nowrap}
+.family-link{all:unset;cursor:pointer;color:#1d5c4b;font-weight:600;text-decoration:underline}
+.family-link:focus-visible{outline:2px solid #1d5c4b;outline-offset:2px}
+@media (max-width:900px){.family-layout{grid-template-columns:1fr!important}}
+</style>
+</head>
+<body class="library-page">
+<a class="skip-link" href="#main">Zum Inhalt</a>
+<div class="app-layout">
+  <aside class="sidebar" aria-label="Werkstattnavigation">
+    <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span>gravuru<small>WERKSTATT · 2027</small></span></a>
+<nav aria-label="Hauptnavigation"><a class="nav-item" href="/werkstatt/"><img src="/workshop-ui/editor-icons/cube.svg" alt="" aria-hidden="true">Produkte</a><a class="nav-item" href="/werkstatt/?view=masters"><img src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Mastervorlagen</a><a class="nav-item" href="/werkstatt/serien/"><img src="/workshop-ui/editor-icons/stack-2.svg" alt="" aria-hidden="true">Stapelverarbeitung</a><a class="nav-item" href="/werkstatt/bestellungen/"><img src="/workshop-ui/editor-icons/shopping-cart.svg" alt="" aria-hidden="true">Bestellungen</a></nav><div class="workshop-tools"><span data-workshop-session role="status">Verbindung wird geprüft …</span><details class="management-menu"><summary>Verwaltung</summary><nav aria-label="Verwaltung"><a href="/werkstatt/familien/" aria-current="page">Produktfamilien</a><a href="/werkstatt/profile/">Schriften &amp; Profile</a><a href="/werkstatt/ausgaben/">Ausgaben</a><a href="/werkstatt/fertigung/">Fertigungsprofile</a><a href="/werkstatt/ausfuehrungen/">Ausführungen</a><a href="/werkstatt/konturen/">Formkonturen</a><a href="/werkstatt/pruefstaende/">Prüfstände</a><a href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a></nav></details></div>
+</aside>
+  <main id="main">
+    <header class="page-heading"><div><p class="eyebrow">PRODUKTFAMILIEN</p><h1>Einmal festlegen. Für die ganze Reihe.</h1><p>Formen, Größen, Preise, Bohrbilder und Schriften einer Produktreihe gemeinsam pflegen, Produkte daraus erzeugen und das Briefing für die Designerstellung herunterladen.</p></div></header>
+    <div id="family-notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="overview" aria-labelledby="family-list-heading">
+      <h2 id="family-list-heading">Deine Familien <span id="family-count" class="count">–</span></h2>
+      <div id="family-list" class="product-list"><p class="empty-state">Familien werden geladen …</p></div>
+      <div id="family-bundled" class="button-row"></div>
+    </section>
+    <section id="family-detail" class="overview library-editor" hidden aria-live="polite">
+      <div class="editor-heading"><div><p class="eyebrow" id="family-meta"></p><h2 id="family-title"></h2><small id="family-summary"></small></div>
+        <div class="button-row"><button type="button" id="family-briefing">Briefing herunterladen</button><button type="button" class="primary" id="family-generate">Produkte erzeugen</button></div></div>
+      <p class="field-help" id="family-rules"></p>
+      <div class="toolbar"><label>Formgruppe<select id="family-group"><option value="">Alle Formen</option></select></label></div>
+      <div class="family-layout" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,340px);gap:20px;align-items:start">
+        <div style="overflow-x:auto"><table class="family-table" style="width:100%;border-collapse:collapse"><thead><tr><th scope="col"><input type="checkbox" id="family-select-all" aria-label="Alle sichtbaren Größen auswählen"></th><th scope="col">Größe</th><th scope="col">Form</th><th scope="col" class="num">Grundpreis</th><th scope="col">Befestigung</th><th scope="col">Produkt</th></tr></thead><tbody id="family-sizes"></tbody></table></div>
+        <figure style="margin:0"><div id="family-template" style="background:#fff;border:1px solid #dce4e0;border-radius:12px;padding:12px;min-height:120px"></div><figcaption class="field-help" id="family-template-caption">Größe wählen, um die Gestaltungsschablone zu sehen: Kontur, Bohrlöcher und gestrichelte Schutzzone. Nur Zeichenhilfe, wird nicht graviert.</figcaption></figure>
+      </div>
+    </section>
+    <footer class="page-footer">Gravuru 2027 <span>·</span> Eine neue Familienrevision ändert bereits erzeugte Produkte nicht automatisch.</footer>
+  </main>
+</div>
+</body>
+</html>

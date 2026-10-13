@@ -33,6 +33,8 @@ export function nativeSpecimenConfig(input){
  if(validated.profile.designs.length!==p.designs.length)fail('Eine Originalvorlage widerspricht der Fotofreigabe.');
  return validated;
 }
+// Shared neutral steel preview surface (preview only, never production data).
+export const steelPreviewSurface=()=>image('gravuru-edelstahl-feine-maserung-vorschau.png');
 function common(profile,resources){return {reviewOnly:true,basePriceCents:0,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:0,extraPriceCents:0},localResources:resources,profile};}
 async function importedMotif(assets,motif){
  if(!assets)fail('Musterübernahme benötigt die geschützte Ressourcenablage.');

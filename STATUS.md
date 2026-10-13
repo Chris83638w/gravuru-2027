@@ -1,3 +1,7 @@
+## Paket A Produktfamilien umgesetzt (nicht installiert) · 13.10.2026
+
+Verwaltung → Produktfamilien: Edelstahl-Türschilder aus vorhandenen Stammdaten (61 Größen, 5 Formen, 7 Bohrbild-Regeln; alle 63 Bohrbilder exakt reproduziert), Gestaltungsschablonen mit 1 mm Schutzzone, Produktentwürfe je Größe ohne Duplikate, Briefing-ZIP für das ChatGPT-Projekt. `npm test` 715/715, Ops 55/55, Browserprüfung PASS. [Nachweis und Grenzen](docs/releases/20261013/families/RELEASE.md). **Nächster Schritt:** Paket C (Schutzzone und Text-Hinweis im Konfigurator) und Rest von Paket B (Größenwechsel per Regel).
+
 ## P1-Korrekturen umgesetzt (nicht installiert) · 13.10.2026
 
 Alle vier P1-Befunde behoben: Plugin-/Vorlagenpakete auf Stahl und Acryl 1:1 bzw. konturgerecht (P1-4), Stahl-Vektorgravur auch in der Kundenansicht schwarz (P1-3), Gravurdatei folgt der Vorschau und lässt Weiß frei (P1-1), überlagerte Elemente per Klick und Folgeklick erreichbar (P1-2). `npm test` 709/709, Ops 55/55 + 13 Python, Browserprüfung mit Gegenprobe. [Nachweis und Grenzen](docs/releases/20261013/p1-fixes/RELEASE.md). Live-App und Daten unverändert. **Nächster Schritt:** Paket A (Produktfamilie Edelstahl-Türschilder aus vorhandenen Stammdaten) gemäß [Plan](docs/plans/PLUGIN-DESIGN-STRECKE-20261013.md); Installation der Korrekturen erst nach Nutzerfreigabe.

@@ -1,0 +1,98 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {once} from 'node:events';
+import {holesFor,ruleFromHoles,keepoutZones} from '../platform/sources/app/shared/models/mounting-rules.mjs';
+import {createDesignAssetStore} from './design-assets.mjs';
+import {createProductRepository} from './repository.mjs';
+import {validateProductDocument,resolveProduct} from './product-model.mjs';
+import {createProductFamilies,validateFamily} from './product-families.mjs';
+import {createWorkshop} from './http.mjs';
+import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
+
+const family=()=>JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
+const OVAL='GR-ES-OV-90X60-T15',RECT='GR-ES-RE-120X80-T15',R5='GR-ES-AB-90X60-T15';
+function stores(t){
+ const assets=createDesignAssetStore({filename:':memory:'});t.after(()=>assets.close());
+ const repository=createProductRepository({filename:':memory:',validateDocument:d=>assets.validateDocument(validateProductDocument(d))});t.after(()=>repository.close());
+ const families=createProductFamilies({filename:':memory:',repository});t.after(()=>families.close());
+ return {repository,families};
+}
+
+test('drill pattern rules: plan acceptance values, user example, resize keeps millimetres',()=>{
+ const two={layout:'left-right',count:2,diameterMm:4,edgeMm:8},four={layout:'corners',count:4,diameterMm:4,edgeMm:8};
+ assert.deepEqual(holesFor({width:120,height:80,shape:'rect'},two).map(h=>[h.x,h.y]),[[8,40],[112,40]]);
+ assert.deepEqual(holesFor({width:120,height:80,shape:'rect'},four).map(h=>[h.x,h.y]),[[8,8],[112,8],[8,72],[112,72]]);
+ const user={layout:'left-right',count:2,diameterMm:4,edgeMm:6};
+ assert.deepEqual(holesFor({width:90,height:60,shape:'ellipse'},user).map(h=>[h.x,h.y,h.diameter]),[[6,30,4],[84,30,4]]);
+ assert.deepEqual(holesFor({width:120,height:80,shape:'ellipse'},user).map(h=>[h.x,h.y]),[[6,40],[114,40]],'edge distance stays 6 mm, not proportional');
+ assert.throws(()=>holesFor({width:90,height:60,shape:'ellipse'},{...four,edgeMm:6}),/ovalen Form/);
+ assert.throws(()=>holesFor({width:12,height:30,shape:'rect'},{...two,edgeMm:4}),/zu dicht/);
+ assert.throws(()=>holesFor({width:90,height:60,shape:'rect'},{...user,count:4}),/benötigt 2/);
+ assert.throws(()=>holesFor({width:90,height:60,shape:'rect'},{...user,edgeMm:1}),/halben Durchmesser/);
+ assert.deepEqual(ruleFromHoles({width:90,height:60,shape:'ellipse'},[{x:6,y:30,diameter:4},{x:84,y:30,diameter:4}]),user);
+ assert.equal(ruleFromHoles({width:90,height:60,shape:'rect'},[{x:6,y:30,diameter:4},{x:80,y:30,diameter:4}]),null,'asymmetric coordinates are not silently turned into a rule');
+ assert.deepEqual(keepoutZones([{x:6,y:30,diameter:4}],1),[{x:6,y:30,r:3}]);
+});
+
+test('bundled steel family reproduces the master data and rejects invalid documents',()=>{
+ const f=validateFamily(family());
+ assert.equal(f.sizes.length,61);assert.equal(f.groups.length,5);assert.deepEqual(f.designArea,{marginMm:0,keepoutMm:1});
+ const oval=f.sizes.find(s=>s.key===OVAL);assert.equal(oval.baseCents,1099);assert.deepEqual(oval.mounting,['B02-E6-D4']);
+ assert.ok(f.mountingRules.every(r=>r.priceCents===0),'master data: drilling has no surcharge');
+ for(const broken of [d=>d.sizes[0].groupKey='XX',d=>d.mountingRules[0].count=3,d=>d.sizes.push(structuredClone(d.sizes[0])),d=>d.designArea.keepoutMm=-1,d=>d.material.kind='acrylic',d=>d.extra=1]){const d=family();broken(d);assert.throws(()=>validateFamily(d));}
+});
+
+test('products are generated once per size with rule-based holes, prices and no publication',async t=>{
+ const {repository,families}=stores(t),rec=families.create(family());
+ const first=families.generate(rec.id,{expectedRevision:1,sizeKeys:[OVAL,RECT,R5]});
+ assert.equal(first.created,3);
+ const again=families.generate(rec.id,{expectedRevision:1,sizeKeys:[OVAL,RECT]});
+ assert.equal(again.created,0);assert.equal(again.existing,2);assert.deepEqual(again.products.map(p=>p.productId),first.products.slice(0,2).map(p=>p.productId));
+ const oval=repository.get(first.products[0].productId).document,values=oval.config.profile.optionGroups[0].values;
+ assert.equal(oval.name,'Edelstahl-Türschilder · Oval 9 × 6 cm');assert.deepEqual(oval.categoryIds,['familie-steel-door-signs','form-ov']);
+ assert.equal(oval.config.profile.geometry.shape,'ellipse');assert.equal(oval.config.profile.features.orderEnabled,false);assert.equal(oval.config.profile.binding.kind,'local-review');
+ assert.deepEqual(values.map(v=>v.id),['K00','B02']);assert.deepEqual(values[1].holes,[{x:6,y:30,diameter:4},{x:84,y:30,diameter:4}]);assert.equal(values[1].mountingRule.keepoutMm,1);
+ for(const mounting of ['K00','B02'])assert.equal(resolveProduct(oval,{options:{mounting}}).price.totalCents,1099);
+ const rect=repository.get(first.products[1].productId).document.config.profile.optionGroups[0].values[1];assert.deepEqual(rect.holes.map(h=>[h.x,h.y]),[[6,40],[114,40]]);
+ assert.deepEqual(families.get(rec.id).products.filter(p=>p.productId).map(p=>p.sizeKey).sort(),[OVAL,R5,RECT].sort());
+});
+
+test('family revisions are immutable, conflicts are reported, existing products stay unchanged',async t=>{
+ const {repository,families}=stores(t),rec=families.create(family());
+ const made=families.generate(rec.id,{expectedRevision:1,sizeKeys:[OVAL]}),before=repository.get(made.products[0].productId);
+ const changed=family();changed.sizes.find(s=>s.key===OVAL).baseCents=1299;
+ assert.throws(()=>families.save(rec.id,changed,0),e=>e.status===409);
+ const saved=families.save(rec.id,changed,1);assert.equal(saved.revision,2);
+ assert.equal(families.get(rec.id,{revision:1}).document.sizes.find(s=>s.key===OVAL).baseCents,1099);
+ assert.equal(families.save(rec.id,changed,2).revision,2,'unchanged save adds no revision');
+ assert.throws(()=>families.generate(rec.id,{expectedRevision:1}),e=>e.status===409);
+ families.generate(rec.id,{expectedRevision:2,sizeKeys:[OVAL]});
+ assert.deepEqual(repository.get(made.products[0].productId),before,'a family revision never rewrites an existing product');
+ assert.throws(()=>families.create(family()),e=>e.status===409);
+});
+
+test('design template shows contour, holes and keep-out only; briefing bundles all sizes',async t=>{
+ const {families}=stores(t),rec=families.create(family()),svg=families.template(rec.id,OVAL);
+ assert.match(svg,/width="90mm" height="60mm" viewBox="0 0 90 60"/);assert.match(svg,/<circle cx="6" cy="30" r="2" fill="#d33"\/>/);assert.match(svg,/r="3" fill="none"/);
+ assert.match(svg,/id="bohrbild-B02"/);assert.match(svg,/nicht drucken/);
+ const zip=await families.briefing(rec.id),names=(await import('node:zlib'),[...zip.toString('latin1').matchAll(/schablonen\/[A-Z0-9-]+\.svg/g)].map(m=>m[0]));
+ assert.equal(new Set(names).size,61);assert.ok(zip.includes(Buffer.from('BRIEFING.md')));assert.ok(zip.includes(Buffer.from('schriften.txt')));
+});
+
+test('family HTTP routes require the session CSRF token and deliver template and briefing',async t=>{
+ const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));
+ const ws=createWorkshop({filename:':memory:',seedConfig:makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'b'.repeat(64)),legacy:{purchasing:{},features:{}}});t.after(()=>ws.close());
+ const server=createPreviewServer({workshop:ws});server.listen(0,'127.0.0.1');await once(server,'listening');t.after(()=>new Promise(r=>server.close(r)));
+ const url='http://127.0.0.1:'+server.address().port+'/api/workshop/',session=await (await fetch(url+'session')).json();
+ const send=(path,data,token=session.csrfToken)=>fetch(url+path,{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':token},body:JSON.stringify(data)});
+ assert.equal((await send('families',{bundled:'steel-door-signs'},'0'.repeat(64))).status,403);
+ const list=await (await fetch(url+'families')).json();assert.deepEqual(list.families,[]);assert.equal(list.bundled[0].id,'steel-door-signs');
+ const created=await send('families',{bundled:'steel-door-signs'});assert.equal(created.status,201);
+ assert.equal((await send('families',{bundled:'steel-door-signs'})).status,409);
+ const gen=await (await send('families/steel-door-signs/products',{expectedRevision:1,sizeKeys:[OVAL]})).json();assert.equal(gen.created,1);
+ const tpl=await fetch(url+'families/steel-door-signs/template/'+OVAL);assert.equal(tpl.status,200);assert.match(tpl.headers.get('content-type'),/image\/svg\+xml/);assert.match(await tpl.text(),/bohrbild-B02/);
+ const zip=await send('families/steel-door-signs/briefing',{});assert.equal(zip.status,200);assert.equal(zip.headers.get('content-type'),'application/zip');
+ assert.equal((await fetch(url+'families/steel-door-signs/template/..%2Fetc')).status,404);
+});

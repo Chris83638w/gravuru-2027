@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "checks": {
+    "familyImported": true,
+    "ovalFilter": true,
+    "templateShown": true,
+    "selectionLabel": true,
+    "generated": true,
+    "briefingDownload": true,
+    "editorShowsHoles": true,
+    "noPageErrors": true
+  },
+  "errors": []
+}

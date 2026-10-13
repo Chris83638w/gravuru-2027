@@ -1,3 +1,7 @@
+## Livegang freigegeben, aktueller Zugang blockiert · 13.10.2026
+
+Quellstand `4d7c150` getrennt übernommen; neuere Produktfamilien und P1-Korrekturen erhalten. Shopify-App und `read_orders` heute lesend bestätigt. Plesk-Zugriff dieser Laufzeit fehlt: HTTPS-CONNECT zum Händlerhost mit 403 abgewiesen; persönliche Plesk-Variablen nicht eingebunden. Kein Server-/Produktwechsel. [Konkrete Nachweise und nächster Schritt](docs/releases/GO-LIVE-ABGLEICH-20261013.md). Bestehende HTTPS-Freigaben und sichere Variablenbindung bereitstellen, anschließend aktiven Serverstand und private Sicherung vor Aktivierung prüfen. Keine erneute allgemeine Veröffentlichungsfreigabe nötig.
+
 ## Materialübergreifende Familien, Gedenktafel 30 × 20 (nicht installiert) · 13.10.2026
 
 Familienformat v2 für Edelstahl, Acrylglas und Schiefer; offene Stammdaten bleiben „offen“ (null) und blockieren nur das Erzeugen. Fünf Gedenktafel-Familien 30 × 20 (Edelstahl, Naturschiefer, Premium-Schiefer, Acryl schwarz/anthrazit); Naturschiefer erzeugt bereits native Produkte. Design-Probelauf prüft alle Familien. Prüfungen: Werkstatt-Tests 579/583 bestanden, 0 Fehler; Browser 9/9 und Regression 12/12. Nachweis: [material-families](docs/releases/20261013/material-families/RELEASE.md). Offen: Stammdaten (Stärken, Ränder, Preise, Bohrbilder), natives Acryl-Gravurprodukt. Nächster Schritt: Stammdaten-Excel einlesen, dann Import-Schritt (übertragene Designs in Produkte, mit Prüfliste).

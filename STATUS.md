@@ -1,3 +1,9 @@
+## Claude-Prüfung und Umsetzungsplan Plugin-Strecke · 13.10.2026
+
+[Claude-Prüfbericht](docs/reviews/CLAUDE-PRUEFBERICHT-20261012.md) zu `4e2713b` (Anwendungscode = installierter `7a168bc`): 769 Tests in isolierter Umgebung bestanden; 4 P1-, 15 P2-, ca. 12 P3-Befunde mit Datei, Nachweis und kleinster Korrektur. [Umsetzungsplan](docs/plans/PLUGIN-DESIGN-STRECKE-20261013.md): Produktfamilien als Datensatz mit Familien-Briefing, Bohrbild als Regel (Motive über Bohrloch erlaubt, Texte mit Hinweis), Exportvorgabe für ChatGPT „Product Design", Serienlauf ohne KI, Mehrfachimport 1:1, Shopify-Veröffentlichung für die erste Familie Edelstahl-Türschilder.
+
+Nur Dokumentation auf Branch `task/plugin-design-pipeline-20261013`; Anwendungscode, Live-App und Daten unverändert. **Nächster Schritt:** P1-Fehler 1–4 beheben, dann Paket A. Offene Nutzerangaben: Befestigungsaufpreise, Stammdaten-Excel Edelstahl, Schutzzonen-Maß (Vorschlag 3 mm), zwei Plugin-Originalausgaben.
+
 ## Übergabe zur unabhängigen Claude-Prüfung · 12.10.2026
 
 [Vollständige Projektübersicht](docs/reviews/PROJEKTUEBERBLICK-CLAUDE-20261012.md): Ziele, verbindliche Entscheidungen, Soll/Ist, tatsächliche Architektur, gemeldete Fehler/Korrekturen, Produktvorlagen, Shopify/KI/Fertigung, Sicherungen und offene Abnahmen. [Prüfpaket](deliverables/claude-review-20261012/README.md) mit Quellenbasis `9d388e3`, neuen Übergabedateien und 1.200 per SHA-256 geprüften Dateien; private Daten/Schlüssel ausgeschlossen, fehlende Dokumentmedien im Manifest benannt. Keine unabhängige Prüfung bereits erfolgt.

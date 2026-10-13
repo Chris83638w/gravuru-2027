@@ -1,6 +1,6 @@
 # Drei Beispielaufträge für den ersten parallelen Durchlauf
 
-Diese Karten sind startbare Beispiele, keine bereits beauftragten oder fertigen Designs. Alle drei verwenden die vorhandene Acrylvorlage, damit der erste Teamdurchlauf ohne neue Produktlogik beginnen kann. Erst durch Absenden der jeweiligen Karte wird das Beispiel zum Gestaltungsauftrag.
+Diese Karten sind wiederverwendbare Beispiele. Der erste Durchlauf wurde inzwischen auf Nutzerauftrag erstellt und unabhängig geprüft; siehe [Nachweis](test-run-01.json). Alle drei verwenden die vorhandene Acrylvorlage. Für einen weiteren Durchlauf neue Auftrags-IDs verwenden und vorhandene Ergebnisse erhalten.
 
 Gemeinsame Referenz: `acryl-18`, 150 × 200 mm, rechteckige Produktfläche mit bestehender Bogenfotomaske. Quelle `private/references/acryl-18/source.svg`. SHA-256 `f6be9bb3b2526ab829dcd9c2419060147c95d0a0d94d79e404f2eaaea413b43b`. Die historische Rekonstruktion ist keine bestätigte 1:1-Kopie des damaligen Mockups. Regelversion: Designrezept und Team-Regeln aus demselben Startpaket. Product Design gestaltet; Bilder bleiben in diesen drei Beispielen unverändert.
 

@@ -1,6 +1,8 @@
 # Gravuru: mehrere Designs parallel erstellen
 
-Version 1 · 13.10.2026 · Arbeitsanleitung, noch kein gestartetes Agententeam und keine implementierte Kontextdatenbank.
+Version 1 · 13.10.2026 · Die Anleitung selbst startet keine Agenten und implementiert keine Kontextdatenbank.
+
+Der [erste parallele Durchlauf](test-run-01.json) wurde anschließend auf Nutzerauftrag ausgeführt: drei Designer und ein unabhängiger Prüfer, drei geprüfte Varianten. Weitere Aufträge erhalten neue IDs oder einen eindeutig getrennten neuen Durchlauf; bestehende Ergebnisse nicht überschreiben.
 
 Wir verwenden ein gemeinsames Designrezept, getrennte Aufträge und eigene Arbeitskopien. Product Design gestaltet. Der vorhandene Helfer bereitet die Dateien vor und prüft die unveränderten Teile. Du musst weder JSON schreiben noch Skripte selbst ausführen.
 

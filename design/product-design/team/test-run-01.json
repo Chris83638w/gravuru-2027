@@ -1,0 +1,65 @@
+{
+  "schema": "gravuru-designteam-verification/v1",
+  "date": "2026-10-13",
+  "recipeCommit": "d9d1b870de095c6dc1297c50c951badb778f04a8",
+  "reference": "acryl-18",
+  "referenceStatus": "Bearbeitbare historische Rekonstruktion, keine bestätigte 1:1-Kopie des damaligen Mockups.",
+  "parallelDesignerAgents": 3,
+  "independentReviewerAgents": 1,
+  "sourceSha256": "f6be9bb3b2526ab829dcd9c2419060147c95d0a0d94d79e404f2eaaea413b43b",
+  "widthMm": 150,
+  "heightMm": 200,
+  "results": [
+    {
+      "jobId": "ACR-001",
+      "checkedSha256": "ee935c784a931d7394c391b55d1b0ea592562b9596538b1098a9fedd2b05d7b0",
+      "technicalCheck": "PASS",
+      "allUsedGlyphsPresent": true,
+      "textBoundsInsideRectangle": true,
+      "javascriptErrors": [],
+      "independentScopeReview": "PASS",
+      "independentVisualReview": "PASS",
+      "independentlyRenderedPngPixelIdentical": true
+    },
+    {
+      "jobId": "ACR-002",
+      "checkedSha256": "e31a37643a84fb8eaa9712ce43f31e1c1d7129d6b798755782bbc4ad84c13339",
+      "technicalCheck": "PASS",
+      "allUsedGlyphsPresent": true,
+      "textBoundsInsideRectangle": true,
+      "javascriptErrors": [],
+      "independentScopeReview": "PASS",
+      "independentVisualReview": "PASS",
+      "independentlyRenderedPngPixelIdentical": true
+    },
+    {
+      "jobId": "ACR-003",
+      "checkedSha256": "49b41e2516cce850ce3adf442bb5df16a40bbd15b950d0af9af62485b05358de",
+      "technicalCheck": "PASS",
+      "allUsedGlyphsPresent": true,
+      "textBoundsInsideRectangle": true,
+      "javascriptErrors": [],
+      "independentScopeReview": "PASS",
+      "independentVisualReview": "PASS",
+      "independentlyRenderedPngPixelIdentical": true
+    }
+  ],
+  "originalImagesReusedUnchanged": true,
+  "newImageGeneration": false,
+  "customGenerationApiCalls": 0,
+  "modelTraining": false,
+  "contextStore": "versioned recipe files and separate private jobs, not a new database",
+  "userApproval": "pending",
+  "importedToWorkshop": false,
+  "productionApproved": false,
+  "privateDeliverables": "Result SVGs, original images, PNG previews and detailed reviews are in the private result package, not Git.",
+  "privatePackageVerification": {
+    "archive": "gravuru-designteam-ergebnisse-20261013-01.zip",
+    "bytes": 32614676,
+    "sha256": "e746cd3b8d7871426b75b491879a03c62bf699ed68da80fcc67f3d2903b7e7e9",
+    "manifestFiles": 61,
+    "archiveIntegrity": "PASS",
+    "allFileHashes": "PASS",
+    "threeJobChecksInSeparateExtractedDirectory": "PASS"
+  }
+}

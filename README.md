@@ -1,5 +1,7 @@
 # Gravuru 2027
 
+> **Neu im Projekt? Zuerst [docs/EINWEISUNG.md](docs/EINWEISUNG.md) lesen** – Überblick über Werkstatt, Konfigurator, Shop, Designs und Installation, Stand 14.10.2026. `main` ist veraltet.
+
 ## Aktueller Migrationsnachweis – 03.10.2026
 
 **Zuerst [CLOUD-AKTUELL.md](CLOUD-AKTUELL.md) und den [Abschlussbericht](docs/cloud-migration-20261003/ABSCHLUSSBERICHT.md) lesen.** Normaler app/-Quellbaum online; 137 Cloudtests/Build bestanden. Private Serversicherung vollständig zurückgeprüft, 3 SQLite-Restores lokal bestanden. Cloudruntime-Restore, Neustart der veröffentlichten Umgebung und zweiter Account noch offen. Produktion nicht freigegeben. Die folgenden früheren Abschnitte sind datierte Historie und überstimmen diesen Einstieg nicht.

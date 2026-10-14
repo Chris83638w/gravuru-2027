@@ -1,3 +1,5 @@
+> **Neue Accounts: zuerst [docs/EINWEISUNG.md](docs/EINWEISUNG.md)** (Gesamtüberblick, Stand 14.10.2026). Danach diese Datei nur bei Bedarf; sie enthält viel datierte Historie.
+
 ## Projektüberblick und Claude-Prüfauftrag · 12.10.2026
 
 Für die unabhängige Prüfung zuerst die [vollständige Übersicht](docs/reviews/PROJEKTUEBERBLICK-CLAUDE-20261012.md) und das [aktuelle Prüfpaket](deliverables/claude-review-20261012/README.md) verwenden. Quellenbasis `9d388e3`, installierter Code `7a168bc`; `main` ist älter. Ziele, Umsetzung, Testarten, Sicherungen und offene Shopify-/Fertigungsabnahmen sind getrennt beschrieben. Heute 17 lesende HTTPS-Prüfungen bestanden; keine Anwendung oder Live-Daten für diese Übergabe geändert. Die nachfolgenden Abschnitte sind datierte Veröffentlichungsnachweise.

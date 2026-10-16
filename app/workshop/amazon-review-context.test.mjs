@@ -64,7 +64,7 @@ test('explicitly selecting a different snapshot clears the Amazon context',async
 test('Amazon page generated assignment link includes exact snapshot and position',async()=>{
  const {get,document}=dom(),fixtures={'amazon/status':{mode:'disconnected'},'amazon/orders':{orders:[line],statuses:{}},products:{products:[]},'review-snapshots':{snapshots:[]},'amazon/catalog':{items:[]}};
  const request=async url=>{const value=fixtures[url.replace('/api/workshop/','')];assert.ok(value,'unexpected request '+url);return {ok:true,json:async()=>structuredClone(value)};};
- await vm.runInNewContext('(async()=>{'+source('amazon-ui.mjs')+'\n})()',{document,request,initializeAmazonCustomUI(){},URLSearchParams,Intl});
+ await vm.runInNewContext('(async()=>{'+source('amazon-ui.mjs')+'\n})()',{document,request,initializeAmazonCustomUI(){},initializeAmazonOperationsUI(){},initializeAmazonCustomImportUI(){},URLSearchParams,Intl});
  get('#orders').onclick({target:{closest:()=>({dataset:{id:line.id}})}});const url=new URL(get('#assignment-status').children[0].href,'http://localhost');
  assert.equal(url.pathname,'/werkstatt/pruefstaende/');assert.equal(url.searchParams.get('snapshot'),line.snapshotId);assert.equal(url.searchParams.get('amazonPosition'),line.id);
 });

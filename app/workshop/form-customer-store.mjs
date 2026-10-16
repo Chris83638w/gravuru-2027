@@ -1,6 +1,8 @@
 import {createOrderIntake} from './order-intake.mjs';
 import {createAmazonOrderStore} from './amazon-order-store.mjs';
 import {createAmazonCatalogStore} from './amazon-catalog.mjs';
+import {createAmazonCustomImportStore} from './amazon-custom-import.mjs';
+import {createAmazonPaperworkStore} from './amazon-paperwork.mjs';
 import {createCustomerDownloads} from './customer-downloads.mjs';
 import {createShopDraftJournal} from './shop-draft-transfer.mjs';
 import {createExportJobStore} from './export-jobs.mjs';
@@ -37,11 +39,22 @@ export function createFormCustomerStore({filename,clock=Date.now,repository,amaz
  const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock});
  const amazonOrders=createAmazonOrderStore({database:db,clock,repository,accountId:amazonAccountId,snapshot:id=>JSON.parse(snapshot(id).manifest)});
  const amazonCatalog=createAmazonCatalogStore({database:db,clock});
+ const amazonCustom=createAmazonCustomImportStore({database:db,orders:amazonOrders,clock});
+ const amazonPaperwork=createAmazonPaperworkStore({database:db,orders:amazonOrders,custom:id=>amazonCustom.paperworkSummary(id),clock});
+ const ingestAmazonPage=amazonOrders.ingestPage.bind(amazonOrders);
+ // Queue only this import's active positions. A PDF error must never discard an imported order.
+ amazonOrders.ingestPage=(page,options)=>{
+  const result=ingestAmazonPage(page,options),lineIds=result.lines.filter(line=>{const s=amazonOrders.status(line.id);return !s.cancelled&&!s.conflict&&!s.cancellationRequested;}).map(line=>line.id);
+  if(!lineIds.length)return {...result,paperwork:{automatic:true,jobIds:[],generated:false}};
+  let jobs=[];
+  try{jobs=amazonPaperwork.enqueue({lineIds,format:'A4'}).jobs;for(const job of jobs)amazonPaperwork.generate({jobIds:[job.id]});return {...result,paperwork:{automatic:true,jobIds:jobs.map(j=>j.id),generated:true}};}
+  catch{return {...result,paperwork:{automatic:true,jobIds:jobs.map(j=>j.id),generated:false,error:'Begleitschein in der Druckwarteschlange prüfen.'}};}
+ };
  const acrylicDrafts=createAcrylicDraftStore({database:db,capture(bundle){const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,m.source.draftRevision,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);}});
  const printProof=(id,key)=>{snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;};
  const customerDownloads=createCustomerDownloads({database:db,orders:orderIntake,jobs:exportJobs,printProof,clock});
  const shopDraftTransfers=createShopDraftJournal({database:db});
- return {exportJobs,orderIntake,amazonOrders,amazonCatalog,cartHandoffs,acrylicDrafts,customerDownloads,shopDraftTransfers,
+ return {exportJobs,orderIntake,amazonOrders,amazonCatalog,amazonCustom,amazonPaperwork,cartHandoffs,acrylicDrafts,customerDownloads,shopDraftTransfers,
   findAcrylicReview(key){const r=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);return r?summary(snapshot(r.snapshot_id)):null;},
   captureAcrylicReview(key,bundle){return transaction(()=>{const old=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);if(old)return summary(snapshot(old.snapshot_id));const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,1,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);db.prepare('INSERT INTO acrylic_review_requests VALUES(?,?)').run(key,m.id);return summary(snapshot(m.id));});},
   printProof,

@@ -1,6 +1,6 @@
 # Antrag auf Direct-to-Consumer Shipping – Entwurf
 
-**Nicht eingereicht. Noch nicht einreichungsreif.** Stand 16.10.2026. Der Antrag benötigt vor dem Absenden die tatsächlichen Sicherheits- und Betriebsnachweise sowie eine ausdrückliche Freigabe. Es wurden keine zusätzlichen Rollen beantragt.
+**Nicht eingereicht. Noch nicht einreichungsreif.** Stand 16.10.2026. Die ausdrückliche Antragsautorisierung liegt inzwischen vor; DTC und fünf Texte wurden im ungesendeten Portalentwurf ergänzt. Es fehlen wahrheitsgemäße Sicherheits- und Betriebsnachweise, keine weitere pauschale Einreichungserlaubnis. [Aktueller Antragsstand](DTC-ANTRAGSSTAND.md).
 
 ## Ausgangslage
 
@@ -17,7 +17,7 @@ Amazon ordnet `orderItems.product.customization.customizedUrl` der eingeschränk
 - Incident-Verantwortung und Verfahren, Aufbewahrungsmatrix, dokumentierte gesetzliche Ausnahmen und getestete Lösch-/Restorebehandlung.
 - Tatsächliche externe Empfänger: Hosting, beauftragte Carrier, Backups und andere eingesetzte Dienste. Die frühere pauschale Aussage „keine externen Empfänger/Quellen“ ist daran zu prüfen.
 
-In Sicherheitsfragen darf eine Kontrolle nur als umgesetzt bestätigt werden, wenn dafür konkrete Nachweise existieren. Der folgende Text enthält bewusst keine Bestätigung ungeprüfter Produktionsmaßnahmen. Zeichenlimits und konkrete Portalfragen sind bei der späteren Einreichung abzugleichen.
+In Sicherheitsfragen darf eine Kontrolle nur als umgesetzt bestätigt werden, wenn dafür konkrete Nachweise existieren. Der Nutzer bezeichnete die Maßnahmen als geplant bzw. unsicher; sieben vorhandene Ja-Angaben bleiben unbestätigt. Der folgende Text bestätigt keine ungeprüften Produktionsmaßnahmen. Tatsächliche Fragen und Zeichenlimits stehen in der [Antwort-/Nachweismatrix](DTC-SICHERHEITSFRAGEN.md).
 
 ## Textvorschlag: Zweck und benötigte Rolle
 
@@ -29,7 +29,7 @@ In Sicherheitsfragen darf eine Kontrolle nur als umgesetzt bestätigt werden, we
 
 ## Textvorschlag: Architektur und Datenfluss
 
-> Die Integration erweitert das vorhandene Projekt gravuru 2027 mit Node.js 24, SQLite, Bestellverwaltung und Designwerkstatt. Ein getrennter lokaler Entwicklungsstand wurde mit der statischen Amazon-Sandbox verbunden. Die tatsächliche Cloud-Betriebsumgebung wurde in diesem Prüfstand noch nicht technisch verifiziert. Wir bestätigen deshalb derzeit weder einen bestimmten aktiven Hostinganbieter oder eine Speicherregion noch die vollständige Umsetzung der Produktionskontrollen.
+> Die Integration erweitert das vorhandene Projekt gravuru 2027 mit Node.js 24, SQLite, Bestellverwaltung und Designwerkstatt. Ein getrennter lokaler Entwicklungsstand wurde mit der statischen Amazon-Sandbox verbunden. Die bestehende Werkstatt ist unter einer festen HTTPS-Adresse erreichbar. Die dahinterliegende Betriebsumgebung wurde noch nicht technisch verifiziert. Wir bestätigen deshalb derzeit weder einen bestimmten aktiven Hostinganbieter oder eine Speicherregion noch die vollständige Umsetzung der Produktionskontrollen.
 >
 > Der geplante Datenfluss ist Amazon Orders → interne Auftragszuordnung → geschützte Verarbeitung erforderlicher Custom-Dateien in der Designwerkstatt → Produktion → autorisierter Versanddienstleister. An DHL, DPD oder Deutsche Post sollen nur die für die jeweils beauftragte Sendung notwendigen Daten übermittelt werden. Vor produktivem Start werden die tatsächlich verwendeten Dienste, Empfänger, Zugriffsmöglichkeiten und vertraglichen Grundlagen dokumentiert. Externe KI-/Designdienste erhalten aus diesem Entwicklungsstand keine Amazon-Kundendaten.
 
@@ -43,4 +43,4 @@ In Sicherheitsfragen darf eine Kontrolle nur als umgesetzt bestätigt werden, we
 
 Die bewilligte Rolle muss anschließend zur passenden Anwendung und Verkäuferautorisierung passen. Erst nach geprüfter Umgebung und ausdrücklicher Echtdatenfreigabe folgt ein begrenzter Custom-Abruf. URL, Archivdownload, Dateiprüfung, Artikelzuordnung und Übereinstimmung der Gestaltung werden getrennt getestet. Ein neues Portalhäkchen allein macht keine Produktionsdatei fertig.
 
-Die [Sicherheits- und Aufbewahrungsdokumentation](SICHERHEIT-UND-AUFBEWAHRUNG.md) beschreibt die verbleibenden Nachweise. Änderungen am Profil und das Absenden bleiben bis zur ausdrücklichen Freigabe gesperrt.
+Die [Sicherheits- und Aufbewahrungsdokumentation](SICHERHEIT-UND-AUFBEWAHRUNG.md) beschreibt die verbleibenden Nachweise. Der bereits autorisierte Antrag wird erst nach sachlich zutreffender Vervollständigung abgeschlossen; ungeprüfte Ja-Angaben werden nicht eingereicht.

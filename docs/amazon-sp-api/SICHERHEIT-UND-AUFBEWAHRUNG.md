@@ -12,9 +12,13 @@ Prüfgrundlage: aktuelle offizielle Amazon-Unterlagen und deutsche Gesetzesquell
 - Explizite Projektion der Orders-Antworten vor Speicherung/Weitergabe. Keine Käufer-/Empfängerinformationen oder Custom-URLs. Der Fixturetest wird ebenso vor Rückgabe reduziert.
 - Eigene lokale Testdatenbank; synthetische, Sandbox- und spätere Datenherkunft werden kenntlich gehalten. Der vorhandene produktive Datenbestand wird nicht für Tests verwendet.
 - Custom-Musterprüfung mit Archivgrößen-, Dateizahl-, Entpack- und Pfadgrenzen; keine Netzwerkaufrufe, Dateiextraktion oder automatische Ausführung/Rendern von Inhalten.
+- Positionsbezogener Testdateiimport mit unveränderlichen SQLite-Originalen und Revisionen, Hashprüfung sowie ausdrücklicher Feldvorschau/-bestätigung gegen Version und Auftragsstand. Bilder bleiben Referenzen ohne Layoutrekonstruktion.
+- Interne PDF-/Scanoperationen hinter den vorhandenen Werkstatt-/CSRF-Grenzen und ausdrücklicher Testfreigabe. Keine Carrier- oder Amazon-Schreiboperation. PDF-Erstellung und Benutzerbestätigung eines Ausdrucks werden getrennt gespeichert.
 - Reine Aufbewahrungsvorschau. Das Modul besitzt keine Löschfunktion und keinen Löschscheduler.
 
 Der eigenständige Client besitzt für spätere serverseitige Verwendung einen ausdrücklichen Runtime-Guard für produktive Leseaufrufe. Der derzeit integrierte Service und die Vorschau akzeptieren ausschließlich Sandbox. Eine spätere Änderung dieser Grenze benötigt eine konkrete fachliche und technische Freigabe; sie darf nicht durch eine vom Browser übermittelte Option erfolgen.
+
+Die neuen Importoriginale, bestätigten Testtexte und PDFs liegen in der privaten lokalen Testdatenbank. Unveränderlichkeit und Dateirechte sind keine Datenbankverschlüsselung. Dieser Speicher ist nicht für echte PII freigegeben; eine spätere produktive Übernahme benötigt geprüfte Verschlüsselung, Rollen, Audit und Aufbewahrung. Es werden keine bestehenden Daten gelöscht.
 
 ## Aktuelle Richtlinienbasis und noch offene Betriebsnachweise
 

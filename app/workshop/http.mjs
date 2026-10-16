@@ -2,6 +2,7 @@ import {createAiDesignJobs} from './ai-design-jobs.mjs';
 import {createAmazonIntegration} from './amazon-integration.mjs';
 import {calculateAmazonContribution} from './amazon-economics.mjs';
 import {inspectAmazonCustomSample} from './amazon-custom.mjs';
+import {createAmazonOperationsHttp} from './amazon-operations-http.mjs';
 import {createFontLibrary,MAX_FONT_BYTES} from './font-library.mjs';
 import {prepareEditableDesign} from './editable-design.mjs';
 import {defaultPhotoSvg} from './product-preview.mjs';
@@ -109,6 +110,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const csrfToken=operatorCsrfToken??merchantCsrfToken??randomBytes(32).toString('hex');
   const customerDrafts=createFormCustomerStore({filename,repository,amazonAccountId:amazon?.accountId??'local-test'}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const amazonOrders=customerDrafts.amazonOrders,amazonCatalog=customerDrafts.amazonCatalog;
+  const amazonOperations=createAmazonOperationsHttp({paperwork:customerDrafts.amazonPaperwork,custom:customerDrafts.amazonCustom,allowTestImports:amazon?.allowTestImports===true,body,json});
   const amazonIntegration=createAmazonIntegration({orders:amazonOrders,client:amazon?.client,allowTestImports:amazon?.allowTestImports===true});
   if(amazon?.automatic===true)amazonIntegration.start();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
@@ -207,6 +209,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(await amazonOperations(req,res,url))return;
       if(pathname==='/api/workshop/amazon/status'&&method==='GET')return json(res,200,amazonIntegration.status());
       if(pathname==='/api/workshop/amazon/orders'&&method==='GET'){const rows=amazonOrders.list();return json(res,200,{orders:rows,statuses:Object.fromEntries(rows.map(r=>[r.id,amazonOrders.status(r.id)])),bindings:amazonOrders.bindings()});}
       if(pathname==='/api/workshop/amazon/catalog'&&method==='GET')return json(res,200,{items:amazonCatalog.list()});

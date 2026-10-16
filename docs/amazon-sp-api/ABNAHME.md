@@ -6,11 +6,26 @@ Entwicklungsbranch `task/amazon-sp-api-20261016`; lokaler Testbetrieb, statische
 
 | Prüfumfang | Ergebnis | Einschränkung |
 |---|---|---|
-| Amazon-Module und Integration | **105 Tests erfolgreich** | Synthetische bzw. injizierte Antworten; keine echten Kundenbestellungen |
+| Amazon-Module und Integration einschließlich Custom-Dateiimport/PDF/Scan | **138/138 Tests erfolgreich**, keine übersprungen | Synthetische bzw. injizierte Antworten; keine echten Kundenbestellungen |
+| Bestehende Kunden-, Prüfstand-, HTTP-, Shopify- und Druckabläufe nach Erweiterung | **29/29 Tests erfolgreich**, keine übersprungen | Sieben gezielte Testdateien; lokale Python-Laufzeit und deren fehlende Kontur-/Druckabhängigkeiten eingerichtet |
 | Bestehende Regressionen | **72 Tests erfolgreich** | Zunächst 70 erfolgreich; zwei Tests scheiterten an einem Python-Alias-/`openpyxl`-Umgebungsproblem. Gezielter Wiederholungslauf mit `GRAVURU_PYTHON` auf gebündeltem Python: 2/2 erfolgreich |
 | Dokumentationslinks und Sandboxbeleg | Relative Dateiverweise und JSON-Struktur geprüft | Kein automatischer Nachweis aller externen Quellenverfügbarkeiten |
 
 Die Zahlen stammen aus dem koordinierenden Integrationslauf, nicht aus einem behaupteten einzigen fehlerfreien Erstlauf. Die vollständige Bestandstestsuite wurde nicht ausgeführt; die 72 gezielten Regressionen betreffen HTTP, Hostschutz, Repository, Shopify-Sitzungen und bisherigen Bestelleingang. Der GitHub-Branch und sein Commit dokumentieren den Quellstand.
+
+Der Erweiterungslauf umfasst 138 Amazon-Tests mit verpflichtendem unabhängigem Barcode-Decoder (`GRAVURU_BARCODE_DECODE_REQUIRED=1`). Der bestehende isolierte UI-Kontexttest erhielt Testdoubles für die zwei neuen UI-Module; danach bestand er, zuletzt separat 11/11. Diese elf Tests sind in den 138 enthalten. Die 29 anschließenden Regressionen wurden mit gebündeltem Python und einem lokalen Windows-Testadapter ausgeführt, der lediglich das fest kodierte `python3` auf `GRAVURU_PYTHON` abbildet und die `promisify`-Semantik erhält. Fehlende `svgpathtools`, `shapely`, `svgwrite` und `scipy` wurden nur im ignorierten lokalen Python-Verzeichnis ergänzt. Anwendungscode und Sollwerte der Bestandstests blieben dafür unverändert. Keine Summe überschneidender Regressionen wird als eindeutige Gesamtzahl ausgegeben.
+
+## Erweiterungsabnahme: Custom-Datei, Begleitschein und Scan
+
+- Original-JSON/ZIP unveränderlich mit SHA-256, Bestell-/Positions-/SKU-Zuordnung und Versionsschutz. Falsche Zuordnung, unbekannte Eingaben, ungültige Archive, fehlende Testfreigabe und konkurrierende Bestätigung werden abgewehrt.
+- Browserimport des synthetischen 212-Byte-Musters: Dateistand 1 geprüft, `Gravurtext: GRAVURU TEST` und `Design: Synthetische Gestaltungswahl` bewusst ausgewählt und als Dateistand 2 bestätigt. Bildpositionen und vollständige Gestaltung wurden nicht übernommen oder erfunden.
+- A4-Begleitschein automatisch nach Import; A4/A5-Einzel-/Stapel-PDFs, reproduzierbare Ausgaben, Warteschlange, Dubletten- und Stornoschutz automatisiert geprüft. Druckbestätigung ist vom PDF-Download getrennt und an genau dessen Ausgabe gebunden.
+- Unabhängige Prüfung mit PyMuPDF, Pillow und ZXing-C++: vollständige Bestell- und Positionsbarcodes aller A4-/A5-Testseiten bei 203 und 300 dpi korrekt decodiert; Seitenmaße, Ruhezonen und Mindestmodulbreite geprüft. Keine Bestellnummer wird gekürzt.
+- Tatsächlicher A5-Download aus dem Browser: eine Seite, beide ausgewählten Custom-Werte vorhanden; Decoder liest `TEST-AMAZON-DESIGN-20261016` und `G27P-B899CECB3FE7A48B`. PDF und maschinenlesbarer Nachweis liegen in den lokalen Ergebnissen.
+- Tastatur-/Enter-Eingabe beider Codes öffnet die richtige native Testposition und ihren vorhandenen Gestaltungslink. Die drei ausdrücklich gewählten Schritte Produktion → Qualitätskontrolle → Versandvorbereitung wurden im Browser gespeichert und angezeigt; keine Amazon-Rückmeldung.
+- Unabhängige Abschlussprüfung der Auth-/CSRF-/Testgrenzen und geänderten Dateien fand keine erkennbaren Geheimnisse oder Kundendaten im Commitumfang.
+
+**Offen:** physischer Ausdruck und Handscanner; echte Amazon-Custom-Muster; Foto-/Logo-/Layoutparität; Unicode außerhalb WinAnsi; verlässliche Erkennung alter Papierkopien allein durch stabile Positionscodes; ein Freigabeverfahren für einen nach Datenänderung gesperrten bereits begonnenen Testzyklus. Alle PDFs bleiben deutlich als Test gekennzeichnet. Es wurde kein tatsächlicher Ausdruck behauptet.
 
 ## Echter Amazon-Netzwerknachweis
 
@@ -44,7 +59,7 @@ Die vollständige native Zuordnung ist geprüft: echtes Produkt aus dem vorhande
 
 ## Nicht ausgeführt oder nicht bestätigt
 
-Keine produktive Amazon-Abfrage, kein echter Custom-Download, keine Angebots-/Preis-/Bestelländerung, kein Carrierlabelkauf, kein produktives Deployment und keine Datenlöschung. Eine aktive gravuru-Cloudanwendung wurde nicht nachgewiesen: Die bekannte Domain zeigte eine Plesk-Standardseite.
+Keine produktive Amazon-Abfrage, kein echter Custom-Download, keine Angebots-/Preis-/Bestelländerung, kein Carrierlabelkauf, kein produktives Deployment und keine Datenlöschung. Die spätere gezielte Prüfung von `https://app-2027.gravuru-designwerkstatt.de/werkstatt/` lieferte HTTP 200, 16.336 Byte und den Titel „Gravuru 2027 · Werkstatt“. Damit ist die bestehende Webanwendung erreichbar; die Plesk-Standardseite der Rootadresse widerlegt dies nicht. Cloudinternals, Sicherheitskonfiguration und produktiver Amazon-Betrieb bleiben ungeprüft.
 
 ## Abschließende Kontrollen
 

@@ -20,7 +20,7 @@ Die folgenden neun Rollen sind im aktuellen Profil ausgewählt und wurden mit de
 | Amazon Logistics | Zugeordnete Logistikfunktionen; kein Ersatz für DTC bei Amazon Custom | Nein |
 | Brand Analytics | Zugeordnete Markenanalysefunktionen; weitere Kontovoraussetzungen können gelten | Nein |
 
-**Nicht ausgewählt bzw. nicht bewilligt:** DTC; Tax Invoicing und Tax Remittance sind ebenfalls nicht ausgewählt. Diese Tabelle belegt keine pauschale Freigabe sämtlicher Operationen einer API. Maßgeblich sind die jeweilige Rollenmatrix, Anwendungskonfiguration, Verkäuferautorisierung und ein erfolgreicher konkreter API-Test.
+**Nicht bewilligt:** DTC. DTC war bei der ersten Bestandsprüfung nicht ausgewählt und wurde anschließend aufgrund der ausdrücklichen Antragsautorisierung im **ungesendeten Portalentwurf** ausgewählt. Das ist keine neue Genehmigung. Tax Invoicing und Tax Remittance sind weiterhin nicht ausgewählt. Diese Tabelle belegt keine pauschale Freigabe sämtlicher Operationen einer API. Maßgeblich sind Rollenmatrix, Anwendung, Verkäuferautorisierung und konkreter API-Test.
 
 Eine Supportnachricht vom **08.10.2026** zum Fall **22422088341** bezeichnete den Antrag als weiterhin in Prüfung. In der begrenzten Nachrichtensuche wurde keine spätere Entscheidung gefunden. Das belegt weder eine laufende neue DTC-Prüfung noch eine inzwischen erteilte DTC-Genehmigung. Für die Umsetzung gilt weiterhin: **DTC fehlt**.
 
@@ -42,7 +42,7 @@ Nach ausdrücklicher Freigabe wurde ein Sandbox-Refresh-Token erstellt und auße
 | Buy Shipping / Carrierkonto | Kein produktiver Tarif-/Label-/Trackingtest |
 | Cloud-Sicherheitskontrollen | Nicht technisch geprüft |
 
-Die bekannte Adresse [app-2027.gravuru-designwerkstatt.de](https://app-2027.gravuru-designwerkstatt.de) antwortete über HTTPS mit HTTP 200 und einer 1.651 Byte großen **„Domain Default page“ von Plesk**. Das ist weder ein gravuru-Appnachweis noch eine Bestätigung einer aktiven Cloudinstallation. Der tatsächliche Cloud-Arbeitsstand bleibt offen.
+Die Rootadresse antwortete zunächst mit einer 1.651 Byte großen Plesk-Standardseite. Die anschließende Prüfung des tatsächlichen Pfads [app-2027.gravuru-designwerkstatt.de/werkstatt/](https://app-2027.gravuru-designwerkstatt.de/werkstatt/) lieferte **HTTP 200**, **16.336 Byte** und den Seitentitel **„Gravuru 2027 · Werkstatt“**. Damit ist die erreichbare Webanwendung belegt. Interne Cloudkonfiguration, aktiver Quellstand, Datenbank, Betreiber/Region und Sicherheitsumsetzung sind weiterhin ungeprüft. Die neue Amazon-Integration wurde nicht produktiv deployed.
 
 ## Was für produktive Bestellungen und Custom fehlt
 
@@ -50,4 +50,4 @@ Für nicht eingeschränkte Bestelldaten kann grundsätzlich eine passende vorhan
 
 Die Orders API `v2026-01-01` klassifiziert `orderItems.product.customization.customizedUrl` als personenbezogene Daten. Für Custom-Daten händlererfüllter Bestellungen verlangt Amazon **Direct-to-Consumer Shipping (Restricted)**. In dieser API-Version entfällt das RDT, nicht die Rollenpflicht. Steuerrollen ersetzen DTC für Custom nicht. Vor einem späteren Test müssen die Rolle bewilligt, der App zugeordnet und die erforderliche Autorisierung hergestellt sein. [Amazon: Access Orders PII](https://developer-docs.amazon/sp-api/docs/access-orders-pii).
 
-Die [Antragsskizze](DTC-ANTRAG-ENTWURF.md) wurde vorbereitet, aber nicht eingereicht. Sie benötigt vorher nachgewiesene Angaben zur tatsächlichen Betriebsumgebung und eine ausdrückliche Einreichungsfreigabe.
+Die DTC-Antragstellung ist ausdrücklich autorisiert. DTC und fünf sachliche Texte wurden im Portalentwurf ergänzt; der Antrag wurde **nicht abgeschickt**, weil der Nutzer die Schutzmaßnahmen als bisher geplant bzw. unsicher eingeordnet hat und sieben vorhandene Ja-Angaben nicht belegt sind. Es fehlen tatsächliche Sicherheitsnachweise, keine weitere allgemeine Einreichungserlaubnis. [Aktueller Antragsstand](DTC-ANTRAGSSTAND.md), [Antwort-/Nachweismatrix](DTC-SICHERHEITSFRAGEN.md).

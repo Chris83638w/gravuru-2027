@@ -60,6 +60,32 @@ Ein wiederholter Import darf keine zweite identische Auftragsposition erzeugen. 
 
 Testdaten liegen getrennt unter `.local-data/amazon-sandbox/`, einschließlich `workshop.sqlite` und generierter Vorschau. Diese Laufzeit öffnet nicht die vorhandene reguläre Werkstattdatenbank. Keine Datendateien einchecken oder vorhandene Bestände zum Testen löschen.
 
+## Custom-Testdatei einer Position zuordnen
+
+Für Dateiimport, Begleitscheine und Scanschritte die lokale Vorschau mit **`--demo`** starten. Ohne diese ausdrückliche Testfreigabe weist der Server die betreffenden Aktionen ab. Die Oberfläche verarbeitet nur synthetische oder bereits anonymisierte JSON-/ZIP-Muster; eine Produktionsdatei wird durch Anklicken einer Testklassifikation nicht anonym.
+
+1. **„Synthetische Beispiele laden“** ausführen und im Bereich **„Personalisierung“** unter **„Custom-Datei einem Auftrag zuordnen“** die richtige Testposition wählen.
+2. Angezeigte Bestellnummer, Position, SKU und Menge kontrollieren. JSON bis 1 MiB oder ZIP bis 8 MiB auswählen; Datenklasse und bestätigte Zuordnung angeben.
+3. **„Datei prüfen und dieser Position zuordnen“** speichert das unveränderte Original mit SHA-256 und einem neuen Prüfstand. Ein identischer Wiederholungsimport erzeugt keine Dublette.
+4. Die tatsächlich benötigten Text-/Optionsfelder oder Bildreferenzen auswählen und benennen. **„Gewählte Felder prüfen“** zeigt die ausgewählten Werte; es erfolgt noch keine Bestätigung.
+5. Nach fachlicher Prüfung **„Geprüfte Testfelder übernehmen“** ausführen. Version, Original-/Review-Hash und Auftragskontext werden erneut abgeglichen. Bei geänderten Daten den aktuellen Stand laden und neu prüfen.
+
+Die Bestätigung übernimmt nur ausgewählte Testfelder. Bildpositionierung, Zuschnitt, Schrift- und Layoutparität werden nicht automatisch rekonstruiert; Bildreferenzen sind keine gerenderten Bilder. Produkt- und native Prüfstandzuordnung bleiben eigene Schritte. Der separate **„Custom-Testdatei prüfen“**-Inspektor zeigt nur Metadaten und speichert kein Original; er ist vom positionsbezogenen Import zu unterscheiden.
+
+## Begleitscheine, PDF-Stapel und Scans
+
+Beim Auftragsimport wird automatisch ein A4-Testbegleitschein je betroffenem Auftrag erzeugt. Ein Fehler bei der PDF-Erstellung löscht den importierten Auftrag nicht. Im Bereich **„Begleitscheine & Scan“**:
+
+1. Für eine neue bzw. aktualisierte Ausgabe Positionen auswählen, **DIN A4** oder **DIN A5** wählen und **„Begleitscheine vorbereiten“** ausführen. Es werden jeweils alle Positionen der ausgewählten Aufträge aufgenommen. Nach geänderten Custom-Feldern oder einer neuen Gestaltungszuordnung ist ein aktueller Begleitschein vorzubereiten.
+2. Gewünschte Einträge der Druckwarteschlange markieren und **„Ausgewählte PDFs herunterladen“** ausführen. Gleiche Inhalte/Formate bleiben wiederholbar; veraltete oder gesperrte Auftragsstände werden abgewiesen.
+3. PDFs mit tatsächlicher Größe / 100 % drucken. **„Tatsächlichen Ausdruck bestätigen“** erst nach tatsächlichem Ausdruck genau dieser heruntergeladenen Auswahl verwenden. Das System protokolliert eine Benutzerbestätigung und besitzt keinen Druckersensor.
+4. Zum Testen eine auf dem PDF lesbare vollständige Bestellnummer oder den `G27P-`-Positionscode in das Scanfeld eingeben. Die Standardaktion **„Auftrag öffnen“** ändert keinen Status. Ein Tastaturscanner soll später denselben Wert mit abschließendem Enter liefern; seine Hardwareprüfung steht aus.
+5. Nur bei Bedarf ausdrücklich **„Produktion im Test dokumentieren“**, danach **„Qualitätskontrolle im Test bestätigen“** und **„Versandvorbereitung im Test bestätigen“** wählen. Offene Zuordnung, ungeprüfte erforderliche Personalisierung, Storno oder geänderte Daten blockieren. Ein Bestellbarcode betrifft bei einer Statusaktion alle zugehörigen Positionen; ein Positionsbarcode genau eine.
+
+Der Druck-/Scanablauf kauft keine Versandlabels und sendet keine Rückmeldung an Amazon. Ein Positionsbarcode ist stabil und kodiert keine Papier-/Prüfstandrevision; alte Papierkopien müssen deshalb zusätzlich mit dem aktuellen sichtbaren Stand abgeglichen werden. Vollständige Grenzen und Hardwareabnahme: [Custom-Dateiimport und Barcodes](CUSTOM-DATEIIMPORT-UND-BARCODES.md).
+
+Die vorhandene öffentliche Werkstatt unter [app-2027.gravuru-designwerkstatt.de/werkstatt/](https://app-2027.gravuru-designwerkstatt.de/werkstatt/) wurde lesend als erreichbar bestätigt. Diese Anleitung installiert den neuen Amazon-Branch ausschließlich lokal; sie deployt nichts an diese Adresse.
+
 ## Automatisierte Prüfungen
 
 ```powershell
@@ -67,7 +93,7 @@ node --test app/workshop/amazon-*.test.mjs
 npm test
 ```
 
-Die automatisierten Tests verwenden injizierte Netzwerkantworten bzw. synthetische Daten. Sie benötigen keinen echten Token. Getestet werden unter anderem API-Guards, Tokenverwaltung, Wiederholungen, Datenminimierung, Importidentität, Änderungen, Zuordnung, Custom-Dateigrenzen und fachliche Vorschauen. Der [echte Netzwerknachweis](nachweise/sandbox-probe-2026-10-16.json) ist separat dokumentiert und wird durch Unit-Tests nicht ersetzt. Zahlen und Browserbefunde stehen im [Abnahmeprotokoll](ABNAHME.md).
+Die automatisierten Tests verwenden injizierte Netzwerkantworten bzw. synthetische Daten. Sie benötigen keinen echten Token. Prüfumfang sind API-Guards, Tokenverwaltung, Wiederholungen, Datenminimierung, Importidentität, Änderungen, Zuordnung, Custom-Dateigrenzen/-Revisionen, Feldprüfung, PDF/Code 128, Warteschlange und Scanstufen. Der [echte Netzwerknachweis](nachweise/sandbox-probe-2026-10-16.json) ist separat dokumentiert und wird durch Unit-Tests nicht ersetzt. Aktuelle Zahlen und Browserbefunde: [siehe Testnachweis](ABNAHME.md).
 
 Einige bestehende Regressionstests verwenden Python mit `openpyxl`. Falls ein Windows-Python-Alias statt des eingerichteten Runtimes aufgerufen wird, `GRAVURU_PYTHON` auf dessen absoluten ausführbaren Pfad setzen und die betroffenen Prüfungen erneut ausführen. Das ist unabhängig von den reinen Amazon-Clienttests.
 

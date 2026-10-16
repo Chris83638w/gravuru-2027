@@ -9,13 +9,14 @@ Stand: 16.10.2026. Lokaler Entwicklungsstand mit statischer Amazon-Sandbox und s
 | API-Verbindung | LWA, Token-Cache mit Ablaufpuffer und gemeinsamer Erneuerung; HTTPS-Hostliste; Timeouts und begrenzte Wiederholungen; Fehler-/Logreduktion | Produktive Verkäuferautorisierung und produktive Endpointrechte |
 | Bestellungen | Orders `v2026-01-01`, nicht eingeschränkte Projektion, eindeutige Konto-/Marktplatz-/Auftrags-/Positionszuordnung, wiederholbarer Import, Statusänderungen/Storno, Fortsetzungsstände | Automatischer Import echter Verkäuferbestellungen |
 | Dashboard | Amazon-Bereich innerhalb der Werkstatt; Testpositionen, Herkunft, Währung, Prüfbedarf, SKU-/Produktstand- und Prüfstandzuordnung | Produktive Cloudbereitstellung und echte Produktionsabnahme |
-| Amazon Custom | Rollen-/Datenfreigabesperre, statischer ZIP-/JSON-Testdatei-Inspektor, Hashes, Inventar und mögliche Text-/Bild-/Design-/Positionsfelder mit Prüfhinweis | DTC, autorisierter Download, echte Formatmuster, automatische vollständige Gestaltung und Produktionsparität |
+| Amazon Custom | JSON-/ZIP-Testimport exakt zu Auftrag/Position/SKU; unveränderliche Originale und Revisionen; manuelle Feldwahl, Vorschau, Review-Hash und Versionsvergleich bei Bestätigung | DTC, echter manueller/API-Download, echte Formatmuster, vollständiges Bildlayout und Produktionsparität |
+| Begleitscheine und Scans | Automatische A4-PDF beim Auftragsimport; A4-/A5-Stapel, Code 128 für Auftrag/Position, Druckwarteschlange, interne Teststufen Fertigung → Qualität → Versandvorbereitung | Physischer Druck-/Scannertest; kein Carrierlabel, keine Fertigungs- oder Versandfreigabe |
 | Artikel | Lesemethoden für Listings/Catalog mit Rollengates; lokale SKU/ASIN-, Angebots-, Bestands-, Varianten- und Fehlerdatenstruktur | Vollständiger Händlerkatalog, echter Finanz-/Bestandsabgleich; keine Listingmutation |
 | Versand | Prüfung von Restmengen, Paketdaten und Versand-/Lieferfenstern; Entwurf einer Amazon-Versandbestätigung | Adresse, Carrieranbindung, Labels, Lieferscheinausgabe, tatsächliche Trackingereignisse und Versandrückmeldung |
 | Wirtschaftlichkeit | SKU-/ASIN-bezogene Centberechnung mit gleicher Währungs-/Steuerbasis; unbekannte Kosten bleiben unbekannt; tatsächliche Werte von Prognosen getrennt | Automatischer Kostenabgleich, Helium-10-Daten, Ads-Autorisierung, echte Kostenbelege |
 | Aufbewahrung | Reine Vorschau mit Datenklassen, Fristen, dokumentierten Ausnahmen und Prüfbedarf | Automatische Löschung, produktiver Backup-/Restoreprozess und rechtliche Freigabe |
 
-Im koordinierenden Integrationslauf wurden 90 Amazon-Tests und 72 bestehende Regressionstests erfolgreich abgeschlossen. Zwei Regressionen benötigten nach einem Python-Aliasproblem einen gezielten Wiederholungslauf mit dem gebündelten Python. Der tatsächliche Sandboxaufruf und die lokale Browserprüfung sind separat belegt. Einzelheiten und verbleibende Abnahmen stehen im [Abnahmeprotokoll](ABNAHME.md).
+Aktuelle Zahlen und Umfang der automatisierten Prüfungen einschließlich Custom-Import, PDF und Scans: [siehe Testnachweis](ABNAHME.md). Der tatsächliche Sandboxaufruf und die lokale Browserprüfung sind separat belegt. Frühere Teilzahlen gelten nicht automatisch als Gesamtabnahme der Erweiterung.
 
 ## API-Vertrag
 
@@ -41,6 +42,10 @@ Amazon dokumentiert im neuen Modell den geschützten Custom-Dateiverweis. Es gib
 
 Der Inspektor nimmt ausschließlich als synthetisch oder anonymisiert gekennzeichnete, ausdrücklich zur Prüfung freigegebene Muster an. Diese Klassifizierung wird nicht automatisch bewiesen. Das Modul lädt nichts herunter, entpackt nichts in das Dateisystem und rendert keine Kundeninhalte. JSON-Felder werden als mögliche Kandidaten mit `reviewRequired` gemeldet; XML wird nicht strukturell importiert, SVG nicht gerendert und Bilder nicht dekodiert. Das Ergebnis bleibt `productionReady:false`.
 
+Darauf aufbauend speichert `amazon-custom-import.mjs` Testoriginale mit SHA-256 in der vorhandenen privaten SQLite-Ablage. Bestellnummer, Position und SKU werden exakt abgeglichen. Ausgewählte Texte/Optionen und Bildreferenzen werden zunächst geprüft und anschließend gegen Version, Hash und unveränderten Auftragskontext bestätigt. Das ersetzt weder ein gesichertes Gesamtbildlayout noch die bestehende native Prüfstandzuordnung. Details und Bedienung: [Custom-Dateiimport und Barcodes](CUSTOM-DATEIIMPORT-UND-BARCODES.md).
+
+`amazon-paperwork.mjs` und `amazon-paperwork-pdf.mjs` erzeugen unveränderliche Testbegleitscheine mit vollständiger Bestellnummer und einem stabilen `G27P-`-Positionsbarcode. PDF-Erstellung, Benutzerbestätigung eines Ausdrucks und interner Scanfortschritt sind getrennt. Standardmäßig öffnet ein Scan nur den Auftrag. Eine ausdrücklich gewählte Stufenaktion betrifft beim Bestellbarcode alle zugehörigen Positionen; beim Positionsbarcode eine Position. Druckwarteschlange und Auftragskontext besitzen Änderungsschutz, der stabile Barcode selbst kodiert jedoch keine Druckrevision. Physische Geräte und vollständiger Custom-Layoutabgleich bleiben ungetestet.
+
 Vor der späteren Abnahme sind autorisierte Muster je Produkttyp erforderlich: Texte, Bilddateien, Designwahl, Varianten, Stückzahl, Einheiten, Schrift, Flächen und Positionierung müssen mit dem tatsächlichen Auftrag verglichen werden. Ein Motiv bleibt ein einzelnes Gestaltungselement; ein Design ist die vollständige Komposition. Die Integration darf diese bestehenden Begriffe nicht vermischen.
 
 ## Versand und Wirtschaftlichkeit
@@ -55,9 +60,9 @@ Helium 10 benötigt eine erneute Anmeldung; in diesem Stand wurden keine Helium-
 
 ## Noch offene Abnahmen
 
-1. Lokale Branchtests und Browserprüfung abgeschlossen; siehe ABNAHME.md. Produktive Abnahmen bleiben offen.
-2. Tatsächliche Cloudarchitektur, Benutzerrollen, Secrets, Verschlüsselung, Backups und Wiederherstellung prüfen.
+1. Neue Custom-/PDF-/Scanprüfungen im [Testnachweis](ABNAHME.md) festhalten; tatsächlichen Drucker und Scanner für A4/A5 separat abnehmen.
+2. Erreichbare Werkstatt unter `/werkstatt/` ist bestätigt. Dahinterliegende Cloudarchitektur, Benutzerrollen, Secrets, Verschlüsselung, Backups und Wiederherstellung prüfen; dieser Branch ist dort nicht installiert.
 3. Produktive private App und Verkäuferautorisierung klären; anschließend einen ausdrücklich freigegebenen Minimalabruf nicht eingeschränkter Bestellungen testen.
-4. DTC-Antrag nach belegter Sicherheitsprüfung freigeben und einreichen; nach Amazon-Entscheidung App-/Autorisierungsebene prüfen.
+4. Bereits autorisierten DTC-Antrag nach belegter Sicherheitsprüfung wahrheitsgemäß vervollständigen und einreichen. DTC und fünf Texte stehen im ungesendeten Portalentwurf; sieben vorhandene Ja-Angaben sind nicht belegt. Nach Amazon-Entscheidung App-/Autorisierungsebene prüfen.
 5. Custom-Dateien mit autorisierten Mustern in die vorhandene Designwerkstatt abnehmen.
 6. Carrier- und Kostenquellen zunächst in deren echten Testumgebungen anschließen; produktive Schreib-/Kaufaktionen jeweils gesondert freigeben.

@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-16T12:24:49.432Z",
+  "source": "local-workshop-http-probe",
+  "environment": "sandbox",
+  "productionPermissionVerified": false,
+  "request": {
+    "operation": "probeSandbox",
+    "environment": "sandbox",
+    "attempt": 1,
+    "status": 200,
+    "durationMs": 690,
+    "requestId": "ea524387-0516-41ed-8850-269dea3d3fd4",
+    "rateLimit": 5
+  },
+  "savedTestPositions": 4,
+  "note": "Capabilities are configuration flags, not granted production permissions."
+}

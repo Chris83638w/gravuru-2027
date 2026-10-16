@@ -1,0 +1,113 @@
+# Lokale Sandbox einrichten und prüfen
+
+Diese Anleitung gilt ausschließlich für den separaten Entwicklungsstand. Es erfolgen keine produktiven Amazon-Abfragen, keine Bestelländerungen und keine Labelkäufe.
+
+## Voraussetzungen
+
+- Checkout des Branches `task/amazon-sp-api-20261016` mit erhaltenem Sicherungspunkt des vorherigen Stands.
+- **Node.js 24**; das Projekt verwendet unter anderem `node:sqlite`. Für die Amazon-Module sind keine zusätzlichen npm-Abhängigkeiten erforderlich.
+- Für die echte statische Sandboxprüfung: autorisierter Sandbox-Zugang in einer privaten Datei **außerhalb** des Git-Repositorys.
+- Für reine synthetische Beispiele ist kein Amazon-Zugang erforderlich.
+
+Alle folgenden Befehle werden im Repository-Verzeichnis ausgeführt. Ein vorhandener Arbeitsstand wird weder zurückgesetzt noch durch einen neuen Clone überschrieben.
+
+```powershell
+node --version
+git branch --show-current
+node scripts/amazon-sandbox-preview.mjs --demo
+```
+
+Die Ausgabe nennt die lokale Adresse `http://127.0.0.1:8971/werkstatt/amazon/`. In der Amazon-Seite lassen sich synthetische Beispielpositionen laden und ein Teststorno durchspielen. Ohne Zugangsspeicher ist die echte Sandboxprüfung deaktiviert. Ein anderer freier Port ist mit `--port=8972` möglich.
+
+## Zugangsspeicher
+
+`GRAVURU_AMAZON_CREDENTIALS_FILE` enthält **nur einen absoluten Dateipfad**, keinen Schlüssel oder Token. Unter Windows ist DPAPI verpflichtend; Klartext-JSON wird abgewiesen. Der geprüfte Zugangsspeicher verwendet dieses Format:
+
+```json
+{"format":"gravuru-windows-dpapi/v1","data":"<DPAPI-verschlüsselter Inhalt>"}
+```
+
+Der Loader entschlüsselt mit Windows DPAPI `CurrentUser`. Die Datei ist an denselben Windows-Benutzer und dessen geschützte Umgebung gebunden. Sie ist kein portables Cloud-Secret. Den Zugriff auf den Ordner und die Datei auf den ausführenden Benutzer und erforderliche Systemidentitäten begrenzen; ein öffentlich lesbarer Speicherort ist ungeeignet. Das vorhandene Sandboxsecret wurde unter diesen Bedingungen verschlüsselt und anschließend erneut erfolgreich getestet.
+
+Nur unter POSIX ist für einen späteren dedizierten SecretStore auch JSON mit den Schlüsseln `clientId`, `clientSecret`, `refreshToken` unterstützt. Diese Werte gehören ausschließlich in den geschützten serverseitigen Speicher. Unter POSIX verlangt der Loader eine reguläre private Datei ohne Gruppen-/Weltrechte, typischerweise Modus `0600`. Die tatsächliche Verschlüsselung des SecretStores bzw. Datenträgers bleibt eine Betriebsanforderung. Keine Klartextdatei in Git, Chat, Frontend oder Kommandozeilenargumente kopieren.
+
+Der Loader lehnt relative Pfade, Symlinks, Dateien im Repository, ungültige Formate und zu große Dateien ab. Entschlüsselungsfehler werden ohne Geheimwerte gemeldet. Für Cloudbetrieb müssen eigene Secretverwaltung und Zugriffsrechte eingerichtet und geprüft werden; das ist nicht Bestandteil dieses lokalen Teststarts.
+
+Beispiel mit einem **anzupassenden privaten Pfad**:
+
+```powershell
+$env:GRAVURU_AMAZON_CREDENTIALS_FILE = 'C:\privat\gravuru\amazon-sandbox.json'
+node scripts/amazon-sandbox-preview.mjs --demo
+```
+
+Danach in der Amazon-Seite **„Amazon-Sandbox prüfen“** ausführen. Der Server lädt die Zugangsdaten; der Browser erhält keine Token. LWA liefert ein kurzlebiges Zugriffstoken, das ausschließlich im Arbeitsspeicher zwischengespeichert wird. Wiederholte Anforderungen teilen eine laufende Token-Erneuerung.
+
+Optional führt folgender Start alle fünf Minuten dieselbe statische Prüfung aus:
+
+```powershell
+node scripts/amazon-sandbox-preview.mjs --automatic
+```
+
+`--automatic` benötigt den Zugangsspeicher und ist **kein produktiver Bestellabgleich**. Beenden mit Strg+C beendet Server und Timer. Eine laufende Vorschau nicht parallel auf demselben Port starten.
+
+## Erwartetes Testergebnis
+
+Der feste Sandboxaufruf lautet `GET /orders/2026-01-01/orders/171-9876543-2109876`. `probeSandbox()` nutzt die im offiziellen Modell vorgeschriebenen Fixture-Parameter und einen fest vorgegebenen Sandboxhost. Die enthaltenen Käufer-/Empfängergruppen gehören ausschließlich zu diesem synthetischen Amazon-Testfall; die Antwort wird vor Rückgabe auf freigegebene Felder reduziert. Reguläre Auftragsmethoden lassen diese Datengruppen nicht zu.
+
+Das öffentliche Beispiel liefert einen Echo Dot mit **BRL 299,90** und Marktplatz **Amazon.com.br**. Das gilt auch beim Aufruf des EU-Sandboxhosts. Es ist kein Nachweis einer deutschen Bestellung, kein Umsatz der gravuru GmbH und keine Währungsumrechnung. Der Import muss Herkunft und BRL erhalten.
+
+Ein wiederholter Import darf keine zweite identische Auftragsposition erzeugen. SKU-Zuordnung und Prüfstandverknüpfung bleiben innerhalb der vorhandenen Werkstatt. Testpositionen lösen keine reale Fertigung aus; fehlende Personalisierung oder Änderungen können die Bearbeitung sperren.
+
+Testdaten liegen getrennt unter `.local-data/amazon-sandbox/`, einschließlich `workshop.sqlite` und generierter Vorschau. Diese Laufzeit öffnet nicht die vorhandene reguläre Werkstattdatenbank. Keine Datendateien einchecken oder vorhandene Bestände zum Testen löschen.
+
+## Custom-Testdatei einer Position zuordnen
+
+Für Dateiimport, Begleitscheine und Scanschritte die lokale Vorschau mit **`--demo`** starten. Ohne diese ausdrückliche Testfreigabe weist der Server die betreffenden Aktionen ab. Die Oberfläche verarbeitet nur synthetische oder bereits anonymisierte JSON-/ZIP-Muster; eine Produktionsdatei wird durch Anklicken einer Testklassifikation nicht anonym.
+
+1. **„Synthetische Beispiele laden“** ausführen und im Bereich **„Personalisierung“** unter **„Custom-Datei einem Auftrag zuordnen“** die richtige Testposition wählen.
+2. Angezeigte Bestellnummer, Position, SKU und Menge kontrollieren. JSON bis 1 MiB oder ZIP bis 8 MiB auswählen; Datenklasse und bestätigte Zuordnung angeben.
+3. **„Datei prüfen und dieser Position zuordnen“** speichert das unveränderte Original mit SHA-256 und einem neuen Prüfstand. Ein identischer Wiederholungsimport erzeugt keine Dublette.
+4. Die tatsächlich benötigten Text-/Optionsfelder oder Bildreferenzen auswählen und benennen. **„Gewählte Felder prüfen“** zeigt die ausgewählten Werte; es erfolgt noch keine Bestätigung.
+5. Nach fachlicher Prüfung **„Geprüfte Testfelder übernehmen“** ausführen. Version, Original-/Review-Hash und Auftragskontext werden erneut abgeglichen. Bei geänderten Daten den aktuellen Stand laden und neu prüfen.
+
+Die Bestätigung übernimmt nur ausgewählte Testfelder. Bildpositionierung, Zuschnitt, Schrift- und Layoutparität werden nicht automatisch rekonstruiert; Bildreferenzen sind keine gerenderten Bilder. Produkt- und native Prüfstandzuordnung bleiben eigene Schritte. Der separate **„Custom-Testdatei prüfen“**-Inspektor zeigt nur Metadaten und speichert kein Original; er ist vom positionsbezogenen Import zu unterscheiden.
+
+## Begleitscheine, PDF-Stapel und Scans
+
+Beim Auftragsimport wird automatisch ein A4-Testbegleitschein je betroffenem Auftrag erzeugt. Ein Fehler bei der PDF-Erstellung löscht den importierten Auftrag nicht. Im Bereich **„Begleitscheine & Scan“**:
+
+1. Für eine neue bzw. aktualisierte Ausgabe Positionen auswählen, **DIN A4** oder **DIN A5** wählen und **„Begleitscheine vorbereiten“** ausführen. Es werden jeweils alle Positionen der ausgewählten Aufträge aufgenommen. Nach geänderten Custom-Feldern oder einer neuen Gestaltungszuordnung ist ein aktueller Begleitschein vorzubereiten.
+2. Gewünschte Einträge der Druckwarteschlange markieren und **„Ausgewählte PDFs herunterladen“** ausführen. Gleiche Inhalte/Formate bleiben wiederholbar; veraltete oder gesperrte Auftragsstände werden abgewiesen.
+3. PDFs mit tatsächlicher Größe / 100 % drucken. **„Tatsächlichen Ausdruck bestätigen“** erst nach tatsächlichem Ausdruck genau dieser heruntergeladenen Auswahl verwenden. Das System protokolliert eine Benutzerbestätigung und besitzt keinen Druckersensor.
+4. Zum Testen eine auf dem PDF lesbare vollständige Bestellnummer oder den `G27P-`-Positionscode in das Scanfeld eingeben. Die Standardaktion **„Auftrag öffnen“** ändert keinen Status. Ein Tastaturscanner soll später denselben Wert mit abschließendem Enter liefern; seine Hardwareprüfung steht aus.
+5. Nur bei Bedarf ausdrücklich **„Produktion im Test dokumentieren“**, danach **„Qualitätskontrolle im Test bestätigen“** und **„Versandvorbereitung im Test bestätigen“** wählen. Offene Zuordnung, ungeprüfte erforderliche Personalisierung, Storno oder geänderte Daten blockieren. Ein Bestellbarcode betrifft bei einer Statusaktion alle zugehörigen Positionen; ein Positionsbarcode genau eine.
+
+Der Druck-/Scanablauf kauft keine Versandlabels und sendet keine Rückmeldung an Amazon. Ein Positionsbarcode ist stabil und kodiert keine Papier-/Prüfstandrevision; alte Papierkopien müssen deshalb zusätzlich mit dem aktuellen sichtbaren Stand abgeglichen werden. Vollständige Grenzen und Hardwareabnahme: [Custom-Dateiimport und Barcodes](CUSTOM-DATEIIMPORT-UND-BARCODES.md).
+
+Die vorhandene öffentliche Werkstatt unter [app-2027.gravuru-designwerkstatt.de/werkstatt/](https://app-2027.gravuru-designwerkstatt.de/werkstatt/) wurde lesend als erreichbar bestätigt. Diese Anleitung installiert den neuen Amazon-Branch ausschließlich lokal; sie deployt nichts an diese Adresse.
+
+## Automatisierte Prüfungen
+
+```powershell
+node --test app/workshop/amazon-*.test.mjs
+npm test
+```
+
+Die automatisierten Tests verwenden injizierte Netzwerkantworten bzw. synthetische Daten. Sie benötigen keinen echten Token. Prüfumfang sind API-Guards, Tokenverwaltung, Wiederholungen, Datenminimierung, Importidentität, Änderungen, Zuordnung, Custom-Dateigrenzen/-Revisionen, Feldprüfung, PDF/Code 128, Warteschlange und Scanstufen. Der [echte Netzwerknachweis](nachweise/sandbox-probe-2026-10-16.json) ist separat dokumentiert und wird durch Unit-Tests nicht ersetzt. Aktuelle Zahlen und Browserbefunde: [siehe Testnachweis](ABNAHME.md).
+
+Einige bestehende Regressionstests verwenden Python mit `openpyxl`. Falls ein Windows-Python-Alias statt des eingerichteten Runtimes aufgerufen wird, `GRAVURU_PYTHON` auf dessen absoluten ausführbaren Pfad setzen und die betroffenen Prüfungen erneut ausführen. Das ist unabhängig von den reinen Amazon-Clienttests.
+
+## Fehler einordnen
+
+| Zustand | Vorgehen |
+|---|---|
+| Kein Zugangsspeicher | Synthetische Beispiele verwenden oder serverseitigen Dateipfad korrekt setzen |
+| Credential-Datei abgewiesen / DPAPI nicht lesbar | Absoluten Pfad, Dateirechte, Repositorygrenze, Format und Windows-Benutzer prüfen; keine Werte ausgeben |
+| LWA 401/ungültige Autorisierung | App und Sandbox-Autorisierung im Portal prüfen; keine Token in Tickets oder Logs übernehmen |
+| API 403 | Operation/App-Berechtigung prüfen; der Client wiederholt 403 nicht automatisch |
+| API 429 | Quoten beachten; begrenzter Backoff und `Retry-After` sind implementiert |
+| Langer `Retry-After` | Später neu versuchen; keine aggressive Warteschleife |
+| Sandboxerfolg mit BRL/Brasilien | Erwartetes öffentliches Fixture; keine Marktplatzberechtigung daraus ableiten |
+| Produktionsclient übergeben | Integrierter Service lehnt ihn ab; es gibt keinen HTTP-Schalter zur Freigabe |
+
+Der nächste produktive Schritt wird erst nach Vorliegen der in [Berechtigungen](BERECHTIGUNGEN.md) und [Sicherheit](SICHERHEIT-UND-AUFBEWAHRUNG.md) genannten Nachweise vorbereitet und konkret freigegeben.

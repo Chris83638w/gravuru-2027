@@ -1,4 +1,8 @@
 import {createOrderIntake} from './order-intake.mjs';
+import {createAmazonOrderStore} from './amazon-order-store.mjs';
+import {createAmazonCatalogStore} from './amazon-catalog.mjs';
+import {createAmazonCustomImportStore} from './amazon-custom-import.mjs';
+import {createAmazonPaperworkStore} from './amazon-paperwork.mjs';
 import {createCustomerDownloads} from './customer-downloads.mjs';
 import {createShopDraftJournal} from './shop-draft-transfer.mjs';
 import {createExportJobStore} from './export-jobs.mjs';
@@ -9,8 +13,9 @@ import {randomBytes,randomUUID,createHash,timingSafeEqual} from 'node:crypto';
 import {chmodSync} from 'node:fs';
 const hash=v=>createHash('sha256').update(v).digest('hex');
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'customer_draft'});};
-export function createFormCustomerStore({filename,clock=Date.now}){
+export function createFormCustomerStore({filename,clock=Date.now,repository,amazonAccountId='local-test'}){
  const db=new DatabaseSync(filename);
+ try {
  if(filename!==':memory:')chmodSync(filename,0o600);
  db.exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
  CREATE TABLE IF NOT EXISTS form_customer_drafts(id TEXT PRIMARY KEY,token_hash TEXT NOT NULL,product_id TEXT NOT NULL,product_revision INTEGER NOT NULL,design_id TEXT NOT NULL,revision INTEGER NOT NULL,state TEXT NOT NULL,created_at TEXT NOT NULL);
@@ -32,11 +37,24 @@ export function createFormCustomerStore({filename,clock=Date.now}){
  const snapshot=(id,columns='manifest')=>{const r=typeof id==='string'&&db.prepare('SELECT '+columns+' FROM form_review_snapshots WHERE id=?').get(id);if(!r)fail(404,'Prüfstand nicht gefunden.');return r;};
  const summary=r=>{const m=JSON.parse(r.manifest);return {id:m.id,createdAt:m.createdAt,product:m.product,source:m.source,blockers:m.blockers,warnings:m.warnings,photoCount:m.photos.length,packageSha256:m.packageSha256};};
  const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock});
+ const amazonOrders=createAmazonOrderStore({database:db,clock,repository,accountId:amazonAccountId,snapshot:id=>JSON.parse(snapshot(id).manifest)});
+ const amazonCatalog=createAmazonCatalogStore({database:db,clock});
+ const amazonCustom=createAmazonCustomImportStore({database:db,orders:amazonOrders,clock});
+ const amazonPaperwork=createAmazonPaperworkStore({database:db,orders:amazonOrders,custom:id=>amazonCustom.paperworkSummary(id),clock});
+ const ingestAmazonPage=amazonOrders.ingestPage.bind(amazonOrders);
+ // Queue only this import's active positions. A PDF error must never discard an imported order.
+ amazonOrders.ingestPage=(page,options)=>{
+  const result=ingestAmazonPage(page,options),lineIds=result.lines.filter(line=>{const s=amazonOrders.status(line.id);return !s.cancelled&&!s.conflict&&!s.cancellationRequested;}).map(line=>line.id);
+  if(!lineIds.length)return {...result,paperwork:{automatic:true,jobIds:[],generated:false}};
+  let jobs=[];
+  try{jobs=amazonPaperwork.enqueue({lineIds,format:'A4'}).jobs;for(const job of jobs)amazonPaperwork.generate({jobIds:[job.id]});return {...result,paperwork:{automatic:true,jobIds:jobs.map(j=>j.id),generated:true}};}
+  catch{return {...result,paperwork:{automatic:true,jobIds:jobs.map(j=>j.id),generated:false,error:'Begleitschein in der Druckwarteschlange prüfen.'}};}
+ };
  const acrylicDrafts=createAcrylicDraftStore({database:db,capture(bundle){const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,m.source.draftRevision,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);}});
  const printProof=(id,key)=>{snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;};
  const customerDownloads=createCustomerDownloads({database:db,orders:orderIntake,jobs:exportJobs,printProof,clock});
  const shopDraftTransfers=createShopDraftJournal({database:db});
- return {exportJobs,orderIntake,cartHandoffs,acrylicDrafts,customerDownloads,shopDraftTransfers,
+ return {exportJobs,orderIntake,amazonOrders,amazonCatalog,amazonCustom,amazonPaperwork,cartHandoffs,acrylicDrafts,customerDownloads,shopDraftTransfers,
   findAcrylicReview(key){const r=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);return r?summary(snapshot(r.snapshot_id)):null;},
   captureAcrylicReview(key,bundle){return transaction(()=>{const old=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);if(old)return summary(snapshot(old.snapshot_id));const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,1,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);db.prepare('INSERT INTO acrylic_review_requests VALUES(?,?)').run(key,m.id);return summary(snapshot(m.id));});},
   printProof,
@@ -53,4 +71,5 @@ export function createFormCustomerStore({filename,clock=Date.now}){
   photo(id,token,mediaId){auth(id,token);const r=db.prepare('SELECT * FROM form_customer_photos WHERE id=? AND draft_id=?').get(mediaId,id);if(!r)fail(422,'Das Foto gehört nicht zu diesem Entwurf.');return {mediaId:r.id,width:r.width,height:r.height,preview:Buffer.from(r.preview),original:Buffer.from(r.original),sourceSha256:r.source_sha256};},
   close:()=>db.close()
  };
+ } catch(error) {db.close();throw error;}
 }

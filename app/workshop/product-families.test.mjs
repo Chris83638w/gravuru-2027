@@ -6,7 +6,7 @@ import {holesFor,ruleFromHoles,keepoutZones} from '../platform/sources/app/share
 import {createDesignAssetStore} from './design-assets.mjs';
 import {createProductRepository} from './repository.mjs';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
-import {createProductFamilies,validateFamily} from './product-families.mjs';
+import {createProductFamilies,validateFamily,familyProductConfig} from './product-families.mjs';
 import {createWorkshop} from './http.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
@@ -39,8 +39,8 @@ test('drill pattern rules: plan acceptance values, user example, resize keeps mi
 test('bundled steel family reproduces the master data and rejects invalid documents',()=>{
  const f=validateFamily(family());
  assert.equal(f.sizes.length,61);assert.equal(f.groups.length,5);assert.deepEqual(f.designArea,{marginMm:0,keepoutMm:1});
- const oval=f.sizes.find(s=>s.key===OVAL);assert.equal(oval.baseCents,1099);assert.deepEqual(oval.mounting,['B02-E6-D4']);
- assert.ok(f.mountingRules.every(r=>r.priceCents===0),'master data: drilling has no surcharge');
+ const oval=f.sizes.find(s=>s.key===OVAL);assert.equal(oval.baseCents,1099);assert.deepEqual(oval.mounting,['KGL','KRA','B02-E6-D4','B02S-E6-D4']);
+ assert.deepEqual(Object.fromEntries(f.mountingRules.map(r=>[r.skuSuffix,r.priceCents])),{KGL:299,KRA:399,B02:249,B02S:269,B04:289,B04S:309},'surcharges as in the shop product Variante C');
  for(const broken of [d=>d.sizes[0].groupKey='XX',d=>d.mountingRules[0].count=3,d=>d.sizes.push(structuredClone(d.sizes[0])),d=>d.designArea.keepoutMm=-1,d=>d.material.kind='acrylic',d=>d.extra=1]){const d=family();broken(d);assert.throws(()=>validateFamily(d));}
 });
 
@@ -53,9 +53,10 @@ test('products are generated once per size with rule-based holes, prices and no 
  const oval=repository.get(first.products[0].productId).document,values=oval.config.profile.optionGroups[0].values;
  assert.equal(oval.name,'Edelstahl-Türschilder · Oval 9 × 6 cm');assert.deepEqual(oval.categoryIds,['familie-steel-door-signs','form-ov']);
  assert.equal(oval.config.profile.geometry.shape,'ellipse');assert.equal(oval.config.profile.features.orderEnabled,false);assert.equal(oval.config.profile.binding.kind,'local-review');
- assert.deepEqual(values.map(v=>v.id),['K00','B02']);assert.deepEqual(values[1].holes,[{x:6,y:30,diameter:4},{x:84,y:30,diameter:4}]);assert.equal(values[1].mountingRule.keepoutMm,1);
- for(const mounting of ['K00','B02'])assert.equal(resolveProduct(oval,{options:{mounting}}).price.totalCents,1099);
- const rect=repository.get(first.products[1].productId).document.config.profile.optionGroups[0].values[1];assert.deepEqual(rect.holes.map(h=>[h.x,h.y]),[[6,40],[114,40]]);
+ assert.deepEqual(values.map(v=>v.id),['K00','KGL','KRA','B02','B02S']);const b02=values.find(v=>v.id==='B02');assert.deepEqual(b02.holes,[{x:6,y:30,diameter:4},{x:84,y:30,diameter:4}]);assert.equal(b02.mountingRule.keepoutMm,1);
+ assert.deepEqual(values.find(v=>v.id==='B02S').holes,b02.holes);assert.equal(values.find(v=>v.id==='B02S').mountingRule.accessory,'screws');assert.deepEqual(values.find(v=>v.id==='KGL').holes,[]);
+ for(const [mounting,total] of [['K00',1099],['KGL',1398],['KRA',1498],['B02',1348],['B02S',1368]])assert.equal(resolveProduct(oval,{options:{mounting}}).price.totalCents,total);
+ const rect=repository.get(first.products[1].productId).document.config.profile.optionGroups[0].values.find(v=>v.id==='B02');assert.deepEqual(rect.holes.map(h=>[h.x,h.y]),[[6,40],[114,40]]);
  assert.deepEqual(families.get(rec.id).products.filter(p=>p.productId).map(p=>p.sizeKey).sort(),[OVAL,R5,RECT].sort());
 });
 
@@ -144,7 +145,7 @@ test('resizing a family product keeps drill holes at the same edge distance in m
  const b02=resized.config.profile.optionGroups.find(g=>g.id==='mounting').values.find(v=>v.id==='B02');
  assert.deepEqual(b02.holes,[{x:6,y:40,diameter:4},{x:114,y:40,diameter:4}],'6 mm edge distance kept, not scaled to 8 mm');
  validateProductDocument(resized);
- const legacy=structuredClone(doc);delete legacy.config.profile.optionGroups[0].values[1].mountingRule;
+ const legacy=structuredClone(doc);delete legacy.config.profile.optionGroups[0].values.find(v=>v.id==='B02').mountingRule;
  assert.throws(()=>resizeSteelDocument(legacy,{width:120,height:80}),/festem Bohrbild/,'fixed coordinates without rule stay blocked');
 });
 
@@ -177,6 +178,13 @@ test('family validation: wrong process for a material and half-open drill rules 
  const f=memorial('schiefer-natur');
  assert.throws(()=>validateFamily({...f,material:{...f.material,processingProfileId:'steel-engraving'}}),/slate-engraving/);
  const half=structuredClone(f);half.mountingRules[0].edgeMm=null;assert.throws(()=>validateFamily(half),/gemeinsam/);
- const v1=family();assert.equal(v1.schema,'gravuru-product-family/v1');validateFamily(v1);
+ const v1=family();v1.schema='gravuru-product-family/v1';v1.mountingRules=v1.mountingRules.filter(r=>r.layout!=='none'&&!r.accessory);for(const r of v1.mountingRules)r.priceCents=0;for(const z of v1.sizes)z.mounting=z.mounting.filter(m=>v1.mountingRules.some(r=>r.id===m));delete v1.source.shopVariants;delete v1.sizeKeyPrefix;delete v1.sizeKeySuffix;validateFamily(v1);
  assert.throws(()=>validateFamily({...memorial('acryl-schwarz'),schema:'gravuru-product-family/v1'}),/v1/);
+});
+
+test('steel family reproduces all 309 shop variants of „Variante C“ (SKU and price)',()=>{
+ const f=validateFamily(family()),v=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/shopify-variante-c-20261016.json',import.meta.url)));
+ const shop=new Map(v.variants.map(x=>[x.sku,x.priceCents]));const seen=new Set();
+ for(const s of f.sizes){const c=familyProductConfig(f,s,1);for(const val of c.profile.optionGroups[0].values){const sku=s.key.replace('GR-ES-','GR-C-')+'-'+val.id;assert.equal(c.basePriceCents+val.priceCents,shop.get(sku),sku);seen.add(sku);}}
+ assert.equal(seen.size,309);assert.equal(shop.size,309);
 });

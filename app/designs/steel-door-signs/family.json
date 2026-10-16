@@ -1,5 +1,5 @@
 {
- "schema": "gravuru-product-family/v1",
+ "schema": "gravuru-product-family/v2",
  "id": "steel-door-signs",
  "name": "Edelstahl-Türschilder",
  "material": {
@@ -46,74 +46,171 @@
  ],
  "mountingRules": [
   {
+   "id": "KGL",
+   "label": "Selbstklebend – glatte Flächen",
+   "layout": "none",
+   "count": 0,
+   "diameterMm": null,
+   "edgeMm": null,
+   "priceCents": 299,
+   "skuSuffix": "KGL"
+  },
+  {
+   "id": "KRA",
+   "label": "Selbstklebend – raue Flächen",
+   "layout": "none",
+   "count": 0,
+   "diameterMm": null,
+   "edgeMm": null,
+   "priceCents": 399,
+   "skuSuffix": "KRA"
+  },
+  {
    "id": "B02-E4-D4",
-   "label": "2 Bohrlöcher Ø 4 mm",
+   "label": "Mit 2 Bohrlöchern",
    "layout": "left-right",
    "count": 2,
    "diameterMm": 4,
    "edgeMm": 4,
-   "priceCents": 0,
+   "priceCents": 249,
    "skuSuffix": "B02"
   },
   {
+   "id": "B02S-E4-D4",
+   "label": "Mit 2 Schrauben",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 4,
+   "edgeMm": 4,
+   "priceCents": 269,
+   "skuSuffix": "B02S",
+   "accessory": "screws"
+  },
+  {
    "id": "B02-E6-D4",
-   "label": "2 Bohrlöcher Ø 4 mm",
+   "label": "Mit 2 Bohrlöchern",
    "layout": "left-right",
    "count": 2,
    "diameterMm": 4,
    "edgeMm": 6,
-   "priceCents": 0,
+   "priceCents": 249,
    "skuSuffix": "B02"
   },
   {
+   "id": "B02S-E6-D4",
+   "label": "Mit 2 Schrauben",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 4,
+   "edgeMm": 6,
+   "priceCents": 269,
+   "skuSuffix": "B02S",
+   "accessory": "screws"
+  },
+  {
    "id": "B02-E8-D4",
-   "label": "2 Bohrlöcher Ø 4 mm",
+   "label": "Mit 2 Bohrlöchern",
    "layout": "left-right",
    "count": 2,
    "diameterMm": 4,
    "edgeMm": 8,
-   "priceCents": 0,
+   "priceCents": 249,
    "skuSuffix": "B02"
   },
   {
+   "id": "B02S-E8-D4",
+   "label": "Mit 2 Schrauben",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 4,
+   "edgeMm": 8,
+   "priceCents": 269,
+   "skuSuffix": "B02S",
+   "accessory": "screws"
+  },
+  {
    "id": "B04-E8-D4",
-   "label": "4 Bohrlöcher Ø 4 mm",
+   "label": "Mit 4 Bohrlöchern",
    "layout": "corners",
    "count": 4,
    "diameterMm": 4,
    "edgeMm": 8,
-   "priceCents": 0,
+   "priceCents": 289,
    "skuSuffix": "B04"
   },
   {
+   "id": "B04S-E8-D4",
+   "label": "Mit 4 Schrauben",
+   "layout": "corners",
+   "count": 4,
+   "diameterMm": 4,
+   "edgeMm": 8,
+   "priceCents": 309,
+   "skuSuffix": "B04S",
+   "accessory": "screws"
+  },
+  {
    "id": "B04-E15-D4",
-   "label": "4 Bohrlöcher Ø 4 mm",
+   "label": "Mit 4 Bohrlöchern",
    "layout": "corners",
    "count": 4,
    "diameterMm": 4,
    "edgeMm": 15,
-   "priceCents": 0,
+   "priceCents": 289,
    "skuSuffix": "B04"
   },
   {
+   "id": "B04S-E15-D4",
+   "label": "Mit 4 Schrauben",
+   "layout": "corners",
+   "count": 4,
+   "diameterMm": 4,
+   "edgeMm": 15,
+   "priceCents": 309,
+   "skuSuffix": "B04S",
+   "accessory": "screws"
+  },
+  {
    "id": "B04-E10-D4",
-   "label": "4 Bohrlöcher Ø 4 mm",
+   "label": "Mit 4 Bohrlöchern",
    "layout": "corners",
    "count": 4,
    "diameterMm": 4,
    "edgeMm": 10,
-   "priceCents": 0,
+   "priceCents": 289,
    "skuSuffix": "B04"
   },
   {
+   "id": "B04S-E10-D4",
+   "label": "Mit 4 Schrauben",
+   "layout": "corners",
+   "count": 4,
+   "diameterMm": 4,
+   "edgeMm": 10,
+   "priceCents": 309,
+   "skuSuffix": "B04S",
+   "accessory": "screws"
+  },
+  {
    "id": "B04-E6-D4",
-   "label": "4 Bohrlöcher Ø 4 mm",
+   "label": "Mit 4 Bohrlöchern",
    "layout": "corners",
    "count": 4,
    "diameterMm": 4,
    "edgeMm": 6,
-   "priceCents": 0,
+   "priceCents": 289,
    "skuSuffix": "B04"
+  },
+  {
+   "id": "B04S-E6-D4",
+   "label": "Mit 4 Schrauben",
+   "layout": "corners",
+   "count": 4,
+   "diameterMm": 4,
+   "edgeMm": 6,
+   "priceCents": 309,
+   "skuSuffix": "B04S",
+   "accessory": "screws"
   }
  ],
  "sizes": [
@@ -125,7 +222,10 @@
    "heightMm": 20,
    "baseCents": 899,
    "mounting": [
-    "B02-E4-D4"
+    "KGL",
+    "KRA",
+    "B02-E4-D4",
+    "B02S-E4-D4"
    ],
    "netWeightG": 12
   },
@@ -137,7 +237,10 @@
    "heightMm": 20,
    "baseCents": 899,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 14
   },
@@ -149,7 +252,10 @@
    "heightMm": 20,
    "baseCents": 899,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 18
   },
@@ -161,7 +267,10 @@
    "heightMm": 23.3,
    "baseCents": 899,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 16
   },
@@ -173,7 +282,10 @@
    "heightMm": 30,
    "baseCents": 899,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 32
   },
@@ -185,7 +297,10 @@
    "heightMm": 35,
    "baseCents": 999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 32
   },
@@ -197,7 +312,10 @@
    "heightMm": 53.3,
    "baseCents": 999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 46
   },
@@ -209,7 +327,10 @@
    "heightMm": 40,
    "baseCents": 1399,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 56
   },
@@ -221,7 +342,10 @@
    "heightMm": 60,
    "baseCents": 1099,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 62
   },
@@ -233,7 +357,10 @@
    "heightMm": 52.5,
    "baseCents": 1299,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 74
   },
@@ -245,7 +372,10 @@
    "heightMm": 50,
    "baseCents": 1599,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 89
   },
@@ -257,7 +387,10 @@
    "heightMm": 80,
    "baseCents": 1999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 112
   },
@@ -269,7 +402,10 @@
    "heightMm": 60,
    "baseCents": 2199,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 128
   },
@@ -281,7 +417,10 @@
    "heightMm": 70,
    "baseCents": 2299,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 132
   },
@@ -293,7 +432,10 @@
    "heightMm": 70,
    "baseCents": 2999,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 174
   },
@@ -305,7 +447,10 @@
    "heightMm": 100,
    "baseCents": 2999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 178
   },
@@ -317,7 +462,10 @@
    "heightMm": 80,
    "baseCents": 3099,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 227
   },
@@ -329,7 +477,10 @@
    "heightMm": 120,
    "baseCents": 3299,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 252
   },
@@ -341,7 +492,10 @@
    "heightMm": 90,
    "baseCents": 3699,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 288
   },
@@ -353,7 +507,10 @@
    "heightMm": 105,
    "baseCents": 3799,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 298
   },
@@ -365,7 +522,10 @@
    "heightMm": 140,
    "baseCents": 4399,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 348
   },
@@ -377,7 +537,10 @@
    "heightMm": 160,
    "baseCents": 4599,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 455
   },
@@ -389,7 +552,10 @@
    "heightMm": 140,
    "baseCents": 5399,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 531
   },
@@ -401,8 +567,12 @@
    "heightMm": 200,
    "baseCents": 6999,
    "mounting": [
+    "KGL",
+    "KRA",
     "B02-E8-D4",
-    "B04-E8-D4"
+    "B02S-E8-D4",
+    "B04-E8-D4",
+    "B04S-E8-D4"
    ],
    "netWeightG": 706
   },
@@ -414,7 +584,10 @@
    "heightMm": 175,
    "baseCents": 8399,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 829
   },
@@ -426,7 +599,10 @@
    "heightMm": 280,
    "baseCents": 13999,
    "mounting": [
-    "B04-E15-D4"
+    "KGL",
+    "KRA",
+    "B04-E15-D4",
+    "B04S-E15-D4"
    ],
    "netWeightG": 1393
   },
@@ -438,7 +614,10 @@
    "heightMm": 300,
    "baseCents": 15999,
    "mounting": [
-    "B04-E15-D4"
+    "KGL",
+    "KRA",
+    "B04-E15-D4",
+    "B04S-E15-D4"
    ],
    "netWeightG": 1599
   },
@@ -450,7 +629,10 @@
    "heightMm": 53.3,
    "baseCents": 999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 46
   },
@@ -462,7 +644,10 @@
    "heightMm": 60,
    "baseCents": 1099,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 62
   },
@@ -474,7 +659,10 @@
    "heightMm": 80,
    "baseCents": 1999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 112
   },
@@ -486,7 +674,10 @@
    "heightMm": 100,
    "baseCents": 2999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 178
   },
@@ -498,7 +689,10 @@
    "heightMm": 120,
    "baseCents": 3299,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 252
   },
@@ -510,7 +704,10 @@
    "heightMm": 140,
    "baseCents": 4399,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 348
   },
@@ -522,7 +719,10 @@
    "heightMm": 160,
    "baseCents": 4599,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 454
   },
@@ -534,8 +734,12 @@
    "heightMm": 200,
    "baseCents": 6999,
    "mounting": [
+    "KGL",
+    "KRA",
     "B02-E8-D4",
-    "B04-E10-D4"
+    "B02S-E8-D4",
+    "B04-E10-D4",
+    "B04S-E10-D4"
    ],
    "netWeightG": 706
   },
@@ -547,7 +751,10 @@
    "heightMm": 280,
    "baseCents": 13999,
    "mounting": [
-    "B04-E15-D4"
+    "KGL",
+    "KRA",
+    "B04-E15-D4",
+    "B04S-E15-D4"
    ],
    "netWeightG": 1393
   },
@@ -559,7 +766,10 @@
    "heightMm": 300,
    "baseCents": 15999,
    "mounting": [
-    "B04-E15-D4"
+    "KGL",
+    "KRA",
+    "B04-E15-D4",
+    "B04S-E15-D4"
    ],
    "netWeightG": 1599
   },
@@ -571,7 +781,10 @@
    "heightMm": 80,
    "baseCents": 1399,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 76
   },
@@ -583,7 +796,10 @@
    "heightMm": 100,
    "baseCents": 2099,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 118
   },
@@ -595,7 +811,10 @@
    "heightMm": 120,
    "baseCents": 2899,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 164
   },
@@ -607,7 +826,10 @@
    "heightMm": 160,
    "baseCents": 3899,
    "mounting": [
-    "B04-E6-D4"
+    "KGL",
+    "KRA",
+    "B04-E6-D4",
+    "B04S-E6-D4"
    ],
    "netWeightG": 296
   },
@@ -619,7 +841,10 @@
    "heightMm": 200,
    "baseCents": 4799,
    "mounting": [
-    "B04-E8-D4"
+    "KGL",
+    "KRA",
+    "B04-E8-D4",
+    "B04S-E8-D4"
    ],
    "netWeightG": 474
   },
@@ -631,7 +856,10 @@
    "heightMm": 260,
    "baseCents": 7999,
    "mounting": [
-    "B04-E8-D4"
+    "KGL",
+    "KRA",
+    "B04-E8-D4",
+    "B04S-E8-D4"
    ],
    "netWeightG": 800
   },
@@ -643,7 +871,10 @@
    "heightMm": 300,
    "baseCents": 10699,
    "mounting": [
-    "B04-E8-D4"
+    "KGL",
+    "KRA",
+    "B04-E8-D4",
+    "B04S-E8-D4"
    ],
    "netWeightG": 1066
   },
@@ -655,7 +886,10 @@
    "heightMm": 60,
    "baseCents": 1099,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 50
   },
@@ -667,7 +901,10 @@
    "heightMm": 80,
    "baseCents": 1999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 89
   },
@@ -679,7 +916,10 @@
    "heightMm": 80,
    "baseCents": 2499,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 110
   },
@@ -691,7 +931,10 @@
    "heightMm": 100,
    "baseCents": 2999,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 139
   },
@@ -703,7 +946,10 @@
    "heightMm": 120,
    "baseCents": 3299,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 201
   },
@@ -715,7 +961,10 @@
    "heightMm": 120,
    "baseCents": 4099,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 251
   },
@@ -727,7 +976,10 @@
    "heightMm": 140,
    "baseCents": 4399,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 273
   },
@@ -739,7 +991,10 @@
    "heightMm": 160,
    "baseCents": 4599,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 357
   },
@@ -751,7 +1006,10 @@
    "heightMm": 159.9,
    "baseCents": 5699,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 446
   },
@@ -763,7 +1021,10 @@
    "heightMm": 200,
    "baseCents": 6999,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 548
   },
@@ -775,7 +1036,10 @@
    "heightMm": 40,
    "baseCents": 1399,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 42
   },
@@ -787,7 +1051,10 @@
    "heightMm": 50,
    "baseCents": 1599,
    "mounting": [
-    "B02-E6-D4"
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
    ],
    "netWeightG": 70
   },
@@ -799,7 +1066,10 @@
    "heightMm": 60,
    "baseCents": 2199,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 100
   },
@@ -811,7 +1081,10 @@
    "heightMm": 70,
    "baseCents": 2999,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 182
   },
@@ -823,7 +1096,10 @@
    "heightMm": 80,
    "baseCents": 3099,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 178
   },
@@ -835,7 +1111,10 @@
    "heightMm": 90,
    "baseCents": 3699,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 226
   },
@@ -847,7 +1126,10 @@
    "heightMm": 100,
    "baseCents": 4499,
    "mounting": [
-    "B02-E8-D4"
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
    "netWeightG": 279
   }
@@ -874,6 +1156,11 @@
   "commit": "b564422edadaf56a27a09f99e1140a546e5e7145",
   "path": "platform/sources/workshop-seed/import.json",
   "sha256": "eac9ef4d0a0943ed5216c074c8fd5bdf9cbdb594ddcd3e166a843411969559b2",
-  "note": "Bohrung laut Stammdaten ohne Aufpreis (eigene SKU-Endung). Nicht verfügbare Schriften weggelassen: keine"
+  "note": "Bohrbilder aus dem Altprojekt-Seed; Grundpreise mit Shopprodukt Variante C abgeglichen (0 Abweichungen). Nicht verfügbare Schriften weggelassen: keine",
+  "shopVariants": {
+   "file": "shopify-variante-c-20261016.json",
+   "productId": "gid://shopify/Product/16121424773500",
+   "note": "Befestigungen, Aufpreise und Grundpreise am 16.10.2026 lesend aus dem Shopprodukt „Variante C“ übernommen (309 Varianten). Werkstatt-SKU GR-ES-… entspricht Shop-SKU GR-C-… bei gleicher Form, Größe und Endung."
+  }
  }
 }

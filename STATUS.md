@@ -1,3 +1,7 @@
+## Edelstahl-Stammdaten vollständig, Stammdaten-Excel (nicht installiert) · 16.10.2026
+
+Befestigungen und Aufpreise lesend aus dem Shopprodukt „Variante C“ (309 Varianten) übernommen; Familie reproduziert alle 309 SKUs und Preise, 0 Abweichungen bei Grundpreisen und Bohrbildern. Familienmodell: Befestigung ohne Löcher und Zubehör Schrauben. `scripts/family-excel.py` erzeugt und liest die Stammdaten-Excel. Prüfungen: Familientests 12/12, Browser 12/12 und 7/7. Nachweis: [steel-master-data](docs/releases/20261016/steel-master-data/RELEASE.md). Nächster Schritt: Materialdatenbank und Designbibliothek (Plan folgt), Alu-Dibond-Familie.
+
 ## Livegang freigegeben, aktueller Zugang blockiert · 13.10.2026
 
 Quellstand `4d7c150` getrennt übernommen; neuere Produktfamilien und P1-Korrekturen erhalten. Shopify-App und `read_orders` heute lesend bestätigt. Plesk-Zugriff dieser Laufzeit fehlt: HTTPS-CONNECT zum Händlerhost mit 403 abgewiesen; persönliche Plesk-Variablen nicht eingebunden. Kein Server-/Produktwechsel. [Konkrete Nachweise und nächster Schritt](docs/releases/GO-LIVE-ABGLEICH-20261013.md). Bestehende HTTPS-Freigaben und sichere Variablenbindung bereitstellen, anschließend aktiven Serverstand und private Sicherung vor Aktivierung prüfen. Keine erneute allgemeine Veröffentlichungsfreigabe nötig.

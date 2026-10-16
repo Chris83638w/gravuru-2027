@@ -40,7 +40,11 @@ const unique=(list,key,label)=>{const seen=new Set();for(const v of list){if(see
 const SHAPES=['rect','ellipse'];
 const open=v=>v===null;
 // A drill rule with diameter and edge distance; null = Bohrbild noch offen.
-export const ruleComplete=r=>!open(r.diameterMm)&&!open(r.edgeMm);
+// Befestigung ohne Löcher (Klebepads, Magnet …): layout 'none', count 0. Eine Regel
+// mit accessory 'screws' bohrt wie ihr Bohrbild und legt Schrauben bei.
+export const holeless=r=>r.layout==='none';
+export const ruleComplete=r=>holeless(r)||(!open(r.diameterMm)&&!open(r.edgeMm));
+export const ACCESSORIES=Object.freeze({screws:'Schrauben'});
 
 export function validateFamily(f){
  only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source'],'Produktfamilie');
@@ -60,9 +64,11 @@ export function validateFamily(f){
  for(const g of f.groups){only(g,['key','name','shape','cornerRadiusMm'],'Formgruppe');if(!id(g.key)||!text(g.name,80)||!SHAPES.includes(g.shape)||!mm(g.cornerRadiusMm,0,100))invalid('Ungültige Formgruppe '+(g.key||''));}
  unique(f.groups,'key','Formgruppe');
  if(!Array.isArray(f.mountingRules)||f.mountingRules.length>40)invalid('Höchstens 40 Bohrbild-Regeln.');
- for(const r of f.mountingRules){only(r,['id','label','layout','count','diameterMm','edgeMm','priceCents','skuSuffix'],'Bohrbild-Regel');if(!id(r.id)||!text(r.label,100)||!(open(r.priceCents)||cents(r.priceCents))||!/^[A-Z0-9]{1,8}$/.test(r.skuSuffix||''))invalid('Bohrbild-Regel '+(r.id||'')+' unvollständig.');
+ for(const r of f.mountingRules){only(r,['id','label','layout','count','diameterMm','edgeMm','priceCents','skuSuffix','accessory'],'Bohrbild-Regel');
+  if(r.accessory!==undefined&&!ACCESSORIES[r.accessory])invalid(r.id+': unbekanntes Zubehör.');
+  if(holeless(r)){if(r.count!==0||r.diameterMm!==null||r.edgeMm!==null)invalid(r.id+': Befestigung ohne Löcher hat Anzahl 0 und keine Lochmaße.');}if(!id(r.id)||!text(r.label,100)||!(open(r.priceCents)||cents(r.priceCents))||!/^[A-Z0-9]{1,8}$/.test(r.skuSuffix||''))invalid('Bohrbild-Regel '+(r.id||'')+' unvollständig.');
   if(open(r.diameterMm)!==open(r.edgeMm))invalid(r.id+': Durchmesser und Randabstand gemeinsam angeben oder beide offen lassen.');
-  try{validateMountingRule(ruleComplete(r)?r:{...r,diameterMm:4,edgeMm:4});}catch(e){invalid(r.id+': '+e.message);}}
+  if(!holeless(r))try{validateMountingRule(ruleComplete(r)?r:{...r,diameterMm:4,edgeMm:4});}catch(e){invalid(r.id+': '+e.message);}}
  unique(f.mountingRules,'id','Bohrbild-Regel');
  if(typeof f.withoutMounting!=='boolean')invalid('Angeben, ob „Ohne Bohrung“ angeboten wird.');
  if(!Array.isArray(f.sizes)||!f.sizes.length||f.sizes.length>500)invalid('1 bis 500 Größen angeben.');
@@ -72,12 +78,12 @@ export function validateFamily(f){
   if(!id(s.key)||!groups.has(s.groupKey)||!text(s.label,60)||!mm(s.widthMm,10,1000)||!mm(s.heightMm,10,1000)||!(open(s.baseCents)||cents(s.baseCents))||!Array.isArray(s.mounting)||s.mounting.length>8||s.mounting.some(m=>!rules.has(m))||new Set(s.mounting).size!==s.mounting.length)invalid('Größe '+(s.key||'')+' unvollständig.');
   if(s.netWeightG!==undefined&&!mm(s.netWeightG,0,100000))invalid('Gewicht von '+s.key+' prüfen.');
   if(!f.withoutMounting&&!s.mounting.length)invalid(s.key+': mindestens eine Befestigung nötig.');
-  for(const m of s.mounting){if(!ruleComplete(rules.get(m)))continue;try{holesFor(geometryOf(f,s),rules.get(m));}catch(e){invalid(s.key+' · '+m+': '+e.message);}}
+  for(const m of s.mounting){if(holeless(rules.get(m))||!ruleComplete(rules.get(m)))continue;try{holesFor(geometryOf(f,s),rules.get(m));}catch(e){invalid(s.key+' · '+m+': '+e.message);}}
  }
  unique(f.sizes,'key','Größe');
  if(!Array.isArray(f.fonts)||!f.fonts.length||f.fonts.length>60||f.fonts.some(v=>!text(v,80)))invalid('Zugelassene Schriften angeben.');
  if(typeof f.briefingNotes!=='string'||f.briefingNotes.length>8000)invalid('Stilnotizen: höchstens 8000 Zeichen.');
- if(f.source!==undefined){only(f.source,['repository','commit','path','sha256','note'],'Herkunft');}
+ if(f.source!==undefined){only(f.source,['repository','commit','path','sha256','note','shopVariants'],'Herkunft');}
  return f;
 }
 // Everything still "offen" in a family, in plain words. Products are generated
@@ -109,7 +115,7 @@ export function familyProductConfig(f,s,revision){
  const font=f.fonts.find(x=>resources.fonts[x])||'Montserrat';
  const values=[];
  if(f.withoutMounting)values.push({id:'K00',label:'Ohne Bohrung',priceCents:0,currency:'EUR',holes:[]});
- for(const rid of s.mounting){const r=ruleOf(f,rid);values.push({id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:holesFor(g,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,edgeMm:r.edgeMm,keepoutMm:f.designArea.keepoutMm}});}
+ for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:holesFor(g,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,edgeMm:r.edgeMm,keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})}});}
  if(new Set(values.map(v=>v.id)).size!==values.length)invalid(s.key+': zwei Befestigungen mit gleicher SKU-Endung.');
  const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(g.height*.22,14),x:g.width/2,y:g.height/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
  measureText(text,resources.fonts);if(text.w>g.width*.6){text.size*=g.width*.6/text.w;measureText(text,resources.fonts);}
@@ -130,13 +136,13 @@ export function familyProductConfig(f,s,revision){
 export function familyTemplate(f,s){
  const g=geometryOf(f,s),c=nativeContour({...g,holes:[]}),m=f.designArea.marginMm||0,k=f.designArea.keepoutMm,w=g.width,h=g.height;
  const inner=m>0?`<g id="nutzflaeche"><path d="${nativeContour({width:w-2*m,height:h-2*m,shape:g.shape,cornerRadiusMm:Math.max(0,g.cornerRadiusMm-m),holes:[]}).contours[0].d}" transform="translate(${m} ${m})" fill="none" stroke="#2a7" stroke-width="0.2" stroke-dasharray="1 1"/></g>`:'';
- const patterns=s.mounting.map(rid=>{const r=ruleOf(f,rid);if(!ruleComplete(r))return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)} – Bohrbild offen"/>`;const holes=holesFor(g,r);return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)}">${holes.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="${p.diameter/2}" fill="#d33"/>`).join('')}${keepoutZones(holes,k).map(z=>`<circle cx="${z.x}" cy="${z.y}" r="${z.r}" fill="none" stroke="#d33" stroke-width="0.2" stroke-dasharray="0.6 0.6"/>`).join('')}</g>`;}).join('');
+ const patterns=s.mounting.filter(rid=>!holeless(ruleOf(f,rid))).map(rid=>{const r=ruleOf(f,rid);if(!ruleComplete(r))return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)} – Bohrbild offen"/>`;const holes=holesFor(g,r);return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)}">${holes.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="${p.diameter/2}" fill="#d33"/>`).join('')}${keepoutZones(holes,k).map(z=>`<circle cx="${z.x}" cy="${z.y}" r="${z.r}" fill="none" stroke="#d33" stroke-width="0.2" stroke-dasharray="0.6 0.6"/>`).join('')}</g>`;}).join('');
  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}mm" height="${h}mm" viewBox="0 0 ${w} ${h}"><title>${esc(f.name)} · ${esc(s.label)} · Gestaltungsschablone (nicht drucken)</title><g id="kontur"><path d="${c.contours[0].d}" fill="none" stroke="#000" stroke-width="0.3"/></g>${inner}${patterns}</svg>`;
 }
 
 export function familyBriefing(f,revision){
  const price=c=>c===null?'offen':(c/100).toFixed(2).replace('.',',')+' €',mat=FAMILY_MATERIALS[f.material.kind],gaps=familyGaps(f);
- const rows=f.sizes.map(s=>{const g=f.groups.find(x=>x.key===s.groupKey);return `| ${s.key} | ${g.name} | ${s.label} (${s.widthMm} × ${s.heightMm} mm${g.cornerRadiusMm?', Ecken R'+g.cornerRadiusMm:''}) | ${price(s.baseCents)} | ${s.mounting.map(id=>{const r=ruleOf(f,id);return r.label+' · '+(ruleComplete(r)?r.edgeMm+' mm Randabstand':'Bohrbild offen');}).join('; ')||'ohne'} | schablonen/${s.key}.svg |`;}).join('\n');
+ const rows=f.sizes.map(s=>{const g=f.groups.find(x=>x.key===s.groupKey);return `| ${s.key} | ${g.name} | ${s.label} (${s.widthMm} × ${s.heightMm} mm${g.cornerRadiusMm?', Ecken R'+g.cornerRadiusMm:''}) | ${price(s.baseCents)} | ${s.mounting.map(id=>{const r=ruleOf(f,id);return r.label+' · '+(holeless(r)?'ohne Löcher':ruleComplete(r)?r.edgeMm+' mm Randabstand':'Bohrbild offen');}).join('; ')||'ohne'} | schablonen/${s.key}.svg |`;}).join('\n');
  return `# ${f.name} – Briefing für die Designerstellung
 
 Familienrevision ${revision}. Automatisch aus der Werkstatt erzeugt; nicht von Hand ändern, sondern in der Werkstatt pflegen und neu herunterladen.

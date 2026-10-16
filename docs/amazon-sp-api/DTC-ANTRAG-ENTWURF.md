@@ -1,6 +1,6 @@
 # Antrag auf Direct-to-Consumer Shipping – Entwurf
 
-**Nicht eingereicht. Noch nicht einreichungsreif.** Stand 16.10.2026. Die ausdrückliche Antragsautorisierung liegt inzwischen vor; DTC und fünf Texte wurden im ungesendeten Portalentwurf ergänzt. Es fehlen wahrheitsgemäße Sicherheits- und Betriebsnachweise, keine weitere pauschale Einreichungserlaubnis. [Aktueller Antragsstand](DTC-ANTRAGSSTAND.md).
+**Nicht eingereicht. Noch nicht einreichungsreif.** Stand 16.10.2026. Die ausdrückliche Antragsautorisierung liegt vor; alle 19 Freitexte wurden im ungesendeten Portalentwurf ergänzt und exakt zurückgelesen. Der bestätigte Sicherheitskontakt ist eingetragen. Hauptzweck ist der Import von Custom-ZIPs mit Personalisierungen in die Designwerkstatt. Die tatsächlich eingetragenen [Portal-Freitexte](DTC-PORTAL-FREITEXTE.md) ersetzen die allgemeinen Textvorschläge unten. Es fehlen wahrheitsgemäße Sicherheits- und Betriebsnachweise, keine weitere pauschale Einreichungserlaubnis. [Aktueller Antragsstand](DTC-ANTRAGSSTAND.md).
 
 ## Ausgangslage
 
@@ -17,7 +17,7 @@ Amazon ordnet `orderItems.product.customization.customizedUrl` der eingeschränk
 - Incident-Verantwortung und Verfahren, Aufbewahrungsmatrix, dokumentierte gesetzliche Ausnahmen und getestete Lösch-/Restorebehandlung.
 - Tatsächliche externe Empfänger: Hosting, beauftragte Carrier, Backups und andere eingesetzte Dienste. Die frühere pauschale Aussage „keine externen Empfänger/Quellen“ ist daran zu prüfen.
 
-In Sicherheitsfragen darf eine Kontrolle nur als umgesetzt bestätigt werden, wenn dafür konkrete Nachweise existieren. Der Nutzer bezeichnete die Maßnahmen als geplant bzw. unsicher; sieben vorhandene Ja-Angaben bleiben unbestätigt. Der folgende Text bestätigt keine ungeprüften Produktionsmaßnahmen. Tatsächliche Fragen und Zeichenlimits stehen in der [Antwort-/Nachweismatrix](DTC-SICHERHEITSFRAGEN.md).
+In Sicherheitsfragen darf eine Kontrolle nur als umgesetzt bestätigt werden, wenn dafür konkrete Nachweise existieren. Der Nutzer bezeichnete die Maßnahmen als geplant bzw. unsicher. Die abschließende Livekontrolle zeigt 15 ausgewählte, nicht technisch bestätigte Ja-Angaben. Der folgende Text bestätigt keine ungeprüften Produktionsmaßnahmen. Tatsächliche Fragen und Zeichenlimits stehen in der [Antwort-/Nachweismatrix](DTC-SICHERHEITSFRAGEN.md).
 
 ## Textvorschlag: Zweck und benötigte Rolle
 

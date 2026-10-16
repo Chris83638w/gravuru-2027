@@ -2,6 +2,8 @@
 
 Stand: 16.10.2026. Grundlage ist der bereinigte Mitschrieb der tatsächlichen Sicherheitsfelder im Amazon Solution Provider Portal nach Auswahl der DTC-Rolle. Die nachfolgenden Fragen sind wortgetreu wiedergegeben; doppelte Darstellungstexte des Portals wurden entfernt. Kontaktblöcke und Zugangsdaten sind nicht übernommen.
 
+**Aktualisierung nach vollständiger Freitextbearbeitung:** Alle 19 Freitexte wurden ausgefüllt und exakt zurückgelesen, einschließlich des vom Nutzer bestätigten Sicherheitskontakts. Die [aktuellen Portaltexte](DTC-PORTAL-FREITEXTE.md) sind maßgeblich; die früheren Statusantworten unten bleiben als Verlauf gekennzeichnet. Die abschließende Livekontrolle zeigt 15 ausgewählte Ja-Antworten und „weniger als 31 Tage nach Versand“. In diesem Schritt wurden nur Freitexte geändert; die Auswahlfelder wurden nicht gesetzt. Ihre betriebliche Richtigkeit ist weiter ungeprüft. Vertragszustimmung ist unmarkiert, Antrag ungesendet.
+
 **Der Nutzer hat die Antragstellung ausdrücklich autorisiert. Es fehlt keine weitere pauschale Einreichungszustimmung. Der Antrag ist dennoch noch nicht wahrheitsgemäß abschließbar:** Die Maßnahmen wurden vom Nutzer als bisher geplant bzw. unsicher eingeordnet. Vorhandene Ja-Häkchen sind kein Umsetzungsnachweis. Geplante Maßnahmen werden nicht als bereits bestehend bestätigt.
 
 Die aktuelle Webanwendung ist unter [app-2027.gravuru-designwerkstatt.de/werkstatt/](https://app-2027.gravuru-designwerkstatt.de/werkstatt/) erreichbar: HTTP 200, Seitentitel „Gravuru 2027 · Werkstatt“, 16.336 Byte bei der Prüfung. Eine zuvor an der Rootadresse beobachtete Plesk-Standardseite widerlegt diese laufende Anwendung nicht. Betreiber, Hostingregion, interne Datenflüsse, Authentisierung, Schlüsselverwaltung und wirksame Produktionskontrollen sind weiterhin nicht technisch verifiziert.
@@ -84,9 +86,9 @@ Beide Felder haben **500 Zeichen**. Ein genehmigter Dienstleister und eine tats�
 | F13 | Wie gehen Sie mit Code-Schwachstellen um, die im Entwicklungszyklus und während der Laufzeit identifiziert wurden? | 500 | Durchgängiger Prozess für Meldung, Bewertung, gesicherte Korrektur, Review/Test, Freigabe, Deployment und Nachprüfung einschließlich laufender Produktion |
 | F14 | Gib den Namen und die E-Mail-Adresse des Incident Management Point of Contact (IMPOC) an, an den du dich im Falle eines Vorfalls, z. B. eines Datenlecks oder einer Sicherheitsverletzung, wenden kannst. | 500 | Verbindlich benannte erreichbare Person, dienstliche Adresse und Vertretung; keine Person oder Adresse ohne Bestätigung einsetzen |
 
-## Wahrheitsgemäße Statusantworten für die weitere Bearbeitung
+## Frühere Statusantworten vor der vollständigen Freitextbearbeitung
 
-Die Texte bleiben innerhalb der Feldgrenzen. Sie sind **Arbeitsentwürfe mit offenem Nachweisbedarf**, keine Behauptung erfüllter Sicherheitsanforderungen. F10/F11 entsprechen dem bereits sachlich begrenzten Portalentwurf. Bei F14 bleibt die eigentliche Kontaktangabe offen; die Statusnotiz ersetzt keinen IMPOC.
+Die folgenden älteren Texte dokumentieren den Zwischenstand vor der vollständigen Eingabe. Sie sind **Arbeitsentwürfe mit offenem Nachweisbedarf**, keine Behauptung erfüllter Sicherheitsanforderungen. Sie wurden inzwischen durch die [19 ausgefüllten Portaltexte](DTC-PORTAL-FREITEXTE.md) ersetzt. Die damals fehlende Kontaktangabe F14 wurde mittlerweile vom Nutzer bestätigt und eingetragen.
 
 | ID | Statusantwort |
 |---|---|
@@ -110,8 +112,8 @@ Die Texte bleiben innerhalb der Feldgrenzen. Sie sind **Arbeitsentwürfe mit off
 1. Betreiber und technische Administration der erreichbaren Werkstatt identifizieren; aktive Konfiguration und Datenflüsse lesen, ohne ungeprüfte Änderungen an Produktion vorzunehmen.
 2. Tatsächlichen Zustand jeder Kontrolle belegen. Geplantes bleibt geplant; Lücken erhalten Verantwortliche und einen Umsetzungsnachweis, bevor eine positive Antwort entsteht.
 3. Tatsächliche Aufbewahrung einschließlich gesetzlicher Ausnahmen und Backupbehandlung auf die konkrete Portalfrage abbilden. Keine Retention-Kategorie allein für einen erfolgreichen Antrag auswählen.
-4. Datenschutz-/Verarbeitungsrichtlinie und Incident-Prozess verbindlich festlegen; bestätigten IMPOC ergänzen. Anbieter und Kontaktinformationen erst nach Verifikation eintragen.
-5. Sicherheitsfelder, bestehende sieben Ja-Antworten und externe Empfänger/Quellen widerspruchsfrei abgleichen. Die bereits vorhandene Antragsautorisierung erlaubt keine unwahren Zusagen.
+4. Datenschutz-/Verarbeitungsrichtlinie und Incident-Prozess verbindlich festlegen; der bestätigte IMPOC ist eingetragen, Vertretung und Erreichbarkeit bleiben festzulegen. Tatsächliche Dienstleister verifizieren.
+5. Sicherheitsfelder, aktuell 15 ausgewählte Ja-Antworten und externe Empfänger/Quellen widerspruchsfrei abgleichen. Die bereits vorhandene Antragsautorisierung erlaubt keine unwahren Zusagen.
 6. Die am Formularende verlangte Zustimmung zu den aktuellen Vertrags-/Richtlinientexten gesondert anhand der erteilten Autorisierung behandeln; eine erforderliche rechtliche Zustimmung nicht aus einem Sicherheitsnachweis ableiten. In diesem Dokument wurden weder Checkbox noch Registrieren betätigt.
 
 Die fehlenden sachlichen Nachweise sind der aktuelle Abschlussblocker. Eine weitere allgemeine Bitte um Erlaubnis zur Antragstellung würde diesen Blocker nicht lösen.

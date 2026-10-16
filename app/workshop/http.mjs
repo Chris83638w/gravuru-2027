@@ -1,4 +1,7 @@
 import {createAiDesignJobs} from './ai-design-jobs.mjs';
+import {createAmazonIntegration} from './amazon-integration.mjs';
+import {calculateAmazonContribution} from './amazon-economics.mjs';
+import {inspectAmazonCustomSample} from './amazon-custom.mjs';
 import {createFontLibrary,MAX_FONT_BYTES} from './font-library.mjs';
 import {prepareEditableDesign} from './editable-design.mjs';
 import {defaultPhotoSvg} from './product-preview.mjs';
@@ -74,7 +77,12 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Loopback preview; optional test session gate is not a public deployment. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null,amazon=null}){
+  // Validate optional Amazon configuration before opening databases or seeding products.
+  if(amazon!==null&&(typeof amazon!=='object'||Array.isArray(amazon)))fail(503,'amazon_configuration','Ungültige Amazon-Testkonfiguration.');
+  if(amazon?.client&&(typeof amazon.client.diagnostics!=='function'||amazon.client.diagnostics()?.environment!=='sandbox'))fail(503,'amazon_sandbox_required','Diese Integration ist ausschließlich für die Amazon-Sandbox freigegeben.');
+  if(amazon?.automatic===true&&!amazon.client)fail(503,'amazon_not_connected','Automatische Sandboxprüfung benötigt eine verbundene Testanbindung.');
+  if(amazon?.accountId!==undefined&&(typeof amazon.accountId!=='string'||!/^[-A-Za-z0-9_.:]{1,100}$/.test(amazon.accountId)))fail(503,'amazon_account_config','Ungültige Amazon-Testkontokennung.');
   if(operatorCsrfToken!==null&&(shopifySessions||typeof operatorCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(operatorCsrfToken)))fail(503,'operator_session_config','Ungültige private Werkstattsitzung.');
   if(merchantCsrfToken!==null&&(!shopifySessions||operatorCsrfToken!==null||typeof merchantCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(merchantCsrfToken)))fail(503,'merchant_session_config','Ungültige Händler-Werkstattsitzung.');
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
@@ -99,7 +107,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const variantBatchJobs=createVariantBatchJobs({filename,variants});
   const defaultId=repository.firstId();
   const csrfToken=operatorCsrfToken??merchantCsrfToken??randomBytes(32).toString('hex');
-  const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
+  const customerDrafts=createFormCustomerStore({filename,repository,amazonAccountId:amazon?.accountId??'local-test'}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
+  const amazonOrders=customerDrafts.amazonOrders,amazonCatalog=customerDrafts.amazonCatalog;
+  const amazonIntegration=createAmazonIntegration({orders:amazonOrders,client:amazon?.client,allowTestImports:amazon?.allowTestImports===true});
+  if(amazon?.automatic===true)amazonIntegration.start();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
   // Explicit server configuration only; constructing the default preview never enables Shopify writes.
   let cartGate=null;
@@ -196,6 +207,25 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/amazon/status'&&method==='GET')return json(res,200,amazonIntegration.status());
+      if(pathname==='/api/workshop/amazon/orders'&&method==='GET'){const rows=amazonOrders.list();return json(res,200,{orders:rows,statuses:Object.fromEntries(rows.map(r=>[r.id,amazonOrders.status(r.id)])),bindings:amazonOrders.bindings()});}
+      if(pathname==='/api/workshop/amazon/catalog'&&method==='GET')return json(res,200,{items:amazonCatalog.list()});
+      if(pathname==='/api/workshop/amazon/economics'&&method==='POST')return json(res,200,calculateAmazonContribution(await body(req,8192)));
+      if(pathname==='/api/workshop/amazon/custom/inspect'&&method==='POST'){
+        if(amazon?.allowTestImports!==true)fail(403,'amazon_custom_disabled','Custom-Testdateien sind auf diesem Server nicht freigegeben.');
+        const data=await body(req,12*1024*1024);
+        if(Object.keys(data).some(k=>!['format','base64','classification','operatorApproved'].includes(k))||!['zip','json'].includes(data.format)||
+          typeof data.base64!=='string'||!data.base64.length||data.base64.length>4*Math.ceil((data.format==='json'?1024*1024:8*1024*1024)/3)||
+          data.base64.length%4!==0||/[^A-Za-z0-9+/=]/.test(data.base64))fail(422,'amazon_custom_payload','Bitte eine gültige JSON-/ZIP-Testdatei senden.');
+        const bytes=Buffer.from(data.base64,'base64');
+        if(bytes.toString('base64')!==data.base64)fail(422,'amazon_custom_payload','Die Testdatei ist nicht eindeutig kodiert.');
+        const report=inspectAmazonCustomSample({bytes,format:data.format,source:{classification:data.classification,operatorApproved:data.operatorApproved}});
+        return json(res,200,{...report,valuesIncluded:false,candidates:report.candidates.map(({value,...metadata})=>metadata)});
+      }
+      if(pathname==='/api/workshop/amazon/demo'&&method==='POST'){const data=await body(req,512);if(Object.keys(data).some(k=>k!=='action'))fail(422,'amazon_fields','Nur eine Testaktion angeben.');return json(res,200,amazonIntegration.demo(data.action));}
+      if(pathname==='/api/workshop/amazon/probe'&&method==='POST'){const data=await body(req,512);if(Object.keys(data).length)fail(422,'amazon_fields','Sandboxprüfung benötigt keine Eingaben.');return json(res,200,await amazonIntegration.probe());}
+      if(pathname==='/api/workshop/amazon/bindings'&&method==='POST'){const data=await body(req,4096);if(Object.keys(data).some(k=>!['marketplaceId','sku','productId','productRevision'].includes(k)))fail(422,'amazon_fields','Unbekannte Zuordnungsfelder.');return json(res,201,amazonOrders.bind(data));}
+      if(pathname==='/api/workshop/amazon/assignments'&&method==='POST'){const data=await body(req,2048);if(Object.keys(data).some(k=>!['lineId','snapshotId'].includes(k)))fail(422,'amazon_fields','Unbekannte Prüfstandfelder.');return json(res,201,amazonOrders.attachSnapshot(data));}
       if(pathname==='/api/workshop/ai-design/status'&&method==='GET')return json(res,200,aiJobs.status());
       if(pathname==='/api/workshop/ai-batches/prepare'&&method==='POST'){const data=await body(req,32768);if(Object.keys(data).join(',')!=='products')fail(422,'ai_batch_invalid','Ungültige Produktauswahl.');return json(res,200,aiBatches.prepare(data.products));}
       if(pathname==='/api/workshop/ai-batches'){
@@ -774,5 +804,5 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {amazonIntegration,amazonOrders,amazonCatalog,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{amazonIntegration.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }

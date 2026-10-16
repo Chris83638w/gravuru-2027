@@ -1,0 +1,38 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {once} from 'node:events';
+import {createHash} from 'node:crypto';
+import {build} from '../configurator/variant-m/build.mjs';
+import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {createWorkshop} from './http.mjs';
+import {seedAmazonDemoDesign} from '../../scripts/amazon-demo-design.mjs';
+import {readReviewPackage} from './review-package.mjs';
+import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
+
+test('Amazon line binds through real HTTP to an existing native product and immutable quantity-checked review package',async t=>{
+ const parent=path.resolve(os.tmpdir()),directory=fs.mkdtempSync(path.join(parent,'g27-amazon-native-'));build({outputDirectory:directory});
+ const seed=JSON.parse(fs.readFileSync(path.join(directory,'models.json'),'utf8'))[0],workshop=createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,amazon:{accountId:'amazon-sandbox',allowTestImports:true}}),server=createPreviewServer({outputDirectory:directory,workshop});
+ t.after(async()=>{await new Promise(resolve=>server.close(resolve));workshop.close();assert.equal(path.dirname(path.resolve(directory)),parent);assert.ok(path.basename(directory).startsWith('g27-amazon-native-'));fs.rmSync(directory,{recursive:true,force:true});});
+ const original=JSON.stringify(workshop.repository.get(workshop.defaultId));
+ const seeded=await seedAmazonDemoDesign(workshop,{seedConfig:seed.universal}),repeated=await seedAmazonDemoDesign(workshop,{seedConfig:seed.universal});
+ for(const key of ['productId','productRevision','snapshotId','lineId','sourcePackageSha256'])assert.equal(repeated[key],seeded[key]);
+ assert.equal(workshop.repository.list().length,2);assert.equal(workshop.customerDrafts.listSnapshots().length,1);assert.equal(workshop.amazonOrders.list().length,1);assert.equal(workshop.orderIntake.list().length,0);assert.equal(seeded.assigned,false);
+ const manifest=workshop.customerDrafts.review(seeded.snapshotId).manifest,archive=workshop.customerDrafts.downloadSnapshot(seeded.snapshotId,'package');
+ assert.equal(createHash('sha256').update(archive).digest('hex'),manifest.packageSha256);assert.equal(manifest.selection.price.quantity,2);assert.equal(manifest.photos.length,0);
+ const packageData=readReviewPackage(archive,manifest.packageSha256,NATIVE_REVIEW_SCHEMAS),source=JSON.parse(packageData.files.get('produkt-und-gestaltung.json'));
+ assert.equal(source.product.name,seeded.productName);assert.ok(source.state.design.objects.some(o=>o.text==='AMAZON TEST'));assert.ok(packageData.files.get('gestaltung-referenz.png').length>1000);
+ server.listen(0,'127.0.0.1');await once(server,'listening');const base='http://127.0.0.1:'+server.address().port,{csrfToken}=await(await fetch(base+'/api/workshop/session')).json();
+ const post=(route,data)=>fetch(base+'/api/workshop/'+route,{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrfToken},body:JSON.stringify(data)});
+ assert.equal((await post('amazon/assignments',seeded.assignmentInput)).status,422);
+ assert.equal((await post('amazon/bindings',seeded.bindingInput)).status,201);
+ const response=await post('amazon/assignments',seeded.assignmentInput),assigned=await response.json();assert.equal(response.status,201,JSON.stringify(assigned));assert.equal(assigned.quantityVerified,true);assert.equal(assigned.quantity,2);assert.equal(assigned.sourcePackageSha256,manifest.packageSha256);assert.equal(assigned.product.revision,1);assert.equal(assigned.productionReady,false);
+ const repeat=await(await post('amazon/assignments',seeded.assignmentInput)).json();assert.deepEqual(repeat,assigned);
+ const listing=await(await fetch(base+'/api/workshop/amazon/orders')).json(),line=listing.orders.find(row=>row.id===seeded.lineId);assert.equal(line.snapshotId,seeded.snapshotId);assert.equal(line.assignment.quantityVerified,true);
+ const record=workshop.repository.get(seeded.productId);workshop.repository.save(record.id,{...record.document,name:record.document.name+' · spätere Testrevision'},record.revision);
+ assert.equal(workshop.repository.get(record.id).revision,2);assert.equal(workshop.amazonOrders.get(seeded.lineId).product.revision,1);assert.deepEqual(workshop.customerDrafts.downloadSnapshot(seeded.snapshotId,'package'),archive);
+ workshop.amazonOrders.ingestPage({orders:[{orderId:seeded.orderId,createdTime:'2026-10-16T10:00:00Z',lastUpdatedTime:'2026-10-16T11:00:00Z',salesChannel:{channelName:'AMAZON',marketplaceId:seeded.marketplaceId},fulfillment:{fulfillmentStatus:'CANCELLED',fulfilledBy:'MERCHANT'},orderItems:[{orderItemId:line.lineId,quantityOrdered:2,product:{sellerSku:seeded.sku,asin:line.asin,price:{unitPrice:{amount:(line.unitCents/100).toFixed(2),currencyCode:'EUR'}}},fulfillment:{quantityFulfilled:0,quantityUnfulfilled:2}}]}]},{provenance:'synthetic'});
+ assert.equal(workshop.amazonOrders.status(seeded.lineId).cancelled,true);assert.equal(workshop.amazonOrders.status(seeded.lineId).productionBlocked,true);assert.deepEqual(workshop.amazonOrders.get(seeded.lineId).assignment,assigned);assert.deepEqual(workshop.customerDrafts.downloadSnapshot(seeded.snapshotId,'package'),archive);assert.equal(JSON.stringify(workshop.repository.get(workshop.defaultId)),original);
+});

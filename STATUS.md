@@ -1,3 +1,10 @@
+## Amazon SP-API: Sandbox integriert, Custom-Rolle offen · 16.10.2026
+
+Separater Branch `task/amazon-sp-api-20261016` ab neuestem Code `8ac694b`; geprüfte Quellstandsicherung vor Änderungen. LWA und Orders-v2026-Sandbox tatsächlich mit HTTP 200 getestet, Token außerhalb des Repos mit Windows DPAPI. In vorhandene Werkstatt integriert: Amazon-Dashboard, idempotenter Import, Storno-/Konfliktschutz, SKU- und unveränderliche native Prüfstandzuordnung. Sichere Custom-Testdateiprüfung, Artikel-Datenspeicher, Versandentwürfe, Wirtschaftlichkeits- und Aufbewahrungsgrundlagen. Keine produktiven Änderungen.
+
+Portal: AMZ_GRAVURU_01 ist Sandbox; neun Nonrestricted-Profilrollen, DTC für Amazon Custom fehlt. Neues Antragsdossier vorbereitet, nicht eingereicht. Aktueller Prüfumfang und Nachweise: [Abnahme](docs/amazon-sp-api/ABNAHME.md). [Berechtigungen und Einrichtung](docs/amazon-sp-api/README.md). [Sicherung](docs/amazon-sp-api/SICHERUNG.md).
+
+Nächster Schritt: tatsächliche Cloud-/Betriebsumgebung und Sicherheitsnachweise vervollständigen, danach fertiges DTC-Profil ausdrücklich zur Einreichung freigeben. Produktions-App/Verkäuferautorisierung, echter Custom-Minimaltest und Deployment bleiben gesonderte Freigaben; alte Livegang-Hinweise weiter unten ersetzen die Grenzen dieses Amazon-Auftrags nicht.
 ## Livegang freigegeben, aktueller Zugang blockiert · 13.10.2026
 
 Quellstand `4d7c150` getrennt übernommen; neuere Produktfamilien und P1-Korrekturen erhalten. Shopify-App und `read_orders` heute lesend bestätigt. Plesk-Zugriff dieser Laufzeit fehlt: HTTPS-CONNECT zum Händlerhost mit 403 abgewiesen; persönliche Plesk-Variablen nicht eingebunden. Kein Server-/Produktwechsel. [Konkrete Nachweise und nächster Schritt](docs/releases/GO-LIVE-ABGLEICH-20261013.md). Bestehende HTTPS-Freigaben und sichere Variablenbindung bereitstellen, anschließend aktiven Serverstand und private Sicherung vor Aktivierung prüfen. Keine erneute allgemeine Veröffentlichungsfreigabe nötig.

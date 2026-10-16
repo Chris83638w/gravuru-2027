@@ -1,0 +1,105 @@
+{
+  "checkedAt": "2026-10-16T12:06:16.925Z",
+  "status": "passed",
+  "endpoint": "sandbox.sellingpartnerapi-eu.amazon.com",
+  "operation": "getOrder",
+  "staticFixture": true,
+  "productionPermissionVerified": false,
+  "requestCount": 2,
+  "audit": [
+    {
+      "operation": "lwa",
+      "environment": "sandbox",
+      "attempt": 1,
+      "status": 200,
+      "durationMs": 549,
+      "requestId": "fb18fe03-83ac-4a92-b12e-974a54bcf6ac"
+    },
+    {
+      "operation": "probeSandbox",
+      "environment": "sandbox",
+      "attempt": 1,
+      "status": 200,
+      "durationMs": 815,
+      "requestId": "249e610c-c9db-4b0d-af4b-de313a70671c",
+      "rateLimit": 5
+    }
+  ],
+  "result": {
+    "environment": "sandbox",
+    "staticFixture": true,
+    "productionPermissionVerified": false,
+    "order": {
+      "orderId": "171-9876543-2109876",
+      "createdTime": "2024-12-24T20:30:00Z",
+      "lastUpdatedTime": "2024-12-25T08:15:00Z",
+      "programs": [
+        "PRIME"
+      ],
+      "salesChannel": {
+        "channelName": "AMAZON",
+        "marketplaceId": "A2Q3Y263D00KWC",
+        "marketplaceName": "Amazon.com.br"
+      },
+      "fulfillment": {
+        "fulfillmentStatus": "UNSHIPPED",
+        "fulfilledBy": "MERCHANT",
+        "fulfillmentServiceLevel": "STANDARD",
+        "shipByWindow": {
+          "earliestDateTime": "2024-12-26T00:00:00Z",
+          "latestDateTime": "2024-12-27T23:59:59Z"
+        },
+        "deliverByWindow": {
+          "earliestDateTime": "2024-12-28T00:00:00Z",
+          "latestDateTime": "2024-12-31T23:59:59Z"
+        },
+        "labelPrintingWindow": {
+          "earliestDateTime": "2024-12-26T17:00:00Z"
+        }
+      },
+      "proceeds": {
+        "grandTotal": {
+          "amount": "299.90",
+          "currencyCode": "BRL"
+        }
+      },
+      "orderItems": [
+        {
+          "orderItemId": "17198765432109",
+          "quantityOrdered": 1,
+          "product": {
+            "asin": "B08N5WRWNW",
+            "sellerSku": "ECHO-DOT-4-BR-PRETO",
+            "title": "Echo Dot (4ª Geração) | Smart Speaker com Alexa | Cor Preta",
+            "customizationAvailable": false,
+            "price": {
+              "unitPrice": {
+                "amount": "299.90",
+                "currencyCode": "BRL"
+              }
+            }
+          },
+          "proceeds": {
+            "proceedsTotal": {
+              "amount": "299.90",
+              "currencyCode": "BRL"
+            },
+            "breakdowns": [
+              {
+                "subtotal": {
+                  "amount": "299.90",
+                  "currencyCode": "BRL"
+                },
+                "type": "ITEM"
+              }
+            ]
+          },
+          "fulfillment": {
+            "quantityFulfilled": 0,
+            "quantityUnfulfilled": 1
+          }
+        }
+      ]
+    }
+  }
+}

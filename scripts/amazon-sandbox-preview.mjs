@@ -1,0 +1,24 @@
+// Explicit local test runtime. Never uses the existing workshop database.
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {build} from '../app/configurator/variant-m/build.mjs';
+import {createPreviewServer} from '../app/configurator/variant-m/server.mjs';
+import {createWorkshop} from '../app/workshop/http.mjs';
+import {createAmazonSpApiClient,readAmazonCredentialsFile} from '../app/workshop/amazon-sp-api-client.mjs';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const args=process.argv.slice(2),allowed=/^(?:--port=\d+|--demo|--automatic)$/;
+if(args.some(v=>!allowed.test(v)))throw Error('Nur --port=, --demo und --automatic sind unterstützt.');
+const port=Number(args.find(v=>v.startsWith('--port='))?.slice(7)||8971);
+if(!Number.isInteger(port)||port<1024||port>65535)throw Error('Ungültiger lokaler Port.');
+const base=path.join(root,'.local-data','amazon-sandbox');fs.mkdirSync(base,{recursive:true,mode:0o700});
+const outputDirectory=path.join(base,'preview');build({outputDirectory});
+const seed=JSON.parse(fs.readFileSync(path.join(outputDirectory,'models.json'),'utf8'))[0];
+const credentialFile=process.env.GRAVURU_AMAZON_CREDENTIALS_FILE;
+const client=credentialFile?createAmazonSpApiClient({environment:'sandbox',region:'eu',roles:['Inventory and Order Tracking'],marketplaceIds:['A1PA6795UKMFR9'],readCredentials:()=>readAmazonCredentialsFile(credentialFile)}):null;
+if(args.includes('--automatic')&&!client)throw Error('Automatische Sandboxprüfung benötigt einen Zugangsspeicher.');
+const workshop=createWorkshop({filename:path.join(base,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,amazon:{client,accountId:'amazon-sandbox',allowTestImports:args.includes('--demo'),automatic:args.includes('--automatic')}});
+const server=createPreviewServer({outputDirectory,workshop});server.on('close',()=>workshop.close());
+server.on('error',error=>{workshop.close();console.error('Lokale Testvorschau konnte nicht starten: '+(error.code||'server_error'));process.exitCode=1;});
+for(const event of ['SIGINT','SIGTERM'])process.once(event,()=>server.close());
+server.listen(port,'127.0.0.1',()=>console.log(JSON.stringify({url:`http://127.0.0.1:${port}/werkstatt/amazon/`,mode:'sandbox-only',automatic:args.includes('--automatic'),production:false})));

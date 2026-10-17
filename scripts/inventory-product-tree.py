@@ -24,10 +24,13 @@ def mm(v):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--list', required=True); ap.add_argument('--root', required=True); ap.add_argument('--out', required=True); ap.add_argument('--encoding', default='cp850')
+    ap.add_argument('--exclude', default='', help='kommagetrennte Wörter; Pfade, die eines enthalten, bleiben außen vor (z. B. Funkklingel)')
     a = ap.parse_args(); out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
+    excl = [w.strip().lower() for w in a.exclude.split(',') if w.strip()]
     raw = Path(a.list).read_bytes().decode(a.encoding)
     root = a.root
     paths = [l.rstrip('\r')[len(root):].split('\\') for l in raw.split('\n') if l.startswith(root)]
+    if excl: paths = [p for p in paths if not any(w in seg.lower() for seg in p for w in excl)]
     products = {}
     for p in paths:
         if not p or not p[0] or p[0].startswith(('_', '[', '.')): continue
@@ -65,7 +68,7 @@ def main():
         report[name] = {'folders': pr['folders'], 'processes': dict(pr['processes']), 'topLevels': pr['levels'].most_common(12), 'materials': pr['materials'].most_common(10), 'flags': pr['flags'].most_common(8),
                         'sizes': dict(sorted(sizes.items(), key=lambda kv: (kv[1]['wMm'] or 0, kv[1]['hMm'] or 0))), 'skuPrefixes': pr['skus'].most_common(10), 'fpdFolders': pr['fpd'], 'examples': pr['examples']}
     (out / 'inventar.json').write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding='utf-8')
-    md = ['# Inventur Produktordner (Server)', '', f'Quelle: `{root}` – Ordnerliste mit {len(paths)} Ordnern, {len(report)} Produktordner. Nur gelesen; Dateien noch nicht geöffnet.', '',
+    md = ['# Inventur Produktordner (Server)', '', f'Quelle: `{root}` – Ordnerliste mit {len(paths)} Ordnern, {len(report)} Produktordner. Nur gelesen; Dateien noch nicht geöffnet.' + (f' Ausgeschlossen: {", ".join(excl)}.' if excl else ''), '',
           '| Produkt | Ordner | Verfahren | Größen | davon mit Archiv-Anteil | SKU-Präfixe | Materialien (Ordnernamen) |', '| --- | --- | --- | --- | --- | --- | --- |']
     for name, r in report.items():
         arch = sum(1 for s in r['sizes'].values() if s['archivedShare'] >= .99)

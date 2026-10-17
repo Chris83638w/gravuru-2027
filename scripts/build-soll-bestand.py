@@ -28,10 +28,11 @@ THEME_HINT = {'Hausnummern': 'hausnummern', 'Namenschilder': 'namensschilder', '
 
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('--katalog', required=True); a = ap.parse_args()
-    kat = Path(a.katalog)
+    ap = argparse.ArgumentParser(); ap.add_argument('--katalog', required=True); ap.add_argument('--exclude', default='', help='kommagetrennte Wörter; Zeilen/Pfade damit bleiben außen vor (z. B. Funkklingel)'); a = ap.parse_args()
+    kat = Path(a.katalog); excl = [w.strip().lower() for w in a.exclude.split(',') if w.strip()]
+    hit = lambda *texts: any(w in str(t).lower() for t in texts for w in excl)
     inv = json.loads((kat / 'linien/_inventar/inventar.json').read_text(encoding='utf-8'))
-    bestand = list(csv.DictReader((kat / 'linien/_inventar/bestand.csv').open(encoding='utf-8'), delimiter=';'))
+    bestand = [b for b in csv.DictReader((kat / 'linien/_inventar/bestand.csv').open(encoding='utf-8'), delimiter=';') if not hit(b['Verfahren'], b['Form'], b['Material'], b['Größe'])]
     # Schriftnutzung je Designordner
     ws = load_workbook(kat / 'quellen/server-produkte-20261017/Produkte Schriftartenhäufigkeit.xlsx', read_only=True, data_only=True)['Tabelle1']
     it = ws.iter_rows(values_only=True); head = list(next(it)); paths = list(next(it))
@@ -40,6 +41,7 @@ def main():
         p = str(paths[i] or ''); parts = p.split('\\')
         prod = parts[2] if len(parts) > 2 else ''
         m = next((SIZE.search(s) for s in reversed(parts) if SIZE.search(s)), None)
+        if hit(p): designs.append(None); continue
         designs.append({'sku': str(head[i]).replace('_Designs', '').replace('-Designs', ''), 'path': p, 'product': prod, 'size': f'{m.group(1)}x{m.group(2)}' if m else '', 'fonts': collections.Counter(), 'ids': set()})
     # Zellen enthalten die Design-Kennungen je Schrift („D17, D6, D1“) – also welche Designs des Ordners die Schrift nutzen.
     for r in it:
@@ -48,8 +50,10 @@ def main():
         for i in range(2, len(head)):
             v = r[i]
             if v in (None, ''): continue
+            if designs[i - 2] is None: continue
             ids = {t.strip() for t in str(v).split(',') if t.strip()}
             if ids: designs[i - 2]['fonts'][name] += len(ids); designs[i - 2]['ids'] |= ids
+    designs = [d for d in designs if d]
     by_prod_designs = collections.Counter(d['product'] for d in designs)
     by_prod_size_designs = collections.Counter((d['product'], d['size']) for d in designs)
     fonts_by_prod = collections.defaultdict(collections.Counter)
@@ -104,7 +108,7 @@ def main():
     rows.sort(key=lambda r: -r[1])
     sheet('Schriften je Produkt', ['Schrift', 'gesamt'] + prods, rows, [28, 8] + [14] * len(prods))
     info = wb.create_sheet('Lesen')
-    for line in ['Soll-Bestandsliste – erzeugt aus der Server-Inventur vom 17.10.2026 (Ordnerbaum, Bestand.xlsm, Schriftartenhäufigkeit). Gelbe Spalten füllt der Nutzer.',
+    for line in ['Soll-Bestandsliste – erzeugt aus der Server-Inventur vom 17.10.2026 (Ordnerbaum, Bestand.xlsm, Schriftartenhäufigkeit). Gelbe Spalten füllt der Nutzer.' + (f' Ausgeschlossen (Nutzer): {", ".join(excl)}.' if excl else ''),
                  'Linien: ein Serverprodukt = ein Linien-Kandidat. „Soll“ = ja (weiterführen), nein (nicht mehr), später. Priorität 1 = zuerst.',
                  'Größen: alle Größen aus Register und Ordnerbaum. „Soll“ = ja/nein; „Zielfamilie“ = Familie im Katalog (z. B. acryl-ss-abstandshalter), wenn die Größe dort weiterlebt. Alte Größen ohne Soll bleiben Bestand.',
                  'Designs: ein [CDR]-Ordner je SKU-Größe = die Corel-Designs dieser Größe. „Kopieren“ steuert den Extraktionslauf (Standard ja). Schriften aus der Schriftartenhäufigkeit.',

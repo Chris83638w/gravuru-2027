@@ -101,16 +101,27 @@ def main():
              'Lesen: Platte rot umrandet, Rückplatte blau, Bohrlöcher als helle Kreise. Maßstab ' + f'1 : {1 / a.scale:g}' + '. Unter jeder Platte: Größe · Form · Befestigung · Randabstand · SKU · Formatklasse (gleiche Klasse = gleiche Designs).']
     if f.get('source', {}).get('note'): intro.append('Hinweis: ' + f['source']['note'])
     pages.append(text_page('Plattenkatalog', intro))
-    for gk, g in groups.items():
+    # Pages per format class (same aspect ratio = scalable series), sizes ascending, forms side by side.
+    # Same series = aspect ratio within ±1 % (e.g. 70 × 23,3 belongs to 3:1).
+    classes = []
+    for s in sorted(f['sizes'], key=lambda s: -s['widthMm'] / s['heightMm']):
+        r = s['widthMm'] / s['heightMm']
+        if classes and abs(r - classes[-1][0]) / classes[-1][0] <= .01: classes[-1][1].append(s)
+        else: classes.append([r, [s]])
+    gorder = [g['key'] for g in f['groups']]
+    for _, members in classes:
+        members = sorted(members, key=lambda s: (s['widthMm'], gorder.index(s['groupKey'])))
+        lead = min(members, key=lambda s: sum(int(v) for v in ratio(s['widthMm'], s['heightMm']).replace('.', '').split(':')) if ':' in ratio(s['widthMm'], s['heightMm']) else 999)
         items = []
-        for s in [x for x in f['sizes'] if x['groupKey'] == gk]:
-            radius = s.get('cornerRadiusMm', g['cornerRadiusMm'])
+        for s in members:
+            g = groups[s['groupKey']]; radius = s.get('cornerRadiusMm', g['cornerRadiusMm'])
             for rid in s['mounting']:
                 r = rules[rid]; holes = [] if r['layout'] == 'none' else holes_for(s['widthMm'], s['heightMm'], r)
                 items.append({'w': s['widthMm'], 'h': s['heightMm'], 'shape': g['shape'], 'radius': radius, 'holes': holes, 'backing': backing,
                               'label': f"{s['label']} · {g['name']}" + (f' R{radius:g}' if radius and not g['cornerRadiusMm'] else ''),
-                              'lines': [f"{r['label']}, {LAYOUT_DE.get(r['layout'], r['layout'])}, Ø {r['diameterMm']:g} mm, Rand {r['edgeMm']:g} mm", f"{s['key']}-{r['skuSuffix']} · Format {ratio(s['widthMm'], s['heightMm'])}"]})
-        pages += flow(items, f"{f['name']} · {g['name']}", f'{len(items)} Zeichnungen · Maßstab 1 : {1 / a.scale:.1f}'.replace('.', ','), a.scale)
+                              'lines': [r['label'] + (f", {LAYOUT_DE.get(r['layout'], r['layout'])}, Ø {r['diameterMm']:g} mm, Rand {r['edgeMm']:g} mm" if r['layout'] != 'none' else ', ohne Löcher') + (f" · +{r['priceCents'] / 100:.2f} €".replace('.', ',') if r['priceCents'] else ''), f"{s['key']}-{r['skuSuffix']}"]})
+        sizes_txt = ', '.join(dict.fromkeys(m['label'] for m in members))
+        pages += flow(items, f"Format {ratio(lead['widthMm'], lead['heightMm'])} · {f['name']}", f'skalierbare Reihe: {sizes_txt} · {len(items)} Zeichnungen · Maßstab 1 : {1 / a.scale:.1f}'.replace('.', ','), a.scale)
     if a.proposals:
         pr = json.loads(Path(a.proposals).read_text(encoding='utf-8'))
         pages.append(text_page('Vorschläge', pr['text']))

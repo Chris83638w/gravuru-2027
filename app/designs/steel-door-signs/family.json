@@ -215,36 +215,6 @@
  ],
  "sizes": [
   {
-   "key": "GR-ES-RE-50X20-T15",
-   "groupKey": "RE",
-   "label": "5 × 2 cm",
-   "widthMm": 50,
-   "heightMm": 20,
-   "baseCents": 899,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E4-D4",
-    "B02S-E4-D4"
-   ],
-   "netWeightG": 12
-  },
-  {
-   "key": "GR-ES-RE-60X20-T15",
-   "groupKey": "RE",
-   "label": "6 × 2 cm",
-   "widthMm": 60,
-   "heightMm": 20,
-   "baseCents": 899,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 14
-  },
-  {
    "key": "GR-ES-RE-80X20-T15",
    "groupKey": "RE",
    "label": "8 × 2 cm",
@@ -275,6 +245,21 @@
    "netWeightG": 16
   },
   {
+   "key": "GR-ES-RE-60X20-T15",
+   "groupKey": "RE",
+   "label": "6 × 2 cm",
+   "widthMm": 60,
+   "heightMm": 20,
+   "baseCents": 899,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 14
+  },
+  {
    "key": "GR-ES-RE-90X30-T15",
    "groupKey": "RE",
    "label": "9 × 3 cm",
@@ -288,36 +273,6 @@
     "B02S-E6-D4"
    ],
    "netWeightG": 32
-  },
-  {
-   "key": "GR-ES-RE-80X35-T15",
-   "groupKey": "RE",
-   "label": "8 × 3,5 cm",
-   "widthMm": 80,
-   "heightMm": 35,
-   "baseCents": 999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 32
-  },
-  {
-   "key": "GR-ES-RE-80X53P3-T15",
-   "groupKey": "RE",
-   "label": "8 × 5 cm",
-   "widthMm": 80,
-   "heightMm": 53.3,
-   "baseCents": 999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 46
   },
   {
    "key": "GR-ES-RE-120X40-T15",
@@ -335,34 +290,19 @@
    "netWeightG": 56
   },
   {
-   "key": "GR-ES-RE-90X60-T15",
-   "groupKey": "RE",
-   "label": "9 × 6 cm",
-   "widthMm": 90,
-   "heightMm": 60,
-   "baseCents": 1099,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 62
-  },
-  {
-   "key": "GR-ES-RE-120X52P5-T15",
-   "groupKey": "RE",
-   "label": "12 × 5,25 cm",
+   "key": "GR-ES-EL-120X40-T15",
+   "groupKey": "EL",
+   "label": "12 × 4 cm",
    "widthMm": 120,
-   "heightMm": 52.5,
-   "baseCents": 1299,
+   "heightMm": 40,
+   "baseCents": 1399,
    "mounting": [
     "KGL",
     "KRA",
     "B02-E6-D4",
     "B02S-E6-D4"
    ],
-   "netWeightG": 74
+   "netWeightG": 42
   },
   {
    "key": "GR-ES-RE-150X50-T15",
@@ -380,19 +320,19 @@
    "netWeightG": 89
   },
   {
-   "key": "GR-ES-RE-120X80-T15",
-   "groupKey": "RE",
-   "label": "12 × 8 cm",
-   "widthMm": 120,
-   "heightMm": 80,
-   "baseCents": 1999,
+   "key": "GR-ES-EL-150X50-T15",
+   "groupKey": "EL",
+   "label": "15 × 5 cm",
+   "widthMm": 150,
+   "heightMm": 50,
+   "baseCents": 1599,
    "mounting": [
     "KGL",
     "KRA",
     "B02-E6-D4",
     "B02S-E6-D4"
    ],
-   "netWeightG": 112
+   "netWeightG": 70
   },
   {
    "key": "GR-ES-RE-180X60-T15",
@@ -410,19 +350,19 @@
    "netWeightG": 128
   },
   {
-   "key": "GR-ES-RE-160X70-T15",
-   "groupKey": "RE",
-   "label": "16 × 7 cm",
-   "widthMm": 160,
-   "heightMm": 70,
-   "baseCents": 2299,
+   "key": "GR-ES-EL-180X60-T15",
+   "groupKey": "EL",
+   "label": "18 × 6 cm",
+   "widthMm": 180,
+   "heightMm": 60,
+   "baseCents": 2199,
    "mounting": [
     "KGL",
     "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
-   "netWeightG": 132
+   "netWeightG": 100
   },
   {
    "key": "GR-ES-RE-210X70-T15",
@@ -440,19 +380,19 @@
    "netWeightG": 174
   },
   {
-   "key": "GR-ES-RE-150X100-T15",
-   "groupKey": "RE",
-   "label": "15 × 10 cm",
-   "widthMm": 150,
-   "heightMm": 100,
+   "key": "GR-ES-EL-210X70-T15",
+   "groupKey": "EL",
+   "label": "21 × 7 cm",
+   "widthMm": 210,
+   "heightMm": 70,
    "baseCents": 2999,
    "mounting": [
     "KGL",
     "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
+    "B02-E8-D4",
+    "B02S-E8-D4"
    ],
-   "netWeightG": 178
+   "netWeightG": 182
   },
   {
    "key": "GR-ES-RE-240X80-T15",
@@ -470,19 +410,19 @@
    "netWeightG": 227
   },
   {
-   "key": "GR-ES-RE-180X120-T15",
-   "groupKey": "RE",
-   "label": "18 × 12 cm",
-   "widthMm": 180,
-   "heightMm": 120,
-   "baseCents": 3299,
+   "key": "GR-ES-EL-240X80-T15",
+   "groupKey": "EL",
+   "label": "24 × 8 cm",
+   "widthMm": 240,
+   "heightMm": 80,
+   "baseCents": 3099,
    "mounting": [
     "KGL",
     "KRA",
     "B02-E8-D4",
     "B02S-E8-D4"
    ],
-   "netWeightG": 252
+   "netWeightG": 178
   },
   {
    "key": "GR-ES-RE-270X90-T15",
@@ -500,6 +440,96 @@
    "netWeightG": 288
   },
   {
+   "key": "GR-ES-EL-270X90-T15",
+   "groupKey": "EL",
+   "label": "27 × 9 cm",
+   "widthMm": 270,
+   "heightMm": 90,
+   "baseCents": 3699,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 226
+  },
+  {
+   "key": "GR-ES-EL-300X100-T15",
+   "groupKey": "EL",
+   "label": "30 × 10 cm",
+   "widthMm": 300,
+   "heightMm": 100,
+   "baseCents": 4499,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 279
+  },
+  {
+   "key": "GR-ES-RE-50X20-T15",
+   "groupKey": "RE",
+   "label": "5 × 2 cm",
+   "widthMm": 50,
+   "heightMm": 20,
+   "baseCents": 899,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E4-D4",
+    "B02S-E4-D4"
+   ],
+   "netWeightG": 12
+  },
+  {
+   "key": "GR-ES-RE-80X35-T15",
+   "groupKey": "RE",
+   "label": "8 × 3,5 cm",
+   "widthMm": 80,
+   "heightMm": 35,
+   "baseCents": 999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 32
+  },
+  {
+   "key": "GR-ES-RE-120X52P5-T15",
+   "groupKey": "RE",
+   "label": "12 × 5,25 cm",
+   "widthMm": 120,
+   "heightMm": 52.5,
+   "baseCents": 1299,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 74
+  },
+  {
+   "key": "GR-ES-RE-160X70-T15",
+   "groupKey": "RE",
+   "label": "16 × 7 cm",
+   "widthMm": 160,
+   "heightMm": 70,
+   "baseCents": 2299,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 132
+  },
+  {
    "key": "GR-ES-RE-240X105-T15",
    "groupKey": "RE",
    "label": "24 × 10,5 cm",
@@ -513,6 +543,291 @@
     "B02S-E8-D4"
    ],
    "netWeightG": 298
+  },
+  {
+   "key": "GR-ES-RE-320X140-T15",
+   "groupKey": "RE",
+   "label": "32 × 14 cm",
+   "widthMm": 320,
+   "heightMm": 140,
+   "baseCents": 5399,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 531
+  },
+  {
+   "key": "GR-ES-RE-400X175-T15",
+   "groupKey": "RE",
+   "label": "40 × 17,5 cm",
+   "widthMm": 400,
+   "heightMm": 175,
+   "baseCents": 8399,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 829
+  },
+  {
+   "key": "GR-ES-OV-300X159P9-T15",
+   "groupKey": "OV",
+   "label": "30 × 16 cm",
+   "widthMm": 300,
+   "heightMm": 159.9,
+   "baseCents": 5699,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 446
+  },
+  {
+   "key": "GR-ES-OV-150X80-T15",
+   "groupKey": "OV",
+   "label": "15 × 8 cm",
+   "widthMm": 150,
+   "heightMm": 80,
+   "baseCents": 2499,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 110
+  },
+  {
+   "key": "GR-ES-OV-225X120-T15",
+   "groupKey": "OV",
+   "label": "22,5 × 12 cm",
+   "widthMm": 225,
+   "heightMm": 120,
+   "baseCents": 4099,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 251
+  },
+  {
+   "key": "GR-ES-RE-80X53P3-T15",
+   "groupKey": "RE",
+   "label": "8 × 5 cm",
+   "widthMm": 80,
+   "heightMm": 53.3,
+   "baseCents": 999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 46
+  },
+  {
+   "key": "GR-ES-AB-80X53P3-T15",
+   "groupKey": "AB",
+   "label": "8 × 5 cm",
+   "widthMm": 80,
+   "heightMm": 53.3,
+   "baseCents": 999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 46
+  },
+  {
+   "key": "GR-ES-RE-90X60-T15",
+   "groupKey": "RE",
+   "label": "9 × 6 cm",
+   "widthMm": 90,
+   "heightMm": 60,
+   "baseCents": 1099,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 62
+  },
+  {
+   "key": "GR-ES-AB-90X60-T15",
+   "groupKey": "AB",
+   "label": "9 × 6 cm",
+   "widthMm": 90,
+   "heightMm": 60,
+   "baseCents": 1099,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 62
+  },
+  {
+   "key": "GR-ES-OV-90X60-T15",
+   "groupKey": "OV",
+   "label": "9 × 6 cm",
+   "widthMm": 90,
+   "heightMm": 60,
+   "baseCents": 1099,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 50
+  },
+  {
+   "key": "GR-ES-RE-120X80-T15",
+   "groupKey": "RE",
+   "label": "12 × 8 cm",
+   "widthMm": 120,
+   "heightMm": 80,
+   "baseCents": 1999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 112
+  },
+  {
+   "key": "GR-ES-AB-120X80-T15",
+   "groupKey": "AB",
+   "label": "12 × 8 cm",
+   "widthMm": 120,
+   "heightMm": 80,
+   "baseCents": 1999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 112
+  },
+  {
+   "key": "GR-ES-OV-120X80-T15",
+   "groupKey": "OV",
+   "label": "12 × 8 cm",
+   "widthMm": 120,
+   "heightMm": 80,
+   "baseCents": 1999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 89
+  },
+  {
+   "key": "GR-ES-RE-150X100-T15",
+   "groupKey": "RE",
+   "label": "15 × 10 cm",
+   "widthMm": 150,
+   "heightMm": 100,
+   "baseCents": 2999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 178
+  },
+  {
+   "key": "GR-ES-AB-150X100-T15",
+   "groupKey": "AB",
+   "label": "15 × 10 cm",
+   "widthMm": 150,
+   "heightMm": 100,
+   "baseCents": 2999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 178
+  },
+  {
+   "key": "GR-ES-OV-150X100-T15",
+   "groupKey": "OV",
+   "label": "15 × 10 cm",
+   "widthMm": 150,
+   "heightMm": 100,
+   "baseCents": 2999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 139
+  },
+  {
+   "key": "GR-ES-RE-180X120-T15",
+   "groupKey": "RE",
+   "label": "18 × 12 cm",
+   "widthMm": 180,
+   "heightMm": 120,
+   "baseCents": 3299,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 252
+  },
+  {
+   "key": "GR-ES-AB-180X120-T15",
+   "groupKey": "AB",
+   "label": "18 × 12 cm",
+   "widthMm": 180,
+   "heightMm": 120,
+   "baseCents": 3299,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 252
+  },
+  {
+   "key": "GR-ES-OV-180X120-T15",
+   "groupKey": "OV",
+   "label": "18 × 12 cm",
+   "widthMm": 180,
+   "heightMm": 120,
+   "baseCents": 3299,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 201
   },
   {
    "key": "GR-ES-RE-210X140-T15",
@@ -530,6 +845,36 @@
    "netWeightG": 348
   },
   {
+   "key": "GR-ES-AB-210X140-T15",
+   "groupKey": "AB",
+   "label": "21 × 14 cm",
+   "widthMm": 210,
+   "heightMm": 140,
+   "baseCents": 4399,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 348
+  },
+  {
+   "key": "GR-ES-OV-210X140-T15",
+   "groupKey": "OV",
+   "label": "21 × 14 cm",
+   "widthMm": 210,
+   "heightMm": 140,
+   "baseCents": 4399,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 273
+  },
+  {
    "key": "GR-ES-RE-240X160-T15",
    "groupKey": "RE",
    "label": "24 × 16 cm",
@@ -545,19 +890,34 @@
    "netWeightG": 455
   },
   {
-   "key": "GR-ES-RE-320X140-T15",
-   "groupKey": "RE",
-   "label": "32 × 14 cm",
-   "widthMm": 320,
-   "heightMm": 140,
-   "baseCents": 5399,
+   "key": "GR-ES-AB-240X160-T15",
+   "groupKey": "AB",
+   "label": "24 × 16 cm",
+   "widthMm": 240,
+   "heightMm": 160,
+   "baseCents": 4599,
    "mounting": [
     "KGL",
     "KRA",
     "B02-E8-D4",
     "B02S-E8-D4"
    ],
-   "netWeightG": 531
+   "netWeightG": 454
+  },
+  {
+   "key": "GR-ES-OV-240X160-T15",
+   "groupKey": "OV",
+   "label": "24 × 16 cm",
+   "widthMm": 240,
+   "heightMm": 160,
+   "baseCents": 4599,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4"
+   ],
+   "netWeightG": 357
   },
   {
    "key": "GR-ES-RE-300X200-T15",
@@ -577,23 +937,55 @@
    "netWeightG": 706
   },
   {
-   "key": "GR-ES-RE-400X175-T15",
-   "groupKey": "RE",
-   "label": "40 × 17,5 cm",
-   "widthMm": 400,
-   "heightMm": 175,
-   "baseCents": 8399,
+   "key": "GR-ES-AB-300X200-T15",
+   "groupKey": "AB",
+   "label": "30 × 20 cm",
+   "widthMm": 300,
+   "heightMm": 200,
+   "baseCents": 6999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E8-D4",
+    "B02S-E8-D4",
+    "B04-E10-D4",
+    "B04S-E10-D4"
+   ],
+   "netWeightG": 706
+  },
+  {
+   "key": "GR-ES-OV-300X200-T15",
+   "groupKey": "OV",
+   "label": "30 × 20 cm",
+   "widthMm": 300,
+   "heightMm": 200,
+   "baseCents": 6999,
    "mounting": [
     "KGL",
     "KRA",
     "B02-E8-D4",
     "B02S-E8-D4"
    ],
-   "netWeightG": 829
+   "netWeightG": 548
   },
   {
    "key": "GR-ES-RE-420X280-T15",
    "groupKey": "RE",
+   "label": "42 × 28 cm",
+   "widthMm": 420,
+   "heightMm": 280,
+   "baseCents": 13999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B04-E15-D4",
+    "B04S-E15-D4"
+   ],
+   "netWeightG": 1393
+  },
+  {
+   "key": "GR-ES-AB-420X280-T15",
+   "groupKey": "AB",
    "label": "42 × 28 cm",
    "widthMm": 420,
    "heightMm": 280,
@@ -620,143 +1012,6 @@
     "B04S-E15-D4"
    ],
    "netWeightG": 1599
-  },
-  {
-   "key": "GR-ES-AB-80X53P3-T15",
-   "groupKey": "AB",
-   "label": "8 × 5 cm",
-   "widthMm": 80,
-   "heightMm": 53.3,
-   "baseCents": 999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 46
-  },
-  {
-   "key": "GR-ES-AB-90X60-T15",
-   "groupKey": "AB",
-   "label": "9 × 6 cm",
-   "widthMm": 90,
-   "heightMm": 60,
-   "baseCents": 1099,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 62
-  },
-  {
-   "key": "GR-ES-AB-120X80-T15",
-   "groupKey": "AB",
-   "label": "12 × 8 cm",
-   "widthMm": 120,
-   "heightMm": 80,
-   "baseCents": 1999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 112
-  },
-  {
-   "key": "GR-ES-AB-150X100-T15",
-   "groupKey": "AB",
-   "label": "15 × 10 cm",
-   "widthMm": 150,
-   "heightMm": 100,
-   "baseCents": 2999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 178
-  },
-  {
-   "key": "GR-ES-AB-180X120-T15",
-   "groupKey": "AB",
-   "label": "18 × 12 cm",
-   "widthMm": 180,
-   "heightMm": 120,
-   "baseCents": 3299,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 252
-  },
-  {
-   "key": "GR-ES-AB-210X140-T15",
-   "groupKey": "AB",
-   "label": "21 × 14 cm",
-   "widthMm": 210,
-   "heightMm": 140,
-   "baseCents": 4399,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 348
-  },
-  {
-   "key": "GR-ES-AB-240X160-T15",
-   "groupKey": "AB",
-   "label": "24 × 16 cm",
-   "widthMm": 240,
-   "heightMm": 160,
-   "baseCents": 4599,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 454
-  },
-  {
-   "key": "GR-ES-AB-300X200-T15",
-   "groupKey": "AB",
-   "label": "30 × 20 cm",
-   "widthMm": 300,
-   "heightMm": 200,
-   "baseCents": 6999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4",
-    "B04-E10-D4",
-    "B04S-E10-D4"
-   ],
-   "netWeightG": 706
-  },
-  {
-   "key": "GR-ES-AB-420X280-T15",
-   "groupKey": "AB",
-   "label": "42 × 28 cm",
-   "widthMm": 420,
-   "heightMm": 280,
-   "baseCents": 13999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B04-E15-D4",
-    "B04S-E15-D4"
-   ],
-   "netWeightG": 1393
   },
   {
    "key": "GR-ES-AB-450X300-T15",
@@ -877,261 +1132,6 @@
     "B04S-E8-D4"
    ],
    "netWeightG": 1066
-  },
-  {
-   "key": "GR-ES-OV-90X60-T15",
-   "groupKey": "OV",
-   "label": "9 × 6 cm",
-   "widthMm": 90,
-   "heightMm": 60,
-   "baseCents": 1099,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 50
-  },
-  {
-   "key": "GR-ES-OV-120X80-T15",
-   "groupKey": "OV",
-   "label": "12 × 8 cm",
-   "widthMm": 120,
-   "heightMm": 80,
-   "baseCents": 1999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 89
-  },
-  {
-   "key": "GR-ES-OV-150X80-T15",
-   "groupKey": "OV",
-   "label": "15 × 8 cm",
-   "widthMm": 150,
-   "heightMm": 80,
-   "baseCents": 2499,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 110
-  },
-  {
-   "key": "GR-ES-OV-150X100-T15",
-   "groupKey": "OV",
-   "label": "15 × 10 cm",
-   "widthMm": 150,
-   "heightMm": 100,
-   "baseCents": 2999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 139
-  },
-  {
-   "key": "GR-ES-OV-180X120-T15",
-   "groupKey": "OV",
-   "label": "18 × 12 cm",
-   "widthMm": 180,
-   "heightMm": 120,
-   "baseCents": 3299,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 201
-  },
-  {
-   "key": "GR-ES-OV-225X120-T15",
-   "groupKey": "OV",
-   "label": "22,5 × 12 cm",
-   "widthMm": 225,
-   "heightMm": 120,
-   "baseCents": 4099,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 251
-  },
-  {
-   "key": "GR-ES-OV-210X140-T15",
-   "groupKey": "OV",
-   "label": "21 × 14 cm",
-   "widthMm": 210,
-   "heightMm": 140,
-   "baseCents": 4399,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 273
-  },
-  {
-   "key": "GR-ES-OV-240X160-T15",
-   "groupKey": "OV",
-   "label": "24 × 16 cm",
-   "widthMm": 240,
-   "heightMm": 160,
-   "baseCents": 4599,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 357
-  },
-  {
-   "key": "GR-ES-OV-300X159P9-T15",
-   "groupKey": "OV",
-   "label": "30 × 16 cm",
-   "widthMm": 300,
-   "heightMm": 159.9,
-   "baseCents": 5699,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 446
-  },
-  {
-   "key": "GR-ES-OV-300X200-T15",
-   "groupKey": "OV",
-   "label": "30 × 20 cm",
-   "widthMm": 300,
-   "heightMm": 200,
-   "baseCents": 6999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 548
-  },
-  {
-   "key": "GR-ES-EL-120X40-T15",
-   "groupKey": "EL",
-   "label": "12 × 4 cm",
-   "widthMm": 120,
-   "heightMm": 40,
-   "baseCents": 1399,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 42
-  },
-  {
-   "key": "GR-ES-EL-150X50-T15",
-   "groupKey": "EL",
-   "label": "15 × 5 cm",
-   "widthMm": 150,
-   "heightMm": 50,
-   "baseCents": 1599,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E6-D4",
-    "B02S-E6-D4"
-   ],
-   "netWeightG": 70
-  },
-  {
-   "key": "GR-ES-EL-180X60-T15",
-   "groupKey": "EL",
-   "label": "18 × 6 cm",
-   "widthMm": 180,
-   "heightMm": 60,
-   "baseCents": 2199,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 100
-  },
-  {
-   "key": "GR-ES-EL-210X70-T15",
-   "groupKey": "EL",
-   "label": "21 × 7 cm",
-   "widthMm": 210,
-   "heightMm": 70,
-   "baseCents": 2999,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 182
-  },
-  {
-   "key": "GR-ES-EL-240X80-T15",
-   "groupKey": "EL",
-   "label": "24 × 8 cm",
-   "widthMm": 240,
-   "heightMm": 80,
-   "baseCents": 3099,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 178
-  },
-  {
-   "key": "GR-ES-EL-270X90-T15",
-   "groupKey": "EL",
-   "label": "27 × 9 cm",
-   "widthMm": 270,
-   "heightMm": 90,
-   "baseCents": 3699,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 226
-  },
-  {
-   "key": "GR-ES-EL-300X100-T15",
-   "groupKey": "EL",
-   "label": "30 × 10 cm",
-   "widthMm": 300,
-   "heightMm": 100,
-   "baseCents": 4499,
-   "mounting": [
-    "KGL",
-    "KRA",
-    "B02-E8-D4",
-    "B02S-E8-D4"
-   ],
-   "netWeightG": 279
   }
  ],
  "withoutMounting": true,

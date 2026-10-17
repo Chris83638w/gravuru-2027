@@ -18,9 +18,9 @@ Nicht installiert. Branch `task/steel-master-data-20261016`.
 
 Familienmodell erweitert: Eckenradius je Größe, Zubehör „Abstandshalter“, Gravurseite, Rückplatte (`backing`: Überstand, Stärke) – in Schablone und Briefing berücksichtigt. Excel-Export/-Import trägt diese Felder (Rundlauf ohne Abweichung).
 
-## Vorschlag zum Abstimmen
+## Plattenkatalog
 
-[Plattenkatalog-Acryl-SS-Vorschlag.pdf](Plattenkatalog-Acryl-SS-Vorschlag.pdf) (`scripts/plate-catalog-pdf.py`): alle 62 Zeichnungen der S/S-Familie mit Rückplatte, dazu Seite „Vorschläge“ (`vorschlaege-20261017.json`): 4 Abstandshalter für 36 × 12, 45 × 15 und die abgerundeten ab 21 × 14; 12 × 8 als kleinstes 3:2-Format; Formatklassen je Platte.
+[Plattenkatalog-Acryl-SS.pdf](Plattenkatalog-Acryl-SS.pdf) (`scripts/plate-catalog-pdf.py`): alle 62 Zeichnungen der S/S-Familie mit Rückplatte, **eine Seite je Format** (skalierbare Reihe, Seitenverhältnis ±1 %), Größen aufsteigend, Formen nebeneinander. Familien-Größen sind in derselben Reihenfolge gespeichert (auch Edelstahl umsortiert). Zusätzliche Platten wurden vom Nutzer abgelehnt (zu viele).
 
 ## Prüfungen
 

@@ -20,6 +20,12 @@ NOTE = ('Randabstand der Bohrlöcher je Platte wie in der Corel-Zeichnung: 10 mm
         'aus optischen Gründen und damit die Platten unter Spannung hängen und nicht durchhängen (Nutzer, 17.10.2026). Nicht vereinheitlichen.')
 
 plates = json.loads(SRC.read_text(encoding='utf-8'))['plates']
+
+
+def format_class(w, h):
+    """Skalierbare Reihe = gleiches Seitenverhältnis; sortiert von breit nach quadratisch."""
+    return round(w / h, 3)
+
 cm = lambda v: ('%g' % (v / 10)).replace('.', ',')
 
 
@@ -46,7 +52,7 @@ def build(fid, name, prefix, material, backing, notes):
     fam = {'schema': 'gravuru-product-family/v2', 'id': fid, 'name': name, 'material': material, 'designArea': {'marginMm': 0, 'keepoutMm': 1},
            'groups': [groups[k] for k in order if k in groups],
            'mountingRules': sorted(rules.values(), key=lambda r: (r['count'], r['edgeMm'])),
-           'sizes': sorted(sizes.values(), key=lambda s: (order.index(s['groupKey']), s['widthMm'], s['heightMm'])),
+           'sizes': sorted(sizes.values(), key=lambda s: (-format_class(s['widthMm'], s['heightMm']), s['widthMm'], order.index(s['groupKey']))),
            'withoutMounting': False, 'fonts': FONTS, 'briefingNotes': notes, 'sizeKeyPrefix': prefix, 'sizeKeySuffix': '',
            'source': {'path': 'app/designs/acrylic-standoff-signs/corel-platten-20261017.json', 'note': NOTE + ' Preise und Aufpreise offen. Schutzzone 1 mm vorläufig; Kopfdurchmesser der Abstandshalter noch nicht bekannt.'}}
     if backing: fam['backing'] = backing

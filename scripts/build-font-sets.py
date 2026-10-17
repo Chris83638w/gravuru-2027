@@ -5,6 +5,10 @@ Liest <katalog>/schriften/schriften.json und sets.json, schreibt schriften/_must
 und schriften/_muster/alle.png (alle freigegebenen Schriften). Kein Schreiben in die Werkstatt.
 
     python scripts/build-font-sets.py --katalog <katalog> [--text "Familie Niemann 32"]
+Zum Ändern durch den Nutzer: schriften/sets.xlsx (Matrix Schrift × Set, „x“ = enthalten) wird
+bei jedem Lauf aus sets.json erzeugt; eine geänderte Matrix wird mit
+    python scripts/build-font-sets.py --katalog <katalog> --import-xlsx <datei.xlsx>
+zurück nach sets.json übernommen (nur freigegebene Schriften; die „immer“-Schriften bleiben in jedem Set).
 """
 import argparse, json
 from pathlib import Path
@@ -35,17 +39,67 @@ def sheet(title, entries, kat, text, path, note=''):
     im.save(path, optimize=True)
 
 
+def export_xlsx(kat, fonts, data):
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, Alignment, PatternFill
+    wb = Workbook(); ws = wb.active; ws.title = 'Schrift-Sets'
+    sets = data['sets']; head = ['Schrift', 'Kategorie', 'Datei im Repo', 'feine Linien'] + [s['name'] for s in sets]
+    ws.append(head)
+    for c in ws[1]: c.font = Font(bold=True); c.alignment = Alignment(wrap_text=True, vertical='top')
+    for f in fonts.values():
+        ws.append([f['name'], f['category'], 'ja' if f.get('file') else 'fehlt', 'ja' if f.get('thin') else ''] + ['x' if f['name'] in s['fonts'] else '' for s in sets])
+    for row in ws.iter_rows(min_row=2):
+        if row[0].value in data.get('always', []):
+            for c in row: c.fill = PatternFill('solid', fgColor='FFF2CC')
+    ws.freeze_panes = 'B2'; ws.column_dimensions['A'].width = 24; ws.column_dimensions['B'].width = 26
+    for i in range(5, 5 + len(sets)): ws.column_dimensions[ws.cell(1, i).column_letter].width = 14
+    info = wb.create_sheet('Lesen')
+    for line in ['„x“ in einer Set-Spalte = Schrift gehört zum Set dieser Produktlinie. Leer = nicht enthalten.',
+                 'Gelb hinterlegt: Schriften, die laut Vorgabe in jedem Set bleiben (' + ', '.join(data.get('always', [])) + ').',
+                 'Nur Schriften aus der Freigabeliste (schriften.json); neue Schriften zuerst freigeben, dann hier ankreuzen.',
+                 'Zurückspielen: python scripts/build-font-sets.py --katalog <katalog> --import-xlsx <diese Datei> (Repo gravuru-2027). Danach sind sets.json und die Musterblätter neu.',
+                 'Set-Reihenfolge und Namen stehen in sets.json; neue Sets dort anlegen (id, name, note), dann erscheint die Spalte hier.']:
+        info.append([line])
+    info.column_dimensions['A'].width = 140
+    wb.save(kat / 'schriften/sets.xlsx')
+
+
+def import_xlsx(kat, fonts, data, path):
+    from openpyxl import load_workbook
+    ws = load_workbook(path, read_only=True)['Schrift-Sets']; rows = list(ws.iter_rows(values_only=True)); head = rows[0]
+    by_name = {s['name']: s for s in data['sets']}
+    cols = {i: by_name[h] for i, h in enumerate(head) if h in by_name}
+    missing_sets = [s['name'] for s in data['sets'] if s['name'] not in head]
+    if missing_sets: raise SystemExit('Spalten fehlen in der Excel: ' + ', '.join(missing_sets))
+    new = {s['name']: [] for s in data['sets']}; unknown = []
+    for r in rows[1:]:
+        name = r[0]
+        if not name: continue
+        if name not in fonts: unknown.append(name); continue
+        for i, s in cols.items():
+            if str(r[i] or '').strip().lower() == 'x': new[s['name']].append(name)
+    if unknown: raise SystemExit('Nicht freigegebene Schriften in der Excel: ' + ', '.join(unknown))
+    for s in data['sets']:
+        rest = [f for f in new[s['name']] if f not in data.get('always', [])]
+        s['fonts'] = list(data.get('always', [])) + rest
+    (kat / 'schriften/sets.json').write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding='utf-8')
+    print('sets.json aus Excel übernommen:', {s['id']: len(s['fonts']) for s in data['sets']})
+
+
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('--katalog', required=True); ap.add_argument('--text', default='Familie Niemann 32'); a = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument('--katalog', required=True); ap.add_argument('--text', default='Familie Niemann 32'); ap.add_argument('--import-xlsx'); a = ap.parse_args()
     kat = Path(a.katalog); fonts = {f['name']: f for f in json.loads((kat / 'schriften/schriften.json').read_text(encoding='utf-8'))['fonts']}
-    sets = json.loads((kat / 'schriften/sets.json').read_text(encoding='utf-8'))['sets']
+    data = json.loads((kat / 'schriften/sets.json').read_text(encoding='utf-8'))
+    if a.import_xlsx: import_xlsx(kat, fonts, data, a.import_xlsx)
+    sets = data['sets']
+    export_xlsx(kat, fonts, data)
     out = kat / 'schriften/_muster'; out.mkdir(exist_ok=True)
     unknown = [n for s in sets for n in s['fonts'] if n not in fonts]
     if unknown: raise SystemExit('Nicht freigegebene Schrift in einem Set: ' + ', '.join(unknown))
     for s in sets:
         sheet(f"Schrift-Set „{s['name']}“ ({len(s['fonts'])}) – {s['note']}", [fonts[n] for n in s['fonts']], kat, a.text, out / f"{s['id']}.png")
     sheet(f'Alle freigegebenen Schriften ({len(fonts)})', list(fonts.values()), kat, a.text, out / 'alle.png')
-    print(f'{len(sets)} Sets, {len(fonts)} Schriften → {out}')
+    print(f'{len(sets)} Sets, {len(fonts)} Schriften → {out} · Matrix: schriften/sets.xlsx')
 
 
 if __name__ == '__main__':

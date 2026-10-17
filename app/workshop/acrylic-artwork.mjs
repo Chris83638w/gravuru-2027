@@ -15,7 +15,9 @@ const number=v=>Number(v.toFixed(8));
 export function nativeContour(g){
  const w=g.width,h=g.height,r=g.cornerRadiusMm||0;
  const ellipse=(x,y,rx,ry)=>`M${x-rx} ${y}a${rx} ${ry} 0 1 0 ${2*rx} 0a${rx} ${ry} 0 1 0 ${-2*rx} 0Z`;
- const d=g.shape==='ellipse'?ellipse(w/2,h/2,w/2,h/2):r?`M${r} 0H${w-r}A${r} ${r} 0 0 1 ${w} ${r}V${h-r}A${r} ${r} 0 0 1 ${w-r} ${h}H${r}A${r} ${r} 0 0 1 0 ${h-r}V${r}A${r} ${r} 0 0 1 ${r} 0Z`:`M0 0H${w}V${h}H0Z`;
+ // sweep 1 = rounded (convex) corner, sweep 0 = eingezogene Ecke (concave quarter circle centred on the corner)
+ const cornered=sw=>`M${r} 0H${w-r}A${r} ${r} 0 0 ${sw} ${w} ${r}V${h-r}A${r} ${r} 0 0 ${sw} ${w-r} ${h}H${r}A${r} ${r} 0 0 ${sw} 0 ${h-r}V${r}A${r} ${r} 0 0 ${sw} ${r} 0Z`;
+ const d=g.shape==='ellipse'?ellipse(w/2,h/2,w/2,h/2):r?cornered(g.shape==='plaque'?0:1):`M0 0H${w}V${h}H0Z`;
  return {schema:'gravuru-contour/v1',widthMm:w,heightMm:h,holeCount:g.holes.length,contours:[{role:'outer',d},...g.holes.map(h=>({role:'hole',d:ellipse(h.x,h.y,h.diameter/2,h.diameter/2)}))]};
 }
 export async function acrylicArtwork(archive,archiveHash,{engraving=false}={}){

@@ -19,7 +19,7 @@ from openpyxl.utils import get_column_letter
 ROOT = Path(__file__).resolve().parents[1]
 LAYOUTS = {'left-right': 'mittig links/rechts', 'top-bottom': 'mittig oben/unten', 'corners': 'vier Ecken', 'top-center': 'oben mittig', 'none': 'ohne Löcher'}
 LAYOUT_BY_TEXT = {v: k for k, v in LAYOUTS.items()}
-SHAPES = {'rect': 'eckig', 'ellipse': 'oval'}
+SHAPES = {'rect': 'eckig', 'ellipse': 'oval', 'plaque': 'eingezogene Ecken'}
 SHAPE_BY_TEXT = {v: k for k, v in SHAPES.items()}
 ACCESSORY = {'screws': 'Schrauben', 'standoffs': 'Abstandshalter'}
 ACCESSORY_BY_TEXT = {v: k for k, v in ACCESSORY.items()}
@@ -69,8 +69,8 @@ def export(paths, out):
         groups = {g['key']: g for g in f['groups']}
         for s in f['sizes']:
             g = groups[s['groupKey']]
-            rows.append([f['id'], s['key'], s['groupKey'], g['name'], SHAPES[g['shape']], s.get('cornerRadiusMm', g['cornerRadiusMm']), s['label'], s['widthMm'], s['heightMm'], euro(s['baseCents']), s.get('netWeightG'), ', '.join(s['mounting'])])
-    sheet('Größen', ['Familie', 'SKU', 'Formgruppe', 'Form', 'eckig/oval', 'Eckenradius mm', 'Bezeichnung', 'Breite mm', 'Höhe mm', 'Grundpreis €', 'Gewicht g', 'Befestigungen (Kennungen)'], rows, [22, 26, 10, 22, 10, 12, 14, 10, 10, 12, 10, 50])
+            rows.append([f['id'], s['key'], s['groupKey'], g['name'], SHAPES[g['shape']], s.get('cornerRadiusMm', g['cornerRadiusMm']), s.get('backingCornerRadiusMm'), s['label'], s['widthMm'], s['heightMm'], euro(s['baseCents']), s.get('netWeightG'), ', '.join(s['mounting'])])
+    sheet('Größen', ['Familie', 'SKU', 'Formgruppe', 'Form', 'eckig/oval', 'Eckenradius mm', 'Rückplatte Eckenradius mm', 'Bezeichnung', 'Breite mm', 'Höhe mm', 'Grundpreis €', 'Gewicht g', 'Befestigungen (Kennungen)'], rows, [22, 26, 10, 22, 16, 12, 14, 14, 10, 10, 12, 10, 50])
     rows = []
     for f in fams:
         for r in f['mountingRules']:
@@ -119,14 +119,15 @@ def import_(xlsx, out):
         size = {'key': r['SKU'], 'groupKey': r['Formgruppe'], 'label': r['Bezeichnung'], 'widthMm': num(r['Breite mm']), 'heightMm': num(r['Höhe mm']), 'baseCents': cents(r['Grundpreis €']),
                 'mounting': [x.strip() for x in str(r['Befestigungen (Kennungen)'] or '').split(',') if x.strip()], '_radius': radius}
         if r.get('Gewicht g') not in (None, ''): size['netWeightG'] = num(r['Gewicht g'])
+        if r.get('Rückplatte Eckenradius mm') not in (None, ''): size['backingCornerRadiusMm'] = num(r['Rückplatte Eckenradius mm'])
         f['sizes'].append(size)
     # Group radius = common radius of its sizes; differing radii stay on the sizes (as drawn in Corel).
     for f in fams.values():
         for g in f['groups']:
-            radii = set(g.pop('_radii')); g['cornerRadiusMm'] = radii.pop() if len(radii) == 1 and g['shape'] == 'rect' else 0
+            radii = set(g.pop('_radii')); g['cornerRadiusMm'] = radii.pop() if len(radii) == 1 and g['shape'] in ('rect', 'plaque') else 0
         for s in f['sizes']:
             radius = s.pop('_radius'); g = next(g for g in f['groups'] if g['key'] == s['groupKey'])
-            if g['shape'] == 'rect' and radius != g['cornerRadiusMm']: s['cornerRadiusMm'] = radius
+            if g['shape'] in ('rect', 'plaque') and radius != g['cornerRadiusMm']: s['cornerRadiusMm'] = radius
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     report = []
     for fid, f in fams.items():

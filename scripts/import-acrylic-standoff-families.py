@@ -2,7 +2,8 @@
 
 Quelle: app/designs/acrylic-standoff-signs/corel-platten-20261017.json (gelesen aus
 Hausnummer-Namenschilder-2026.pdf). Werte genau wie gezeichnet: Randabstand je
-Platte (10 oder 15 mm), Eckenradius je Platte, Rückplatte rundum 10 mm größer.
+Platte (10 oder 15 mm), Eckenradius je Platte (eingezogene Ecken = konkav), Rückplatte
+rundum 10 mm größer. Reihenfolge der Größen = Spalten der Zeichnung, von oben nach unten.
 Nutzerangaben 17.10.2026: AA/AS = 5 mm, Gravur von hinten; S/S = je 3 mm, Front
 satiniert von vorn graviert, Rückplatte schwarz. Preise: offen.
 
@@ -22,36 +23,33 @@ NOTE = ('Randabstand der Bohrlöcher je Platte wie in der Corel-Zeichnung: 10 mm
 plates = json.loads(SRC.read_text(encoding='utf-8'))['plates']
 
 
-def format_class(w, h):
-    """Skalierbare Reihe = gleiches Seitenverhältnis; sortiert von breit nach quadratisch."""
-    return round(w / h, 3)
-
 cm = lambda v: ('%g' % (v / 10)).replace('.', ',')
 
 
 def build(fid, name, prefix, material, backing, notes):
     sizes, rules, groups = {}, {}, {}
-    for p in plates:
+    for p in sorted(plates, key=lambda p: (p['drawingColumn'], p['drawingRow'])):
         shape, radius = p['shape'], p['cornerRadiusMm']
-        gkey = 'OV' if shape == 'ellipse' else 'AB' if radius else 'RE'
-        groups.setdefault(gkey, {'key': gkey, 'name': {'OV': 'Oval', 'AB': 'Abgerundete Ecken', 'RE': 'Rechteck'}[gkey], 'shape': shape, 'cornerRadiusMm': 0})
+        gkey = 'OV' if shape == 'ellipse' else 'EE' if shape == 'plaque' else 'AB' if radius else 'RE'
+        groups.setdefault(gkey, {'key': gkey, 'name': {'OV': 'Oval', 'EE': 'Eingezogene Ecken', 'AB': 'Abgerundete Ecken', 'RE': 'Rechteck'}[gkey], 'shape': shape, 'cornerRadiusMm': 0})
         key = f"{prefix}-{gkey}-{p['widthMm']:g}X{p['heightMm']:g}"
         edge = p['edgeMm']; n = p['holes']
         rid = f"AH{n:02d}-E{edge:g}-D8"
         rules.setdefault(rid, {'id': rid, 'label': f'{n} Abstandshalter', 'layout': p['layout'], 'count': n, 'diameterMm': 8, 'edgeMm': edge, 'priceCents': None, 'skuSuffix': f'AH{n:02d}', 'accessory': 'standoffs'})
         s = sizes.setdefault(key, {'key': key, 'groupKey': gkey, 'label': f"{cm(p['widthMm'])} × {cm(p['heightMm'])} cm", 'widthMm': p['widthMm'], 'heightMm': p['heightMm'], 'baseCents': None, 'mounting': []})
         if radius: s['cornerRadiusMm'] = radius
+        if radius and backing and p.get('backCornerRadiusMm'): s['backingCornerRadiusMm'] = p['backCornerRadiusMm']
         if rid not in s['mounting']: s['mounting'].append(rid)
     # Nutzerwunsch 17.10.2026: genau EINE rechteckige Größe zusätzlich mit Eckenradius 5 mm.
     # Vorläufig 18 × 12 cm (erste Größe, die es in der Zeichnung auch abgerundet gibt); Größe austauschbar.
     groups['R5'] = {'key': 'R5', 'name': 'Abgerundete Ecken R5', 'shape': 'rect', 'cornerRadiusMm': 5}
     base = sizes[f'{prefix}-RE-180X120']
     sizes[f'{prefix}-R5-180X120'] = {**base, 'key': f'{prefix}-R5-180X120', 'groupKey': 'R5', 'mounting': list(base['mounting'])}
-    order = ['RE', 'R5', 'AB', 'OV']
+    order = ['RE', 'OV', 'EE', 'AB', 'R5']
     fam = {'schema': 'gravuru-product-family/v2', 'id': fid, 'name': name, 'material': material, 'designArea': {'marginMm': 0, 'keepoutMm': 1},
            'groups': [groups[k] for k in order if k in groups],
            'mountingRules': sorted(rules.values(), key=lambda r: (r['count'], r['edgeMm'])),
-           'sizes': sorted(sizes.values(), key=lambda s: (-format_class(s['widthMm'], s['heightMm']), s['widthMm'], order.index(s['groupKey']))),
+           'sizes': list(sizes.values()),  # drawing order: column by column, top to bottom; R5 last
            'withoutMounting': False, 'fonts': FONTS, 'briefingNotes': notes, 'sizeKeyPrefix': prefix, 'sizeKeySuffix': '',
            'source': {'path': 'app/designs/acrylic-standoff-signs/corel-platten-20261017.json', 'note': NOTE + ' Preise und Aufpreise offen. Schutzzone 1 mm vorläufig; Kopfdurchmesser der Abstandshalter noch nicht bekannt.'}}
     if backing: fam['backing'] = backing

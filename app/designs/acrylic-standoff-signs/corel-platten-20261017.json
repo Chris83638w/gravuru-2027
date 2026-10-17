@@ -1,20 +1,399 @@
 {
- "source": {
-  "file": "Hausnummer-Namenschilder-2026.pdf",
-  "sha256": "f36aef86d5ac25d0b0bf9e49ebaadad4e9b0ba54fb562cccf7c368b6798cdbae",
-  "creator": "CorelDRAW 2020",
-  "receivedFrom": "Nutzer, 17.10.2026",
-  "convention": "rot = Platte und Bohrlöcher (AA/AS, 5 mm, Hinterglasgravur); cyan = Rückplatte S/S (schwarz satiniert), rundum 10 mm größer; Kreise Ø 8 mm = Bohrlöcher für Abstandshalter"
- },
+ "source": "Hausnummer-Namenschilder-2026.pdf",
  "meta": {
   "page_mm": [
    5000,
    8000
   ],
   "drawings": 264,
-  "creator": "CorelDRAW 2020"
+  "creator": "CorelDRAW 2020",
+  "columns": 8
  },
  "plates": [
+  {
+   "widthMm": 150.0,
+   "heightMm": 100.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     50.0
+    ],
+    [
+     140.0,
+     50.0
+    ]
+   ],
+   "backPlate": [
+    170.0,
+    120.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 1,
+   "drawingRow": 1
+  },
+  {
+   "widthMm": 180.0,
+   "heightMm": 120.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     60.0
+    ],
+    [
+     170.0,
+     60.0
+    ]
+   ],
+   "backPlate": [
+    200.0,
+    140.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 1,
+   "drawingRow": 2
+  },
+  {
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     80.0
+    ],
+    [
+     225.0,
+     80.0
+    ]
+   ],
+   "backPlate": [
+    260.0,
+    180.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 1,
+   "drawingRow": 3
+  },
+  {
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     100.0
+    ],
+    [
+     285.0,
+     100.0
+    ]
+   ],
+   "backPlate": [
+    320.0,
+    220.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 1,
+   "drawingRow": 4
+  },
+  {
+   "widthMm": 360.0,
+   "heightMm": 240.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     120.0
+    ],
+    [
+     345.0,
+     120.0
+    ]
+   ],
+   "backPlate": [
+    380.0,
+    260.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 1,
+   "drawingRow": 5
+  },
+  {
+   "widthMm": 420.0,
+   "heightMm": 280.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     140.0
+    ],
+    [
+     405.0,
+     140.0
+    ]
+   ],
+   "backPlate": [
+    440.0,
+    300.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 1,
+   "drawingRow": 6
+  },
+  {
+   "widthMm": 150.0,
+   "heightMm": 100.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     90.0
+    ],
+    [
+     140.0,
+     10.0
+    ],
+    [
+     140.0,
+     90.0
+    ]
+   ],
+   "backPlate": [
+    170.0,
+    120.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 2,
+   "drawingRow": 1
+  },
+  {
+   "widthMm": 180.0,
+   "heightMm": 120.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     110.0
+    ],
+    [
+     170.0,
+     10.0
+    ],
+    [
+     170.0,
+     110.0
+    ]
+   ],
+   "backPlate": [
+    200.0,
+    140.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 2,
+   "drawingRow": 2
+  },
+  {
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     15.0
+    ],
+    [
+     15.0,
+     145.0
+    ],
+    [
+     225.0,
+     15.0
+    ],
+    [
+     225.0,
+     145.0
+    ]
+   ],
+   "backPlate": [
+    260.0,
+    180.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 2,
+   "drawingRow": 3
+  },
+  {
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     15.0
+    ],
+    [
+     15.0,
+     185.0
+    ],
+    [
+     285.0,
+     15.0
+    ],
+    [
+     285.0,
+     185.0
+    ]
+   ],
+   "backPlate": [
+    320.0,
+    220.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 2,
+   "drawingRow": 4
+  },
+  {
+   "widthMm": 360.0,
+   "heightMm": 240.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     15.0
+    ],
+    [
+     15.0,
+     225.0
+    ],
+    [
+     345.0,
+     15.0
+    ],
+    [
+     345.0,
+     225.0
+    ]
+   ],
+   "backPlate": [
+    380.0,
+    260.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 2,
+   "drawingRow": 5
+  },
+  {
+   "widthMm": 420.0,
+   "heightMm": 280.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     15.0
+    ],
+    [
+     15.0,
+     265.0
+    ],
+    [
+     405.0,
+     15.0
+    ],
+    [
+     405.0,
+     265.0
+    ]
+   ],
+   "backPlate": [
+    440.0,
+    300.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 2,
+   "drawingRow": 6
+  },
   {
    "widthMm": 150.0,
    "heightMm": 80.0,
@@ -38,389 +417,10 @@
     170.0,
     100.0
    ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 150.0,
-   "heightMm": 100.0,
-   "shape": "ellipse",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     50.0
-    ],
-    [
-     140.0,
-     50.0
-    ]
-   ],
-   "backPlate": [
-    170.0,
-    120.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 150.0,
-   "heightMm": 100.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     50.0
-    ],
-    [
-     140.0,
-     50.0
-    ]
-   ],
-   "backPlate": [
-    170.0,
-    120.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 150.0,
-   "heightMm": 100.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     10.0
-    ],
-    [
-     10.0,
-     90.0
-    ],
-    [
-     140.0,
-     10.0
-    ],
-    [
-     140.0,
-     90.0
-    ]
-   ],
-   "backPlate": [
-    170.0,
-    120.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 160.0,
-   "heightMm": 160.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     80.0
-    ],
-    [
-     150.0,
-     80.0
-    ]
-   ],
-   "backPlate": [
-    180.0,
-    180.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 160.0,
-   "heightMm": 160.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     10.0
-    ],
-    [
-     10.0,
-     150.0
-    ],
-    [
-     150.0,
-     10.0
-    ],
-    [
-     150.0,
-     150.0
-    ]
-   ],
-   "backPlate": [
-    180.0,
-    180.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 180.0,
-   "heightMm": 120.0,
-   "shape": "ellipse",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     60.0
-    ],
-    [
-     170.0,
-     60.0
-    ]
-   ],
-   "backPlate": [
-    200.0,
-    140.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 180.0,
-   "heightMm": 120.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     60.0
-    ],
-    [
-     170.0,
-     60.0
-    ]
-   ],
-   "backPlate": [
-    200.0,
-    140.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 180.0,
-   "heightMm": 120.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     10.0
-    ],
-    [
-     10.0,
-     110.0
-    ],
-    [
-     170.0,
-     10.0
-    ],
-    [
-     170.0,
-     110.0
-    ]
-   ],
-   "backPlate": [
-    200.0,
-    140.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 180.0,
-   "heightMm": 120.0,
-   "shape": "rect",
-   "cornerRadiusMm": 11.6,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     60.0
-    ],
-    [
-     170.0,
-     60.0
-    ]
-   ],
-   "backPlate": [
-    200.0,
-    140.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 200.0,
-   "heightMm": 200.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     100.0
-    ],
-    [
-     190.0,
-     100.0
-    ]
-   ],
-   "backPlate": [
-    220.0,
-    220.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 200.0,
-   "heightMm": 200.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     10.0
-    ],
-    [
-     10.0,
-     190.0
-    ],
-    [
-     190.0,
-     10.0
-    ],
-    [
-     190.0,
-     190.0
-    ]
-   ],
-   "backPlate": [
-    220.0,
-    220.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 210.0,
-   "heightMm": 70.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     35.0
-    ],
-    [
-     200.0,
-     35.0
-    ]
-   ],
-   "backPlate": [
-    230.0,
-    90.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 210.0,
-   "heightMm": 140.0,
-   "shape": "ellipse",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     70.0
-    ],
-    [
-     195.0,
-     70.0
-    ]
-   ],
-   "backPlate": [
-    230.0,
-    160.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 210.0,
-   "heightMm": 140.0,
-   "shape": "rect",
-   "cornerRadiusMm": 13.5,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     70.0
-    ],
-    [
-     200.0,
-     70.0
-    ]
-   ],
-   "backPlate": [
-    230.0,
-    160.0
-   ],
-   "backMarginMm": 10.0
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 3,
+   "drawingRow": 1
   },
   {
    "widthMm": 225.0,
@@ -445,7 +445,206 @@
     245.0,
     140.0
    ],
-   "backMarginMm": 10.0
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 3,
+   "drawingRow": 2
+  },
+  {
+   "widthMm": 300.0,
+   "heightMm": 160.0,
+   "shape": "ellipse",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     80.0
+    ],
+    [
+     285.0,
+     80.0
+    ]
+   ],
+   "backPlate": [
+    320.0,
+    180.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 3,
+   "drawingRow": 3
+  },
+  {
+   "widthMm": 150.0,
+   "heightMm": 100.0,
+   "shape": "ellipse",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     50.0
+    ],
+    [
+     140.0,
+     50.0
+    ]
+   ],
+   "backPlate": [
+    170.0,
+    120.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 4,
+   "drawingRow": 1
+  },
+  {
+   "widthMm": 180.0,
+   "heightMm": 120.0,
+   "shape": "ellipse",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     60.0
+    ],
+    [
+     170.0,
+     60.0
+    ]
+   ],
+   "backPlate": [
+    200.0,
+    140.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 4,
+   "drawingRow": 2
+  },
+  {
+   "widthMm": 210.0,
+   "heightMm": 140.0,
+   "shape": "ellipse",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     70.0
+    ],
+    [
+     195.0,
+     70.0
+    ]
+   ],
+   "backPlate": [
+    230.0,
+    160.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 4,
+   "drawingRow": 3
+  },
+  {
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "shape": "ellipse",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     80.0
+    ],
+    [
+     225.0,
+     80.0
+    ]
+   ],
+   "backPlate": [
+    260.0,
+    180.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 4,
+   "drawingRow": 4
+  },
+  {
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "shape": "ellipse",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     100.0
+    ],
+    [
+     285.0,
+     100.0
+    ]
+   ],
+   "backPlate": [
+    320.0,
+    220.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 4,
+   "drawingRow": 5
+  },
+  {
+   "widthMm": 210.0,
+   "heightMm": 70.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     35.0
+    ],
+    [
+     200.0,
+     35.0
+    ]
+   ],
+   "backPlate": [
+    230.0,
+    90.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 5,
+   "drawingRow": 1
   },
   {
    "widthMm": 240.0,
@@ -470,173 +669,10 @@
     260.0,
     90.0
    ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 240.0,
-   "heightMm": 160.0,
-   "shape": "ellipse",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     80.0
-    ],
-    [
-     225.0,
-     80.0
-    ]
-   ],
-   "backPlate": [
-    260.0,
-    180.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 240.0,
-   "heightMm": 160.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     80.0
-    ],
-    [
-     225.0,
-     80.0
-    ]
-   ],
-   "backPlate": [
-    260.0,
-    180.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 240.0,
-   "heightMm": 160.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     15.0
-    ],
-    [
-     15.0,
-     145.0
-    ],
-    [
-     225.0,
-     15.0
-    ],
-    [
-     225.0,
-     145.0
-    ]
-   ],
-   "backPlate": [
-    260.0,
-    180.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 240.0,
-   "heightMm": 160.0,
-   "shape": "rect",
-   "cornerRadiusMm": 15.5,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 10.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     10.0,
-     80.0
-    ],
-    [
-     230.0,
-     80.0
-    ]
-   ],
-   "backPlate": [
-    260.0,
-    180.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 260.0,
-   "heightMm": 260.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     130.0
-    ],
-    [
-     245.0,
-     130.0
-    ]
-   ],
-   "backPlate": [
-    280.0,
-    280.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 260.0,
-   "heightMm": 260.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     15.0
-    ],
-    [
-     15.0,
-     245.0
-    ],
-    [
-     245.0,
-     15.0
-    ],
-    [
-     245.0,
-     245.0
-    ]
-   ],
-   "backPlate": [
-    280.0,
-    280.0
-   ],
-   "backMarginMm": 10.0
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 5,
+   "drawingRow": 2
   },
   {
    "widthMm": 270.0,
@@ -661,198 +697,10 @@
     290.0,
     110.0
    ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 300.0,
-   "heightMm": 160.0,
-   "shape": "ellipse",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     80.0
-    ],
-    [
-     285.0,
-     80.0
-    ]
-   ],
-   "backPlate": [
-    320.0,
-    180.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 300.0,
-   "heightMm": 200.0,
-   "shape": "ellipse",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     100.0
-    ],
-    [
-     285.0,
-     100.0
-    ]
-   ],
-   "backPlate": [
-    320.0,
-    220.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 300.0,
-   "heightMm": 200.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     100.0
-    ],
-    [
-     285.0,
-     100.0
-    ]
-   ],
-   "backPlate": [
-    320.0,
-    220.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 300.0,
-   "heightMm": 200.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     15.0
-    ],
-    [
-     15.0,
-     185.0
-    ],
-    [
-     285.0,
-     15.0
-    ],
-    [
-     285.0,
-     185.0
-    ]
-   ],
-   "backPlate": [
-    320.0,
-    220.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 300.0,
-   "heightMm": 200.0,
-   "shape": "rect",
-   "cornerRadiusMm": 19.3,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     100.0
-    ],
-    [
-     285.0,
-     100.0
-    ]
-   ],
-   "backPlate": [
-    320.0,
-    220.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 300.0,
-   "heightMm": 300.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     150.0
-    ],
-    [
-     285.0,
-     150.0
-    ]
-   ],
-   "backPlate": [
-    320.0,
-    320.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 300.0,
-   "heightMm": 300.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     15.0
-    ],
-    [
-     15.0,
-     285.0
-    ],
-    [
-     285.0,
-     15.0
-    ],
-    [
-     285.0,
-     285.0
-    ]
-   ],
-   "backPlate": [
-    320.0,
-    320.0
-   ],
-   "backMarginMm": 10.0
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 5,
+   "drawingRow": 3
   },
   {
    "widthMm": 360.0,
@@ -877,123 +725,10 @@
     380.0,
     140.0
    ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 360.0,
-   "heightMm": 240.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     120.0
-    ],
-    [
-     345.0,
-     120.0
-    ]
-   ],
-   "backPlate": [
-    380.0,
-    260.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 360.0,
-   "heightMm": 240.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     15.0
-    ],
-    [
-     15.0,
-     225.0
-    ],
-    [
-     345.0,
-     15.0
-    ],
-    [
-     345.0,
-     225.0
-    ]
-   ],
-   "backPlate": [
-    380.0,
-    260.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 420.0,
-   "heightMm": 280.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 2,
-   "layout": "left-right",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     140.0
-    ],
-    [
-     405.0,
-     140.0
-    ]
-   ],
-   "backPlate": [
-    440.0,
-    300.0
-   ],
-   "backMarginMm": 10.0
-  },
-  {
-   "widthMm": 420.0,
-   "heightMm": 280.0,
-   "shape": "rect",
-   "cornerRadiusMm": 0,
-   "holes": 4,
-   "layout": "corners",
-   "edgeMm": 15.0,
-   "holeDiameterMm": 8.0,
-   "holePositions": [
-    [
-     15.0,
-     15.0
-    ],
-    [
-     15.0,
-     265.0
-    ],
-    [
-     405.0,
-     15.0
-    ],
-    [
-     405.0,
-     265.0
-    ]
-   ],
-   "backPlate": [
-    440.0,
-    300.0
-   ],
-   "backMarginMm": 10.0
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 5,
+   "drawingRow": 4
   },
   {
    "widthMm": 450.0,
@@ -1018,8 +753,380 @@
     470.0,
     170.0
    ],
-   "backMarginMm": 10.0
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 5,
+   "drawingRow": 5
+  },
+  {
+   "widthMm": 160.0,
+   "heightMm": 160.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     80.0
+    ],
+    [
+     150.0,
+     80.0
+    ]
+   ],
+   "backPlate": [
+    180.0,
+    180.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 6,
+   "drawingRow": 1
+  },
+  {
+   "widthMm": 200.0,
+   "heightMm": 200.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     100.0
+    ],
+    [
+     190.0,
+     100.0
+    ]
+   ],
+   "backPlate": [
+    220.0,
+    220.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 6,
+   "drawingRow": 2
+  },
+  {
+   "widthMm": 260.0,
+   "heightMm": 260.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     130.0
+    ],
+    [
+     245.0,
+     130.0
+    ]
+   ],
+   "backPlate": [
+    280.0,
+    280.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 6,
+   "drawingRow": 3
+  },
+  {
+   "widthMm": 300.0,
+   "heightMm": 300.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     150.0
+    ],
+    [
+     285.0,
+     150.0
+    ]
+   ],
+   "backPlate": [
+    320.0,
+    320.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 6,
+   "drawingRow": 4
+  },
+  {
+   "widthMm": 160.0,
+   "heightMm": 160.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     150.0
+    ],
+    [
+     150.0,
+     10.0
+    ],
+    [
+     150.0,
+     150.0
+    ]
+   ],
+   "backPlate": [
+    180.0,
+    180.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 7,
+   "drawingRow": 1
+  },
+  {
+   "widthMm": 200.0,
+   "heightMm": 200.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     190.0
+    ],
+    [
+     190.0,
+     10.0
+    ],
+    [
+     190.0,
+     190.0
+    ]
+   ],
+   "backPlate": [
+    220.0,
+    220.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 7,
+   "drawingRow": 2
+  },
+  {
+   "widthMm": 260.0,
+   "heightMm": 260.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     15.0
+    ],
+    [
+     15.0,
+     245.0
+    ],
+    [
+     245.0,
+     15.0
+    ],
+    [
+     245.0,
+     245.0
+    ]
+   ],
+   "backPlate": [
+    280.0,
+    280.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 7,
+   "drawingRow": 3
+  },
+  {
+   "widthMm": 300.0,
+   "heightMm": 300.0,
+   "shape": "rect",
+   "cornerRadiusMm": 0,
+   "holes": 4,
+   "layout": "corners",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     15.0
+    ],
+    [
+     15.0,
+     285.0
+    ],
+    [
+     285.0,
+     15.0
+    ],
+    [
+     285.0,
+     285.0
+    ]
+   ],
+   "backPlate": [
+    320.0,
+    320.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 0,
+   "drawingColumn": 7,
+   "drawingRow": 4
+  },
+  {
+   "widthMm": 180.0,
+   "heightMm": 120.0,
+   "shape": "plaque",
+   "cornerRadiusMm": 11.6,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     60.0
+    ],
+    [
+     170.0,
+     60.0
+    ]
+   ],
+   "backPlate": [
+    200.0,
+    140.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 12.9,
+   "drawingColumn": 8,
+   "drawingRow": 1
+  },
+  {
+   "widthMm": 210.0,
+   "heightMm": 140.0,
+   "shape": "plaque",
+   "cornerRadiusMm": 13.5,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     70.0
+    ],
+    [
+     200.0,
+     70.0
+    ]
+   ],
+   "backPlate": [
+    230.0,
+    160.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 14.8,
+   "drawingColumn": 8,
+   "drawingRow": 2
+  },
+  {
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "shape": "plaque",
+   "cornerRadiusMm": 15.5,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 10.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     10.0,
+     80.0
+    ],
+    [
+     230.0,
+     80.0
+    ]
+   ],
+   "backPlate": [
+    260.0,
+    180.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 16.8,
+   "drawingColumn": 8,
+   "drawingRow": 3
+  },
+  {
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "shape": "plaque",
+   "cornerRadiusMm": 19.3,
+   "holes": 2,
+   "layout": "left-right",
+   "edgeMm": 15.0,
+   "holeDiameterMm": 8.0,
+   "holePositions": [
+    [
+     15.0,
+     100.0
+    ],
+    [
+     285.0,
+     100.0
+    ]
+   ],
+   "backPlate": [
+    320.0,
+    220.0
+   ],
+   "backMarginMm": 10.0,
+   "backCornerRadiusMm": 20.6,
+   "drawingColumn": 8,
+   "drawingRow": 4
   }
  ],
- "unclassified": 0
+ "unclassified": 0,
+ "sourceSha256": "f36aef86d5ac25d0b0bf9e49ebaadad4e9b0ba54fb562cccf7c368b6798cdbae"
 }

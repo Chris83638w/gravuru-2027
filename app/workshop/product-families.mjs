@@ -37,7 +37,8 @@ const mm=(v,min,max)=>Number.isFinite(v)&&v>=min&&v<=max;
 const sha=v=>createHash('sha256').update(v).digest('hex');
 const only=(o,keys,label)=>{if(!o||typeof o!=='object'||Array.isArray(o))invalid(label+' fehlt.');const extra=Object.keys(o).filter(k=>!keys.includes(k));if(extra.length)invalid(label+': unbekannte Felder '+extra.join(', '));};
 const unique=(list,key,label)=>{const seen=new Set();for(const v of list){if(seen.has(v[key]))invalid(label+' doppelt: '+v[key]);seen.add(v[key]);}};
-const SHAPES=['rect','ellipse'];
+const SHAPES=['rect','ellipse','plaque'];// plaque = eingezogene Ecken (konkave Viertelkreise)
+const CORNERED=['rect','plaque'];
 const open=v=>v===null;
 // A drill rule with diameter and edge distance; null = Bohrbild noch offen.
 // Befestigung ohne Löcher (Klebepads, Magnet …): layout 'none', count 0. Eine Regel
@@ -78,8 +79,9 @@ export function validateFamily(f){
  if(!Array.isArray(f.sizes)||!f.sizes.length||f.sizes.length>500)invalid('1 bis 500 Größen angeben.');
  const groups=new Map(f.groups.map(g=>[g.key,g])),rules=new Map(f.mountingRules.map(r=>[r.id,r]));
  for(const s of f.sizes){
-  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm'],'Größe');
-  if(s.cornerRadiusMm!==undefined&&(!mm(s.cornerRadiusMm,0,100)||groups.get(s.groupKey)?.shape!=='rect'))invalid('Größe '+(s.key||'')+': eigener Eckenradius nur bei eckiger Form.');
+  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm'],'Größe');
+  if(s.cornerRadiusMm!==undefined&&(!mm(s.cornerRadiusMm,0,100)||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': eigener Eckenradius nur bei eckiger Form.');
+  if(s.backingCornerRadiusMm!==undefined&&(!mm(s.backingCornerRadiusMm,0,100)||!f.backing||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': Eckenradius der Rückplatte nur mit Rückplatte und eckiger Form.');
   if(!id(s.key)||!groups.has(s.groupKey)||!text(s.label,60)||!mm(s.widthMm,10,1000)||!mm(s.heightMm,10,1000)||!(open(s.baseCents)||cents(s.baseCents))||!Array.isArray(s.mounting)||s.mounting.length>8||s.mounting.some(m=>!rules.has(m))||new Set(s.mounting).size!==s.mounting.length)invalid('Größe '+(s.key||'')+' unvollständig.');
   if(s.netWeightG!==undefined&&!mm(s.netWeightG,0,100000))invalid('Gewicht von '+s.key+' prüfen.');
   if(!f.withoutMounting&&!s.mounting.length)invalid(s.key+': mindestens eine Befestigung nötig.');
@@ -100,6 +102,7 @@ export function familyGaps(f){
  for(const r of f.mountingRules){if(!ruleComplete(r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
  const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
+ if(f.groups.some(g=>g.shape==='plaque'))gaps.push('Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)');
  return gaps;
 }
 export function familyReady(f){
@@ -108,7 +111,9 @@ export function familyReady(f){
  if(m.adapter==='steel'&&f.material.thicknessMm!==null&&f.material.thicknessMm!==1.5)return {ready:false,gaps,reason:'Das Edelstahl-Produktmodell ist für 1,5 mm freigegeben.'};
  return gaps.length?{ready:false,gaps,reason:'Stammdaten unvollständig: '+gaps.join(' · ')}:{ready:true,gaps:[]};
 }
-export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm};}
+export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm,...(s.backingCornerRadiusMm!==undefined?{backingCornerRadiusMm:s.backingCornerRadiusMm}:{})};}
+// Corner radius of an offset contour: a rounded corner grows outward, a concave corner shrinks.
+const offsetRadius=(g,d)=>g.shape==='plaque'?Math.max(0,g.cornerRadiusMm-d):g.cornerRadiusMm?Math.max(0,g.cornerRadiusMm+d):0;
 const ruleOf=(f,rid)=>f.mountingRules.find(r=>r.id===rid);
 const productKey=(f,s)=>'family:'+f.id+':'+s.key;
 
@@ -140,16 +145,16 @@ export function familyProductConfig(f,s,revision){
 // per mounting option. A drawing aid, never production geometry.
 export function familyTemplate(f,s){
  const g=geometryOf(f,s),c=nativeContour({...g,holes:[]}),m=f.designArea.marginMm||0,k=f.designArea.keepoutMm,w=g.width,h=g.height;
- const inner=m>0?`<g id="nutzflaeche"><path d="${nativeContour({width:w-2*m,height:h-2*m,shape:g.shape,cornerRadiusMm:Math.max(0,g.cornerRadiusMm-m),holes:[]}).contours[0].d}" transform="translate(${m} ${m})" fill="none" stroke="#2a7" stroke-width="0.2" stroke-dasharray="1 1"/></g>`:'';
+ const inner=m>0?`<g id="nutzflaeche"><path d="${nativeContour({width:w-2*m,height:h-2*m,shape:g.shape,cornerRadiusMm:offsetRadius(g,-m),holes:[]}).contours[0].d}" transform="translate(${m} ${m})" fill="none" stroke="#2a7" stroke-width="0.2" stroke-dasharray="1 1"/></g>`:'';
  const b=f.backing?.offsetMm||0,vb=`${-b} ${-b} ${w+2*b} ${h+2*b}`;
- const backing=b?`<g id="rueckplatte" data-label="${esc(f.backing.label)}"><path d="${nativeContour({width:w+2*b,height:h+2*b,shape:g.shape,cornerRadiusMm:g.cornerRadiusMm?g.cornerRadiusMm+b:0,holes:[]}).contours[0].d}" transform="translate(${-b} ${-b})" fill="none" stroke="#06c" stroke-width="0.3" stroke-dasharray="2 1"/></g>`:'';
+ const backing=b?`<g id="rueckplatte" data-label="${esc(f.backing.label)}"><path d="${nativeContour({width:w+2*b,height:h+2*b,shape:g.shape,cornerRadiusMm:g.backingCornerRadiusMm??offsetRadius(g,b),holes:[]}).contours[0].d}" transform="translate(${-b} ${-b})" fill="none" stroke="#06c" stroke-width="0.3" stroke-dasharray="2 1"/></g>`:'';
  const patterns=s.mounting.filter(rid=>!holeless(ruleOf(f,rid))).map(rid=>{const r=ruleOf(f,rid);if(!ruleComplete(r))return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)} – Bohrbild offen"/>`;const holes=holesFor(g,r);return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)}">${holes.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="${p.diameter/2}" fill="#d33"/>`).join('')}${keepoutZones(holes,k).map(z=>`<circle cx="${z.x}" cy="${z.y}" r="${z.r}" fill="none" stroke="#d33" stroke-width="0.2" stroke-dasharray="0.6 0.6"/>`).join('')}</g>`;}).join('');
  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w+2*b}mm" height="${h+2*b}mm" viewBox="${vb}"><title>${esc(f.name)} · ${esc(s.label)} · Gestaltungsschablone (nicht drucken)</title>${backing}<g id="kontur"><path d="${c.contours[0].d}" fill="none" stroke="#000" stroke-width="0.3"/></g>${inner}${patterns}</svg>`;
 }
 
 export function familyBriefing(f,revision){
  const price=c=>c===null?'offen':(c/100).toFixed(2).replace('.',',')+' €',mat=FAMILY_MATERIALS[f.material.kind],gaps=familyGaps(f);
- const rows=f.sizes.map(s=>{const g=f.groups.find(x=>x.key===s.groupKey);const rad=geometryOf(f,s).cornerRadiusMm;return `| ${s.key} | ${g.name} | ${s.label} (${s.widthMm} × ${s.heightMm} mm${rad?', Ecken R'+rad:''}) | ${price(s.baseCents)} | ${s.mounting.map(id=>{const r=ruleOf(f,id);return r.label+' · '+(holeless(r)?'ohne Löcher':ruleComplete(r)?r.edgeMm+' mm Randabstand':'Bohrbild offen');}).join('; ')||'ohne'} | schablonen/${s.key}.svg |`;}).join('\n');
+ const rows=f.sizes.map(s=>{const g=f.groups.find(x=>x.key===s.groupKey);const rad=geometryOf(f,s).cornerRadiusMm;return `| ${s.key} | ${g.name} | ${s.label} (${s.widthMm} × ${s.heightMm} mm${rad?(g.shape==='plaque'?', eingezogene Ecken R':', Ecken R')+rad:''}) | ${price(s.baseCents)} | ${s.mounting.map(id=>{const r=ruleOf(f,id);return r.label+' · '+(holeless(r)?'ohne Löcher':ruleComplete(r)?r.edgeMm+' mm Randabstand':'Bohrbild offen');}).join('; ')||'ohne'} | schablonen/${s.key}.svg |`;}).join('\n');
  return `# ${f.name} – Briefing für die Designerstellung
 
 Familienrevision ${revision}. Automatisch aus der Werkstatt erzeugt; nicht von Hand ändern, sondern in der Werkstatt pflegen und neu herunterladen.
@@ -208,7 +213,7 @@ export function familyChanges(before,after){
  add('name','Name',before.name,after.name);
  add('price','Grundpreis',euroText(a.basePriceCents),euroText(b.basePriceCents));
  add('size','Maße',ga.width+' × '+ga.height+' mm',gb.width+' × '+gb.height+' mm');
- add('shape','Form',(ga.shape==='ellipse'?'oval':'eckig')+(ga.cornerRadiusMm?' R'+ga.cornerRadiusMm:''),(gb.shape==='ellipse'?'oval':'eckig')+(gb.cornerRadiusMm?' R'+gb.cornerRadiusMm:''));
+ const shapeName=g=>(g.shape==='ellipse'?'oval':g.shape==='plaque'?'eingezogene Ecken':'eckig')+(g.cornerRadiusMm?' R'+g.cornerRadiusMm:'');add('shape','Form',shapeName(ga),shapeName(gb));
  add('margin','Gestaltungsrand',(ga.safeMarginMm??2)+' mm',gb.safeMarginMm+' mm');
  const mv=d=>d.config.profile.optionGroups.find(g=>g.id==='mounting')?.values||[];
  add('mounting','Befestigung',mountingText(mv(before)),mountingText(mv(after)));

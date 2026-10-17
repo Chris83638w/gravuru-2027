@@ -14,13 +14,13 @@ Nicht installiert. Branch `task/steel-master-data-20261016`.
 
 ## Familien
 
-`scripts/import-acrylic-standoff-families.py` → `aa.json`, `as.json`, `ss.json`: je 28 Größen (15 Rechteck, 4 abgerundet mit gemessenem Radius, 8 oval – genau die 37 gezeichneten Platten – plus eine R5-Größe 18 × 12), 4 Bohrbilder (2/4 Abstandshalter, Rand 10/15 mm, Ø 8), 39 Zuordnungen. Preise und Aufpreise offen; Schutzzone 1 mm vorläufig (Kopfdurchmesser der Abstandshalter offen).
+`scripts/import-acrylic-standoff-families.py` → `aa.json`, `as.json`, `ss.json`: je 28 Größen (15 Rechteck, 4 mit eingezogenen Ecken [konkave Viertelkreise, Radius gemessen], 8 oval – genau die 37 gezeichneten Platten – plus eine R5-Größe 18 × 12); Reihenfolge = Spalten der Zeichnung von oben nach unten, 4 Bohrbilder (2/4 Abstandshalter, Rand 10/15 mm, Ø 8), 39 Zuordnungen. Preise und Aufpreise offen; Schutzzone 1 mm vorläufig (Kopfdurchmesser der Abstandshalter offen).
 
 Familienmodell erweitert: Eckenradius je Größe, Zubehör „Abstandshalter“, Gravurseite, Rückplatte (`backing`: Überstand, Stärke) – in Schablone und Briefing berücksichtigt. Excel-Export/-Import trägt diese Felder (Rundlauf ohne Abweichung).
 
 ## Plattenkatalog
 
-[Plattenkatalog-Acryl-SS.pdf](Plattenkatalog-Acryl-SS.pdf) (`scripts/plate-catalog-pdf.py`): alle 39 Zeichnungen der S/S-Familie mit Rückplatte, **eine Seite je Format** (skalierbare Reihe, Seitenverhältnis ±1 %), Größen aufsteigend, Formen nebeneinander. Familien-Größen sind in derselben Reihenfolge gespeichert (auch Edelstahl umsortiert). Zusätzliche Platten wurden vom Nutzer abgelehnt (zu viele).
+[Plattenkatalog-Acryl-SS.pdf](Plattenkatalog-Acryl-SS.pdf) (`scripts/plate-catalog-pdf.py`): alle 39 Zeichnungen der S/S-Familie mit Rückplatte, **Aufbau wie die Corel-Zeichnung**: eine Spalte je Form und Befestigung (Spalten 1–8 der Zeichnung), Größen von oben nach unten aufsteigend, die ergänzte R5-Größe als eigene Spalte am Ende; Familien-Größen sind in derselben Reihenfolge gespeichert. Edelstahl ohne Zeichnung: eine Spalte je Form und Formatreihe. Zusätzliche Platten wurden vom Nutzer abgelehnt (zu viele).
 
 ## Prüfungen
 
@@ -40,3 +40,9 @@ Auffällig (Rückfrage, keine Änderung):
 - 21 × 14 gibt es nur oval und abgerundet (R 13,5), nicht als einfaches Rechteck mit 2/4 Löchern – alle anderen 3:2-Größen haben beides.
 - 24 × 7 ist ein Einzelformat (3,43:1); Designs der 3:1-Reihe passen dort nicht ohne Anpassung.
 - Reihe 15:8 (15 × 8, 22,5 × 12, 30 × 16) gibt es nur oval, Reihe 3:1 (21 × 7 … 45 × 15) nur eckig.
+
+## Korrektur 17.10.2026 (nach Rückmeldung „völlig durcheinander“)
+
+- **Lesefehler behoben:** Die vier Platten 18 × 12, 21 × 14, 24 × 16, 30 × 20 der Spalte 8 haben keine abgerundeten, sondern **eingezogene Ecken** (konkave Viertelkreise, Radius 11,6 / 13,5 / 15,5 / 19,3 mm; Rückplatte 12,9 / 14,8 / 16,8 / 20,6 mm). Der Leser hatte die Bogenrichtung nicht unterschieden. Neue Form `plaque` im Familienschema (`gravuru-product-family/v2`: Formen rect/ellipse/plaque), Radius je Größe, `backingCornerRadiusMm` je Größe; Schablone und Katalog zeichnen die Ecken nach innen. Im Konfigurator ist die Form noch nicht angeschlossen (wird als Lücke gemeldet).
+- **Reihenfolge wie gezeichnet:** `read-corel-plates.py` erkennt die Spalten der Zeichnung (`drawingColumn`/`drawingRow`); Familien, Übersichts-PNG, Katalog-PDF und Excel folgen dieser Ordnung. Der Katalog hat jetzt den gleichen Aufbau wie die Zeichnung.
+- Tests 13/13; Excel-Rundlauf (export → import) für AA und S/S ohne Abweichung.

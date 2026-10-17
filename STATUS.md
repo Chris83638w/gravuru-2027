@@ -1,6 +1,6 @@
 ## Acryl-Schilder mit Abstandshaltern aus Corel-Zeichnung (nicht installiert) · 17.10.2026
 
-Corel-PDF gelesen (37 Platten, 26 Formate, Rückplatte, Ø-8-Löcher); Familien AA, AS, S/S mit 28 Größen (37 Platten wie gezeichnet + eine R5-Größe 18 × 12), Plausibilität geprüft (4 Rückfragen, nichts geändert). Familienmodell: Radius je Größe, Abstandshalter, Gravurseite, Rückplatte. Plattenkatalog-PDF mit Vorschlagsseite zur Abstimmung; Stammdaten-Excel mit 9 Familien. Tests 13/13. Nachweis: [acrylic-standoff](docs/releases/20261017/acrylic-standoff/RELEASE.md). Offen: Preise, Kopfdurchmesser Abstandshalter, natives Acryl-Gravurprodukt.
+Corel-PDF gelesen (37 Platten, 26 Formate, Rückplatte, Ø-8-Löcher); Familien AA, AS, S/S mit 28 Größen (37 Platten wie gezeichnet + eine R5-Größe 18 × 12), Reihenfolge und Katalog wie die Zeichnung (Spalten, von oben nach unten); Spalte 8 = eingezogene Ecken (neue Form `plaque`, Lesefehler korrigiert); Plausibilität geprüft (4 Rückfragen, nichts geändert). Familienmodell: Radius je Größe, Abstandshalter, Gravurseite, Rückplatte. Plattenkatalog-PDF mit Vorschlagsseite zur Abstimmung; Stammdaten-Excel mit 9 Familien. Tests 13/13. Nachweis: [acrylic-standoff](docs/releases/20261017/acrylic-standoff/RELEASE.md). Offen: Preise, Kopfdurchmesser Abstandshalter, natives Acryl-Gravurprodukt.
 
 ## Edelstahl-Stammdaten vollständig, Stammdaten-Excel (nicht installiert) · 16.10.2026
 

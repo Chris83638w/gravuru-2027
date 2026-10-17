@@ -6,7 +6,7 @@ import {holesFor,ruleFromHoles,keepoutZones} from '../platform/sources/app/share
 import {createDesignAssetStore} from './design-assets.mjs';
 import {createProductRepository} from './repository.mjs';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
-import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,geometryOf} from './product-families.mjs';
+import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,geometryOf,familyGaps} from './product-families.mjs';
 import {createWorkshop} from './http.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
@@ -194,10 +194,16 @@ test('acrylic standoff families from the Corel drawing: per-size radius, standof
  
  for(const k of ['aa','as','ss']){const f=validateFamily(load(k));assert.equal(f.sizes.length,28);assert.deepEqual(f.mountingRules.map(r=>r.id),['AH02-E10-D8','AH02-E15-D8','AH04-E10-D8','AH04-E15-D8']);assert.ok(f.mountingRules.every(r=>r.accessory==='standoffs'&&r.diameterMm===8));}
  const ss=load('ss');
- const ab=ss.sizes.find(s=>s.key==='SS-AB-210X140');assert.equal(geometryOf(ss,ab).cornerRadiusMm,13.5,'radius as drawn, per size');assert.deepEqual(ab.mounting,['AH02-E10-D8'],'10 mm as drawn, not unified');
+ // Eingezogene Ecken (konkav) as drawn: own shape, radius per size, backing radius as measured.
+ const ee=ss.sizes.find(s=>s.key==='SS-EE-210X140');assert.deepEqual(geometryOf(ss,ee),{width:210,height:140,shape:'plaque',cornerRadiusMm:13.5,backingCornerRadiusMm:14.8});assert.deepEqual(ee.mounting,['AH02-E10-D8'],'10 mm as drawn, not unified');
  const ov=ss.sizes.find(s=>s.key==='SS-OV-210X140');assert.deepEqual(ov.mounting,['AH02-E15-D8']);
  assert.equal(ss.sizes.filter(s=>s.groupKey==='R5').length,1);assert.equal(geometryOf(ss,ss.sizes.find(s=>s.key==='SS-R5-180X120')).cornerRadiusMm,5);
- const svg=familyTemplate(ss,ab);assert.match(svg,/viewBox="-10 -10 230 160"/,'backing plate 10 mm around');assert.match(svg,/id="rueckplatte"/);
+ // Order as drawn: column by column, top to bottom; the added R5 size last.
+ assert.deepEqual(ss.sizes.slice(0,6).map(s=>s.key),['SS-RE-150X100','SS-RE-180X120','SS-RE-240X160','SS-RE-300X200','SS-RE-360X240','SS-RE-420X280']);assert.equal(ss.sizes.at(-1).key,'SS-R5-180X120');
+ const svg=familyTemplate(ss,ee);assert.match(svg,/viewBox="-10 -10 230 160"/,'backing plate 10 mm around');assert.match(svg,/id="rueckplatte"[^>]*><path d="M14.8 0H215.2A14.8 14.8 0 0 0 230 14.8/,'backing with concave corners');assert.match(svg,/id="kontur"><path d="M13.5 0H196.5A13.5 13.5 0 0 0 210 13.5/,'plate with concave corners (sweep 0)');
+ assert.match(familyTemplate(ss,ss.sizes.find(s=>s.key==='SS-R5-180X120')),/id="kontur"><path d="M5 0H175A5 5 0 0 1 180 5/,'rounded corners keep sweep 1');
+ assert.ok(familyGaps(ss).some(g=>/eingezogene Ecken/.test(g)),'plaque shape is reported as not yet connected');
  assert.throws(()=>validateFamily({...ss,backing:{...ss.backing,offsetMm:-1}}),/Rückplatte/);
  const bad=structuredClone(ss);bad.sizes.find(s=>s.groupKey==='OV').cornerRadiusMm=5;assert.throws(()=>validateFamily(bad),/Eckenradius/);
+ const noBacking=structuredClone(load('aa'));noBacking.sizes.find(s=>s.groupKey==='EE').backingCornerRadiusMm=12;assert.throws(()=>validateFamily(noBacking),/Rückplatte/);
 });

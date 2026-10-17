@@ -21,6 +21,8 @@ LAYOUTS = {'left-right': 'mittig links/rechts', 'top-bottom': 'mittig oben/unten
 LAYOUT_BY_TEXT = {v: k for k, v in LAYOUTS.items()}
 SHAPES = {'rect': 'eckig', 'ellipse': 'oval'}
 SHAPE_BY_TEXT = {v: k for k, v in SHAPES.items()}
+ACCESSORY = {'screws': 'Schrauben', 'standoffs': 'Abstandshalter'}
+ACCESSORY_BY_TEXT = {v: k for k, v in ACCESSORY.items()}
 MATERIALS = {'steel': ('Edelstahl', 'Gravur', 'dunkel'), 'slate': ('Schiefer', 'Gravur', 'hell'), 'acrylic': ('Acrylglas', 'Gravur', 'hell')}
 PROCESS = {'steel-engraving': 'Gravur', 'slate-engraving': 'Gravur', 'acrylic-engraving': 'Gravur', 'color-print': 'Druck'}
 
@@ -56,21 +58,23 @@ def export(paths, out):
             name, proc, ink = MATERIALS.get(m['kind'], (m['kind'], '', ''))
             seen[k] = [m['kind'], m.get('variant') or '', m['label'], m['thicknessMm'], PROCESS.get(m['processingProfileId'], m['processingProfileId']), ink, '']
     sheet('Materialien', ['Material (Kennung)', 'Variante', 'Bezeichnung', 'Stärke mm', 'Verfahren', 'Gravur erscheint', 'Hinweise'], list(seen.values()), [18, 12, 34, 10, 10, 16, 40])
-    sheet('Familien', ['Familie (Kennung)', 'Name', 'Material', 'Variante', 'Stärke mm', 'Verfahren', 'Gestaltungsrand mm', 'Schutzzone mm', 'Ohne Befestigung anbieten', 'Schriften', 'Stilnotizen', 'Herkunft'],
+    sheet('Familien', ['Familie (Kennung)', 'Name', 'Material', 'Variante', 'Stärke mm', 'Verfahren', 'Gravurseite', 'Gestaltungsrand mm', 'Schutzzone mm', 'Ohne Befestigung anbieten', 'Rückplatte', 'Rückplatte Überstand mm', 'Rückplatte Stärke mm', 'Rückplatte Hinweis', 'Schriften', 'Stilnotizen', 'Herkunft'],
           [[f['id'], f['name'], f['material']['kind'], f['material'].get('variant') or '', f['material']['thicknessMm'], PROCESS.get(f['material']['processingProfileId'], f['material']['processingProfileId']),
-            f['designArea']['marginMm'], f['designArea']['keepoutMm'], 'ja' if f['withoutMounting'] else 'nein', ', '.join(f['fonts']), f['briefingNotes'], (f.get('source') or {}).get('note', '')] for f in fams],
-          [26, 34, 10, 10, 9, 10, 12, 12, 12, 50, 60, 60])
+            {'back': 'hinten', 'front': 'vorn'}.get(f['material'].get('engravingSide'), ''), f['designArea']['marginMm'], f['designArea']['keepoutMm'], 'ja' if f['withoutMounting'] else 'nein',
+            (f.get('backing') or {}).get('label', ''), (f.get('backing') or {}).get('offsetMm'), (f.get('backing') or {}).get('thicknessMm'), (f.get('backing') or {}).get('note', ''),
+            ', '.join(f['fonts']), f['briefingNotes'], (f.get('source') or {}).get('note', '')] for f in fams],
+          [26, 34, 10, 10, 9, 10, 10, 12, 12, 12, 24, 12, 12, 30, 50, 60, 60])
     rows = []
     for f in fams:
         groups = {g['key']: g for g in f['groups']}
         for s in f['sizes']:
             g = groups[s['groupKey']]
-            rows.append([f['id'], s['key'], s['groupKey'], g['name'], SHAPES[g['shape']], g['cornerRadiusMm'], s['label'], s['widthMm'], s['heightMm'], euro(s['baseCents']), s.get('netWeightG'), ', '.join(s['mounting'])])
+            rows.append([f['id'], s['key'], s['groupKey'], g['name'], SHAPES[g['shape']], s.get('cornerRadiusMm', g['cornerRadiusMm']), s['label'], s['widthMm'], s['heightMm'], euro(s['baseCents']), s.get('netWeightG'), ', '.join(s['mounting'])])
     sheet('Größen', ['Familie', 'SKU', 'Formgruppe', 'Form', 'eckig/oval', 'Eckenradius mm', 'Bezeichnung', 'Breite mm', 'Höhe mm', 'Grundpreis €', 'Gewicht g', 'Befestigungen (Kennungen)'], rows, [22, 26, 10, 22, 10, 12, 14, 10, 10, 12, 10, 50])
     rows = []
     for f in fams:
         for r in f['mountingRules']:
-            rows.append([f['id'], r['id'], r['label'], r['skuSuffix'], LAYOUTS[r['layout']], r['count'], r['diameterMm'], r['edgeMm'], 'Schrauben' if r.get('accessory') == 'screws' else '', euro(r['priceCents'])])
+            rows.append([f['id'], r['id'], r['label'], r['skuSuffix'], LAYOUTS[r['layout']], r['count'], r['diameterMm'], r['edgeMm'], ACCESSORY.get(r.get('accessory'), ''), euro(r['priceCents'])])
     sheet('Befestigungen', ['Familie', 'Kennung', 'Bezeichnung', 'SKU-Endung', 'Lage', 'Anzahl Löcher', 'Ø mm', 'Randabstand mm', 'Zubehör', 'Aufpreis €'], rows, [22, 16, 32, 10, 20, 12, 8, 14, 12, 11])
     ws = wb.create_sheet('Lesen')
     for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
@@ -94,6 +98,10 @@ def import_(xlsx, out):
                      'designArea': {'marginMm': num(r['Gestaltungsrand mm']), 'keepoutMm': num(r['Schutzzone mm'])}, 'groups': [], 'mountingRules': [], 'sizes': [],
                      'withoutMounting': str(r['Ohne Befestigung anbieten']).strip().lower() == 'ja', 'fonts': [x.strip() for x in str(r['Schriften'] or '').split(',') if x.strip()],
                      'briefingNotes': r['Stilnotizen'] or '', 'source': {'note': 'Aus Stammdaten-Excel gelesen: ' + Path(xlsx).name}}
+        if r.get('Gravurseite') in ('vorn', 'hinten'): fams[fid]['material']['engravingSide'] = 'front' if r['Gravurseite'] == 'vorn' else 'back'
+        if r.get('Rückplatte'):
+            fams[fid]['backing'] = {'label': r['Rückplatte'], 'offsetMm': num(r['Rückplatte Überstand mm']) or 0, 'thicknessMm': num(r['Rückplatte Stärke mm'])}
+            if r.get('Rückplatte Hinweis'): fams[fid]['backing']['note'] = r['Rückplatte Hinweis']
     for r in rows('Materialien'):
         for f in fams.values():
             if f['material']['kind'] == r['Material (Kennung)'] and (f['material'].get('variant') or '') == (r['Variante'] or ''): f['material']['label'] = r['Bezeichnung']
@@ -101,16 +109,24 @@ def import_(xlsx, out):
         f = fams[r['Familie']]; layout = LAYOUT_BY_TEXT[r['Lage']]
         rule = {'id': r['Kennung'], 'label': r['Bezeichnung'], 'layout': layout, 'count': 0 if layout == 'none' else int(r['Anzahl Löcher']),
                 'diameterMm': None if layout == 'none' else num(r['Ø mm']), 'edgeMm': None if layout == 'none' else num(r['Randabstand mm']), 'priceCents': cents(r['Aufpreis €']), 'skuSuffix': r['SKU-Endung']}
-        if r.get('Zubehör') == 'Schrauben': rule['accessory'] = 'screws'
+        if r.get('Zubehör') in ACCESSORY_BY_TEXT: rule['accessory'] = ACCESSORY_BY_TEXT[r['Zubehör']]
         f['mountingRules'].append(rule)
     for r in rows('Größen'):
         f = fams[r['Familie']]
         if not any(g['key'] == r['Formgruppe'] for g in f['groups']):
-            f['groups'].append({'key': r['Formgruppe'], 'name': r['Form'], 'shape': SHAPE_BY_TEXT[r['eckig/oval']], 'cornerRadiusMm': num(r['Eckenradius mm']) or 0})
+            f['groups'].append({'key': r['Formgruppe'], 'name': r['Form'], 'shape': SHAPE_BY_TEXT[r['eckig/oval']], 'cornerRadiusMm': 0, '_radii': []})
+        group = next(g for g in f['groups'] if g['key'] == r['Formgruppe']); radius = num(r['Eckenradius mm']) or 0; group['_radii'].append(radius)
         size = {'key': r['SKU'], 'groupKey': r['Formgruppe'], 'label': r['Bezeichnung'], 'widthMm': num(r['Breite mm']), 'heightMm': num(r['Höhe mm']), 'baseCents': cents(r['Grundpreis €']),
-                'mounting': [x.strip() for x in str(r['Befestigungen (Kennungen)'] or '').split(',') if x.strip()]}
+                'mounting': [x.strip() for x in str(r['Befestigungen (Kennungen)'] or '').split(',') if x.strip()], '_radius': radius}
         if r.get('Gewicht g') not in (None, ''): size['netWeightG'] = num(r['Gewicht g'])
         f['sizes'].append(size)
+    # Group radius = common radius of its sizes; differing radii stay on the sizes (as drawn in Corel).
+    for f in fams.values():
+        for g in f['groups']:
+            radii = set(g.pop('_radii')); g['cornerRadiusMm'] = radii.pop() if len(radii) == 1 and g['shape'] == 'rect' else 0
+        for s in f['sizes']:
+            radius = s.pop('_radius'); g = next(g for g in f['groups'] if g['key'] == s['groupKey'])
+            if g['shape'] == 'rect' and radius != g['cornerRadiusMm']: s['cornerRadiusMm'] = radius
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     report = []
     for fid, f in fams.items():

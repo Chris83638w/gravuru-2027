@@ -1,3 +1,7 @@
+## Acryl-Schilder mit Abstandshaltern aus Corel-Zeichnung (nicht installiert) · 17.10.2026
+
+Corel-PDF gelesen (37 Platten, 26 Formate, Rückplatte, Ø-8-Löcher); Familien AA, AS, S/S mit 42 Größen, R5 ergänzt, Werte wie gezeichnet. Familienmodell: Radius je Größe, Abstandshalter, Gravurseite, Rückplatte. Plattenkatalog-PDF mit Vorschlagsseite zur Abstimmung; Stammdaten-Excel mit 9 Familien. Tests 13/13. Nachweis: [acrylic-standoff](docs/releases/20261017/acrylic-standoff/RELEASE.md). Offen: Preise, Kopfdurchmesser Abstandshalter, natives Acryl-Gravurprodukt.
+
 ## Edelstahl-Stammdaten vollständig, Stammdaten-Excel (nicht installiert) · 16.10.2026
 
 Befestigungen und Aufpreise lesend aus dem Shopprodukt „Variante C“ (309 Varianten) übernommen; Familie reproduziert alle 309 SKUs und Preise, 0 Abweichungen bei Grundpreisen und Bohrbildern. Familienmodell: Befestigung ohne Löcher und Zubehör Schrauben. `scripts/family-excel.py` erzeugt und liest die Stammdaten-Excel. Prüfungen: Familientests 12/12, Browser 12/12 und 7/7. Nachweis: [steel-master-data](docs/releases/20261016/steel-master-data/RELEASE.md). Nächster Schritt: Materialdatenbank und Designbibliothek (Plan folgt), Alu-Dibond-Familie.

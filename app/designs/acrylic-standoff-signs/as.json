@@ -1,0 +1,600 @@
+{
+ "schema": "gravuru-product-family/v2",
+ "id": "acryl-as-abstandshalter",
+ "name": "Acrylglas schwarz 5 mm · Abstandshalter (AS)",
+ "material": {
+  "kind": "acrylic",
+  "variant": "schwarz",
+  "label": "Acrylglas schwarz",
+  "thicknessMm": 5,
+  "processingProfileId": "acrylic-engraving",
+  "engravingSide": "back"
+ },
+ "designArea": {
+  "marginMm": 0,
+  "keepoutMm": 1
+ },
+ "groups": [
+  {
+   "key": "RE",
+   "name": "Rechteck",
+   "shape": "rect",
+   "cornerRadiusMm": 0
+  },
+  {
+   "key": "R5",
+   "name": "Abgerundete Ecken R5",
+   "shape": "rect",
+   "cornerRadiusMm": 5
+  },
+  {
+   "key": "AB",
+   "name": "Abgerundete Ecken",
+   "shape": "rect",
+   "cornerRadiusMm": 0
+  },
+  {
+   "key": "OV",
+   "name": "Oval",
+   "shape": "ellipse",
+   "cornerRadiusMm": 0
+  }
+ ],
+ "mountingRules": [
+  {
+   "id": "AH02-E10-D8",
+   "label": "2 Abstandshalter",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 8,
+   "edgeMm": 10.0,
+   "priceCents": null,
+   "skuSuffix": "AH02",
+   "accessory": "standoffs"
+  },
+  {
+   "id": "AH02-E15-D8",
+   "label": "2 Abstandshalter",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 8,
+   "edgeMm": 15.0,
+   "priceCents": null,
+   "skuSuffix": "AH02",
+   "accessory": "standoffs"
+  },
+  {
+   "id": "AH04-E10-D8",
+   "label": "4 Abstandshalter",
+   "layout": "corners",
+   "count": 4,
+   "diameterMm": 8,
+   "edgeMm": 10.0,
+   "priceCents": null,
+   "skuSuffix": "AH04",
+   "accessory": "standoffs"
+  },
+  {
+   "id": "AH04-E15-D8",
+   "label": "4 Abstandshalter",
+   "layout": "corners",
+   "count": 4,
+   "diameterMm": 8,
+   "edgeMm": 15.0,
+   "priceCents": null,
+   "skuSuffix": "AH04",
+   "accessory": "standoffs"
+  }
+ ],
+ "sizes": [
+  {
+   "key": "AS-RE-150X100",
+   "groupKey": "RE",
+   "label": "15 × 10 cm",
+   "widthMm": 150.0,
+   "heightMm": 100.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8",
+    "AH04-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-160X160",
+   "groupKey": "RE",
+   "label": "16 × 16 cm",
+   "widthMm": 160.0,
+   "heightMm": 160.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8",
+    "AH04-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-180X120",
+   "groupKey": "RE",
+   "label": "18 × 12 cm",
+   "widthMm": 180.0,
+   "heightMm": 120.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8",
+    "AH04-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-200X200",
+   "groupKey": "RE",
+   "label": "20 × 20 cm",
+   "widthMm": 200.0,
+   "heightMm": 200.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8",
+    "AH04-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-210X70",
+   "groupKey": "RE",
+   "label": "21 × 7 cm",
+   "widthMm": 210.0,
+   "heightMm": 70.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-240X70",
+   "groupKey": "RE",
+   "label": "24 × 7 cm",
+   "widthMm": 240.0,
+   "heightMm": 70.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-240X160",
+   "groupKey": "RE",
+   "label": "24 × 16 cm",
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-260X260",
+   "groupKey": "RE",
+   "label": "26 × 26 cm",
+   "widthMm": 260.0,
+   "heightMm": 260.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-270X90",
+   "groupKey": "RE",
+   "label": "27 × 9 cm",
+   "widthMm": 270.0,
+   "heightMm": 90.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-300X200",
+   "groupKey": "RE",
+   "label": "30 × 20 cm",
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-300X300",
+   "groupKey": "RE",
+   "label": "30 × 30 cm",
+   "widthMm": 300.0,
+   "heightMm": 300.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-360X120",
+   "groupKey": "RE",
+   "label": "36 × 12 cm",
+   "widthMm": 360.0,
+   "heightMm": 120.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-360X240",
+   "groupKey": "RE",
+   "label": "36 × 24 cm",
+   "widthMm": 360.0,
+   "heightMm": 240.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-420X280",
+   "groupKey": "RE",
+   "label": "42 × 28 cm",
+   "widthMm": 420.0,
+   "heightMm": 280.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-RE-450X150",
+   "groupKey": "RE",
+   "label": "45 × 15 cm",
+   "widthMm": 450.0,
+   "heightMm": 150.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-150X100",
+   "groupKey": "R5",
+   "label": "15 × 10 cm",
+   "widthMm": 150.0,
+   "heightMm": 100.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8",
+    "AH04-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-160X160",
+   "groupKey": "R5",
+   "label": "16 × 16 cm",
+   "widthMm": 160.0,
+   "heightMm": 160.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8",
+    "AH04-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-180X120",
+   "groupKey": "R5",
+   "label": "18 × 12 cm",
+   "widthMm": 180.0,
+   "heightMm": 120.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8",
+    "AH04-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-200X200",
+   "groupKey": "R5",
+   "label": "20 × 20 cm",
+   "widthMm": 200.0,
+   "heightMm": 200.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8",
+    "AH04-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-210X70",
+   "groupKey": "R5",
+   "label": "21 × 7 cm",
+   "widthMm": 210.0,
+   "heightMm": 70.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-240X70",
+   "groupKey": "R5",
+   "label": "24 × 7 cm",
+   "widthMm": 240.0,
+   "heightMm": 70.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-240X160",
+   "groupKey": "R5",
+   "label": "24 × 16 cm",
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-260X260",
+   "groupKey": "R5",
+   "label": "26 × 26 cm",
+   "widthMm": 260.0,
+   "heightMm": 260.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-270X90",
+   "groupKey": "R5",
+   "label": "27 × 9 cm",
+   "widthMm": 270.0,
+   "heightMm": 90.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-300X200",
+   "groupKey": "R5",
+   "label": "30 × 20 cm",
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-300X300",
+   "groupKey": "R5",
+   "label": "30 × 30 cm",
+   "widthMm": 300.0,
+   "heightMm": 300.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-360X120",
+   "groupKey": "R5",
+   "label": "36 × 12 cm",
+   "widthMm": 360.0,
+   "heightMm": 120.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-360X240",
+   "groupKey": "R5",
+   "label": "36 × 24 cm",
+   "widthMm": 360.0,
+   "heightMm": 240.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-420X280",
+   "groupKey": "R5",
+   "label": "42 × 28 cm",
+   "widthMm": 420.0,
+   "heightMm": 280.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8",
+    "AH04-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-R5-450X150",
+   "groupKey": "R5",
+   "label": "45 × 15 cm",
+   "widthMm": 450.0,
+   "heightMm": 150.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-AB-180X120",
+   "groupKey": "AB",
+   "label": "18 × 12 cm",
+   "widthMm": 180.0,
+   "heightMm": 120.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ],
+   "cornerRadiusMm": 11.6
+  },
+  {
+   "key": "AS-AB-210X140",
+   "groupKey": "AB",
+   "label": "21 × 14 cm",
+   "widthMm": 210.0,
+   "heightMm": 140.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ],
+   "cornerRadiusMm": 13.5
+  },
+  {
+   "key": "AS-AB-240X160",
+   "groupKey": "AB",
+   "label": "24 × 16 cm",
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ],
+   "cornerRadiusMm": 15.5
+  },
+  {
+   "key": "AS-AB-300X200",
+   "groupKey": "AB",
+   "label": "30 × 20 cm",
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ],
+   "cornerRadiusMm": 19.3
+  },
+  {
+   "key": "AS-OV-150X80",
+   "groupKey": "OV",
+   "label": "15 × 8 cm",
+   "widthMm": 150.0,
+   "heightMm": 80.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-OV-150X100",
+   "groupKey": "OV",
+   "label": "15 × 10 cm",
+   "widthMm": 150.0,
+   "heightMm": 100.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-OV-180X120",
+   "groupKey": "OV",
+   "label": "18 × 12 cm",
+   "widthMm": 180.0,
+   "heightMm": 120.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-OV-210X140",
+   "groupKey": "OV",
+   "label": "21 × 14 cm",
+   "widthMm": 210.0,
+   "heightMm": 140.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-OV-225X120",
+   "groupKey": "OV",
+   "label": "22,5 × 12 cm",
+   "widthMm": 225.0,
+   "heightMm": 120.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AS-OV-240X160",
+   "groupKey": "OV",
+   "label": "24 × 16 cm",
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-OV-300X160",
+   "groupKey": "OV",
+   "label": "30 × 16 cm",
+   "widthMm": 300.0,
+   "heightMm": 160.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AS-OV-300X200",
+   "groupKey": "OV",
+   "label": "30 × 20 cm",
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  }
+ ],
+ "withoutMounting": false,
+ "fonts": [
+  "Montserrat",
+  "Great Vibes",
+  "Cinzel",
+  "Cormorant Garamond",
+  "Allura",
+  "Lora",
+  "Parisienne",
+  "Josefin Sans",
+  "Dancing Script",
+  "Lora Italic",
+  "Caveat",
+  "Kalam",
+  "Oswald"
+ ],
+ "briefingNotes": "Namens- und Hausnummernschilder. Gravur von hinten, erscheint hell auf Schwarz. Texte groß und ruhig; Abstandshalter in den Ecken oder seitlich freihalten.",
+ "sizeKeyPrefix": "AS",
+ "sizeKeySuffix": "",
+ "source": {
+  "path": "app/designs/acrylic-standoff-signs/corel-platten-20261017.json",
+  "note": "Randabstand der Bohrlöcher je Platte wie in der Corel-Zeichnung: 10 mm bei kleinen, 15 mm bei größeren Platten, aus optischen Gründen und damit die Platten unter Spannung hängen und nicht durchhängen (Nutzer, 17.10.2026). Nicht vereinheitlichen. Preise und Aufpreise offen. Schutzzone 1 mm vorläufig; Kopfdurchmesser der Abstandshalter noch nicht bekannt."
+ }
+}

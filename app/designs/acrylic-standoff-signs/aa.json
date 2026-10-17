@@ -399,6 +399,17 @@
    "cornerRadiusMm": 19.3
   },
   {
+   "key": "AA-R5-150X100",
+   "groupKey": "R5",
+   "label": "15 × 10 cm",
+   "widthMm": 150.0,
+   "heightMm": 100.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E10-D8"
+   ]
+  },
+  {
    "key": "AA-R5-180X120",
    "groupKey": "R5",
    "label": "18 × 12 cm",
@@ -406,8 +417,51 @@
    "heightMm": 120.0,
    "baseCents": null,
    "mounting": [
-    "AH02-E10-D8",
-    "AH04-E10-D8"
+    "AH02-E10-D8"
+   ]
+  },
+  {
+   "key": "AA-R5-240X160",
+   "groupKey": "R5",
+   "label": "24 × 16 cm",
+   "widthMm": 240.0,
+   "heightMm": 160.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AA-R5-300X200",
+   "groupKey": "R5",
+   "label": "30 × 20 cm",
+   "widthMm": 300.0,
+   "heightMm": 200.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AA-R5-360X240",
+   "groupKey": "R5",
+   "label": "36 × 24 cm",
+   "widthMm": 360.0,
+   "heightMm": 240.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
+   ]
+  },
+  {
+   "key": "AA-R5-420X280",
+   "groupKey": "R5",
+   "label": "42 × 28 cm",
+   "widthMm": 420.0,
+   "heightMm": 280.0,
+   "baseCents": null,
+   "mounting": [
+    "AH02-E15-D8"
    ]
   }
  ],

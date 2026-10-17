@@ -40,11 +40,13 @@ def build(fid, name, prefix, material, backing, notes):
         if radius: s['cornerRadiusMm'] = radius
         if radius and backing and p.get('backCornerRadiusMm'): s['backingCornerRadiusMm'] = p['backCornerRadiusMm']
         if rid not in s['mounting']: s['mounting'].append(rid)
-    # Nutzerwunsch 17.10.2026: genau EINE rechteckige Größe zusätzlich mit Eckenradius 5 mm.
-    # Vorläufig 18 × 12 cm (erste Größe, die es in der Zeichnung auch abgerundet gibt); Größe austauschbar.
+    # Nutzerwunsch 17.10.2026: Spalte 1 der Zeichnung (Rechteck 3:2, 2 Abstandshalter) zusätzlich
+    # mit Eckenradius 5 mm – gleiche Größen, gleiche Befestigung – als ergänzende Spalte am Ende.
     groups['R5'] = {'key': 'R5', 'name': 'Abgerundete Ecken R5', 'shape': 'rect', 'cornerRadiusMm': 5}
-    base = sizes[f'{prefix}-RE-180X120']
-    sizes[f'{prefix}-R5-180X120'] = {**base, 'key': f'{prefix}-R5-180X120', 'groupKey': 'R5', 'mounting': list(base['mounting'])}
+    for p in sorted([p for p in plates if p['drawingColumn'] == 1], key=lambda p: p['drawingRow']):
+        base = sizes[f"{prefix}-RE-{p['widthMm']:g}X{p['heightMm']:g}"]
+        rid = f"AH{p['holes']:02d}-E{p['edgeMm']:g}-D8"
+        sizes[f"{prefix}-R5-{p['widthMm']:g}X{p['heightMm']:g}"] = {**base, 'key': f"{prefix}-R5-{p['widthMm']:g}X{p['heightMm']:g}", 'groupKey': 'R5', 'mounting': [rid]}
     order = ['RE', 'OV', 'EE', 'AB', 'R5']
     fam = {'schema': 'gravuru-product-family/v2', 'id': fid, 'name': name, 'material': material, 'designArea': {'marginMm': 0, 'keepoutMm': 1},
            'groups': [groups[k] for k in order if k in groups],

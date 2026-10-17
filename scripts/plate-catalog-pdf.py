@@ -147,7 +147,7 @@ def main():
             key = (s['widthMm'], s['heightMm'], g['shape'], radius or 0, r['count'], r['edgeMm'])
             col = drawn.get(key)
             # Without a drawing: one column per form and format series, mounting options stacked per size.
-            colkey = ('drawn', col[0]) if col else ('extra', g['key'], rid if drawn else '', round(s['widthMm'] / s['heightMm'], 2))
+            colkey = ('drawn', col[0]) if col else ('extra', g['key'], (r['count'], r['layout']) if drawn else '', round(s['widthMm'] / s['heightMm'], 2))
             item = {'w': s['widthMm'], 'h': s['heightMm'], 'shape': g['shape'], 'radius': radius, 'holes': holes, 'backing': backing,
                     'backingRadius': s.get('backingCornerRadiusMm', (max(0, radius - backing) if g['shape'] == 'plaque' else radius + backing if radius else 0) if backing else 0),
                     'label': f"{s['label']} · {g['name']}" + (f' R{radius:g}' if radius and not g['cornerRadiusMm'] else ''),
@@ -173,7 +173,7 @@ def main():
     intro = [f"# {f['name']}", f"Material: {f['material']['label']}, {f['material']['thicknessMm']} mm, Gravur {'von hinten' if f['material'].get('engravingSide') == 'back' else 'von vorn'}.",
              (f"Rückplatte: {f['backing']['label']}, rundum {backing} mm größer. " if backing else '') + f"Gestaltungsrand {f['designArea']['marginMm']} mm, Schutzzone {f['designArea']['keepoutMm']} mm.",
              f"{len(f['sizes'])} Größen in {len(f['groups'])} Formgruppen, {len(f['mountingRules'])} Bohrbilder, {len(entries)} Zeichnungen. Preise: {'offen' if all(s['baseCents'] is None for s in f['sizes']) else 'hinterlegt'}.",
-             ('Aufbau wie die Zeichnung: eine Spalte je Form und Befestigung, Größen von oben nach unten aufsteigend; ergänzte Größen als eigene Spalte am Ende. ' if drawn else 'Eine Spalte je Form und Formatreihe (gleiches Seitenverhältnis = skalierbar), Größen von oben nach unten aufsteigend, je Größe alle Befestigungen. ')
+             ('Aufbau wie die Zeichnung: eine Spalte je Form und Befestigung, Größen von oben nach unten aufsteigend; ergänzte Größen als eigene Spalte am Ende. ' if drawn else 'Eine Spalte je Form und Formatreihe (gleiches Seitenverhältnis = skalierbar), Größen von oben nach unten aufsteigend, je Größe alle Befestigungen. ') +
              'Platte rot umrandet, Rückplatte blau, Bohrlöcher als helle Kreise. Maßstab ' + f'1 : {1 / scale:.1f}'.replace('.', ',') + '. Unter jeder Platte: Größe · Form · Befestigung · Randabstand · SKU.']
     if f.get('source', {}).get('note'): intro.append('Hinweis: ' + f['source']['note'])
     pages = [text_page('Plattenkatalog', intro)] + layout_columns(cols, f['name'], scale, bool(drawn))

@@ -10,17 +10,17 @@ Nicht installiert. Branch `task/steel-master-data-20261016`.
 
 - AA/AS: Acrylglas anthrazit bzw. schwarz, 5 mm, Gravur von hinten. S/S: Front satiniert 3 mm, von vorn graviert; Rückplatte schwarz 3 mm, rundum 10 mm größer, Abstandsringe dazwischen.
 - Randabstände und Formen **genau wie in der PDF**, nicht vereinheitlichen (10 mm bei kleinen Platten, 15 mm bei größeren, aus optischen Gründen und für Spannung gegen Durchhängen). 21 × 14 bleibt.
-- Zusätzlich genau eine rechteckige Größe mit Eckenradius 5 mm (vorläufig 18 × 12, austauschbar).
+- Zusätzlich Spalte 1 der Zeichnung (15 × 10 … 42 × 28, 2 Abstandshalter) noch einmal mit Eckenradius 5 mm als ergänzende Spalte (Nutzer, 17.10.2026).
 
 ## Familien
 
-`scripts/import-acrylic-standoff-families.py` → `aa.json`, `as.json`, `ss.json`: je 28 Größen (15 Rechteck, 4 mit eingezogenen Ecken [konkave Viertelkreise, Radius gemessen], 8 oval – genau die 37 gezeichneten Platten – plus eine R5-Größe 18 × 12); Reihenfolge = Spalten der Zeichnung von oben nach unten, 4 Bohrbilder (2/4 Abstandshalter, Rand 10/15 mm, Ø 8), 39 Zuordnungen. Preise und Aufpreise offen; Schutzzone 1 mm vorläufig (Kopfdurchmesser der Abstandshalter offen).
+`scripts/import-acrylic-standoff-families.py` → `aa.json`, `as.json`, `ss.json`: je 33 Größen (15 Rechteck, 8 oval, 4 mit eingezogenen Ecken [konkave Viertelkreise, Radius gemessen] – genau die 37 gezeichneten Platten – plus 6 × R5 = Spalte 1 der Zeichnung mit Eckenradius 5 mm, nur 2 Abstandshalter); Reihenfolge = Spalten der Zeichnung von oben nach unten, R5 als ergänzende Spalte am Ende, 4 Bohrbilder (2/4 Abstandshalter, Rand 10/15 mm, Ø 8), 43 Zuordnungen. Preise und Aufpreise offen; Schutzzone 1 mm vorläufig (Kopfdurchmesser der Abstandshalter offen).
 
 Familienmodell erweitert: Eckenradius je Größe, Zubehör „Abstandshalter“, Gravurseite, Rückplatte (`backing`: Überstand, Stärke) – in Schablone und Briefing berücksichtigt. Excel-Export/-Import trägt diese Felder (Rundlauf ohne Abweichung).
 
 ## Plattenkatalog
 
-[Plattenkatalog-Acryl-SS.pdf](Plattenkatalog-Acryl-SS.pdf) (`scripts/plate-catalog-pdf.py`): alle 39 Zeichnungen der S/S-Familie mit Rückplatte, **Aufbau wie die Corel-Zeichnung**: eine Spalte je Form und Befestigung (Spalten 1–8 der Zeichnung), Größen von oben nach unten aufsteigend, die ergänzte R5-Größe als eigene Spalte am Ende; Familien-Größen sind in derselben Reihenfolge gespeichert. Edelstahl ohne Zeichnung: eine Spalte je Form und Formatreihe. Zusätzliche Platten wurden vom Nutzer abgelehnt (zu viele).
+[Plattenkatalog-Acryl-SS.pdf](Plattenkatalog-Acryl-SS.pdf) (`scripts/plate-catalog-pdf.py`): alle 43 Zeichnungen der S/S-Familie mit Rückplatte, **Aufbau wie die Corel-Zeichnung**: eine Spalte je Form und Befestigung (Spalten 1–8 der Zeichnung), Größen von oben nach unten aufsteigend, die ergänzten R5-Größen als eigene Spalte am Ende; Familien-Größen sind in derselben Reihenfolge gespeichert. Edelstahl ohne Zeichnung: eine Spalte je Form und Formatreihe. Zusätzliche Platten wurden vom Nutzer abgelehnt (zu viele).
 
 ## Prüfungen
 

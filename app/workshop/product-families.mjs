@@ -49,7 +49,7 @@ export const ACCESSORIES=Object.freeze({screws:'Schrauben',standoffs:'Abstandsha
 export const ENGRAVING_SIDES=['front','back'];
 
 export function validateFamily(f){
- only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing'],'Produktfamilie');
+ only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options'],'Produktfamilie');
  // Optional second plate behind the design plate (e.g. S/S: satin front, black back), larger by offsetMm on every side.
  if(f.backing!==undefined){only(f.backing,['label','offsetMm','thicknessMm','note'],'Rückplatte');if(!text(f.backing.label,80)||!mm(f.backing.offsetMm,0,100)||!(open(f.backing.thicknessMm)||mm(f.backing.thicknessMm,0.3,50))||(f.backing.note!==undefined&&typeof f.backing.note!=='string'))invalid('Rückplatte: Bezeichnung, Überstand in mm und Stärke (oder offen) angeben.');}
  if(!FAMILY_SCHEMAS.includes(f.schema))invalid('Unbekanntes Familienformat.');
@@ -91,8 +91,22 @@ export function validateFamily(f){
  if(!Array.isArray(f.fonts)||!f.fonts.length||f.fonts.length>150||f.fonts.some(v=>!text(v,80)))invalid('Zugelassene Schriften angeben.');
  if(typeof f.briefingNotes!=='string'||f.briefingNotes.length>8000)invalid('Stilnotizen: höchstens 8000 Zeichen.');
  if(f.source!==undefined){only(f.source,['repository','commit','path','sha256','note','shopVariants'],'Herkunft');}
+ // Optionales Zubehör und Varianten (Stammdaten): Gruppen mit Auswahlen und Aufpreis in Cent, null = offen.
+ // Noch nicht an die Produkterzeugung angebunden; Preise je Linie können in linien/<linie>.json überschrieben werden.
+ if(f.options!==undefined){
+  if(!Array.isArray(f.options)||f.options.length>20)invalid('Höchstens 20 Optionsgruppen.');
+  for(const g of f.options){
+   only(g,['id','label','kind','selection','required','choices','note'],'Optionsgruppe');
+   if(!id(g.id)||!text(g.label,80)||!OPTION_KINDS.includes(g.kind)||!OPTION_SELECTIONS.includes(g.selection)||(g.required!==undefined&&typeof g.required!=='boolean')||(g.note!==undefined&&!text(g.note,400)))invalid('Optionsgruppe '+(g.id||'')+' prüfen.');
+   if(!Array.isArray(g.choices)||!g.choices.length||g.choices.length>40)invalid('Optionsgruppe '+g.id+': 1 bis 40 Auswahlen.');
+   for(const c of g.choices){only(c,['id','label','priceCents','skuSuffix','default','note'],'Option');if(!id(c.id)||!text(c.label,80)||!(open(c.priceCents)||cents(c.priceCents))||(c.skuSuffix!==undefined&&!/^[A-Za-z0-9_.:-]{1,30}$/.test(c.skuSuffix))||(c.default!==undefined&&typeof c.default!=='boolean')||(c.note!==undefined&&!text(c.note,400)))invalid('Option '+g.id+' / '+(c.id||'')+' prüfen.');}
+   unique(g.choices,'id','Option '+g.id);
+  }
+  unique(f.options,'id','Optionsgruppe');
+ }
  return f;
 }
+const OPTION_KINDS=['accessory','variant'],OPTION_SELECTIONS=['single','multiple'];
 // Everything still "offen" in a family, in plain words. Products are generated
 // only when this list is empty and the material has a native adapter.
 export function familyGaps(f){
@@ -101,6 +115,7 @@ export function familyGaps(f){
  if(open(f.designArea.marginMm))gaps.push('Gestaltungsrand');
  for(const r of f.mountingRules){if(!ruleComplete(r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
  const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
+ for(const g of f.options||[])for(const c of g.choices)if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
  if(f.groups.some(g=>g.shape==='plaque'))gaps.push('Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)');
  return gaps;

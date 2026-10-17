@@ -22,6 +22,8 @@ LAYOUT_BY_TEXT = {v: k for k, v in LAYOUTS.items()}
 SHAPES = {'rect': 'eckig', 'ellipse': 'oval', 'plaque': 'eingezogene Ecken'}
 SHAPE_BY_TEXT = {v: k for k, v in SHAPES.items()}
 ACCESSORY = {'screws': 'Schrauben', 'standoffs': 'Abstandshalter'}
+OPTION_KIND = {'accessory': 'Zubehör', 'variant': 'Variante'}; OPTION_KIND_BY_TEXT = {v: k for k, v in OPTION_KIND.items()}
+OPTION_SEL = {'single': 'eine', 'multiple': 'mehrere'}; OPTION_SEL_BY_TEXT = {v: k for k, v in OPTION_SEL.items()}
 ACCESSORY_BY_TEXT = {v: k for k, v in ACCESSORY.items()}
 MATERIALS = {'steel': ('Edelstahl', 'Gravur', 'dunkel'), 'slate': ('Schiefer', 'Gravur', 'hell'), 'acrylic': ('Acrylglas', 'Gravur', 'hell')}
 PROCESS = {'steel-engraving': 'Gravur', 'slate-engraving': 'Gravur', 'acrylic-engraving': 'Gravur', 'color-print': 'Druck'}
@@ -76,8 +78,14 @@ def export(paths, out):
         for r in f['mountingRules']:
             rows.append([f['id'], r['id'], r['label'], r['skuSuffix'], LAYOUTS[r['layout']], r['count'], r['diameterMm'], r['edgeMm'], ACCESSORY.get(r.get('accessory'), ''), euro(r['priceCents'])])
     sheet('Befestigungen', ['Familie', 'Kennung', 'Bezeichnung', 'SKU-Endung', 'Lage', 'Anzahl Löcher', 'Ø mm', 'Randabstand mm', 'Zubehör', 'Aufpreis €'], rows, [22, 16, 32, 10, 20, 12, 8, 14, 12, 11])
+    rows = []
+    for f in fams:
+        for g in f.get('options', []):
+            for c in g['choices']:
+                rows.append([f['id'], g['id'], g['label'], OPTION_KIND.get(g['kind'], g['kind']), OPTION_SEL.get(g['selection'], g['selection']), 'ja' if g.get('required') else '', c['id'], c['label'], c.get('skuSuffix', ''), euro(c['priceCents']), 'ja' if c.get('default') else '', c.get('note', '')])
+    sheet('Optionen', ['Familie', 'Gruppe (Kennung)', 'Gruppe', 'Art', 'Auswahl', 'Pflicht', 'Option (Kennung)', 'Option', 'SKU-Endung', 'Aufpreis €', 'Standard', 'Hinweis'], rows, [22, 16, 24, 10, 10, 8, 16, 28, 10, 11, 9, 40])
     ws = wb.create_sheet('Lesen')
-    for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
+    for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Blatt Optionen: optionales Zubehör und Varianten je Familie – Gruppe (z. B. Abstandshalter-Set), Art Zubehör/Variante, Auswahl eine/mehrere, je Option Aufpreis in €. Neue Zeilen = neue Optionen. Preise je Linie (Unterkategorie) stehen in linien/<linie>.json des Katalogs.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
                  'Befestigungen je Größe als Kennungen aus dem Blatt Befestigungen, mit Komma getrennt. Neue Kennung = neue Zeile dort.', 'Zurücklesen: python scripts/family-excel.py import --xlsx DATEI --out ORDNER']:
         ws.append([line])
     ws.column_dimensions['A'].width = 120
@@ -111,6 +119,19 @@ def import_(xlsx, out):
                 'diameterMm': None if layout == 'none' else num(r['Ø mm']), 'edgeMm': None if layout == 'none' else num(r['Randabstand mm']), 'priceCents': cents(r['Aufpreis €']), 'skuSuffix': r['SKU-Endung']}
         if r.get('Zubehör') in ACCESSORY_BY_TEXT: rule['accessory'] = ACCESSORY_BY_TEXT[r['Zubehör']]
         f['mountingRules'].append(rule)
+    if 'Optionen' in wb.sheetnames:
+        for r in rows('Optionen'):
+            f = fams[r['Familie']]; f.setdefault('options', [])
+            g = next((g for g in f['options'] if g['id'] == r['Gruppe (Kennung)']), None)
+            if not g:
+                g = {'id': r['Gruppe (Kennung)'], 'label': r['Gruppe'], 'kind': OPTION_KIND_BY_TEXT.get(r['Art'], r['Art']), 'selection': OPTION_SEL_BY_TEXT.get(r['Auswahl'], r['Auswahl']), 'choices': []}
+                if str(r.get('Pflicht') or '').strip().lower() == 'ja': g['required'] = True
+                f['options'].append(g)
+            c = {'id': r['Option (Kennung)'], 'label': r['Option'], 'priceCents': cents(r['Aufpreis €'])}
+            if r.get('SKU-Endung'): c['skuSuffix'] = str(r['SKU-Endung'])
+            if str(r.get('Standard') or '').strip().lower() == 'ja': c['default'] = True
+            if r.get('Hinweis'): c['note'] = r['Hinweis']
+            g['choices'].append(c)
     for r in rows('Größen'):
         f = fams[r['Familie']]
         if not any(g['key'] == r['Formgruppe'] for g in f['groups']):

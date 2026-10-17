@@ -71,6 +71,13 @@ def family_section(f, path, kat, pdf_ok):
     lines += ['', '| Bohrbild | Lage | Löcher | Ø | Randabstand | Zubehör | Aufpreis |', '| --- | --- | --- | --- | --- | --- | --- |']
     for r in f['mountingRules']:
         lines.append(f"| {r['label']} (`{r['id']}`) | {LAYOUT.get(r['layout'], r['layout'])} | {r['count']} | {r['diameterMm'] if r['diameterMm'] is not None else 'offen'} | {r['edgeMm'] if r['edgeMm'] is not None else 'offen'} | {r.get('accessory', '–')} | {euro(r['priceCents'])} |")
+    if f.get('options'):
+        lines += ['', '| Optionsgruppe | Art | Auswahl | Option | SKU-Endung | Aufpreis |', '| --- | --- | --- | --- | --- | --- |']
+        for g in f['options']:
+            for c in g['choices']:
+                lines.append(f"| {g['label']} (`{g['id']}`) | {'Zubehör' if g['kind'] == 'accessory' else 'Variante'} | {'eine' if g['selection'] == 'single' else 'mehrere'} | {c['label']} (`{c['id']}`){' · Standard' if c.get('default') else ''} | {c.get('skuSuffix', '')} | {euro(c['priceCents'])} |")
+    else:
+        lines.append('\nOptionen (Zubehör/Varianten): noch keine hinterlegt – Blatt „Optionen“ der Stammdaten-Excel.')
     lines.append(f"\nSchriften: {', '.join(f['fonts'])}")
     if f.get('source', {}).get('note'): lines.append(f"\nHinweis: {f['source']['note']}")
     return '\n'.join(lines) + '\n'
@@ -86,7 +93,17 @@ def main():
         families.append((p, f))
     md = ['# Gravuru-Katalog', '', 'Erzeugt aus den Familien-Stammdaten (`familien/`). Nicht von Hand bearbeiten – Änderungen in den JSON-Dateien oder über die Stammdaten-Excel, dann `python scripts/build-katalog.py` (Repo gravuru-2027).', '']
     lines_md = kat / 'linien' / 'README.md'
-    if lines_md.exists(): md += ['## Produktlinien', '', f'Siehe [linien/README.md](linien/README.md).', '']
+    lines = [json.loads(p.read_text(encoding='utf-8')) for p in sorted((kat / 'linien').glob('*.json'))]
+    fam_by_id = {f['id']: f for _, f in families}
+    if lines:
+        md += ['## Produktlinien (Unterkategorien)', '', 'Je Linie: Familien, Schrift-Set, Design-Themen und – wo abweichend – eigene Preise für Größen, Befestigungen und Optionen (`linien/<linie>.json`, `priceOverrides`). Ohne Überschreibung gelten die Preise der Familie.', '',
+               '| Linie | Familien | Schrift-Set | Design-Themen | Preisüberschreibungen | Stand |', '| --- | --- | --- | --- | --- | --- |']
+        for l in lines:
+            fams_txt = ', '.join(f"[{fam_by_id[i]['name']}](#{i})" if i in fam_by_id else f'`{i}` (fehlt)' for i in l.get('families', [])) or 'offen'
+            ov = l.get('priceOverrides') or {}; n_ov = sum(len(v.get('sizes', {})) + len(v.get('mounting', {})) + sum(len(x) for x in v.get('options', {}).values()) for v in ov.values())
+            md.append(f"| {l['name']} | {fams_txt} | `{l.get('fontSet', 'offen')}` | {', '.join(l.get('designTags', [])) or 'offen'} | {n_ov or 'keine'} | {l.get('status', 'offen')} |")
+        md.append('')
+    elif lines_md.exists(): md += ['## Produktlinien', '', f'Siehe [linien/README.md](linien/README.md).', '']
     md += ['## Familien auf einen Blick', '', '| Material | Familie | Größen | Formen | Bohrbilder | Preise | Stand |', '| --- | --- | --- | --- | --- | --- | --- |']
     sections = []
     for p, f in families:

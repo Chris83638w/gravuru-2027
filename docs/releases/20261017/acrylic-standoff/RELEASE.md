@@ -46,3 +46,10 @@ Auffällig (Rückfrage, keine Änderung):
 - **Lesefehler behoben:** Die vier Platten 18 × 12, 21 × 14, 24 × 16, 30 × 20 der Spalte 8 haben keine abgerundeten, sondern **eingezogene Ecken** (konkave Viertelkreise, Radius 11,6 / 13,5 / 15,5 / 19,3 mm; Rückplatte 12,9 / 14,8 / 16,8 / 20,6 mm). Der Leser hatte die Bogenrichtung nicht unterschieden. Neue Form `plaque` im Familienschema (`gravuru-product-family/v2`: Formen rect/ellipse/plaque), Radius je Größe, `backingCornerRadiusMm` je Größe; Schablone und Katalog zeichnen die Ecken nach innen. Im Konfigurator ist die Form noch nicht angeschlossen (wird als Lücke gemeldet).
 - **Reihenfolge wie gezeichnet:** `read-corel-plates.py` erkennt die Spalten der Zeichnung (`drawingColumn`/`drawingRow`); Familien, Übersichts-PNG, Katalog-PDF und Excel folgen dieser Ordnung. Der Katalog hat jetzt den gleichen Aufbau wie die Zeichnung.
 - Tests 13/13; Excel-Rundlauf (export → import) für AA und S/S ohne Abweichung.
+
+## Testlauf Designbogen (17.10.2026, `Beispiele.pdf`, 19 Hausnummern-/Namensschilder)
+
+Neues Skript `scripts/split-corel-design-sheet.py`: zerlegt einen Corel-Bogen (graue Platte, dunkle Rückplatte, rote Ø-8-Löcher, weiße Gestaltung) in Einzeldesigns nach Lieferform 2 (`design.svg` mit Ebenen `text-<n>` als echtem Text und `motiv-1`, schwarz auf weiß; `design.json`), Bericht und Übersichts-PNG. Nur Lesen; nichts importiert, Designs nicht im Repo.
+
+Ergebnis: 19/19 Designs sauber getrennt, Texte als echter Text (bis auf Design 3: Schrift in Kurven → nur festes Motiv), Motive vollständig, Hausnummern per `--numbers` je Design verschieden.
+Offen vor einem echten Lauf: Plattenmaß 190 × 80 mm existiert in keiner Familie (AA/AS/S/S: 21 × 7, 24 × 7 …, Edelstahl auch nicht); 8 von 11 Schriften fehlen in der Werkstatt (Michroma, Alex Brush, Rounded Elegance, Homage, Fjalla One, Champagne & Limousines, MINIMALIST, Ashley – vorhanden: Cinzel, Great Vibes, Allura); Straße und Nummer in einem Textobjekt (Design 16) ergeben ein gemeinsames Kundenfeld.

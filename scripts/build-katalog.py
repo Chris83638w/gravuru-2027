@@ -95,14 +95,17 @@ def main():
     lines_md = kat / 'linien' / 'README.md'
     lines = [json.loads(p.read_text(encoding='utf-8')) for p in sorted((kat / 'linien').glob('*.json'))]
     fam_by_id = {f['id']: f for _, f in families}
+    themes = {t['id']: t for t in json.loads((kat / 'themen.json').read_text(encoding='utf-8'))['themes']} if (kat / 'themen.json').exists() else {}
     if lines:
-        md += ['## Produktlinien (Unterkategorien)', '', 'Je Linie: Familien, Schrift-Set, Design-Themen und – wo abweichend – eigene Preise für Größen, Befestigungen und Optionen (`linien/<linie>.json`, `priceOverrides`). Ohne Überschreibung gelten die Preise der Familie.', '',
-               '| Linie | Familien | Schrift-Set | Design-Themen | Preisüberschreibungen | Stand |', '| --- | --- | --- | --- | --- | --- |']
+        md += ['## Produktlinien und Unterkategorien', '', 'Linie = was physisch verkauft wird (Familien); Unterkategorie = Thema/Zielgruppe innerhalb der Linie (Name im Shop „Linie – Unterkategorie“). Je Unterkategorie: Schrift-Set, Design-Themen und Motivkategorien aus [themen.json](themen.json), eigene Preise nur wo abweichend (`priceOverrides`). Status „Vorschlag“ = vom Nutzer noch zu bestätigen.', '']
         for l in lines:
-            fams_txt = ', '.join(f"[{fam_by_id[i]['name']}](#{i})" if i in fam_by_id else f'`{i}` (fehlt)' for i in l.get('families', [])) or 'offen'
-            ov = l.get('priceOverrides') or {}; n_ov = sum(len(v.get('sizes', {})) + len(v.get('mounting', {})) + sum(len(x) for x in v.get('options', {}).values()) for v in ov.values())
-            md.append(f"| {l['name']} | {fams_txt} | `{l.get('fontSet', 'offen')}` | {', '.join(l.get('designTags', [])) or 'offen'} | {n_ov or 'keine'} | {l.get('status', 'offen')} |")
-        md.append('')
+            fams_txt = ', '.join(f"[{fam_by_id[i]['name']}](#{i})" if i in fam_by_id else f'`{i}` (fehlt)' for i in l.get('families', [])) or 'Familie offen'
+            md += [f"### {l['name']}", '', f"Familien: {fams_txt} · Stand: {l.get('status', 'offen')}", '', '| Unterkategorie | Thema | Schrift-Set | Motivkategorien | Preise | Status |', '| --- | --- | --- | --- | --- | --- |']
+            for sc in l.get('subcategories', []):
+                t = themes.get(sc.get('themeId'), {}); ov = sc.get('priceOverrides') or {}
+                n_ov = sum(len(v.get('sizes', {})) + len(v.get('mounting', {})) + sum(len(x) for x in v.get('options', {}).values()) for v in ov.values())
+                md.append(f"| {sc['name']} | `{sc.get('themeId', '')}` | `{sc.get('fontSet', t.get('fontSet', 'offen'))}` | {', '.join(t.get('motifCategories', [])) or '–'} | {'wie Familie' if not n_ov else str(n_ov) + ' abweichend'} | {sc.get('status', 'offen')} |")
+            md.append('')
     elif lines_md.exists(): md += ['## Produktlinien', '', f'Siehe [linien/README.md](linien/README.md).', '']
     md += ['## Familien auf einen Blick', '', '| Material | Familie | Größen | Formen | Bohrbilder | Preise | Stand |', '| --- | --- | --- | --- | --- | --- | --- |']
     sections = []

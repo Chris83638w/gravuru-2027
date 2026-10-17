@@ -122,11 +122,14 @@ def layout_columns(cols, title, scale, drawn=True):
     return pages
 
 
-def drawing_columns(f):
-    """(width, height, shape, holes, edge) → (column, row) from the Corel plate list, if the family has one."""
+def drawing_columns(f, family_path):
+    """(width, height, shape, radius, holes, edge) → (column, row) from the Corel plate list, if the family has one.
+    source.path is relative to the repo root (code repo or catalog repo), so look upward from the family file too."""
     src = (f.get('source') or {}).get('path')
-    if not src or not (ROOT / src).exists(): return {}
-    plates = json.loads((ROOT / src).read_text(encoding='utf-8')).get('plates', [])
+    if not src: return {}
+    found = next((c / src for c in [ROOT, *Path(family_path).resolve().parents] if (c / src).exists()), None)
+    if not found: return {}
+    plates = json.loads(found.read_text(encoding='utf-8')).get('plates', [])
     if not plates or 'drawingColumn' not in plates[0]: return {}
     return {(p['widthMm'], p['heightMm'], p['shape'], p['cornerRadiusMm'], p['holes'], p['edgeMm'] if not isinstance(p['edgeMm'], list) else p['edgeMm'][0]): (p['drawingColumn'], p['drawingRow']) for p in plates}
 
@@ -137,13 +140,14 @@ def main():
     f = json.loads(Path(a.family).read_text(encoding='utf-8'))
     groups = {g['key']: g for g in f['groups']}; rules = {r['id']: r for r in f['mountingRules']}
     backing = f.get('backing', {}).get('offsetMm')
-    drawn = drawing_columns(f)
+    drawn = drawing_columns(f, a.family)
     # One entry per size × mounting rule, keyed to a column.
     entries = []
     for s in f['sizes']:
         g = groups[s['groupKey']]; radius = s.get('cornerRadiusMm', g['cornerRadiusMm'])
         for rid in s['mounting']:
-            r = rules[rid]; holes = [] if r['layout'] == 'none' else holes_for(s['widthMm'], s['heightMm'], r)
+            r = rules[rid]; complete = r['layout'] == 'none' or (r['edgeMm'] is not None and r['diameterMm'] is not None)
+            holes = [] if r['layout'] == 'none' or not complete else holes_for(s['widthMm'], s['heightMm'], r)
             key = (s['widthMm'], s['heightMm'], g['shape'], radius or 0, r['count'], r['edgeMm'])
             col = drawn.get(key)
             # Without a drawing: one column per form and format series, mounting options stacked per size.
@@ -151,7 +155,7 @@ def main():
             item = {'w': s['widthMm'], 'h': s['heightMm'], 'shape': g['shape'], 'radius': radius, 'holes': holes, 'backing': backing,
                     'backingRadius': s.get('backingCornerRadiusMm', (max(0, radius - backing) if g['shape'] == 'plaque' else radius + backing if radius else 0) if backing else 0),
                     'label': f"{s['label']} · {g['name']}" + (f' R{radius:g}' if radius and not g['cornerRadiusMm'] else ''),
-                    'lines': [r['label'] + (f", Rand {r['edgeMm']:g} mm" if r['layout'] != 'none' else ', ohne Löcher') + (f" · +{r['priceCents'] / 100:.2f} €".replace('.', ',') if r['priceCents'] else ''), f"{s['key']}-{r['skuSuffix']}"],
+                    'lines': [r['label'] + (', ohne Löcher' if r['layout'] == 'none' else f", Rand {r['edgeMm']:g} mm" if complete else ', Bohrbild offen') + (f" · +{r['priceCents'] / 100:.2f} €".replace('.', ',') if r['priceCents'] else ''), f"{s['key']}-{r['skuSuffix']}"],
                     'sort': (col[1] if col else (s['widthMm'] * s['heightMm'], list(rules).index(rid)))}
             entries.append((colkey, g, r, item))
     order = {}
@@ -161,7 +165,7 @@ def main():
         g, r, items = order[colkey]; items.sort(key=lambda it: it['sort'])
         series = ', '.join(dict.fromkeys(ratio(it['w'], it['h']) for it in items))
         head = [(f'Spalte {colkey[1]}' if colkey[0] == 'drawn' else 'Ergänzt' if drawn else 'Reihe') + f' · {SHAPE_DE[g["shape"]]}' + (f' R{g["cornerRadiusMm"]:g}' if g['cornerRadiusMm'] else '') + f' · {series}']
-        if colkey[0] == 'drawn' or drawn: head.append(r['label'] + (f', {LAYOUT_DE.get(r["layout"], r["layout"])}, Ø {r["diameterMm"]:g} mm' if r['layout'] != 'none' else ', ohne Löcher'))
+        if colkey[0] == 'drawn' or drawn: head.append(r['label'] + (f', {LAYOUT_DE.get(r["layout"], r["layout"])}' + (f', Ø {r["diameterMm"]:g} mm' if r['diameterMm'] is not None else ', Ø offen') if r['layout'] != 'none' else ', ohne Löcher'))
         cols.append((head, items))
     # Scale so that the tallest column fits on one page (no sub-columns), never larger than requested
     # and not below the requested scale / 2.6 – beyond that a column continues in a sub-column.

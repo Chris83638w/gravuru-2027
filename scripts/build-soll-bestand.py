@@ -96,8 +96,9 @@ def main():
             ctx = s['contexts'][0][0] if s['contexts'] else ''
             if any(name == row[0] and row[4].startswith(k) for row in rows): continue
             rows.append([name, ctx.split(' / ')[0] if ctx else '', '', ' / '.join(ctx.split(' / ')[1:]), k, 'nur Ordnerbaum' + (' (Archiv)' if s['archivedShare'] >= .99 else ''), '', '', '', '', by_prod_size_designs.get((name, k), 0), '', '', ''])
-    sheet('Größen', ['Produkt', 'Verfahren', 'Form/Serie', 'Material', 'Größe', 'Quelle', 'Produktbilder (alt)', 'Fancy (alt)', 'Amazon (alt)', 'Import (alt)', 'Designordner', 'Soll (ja/nein)', 'Zielfamilie (Katalog)', 'Bemerkung'],
-          rows, [24, 12, 22, 26, 16, 20, 9, 9, 9, 9, 10, 12, 28, 36], ['Soll (ja/nein)', 'Zielfamilie (Katalog)', 'Bemerkung'])
+    rows = [r[:11] + ['', '', '', ''] for r in rows]
+    sheet('Größen', ['Produkt', 'Verfahren', 'Form/Serie', 'Material', 'Größe', 'Quelle', 'Produktbilder (alt)', 'Fancy (alt)', 'Amazon (alt)', 'Import (alt)', 'Designordner', 'Soll (ja/nein)', 'Neue Größe (BxH cm, wenn geändert)', 'Zielfamilie (Katalog)', 'Bemerkung'],
+          rows, [24, 12, 22, 26, 16, 20, 9, 9, 9, 9, 10, 12, 20, 28, 36], ['Soll (ja/nein)', 'Neue Größe (BxH cm, wenn geändert)', 'Zielfamilie (Katalog)', 'Bemerkung'])
     # Designs
     rows = [[d['sku'], d['product'], d['size'], d['path'], len(d['ids']), len(d['fonts']), ', '.join(f for f, _ in d['fonts'].most_common(5)), 'ja', ''] for d in designs]
     sheet('Designs', ['SKU', 'Produkt', 'Größe', 'Designordner (Server)', 'Designs (mit Text)', 'Schriften genutzt', 'häufigste Schriften', 'Kopieren (ja/nein)', 'Bemerkung'], rows, [26, 20, 12, 70, 10, 10, 50, 12, 30], ['Kopieren (ja/nein)', 'Bemerkung'])
@@ -110,7 +111,7 @@ def main():
     info = wb.create_sheet('Lesen')
     for line in ['Soll-Bestandsliste – erzeugt aus der Server-Inventur vom 17.10.2026 (Ordnerbaum, Bestand.xlsm, Schriftartenhäufigkeit). Gelbe Spalten füllt der Nutzer.' + (f' Ausgeschlossen (Nutzer): {", ".join(excl)}.' if excl else ''),
                  'Linien: ein Serverprodukt = ein Linien-Kandidat. „Soll“ = ja (weiterführen), nein (nicht mehr), später. Priorität 1 = zuerst.',
-                 'Größen: alle Größen aus Register und Ordnerbaum. „Soll“ = ja/nein; „Zielfamilie“ = Familie im Katalog (z. B. acryl-ss-abstandshalter), wenn die Größe dort weiterlebt. Alte Größen ohne Soll bleiben Bestand.',
+                 'Größen: alle Größen aus Register und Ordnerbaum. „Soll“ = ja/nein; „Neue Größe“ = wenn die Größe geändert wird (z. B. 25x15 → 24x16): die Designs dieser Zeile werden auf die neue Größe übertragen – gleiches Seitenverhältnis (±1 %) automatisch, sonst eingepasst und zur Nachgestaltung markiert; „Zielfamilie“ = Familie im Katalog, in der die Größe weiterlebt. Alte Größen ohne Soll bleiben Bestand.',
                  'Designs: ein [CDR]-Ordner je SKU-Größe = die Corel-Designs dieser Größe. „Kopieren“ steuert den Extraktionslauf (Standard ja). Schriften aus der Schriftartenhäufigkeit.',
                  'Schriften je Produkt: wie oft welche Schrift in den Designs eines Produkts vorkommt – Grundlage für die Schrift-Sets je Linie.',
                  'Zurück an Claude: ausgefüllte Datei im Chat oder im Katalog-Repo ablegen; daraus entstehen Linien-Dateien, Zielfamilien-Zuordnung und der Kopierplan.']:

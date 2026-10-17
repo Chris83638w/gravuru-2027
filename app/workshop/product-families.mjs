@@ -88,7 +88,7 @@ export function validateFamily(f){
   for(const m of s.mounting){if(holeless(rules.get(m))||!ruleComplete(rules.get(m)))continue;try{holesFor(geometryOf(f,s),rules.get(m));}catch(e){invalid(s.key+' · '+m+': '+e.message);}}
  }
  unique(f.sizes,'key','Größe');
- if(!Array.isArray(f.fonts)||!f.fonts.length||f.fonts.length>60||f.fonts.some(v=>!text(v,80)))invalid('Zugelassene Schriften angeben.');
+ if(!Array.isArray(f.fonts)||!f.fonts.length||f.fonts.length>150||f.fonts.some(v=>!text(v,80)))invalid('Zugelassene Schriften angeben.');
  if(typeof f.briefingNotes!=='string'||f.briefingNotes.length>8000)invalid('Stilnotizen: höchstens 8000 Zeichen.');
  if(f.source!==undefined){only(f.source,['repository','commit','path','sha256','note','shopVariants'],'Herkunft');}
  return f;

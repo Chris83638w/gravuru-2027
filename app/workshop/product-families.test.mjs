@@ -192,7 +192,7 @@ test('steel family reproduces all 309 shop variants of „Variante C“ (SKU and
 test('acrylic standoff families from the Corel drawing: per-size radius, standoffs, backing plate',()=>{
  const load=k=>JSON.parse(fs.readFileSync(new URL('../designs/acrylic-standoff-signs/'+k+'.json',import.meta.url)));
  
- for(const k of ['aa','as','ss']){const f=validateFamily(load(k));assert.equal(f.sizes.length,33);assert.deepEqual(f.mountingRules.map(r=>r.id),['AH02-E10-D8','AH02-E15-D8','AH04-E10-D8','AH04-E15-D8']);assert.ok(f.mountingRules.every(r=>r.accessory==='standoffs'&&r.diameterMm===8));}
+ for(const k of ['aa','as','ss']){const f=validateFamily(load(k));assert.equal(f.sizes.length,33);assert.equal(f.fonts.length,75,'Freigabeliste: 49 Nutzer + Fjalla One + 25 Ergänzungen');assert.ok(f.fonts.includes('Michroma')&&f.fonts.includes('Zentenar Fraktur')&&f.fonts.includes('Uncial Antiqua'));assert.deepEqual(f.mountingRules.map(r=>r.id),['AH02-E10-D8','AH02-E15-D8','AH04-E10-D8','AH04-E15-D8']);assert.ok(f.mountingRules.every(r=>r.accessory==='standoffs'&&r.diameterMm===8));}
  const ss=load('ss');
  // Eingezogene Ecken (konkav) as drawn: own shape, radius per size, backing radius as measured.
  const ee=ss.sizes.find(s=>s.key==='SS-EE-210X140');assert.deepEqual(geometryOf(ss,ee),{width:210,height:140,shape:'plaque',cornerRadiusMm:13.5,backingCornerRadiusMm:14.8});assert.deepEqual(ee.mounting,['AH02-E10-D8'],'10 mm as drawn, not unified');

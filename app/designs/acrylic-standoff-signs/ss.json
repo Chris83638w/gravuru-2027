@@ -99,30 +99,8 @@
    ]
   },
   {
-   "key": "SS-R5-240X70",
-   "groupKey": "R5",
-   "label": "24 × 7 cm",
-   "widthMm": 240.0,
-   "heightMm": 70.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E10-D8"
-   ]
-  },
-  {
    "key": "SS-RE-210X70",
    "groupKey": "RE",
-   "label": "21 × 7 cm",
-   "widthMm": 210.0,
-   "heightMm": 70.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E10-D8"
-   ]
-  },
-  {
-   "key": "SS-R5-210X70",
-   "groupKey": "R5",
    "label": "21 × 7 cm",
    "widthMm": 210.0,
    "heightMm": 70.0,
@@ -143,17 +121,6 @@
    ]
   },
   {
-   "key": "SS-R5-270X90",
-   "groupKey": "R5",
-   "label": "27 × 9 cm",
-   "widthMm": 270.0,
-   "heightMm": 90.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E10-D8"
-   ]
-  },
-  {
    "key": "SS-RE-360X120",
    "groupKey": "RE",
    "label": "36 × 12 cm",
@@ -165,30 +132,8 @@
    ]
   },
   {
-   "key": "SS-R5-360X120",
-   "groupKey": "R5",
-   "label": "36 × 12 cm",
-   "widthMm": 360.0,
-   "heightMm": 120.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E15-D8"
-   ]
-  },
-  {
    "key": "SS-RE-450X150",
    "groupKey": "RE",
-   "label": "45 × 15 cm",
-   "widthMm": 450.0,
-   "heightMm": 150.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E15-D8"
-   ]
-  },
-  {
-   "key": "SS-R5-450X150",
-   "groupKey": "R5",
    "label": "45 × 15 cm",
    "widthMm": 450.0,
    "heightMm": 150.0,
@@ -233,18 +178,6 @@
   {
    "key": "SS-RE-150X100",
    "groupKey": "RE",
-   "label": "15 × 10 cm",
-   "widthMm": 150.0,
-   "heightMm": 100.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E10-D8",
-    "AH04-E10-D8"
-   ]
-  },
-  {
-   "key": "SS-R5-150X100",
-   "groupKey": "R5",
    "label": "15 × 10 cm",
    "widthMm": 150.0,
    "heightMm": 100.0,
@@ -348,18 +281,6 @@
    ]
   },
   {
-   "key": "SS-R5-240X160",
-   "groupKey": "R5",
-   "label": "24 × 16 cm",
-   "widthMm": 240.0,
-   "heightMm": 160.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E15-D8",
-    "AH04-E15-D8"
-   ]
-  },
-  {
    "key": "SS-AB-240X160",
    "groupKey": "AB",
    "label": "24 × 16 cm",
@@ -385,18 +306,6 @@
   {
    "key": "SS-RE-300X200",
    "groupKey": "RE",
-   "label": "30 × 20 cm",
-   "widthMm": 300.0,
-   "heightMm": 200.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E15-D8",
-    "AH04-E15-D8"
-   ]
-  },
-  {
-   "key": "SS-R5-300X200",
-   "groupKey": "R5",
    "label": "30 × 20 cm",
    "widthMm": 300.0,
    "heightMm": 200.0,
@@ -442,32 +351,8 @@
    ]
   },
   {
-   "key": "SS-R5-360X240",
-   "groupKey": "R5",
-   "label": "36 × 24 cm",
-   "widthMm": 360.0,
-   "heightMm": 240.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E15-D8",
-    "AH04-E15-D8"
-   ]
-  },
-  {
    "key": "SS-RE-420X280",
    "groupKey": "RE",
-   "label": "42 × 28 cm",
-   "widthMm": 420.0,
-   "heightMm": 280.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E15-D8",
-    "AH04-E15-D8"
-   ]
-  },
-  {
-   "key": "SS-R5-420X280",
-   "groupKey": "R5",
    "label": "42 × 28 cm",
    "widthMm": 420.0,
    "heightMm": 280.0,
@@ -490,32 +375,8 @@
    ]
   },
   {
-   "key": "SS-R5-160X160",
-   "groupKey": "R5",
-   "label": "16 × 16 cm",
-   "widthMm": 160.0,
-   "heightMm": 160.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E10-D8",
-    "AH04-E10-D8"
-   ]
-  },
-  {
    "key": "SS-RE-200X200",
    "groupKey": "RE",
-   "label": "20 × 20 cm",
-   "widthMm": 200.0,
-   "heightMm": 200.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E10-D8",
-    "AH04-E10-D8"
-   ]
-  },
-  {
-   "key": "SS-R5-200X200",
-   "groupKey": "R5",
    "label": "20 × 20 cm",
    "widthMm": 200.0,
    "heightMm": 200.0,
@@ -538,32 +399,8 @@
    ]
   },
   {
-   "key": "SS-R5-260X260",
-   "groupKey": "R5",
-   "label": "26 × 26 cm",
-   "widthMm": 260.0,
-   "heightMm": 260.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E15-D8",
-    "AH04-E15-D8"
-   ]
-  },
-  {
    "key": "SS-RE-300X300",
    "groupKey": "RE",
-   "label": "30 × 30 cm",
-   "widthMm": 300.0,
-   "heightMm": 300.0,
-   "baseCents": null,
-   "mounting": [
-    "AH02-E15-D8",
-    "AH04-E15-D8"
-   ]
-  },
-  {
-   "key": "SS-R5-300X300",
-   "groupKey": "R5",
    "label": "30 × 30 cm",
    "widthMm": 300.0,
    "heightMm": 300.0,

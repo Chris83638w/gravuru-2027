@@ -14,13 +14,13 @@ Nicht installiert. Branch `task/steel-master-data-20261016`.
 
 ## Familien
 
-`scripts/import-acrylic-standoff-families.py` → `aa.json`, `as.json`, `ss.json`: je 23 Größen (14 Rechteck, 1 R5 als 18 × 12, 4 abgerundet mit gemessenem Radius, 8 oval – genau wie gezeichnet plus eine R5-Größe), 4 Bohrbilder (2/4 Abstandshalter, Rand 10/15 mm, Ø 8), 38 Zuordnungen. Preise und Aufpreise offen; Schutzzone 1 mm vorläufig (Kopfdurchmesser der Abstandshalter offen).
+`scripts/import-acrylic-standoff-families.py` → `aa.json`, `as.json`, `ss.json`: je 28 Größen (15 Rechteck, 4 abgerundet mit gemessenem Radius, 8 oval – genau die 37 gezeichneten Platten – plus eine R5-Größe 18 × 12), 4 Bohrbilder (2/4 Abstandshalter, Rand 10/15 mm, Ø 8), 39 Zuordnungen. Preise und Aufpreise offen; Schutzzone 1 mm vorläufig (Kopfdurchmesser der Abstandshalter offen).
 
 Familienmodell erweitert: Eckenradius je Größe, Zubehör „Abstandshalter“, Gravurseite, Rückplatte (`backing`: Überstand, Stärke) – in Schablone und Briefing berücksichtigt. Excel-Export/-Import trägt diese Felder (Rundlauf ohne Abweichung).
 
 ## Plattenkatalog
 
-[Plattenkatalog-Acryl-SS.pdf](Plattenkatalog-Acryl-SS.pdf) (`scripts/plate-catalog-pdf.py`): alle 62 Zeichnungen der S/S-Familie mit Rückplatte, **eine Seite je Format** (skalierbare Reihe, Seitenverhältnis ±1 %), Größen aufsteigend, Formen nebeneinander. Familien-Größen sind in derselben Reihenfolge gespeichert (auch Edelstahl umsortiert). Zusätzliche Platten wurden vom Nutzer abgelehnt (zu viele).
+[Plattenkatalog-Acryl-SS.pdf](Plattenkatalog-Acryl-SS.pdf) (`scripts/plate-catalog-pdf.py`): alle 39 Zeichnungen der S/S-Familie mit Rückplatte, **eine Seite je Format** (skalierbare Reihe, Seitenverhältnis ±1 %), Größen aufsteigend, Formen nebeneinander. Familien-Größen sind in derselben Reihenfolge gespeichert (auch Edelstahl umsortiert). Zusätzliche Platten wurden vom Nutzer abgelehnt (zu viele).
 
 ## Prüfungen
 
@@ -30,3 +30,13 @@ Familienmodell erweitert: Eckenradius je Größe, Zubehör „Abstandshalter“,
 
 - Acryl-Gravurplatten haben noch kein natives Produktmodell: Produkte erzeugen ist gesperrt, Briefing, Schablone und Probelauf gehen.
 - Die Rückplatte erscheint in der Schablone, noch nicht in der Konfigurator-Vorschau (folgt mit dem Acryl-Produktmodell).
+
+## Plausibilitätsprüfung der Zeichnung (17.10.2026, nur Hinweise – nichts geändert)
+
+Geprüft: Lochsymmetrie, Rückplatte, Randabstände, Radien, Formatreihen. Ergebnis: alle 37 Platten symmetrisch, Rückplatte überall +10 mm rundum, Radien der abgerundeten Platten skalieren sauber (≈ Höhe/10: 11,6 / 13,5 / 15,5 / 19,3).
+
+Auffällig (Rückfrage, keine Änderung):
+- 20 × 20 hat 10 mm Randabstand, obwohl die Platte größer ist als 21 × 14 (ab dort sonst 15 mm; 26 × 26 und 30 × 30 haben 15 mm).
+- 21 × 14 gibt es nur oval und abgerundet (R 13,5), nicht als einfaches Rechteck mit 2/4 Löchern – alle anderen 3:2-Größen haben beides.
+- 24 × 7 ist ein Einzelformat (3,43:1); Designs der 3:1-Reihe passen dort nicht ohne Anpassung.
+- Reihe 15:8 (15 × 8, 22,5 × 12, 30 × 16) gibt es nur oval, Reihe 3:1 (21 × 7 … 45 × 15) nur eckig.

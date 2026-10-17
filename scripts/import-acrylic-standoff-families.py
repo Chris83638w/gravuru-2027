@@ -16,7 +16,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / 'app/designs/acrylic-standoff-signs/corel-platten-20261017.json'
 OUT = ROOT / 'app/designs/acrylic-standoff-signs'
-FONTS = json.loads((ROOT / 'app/designs/steel-door-signs/family.json').read_text(encoding='utf-8'))['fonts'] + ['Michroma']  # Datei + OFL-Lizenz im Repo (aosu-labrador/assets)
+# Freigabeliste = die 49 lizenzierten Schriften des Nutzers (Schriftarten-Uebersicht-Lizenz, 30.09.2026), gepflegt im Katalog-Repo schriften/schriften.json
+FONTS = ["Antic Slab", "Bellefair", "Cinzel", "Roboto Slab", "Aldrich", "Audiowide", "Comfortaa", "Lato", "Michroma", "Minimalist", "Raleway", "Rounded Elegance", "Archivo Black", "Ashley Marie", "Bebas Neue", "Bernardo Moda Contrast", "Chewy", "Days One", "Dream Orphans", "Righteous", "Alex Brush", "Allura", "Ashley", "Betsy Bailey", "Dancing Script", "Great Vibes", "Italianno", "Magnolia Script", "Parisienne", "Rochester", "Satisfy", "Sweetie", "Tangerine", "Cookie", "Courgette", "Homage", "Kaushan Script", "Pacifico", "Soulmate", "Standlist", "Bad Script", "Caveat", "Daniel", "Daniel Black", "Desyrel", "Fineliner Script", "Gloria Hallelujah", "Rock Salt", "Zentenar Fraktur"]
 NOTE = ('Randabstand der Bohrlöcher je Platte wie in der Corel-Zeichnung: 10 mm bei kleinen, 15 mm bei größeren Platten, '
         'aus optischen Gründen und damit die Platten unter Spannung hängen und nicht durchhängen (Nutzer, 17.10.2026). Nicht vereinheitlichen.')
 

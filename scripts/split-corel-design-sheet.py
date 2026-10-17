@@ -17,8 +17,8 @@ Die PDF enthält nur Schriftteilmengen (benutzte Zeichen); für die Werkstatt we
 vollständigen Schriftdateien gebraucht – das Skript meldet fehlende Schriften, ersetzt nichts.
 
     python scripts/split-corel-design-sheet.py bogen.pdf --out ordner/ [--prefix beispiele]
-        [--fonts "Cinzel,Great Vibes,…"] [--numbers "1,3,7,…"]
---fonts: zugelassene Werkstatt-Schriften (sonst aus app/designs/steel-door-signs/family.json);
+        [--family familie.json | --fonts "Cinzel,Great Vibes,…"] [--numbers "1,3,7,…"]
+--family/--fonts: Freigabeliste der Schriften (sonst aus app/designs/steel-door-signs/family.json);
          nicht zugelassene Schriften bleiben im SVG stehen und werden gemeldet, nie ersetzt.
 --numbers: Platzhalter-Hausnummern je Design der Reihe nach (nur Textfelder, die genau
          eine Zahl enthalten). Ohne Angabe bleibt der gezeichnete Text.
@@ -167,9 +167,9 @@ def split(pdf, out, prefix, fonts, numbers):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('pdf'); ap.add_argument('--out', required=True); ap.add_argument('--prefix', default='design')
-    ap.add_argument('--fonts'); ap.add_argument('--numbers')
+    ap.add_argument('--fonts'); ap.add_argument('--family', help='Familie (JSON), deren Freigabeliste fonts gilt'); ap.add_argument('--numbers')
     a = ap.parse_args()
-    fonts = [f.strip() for f in a.fonts.split(',')] if a.fonts else json.loads((ROOT / 'app/designs/steel-door-signs/family.json').read_text(encoding='utf-8'))['fonts']
+    fonts = [f.strip() for f in a.fonts.split(',')] if a.fonts else json.loads(Path(a.family or ROOT / 'app/designs/steel-door-signs/family.json').read_text(encoding='utf-8'))['fonts']
     numbers = [v.strip() for v in a.numbers.split(',') if v.strip()] if a.numbers else None
     rows = split(a.pdf, Path(a.out), a.prefix, fonts, numbers)
     flagged = sum(1 for r in rows if r['Hinweise'])

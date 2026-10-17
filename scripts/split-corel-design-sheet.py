@@ -10,8 +10,11 @@ Je Design entsteht ein Ordner nach Lieferform 2 (Plugin-Designstrecke, Paket D):
                                Text, text-anchor middle) und motiv-<n> (Pfade),
                                schwarz auf weiß (Gravur-Konvention)
     <ordner>/<id>/design.json  Name, Quelle, Plattenmaß, Schriften, Hinweise
-Dazu bericht.md / bericht.csv (Felder, Schriften, Auffälligkeiten) und
-uebersicht.png (aus den erzeugten SVGs gerendert – zum Gegenprüfen der Zerlegung).
+    <ordner>/<id>/original.png Platte aus der PDF gerendert (echte Schriften), schwarz auf weiß
+Dazu bericht.md / bericht.csv (Felder, Schriften, Auffälligkeiten), uebersicht.png (aus der
+PDF, echte Schriften) und uebersicht-svg.png (aus den SVGs mit Ersatzschrift – Geometrieprüfung).
+Die PDF enthält nur Schriftteilmengen (benutzte Zeichen); für die Werkstatt werden die
+vollständigen Schriftdateien gebraucht – das Skript meldet fehlende Schriften, ersetzt nichts.
 
     python scripts/split-corel-design-sheet.py bogen.pdf --out ordner/ [--prefix beispiele]
         [--fonts "Cinzel,Great Vibes,…"] [--numbers "1,3,7,…"]
@@ -24,6 +27,20 @@ Liest nur. Keine Werkstatt, kein Shop, nichts wird importiert.
 import argparse, csv, hashlib, json, re, io
 from pathlib import Path
 import pymupdf
+from PIL import Image, ImageDraw
+
+PX_PER_MM = 6
+
+
+def plate_png(page, rect, holes_mm, w, h):
+    """Platte aus der PDF rendern: weiße Gestaltung → schwarz, Platte → weiß, Schraubenköpfe abgedeckt."""
+    pix = page.get_pixmap(clip=rect, dpi=round(PX_PER_MM * 25.4), colorspace=pymupdf.csGRAY)
+    im = Image.frombytes('L', (pix.width, pix.height), pix.samples)
+    im = im.point(lambda v: 0 if v > 223 else 255)  # nur Weiß bleibt (als Schwarz), Plattengrau wird Weiß
+    dr = ImageDraw.Draw(im)
+    for x, y in holes_mm:
+        rr = 6.5 * PX_PER_MM; dr.ellipse([x * PX_PER_MM - rr, y * PX_PER_MM - rr, x * PX_PER_MM + rr, y * PX_PER_MM + rr], fill=255)
+    return im
 
 ROOT = Path(__file__).resolve().parents[1]
 MM = 25.4 / 72
@@ -114,12 +131,13 @@ def split(pdf, out, prefix, fonts, numbers):
                f'<title>{esc(did)}</title>' + ''.join(layers) + '</svg>')
         folder = out / did; folder.mkdir(exist_ok=True)
         (folder / 'design.svg').write_text(svg, encoding='utf-8')
+        png = plate_png(page, r, hole_pos, w, h); png.save(folder / 'original.png')
         meta = {'id': did, 'name': f'{prefix.capitalize()} {n:02d}', 'source': {'file': Path(pdf).name, 'sha256': sha, 'plateIndex': n},
                 'plateMm': [w, h], 'holes': hole_pos, 'holeDiameterMm': HOLE_D, 'textFields': len(texts), 'motifs': len(shapes), 'fonts': sorted(set(used_fonts)), 'notes': notes}
         (folder / 'design.json').write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding='utf-8')
         rows.append({'id': did, 'Platte mm': f'{w:g} × {h:g}', 'Textfelder': len(texts), 'Texte': ' | '.join(s['text'].strip() for s in texts), 'Motive': len(shapes),
                      'Schriften': ', '.join(sorted(set(used_fonts))), 'Löcher': len(holes), 'Hinweise': '; '.join(notes)})
-        overview.append((did, svg, w, h))
+        overview.append((did, svg, w, h, png))
     # Bericht
     with (out / 'bericht.csv').open('w', newline='', encoding='utf-8') as fh:
         wr = csv.DictWriter(fh, fieldnames=list(rows[0].keys()), delimiter=';'); wr.writeheader(); wr.writerows(rows)
@@ -127,20 +145,23 @@ def split(pdf, out, prefix, fonts, numbers):
           '| Design | Textfelder | Texte | Motive | Schriften | Hinweise |', '| --- | --- | --- | --- | --- | --- |']
     md += [f"| {r['id']} | {r['Textfelder']} | {r['Texte']} | {r['Motive']} | {r['Schriften']} | {r['Hinweise']} |" for r in rows]
     (out / 'bericht.md').write_text('\n'.join(md) + '\n', encoding='utf-8')
-    # Übersicht aus den erzeugten SVGs (Schriften: Systemersatz, nur Geometrieprüfung)
-    try:
-        import cairosvg
-        from PIL import Image, ImageDraw
-        cols = 5; scale = 2.2; pad = 14
-        cw, ch = int(overview[0][2] * scale) + pad, int(overview[0][3] * scale) + pad + 14
+    # Übersichten: aus der PDF (echte Schriften) und aus den erzeugten SVGs (Ersatzschrift, nur Geometrie)
+    cols = 5; scale = 2.2; pad = 14
+    cw, ch = int(overview[0][2] * scale) + pad, int(overview[0][3] * scale) + pad + 14
+    for name, from_svg in (('uebersicht.png', False), ('uebersicht-svg.png', True)):
         im = Image.new('RGB', (cols * cw, ((len(overview) + cols - 1) // cols) * ch), (235, 233, 228)); dr = ImageDraw.Draw(im)
-        for i, (did, svg, w, h) in enumerate(overview):
-            png = cairosvg.svg2png(bytestring=svg.encode('utf-8'), output_width=int(w * scale), output_height=int(h * scale), background_color='white')
+        for i, (did, svg, w, h, png) in enumerate(overview):
             x, y = (i % cols) * cw + pad // 2, (i // cols) * ch + pad // 2
-            im.paste(Image.open(io.BytesIO(png)), (x, y)); dr.text((x, y + int(h * scale) + 2), did, fill=(40, 40, 40))
-        im.save(out / 'uebersicht.png')
-    except ImportError:
-        pass
+            if from_svg:
+                try:
+                    import cairosvg
+                    tile = Image.open(io.BytesIO(cairosvg.svg2png(bytestring=svg.encode('utf-8'), output_width=int(w * scale), output_height=int(h * scale), background_color='white')))
+                except ImportError:
+                    continue
+            else:
+                tile = png.resize((int(w * scale), int(h * scale)), Image.LANCZOS)
+            im.paste(tile, (x, y)); dr.text((x, y + int(h * scale) + 2), did, fill=(40, 40, 40))
+        im.save(out / name)
     return rows
 
 

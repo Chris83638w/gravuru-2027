@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / 'app/designs/acrylic-standoff-signs/corel-platten-20261017.json'
 OUT = ROOT / 'app/designs/acrylic-standoff-signs'
-FONTS = json.loads((ROOT / 'app/designs/steel-door-signs/family.json').read_text(encoding='utf-8'))['fonts']
+FONTS = json.loads((ROOT / 'app/designs/steel-door-signs/family.json').read_text(encoding='utf-8'))['fonts'] + ['Michroma']  # Datei + OFL-Lizenz im Repo (aosu-labrador/assets)
 NOTE = ('Randabstand der Bohrlöcher je Platte wie in der Corel-Zeichnung: 10 mm bei kleinen, 15 mm bei größeren Platten, '
         'aus optischen Gründen und damit die Platten unter Spannung hängen und nicht durchhängen (Nutzer, 17.10.2026). Nicht vereinheitlichen.')
 

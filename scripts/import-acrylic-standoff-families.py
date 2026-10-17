@@ -42,12 +42,11 @@ def build(fid, name, prefix, material, backing, notes):
         s = sizes.setdefault(key, {'key': key, 'groupKey': gkey, 'label': f"{cm(p['widthMm'])} × {cm(p['heightMm'])} cm", 'widthMm': p['widthMm'], 'heightMm': p['heightMm'], 'baseCents': None, 'mounting': []})
         if radius: s['cornerRadiusMm'] = radius
         if rid not in s['mounting']: s['mounting'].append(rid)
-    # Nutzerwunsch 17.10.2026: zusätzlich jede rechteckige Größe mit Eckenradius 5 mm (R5),
-    # gleiche Bohrbilder wie das Rechteck derselben Größe.
+    # Nutzerwunsch 17.10.2026: genau EINE rechteckige Größe zusätzlich mit Eckenradius 5 mm.
+    # Vorläufig 18 × 12 cm (erste Größe, die es in der Zeichnung auch abgerundet gibt); Größe austauschbar.
     groups['R5'] = {'key': 'R5', 'name': 'Abgerundete Ecken R5', 'shape': 'rect', 'cornerRadiusMm': 5}
-    for s in [x for x in sizes.values() if x['groupKey'] == 'RE']:
-        key = s['key'].replace(f'{prefix}-RE-', f'{prefix}-R5-')
-        sizes[key] = {**s, 'key': key, 'groupKey': 'R5', 'mounting': list(s['mounting'])}
+    base = sizes[f'{prefix}-RE-180X120']
+    sizes[f'{prefix}-R5-180X120'] = {**base, 'key': f'{prefix}-R5-180X120', 'groupKey': 'R5', 'mounting': list(base['mounting'])}
     order = ['RE', 'R5', 'AB', 'OV']
     fam = {'schema': 'gravuru-product-family/v2', 'id': fid, 'name': name, 'material': material, 'designArea': {'marginMm': 0, 'keepoutMm': 1},
            'groups': [groups[k] for k in order if k in groups],

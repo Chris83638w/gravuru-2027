@@ -10,11 +10,11 @@ Nicht installiert. Branch `task/steel-master-data-20261016`.
 
 - AA/AS: Acrylglas anthrazit bzw. schwarz, 5 mm, Gravur von hinten. S/S: Front satiniert 3 mm, von vorn graviert; Rückplatte schwarz 3 mm, rundum 10 mm größer, Abstandsringe dazwischen.
 - Randabstände und Formen **genau wie in der PDF**, nicht vereinheitlichen (10 mm bei kleinen Platten, 15 mm bei größeren, aus optischen Gründen und für Spannung gegen Durchhängen). 21 × 14 bleibt.
-- Zusätzlich jede rechteckige Größe mit Eckenradius 5 mm.
+- Zusätzlich genau eine rechteckige Größe mit Eckenradius 5 mm (vorläufig 18 × 12, austauschbar).
 
 ## Familien
 
-`scripts/import-acrylic-standoff-families.py` → `aa.json`, `as.json`, `ss.json`: je 42 Größen (20 Rechteck, 20 R5, 4 abgerundet mit gemessenem Radius, 8 oval), 4 Bohrbilder (2/4 Abstandshalter, Rand 10/15 mm, Ø 8), 62 Zuordnungen. Preise und Aufpreise offen; Schutzzone 1 mm vorläufig (Kopfdurchmesser der Abstandshalter offen).
+`scripts/import-acrylic-standoff-families.py` → `aa.json`, `as.json`, `ss.json`: je 23 Größen (14 Rechteck, 1 R5 als 18 × 12, 4 abgerundet mit gemessenem Radius, 8 oval – genau wie gezeichnet plus eine R5-Größe), 4 Bohrbilder (2/4 Abstandshalter, Rand 10/15 mm, Ø 8), 38 Zuordnungen. Preise und Aufpreise offen; Schutzzone 1 mm vorläufig (Kopfdurchmesser der Abstandshalter offen).
 
 Familienmodell erweitert: Eckenradius je Größe, Zubehör „Abstandshalter“, Gravurseite, Rückplatte (`backing`: Überstand, Stärke) – in Schablone und Briefing berücksichtigt. Excel-Export/-Import trägt diese Felder (Rundlauf ohne Abweichung).
 

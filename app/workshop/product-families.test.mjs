@@ -192,11 +192,11 @@ test('steel family reproduces all 309 shop variants of „Variante C“ (SKU and
 test('acrylic standoff families from the Corel drawing: per-size radius, standoffs, backing plate',()=>{
  const load=k=>JSON.parse(fs.readFileSync(new URL('../designs/acrylic-standoff-signs/'+k+'.json',import.meta.url)));
  
- for(const k of ['aa','as','ss']){const f=validateFamily(load(k));assert.equal(f.sizes.length,42);assert.deepEqual(f.mountingRules.map(r=>r.id),['AH02-E10-D8','AH02-E15-D8','AH04-E10-D8','AH04-E15-D8']);assert.ok(f.mountingRules.every(r=>r.accessory==='standoffs'&&r.diameterMm===8));}
+ for(const k of ['aa','as','ss']){const f=validateFamily(load(k));assert.equal(f.sizes.length,23);assert.deepEqual(f.mountingRules.map(r=>r.id),['AH02-E10-D8','AH02-E15-D8','AH04-E10-D8','AH04-E15-D8']);assert.ok(f.mountingRules.every(r=>r.accessory==='standoffs'&&r.diameterMm===8));}
  const ss=load('ss');
  const ab=ss.sizes.find(s=>s.key==='SS-AB-210X140');assert.equal(geometryOf(ss,ab).cornerRadiusMm,13.5,'radius as drawn, per size');assert.deepEqual(ab.mounting,['AH02-E10-D8'],'10 mm as drawn, not unified');
  const ov=ss.sizes.find(s=>s.key==='SS-OV-210X140');assert.deepEqual(ov.mounting,['AH02-E15-D8']);
- assert.equal(ss.sizes.find(s=>s.key==='SS-R5-300X200').cornerRadiusMm,undefined);assert.equal(geometryOf(ss,ss.sizes.find(s=>s.key==='SS-R5-300X200')).cornerRadiusMm,5);
+ assert.equal(ss.sizes.filter(s=>s.groupKey==='R5').length,1);assert.equal(geometryOf(ss,ss.sizes.find(s=>s.key==='SS-R5-180X120')).cornerRadiusMm,5);
  const svg=familyTemplate(ss,ab);assert.match(svg,/viewBox="-10 -10 230 160"/,'backing plate 10 mm around');assert.match(svg,/id="rueckplatte"/);
  assert.throws(()=>validateFamily({...ss,backing:{...ss.backing,offsetMm:-1}}),/Rückplatte/);
  const bad=structuredClone(ss);bad.sizes.find(s=>s.groupKey==='OV').cornerRadiusMm=5;assert.throws(()=>validateFamily(bad),/Eckenradius/);

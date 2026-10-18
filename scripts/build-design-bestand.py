@@ -59,6 +59,23 @@ STERNENKIND = r'\b(sternenkind\w*|sternenkinder|zu früh|still ?geboren|ungebore
 def norm(t): return re.sub(r'\s+', ' ', t.lower()).strip()
 
 
+_FONT_OK = {}
+
+
+def font_available(family):
+    """True, wenn fontconfig (FONTCONFIG_FILE) für den Namen eine Schrift dieser Familie liefert – sonst Ersatz in der Vorschau."""
+    import subprocess
+    if family in _FONT_OK: return _FONT_OK[family]
+    ok = False
+    try:
+        got = subprocess.run(['fc-match', '-f', '%{family}', family], capture_output=True, text=True, timeout=30).stdout
+        k = lambda s: re.sub(r'[^a-z0-9]', '', s.lower())
+        ok = any(k(g) == k(family) or (k(g) in k(family) or k(family) in k(g)) and min(len(k(g)), len(k(family))) >= 5 for g in got.split(','))
+    except Exception:
+        pass
+    _FONT_OK[family] = ok; return ok
+
+
 FULLNAME = re.compile(r'^[A-ZÄÖÜ][a-zäöüß]+(?:-[A-ZÄÖÜ][a-zäöüß]+)?\s+(?:von\s+|de\s+)?[A-ZÄÖÜ][a-zäöüß]+(?:-[A-ZÄÖÜ][a-zäöüß]+)?$')
 DATE = re.compile(r'(\d{1,2})\.\s?(\d{1,2})\.\s?(\d{4})')
 YEAR = re.compile(r'\b(1[89]\d\d|20\d\d)\b')
@@ -142,12 +159,75 @@ def load_tree(path):
     return out
 
 
+ZIEL_NAMES = {'menschen': 'Menschen', 'mensch': 'Menschen', 'tiere': 'Tiere', 'tier': 'Tiere', 'sternenkinder': 'Sternenkinder', 'sternenkind': 'Sternenkinder'}
+
+
+def import_xlsx(xlsx, out, line):
+    """Chris' Korrekturen aus der Excel (gelbe Spalten Zielgruppe, Unterkategorie, Foto, Bemerkung) in den Katalog übernehmen:
+    _korrekturen.json fortschreiben, Designordner in die neue Kategorie verschieben, Index/Excel/Übersichten neu schreiben.
+    Bemerkung „auch: Kinderzimmer, Garten“ → weitere Themen (kategorie.themen). Läuft ohne die Quellordner."""
+    import datetime
+    from openpyxl import load_workbook
+    out = Path(out); xlsx = Path(xlsx)
+    ws = load_workbook(xlsx, read_only=True, data_only=True)['Designs']
+    rows = ws.iter_rows(values_only=True); head = [str(h or '').strip() for h in next(rows)]
+    col = {h: i for i, h in enumerate(head)}
+    for need in ('Schlüssel', 'Zielgruppe', 'Unterkategorie', 'Foto', 'Bemerkung'):
+        if need not in col: raise SystemExit(f'Spalte „{need}“ fehlt in {xlsx.name}')
+    index = json.loads((out / 'designs.json').read_text(encoding='utf-8')); by = {d['key']: d for d in index}
+    ov_path = out / '_korrekturen.json'; overrides = json.loads(ov_path.read_text(encoding='utf-8')) if ov_path.exists() else {}
+    today = datetime.date.today().strftime('%d.%m.%Y'); changed = moved = 0; unknown = []
+    for row in rows:
+        key = (row[col['Schlüssel']] or '').strip() if isinstance(row[col['Schlüssel']], str) else row[col['Schlüssel']]
+        if not key: continue
+        d = by.get(key)
+        if not d: unknown.append(key); continue
+        k = d['kategorie']; new = dict(k)
+        ziel = ZIEL_NAMES.get(str(row[col['Zielgruppe']] or '').strip().lower(), str(row[col['Zielgruppe']] or '').strip())
+        unter = str(row[col['Unterkategorie']] or '').strip(); foto = str(row[col['Foto']] or '').strip().lower(); bem = str(row[col['Bemerkung']] or '').strip()
+        if ziel: new['ziel'] = ziel
+        if unter: new['unter'] = unter[:1].upper() + unter[1:]
+        if foto in ('ja', 'nein', 'offen'): new['foto'] = foto
+        themen = [t.strip() for m in re.findall(r'auch:\s*([^;\n]+)', bem, re.I) for t in m.split(',') if t.strip()]
+        if themen: new['themen'] = themen
+        if bem: new['bemerkung'] = bem
+        if new == k: continue
+        cat_changed = (new['ziel'], new['unter']) != (k['ziel'], k['unter'])
+        if cat_changed: new['sicherheit'] = 'korrigiert'; new['begruendung'] = f'Korrektur aus Excel ({today})'
+        overrides[key] = {kk: new[kk] for kk in ('ziel', 'unter', 'foto', 'sicherheit', 'begruendung', 'themen', 'bemerkung') if kk in new}
+        d['kategorie'] = new; changed += 1
+        new_path = f"{new['ziel']}/{new['unter']}/{key}"
+        if new_path != d['path']:
+            src_dir = out / d['path']; dst_dir = out / new_path
+            if src_dir.exists():
+                dst_dir.parent.mkdir(parents=True, exist_ok=True); shutil.move(str(src_dir), str(dst_dir)); moved += 1
+                # leere Kategorieordner aufräumen
+                for parent in (src_dir.parent, src_dir.parent.parent):
+                    if parent != out and parent.exists() and not any(parent.iterdir()): parent.rmdir()
+            d['path'] = new_path
+        dj = out / d['path'] / 'design.json'
+        if dj.exists():
+            full = json.loads(dj.read_text(encoding='utf-8')); full['katalog'] = {kk: v for kk, v in d.items() if not kk.startswith('_')}
+            dj.write_text(json.dumps(full, ensure_ascii=False, indent=1), encoding='utf-8')
+    ov_path.write_text(json.dumps(overrides, ensure_ascii=False, indent=1), encoding='utf-8')
+    (out / 'designs.json').write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding='utf-8')
+    write_xlsx(index, out / f'{line.upper()}-DESIGNS.xlsx', out)
+    for old in (out / '_uebersicht').glob('*.png'): old.unlink()
+    write_contact_sheets(index, out); write_overview_md(index, out, line); write_readme(index, out, line)
+    print(f'{changed} Designs korrigiert, {moved} Ordner verschoben, {len(overrides)} Einträge in _korrekturen.json' + (f'; unbekannte Schlüssel: {", ".join(unknown[:10])}' if unknown else ''))
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--line', required=True); ap.add_argument('--sources', required=True); ap.add_argument('--out', required=True)
+    ap.add_argument('--line', required=True); ap.add_argument('--sources', default=''); ap.add_argument('--out', required=True)
     ap.add_argument('--tree', default=''); ap.add_argument('--no-copy', action='store_true')
     ap.add_argument('--overrides', default='', help='JSON Schlüssel → {ziel, unter, foto, begruendung}; Standard <out>/_korrekturen.json')
-    a = ap.parse_args(); src = Path(a.sources); out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
+    ap.add_argument('--import-xlsx', default='', help='Korrekturen aus dieser Excel in den Katalog <out> übernehmen (ohne Quellordner)')
+    a = ap.parse_args()
+    if a.import_xlsx:
+        import_xlsx(a.import_xlsx, a.out, a.line); return
+    if not a.sources: raise SystemExit('--sources fehlt (oder --import-xlsx verwenden)')
+    src = Path(a.sources); out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
     tree = load_tree(a.tree)
     ov_path = Path(a.overrides) if a.overrides else out / '_korrekturen.json'
     overrides = json.loads(ov_path.read_text(encoding='utf-8')) if ov_path.exists() else {}
@@ -165,7 +245,7 @@ def main():
     for key, recs in groups.items():
         # Master: Datensatz mit Texten (Bogen vor Paket), sonst erster
         MAT_PRIO = {'Schiefer': 0, 'Granit': 0, 'Acryl': 1, 'Premium Schiefer': 2, 'Acryl + Edelstahl': 3}
-        recs.sort(key=lambda r: (0 if r['texts'] and not any(t.get('ocr') for t in r['texts']) else 1 if r['texts'] else 2, 0 if r.get('sourceKind') != 'fpd-zip' else 1, MAT_PRIO.get(r['material'], 5)))
+        recs.sort(key=lambda r: (0 if r['texts'] and not any(t.get('ocr') for t in r['texts']) else 1 if r['texts'] else 2, 0 if r.get('sourceKind') != 'fpd-zip' else 1, 0 if r.get('photoFiles') else 1, MAT_PRIO.get(r['material'], 5)))
         master = recs[0]
         mats = list(dict.fromkeys(r['material'] for r in recs))
         sizes = set()
@@ -183,11 +263,12 @@ def main():
         rec = {'key': key, 'series': master['series'], 'seriesLabel': SERIES_LABEL.get(master['series'], master['series']), 'process': master['process'], 'form': master.get('form', ''),
                'material': master['material'], 'materials': mats, 'designNo': int(SKU.match(master['id']).group('n')), 'masterId': master['id'], 'ids': [r['id'] for r in recs],
                'sizesInStock': sorted(sizes, key=lambda s: [float(x.replace(',', '.')) for x in s.split('x')]), 'sheetLabel': master.get('sheetLabel', ''),
-               'plate': master.get('plate'), 'texts': master['texts'], 'fonts': master.get('fonts', []), 'photo': master.get('photo'), 'textsDiffer': diff, 'sourceKind': master.get('sourceKind', 'corel-bogen')}
+               'plate': master.get('plate'), 'texts': master['texts'], 'fonts': master.get('fonts', []), 'fontsMissing': [f for f in master.get('fonts', []) if not font_available(f)],
+               'photo': master.get('photo'), 'photoFiles': master.get('photoFiles', []), 'texture': master.get('texture'), 'textsDiffer': diff, 'sourceKind': master.get('sourceKind', 'corel-bogen')}
         rec['kategorie'] = classify(rec)
         if key in overrides:
-            o = overrides[key]; rec['kategorie'].update({k: v for k, v in o.items() if k in ('ziel', 'unter', 'foto')})
-            rec['kategorie']['sicherheit'] = o.get('sicherheit', 'korrigiert'); rec['kategorie']['begruendung'] = o.get('begruendung', 'Korrektur') 
+            o = overrides[key]; rec['kategorie'].update({k: v for k, v in o.items() if k in ('ziel', 'unter', 'foto', 'themen', 'bemerkung') and v})
+            rec['kategorie']['sicherheit'] = o.get('sicherheit', 'korrigiert'); rec['kategorie']['begruendung'] = o.get('begruendung', 'Korrektur')
         lf = lifespan_years(' '.join(norm(t['text']) for t in rec['texts'])); rec['beispielAlter'] = round(lf, 1) if lf is not None else None
         rec['_dirs'] = [r['_dir'] for r in recs]
         designs.append(rec)
@@ -198,13 +279,19 @@ def main():
         if a.no_copy: continue
         folder.mkdir(parents=True, exist_ok=True)
         srcdir = d['_dirs'][0]
+        for old in list(folder.glob('foto-*.jpg')) + list(folder.glob('foto-*.png')): old.unlink()
         for n in ('design.svg', 'design.json', 'preview.png', 'product.json', 'design.png'):
             if (srcdir / n).exists(): shutil.copy(srcdir / n, folder / n)
+        for foto in list(srcdir.glob('foto-*.jpg')) + list(srcdir.glob('foto-*.png')): shutil.copy(foto, folder / foto.name)
         full = json.loads((srcdir / 'design.json').read_text(encoding='utf-8'))
+        if full.get('texture') and (srcdir.parent / '_texturen' / full['texture']).exists():
+            # Materialtextur (Plattenbitmap) einmal je Katalogordner
+            (out / '_texturen').mkdir(exist_ok=True)
+            if not (out / '_texturen' / full['texture']).exists(): shutil.copy(srcdir.parent / '_texturen' / full['texture'], out / '_texturen' / full['texture'])
         if full.get('motifs') is not None and full.get('sourceKind', 'corel-bogen') == 'corel-bogen' and not (srcdir / 'product.json').exists():
-            # Vorschau aus den Vektordaten neu rendern (aktuelle Darstellungsregeln, Katalogschriften)
+            # Vorschau aus den Vektordaten neu rendern (aktuelle Darstellungsregeln, Originalschriften, Fotos, Textur)
             (folder / 'design.svg').write_text(corel.design_svg(full), encoding='utf-8')
-            corel.render_png(corel.design_svg(full, preview=True), folder / 'preview.png', width=600)
+            corel.render_png(corel.design_svg(full, preview=True, assets=folder, textures=out / '_texturen'), folder / 'preview.png', width=600)
         for extra in srcdir.glob('*.svg'):
             if extra.name != 'design.svg': shutil.copy(extra, folder / extra.name)
         for extra in list(srcdir.glob('Bild*')): shutil.copy(extra, folder / extra.name)
@@ -223,17 +310,17 @@ def write_xlsx(index, path, out):
     from openpyxl import Workbook
     from openpyxl.styles import PatternFill, Font, Alignment
     wb = Workbook(); ws = wb.active; ws.title = 'Designs'
-    head = ['Schlüssel', 'Reihe', 'Verfahren', 'Form', 'Material (Master)', 'weitere Materialien', 'Design-Nr', 'Zielgruppe', 'Unterkategorie', 'Sicherheit', 'Foto', 'Texte', 'Alter (Beispieldaten)', 'Schriften', 'Größen im Bestand', 'SKUs', 'Vorschau', 'Begründung', 'Bemerkung']
+    head = ['Schlüssel', 'Reihe', 'Verfahren', 'Form', 'Material (Master)', 'weitere Materialien', 'Design-Nr', 'Zielgruppe', 'Unterkategorie', 'Sicherheit', 'Foto', 'Texte', 'Alter (Beispieldaten)', 'Schriften', 'Größen im Bestand', 'SKUs', 'Vorschau', 'Begründung', 'Bemerkung', 'Schrift fehlt (Vorschau mit Ersatz)', 'Musterfotos']
     ws.append(head); yellow = PatternFill('solid', fgColor='FFF2CC')
     for c in ws[1]: c.font = Font(bold=True)
     for d in index:
         k = d['kategorie']
         ws.append([d['key'], d['seriesLabel'], d['process'], d['form'], d['material'], ', '.join(d['materials'][1:]), d['designNo'], k['ziel'], k['unter'], k['sicherheit'], k['foto'],
-                   ' | '.join(t['text'].replace('\n', ' / ') for t in d['texts'])[:500], d.get('beispielAlter'), ', '.join(d['fonts']), ', '.join(d['sizesInStock']), ', '.join(d['ids']), d['path'] + '/preview.png', k['begruendung'], ''])
+                   ' | '.join(t['text'].replace('\n', ' / ') for t in d['texts'])[:500], d.get('beispielAlter'), ', '.join(d['fonts']), ', '.join(d['sizesInStock']), ', '.join(d['ids']), d['path'] + '/preview.png', k['begruendung'], k.get('bemerkung', ''), ', '.join(d.get('fontsMissing') or []), len(d.get('photoFiles') or [])])
         r = ws.max_row
         for col in (8, 9, 11, 19): ws.cell(r, col).fill = yellow
         ws.cell(r, 17).hyperlink = d['path'] + '/preview.png'
-    widths = [34, 30, 9, 12, 16, 22, 9, 12, 14, 14, 7, 80, 9, 30, 30, 40, 40, 40, 30]
+    widths = [34, 30, 9, 12, 16, 22, 9, 12, 14, 14, 7, 80, 9, 30, 30, 40, 40, 40, 30, 30, 10]
     for i, w in enumerate(widths, 1): ws.column_dimensions[ws.cell(1, i).column_letter].width = w
     ws.freeze_panes = 'B2'; ws.auto_filter.ref = ws.dimensions
     for row in ws.iter_rows(min_row=2):
@@ -251,7 +338,9 @@ def write_xlsx(index, path, out):
                  'Ein Design kann mehreren Themen gehören: weitere Zielgruppen/Unterkategorien kommagetrennt in die Bemerkung („auch: Kinderzimmer“).',
                  'Sicherheit „sicher“ = eindeutiges Wort im Text; „Vorschlag“ = kein eindeutiges Wort (meist Allgemein) – bitte prüfen; „Vorschlag (OCR)“ = Text nur aus Bild gelesen.',
                  'Rückimport: python scripts/build-design-bestand.py --import-xlsx <diese Datei> (verschiebt die Ordner in die neue Kategorie).',
-                 'Vorschau-Spalte: Pfad relativ zu diesem Ordner; Übersichtsbögen je Kategorie liegen in _uebersicht/.']:
+                 'Vorschau-Spalte: Pfad relativ zu diesem Ordner; Übersichtsbögen je Kategorie liegen in _uebersicht/.',
+                 'Schrift fehlt: Originalschrift lag weder in Windows/Fonts, im Benutzer-Schriftordner, im Konfigurator-Schriftordner noch im Katalog vor – die Vorschau zeigt eine Ersatzschrift (Script → Dancing Script, Sans → Century Gothic/Poppins). Bitte Schriftdatei nachliefern.',
+                 'Musterfotos: Anzahl der aus dem Bogen übernommenen Beispielfotos (foto-n.jpg im Designordner, in design.svg unter der Fotomaske).']:
         l.append([line])
     l.column_dimensions['A'].width = 160
     wb.save(path)
@@ -276,6 +365,7 @@ def write_contact_sheets(designs, out, cols=5):
                 x = 10 + (i % cols) * (tw + 10); y = 50 + (i // cols) * (th + 10)
                 sheet.paste(im, (x, y)); dr.text((x, y + im.height + 3), d['key'], fill='black')
                 dr.text((x, y + im.height + 16), (d['kategorie']['sicherheit'] + ' · ' + ', '.join(d['materials']))[:60], fill=(90, 90, 90))
+                if d.get('fontsMissing'): dr.text((x + 200, y + im.height + 3), ('Ersatzschrift: ' + ', '.join(d['fontsMissing']))[:34], fill=(190, 60, 0))
             sheet.save(ud / f"{z}-{u}{'-' + str(part // 60 + 1) if len(tiles) > 60 else ''}.png")
 
 

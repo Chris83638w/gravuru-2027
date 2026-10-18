@@ -295,7 +295,8 @@ def build_design(sku, items, label_item, meta):
             box = rel(it['bbox']); bm = it.get('bm') or {}
             covers = box[0] <= 2 and box[1] <= 2 and box[0] + box[2] >= W - 2 and box[1] + box[3] >= H - 2
             images.append({'box': box, 'mime': it['mime'], 'px': list(bm.get('px', ())) or None, 'key': bm.get('key'), 'uses': bm.get('uses', 0), 'covers': covers, 'plate': False, 'alpha': bm.get('ext') == '.png', '_jpeg': bm.get('jpeg')})
-    # Textur = plattendeckende Bitmap, die auf dem Bogen am häufigsten vorkommt (Material); weitere deckende Bitmaps sind Fotos
+    # Textur = plattendeckende Bitmap, die auf dem Bogen am häufigsten vorkommt (Material); weitere deckende Bitmaps sind Fotos.
+    # Formplatten (Textur innerhalb der Schnittlinie) behandelt mark_sheet_textures() nach dem Lesen des ganzen Bogens.
     covering = [im for im in images if im['covers']]
     if covering:
         tex = max(covering, key=lambda im: (im['uses'], -images.index(im)))
@@ -337,6 +338,17 @@ def png_small(im, max_px=640):
     q = im.quantize(256, method=Image.Quantize.FASTOCTREE)
     buf = io.BytesIO(); q.save(buf, 'PNG', optimize=True)
     return buf.getvalue()
+
+
+def mark_sheet_textures(designs):
+    """Formplatten (Herz, Stern): die Materialtextur liegt innerhalb der Schnittlinie und deckt die Platte nicht ganz.
+    Eine Bitmap, die auf ≥ 80 % der Designs des Bogens vorkommt und ≥ 60 % der Plattenfläche einnimmt, ist Textur, kein Foto."""
+    if len(designs) < 4: return
+    for d in designs:
+        W, H = d['plate']['widthMm'], d['plate']['heightMm']
+        if any(im.get('plate') for im in d['images']): continue
+        cands = [im for im in d['images'] if im.get('uses', 0) >= 0.8 * len(designs) and im['box'][2] * im['box'][3] >= 0.6 * W * H]
+        if cands: max(cands, key=lambda im: im['uses'])['plate'] = True
 
 
 def write_bitmaps(d, dd, out):
@@ -671,6 +683,7 @@ def main():
             items = [it for g in groups for it in g] + loose
             if items: designs.append(build_design(cdr.stem, items, None, meta))
         n_png = 0
+        mark_sheet_textures(designs)
         for d in designs:
             dd = out / d['id']; dd.mkdir(exist_ok=True)
             for old in list(dd.glob('foto-*.jpg')) + list(dd.glob('foto-*.png')): old.unlink()

@@ -56,6 +56,38 @@ TIER_ANY = r'\b(pfot\w*|regenbogenbrücke|tier\w*|fell|treuer (freund|begleiter|
 STERNENKIND = r'\b(sternenkind\w*|sternenkinder|zu früh|still ?geboren|ungeboren|stern am himmel|kleiner stern|unser stern|dein kleines herz)\b'
 
 
+# Themen für alle anderen Linien (Türschilder, Hausnummern, Namenschilder …): Themengruppe → [(Thema, Regex)]
+THEMEN = [
+    ('Familie', [('Familie', r'\b(familie|fam\.|hier wohn\w*|wohnen hier|zuhause|zu hause|daheim|home|sweet home)\b'), ('Willkommen', r'\b(willkommen|welcome|herzlich willkommen|schön, dass du da bist)\b'),
+                 ('Paar', r'\b(mr\.? ?& ?mrs|hochzeit|ehe\w*|ringe|braut\w*|just married|verliebt|verlobt|verheiratet)\b'), ('Kinder', r'\b(kinderzimmer|baby|geboren|geburt|taufe|kleiner? (prinz|prinzessin)|spielzimmer)\b')]),
+    ('Tiere', [('Hund', TIER[0][1]), ('Katze', TIER[1][1]), ('Pferd', TIER[2][1]), ('Kleintier', TIER[3][1]), ('Tiere allgemein', TIER_ANY)]),
+    ('Beruf', [('Praxis', r'\b(praxis|dr\.|arzt|ärztin|zahnarzt|physio\w*|therapie|heilpraktik\w*|sprechzeiten)\b'), ('Firma', r'\b(gmbh|ug\b|kg\b|firma|büro|buero|kanzlei|öffnungszeiten|werkstatt|studio|salon|agentur|service)\b')]),
+    ('Hinweis', [('Bitte/Verbot', r'\b(bitte|verboten|kein\w*|nicht|achtung|vorsicht|betreten|rauchen|hunde an die leine)\b'), ('Klingel/Post', r'\b(klingel\w*|post|paket\w*|lieferung\w*|briefkasten|werbung)\b'),
+                 ('Privat/Eingang', r'\b(privat|eingang|ausgang|parkplatz|wc|toilette|garten|garage|keller|ferienhaus|ferienwohnung|hütte|chalet)\b')]),
+    ('Anlass', [('Weihnachten', r'\b(weihnacht\w*|advent\w*|frohes fest|merry christmas|nikolaus|x-?mas)\b'), ('Ostern', r'\b(ostern|frohe ostern|osterhase)\b'),
+                ('Geburtstag', r'\b(geburtstag|happy birthday|alles gute)\b'), ('Jubiläum', r'\b(jubiläum|jahre|hochzeitstag|silberhochzeit|goldene hochzeit)\b'),
+                ('Muttertag/Vatertag', r'\b(muttertag|vatertag|beste mama|bester papa|lieblingsmama|lieblingspapa)\b'), ('Valentinstag/Liebe', r'\b(valentin\w*|ich liebe dich|für immer|in love|love)\b')]),
+    ('Trauer', [('Gedenken', r'\b(in liebevoller erinnerung|ruhe in frieden|unvergessen|in stiller trauer|gedenken|†|verstorben|für immer in unseren herzen)\b'), ('Sternenkind', STERNENKIND)]),
+    ('Sprüche', [('Spruch', r'\b(leben|glück|träume|lachen|liebe|herz|heim|zuhause ist)\b')]),
+]
+
+
+def classify_generic(rec):
+    txt = ' '.join(norm(t['text']) for t in rec['texts'])
+    if not txt: return {'ziel': 'offen', 'unter': 'offen', 'sicherheit': 'Vorschlag', 'foto': 'ja' if rec.get('photo') else 'offen', 'begruendung': 'kein Text lesbar'}
+    best = None
+    for gruppe, themen in THEMEN:
+        for name, pat in themen:
+            n = len(re.findall(pat, txt))
+            if n and (best is None or n > best[2]): best = (gruppe, name, n)
+    label = (rec.get('sheetLabel') or '').lower()
+    if best: ziel, unter, n = best; conf = 'sicher' if n >= 2 else 'Vorschlag'; grund = f'Wort: {unter}×{n}'
+    else: ziel, unter, conf, grund = 'Allgemein', 'Allgemein', 'Vorschlag', 'kein Schlüsselwort'
+    if any(t.get('ocr') for t in rec['texts']): conf = 'Vorschlag (OCR)'
+    photo = 'ja' if rec.get('photoFiles') or rec.get('photo') or 'foto' in label else 'offen'
+    return {'ziel': ziel, 'unter': unter, 'sicherheit': conf, 'foto': photo, 'begruendung': grund}
+
+
 def norm(t): return re.sub(r'\s+', ' ', t.lower()).strip()
 
 
@@ -232,9 +264,10 @@ def main():
     ov_path = Path(a.overrides) if a.overrides else out / '_korrekturen.json'
     overrides = json.loads(ov_path.read_text(encoding='utf-8')) if ov_path.exists() else {}
     groups = collections.OrderedDict()
+    generic = a.line != 'gedenktafeln'
     for d in sorted(src.iterdir()):
-        if d.name not in SERIES or not (d / 'designs.json').exists(): continue
-        series, split = SERIES[d.name]
+        if not (d / 'designs.json').exists() or (not generic and d.name not in SERIES): continue
+        series, split = SERIES.get(d.name, (d.name, False))
         for rec in json.loads((d / 'designs.json').read_text(encoding='utf-8')):
             m = SKU.match(rec['id'])
             if not m: continue
@@ -260,12 +293,12 @@ def main():
                     sizes |= ss
         base_texts = [norm(t['text']) for t in master['texts']]
         diff = [r['id'] for r in recs[1:] if r['texts'] and sorted(norm(t['text']) for t in r['texts']) != sorted(base_texts)]
-        rec = {'key': key, 'series': master['series'], 'seriesLabel': SERIES_LABEL.get(master['series'], master['series']), 'process': master['process'], 'form': master.get('form', ''),
+        rec = {'key': key, 'series': master['series'], 'seriesLabel': SERIES_LABEL.get(master['series'], master.get('sheetLabel') or master['series']), 'process': master['process'], 'form': master.get('form', ''),
                'material': master['material'], 'materials': mats, 'designNo': int(SKU.match(master['id']).group('n')), 'masterId': master['id'], 'ids': [r['id'] for r in recs],
                'sizesInStock': sorted(sizes, key=lambda s: [float(x.replace(',', '.')) for x in s.split('x')]), 'sheetLabel': master.get('sheetLabel', ''),
                'plate': master.get('plate'), 'texts': master['texts'], 'fonts': master.get('fonts', []), 'fontsMissing': [f for f in master.get('fonts', []) if not font_available(f)],
                'photo': master.get('photo'), 'photoFiles': master.get('photoFiles', []), 'texture': master.get('texture'), 'textsDiffer': diff, 'sourceKind': master.get('sourceKind', 'corel-bogen')}
-        rec['kategorie'] = classify(rec)
+        rec['kategorie'] = classify_generic(rec) if generic else classify(rec)
         if key in overrides:
             o = overrides[key]; rec['kategorie'].update({k: v for k, v in o.items() if k in ('ziel', 'unter', 'foto', 'themen', 'bemerkung') and v})
             rec['kategorie']['sicherheit'] = o.get('sicherheit', 'korrigiert'); rec['kategorie']['begruendung'] = o.get('begruendung', 'Korrektur')

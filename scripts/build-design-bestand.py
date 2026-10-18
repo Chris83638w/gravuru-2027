@@ -62,11 +62,11 @@ THEMEN = [
                  ('Paar', r'\b(mr\.? ?& ?mrs|hochzeit|ehe\w*|ringe|braut\w*|just married|verliebt|verlobt|verheiratet)\b'), ('Kinder', r'\b(kinderzimmer|baby|geboren|geburt|taufe|kleiner? (prinz|prinzessin)|spielzimmer)\b')]),
     ('Tiere', [('Hund', TIER[0][1]), ('Katze', TIER[1][1]), ('Pferd', TIER[2][1]), ('Kleintier', TIER[3][1]), ('Tiere allgemein', TIER_ANY)]),
     ('Beruf', [('Praxis', r'\b(praxis|dr\.|arzt|ärztin|zahnarzt|physio\w*|therapie|heilpraktik\w*|sprechzeiten)\b'), ('Firma', r'\b(gmbh|ug\b|kg\b|firma|büro|buero|kanzlei|öffnungszeiten|werkstatt|studio|salon|agentur|service)\b')]),
-    ('Hinweis', [('Bitte/Verbot', r'\b(bitte|verboten|kein\w*|nicht|achtung|vorsicht|betreten|rauchen|hunde an die leine)\b'), ('Klingel/Post', r'\b(klingel\w*|post|paket\w*|lieferung\w*|briefkasten|werbung)\b'),
-                 ('Privat/Eingang', r'\b(privat|eingang|ausgang|parkplatz|wc|toilette|garten|garage|keller|ferienhaus|ferienwohnung|hütte|chalet)\b')]),
+    ('Hinweis', [('Bitte und Verbot', r'\b(bitte (nicht|keine?|klingeln|anklopfen|eintreten|warten|leise)|verboten|achtung|vorsicht|betreten|rauchen|rauchverbot|an die leine|zutritt|kein zutritt|keine werbung|nicht stören|nicht füttern)\b'), ('Klingel und Post', r'\b(klingel\w*|post|paket\w*|lieferung\w*|briefkasten|werbung)\b'),
+                 ('Privat und Eingang', r'\b(privat|eingang|ausgang|parkplatz|wc|toilette|garten|garage|keller|ferienhaus|ferienwohnung|hütte|chalet)\b')]),
     ('Anlass', [('Weihnachten', r'\b(weihnacht\w*|advent\w*|frohes fest|merry christmas|nikolaus|x-?mas)\b'), ('Ostern', r'\b(ostern|frohe ostern|osterhase)\b'),
                 ('Geburtstag', r'\b(geburtstag|happy birthday|alles gute)\b'), ('Jubiläum', r'\b(jubiläum|jahre|hochzeitstag|silberhochzeit|goldene hochzeit)\b'),
-                ('Muttertag/Vatertag', r'\b(muttertag|vatertag|beste mama|bester papa|lieblingsmama|lieblingspapa)\b'), ('Valentinstag/Liebe', r'\b(valentin\w*|ich liebe dich|für immer|in love|love)\b')]),
+                ('Muttertag und Vatertag', r'\b(muttertag|vatertag|beste mama|bester papa|lieblingsmama|lieblingspapa)\b'), ('Liebe', r'\b(valentin\w*|ich liebe dich|für immer|in love|love)\b')]),
     ('Trauer', [('Gedenken', r'\b(in liebevoller erinnerung|ruhe in frieden|unvergessen|in stiller trauer|gedenken|†|verstorben|für immer in unseren herzen)\b'), ('Sternenkind', STERNENKIND)]),
     ('Sprüche', [('Spruch', r'\b(leben|glück|träume|lachen|liebe|herz|heim|zuhause ist)\b')]),
 ]
@@ -89,6 +89,9 @@ def classify_generic(rec):
 
 
 def norm(t): return re.sub(r'\s+', ' ', t.lower()).strip()
+
+
+def safe(name): return re.sub(r'[\\/:*?"<>|]+', '-', name or 'offen').strip() or 'offen'
 
 
 _FONT_OK = {}
@@ -271,6 +274,9 @@ def main():
         for rec in json.loads((d / 'designs.json').read_text(encoding='utf-8')):
             m = SKU.match(rec['id'])
             if not m: continue
+            if generic:
+                # alle anderen Linien: Reihe = SKU-Präfix (Form + Material, z. B. TRE-V2A); Größen derselben Design-Nummer werden zusammengefasst
+                series = m.group('prefix')
             key = f"{series}-{m.group('size')}-D{m.group('n')}" if split else f"{series}-D{m.group('n')}"
             rec['_dir'] = d / rec['id']; rec['series'] = series
             groups.setdefault(key, []).append(rec)
@@ -293,7 +299,8 @@ def main():
                     sizes |= ss
         base_texts = [norm(t['text']) for t in master['texts']]
         diff = [r['id'] for r in recs[1:] if r['texts'] and sorted(norm(t['text']) for t in r['texts']) != sorted(base_texts)]
-        rec = {'key': key, 'series': master['series'], 'seriesLabel': SERIES_LABEL.get(master['series'], master.get('sheetLabel') or master['series']), 'process': master['process'], 'form': master.get('form', ''),
+        label = SERIES_LABEL.get(master['series']) or (' '.join(x for x in (master['series'], '·', master.get('process', ''), master.get('material', ''), master.get('form', '')) if x) if generic else master.get('sheetLabel') or master['series'])
+        rec = {'key': key, 'series': master['series'], 'seriesLabel': label, 'process': master['process'], 'form': master.get('form', ''),
                'material': master['material'], 'materials': mats, 'designNo': int(SKU.match(master['id']).group('n')), 'masterId': master['id'], 'ids': [r['id'] for r in recs],
                'sizesInStock': sorted(sizes, key=lambda s: [float(x.replace(',', '.')) for x in s.split('x')]), 'sheetLabel': master.get('sheetLabel', ''),
                'plate': master.get('plate'), 'texts': master['texts'], 'fonts': master.get('fonts', []), 'fontsMissing': [f for f in master.get('fonts', []) if not font_available(f)],
@@ -307,7 +314,7 @@ def main():
         designs.append(rec)
     # Ablage: Zielgruppe/Unterkategorie/Schlüssel
     for d in designs:
-        k = d['kategorie']; folder = out / k['ziel'] / k['unter'] / d['key']
+        k = d['kategorie']; k['ziel'] = safe(k['ziel']); k['unter'] = safe(k['unter']); folder = out / k['ziel'] / k['unter'] / d['key']
         d['path'] = folder.relative_to(out).as_posix()
         if a.no_copy: continue
         folder.mkdir(parents=True, exist_ok=True)

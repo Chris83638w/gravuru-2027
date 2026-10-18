@@ -659,7 +659,7 @@ def main():
         groups, loose = parse_sheet(cdr)
         for g in groups: fix_text_boxes(g)
         fix_text_boxes(loose)
-        meta = {'sheet': cdr.name, 'sheetLabel': job.get('label', ''), 'material': job.get('material', ''), 'process': job.get('process', ''), 'form': job.get('form', '')}
+        meta = {'sheet': cdr.name, 'sheetLabel': job.get('label', ''), 'material': job.get('material', ''), 'process': job.get('process', ''), 'form': job.get('form', ''), 'sourcePath': job.get('sourcePath', '')}
         designs = []
         unlabeled = []
         for items in groups:

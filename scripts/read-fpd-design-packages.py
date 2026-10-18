@@ -30,10 +30,25 @@ def svg_size(data):
     return (float(w.group(1)), float(h.group(1))) if w and h else (None, None)
 
 
+NO_OCR = False
+
+
+class DirPackage:
+    """Entpackter Paketauszug (Light-Kopie: product.json, *_front.jpg, Hauptform*.svg) mit Zip-Schnittstelle."""
+    def __init__(self, d): self.d = Path(d)
+    def namelist(self): return [p.name for p in sorted(self.d.iterdir()) if p.is_file()]
+    def read(self, n): return (self.d / n).read_bytes()
+
+
+def open_pkg(zp):
+    return DirPackage(zp) if Path(zp).is_dir() else zipfile.ZipFile(zp)
+
+
 def read_zip(zp, meta):
-    z = zipfile.ZipFile(zp); names = z.namelist()
+    z = open_pkg(zp); names = z.namelist()
     pj = json.loads(z.read('product.json'))
-    sku = Path(zp).stem if SKU.match(Path(zp).stem) else (pj.get('title') or Path(zp).stem)
+    stem = Path(zp).name if Path(zp).is_dir() else Path(zp).stem
+    sku = stem if SKU.match(stem) else (pj.get('title') or stem)
     W, H = plate_mm_from_sku(sku)
     # Maßstab: Hauptform (Plattenumriss) in Stage-Pixeln ↔ Plattenmaß in mm
     scale = None
@@ -60,7 +75,7 @@ def read_zip(zp, meta):
                 texts.append({'text': t, 'font': f, 'sizePt': round(p.get('fontSize', 0) * (scale or 0) / 0.3528, 1) if scale else None, 'sizePx': p.get('fontSize'), 'color': p.get('fill') if isinstance(p.get('fill'), str) else '', 'align': p.get('textAlign', 'left'), 'box': box, 'curved': bool(p.get('curved'))})
             elif e.get('type') == 'image':
                 images.append({'title': e.get('title', ''), 'source': e.get('source', ''), 'uploadZone': bool(p.get('uploadZone'))})
-    if not texts:
+    if not texts and not NO_OCR:
         # Paket ohne Textelemente (Text im Druckbild): Vorschau per OCR lesen, als OCR markiert
         front = next((n for n in names if n.lower().endswith('_front.jpg')), None)
         if front:
@@ -120,9 +135,13 @@ def contact_sheet(designs, out_dir, title, cols=4):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('files', nargs='+'); ap.add_argument('--out', required=True)
+    ap.add_argument('files', nargs='*'); ap.add_argument('--out', required=True)
     ap.add_argument('--process', default='UV'); ap.add_argument('--material', default=''); ap.add_argument('--form', default='Rechteck'); ap.add_argument('--label', default='')
+    ap.add_argument('--no-ocr', action='store_true', help='Pakete ohne Textelemente nicht per tesseract lesen (Massenlauf)')
+    ap.add_argument('--from-list', default='', help='Textdatei: ein Paket (Zip oder entpackter Ordner) je Zeile')
     a = ap.parse_args(); out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
+    global NO_OCR; NO_OCR = a.no_ocr
+    if a.from_list: a.files = [l.strip() for l in Path(a.from_list).read_text(encoding='utf-8').splitlines() if l.strip()]
     meta = {'sheet': '', 'sheetLabel': a.label, 'material': a.material, 'process': a.process, 'form': a.form}
     index = json.loads((out / 'designs.json').read_text(encoding='utf-8')) if (out / 'designs.json').exists() else []
     seen = {d['id']: i for i, d in enumerate(index)}
@@ -131,7 +150,7 @@ def main():
         f = Path(f)
         if not f.exists(): print('fehlt:', f); continue
         try:
-            if f.suffix.lower() == '.zip':
+            if f.suffix.lower() == '.zip' or f.is_dir():
                 d, z = read_zip(f, {**meta, 'sheet': f.name}); dd = out / d['id']; dd.mkdir(exist_ok=True)
                 front = next((n for n in z.namelist() if n.lower().endswith('_front.jpg')), None)
                 if front:

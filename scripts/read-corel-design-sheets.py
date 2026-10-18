@@ -470,6 +470,22 @@ def ink_width(family, text):
         return None
 
 
+def ink_sides(family, text):
+    """Linke Vorbreite des ersten und rechte Nachbreite des letzten Zeichens in em (negativ bei Schwüngen über den Ursprung hinaus)."""
+    f = font_of(family)
+    try:
+        if f is None or 'glyf' not in f: return 0.0, 0.0
+        upem = f['head'].unitsPerEm; cmap = f.getBestCmap() or {}; glyf = f['glyf']; hmtx = f['hmtx']
+        names = [cmap.get(ord(ch)) for ch in text if cmap.get(ord(ch))]
+        if not names: return 0.0, 0.0
+        first, last = glyf[names[0]], glyf[names[-1]]
+        lsb = hmtx[names[0]][1] if first.numberOfContours else 0
+        rsb = (hmtx[names[-1]][0] - last.xMax) if last.numberOfContours else 0
+        return lsb / upem, rsb / upem
+    except Exception:
+        return 0.0, 0.0
+
+
 def font_runs(text, family):
     """Zeichen, die der Schrift fehlen (✝, –, ♥ …), in Läufe mit Ersatzschrift aufteilen: [(familie|None, text)]."""
     cm = cmap_of(family)
@@ -553,6 +569,10 @@ def design_svg(d, preview=False, assets=None, textures=None):
         if t.get('hint') or HINT.search(t['text']): continue  # Bedienhinweis der Vorlage, kein Designtext
         x, y, w, h = t['box']; size = t['sizePt'] * 0.3528
         anchor = {'center': 'middle', 'right': 'end'}.get(t['align'], 'start'); tx = x + (w / 2 if anchor == 'middle' else w if anchor == 'end' else 0)
+        if preview and anchor != 'middle':
+            # Corel-Box = Tinte: Ursprung so setzen, dass die Tinte an der Boxkante beginnt (Vorbreite, Schwünge)
+            lsb, rsb = ink_sides(t['font'], t['text'].split('\n')[0] if anchor == 'start' else t['text'].split('\n')[-1])
+            tx += -lsb * t['sizePt'] * 0.3528 if anchor == 'start' else rsb * t['sizePt'] * 0.3528
         fill = (light(t['color'], proc) or '#f2f2f2') if preview else (t['color'] or '#000')
         lines = t['text'].split('\n'); n = len(lines)
         # Grundlinie aus der Tintenbox (Corel: Box = Tinte): erste Grundlinie = Oberkante + Oberlänge der ersten Zeile,

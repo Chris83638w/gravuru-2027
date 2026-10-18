@@ -56,8 +56,10 @@ def main():
             x, y, w, h = t['box']; exp = [x, y, x + w, y + h]
             dev = [round(g - e, 2) for g, e in zip(got, exp)]
             rows.append([d['id'], i + 1, t['font'], font_ok(t['font']), t['align'], t['text'].replace('\n', ' / ')[:40], *dev])
-            # Breite zählt nur bei Originalschrift; Höhe/Grundlinie immer
-            m = max(abs(dev[1]), abs(dev[3])) if not font_ok(t['font']) else max(abs(v) for v in dev)
+            # bewertet werden Grundlinie/Höhe und die Ankerkante (links bei Start, rechts bei Ende); die Breite kann
+            # durch Stauchung (Corel-Zeichenbreite) oder Ersatzschrift abweichen und wird nur berichtet
+            edge = dev[0] if t['align'] not in ('center', 'right') else dev[2] if t['align'] == 'right' else 0.0
+            m = max(abs(dev[1]), abs(dev[3]), abs(edge))
             maxdev = max(maxdev, m)
         if sub: n_sub += 1
         if maxdev > a.limit_mm: n_bad += 1; worst.append((maxdev, d['id'], f.parent.relative_to(root).as_posix()))

@@ -387,8 +387,35 @@ def light(c, process='Gravur'):
     c = c.lower()
     if c in ('#ff0000', '#00ff00'): return c
     if process != 'Gravur': return c
-    if c == '#000000': return '#141414'
+    if c == '#000000' or luminance(c) < 0.25: return '#141414'
     return '#f2f2f2'
+
+
+def luminance(c):
+    """Relative Helligkeit 0–1 einer #rrggbb-Farbe (unbekannt → 0.5)."""
+    try:
+        c = c.lstrip('#'); r, g, b = (int(c[i:i + 2], 16) / 255 for i in (0, 2, 4))
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+    except Exception:
+        return 0.5
+
+
+def contrast(c, plate_fill, process='Gravur'):
+    """Farbe wie gezeichnet; bei Gravur ohne Kontrast zur gezeichneten Platte (z. B. schwarzer Text auf schwarzem Acryl) hell/dunkel kippen."""
+    if not c: return None
+    c = c.lower()
+    if process != 'Gravur' or c in ('#ff0000', '#00ff00'): return c
+    if abs(luminance(c) - luminance(plate_fill)) < 0.15: return '#f2f2f2' if luminance(plate_fill) < 0.5 else '#141414'
+    return c
+
+
+def plate_motif(d):
+    """Gezeichnete Platte: gefülltes Motiv, das (fast) die ganze Platte deckt – gibt die Plattenfarbe der Vorlage vor."""
+    W, H = d['plate']['widthMm'], d['plate']['heightMm']
+    for m in d['motifs']:
+        if m.get('fill') and not m.get('hint') and m.get('box') and m['box'][2] * m['box'][3] >= 0.95 * W * H and m['box'][2] <= 1.02 * W and m['box'][3] <= 1.02 * H:
+            return m
+    return None
 
 
 def is_photo_mask(m, W, H):
@@ -527,12 +554,18 @@ def design_svg(d, preview=False, assets=None, textures=None):
     outline = (d.get('plate') or {}).get('outline')
     plate_d = outline or f'M0 0 h{W} v{H} h{-W} Z'
     tex = Path(textures) / d['texture'] if preview and textures and d.get('texture') else None
+    pm = plate_motif(d) if preview else None
+    # Platte in der Vorlage gezeichnet (z. B. schwarzes Acryl #161616, weißes Acryl): Farben wie gezeichnet, Platte in dieser Farbe
+    as_drawn = pm is not None
+    plate_fill = pm['fill'] if pm is not None else '#2a2a2a'
+    dark_plate = luminance(plate_fill) < 0.5
     if preview:
         if tex is not None and tex.exists():
             out.append(f'<clipPath id="clip-platte"><path d="{plate_d}"/></clipPath>')
             out.append(f'<image id="platte" x="0" y="0" width="{W}" height="{H}" preserveAspectRatio="none" clip-path="url(#clip-platte)" xlink:href="data:image/jpeg;base64,{base64.b64encode(tex.read_bytes()).decode()}"/>')
-        elif outline: out.append(f'<path id="platte" d="{outline}" fill="#2a2a2a"/>')
-        else: out.append(f'<rect id="platte" width="{W}" height="{H}" fill="#2a2a2a"/>')
+        elif outline: out.append(f'<path id="platte" d="{outline}" fill="{plate_fill}" fill-rule="evenodd"/>')
+        else: out.append(f'<rect id="platte" width="{W}" height="{H}" fill="{plate_fill}"/>')
+        if not dark_plate: out.append(f'<path id="platte-rand" d="{plate_d}" fill="none" stroke="#b0b0b0" stroke-width="0.3" fill-rule="evenodd"/>')
     else:
         if outline: out.append(f'<path id="platte" d="{outline}" fill="none" stroke="#999" stroke-width="0.2"/>')
         else: out.append(f'<rect id="platte" width="{W}" height="{H}" fill="none" stroke="#999" stroke-width="0.2"/>')
@@ -565,6 +598,7 @@ def design_svg(d, preview=False, assets=None, textures=None):
         else: out.append(photo_svg(n_foto, f'M{x} {y} h{w} v{h} h{-w} Z', im['box'], preview))
     for i, m in enumerate(d['motifs']):
         if id(m) in used_masks: continue
+        if preview and m is pm: continue  # gezeichnete Platte – schon als Platte ausgegeben
         if m.get('hint'):
             if not preview: out.append(f'<path id="hinweis-{i + 1}" class="hinweis" d="{m["d"]}" fill="{m["fill"] or "none"}" stroke="{m["stroke"] or "none"}" stroke-width="{m["strokeMm"]}" display="none"/>')
             continue
@@ -574,7 +608,8 @@ def design_svg(d, preview=False, assets=None, textures=None):
             if m.get('stroke'): out.append(f'<path id="motiv-{i + 1}" d="{m["d"]}" fill="none" stroke="{light(m["stroke"], proc) if preview else m["stroke"]}" stroke-width="{m["strokeMm"]}"/>')
             continue
         if preview and (m.get('stroke') or '').lower() in CUT_COLORS and not m.get('fill'): continue  # Schnittlinie
-        fill = light(m['fill'], proc) if preview else (m['fill'] or 'none'); stroke = light(m['stroke'], proc) if preview else (m['stroke'] or 'none')
+        if preview and as_drawn: fill, stroke = contrast(m['fill'], plate_fill, proc), contrast(m['stroke'], plate_fill, proc)
+        else: fill = light(m['fill'], proc) if preview else (m['fill'] or 'none'); stroke = light(m['stroke'], proc) if preview else (m['stroke'] or 'none')
         if preview and fill is None and stroke is None: continue
         out.append(f'<path id="motiv-{i + 1}" d="{m["d"]}" fill="{fill or "none"}" stroke="{stroke or "none"}" stroke-width="{m["strokeMm"]}" fill-rule="evenodd"/>')
     for i, t in enumerate(d['texts']):
@@ -585,7 +620,8 @@ def design_svg(d, preview=False, assets=None, textures=None):
             # Corel-Box = Tinte: Ursprung so setzen, dass die Tinte an der Boxkante beginnt (Vorbreite, Schwünge)
             lsb, rsb = ink_sides(t['font'], t['text'].split('\n')[0] if anchor == 'start' else t['text'].split('\n')[-1])
             tx += -lsb * t['sizePt'] * 0.3528 if anchor == 'start' else rsb * t['sizePt'] * 0.3528
-        fill = (light(t['color'], proc) or '#f2f2f2') if preview else (t['color'] or '#000')
+        if preview and as_drawn: fill = contrast(t['color'], plate_fill, proc) or ('#f2f2f2' if dark_plate else '#141414')
+        else: fill = (light(t['color'], proc) or '#f2f2f2') if preview else (t['color'] or '#000')
         lines = t['text'].split('\n'); n = len(lines)
         # Grundlinie aus der Tintenbox (Corel: Box = Tinte): erste Grundlinie = Oberkante + Oberlänge der ersten Zeile,
         # Zeilenabstand aus Boxhöhe, Oberlänge der ersten und Unterlänge der letzten Zeile

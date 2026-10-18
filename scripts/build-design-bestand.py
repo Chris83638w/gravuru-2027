@@ -214,6 +214,7 @@ def main():
     (out / 'designs.json').write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding='utf-8')
     write_xlsx(index, out / f'{a.line.upper()}-DESIGNS.xlsx', out)
     write_contact_sheets(designs, out)
+    write_overview_md(index, out, a.line)
     write_readme(index, out, a.line)
     print(f'{len(designs)} Designs aus {sum(len(v) for v in groups.values())} Datensätzen → {out}')
 
@@ -276,6 +277,18 @@ def write_contact_sheets(designs, out, cols=5):
                 sheet.paste(im, (x, y)); dr.text((x, y + im.height + 3), d['key'], fill='black')
                 dr.text((x, y + im.height + 16), (d['kategorie']['sicherheit'] + ' · ' + ', '.join(d['materials']))[:60], fill=(90, 90, 90))
             sheet.save(ud / f"{z}-{u}{'-' + str(part // 60 + 1) if len(tiles) > 60 else ''}.png")
+
+
+def write_overview_md(index, out, line):
+    """UEBERSICHT.md: alle Übersichtsbögen eingebettet – ein Link für den Nutzer (GitHub rendert die Bilder)."""
+    cnt = collections.Counter((d['kategorie']['ziel'], d['kategorie']['unter']) for d in index)
+    md = [f'# {line.capitalize()} – Übersicht der Bestandsdesigns', '', f'{len(index)} Designs, vorsortiert nach Zielgruppe und Unterkategorie. Unter jedem Bild: Schlüssel · Sicherheit der Zuordnung · Materialien. Korrekturen in [`{line.upper()}-DESIGNS.xlsx`]({line.upper()}-DESIGNS.xlsx).', '']
+    md += ['Sprungmarken: ' + ' · '.join(f'[{z} – {u} ({n})](#{re.sub(r"[^a-z0-9]+", "-", (z + "-" + u).lower()).strip("-")})' for (z, u), n in sorted(cnt.items())), '']
+    for (z, u), n in sorted(cnt.items()):
+        md += [f'## {z} – {u}', '', f'{n} Designs', '']
+        for png in sorted((out / '_uebersicht').glob(f'{z}-{u}*.png')):
+            md += [f'![{z} – {u}](_uebersicht/{png.name})', '']
+    (out / 'UEBERSICHT.md').write_text('\n'.join(md) + '\n', encoding='utf-8')
 
 
 def write_readme(index, out, line):

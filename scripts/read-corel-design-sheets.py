@@ -222,7 +222,12 @@ def build_design(sku, items, label_item, meta):
                            'strokeMm': round(inch(st.get('svg:stroke-width', '0')) * IN, 3), 'box': rel(it['bbox']), 'rect': it['rect'], 'd': to_svg_d(it['acts'], ox, oy)})
         elif it['kind'] == 'image':
             images.append({'box': rel(it['bbox']), 'mime': it['mime']})
-    return {'id': sku, **meta, 'plate': {'widthMm': round(W, 1), 'heightMm': round(H, 1), 'source': plate_source}, 'texts': texts, 'fonts': fonts, 'motifs': motifs, 'images': images}
+    plate_rec = {'widthMm': round(W, 1), 'heightMm': round(H, 1), 'source': plate_source}
+    if plate is not None and not plate['rect']: plate_rec['outline'] = to_svg_d(plate['acts'], ox, oy)
+    return {'id': sku, **meta, 'plate': plate_rec, 'texts': texts, 'fonts': fonts, 'motifs': motifs, 'images': images}
+
+
+HINT = re.compile(r'foto-?\s*upload|hier\s+klicken|^\s*dein\s*\n?\s*foto\s*$|ihr\s*foto\s*hier', re.I)
 
 
 def esc(s): return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
@@ -236,23 +241,57 @@ def light(c):
     return '#f2f2f2'
 
 
+def is_photo_mask(m, W, H):
+    """Fotoplatzhalter: gefüllte, einfache geschlossene Form (Kreis, Oval, Rechteck, Herz …) mit 3–70 % der Plattenfläche."""
+    if not m.get('fill'): return False
+    bx = m['box']; share = bx[2] * bx[3] / max(1.0, W * H)
+    if not 0.03 <= share <= 0.95: return False
+    cmds = len(re.findall(r'[MLCQAZ]', m['d']))
+    return cmds <= 40 and m['d'].count('M') <= 2
+
+
+def photo_svg(idx, d, box, preview):
+    x, y, w, h = box; cx, cy = x + w / 2, y + h / 2; r = min(w, h)
+    fill = '#8c8c8c' if preview else '#dddddd'
+    icon = (f'<g fill="none" stroke="#2a2a2a" stroke-width="{max(0.4, r * 0.025):.2f}" stroke-linejoin="round">'
+            f'<rect x="{cx - r * 0.17:.2f}" y="{cy - r * 0.11:.2f}" width="{r * 0.34:.2f}" height="{r * 0.24:.2f}" rx="{r * 0.03:.2f}"/>'
+            f'<circle cx="{cx:.2f}" cy="{cy + r * 0.015:.2f}" r="{r * 0.065:.2f}"/><path d="M{cx - r * 0.07:.2f} {cy - r * 0.11:.2f} l{r * 0.03:.2f} -{r * 0.05:.2f} h{r * 0.08:.2f} l{r * 0.03:.2f} {r * 0.05:.2f}"/></g>') if preview and r > 15 else ''
+    return f'<g id="foto-{idx}" class="foto"><path d="{d}" fill="{fill}" fill-rule="evenodd"/>{icon}</g>'
+
+
 def design_svg(d, preview=False):
     W, H = d['plate']['widthMm'], d['plate']['heightMm']
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}mm" height="{H}mm">']
-    if preview: out.append(f'<rect width="{W}" height="{H}" fill="#2a2a2a"/>')
-    else: out.append(f'<rect id="platte" width="{W}" height="{H}" fill="none" stroke="#999" stroke-width="0.2"/>')
-    for i, im in enumerate(d['images']):
+    outline = (d.get('plate') or {}).get('outline')
+    if preview:
+        if outline: out.append(f'<path id="platte" d="{outline}" fill="#2a2a2a"/>')
+        else: out.append(f'<rect id="platte" width="{W}" height="{H}" fill="#2a2a2a"/>')
+    else:
+        if outline: out.append(f'<path id="platte" d="{outline}" fill="none" stroke="#999" stroke-width="0.2"/>')
+        else: out.append(f'<rect id="platte" width="{W}" height="{H}" fill="none" stroke="#999" stroke-width="0.2"/>')
+    def overlap(a, b):
+        ix = max(0.0, min(a[0] + a[2], b[0] + b[2]) - max(a[0], b[0])); iy = max(0.0, min(a[1] + a[3], b[1] + b[3]) - max(a[1], b[1]))
+        return ix * iy
+    masks = [m for m in d['motifs'] if is_photo_mask(m, W, H)]
+    # Rahmen ohne Füllung (nur Kontur), einfach geformt: nimmt die Form des Fotos an, wenn ein Bitmap darunter liegt
+    frames = [m for m in d['motifs'] if not m.get('fill') and m.get('stroke') and is_photo_mask({**m, 'fill': '#000'}, W, H)]
+    n_foto = 0; used_frames = set()
+    for im in d['images']:
         x, y, w, h = im['box']
         if abs(w - W) < 2 and abs(h - H) < 2: continue  # Plattenbitmap
-        out.append(f'<rect id="foto-{i + 1}" x="{x}" y="{y}" width="{w}" height="{h}" fill="none" stroke="#ff8080" stroke-width="0.3" stroke-dasharray="2 1"/>')
+        if any(overlap(im['box'], m['box']) >= 0.5 * m['box'][2] * m['box'][3] for m in masks): continue  # Musterfoto unter einer Maske
+        fr = next((f for f in frames if overlap(im['box'], f['box']) >= 0.5 * f['box'][2] * f['box'][3]), None)
+        n_foto += 1
+        if fr is not None: used_frames.add(id(fr)); out.append(photo_svg(n_foto, fr['d'], fr['box'], preview))
+        else: out.append(photo_svg(n_foto, f'M{x} {y} h{w} v{h} h{-w} Z', im['box'], preview))
     for i, m in enumerate(d['motifs']):
+        if m in masks:
+            n_foto += 1; out.append(photo_svg(n_foto, m['d'], m['box'], preview)); continue
+        if id(m) in used_frames: continue
         fill = light(m['fill']) if preview else (m['fill'] or 'none'); stroke = light(m['stroke']) if preview else (m['stroke'] or 'none')
-        bx = m['box']; big = m['fill'] and bx[2] * bx[3] > 0.3 * W * H
-        if big and preview:
-            # große gefüllte Fläche = Fotoplatzhalter/Maske: nur Umriss, sonst verdeckt sie das Design
-            out.append(f'<path id="motiv-{i + 1}" d="{m["d"]}" fill="none" stroke="#bbbbbb" stroke-width="0.5" stroke-dasharray="3 1.5"/>'); continue
-        out.append(f'<path id="motiv-{i + 1}"{" data-role=\"foto?\"" if big else ""} d="{m["d"]}" fill="{fill or "none"}" stroke="{stroke or "none"}" stroke-width="{m["strokeMm"]}" fill-rule="evenodd"/>')
+        out.append(f'<path id="motiv-{i + 1}" d="{m["d"]}" fill="{fill or "none"}" stroke="{stroke or "none"}" stroke-width="{m["strokeMm"]}" fill-rule="evenodd"/>')
     for i, t in enumerate(d['texts']):
+        if HINT.search(t['text']): continue  # Bedienhinweis der Vorlage, kein Designtext
         x, y, w, h = t['box']; size = t['sizePt'] * 0.3528
         anchor = {'center': 'middle', 'right': 'end'}.get(t['align'], 'start'); tx = x + (w / 2 if anchor == 'middle' else w if anchor == 'end' else 0)
         fill = light(t['color']) if preview else (t['color'] or '#000')

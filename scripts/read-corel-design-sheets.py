@@ -78,7 +78,7 @@ def to_svg_d(acts, ox, oy):
     return ' '.join(out)
 
 
-ZERO_BITMAPS_OVER_MB = 4000  # mit 12-GB-Swap liest libcdr auch 1-GB-Bitmapspeicher; Nullung nur als Notbremse
+ZERO_BITMAPS_OVER_MB = float(os.environ.get('CDR_ZERO_BITMAPS_OVER_MB', 4000))  # Notbremse; Light-Pass: CDR_ZERO_BITMAPS_OVER_MB=1 → Bitmaps immer nullen (Sekunden statt Minuten je Bogen, keine Texturen/Fotos)
 
 
 def decode_bitmap(b64, max_px):
@@ -117,7 +117,7 @@ def zero_bitmaps(cdr):
     except zipfile.BadZipFile:
         return cdr, False
     if not info or info.file_size < ZERO_BITMAPS_OVER_MB * 1024 * 1024: return cdr, False
-    tmp = Path(tempfile.gettempdir()) / (Path(cdr).stem + '.nobmp.cdr')
+    tmp = Path(tempfile.gettempdir()) / (Path(cdr).stem + '.' + hashlib.md5(str(cdr).encode()).hexdigest()[:8] + '.nobmp.cdr')
     with zipfile.ZipFile(tmp, 'w') as dst:
         dst.writestr(zipfile.ZipInfo('mimetype'), z.read('mimetype'), compress_type=zipfile.ZIP_STORED)
         for i in z.infolist():

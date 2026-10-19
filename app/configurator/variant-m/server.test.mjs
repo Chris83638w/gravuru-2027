@@ -22,12 +22,12 @@ test('local preview serves complete acrylic model but no write, shop or admin ro
     assert.equal(rows[0].key,'acryl');assert.equal(rows[0].universal.profile.binding.kind,'local-review');
     assert.equal(rows[0].universal.profile.features.orderEnabled,false);
     assert.equal(rows[0].universal.profile.optionGroups.find(g=>g.id==='base').values.length,7);
-    for(const route of ['/?model=acryl','/editor.html','/assistant.js','/api/guides','/acrylic-assets/scene-empty-v2.png','/acrylic-assets/base-buche-v2.png','/acrylic-assets/base-eiche-v2.png','/acrylic-assets/base-nussbaum-v2.png','/acrylic-assets/base-klar-v2.png','/acrylic-assets/base-satiniert-v2.png','/acrylic-assets/base-holz-flach-v2.png']){
+    for(const route of ['/?model=acryl','/editor.html','/assistant.js','/api/guides','/configurator/variant-m/contract.mjs','/workshop/theme-limits.mjs','/acrylic-assets/scene-empty-v2.png','/acrylic-assets/base-buche-v2.png','/acrylic-assets/base-eiche-v2.png','/acrylic-assets/base-nussbaum-v2.png','/acrylic-assets/base-klar-v2.png','/acrylic-assets/base-satiniert-v2.png','/acrylic-assets/base-holz-flach-v2.png']){
       assert.equal((await request(route)).status,200,route);
     }
     const head=await request('/models.json',{method:'HEAD'});assert.equal(head.status,200);assert.equal(head.body.length,0);
     assert.match(head.headers['content-security-policy'],/frame-ancestors 'self'/);
-    for(const route of ['/api/session','/api/product-workbench','/produktanlage.html','/.env','/_runtime/%2e%2e%2f%2e%2e%2fQUELLEN-MANIFEST.json','/configurator/variant-m/server.test.mjs/../../../../.git/config'])assert.equal((await request(route)).status,404,route);
+    for(const route of ['/api/session','/api/product-workbench','/produktanlage.html','/.env','/workshop/http.mjs','/workshop/theme-limits.test.mjs','/_runtime/%2e%2e%2f%2e%2e%2fQUELLEN-MANIFEST.json','/configurator/variant-m/server.test.mjs/../../../../.git/config'])assert.equal((await request(route)).status,404,route);
     assert.equal((await request('/api/acrylic/export',{method:'POST'})).status,405);
     assert.equal((await request('/models.json',{headers:{Host:'evil.example'}})).status,403);
     assert.equal((await request('/models.json',{headers:{Origin:'https://evil.example'}})).status,403);

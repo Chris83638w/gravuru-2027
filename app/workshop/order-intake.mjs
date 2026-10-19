@@ -1,5 +1,6 @@
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createOrderStatus} from './order-status.mjs';
+import {createProductionRelease} from './production-release.mjs';
 import {resolveProduct,PRODUCT_SCHEMA} from './product-model.mjs';
 import {createHash,createHmac,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
@@ -26,7 +27,8 @@ export function verifyPaidWebhook(raw,headers,config){
  if(payload.financial_status!=='paid'||payload.cancelled_at||payload.currency!=='EUR'||!Array.isArray(payload.line_items)||payload.line_items.length>250)fail(422,'Zahlungsstatus, Währung oder Bestellpositionen sind nicht geeignet.');
  return v;
 }
-export function createOrderIntake({database:db,snapshot,clock=Date.now}){
+// `autoRelease(line)` meldet, ob das Fertigungsprofil der Position automatische Freigabe erlaubt (http.mjs liefert es aus production-profiles.mjs).
+export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelease=null}){
  db.exec(`CREATE TABLE IF NOT EXISTS form_shop_bindings(id TEXT PRIMARY KEY,shop TEXT NOT NULL,variant_id TEXT NOT NULL,product_id TEXT NOT NULL,product_revision INTEGER NOT NULL,unit_cents INTEGER NOT NULL,created_at TEXT NOT NULL,UNIQUE(shop,variant_id,product_id,product_revision));
  CREATE TABLE IF NOT EXISTS form_shop_binding_personalization(binding_id TEXT PRIMARY KEY,document TEXT NOT NULL);
  CREATE TRIGGER IF NOT EXISTS form_binding_personalization_fixed BEFORE UPDATE ON form_shop_binding_personalization BEGIN SELECT RAISE(ABORT,'Pricing contracts are immutable');END;
@@ -56,12 +58,18 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
  const safeBinding=r=>({id:r.id,shopDomain:r.shop,variantId:r.variant_id,productId:r.product_id,productRevision:r.product_revision,unitCents:r.unit_cents,...(selection(r.id)?{options:selection(r.id)}:{})});
  const pricing=id=>{const row=db.prepare('SELECT document FROM form_shop_binding_personalization WHERE binding_id=?').get(id);return row?JSON.parse(row.document):null;};
  const offerPricing=id=>{const row=db.prepare('SELECT document FROM form_offer_personalization WHERE offer_id=?').get(id);return row?JSON.parse(row.document):null;};
- const statuses=createOrderStatus({database:db,clock});
  const get=id=>{const r=db.prepare('SELECT document FROM form_order_lines WHERE id=?').get(id);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
  // E3: rejected single positions (status „fehler“). Append-only per delivery; the overview shows the latest reason
  // per shop line until that line is accepted by a later delivery.
  const errorRows=(where='',...args)=>db.prepare('SELECT e.document FROM form_order_line_errors e WHERE e.rowid=(SELECT max(rowid) FROM form_order_line_errors x WHERE x.shop=e.shop AND x.order_id=e.order_id AND x.line_id=e.line_id) AND NOT EXISTS(SELECT 1 FROM form_order_lines l WHERE l.shop=e.shop AND l.order_id=e.order_id AND l.line_id=e.line_id)'+where+' ORDER BY e.rowid DESC LIMIT 200').all(...args).map(r=>JSON.parse(r.document));
- return {get,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
+ const rejected=id=>{const r=db.prepare('SELECT document FROM form_order_line_errors WHERE id=?').get(id);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
+ // Freigabeprozess (K5) kennt auch abgelehnte Positionen: sie stehen dort als „fehler“ mit dem Grund aus dem Eingang.
+ const lineOrRejected=id=>typeof id==='string'&&id.startsWith('ordererror_')?rejected(id):get(id);
+ // Shop-Status und Freigabeprozess verweisen aufeinander: Freigabe braucht Storno/Erstattung, der Status liefert productionReady.
+ let release=null;
+ const statuses=createOrderStatus({database:db,clock,production:(line,shop)=>release.state(line.id,{shop})});
+ release=createProductionRelease({database:db,clock,line:lineOrRejected,shopStatus:line=>statuses.shopState(line),autoRelease,rejectedLines:()=>errorRows()});
+ return {get,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
   // Caller supplies the actual saved product record, never a browser price.
   bind({shopDomain,variantId,record,snapshotId,options:selected,personalizationPricing}){
    if(!domain(shopDomain))fail(422,'Bitte die myshopify.com-Domain des Entwicklungsstores angeben.');variantId=identifier(variantId);
@@ -153,6 +161,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
     return tx(()=>{
      if(db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND event_id=?').get(v.shopDomain,v.eventId))fail(409,'Ereignis-ID gehört bereits zu einer Zahlungsnachricht.');
      const result=statuses.record(v),lines=db.prepare('SELECT id FROM form_order_lines WHERE shop=? AND order_id=?').all(v.shopDomain,v.orderId);
+     for(const l of lines)release.syncShop(l.id);
      return {...result,orderId:v.orderId,matchedLines:lines.length,statuses:lines.map(l=>({id:l.id,...statuses.forLine(get(l.id))}))};
     });
    }
@@ -165,7 +174,8 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
    // admitted, the event is recorded and the webhook answers 200 (no Shopify retry storm).
    const reject=(line,lineId,reason)=>{
     const document={id:'ordererror_'+randomUUID(),shopDomain:shop,orderId,lineId,eventId,variantId:line.variant_id==null?null:String(line.variant_id),quantity:Number.isSafeInteger(line.quantity)?line.quantity:null,status:'fehler',intakeError:reason,test:true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
-    db.prepare('INSERT INTO form_order_line_errors VALUES(?,?,?,?,?,?,?)').run(document.id,shop,orderId,lineId,eventId,JSON.stringify(document),at());errors.push(document);
+    db.prepare('INSERT INTO form_order_line_errors VALUES(?,?,?,?,?,?,?)').run(document.id,shop,orderId,lineId,eventId,JSON.stringify(document),at());
+    release.rejectIntake(document.id,reason);errors.push(document);
    };
    for(const line of payload.line_items){
     const lineId=identifier(line.id);if(seen.has(lineId))fail(422,'Doppelte Bestellposition.');seen.add(lineId);
@@ -195,7 +205,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
     if(!owner&&!db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND order_id=?').get(shop,orderId))db.prepare('INSERT INTO form_order_customers VALUES(?,?,?)').run(shop,orderId,customerId);
    }
    if(payload.updated_at)statuses.record(verified);
-   db.prepare('INSERT INTO form_order_events VALUES(?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at());return {duplicate:false,lines:result,errors};
+   db.prepare('INSERT INTO form_order_events VALUES(?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at());
+   // Eine frühere Storno-/Erstattungsmeldung sperrt die Position sofort.
+   for(const l of result)release.syncShop(l.id);
+   return {duplicate:false,lines:result,errors};
   });}
  };
 }

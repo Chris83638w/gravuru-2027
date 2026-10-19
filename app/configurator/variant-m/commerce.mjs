@@ -6,7 +6,9 @@ export function installCommerce({el,config,files,pending}){
  const bridge=window.parent.GravuruCommerce;if(!bridge)return;
  const binding=validateCommerce(config,bridge.binding),r=el.shadowRoot,button=r.querySelector('.fk-buy-button'),status=r.querySelector('.fk-order-status');
  let busy=false,message='';
- const update=()=>{button.disabled=busy;button.textContent=busy?'Wird vorbereitet …':'In den Warenkorb';status.textContent=message;status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.style.setProperty('display',message?'block':'none','important');};
+ // K1 (Ü2.2/Ü3.1): Pflichtfeld mit Mustertext oder Text über dem Limit sperrt den Warenkorb; der Kunde sieht welches Feld.
+ const blockedBy=()=>{try{return el.uxTextIssues?.()[0]||null;}catch{return null;}};
+ const update=()=>{const blocked=busy?null:blockedBy();button.disabled=busy||!!blocked;button.textContent=busy?'Wird vorbereitet …':'In den Warenkorb';const text=message||blocked?.message||'';status.textContent=text;status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.style.setProperty('display',text?'block':'none','important');};
  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);update();return result;};
  const fail=error=>{busy=false;message=error.message||'Übertragung fehlgeschlagen. Deine Gestaltung bleibt geöffnet.';update();};
  window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==window.parent||event.data?.session!==bridge.session)return;if(event.data.type==='gravuru-cart-error')fail(Error(event.data.message));});
@@ -17,6 +19,7 @@ export function installCommerce({el,config,files,pending}){
    if(r.querySelector('dialog[open]:not([data-commerce-review])'))throw Error('Bitte die Bildbearbeitung zuerst abschließen.');
    const missing=el.state.objects.filter(o=>!o.uxHidden&&o.type==='photoSlot'&&o.required&&!files.has(o.uxUploadId));
    if(missing.length)throw Error('Bitte zuerst dein Foto im Bereich „Foto / Logo“ hochladen.');
+   const blocked=blockedBy();if(blocked){el.uxRevealTextIssue?.(blocked.id);throw Error(blocked.message);}
    const quantity=Number(r.querySelector('[data-fk-quantity]').value||1),selection=selectCommerceVariant(config,binding,el.state,quantity);
    const design=designFromState(config,el.state);design.objects=design.objects.filter(o=>!o.uxHidden);
    validateDesign(config,design,el.state.mOptions,el.fontData,Object.entries(el.motifs).map(([key,svgFragment])=>({key,svgFragment})));

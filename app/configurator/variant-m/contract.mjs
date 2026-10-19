@@ -9,6 +9,7 @@ import {localFontIds} from './local-pilot.mjs';
 import {acrylicSelection} from './acrylic-product.mjs';
 import {validSurface} from './material-surface.mjs';
 import {validateSteelFormats} from './steel-formats.mjs';
+import {textLimits,textLimitIssue,sameSampleText,requiredFieldMessage} from '../../workshop/theme-limits.mjs';
 
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
@@ -28,6 +29,12 @@ export function prepareConfig(input) {
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
   validateStudio(p, p, {extraFontIds});
+  // Themenlimits und Pflichtkennzeichen der Vorlage sind Produktregeln: ungültige Werte laden nicht.
+  for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
+    if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');
+    if(o.required===true&&o.customerEditable===false)fail('Ein Pflichttext muss für Kunden bearbeitbar sein.');
+    const issue=textLimitIssue(o.text,textLimits(o,d,p));if(issue)fail((d.name||d.id)+': Mustertext – '+issue);
+  }
   for(const group of p.optionGroups||[])for(const value of group.values)validateOptionPresentation(value);
   if (!p.binding?.productId || !p.id || !p.revision) fail('Produktbindung und feste Profilrevision fehlen.');
   if (!(review&&config.basePriceCents===null&&config.extraMotifCents===null)&&(!Number.isSafeInteger(config.basePriceCents) || config.basePriceCents < 0 ||
@@ -118,7 +125,10 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, options};
 }
 
-export function validateDesign(config, design, options, fonts, motifs) {
+// `template:true` prüft eine Vorlage gegen sich selbst (Händler-Werkstatt):
+// dort ist der Mustertext kein Kundenfehler. Kunden-Entwürfe, Warenkorb und
+// Bestellung laufen ohne diese Option.
+export function validateDesign(config, design, options, fonts, motifs, {template=false}={}) {
   const source = config.profile.designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
   if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
@@ -143,7 +153,17 @@ export function validateDesign(config, design, options, fonts, motifs) {
     const o = design.objects.find(o => o.id === raw.id);
     if (!o || JSON.stringify(cleanObject(o)) !== JSON.stringify(cleanObject(raw))) fail('Ein fester Vorlagenbereich wurde verändert.');
   }
+  // Pflichttexte (Ü2.2): vorhanden, sichtbar und nicht mehr der Mustertext der Vorlage.
+  if(!template)for(const raw of source.objects.filter(o=>o.type==='text'&&o.required===true)){
+    const o=design.objects.find(o=>o.id===raw.id);
+    if(!o||o.type!=='text'||o.uxHidden===true||sameSampleText(o.text,raw.text))fail(requiredFieldMessage(raw));
+  }
   for (const o of design.objects) {
+    // Zeichen-/Zeilenlimit (Ü3.1) aus der Vorlage, nie aus dem Kundenobjekt.
+    if(o.type==='text'){
+      const raw=source.objects.find(r=>r.id===o.id&&r.type==='text');
+      if((raw??o).customerEditable!==false){const issue=textLimitIssue(o.text,textLimits(raw,source,config.profile));if(issue)fail(issue);}
+    }
     if(o.uxPhotoCrop!==undefined){
       const c=o.uxPhotoCrop;
       if(o.type!=='photoSlot'||!o.uxUploadId||!c||typeof c!=='object'||Array.isArray(c)||Object.keys(c).some(k=>!['zoom','x','y','angle'].includes(k))||![c.zoom,c.x,c.y,c.angle??0].every(Number.isFinite)||c.zoom<.25||c.zoom>4||Math.abs(c.x)>1||Math.abs(c.y)>1||Math.abs(c.angle??0)>3600)fail('Ungültige Foto-Ausrichtung.');

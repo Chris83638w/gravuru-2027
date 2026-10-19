@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import {PROCESSING_PROFILES, getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
-import {prepareConfig,quote,saveDraft,readDraft,selectedProfile,validatePhotoFile,MAX_PHOTO_BYTES,newEditableObject} from './contract.mjs';
+import {prepareConfig,quote,saveDraft,readDraft,selectedProfile,validatePhotoFile,MAX_PHOTO_BYTES,newEditableObject,validateDesign} from './contract.mjs';
 // Historical generic profile retained as a test fixture, detached from Shopify.
 // Tests need the editor's resource data, not its former product-pipeline runtime.
 const native=JSON.parse(fs.readFileSync(new URL('./fixtures/native-profile.json',import.meta.url),'utf8'));
@@ -95,6 +95,60 @@ test('upload accepts only explicit raster types and positive sizes within limit'
  for(const file of [{type:'image/svg+xml',size:100},{type:'image/jpeg',size:0},{type:'image/png',size:MAX_PHOTO_BYTES+1}])assert.throws(()=>validatePhotoFile(file),/15 MB/);
 });
 
+
+// K1 (Ü3.1/Ü2.2): Limits und Pflichtfelder kommen aus der Vorlage, nie aus dem Kundenobjekt.
+const themed=(designPatch={},objectPatch={},profilePatch={})=>{
+ const input=structuredClone(native);Object.assign(input,profilePatch);
+ const d=input.designs[0];Object.assign(d,designPatch);
+ Object.assign(d.objects.find(o=>o.type==='text'&&o.fieldKey==='name'),objectPatch);
+ return prepareConfig({profile:input,basePriceCents:2999,extraMotifCents:169,photo:{enabled:true,mode:'upload-only'}});
+};
+const themedState=cfg=>({designId:cfg.profile.designs[0].id,objects:structuredClone(cfg.profile.designs[0].objects)});
+const themedSave=(cfg,s)=>saveDraft(cfg,s,{},fonts,motifs);
+test('text over theme limit is rejected in chars without surrounding spaces',()=>{
+ const cfg=themed({themes:['namensschilder']}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');name.size=4;
+ name.text='  '+'A'.repeat(32)+'  ';assert.doesNotThrow(()=>themedSave(cfg,s));
+ name.text='A'.repeat(33);assert.throws(()=>themedSave(cfg,s),/Text zu lang: höchstens 32 Zeichen\./);
+ // Ohne Thema gilt der Standard 40 / 2, der Mustertext der Vorlage bleibt zulässig.
+ const plain=themed(),p=themedState(plain),pn=p.objects.find(o=>o.fieldKey==='name');pn.size=4;
+ pn.text='A'.repeat(41);assert.throws(()=>themedSave(plain,p),/höchstens 40 Zeichen/);
+ for(const d of plain.profile.designs)assert.doesNotThrow(()=>saveDraft(plain,{designId:d.id,objects:structuredClone(d.objects)},{},fonts,motifs),d.id);
+});
+test('too many lines are rejected per theme',()=>{
+ const cfg=themed({themes:['namensschilder']}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');
+ name.text='Balu\nLuna';assert.doesNotThrow(()=>themedSave(cfg,s));
+ name.text='Balu\nLuna\nRex';assert.throws(()=>themedSave(cfg,s),/Höchstens 2 Zeilen\./);
+ const memorial=themed({themes:['tiergedenktafeln']}),m=themedState(memorial);
+ m.objects.find(o=>o.fieldKey==='name').text='Balu\nLuna\nRex\nMax';assert.doesNotThrow(()=>themedSave(memorial,m));
+});
+test('object limit overrides theme and product theme; client-side limits are ignored',()=>{
+ const cfg=themed({themes:['gedenktafeln']},{maxLength:6,maxLines:1},{themeId:'hinweisschilder'}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');
+ name.text='Balu';assert.doesNotThrow(()=>themedSave(cfg,s));
+ name.text='Balu und Luna';assert.throws(()=>themedSave(cfg,s),/höchstens 6 Zeichen/);
+ name.text='Ba\nlu';assert.throws(()=>themedSave(cfg,s),/Höchstens 1 Zeilen/);
+ name.text='Balu und Luna';name.maxLength=500;name.maxLines=10;assert.throws(()=>themedSave(cfg,s),/höchstens 6 Zeichen/);
+ const product=themed({},{},{themeId:'hinweisschilder'});assert.doesNotThrow(()=>{const t=themedState(product),n=t.objects.find(o=>o.fieldKey==='name');n.size=4;n.x=150;n.text='A'.repeat(52);themedSave(product,t);});
+ assert.throws(()=>themed({},{maxLength:0}),/Zeichenlimit/);assert.throws(()=>themed({},{maxLines:11}),/Zeilenlimit/);
+ assert.throws(()=>themed({},{maxLength:3}),/Mustertext/);
+});
+test('required text must differ from the template sample text',()=>{
+ const cfg=themed({},{required:true}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');
+ assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „name“ ausfüllen\./);
+ name.text=' balu ';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „name“ ausfüllen\./);
+ name.uxHidden=true;name.text='Luna';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „name“ ausfüllen\./);
+ delete name.uxHidden;s.objects=s.objects.filter(o=>o.id!==name.id);assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „name“ ausfüllen\./);
+ // Der Kunde kann das Pflichtkennzeichen nicht selbst abschalten.
+ const t=themedState(cfg);Object.assign(t.objects.find(o=>o.fieldKey==='name'),{required:false});assert.throws(()=>themedSave(cfg,t),/ausfüllen/);
+ assert.throws(()=>themed({},{required:'ja'}),/Pflichtfeld/);assert.throws(()=>themed({},{required:true,customerEditable:false}),/bearbeitbar/);
+});
+test('required text filled in passes, roundtrips and stays required; template self-check only with explicit option',()=>{
+ const cfg=themed({},{required:true}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');
+ name.text='Luna';const loaded=readDraft(cfg,themedSave(cfg,s),fonts,motifs);
+ assert.equal(loaded.design.objects.find(o=>o.fieldKey==='name').text,'Luna');assert.equal(loaded.design.objects.find(o=>o.fieldKey==='name').required,true);
+ const template=cfg.profile.designs[0];
+ assert.throws(()=>validateDesign(cfg,structuredClone(template),{},fonts,motifs),/ausfüllen/);
+ assert.doesNotThrow(()=>validateDesign(cfg,structuredClone(template),{},fonts,motifs,{template:true}));
+});
 
 test('photo background instructions roundtrip and reject invalid or misplaced values',()=>{
  const s=state(),photo=s.objects.find(o=>o.type==='photoSlot');photo.uxUploadId='test-photo';photo.uxUploadKind='photo';photo.uxPhotoBackground='keep';

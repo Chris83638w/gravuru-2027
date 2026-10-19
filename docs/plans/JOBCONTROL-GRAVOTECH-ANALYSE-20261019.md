@@ -50,7 +50,7 @@ Zweite Druckdatei (21:22, 248 Bytes): Kopf dpi 500 × 500, Feld 8/9 = 92 / 9, Wo
 | 1 Raster (Schwarz) | `VD 9`, `vd 90`, `AI 0`, `FR 250`, `SL 1`, `PW 92`, dann `RX`/`RY`, 445 Rasterzeilen (`C1` 223 / `C2` 222), `R5` | 92 % / 9,0 %, 500 dpi | Schwarz 92 · 9,0 · Raster |
 | 2 Vektor (Rot) | `DP 500`, `PW 0`, `VD 0`, `vd 0`, `AI 0`, `FR 250`, `SL 1`, `PD` + Koordinaten | 0 % / 0,0 % | Rot 0 · 0,0 · Vektor |
 
-Alle Befehle bekannt, nichts unbekannt. Damit gilt: **Leistung und Geschwindigkeit stehen pro Farbe im Befehlsstrom** (`PW`, `VD` ganze %, `vd` Zehntel-%), der Kopf trägt die Werte von Farbe 1. JobControl ändert je Block nur diese 16-Bit-Werte und lässt Raster- und Vektordaten unverändert. J1 ist abgenommen; weiter mit J2 (unveränderte Datei an einen Laser senden, nur mit Chris' Freigabe und an Restmaterial).
+Alle Befehle bekannt, nichts unbekannt. Damit gilt: **Leistung und Geschwindigkeit stehen pro Farbe im Befehlsstrom** (`PW`, `VD` ganze %, `vd` Zehntel-%), der Kopf trägt die Werte von Farbe 1. JobControl ändert je Block nur diese 16-Bit-Werte und lässt Raster- und Vektordaten unverändert. Laut Chris (19.10.) wird eine Farbe mit 0 % / 0,0 % im Vektormodus an der Maschine trotzdem graviert – `PW 0` heißt also **nicht** „Laser aus“. Offen, welche Werte die Maschine dann nimmt (eigene Vorgabe, Materialwert, Wert aus dem Kopf); wird in J2 an Restmaterial geklärt. Bis dahin ändert JobControl keine Blöcke mit Wert 0. J1 ist abgenommen; weiter mit J2 (unveränderte Datei an einen Laser senden, nur mit Chris' Freigabe und an Restmaterial).
 
 ## Gespeicherte Treiber-Einstellungen (.job) – an echter Datei geprüft
 

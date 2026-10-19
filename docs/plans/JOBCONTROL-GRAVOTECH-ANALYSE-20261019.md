@@ -67,6 +67,12 @@ Die Treiberoberfläche speichert ihren Parametersatz als `.job` (Standardpfad `C
 
 Leser: `python3 -I scripts/jobcontrol/job_inspect.py <datei.job> [--json]`. Bedeutung für JobControl: diese Dateien sind direkt die Materialtabelle je Maschine – sie lassen sich lesen, vergleichen und später mit geänderten Werten schreiben, ohne den Treiber anzufassen.
 
+## Werkzeuge J2/J3 (vorbereitet, 19.10.2026)
+
+- `scripts/jobcontrol/las_edit.py`: listet Farbblöcke (`--bloecke`) und schreibt eine **neue** Datei mit geänderter Leistung/Geschwindigkeit je Block (PW, VD, vd; bei Block 1 auch Kopf). Raster-/Vektordaten bleiben gleich, Länge gleich; Beispiel 92/9,0 → 80/12,5: 6 Werte, 6 Bytes verschieden. Blöcke mit 0 werden abgelehnt. Tests: `python3 -I -m unittest discover -s scripts/jobcontrol -p 'test_*.py'` (6 grün, Fixture = Chris' Corel-Testjob `tests/fixtures/jobcontrol/corel-test-schild-92-9.las`).
+- `scripts/jobcontrol/send-raw.ps1`: sendet eine .las byteweise als RAW-Auftrag (Windows `WritePrinter`) an eine Warteschlange. Senden erst nach Eingabe des genauen Druckernamens; hängt der Drucker nicht an einem Datei-Port, zusätzlich „LASER“. Ausgabe am Datei-Port per SHA256 prüfbar.
+- Trockentest ohne Maschine: an „L-Solution TEST (Datei)“ senden → `C:\gravuru-jobs\test.las` muss dieselbe SHA256 haben wie die Quelle (j2-quelle `51cf1b95…`, j3-80-12-5 `5bf8cb93…`). Zeigt, ob Spooler/Treiber RAW unverändert durchreichen.
+
 ## Vorschlag Ausbau (Paket J1–J4)
 
 | Paket | Inhalt | Abnahme |

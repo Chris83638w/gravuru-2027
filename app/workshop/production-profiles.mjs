@@ -9,7 +9,10 @@ const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'p
 const exact=(v,keys)=>{if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==keys.length||keys.some(k=>!Object.hasOwn(v,k)))fail(422,'Fertigungsprofil: Felder fehlen oder sind unbekannt.');};
 const text=(v,max,required=false)=>{if(typeof v!=='string'||v.length>max||/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(v)||required&&!v.trim())fail(422,'Bitte gültige Profilangaben eingeben.');return v.trim();};
 export function productionProfileDocument(input){
- exact(input,['name','method','materialId','thicknessMm','machine','rip','notes','output','archived']);
+ // autoRelease ist optional: true lässt eine bestandene automatische Prüfung die Fertigungsfreigabe setzen (production-release.mjs).
+ const keys=['name','method','materialId','thicknessMm','machine','rip','notes','output','archived'];
+ exact(input,input&&typeof input==='object'&&Object.hasOwn(input,'autoRelease')?[...keys,'autoRelease']:keys);
+ if(Object.hasOwn(input,'autoRelease')&&typeof input.autoRelease!=='boolean')fail(422,'Automatische Freigabe muss ja oder nein sein.');
  const d=structuredClone(input);d.name=text(d.name,160,true);d.machine=text(d.machine,200);d.rip=text(d.rip,200);d.notes=text(d.notes,2000);
  if(!['print','engraving'].includes(d.method)||typeof d.archived!=='boolean'||!FORM_MATERIALS.some(m=>m.id===d.materialId)||!Number.isFinite(d.thicknessMm)||d.thicknessMm<=0||d.thicknessMm>100)fail(422,'Verfahren, Material und tatsächliche Stärke sind erforderlich.');
  if(d.method==='print')d.output=formPrintSettings(d.output);

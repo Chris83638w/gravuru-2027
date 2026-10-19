@@ -64,7 +64,7 @@ export async function installRefinements(api){
       if(window.GravuruGuided){const scene=$('.scene').getBoundingClientRect(),state={...el.state,objects:el.state.objects.filter(x=>!x.uxHidden)};const snapped=window.GravuruGuided.snap(state,o,7/Math.max(.1,scene.width/el.state.width),resize.locks);o.x=snapped.x;o.y=snapped.y;resize.locks=snapped.locks;}
     }
     else if(resize.kind==='rotate'){const from=Math.atan2(resize.start.y-start.y,resize.start.x-start.x),to=Math.atan2(p.y-start.y,p.x-start.x);o.rotation=Math.round((start.rotation||0)+(to-from)*180/Math.PI);}
-    else{const factor=Math.hypot(p.x-start.x,p.y-start.y)/Math.max(.1,Math.hypot(resize.start.x-start.x,resize.start.y-start.y));Object.assign(o,scaleObject(start,factor,el.uxTextScale?.()||1));}
+    else{const factor=Math.hypot(p.x-start.x,p.y-start.y)/Math.max(.1,Math.hypot(resize.start.x-start.x,resize.start.y-start.y));Object.assign(o,scaleObject(start,factor,el.uxTextScale?.()||1,el.uxMinTextMm));}
     el.normalize();el.render();
   },true);
   function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);if(cancel)el.state=prior.old;else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
@@ -83,7 +83,7 @@ export async function installRefinements(api){
       if(key==='object-delete')await el.action('delete');
       if(key==='object-center')mutate(()=>o.x=el.state.width/2);
       if(key==='object-turn')mutate(()=>o.rotation=(o.rotation||0)+15);
-      if(key==='object-smaller'||key==='object-bigger')mutate(()=>Object.assign(o,scaleObject(o,key==='object-bigger'?1.1:1/1.1,el.uxTextScale?.()||1)));
+      if(key==='object-smaller'||key==='object-bigger')mutate(()=>Object.assign(o,scaleObject(o,key==='object-bigger'?1.1:1/1.1,el.uxTextScale?.()||1,el.uxMinTextMm)));
     }
   });
   function checkMini(){const before=mini.hidden;mini.hidden=!matchMedia('(max-width:900px)').matches||stage.getBoundingClientRect().bottom>72||$('.c-large-preview').open;$('.ux-shell').dataset.miniVisible=String(!mini.hidden);if(before&&!mini.hidden)updateSelection();}

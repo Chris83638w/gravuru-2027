@@ -16,9 +16,9 @@ export function fittedSize(width,height,max=1600){
   if(!(width>0&&height>0&&max>0))throw Error('Ungültige Bildmaße.');
   const scale=Math.min(1,max/Math.max(width,height));return {width:Math.max(1,Math.round(width*scale)),height:Math.max(1,Math.round(height*scale))};
 }
-export function scaleObject(object,factor,physicalScale=1){
+export function scaleObject(object,factor,physicalScale=1,minTextMm=undefined){
   if(!Number.isFinite(factor)||factor<=0)throw Error('Ungültige Skalierung.');
-  if(object.type==='text')return {...object,size:designTextSize(object.size*factor*physicalScale,physicalScale)};
+  if(object.type==='text')return {...object,size:designTextSize(object.size*factor*physicalScale,physicalScale,minTextMm)};
   const safe=Math.max(.05,Math.min(20,factor));return {...object,w:Math.max(1,object.w*safe),h:Math.max(1,object.h*safe)};
 }
 

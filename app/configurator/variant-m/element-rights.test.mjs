@@ -117,11 +117,11 @@ test('client repair agrees with server validation for the real acrylic design',(
   Object.assign(rights.names,{content:false,move:false,scale:false,delete:false,color:true});
   rights['photo-main'].replace=false;
   const changed=structuredClone(source);
-  Object.assign(changed.objects.find(object=>object.id==='names'),{text:'Wrong',x:0,size:30,color:'#abcdef'});
+  Object.assign(changed.objects.find(object=>object.id==='names'),{text:'Wrong',x:0,size:30,color:'#c93232'}); // K10: Farbe aus der UV-Profilpalette
   changed.objects.find(object=>object.id==='photo-main').uxUploadId='forbidden-upload';
   assert.throws(()=>validateProductDesign(document,changed));
   const repaired=restoreElementRights(source.objects,changed.objects,rights);
   const validated=validateProductDesign(document,{...source,objects:repaired.objects});
-  assert.equal(validated.objects.find(object=>object.id==='names').color,'#abcdef');
+  assert.equal(validated.objects.find(object=>object.id==='names').color,'#c93232');
   assert.equal(validated.objects.find(object=>object.id==='photo-main').uxUploadId,undefined);
 });

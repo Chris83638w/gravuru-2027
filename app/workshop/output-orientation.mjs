@@ -5,13 +5,19 @@
 // alles andere bleibt ungespiegelt. Bohrungen als Schnittlinie und Schrift-in-
 // Pfade entstehen ohnehin ausschließlich serverseitig (acrylic-artwork.mjs,
 // form-print-worker.py); dort gibt es kein Clientflag.
+import {PROCESS_PROFILES,processMirror} from './process-profiles.mjs';
 const ACRYLIC_REVIEW='gravuru-acrylic-review/v1'; // Schema des nativen Acryl-Prüfstands (acrylic-review.mjs)
 const fail=(code,message)=>{throw Object.assign(Error(message),{status:422,code});};
-export const MIRROR_SOURCES=Object.freeze({profile:'fertigungsprofil',rear:'acryl-rueckseite',front:'vorderseite'});
+// K10: Ohne Maschinenprofil fällt die Spiegelung auf das Verfahrensprofil zurück
+// (manifest.product.processingProfileId, z. B. acrylic-engraving von hinten;
+// manifest.product.engravingSide überschreibt, sobald eine Familie sie liefert).
+export const MIRROR_SOURCES=Object.freeze({profile:'fertigungsprofil',rear:'acryl-rueckseite',process:'verfahrensprofil',front:'vorderseite'});
 export function productionMirror(manifest){
  const output=manifest?.productionProfile?.document?.output;
  if(output&&typeof output==='object')return {mirror:output.mirror===true,source:MIRROR_SOURCES.profile};
  if(manifest?.schema===ACRYLIC_REVIEW&&manifest.product?.method==='print')return {mirror:true,source:MIRROR_SOURCES.rear};
+ const process=PROCESS_PROFILES.find(p=>p.id===manifest?.product?.processingProfileId);
+ if(process)return {mirror:processMirror(process,manifest.product.engravingSide),source:MIRROR_SOURCES.process};
  return {mirror:false,source:MIRROR_SOURCES.front};
 }
 // Clientseitige Ausgabeeinstellungen: alles außer der Spiegelung bleibt eine

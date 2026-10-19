@@ -68,13 +68,14 @@ test('fixed elements still accept colour and photo replacement and editable text
   const config=fixture(),source=config.profile.designs[0],objects=structuredClone(source.objects);
   const photo=objects.find(o=>o.id==='photo-main');
   Object.assign(photo,{uxUploadId:'test-original',uxUploadKind:'photo',uxPhotoBackground:'keep'});
-  objects.find(o=>o.id==='location-pin').color='#ff0000';
-  objects.find(o=>o.id==='heart').color='#ff0000';
-  objects.find(o=>o.id==='photo-frame').color='#ff0000';
+  // K10: Farbwahl nur aus der UV-Profilpalette (Rot #c93232).
+  objects.find(o=>o.id==='location-pin').color='#c93232';
+  objects.find(o=>o.id==='heart').color='#c93232';
+  objects.find(o=>o.id==='photo-frame').color='#c93232';
   objects.find(o=>o.id==='place').text='Am See';
   const saved=saveDraft(config,{designId:source.id,objects},{},resources.fonts,resources.motifs);
   const loaded=readDraft(config,saved,resources.fonts,resources.motifs);
   assert.equal(loaded.design.objects.find(o=>o.id==='photo-main').uxUploadId,'test-original');
   assert.equal(loaded.design.objects.find(o=>o.id==='place').text,'Am See');
-  assert.equal(loaded.design.objects.find(o=>o.id==='heart').color,'#ff0000');
+  assert.equal(loaded.design.objects.find(o=>o.id==='heart').color,'#c93232');
 });

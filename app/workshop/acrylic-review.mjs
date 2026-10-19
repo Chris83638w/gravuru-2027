@@ -2,6 +2,7 @@ import {acrylicPhotoResolution,resolutionTargetDpi} from './acrylic-photo-resolu
 import {NATIVE_REVIEW} from './native-review-schema.mjs';
 import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
+import {processProfile} from './process-profiles.mjs';
 import {randomUUID,createHash} from 'node:crypto';
 import {validateProductDesign,resolveProduct} from './product-model.mjs';
 import {cleanObject,isGuideObject} from '../configurator/variant-m/contract.mjs';
@@ -53,9 +54,10 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
   photos.push({uploadId:m.id,...source,width:original.width,height:original.height,edited});
  }
  const viewport=artworkViewport(config,{mOptions:state.options});
- // Ü5.1/Ü5.2: Ampel je Fotoobjekt gegen das Soll des Fertigungsprofils (sonst 300 dpi).
- // Nie eine Sperre: der Grad wird mitgeführt, damit Summary und Freigabe „Auflösung niedrig“ vermerken.
- const targetDpi=resolutionTargetDpi(productionProfile);
+ // Ü5.1/Ü5.2: Ampel je Fotoobjekt gegen das Soll des Fertigungsprofils, sonst (K10) des
+ // Verfahrensprofils, sonst 300 dpi. Nie eine Sperre: der Grad wird mitgeführt, damit
+ // Summary und Freigabe „Auflösung niedrig“ vermerken.
+ const process=processProfile(config.profile),targetDpi=resolutionTargetDpi(productionProfile,process);
  const photoResolution=state.design.objects.filter(o=>!o.uxHidden&&!isGuideObject(o)&&o.uxUploadId).map(o=>acrylicPhotoResolution(o,photos.find(p=>p.uploadId===o.uxUploadId),viewport.scale,{targetDpi})).filter(Boolean);
  const photoWarnings=photoResolution.filter(p=>p.grade!=='gruen').map(p=>p.productionNote+': Bild „'+p.label+'“ erreicht in dieser Platzierung etwa '+p.effectiveDpi+' dpi (Soll '+p.targetDpi+' dpi). Foto wurde angenommen; bitte in der Freigabe prüfen. Mehr dpi beim Export ergänzen keine fehlenden Bilddetails.');
  const photoHints=photoResolution.filter(p=>p.hint).map(p=>({objectId:p.objectId,grade:p.grade,text:p.hint}));
@@ -74,7 +76,7 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  const method=getProcessingProfile(config.profile).method;
  // Production note (not a blocker): customer kept a text inside a drill-hole protection zone.
  const holeWarnings=config.acrylic?[]:textsNearHoles(state.design,selectedProfile(config,state.options),config.localResources.fonts).map(n=>'Prüfvermerk Bohrloch: Text „'+String(n.text).trim().slice(0,60)+'“ liegt im Schutzbereich des Bohrlochs bei '+n.hole.x+' | '+n.hole.y+' mm. Kunde wurde vor der Bestellung darauf hingewiesen.');
- const id='proof_'+randomUUID(),manifest={schema:config.acrylic?ACRYLIC_REVIEW:NATIVE_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:config.profile.material,method,widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:state.options,labels:config.profile.optionGroups.map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,photoHints,capabilities:{contour:!config.doorbell,print:!config.doorbell&&method==='print',engraving:!config.doorbell&&method==='engraving',cart:false},blockers:[...(config.doorbell?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,...holeWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
+ const id='proof_'+randomUUID(),manifest={schema:config.acrylic?ACRYLIC_REVIEW:NATIVE_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:config.profile.material,method,processingProfileId:process.id,widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:state.options,labels:config.profile.optionGroups.map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,photoHints,capabilities:{contour:!config.doorbell,print:!config.doorbell&&method==='print',engraving:!config.doorbell&&method==='engraving',cart:false},blockers:[...(config.doorbell?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,...holeWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
  add('manifest.json',json(manifest),'Prüfsummen und Geltungsgrenzen.');
  const archive=await zip(files);return {manifest:{...manifest,packageSha256:sha(archive)},preview,contourPdf:Buffer.alloc(0),package:archive,photos:await zip(files.filter(f=>f.path.startsWith('fotos/')&&f.path.includes('-original.')))};
 }

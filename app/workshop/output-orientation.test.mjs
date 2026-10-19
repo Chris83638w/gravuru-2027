@@ -6,13 +6,21 @@ import {productionMirror,clientOutputSettings,MIRROR_SOURCES} from './output-ori
 
 const SQUARE={id:'square',type:'graphic',shape:'rect',filled:true,strokeWidth:.2,x:25,y:40,w:20,h:20,rotation:0,color:'#b56943',technicalLocked:true,customerEditable:false};
 const manifest=(schema,method,output)=>({schema,product:{method},productionProfile:output?{document:{output}}:null});
-test('productionMirror: Profil zuerst, dann Acryl-Rückseitendruck, sonst Vorderseite',()=>{
+test('productionMirror: Profil zuerst, dann Acryl-Rückseitendruck, dann Verfahrensprofil (K10), sonst Vorderseite',()=>{
  assert.deepEqual(productionMirror(manifest('gravuru-acrylic-review/v1','print',{mirror:false,dpi:300})),{mirror:false,source:MIRROR_SOURCES.profile});
  assert.deepEqual(productionMirror(manifest('gravuru-native-review/v1','engraving',{mode:'vector',dpi:300,mirror:true})),{mirror:true,source:MIRROR_SOURCES.profile});
  assert.deepEqual(productionMirror(manifest('gravuru-acrylic-review/v1','print')),{mirror:true,source:MIRROR_SOURCES.rear});
  assert.deepEqual(productionMirror(manifest('gravuru-acrylic-review/v1','engraving')),{mirror:false,source:MIRROR_SOURCES.front});
  assert.deepEqual(productionMirror(manifest('gravuru-native-review/v1','engraving')),{mirror:false,source:MIRROR_SOURCES.front});
  assert.deepEqual(productionMirror(manifest('gravuru-form-review/v1','print')),{mirror:false,source:MIRROR_SOURCES.front});
+ // K10: ohne Maschinenprofil entscheidet das Verfahrensprofil; die Gravurseite der Familie überschreibt.
+ const withProcess=(id,engravingSide)=>({schema:'gravuru-native-review/v1',product:{method:'engraving',processingProfileId:id,...(engravingSide?{engravingSide}:{})},productionProfile:null});
+ assert.deepEqual(productionMirror(withProcess('acrylic-engraving')),{mirror:true,source:MIRROR_SOURCES.process});
+ assert.deepEqual(productionMirror(withProcess('acrylic-engraving','front')),{mirror:false,source:MIRROR_SOURCES.process});
+ assert.deepEqual(productionMirror(withProcess('steel-engraving')),{mirror:false,source:MIRROR_SOURCES.process});
+ assert.deepEqual(productionMirror(withProcess('steel-engraving','back')),{mirror:true,source:MIRROR_SOURCES.process});
+ assert.deepEqual(productionMirror(withProcess('unbekannt')),{mirror:false,source:MIRROR_SOURCES.front});
+ assert.deepEqual(productionMirror({...withProcess('acrylic-engraving'),productionProfile:{document:{output:{mode:'vector',dpi:300,mirror:false}}}}),{mirror:false,source:MIRROR_SOURCES.profile});
 });
 test('clientOutputSettings ersetzt ein gesendetes mirror durch den abgeleiteten Wert und meldet Abweichungen',()=>{
  const rear=manifest('gravuru-acrylic-review/v1','print'),steel=manifest('gravuru-native-review/v1','engraving');
@@ -48,7 +56,9 @@ test('Acryl-Rückseite liefert die gespiegelte Datei, auch wenn der Client mirro
 });
 test('Stahl-Gravur bleibt ungespiegelt, auch wenn der Client mirror:true sendet',{timeout:180000},async t=>{
  const f=await fixture(t,{steel:true});assert.equal(f.bundle.manifest.schema,'gravuru-native-review/v1');assert.equal(f.bundle.manifest.product.method,'engraving');
- const detail=await(await fetch(f.base+'/api/workshop/review-snapshots/'+f.id)).json();assert.deepEqual(detail.outputOrientation,{mirror:false,source:MIRROR_SOURCES.front});
+ // K10: Der Prüfstand trägt das Verfahrensprofil (steel-engraving, nicht gespiegelt).
+ assert.equal(f.bundle.manifest.product.processingProfileId,'steel-engraving');
+ const detail=await(await fetch(f.base+'/api/workshop/review-snapshots/'+f.id)).json();assert.deepEqual(detail.outputOrientation,{mirror:false,source:MIRROR_SOURCES.process});
  const response=await fetch(f.base+'/api/workshop/export-jobs',{method:'POST',headers:f.headers,body:JSON.stringify({snapshotId:f.id,settings:{mode:'raster',mirror:true}})});
  assert.equal(response.status,202);const job=await response.json();assert.equal(job.settings.mirror,false);assert.equal(job.clientSettingsIgnored.length,1);
  await f.w.exportWorker.wait(job.id);const proof=f.w.customerDrafts.printProof(f.id,job.recipeKey);assert.equal(proof.metadata.settings.mirror,false);

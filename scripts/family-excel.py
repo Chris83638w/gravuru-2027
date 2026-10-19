@@ -27,6 +27,9 @@ OPTION_SEL = {'single': 'eine', 'multiple': 'mehrere'}; OPTION_SEL_BY_TEXT = {v:
 ACCESSORY_BY_TEXT = {v: k for k, v in ACCESSORY.items()}
 MATERIALS = {'steel': ('Edelstahl', 'Gravur', 'dunkel'), 'slate': ('Schiefer', 'Gravur', 'hell'), 'acrylic': ('Acrylglas', 'Gravur', 'hell')}
 PROCESS = {'steel-engraving': 'Gravur', 'slate-engraving': 'Gravur', 'acrylic-engraving': 'Gravur', 'color-print': 'Druck'}
+# K10: Spalte „Verfahrensprofil“ trägt die exakte Profilkennung (app/workshop/process-profiles.mjs);
+# leer = offen (null). „Verfahren“ bleibt der lesbare Text und dient nur noch als Rückfall.
+PROCESS_IDS = ('steel-engraving', 'wood-engraving', 'slate-engraving', 'acrylic-engraving', 'color-print')
 
 euro = lambda c: None if c is None else round(c / 100, 2)
 cents = lambda v: None if v in (None, '') else int(round(float(str(v).replace('€', '').replace(',', '.').strip()) * 100))
@@ -58,14 +61,14 @@ def export(paths, out):
         m = f['material']; k = m['kind'] + '|' + (m.get('variant') or '')
         if k not in seen:
             name, proc, ink = MATERIALS.get(m['kind'], (m['kind'], '', ''))
-            seen[k] = [m['kind'], m.get('variant') or '', m['label'], m['thicknessMm'], PROCESS.get(m['processingProfileId'], m['processingProfileId']), ink, '']
-    sheet('Materialien', ['Material (Kennung)', 'Variante', 'Bezeichnung', 'Stärke mm', 'Verfahren', 'Gravur erscheint', 'Hinweise'], list(seen.values()), [18, 12, 34, 10, 10, 16, 40])
-    sheet('Familien', ['Familie (Kennung)', 'Name', 'Material', 'Variante', 'Stärke mm', 'Verfahren', 'Gravurseite', 'Gestaltungsrand mm', 'Schutzzone mm', 'Ohne Befestigung anbieten', 'Rückplatte', 'Rückplatte Überstand mm', 'Rückplatte Stärke mm', 'Rückplatte Hinweis', 'Schriften', 'Stilnotizen', 'Herkunft'],
-          [[f['id'], f['name'], f['material']['kind'], f['material'].get('variant') or '', f['material']['thicknessMm'], PROCESS.get(f['material']['processingProfileId'], f['material']['processingProfileId']),
+            seen[k] = [m['kind'], m.get('variant') or '', m['label'], m['thicknessMm'], PROCESS.get(m['processingProfileId'], m['processingProfileId']), m['processingProfileId'], ink, '']
+    sheet('Materialien', ['Material (Kennung)', 'Variante', 'Bezeichnung', 'Stärke mm', 'Verfahren', 'Verfahrensprofil', 'Gravur erscheint', 'Hinweise'], list(seen.values()), [18, 12, 34, 10, 10, 18, 16, 40])
+    sheet('Familien', ['Familie (Kennung)', 'Name', 'Material', 'Variante', 'Stärke mm', 'Verfahren', 'Verfahrensprofil', 'Gravurseite', 'Gestaltungsrand mm', 'Schutzzone mm', 'Ohne Befestigung anbieten', 'Rückplatte', 'Rückplatte Überstand mm', 'Rückplatte Stärke mm', 'Rückplatte Hinweis', 'Schriften', 'Stilnotizen', 'Herkunft'],
+          [[f['id'], f['name'], f['material']['kind'], f['material'].get('variant') or '', f['material']['thicknessMm'], PROCESS.get(f['material']['processingProfileId'], f['material']['processingProfileId']), f['material']['processingProfileId'],
             {'back': 'hinten', 'front': 'vorn'}.get(f['material'].get('engravingSide'), ''), f['designArea']['marginMm'], f['designArea']['keepoutMm'], 'ja' if f['withoutMounting'] else 'nein',
             (f.get('backing') or {}).get('label', ''), (f.get('backing') or {}).get('offsetMm'), (f.get('backing') or {}).get('thicknessMm'), (f.get('backing') or {}).get('note', ''),
             ', '.join(f['fonts']), f['briefingNotes'], (f.get('source') or {}).get('note', '')] for f in fams],
-          [26, 34, 10, 10, 9, 10, 10, 12, 12, 12, 24, 12, 12, 30, 50, 60, 60])
+          [26, 34, 10, 10, 9, 10, 18, 10, 12, 12, 12, 24, 12, 12, 30, 50, 60, 60])
     rows = []
     for f in fams:
         groups = {g['key']: g for g in f['groups']}
@@ -85,7 +88,7 @@ def export(paths, out):
                 rows.append([f['id'], g['id'], g['label'], OPTION_KIND.get(g['kind'], g['kind']), OPTION_SEL.get(g['selection'], g['selection']), 'ja' if g.get('required') else '', c['id'], c['label'], c.get('skuSuffix', ''), euro(c['priceCents']), 'ja' if c.get('default') else '', c.get('note', '')])
     sheet('Optionen', ['Familie', 'Gruppe (Kennung)', 'Gruppe', 'Art', 'Auswahl', 'Pflicht', 'Option (Kennung)', 'Option', 'SKU-Endung', 'Aufpreis €', 'Standard', 'Hinweis'], rows, [22, 16, 24, 10, 10, 8, 16, 28, 10, 11, 9, 40])
     ws = wb.create_sheet('Lesen')
-    for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Blatt Optionen: optionales Zubehör und Varianten je Familie – Gruppe (z. B. Abstandshalter-Set), Art Zubehör/Variante, Auswahl eine/mehrere, je Option Aufpreis in €. Neue Zeilen = neue Optionen. Preise je Linie (Unterkategorie) stehen in linien/<linie>.json des Katalogs.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
+    for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Verfahrensprofil: exakte Kennung (' + ', '.join(PROCESS_IDS) + '); sie legt Werkzeuge, Palette, Mindestschriftgröße, Soll-dpi und Spiegelung fest. Leer = offen; dann zählt ersatzweise die Spalte Verfahren (Gravur je Material, Druck = color-print).', 'Blatt Optionen: optionales Zubehör und Varianten je Familie – Gruppe (z. B. Abstandshalter-Set), Art Zubehör/Variante, Auswahl eine/mehrere, je Option Aufpreis in €. Neue Zeilen = neue Optionen. Preise je Linie (Unterkategorie) stehen in linien/<linie>.json des Katalogs.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
                  'Befestigungen je Größe als Kennungen aus dem Blatt Befestigungen, mit Komma getrennt. Neue Kennung = neue Zeile dort.', 'Zurücklesen: python scripts/family-excel.py import --xlsx DATEI --out ORDNER']:
         ws.append([line])
     ws.column_dimensions['A'].width = 120
@@ -97,12 +100,20 @@ def import_(xlsx, out):
     wb = load_workbook(xlsx, data_only=True)
     rows = lambda name: [dict(zip([c.value for c in wb[name][1]], [c.value for c in r])) for r in wb[name].iter_rows(min_row=2) if any(c.value not in (None, '') for c in r)]
     fams = {}
-    proc_id = {('steel', 'Gravur'): 'steel-engraving', ('slate', 'Gravur'): 'slate-engraving', ('acrylic', 'Gravur'): 'acrylic-engraving'}
+    proc_id = {('steel', 'Gravur'): 'steel-engraving', ('slate', 'Gravur'): 'slate-engraving', ('acrylic', 'Gravur'): 'acrylic-engraving', ('wood', 'Gravur'): 'wood-engraving'}
+
+    def process_id(r):
+        explicit = str(r.get('Verfahrensprofil') or '').strip()
+        if explicit: return explicit
+        text = str(r.get('Verfahren') or '').strip()
+        if not text: return None
+        if text == 'Druck': return 'color-print'
+        return proc_id.get((r['Material'], text), text)
     for r in rows('Familien'):
         fid = r['Familie (Kennung)']
         kind = r['Material']
         fams[fid] = {'schema': 'gravuru-product-family/v2', 'id': fid, 'name': r['Name'],
-                     'material': {'kind': kind, **({'variant': r['Variante']} if r.get('Variante') else {}), 'label': '', 'thicknessMm': num(r['Stärke mm']), 'processingProfileId': proc_id.get((kind, r['Verfahren']), r['Verfahren'])},
+                     'material': {'kind': kind, **({'variant': r['Variante']} if r.get('Variante') else {}), 'label': '', 'thicknessMm': num(r['Stärke mm']), 'processingProfileId': process_id(r)},
                      'designArea': {'marginMm': num(r['Gestaltungsrand mm']), 'keepoutMm': num(r['Schutzzone mm'])}, 'groups': [], 'mountingRules': [], 'sizes': [],
                      'withoutMounting': str(r['Ohne Befestigung anbieten']).strip().lower() == 'ja', 'fonts': [x.strip() for x in str(r['Schriften'] or '').split(',') if x.strip()],
                      'briefingNotes': r['Stilnotizen'] or '', 'source': {'note': 'Aus Stammdaten-Excel gelesen: ' + Path(xlsx).name}}

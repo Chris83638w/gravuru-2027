@@ -1,5 +1,6 @@
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
-import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,restoreOriginalColors} from './usability-model.mjs';
+import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
+import {processPalette} from '../../workshop/process-profiles.mjs';
 import {money} from './contract.mjs';
 import {colorPalettes} from './profile-selection.mjs';
 
@@ -118,25 +119,31 @@ export async function installUsability(api) {
   drop.addEventListener('drop',async e=>{e.preventDefault();drop.classList.remove('is-dragover');await acceptFiles(e.dataTransfer.files,uploadKind,null);});
   const uploadedTitle=document.createElement('h3');uploadedTitle.textContent='Deine Bilder';$('.ux-uploads').before(uploadedTitle);
 
+  // K10 / Ü1.2: Farbwerkzeug nur, wenn das Verfahrensprofil es erlaubt (Gravur: keines).
+  // Die Swatches sind genau die Profilpalette (Produktauswahl grenzt ein); eine freie
+  // Farbwahl gibt es nur bei palette === null.
   let palette;
-  if(config?.profile.processing?.profileId==='color-print'){
+  const process=el.uxProcess||null,colorSelection=config?.workshopProfiles?.selections?.colors??null;
+  colorPalettes(PRINT_PALETTES,colorSelection); // prüft die Produktauswahl (Hex), wie bisher
+  const allowedColors=process?.tools.textColor?processPalette(process,colorSelection):[];
+  if(process?.tools.textColor){
+    const freeChoice=allowedColors===null;
     palette=document.createElement('section');palette.className='ux-color-palette';palette.hidden=true;
-    palette.innerHTML='<h3 data-color-title>Elementfarbe</h3>'+colorPalettes(PRINT_PALETTES,config?.workshopProfiles?.selections?.colors).map(([name,colors])=>'<fieldset><legend>'+name+'</legend><div class="ux-swatches">'+colors.map(([label,color])=>button('swatch','',`data-color="${color}" style="--swatch:${color}" aria-label="${label}" title="${label}" aria-pressed="false"`)).join('')+'</div></fieldset>').join('')+'<label>Ausgewählte Farbe <input type="color" data-free-color aria-label="Ausgewählte Farbe" value="#202824"></label>'+button('original-colors','Originalfarben verwenden')+'<p data-logo-color-note hidden>Einfarbige Logovorschau: Weiß wird transparent. Die Originaldatei bleibt erhalten.</p>';
+    palette.innerHTML='<h3 data-color-title>Elementfarbe</h3>'+paletteGroups(allowedColors).map(([name,colors])=>'<fieldset><legend>'+name+'</legend><div class="ux-swatches">'+colors.map(([label,color])=>button('swatch','',`data-color="${color}" style="--swatch:${color}" aria-label="${label}" title="${label}" aria-pressed="false"`)).join('')+'</div></fieldset>').join('')+(freeChoice?'<label>Ausgewählte Farbe <input type="color" data-free-color aria-label="Ausgewählte Farbe" value="#202824"></label>':'')+(process.tools.motifRecolor?button('original-colors','Originalfarben verwenden'):'')+'<p data-logo-color-note hidden>Einfarbige Logovorschau: Weiß wird transparent. Die Originaldatei bleibt erhalten.</p>';
     $('.ux-editor').append(palette);
     r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(!b||!canColorElement(selected()))return;
       if(b.dataset.ux==='swatch')changeObject('color',b.dataset.color);
       if(b.dataset.ux==='original-colors')mutate(()=>restoreOriginalColors(selected()));
     });
-    palette.querySelector('[data-free-color]').addEventListener('change',e=>{if(canColorElement(selected()))changeObject('color',e.target.value);});
+    palette.querySelector('[data-free-color]')?.addEventListener('change',e=>{if(canColorElement(selected()))changeObject('color',e.target.value);});
   }
   function updatePalette(){if(!palette)return;const o=selected();palette.hidden=!canColorElement(o);if(palette.hidden)return;
     const parent=o.type==='text'?$('.ux-controls'):$('.ux-panel:not([hidden])');if(parent&&palette.parentElement!==parent)parent.append(palette);
     palette.querySelector('[data-color-title]').textContent='Farbe: '+(o.type==='text'?'Text':o.uxUploadKind==='logo'?'Logo':o.type==='graphic'?'Grafik':'Motiv');
     const originals=o.uxUploadKind==='logo'?!o.uxLogoTint:o.type==='motif'&&o.preserveColors!==false;
     for(const swatch of palette.querySelectorAll('[data-color]'))swatch.setAttribute('aria-pressed',String(!originals&&o.color?.toLowerCase()===swatch.dataset.color));
-    palette.querySelector('[data-free-color]').value=o.color||'#202824';palette.querySelector('[data-logo-color-note]').hidden=o.uxUploadKind!=='logo';
-    palette.querySelector('[data-ux=original-colors]').hidden=!['image','motif'].includes(o.type);
-    palette.querySelector('[data-ux=original-colors]').setAttribute('aria-pressed',String(!!originals));
+    const free=palette.querySelector('[data-free-color]');if(free)free.value=o.color||'#202824';palette.querySelector('[data-logo-color-note]').hidden=o.uxUploadKind!=='logo';
+    const original=palette.querySelector('[data-ux=original-colors]');if(original){original.hidden=!['image','motif'].includes(o.type);original.setAttribute('aria-pressed',String(!!originals));}
   }
   r.addEventListener('click',e=>{if(e.target.closest('[data-ux-tab]'))updatePalette();});
 
@@ -208,8 +215,8 @@ export async function installUsability(api) {
   const warning=document.createElement('p');warning.dataset.uxBoundaryStatus='';warning.className='ux-boundary-status';warning.hidden=true;stage.append(warning);
   r.addEventListener('click',e=>{const b=e.target.closest('[data-ux=fit-text]');if(!b)return;
     const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked)return;
-    const size=fittingTextSize(o,textBounds(o),surface(),el.uxTextScale?.()||1);
-    if(size===null){say('Auch mit 4 mm passt der Text hier nicht. Bitte kürzen oder weiter nach innen verschieben.');return;}
+    const size=fittingTextSize(o,textBounds(o),surface(),el.uxTextScale?.()||1,el.uxMinTextMm);
+    if(size===null){say('Auch mit '+String(el.uxMinTextMm||4).replace('.',',')+' mm passt der Text hier nicht. Bitte kürzen oder weiter nach innen verschieben.');return;}
     mutate(()=>{o.size=size;el.state.selected=o.id;});say('Text auf '+el.uxDisplayTextSize(o).toLocaleString('de-DE')+' mm angepasst.');
   });
   const render=el.render;el.render=function(...args){const value=render.apply(this,args);drawAlignment();namespaceAll();return value;};

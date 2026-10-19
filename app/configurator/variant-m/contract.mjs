@@ -1,4 +1,5 @@
-import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions} from './element-rights.mjs';
+import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions,designElementRights} from './element-rights.mjs';
+import {processProfile,processColorIssue} from '../../workshop/process-profiles.mjs';
 import {validateOptionPresentation} from './option-media.mjs';
 import {validateStudio} from '../../platform/sources/app/shared/models/studio-products.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
@@ -25,6 +26,12 @@ export const objectRole=o=>o?.role==='guide'?'guide':'print';
 export const isGuideObject=o=>objectRole(o)==='guide';
 export const productionObjects=objects=>objects.filter(o=>!o.uxHidden&&!isGuideObject(o));
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
+// K10 / Ü1: Verfahrensprofil des Produkts (Werkzeuge, Palette, Mindestschriftgröße, Soll-DPI).
+export const productProcess=config=>processProfile(config.profile);
+// Physischer Maßstab der Gestaltung (Acryl: gewählte Größe / Designbreite, sonst 1).
+export function physicalScale(config, options={}) {
+  return config.acrylic ? acrylicSelection(resolvedOptions(config, options), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
+}
 export const money = cents => new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR'}).format(cents / 100);
 
 // This adapter consumes the existing native profile. It never grants a runtime release.
@@ -206,6 +213,19 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   // and the product's addition policy, enforced for every server entry point
   // (draft, cart handoff, order intake) and the client alike.
   const rightsIssue=templateRightsIssue(config,design,source,design.objects); if(rightsIssue)fail(rightsIssue);
+  // Verfahrensprofil (K10 / Ü1.2): Gravur erlaubt keine Farbänderung, Druck nur die
+  // Profilpalette (Produktauswahl grenzt ein); Texte, die der Kunde skalieren darf,
+  // nicht unter der Mindestschriftgröße des Verfahrens. Vorlagen prüft die Werkstatt
+  // gegen sich selbst (template:true) ohne die Mindestgröße.
+  const process = productProcess(config), scale = physicalScale(config, options), rights = designElementRights(config, source.id, source.objects);
+  const colorSelection = config.workshopProfiles?.selections?.colors ?? null, designColors = source.objects.map(s => s.color);
+  for (const o of design.objects) {
+    if (o.uxHidden || isGuideObject(o) || o.type === 'photoSlot') continue;
+    const raw = source.objects.find(s => s.id === o.id);
+    const colorIssue = processColorIssue(process, o.color, {templateColor: raw?.color, designColors, selection: colorSelection}); if (colorIssue) fail(colorIssue);
+    if (template || o.type !== 'text' || !(raw ? rights[raw.id]?.scale === true : true)) continue;
+    if (!Number.isFinite(o.size) || o.size * scale < process.minTextMm - 0.005) fail('Text zu klein: mindestens ' + String(process.minTextMm).replace('.', ',') + ' mm bei diesem Verfahren.');
+  }
   return design;
 }
 
@@ -259,7 +279,8 @@ export function newEditableObject(config, input, id, fonts, motifs, options = {}
     if (!fonts[o.font]) o.font = 'Montserrat';
     o.size = Math.min(o.size || 14, height*.12); o.bold = !!o.bold;
     measureText(o, fonts);
-    o.size = Math.max(1, o.size * Math.min(1, width*.6/o.w, height*.3/o.h));
+    // Nie unter die Mindestschriftgröße des Verfahrens (K10), in Designeinheiten.
+    o.size = Math.max(productProcess(config).minTextMm / physicalScale(config, options), o.size * Math.min(1, width*.6/o.w, height*.3/o.h));
     measureText(o, fonts);
   } else {
     const item = motifs.find(m => m.key === o.motif);

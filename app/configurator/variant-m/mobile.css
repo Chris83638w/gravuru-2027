@@ -1,0 +1,78 @@
+/* K11 Mobile-first (Ü13.1, A6): eigener Zustand unter 768 px. Das Attribut data-ux-mobile
+   setzt mobile-steps.mjs über matchMedia; ohne Attribut bleibt der Desktop unverändert.
+   Platte oben fest (40 %, bei Tastatur 25 %), ein Schritt je Bildschirm, Werkzeugleiste unten. */
+:host([data-ux-mobile="true"]){padding:0!important;overflow:hidden}
+:host([data-ux-mobile="true"]) .ux-shell{position:fixed;left:0;right:0;top:var(--ux-vv-top,0px);height:var(--ux-vv-height,100dvh);max-width:none;margin:0;padding:0;display:flex;flex-direction:column;background:#fff;z-index:9000;overflow:hidden}
+:host([data-ux-mobile="true"]) .ux-heading{flex:none;display:flex;flex-wrap:nowrap;align-items:center;gap:6px;padding:4px 8px;margin:0;border-bottom:1px solid var(--ux-border);min-height:52px}
+:host([data-ux-mobile="true"]) .ux-heading h1,:host([data-ux-mobile="true"]) .ux-heading small{display:none}
+:host([data-ux-mobile="true"]) .ux-brand{font-size:20px;margin-right:auto;order:0}
+:host([data-ux-mobile="true"]) .ux-heading [data-ux=back]{order:-1;padding:9px 10px;font-size:14px!important}
+:host([data-ux-mobile="true"]) .ux-heading [data-ux=account]{font-size:13px!important;padding:9px 10px}
+:host([data-ux-mobile="true"]) .ux-layout{display:flex;flex-direction:column;flex:1;min-height:0;gap:0}
+
+/* Vorschau: feste Höhe aus --ux-mobile-preview-h, Platte bleibt bei offener Tastatur sichtbar. */
+:host([data-ux-mobile="true"]) .ux-preview{position:relative;top:auto;flex:none;height:var(--ux-mobile-preview-h,40dvh);overflow:hidden;background:#f3f5f3;border-bottom:1px solid var(--ux-border);display:flex;flex-direction:column;align-items:center;justify-content:center}
+:host([data-ux-mobile="true"]) [data-ux-stage]{height:100%;width:100%;display:flex;align-items:center;justify-content:center;min-height:0;position:relative}
+:host([data-ux-mobile="true"]) .ux-preview .stage{height:100%!important;width:100%!important;padding:34px 30px 50px!important;border-radius:0}
+:host([data-ux-mobile="true"]) .ux-preview .stage.acryl-scene{height:auto!important;width:min(100%,calc(var(--ux-mobile-preview-h,40dvh) * 1086 / 1448))!important;max-height:100%;padding:0!important;margin:0 auto!important}
+:host([data-ux-mobile="true"]) .ux-preview-help,:host([data-ux-mobile="true"]) .acryl-preview-note,:host([data-ux-mobile="true"]) .acryl-below .ux-preview-caption,:host([data-ux-mobile="true"]) .acryl-below .acryl-details,:host([data-ux-mobile="true"]) .ux-preview-size{display:none!important}
+:host([data-ux-mobile="true"]) .acryl-below{position:absolute;right:4px;top:50%;transform:translateY(-50%);z-index:8}
+:host([data-ux-mobile="true"]) .acryl-below .ux-preview-tools{margin:0!important;gap:6px!important;display:flex!important;flex-direction:column}
+:host([data-ux-mobile="true"]) .ux-preview-tools button,:host([data-ux-mobile="true"]) .ux-preview-tools .ux-canvas-help{min-height:44px!important;height:44px!important;min-width:44px!important;margin:0!important;padding:8px 6px!important;font-size:13px!important}
+:host([data-ux-mobile="true"]) .ux-shell .ux-enlarge{top:6px!important;left:6px!important;min-height:44px;width:44px;padding:8px!important;justify-content:center}
+:host([data-ux-mobile="true"]) .ux-shell .ux-enlarge span{display:none}
+/* Direkt-Werkzeug am Element nur in den Schritten Text und Foto/Motiv, nie über der Tastatur. */
+:host([data-ux-mobile="true"]:not([data-ux-step="text"]):not([data-ux-step="media"])) .ux-direct-edit,:host([data-ux-mobile="true"][data-ux-keyboard="true"]) .ux-direct-edit{display:none!important}
+
+/* Bearbeitungsbereich: ein Schritt je Bildschirm, scrollt unter der festen Platte. */
+:host([data-ux-mobile="true"]) .ux-editor{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 24px;overscroll-behavior:contain;display:flex;flex-direction:column}
+:host([data-ux-mobile="true"]) .ux-editor > *{order:1}
+:host([data-ux-mobile="true"]) #ux-panel-upload{order:2}
+:host([data-ux-mobile="true"]) #ux-panel-motif{order:3}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-status{order:5}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-template-delete{order:6}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-contents-bottom{order:7;align-self:center}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-color-palette{order:8}
+:host([data-ux-mobile="true"]) .ux-tabbar,:host([data-ux-mobile="true"]) .ux-mini,:host([data-ux-mobile="true"]) .fk-buy-dock{display:none!important}
+:host([data-ux-mobile="true"]) .ux-panel{border:0;padding:4px 0 12px;border-radius:0}
+:host([data-ux-mobile="true"]) .ux-panel h2{font-size:19px!important}
+:host([data-ux-mobile="true"]) #ux-panel-motif:not([hidden]){border-top:1px solid var(--ux-border);margin-top:8px;padding-top:14px}
+:host([data-ux-mobile="true"]) .ux-text-row{grid-template-columns:76px minmax(0,1fr)}
+:host([data-ux-mobile="true"]) .ux-text-row label{overflow-wrap:anywhere;font-size:14px}
+:host([data-ux-mobile="true"]) .ux-text-row textarea{min-height:48px;font-size:16px!important}
+:host([data-ux-mobile="true"]) .ux-text-issue{display:block}
+
+/* Werkzeugleiste unten (Daumenzone): Fortschritt, Schritte, Zurück/Weiter, Preis, Warenkorb. */
+:host([data-ux-mobile="true"]) .ux-mobile-bar{flex:none;border-top:1px solid var(--ux-border);background:#fff;padding:0 8px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -3px 14px #18332710}
+.ux-mobile-progress{height:4px;background:var(--ux-soft);overflow:hidden;margin:0 -8px}
+.ux-mobile-progress span{display:block;height:100%;background:var(--ux-green);transition:width .25s}
+.ux-mobile-steps{list-style:none;margin:4px 0 0;padding:0;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+.ux-mobile-steps li{flex:1 1 0;min-width:60px}
+.ux-shell .ux-mobile-steps button{width:100%;min-height:48px;padding:3px 2px!important;border:0!important;border-radius:8px!important;background:transparent!important;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px!important;line-height:1.1;color:var(--ux-muted)!important;white-space:nowrap}
+.ux-shell .ux-mobile-steps button .ux-mobile-step-no{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#e9efe9;color:var(--ux-ink);font-size:12px;font-weight:700}
+.ux-shell .ux-mobile-steps button[aria-current=step]{color:var(--ux-green)!important;font-weight:700!important}
+.ux-shell .ux-mobile-steps button[aria-current=step] .ux-mobile-step-no{background:var(--ux-green);color:#fff}
+.ux-shell .ux-mobile-steps button.is-done .ux-mobile-step-no{background:#cfe3d6;color:var(--ux-green)}
+.ux-mobile-nav{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;margin-top:4px}
+.ux-shell .ux-mobile-nav button{min-height:46px}
+.ux-shell .ux-mobile-prev{grid-column:1;padding:9px 12px!important}
+.ux-shell .ux-mobile-next{grid-column:3;padding:9px 16px!important;font-weight:700!important}
+.ux-shell .ux-mobile-price{grid-column:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1.1;min-width:0;min-height:46px;border:0!important;background:transparent!important;padding:4px 6px!important}
+.ux-mobile-price strong{font-size:18px;color:var(--ux-green)}
+.ux-mobile-price small{font-size:12px;color:var(--ux-muted);text-decoration:underline}
+.ux-mobile-cart{display:contents}
+.ux-mobile-cart[hidden]{display:none!important}
+.ux-shell .ux-mobile-cart .fk-buy-button{grid-column:3!important;grid-row:1!important;width:auto!important;margin:0!important;min-height:46px!important;height:auto!important;padding:9px 16px!important;font-size:15px!important;font-weight:700!important;white-space:nowrap;background:var(--ux-green)!important;color:#fff!important;border-color:var(--ux-green)!important}
+
+/* Schritt „Prüfen“: Zusammenfassung, Hinweise aus K1, Menge, Bestellstatus. */
+.ux-mobile-summary{margin:0 0 12px;display:grid;gap:0}
+.ux-mobile-summary div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;padding:8px 0;border-bottom:1px solid var(--ux-border)}
+.ux-mobile-summary dt{color:var(--ux-muted);font-size:13px}
+.ux-mobile-summary dd{margin:0;font-size:15px;overflow-wrap:anywhere}
+.ux-mobile-issues{padding:10px 12px;background:#fff5eb;color:#7c3a12;border-radius:8px;margin:0 0 12px;font-size:14px}
+.ux-mobile-issues h3{margin:0 0 6px;font-size:15px!important;color:inherit!important}
+.ux-mobile-issues p{margin:6px 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;color:inherit;font-size:14px}
+.ux-shell .ux-mobile-issues button{min-height:36px;padding:5px 10px!important;font-size:13px!important}
+.ux-mobile-quantity label.fk-quantity{display:flex!important;align-items:center;gap:10px;font-size:14px!important;margin:4px 0 10px}
+.ux-mobile-quantity .fk-quantity input{width:72px!important;min-height:44px;height:44px!important}
+.ux-mobile-order-status{font-size:13px;color:var(--ux-muted);margin:0}

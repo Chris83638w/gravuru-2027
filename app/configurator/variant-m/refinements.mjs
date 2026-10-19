@@ -6,6 +6,7 @@ import {createPhotoEditor} from './photo-editor.mjs';
 import {installUsability} from './usability.mjs';
 import {installWorkflow} from './workflow.mjs';
 import {installCustomerTools} from './customer-tools.mjs';
+import {installMobileSteps} from './mobile-steps.mjs';
 
 export async function installRefinements(api){
   const {el,r,files,selected,select,mutate,showTab,say,dialog,button,esc,dialogs}=api;
@@ -115,5 +116,7 @@ export async function installRefinements(api){
   await installWorkflow(api);
   installDirectEditing({...api,editPhoto});
   $('#ux-panel-upload > p.ux-small').textContent='Dein Bild wird direkt übernommen. Über „Bild bearbeiten“ kannst du es zuschneiden oder anpassen.';
+  // K11: geführte Schritte unter 768 px (eigenes Modul, Desktop-Reiter bleiben unverändert).
+  await installMobileSteps(api);
   updateSelection();
 }

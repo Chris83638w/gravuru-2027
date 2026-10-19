@@ -26,7 +26,7 @@ last = ['Allgemein', 'offen']
 groups = collections.OrderedDict()
 for d in index:
     k = d['kategorie']; groups.setdefault((k['ziel'], k['unter']), []).append(d)
-keys = sorted(groups, key=lambda zu: (zu[0].split(' · ')[-1] in last, order.index(zu[0].split(' · ')[-1]) if zu[0].split(' · ')[-1] in order else 9, zu[0], zu[1] in last, zu[1]))
+keys = sorted(groups, key=lambda zu: (zu[0].rsplit(' · ', 1)[0] if ' · ' in zu[0] else '', zu[0].split(' · ')[-1] in last, order.index(zu[0].split(' · ')[-1]) if zu[0].split(' · ')[-1] in order else 9, zu[0], zu[1] in last, zu[1]))
 ordered = [d for zu in keys for d in groups[zu]]
 
 # Sprite-Bögen: 6 × 10 Kacheln à 300 × 220 (Vorschau eingepasst, transparent)

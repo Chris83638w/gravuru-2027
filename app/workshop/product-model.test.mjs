@@ -115,12 +115,13 @@ test('fixed elements receive explicit separate rights without losing permitted p
   }
   assert.doesNotThrow(()=>checkedDesign(document,design=>{
     Object.assign(design.objects.find(o=>o.id==='photo-main'),{uxUploadId:'replacement',uxUploadKind:'photo',uxPhotoBackground:'keep'});
-    design.objects.find(o=>o.id==='heart').color='#ff0000';
+    // K10: Farbwahl aus der UV-Profilpalette (Rot #c93232).
+    design.objects.find(o=>o.id==='heart').color='#c93232';
   }));
 });
 test('server-side design validator enforces each individually restricted right',()=>{
   for(const [right,change] of [
-    ['content',(d,o)=>{o.text='Anderer Text';}],['color',(d,o)=>{o.color='#ff0000';}],
+    ['content',(d,o)=>{o.text='Anderer Text';}],['color',(d,o)=>{o.color='#c93232';}],
     ['move',(d,o)=>{o.x+=1;}],['scale',(d,o)=>{o.size+=1;}],['delete',(d,o)=>{d.objects=d.objects.filter(item=>item.id!==o.id);}]
   ]){
     const document=fixture();rights(document).names[right]=false;

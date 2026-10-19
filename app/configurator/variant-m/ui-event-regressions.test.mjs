@@ -23,7 +23,8 @@ const inertEvent=target=>({target,preventDefault(){},stopImmediatePropagation(){
 function textEnvironment(){
  const object={id:'name',type:'text',text:'Anna',size:6,x:30,y:20,w:40,h:7},input={id:'ux-size',value:'12',dataset:{},matches(){return false;}},r=eventTarget();
  const noopNode={textContent:'',hidden:false,setAttribute(){},classList:{toggle(){}}};
- const env={r,el:{state:{objects:[object]},sync(){},normalize(){},uxCanEdit:()=>true},config:{},isPrint:true,rightForProperty,
+ // K10: colorTool/minTextMm sind die Closure-Werte des Verfahrensprofils in installUX (Druck: Farbwahl, 4 mm).
+ const env={r,el:{state:{objects:[object]},sync(){},normalize(){},uxCanEdit:()=>true},config:{},isPrint:true,colorTool:true,minTextMm:4,rightForProperty,
   selected:()=>object,selectable:()=>true,mutate:fn=>fn(),say(){},
   textScale:()=>4/3,displayTextSize:o=>physicalTextSize(o,4/3),designTextSize,
   $:selector=>selector==='#ux-size'?input:selector==='[data-ux-color]'?null:noopNode,
@@ -196,4 +197,32 @@ test('photo apply rejects an oversized edited PNG before changing the object or 
  vm.runInNewContext(block('photo-editor.mjs',"  d.addEventListener('click',async e=>{","\n  });"),env);
  const button={dataset:{ux:'photo-apply'},disabled:false};await dispatch(d,'click',inertEvent({closest:()=>button}));
  assert.deepEqual(object,before);assert.equal(files.size,0);assert.equal(closed,false);assert.equal(button.disabled,false);assert.match(status.textContent,/15 MB/);
+});
+
+test('K10 / Ü1.2: changeObject refuses colour when the process profile has no colour tool and clamps size to the profile minimum',async()=>{
+ const {env,object,input,r}=textEnvironment();
+ vm.runInContext(line('ux.mjs',"const t=e.target,key=t.id==='ux-size'"),env);
+ vm.runInContext(block('ux.mjs',"  r.addEventListener('change',async e=>{const t=e.target;","\n  },true);"),env);
+ const said=[];env.say=m=>said.push(m);
+ // Druckprofil (colorTool): Farbe wird gesetzt (applyPrintColor nur für Druckprodukte, hier isPrint=true).
+ env.applyPrintColor=(o,v)=>{o.color=v;};
+ vm.runInContext("changeObject('color','#c93232')",env);assert.equal(object.color,'#c93232');
+ // Gravurprofil: kein Farbwerkzeug – der Handler lehnt ab, das Objekt bleibt unverändert.
+ env.colorTool=false;env.isPrint=false;vm.runInContext("changeObject('color','#123456')",env);
+ assert.equal(object.color,'#c93232');assert.deepEqual(said,['Bei diesem Verfahren gibt es keine Farbwahl.']);
+ const colorInput={value:'#000000',dataset:{},matches:s=>s==="[data-ux-color],[data-ux-content-color]"};
+ await dispatch(r,'change',inertEvent(colorInput));assert.equal(object.color,'#c93232','change-Handler ohne Farbwerkzeug ändert nichts');
+ // Mindestgröße aus dem Profil: Druck 3 mm wird angenommen, Gravur 4 mm hebt an.
+ env.minTextMm=3;input.value='3';await dispatch(r,'input',inertEvent(input));assert.equal(Math.round(object.size*4/3*100)/100,3);
+ env.minTextMm=4;input.value='3';await dispatch(r,'input',inertEvent(input));assert.equal(Math.round(object.size*4/3*100)/100,4);
+});
+test('K10 / Ü1.2: engraving products build the text panel without a colour picker, print without a free picker when the palette is fixed; photo tool follows tools.photo',()=>{
+ // Die Markup-Zeilen aus ux.mjs, mit den Closure-Werten des Verfahrensprofils ausgewertet.
+ const markup=block('ux.mjs',"  $('#ux-panel-text').innerHTML=","mitgefertigt.</p></div>`;");
+ const render=(freeColor,minTextMm)=>{const env={freeColor,minTextMm,icons:{},button:(k,l,extra='')=>`<button data-ux="${k}" ${extra}>${l}</button>`,config:null,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-text').innerHTML=",'out='),env);return env.out;};
+ assert.doesNotMatch(render(false,4),/data-ux-color/);assert.match(render(true,3),/data-ux-color/);
+ assert.match(render(false,4),/id="ux-size" type="number" min="4"/);assert.match(render(true,3),/min="3"/);
+ const photoLine=line('ux.mjs','const photoEnabled=config?config.photo.enabled&&process.tools.photo!==false:true');
+ const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
+ assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
 });

@@ -11,6 +11,7 @@ import {nativeSpecimenConfig,steelPreviewSurface} from './specimen-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {nativeContour} from './acrylic-artwork.mjs';
+import {processProfile,isProcessProfileId,processMirror} from './process-profiles.mjs';
 
 // A product family holds everything a product series shares (material, shapes,
 // sizes, prices, drill-pattern rules, fonts, style notes) once. Products are
@@ -47,6 +48,13 @@ export const holeless=r=>r.layout==='none';
 export const ruleComplete=r=>holeless(r)||(!open(r.diameterMm)&&!open(r.edgeMm));
 export const ACCESSORIES=Object.freeze({screws:'Schrauben',standoffs:'Abstandshalter'});
 export const ENGRAVING_SIDES=['front','back'];
+// K10 / Ü1.1: Verfahrensprofil der Familie (material.processingProfileId, null = offen)
+// samt Spiegelung aus der Gravurseite. Gravurprofil muss zum Material passen;
+// UV-Druck (color-print) ist materialneutral.
+export function familyProcess(f){
+ const id=f.material.processingProfileId;if(id===null||id===undefined)return null;
+ const p=processProfile(id);return {...p,mirror:processMirror(p,f.material.engravingSide)};
+}
 
 export function validateFamily(f){
  only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options'],'Produktfamilie');
@@ -59,7 +67,9 @@ export function validateFamily(f){
  const material=FAMILY_MATERIALS[f.material.kind];
  if(!material||!text(f.material.label,80))invalid('Material: Edelstahl, Acrylglas oder Schiefer mit Bezeichnung angeben.');
  if(f.schema!==FAMILY_SCHEMA&&(f.material.kind!=='steel'||f.material.thicknessMm!==1.5))invalid('Familienformat v1 beschreibt nur Edelstahl 1,5 mm.');
- if(f.material.processingProfileId!==material.processing)invalid(`${material.name} wird mit „${material.processing}“ graviert.`);
+ const processId=f.material.processingProfileId;
+ if(processId!==null&&!isProcessProfileId(processId))invalid('Unbekanntes Verfahrensprofil: '+processId);
+ if(processId!==null&&processId!==material.processing&&processId!=='color-print')invalid(`${material.name} wird mit „${material.processing}“ graviert.`);
  if(f.material.variant!==undefined&&!text(f.material.variant,40))invalid('Materialvariante prüfen.');
  if(!open(f.material.thicknessMm)&&!mm(f.material.thicknessMm,0.3,50))invalid('Materialstärke: 0,3 bis 50 mm oder offen.');
  for(const k of ['sizeKeyPrefix','sizeKeySuffix'])if(f[k]!==undefined&&!(typeof f[k]==='string'&&/^[A-Za-z0-9_.:-]{0,30}$/.test(f[k])))invalid('SKU-Muster prüfen.');
@@ -111,6 +121,7 @@ const OPTION_KINDS=['accessory','variant'],OPTION_SELECTIONS=['single','multiple
 // only when this list is empty and the material has a native adapter.
 export function familyGaps(f){
  const gaps=[],m=FAMILY_MATERIALS[f.material.kind];
+ if(open(f.material.processingProfileId))gaps.push('Verfahrensprofil');
  if(open(f.material.thicknessMm))gaps.push('Materialstärke');
  if(open(f.designArea.marginMm))gaps.push('Gestaltungsrand');
  for(const r of f.mountingRules){if(!ruleComplete(r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
@@ -168,7 +179,7 @@ export function familyTemplate(f,s){
 }
 
 export function familyBriefing(f,revision){
- const price=c=>c===null?'offen':(c/100).toFixed(2).replace('.',',')+' €',mat=FAMILY_MATERIALS[f.material.kind],gaps=familyGaps(f);
+ const price=c=>c===null?'offen':(c/100).toFixed(2).replace('.',',')+' €',mat=FAMILY_MATERIALS[f.material.kind],gaps=familyGaps(f),process=familyProcess(f);
  const rows=f.sizes.map(s=>{const g=f.groups.find(x=>x.key===s.groupKey);const rad=geometryOf(f,s).cornerRadiusMm;return `| ${s.key} | ${g.name} | ${s.label} (${s.widthMm} × ${s.heightMm} mm${rad?(g.shape==='plaque'?', eingezogene Ecken R':', Ecken R')+rad:''}) | ${price(s.baseCents)} | ${s.mounting.map(id=>{const r=ruleOf(f,id);return r.label+' · '+(holeless(r)?'ohne Löcher':ruleComplete(r)?r.edgeMm+' mm Randabstand':'Bohrbild offen');}).join('; ')||'ohne'} | schablonen/${s.key}.svg |`;}).join('\n');
  return `# ${f.name} – Briefing für die Designerstellung
 
@@ -178,7 +189,8 @@ Familienrevision ${revision}. Automatisch aus der Werkstatt erzeugt; nicht von H
 
 Nur das **Design**: Texte, Motive, Foto. Form, Größe, Material, Bohrlöcher, Befestigung und Preise legt die Werkstatt fest.
 
-- Material: ${f.material.label}, ${f.material.thicknessMm===null?'Stärke offen':String(f.material.thicknessMm).replace('.',',')+' mm'}, Verfahren Gravur. ${mat.ink} Gestaltet wird immer schwarz auf weiß; die Werkstatt stellt die Gravur je Material dar. Keine Graustufenflächen in Motiven.
+- Material: ${f.material.label}, ${f.material.thicknessMm===null?'Stärke offen':String(f.material.thicknessMm).replace('.',',')+' mm'}, Verfahren ${process?process.method==='print'?'UV-Druck':'Gravur':'offen'}${process?` (Profil „${process.id}“)`:''}. ${process?.method==='print'?'Farben aus der Profilpalette; die Werkstatt stellt den Druck dar.':mat.ink+' Gestaltet wird immer schwarz auf weiß; die Werkstatt stellt die Gravur je Material dar.'} Keine Graustufenflächen in Motiven.
+- Verfahrensregeln: Mindestschriftgröße ${process?String(process.minTextMm).replace('.',',')+' mm':'offen'}, Mindestlinienstärke ${process?.minStrokeMm!=null?String(process.minStrokeMm).replace('.',',')+' mm':'offen'}, Fotos ${process?(process.tools.photo?'möglich':'nicht vorgesehen'):'offen'}${process?.targetDpi?' (Soll '+process.targetDpi+' dpi)':''}, Spiegelung für die Fertigung: ${process?(process.mirror?'ja (Werkstatt spiegelt)':'nein'):'offen'}.
 - Randabstand der Gestaltung: ${f.designArea.marginMm===null?'offen (bis zur Klärung mindestens 10 mm frei lassen)':f.designArea.marginMm+' mm'}.${f.material.engravingSide==='back'?' Gravur von der Rückseite (die Werkstatt spiegelt für die Fertigung; gestaltet wird seitenrichtig).':''}${f.backing?` Rückplatte „${f.backing.label}“ rundum ${f.backing.offsetMm} mm größer; sie ist in der Schablone gestrichelt blau eingezeichnet und wird nicht gestaltet.`:''} Schutzzone um Bohrlöcher: ${f.designArea.keepoutMm} mm um den Lochrand.
 - **Texte** nicht in die Schutzzonen legen (sonst sieht der Kunde einen Hinweis). **Motive dürfen über Bohrlöcher** gehen.
 - Zugelassene Schriften (exakt diese Namen verwenden): siehe \`schriften.txt\`.

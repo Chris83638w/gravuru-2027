@@ -33,6 +33,9 @@ test('Ü5.1: Ampel grün ab Soll-DPI, gelb ab 60 %, rot darunter; Soll aus Ferti
  assert.equal(resolutionGrade(600,600),'gruen');assert.equal(resolutionGrade(360,600),'gelb');assert.equal(resolutionGrade(300,600),'rot');
  assert.equal(resolutionGrade(50),'rot');assert.throws(()=>resolutionGrade(NaN,300));assert.throws(()=>resolutionGrade(100,0));
  assert.equal(resolutionTargetDpi(null),300);assert.equal(resolutionTargetDpi({document:{output:{dpi:600,mirror:true}}}),600);assert.equal(resolutionTargetDpi({document:{output:{mode:'vector',dpi:300}}}),300);
+ // K10: ohne Maschinenprofil zählt das Soll des Verfahrensprofils (Objekt oder Kennung), sonst 300.
+ assert.equal(resolutionTargetDpi(null,'color-print'),300);assert.equal(resolutionTargetDpi(null,{id:'x',targetDpi:600}),600);assert.equal(resolutionTargetDpi(null,{id:'x',targetDpi:null}),300);
+ assert.equal(resolutionTargetDpi({document:{output:{dpi:600}}},{id:'x',targetDpi:150}),600);assert.equal(resolutionTargetDpi(null,'unbekannt'),300);
  assert.equal(measure(slot,photo,2,{targetDpi:600}).grade,'rot');assert.equal(measure(slot,photo,1).grade,'gruen');assert.equal(measure(slot,photo,1).targetDpi,300);
 });
 test('Ü5.2: rot ergibt den freundlichen Hinweis und den Vermerk „Auflösung niedrig“ – keine Sperre, keine Bestätigung',()=>{

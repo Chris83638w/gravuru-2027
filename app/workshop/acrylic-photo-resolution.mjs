@@ -1,5 +1,6 @@
 import {photoFrameCovered} from './photo-frame-coverage.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
+import {PROCESS_PROFILES} from './process-profiles.mjs';
 
 // Ü5.1/Ü5.2: Ampel aus effektiver Auflösung und Soll-DPI des Fertigungsprofils.
 // Grün ab Soll, Gelb ab 60 % des Solls, Rot darunter. Nie eine Sperre und keine
@@ -7,9 +8,13 @@ import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs
 export const DEFAULT_TARGET_DPI=300;
 export const RESOLUTION_GRADES=Object.freeze(['gruen','gelb','rot']);
 export const LOW_RESOLUTION_HINT='Das Foto ist klein, wir holen das Beste raus.';
-export function resolutionTargetDpi(productionProfile){
+// Reihenfolge: gebundenes Fertigungsprofil (output.dpi) → Verfahrensprofil (K10,
+// targetDpi; Objekt aus process-profiles.mjs oder dessen Kennung) → 300.
+export function resolutionTargetDpi(productionProfile,processProfile=null){
  const dpi=productionProfile?.document?.output?.dpi;
- return Number.isFinite(dpi)&&dpi>0?dpi:DEFAULT_TARGET_DPI;
+ if(Number.isFinite(dpi)&&dpi>0)return dpi;
+ const process=typeof processProfile==='string'?PROCESS_PROFILES.find(p=>p.id===processProfile):processProfile;
+ return Number.isFinite(process?.targetDpi)&&process.targetDpi>0?process.targetDpi:DEFAULT_TARGET_DPI;
 }
 export function resolutionGrade(effectiveDpi,targetDpi=DEFAULT_TARGET_DPI){
  if(!Number.isFinite(effectiveDpi)||effectiveDpi<0||!Number.isFinite(targetDpi)||targetDpi<=0)throw Error('Ungültige Auflösungsangabe.');

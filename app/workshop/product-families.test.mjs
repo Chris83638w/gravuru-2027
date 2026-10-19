@@ -6,7 +6,10 @@ import {holesFor,ruleFromHoles,keepoutZones} from '../platform/sources/app/share
 import {createDesignAssetStore} from './design-assets.mjs';
 import {createProductRepository} from './repository.mjs';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
-import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,geometryOf,familyGaps} from './product-families.mjs';
+import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,geometryOf,familyGaps,familyProcess,familyBriefing} from './product-families.mjs';
+import {execFileSync} from 'node:child_process';
+import os from 'node:os';
+import path from 'node:path';
 import {createWorkshop} from './http.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
@@ -182,6 +185,31 @@ test('family validation: wrong process for a material and half-open drill rules 
  assert.throws(()=>validateFamily({...memorial('acryl-schwarz'),schema:'gravuru-product-family/v1'}),/v1/);
 });
 
+test('K10: family process profile – id validated, null stays open, engraving side sets the mirror, Excel round trip keeps the column',()=>{
+ const f=memorial('schiefer-natur');
+ assert.throws(()=>validateFamily({...f,material:{...f.material,processingProfileId:'uv-roland'}}),/Unbekanntes Verfahrensprofil/);
+ const open={...f,material:{...f.material,processingProfileId:null}};validateFamily(open);
+ assert.ok(familyGaps(open).includes('Verfahrensprofil'));assert.equal(familyProcess(open),null);
+ assert.throws(()=>familyProductConfig(open,open.sizes[0],1),/Verfahrensprofil/);
+ const slate=familyProcess(f);assert.equal(slate.id,'slate-engraving');assert.equal(slate.tools.textColor,false);assert.deepEqual(slate.palette,[]);assert.equal(slate.minTextMm,4);assert.equal(slate.mirror,false);
+ // UV-Druck ist materialneutral und für jede Familie zulässig.
+ validateFamily({...f,material:{...f.material,processingProfileId:'color-print'}});assert.equal(familyProcess({...f,material:{...f.material,processingProfileId:'color-print'}}).minTextMm,3);
+ const standoff=id=>JSON.parse(fs.readFileSync(new URL('../designs/acrylic-standoff-signs/'+id+'.json',import.meta.url)));
+ assert.equal(familyProcess(standoff('aa')).mirror,true);assert.equal(familyProcess(standoff('ss')).mirror,false);assert.equal(familyProcess(memorial('acryl-schwarz')).mirror,true);
+ assert.match(familyBriefing(standoff('aa'),1),/Profil „acrylic-engraving“/);assert.match(familyBriefing(standoff('aa'),1),/Mindestschriftgröße 4 mm/);assert.match(familyBriefing(standoff('aa'),1),/Spiegelung für die Fertigung: ja/);
+ assert.match(familyBriefing(open,1),/Verfahren offen/);
+ // Excel-Rundlauf: Spalte „Verfahrensprofil“ wird geschrieben und exakt zurückgelesen (auch die Gravurseite).
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-family-excel-')),xlsx=path.join(dir,'stamm.xlsx'),root=new URL('../../',import.meta.url).pathname;
+ try{
+  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'export','--out',xlsx,path.join(root,'app/designs/acrylic-standoff-signs/ss.json'),path.join(root,'app/designs/gedenktafeln-30x20/schiefer-natur.json')],{cwd:root});
+  const header=execFileSync('python3',['-c',"import sys;from openpyxl import load_workbook;wb=load_workbook(sys.argv[1]);print('|'.join(str(c.value) for c in wb['Familien'][1]));print('|'.join(str(c.value) for c in wb['Familien'][2]))",xlsx]).toString().split('\n');
+  assert.ok(header[0].split('|').includes('Verfahrensprofil'));assert.ok(header[1].split('|').includes('acrylic-engraving'));
+  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'import','--xlsx',xlsx,'--out',path.join(dir,'out')],{cwd:root});
+  const back=JSON.parse(fs.readFileSync(path.join(dir,'out','acryl-ss-abstandshalter.json')));
+  assert.equal(back.material.processingProfileId,'acrylic-engraving');assert.equal(back.material.engravingSide,'front');assert.equal(familyProcess(validateFamily(back)).mirror,false);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'out','gedenktafel-30x20-schiefer-natur.json'))).material.processingProfileId,'slate-engraving');
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
 test('steel family reproduces all 309 shop variants of „Variante C“ (SKU and price)',()=>{
  const f=validateFamily(family()),v=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/shopify-variante-c-20261016.json',import.meta.url)));
  const shop=new Map(v.variants.map(x=>[x.sku,x.priceCents]));const seen=new Set();

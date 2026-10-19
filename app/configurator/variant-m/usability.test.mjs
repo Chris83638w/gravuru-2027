@@ -1,10 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {textSizeMm,fitsSurface,fittingTextSize,canColorElement,applyPrintColor,restoreOriginalColors,PRINT_PALETTES} from './usability-model.mjs';
+import {textSizeMm,designTextSize,fitsSurface,fittingTextSize,canColorElement,applyPrintColor,restoreOriginalColors,PRINT_PALETTES,paletteGroups} from './usability-model.mjs';
 import {validateUniversalElements} from '../../platform/sources/app/shared/models/universal-elements.mjs';
 import {cleanObject} from './contract.mjs';
 test('Customer sizes retain hundredths of millimetres, never below four',()=>{
-  assert.deepEqual([0,3,4,4.4,4.5,6.8,101].map(textSizeMm),[4,4,4,4.4,4.5,6.8,100]);
+  assert.deepEqual([0,3,4,4.4,4.5,6.8,101].map(v=>textSizeMm(v)),[4,4,4,4.4,4.5,6.8,100]);
+  // K10: Mindestgröße aus dem Verfahrensprofil (Druck 3 mm), ungültiges Minimum fällt auf 4 zurück.
+  assert.deepEqual([0,2.5,3,4.4].map(v=>textSizeMm(v,3)),[3,3,3,4.4]);
+  assert.equal(textSizeMm(2,null),4);assert.equal(designTextSize(3,1,3),3);assert.equal(designTextSize(3,1),4);
 });
 test('Surface changes with the frame; exact edge is allowed, overrun is not',()=>{
   const object={x:80,y:30,size:10}, bounds={x:-80,y:-5,width:160,height:10};
@@ -42,3 +45,12 @@ test('Motifs and upload logos can restore original colours with separate draft f
   assert.equal(PRINT_PALETTES.flatMap(([,colors])=>colors).length,20);
 });
 
+test('K10: palette swatches follow the process profile list; autofit honours the profile minimum',()=>{
+  assert.equal(paletteGroups(null).flatMap(([,c])=>c).length,20);
+  assert.deepEqual(paletteGroups(['#C93232','#edc4cf']),[['Standardfarben',[['Rot','#c93232']]],['Pastellfarben',[['Rosé','#edc4cf']]]]);
+  assert.deepEqual(paletteGroups(['#abcdef']),[['Weitere Profilfarben',[['#ABCDEF','#abcdef']]]]);
+  assert.deepEqual(paletteGroups([]),[]);
+  // Text 10 mm, Breite 200 (passt bei 60 mm Fläche erst ab 3 mm): Druckminimum 3 mm greift, Gravurminimum 4 mm nicht.
+  assert.equal(fittingTextSize({x:30,y:25,size:10},{x:-100,y:-5,width:200,height:10},{x:0,y:0,width:60,height:50},1,3),3);
+  assert.equal(fittingTextSize({x:30,y:25,size:10},{x:-100,y:-5,width:200,height:10},{x:0,y:0,width:60,height:50},1,4),null);
+});

@@ -57,7 +57,8 @@ test('explicit fields preserve original, prices, identity and historical revisio
 test('customers can change text, allowed colour and photo but cannot move, resize, remove or remap fields',async t=>{
   const {repository,assets,record,input}=await setup(t),{document}=planCustomerFields(repository,assets,record.id,input);
   const design=structuredClone(document.config.profile.designs[0]);
-  design.objects[1].text='Mia & Noah';design.objects[1].color='#17614f';
+  // K10: Farbwahl aus der UV-Profilpalette (Grün #28734b).
+  design.objects[1].text='Mia & Noah';design.objects[1].color='#28734b';
   design.objects[2].uxUploadId='test-photo';design.objects[2].uxUploadKind='photo';
   assert.doesNotThrow(()=>validateProductDesign(document,design));
   for(const [index,key,value] of [[1,'x',76],[1,'size',5],[1,'fieldKey','date'],[2,'w',80],[2,'required',false]]){

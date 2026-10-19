@@ -167,7 +167,9 @@ test('server gate (K2): element rights, additions and template layer order are e
  s=state();Object.assign(s.objects.find(o=>o.id===photoId),{uxUploadId:'u',uxUploadKind:'photo'});assert.throws(()=>draftOf(c,s),/Recht replace fehlt/);
  c=withRights({[textId]:{content:true}});s=state();const t=s.objects.find(o=>o.id===textId);t.text='Luna';t.w+=20;t.h+=2;assert.doesNotThrow(()=>draftOf(c,s));
  s=state();s.objects.find(o=>o.id===textId).size+=1;assert.throws(()=>draftOf(c,s),/Recht scale fehlt/);
- c=withRights({[textId]:{content:true,color:true,move:true,scale:true},[photoId]:{replace:true}});s=state();Object.assign(s.objects.find(o=>o.id===textId),{text:'Luna',color:'#123456',x:140,size:9});Object.assign(s.objects.find(o=>o.id===photoId),{uxUploadId:'u',uxUploadKind:'photo'});assert.doesNotThrow(()=>draftOf(c,s));
+ c=withRights({[textId]:{content:true,color:true,move:true,scale:true},[photoId]:{replace:true}});s=state();Object.assign(s.objects.find(o=>o.id===textId),{text:'Luna',color:'#123456',x:140,size:9});Object.assign(s.objects.find(o=>o.id===photoId),{uxUploadId:'u',uxUploadKind:'photo'});
+ assert.throws(()=>draftOf(c,s),/keine Farbwahl/); // K10: das Gravurprofil kennt keine Farbwahl, auch mit Elementrecht color
+ s.objects.find(o=>o.id===textId).color=source.find(o=>o.id===textId).color;assert.doesNotThrow(()=>draftOf(c,s));
  s=state();s.objects.find(o=>o.id===textId).fieldKey='other';assert.throws(()=>draftOf(c,s),/Vorlageneigenschaften nicht ändern/);
  s=state();s.objects.find(o=>o.id===textId).customerEditable=false;assert.throws(()=>draftOf(c,s),/Vorlageneigenschaften nicht ändern/);
  // (c) additions only when the product allows them; never photo areas
@@ -206,4 +208,38 @@ test('photo alignment survives the actual render/draft contract and rejects inva
  assert.deepEqual(loaded.design.objects.find(o=>o.id===photo.id).uxPhotoCrop,photo.uxPhotoCrop);
  for(const invalid of [{zoom:0,x:0,y:0},{zoom:1,x:2,y:0},{zoom:1,x:0,y:0,angle:'15'},{zoom:1,x:0,y:0,url:'untrusted'},null]){photo.uxPhotoCrop=invalid;assert.throws(()=>save(s),/Foto-Ausrichtung/);}
  delete photo.uxPhotoCrop;s.objects.find(o=>o.type==='text').uxPhotoCrop={zoom:1,x:0,y:0};assert.throws(()=>save(s),/Foto-Ausrichtung/);
+});
+test('K10 / Ü1.2 server gate: engraving rejects colour changes, print allows exactly the profile palette',()=>{
+ const textId=config.profile.designs[0].objects.find(o=>o.type==='text').id,motifId=config.profile.designs[0].objects.find(o=>o.type==='motif'&&!o.technicalLocked).id;
+ // Gravur (Schiefer): jede Abweichung von der Vorlagenfarbe ist eine Farbwahl – auch mit Elementrecht.
+ let s=state();s.objects.find(o=>o.id===textId).color='#c93232';assert.throws(()=>save(s),/Dieses Verfahren erlaubt keine Farbwahl\./);
+ s=state();s.objects.find(o=>o.id===motifId).color='#ffffff';assert.throws(()=>save(s),/keine Farbwahl/);
+ s=state();s.objects.push(newEditableObject(config,{type:'text',text:'Neu',font:'Montserrat',size:8},'own',fonts,motifs));assert.doesNotThrow(()=>save(s),'neue Elemente tragen die Profiltinte');
+ // UV-Druck: Palette des Profils, Vorlagenfarbe und Tinte sind zulässig, alles andere nicht.
+ const printFixture=structuredClone(config);printFixture.profile.processing.profileId='color-print';printFixture.profile.material.kind='other';
+ const print=prepareConfig(printFixture),printSave=(st,extra={})=>saveDraft({...print,...extra},st,{},fonts,motifs);
+ s=state();s.objects.find(o=>o.id===textId).color='#c93232';assert.doesNotThrow(()=>printSave(s));
+ s=state();s.objects.find(o=>o.id===textId).color='#EFCA37';assert.doesNotThrow(()=>printSave(s),'Groß-/Kleinschreibung egal');
+ s=state();s.objects.find(o=>o.id===textId).color='#202824';assert.doesNotThrow(()=>printSave(s),'Profiltinte');
+ s=state();s.objects.find(o=>o.id===textId).color='#123456';assert.throws(()=>printSave(s),/Farbe nicht in der Palette\./);
+ s=state();s.objects.find(o=>o.id===textId).color='#c93232';assert.throws(()=>printSave(s,{workshopProfiles:{selections:{fonts:null,motifs:null,colors:['#245cac'],bestsellers:null}}}),/nicht in der Palette/,'Produktauswahl grenzt die Palette ein');
+ s=state();s.objects.find(o=>o.id===textId).color='#245cac';assert.doesNotThrow(()=>printSave(s,{workshopProfiles:{selections:{fonts:null,motifs:null,colors:['#245cac'],bestsellers:null}}}));
+ s=state();s.objects.find(o=>o.id===textId).uxHidden=true;s.objects.find(o=>o.id===textId).color='#123456';assert.doesNotThrow(()=>printSave(s),'ausgeblendete Elemente werden nicht gefertigt');
+});
+test('K10 / Ü1.1 server gate: text below the process minimum is rejected (engraving 4 mm, print 3 mm); templates and non-scalable texts are exempt',()=>{
+ const textId=config.profile.designs[0].objects.find(o=>o.type==='text').id;
+ let s=state();s.objects.find(o=>o.id===textId).size=3.9;assert.throws(()=>save(s),/Text zu klein: mindestens 4 mm bei diesem Verfahren\./);
+ s=state();s.objects.find(o=>o.id===textId).size=3.996;assert.doesNotThrow(()=>save(s),'Rundung auf Hundertstel');
+ s=state();s.objects.find(o=>o.id===textId).size=4;assert.doesNotThrow(()=>save(s));
+ const printFixture=structuredClone(config);printFixture.profile.processing.profileId='color-print';printFixture.profile.material.kind='other';const print=prepareConfig(printFixture);
+ s=state();s.objects.find(o=>o.id===textId).size=3.2;assert.doesNotThrow(()=>saveDraft(print,s,{},fonts,motifs));
+ s=state();s.objects.find(o=>o.id===textId).size=2.9;assert.throws(()=>saveDraft(print,s,{},fonts,motifs),/mindestens 3 mm/);
+ // Vorlagenprüfung der Werkstatt (template:true) prüft die Mindestgröße nicht; ohne Skalierrecht bleibt die Vorlagengröße maßgeblich.
+ const small=structuredClone(config);small.profile.designs[0].objects.find(o=>o.id===textId).size=3.5;const smallConfig=prepareConfig(small);
+ assert.doesNotThrow(()=>validateDesign(smallConfig,structuredClone(smallConfig.profile.designs[0]),{},fonts,motifs,{template:true}));
+ const designId=config.profile.designs[0].id,rights=Object.fromEntries(config.profile.designs[0].objects.map(o=>[o.id,{content:true,color:false,replace:true,move:true,scale:o.id!==textId,delete:true}]));
+ assert.doesNotThrow(()=>saveDraft({...smallConfig,workshopElementRights:{[designId]:rights}},{designId,objects:structuredClone(smallConfig.profile.designs[0].objects)},{},fonts,motifs));
+ rights[textId].scale=true;assert.throws(()=>saveDraft({...smallConfig,workshopElementRights:{[designId]:rights}},{designId,objects:structuredClone(smallConfig.profile.designs[0].objects)},{},fonts,motifs),/Text zu klein/);
+ // Neue Texte entstehen nie unter der Mindestgröße.
+ assert.ok(newEditableObject(config,{type:'text',text:'Neu',font:'Montserrat',size:1},'tiny',fonts,motifs).size>=4);
 });

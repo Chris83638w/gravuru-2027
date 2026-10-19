@@ -1,4 +1,5 @@
 import {DatabaseSync} from 'node:sqlite';
+import {tenantOption,TENANT_COLUMN} from './tenant.mjs';
 import {createHash} from 'node:crypto';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
@@ -248,26 +249,41 @@ export function familyChanges(before,after){
  return changes;
 }
 
-export function createProductFamilies({filename,repository}){
+export function createProductFamilies({filename,repository,tenantId}){
  if(filename!==':memory:')mkdirSync(dirname(filename),{recursive:true});
+ // K13: Familien-Kennungen sind vom Händler gewählt (z. B. `steel-door-signs`) und darum nur je Mandant eindeutig.
+ const tenant=tenantOption({tenantId:tenantId??repository?.tenantId});
  const db=new DatabaseSync(filename);
- db.exec(`PRAGMA busy_timeout=5000;
-  CREATE TABLE IF NOT EXISTS product_families(id TEXT PRIMARY KEY,revision INTEGER NOT NULL CHECK(revision>=1),name TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL);
-  CREATE TABLE IF NOT EXISTS product_family_revisions(family_id TEXT NOT NULL REFERENCES product_families(id),revision INTEGER NOT NULL,document TEXT NOT NULL CHECK(json_valid(document)),created_at TEXT NOT NULL,PRIMARY KEY(family_id,revision));
-  CREATE TRIGGER IF NOT EXISTS immutable_family_revision_update BEFORE UPDATE ON product_family_revisions BEGIN SELECT RAISE(ABORT,'Family revisions are immutable'); END;
+ const tables=`CREATE TABLE IF NOT EXISTS product_families(id TEXT NOT NULL,revision INTEGER NOT NULL CHECK(revision>=1),name TEXT NOT NULL,created_at TEXT NOT NULL,updated_at TEXT NOT NULL,${TENANT_COLUMN},PRIMARY KEY(tenant_id,id));
+  CREATE TABLE IF NOT EXISTS product_family_revisions(family_id TEXT NOT NULL,revision INTEGER NOT NULL,document TEXT NOT NULL CHECK(json_valid(document)),created_at TEXT NOT NULL,${TENANT_COLUMN},PRIMARY KEY(tenant_id,family_id,revision),FOREIGN KEY(tenant_id,family_id) REFERENCES product_families(tenant_id,id));`;
+ db.exec('PRAGMA busy_timeout=5000;');
+ db.exec('BEGIN IMMEDIATE');
+ try{
+  db.exec(tables);
+  // Bestehende Datenbank ohne Mandantenspalte: Tabellen mit Mandantenschlüssel neu aufbauen (Altdaten = Standardmandant, nichts geht verloren).
+  if(!db.prepare('PRAGMA table_info(product_families)').all().some(c=>c.name==='tenant_id')){
+   db.exec(`ALTER TABLE product_families RENAME TO product_families_old; ALTER TABLE product_family_revisions RENAME TO product_family_revisions_old;
+    DROP TRIGGER IF EXISTS immutable_family_revision_update; DROP TRIGGER IF EXISTS immutable_family_revision_delete;`+tables+`
+    INSERT INTO product_families(id,revision,name,created_at,updated_at) SELECT id,revision,name,created_at,updated_at FROM product_families_old;
+    INSERT INTO product_family_revisions(family_id,revision,document,created_at) SELECT family_id,revision,document,created_at FROM product_family_revisions_old;
+    DROP TABLE product_family_revisions_old; DROP TABLE product_families_old;`);
+  }
+  db.exec(`CREATE TRIGGER IF NOT EXISTS immutable_family_revision_update BEFORE UPDATE ON product_family_revisions BEGIN SELECT RAISE(ABORT,'Family revisions are immutable'); END;
   CREATE TRIGGER IF NOT EXISTS immutable_family_revision_delete BEFORE DELETE ON product_family_revisions BEGIN SELECT RAISE(ABORT,'Family revisions are immutable'); END;`);
+  db.exec('COMMIT');
+ }catch(e){db.exec('ROLLBACK');db.close();throw e;}
  const transact=work=>{db.exec('BEGIN IMMEDIATE');try{const v=work();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}};
- const row=fid=>{const r=db.prepare('SELECT * FROM product_families WHERE id=?').get(fid);if(!r)fail(404,'family_missing','Produktfamilie nicht gefunden.');return r;};
- const record=(r,rev=r.revision)=>{const v=db.prepare('SELECT * FROM product_family_revisions WHERE family_id=? AND revision=?').get(r.id,rev);if(!v)fail(404,'family_revision_missing','Familienstand nicht gefunden.');return {id:r.id,revision:rev,currentRevision:r.revision,name:r.name,createdAt:r.created_at,updatedAt:r.updated_at,document:JSON.parse(v.document)};};
+ const row=fid=>{const r=db.prepare('SELECT * FROM product_families WHERE id=? AND tenant_id=?').get(fid,tenant);if(!r)fail(404,'family_missing','Produktfamilie nicht gefunden.');return r;};
+ const record=(r,rev=r.revision)=>{const v=db.prepare('SELECT * FROM product_family_revisions WHERE family_id=? AND revision=? AND tenant_id=?').get(r.id,rev,tenant);if(!v)fail(404,'family_revision_missing','Familienstand nicht gefunden.');return {id:r.id,revision:rev,currentRevision:r.revision,name:r.name,createdAt:r.created_at,updatedAt:r.updated_at,document:JSON.parse(v.document)};};
  const withReadiness=rec=>({...rec,readiness:familyReady(rec.document)});
- const insert=(fid,rev,doc)=>db.prepare('INSERT INTO product_family_revisions VALUES(?,?,?,?)').run(fid,rev,JSON.stringify(doc),new Date().toISOString());
+ const insert=(fid,rev,doc)=>db.prepare('INSERT INTO product_family_revisions(family_id,revision,document,created_at,tenant_id) VALUES(?,?,?,?,?)').run(fid,rev,JSON.stringify(doc),new Date().toISOString(),tenant);
  const products=f=>f.sizes.map(s=>{const item=repository.importItem(productKey(f,s));return {sizeKey:s.key,productId:item?.id||null};});
  return {
-  list:()=>db.prepare('SELECT * FROM product_families ORDER BY name COLLATE NOCASE,id').all().map(r=>{const d=record(r).document;return {id:r.id,name:r.name,revision:r.revision,updatedAt:r.updated_at,sizes:d.sizes.length,groups:d.groups.length,material:d.material.label,gaps:familyGaps(d).length,generated:products(d).filter(p=>p.productId).length};}),
+  list:()=>db.prepare('SELECT * FROM product_families WHERE tenant_id=? ORDER BY name COLLATE NOCASE,id').all(tenant).map(r=>{const d=record(r).document;return {id:r.id,name:r.name,revision:r.revision,updatedAt:r.updated_at,sizes:d.sizes.length,groups:d.groups.length,material:d.material.label,gaps:familyGaps(d).length,generated:products(d).filter(p=>p.productId).length};}),
   get(fid,{revision}={}){const r=row(fid),rec=record(r,revision??r.revision);return {...withReadiness(rec),products:products(rec.document)};},
-  history:fid=>{row(fid);return db.prepare('SELECT revision,created_at FROM product_family_revisions WHERE family_id=? ORDER BY revision DESC').all(fid).map(v=>({revision:v.revision,createdAt:v.created_at}));},
-  create(doc){const f=validateFamily(structuredClone(doc));return transact(()=>{if(db.prepare('SELECT 1 FROM product_families WHERE id=?').get(f.id))fail(409,'family_exists','Diese Produktfamilie ist bereits angelegt.');const t=new Date().toISOString();db.prepare('INSERT INTO product_families VALUES(?,?,?,?,?)').run(f.id,1,f.name,t,t);insert(f.id,1,f);return withReadiness(record(row(f.id)));});},
-  save(fid,doc,expectedRevision){const f=validateFamily(structuredClone(doc));if(f.id!==fid)invalid('Die Kennung einer Familie bleibt unverändert.');return transact(()=>{const r=row(fid);if(!Number.isSafeInteger(expectedRevision)||r.revision!==expectedRevision)fail(409,'family_conflict','Die Familie wurde inzwischen geändert. Bitte neu laden.');if(JSON.stringify(record(r).document)===JSON.stringify(f))return record(r);const rev=r.revision+1;insert(fid,rev,f);db.prepare('UPDATE product_families SET revision=?,name=?,updated_at=? WHERE id=?').run(rev,f.name,new Date().toISOString(),fid);return withReadiness(record(row(fid)));});},
+  history:fid=>{row(fid);return db.prepare('SELECT revision,created_at FROM product_family_revisions WHERE family_id=? AND tenant_id=? ORDER BY revision DESC').all(fid,tenant).map(v=>({revision:v.revision,createdAt:v.created_at}));},
+  create(doc){const f=validateFamily(structuredClone(doc));return transact(()=>{if(db.prepare('SELECT 1 FROM product_families WHERE id=? AND tenant_id=?').get(f.id,tenant))fail(409,'family_exists','Diese Produktfamilie ist bereits angelegt.');const t=new Date().toISOString();db.prepare('INSERT INTO product_families(id,revision,name,created_at,updated_at,tenant_id) VALUES(?,?,?,?,?,?)').run(f.id,1,f.name,t,t,tenant);insert(f.id,1,f);return withReadiness(record(row(f.id)));});},
+  save(fid,doc,expectedRevision){const f=validateFamily(structuredClone(doc));if(f.id!==fid)invalid('Die Kennung einer Familie bleibt unverändert.');return transact(()=>{const r=row(fid);if(!Number.isSafeInteger(expectedRevision)||r.revision!==expectedRevision)fail(409,'family_conflict','Die Familie wurde inzwischen geändert. Bitte neu laden.');if(JSON.stringify(record(r).document)===JSON.stringify(f))return record(r);const rev=r.revision+1;insert(fid,rev,f);db.prepare('UPDATE product_families SET revision=?,name=?,updated_at=? WHERE id=? AND tenant_id=?').run(rev,f.name,new Date().toISOString(),fid,tenant);return withReadiness(record(row(fid)));});},
   // Generates one draft product per size. The import key makes repeats and
   // retries idempotent; existing products are never overwritten.
   generate(fid,{sizeKeys,expectedRevision}={}){
@@ -294,7 +310,7 @@ export function createProductFamilies({filename,repository}){
     items.push(entry);
    }
    const orphaned=[];
-   for(const r of db.prepare('SELECT document FROM product_family_revisions WHERE family_id=?').all(fid))for(const s of JSON.parse(r.document).sizes)if(!f.sizes.some(x=>x.key===s.key)&&!orphaned.some(o=>o.sizeKey===s.key)){const item=repository.importItem('family:'+fid+':'+s.key);if(item)orphaned.push({sizeKey:s.key,productId:item.id});}
+   for(const r of db.prepare('SELECT document FROM product_family_revisions WHERE family_id=? AND tenant_id=?').all(fid,tenant))for(const s of JSON.parse(r.document).sizes)if(!f.sizes.some(x=>x.key===s.key)&&!orphaned.some(o=>o.sizeKey===s.key)){const item=repository.importItem('family:'+fid+':'+s.key);if(item)orphaned.push({sizeKey:s.key,productId:item.id});}
    const token=sha(JSON.stringify({fid,revision:rec.revision,items:items.filter(i=>i.status==='change').map(i=>[i.productId,i.productRevision,i.targetSha256])}));
    return {familyId:fid,familyRevision:rec.revision,token,changed:items.filter(i=>i.status==='change').length,unchanged:items.filter(i=>i.status==='same').length,errors:items.filter(i=>i.status==='error').length,items,orphaned};
   },

@@ -50,12 +50,12 @@ test('snapshot storage rejects credentials/arbitrary payload and cannot rewrite 
  for(const extra of [{token:'not-to-store'},{authorization:'not-to-store'},{customerPhoto:'not-to-store'},{entries:[]}])assert.throws(()=>f.jobs.create({name:'Ungültig',input:{...input,...extra}}),/Importdaten/);
  for(const name of ['', 'x'.repeat(161), 'bad\nname'])assert.throws(()=>f.jobs.create({name,input}),/Namen/);
  const job=f.jobs.create({name:'Prüfung',input}),db=new DatabaseSync(f.filename);
- try{assert.throws(()=>db.prepare('UPDATE batch_jobs SET input=? WHERE id=?').run('{}',job.id),/immutable/);assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check,'ok');assert.equal(db.prepare('PRAGMA user_version').get().user_version,3);}finally{db.close();}
+ try{assert.throws(()=>db.prepare('UPDATE batch_jobs SET input=? WHERE id=?').run('{}',job.id),/immutable/);assert.equal(db.prepare('PRAGMA integrity_check').get().integrity_check,'ok');assert.equal(db.prepare('PRAGMA user_version').get().user_version,4);}finally{db.close();}
  assert.equal(f.jobs.review(job.id).input.rows[0].name,'Produkt');
 });
 test('saved checks have an explicit capacity and reject oversized data instead of removing older work',t=>{
  const f=fixture(t),db=new DatabaseSync(f.filename);
- try{const insert=db.prepare('INSERT INTO batch_jobs VALUES(?,?,?,?,?,?)');for(let i=0;i<100;i++)insert.run('fixture-'+i,'hash-'+i,'Bestand',new Date().toISOString(),1,'{}');}finally{db.close();}
+ try{const insert=db.prepare('INSERT INTO batch_jobs(id,fingerprint,name,created_at,row_count,input) VALUES(?,?,?,?,?,?)');for(let i=0;i<100;i++)insert.run('fixture-'+i,'hash-'+i,'Bestand',new Date().toISOString(),1,'{}');}finally{db.close();}
  assert.throws(()=>f.jobs.create({name:'Neu',input:f.input([{import_key:'new',name:'Neu'}])}),/100 Importprüfungen/);assert.equal(f.jobs.list().length,100);
  const huge=f.input(Array.from({length:100},(_,i)=>({import_key:'large-'+i,name:'Produkt',slogan:'x'.repeat(25000)})));
  assert.throws(()=>f.jobs.create({name:'Groß',input:huge}),/2 MB/);assert.equal(f.jobs.list().length,100);

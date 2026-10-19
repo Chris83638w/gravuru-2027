@@ -16,7 +16,7 @@ test('graceful worker close releases a job and a later worker resumes without th
 
 test('position outputs filter by immutable snapshot before the global 200-job limit, never by product or recency',t=>{
  const filename=fixture(t),jobs=createExportJobStore({filename});t.after(()=>jobs.close());
- const first=jobs.enqueue(input),db=new DatabaseSync(filename);db.prepare('INSERT INTO form_review_snapshots VALUES(?)').run('proof-other');db.close();
+ const first=jobs.enqueue(input),db=new DatabaseSync(filename);db.prepare('INSERT INTO form_review_snapshots(id) VALUES(?)').run('proof-other');db.close();
  for(let i=0;i<205;i++)jobs.enqueue({...input,snapshotId:'proof-other',recipeKey:'other-'+i});
  assert.equal(jobs.list().some(j=>j.id===first.id),false);
  assert.deepEqual(jobs.forSnapshot(input.snapshotId),{jobs:[first],total:1});

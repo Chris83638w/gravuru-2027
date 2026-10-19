@@ -4,6 +4,7 @@
 // Revision zu. Zeilen werden nie geändert oder gelöscht; die Warenkorbzeile wird
 // genau einmal nachgetragen, sobald der Shop sie bestätigt hat.
 import {randomUUID} from 'node:crypto';
+import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 
 const fail = (status, code, message) => {
   throw Object.assign(new Error(message), {status, code, retryable: false, paymentConfirmed: false});
@@ -14,12 +15,13 @@ const draftId = v => typeof v === 'string' && /^(?:adraft|draft)_[a-f0-9-]{36}$/
 const row = r => ({id: r.config_id, rev: r.rev, draftId: r.draft_id, draftRevision: r.draft_revision,
   snapshotId: r.snapshot_id, offerId: r.offer_id, cartId: r.cart_id, lineId: r.line_id, createdAt: r.created_at});
 
-export function createCartConfigurations({database: db, clock = Date.now}) {
+export function createCartConfigurations({database: db, clock = Date.now, tenantId}) {
+  const tenant = tenantOption({tenantId});
   db.exec(`CREATE TABLE IF NOT EXISTS cart_configurations (
-      id TEXT PRIMARY KEY, draft_id TEXT NOT NULL UNIQUE, product_id TEXT NOT NULL, created_at TEXT NOT NULL);
+      id TEXT PRIMARY KEY, draft_id TEXT NOT NULL UNIQUE, product_id TEXT NOT NULL, created_at TEXT NOT NULL, ${TENANT_COLUMN});
     CREATE TABLE IF NOT EXISTS cart_configuration_revisions (
       config_id TEXT NOT NULL, rev INTEGER NOT NULL, draft_id TEXT NOT NULL, draft_revision INTEGER NOT NULL,
-      snapshot_id TEXT NOT NULL, offer_id TEXT NOT NULL UNIQUE, cart_id TEXT, line_id TEXT, created_at TEXT NOT NULL,
+      snapshot_id TEXT NOT NULL, offer_id TEXT NOT NULL UNIQUE, cart_id TEXT, line_id TEXT, created_at TEXT NOT NULL, ${TENANT_COLUMN},
       PRIMARY KEY(config_id, rev));
     CREATE TRIGGER IF NOT EXISTS cart_configuration_fixed BEFORE UPDATE ON cart_configurations
       BEGIN SELECT RAISE(ABORT,'Cart configurations are immutable'); END;
@@ -33,6 +35,7 @@ export function createCartConfigurations({database: db, clock = Date.now}) {
       BEGIN SELECT RAISE(ABORT,'Cart line of a revision is attached once'); END;
     CREATE TRIGGER IF NOT EXISTS cart_configuration_revision_keep BEFORE DELETE ON cart_configuration_revisions
       BEGIN SELECT RAISE(ABORT,'Cart configuration revisions are immutable'); END;`);
+  ensureTenantColumns(db, ['cart_configurations', 'cart_configuration_revisions']);
   const tx = fn => {
     if (db.isTransaction) return fn();
     db.exec('BEGIN IMMEDIATE');
@@ -40,8 +43,8 @@ export function createCartConfigurations({database: db, clock = Date.now}) {
     catch (e) {db.exec('ROLLBACK'); throw e;}
   };
   const at = () => new Date(clock()).toISOString();
-  const get = (id, rev) => db.prepare('SELECT * FROM cart_configuration_revisions WHERE config_id=? AND rev=?').get(id, rev);
-  const latestRow = id => db.prepare('SELECT * FROM cart_configuration_revisions WHERE config_id=? ORDER BY rev DESC LIMIT 1').get(id);
+  const get = (id, rev) => db.prepare('SELECT * FROM cart_configuration_revisions WHERE config_id=? AND rev=? AND tenant_id=?').get(id, rev, tenant);
+  const latestRow = id => db.prepare('SELECT * FROM cart_configuration_revisions WHERE config_id=? AND tenant_id=? ORDER BY rev DESC LIMIT 1').get(id, tenant);
 
   return {
     // Erste Übergabe eines Entwurfs: neue Kennung, Revision 1. Jede weitere Übergabe mit
@@ -53,25 +56,25 @@ export function createCartConfigurations({database: db, clock = Date.now}) {
         fail(422, 'cart_configuration', 'Konfiguration braucht Entwurf, Prüfstand und gesichertes Angebot.');
       }
       return tx(() => {
-        const known = db.prepare('SELECT * FROM cart_configuration_revisions WHERE offer_id=?').get(offerId);
+        const known = db.prepare('SELECT * FROM cart_configuration_revisions WHERE offer_id=? AND tenant_id=?').get(offerId, tenant);
         if (known) {
           if (known.draft_id !== draft || known.snapshot_id !== snapshotId) fail(409, 'cart_configuration', 'Dieses Angebot gehört zu einem anderen Konfigurationsstand.');
           return {...row(known), created: false};
         }
-        let config = db.prepare('SELECT * FROM cart_configurations WHERE draft_id=?').get(draft);
+        let config = db.prepare('SELECT * FROM cart_configurations WHERE draft_id=? AND tenant_id=?').get(draft, tenant);
         if (config && config.product_id !== productId) fail(409, 'cart_configuration', 'Die Konfiguration gehört zu einem anderen Produkt.');
         if (!config) {
           config = {id: 'konfig_' + randomUUID()};
-          db.prepare('INSERT INTO cart_configurations VALUES(?,?,?,?)').run(config.id, draft, productId, at());
+          db.prepare('INSERT INTO cart_configurations(id,draft_id,product_id,created_at,tenant_id) VALUES(?,?,?,?,?)').run(config.id, draft, productId, at(), tenant);
         }
         const rev = (latestRow(config.id)?.rev ?? 0) + 1;
-        db.prepare('INSERT INTO cart_configuration_revisions (config_id,rev,draft_id,draft_revision,snapshot_id,offer_id,created_at) VALUES(?,?,?,?,?,?,?)')
-          .run(config.id, rev, draft, draftRevision, snapshotId, offerId, at());
+        db.prepare('INSERT INTO cart_configuration_revisions (config_id,rev,draft_id,draft_revision,snapshot_id,offer_id,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?)')
+          .run(config.id, rev, draft, draftRevision, snapshotId, offerId, at(), tenant);
         return {...row(get(config.id, rev)), created: true};
       });
     },
     forDraft(draft) {
-      const config = draftId(draft) && db.prepare('SELECT * FROM cart_configurations WHERE draft_id=?').get(draft);
+      const config = draftId(draft) && db.prepare('SELECT * FROM cart_configurations WHERE draft_id=? AND tenant_id=?').get(draft, tenant);
       if (!config) return null;
       const latest = latestRow(config.id);
       return {id: config.id, draftId: draft, productId: config.product_id, rev: latest?.rev ?? 0};
@@ -87,13 +90,13 @@ export function createCartConfigurations({database: db, clock = Date.now}) {
       return row(r);
     },
     byOffer(offerId) {
-      const r = typeof offerId === 'string' && db.prepare('SELECT * FROM cart_configuration_revisions WHERE offer_id=?').get(offerId);
+      const r = typeof offerId === 'string' && db.prepare('SELECT * FROM cart_configuration_revisions WHERE offer_id=? AND tenant_id=?').get(offerId, tenant);
       return r ? row(r) : null;
     },
     // Jüngste Revision vor `before`, die der Shop als Warenkorbzeile bestätigt hat.
     lastCartLine(id, {before}) {
       const r = typeof id === 'string' && Number.isSafeInteger(before) &&
-        db.prepare('SELECT * FROM cart_configuration_revisions WHERE config_id=? AND rev<? AND cart_id IS NOT NULL ORDER BY rev DESC LIMIT 1').get(id, before);
+        db.prepare('SELECT * FROM cart_configuration_revisions WHERE config_id=? AND rev<? AND cart_id IS NOT NULL AND tenant_id=? ORDER BY rev DESC LIMIT 1').get(id, before, tenant);
       return r ? row(r) : null;
     },
     attachCartLine(id, rev, {cartId, lineId}) {
@@ -107,7 +110,7 @@ export function createCartConfigurations({database: db, clock = Date.now}) {
           if (r.cart_id !== cartId || r.line_id !== lineId) fail(409, 'cart_configuration', 'Diese Revision ist bereits einer anderen Warenkorbzeile zugeordnet.');
           return row(r);
         }
-        db.prepare('UPDATE cart_configuration_revisions SET cart_id=?,line_id=? WHERE config_id=? AND rev=?').run(cartId, lineId, id, rev);
+        db.prepare('UPDATE cart_configuration_revisions SET cart_id=?,line_id=? WHERE config_id=? AND rev=? AND tenant_id=?').run(cartId, lineId, id, rev, tenant);
         return row(get(id, rev));
       });
     },

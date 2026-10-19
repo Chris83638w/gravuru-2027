@@ -1,4 +1,5 @@
 import {createHash, randomUUID} from 'node:crypto';
+import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 
 const fail = (status, message) => {throw Object.assign(Error(message), {status, code: 'shop_draft_transfer'});};
@@ -78,12 +79,14 @@ export function createShopDraftTransport(config, {fetchImpl = globalThis.fetch, 
   };
 }
 
-export function createShopDraftJournal({database: db}) {
-  db.exec(`CREATE TABLE IF NOT EXISTS shop_draft_transfers(id TEXT PRIMARY KEY,identity TEXT UNIQUE NOT NULL,source_sha TEXT NOT NULL,request TEXT NOT NULL,state TEXT NOT NULL CHECK(state IN ('started','unknown','completed')),result TEXT,created_at TEXT NOT NULL);
+export function createShopDraftJournal({database: db, tenantId}) {
+  const tenant = tenantOption({tenantId});
+  db.exec(`CREATE TABLE IF NOT EXISTS shop_draft_transfers(id TEXT PRIMARY KEY,identity TEXT UNIQUE NOT NULL,source_sha TEXT NOT NULL,request TEXT NOT NULL,state TEXT NOT NULL CHECK(state IN ('started','unknown','completed')),result TEXT,created_at TEXT NOT NULL,${TENANT_COLUMN});
     CREATE TRIGGER IF NOT EXISTS shop_transfer_fixed BEFORE UPDATE OF identity,source_sha,request,created_at ON shop_draft_transfers BEGIN SELECT RAISE(ABORT,'Transfer identity is immutable');END;
     CREATE TRIGGER IF NOT EXISTS shop_transfer_completed BEFORE UPDATE ON shop_draft_transfers WHEN OLD.state='completed' BEGIN SELECT RAISE(ABORT,'Completed transfers are immutable');END;
     CREATE TRIGGER IF NOT EXISTS shop_transfer_keep BEFORE DELETE ON shop_draft_transfers BEGIN SELECT RAISE(ABORT,'Transfers require explicit retention');END;`);
-  const byIdentity = identity => db.prepare('SELECT * FROM shop_draft_transfers WHERE identity=?').get(identity);
+  ensureTenantColumn(db, 'shop_draft_transfers');
+  const byIdentity = identity => db.prepare('SELECT * FROM shop_draft_transfers WHERE identity=? AND tenant_id=?').get(identity, tenant);
   const publicRow = row => row ? {id: row.id, state: row.state, sourceSha256: row.source_sha, result: row.result ? JSON.parse(row.result) : null, createdAt: row.created_at} : null;
   return {
     get: identity => publicRow(byIdentity(identity)),
@@ -93,16 +96,16 @@ export function createShopDraftJournal({database: db}) {
         const old = byIdentity(request.identity);
         if (old && (old.source_sha !== request.sourceSha256 || JSON.parse(old.request).requestSha256 !== request.requestSha256)) fail(409, 'Dieses Produkt hat bereits einen anderen Übertragungsstand. Keine zweite Anlage; Änderung gesondert prüfen.');
         if (old) {db.exec('COMMIT'); return {...publicRow(old), claimed: false};}
-        db.prepare('INSERT INTO shop_draft_transfers VALUES(?,?,?,?,?,?,?)').run('transfer_' + randomUUID(), request.identity, request.sourceSha256, JSON.stringify(request), 'started', null, new Date().toISOString());
+        db.prepare('INSERT INTO shop_draft_transfers(id,identity,source_sha,request,state,result,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?)').run('transfer_' + randomUUID(), request.identity, request.sourceSha256, JSON.stringify(request), 'started', null, new Date().toISOString(), tenant);
         const row = publicRow(byIdentity(request.identity)); db.exec('COMMIT'); return {...row, claimed: true};
       } catch (e) {db.exec('ROLLBACK'); throw e;}
     },
     finish(identity, result) {
       const row = byIdentity(identity); if (!row) fail(409, 'Übertragungsjournal fehlt.');
       if (row.state === 'completed') {if (row.result !== JSON.stringify(result)) fail(409, 'Widersprüchliche Übertragungsergebnisse.'); return;}
-      db.prepare("UPDATE shop_draft_transfers SET state='completed',result=? WHERE identity=? AND state!='completed'").run(JSON.stringify(result), identity);
+      db.prepare("UPDATE shop_draft_transfers SET state='completed',result=? WHERE identity=? AND state!='completed' AND tenant_id=?").run(JSON.stringify(result), identity, tenant);
     },
-    unknown(identity) {db.prepare("UPDATE shop_draft_transfers SET state='unknown' WHERE identity=? AND state='started'").run(identity);}
+    unknown(identity) {db.prepare("UPDATE shop_draft_transfers SET state='unknown' WHERE identity=? AND state='started' AND tenant_id=?").run(identity, tenant);}
   };
 }
 

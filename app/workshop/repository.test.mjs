@@ -231,7 +231,7 @@ test('migration is durable and idempotent, enforces foreign keys, and rejects fu
   repository.close();
   const raw = new DatabaseSync(filename);
   try {
-    assert.equal(raw.prepare('PRAGMA user_version').get().user_version, 3);
+    assert.equal(raw.prepare('PRAGMA user_version').get().user_version, 4);
     raw.exec('PRAGMA foreign_keys = ON');
     assert.throws(() => raw.prepare('UPDATE products SET master_id = ? WHERE id = ?').run('missing', first.id), /FOREIGN KEY/);
     assert.equal(raw.prepare('PRAGMA foreign_key_check').all().length, 0);
@@ -240,13 +240,13 @@ test('migration is durable and idempotent, enforces foreign keys, and rejects fu
   assert.equal(restarted.get(first.id).revision, 1);
   restarted.close();
   const future = new DatabaseSync(filename);
-  future.exec('PRAGMA user_version = 4');
+  future.exec('PRAGMA user_version = 5');
   future.close();
   assert.throws(() => open(), errorIs(422, 'unsupported_database_version'));
   const inspect = new DatabaseSync(filename);
   try {
     assert.equal(inspect.prepare('SELECT COUNT(*) AS count FROM products').get().count, 1);
-    assert.equal(inspect.prepare('PRAGMA user_version').get().user_version, 4);
+    assert.equal(inspect.prepare('PRAGMA user_version').get().user_version, 5);
   } finally { inspect.close(); }
 });
 
@@ -331,8 +331,12 @@ for (const version of [1, 2]) test(`migration from schema ${version} preserves h
   const raw = new DatabaseSync(filename);
   try {
     raw.exec('ALTER TABLE product_revisions DROP COLUMN metadata');
-    if (version === 1) raw.exec('DROP TABLE import_items');
-    else raw.prepare('INSERT INTO import_items VALUES (?, ?, ?, ?)').run('old-import', 'a'.repeat(64), first.id, first.createdAt);
+    // K13: Alt-Schema vor der Mandantenspalte nachbilden (Schema 1/2 kannte weder tenant_id noch den Mandantenschlüssel der Importzeilen).
+    raw.exec('DROP INDEX IF EXISTS products_tenant; DROP INDEX IF EXISTS product_revisions_tenant; ALTER TABLE products DROP COLUMN tenant_id; ALTER TABLE product_revisions DROP COLUMN tenant_id; DROP TABLE import_items');
+    if (version === 2) {
+      raw.exec('CREATE TABLE import_items (import_key TEXT PRIMARY KEY, fingerprint TEXT NOT NULL, product_id TEXT NOT NULL REFERENCES products(id), created_at TEXT NOT NULL)');
+      raw.prepare('INSERT INTO import_items VALUES (?, ?, ?, ?)').run('old-import', 'a'.repeat(64), first.id, first.createdAt);
+    }
     raw.exec(`PRAGMA user_version = ${version}`);
   } finally { raw.close(); }
   let calls = 0;
@@ -348,7 +352,7 @@ for (const version of [1, 2]) test(`migration from schema ${version} preserves h
   assert.deepEqual(restarted.get(first.id).metadata, { profileRevision: 1 });
   const inspect = new DatabaseSync(filename);
   try {
-    assert.equal(inspect.prepare('PRAGMA user_version').get().user_version, 3);
+    assert.equal(inspect.prepare('PRAGMA user_version').get().user_version, 4);
     assert.equal(inspect.prepare('PRAGMA foreign_key_check').all().length, 0);
   } finally { inspect.close(); }
 });

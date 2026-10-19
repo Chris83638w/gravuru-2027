@@ -43,6 +43,15 @@ Prüf-Leser: `python3 -I scripts/jobcontrol/las_inspect.py <datei.las> [--json]`
 
 Zweite Druckdatei (21:22, 248 Bytes): Kopf dpi 500 × 500, Feld 8/9 = 92 / 9, Wort 40 = 90 (Geschwindigkeit in Zehntel-%, = 9,0 %), Feld 28 = 40 (Auswahl „30/40“ = Laserleistung in W; erste Datei 30). Das sind **genau die Werte aus dem Screenshot** – der Kopf trägt die Einstellung von Farbe 1. Die Datei enthält aber keine Grafik (nur PU/AI/OP/TE/JF): aus Corel kam eine leere Seite. Nächster Test: Dokument mit Inhalt, geänderte Werte je Farbe.
 
+**Abnahme J1 (21:24, 42 924 Bytes, Text schwarz + Rechteck rot):** Der Auftrag besteht aus je einem Block pro Farbe, jeder Block bringt seine Parameter selbst mit:
+
+| Block | Befehle | Werte | Einstellung im Treiber |
+| --- | --- | --- | --- |
+| 1 Raster (Schwarz) | `VD 9`, `vd 90`, `AI 0`, `FR 250`, `SL 1`, `PW 92`, dann `RX`/`RY`, 445 Rasterzeilen (`C1` 223 / `C2` 222), `R5` | 92 % / 9,0 %, 500 dpi | Schwarz 92 · 9,0 · Raster |
+| 2 Vektor (Rot) | `DP 500`, `PW 0`, `VD 0`, `vd 0`, `AI 0`, `FR 250`, `SL 1`, `PD` + Koordinaten | 0 % / 0,0 % | Rot 0 · 0,0 · Vektor |
+
+Alle Befehle bekannt, nichts unbekannt. Damit gilt: **Leistung und Geschwindigkeit stehen pro Farbe im Befehlsstrom** (`PW`, `VD` ganze %, `vd` Zehntel-%), der Kopf trägt die Werte von Farbe 1. JobControl ändert je Block nur diese 16-Bit-Werte und lässt Raster- und Vektordaten unverändert. J1 ist abgenommen; weiter mit J2 (unveränderte Datei an einen Laser senden, nur mit Chris' Freigabe und an Restmaterial).
+
 ## Gespeicherte Treiber-Einstellungen (.job) – an echter Datei geprüft
 
 Die Treiberoberfläche speichert ihren Parametersatz als `.job` (Standardpfad `C:\L_Solution\Job\`, Einträge `JobPath`, `SavConfLs`, „Chemin des sauvegardes“ in `glaserui.dll`). Das ist **kein Gravurauftrag**, sondern nur die Einstellung – feste Größe 1308 Bytes, little-endian. Geprüft an `Test_JOB19102026.job` (19.10.2026) gegen den Screenshot der Druckeinstellungen (LS100, Schwarz 92 | 9,0 | 1 | 0,00 | Raster, Rot Vektor, Rest Überspringen, Platte 460 × 305 mm, 500 × 500 dpi):
@@ -62,7 +71,7 @@ Leser: `python3 -I scripts/jobcontrol/job_inspect.py <datei.job> [--json]`. Bede
 
 | Paket | Inhalt | Abnahme |
 | --- | --- | --- |
-| J1 Erfassen | An einem Produktions-PC den Treiber auf JobManager-Pfad oder „Drucken in Datei“ stellen; 3 echte Jobs (Edelstahl-Schild, Schiefer-Foto, Acryl) mit bekannten Parametern drucken; Dateien + Screenshot der Treibereinstellungen sichern | Leser zeigt genau die eingestellten Werte |
+| J1 Erfassen ✅ 19.10. | An einem Produktions-PC den Treiber auf JobManager-Pfad oder „Drucken in Datei“ stellen; 3 echte Jobs (Edelstahl-Schild, Schiefer-Foto, Acryl) mit bekannten Parametern drucken; Dateien + Screenshot der Treibereinstellungen sichern | Leser zeigt genau die eingestellten Werte |
 | J2 Senden | Gleiche Datei unverändert als RAW an die Warteschlange senden (Windows `WritePrinter`, kleines Programm auf dem PC) | Maschine graviert identisch zum Direktdruck |
 | J3 Ändern | Leistung/Geschwindigkeit/Frequenz im Kopf und in `PW`/`VD`/`FR` ändern, senden; Probe auf Restmaterial | Gravurbild entspricht der Änderung |
 | J4 Leitstand | Ordnerwächter + Liste aller Jobs je Maschine/Material, Statusabfrage der Warteschlangen, Materialtabelle aus den Vorgaben, Anbindung an Werkstatt-Freigabe (K5) | 13 Laser im Überblick, Auftrag per Klick an freie Maschine |

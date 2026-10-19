@@ -3,7 +3,8 @@ import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {readReviewPackage,digest} from './review-package.mjs';
 import {importEnvironment} from './design-assets.mjs';
-import {exportSettings,zipFiles} from '../configurator/variant-m/print-export-model.mjs';
+import {exportSettings} from '../configurator/variant-m/print-export-model.mjs';
+import {productionPackage} from './production-summary.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'form_print_proof'});};
 export const FORM_PRINT_RECIPE='gravuru-form-print-proof/v5';
 export function formPrintSettings(input={}){
@@ -22,7 +23,7 @@ export function rasterizePrint(data){
   child.on('close',code=>{if(done)return;try{const v=JSON.parse(Buffer.concat(chunks));if(code||v.error)end(v.error||'Druckprüfung fehlgeschlagen.');else end(null,v);}catch{end('Die Druckdaten konnten nicht gelesen werden.');}});child.stdin.end(JSON.stringify(data));
  });
 }
-export async function createFormPrintProof(archive,archiveHash,input={}){
+export async function createFormPrintProof(archive,archiveHash,input={},context={}){
  const {files,manifest}=readReviewPackage(archive,archiveHash),requested=formPrintSettings({...manifest.productionProfile?.document.output,...input});
  if(manifest.product.method!=='print')fail('Diese Ausgabe ist nur für Druckprodukte bestimmt. Gravur benötigt eine eigene Ausgabe ohne Druckweiß.');
  const saved=JSON.parse(files.get('produkt-und-gestaltung.json')),g=saved.product.form.geometry,design=saved.product.designs.find(d=>d.id===saved.designId);
@@ -38,6 +39,6 @@ export async function createFormPrintProof(archive,archiveHash,input={}){
  const metadata={schema:FORM_PRINT_RECIPE,sourceReviewSchema:manifest.schema,downloads:delivery.downloads,productionProfile:manifest.productionProfile||null,profileSettingsOverridden:manifest.productionProfile?JSON.stringify(requested)!==JSON.stringify(formPrintSettings(manifest.productionProfile.document.output)):false,snapshotId:manifest.id,sourcePackageSha256:archiveHash,requested,settings,geometrySha256:saved.product.form.geometrySha256,vectorGlyphs:raw.textVectors.length,pixelWidth:raw.width,pixelHeight:raw.height,edgeInk:raw.edgeInk,pdfSha256:digest(pdf),warnings,productionReady:false,colorConversion:'Generische DeviceCMYK-Separation, kein gemessenes ICC-Profil.',colorArtwork:'Explizite Textfelder als CMYK-Vektorpfade in ursprünglicher Reihenfolge; zugehöriges Weiß ebenfalls als Schriftpfade. Importierte Designquelle und Fotos gerastert; Schnittkontur als Vektor.'};
  const extras=[{name:settings.profile==='mimaki'?delivery.downloads.pdf.name:'technische-druckpruefung.pdf',blob:new Blob([pdf])},{name:'druckpruefung.json',blob:new Blob([JSON.stringify(metadata,null,2)])}];
  extras.push(...delivery.extras);
- const archiveWithPrint=Buffer.from(await (await zipFiles([...files].map(([name,bytes])=>({name,blob:new Blob([bytes])})).concat(extras))).arrayBuffer());
+ const {archive:archiveWithPrint}=await productionPackage({files,manifest,metadata,pdf,extras,orderLines:context.orderLines});
  return {pdf,archive:archiveWithPrint,metadata};
 }

@@ -10,8 +10,14 @@ import collections, html, json, re, sys
 from pathlib import Path
 from PIL import Image
 
-src = Path(sys.argv[1]); dst = Path(sys.argv[2]); stand = sys.argv[3]; titel = sys.argv[4] if len(sys.argv) > 4 else 'Gedenktafeln'
-index = json.loads((src / 'designs.json').read_text(encoding='utf-8'))
+# Mehrere Bestandsordner (kleine Linien auf einer Seite): Pfade durch Komma getrennt; Zielgruppe wird dann mit dem Liniennamen vorangestellt
+srcs = [Path(x) for x in sys.argv[1].split(',')]; src = srcs[0]; dst = Path(sys.argv[2]); stand = sys.argv[3]; titel = sys.argv[4] if len(sys.argv) > 4 else 'Gedenktafeln'
+index = []
+for sd in srcs:
+    for d in json.loads((sd / 'designs.json').read_text(encoding='utf-8')):
+        d['_src'] = sd
+        if len(srcs) > 1: d['kategorie']['ziel'] = f"{sd.name} · {d['kategorie']['ziel']}"
+        index.append(d)
 (dst / 'bilder').mkdir(parents=True, exist_ok=True)
 for old in list((dst / 'bilder').glob('*.png')) + list((dst / 'bilder').glob('*.jpg')): old.unlink()
 slug = lambda *a: re.sub(r'[^a-z0-9]+', '-', '-'.join(a).lower()).strip('-')
@@ -20,7 +26,7 @@ last = ['Allgemein', 'offen']
 groups = collections.OrderedDict()
 for d in index:
     k = d['kategorie']; groups.setdefault((k['ziel'], k['unter']), []).append(d)
-keys = sorted(groups, key=lambda zu: (zu[0] in last, order.index(zu[0]) if zu[0] in order else 9, zu[0], zu[1] in last, zu[1]))
+keys = sorted(groups, key=lambda zu: (zu[0].split(' · ')[-1] in last, order.index(zu[0].split(' · ')[-1]) if zu[0].split(' · ')[-1] in order else 9, zu[0], zu[1] in last, zu[1]))
 ordered = [d for zu in keys for d in groups[zu]]
 
 # Sprite-Bögen: 6 × 10 Kacheln à 300 × 220 (Vorschau eingepasst, transparent)
@@ -31,7 +37,7 @@ for si in range(0, len(ordered), PER):
     chunk = ordered[si:si + PER]; n = si // PER + 1
     sheet = Image.new('RGB', (COLS * TW, ROWS * TH), (42, 42, 42))
     for i, d in enumerate(chunk):
-        p = src / d['path'] / 'preview.png'
+        p = d['_src'] / d['path'] / 'preview.png'
         if not p.exists(): continue
         im = Image.open(p).convert('RGBA'); im.thumbnail((TW - 8, TH - 8))
         x = (i % COLS) * TW + (TW - im.width) // 2; y = (i // COLS) * TH + (TH - im.height) // 2

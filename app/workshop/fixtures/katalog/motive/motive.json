@@ -1,0 +1,17 @@
+{
+ "count": 1,
+ "motifs": [
+  {
+   "key": "test-herz",
+   "name": "Herz (Test)",
+   "category": "Herzen",
+   "file": "herzen/herz-test.svg",
+   "bounds": [
+    0,
+    0,
+    100,
+    100
+   ]
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+[
+ {
+  "key": "TB-D1",
+  "series": "TB",
+  "process": "Gravur",
+  "material": "Edelstahl",
+  "materials": [
+   "Edelstahl"
+  ],
+  "designNo": 1,
+  "masterId": "TB-10x10-D1",
+  "sizesInStock": [
+   "10x10",
+   "12x12"
+  ],
+  "plate": {
+   "widthMm": 100.0,
+   "heightMm": 100.0,
+   "source": "schnittlinie"
+  },
+  "fonts": [
+   "Cinzel",
+   "Montserrat"
+  ],
+  "kategorie": {
+   "ziel": "Allgemein",
+   "unter": "Allgemein",
+   "sicherheit": "Vorschlag"
+  },
+  "path": "Allgemein/TB-D1"
+ },
+ {
+  "key": "TB-D2",
+  "series": "TB",
+  "process": "Gravur",
+  "material": "Acryl",
+  "materials": [
+   "Acryl"
+  ],
+  "designNo": 2,
+  "masterId": "TB-A-15x10-D2",
+  "sizesInStock": [
+   "15x10"
+  ],
+  "plate": {
+   "widthMm": 150.0,
+   "heightMm": 100.0,
+   "source": "schnittlinie"
+  },
+  "fonts": [
+   "Arial"
+  ],
+  "kategorie": {
+   "ziel": "offen",
+   "unter": "offen"
+  },
+  "path": "Allgemein/TB-D2"
+ }
+]

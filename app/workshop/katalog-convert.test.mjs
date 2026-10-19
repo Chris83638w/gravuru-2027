@@ -1,0 +1,152 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {fileURLToPath} from 'node:url';
+import {openKatalog} from './katalog-source.mjs';
+import {parseDesignSvg,pathBounds,katalogDesignToTemplate,formatSeries,seriesOf,assignSeries,scaleTemplate,scaleEmbeddedMotifs,templateFit,katalogFamilyToProduct,applyPriceOverrides,priceGaps} from './katalog-convert.mjs';
+import {workshopResources} from './catalog.mjs';
+import {resolveProduct,validateProductDesign} from './product-model.mjs';
+import {localFontIds} from '../configurator/variant-m/local-pilot.mjs';
+
+const FIXTURE=fileURLToPath(new URL('./fixtures/katalog/',import.meta.url));
+const katalog=()=>openKatalog(FIXTURE);
+const fonts=()=>workshopResources().fonts;// Laufzeitschriften der Werkstatt (Montserrat, Cinzel …)
+const herz=k=>k.designs.masters.find(d=>d.id==='test-herz');
+
+test('pathBounds: Hüllbox aus Stütz- und Kontrollpunkten, relative und absolute Befehle',()=>{
+ assert.deepEqual(pathBounds('M10 10 L30 10 L30 20 Z'),[10,10,20,10]);
+ assert.deepEqual(pathBounds('m10 10 l20 0 v10 h-20 z'),[10,10,20,10]);
+ assert.deepEqual(pathBounds('M0 0 C0 10 10 10 10 0'),[0,0,10,10],'Kontrollpunkte zählen mit (konservativ)');
+ assert.throws(()=>pathBounds('10 10'),/ohne Befehl/);
+});
+
+test('parseDesignSvg liest Lieferform 2: Textebenen mit Zeilen, Motiv-/Deko-Pfade, Fotomaske, Hilfsebene',()=>{
+ const p=parseDesignSvg(herz(katalog()).svg());
+ assert.equal(p.widthMm,90);assert.equal(p.heightMm,60);
+ assert.deepEqual(p.layers.map(l=>[l.id,l.kind]),[['motiv-1','motiv'],['deko-1','deko'],['text-1','text'],['text-2','text'],['guide-1','guide']]);
+ const t1=p.layers[2];assert.equal(t1.fieldKey,'name');assert.equal(t1.text,'Familie Muster');assert.equal(t1.font,'Montserrat');assert.equal(t1.size,9);assert.equal(t1.anchor,'middle');assert.equal(t1.x,55);assert.equal(t1.y,30);
+ const t2=p.layers[3];assert.equal(t2.text,'Herzlich\nwillkommen');assert.equal(t2.lines,2);assert.equal(t2.y,50);
+ assert.deepEqual(p.layers[1].bounds,[30,44,50,0.6]);assert.equal(p.layers[0].fill,'#000');
+ const foto=parseDesignSvg(katalog().designs.masters.find(d=>d.id==='test-foto').svg()).layers[0];
+ assert.equal(foto.kind,'foto');assert.equal(foto.shape,'circle');assert.deepEqual(foto.bounds,[4,14,32,32]);
+ // Bestandsform: <text id="text-1"> und <path id="motiv-n"> direkt, Platte wird übersprungen.
+ const b=parseDesignSvg(katalog().designs.bestand('test-bestand')[0].svg());
+ assert.deepEqual(b.layers.map(l=>l.id),['motiv-1','motiv-2','text-1','text-2']);
+ assert.throws(()=>parseDesignSvg('<svg xmlns="x" viewBox="0 0 10 10"><g id="text-1"><text font-family="A" x="1" y="1">x</text></g>'),/nicht geschlossen/);
+ assert.throws(()=>parseDesignSvg('<svg viewBox="0 0 10 10"><g id="motiv-1" transform="skewX(3)"><path d="M0 0"/></g></svg>'),/Transformation „skewX“/);
+ assert.match(parseDesignSvg('<svg viewBox="0 0 10 10"><g id="rand"><path d="M0 0 L1 1"/></g></svg>').notes[0],/ohne Lieferform-2-Kennung/);
+});
+
+test('Design → Vorlage: Kundenfelder aus text-Ebenen, gesperrte Motive, Rechte und Guide-Rolle',()=>{
+ const k=katalog(),f=k.families.get('test-schilder'),theme=k.theme('namensschilder');
+ const r=katalogDesignToTemplate(herz(k),f,theme,{fonts:fonts()});
+ const t=r.template;
+ assert.equal(t.id,'katalog-test-herz');assert.equal(t.name,'Herz mit Namen');assert.deepEqual(t.themes,['namensschilder','hundeschilder']);assert.equal(t.bestseller,true);
+ assert.deepEqual(t.katalog,{designId:'test-herz',source:'lieferform2',plateMm:[90,60]});
+ assert.deepEqual(t.objects.map(o=>[o.id,o.type]),[['motiv-1','motif'],['deko-1','motif'],['text-1','text'],['text-2','text'],['guide-1','text']]);
+ const name=t.objects[2];
+ assert.equal(name.fieldKey,'name');assert.equal(name.required,true,'Namensfeld ist Pflicht');assert.equal(name.customerEditable,true);assert.equal(name.font,'Montserrat');assert.equal(name.size,9);
+ assert.equal(name.x,55);assert.equal(name.y,30-0.35*9,'Grundlinie → Kastenmitte');assert.ok(name.w>20&&name.h===9*1.2);
+ assert.equal(name.color,'#000000','Gravur: Profiltinte statt SVG-Füllung');
+ const zusatz=t.objects[3];
+ assert.equal(zusatz.required,false);assert.equal(zusatz.maxLength,24);assert.equal(zusatz.maxLines,2);assert.equal(zusatz.text,'Herzlich\nwillkommen');
+ assert.equal(zusatz.y,50-0.35*4+0.5*1.2*4,'zweizeilig: Mitte zwischen den Grundlinien');
+ const motif=t.objects[0];
+ assert.equal(motif.motif,'katalog-test-herz-motiv-1');assert.equal(motif.locked,true);assert.equal(motif.customerEditable,false);assert.deepEqual([motif.x,motif.y,motif.w,motif.h],[14,28,20,16],'Hüllbox aus Stütz- und Kontrollpunkten');
+ assert.equal(t.objects[4].role,'guide');assert.equal(t.objects[4].locked,true);
+ assert.deepEqual(r.rights['text-1'],{content:true,color:false,replace:false,move:true,scale:true,delete:false});
+ assert.deepEqual(r.rights['text-2'],{content:true,color:false,replace:false,move:true,scale:true,delete:true});
+ assert.deepEqual(r.rights['motiv-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false},'Gravur: nicht einmal Farbe');
+ assert.deepEqual(r.rights['guide-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});
+ assert.equal(r.motifs.length,2);assert.equal(r.motifs[0].embeddedOnly,true);assert.deepEqual(r.motifs[0].bounds,[4,20,20,16]);
+ assert.match(r.motifs[0].svgFragment,/^<path d="M14 36 L6 27 .* Z" fill="currentColor" fill-rule="nonzero"\/>$/);
+ assert.deepEqual(r.fonts.sort(),['Cinzel','Montserrat']);assert.equal(r.photo,false);
+ // Fotofeld → photoSlot mit Maske, Recht nur „ersetzen“.
+ const foto=katalogDesignToTemplate(k.designs.masters.find(d=>d.id==='test-foto'),f,k.theme('hundeschilder'),{fonts:fonts()});
+ const slot=foto.template.objects[0];
+ assert.equal(slot.type,'photoSlot');assert.equal(slot.photoShape,'circle');assert.equal(slot.fieldKey,'photo-foto-1');assert.equal(slot.required,true);assert.deepEqual([slot.x,slot.y,slot.w,slot.h],[20,30,32,32]);
+ assert.deepEqual(foto.rights['foto-1'],{content:false,color:false,replace:true,move:false,scale:false,delete:false});assert.equal(foto.photo,true);
+ // Bestand: Plattenfläche übersprungen, erstes Namensfeld = größter Text, Zeichenlimit des Themas gilt.
+ const b=katalogDesignToTemplate(k.designs.bestand('test-bestand')[0],f,theme,{fonts:fonts()});
+ assert.deepEqual(b.template.objects.map(o=>o.id),['motiv-2','text-1','text-2']);assert.match(b.notes[0],/Plattenfläche/);
+ assert.equal(b.template.objects[1].required,true);assert.equal(b.template.objects[2].required,false);
+ assert.equal(b.template.katalog.source,'bestand');
+ // Nichts erfinden: fehlende Schrift, offenes Verfahrensprofil, widersprüchliches Maß.
+ assert.throws(()=>katalogDesignToTemplate(herz(k),f,theme,{fonts:{Montserrat:fonts().Montserrat}}),/Schrift fehlt: Cinzel \(Ebene „text-2“\)/);
+ assert.throws(()=>katalogDesignToTemplate(herz(k),{...f,material:{...f.material,processingProfileId:null}},theme,{fonts:fonts()}),/Verfahrensprofil .* offen/);
+ assert.throws(()=>katalogDesignToTemplate({...herz(k),plateMm:[100,60]},f,theme,{fonts:fonts()}),/widerspricht dem Plattenmaß/);
+ assert.throws(()=>katalogDesignToTemplate({...herz(k),fields:{'text-1':{maxLength:3}}},f,theme,{fonts:fonts()}),/Mustertext „name“ – Text zu lang/);
+ assert.throws(()=>katalogDesignToTemplate({...herz(k),fields:{'text-1':{farbe:1}}},f,theme,{fonts:fonts()}),/kennt „farbe“ nicht/);
+});
+
+test('Formatreihen ±1 %: Design nur in Größen seiner Reihe, alte Größe markiert',()=>{
+ const k=katalog(),f=k.families.get('test-schilder');
+ const series=formatSeries(f);
+ assert.deepEqual(series.map(s=>[s.key,s.sizes]),[['60x40',['TS-RE-60X40','TS-RE-90X60','TS-RE-120X80']],['80x80',['TS-QU-80X80']]]);
+ assert.equal(seriesOf(series,[90,60]).key,'60x40');assert.equal(seriesOf(series,[90.5,60]).key,'60x40','0,8 % Abweichung liegt in der Toleranz');
+ assert.equal(seriesOf(series,[190,80]),null);assert.equal(seriesOf(series,null),null);
+ const assigned=assignSeries(f,k.designs.masters);
+ assert.deepEqual(assigned.map(a=>[a.design.id,a.series,a.oldSize]).sort(),[['test-alt',null,true],['test-foto','60x40',false],['test-herz','60x40',false]]);
+ assert.deepEqual(assigned.find(a=>a.design.id==='test-herz').sizes,['TS-RE-60X40','TS-RE-90X60','TS-RE-120X80']);
+});
+
+test('Master → Zielgröße: reine Skalierung mit Schriftgröße, Bohrbild aus der Familie; passt / prüfen / passt nicht',()=>{
+ const k=katalog(),f=k.families.get('test-schilder'),r=katalogDesignToTemplate(herz(k),f,k.theme('namensschilder'),{fonts:fonts()});
+ const big=f.sizes.find(s=>s.key==='TS-RE-120X80'),scaled=scaleTemplate(r.template,[90,60],[120,80],fonts());
+ assert.equal(scaled.katalog.scale,4/3);assert.equal(scaled.katalog.ratioDeviation,0);
+ const name=scaled.objects.find(o=>o.id==='text-1');
+ assert.equal(name.size,12);assert.equal(name.x,round(55*4/3));assert.equal(Math.round(name.w*1000),Math.round(r.template.objects[2].w*4/3*1000));
+ const motifs=scaleEmbeddedMotifs(r.motifs,scaled.katalog.scale);
+ assert.deepEqual(motifs[0].bounds,[round(4*4/3),round(20*4/3),round(20*4/3),round(16*4/3)]);assert.match(motifs[0].svgFragment,/^<path d="M 18.667 48 L 8 36 /);
+ assert.deepEqual(templateFit(scaled,f,big,fonts()),{status:'passt',issues:[]});
+ // Kleinere Größe: Texte unter 4 mm → prüfen; Übergroß → passt nicht (Element verlässt die Fläche).
+ const small=f.sizes.find(s=>s.key==='TS-RE-60X40'),down=scaleTemplate(r.template,[90,60],[60,40],fonts());
+ const fit=templateFit(down,f,small,fonts());assert.equal(fit.status,'prüfen');assert.match(fit.issues[0],/zusatz: 2.667 mm unter der Mindestgröße 4 mm/);
+ const wide={...r.template,objects:r.template.objects.map(o=>o.id==='text-1'?{...o,size:40}:o)};
+ const bad=templateFit(scaleTemplate(wide,[90,60],[90,60],fonts()),f,f.sizes[0],fonts());assert.equal(bad.status,'passt nicht');assert.match(bad.issues[0],/name: Element ragt über die Gestaltungsfläche hinaus/);
+ // Eingepasst (Reihe ±1 %) → prüfen mit Hinweis; andere Reihe → Fehler.
+ const fitted=scaleTemplate(r.template,[90.5,60],[120,80],fonts());assert.ok(fitted.katalog.ratioDeviation>0);assert.match(templateFit(fitted,f,big,fonts()).issues[0],/Seitenverhältnis weicht/);
+ assert.throws(()=>scaleTemplate(r.template,[90,60],[80,80],fonts()),/gehört nicht zur Formatreihe/);
+ // Bohrbild wird nicht skaliert: das Produkt rechnet es aus der Regel der Familie.
+ const product=katalogFamilyToProduct(f,k.lines.get('test-linie'),k.lines.get('test-linie').subcategories[0],{size:big,fonts:fonts(),templates:[{template:scaled,motifs,rights:r.rights}]});
+ assert.deepEqual(product.document.config.profile.optionGroups[0].values.find(v=>v.id==='B02').holes,[{x:6,y:40,diameter:4},{x:114,y:40,diameter:4}]);
+});
+const round=v=>Math.round(v*1000)/1000;
+
+test('Familie → Produkt: Preise in Cent mit Überschreibung, Thema, Rechte, Vorlagen; offener Preis blockiert',()=>{
+ const k=katalog(),f=k.families.get('test-schilder'),line=k.lines.get('test-linie'),[namen,hunde]=line.subcategories;
+ assert.deepEqual(priceGaps(f,f.sizes[2]),['Preis offen: 6 × 4 cm']);
+ const over=applyPriceOverrides(f,namen);assert.equal(over.sizes[0].baseCents,1199);assert.equal(over.mountingRules[1].priceCents,199);assert.equal(f.sizes[0].baseCents,1099,'Familie selbst bleibt unverändert');
+ assert.throws(()=>applyPriceOverrides(f,{id:'x',priceOverrides:{sizes:{FREMD:1}}}),/unbekannte Größe „FREMD“/);
+ const size=f.sizes[0],r=katalogDesignToTemplate(herz(k),f,k.theme('namensschilder'),{fonts:fonts()});
+ const scaled=scaleTemplate(r.template,[90,60],[90,60],fonts());
+ const p=katalogFamilyToProduct(f,line,namen,{size,theme:k.theme('namensschilder'),fontSet:{...k.fontSet(namen),available:['Cinzel','Montserrat']},fontProfileId:'prf_test',fonts:fonts(),templates:[{template:scaled,motifs:r.motifs,rights:r.rights}],revision:3});
+ const d=p.document,c=d.config,pr=c.profile;
+ assert.equal(d.name,'Test Linie – Namensschilder · Rechteck 9 × 6 cm');
+ assert.equal(c.basePriceCents,1199,'Preis der Unterkategorie');assert.deepEqual(pr.optionGroups[0].values.map(v=>[v.id,v.priceCents]),[['K00',0],['KGL',299],['B02',199]]);
+ assert.equal(pr.id,'katalog-test-linie-namensschilder-ts-re-90x60');assert.equal(pr.binding.productId,'local-katalog-test-linie-namensschilder-ts-re-90x60');assert.equal(pr.revision,'family-test-schilder-r3');
+ assert.equal(pr.themeId,'namensschilder');assert.equal(pr.processing.profileId,'steel-engraving');assert.equal(pr.features.orderEnabled,false);
+ assert.deepEqual(pr.designs.map(x=>x.id),['katalog-test-herz']);assert.equal(pr.defaultDesignId,'katalog-test-herz');
+ assert.deepEqual(d.categoryIds,['familie-test-schilder','form-re','linie-test-linie','unterkategorie-test-linie-namensschilder','thema-namensschilder']);
+ assert.deepEqual(d.profileAssignments.fonts,{mode:'override',profileId:'prf_test'});
+ assert.deepEqual(Object.keys(c.localResources.fonts).sort(),['Cinzel','Montserrat'],'nur Vorlagenschriften eingebettet, das Set kommt als Profil');
+ assert.deepEqual(p.fontsMissing,['Michroma','Lato']);
+ assert.equal(c.localResources.motifs.length,2);assert.equal(c.photo.enabled,false);
+ assert.deepEqual(d.elementRights['katalog-test-herz']['motiv-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});
+ assert.deepEqual(d.elementRights['katalog-test-herz']['text-1'].content,true);
+ assert.equal(localFontIds(c).length,2);
+ // Das Produkt ist über den Vertrag nutzbar: Preis, Pflichtfeld, gesperrtes Motiv.
+ const resolved=resolveProduct(d,{options:{mounting:'B02'}});assert.equal(resolved.price.unitCents,1398);assert.equal(resolved.physical.widthMm,90);
+ const design=structuredClone(resolved.design);
+ assert.throws(()=>validateProductDesign(d,design,{options:{mounting:'B02'}}),/Bitte das Feld „name“ ausfüllen/);
+ design.objects[2].text='Familie Koch';validateProductDesign(d,design,{options:{mounting:'B02'}});
+ design.objects[0].x+=5;assert.throws(()=>validateProductDesign(d,{...design},{options:{mounting:'B02'}}),/darf nicht verändert werden/);
+ // Offener Preis blockiert, auch wenn die Größe angeboten wird; nicht angebotene Größe ebenso.
+ assert.throws(()=>katalogFamilyToProduct(f,line,hunde,{size:f.sizes[2],fonts:fonts()}),/Preis offen: 6 × 4 cm$/);
+ assert.throws(()=>katalogFamilyToProduct(f,line,hunde,{size:f.sizes[1],fonts:fonts()}),/wird in „Hundeschilder“ nicht angeboten/);
+ assert.throws(()=>katalogFamilyToProduct(f,line,namen,{size,fonts:fonts(),templates:[{template:{...scaled,objects:scaled.objects.map(o=>o.id==='text-1'?{...o,font:'Lato'}:o)},motifs:r.motifs,rights:r.rights}]}),/Schrift fehlt: Lato/);
+ // Fotovorlage schaltet die Fotofunktion ein; ohne Vorlagen bleibt das Startdesign der Familie.
+ const foto=katalogDesignToTemplate(k.designs.masters.find(x=>x.id==='test-foto'),f,null,{fonts:fonts()});
+ const withPhoto=katalogFamilyToProduct(f,line,hunde,{size,fonts:fonts(),templates:[{template:scaleTemplate(foto.template,[90,60],[90,60],fonts()),motifs:[],rights:foto.rights}]});
+ assert.equal(withPhoto.document.config.photo.enabled,true);assert.equal(withPhoto.document.config.profile.designs[0].objects[0].type,'photoSlot');
+ const plain=katalogFamilyToProduct(f,line,hunde,{size,fonts:fonts()});assert.deepEqual(plain.document.config.profile.designs.map(x=>x.id),['start']);assert.equal(plain.document.profileAssignments.fonts.mode,'inherit');
+});

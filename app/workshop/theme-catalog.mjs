@@ -1,4 +1,6 @@
 // Themen-Definition aus dem Katalog-Repo (`themen.json`): {themes:[{id,name,fontSet,motifCategories,designTags}]}.
+// `fontSet` ist im Katalog die Kennung eines Schrift-Sets aus `schriften/sets.json` (Text);
+// eine Liste von Schriftnamen bleibt zulässig (ältere Fixtures). K12 löst die Kennung auf.
 // Die Datei liegt nicht in diesem Repo; der Server liest sie auf Wunsch (`--themen=<pfad>`) und
 // gibt die geprüfte Liste als `config.themes` an den Kundeneditor (K9). Keine Werte werden erfunden.
 import fs from 'node:fs';
@@ -20,7 +22,7 @@ export function parseThemeCatalog(input){
   const id=theme.id.trim().toLowerCase();
   if(ids.has(id))fail('themen.json: Themen-ID „'+id+'“ ist doppelt.');ids.add(id);
   if(typeof theme.name!=='string'||!theme.name.trim()||theme.name.length>120)fail('themen.json: Thema „'+id+'“ braucht einen Namen bis 120 Zeichen.');
-  const fontSet=theme.fontSet===undefined?[]:stringList(theme.fontSet,'themen.json: fontSet von „'+id+'“');
+  const fontSet=theme.fontSet===undefined?[]:typeof theme.fontSet==='string'?(/^[a-z0-9][a-z0-9_.-]{0,79}$/i.test(theme.fontSet.trim())?theme.fontSet.trim():fail('themen.json: fontSet von „'+id+'“ ist keine gültige Set-Kennung.')):stringList(theme.fontSet,'themen.json: fontSet von „'+id+'“');
   return Object.freeze({id,name:theme.name.trim(),fontSet,motifCategories:stringList(theme.motifCategories,'themen.json: motifCategories von „'+id+'“'),designTags:stringList(theme.designTags,'themen.json: designTags von „'+id+'“')});
  });
 }

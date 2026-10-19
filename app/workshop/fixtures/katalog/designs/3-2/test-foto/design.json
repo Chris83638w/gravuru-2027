@@ -1,0 +1,14 @@
+{
+ "id": "test-foto",
+ "name": "Foto rund",
+ "plateMm": [
+  90,
+  60
+ ],
+ "themes": [
+  "hundeschilder"
+ ],
+ "fonts": [
+  "Montserrat"
+ ]
+}

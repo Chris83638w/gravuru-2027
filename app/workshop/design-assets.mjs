@@ -6,6 +6,7 @@ import {dirname,join,delimiter} from 'node:path';
 import {homedir} from 'node:os';
 import {fileURLToPath} from 'node:url';
 import {artworkFragment,isArtworkResource} from '../configurator/variant-m/artwork-resource.mjs';
+import {tenantOption,ensureTenantColumns,tenantKey,TENANT_COLUMN} from './tenant.mjs';
 
 export const MAX_DESIGN_BYTES=15*1024*1024;
 const MAX_OUTPUT=30*1024*1024;
@@ -39,19 +40,24 @@ export function convertDesign(input){
 }
 
 /** Byte-identical originals and validated previews, addressed immutably by hash. */
-export function createDesignAssetStore({filename,converter=convertDesign}){
+export function createDesignAssetStore({filename,converter=convertDesign,tenantId}){
   if(filename!==':memory:')mkdirSync(dirname(filename),{recursive:true});
+  // K13: Designressourcen, Oberflächen und Musterfoto-Quellen je Mandant (Kennungen im Schlüsselraum des Mandanten, tenantKey).
+  // `design_sources` bleibt ein gemeinsamer, inhaltsadressierter Byte-Speicher: identische Bytes sind keine Mandantendaten,
+  // erreichbar nur über eine mandantengefilterte Ressourcenzeile.
+  const tenant=tenantOption({tenantId});
   const db=new DatabaseSync(filename);let converting=false;
   db.exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
     CREATE TABLE IF NOT EXISTS design_sources (sha256 TEXT PRIMARY KEY, bytes BLOB NOT NULL);
-    CREATE TABLE IF NOT EXISTS design_assets (id TEXT PRIMARY KEY, source_sha256 TEXT NOT NULL REFERENCES design_sources(sha256), preview BLOB NOT NULL, metadata TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS design_assets (id TEXT PRIMARY KEY, source_sha256 TEXT NOT NULL REFERENCES design_sources(sha256), preview BLOB NOT NULL, metadata TEXT NOT NULL, ${TENANT_COLUMN});
     CREATE TRIGGER IF NOT EXISTS design_source_immutable BEFORE UPDATE ON design_sources BEGIN SELECT RAISE(ABORT,'immutable source'); END;
     CREATE TRIGGER IF NOT EXISTS design_asset_immutable BEFORE UPDATE ON design_assets BEGIN SELECT RAISE(ABORT,'immutable asset'); END;
-    CREATE TABLE IF NOT EXISTS material_surfaces (sha256 TEXT PRIMARY KEY, original BLOB NOT NULL, preview BLOB NOT NULL);
-    CREATE TABLE IF NOT EXISTS photo_example_sources (asset_id TEXT NOT NULL REFERENCES design_assets(id), source_sha256 TEXT NOT NULL REFERENCES design_sources(sha256), PRIMARY KEY (asset_id,source_sha256));
+    CREATE TABLE IF NOT EXISTS material_surfaces (sha256 TEXT PRIMARY KEY, original BLOB NOT NULL, preview BLOB NOT NULL, ${TENANT_COLUMN});
+    CREATE TABLE IF NOT EXISTS photo_example_sources (asset_id TEXT NOT NULL REFERENCES design_assets(id), source_sha256 TEXT NOT NULL REFERENCES design_sources(sha256), ${TENANT_COLUMN}, PRIMARY KEY (asset_id,source_sha256));
     CREATE TRIGGER IF NOT EXISTS photo_example_source_immutable BEFORE UPDATE ON photo_example_sources BEGIN SELECT RAISE(ABORT,'immutable photo original'); END;
     CREATE TRIGGER IF NOT EXISTS material_surface_immutable BEFORE UPDATE ON material_surfaces BEGIN SELECT RAISE(ABORT,'immutable surface'); END;`);
-  function row(id){if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'asset_missing','Designressource nicht gefunden.');const r=db.prepare('SELECT * FROM design_assets WHERE id=?').get(id);if(!r)fail(404,'asset_missing','Designressource nicht gefunden.');return r;}
+  ensureTenantColumns(db,['design_assets','material_surfaces','photo_example_sources']);
+  function row(id){if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'asset_missing','Designressource nicht gefunden.');const r=db.prepare('SELECT * FROM design_assets WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'asset_missing','Designressource nicht gefunden.');return r;}
   function get(id){return JSON.parse(row(id).metadata);}
   function resource(id){const a=get(id);return {key:'artwork-'+id,name:'Importiertes Design',category:'Vorlagen',bounds:[0,0,a.widthMm,a.heightMm],embeddedOnly:true,vectorOnly:!/<(?:[\w-]+:)?image\b/i.test(Buffer.from(row(id).preview).toString('utf8')),svgFragment:artworkFragment(id,a.widthMm,a.heightMm),artwork:a};}
   return {
@@ -62,20 +68,20 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
       const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${widthMm}mm" height="${heightMm}mm" viewBox="0 0 ${widthMm} ${heightMm}"><image href="data:image/png;base64,${photo.preview.toString('base64')}" width="${widthMm}" height="${heightMm}" preserveAspectRatio="xMidYMid slice"/></svg>`;
       const asset=await this.import({name:'Beispielfoto.svg',bytes:Buffer.from(svg).toString('base64')});
       db.exec('BEGIN IMMEDIATE');try{
-        db.prepare('INSERT OR IGNORE INTO design_sources VALUES (?,?)').run(originalHash,photo.original);
-        db.prepare('INSERT OR IGNORE INTO photo_example_sources VALUES (?,?)').run(asset.assetId,originalHash);db.exec('COMMIT');
+        db.prepare('INSERT OR IGNORE INTO design_sources(sha256,bytes) VALUES(?,?)').run(originalHash,photo.original);
+        db.prepare('INSERT OR IGNORE INTO photo_example_sources(asset_id,source_sha256,tenant_id) VALUES(?,?,?)').run(asset.assetId,originalHash,tenant);db.exec('COMMIT');
       }catch(error){db.exec('ROLLBACK');throw error;}
       return asset;
     },
     async importMaterialSurface(bytes){
       const {prepareCustomerPhoto}=await import('./customer-photo.mjs');
-      const image=await prepareCustomerPhoto(bytes),id=sha256(image.original);
-      db.prepare('INSERT OR IGNORE INTO material_surfaces VALUES (?,?,?)').run(id,image.original,image.preview);
+      const image=await prepareCustomerPhoto(bytes),id=tenantKey(tenant,sha256(image.original));
+      db.prepare('INSERT OR IGNORE INTO material_surfaces(sha256,original,preview,tenant_id) VALUES(?,?,?,?)').run(id,image.original,image.preview,tenant);
       return {sha256:id,url:'/api/workshop/material-surfaces/'+id+'.png'};
     },
     photoExampleImage(id){
       row(id);
-      const source=db.prepare('SELECT s.bytes FROM photo_example_sources p JOIN design_sources s ON s.sha256=p.source_sha256 WHERE p.asset_id=? ORDER BY p.rowid LIMIT 1').get(id);
+      const source=db.prepare('SELECT s.bytes FROM photo_example_sources p JOIN design_sources s ON s.sha256=p.source_sha256 WHERE p.asset_id=? AND p.tenant_id=? ORDER BY p.rowid LIMIT 1').get(id,tenant);
       if(source)return Buffer.from(source.bytes);
       // Older PDF examples store the extracted photo in a validated SVG wrapper.
       const images=[...this.read(id).toString('utf8').matchAll(/<(?:\w+:)?image\b[^>]*\b(?:href|xlink:href)=["']data:image\/(?:png|jpeg);base64,([A-Za-z0-9+/=]+)["']/g)];
@@ -84,7 +90,7 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
     },
     materialSurface(id,original=false){
       if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'surface_missing','Materialoberfläche fehlt.');
-      const r=db.prepare('SELECT original,preview FROM material_surfaces WHERE sha256=?').get(id);
+      const r=db.prepare('SELECT original,preview FROM material_surfaces WHERE sha256=? AND tenant_id=?').get(id,tenant);
       if(!r)fail(404,'surface_missing','Materialoberfläche fehlt.');
       return Buffer.from(original?r.original:r.preview);
     },
@@ -97,19 +103,19 @@ export function createDesignAssetStore({filename,converter=convertDesign}){
       converting=true;let result;const format=name.toLowerCase().endsWith('.pdf')?'pdf':'svg';
       try{result=await converter({kind:format,bytes,page});}finally{converting=false;}
       if(![result.widthMm,result.heightMm].every(v=>Number.isFinite(v)&&v>0&&v<=2000)||!Number.isInteger(result.pageCount)||result.page!==page)fail(422,'invalid_conversion','Die Abmessungen oder Seiten der Datei sind ungültig.');
-      const sourceSha256=sha256(original),preview=Buffer.from(result.svg,'utf8'),previewSha256=sha256(preview),assetId=sha256([sourceSha256,previewSha256,page].join(':'));
+      const sourceSha256=sha256(original),preview=Buffer.from(result.svg,'utf8'),previewSha256=sha256(preview),assetId=tenantKey(tenant,sha256([sourceSha256,previewSha256,page].join(':')));
       if(preview.length>MAX_OUTPUT)fail(413,'preview_limit','Die umgewandelte Datei ist zu groß.');
       const metadata={schema:'gravuru-imported-artwork/v1',assetId,sourceSha256,previewSha256,format,page,pageCount:result.pageCount,widthMm:result.widthMm,heightMm:result.heightMm,widthSource:result.widthSource,hasText:result.hasText,warnings:result.warnings||[]};
       db.exec('BEGIN IMMEDIATE');
-      try{db.prepare('INSERT OR IGNORE INTO design_sources VALUES (?,?)').run(sourceSha256,original);db.prepare('INSERT OR IGNORE INTO design_assets VALUES (?,?,?,?)').run(assetId,sourceSha256,preview,JSON.stringify(metadata));db.exec('COMMIT');}catch(error){db.exec('ROLLBACK');throw error;}
+      try{db.prepare('INSERT OR IGNORE INTO design_sources(sha256,bytes) VALUES(?,?)').run(sourceSha256,original);db.prepare('INSERT OR IGNORE INTO design_assets(id,source_sha256,preview,metadata,tenant_id) VALUES(?,?,?,?,?)').run(assetId,sourceSha256,preview,JSON.stringify(metadata),tenant);db.exec('COMMIT');}catch(error){db.exec('ROLLBACK');throw error;}
       return {...get(assetId),originalName:name};
-    },get,resource,
-    list(){return db.prepare('SELECT metadata FROM design_assets ORDER BY rowid DESC LIMIT 300').all().map(r=>JSON.parse(r.metadata));},
+    },get,resource,tenantId:tenant,
+    list(){return db.prepare('SELECT metadata FROM design_assets WHERE tenant_id=? ORDER BY rowid DESC LIMIT 300').all(tenant).map(r=>JSON.parse(r.metadata));},
     read(id,original=false){const r=row(id);return Buffer.from(original?db.prepare('SELECT bytes FROM design_sources WHERE sha256=?').get(r.source_sha256).bytes:r.preview);},
     validateDocument(document){
       for(const key of ['materialSurface','sceneBackground']){
         const surface=document.config?.[key]?.match(/^\/api\/workshop\/material-surfaces\/([a-f0-9]{64})\.png$/);
-        if(surface&&!db.prepare('SELECT 1 FROM material_surfaces WHERE sha256=?').get(surface[1]))fail(422,'surface_missing','Das gespeicherte Rohling- oder Szenenbild fehlt.');
+        if(surface&&!db.prepare('SELECT 1 FROM material_surfaces WHERE sha256=? AND tenant_id=?').get(surface[1],tenant))fail(422,'surface_missing','Das gespeicherte Rohling- oder Szenenbild fehlt.');
       }
       for(const example of document.config?.localResources?.photoExamples||[]){
         const asset=get(example.assetId);

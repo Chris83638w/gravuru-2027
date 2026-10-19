@@ -17,8 +17,8 @@ export function variantBatchReportData(variants,input){
   return {kind:'variants',mode:input.mode,createdAt:new Date().toISOString(),columns:VARIANT_GROUP_COLUMNS,designColumns:VARIANT_MEMBER_COLUMNS,rows,variantRows,report};
 }
 export const variantBatchReportWorkbook=batchReportWorkbook;
-export function createVariantBatchJobs({filename,variants}){
-  return createImportJobStore({filename,table:'variant_batch_jobs',plan:input=>variants.plan(input),prepare:input=>{
+export function createVariantBatchJobs({filename,variants,tenantId}){
+  return createImportJobStore({filename,table:'variant_batch_jobs',tenantId:tenantId??variants?.tenantId,plan:input=>variants.plan(input),prepare:input=>{
     if(!input||Object.keys(input).some(k=>!['rows','variantRows'].includes(k)))fail('Nur Gruppen- und Ausführungszeilen können gespeichert werden.');
     const data=variantBatchReportData(variants,{...input,mode:'report'});
     return {rows:data.rows,variantRows:data.variantRows};

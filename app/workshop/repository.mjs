@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {createProductCatalog} from './product-catalog.mjs';
+import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
 
 const OWNED_FIELDS = ['id', 'revision', 'publishedRevision', 'status', 'createdAt', 'updatedAt', 'metadata'];
 
@@ -11,8 +12,10 @@ function failure(status, code, message) {
 }
 
 /** A local, synchronous SQLite store. Documents are immutable JSON snapshots. */
-export function createProductRepository({ filename, validateDocument = (value) => value, snapshotMetadata = () => ({}),catalogOverview=()=>({}) }) {
+export function createProductRepository({ filename, validateDocument = (value) => value, snapshotMetadata = () => ({}),catalogOverview=()=>({}),tenantId }) {
   if (typeof filename !== 'string' || !filename) throw new TypeError('A database filename is required.');
+  // K13: Alle Lese- und Schreibzugriffe dieses Stores gehören genau einem Mandanten.
+  const tenant=tenantOption({tenantId});
   if (typeof snapshotMetadata !== 'function') throw new TypeError('snapshotMetadata must be a synchronous function.');
   if (filename !== ':memory:') mkdirSync(dirname(filename), { recursive: true });
   const db = new DatabaseSync(filename);
@@ -32,7 +35,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     db.exec('PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000; PRAGMA journal_mode = WAL;');
     transact(() => {
       const version = db.prepare('PRAGMA user_version').get().user_version;
-      if (version > 3) throw failure(422, 'unsupported_database_version', 'Die Datenbank benötigt eine neuere Anwendung.');
+      if (version > 4) throw failure(422, 'unsupported_database_version', 'Die Datenbank benötigt eine neuere Anwendung.');
       if (version === 0) {
         db.exec(`
           CREATE TABLE products (
@@ -73,21 +76,32 @@ export function createProductRepository({ filename, validateDocument = (value) =
       if (version < 3) db.exec(`ALTER TABLE product_revisions
         ADD COLUMN metadata TEXT NOT NULL DEFAULT '{}' CHECK (json_valid(metadata));
         PRAGMA user_version = 3;`);
+      if (version < 4) {
+        // K13: Mandant je Produkt und Revision; Importschlüssel sind je Mandant eindeutig (Tabelle neu aufgebaut, Altdaten = Standardmandant).
+        ensureTenantColumn(db, 'products'); ensureTenantColumn(db, 'product_revisions');
+        db.exec(`CREATE TABLE import_items_v4 (
+          import_key TEXT NOT NULL, fingerprint TEXT NOT NULL,
+          product_id TEXT NOT NULL REFERENCES products(id), created_at TEXT NOT NULL, ${TENANT_COLUMN},
+          PRIMARY KEY (tenant_id, import_key)
+        ); INSERT INTO import_items_v4 (import_key, fingerprint, product_id, created_at) SELECT import_key, fingerprint, product_id, created_at FROM import_items;
+        DROP TABLE import_items; ALTER TABLE import_items_v4 RENAME TO import_items;
+        PRAGMA user_version = 4;`);
+      }
     });
   } catch (error) {
     db.close();
     throw error;
   }
 
-  const catalog=transact(()=>createProductCatalog(db,catalogOverview));
+  const catalog=transact(()=>createProductCatalog(db,catalogOverview,tenant));
   function product(id) {
-    const row = typeof id === 'string' ? db.prepare('SELECT * FROM products WHERE id = ?').get(id) : null;
+    const row = typeof id === 'string' ? db.prepare('SELECT * FROM products WHERE id = ? AND tenant_id = ?').get(id, tenant) : null;
     if (!row) throw failure(404, 'not_found', 'Konfiguration nicht gefunden.');
     return row;
   }
 
   function snapshot(id, revision) {
-    const row = db.prepare('SELECT * FROM product_revisions WHERE product_id = ? AND revision = ?').get(id, revision);
+    const row = db.prepare('SELECT * FROM product_revisions WHERE product_id = ? AND revision = ? AND tenant_id = ?').get(id, revision, tenant);
     if (!row) throw failure(404, 'revision_not_found', 'Revision nicht gefunden.');
     return row;
   }
@@ -135,7 +149,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
 
   function reference(document, id) {
     if (document.masterId === null) return;
-    const master = db.prepare('SELECT kind FROM products WHERE id = ?').get(document.masterId);
+    const master = db.prepare('SELECT kind FROM products WHERE id = ? AND tenant_id = ?').get(document.masterId, tenant);
     if (!master || master.kind !== 'master' || document.masterId === id) {
       throw failure(422, 'invalid_master', 'Die referenzierte Mastervorlage existiert nicht.');
     }
@@ -169,8 +183,8 @@ export function createProductRepository({ filename, validateDocument = (value) =
       throw failure(422, 'invalid_snapshot_metadata', error?.message || 'Revisionsmetadaten konnten nicht gespeichert werden.');
     }
     db.prepare(`INSERT INTO product_revisions
-      (product_id, revision, document, published_revision, status, created_at, metadata) VALUES (?, ?, ?, ?, ?, ?, ?)`)
-      .run(row.id, row.revision, JSON.stringify(document), row.published_revision, state(row), row.updated_at, metadata);
+      (product_id, revision, document, published_revision, status, created_at, metadata, tenant_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
+      .run(row.id, row.revision, JSON.stringify(document), row.published_revision, state(row), row.updated_at, metadata, tenant);
     catalog.update(row,document);
   }
 
@@ -179,9 +193,9 @@ export function createProductRepository({ filename, validateDocument = (value) =
     reference(document, id);
     const timestamp = new Date().toISOString();
     db.prepare(`INSERT INTO products
-      (id, revision, published_revision, archived, name, kind, master_id, created_at, updated_at)
-      VALUES (?, 1, NULL, 0, ?, ?, ?, ?, ?)`)
-      .run(id, document.name, document.kind, document.masterId, timestamp, timestamp);
+      (id, revision, published_revision, archived, name, kind, master_id, created_at, updated_at, tenant_id)
+      VALUES (?, 1, NULL, 0, ?, ?, ?, ?, ?, ?)`)
+      .run(id, document.name, document.kind, document.masterId, timestamp, timestamp, tenant);
     const row = product(id);
     insertSnapshot(row, document);
     return record(row);
@@ -191,27 +205,28 @@ export function createProductRepository({ filename, validateDocument = (value) =
     reference(document, row.id);
     // A referenced master cannot change its type: existing copies retain valid provenance.
     if (row.kind === 'master' && document.kind !== 'master' &&
-        db.prepare('SELECT 1 FROM products WHERE master_id = ? LIMIT 1').get(row.id)) {
+        db.prepare('SELECT 1 FROM products WHERE master_id = ? AND tenant_id = ? LIMIT 1').get(row.id, tenant)) {
       throw failure(422, 'master_in_use', 'Diese Mastervorlage wird bereits von Produkten referenziert.');
     }
     const revision = row.revision + 1;
     const published = publish ? revision : row.published_revision;
     db.prepare(`UPDATE products SET revision = ?, published_revision = ?, archived = ?,
-      name = ?, kind = ?, master_id = ?, updated_at = ? WHERE id = ?`)
-      .run(revision, published, archived, document.name, document.kind, document.masterId, new Date().toISOString(), row.id);
+      name = ?, kind = ?, master_id = ?, updated_at = ? WHERE id = ? AND tenant_id = ?`)
+      .run(revision, published, archived, document.name, document.kind, document.masterId, new Date().toISOString(), row.id, tenant);
     const updated = product(row.id);
     insertSnapshot(updated, document);
     return record(updated);
   }
 
   return {
-    firstId:()=>db.prepare('SELECT id FROM products ORDER BY created_at,id LIMIT 1').get()?.id||null,
+    tenantId:tenant,
+    firstId:()=>db.prepare('SELECT id FROM products WHERE tenant_id = ? ORDER BY created_at,id LIMIT 1').get(tenant)?.id||null,
     catalog:options=>catalog.list(options),
     // The dry-run uses the same pure validation as the transactional write.
     validate(document) { return documentValue(document); },
     previewMetadata(document) { return JSON.parse(JSON.stringify(snapshotMetadata(JSON.parse(JSON.stringify(document))))); },
     importItem(key) {
-      const row=db.prepare('SELECT * FROM import_items WHERE import_key = ?').get(key);
+      const row=db.prepare('SELECT * FROM import_items WHERE import_key = ? AND tenant_id = ?').get(key, tenant);
       return row ? {key:row.import_key,fingerprint:row.fingerprint,id:row.product_id} : null;
     },
     importBatch(entries) {
@@ -222,7 +237,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
           if(!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(entry.key)||keys.has(entry.key))throw failure(422,'invalid_import_key','Jede Zeile benötigt einen eindeutigen Importschlüssel.');
           keys.add(entry.key);
           if(!/^[a-f0-9]{64}$/.test(entry.fingerprint))throw failure(422,'invalid_fingerprint','Ungültiger Importstand.');
-          const prior=db.prepare('SELECT * FROM import_items WHERE import_key = ?').get(entry.key);
+          const prior=db.prepare('SELECT * FROM import_items WHERE import_key = ? AND tenant_id = ?').get(entry.key, tenant);
           if(prior&&prior.fingerprint!==entry.fingerprint)throw failure(409,'import_key_conflict',`Importschlüssel ${entry.key} wurde bereits für andere Daten verwendet.`);
           if(entry.action!==undefined&&entry.action!=='update')throw failure(422,'invalid_action','Unbekannte Importaktion.');
           if(entry.action==='update'){
@@ -237,7 +252,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
           if(entry.prior)return {key:entry.key,id:entry.prior.product_id,created:false};
           const updating=entry.action==='update';
           const item=updating?append(product(entry.productId),entry.document):createInside(entry.document);
-          db.prepare('INSERT INTO import_items VALUES (?, ?, ?, ?)').run(entry.key,entry.fingerprint,item.id,new Date().toISOString());
+          db.prepare('INSERT INTO import_items (import_key, fingerprint, product_id, created_at, tenant_id) VALUES (?, ?, ?, ?, ?)').run(entry.key,entry.fingerprint,item.id,new Date().toISOString(),tenant);
           return {key:entry.key,id:item.id,created:!updating,...(updating?{updated:true,revision:item.revision}:{})};
         });
       });
@@ -256,8 +271,8 @@ export function createProductRepository({ filename, validateDocument = (value) =
       }
       // Literal substring search; %, _ and SQL punctuation never become wildcards/code.
       const term = query.trim().toLowerCase();
-      return db.prepare(`SELECT * FROM products WHERE (? = 1 OR archived = 0)
-        ORDER BY updated_at DESC, id`).all(includeArchived ? 1 : 0)
+      return db.prepare(`SELECT * FROM products WHERE tenant_id = ? AND (? = 1 OR archived = 0)
+        ORDER BY updated_at DESC, id`).all(tenant, includeArchived ? 1 : 0)
         .filter((row) => !term || row.name.toLowerCase().includes(term) || row.id.toLowerCase().includes(term))
         .map((row) => ({ ...record(row), name: row.name, kind: row.kind, masterId: row.master_id }));
     },
@@ -269,7 +284,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
         json_extract(r.document,'$.schema') AS schema,json_extract(r.document,'$.productionProfile.revision') AS profileRevision
         FROM products p JOIN product_revisions r ON r.product_id=p.id
         AND (r.revision=p.revision OR r.revision=p.published_revision)
-        WHERE json_extract(r.document,'$.productionProfile.id')=? ORDER BY p.name COLLATE NOCASE,p.id,r.revision DESC`).all(profileId)
+        WHERE p.tenant_id=? AND r.tenant_id=p.tenant_id AND json_extract(r.document,'$.productionProfile.id')=? ORDER BY p.name COLLATE NOCASE,p.id,r.revision DESC`).all(tenant, profileId)
         .map(r=>({id:r.id,name:r.name,kind:r.kind,schema:r.schema,revision:r.revision,profileRevision:r.profileRevision,
           current:r.revision===r.head,activated:r.revision===r.published_revision,archived:Boolean(r.archived)}));
     },
@@ -277,13 +292,13 @@ export function createProductRepository({ filename, validateDocument = (value) =
     saveOnce(id, document, expectedRevision, key, fingerprint) {
       if(!/^ai:air_[a-f0-9-]{36}$/.test(key)||! /^[a-f0-9]{64}$/.test(fingerprint))throw failure(422,'invalid_save_key','Ungültiger geprüfter Auftrag.');
       return transact(()=>{
-        const prior=db.prepare('SELECT * FROM import_items WHERE import_key=?').get(key);
+        const prior=db.prepare('SELECT * FROM import_items WHERE import_key=? AND tenant_id=?').get(key, tenant);
         positiveRevision(expectedRevision);
         if(prior){if(prior.product_id!==id||prior.fingerprint!==fingerprint)throw failure(409,'save_key_conflict','Der Auftrag wurde für andere Daten verwendet.');return record(product(id),expectedRevision+1);}
         const row=product(id);expected(row,expectedRevision);
         if(row.archived)throw failure(409,'archived_product','Archivierte Produkte können nicht geändert werden.');
         const saved=append(row,documentValue(document));
-        db.prepare('INSERT INTO import_items VALUES (?,?,?,?)').run(key,fingerprint,id,new Date().toISOString());
+        db.prepare('INSERT INTO import_items (import_key, fingerprint, product_id, created_at, tenant_id) VALUES (?,?,?,?,?)').run(key,fingerprint,id,new Date().toISOString(),tenant);
         return saved;
       });
     },
@@ -323,7 +338,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     },
     history(id) {
       const row = product(id);
-      return db.prepare('SELECT revision FROM product_revisions WHERE product_id = ? ORDER BY revision DESC').all(id)
+      return db.prepare('SELECT revision FROM product_revisions WHERE product_id = ? AND tenant_id = ? ORDER BY revision DESC').all(id, tenant)
         .map(({ revision }) => record(row, revision));
     },
     restore(id, { expectedRevision, revision } = {}) {

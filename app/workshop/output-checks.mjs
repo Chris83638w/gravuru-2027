@@ -1,4 +1,5 @@
 import {randomUUID} from 'node:crypto';
+import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'output_check'});};
 const keys=['requestId','format','sha256','stage','result','machine','software','notes'];
 function clean(input,file){
@@ -11,29 +12,31 @@ function clean(input,file){
  return {format:input.format,filename:file.name,sha256:file.sha256,stage:input.stage,result:input.result,machine:text(input.machine,200,input.stage==='print'),software:text(input.software,200,true),notes:text(input.notes,2000,input.result==='failed'),source:'operator-report',productionReady:false};
 }
 // Append-only operator observations, never an automatic manufacturing release.
-export function createOutputChecks(db){
- db.exec(`CREATE TABLE IF NOT EXISTS export_output_checks(id TEXT PRIMARY KEY,job_id TEXT NOT NULL REFERENCES form_export_jobs(id),request_id TEXT NOT NULL,document TEXT NOT NULL,created_at TEXT NOT NULL,UNIQUE(job_id,request_id));
+export function createOutputChecks(db,tenantId){
+ const tenant=tenantOption({tenantId});
+ db.exec(`CREATE TABLE IF NOT EXISTS export_output_checks(id TEXT PRIMARY KEY,job_id TEXT NOT NULL REFERENCES form_export_jobs(id),request_id TEXT NOT NULL,document TEXT NOT NULL,created_at TEXT NOT NULL,${TENANT_COLUMN},UNIQUE(job_id,request_id));
  CREATE TRIGGER IF NOT EXISTS export_output_check_no_update BEFORE UPDATE ON export_output_checks BEGIN SELECT RAISE(ABORT,'Output checks are immutable');END;
  CREATE TRIGGER IF NOT EXISTS export_output_check_no_delete BEFORE DELETE ON export_output_checks BEGIN SELECT RAISE(ABORT,'Output checks are immutable');END;`);
+ ensureTenantColumn(db,'export_output_checks');
  const read=row=>({id:row.id,jobId:row.job_id,createdAt:row.created_at,...JSON.parse(row.document)});
  return {
   list(jobId,{format='',stage='',before=''}={}){
    if(!['','pdf','white-pdf'].includes(format)||!['','import','print'].includes(stage)||typeof before!=='string'||before&&!/^check_[a-f0-9-]{36}$/.test(before))fail(422,'Ungültiger Prüfverlaufsfilter.');
-   const where=['job_id=?'],params=[jobId];
+   const where=['job_id=?'],params=[tenant,jobId];
    if(format){where.push("json_extract(document,'$.format')=?");params.push(format);}
    if(stage){where.push("json_extract(document,'$.stage')=?");params.push(stage);}
-   const total=db.prepare('SELECT count(*) AS total FROM export_output_checks WHERE '+where.join(' AND ')).get(...params).total;
-   if(before){const cursor=db.prepare('SELECT rowid FROM export_output_checks WHERE id=? AND job_id=?').get(before,jobId);if(!cursor)fail(422,'Der Prüfverlaufsverweis gehört nicht zu dieser Ausgabe.');where.push('rowid<?');params.push(cursor.rowid);}
-   const rows=db.prepare('SELECT * FROM export_output_checks WHERE '+where.join(' AND ')+' ORDER BY rowid DESC LIMIT 51').all(...params),page=rows.slice(0,50);
+   const total=db.prepare(`SELECT count(*) AS total FROM export_output_checks WHERE tenant_id=? AND ${where.join(' AND ')}`).get(...params).total;
+   if(before){const cursor=db.prepare('SELECT rowid FROM export_output_checks WHERE id=? AND job_id=? AND tenant_id=?').get(before,jobId,tenant);if(!cursor)fail(422,'Der Prüfverlaufsverweis gehört nicht zu dieser Ausgabe.');where.push('rowid<?');params.push(cursor.rowid);}
+   const rows=db.prepare(`SELECT * FROM export_output_checks WHERE tenant_id=? AND ${where.join(' AND ')} ORDER BY rowid DESC LIMIT 51`).all(...params),page=rows.slice(0,50);
    return {checks:page.map(read),total,nextBefore:rows.length>50?page.at(-1).id:null};
   },
   add(jobId,input,file){
-   const job=db.prepare('SELECT status FROM form_export_jobs WHERE id=?').get(jobId);if(!job)fail(404,'Ausgabeauftrag nicht gefunden.');if(job.status!=='completed')fail(409,'Nur eine fertig gespeicherte Ausgabe kann geprüft werden.');
-   const document=JSON.stringify(clean(input,file)),old=db.prepare('SELECT * FROM export_output_checks WHERE job_id=? AND request_id=?').get(jobId,input.requestId);
+   const job=db.prepare('SELECT status FROM form_export_jobs WHERE id=? AND tenant_id=?').get(jobId,tenant);if(!job)fail(404,'Ausgabeauftrag nicht gefunden.');if(job.status!=='completed')fail(409,'Nur eine fertig gespeicherte Ausgabe kann geprüft werden.');
+   const document=JSON.stringify(clean(input,file)),old=db.prepare('SELECT * FROM export_output_checks WHERE job_id=? AND request_id=? AND tenant_id=?').get(jobId,input.requestId,tenant);
    if(old){if(old.document!==document)fail(409,'Diese Prüfanforderung wurde bereits mit anderen Angaben gespeichert.');return read(old);}
    const id='check_'+randomUUID(),createdAt=new Date().toISOString();
-   db.prepare('INSERT OR IGNORE INTO export_output_checks VALUES(?,?,?,?,?)').run(id,jobId,input.requestId,document,createdAt);
-   const saved=db.prepare('SELECT * FROM export_output_checks WHERE job_id=? AND request_id=?').get(jobId,input.requestId);
+   db.prepare('INSERT OR IGNORE INTO export_output_checks(id,job_id,request_id,document,created_at,tenant_id) VALUES(?,?,?,?,?,?)').run(id,jobId,input.requestId,document,createdAt,tenant);
+   const saved=db.prepare('SELECT * FROM export_output_checks WHERE job_id=? AND request_id=? AND tenant_id=?').get(jobId,input.requestId,tenant);
    if(saved.document!==document)fail(409,'Diese Prüfanforderung wurde bereits mit anderen Angaben gespeichert.');
    return read(saved);
   }

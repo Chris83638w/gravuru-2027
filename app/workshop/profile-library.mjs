@@ -1,4 +1,5 @@
 import {DatabaseSync} from 'node:sqlite';
+import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
 import {randomUUID} from 'node:crypto';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
@@ -38,8 +39,10 @@ function readCatalog(catalog){
 
 /** Persistent choice lists. The catalog contains IDs/labels, never glyph paths
  * or image data; filtering choices must not delete production font resources. */
-export function createProfileLibrary({filename,catalog}){
+export function createProfileLibrary({filename,catalog,tenantId}){
   if(typeof filename!=='string'||!filename)throw new TypeError('Ein Dateiname für die Profilbibliothek ist erforderlich.');
+  // K13: Profile und Zuordnungen gehören genau einem Mandanten; die Zuordnungs-„Einstellungen“ gibt es je Mandant einmal.
+  const tenant=tenantOption({tenantId});
   const catalogRows=readCatalog(catalog),catalogIds=Object.fromEntries(Object.entries(catalogRows).map(([type,rows])=>[type,new Set(rows.map(row=>row.id))]));
   if(filename!==':memory:')mkdirSync(dirname(filename),{recursive:true});
   const db=new DatabaseSync(filename);
@@ -51,7 +54,7 @@ export function createProfileLibrary({filename,catalog}){
     db.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000; PRAGMA journal_mode=WAL;');
     transaction(()=>{
       const version=db.prepare('PRAGMA user_version').get().user_version;
-      if(version>1)throw failure(422,'unsupported_database_version','Die Profilbibliothek benötigt eine neuere Anwendung.');
+      if(version>2)throw failure(422,'unsupported_database_version','Die Profilbibliothek benötigt eine neuere Anwendung.');
       if(version===0){
         if(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' LIMIT 1").get())throw failure(422,'wrong_database','Die Profilbibliothek benötigt eine eigene Datenbankdatei.');
         db.exec(`CREATE TABLE profiles (
@@ -74,14 +77,33 @@ export function createProfileLibrary({filename,catalog}){
         );
         CREATE TRIGGER immutable_profile_update BEFORE UPDATE ON profile_revisions BEGIN SELECT RAISE(ABORT,'Profile revisions are immutable'); END;
         CREATE TRIGGER immutable_profile_delete BEFORE DELETE ON profile_revisions BEGIN SELECT RAISE(ABORT,'Profile revisions are immutable'); END;
-        CREATE TRIGGER immutable_settings_update BEFORE UPDATE ON profile_settings_revisions BEGIN SELECT RAISE(ABORT,'Settings revisions are immutable'); END;
-        CREATE TRIGGER immutable_settings_delete BEFORE DELETE ON profile_settings_revisions BEGIN SELECT RAISE(ABORT,'Settings revisions are immutable'); END;
         PRAGMA user_version=1;`);
-        const document=JSON.stringify({defaults:emptyAssignments(),categories:{}}),now=new Date().toISOString();
-        db.prepare('INSERT INTO profile_library_settings(id,revision,document,updated_at) VALUES (1,1,?,?)').run(document,now);
-        db.prepare('INSERT INTO profile_settings_revisions(revision,document,created_at) VALUES(1,?,?)').run(document,now);
       }else{
         for(const table of ['profiles','profile_revisions','profile_library_settings','profile_settings_revisions'])if(!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?").get(table))throw failure(422,'wrong_database','Diese Datei ist keine Profilbibliothek.');
+      }
+      if(version<2){
+        // K13: Mandant je Profil; die Zuordnungs-Einstellungen (bisher Einzelzeile id=1) und ihre Historie werden je Mandant geführt.
+        ensureTenantColumn(db,'profiles');ensureTenantColumn(db,'profile_revisions');
+        db.exec(`CREATE TABLE profile_library_settings_v2 (
+          ${TENANT_COLUMN},revision INTEGER NOT NULL CHECK(revision>=1),
+          document TEXT NOT NULL CHECK(json_valid(document)),updated_at TEXT NOT NULL,PRIMARY KEY(tenant_id)
+        );
+        INSERT INTO profile_library_settings_v2(revision,document,updated_at) SELECT revision,document,updated_at FROM profile_library_settings;
+        DROP TABLE profile_library_settings; ALTER TABLE profile_library_settings_v2 RENAME TO profile_library_settings;
+        CREATE TABLE profile_settings_revisions_v2 (
+          ${TENANT_COLUMN},revision INTEGER NOT NULL CHECK(revision>=1),document TEXT NOT NULL CHECK(json_valid(document)),created_at TEXT NOT NULL,PRIMARY KEY(tenant_id,revision)
+        );
+        INSERT INTO profile_settings_revisions_v2(revision,document,created_at) SELECT revision,document,created_at FROM profile_settings_revisions;
+        DROP TABLE profile_settings_revisions; ALTER TABLE profile_settings_revisions_v2 RENAME TO profile_settings_revisions;
+        CREATE TRIGGER immutable_settings_update BEFORE UPDATE ON profile_settings_revisions BEGIN SELECT RAISE(ABORT,'Settings revisions are immutable'); END;
+        CREATE TRIGGER immutable_settings_delete BEFORE DELETE ON profile_settings_revisions BEGIN SELECT RAISE(ABORT,'Settings revisions are immutable'); END;
+        PRAGMA user_version=2;`);
+      }
+      // Jeder Mandant beginnt mit leeren Zuordnungen (Stand 1), auch in einer bestehenden Datei.
+      if(!db.prepare('SELECT 1 FROM profile_library_settings WHERE tenant_id=?').get(tenant)){
+        const document=JSON.stringify({defaults:emptyAssignments(),categories:{}}),now=new Date().toISOString();
+        db.prepare('INSERT INTO profile_library_settings(tenant_id,revision,document,updated_at) VALUES (?,1,?,?)').run(tenant,document,now);
+        db.prepare('INSERT INTO profile_settings_revisions(tenant_id,revision,document,created_at) VALUES(?,1,?,?)').run(tenant,document,now);
       }
     });
   }catch(error){db.close();throw error;}
@@ -103,22 +125,22 @@ export function createProfileLibrary({filename,catalog}){
     return {name:input.name.trim(),type,items};
   }
   function profileRow(id){
-    const row=typeof id==='string'?db.prepare('SELECT * FROM profiles WHERE id=?').get(id):null;
+    const row=typeof id==='string'?db.prepare('SELECT * FROM profiles WHERE id=? AND tenant_id=?').get(id,tenant):null;
     if(!row)throw failure(404,'profile_not_found','Profil nicht gefunden.');
     return row;
   }
   function profileRecord(row,revision=row.revision){
-    const saved=db.prepare('SELECT document,created_at FROM profile_revisions WHERE profile_id=? AND revision=?').get(row.id,revision);
+    const saved=db.prepare('SELECT document,created_at FROM profile_revisions WHERE profile_id=? AND revision=? AND tenant_id=?').get(row.id,revision,tenant);
     if(!saved)throw failure(404,'profile_revision_not_found','Profilversion nicht gefunden.');
     return {id:row.id,revision,...JSON.parse(saved.document),createdAt:row.created_at,updatedAt:saved.created_at};
   }
   function appendProfile(row,document){
-    db.prepare('INSERT INTO profile_revisions(profile_id,revision,document,created_at) VALUES(?,?,?,?)').run(row.id,row.revision,JSON.stringify(document),row.updated_at);
+    db.prepare('INSERT INTO profile_revisions(profile_id,revision,document,created_at,tenant_id) VALUES(?,?,?,?,?)').run(row.id,row.revision,JSON.stringify(document),row.updated_at,tenant);
     return profileRecord(row);
   }
   function settings({revision}={}){
     if(revision!==undefined)positiveRevision(revision);
-    const row=revision===undefined?db.prepare('SELECT revision,document,updated_at FROM profile_library_settings WHERE id=1').get():db.prepare('SELECT revision,document,created_at AS updated_at FROM profile_settings_revisions WHERE revision=?').get(revision);
+    const row=revision===undefined?db.prepare('SELECT revision,document,updated_at FROM profile_library_settings WHERE tenant_id=?').get(tenant):db.prepare('SELECT revision,document,created_at AS updated_at FROM profile_settings_revisions WHERE revision=? AND tenant_id=?').get(revision,tenant);
     if(!row)throw failure(404,'settings_revision_not_found','Version der Profilzuordnungen nicht gefunden.');
     return {revision:row.revision,...JSON.parse(row.document),updatedAt:row.updated_at};
   }
@@ -150,8 +172,8 @@ export function createProfileLibrary({filename,catalog}){
     return transaction(()=>{
       const current=proposedAssignment(categoryId,type,input,expectedRevision);
       const document=JSON.stringify({defaults:current.defaults,categories:current.categories}),revision=current.revision+1,now=new Date().toISOString();
-      db.prepare('UPDATE profile_library_settings SET revision=?,document=?,updated_at=? WHERE id=1').run(revision,document,now);
-      db.prepare('INSERT INTO profile_settings_revisions(revision,document,created_at) VALUES(?,?,?)').run(revision,document,now);
+      db.prepare('UPDATE profile_library_settings SET revision=?,document=?,updated_at=? WHERE tenant_id=?').run(revision,document,now,tenant);
+      db.prepare('INSERT INTO profile_settings_revisions(revision,document,created_at,tenant_id) VALUES(?,?,?,?)').run(revision,document,now,tenant);
       return settings();
     });
   }
@@ -191,14 +213,14 @@ export function createProfileLibrary({filename,catalog}){
       if(type!==undefined)typeValue(type);
       if(typeof query!=='string'||query.length>256)fail('invalid_query','Ungültige Profilsuche.');
       const term=query.trim().toLowerCase();
-      return db.prepare('SELECT * FROM profiles ORDER BY type,name COLLATE NOCASE,id').all().filter(row=>(type===undefined||row.type===type)&&(!term||row.name.toLowerCase().includes(term)||row.id.includes(term))).map(row=>profileRecord(row));
+      return db.prepare('SELECT * FROM profiles WHERE tenant_id=? ORDER BY type,name COLLATE NOCASE,id').all(tenant).filter(row=>(type===undefined||row.type===type)&&(!term||row.name.toLowerCase().includes(term)||row.id.includes(term))).map(row=>profileRecord(row));
     },
     get(id,{revision}={}){if(revision!==undefined)positiveRevision(revision);const row=profileRow(id);return profileRecord(row,revision??row.revision);},
     create(input){
       const document=profileData(input);
       return transaction(()=>{
         const id='prf_'+randomUUID(),now=new Date().toISOString();
-        db.prepare('INSERT INTO profiles(id,revision,name,type,created_at,updated_at) VALUES(?,1,?,?,?,?)').run(id,document.name,document.type,now,now);
+        db.prepare('INSERT INTO profiles(id,revision,name,type,created_at,updated_at,tenant_id) VALUES(?,1,?,?,?,?,?)').run(id,document.name,document.type,now,now,tenant);
         return appendProfile(profileRow(id),document);
       });
     },
@@ -207,7 +229,7 @@ export function createProfileLibrary({filename,catalog}){
         const row=profileRow(id);checkExpected(row.revision,expectedRevision);
         const document=profileData(input);
         if(document.type!==row.type)fail('profile_type_change','Die Profilart bleibt unverändert. Für eine andere Art bitte ein neues Profil anlegen.');
-        db.prepare('UPDATE profiles SET revision=?,name=?,updated_at=? WHERE id=?').run(row.revision+1,document.name,new Date().toISOString(),id);
+        db.prepare('UPDATE profiles SET revision=?,name=?,updated_at=? WHERE id=? AND tenant_id=?').run(row.revision+1,document.name,new Date().toISOString(),id,tenant);
         return appendProfile(profileRow(id),document);
       });
     },

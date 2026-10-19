@@ -28,7 +28,9 @@ export function shopifyRuntimeConfig(env){
   }
   // K7: App-Proxy-Signatur (Konto-Entwürfe) nutzt dasselbe App-Geheimnis; kein weiteres Feld nötig.
   const appProxy={shopDomain,secret};
-  return {shopifySessions,embeddedApp,shopDrafts,appProxy,dataDirectory,port};
+  // K13: Mandanteneinstellungen des Standardmandanten – nur Namen der Env-/Secret-Felder, nie deren Werte.
+  const tenantSettings={clientSecretRef:'GRAVURU_SHOPIFY_CLIENT_SECRET',storefrontApiVersion:'2026-07',...(env.GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN?{adminTokenRef:'GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN'}:{})};
+  return {shopifySessions,embeddedApp,shopDrafts,appProxy,tenantSettings,dataDirectory,port};
 }
 export function checkShopifyRuntime(env){
   try{const config=shopifyRuntimeConfig(env);return {configured:true,scope:'merchant-embedded-test',draftTransferConfigured:Boolean(config.shopDrafts),credentialsVerified:false,httpsHostVerified:false,privateStorageVerified:false};}

@@ -3,6 +3,7 @@
 import {createHash, randomUUID} from 'node:crypto';
 import {prepareCartRequest} from './storefront-cart.mjs';
 import {CART_LINE_ID} from './cart-configuration.mjs';
+import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const fail = (status, code, message) => Object.assign(new Error(message), {
@@ -10,13 +11,14 @@ const fail = (status, code, message) => Object.assign(new Error(message), {
 });
 const shopPattern = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.myshopify\.com$/;
 
-export function createCartHandoffJournal({database: db}) {
+export function createCartHandoffJournal({database: db, tenantId}) {
+  const tenant = tenantOption({tenantId});
   db.exec(`PRAGMA busy_timeout=5000;
     CREATE TABLE IF NOT EXISTS storefront_cart_handoffs (
       id TEXT PRIMARY KEY, offer_key TEXT NOT NULL UNIQUE,
       principal_hash TEXT NOT NULL, request_hash TEXT NOT NULL,
       state TEXT NOT NULL CHECK(state IN ('started','completed','failed','unknown')),
-      result TEXT, created_at TEXT NOT NULL, finished_at TEXT
+      result TEXT, created_at TEXT NOT NULL, finished_at TEXT, ${TENANT_COLUMN}
     );
     CREATE TRIGGER IF NOT EXISTS storefront_cart_identity_immutable
       BEFORE UPDATE OF offer_key,principal_hash,request_hash,created_at ON storefront_cart_handoffs
@@ -27,6 +29,7 @@ export function createCartHandoffJournal({database: db}) {
     CREATE TRIGGER IF NOT EXISTS storefront_cart_no_delete
       BEFORE DELETE ON storefront_cart_handoffs
       BEGIN SELECT RAISE(ABORT,'Cart handoff needs explicit retention migration'); END;`);
+  ensureTenantColumn(db, 'storefront_cart_handoffs');
 
   return {
     claim({offerKey, principalHash, requestHash}) {
@@ -34,9 +37,10 @@ export function createCartHandoffJournal({database: db}) {
       try {
         const id = 'cart_' + randomUUID();
         const inserted = db.prepare(`INSERT OR IGNORE INTO storefront_cart_handoffs
-          (id,offer_key,principal_hash,request_hash,state,created_at)
-          VALUES(?,?,?,?,'started',?)`).run(id, offerKey, principalHash, requestHash, new Date().toISOString());
-        const row = db.prepare('SELECT * FROM storefront_cart_handoffs WHERE offer_key=?').get(offerKey);
+          (id,offer_key,principal_hash,request_hash,state,created_at,tenant_id)
+          VALUES(?,?,?,?,'started',?,?)`).run(id, offerKey, principalHash, requestHash, new Date().toISOString(), tenant);
+        const row = db.prepare('SELECT * FROM storefront_cart_handoffs WHERE offer_key=? AND tenant_id=?').get(offerKey, tenant);
+        if (!row) throw fail(404, 'cart_private', 'Diese Warenkorbübergabe ist nicht zugänglich.');
         if (row.principal_hash !== principalHash) throw fail(404, 'cart_private', 'Diese Warenkorbübergabe ist nicht zugänglich.');
         if (row.request_hash !== requestHash) throw fail(409, 'cart_changed', 'Die gespeicherte Warenkorbübergabe gehört zu einem anderen Angebotsstand.');
         const result = row.result ? JSON.parse(row.result) : null;
@@ -50,7 +54,7 @@ export function createCartHandoffJournal({database: db}) {
     finish(id, state, result = null) {
       if (!['completed', 'failed', 'unknown'].includes(state)) throw fail(422, 'cart_journal', 'Ungültiger Übergabestatus.');
       const changed = db.prepare(`UPDATE storefront_cart_handoffs SET state=?,result=?,finished_at=?
-        WHERE id=? AND state='started'`).run(state, result === null ? null : JSON.stringify(result), new Date().toISOString(), id);
+        WHERE id=? AND state='started' AND tenant_id=?`).run(state, result === null ? null : JSON.stringify(result), new Date().toISOString(), id, tenant);
       if (changed.changes !== 1) throw fail(409, 'cart_journal', 'Die Warenkorbübergabe wurde bereits abgeschlossen.');
     },
   };

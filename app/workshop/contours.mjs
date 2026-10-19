@@ -4,6 +4,7 @@ import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {sha256,importEnvironment,MAX_DESIGN_BYTES} from './design-assets.mjs';
+import {tenantOption,ensureTenantColumn,tenantKey,TENANT_COLUMN} from './tenant.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const worker=fileURLToPath(new URL('./contour-converter.py',import.meta.url));
@@ -44,13 +45,16 @@ export function contourSvg(g){
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${g.widthMm+2*pad} ${g.heightMm+2*pad}"><title>Formkontur mit ${g.holeCount} Ausschnitten</title><path d="${g.contours.map(c=>c.d+' Z').join(' ')}" fill="#e0e5e8" fill-rule="evenodd" stroke="#485660" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg>`;
 }
 /** Independent immutable form templates in the existing private asset database. */
-export function createContourStore({filename,converter=convertContour}){
+export function createContourStore({filename,converter=convertContour,tenantId}){
   if(filename!==':memory:')mkdirSync(dirname(filename),{recursive:true});
+  // K13: Konturen je Mandant; die Kennung liegt im Schlüsselraum des Mandanten (tenantKey).
+  const tenant=tenantOption({tenantId});
   const db=new DatabaseSync(filename);let busy=false;
   db.exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
-    CREATE TABLE IF NOT EXISTS form_contours (id TEXT PRIMARY KEY, original BLOB NOT NULL, metadata TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS form_contours (id TEXT PRIMARY KEY, original BLOB NOT NULL, metadata TEXT NOT NULL, ${TENANT_COLUMN});
     CREATE TRIGGER IF NOT EXISTS form_contour_immutable BEFORE UPDATE ON form_contours BEGIN SELECT RAISE(ABORT,'immutable contour'); END;`);
-  function row(id){if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'contour_missing','Formkontur nicht gefunden.');const r=db.prepare('SELECT * FROM form_contours WHERE id=?').get(id);if(!r)fail(404,'contour_missing','Formkontur nicht gefunden.');return r;}
+  ensureTenantColumn(db,'form_contours');
+  function row(id){if(!/^[a-f0-9]{64}$/.test(id||''))fail(404,'contour_missing','Formkontur nicht gefunden.');const r=db.prepare('SELECT * FROM form_contours WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'contour_missing','Formkontur nicht gefunden.');return r;}
   const get=id=>JSON.parse(row(id).metadata);
   const summary=({geometry,...rest})=>({...rest,widthMm:geometry.widthMm,heightMm:geometry.heightMm,holeCount:geometry.holeCount});
   return {
@@ -62,15 +66,15 @@ export function createContourStore({filename,converter=convertContour}){
       if(busy)fail(409,'contour_busy','Eine Kontur wird gerade geprüft. Bitte kurz warten.');
       busy=true;
       try{
-        const sourceSha256=sha256(original),id=sha256('gravuru-contour/v1:'+format+':'+sourceSha256);
-        if(db.prepare('SELECT id FROM form_contours WHERE id=?').get(id))return {...get(id),alreadyExists:true};
+        const sourceSha256=sha256(original),id=tenantKey(tenant,sha256('gravuru-contour/v1:'+format+':'+sourceSha256));
+        if(db.prepare('SELECT id FROM form_contours WHERE id=? AND tenant_id=?').get(id,tenant))return {...get(id),alreadyExists:true};
         const geometry=validateGeometry(await converter({kind:format,bytes}));
         const metadata={id,name,format,sourceSha256,geometrySha256:sha256(JSON.stringify(geometry)),createdAt:new Date().toISOString(),geometry};
-        db.prepare('INSERT INTO form_contours VALUES (?,?,?)').run(id,original,JSON.stringify(metadata));
+        db.prepare('INSERT INTO form_contours(id,original,metadata,tenant_id) VALUES(?,?,?,?)').run(id,original,JSON.stringify(metadata),tenant);
         return get(id);
       }finally{busy=false;}
-    },get,
-    list:()=>db.prepare('SELECT metadata FROM form_contours ORDER BY json_extract(metadata,\'$.createdAt\') DESC,id').all().map(r=>summary(JSON.parse(r.metadata))),
+    },get,tenantId:tenant,
+    list:()=>db.prepare('SELECT metadata FROM form_contours WHERE tenant_id=? ORDER BY json_extract(metadata,\'$.createdAt\') DESC,id').all(tenant).map(r=>summary(JSON.parse(r.metadata))),
     original:id=>Buffer.from(row(id).original),
     preview:id=>Buffer.from(contourSvg(get(id).geometry)),
     close:()=>db.close()

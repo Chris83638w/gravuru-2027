@@ -63,6 +63,8 @@ import {createDesignAssetStore,MAX_DESIGN_BYTES,sha256} from './design-assets.mj
 import {planDesignImport,applyDesignImport} from './design-import.mjs';
 import {planCustomerFields,applyCustomerFields} from './customer-fields.mjs';
 import {parseThemeCatalog} from './theme-catalog.mjs';
+import {DatabaseSync} from 'node:sqlite';
+import {DEFAULT_TENANT,createTenantRegistry,tenantFromRequest} from './tenant.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(new Error(message),{status,code});};
 // Master data shipped with the app (provenance inside each file). Loaded only on explicit request.
@@ -80,13 +82,16 @@ async function body(req,limit=2*1024*1024){
 }
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
-/** Loopback preview; optional test session gate is not a public deployment. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null,themes=null,appProxy=null}){
-  // K9: Themen-Definition (themen.json aus dem Katalog) für Galerie und Motivkategorien im Kundeneditor.
-  const themeCatalog=themes===null?null:parseThemeCatalog(themes);
+function checkSessionOptions({operatorCsrfToken=null,merchantCsrfToken=null,shopifySessions=null}){
   if(operatorCsrfToken!==null&&(shopifySessions||typeof operatorCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(operatorCsrfToken)))fail(503,'operator_session_config','Ungültige private Werkstattsitzung.');
   if(merchantCsrfToken!==null&&(!shopifySessions||operatorCsrfToken!==null||typeof merchantCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(merchantCsrfToken)))fail(503,'merchant_session_config','Ungültige Händler-Werkstattsitzung.');
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
+}
+/** Werkstatt genau eines Mandanten (K13): alle Stores werden mit diesem Mandanten angelegt und lesen/schreiben nur ihn. */
+function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null,themes=null,appProxy=null,tenant=null}){
+  // K9: Themen-Definition (themen.json aus dem Katalog) für Galerie und Motivkategorien im Kundeneditor.
+  const themeCatalog=themes===null?null:parseThemeCatalog(themes);
+  checkSessionOptions({operatorCsrfToken,merchantCsrfToken,shopifySessions});
   const verifySession=shopifySessions?createShopifySessionVerifier(shopifySessions):null;
   // K7: Kundenidentität für Konto-Entwürfe. Bevorzugt die App-Proxy-Signatur (serverseitig prüfbar, `logged_in_customer_id`),
   // ersatzweise ein Kundenkonto-Sitzungstoken. Ohne beides ist die Kontoverbindung nicht eingerichtet (503).
@@ -104,29 +109,33 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   }
   if(shopDrafts&&(!verifySession||shopDrafts.config?.shopDomain!==shopifySessions.shopDomain||shopDrafts.config?.mode!=='draft-only'))fail(503,'shop_draft_config','Shop-Entwurfsanbindung benötigt dieselbe bestätigte Händler-Testanmeldung.');
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
-  const fonts=createFontLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite')});
+  // gravurus Stammdaten (Mastervorlage, mitgelieferte Familien) gehören nur dem Standardmandanten.
+  const ownsBundled=tenantId===DEFAULT_TENANT,bundledFamilies=ownsBundled?BUNDLED_FAMILIES:[];
+  // Dateinamen der Downloads tragen den Mandantennamen; für gravuru bleibt das bisherige Präfix „Gravuru“.
+  const downloadPrefix=ownsBundled?'Gravuru':(String(tenant?.name||tenantId).replace(/[^A-Za-z0-9-]+/g,'-').replace(/^-+|-+$/g,'')||tenantId);
+  const fonts=createFontLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),tenantId});
   const formFonts={...seed.config.localResources.fonts,...workshopResources(seed.config.localResources).fonts,...fonts.resources()};
-  const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources)});
+  const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources),tenantId});
   profiles.registerFonts(fonts.list());
-  const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite')});
-  const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter});
-  const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter});
+  const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),tenantId});
+  const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter,tenantId});
+  const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter,tenantId});
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,formFonts);productionProfiles.resolve(d);return d;};
-  const repository=createProductRepository({filename,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
-  if(!repository.firstId())repository.create(seed);
-  const families=createProductFamilies({filename,repository});
-  const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider,imageProvider:aiDesign?.imageProvider,assets});
-  const aiBatches=createAiBatchJobs({filename,repository,aiJobs});
-  const variants=createFormVariants({filename,repository});
-  const batchJobs=createBatchJobs({filename,repository,assets});
-  const variantBatchJobs=createVariantBatchJobs({filename,variants});
+  const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
+  if(ownsBundled&&!repository.firstId())repository.create(seed);
+  const families=createProductFamilies({filename,repository,tenantId});
+  const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider,imageProvider:aiDesign?.imageProvider,assets,tenantId});
+  const aiBatches=createAiBatchJobs({filename,repository,aiJobs,tenantId});
+  const variants=createFormVariants({filename,repository,tenantId});
+  const batchJobs=createBatchJobs({filename,repository,assets,tenantId});
+  const variantBatchJobs=createVariantBatchJobs({filename,variants,tenantId});
   const defaultId=repository.firstId();
   const csrfToken=operatorCsrfToken??merchantCsrfToken??randomBytes(32).toString('hex');
   // Akteur für Freigabeübergänge: Händler-Benutzer aus der Shopify-Sitzung, sonst die lokale Werkstattsitzung (abgeleitete Kennung, nie das Token selbst).
   const localActor='werkstatt:'+createHash('sha256').update(csrfToken).digest('hex').slice(0,12);
   // Automatische Fertigungsfreigabe nur, wenn der fest zugeordnete Profilstand sie ausdrücklich erlaubt.
   const autoRelease=line=>Boolean(line.productionProfile)&&productionProfiles.get(line.productionProfile.id,line.productionProfile.revision).document.autoRelease===true;
-  const customerDrafts=createFormCustomerStore({filename,autoRelease}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
+  const customerDrafts=createFormCustomerStore({filename,autoRelease,tenantId}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
   // Explicit server configuration only; constructing the default preview never enables Shopify writes.
   let cartGate=null;
@@ -393,14 +402,14 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/order-offers'&&method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['bindingId','snapshotId','quantity'].includes(k)))fail(422,'offer_fields','Unbekannte Checkout-Felder.');return json(res,201,orderIntake.offer(data));}
       if(pathname==='/api/workshop/variants/batch/export'&&method==='POST'){
         const data=variantExportData(variants,repository,await body(req)),bytes=await variantWorkbook(data);
-        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Ausfuehrungen-Bestand.xlsx"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
+        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${downloadPrefix}-Ausfuehrungen-Bestand.xlsx"`,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
       }
       if(pathname==='/api/workshop/variant-import-template'&&method==='GET'){
-        const bytes=fs.readFileSync(new URL('./templates/ausfuehrungen.xlsx',import.meta.url));res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Ausfuehrungen.xlsx"','Cache-Control':'no-store'}).end(bytes);return;
+        const bytes=fs.readFileSync(new URL('./templates/ausfuehrungen.xlsx',import.meta.url));res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${downloadPrefix}-Ausfuehrungen.xlsx"`,'Cache-Control':'no-store'}).end(bytes);return;
       }
       if(pathname==='/api/workshop/variants/batch/report'&&method==='POST'){
         const data=variantBatchReportData(variants,await body(req)),bytes=await variantBatchReportWorkbook(data);
-        const filename=data.mode==='errors'?'Gravuru-Ausfuehrungen-Korrektur.xlsx':'Gravuru-Ausfuehrungen-Pruefbericht.xlsx';
+        const filename=data.mode==='errors'?`${downloadPrefix}-Ausfuehrungen-Korrektur.xlsx`:`${downloadPrefix}-Ausfuehrungen-Pruefbericht.xlsx`;
         res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${filename}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
       }
       if(pathname==='/api/workshop/variants/batch/jobs'){
@@ -435,7 +444,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         if(method==='PATCH'&&!action){const data=await body(req);return json(res,200,variants.save(id,data.document,data.expectedRevision));}
         fail(405,'method_not_allowed','Diese Ausführungsaktion ist nicht möglich.');
       }
-      if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,scope:merchantSession?'shopify-merchant-test':'local-operator',merchantTestCart:merchantSession&&merchantTestCart?{productId:merchantTestCart.productId,productRevision:merchantTestCart.productRevision}:null});
+      if(pathname==='/api/workshop/session'&&method==='GET')return json(res,200,{csrfToken,tenant:{id:tenantId,name:tenant?.name??tenantId},scope:merchantSession?'shopify-merchant-test':'local-operator',merchantTestCart:merchantSession&&merchantTestCart?{productId:merchantTestCart.productId,productRevision:merchantTestCart.productRevision}:null});
       const customerModel=pathname.match(/^\/api\/workshop\/customer-model\/(cfg_[a-f0-9-]{36})$/);
       if(customerModel&&method==='GET'){
         if(!url.searchParams.has('revision'))fail(422,'revision_required','Eine feste Produktrevision ist erforderlich.');
@@ -585,10 +594,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/form-materials'&&method==='GET')return json(res,200,{materials:FORM_MATERIALS});
       if(pathname==='/api/workshop/form-motifs'&&method==='GET')return json(res,200,{motifs:formMotifs()});
       if(pathname==='/api/workshop/families'){
-        if(method==='GET')return json(res,200,{families:families.list(),bundled:BUNDLED_FAMILIES.map(({id,name})=>({id,name})),layouts:families.layouts()});
+        if(method==='GET')return json(res,200,{families:families.list(),bundled:bundledFamilies.map(({id,name})=>({id,name})),layouts:families.layouts()});
         if(method==='POST'){
           const data=await body(req,4*1024*1024),keys=Object.keys(data).join(',');
-          if(keys==='bundled'){const source=BUNDLED_FAMILIES.find(f=>f.id===data.bundled);if(!source)fail(404,'family_source_missing','Diese Stammdaten sind nicht vorhanden.');return json(res,201,families.create(source.load()));}
+          if(keys==='bundled'){const source=bundledFamilies.find(f=>f.id===data.bundled);if(!source)fail(404,'family_source_missing','Diese Stammdaten sind nicht vorhanden.');return json(res,201,families.create(source.load()));}
           if(keys!=='document')fail(422,'family_invalid','Familiendaten oder vorhandene Stammdaten angeben.');
           return json(res,201,families.create(data.document));
         }
@@ -654,7 +663,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           return json(res,200,{svg,designSvg:overlay?svg.replace('</svg>',overlay+'</svg>'):null,materialPreview:{...surface,svg:surface.svg?composeMaterialPreview(surface.svg,overlay):null},geometry:document.form.geometry,readiness:formReadiness(document),revision:record.revision});
         }
         const bytes=await formContourPdf(document,record);
-        res.writeHead(200,{'Content-Type':'application/pdf','Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Disposition':`attachment; filename="Gravuru-Kontur-${record.id}-v${record.revision}.pdf"`}).end(bytes);return;
+        res.writeHead(200,{'Content-Type':'application/pdf','Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Disposition':`attachment; filename="${downloadPrefix}-Kontur-${record.id}-v${record.revision}.pdf"`}).end(bytes);return;
       }
       if(pathname==='/api/workshop/contours'){
         if(method==='GET')return json(res,200,{contours:contours.list()});
@@ -669,7 +678,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         res.writeHead(200,{'Content-Type':original?(record.format==='pdf'?'application/pdf':'image/svg+xml'):'image/svg+xml',
           'Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff',
           'Content-Security-Policy':"default-src 'none'; sandbox",
-          ...(original?{'Content-Disposition':`attachment; filename="Gravuru-Kontur-${record.sourceSha256.slice(0,12)}.${record.format}"`}:{})}).end(bytes);return;
+          ...(original?{'Content-Disposition':`attachment; filename="${downloadPrefix}-Kontur-${record.sourceSha256.slice(0,12)}.${record.format}"`}:{})}).end(bytes);return;
       }
       if(pathname==='/api/workshop/design-assets/import'&&method==='POST'){
         const data=await body(req,Math.ceil(MAX_DESIGN_BYTES/3)*4+4096);
@@ -706,7 +715,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         res.writeHead(200,{'Content-Type':original?(asset.format==='pdf'?'application/pdf':'image/svg+xml'):'image/svg+xml',
           'Content-Length':bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff',
           'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'none'; sandbox",
-          ...(original?{'Content-Disposition':`attachment; filename="Gravuru-Original-${asset.sourceSha256.slice(0,12)}.${asset.format}"`}:{})}).end(bytes);return;
+          ...(original?{'Content-Disposition':`attachment; filename="${downloadPrefix}-Original-${asset.sourceSha256.slice(0,12)}.${asset.format}"`}:{})}).end(bytes);return;
       }
       const editorMatch=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/editor-preview$/);
       if(editorMatch&&method==='POST'){
@@ -761,7 +770,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/seed'&&method==='GET')return json(res,200,{document:structuredClone(seed)});
       if(pathname==='/api/workshop/import-template'&&method==='GET'){
         const bytes=fs.readFileSync(new URL('./templates/produktserie.xlsx',import.meta.url));
-        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Produktserie.xlsx"','Content-Length':bytes.length,'Cache-Control':'no-store'}).end(bytes);return;
+        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${downloadPrefix}-Produktserie.xlsx"`,'Content-Length':bytes.length,'Cache-Control':'no-store'}).end(bytes);return;
       }
       if(pathname==='/api/workshop/profiles'){
         if(method==='GET')return json(res,200,{profiles:profiles.list(),catalog:profiles.catalog(),settings:profiles.settings()});
@@ -786,7 +795,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/profile-settings/impact'&&method==='POST')return json(res,200,assignmentChangeImpact(repository,profiles,await body(req)));
       if(pathname==='/api/workshop/batch/export'&&method==='POST'){
         const bytes=await designWorkbook(designExportData(repository,await body(req)));
-        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':'attachment; filename="Gravuru-Designzuordnungen.xlsx"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
+        res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${downloadPrefix}-Designzuordnungen.xlsx"`,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
       }
       if(pathname==='/api/workshop/batch/jobs'){
         if(method==='GET')return json(res,200,{jobs:batchJobs.list()});
@@ -807,7 +816,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       if(pathname==='/api/workshop/batch/report'&&method==='POST'){
         const data=batchReportData(repository,await body(req),assets),bytes=await batchReportWorkbook(data);
-        const filename=data.mode==='errors'?'Gravuru-Fehlerkorrektur.xlsx':'Gravuru-Pruefbericht.xlsx';
+        const filename=data.mode==='errors'?`${downloadPrefix}-Fehlerkorrektur.xlsx`:`${downloadPrefix}-Pruefbericht.xlsx`;
         res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':`attachment; filename="${filename}"`,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'}).end(bytes);return;
       }
       if(pathname==='/api/workshop/batch/commit'&&method==='POST')return json(res,200,commitBatch(repository,await body(req),assets));
@@ -870,5 +879,44 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model,defaultId,close:()=>{families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+}
+
+/** Loopback preview; optional test session gate is not a public deployment.
+ *  K13: Der Mandant wird je Anfrage einmal bestimmt (tenant.mjs) und die Anfrage an die Werkstatt genau dieses
+ *  Mandanten gegeben. Der Standardmandant (gravuru) bekommt die übergebene Konfiguration; weitere Mandanten nur
+ *  mit eigener, bestätigter Shop-Anbindung aus `tenantOptions(tenant, settings)` – sonst 503. Die Eigenschaften
+ *  des Rückgabewerts (repository, orderIntake, …) sind die Stores des Standardmandanten. */
+export function createWorkshop(options){
+  const {filename,tenantOptions=null,tenantSettings=null}=options;
+  checkSessionOptions(options);
+  if(filename!==':memory:')fs.mkdirSync(path.dirname(filename),{recursive:true});
+  const registryDb=new DatabaseSync(filename);registryDb.exec('PRAGMA busy_timeout=5000;');
+  let tenants,primary;
+  try{
+    // Shop-Domain des Standardmandanten aus der Laufzeitkonfiguration (nie hartkodiert); lokal ohne Shop: null.
+    const shopDomain=options.shopifySessions?.shopDomain??options.appProxy?.shopDomain??options.shopDrafts?.config?.shopDomain??options.orderWebhook?.shopDomain??null;
+    tenants=createTenantRegistry({database:registryDb,shopDomain});
+    for(const [key,value] of Object.entries(tenantSettings||{}))tenants.setSetting(DEFAULT_TENANT,key,value);
+    primary=createTenantWorkshop(DEFAULT_TENANT,{...options,tenant:tenants.seed});
+  }catch(error){registryDb.close();throw error;}
+  const others=new Map();
+  function workshopFor(tenant){
+    if(tenant.id===DEFAULT_TENANT)return primary;
+    if(others.has(tenant.id))return others.get(tenant.id);
+    const own=typeof tenantOptions==='function'?tenantOptions(tenant,tenants.settings(tenant.id)):null;
+    // Ein weiterer Mandant ist nur mit eigener Händlersitzung erreichbar; eine bloße Shop-Domain im Request genügt nie.
+    if(!own?.shopifySessions||own.shopifySessions.shopDomain!==tenant.shopDomain)fail(503,'tenant_unverified','Für diesen Mandanten ist keine bestätigte Shop-Anbindung eingerichtet.');
+    const {filename:_f,seedConfig:_s,legacy:_l,...rest}=own;
+    const workshop=createTenantWorkshop(tenant.id,{filename,seedConfig:options.seedConfig,legacy:options.legacy,designConverter:options.designConverter,contourConverter:options.contourConverter,...rest,tenant});
+    others.set(tenant.id,workshop);return workshop;
+  }
+  async function handle(req,res,url){
+    let target;
+    try{target=workshopFor(tenantFromRequest(req,url,{tenants}));}
+    catch(error){const status=error.status||503;if(!res.headersSent)json(res,status,{error:{code:error.code||'tenant_unknown',message:error.message}});return;}
+    return target.handle(req,res,url);
+  }
+  return {...primary,handle,tenants,forTenant:id=>workshopFor(tenants.require(id)),
+    close:()=>{for(const w of others.values())w.close();primary.close();registryDb.close();}};
 }

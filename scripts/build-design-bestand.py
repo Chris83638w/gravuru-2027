@@ -326,6 +326,16 @@ def main():
         lf = lifespan_years(' '.join(norm(t['text']) for t in rec['texts'])); rec['beispielAlter'] = round(lf, 1) if lf is not None else None
         rec['_dirs'] = [r['_dir'] for r in recs]
         designs.append(rec)
+    # Varianten: gleiche Design-Nummer, gleiches Verfahren, gleiche Texte in anderer Reihe (Form/Material/Farbe) → eine Hauptvariante, Rest „Variante von“
+    if generic:
+        by_sig = collections.defaultdict(list)
+        for d in designs:
+            if d['texts']: by_sig[(d['designNo'], d['process'], tuple(sorted(norm(t['text']) for t in d['texts'])))].append(d)
+        for sg in by_sig.values():
+            if len(sg) < 2: continue
+            sg.sort(key=lambda d: (len(d['series']), d['series']))
+            sg[0]['variants'] = [v['key'] for v in sg[1:]]
+            for v in sg[1:]: v['variantOf'] = sg[0]['key']
     # Ablage: Zielgruppe/Unterkategorie/Schlüssel
     for d in designs:
         k = d['kategorie']; k['ziel'] = safe(k['ziel']); k['unter'] = safe(k['unter']); folder = out / k['ziel'] / k['unter'] / d['key']
@@ -364,17 +374,17 @@ def write_xlsx(index, path, out):
     from openpyxl import Workbook
     from openpyxl.styles import PatternFill, Font, Alignment
     wb = Workbook(); ws = wb.active; ws.title = 'Designs'
-    head = ['Schlüssel', 'Reihe', 'Verfahren', 'Form', 'Material (Master)', 'weitere Materialien', 'Design-Nr', 'Zielgruppe', 'Unterkategorie', 'Sicherheit', 'Foto', 'Texte', 'Alter (Beispieldaten)', 'Schriften', 'Größen im Bestand', 'SKUs', 'Vorschau', 'Begründung', 'Bemerkung', 'Schrift fehlt (Vorschau mit Ersatz)', 'Musterfotos']
+    head = ['Schlüssel', 'Reihe', 'Verfahren', 'Form', 'Material (Master)', 'weitere Materialien', 'Design-Nr', 'Zielgruppe', 'Unterkategorie', 'Sicherheit', 'Foto', 'Texte', 'Alter (Beispieldaten)', 'Schriften', 'Größen im Bestand', 'SKUs', 'Vorschau', 'Begründung', 'Bemerkung', 'Schrift fehlt (Vorschau mit Ersatz)', 'Musterfotos', 'Variante von', 'Varianten']
     ws.append(head); yellow = PatternFill('solid', fgColor='FFF2CC')
     for c in ws[1]: c.font = Font(bold=True)
     for d in index:
         k = d['kategorie']
         ws.append([d['key'], d['seriesLabel'], d['process'], d['form'], d['material'], ', '.join(d['materials'][1:]), d['designNo'], k['ziel'], k['unter'], k['sicherheit'], k['foto'],
-                   ' | '.join(t['text'].replace('\n', ' / ') for t in d['texts'])[:500], d.get('beispielAlter'), ', '.join(d['fonts']), ', '.join(d['sizesInStock']), ', '.join(d['ids']), d['path'] + '/preview.png', k['begruendung'], k.get('bemerkung', ''), ', '.join(d.get('fontsMissing') or []), len(d.get('photoFiles') or [])])
+                   ' | '.join(t['text'].replace('\n', ' / ') for t in d['texts'])[:500], d.get('beispielAlter'), ', '.join(d['fonts']), ', '.join(d['sizesInStock']), ', '.join(d['ids']), d['path'] + '/preview.png', k['begruendung'], k.get('bemerkung', ''), ', '.join(d.get('fontsMissing') or []), len(d.get('photoFiles') or []), d.get('variantOf', ''), ', '.join(d.get('variants') or [])])
         r = ws.max_row
         for col in (8, 9, 11, 19): ws.cell(r, col).fill = yellow
         ws.cell(r, 17).hyperlink = d['path'] + '/preview.png'
-    widths = [34, 30, 9, 12, 16, 22, 9, 12, 14, 14, 7, 80, 9, 30, 30, 40, 40, 40, 30, 30, 10]
+    widths = [34, 30, 9, 12, 16, 22, 9, 12, 14, 14, 7, 80, 9, 30, 30, 40, 40, 40, 30, 30, 10, 24, 40]
     for i, w in enumerate(widths, 1): ws.column_dimensions[ws.cell(1, i).column_letter].width = w
     ws.freeze_panes = 'B2'; ws.auto_filter.ref = ws.dimensions
     for row in ws.iter_rows(min_row=2):
@@ -408,7 +418,8 @@ def write_contact_sheets(designs, out, cols=5):
     ud = out / '_uebersicht'; ud.mkdir(exist_ok=True)
     for old in ud.glob('*.png'): old.unlink()
     by = collections.defaultdict(list)
-    for d in designs: by[(d['kategorie']['ziel'], d['kategorie']['unter'])].append(d)
+    for d in designs:
+        if not d.get('variantOf'): by[(d['kategorie']['ziel'], d['kategorie']['unter'])].append(d)
     for (z, u), ds in sorted(by.items()):
         tiles = [(d, out / d['path'] / 'preview.png') for d in ds]
         tiles = [(d, p) for d, p in tiles if p.exists()]
@@ -422,15 +433,16 @@ def write_contact_sheets(designs, out, cols=5):
                 im = Image.open(p).convert('RGB'); im.thumbnail((tw, th - 40))
                 x = 10 + (i % cols) * (tw + 10); y = 50 + (i // cols) * (th + 10)
                 sheet.paste(im, (x, y)); dr.text((x, y + im.height + 3), d['key'], fill='black')
-                dr.text((x, y + im.height + 16), (d['kategorie']['sicherheit'] + ' · ' + ', '.join(d['materials']))[:60], fill=(90, 90, 90))
+                dr.text((x, y + im.height + 16), (d['kategorie']['sicherheit'] + ' · ' + ', '.join(d['materials']) + (f" · +{len(d['variants'])} Varianten" if d.get('variants') else ''))[:60], fill=(90, 90, 90))
                 if d.get('fontsMissing'): dr.text((x + 200, y + im.height + 3), ('Ersatzschrift: ' + ', '.join(d['fontsMissing']))[:34], fill=(190, 60, 0))
             sheet.save(ud / f"{z}-{u}{'-' + str(part // 60 + 1) if len(tiles) > 60 else ''}.png")
 
 
 def write_overview_md(index, out, line):
     """UEBERSICHT.md: alle Übersichtsbögen eingebettet – ein Link für den Nutzer (GitHub rendert die Bilder)."""
+    n_var = sum(1 for d in index if d.get('variantOf')); index = [d for d in index if not d.get('variantOf')]
     cnt = collections.Counter((d['kategorie']['ziel'], d['kategorie']['unter']) for d in index)
-    md = [f'# {line.capitalize()} – Übersicht der Bestandsdesigns', '', f'{len(index)} Designs, vorsortiert nach Zielgruppe und Unterkategorie. Unter jedem Bild: Schlüssel · Sicherheit der Zuordnung · Materialien. Korrekturen in [`{line.upper()}-DESIGNS.xlsx`]({line.upper()}-DESIGNS.xlsx).', '']
+    md = [f'# {line.capitalize()} – Übersicht der Bestandsdesigns', '', f'{len(index)} Designs' + (f' (dazu {n_var} Varianten desselben Designs in anderer Form/Farbe/Material, in der Excel als „Variante von“)' if n_var else '') + f', vorsortiert nach Zielgruppe und Unterkategorie. Unter jedem Bild: Schlüssel · Sicherheit der Zuordnung · Materialien. Korrekturen in [`{line.upper()}-DESIGNS.xlsx`]({line.upper()}-DESIGNS.xlsx).', '']
     md += ['Sprungmarken: ' + ' · '.join(f'[{z} – {u} ({n})](#{re.sub(r"[^a-z0-9]+", "-", (z + "-" + u).lower()).strip("-")})' for (z, u), n in sorted(cnt.items())), '']
     for (z, u), n in sorted(cnt.items()):
         md += [f'## {z} – {u}', '', f'{n} Designs', '']

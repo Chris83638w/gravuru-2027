@@ -17,7 +17,7 @@ import {physicalTextSize,designTextSize,applyPrintColor} from './usability-model
 import {installAcrylicScene} from './acrylic-scene.mjs';
 import {acrylicSelection} from './acrylic-product.mjs';
 import {selectionIds} from './profile-selection.mjs';
-import {rightForProperty} from './element-rights.mjs';
+import {rightForProperty,canEditElement,customerAdditionPolicy} from './element-rights.mjs';
 import {beginCustomerRights} from './customer-rights.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -73,6 +73,10 @@ export async function installUX(el,config,legacy){
     <div class="ux-actions">${button('bold','Fett','aria-pressed="false"')}${button('italic','Kursiv','aria-pressed="false"')}${button('duplicate',`${icons.duplicate}Duplizieren`)}${button('delete',`${icons.delete}Löschen`)}</div>${isPrint?'<label class="ux-print-color">Druckfarbe <input type="color" data-ux-color aria-label="Druckfarbe des ausgewählten Texts" value="#202824"></label>':''}
     <details class="ux-precise"><summary>Position & Drehung</summary><div class="ux-precise-fields">${[['x','Horizontal · mm'],['y','Vertikal · mm'],['rotation','Drehung · °']].map(([key,label])=>`<label>${label}<input type="number" data-ux-prop="${key}" step="${config?.workbench?.embedded?'.01':'1'}"></label>`).join('')}</div></details>
     <p class="ux-tip">Hilfslinien helfen dir beim mittigen Ausrichten. Die Linien werden nicht mitgefertigt.</p></div>`;
+  // The product's addition policy (server-enforced in contract.mjs) also hides the offers.
+  const additions=customerAdditionPolicy(config);
+  if(!additions.text)$('[data-ux=add-text]').hidden=true;
+  if(!additions.motifs){const library=$('#panel-motif');if(library)library.hidden=true;}
   $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Deine Fotos':'Deine Logos'}</h2><p>${(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} Foto(s) inklusive · weitere Dateien ${money(config.photo.extraPriceCents)} · maximal vier insgesamt.`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}<br>JPG, PNG oder WebP · bis 15 MB.</p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><p class="ux-small">${config&&photoEnabled?'Dein Foto erscheint direkt auf deinem Schild. ':''}Deine Dateien bleiben im lokalen Prüfstand in dieser Sitzung.</p><input type="file" accept="image/jpeg,image/png,image/webp" data-ux-file hidden>`;
   const dialogs={};
   function dialog(key,title,body){const d=document.createElement('dialog');d.className='ux-dialog ux-'+key+'-dialog';d.setAttribute('aria-label',title);d.innerHTML=`<header><h2>${title}</h2>${button('close','✕','aria-label="Fenster schließen"')}</header>${body}`;d.addEventListener('click',e=>{if(e.target.closest('[data-ux=close]'))d.close();});const show=d.showModal.bind(d);d.showModal=()=>{window.GravuruChat?.close?.();for(const other of all('dialog[open]'))if(other!==d&&!other.matches('.c-large-preview'))other.close();show();};r.append(d);dialogs[key]=d;return d;}
@@ -255,7 +259,7 @@ export async function installUX(el,config,legacy){
     if(action==='smaller'||action==='bigger'){changeObject('size',(selected()?displayTextSize(selected()):4)+(action==='bigger'?1:-1));return;}
     if(action==='bold'||action==='italic'){changeObject(action,!selected()?.[action]);return;}
     if(['left','center','right'].includes(action)){if(el.uxAlign){el.uxAlign(action);return;}const o=selected();if(o)changeObject('x',action==='center'?width/2:action==='left'?o.w/2+8:width-o.w/2-8);return;}
-    if(['layer-front','layer-back'].includes(action)){if(!selectable())return;mutate(()=>{const o=selected();el.state.objects=el.state.objects.filter(v=>v.id!==o.id);if(action==='layer-front')el.state.objects.push(o);else el.state.objects.unshift(o);});return;}
+    if(['layer-front','layer-back'].includes(action)){if(!selectable())return;const o=selected();if(!canEditElement(config,el.state.designId,o,'order'))return say('Die Reihenfolge der Vorlagenelemente ist fest. Eigene Elemente liegen immer darüber.');mutate(()=>{const templateIds=new Set((design()?.objects||[]).map(v=>v.id)),rest=el.state.objects.filter(v=>v.id!==o.id);if(action==='layer-front')rest.push(o);else rest.splice(rest.findLastIndex(v=>templateIds.has(v.id))+1,0,o);el.state.objects=rest;});return;}
     if(['undo','redo','delete','duplicate'].includes(action)){if(['delete','duplicate'].includes(action)&&selected()?.locked)return say('Das feste Rastermotiv kann verschoben und skaliert werden.');if(action==='duplicate'&&selected()?.uxUploadId)return say('Bitte Fotos und Logos über den Upload hinzufügen, damit Anzahl und Aufpreis eindeutig bleiben.');await el.action(action);return;}
   });
   r.addEventListener('focusin',e=>{const f=e.target.closest('[data-ux-text]');if(f&&el.state.selected!==f.dataset.uxText){el.state.selected=f.dataset.uxText;el.sync();}});

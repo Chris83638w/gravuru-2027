@@ -96,6 +96,49 @@ test('upload accepts only explicit raster types and positive sizes within limit'
 });
 
 
+test('server gate (K2): element rights, additions and template layer order are enforced in saveDraft and readDraft',()=>{
+ const designId=config.profile.designs[0].id,source=config.profile.designs[0].objects;
+ const none={content:false,color:false,replace:false,move:false,scale:false,delete:false};
+ const withRights=(rights,extra={})=>({...config,...extra,workshopElementRights:{[designId]:Object.fromEntries(source.map(o=>[o.id,{...none,...(rights[o.id]||{})}]))}});
+ const textId=source.find(o=>o.type==='text').id,motifId=source.find(o=>o.type==='motif').id,photoId=source.find(o=>o.type==='photoSlot').id;
+ const draftOf=(c,s)=>saveDraft(c,s,{},fonts,motifs);
+ // (a) delete or hide a template element without the delete right
+ let c=withRights({});let s=state();s.objects=s.objects.filter(o=>o.id!==textId);assert.throws(()=>draftOf(c,s),/darf nicht entfernt oder ausgeblendet/);
+ s=state();s.objects.find(o=>o.id===motifId).uxHidden=true;assert.throws(()=>draftOf(c,s),/darf nicht entfernt oder ausgeblendet/);
+ s=state();s.objects.find(o=>o.id===motifId).opacity=0;assert.throws(()=>draftOf(c,s),/darf nicht entfernt oder ausgeblendet/);
+ c=withRights({[textId]:{delete:true},[motifId]:{delete:true}});s=state();s.objects=s.objects.filter(o=>o.id!==textId);s.objects.find(o=>o.id===motifId).uxHidden=true;assert.doesNotThrow(()=>draftOf(c,s));
+ // (b) change without the respective right; text width/height may follow permitted content; structure never
+ c=withRights({});s=state();s.objects.find(o=>o.id===textId).text='Luna';assert.throws(()=>draftOf(c,s),/„name“ darf nicht verändert werden \(Recht content fehlt\)/);
+ s=state();s.objects.find(o=>o.id===textId).x+=1;assert.throws(()=>draftOf(c,s),/Recht move fehlt/);
+ s=state();s.objects.find(o=>o.id===textId).color='#123456';assert.throws(()=>draftOf(c,s),/Recht color fehlt/);
+ s=state();Object.assign(s.objects.find(o=>o.id===photoId),{uxUploadId:'u',uxUploadKind:'photo'});assert.throws(()=>draftOf(c,s),/Recht replace fehlt/);
+ c=withRights({[textId]:{content:true}});s=state();const t=s.objects.find(o=>o.id===textId);t.text='Luna';t.w+=20;t.h+=2;assert.doesNotThrow(()=>draftOf(c,s));
+ s=state();s.objects.find(o=>o.id===textId).size+=1;assert.throws(()=>draftOf(c,s),/Recht scale fehlt/);
+ c=withRights({[textId]:{content:true,color:true,move:true,scale:true},[photoId]:{replace:true}});s=state();Object.assign(s.objects.find(o=>o.id===textId),{text:'Luna',color:'#123456',x:140,size:9});Object.assign(s.objects.find(o=>o.id===photoId),{uxUploadId:'u',uxUploadKind:'photo'});assert.doesNotThrow(()=>draftOf(c,s));
+ s=state();s.objects.find(o=>o.id===textId).fieldKey='other';assert.throws(()=>draftOf(c,s),/Vorlageneigenschaften nicht ändern/);
+ s=state();s.objects.find(o=>o.id===textId).customerEditable=false;assert.throws(()=>draftOf(c,s),/Vorlageneigenschaften nicht ändern/);
+ // (c) additions only when the product allows them; never photo areas
+ const own=newEditableObject(config,{type:'text',text:'Eigen',font:'Montserrat',size:8},'own-text',fonts,motifs),ownMotif=newEditableObject(config,{type:'motif',motif:motifs[0].key},'own-motif',fonts,motifs);
+ s=state();s.objects.push(own,ownMotif);assert.doesNotThrow(()=>draftOf(config,s));
+ const closed=prepareConfig({...structuredClone(config),customerAdditions:{text:false,motifs:false,maxElements:0}});
+ assert.throws(()=>draftOf(closed,s),/Eigener Text ist bei diesem Produkt nicht vorgesehen/);
+ assert.throws(()=>newEditableObject(closed,{type:'text',text:'Eigen',font:'Montserrat',size:8},'own-text',fonts,motifs),/Eigener Text/);
+ assert.throws(()=>newEditableObject(closed,{type:'motif',motif:motifs[0].key},'own-motif',fonts,motifs),/Eigene Motive/);
+ const textOnly=prepareConfig({...structuredClone(config),customerAdditions:{text:true,motifs:false,maxElements:1}});
+ s=state();s.objects.push(own);assert.doesNotThrow(()=>draftOf(textOnly,s));
+ s.objects.push(ownMotif);assert.throws(()=>draftOf(textOnly,s),/Eigene Motive sind bei diesem Produkt nicht vorgesehen/);
+ s=state();s.objects.push(own,{...own,id:'own-text-2',y:own.y+12});assert.throws(()=>draftOf(textOnly,s),/höchstens 1 zusätzliche Elemente/);
+ s=state();s.objects.push({...structuredClone(s.objects.find(o=>o.id===photoId)),id:'own-photo',fieldKey:'photo-own'});assert.throws(()=>draftOf(config,s),/nicht zum freien Hinzufügen/);
+ assert.throws(()=>prepareConfig({...structuredClone(config),customerAdditions:{text:true}}),/Kundenfreigaben/);
+ // (d) template layer order stays, additions only above
+ s=state();s.objects.reverse();assert.throws(()=>draftOf(config,s),/Ebenenreihenfolge der Vorlagenelemente/);
+ s=state();s.objects.unshift(own);assert.throws(()=>draftOf(config,s),/oberhalb der Vorlagenelemente/);
+ s=state();s.objects.splice(1,0,own);assert.throws(()=>draftOf(config,s),/oberhalb der Vorlagenelemente/);
+ s=state();s.objects.push(own);const draft=draftOf(config,s);assert.equal(readDraft(config,draft,fonts,motifs).design.objects.at(-1).id,'own-text');
+ const forged=structuredClone(draft);forged.design.objects.reverse();assert.throws(()=>readDraft(config,forged,fonts,motifs),/Ebenenreihenfolge/);
+ const hidden=structuredClone(draft);hidden.design.objects=hidden.design.objects.filter(o=>o.id!==photoId);assert.throws(()=>readDraft(withRights({}),hidden,fonts,motifs),/nicht entfernt/);
+});
+
 test('photo background instructions roundtrip and reject invalid or misplaced values',()=>{
  const s=state(),photo=s.objects.find(o=>o.type==='photoSlot');photo.uxUploadId='test-photo';photo.uxUploadKind='photo';photo.uxPhotoBackground='keep';
  const loaded=readDraft(config,save(s),fonts,motifs);assert.equal(loaded.design.objects.find(o=>o.id===photo.id).uxPhotoBackground,'keep');

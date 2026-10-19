@@ -5,10 +5,11 @@ import {prepareConfig,resolvedOptions,selectedProfile,quote,validateDesign,clean
 import {ACRYLIC_BASES,ACRYLIC_SIZES,acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
+import {legacyElementRights,ELEMENT_RIGHTS} from '../configurator/variant-m/element-rights.mjs';
 
 export const PRODUCT_SCHEMA='gravuru-product/v1';
 const PROFILE_TYPES=['fonts','motifs','colors','bestsellers'];
-const RIGHTS=['content','color','replace','move','scale','delete'];
+const RIGHTS=ELEMENT_RIGHTS;
 const DOCUMENT_KEYS=['schema','name','kind','masterId','categoryIds','seo','profileAssignments','elementRights','config'];
 const fail=message=>{throw Error(message);};
 const record=value=>value!==null&&typeof value==='object'&&!Array.isArray(value)&&[Object.prototype,null].includes(Object.getPrototypeOf(value));
@@ -26,14 +27,11 @@ function jsonData(value,seen=new Set()){
   if((!Array.isArray(value)&&!record(value))||seen.has(value))fail('Das Produkt muss aus vollständigen JSON-Daten bestehen.');
   seen.add(value);for(const child of Object.values(value))jsonData(child,seen);seen.delete(value);
 }
-function capability(object){
-  const editable=object.customerEditable!==false&&!object.technicalLocked&&!object.locked;
-  const movable=editable&&!object.acrylicFixed;
-  return {content:editable&&object.type==='text',color:editable&&['text','motif','graphic'].includes(object.type),
-    replace:editable&&(object.type==='photoSlot'||movable&&object.type==='motif'),move:movable,scale:movable,delete:!object.technicalLocked};
-}
+// Upper bound a document may grant: the legacy flags, except that deletion of a
+// non-technical element may be released explicitly.
+const capability=object=>({...legacyElementRights(object),delete:!object.technicalLocked});
 function initialRights(config){
-  return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,{...capability(object),delete:!object.acrylicFixed&&!object.locked&&!object.technicalLocked&&object.customerEditable!==false}]))]));
+  return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,legacyElementRights(object)]))]));
 }
 
 // This first document model deliberately supports the existing rectangular
@@ -128,27 +126,13 @@ export function resolveProduct(document,{options={},designId}={}){
 }
 
 // A server must call this against its saved document, not a client-supplied
-// rights table. The existing content/geometry/media validation runs afterwards.
+// rights table. Element rights, template layer order and the addition policy
+// are enforced inside `validateDesign` (contract.mjs) from the saved
+// `elementRights`, followed by the content/geometry/media validation.
 export function validateProductDesign(document,design,{options={},fonts,motifs}={}){
   const product=validateProductDocument(document),config=product.config;
   const source=config.profile.designs.find(item=>item.id===design?.id);
   if(!source||!Array.isArray(design.objects))fail('Kundendesign gehört zu keiner Produktvorlage.');
-  const rights=product.elementRights[source.id];
-  const properties={content:['text','font','bold','italic'],color:['color','preserveColors','opacity'],replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground','uxPhotoCrop'],move:['x','y','rotation'],scale:['w','h','size']};
-  const structural=['letterSpacing','type','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed'];
-  for(const original of source.objects){
-    const matches=design.objects.filter(object=>object.id===original.id),current=matches[0],permission=rights[original.id];
-    if(matches.length>1||(!permission.delete&&(!current||current.uxHidden===true&&original.uxHidden!==true||current.opacity===0&&original.opacity!==0)))fail('Element '+original.id+' darf nicht entfernt oder dupliziert werden.');
-    if(!current)continue;
-    if(structural.some(key=>current[key]!==original[key]))fail('Element '+original.id+' darf seine Feldzuordnung oder Vorlageneigenschaften nicht ändern.');
-    for(const [right,fields] of Object.entries(properties))if(!permission[right]&&fields.some(key=>JSON.stringify(current[key])!==JSON.stringify(original[key]))){
-      // Width and height of text are measured from its content; allowing a text
-      // edit must not force stale dimensions when font size remains unchanged.
-      if(right==='scale'&&original.type==='text'&&permission.content&&current.size===original.size)continue;
-      fail('Element '+original.id+': Änderung ohne Recht '+right+'.');
-    }
-    if(original.acrylicFixed&&current.acrylicFixed!==true)fail('Ein fester Vorlagenbereich darf nicht entsperrt werden.');
-  }
   const fontLibrary=fonts??config.localResources?.fonts??{};
   const validated=validateDesign({...config,workshopElementRights:product.elementRights},design,resolvedOptions(config,options),fontLibrary,motifs??config.localResources?.motifs??[]);
   const result={...structuredClone(validated),objects:validated.objects.map(cleanObject)};

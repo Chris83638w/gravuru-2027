@@ -24,7 +24,7 @@ Der Weg ist frei und braucht **keinen Eingriff in die Gravotech-Software**:
 
 ## Jobformat LA 192 (an 15 Beispieljobs geprüft)
 
-- Kopf: ASCII `!LA 192;` + 16 Zeichen Jobname, dann 40 × int32 big-endian ab Offset 0x18. Belegt: Feld 6/7 = dpi X/Y (300/600), Feld 8 = Leistung %, Feld 9 = Geschwindigkeit %, Feld 10/11 = Plattengröße (Einheit offen). Restliche Felder: offen.
+- Kopf: ASCII `!LA 192;` + 16 Zeichen Jobname, dann 40 × int32 big-endian ab Offset 0x18. Belegt: Feld 6/7 = dpi X/Y (300/600), Feld 8 = Leistung %, Feld 9 = Geschwindigkeit %, Feld 10/11 = Plattengröße in 1/100 mm (46000 × 30500 = 460 × 305 mm, an echter Corel-Druckdatei belegt; Beispieljobs ergeben damit plausible 210 × 55 mm usw.). Aus Corel gedruckte Dateien beginnen mit `!LB 1;` vor `!LA 192;`, der Kopf zählt ab `!LA`. Restliche Felder: offen.
 - Befehlsstrom: `FF FD` + 2 Zeichen + 16-Bit-Wert (big-endian). Belegt: `PW` Leistung %, `VD` Geschwindigkeit % (Raster), `vd` Geschwindigkeit % (Vektor), `FR` Frequenz (250–500), `AI` Luft an/aus, `ZA` Z/Fokus, `RX`/`RY` Position (zweiteilig), `RE`/`RS` Rasterbereich, `PU`/`PD` Laser aus/an (Vektor), `DP` Vektor-DPI, `JF` Jobende.
 - Rasterdaten: `C1` (vorwärts) / `C2` (rückwärts) + Länge in 16-Bit-Wörtern + gepackte Zeile. Mit dieser Regel werden alle 14 Rasterjobs ohne unbekannten Befehl gelesen.
 - **Offen:** Koordinatenblöcke hinter `BX`/`BY`/`PD` in Vektorjobs, Bedeutung von `SL`, `R5`, `RF`, `TI`, `V2`, `OP`, `TE`, restliche Kopffelder, Packverfahren der Rasterzeilen. Für JobControl reicht das Ändern von Kopf + `PW`/`VD`/`vd`/`FR`/`AI` – Raster- und Vektordaten bleiben unberührt.
@@ -36,6 +36,10 @@ Prüf-Leser: `python3 -I scripts/jobcontrol/las_inspect.py <datei.las> [--json]`
 - `LSPresetsGII_mm.ini`: 657 Materialvorgaben, je Maschine/Leistung/Material (z. B. `LS900-40W-METALLEX 0.5mm`, 358 für LS100). Je Vorgabe 9 Farbzuordnungen `Color0…Color8` mit je 8 Werten plus Grundwerte (Bitmapmodus, Raster-Richtung, DPI X/Y, Luft, Absaugung, Autofokus, Leistungskorrektur Raster/Vektor). Das ist die Vorlage für die JobControl-Materialtabelle (gravuru-Materialien: Edelstahl, Schiefer, Acryl AA/AS 3/5 mm, klar, satiniert …).
 - `MachiLaserLS.ini`: Vektor-DPI-Stufen 50–75 000, Vorschau, Link auf die Gravograph-Materialdatenbank.
 - Deutung der 8 Werte je Farbe (`30,100.0,1,1,0.000000,1,0,25`) ist **offen** und wird an einer echten Maschine gegen die Treiberoberfläche geprüft (vermutlich Leistung, Geschwindigkeit, Durchgänge, …, Modus Raster/Vektor, Luft, Frequenz).
+
+## Erste echte Druckdatei (test.las, 19.10.2026)
+
+824 Bytes, Name „Unbenannt-1“, nur Vektor (PU/PD, keine Rasterzeilen C1/C2): `DP 300`, `PW 100`, `VD 30`, `vd 300` (= 30,0 % in Zehnteln), `FR 250`, `AI 0`; Kopf dpi 300 × 300, Feld 8/9 = 60/80. Diese Werte passen **nicht** zur gespeicherten Einstellung (Schwarz 92 / 9,0 Raster, Rot 0 / 0,0 Vektor) – Abgleich mit Chris offen (welches Dokument, welche Einstellung beim Drucken).
 
 ## Gespeicherte Treiber-Einstellungen (.job) – an echter Datei geprüft
 

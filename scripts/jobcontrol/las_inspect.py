@@ -13,7 +13,7 @@ import sys
 from collections import Counter
 
 MARK = b"\xff\xfd"
-HEADER_OFFSET = 0x18          # nach "!LA 192;" + 16 Zeichen Name
+HEADER_OFFSET = 0x18          # nach "!LA 192;" + 16 Zeichen Name (relativ zu "!LA")
 HEADER_WORDS = 40             # 40 × int32 big-endian
 
 # Belegt durch Vergleich der Beispieljobs (Werte stimmen mit PW/VD/DPI im Befehlsstrom überein).
@@ -22,8 +22,8 @@ HEADER_FIELDS = {
     7: "dpi_y",
     8: "leistung_prozent",
     9: "geschwindigkeit_prozent",
-    10: "platte_breite_einheit",   # Einheit offen (vermutlich 1/1000 Zoll oder 1/100 mm)
-    11: "platte_hoehe_einheit",
+    10: "platte_breite_hundertstel_mm",   # 46000 = 460 mm (an Chris' test.las belegt)
+    11: "platte_hoehe_hundertstel_mm",
 }
 
 # Befehle mit 16-Bit-Wert; Bedeutung nach Beispielen, Rest "offen".
@@ -59,15 +59,18 @@ DATA_COMMANDS = {"C1", "C2"}   # danach: 16-Bit-Länge + Daten
 
 
 def parse(data: bytes):
-    semi = data.index(b";")
-    name_end = data.index(b"\x00", semi)
-    title = data[:name_end].decode("latin1")
-    if not title.startswith("!LA "):
+    # Druckdateien aus Corel beginnen mit "!LB 1;" vor "!LA 192;", die Beispieljobs nicht.
+    start = data.find(b"!LA ", 0, 32)
+    if start < 0:
         raise ValueError("Keine L-Solution-Jobdatei (Kopf '!LA' fehlt).")
-    words = struct.unpack(">" + "i" * HEADER_WORDS, data[HEADER_OFFSET:HEADER_OFFSET + 4 * HEADER_WORDS])
+    prefix = data[:start].decode("latin1")
+    semi = data.index(b";", start)
+    title = data[start:data.index(b"\x00", semi)].decode("latin1")
+    base = start + HEADER_OFFSET
+    words = struct.unpack(">" + "i" * HEADER_WORDS, data[base:base + 4 * HEADER_WORDS])
     header = {HEADER_FIELDS.get(i, f"unbekannt_{i}"): v for i, v in enumerate(words)}
     commands, counts = [], Counter()
-    i = data.find(MARK, HEADER_OFFSET + 4 * HEADER_WORDS)
+    i = data.find(MARK, base + 4 * HEADER_WORDS)
     while 0 <= i < len(data) - 5:
         op = data[i + 2:i + 4].decode("latin1", "replace")
         value = struct.unpack(">H", data[i + 4:i + 6])[0]
@@ -79,6 +82,7 @@ def parse(data: bytes):
         commands.append({"offset": i, "befehl": op, "wert": value, "bedeutung": COMMANDS.get(op, "unbekannt")})
         i = data.find(MARK, i + 6)
     return {
+        "vorspann": prefix,
         "titel": title,
         "version": title.split(";")[0][4:].strip(),
         "jobname": title.split(";", 1)[1].strip(),
@@ -102,7 +106,7 @@ def main(argv):
         return 0
     k = result["kopf"]
     print(f"{result['jobname']}  (LA {result['version']}, {result['bytes']} Bytes)")
-    print(f"  dpi {k['dpi_x']}×{k['dpi_y']}  Leistung {k['leistung_prozent']} %  Geschwindigkeit {k['geschwindigkeit_prozent']} %  Platte {k['platte_breite_einheit']}×{k['platte_hoehe_einheit']}")
+    print(f"  dpi {k['dpi_x']}×{k['dpi_y']}  Leistung {k['leistung_prozent']} %  Geschwindigkeit {k['geschwindigkeit_prozent']} %  Platte {k['platte_breite_hundertstel_mm']/100:g}×{k['platte_hoehe_hundertstel_mm']/100:g} mm")
     print("  Befehle:", ", ".join(f"{op} {n}" for op, n in result["befehle_anzahl"].items()))
     for c in result["befehle"]:
         print(f"    {c['offset']:#08x}  {c['befehl']:2s} = {c['wert']:<6d} {c['bedeutung']}")

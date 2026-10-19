@@ -10,7 +10,7 @@ export const SHOP_BLOCK_REASON='Storniert/erstattet im Shop';
 const NEXT=Object.freeze({eingegangen:['geprueft'],geprueft:['freigegeben','fehler'],freigegeben:['in_fertigung','fehler'],in_fertigung:['fertig','fehler'],fertig:['fehler'],fehler:['geprueft']});
 const RELEASED=new Set(['freigegeben','in_fertigung','fertig']);
 const text=(value,max,required,what)=>{if(value===undefined||value===null)value='';if(typeof value!=='string'||value.length>max||/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(value))fail(422,what+' ist ungültig oder zu lang.');value=value.trim();if(required&&!value)fail(422,what+' ist erforderlich.');return value;};
-export function createProductionRelease({database:db,clock=Date.now,line,shopStatus,autoRelease=null}){
+export function createProductionRelease({database:db,clock=Date.now,line,shopStatus,autoRelease=null,rejectedLines=null}){
  if(typeof line!=='function'||typeof shopStatus!=='function')fail(503,'Freigabeprozess benötigt Zugriff auf Bestellposition und Shop-Status.');
  db.exec(`CREATE TABLE IF NOT EXISTS production_release_events(id INTEGER PRIMARY KEY,line_id TEXT NOT NULL,from_state TEXT NOT NULL,to_state TEXT NOT NULL,actor TEXT NOT NULL,reason TEXT NOT NULL,at TEXT NOT NULL);
  CREATE INDEX IF NOT EXISTS production_release_line ON production_release_events(line_id,id);
@@ -36,7 +36,7 @@ export function createProductionRelease({database:db,clock=Date.now,line,shopSta
  function append(lineId,from,to,actor,reason){db.prepare('INSERT INTO production_release_events(line_id,from_state,to_state,actor,reason,at) VALUES(?,?,?,?,?,?)').run(lineId,from,to,actor,reason,at());}
  function state(lineId,{shop}={}){
   const {line:l,history,state:s,last}=current(lineId),shopState=shop??shopStatus(l),shopBlocked=blocked(shopState),automatic=checks(l.snapshotId),auto=autoReleaseFor(l);
-  const allowed=NEXT[s].filter(to=>!(shopBlocked&&(to==='freigegeben'||to==='in_fertigung')));
+  const allowed=l.intakeError?[]:NEXT[s].filter(to=>!(shopBlocked&&(to==='freigegeben'||to==='in_fertigung')));
   return {lineId,state:s,label:PRODUCTION_LABELS[s],at:last?last.at:l.receivedAt||null,actor:last?last.actor:null,reason:last?last.reason:'',events:history,allowed,shopBlocked,checks:automatic,autoRelease:auto,productionReady:RELEASED.has(s)&&automatic.ok};
  }
  // Bestandene automatische Prüfung setzt bei autoRelease:true am Fertigungsprofil
@@ -58,6 +58,7 @@ export function createProductionRelease({database:db,clock=Date.now,line,shopSta
    actor=text(actor,200,true,'Akteur');reason=text(reason,2000,to==='fehler','Grund');
    return tx(()=>{
     const {line:l,state:from}=current(lineId);
+    if(l.intakeError)fail(409,'Abgelehnte Bestellposition ohne gesicherten Entwurf: kein Fertigungsübergang möglich. Grund: '+l.intakeError);
     if(!NEXT[from].includes(to))fail(409,'Übergang von „'+PRODUCTION_LABELS[from]+'“ nach „'+PRODUCTION_LABELS[to]+'“ ist nicht erlaubt.');
     if((to==='freigegeben'||to==='in_fertigung')&&blocked(shopStatus(l)))fail(409,'Bestellung ist im Shop storniert oder erstattet; keine Freigabe möglich.');
     append(lineId,from,to,actor,reason);
@@ -65,6 +66,12 @@ export function createProductionRelease({database:db,clock=Date.now,line,shopSta
     return state(lineId);
    });
   },
+  // E3: Im Bestelleingang abgelehnte Position (kein gesicherter Entwurf, Preis/Menge/Variante
+  // abweichend …) steht im Freigabeprozess sofort als „fehler“ mit dem Grund aus dem Eingang.
+  rejectIntake(lineId,reason){return tx(()=>{
+   if(events(lineId).length)return false;
+   append(lineId,'eingegangen','fehler',SYSTEM_ACTOR,text(reason,2000,true,'Grund'));return true;
+  });},
   // Storno/Erstattung aus dem Shop: vor Fertigungsbeginn automatisch „fehler“.
   syncShop(lineId){return tx(()=>{
    const {line:l,state:s}=current(lineId);
@@ -81,7 +88,10 @@ export function createProductionRelease({database:db,clock=Date.now,line,shopSta
    if(filter!==undefined&&!PRODUCTION_STATES.includes(filter))fail(422,'Unbekannter Produktionsstatus.');
    const latest=new Map(db.prepare('SELECT line_id,to_state,at FROM production_release_events WHERE id IN (SELECT max(id) FROM production_release_events GROUP BY line_id)').all().map(r=>[r.line_id,r]));
    const rows=db.prepare('SELECT id,created_at FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>{const e=latest.get(r.id);return {lineId:r.id,state:e?e.to_state:'eingegangen',label:PRODUCTION_LABELS[e?e.to_state:'eingegangen'],at:e?e.at:r.created_at};});
-   return filter===undefined?rows:rows.filter(r=>r.state===filter);
+   // Abgelehnte Positionen aus dem Bestelleingang (E3) erscheinen als „fehler“ mit Grund.
+   const rejectedRows=typeof rejectedLines==='function'?rejectedLines().map(d=>{const e=latest.get(d.id);return {lineId:d.id,state:e?e.to_state:'fehler',label:PRODUCTION_LABELS[e?e.to_state:'fehler'],at:e?e.at:d.receivedAt,orderId:d.orderId,shopLineId:d.lineId,reason:d.intakeError,rejected:true};}):[];
+   const all=[...rows,...rejectedRows];
+   return filter===undefined?all:all.filter(r=>r.state===filter);
   }
  };
 }

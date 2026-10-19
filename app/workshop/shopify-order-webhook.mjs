@@ -34,7 +34,7 @@ export function createOrderWebhookHandler({intake,config,bodyTimeoutMs=3000}) {
    // Synchronous local transaction only: HTTP success follows durable commit.
    // No Admin API, artwork export, fulfillment or other slow work is performed.
    const result=intake.receive(raw,req.headers,fixed);
-   reply(200,{accepted:true,duplicate:result.duplicate,matchedLines:result.lines.length,testOnly:true});
+   reply(200,{accepted:true,duplicate:result.duplicate,matchedLines:result.lines.length,rejectedLines:(result.errors||[]).length,testOnly:true});
   }catch(error){req.resume();reply([400,401,403,404,405,408,409,413,415,422,503].includes(error.status)?error.status:503,{accepted:false});}
  };
 }

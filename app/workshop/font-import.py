@@ -18,8 +18,10 @@ try:
     cmap = font.getBestCmap() or {}
     if not cmap or len(cmap) > 10000:
         raise ValueError('Die Schrift muss 1 bis 10.000 Unicode-Zeichen enthalten.')
-    if any(ord(c) not in cmap for c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 '):
-        raise ValueError('Die Schrift enthält kein vollständiges lateinisches Alphabet mit Ziffern.')
+    # E4 (P2-13): required characters for engraving texts. Missing ones are reported,
+    # the library decides (reject, or accept with a reason for digits-only/capitals-only fonts).
+    required = 'ÄÖÜäöüß€0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,-\' '
+    missing = [c for c in required if ord(c) not in cmap]
     glyphset = font.getGlyphSet()
     glyphs = {}
     for codepoint, name in cmap.items():
@@ -29,7 +31,7 @@ try:
         glyphset[name].draw(pen)
         glyphs[chr(codepoint)] = {'a': glyphset[name].width, 'd': pen.getCommands()}
     name = font['name'].getDebugName(4) or font['name'].getDebugName(1) or 'Importierte Schrift'
-    result = {'name': name, 'glyphCount': len(glyphs), 'font': {'regular': {'units': font['head'].unitsPerEm, 'glyphs': glyphs}}}
+    result = {'name': name, 'glyphCount': len(glyphs), 'missingGlyphs': missing, 'font': {'regular': {'units': font['head'].unitsPerEm, 'glyphs': glyphs}}}
     encoded = json.dumps(result, ensure_ascii=True, separators=(',', ':'))
     if len(encoded) > 8 * 1024**2:
         raise ValueError('Die vollständigen Schriftpfade sind zu umfangreich (über 8 MB).')

@@ -143,7 +143,15 @@ $('#font-upload-file').addEventListener('change',async event=>{
   if(file.size>8*1024*1024)throw Error('Bitte eine TTF- oder OTF-Schrift bis 8 MB auswählen.');
   status.textContent='Schrift und Zeichen werden geprüft …';
   const bytes=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Datei konnte nicht gelesen werden.'));reader.readAsDataURL(file);});
-  const font=await api('/api/workshop/font-library',{method:'POST',body:{name:file.name,bytes}});
-  await loadLibrary();status.textContent='„'+font.name+'“ hochgeladen · '+font.glyphCount+' Zeichen. Du kannst die Schrift jetzt in einem Schriftprofil auswählen.';
+  let font;
+  try{font=await api('/api/workshop/font-library',{method:'POST',body:{name:file.name,bytes}});}
+  catch(error){
+   // E4: missing Ä/Ö/Ü/ß/€/digits reject the font. Only an explicit exception with a reason (digits-only, capitals-only) is accepted.
+   if(!/^Schrift fehlt:/.test(error.message||''))throw error;
+   const reason=window.prompt(error.message+'\n\nAusnahme nur für Sonderfälle (z. B. reine Zahlen- oder Großbuchstabenschrift). Begründung eingeben, um die Schrift trotzdem freizugeben – oder abbrechen:','');
+   if(reason===null||!reason.trim())throw error;
+   font=await api('/api/workshop/font-library',{method:'POST',body:{name:file.name,bytes,allowMissing:true,reason:reason.trim()}});
+  }
+  await loadLibrary();status.textContent='„'+font.name+'“ hochgeladen · '+font.glyphCount+' Zeichen.'+(font.glyphWarnings?.length?' Hinweis: '+font.glyphWarnings.join(' '):'')+' Du kannst die Schrift jetzt in einem Schriftprofil auswählen.';
  }catch(error){status.textContent=error.message;}finally{busy(false);event.target.value='';}
 });

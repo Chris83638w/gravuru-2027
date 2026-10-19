@@ -307,6 +307,17 @@ def build_design(sku, items, label_item, meta):
         return a[0] - pad < b[0] + b[2] and b[0] - pad < a[0] + a[2] and a[1] - pad < b[1] + b[3] and b[1] - pad < a[1] + a[3]
     for m in motifs:
         if (m.get('fill') or '').lower() in ('#000000', '#ffffff') and any(touches(m['box'], hb) for hb in hint_boxes): m['hint'] = True
+    # derselbe Knopf in Kurven umgewandelt: schwarzer Ring (2 Teilpfade, quadratische Box) mit Schriftzug aus vielen Teilpfaden darin
+    for ring in motifs:
+        b = ring['box']
+        if (ring.get('fill') or '').lower() != '#000000' or ring['d'].count('M') != 2 or abs(b[2] - b[3]) > 1.5 or not 8 <= b[2] <= 120: continue
+        inside = [m for m in motifs if m is not ring and m['box'][0] >= b[0] - 1 and m['box'][1] >= b[1] - 1 and m['box'][0] + m['box'][2] <= b[0] + b[2] + 1 and m['box'][1] + m['box'][3] <= b[1] + b[3] + 1]
+        glyphs = [m for m in inside if (m.get('fill') or '').lower() == '#000000' and m['d'].count('M') >= 3 and m['box'][3] <= 0.3 * b[3]]
+        if not glyphs: continue
+        ring['hint'] = True
+        for m in glyphs: m['hint'] = True
+        for m in inside:  # weiße Scheibe des Knopfs (konzentrisch, einteilig)
+            if (m.get('fill') or '').lower() in ('#ffffff', '#fdfdfd', '#fefefe') and m['d'].count('M') == 1 and abs(m['box'][2] - m['box'][3]) < 1.5 and m['box'][2] >= 0.6 * b[2]: m['hint'] = True
     plate_rec = {'widthMm': round(W, 1), 'heightMm': round(H, 1), 'source': plate_source}
     if plate is not None and not plate['rect']: plate_rec['outline'] = to_svg_d(plate['acts'], ox, oy)
     return {'id': sku, **meta, 'plate': plate_rec, 'texts': texts, 'fonts': fonts, 'motifs': motifs, 'images': images}

@@ -135,7 +135,7 @@ export function validateProductDesign(document,design,{options={},fonts,motifs}=
   if(!source||!Array.isArray(design.objects))fail('Kundendesign gehört zu keiner Produktvorlage.');
   const rights=product.elementRights[source.id];
   const properties={content:['text','font','bold','italic'],color:['color','preserveColors','opacity'],replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground','uxPhotoCrop'],move:['x','y','rotation'],scale:['w','h','size']};
-  const structural=['letterSpacing','type','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed'];
+  const structural=['letterSpacing','type','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed','role'];
   for(const original of source.objects){
     const matches=design.objects.filter(object=>object.id===original.id),current=matches[0],permission=rights[original.id];
     if(matches.length>1||(!permission.delete&&(!current||current.uxHidden===true&&original.uxHidden!==true||current.opacity===0&&original.opacity!==0)))fail('Element '+original.id+' darf nicht entfernt oder dupliziert werden.');

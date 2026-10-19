@@ -24,8 +24,8 @@ export function rgbToCmyk(rgb){
 }
 // Advisory, not a complete fine-detail analysis of imported bitmap artwork.
 export function resolutionAdvice(objects,scale=1,marks=[]){
- const smallText=objects.some(o=>!o.uxHidden&&o.type==='text'&&o.text?.trim()&&o.size*scale<5);
- const thinLine=marks.some(m=>Number.isFinite(m.width)&&m.width>0&&m.width*scale<.25)||objects.some(o=>!o.uxHidden&&Number.isFinite(o.strokeWidth)&&o.strokeWidth>0&&o.strokeWidth*scale<.25);
+ const smallText=objects.some(o=>!o.uxHidden&&o.role!=='guide'&&o.type==='text'&&o.text?.trim()&&o.size*scale<5);
+ const thinLine=marks.some(m=>Number.isFinite(m.width)&&m.width>0&&m.width*scale<.25)||objects.some(o=>!o.uxHidden&&o.role!=='guide'&&Number.isFinite(o.strokeWidth)&&o.strokeWidth>0&&o.strokeWidth*scale<.25);
  return smallText||thinLine?'Kleine Schrift oder feine Linien erkannt: 600 dpi empfohlen. 300 dpi bleiben der Standard.':'';
 }
 // Closed physical contours, shared by clipping, white fill and cutting. Coordinates are mm, y down.

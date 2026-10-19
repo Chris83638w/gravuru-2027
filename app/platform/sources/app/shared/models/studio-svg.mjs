@@ -7,6 +7,9 @@ export function motifMarkup(item,w,h){
  const box=item.bounds||[0,0,100,100];
  return '<svg x="'+(-w/2)+'" y="'+(-h/2)+'" width="'+w+'" height="'+h+'" viewBox="'+box.join(' ')+'" preserveAspectRatio="none">'+item.svgFragment.replace(/#000000|currentColor/gi,'#ffffff')+'</svg>';
 }
+// Ü6.1: Hilfsebenen bleiben in der Vorschau sichtbar und tragen ihre Rolle im
+// Markup, damit jede Fertigungsausgabe sie generisch auslassen kann.
+export const roleAttribute=o=>o?.role==='guide'?' data-role="guide"':'';
 function selectionMarkup(o,units){
  const u=Number.isFinite(units)&&units>0?units:.4,grip=12*u,hit=24*u,offset=4*u;
  return '<rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="none" stroke="#16845d" stroke-width="'+u+'" pointer-events="none"/>'+[[-1,-1],[1,-1],[-1,1],[1,1]].map(([x,y])=>'<g data-resize="'+esc(o.id)+'" transform="translate('+(x*(o.w/2+offset))+' '+(y*(o.h/2+offset))+')" style="cursor:'+(x===y?'nwse':'nesw')+'-resize"><title>Ziehen zum Vergrößern oder Verkleinern</title><rect x="'+(-hit/2)+'" y="'+(-hit/2)+'" width="'+hit+'" height="'+hit+'" fill="transparent" pointer-events="all"/><rect x="'+(-grip/2)+'" y="'+(-grip/2)+'" width="'+grip+'" height="'+grip+'" rx="'+2*u+'" fill="#fff" stroke="#196347" stroke-width="'+1.5*u+'" pointer-events="none"/></g>').join('');
@@ -20,7 +23,7 @@ export function studioSvg(profile,design,fonts,{selected='',frameKey='',mounting
   if(o.type==='motif')inside=universalMotif(motifs.find(m=>m.key===o.motif),o,'#ffffff',{method:'engraving'},id+'-ink-'+o.id);
   if(o.type==='photoSlot')inside=photoExampleMarkup?.(o)||photoMarkup(profile,o,media,id+'-photo-'+o.id,getProcessingProfile(profile),.3);
   const select=handles&&o.id===selected?selectionMarkup(o,handleUnits??176/365):'';
-  return '<g data-object="'+esc(o.id)+'" transform="translate('+o.x+' '+o.y+') rotate('+o.rotation+')" fill="white" style="cursor:move"><rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="transparent"/>'+inside+select+'</g>';
+  return '<g data-object="'+esc(o.id)+'"'+roleAttribute(o)+' transform="translate('+o.x+' '+o.y+') rotate('+o.rotation+')" fill="white" style="cursor:move"><rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="transparent"/>'+inside+select+'</g>';
  }).join('');
  const screws=profile.mounting.options.find(m=>m.key===mountingKey)?.visibleScrews?profile.mounting.holes.map(h=>'<circle data-mounting-screw="true" cx="'+h.x+'" cy="'+h.y+'" r="'+profile.mounting.screwHeadPreviewDiameterMm/2+'" fill="#d1d5d7" stroke="#687078" stroke-width=".3"/>').join(''):'';
  const surface=profile.admin?.steelImageUrl?'<image href="'+esc(profile.admin.steelImageUrl)+'" width="160" height="280" preserveAspectRatio="none" pointer-events="none"/>':'';
@@ -85,7 +88,7 @@ function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleU
   else if(o.type==='graphic')content=graphicMarkup(o,color);
   else content=placeholder(o,'Unbekanntes Element: '+o.type,stroke);
   if(handles&&o.id===selected)content+=selectionMarkup(o,handleUnits??(w+pad*2)/365);
-  return '<g data-object="'+esc(o.id)+'" transform="translate('+o.x+' '+o.y+') rotate('+(o.rotation||0)+')" fill="'+color+'" style="cursor:move"><rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="transparent"/>'+content+'</g>';
+  return '<g data-object="'+esc(o.id)+'"'+roleAttribute(o)+' transform="translate('+o.x+' '+o.y+') rotate('+(o.rotation||0)+')" fill="'+color+'" style="cursor:move"><rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="transparent"/>'+content+'</g>';
  }).join('');
  const surface=/^#[a-fA-F0-9]{6}$/.test(p.material.color)?p.material.color:'#eeeeee';
  return '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(d.name)+'" viewBox="'+[-pad,-pad,w+pad*2,h+pad*2].join(' ')+'"><defs><linearGradient id="'+safeId+'-surface" x2=".2" y2="1"><stop stop-color="'+surface+'"/><stop offset=".5" stop-color="'+(p.material.kind==='steel'?'#e3e8e7':surface)+'"/><stop offset="1" stop-color="'+surface+'"/></linearGradient><filter id="'+safeId+'-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+inkMatrix(ink)+'"/></filter></defs>'+plate+' fill="url(#'+safeId+'-surface)" stroke="#8c9991" stroke-width="'+stroke+'"/>'+objects+'<g fill="none" stroke="'+ink+'">'+(d.marks||[]).map(m=>'<path d="'+esc(m.d)+'" stroke="'+elementColor(p,m)+'" stroke-width="'+m.width+'"/>').join('')+'</g>'+(p.geometry.holes||[]).map(hole=>'<circle cx="'+hole.x+'" cy="'+hole.y+'" r="'+hole.diameter/2+'" fill="#f4f5f3" stroke="#84958c" stroke-width="'+stroke+'" pointer-events="none"/>').join('')+(guides?'<path d="M'+w/2+' 0V'+h+'M0 '+h/2+'H'+w+'" fill="none" stroke="#5da894" stroke-width="'+stroke+'" stroke-dasharray="'+stroke*3+' '+stroke*5+'" pointer-events="none"/>':'')+'</svg>';

@@ -118,9 +118,17 @@ def tint_imported_artwork(root,dpi):
   out=io.BytesIO();tinted.save(out,format='PNG');image.set('href','data:image/png;base64,'+base64.b64encode(out.getvalue()).decode())
   for key in ['data-native-tint','data-native-tonal','data-raster-width-mm','data-raster-height-mm']:image.attrib.pop(key,None)
 
+def remove_guide_layers(root):
+ # Ü6.1: Hilfsebenen (data-role="guide": Fotohinweis, Bohrloch-/Abstandshalter-
+ # Vorschau, Platzhalter) sind Editor-Darstellung und gehören nie in die
+ # Fertigungsdatei. Druck und Gravur teilen diese Stufe.
+ for parent in list(root.iter()):
+  for child in list(parent):
+   if child.get('data-role')=='guide':parent.remove(child)
 def prepare_svg(data):
  # Originals are decoded at their actual resolution; only the output raster has a DPI.
  root=ET.fromstring(data['svg']);c.require(root.tag==S+'svg','Ungültige Gestaltung.')
+ remove_guide_layers(root)
  template_photo_masks(root,data['settings']['dpi'])
  tint_imported_artwork(root,data['settings']['dpi'])
  photo_ids=set()

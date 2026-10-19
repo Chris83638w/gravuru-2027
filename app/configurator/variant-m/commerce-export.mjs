@@ -1,4 +1,4 @@
-import {selectedProfile,designFromState} from './contract.mjs';
+import {selectedProfile,designFromState,productionObjects} from './contract.mjs';
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {embedSurface} from './material-surface.mjs';
@@ -24,7 +24,8 @@ export function jpegPDF(jpeg,pixels,widthMm,heightMm){
 }
 export async function exportCommerce({el,config,files,selection,binding}){
  const state=structuredClone(el.state),profile=selectedProfile(config,state.mOptions),design=designFromState(config,state),{width:w,height:h}=profile.geometry;
- const active=design.objects.filter(o=>!o.uxHidden),assets=[],used=new Set(active.filter(o=>o.uxUploadId).map(o=>o.uxUploadId));
+ // Ü6.1: Hilfsebenen (role guide) bleiben Vorschau und gehen nie in Fertigungsdateien.
+ const active=productionObjects(design.objects),assets=[],used=new Set(active.filter(o=>o.uxUploadId).map(o=>o.uxUploadId));
  const rasterObjects=active.filter(o=>o.type==='motif-raster'),rasterAssets=new Map();
  let vectors='',layout='';
  for(const o of active){

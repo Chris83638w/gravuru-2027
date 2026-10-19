@@ -27,3 +27,19 @@ test('free uploads use contained image dimensions rather than the photo-slot cov
  assert.equal(contained.effectiveDpi,300);assert.equal(contained.placedHeightMm,50.8);
  assert.equal(covered.effectiveDpi,150);assert.equal(covered.placedWidthMm,203.2);
 });
+import {resolutionGrade,resolutionHint,photoResolutionNote,resolutionTargetDpi,LOW_RESOLUTION_HINT} from './acrylic-photo-resolution.mjs';
+test('Ü5.1: Ampel grün ab Soll-DPI, gelb ab 60 %, rot darunter; Soll aus Fertigungsprofil, sonst 300',()=>{
+ assert.equal(resolutionGrade(300,300),'gruen');assert.equal(resolutionGrade(180,300),'gelb');assert.equal(resolutionGrade(179,300),'rot');
+ assert.equal(resolutionGrade(600,600),'gruen');assert.equal(resolutionGrade(360,600),'gelb');assert.equal(resolutionGrade(300,600),'rot');
+ assert.equal(resolutionGrade(50),'rot');assert.throws(()=>resolutionGrade(NaN,300));assert.throws(()=>resolutionGrade(100,0));
+ assert.equal(resolutionTargetDpi(null),300);assert.equal(resolutionTargetDpi({document:{output:{dpi:600,mirror:true}}}),600);assert.equal(resolutionTargetDpi({document:{output:{mode:'vector',dpi:300}}}),300);
+ assert.equal(measure(slot,photo,2,{targetDpi:600}).grade,'rot');assert.equal(measure(slot,photo,1).grade,'gruen');assert.equal(measure(slot,photo,1).targetDpi,300);
+});
+test('Ü5.2: rot ergibt den freundlichen Hinweis und den Vermerk „Auflösung niedrig“ – keine Sperre, keine Bestätigung',()=>{
+ const red=photoResolutionNote(100,300),yellow=photoResolutionNote(200,300),green=photoResolutionNote(400,300);
+ assert.deepEqual(red,{grade:'rot',effectiveDpi:100,targetDpi:300,hint:LOW_RESOLUTION_HINT,productionNote:'Auflösung niedrig'});
+ assert.equal(red.hint,'Das Foto ist klein, wir holen das Beste raus.');assert.equal(resolutionHint('rot'),LOW_RESOLUTION_HINT);
+ assert.equal(yellow.grade,'gelb');assert.equal(yellow.productionNote,'Auflösung knapp');assert.ok(yellow.hint);
+ assert.deepEqual(green,{grade:'gruen',effectiveDpi:400,targetDpi:300,hint:'',productionNote:''});
+ for(const note of [red,yellow,green])assert.ok(!('blocked' in note)&&!('confirmationRequired' in note));
+});

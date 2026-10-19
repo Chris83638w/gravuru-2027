@@ -30,7 +30,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    const replaceable=el.uxCanEdit?.(o,'replace')!==false;
    const hintSetting=config.photo?.hints?.find(h=>h.designId===el.state.designId&&h.slotId===o.id);
    const hintText=String(hintSetting?.text||'Hier tippen & eigenes Foto hochladen').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-   const hint=example&&replaceable&&hintSetting?.enabled!==false?`<g data-preview-only="true" transform="translate(0 31)"><rect x="-53" y="-9" width="106" height="18" rx="3" fill="white" fill-opacity=".96"/><text text-anchor="middle" y="-.5" font-size="4.2" font-family="Arial" fill="#332d27">${hintText}</text><text text-anchor="middle" y="5.5" font-size="3.1" font-family="Arial" fill="#63564c">Beispielfoto ersetzen</text></g>`:'';
+   const hint=example&&replaceable&&hintSetting?.enabled!==false?`<g data-preview-only="true" data-role="guide" transform="translate(0 31)"><rect x="-53" y="-9" width="106" height="18" rx="3" fill="white" fill-opacity=".96"/><text text-anchor="middle" y="-.5" font-size="4.2" font-family="Arial" fill="#332d27">${hintText}</text><text text-anchor="middle" y="5.5" font-size="3.1" font-family="Arial" fill="#63564c">Beispielfoto ersetzen</text></g>`:'';
    return `<g data-object="${o.id}" ${replaceable?`data-ux-empty-photo-slot="true" role="button" tabindex="0" aria-label="${example?'Eigenes Foto hochladen':'Foto ersetzen'}"`:'data-ux-static-photo="true" aria-hidden="true" tabindex="-1" focusable="false"'} transform="translate(${o.x} ${o.y})"><defs><clipPath id="acryl-photo-clip"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2"/></clipPath></defs><g clip-path="url(#acryl-photo-clip)">${picture}</g>${hint}<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/></g>`;
  };
  // Keep native editor tools and event handling; only the scene and physical options are extended.
@@ -87,9 +87,9 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    const uploaded=files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId);
    if(!uploaded)throw Error('Bitte zuerst das Beispielfoto durch dein eigenes Foto ersetzen.');
    let body='';const selectedId=el.state.selected;el.state.selected=null;
-   try{for(const o of el.state.objects.filter(o=>!o.uxHidden)){
+   try{for(const o of el.state.objects.filter(o=>!o.uxHidden&&o.role!=='guide')){
      const xml=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+el.objectSVG(o)+'</svg>','image/svg+xml');
-     xml.querySelectorAll('[data-preview-only],[data-resize],rect[fill="transparent"]').forEach(n=>n.remove());
+     xml.querySelectorAll('[data-preview-only],[data-role="guide"],[data-resize],rect[fill="transparent"]').forEach(n=>n.remove());
      if(o.type==='motif'&&o.preserveColors===false){xml.querySelectorAll('filter').forEach(n=>n.remove());for(const n of xml.querySelectorAll('*')){n.removeAttribute('filter');for(const key of ['fill','stroke'])if(n.hasAttribute(key)&&n.getAttribute(key)!=='none')n.setAttribute(key,o.color);}}
      body+=xml.documentElement.innerHTML;
    }}finally{el.state.selected=selectedId;}

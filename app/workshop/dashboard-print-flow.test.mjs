@@ -63,6 +63,8 @@ for(const full of [false,true])test(`dashboard PDF-to-print flow: ${full?'edge-t
   const imported=await json(url+'/form-design-import',{data:{expectedRevision:1,document:initial.document,name:'Design.pdf',bytes:f.source.toString('base64'),designName:'PDF-Testdesign'}});
   const document=imported.document;document.processingMethod='print';document.material={id:'steel',thicknessMm:1.5,surfaceNotes:'Synthetische Prüfdaten'};document.basePriceCents=2999;
   const design=document.designs[0];design.sourcePrepared=true;design.fields=[{id:'title',type:'text',label:'Name',xMm:15,yMm:42,widthMm:45,heightMm:10,text:'BEISPIEL',font:f.font,sizeMm:4,color:'#222222',bold:false,italic:false,allowMove:false,allowScale:false,allowDelete:false,allowColor:false},{id:'photo',type:'photo',label:'Foto',xMm:30,yMm:10,widthMm:20,heightMm:20,shape:'rect',required:true,allowMove:true,allowScale:true,allowDelete:false}];
+  // Ü7.2: Die Spiegelung kommt ausschließlich aus dem gebundenen Fertigungsprofil, nicht aus dem Client.
+  if(full){const mirrored=await json('/api/workshop/production-profiles',{data:{document:{name:'Synthetisches Rückseitenprofil',method:'print',materialId:'steel',thicknessMm:1.5,machine:'',rip:'',notes:'Nur technischer Test',archived:false,output:{profile:'roland',dpi:300,white:'motif',bleedMm:1,whiteBleedMm:0,mirror:true}}}},201);document.productionProfile={id:mirrored.id,revision:mirrored.revision};}
   const product=await json(url,{method:'PATCH',data:{expectedRevision:1,document}});
   assert.equal(product.revision,2);assert.equal((await request(url,{method:'PATCH',data:{expectedRevision:1,document}})).status,409);
   const created=await json('/api/workshop/customer-drafts',{data:{productId:product.id,productRevision:2}},201),draftUrl='/api/workshop/customer-drafts/'+created.draft.id,headers={'x-gravuru-draft':created.token};
@@ -82,7 +84,7 @@ for(const full of [false,true])test(`dashboard PDF-to-print flow: ${full?'edge-t
   assert.ok([...archive.files.values()].some(bytes=>bytes.equals(f.source)));assert.ok([...archive.files.values()].some(bytes=>bytes.equals(f.photo)));
   const outputs=[];
   for(const profile of ['roland','mimaki']){
-    const settings={profile,bleedMm:1,mirror:full},job=await json('/api/workshop/export-jobs',{data:{snapshotId:snapshot.id,settings}},202);
+    const settings={profile,bleedMm:1,mirror:!full},job=await json('/api/workshop/export-jobs',{data:{snapshotId:snapshot.id,settings}},202);assert.equal(job.settings.mirror,full,'Client-mirror wird ignoriert; Profil bzw. Vorderseite entscheidet');assert.equal(job.clientSettingsIgnored.length,1);
     await f.workshop.exportWorker.wait(job.id);const done=await json('/api/workshop/export-jobs/'+job.id);assert.equal(done.status,'completed');
     assert.equal((await json('/api/workshop/export-jobs',{data:{snapshotId:snapshot.id,settings}})).id,job.id);
     const result=f.workshop.customerDrafts.printProof(snapshot.id,job.recipeKey);assert.equal(result.metadata.settings.dpi,300);assert.equal(result.metadata.settings.bleedMm,full?1:0);assert.ok(result.metadata.vectorGlyphs>0);

@@ -26,6 +26,8 @@ import {createMerchantTestCart} from './merchant-test-cart.mjs';
 import {createCartHttpGate} from './cart-http-gate.mjs';
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {createShopifySessionVerifier} from './shopify-session.mjs';
+import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
+import {readDraft,decorationMotifs} from '../configurator/variant-m/contract.mjs';
 import {createShopDraftTransfer,createShopDraftTransport,shopDraftRequest} from './shop-draft-transfer.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createFormEngravingProof,formEngravingSettings,formEngravingKey,FORM_ENGRAVING_RECIPE} from './form-engraving-proof.mjs';
@@ -79,13 +81,27 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Loopback preview; optional test session gate is not a public deployment. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null,themes=null}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null,themes=null,appProxy=null}){
   // K9: Themen-Definition (themen.json aus dem Katalog) für Galerie und Motivkategorien im Kundeneditor.
   const themeCatalog=themes===null?null:parseThemeCatalog(themes);
   if(operatorCsrfToken!==null&&(shopifySessions||typeof operatorCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(operatorCsrfToken)))fail(503,'operator_session_config','Ungültige private Werkstattsitzung.');
   if(merchantCsrfToken!==null&&(!shopifySessions||operatorCsrfToken!==null||typeof merchantCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(merchantCsrfToken)))fail(503,'merchant_session_config','Ungültige Händler-Werkstattsitzung.');
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
   const verifySession=shopifySessions?createShopifySessionVerifier(shopifySessions):null;
+  // K7: Kundenidentität für Konto-Entwürfe. Bevorzugt die App-Proxy-Signatur (serverseitig prüfbar, `logged_in_customer_id`),
+  // ersatzweise ein Kundenkonto-Sitzungstoken. Ohne beides ist die Kontoverbindung nicht eingerichtet (503).
+  if(appProxy&&shopifySessions&&appProxy.shopDomain!==shopifySessions.shopDomain)fail(503,'app_proxy_config','App-Proxy und Shopify-Sitzung müssen denselben Shop bestätigen.');
+  const verifyProxy=appProxy?createAppProxyVerifier(appProxy):null;
+  function customerPrincipal(req,url){
+    if(verifyProxy&&(url.searchParams.has('signature')||!req.headers.authorization||!verifySession)){
+      const proxy=verifyProxy(url.searchParams);
+      if(!proxy.customerId)fail(401,'customer_login_required','Bitte im Kundenkonto anmelden, um Entwürfe zu speichern.');
+      return {shopDomain:proxy.shopDomain,customerId:proxy.customerId};
+    }
+    if(verifySession&&req.headers.authorization){const p=verifySession(req.headers.authorization,'customer');return {shopDomain:p.shopDomain,customerId:p.subject};}
+    if(verifySession)fail(401,'customer_login_required','Bitte im Kundenkonto anmelden, um Entwürfe zu speichern.');
+    fail(503,'customer_account_disabled','Die Kontoverbindung ist in dieser Umgebung nicht eingerichtet.');
+  }
   if(shopDrafts&&(!verifySession||shopDrafts.config?.shopDomain!==shopifySessions.shopDomain||shopDrafts.config?.mode!=='draft-only'))fail(503,'shop_draft_config','Shop-Entwurfsanbindung benötigt dieselbe bestätigte Händler-Testanmeldung.');
   const seed=makeProductDocument(seedConfig,{name:seedConfig.profile.name,kind:'master'});
   const fonts=createFontLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite')});
@@ -179,9 +195,56 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     const examples=(universal.localResources.photoExamples||[]).filter(e=>e.designId===resolved.designId).map(e=>({...e,url:'data:image/svg+xml;base64,'+assets.read(e.assetId).toString('base64')}));
     return {svg:privateProductPreview({universal},{options:resolved.resolvedOptions,examples,keepout:true}),designId:resolved.designId,price:resolved.price,holeHint:previewHoleHint(universal,{options:resolved.resolvedOptions,designId:resolved.designId})};
   }
+  // K7 (Ü8.2): GET/POST/DELETE /api/workshop/account-drafts[/:id[/preview.png|/photos/:uploadId]] hinter der Kundenprüfung.
+  const base64Bytes=(value,label)=>{if(typeof value!=='string'||!value.length||value.length%4!==0||value.length>Math.ceil(MAX_CUSTOMER_PHOTO/3)*4||!/^[A-Za-z0-9+/]*={0,2}$/.test(value))fail(422,'customer_draft_media',label);const bytes=Buffer.from(value,'base64');if(bytes.toString('base64')!==value)fail(422,'customer_draft_media',label);return bytes;};
+  function validatedAccountDraft(data){
+    if(Object.keys(data).some(k=>!['title','draft','photos','preview'].includes(k)))fail(422,'customer_draft_fields','Nur Titel, Entwurf, Fotos und Vorschau übergeben.');
+    const draft=data.draft;if(!draft||typeof draft!=='object'||Array.isArray(draft)||typeof draft.productId!=='string'||typeof draft.profileRevision!=='string')fail(422,'customer_draft_fields','Bitte den vollständigen Entwurf übergeben.');
+    const [productId,revisionText]=draft.profileRevision.split(':');
+    if(productId!==draft.productId||!/^[1-9][0-9]*$/.test(revisionText||''))fail(422,'customer_draft_fields','Produktstand des Entwurfs ist ungültig.');
+    let record;try{record=repository.get(draft.productId,{revision:revision(revisionText)});}catch{fail(422,'customer_draft_invalid','Der Produktstand dieses Entwurfs ist nicht mehr verfügbar.');}
+    if(isFormProduct(record.document)||record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Bitte ein aktives Produkt verwenden.');
+    const universal=model(record.id,record.revision).universal,source=universal.profile.designs.find(d=>d.id===draft.design?.id);
+    // Gleiche Prüfung wie im Editor (contract.readDraft, unfertiger Entwurf erlaubt); Gestaltungslinien wie der Editor registrieren.
+    try{readDraft(universal,draft,universal.localResources.fonts,[...universal.localResources.motifs,...decorationMotifs(source)],{draft:true});}
+    catch(error){fail(422,'customer_draft_invalid',error.message);}
+    const uploadIds=new Set(draft.design.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId));
+    const photos=(Array.isArray(data.photos)?data.photos:data.photos===undefined?[]:fail(422,'customer_draft_media','Fotos als Liste übergeben.')).map(p=>{
+      if(!p||typeof p!=='object'||Object.keys(p).some(k=>!['uploadId','kind','name','mime','original','edited'].includes(k)))fail(422,'customer_draft_media','Ungültige Fotoangabe.');
+      if(!uploadIds.has(p.uploadId))fail(422,'customer_draft_media','Ein Foto gehört zu keinem Element des Entwurfs.');
+      return {uploadId:p.uploadId,kind:p.kind,name:p.name,mime:p.mime,original:base64Bytes(p.original,'Ungültiges Foto.'),...(p.edited!==undefined?{edited:base64Bytes(p.edited,'Ungültige bearbeitete Fotofassung.')}:{})};
+    });
+    return {productId:record.id,profileRevision:universal.profile.revision,title:data.title,draft,photos,preview:data.preview===undefined?undefined:base64Bytes(data.preview,'Ungültige Vorschau.')};
+  }
+  async function accountDraftRoute(req,res,url,match){
+    const method=req.method,store=customerDrafts.accountDrafts;
+    if(!['GET','POST','DELETE'].includes(method))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+    const principal=customerPrincipal(req,url),id=match[1];
+    if(!id){
+      if(method==='GET')return json(res,200,{drafts:store.list(principal),limit:store.limit,ttlDays:store.ttlDays});
+      if(method==='POST')return json(res,201,{draft:store.create(principal,validatedAccountDraft(await body(req,100*1024*1024)))});
+      fail(405,'method_not_allowed','Entwürfe mit GET lesen oder mit POST speichern.');
+    }
+    if(match[2]==='preview.png'){
+      if(method!=='GET')fail(405,'method_not_allowed','Vorschau nur lesen.');
+      const bytes=store.preview(principal,id);
+      return res.writeHead(200,{'Content-Type':'image/png','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);
+    }
+    if(match[3]){
+      if(method!=='GET')fail(405,'method_not_allowed','Fotos nur lesen.');
+      const variant=url.searchParams.get('variant')||'original';
+      const photo=store.photo(principal,id,match[3],variant);
+      return res.writeHead(200,{'Content-Type':photo.mime,'Content-Length':photo.bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline'}).end(photo.bytes);
+    }
+    if(method==='GET')return json(res,200,store.get(principal,id));
+    if(method==='DELETE')return json(res,200,store.remove(principal,id));
+    return json(res,200,{draft:store.save(principal,id,validatedAccountDraft(await body(req,100*1024*1024)))});
+  }
   async function handle(req,res,url){
     try{
       const pathname=url.pathname,method=req.method;
+      const accountDraft=pathname.match(/^\/api\/workshop\/account-drafts(?:\/(cdraft_[a-f0-9-]{36})(?:\/(preview\.png)|\/photos\/([A-Za-z0-9_-]{1,64}))?)?$/);
+      if(accountDraft)return await accountDraftRoute(req,res,url,accountDraft);
       if(!['GET','POST','PATCH'].includes(method))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(pathname==='/api/workshop/order-webhook'){
         if(method!=='POST')fail(405,'method_not_allowed','Bestellnachrichten benötigen POST.');

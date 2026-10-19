@@ -44,3 +44,13 @@ button{cursor:pointer} button:disabled{cursor:not-allowed;opacity:.5!important}b
 .ux-text-issue{order:1;color:#91321f;font-weight:600}.ux-text-issue:empty{display:none}
 .ux-text-row.is-invalid textarea{border:2px solid #ad3d29!important}
 .ux-text-required{color:#91321f;font-weight:700}
+/* K7: Sitzungsschutz-Hinweis und Konto-Entwürfe */
+.ux-session-note{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:10px 14px;border:1px solid #c9d9cf;border-radius:10px;background:var(--ux-soft);font-size:14px}
+.ux-session-note span{flex:1 1 220px}.ux-session-note button{font-size:14px!important;padding:7px 12px}.ux-session-note [data-ux="session-dismiss"]{padding:7px 10px}
+.ux-account-save{display:grid;gap:8px;margin:14px 0 18px}.ux-account-save label{display:grid;gap:4px;font-size:14px}.ux-account-save input{min-height:42px;padding:8px 10px;border:1px solid var(--ux-border);border-radius:8px;font:inherit}
+.ux-dialog .ux-account-save .ux-primary{margin-top:4px}
+.ux-account-login{display:block;text-align:center;padding:12px;margin-top:14px;border-radius:10px;background:var(--ux-green);color:#fff;text-decoration:none;font-weight:600}
+.ux-account-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.ux-account-draft{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--ux-border)}
+.ux-account-draft .ux-upload-actions{grid-column:2;margin-top:0}.ux-account-draft strong{display:block;overflow-wrap:anywhere}.ux-account-draft small{display:block;color:var(--ux-muted);font-size:12px}
+.ux-account-thumb{width:72px;height:72px;object-fit:contain;border:1px solid var(--ux-border);border-radius:8px;background:#fff}

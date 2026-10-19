@@ -20,7 +20,7 @@ export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhoo
     const file=path.join(directory,name);if(fs.existsSync(file)&&(fs.lstatSync(file).isSymbolicLink()||!fs.statSync(file).isFile()))fail();
   }
   build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
-  const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts,merchantCsrfToken,orderWebhook,merchantTestCart,aiDesign});
+  const workshop=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:config.shopifySessions,shopDrafts:config.shopDrafts,appProxy:config.appProxy,merchantCsrfToken,orderWebhook,merchantTestCart,aiDesign});
   let server,orderWebhookHandler;try{
     orderWebhookHandler=orderWebhook?createOrderWebhookHandler({intake:workshop.orderIntake,config:orderWebhook}):null;
     server=createPreviewServer({workshop,embeddedApp:config.embeddedApp});

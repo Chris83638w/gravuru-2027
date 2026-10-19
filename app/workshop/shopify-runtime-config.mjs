@@ -26,7 +26,9 @@ export function shopifyRuntimeConfig(env){
     const config={mode:'draft-only',shopDomain,apiVersion:'2026-07',accessToken:env.GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN};
     try{createShopDraftTransport(config);}catch{invalid();}shopDrafts={config};
   }
-  return {shopifySessions,embeddedApp,shopDrafts,dataDirectory,port};
+  // K7: App-Proxy-Signatur (Konto-Entwürfe) nutzt dasselbe App-Geheimnis; kein weiteres Feld nötig.
+  const appProxy={shopDomain,secret};
+  return {shopifySessions,embeddedApp,shopDrafts,appProxy,dataDirectory,port};
 }
 export function checkShopifyRuntime(env){
   try{const config=shopifyRuntimeConfig(env);return {configured:true,scope:'merchant-embedded-test',draftTransferConfigured:Boolean(config.shopDrafts),credentialsVerified:false,httpsHostVerified:false,privateStorageVerified:false};}

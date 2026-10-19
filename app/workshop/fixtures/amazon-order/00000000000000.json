@@ -1,0 +1,821 @@
+{
+  "orderId": "000-0000000-0000000",
+  "orderItemId": "00000000000000",
+  "merchantId": "A0000000000000",
+  "marketplaceId": "A1PA6795UKMFR9",
+  "asin": "B013T1VRKS",
+  "title": "CHRISCK design Grabstein Hund und Katze aus Schiefer mit Gravur & Foto - 22x14 cm o. 30x20 cm - Wetterfester Grabschmuck - Katzen & Hunde Gedenkstein mit Bild & Motiven - Grabplatte Tiergrabstein",
+  "quantity": 1,
+  "vendorCode": null,
+  "customizationData": {
+    "type": "PageContainerCustomization",
+    "children": [
+      {
+        "type": "PreviewContainerCustomization",
+        "name": "Anpassung",
+        "label": "Anpassung",
+        "children": [
+          {
+            "type": "FlatContainerCustomization",
+            "children": [
+              {
+                "type": "OptionCustomization",
+                "name": "Größe",
+                "label": "Größen Auswahl",
+                "optionSelection": {
+                  "name": "ca. 22x14 cm",
+                  "label": "ca. 22x14 cm",
+                  "additionalCost": {
+                    "amount": 0,
+                    "currency": "EUR"
+                  }
+                },
+                "displayValue": "ca. 22x14 cm"
+              },
+              {
+                "type": "PlacementContainerCustomization",
+                "name": "Bild 1",
+                "label": "Bild 1",
+                "children": [
+                  {
+                    "type": "ImageCustomization",
+                    "name": "",
+                    "label": "Foto-Upload",
+                    "image": {
+                      "imageName": "00000000-0000-4000-8000-000000000001.jpg",
+                      "buyerFilename": "kundenfoto.jpeg"
+                    }
+                  }
+                ],
+                "position": {
+                  "x": 9,
+                  "y": 73
+                },
+                "dimension": {
+                  "width": 381,
+                  "height": 254
+                },
+                "buyerPlacement": {
+                  "position": {
+                    "x": 26.616580310880934,
+                    "y": 88.63274668627028
+                  },
+                  "dimension": {
+                    "width": 1118,
+                    "height": 1636
+                  },
+                  "scale": {
+                    "scaleX": 0.13796435210196845,
+                    "scaleY": 0.13796435210196845
+                  },
+                  "angleOfRotation": 0
+                }
+              },
+              {
+                "type": "OptionCustomization",
+                "name": "Designs",
+                "label": "Designs",
+                "optionSelection": {
+                  "name": "Doppelherz D201",
+                  "label": "Doppelherz D201",
+                  "additionalCost": {
+                    "amount": 0
+                  },
+                  "overlayImage": {
+                    "imageUrl": "https://example.invalid/amazon-vorlage/datei-01.png",
+                    "dimension": {
+                      "width": 400,
+                      "height": 400
+                    }
+                  },
+                  "thumbnailImage": {
+                    "imageUrl": "https://example.invalid/amazon-vorlage/datei-02.jpg",
+                    "dimension": {
+                      "width": 400,
+                      "height": 400
+                    }
+                  }
+                },
+                "displayValue": "Doppelherz D201"
+              },
+              {
+                "type": "ContainerCustomization",
+                "name": "Text 1",
+                "label": "Text 1",
+                "children": [
+                  {
+                    "type": "FontCustomization",
+                    "name": "",
+                    "label": "Schriftart",
+                    "fontSelection": {
+                      "family": "Great Vibes",
+                      "fontUrl": "https://example.invalid/amazon-vorlage/datei-03.ttf"
+                    }
+                  },
+                  {
+                    "type": "ColorCustomization",
+                    "name": "",
+                    "label": "Schriftfarbe",
+                    "colorSelection": {
+                      "name": "Laser-Gravur",
+                      "value": "#B3b3b3",
+                      "colorModel": "rgb"
+                    }
+                  },
+                  {
+                    "type": "ContainerCustomization",
+                    "children": [
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 1",
+                        "label": "Texteingabe 1",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 1",
+                                "inputValue": "Muster"
+                              }
+                            ],
+                            "priceDelta": {
+                              "amount": 0
+                            }
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        },
+                        "buyerPlacement": {
+                          "position": {
+                            "x": 211.20847080663435,
+                            "y": 87.99556873080567
+                          },
+                          "dimension": {
+                            "width": 544.9308794326241,
+                            "height": 230.02312056737588
+                          },
+                          "scale": {
+                            "scaleX": 0.25886728,
+                            "scaleY": 0.25886728
+                          },
+                          "angleOfRotation": 0
+                        }
+                      },
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 2",
+                        "label": "Texteingabe 2",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 2",
+                                "inputValue": "01.01.2010 – 01.01.2020"
+                              }
+                            ],
+                            "priceDelta": {
+                              "amount": 0
+                            }
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        },
+                        "buyerPlacement": {
+                          "position": {
+                            "x": 207.2586624703776,
+                            "y": 149.38356858909646
+                          },
+                          "dimension": {
+                            "width": 1580.0349219858158,
+                            "height": 230.02312056737588
+                          },
+                          "scale": {
+                            "scaleX": 0.10100798,
+                            "scaleY": 0.10100798
+                          },
+                          "angleOfRotation": 0
+                        }
+                      },
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 3",
+                        "label": "Texteingabe 3",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 3",
+                                "inputValue": "Ruhige, würdige Gestaltung. \nName groß, Lebensdaten klar lesbar,\nSpruch zurückhaltend; \nMotive dezent."
+                              }
+                            ],
+                            "priceDelta": {
+                              "amount": 0
+                            }
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        },
+                        "buyerPlacement": {
+                          "position": {
+                            "x": 188.14183952285953,
+                            "y": 226.50501430828143
+                          },
+                          "dimension": {
+                            "width": 2300.434765957447,
+                            "height": 1030.503580141844
+                          },
+                          "scale": {
+                            "scaleX": 0.0838468,
+                            "scaleY": 0.0838468
+                          },
+                          "angleOfRotation": 0
+                        }
+                      },
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 4",
+                        "label": "Texteingabe 4",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 4",
+                                "inputValue": ""
+                              }
+                            ]
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        }
+                      },
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 5",
+                        "label": "Texteingabe 5",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 5",
+                                "inputValue": ""
+                              }
+                            ]
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "ContainerCustomization",
+                "name": "Text 2",
+                "label": "Text 2",
+                "children": [
+                  {
+                    "type": "FontCustomization",
+                    "name": "",
+                    "label": "Schriftart",
+                    "fontSelection": {
+                      "family": "Allura",
+                      "fontUrl": "https://example.invalid/amazon-vorlage/datei-04.woff"
+                    }
+                  },
+                  {
+                    "type": "ColorCustomization",
+                    "name": "",
+                    "label": "Farbe",
+                    "colorSelection": {
+                      "name": "Laser-Gravur",
+                      "value": "#b3b3b3",
+                      "colorModel": "rgb"
+                    }
+                  },
+                  {
+                    "type": "ContainerCustomization",
+                    "children": [
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 1",
+                        "label": "Texteingabe 1",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 6",
+                                "inputValue": ""
+                              }
+                            ]
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        }
+                      },
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 2",
+                        "label": "Texteingabe 2",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 7",
+                                "inputValue": ""
+                              }
+                            ]
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        }
+                      },
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 3",
+                        "label": "Texteingabe 3",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 8",
+                                "inputValue": ""
+                              }
+                            ]
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        }
+                      },
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 4",
+                        "label": "Texteingabe 4",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 9",
+                                "inputValue": ""
+                              }
+                            ]
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        }
+                      },
+                      {
+                        "type": "PlacementContainerCustomization",
+                        "name": "Texteingabe 5",
+                        "label": "Texteingabe 5",
+                        "children": [
+                          {
+                            "type": "FlatRatePriceDeltaContainerCustomization",
+                            "children": [
+                              {
+                                "type": "TextCustomization",
+                                "name": "",
+                                "label": "Text 10",
+                                "inputValue": ""
+                              }
+                            ]
+                          }
+                        ],
+                        "position": {
+                          "x": 9,
+                          "y": 73
+                        },
+                        "dimension": {
+                          "width": 381,
+                          "height": 254
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "OptionCustomization",
+                "name": "Zusätzliches Imprägnierspray (60 ml Sprühflasche)",
+                "label": "Zusätzliches Imprägnierspray (60 ml Sprühflasche)",
+                "optionSelection": {
+                  "name": "Kein Imprägnierspray",
+                  "label": "Kein Imprägnierspray",
+                  "additionalCost": {
+                    "amount": 0
+                  },
+                  "thumbnailImage": {
+                    "imageUrl": "https://example.invalid/amazon-vorlage/datei-05.png",
+                    "dimension": {
+                      "width": 300,
+                      "height": 300
+                    }
+                  }
+                },
+                "displayValue": "Kein Imprägnierspray"
+              },
+              {
+                "type": "OptionCustomization",
+                "name": "var_befestigung",
+                "label": "Montagemöglichkeit",
+                "optionSelection": {
+                  "name": "Acrylständer / Klares Acrylglas",
+                  "label": "Acrylständer / Klares Acrylglas",
+                  "additionalCost": {
+                    "amount": 11.89,
+                    "currency": "EUR"
+                  },
+                  "thumbnailImage": {
+                    "imageUrl": "https://example.invalid/amazon-vorlage/datei-06.jpg",
+                    "dimension": {
+                      "width": 1900,
+                      "height": 1900
+                    }
+                  }
+                },
+                "displayValue": "Acrylständer / Klares Acrylglas"
+              },
+              {
+                "type": "OptionCustomization",
+                "name": "Entwurf (inkl. 2 Änderungen)",
+                "label": "Entwurf (inkl. 2 Änderungen)",
+                "optionSelection": {
+                  "name": "ohne Entwurf",
+                  "label": "ohne Entwurf",
+                  "additionalCost": {
+                    "amount": 0
+                  }
+                },
+                "displayValue": "ohne Entwurf"
+              },
+              {
+                "type": "FlatRatePriceDeltaContainerCustomization",
+                "name": "Informationen 1",
+                "label": "Anmerkung",
+                "children": [
+                  {
+                    "type": "TextCustomization",
+                    "name": "Informationen 1",
+                    "label": "Anmerkung",
+                    "inputValue": ""
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "baseImage": {
+          "imageUrl": "https://example.invalid/amazon-vorlage/datei-07.jpg",
+          "dimension": {
+            "width": 400,
+            "height": 400
+          }
+        },
+        "snapshot": {
+          "imageName": "00000000-0000-4000-8000-000000000002.jpg",
+          "dimension": {
+            "width": 400,
+            "height": 400
+          }
+        },
+        "svg": "00000000-0000-4000-8000-000000000003.svg"
+      }
+    ]
+  },
+  "customizationInfo": {
+    "version3.0": {
+      "surfaces": [
+        {
+          "name": "Anpassung",
+          "areas": [
+            {
+              "customizationType": "Options",
+              "name": "Größe",
+              "label": "Größen Auswahl",
+              "optionValue": "ca. 22x14 cm",
+              "priceDelta": {
+                "currency": "EUR",
+                "value": 0.0
+              },
+              "optionImage": ""
+            },
+            {
+              "customizationType": "ImagePrinting",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "name": "Bild 1",
+              "svgImage": "00000000-0000-4000-8000-000000000003.svg"
+            },
+            {
+              "customizationType": "Options",
+              "name": "Designs",
+              "label": "Designs",
+              "optionValue": "Doppelherz D201",
+              "priceDelta": {
+                "value": 0.0
+              },
+              "optionImage": "https://example.invalid/amazon-vorlage/datei-01.png"
+            },
+            {
+              "customizationType": "ImagePrinting",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "priceDelta": {
+                "value": 0.0
+              },
+              "name": "Texteingabe 1",
+              "svgImage": "00000000-0000-4000-8000-000000000003.svg"
+            },
+            {
+              "customizationType": "ImagePrinting",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "priceDelta": {
+                "value": 0.0
+              },
+              "name": "Texteingabe 2",
+              "svgImage": "00000000-0000-4000-8000-000000000003.svg"
+            },
+            {
+              "customizationType": "ImagePrinting",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "priceDelta": {
+                "value": 0.0
+              },
+              "name": "Texteingabe 3",
+              "svgImage": "00000000-0000-4000-8000-000000000003.svg"
+            },
+            {
+              "customizationType": "TextPrinting",
+              "colorName": "Laser-Gravur",
+              "fill": "#B3b3b3",
+              "fontFamily": "Great Vibes",
+              "fontUrl": "https://example.invalid/amazon-vorlage/datei-03.ttf",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "name": "Texteingabe 4",
+              "label": "Text 4",
+              "text": ""
+            },
+            {
+              "customizationType": "TextPrinting",
+              "colorName": "Laser-Gravur",
+              "fill": "#B3b3b3",
+              "fontFamily": "Great Vibes",
+              "fontUrl": "https://example.invalid/amazon-vorlage/datei-03.ttf",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "name": "Texteingabe 5",
+              "label": "Text 5",
+              "text": ""
+            },
+            {
+              "customizationType": "TextPrinting",
+              "colorName": "Laser-Gravur",
+              "fill": "#b3b3b3",
+              "fontFamily": "Allura",
+              "fontUrl": "https://example.invalid/amazon-vorlage/datei-04.woff",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "name": "Texteingabe 1",
+              "label": "Text 6",
+              "text": ""
+            },
+            {
+              "customizationType": "TextPrinting",
+              "colorName": "Laser-Gravur",
+              "fill": "#b3b3b3",
+              "fontFamily": "Allura",
+              "fontUrl": "https://example.invalid/amazon-vorlage/datei-04.woff",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "name": "Texteingabe 2",
+              "label": "Text 7",
+              "text": ""
+            },
+            {
+              "customizationType": "TextPrinting",
+              "colorName": "Laser-Gravur",
+              "fill": "#b3b3b3",
+              "fontFamily": "Allura",
+              "fontUrl": "https://example.invalid/amazon-vorlage/datei-04.woff",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "name": "Texteingabe 3",
+              "label": "Text 8",
+              "text": ""
+            },
+            {
+              "customizationType": "TextPrinting",
+              "colorName": "Laser-Gravur",
+              "fill": "#b3b3b3",
+              "fontFamily": "Allura",
+              "fontUrl": "https://example.invalid/amazon-vorlage/datei-04.woff",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "name": "Texteingabe 4",
+              "label": "Text 9",
+              "text": ""
+            },
+            {
+              "customizationType": "TextPrinting",
+              "colorName": "Laser-Gravur",
+              "fill": "#b3b3b3",
+              "fontFamily": "Allura",
+              "fontUrl": "https://example.invalid/amazon-vorlage/datei-04.woff",
+              "Dimensions": {
+                "width": 381,
+                "height": 254
+              },
+              "Position": {
+                "x": 9,
+                "y": 73
+              },
+              "name": "Texteingabe 5",
+              "label": "Text 10",
+              "text": ""
+            },
+            {
+              "customizationType": "Options",
+              "name": "Zusätzliches Imprägnierspray (60 ml Sprühflasche)",
+              "label": "Zusätzliches Imprägnierspray (60 ml Sprühflasche)",
+              "optionValue": "Kein Imprägnierspray",
+              "priceDelta": {
+                "value": 0.0
+              },
+              "optionImage": ""
+            },
+            {
+              "customizationType": "Options",
+              "name": "var_befestigung",
+              "label": "Montagemöglichkeit",
+              "optionValue": "Acrylständer / Klares Acrylglas",
+              "priceDelta": {
+                "currency": "EUR",
+                "value": 11.89
+              },
+              "optionImage": ""
+            },
+            {
+              "customizationType": "Options",
+              "name": "Entwurf (inkl. 2 Änderungen)",
+              "label": "Entwurf (inkl. 2 Änderungen)",
+              "optionValue": "ohne Entwurf",
+              "priceDelta": {
+                "value": 0.0
+              },
+              "optionImage": ""
+            },
+            {
+              "customizationType": "TextPrinting",
+              "name": "Informationen 1",
+              "label": "Anmerkung",
+              "text": ""
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

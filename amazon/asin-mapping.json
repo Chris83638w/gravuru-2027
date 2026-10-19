@@ -1,0 +1,38 @@
+{
+  "B013T1VRKS": {
+    "sku": "Boxenschild2443",
+    "linie": "gedenktafeln",
+    "titel": "Schiefer-Gedenktafel Tier",
+    "sizeOption": "Größe",
+    "designOption": "Designs",
+    "familyBySize": {
+      "ca. 22x14 cm": "gedenktafel-22x14-schiefer-natur",
+      "ca. 30x20 cm (Bestseller)": "gedenktafel-30x20-schiefer-natur"
+    },
+    "placeholderGeometry": {
+      "gedenktafel-22x14-schiefer-natur": {
+        "status": "offen",
+        "entscheidung": "Katalog-Entscheidung 15 (Familie 22 × 14 Schiefer)",
+        "widthMm": 220,
+        "heightMm": 140,
+        "marginMm": 10,
+        "keepoutMm": 1,
+        "shape": "rect",
+        "cornerRadiusMm": 0,
+        "mountingRules": []
+      }
+    },
+    "mountingOption": "var_befestigung",
+    "mountingByOption": {
+      "2 Bohrlöcher": "B02-E12-D5",
+      "4 Bohrlöcher": "B04-E12-D5",
+      "Acrylständer / Klares Acrylglas": null
+    },
+    "optionsByName": {
+      "Acrylständer / Klares Acrylglas": "staender-klar",
+      "Kein Imprägnierspray": "kein-impraegnierspray",
+      "ohne Entwurf": "ohne-entwurf"
+    },
+    "quelle": "Referenzfall 302-4217613-2163531 und AMAZON-CUSTOM-IMPORT-20261019.md Abschnitt 3; nur im Referenzfall gesehen: ca. 22x14 cm, Acrylständer, Kein Imprägnierspray, ohne Entwurf. Optionstexte 'ca. 30x20 cm (Bestseller)', '2 Bohrlöcher', '4 Bohrlöcher' stammen aus dem Beispiel der Spezifikation und sind mit dem Amazon-Vorlagen-Export zu bestätigen. Unbekannte Optionen erzeugen eine Warnung."
+  }
+}

@@ -1,0 +1,5 @@
+# Amazon-Custom-Import (scripts/import-amazon-order.py): Text zu Pfaden, Bildlesen, PDF-Ausgabe. Kein Netzzugriff zur Laufzeit.
+fonttools==4.65.0
+Pillow==12.3.0
+PyMuPDF==1.28.2
+CairoSVG==2.8.2

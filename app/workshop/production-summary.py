@@ -159,13 +159,21 @@ def build(data):
  else:mounting='Keine Bohrungen · Befestigung laut Optionen' if not holes and not mount.get('holeCount') else 'laut Bohrbild'
  if holes:mounting+=f" · {len(holes)} Bohrung(en): "+', '.join(f"Ø {mm(h['diameterMm'])} mm bei {mm(h['xMm'])} | {mm(h['yMm'])} mm" for h in holes)
  elif mount.get('holeCount'):mounting+=f" · {mount['holeCount']} Ausschnitt(e) laut Kontur"
+ sides=product.get('surfaces') or []
  rows=[('Material',material),('Größe',f"{mm(product['widthMm'])} × {mm(product['heightMm'])} mm"+(f" · Radius {mm(product['cornerRadiusMm'])} mm" if product.get('cornerRadiusMm') else '')),('Befestigung',mounting),('Verfahren',product.get('methodLabel') or '–')]
+ if sides:rows.append(('Seiten',' + '.join(s['label'] for s in sides)+(' (je Seite eine Produktionsdatei)' if len(sides)>1 else '')))
  options=product.get('options') or []
  def option_price(o):
   c=o.get('priceCents')
   if not isinstance(c,int):return 'Preis offen'
   return ('Grundpreis ' if o.get('priceKind')=='base' else '+' if c>0 else '')+money(c)
  rows.append(('Optionen','; '.join(f"{o['group']}: {o['value']} ({option_price(o)})" for o in options) if options else 'Keine Optionsgruppen'))
+ # K14 / Ü12.1: Zusatzangaben ohne Vorschau (Textfeld, Datum, Auswahl, Ankreuzfeld)
+ extra=product.get('fields') or []
+ def field_text(f):
+  c=f.get('priceCents')
+  return f"{f['label']}: {f['display']}"+(f" (+{money(c)})" if isinstance(c,int) and c>0 else '')
+ if extra:rows.append(('Zusatzangaben','; '.join(field_text(f) for f in extra)))
  sheet.key_values(rows,width=left_w,label_width=100)
  sheet.y=max(sheet.y,box.y1+26)
  # Textfelder
@@ -176,7 +184,8 @@ def build(data):
   font=f.get('font') or '–'
   style=[k for k,v in (('fett',f.get('bold')),('kursiv',f.get('italic'))) if v]
   if style:font+=' ('+', '.join(style)+')'
-  trows.append([f.get('label') or f.get('id'),f.get('text') or '',font,mm(f.get('sizeMm')),mm(f.get('xMm')),mm(f.get('yMm')),mm(f.get('rotationDeg'),1)+'°'])
+  side={'back':' (Rückseite)','front':' (Vorderseite)'}.get(f.get('surfaceId'),'') if sides and len(sides)>1 else ''
+  trows.append([(f.get('label') or f.get('id'))+side,f.get('text') or '',font,mm(f.get('sizeMm')),mm(f.get('xMm')),mm(f.get('yMm')),mm(f.get('rotationDeg'),1)+'°'])
  sheet.table([('Feld',70),('Text',170),('Schrift',100),('Größe mm',54),('x mm',44),('y mm',44),('Drehung',41)],trows,limit_y=H-250,empty='Keine Textfelder')
  sheet.text(MARGIN,sheet.y+8,'Position = Mittelpunkt des Felds in mm vom linken oberen Plattenrand; Größe = Schriftgröße in mm auf der Platte.',6.5);sheet.y+=10
  # Fotos

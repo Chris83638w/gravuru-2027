@@ -29,7 +29,7 @@ export function createStorefrontCartTransport(config,{fetchImpl=globalThis.fetch
   if(signal!==undefined&&!(signal instanceof AbortSignal))throw failure('storefront_input','Ungültiges Abbruchsignal.');
   if(signal?.aborted)throw failure('storefront_cancelled','Warenkorbanfrage vor dem Versand abgebrochen.');
   // Never serialize caller-supplied objects outside the established request model.
-  const request=prepareCartRequest(offer,replace),frozenOffer={scope:offer.scope,variantId:offer.variantId,quantity:offer.quantity,unitCents:offer.unitCents,currency:offer.currency,property:{...offer.property},...(offer.personalization?{personalization:{...offer.personalization}}:{}),...(offer.configuration?{configuration:{...offer.configuration}}:{})};
+  const request=prepareCartRequest(offer,replace),frozenOffer={scope:offer.scope,variantId:offer.variantId,quantity:offer.quantity,unitCents:offer.unitCents,currency:offer.currency,property:{...offer.property},...(offer.personalization?{personalization:{...offer.personalization}}:{}),...(offer.configuration?{configuration:{...offer.configuration}}:{}),...(offer.fields?{fields:offer.fields.map(f=>({label:f.label,value:f.value}))}:{})};
   const frozenTarget=replace?{cartId:replace.cartId,lineId:replace.lineId}:undefined;
   const body=JSON.stringify(request);
   const controller=new AbortController(),combined=signal?AbortSignal.any([controller.signal,signal]):controller.signal;

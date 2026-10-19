@@ -1,4 +1,4 @@
-import {ACRYLIC_SIZES,acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
+import {ACRYLIC_SIZES,acrylicSelection,acrylicOptions} from '../configurator/variant-m/acrylic-product.mjs';
 import {baseAnchors} from '../configurator/variant-m/acrylic-base-anchors.mjs';
 import fs from 'node:fs';
 import {studioSvg} from '../platform/sources/app/shared/models/studio-svg.mjs';
@@ -54,7 +54,7 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
  if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(surfacePreview(svg,c.materialSurface,p.geometry),p,{show:keepout}),c,p,{show:keepout}),c.sceneBackground);
  backdrop??=image('scene-empty-v2.jpg');
  svg=svg.replace(/viewBox="[^"]+"/,'x="85.794" y="49.956" width="915.498" height="1196.048" viewBox="0 0 150 200"').replace('fill="url(#studio-product-card-surface)"','fill="transparent"');
- const choice=acrylicSelection(options,c.acrylic.pricing),b=choice.base;
+ const choice=acrylicSelection(acrylicOptions(options),c.acrylic.pricing),b=choice.base;
  let front='',back='';
  if(b.asset){
   const a=baseAnchors[b.asset],scale=912/(a.right-a.left),slot=1246-b.insertionMm*1196/choice.size.height;

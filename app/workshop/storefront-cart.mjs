@@ -30,6 +30,20 @@ export function configurationAttributes(configuration) {
   return [{key:'_gravuru_config', value:configuration.id}, {key:'_gravuru_rev', value:String(configuration.rev)},
     ...(configuration.editUrl === undefined ? [] : [{key:'Bearbeiten', value:editLink(configuration.editUrl, configuration)}])];
 }
+// K14 / Ü12.1: sichtbare Zusatzfelder (ohne Unterstrich), nie technische oder reservierte Schlüssel.
+const RESERVED = ['Bearbeiten', 'Bearbeitbarer Entwurf'];
+export function fieldAttributes(fields) {
+  if (fields === undefined) return [];
+  if (!Array.isArray(fields) || fields.length > 20) fail('Ungültige Zusatzangaben.');
+  const seen = new Set();
+  return fields.map(f => {
+    if (!f || typeof f !== 'object' || Array.isArray(f) || Object.keys(f).some(k => !['label','value'].includes(k)) ||
+        typeof f.label !== 'string' || !f.label.trim() || f.label.length > 80 || f.label.startsWith('_') || RESERVED.includes(f.label) || seen.has(f.label) ||
+        typeof f.value !== 'string' || !f.value || f.value.length > 500 || /[\x00-\x1f\x7f]/.test(f.label + f.value)) fail('Ungültige Zusatzangaben.');
+    seen.add(f.label);
+    return {key: f.label, value: f.value};
+  });
+}
 const target = t => {
   if (t === undefined || t === null) return null;
   if (!t || typeof t !== 'object' || Array.isArray(t) || Object.keys(t).some(k=>!['cartId','lineId'].includes(k)) ||
@@ -45,7 +59,7 @@ function lineInput(offer) {
   return {
     merchandiseId:'gid://shopify/ProductVariant/'+offer.variantId,
     quantity:offer.quantity,
-    attributes:[{key:offer.property.name, value:offer.property.value}, ...personalizationAttributes(offer.personalization), ...configurationAttributes(offer.configuration)]
+    attributes:[{key:offer.property.name, value:offer.property.value}, ...personalizationAttributes(offer.personalization), ...configurationAttributes(offer.configuration), ...fieldAttributes(offer.fields)]
   };
 }
 // `replace` = bestehende Zeile (cartId/lineId) durch den neuen Stand ersetzen statt neu anlegen.

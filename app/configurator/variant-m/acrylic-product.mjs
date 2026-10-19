@@ -28,6 +28,9 @@ export function containAcrylicObject(o){
   o.x=Math.min(area.right-w/2,Math.max(area.left+w/2,o.x));
   o.y=Math.min(area.bottom-h/2,Math.max(area.top+h/2,o.y));return o;
 }
+// K14 / Ü12.1: Zusatzfelder stehen im selben Optionsobjekt wie Größe/Sockel/Wand; für die
+// Acryl-Ausführung zählen nur diese drei (unbekannte Schlüssel weist resolvedOptions ab).
+export const acrylicOptions=options=>options&&typeof options==='object'&&!Array.isArray(options)?Object.fromEntries(Object.entries(options).filter(([key])=>['size','base','wall'].includes(key))):options;
 export function acrylicSelection(options={},pricing=ACRYLIC_PRICING) {
   if(!options||typeof options!=='object'||Array.isArray(options)||Object.keys(options).some(key=>!['size','base','wall'].includes(key)))throw Error('Ungültige Acrylglas-Ausführung.');
   const sizeId=options.size??'small',baseId=options.base??'none',wallId=options.wall??'none';

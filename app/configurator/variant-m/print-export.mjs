@@ -2,6 +2,7 @@ import {previewResourceURL} from './preview-resource.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {selectedProfile,designFromState,isGuideObject} from './contract.mjs';
+import {objectSurface} from './surfaces.mjs';
 import {acrylicSelection} from './acrylic-product.mjs';
 import {exportSettings,printPDF,zipFiles,hasContourInk,whiteMask,insideContour,boundarySample,resolutionAdvice} from './print-export-model.mjs';
 const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -12,7 +13,8 @@ export async function printArtwork({el,config,files}){
  const fingerprint=JSON.stringify(el.state),selection=el.state.selected,markup=[],examplePhotos=[];
  try{
   el.state.selected=null;
-  for(const o of el.state.objects){if(o.uxHidden||isGuideObject(o))continue;if(o.type==='photoSlot'&&!o.uxUploadId){
+  // K14 / Ü15.1: Der lokale Browser-Druckexport gibt nur die Vorderseite aus; die Rückseite erzeugt die Werkstatt-Ausgabe als eigene Datei.
+  for(const o of el.state.objects){if(o.uxHidden||isGuideObject(o)||objectSurface(o)!=='front')continue;if(o.type==='photoSlot'&&!o.uxUploadId){
     const example=config.localResources?.photoExamples?.find(e=>e.designId===el.state.designId&&e.slotId===o.id);
     if(example){const clip='print-example-'+o.id,mask=photoClip(o,clip,previewResourceURL(photoMaskURL(o)));markup.push(`<g transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><defs>${mask.defs}</defs><g ${mask.attribute}><image href="${previewResourceURL('/api/workshop/design-assets/'+example.assetId+'/preview.svg')}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g></g>`);examplePhotos.push(o.id);}
     else{const picture=el.uxObjectSVG(o);if(!picture&&o.required)throw Error('Bitte für den benötigten Fotobereich ein Foto hochladen.');markup.push(picture||'');if(picture)examplePhotos.push(o.id);}continue;

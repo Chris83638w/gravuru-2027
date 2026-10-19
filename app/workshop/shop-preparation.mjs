@@ -1,7 +1,7 @@
 import {createHash} from 'node:crypto';
 import {isFormProduct,formReadiness} from './form-product.mjs';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
-import {quote} from '../configurator/variant-m/contract.mjs';
+import {quote,variantCombinations} from '../configurator/variant-m/contract.mjs';
 import {variantKey} from '../configurator/variant-m/commerce-model.mjs';
 // Read-only preparation. No Shopify credentials, IDs, writes or publication are fabricated.
 export function prepareShopProduct(record){
@@ -17,8 +17,9 @@ export function prepareShopProduct(record){
   check('price',d.basePriceCents!==null,d.basePriceCents!==null?'Preis aus dem gespeicherten Produktstand.':'Grundpreis noch festlegen.');
   if(d.basePriceCents!==null)variants.push({key:variantKey({}),title:'Standard',options:{},priceCents:d.basePriceCents,widthMm:d.form.geometry.widthMm,heightMm:d.form.geometry.heightMm});
  }else{
-  const groups=d.config.profile.optionGroups;let options=[{}];for(const group of groups)options=options.flatMap(o=>group.values.map(v=>({...o,[group.id]:v.id})));
-  for(const option of options){const resolved=resolveProduct(d,{options:option}),price=quote(resolved.config,[],resolved.designId,option);variants.push({key:variantKey(option),title:groups.map(g=>g.values.find(v=>v.id===option[g.id]).label||option[g.id]).join(' · '),options:option,priceCents:price.unitCents,widthMm:resolved.physical.widthMm,heightMm:resolved.physical.heightMm});}
+  // K14 / Ü12.1: unsichtbare Gruppen (visibleIf) entfallen, gleiche Ausführungen nur einmal.
+  const groups=d.config.profile.optionGroups,options=variantCombinations(validateProductDocument(d).config);
+  for(const option of options){const resolved=resolveProduct(d,{options:option}),price=quote(resolved.config,[],resolved.designId,option);variants.push({key:variantKey(option),title:groups.filter(g=>option[g.id]!==undefined).map(g=>g.values.find(v=>v.id===option[g.id]).label||option[g.id]).join(' · '),options:option,priceCents:price.unitCents,widthMm:resolved.physical.widthMm,heightMm:resolved.physical.heightMm});}
   check('variants',true,variants.length+' gültige Ausführungen aus derselben Preis-/Variantenprüfung wie im Konfigurator.');
  }
  check('seo',Boolean(d.seo?.title?.trim()&&d.seo?.description?.trim()),'Titel und Beschreibung für die Produktseite'+(d.seo?.title?.trim()&&d.seo?.description?.trim()?' sind vorbereitet.':' noch ergänzen.'));

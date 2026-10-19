@@ -1,0 +1,17 @@
+{
+ "schema": "gravuru-quantity-tier-defaults/v1",
+ "note": "K14 / Ü11.1: Vorgabe-Mengenstaffeln je Linie bzw. Thema der Katalog-Unterkategorie, wenn weder Unterkategorie (priceOverrides.quantityTiers) noch Familie/Größe (quantityTiers) eine Staffel nennen. Erste passende Regel gilt; tiers [] = ausdrücklich keine Staffel. percentOff null = offen: die Staffel wird bis zur Angabe weder gerechnet noch angezeigt. Werte nur als Daten ändern, nie raten. Grundlage und offener Abgleich mit dem Shop-Bestand: docs/plans/STAFFEL-SHOP-BESTAND-20261019.md.",
+ "rules": [
+  {
+   "id": "entscheidung-20261019-nr4",
+   "label": "Entscheidung Chris 19.10.2026 Nr. 4: Firmenschilder, Boxenschilder, Schlüsselanhänger, Hinweisschilder, Brettchen – Stufen ab 5 / 10 / 25 Stück; Prozentwerte offen (sollten aus rabatt_stufe1–3 des alten Shops kommen, dort für diese Typen nicht gesetzt)",
+   "lineIds": ["brettchen", "schluesselanhaenger", "pferdeschilder"],
+   "themeIds": ["firmenschilder", "hinweisschilder"],
+   "tiers": [
+    {"minQuantity": 5, "percentOff": null},
+    {"minQuantity": 10, "percentOff": null},
+    {"minQuantity": 25, "percentOff": null}
+   ]
+  }
+ ]
+}

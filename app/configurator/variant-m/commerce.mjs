@@ -26,7 +26,9 @@ export function installCommerce({el,config,files,pending}){
    busy=true;message='Gestaltung und Bilder werden vorbereitet …';update();
    const fingerprint=JSON.stringify(el.state),{assets}=await exportCommerce({el,config,files,selection,binding});
    if(fingerprint!==JSON.stringify(el.state))throw Error('Die Gestaltung wurde während der Vorbereitung geändert. Bitte erneut in den Warenkorb legen.');
-   const properties={Design:el.state.designId,Format:config.profile.geometry.width+' × '+config.profile.geometry.height+' mm',Ausführung:config.profile.optionGroups.map(g=>g.values.find(v=>v.id===selection.options[g.id]).label).join(' · '),'Zusätzliche Motive':String(selection.additionalMotifs),'Kostenpflichtige Bilder':String(selection.chargedUploads),'Einzelpreis':money(selection.unitCents),'_Gravuru Stand':String(binding.revision),'_Gravuru Vorgang':crypto.randomUUID()};
+   const properties={Design:el.state.designId,Format:config.profile.geometry.width+' × '+config.profile.geometry.height+' mm',Ausführung:config.profile.optionGroups.filter(g=>selection.options[g.id]!==undefined).map(g=>g.values.find(v=>v.id===selection.options[g.id]).label).join(' · '),'Zusätzliche Motive':String(selection.additionalMotifs),'Kostenpflichtige Bilder':String(selection.chargedUploads),'Einzelpreis':money(selection.unitCents),'_Gravuru Stand':String(binding.revision),'_Gravuru Vorgang':crypto.randomUUID()};
+   // K14 / Ü12.1: Zusatzfelder sichtbar (ohne Unterstrich) unter ihrer Bezeichnung; feste Schlüssel bleiben vorrangig.
+   for(const entry of optionFieldEntries(config,selection.options))if(!Object.hasOwn(properties,entry.label))properties[entry.label]=entry.display;
    Object.assign(properties,{_gravuru_motifs:String(selection.additionalMotifs),_gravuru_uploads:String(selection.chargedUploads),_gravuru_revision:String(binding.revision)});
    // K8 (Ü9.1): Bearbeiten-Kontext für das Theme (Zeile ersetzen statt neu anlegen); die Konfigurations-Revision vergibt der Server.
    const edit=el.cartEdit?{configId:el.cartEdit.configId,rev:el.cartEdit.rev,cartLineId:el.cartEdit.cartLineId||null}:null;

@@ -16,7 +16,9 @@ import {measureText} from '../platform/sources/app/shared/models/doorbell-previe
 import {validColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {validContentId} from '../platform/sources/app/shared/models/design-content.mjs';
 import {customerLayoutIssue} from '../configurator/variant-m/contract.mjs';
-import {familyProductConfig,familyProcess,geometryOf,validateFamily} from './product-families.mjs';
+import {familyProductConfig,familyProcess,geometryOf,validateFamily,sizeQuantityTiers} from './product-families.mjs';
+import {quantityTiersIssue} from '../configurator/variant-m/contract.mjs';
+import fs from 'node:fs';
 import {makeProductDocument,validateProductDocument} from './product-model.mjs';
 import {textLimits,textLimitIssue,TEXT_LIMIT_RANGES} from './theme-limits.mjs';
 import {FONT_SET_ALWAYS} from './katalog-source.mjs';
@@ -289,7 +291,37 @@ export function applyPriceOverrides(family,subcategory){
  for(const [key,value] of Object.entries(o.sizes||{})){const s=f.sizes.find(s=>s.key===key);if(!s)fail('Unterkategorie „'+subcategory.id+'“: Preis für unbekannte Größe „'+key+'“.');if(!cents(value))fail('Preis '+key+' prüfen.');s.baseCents=value;}
  for(const [key,value] of Object.entries(o.mounting||{})){const r=f.mountingRules.find(r=>r.id===key);if(!r)fail('Unterkategorie „'+subcategory.id+'“: Preis für unbekannte Befestigung „'+key+'“.');if(!cents(value))fail('Preis '+key+' prüfen.');r.priceCents=value;}
  for(const [key,value] of Object.entries(o.options||{})){const [gid,cid]=key.split('/'),c=(f.options||[]).find(g=>g.id===gid)?.choices.find(c=>c.id===cid);if(!c)fail('Unterkategorie „'+subcategory.id+'“: Preis für unbekannte Option „'+key+'“.');if(!cents(value))fail('Preis '+key+' prüfen.');c.priceCents=value;}
+ // K14 / Ü11.1: Staffel der Unterkategorie überschreibt die der Familie (Liste = alle Größen).
+ const tiers=o.quantityTiers;
+ if(tiers!==undefined){
+  const family=Array.isArray(tiers)?tiers:tiers.family;
+  if(family!==undefined){f.quantityTiers=structuredClone(family);for(const s of f.sizes)delete s.quantityTiers;}
+  for(const [key,value] of Object.entries(Array.isArray(tiers)?{}:tiers.sizes||{})){const s=f.sizes.find(s=>s.key===key);if(!s)fail('Unterkategorie „'+subcategory.id+'“: Staffel für unbekannte Größe „'+key+'“.');s.quantityTiers=structuredClone(value);}
+ }
  return validateFamily(f);
+}
+// Vorgabe-Staffeln (app/workshop/quantity-tier-defaults.json): gelten nur, wenn weder
+// Unterkategorie noch Familie/Größe eine Staffel nennen. Erste passende Regel gewinnt.
+export const QUANTITY_TIER_DEFAULTS_SCHEMA='gravuru-quantity-tier-defaults/v1';
+export function validateQuantityTierDefaults(doc){
+ if(!doc||doc.schema!==QUANTITY_TIER_DEFAULTS_SCHEMA||!Array.isArray(doc.rules))fail('Staffel-Vorgaben: unbekanntes Format.');
+ const ids=new Set();
+ for(const r of doc.rules){
+  if(!r||typeof r.id!=='string'||!r.id||ids.has(r.id)||Object.keys(r).some(k=>!['id','label','lineIds','themeIds','tiers'].includes(k)))fail('Staffel-Vorgaben: Regel mit eindeutiger Kennung, Linien/Themen und Stufen.');
+  ids.add(r.id);
+  for(const k of ['lineIds','themeIds'])if(r[k]!==undefined&&(!Array.isArray(r[k])||r[k].some(v=>typeof v!=='string'||!v)))fail('Staffel-Vorgaben „'+r.id+'“: '+k+' ist eine Liste von Kennungen.');
+  const issue=quantityTiersIssue(r.tiers);if(issue)fail('Staffel-Vorgaben „'+r.id+'“: '+issue);
+ }
+ return doc;
+}
+let bundledDefaults=null;
+export function quantityTierDefaults(){
+ bundledDefaults??=validateQuantityTierDefaults(JSON.parse(fs.readFileSync(new URL('./quantity-tier-defaults.json',import.meta.url),'utf8')));
+ return bundledDefaults;
+}
+export function defaultQuantityTiers(line,subcategory,defaults=quantityTierDefaults()){
+ const rule=defaults.rules.find(r=>(r.lineIds||[]).includes(line?.id)||(subcategory?.themeId&&(r.themeIds||[]).includes(subcategory.themeId)));
+ return rule?{ruleId:rule.id,tiers:structuredClone(rule.tiers)}:null;
 }
 export function priceGaps(family,size){
  const gaps=[];
@@ -305,7 +337,7 @@ const cleanId=v=>String(v).toLowerCase().replace(/[^a-z0-9._:-]+/g,'-').replace(
 // Unterkategorie wird nicht je Produkt eingebettet, sondern als Schriftprofil der
 // Profilbibliothek zugeordnet (`fontProfileId` → profileAssignments.fonts, siehe
 // katalog-import.mjs `ensureFontSet`); fehlende Set-Schriften werden gemeldet, nie erfunden.
-export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,fontSet=null,fontProfileId=null,fonts={},templates=[],revision=1}={}){
+export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,fontSet=null,fontProfileId=null,fonts={},templates=[],revision=1,tierDefaults}={}){
  if(!size)fail('Größe fehlt.');
  if(Array.isArray(subcategory.sizesOffered)&&!subcategory.sizesOffered.includes(size.key))fail('Größe '+size.key+' wird in „'+subcategory.name+'“ nicht angeboten.');
  const f=applyPriceOverrides(family,subcategory),s=f.sizes.find(x=>x.key===size.key);
@@ -314,6 +346,9 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
  // Sicht der Familie auf diese eine Größe: offene Preise anderer Größen sperren dieses
  // Produkt nicht (die Prüfung oben nennt die Größe), unbenutzte Bohrbild-Regeln bleiben außen vor.
  const view={...f,sizes:[s],mountingRules:f.mountingRules.filter(r=>s.mounting.includes(r.id))};
+ // Staffel: Unterkategorie > Größe > Familie > Vorgabe je Linie/Thema (Daten, nie geraten).
+ const fallback=sizeQuantityTiers(f,s)===undefined?defaultQuantityTiers(line,subcategory,tierDefaults):null;
+ if(fallback)view.quantityTiers=fallback.tiers;
  const config=familyProductConfig(view,s,revision),p=config.profile;
  // Eigene Produktkennung je Linie, Unterkategorie und Größe (Sitzungsschutz K7 und
  // Direktlinks K9 unterscheiden Produkte über binding.productId).

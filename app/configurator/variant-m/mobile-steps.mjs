@@ -3,6 +3,8 @@
 // Der Desktop (≥ 768 px) behält die Reiter aus ux.mjs unverändert; dieses Modul
 // bildet die vorhandenen Reiter nur auf Schritte ab und verschiebt keine Logik.
 
+import {visibleBy,optionFields,fieldValue,fieldDisplay} from './option-fields.mjs';
+
 export const MOBILE_MAX_WIDTH=767;
 export const MOBILE_QUERY='(max-width:'+MOBILE_MAX_WIDTH+'px)';
 export const PREVIEW_FRACTION=.4;
@@ -69,14 +71,18 @@ export function summaryRows({profile,legacy,state,quantity=1,totalText='',design
   const rows=[];
   const groups=profile?.optionGroups||[];
   const chosen=group=>group.values?.find(v=>v.id===(state?.mOptions?.[group.id]||group.defaultValueId));
+  // K14 / Ü12.1: unsichtbare Gruppen (visibleIf) und Felder erscheinen nicht in der Zusammenfassung.
+  const picked={};for(const g of groups)if(visibleBy(g.visibleIf,picked)){const v=chosen(g);if(v)picked[g.id]=v.id;}
+  const fieldRows=[];for(const f of optionFields(profile)){if(!visibleBy(f.visibleIf,picked))continue;let v;try{v=fieldValue(f,state?.mOptions?.[f.id]);}catch{v=undefined;}if(v===undefined)continue;if(f.kind==='select')picked[f.id]=v;fieldRows.push([f.label,fieldDisplay(f,v)]);}
   const sizeGroup=groups.find(g=>g.id==='size'||/größe|groesse|format/i.test(g.name||g.label||''));
   const size=sizeGroup?chosen(sizeGroup)?.label:sizeLabel(profile?.geometry);
   if(size)rows.push(['Größe',size]);
   const material=materialLabel(profile?.material)||(state?.fkColor?'Acrylglas · '+(state.fkColor==='anthrazit'?'Anthrazit':'Schwarz'):'');
   if(material)rows.push(['Material',material]);
-  const options=groups.filter(g=>g!==sizeGroup).map(g=>chosen(g)?.label).filter(Boolean);
+  const options=groups.filter(g=>g!==sizeGroup&&picked[g.id]!==undefined).map(g=>chosen(g)?.label).filter(Boolean);
   if(options.length)rows.push(['Optionen',options.join(' · ')]);
   else if(legacy?.mounting&&state?.fkMounting){const m=legacy.mounting.options?.find(v=>v.key===state.fkMounting);if(m)rows.push(['Befestigung',m.name]);}
+  rows.push(...fieldRows);
   if(designName)rows.push(['Design',designName]);
   const objects=(state?.objects||[]).filter(o=>!o.uxHidden);
   const texts=objects.filter(o=>o.type==='text').map(o=>String(o.text||'').trim()).filter(Boolean);

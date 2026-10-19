@@ -13,6 +13,8 @@ import {nativeSlateConfig} from './slate-product.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {nativeContour} from './acrylic-artwork.mjs';
 import {processProfile,isProcessProfileId,processMirror} from './process-profiles.mjs';
+import {quantityTiersIssue,quantityTiersOpen} from '../configurator/variant-m/contract.mjs';
+import {validateSurfaces,hasBack,backSurface} from '../configurator/variant-m/surfaces.mjs';
 
 // A product family holds everything a product series shares (material, shapes,
 // sizes, prices, drill-pattern rules, fonts, style notes) once. Products are
@@ -57,8 +59,28 @@ export function familyProcess(f){
  const p=processProfile(id);return {...p,mirror:processMirror(p,f.material.engravingSide)};
 }
 
+// Staffel einer Größe: eigene Angabe der Größe, sonst die der Familie (undefined = keine).
+export const sizeQuantityTiers=(f,s)=>s.quantityTiers??f.quantityTiers;
+// Offene Staffelwerte sperren die Produkterzeugung nicht (die Staffel ist optional);
+// sie werden nur genannt und bis zur Angabe nicht gerechnet.
+export function quantityTierGaps(f){
+ const gaps=[];
+ if(quantityTiersOpen(f.quantityTiers))gaps.push('Mengenstaffel (Prozentwerte offen)');
+ const sizes=f.sizes.filter(s=>quantityTiersOpen(s.quantityTiers));if(sizes.length)gaps.push('Mengenstaffel offen: '+sizes.map(s=>s.label).join(', '));
+ return gaps;
+}
+
+// Offene, aber nicht sperrende Angaben (Staffel, Aufpreis Rückseite) – fürs Briefing.
+export const familyOpenNotes=f=>[...quantityTierGaps(f),...(hasBack(f)&&backSurface(f).priceCents===null?['Aufpreis „Rückseite gestalten“ (bis dahin nicht buchbar)']:[])];
 export function validateFamily(f){
- only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options'],'Produktfamilie');
+ only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers','surfaces'],'Produktfamilie');
+ // K14 / Ü15.1: zweite Fläche nur, wo das Produkt physisch eine Rückseite hat (Entscheidung Chris
+ // 19.10.2026: Brettchen, Schlüsselanhänger, Autoanhänger, Lesezeichen; Platten bleiben einseitig,
+ // Acryl „von hinten“ ist Spiegelung im Profil). Aufpreis null = offen → Rückseite nicht buchbar.
+ if(f.surfaces!==undefined){try{validateSurfaces({surfaces:f.surfaces});}catch(e){invalid(e.message);}const b=f.surfaces.find(s=>s.id==='back');if(b?.processingProfileId!==undefined&&!isProcessProfileId(b.processingProfileId))invalid('Rückseite: unbekanntes Verfahrensprofil.');}
+ // K14 / Ü11.1: Mengenstaffel je Familie (und je Größe), Werte als Daten; null = offen.
+ const tierIssue=(t,label)=>{if(t===undefined)return;const issue=quantityTiersIssue(t);if(issue)invalid(label+': '+issue);};
+ tierIssue(f.quantityTiers,'Familie');
  // Optional second plate behind the design plate (e.g. S/S: satin front, black back), larger by offsetMm on every side.
  if(f.backing!==undefined){only(f.backing,['label','offsetMm','thicknessMm','note'],'Rückplatte');if(!text(f.backing.label,80)||!mm(f.backing.offsetMm,0,100)||!(open(f.backing.thicknessMm)||mm(f.backing.thicknessMm,0.3,50))||(f.backing.note!==undefined&&typeof f.backing.note!=='string'))invalid('Rückplatte: Bezeichnung, Überstand in mm und Stärke (oder offen) angeben.');}
  if(!FAMILY_SCHEMAS.includes(f.schema))invalid('Unbekanntes Familienformat.');
@@ -90,7 +112,8 @@ export function validateFamily(f){
  if(!Array.isArray(f.sizes)||!f.sizes.length||f.sizes.length>500)invalid('1 bis 500 Größen angeben.');
  const groups=new Map(f.groups.map(g=>[g.key,g])),rules=new Map(f.mountingRules.map(r=>[r.id,r]));
  for(const s of f.sizes){
-  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm'],'Größe');
+  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm','quantityTiers'],'Größe');
+  tierIssue(s.quantityTiers,'Größe '+(s.key||''));
   if(s.cornerRadiusMm!==undefined&&(!mm(s.cornerRadiusMm,0,100)||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': eigener Eckenradius nur bei eckiger Form.');
   if(s.backingCornerRadiusMm!==undefined&&(!mm(s.backingCornerRadiusMm,0,100)||!f.backing||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': Eckenradius der Rückplatte nur mit Rückplatte und eckiger Form.');
   if(!id(s.key)||!groups.has(s.groupKey)||!text(s.label,60)||!mm(s.widthMm,10,1000)||!mm(s.heightMm,10,1000)||!(open(s.baseCents)||cents(s.baseCents))||!Array.isArray(s.mounting)||s.mounting.length>8||s.mounting.some(m=>!rules.has(m))||new Set(s.mounting).size!==s.mounting.length)invalid('Größe '+(s.key||'')+' unvollständig.');
@@ -106,8 +129,24 @@ export function validateFamily(f){
  // Noch nicht an die Produkterzeugung angebunden; Preise je Linie können in linien/<linie>.json überschrieben werden.
  if(f.options!==undefined){
   if(!Array.isArray(f.options)||f.options.length>20)invalid('Höchstens 20 Optionsgruppen.');
+  // K14 / Ü12.1: Felder ohne Vorschau (Text, Datum, Auswahlliste, Ankreuzfeld) und `visibleIf`
+  // (Ziel: Befestigung `mounting` mit Regel-Kennungen oder eine weiter oben stehende Auswahlliste).
+  const targets=new Map([['mounting',f.mountingRules.map(r=>r.id)]]);
+  const condition=(g,what)=>{if(g.visibleIf===undefined)return;const c=g.visibleIf;if(!c||typeof c!=='object'||Array.isArray(c))invalid(what+': Bedingung als {groupId, valueIds}.');only(c,['groupId','valueIds'],what+' · Bedingung');const t=targets.get(c.groupId);if(!t||!Array.isArray(c.valueIds)||!c.valueIds.length||c.valueIds.some(v=>!t.includes(v))||new Set(c.valueIds).size!==c.valueIds.length)invalid(what+': Bedingung verweist auf keine Befestigung bzw. weiter oben stehende Auswahlliste oder auf unbekannte Werte.');};
   for(const g of f.options){
-   only(g,['id','label','kind','selection','required','choices','note'],'Optionsgruppe');
+   if(FIELD_KINDS.includes(g.kind)){
+    only(g,['id','label','kind','required','maxLength','priceCents','choices','visibleIf','note'],'Zusatzfeld');
+    const what='Zusatzfeld '+(g.id||'');
+    if(!id(g.id)||g.id==='mounting'||!text(g.label,80)||(g.required!==undefined&&typeof g.required!=='boolean')||(g.note!==undefined&&!text(g.note,400)))invalid(what+' prüfen.');
+    if(g.maxLength!==undefined&&(g.kind!=='text'||!Number.isInteger(g.maxLength)||g.maxLength<1||g.maxLength>500))invalid(what+': Zeichenlimit 1 bis 500 nur bei Textfeldern.');
+    if(g.priceCents!==undefined&&(g.kind==='select'||!(open(g.priceCents)||cents(g.priceCents))))invalid(what+': Aufpreis in Cent oder offen (Auswahllisten je Auswahl).');
+    if(g.kind==='select'){if(!Array.isArray(g.choices)||!g.choices.length||g.choices.length>40)invalid(what+': 1 bis 40 Auswahlen.');for(const c of g.choices){only(c,['id','label','priceCents'],'Auswahl');if(!id(c.id)||!text(c.label,80)||(c.priceCents!==undefined&&!(open(c.priceCents)||cents(c.priceCents))))invalid(what+' / '+(c.id||'')+' prüfen.');}unique(g.choices,'id',what);}
+    else if(g.choices!==undefined)invalid(what+': Auswahlen nur bei Auswahllisten.');
+    condition(g,what);if(g.kind==='select')targets.set(g.id,g.choices.map(c=>c.id));
+    continue;
+   }
+   only(g,['id','label','kind','selection','required','choices','note','visibleIf'],'Optionsgruppe');
+   condition(g,'Optionsgruppe '+(g.id||''));
    if(!id(g.id)||!text(g.label,80)||!OPTION_KINDS.includes(g.kind)||!OPTION_SELECTIONS.includes(g.selection)||(g.required!==undefined&&typeof g.required!=='boolean')||(g.note!==undefined&&!text(g.note,400)))invalid('Optionsgruppe '+(g.id||'')+' prüfen.');
    if(!Array.isArray(g.choices)||!g.choices.length||g.choices.length>40)invalid('Optionsgruppe '+g.id+': 1 bis 40 Auswahlen.');
    for(const c of g.choices){only(c,['id','label','priceCents','skuSuffix','default','note'],'Option');if(!id(c.id)||!text(c.label,80)||!(open(c.priceCents)||cents(c.priceCents))||(c.skuSuffix!==undefined&&!/^[A-Za-z0-9_.:-]{1,30}$/.test(c.skuSuffix))||(c.default!==undefined&&typeof c.default!=='boolean')||(c.note!==undefined&&!text(c.note,400)))invalid('Option '+g.id+' / '+(c.id||'')+' prüfen.');}
@@ -118,6 +157,7 @@ export function validateFamily(f){
  return f;
 }
 const OPTION_KINDS=['accessory','variant'],OPTION_SELECTIONS=['single','multiple'];
+export const FIELD_KINDS=['text','date','select','checkbox'];
 // Everything still "offen" in a family, in plain words. Products are generated
 // only when this list is empty and the material has a native adapter.
 export function familyGaps(f){
@@ -127,7 +167,7 @@ export function familyGaps(f){
  if(open(f.designArea.marginMm))gaps.push('Gestaltungsrand');
  for(const r of f.mountingRules){if(!ruleComplete(r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
  const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
- for(const g of f.options||[])for(const c of g.choices)if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);
+ for(const g of f.options||[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
  if(f.groups.some(g=>g.shape==='plaque'))gaps.push('Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)');
  return gaps;
@@ -163,9 +203,32 @@ export function familyProductConfig(f,s,revision){
   material:{kind:f.material.kind,color:FAMILY_MATERIALS[f.material.kind].color(f.material.variant),thicknessMm:f.material.thicknessMm},processing:{profileId:f.material.processingProfileId},
   features:{orderEnabled:false,productionConfirmed:false,motifsAllowed:true},designs:[design],defaultDesignId:design.id,
   optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values}]};
+ const fields=familyOptionFields(f,s);if(fields.length)profile.optionFields=fields;
+ if(f.surfaces!==undefined)profile.surfaces=structuredClone(f.surfaces);
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:0,extraPriceCents:0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
+ const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
  if(f.material.kind==='steel'){c.materialSurface=steelPreviewSurface();return nativeSpecimenConfig(c);}
  return nativeSlateConfig(c);
+}
+
+// K14 / Ü12.1: Zusatzfelder der Familie für eine Größe. Bedingung auf die Befestigung wird auf
+// die SKU-Endungen dieser Größe abgebildet; ein Feld, dessen Bedingung bei dieser Größe nie
+// eintreten kann, entfällt (samt Feldern, die auf es verweisen).
+export function familyOptionFields(f,s){
+ const result=[],present=new Map();
+ for(const g of (f.options||[]).filter(g=>FIELD_KINDS.includes(g.kind))){
+  const field={id:g.id,kind:g.kind,label:g.label,...(g.required!==undefined?{required:g.required}:{}),...(g.maxLength!==undefined?{maxLength:g.maxLength}:{}),...(g.priceCents!==undefined?{priceCents:g.priceCents}:{}),...(g.note!==undefined?{note:g.note}:{})};
+  if(g.kind==='select')field.choices=g.choices.map(c=>({id:c.id,label:c.label,...(c.priceCents!==undefined?{priceCents:c.priceCents}:{})}));
+  if(g.visibleIf){
+   const c=g.visibleIf;let valueIds;
+   if(c.groupId==='mounting')valueIds=c.valueIds.filter(rid=>s.mounting.includes(rid)).map(rid=>ruleOf(f,rid).skuSuffix);
+   else{if(!present.has(c.groupId))continue;valueIds=c.valueIds;}
+   if(!valueIds.length)continue;
+   field.visibleIf={groupId:c.groupId,valueIds};
+  }
+  present.set(g.id,true);result.push(field);
+ }
+ return result;
 }
 
 // Design template for the plugin: contour, usable area, holes and keep-out zones
@@ -192,7 +255,7 @@ Nur das **Design**: Texte, Motive, Foto. Form, Größe, Material, Bohrlöcher, B
 
 - Material: ${f.material.label}, ${f.material.thicknessMm===null?'Stärke offen':String(f.material.thicknessMm).replace('.',',')+' mm'}, Verfahren ${process?process.method==='print'?'UV-Druck':'Gravur':'offen'}${process?` (Profil „${process.id}“)`:''}. ${process?.method==='print'?'Farben aus der Profilpalette; die Werkstatt stellt den Druck dar.':mat.ink+' Gestaltet wird immer schwarz auf weiß; die Werkstatt stellt die Gravur je Material dar.'} Keine Graustufenflächen in Motiven.
 - Verfahrensregeln: Mindestschriftgröße ${process?String(process.minTextMm).replace('.',',')+' mm':'offen'}, Mindestlinienstärke ${process?.minStrokeMm!=null?String(process.minStrokeMm).replace('.',',')+' mm':'offen'}, Fotos ${process?(process.tools.photo?'möglich':'nicht vorgesehen'):'offen'}${process?.targetDpi?' (Soll '+process.targetDpi+' dpi)':''}, Spiegelung für die Fertigung: ${process?(process.mirror?'ja (Werkstatt spiegelt)':'nein'):'offen'}.
-- Randabstand der Gestaltung: ${f.designArea.marginMm===null?'offen (bis zur Klärung mindestens 10 mm frei lassen)':f.designArea.marginMm+' mm'}.${f.material.engravingSide==='back'?' Gravur von der Rückseite (die Werkstatt spiegelt für die Fertigung; gestaltet wird seitenrichtig).':''}${f.backing?` Rückplatte „${f.backing.label}“ rundum ${f.backing.offsetMm} mm größer; sie ist in der Schablone gestrichelt blau eingezeichnet und wird nicht gestaltet.`:''} Schutzzone um Bohrlöcher: ${f.designArea.keepoutMm} mm um den Lochrand.
+${hasBack(f)?'- **Rückseite:** eigene Fläche, seitenrichtig gestalten; Bohrlöcher erscheinen von hinten gespiegelt. Die Werkstatt erzeugt je Seite eine eigene Produktionsdatei. Lieferform für Rückseiten-Designs ist im Katalog noch offen.\n':''}- Randabstand der Gestaltung: ${f.designArea.marginMm===null?'offen (bis zur Klärung mindestens 10 mm frei lassen)':f.designArea.marginMm+' mm'}.${f.material.engravingSide==='back'?' Gravur von der Rückseite (die Werkstatt spiegelt für die Fertigung; gestaltet wird seitenrichtig).':''}${f.backing?` Rückplatte „${f.backing.label}“ rundum ${f.backing.offsetMm} mm größer; sie ist in der Schablone gestrichelt blau eingezeichnet und wird nicht gestaltet.`:''} Schutzzone um Bohrlöcher: ${f.designArea.keepoutMm} mm um den Lochrand.
 - **Texte** nicht in die Schutzzonen legen (sonst sieht der Kunde einen Hinweis). **Motive dürfen über Bohrlöcher** gehen.
 - Zugelassene Schriften (exakt diese Namen verwenden): siehe \`schriften.txt\`.
 
@@ -215,7 +278,7 @@ Texte als echten Text, nicht in Pfade umwandeln. Kein Text in Deko oder Motiv. K
 | --- | --- | --- | ---: | --- | --- |
 ${rows}
 
-${gaps.length?'## Noch offen in den Stammdaten\n\n'+gaps.map(g=>'- '+g).join('\n')+'\n\n':''}## Stil und Hinweise
+${gaps.length||familyOpenNotes(f).length?'## Noch offen in den Stammdaten\n\n'+[...gaps,...familyOpenNotes(f)].map(g=>'- '+g).join('\n')+'\n\n':''}## Stil und Hinweise
 
 ${f.briefingNotes.trim()||'Noch keine Stilnotizen hinterlegt.'}
 `;

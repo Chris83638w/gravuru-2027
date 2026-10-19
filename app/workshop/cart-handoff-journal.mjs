@@ -99,7 +99,9 @@ export function createPersistentCartHandoff({journal, transport, shopDomain, api
       unitCents: offer.unitCents, currency: offer.currency,
       property: Object.freeze({name: offer.property.name, value: offer.property.value}),
       ...(offer.personalization?{personalization:Object.freeze({...offer.personalization})}:{}),
-      ...(offer.configuration?{configuration:Object.freeze({...offer.configuration})}:{})});
+      ...(offer.configuration?{configuration:Object.freeze({...offer.configuration})}:{}),
+      // K14 / Ü12.1: sichtbare Zusatzangaben (geprüft in prepareCartRequest), nur Bezeichnung und Anzeigewert.
+      ...(offer.fields?{fields:Object.freeze(offer.fields.map(f=>Object.freeze({label:f.label,value:f.value})))}:{})});
     let ticket;
     try {
       ticket = journal.claim({offerKey: hash(JSON.stringify([shopDomain, fixed.property.value])),

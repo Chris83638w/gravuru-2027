@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {validateFamily} from './product-families.mjs';
+import {quantityTiersIssue} from '../configurator/variant-m/contract.mjs';
 import {parseThemeCatalog,findTheme} from './theme-catalog.mjs';
 
 export const LINE_SCHEMA='gravuru-line/v2';
@@ -32,6 +33,13 @@ const listFiles=(dir,ext)=>isDir(dir)?fs.readdirSync(dir).filter(n=>n.toLowerCas
 
 // Linie (`linien/<linie>.json`, Schema gravuru-line/v2): physisches Produkt mit
 // Familien und Unterkategorien (Thema, Schrift-Set, Preisüberschreibungen).
+export function quantityTiersOverrideIssue(value){
+ if(Array.isArray(value))return quantityTiersIssue(value);
+ if(!record(value)||Object.keys(value).some(k=>!['family','sizes'].includes(k)))return 'priceOverrides.quantityTiers ist eine Stufenliste oder {family, sizes}.';
+ if(value.family!==undefined){const issue=quantityTiersIssue(value.family);if(issue)return issue;}
+ if(value.sizes!==undefined){if(!record(value.sizes))return 'priceOverrides.quantityTiers.sizes ist eine Zuordnung Größe → Stufenliste.';for(const [k,v] of Object.entries(value.sizes)){const issue=quantityTiersIssue(v);if(issue)return k+': '+issue;}}
+ return null;
+}
 export function validateLine(line,{families,themes,fontSets,file='linie'}={}){
  if(!record(line))fail(file,'Linie fehlt.');
  if(line.schema!==LINE_SCHEMA)fail(file,'unbekanntes Linienformat „'+line.schema+'“ (erwartet '+LINE_SCHEMA+').');
@@ -48,8 +56,10 @@ export function validateLine(line,{families,themes,fontSets,file='linie'}={}){
   if(s.themeId!==null&&s.themeId!==undefined){if(!id(s.themeId))fail(file,'Unterkategorie „'+s.id+'“: ungültige Themen-Kennung.');if(themes&&!findTheme(themes,s.themeId))fail(file,'Unterkategorie „'+s.id+'“ verweist auf das unbekannte Thema „'+s.themeId+'“.');}
   if(s.fontSet!==null&&s.fontSet!==undefined){if(!id(s.fontSet))fail(file,'Unterkategorie „'+s.id+'“: ungültiges Schrift-Set.');if(fontSets&&!fontSets.has(s.fontSet))fail(file,'Unterkategorie „'+s.id+'“ verweist auf das unbekannte Schrift-Set „'+s.fontSet+'“.');}
   const o=s.priceOverrides??{};
-  if(!record(o)||Object.keys(o).some(k=>!['sizes','mounting','options'].includes(k)))fail(file,'Unterkategorie „'+s.id+'“: priceOverrides kennt nur sizes, mounting, options.');
-  for(const [group,values] of Object.entries(o)){if(!record(values))fail(file,'Unterkategorie „'+s.id+'“: priceOverrides.'+group+' ist eine Zuordnung Kennung → Cent.');for(const [k,v] of Object.entries(values))if(v!==null&&!(Number.isSafeInteger(v)&&v>=0))fail(file,'Unterkategorie „'+s.id+'“: Preis '+group+'/'+k+' in ganzen Cent oder null.');}
+  if(!record(o)||Object.keys(o).some(k=>!['sizes','mounting','options','quantityTiers'].includes(k)))fail(file,'Unterkategorie „'+s.id+'“: priceOverrides kennt nur sizes, mounting, options, quantityTiers.');
+  // K14 / Ü11.1: Mengenstaffel der Unterkategorie – Liste (alle Größen) oder {family, sizes:{<größe>:[…]}}.
+  if(o.quantityTiers!==undefined){const issue=quantityTiersOverrideIssue(o.quantityTiers);if(issue)fail(file,'Unterkategorie „'+s.id+'“: '+issue);}
+  for(const [group,values] of Object.entries(o)){if(group==='quantityTiers')continue;if(!record(values))fail(file,'Unterkategorie „'+s.id+'“: priceOverrides.'+group+' ist eine Zuordnung Kennung → Cent.');for(const [k,v] of Object.entries(values))if(v!==null&&!(Number.isSafeInteger(v)&&v>=0))fail(file,'Unterkategorie „'+s.id+'“: Preis '+group+'/'+k+' in ganzen Cent oder null.');}
   if(s.sizesOffered!==null&&s.sizesOffered!==undefined&&(!Array.isArray(s.sizesOffered)||s.sizesOffered.some(k=>!id(k))))fail(file,'Unterkategorie „'+s.id+'“: sizesOffered ist null oder eine Liste von Größen-Schlüsseln.');
   if(s.options!==null&&s.options!==undefined&&(!Array.isArray(s.options)||s.options.some(k=>!id(k))))fail(file,'Unterkategorie „'+s.id+'“: options ist null oder eine Liste von Optionsgruppen.');
   if(s.collectionHandle!==null&&s.collectionHandle!==undefined&&!text(s.collectionHandle,200))fail(file,'Unterkategorie „'+s.id+'“: collectionHandle prüfen.');

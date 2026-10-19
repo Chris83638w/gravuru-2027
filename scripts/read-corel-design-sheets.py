@@ -380,6 +380,9 @@ HINT = re.compile(r'foto-?\s*upload|hier\s+klicken|^\s*dein\s*\n?\s*foto\s*$|ihr
 def esc(s): return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
 
 
+MATERIAL_PLATE = {'Edelstahl': '#c6c6c6', 'Acryl + Edelstahl': '#c6c6c6', 'Aluminium': '#cfcfcf', 'Messing': '#c9b26a', 'Alu-Dibond': '#e4e4e4', 'Holz': '#c49a6c', 'Eiche': '#c49a6c', 'Buche': '#d7b48a', 'Bambus': '#d2b074', 'Kork': '#c8a06e', 'Glas': '#dfe6e6'}
+
+
 def light(c, process='Gravur'):
     """Vorschaufarbe. Gravur: Grau/Weiß (gravierte Fläche) hell, Schwarz (ungraviert) dunkel, Rot/Grün (Schnitt) unverändert.
     UV-Druck: Farben wie gezeichnet."""
@@ -557,8 +560,13 @@ def design_svg(d, preview=False, assets=None, textures=None):
     pm = plate_motif(d) if preview else None
     # Platte in der Vorlage gezeichnet (z. B. schwarzes Acryl #161616, weißes Acryl): Farben wie gezeichnet, Platte in dieser Farbe
     as_drawn = pm is not None
-    plate_fill = pm['fill'] if pm is not None else '#2a2a2a'
+    plate_fill = pm['fill'] if pm is not None else MATERIAL_PLATE.get(d.get('material') or '', '#2a2a2a')
     dark_plate = luminance(plate_fill) < 0.5
+    has_tex = tex is not None and tex.exists()
+    def guard(c):
+        # ohne Textur: Farbe mit zu wenig Kontrast zur Platte kippen (z. B. helle Gravur auf hellem Edelstahl)
+        if c is None or has_tex or not preview: return c
+        return contrast(c, plate_fill, 'Gravur') if abs(luminance(c) - luminance(plate_fill)) < 0.15 else c
     if preview:
         if tex is not None and tex.exists():
             out.append(f'<clipPath id="clip-platte"><path d="{plate_d}"/></clipPath>')
@@ -573,7 +581,9 @@ def design_svg(d, preview=False, assets=None, textures=None):
         ix = max(0.0, min(a[0] + a[2], b[0] + b[2]) - max(a[0], b[0])); iy = max(0.0, min(a[1] + a[3], b[1] + b[3]) - max(a[1], b[1]))
         return ix * iy
     proc = d.get('process') or 'Gravur'
-    masks = [m for m in d['motifs'] if is_photo_mask(m, W, H)]
+    cut_boxes = [m['box'] for m in d['motifs'] if (m.get('stroke') or '').lower() in CUT_COLORS and m.get('box')]
+    same = lambda a, b: all(abs(a[i] - b[i]) < 0.6 for i in range(4))
+    masks = [m for m in d['motifs'] if is_photo_mask(m, W, H) and not any(same(m['box'], cb) for cb in cut_boxes)]
     # Rahmen ohne Füllung (nur Kontur) oder unsichtbare Form (PowerClip-Rahmen), einfach geformt: Beschnitt des Fotos darunter
     frames = [m for m in d['motifs'] if not m.get('fill') and not m.get('hint') and is_photo_mask({**m, 'fill': '#000'}, W, H)]
     n_foto = 0; used_frames = set(); used_masks = set()
@@ -609,19 +619,26 @@ def design_svg(d, preview=False, assets=None, textures=None):
             continue
         if preview and (m.get('stroke') or '').lower() in CUT_COLORS and not m.get('fill'): continue  # Schnittlinie
         if preview and as_drawn: fill, stroke = contrast(m['fill'], plate_fill, proc), contrast(m['stroke'], plate_fill, proc)
-        else: fill = light(m['fill'], proc) if preview else (m['fill'] or 'none'); stroke = light(m['stroke'], proc) if preview else (m['stroke'] or 'none')
+        else:
+            big = m.get('box') and m['box'][2] * m['box'][3] >= 0.3 * W * H  # Materiallage (z. B. Acryl auf Edelstahl): Farbe nicht kippen
+            fill = (light(m['fill'], proc) if big else guard(light(m['fill'], proc))) if preview else (m['fill'] or 'none'); stroke = guard(light(m['stroke'], proc)) if preview else (m['stroke'] or 'none')
         if preview and fill is None and stroke is None: continue
         out.append(f'<path id="motiv-{i + 1}" d="{m["d"]}" fill="{fill or "none"}" stroke="{stroke or "none"}" stroke-width="{m["strokeMm"]}" fill-rule="evenodd"/>')
     for i, t in enumerate(d['texts']):
         if t.get('hint') or HINT.search(t['text']): continue  # Bedienhinweis der Vorlage, kein Designtext
         x, y, w, h = t['box']; size = t['sizePt'] * 0.3528
+        # Gedrehter Text (90°): libcdr liefert nur die gedrehte Box – einzeilig, hoch und schmal → um die Boxmitte drehen (Leserichtung von unten nach oben angenommen)
+        rot = ''
+        if '\n' not in t['text'] and len(t['text'].strip()) >= 2 and h > 2.0 * size and w < 1.6 * size and h > 2 * w:
+            cx, cy = x + w / 2, y + h / 2; x, y, w, h = cx - h / 2, cy - w / 2, h, w
+            rot = f' transform="rotate(-90 {cx:.2f} {cy:.2f})"'; t['rotated'] = -90
         anchor = {'center': 'middle', 'right': 'end'}.get(t['align'], 'start'); tx = x + (w / 2 if anchor == 'middle' else w if anchor == 'end' else 0)
         if preview and anchor != 'middle':
             # Corel-Box = Tinte: Ursprung so setzen, dass die Tinte an der Boxkante beginnt (Vorbreite, Schwünge)
             lsb, rsb = ink_sides(t['font'], t['text'].split('\n')[0] if anchor == 'start' else t['text'].split('\n')[-1])
             tx += -lsb * t['sizePt'] * 0.3528 if anchor == 'start' else rsb * t['sizePt'] * 0.3528
         if preview and as_drawn: fill = contrast(t['color'], plate_fill, proc) or ('#f2f2f2' if dark_plate else '#141414')
-        else: fill = (light(t['color'], proc) or '#f2f2f2') if preview else (t['color'] or '#000')
+        else: fill = (guard(light(t['color'], proc)) or ('#f2f2f2' if dark_plate else '#141414')) if preview else (t['color'] or '#000')
         lines = t['text'].split('\n'); n = len(lines)
         # Grundlinie aus der Tintenbox (Corel: Box = Tinte): erste Grundlinie = Oberkante + Oberlänge der ersten Zeile,
         # Zeilenabstand aus Boxhöhe, Oberlänge der ersten und Unterlänge der letzten Zeile
@@ -647,6 +664,8 @@ def design_svg(d, preview=False, assets=None, textures=None):
                 elif anchor == 'middle' and nat > W - 2 * margin and (tx - nat / 2 < 3 or tx + nat / 2 > W - 3): sx = max(0.3, (W - 2 * margin) / nat)
                 else: sx = 1.0
                 if sx < 0.995: squeeze = f' transform="matrix({sx:.4f} 0 0 1 {tx * (1 - sx):.3f} 0)"'
+        if rot and squeeze: squeeze = squeeze.replace(' transform="', rot[:-1] + ' ')
+        elif rot: squeeze = rot
         def line_svg(l):
             if not l: return ' '
             return ''.join(esc(seg) if fam is None else f'<tspan font-family="{esc(fam)}">{esc(seg)}</tspan>' for fam, seg in (font_runs(l, t['font']) if preview else [(None, l)]))
@@ -728,7 +747,7 @@ def main():
             (dd / 'design.json').write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding='utf-8')
             (dd / 'design.svg').write_text(design_svg(d), encoding='utf-8')
             if not a.no_png and render_png(design_svg(d, preview=True, assets=dd, textures=out / '_texturen'), dd / 'preview.png'): n_png += 1
-            slim = {k: v for k, v in d.items() if k != 'motifs'}; slim['motifCount'] = len(d['motifs']); slim['texts'] = [{k: t[k] for k in ('text', 'font', 'sizePt', 'align')} for t in d['texts']]
+            slim = {k: v for k, v in d.items() if k != 'motifs'}; slim['motifCount'] = len(d['motifs']); slim['texts'] = [{k: t.get(k) for k in ('text', 'font', 'sizePt', 'align', 'box')} for t in d['texts']]
             if d['id'] in seen: index[seen[d['id']]] = slim
             else: seen[d['id']] = len(index); index.append(slim)
         if not a.no_png: contact_sheet(designs, out, f"{meta['process']} {meta['material']} {meta['form']} – {meta['sheetLabel'] or cdr.stem}")

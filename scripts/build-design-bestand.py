@@ -36,6 +36,8 @@ SERIES = {
     'uv-schiefer-rechteck': ('uv-schiefer-rechteck', False), 'uv-schiefer-quadrat': ('uv-schiefer-quadrat', False),
     'uv-schiefer-rund': ('uv-schiefer-rund', False), 'uv-schiefer-herz': ('uv-schiefer-herz', False), 'uv-schiefer-stern': ('uv-schiefer-stern', False),
 }
+# Materialkürzel im SKU-Präfix (Rückfall, wenn der Ordnerpfad kein Material nennt)
+MAT_CODE = {'V2A': 'Edelstahl', 'A': 'Acryl', 'AV2A': 'Acryl + Edelstahl', 'KS': 'Kunststoff', 'S': 'Schiefer', 'PS': 'Premium Schiefer', 'H': 'Holz', 'G': 'Granit', 'M': 'Marmor', 'AD': 'Alu-Dibond', 'ALU': 'Aluminium', 'GL': 'Glas', 'MS': 'Messing'}
 SERIES_LABEL = {'gravur-rechteck': 'Gravur Rechteck/Hochformat (Schiefer, Acryl, Acryl+Edelstahl, Premium Schiefer)', 'gravur-herz': 'Gravur Schiefer Herz', 'gravur-acryl-herz': 'Gravur Acryl Herz',
                 'gravur-stern': 'Gravur Schiefer Stern', 'gravur-knochen': 'Gravur Schiefer Knochen', 'gravur-edelstahl': 'Gravur Edelstahl', 'gravur-sternenkinder': 'Gravur Sternenkinder (Schiefer)',
                 'uv-granit': 'UV Granit / Premium Schiefer', 'uv-acryl': 'UV Acryl / Acryl+Edelstahl', 'uv-edelstahl': 'UV Edelstahl', 'uv-aludibond': 'UV Alu-Dibond', 'uv-acryl-rund': 'UV Acryl rund',
@@ -89,6 +91,14 @@ def classify_generic(rec):
 
 
 def norm(t): return re.sub(r'\s+', ' ', t.lower()).strip()
+
+
+def outside_plate(t, plate):
+    """True, wenn die Textbox vollständig außerhalb der Platte liegt (z. B. Artikelnummer über dem Design)."""
+    b = t.get('box'); W = (plate or {}).get('widthMm'); H = (plate or {}).get('heightMm')
+    if not b or not W or not H: return False
+    x, y, w, h = b
+    return x + w <= 0 or y + h <= 0 or x >= W or y >= H
 
 
 def safe(name): return re.sub(r'[\\/:*?"<>|]+', '-', name or 'offen').strip() or 'offen'
@@ -277,6 +287,7 @@ def main():
             if generic:
                 # alle anderen Linien: Reihe = SKU-Präfix (Form + Material, z. B. TRE-V2A); Größen derselben Design-Nummer werden zusammengefasst
                 series = m.group('prefix')
+                if not rec.get('material'): rec['material'] = MAT_CODE.get(m.group('prefix').split('-')[-1], '')
             key = f"{series}-{m.group('size')}-D{m.group('n')}" if split else f"{series}-D{m.group('n')}"
             rec['_dir'] = d / rec['id']; rec['series'] = series
             groups.setdefault(key, []).append(rec)
@@ -297,13 +308,16 @@ def main():
                     if any(w in ctx.lower() for w in ('herz', 'stern', 'knochen', 'rund')) != any(w in form for w in ('herz', 'stern', 'knochen', 'rund')): continue
                     if 'herz' in form and 'herz' not in ctx.lower(): continue
                     sizes |= ss
+        # Texte außerhalb der Platte (Artikelnummern/Etiketten neben dem Design) gehören nicht zum Design
+        for r in recs: r['texts'] = [t for t in r['texts'] if not outside_plate(t, r.get('plate'))]
+        fonts = list(dict.fromkeys(t['font'] for t in master['texts'] if t.get('font'))) or master.get('fonts', [])
         base_texts = [norm(t['text']) for t in master['texts']]
         diff = [r['id'] for r in recs[1:] if r['texts'] and sorted(norm(t['text']) for t in r['texts']) != sorted(base_texts)]
         label = SERIES_LABEL.get(master['series']) or (' '.join(x for x in (master['series'], '·', master.get('process', ''), master.get('material', ''), master.get('form', '')) if x) if generic else master.get('sheetLabel') or master['series'])
         rec = {'key': key, 'series': master['series'], 'seriesLabel': label, 'process': master['process'], 'form': master.get('form', ''),
                'material': master['material'], 'materials': mats, 'designNo': int(SKU.match(master['id']).group('n')), 'masterId': master['id'], 'ids': [r['id'] for r in recs],
                'sizesInStock': sorted(sizes, key=lambda s: [float(x.replace(',', '.')) for x in s.split('x')]), 'sheetLabel': master.get('sheetLabel', ''),
-               'plate': master.get('plate'), 'texts': master['texts'], 'fonts': master.get('fonts', []), 'fontsMissing': [f for f in master.get('fonts', []) if not font_available(f)],
+               'plate': master.get('plate'), 'texts': master['texts'], 'fonts': fonts, 'fontsMissing': [f for f in fonts if not font_available(f)],
                'photo': master.get('photo'), 'photoFiles': master.get('photoFiles', []), 'texture': master.get('texture'), 'textsDiffer': diff, 'sourceKind': master.get('sourceKind', 'corel-bogen')}
         rec['kategorie'] = classify_generic(rec) if generic else classify(rec)
         if key in overrides:
@@ -392,6 +406,7 @@ def write_xlsx(index, path, out):
 def write_contact_sheets(designs, out, cols=5):
     from PIL import Image, ImageDraw
     ud = out / '_uebersicht'; ud.mkdir(exist_ok=True)
+    for old in ud.glob('*.png'): old.unlink()
     by = collections.defaultdict(list)
     for d in designs: by[(d['kategorie']['ziel'], d['kategorie']['unter'])].append(d)
     for (z, u), ds in sorted(by.items()):

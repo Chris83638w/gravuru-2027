@@ -164,7 +164,7 @@ def main():
         except Exception as e:
             print('Fehler', f.name, str(e)[:100]); continue
         (dd / 'design.json').write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding='utf-8')
-        slim = {k: v for k, v in d.items() if k != 'motifs'}; slim['motifCount'] = 0; slim['texts'] = [{k: t.get(k) for k in ('text', 'font', 'sizePt', 'align', 'ocr')} for t in d['texts']]
+        slim = {k: v for k, v in d.items() if k != 'motifs'}; slim['motifCount'] = 0; slim['texts'] = [{k: t.get(k) for k in ('text', 'font', 'sizePt', 'align', 'ocr', 'box')} for t in d['texts']]
         if d['id'] in seen: index[seen[d['id']]] = slim
         else: seen[d['id']] = len(index); index.append(slim)
         designs.append(d)

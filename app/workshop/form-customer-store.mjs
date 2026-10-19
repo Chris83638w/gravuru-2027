@@ -3,6 +3,7 @@ import {createCustomerDownloads} from './customer-downloads.mjs';
 import {createShopDraftJournal} from './shop-draft-transfer.mjs';
 import {createExportJobStore} from './export-jobs.mjs';
 import {createCartHandoffJournal} from './cart-handoff-journal.mjs';
+import {createCartConfigurations} from './cart-configuration.mjs';
 import {createAcrylicDraftStore} from './acrylic-draft-store.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {randomBytes,randomUUID,createHash,timingSafeEqual} from 'node:crypto';
@@ -26,17 +27,19 @@ export function createFormCustomerStore({filename,clock=Date.now,autoRelease=nul
  CREATE TRIGGER IF NOT EXISTS form_print_proof_immutable BEFORE UPDATE ON form_print_proofs BEGIN SELECT RAISE(ABORT,'Print proofs are immutable'); END;`);
  const exportJobs=createExportJobStore({database:db});
  const cartHandoffs=createCartHandoffJournal({database:db});
+ // K8 (Ü9.1): Konfigurations-ID/Revision je Warenkorbübergabe; Inhalte bleiben im Prüfstand.
+ const cartConfigurations=createCartConfigurations({database:db,clock});
  const publicRow=r=>({id:r.id,productId:r.product_id,productRevision:r.product_revision,designId:r.design_id,revision:r.revision,state:JSON.parse(r.state)});
  const auth=(id,token)=>{const r=typeof id==='string'&&db.prepare('SELECT * FROM form_customer_drafts WHERE id=?').get(id);if(!r||typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)||!timingSafeEqual(Buffer.from(hash(token)),Buffer.from(r.token_hash)))fail(404,'Dieser private Entwurf ist hier nicht zugänglich.');return r;};
  function transaction(fn){db.exec('BEGIN IMMEDIATE');try{const result=fn();db.exec('COMMIT');return result;}catch(e){db.exec('ROLLBACK');throw e;}}
  const snapshot=(id,columns='manifest')=>{const r=typeof id==='string'&&db.prepare('SELECT '+columns+' FROM form_review_snapshots WHERE id=?').get(id);if(!r)fail(404,'Prüfstand nicht gefunden.');return r;};
  const summary=r=>{const m=JSON.parse(r.manifest);return {id:m.id,createdAt:m.createdAt,product:m.product,source:m.source,blockers:m.blockers,warnings:m.warnings,photoCount:m.photos.length,photoHints:m.photoHints||[],photoResolution:(m.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi})),packageSha256:m.packageSha256};};
- const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock,autoRelease});
+ const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock,autoRelease,configurations:cartConfigurations});
  const acrylicDrafts=createAcrylicDraftStore({database:db,capture(bundle){const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,m.source.draftRevision,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);}});
  const printProof=(id,key)=>{snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;};
  const customerDownloads=createCustomerDownloads({database:db,orders:orderIntake,jobs:exportJobs,printProof,clock});
  const shopDraftTransfers=createShopDraftJournal({database:db});
- return {exportJobs,orderIntake,cartHandoffs,acrylicDrafts,customerDownloads,shopDraftTransfers,
+ return {exportJobs,orderIntake,cartHandoffs,cartConfigurations,acrylicDrafts,customerDownloads,shopDraftTransfers,
   findAcrylicReview(key){const r=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);return r?summary(snapshot(r.snapshot_id)):null;},
   captureAcrylicReview(key,bundle){return transaction(()=>{const old=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);if(old)return summary(snapshot(old.snapshot_id));const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,1,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);db.prepare('INSERT INTO acrylic_review_requests VALUES(?,?)').run(key,m.id);return summary(snapshot(m.id));});},
   printProof,

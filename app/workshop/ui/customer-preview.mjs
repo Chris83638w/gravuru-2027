@@ -23,7 +23,9 @@ try{
  // session tokens never enter URLs, storage or the serialized product model.
  window.GravuruMerchantRequest=merchantRequest;
  document.querySelector('#title').textContent=model.name;document.title=model.name+' · Kundenansicht';
- const frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=model.key==='form'?'/_merchant-form-editor.html?configuration='+id+'&revision='+revision:'/_merchant-editor.html';
+ // K8 (Ü9.1): Bearbeiten-Link aus dem Warenkorb (config, rev, line) an den Editor weiterreichen.
+ const edit=new URLSearchParams();for(const key of ['config','rev','line'])if(params.has(key))edit.set(key,params.get(key));
+ const frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=model.key==='form'?'/_merchant-form-editor.html?configuration='+id+'&revision='+revision:'/_merchant-editor.html'+(edit.size?'?'+edit:'');
  document.querySelector('#editor').append(frame);status.hidden=true;
  window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===frame.contentWindow&&event.data?.type==='gravuru-fk-close')location.assign(back.href);});
 }catch(error){status.textContent=error.message;}

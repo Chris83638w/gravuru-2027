@@ -165,3 +165,39 @@ test('customer store provides its journal inside the same private database witho
   assert.equal((await handoff(offer(), owner)).duplicate, false);
   assert.equal((await handoff(offer(), owner)).duplicate, true);
 });
+
+// K8 (Ü9.1): Ersetzen einer Warenkorbzeile läuft über dasselbe Journal wie das Anlegen.
+const configured = (rev = 2) => ({...offer(), property: {name: '_gravuru_offer', value: 'b'.repeat(64)}, configuration: {id: 'konfig_' + 'c'.repeat(8) + '-' + 'c'.repeat(4) + '-' + 'c'.repeat(4) + '-' + 'c'.repeat(4) + '-' + 'c'.repeat(12), rev}});
+const line = 'gid://shopify/CartLine/synthetic-line?cart=synthetic', replace = {cartId: 'gid://shopify/Cart/synthetic', lineId: line};
+const updated = () => ({...result(), lineId: line, mode: 'update'});
+test('replacing a cart line is journaled once: duplicate replays return the stored result, the target is part of the request identity', async t => {
+  const current = fixture(t).open(); let calls = 0, seen = null;
+  const transport = async (fixed, context) => {calls++; seen = {fixed, context}; return updated();};
+  const handoff = current.handoff(transport), first = await handoff(configured(), {...owner, replace});
+  assert.equal(first.mode, 'update'); assert.equal(first.lineId, line); assert.equal(first.duplicate, false);
+  assert.deepEqual(seen.context.replace, replace); assert.deepEqual(seen.fixed.configuration, configured().configuration);
+  assert.deepEqual(await handoff(configured(), {...owner, replace}), {...first, duplicate: true}); assert.equal(calls, 1);
+  // Dasselbe Angebot darf nicht zusätzlich neu angelegt oder auf eine andere Zeile angewendet werden.
+  await assert.rejects(() => handoff(configured(), owner), e => e.code === 'cart_changed');
+  await assert.rejects(() => handoff(configured(), {...owner, replace: {...replace, lineId: 'gid://shopify/CartLine/other?cart=synthetic'}}), e => e.code === 'cart_changed');
+  await assert.rejects(() => handoff(configured(3), {...owner, replace}), e => e.code === 'cart_changed');
+  assert.equal(calls, 1);
+});
+test('a replacement the shop does not confirm for the requested line or cart is never presented and never resent', async t => {
+  for (const [name, bad] of Object.entries({createdInstead: {...result(), lineId: line, mode: 'create'}, otherLine: {...updated(), lineId: 'gid://shopify/CartLine/other?cart=synthetic'}, otherCart: {...updated(), cartId: 'gid://shopify/Cart/other'}, noLine: {...result(), mode: 'update'}})) {
+    await t.test(name, async t => {
+      const current = fixture(t).open(); let calls = 0;
+      const handoff = current.handoff(async () => {calls++; return bad;});
+      await assert.rejects(() => handoff(configured(), {...owner, replace}), e => e.code === 'cart_review' && !e.message.includes('synthetic-checkout-key'));
+      await assert.rejects(() => handoff(configured(), {...owner, replace}), e => e.code === 'cart_review');
+      assert.equal(calls, 1); assert.equal(rows(current.db)[0].state, 'unknown');
+    });
+  }
+  // Anlegen mit Konfiguration verlangt die bestätigte Zeilenkennung; ein Ersetzen-Ergebnis zählt nicht als Anlage.
+  const current = fixture(t).open();
+  await assert.rejects(() => current.handoff(async () => result())(configured(1), owner), e => e.code === 'cart_review');
+  await assert.rejects(() => current.handoff(async () => updated())({...configured(1), property: {name: '_gravuru_offer', value: 'd'.repeat(64)}}, owner), e => e.code === 'cart_review');
+  // Ersetzen ohne Konfigurations-Revision wird vor dem Journal abgewiesen.
+  await assert.rejects(() => current.handoff(async () => updated())(offer(), {...owner, replace}), e => e.code === 'cart_handoff');
+  assert.equal(rows(current.db).length, 2);
+});

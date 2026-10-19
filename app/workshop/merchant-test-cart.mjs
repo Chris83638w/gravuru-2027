@@ -29,7 +29,8 @@ export function createMerchantTestCart({drafts,repository,settings},transportOpt
  const reviewPolicy=m=>assertMemorialTestReview(m,settings.productRevision);
  const submit=createDraftCartHandoff({drafts,config:{shopDomain:settings.shopDomain,apiVersion:settings.apiVersion,authentication:'tokenless',requestContext:'merchant-test'},reviewPolicy},transportOptions);
  return async(input,{draftToken,signal}={})=>{
-  if(!input||Array.isArray(input)||Object.keys(input).some(k=>!['draftId','expectedRevision'].includes(k))||!/^adraft_[a-f0-9-]{36}$/.test(input.draftId||'')||!Number.isSafeInteger(input.expectedRevision)||input.expectedRevision<1)fail(422,'test_cart_fields','Einen gespeicherten privaten Entwurf und seine Revision angeben.');
+  // K8: `configId`/`cartLineId` kommen aus dem Bearbeiten-Link; die Übergabe prüft sie gegen das Konfigurationsregister.
+  if(!input||Array.isArray(input)||Object.keys(input).some(k=>!['draftId','expectedRevision','configId','cartLineId'].includes(k))||!/^adraft_[a-f0-9-]{36}$/.test(input.draftId||'')||!Number.isSafeInteger(input.expectedRevision)||input.expectedRevision<1||(input.configId!==undefined&&typeof input.configId!=='string')||(input.cartLineId!==undefined&&typeof input.cartLineId!=='string'))fail(422,'test_cart_fields','Einen gespeicherten privaten Entwurf und seine Revision angeben.');
   const fixed={...input};
   function resolve(){
    const draft=drafts.acrylicDrafts.get(fixed.draftId,draftToken);
@@ -43,7 +44,7 @@ export function createMerchantTestCart({drafts,repository,settings},transportOpt
   const {draft,manifest,binding}=resolve();
   const stableToken=createHmac('sha256',draftToken).update(JSON.stringify(['gravuru-merchant-test-cart/v1',draft.id,draft.revision,draft.snapshotId,binding.id])).digest('hex');
   const offer=drafts.orderIntake.offer({bindingId:binding.id,snapshotId:draft.snapshotId,quantity:manifest.selection.price.quantity},{stableToken});
-  const result=await submit({draftId:draft.id,expectedRevision:draft.revision,snapshotId:draft.snapshotId,offerId:offer.id,offerToken:offer.property.value},{draftToken,signal});
+  const result=await submit({draftId:draft.id,expectedRevision:draft.revision,snapshotId:draft.snapshotId,offerId:offer.id,offerToken:offer.property.value,...(fixed.configId===undefined?{}:{configId:fixed.configId}),...(fixed.cartLineId===undefined?{}:{cartLineId:fixed.cartLineId})},{draftToken,signal});
   resolve();return {...result,testOnly:true,productionReady:false};
  };
 }

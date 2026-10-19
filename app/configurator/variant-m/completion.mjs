@@ -1,4 +1,5 @@
 import {installWorkshopReview} from './workshop-review.mjs';
+import {installCartEdit} from './cart-edit.mjs';
 export async function installCompletion(api){
  const {el,r,profile,config,button,esc,mutate,dialog}=api,$=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/completion.css').then(v=>{if(!v.ok)throw Error('Abschlussoberfläche fehlt');return v.text();});r.append(style);
@@ -20,6 +21,8 @@ export async function installCompletion(api){
  const review=dialog('completion','Deine Gestaltung im Überblick','<p>Prüfe deine Auswahl. Du kannst jederzeit weiter bearbeiten.</p><div class="completion-review"><div data-review-art></div><dl data-review-details></dl></div><section data-review-warnings></section><div class="completion-review-footer"><strong data-review-total></strong>'+button('review-edit','Weiter bearbeiten')+'<button type="button" disabled data-unconnected-cart>In den Warenkorb</button><p data-unconnected-cart>Testansicht: Der Warenkorb ist noch nicht verbunden.</p></div>');
  const reviewBody=document.createElement('div');reviewBody.className='completion-review-body';const footer=review.querySelector('.completion-review-footer');for(const child of [...review.children])if(child.tagName!=='HEADER'&&child!==footer)reviewBody.append(child);review.insertBefore(reviewBody,footer);
  installWorkshopReview(api,footer);
+ // K8 (Ü9.1): ?config=&rev=&line= aus dem Warenkorb-Link stellt genau diese Revision wieder her.
+ if(config)installCartEdit(api).catch(()=>{});
  if(config&&window.parent.GravuruCommerce){
   footer.querySelector('button[disabled]').replaceWith(buy);buy.hidden=false;
   footer.querySelector('p').remove();footer.append($('.fk-order-status'));

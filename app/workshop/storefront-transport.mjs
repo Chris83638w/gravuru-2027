@@ -22,13 +22,15 @@ export function createStorefrontCartTransport(config,{fetchImpl=globalThis.fetch
     typeof privateToken!=='string'||privateToken.length<16||privateToken.length>4096||/[^\x21-\x7e]/.test(privateToken))||
   typeof fetchImpl!=='function'||!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>60000)throw failure('storefront_config','Storefront-Konfiguration ist unvollständig oder ungültig.');
  const endpoint=`https://${shopDomain}/api/${apiVersion}/graphql.json`;
- return async function createCart(offer,{buyerIp,signal}={}){
+ // `replace` (cartId/lineId) ersetzt eine bestehende Zeile per cartLinesUpdate statt einen neuen Warenkorb anzulegen (K8).
+ return async function createCart(offer,{buyerIp,signal,replace}={}){
   const operatorRequest=config.requestContext==='merchant-test'&&buyerIp===undefined;
   if(!operatorRequest&&(typeof buyerIp!=='string'||!isIP(buyerIp)||buyerIp.includes('%')))throw failure('storefront_buyer','Eine bestätigte Käufer-IP aus dem vertrauenswürdigen Anfragekontext ist erforderlich.');
   if(signal!==undefined&&!(signal instanceof AbortSignal))throw failure('storefront_input','Ungültiges Abbruchsignal.');
   if(signal?.aborted)throw failure('storefront_cancelled','Warenkorbanfrage vor dem Versand abgebrochen.');
   // Never serialize caller-supplied objects outside the established request model.
-  const request=prepareCartRequest(offer),frozenOffer={scope:offer.scope,variantId:offer.variantId,quantity:offer.quantity,unitCents:offer.unitCents,currency:offer.currency,property:{...offer.property},...(offer.personalization?{personalization:{...offer.personalization}}:{})};
+  const request=prepareCartRequest(offer,replace),frozenOffer={scope:offer.scope,variantId:offer.variantId,quantity:offer.quantity,unitCents:offer.unitCents,currency:offer.currency,property:{...offer.property},...(offer.personalization?{personalization:{...offer.personalization}}:{}),...(offer.configuration?{configuration:{...offer.configuration}}:{})};
+  const frozenTarget=replace?{cartId:replace.cartId,lineId:replace.lineId}:undefined;
   const body=JSON.stringify(request);
   const controller=new AbortController(),combined=signal?AbortSignal.any([controller.signal,signal]):controller.signal;
   const timer=setTimeout(()=>controller.abort(),timeoutMs);let reader;
@@ -44,7 +46,7 @@ export function createStorefrontCartTransport(config,{fetchImpl=globalThis.fetch
    reader=response.body.getReader();const chunks=[];let size=0;
    for(;;){const {done,value}=await reader.read();if(combined.aborted)throw failure('storefront_interrupted','Warenkorbergebnis nach Abbruch oder Zeitüberschreitung unklar. Nicht automatisch erneut anlegen.',true);if(done)break;size+=value.byteLength;if(size>MAX_BYTES)throw failure('storefront_response','Shop-Antwort überschreitet die zulässige Größe. Warenkorb prüfen; keine Weiterleitung.',true);chunks.push(Buffer.from(value));}
    let result;try{result=JSON.parse(Buffer.concat(chunks,size).toString('utf8'));}catch{throw failure('storefront_response','Shop-Antwort nicht verlässlich lesbar. Warenkorb prüfen; keine Weiterleitung.',true);}
-   try{return verifyCartResponse(result,frozenOffer,shopDomain);}catch{throw failure('storefront_cart_mismatch','Shop-Warenkorb ist bei Gestaltung, Preis, Verfügbarkeit oder Antwortstruktur nicht bestätigt. Keine Weiterleitung oder automatische Wiederholung.',true);}
+   try{return verifyCartResponse(result,frozenOffer,shopDomain,frozenTarget);}catch{throw failure('storefront_cart_mismatch','Shop-Warenkorb ist bei Gestaltung, Preis, Verfügbarkeit oder Antwortstruktur nicht bestätigt. Keine Weiterleitung oder automatische Wiederholung.',true);}
   }catch(error){
    if(error instanceof StorefrontTransportError)throw error;
    throw failure(combined.aborted?'storefront_interrupted':'storefront_network','Warenkorbergebnis nach Verbindungsfehler oder Abbruch unklar. Nicht automatisch erneut anlegen.',true);

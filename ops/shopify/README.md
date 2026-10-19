@@ -62,3 +62,21 @@ Gesichert werden die beiden Konfigurationsdateien, eine Versionsliste ohne Mitar
 Gezielte neue Prüfung: `node --test ops/shopify/read-baseline.test.mjs`. Die bestehende Produkt-/Browser-/Druckabnahme wird durch diesen eigenständigen Betriebshelfer nicht geändert.
 
 Aktuell installierter privater Helfer: `gravuru-shopify-deploy-tools/read-baseline-a3d551e7.mjs`. **15 gezielte lokale Prüfungen und echter Serverlauf erfolgreich.** [Aktueller Serverstatus vom 09.10.2026](../../docs/dashboard-20261004/SHOPIFY-ZUGRIFF-BESTAETIGT-20261009.md). Vorheriger Helfer `read-baseline-3996475.mjs` und sein Fehlversuch bleiben als historische Nachweise erhalten.
+
+## Bearbeiten-Link im Warenkorb (K8)
+
+Jede Warenkorbzeile aus der Storefront-Übergabe trägt die versteckten Eigenschaften `_gravuru_config` (stabile Konfigurations-ID `konfig_…`) und `_gravuru_rev` (Revision, ab 1). Shopify blendet Eigenschaften mit führendem Unterstrich in Theme, Checkout und Bestellung aus; sichtbar bleiben die Zusammenfassung und – nur wenn der Server mit `editUrl` konfiguriert ist – die Eigenschaft `Bearbeiten` mit der fertigen Adresse `…?config=<id>&rev=<n>`.
+
+Ohne `editUrl` baut das Theme den Link selbst. Snippet für die Warenkorbzeile (z. B. in `main-cart-items.liquid` innerhalb der `for item in cart.items`-Schleife; `product_url` ist die Produktseite mit eingebettetem Konfigurator):
+
+```liquid
+{%- assign gravuru_config = item.properties['_gravuru_config'] -%}
+{%- assign gravuru_rev = item.properties['_gravuru_rev'] -%}
+{%- if gravuru_config != blank and gravuru_rev != blank -%}
+  <a class="gravuru-cart-edit" href="{{ item.product.url }}?config={{ gravuru_config | url_encode }}&rev={{ gravuru_rev | url_encode }}&line={{ item.key | url_encode }}">Bearbeiten</a>
+{%- endif -%}
+```
+
+Die Produktseite reicht `config`, `rev` und `line` unverändert an die Editor-`iframe`-Adresse weiter (die Händler-Kundenansicht `customer-preview.mjs` tut das bereits). Der Editor lädt die Revision nur mit dem privaten Entwurfszugriff desselben Geräts (`GET /api/workshop/cart-configurations/<id>/<rev>` mit `X-Gravuru-Draft`); die ID allein öffnet nichts. „Warenkorb aktualisieren“ erzeugt Revision n+1 und ersetzt per Storefront `cartLinesUpdate` die im Register gespeicherte Zeile derselben Konfiguration: Menge aus dem neuen Stand, Preis vom Shop neu berechnet und gegen den Serverpreis geprüft, keine zweite Zeile. Ist `line` leer (Warenkorb verloren), wird normal neu hinzugefügt.
+
+Mit dem echten Shop zu prüfen (Testbestellung, Entscheidung 6 vom 19.10.2026): ob die per Storefront API angelegte Zeile nach Besuch der Checkout-URL im Theme-Warenkorb erscheint, ob `item.key` der Storefront-Zeilenkennung `gid://shopify/CartLine/…` entspricht (der Server ersetzt in jedem Fall die im Register gespeicherte Zeile; ein abweichender `gid://`-Wert im Link wird abgewiesen) und ob die Preisfunktion den aktualisierten Aufpreis liefert. Der Bestelleingang nimmt eine Position nur an, wenn `_gravuru_config`/`_gravuru_rev` genau zur gesicherten Revision des Angebots gehören; sonst wird allein diese Position als Fehler abgelegt.

@@ -21,17 +21,24 @@ export function installWorkshopReview(api,footer){
  footer.append(button,status,link,testButton,checkout);let busy=false,savePrivate,saved=null;
  const fingerprint=()=>JSON.stringify([api.el.state,Number(api.r.querySelector('[data-fk-quantity]').value||1)]);
  checkout.onclick=event=>{if(api.pending?.()||!saved||saved.fingerprint!==fingerprint()){event.preventDefault();checkout.hidden=true;checkout.removeAttribute('href');status.textContent='Die Gestaltung wurde geändert. Bitte zuerst erneut sichern.';}};
+ // K8 (Ü9.1): Bearbeiten-Kontext aus dem Warenkorb-Link (cart-edit.mjs). Nur derselbe Entwurf kann seine Zeile ersetzen.
+ const editContext=()=>{const edit=api.el.cartEdit;return edit&&saved&&edit.draftId===saved.result.draftId?edit:null;};
+ const labelTestButton=()=>{testButton.textContent=editContext()?.cartLineId?'Warenkorb aktualisieren (Test)':'Test-Warenkorb erstellen';};
  testButton.onclick=async()=>{
   if(busy||!saved)return;busy=true;testButton.disabled=true;button.disabled=true;checkout.hidden=true;checkout.removeAttribute('href');
   try{
    if(api.pending?.()||saved.fingerprint!==fingerprint())throw Error('Die Gestaltung wurde geändert. Bitte zuerst erneut sichern.');
-   status.textContent='Test-Warenkorb wird mit dem gespeicherten Preis geprüft …';
-   const response=await request('/api/workshop/merchant-test-cart',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':saved.csrfToken,'X-Gravuru-Draft':saved.result.draftToken},body:JSON.stringify({draftId:saved.result.draftId,expectedRevision:saved.result.revision})});
+   const edit=editContext();
+   status.textContent=edit?.cartLineId?'Warenkorbposition wird mit dem neuen Stand und Preis ersetzt …':'Test-Warenkorb wird mit dem gespeicherten Preis geprüft …';
+   const body={draftId:saved.result.draftId,expectedRevision:saved.result.revision,...(edit?{configId:edit.configId,...(edit.cartLineId?{cartLineId:edit.cartLineId}:{})}:{})};
+   const response=await request('/api/workshop/merchant-test-cart',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':saved.csrfToken,'X-Gravuru-Draft':saved.result.draftToken},body:JSON.stringify(body)});
    const result=await response.json();if(!response.ok)throw Error(result.error?.message||'Test-Warenkorb konnte nicht bestätigt werden.');
    if(saved.fingerprint!==fingerprint())throw Error('Die Gestaltung wurde während der Übergabe geändert. Bitte zuerst erneut sichern.');
    const target=new URL(result.checkoutUrl);if(target.protocol!=='https:'||target.hostname!=='gravuru-design.myshopify.com'||target.port||target.username||target.password||result.testOnly!==true||result.productionReady!==false||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents))throw Error('Die Test-Checkout-Antwort ist nicht bestätigt.');
    checkout.href=target.href;checkout.hidden=false;
-   status.textContent='Test-Warenkorb bestätigt: '+new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(result.totalCents/100)+'. Nur im aktivierten Shopify-Zahlungstestmodus abschließen. Keine Fertigung freigegeben.';
+   if(result.configuration?.id&&result.lineId)api.el.cartEdit={configId:result.configuration.id,rev:result.configuration.rev,cartLineId:result.lineId,draftId:saved.result.draftId,draftToken:saved.result.draftToken,draftRevision:saved.result.revision};
+   labelTestButton();
+   status.textContent=(result.mode==='update'?'Warenkorbposition ersetzt (Revision '+result.configuration.rev+'): ':'Test-Warenkorb bestätigt'+(result.configuration?' (Revision '+result.configuration.rev+')':'')+': ')+new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(result.totalCents/100)+'. Nur im aktivierten Shopify-Zahlungstestmodus abschließen. Keine Fertigung freigegeben.';
   }catch(error){status.textContent=error.message;}finally{busy=false;testButton.disabled=false;button.disabled=false;}
  };
  button.onclick=async()=>{
@@ -46,10 +53,11 @@ export function installWorkshopReview(api,footer){
    savePrivate??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:request});
    const result=await savePrivate(payload,credentials.csrfToken);
    saved={result,csrfToken:credentials.csrfToken,fingerprint:JSON.stringify([JSON.parse(fingerprint),payload.quantity])};
-   testButton.hidden=credentials.merchantTestCart?.productId!==binding.productId||credentials.merchantTestCart?.productRevision!==binding.productRevision;
+   testButton.hidden=credentials.merchantTestCart?.productId!==binding.productId||credentials.merchantTestCart?.productRevision!==binding.productRevision;labelTestButton();
+   if(api.el.cartEdit&&api.el.cartEdit.draftId!==result.draftId)status.textContent='Hinweis: Diese Gestaltung gehört zu einem neuen Entwurf; die alte Warenkorbposition bleibt bestehen. ';
    for(const item of footer.querySelectorAll('[data-unconnected-cart]'))item.hidden=!testButton.hidden;
    const target=new URL('/werkstatt/pruefstaende/',location.origin);target.searchParams.set('snapshot',result.id);if(window.parent.GravuruMerchantRequest){for(const key of ['shop','host','embedded']){const value=new URL(window.parent.location.href).searchParams.get(key);if(value)target.searchParams.set(key,value);}link.target='_parent';}link.href=target.pathname+target.search;link.hidden=false;
-   status.textContent='Gestaltung mit Originalbildern als Revision '+result.revision+' gesichert. Frühere Prüfstände bleiben erhalten. Dies ist noch keine Bestellung.'+(result.accessStored?'':' Der private Zugriff bleibt nur bis zum Schließen dieser Seite verfügbar; bitte den Dashboard-Link geöffnet lassen.')+(result.photoHints?.length?' '+[...new Set(result.photoHints.map(h=>h.text))].join(' '):'');
+   status.textContent=(api.el.cartEdit&&api.el.cartEdit.draftId!==result.draftId?status.textContent:'')+'Gestaltung mit Originalbildern als Revision '+result.revision+' gesichert. Frühere Prüfstände bleiben erhalten. Dies ist noch keine Bestellung.'+(result.accessStored?'':' Der private Zugriff bleibt nur bis zum Schließen dieser Seite verfügbar; bitte den Dashboard-Link geöffnet lassen.')+(result.photoHints?.length?' '+[...new Set(result.photoHints.map(h=>h.text))].join(' '):'');
   }catch(error){status.textContent=error.message;}finally{busy=false;button.disabled=false;}
  };
 }

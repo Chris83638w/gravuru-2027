@@ -1,4 +1,4 @@
-import {canDeleteTemplateElement} from './element-rights.mjs';
+import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions} from './element-rights.mjs';
 import {validateOptionPresentation} from './option-media.mjs';
 import {validateStudio} from '../../platform/sources/app/shared/models/studio-products.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
@@ -41,6 +41,7 @@ export function prepareConfig(input) {
       !Number.isSafeInteger(config.extraMotifCents) || config.extraMotifCents < 0)) fail('Verbindliche Centpreise fehlen.');
   if (typeof config.photo?.enabled !== 'boolean' || config.photo.mode !== 'upload-only') fail('Fotofunktion ausdrücklich festlegen.');
   if(config.logo!==undefined&&typeof config.logo.enabled!=='boolean')fail('Logofunktion ausdrücklich festlegen.');
+  validateCustomerAdditions(config);
   if (!config.photo.enabled){p.designs = p.designs.filter(d => !d.objects.some(o => o.type === 'photoSlot'));if(config.localResources){config.localResources.photoPlaceholders=[];config.localResources.photoExamples=[];}}
   if (!p.designs.length) fail('Für dieses Produkt gibt es keine passende Vorlage ohne Fotobereich.');
   if(p.defaultDesignId&&!p.designs.some(d=>d.id===p.defaultDesignId))p.defaultDesignId=p.designs[0].id;
@@ -146,7 +147,8 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   const fixedKeys=['type','x','y','w','h','rotation','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','motif','assetId','required','acrylicFixed'];
   for(const raw of source.objects.filter(o=>o.acrylicFixed===true)){
     const matches=design.objects.filter(o=>o.id===raw.id),o=matches[0];
-    if(!matches.length&&canDeleteTemplateElement(config,source.id,raw))continue;
+    // Removal is judged by the delete right in the element-rights gate below.
+    if(!matches.length)continue;
     if(matches.length!==1||o.uxHidden===true||fixedKeys.some(key=>o[key]!==raw[key]))fail('Ein fester Acrylglas-Vorlagenbereich wurde verändert.');
   }
   for (const raw of source.objects.filter(o => o.technicalLocked === true)) {
@@ -184,6 +186,10 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     const measured = o.type === 'text' ? measureText(clone(o), fonts) : o;
     const issue = customerLayoutIssue(measured, p); if (issue) fail(issue);
   }
+  // Element rights (rights document or legacy flags), fixed template layer order
+  // and the product's addition policy, enforced for every server entry point
+  // (draft, cart handoff, order intake) and the client alike.
+  const rightsIssue=templateRightsIssue(config,design,source,design.objects); if(rightsIssue)fail(rightsIssue);
   return design;
 }
 
@@ -223,6 +229,8 @@ export function validatePhotoFile(file) {
 
 export function newEditableObject(config, input, id, fonts, motifs, options = {}) {
   if (!['text','motif'].includes(input.type)) fail('Dieses Element wird nicht zum freien Hinzufügen angeboten.');
+  const policy=customerAdditionPolicy(config);
+  if(!(input.type==='text'?policy.text:policy.motifs))fail(input.type==='text'?'Eigener Text ist bei diesem Produkt nicht vorgesehen.':'Eigene Motive sind bei diesem Produkt nicht vorgesehen.');
   const p = selectedProfile(config, options), {width,height} = p.geometry;
   const o = {...cleanObject(input), id, x:width/2, y:height/2, rotation:0,
     color:getProcessingProfile(p).ink, customerEditable:true, templateOrigin:false};

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {canEditElement,restoreElementRights,rightForProperty} from './element-rights.mjs';
+import {canEditElement,restoreElementRights,rightForProperty,templateRightsIssue,legacyElementRights,customerAdditionPolicy,validateCustomerAdditions} from './element-rights.mjs';
 import fs from 'node:fs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {makeProductDocument,validateProductDesign} from '../../workshop/product-model.mjs';
@@ -42,6 +42,69 @@ test('rights follow current design and unknown/missing permissions fail closed f
   assert.equal(canEditElement(config,'first',{id:'customer-new'},'move'),true);
   assert.equal(canEditElement({...config,workbench:{embedded:true}},'first',text,'move'),true);
   assert.equal(rightForProperty('size'),'scale');assert.equal(rightForProperty('font'),'content');
+});
+
+test('template layer order is restored and added elements always end up above the template',()=>{
+  const motif={id:'leaf',type:'motif',motif:'branch',x:20,y:20,w:10,h:10,rotation:0,color:'#000000',customerEditable:true};
+  const own={id:'own',type:'text',text:'Eigen',font:'Source',size:6,w:20,h:8,x:50,y:50,rotation:0,color:'#000000',customerEditable:true,templateOrigin:false};
+  const full={name:{...none,move:true},leaf:{...none,move:true}};
+  const reordered=restoreElementRights([text,motif],[motif,text],full);
+  assert.deepEqual(reordered.objects,[text,motif]);assert.deepEqual(reordered.blockedIds.sort(),['leaf','name']);
+  const below=restoreElementRights([text,motif],[own,text,motif],full);
+  assert.deepEqual(below.objects,[text,motif,own]);assert.deepEqual(below.blockedIds.sort(),['leaf','name','own']);
+  assert.deepEqual(restoreElementRights([text,motif],[text,motif,own],full).blockedIds,[]);
+  assert.deepEqual(restoreElementRights([text,motif],[motif,own],{name:{...none,delete:true},leaf:none}).objects,[motif,own]);
+  assert.equal(canEditElement({profile:{designs:[{id:'d',objects:[text]}]}},'d',text,'order'),false);
+  assert.equal(canEditElement({profile:{designs:[{id:'d',objects:[text]}]}},'d',own,'order'),true);
+  assert.equal(canEditElement({profile:{designs:[{id:'d',objects:[text]}]},workbench:{embedded:true}},'d',text,'order'),true);
+});
+
+test('server gate: forbidden deletion, change, addition and reorder are rejected with German messages; permitted versions pass',()=>{
+  const design={id:'d',objects:[text,photo],marks:[]};
+  const config=rights=>({profile:{designs:[design]},workshopElementRights:{d:rights}});
+  const own={id:'own',type:'text',text:'Eigen',font:'Source',size:6,w:20,h:8,x:50,y:50,rotation:0,color:'#000000',customerEditable:true,templateOrigin:false};
+  const strict=config({name:none,photo:none}),open=config({name:{...none,content:true,color:true,move:true,scale:true,delete:true},photo:{...none,replace:true,delete:true}});
+  const issue=(c,objects)=>templateRightsIssue(c,design,design,objects);
+  // (a) delete / hide
+  assert.match(issue(strict,[photo]),/„name“ darf nicht entfernt oder ausgeblendet/);
+  assert.match(issue(strict,[{...text,uxHidden:true},photo]),/nicht entfernt oder ausgeblendet/);
+  assert.match(issue(strict,[{...text,opacity:0},photo]),/nicht entfernt oder ausgeblendet/);
+  assert.equal(issue(open,[photo]),null);assert.equal(issue(open,[{...text,uxHidden:true},photo]),null);
+  // (b) change without right; structural never
+  assert.match(issue(strict,[{...text,text:'Daria'},photo]),/„name“ darf nicht verändert werden \(Recht content fehlt\)/);
+  assert.match(issue(strict,[{...text,x:1},photo]),/Recht move fehlt/);
+  assert.match(issue(strict,[text,{...photo,uxUploadId:'u',uxUploadKind:'photo'}]),/„photo“ darf nicht verändert werden \(Recht replace fehlt\)/);
+  assert.match(issue(open,[{...text,fieldKey:'other'},photo]),/Vorlageneigenschaften nicht ändern/);
+  assert.match(issue(open,[text,{...photo,acrylicFixed:false}]),/Vorlageneigenschaften nicht ändern/);
+  assert.equal(issue(open,[{...text,text:'Daria',w:70,h:12,x:1,color:'#abcdef'},{...photo,uxUploadId:'u',uxUploadKind:'photo'}]),null);
+  // text width/height follow permitted content, size does not
+  const contentOnly=config({name:{...none,content:true},photo:none});
+  assert.equal(issue(contentOnly,[{...text,text:'Daria',w:70,h:12},photo]),null);
+  assert.match(issue(contentOnly,[{...text,text:'Daria',size:12},photo]),/Recht scale fehlt/);
+  // (c) additions
+  assert.equal(issue(strict,[text,photo,own]),null);
+  assert.match(issue({...strict,customerAdditions:{text:false,motifs:true,maxElements:5}},[text,photo,own]),/Eigener Text ist bei diesem Produkt nicht vorgesehen/);
+  assert.match(issue({...strict,customerAdditions:{text:true,motifs:false,maxElements:5}},[text,photo,{...own,id:'m',type:'motif',motif:'branch'}]),/Eigene Motive sind bei diesem Produkt nicht vorgesehen/);
+  assert.match(issue({...strict,customerAdditions:{text:true,motifs:true,maxElements:1}},[text,photo,own,{...own,id:'own2'}]),/höchstens 1 zusätzliche Elemente/);
+  assert.equal(issue({...strict,customerAdditions:{text:true,motifs:true,maxElements:1}},[text,photo,own]),null);
+  assert.match(issue(open,[text,photo,{...photo,id:'photo2',fieldKey:'photo-2'}]),/nicht zum freien Hinzufügen/);
+  assert.equal(issue(strict,[text,photo,{id:'logo',type:'image',uxUploadKind:'logo',uxUploadId:'l',x:1,y:1,w:5,h:5,rotation:0}]),null);
+  // (d) order
+  assert.match(issue(open,[photo,text]),/Ebenenreihenfolge der Vorlagenelemente/);
+  assert.match(issue(open,[text,own,photo]),/oberhalb der Vorlagenelemente/);
+  assert.match(issue(open,[own,text,photo]),/oberhalb der Vorlagenelemente/);
+  assert.equal(issue(open,[text,photo,own,{...own,id:'own2'}]),null);
+  // legacy flags without a rights document
+  const legacy={profile:{designs:[design]}};
+  assert.equal(issue(legacy,[{...text,text:'Daria',x:1},photo]),null);
+  assert.match(issue(legacy,[text,{...photo,x:1}]),/Recht move fehlt/);
+  assert.match(issue(legacy,[text]),/nicht entfernt/);
+  const fixed={...design,objects:[{...text,customerEditable:false},photo]};
+  assert.match(templateRightsIssue({profile:{designs:[fixed]}},fixed,fixed,[{...text,customerEditable:false,text:'Daria'},photo]),/Recht content fehlt/);
+  assert.deepEqual(legacyElementRights(text),{content:true,color:true,replace:false,move:true,scale:true,delete:true});
+  assert.deepEqual(legacyElementRights(photo),{content:false,color:false,replace:true,move:false,scale:false,delete:false});
+  assert.deepEqual(customerAdditionPolicy({}),{text:true,motifs:true,maxElements:19});
+  for(const bad of [null,{text:true},{text:'yes',motifs:true,maxElements:1},{text:true,motifs:true,maxElements:20},{text:true,motifs:true,maxElements:1,extra:1}])assert.throws(()=>validateCustomerAdditions({customerAdditions:bad}),/Kundenfreigaben/);
 });
 
 test('client repair agrees with server validation for the real acrylic design',()=>{

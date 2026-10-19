@@ -11,7 +11,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
   const uploadObject=()=>config.acrylic?el.state.objects.find(o=>o.type==='photoSlot'&&o.fieldKey==='photo-main'):el.state.objects.find(object=>object.type==='photoSlot'&&!object.uxUploadId);
   const actionRights={fonts:'content','font-apply':'content',bold:'content',
     smaller:'scale',bigger:'scale','fit-text':'scale','object-smaller':'scale','object-bigger':'scale',
-    left:'move',center:'move',right:'move','object-center':'move','object-turn':'move','layer-front':'move','layer-back':'move',
+    left:'move',center:'move',right:'move','object-center':'move','object-turn':'move','layer-front':'order','layer-back':'order',
     swatch:'color','original-colors':'color',delete:'delete','remove-content':'delete','object-delete':'delete',
     'replace-upload':'replace','fill-photo-slot':'replace','edit-upload':'replace','edit-photo':'replace','photo-apply':'replace'};
   const priorDisabled=new Map(),previous=new Map();let finalised=false,repairing=false,normalPreviewHelp='',replacedHelp=false,hasInteracted=false;

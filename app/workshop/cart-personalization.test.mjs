@@ -55,10 +55,12 @@ test('native slate offer pins shop revision, extras and private proof through re
   const intake=f.reopen();assert.deepEqual(intake.resolveCartOffer({offerId:o.id,offerToken:o.property.value,snapshotId:f.m.id,shopDomain:shop}),o);
   const cfg={shopDomain:shop,apiVersion:'2026-07',secret:'synthetic-webhook-secret-only'};
   const payload={id:101,test:true,financial_status:'paid',currency:'EUR',line_items:[{id:201,variant_id:301,quantity:2,price:'36.36',properties:attributes.map(a=>({name:a.key,value:a.value}))}]};
-  const receive=p=>{const raw=Buffer.from(JSON.stringify(p));return intake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',cfg.secret).update(raw).digest('base64'),'x-shopify-shop-domain':shop,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'synthetic-slate-payment'},cfg);};
-  for(const change of [p=>p.line_items[0].price='22.99',p=>p.line_items[0].properties.pop(),p=>p.test=false]){
-    const copy=structuredClone(payload);change(copy);assert.throws(()=>receive(copy));assert.equal(intake.list().length,0);
+  const receive=(p,eventId='synthetic-slate-payment')=>{const raw=Buffer.from(JSON.stringify(p));return intake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',cfg.secret).update(raw).digest('base64'),'x-shopify-shop-domain':shop,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':eventId},cfg);};
+  // E3: a changed price or a removed surcharge attribute rejects that position alone; a live order is still refused as a whole.
+  for(const [i,change] of [p=>p.line_items[0].price='22.99',p=>p.line_items[0].properties.pop()].entries()){
+    const copy=structuredClone(payload);change(copy);const r=receive(copy,'synthetic-slate-change-'+i);assert.equal(r.lines.length,0);assert.equal(r.errors[0].status,'fehler');assert.equal(intake.list().length,0);
   }
+  assert.throws(()=>receive({...payload,test:false}),/Live/);assert.equal(intake.list().length,0);
   const result=receive(payload);assert.equal(result.lines[0].sourceSchema,'gravuru-native-review/v1');assert.equal(result.lines[0].totalCents,7272);
   assert.equal(result.lines[0].productionReady,false);assert.equal(result.lines[0].customerDownloadAllowed,false);assert.equal(receive(payload).duplicate,true);
   assert.throws(()=>f.db.exec("UPDATE form_offer_personalization SET document='{}'"),/immutable/);

@@ -45,8 +45,10 @@ test('uploaded fonts survive restart, deduplicate originals and reject invalid i
  const filename=path.join(dir,'assets.sqlite');let conversions=0;
  const converter=async()=>{conversions++;return {name:'Synthetic',glyphCount:1,font:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0L200 400'}}}}};};
  let library=createFontLibrary({filename,converter});const input={name:'Test.ttf',bytes:Buffer.from('synthetic-font').toString('base64')};
- const font=await library.import(input);assert.deepEqual(await library.import(input),font);assert.equal(conversions,1);library.close();
- library=createFontLibrary({filename,converter});assert.equal(library.list()[0].id,font.id);assert.equal(library.resources()[font.id].regular.glyphs.A.a,500);
+ // E4: a one-glyph synthetic font lacks umlauts, ß, € and digits – only an explicit exception with a reason imports it.
+ await assert.rejects(library.import(input),/Schrift fehlt: Ä, Ö, Ü, ä, ö, ü, ß, €, 0, 1/);await assert.rejects(library.import({...input,allowMissing:true}),/begründen/);assert.equal(library.list().length,0);
+ const font=await library.import({...input,allowMissing:true,reason:'Synthetische Testschrift'});assert.deepEqual(await library.import(input),font);assert.equal(conversions,3);assert.equal(font.missingGlyphs.length,74);assert.match(font.glyphWarnings[0],/Begründung: Synthetische Testschrift/);library.close();
+ library=createFontLibrary({filename,converter});assert.equal(library.list()[0].id,font.id);assert.deepEqual(library.list()[0].glyphWarnings,font.glyphWarnings);assert.equal(library.resources()[font.id].regular.glyphs.A.a,500);
  await assert.rejects(library.import({...input,name:'font.exe'}),/TTF/);assert.equal(library.list().length,1);library.close();
 });
 

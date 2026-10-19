@@ -280,7 +280,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         try{return json(res,200,await configuredMerchantCart()(data,{draftToken:req.headers['x-gravuru-draft'],signal:controller.signal}));}
         finally{req.removeListener('aborted',abort);res.removeListener('close',abort);}
       }
-      if(pathname==='/api/workshop/orders'&&method==='GET'){const orders=orderIntake.list();return json(res,200,{orders,statuses:Object.fromEntries(orders.map(o=>[o.id,orderIntake.status(o.id)])),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});}
+      if(pathname==='/api/workshop/orders'&&method==='GET'){const orders=orderIntake.list();return json(res,200,{orders,errors:orderIntake.errors(),statuses:Object.fromEntries(orders.map(o=>[o.id,orderIntake.status(o.id)])),integration:{enabled:Boolean(orderWebhook),mode:'test-only'}});}
       const orderProductMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/product-draft(?:\/(preview|apply))?$/);
       if(orderProductMatch){
         const line=orderIntake.get(orderProductMatch[1]),action=orderProductMatch[2];

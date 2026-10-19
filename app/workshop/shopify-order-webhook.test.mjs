@@ -26,7 +26,7 @@ async function fixture(t,{timeout=3000}={}){
 }
 test('signed delivery commits matching immutable lines before acknowledgment and deduplicates without leaking data',async t=>{
  const f=await fixture(t),first=await f.request();assert.equal(first.status,200);
- assert.deepEqual(JSON.parse(first.body),{accepted:true,duplicate:false,matchedLines:1,testOnly:true});
+ assert.deepEqual(JSON.parse(first.body),{accepted:true,duplicate:false,matchedLines:1,rejectedLines:0,testOnly:true});
  assert.equal(f.intake.list().length,1);assert.equal(f.intake.list()[0].totalCents,2998);assert.equal(f.intake.list()[0].productionReady,false);
  assert.equal(JSON.parse((await f.request()).body).duplicate,true);assert.equal(f.intake.list().length,1);
  for(const value of [f.offer.property.value,f.payload.customer.email,config.secret,'cfg_test','proof_test'])assert.ok(!first.body.includes(value));
@@ -41,10 +41,14 @@ test('forged, browser, wrong topic/version/shop, live and malformed deliveries n
  assert.equal((await f.request(f.payload,{route:ORDER_WEBHOOK_PATH+'?token=x'})).status,404);
  assert.equal(f.intake.list().length,0);assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_events').get().n,0);
 });
-test('bad second line rolls back first line and delivery ID; corrected retry is accepted',async t=>{
+test('E3: a bad second line is rejected alone (status „fehler“); the first line and the delivery ID are kept, the answer is 200',async t=>{
  const f=await fixture(t),bad=structuredClone(f.payload);bad.line_items.push({...bad.line_items[0],id:202,price:'0.01'});
- assert.equal((await f.request(bad)).status,422);assert.equal(f.intake.list().length,0);
- assert.equal((await f.request()).status,200);assert.equal(f.intake.list().length,1);
+ const r=await f.request(bad);assert.equal(r.status,200);assert.deepEqual(JSON.parse(r.body),{accepted:true,duplicate:false,matchedLines:1,rejectedLines:1,testOnly:true});
+ assert.equal(f.intake.list().length,1);assert.equal(f.intake.errors().length,1);assert.equal(f.intake.errors()[0].lineId,'202');assert.equal(f.intake.errors()[0].status,'fehler');assert.match(f.intake.errors()[0].intakeError,/Preis/);
+ // Shopify retry of the same delivery: nothing changes, still 200.
+ const again=await f.request(bad);assert.equal(again.status,200);assert.equal(JSON.parse(again.body).duplicate,true);assert.equal(f.intake.list().length,1);assert.equal(f.intake.errors().length,1);
+ // Same delivery ID with a different body is still refused.
+ assert.equal((await f.request()).status,409);assert.equal(f.intake.list().length,1);
 });
 test('oversized and slow request bodies stop before intake and do not acknowledge payment',async t=>{
  const f=await fixture(t,{timeout:80});

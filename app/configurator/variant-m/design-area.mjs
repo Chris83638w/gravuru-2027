@@ -8,6 +8,35 @@ export function designArea(config){
  const g=config.profile.geometry,m=g.safeMarginMm??2;
  return {left:m,top:m,right:g.width-m,bottom:config.doorbell?g.bell.y-m:g.height-m};
 }
+const n=v=>Number(v.toFixed(3));
+// Outline of the design area as SVG markup in mm (same inset rules as objectIssue:
+// rounded rectangle with reduced radius, constant-distance inset of an ellipse).
+// Empty when nothing is hidden (margin 0 on a plain plate).
+export function designAreaOutline(config,profile=config.profile){
+ const g=profile.geometry;
+ if(config.acrylic){const a=ACRYLIC_SAFE_AREA;return `<rect x="${a.left}" y="${a.top}" width="${a.right-a.left}" height="${a.bottom-a.top}"/>`;}
+ const m=g.safeMarginMm??2,bottom=config.doorbell&&g.bell?g.bell.y-m:g.height-m;
+ if(!(m>0)&&bottom>=g.height)return '';
+ if(m*2>=Math.min(g.width,g.height)||bottom<=m)return '';
+ if(g.shape==='ellipse'){
+  const a=g.width/2,b=g.height/2,cx=a,cy=b,points=[];
+  for(let i=0;i<120;i++){
+   const t=i/120*2*Math.PI,px=a*Math.cos(t),py=b*Math.sin(t),nx=b*Math.cos(t),ny=a*Math.sin(t),len=Math.hypot(nx,ny)||1;
+   points.push(n(cx+px-m*nx/len)+','+n(cy+py-m*ny/len));
+  }
+  return `<polygon points="${points.join(' ')}"/>`;
+ }
+ const r=Math.max(0,(g.cornerRadiusMm||0)-m);
+ return `<rect x="${n(m)}" y="${n(m)}" width="${n(g.width-2*m)}" height="${n(bottom-m)}"${r?` rx="${n(r)}"`:''}/>`;
+}
+// Visible design boundary: a 1 px dashed preview line. Never part of production
+// files – the production SVG is rendered without this layer (show=false).
+export function designAreaPreview(svg,config,profile=config.profile,{show=true}={}){
+ if(!show)return svg;
+ const outline=designAreaOutline(config,profile);if(!outline)return svg;
+ const end=svg.lastIndexOf('</svg>');
+ return end<0?svg:svg.slice(0,end)+'<g data-m-design-area="true" aria-label="Gestaltungsrand" pointer-events="none" fill="none" stroke="#a0a8a3" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="1.5 1">'+outline.replace('/>',' vector-effect="non-scaling-stroke"/>')+'</g>'+svg.slice(end);
+}
 export function fittedArtwork(config,width,height,{original=false}={}){
  if(![width,height].every(n=>Number.isFinite(n)&&n>0))throw Error('Die Datei benötigt gültige Maße.');
  const a=designArea(config),x=(a.left+a.right)/2,y=(a.top+a.bottom)/2;

@@ -1,4 +1,5 @@
 import {spacerPreview,keepoutPreview} from './option-media.mjs';
+import {designAreaPreview} from './design-area.mjs';
 import {textsNearHoles,holeHintText} from '../../platform/sources/app/shared/models/hole-proximity.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
@@ -27,7 +28,8 @@ export function installUniversal(configInput) {
     let result=surfacePreview(studioSvg(profile(), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
-    return scenePreview(keepoutPreview(spacerPreview(result,profile()),profile(),{show:keepout,emphasis:guides}),config.sceneBackground);
+    // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
+    return scenePreview(designAreaPreview(keepoutPreview(spacerPreview(result,profile()),profile(),{show:keepout,emphasis:guides}),config,profile(),{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
 

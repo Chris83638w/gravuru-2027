@@ -47,7 +47,9 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
  CREATE TRIGGER IF NOT EXISTS form_order_offer_fixed BEFORE UPDATE ON form_order_offers BEGIN SELECT RAISE(ABORT,'Offers are immutable');END;
  CREATE TRIGGER IF NOT EXISTS form_order_line_fixed BEFORE UPDATE ON form_order_lines BEGIN SELECT RAISE(ABORT,'Order lines are immutable');END;
  CREATE TRIGGER IF NOT EXISTS form_order_line_no_delete BEFORE DELETE ON form_order_lines BEGIN SELECT RAISE(ABORT,'Order lines require explicit retention');END;
- CREATE TRIGGER IF NOT EXISTS form_order_event_fixed BEFORE UPDATE ON form_order_events BEGIN SELECT RAISE(ABORT,'Order events are immutable');END;`);
+ CREATE TRIGGER IF NOT EXISTS form_order_event_fixed BEFORE UPDATE ON form_order_events BEGIN SELECT RAISE(ABORT,'Order events are immutable');END;
+ CREATE TABLE IF NOT EXISTS form_order_line_errors(id TEXT PRIMARY KEY,shop TEXT NOT NULL,order_id TEXT NOT NULL,line_id TEXT NOT NULL,event_id TEXT NOT NULL,document TEXT NOT NULL,created_at TEXT NOT NULL,UNIQUE(shop,order_id,line_id,event_id));
+ CREATE TRIGGER IF NOT EXISTS form_order_line_error_fixed BEFORE UPDATE ON form_order_line_errors BEGIN SELECT RAISE(ABORT,'Order line errors are immutable');END;`);
  const tx=fn=>{if(db.isTransaction)return fn();db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}},at=()=>new Date(clock()).toISOString();
  const binding=id=>{const r=db.prepare('SELECT * FROM form_shop_bindings WHERE id=?').get(id);if(!r)fail(404,'Shop-Zuordnung nicht gefunden.');return r;};
  const selection=id=>{const r=db.prepare('SELECT options FROM form_shop_binding_selections WHERE binding_id=?').get(id);return r?JSON.parse(r.options):null;};
@@ -56,7 +58,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
  const offerPricing=id=>{const row=db.prepare('SELECT document FROM form_offer_personalization WHERE offer_id=?').get(id);return row?JSON.parse(row.document):null;};
  const statuses=createOrderStatus({database:db,clock});
  const get=id=>{const r=db.prepare('SELECT document FROM form_order_lines WHERE id=?').get(id);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
- return {get,customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
+ // E3: rejected single positions (status „fehler“). Append-only per delivery; the overview shows the latest reason
+ // per shop line until that line is accepted by a later delivery.
+ const errorRows=(where='',...args)=>db.prepare('SELECT e.document FROM form_order_line_errors e WHERE e.rowid=(SELECT max(rowid) FROM form_order_line_errors x WHERE x.shop=e.shop AND x.order_id=e.order_id AND x.line_id=e.line_id) AND NOT EXISTS(SELECT 1 FROM form_order_lines l WHERE l.shop=e.shop AND l.order_id=e.order_id AND l.line_id=e.line_id)'+where+' ORDER BY e.rowid DESC LIMIT 200').all(...args).map(r=>JSON.parse(r.document));
+ return {get,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
   // Caller supplies the actual saved product record, never a browser price.
   bind({shopDomain,variantId,record,snapshotId,options:selected,personalizationPricing}){
    if(!domain(shopDomain))fail(422,'Bitte die myshopify.com-Domain des Entwicklungsstores angeben.');variantId=identifier(variantId);
@@ -154,12 +159,21 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
    const verified=verifyPaidWebhook(raw,headers,config);return tx(()=>{
    if(db.prepare('SELECT 1 FROM form_order_status_events WHERE shop=? AND event_id=? AND topic!=\'orders/paid\'').get(verified.shopDomain,verified.eventId))fail(409,'Ereignis-ID gehört bereits zu einer Statusnachricht.');
    const {shopDomain:shop,eventId,bodySha256,orderId,payload}=verified,existing=db.prepare('SELECT body_sha256 FROM form_order_events WHERE shop=? AND event_id=?').get(shop,eventId);
-   if(existing){if(existing.body_sha256!==bodySha256)fail(409,'Ereignis-ID wurde mit anderem Inhalt erneut geliefert.');return {duplicate:true,lines:db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=?').all(shop,orderId).map(r=>JSON.parse(r.document))};}
-   const result=[],seen=new Set();
+   if(existing){if(existing.body_sha256!==bodySha256)fail(409,'Ereignis-ID wurde mit anderem Inhalt erneut geliefert.');return {duplicate:true,lines:db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=?').all(shop,orderId).map(r=>JSON.parse(r.document)),errors:errorRows(' AND e.shop=? AND e.order_id=?',shop,orderId)};}
+   const result=[],errors=[],seen=new Set();
+   // E3 (P2-9): one invalid position is rejected alone. Valid positions are still
+   // admitted, the event is recorded and the webhook answers 200 (no Shopify retry storm).
+   const reject=(line,lineId,reason)=>{
+    const document={id:'ordererror_'+randomUUID(),shopDomain:shop,orderId,lineId,eventId,variantId:line.variant_id==null?null:String(line.variant_id),quantity:Number.isSafeInteger(line.quantity)?line.quantity:null,status:'fehler',intakeError:reason,test:true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
+    db.prepare('INSERT INTO form_order_line_errors VALUES(?,?,?,?,?,?,?)').run(document.id,shop,orderId,lineId,eventId,JSON.stringify(document),at());errors.push(document);
+   };
    for(const line of payload.line_items){
     const lineId=identifier(line.id);if(seen.has(lineId))fail(422,'Doppelte Bestellposition.');seen.add(lineId);
+    try{admit(line,lineId);}catch(error){if(!Number.isInteger(error?.status)||error.status>=500)throw error;reject(line,lineId,error.message);}
+   }
+   function admit(line,lineId){
     const properties=line.properties||[];if(!Array.isArray(properties))fail(422,'Ungültige Positionszuordnung.');const refs=properties.filter(p=>p?.name==='_gravuru_offer');
-    if(!refs.length){if(line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=?').get(shop,identifier(line.variant_id)))fail(422,'Für diese konfigurierte Variante fehlt der gesicherte Entwurf.');continue;}
+    if(!refs.length){if(line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=?').get(shop,identifier(line.variant_id)))fail(422,'Für diese konfigurierte Variante fehlt der gesicherte Entwurf.');return;}
     if(refs.length!==1||typeof refs[0].value!=='string'||!/^[a-f0-9]{64}$/.test(refs[0].value))fail(422,'Ungültige Entwurfszuordnung.');
     const o=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=?').get(sha(refs[0].value));if(!o)fail(422,'Entwurfszuordnung nicht gefunden.');const b=binding(o.binding_id),extra=offerPricing(o.id),unit=extra?.unitCents??b.unit_cents;
     if(b.shop!==shop||b.variant_id!==identifier(line.variant_id)||line.quantity!==o.quantity||money(line.price)!==unit)fail(422,'Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.');
@@ -167,7 +181,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
      const actual=properties.filter(p=>p?.name===expected.key);
      if(actual.length!==1||actual[0].value!==expected.value)fail(422,'Bestellung hat die gesicherte Entwurfs- oder Aufpreiszuordnung verändert.');
     }
-    const old=db.prepare('SELECT * FROM form_order_lines WHERE shop=? AND order_id=? AND line_id=?').get(shop,orderId,lineId);if(old){if(old.offer_id!==o.id)fail(409,'Bestellposition darf ihren Entwurf nicht wechseln.');result.push(JSON.parse(old.document));continue;}
+    const old=db.prepare('SELECT * FROM form_order_lines WHERE shop=? AND order_id=? AND line_id=?').get(shop,orderId,lineId);if(old){if(old.offer_id!==o.id)fail(409,'Bestellposition darf ihren Entwurf nicht wechseln.');result.push(JSON.parse(old.document));return;}
     if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=?').get(o.id))fail(409,'Dieser Entwurf wurde bereits einer anderen Bestellposition zugeordnet.');
     if(o.expires_at<clock())fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');const m=snapshot(o.snapshot_id);if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
     const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity:o.quantity,unitCents:unit,totalCents:unit*o.quantity,currency:'EUR',status:'test-paid-event-recorded',test:true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
@@ -181,7 +195,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
     if(!owner&&!db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND order_id=?').get(shop,orderId))db.prepare('INSERT INTO form_order_customers VALUES(?,?,?)').run(shop,orderId,customerId);
    }
    if(payload.updated_at)statuses.record(verified);
-   db.prepare('INSERT INTO form_order_events VALUES(?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at());return {duplicate:false,lines:result};
+   db.prepare('INSERT INTO form_order_events VALUES(?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at());return {duplicate:false,lines:result,errors};
   });}
  };
 }

@@ -37,6 +37,21 @@ Prüf-Leser: `python3 -I scripts/jobcontrol/las_inspect.py <datei.las> [--json]`
 - `MachiLaserLS.ini`: Vektor-DPI-Stufen 50–75 000, Vorschau, Link auf die Gravograph-Materialdatenbank.
 - Deutung der 8 Werte je Farbe (`30,100.0,1,1,0.000000,1,0,25`) ist **offen** und wird an einer echten Maschine gegen die Treiberoberfläche geprüft (vermutlich Leistung, Geschwindigkeit, Durchgänge, …, Modus Raster/Vektor, Luft, Frequenz).
 
+## Gespeicherte Treiber-Einstellungen (.job) – an echter Datei geprüft
+
+Die Treiberoberfläche speichert ihren Parametersatz als `.job` (Standardpfad `C:\L_Solution\Job\`, Einträge `JobPath`, `SavConfLs`, „Chemin des sauvegardes“ in `glaserui.dll`). Das ist **kein Gravurauftrag**, sondern nur die Einstellung – feste Größe 1308 Bytes, little-endian. Geprüft an `Test_JOB19102026.job` (19.10.2026) gegen den Screenshot der Druckeinstellungen (LS100, Schwarz 92 | 9,0 | 1 | 0,00 | Raster, Rot Vektor, Rest Überspringen, Platte 460 × 305 mm, 500 × 500 dpi):
+
+| Offset | Inhalt | Status |
+| --- | --- | --- |
+| 0x08 / 0x0C | Plattenbreite / -höhe in µm (460 000 / 305 000) | belegt |
+| 0x58 + n·0x14 (8 Farben) | +0 Leistung %, +2 Geschwindigkeit in Zehntel-%, +4 Durchgänge, +8 Z (float, vermutet), +0x0C offen (1), +0x0E Modus 0 Überspringen / 1 Raster / 2 Vektor | Leistung, Geschwindigkeit, Modus belegt |
+| 0xF8 | Name des Parametersatzes („Default“) | belegt |
+| 0x120 | 100 (vermutlich das 100-%-Feld) | vermutet |
+| 0x124 + n·0x1C | 250 je Farbe (vermutlich Frequenz) | vermutet |
+| 0x28/0x2A (6/6), 0x48 (50), 0x3E, 0x10A, 0x10C, 0x11A (48), 0x204 (300) | dpi-Stufe, Maschinen-/Leistungswahl „30/40“ u. a. | offen – zweite Datei mit geänderten Werten nötig |
+
+Leser: `python3 -I scripts/jobcontrol/job_inspect.py <datei.job> [--json]`. Bedeutung für JobControl: diese Dateien sind direkt die Materialtabelle je Maschine – sie lassen sich lesen, vergleichen und später mit geänderten Werten schreiben, ohne den Treiber anzufassen.
+
 ## Vorschlag Ausbau (Paket J1–J4)
 
 | Paket | Inhalt | Abnahme |

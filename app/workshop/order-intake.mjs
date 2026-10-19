@@ -28,7 +28,8 @@ export function verifyPaidWebhook(raw,headers,config){
  return v;
 }
 // `autoRelease(line)` meldet, ob das Fertigungsprofil der Position automatische Freigabe erlaubt (http.mjs liefert es aus production-profiles.mjs).
-export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelease=null}){
+// `configurations` (K8): Register der Konfigurations-IDs/Revisionen; eine Position mit unbekannter Revision wird als Positionsfehler abgelehnt.
+export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelease=null,configurations=null}){
  db.exec(`CREATE TABLE IF NOT EXISTS form_shop_bindings(id TEXT PRIMARY KEY,shop TEXT NOT NULL,variant_id TEXT NOT NULL,product_id TEXT NOT NULL,product_revision INTEGER NOT NULL,unit_cents INTEGER NOT NULL,created_at TEXT NOT NULL,UNIQUE(shop,variant_id,product_id,product_revision));
  CREATE TABLE IF NOT EXISTS form_shop_binding_personalization(binding_id TEXT PRIMARY KEY,document TEXT NOT NULL);
  CREATE TRIGGER IF NOT EXISTS form_binding_personalization_fixed BEFORE UPDATE ON form_shop_binding_personalization BEGIN SELECT RAISE(ABORT,'Pricing contracts are immutable');END;
@@ -182,6 +183,13 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     const lineId=identifier(line.id);if(seen.has(lineId))fail(422,'Doppelte Bestellposition.');seen.add(lineId);
     try{admit(line,lineId);}catch(error){if(!Number.isInteger(error?.status)||error.status>=500)throw error;reject(line,lineId,error.message);}
    }
+   function configurationFor(properties,offerId){
+    const value=name=>{const found=properties.filter(p=>p?.name===name);if(found.length>1)fail(422,'Konfigurations-Revision der Position ist nicht eindeutig.');return found.length?found[0].value:undefined;};
+    const configId=value('_gravuru_config'),rev=value('_gravuru_rev'),known=configurations?.byOffer(offerId)||null;
+    if(configId===undefined&&rev===undefined){if(known)fail(422,'Die Position nennt ihre Konfigurations-Revision nicht.');return null;}
+    if(!known||typeof configId!=='string'||typeof rev!=='string'||!/^[1-9][0-9]{0,8}$/.test(rev)||known.id!==configId||known.rev!==Number(rev))fail(422,'Die Konfigurations-Revision dieser Position ist unbekannt oder gehört zu einem anderen Stand.');
+    return {id:known.id,rev:known.rev};
+   }
    function admit(line,lineId){
     const properties=line.properties||[];if(!Array.isArray(properties))fail(422,'Ungültige Positionszuordnung.');const refs=properties.filter(p=>p?.name==='_gravuru_offer');
     if(!refs.length){if(line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=?').get(shop,identifier(line.variant_id)))fail(422,'Für diese konfigurierte Variante fehlt der gesicherte Entwurf.');return;}
@@ -192,10 +200,13 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
      const actual=properties.filter(p=>p?.name===expected.key);
      if(actual.length!==1||actual[0].value!==expected.value)fail(422,'Bestellung hat die gesicherte Entwurfs- oder Aufpreiszuordnung verändert.');
     }
+    // K8 (Ü9.1): Die Position verweist auf genau die Konfigurations-Revision, die zu diesem Angebot gesichert wurde.
+    // Fehlt sie oder ist sie unbekannt, wird nur diese Position abgelehnt (E3), nicht die ganze Bestellung.
+    const configuration=configurationFor(properties,o.id);
     const old=db.prepare('SELECT * FROM form_order_lines WHERE shop=? AND order_id=? AND line_id=?').get(shop,orderId,lineId);if(old){if(old.offer_id!==o.id)fail(409,'Bestellposition darf ihren Entwurf nicht wechseln.');result.push(JSON.parse(old.document));return;}
     if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=?').get(o.id))fail(409,'Dieser Entwurf wurde bereits einer anderen Bestellposition zugeordnet.');
     if(o.expires_at<clock())fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');const m=snapshot(o.snapshot_id);if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
-    const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity:o.quantity,unitCents:unit,totalCents:unit*o.quantity,currency:'EUR',status:'test-paid-event-recorded',test:true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
+    const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,...(configuration?{configuration}:{}),sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity:o.quantity,unitCents:unit,totalCents:unit*o.quantity,currency:'EUR',status:'test-paid-event-recorded',test:true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
     db.prepare('INSERT INTO form_order_lines VALUES(?,?,?,?,?,?,?)').run(id,shop,orderId,lineId,o.id,JSON.stringify(document),at());result.push(document);
    }
    if(result.length){

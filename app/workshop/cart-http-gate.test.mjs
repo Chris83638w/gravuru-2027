@@ -24,7 +24,7 @@ function setup(t, {enabled = true, mode = 'test-only'} = {}) {
       const line = JSON.parse(options.body).variables.input.lines[0]; if (duringSend) await duringSend();
       return Response.json({data: {cartCreate: {userErrors: [], warnings: [], cart: {
         id: 'gid://shopify/Cart/synthetic', checkoutUrl: `https://${config.shopDomain}/checkout/synthetic?key=private-fixture`,
-        lines: {pageInfo: {hasNextPage: false}, nodes: [{quantity: line.quantity, attributes: line.attributes,
+        lines: {pageInfo: {hasNextPage: false}, nodes: [{id: 'gid://shopify/CartLine/synthetic?cart=synthetic', quantity: line.quantity, attributes: line.attributes,
           merchandise: {id: line.merchandiseId}, cost: {amountPerQuantity: {amount: (unit / 100).toFixed(2), currencyCode: 'EUR'},
             totalAmount: {amount: (unit / 100).toFixed(2), currencyCode: 'EUR'}}}]}}}}});
     }}};

@@ -24,6 +24,7 @@ import {orderProductDraft,planOrderProductDraft,applyOrderProductDraft} from './
 import {prepareCartRequest} from './storefront-cart.mjs';
 import {createMerchantTestCart} from './merchant-test-cart.mjs';
 import {createCartHttpGate} from './cart-http-gate.mjs';
+import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {createShopifySessionVerifier} from './shopify-session.mjs';
 import {createShopDraftTransfer,createShopDraftTransport,shopDraftRequest} from './shop-draft-transfer.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
@@ -382,6 +383,15 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         const id=manufacturingMatch[1];if(method==='GET'&&manufacturingMatch[2]==='usage'){productionProfiles.get(id);return json(res,200,{products:repository.productionProfileUsage(id),scope:'current-and-activated-product-revisions'});}if(method==='GET')return json(res,200,manufacturingMatch[2]?{revisions:productionProfiles.history(id)}:productionProfiles.get(id,revision(url.searchParams.get('revision'))));
         if(method==='PATCH'&&!manufacturingMatch[2]){const data=await body(req);return json(res,200,productionProfiles.save(id,data.document,data.expectedRevision));}
         fail(405,'method_not_allowed','Diese Profilaktion ist nicht möglich.');
+      }
+      // K8 (Ü9.1): Bearbeiten aus dem Warenkorb – genau diese Revision laden; nur mit privatem Entwurfstoken.
+      const cartRevisionMatch=pathname.match(/^\/api\/workshop\/cart-configurations\/(konfig_[a-f0-9-]{36})\/([1-9][0-9]{0,8})(?:\/photos\/([A-Za-z0-9_-]{1,100}))?$/);
+      if(cartRevisionMatch){
+        if(method!=='GET')fail(405,'method_not_allowed','Konfigurations-Revisionen werden nur gelesen.');
+        const access={drafts:customerDrafts,configId:cartRevisionMatch[1],rev:Number(cartRevisionMatch[2]),draftToken:req.headers['x-gravuru-draft']};
+        if(!cartRevisionMatch[3])return json(res,200,loadCartRevision({...access,repository}));
+        const photo=loadCartRevisionPhoto({...access,uploadId:cartRevisionMatch[3],edited:url.searchParams.get('edited')==='1'});
+        return res.writeHead(200,{'Content-Type':photo.contentType,'Content-Length':photo.bytes.length,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox"}).end(photo.bytes);
       }
       const acrylicDraftMatch=pathname.match(/^\/api\/workshop\/acrylic-drafts\/(adraft_[a-f0-9-]+)$/);
       if(pathname==='/api/workshop/acrylic-drafts'||acrylicDraftMatch){

@@ -8,7 +8,7 @@ export function installCommerce({el,config,files,pending}){
  let busy=false,message='';
  // K1 (Ü2.2/Ü3.1): Pflichtfeld mit Mustertext oder Text über dem Limit sperrt den Warenkorb; der Kunde sieht welches Feld.
  const blockedBy=()=>{try{return el.uxTextIssues?.()[0]||null;}catch{return null;}};
- const update=()=>{const blocked=busy?null:blockedBy();button.disabled=busy||!!blocked;button.textContent=busy?'Wird vorbereitet …':'In den Warenkorb';const text=message||blocked?.message||'';status.textContent=text;status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.style.setProperty('display',text?'block':'none','important');};
+ const update=()=>{const blocked=busy?null:blockedBy();button.disabled=busy||!!blocked;button.textContent=busy?'Wird vorbereitet …':el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'In den Warenkorb';const text=message||blocked?.message||'';status.textContent=text;status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.style.setProperty('display',text?'block':'none','important');};
  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);update();return result;};
  const fail=error=>{busy=false;message=error.message||'Übertragung fehlgeschlagen. Deine Gestaltung bleibt geöffnet.';update();};
  window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==window.parent||event.data?.session!==bridge.session)return;if(event.data.type==='gravuru-cart-error')fail(Error(event.data.message));});
@@ -28,7 +28,9 @@ export function installCommerce({el,config,files,pending}){
    if(fingerprint!==JSON.stringify(el.state))throw Error('Die Gestaltung wurde während der Vorbereitung geändert. Bitte erneut in den Warenkorb legen.');
    const properties={Design:el.state.designId,Format:config.profile.geometry.width+' × '+config.profile.geometry.height+' mm',Ausführung:config.profile.optionGroups.map(g=>g.values.find(v=>v.id===selection.options[g.id]).label).join(' · '),'Zusätzliche Motive':String(selection.additionalMotifs),'Kostenpflichtige Bilder':String(selection.chargedUploads),'Einzelpreis':money(selection.unitCents),'_Gravuru Stand':String(binding.revision),'_Gravuru Vorgang':crypto.randomUUID()};
    Object.assign(properties,{_gravuru_motifs:String(selection.additionalMotifs),_gravuru_uploads:String(selection.chargedUploads),_gravuru_revision:String(binding.revision)});
-   window.parent.postMessage({type:'gravuru-cart-submit',session:bridge.session,productId:binding.productId,variantId:selection.variantId,priceCents:selection.unitCents,baseVariantCents:selection.baseVariantCents,quantity,properties,assets},location.origin);
+   // K8 (Ü9.1): Bearbeiten-Kontext für das Theme (Zeile ersetzen statt neu anlegen); die Konfigurations-Revision vergibt der Server.
+   const edit=el.cartEdit?{configId:el.cartEdit.configId,rev:el.cartEdit.rev,cartLineId:el.cartEdit.cartLineId||null}:null;
+   window.parent.postMessage({type:'gravuru-cart-submit',session:bridge.session,productId:binding.productId,variantId:selection.variantId,priceCents:selection.unitCents,baseVariantCents:selection.baseVariantCents,quantity,properties,assets,edit},location.origin);
    message='Bilder werden an Shopify übertragen …';update();
   }catch(error){fail(error);}
  },true);

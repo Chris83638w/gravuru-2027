@@ -95,7 +95,7 @@ test('acrylic cart access uses private ownership and current snapshot, not the h
       calls++; const line = JSON.parse(options.body).variables.input.lines[0];
       return Response.json({data: {cartCreate: {userErrors: [], warnings: [], cart: {
         id: 'gid://shopify/Cart/synthetic', checkoutUrl: `https://${shopDomain}/checkout/synthetic`,
-        lines: {pageInfo: {hasNextPage: false}, nodes: [{quantity: 2, merchandise: {id: line.merchandiseId},
+        lines: {pageInfo: {hasNextPage: false}, nodes: [{id: 'gid://shopify/CartLine/synthetic?cart=synthetic', quantity: 2, merchandise: {id: line.merchandiseId},
           attributes: line.attributes, cost: {amountPerQuantity: {amount: '29.99', currencyCode: 'EUR'},
             totalAmount: {amount: '59.98', currencyCode: 'EUR'}}}]}}}}});
     }});

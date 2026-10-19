@@ -46,7 +46,7 @@ function setup(t,patch={},settings=MEMORIAL_TEST_CART){
   assert.equal(options.headers['Shopify-Storefront-Buyer-IP'],undefined);assert.equal(options.headers['Shopify-Storefront-Private-Token'],undefined);
   line=JSON.parse(options.body).variables.input.lines[0];assert.equal(line.merchandiseId,'gid://shopify/ProductVariant/57509812633980');assert.equal(line.quantity,1);
   if(duringSend)await duringSend();
-  return Response.json({data:{cartCreate:{userErrors:[],warnings:[],cart:{id:'gid://shopify/Cart/synthetic',checkoutUrl:'https://gravuru-design.myshopify.com/checkout/synthetic?key=synthetic',lines:{pageInfo:{hasNextPage:false},nodes:[{quantity:1,attributes:line.attributes,merchandise:{id:line.merchandiseId},cost:{amountPerQuantity:{amount:unit,currencyCode:'EUR'},totalAmount:{amount:unit,currencyCode:'EUR'}}}]}}}}});
+  return Response.json({data:{cartCreate:{userErrors:[],warnings:[],cart:{id:'gid://shopify/Cart/synthetic',checkoutUrl:'https://gravuru-design.myshopify.com/checkout/synthetic?key=synthetic',lines:{pageInfo:{hasNextPage:false},nodes:[{id:'gid://shopify/CartLine/synthetic?cart=synthetic',quantity:1,attributes:line.attributes,merchandise:{id:line.merchandiseId},cost:{amountPerQuantity:{amount:unit,currencyCode:'EUR'},totalAmount:{amount:unit,currencyCode:'EUR'}}}]}}}}});
  };
  const submit=(input={draftId:draft.id,expectedRevision:1},context={draftToken:draft.token})=>createMerchantTestCart({drafts:store,repository,settings},{fetchImpl})(input,context);
  t.after(()=>{store.close();fs.rmSync(dir,{recursive:true,force:true});});

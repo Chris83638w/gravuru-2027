@@ -409,8 +409,11 @@ class TestAusgabe(Basis):
         self.assertEqual(b['familyStatus'], 'platzhalter')
         self.assertEqual((b['plate']['widthMm'], b['plate']['heightMm'], b['plate']['marginMm'], b['plate']['shape']), (220, 140, 10, 'rect'))
         codes = [w['code'] for w in b['warnings']]
-        for c in ('familie_platzhalter', 'seitenverhaeltnis', 'overlay_geschaetzt'):
+        for c in ('familie_platzhalter', 'seitenverhaeltnis'):
             self.assertIn(c, codes)
+        # D201 ist seit 19.10.2026 aus der Corel-CDR berechnet, nicht mehr geschätzt; Proportion passt zum Katalogmotiv.
+        self.assertNotIn('overlay_geschaetzt', codes)
+        self.assertNotIn('motivproportion', codes)
         self.assertNotIn('schriftbreite', codes)
         self.assertNotIn('ausrichtung_unsicher', codes)
 
@@ -457,15 +460,27 @@ class TestAusgabe(Basis):
     def test_motiv_aus_katalog_in_amazon_box(self):
         m = self.best['design']
         self.assertEqual(m['designNo'], 201)
-        self.assertEqual(m['bbox400'], [268, 188, 39, 30])
-        self.assertTrue(m['lagequelle'].startswith('geschätzt'))
+        soll = json.loads((MAPPING / 'design-overlays.json').read_text(encoding='utf-8'))['gedenktafeln']['201']
+        self.assertEqual(m['bbox400'], soll['bbox400'])
+        self.assertTrue(m['lagequelle'].startswith('berechnet'))
         bx, by, bw, bh = m['boxMm']
-        self.assertAlmostEqual(bx, (268 - 9) * 220 / 381, places=2)
-        self.assertAlmostEqual(bw, 39 * 220 / 381, places=2)
+        self.assertAlmostEqual(bx, (soll['bbox400'][0] - 9) * 220 / 381, places=2)
+        self.assertAlmostEqual(bw, soll['bbox400'][2] * 220 / 381, places=2)
         # proportional eingepasst: Motiv 30,55 × 24,41 mm, begrenzt durch die Höhe
         self.assertAlmostEqual(m['groesseMm'][0] / m['groesseMm'][1], 30.55 / 24.41, places=3)
         self.assertLessEqual(m['groesseMm'][0], bw + 1e-6)
         self.assertLessEqual(m['groesseMm'][1], bh + 1e-6)
+
+    def test_geschaetzte_motivlage_warnt(self):
+        tmp = Path(tempfile.mkdtemp(dir=self.tmp))
+        for n in ('asin-mapping.json', 'font-aliases.json'):
+            shutil.copy(MAPPING / n, tmp / n)
+        (tmp / 'design-overlays.json').write_text(json.dumps({'gedenktafeln': {'201': {'bbox400': [268, 188, 39, 30], 'quelle': 'geschätzt (Test)'}}}), encoding='utf-8')
+        r, out = self.lauf(baue_bestellung(self.katalog), mapping=imp.Mapping(tmp))
+        p = r['positionen'][0]
+        self.assertEqual(p['status'], 'ok', p['fehler'])
+        b = json.loads((out / p['ordner'] / 'bestellung.json').read_text(encoding='utf-8'))
+        self.assertIn('overlay_geschaetzt', [w['code'] for w in b['warnings']])
 
     def test_svg_ebenen(self):
         import xml.etree.ElementTree as ET
@@ -1002,13 +1017,94 @@ class TestRealkatalog(unittest.TestCase):
         b = json.loads((self.out / ORDNER / 'bestellung.json').read_text(encoding='utf-8'))
         self.assertEqual(b['designId'], 'GT-S-30x20-D201')
         self.assertEqual(b['design']['key'], 'gravur-rechteck-D201')
-        self.assertAlmostEqual(b['design']['massstab'], 0.6785, places=3)
+        # Box aus GT-S-30x20-D201.cdr (design-overlays.json): Höhe begrenzt, 30,87 px × 140/254 = 17,01 mm auf 24,37 mm Motiv.
+        # Vorher mit der geschätzten Box 0,6785.
+        self.assertAlmostEqual(b['design']['massstab'], 0.6982, places=3)
 
     def test_fixture_texte_sind_zentriert_und_im_kerning_der_echten_schrift(self):
         schrift = imp.Katalog(self.katalogpfad).schrift('Great Vibes', {})[1]
         self.assertEqual(schrift.breite(schrift.formen('Muster')) > 0, True)
         b = json.loads((self.out / ORDNER / 'bestellung.json').read_text(encoding='utf-8'))
         self.assertEqual([f['align'] for f in b['fields'] if f['type'] == 'text'], ['center'] * 3)
+
+
+# --------------------------------------------------------------------------------------------------
+# Corel-Zuordnung (erzeugt aus der produktiven Corel-Tabelle; nur Spur und Hinweis)
+# --------------------------------------------------------------------------------------------------
+
+corel_gen = lade('build_asin_mapping_from_corel', 'build-asin-mapping-from-corel.py')
+
+COREL_CSV = (
+    'ASIN;View-Name;Dateipfad;Hinweis (muss nicht ausgefüllt werden);Konfi-Typ;Größe;Design-Nummer;Schablonenpfad;'
+    'Konfi-Options-Übersetzungen;Designauswahl verwendung erzwingen;View Sortierung;Produktbild laden;'
+    'Breite wie Größenauswahl;automatisches Größenmanagement;Auf Breite skalieren\r\n'
+    ';A C H T U N G:\r\n'
+    ';GEDENKTAFELN ---------------------------\r\n'
+    'B013T1VRKS;;V:\\Produkte\\Gedenktafeln\\Gravur\\Schiefer;;;ja;;;;;;;;;\r\n'
+    'B0000COREL;;V:\\Produkte\\Gedenktafeln\\Gravur\\Schiefer\\30x20;Mit Entwurf;;;7;;;;;;;;\r\n'
+    '>;;V:\\Produkte\\Gedenktafeln\\Gravur\\Schiefer\\Rückseite;;;;;;;;;;;;\r\n'
+    ';TÜRSCHILDER ---------------------------\r\n'
+    'B0000COREL;;V:\\Produkte\\Türschilder\\Gravur\\Edelstahl;;;;;;;;;;;;\r\n'
+)
+
+
+class TestCorelZuordnung(Basis):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.csv = cls.tmp / 'corel.csv'
+        cls.csv.write_bytes(COREL_CSV.encode('cp1252'))
+        cls.mapdir = cls.tmp / 'mapping-mit-corel'
+        cls.mapdir.mkdir()
+        for n in ('asin-mapping.json', 'font-aliases.json', 'design-overlays.json'):
+            shutil.copy(MAPPING / n, cls.mapdir / n)
+        with contextlib.redirect_stdout(io.StringIO()):
+            corel_gen.main(['--asin-csv', str(cls.csv), '--out', str(cls.mapdir / 'asin-mapping.corel.json')])
+        cls.corel = json.loads((cls.mapdir / 'asin-mapping.corel.json').read_text(encoding='utf-8'))
+        cls.mapping_corel = imp.Mapping(cls.mapdir)
+
+    def test_generator_erste_zeile_gilt_folgezeilen_zaehlen(self):
+        e = self.corel['B0000COREL']
+        self.assertEqual(e['abschnitt'], 'GEDENKTAFELN')               # erste Fundstelle, wie Corel
+        self.assertEqual(e['dateipfad'], 'V:\\Produkte\\Gedenktafeln\\Gravur\\Schiefer\\30x20')
+        self.assertEqual(e['designNummer'], '7')
+        self.assertEqual(e['weitereViews'], 1)
+        self.assertEqual(len(e['corelDoppelteZeilen']), 1)
+        self.assertNotIn('groesseAusOrdner', e)                         # Standardwerte werden nicht geschrieben
+        self.assertTrue(self.corel['B013T1VRKS']['groesseAusOrdner'])
+        self.assertEqual(self.corel['_quelle']['asins'], 2)
+        self.assertEqual(self.corel['_quelle']['schema'], 'gravuru-amazon-corel-mapping/v1')
+
+    def test_handgepflegt_bleibt_unveraendert(self):
+        self.assertEqual((self.mapdir / 'asin-mapping.json').read_bytes(), (MAPPING / 'asin-mapping.json').read_bytes())
+
+    def test_ohne_corel_datei_leer(self):
+        leer = self.tmp / 'mapping-ohne-corel'
+        leer.mkdir(exist_ok=True)
+        for n in ('asin-mapping.json', 'font-aliases.json', 'design-overlays.json'):
+            shutil.copy(MAPPING / n, leer / n)
+        m = imp.Mapping(leer)
+        self.assertEqual(m.corel, {})
+        self.assertIsNone(m.corel_eintrag('B013T1VRKS'))
+        self.assertIsNone(m.corel_eintrag('_quelle'))
+
+    def test_asin_nur_in_corel_meldet_herkunft(self):
+        r, _ = self.lauf(baue_bestellung(self.katalog, lambda d: d.__setitem__('asin', 'B0000COREL')), mapping=self.mapping_corel)
+        f = r['positionen'][0]['fehler'][0]
+        self.assertEqual(f['code'], 'asin_unknown')
+        self.assertIn('Corel-Tabelle', f['text'])
+        self.assertIn('Gedenktafeln\\Gravur\\Schiefer\\30x20', f['text'])
+
+    def test_spur_nur_in_summary(self):
+        r, out = self.lauf(baue_bestellung(self.katalog), mapping=self.mapping_corel)
+        p = r['positionen'][0]
+        self.assertEqual(p['status'], 'ok', p['fehler'])
+        s = json.loads((out / p['ordner'] / 'summary.json').read_text(encoding='utf-8'))
+        b = json.loads((out / p['ordner'] / 'bestellung.json').read_text(encoding='utf-8'))
+        self.assertEqual(s['corel']['corelZeile'], 4)
+        self.assertTrue(s['corel']['pfadRegel'].startswith('V:\\Produkte\\Gedenktafeln\\Gravur\\Schiefer\\22x14*'))
+        self.assertTrue(s['corel']['pfadRegel'].endswith('-D201'))
+        self.assertNotIn('corel', b)                                     # gravuru-order/v1 bleibt unverändert
 
 
 if __name__ == '__main__':

@@ -845,6 +845,33 @@ class Mapping:
         for was, d in (('asin-mapping.json', self.asin), ('font-aliases.json', self.aliase), ('design-overlays.json', self.overlays)):
             if not isinstance(d, dict):
                 raise SystemExit(f'{was} muss ein JSON-Objekt sein.')
+        # Optional, erzeugt aus der produktiven Corel-Tabelle (scripts/build-asin-mapping-from-corel.py).
+        # Liefert nur Herkunft/Corel-Pfad als Spur und Hinweis; Familien, Größen und Optionen kommen weiter
+        # ausschließlich aus der handgepflegten asin-mapping.json (die hat immer Vorrang).
+        corel_pfad = o / 'asin-mapping.corel.json'
+        self.corel = lade_json(corel_pfad, 'asin-mapping.corel.json') if corel_pfad.is_file() else {}
+        if not isinstance(self.corel, dict):
+            raise SystemExit('asin-mapping.corel.json muss ein JSON-Objekt sein.')
+
+    def corel_eintrag(self, asin: str) -> dict | None:
+        e = self.corel.get(asin) if not asin.startswith('_') else None
+        return e if isinstance(e, dict) else None
+
+
+def corel_spur(eintrag: dict | None, groesse_wert: str | None, design_nr) -> dict | None:
+    """Was die Corel-Skripte für diese ASIN laden würden – als Regel, ohne Dateisystem von V:."""
+    if not eintrag:
+        return None
+    spur = {k: eintrag[k] for k in ('abschnitt', 'corelZeile', 'dateipfad', 'groesseAusOrdner', 'designNummer', 'weitereViews') if k in eintrag}
+    teile = [str(eintrag.get('dateipfad') or '')]
+    if eintrag.get('groesseAusOrdner'):
+        m = re.search(r'(\d+(?:[.,]\d+)?)\s*x\s*(\d+(?:[.,]\d+)?)', groesse_wert or '')
+        teile.append(f'{m.group(1)}x{m.group(2)}*' if m else '<Größenordner>')
+    nr = eintrag.get('designNummer') or design_nr
+    if nr not in (None, ''):
+        teile.append(f'<Standardname>-D{nr}')
+    spur['pfadRegel'] = '\\'.join(t for t in teile if t)
+    return spur
 
 
 # --------------------------------------------------------------------------------------------------
@@ -1508,8 +1535,13 @@ def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict
         sammler.warn(h['code'], h['text'])
     roh = extrahiere(doc)
     eintrag = mapping.asin.get(roh['asin'])
+    corel = mapping.corel_eintrag(roh['asin'])
     if not isinstance(eintrag, dict):
-        raise PositionsFehler('asin_unknown', f'ASIN „{roh["asin"]}“ steht nicht in amazon/asin-mapping.json.')
+        if corel:
+            raise PositionsFehler('asin_unknown', f'ASIN „{roh["asin"]}“ steht nicht in amazon/asin-mapping.json, aber in der Corel-Tabelle '
+                                  f'(Zeile {corel.get("corelZeile")}, Abschnitt {corel.get("abschnitt")}, Pfad {corel.get("dateipfad")}); '
+                                  f'Familie, Größen und Optionen in asin-mapping.json ergänzen.')
+        raise PositionsFehler('asin_unknown', f'ASIN „{roh["asin"]}“ steht nicht in amazon/asin-mapping.json (und nicht in der Corel-Tabelle).')
     # --- Groesse -> Familie
     groesse = finde_option(roh, [eintrag.get('sizeOption', 'Größe')])
     if groesse is None:
@@ -1646,7 +1678,10 @@ def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict
         'aufpreisSummeCent': sum(o['aufpreisCent'] for o in optionen_aus), 'warnings': sammler.warnungen, 'errors': [], 'productionReady': False,
         'files': {}, 'sourceSha256': quellen,
     }
-    modell = {'geom': geom, 'foto': foto_el, 'motive': motiv_elemente, 'texte': textelemente, 'bohrungen': bohrungen}
+    spur = corel_spur(corel, groesse['wert'], (DESIGN_NR.findall(design_label or '') or [None])[-1])
+    if spur:
+        summary['corel'] = spur   # nur Summary (Paritätsprüfung), nicht Teil von gravuru-order/v1
+    modell ={'geom': geom, 'foto': foto_el, 'motive': motiv_elemente, 'texte': textelemente, 'bohrungen': bohrungen}
     return {'roh': roh, 'modell': modell, 'bestellung': bestellung, 'summary': summary, 'foto_daten': foto_el['daten'] if foto_el else None,
             'amazon_vorschau': dateien.get(roh['snapshot']) if roh['snapshot'] else None}
 

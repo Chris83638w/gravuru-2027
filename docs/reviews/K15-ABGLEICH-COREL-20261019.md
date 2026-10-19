@@ -55,3 +55,20 @@ Größte Abschnitte: Gedenktafeln 878, Türklingel 338, Hochzeitsschilder 263, W
 ## Nicht geprüft
 
 Ob alle 3 266 Dateipfade auf `V:` existieren; Inhalt der Regel-Übersetzungen im Einzelnen; welche Schriften im Amazon-Konfigurator tatsächlich zur Auswahl stehen (Amazon-Vorlagenexport fehlt); Stand der `.gms` auf den Werkstatt-PCs.
+
+## Nachtrag 19.10.2026 abends: CDRs gelesen, Zuordnung erzeugt
+
+**Plattenmaß belegt.** `GT-S-22x14.cdr` und `GT-S-22x14-D201.cdr` (Kopien, `cdr2raw`): rote Kontur 220,0 × 140,0 mm auf einer Seite 230 × 150 mm. Der Platzhalter im Mapping (220 × 140) stimmt; der Rand von 10 mm ist weiter nicht belegt.
+
+**Corel rechnet anders als die K15-Spezifikation.** `AmazonImport.prepareView` + `applyTransformToTextShapeWithBuyerPlacement`: 400er Raster, 10 px Rand, die längere Seite der Einpass-Formen (Platte) = 380 px, **ein** Maßstab für x und y, Platte mittig. Der Amazon-Druckbereich (`Position/Dimensions` der Area) wird von Corel nicht verwendet. Der Python-Importer rechnet dagegen getrennt in x und y über den Druckbereich (Spezifikation Abschnitt 2).
+
+**Der Konfigurator zeigt bei B013T1VRKS immer die 30 × 20-Vorlage.** Der Druckbereich 9/73, 381 × 254 ist genau die 30 × 20-Platte in Corels Raster (10/73,3, 380 × 253,3). Das Motiv von `GT-S-30x20-D201.cdr` mit Corels Formel umgerechnet ergibt **268,06 / 188,07 / 38,56 × 30,87** – die Schätzung aus der Vorschau war [268, 188, 39, 30]. Folge für 22 × 14:
+- **Corel** lädt `GT-S-22x14-D201.cdr`; dort liegt das Motiv bei 145,7 / 64,1 mm, 18,9 × 15,2 mm (relativ x 0,662–0,748). Kundentexte und -foto kommen aus dem 30 × 20-Rahmen, gleichmäßig auf 220 mm Breite skaliert und senkrecht mittig – oben und unten können bis ca. 3,4 mm über die Platte hinausragen. Das Motiv steht damit **nicht** dort, wo der Kunde es gesehen hat (ca. 5 mm weiter links, kleiner).
+- **Python** setzt das Katalogmotiv (aus `GT-S-30x20-D201`) in die Amazon-Box, also dort, wo der Kunde es gesehen hat, und verzerrt nur die Positionen (Seitenverhältnis 1,500 → 1,571, 4,8 %).
+Beides ist eine Annäherung; welche Regel für Größen gilt, deren Konfigurator-Bild ein anderes Seitenverhältnis hat, ist eine **Entscheidung** (Vorschlag: Python-Verhalten „wie gesehen“ beibehalten und beim Paritätslauf gezielt diese Abweichung prüfen).
+
+**Umgesetzt (Repo, Branch K15):**
+- `amazon/design-overlays.json` D201: berechnete Box statt Schätzung (Quelle und Rechenweg im Eintrag). Warnungen `overlay_geschaetzt` und `motivproportion` entfallen (1,249 = Katalogmotiv).
+- `scripts/build-asin-mapping-from-corel.py` → `amazon/asin-mapping.corel.json` (3 266 ASINs, nur die von Corel genutzte Zeile, erzeugt, nicht von Hand ändern). Die handgepflegte `asin-mapping.json` bleibt unverändert und hat Vorrang.
+- Importer: liest die Corel-Datei optional. Unbekannte ASIN, die in Corel steht → `asin_unknown` mit Zeile, Abschnitt und Corel-Pfad. Bekannte ASIN → `summary.json` erhält `corel` (Zeile, Pfad, `pfadRegel`, z. B. `…\Schiefer\22x14*\<Standardname>-D201`). `bestellung.json` (gravuru-order/v1) bleibt unverändert.
+- Tests: 83/83 (mit echtem Katalog, 0 übersprungen); neu: Generator, Vorrang handgepflegt, fehlende Corel-Datei, Hinweistext, Spur nur in der Summary, Warnung bei geschätzter Motivlage. Zwei Tests, die die Schätzung festhielten, lesen jetzt den Wert aus `design-overlays.json`; Realkatalog-Maßstab D201 0,6785 → 0,6982.

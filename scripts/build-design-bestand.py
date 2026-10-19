@@ -374,7 +374,10 @@ def write_xlsx(index, path, out):
     s.append([]); s.append(['Reihe', 'Designs'])
     for ser, n in collections.Counter(d['seriesLabel'] for d in index).most_common(): s.append([ser, n])
     l = wb.create_sheet('Lesen')
-    for line in ['Gelbe Spalten ändern: Zielgruppe (Menschen / Tiere / Sternenkinder), Unterkategorie (Oma, Opa, Mama, Papa, Eltern, Kind, Partner, Geschwister, Freund, Allgemein; Hund, Katze, Pferd, Kleintier, Allgemein; Sternenkind), Foto (ja/nein), Bemerkung.',
+    gt = all(d['kategorie']['ziel'] in ('Menschen', 'Tiere', 'Sternenkinder') for d in index)
+    kat = 'Zielgruppe (Menschen / Tiere / Sternenkinder), Unterkategorie (Oma, Opa, Mama, Papa, Eltern, Kind, Partner, Geschwister, Freund, Allgemein; Hund, Katze, Pferd, Kleintier, Allgemein; Sternenkind)' if gt else \
+          'Themengruppe und Thema – Vorschlag aus Schlüsselwörtern: ' + '; '.join(f"{g} ({', '.join(n for n, _ in th)})" for g, th in THEMEN) + '; Allgemein; eigene Namen sind erlaubt'
+    for line in [f'Gelbe Spalten ändern: {kat}, Foto (ja/nein), Bemerkung.',
                  'Ein Design kann mehreren Themen gehören: weitere Zielgruppen/Unterkategorien kommagetrennt in die Bemerkung („auch: Kinderzimmer“).',
                  'Sicherheit „sicher“ = eindeutiges Wort im Text; „Vorschlag“ = kein eindeutiges Wort (meist Allgemein) – bitte prüfen; „Vorschlag (OCR)“ = Text nur aus Bild gelesen.',
                  'Rückimport: python scripts/build-design-bestand.py --import-xlsx <diese Datei> (verschiebt die Ordner in die neue Kategorie).',

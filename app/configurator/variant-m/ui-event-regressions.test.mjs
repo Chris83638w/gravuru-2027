@@ -63,7 +63,7 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   object.text='Lena\nMax\nTom';assert.deepEqual(issues(),[{id:'name',message:'Namen: Höchstens 2 Zeilen.'}]);
   object.text='Lena';object.uxTextOverflow='length';assert.match(issues()[0].message,/Text zu lang: Passt auch in der Mindestgröße/);delete object.uxTextOverflow;
   object.uxHidden=true;assert.deepEqual(issues(),[{id:'name',message:'Pflichtfeld „Namen“ fehlt. Bitte einblenden und ausfüllen.'}]);delete object.uxHidden;
- Object.assign(env,{changing:false,known:new Set(['name']),rename(){},guides(){}});
+ Object.assign(env,{changing:false,known:new Set(['name']),rename(){},guides(){},arrangeGallery(){}});
  vm.runInContext(line('workflow.mjs','const sync=el.sync;el.sync=function'),env);
  input.value='stale';env.el.sync();assert.equal(Number(input.value),12);
 });

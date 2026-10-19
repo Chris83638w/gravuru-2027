@@ -8,3 +8,13 @@ test('Autofit preserves rotation and rejects an impossible readable minimum',()=
 test('Free placement avoids other elements and physical doorbell while preserving old objects',()=>{const o={id:'new',type:'motif',w:20,h:20,rotation:0};const existing=[{id:'a',type:'text',x:80,y:25,w:140,h:30}];const before=structuredClone(existing);const pos=freePosition(o,surface,existing,[{x:80,y:80,w:140,h:70}]);assert.ok(pos);assert.ok(pos.y>=126);assert.deepEqual(existing,before);assert.equal(freePosition({...o,w:200},surface,existing),null);});
 test('Text transfer keeps new typography and returns every unmatched or ambiguous field',()=>{const source=[{id:'a',type:'text',fieldKey:'name',text:'Erdem',font:'old'},{id:'b',type:'text',fieldKey:'extra',text:'Willkommen'}];const target=[{id:'c',type:'text',fieldKey:'name',text:'Beispiel',font:'new',size:12,x:40}];assert.deepEqual(transferTexts(source,target).map(o=>o.id),['b']);assert.equal(target[0].text,'Erdem');assert.equal(target[0].font,'new');assert.equal(target[0].x,40);assert.equal(transferTexts([...source,{...source[0],id:'d'}],target).length,3);});
 test('Group alignment shares edges while retaining vertical positions and locked text',()=>{const objects=[{id:'a',type:'text',x:50,y:20,w:20,h:10},{id:'b',type:'text',x:70,y:40,w:40,h:10},{id:'c',type:'text',x:90,y:60,w:20,h:10,uxLocked:true}];alignGroup(objects,['a','b','c'],'left',surface);assert.equal(objects[0].x-10,objects[1].x-20);assert.deepEqual(objects.map(o=>o.y),[20,40,60]);assert.equal(objects[2].x,90);});
+// K9: Galerie je Thema und Direktlink (ausführlich in design-gallery.test.mjs).
+import {galleryOrder,parseDirectLink,thumbnailDesign} from './design-gallery-model.mjs';
+test('Tab Designs: Thema zuerst mit Bestseller vorn, Designs ohne Thema sichtbar, Direktlink ohne gültiges Design wird gemeldet',()=>{
+ const designs=[{id:'a',themes:['gedenktafeln'],objects:[]},{id:'b',objects:[]},{id:'c',themes:['hausnummern'],bestseller:true,objects:[]},{id:'d',themes:['gedenktafeln'],bestseller:true,objects:[]}];
+ assert.deepEqual(galleryOrder(designs,'gedenktafeln'),{theme:'gedenktafeln',primary:['d','a','b'],more:['c']});
+ const link=parseDirectLink('?design=x&text=Anna',{designs});
+ assert.equal(link.designId,null);assert.equal(link.text,'Anna');assert.equal(link.notes.length,1);
+ const thumb=thumbnailDesign({id:'a',objects:[{id:'t',type:'text',fieldKey:'name',text:'Muster'}]},[{id:'s',type:'text',fieldKey:'name',text:'Anna'}]);
+ assert.equal(thumb.objects[0].text,'Anna');
+});

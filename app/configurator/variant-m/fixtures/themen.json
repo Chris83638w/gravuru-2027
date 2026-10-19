@@ -1,0 +1,8 @@
+{
+  "_hinweis": "Test-Fixture für K9 im Aufbau von themen.json aus dem Katalog-Repo (gravuru-katalog). Keine Stammdaten; Werte nur für Tests.",
+  "themes": [
+    {"id": "tiergedenktafeln", "name": "Tiergedenktafeln", "fontSet": ["Michroma", "Lato", "Cinzel"], "motifCategories": ["Tiere", "Gedenken"], "designTags": ["hund", "katze", "erinnerung"]},
+    {"id": "namensschilder", "name": "Namensschilder", "fontSet": ["Michroma", "Lato"], "motifCategories": ["Familie", "Zuhause"], "designTags": ["familie", "tuer"]},
+    {"id": "firmenschilder", "name": "Firmenschilder", "fontSet": ["Michroma", "Lato", "Montserrat"], "motifCategories": ["Symbole"], "designTags": ["firma", "praxis"]}
+  ]
+}

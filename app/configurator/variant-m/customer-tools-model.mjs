@@ -14,15 +14,23 @@ const concepts = [
  ['pferd','pferde','horse','horses','reiten'],
  ['haus','zuhause','home','house','familie','family']
 ];
-export function motifScore(entry, query) {
+export function inThemeCategory(entry,theme){
+ const wanted=(Array.isArray(theme?.motifCategories)?theme.motifCategories:[]).map(c=>String(c??'').trim().toLocaleLowerCase('de'));
+ const category=String(entry?.category??'').trim().toLocaleLowerCase('de');
+ return !!category&&wanted.includes(category);
+}
+// K9/V4: Motive aus den Kategorien des Produktthemas (`theme.motifCategories`) stehen
+// bei gleicher Trefferqualität vorn; ohne Suchbegriff damit zuerst in der Bibliothek.
+export function motifScore(entry, query, theme=null) {
+ const bonus=inThemeCategory(entry,theme)?.5:0;
  const terms=normalized(query).split(/[^a-z0-9]+/).filter(t=>t&&!['ein','eine','einen','mit','fur','und','das','der','die'].includes(t));
- if(!terms.length)return 1;
+ if(!terms.length)return 1+bonus;
  const name=normalized(entry.name), corpus=normalized([entry.name,entry.category,...(entry.tags||[])].join(' '));
  let score=0;
  for(const term of terms){if(name.includes(term)){score+=8;continue;}if(corpus.includes(term)){score+=4;continue;}
   const related=concepts.filter(group=>group.includes(term)).flat();
   if(related.some(word=>corpus.includes(word)))score+=1;else return 0;
- }return score;
+ }return score+bonus;
 }
 export function editableTexts(objects){return objects.filter(o=>o.type==='text'&&!o.uxHidden&&!o.uxLocked&&!o.technicalLocked&&o.customerEditable!==false);}
 export function centerTexts(objects,ids,center){for(const o of editableTexts(objects))if(ids.includes(o.id))o.x=center;}

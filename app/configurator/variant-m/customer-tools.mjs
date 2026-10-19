@@ -1,4 +1,5 @@
 import {showOverlapWarnings,editableTexts,centerTexts,mechanicalHints,hintKey,motifScore} from './customer-tools-model.mjs';
+import {themeDefinition,orderMotifCategories} from './design-gallery-model.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
 export async function installCustomerTools(api){
@@ -53,7 +54,16 @@ export async function installCustomerTools(api){
  const search=$('[data-library-search]'),category=$('[data-library-category]');
  category?.addEventListener('change',()=>{search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));},true);
  // Renderer supplies semantic matching through this callback; no upload or paid API.
- el.uxMotifScore=(entry,query)=>motifScore(entry,query);
+ // K9/V4: Motivkategorien des Produktthemas (`config.themes` aus themen.json) zuerst.
+ const theme=themeDefinition(config,profile);
+ el.uxMotifScore=(entry,query)=>motifScore(entry,query,theme);
+ if(category&&theme?.motifCategories?.length){
+  const options=[...category.options],ordered=orderMotifCategories(options.map(o=>o.value),theme);
+  const byValue=new Map(options.map(o=>[o.value,o])),current=category.value;
+  for(const value of ordered){const option=byValue.get(value);if(option&&option.value!==''){category.append(option);}}
+  const empty=options.find(o=>o.value==='');if(empty)category.prepend(empty);
+  category.value=current;
+ }
 
  const hintsPanel=document.createElement('section');hintsPanel.className='ux-conflict-hints';hintsPanel.setAttribute('aria-label','Hinweise zur Gestaltung');$('.ux-preview').append(hintsPanel);
  const ignored=new Set();let hints=[],shown=null;

@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {build,HERE,ROOT,OUTPUT} from './build.mjs';
 import {createShopifyAdminHost} from '../../workshop/shopify-admin-host.mjs';
 import {createWorkshop} from '../../workshop/http.mjs';
+import {readThemeCatalog} from '../../workshop/theme-catalog.mjs';
 
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.gz':'application/gzip'};
 const csp="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; frame-ancestors 'self'";
@@ -79,7 +80,9 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   if(!Number.isInteger(port)||port<1024||port>65535)throw Error('Ungültiger Port.');
   const result=build();
   const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json'),'utf8'))[0];
-  const workshop=createWorkshop({filename:path.join(ROOT,'../.local-data/workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
+  // K9: optional `--themen=<pfad zu themen.json>` aus dem Katalog-Repo (nicht Teil dieses Repos).
+  const themenFile=process.argv.find(v=>v.startsWith('--themen='))?.slice('--themen='.length);
+  const workshop=createWorkshop({filename:path.join(ROOT,'../.local-data/workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,themes:themenFile?readThemeCatalog(themenFile):null});
   const server=createPreviewServer({workshop});
   server.on('close',()=>workshop.close());
   server.listen(port,'127.0.0.1',()=>console.log(JSON.stringify({project:'Gravuru 2027',...result,url:`http://127.0.0.1:${port}/?model=acryl`,workshop:`http://127.0.0.1:${port}/werkstatt`,scope:'local-operator'})));

@@ -59,6 +59,7 @@ import {makeProductDocument,validateProductDocument,resolveProduct,validateProdu
 import {createDesignAssetStore,MAX_DESIGN_BYTES,sha256} from './design-assets.mjs';
 import {planDesignImport,applyDesignImport} from './design-import.mjs';
 import {planCustomerFields,applyCustomerFields} from './customer-fields.mjs';
+import {parseThemeCatalog} from './theme-catalog.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(new Error(message),{status,code});};
 // Master data shipped with the app (provenance inside each file). Loaded only on explicit request.
@@ -77,7 +78,9 @@ async function body(req,limit=2*1024*1024){
 const revision=value=>{if(value===null||value===undefined)return undefined;const n=Number(value);if(!/^[1-9][0-9]*$/.test(String(value))||!Number.isSafeInteger(n))fail(422,'invalid_revision','Ungültige Version.');return n;};
 
 /** Loopback preview; optional test session gate is not a public deployment. */
-export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null}){
+export function createWorkshop({filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null,themes=null}){
+  // K9: Themen-Definition (themen.json aus dem Katalog) für Galerie und Motivkategorien im Kundeneditor.
+  const themeCatalog=themes===null?null:parseThemeCatalog(themes);
   if(operatorCsrfToken!==null&&(shopifySessions||typeof operatorCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(operatorCsrfToken)))fail(503,'operator_session_config','Ungültige private Werkstattsitzung.');
   if(merchantCsrfToken!==null&&(!shopifySessions||operatorCsrfToken!==null||typeof merchantCsrfToken!=='string'||!/^[a-f0-9]{64}$/.test(merchantCsrfToken)))fail(503,'merchant_session_config','Ungültige Händler-Werkstattsitzung.');
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
@@ -164,6 +167,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
     universal.profile.id=record.id;
     universal.profile.binding={kind:'local-review',productId:record.id};
     universal.profile.revision=`${record.id}:${record.revision}`;
+    if(themeCatalog)universal.themes=structuredClone(themeCatalog);
     return {key:'acryl',name:record.document.name,legacy:shell,universal,configuration:{id:record.id,revision:record.revision,publishedRevision:record.publishedRevision}};
   }
   function editorPreview(input,designId,options){

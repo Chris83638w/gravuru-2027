@@ -20,6 +20,7 @@ import {selectionIds} from './profile-selection.mjs';
 import {rightForProperty,canEditElement,customerAdditionPolicy} from './element-rights.mjs';
 import {beginCustomerRights} from './customer-rights.mjs';
 import {textLimits,textLimitIssue,textLength,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
+import {parseDirectLink,applyLinkText,withoutDirectLinkParams} from './design-gallery-model.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
@@ -339,6 +340,28 @@ export async function installUX(el,config,legacy){
   function startUnselected(){r.activeElement?.blur();el.multiSelecting=false;el.state.selected=null;el.centerSuggestion=null;showTab(config?.productPreview?'design':'options');el.sync();}
   window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===window.parent&&e.data?.type==='gravuru-ux-open')startUnselected();});
   addDecoration();el.normalize();startUnselected();if(config?.workbench?.embedded){showTab('text');for(const field of all('input[type=number]'))field.step='.01';if($('#ux-size'))$('#ux-size').min='1';r.addEventListener('focusout',e=>{if(e.target.type==='number'&&e.target.value!==''&&Number.isFinite(e.target.valueAsNumber))e.target.value=roundEdit(e.target.valueAsNumber);});previousCorrection=JSON.stringify(roundDesign({id:el.state.designId,objects:el.state.objects}));correctionReady=true;const s=document.createElement('style');s.textContent='.ux-cart-bar,.ux-bottom-bar,.ux-price-bar,.fk-buy-row{display:none!important}';r.append(s);}
+  // K9/Ü10.2: Direktlink `?design=<id>&size=<sku-oder-größen-id>&text=<Name>` von der Host-Seite
+  // (gleiche Herkunft, z. B. index.html) oder der eigenen URL. Ungültiges wird ignoriert und gemeldet;
+  // der Text geht in das erste Pflicht-/Namensfeld mit den Limits der Vorlage. Danach werden die
+  // Parameter aus beiden URLs entfernt (history.replaceState), damit der Sitzungsschutz nicht kollidiert.
+  function directLinkWindows(){const list=[];try{if(window.parent!==window&&window.parent.location.origin===location.origin)list.push(window.parent);}catch{}list.push(window);return list;}
+  function applyDirectLink(){
+    if(config?.workbench?.embedded)return null;
+    let applied=null;
+    for(const host of directLinkWindows()){
+      let href;try{href=host.location.href;}catch{continue;}
+      const link=parseDirectLink(new URL(href).searchParams,profile);
+      if(!link.present)continue;
+      if(link.designId&&link.designId!==el.state.designId)el.chooseDesign(link.designId);
+      if(link.sizeId&&config){try{el.record?.();el.state.mOptions={...(el.state.mOptions||{}),size:link.sizeId};el.sync();}catch{link.notes.push('Die verlinkte Größe konnte nicht übernommen werden.');}}
+      if(link.text){const result=applyLinkText(el.state.objects,design(),profile,link.text);if(result){dirty=true;el.normalize();el.sync();if(result.truncated)link.notes.push('Der verlinkte Text wurde auf das Limit des Feldes gekürzt.');}else link.notes.push('Der verlinkte Text konnte keinem Textfeld zugeordnet werden.');}
+      applied=link;break;
+    }
+    if(applied){for(const host of directLinkWindows()){try{const clean=withoutDirectLinkParams(host.location.href);if(clean)host.history.replaceState(host.history.state,'',clean);}catch{}}if(applied.notes.length)say(applied.notes.join(' '));}
+    return applied;
+  }
+  el.uxApplyDirectLink=applyDirectLink;
+  applyDirectLink();
   window.addEventListener('pagehide',()=>{for(const asset of files.values())URL.revokeObjectURL(asset.url);},{once:true});
   if(config?.workbench)window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===window.parent&&event.data?.type==='gravuru-workbench-saved')say(event.data.message);});
   installPrintExport({el,config,files});

@@ -2,6 +2,7 @@ import {placeNewMotif} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
 import {transformedCorners} from './usability-model.mjs';
 import {fitText,freePosition,transferTexts,alignGroup} from './workflow-model.mjs';
+import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
 import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
 export async function installWorkflow(api){
@@ -78,8 +79,54 @@ export async function installWorkflow(api){
  r.addEventListener('pointerout',e=>{const card=e.target.closest('[data-c-design]');if(card&&!card.contains(e.relatedTarget)){clearTimeout(hoverTimer);hover.hidden=true;}});
  r.addEventListener('click',e=>{hover.hidden=true;if(e.target.closest('[data-ux=preview-use]')){designPreview.close();el.chooseDesign(previewId);}});
  new MutationObserver(decorate).observe($('.c-gallery'),{childList:true});decorate();
+ // K9/Ü10.1: Designs des Produktthemas zuerst (Bestseller vorn, sonst Reihenfolge im Profil),
+ // Designs anderer Themen eingeklappt unter „Weitere Designs“; Designs ohne Thema bleiben sichtbar.
+ const gallery=$('.c-gallery');let moreExpanded=false,arranging=false;
+ const moreToggle=document.createElement('button');moreToggle.type='button';moreToggle.className='workflow-more-designs';moreToggle.dataset.ux='more-designs';moreToggle.hidden=true;moreToggle.setAttribute('aria-expanded','false');
+ ($('.ux-design-reveal')||gallery).after(moreToggle);
+ function arrangeGallery(){if(arranging||!gallery)return;arranging=true;try{
+  const order=galleryOrder(profile.designs,productTheme(profile)),cards=new Map(all('.c-gallery [data-c-design]').map(c=>[c.dataset.cDesign,c]));
+  const ordered=[...order.primary,...order.more].map(id=>cards.get(id)).filter(Boolean);
+  if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);
+  const more=new Set(order.more);let hiddenMore=0;
+  for(const [id,card] of cards){
+   const design=profile.designs.find(d=>d.id===id),bestseller=design?.bestseller===true;
+   card.classList.toggle('is-bestseller',bestseller);
+   if(bestseller&&!card.querySelector('[data-design-bestseller]')){const badge=document.createElement('span');badge.dataset.designBestseller='';badge.textContent='Bestseller';card.prepend(badge);}
+   const tucked=more.has(id)&&!moreExpanded&&id!==el.state.designId;
+   card.classList.toggle('is-more-design',more.has(id));
+   if(tucked){card.hidden=true;hiddenMore++;}
+  }
+  moreToggle.hidden=!more.size;moreToggle.setAttribute('aria-expanded',String(moreExpanded));
+  moreToggle.textContent=moreExpanded?'Weitere Designs ausblenden':'Weitere Designs anzeigen ('+(hiddenMore||more.size)+')';
+ }finally{arranging=false;}}
+ r.addEventListener('click',e=>{if(e.target.closest('[data-ux]')?.dataset.ux!=='more-designs')return;moreExpanded=!moreExpanded;el.sync();if(moreExpanded)requestAnimationFrame(()=>refreshThumbnails());});
+ // Ü10.1: Miniaturen zeigen den aktuellen Kundentext (Textübernahme wie beim Designwechsel),
+ // werden erst bei Sichtbarkeit gezeichnet und höchstens 24 je Durchlauf.
+ const THUMBNAIL_BATCH=24;const seen=new Set();let thumbnailTimer=0,commitTimer=0;
+ const currentTemplate=()=>profile.designs.find(d=>d.id===el.state.designId);
+ const sourceTexts=()=>customerTexts(el.state.objects,currentTemplate());
+ // Tippen zeichnet nicht bei jedem Zeichen neu: der Schlüssel folgt dem Kundentext mit 250 ms Verzögerung.
+ let committed=thumbnailSignature(sourceTexts());
+ el.uxThumbnailSignature=()=>{const live=thumbnailSignature(sourceTexts());if(live!==committed){clearTimeout(commitTimer);commitTimer=setTimeout(()=>{committed=live;refreshThumbnails();},250);}return committed;};
+ el.uxThumbnailBudget=THUMBNAIL_BATCH;
+ el.uxThumbnailDesign=design=>thumbnailDesign(design,sourceTexts(),o=>{measureText(o,el.fontData);try{const size=fitText(o,bounds(o),surface(),config?.workbench?.embedded?1:4/(el.uxTextScale?.()||1));if(size!==null&&size<o.size){o.size=size;measureText(o,el.fontData);}}catch{}});
+ el.uxThumbnailDeferred=card=>!seen.has(card);
+ const watcher=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{let due=false;for(const entry of entries){if(entry.isIntersecting){seen.add(entry.target);due=true;}else seen.delete(entry.target);}if(due)refreshThumbnails();},{rootMargin:'160px'}):null;
+ function watchCards(){for(const card of all('[data-c-design]')){if(watcher){if(!card.dataset.thumbWatched){card.dataset.thumbWatched='';watcher.observe(card);}}else seen.add(card);}}
+ function refreshThumbnails(){clearTimeout(thumbnailTimer);if(!el.isConnected)return;const pending=el.uxRefreshThumbnails?.()||0;if(pending>0)thumbnailTimer=setTimeout(refreshThumbnails,120);}
+ new MutationObserver(()=>{watchCards();requestAnimationFrame(arrangeGallery);}).observe(gallery,{childList:true});watchCards();
+ // Ü10.2: „Link zu diesem Design“ – Direktlink ohne Kundentext.
+ const linkDialog=dialog('design-link','Link zu diesem Design','<p>Dieser Link öffnet den Editor mit dem gewählten Design und der gewählten Größe. Deine Texte werden nicht mitgeschickt.</p><input type="text" readonly data-design-link aria-label="Link zu diesem Design"><div class="ux-actions">'+button('copy-design-link','Link kopieren','class="ux-primary"')+button('close','Schließen')+'</div><p class="ux-small" data-design-link-status role="status"></p>');
+ const shareButton=document.createElement('button');shareButton.type='button';shareButton.className='workflow-share-design';shareButton.dataset.ux='share-design';shareButton.textContent='Link zu diesem Design';
+ ($('.m-filters')||$('.ux-design-reveal')||gallery).before(shareButton);
+ function hostHref(){try{if(window.parent!==window&&window.parent.location.origin===location.origin)return window.parent.location.href;}catch{}return location.href;}
+ r.addEventListener('click',async e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;
+  if(key==='share-design'){const link=designLink(hostHref(),{designId:el.state.designId,sizeId:el.state.mOptions?.size||null});$('[data-design-link]').value=link;$('[data-design-link-status]').textContent='';linkDialog.showModal();$('[data-design-link]').select();}
+  if(key==='copy-design-link'){const field=$('[data-design-link]');try{await navigator.clipboard.writeText(field.value);$('[data-design-link-status]').textContent='Link kopiert.';}catch{field.select();$('[data-design-link-status]').textContent='Bitte den Link markieren und kopieren.';}}
+ });
  const render=el.render;el.render=function(...args){const v=render.apply(this,args);guides();return v;};
- const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId)place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
+ const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId)place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
  for(const d of [transfer,browser,designPreview])d.addEventListener('click',e=>{if(e.target!==d)return;const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close();});
  await installCompletion(api);
  el.sync();

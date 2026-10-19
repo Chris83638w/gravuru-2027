@@ -4,6 +4,7 @@ import {createShopDraftJournal} from './shop-draft-transfer.mjs';
 import {createExportJobStore} from './export-jobs.mjs';
 import {createCartHandoffJournal} from './cart-handoff-journal.mjs';
 import {createAcrylicDraftStore} from './acrylic-draft-store.mjs';
+import {createCustomerDraftStore} from './customer-draft-store.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {randomBytes,randomUUID,createHash,timingSafeEqual} from 'node:crypto';
 import {chmodSync} from 'node:fs';
@@ -36,7 +37,9 @@ export function createFormCustomerStore({filename,clock=Date.now,autoRelease=nul
  const printProof=(id,key)=>{snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;};
  const customerDownloads=createCustomerDownloads({database:db,orders:orderIntake,jobs:exportJobs,printProof,clock});
  const shopDraftTransfers=createShopDraftJournal({database:db});
- return {exportJobs,orderIntake,cartHandoffs,acrylicDrafts,customerDownloads,shopDraftTransfers,
+ // K7: Entwürfe im Kundenkonto (Eigentümer = Shopify-Kunde), getrennt von Token-Entwürfen und Prüfständen.
+ const accountDrafts=createCustomerDraftStore({database:db,clock});
+ return {exportJobs,orderIntake,cartHandoffs,acrylicDrafts,accountDrafts,customerDownloads,shopDraftTransfers,
   findAcrylicReview(key){const r=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);return r?summary(snapshot(r.snapshot_id)):null;},
   captureAcrylicReview(key,bundle){return transaction(()=>{const old=db.prepare('SELECT snapshot_id FROM acrylic_review_requests WHERE request_hash=?').get(key);if(old)return summary(snapshot(old.snapshot_id));const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,1,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);db.prepare('INSERT INTO acrylic_review_requests VALUES(?,?)').run(key,m.id);return summary(snapshot(m.id));});},
   printProof,

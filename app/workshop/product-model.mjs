@@ -129,12 +129,12 @@ export function resolveProduct(document,{options={},designId}={}){
 // rights table. Element rights, template layer order and the addition policy
 // are enforced inside `validateDesign` (contract.mjs) from the saved
 // `elementRights`, followed by the content/geometry/media validation.
-export function validateProductDesign(document,design,{options={},fonts,motifs,template=false}={}){
+export function validateProductDesign(document,design,{options={},fonts,motifs,template=false,draft=false}={}){
   const product=validateProductDocument(document),config=product.config;
   const source=config.profile.designs.find(item=>item.id===design?.id);
   if(!source||!Array.isArray(design.objects))fail('Kundendesign gehört zu keiner Produktvorlage.');
   const fontLibrary=fonts??config.localResources?.fonts??{};
-  const validated=validateDesign({...config,workshopElementRights:product.elementRights},design,resolvedOptions(config,options),fontLibrary,motifs??config.localResources?.motifs??[],{template});
+  const validated=validateDesign({...config,workshopElementRights:product.elementRights},design,resolvedOptions(config,options),fontLibrary,motifs??config.localResources?.motifs??[],{template,draft});
   const result={...structuredClone(validated),objects:validated.objects.map(cleanObject)};
   for(const object of result.objects.filter(item=>item.type==='text'))measureText(object,fontLibrary);
   return result;

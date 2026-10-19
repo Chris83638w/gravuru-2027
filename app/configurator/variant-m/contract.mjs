@@ -134,9 +134,11 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
 }
 
 // `template:true` prüft eine Vorlage gegen sich selbst (Händler-Werkstatt):
-// dort ist der Mustertext kein Kundenfehler. Kunden-Entwürfe, Warenkorb und
-// Bestellung laufen ohne diese Option.
-export function validateDesign(config, design, options, fonts, motifs, {template=false}={}) {
+// dort ist der Mustertext kein Kundenfehler. Warenkorb und Bestellung laufen
+// ohne diese Option. `draft:true` (K7) prüft einen unfertigen Kundenentwurf
+// (Sitzungsschutz, Konto-Entwurf): alle Strukturregeln gelten, nur der noch
+// nicht ersetzte Mustertext eines Pflichtfelds ist erlaubt.
+export function validateDesign(config, design, options, fonts, motifs, {template=false,draft=false}={}) {
   const source = config.profile.designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
   if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
@@ -170,7 +172,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     if (!o || JSON.stringify(cleanObject(o)) !== JSON.stringify(cleanObject(raw))) fail('Ein fester Vorlagenbereich wurde verändert.');
   }
   // Pflichttexte (Ü2.2): vorhanden, sichtbar und nicht mehr der Mustertext der Vorlage.
-  if(!template)for(const raw of source.objects.filter(o=>o.type==='text'&&o.required===true)){
+  if(!template&&!draft)for(const raw of source.objects.filter(o=>o.type==='text'&&o.required===true)){
     const o=design.objects.find(o=>o.id===raw.id);
     if(!o||o.type!=='text'||o.uxHidden===true||sameSampleText(o.text,raw.text))fail(requiredFieldMessage(raw));
   }
@@ -223,20 +225,24 @@ export function designFromState(config, state) {
   if (!source) fail('Unbekanntes Design.');
   return {...clone(source), objects:state.objects.map(cleanObject)};
 }
-export function saveDraft(config, state, options, fonts, motifs) {
+export function saveDraft(config, state, options, fonts, motifs, {draft=false}={}) {
   const design = designFromState(config, state);
-  validateDesign(config, design, options, fonts, motifs);
+  validateDesign(config, design, options, fonts, motifs, {draft});
   return {schema:DRAFT_SCHEMA, profileId:config.profile.id, profileRevision:config.profile.revision,
     productId:config.profile.binding.productId, design, options:resolvedOptions(config, options)};
 }
-export function readDraft(config, input, fonts, motifs) {
+export function readDraft(config, input, fonts, motifs, {draft=false}={}) {
   if (new TextEncoder().encode(JSON.stringify(input)).length > 2_000_000) fail('Entwurfsdatei ist zu groß.');
   if (input?.schema !== DRAFT_SCHEMA || input.profileId !== config.profile.id || input.profileRevision !== config.profile.revision || input.productId !== config.profile.binding.productId) fail('Entwurf gehört zu einem anderen Produkt oder einer anderen Vorlagenrevision.');
   const design = {...clone(input.design), objects:(input.design?.objects || []).map(cleanObject)};
   const options = resolvedOptions(config, input.options);
-  validateDesign(config, design, options, fonts, motifs);
+  validateDesign(config, design, options, fonts, motifs, {draft});
   return {design, options};
 }
+// Gestaltungslinien einer Vorlage (`marks`) werden im Kundeneditor als
+// Motive `ux-line-<design>-<n>` registriert (ux.mjs addDecoration). Ein
+// Server, der einen Kundenentwurf prüft, ergänzt seine Motivliste damit.
+export const decorationMotifs = design => (design?.marks || []).map((_, i) => ({key:'ux-line-' + design.id + '-' + i, svgFragment:''}));
 export function validatePhotoFile(file) {
   if (!file || !['image/jpeg','image/png','image/webp'].includes(file.type) || !Number.isSafeInteger(file.size) || file.size < 1 || file.size > MAX_PHOTO_BYTES) fail('Bitte JPG, PNG oder WebP bis 15 MB auswählen.');
 }

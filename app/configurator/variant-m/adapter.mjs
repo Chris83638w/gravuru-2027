@@ -155,7 +155,10 @@ export function installUniversal(configInput) {
       if(key==='save'){try{this.download(new Blob([JSON.stringify(saveDraft(config,this.state,options,this.fontData,motifs()),null,2)],{type:'application/json'}),p.id+'-entwurf.json');$('.status').textContent='Entwurf gespeichert. Das Foto bleibt separat und muss beim erneuten Öffnen ausgewählt werden.';}catch(error){$('.status').textContent=error.message;}return;}
       return action.call(this,key,...args);
     };
-    el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const restored=readDraft(config,JSON.parse(await file.text()),this.fontData,motifs());this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);this.state.selected=null;photos.clear();photoDesign='';this.sync();$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
+    // K7: Entwurf im Vertragsformat lesen/schreiben (Sitzungsschutz, Konto-Entwurf). `draft:true` erlaubt unfertige Pflichttexte.
+    el.restoreDraft=function(input,{draft=false}={}){const restored=readDraft(config,input,this.fontData,motifs(),{draft});this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);this.state.selected=null;photos.clear();photoDesign='';this.sync();return restored;};
+    el.draftPayload=function({draft=false}={}){return saveDraft(config,this.state,options,this.fontData,motifs(),{draft});};
+    el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');this.restoreDraft(JSON.parse(await file.text()));$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
     el.chooseDesign=function(id){
       const d=p.designs.find(d=>d.id===id);if(!d)return;
       this.record();const texts=editedDesignTexts(config,this.state);

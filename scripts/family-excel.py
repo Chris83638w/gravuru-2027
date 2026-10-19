@@ -7,7 +7,7 @@
         Schreibt je Familie eine JSON-Datei, geprüft mit denselben Regeln wie die
         Werkstatt (node, validateFamily). Nichts wird in die Werkstatt geschrieben.
 
-Blätter: Materialien, Familien, Größen, Befestigungen. Leere Zelle = offen.
+Blätter: Materialien, Familien, Größen, Befestigungen, Optionen, Staffel. Leere Zelle = offen.
 Preise in Euro mit Komma; intern bleiben es ganze Cent.
 """
 import argparse, json, subprocess, sys
@@ -87,8 +87,19 @@ def export(paths, out):
             for c in g['choices']:
                 rows.append([f['id'], g['id'], g['label'], OPTION_KIND.get(g['kind'], g['kind']), OPTION_SEL.get(g['selection'], g['selection']), 'ja' if g.get('required') else '', c['id'], c['label'], c.get('skuSuffix', ''), euro(c['priceCents']), 'ja' if c.get('default') else '', c.get('note', '')])
     sheet('Optionen', ['Familie', 'Gruppe (Kennung)', 'Gruppe', 'Art', 'Auswahl', 'Pflicht', 'Option (Kennung)', 'Option', 'SKU-Endung', 'Aufpreis €', 'Standard', 'Hinweis'], rows, [22, 16, 24, 10, 10, 8, 16, 28, 10, 11, 9, 40])
+    # K14 / Ü11.1: Mengenstaffel je Familie (SKU leer) oder je Größe. Leerer Rabatt = offen (null).
+    rows = []
+    def tier_rows(fid, sku, tiers):
+        if tiers is None: return
+        if not tiers: rows.append([fid, sku, None, None, None]); return
+        for t in tiers:
+            rows.append([fid, sku, t['minQuantity'], t.get('percentOff') if 'percentOff' in t else None, euro(t['unitCents']) if 'unitCents' in t else None])
+    for f in fams:
+        tier_rows(f['id'], '', f.get('quantityTiers'))
+        for s in f['sizes']: tier_rows(f['id'], s['key'], s.get('quantityTiers'))
+    sheet('Staffel', ['Familie', 'SKU', 'ab Stück', 'Rabatt %', 'Stückpreis €'], rows, [22, 26, 10, 10, 12])
     ws = wb.create_sheet('Lesen')
-    for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Verfahrensprofil: exakte Kennung (' + ', '.join(PROCESS_IDS) + '); sie legt Werkzeuge, Palette, Mindestschriftgröße, Soll-dpi und Spiegelung fest. Leer = offen; dann zählt ersatzweise die Spalte Verfahren (Gravur je Material, Druck = color-print).', 'Blatt Optionen: optionales Zubehör und Varianten je Familie – Gruppe (z. B. Abstandshalter-Set), Art Zubehör/Variante, Auswahl eine/mehrere, je Option Aufpreis in €. Neue Zeilen = neue Optionen. Preise je Linie (Unterkategorie) stehen in linien/<linie>.json des Katalogs.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
+    for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Verfahrensprofil: exakte Kennung (' + ', '.join(PROCESS_IDS) + '); sie legt Werkzeuge, Palette, Mindestschriftgröße, Soll-dpi und Spiegelung fest. Leer = offen; dann zählt ersatzweise die Spalte Verfahren (Gravur je Material, Druck = color-print).', 'Blatt Optionen: optionales Zubehör und Varianten je Familie – Gruppe (z. B. Abstandshalter-Set), Art Zubehör/Variante, Auswahl eine/mehrere, je Option Aufpreis in €. Neue Zeilen = neue Optionen. Preise je Linie (Unterkategorie) stehen in linien/<linie>.json des Katalogs.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Blatt Staffel: Mengenstaffel je Familie (SKU leer) oder je Größe (SKU). Je Zeile eine Stufe: ab Stück (2–99), Rabatt % auf den Stückpreis inkl. Optionen ODER Stückpreis € (Grundpreis ab dieser Menge). Beides leer = Wert offen – die Staffel wird dann nicht gerechnet und nicht angezeigt. Zeile ohne „ab Stück“ = ausdrücklich keine Staffel.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
                  'Befestigungen je Größe als Kennungen aus dem Blatt Befestigungen, mit Komma getrennt. Neue Kennung = neue Zeile dort.', 'Zurücklesen: python scripts/family-excel.py import --xlsx DATEI --out ORDNER']:
         ws.append([line])
     ws.column_dimensions['A'].width = 120
@@ -143,6 +154,7 @@ def import_(xlsx, out):
             if str(r.get('Standard') or '').strip().lower() == 'ja': c['default'] = True
             if r.get('Hinweis'): c['note'] = r['Hinweis']
             g['choices'].append(c)
+    staffel = rows('Staffel') if 'Staffel' in wb.sheetnames else []
     for r in rows('Größen'):
         f = fams[r['Familie']]
         if not any(g['key'] == r['Formgruppe'] for g in f['groups']):
@@ -160,6 +172,17 @@ def import_(xlsx, out):
         for s in f['sizes']:
             radius = s.pop('_radius'); g = next(g for g in f['groups'] if g['key'] == s['groupKey'])
             if g['shape'] in ('rect', 'plaque') and radius != g['cornerRadiusMm']: s['cornerRadiusMm'] = radius
+    for r in staffel:
+        f = fams[r['Familie']]; sku = str(r.get('SKU') or '').strip()
+        target = f if not sku else next(s for s in f['sizes'] if s['key'] == sku)
+        tiers = target.setdefault('quantityTiers', [])
+        if r.get('ab Stück') in (None, ''): continue
+        tier = {'minQuantity': int(num(r['ab Stück']))}
+        if r.get('Stückpreis €') not in (None, ''): tier['unitCents'] = cents(r['Stückpreis €'])
+        else:
+            pct = num(r.get('Rabatt %'))
+            tier['percentOff'] = None if pct is None else (int(pct) if pct == int(pct) else round(pct, 2))
+        tiers.append(tier)
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     report = []
     for fid, f in fams.items():

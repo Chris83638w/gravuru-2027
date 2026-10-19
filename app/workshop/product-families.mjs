@@ -13,6 +13,7 @@ import {nativeSlateConfig} from './slate-product.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {nativeContour} from './acrylic-artwork.mjs';
 import {processProfile,isProcessProfileId,processMirror} from './process-profiles.mjs';
+import {quantityTiersIssue,quantityTiersOpen} from '../configurator/variant-m/contract.mjs';
 
 // A product family holds everything a product series shares (material, shapes,
 // sizes, prices, drill-pattern rules, fonts, style notes) once. Products are
@@ -57,8 +58,22 @@ export function familyProcess(f){
  const p=processProfile(id);return {...p,mirror:processMirror(p,f.material.engravingSide)};
 }
 
+// Staffel einer Größe: eigene Angabe der Größe, sonst die der Familie (undefined = keine).
+export const sizeQuantityTiers=(f,s)=>s.quantityTiers??f.quantityTiers;
+// Offene Staffelwerte sperren die Produkterzeugung nicht (die Staffel ist optional);
+// sie werden nur genannt und bis zur Angabe nicht gerechnet.
+export function quantityTierGaps(f){
+ const gaps=[];
+ if(quantityTiersOpen(f.quantityTiers))gaps.push('Mengenstaffel (Prozentwerte offen)');
+ const sizes=f.sizes.filter(s=>quantityTiersOpen(s.quantityTiers));if(sizes.length)gaps.push('Mengenstaffel offen: '+sizes.map(s=>s.label).join(', '));
+ return gaps;
+}
+
 export function validateFamily(f){
- only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options'],'Produktfamilie');
+ only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers'],'Produktfamilie');
+ // K14 / Ü11.1: Mengenstaffel je Familie (und je Größe), Werte als Daten; null = offen.
+ const tierIssue=(t,label)=>{if(t===undefined)return;const issue=quantityTiersIssue(t);if(issue)invalid(label+': '+issue);};
+ tierIssue(f.quantityTiers,'Familie');
  // Optional second plate behind the design plate (e.g. S/S: satin front, black back), larger by offsetMm on every side.
  if(f.backing!==undefined){only(f.backing,['label','offsetMm','thicknessMm','note'],'Rückplatte');if(!text(f.backing.label,80)||!mm(f.backing.offsetMm,0,100)||!(open(f.backing.thicknessMm)||mm(f.backing.thicknessMm,0.3,50))||(f.backing.note!==undefined&&typeof f.backing.note!=='string'))invalid('Rückplatte: Bezeichnung, Überstand in mm und Stärke (oder offen) angeben.');}
  if(!FAMILY_SCHEMAS.includes(f.schema))invalid('Unbekanntes Familienformat.');
@@ -90,7 +105,8 @@ export function validateFamily(f){
  if(!Array.isArray(f.sizes)||!f.sizes.length||f.sizes.length>500)invalid('1 bis 500 Größen angeben.');
  const groups=new Map(f.groups.map(g=>[g.key,g])),rules=new Map(f.mountingRules.map(r=>[r.id,r]));
  for(const s of f.sizes){
-  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm'],'Größe');
+  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm','quantityTiers'],'Größe');
+  tierIssue(s.quantityTiers,'Größe '+(s.key||''));
   if(s.cornerRadiusMm!==undefined&&(!mm(s.cornerRadiusMm,0,100)||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': eigener Eckenradius nur bei eckiger Form.');
   if(s.backingCornerRadiusMm!==undefined&&(!mm(s.backingCornerRadiusMm,0,100)||!f.backing||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': Eckenradius der Rückplatte nur mit Rückplatte und eckiger Form.');
   if(!id(s.key)||!groups.has(s.groupKey)||!text(s.label,60)||!mm(s.widthMm,10,1000)||!mm(s.heightMm,10,1000)||!(open(s.baseCents)||cents(s.baseCents))||!Array.isArray(s.mounting)||s.mounting.length>8||s.mounting.some(m=>!rules.has(m))||new Set(s.mounting).size!==s.mounting.length)invalid('Größe '+(s.key||'')+' unvollständig.');
@@ -164,6 +180,7 @@ export function familyProductConfig(f,s,revision){
   features:{orderEnabled:false,productionConfirmed:false,motifsAllowed:true},designs:[design],defaultDesignId:design.id,
   optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values}]};
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:0,extraPriceCents:0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
+ const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
  if(f.material.kind==='steel'){c.materialSurface=steelPreviewSurface();return nativeSpecimenConfig(c);}
  return nativeSlateConfig(c);
 }
@@ -215,7 +232,7 @@ Texte als echten Text, nicht in Pfade umwandeln. Kein Text in Deko oder Motiv. K
 | --- | --- | --- | ---: | --- | --- |
 ${rows}
 
-${gaps.length?'## Noch offen in den Stammdaten\n\n'+gaps.map(g=>'- '+g).join('\n')+'\n\n':''}## Stil und Hinweise
+${gaps.length||quantityTierGaps(f).length?'## Noch offen in den Stammdaten\n\n'+[...gaps,...quantityTierGaps(f)].map(g=>'- '+g).join('\n')+'\n\n':''}## Stil und Hinweise
 
 ${f.briefingNotes.trim()||'Noch keine Stilnotizen hinterlegt.'}
 `;

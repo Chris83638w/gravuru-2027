@@ -4,7 +4,7 @@ import {createProductionRelease} from './production-release.mjs';
 import {resolveProduct,PRODUCT_SCHEMA} from './product-model.mjs';
 import {createHash,createHmac,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
-import {capturePersonalization,personalizationForSnapshot,personalizationAttributes} from './cart-personalization.mjs';
+import {capturePersonalization,personalizationForSnapshot,personalizationAttributes,tierUnitCents} from './cart-personalization.mjs';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
@@ -90,7 +90,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
      if(!snapshotId)fail(422,'Für Acryl bitte zuerst einen festen Prüfstand auswählen.');const m=snapshot(snapshotId);
      if(!isNativeReviewSchema(m.schema)||m.product.id!==record.id||m.product.revision!==record.revision||!m.selection)fail(422,'Acryl-Prüfstand und Produktstand stimmen nicht überein.');
      const resolved=resolveProduct(d,{options:m.selection.options});options=resolved.resolvedOptions;unit=resolved.price.unitCents;
-     if(personalizationPricing===undefined&&m.selection.price.unitCents!==unit)fail(422,'Zusätzliche kostenpflichtige Elemente benötigen zuerst eine bestätigte Shop-Aufpreisbindung.');
+     if(personalizationPricing===undefined&&m.selection.price.unitCents!==tierUnitCents(unit,m))fail(422,'Zusätzliche kostenpflichtige Elemente benötigen zuerst eine bestätigte Shop-Aufpreisbindung.');
     }
    }else if(d.schema!=='gravuru-form-product/v1'||unit===null||!d.designs?.length)fail(422,'Ein Produkt mit Design und Preis ist erforderlich.');
    const contract=personalizationPricing===undefined?null:capturePersonalization(personalizationPricing,{variantId,baseCents:unit,document:d});
@@ -121,7 +121,8 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
   },
   offer({bindingId,snapshotId,quantity}, {stableToken}={}){return tx(()=>{
    const b=binding(bindingId),m=snapshot(snapshotId),contract=pricing(bindingId);
-   const extra=contract?personalizationForSnapshot(contract,m):null,unit=extra?.unitCents??b.unit_cents;
+   // K14: Bindung = Listenpreis je Stück; eine Mengenstaffel im Prüfstand senkt den Stückpreis nachprüfbar.
+   const extra=contract?personalizationForSnapshot(contract,m):null,unit=extra?.unitCents??tierUnitCents(b.unit_cents,m);
    if(!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(422,'Menge: 1 bis 99.');
    if(m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR')fail(422,'Prüfstand und Shop-/Preisbindung stimmen nicht überein.');
    const chosen=selection(b.id);
@@ -155,7 +156,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=? AND tenant_id=?').get(o.id,tenant))fail(409,'Dieses Angebot gehört bereits zu einer Bestellung.');
    const m=snapshot(o.snapshot_id),extra=offerPricing(o.id),contract=pricing(b.id);
    if(JSON.stringify(extra)!==JSON.stringify(contract?personalizationForSnapshot(contract,m):null))fail(409,'Gesicherter Preisvertrag stimmt nicht überein.');
-   const unit=extra?.unitCents??b.unit_cents;
+   const unit=extra?.unitCents??tierUnitCents(b.unit_cents,m);
    const chosen=selection(b.id);
    if(chosen&&(!isNativeReviewSchema(m.schema)||optionKey(chosen)!==optionKey(m.selection?.options)||m.selection?.price?.quantity!==o.quantity))fail(409,'Die gesicherte Ausführung oder Menge stimmt nicht überein.');
    if(m.packageSha256!==o.package_sha256||m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR')fail(409,'Der gesicherte Angebotsstand stimmt nicht überein.');

@@ -6,7 +6,8 @@ const baseVariantPrice=(config,options)=>quote(config,[],config.profile.defaultD
 export const variantKey=options=>JSON.stringify(Object.entries(options).sort());
 export function commercePrice(config,state,quantity=1){
  const q=quote(config,state.objects,state.designId,state.mOptions,quantity),photos=uploadQuote(state.objects,quantity,false,config.photo);
- return {...q,chargedUploads:config.photo.extraPriceCents?photos.unitCents/config.photo.extraPriceCents:0,unitCents:q.unitCents+photos.unitCents,totalCents:q.totalCents+photos.totalCents,key:variantKey(q.options)};
+ // Fotos/Logos kommen nach der Mengenstaffel dazu (Staffel gilt für Stückpreis inkl. Optionen und Motive).
+ return {...q,chargedUploads:config.photo.extraPriceCents?photos.unitCents/config.photo.extraPriceCents:0,unitCents:q.unitCents+photos.unitCents,totalCents:q.totalCents+photos.totalCents,...(q.listUnitCents!==undefined?{listUnitCents:q.listUnitCents+photos.unitCents}:{}),key:variantKey(q.options)};
 }
 export function validateCommerce(config,binding){
  if(binding?.schema!=='gravuru-shopify-commerce/v2'||!/^gid:\/\/shopify\/Product\/\d+$/.test(binding.productId)||binding.profileId!==config.profile.id||String(binding.revision)!==String(config.profile.revision)||binding.currency!=='EUR')throw Error('Shop-Produktzuordnung stimmt nicht mit dem Entwurf überein.');
@@ -24,6 +25,8 @@ export function selectCommerceVariant(config,binding,state,quantity=1){
  if(!variant)throw Error('Diese Ausführung ist derzeit nicht bestellbar.');
  if(variant.priceCents!==baseVariantPrice(config,price.options))throw Error('Der Shop-Preis passt nicht mehr zur gespeicherten Ausführung.');
  if(binding.priceMode!=='shopify-cart-transform'&&(price.additionalMotifs||price.chargedUploads))throw Error('Die Aufpreisberechnung ist noch nicht freigeschaltet.');
+ // Ein fester Variantenpreis kann keine Staffel abbilden; der Shop würde den Listenpreis berechnen.
+ if(binding.priceMode!=='shopify-cart-transform'&&price.quantityTier)throw Error('Die Mengenstaffel ist im Shop-Warenkorb noch nicht freigeschaltet.');
  return {...price,variantId:variant.id,baseVariantCents:variant.priceCents};
 }
 

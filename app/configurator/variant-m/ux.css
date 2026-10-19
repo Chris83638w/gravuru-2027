@@ -54,3 +54,5 @@ button{cursor:pointer} button:disabled{cursor:not-allowed;opacity:.5!important}b
 .ux-account-draft{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--ux-border)}
 .ux-account-draft .ux-upload-actions{grid-column:2;margin-top:0}.ux-account-draft strong{display:block;overflow-wrap:anywhere}.ux-account-draft small{display:block;color:var(--ux-muted);font-size:12px}
 .ux-account-thumb{width:72px;height:72px;object-fit:contain;border:1px solid var(--ux-border);border-radius:8px;background:#fff}
+/* K14 / Ü11.1: Mengenstaffel neben der Menge (eigene Zeile im Kaufbereich). */
+.ux-quantity-tiers{display:block;grid-column:1/-1;font-size:12px;line-height:1.35;color:#46574d;margin:2px 0 0}.ux-quantity-tiers[hidden]{display:none!important}.ux-quantity-tiers[data-ux-tier-active]{color:#1c3327;font-weight:600}

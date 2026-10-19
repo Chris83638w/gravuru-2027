@@ -1,0 +1,111 @@
+{
+ "schema": "gravuru-product-family/v2",
+ "id": "test-schilder",
+ "name": "Test-Edelstahlschilder (Fixture)",
+ "material": {
+  "kind": "steel",
+  "label": "Edelstahl gebürstet",
+  "thicknessMm": 1.5,
+  "processingProfileId": "steel-engraving"
+ },
+ "designArea": {
+  "marginMm": 0,
+  "keepoutMm": 1
+ },
+ "groups": [
+  {
+   "key": "RE",
+   "name": "Rechteck",
+   "shape": "rect",
+   "cornerRadiusMm": 0
+  },
+  {
+   "key": "QU",
+   "name": "Quadrat",
+   "shape": "rect",
+   "cornerRadiusMm": 0
+  }
+ ],
+ "mountingRules": [
+  {
+   "id": "KGL",
+   "label": "Selbstklebend",
+   "layout": "none",
+   "count": 0,
+   "diameterMm": null,
+   "edgeMm": null,
+   "priceCents": 299,
+   "skuSuffix": "KGL"
+  },
+  {
+   "id": "B02-E6-D4",
+   "label": "Mit 2 Bohrlöchern",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 4,
+   "edgeMm": 6,
+   "priceCents": 249,
+   "skuSuffix": "B02"
+  }
+ ],
+ "sizes": [
+  {
+   "key": "TS-RE-90X60",
+   "groupKey": "RE",
+   "label": "9 × 6 cm",
+   "widthMm": 90,
+   "heightMm": 60,
+   "baseCents": 1099,
+   "mounting": [
+    "KGL",
+    "B02-E6-D4"
+   ]
+  },
+  {
+   "key": "TS-RE-120X80",
+   "groupKey": "RE",
+   "label": "12 × 8 cm",
+   "widthMm": 120,
+   "heightMm": 80,
+   "baseCents": 1499,
+   "mounting": [
+    "KGL",
+    "B02-E6-D4"
+   ]
+  },
+  {
+   "key": "TS-RE-60X40",
+   "groupKey": "RE",
+   "label": "6 × 4 cm",
+   "widthMm": 60,
+   "heightMm": 40,
+   "baseCents": null,
+   "mounting": [
+    "KGL"
+   ]
+  },
+  {
+   "key": "TS-QU-80X80",
+   "groupKey": "QU",
+   "label": "8 × 8 cm",
+   "widthMm": 80,
+   "heightMm": 80,
+   "baseCents": 1299,
+   "mounting": [
+    "KGL",
+    "B02-E6-D4"
+   ]
+  }
+ ],
+ "withoutMounting": true,
+ "fonts": [
+  "Michroma",
+  "Lato",
+  "Montserrat",
+  "Cinzel"
+ ],
+ "briefingNotes": "Fixture für katalog-*.test.mjs – keine Stammdaten.",
+ "source": {
+  "note": "Testdaten"
+ }
+}

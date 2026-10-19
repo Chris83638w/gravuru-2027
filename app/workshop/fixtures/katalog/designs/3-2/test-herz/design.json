@@ -1,0 +1,24 @@
+{
+ "id": "test-herz",
+ "name": "Herz mit Namen",
+ "plateMm": [
+  90,
+  60
+ ],
+ "themes": [
+  "namensschilder",
+  "hundeschilder"
+ ],
+ "bestseller": true,
+ "fields": {
+  "text-2": {
+   "required": false,
+   "maxLength": 24,
+   "maxLines": 2
+  }
+ },
+ "fonts": [
+  "Montserrat",
+  "Cinzel"
+ ]
+}

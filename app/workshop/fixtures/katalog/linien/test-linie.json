@@ -1,0 +1,44 @@
+{
+ "schema": "gravuru-line/v2",
+ "id": "test-linie",
+ "name": "Test Linie",
+ "families": [
+  "test-schilder"
+ ],
+ "status": "Fixture",
+ "subcategories": [
+  {
+   "id": "namensschilder",
+   "name": "Namensschilder",
+   "themeId": "namensschilder",
+   "fontSet": "tuerschilder",
+   "priceOverrides": {
+    "sizes": {
+     "TS-RE-90X60": 1199
+    },
+    "mounting": {
+     "B02-E6-D4": 199
+    }
+   },
+   "sizesOffered": null,
+   "options": null,
+   "collectionHandle": null,
+   "status": "Vorschlag"
+  },
+  {
+   "id": "hundeschilder",
+   "name": "Hundeschilder",
+   "themeId": "hundeschilder",
+   "fontSet": null,
+   "priceOverrides": {},
+   "sizesOffered": [
+    "TS-RE-90X60",
+    "TS-RE-60X40"
+   ],
+   "options": null,
+   "collectionHandle": null,
+   "status": "Vorschlag"
+  }
+ ],
+ "note": "Fixture"
+}

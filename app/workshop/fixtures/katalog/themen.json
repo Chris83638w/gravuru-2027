@@ -1,0 +1,43 @@
+{
+ "schema": "gravuru-themes/v1",
+ "note": "Fixture-Auszug aus themen.json des Katalogs (keine Stammdaten)",
+ "themes": [
+  {
+   "id": "namensschilder",
+   "name": "Namensschilder",
+   "fontSet": "tuerschilder",
+   "motifCategories": [
+    "Ornamente",
+    "Herzen"
+   ],
+   "designTags": [
+    "name",
+    "familie"
+   ]
+  },
+  {
+   "id": "hundeschilder",
+   "name": "Hundeschilder",
+   "fontSet": "hundeschilder",
+   "motifCategories": [
+    "Hunde",
+    "Pfoten"
+   ],
+   "designTags": [
+    "hund",
+    "name"
+   ]
+  },
+  {
+   "id": "gedenktafeln",
+   "name": "Gedenktafeln",
+   "fontSet": "andenken",
+   "motifCategories": [
+    "Kreuze"
+   ],
+   "designTags": [
+    "gedenken"
+   ]
+  }
+ ]
+}

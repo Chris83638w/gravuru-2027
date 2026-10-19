@@ -1,0 +1,32 @@
+{
+ "sets": [
+  {
+   "id": "tuerschilder",
+   "name": "Türschilder / Namensschilder",
+   "fonts": [
+    "Michroma",
+    "Lato",
+    "Cinzel",
+    "Montserrat"
+   ]
+  },
+  {
+   "id": "hundeschilder",
+   "name": "Hundeschilder",
+   "fonts": [
+    "Michroma",
+    "Lato",
+    "Montserrat"
+   ]
+  },
+  {
+   "id": "andenken",
+   "name": "Andenken",
+   "fonts": [
+    "Michroma",
+    "Lato",
+    "Cinzel"
+   ]
+  }
+ ]
+}

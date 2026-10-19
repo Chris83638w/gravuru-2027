@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90mm" height="60mm" viewBox="0 0 90 60"><title>test-herz</title>
+<g id="motiv-1"><path d="M14 36 L6 27 C4 24 7 20 11 21 C13 21.6 14 23.6 14 23.6 C14 23.6 15 21.6 17 21 C21 20 24 24 22 27 Z" fill="#000"/></g>
+<g id="deko-1"><rect x="30" y="44" width="50" height="0.6" fill="#000"/></g>
+<g id="text-1" data-feld="name"><text x="55" y="30" font-family="Montserrat" font-size="9" text-anchor="middle" fill="#000">Familie Muster</text></g>
+<g id="text-2" data-feld="zusatz"><text x="55" y="50" font-family="Cinzel" font-size="4" text-anchor="middle" fill="#000"><tspan x="55" y="50">Herzlich</tspan><tspan x="55" dy="4.8">willkommen</tspan></text></g>
+<g id="guide-1"><text x="45" y="58" font-family="Montserrat" font-size="2" text-anchor="middle" fill="#999">Bohrlöcher je nach Befestigung</text></g>
+</svg>

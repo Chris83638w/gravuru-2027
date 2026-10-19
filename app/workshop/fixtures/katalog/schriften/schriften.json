@@ -1,0 +1,37 @@
+{
+ "count": 4,
+ "fonts": [
+  {
+   "name": "Michroma",
+   "category": "Serifenlose Schriften",
+   "license": "Google Fonts – SIL Open Font License",
+   "status": "frei nutzbar",
+   "inPlatform": false,
+   "file": "schriften/dateien/Michroma/Michroma-Regular.ttf"
+  },
+  {
+   "name": "Lato",
+   "category": "Serifenlose Schriften",
+   "license": "Google Fonts – SIL Open Font License",
+   "status": "frei nutzbar",
+   "inPlatform": false,
+   "file": "schriften/dateien/Lato/Lato-Regular.ttf"
+  },
+  {
+   "name": "Montserrat",
+   "category": "Serifenlose Schriften",
+   "license": "Google Fonts – SIL Open Font License",
+   "status": "frei nutzbar",
+   "inPlatform": true,
+   "file": null
+  },
+  {
+   "name": "Cinzel",
+   "category": "Klassische Serifenschriften",
+   "license": "Google Fonts – SIL Open Font License",
+   "status": "frei nutzbar",
+   "inPlatform": true,
+   "file": null
+  }
+ ]
+}

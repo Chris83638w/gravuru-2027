@@ -18,3 +18,10 @@ test('Master overlap warnings are engraving-only, independent of design',()=>{
  assert.equal(showOverlapWarnings({kind:'layered-doorbell'}),true);
  assert.equal(showOverlapWarnings({}),false);
 });
+// K9/V4: Motivkategorien des Produktthemas zuerst (ausführlich in design-gallery.test.mjs).
+test('Motivbibliothek: Kategorien des Themas liegen ohne Suchbegriff vorn, Suche bleibt maßgeblich',()=>{
+ const theme={motifCategories:['Tiere']},entries=[{name:'Anker',category:'Maritim'},{name:'Pfote',category:'Tiere'}];
+ const sorted=[...entries].sort((a,b)=>motifScore(b,'',theme)-motifScore(a,'',theme));
+ assert.deepEqual(sorted.map(e=>e.name),['Pfote','Anker']);
+ assert(motifScore({name:'Anker',category:'Maritim'},'Anker',theme)>motifScore({name:'Pfote',category:'Tiere'},'Anker',theme));
+});

@@ -65,7 +65,8 @@
       }
       if(event.data?.type==='gravuru-fk-close'){editor.hidden=true;intro.hidden=false;}
     });
-    if(new URL(location.href).searchParams.get('model')==='acryl'||new URL(location.href).searchParams.has('configuration')||new URL(location.href).searchParams.has('group'))open();
+    // K9: Direktlink ?design=…&size=…&text=… öffnet den Editor sofort; der Editor liest und entfernt die Parameter.
+    if(new URL(location.href).searchParams.get('model')==='acryl'||['configuration','group','design'].some(key=>new URL(location.href).searchParams.has(key)))open();
   </script>
 </body>
 </html>

@@ -174,6 +174,29 @@ export function installUniversal(configInput) {
     const edit=el.edit;el.edit=function(field){if(!locked(this.selected()))return edit.call(this,field);};
     r.addEventListener('pointerdown',e=>{const o=el.state.objects.find(o=>o.id===e.target.closest('[data-object]')?.dataset.object);if(locked(o)){e.preventDefault();e.stopImmediatePropagation();}},true);
     const qty=$('[data-fk-quantity]');qty.addEventListener('input',()=>{quantity=Number(qty.value);update();});
+    // K9: Miniaturen der Designs. Der Kundeneditor kann das gezeichnete Design (Kundentext,
+    // `uxThumbnailDesign`), den Cache-Schlüssel (`uxThumbnailSignature`) und das Aufschieben
+    // (`uxThumbnailDeferred`, höchstens `uxThumbnailBudget` neue Miniaturen je Durchlauf)
+    // bestimmen; ausgeblendete oder aufgeschobene Karten behalten ihre bisherige Miniatur.
+    // Rückgabe: Anzahl sichtbarer Karten, die nur wegen des Budgets warten.
+    function renderThumbnails(){
+      const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
+      let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
+      for(const card of r.querySelectorAll('[data-c-design]')){
+        const design=p.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
+        let thumbnail=thumbnails.get(card);
+        if(!thumbnail||thumbnail.key!==thumbnailKey){
+          if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
+          else{budget--;thumbnail={key:thumbnailKey,markup:svg(el.uxThumbnailDesign?.(design)||design)};}
+        }
+        // The legacy sync replaces the SVG with its portrait doorbell preview.
+        // Restore the product geometry even when the cached rendering is valid.
+        if(thumbnail.node!==card.querySelector('svg')){card.querySelector('svg').outerHTML=thumbnail.markup;thumbnail.node=card.querySelector('svg');}
+        thumbnails.set(card,thumbnail);
+      }
+      return deferred;
+    }
+    el.uxRefreshThumbnails=renderThumbnails;
     function update(){
       const d=current(), visible=new Set(filteredDesigns(p.designs,filters).map(d=>d.id));
       const physical=physicalGeometry(config,{mOptions:options});
@@ -185,17 +208,10 @@ export function installUniversal(configInput) {
       $('.fk-scroll-hint').textContent='Wähle dein Design';
       $('.fk-material-note').textContent=config.doorbell?'Edelstahl 1,5 mm · Gravur auf Acrylglas 3 mm':processing.name+' · '+p.material.thicknessMm+' mm';
       $('.fk-options>[data-fk-mount-note]')?.setAttribute('hidden','');
-      const thumbnailKey=JSON.stringify(options);
       for(const card of r.querySelectorAll('[data-c-design]')){
         card.hidden=!visible.has(card.dataset.cDesign);card.querySelector('small').textContent='Vorlage inklusive';
-        const design=p.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
-        let thumbnail=thumbnails.get(card);
-        if(!thumbnail||thumbnail.key!==thumbnailKey)thumbnail={key:thumbnailKey,markup:svg(design)};
-        // The legacy sync replaces the SVG with its portrait doorbell preview.
-        // Restore the product geometry even when the cached rendering is valid.
-        if(thumbnail.node!==card.querySelector('svg')){card.querySelector('svg').outerHTML=thumbnail.markup;thumbnail.node=card.querySelector('svg');}
-        thumbnails.set(card,thumbnail);
       }
+      renderThumbnails();
       const name=current().name;$('.guided-review dl').innerHTML='<div><dt>Design</dt><dd>'+esc(name)+'</dd></div><div><dt>Material</dt><dd>'+esc(processing.name)+'</dd></div>';
       $('[data-setting=guides]').closest('.check-guide').hidden=false;
       for(const select of picks.querySelectorAll('select'))select.value=options[select.dataset.mOption];

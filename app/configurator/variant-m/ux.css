@@ -38,3 +38,9 @@ button{cursor:pointer} button:disabled{cursor:not-allowed;opacity:.5!important}b
 .ux-preview .stage{container-type:size!important}.ux-preview .stage .plate-holder{height:auto!important;width:min(100cqw,calc(100cqh * var(--ux-ratio)))!important;max-height:100%!important;aspect-ratio:var(--ux-ratio)!important;flex:none!important}.ux-preview .scene{display:block!important;width:100%!important;height:100%!important}
 .ux-preview .dimension-x{bottom:-18px!important}.ux-preview .dimension-x span,.c-large-preview .dimension-x span{top:16px!important}.ux-preview .stage{padding-bottom:46px!important}.c-large-preview .stage-bottom{margin-top:12px!important}
 
+/* K1: Zähler „12/32“, Feldhinweis und Pflichtkennzeichen je Textfeld */
+.ux-text-meta{grid-column:2;display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-top:-4px;font-size:13px;line-height:1.3;color:#607068}
+.ux-text-meta [data-ux-text-count]{margin-left:auto;order:2;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ux-text-issue{order:1;color:#91321f;font-weight:600}.ux-text-issue:empty{display:none}
+.ux-text-row.is-invalid textarea{border:2px solid #ad3d29!important}
+.ux-text-required{color:#91321f;font-weight:700}

@@ -10,6 +10,7 @@ import {prepareConfig,validateDesign} from './contract.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {rightForProperty} from './element-rights.mjs';
 import {emptyPhotoMarkup,decorateEmptyPhotoSlots,examplePhotoMarkup} from './photo-placeholder.mjs';
+import {textLimits,textLimitIssue,textLength,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
 
 // Execute the actual registered handlers from the presentation modules with
 // deterministic DOM ports. This covers event routing without claiming browser QA.
@@ -45,12 +46,43 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   env.el.state.designId='test-design';
   vm.runInContext(line('ux.mjs','const esc=value=>'),env);
   vm.runInContext(line('ux.mjs','const fieldLabel='),env);
+  // K1: Limits und Feldhinweise aus dem echten Modul, Vorlage mit Pflichtfeld und Thema.
+  Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,design:()=>env.profile.designs[0]});
+  env.profile.designs[0].themes=['namensschilder'];env.profile.designs[0].objects=[{id:'name',type:'text',text:'Anna',required:true}];
+  for(const marker of ['const templateText=','const limitsFor=','const textIndex='])vm.runInContext(line('ux.mjs',marker),env);
+  vm.runInContext(block('ux.mjs','  function textFieldIssue(o){','\n  }'),env);
+  vm.runInContext(block('ux.mjs','  function textIssues(){','\n  }'),env);
+  const issues=()=>JSON.parse(JSON.stringify(vm.runInContext('textIssues()',env)));
   const fields=block('ux.mjs','  function updateFields(){','\n  }\n  function renderFontPage').replace('\n  function renderFontPage','');
   vm.runInContext(fields,env);input.value='stale';vm.runInContext('updateFields()',env);assert.equal(Number(input.value),12);
   assert.match(env.$('.ux-fields').innerHTML,/aria-label="Namen"/);
+  assert.match(env.$('.ux-fields').innerHTML,/maxlength="32"/);assert.match(env.$('.ux-fields').innerHTML,/aria-required="true"/);assert.match(env.$('.ux-fields').innerHTML,/data-ux-text-count="name"/);
+  assert.deepEqual(issues(),[{id:'name',message:'Namen: Pflichtfeld: Bitte den Beispieltext durch deinen eigenen ersetzen.'}]);
+  object.text='Lena';assert.deepEqual(issues(),[]);
+  object.text='L'.repeat(33);assert.deepEqual(issues(),[{id:'name',message:'Namen: Text zu lang: höchstens 32 Zeichen.'}]);
+  object.text='Lena\nMax\nTom';assert.deepEqual(issues(),[{id:'name',message:'Namen: Höchstens 2 Zeilen.'}]);
+  object.text='Lena';object.uxTextOverflow='length';assert.match(issues()[0].message,/Text zu lang: Passt auch in der Mindestgröße/);delete object.uxTextOverflow;
+  object.uxHidden=true;assert.deepEqual(issues(),[{id:'name',message:'Pflichtfeld „Namen“ fehlt. Bitte einblenden und ausfüllen.'}]);delete object.uxHidden;
  Object.assign(env,{changing:false,known:new Set(['name']),rename(){},guides(){}});
  vm.runInContext(line('workflow.mjs','const sync=el.sync;el.sync=function'),env);
  input.value='stale';env.el.sync();assert.equal(Number(input.value),12);
+});
+test('K1: actual text input handler keeps 32 chars / 2 lines and the direct editor clamps alike',async()=>{
+ const {env,object,r}=textEnvironment();
+ Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,clampText,dirty:false,updatePrice(){},design:()=>env.profile.designs[0],profile:{designs:[{id:'d',themes:['namensschilder'],objects:[{id:'name',type:'text',text:'Anna'}]}]}});
+ env.el.state.designId='d';env.el.record=()=>{};const said=[];env.say=m=>said.push(m);
+ for(const marker of ['const templateText=','const limitsFor='])vm.runInContext(line('ux.mjs',marker),env);
+ vm.runInContext(block('ux.mjs',"  r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){","updatePrice();});"),env);
+ vm.runInContext(line('ux.mjs',"r.addEventListener('keydown',e=>{const t=e.target;if(!t.dataset?.uxText||e.key!=='Enter')return;"),env);
+ const field={value:'A'.repeat(40),selectionStart:40,dataset:{uxText:'name'},matches(){return false;},setSelectionRange(a){this.selectionStart=a;}};
+ await dispatch(r,'input',inertEvent(field));assert.equal(object.text.length,32);assert.equal(field.value.length,32);assert.equal(said.at(-1),'Höchstens 32 Zeichen.');
+ field.value='A\nB\nC';await dispatch(r,'input',inertEvent(field));assert.equal(object.text,'A'.repeat(32));assert.equal(field.value,'A'.repeat(32));assert.equal(said.at(-1),'Höchstens 2 Zeilen.');
+ field.value='Anna\nLena';await dispatch(r,'input',inertEvent(field));assert.equal(object.text,'Anna\nLena');
+ let prevented=0;await dispatch(r,'keydown',{target:field,key:'Enter',preventDefault(){prevented++;}});assert.equal(prevented,1);
+ field.value='Anna';await dispatch(r,'keydown',{target:field,key:'Enter',preventDefault(){prevented++;}});assert.equal(prevented,1);
+ // Direkte Bearbeitung im Design nutzt dieselben Limits über el.uxTextLimits.
+ assert.match(source('direct-editing.mjs'),/clampText\(field\.value,limits,o\.text\)/);assert.match(source('direct-editing.mjs'),/field\.maxLength=limits\.maxLength/);
+ assert.match(source('commerce.mjs'),/el\.uxTextIssues/);assert.match(source('workflow.mjs'),/uxTextOverflow='length'/);
 });
 test('large text: actual +/- click handlers operate in physical mm',async()=>{
  const {env,object,r}=textEnvironment();object.size=9;

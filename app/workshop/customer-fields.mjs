@@ -57,7 +57,7 @@ export function planCustomerFields(repository,assets,id,input){
     checked=validateProductDocument(document);
     const current=checked.config.profile.designs.find(d=>d.id===design.id);
     for(const object of current.objects.filter(o=>o.type==='text'))measureText(object,checked.config.localResources.fonts);
-    validateProductDesign(checked,current);
+    validateProductDesign(checked,current,{template:true});
     assets.validateDocument(checked);
   }catch(error){fail('invalid_fields',error.message);}
   const current=checked.config.profile.designs.find(d=>d.id===design.id);

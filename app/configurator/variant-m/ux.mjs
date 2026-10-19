@@ -19,6 +19,7 @@ import {acrylicSelection} from './acrylic-product.mjs';
 import {selectionIds} from './profile-selection.mjs';
 import {rightForProperty} from './element-rights.mjs';
 import {beginCustomerRights} from './customer-rights.mjs';
+import {textLimits,textLimitIssue,textLength,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
@@ -179,8 +180,31 @@ export async function installUX(el,config,legacy){
     if(slot&&(event.key==='Enter'||event.key===' '))uploadFromEmptySlot(event,slot);
   },true);
   const fieldLabel=(object,index)=>profile.designs.find(d=>d.id===el.state.designId)?.customerFields?.find(f=>f.id===object.id)?.label||({heading:'Überschrift',names:'Namen',place:'Ort',date:'Datum',slogan:'Spruch'})[object.fieldKey]||'Text '+(index+1);
-  function updateFields(){const texts=el.state.objects.filter(o=>o.type==='text');const signature=el.state.designId+'|'+texts.map((o,i)=>o.id+':'+fieldLabel(o,i)).join('|');if(signature!==fieldSignature){fieldSignature=signature;$('.ux-fields').innerHTML=texts.map((o,i)=>`<div class="ux-text-row" data-ux-row="${esc(o.id)}"><label for="ux-text-${i}">${esc(fieldLabel(o,i))}</label><textarea id="ux-text-${i}" rows="1" data-ux-text="${esc(o.id)}" aria-label="${esc(fieldLabel(o,i))}"></textarea></div>`).join('');}
-    for(const field of all('[data-ux-text]')){const o=texts.find(o=>o.id===field.dataset.uxText);if(r.activeElement!==field)field.value=o.text;field.disabled=!!o.uxLocked||!!o.uxHidden;field.closest('.ux-text-row').classList.toggle('is-selected',el.state.selected===o.id);}
+  // K1: Limits und Pflichtkennzeichen kommen aus dem Vorlagenelement, nie aus dem bearbeiteten Objekt.
+  const templateText=o=>design()?.objects.find(t=>t.id===o.id&&t.type==='text');
+  const limitsFor=o=>textLimits(templateText(o),design(),profile);
+  const textIndex=o=>el.state.objects.filter(v=>v.type==='text').indexOf(o);
+  function textFieldIssue(o){
+    const t=templateText(o);
+    if(t?.required===true&&sameSampleText(o.text,t.text))return 'Pflichtfeld: Bitte den Beispieltext durch deinen eigenen ersetzen.';
+    const issue=textLimitIssue(o.text,limitsFor(o));if(issue)return issue;
+    if(o.uxTextOverflow==='length')return 'Text zu lang: Passt auch in der Mindestgröße nicht auf die Fläche. Bitte kürzen.';
+    return '';
+  }
+  function textIssues(){
+    const issues=[];
+    for(const t of (design()?.objects||[]).filter(t=>t.type==='text'&&t.required===true)){const o=el.state.objects.find(o=>o.id===t.id);if(!o||o.uxHidden)issues.push({id:t.id,message:'Pflichtfeld „'+fieldLabel(t,0)+'“ fehlt. Bitte einblenden und ausfüllen.'});}
+    for(const o of el.state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false)){const message=textFieldIssue(o);if(message)issues.push({id:o.id,message:fieldLabel(o,textIndex(o))+': '+message});}
+    return issues;
+  }
+  el.uxTextLimits=limitsFor;el.uxTextIssues=textIssues;
+  el.uxRevealTextIssue=id=>{showTab('text');select(id);const field=all('[data-ux-text]').find(f=>f.dataset.uxText===id);field?.scrollIntoView?.({block:'center',behavior:'smooth'});field?.focus({preventScroll:true});};
+  // Abschluss und Warenkorb bleiben gesperrt, solange ein Textfeld einen Hinweis trägt; das Feld wird gezeigt.
+  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;const issue=textIssues()[0];if(!issue)return;e.preventDefault();e.stopImmediatePropagation();say(issue.message);el.uxRevealTextIssue(issue.id);},true);
+  function updateFields(){const texts=el.state.objects.filter(o=>o.type==='text');const signature=el.state.designId+'|'+texts.map((o,i)=>o.id+':'+fieldLabel(o,i)).join('|');if(signature!==fieldSignature){fieldSignature=signature;$('.ux-fields').innerHTML=texts.map((o,i)=>{const required=templateText(o)?.required===true,limits=limitsFor(o);return `<div class="ux-text-row" data-ux-row="${esc(o.id)}"><label for="ux-text-${i}">${esc(fieldLabel(o,i))}${required?' <span class="ux-text-required" title="Pflichtfeld">*</span>':''}</label><textarea id="ux-text-${i}" rows="1" data-ux-text="${esc(o.id)}" aria-label="${esc(fieldLabel(o,i))}" maxlength="${limits.maxLength}" ${required?'aria-required="true"':''} aria-describedby="ux-text-count-${i} ux-text-issue-${i}"></textarea><small class="ux-text-meta"><span id="ux-text-count-${i}" data-ux-text-count="${esc(o.id)}" aria-live="polite"></span><span id="ux-text-issue-${i}" class="ux-text-issue" data-ux-text-issue="${esc(o.id)}" role="alert"></span></small></div>`;}).join('');}
+    for(const field of all('[data-ux-text]')){const o=texts.find(o=>o.id===field.dataset.uxText),limits=limitsFor(o),row=field.closest('.ux-text-row');field.maxLength=limits.maxLength;if(r.activeElement!==field)field.value=o.text;field.disabled=!!o.uxLocked||!!o.uxHidden;row.classList.toggle('is-selected',el.state.selected===o.id);
+      const issue=o.uxHidden||o.customerEditable===false?'':textFieldIssue(o),count=textLength(o.text)+'/'+limits.maxLength;row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
+      const countNode=row.querySelector('[data-ux-text-count]'),issueNode=row.querySelector('[data-ux-text-issue]');if(countNode&&countNode.textContent!==count)countNode.textContent=count;if(issueNode&&issueNode.textContent!==issue)issueNode.textContent=issue;}
     const o=selected(),isText=o?.type==='text';$('.ux-controls').hidden=!isText;
     if(isText){$('[data-ux-font-name]').textContent=o.font;if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
   }
@@ -259,7 +283,11 @@ export async function installUX(el,config,legacy){
     if(['undo','redo','delete','duplicate'].includes(action)){if(['delete','duplicate'].includes(action)&&selected()?.locked)return say('Das feste Rastermotiv kann verschoben und skaliert werden.');if(action==='duplicate'&&selected()?.uxUploadId)return say('Bitte Fotos und Logos über den Upload hinzufügen, damit Anzahl und Aufpreis eindeutig bleiben.');await el.action(action);return;}
   });
   r.addEventListener('focusin',e=>{const f=e.target.closest('[data-ux-text]');if(f&&el.state.selected!==f.dataset.uxText){el.state.selected=f.dataset.uxText;el.sync();}});
-  r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){if(!t.dataset.editStarted){el.record();t.dataset.editStarted='true';}const o=el.state.objects.find(o=>o.id===t.dataset.uxText);o.text=t.value;dirty=true;el.normalize();el.sync();}if(t.matches('[data-fk-quantity]'))updatePrice();});
+  r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){if(!t.dataset.editStarted){el.record();t.dataset.editStarted='true';}const o=el.state.objects.find(o=>o.id===t.dataset.uxText);
+    const limits=limitsFor(o),next=clampText(t.value,limits,o.text);
+    if(next!==t.value){const tooManyLines=t.value.split('\n').length>limits.maxLines,at=Math.min(t.selectionStart??next.length,next.length);t.value=next;try{t.setSelectionRange(at,at);}catch{}say(tooManyLines?'Höchstens '+limits.maxLines+' Zeilen.':'Höchstens '+limits.maxLength+' Zeichen.');}
+    o.text=next;dirty=true;el.normalize();el.sync();}if(t.matches('[data-fk-quantity]'))updatePrice();});
+  r.addEventListener('keydown',e=>{const t=e.target;if(!t.dataset?.uxText||e.key!=='Enter')return;const o=el.state.objects.find(o=>o.id===t.dataset.uxText);if(!o)return;const limits=limitsFor(o);if(t.value.split('\n').length>=limits.maxLines){e.preventDefault();say('Höchstens '+limits.maxLines+' Zeilen.');}});
   r.addEventListener('input',e=>{const t=e.target,key=t.id==='ux-size'?'size':t.dataset.uxProp||t.dataset.uxContentProp;if(key&&t.value!==''&&Number.isFinite(Number(t.value))){e.stopImmediatePropagation();const value=Number(t.value);if(!['w','h','size'].includes(key)||value>0)changeObject(key,value);}},true);
   r.addEventListener('focusout',e=>{if(e.target.dataset.uxText)delete e.target.dataset.editStarted;if(e.target.id==='ux-size'&&selected()?.type==='text')e.target.value=displayTextSize(selected());});
   let uploadPending=false;

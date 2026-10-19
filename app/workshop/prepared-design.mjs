@@ -75,7 +75,7 @@ export async function planPreparedDesign(repository,assets,id,input){
  config.profile.designs.push(d);document.elementRights[d.id]=table;
  if(input.makeDefault===true)config.profile.defaultDesignId=d.id;
  const checked=validateProductDocument(document);assets.validateDocument(checked);
- const design=checked.config.profile.designs.find(v=>v.id===d.id);validateProductDesign(checked,design);
+ const design=checked.config.profile.designs.find(v=>v.id===d.id);validateProductDesign(checked,design,{template:true});
  const token=sha256(JSON.stringify({id,expectedRevision:input.expectedRevision,document:checked}));
  return {document:checked,token,designId:d.id,name:d.name,fields:d.customerFields.length,layers:d.objects.length,scale,svg:studioSvg(checked.config.profile,design,config.localResources.fonts,{motifs:config.localResources.motifs,handles:false}),fit,warnings:[fit==='original'?'Originalmaß 1:1 auf der Platte platziert.':'Paketmaß weicht vom Produkt ab: proportional auf '+Math.round(scale*1000)/10+' % in die Produktkontur eingepasst.','Neues Design: bestehende Designs und Preise bleiben erhalten.',config.localResources.photoExamples?.some(e=>e.designId===d.id)?'Beispielfoto bleibt als anklickbare Vorschau. Kunden müssen ihr eigenes Foto hochladen.':'Kein Beispielfoto enthalten. Kunden laden ihr eigenes Foto hoch.','Vorbereitete Ebenen werden übernommen. Dies ist keine automatische Zerlegung beliebiger Bilder oder PDFs.','RGB-Vorschau: keine freigegebene Druckdatei.']};
 }

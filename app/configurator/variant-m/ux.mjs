@@ -24,6 +24,7 @@ import {textLimits,textLimitIssue,textLength,sameSampleText,clampText} from '../
 import {parseDirectLink,applyLinkText,withoutDirectLinkParams} from './design-gallery-model.mjs';
 import {createSessionGuard,uploadReferences} from './session-guard.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
+import {installSurfaceTabs} from './surface-tabs.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
@@ -361,6 +362,8 @@ export async function installUX(el,config,legacy){
     $('.ux-motif-pricing').hidden=true;
   }
   if($('[data-bestsellers]')?.hidden)$('[data-ux=bestsellers]')?.setAttribute('hidden','');
+  // K14 / Ü15.1: Reiter Vorderseite/Rückseite über der Platte (nur Produkte mit Rückseite).
+  if(config)installSurfaceTabs({el,r,config,button,say});
   if(config)installCommerce({el,config,files,pending:()=>uploadPending});
   if(config?.acrylic)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles});
   finishCustomerRights();

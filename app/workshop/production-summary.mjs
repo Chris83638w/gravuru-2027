@@ -10,6 +10,7 @@ import {acrylicSelection,acrylicOptions} from '../configurator/variant-m/acrylic
 import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {optionFieldEntries} from '../configurator/variant-m/contract.mjs';
+import {hasBack,objectSurface,producedSurfaces,surfaceLabel} from '../configurator/variant-m/surfaces.mjs';
 
 // Werkstatt-Zusammenfassung je Fertigungspaket (Ü7.1). Alle Werte stammen aus dem
 // gesicherten Prüfstand und den Renderer-Metadaten; nichts wird neu berechnet,
@@ -44,7 +45,9 @@ function nativeDetails(files,manifest,targetDpi){
  };
  // K14 / Ü12.1: nur sichtbare Gruppen (visibleIf); Zusatzfelder ohne Vorschau getrennt als `fields`.
  const options=groups.filter(group=>state.options[group.id]!==undefined).map(group=>{const value=group.values.find(v=>v.id===state.options[group.id]);return {groupId:group.id,group:group.name,valueId:state.options[group.id]??null,value:value?.label??String(state.options[group.id]??''),...optionPrice(group,value),mounting:Boolean(value&&(value.holes||value.mountingRule))};});
- const textFields=state.design.objects.filter(o=>!o.uxHidden&&o.type==='text').map(o=>({id:o.id,label:o.fieldKey||o.id,text:o.text,font:o.font,bold:Boolean(o.bold),italic:Boolean(o.italic),colorHex:o.color??null,
+ // K14 / Ü15.1: bei Produkten mit Rückseite trägt jedes Feld seine Seite.
+ const sided=hasBack(config.profile);
+ const textFields=state.design.objects.filter(o=>!o.uxHidden&&o.type==='text').map(o=>({id:o.id,label:o.fieldKey||o.id,...(sided?{surfaceId:objectSurface(o)}:{}),text:o.text,font:o.font,bold:Boolean(o.bold),italic:Boolean(o.italic),colorHex:o.color??null,
   sizeMm:round(o.size*viewport.scale),xMm:round(viewport.x+o.x*viewport.scale),yMm:round(viewport.y+o.y*viewport.scale),widthMm:round(o.w*viewport.scale),heightMm:round(o.h*viewport.scale),rotationDeg:round(o.rotation||0),anchor:'center'}));
  const processing=getProcessingProfile(config.profile),material=config.profile.material||{};
  const resolution=Array.isArray(manifest.photoResolution)?manifest.photoResolution:[];
@@ -53,6 +56,7 @@ function nativeDetails(files,manifest,targetDpi){
  return {product:{material:{kind:material.kind??null,label:MATERIAL_KINDS[material.kind]||material.kind||'offen',thicknessMm:round(material.thicknessMm,3),colorHex:material.color??null},
    widthMm:round(g.width,3),heightMm:round(g.height,3),shape:g.shape??'rect',cornerRadiusMm:round(g.cornerRadiusMm||0,3),
    mounting:{holeCount:(g.holes||[]).length,holes:(g.holes||[]).map(h=>({xMm:round(h.x,3),yMm:round(h.y,3),diameterMm:round(h.diameter,3)})),option:options.find(o=>o.mounting)?{group:options.find(o=>o.mounting).group,value:options.find(o=>o.mounting).value}:null},
+   ...(sided?{surfaces:producedSurfaces(config.profile,state.design.objects).map(id=>({id,label:surfaceLabel(config.profile,id)}))}:{}),
    options:options.map(({mounting,...o})=>o),fields:optionFieldEntries(config,state.options).map(f=>({id:f.id,kind:f.kind,label:f.label,value:f.value,display:f.display,priceCents:f.priceCents})),method:processing.method,methodLabel:processing.name||METHOD_LABELS[processing.method]||processing.method},
   textFields,photos,designId:state.design.id};
 }

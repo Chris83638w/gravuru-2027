@@ -14,6 +14,7 @@ import {makeProductDocument} from './product-model.mjs';
 import {nativeContour} from './acrylic-artwork.mjs';
 import {processProfile,isProcessProfileId,processMirror} from './process-profiles.mjs';
 import {quantityTiersIssue,quantityTiersOpen} from '../configurator/variant-m/contract.mjs';
+import {validateSurfaces,hasBack,backSurface} from '../configurator/variant-m/surfaces.mjs';
 
 // A product family holds everything a product series shares (material, shapes,
 // sizes, prices, drill-pattern rules, fonts, style notes) once. Products are
@@ -69,8 +70,14 @@ export function quantityTierGaps(f){
  return gaps;
 }
 
+// Offene, aber nicht sperrende Angaben (Staffel, Aufpreis Rückseite) – fürs Briefing.
+export const familyOpenNotes=f=>[...quantityTierGaps(f),...(hasBack(f)&&backSurface(f).priceCents===null?['Aufpreis „Rückseite gestalten“ (bis dahin nicht buchbar)']:[])];
 export function validateFamily(f){
- only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers'],'Produktfamilie');
+ only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers','surfaces'],'Produktfamilie');
+ // K14 / Ü15.1: zweite Fläche nur, wo das Produkt physisch eine Rückseite hat (Entscheidung Chris
+ // 19.10.2026: Brettchen, Schlüsselanhänger, Autoanhänger, Lesezeichen; Platten bleiben einseitig,
+ // Acryl „von hinten“ ist Spiegelung im Profil). Aufpreis null = offen → Rückseite nicht buchbar.
+ if(f.surfaces!==undefined){try{validateSurfaces({surfaces:f.surfaces});}catch(e){invalid(e.message);}const b=f.surfaces.find(s=>s.id==='back');if(b?.processingProfileId!==undefined&&!isProcessProfileId(b.processingProfileId))invalid('Rückseite: unbekanntes Verfahrensprofil.');}
  // K14 / Ü11.1: Mengenstaffel je Familie (und je Größe), Werte als Daten; null = offen.
  const tierIssue=(t,label)=>{if(t===undefined)return;const issue=quantityTiersIssue(t);if(issue)invalid(label+': '+issue);};
  tierIssue(f.quantityTiers,'Familie');
@@ -197,6 +204,7 @@ export function familyProductConfig(f,s,revision){
   features:{orderEnabled:false,productionConfirmed:false,motifsAllowed:true},designs:[design],defaultDesignId:design.id,
   optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values}]};
  const fields=familyOptionFields(f,s);if(fields.length)profile.optionFields=fields;
+ if(f.surfaces!==undefined)profile.surfaces=structuredClone(f.surfaces);
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:0,extraPriceCents:0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
  const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
  if(f.material.kind==='steel'){c.materialSurface=steelPreviewSurface();return nativeSpecimenConfig(c);}
@@ -247,7 +255,7 @@ Nur das **Design**: Texte, Motive, Foto. Form, Größe, Material, Bohrlöcher, B
 
 - Material: ${f.material.label}, ${f.material.thicknessMm===null?'Stärke offen':String(f.material.thicknessMm).replace('.',',')+' mm'}, Verfahren ${process?process.method==='print'?'UV-Druck':'Gravur':'offen'}${process?` (Profil „${process.id}“)`:''}. ${process?.method==='print'?'Farben aus der Profilpalette; die Werkstatt stellt den Druck dar.':mat.ink+' Gestaltet wird immer schwarz auf weiß; die Werkstatt stellt die Gravur je Material dar.'} Keine Graustufenflächen in Motiven.
 - Verfahrensregeln: Mindestschriftgröße ${process?String(process.minTextMm).replace('.',',')+' mm':'offen'}, Mindestlinienstärke ${process?.minStrokeMm!=null?String(process.minStrokeMm).replace('.',',')+' mm':'offen'}, Fotos ${process?(process.tools.photo?'möglich':'nicht vorgesehen'):'offen'}${process?.targetDpi?' (Soll '+process.targetDpi+' dpi)':''}, Spiegelung für die Fertigung: ${process?(process.mirror?'ja (Werkstatt spiegelt)':'nein'):'offen'}.
-- Randabstand der Gestaltung: ${f.designArea.marginMm===null?'offen (bis zur Klärung mindestens 10 mm frei lassen)':f.designArea.marginMm+' mm'}.${f.material.engravingSide==='back'?' Gravur von der Rückseite (die Werkstatt spiegelt für die Fertigung; gestaltet wird seitenrichtig).':''}${f.backing?` Rückplatte „${f.backing.label}“ rundum ${f.backing.offsetMm} mm größer; sie ist in der Schablone gestrichelt blau eingezeichnet und wird nicht gestaltet.`:''} Schutzzone um Bohrlöcher: ${f.designArea.keepoutMm} mm um den Lochrand.
+${hasBack(f)?'- **Rückseite:** eigene Fläche, seitenrichtig gestalten; Bohrlöcher erscheinen von hinten gespiegelt. Die Werkstatt erzeugt je Seite eine eigene Produktionsdatei. Lieferform für Rückseiten-Designs ist im Katalog noch offen.\n':''}- Randabstand der Gestaltung: ${f.designArea.marginMm===null?'offen (bis zur Klärung mindestens 10 mm frei lassen)':f.designArea.marginMm+' mm'}.${f.material.engravingSide==='back'?' Gravur von der Rückseite (die Werkstatt spiegelt für die Fertigung; gestaltet wird seitenrichtig).':''}${f.backing?` Rückplatte „${f.backing.label}“ rundum ${f.backing.offsetMm} mm größer; sie ist in der Schablone gestrichelt blau eingezeichnet und wird nicht gestaltet.`:''} Schutzzone um Bohrlöcher: ${f.designArea.keepoutMm} mm um den Lochrand.
 - **Texte** nicht in die Schutzzonen legen (sonst sieht der Kunde einen Hinweis). **Motive dürfen über Bohrlöcher** gehen.
 - Zugelassene Schriften (exakt diese Namen verwenden): siehe \`schriften.txt\`.
 
@@ -270,7 +278,7 @@ Texte als echten Text, nicht in Pfade umwandeln. Kein Text in Deko oder Motiv. K
 | --- | --- | --- | ---: | --- | --- |
 ${rows}
 
-${gaps.length||quantityTierGaps(f).length?'## Noch offen in den Stammdaten\n\n'+[...gaps,...quantityTierGaps(f)].map(g=>'- '+g).join('\n')+'\n\n':''}## Stil und Hinweise
+${gaps.length||familyOpenNotes(f).length?'## Noch offen in den Stammdaten\n\n'+[...gaps,...familyOpenNotes(f)].map(g=>'- '+g).join('\n')+'\n\n':''}## Stil und Hinweise
 
 ${f.briefingNotes.trim()||'Noch keine Stilnotizen hinterlegt.'}
 `;

@@ -40,6 +40,11 @@ PROCESS = {'steel-engraving': 'Gravur', 'slate-engraving': 'Gravur', 'acrylic-en
 PROCESS_IDS = ('steel-engraving', 'wood-engraving', 'slate-engraving', 'acrylic-engraving', 'color-print')
 
 euro = lambda c: None if c is None else round(c / 100, 2)
+# K14 / Ü15.1: Rückseite je Familie (leer = einseitig; Aufpreis leer = offen, nicht buchbar).
+def back_columns(f):
+    b = next((s for s in f.get('surfaces') or [] if s['id'] == 'back'), None)
+    if not b: return ['', None, '', '']
+    return ['ja', euro(b.get('priceCents')), b.get('processingProfileId', ''), {True: 'ja', False: 'nein'}.get(b.get('mirror'), '')]
 cents = lambda v: None if v in (None, '') else int(round(float(str(v).replace('€', '').replace(',', '.').strip()) * 100))
 num = lambda v: None if v in (None, '') else float(str(v).replace(',', '.'))
 
@@ -71,12 +76,12 @@ def export(paths, out):
             name, proc, ink = MATERIALS.get(m['kind'], (m['kind'], '', ''))
             seen[k] = [m['kind'], m.get('variant') or '', m['label'], m['thicknessMm'], PROCESS.get(m['processingProfileId'], m['processingProfileId']), m['processingProfileId'], ink, '']
     sheet('Materialien', ['Material (Kennung)', 'Variante', 'Bezeichnung', 'Stärke mm', 'Verfahren', 'Verfahrensprofil', 'Gravur erscheint', 'Hinweise'], list(seen.values()), [18, 12, 34, 10, 10, 18, 16, 40])
-    sheet('Familien', ['Familie (Kennung)', 'Name', 'Material', 'Variante', 'Stärke mm', 'Verfahren', 'Verfahrensprofil', 'Gravurseite', 'Gestaltungsrand mm', 'Schutzzone mm', 'Ohne Befestigung anbieten', 'Rückplatte', 'Rückplatte Überstand mm', 'Rückplatte Stärke mm', 'Rückplatte Hinweis', 'Schriften', 'Stilnotizen', 'Herkunft'],
+    sheet('Familien', ['Familie (Kennung)', 'Name', 'Material', 'Variante', 'Stärke mm', 'Verfahren', 'Verfahrensprofil', 'Gravurseite', 'Gestaltungsrand mm', 'Schutzzone mm', 'Ohne Befestigung anbieten', 'Rückplatte', 'Rückplatte Überstand mm', 'Rückplatte Stärke mm', 'Rückplatte Hinweis', 'Schriften', 'Stilnotizen', 'Herkunft', 'Rückseite', 'Rückseite Aufpreis €', 'Rückseite Verfahrensprofil', 'Rückseite gespiegelt'],
           [[f['id'], f['name'], f['material']['kind'], f['material'].get('variant') or '', f['material']['thicknessMm'], PROCESS.get(f['material']['processingProfileId'], f['material']['processingProfileId']), f['material']['processingProfileId'],
             {'back': 'hinten', 'front': 'vorn'}.get(f['material'].get('engravingSide'), ''), f['designArea']['marginMm'], f['designArea']['keepoutMm'], 'ja' if f['withoutMounting'] else 'nein',
             (f.get('backing') or {}).get('label', ''), (f.get('backing') or {}).get('offsetMm'), (f.get('backing') or {}).get('thicknessMm'), (f.get('backing') or {}).get('note', ''),
-            ', '.join(f['fonts']), f['briefingNotes'], (f.get('source') or {}).get('note', '')] for f in fams],
-          [26, 34, 10, 10, 9, 10, 18, 10, 12, 12, 12, 24, 12, 12, 30, 50, 60, 60])
+            ', '.join(f['fonts']), f['briefingNotes'], (f.get('source') or {}).get('note', '')] + back_columns(f) for f in fams],
+          [26, 34, 10, 10, 9, 10, 18, 10, 12, 12, 12, 24, 12, 12, 30, 50, 60, 60, 10, 12, 18, 12])
     rows = []
     for f in fams:
         groups = {g['key']: g for g in f['groups']}
@@ -141,6 +146,11 @@ def import_(xlsx, out):
                      'designArea': {'marginMm': num(r['Gestaltungsrand mm']), 'keepoutMm': num(r['Schutzzone mm'])}, 'groups': [], 'mountingRules': [], 'sizes': [],
                      'withoutMounting': str(r['Ohne Befestigung anbieten']).strip().lower() == 'ja', 'fonts': [x.strip() for x in str(r['Schriften'] or '').split(',') if x.strip()],
                      'briefingNotes': r['Stilnotizen'] or '', 'source': {'note': 'Aus Stammdaten-Excel gelesen: ' + Path(xlsx).name}}
+        if str(r.get('Rückseite') or '').strip().lower() == 'ja':
+            back = {'id': 'back', 'priceCents': cents(r.get('Rückseite Aufpreis €'))}
+            if r.get('Rückseite Verfahrensprofil'): back['processingProfileId'] = str(r['Rückseite Verfahrensprofil']).strip()
+            if r.get('Rückseite gespiegelt') in ('ja', 'nein'): back['mirror'] = r['Rückseite gespiegelt'] == 'ja'
+            fams[fid]['surfaces'] = [{'id': 'front'}, back]
         if r.get('Gravurseite') in ('vorn', 'hinten'): fams[fid]['material']['engravingSide'] = 'front' if r['Gravurseite'] == 'vorn' else 'back'
         if r.get('Rückplatte'):
             fams[fid]['backing'] = {'label': r['Rückplatte'], 'offsetMm': num(r['Rückplatte Überstand mm']) or 0, 'thicknessMm': num(r['Rückplatte Stärke mm'])}

@@ -11,6 +11,7 @@ import {measureText} from '../../platform/sources/app/shared/models/doorbell-pre
 import {escapeXml as esc, filteredDesigns} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, editedDesignTexts, validatePhotoFile, newEditableObject, resolvedOptions} from './contract.mjs';
 import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
+import {objectSurface, surfaceGeometry} from './surfaces.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -22,15 +23,17 @@ export function installUniversal(configInput) {
   const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
   const thumbnails=new WeakMap();
   const current = () => designFromState(config, el.state);
-  const profile = () => selectedProfile(config, options);
+  // K14 / Ü15.1: gewählte Seite (`el.state.uxSurface`, Standard vorn); von hinten sind die Bohrlöcher gespiegelt.
+  const activeSurface = () => el?.state?.uxSurface === 'back' ? 'back' : 'front';
+  const profile = (surface = activeSurface()) => { const sp = selectedProfile(config, options); return surface === 'back' ? {...sp, geometry:surfaceGeometry(sp.geometry, 'back')} : sp; };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
-  const svg = (design, {guides=false, selected='', handles=false, keepout=false} = {}) => {
-    const visible={...design,objects:design.objects.filter(o=>!o.uxHidden)};
-    let result=surfacePreview(studioSvg(profile(), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
+  const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front'} = {}) => {
+    const visible={...design,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
+    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
-    return scenePreview(designAreaPreview(keepoutPreview(spacerPreview(result,profile()),profile(),{show:keepout,emphasis:guides}),config,profile(),{show:keepout}),config.sceneBackground);
+    return scenePreview(designAreaPreview(keepoutPreview(spacerPreview(result,profile(surface)),profile(surface),{show:keepout,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
 
@@ -48,9 +51,9 @@ export function installUniversal(configInput) {
       const outline = shape === 'ellipse' ? `M0 ${height/2}a${width/2} ${height/2} 0 1 0 ${width} 0a${width/2} ${height/2} 0 1 0 -${width} 0` : `M0 0H${width}V${height}H0Z`;
       return {outline, clip:outline, holes:profile().geometry.holes.map(h => ({...h, r:h.diameter/2})), gap:0};
     };
-    el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]})).querySelector('[data-object]')?.outerHTML || '';
+    el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o)})).querySelector('[data-object]')?.outerHTML || '';
     el.svgBody = function(preview=true, guides=false) {
-      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview}));
+      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front'}));
       if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[]);for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
       return doc.documentElement.innerHTML;
     };
@@ -250,7 +253,7 @@ export function installUniversal(configInput) {
       updateOptionVisibility();
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
       // Independent of validity: the drill-hole hint must also show while another issue is open.
-      try{const hint=holeHintText(textsNearHoles(current(),profile(),el.fontData));holeHint.textContent=hint;holeHint.hidden=!hint;}catch{holeHint.hidden=true;}
+      try{const shown=current();const hint=holeHintText(textsNearHoles({...shown,objects:shown.objects.filter(o=>objectSurface(o)===activeSurface())},profile(),el.fontData));holeHint.textContent=hint;holeHint.hidden=!hint;}catch{holeHint.hidden=true;}
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';

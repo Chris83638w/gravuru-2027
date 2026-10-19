@@ -159,7 +159,9 @@ def build(data):
  else:mounting='Keine Bohrungen · Befestigung laut Optionen' if not holes and not mount.get('holeCount') else 'laut Bohrbild'
  if holes:mounting+=f" · {len(holes)} Bohrung(en): "+', '.join(f"Ø {mm(h['diameterMm'])} mm bei {mm(h['xMm'])} | {mm(h['yMm'])} mm" for h in holes)
  elif mount.get('holeCount'):mounting+=f" · {mount['holeCount']} Ausschnitt(e) laut Kontur"
+ sides=product.get('surfaces') or []
  rows=[('Material',material),('Größe',f"{mm(product['widthMm'])} × {mm(product['heightMm'])} mm"+(f" · Radius {mm(product['cornerRadiusMm'])} mm" if product.get('cornerRadiusMm') else '')),('Befestigung',mounting),('Verfahren',product.get('methodLabel') or '–')]
+ if sides:rows.append(('Seiten',' + '.join(s['label'] for s in sides)+(' (je Seite eine Produktionsdatei)' if len(sides)>1 else '')))
  options=product.get('options') or []
  def option_price(o):
   c=o.get('priceCents')
@@ -182,7 +184,8 @@ def build(data):
   font=f.get('font') or '–'
   style=[k for k,v in (('fett',f.get('bold')),('kursiv',f.get('italic'))) if v]
   if style:font+=' ('+', '.join(style)+')'
-  trows.append([f.get('label') or f.get('id'),f.get('text') or '',font,mm(f.get('sizeMm')),mm(f.get('xMm')),mm(f.get('yMm')),mm(f.get('rotationDeg'),1)+'°'])
+  side={'back':' (Rückseite)','front':' (Vorderseite)'}.get(f.get('surfaceId'),'') if sides and len(sides)>1 else ''
+  trows.append([(f.get('label') or f.get('id'))+side,f.get('text') or '',font,mm(f.get('sizeMm')),mm(f.get('xMm')),mm(f.get('yMm')),mm(f.get('rotationDeg'),1)+'°'])
  sheet.table([('Feld',70),('Text',170),('Schrift',100),('Größe mm',54),('x mm',44),('y mm',44),('Drehung',41)],trows,limit_y=H-250,empty='Keine Textfelder')
  sheet.text(MARGIN,sheet.y+8,'Position = Mittelpunkt des Felds in mm vom linken oberen Plattenrand; Größe = Schriftgröße in mm auf der Platte.',6.5);sheet.y+=10
  # Fotos

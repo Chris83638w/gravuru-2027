@@ -12,6 +12,7 @@ import {validSurface} from './material-surface.mjs';
 import {validateSteelFormats} from './steel-formats.mjs';
 import {textLimits,textLimitIssue,sameSampleText,requiredFieldMessage} from '../../workshop/theme-limits.mjs';
 import {optionFields,visibleBy,validateOptionConditions,fieldValue,fieldPrice,fieldRequiredMessage,fieldDisplay} from './option-fields.mjs';
+import {validateSurfaces,objectSurface,hasBack,backSurcharge,surfaceProcess} from './surfaces.mjs';
 
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
@@ -97,6 +98,11 @@ export function prepareConfig(input) {
   }
   for(const group of p.optionGroups||[])for(const value of group.values)validateOptionPresentation(value);
   validateOptionConditions(p); // K14 / Ü12.1: bedingte Gruppen und Zusatzfelder
+  // K14 / Ü15.1: Flächen (Vorder-/Rückseite). Die Rückseite darf ein eigenes Verfahrensprofil
+  // tragen, aber dasselbe Verfahren (Gravur/Druck): die Fertigungsausgabe erzeugt beide Dateien
+  // im selben Lauf; ein Verfahrenswechsel je Seite ist noch nicht an die Ausgabe angeschlossen.
+  validateSurfaces(p);
+  if(hasBack(p)&&surfaceProcess(config,'back').method!==processProfile(p).method)fail('Rückseite mit anderem Verfahren (Gravur/Druck) ist noch nicht an die Fertigungsausgabe angeschlossen.');
   if (!p.binding?.productId || !p.id || !p.revision) fail('Produktbindung und feste Profilrevision fehlen.');
   if (!(review&&config.basePriceCents===null&&config.extraMotifCents===null)&&(!Number.isSafeInteger(config.basePriceCents) || config.basePriceCents < 0 ||
       !Number.isSafeInteger(config.extraMotifCents) || config.extraMotifCents < 0)) fail('Verbindliche Centpreise fehlen.');
@@ -133,7 +139,7 @@ export function prepareConfig(input) {
   }
   if(config.quantityTiers!==undefined){const issue=quantityTiersIssue(config.quantityTiers,{allowUnitCents:!config.acrylic&&!config.steelFormats});if(issue)fail(issue);}
   getProcessingProfile(p);
-  if(config.acrylic)acrylicSelection(resolvedOptions(config),config.acrylic.pricing);
+  if(config.acrylic)acrylicSelection(acrylicOptions(resolvedOptions(config)),config.acrylic.pricing);
   return config;
 }
 
@@ -218,7 +224,9 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   if(!config.acrylic)for (const group of config.profile.optionGroups || []) if (options[group.id] !== undefined) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
   // Zusatzfelder (Ü12.1): Aufpreis nur sichtbarer, ausgefüllter Felder.
   const fieldCents = optionFieldCents(config, options);
-  unitCents += additionalMotifs * config.extraMotifCents + fieldCents;
+  // Rückseite gestalten (Ü15.1): Aufpreis je Stück, sobald die Rückseite gestaltet ist; offen = nicht buchbar.
+  const backCents = backSurcharge(config, objects);
+  unitCents += additionalMotifs * config.extraMotifCents + fieldCents + backCents;
   if (!Number.isSafeInteger(unitCents)) fail('Ungültiger Gesamtpreis.');
   // Staffel (Ü11.1) serverseitig auf den Stückpreis; nur Produkte mit Staffelangabe
   // tragen die Zusatzfelder, damit bestehende Preisstände unverändert bleiben.
@@ -226,7 +234,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   unitCents = applyQuantityTier(listUnitCents, tier, config.basePriceCents);
   if (!Number.isSafeInteger(unitCents * quantity)) fail('Ungültiger Gesamtpreis.');
   const tiers = config.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents};
-  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents})};
+  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
 }
 
 // `template:true` prüft eine Vorlage gegen sich selbst (Händler-Werkstatt):
@@ -268,6 +276,14 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     if (!o || JSON.stringify(cleanObject(o)) !== JSON.stringify(cleanObject(raw))) fail('Ein fester Vorlagenbereich wurde verändert.');
   }
   // Pflichttexte (Ü2.2): vorhanden, sichtbar und nicht mehr der Mustertext der Vorlage.
+  // Flächen (Ü15.1): Vorlagenelemente bleiben auf ihrer Seite, neue Elemente nur auf vorhandenen
+  // Seiten; eine gestaltete Rückseite braucht ihren Aufpreis (offen sperrt, außer Vorlage/Entwurf).
+  for (const o of design.objects) {
+    if (o.surfaceId !== undefined && o.surfaceId !== 'front' && !(o.surfaceId === 'back' && hasBack(config.profile))) fail('Dieses Produkt hat keine solche Seite.');
+    const raw = source.objects.find(s => s.id === o.id);
+    if (raw && objectSurface(o) !== objectSurface(raw)) fail('Ein Vorlagenelement bleibt auf seiner Seite.');
+  }
+  if(!template&&!draft)backSurcharge(config,design.objects);
   // Pflicht-Zusatzfelder (Ü12.1): nur sichtbare, nicht in Vorlage oder Entwurf.
   if(!template&&!draft){const missing=missingRequiredFields(config,options);if(missing.length)fail(fieldRequiredMessage(missing[0]));}
   if(!template&&!draft)for(const raw of source.objects.filter(o=>o.type==='text'&&o.required===true)){
@@ -309,13 +325,15 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   // nicht unter der Mindestschriftgröße des Verfahrens. Vorlagen prüft die Werkstatt
   // gegen sich selbst (template:true) ohne die Mindestgröße.
   const process = productProcess(config), scale = physicalScale(config, options), rights = designElementRights(config, source.id, source.objects);
+  const backProcess = hasBack(config.profile) ? surfaceProcess(config, 'back') : process, processOf = o => objectSurface(o) === 'back' ? backProcess : process;
   const colorSelection = config.workshopProfiles?.selections?.colors ?? null, designColors = source.objects.map(s => s.color);
   for (const o of design.objects) {
     if (o.uxHidden || isGuideObject(o) || o.type === 'photoSlot') continue;
     const raw = source.objects.find(s => s.id === o.id);
-    const colorIssue = processColorIssue(process, o.color, {templateColor: raw?.color, designColors, selection: colorSelection}); if (colorIssue) fail(colorIssue);
+    const colorIssue = processColorIssue(processOf(o), o.color, {templateColor: raw?.color, designColors, selection: colorSelection}); if (colorIssue) fail(colorIssue);
     if (template || o.type !== 'text' || !(raw ? rights[raw.id]?.scale === true : true)) continue;
-    if (!Number.isFinite(o.size) || o.size * scale < process.minTextMm - 0.005) fail('Text zu klein: mindestens ' + String(process.minTextMm).replace('.', ',') + ' mm bei diesem Verfahren.');
+    const min = processOf(o).minTextMm;
+    if (!Number.isFinite(o.size) || o.size * scale < min - 0.005) fail('Text zu klein: mindestens ' + String(min).replace('.', ',') + ' mm bei diesem Verfahren.');
   }
   return design;
 }
@@ -323,7 +341,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','italic','motif','fieldKey',
   'letterSpacing','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
-  'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role'];
+  'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){
  const source=config.profile.designs.find(d=>d.id===state.designId);
@@ -366,6 +384,7 @@ export function newEditableObject(config, input, id, fonts, motifs, options = {}
   const o = {...cleanObject(input), id, x:width/2, y:height/2, rotation:0,
     color:getProcessingProfile(p).ink, customerEditable:true, templateOrigin:false};
   delete o.role; // Neue Kundenelemente sind immer Druck-/Gravurebenen (Ü6.1).
+  if (o.surfaceId !== undefined && !(o.surfaceId === 'front' || (o.surfaceId === 'back' && hasBack(config.profile)))) fail('Dieses Produkt hat keine solche Seite.');
   if (o.type === 'text') {
     if (!fonts[o.font]) o.font = 'Montserrat';
     o.size = Math.min(o.size || 14, height*.12); o.bold = !!o.bold;

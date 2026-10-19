@@ -1,6 +1,6 @@
 import {previewResourceURL} from './preview-resource.mjs';
 import {ACRYLIC_BASES,acrylicSelection,acrylicOptions,containAcrylicObject} from './acrylic-product.mjs';
-import {money} from './contract.mjs';
+import {money,quote} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
 const ROOT='/acrylic-assets/';
 export async function installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles}) {
@@ -75,8 +75,11 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    base.dataset.flat=String(!!b.flat);
    stage.dataset.hasBase=String(!!b.asset);
    const quantity=Number($('[data-fk-quantity]')?.value||1);
-   all('[data-fk-total]').forEach(n=>n.textContent=money(choice.totalCents*quantity));
-   const lines=$('[data-ux-price-lines]');if(lines)lines.textContent=`Acrylglas ${money(choice.size.basePriceCents)}${b.id==='none'?'':` + Sockel ${money(choice.baseCents)}`}${choice.wallCents?` + Wandhalterung ${money(choice.wallCents)}`:''}`;
+   // K14: Gesamtpreis aus derselben Rechnung wie Server und Warenkorb (quote: Staffel, Zusatzfelder,
+   // Rückseite, Zusatzmotive); nur wenn sie nicht rechnen kann (z. B. Rückseite nicht buchbar), die Ausführung allein.
+   let q=null;try{q=quote(config,el.state.objects,el.state.designId,el.state.mOptions,quantity);}catch{q=null;}
+   all('[data-fk-total]').forEach(n=>n.textContent=money(q?q.totalCents:choice.totalCents*quantity));
+   const lines=$('[data-ux-price-lines]');if(lines)lines.textContent=`Acrylglas ${money(choice.size.basePriceCents)}${b.id==='none'?'':` + Sockel ${money(choice.baseCents)}`}${choice.wallCents?` + Wandhalterung ${money(choice.wallCents)}`:''}${q?.fieldCents?` + Zusatzangaben ${money(q.fieldCents)}`:''}${q?.backCents?` + Rückseite ${money(q.backCents)}`:''}${q?.additionalMotifs?` + ${q.additionalMotifs} Zusatzmotiv(e) ${money(q.additionalMotifs*config.extraMotifCents)}`:''}${q?.quantityTier?` · Mengenstaffel ab ${q.quantityTier.minQuantity} Stück −${money(q.quantityTierDiscountCents)} je Stück`:''}`;
    footer.textContent=`${choice.size.width/10} × ${(choice.size.height/10).toLocaleString('de-DE')} cm · 3 mm Acrylglas`;
    for(const option of all('select[data-m-option="base"] option')){const row=ACRYLIC_BASES.find(b=>b.id===option.value);if(row)option.textContent=row.label+(row.id==='none'?'':` · +${money(acrylicSelection({size:el.state.mOptions.size,base:row.id},config.acrylic.pricing).baseCents)}`);}
    all('[data-ux=lock],[data-ux=remove-content]').forEach(n=>{if(fixedSource().some(o=>o.id===n.dataset.id)&&!(n.dataset.ux==='remove-content'&&el.uxCanPositionPhoto?.(el.state.objects.find(o=>o.id===n.dataset.id))))n.disabled=true;});

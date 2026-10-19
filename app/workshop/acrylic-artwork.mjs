@@ -10,6 +10,7 @@ import {textPaths} from '../platform/sources/app/shared/models/doorbell-preview.
 import {escapeXml as esc} from '../platform/sources/app/shared/models/design-content.mjs';
 import {elementColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {isGuideObject} from '../configurator/variant-m/contract.mjs';
+import {objectSurface,surfaceGeometry,producedSurfaces,surfaceMirror,hasBack} from '../configurator/variant-m/surfaces.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'acrylic_artwork'});};
 const dataSvg=bytes=>'data:image/svg+xml;base64,'+bytes.toString('base64');
 const number=v=>Number(v.toFixed(8));
@@ -21,18 +22,22 @@ export function nativeContour(g){
  const d=g.shape==='ellipse'?ellipse(w/2,h/2,w/2,h/2):r?cornered(g.shape==='plaque'?0:1):`M0 0H${w}V${h}H0Z`;
  return {schema:'gravuru-contour/v1',widthMm:w,heightMm:h,holeCount:g.holes.length,contours:[{role:'outer',d},...g.holes.map(h=>({role:'hole',d:ellipse(h.x,h.y,h.diameter/2,h.diameter/2)}))]};
 }
-export async function acrylicArtwork(archive,archiveHash,{engraving=false}={}){
+// K14 / Ü15.1: `surfaceId` wählt die Fläche (Standard vorn, wie bisher). Die Rückseite wird
+// seitenrichtig ausgegeben, ihre Kontur hat die von hinten gespiegelten Bohrlöcher.
+export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfaceId='front'}={}){
  const {files,manifest}=readReviewPackage(archive,archiveHash,NATIVE_REVIEW_SCHEMAS),saved=JSON.parse(files.get('produkt-und-gestaltung.json')),config=JSON.parse(files.get('konfigurator-quellen.json')),state=saved.state;
  if(config.doorbell)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
  if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind))||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
  const design=validateProductDesign(saved.product,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
- const viewport=artworkViewport(config,{mOptions:state.options}),geometry=nativeContour(viewport.geometry),parts=[],photos=[],textFields=[],photoFields=[];
+ if(surfaceId!=='front'&&!(surfaceId==='back'&&hasBack(config.profile)))fail('Dieses Produkt hat keine solche Seite.');
+ const viewport=artworkViewport(config,{mOptions:state.options}),geometry=nativeContour(surfaceGeometry(viewport.geometry,surfaceId)),parts=[],photos=[],textFields=[],photoFields=[];
  if(geometry.widthMm!==manifest.product.widthMm||geometry.heightMm!==manifest.product.heightMm)fail('Das gesicherte Druckformat stimmt nicht überein.');
  const maskFor=(o,id)=>{const bytes=o.photoMaskAssetId&&files.get('quellen/'+o.photoMaskAssetId+'-vorschau.svg');if(o.photoShape==='template'&&!bytes)fail('Original-Fotomaske fehlt im gesicherten Stand.');const clip=photoClip(o,id,bytes?dataSvg(bytes):undefined);clip.defs=clip.defs.replace('<mask ',`<mask data-mask-scale="${viewport.scale}" `);return clip;};
  const transform=o=>`translate(${number(viewport.x)} ${number(viewport.y)}) scale(${number(viewport.scale)}) translate(${o.x} ${o.y}) rotate(${o.rotation||0})`;
  for(const [index,o] of design.objects.entries()){
   if(o.uxHidden||isGuideObject(o))continue; // Ü6.1: Hilfsebenen sind Vorschau, nie Fertigung
+  if(objectSurface(o)!==surfaceId)continue; // Ü15.1: je Fläche eine eigene Datei
   const field='native-'+index,color=engraving?'#000000':elementColor(config.profile,o);let body='';
   if(o.type==='text'){body=textPaths(o,config.localResources.fonts);if(!body&&o.text.trim())fail('Gesicherte Schriftpfade fehlen.');textFields.push(field);}
   else if(o.uxUploadId){
@@ -67,5 +72,5 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false}={}){
  if(design.marks?.length)fail('Diese Vorlage enthält noch nicht übernommene Gestaltungslinien. Bitte vor der Fertigung prüfen.');
  const clip=engraving?`<defs><clipPath id="native-engraving-contour"><path d="${geometry.contours.map(c=>c.d).join(' ')}" clip-rule="evenodd"/></clipPath></defs>`:'';
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${geometry.widthMm}mm" height="${geometry.heightMm}mm" viewBox="0 0 ${geometry.widthMm} ${geometry.heightMm}">${clip}<g data-native-design="true"${engraving?' clip-path="url(#native-engraving-contour)"':''}>${parts.join('')}</g></svg>`;
- return {files,manifest,svg,geometry,geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields};
+ return {files,manifest,svg,geometry,geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields,surfaceId,surfaces:producedSurfaces(config.profile,design.objects),mirrorFor:front=>surfaceMirror(config,surfaceId,front)};
 }

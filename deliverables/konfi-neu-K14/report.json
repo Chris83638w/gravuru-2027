@@ -1,0 +1,84 @@
+{
+ "checks": [
+  {
+   "name": "desktop: Reiter Vorderseite/Rückseite vorhanden",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "desktop: Staffel neben der Menge",
+   "ok": true,
+   "detail": "ab 5 Stück −10 % · ab 10 Stück −15 % · ab 25 Stück −20 %"
+  },
+  {
+   "name": "desktop: Zusatzfelder sichtbar (Kordel nur ohne Sockel)",
+   "ok": true,
+   "detail": "[\"widmung\", \"kordel\", \"termin\", \"karte\"]"
+  },
+  {
+   "name": "desktop: bedingtes Feld blendet aus",
+   "ok": true,
+   "detail": "[\"widmung\", \"termin\", \"karte\"]"
+  },
+  {
+   "name": "desktop: Menge 5 rechnet Staffel",
+   "ok": true,
+   "detail": "14,99 € → 67,45 €"
+  },
+  {
+   "name": "desktop: Rückseite gewählt, Vorlagentext ausgeblendet",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "name": "desktop: neuer Text liegt auf der Rückseite",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "desktop: keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "mobile: Reiter Vorderseite/Rückseite vorhanden",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "mobile: Staffel neben der Menge",
+   "ok": true,
+   "detail": "ab 5 Stück −10 % · ab 10 Stück −15 % · ab 25 Stück −20 %"
+  },
+  {
+   "name": "mobile: Zusatzfelder sichtbar (Kordel nur ohne Sockel)",
+   "ok": true,
+   "detail": "[\"widmung\", \"kordel\", \"termin\", \"karte\"]"
+  },
+  {
+   "name": "mobile: bedingtes Feld blendet aus",
+   "ok": true,
+   "detail": "[\"widmung\", \"termin\", \"karte\"]"
+  },
+  {
+   "name": "mobile: Menge 5 rechnet Staffel",
+   "ok": true,
+   "detail": "14,99 € → 67,45 €"
+  },
+  {
+   "name": "mobile: Rückseite gewählt, Vorlagentext ausgeblendet",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "name": "mobile: neuer Text liegt auf der Rückseite",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "name": "mobile: keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  }
+ ]
+}

@@ -1,0 +1,661 @@
+{
+  "quelle": "Tools 52.5.2.gms",
+  "quelle_sha256": "88701c199a0a1e5e069806cf9d4b47b8babec3566d2a78aa8040ae256b24d880",
+  "quelle_bytes": 5121554,
+  "extrahiert_am": "2026-10-19",
+  "module": 130,
+  "zeilen": 81106,
+  "geschwaerzte_passwoerter": 2,
+  "dateien": [
+    {
+      "path": "src/class/AmazonConvertPreset.cls",
+      "type": "Class",
+      "lines": 138
+    },
+    {
+      "path": "src/class/AmazonExcelDesignInfo.cls",
+      "type": "Class",
+      "lines": 1085
+    },
+    {
+      "path": "src/class/AmazonImportJSON.cls",
+      "type": "Class",
+      "lines": 211
+    },
+    {
+      "path": "src/class/AmazonImportJSONOptionGroup.cls",
+      "type": "Class",
+      "lines": 10
+    },
+    {
+      "path": "src/class/AmazonImportJSONRun.cls",
+      "type": "Class",
+      "lines": 127
+    },
+    {
+      "path": "src/class/AmazonImportJSONRunRange.cls",
+      "type": "Class",
+      "lines": 72
+    },
+    {
+      "path": "src/class/AmazonImportJSONView.cls",
+      "type": "Class",
+      "lines": 637
+    },
+    {
+      "path": "src/class/AmazonImportSortedView.cls",
+      "type": "Class",
+      "lines": 230
+    },
+    {
+      "path": "src/class/AmazonImportTemplate.cls",
+      "type": "Class",
+      "lines": 87
+    },
+    {
+      "path": "src/class/AmazonImportViewManager.cls",
+      "type": "Class",
+      "lines": 572
+    },
+    {
+      "path": "src/class/ArrayList.cls",
+      "type": "Class",
+      "lines": 628
+    },
+    {
+      "path": "src/class/ArrayList2D.cls",
+      "type": "Class",
+      "lines": 433
+    },
+    {
+      "path": "src/class/CDRRun.cls",
+      "type": "Class",
+      "lines": 115
+    },
+    {
+      "path": "src/class/ConfiExport.cls",
+      "type": "Class",
+      "lines": 59
+    },
+    {
+      "path": "src/class/ConfiExportRange.cls",
+      "type": "Class",
+      "lines": 37
+    },
+    {
+      "path": "src/class/ConfiPartToViewSortInstruction.cls",
+      "type": "Class",
+      "lines": 108
+    },
+    {
+      "path": "src/class/ConfiView.cls",
+      "type": "Class",
+      "lines": 171
+    },
+    {
+      "path": "src/class/ConfiViewRange.cls",
+      "type": "Class",
+      "lines": 58
+    },
+    {
+      "path": "src/class/Curve2.cls",
+      "type": "Class",
+      "lines": 21
+    },
+    {
+      "path": "src/class/CustomShapeTypeQuery.cls",
+      "type": "Class",
+      "lines": 381
+    },
+    {
+      "path": "src/class/FSDesignFiles.cls",
+      "type": "Class",
+      "lines": 790
+    },
+    {
+      "path": "src/class/FSShapeFolder.cls",
+      "type": "Class",
+      "lines": 98
+    },
+    {
+      "path": "src/class/FSSizeFolder.cls",
+      "type": "Class",
+      "lines": 625
+    },
+    {
+      "path": "src/class/FancyExportJSONImageElement.cls",
+      "type": "Class",
+      "lines": 330
+    },
+    {
+      "path": "src/class/FancyExportJSONTextElement.cls",
+      "type": "Class",
+      "lines": 160
+    },
+    {
+      "path": "src/class/FancyExportPackage.cls",
+      "type": "Class",
+      "lines": 359
+    },
+    {
+      "path": "src/class/FancyExportTextSplit.cls",
+      "type": "Class",
+      "lines": 27
+    },
+    {
+      "path": "src/class/FancyExportView.cls",
+      "type": "Class",
+      "lines": 2013
+    },
+    {
+      "path": "src/class/FileDataCSV.cls",
+      "type": "Class",
+      "lines": 46
+    },
+    {
+      "path": "src/class/IMonitoredFileData.cls",
+      "type": "Class",
+      "lines": 24
+    },
+    {
+      "path": "src/class/MonitoredFile.cls",
+      "type": "Class",
+      "lines": 65
+    },
+    {
+      "path": "src/class/MySQLConnection.cls",
+      "type": "Class",
+      "lines": 93
+    },
+    {
+      "path": "src/class/PersistentShape.cls",
+      "type": "Class",
+      "lines": 67
+    },
+    {
+      "path": "src/class/PersistentShapeDocumentHandler.cls",
+      "type": "Class",
+      "lines": 87
+    },
+    {
+      "path": "src/class/PlaceFileJob.cls",
+      "type": "Class",
+      "lines": 468
+    },
+    {
+      "path": "src/class/PlaceFileJobList.cls",
+      "type": "Class",
+      "lines": 24
+    },
+    {
+      "path": "src/class/PlaceFileParameters.cls",
+      "type": "Class",
+      "lines": 87
+    },
+    {
+      "path": "src/class/PlaceFileShapeCache.cls",
+      "type": "Class",
+      "lines": 240
+    },
+    {
+      "path": "src/class/PlaceFileSubJob.cls",
+      "type": "Class",
+      "lines": 838
+    },
+    {
+      "path": "src/class/ProductDesignLayer.cls",
+      "type": "Class",
+      "lines": 2462
+    },
+    {
+      "path": "src/class/ProductDesignLayerRange.cls",
+      "type": "Class",
+      "lines": 190
+    },
+    {
+      "path": "src/class/ProductDesignPart.cls",
+      "type": "Class",
+      "lines": 352
+    },
+    {
+      "path": "src/class/ProductDesignPartRange.cls",
+      "type": "Class",
+      "lines": 162
+    },
+    {
+      "path": "src/class/ProductDesignRange.cls",
+      "type": "Class",
+      "lines": 284
+    },
+    {
+      "path": "src/class/ProductIDObject.cls",
+      "type": "Class",
+      "lines": 373
+    },
+    {
+      "path": "src/class/ProductShapeInfo.cls",
+      "type": "Class",
+      "lines": 143
+    },
+    {
+      "path": "src/class/RegexMatcher.cls",
+      "type": "Class",
+      "lines": 164
+    },
+    {
+      "path": "src/class/RenameJob.cls",
+      "type": "Class",
+      "lines": 69
+    },
+    {
+      "path": "src/class/ShapeExport.cls",
+      "type": "Class",
+      "lines": 1030
+    },
+    {
+      "path": "src/class/StopWatch.cls",
+      "type": "Class",
+      "lines": 21
+    },
+    {
+      "path": "src/class/StringWord.cls",
+      "type": "Class",
+      "lines": 17
+    },
+    {
+      "path": "src/class/SubPathClusterTreeNode.cls",
+      "type": "Class",
+      "lines": 14
+    },
+    {
+      "path": "src/class/SubProgress.cls",
+      "type": "Class",
+      "lines": 66
+    },
+    {
+      "path": "src/class/UIOptionalPathChooser.cls",
+      "type": "Class",
+      "lines": 42
+    },
+    {
+      "path": "src/class/UIPathChooser.cls",
+      "type": "Class",
+      "lines": 108
+    },
+    {
+      "path": "src/class/UIProductIDProperty.cls",
+      "type": "Class",
+      "lines": 191
+    },
+    {
+      "path": "src/class/VariantArray.cls",
+      "type": "Class",
+      "lines": 486
+    },
+    {
+      "path": "src/class/VariantGroup.cls",
+      "type": "Class",
+      "lines": 149
+    },
+    {
+      "path": "src/class/VariantRange.cls",
+      "type": "Class",
+      "lines": 130
+    },
+    {
+      "path": "src/class/Version.cls",
+      "type": "Class",
+      "lines": 210
+    },
+    {
+      "path": "src/document/ThisMacroStorage.cls",
+      "type": "Document",
+      "lines": 181
+    },
+    {
+      "path": "src/form/AdminDialog.frm",
+      "type": "BaseClass",
+      "lines": 200
+    },
+    {
+      "path": "src/form/AmazonExportDialog.frm",
+      "type": "BaseClass",
+      "lines": 129
+    },
+    {
+      "path": "src/form/AmazonImportDialog.frm",
+      "type": "BaseClass",
+      "lines": 57
+    },
+    {
+      "path": "src/form/AmazonImportTemplateDialog.frm",
+      "type": "BaseClass",
+      "lines": 67
+    },
+    {
+      "path": "src/form/AutoCorrectionDialog.frm",
+      "type": "BaseClass",
+      "lines": 23
+    },
+    {
+      "path": "src/form/BleedDialog.frm",
+      "type": "BaseClass",
+      "lines": 97
+    },
+    {
+      "path": "src/form/DesignSelectorDialog.frm",
+      "type": "BaseClass",
+      "lines": 27
+    },
+    {
+      "path": "src/form/DesignVariantDialog.frm",
+      "type": "BaseClass",
+      "lines": 78
+    },
+    {
+      "path": "src/form/Export2Dialog.frm",
+      "type": "BaseClass",
+      "lines": 111
+    },
+    {
+      "path": "src/form/ExportDialog.frm",
+      "type": "BaseClass",
+      "lines": 91
+    },
+    {
+      "path": "src/form/Extractor2Dialog.frm",
+      "type": "BaseClass",
+      "lines": 76
+    },
+    {
+      "path": "src/form/FancyExportDialog.frm",
+      "type": "BaseClass",
+      "lines": 525
+    },
+    {
+      "path": "src/form/GlobalSettingsUserForm.frm",
+      "type": "BaseClass",
+      "lines": 251
+    },
+    {
+      "path": "src/form/LookCreatorDialog.frm",
+      "type": "BaseClass",
+      "lines": 50
+    },
+    {
+      "path": "src/form/MacroRunnerDialog.frm",
+      "type": "BaseClass",
+      "lines": 95
+    },
+    {
+      "path": "src/form/MotiveDialog.frm",
+      "type": "BaseClass",
+      "lines": 140
+    },
+    {
+      "path": "src/form/MotiveNameDialog.frm",
+      "type": "BaseClass",
+      "lines": 142
+    },
+    {
+      "path": "src/form/PlaceFileDialog.frm",
+      "type": "BaseClass",
+      "lines": 290
+    },
+    {
+      "path": "src/form/ProductIdDialog.frm",
+      "type": "BaseClass",
+      "lines": 723
+    },
+    {
+      "path": "src/form/ProductLayerDistanceDialog.frm",
+      "type": "BaseClass",
+      "lines": 118
+    },
+    {
+      "path": "src/form/ProgressBarUserForm.frm",
+      "type": "BaseClass",
+      "lines": 272
+    },
+    {
+      "path": "src/form/ResizeDesignDialog.frm",
+      "type": "BaseClass",
+      "lines": 161
+    },
+    {
+      "path": "src/form/SVGColorizerDialog.frm",
+      "type": "BaseClass",
+      "lines": 54
+    },
+    {
+      "path": "src/form/SelectShapeByColorDialog.frm",
+      "type": "BaseClass",
+      "lines": 188
+    },
+    {
+      "path": "src/form/StructureHelperDialog.frm",
+      "type": "BaseClass",
+      "lines": 19
+    },
+    {
+      "path": "src/form/ToolCreateUploadBoxDialog.frm",
+      "type": "BaseClass",
+      "lines": 30
+    },
+    {
+      "path": "src/form/ToolMarkTransparencyDialog.frm",
+      "type": "BaseClass",
+      "lines": 19
+    },
+    {
+      "path": "src/form/VersionDialog.frm",
+      "type": "BaseClass",
+      "lines": 38
+    },
+    {
+      "path": "src/form/WeightCalculatorDialog.frm",
+      "type": "BaseClass",
+      "lines": 78
+    },
+    {
+      "path": "src/module/AmazonASINConnector.bas",
+      "type": "Module",
+      "lines": 197
+    },
+    {
+      "path": "src/module/AmazonExport.bas",
+      "type": "Module",
+      "lines": 1497
+    },
+    {
+      "path": "src/module/AmazonImport.bas",
+      "type": "Module",
+      "lines": 4480
+    },
+    {
+      "path": "src/module/AutoCorrection.bas",
+      "type": "Module",
+      "lines": 1212
+    },
+    {
+      "path": "src/module/Classfactory.bas",
+      "type": "Module",
+      "lines": 64
+    },
+    {
+      "path": "src/module/ConfiHelper.bas",
+      "type": "Module",
+      "lines": 2532
+    },
+    {
+      "path": "src/module/DesignSelector.bas",
+      "type": "Module",
+      "lines": 72
+    },
+    {
+      "path": "src/module/DesignVariantCreator.bas",
+      "type": "Module",
+      "lines": 97
+    },
+    {
+      "path": "src/module/Export1.bas",
+      "type": "Module",
+      "lines": 1044
+    },
+    {
+      "path": "src/module/Export2.bas",
+      "type": "Module",
+      "lines": 1422
+    },
+    {
+      "path": "src/module/Extractor.bas",
+      "type": "Module",
+      "lines": 497
+    },
+    {
+      "path": "src/module/Extractor2.bas",
+      "type": "Module",
+      "lines": 268
+    },
+    {
+      "path": "src/module/FancyExport.bas",
+      "type": "Module",
+      "lines": 933
+    },
+    {
+      "path": "src/module/Globals.bas",
+      "type": "Module",
+      "lines": 19979
+    },
+    {
+      "path": "src/module/GravostyleBridge.bas",
+      "type": "Module",
+      "lines": 316
+    },
+    {
+      "path": "src/module/Gravuru.bas",
+      "type": "Module",
+      "lines": 31
+    },
+    {
+      "path": "src/module/JSON.bas",
+      "type": "Module",
+      "lines": 1205
+    },
+    {
+      "path": "src/module/LookCreator.bas",
+      "type": "Module",
+      "lines": 119
+    },
+    {
+      "path": "src/module/MacroRunner.bas",
+      "type": "Module",
+      "lines": 240
+    },
+    {
+      "path": "src/module/Macros.bas",
+      "type": "Module",
+      "lines": 6716
+    },
+    {
+      "path": "src/module/MotiveNames.bas",
+      "type": "Module",
+      "lines": 57
+    },
+    {
+      "path": "src/module/MultiFileSelector.bas",
+      "type": "Module",
+      "lines": 124
+    },
+    {
+      "path": "src/module/MySQL.bas",
+      "type": "Module",
+      "lines": 163
+    },
+    {
+      "path": "src/module/PersistentShapeHandler.bas",
+      "type": "Module",
+      "lines": 43
+    },
+    {
+      "path": "src/module/PlaceFile.bas",
+      "type": "Module",
+      "lines": 7593
+    },
+    {
+      "path": "src/module/ProductLayerDistance.bas",
+      "type": "Module",
+      "lines": 187
+    },
+    {
+      "path": "src/module/ProductRecognizer.bas",
+      "type": "Module",
+      "lines": 650
+    },
+    {
+      "path": "src/module/ResizeDesign.bas",
+      "type": "Module",
+      "lines": 85
+    },
+    {
+      "path": "src/module/SVGColorizer.bas",
+      "type": "Module",
+      "lines": 165
+    },
+    {
+      "path": "src/module/SelectShapeByColor.bas",
+      "type": "Module",
+      "lines": 181
+    },
+    {
+      "path": "src/module/ShapeRegistry.bas",
+      "type": "Module",
+      "lines": 310
+    },
+    {
+      "path": "src/module/StructureHelper.bas",
+      "type": "Module",
+      "lines": 44
+    },
+    {
+      "path": "src/module/Tool.bas",
+      "type": "Module",
+      "lines": 2097
+    },
+    {
+      "path": "src/module/WeightCalculator.bas",
+      "type": "Module",
+      "lines": 83
+    },
+    {
+      "path": "src/module/arrange.bas",
+      "type": "Module",
+      "lines": 378
+    },
+    {
+      "path": "src/module/group.bas",
+      "type": "Module",
+      "lines": 220
+    },
+    {
+      "path": "src/module/logger.bas",
+      "type": "Module",
+      "lines": 379
+    },
+    {
+      "path": "src/module/productDesign.bas",
+      "type": "Module",
+      "lines": 1607
+    },
+    {
+      "path": "src/module/productID.bas",
+      "type": "Module",
+      "lines": 518
+    },
+    {
+      "path": "src/module/variante.bas",
+      "type": "Module",
+      "lines": 687
+    }
+  ]
+}

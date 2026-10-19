@@ -90,5 +90,5 @@ Das Amazon-Overlay ist ein 400 × 400-PNG mit dem Motiv an der Stelle, die der K
 ## 8. Offen (Entscheidungen Chris)
 
 1. Familie 22 × 14 Schiefer (und die übrigen 36 Bestandsgrößen der Gedenktafeln) – Katalog-Entscheidung 15; bis dahin Platzhalter `offen`.
-2. Bestehendes Corel-Einlese-Skript: Datei liefern, damit `gravur.pdf`/`bestellung.json` genau das Format bekommen, das es heute erwartet (oder das Skript durch das Corel-Makro „Auftrag laden" ersetzt wird).
+2. Bestehendes Corel-Einlese-Skript: **Quelltext liegt seit 19.10.2026 unter [`corel-skripte/`](../../corel-skripte/README.md)** (`AmazonImport.bas` + `AmazonImport*`-Klassen). Offen bleibt der Abgleich der Server-CSVs (`Amazon-Import ASIN zu Design-CDR.csv`, `Schiften Aliasse.csv`) mit `amazon/*.json` und der Paritätslauf gegen die Corel-Ausgabe derselben ZIP.
 3. SP-API statt manuellem ZIP-Download (Branch `task/amazon-sp-api-20261016`): später, Importer bleibt gleich.

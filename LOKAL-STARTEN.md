@@ -36,6 +36,8 @@ node --test app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs
 node app/configurator/variant-m/build.mjs
 ```
 
+Mobile Sichtprüfung (K11, geführte Schritte unter 768 px) bei laufendem Server mit vorinstalliertem Playwright/Chromium: `node scripts/check-mobile-steps.mjs http://127.0.0.1:8961 deliverables/konfi-neu-K11` (Screenshots 390×844 je Schritt und 1280×800, `report.json`).
+
 Build mit 76 Ressourcen und einem Acrylmodell. Aktueller Funktions- und Prüfstand: `STATUS.md`. `G27-01-PRUEFUNG.md` beschreibt nur die ursprüngliche Kundenoberfläche.
 
 ## Grenzen

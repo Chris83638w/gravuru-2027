@@ -19,7 +19,7 @@ from pathlib import Path
 _spec = importlib.util.spec_from_file_location('corel', Path(__file__).with_name('read-corel-design-sheets.py'))
 corel = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(corel)
 
-SKU = re.compile(r'^(?P<prefix>[A-Z]{2,6}[A-Z0-9]*-[A-Z0-9]+)-(?P<size>[\d.,]+x[\d.,]+)-D(?P<n>\d+)$')
+SKU = re.compile(r'^(?P<prefix>[A-Z]{2,6}[A-Z0-9]*(?:-[A-Z0-9]+)*?)-(?P<size>(?:\([\d.,]+x[\d.,]+\))?[\d.,]+(?:x[\d.,]+)?(?:\([\d.,]+x[\d.,]+\))?[a-zA-Z]{0,3})-D(?P<n>\d+)$')
 
 # Quellordner → Reihe. split=True: jede Größe ist eine eigene Reihe (eigene Nummerierung).
 SERIES = {
@@ -316,7 +316,7 @@ def main():
         label = SERIES_LABEL.get(master['series']) or (' '.join(x for x in (master['series'], '·', master.get('process', ''), master.get('material', ''), master.get('form', '')) if x) if generic else master.get('sheetLabel') or master['series'])
         rec = {'key': key, 'series': master['series'], 'seriesLabel': label, 'process': master['process'], 'form': master.get('form', ''),
                'material': master['material'], 'materials': mats, 'designNo': int(SKU.match(master['id']).group('n')), 'masterId': master['id'], 'ids': [r['id'] for r in recs],
-               'sizesInStock': sorted(sizes, key=lambda s: [float(x.replace(',', '.')) for x in s.split('x')]), 'sheetLabel': master.get('sheetLabel', ''),
+               'sizesInStock': sorted(sizes, key=lambda s: [float(x.replace(',', '.')) for x in re.findall(r'\d+(?:[.,]\d+)?', s)]), 'sheetLabel': master.get('sheetLabel', ''),
                'plate': master.get('plate'), 'texts': master['texts'], 'fonts': fonts, 'fontsMissing': [f for f in fonts if not font_available(f)],
                'photo': master.get('photo'), 'photoFiles': master.get('photoFiles', []), 'texture': master.get('texture'), 'textsDiffer': diff, 'sourceKind': master.get('sourceKind', 'corel-bogen')}
         rec['kategorie'] = classify_generic(rec) if generic else classify(rec)

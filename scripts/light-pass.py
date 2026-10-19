@@ -19,7 +19,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 SIZE = re.compile(r'^(\d+(?:[.,]\d+)?)\s*x\s*(\d+(?:[.,]\d+)?)')
-SKU = re.compile(r'^([A-Z]{2,6}[A-Z0-9]*)-([A-Z0-9]+)-[\d.,]+x[\d.,]+-D\d+$')
+SKU = re.compile(r'^([A-Z]{2,6}[A-Z0-9]*)((?:-[A-Z0-9]+)*?)-(?:\([\d.,]+x[\d.,]+\))?[\d.,]+(?:x[\d.,]+)?(?:\([\d.,]+x[\d.,]+\))?[a-zA-Z]{0,3}-D\d+$')
 MATERIAL = [('acryl+edelstahl', 'Acryl + Edelstahl'), ('acryl + edelstahl', 'Acryl + Edelstahl'), ('acryl+v2a', 'Acryl + Edelstahl'), ('premium schiefer', 'Premium Schiefer'), ('premiumschiefer', 'Premium Schiefer'),
             ('edelstahl', 'Edelstahl'), ('v2a', 'Edelstahl'), ('acryl', 'Acryl'), ('acrylglas', 'Acryl'), ('kunststoff', 'Kunststoff'), ('schiefer', 'Schiefer'), ('holz', 'Holz'), ('granit', 'Granit'), ('marmor', 'Marmor'),
             ('alu-dibond', 'Alu-Dibond'), ('aludibond', 'Alu-Dibond'), ('alu dibond', 'Alu-Dibond'), ('dibond', 'Alu-Dibond'), ('aluminium', 'Aluminium'), ('glas', 'Glas'), ('messing', 'Messing'), ('kork', 'Kork'),
@@ -58,7 +58,7 @@ def meta_from_path(segs, sku=None):
             if material: break
     if not material and sku:
         m = SKU.match(sku)
-        if m: material = MAT_CODE.get(m.group(2), '')
+        if m: material = MAT_CODE.get(m.group(2).strip('-').split('-')[-1], '')
     form = ''; size = ''
     for s in segs:
         m = SIZE.match(s)

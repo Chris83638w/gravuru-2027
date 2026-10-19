@@ -14,7 +14,7 @@ import argparse, io, json, math, re, subprocess, zipfile
 from pathlib import Path
 from PIL import Image, ImageOps
 
-SKU = re.compile(r'^([A-Z]{2,6}[A-Z0-9]*-[A-Z0-9]+-[\d.,]+x[\d.,]+)-D(\d+)$')
+SKU = re.compile(r'^([A-Z]{2,6}[A-Z0-9]*(?:-[A-Z0-9]+)*?-(?:\([\d.,]+x[\d.,]+\))?[\d.,]+(?:x[\d.,]+)?(?:\([\d.,]+x[\d.,]+\))?[a-zA-Z]{0,3})-D(\d+)$')
 
 
 def plate_mm_from_sku(sku):

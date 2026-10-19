@@ -20,7 +20,7 @@ from pathlib import Path
 IN = 25.4
 PHOTO_MAX_PX = 800     # längste Seite eines Musterfotos in foto-n.jpg
 TEXTURE_MAX_PX = 700   # längste Seite einer Materialtextur in _texturen/<key>.jpg
-SKU = re.compile(r'^[A-Z]{2,6}[A-Z0-9]*-[A-Z0-9]+-[\d.,]+x[\d.,]+-D\d+$')
+SKU = re.compile(r'^[A-Z]{2,6}[A-Z0-9]*(?:-[A-Z0-9]+)*?-(?:\([\d.,]+x[\d.,]+\))?[\d.,]+(?:x[\d.,]+)?(?:\([\d.,]+x[\d.,]+\))?[a-zA-Z]{0,3}-D\d+$')  # Größe WxH oder Einzelmaß, auch mit Klammerzusatz (30x8(28x6)) oder Kürzel (30x8ae); Präfix ein oder mehrere Segmente
 PROP = re.compile(r'([a-z0-9:-]+): ([^,()]+?)(?=, [a-z0-9:-]+: |\)$|$)')
 NUM = re.compile(r'-?\d+(?:\.\d+)?')
 

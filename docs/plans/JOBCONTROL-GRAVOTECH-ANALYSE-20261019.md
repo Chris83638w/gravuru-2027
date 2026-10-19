@@ -41,6 +41,8 @@ Prüf-Leser: `python3 -I scripts/jobcontrol/las_inspect.py <datei.las> [--json]`
 
 824 Bytes, Name „Unbenannt-1“, nur Vektor (PU/PD, keine Rasterzeilen C1/C2): `DP 300`, `PW 100`, `VD 30`, `vd 300` (= 30,0 % in Zehnteln), `FR 250`, `AI 0`; Kopf dpi 300 × 300, Feld 8/9 = 60/80. Diese Werte passen **nicht** zur gespeicherten Einstellung (Schwarz 92 / 9,0 Raster, Rot 0 / 0,0 Vektor) – Abgleich mit Chris offen (welches Dokument, welche Einstellung beim Drucken).
 
+Zweite Druckdatei (21:22, 248 Bytes): Kopf dpi 500 × 500, Feld 8/9 = 92 / 9, Wort 40 = 90 (Geschwindigkeit in Zehntel-%, = 9,0 %), Feld 28 = 40 (Auswahl „30/40“ = Laserleistung in W; erste Datei 30). Das sind **genau die Werte aus dem Screenshot** – der Kopf trägt die Einstellung von Farbe 1. Die Datei enthält aber keine Grafik (nur PU/AI/OP/TE/JF): aus Corel kam eine leere Seite. Nächster Test: Dokument mit Inhalt, geänderte Werte je Farbe.
+
 ## Gespeicherte Treiber-Einstellungen (.job) – an echter Datei geprüft
 
 Die Treiberoberfläche speichert ihren Parametersatz als `.job` (Standardpfad `C:\L_Solution\Job\`, Einträge `JobPath`, `SavConfLs`, „Chemin des sauvegardes“ in `glaserui.dll`). Das ist **kein Gravurauftrag**, sondern nur die Einstellung – feste Größe 1308 Bytes, little-endian. Geprüft an `Test_JOB19102026.job` (19.10.2026) gegen den Screenshot der Druckeinstellungen (LS100, Schwarz 92 | 9,0 | 1 | 0,00 | Raster, Rot Vektor, Rest Überspringen, Platte 460 × 305 mm, 500 × 500 dpi):

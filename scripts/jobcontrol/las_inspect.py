@@ -71,7 +71,9 @@ def parse(data: bytes):
     words = struct.unpack(">" + "i" * HEADER_WORDS, data[base:base + 4 * HEADER_WORDS])
     header = {HEADER_FIELDS.get(i, f"unbekannt_{i}"): v for i, v in enumerate(words)}
     # Wort 40 hinter dem Kopf: Geschwindigkeit in Zehntel-% (90 = 9,0 %, 800 = 80,0 %).
-    header["geschwindigkeit_zehntel_prozent"] = struct.unpack(">i", data[base + 160:base + 164])[0]
+    # Nur in Corel-Druckdateien belegt; in den Beispieljobs steht dort -1 bzw. anderes.
+    tenth = struct.unpack(">i", data[base + 160:base + 164])[0]
+    header["geschwindigkeit_zehntel_prozent"] = tenth if prefix and tenth // 10 == header["geschwindigkeit_prozent"] else None
     commands, counts = [], Counter()
     i = data.find(MARK, base + 4 * HEADER_WORDS)
     while 0 <= i < len(data) - 5:
@@ -109,7 +111,7 @@ def main(argv):
         return 0
     k = result["kopf"]
     print(f"{result['jobname']}  (LA {result['version']}, {result['bytes']} Bytes)")
-    print(f"  dpi {k['dpi_x']}×{k['dpi_y']}  Leistung {k['leistung_prozent']} %  Geschwindigkeit {k['geschwindigkeit_zehntel_prozent']/10:g} %  Laser {k['laser_watt']} W  Platte {k['platte_breite_hundertstel_mm']/100:g}×{k['platte_hoehe_hundertstel_mm']/100:g} mm")
+    print(f"  dpi {k['dpi_x']}×{k['dpi_y']}  Leistung {k['leistung_prozent']} %  Geschwindigkeit {(k['geschwindigkeit_zehntel_prozent'] or 10 * k['geschwindigkeit_prozent'])/10:g} %  Laser {k['laser_watt'] if k['laser_watt'] > 0 else '?'} W  Platte {k['platte_breite_hundertstel_mm']/100:g}×{k['platte_hoehe_hundertstel_mm']/100:g} mm")
     print("  Befehle:", ", ".join(f"{op} {n}" for op, n in result["befehle_anzahl"].items()))
     for c in result["befehle"]:
         print(f"    {c['offset']:#08x}  {c['befehl']:2s} = {c['wert']:<6d} {c['bedeutung']}")

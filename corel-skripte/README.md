@@ -63,6 +63,6 @@ corel-skripte/
 
 ## Regeln
 
-- Referenz, keine aktive Codebasis: nicht umschreiben, nicht „modernisieren“. Neue Logik entsteht in `scripts/`, `app/` oder einem späteren JobControl-Modul.
+- Referenz, keine aktive Codebasis: nicht umschreiben, nicht „modernisieren“. Vorschläge für Corel-Änderungen kommen als Datei nach `patches/` (Beispiel: MySQL-Zugang aus `zugang.ini` statt Klartext, 19.10.2026). Neue Logik entsteht in `scripts/`, `app/` oder einem späteren JobControl-Modul.
 - Keine Zugangsdaten, Kunden- oder Bestelldaten in diesem Ordner (vgl. `AGENTS.md`). Vor jedem erneuten Extrahieren `grep -rn -i "password" corel-skripte/src` prüfen; das Werkzeug schwärzt nur das Muster `password = "…"`.
 - Bei neuer Corel-Version: `.gms` neu extrahieren, `MANIFEST.json`-Hash vergleichen, Commit-Nachricht mit Versionsnummer (z. B. „Tools 52.6.0“).

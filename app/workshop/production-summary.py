@@ -166,6 +166,12 @@ def build(data):
   if not isinstance(c,int):return 'Preis offen'
   return ('Grundpreis ' if o.get('priceKind')=='base' else '+' if c>0 else '')+money(c)
  rows.append(('Optionen','; '.join(f"{o['group']}: {o['value']} ({option_price(o)})" for o in options) if options else 'Keine Optionsgruppen'))
+ # K14 / Ü12.1: Zusatzangaben ohne Vorschau (Textfeld, Datum, Auswahl, Ankreuzfeld)
+ extra=product.get('fields') or []
+ def field_text(f):
+  c=f.get('priceCents')
+  return f"{f['label']}: {f['display']}"+(f" (+{money(c)})" if isinstance(c,int) and c>0 else '')
+ if extra:rows.append(('Zusatzangaben','; '.join(field_text(f) for f in extra)))
  sheet.key_values(rows,width=left_w,label_width=100)
  sheet.y=max(sheet.y,box.y1+26)
  # Textfelder

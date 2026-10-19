@@ -9,7 +9,8 @@ import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 import {getProcessingProfile, elementColor} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc, filteredDesigns} from '../../platform/sources/app/shared/models/design-content.mjs';
-import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, editedDesignTexts, validatePhotoFile, newEditableObject} from './contract.mjs';
+import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, editedDesignTexts, validatePhotoFile, newEditableObject, resolvedOptions} from './contract.mjs';
+import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -93,9 +94,37 @@ export function installUniversal(configInput) {
     picks.append(pictures);
     style.textContent+='.m-option-pictures>div{display:flex;flex-wrap:wrap;gap:8px}.m-option-pictures button{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;width:112px;min-height:110px;border:1px solid #c4cbc6;border-radius:8px;background:#fff;padding:6px;color:#1c3327}.m-option-pictures button[aria-pressed=true]{outline:2px solid #28543f}.m-option-pictures img{width:70px;height:70px;object-fit:contain;display:block;margin:auto;flex:none}.m-option-pictures span{display:block;font-size:12px;white-space:normal}';
     pictures.addEventListener('click',e=>{const button=e.target.closest('[data-picture-option]');if(!button)return;el.record();options={...options,[button.dataset.pictureGroup]:button.dataset.pictureOption};el.state.mOptions=clone(options);el.sync();});
+    // K14 / Ü12.1: Zusatzfelder ohne Vorschau (Text, Datum, Auswahlliste, Ankreuzfeld) im Reiter „Optionen“.
+    const fieldBox=document.createElement('div');fieldBox.className='m-option-fields';
+    const surcharge=c=>c?' · +'+money(c):'';
+    fieldBox.innerHTML=optionFields(p).map(f=>{
+      const head=esc(f.label)+(f.required?' · erforderlich':' · optional'),note=f.note?'<small>'+esc(f.note)+'</small>':'',attr='data-m-field="'+esc(f.id)+'" aria-label="'+esc(f.label)+'"'+(f.required?' aria-required="true"':'');
+      if(f.kind==='checkbox')return '<label class="m-field-check" data-m-field-row="'+esc(f.id)+'"><input type="checkbox" '+attr+'><span>'+head+surcharge(f.priceCents)+'</span>'+note+'</label>';
+      if(f.kind==='select')return '<label data-m-field-row="'+esc(f.id)+'"><span>'+head+'</span><select '+attr+'><option value="">Bitte wählen</option>'+f.choices.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.label)+surcharge(c.priceCents)+'</option>').join('')+'</select>'+note+'</label>';
+      return '<label data-m-field-row="'+esc(f.id)+'"><span>'+head+surcharge(f.priceCents)+'</span><input type="'+(f.kind==='date'?'date':'text')+'" '+attr+(f.kind==='text'?' maxlength="'+(f.maxLength??FIELD_TEXT_DEFAULT_MAX)+'"':'')+(f.placeholder?' placeholder="'+esc(f.placeholder)+'"':'')+'>'+note+'</label>';
+    }).join('');
+    fieldBox.hidden=!fieldBox.childElementCount;picks.append(fieldBox);
+    style.textContent+='.m-option-fields{display:grid;gap:10px;margin:12px 0}.m-option-fields label{display:grid!important;gap:4px;margin:0!important}.m-option-fields .m-field-check{grid-template-columns:auto 1fr;align-items:center}.m-option-fields .m-field-check small{grid-column:1/-1}.m-option-fields input[type=text],.m-option-fields input[type=date],.m-option-fields select{width:100%;box-sizing:border-box;min-height:40px}.m-option-fields small{font-size:12px;color:#46574d}.m-options label[hidden],.m-option-fields[hidden],.m-option-pictures [hidden]{display:none!important}';
+    const fieldInput=input=>input.type==='checkbox'?input.checked:input.value;
+    fieldBox.addEventListener('focusin',e=>{if(e.target.dataset.mField&&e.target.type!=='checkbox')el.record();});
+    fieldBox.addEventListener('input',e=>{const key=e.target.dataset.mField;if(!key||e.target.type==='checkbox')return;options={...options,[key]:fieldInput(e.target)};el.state.mOptions=clone(options);el.sync();});
+    fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;if(e.target.type==='checkbox')el.record();options={...options,[key]:fieldInput(e.target)};el.state.mOptions=clone(options);el.sync();});
     options=Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId]));
-    for(const select of picks.querySelectorAll('select')) select.value=options[select.dataset.mOption];
-    picks.addEventListener('change',e=>{el.record();options={...options,[e.target.dataset.mOption]:e.target.value};el.state.mOptions=clone(options);el.sync();});
+    for(const select of picks.querySelectorAll('select[data-m-option]')) select.value=options[select.dataset.mOption];
+    picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;el.record();options={...options,[e.target.dataset.mOption]:e.target.value};el.state.mOptions=clone(options);el.sync();});
+    // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.
+    function updateOptionVisibility(){
+      let shown;try{shown=resolvedOptions(config,options);}catch{shown=null;}
+      for(const select of picks.querySelectorAll('select[data-m-option]')){const g=(p.optionGroups||[]).find(x=>x.id===select.dataset.mOption),visible=!g?.visibleIf||(shown?shown[g.id]!==undefined:true);select.closest('label').hidden=!visible;}
+      for(const group of pictures.querySelectorAll('[role=group]')){const id=group.querySelector('[data-picture-group]')?.dataset.pictureGroup;if(id)group.hidden=shown?shown[id]===undefined:false;}
+      for(const f of optionFields(p)){
+        const row=fieldBox.querySelector('[data-m-field-row="'+CSS.escape(f.id)+'"]'),input=row?.querySelector('[data-m-field]');if(!row)continue;
+        // Sichtbar = Bedingung erfüllt (auch wenn das Feld noch leer ist).
+        const cond=f.visibleIf,visible=!cond||(shown?shown[cond.groupId]!==undefined&&cond.valueIds.includes(shown[cond.groupId]):true);row.hidden=!visible;
+        const value=options[f.id];if(r.activeElement===input)continue;
+        if(input.type==='checkbox')input.checked=value===true;else input.value=value??'';
+      }
+    }
 
     const photoSection=document.createElement('section'); photoSection.className='m-photo';photoSection.setAttribute('aria-label','Foto hochladen');
     $('.fk-font-section').after(photoSection);
@@ -217,7 +246,8 @@ export function installUniversal(configInput) {
       renderThumbnails();
       const name=current().name;$('.guided-review dl').innerHTML='<div><dt>Design</dt><dd>'+esc(name)+'</dd></div><div><dt>Material</dt><dd>'+esc(processing.name)+'</dd></div>';
       $('[data-setting=guides]').closest('.check-guide').hidden=false;
-      for(const select of picks.querySelectorAll('select'))select.value=options[select.dataset.mOption];
+      for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=options[select.dataset.mOption];
+      updateOptionVisibility();
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
       // Independent of validity: the drill-hole hint must also show while another issue is open.
       try{const hint=holeHintText(textsNearHoles(current(),profile(),el.fontData));holeHint.textContent=hint;holeHint.hidden=!hint;}catch{holeHint.hidden=true;}

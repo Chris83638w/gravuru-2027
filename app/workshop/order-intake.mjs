@@ -8,6 +8,8 @@ import {capturePersonalization,personalizationForSnapshot,personalizationAttribu
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
+// K14 / Ü12.1: Zusatzfelder des Prüfstands als sichtbare Warenkorb-Eigenschaften (Bezeichnung → Anzeige).
+const offerFields=m=>Array.isArray(m.selection?.fields)&&m.selection.fields.length?{fields:m.selection.fields.map(f=>({label:f.label,value:f.display}))}:{};
 const sha=v=>createHash('sha256').update(v).digest('hex');
 const domain=v=>typeof v==='string'&&/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(v);
 const identifier=v=>{if(typeof v==='number'&&!Number.isSafeInteger(v))fail(422,'Unsichere Shop-ID.');const s=String(v);if(!/^[1-9][0-9]{0,19}$/.test(s))fail(422,'Ungültige Shop-ID.');return s;};
@@ -143,7 +145,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    const id='offer_'+randomUUID(),token=stableToken??randomBytes(32).toString('hex');
    db.prepare('INSERT INTO form_order_offers(id,token_hash,binding_id,snapshot_id,package_sha256,quantity,created_at,expires_at,tenant_id) VALUES(?,?,?,?,?,?,?,?,?)').run(id,sha(token),bindingId,snapshotId,m.packageSha256,quantity,at(),clock()+7*86400000,tenant);
    if(extra)db.prepare('INSERT INTO form_offer_personalization(offer_id,document,tenant_id) VALUES(?,?,?)').run(id,JSON.stringify(extra),tenant);
-   return {id,property:{name:'_gravuru_offer',value:token},variantId:b.variant_id,quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{})};
+   return {id,property:{name:'_gravuru_offer',value:token},variantId:b.variant_id,quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{}),...offerFields(m)};
   });},
   // Resolve only a previously saved offer. Price, quantity and variant are never
   // accepted from a browser here. Callers must additionally authenticate its draft.
@@ -160,7 +162,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    const chosen=selection(b.id);
    if(chosen&&(!isNativeReviewSchema(m.schema)||optionKey(chosen)!==optionKey(m.selection?.options)||m.selection?.price?.quantity!==o.quantity))fail(409,'Die gesicherte Ausführung oder Menge stimmt nicht überein.');
    if(m.packageSha256!==o.package_sha256||m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR')fail(409,'Der gesicherte Angebotsstand stimmt nicht überein.');
-   return {id:o.id,property:{name:'_gravuru_offer',value:offerToken},variantId:b.variant_id,quantity:o.quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{})};
+   return {id:o.id,property:{name:'_gravuru_offer',value:offerToken},variantId:b.variant_id,quantity:o.quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{}),...offerFields(m)};
   },
   receive(raw,headers,config){
    if(['orders/updated','orders/cancelled'].includes(headers['x-shopify-topic'])){

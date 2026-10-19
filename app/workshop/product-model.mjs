@@ -2,7 +2,7 @@ import {isFormProduct,validateFormProduct} from './form-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {nativeSpecimenConfig} from './specimen-product.mjs';
 import {prepareConfig,resolvedOptions,selectedProfile,quote,validateDesign,cleanObject} from '../configurator/variant-m/contract.mjs';
-import {ACRYLIC_BASES,ACRYLIC_SIZES,acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
+import {ACRYLIC_BASES,ACRYLIC_SIZES,acrylicSelection,acrylicOptions} from '../configurator/variant-m/acrylic-product.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
 import {legacyElementRights,ELEMENT_RIGHTS} from '../configurator/variant-m/element-rights.mjs';
@@ -115,7 +115,7 @@ export function resolveProduct(document,{options={},designId}={}){
   const resolved=resolvedOptions(config,options),chosenId=designId===undefined?config.profile.defaultDesignId:designId;
   const design=config.profile.designs.find(item=>item.id===chosenId);
   if(!design)fail('Das gewählte Design gehört nicht zu diesem Produkt.');
-  const profile=selectedProfile(config,resolved),selection=config.acrylic?acrylicSelection(resolved,config.acrylic.pricing):null;
+  const profile=selectedProfile(config,resolved),selection=config.acrylic?acrylicSelection(acrylicOptions(resolved),config.acrylic.pricing):null;
   const width=config.acrylic?.designWidth??profile.geometry.width,height=config.acrylic?.designHeight??profile.geometry.height;
   const physical=physicalGeometry(config,{mOptions:resolved});
   return {config,profile,designId:chosenId,design:structuredClone(design),resolvedOptions:resolved,

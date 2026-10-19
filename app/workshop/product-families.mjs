@@ -122,8 +122,24 @@ export function validateFamily(f){
  // Noch nicht an die Produkterzeugung angebunden; Preise je Linie können in linien/<linie>.json überschrieben werden.
  if(f.options!==undefined){
   if(!Array.isArray(f.options)||f.options.length>20)invalid('Höchstens 20 Optionsgruppen.');
+  // K14 / Ü12.1: Felder ohne Vorschau (Text, Datum, Auswahlliste, Ankreuzfeld) und `visibleIf`
+  // (Ziel: Befestigung `mounting` mit Regel-Kennungen oder eine weiter oben stehende Auswahlliste).
+  const targets=new Map([['mounting',f.mountingRules.map(r=>r.id)]]);
+  const condition=(g,what)=>{if(g.visibleIf===undefined)return;const c=g.visibleIf;if(!c||typeof c!=='object'||Array.isArray(c))invalid(what+': Bedingung als {groupId, valueIds}.');only(c,['groupId','valueIds'],what+' · Bedingung');const t=targets.get(c.groupId);if(!t||!Array.isArray(c.valueIds)||!c.valueIds.length||c.valueIds.some(v=>!t.includes(v))||new Set(c.valueIds).size!==c.valueIds.length)invalid(what+': Bedingung verweist auf keine Befestigung bzw. weiter oben stehende Auswahlliste oder auf unbekannte Werte.');};
   for(const g of f.options){
-   only(g,['id','label','kind','selection','required','choices','note'],'Optionsgruppe');
+   if(FIELD_KINDS.includes(g.kind)){
+    only(g,['id','label','kind','required','maxLength','priceCents','choices','visibleIf','note'],'Zusatzfeld');
+    const what='Zusatzfeld '+(g.id||'');
+    if(!id(g.id)||g.id==='mounting'||!text(g.label,80)||(g.required!==undefined&&typeof g.required!=='boolean')||(g.note!==undefined&&!text(g.note,400)))invalid(what+' prüfen.');
+    if(g.maxLength!==undefined&&(g.kind!=='text'||!Number.isInteger(g.maxLength)||g.maxLength<1||g.maxLength>500))invalid(what+': Zeichenlimit 1 bis 500 nur bei Textfeldern.');
+    if(g.priceCents!==undefined&&(g.kind==='select'||!(open(g.priceCents)||cents(g.priceCents))))invalid(what+': Aufpreis in Cent oder offen (Auswahllisten je Auswahl).');
+    if(g.kind==='select'){if(!Array.isArray(g.choices)||!g.choices.length||g.choices.length>40)invalid(what+': 1 bis 40 Auswahlen.');for(const c of g.choices){only(c,['id','label','priceCents'],'Auswahl');if(!id(c.id)||!text(c.label,80)||(c.priceCents!==undefined&&!(open(c.priceCents)||cents(c.priceCents))))invalid(what+' / '+(c.id||'')+' prüfen.');}unique(g.choices,'id',what);}
+    else if(g.choices!==undefined)invalid(what+': Auswahlen nur bei Auswahllisten.');
+    condition(g,what);if(g.kind==='select')targets.set(g.id,g.choices.map(c=>c.id));
+    continue;
+   }
+   only(g,['id','label','kind','selection','required','choices','note','visibleIf'],'Optionsgruppe');
+   condition(g,'Optionsgruppe '+(g.id||''));
    if(!id(g.id)||!text(g.label,80)||!OPTION_KINDS.includes(g.kind)||!OPTION_SELECTIONS.includes(g.selection)||(g.required!==undefined&&typeof g.required!=='boolean')||(g.note!==undefined&&!text(g.note,400)))invalid('Optionsgruppe '+(g.id||'')+' prüfen.');
    if(!Array.isArray(g.choices)||!g.choices.length||g.choices.length>40)invalid('Optionsgruppe '+g.id+': 1 bis 40 Auswahlen.');
    for(const c of g.choices){only(c,['id','label','priceCents','skuSuffix','default','note'],'Option');if(!id(c.id)||!text(c.label,80)||!(open(c.priceCents)||cents(c.priceCents))||(c.skuSuffix!==undefined&&!/^[A-Za-z0-9_.:-]{1,30}$/.test(c.skuSuffix))||(c.default!==undefined&&typeof c.default!=='boolean')||(c.note!==undefined&&!text(c.note,400)))invalid('Option '+g.id+' / '+(c.id||'')+' prüfen.');}
@@ -134,6 +150,7 @@ export function validateFamily(f){
  return f;
 }
 const OPTION_KINDS=['accessory','variant'],OPTION_SELECTIONS=['single','multiple'];
+export const FIELD_KINDS=['text','date','select','checkbox'];
 // Everything still "offen" in a family, in plain words. Products are generated
 // only when this list is empty and the material has a native adapter.
 export function familyGaps(f){
@@ -143,7 +160,7 @@ export function familyGaps(f){
  if(open(f.designArea.marginMm))gaps.push('Gestaltungsrand');
  for(const r of f.mountingRules){if(!ruleComplete(r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
  const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
- for(const g of f.options||[])for(const c of g.choices)if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);
+ for(const g of f.options||[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
  if(f.groups.some(g=>g.shape==='plaque'))gaps.push('Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)');
  return gaps;
@@ -179,10 +196,31 @@ export function familyProductConfig(f,s,revision){
   material:{kind:f.material.kind,color:FAMILY_MATERIALS[f.material.kind].color(f.material.variant),thicknessMm:f.material.thicknessMm},processing:{profileId:f.material.processingProfileId},
   features:{orderEnabled:false,productionConfirmed:false,motifsAllowed:true},designs:[design],defaultDesignId:design.id,
   optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values}]};
+ const fields=familyOptionFields(f,s);if(fields.length)profile.optionFields=fields;
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:0,extraPriceCents:0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
  const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
  if(f.material.kind==='steel'){c.materialSurface=steelPreviewSurface();return nativeSpecimenConfig(c);}
  return nativeSlateConfig(c);
+}
+
+// K14 / Ü12.1: Zusatzfelder der Familie für eine Größe. Bedingung auf die Befestigung wird auf
+// die SKU-Endungen dieser Größe abgebildet; ein Feld, dessen Bedingung bei dieser Größe nie
+// eintreten kann, entfällt (samt Feldern, die auf es verweisen).
+export function familyOptionFields(f,s){
+ const result=[],present=new Map();
+ for(const g of (f.options||[]).filter(g=>FIELD_KINDS.includes(g.kind))){
+  const field={id:g.id,kind:g.kind,label:g.label,...(g.required!==undefined?{required:g.required}:{}),...(g.maxLength!==undefined?{maxLength:g.maxLength}:{}),...(g.priceCents!==undefined?{priceCents:g.priceCents}:{}),...(g.note!==undefined?{note:g.note}:{})};
+  if(g.kind==='select')field.choices=g.choices.map(c=>({id:c.id,label:c.label,...(c.priceCents!==undefined?{priceCents:c.priceCents}:{})}));
+  if(g.visibleIf){
+   const c=g.visibleIf;let valueIds;
+   if(c.groupId==='mounting')valueIds=c.valueIds.filter(rid=>s.mounting.includes(rid)).map(rid=>ruleOf(f,rid).skuSuffix);
+   else{if(!present.has(c.groupId))continue;valueIds=c.valueIds;}
+   if(!valueIds.length)continue;
+   field.visibleIf={groupId:c.groupId,valueIds};
+  }
+  present.set(g.id,true);result.push(field);
+ }
+ return result;
 }
 
 // Design template for the plugin: contour, usable area, holes and keep-out zones

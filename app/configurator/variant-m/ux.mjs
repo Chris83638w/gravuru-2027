@@ -7,7 +7,7 @@ import {photoPlacement} from './photo-position-model.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {roundEdit,roundDesign,editorTextSize} from './design-edit.mjs';
 import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
-import {quote,money,productProcess,quantityTierLabels} from './contract.mjs';
+import {quote,money,productProcess,quantityTierLabels,visibleGroups} from './contract.mjs';
 import {processPalette} from '../../workshop/process-profiles.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {uploadAllowed,uploadQuote,validateUpload,customerDraft,additionalMotifCount,mapPersonalObjects,uploadTarget,photoAvailableForDesign} from './ux-model.mjs';
@@ -16,7 +16,7 @@ import {installCommerce} from './commerce.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 import {physicalTextSize,designTextSize,applyPrintColor} from './usability-model.mjs';
 import {installAcrylicScene} from './acrylic-scene.mjs';
-import {acrylicSelection} from './acrylic-product.mjs';
+import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {selectionIds} from './profile-selection.mjs';
 import {rightForProperty,canEditElement,customerAdditionPolicy} from './element-rights.mjs';
 import {beginCustomerRights} from './customer-rights.mjs';
@@ -50,7 +50,7 @@ export async function installUX(el,config,legacy){
   const availableFonts=()=>selectionIds(Object.keys(el.fontData).sort((a,b)=>a.localeCompare(b,'de')),profileChoices?.fonts);
   const fontFits=(object,font)=>{try{measureText({...object,font},el.fontData);return true;}catch{return false;}};
   // The scene uses the original design grid; the customer always edits physical mm.
-  const textScale=()=>config?.acrylic?acrylicSelection(el.state.mOptions,config.acrylic.pricing).size.width/config.acrylic.designWidth:1;
+  const textScale=()=>config?.acrylic?acrylicSelection(acrylicOptions(el.state.mOptions),config.acrylic.pricing).size.width/config.acrylic.designWidth:1;
   const displayTextSize=o=>physicalTextSize(o,textScale());
   el.uxTextScale=textScale;
   el.uxDisplayTextSize=displayTextSize;
@@ -259,7 +259,7 @@ export async function installUX(el,config,legacy){
     if(config){const q=quote(config,el.state.objects,el.state.designId,el.state.mOptions,quantity);total=q.totalCents+extra.totalCents;base=config.basePriceCents;motifs=q.additionalMotifs*config.extraMotifCents;options=(q.listUnitCents??q.unitCents)-base-motifs;
       if(q.quantityTier){tierLine=`<p>Mengenstaffel ab ${q.quantityTier.minQuantity} Stück: −${money(q.quantityTierDiscountCents)} je Stück</p>`;tierNote.dataset.uxTierActive=String(q.quantityTier.minQuantity);}else delete tierNote.dataset.uxTierActive;}
     else{base=legacy.purchasing.basePriceCents;options=legacy.mounting.options.find(v=>v.key===el.state.fkMounting)?.surchargeCents||0;motifs=additionalMotifCount(el.state.objects,design()?.objects||[])*(legacy.purchasing.motifPriceCents??169);total=(base+options+motifs)*quantity+extra.totalCents;}
-    const optionNames=config?(profile.optionGroups||[]).map(g=>g.values.find(v=>v.id===(el.state.mOptions?.[g.id]||g.defaultValueId))?.label).filter(Boolean).join(', '):legacy.mounting.options.find(v=>v.key===el.state.fkMounting)?.name;
+    const optionNames=config?visibleGroups(config,el.state.mOptions||{}).map(g=>g.values.find(v=>v.id===(el.state.mOptions?.[g.id]||g.defaultValueId))?.label).filter(Boolean).join(', '):legacy.mounting.options.find(v=>v.key===el.state.fkMounting)?.name;
     $('[data-fk-total]').textContent=config?.demo?'Materialdemo':money(total);$('[data-ux-price-lines]').innerHTML=config?.demo?'<p>Reiner Profiltest ohne Artikelpreis oder Shopify-Zuordnung.</p>':`<p>Grundpreis: <strong>${money(base)}</strong></p><p>${esc(optionNames||'Optionen')}: ${money(options)}</p><p>Zusätzliche Motive: ${money(motifs)}</p><p>Fotos / Logos (${extra.count}): ${money(extra.unitCents)}</p>${tierLine}<p>Menge: ${quantity}</p><p>Gesamt: <strong>${money(total)}</strong></p><small>Inkl. MwSt. · zzgl. Versand. Berechnet werden nur Fotos und Logos, die auf deinem Produkt sichtbar sind.</small>`;
   }catch(error){say(error.message);}}
   function update(){updateFields();updateGallery();updateUploads();updatePrice();$('[data-ux-guides]').checked=$('[data-setting=guides]').checked;$('[data-ux-count]').textContent=`(${el.state.objects.length})`;$('[data-ux=undo]').disabled=!el.history.length;$('[data-ux=redo]').disabled=!el.future.length;$('.fk-buy-button').disabled=true;$('.fk-order-status').textContent=config?.productPreview?'Produktvorschau · Bestellung noch nicht verbunden':'Lokaler Prüfstand · Bestellung noch nicht verbunden';renderContents();if(dialogs.contents.open&&freeColor&&selected()&&!$('[data-ux-content-color]'))$('[data-ux-object-tools]').insertAdjacentHTML('beforeend','<label class="ux-print-color">Druckfarbe <input type="color" data-ux-content-color aria-label="Druckfarbe des ausgewählten Elements" value="'+esc(selected().color||'#202824')+'"></label>');}

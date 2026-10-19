@@ -6,9 +6,10 @@ import {printPreview} from './print-preview.mjs';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {FORM_MATERIALS} from './form-product.mjs';
 import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
-import {acrylicSelection} from '../configurator/variant-m/acrylic-product.mjs';
+import {acrylicSelection,acrylicOptions} from '../configurator/variant-m/acrylic-product.mjs';
 import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
+import {optionFieldEntries} from '../configurator/variant-m/contract.mjs';
 
 // Werkstatt-Zusammenfassung je Fertigungspaket (Ü7.1). Alle Werte stammen aus dem
 // gesicherten Prüfstand und den Renderer-Metadaten; nichts wird neu berechnet,
@@ -33,7 +34,7 @@ function nativeDetails(files,manifest,targetDpi){
  let saved,config;try{saved=JSON.parse(files.get('produkt-und-gestaltung.json'));config=JSON.parse(files.get('konfigurator-quellen.json'));}catch{fail('Der gesicherte Produktstand für die Zusammenfassung ist unvollständig.');}
  const state=saved.state,viewport=artworkViewport(config,{mOptions:state.options}),g=viewport.geometry,groups=config.profile.optionGroups||[];
  // Acryl rechnet über config.acrylic.pricing, nicht über die Gruppenpreise; dieselbe Quelle wie quote().
- const acrylic=config.acrylic?acrylicSelection(state.options,config.acrylic.pricing):null;
+ const acrylic=config.acrylic?acrylicSelection(acrylicOptions(state.options),config.acrylic.pricing):null;
  const optionPrice=(group,value)=>{
   if(!acrylic)return {priceCents:cents(value?.priceCents),priceKind:'surcharge'};
   if(group.id==='size')return {priceCents:cents(acrylic.size.basePriceCents),priceKind:'base'};
@@ -41,7 +42,8 @@ function nativeDetails(files,manifest,targetDpi){
   if(group.id==='wall')return {priceCents:cents(acrylic.wallCents),priceKind:'surcharge'};
   return {priceCents:null,priceKind:'surcharge'};
  };
- const options=groups.map(group=>{const value=group.values.find(v=>v.id===state.options[group.id]);return {groupId:group.id,group:group.name,valueId:state.options[group.id]??null,value:value?.label??String(state.options[group.id]??''),...optionPrice(group,value),mounting:Boolean(value&&(value.holes||value.mountingRule))};});
+ // K14 / Ü12.1: nur sichtbare Gruppen (visibleIf); Zusatzfelder ohne Vorschau getrennt als `fields`.
+ const options=groups.filter(group=>state.options[group.id]!==undefined).map(group=>{const value=group.values.find(v=>v.id===state.options[group.id]);return {groupId:group.id,group:group.name,valueId:state.options[group.id]??null,value:value?.label??String(state.options[group.id]??''),...optionPrice(group,value),mounting:Boolean(value&&(value.holes||value.mountingRule))};});
  const textFields=state.design.objects.filter(o=>!o.uxHidden&&o.type==='text').map(o=>({id:o.id,label:o.fieldKey||o.id,text:o.text,font:o.font,bold:Boolean(o.bold),italic:Boolean(o.italic),colorHex:o.color??null,
   sizeMm:round(o.size*viewport.scale),xMm:round(viewport.x+o.x*viewport.scale),yMm:round(viewport.y+o.y*viewport.scale),widthMm:round(o.w*viewport.scale),heightMm:round(o.h*viewport.scale),rotationDeg:round(o.rotation||0),anchor:'center'}));
  const processing=getProcessingProfile(config.profile),material=config.profile.material||{};
@@ -51,7 +53,7 @@ function nativeDetails(files,manifest,targetDpi){
  return {product:{material:{kind:material.kind??null,label:MATERIAL_KINDS[material.kind]||material.kind||'offen',thicknessMm:round(material.thicknessMm,3),colorHex:material.color??null},
    widthMm:round(g.width,3),heightMm:round(g.height,3),shape:g.shape??'rect',cornerRadiusMm:round(g.cornerRadiusMm||0,3),
    mounting:{holeCount:(g.holes||[]).length,holes:(g.holes||[]).map(h=>({xMm:round(h.x,3),yMm:round(h.y,3),diameterMm:round(h.diameter,3)})),option:options.find(o=>o.mounting)?{group:options.find(o=>o.mounting).group,value:options.find(o=>o.mounting).value}:null},
-   options:options.map(({mounting,...o})=>o),method:processing.method,methodLabel:processing.name||METHOD_LABELS[processing.method]||processing.method},
+   options:options.map(({mounting,...o})=>o),fields:optionFieldEntries(config,state.options).map(f=>({id:f.id,kind:f.kind,label:f.label,value:f.value,display:f.display,priceCents:f.priceCents})),method:processing.method,methodLabel:processing.name||METHOD_LABELS[processing.method]||processing.method},
   textFields,photos,designId:state.design.id};
 }
 
@@ -67,7 +69,7 @@ function formDetails(files,manifest,targetDpi){
  return {product:{material:{kind:material.id??null,label:known?.name||material.id||'offen',thicknessMm:round(material.thicknessMm,3),colorHex:null,surfaceNotes:material.surfaceNotes||''},
    widthMm:round(g.widthMm,3),heightMm:round(g.heightMm,3),shape:'contour',cornerRadiusMm:null,
    mounting:{holeCount:Number.isInteger(g.holeCount)?g.holeCount:(g.contours||[]).filter(c=>c.role==='hole').length,holes:[],option:null},
-   options:[],method:product.processingMethod,methodLabel:METHOD_LABELS[product.processingMethod]||product.processingMethod||'offen'},
+   options:[],fields:[],method:product.processingMethod,methodLabel:METHOD_LABELS[product.processingMethod]||product.processingMethod||'offen'},
   textFields,photos,designId:saved.designId};
 }
 

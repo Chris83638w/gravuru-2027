@@ -7,10 +7,11 @@ import {validateDesignContent, objectIssue} from '../../platform/sources/app/sha
 import {validateUniversalElements} from '../../platform/sources/app/shared/models/universal-elements.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {localFontIds} from './local-pilot.mjs';
-import {acrylicSelection} from './acrylic-product.mjs';
+import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {validSurface} from './material-surface.mjs';
 import {validateSteelFormats} from './steel-formats.mjs';
 import {textLimits,textLimitIssue,sameSampleText,requiredFieldMessage} from '../../workshop/theme-limits.mjs';
+import {optionFields,visibleBy,validateOptionConditions,fieldValue,fieldPrice,fieldRequiredMessage,fieldDisplay} from './option-fields.mjs';
 
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
@@ -30,7 +31,7 @@ export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 export const productProcess=config=>processProfile(config.profile);
 // Physischer Maßstab der Gestaltung (Acryl: gewählte Größe / Designbreite, sonst 1).
 export function physicalScale(config, options={}) {
-  return config.acrylic ? acrylicSelection(resolvedOptions(config, options), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
+  return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
 }
 export const money = cents => new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR'}).format(cents / 100);
 
@@ -95,6 +96,7 @@ export function prepareConfig(input) {
     const issue=textLimitIssue(o.text,textLimits(o,d,p));if(issue)fail((d.name||d.id)+': Mustertext – '+issue);
   }
   for(const group of p.optionGroups||[])for(const value of group.values)validateOptionPresentation(value);
+  validateOptionConditions(p); // K14 / Ü12.1: bedingte Gruppen und Zusatzfelder
   if (!p.binding?.productId || !p.id || !p.revision) fail('Produktbindung und feste Profilrevision fehlen.');
   if (!(review&&config.basePriceCents===null&&config.extraMotifCents===null)&&(!Number.isSafeInteger(config.basePriceCents) || config.basePriceCents < 0 ||
       !Number.isSafeInteger(config.extraMotifCents) || config.extraMotifCents < 0)) fail('Verbindliche Centpreise fehlen.');
@@ -135,16 +137,48 @@ export function prepareConfig(input) {
   return config;
 }
 
+// Gruppenwahl und Zusatzfelder (K14 / Ü12.1) in einem Objekt. Unsichtbare Gruppen
+// und Felder werden verworfen (auch wenn ein Wert mitkommt); leere Felder fehlen.
+// Pflichtfelder prüft `validateDesign` (nur sichtbare, nicht im Entwurf).
 export function resolvedOptions(config, values = {}) {
-  const groups = config.profile.optionGroups || [], result = {};
+  const groups = config.profile.optionGroups || [], fields = optionFields(config.profile), result = {};
   if (!values || typeof values !== 'object' || Array.isArray(values)) fail('Ungültige Optionen.');
-  for (const key of Object.keys(values)) if (!groups.some(g => g.id === key)) fail('Unbekannte Optionsgruppe.');
+  for (const key of Object.keys(values)) if (!groups.some(g => g.id === key) && !fields.some(f => f.id === key)) fail('Unbekannte Optionsgruppe.');
   for (const group of groups) {
+    if (!visibleBy(group.visibleIf, result)) continue;
     const id = values[group.id] ?? group.defaultValueId;
     if (!group.values.some(v => v.id === id)) fail('Ungültige Auswahl: ' + group.name);
     result[group.id] = id;
   }
+  for (const field of fields) {
+    if (!visibleBy(field.visibleIf, result)) continue;
+    const value = fieldValue(field, values[field.id]);
+    if (value !== undefined) result[field.id] = value;
+  }
   return result;
+}
+const visibleFields = (config, options) => optionFields(config.profile).filter(f => visibleBy(f.visibleIf, options));
+export const choiceOptions = (config, options) => Object.fromEntries(Object.entries(options).filter(([key]) => (config.profile.optionGroups || []).some(g => g.id === key)));
+export const fieldOptions = (config, options) => Object.fromEntries(Object.entries(options).filter(([key]) => optionFields(config.profile).some(f => f.id === key)));
+export const visibleGroups = (config, values = {}) => { const options = resolvedOptions(config, values); return (config.profile.optionGroups || []).filter(g => options[g.id] !== undefined); };
+export function missingRequiredFields(config, values = {}) {
+  const options = resolvedOptions(config, values);
+  return visibleFields(config, options).filter(f => f.required === true && options[f.id] === undefined);
+}
+export const optionFieldCents = (config, options) => visibleFields(config, options).reduce((sum, f) => sum + fieldPrice(f, options[f.id]), 0);
+// Sichtbare, ausgefüllte Zusatzfelder für Warenkorb, Bestellung und Fertigungszusammenfassung.
+export function optionFieldEntries(config, values = {}) {
+  const options = resolvedOptions(config, values);
+  return visibleFields(config, options).filter(f => options[f.id] !== undefined).map(f => ({id:f.id, kind:f.kind, label:f.label, value:options[f.id], display:fieldDisplay(f, options[f.id]), priceCents:fieldPrice(f, options[f.id])}));
+}
+// Ausführungen für Shop-Varianten: alle Kombinationen der Gruppen, unsichtbare Gruppen
+// verworfen und doppelte Ausführungen zusammengefasst; Zusatzfelder sind keine Varianten.
+export function variantCombinations(config) {
+  let combinations = [{}];
+  for (const g of config.profile.optionGroups || []) combinations = combinations.flatMap(o => g.values.map(v => ({...o, [g.id]:v.id})));
+  const seen = new Map();
+  for (const o of combinations) { const resolved = choiceOptions(config, resolvedOptions(config, o)), key = JSON.stringify(Object.entries(resolved).sort()); if (!seen.has(key)) seen.set(key, resolved); }
+  return [...seen.values()];
 }
 
 export function selectedProfile(config, values = {}) {
@@ -153,6 +187,7 @@ export function selectedProfile(config, values = {}) {
   delete profile.mountingPreview;
   for (const group of profile.optionGroups || []) {
     const value = group.values.find(v => v.id === options[group.id]);
+    if (!value) continue; // unsichtbare Gruppe (visibleIf)
     if (value.holes !== undefined) {
       if (holeSelection) fail('Mehrere Optionen bestimmen gleichzeitig das Bohrbild.');
       profile.geometry.holes = clone(value.holes); holeSelection = true;
@@ -179,9 +214,11 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
     if (included.get(o.id) === o.motif && !seen.has(o.id)) seen.add(o.id);
     else additionalMotifs++;
   }
-  let unitCents = config.acrylic ? acrylicSelection(options,config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
-  if(!config.acrylic)for (const group of config.profile.optionGroups || []) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
-  unitCents += additionalMotifs * config.extraMotifCents;
+  let unitCents = config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
+  if(!config.acrylic)for (const group of config.profile.optionGroups || []) if (options[group.id] !== undefined) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
+  // Zusatzfelder (Ü12.1): Aufpreis nur sichtbarer, ausgefüllter Felder.
+  const fieldCents = optionFieldCents(config, options);
+  unitCents += additionalMotifs * config.extraMotifCents + fieldCents;
   if (!Number.isSafeInteger(unitCents)) fail('Ungültiger Gesamtpreis.');
   // Staffel (Ü11.1) serverseitig auf den Stückpreis; nur Produkte mit Staffelangabe
   // tragen die Zusatzfelder, damit bestehende Preisstände unverändert bleiben.
@@ -189,7 +226,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   unitCents = applyQuantityTier(listUnitCents, tier, config.basePriceCents);
   if (!Number.isSafeInteger(unitCents * quantity)) fail('Ungültiger Gesamtpreis.');
   const tiers = config.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents};
-  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, options, ...tiers};
+  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents})};
 }
 
 // `template:true` prüft eine Vorlage gegen sich selbst (Händler-Werkstatt):
@@ -231,6 +268,8 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     if (!o || JSON.stringify(cleanObject(o)) !== JSON.stringify(cleanObject(raw))) fail('Ein fester Vorlagenbereich wurde verändert.');
   }
   // Pflichttexte (Ü2.2): vorhanden, sichtbar und nicht mehr der Mustertext der Vorlage.
+  // Pflicht-Zusatzfelder (Ü12.1): nur sichtbare, nicht in Vorlage oder Entwurf.
+  if(!template&&!draft){const missing=missingRequiredFields(config,options);if(missing.length)fail(fieldRequiredMessage(missing[0]));}
   if(!template&&!draft)for(const raw of source.objects.filter(o=>o.type==='text'&&o.required===true)){
     const o=design.objects.find(o=>o.id===raw.id);
     if(!o||o.type!=='text'||o.uxHidden===true||sameSampleText(o.text,raw.text))fail(requiredFieldMessage(raw));

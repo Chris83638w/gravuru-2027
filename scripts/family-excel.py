@@ -22,7 +22,15 @@ LAYOUT_BY_TEXT = {v: k for k, v in LAYOUTS.items()}
 SHAPES = {'rect': 'eckig', 'ellipse': 'oval', 'plaque': 'eingezogene Ecken'}
 SHAPE_BY_TEXT = {v: k for k, v in SHAPES.items()}
 ACCESSORY = {'screws': 'Schrauben', 'standoffs': 'Abstandshalter'}
-OPTION_KIND = {'accessory': 'Zubehör', 'variant': 'Variante'}; OPTION_KIND_BY_TEXT = {v: k for k, v in OPTION_KIND.items()}
+OPTION_KIND = {'accessory': 'Zubehör', 'variant': 'Variante', 'text': 'Textfeld', 'date': 'Datum', 'select': 'Auswahlliste', 'checkbox': 'Ankreuzfeld'}; OPTION_KIND_BY_TEXT = {v: k for k, v in OPTION_KIND.items()}
+FIELD_KINDS = ('text', 'date', 'select', 'checkbox')
+# K14 / Ü12.1: „Sichtbar wenn“ als „gruppe: wert1, wert2“ (z. B. „mounting: AH02-E10-D8“).
+condition_text = lambda c: '' if not c else c['groupId'] + ': ' + ', '.join(c['valueIds'])
+def condition_parse(v):
+    v = str(v or '').strip()
+    if not v: return None
+    gid, _, values = v.partition(':')
+    return {'groupId': gid.strip(), 'valueIds': [x.strip() for x in values.split(',') if x.strip()]}
 OPTION_SEL = {'single': 'eine', 'multiple': 'mehrere'}; OPTION_SEL_BY_TEXT = {v: k for k, v in OPTION_SEL.items()}
 ACCESSORY_BY_TEXT = {v: k for k, v in ACCESSORY.items()}
 MATERIALS = {'steel': ('Edelstahl', 'Gravur', 'dunkel'), 'slate': ('Schiefer', 'Gravur', 'hell'), 'acrylic': ('Acrylglas', 'Gravur', 'hell')}
@@ -84,9 +92,14 @@ def export(paths, out):
     rows = []
     for f in fams:
         for g in f.get('options', []):
+            cond = condition_text(g.get('visibleIf'))
+            if g['kind'] in FIELD_KINDS and g['kind'] != 'select':
+                rows.append([f['id'], g['id'], g['label'], OPTION_KIND[g['kind']], '', 'ja' if g.get('required') else '', '', '', '', euro(g.get('priceCents')) if 'priceCents' in g else '', '', g.get('note', ''), cond, g.get('maxLength', ''), 'ja' if 'priceCents' in g and g['priceCents'] is None else ''])
+                continue
             for c in g['choices']:
-                rows.append([f['id'], g['id'], g['label'], OPTION_KIND.get(g['kind'], g['kind']), OPTION_SEL.get(g['selection'], g['selection']), 'ja' if g.get('required') else '', c['id'], c['label'], c.get('skuSuffix', ''), euro(c['priceCents']), 'ja' if c.get('default') else '', c.get('note', '')])
-    sheet('Optionen', ['Familie', 'Gruppe (Kennung)', 'Gruppe', 'Art', 'Auswahl', 'Pflicht', 'Option (Kennung)', 'Option', 'SKU-Endung', 'Aufpreis €', 'Standard', 'Hinweis'], rows, [22, 16, 24, 10, 10, 8, 16, 28, 10, 11, 9, 40])
+                field = g['kind'] in FIELD_KINDS
+                rows.append([f['id'], g['id'], g['label'], OPTION_KIND.get(g['kind'], g['kind']), '' if field else OPTION_SEL.get(g['selection'], g['selection']), 'ja' if g.get('required') else '', c['id'], c['label'], '' if field else c.get('skuSuffix', ''), euro(c.get('priceCents')) if 'priceCents' in c else '', '' if field else ('ja' if c.get('default') else ''), (g.get('note', '') if field else c.get('note', '')), cond, '', 'ja' if 'priceCents' in c and c['priceCents'] is None else ''])
+    sheet('Optionen', ['Familie', 'Gruppe (Kennung)', 'Gruppe', 'Art', 'Auswahl', 'Pflicht', 'Option (Kennung)', 'Option', 'SKU-Endung', 'Aufpreis €', 'Standard', 'Hinweis', 'Sichtbar wenn', 'Max. Zeichen', 'Aufpreis offen'], rows, [22, 16, 24, 10, 10, 8, 16, 28, 10, 11, 9, 40, 26, 10, 10])
     # K14 / Ü11.1: Mengenstaffel je Familie (SKU leer) oder je Größe. Leerer Rabatt = offen (null).
     rows = []
     def tier_rows(fid, sku, tiers):
@@ -99,7 +112,7 @@ def export(paths, out):
         for s in f['sizes']: tier_rows(f['id'], s['key'], s.get('quantityTiers'))
     sheet('Staffel', ['Familie', 'SKU', 'ab Stück', 'Rabatt %', 'Stückpreis €'], rows, [22, 26, 10, 10, 12])
     ws = wb.create_sheet('Lesen')
-    for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Verfahrensprofil: exakte Kennung (' + ', '.join(PROCESS_IDS) + '); sie legt Werkzeuge, Palette, Mindestschriftgröße, Soll-dpi und Spiegelung fest. Leer = offen; dann zählt ersatzweise die Spalte Verfahren (Gravur je Material, Druck = color-print).', 'Blatt Optionen: optionales Zubehör und Varianten je Familie – Gruppe (z. B. Abstandshalter-Set), Art Zubehör/Variante, Auswahl eine/mehrere, je Option Aufpreis in €. Neue Zeilen = neue Optionen. Preise je Linie (Unterkategorie) stehen in linien/<linie>.json des Katalogs.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Blatt Staffel: Mengenstaffel je Familie (SKU leer) oder je Größe (SKU). Je Zeile eine Stufe: ab Stück (2–99), Rabatt % auf den Stückpreis inkl. Optionen ODER Stückpreis € (Grundpreis ab dieser Menge). Beides leer = Wert offen – die Staffel wird dann nicht gerechnet und nicht angezeigt. Zeile ohne „ab Stück“ = ausdrücklich keine Staffel.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
+    for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Verfahrensprofil: exakte Kennung (' + ', '.join(PROCESS_IDS) + '); sie legt Werkzeuge, Palette, Mindestschriftgröße, Soll-dpi und Spiegelung fest. Leer = offen; dann zählt ersatzweise die Spalte Verfahren (Gravur je Material, Druck = color-print).', 'Blatt Optionen: optionales Zubehör und Varianten je Familie – Gruppe (z. B. Abstandshalter-Set), Art Zubehör/Variante, Auswahl eine/mehrere, je Option Aufpreis in €. Neue Zeilen = neue Optionen. Zusatzfelder ohne Vorschau: Art Textfeld/Datum/Auswahlliste/Ankreuzfeld (Auswahlliste: je Auswahl eine Zeile), Max. Zeichen nur bei Textfeldern; „Sichtbar wenn“ = „mounting: <Befestigungs-Kennung>, …“ oder „<Auswahlliste>: <Auswahl>“; „Aufpreis offen“ = ja, wenn der Aufpreis noch nicht feststeht. Preise je Linie (Unterkategorie) stehen in linien/<linie>.json des Katalogs.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Blatt Staffel: Mengenstaffel je Familie (SKU leer) oder je Größe (SKU). Je Zeile eine Stufe: ab Stück (2–99), Rabatt % auf den Stückpreis inkl. Optionen ODER Stückpreis € (Grundpreis ab dieser Menge). Beides leer = Wert offen – die Staffel wird dann nicht gerechnet und nicht angezeigt. Zeile ohne „ab Stück“ = ausdrücklich keine Staffel.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
                  'Befestigungen je Größe als Kennungen aus dem Blatt Befestigungen, mit Komma getrennt. Neue Kennung = neue Zeile dort.', 'Zurücklesen: python scripts/family-excel.py import --xlsx DATEI --out ORDNER']:
         ws.append([line])
     ws.column_dimensions['A'].width = 120
@@ -145,9 +158,30 @@ def import_(xlsx, out):
         for r in rows('Optionen'):
             f = fams[r['Familie']]; f.setdefault('options', [])
             g = next((g for g in f['options'] if g['id'] == r['Gruppe (Kennung)']), None)
+            kind = OPTION_KIND_BY_TEXT.get(r['Art'], r['Art'])
+            open_price = str(r.get('Aufpreis offen') or '').strip().lower() == 'ja'
+            price = None if open_price else cents(r['Aufpreis €'])
+            if kind in FIELD_KINDS:
+                if not g:
+                    g = {'id': r['Gruppe (Kennung)'], 'label': r['Gruppe'], 'kind': kind}
+                    if str(r.get('Pflicht') or '').strip().lower() == 'ja': g['required'] = True
+                    if r.get('Max. Zeichen') not in (None, ''): g['maxLength'] = int(num(r['Max. Zeichen']))
+                    if kind != 'select' and (open_price or price is not None): g['priceCents'] = price
+                    if r.get('Hinweis'): g['note'] = r['Hinweis']
+                    cond = condition_parse(r.get('Sichtbar wenn'))
+                    if cond: g['visibleIf'] = cond
+                    if kind == 'select': g['choices'] = []
+                    f['options'].append(g)
+                if kind == 'select':
+                    c = {'id': r['Option (Kennung)'], 'label': r['Option']}
+                    if open_price or price is not None: c['priceCents'] = price
+                    g['choices'].append(c)
+                continue
             if not g:
                 g = {'id': r['Gruppe (Kennung)'], 'label': r['Gruppe'], 'kind': OPTION_KIND_BY_TEXT.get(r['Art'], r['Art']), 'selection': OPTION_SEL_BY_TEXT.get(r['Auswahl'], r['Auswahl']), 'choices': []}
                 if str(r.get('Pflicht') or '').strip().lower() == 'ja': g['required'] = True
+                cond = condition_parse(r.get('Sichtbar wenn'))
+                if cond: g['visibleIf'] = cond
                 f['options'].append(g)
             c = {'id': r['Option (Kennung)'], 'label': r['Option'], 'priceCents': cents(r['Aufpreis €'])}
             if r.get('SKU-Endung'): c['skuSuffix'] = str(r['SKU-Endung'])

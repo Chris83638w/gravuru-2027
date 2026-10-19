@@ -1,5 +1,5 @@
 import {previewResourceURL} from './preview-resource.mjs';
-import {ACRYLIC_BASES,acrylicSelection,containAcrylicObject} from './acrylic-product.mjs';
+import {ACRYLIC_BASES,acrylicSelection,acrylicOptions,containAcrylicObject} from './acrylic-product.mjs';
 import {money} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
 const ROOT='/acrylic-assets/';
@@ -55,7 +55,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  const normalize=el.normalize;el.normalize=function(...args){const result=normalize.apply(this,args),geometry=new Map(fixedSource().map(o=>[o.id,{x:o.x,y:o.y,w:o.w,h:o.h,rotation:o.rotation}]));for(const o of this.state.objects){if(geometry.has(o.id)){Object.assign(o,geometry.get(o.id),{acrylicFixed:true,uxLocked:false,uxHidden:false});}else containAcrylicObject(o);}return result;};
  const oldAction=el.action;el.action=function(key,...args){if(isFixed(selected())&&['delete','duplicate','grow','shrink','center','centerX','up','down','resetRotation'].includes(key))return;return oldAction.call(this,key,...args);};
  function updateScene(){
-   const choice=acrylicSelection(el.state.mOptions,config.acrylic.pricing),b=choice.base;
+   const choice=acrylicSelection(acrylicOptions(el.state.mOptions),config.acrylic.pricing),b=choice.base;
    for(const o of el.state.objects)if(isFixed(o))o.acrylicFixed=true;
    stage.dataset.fixedSelected=String(isFixed(selected())&&!el.uxCanPositionPhoto?.(selected()));
    const mainPhoto=el.state.objects.find(o=>o.id==='photo-main');if(mainPhoto?.uxUploadId)mainPhoto.uxPhotoBackground='keep';

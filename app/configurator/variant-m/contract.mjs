@@ -17,6 +17,13 @@ const fail = message => { throw Error(message); };
 // to the model-bound plate assembly; retain the native outer-contour checks here.
 export const customerLayoutIssue=(object,profile)=>objectIssue(object,{...profile,geometry:{...profile.geometry,holes:[]}});
 export const DRAFT_SCHEMA = 'gravuru-universal-customer-draft/v1';
+// Ü6.1: Ebenenrolle. 'guide' ist im Editor sichtbar, erscheint aber nie in der
+// Fertigungsausgabe. Standard ohne Angabe ist 'print'. Die Rolle ist ein
+// Vorlagenfeld; der Kunde kann sie weder setzen noch ändern.
+export const OBJECT_ROLES=Object.freeze(['guide','print']);
+export const objectRole=o=>o?.role==='guide'?'guide':'print';
+export const isGuideObject=o=>objectRole(o)==='guide';
+export const productionObjects=objects=>objects.filter(o=>!o.uxHidden&&!isGuideObject(o));
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 export const money = cents => new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR'}).format(cents / 100);
 
@@ -114,7 +121,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   const seen = new Set();
   let additionalMotifs = 0;
   const lineKeys=new Set((design.marks||[]).map((_,i)=>'ux-line-'+design.id+'-'+i));
-  for (const o of objects.filter(o => o.type === 'motif' && !o.uxHidden && !(o.uxDecoration&&lineKeys.has(o.motif)&&o.id===o.motif))) {
+  for (const o of objects.filter(o => o.type === 'motif' && !o.uxHidden && !isGuideObject(o) && !(o.uxDecoration&&lineKeys.has(o.motif)&&o.id===o.motif))) {
     if(embeddedOnly.has(o.motif)&&(included.get(o.id)!==o.motif||o.templateOrigin!==true||seen.has(o.id)))fail('Vorlagenmotiv darf nicht zusätzlich eingefügt werden.');
     if (included.get(o.id) === o.motif && !seen.has(o.id)) seen.add(o.id);
     else additionalMotifs++;
@@ -142,6 +149,13 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   if (JSON.stringify(design.marks || []) !== JSON.stringify(source.marks || [])) fail('Feste Gestaltungslinien wurden verändert.');
   for(const raw of source.objects.filter(o=>o.type==='motif-raster'&&!canDeleteTemplateElement(config,source.id,o)))if(!design.objects.some(o=>o.id===raw.id&&o.type==='motif-raster'&&o.assetId===raw.assetId&&o.locked===true))fail('Rastermotiv darf nicht entfernt oder ersetzt werden.');
   const p = selectedProfile(config, options);
+  // Ebenenrolle (Ü6.1) ist Vorlagensache: Vorlagenobjekte behalten ihre Rolle,
+  // neue Kundenobjekte sind immer Druck-/Gravurebenen.
+  for (const o of design.objects) {
+    if (o.role !== undefined && !OBJECT_ROLES.includes(o.role)) fail('Ungültige Ebenenrolle.');
+    const raw = source.objects.find(s => s.id === o.id);
+    if (raw ? objectRole(o) !== objectRole(raw) : isGuideObject(o)) fail('Die Ebenenrolle einer Vorlage kann nicht vom Kunden geändert werden.');
+  }
   // Geometry locks are product rules, not just disabled drag handles. Colour
   // and an uploaded photograph may change without changing the fixed layout.
   const fixedKeys=['type','x','y','w','h','rotation','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','motif','assetId','required','acrylicFixed'];
@@ -196,7 +210,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','italic','motif','fieldKey',
   'letterSpacing','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
-  'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked'];
+  'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){
  const source=config.profile.designs.find(d=>d.id===state.designId);
@@ -234,6 +248,7 @@ export function newEditableObject(config, input, id, fonts, motifs, options = {}
   const p = selectedProfile(config, options), {width,height} = p.geometry;
   const o = {...cleanObject(input), id, x:width/2, y:height/2, rotation:0,
     color:getProcessingProfile(p).ink, customerEditable:true, templateOrigin:false};
+  delete o.role; // Neue Kundenelemente sind immer Druck-/Gravurebenen (Ü6.1).
   if (o.type === 'text') {
     if (!fonts[o.font]) o.font = 'Montserrat';
     o.size = Math.min(o.size || 14, height*.12); o.bold = !!o.bold;

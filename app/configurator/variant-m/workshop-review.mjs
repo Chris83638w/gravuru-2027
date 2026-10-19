@@ -49,7 +49,7 @@ export function installWorkshopReview(api,footer){
    testButton.hidden=credentials.merchantTestCart?.productId!==binding.productId||credentials.merchantTestCart?.productRevision!==binding.productRevision;
    for(const item of footer.querySelectorAll('[data-unconnected-cart]'))item.hidden=!testButton.hidden;
    const target=new URL('/werkstatt/pruefstaende/',location.origin);target.searchParams.set('snapshot',result.id);if(window.parent.GravuruMerchantRequest){for(const key of ['shop','host','embedded']){const value=new URL(window.parent.location.href).searchParams.get(key);if(value)target.searchParams.set(key,value);}link.target='_parent';}link.href=target.pathname+target.search;link.hidden=false;
-   status.textContent='Gestaltung mit Originalbildern als Revision '+result.revision+' gesichert. Frühere Prüfstände bleiben erhalten. Dies ist noch keine Bestellung.'+(result.accessStored?'':' Der private Zugriff bleibt nur bis zum Schließen dieser Seite verfügbar; bitte den Dashboard-Link geöffnet lassen.');
+   status.textContent='Gestaltung mit Originalbildern als Revision '+result.revision+' gesichert. Frühere Prüfstände bleiben erhalten. Dies ist noch keine Bestellung.'+(result.accessStored?'':' Der private Zugriff bleibt nur bis zum Schließen dieser Seite verfügbar; bitte den Dashboard-Link geöffnet lassen.')+(result.photoHints?.length?' '+[...new Set(result.photoHints.map(h=>h.text))].join(' '):'');
   }catch(error){status.textContent=error.message;}finally{busy=false;button.disabled=false;}
  };
 }

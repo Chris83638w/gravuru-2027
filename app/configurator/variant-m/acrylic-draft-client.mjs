@@ -25,6 +25,8 @@ export function createAcrylicDraftClient({fetchImpl = globalThis.fetch, storage}
     known.set(key, credential);
     let accessStored = true;
     try {storage.setItem(key, JSON.stringify(credential));} catch {accessStored = false;}
-    return {id: result.snapshotId, draftId: credential.id, revision: credential.revision, accessStored, draftToken:credential.token};
+    // Ü5.2: Auflösungs-Hinweise sind Text für den Editor, nie eine Sperre.
+    const photoHints = Array.isArray(result.photoHints) ? result.photoHints.filter(h => typeof h?.text === 'string' && ['gelb','rot'].includes(h.grade)).map(h => ({objectId: String(h.objectId ?? ''), grade: h.grade, text: h.text})) : [];
+    return {id: result.snapshotId, draftId: credential.id, revision: credential.revision, accessStored, draftToken:credential.token, photoHints};
   };
 }

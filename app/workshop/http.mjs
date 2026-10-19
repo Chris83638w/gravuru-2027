@@ -39,6 +39,9 @@ import {verifyFormDesignSources,addFormDesign,formDesignOverlay} from './form-de
 import {createFormCustomerStore} from './form-customer-store.mjs';
 import {initialFormCustomerState,resolveFormCustomer,customerPhotoMarkup} from './form-customer-model.mjs';
 import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
+import {photoResolutionNote,resolutionTargetDpi} from './acrylic-photo-resolution.mjs';
+import {clientOutputSettings,productionMirror} from './output-orientation.mjs';
+import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
 import {prepareFormReview} from './form-review-snapshot.mjs';
 import {createFormPrintProof,formPrintSettings,formPrintKey,FORM_PRINT_RECIPE} from './form-print-proof.mjs';
 import {createContourStore} from './contours.mjs';
@@ -397,7 +400,8 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           if(isFormProduct(record.document)||record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Bitte ein aktives Acrylprodukt verwenden.');
           const bundle=await prepareAcrylicReview({record,config:model(record.id,record.revision).universal,input,assets});
           const saved=draft?customerDrafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):customerDrafts.acrylicDrafts.create(bundle);
-          return json(res,draft?200:201,saved);
+          // Ü5.2: Auflösungs-Hinweis als Text an den Editor; nie eine Sperre, keine Bestätigung.
+          return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
         }finally{reviewJobs.delete(job);}
       }
       if(pathname==='/api/workshop/acrylic-reviews'&&method==='POST'){
@@ -419,7 +423,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       }
       if(pathname==='/api/workshop/export-jobs'){
         if(method==='GET')return json(res,200,{jobs:exportJobs.list()});
-        if(method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['snapshotId','settings'].includes(k)))fail(422,'invalid_export_request','Ungültiger Ausgabeauftrag.');const job=enqueueOutput(data.snapshotId,data.settings);return json(res,job.status==='completed'?200:202,job);}
+        if(method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['snapshotId','settings'].includes(k)))fail(422,'invalid_export_request','Ungültiger Ausgabeauftrag.');const resolved=clientOutputSettings(customerDrafts.review(data.snapshotId).manifest,data.settings),job=enqueueOutput(data.snapshotId,resolved.settings);return json(res,job.status==='completed'?200:202,{...job,outputOrientation:resolved.orientation,clientSettingsIgnored:resolved.ignored});}
       }
       const exportMatch=pathname.match(/^\/api\/workshop\/export-jobs\/(job_[a-f0-9-]+)(?:\/(retry|recreate|download|preview|checks))?$/);
       if(exportMatch){
@@ -456,10 +460,10 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
       if(pathname==='/api/workshop/review-snapshots'&&method==='GET')return json(res,200,{snapshots:customerDrafts.listSnapshots(),scope:'local-operator'});
       const reviewMatch=pathname.match(/^\/api\/workshop\/review-snapshots\/(proof_[a-f0-9-]+)(?:\/(download|print))?$/);
       if(reviewMatch){
-        if(!reviewMatch[2]&&method==='GET'){const detail=customerDrafts.review(reviewMatch[1]);return json(res,200,{...detail,outputCapabilities:{cart:detail.manifest.capabilities?.contour!==false,print:detail.manifest.capabilities?.print!==false&&detail.manifest.product.method==='print',contour:detail.manifest.capabilities?.contour!==false,engraving:detail.manifest.capabilities?.engraving!==false&&detail.manifest.product.method==='engraving'}});}
+        if(!reviewMatch[2]&&method==='GET'){const detail=customerDrafts.review(reviewMatch[1]);return json(res,200,{...detail,outputOrientation:productionMirror(detail.manifest),outputCapabilities:{cart:detail.manifest.capabilities?.contour!==false,print:detail.manifest.capabilities?.print!==false&&detail.manifest.product.method==='print',contour:detail.manifest.capabilities?.contour!==false,engraving:detail.manifest.capabilities?.engraving!==false&&detail.manifest.product.method==='engraving'}});}
         if(reviewMatch[2]==='print'&&method==='POST'){
           const data=await body(req);if(Object.keys(data).some(k=>!['settings','format'].includes(k))||!['pdf','white-pdf','zip'].includes(data.format||'pdf'))fail(422,'invalid_print_request','Bitte PDF oder ZIP und gültige Einstellungen auswählen.');
-          const id=reviewMatch[1],job=enqueuePrint(id,data.settings);await exportWorker.wait(job.id);const output=customerDrafts.printProof(id,job.recipeKey);
+          const id=reviewMatch[1],job=enqueuePrint(id,clientOutputSettings(customerDrafts.review(id).manifest,data.settings).settings);await exportWorker.wait(job.id);const output=customerDrafts.printProof(id,job.recipeKey);
           const download=outputDownload(output,data.format||'pdf'),bytes=download.bytes;
           res.writeHead(200,{'Content-Type':download.mime,'Content-Length':bytes.length,'Content-Disposition':'attachment; filename="'+id+'-'+download.suffix+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Gravuru-Print-Info':encodeURIComponent(JSON.stringify({dpi:output.metadata.settings.dpi,bleedMm:output.metadata.settings.bleedMm,white:output.metadata.settings.white,warnings:output.metadata.warnings.slice(0,3).map(w=>Array.from(w).slice(0,140).join(''))}))}).end(bytes);return;
         }
@@ -489,10 +493,13 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           }finally{reviewJobs.delete(draft.id);}
         }
         if(action==='photos'&&method==='POST'){
-          const source=customerRecord(draft.productId,draft.productRevision).document.designs.find(d=>d.id===draft.designId);
-          if(!source.fields.some(f=>f.id===data.fieldId&&f.type==='photo'))fail(422,'photo_field_missing','Bitte einen vorgegebenen Fotobereich wählen.');
+          const photoRecord=customerRecord(draft.productId,draft.productRevision),source=photoRecord.document.designs.find(d=>d.id===draft.designId),photoField=source.fields.find(f=>f.id===data.fieldId&&f.type==='photo');
+          if(!photoField)fail(422,'photo_field_missing','Bitte einen vorgegebenen Fotobereich wählen.');
           if(photoJobs.size>=2||photoJobs.has(draft.id))fail(409,'photo_busy','Eine Fotoprüfung läuft bereits. Bitte kurz warten.');
-          photoJobs.add(draft.id);try{const photo=await prepareCustomerPhoto(data.bytes);if(customerDrafts.get(draft.id,token).revision!==data.expectedRevision)fail(409,'stale_customer_draft','Entwurf inzwischen geändert. Bitte neu laden.');return json(res,201,customerDrafts.addPhoto(draft.id,token,photo));}finally{photoJobs.delete(draft.id);}
+          photoJobs.add(draft.id);try{const photo=await prepareCustomerPhoto(data.bytes);if(customerDrafts.get(draft.id,token).revision!==data.expectedRevision)fail(409,'stale_customer_draft','Entwurf inzwischen geändert. Bitte neu laden.');
+            // Ü5.1/Ü5.2: Ampel nach Upload aus Fotobereich in mm und Pixelmaß; Hinweis als Text, nie eine Sperre.
+            const placement=photoPlacement({w:photoField.widthMm,h:photoField.heightMm},{width:photo.width,height:photo.height}),effectiveDpi=Math.floor(Math.min(photo.width/placement.w,photo.height/placement.h)*25.4),note=photoResolutionNote(effectiveDpi,resolutionTargetDpi(photoRecord.metadata?.productionProfile));
+            return json(res,201,{...customerDrafts.addPhoto(draft.id,token,photo),photoResolution:{grade:note.grade,effectiveDpi:note.effectiveDpi,targetDpi:note.targetDpi},hint:note.hint});}finally{photoJobs.delete(draft.id);}
         }
         if(action==='preview'&&method==='POST')return json(res,200,customerResult(draft,token,data.state));
         if(!action&&method==='PATCH'){customerResult(draft,token,data.state);const saved=customerDrafts.save(draft.id,token,data.state,data.expectedRevision);return json(res,200,customerResult(saved,token));}

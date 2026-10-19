@@ -5,6 +5,7 @@ import {formProductPreview} from './form-product-preview.mjs';
 import {formDesignOverlay} from './form-designs.mjs';
 import {formContourPdf} from './form-contour-pdf.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
+import {photoResolutionNote,resolutionTargetDpi} from './acrylic-photo-resolution.mjs';
 import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -39,8 +40,10 @@ export async function prepareFormReview({record,draft,assets,contours,fonts,medi
   const ext=photo.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':photo.original.subarray(1,4).toString()==='PNG'?'png':'webp';
   const file=add('fotos/'+f.id+'-original.'+ext,photo.original,'Unverändertes privates Originalfoto.');
   const placement=photoPlacement({w:f.widthMm,h:f.heightMm},{width:photo.width,height:photo.height},photo.crop),effectiveDpi=Math.floor(Math.min(photo.width/placement.w,photo.height/placement.h)*25.4);
-  photos.push({fieldId:f.id,...file,width:photo.width,height:photo.height,effectiveDpi,crop:photo.crop,tone:photo.tone});
-  if(effectiveDpi<300)warnings.push('Foto „'+f.label+'“ erreicht im gewählten Ausschnitt etwa '+effectiveDpi+' dpi; 300 dpi werden nicht durch Hochrechnen hinzugewonnen.');
+  // Ü5.1/Ü5.2: Ampel gegen das Soll des Fertigungsprofils; nie eine Sperre, Vermerk für Summary und Freigabe.
+  const note=photoResolutionNote(effectiveDpi,resolutionTargetDpi(record.metadata?.productionProfile));
+  photos.push({fieldId:f.id,...file,width:photo.width,height:photo.height,effectiveDpi,photoResolution:{grade:note.grade,effectiveDpi:note.effectiveDpi,targetDpi:note.targetDpi},crop:photo.crop,tone:photo.tone});
+  if(note.grade!=='gruen')warnings.push(note.productionNote+': Foto „'+f.label+'“ erreicht im gewählten Ausschnitt etwa '+effectiveDpi+' dpi (Soll '+note.targetDpi+' dpi). Foto wurde angenommen; bitte in der Freigabe prüfen. Hochrechnen ergänzt keine Bilddetails.');
  }
  const photoMarkup=f=>customerPhotoMarkup(f,resolved.photos.get(f.id));
  const preview=Buffer.from(formProductPreview(document,{assets,fonts,contours,photoMarkup}));

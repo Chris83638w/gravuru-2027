@@ -18,6 +18,8 @@ export function validateUniversalElements(design){
  }
  for(const object of design.objects){
   if(object.color!==undefined&&!validColor(object.color))throw Error('Elementfarbe bitte als gültige RGB-Farbe angeben.');
+  // Ebenenrolle: 'guide' bleibt sichtbar im Editor, erscheint nie in der Fertigungsdatei; Standard 'print'.
+  if(object.role!==undefined&&!['guide','print'].includes(object.role))throw Error('Ebenenrolle bitte als guide oder print angeben.');
   if(object.type==='motif-raster'&&(!/^[a-f0-9]{64}$/.test(object.assetId||'')||typeof object.locked!=='boolean'||object.locked!==true||object.opacity!==undefined&&(!Number.isFinite(object.opacity)||object.opacity<0||object.opacity>1)))throw Error('Rastermotiv braucht eine feste Bildkennung, Sperre und gültige Deckkraft.');
   if(object.preserveColors!==undefined&&(object.type!=='motif'||typeof object.preserveColors!=='boolean'))throw Error('Originalfarben können nur für Motive ein- oder ausgeschaltet werden.');
   if(['image','photoSlot'].includes(object.type)){

@@ -11,7 +11,7 @@ export function examplePhotoMarkup(slot,assetId,hint,sourceUrl){
   const buttonWidth=Math.min(w*.9,98),font=Math.min(4.5,w/12),height=lines.length*font*1.25+4,y=-h*.24;
   const text=lines.map((line,i)=>`<tspan x="0" y="${-height/2+2+font+i*font*1.25}">${escape(line)}${i<lines.length-1?' ':''}</tspan>`).join('');
   const mask=photoClip(slot,clip,previewResourceURL(photoMaskURL(slot)));
-  return `<g data-preview-only="true" data-ux-placeholder="true"><defs>${mask.defs}</defs><g ${mask.attribute}><image href="${url}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/>${hint?.enabled===false?'':`<g transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="${-height/2}" width="${buttonWidth}" height="${height}" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">${text}</text></g>`}</g></g>`;
+  return `<g data-preview-only="true" data-role="guide" data-ux-placeholder="true"><defs>${mask.defs}</defs><g ${mask.attribute}><image href="${url}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/>${hint?.enabled===false?'':`<g transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="${-height/2}" width="${buttonWidth}" height="${height}" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">${text}</text></g>`}</g></g>`;
 }
 export function emptyPhotoMarkup(slot, ink, surface, asset) {
   const w=Number(slot.w),h=Number(slot.h);
@@ -19,12 +19,12 @@ export function emptyPhotoMarkup(slot, ink, surface, asset) {
   if(asset){
     const {x,y,w:aw,h:ah}=asset.placement,href=String(asset.url).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
     const r=Math.min(w,h)*.41;
-    return `<svg data-ux-placeholder="true" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" viewBox="${-w/2} ${-h/2} ${w} ${h}" overflow="visible" aria-hidden="true"><image x="${x}" y="${y}" width="${aw}" height="${ah}" href="${href}" preserveAspectRatio="none"/><circle r="${r}" fill="${surface}" fill-opacity=".36" stroke="${ink}" stroke-width="${Math.max(.5,r*.06)}"/><text y="${-r*.08}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${r*.37}" font-weight="bold" fill="${ink}">Foto-Upload</text><text y="${r*.37}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${r*.33}" fill="${ink}">hier klicken</text></svg>`;
+    return `<svg data-ux-placeholder="true" data-role="guide" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" viewBox="${-w/2} ${-h/2} ${w} ${h}" overflow="visible" aria-hidden="true"><image x="${x}" y="${y}" width="${aw}" height="${ah}" href="${href}" preserveAspectRatio="none"/><circle r="${r}" fill="${surface}" fill-opacity=".36" stroke="${ink}" stroke-width="${Math.max(.5,r*.06)}"/><text y="${-r*.08}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${r*.37}" font-weight="bold" fill="${ink}">Foto-Upload</text><text y="${r*.37}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${r*.33}" fill="${ink}">hier klicken</text></svg>`;
   }
   const oval=slot.photoShape==='circle'||slot.photoShape==='ellipse';
   const shape=slot.photoShape==='arch'?`<path d="M1 99V${1+49*w/h}a49 ${49*w/h} 0 0 1 98 0V99Z"/>`:oval?`<ellipse cx="50" cy="50" rx="49" ry="49"/>`:'<rect x="1" y="1" width="98" height="98" rx="4"/>';
   const id='ux-empty-photo-'+String(slot.id).replace(/[^a-zA-Z0-9_-]/g,'_');
-  return `<svg data-ux-placeholder="true" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  return `<svg data-ux-placeholder="true" data-role="guide" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <defs><clipPath id="${id}">${shape}</clipPath></defs>
     <g clip-path="url(#${id})">
       <rect width="100" height="100" fill="${surface}"/>

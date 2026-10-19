@@ -9,6 +9,7 @@ import {photoShape,photoClip,photoMaskURL} from '../platform/sources/app/shared/
 import {textPaths} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc} from '../platform/sources/app/shared/models/design-content.mjs';
 import {elementColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
+import {isGuideObject} from '../configurator/variant-m/contract.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'acrylic_artwork'});};
 const dataSvg=bytes=>'data:image/svg+xml;base64,'+bytes.toString('base64');
 const number=v=>Number(v.toFixed(8));
@@ -31,7 +32,8 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false}={}){
  const maskFor=(o,id)=>{const bytes=o.photoMaskAssetId&&files.get('quellen/'+o.photoMaskAssetId+'-vorschau.svg');if(o.photoShape==='template'&&!bytes)fail('Original-Fotomaske fehlt im gesicherten Stand.');const clip=photoClip(o,id,bytes?dataSvg(bytes):undefined);clip.defs=clip.defs.replace('<mask ',`<mask data-mask-scale="${viewport.scale}" `);return clip;};
  const transform=o=>`translate(${number(viewport.x)} ${number(viewport.y)}) scale(${number(viewport.scale)}) translate(${o.x} ${o.y}) rotate(${o.rotation||0})`;
  for(const [index,o] of design.objects.entries()){
-  if(o.uxHidden)continue;const field='native-'+index,color=engraving?'#000000':elementColor(config.profile,o);let body='';
+  if(o.uxHidden||isGuideObject(o))continue; // Ü6.1: Hilfsebenen sind Vorschau, nie Fertigung
+  const field='native-'+index,color=engraving?'#000000':elementColor(config.profile,o);let body='';
   if(o.type==='text'){body=textPaths(o,config.localResources.fonts);if(!body&&o.text.trim())fail('Gesicherte Schriftpfade fehlen.');textFields.push(field);}
   else if(o.uxUploadId){
    const entry=manifest.photos.find(p=>p.uploadId===o.uxUploadId);if(!entry)fail('Ein Originalbild fehlt im gesicherten Stand.');

@@ -9,7 +9,7 @@ import {randomBytes,randomUUID,createHash,timingSafeEqual} from 'node:crypto';
 import {chmodSync} from 'node:fs';
 const hash=v=>createHash('sha256').update(v).digest('hex');
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'customer_draft'});};
-export function createFormCustomerStore({filename,clock=Date.now}){
+export function createFormCustomerStore({filename,clock=Date.now,autoRelease=null}){
  const db=new DatabaseSync(filename);
  if(filename!==':memory:')chmodSync(filename,0o600);
  db.exec(`PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;
@@ -31,7 +31,7 @@ export function createFormCustomerStore({filename,clock=Date.now}){
  function transaction(fn){db.exec('BEGIN IMMEDIATE');try{const result=fn();db.exec('COMMIT');return result;}catch(e){db.exec('ROLLBACK');throw e;}}
  const snapshot=(id,columns='manifest')=>{const r=typeof id==='string'&&db.prepare('SELECT '+columns+' FROM form_review_snapshots WHERE id=?').get(id);if(!r)fail(404,'Prüfstand nicht gefunden.');return r;};
  const summary=r=>{const m=JSON.parse(r.manifest);return {id:m.id,createdAt:m.createdAt,product:m.product,source:m.source,blockers:m.blockers,warnings:m.warnings,photoCount:m.photos.length,packageSha256:m.packageSha256};};
- const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock});
+ const orderIntake=createOrderIntake({database:db,snapshot:id=>JSON.parse(snapshot(id).manifest),clock,autoRelease});
  const acrylicDrafts=createAcrylicDraftStore({database:db,capture(bundle){const m=bundle.manifest;db.prepare('INSERT INTO form_review_snapshots VALUES(?,?,?,?,?,?,?,?)').run(m.id,m.source.draftId,m.source.draftRevision,JSON.stringify(m),bundle.preview,bundle.contourPdf,bundle.package,bundle.photos);}});
  const printProof=(id,key)=>{snapshot(id);const r=db.prepare('SELECT * FROM form_print_proofs WHERE snapshot_id=? AND recipe_key=?').get(id,key);return r?{metadata:JSON.parse(r.metadata),pdf:Buffer.from(r.pdf),archive:Buffer.from(r.archive)}:null;};
  const customerDownloads=createCustomerDownloads({database:db,orders:orderIntake,jobs:exportJobs,printProof,clock});

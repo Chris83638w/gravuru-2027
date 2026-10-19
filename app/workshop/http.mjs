@@ -99,7 +99,11 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
   const variantBatchJobs=createVariantBatchJobs({filename,variants});
   const defaultId=repository.firstId();
   const csrfToken=operatorCsrfToken??merchantCsrfToken??randomBytes(32).toString('hex');
-  const customerDrafts=createFormCustomerStore({filename}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
+  // Akteur für Freigabeübergänge: Händler-Benutzer aus der Shopify-Sitzung, sonst die lokale Werkstattsitzung (abgeleitete Kennung, nie das Token selbst).
+  const localActor='werkstatt:'+createHash('sha256').update(csrfToken).digest('hex').slice(0,12);
+  // Automatische Fertigungsfreigabe nur, wenn der fest zugeordnete Profilstand sie ausdrücklich erlaubt.
+  const autoRelease=line=>Boolean(line.productionProfile)&&productionProfiles.get(line.productionProfile.id,line.productionProfile.revision).document.autoRelease===true;
+  const customerDrafts=createFormCustomerStore({filename,autoRelease}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
   // Explicit server configuration only; constructing the default preview never enables Shopify writes.
   let cartGate=null;
@@ -297,6 +301,14 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
         return json(res,200,{positionId:line.id,orderId:line.orderId,snapshotId:line.snapshotId,product:line.product,quantity:line.quantity,status:orderIntake.status(line.id),...exportJobs.forSnapshot(line.snapshotId),scope:'local-operator'});
       }
       const orderStatusMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/status$/);if(orderStatusMatch&&method==='GET')return json(res,200,orderIntake.status(orderStatusMatch[1]));
+      const productionMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)\/production(?:\/(transition))?$/);
+      if(productionMatch){
+        const line=orderIntake.get(productionMatch[1]);
+        if(method==='GET'&&!productionMatch[2])return json(res,200,orderIntake.production.state(line.id));
+        if(method!=='POST'||!productionMatch[2])fail(405,'method_not_allowed','Freigabestand lesen oder einen Übergang senden.');
+        const data=await body(req,4096);if(Object.keys(data).some(k=>!['to','reason'].includes(k)))fail(422,'production_fields','Nur Zielzustand und Grund angeben.');
+        return json(res,201,orderIntake.production.transition(line.id,data.to,{actor:merchantSession?'merchant:'+merchantSession.subject:localActor,reason:data.reason}));
+      }
       const orderMatch=pathname.match(/^\/api\/workshop\/orders\/(orderline_[a-f0-9-]+)$/);if(orderMatch&&method==='GET')return json(res,200,orderIntake.get(orderMatch[1]));
       if(pathname==='/api/workshop/order-bindings'){
         if(method==='GET')return json(res,200,{bindings:orderIntake.bindings()});
@@ -418,7 +430,7 @@ export function createWorkshop({filename,seedConfig,legacy,designConverter,conto
           const formats=outputFormats(result).filter(f=>f!=='zip');
           const files=formats.map(format=>{const f=outputDownload(result,format),sha256=createHash('sha256').update(f.bytes).digest('hex'),expected=format==='pdf'?(result.metadata.downloads?.pdf?.sha256||result.metadata.pdfSha256):result.metadata.downloads?.white?.sha256;if(expected&&sha256!==expected)fail(409,'export_changed','Die PDF weicht vom gesicherten Dateinachweis ab.');return {format,name:f.suffix,sha256};});
           if(method==='GET')return json(res,200,{...exportJobs.checks.list(id,Object.fromEntries(['format','stage','before'].map(k=>[k,url.searchParams.get(k)||'']))),files,machines:PRODUCTION_MACHINES,productionReady:false});
-          if(method==='POST'){const data=await body(req,8192),file=files.find(f=>f.format===data.format);if(!file)fail(422,'check_file','Bitte eine vorhandene PDF auswählen.');return json(res,201,exportJobs.checks.add(id,data,file));}
+          if(method==='POST'){const data=await body(req,8192),file=files.find(f=>f.format===data.format);if(!file)fail(422,'check_file','Bitte eine vorhandene PDF auswählen.');const check=exportJobs.checks.add(id,data,file);const released=orderIntake.production.reviewSnapshot(job.snapshotId);return json(res,201,{...check,autoReleased:released});}
           fail(405,'method_not_allowed','Prüfvermerke nur lesen oder ergänzen.');
         }
         if(exportMatch[2]==='recreate'&&method==='POST'){

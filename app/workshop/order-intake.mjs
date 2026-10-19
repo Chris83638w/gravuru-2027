@@ -1,5 +1,6 @@
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createOrderStatus} from './order-status.mjs';
+import {createProductionRelease} from './production-release.mjs';
 import {resolveProduct,PRODUCT_SCHEMA} from './product-model.mjs';
 import {createHash,createHmac,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
@@ -26,7 +27,8 @@ export function verifyPaidWebhook(raw,headers,config){
  if(payload.financial_status!=='paid'||payload.cancelled_at||payload.currency!=='EUR'||!Array.isArray(payload.line_items)||payload.line_items.length>250)fail(422,'Zahlungsstatus, Währung oder Bestellpositionen sind nicht geeignet.');
  return v;
 }
-export function createOrderIntake({database:db,snapshot,clock=Date.now}){
+// `autoRelease(line)` meldet, ob das Fertigungsprofil der Position automatische Freigabe erlaubt (http.mjs liefert es aus production-profiles.mjs).
+export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelease=null}){
  db.exec(`CREATE TABLE IF NOT EXISTS form_shop_bindings(id TEXT PRIMARY KEY,shop TEXT NOT NULL,variant_id TEXT NOT NULL,product_id TEXT NOT NULL,product_revision INTEGER NOT NULL,unit_cents INTEGER NOT NULL,created_at TEXT NOT NULL,UNIQUE(shop,variant_id,product_id,product_revision));
  CREATE TABLE IF NOT EXISTS form_shop_binding_personalization(binding_id TEXT PRIMARY KEY,document TEXT NOT NULL);
  CREATE TRIGGER IF NOT EXISTS form_binding_personalization_fixed BEFORE UPDATE ON form_shop_binding_personalization BEGIN SELECT RAISE(ABORT,'Pricing contracts are immutable');END;
@@ -54,9 +56,12 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
  const safeBinding=r=>({id:r.id,shopDomain:r.shop,variantId:r.variant_id,productId:r.product_id,productRevision:r.product_revision,unitCents:r.unit_cents,...(selection(r.id)?{options:selection(r.id)}:{})});
  const pricing=id=>{const row=db.prepare('SELECT document FROM form_shop_binding_personalization WHERE binding_id=?').get(id);return row?JSON.parse(row.document):null;};
  const offerPricing=id=>{const row=db.prepare('SELECT document FROM form_offer_personalization WHERE offer_id=?').get(id);return row?JSON.parse(row.document):null;};
- const statuses=createOrderStatus({database:db,clock});
  const get=id=>{const r=db.prepare('SELECT document FROM form_order_lines WHERE id=?').get(id);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
- return {get,customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
+ // Shop-Status und Freigabeprozess verweisen aufeinander: Freigabe braucht Storno/Erstattung, der Status liefert productionReady.
+ let release=null;
+ const statuses=createOrderStatus({database:db,clock,production:(line,shop)=>release.state(line.id,{shop})});
+ release=createProductionRelease({database:db,clock,line:get,shopStatus:line=>statuses.shopState(line),autoRelease});
+ return {get,production:release,customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
   // Caller supplies the actual saved product record, never a browser price.
   bind({shopDomain,variantId,record,snapshotId,options:selected,personalizationPricing}){
    if(!domain(shopDomain))fail(422,'Bitte die myshopify.com-Domain des Entwicklungsstores angeben.');variantId=identifier(variantId);
@@ -148,6 +153,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
     return tx(()=>{
      if(db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND event_id=?').get(v.shopDomain,v.eventId))fail(409,'Ereignis-ID gehört bereits zu einer Zahlungsnachricht.');
      const result=statuses.record(v),lines=db.prepare('SELECT id FROM form_order_lines WHERE shop=? AND order_id=?').all(v.shopDomain,v.orderId);
+     for(const l of lines)release.syncShop(l.id);
      return {...result,orderId:v.orderId,matchedLines:lines.length,statuses:lines.map(l=>({id:l.id,...statuses.forLine(get(l.id))}))};
     });
    }
@@ -181,7 +187,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now}){
     if(!owner&&!db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND order_id=?').get(shop,orderId))db.prepare('INSERT INTO form_order_customers VALUES(?,?,?)').run(shop,orderId,customerId);
    }
    if(payload.updated_at)statuses.record(verified);
-   db.prepare('INSERT INTO form_order_events VALUES(?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at());return {duplicate:false,lines:result};
+   db.prepare('INSERT INTO form_order_events VALUES(?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at());
+   // Eine frühere Storno-/Erstattungsmeldung sperrt die Position sofort.
+   for(const l of result)release.syncShop(l.id);
+   return {duplicate:false,lines:result};
   });}
  };
 }

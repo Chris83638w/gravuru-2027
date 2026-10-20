@@ -29,6 +29,7 @@ import {createSessionGuard,uploadReferences} from './session-guard.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
 import {installSurfaceTabs} from './surface-tabs.mjs';
 import {installBackgroundLoading} from './background-loading.mjs';
+import {installEdgeClamp} from './edge-clamp.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
@@ -368,6 +369,7 @@ export async function installUX(el,config,legacy){
   dialogs.help.addEventListener('close',()=>window.speechSynthesis?.cancel());
   // A portable draft payload is provided to the future authenticated server adapter, not downloaded.
   el.uxDraft=()=>customerDraft(el.state,profile);
+  installEdgeClamp(el);
   await installRefinements({el,r,profile,config,files,pending:()=>uploadPending,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles:acceptCustomerFiles,changeObject});
   if(el.uxMotifChoiceIds?.length===0){
     const entry=$('.workflow-motif-entry');

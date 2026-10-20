@@ -162,11 +162,11 @@ test('Gedenktafel 22 × 14 (20.10.2026): movable verschiebt alle Elemente, Fotof
  const r=katalogDesignToTemplate(design('pdf-a',true),f,k.theme('namensschilder'),{fonts:fonts()});
  assert.deepEqual(r.placeholders,[{slotId:'foto-1',file:'foto-1.png',widthMm:30,heightMm:40}]);
  assert.equal(r.rights['foto-1'].move,true);assert.equal(r.rights['foto-1'].replace,true);assert.equal(r.rights['foto-1'].scale,false);
- assert.equal(r.rights['motiv-1'].move,true);const motif=r.template.objects.find(o=>o.type==='motif');assert.equal(motif.locked,undefined);assert.equal(motif.customerEditable,true);
+ assert.equal(r.rights['motiv-1'].move,true);assert.equal(r.rights['motiv-1'].scale,true,'Ecken-Pfeile für verschiebbare Motive');const motif=r.template.objects.find(o=>o.type==='motif');assert.equal(motif.locked,undefined);assert.equal(motif.customerEditable,true);
  assert.equal(r.rights['text-1'].move,true);
  // Ohne movable bleibt alles wie bisher: Motiv gesperrt, Foto fest.
  const fixed=katalogDesignToTemplate(design('pdf-b',false),f,k.theme('namensschilder'),{fonts:fonts()});
- assert.equal(fixed.rights['foto-1'].move,false);assert.equal(fixed.rights['motiv-1'].move,false);assert.equal(fixed.template.objects.find(o=>o.type==='motif').locked,true);
+ assert.equal(fixed.rights['foto-1'].move,false);assert.equal(fixed.rights['motiv-1'].move,false);assert.equal(fixed.rights['motiv-1'].scale,false);assert.equal(fixed.template.objects.find(o=>o.type==='motif').locked,true);
  // Startdesign der Unterkategorie steht vorn; Platzhalter wird Beispielfoto ohne eigenen Hinweis.
  const t=(res,examples)=>({template:scaleTemplate(res.template,[90,60],[90,60],fonts()),motifs:res.motifs,rights:res.rights,examples});
  const asset='a'.repeat(64),sub={...namen,startDesign:'pdf-a'};

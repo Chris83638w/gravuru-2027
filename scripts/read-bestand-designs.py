@@ -21,7 +21,7 @@ Aufruf:
 import argparse, base64, importlib.util, io, json, math, re, shutil, xml.etree.ElementTree as ET
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 HERE = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location('read_pdf_designs', HERE / 'read-pdf-designs.py')
@@ -91,13 +91,20 @@ def render_placeholder(photo_file, img_box, area, hints, out_png, px_per_mm=8):
     sx, sy = src.width / iw, src.height / ih
     crop = src.crop((round((ax - ix) * sx), round((ay - iy) * sy), round((ax + aw - ix) * sx), round((ay + ah - iy) * sy))).resize((W, H), Image.LANCZOS)
     # Gravur auf Schiefer: Schwarz bleibt ungraviert → im Platzhalter durchsichtig (wie beim echten Ergebnis)
-    lum = crop.convert('L').point(lambda v: min(255, int(v * 2.4)))
-    crop.putalpha(lum)
+    # Hintergrund des Musterfotos (Randstreifen, meist schwarz oder dunkelgrau) wird durchsichtig, damit kein
+    # dunkler Kasten auf dem Stein steht; dunkle Stellen bleiben ungraviert wie beim echten Ergebnis.
+    import numpy as np
+    L = np.asarray(crop.convert('L'), dtype=np.float32); bw = max(2, int(min(W, H) * 0.04))
+    border = np.concatenate([L[:bw].ravel(), L[-bw:].ravel(), L[:, :bw].ravel(), L[:, -bw:].ravel()])
+    bg = float(np.median(border))
+    alpha = np.clip((L - bg - 4) * (255 / 34), 0, 255).astype(np.uint8)
+    crop.putalpha(Image.fromarray(alpha).filter(ImageFilter.GaussianBlur(0.8)))
     import cairosvg
-    btn_w = min(aw * 0.62, 70); btn_h = btn_w * 0.36; bx = ax + (aw - btn_w) / 2; by = ay + (ah - btn_h) / 2
+    # Button nie im Gesicht: unten im Fotofeld (Porträts haben das Gesicht oben), etwas durchsichtig
+    btn_w = min(aw * 0.62, 70); btn_h = btn_w * 0.36; bx = ax + (aw - btn_w) / 2; by = ay + ah - btn_h - max(2.0, ah * 0.05)
     fs = btn_h * 0.27
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{ax} {ay} {aw} {ah}" width="{W}" height="{H}">'
-           f'<rect x="{bx:.2f}" y="{by:.2f}" width="{btn_w:.2f}" height="{btn_h:.2f}" rx="{btn_h * 0.22:.2f}" fill="#ffffff" fill-opacity="0.92" stroke="#1b1b1b" stroke-width="{btn_h * 0.03:.2f}"/>'
+           f'<rect x="{bx:.2f}" y="{by:.2f}" width="{btn_w:.2f}" height="{btn_h:.2f}" rx="{btn_h * 0.22:.2f}" fill="#ffffff" fill-opacity="0.72" stroke="#1b1b1b" stroke-opacity="0.6" stroke-width="{btn_h * 0.03:.2f}"/>'
            f'<text x="{bx + btn_w / 2:.2f}" y="{by + btn_h * 0.44:.2f}" font-family="Lato, Montserrat, sans-serif" font-weight="700" font-size="{fs:.2f}" fill="#1b1b1b" text-anchor="middle">Foto-Upload</text>'
            f'<text x="{bx + btn_w / 2:.2f}" y="{by + btn_h * 0.78:.2f}" font-family="Lato, Montserrat, sans-serif" font-size="{fs * 0.85:.2f}" fill="#1b1b1b" text-anchor="middle">hier klicken</text></svg>')
     btn = Image.open(io.BytesIO(cairosvg.svg2png(bytestring=svg.encode()))).convert('RGBA')
@@ -194,8 +201,10 @@ def convert(folder, target, prefix, ersatz, files, s_fix=None):
         paths.append({'d': d, 'fill': None if fill == 'none' else fill, 'stroke': None if stroke == 'none' else stroke,
                       'strokeMm': round(sw, 3), 'evenodd': el.get('fill-rule') == 'evenodd', 'opacity': 1, 'box': path_box(d)})
     budget = MAX_ELEMENTS - len(texts) - len(photos)
-    motifs = [{'box': p['box'], 'paths': [p]} for p in paths]
-    gap = 2.0
+    # Ein Motiv besteht in Corel oft aus mehreren Pfaden (Kreuz + Taube, Baum + Blätter). Pfade, deren Boxen
+    # sich berühren oder überlappen, sind ein Motiv – sonst zieht der Kunde nur ein Einzelteil weg (Chris 20.10.2026).
+    gap = 1.0
+    motifs = rpd.cluster(paths, gap) if paths else []
     if len(motifs) > budget:
         motifs = rpd.cluster(paths, gap)
         while len(motifs) > budget and gap < 80: gap *= 1.6; motifs = rpd.cluster(paths, gap)

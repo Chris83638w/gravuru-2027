@@ -25,7 +25,7 @@ const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json'),'utf8'))[0
 const workshop=createWorkshop({filename:dbFile,seedConfig:seed.universal,legacy:seed.legacy,themes:katalog.themes});
 try{
  const available={...workshopResources().fonts,...workshop.fonts.resources()};
- const plan=await planKatalogImport(katalog,lineId,{repository:workshop.repository,families:workshop.families,bestand,available,converter:convertFont,fontLibrary:workshop.fonts,profiles:workshop.profiles});
+ const plan=await planKatalogImport(katalog,lineId,{repository:workshop.repository,families:workshop.families,bestand,available,converter:convertFont,fontLibrary:workshop.fonts,profiles:workshop.profiles,assets:workshop.assets});
  console.log(formatReport(plan.report));
  const jsonFile=arg('json');if(jsonFile)fs.writeFileSync(jsonFile,JSON.stringify(plan.report,null,1)+'\n');
  if(!commit){console.log('\nDry-run: nichts geschrieben. Mit --commit werden '+plan.report.counts.new+' Produkte angelegt und '+plan.report.counts.update+' aktualisiert ('+dbFile+').');}

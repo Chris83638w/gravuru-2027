@@ -150,3 +150,28 @@ test('Familie → Produkt: Preise in Cent mit Überschreibung, Thema, Rechte, Vo
  assert.equal(withPhoto.document.config.photo.enabled,true);assert.equal(withPhoto.document.config.profile.designs[0].objects[0].type,'photoSlot');
  const plain=katalogFamilyToProduct(f,line,hunde,{size,fonts:fonts()});assert.deepEqual(plain.document.config.profile.designs.map(x=>x.id),['start']);assert.equal(plain.document.profileAssignments.fonts.mode,'inherit');
 });
+
+test('Gedenktafel 22 × 14 (20.10.2026): movable verschiebt alle Elemente, Fotofeld mit Platzhalterbild, Startdesign zuerst',()=>{
+ const k=katalog(),f=k.families.get('test-schilder'),line=k.lines.get('test-linie'),[namen]=line.subcategories,size=f.sizes[0];
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 90 60" width="90mm" height="60mm"><rect id="platte" width="90" height="60" fill="none"/>`
+  +`<g id="foto-1" class="foto" data-platzhalter="ja" data-gravur="nein"><rect x="5" y="10" width="30" height="40" fill="none"/><image x="5" y="10" width="30" height="40" preserveAspectRatio="none" xlink:href="foto-1.png"/></g>`
+  +`<g id="motiv-1"><path d="M50 10 L60 10 L60 20 Z" fill="#b3b3b3"/><path d="M62 10 L70 10 L70 18 Z" fill="#b3b3b3"/></g>`
+  +`<text id="text-1" x="65" y="40" font-family="Montserrat" font-size="8" fill="#b3b3b3" text-anchor="middle"><tspan x="65" dy="0">Bello</tspan></text></svg>`;
+ const design=(id,movable)=>({id,name:id,source:'lieferform2',plateMm:[90,60],themes:['namensschilder'],json:{movable},svg:()=>svg});
+ const r=katalogDesignToTemplate(design('pdf-a',true),f,k.theme('namensschilder'),{fonts:fonts()});
+ assert.deepEqual(r.placeholders,[{slotId:'foto-1',file:'foto-1.png',widthMm:30,heightMm:40}]);
+ assert.equal(r.rights['foto-1'].move,true);assert.equal(r.rights['foto-1'].replace,true);assert.equal(r.rights['foto-1'].scale,false);
+ assert.equal(r.rights['motiv-1'].move,true);const motif=r.template.objects.find(o=>o.type==='motif');assert.equal(motif.locked,undefined);assert.equal(motif.customerEditable,true);
+ assert.equal(r.rights['text-1'].move,true);
+ // Ohne movable bleibt alles wie bisher: Motiv gesperrt, Foto fest.
+ const fixed=katalogDesignToTemplate(design('pdf-b',false),f,k.theme('namensschilder'),{fonts:fonts()});
+ assert.equal(fixed.rights['foto-1'].move,false);assert.equal(fixed.rights['motiv-1'].move,false);assert.equal(fixed.template.objects.find(o=>o.type==='motif').locked,true);
+ // Startdesign der Unterkategorie steht vorn; Platzhalter wird Beispielfoto ohne eigenen Hinweis.
+ const t=(res,examples)=>({template:scaleTemplate(res.template,[90,60],[90,60],fonts()),motifs:res.motifs,rights:res.rights,examples});
+ const asset='a'.repeat(64),sub={...namen,startDesign:'pdf-a'};
+ const p=katalogFamilyToProduct(f,line,sub,{size,fonts:fonts(),templates:[t(fixed),t(r,[{slotId:'foto-1',assetId:asset}])]});
+ const c=p.document.config;assert.deepEqual(c.profile.designs.map(d=>d.id),['katalog-pdf-a','katalog-pdf-b']);assert.equal(c.profile.defaultDesignId,'katalog-pdf-a');
+ assert.deepEqual(c.localResources.photoExamples,[{designId:'katalog-pdf-a',slotId:'foto-1',assetId:asset}]);
+ assert.deepEqual(c.photo.hints,[{designId:'katalog-pdf-a',slotId:'foto-1',text:'Foto-Upload hier klicken',enabled:false}]);
+ assert.throws(()=>katalogFamilyToProduct(f,line,{...namen,startDesign:'fehlt'},{size,fonts:fonts(),templates:[t(fixed)]}),/Startdesign „fehlt“/);
+});

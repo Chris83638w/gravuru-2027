@@ -1,0 +1,359 @@
+{
+ "base": "http://127.0.0.1:8961",
+ "checks": [
+  {
+   "name": "Desktop (Einzelmodule): früher Tipp (Oberfläche lädt noch) öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop (Einzelmodule): früher Tipp – Dateiauswahl erlaubt Galerie (accept JPG, kein capture)",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":false}"
+  },
+  {
+   "name": "Desktop (Einzelmodule): früher Tipp – Foto erscheint nach dem Laden im Fotobereich",
+   "ok": true,
+   "detail": "{\"uploadId\":\"2b5ba4f6-b1b5-4dcc-8a65-92b3a1d24c07\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Desktop (Einzelmodule): früher Tipp – Pixel im Fotobereich stammen vom Kundenfoto",
+   "ok": true,
+   "detail": "1.00"
+  },
+  {
+   "name": "Desktop (Einzelmodule): früher Tipp – keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop (Bündel): früher Tipp (Oberfläche lädt noch) öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop (Bündel): früher Tipp – Dateiauswahl erlaubt Galerie (accept JPG, kein capture)",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":false}"
+  },
+  {
+   "name": "Desktop (Bündel): früher Tipp – Foto erscheint nach dem Laden im Fotobereich",
+   "ok": true,
+   "detail": "{\"uploadId\":\"e09eb247-2b16-4aef-a13a-6b6360cfaf04\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Desktop (Bündel): früher Tipp – Pixel im Fotobereich stammen vom Kundenfoto",
+   "ok": true,
+   "detail": "1.00"
+  },
+  {
+   "name": "Desktop (Bündel): früher Tipp – keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Fotohinweis auf der Platte sichtbar",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Tipp auf den Fotohinweis öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Dateiauswahl erlaubt Galerie (accept JPG, kein capture)",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Desktop: gewähltes Bild ersetzt das Beispielfoto",
+   "ok": true,
+   "detail": "{\"uploadId\":\"f186d55c-0588-4c78-8f40-af665efccde1\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Desktop: Pixel im Fotobereich stammen vom Kundenfoto",
+   "ok": true,
+   "detail": "1.00"
+  },
+  {
+   "name": "Desktop: Fotohinweis nach dem Upload verschwunden",
+   "ok": true,
+   "detail": "{\"uploadId\":\"f186d55c-0588-4c78-8f40-af665efccde1\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Desktop: Fertigungsdatei ohne Hinweis, mit Kundenfoto statt Beispielfoto",
+   "ok": true,
+   "detail": "{\"hint\":false,\"photo\":true,\"reference\":false}"
+  },
+  {
+   "name": "Desktop: „Ersetzen“ öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Desktop: ersetztes Foto erscheint im Fotobereich",
+   "ok": true,
+   "detail": "1.00"
+  },
+  {
+   "name": "Desktop: Prüfansicht zeigt Kundenfoto ohne Fotohinweis",
+   "ok": true,
+   "detail": "{\"open\":true,\"hint\":false,\"photo\":true}"
+  },
+  {
+   "name": "Desktop: keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: „Dateien auswählen“ sichtbar und nicht verdeckt",
+   "ok": true,
+   "detail": "{\"b\":{\"x\":771.640625,\"y\":428.625,\"w\":419.34375,\"h\":42},\"top\":true}"
+  },
+  {
+   "name": "Desktop: „Dateien auswählen“ öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Desktop: „Dateien auswählen“ – Bild erscheint im Fotobereich",
+   "ok": true,
+   "detail": "{\"uploadId\":\"0cdd3ecd-be7f-492c-b0b3-107fd3de8389\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Desktop: „Dateien auswählen“ gut lesbar (helle Schrift auf dunklem Grund)",
+   "ok": true,
+   "detail": "{\"color\":\"rgb(255, 255, 255)\",\"background\":\"rgb(52, 58, 64)\",\"opacity\":\"1\",\"disabled\":false}"
+  },
+  {
+   "name": "Desktop: „Dateien auswählen“ – keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: „Foto für diesen Platzhalter hochladen“ sichtbar und nicht verdeckt",
+   "ok": true,
+   "detail": "{\"b\":{\"x\":767.640625,\"y\":428.40625,\"w\":231.359375,\"h\":44},\"top\":true}"
+  },
+  {
+   "name": "Desktop: „Foto für diesen Platzhalter hochladen“ öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Desktop: „Foto für diesen Platzhalter hochladen“ – Bild erscheint im Fotobereich",
+   "ok": true,
+   "detail": "{\"uploadId\":\"65df7fca-91b6-4ff4-ada0-caf877105881\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Desktop: „Foto für diesen Platzhalter hochladen“ – keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: HEIC wird nicht stillschweigend abgewiesen, sondern verständlich gemeldet",
+   "ok": true,
+   "detail": "{\"uploadId\":null,\"blob\":false,\"hint\":true,\"hintText\":true,\"status\":\"Dieses Foto ist im HEIC-Format (iPhone) und kann hier nicht gelesen werden. Bitte als JPG wählen – z. B. am iPhone unter Einstellungen › Kamera › Formate „Maximale Kompatibilität“ oder das Foto als JPEG teilen.\"}"
+  },
+  {
+   "name": "Handy (Einzelmodule): früher Tipp (Oberfläche lädt noch) öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy (Einzelmodule): früher Tipp – Dateiauswahl erlaubt Galerie (accept JPG, kein capture)",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":false}"
+  },
+  {
+   "name": "Handy (Einzelmodule): früher Tipp – Foto erscheint nach dem Laden im Fotobereich",
+   "ok": true,
+   "detail": "{\"uploadId\":\"492cee8a-ad73-4c7a-b061-740aa0c3c00d\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Handy (Einzelmodule): früher Tipp – Pixel im Fotobereich stammen vom Kundenfoto",
+   "ok": true,
+   "detail": "1.00"
+  },
+  {
+   "name": "Handy (Einzelmodule): früher Tipp – keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy (Bündel): früher Tipp (Oberfläche bereit) öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy (Bündel): früher Tipp – Dateiauswahl erlaubt Galerie (accept JPG, kein capture)",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Handy (Bündel): früher Tipp – Foto erscheint nach dem Laden im Fotobereich",
+   "ok": true,
+   "detail": "{\"uploadId\":\"6548b5c6-6beb-4050-8da1-0d2d290cdbe9\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Handy (Bündel): früher Tipp – Pixel im Fotobereich stammen vom Kundenfoto",
+   "ok": true,
+   "detail": "1.00"
+  },
+  {
+   "name": "Handy (Bündel): früher Tipp – keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy: Fotohinweis auf der Platte sichtbar",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy: Tipp auf den Fotohinweis öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy: Dateiauswahl erlaubt Galerie (accept JPG, kein capture)",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Handy: gewähltes Bild ersetzt das Beispielfoto",
+   "ok": true,
+   "detail": "{\"uploadId\":\"2489e069-ab44-487e-9113-5879144f7dfe\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Handy: Pixel im Fotobereich stammen vom Kundenfoto",
+   "ok": true,
+   "detail": "1.00"
+  },
+  {
+   "name": "Handy: Fotohinweis nach dem Upload verschwunden",
+   "ok": true,
+   "detail": "{\"uploadId\":\"2489e069-ab44-487e-9113-5879144f7dfe\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Handy: Fertigungsdatei ohne Hinweis, mit Kundenfoto statt Beispielfoto",
+   "ok": true,
+   "detail": "{\"hint\":false,\"photo\":true,\"reference\":false}"
+  },
+  {
+   "name": "Handy: „Ersetzen“ öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Handy: ersetztes Foto erscheint im Fotobereich",
+   "ok": true,
+   "detail": "1.00"
+  },
+  {
+   "name": "Handy: Prüfen-Schritt zeigt Kundenfoto ohne Hinweis",
+   "ok": true,
+   "detail": "{\"step\":\"review\",\"hint\":false,\"photo\":true}"
+  },
+  {
+   "name": "Handy: Prüfansicht zeigt Kundenfoto ohne Fotohinweis",
+   "ok": true,
+   "detail": "{\"open\":true,\"hint\":false,\"photo\":true}"
+  },
+  {
+   "name": "Handy: keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy: „Dateien auswählen“ sichtbar und nicht verdeckt",
+   "ok": true,
+   "detail": "{\"b\":{\"x\":28,\"y\":536.328125,\"w\":334,\"h\":42},\"top\":true}"
+  },
+  {
+   "name": "Handy: „Dateien auswählen“ öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Handy: „Dateien auswählen“ – Bild erscheint im Fotobereich",
+   "ok": true,
+   "detail": "{\"uploadId\":\"4decac2c-4f56-43c4-951a-f8c15fb57f0a\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Handy: „Dateien auswählen“ gut lesbar (helle Schrift auf dunklem Grund)",
+   "ok": true,
+   "detail": "{\"color\":\"rgb(255, 255, 255)\",\"background\":\"rgb(52, 58, 64)\",\"opacity\":\"1\",\"disabled\":false}"
+  },
+  {
+   "name": "Handy: „Dateien auswählen“ – keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy: „Foto für diesen Platzhalter hochladen“ sichtbar und nicht verdeckt",
+   "ok": true,
+   "detail": "{\"b\":{\"x\":24,\"y\":536.109375,\"w\":231.359375,\"h\":44},\"top\":true}"
+  },
+  {
+   "name": "Handy: „Foto für diesen Platzhalter hochladen“ öffnet die Dateiauswahl",
+   "ok": true,
+   "detail": "{\"accept\":\"image/jpeg,image/png,image/webp\",\"capture\":false,\"multiple\":true}"
+  },
+  {
+   "name": "Handy: „Foto für diesen Platzhalter hochladen“ – Bild erscheint im Fotobereich",
+   "ok": true,
+   "detail": "{\"uploadId\":\"5db6f838-2644-4b54-9561-e890c83c5263\",\"blob\":true,\"hint\":false,\"hintText\":false,\"status\":\"Bild übernommen.\"}"
+  },
+  {
+   "name": "Handy: „Foto für diesen Platzhalter hochladen“ – keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Handy: HEIC wird nicht stillschweigend abgewiesen, sondern verständlich gemeldet",
+   "ok": true,
+   "detail": "{\"uploadId\":null,\"blob\":false,\"hint\":true,\"hintText\":true,\"status\":\"Dieses Foto ist im HEIC-Format (iPhone) und kann hier nicht gelesen werden. Bitte als JPG wählen – z. B. am iPhone unter Einstellungen › Kamera › Formate „Maximale Kompatibilität“ oder das Foto als JPEG teilen.\"}"
+  }
+ ],
+ "scenarios": {
+  "Desktop (Einzelmodule) früh": {
+   "uiReadyAtTap": false
+  },
+  "Desktop (Bündel) früh": {
+   "uiReadyAtTap": false
+  },
+  "Desktop Dateien auswählen": {
+   "color": "rgb(255, 255, 255)",
+   "background": "rgb(52, 58, 64)",
+   "opacity": "1",
+   "disabled": false
+  },
+  "Desktop Foto für diesen Platzhalter hochladen": {
+   "color": "rgb(53, 59, 66)",
+   "background": "rgb(255, 255, 255)",
+   "opacity": "1",
+   "disabled": false
+  },
+  "Handy (Einzelmodule) früh": {
+   "uiReadyAtTap": false
+  },
+  "Handy (Bündel) früh": {
+   "uiReadyAtTap": true
+  },
+  "Handy Dateien auswählen": {
+   "color": "rgb(255, 255, 255)",
+   "background": "rgb(52, 58, 64)",
+   "opacity": "1",
+   "disabled": false
+  },
+  "Handy Foto für diesen Platzhalter hochladen": {
+   "color": "rgb(53, 59, 66)",
+   "background": "rgb(255, 255, 255)",
+   "opacity": "1",
+   "disabled": false
+  }
+ },
+ "result": "PASS"
+}

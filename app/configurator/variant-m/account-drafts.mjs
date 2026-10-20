@@ -80,6 +80,7 @@ export function installAccountDrafts({el,config,files,dialog,button,esc,say,rest
         const edited=photo.edited?await fetchBlob('edited'):null,shown=await decodeImage(edited||file);
         loaded.set(photo.uploadId,{file,url:shown.url,width:shown.width,height:shown.height,...(edited?{blob:edited,edited:true}:{})});
       }
+      await el.uxEnsureDraftResources?.(draft);
       restoreDraft(draft);
       for(const [uploadId,asset] of loaded)files.set(uploadId,asset);
       el.sync();activeId=id;

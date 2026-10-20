@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#183e35">
+  <title>Mandanten · Gravuru 2027 Werkstatt</title>
+  <link rel="stylesheet" href="/workshop-ui/style.css"><link rel="stylesheet" href="/workshop-ui/dashboard.css"><link rel="stylesheet" href="/workshop-ui/konfis.css">
+  <script type="module" src="/workshop-ui/tenants-ui.mjs"></script>
+<link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><script type="module" src="/workshop-ui/workshop-shell.mjs"></script></head>
+<body class="dashboard-page ws-page tenant-page">
+<a class="ws-skip" href="#main">Zum Inhalt</a>
+<!-- werkstatt-kopf: erzeugt aus app/workshop/workshop-shell-markup.mjs, nicht von Hand ändern -->
+<header class="ws-topbar">
+<a class="ws-brand" href="/werkstatt/"><em>gravuru</em> werkstatt</a>
+<nav class="ws-nav" aria-label="Hauptnavigation"><a class="ws-nav-item" href="/werkstatt/"><img class="ws-icon" src="/workshop-ui/editor-icons/cube.svg" alt="" aria-hidden="true">Produkte</a><a class="ws-nav-item" href="/werkstatt/?view=masters"><img class="ws-icon" src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Mastervorlagen</a><a class="ws-nav-item" href="/werkstatt/serien/"><img class="ws-icon" src="/workshop-ui/editor-icons/stack-2.svg" alt="" aria-hidden="true">Stapelverarbeitung</a><a class="ws-nav-item" href="/werkstatt/bestellungen/"><img class="ws-icon" src="/workshop-ui/editor-icons/shopping-cart.svg" alt="" aria-hidden="true">Bestellungen</a><a class="ws-nav-item" href="/werkstatt/konfis/"><img class="ws-icon" src="/workshop-ui/editor-icons/adjustments-horizontal.svg" alt="" aria-hidden="true">Konfis</a></nav>
+<div class="ws-tools"><span data-workshop-session role="status">Verbindung wird geprüft …</span><details class="management-menu"><summary class="ws-current">Verwaltung</summary><nav aria-label="Verwaltung"><a href="/werkstatt/familien/">Produktfamilien</a><a href="/werkstatt/profile/">Schriften &amp; Profile</a><a href="/werkstatt/ausgaben/">Ausgaben</a><a href="/werkstatt/fertigung/">Fertigungsprofile</a><a href="/werkstatt/ausfuehrungen/">Ausführungen</a><a href="/werkstatt/konturen/">Formkonturen</a><a href="/werkstatt/pruefstaende/">Prüfstände</a><a href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a><a href="/werkstatt/mandanten/" aria-current="page">Mandanten</a></nav></details></div>
+</header>
+<!-- /werkstatt-kopf -->
+<main id="main">
+  <header class="page-heading"><div><h1>Mandanten</h1><p>Jeder Mandant hat eigene Produkte, Konfis, Bestellungen und Einstellungen. Heute arbeitet hier nur gravuru.</p></div>
+    <div class="heading-actions"><button type="button" id="tenant-create" disabled aria-describedby="tenant-create-hint">Mandant anlegen</button></div></header>
+  <p id="tenant-create-hint" class="konfi-help tenant-hint">Mandant anlegen folgt mit dem Abo-Modell.</p>
+  <div class="notice" id="tenant-notice" role="status" aria-live="polite" hidden></div>
+  <div id="tenant-list" class="tenant-list" aria-live="polite"><p class="empty-state">Mandanten werden geladen …</p></div>
+  <footer class="page-footer">Gravuru 2027 <span>·</span> Nur Verwaltungsansicht: keine Tarife, keine Abrechnung, keine Shop-Anbindung.</footer>
+</main>
+</body>
+</html>

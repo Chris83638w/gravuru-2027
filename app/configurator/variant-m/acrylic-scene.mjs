@@ -2,6 +2,8 @@ import {previewResourceURL} from './preview-resource.mjs';
 import {ACRYLIC_BASES,acrylicSelection,acrylicOptions,containAcrylicObject} from './acrylic-product.mjs';
 import {money,quote} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
+import {PHOTO_ACCEPT} from './photo-upload.mjs';
+// Kundenansicht: WebP-Fassungen (customer-images.json); PNG-Originale bleiben für Fertigung/Referenz.
 const ROOT='/acrylic-assets/';
 export async function installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles}) {
  if(!config?.acrylic)return;
@@ -9,7 +11,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  const css=document.createElement('style');css.textContent=await fetch('/configurator/variant-m/acrylic-scene.css').then(r=>r.text());r.append(css);
  r.host.dataset.acrylicScene='true';
  const stage=$('.stage');stage.classList.add('acryl-scene');
- const scene=document.createElement('img');scene.className='acryl-backdrop';scene.src=config.sceneBackground||ROOT+'scene-empty-v2.png';scene.alt='Szenenhintergrund der Produktvorschau';
+ const scene=document.createElement('img');scene.className='acryl-backdrop';scene.src=config.sceneBackground||ROOT+'scene-empty-v2.webp';scene.alt='Szenenhintergrund der Produktvorschau';
  const base=document.createElement('img');base.className='acryl-base';base.alt='Gewählter Sockel';base.hidden=true;
  const baseBack=base.cloneNode();baseBack.classList.add('acryl-base-back');baseBack.alt='';baseBack.setAttribute('aria-hidden','true');
  stage.prepend(scene);stage.append(baseBack,base);
@@ -23,14 +25,14 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    if(o.id!=='photo-main'||files.has(o.uxUploadId))return rawSVG(o);
    if(o.uxHidden)return '';
    const exampleResource=config.localResources?.photoExamples?.find(e=>e.designId===el.state.designId&&e.slotId===o.id);
-   const asset=files.get(o.uxUploadId),url=asset?.url||(exampleResource?previewResourceURL('/api/workshop/design-assets/'+exampleResource.assetId+'/preview.svg'):ROOT+'reference.png');
+   const asset=files.get(o.uxUploadId),url=asset?.url||(exampleResource?previewResourceURL('/api/workshop/design-assets/'+exampleResource.assetId+'/preview.svg'):ROOT+'reference.webp');
    const src=String(url).replaceAll('&','&amp;').replaceAll('"','&quot;');
    const example=!asset;
    const picture=example&&!exampleResource?`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="130 101 827 708" preserveAspectRatio="xMidYMid slice"><image href="${src}" width="1086" height="1448"/></svg>`:`<image href="${src}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="xMidYMid slice"/>`;
    const replaceable=el.uxCanEdit?.(o,'replace')!==false;
    const hintSetting=config.photo?.hints?.find(h=>h.designId===el.state.designId&&h.slotId===o.id);
    const hintText=String(hintSetting?.text||'Hier tippen & eigenes Foto hochladen').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-   const hint=example&&replaceable&&hintSetting?.enabled!==false?`<g data-preview-only="true" data-role="guide" transform="translate(0 31)"><rect x="-53" y="-9" width="106" height="18" rx="3" fill="white" fill-opacity=".96"/><text text-anchor="middle" y="-.5" font-size="4.2" font-family="Arial" fill="#332d27">${hintText}</text><text text-anchor="middle" y="5.5" font-size="3.1" font-family="Arial" fill="#63564c">Beispielfoto ersetzen</text></g>`:'';
+   const hint=example&&replaceable&&hintSetting?.enabled!==false?`<g data-preview-only="true" data-role="guide" data-ux-photo-hint="true" transform="translate(0 31)"><rect x="-53" y="-9" width="106" height="18" rx="3" fill="white" fill-opacity=".96"/><text text-anchor="middle" y="-.5" font-size="4.2" font-family="Arial" fill="#332d27">${hintText}</text><text text-anchor="middle" y="5.5" font-size="3.1" font-family="Arial" fill="#63564c">Beispielfoto ersetzen</text></g>`:'';
    return `<g data-object="${o.id}" ${replaceable?`data-ux-empty-photo-slot="true" role="button" tabindex="0" aria-label="${example?'Eigenes Foto hochladen':'Foto ersetzen'}"`:'data-ux-static-photo="true" aria-hidden="true" tabindex="-1" focusable="false"'} transform="translate(${o.x} ${o.y})"><defs><clipPath id="acryl-photo-clip"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2"/></clipPath></defs><g clip-path="url(#acryl-photo-clip)">${picture}</g>${hint}<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/></g>`;
  };
  // Keep native editor tools and event handling; only the scene and physical options are extended.
@@ -43,7 +45,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  };
  const fixedSource=()=>config.profile.designs.find(design=>design.id===el.state.designId)?.objects.filter(object=>object.acrylicFixed)||[];
  const isFixed=o=>!!o&&fixedSource().some(source=>source.id===o.id);
- const photoInput=document.createElement('input');photoInput.type='file';photoInput.accept='image/png,image/jpeg,image/webp';photoInput.hidden=true;r.append(photoInput);
+ const photoInput=document.createElement('input');photoInput.type='file';photoInput.accept=PHOTO_ACCEPT;photoInput.hidden=true;r.append(photoInput);
  photoInput.addEventListener('change',async()=>{await acceptFiles(photoInput.files,'photo','photo-main');photoInput.value='';});
  r.addEventListener('click',e=>{if(e.target.closest('[data-object="photo-main"]')&&files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId)){e.preventDefault();e.stopImmediatePropagation();photoInput.click();}},true);
  r.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)&&e.target.closest('[data-object="photo-main"]')&&files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId)){e.preventDefault();e.stopImmediatePropagation();photoInput.click();}},true);
@@ -64,7 +66,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    if(b.asset){
      const anchor=baseAnchors[b.asset],scale=912/(anchor.right-anchor.left),slot=1246-b.insertionMm*1196/choice.size.height;
      for(const layer of [base,baseBack]){
-       const src=ROOT+b.asset.replace('.png','-v2.png');if(layer.getAttribute('src')!==src)layer.src=src;
+       const src=ROOT+b.asset.replace('.png','-v2.webp');if(layer.getAttribute('src')!==src)layer.src=src;
        layer.style.width=(anchor.width*scale/1086*100)+'%';layer.style.height='auto';
        layer.style.left=((542-(anchor.left+anchor.right)/2*scale)/1086*100)+'%';
        layer.style.top=((slot-anchor.slot*scale)/1448*100)+'%';

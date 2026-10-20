@@ -13,7 +13,8 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  const icon=name=>`<img class="editor-icon" src="/workshop-ui/editor-icons/${name}.svg" alt="" aria-hidden="true">`;
  const icons={details:'cube',designs:'photo',prices:'tag',profiles:'typography',scene:'photo',production:'settings',shopify:'link'};
  for(const tab of document.querySelectorAll('.editor-tabs [data-tab]'))tab.insertAdjacentHTML('afterbegin',icon(icons[tab.dataset.tab]));
- for(const [selector,name] of [['[data-view=products]','cube'],['[data-view=masters]','files'],['.sidebar a[href="/werkstatt/serien/"]','stack-2'],['.sidebar a[href="/werkstatt/bestellungen/"],.upcoming-orders','shopping-cart'],['#customer-view','eye'],['#save-product','device-floppy']])$(selector)?.insertAdjacentHTML('afterbegin',icon(name));
+ // Navigationssymbole kommen aus der gemeinsamen Kopfzeile (workshop-shell-markup.mjs).
+ for(const [selector,name] of [['#customer-view','eye'],['#save-product','device-floppy']])$(selector)?.insertAdjacentHTML('afterbegin',icon(name));
  for(const b of document.querySelectorAll('.record-aside button'))b.type='button';$('#copy-product').type='button';$('#record-id').after($('#copy-product'));
  function workspaceTab(key,focus=false){
   workspace=['designs','design-library','profiles'].includes(key)?'designs':'product';

@@ -7,6 +7,8 @@ export const ACRYLIC_BASES = [
   {id:'satiniert',label:'Flacher Acrylglasständer · satiniert',priceCents:499,insertionMm:5,asset:'base-satiniert.png',flat:true},
   {id:'holz-flach',label:'Flacher Holzständer · Nussbaumoptik',priceCents:599,insertionMm:5,asset:'base-holz-flach.png',flat:true}
 ];
+// Kundenansicht des Sockels (WebP-Fassung, customer-images.json); gleiche Regel wie acrylic-scene.mjs (Vorladen).
+export const acrylicBaseImageUrl=asset=>asset?'/acrylic-assets/'+asset.replace('.png','-v2.webp'):null;
 export const ACRYLIC_SIZES={small:{width:150,height:200,basePriceCents:1499},large:{width:200,height:266.7,basePriceCents:1999}};
 // Persisted with the product revision. Scene, contract and option labels consume
 // this same rule; no second size-dependent surcharge belongs in a UI adapter.

@@ -16,6 +16,7 @@ import {uploadAllowed,uploadQuote,validateUpload,customerDraft,additionalMotifCo
 import {installRefinements} from './refinements.mjs';
 import {installCommerce} from './commerce.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
+import {emptyPhotoSlotAt,replaceablePhotoSlot,tapTracker,normalizePhotoFile,PHOTO_ACCEPT} from './photo-upload.mjs';
 import {physicalTextSize,designTextSize,applyPrintColor} from './usability-model.mjs';
 import {installAcrylicScene} from './acrylic-scene.mjs';
 import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
@@ -27,6 +28,7 @@ import {parseDirectLink,applyLinkText,withoutDirectLinkParams} from './design-ga
 import {createSessionGuard,uploadReferences} from './session-guard.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
 import {installSurfaceTabs} from './surface-tabs.mjs';
+import {installBackgroundLoading} from './background-loading.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
@@ -79,6 +81,8 @@ export async function installUX(el,config,legacy){
   $('.fk-options h2').textContent='Material & Befestigung';
   $('#ux-panel-design').append($('.c-design-section'));
   $('#ux-panel-motif').append($('#panel-motif'));
+  // Ladezeit: Motivbibliothek laden, sobald der Motivbereich sichtbar wird (Reiter oder mobiler Schritt „Foto / Motiv“).
+  {const panel=$('#ux-panel-motif');if(panel&&el.uxEnsureMotifLibrary)new MutationObserver(()=>{if(!panel.hidden)el.uxEnsureMotifLibrary().catch(()=>{});}).observe(panel,{attributes:true,attributeFilter:['hidden']});}
   if($('[data-m-invalid]'))$('.ux-editor').append($('[data-m-invalid]'));
   for(const s of all('#panel-motif summary'))if(s.textContent.includes('Motivideen'))s.textContent='Bestseller Motive';
   $('[data-bestsellers]').open=false;
@@ -92,7 +96,7 @@ export async function installUX(el,config,legacy){
   const additions=customerAdditionPolicy(config);
   if(!additions.text)$('[data-ux=add-text]').hidden=true;
   if(!additions.motifs){const library=$('#panel-motif');if(library)library.hidden=true;}
-  $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Deine Fotos':'Deine Logos'}</h2><p>${(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} Foto(s) inklusive · weitere Dateien ${money(config.photo.extraPriceCents)} · maximal vier insgesamt.`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}<br>JPG, PNG oder WebP · bis 15 MB.</p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><p class="ux-small">${config&&photoEnabled?'Dein Foto erscheint direkt auf deinem Schild. ':''}Deine Dateien bleiben auf diesem Gerät, bis du den Entwurf in deinem Kundenkonto speicherst.</p><input type="file" accept="image/jpeg,image/png,image/webp" data-ux-file hidden>`;
+  $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Deine Fotos':'Deine Logos'}</h2><p>${(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} Foto(s) inklusive · weitere Dateien ${money(config.photo.extraPriceCents)} · maximal vier insgesamt.`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}<br>JPG, PNG oder WebP · bis 15 MB.</p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><p class="ux-small">${config&&photoEnabled?'Dein Foto erscheint direkt auf deinem Schild. ':''}Deine Dateien bleiben auf diesem Gerät, bis du den Entwurf in deinem Kundenkonto speicherst.</p><input type="file" accept="${PHOTO_ACCEPT}" data-ux-file hidden>`;
   const dialogs={};
   function dialog(key,title,body){const d=document.createElement('dialog');d.className='ux-dialog ux-'+key+'-dialog';d.setAttribute('aria-label',title);d.innerHTML=`<header><h2>${title}</h2>${button('close','✕','aria-label="Fenster schließen"')}</header>${body}`;d.addEventListener('click',e=>{if(e.target.closest('[data-ux=close]'))d.close();});const show=d.showModal.bind(d);d.showModal=()=>{window.GravuruChat?.close?.();for(const other of all('dialog[open]'))if(other!==d&&!other.matches('.c-large-preview'))other.close();show();};r.append(d);dialogs[key]=d;return d;}
   dialog('font','Schrift auswählen','<p>Dein Text als Schriftprobe. Bei eingeschränkten PDF-Schriften zeigen wir ein Beispiel aus dem Design.</p><div class="ux-font-columns" aria-hidden="true"><span>Dein Text</span><span>Schriftname</span></div><div class="ux-font-grid" tabindex="0" aria-label="Schriftproben"></div>'+button('font-apply','Schrift übernehmen','class="ux-primary"'));
@@ -174,32 +178,34 @@ export async function installUX(el,config,legacy){
   r.addEventListener('pointerdown',e=>{const obj=e.target.closest('[data-object],[data-resize]');if(!obj)return;const o=el.state.objects.find(o=>o.id===(obj.dataset.object||obj.dataset.resize));if(o?.uxLocked){e.preventDefault();e.stopImmediatePropagation();}},true);
   r.addEventListener('keydown',e=>{if(e.target.closest('.scene')&&selected()?.uxLocked&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Delete','Backspace'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();}},true);
   function select(id){el.state.selected=id;el.sync();}
-  function emptySlotFromTarget(target){
-    if(!photoEnabled||target.closest?.('[data-resize]'))return null;
-    const group=target.closest?.('[data-ux-empty-photo-slot]');
-    const slot=el.state.objects.find(o=>o.id===group?.dataset.object);
-    return slot?.type==='photoSlot'&&!slot.uxUploadId&&!slot.uxHidden&&!slot.uxLocked&&el.uxCanEdit?.(slot,'replace')!==false?slot:null;
+  // Fototipp: leerer Fotobereich direkt oder unter einem durchlässigen Rahmen (photo-upload.mjs).
+  function emptySlotFromEvent(event){
+    if(!photoEnabled)return null;
+    return emptyPhotoSlotAt(r,el.state.objects,event.target,Number.isFinite(event.clientX)?{x:event.clientX,y:event.clientY}:null,{canReplace:slot=>el.uxCanEdit?.(slot,'replace')});
   }
   function uploadFromEmptySlot(event,slot){
     event.preventDefault();event.stopImmediatePropagation();
     replacing=slot.id;uploadKind='photo';say('Wähle jetzt ein Foto für diesen Platzhalter aus.');$('[data-ux-file]').click();
   }
-  let photoPointer=null;
+  const photoTap=tapTracker();
   r.addEventListener('pointerdown',event=>{
-    const slot=event.button===0?emptySlotFromTarget(event.target):null;
-    photoPointer=slot?{id:slot.id,pointerId:event.pointerId,x:event.clientX,y:event.clientY}:null;
+    const hit=event.button===0?emptySlotFromEvent(event):null;
+    photoTap.down(event,hit);
+    // Tipp durch den festen Rahmen: Rahmen weder wählen noch ziehen, der Tipp gilt dem Foto.
+    if(hit?.through){event.preventDefault();event.stopImmediatePropagation();}
   },true);
   r.addEventListener('pointerup',event=>{
-    const start=photoPointer;photoPointer=null;
-    if(!start||start.pointerId!==event.pointerId||Math.hypot(event.clientX-start.x,event.clientY-start.y)>6)return;
-    const slot=el.state.objects.find(o=>o.id===start.id);
-    if(slot?.type==='photoSlot'&&!slot.uxUploadId&&!slot.uxHidden&&!slot.uxLocked)uploadFromEmptySlot(event,slot);
+    const id=photoTap.up(event);if(!id)return;
+    const slot=el.state.objects.find(o=>o.id===id);
+    if(replaceablePhotoSlot(slot,o=>el.uxCanEdit?.(o,'replace')))uploadFromEmptySlot(event,slot);
   },true);
-  r.addEventListener('pointercancel',()=>{photoPointer=null;},true);
+  r.addEventListener('pointercancel',()=>photoTap.cancel(),true);
   r.addEventListener('keydown',event=>{
-    const slot=emptySlotFromTarget(event.target);
-    if(slot&&(event.key==='Enter'||event.key===' '))uploadFromEmptySlot(event,slot);
+    const hit=event.key==='Enter'||event.key===' '?emptySlotFromEvent({target:event.target}):null;
+    if(hit)uploadFromEmptySlot(event,hit.slot);
   },true);
+  // Ab hier bedient diese Oberfläche den Fototipp; der frühe Handler (installEarlyPhotoTap) ruht.
+  el.uxPhotoTapReady=true;
   const fieldLabel=(object,index)=>profile.designs.find(d=>d.id===el.state.designId)?.customerFields?.find(f=>f.id===object.id)?.label||({heading:'Überschrift',names:'Namen',name:'Name',place:'Ort',date:'Datum',daten:'Lebensdaten',slogan:'Spruch',spruch:'Spruch'})[object.fieldKey]||'Text '+(index+1);
   // K1: Limits und Pflichtkennzeichen kommen aus dem Vorlagenelement, nie aus dem bearbeiteten Objekt.
   const templateText=o=>design()?.objects.find(t=>t.id===o.id&&t.type==='text');
@@ -281,7 +287,10 @@ export async function installUX(el,config,legacy){
     if(storage)sessionGuard=createSessionGuard({storage,productId:profile.binding.productId,profileRevision:profile.revision,
       payload:()=>({draft:el.draftPayload({draft:true}),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
   }
-  function openFonts(){const o=selected();if(o?.type!=='text')return say('Bitte zuerst eine Textzeile auswählen.');fontObject=o.id;fontChoice=o.font;dialogs.font.showModal();renderFontPage();}
+  // Ladezeit: die Schriftproben brauchen die Konturen aller angebotenen Schriften (lazy-resources.mjs).
+  async function openFonts(){const o=selected();if(o?.type!=='text')return say('Bitte zuerst eine Textzeile auswählen.');fontObject=o.id;fontChoice=o.font;dialogs.font.showModal();
+    if(el.uxEnsureFonts){$('.ux-font-grid').innerHTML='<p role="status">Schriften werden geladen …</p>';$('[data-ux=font-apply]').disabled=true;try{await el.uxEnsureFonts(selectionIds(el.uxKnownFonts(),profileChoices?.fonts));}catch{$('.ux-font-grid').innerHTML='<p role="status">Die Schriften konnten nicht geladen werden. Bitte erneut öffnen.</p>';return;}if(!dialogs.font.open||fontObject!==o.id)return;}
+    renderFontPage();}
   function guide(key){const content={text:['Text ändern','Tippe auf eine Textzeile und ersetze den Beispieltext. Alle Änderungen siehst du sofort auf deinem Produkt.'],font:['Schrift & Größe','Wähle eine Textzeile und danach „Schrift ändern“. Du siehst deinen eigenen Text in jeder Schrift. Mit Plus und Minus änderst du die Größe. Der Schriftgrößenwert beträgt mindestens '+String(minTextMm).replace('.',',')+' mm.'],guides:['Mittig ausrichten','Aktiviere „Hilfslinien“ unten links im Produktbild. Wähle deinen Text und tippe auf „Mitte“. Beim Ziehen rastet er auch an der Mitte und den Kanten anderer Texte ein. Ankerpunkte zeigen dir die Textmitten, damit du Texte untereinander setzen kannst. Gestrichelte Linie = Gestaltungsrand: Elemente bleiben innerhalb dieser Linie. Rote Kreise markieren die Schutzzone um Bohrlöcher; Text dort ist nur ein Hinweis, keine Sperre.'],motif:['Deine Motive',config?.acrylic?'Vorlagenmotive bleiben fest platziert; ihre Farbe kannst du ändern. Eigene zusätzliche Motive kannst du in der Motivbibliothek hinzufügen und bearbeiten.':'Wähle Motive aus Bestsellern oder Kategorien. In „Ebenenverwaltung“ kannst du ein freigegebenes Motiv bearbeiten.'],upload:['Fotos & Logos',config?.acrylic?'Ein Foto ist enthalten. Tippe auf das Beispielfoto, um dein eigenes Foto an derselben Position einzusetzen. Ein weiterer Upload ersetzt dieses Foto. Der Hintergrund bleibt erhalten.':(config?.reviewOnly&&config.basePriceCents===null)?'Du kannst bis zu vier Fotos und Logos testen. Die Preise für dieses Produkt sind noch offen. Dein Bild erscheint direkt in der Vorschau. Zuschneiden öffnet die Bildbearbeitung.':'Du kannst bis zu vier Fotos und Logos zusammen hinzufügen. '+uploadPriceSentence(config?.photo)+' Dein Bild erscheint direkt in der Vorschau. Über „Bild bearbeiten“ kannst du dein Foto zuschneiden, drehen oder spiegeln.'],save:['Entwurf speichern',config?.workbench?'Mit „Entwurf speichern“ sicherst du Text, Schrift und Positionen dauerhaft in der Produktanlage. Testfotos werden nicht als Vorlage gespeichert.':'Dein aktueller Stand bleibt auf diesem Gerät erhalten – auch wenn du die Seite neu lädst. Mit „Entwurf speichern“ legst du ihn mit Fotos für 90 Tage in deinem Kundenkonto ab und kannst ihn auf jedem Gerät wieder öffnen. Dafür meldest du dich kurz an oder registrierst dich. Nach dem bezahlten Kauf ist ein PNG-Download vorgesehen.']}[key];if(!content)return;
     if(['text','font','guides'].includes(key))showTab('text');else if(key==='motif')showTab('motif');else if(key==='upload')showTab('upload');
     $('[data-ux-help-content]').innerHTML=`<h3>${content[0]}</h3><p data-ux-guide-copy>${content[1]}</p>${button('speak','Erklärung anhören')}${button('stop-speaking','Stopp')}<p class="ux-small">Vorlesen mit der verfügbaren Gerätestimme.</p>`;
@@ -312,7 +321,7 @@ export async function installUX(el,config,legacy){
     if(action==='lock'){mutate(()=>{const o=el.state.objects.find(o=>o.id===b.dataset.id);if(o?.type==='motif-raster')return;o.uxLocked=!o.uxLocked;});return;}
     if(action==='remove-content'){const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked||o.locked||o.acrylicFixed)return;mutate(()=>{el.state.objects=el.state.objects.filter(v=>v.id!==o.id);if(el.state.selected===o.id)el.state.selected=null;});return;}
     if(['photo-upload','logo-upload','replace-upload','fill-photo-slot'].includes(action)){replacing=['replace-upload','fill-photo-slot'].includes(action)?b.dataset.id:null;uploadKind=replacing?(el.state.objects.find(o=>o.id===replacing)?.uxUploadKind||'photo'):action==='logo-upload'?'logo':'photo';$('[data-ux-file]').click();return;}
-    if(action==='add-text'){el.add({type:'text',text:'Dein Text',font:config?'Montserrat':'Nunito',size:10,bold:false});showTab('text');return;}
+    if(action==='add-text'){const font=config?'Montserrat':'Nunito';try{await el.uxEnsureFonts?.(profileChoices?.fonts?selectionIds(el.uxKnownFonts(),profileChoices.fonts):[font]);}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
     if(action==='smaller'||action==='bigger'){changeObject('size',(selected()?displayTextSize(selected()):minTextMm)+(action==='bigger'?1:-1));return;}
     if(action==='bold'||action==='italic'){changeObject(action,!selected()?.[action]);return;}
     if(['left','center','right'].includes(action)){if(el.uxAlign){el.uxAlign(action);return;}const o=selected();if(o)changeObject('x',action==='center'?width/2:action==='left'?o.w/2+8:width-o.w/2-8);return;}
@@ -328,6 +337,8 @@ export async function installUX(el,config,legacy){
   r.addEventListener('input',e=>{const t=e.target,key=t.id==='ux-size'?'size':t.dataset.uxProp||t.dataset.uxContentProp;if(key&&t.value!==''&&Number.isFinite(Number(t.value))){e.stopImmediatePropagation();const value=Number(t.value);if(!['w','h','size'].includes(key)||value>0)changeObject(key,value);}},true);
   r.addEventListener('focusout',e=>{if(e.target.dataset.uxText)delete e.target.dataset.editStarted;if(e.target.id==='ux-size'&&selected()?.type==='text')e.target.value=displayTextSize(selected());});
   let uploadPending=false;
+  // HEIC (iPhone) vor der gemeinsamen Prüfung in JPEG wandeln oder verständlich melden (photo-upload.mjs).
+  const acceptCustomerFiles=async(incoming,...rest)=>{let list;try{list=await Promise.all([...incoming].map(file=>normalizePhotoFile(file)));}catch(error){say(error.message);return;}return acceptFiles(list,...rest);};
   async function acceptFiles(incoming,kind=uploadKind,replaceId=replacing){
     if(config.acrylic&&kind==='photo'&&!replaceId){const slots=el.state.objects.filter(o=>o.type==='photoSlot');replaceId=slots.find(o=>o.fieldKey==='photo-main')?.id||(slots.length===1?slots[0].id:null);}
     if(!uploadAllowed(config,kind)||kind==='photo'&&!photoAvailableForDesign(config,el.state.designId)){say('Diese Vorlage hat noch keinen austauschbaren Fotobereich.');return;}
@@ -352,12 +363,12 @@ export async function installUX(el,config,legacy){
     if(t.dataset.uxProp||t.dataset.uxContentProp){const prop=t.dataset.uxProp||t.dataset.uxContentProp,value=Number(t.value);if(Number.isFinite(value)&&(!['w','h','size'].includes(prop)||value>0))changeObject(prop,value);}
     if(t.dataset.uxVisible)mutate(()=>{el.state.objects.find(o=>o.id===t.dataset.uxVisible).uxHidden=!t.checked;if(!t.checked&&el.state.selected===t.dataset.uxVisible)el.state.selected=null;});
     if(t.dataset.mFilter)updateGallery();
-    if(t.matches('[data-ux-file]')){const incoming=[...t.files];t.value='';await acceptFiles(incoming);}
+    if(t.matches('[data-ux-file]')){const incoming=[...t.files];t.value='';await acceptCustomerFiles(incoming);}
   },true);
   dialogs.help.addEventListener('close',()=>window.speechSynthesis?.cancel());
   // A portable draft payload is provided to the future authenticated server adapter, not downloaded.
   el.uxDraft=()=>customerDraft(el.state,profile);
-  await installRefinements({el,r,profile,config,files,pending:()=>uploadPending,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles,changeObject});
+  await installRefinements({el,r,profile,config,files,pending:()=>uploadPending,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles:acceptCustomerFiles,changeObject});
   if(el.uxMotifChoiceIds?.length===0){
     const entry=$('.workflow-motif-entry');
     if(entry){const note=document.createElement('p');note.textContent='Für dieses Produkt sind keine zusätzlichen Motive freigegeben. Die Motive im Design bleiben erhalten.';entry.append(note);entry.querySelector('[data-ux=discover-motifs]').hidden=true;entry.querySelector('.completion-motif-nav')?.setAttribute('hidden','');}
@@ -367,13 +378,15 @@ export async function installUX(el,config,legacy){
   // K14 / Ü15.1: Reiter Vorderseite/Rückseite über der Platte (nur Produkte mit Rückseite).
   if(config)installSurfaceTabs({el,r,config,button,say});
   if(config)installCommerce({el,config,files,pending:()=>uploadPending});
-  if(config?.acrylic)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles});
+  if(config?.acrylic)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles:acceptCustomerFiles});
   finishCustomerRights();
   finishTemplateDeletion();
   installFirstTextFocus({el,r});
   function startUnselected(){r.activeElement?.blur();el.multiSelecting=false;el.state.selected=null;el.centerSuggestion=null;showTab(config?.productPreview?'design':'options');el.sync();}
   window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===window.parent&&e.data?.type==='gravuru-ux-open')startUnselected();});
   addDecoration();el.normalize();startUnselected();
+  // Ladezeit: Schriften/Motive des gesicherten Stands vor dem (synchronen) Wiederherstellen laden.
+  if(sessionGuard&&!config?.workbench&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
   if(sessionGuard&&!config?.workbench){
     try{initialDraft=el.draftPayload({draft:true});}catch{initialDraft=null;}
     const recovered=initialDraft?sessionGuard.recover():null;
@@ -413,7 +426,12 @@ export async function installUX(el,config,legacy){
   installPrintExport({el,config,files});
   installPreviewFeedback({el,r});
   const neutral=document.createElement('style');neutral.textContent=await fetch('/configurator/variant-m/neutral-theme.css').then(res=>{if(!res.ok)throw Error('Oberflächenstil fehlt');return res.text();});r.append(neutral);r.host.dataset.uxNeutral='true';
+  // Vor der fertigen Oberfläche auf der Platte gewähltes Foto (photo-upload.mjs installEarlyPhotoTap) übernehmen.
+  const takeEarlyPhoto=()=>{const early=el.uxEarlyPhoto;if(!early)return;el.uxEarlyPhoto=null;acceptCustomerFiles(early.files,'photo',early.slotId).catch(error=>say(error.message));};
+  el.addEventListener('gravuru-early-photo',takeEarlyPhoto);takeEarlyPhoto();
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
+  // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).
+  if(config)installBackgroundLoading({el,r,config});
   const assistant=document.createElement('script');assistant.src='/assistant.js';assistant.dataset.api=location.origin;document.body.append(assistant);
   return {showTab,update,isDirty:()=>dirty};
 }

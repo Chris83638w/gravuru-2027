@@ -1,0 +1,379 @@
+{
+  "profiles": [
+    {
+      "base": "http://127.0.0.1:8961",
+      "network": "50 Mbit/s, 30 ms",
+      "budget": {
+        "maxBytes": 2000000,
+        "maxMs": 3000
+      },
+      "readyMs": 886,
+      "bytes": 613855,
+      "ui": {
+        "readyMs": 1417,
+        "bytes": 730935
+      },
+      "requests": 5,
+      "localRequests": 80,
+      "largest": [
+        {
+          "path": "/_bundle/editor-f6e29e1669be1b6d.mjs",
+          "bytes": 308719
+        },
+        {
+          "path": "/models.json",
+          "bytes": 131543
+        },
+        {
+          "path": "/editor.html",
+          "bytes": 124665
+        },
+        {
+          "path": "/_runtime/lazy/katalog-kern.json",
+          "bytes": 46097
+        },
+        {
+          "path": "/",
+          "bytes": 2831
+        }
+      ],
+      "afterReady": [
+        {
+          "path": "/acrylic-assets/scene-empty-v2.webp",
+          "bytes": 19947
+        },
+        {
+          "path": "/acrylic-assets/reference.webp",
+          "bytes": 97133
+        },
+        {
+          "path": "/acrylic-assets/reference.webp",
+          "bytes": 97133
+        },
+        {
+          "path": "/assistant.js",
+          "bytes": 17029
+        },
+        {
+          "path": "/api/guides",
+          "bytes": 1931
+        },
+        {
+          "path": "/acrylic-assets/base-buche-v2.webp",
+          "bytes": 47919
+        },
+        {
+          "path": "/acrylic-assets/base-eiche-v2.webp",
+          "bytes": 46371
+        },
+        {
+          "path": "/acrylic-assets/base-nussbaum-v2.webp",
+          "bytes": 49043
+        },
+        {
+          "path": "/acrylic-assets/base-klar-v2.webp",
+          "bytes": 44561
+        },
+        {
+          "path": "/acrylic-assets/base-satiniert-v2.webp",
+          "bytes": 23425
+        },
+        {
+          "path": "/acrylic-assets/base-holz-flach-v2.webp",
+          "bytes": 31583
+        },
+        {
+          "path": "/_runtime/lazy/schriften/montserrat.json",
+          "bytes": 132803
+        },
+        {
+          "path": "/_runtime/lazy/schriften/lora.json",
+          "bytes": 180006
+        },
+        {
+          "path": "/_runtime/lazy/schriften/lora-italic.json",
+          "bytes": 207222
+        },
+        {
+          "path": "/_runtime/lazy/schriften/dancing-script.json",
+          "bytes": 302048
+        },
+        {
+          "path": "/_runtime/lazy/schriften/source-code-pro.json",
+          "bytes": 143274
+        },
+        {
+          "path": "/_runtime/lazy/schriften/ubuntu.json",
+          "bytes": 132099
+        },
+        {
+          "path": "/_runtime/lazy/schriften/nunito.json",
+          "bytes": 137319
+        },
+        {
+          "path": "/_runtime/lazy/schriften/open-sans.json",
+          "bytes": 85300
+        },
+        {
+          "path": "/_runtime/lazy/schriften/raleway.json",
+          "bytes": 96019
+        },
+        {
+          "path": "/_runtime/lazy/schriften/poppins.json",
+          "bytes": 50368
+        },
+        {
+          "path": "/_runtime/lazy/schriften/roboto-condensed.json",
+          "bytes": 105224
+        },
+        {
+          "path": "/_runtime/lazy/schriften/josefin-sans.json",
+          "bytes": 76154
+        },
+        {
+          "path": "/_runtime/lazy/schriften/playfair-display.json",
+          "bytes": 131366
+        },
+        {
+          "path": "/_runtime/lazy/schriften/libre-baskerville.json",
+          "bytes": 103096
+        },
+        {
+          "path": "/_runtime/lazy/schriften/cormorant-garamond.json",
+          "bytes": 144124
+        },
+        {
+          "path": "/_runtime/lazy/schriften/merriweather.json",
+          "bytes": 151827
+        },
+        {
+          "path": "/_runtime/lazy/schriften/cinzel.json",
+          "bytes": 120145
+        },
+        {
+          "path": "/_runtime/lazy/schriften/caveat.json",
+          "bytes": 262792
+        },
+        {
+          "path": "/_runtime/lazy/schriften/kalam.json",
+          "bytes": 112300
+        },
+        {
+          "path": "/_runtime/lazy/schriften/patrick-hand.json",
+          "bytes": 110234
+        },
+        {
+          "path": "/_runtime/lazy/schriften/sacramento.json",
+          "bytes": 271198
+        },
+        {
+          "path": "/_runtime/lazy/schriften/allura.json",
+          "bytes": 219992
+        },
+        {
+          "path": "/_runtime/lazy/schriften/great-vibes.json",
+          "bytes": 207550
+        },
+        {
+          "path": "/_runtime/lazy/schriften/parisienne.json",
+          "bytes": 234974
+        },
+        {
+          "path": "/_runtime/lazy/schriften/pacifico.json",
+          "bytes": 138653
+        },
+        {
+          "path": "/_runtime/lazy/schriften/amatic-sc.json",
+          "bytes": 137086
+        },
+        {
+          "path": "/_runtime/lazy/schriften/lobster.json",
+          "bytes": 85471
+        },
+        {
+          "path": "/_runtime/lazy/schriften/oswald.json",
+          "bytes": 59519
+        },
+        {
+          "path": "/_runtime/lazy/schriften/cutive-mono.json",
+          "bytes": 128164
+        },
+        {
+          "path": "/_runtime/lazy/schriften/roboto-mono.json",
+          "bytes": 101355
+        }
+      ],
+      "modules": [],
+      "preload": {
+        "tasks": [
+          "images:background",
+          "fonts:background",
+          "motifs:background"
+        ],
+        "order": [
+          "images",
+          "fonts",
+          "motifs"
+        ],
+        "files": 37,
+        "bytes": 8955002,
+        "duplicates": [],
+        "otherRepeats": [
+          "/acrylic-assets/reference.webp ×2"
+        ],
+        "finished": true
+      },
+      "errors": [],
+      "allReadyMs": [
+        886
+      ],
+      "ok": true
+    },
+    {
+      "base": "http://127.0.0.1:8961",
+      "network": "20 Mbit/s, 150 ms",
+      "budget": {
+        "maxBytes": 2000000,
+        "maxMs": 3000
+      },
+      "readyMs": 1493,
+      "bytes": 613855,
+      "ui": {
+        "readyMs": 2050,
+        "bytes": 633802
+      },
+      "requests": 5,
+      "localRequests": 80,
+      "largest": [
+        {
+          "path": "/_bundle/editor-f6e29e1669be1b6d.mjs",
+          "bytes": 308719
+        },
+        {
+          "path": "/models.json",
+          "bytes": 131543
+        },
+        {
+          "path": "/editor.html",
+          "bytes": 124665
+        },
+        {
+          "path": "/_runtime/lazy/katalog-kern.json",
+          "bytes": 46097
+        },
+        {
+          "path": "/",
+          "bytes": 2831
+        }
+      ],
+      "afterReady": [
+        {
+          "path": "/acrylic-assets/scene-empty-v2.webp",
+          "bytes": 19947
+        },
+        {
+          "path": "/acrylic-assets/reference.webp",
+          "bytes": 97133
+        },
+        {
+          "path": "/assistant.js",
+          "bytes": 17029
+        },
+        {
+          "path": "/acrylic-assets/base-buche-v2.webp",
+          "bytes": 47919
+        },
+        {
+          "path": "/api/guides",
+          "bytes": 1931
+        },
+        {
+          "path": "/acrylic-assets/base-eiche-v2.webp",
+          "bytes": 46371
+        },
+        {
+          "path": "/acrylic-assets/base-nussbaum-v2.webp",
+          "bytes": 49043
+        },
+        {
+          "path": "/acrylic-assets/base-klar-v2.webp",
+          "bytes": 44561
+        },
+        {
+          "path": "/acrylic-assets/base-satiniert-v2.webp",
+          "bytes": 23425
+        },
+        {
+          "path": "/acrylic-assets/base-holz-flach-v2.webp",
+          "bytes": 31583
+        },
+        {
+          "path": "/_runtime/lazy/schriften/montserrat.json",
+          "bytes": 132803
+        },
+        {
+          "path": "/_runtime/lazy/schriften/lora.json",
+          "bytes": 180006
+        },
+        {
+          "path": "/_runtime/lazy/schriften/lora-italic.json",
+          "bytes": 207222
+        },
+        {
+          "path": "/_runtime/lazy/schriften/dancing-script.json",
+          "bytes": 302048
+        },
+        {
+          "path": "/_runtime/lazy/schriften/source-code-pro.json",
+          "bytes": 143274
+        }
+      ],
+      "modules": [],
+      "preload": {
+        "tasks": [
+          "images:background",
+          "fonts:background",
+          "motifs:background"
+        ],
+        "order": [
+          "images",
+          "fonts",
+          "motifs"
+        ],
+        "files": 37,
+        "bytes": 8955002,
+        "duplicates": [],
+        "otherRepeats": [],
+        "finished": true
+      },
+      "errors": [],
+      "allReadyMs": [
+        1493
+      ],
+      "ok": true
+    }
+  ],
+  "comparisonSingleModules": [
+    {
+      "network": "50 Mbit/s, 30 ms",
+      "readyMs": 1215,
+      "uiReadyMs": 2188,
+      "bytes": 821292,
+      "requests": 45,
+      "modules": 79,
+      "missingInBundle": [],
+      "errors": []
+    },
+    {
+      "network": "20 Mbit/s, 150 ms",
+      "readyMs": 2807,
+      "uiReadyMs": 5880,
+      "bytes": 821124,
+      "requests": 44,
+      "modules": 79,
+      "missingInBundle": [],
+      "errors": []
+    }
+  ],
+  "ok": true
+}

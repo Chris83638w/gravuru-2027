@@ -233,13 +233,13 @@ class Basis(unittest.TestCase):
     def tearDownClass(cls):
         shutil.rmtree(cls.tmp, ignore_errors=True)
 
-    def lauf(self, dateien: dict[str, bytes], nur_pruefen=True, backend='auto', mapping=None, name=None):
+    def lauf(self, dateien: dict[str, bytes], nur_pruefen=True, backend='auto', mapping=None, name=None, umrechnung='corel'):
         """Einen Lauf über eine ZIP; gibt (Ergebnis, Ausgabeordner) zurück."""
         arbeits = Path(tempfile.mkdtemp(dir=self.tmp))
         z = schreibe_zip(arbeits / (name or 'bestellung.zip'), dateien)
         out = arbeits / 'out'
         out.mkdir()
-        r = imp.verarbeite_zip(z, self.katalog, mapping or self.mapping, out, backend, nur_pruefen)
+        r = imp.verarbeite_zip(z, self.katalog, mapping or self.mapping, out, backend, nur_pruefen, umrechnung)
         return r, out
 
     def position(self, mod=None, **kw):
@@ -262,9 +262,54 @@ class Basis(unittest.TestCase):
 # Umrechnung
 # --------------------------------------------------------------------------------------------------
 
+# Corel-Regel (Standard): 400er Raster, 10 px Rand, ein Maßstab aus der längeren Plattenseite, Platte mittig.
+C_S = 220 / 380                          # mm je px bei 220 × 140
+C_OX = 10.0
+C_OY = (400 - 140 / C_S) / 2             # 79.0909… px
+
+
+def corel_mm(px, py):
+    return (px - C_OX) * C_S, (py - C_OY) * C_S
+
+
 class TestUmrechnung(unittest.TestCase):
-    def test_raster_ecken_und_mitte(self):
+    def test_corel_ecken_und_mitte(self):
         r = imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 220, 140)
+        self.assertEqual(r.regel, 'corel')
+        x, y = r.punkt(10, C_OY)
+        self.assertAlmostEqual(x, 0)
+        self.assertAlmostEqual(y, 0)
+        x, y = r.punkt(390, 400 - C_OY)
+        self.assertAlmostEqual(x, 220)
+        self.assertAlmostEqual(y, 140)
+        x, y = r.punkt(200, 200)
+        self.assertAlmostEqual(x, 110)
+        self.assertAlmostEqual(y, 70)
+
+    def test_corel_ein_massstab_hochformat(self):
+        r = imp.Raster({'x': 0, 'y': 0, 'width': 400, 'height': 400}, 140, 220)
+        self.assertAlmostEqual(r.sx, r.sy)
+        self.assertAlmostEqual(r.sx, 220 / 380)
+        self.assertAlmostEqual(r.punkt(200, 10)[1], 0)
+
+    def test_corel_foto_wie_im_paritaetslauf(self):
+        # Paritätslauf 20.10.2026: Pythons alte Fotobox (Druckbereich-Regel) in Corel-mm umgerechnet = Corel-Ergebnis.
+        alt = imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 220, 140, 'druckbereich')
+        neu = imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 220, 140)
+        px0 = (9 + 10.1723 * 381 / 220, 73 + 8.6165 * 254 / 140)
+        px1 = (9 + 99.2372 * 381 / 220, 73 + 133.0234 * 254 / 140)
+        self.assertAlmostEqual(alt.punkt(*px0)[0], 10.1723, places=3)
+        x0, y0 = neu.punkt(*px0)
+        x1, y1 = neu.punkt(*px1)
+        for ist, soll in zip((x0, y0, x1 - x0, y1 - y0), (9.62, 5.52, 89.30, 130.67)):
+            self.assertAlmostEqual(ist, soll, delta=0.02)
+
+    def test_unbekannte_regel(self):
+        with self.assertRaises(ValueError):
+            imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 220, 140, 'frei')
+
+    def test_raster_ecken_und_mitte(self):
+        r = imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 220, 140, 'druckbereich')
         self.assertEqual(r.punkt(9, 73), (0, 0))
         x, y = r.punkt(390, 327)
         self.assertAlmostEqual(x, 220)
@@ -274,13 +319,13 @@ class TestUmrechnung(unittest.TestCase):
         self.assertAlmostEqual(y, 70)
 
     def test_getrennte_massstaebe_bei_unterschiedlichem_seitenverhaeltnis(self):
-        r = imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 220, 140)
+        r = imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 220, 140, 'druckbereich')
         self.assertAlmostEqual(r.sx, 220 / 381)
         self.assertAlmostEqual(r.sy, 140 / 254)
         self.assertNotAlmostEqual(r.sx, r.sy, places=2)
 
     def test_raster_bei_30x20_ist_massgleich(self):
-        r = imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 300, 200)
+        r = imp.Raster({'x': 9, 'y': 73, 'width': 381, 'height': 254}, 300, 200, 'druckbereich')
         self.assertAlmostEqual(r.sx / r.sy, 1.0, places=2)
 
     def test_matrizen(self):
@@ -411,25 +456,32 @@ class TestAusgabe(Basis):
         codes = [w['code'] for w in b['warnings']]
         for c in ('familie_platzhalter', 'seitenverhaeltnis'):
             self.assertIn(c, codes)
-        # D201 ist seit 19.10.2026 aus der Corel-CDR berechnet, nicht mehr geschätzt; Proportion passt zum Katalogmotiv.
+        # D201 ist seit 19.10.2026 aus den Corel-CDRs berechnet, nicht mehr geschätzt; Proportion passt zum Katalogmotiv.
         self.assertNotIn('overlay_geschaetzt', codes)
         self.assertNotIn('motivproportion', codes)
         self.assertNotIn('schriftbreite', codes)
         self.assertNotIn('ausrichtung_unsicher', codes)
 
     def test_schriftgroesse_mm(self):
-        # Schriftgröße = font-size · scale · (Platte.höhe / Druckbereich.höhe)
-        erwartet = 203.56028368794327 * 0.25886728338014503 * (140 / 254)
+        # Schriftgröße = font-size · scale · (mm je px der Corel-Regel)
+        erwartet = 203.56028368794327 * 0.25886728338014503 * C_S
         f = {x['id']: x for x in self.best['fields']}
         self.assertAlmostEqual(f['text-1']['sizeMm'], erwartet, places=3)
-        self.assertAlmostEqual(f['text-2']['sizeMm'], 203.56028368794327 * 0.10100797795269684 * (140 / 254), places=3)
-        self.assertAlmostEqual(f['text-3']['sizeMm'], 203.56028368794327 * 0.08384680212650573 * (140 / 254), places=3)
+        self.assertAlmostEqual(f['text-2']['sizeMm'], 203.56028368794327 * 0.10100797795269684 * C_S, places=3)
+        self.assertAlmostEqual(f['text-3']['sizeMm'], 203.56028368794327 * 0.08384680212650573 * C_S, places=3)
+
+    def test_schriftgroesse_wie_corel_im_paritaetslauf(self):
+        # Corel setzte im Referenzfall 86,5 / 33,5 / 28 pt (gerundet auf 0,5 pt); die Fixture hat dasselbe Layout.
+        f = {x['id']: x for x in self.best['fields']}
+        for fid, pt in (('text-1', 86.5), ('text-2', 33.5), ('text-3', 28.0)):
+            self.assertEqual(round(f[fid]['sizeMm'] / 25.4 * 72 * 2) / 2, pt, fid)
 
     def test_textlage_mitte_in_mm(self):
-        # Mittelpunkt der Textbox: x/y getrennt über den Druckbereich (px 281.74 / 117.77 -> mm)
+        # Mittelpunkt der Textbox (px 281.74 / 117.77) mit der Corel-Regel -> mm
         f = {x['id']: x for x in self.best['fields']}
-        self.assertAlmostEqual(f['text-1']['boxMm'][0], (281.74085808 - 9) * 220 / 381, places=3)
-        self.assertAlmostEqual(f['text-1']['boxMm'][1], (117.76829851 - 73) * 140 / 254, places=3)
+        x, y = corel_mm(281.74085808, 117.76829851)
+        self.assertAlmostEqual(f['text-1']['boxMm'][0], x, places=3)
+        self.assertAlmostEqual(f['text-1']['boxMm'][1], y, places=3)
         self.assertEqual(f['text-1']['align'], 'center')
 
     def test_zeilen_und_ausrichtung(self):
@@ -441,31 +493,40 @@ class TestAusgabe(Basis):
         self.assertIsNotNone(f['text-3']['lineHeightMm'])
         self.assertIsNone(f['text-1']['lineHeightMm'])
         # y-Abstand der Zeilen = Fabric-Zeilenabstand in mm
-        self.assertAlmostEqual(f['text-3']['lineHeightMm'], 203.56028368794327 * 1.13 * 1.16 * 0.08384680212650573 * 140 / 254, places=2)
+        self.assertAlmostEqual(f['text-3']['lineHeightMm'], 203.56028368794327 * 1.13 * 1.16 * 0.08384680212650573 * C_S, places=2)
 
     def test_foto_unveraendert_und_lage(self):
         self.assertEqual((self.ordner / 'foto-1.jpg').read_bytes(), (FIXTURE / FOTO).read_bytes())
         fo = next(f for f in self.best['fields'] if f['type'] == 'photo')
         self.assertEqual(fo['pixels'], [1118, 1636])
-        # Mittelpunkt (103.74, 201.49) px -> mm, Größe 154.25 × 225.7 px -> mm
-        self.assertAlmostEqual(fo['centerMm'][0], (103.73865314 - 9) * 220 / 381, places=3)
-        self.assertAlmostEqual(fo['centerMm'][1], (201.48758671 - 73) * 140 / 254, places=3)
-        self.assertAlmostEqual(fo['sizeMm'][0], 1118 * 0.13796435 * 220 / 381, places=2)
-        self.assertAlmostEqual(fo['sizeMm'][1], 1636 * 0.13796435 * 140 / 254, places=2)
+        # Mittelpunkt (103.74, 201.49) px -> mm, Größe 154.25 × 225.7 px -> mm, ein Maßstab: Foto unverzerrt
+        cx, cy = corel_mm(103.73865314, 201.48758671)
+        self.assertAlmostEqual(fo['centerMm'][0], cx, places=3)
+        self.assertAlmostEqual(fo['centerMm'][1], cy, places=3)
+        self.assertAlmostEqual(fo['sizeMm'][0], 1118 * 0.13796435 * C_S, places=2)
+        self.assertAlmostEqual(fo['sizeMm'][1], 1636 * 0.13796435 * C_S, places=2)
+        self.assertAlmostEqual(fo['scale']['x'], fo['scale']['y'], places=5)
         self.assertEqual(fo['rotation'], 0)
+        # Paritätslauf 20.10.2026: Corel-Fotorahmen 9,62 / 5,52 mm, 89,30 × 130,67 mm (Fixture hat dasselbe Layout)
         x0, y0, x1, y1 = fo['cropMm']
-        self.assertGreater(x1, x0)
-        self.assertLessEqual(y1, 140.3)
+        for ist, soll in zip((x0, y0, x1 - x0, y1 - y0), (9.62, 5.52, 89.30, 130.67)):
+            self.assertAlmostEqual(ist, soll, delta=0.03)
+        cl = fo['clipMm']
+        self.assertTrue(cl[0] >= 0 and cl[1] >= 0 and cl[2] <= 220 and cl[3] <= 140, cl)
 
     def test_motiv_aus_katalog_in_amazon_box(self):
         m = self.best['design']
         self.assertEqual(m['designNo'], 201)
         soll = json.loads((MAPPING / 'design-overlays.json').read_text(encoding='utf-8'))['gedenktafeln']['201']
         self.assertEqual(m['bbox400'], soll['bbox400'])
-        self.assertTrue(m['lagequelle'].startswith('berechnet'))
+        # Corel lädt die 22×14-Vorlage: Motiv steht dort, nicht in der Konfigurator-Box (Paritätslauf 20.10.2026)
+        self.assertEqual(m['boxMm'], soll['vorlageMm']['220x140']['boxMm'])
+        self.assertTrue(m['lagequelle'].endswith('GT-S-22x14-D201.cdr'))
         bx, by, bw, bh = m['boxMm']
-        self.assertAlmostEqual(bx, (soll['bbox400'][0] - 9) * 220 / 381, places=2)
-        self.assertAlmostEqual(bw, soll['bbox400'][2] * 220 / 381, places=2)
+        kx, ky = corel_mm(soll['bbox400'][0], soll['bbox400'][1])
+        self.assertAlmostEqual(m['konfiBoxMm'][0], kx, places=2)
+        self.assertAlmostEqual(m['konfiBoxMm'][2], soll['bbox400'][2] * C_S, places=2)
+        self.assertIn('motiv_versatz', [w['code'] for w in self.best['warnings']])
         # proportional eingepasst: Motiv 30,55 × 24,41 mm, begrenzt durch die Höhe
         self.assertAlmostEqual(m['groesseMm'][0] / m['groesseMm'][1], 30.55 / 24.41, places=3)
         self.assertLessEqual(m['groesseMm'][0], bw + 1e-6)
@@ -480,7 +541,30 @@ class TestAusgabe(Basis):
         p = r['positionen'][0]
         self.assertEqual(p['status'], 'ok', p['fehler'])
         b = json.loads((out / p['ordner'] / 'bestellung.json').read_text(encoding='utf-8'))
-        self.assertIn('overlay_geschaetzt', [w['code'] for w in b['warnings']])
+        codes = [w['code'] for w in b['warnings']]
+        self.assertIn('overlay_geschaetzt', codes)
+        self.assertIn('motiv_ohne_vorlage', codes)          # keine Vorlagenlage, Konfigurator-Bild 1,50 ≠ Platte 1,57
+        self.assertNotIn('motiv_versatz', codes)
+
+    def test_seitenverhaeltnis_meldet_corel_und_ueberstand(self):
+        w = next(x for x in self.best['warnings'] if x['code'] == 'seitenverhaeltnis')
+        self.assertIn('wie Corel', w['text'])
+        self.assertIn('3.5 mm', w['text'])                  # (79,09 − 73) px × 220/380 = 3,5 mm über die Platte
+        s = json.loads((self.ordner / 'summary.json').read_text(encoding='utf-8'))
+        self.assertEqual(s['umrechnung'], 'corel')
+
+    def test_alte_regel_druckbereich_bleibt_waehlbar(self):
+        r, out = self.lauf(baue_bestellung(self.katalog), umrechnung='druckbereich')
+        p = r['positionen'][0]
+        self.assertEqual(p['status'], 'ok', p['fehler'])
+        b = json.loads((out / p['ordner'] / 'bestellung.json').read_text(encoding='utf-8'))
+        s = json.loads((out / p['ordner'] / 'summary.json').read_text(encoding='utf-8'))
+        self.assertEqual(s['umrechnung'], 'druckbereich')
+        f = {x['id']: x for x in b['fields']}
+        self.assertAlmostEqual(f['text-1']['sizeMm'], 203.56028368794327 * 0.25886728338014503 * 140 / 254, places=3)
+        codes = [w['code'] for w in b['warnings']]
+        self.assertNotIn('motiv_versatz', codes)              # Vorlagenlage gilt nur für die Corel-Regel
+        self.assertAlmostEqual(b['design']['boxMm'][0], (b['design']['bbox400'][0] - 9) * 220 / 381, places=2)
 
     def test_svg_ebenen(self):
         import xml.etree.ElementTree as ET
@@ -1017,9 +1101,9 @@ class TestRealkatalog(unittest.TestCase):
         b = json.loads((self.out / ORDNER / 'bestellung.json').read_text(encoding='utf-8'))
         self.assertEqual(b['designId'], 'GT-S-30x20-D201')
         self.assertEqual(b['design']['key'], 'gravur-rechteck-D201')
-        # Box aus GT-S-30x20-D201.cdr (design-overlays.json): Höhe begrenzt, 30,87 px × 140/254 = 17,01 mm auf 24,37 mm Motiv.
-        # Vorher mit der geschätzten Box 0,6785.
-        self.assertAlmostEqual(b['design']['massstab'], 0.6982, places=3)
+        # Motiv in der Box der 22×14-Vorlage (15,16 mm hoch) auf 24,37 mm Katalogmotiv – wie Corel.
+        # Vorher: Konfigurator-Box mit getrennten Maßstäben 0,6982, davor geschätzt 0,6785.
+        self.assertAlmostEqual(b['design']['massstab'], 0.6221, places=3)
 
     def test_fixture_texte_sind_zentriert_und_im_kerning_der_echten_schrift(self):
         schrift = imp.Katalog(self.katalogpfad).schrift('Great Vibes', {})[1]

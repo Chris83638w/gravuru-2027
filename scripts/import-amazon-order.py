@@ -44,6 +44,10 @@ GRAVURFARBE = '#000000'
 VORSCHAUFARBE = '#b3b3b3'
 RUNDUNG = 4
 WARN_SEITENVERHAELTNIS = 0.005
+KONFI_PX = 400.0          # Amazon-Konfigurator-Raster (Corel: AmazonExport.getAmazonKonfiSize)
+KONFI_RAND_PX = 10.0      # Rand je Seite (Corel: getAmazonKonfiPadding); die längere Plattenseite = 380 px
+UMRECHNUNGEN = ('corel', 'druckbereich')
+WARN_MOTIVVERSATZ_MM = 1.0
 WARN_MOTIVPROPORTION = 0.03
 WARN_SCHRIFTBREITE = 0.005
 WARN_AUSRICHTUNG = 0.03
@@ -1005,18 +1009,31 @@ def lese_motive(svg_bytes: bytes) -> list[dict]:
 
 
 # --------------------------------------------------------------------------------------------------
-# Umrechnung px (400er Raster) -> mm, getrennt in x und y ueber den Druckbereich
+# Umrechnung px (400er Raster) -> mm
+#   corel (Standard): wie AmazonImport.prepareView/applyTransformToTextShapeWithBuyerPlacement der Corel-Skripte –
+#       ein Maßstab, die längere Plattenseite füllt 400 − 2·10 px, Platte mittig im Raster. Der Amazon-Druckbereich
+#       wird dafür nicht verwendet. Belegt am Referenzfall (Paritätslauf 20.10.2026, Foto-Rahmen auf 0,01 mm).
+#   druckbereich: getrennt in x und y über Position/Dimensions der Area (Spezifikation K15 bis 19.10.2026).
 # --------------------------------------------------------------------------------------------------
 
 class Raster:
-    def __init__(self, bereich: dict, breite_mm: float, hoehe_mm: float):
-        self.b = bereich
-        self.sx = breite_mm / bereich['width']
-        self.sy = hoehe_mm / bereich['height']
-        self.matrix = (self.sx, 0.0, 0.0, self.sy, -bereich['x'] * self.sx, -bereich['y'] * self.sy)
+    def __init__(self, bereich: dict, breite_mm: float, hoehe_mm: float, regel: str = 'corel'):
+        if regel not in UMRECHNUNGEN:
+            raise ValueError(f'Unbekannte Umrechnung: {regel}')
+        self.b, self.regel, self.platte = bereich, regel, (breite_mm, hoehe_mm)
+        if regel == 'corel':
+            px_je_mm = (KONFI_PX - 2 * KONFI_RAND_PX) / max(breite_mm, hoehe_mm)
+            self.sx = self.sy = 1.0 / px_je_mm
+            self.ox = (KONFI_PX - breite_mm * px_je_mm) / 2
+            self.oy = (KONFI_PX - hoehe_mm * px_je_mm) / 2
+        else:
+            self.sx = breite_mm / bereich['width']
+            self.sy = hoehe_mm / bereich['height']
+            self.ox, self.oy = bereich['x'], bereich['y']
+        self.matrix = (self.sx, 0.0, 0.0, self.sy, -self.ox * self.sx, -self.oy * self.sy)
 
     def punkt(self, px, py):
-        return ((px - self.b['x']) * self.sx, (py - self.b['y']) * self.sy)
+        return ((px - self.ox) * self.sx, (py - self.oy) * self.sy)
 
     def box(self, x0, y0, x1, y1):
         a, b = self.punkt(x0, y0)
@@ -1217,6 +1234,9 @@ def baue_foto(roh: dict, fabric: dict, raster: Raster, dateien: dict, geom: dict
     if clip is None:
         clip = (raster.b['x'], raster.b['y'], raster.b['x'] + raster.b['width'], raster.b['y'] + raster.b['height'])
     cm = raster.box(*clip)
+    if raster.regel == 'corel':
+        pb = raster.platte
+        cm = (max(cm[0], 0.0), max(cm[1], 0.0), min(cm[2], pb[0]), min(cm[3], pb[1]))
     achsparallel = abs(mm[1]) < 1e-9 and abs(mm[2]) < 1e-9 and mm[0] > 0 and mm[3] > 0
     crop = None
     if achsparallel:
@@ -1240,7 +1260,18 @@ def baue_foto(roh: dict, fabric: dict, raster: Raster, dateien: dict, geom: dict
 # Motiv
 # --------------------------------------------------------------------------------------------------
 
-def baue_motiv(design_eintrag: dict, svg_bytes: bytes, overlay: dict, raster: Raster, sammler: Sammler, design_label: str):
+def vorlage_fuer(overlay: dict, breite_mm: float, hoehe_mm: float) -> dict | None:
+    """Lage des Motivs in der Corel-Designvorlage der bestellten Plattengröße (design-overlays.json: vorlageMm['<B>x<H>'])."""
+    v = (overlay.get('vorlageMm') or {}).get(f'{breite_mm:g}x{hoehe_mm:g}')
+    if not isinstance(v, dict):
+        return None
+    b = v.get('boxMm')
+    if not (isinstance(b, list) and len(b) == 4 and all(isinstance(x, (int, float)) for x in b) and b[2] > 0 and b[3] > 0):
+        raise PositionsFehler('overlay_unknown', f'design-overlays.json: vorlageMm {breite_mm:g}x{hoehe_mm:g} ist ungültig.')
+    return v
+
+
+def baue_motiv(design_eintrag: dict, svg_bytes: bytes, overlay: dict, raster: Raster, sammler: Sammler, design_label: str, abweichendes_bild: bool = False):
     motive = lese_motive(svg_bytes)
     if not motive:
         sammler.warn('design_ohne_motiv', f'{design_label}: Das Katalogdesign enthält kein sichtbares Motiv (Ebenen motiv-*/deko-*).')
@@ -1259,10 +1290,24 @@ def baue_motiv(design_eintrag: dict, svg_bytes: bytes, overlay: dict, raster: Ra
     bx, by, bw, bh = bbox
     if mb <= 0 or mh <= 0:
         raise PositionsFehler('design_unknown', f'{design_label}: Motivgröße ist null.')
-    abw = abs((bw / bh) / (mb / mh) - 1)
+    kx0, ky0, kx1, ky1 = raster.box(bx, by, bx + bw, by + bh)              # wo der Kunde das Motiv gesehen hat
+    vorlage = vorlage_fuer(overlay, *raster.platte) if raster.regel == 'corel' else None
+    if vorlage is not None:
+        vb = vorlage['boxMm']
+        x0, y0, x1, y1 = vb[0], vb[1], vb[0] + vb[2], vb[1] + vb[3]
+        quelle = str(vorlage.get('quelle', 'Corel-Vorlage'))
+        dx = (x0 + x1) / 2 - (kx0 + kx1) / 2
+        dy = (y0 + y1) / 2 - (ky0 + ky1) / 2
+        if math.hypot(dx, dy) > WARN_MOTIVVERSATZ_MM:
+            sammler.warn('motiv_versatz', f'{design_label}: Motiv steht in der Corel-Vorlage {dx:+.1f} / {dy:+.1f} mm (x/y) versetzt und '
+                                          f'{(x1 - x0) / max(kx1 - kx0, 1e-9) * 100 - 100:+.0f} % in der Breite gegenüber dem Konfigurator-Bild, das der Kunde gesehen hat.')
+    else:
+        x0, y0, x1, y1 = kx0, ky0, kx1, ky1
+        if abweichendes_bild and raster.regel == 'corel':
+            sammler.warn('motiv_ohne_vorlage', f'{design_label}: Konfigurator-Bild hat ein anderes Seitenverhältnis als die Platte, für diese Größe ist aber keine Vorlagenlage hinterlegt (design-overlays.json vorlageMm); Motiv steht wie im Konfigurator gezeigt, Corel kann abweichen.')
+    abw = abs(((x1 - x0) / (y1 - y0)) / (mb / mh) - 1)
     if abw > WARN_MOTIVPROPORTION:
-        sammler.warn('motivproportion', f'Motivproportion: Amazon-Box {bw / bh:.3f} : 1 gegenüber Katalogmotiv {mb / mh:.3f} : 1 (Abweichung {abw * 100:.1f} %); Motiv wird proportional eingepasst.')
-    x0, y0, x1, y1 = raster.box(bx, by, bx + bw, by + bh)
+        sammler.warn('motivproportion', f'Motivproportion: Box {(x1 - x0) / (y1 - y0):.3f} : 1 gegenüber Katalogmotiv {mb / mh:.3f} : 1 (Abweichung {abw * 100:.1f} %); Motiv wird proportional eingepasst.')
     k = min((x1 - x0) / mb, (y1 - y0) / mh)
     tx = (x0 + x1) / 2 - k * (mx0 + mx1) / 2
     ty = (y0 + y1) / 2 - k * (my0 + my1) / 2
@@ -1270,6 +1315,7 @@ def baue_motiv(design_eintrag: dict, svg_bytes: bytes, overlay: dict, raster: Ra
     for m in motive:
         elemente.append({'id': m['id'], 'art': 'motiv', 'd': m['d'], 'matrix': mat_mul((k, 0, 0, k, tx, ty), m['m']), 'fillRule': m['fillRule'], 'kontur': m['kontur'], 'strichMm': m['strichMm'] * k})
     info = {'designNo': design_eintrag.get('designNo'), 'boxMm': [runde(x0), runde(y0), runde(x1 - x0), runde(y1 - y0)], 'bbox400': bbox,
+            'konfiBoxMm': [runde(kx0), runde(ky0), runde(kx1 - kx0), runde(ky1 - ky0)],
             'massstab': runde(k, 6), 'groesseMm': [runde(mb * k), runde(mh * k)], 'lagequelle': quelle}
     return info, elemente
 
@@ -1528,7 +1574,7 @@ def finde_option(roh: dict, namen: list[str]):
     return None
 
 
-def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict, katalog: Katalog, mapping: Mapping, backend: str, nur_pruefen: bool, zip_hinweise: list[dict]) -> dict:
+def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict, katalog: Katalog, mapping: Mapping, backend: str, nur_pruefen: bool, zip_hinweise: list[dict], umrechnung: str = 'corel') -> dict:
     """Gibt {'roh', 'modell', 'bestellung', 'summary', 'warnungen', 'quellen'} zurueck oder wirft PositionsFehler."""
     sammler = Sammler()
     for h in zip_hinweise:
@@ -1563,12 +1609,19 @@ def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict
         raise PositionsFehler('family_unknown', f'Familie „{fam_id}“ fehlt im Katalog und hat keine placeholderGeometry im Mapping.')
     # --- Druckbereich und Umrechnung
     bereich = druckbereich(roh, sammler)
-    raster = Raster(bereich, geom['widthMm'], geom['heightMm'])
+    raster = Raster(bereich, geom['widthMm'], geom['heightMm'], umrechnung)
     verhaeltnis_plate = geom['widthMm'] / geom['heightMm']
     verhaeltnis_area = bereich['width'] / bereich['height']
     abw = abs(verhaeltnis_plate / verhaeltnis_area - 1)
-    if abw > WARN_SEITENVERHAELTNIS:
-        sammler.warn('seitenverhaeltnis', f'Seitenverhältnis Druckbereich {verhaeltnis_area:.3f} zu Platte {verhaeltnis_plate:.3f} (Abweichung {abw * 100:.1f} %): Position getrennt in x und y umgerechnet, Text unverzerrt, Foto und Motiv in beiden Achsen.')
+    abweichendes_bild = abw > WARN_SEITENVERHAELTNIS
+    if abweichendes_bild:
+        if umrechnung == 'corel':
+            bx0, by0, bx1, by1 = raster.box(bereich['x'], bereich['y'], bereich['x'] + bereich['width'], bereich['y'] + bereich['height'])
+            ueber = max(-bx0, -by0, bx1 - geom['widthMm'], by1 - geom['heightMm'], 0.0)
+            sammler.warn('seitenverhaeltnis', f'Konfigurator-Bild {verhaeltnis_area:.3f} zu Platte {verhaeltnis_plate:.3f} (Abweichung {abw * 100:.1f} %): umgerechnet wie Corel (ein Maßstab, Platte mittig); '
+                                              f'Kundeninhalte am Bildrand können bis {ueber:.1f} mm über die Platte reichen.')
+        else:
+            sammler.warn('seitenverhaeltnis', f'Seitenverhältnis Druckbereich {verhaeltnis_area:.3f} zu Platte {verhaeltnis_plate:.3f} (Abweichung {abw * 100:.1f} %): Position getrennt in x und y umgerechnet, Text unverzerrt, Foto und Motiv in beiden Achsen.')
     # --- Fabric-SVG
     svg_name = roh['svg']
     if not svg_name or svg_name not in dateien:
@@ -1598,7 +1651,7 @@ def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict
             overlay = (mapping.overlays.get(str(linie)) or {}).get(str(nr))
             if not isinstance(overlay, dict):
                 raise PositionsFehler('overlay_unknown', f'design-overlays.json hat keinen Eintrag für Design D{nr} (Linie {linie}); die Lage im Amazon-Raster ist unbekannt.')
-            design_info, motiv_elemente = baue_motiv(d_eintrag, svg_bytes, overlay, raster, sammler, f'D{nr}')
+            design_info, motiv_elemente = baue_motiv(d_eintrag, svg_bytes, overlay, raster, sammler, f'D{nr}', abweichendes_bild)
             design_id = d_eintrag.get('masterId')
             design_info = dict(design_info or {}, key=d_eintrag.get('key'), masterId=design_id)
             if re.search(r'ohne\s+Freistellung', design_label, re.I):
@@ -1678,6 +1731,7 @@ def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict
         'aufpreisSummeCent': sum(o['aufpreisCent'] for o in optionen_aus), 'warnings': sammler.warnungen, 'errors': [], 'productionReady': False,
         'files': {}, 'sourceSha256': quellen,
     }
+    summary['umrechnung'] = umrechnung
     spur = corel_spur(corel, groesse['wert'], (DESIGN_NR.findall(design_label or '') or [None])[-1])
     if spur:
         summary['corel'] = spur   # nur Summary (Paritätsprüfung), nicht Teil von gravuru-order/v1
@@ -1719,7 +1773,7 @@ def schreibe_position(pos: dict, ordner: Path, backend: str, nur_pruefen: bool) 
 # Lauf
 # --------------------------------------------------------------------------------------------------
 
-def verarbeite_zip(zip_pfad, katalog: Katalog, mapping: Mapping, out: Path, backend: str, nur_pruefen: bool) -> dict:
+def verarbeite_zip(zip_pfad, katalog: Katalog, mapping: Mapping, out: Path, backend: str, nur_pruefen: bool, umrechnung: str = 'corel') -> dict:
     ergebnis = {'zip': Path(zip_pfad).name, 'positionen': [], 'fehler': []}
     try:
         dateien, hinweise = lese_zip(zip_pfad)
@@ -1730,7 +1784,7 @@ def verarbeite_zip(zip_pfad, katalog: Katalog, mapping: Mapping, out: Path, back
     for name, doc in dokumente:
         eintrag = {'quelle': name, 'status': 'ok', 'fehler': [], 'warnungen': [], 'ordner': None}
         try:
-            pos = verarbeite_position(dateien, name, doc, katalog, mapping, backend, nur_pruefen, hinweise)
+            pos = verarbeite_position(dateien, name, doc, katalog, mapping, backend, nur_pruefen, hinweise, umrechnung)
             ordner = out / f'{pos["roh"]["orderId"]}_{pos["roh"]["orderItemId"]}'
             eintrag['ordner'] = ordner.name
             eintrag['warnungen'] = pos['bestellung']['warnings']
@@ -1756,6 +1810,8 @@ def main(argv=None) -> int:
     ap.add_argument('--mapping', default=str(wurzel / 'amazon'), help='Ordner mit asin-mapping.json, font-aliases.json, design-overlays.json')
     ap.add_argument('--out', required=True, help='Ausgabeordner (außerhalb des Repos, enthält Kundendaten)')
     ap.add_argument('--nur-pruefen', action='store_true', help='nur bestellung.json und summary.json, keine Grafik')
+    ap.add_argument('--umrechnung', choices=list(UMRECHNUNGEN), default='corel',
+                    help='corel (Standard): wie die Corel-Skripte, ein Maßstab, Platte mittig; druckbereich: getrennt in x/y über die Amazon-Area (alt, nur zum Vergleich)')
     ap.add_argument('--pdf-verfahren', choices=['auto', 'cairo', 'mupdf'], default='auto', help='PDF-Erzeugung (auto: CairoSVG, sonst PyMuPDF)')
     a = ap.parse_args(argv)
     out = Path(a.out)
@@ -1764,7 +1820,7 @@ def main(argv=None) -> int:
     lauf = {'schema': SCHEMA_LAUF, 'zips': [], 'productionReady': False}
     fehler_gesamt = 0
     for z in a.zip:
-        r = verarbeite_zip(z, katalog, mapping, out, a.pdf_verfahren, a.nur_pruefen)
+        r = verarbeite_zip(z, katalog, mapping, out, a.pdf_verfahren, a.nur_pruefen, a.umrechnung)
         lauf['zips'].append(r)
         n_fehler = len(r['fehler']) + sum(1 for p in r['positionen'] if p['status'] != 'ok')
         fehler_gesamt += n_fehler

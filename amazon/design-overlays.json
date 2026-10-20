@@ -8,7 +8,19 @@
         30.87
       ],
       "quelle": "berechnet 2026-10-19 aus GT-S-30x20-D201.cdr",
-      "hinweis": "Motivkurve aus V:\\Produkte\\Gedenktafeln\\Gravur\\Schiefer\\30x20\\GT-S-30x20-D201\\Export\\GT-S-30x20-D201.cdr (Platte 300 × 200 mm, Motiv x 203,73 / y 90,59 / 30,44 × 24,37 mm), umgerechnet mit der Corel-Formel aus AmazonImport.prepareView: 400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig. Der Amazon-Konfigurator dieser ASIN zeigt die 30 × 20-Vorlage auch bei Größe 22 × 14. Vorherige Schätzung aus der Vorschau: [268, 188, 39, 30]."
+      "hinweis": "Motivkurve aus V:\\Produkte\\Gedenktafeln\\Gravur\\Schiefer\\30x20\\GT-S-30x20-D201\\Export\\GT-S-30x20-D201.cdr (Platte 300 × 200 mm, Motiv x 203,73 / y 90,59 / 30,44 × 24,37 mm), umgerechnet mit der Corel-Formel aus AmazonImport.prepareView: 400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig. Der Amazon-Konfigurator dieser ASIN zeigt die 30 × 20-Vorlage auch bei Größe 22 × 14. Vorherige Schätzung aus der Vorschau: [268, 188, 39, 30].",
+      "vorlageMm": {
+        "220x140": {
+          "boxMm": [
+            145.68,
+            64.14,
+            18.94,
+            15.16
+          ],
+          "quelle": "berechnet 2026-10-19 aus GT-S-22x14-D201.cdr",
+          "hinweis": "Motivkurve aus V:\\Produkte\\Gedenktafeln\\Gravur\\Schiefer\\22x14\\GT-S-22x14-D201\\Export\\GT-S-22x14-D201.cdr relativ zur Plattenkontur (220 × 140 mm); Corel übernimmt das Motiv unverändert (Paritätslauf 20.10.2026)."
+        }
+      }
     }
   }
 }

@@ -42,3 +42,14 @@ Umsetzung als nächstes Paket; die Spezifikation `AMAZON-CUSTOM-IMPORT-20261019.
 ## Nicht geprüft
 
 Exakte Texttinte (Grafiktext-Rahmen aus libcdr sind ungenau; bei Bedarf PDF-Export aus Corel mit eingebetteten Schriften lesen); Zeilenabstand von Text 3 (Corel setzt 130 % der Schriftgröße, Kommentar im Corel-Code „TODO Falsch“); Fotofreistellung; weitere ASINs, Größen und Schriften.
+
+## Umsetzung 20.10.2026: Importer rechnet wie Corel
+
+- `Raster` mit Regel `corel` (Standard) und `druckbereich` (alt, `--umrechnung druckbereich`). Foto-Clip zusätzlich auf die Platte begrenzt.
+- `design-overlays.json` D201: `vorlageMm["220x140"]` = 145,68 / 64,14 / 18,94 × 15,16 mm aus `GT-S-22x14-D201.cdr`. Motiv wird bei der Corel-Regel aus der Vorlage gesetzt; `konfiBoxMm` hält die Konfigurator-Lage fest.
+- Neue Warnungen: `motiv_versatz` (Vorlage vs. Konfigurator, hier −5,4 / −0,3 mm, −15 % Breite), `motiv_ohne_vorlage`; `seitenverhaeltnis` nennt jetzt den Überstand (hier 3,5 mm). `summary.json` erhält `umrechnung`.
+- Gegenprobe an der echten Bestellung (nur lokal): Foto 9,62 / 5,52 / 89,30 × 130,67 mm = Corel; Schrift 86,48 / 33,74 / 28,01 pt ↔ Corel 86,5 / 33,5 / 28 pt (Corel rundet auf 0,5 pt); Motiv 145,68 / 64,14 / 18,94 × 15,16 = Corel.
+- Tests 90/90 (mit echtem Katalog), darunter Paritätstests mit den in Corel gemessenen Werten und Tests der alten Regel als Option.
+
+Offen: Textmitte in y und Zeilenabstand (Corel 130 %) nicht direkt messbar aus der CDR; bei Bedarf PDF-Export aus Corel lesen.
+

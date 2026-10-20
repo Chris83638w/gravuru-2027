@@ -20,7 +20,13 @@ Referenzfall (nur lokal, **nicht im Repo**): Bestellung `302-4217613-2163531`, P
 
 Koordinatensystem: **400 × 400 px** über dem Amazon-Basisbild der Vorlage. Der Druckbereich der Oberfläche steht in jeder Area: `Position {x,y}` und `Dimensions {width,height}` (Referenz: 9/73, 381 × 254). `buyerPlacement` je Text/Foto enthält Position (px im 400-Raster), Dimension (px in Elementeinheiten) und `scale`; die Fabric-SVG enthält dieselbe Lage bereits ausgerechnet als `transform`/`tspan`-Koordinaten.
 
+**Umrechnung (geändert 20.10.2026, Paritätslauf):** Maßgeblich ist die Regel der Corel-Skripte (`AmazonImport.prepareView`): 400er Raster, 10 px Rand, die längere Plattenseite = 380 px, **ein** Maßstab für x und y, Platte mittig: `s = 380 / max(B, H)` px/mm, `mm_x = (px − (400 − B·s)/2) / s`, `mm_y = (py − (400 − H·s)/2) / s`. Schriftgröße in mm = `font-size · scale / s`. Der Amazon-Druckbereich (Area) wird dafür nicht verwendet. Am Referenzfall belegt: Foto-Rahmen auf 0,01 mm, Schriftgrößen innerhalb Corels 0,5-pt-Rundung ([Paritätsbericht](../reviews/K15-PARITAET-COREL-20261020.md)). Weicht das Seitenverhältnis des Konfigurator-Bildes von der Platte ab (B013T1VRKS zeigt immer die 30 × 20-Vorlage, 1,50, auch bei 22 × 14, 1,57), ragen Kundeninhalte am Bildrand über die Platte – Warnung `seitenverhaeltnis` mit Überstand in mm. Die frühere Regel (getrennt in x und y über die Area) bleibt als `--umrechnung druckbereich` nur zum Vergleich.
+
+<details><summary>Bisherige Regel (bis 19.10.2026)</summary>
+
 **Nicht maßgleich:** 381 : 254 = 1,50, die Platte 22 × 14 cm = 1,57 (30 × 20 = 1,50). Die Umrechnung px → mm erfolgt daher **getrennt in x und y** über den Druckbereich: `mm_x = (px − area.x) · Platte.breite / area.width`, `mm_y = (px − area.y) · Platte.höhe / area.height`. Text wird dabei **nicht** verzerrt: Schriftgröße aus der y-Skala, Position aus x/y; Fotoausschnitt wird in beiden Achsen abgebildet (das Foto wurde vom Kunden auf das verzerrte Bild gelegt, der Ausschnitt zählt, nicht die Pixelproportion). Abweichung in x < 5 % wird als Warnung in die Summary geschrieben.
+
+</details>
 
 ## 3. Zuordnung Amazon → Katalog
 
@@ -73,6 +79,8 @@ Mapping-Dateien unter `amazon/` (Repo gravuru-2027, keine Kundendaten):
 - `design-overlays.json`: `{ "gedenktafeln": { "201": { "bbox400": [x, y, w, h], "quelle": "kalibriert 2026-10-19" } } }`
 
 ## 6. Kalibrierung der Design-Lage (einmal je Design)
+
+> **Stand 20.10.2026:** Die Kalibrierung über Overlay-PNGs ist nicht nötig. `bbox400` (Lage im Konfigurator) wird aus der Corel-Design-CDR der Konfigurator-Vorlage mit der Corel-Formel berechnet; zusätzlich steht je Plattengröße die Lage in der Corel-Vorlage der bestellten Größe unter `vorlageMm["<B>x<H>"]` (mm). Mit der Corel-Regel wird das Motiv dorthin gesetzt, wo Corel es setzt (aus der Vorlage), und Warnung `motiv_versatz` nennt den Abstand zur Konfigurator-Lage; ohne Vorlagenlage bei abweichendem Bild Warnung `motiv_ohne_vorlage`. Werkzeug: `cdr2raw` (libcdr-tools), siehe Bericht K15-ABGLEICH Nachtrag.
 
 Das Amazon-Overlay ist ein 400 × 400-PNG mit dem Motiv an der Stelle, die der Kunde sieht. Unsere Gravur muss das Motiv **genau dort** haben, nicht an der Katalog-Position (der Kunde hat seine Texte um das Motiv herum gesetzt). Vorgehen:
 

@@ -1,0 +1,282 @@
+{
+  "base": "http://127.0.0.1:8981",
+  "network": "50 Mbit/s, 30 ms",
+  "budget": {
+    "maxBytes": 2000000,
+    "maxMs": 3000
+  },
+  "readyMs": 1168,
+  "bytes": 507724,
+  "ui": {
+    "readyMs": 2121,
+    "bytes": 808612
+  },
+  "requests": 43,
+  "largest": [
+    {
+      "path": "/models.json",
+      "bytes": 131541
+    },
+    {
+      "path": "/editor.html",
+      "bytes": 124199
+    },
+    {
+      "path": "/configurator/variant-m/option-standard-images.mjs",
+      "bytes": 74257
+    },
+    {
+      "path": "/_runtime/lazy/katalog-kern.json",
+      "bytes": 46097
+    },
+    {
+      "path": "/platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "bytes": 22903
+    },
+    {
+      "path": "/configurator/variant-m/contract.mjs",
+      "bytes": 11373
+    },
+    {
+      "path": "/configurator/variant-m/adapter.mjs",
+      "bytes": 10600
+    },
+    {
+      "path": "/platform/sources/app/shared/models/design-content.mjs",
+      "bytes": 5287
+    },
+    {
+      "path": "/platform/sources/app/shared/models/studio-svg.mjs",
+      "bytes": 5123
+    },
+    {
+      "path": "/platform/sources/app/shared/models/doorbells.mjs",
+      "bytes": 3978
+    },
+    {
+      "path": "/configurator/variant-m/element-rights.mjs",
+      "bytes": 3897
+    },
+    {
+      "path": "/platform/sources/app/shared/models/runtime-contract.mjs",
+      "bytes": 3451
+    }
+  ],
+  "afterReady": [
+    {
+      "path": "/configurator/variant-m/ux.mjs",
+      "bytes": 22099
+    },
+    {
+      "path": "/configurator/variant-m/first-text-focus.mjs",
+      "bytes": 1088
+    },
+    {
+      "path": "/configurator/variant-m/preview-feedback.mjs",
+      "bytes": 2564
+    },
+    {
+      "path": "/configurator/variant-m/template-deletion.mjs",
+      "bytes": 2302
+    },
+    {
+      "path": "/configurator/variant-m/design-edit.mjs",
+      "bytes": 1137
+    },
+    {
+      "path": "/configurator/variant-m/photo-position-model.mjs",
+      "bytes": 1121
+    },
+    {
+      "path": "/configurator/variant-m/print-export.mjs",
+      "bytes": 8654
+    },
+    {
+      "path": "/configurator/variant-m/ux-model.mjs",
+      "bytes": 2207
+    },
+    {
+      "path": "/configurator/variant-m/refinements.mjs",
+      "bytes": 5976
+    },
+    {
+      "path": "/configurator/variant-m/commerce.mjs",
+      "bytes": 2681
+    },
+    {
+      "path": "/configurator/variant-m/acrylic-scene.mjs",
+      "bytes": 5562
+    },
+    {
+      "path": "/configurator/variant-m/usability-model.mjs",
+      "bytes": 2099
+    },
+    {
+      "path": "/configurator/variant-m/customer-rights.mjs",
+      "bytes": 3479
+    },
+    {
+      "path": "/configurator/variant-m/session-guard.mjs",
+      "bytes": 2139
+    },
+    {
+      "path": "/configurator/variant-m/surface-tabs.mjs",
+      "bytes": 2626
+    },
+    {
+      "path": "/configurator/variant-m/design-gallery-model.mjs",
+      "bytes": 3712
+    },
+    {
+      "path": "/configurator/variant-m/field-mapping.mjs",
+      "bytes": 1519
+    },
+    {
+      "path": "/configurator/variant-m/account-drafts.mjs",
+      "bytes": 4256
+    },
+    {
+      "path": "/configurator/variant-m/print-export-model.mjs",
+      "bytes": 6942
+    },
+    {
+      "path": "/configurator/variant-m/photo-position.mjs",
+      "bytes": 2956
+    },
+    {
+      "path": "/configurator/variant-m/direct-editing.mjs",
+      "bytes": 5948
+    },
+    {
+      "path": "/configurator/variant-m/image-processing.mjs",
+      "bytes": 1721
+    },
+    {
+      "path": "/configurator/variant-m/photo-editor.mjs",
+      "bytes": 4364
+    },
+    {
+      "path": "/configurator/variant-m/usability.mjs",
+      "bytes": 8041
+    },
+    {
+      "path": "/configurator/variant-m/workflow.mjs",
+      "bytes": 8263
+    },
+    {
+      "path": "/configurator/variant-m/customer-tools.mjs",
+      "bytes": 5763
+    },
+    {
+      "path": "/configurator/variant-m/mobile-steps.mjs",
+      "bytes": 6842
+    },
+    {
+      "path": "/configurator/variant-m/commerce-model.mjs",
+      "bytes": 2080
+    },
+    {
+      "path": "/configurator/variant-m/commerce-export.mjs",
+      "bytes": 4393
+    },
+    {
+      "path": "/configurator/variant-m/acrylic-base-anchors.mjs",
+      "bytes": 1400
+    },
+    {
+      "path": "/configurator/variant-m/workflow-model.mjs",
+      "bytes": 1635
+    },
+    {
+      "path": "/configurator/variant-m/account-draft-client.mjs",
+      "bytes": 2074
+    },
+    {
+      "path": "/configurator/variant-m/customer-tools-model.mjs",
+      "bytes": 2537
+    },
+    {
+      "path": "/configurator/variant-m/motif-placement.mjs",
+      "bytes": 1895
+    },
+    {
+      "path": "/configurator/variant-m/completion.mjs",
+      "bytes": 4752
+    },
+    {
+      "path": "/configurator/variant-m/workshop-review.mjs",
+      "bytes": 3749
+    },
+    {
+      "path": "/configurator/variant-m/cart-edit.mjs",
+      "bytes": 3021
+    },
+    {
+      "path": "/configurator/variant-m/acrylic-draft-client.mjs",
+      "bytes": 1774
+    },
+    {
+      "path": "/configurator/variant-m/ux.css",
+      "bytes": 5706
+    },
+    {
+      "path": "/configurator/variant-m/refinements.css",
+      "bytes": 5668
+    },
+    {
+      "path": "/configurator/variant-m/usability.css",
+      "bytes": 5014
+    },
+    {
+      "path": "/configurator/variant-m/customer-tools.css",
+      "bytes": 1929
+    },
+    {
+      "path": "/configurator/variant-m/workflow.css",
+      "bytes": 1868
+    },
+    {
+      "path": "/configurator/variant-m/completion.css",
+      "bytes": 2337
+    },
+    {
+      "path": "/configurator/variant-m/mobile.css",
+      "bytes": 2956
+    },
+    {
+      "path": "/configurator/variant-m/acrylic-scene.css",
+      "bytes": 1402
+    },
+    {
+      "path": "/acrylic-assets/reference.webp",
+      "bytes": 97120
+    },
+    {
+      "path": "/acrylic-assets/scene-empty-v2.webp",
+      "bytes": 19934
+    },
+    {
+      "path": "/configurator/variant-m/neutral-theme.css",
+      "bytes": 1583
+    },
+    {
+      "path": "/acrylic-assets/reference.webp",
+      "bytes": 97120
+    },
+    {
+      "path": "/assistant.js",
+      "bytes": 17029
+    },
+    {
+      "path": "/api/guides",
+      "bytes": 1931
+    }
+  ],
+  "errors": [],
+  "allReadyMs": [
+    1118,
+    1168,
+    1304
+  ],
+  "ok": true
+}

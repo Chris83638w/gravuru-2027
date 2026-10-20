@@ -1,14 +1,33 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
+import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
-import {build,HERE,ROOT,OUTPUT} from './build.mjs';
+import {build,HERE,ROOT,OUTPUT,LAZY} from './build.mjs';
 import {createShopifyAdminHost} from '../../workshop/shopify-admin-host.mjs';
 import {createWorkshop} from '../../workshop/http.mjs';
 import {readThemeCatalog} from '../../workshop/theme-catalog.mjs';
 import {openKatalog,katalogPath} from '../../workshop/katalog-source.mjs';
 
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.gz':'application/gzip'};
+// Ladezeit: Textantworten gzip-komprimiert, wenn der Browser es anbietet (Inhalt unverändert).
+const compressible=new Set(['.html','.css','.mjs','.js','.json','.txt','.svg']);
+const gzip=promisify(zlib.gzip),gzipCache=new Map();
+export function acceptsGzip(header){
+  return String(header||'').split(',').some(part=>{const [name,...params]=part.trim().toLowerCase().split(';').map(v=>v.trim());const q=params.find(v=>v.startsWith('q='));return (name==='gzip'||name==='*')&&(!q||Number(q.slice(2))>0);});
+}
+async function compressed(file,bytes,cacheable){
+  const stat=fs.statSync(file),hit=cacheable&&gzipCache.get(file);
+  if(hit&&hit.mtimeMs===stat.mtimeMs&&hit.size===bytes.length)return hit.data;
+  const data=await gzip(bytes,{level:6});
+  if(cacheable)gzipCache.set(file,{mtimeMs:stat.mtimeMs,size:bytes.length,data});
+  return data;
+}
+// Große Nachladeteile nach dem Start im Hintergrund vorkomprimieren (erster Abruf ohne Wartezeit).
+export async function warmCompression(files){
+  for(const file of files){try{await compressed(file,fs.readFileSync(file),true);}catch{/* fehlt die Datei, komprimiert der erste Abruf */}}
+}
 const csp="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; frame-ancestors 'self'";
 
 // Loopback application. Workshop writes require an explicit repository + CSRF token.
@@ -33,8 +52,11 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       if(!['GET','HEAD'].includes(req.method))return fail(405);
       if(workshop&&pathname==='/models.json'){
         try{
-          const bytes=Buffer.from(JSON.stringify([workshop.model(url.searchParams.get('configuration')||workshop.defaultId,url.searchParams.get('revision'))]));
-          res.writeHead(200,{'Content-Type':types['.json'],'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
+          let bytes=Buffer.from(JSON.stringify([workshop.model(url.searchParams.get('configuration')||workshop.defaultId,url.searchParams.get('revision'))]));
+          const headers={'Content-Type':types['.json'],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff',Vary:'Accept-Encoding'};
+          if(bytes.length>1024&&acceptsGzip(req.headers['accept-encoding'])){bytes=await gzip(bytes,{level:6});headers['Content-Encoding']='gzip';}
+          headers['Content-Length']=bytes.length;
+          res.writeHead(200,headers);
           return res.end(req.method==='HEAD'?undefined:bytes);
         }catch(error){return fail(error.status||422);}
       }
@@ -57,10 +79,12 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       else if(workshop&&['/workshop-ui/material-surfaces/wood-leather-derived-v1.png','/workshop-ui/material-surfaces/steel-reference-v4.png'].includes(pathname)){base=path.join(ROOT,'workshop/ui/material-surfaces');relative=pathname.split('/').pop();}
       else if(workshop&&/^\/workshop-ui\/editor-icons\/[a-z0-9-]+\.svg$/.test(pathname)){base=path.join(ROOT,'workshop/ui/editor-icons');relative=pathname.split('/').pop();}
       else if(workshop&&/^\/workshop-ui\/(families-ui\.mjs|catalog\.css|catalog-ui\.mjs|steel-options-ui\.mjs|editor-guides\.mjs|customer-preview-link\.mjs|customer-preview\.mjs|customer-preview\.css|profile-impact-ui\.mjs|revision-compare-ui\.mjs|revision-compare\.css|merchant-media\.mjs|merchant-downloads\.mjs|shop-transfer-ui\.mjs|merchant-request\.mjs|merchant-navigation\.mjs|workshop-shell\.mjs|workshop-shell\.css|order-file-grants-ui\.mjs|production-release-ui\.mjs|variant-batch-reader\.mjs|variant-batch-ui\.mjs|form-variants-ui\.mjs|form-variant-picker\.mjs|form-variants\.css|app\.mjs|style\.css|dashboard\.css|editor\.css|ai-design-ui\.mjs|ai-batch-ui\.mjs|product-editor-ui\.mjs|design-authoring\.mjs|editor-selection\.mjs|product-overview-ui\.mjs|product-options-ui\.mjs|native-production-ui\.mjs|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|production-profiles-ui\.mjs|export-jobs-ui\.mjs|output-checks-ui\.mjs|output-summary\.mjs|output-specification\.mjs|order-output-context\.mjs|shop-preparation-ui\.mjs|orders-ui\.mjs|order-product-ui\.mjs|cart-handoff-ui\.mjs|production-profiles\.css|contours-ui\.mjs|form-product-ui\.mjs|form-design-ui\.mjs|review-snapshots-ui\.mjs|review-snapshots\.css|form-customer-ui\.mjs|form-interaction\.mjs|form-customer\.css|form-product\.css|contours\.css|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
-      else if(/^\/acrylic-assets\/[a-z0-9-]+\.png$/.test(pathname)){
+      // Kundenansicht lädt die WebP-Fassungen (customer-images.json); PNG-Originale bleiben abrufbar.
+      else if(/^\/acrylic-assets\/[a-z0-9-]+\.(png|webp)$/.test(pathname)){
         base=path.join(ROOT,'designs/acrylic-unser-anfang');relative=pathname.split('/').pop();
       } else {
-        const mounts=[['/_runtime/',path.join(ROOT,'designs/aosu-labrador/runtime')],['/platform/sources/app/shared/',path.join(ROOT,'platform/sources/app/shared')],['/configurator/variant-m/',HERE]];
+        // `/_runtime/lazy/`: beim Build abgeleitete Einzelteile (build.mjs LAZY), vor dem allgemeinen Laufzeitordner.
+        const mounts=[['/_runtime/lazy/',LAZY],['/_runtime/',path.join(ROOT,'designs/aosu-labrador/runtime')],['/platform/sources/app/shared/',path.join(ROOT,'platform/sources/app/shared')],['/configurator/variant-m/',HERE]];
         const mount=mounts.find(([prefix])=>pathname.startsWith(prefix));
         if(!mount)return fail(404);
         base=mount[1];relative=pathname.slice(mount[0].length);
@@ -69,9 +93,13 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       const realBase=fs.realpathSync(base),file=fs.realpathSync(path.resolve(base,relative));
       const within=path.relative(realBase,file);
       if(within.startsWith('..')||path.isAbsolute(within)||!fs.statSync(file).isFile())return fail(404);
-      let bytes=fs.readFileSync(file);
-      if(adminHost&&path.extname(file)==='.html')bytes=adminHost.html(bytes,pathname);
-      res.writeHead(200,{'Content-Type':types[path.extname(file)]||'application/octet-stream','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':adminHost?.cspFor(pathname)||csp});
+      let bytes=fs.readFileSync(file);const extension=path.extname(file);
+      const transformed=adminHost&&extension==='.html';
+      if(transformed)bytes=adminHost.html(bytes,pathname);
+      const headers={'Content-Type':types[extension]||'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':adminHost?.cspFor(pathname)||csp};
+      if(compressible.has(extension)){headers.Vary='Accept-Encoding';if(bytes.length>1024&&acceptsGzip(req.headers['accept-encoding'])){bytes=await compressed(file,bytes,!transformed);headers['Content-Encoding']='gzip';}}
+      headers['Content-Length']=bytes.length;
+      res.writeHead(200,headers);
       res.end(req.method==='HEAD'?undefined:bytes);
     } catch {if(!res.headersSent)fail(404);else res.end();}
   });
@@ -91,5 +119,5 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
   const workshop=createWorkshop({filename:path.join(ROOT,'../.local-data/workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,themes:themenFile?readThemeCatalog(themenFile):katalog?katalog.themes:null});
   const server=createPreviewServer({workshop});
   server.on('close',()=>workshop.close());
-  server.listen(port,'127.0.0.1',()=>console.log(JSON.stringify({project:'Gravuru 2027',...result,url:`http://127.0.0.1:${port}/?model=acryl`,workshop:`http://127.0.0.1:${port}/werkstatt`,scope:'local-operator'})));
+  server.listen(port,'127.0.0.1',()=>{console.log(JSON.stringify({project:'Gravuru 2027',...result,url:`http://127.0.0.1:${port}/?model=acryl`,workshop:`http://127.0.0.1:${port}/werkstatt`,scope:'local-operator'}));warmCompression(['katalog-kern.json','motive-alle.json'].map(name=>path.join(LAZY,name)));});
 }

@@ -150,7 +150,7 @@ test('non-replaceable photo retains its artwork and is not redecorated as an unn
  const env={el,config:{},files:new Map(),ROOT:'/acrylic-assets/',rawSVG:()=>undefined,previewResourceURL};
  vm.runInNewContext(block('acrylic-scene.mjs',' el.uxObjectSVG=function(o){','\n };'),env);
  const locked=el.uxObjectSVG(object);
- assert.match(locked,/reference\.png/);assert.match(locked,/aria-hidden="true"/);assert.match(locked,/tabindex="-1"/);
+ assert.match(locked,/reference\.webp/);assert.match(locked,/aria-hidden="true"/);assert.match(locked,/tabindex="-1"/);
  assert.doesNotMatch(locked,/role="button"|data-preview-only|eigenes Foto hochladen/);
  const group={querySelector:()=>({}),hasAttribute:name=>name==='data-ux-static-photo',get children(){assert.fail('static artwork must never be removed by the placeholder decorator');}};
  vm.runInNewContext('('+decorateEmptyPhotoSlots.toString()+')(root,[object],"#000000","#ffffff")',{root:{querySelector:()=>group},object,CSS:{escape:value=>value},emptyPhotoMarkup});

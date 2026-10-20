@@ -10,6 +10,8 @@ const blobURL=blob=>new Promise((res,rej)=>{const reader=new FileReader();reader
 export {physicalGeometry} from './print-geometry.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
 export async function printArtwork({el,config,files}){
+ // Ladezeit: Schriften/Motive der Gestaltung sind vor dem Export sicher geladen (lazy-resources.mjs).
+ await el.uxEnsureDraftResources?.({design:{objects:el.state.objects}});
  const fingerprint=JSON.stringify(el.state),selection=el.state.selected,markup=[],examplePhotos=[];
  try{
   el.state.selected=null;

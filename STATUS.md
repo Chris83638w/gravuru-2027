@@ -4,7 +4,9 @@
 - Katalog-Import: `design.json movable:true` → Motive und Fotofeld verschiebbar; Fotofeld-Platzhalterbild wird Werkstatt-Beispielfoto (`photoExamples`, Hinweis aus – Button steckt im Bild, nie graviert); Unterkategorie `startDesign` steht vorn (= Shop-Hauptbild). Test in `katalog-convert.test.mjs`.
 - Sichtprüfung: `scripts/check-katalog-preview.py` (synthetische DB, Playwright) – 6 Produkte laden ohne Seitenfehler, Startdesign vorn, Platzhalter sichtbar; `--hauptbilder` erzeugt Shop-Hauptbilder.
 - Prüfungen: katalog-*.test + product-families 29/29; voller Lauf 748/876, die 123 Fehlschläge sind identisch mit dem unveränderten Branch (Node 22 statt 24, fehlende `.local-data/python`) – keine neuen.
-- Offen: Schriftdateien Homage/Betsy Bailey/Ashley/Sweetie/Desyrel (9 Designs), Bestätigung Ersatzschriften, Punkte aus Katalog STAND Nr. 19. Nächster Schritt: nach Freigabe Shopify-Entwürfe, später Werkstatt-Import auf dem Händlerhost (`katalog-import.mjs --commit`) und Variantenbindung (`shop-bindings`).
+- Schriftdateien Homage/Betsy Bailey/Ashley/Sweetie/Desyrel aus „Aktive Produkte“ eingetragen (Lizenznachweis offen).
+- Shopify: 6 Entwürfe (DRAFT, auf Auftrag von Chris, Freigabe durch ihn) – Produkt-IDs 16168645525884 (Hund Knochenherz), 16168659321212 (Hund Rosen), 16168667775356 (Hund Blüten), 16168669512060 (Hund Sternschnuppe), 16168671183228 (Katze Pfotenherz), 16168672756092 (Katze Blätterzweig); je 7 Varianten Befestigung, SKU `GT-S-22x14-<Kürzel>-<K00|B02S|B04S|AH02|STKL|STSW|SIL40>`, Hauptbild aus dem Konfi-Startdesign, Metafelder `gravuru_katalog.linie/unterkategorie/startdesign`. `custom.stichpunkt_0` hat im Shop „eindeutige Werte“ – nur Entwurf 1 trägt „mit Foto“.
+- Offen: Bestätigung Ersatzschriften, Punkte aus Katalog STAND Nr. 19. Nächster Schritt: Freigabe der Entwürfe, später Werkstatt-Import auf dem Händlerhost (`katalog-import.mjs --commit`) und Variantenbindung (`shop-bindings`).
 
 ## „Konfi neu“ komplett: K1–K14 im Dev-Branch (nicht installiert) · 19.10.2026
 

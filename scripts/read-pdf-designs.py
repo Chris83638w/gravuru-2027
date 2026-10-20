@@ -516,6 +516,10 @@ def main():
             if name in ersatz or t['font'] in ersatz:
                 t['fontOriginal'] = name; t['font'] = ersatz.get(name, ersatz.get(t['font']))
                 if name != t['font']: rescale(t, katalog_fonts)
+            if t.get('letterSpacingMm') and not t.get('sizePtOriginal'):
+                # Konfigurator kennt keine Laufweite: Corel-Zeichenabstand über die Schriftgröße ausgleichen
+                rescale(t, katalog_fonts)
+                if t.get('sizePtOriginal'): t['letterSpacingMmOriginal'] = t['letterSpacingMm']; t['letterSpacingMm'] = 0.0
         d['fonts'] = sorted({t['font'] for t in d['texts']})
         d['fontsOriginal'] = sorted({t.get('fontOriginal') for t in d['texts'] if t.get('fontOriginal')})
         if z.get('hinweis'): d['warnings'].append(z['hinweis'])

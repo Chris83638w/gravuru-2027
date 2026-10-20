@@ -857,6 +857,20 @@ class Mapping:
         if not isinstance(self.corel, dict):
             raise SystemExit('asin-mapping.corel.json muss ein JSON-Objekt sein.')
 
+        # Optional, erzeugt aus den Corel-Design-CDRs (scripts/build-design-overlays-from-corel.py).
+        # Handgepflegte Einträge in design-overlays.json haben je Design Vorrang.
+        ov_pfad = o / 'design-overlays.corel.json'
+        self.overlays_corel = lade_json(ov_pfad, 'design-overlays.corel.json') if ov_pfad.is_file() else {}
+        if not isinstance(self.overlays_corel, dict):
+            raise SystemExit('design-overlays.corel.json muss ein JSON-Objekt sein.')
+
+    def overlay(self, linie: str, nr) -> dict | None:
+        for quelle in (self.overlays, self.overlays_corel):
+            e = (quelle.get(str(linie)) or {}).get(str(nr)) if isinstance(quelle.get(str(linie)), dict) else None
+            if isinstance(e, dict):
+                return e
+        return None
+
     def corel_eintrag(self, asin: str) -> dict | None:
         e = self.corel.get(asin) if not asin.startswith('_') else None
         return e if isinstance(e, dict) else None
@@ -1648,9 +1662,9 @@ def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict
             linie = eintrag.get('linie')
             d_eintrag = waehle_design(katalog.designs(str(linie)), nr, geom['shape'], f'Linie {linie}')
             svg_bytes, _ = katalog.design_svg(str(linie), d_eintrag)
-            overlay = (mapping.overlays.get(str(linie)) or {}).get(str(nr))
+            overlay = mapping.overlay(str(linie), nr)
             if not isinstance(overlay, dict):
-                raise PositionsFehler('overlay_unknown', f'design-overlays.json hat keinen Eintrag für Design D{nr} (Linie {linie}); die Lage im Amazon-Raster ist unbekannt.')
+                raise PositionsFehler('overlay_unknown', f'design-overlays.json und design-overlays.corel.json haben keinen Eintrag für Design D{nr} (Linie {linie}); die Lage im Amazon-Raster ist unbekannt.')
             design_info, motiv_elemente = baue_motiv(d_eintrag, svg_bytes, overlay, raster, sammler, f'D{nr}', abweichendes_bild)
             design_id = d_eintrag.get('masterId')
             design_info = dict(design_info or {}, key=d_eintrag.get('key'), masterId=design_id)

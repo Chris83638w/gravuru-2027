@@ -1191,5 +1191,86 @@ class TestCorelZuordnung(Basis):
         self.assertNotIn('corel', b)                                     # gravuru-order/v1 bleibt unverändert
 
 
+# --------------------------------------------------------------------------------------------------
+# Motivlagen aus Corel-Design-CDRs (erzeugt; handgepflegt hat Vorrang)
+# --------------------------------------------------------------------------------------------------
+
+ov_gen = lade('build_design_overlays_from_corel', 'build-design-overlays-from-corel.py')
+
+
+def raw_platte_und_motiv(platte_in, motiv_in, foto_in=None, zweites=None):
+    """Synthetischer libcdr-Rohtext: rote Platte, schwarze Motive (Rechtecke), optional gelber Fotorahmen."""
+    def rect(x0, y0, x1, y1):
+        return ('drawPath (svg:d: ((librevenge:path-action: M, svg:x: %.4fin, svg:y: %.4fin), (librevenge:path-action: L, svg:x: %.4fin, svg:y: %.4fin), '
+                '(librevenge:path-action: L, svg:x: %.4fin, svg:y: %.4fin), (librevenge:path-action: L, svg:x: %.4fin, svg:y: %.4fin), (librevenge:path-action: Z)))'
+                % (x0, y0, x1, y0, x1, y1, x0, y1))
+    z = ['startDocument()', '  startPage(svg:height: 8.0in, svg:width: 12.0in)', '    startLayer ()',
+         '      setStyle(draw:fill: none, draw:stroke: solid, svg:stroke-color: #ff0000, svg:stroke-width: 0.003in)', '      ' + rect(*platte_in)]
+    for m in [motiv_in] + ([zweites] if zweites else []):
+        z += ['      setStyle(draw:fill: solid, draw:fill-color: #000000, draw:stroke: none, svg:fill-rule: evenodd)', '      ' + rect(*m)]
+    if foto_in:
+        z += ['      setStyle(draw:fill: none, draw:stroke: solid, svg:stroke-color: #ffff00, svg:stroke-width: 0.0079in)', '      ' + rect(*foto_in)]
+    z += ['    endLayer', '  endPage', 'endDocument']
+    return '\n'.join(z)
+
+
+class TestDesignOverlaysAusCorel(Basis):
+    def test_lies_raw_platte_motiv_foto(self):
+        g = ov_gen.lies_raw(raw_platte_und_motiv((0.2, 0.2, 12.0, 8.0), (8.0, 3.5, 9.2, 4.46), (0.3, 1.0, 5.0, 8.0)))
+        self.assertEqual(g['motive'], 1)
+        self.assertAlmostEqual(g['platte'][2], 12.0)
+        self.assertAlmostEqual(g['foto'][0], 0.3)
+
+    def test_kurve_nicht_stuetzpunkte(self):
+        # Bézier mit Stützpunkten weit außerhalb: Box der Kurve ist kleiner als die der Stützpunkte
+        z = ('drawPath (svg:d: ((librevenge:path-action: M, svg:x: 0.0000in, svg:y: 0.0000in), '
+             '(librevenge:path-action: C, svg:x: 1.0000in, svg:x1: 0.0000in, svg:x2: 1.0000in, svg:y: 0.0000in, svg:y1: 1.0000in, svg:y2: 1.0000in)))')
+        b = ov_gen.bbox(ov_gen.punkte(z))
+        self.assertAlmostEqual(b[3], 0.75, places=3)                  # Scheitel bei 3/4, nicht bei 1
+
+    def test_baue_konfi_und_vorlage_nach_nennmass(self):
+        IN = 25.4
+        dateien = [
+            (Path('GT-S-30x20-D7.cdr'), raw_platte_und_motiv((0.2, 0.2, 0.2 + 300 / IN, 0.2 + 200 / IN), (0.2 + 200 / IN, 0.2 + 90 / IN, 0.2 + 230 / IN, 0.2 + 114 / IN))),
+            (Path('GT-S-22x14-D7.cdr'), raw_platte_und_motiv((0.0, 0.0, 220 / IN, 140 / IN), (145 / IN, 64 / IN, 164 / IN, 79 / IN), zweites=(150 / IN, 60 / IN, 152 / IN, 62 / IN))),
+            (Path('GT-S-22x14.cdr'), raw_platte_und_motiv((0, 0, 1, 1), (0.1, 0.1, 0.2, 0.2))),
+        ]
+        daten, hinweise = ov_gen.baue(dateien, '30x20', 'gedenktafeln', '2026-10-20')
+        e = daten['gedenktafeln']['7']
+        self.assertEqual(e['vorlageMm']['300x200']['boxMm'], [200.0, 90.0, 30.0, 24.0])
+        self.assertEqual(e['vorlageMm']['220x140']['boxMm'], [145.0, 60.0, 19.0, 19.0])   # Vereinigung beider Motive
+        self.assertEqual(e['vorlageMm']['220x140']['motive'], 2)
+        s = 380 / 300
+        for ist, soll in zip(e['bbox400'], (10 + 200 * s, (400 - 200 * s) / 2 + 90 * s, 30 * s, 24 * s)):
+            self.assertAlmostEqual(ist, soll, places=1)
+        self.assertTrue(any('GT-S-22x14.cdr' in h for h in hinweise))
+
+    def test_handgepflegt_hat_vorrang_und_corel_ergaenzt(self):
+        tmp = Path(tempfile.mkdtemp(dir=self.tmp))
+        for n in ('asin-mapping.json', 'font-aliases.json'):
+            shutil.copy(MAPPING / n, tmp / n)
+        (tmp / 'design-overlays.json').write_text(json.dumps({'gedenktafeln': {}}), encoding='utf-8')
+        corel = json.loads((MAPPING / 'design-overlays.json').read_text(encoding='utf-8'))
+        corel['_quelle'] = {'schema': 'test'}
+        (tmp / 'design-overlays.corel.json').write_text(json.dumps(corel), encoding='utf-8')
+        m = imp.Mapping(tmp)
+        self.assertEqual(m.overlay('gedenktafeln', 201)['bbox400'], corel['gedenktafeln']['201']['bbox400'])
+        self.assertIsNone(m.overlay('gedenktafeln', 9999))
+        b, _ = (lambda r: (r[0], r[1]))(self.lauf(baue_bestellung(self.katalog), mapping=m))
+        self.assertEqual(b['positionen'][0]['status'], 'ok', b['positionen'][0]['fehler'])
+        # handgepflegt gewinnt
+        (tmp / 'design-overlays.json').write_text(json.dumps({'gedenktafeln': {'201': {'bbox400': [1, 2, 3, 4], 'quelle': 'Hand'}}}), encoding='utf-8')
+        self.assertEqual(imp.Mapping(tmp).overlay('gedenktafeln', 201)['bbox400'], [1, 2, 3, 4])
+
+    def test_erzeugte_datei_stimmt_mit_handwert_d201(self):
+        p = MAPPING / 'design-overlays.corel.json'
+        if not p.is_file():
+            self.skipTest('design-overlays.corel.json nicht erzeugt')
+        gen = json.loads(p.read_text(encoding='utf-8'))['gedenktafeln']['201']
+        hand = json.loads((MAPPING / 'design-overlays.json').read_text(encoding='utf-8'))['gedenktafeln']['201']
+        self.assertEqual(gen['bbox400'], hand['bbox400'])
+        self.assertEqual(gen['vorlageMm']['220x140']['boxMm'], hand['vorlageMm']['220x140']['boxMm'])
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=1)

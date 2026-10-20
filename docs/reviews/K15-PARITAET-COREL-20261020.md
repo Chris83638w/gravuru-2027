@@ -53,3 +53,11 @@ Exakte Texttinte (Grafiktext-Rahmen aus libcdr sind ungenau; bei Bedarf PDF-Expo
 
 Offen: Textmitte in y und Zeilenabstand (Corel 130 %) nicht direkt messbar aus der CDR; bei Bedarf PDF-Export aus Corel lesen.
 
+## Motivlagen aller Schiefer-Gravur-Designs aus den Corel-Vorlagen (20.10.2026)
+
+`scripts/build-design-overlays-from-corel.py` hat 314 Design-CDRs gelesen (Kopien von `V:\Produkte\Gedenktafeln\Gravur\Schiefer\{30x20,22x14}\GT-S-…-Dn\Export\`; auf V: nichts geschrieben) → `amazon/design-overlays.corel.json`: 156 Designs, Konfigurator-Lage (`bbox400`, aus 30×20) für 154, Vorlagenlage 22×14 für 156, 30×20 für 154. Übersprungen: D64 (beide Größen) und D217/D251 (30×20) ohne schwarz gefülltes Motiv; D77 (30×20) mit Plattenkontur 300,2 × 201,3 mm. D201 stimmt exakt mit dem Handwert überein (Test). Handgepflegte `design-overlays.json` hat Vorrang.
+
+**Befund für die Produktion** (sofern der Konfigurator wie bei B013T1VRKS immer die 30×20-Vorlage zeigt – für D201 belegt, für die übrigen Designs angenommen): Bei einer 22×14-Bestellung setzt Corel das Motiv aus der 22×14-Vorlage, nicht dorthin, wo der Kunde es gesehen hat. Versatz (Mitte, Corel-Regel) über 154 Designs: Median **4,7 mm**, > 1 mm bei 134, > 3 mm bei 97, > 5 mm bei 72, **> 10 mm bei 19** (größte: D270 17,1 mm, D271 16,9, D77 14,7, D235 14,7, D5 14,5). Das Motiv ist in der 22×14-Vorlage im Median 12 % schmaler. Liste je Design: [`k15-corel-abgleich-20261019/motivversatz-22x14.json`](k15-corel-abgleich-20261019/motivversatz-22x14.json). Kundentexte stehen dagegen dort, wo der Kunde sie hingesetzt hat – bei großem Versatz können Text und Motiv überlappen oder auseinanderfallen. Der Importer meldet das je Bestellung als `motiv_versatz`.
+
+Entscheidung offen (Chris): ob für 22×14 ein eigenes Konfigurator-Bild je Größe bei Amazon hinterlegt wird oder die 22×14-Vorlagen an die 30×20-Lage angeglichen werden.
+

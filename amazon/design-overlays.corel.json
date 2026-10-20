@@ -1,0 +1,4983 @@
+{
+ "_quelle": {
+  "schema": "gravuru-amazon-design-overlays-corel/v1",
+  "erzeugtAm": "2026-10-20",
+  "erzeugtMit": "scripts/build-design-overlays-from-corel.py",
+  "konfiGroesse": "30x20",
+  "dateien": 316,
+  "hinweis": "Erzeugt – nicht von Hand ändern. Handgepflegte Einträge in design-overlays.json haben Vorrang.",
+  "uebersprungen": [
+   "GT-S-22x14-D64.cdr: kein schwarz gefülltes Motiv – übersprungen",
+   "GT-S-22x14.cdr: Dateiname passt nicht zum Muster <Präfix>-<B>x<H>-D<n>.cdr – übersprungen",
+   "GT-S-30x20-D217.cdr: kein schwarz gefülltes Motiv – übersprungen",
+   "GT-S-30x20-D251.cdr: kein schwarz gefülltes Motiv – übersprungen",
+   "GT-S-30x20-D64.cdr: kein schwarz gefülltes Motiv – übersprungen",
+   "GT-S-30x20-D77.cdr: Plattenkontur 300.2 × 201.3 mm statt Nennmaß 300 × 200 mm – Lage relativ zur gemessenen Kontur",
+   "GT-S-30x20.cdr: Dateiname passt nicht zum Muster <Präfix>-<B>x<H>-D<n>.cdr – übersprungen",
+   "D217: keine 30x20-Vorlage gelesen – nur vorlageMm, keine Konfigurator-Lage",
+   "D251: keine 30x20-Vorlage gelesen – nur vorlageMm, keine Konfigurator-Lage"
+  ]
+ },
+ "gedenktafeln": {
+  "1": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.98,
+      16.08,
+      204.02,
+      112.92
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D1.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      24.51,
+      13.34,
+      275.49,
+      173.32
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D1.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    41.05,
+    90.23,
+    348.95,
+    219.53
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D1.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "2": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      134.84,
+      16.19,
+      68.46,
+      107.61
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D2.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      170.79,
+      13.52,
+      110.02,
+      172.95
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D2.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    226.33,
+    90.46,
+    139.36,
+    219.07
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D2.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "3": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      147.96,
+      15.35,
+      39.63,
+      44.33
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D3.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      211.01,
+      12.17,
+      63.68,
+      71.25
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D3.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    277.28,
+    88.75,
+    80.67,
+    90.25
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D3.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "4": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      64.38,
+      61.64,
+      21.78,
+      32.34
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D4.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      75.36,
+      86.31,
+      35.63,
+      52.92
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D4.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    105.46,
+    182.66,
+    45.13,
+    67.03
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D4.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "5": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      155.34,
+      25.56,
+      51.49,
+      33.76
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D5.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      187.0,
+      38.04,
+      80.45,
+      52.75
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D5.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    246.87,
+    121.51,
+    101.91,
+    66.82
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D5.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "6": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      10.73,
+      92.85,
+      198.55,
+      40.98
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D6.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      15.07,
+      132.64,
+      269.79,
+      58.55
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D6.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    29.09,
+    241.34,
+    341.73,
+    74.16
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D6.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "7": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      96.03,
+      15.01,
+      106.53,
+      109.98
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D7.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      118.32,
+      23.39,
+      155.29,
+      160.31
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D7.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    159.87,
+    102.96,
+    196.69,
+    203.06
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D7.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "8": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.63,
+      7.5,
+      195.29,
+      125.35
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D8.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      13.78,
+      19.53,
+      273.94,
+      167.72
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D8.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    27.46,
+    98.08,
+    346.99,
+    212.45
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D8.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "9": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      140.51,
+      49.02,
+      22.43,
+      28.99
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D9.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      194.56,
+      70.29,
+      32.04,
+      41.42
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D9.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    256.44,
+    162.36,
+    40.58,
+    52.46
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D9.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "10": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      0.0,
+      -0.19,
+      97.8,
+      140.37
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D10.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      10.28,
+      -0.27,
+      145.74,
+      200.53
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D10.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    23.02,
+    73.0,
+    184.6,
+    254.01
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D10.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "11": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      53.34,
+      42.98,
+      111.25,
+      87.09
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D11.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      69.05,
+      61.4,
+      158.93,
+      124.42
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D11.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    97.47,
+    151.11,
+    201.31,
+    157.6
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D11.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "12": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      33.78,
+      44.01,
+      152.44,
+      33.31
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D12.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      41.11,
+      62.88,
+      217.77,
+      47.59
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D12.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    62.08,
+    152.98,
+    275.84,
+    60.28
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D12.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "13": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      55.03,
+      97.43,
+      19.85,
+      19.03
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D13.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      65.7,
+      144.08,
+      31.91,
+      30.58
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D13.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    93.21,
+    255.84,
+    40.42,
+    38.74
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D13.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "14": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      12.13,
+      17.62,
+      195.75,
+      21.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D14.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      20.65,
+      20.36,
+      258.69,
+      30.37
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D14.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    36.16,
+    99.13,
+    327.68,
+    38.47
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D14.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "15": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      182.6,
+      31.78,
+      27.54,
+      63.98
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D15.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      242.73,
+      29.96,
+      47.68,
+      110.77
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D15.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    317.46,
+    111.28,
+    60.39,
+    140.31
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D15.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "16": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      119.76,
+      75.33,
+      62.43,
+      53.75
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D16.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      165.24,
+      98.71,
+      100.34,
+      86.38
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D16.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    219.3,
+    198.37,
+    127.09,
+    109.41
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D16.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "17": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      99.43,
+      67.64,
+      97.04,
+      35.04
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D17.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      123.89,
+      96.21,
+      155.96,
+      56.32
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D17.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    166.93,
+    195.2,
+    197.54,
+    71.34
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D17.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "18": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      9.53,
+      7.61,
+      65.72,
+      37.17
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D18.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      8.66,
+      10.4,
+      105.63,
+      59.74
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D18.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    20.97,
+    86.5,
+    133.8,
+    75.68
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D18.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "19": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      18.46,
+      34.41,
+      45.83,
+      71.19
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D19.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      10.98,
+      42.79,
+      73.65,
+      114.41
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D19.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    23.91,
+    127.54,
+    93.29,
+    144.92
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D19.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "20": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      43.73,
+      50.85,
+      63.7,
+      24.14
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D20.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      36.9,
+      69.22,
+      102.38,
+      38.8
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D20.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    56.73,
+    161.02,
+    129.69,
+    49.14
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D20.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "21": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      13.71,
+      52.95,
+      116.49,
+      87.05
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D21.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      7.21,
+      57.19,
+      187.21,
+      139.9
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D21.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    19.14,
+    145.78,
+    237.13,
+    177.21
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D21.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "22": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      57.32,
+      50.1,
+      20.51,
+      23.31
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D22.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      71.49,
+      68.02,
+      32.96,
+      37.46
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D22.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    100.56,
+    159.49,
+    41.75,
+    47.44
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D22.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "23": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      136.52,
+      57.82,
+      42.35,
+      20.56
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D23.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      188.22,
+      82.59,
+      61.38,
+      29.8
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D23.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    248.41,
+    177.95,
+    77.75,
+    37.75
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D23.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "24": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      179.02,
+      13.39,
+      26.03,
+      29.84
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D24.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      248.71,
+      9.01,
+      41.82,
+      47.96
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D24.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    325.03,
+    84.75,
+    52.98,
+    60.75
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D24.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "25": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      132.12,
+      53.16,
+      45.55,
+      36.87
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D25.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      178.14,
+      75.03,
+      66.72,
+      54.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D25.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    235.64,
+    168.37,
+    84.52,
+    68.41
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D25.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "50": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      158.22,
+      45.39,
+      46.25,
+      66.01
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D50.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      229.51,
+      62.9,
+      61.42,
+      87.65
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D50.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    300.71,
+    153.0,
+    77.79,
+    111.03
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D50.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "51": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      10.33,
+      16.84,
+      199.34,
+      22.91
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D51.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      20.65,
+      28.96,
+      258.69,
+      30.37
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D51.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    36.16,
+    110.02,
+    327.68,
+    38.47
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D51.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "52": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      60.22,
+      58.06,
+      143.22,
+      67.33
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D52.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      68.49,
+      80.53,
+      212.69,
+      105.41
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D52.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    96.75,
+    175.34,
+    269.41,
+    133.52
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D52.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "53": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      181.55,
+      40.49,
+      26.12,
+      60.69
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D53.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      239.5,
+      33.76,
+      47.68,
+      110.77
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D53.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    313.37,
+    116.09,
+    60.39,
+    140.31
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D53.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "54": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      0.0,
+      76.38,
+      220.0,
+      34.49
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D54.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      -0.29,
+      101.7,
+      300.29,
+      55.48
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D54.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    9.63,
+    202.15,
+    380.37,
+    70.28
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D54.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "55": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      69.06,
+      60.14,
+      81.88,
+      72.16
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D55.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      93.31,
+      84.87,
+      113.37,
+      99.92
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D55.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    128.2,
+    180.83,
+    143.61,
+    126.57
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D55.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "56": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      48.25,
+      18.38,
+      123.5,
+      44.6
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D56.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      61.79,
+      26.26,
+      176.42,
+      63.71
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D56.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    88.26,
+    106.6,
+    223.47,
+    80.7
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D56.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "57": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      30.89,
+      39.38,
+      181.18,
+      50.03
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D57.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      49.77,
+      59.96,
+      230.68,
+      58.35
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D57.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    73.04,
+    149.28,
+    292.2,
+    73.91
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D57.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "58": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      23.11,
+      34.3,
+      45.48,
+      76.57
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D58.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      10.98,
+      42.79,
+      73.65,
+      114.41
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D58.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    23.91,
+    127.54,
+    93.29,
+    144.92
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D58.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "59": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      7.66,
+      4.92,
+      68.47,
+      38.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D59.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      8.66,
+      10.4,
+      105.63,
+      59.74
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D59.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    20.97,
+    86.5,
+    133.8,
+    75.68
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D59.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "60": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      48.78,
+      48.48,
+      122.45,
+      46.4
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D60.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      44.73,
+      66.99,
+      197.2,
+      74.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D60.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    66.65,
+    158.19,
+    249.78,
+    94.66
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D60.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "61": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      12.6,
+      69.77,
+      62.96,
+      61.31
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D61.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      10.39,
+      80.44,
+      99.6,
+      96.99
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D61.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    23.16,
+    175.23,
+    126.16,
+    122.85
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D61.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "62": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      14.98,
+      9.6,
+      205.02,
+      121.53
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D62.cdr",
+     "motive": 7
+    },
+    "300x200": {
+     "boxMm": [
+      23.77,
+      13.71,
+      276.23,
+      173.62
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D62.cdr",
+     "motive": 7
+    }
+   },
+   "bbox400": [
+    40.11,
+    90.7,
+    349.89,
+    219.91
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D62.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "63": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      19.02,
+      37.38,
+      42.62,
+      71.41
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D63.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      20.84,
+      44.94,
+      71.64,
+      120.02
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D63.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    36.4,
+    130.26,
+    90.74,
+    152.02
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D63.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "65": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      66.71,
+      22.42,
+      133.72,
+      95.17
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D65.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      94.07,
+      25.01,
+      186.63,
+      148.51
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D65.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    129.16,
+    105.01,
+    236.4,
+    188.11
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D65.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "66": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      11.13,
+      62.22,
+      60.81,
+      77.52
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D66.cdr",
+     "motive": 27
+    },
+    "300x200": {
+     "boxMm": [
+      6.02,
+      88.13,
+      87.15,
+      111.11
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D66.cdr",
+     "motive": 27
+    }
+   },
+   "bbox400": [
+    17.63,
+    184.97,
+    110.4,
+    140.74
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D66.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "67": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      10.39,
+      16.96,
+      199.75,
+      107.63
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D67.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      13.27,
+      23.82,
+      276.7,
+      160.62
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D67.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    26.8,
+    103.5,
+    350.49,
+    203.45
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D67.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "68": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      13.68,
+      11.08,
+      187.0,
+      32.26
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D68.cdr",
+     "motive": 25
+    },
+    "300x200": {
+     "boxMm": [
+      9.48,
+      8.9,
+      280.01,
+      61.68
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D68.cdr",
+     "motive": 25
+    }
+   },
+   "bbox400": [
+    22.01,
+    84.61,
+    354.68,
+    78.12
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D68.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "69": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      8.1,
+      35.63,
+      202.78,
+      93.01
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D69.cdr",
+     "motive": 4
+    },
+    "300x200": {
+     "boxMm": [
+      12.3,
+      55.4,
+      268.96,
+      128.2
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D69.cdr",
+     "motive": 4
+    }
+   },
+   "bbox400": [
+    25.58,
+    143.51,
+    340.68,
+    162.39
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D69.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "70": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      135.97,
+      41.52,
+      69.56,
+      96.08
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D70.cdr",
+     "motive": 5
+    },
+    "300x200": {
+     "boxMm": [
+      181.97,
+      46.51,
+      104.0,
+      143.64
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D70.cdr",
+     "motive": 5
+    }
+   },
+   "bbox400": [
+    240.5,
+    132.24,
+    131.73,
+    181.94
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D70.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "71": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      18.18,
+      48.33,
+      64.39,
+      84.76
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D71.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      16.54,
+      51.88,
+      103.48,
+      136.22
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D71.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    30.95,
+    139.04,
+    131.08,
+    172.54
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D71.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "72": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      24.39,
+      24.08,
+      58.0,
+      91.85
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D72.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      20.71,
+      42.32,
+      82.86,
+      131.21
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D72.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    36.24,
+    126.94,
+    104.96,
+    166.2
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D72.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "73": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      22.52,
+      58.82,
+      73.07,
+      64.77
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D73.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      16.57,
+      85.41,
+      105.83,
+      93.81
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D73.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    30.98,
+    181.52,
+    134.05,
+    118.82
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D73.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "74": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.37,
+      39.82,
+      134.59,
+      97.79
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D74.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      11.62,
+      42.85,
+      197.31,
+      151.55
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D74.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    24.71,
+    127.62,
+    249.93,
+    191.96
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D74.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "75": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      13.71,
+      17.85,
+      79.66,
+      105.91
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D75.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      7.96,
+      17.71,
+      126.99,
+      168.85
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D75.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    20.09,
+    95.76,
+    160.86,
+    213.88
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D75.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "76": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      26.94,
+      16.04,
+      166.11,
+      103.64
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D76.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      37.43,
+      15.83,
+      239.49,
+      149.42
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D76.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    57.41,
+    93.39,
+    303.36,
+    189.27
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D76.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "77": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      -0.07,
+      0.0,
+      142.49,
+      125.12
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D77.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      -0.1,
+      -0.01,
+      229.22,
+      201.27
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D77.cdr",
+     "motive": 1,
+     "platteGemessenMm": [
+      300.2,
+      201.3
+     ]
+    }
+   },
+   "bbox400": [
+    9.87,
+    72.58,
+    290.15,
+    254.78
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D77.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300.2 × 201.3 mm."
+  },
+  "78": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      38.11,
+      5.32,
+      143.78,
+      132.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D78.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      47.3,
+      7.59,
+      205.41,
+      189.61
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D78.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    69.91,
+    82.95,
+    260.18,
+    240.17
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D78.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "79": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      20.27,
+      16.06,
+      48.93,
+      107.87
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D79.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      16.25,
+      21.92,
+      70.83,
+      156.17
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D79.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    30.59,
+    101.09,
+    89.72,
+    197.81
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D79.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "80": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      123.35,
+      35.14,
+      82.64,
+      104.86
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D80.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      154.88,
+      44.35,
+      122.66,
+      155.65
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D80.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    206.18,
+    129.51,
+    155.37,
+    197.15
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D80.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "81": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      40.55,
+      10.11,
+      138.9,
+      123.33
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D81.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      50.78,
+      14.44,
+      198.43,
+      176.18
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D81.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    74.33,
+    91.63,
+    251.35,
+    223.16
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D81.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "82": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      0.0,
+      56.65,
+      220.0,
+      66.84
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D82.cdr",
+     "motive": 21
+    },
+    "300x200": {
+     "boxMm": [
+      -0.05,
+      80.93,
+      300.0,
+      95.48
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D82.cdr",
+     "motive": 40
+    }
+   },
+   "bbox400": [
+    9.93,
+    175.84,
+    380.0,
+    120.94
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D82.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "83": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      19.5,
+      84.1,
+      179.16,
+      47.1
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D83.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      4.55,
+      113.21,
+      287.94,
+      75.7
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D83.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    15.76,
+    216.73,
+    364.72,
+    95.89
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D83.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "84": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      0.0,
+      63.6,
+      220.0,
+      62.81
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D84.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      0.0,
+      90.85,
+      300.0,
+      89.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D84.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    10.0,
+    188.41,
+    380.0,
+    113.66
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D84.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "85": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      49.67,
+      29.02,
+      120.66,
+      94.45
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D85.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      69.05,
+      41.46,
+      158.93,
+      124.42
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D85.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    97.47,
+    125.85,
+    201.31,
+    157.6
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D85.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "86": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      26.25,
+      29.35,
+      173.5,
+      101.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D86.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      30.36,
+      41.93,
+      247.85,
+      145.33
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D86.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    48.46,
+    126.45,
+    313.95,
+    184.09
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D86.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "87": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      12.24,
+      9.14,
+      192.76,
+      117.22
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D87.cdr",
+     "motive": 4
+    },
+    "300x200": {
+     "boxMm": [
+      22.78,
+      10.21,
+      259.39,
+      177.3
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D87.cdr",
+     "motive": 4
+    }
+   },
+   "bbox400": [
+    38.86,
+    86.27,
+    328.56,
+    224.58
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D87.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "88": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      13.32,
+      10.73,
+      189.82,
+      82.74
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D88.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      8.59,
+      13.82,
+      265.24,
+      123.91
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D88.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    20.88,
+    90.84,
+    335.98,
+    156.95
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D88.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "89": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      24.57,
+      11.76,
+      89.16,
+      81.88
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D89.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      27.96,
+      16.79,
+      127.38,
+      116.97
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D89.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    45.41,
+    94.6,
+    161.34,
+    148.16
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D89.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "90": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      58.0,
+      48.19,
+      104.0,
+      52.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D90.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      75.72,
+      68.84,
+      148.57,
+      75.32
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D90.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    105.91,
+    160.53,
+    188.18,
+    95.41
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D90.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "91": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      14.96,
+      35.87,
+      101.64,
+      104.13
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D91.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      4.96,
+      32.64,
+      163.35,
+      167.36
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D91.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    16.28,
+    114.68,
+    206.91,
+    211.99
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D91.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "92": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      17.76,
+      56.73,
+      85.51,
+      73.24
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D92.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      18.89,
+      80.81,
+      127.83,
+      109.49
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D92.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    33.92,
+    175.69,
+    161.92,
+    138.69
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D92.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "93": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      77.3,
+      0.94,
+      141.09,
+      89.56
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D93.cdr",
+     "motive": 4
+    },
+    "300x200": {
+     "boxMm": [
+      103.28,
+      0.97,
+      195.4,
+      128.31
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D93.cdr",
+     "motive": 4
+    }
+   },
+   "bbox400": [
+    140.82,
+    74.57,
+    247.5,
+    162.52
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D93.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "94": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      19.12,
+      5.86,
+      81.34,
+      61.05
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D94.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      14.59,
+      14.37,
+      126.54,
+      94.98
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D94.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    28.48,
+    91.53,
+    160.28,
+    120.3
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D94.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "95": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.3,
+      4.9,
+      190.73,
+      132.9
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D95.cdr",
+     "motive": 4
+    },
+    "300x200": {
+     "boxMm": [
+      4.08,
+      6.99,
+      278.48,
+      189.85
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D95.cdr",
+     "motive": 4
+    }
+   },
+   "bbox400": [
+    15.16,
+    82.19,
+    352.75,
+    240.48
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D95.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "96": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      13.14,
+      42.86,
+      68.58,
+      87.02
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D96.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      3.71,
+      56.1,
+      107.03,
+      135.8
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D96.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    14.7,
+    144.39,
+    135.57,
+    172.01
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D96.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "97": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      25.66,
+      15.46,
+      70.76,
+      67.83
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D97.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      11.74,
+      17.79,
+      110.31,
+      105.75
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D97.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    24.87,
+    95.87,
+    139.73,
+    133.94
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D97.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "98": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      12.26,
+      22.46,
+      157.28,
+      117.54
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D98.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      3.11,
+      9.4,
+      252.78,
+      188.9
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D98.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    13.94,
+    85.24,
+    320.18,
+    239.27
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D98.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "99": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      60.9,
+      35.17,
+      98.2,
+      96.16
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D99.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      79.85,
+      50.23,
+      140.29,
+      137.37
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D99.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    111.14,
+    136.96,
+    177.7,
+    174.01
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D99.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "100": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      11.96,
+      31.39,
+      82.65,
+      60.95
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D100.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      14.54,
+      43.25,
+      118.45,
+      87.36
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D100.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    28.42,
+    128.11,
+    150.04,
+    110.65
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D100.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "200": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.36,
+      7.46,
+      197.92,
+      127.09
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D200.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      16.71,
+      9.89,
+      271.9,
+      180.09
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D200.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    31.17,
+    85.86,
+    344.4,
+    228.12
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D200.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "201": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      145.68,
+      64.14,
+      18.94,
+      15.16
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D201.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      203.73,
+      90.59,
+      30.44,
+      24.37
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D201.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    268.06,
+    188.07,
+    38.56,
+    30.87
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D201.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "202": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      136.39,
+      67.17,
+      30.91,
+      18.39
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D202.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      198.0,
+      95.45,
+      49.68,
+      29.56
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D202.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    260.79,
+    194.24,
+    62.92,
+    37.44
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D202.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "203": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      140.84,
+      68.67,
+      20.06,
+      10.2
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D203.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      199.57,
+      97.86,
+      32.25,
+      16.4
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D203.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    262.78,
+    197.29,
+    40.84,
+    20.77
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D203.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "204": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      138.43,
+      59.05,
+      24.55,
+      16.02
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D204.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      189.17,
+      82.4,
+      39.45,
+      25.75
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D204.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    249.62,
+    177.7,
+    49.97,
+    32.61
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D204.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "205": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      148.21,
+      65.77,
+      14.11,
+      15.05
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D205.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      206.31,
+      93.2,
+      22.67,
+      24.19
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D205.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    271.32,
+    191.38,
+    28.72,
+    30.64
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D205.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "206": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      142.91,
+      58.17,
+      21.24,
+      22.84
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D206.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      193.53,
+      80.99,
+      34.14,
+      36.7
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D206.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    255.54,
+    175.88,
+    43.31,
+    46.57
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D206.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 299.5 × 200 mm."
+  },
+  "207": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      5.73,
+      3.94,
+      207.65,
+      131.71
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D207.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      1.31,
+      4.44,
+      297.41,
+      191.41
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D207.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    11.66,
+    78.96,
+    376.71,
+    242.46
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D207.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "208": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      134.76,
+      58.84,
+      32.93,
+      16.08
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D208.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      185.11,
+      84.4,
+      52.92,
+      25.84
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D208.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    244.47,
+    180.24,
+    67.03,
+    32.73
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D208.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "209": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      122.23,
+      58.87,
+      43.36,
+      26.68
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D209.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      166.25,
+      77.46,
+      69.68,
+      42.88
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D209.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    220.58,
+    171.44,
+    88.26,
+    54.32
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D209.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "210": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      5.57,
+      85.07,
+      44.97,
+      51.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D210.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      6.66,
+      127.37,
+      60.61,
+      68.74
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D210.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    18.43,
+    234.67,
+    76.78,
+    87.07
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D210.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "211": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      144.99,
+      66.34,
+      17.09,
+      21.15
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D211.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      198.9,
+      94.11,
+      27.46,
+      33.99
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D211.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    261.94,
+    192.54,
+    34.79,
+    43.06
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D211.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "212": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      84.2,
+      1.04,
+      133.93,
+      63.42
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D212.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      94.82,
+      1.1,
+      202.43,
+      95.85
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D212.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    130.1,
+    74.73,
+    256.41,
+    121.41
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D212.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "213": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      11.99,
+      19.27,
+      99.22,
+      97.84
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D213.cdr",
+     "motive": 217
+    },
+    "300x200": {
+     "boxMm": [
+      5.3,
+      26.04,
+      144.1,
+      142.09
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D213.cdr",
+     "motive": 217
+    }
+   },
+   "bbox400": [
+    16.71,
+    106.32,
+    182.53,
+    179.98
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D213.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "214": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      122.02,
+      7.98,
+      71.43,
+      61.97
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D214.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      162.27,
+      0.33,
+      114.81,
+      99.59
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D214.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    215.55,
+    73.75,
+    145.42,
+    126.15
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D214.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "215": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      0.0,
+      0.0,
+      220.0,
+      140.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D215.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      -0.02,
+      -0.1,
+      300.02,
+      200.1
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D215.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    9.97,
+    73.21,
+    380.02,
+    253.46
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D215.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "216": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.24,
+      10.85,
+      195.85,
+      69.89
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D216.cdr",
+     "motive": 16
+    },
+    "300x200": {
+     "boxMm": [
+      23.76,
+      4.93,
+      260.34,
+      112.33
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D216.cdr",
+     "motive": 16
+    }
+   },
+   "bbox400": [
+    40.1,
+    79.58,
+    329.77,
+    142.28
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D216.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "217": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      127.84,
+      77.99,
+      69.42,
+      41.46
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D217.cdr",
+     "motive": 2
+    }
+   }
+  },
+  "218": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      6.44,
+      36.32,
+      138.77,
+      103.7
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D218.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      4.32,
+      36.71,
+      218.51,
+      163.29
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D218.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    15.47,
+    119.83,
+    276.78,
+    206.83
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D218.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "219": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      51.43,
+      50.62,
+      25.81,
+      25.14
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D219.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      69.14,
+      68.85,
+      41.48,
+      40.39
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D219.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    97.58,
+    160.54,
+    52.54,
+    51.17
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D219.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "220": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      131.92,
+      56.23,
+      42.74,
+      28.61
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D220.cdr",
+     "motive": 7
+    },
+    "300x200": {
+     "boxMm": [
+      180.89,
+      77.87,
+      68.69,
+      45.98
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D220.cdr",
+     "motive": 7
+    }
+   },
+   "bbox400": [
+    239.13,
+    171.97,
+    87.0,
+    58.24
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D220.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "221": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      140.0,
+      86.73,
+      47.17,
+      37.43
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D221.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      190.02,
+      126.88,
+      75.82,
+      60.16
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D221.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    250.69,
+    234.05,
+    96.03,
+    76.2
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D221.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "222": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      127.7,
+      14.54,
+      72.5,
+      46.4
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D222.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      169.86,
+      12.71,
+      113.93,
+      72.92
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D222.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    225.16,
+    89.43,
+    144.32,
+    92.37
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D222.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "223": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      158.98,
+      14.87,
+      45.76,
+      44.93
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D223.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      217.78,
+      11.4,
+      73.55,
+      72.2
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D223.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    285.86,
+    87.77,
+    93.16,
+    91.46
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D223.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "224": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      139.95,
+      80.97,
+      49.98,
+      42.04
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D224.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      198.14,
+      117.63,
+      80.33,
+      67.56
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D224.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    260.97,
+    222.33,
+    101.75,
+    85.57
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D224.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "225": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      142.18,
+      67.7,
+      18.16,
+      20.19
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D225.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      201.72,
+      96.3,
+      29.18,
+      32.45
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D225.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    265.51,
+    195.32,
+    36.96,
+    41.1
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D225.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "226": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      140.44,
+      106.33,
+      23.97,
+      23.12
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D226.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      194.75,
+      158.96,
+      35.76,
+      34.48
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D226.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    256.69,
+    274.68,
+    45.3,
+    43.68
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D226.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "227": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      27.72,
+      38.69,
+      121.29,
+      28.58
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D227.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      34.56,
+      49.11,
+      194.93,
+      45.93
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D227.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    53.78,
+    135.54,
+    246.91,
+    58.17
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D227.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "228": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      118.14,
+      63.56,
+      58.09,
+      34.52
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D228.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      161.0,
+      89.65,
+      93.37,
+      55.48
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D228.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    213.93,
+    186.89,
+    118.27,
+    70.28
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D228.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "229": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      126.55,
+      75.69,
+      66.37,
+      48.12
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D229.cdr",
+     "motive": 5
+    },
+    "300x200": {
+     "boxMm": [
+      173.06,
+      109.14,
+      110.2,
+      77.34
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D229.cdr",
+     "motive": 5
+    }
+   },
+   "bbox400": [
+    229.21,
+    211.57,
+    139.59,
+    97.96
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D229.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "230": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      169.42,
+      58.84,
+      31.92,
+      41.1
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D230.cdr",
+     "motive": 6
+    },
+    "300x200": {
+     "boxMm": [
+      236.5,
+      82.06,
+      51.31,
+      66.06
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D230.cdr",
+     "motive": 6
+    }
+   },
+   "bbox400": [
+    309.57,
+    177.27,
+    64.99,
+    83.67
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D230.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "231": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      28.25,
+      22.52,
+      34.89,
+      21.33
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D231.cdr",
+     "motive": 10
+    },
+    "300x200": {
+     "boxMm": [
+      18.61,
+      23.69,
+      56.08,
+      34.29
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D231.cdr",
+     "motive": 10
+    }
+   },
+   "bbox400": [
+    33.57,
+    103.34,
+    71.03,
+    43.43
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D231.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "232": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      53.86,
+      47.98,
+      23.88,
+      31.11
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D232.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      66.19,
+      64.6,
+      38.39,
+      50.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D232.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    93.85,
+    155.16,
+    48.62,
+    63.33
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D232.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "233": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      178.15,
+      9.35,
+      18.17,
+      15.27
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D233.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      256.38,
+      18.76,
+      29.19,
+      24.55
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D233.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    334.75,
+    97.09,
+    36.98,
+    31.09
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D233.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "234": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      147.16,
+      58.37,
+      13.78,
+      20.47
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D234.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      201.36,
+      81.3,
+      22.14,
+      32.89
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D234.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    265.06,
+    176.32,
+    28.05,
+    41.66
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D234.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "235": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      151.94,
+      3.46,
+      49.24,
+      33.38
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D235.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      224.67,
+      4.94,
+      71.87,
+      48.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D235.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    294.58,
+    79.59,
+    91.03,
+    61.72
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D235.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "236": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      143.15,
+      62.32,
+      34.17,
+      11.18
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D236.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      192.45,
+      86.24,
+      52.92,
+      17.31
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D236.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    253.76,
+    182.57,
+    67.03,
+    21.93
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D236.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "250": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      20.24,
+      48.89,
+      179.44,
+      43.33
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D250.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      11.19,
+      66.08,
+      277.84,
+      69.63
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D250.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    24.18,
+    157.03,
+    351.93,
+    88.2
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D250.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "251": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      49.38,
+      18.56,
+      132.12,
+      100.37
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D251.cdr",
+     "motive": 3
+    }
+   }
+  },
+  "252": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      16.97,
+      7.57,
+      57.19,
+      124.85
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D252.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      30.12,
+      9.53,
+      82.41,
+      179.92
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D252.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    48.15,
+    85.4,
+    104.38,
+    227.9
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D252.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "253": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      59.24,
+      43.35,
+      143.04,
+      64.57
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D253.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      71.48,
+      57.17,
+      217.04,
+      103.77
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D253.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    100.54,
+    145.75,
+    274.92,
+    131.44
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D253.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "254": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      158.01,
+      11.8,
+      18.83,
+      30.06
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D254.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      227.16,
+      6.46,
+      30.26,
+      48.31
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D254.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    297.73,
+    81.52,
+    38.33,
+    61.19
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D254.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "255": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.9,
+      12.63,
+      72.66,
+      75.87
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D255.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      18.15,
+      7.8,
+      116.78,
+      121.93
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D255.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    32.99,
+    83.21,
+    147.92,
+    154.45
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D255.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "256": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      20.64,
+      37.15,
+      72.45,
+      96.6
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D256.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      12.52,
+      35.97,
+      116.43,
+      155.24
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D256.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    25.85,
+    118.89,
+    147.48,
+    196.64
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D256.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "257": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      21.16,
+      42.99,
+      133.6,
+      60.5
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D257.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      12.34,
+      56.58,
+      205.85,
+      97.22
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D257.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    25.63,
+    145.0,
+    260.74,
+    123.15
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D257.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "258": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      46.59,
+      25.86,
+      133.15,
+      48.08
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D258.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      48.09,
+      29.06,
+      214.0,
+      77.28
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D258.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    70.92,
+    110.15,
+    271.06,
+    97.88
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D258.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "259": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.82,
+      18.5,
+      108.21,
+      100.83
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D259.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      5.71,
+      17.23,
+      173.91,
+      162.05
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D259.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    17.24,
+    95.15,
+    220.28,
+    205.26
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D259.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "260": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      -0.0,
+      0.7,
+      146.21,
+      128.39
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D260.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      2.07,
+      1.38,
+      223.67,
+      196.4
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D260.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    12.62,
+    75.08,
+    283.31,
+    248.77
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D260.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "261": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      43.92,
+      9.0,
+      132.16,
+      122.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D261.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      54.27,
+      8.93,
+      191.45,
+      176.73
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D261.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    78.75,
+    84.65,
+    242.51,
+    223.86
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D261.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "262": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.04,
+      10.63,
+      173.12,
+      129.37
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D262.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      9.75,
+      8.55,
+      253.16,
+      189.18
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D262.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    22.35,
+    84.16,
+    320.67,
+    239.63
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D262.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "263": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      15.52,
+      11.07,
+      188.27,
+      113.28
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D263.cdr",
+     "motive": 6
+    },
+    "300x200": {
+     "boxMm": [
+      14.9,
+      15.04,
+      264.03,
+      167.97
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D263.cdr",
+     "motive": 6
+    }
+   },
+   "bbox400": [
+    28.87,
+    92.38,
+    334.44,
+    212.76
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D263.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "264": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      5.97,
+      7.75,
+      209.87,
+      127.23
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D264.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      12.34,
+      10.13,
+      279.62,
+      179.96
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D264.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    25.63,
+    86.17,
+    354.19,
+    227.95
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D264.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "265": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      21.49,
+      7.86,
+      189.91,
+      125.93
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D265.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      13.46,
+      9.89,
+      277.69,
+      178.75
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D265.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    27.05,
+    85.87,
+    351.74,
+    226.42
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D265.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "266": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      -0.0,
+      0.0,
+      220.0,
+      140.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D266.cdr",
+     "motive": 4
+    },
+    "300x200": {
+     "boxMm": [
+      0.0,
+      -0.0,
+      300.0,
+      200.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D266.cdr",
+     "motive": 4
+    }
+   },
+   "bbox400": [
+    10.0,
+    73.33,
+    380.0,
+    253.33
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D266.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "267": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      30.59,
+      20.33,
+      158.44,
+      103.91
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D267.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      22.38,
+      20.16,
+      254.64,
+      167.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D267.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    38.35,
+    98.87,
+    322.54,
+    211.53
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D267.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "268": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      23.12,
+      13.6,
+      139.46,
+      108.89
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D268.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      10.38,
+      9.36,
+      224.13,
+      175.0
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D268.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    23.15,
+    85.19,
+    283.89,
+    221.67
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D268.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "269": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      22.12,
+      22.7,
+      133.58,
+      102.89
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D269.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      15.67,
+      23.98,
+      195.62,
+      165.36
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D269.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    29.84,
+    103.7,
+    247.78,
+    209.46
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D269.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "270": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      0.0,
+      82.49,
+      186.13,
+      57.52
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D270.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      0.36,
+      106.67,
+      299.14,
+      92.44
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D270.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    10.45,
+    208.45,
+    378.91,
+    117.09
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D270.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "271": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      50.88,
+      43.57,
+      121.29,
+      28.58
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D271.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      34.56,
+      49.11,
+      194.93,
+      45.93
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D271.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    53.78,
+    135.54,
+    246.91,
+    58.17
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D271.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "272": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      17.5,
+      39.4,
+      180.91,
+      55.06
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D272.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      10.17,
+      47.03,
+      273.1,
+      83.12
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D272.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    22.88,
+    132.91,
+    345.92,
+    105.28
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D272.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "273": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      17.03,
+      16.58,
+      174.38,
+      99.88
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D273.cdr",
+     "motive": 8
+    },
+    "300x200": {
+     "boxMm": [
+      16.91,
+      14.15,
+      263.92,
+      160.52
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D273.cdr",
+     "motive": 8
+    }
+   },
+   "bbox400": [
+    31.42,
+    91.25,
+    334.3,
+    203.32
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D273.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "274": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      26.67,
+      43.12,
+      54.44,
+      58.54
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D274.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      20.03,
+      56.8,
+      87.49,
+      94.08
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D274.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    35.41,
+    145.19,
+    111.01,
+    119.37
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D274.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 299.5 × 200 mm."
+  },
+  "275": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      26.51,
+      23.33,
+      42.15,
+      96.11
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D275.cdr",
+     "motive": 4
+    },
+    "300x200": {
+     "boxMm": [
+      22.96,
+      24.99,
+      67.75,
+      154.46
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D275.cdr",
+     "motive": 4
+    }
+   },
+   "bbox400": [
+    39.08,
+    104.99,
+    85.82,
+    195.65
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D275.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "276": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      36.1,
+      19.63,
+      147.81,
+      103.23
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D276.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      31.23,
+      19.05,
+      237.54,
+      165.9
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D276.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    49.55,
+    97.47,
+    300.89,
+    210.14
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D276.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "277": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      64.89,
+      7.41,
+      90.22,
+      125.19
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D277.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      86.08,
+      11.31,
+      127.84,
+      177.38
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D277.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    119.03,
+    87.66,
+    161.93,
+    224.69
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D277.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "278": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      54.44,
+      12.04,
+      99.36,
+      115.91
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D278.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      68.65,
+      11.61,
+      149.46,
+      174.36
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D278.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    96.96,
+    88.04,
+    189.31,
+    220.86
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D278.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "279": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      29.5,
+      23.44,
+      161.01,
+      95.68
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D279.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      20.62,
+      25.17,
+      258.76,
+      153.77
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D279.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    36.12,
+    105.21,
+    327.76,
+    194.77
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D279.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "280": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      14.44,
+      60.72,
+      123.26,
+      76.91
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D280.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      10.72,
+      68.4,
+      198.09,
+      123.6
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D280.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    23.58,
+    159.98,
+    250.92,
+    156.56
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D280.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "281": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      49.66,
+      18.94,
+      120.69,
+      84.29
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D281.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      57.98,
+      15.42,
+      184.04,
+      128.54
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D281.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    83.44,
+    92.86,
+    233.12,
+    162.81
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D281.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "282": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      27.0,
+      47.25,
+      60.31,
+      83.68
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D282.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      19.61,
+      50.21,
+      96.92,
+      134.49
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D282.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    34.83,
+    136.94,
+    122.77,
+    170.35
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D282.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "283": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      24.35,
+      46.43,
+      71.25,
+      83.12
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D283.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      12.35,
+      48.16,
+      114.5,
+      133.58
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D283.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    25.64,
+    134.33,
+    145.04,
+    169.2
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D283.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "284": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      38.7,
+      18.49,
+      142.61,
+      84.74
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D284.cdr",
+     "motive": 1
+    },
+    "300x200": {
+     "boxMm": [
+      35.41,
+      17.22,
+      229.18,
+      136.19
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D284.cdr",
+     "motive": 1
+    }
+   },
+   "bbox400": [
+    54.85,
+    95.14,
+    290.3,
+    172.51
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D284.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "285": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      120.07,
+      65.93,
+      77.83,
+      65.46
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D285.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      160.59,
+      74.06,
+      125.09,
+      105.21
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D285.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    213.41,
+    167.14,
+    158.45,
+    133.26
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D285.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "286": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      24.0,
+      45.5,
+      121.32,
+      85.14
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D286.cdr",
+     "motive": 5
+    },
+    "300x200": {
+     "boxMm": [
+      11.48,
+      50.62,
+      194.98,
+      136.83
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D286.cdr",
+     "motive": 5
+    }
+   },
+   "bbox400": [
+    24.54,
+    137.46,
+    246.98,
+    173.32
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D286.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "287": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      128.26,
+      41.07,
+      65.33,
+      84.12
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D287.cdr",
+     "motive": 6
+    },
+    "300x200": {
+     "boxMm": [
+      179.34,
+      53.51,
+      105.0,
+      135.18
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D287.cdr",
+     "motive": 6
+    }
+   },
+   "bbox400": [
+    237.16,
+    141.11,
+    132.99,
+    171.23
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D287.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "288": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      38.34,
+      13.87,
+      143.32,
+      116.63
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D288.cdr",
+     "motive": 2
+    },
+    "300x200": {
+     "boxMm": [
+      45.31,
+      14.42,
+      209.38,
+      170.38
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D288.cdr",
+     "motive": 2
+    }
+   },
+   "bbox400": [
+    67.39,
+    91.6,
+    265.22,
+    215.82
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D288.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "289": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      22.01,
+      13.82,
+      177.65,
+      116.14
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D289.cdr",
+     "motive": 4
+    },
+    "300x200": {
+     "boxMm": [
+      23.44,
+      25.98,
+      256.9,
+      156.68
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D289.cdr",
+     "motive": 4
+    }
+   },
+   "bbox400": [
+    39.69,
+    106.24,
+    325.4,
+    198.47
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D289.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "290": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      74.36,
+      70.53,
+      71.28,
+      47.72
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D290.cdr",
+     "motive": 7
+    },
+    "300x200": {
+     "boxMm": [
+      92.72,
+      100.85,
+      114.55,
+      76.69
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D290.cdr",
+     "motive": 7
+    }
+   },
+   "bbox400": [
+    127.45,
+    201.07,
+    145.1,
+    97.14
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D290.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "291": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      119.15,
+      65.73,
+      75.75,
+      60.1
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D291.cdr",
+     "motive": 3
+    },
+    "300x200": {
+     "boxMm": [
+      160.81,
+      79.8,
+      121.74,
+      96.59
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D291.cdr",
+     "motive": 3
+    }
+   },
+   "bbox400": [
+    213.69,
+    174.41,
+    154.2,
+    122.35
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D291.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "292": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      17.68,
+      12.75,
+      185.06,
+      120.93
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D292.cdr",
+     "motive": 7
+    },
+    "300x200": {
+     "boxMm": [
+      18.17,
+      15.47,
+      268.04,
+      174.48
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D292.cdr",
+     "motive": 8
+    }
+   },
+   "bbox400": [
+    33.01,
+    92.93,
+    339.51,
+    221.01
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D292.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  },
+  "293": {
+   "vorlageMm": {
+    "220x140": {
+     "boxMm": [
+      25.6,
+      53.14,
+      134.08,
+      77.99
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-22x14-D293.cdr",
+     "motive": 21
+    },
+    "300x200": {
+     "boxMm": [
+      18.73,
+      59.98,
+      207.71,
+      125.34
+     ],
+     "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D293.cdr",
+     "motive": 21
+    }
+   },
+   "bbox400": [
+    33.73,
+    149.31,
+    263.1,
+    158.76
+   ],
+   "quelle": "berechnet 2026-10-20 aus GT-S-30x20-D293.cdr",
+   "hinweis": "Konfigurator-Lage aus der 30x20-Vorlage mit der Corel-Formel (400er Raster, 10 px Rand, längere Seite = 380 px, Platte mittig); Platte gemessen 300 × 200 mm."
+  }
+ }
+}

@@ -36,6 +36,7 @@ test('Reiterwechsel aus ux.mjs landet im passenden Schritt; Weiter/Zurück sind 
 });
 test('Platte oben: 40 % des sichtbaren Bereichs, bei Tastatur mindestens 25 %, nie unter 120 px',()=>{
   assert.equal(previewHeight({viewportHeight:844}),338);
+  assert.equal(previewHeight({viewportHeight:690}),235,'kleiner Bildschirm (App-Webansicht)');
   assert.equal(previewHeight({viewportHeight:844,keyboardOpen:true}),211);
   assert.equal(previewHeight({viewportHeight:500,keyboardOpen:true}),125);
   assert.equal(previewHeight({viewportHeight:300,keyboardOpen:true}),120);

@@ -38,8 +38,9 @@ export async function installRefinements(api){
     handles.hidden=!enabled;
     if(enabled){const a=(o.rotation||0)*Math.PI/180,scene=$('.scene').getBoundingClientRect(),ph=stage.getBoundingClientRect();
       const point=(dx,dy)=>({x:(scene.left-ph.left)+(o.x+dx*Math.cos(a)-dy*Math.sin(a))*scene.width/el.state.width,y:(scene.top-ph.top)+(o.y+dx*Math.sin(a)+dy*Math.cos(a))*scene.height/el.state.height});
-      // Ecken-Pfeile sitzen genau an den Ecken des Auswahlrahmens (Chris 20.10.2026).
-      const margin=0;
+      // Ecken-Pfeile sitzen an den Ecken des Auswahlrahmens (Chris 20.10.2026), diagonal nach außen: die innere
+      // Ecke des 28-px-Knopfs berührt die Rahmenecke, so verdeckt der Pfeil den Text nicht.
+      const margin=14*el.state.width/Math.max(1,scene.width);
       for(const h of handles.querySelectorAll('[data-corner]')){const [x,y]=h.dataset.corner.split(',').map(Number),p=point(x*(o.w/2+margin),y*(o.h/2+margin));h.style.left=p.x+'px';h.style.top=p.y+'px';}
       const gap=36*el.state.width/Math.max(1,scene.width),p=point(0,-o.h/2-gap);const h=handles.querySelector('[data-ux-handle=rotate]');h.style.left=p.x+'px';h.style.top=p.y+'px';
       const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=d.x+'px';remove.style.top=d.y+'px';

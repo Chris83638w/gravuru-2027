@@ -21,7 +21,9 @@ export const STEPS=Object.freeze([
   {id:'options',label:'Optionen',tabs:['options']},
   {id:'design',label:'Design',tabs:['design']},
   {id:'text',label:'Text',tabs:['text']},
-  {id:'media',label:'Foto / Motiv',tabs:['upload','motif']},
+  // Foto und Motiv sind getrennte Schritte (Chris 20.10.2026: „Foto und Motiv dürfen nicht zusammen sein“).
+  {id:'media',label:'Foto',tabs:['upload']},
+  {id:'motif',label:'Motive',tabs:['motif']},
   {id:'review',label:'Prüfen',tabs:[]}
 ]);
 
@@ -33,10 +35,7 @@ export function availableSteps(tabs={},labels={}){
     const present=step.tabs.filter(tab=>tabs[tab]);
     if(step.tabs.length&&!present.length)continue;
     let label=step.label;
-    if(step.id==='media'){
-      const upload=labels.upload||'Foto';
-      label=present.length===2?upload+' / Motiv':present[0]==='upload'?upload:'Motive';
-    }
+    if(step.id==='media')label=labels.upload||'Foto';
     steps.push({id:step.id,label,tabs:present});
   }
   return steps;
@@ -212,13 +211,13 @@ export async function installMobileSteps(api){
   window.addEventListener('resize',applyViewport);
   r.addEventListener('focusin',e=>{if(!active)return;applyViewport();const field=e.target;
     // Direktbearbeitung auf der Platte (uxTextTap → uxEditText) gehört zum Schritt Text.
-    if(field.closest('.ux-direct-input')&&!['text','media'].includes(current))showStep('text',{scroll:false});
+    if(field.closest('.ux-direct-input')&&!['text','media','motif'].includes(current))showStep('text',{scroll:false});
     if(field.closest('.ux-editor')&&fieldFocused())setTimeout(()=>{if(r.activeElement===field)field.scrollIntoView({block:'center',behavior:'smooth'});},280);});
   r.addEventListener('focusout',()=>{if(active)setTimeout(applyViewport,0);});
   r.addEventListener('click',e=>{
     if(!active)return;const b=e.target.closest('[data-ux]');if(!b||b.disabled)return;const key=b.dataset.ux;
     // Schrittwechsel über die Leiste: Auswahl auf der Platte nur in Text/Foto/Motiv behalten.
-    const go=id=>{if(!id)return;if(!['text','media'].includes(id)&&el.state.selected){el.state.selected=null;el.sync();}showStep(id);};
+    const go=id=>{if(!id)return;if(!['text','media','motif'].includes(id)&&el.state.selected){el.state.selected=null;el.sync();}showStep(id);};
     if(key==='mobile-step'||key==='mobile-goto'){go(b.dataset.step);return;}
     if(key==='mobile-prev'||key==='mobile-next'){go(neighbourStep(steps,current,key==='mobile-next'?1:-1));return;}
     if(key==='mobile-issue'){el.uxRevealTextIssue?.(b.dataset.id);return;}

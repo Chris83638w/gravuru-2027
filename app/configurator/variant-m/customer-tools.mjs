@@ -8,10 +8,12 @@ export async function installCustomerTools(api){
  const response=await fetch('/configurator/variant-m/customer-tools.css');if(!response.ok)throw Error('Neue Bedienoberfläche fehlt.');
  const style=document.createElement('style');style.textContent=await response.text();r.append(style);
  $('.ux-alignment-help')?.remove();
- const name=o=>o.type==='text'?`Text „${o.text||'Leer'}“`:o.uxUploadKind==='photo'?'Dein Foto':o.uxUploadKind==='logo'?'Dein Logo':el.catalog.motif_labels?.[o.motif]||'Motiv';
+ const name=o=>o.type==='text'?`Text „${o.text||'Leer'}“`:o.uxUploadKind==='photo'?'Dein Foto':o.uxUploadKind==='logo'?'Dein Logo':o.type==='photoSlot'?'Foto':el.catalog.motif_labels?.[o.motif]||'Motiv';
  // White engraving is visible on dark materials too. Make vector ink black only
  // for the existing collision mask; uploaded photo paper keeps its own pixels.
- el.uxCollisionSVG=o=>{if(o.uxHidden||o.uxDecoration)return '';const svg=el.objectSVG(o);return o.uxUploadId?svg:svg.replace(/(fill|stroke)="(?:#fff(?:fff)?|white|#f[0-9a-f]{5})"/gi,'$1="#000000"');};
+ // Leerer Fotobereich (nur Platzhalter/Musterfoto) wird nicht graviert: keine Überlagerung melden – erst das
+ // hochgeladene Foto zählt (Chris 20.10.2026: Warnhinweis nur pixelgenau).
+ el.uxCollisionSVG=o=>{if(o.uxHidden||o.uxDecoration||o.type==='photoSlot'&&!o.uxUploadId)return '';const svg=el.objectSVG(o);return o.uxUploadId?svg:svg.replace(/(fill|stroke)="(?:#fff(?:fff)?|white|#f[0-9a-f]{5})"/gi,'$1="#000000"');};
  let multi=false;const ids=new Set();
  const alignment=document.createElement('section');alignment.className='ux-multi-align';
  alignment.innerHTML=button('multi-texts','Mehrere Texte auswählen','aria-pressed="false"')+'<div data-multi-body hidden><p>Texte hier oder auf dem Schild auswählen. Höhen und Abstände bleiben erhalten.</p><div data-multi-list></div>'+button('multi-center','Mittig untereinander ausrichten','class="ux-primary" disabled')+'</div>';

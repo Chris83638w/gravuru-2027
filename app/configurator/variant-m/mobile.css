@@ -23,7 +23,7 @@
 :host([data-ux-mobile="true"]) .ux-shell .ux-enlarge{top:6px!important;left:6px!important;min-height:44px;width:44px;padding:8px!important;justify-content:center}
 :host([data-ux-mobile="true"]) .ux-shell .ux-enlarge span{display:none}
 /* Direkt-Werkzeug am Element nur in den Schritten Text und Foto/Motiv, nie über der Tastatur. */
-:host([data-ux-mobile="true"]:not([data-ux-step="text"]):not([data-ux-step="media"])) .ux-direct-edit,:host([data-ux-mobile="true"][data-ux-keyboard="true"]) .ux-direct-edit{display:none!important}
+:host([data-ux-mobile="true"]:not([data-ux-step="text"]):not([data-ux-step="media"]):not([data-ux-step="motif"])) .ux-direct-edit,:host([data-ux-mobile="true"][data-ux-keyboard="true"]) .ux-direct-edit{display:none!important}
 
 /* Bearbeitungsbereich: ein Schritt je Bildschirm, scrollt unter der festen Platte. */
 :host([data-ux-mobile="true"]) .ux-editor{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 24px;overscroll-behavior:contain;display:flex;flex-direction:column}
@@ -38,8 +38,8 @@
 :host([data-ux-mobile="true"]) .ux-panel{border:0;padding:4px 0 12px;border-radius:0}
 :host([data-ux-mobile="true"]) .ux-panel h2{font-size:19px!important}
 :host([data-ux-mobile="true"]) #ux-panel-motif:not([hidden]){border-top:1px solid var(--ux-border);margin-top:8px;padding-top:14px}
-:host([data-ux-mobile="true"]) .ux-text-row{grid-template-columns:76px minmax(0,1fr)}
-:host([data-ux-mobile="true"]) .ux-text-row label{overflow-wrap:anywhere;font-size:14px}
+:host([data-ux-mobile="true"]) .ux-text-row{grid-template-columns:92px minmax(0,1fr)}
+:host([data-ux-mobile="true"]) .ux-text-row label{overflow-wrap:normal;word-break:normal;hyphens:auto;font-size:14px}
 :host([data-ux-mobile="true"]) .ux-text-row textarea{min-height:48px;font-size:16px!important}
 :host([data-ux-mobile="true"]) .ux-text-issue{display:block}
 
@@ -101,3 +101,6 @@
 
 /* Ziehen mit dem Finger: Geste gehört der Platte, nicht dem Seitenscrollen (Fehler 20.10.2026). */
 :host([data-ux-mobile="true"]) .ux-preview .scene,:host([data-ux-mobile="true"]) .ux-preview .plate-holder{touch-action:none!important}
+
+/* Feldnamen wie „Lebensdaten“ nicht mitten im Wort umbrechen (Silbentrennung statt „Lebensdate|n“) */
+.ux-fields label{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:normal;word-break:normal}

@@ -14,10 +14,6 @@
 :host([data-ux-neutral]) :is(input,textarea){border-color:#cbd1d8!important;accent-color:#555e68}
 :host([data-ux-neutral]) .ux-text-row.is-selected textarea{border-color:#59636f!important;background:#fafbfc!important}
 :host([data-ux-neutral]) :is(button,input,textarea,select,summary):focus-visible{outline-color:#59636f!important}
-:host([data-ux-neutral]) :is(.ux-direct-edit,.ux-direct-input){color:#353b42!important;border-color:#b8c0c9!important}
-:host([data-ux-neutral]) .ux-direct-edit button{color:#353b42!important}
-:host([data-ux-neutral]) .ux-direct-edit button[aria-pressed=true]{background:#e3e7ec!important;color:#242b33!important}
-:host([data-ux-neutral]) .ux-direct-edit [data-direct-done]{background:#343a40!important;color:white!important}
 :host([data-ux-neutral]) .ux-selection-handles button::before{border-color:#68717d!important}
 :host([data-ux-neutral]) :is(.stage,[data-mini-art]).ux-preview-changed::after{border-color:#59636f!important}
 :host([data-ux-neutral]) :is(.ux-upload-actions .ux-remove-upload,.ux-handle-delete){background:#b63e36!important;color:white!important}
@@ -34,3 +30,10 @@
 :host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) button:is(.ux-primary,.fk-buy-button,.completion-finish,[data-direct-done],.ux-photo-quick-apply,.ux-file-select){background:#343a40!important;color:#fff!important;border-color:#343a40!important}
 /* Fotoauswahl: Hauptaktion, nicht blass (dunkle Schrift auf grünem Grund wirkte deaktiviert). */
 :host([data-ux-neutral]) :is(.ux-shell,.ux-dialog) button.ux-file-select:hover{background:#22272d!important;color:#fff!important}
+
+/* Text-Werkzeugleiste farbig hervorgehoben (Chris 20.10.2026) – gilt auch im neutralen Stil */
+:host([data-ux-neutral]) .ux-direct-edit{background:#17634d!important;border-color:#17634d!important;color:#fff!important}
+:host([data-ux-neutral]) .ux-direct-edit button,:host([data-ux-neutral]) .ux-direct-edit label,:host([data-ux-neutral]) .ux-direct-edit input[type=number]{color:#fff!important}
+:host([data-ux-neutral]) .ux-direct-edit button[aria-pressed=true]{background:#ffffff40!important;color:#fff!important}
+:host([data-ux-neutral]) .ux-direct-edit [data-direct-done]{background:#fff!important;color:#17634d!important}
+:host([data-ux-neutral]) .ux-direct-input{color:#353b42!important;border-color:#17634d!important}

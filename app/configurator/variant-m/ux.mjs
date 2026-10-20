@@ -30,6 +30,7 @@ import {installAccountDrafts} from './account-drafts.mjs';
 import {installSurfaceTabs} from './surface-tabs.mjs';
 import {installBackgroundLoading} from './background-loading.mjs';
 import {installEdgeClamp} from './edge-clamp.mjs';
+import {fontDisplayName} from './font-display.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
@@ -242,7 +243,7 @@ export async function installUX(el,config,legacy){
       const issue=o.uxHidden||o.customerEditable===false?'':textFieldIssue(o),count=textLength(o.text)+'/'+limits.maxLength;row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
       const countNode=row.querySelector('[data-ux-text-count]'),issueNode=row.querySelector('[data-ux-text-issue]');if(countNode&&countNode.textContent!==count)countNode.textContent=count;if(issueNode&&issueNode.textContent!==issue)issueNode.textContent=issue;}
     const o=selected(),isText=o?.type==='text';$('.ux-controls').hidden=!isText;
-    if(isText){$('[data-ux-font-name]').textContent=o.font;if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
+    if(isText){$('[data-ux-font-name]').textContent=fontDisplayName(o.font);if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
   }
   function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=availableFonts();
     $('[data-ux=font-apply]').disabled=!fonts.includes(fontChoice)||!fontFits({...o,bold:false},fontChoice);
@@ -252,9 +253,9 @@ export async function installUX(el,config,legacy){
         unavailable=true;
         const sample=profile.designs.flatMap(d=>d.objects||[]).find(v=>v.type==='text'&&v.font===name&&v.text?.trim());
         text.text=sample?.text||Object.keys(el.fontData[name]?.regular?.glyphs||{}).filter(c=>c.trim()).slice(0,12).join('');
-        try{measureText(text,el.fontData);}catch{return `<button disabled><span>${esc(name)}</span><small>Keine Schriftprobe verfügbar</small></button>`;}
+        try{measureText(text,el.fontData);}catch{return `<button disabled><span>${esc(fontDisplayName(name))}</span><small>Keine Schriftprobe verfügbar</small></button>`;}
       }
-      return `<button type="button" data-ux-font="${esc(name)}" aria-pressed="${fontChoice===name}" aria-label="Schrift ${esc(name)}" ${unavailable?'disabled':''}><svg viewBox="${-text.w/2-2} ${-text.h/2-2} ${text.w+4} ${text.h+4}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" fill="#243a32"><g data-font-ink>${textPaths(text,el.fontData)}</g></svg><span>${esc(name)}${unavailable?'<small>Designbeispiel · Zeichen für deinen Text fehlen</small>':''}</span></button>`;
+      return `<button type="button" data-ux-font="${esc(name)}" aria-pressed="${fontChoice===name}" aria-label="Schrift ${esc(fontDisplayName(name))}" ${unavailable?'disabled':''}><svg viewBox="${-text.w/2-2} ${-text.h/2-2} ${text.w+4} ${text.h+4}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" fill="#243a32"><g data-font-ink>${textPaths(text,el.fontData)}</g></svg><span>${esc(fontDisplayName(name))}${unavailable?'<small>Designbeispiel · Zeichen für deinen Text fehlen</small>':''}</span></button>`;
     }).join(''):'<p>Für dieses Produkt sind keine weiteren Schriften freigegeben. Die Schrift aus deinem Design bleibt erhalten.</p>';
     // Letter advances omit calligraphic overhangs. Fit the actual ink once the
     // dialog is visible, so Safari and Chromium measure a rendered SVG.

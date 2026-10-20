@@ -1,0 +1,126 @@
+{
+  "purpose": "Kundenansicht lädt WebP; PNG-Originale für Fertigung und Referenz unverändert",
+  "generator": "scripts/build-preview-webp.py · Pillow WebP quality 82, method 6",
+  "files": [
+    {
+      "source": "app/designs/acrylic-unser-anfang/scene-empty-v2.png",
+      "sourceSha256": "0272e621528bb423ff699563061c940264fe9eeff3fa44bf1287658003ac1ca2",
+      "sourceBytes": 1259362,
+      "output": "app/designs/acrylic-unser-anfang/scene-empty-v2.webp",
+      "sha256": "ce78f7823fa03a49a40ef7e40bf86e48b94923a436ba060b5a30297ca26c4646",
+      "bytes": 19446,
+      "width": 1086,
+      "height": 1448,
+      "alpha": false,
+      "purpose": "Szenenhintergrund Acryl"
+    },
+    {
+      "source": "app/designs/acrylic-unser-anfang/reference.png",
+      "sourceSha256": "68b1000ddce2d1cd92446ed3565b75eab9e35680fea4d58a93d983447db44d74",
+      "sourceBytes": 1869856,
+      "output": "app/designs/acrylic-unser-anfang/reference.webp",
+      "sha256": "8030803bae4e423980101eaa8592f7fc7fdc4fc292e66640db234937a3e6fc33",
+      "bytes": 96632,
+      "width": 1086,
+      "height": 1448,
+      "alpha": false,
+      "purpose": "Beispielfoto im Fotofeld"
+    },
+    {
+      "source": "app/designs/acrylic-unser-anfang/base-buche-v2.png",
+      "sourceSha256": "4803dffa70e97d2d98c4e625442a59e594ed13df7879e87d2759413036fa8262",
+      "sourceBytes": 355594,
+      "output": "app/designs/acrylic-unser-anfang/base-buche-v2.webp",
+      "sha256": "abc871260285c54a07c743f831e15e11d5216e65c4d1c9cb2a1edb7a7a670f5a",
+      "bytes": 47418,
+      "width": 1086,
+      "height": 1448,
+      "alpha": true,
+      "purpose": "Sockelansicht"
+    },
+    {
+      "source": "app/designs/acrylic-unser-anfang/base-eiche-v2.png",
+      "sourceSha256": "60751404e382c9fab41c475f2458fcf26290cd83d02e8d82ba7061bb3b5965b6",
+      "sourceBytes": 310200,
+      "output": "app/designs/acrylic-unser-anfang/base-eiche-v2.webp",
+      "sha256": "a4392268fbcf3eecb89bfddf1056463af7532e5117c647567708942d6b0876ec",
+      "bytes": 45870,
+      "width": 1086,
+      "height": 1448,
+      "alpha": true,
+      "purpose": "Sockelansicht"
+    },
+    {
+      "source": "app/designs/acrylic-unser-anfang/base-holz-flach-v2.png",
+      "sourceSha256": "bafe3fe84800c9f9fbf0cc346267aa6748f56c3cbfe2324def0d17c587265d09",
+      "sourceBytes": 218123,
+      "output": "app/designs/acrylic-unser-anfang/base-holz-flach-v2.webp",
+      "sha256": "1e3426174bf44f046c8d0e74bb5c09a5dfe3490916accb53234c3b6f1e7533f6",
+      "bytes": 31082,
+      "width": 1086,
+      "height": 1448,
+      "alpha": true,
+      "purpose": "Sockelansicht"
+    },
+    {
+      "source": "app/designs/acrylic-unser-anfang/base-klar-v2.png",
+      "sourceSha256": "3c85ee8882f8c2b3778422b4e04b12943afa35018c0a55b18428cdcd308f08f1",
+      "sourceBytes": 240812,
+      "output": "app/designs/acrylic-unser-anfang/base-klar-v2.webp",
+      "sha256": "e223e2e72372092e05b0e09d1e55a9e226b2c7fbb0644401abbf10844ab93fe4",
+      "bytes": 44060,
+      "width": 1078,
+      "height": 1459,
+      "alpha": true,
+      "purpose": "Sockelansicht"
+    },
+    {
+      "source": "app/designs/acrylic-unser-anfang/base-nussbaum-v2.png",
+      "sourceSha256": "32c06de5557bfdb31125399ab1d33c70a2ae9f92a186c053e2b3eace841293c0",
+      "sourceBytes": 374283,
+      "output": "app/designs/acrylic-unser-anfang/base-nussbaum-v2.webp",
+      "sha256": "8ba23b19505108e2e2273a8d07f1a6f35e43d0bba241bff7a0a73b4815dcbb0f",
+      "bytes": 48542,
+      "width": 1086,
+      "height": 1448,
+      "alpha": true,
+      "purpose": "Sockelansicht"
+    },
+    {
+      "source": "app/designs/acrylic-unser-anfang/base-satiniert-v2.png",
+      "sourceSha256": "1ee601d7287ca59c62f13accbcb5c72512faac04cc716d13a7c2b4555a230b63",
+      "sourceBytes": 204381,
+      "output": "app/designs/acrylic-unser-anfang/base-satiniert-v2.webp",
+      "sha256": "cf737f3ed42aefed4cab7c9bfb44276c6091b141a9cdde88d8bf016377aec2fb",
+      "bytes": 22924,
+      "width": 1078,
+      "height": 1459,
+      "alpha": true,
+      "purpose": "Sockelansicht"
+    },
+    {
+      "source": "app/designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.png",
+      "sourceSha256": "27f4c392b3891b1923791bfce9b429a876a43f9374418693b863c87c691905ae",
+      "sourceBytes": 2590743,
+      "output": "app/designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.webp",
+      "sha256": "596b0cd79307e39b46536a21ee3fb108a4341a5a4f361aa90c4eaafbe574fa12",
+      "bytes": 42990,
+      "width": 400,
+      "height": 400,
+      "alpha": true,
+      "purpose": "Schraubenkopf (nur sichtbare Schraubbefestigung)"
+    },
+    {
+      "source": "app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png",
+      "sourceSha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6",
+      "sourceBytes": 1440952,
+      "output": "app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.webp",
+      "sha256": "50e74d27e1f6f49408396a856082bd92d3d7e5831486b50c7188e7f6a33ee4fb",
+      "bytes": 97754,
+      "width": 1536,
+      "height": 1024,
+      "alpha": false,
+      "purpose": "Edelstahloberfläche (nur Altpfad Edelstahl)"
+    }
+  ]
+}

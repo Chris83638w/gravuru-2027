@@ -77,6 +77,8 @@ export async function installUX(el,config,legacy){
   $('.fk-options h2').textContent='Material & Befestigung';
   $('#ux-panel-design').append($('.c-design-section'));
   $('#ux-panel-motif').append($('#panel-motif'));
+  // Ladezeit: Motivbibliothek laden, sobald der Motivbereich sichtbar wird (Reiter oder mobiler Schritt „Foto / Motiv“).
+  {const panel=$('#ux-panel-motif');if(panel&&el.uxEnsureMotifLibrary)new MutationObserver(()=>{if(!panel.hidden)el.uxEnsureMotifLibrary().catch(()=>{});}).observe(panel,{attributes:true,attributeFilter:['hidden']});}
   if($('[data-m-invalid]'))$('.ux-editor').append($('[data-m-invalid]'));
   for(const s of all('#panel-motif summary'))if(s.textContent.includes('Motivideen'))s.textContent='Bestseller Motive';
   $('[data-bestsellers]').open=false;
@@ -279,7 +281,10 @@ export async function installUX(el,config,legacy){
     if(storage)sessionGuard=createSessionGuard({storage,productId:profile.binding.productId,profileRevision:profile.revision,
       payload:()=>({draft:el.draftPayload({draft:true}),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
   }
-  function openFonts(){const o=selected();if(o?.type!=='text')return say('Bitte zuerst eine Textzeile auswählen.');fontObject=o.id;fontChoice=o.font;dialogs.font.showModal();renderFontPage();}
+  // Ladezeit: die Schriftproben brauchen die Konturen aller angebotenen Schriften (lazy-resources.mjs).
+  async function openFonts(){const o=selected();if(o?.type!=='text')return say('Bitte zuerst eine Textzeile auswählen.');fontObject=o.id;fontChoice=o.font;dialogs.font.showModal();
+    if(el.uxEnsureFonts){$('.ux-font-grid').innerHTML='<p role="status">Schriften werden geladen …</p>';$('[data-ux=font-apply]').disabled=true;try{await el.uxEnsureFonts(selectionIds(el.uxKnownFonts(),profileChoices?.fonts));}catch{$('.ux-font-grid').innerHTML='<p role="status">Die Schriften konnten nicht geladen werden. Bitte erneut öffnen.</p>';return;}if(!dialogs.font.open||fontObject!==o.id)return;}
+    renderFontPage();}
   function guide(key){const content={text:['Text ändern','Tippe auf eine Textzeile und ersetze den Beispieltext. Alle Änderungen siehst du sofort auf deinem Produkt.'],font:['Schrift & Größe','Wähle eine Textzeile und danach „Schrift ändern“. Du siehst deinen eigenen Text in jeder Schrift. Mit Plus und Minus änderst du die Größe. Der Schriftgrößenwert beträgt mindestens '+String(minTextMm).replace('.',',')+' mm.'],guides:['Mittig ausrichten','Aktiviere „Hilfslinien“ unten links im Produktbild. Wähle deinen Text und tippe auf „Mitte“. Beim Ziehen rastet er auch an der Mitte und den Kanten anderer Texte ein. Ankerpunkte zeigen dir die Textmitten, damit du Texte untereinander setzen kannst. Gestrichelte Linie = Gestaltungsrand: Elemente bleiben innerhalb dieser Linie. Rote Kreise markieren die Schutzzone um Bohrlöcher; Text dort ist nur ein Hinweis, keine Sperre.'],motif:['Deine Motive',config?.acrylic?'Vorlagenmotive bleiben fest platziert; ihre Farbe kannst du ändern. Eigene zusätzliche Motive kannst du in der Motivbibliothek hinzufügen und bearbeiten.':'Wähle Motive aus Bestsellern oder Kategorien. In „Ebenenverwaltung“ kannst du ein freigegebenes Motiv bearbeiten.'],upload:['Fotos & Logos',config?.acrylic?'Ein Foto ist enthalten. Tippe auf das Beispielfoto, um dein eigenes Foto an derselben Position einzusetzen. Ein weiterer Upload ersetzt dieses Foto. Der Hintergrund bleibt erhalten.':(config?.reviewOnly&&config.basePriceCents===null)?'Du kannst bis zu vier Fotos und Logos testen. Die Preise für dieses Produkt sind noch offen. Dein Bild erscheint direkt in der Vorschau. Zuschneiden öffnet die Bildbearbeitung.':'Du kannst bis zu vier Fotos und Logos zusammen hinzufügen. Jede sichtbare Datei kostet 9,99 Euro extra. Dein Bild erscheint direkt in der Vorschau. Über „Bild bearbeiten“ kannst du dein Foto zuschneiden, drehen oder spiegeln.'],save:['Entwurf speichern',config?.workbench?'Mit „Entwurf speichern“ sicherst du Text, Schrift und Positionen dauerhaft in der Produktanlage. Testfotos werden nicht als Vorlage gespeichert.':'Dein aktueller Stand bleibt auf diesem Gerät erhalten – auch wenn du die Seite neu lädst. Mit „Entwurf speichern“ legst du ihn mit Fotos für 90 Tage in deinem Kundenkonto ab und kannst ihn auf jedem Gerät wieder öffnen. Dafür meldest du dich kurz an oder registrierst dich. Nach dem bezahlten Kauf ist ein PNG-Download vorgesehen.']}[key];if(!content)return;
     if(['text','font','guides'].includes(key))showTab('text');else if(key==='motif')showTab('motif');else if(key==='upload')showTab('upload');
     $('[data-ux-help-content]').innerHTML=`<h3>${content[0]}</h3><p data-ux-guide-copy>${content[1]}</p>${button('speak','Erklärung anhören')}${button('stop-speaking','Stopp')}<p class="ux-small">Vorlesen mit der verfügbaren Gerätestimme.</p>`;
@@ -310,7 +315,7 @@ export async function installUX(el,config,legacy){
     if(action==='lock'){mutate(()=>{const o=el.state.objects.find(o=>o.id===b.dataset.id);if(o?.type==='motif-raster')return;o.uxLocked=!o.uxLocked;});return;}
     if(action==='remove-content'){const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked||o.locked||o.acrylicFixed)return;mutate(()=>{el.state.objects=el.state.objects.filter(v=>v.id!==o.id);if(el.state.selected===o.id)el.state.selected=null;});return;}
     if(['photo-upload','logo-upload','replace-upload','fill-photo-slot'].includes(action)){replacing=['replace-upload','fill-photo-slot'].includes(action)?b.dataset.id:null;uploadKind=replacing?(el.state.objects.find(o=>o.id===replacing)?.uxUploadKind||'photo'):action==='logo-upload'?'logo':'photo';$('[data-ux-file]').click();return;}
-    if(action==='add-text'){el.add({type:'text',text:'Dein Text',font:config?'Montserrat':'Nunito',size:10,bold:false});showTab('text');return;}
+    if(action==='add-text'){const font=config?'Montserrat':'Nunito';try{await el.uxEnsureFonts?.(profileChoices?.fonts?selectionIds(el.uxKnownFonts(),profileChoices.fonts):[font]);}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
     if(action==='smaller'||action==='bigger'){changeObject('size',(selected()?displayTextSize(selected()):minTextMm)+(action==='bigger'?1:-1));return;}
     if(action==='bold'||action==='italic'){changeObject(action,!selected()?.[action]);return;}
     if(['left','center','right'].includes(action)){if(el.uxAlign){el.uxAlign(action);return;}const o=selected();if(o)changeObject('x',action==='center'?width/2:action==='left'?o.w/2+8:width-o.w/2-8);return;}
@@ -372,6 +377,8 @@ export async function installUX(el,config,legacy){
   function startUnselected(){r.activeElement?.blur();el.multiSelecting=false;el.state.selected=null;el.centerSuggestion=null;showTab(config?.productPreview?'design':'options');el.sync();}
   window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===window.parent&&e.data?.type==='gravuru-ux-open')startUnselected();});
   addDecoration();el.normalize();startUnselected();
+  // Ladezeit: Schriften/Motive des gesicherten Stands vor dem (synchronen) Wiederherstellen laden.
+  if(sessionGuard&&!config?.workbench&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
   if(sessionGuard&&!config?.workbench){
     try{initialDraft=el.draftPayload({draft:true});}catch{initialDraft=null;}
     const recovered=initialDraft?sessionGuard.recover():null;

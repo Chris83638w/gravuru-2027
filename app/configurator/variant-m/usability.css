@@ -195,7 +195,7 @@
  .ux-preview-size{top:56px!important;bottom:111px!important}
  .ux-shell .ux-mini:not([hidden]){height:132px!important;gap:14px;padding:6px 12px!important}
  .ux-mini [data-mini-art]{height:117.6px!important;width:103.2px!important;flex:none}
- .ux-mini [data-mini-art] svg{width:100%!important;height:100%!important;max-height:none!important;max-width:none!important;margin:0!important}
+ .ux-mini [data-mini-art]>svg{width:100%!important;height:100%!important;max-height:none!important;max-width:none!important;margin:0!important}
  .ux-shell[data-mini-visible=true] .ux-tabbar{top:132px!important}
  .ux-shell[data-mini-visible=true] .ux-panel{scroll-margin-top:198px}
  .ux-mini small{font-size:12px!important}

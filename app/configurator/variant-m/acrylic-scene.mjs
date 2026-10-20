@@ -2,6 +2,7 @@ import {previewResourceURL} from './preview-resource.mjs';
 import {ACRYLIC_BASES,acrylicSelection,acrylicOptions,containAcrylicObject} from './acrylic-product.mjs';
 import {money,quote} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
+// Kundenansicht: WebP-Fassungen (customer-images.json); PNG-Originale bleiben für Fertigung/Referenz.
 const ROOT='/acrylic-assets/';
 export async function installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles}) {
  if(!config?.acrylic)return;
@@ -9,7 +10,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  const css=document.createElement('style');css.textContent=await fetch('/configurator/variant-m/acrylic-scene.css').then(r=>r.text());r.append(css);
  r.host.dataset.acrylicScene='true';
  const stage=$('.stage');stage.classList.add('acryl-scene');
- const scene=document.createElement('img');scene.className='acryl-backdrop';scene.src=config.sceneBackground||ROOT+'scene-empty-v2.png';scene.alt='Szenenhintergrund der Produktvorschau';
+ const scene=document.createElement('img');scene.className='acryl-backdrop';scene.src=config.sceneBackground||ROOT+'scene-empty-v2.webp';scene.alt='Szenenhintergrund der Produktvorschau';
  const base=document.createElement('img');base.className='acryl-base';base.alt='Gewählter Sockel';base.hidden=true;
  const baseBack=base.cloneNode();baseBack.classList.add('acryl-base-back');baseBack.alt='';baseBack.setAttribute('aria-hidden','true');
  stage.prepend(scene);stage.append(baseBack,base);
@@ -23,7 +24,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    if(o.id!=='photo-main'||files.has(o.uxUploadId))return rawSVG(o);
    if(o.uxHidden)return '';
    const exampleResource=config.localResources?.photoExamples?.find(e=>e.designId===el.state.designId&&e.slotId===o.id);
-   const asset=files.get(o.uxUploadId),url=asset?.url||(exampleResource?previewResourceURL('/api/workshop/design-assets/'+exampleResource.assetId+'/preview.svg'):ROOT+'reference.png');
+   const asset=files.get(o.uxUploadId),url=asset?.url||(exampleResource?previewResourceURL('/api/workshop/design-assets/'+exampleResource.assetId+'/preview.svg'):ROOT+'reference.webp');
    const src=String(url).replaceAll('&','&amp;').replaceAll('"','&quot;');
    const example=!asset;
    const picture=example&&!exampleResource?`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="130 101 827 708" preserveAspectRatio="xMidYMid slice"><image href="${src}" width="1086" height="1448"/></svg>`:`<image href="${src}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="xMidYMid slice"/>`;
@@ -64,7 +65,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    if(b.asset){
      const anchor=baseAnchors[b.asset],scale=912/(anchor.right-anchor.left),slot=1246-b.insertionMm*1196/choice.size.height;
      for(const layer of [base,baseBack]){
-       const src=ROOT+b.asset.replace('.png','-v2.png');if(layer.getAttribute('src')!==src)layer.src=src;
+       const src=ROOT+b.asset.replace('.png','-v2.webp');if(layer.getAttribute('src')!==src)layer.src=src;
        layer.style.width=(anchor.width*scale/1086*100)+'%';layer.style.height='auto';
        layer.style.left=((542-(anchor.left+anchor.right)/2*scale)/1086*100)+'%';
        layer.style.top=((slot-anchor.slot*scale)/1448*100)+'%';

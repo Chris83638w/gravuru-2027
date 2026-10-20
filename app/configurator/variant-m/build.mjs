@@ -9,9 +9,12 @@ import {localAssistant,ACRYLIC_GUIDES} from './help.mjs';
 
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {writeLazyResources,patchEditorLoading} from './lazy-resources-build.mjs';
 export const HERE=path.dirname(fileURLToPath(import.meta.url));
 export const ROOT=path.resolve(HERE,'../..');
 export const OUTPUT=path.join(HERE,'.preview');
+// Gemeinsame, beim Build abgeleitete Nachladeteile (lazy-resources-build.mjs); Server-Route /_runtime/lazy/.
+export const LAZY=path.join(OUTPUT,'lazy');
 const read=file=>JSON.parse(fs.readFileSync(path.join(ROOT,file),'utf8').replace(/^\uFEFF/,''));
 export function build({outputDirectory=OUTPUT}={}){
   // Immutable inputs are checked against their existing inventory, not a refreshed baseline.
@@ -47,6 +50,8 @@ export function build({outputDirectory=OUTPUT}={}){
   let source=fs.readFileSync(path.join(ROOT,'references/aosu-upgrade-2026-09-21/verification/editor-source.html'),'utf8');
   function replaceOnce(from,to){if(source.split(from).length!==2)throw Error('M-Anker ist nicht eindeutig: '+from.slice(0,90));source=source.replace(from,to);}
   const urls=JSON.parse(source.match(/<script[^>]*id="preview-urls"[^>]*>([\s\S]*?)<\/script>/)[1]);
+  // Ladezeit: Katalog, Schriften und Motive zusätzlich als einzeln ladbare Teile (/_runtime/lazy/).
+  const lazy=writeLazyResources(LAZY,path.join(ROOT,'designs/aosu-labrador/runtime'),urls);
   for(const [key,value] of Object.entries(urls))urls[key]=Array.isArray(value)?value.map(u=>'/_runtime/'+u.split('/').pop()):'/_runtime/'+value.split('/').pop();
   source=source.replace(/(<script[^>]*id="preview-urls"[^>]*>)[\s\S]*?(<\/script>)/,(_,a,b)=>a+JSON.stringify(urls)+b);
   replaceOnce('<base href="/" target="_top">','');
@@ -80,11 +85,12 @@ export function build({outputDirectory=OUTPUT}={}){
   replaceOnce('await customElements.whenDefined(\'gravuru-configurator\');',
     "window.GravuruProfileChoices=await import('/configurator/variant-m/profile-selection.mjs');window.GravuruPreviewResource=await import('/configurator/variant-m/preview-resource.mjs');const adapter=await import('/configurator/variant-m/adapter.mjs');if(window.parent.UniversalConfig)adapter.installUniversal(window.parent.UniversalConfig);await customElements.whenDefined('gravuru-configurator');");
   replaceOnce('prepareMotifGeometry(entries);',
-    'if(!window.parent.UniversalConfig){Object.assign(catalog.fonts,window.parent.LabradorFonts);entries.unshift(window.parent.LabradorMotif);}const localResources=window.parent.UniversalConfig?.localResources;if(localResources)Object.assign(catalog.fonts,localResources.fonts);prepareMotifGeometry(entries);if(localResources)entries.unshift(...localResources.motifs.map(m=>({...m,svgFragment:window.GravuruPreviewResource.previewResourceMarkup(m.svgFragment)})));window.GravuruTemplateOnlyMotifKeys=new Set((localResources?.motifs||[]).filter(m=>m.embeddedOnly===true||localResources.motive_in_bibliothek===false).map(m=>m.key));window.GravuruMotifCategories=window.GravuruProfileChoices.motifChoices(entries,window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys).map(({key,name,category})=>({key,name,category}));');
+    'if(!window.parent.UniversalConfig){Object.assign(catalog.fonts,window.parent.LabradorFonts);entries.unshift(window.parent.LabradorMotif);}const localResources=window.parent.UniversalConfig?.localResources;if(localResources)Object.assign(catalog.fonts,localResources.fonts);prepareMotifGeometry(entries.filter(e=>typeof e.svgFragment===\'string\'));if(localResources)entries.unshift(...localResources.motifs.map(m=>({...m,svgFragment:window.GravuruPreviewResource.previewResourceMarkup(m.svgFragment)})));window.GravuruTemplateOnlyMotifKeys=new Set((localResources?.motifs||[]).filter(m=>m.embeddedOnly===true||localResources.motive_in_bibliothek===false).map(m=>m.key));window.GravuruMotifCategories=window.GravuruProfileChoices.motifChoices(entries,window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys).map(({key,name,category})=>({key,name,category}));');
   replaceOnce('await mount(form.value);',
     "await mount(form.value);const specimen=host.querySelector('gravuru-configurator');if(!window.parent.UniversalConfig){specimen.chooseDesign('FK-LABRADOR-MICHROMA-01');adapter.hardenDoorbell(specimen);}specimen.$('[data-setting=guides]').checked=false;specimen.cfg.orderEnabled=false;specimen.cfg.demo=true;specimen.sync();const ux=await import('/configurator/variant-m/ux.mjs');await ux.installUX(specimen,window.parent.UniversalConfig,window.parent.GravuruModelProfile);");
   for(const item of read('designs/aosu-labrador/image-source-verification.json'))source=source.replaceAll(item.url,'/_runtime/images/'+item.name);
+  source=patchEditorLoading(source);
   fs.writeFileSync(path.join(outputDirectory,'editor.html'),source);
-  return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source)};
+  return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source),lazyResources:{fonts:lazy.fonts,motifs:lazy.motifs}};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))console.log(JSON.stringify(build()));

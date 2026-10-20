@@ -190,7 +190,7 @@ export function installUniversal(configInput) {
     // K7: Entwurf im Vertragsformat lesen/schreiben (Sitzungsschutz, Konto-Entwurf). `draft:true` erlaubt unfertige Pflichttexte.
     el.restoreDraft=function(input,{draft=false}={}){const restored=readDraft(config,input,this.fontData,motifs(),{draft});this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);this.state.selected=null;photos.clear();photoDesign='';this.sync();return restored;};
     el.draftPayload=function({draft=false}={}){return saveDraft(config,this.state,options,this.fontData,motifs(),{draft});};
-    el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');this.restoreDraft(JSON.parse(await file.text()));$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
+    el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const input=JSON.parse(await file.text());await this.uxEnsureDraftResources?.(input);this.restoreDraft(input);$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
     el.chooseDesign=function(id){
       const d=p.designs.find(d=>d.id===id);if(!d)return;
       this.record();const texts=editedDesignTexts(config,this.state);

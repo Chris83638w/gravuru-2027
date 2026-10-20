@@ -4,6 +4,8 @@
 Aufruf:
   python3 -I scripts/read-pdf-designs.py --pdf <ordner> --out <katalog>/designs/bestand/<linie> \
       [--zuordnung <json>] [--serie <schlüssel>] [--prozess Gravur]
+  Zuordnung je Design: zielgruppe, unterkategorie, themen, textFix, hinweis, gesperrt (bleibt im Katalog,
+  ohne Themen) oder weglassen (wird nicht erzeugt).
 
 Je PDF entsteht ein Ordner `<Zielgruppe>/<Unterkategorie>/<serie>-D<n>/` mit
   design.json   Texte (echter Text, Schrift, Größe, Grundlinie), Motive (Pfade in mm), Fotofeld
@@ -507,6 +509,8 @@ def main():
         d = read_pdf(pdf, a.serie, a.prozess)
         key = f'D{d["designNo"]}'
         z = zu.get(key, {})
+        if z.get('weglassen'):  # Entscheidung Chris: Design gehört nicht in die Linie
+            print(f'{key}: weggelassen – {z.get("hinweis", "")}'); continue
         tgt = out / d['id'] if a.flach else out / z.get('zielgruppe', 'Unsortiert') / z.get('unterkategorie', 'Allgemein') / d['katalog']['key']
         tgt.mkdir(parents=True, exist_ok=True)
         for t in d['texts']:  # sichtbar geprüfte Korrekturen (z. B. Ligatur ohne lesbaren Glyphnamen)

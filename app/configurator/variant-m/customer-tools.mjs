@@ -1,4 +1,4 @@
-import {showOverlapWarnings,editableTexts,centerTexts,mechanicalHints,hintKey,motifScore} from './customer-tools-model.mjs';
+import {showOverlapWarnings,editableTexts,centerTexts,mechanicalHints,hintKey,motifScore,templateOverlap} from './customer-tools-model.mjs';
 import {themeDefinition,orderMotifCategories} from './design-gallery-model.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
@@ -76,7 +76,7 @@ export async function installCustomerTools(api){
    }catch{if(run!==serial)return;checkError='Überlagerungen konnten nicht geprüft werden. Bitte die Vorschau kontrollieren.';updateHints();}
   },180);
  }
- function currentHints(){const key=JSON.stringify([el.state.width,el.state.height,el.state.objects]);const overlaps=showOverlapWarnings(config?.profile||profile)&&el.uxOverlapResult?.key===key?el.uxOverlapResult.ids.filter(ids=>ids.every(id=>el.state.objects.some(o=>o.id===id&&!o.uxHidden))&&!(config?.acrylic&&ids.includes("photo-frame")&&ids.includes("photo-main"))).map(ids=>({code:'overlap',ids,message:'Die markierten Elemente überlagern sich. Ist das beabsichtigt, kannst du diesen Hinweis ignorieren.'})):[];
+ function currentHints(){const key=JSON.stringify([el.state.width,el.state.height,el.state.objects]);const overlaps=showOverlapWarnings(config?.profile||profile)&&el.uxOverlapResult?.key===key?el.uxOverlapResult.ids.filter(ids=>ids.every(id=>el.state.objects.some(o=>o.id===id&&!o.uxHidden))&&!(config?.acrylic&&ids.includes("photo-frame")&&ids.includes("photo-main"))&&!templateOverlap(ids,el.state.objects,(config?.profile||profile)?.designs?.find(d=>d.id===el.state.designId))).map(ids=>({code:'overlap',ids,message:'Die markierten Elemente überlagern sich. Ist das beabsichtigt, kannst du diesen Hinweis ignorieren.'})):[];
   return [...overlaps,...mechanicalHints(profile,el.state)].map(h=>({...h,key:hintKey(h,el.state.objects,[el.state.designId,el.state.fkFrame,el.state.fkMounting])}));}
  function draw(){const scene=$('.scene');scene?.querySelector('[data-customer-highlights]')?.remove();if(!scene)return;const ns='http://www.w3.org/2000/svg',group=document.createElementNS(ns,'g');group.dataset.customerHighlights='';group.setAttribute('pointer-events','none');
   const marked=new Set([...(multi?ids:[]),...(shown?.ids||[])]);

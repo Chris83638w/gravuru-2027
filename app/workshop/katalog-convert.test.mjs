@@ -6,6 +6,7 @@ import {parseDesignSvg,pathBounds,katalogDesignToTemplate,formatSeries,seriesOf,
 import {workshopResources} from './catalog.mjs';
 import {resolveProduct,validateProductDesign} from './product-model.mjs';
 import {localFontIds} from '../configurator/variant-m/local-pilot.mjs';
+import {validateFamily,familyGaps} from './product-families.mjs';
 
 const FIXTURE=fileURLToPath(new URL('./fixtures/katalog/',import.meta.url));
 const katalog=()=>openKatalog(FIXTURE);
@@ -137,7 +138,7 @@ test('Familie → Produkt: Preise in Cent mit Überschreibung, Thema, Rechte, Vo
  // Das Produkt ist über den Vertrag nutzbar: Preis, Pflichtfeld, gesperrtes Motiv.
  const resolved=resolveProduct(d,{options:{mounting:'B02'}});assert.equal(resolved.price.unitCents,1398);assert.equal(resolved.physical.widthMm,90);
  const design=structuredClone(resolved.design);
- assert.throws(()=>validateProductDesign(d,design,{options:{mounting:'B02'}}),/Bitte das Feld „name“ ausfüllen/);
+ assert.throws(()=>validateProductDesign(d,design,{options:{mounting:'B02'}}),/Bitte das Feld „Name“ ausfüllen/);
  design.objects[2].text='Familie Koch';validateProductDesign(d,design,{options:{mounting:'B02'}});
  design.objects[0].x+=5;assert.throws(()=>validateProductDesign(d,{...design},{options:{mounting:'B02'}}),/darf nicht verändert werden/);
  // Offener Preis blockiert, auch wenn die Größe angeboten wird; nicht angebotene Größe ebenso.
@@ -174,4 +175,12 @@ test('Gedenktafel 22 × 14 (20.10.2026): movable verschiebt alle Elemente, Fotof
  assert.deepEqual(c.localResources.photoExamples,[{designId:'katalog-pdf-a',slotId:'foto-1',assetId:asset}]);
  assert.deepEqual(c.photo.hints,[{designId:'katalog-pdf-a',slotId:'foto-1',text:'Foto-Upload hier klicken',enabled:false}]);
  assert.throws(()=>katalogFamilyToProduct(f,line,{...namen,startDesign:'fehlt'},{size,fonts:fonts(),templates:[t(fixed)]}),/Startdesign „fehlt“/);
+ // Ohne Fotopreis der Familie bleibt die bisherige Vorgabe; mit Fotopreis: 1. Foto inklusive, weiteres 8,99 €.
+ assert.equal(c.photo.includedCount,0);assert.equal(c.photo.extraPriceCents,0);
+ const priced={...f,photo:{includedCount:1,extraPriceCents:899}};
+ const q=katalogFamilyToProduct(priced,line,sub,{size,fonts:fonts(),templates:[t(r,[{slotId:'foto-1',assetId:asset}])]}).document.config.photo;
+ assert.equal(q.enabled,true);assert.equal(q.includedCount,1);assert.equal(q.extraPriceCents,899);
+ assert.throws(()=>validateFamily({...f,photo:{includedCount:5,extraPriceCents:899}}),/Fotopreis/);
+ assert.throws(()=>validateFamily({...f,photo:{includedCount:1,extraPriceCents:899,preis:1}}),/unbekannte Felder/);
+ assert.ok(familyGaps({...f,photo:{includedCount:1,extraPriceCents:null}}).includes('Aufpreis weiteres Foto'));
 });

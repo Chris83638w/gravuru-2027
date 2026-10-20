@@ -133,10 +133,10 @@ test('object limit overrides theme and product theme; client-side limits are ign
 });
 test('required text must differ from the template sample text',()=>{
  const cfg=themed({},{required:true}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');
- assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „name“ ausfüllen\./);
- name.text=' balu ';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „name“ ausfüllen\./);
- name.uxHidden=true;name.text='Luna';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „name“ ausfüllen\./);
- delete name.uxHidden;s.objects=s.objects.filter(o=>o.id!==name.id);assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „name“ ausfüllen\./);
+ assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
+ name.text=' balu ';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
+ name.uxHidden=true;name.text='Luna';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
+ delete name.uxHidden;s.objects=s.objects.filter(o=>o.id!==name.id);assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
  // Der Kunde kann das Pflichtkennzeichen nicht selbst abschalten.
  const t=themedState(cfg);Object.assign(t.objects.find(o=>o.fieldKey==='name'),{required:false});assert.throws(()=>themedSave(cfg,t),/ausfüllen/);
  assert.throws(()=>themed({},{required:'ja'}),/Pflichtfeld/);assert.throws(()=>themed({},{required:true,customerEditable:false}),/bearbeitbar/);

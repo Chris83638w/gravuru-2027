@@ -46,9 +46,10 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
   el.uxEnsureAllFonts=()=>el.uxEnsureFonts(fontIndex.map(f=>f.name));
   // Hintergrund (preload-queue.mjs): Schriften einzeln nacheinander mit niedriger Priorität. Eine laufende
   // Schrift teilt sich die Anfrage mit uxEnsureFonts (Merker `fonts`), nichts wird doppelt geladen.
-  el.uxPrefetchFonts=async({priority='low'}={})=>{
+  el.uxPrefetchFonts=async({priority='low',names=null}={})=>{
     let added=0;
-    for(const font of lazyUrls({fonts:fontIndex.map(f=>f.name)},{fontIndex},base).fonts){
+    const wanted=names?fontIndex.map(f=>f.name).filter(n=>names.includes(n)):fontIndex.map(f=>f.name);
+    for(const font of lazyUrls({fonts:wanted},{fontIndex},base).fonts){
       if(el.fontData[font.name])continue;
       const data=await loadFont(font,url=>get(url,{priority}));
       if(!el.fontData[font.name]){addFont(font.name,data);added++;}

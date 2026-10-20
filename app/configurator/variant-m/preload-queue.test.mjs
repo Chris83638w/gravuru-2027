@@ -158,3 +158,24 @@ test('Kundenoberfläche startet die Ladefolge erst am Ende von installUX',()=>{
   assert.ok(ready>0&&install>ready,'nach der fertigen Oberfläche');
   assert.ok(ux.indexOf("r.host.dataset.uxNeutral=")<install);
 });
+
+// Entscheidung 20.10.2026: Handy mit Mobilfunk lädt im Hintergrund nur die empfohlenen Schriften,
+// alle Schriften und die Motivbibliothek erst auf Anforderung; WLAN/Desktop alles.
+import {preloadScope,RECOMMENDED_FONTS} from './background-loading.mjs';
+test('Vorlade-Umfang: WLAN/Desktop voll, Handy/Mobilfunk leicht',()=>{
+  const win=(type,coarse)=>({navigator:{connection:type?{type}:undefined},matchMedia:()=>({matches:coarse})});
+  assert.equal(preloadScope(win('wifi',true)),'full');
+  assert.equal(preloadScope(win('ethernet',false)),'full');
+  assert.equal(preloadScope(win('cellular',true)),'light');
+  assert.equal(preloadScope(win(undefined,true)),'light','iOS ohne Angabe');
+  assert.equal(preloadScope(win(undefined,false)),'full','Desktop ohne Angabe');
+  assert.deepEqual([...RECOMMENDED_FONTS],['Montserrat','Nunito','Lora','Caveat','Allura','Dancing Script']);
+});
+test('saveData never: läuft nie im Hintergrund, aber auf Anforderung',async()=>{
+  const ran=[];const q=createPreloadQueue({idle:cb=>cb()});
+  q.add('a',{background:async()=>ran.push('a')});
+  q.add('b',{background:async()=>ran.push('b-bg'),now:async()=>ran.push('b-now'),saveData:'never'});
+  q.start();await new Promise(r=>setTimeout(r,10));
+  assert.deepEqual(ran,['a']);assert.equal(q.state('b'),'skipped');
+  await q.request('b');assert.deepEqual(ran,['a','b-now']);assert.equal(q.state('b'),'done');
+});

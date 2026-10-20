@@ -12,6 +12,19 @@ export function optionImageUrls(config){
   return [...urls];
 }
 
+// Umfang des Hintergrund-Vorladens (Entscheidung 20.10.2026): Vollständig (alle Schriften + Motivbibliothek,
+// ~9 MB) nur bei unbegrenzter Verbindung (WLAN/Ethernet laut navigator.connection.type) oder am Desktop ohne
+// Angabe. Am Handy/Tablet mit Mobilfunk oder ohne Angabe (iOS liefert keine) nur die empfohlenen Schriften
+// (dieselbe Liste wie „Unsere Empfehlungen“ der Schriftauswahl); alle Schriften und Motive erst auf Anforderung.
+export const RECOMMENDED_FONTS=Object.freeze(['Montserrat','Nunito','Lora','Caveat','Allura','Dancing Script']);
+export function preloadScope(win=globalThis){
+  const type=win.navigator?.connection?.type;
+  if(type==='wifi'||type==='ethernet')return 'full';
+  if(type)return 'light';
+  const coarse=typeof win.matchMedia==='function'&&win.matchMedia('(pointer: coarse)').matches;
+  return coarse?'light':'full';
+}
+
 // Welcher Bereich nach einer Kundenaktion sichtbar ist → welche Aufgabe vorgezogen wird.
 export const PANEL_TASKS=[['#ux-panel-options','images'],['#ux-panel-text','fonts'],['#ux-panel-motif','motifs']];
 
@@ -31,8 +44,13 @@ export function installBackgroundLoading({el,r,config,win=window}){
   const urls=optionImageUrls(config);
   queue.add('images',{background:async()=>{for(const url of urls)await loadImage(url,'low');},now:()=>Promise.all(urls.map(url=>loadImage(url,'high')))});
   const ensureAllFonts=el.uxEnsureAllFonts,ensureLibrary=el.uxEnsureMotifLibrary;
-  queue.add('fonts',{background:()=>el.uxPrefetchFonts?.({priority:'low'}),now:()=>ensureAllFonts?.()});
-  queue.add('motifs',{background:()=>ensureLibrary?.({priority:'low'}),now:()=>ensureLibrary?.(),saveData:'skip'});
+  const scope=preloadScope(win);el.uxPreloadScope=scope;
+  const light=scope==='light';
+  // Leicht: erst die empfohlenen Schriften im Hintergrund; „alle Schriften“ bleibt offen und lädt bei Bedarf
+  // (Schriftauswahl), damit eine vorgezogene Anforderung nie an einer nur teilweise erledigten Aufgabe endet.
+  if(light)queue.add('fonts-recommended',{background:()=>el.uxPrefetchFonts?.({priority:'low',names:RECOMMENDED_FONTS}),now:()=>el.uxEnsureFonts?.(RECOMMENDED_FONTS)});
+  queue.add('fonts',{background:()=>el.uxPrefetchFonts?.({priority:'low'}),now:()=>ensureAllFonts?.(),saveData:light?'never':'load'});
+  queue.add('motifs',{background:()=>ensureLibrary?.({priority:'low'}),now:()=>ensureLibrary?.(),saveData:light?'never':'skip'});
   // Bestehende Aufrufer (Reiter „Motive“, Schriftauswahl) laufen über die Warteschlange und ziehen vor.
   if(ensureAllFonts)el.uxEnsureAllFonts=()=>queue.request('fonts');
   if(ensureLibrary)el.uxEnsureMotifLibrary=(options={})=>options.priority==='low'?ensureLibrary(options):queue.request('motifs');

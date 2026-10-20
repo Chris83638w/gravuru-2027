@@ -5,7 +5,8 @@
 // sofort vorgezogen (request). Doppelte Downloads verhindern die Lader selbst (laufende Anfrage wird
 // wiederverwendet, lazy-resources.mjs/background-loading.mjs); die Warteschlange startet jede Aufgabe im
 // Hintergrund höchstens einmal und überspringt erledigte. Datensparmodus/2G: Aufgaben mit `saveData:'skip'`
-// laufen nicht im Hintergrund, nur auf Anforderung. Ohne DOM, in Node prüfbar.
+// laufen nicht im Hintergrund, nur auf Anforderung; `saveData:'never'` nie im Hintergrund (z. B. Handy
+// mit Mobilfunk, background-loading.mjs preloadScope). Ohne DOM, in Node prüfbar.
 
 // Datensparen: navigator.connection.saveData oder effectiveType 2g/slow-2g.
 export function saveDataActive(connection){
@@ -34,7 +35,7 @@ export function createPreloadQueue({idle=idleScheduler(),connection=null,onEvent
     idle(()=>{
       // Inzwischen vorgezogen oder erledigt: nichts doppelt starten.
       if(task.state!=='queued'){running=false;return next();}
-      if(saving&&task.saveData==='skip'){task.state='skipped';emit('skipped',task.key,{reason:'saveData'});running=false;return next();}
+      if(task.saveData==='never'||saving&&task.saveData==='skip'){task.state='skipped';emit('skipped',task.key,{reason:'saveData'});running=false;return next();}
       task.state='background';emit('start',task.key,{mode:'background'});
       settle(task,Promise.resolve().then(()=>task.background()),'background').catch(()=>{}).finally(()=>{running=false;next();});
     });

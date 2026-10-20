@@ -1272,5 +1272,46 @@ class TestDesignOverlaysAusCorel(Basis):
         self.assertEqual(gen['vorlageMm']['220x140']['boxMm'], hand['vorlageMm']['220x140']['boxMm'])
 
 
+# --------------------------------------------------------------------------------------------------
+# Motiv/Text-Überlappung (Corel setzt das Motiv aus der Vorlage der bestellten Größe)
+# --------------------------------------------------------------------------------------------------
+
+class TestMotivTextUeberlappung(Basis):
+    def mapping_mit_vorlage(self, box):
+        tmp = Path(tempfile.mkdtemp(dir=self.tmp))
+        for n in ('asin-mapping.json', 'font-aliases.json'):
+            shutil.copy(MAPPING / n, tmp / n)
+        ov = json.loads((MAPPING / 'design-overlays.json').read_text(encoding='utf-8'))
+        ov['gedenktafeln']['201']['vorlageMm']['220x140']['boxMm'] = box
+        (tmp / 'design-overlays.json').write_text(json.dumps(ov), encoding='utf-8')
+        return imp.Mapping(tmp)
+
+    def codes(self, mapping=None):
+        r, out = self.lauf(baue_bestellung(self.katalog), mapping=mapping)
+        p = r['positionen'][0]
+        self.assertEqual(p['status'], 'ok', p['fehler'])
+        b = json.loads((out / p['ordner'] / 'bestellung.json').read_text(encoding='utf-8'))
+        return [w for w in b['warnings'] if w['code'].startswith('motiv_text')], b
+
+    def test_referenz_ohne_ueberlappung(self):
+        w, _ = self.codes()
+        self.assertEqual(w, [])
+
+    def test_neue_ueberlappung_durch_vorlage(self):
+        # Vorlage legt das Motiv mitten auf den Namen (text-1), im Konfigurator lag es getrennt daneben
+        _, b = self.codes()
+        t1 = next(f for f in b['fields'] if f['id'] == 'text-1')['bboxMm']
+        box = [(t1[0] + t1[2]) / 2 - 10, (t1[1] + t1[3]) / 2 - 8, 20, 16]
+        w, _ = self.codes(self.mapping_mit_vorlage(box))
+        self.assertIn('motiv_text_ueberlappung_neu', [x['code'] for x in w])
+        self.assertTrue(any('text-1' in x['text'] for x in w))
+
+    def test_hilfsfunktionen(self):
+        self.assertEqual(imp.ueberlappung([0, 0, 10, 10], [5, 5, 20, 20]), (5, 5))
+        self.assertEqual(imp.ueberlappung([0, 0, 10, 10], [11, 0, 20, 10]), (0.0, 10))
+        r = imp.eingepasst([0, 0, 20, 10], 4, 4)                      # quadratisches Motiv in 20×10: 10×10 mittig
+        self.assertEqual([round(v, 6) for v in r], [5, 0, 15, 10])
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=1)

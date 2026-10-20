@@ -1,3 +1,7 @@
+## K15: Prüfung Motiv/Text-Überlappung je Bestellung (nicht installiert) · 20.10.2026
+
+Entscheidung Chris: Konfigurator und Corel-Vorlagen bleiben wie bisher. Importer meldet je Bestellung `motiv_text_ueberlappung_neu`, wenn Motiv und Kundentext erst durch die versetzte Corel-Vorlage überlappen (vor dem Gravieren prüfen), bzw. `motiv_text_ueberlappung`, wenn der Kunde es so gesehen hat. Tests 98/98 mit echtem Katalog; echte Referenzbestellung ohne Fehlalarm. **Nächster Schritt:** zweiter Paritätslauf mit Design großen Versatzes (z. B. D270, D271, D77, D235, D5) auf 22×14.
+
 ## K15: Motivlagen aller Schiefer-Gravur-Designs aus Corel-CDRs (nicht installiert) · 20.10.2026
 
 `scripts/build-design-overlays-from-corel.py` → `amazon/design-overlays.corel.json` (156 Designs, Konfigurator-Lage aus 30×20, Vorlagenlage 22×14 und 30×20); Importer nutzt sie, handgepflegte `design-overlays.json` hat Vorrang. 314 CDRs nur als Kopie gelesen, auf V: nichts geschrieben. Tests 95/95 mit echtem Katalog (neu: Rohtext-Parser, Bézier-Box, Nennmaß-Schlüssel, Vorrang). **Befund:** Bei 22×14-Bestellungen weicht das Motiv in Corel bei 134 von 154 Designs um mehr als 1 mm, bei 19 um mehr als 10 mm von der Kundenansicht ab ([Bericht](docs/reviews/K15-PARITAET-COREL-20261020.md)). **Offen:** Entscheidung Konfigurator-Bild je Größe vs. Vorlagen angleichen; weitere Größen (14x22, 20x15, 40x30 …) mit demselben Skript; Schriften. **Nächster Schritt:** zweiter Paritätslauf mit anderem Design/anderer Größe.

@@ -48,6 +48,7 @@ KONFI_PX = 400.0          # Amazon-Konfigurator-Raster (Corel: AmazonExport.getA
 KONFI_RAND_PX = 10.0      # Rand je Seite (Corel: getAmazonKonfiPadding); die längere Plattenseite = 380 px
 UMRECHNUNGEN = ('corel', 'druckbereich')
 WARN_MOTIVVERSATZ_MM = 1.0
+UEBERLAPPUNG_MIN_MM = 0.5    # Überlappung Motiv/Text erst ab 0,5 mm in beiden Richtungen melden
 WARN_MOTIVPROPORTION = 0.03
 WARN_SCHRIFTBREITE = 0.005
 WARN_AUSRICHTUNG = 0.03
@@ -1285,6 +1286,42 @@ def vorlage_fuer(overlay: dict, breite_mm: float, hoehe_mm: float) -> dict | Non
     return v
 
 
+def eingepasst(box: list, breite: float, hoehe: float) -> list:
+    """Rechteck [x0,y0,x1,y1] eines Motivs breite×hoehe, proportional und mittig in box=[x,y,w,h] eingepasst."""
+    k = min(box[2] / breite, box[3] / hoehe)
+    cx, cy = box[0] + box[2] / 2, box[1] + box[3] / 2
+    return [cx - breite * k / 2, cy - hoehe * k / 2, cx + breite * k / 2, cy + hoehe * k / 2]
+
+
+def ueberlappung(a: list, b: list) -> tuple[float, float]:
+    """Überlappung zweier Rechtecke [x0,y0,x1,y1] in mm (Breite, Höhe); (0, 0) wenn getrennt."""
+    return max(0.0, min(a[2], b[2]) - max(a[0], b[0])), max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+
+
+def pruefe_motiv_text(design_info: dict | None, textfelder: list[dict], sammler: Sammler):
+    """Meldet Motiv/Text-Überlappungen im Ergebnis – und ob der Kunde sie im Konfigurator so gesehen hat.
+    Wichtig, weil Corel das Motiv aus der Vorlage der bestellten Größe setzt (Paritätslauf 20.10.2026)."""
+    if not design_info or not design_info.get('groesseMm') or not design_info.get('massstab'):
+        return
+    k = design_info['massstab']
+    mb, mh = design_info['groesseMm'][0] / k, design_info['groesseMm'][1] / k     # Motivgröße in Motiv-Einheiten
+    ergebnis = eingepasst(design_info['boxMm'], mb, mh)
+    kunde = eingepasst(design_info['konfiBoxMm'], mb, mh) if design_info.get('konfiBoxMm') else ergebnis
+    for t in textfelder:
+        bb = t.get('bboxMm')
+        if not bb:
+            continue
+        ew, eh = ueberlappung(ergebnis, bb)
+        if ew < UEBERLAPPUNG_MIN_MM or eh < UEBERLAPPUNG_MIN_MM:
+            continue
+        kw, kh = ueberlappung(kunde, bb)
+        if kw >= UEBERLAPPUNG_MIN_MM and kh >= UEBERLAPPUNG_MIN_MM:
+            sammler.warn('motiv_text_ueberlappung', f'{t["id"]} überlappt das Motiv um {ew:.1f} × {eh:.1f} mm – so hat der Kunde es auch im Konfigurator gesehen.')
+        else:
+            sammler.warn('motiv_text_ueberlappung_neu', f'{t["id"]} überlappt das Motiv um {ew:.1f} × {eh:.1f} mm, im Konfigurator waren beide getrennt '
+                                                        f'(Motiv in der Vorlage versetzt) – vor dem Gravieren prüfen.')
+
+
 def baue_motiv(design_eintrag: dict, svg_bytes: bytes, overlay: dict, raster: Raster, sammler: Sammler, design_label: str, abweichendes_bild: bool = False):
     motive = lese_motive(svg_bytes)
     if not motive:
@@ -1701,6 +1738,7 @@ def verarbeite_position(dateien: dict[str, bytes], dokument_name: str, doc: dict
         optionen_aus.append({'name': o['name'], 'label': o['label'], 'value': o['wert'], 'id': opt_id, 'aufpreisCent': o['aufpreisCent']})
     befestigung['holes'] = bohrungen
     # --- Pruefungen Lage
+    pruefe_motiv_text(design_info, textfelder, sammler)
     rand = geom['marginMm']
     for t in textfelder:
         bb = t['bboxMm']

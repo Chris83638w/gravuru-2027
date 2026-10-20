@@ -10,6 +10,7 @@ import {localAssistant,ACRYLIC_GUIDES} from './help.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {writeLazyResources,patchEditorLoading} from './lazy-resources-build.mjs';
+import {buildEditorBundle,patchEditorBundle} from './bundle-build.mjs';
 export const HERE=path.dirname(fileURLToPath(import.meta.url));
 export const ROOT=path.resolve(HERE,'../..');
 export const OUTPUT=path.join(HERE,'.preview');
@@ -90,7 +91,10 @@ export function build({outputDirectory=OUTPUT}={}){
     "await mount(form.value);const specimen=host.querySelector('gravuru-configurator');if(window.parent.UniversalConfig)adapter.installEarlyPhotoTap(specimen,window.parent.UniversalConfig);if(!window.parent.UniversalConfig){specimen.chooseDesign('FK-LABRADOR-MICHROMA-01');adapter.hardenDoorbell(specimen);}specimen.$('[data-setting=guides]').checked=false;specimen.cfg.orderEnabled=false;specimen.cfg.demo=true;specimen.sync();const ux=await import('/configurator/variant-m/ux.mjs');await ux.installUX(specimen,window.parent.UniversalConfig,window.parent.GravuruModelProfile);");
   for(const item of read('designs/aosu-labrador/image-source-verification.json'))source=source.replaceAll(item.url,'/_runtime/images/'+item.name);
   source=patchEditorLoading(source);
+  // Ladezeit: alle Editor-Module als ein Bündel (bundle-build.mjs, Route /_bundle/); `?module=einzeln` lädt Einzelmodule.
+  const bundle=buildEditorBundle(outputDirectory);
+  source=patchEditorBundle(source,bundle.url);
   fs.writeFileSync(path.join(outputDirectory,'editor.html'),source);
-  return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source),lazyResources:{fonts:lazy.fonts,motifs:lazy.motifs}};
+  return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source),lazyResources:{fonts:lazy.fonts,motifs:lazy.motifs},bundle:{url:bundle.url,modules:bundle.modules.length,styles:bundle.styles.length,bytes:bundle.bytes,gzipBytes:bundle.gzipBytes}};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url))console.log(JSON.stringify(build()));

@@ -55,14 +55,14 @@ const check=(name,ok,detail='')=>{report.checks.push({name,ok:!!ok,detail:String
 
 const DESKTOP={viewport:{width:1280,height:900},locale:'de-DE'};
 const MOBILE={viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:2,locale:'de-DE'};
-async function open(browser,device,{throttle=false,waitReady=true}={}){
+async function open(browser,device,{throttle=false,waitReady=true,query=''}={}){
   const context=await browser.newContext(device);const page=await context.newPage();
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   // Abfangen der Dateiauswahl sofort einschalten: Playwright schaltet es sonst erst beim ersten waitForEvent
   // ohne Rückmeldung ein, ein schneller Klick kann davor liegen (Messfehler, kein Editorfehler).
   page.on('filechooser',()=>{});
   if(throttle){const cdp=await context.newCDPSession(page);await cdp.send('Network.enable');await cdp.send('Network.setCacheDisabled',{cacheDisabled:true});await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:150,downloadThroughput:20e6/8,uploadThroughput:20e6/8});}
-  await page.goto(base+'/?model=acryl');
+  await page.goto(base+'/?model=acryl'+query);
   const frame=await (await page.waitForSelector('#editor iframe',{timeout:60000})).contentFrame();
   // Fotobereich ist auf der Platte gezeichnet (frühester Zeitpunkt, zu dem ein Kunde tippen kann).
   await frame.waitForFunction(()=>!!document.querySelector('gravuru-configurator')?.shadowRoot?.querySelector('.scene [data-ux-empty-photo-slot]'),null,{timeout:60000,polling:20});
@@ -96,11 +96,13 @@ const acceptOk=input=>!!input&&input.accept.split(',').includes('image/jpeg')&&!
 const hintBox=s=>s.box('.scene [data-object="photo-main"] [data-ux-photo-hint]');
 const slotBox=s=>s.box('.scene [data-object="photo-main"] > rect[fill="transparent"]');
 
-async function scenarioEarly(browser,device,label){
-  const s=await open(browser,device,{throttle:true,waitReady:false});
+async function scenarioEarly(browser,device,label,query=''){
+  const s=await open(browser,device,{throttle:true,waitReady:false,query});
+  label+=query?' (Einzelmodule)':' (Bündel)';
   try{
+    // Position erst nehmen, wenn die Platte nicht mehr springt (Handy: Schrittlayout baut sich auf).
+    let b=await slotBox(s);for(let i=0;i<40;i++){await s.page.waitForTimeout(40);const next=await slotBox(s);if(next&&b&&Math.abs(next.x-b.x)+Math.abs(next.y-b.y)+Math.abs(next.w-b.w)<1)break;b=next;}
     const ready=await s.evaluate(el=>!!el.uxPhotoTapReady);
-    const b=await slotBox(s);
     // Mitte des Fotobereichs: dort liegt der feste Rahmen (photo-frame) darüber.
     const input=await choose(s,()=>s.tap(b.x+b.w/2,b.y+b.h*.45),asUpload(IMAGE_A));
     check(`${label}: früher Tipp (Oberfläche ${ready?'bereit':'lädt noch'}) öffnet die Dateiauswahl`,!!input);
@@ -185,6 +187,8 @@ async function scenarioHeic(browser,device,label){
 const browser=await playwright.chromium.launch({executablePath});
 try{
   for(const [device,label] of [[DESKTOP,'Desktop'],[MOBILE,'Handy']]){
+    // Einzelmodule bei 150 ms: lange Ladephase, der Tipp trifft die Platte, bevor die Oberfläche bereit ist.
+    await scenarioEarly(browser,device,label,'&module=einzeln');
     await scenarioEarly(browser,device,label);
     await scenarioHint(browser,device,label);
     await scenarioButton(browser,device,label,'[data-ux=choose-upload]','Dateien auswählen');

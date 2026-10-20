@@ -90,6 +90,15 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       else if(workshop&&['/workshop-ui/material-surfaces/wood-leather-derived-v1.png','/workshop-ui/material-surfaces/steel-reference-v4.png'].includes(pathname)){base=path.join(ROOT,'workshop/ui/material-surfaces');relative=pathname.split('/').pop();}
       else if(workshop&&/^\/workshop-ui\/editor-icons\/[a-z0-9-]+\.svg$/.test(pathname)){base=path.join(ROOT,'workshop/ui/editor-icons');relative=pathname.split('/').pop();}
       else if(workshop&&/^\/workshop-ui\/(families-ui\.mjs|catalog\.css|catalog-ui\.mjs|steel-options-ui\.mjs|editor-guides\.mjs|customer-preview-link\.mjs|customer-preview\.mjs|customer-preview\.css|profile-impact-ui\.mjs|revision-compare-ui\.mjs|revision-compare\.css|merchant-media\.mjs|merchant-downloads\.mjs|shop-transfer-ui\.mjs|merchant-request\.mjs|merchant-navigation\.mjs|workshop-shell\.mjs|workshop-shell\.css|order-file-grants-ui\.mjs|production-release-ui\.mjs|variant-batch-reader\.mjs|variant-batch-ui\.mjs|form-variants-ui\.mjs|form-variant-picker\.mjs|form-variants\.css|app\.mjs|style\.css|dashboard\.css|editor\.css|ai-design-ui\.mjs|ai-batch-ui\.mjs|product-editor-ui\.mjs|design-authoring\.mjs|editor-selection\.mjs|product-overview-ui\.mjs|product-options-ui\.mjs|native-production-ui\.mjs|batch-reader\.mjs|batch-ui\.mjs|profiles-ui\.mjs|production-profiles-ui\.mjs|export-jobs-ui\.mjs|output-checks-ui\.mjs|output-summary\.mjs|output-specification\.mjs|order-output-context\.mjs|shop-preparation-ui\.mjs|orders-ui\.mjs|order-product-ui\.mjs|cart-handoff-ui\.mjs|production-profiles\.css|contours-ui\.mjs|form-product-ui\.mjs|form-design-ui\.mjs|review-snapshots-ui\.mjs|review-snapshots\.css|form-customer-ui\.mjs|form-interaction\.mjs|form-customer\.css|form-product\.css|contours\.css|design-import-ui\.mjs|customer-fields-ui\.mjs)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
+      // Gebündelte Editor-Module (bundle-build.mjs): Inhalts-Hash im Namen, daher unveränderlich und lange im Cache.
+      else if(/^\/_bundle\/editor-[a-f0-9]{16}\.mjs$/.test(pathname)){
+        const file=path.join(outputDirectory,'bundle',pathname.split('/').pop()),zipped=acceptsGzip(req.headers['accept-encoding'])&&fs.existsSync(file+'.gz');
+        if(!fs.existsSync(file))return fail(404);
+        const bytes=fs.readFileSync(zipped?file+'.gz':file);
+        const headers={'Content-Type':types['.mjs'],'Cache-Control':'public, max-age=31536000, immutable','X-Content-Type-Options':'nosniff',Vary:'Accept-Encoding','Content-Length':bytes.length,'Content-Security-Policy':adminHost?.cspFor(pathname)||csp};
+        if(zipped)headers['Content-Encoding']='gzip';
+        res.writeHead(200,headers);return res.end(req.method==='HEAD'?undefined:bytes);
+      }
       // Kundenansicht lädt die WebP-Fassungen (customer-images.json); PNG-Originale bleiben abrufbar.
       else if(/^\/acrylic-assets\/[a-z0-9-]+\.(png|webp)$/.test(pathname)){
         base=path.join(ROOT,'designs/acrylic-unser-anfang');relative=pathname.split('/').pop();

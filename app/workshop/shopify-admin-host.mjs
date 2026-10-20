@@ -30,7 +30,7 @@ export function createShopifyAdminHost(config, sessionContext) {
       // URL host/shop parameters and forwarded headers never select a trust target.
       return true;
     },
-    allows(pathname) {return pathname==='/assistant.js' || /^\/acrylic-assets\/[a-z0-9-]+\.(png|webp)$/.test(pathname) || rendererPage(pathname) || pathname==='/api/guides' || pathname.startsWith('/_runtime/') || pathname.startsWith('/configurator/variant-m/') || pathname==='/workshop/theme-limits.mjs' || pathname==='/workshop/process-profiles.mjs' || merchantPage(pathname) || pathname.startsWith('/api/workshop/') || pathname.startsWith('/workshop-ui/') || pathname.startsWith('/platform/sources/app/shared/');},
+    allows(pathname) {return pathname==='/assistant.js' || /^\/acrylic-assets\/[a-z0-9-]+\.(png|webp)$/.test(pathname) || rendererPage(pathname) || pathname==='/api/guides' || pathname.startsWith('/_runtime/') || /^\/_bundle\/editor-[a-f0-9]{16}\.mjs$/.test(pathname) || pathname.startsWith('/configurator/variant-m/') || pathname==='/workshop/theme-limits.mjs' || pathname==='/workshop/process-profiles.mjs' || merchantPage(pathname) || pathname.startsWith('/api/workshop/') || pathname.startsWith('/workshop-ui/') || pathname.startsWith('/platform/sources/app/shared/');},
     html(bytes, pathname) {
       if(rendererPage(pathname))return bytes;
       if (!merchantPage(pathname)) reject();

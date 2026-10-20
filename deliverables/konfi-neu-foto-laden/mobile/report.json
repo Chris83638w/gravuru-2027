@@ -1,0 +1,229 @@
+{
+ "base": "http://127.0.0.1:8961",
+ "viewports": {
+  "mobile": {
+   "steps": [
+    {
+     "id": "options",
+     "label": "1Optionen",
+     "current": true
+    },
+    {
+     "id": "text",
+     "label": "2Text",
+     "current": false
+    },
+    {
+     "id": "media",
+     "label": "3Foto / Motiv",
+     "current": false
+    },
+    {
+     "id": "review",
+     "label": "4Prüfen",
+     "current": false
+    }
+   ],
+   "review": {
+    "cartVisible": true,
+    "cartInBar": true,
+    "cartText": "In den Warenkorb",
+    "rows": [
+     [
+      "Größe",
+      "15 × 20 cm"
+     ],
+     [
+      "Material",
+      "Acrylglas · 3 mm"
+     ],
+     [
+      "Optionen",
+      "Ohne Sockel · Ohne Wandhalterung"
+     ],
+     [
+      "Design",
+      "Unser Anfang"
+     ],
+     [
+      "Texte",
+      "Mia & Jonas · Anna & Lukas · Am See in Hamburg · 14.06.2020 · Hier begann unser Wir."
+     ],
+     [
+      "Menge",
+      "1"
+     ],
+     [
+      "Preis",
+      "14,99 €"
+     ]
+    ],
+    "nextHidden": true,
+    "panel": true
+   }
+  }
+ },
+ "checks": [
+  {
+   "name": "Mobile: Zustand aktiv (data-ux-mobile)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: Schrittleiste beginnt mit Optionen und endet mit Prüfen",
+   "ok": true,
+   "detail": "[{\"id\":\"options\",\"label\":\"1Optionen\",\"current\":true},{\"id\":\"text\",\"label\":\"2Text\",\"current\":false},{\"id\":\"media\",\"label\":\"3Foto / Motiv\",\"current\":false},{\"id\":\"review\",\"label\":\"4Prüfen\",\"current\":false}]"
+  },
+  {
+   "name": "Mobile: erster Schritt aktiv",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: Desktop-Reiter ausgeblendet",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: Warenkorbleiste des Desktops ausgeblendet",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: Touch-Ziele der Leiste ≥ 44 px hoch",
+   "ok": true,
+   "detail": "[{\"t\":\"1Optionen\",\"h\":48,\"w\":92},{\"t\":\"2Text\",\"h\":48,\"w\":92},{\"t\":\"3Foto / Motiv\",\"h\":48,\"w\":92},{\"t\":\"4Prüfen\",\"h\":48,\"w\":92},{\"t\":\"14,99 €Preisdetails\",\"h\":52,\"w\":266},{\"t\":\"Weiter ›\",\"h\":46,\"w\":92}]"
+  },
+  {
+   "name": "Mobile: Warenkorb-Knopf im ersten Schritt nicht sichtbar",
+   "ok": true,
+   "detail": "{\"hidden\":false,\"visible\":false}"
+  },
+  {
+   "name": "Mobile: Platte oben, ca. 40 % Höhe",
+   "ok": true,
+   "detail": "{\"x\":0,\"y\":53,\"w\":390,\"h\":338,\"visible\":true}"
+  },
+  {
+   "name": "Mobile: „Weiter“ wechselt zum nächsten Schritt",
+   "ok": true,
+   "detail": "text"
+  },
+  {
+   "name": "Mobile: Schritt Text zeigt nur das Textpanel",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: Eingabe erreicht die Platte",
+   "ok": true,
+   "detail": "{\"text\":\"Mia & Jonas\",\"preview\":{\"x\":0,\"y\":53,\"w\":390,\"h\":211,\"visible\":true},\"field\":{\"y\":339.5,\"bottom\":383.5},\"keyboard\":\"true\",\"scrollable\":1298,\"inScene\":true}"
+  },
+  {
+   "name": "Mobile: Platte bleibt bei Texteingabe sichtbar (≥ 25 %)",
+   "ok": true,
+   "detail": "{\"x\":0,\"y\":53,\"w\":390,\"h\":211,\"visible\":true}"
+  },
+  {
+   "name": "Mobile: Textfeld unterhalb der Platte sichtbar",
+   "ok": true,
+   "detail": "{\"y\":339.5,\"bottom\":383.5}"
+  },
+  {
+   "name": "Mobile: Bei Tastatur (500 px) bleibt die Platte ≥ 25 % sichtbar",
+   "ok": true,
+   "detail": "{\"shell\":{\"x\":0,\"y\":0,\"w\":390,\"h\":500,\"visible\":true},\"preview\":{\"x\":0,\"y\":53,\"w\":390,\"h\":125,\"visible\":true}}"
+  },
+  {
+   "name": "Mobile: Schritt Foto/Motiv zeigt Foto- und Motivpanel",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: Warenkorb-Knopf in Foto/Motiv nicht sichtbar",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: Warenkorb-Knopf nur im Schritt Prüfen sichtbar (Daumenzone)",
+   "ok": true,
+   "detail": "{\"cartVisible\":true,\"cartInBar\":true,\"cartText\":\"In den Warenkorb\",\"rows\":[[\"Größe\",\"15 × 20 cm\"],[\"Material\",\"Acrylglas · 3 mm\"],[\"Optionen\",\"Ohne Sockel · Ohne Wandhalterung\"],[\"Design\",\"Unser Anfang\"],[\"Texte\",\"Mia & Jonas · Anna & Lukas · Am See in Hamburg · 14.06.2020 · Hier begann unser Wir.\"],[\"Menge\",\"1\"],[\"Preis\",\"14,99 €\"]],\"nextHidden\":true,\"panel\":true}"
+  },
+  {
+   "name": "Mobile: Zusammenfassung mit Größe, Material, Optionen, Preis",
+   "ok": true,
+   "detail": "Größe, Material, Optionen, Design, Texte, Menge, Preis"
+  },
+  {
+   "name": "Mobile: Zusammenfassung enthält den eingegebenen Text",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: „Zurück“ wechselt zum vorherigen Schritt",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Mobile: keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: kein Mobile-Zustand",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Reiter sichtbar",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Schrittleiste nicht sichtbar",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Warenkorbleiste des Desktops sichtbar",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Prüfen-Panel ausgeblendet",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Warenkorb-Knopf an alter Stelle (nicht in der Schrittleiste)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: Reiterwechsel funktioniert weiter",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Desktop: keine Skriptfehler",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Umschalten: 390 px aktiviert den Mobile-Zustand",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "name": "Umschalten: zurück auf 1280 px stellt Desktop her",
+   "ok": true,
+   "detail": ""
+  }
+ ],
+ "result": "PASS",
+ "desktop-1280.png": "119 KB",
+ "mobile-01-optionen.png": "137 KB",
+ "mobile-02-text.png": "259 KB",
+ "mobile-03-foto-motiv.png": "124 KB",
+ "mobile-04-pruefen.png": "144 KB"
+}

@@ -117,6 +117,9 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       const transformed=adminHost&&extension==='.html';
       if(transformed)bytes=adminHost.html(bytes,pathname);
       const headers={'Content-Type':types[extension]||'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':adminHost?.cspFor(pathname)||csp};
+      // Kundenbilder (Szene, Sockel, Beispielfoto): einen Tag im Cache, damit vorgeladene Sockelansichten
+      // (background-loading.mjs) beim Wechsel ohne neuen Abruf erscheinen. Alles andere bleibt no-store.
+      if(pathname.startsWith('/acrylic-assets/'))headers['Cache-Control']='public, max-age=86400';
       if(compressible.has(extension)){headers.Vary='Accept-Encoding';if(bytes.length>1024&&acceptsGzip(req.headers['accept-encoding'])){bytes=await compressed(file,bytes,!transformed);headers['Content-Encoding']='gzip';}}
       headers['Content-Length']=bytes.length;
       res.writeHead(200,headers);

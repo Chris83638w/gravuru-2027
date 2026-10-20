@@ -3,6 +3,7 @@
 //   node app/configurator/variant-m/server.mjs --port=8981   (separates Terminal)
 //   PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node scripts/check-load-budget.mjs http://127.0.0.1:8981 [--max-bytes=2000000] [--max-ms=3000] [--json=<datei>]
 // Bedienbar = im shadowRoot von gravuru-configurator ist `.scene [data-object]` vorhanden.
+// Danach: Ladefolge im Hintergrund (Bilder → Schriften → Motive, keine Doppelabrufe) bis zum Ende der Warteschlange.
 // Zusätzlich je Profil ein Vergleichslauf mit Einzelmodulen (`module=einzeln`), der auch die Vollständigkeit des Bündels prüft.
 // Netz: je Profil (Standard 50 Mbit/s bei 30 ms und 20 Mbit/s bei 150 ms Latenz, `--net=<ms>:<Mbit>`), CDP Network.emulateNetworkConditions, Cache aus.
 // Gezählt werden alle bis dahin abgeschlossenen Antworten (encodedDataLength laut CDP) von Seite und iframe.
@@ -45,11 +46,22 @@ async function measure(browser,{latencyMs,megabit},query=''){
   // Nach der Bedienbarkeit nachgeladene Dateien gesondert ausweisen (Leerlauf abwarten).
   await page.waitForTimeout(2500);
   const later=done.slice(snapshot.length);
+  // Ladefolge im Hintergrund (preload-queue.mjs): bis die Warteschlange fertig ist, dann Reihenfolge und Doppelabrufe.
+  let preload=null;
+  if(!query){
+    await frame.waitForFunction(()=>(document.querySelector('gravuru-configurator')?.uxPreloadLog||[]).some(e=>e.type==='idle'),null,{timeout:120000,polling:100}).catch(()=>{});
+    const log=await frame.evaluate(()=>document.querySelector('gravuru-configurator')?.uxPreloadLog||[]);
+    const kind=u=>/\/acrylic-assets\/base-/.test(u)?'images':/\/_runtime\/lazy\/schriften\//.test(u)?'fonts':/\/_runtime\/lazy\/motive-alle\.json$/.test(u)?'motifs':null;
+    const after=done.slice(snapshot.length).map(r=>({path:new URL(r.url).pathname,end:r.end})).filter(r=>kind(r.path));
+    const first=k=>Math.min(...after.filter(r=>kind(r.path)===k).map(r=>r.end));
+    const counts={};for(const r of done)counts[new URL(r.url).pathname]=(counts[new URL(r.url).pathname]||0)+1;
+    preload={tasks:log.filter(e=>e.type==='start').map(e=>e.key+':'+e.mode),order:['images','fonts','motifs'].filter(k=>Number.isFinite(first(k))).sort((a,b)=>first(a)-first(b)),files:after.length,bytes:done.slice(snapshot.length).filter(r=>kind(new URL(r.url).pathname)).reduce((n,r)=>n+r.bytes,0),duplicates:Object.entries(counts).filter(([p,n])=>n>1&&kind(p)).map(([p,n])=>p+' ×'+n),otherRepeats:Object.entries(counts).filter(([p,n])=>n>1&&!kind(p)).map(([p,n])=>p+' ×'+n),finished:log.some(e=>e.type==='idle')};
+  }
   const modules=[...new Set(done.map(r=>new URL(r.url)).filter(u=>u.protocol.startsWith('http')&&u.pathname.endsWith('.mjs')&&!u.pathname.startsWith('/_bundle/')).map(u=>u.pathname))].sort();
   await context.close();
   const total=snapshot.reduce((s,r)=>s+r.bytes,0);
   const byUrl=snapshot.map(r=>({path:new URL(r.url).pathname,bytes:r.bytes})).sort((a,b)=>b.bytes-a.bytes);
-  return {readyMs,bytes:total,ui:{readyMs:uiMs,bytes:uiBytes},requests:snapshot.length,localRequests:local,largest:byUrl.slice(0,12),afterReady:later.map(r=>({path:new URL(r.url).pathname,bytes:r.bytes})),modules,errors};
+  return {readyMs,bytes:total,ui:{readyMs:uiMs,bytes:uiBytes},requests:snapshot.length,localRequests:local,largest:byUrl.slice(0,12),afterReady:later.map(r=>({path:new URL(r.url).pathname,bytes:r.bytes})),modules,preload,errors};
 }
 
 const browser=await playwright.chromium.launch({executablePath});
@@ -72,7 +84,8 @@ try{
     const all=[];for(let i=0;i<runs;i++)all.push(await measure(browser,net));
     // Bei mehreren Läufen zählt der Median der Zeit; Bytes sind je Lauf gleich.
     all.sort((a,b)=>a.readyMs-b.readyMs);const result=all[Math.floor(all.length/2)];result.allReadyMs=all.map(r=>r.readyMs);
-    const ok=result.bytes<=maxBytes&&result.readyMs<=maxMs&&!result.errors.length;
+    const preloadOk=!result.preload||(result.preload.finished&&!result.preload.duplicates.length&&result.preload.order.join()==='images,fonts,motifs');
+    const ok=result.bytes<=maxBytes&&result.readyMs<=maxMs&&!result.errors.length&&preloadOk;
     reports.push({base,network:`${net.megabit} Mbit/s, ${net.latencyMs} ms`,budget:{maxBytes,maxMs},...result,ok});
   }
 }finally{await browser.close();}
@@ -82,8 +95,10 @@ for(const result of reports){
   console.log(`Oberfläche vollständig (UX + Szenenbild) nach ${result.ui.readyMs} ms, ${fmt(result.ui.bytes)} (Zusatzangabe)`);
   for(const r of result.largest)console.log('  '+String(r.bytes).padStart(9)+'  '+r.path);
   if(result.afterReady.length)console.log(`Danach nachgeladen: ${result.afterReady.length} Dateien, ${fmt(result.afterReady.reduce((s,r)=>s+r.bytes,0))}`);
+  if(result.preload)console.log(`Hintergrund (Warteschlange): ${result.preload.order.join(' → ')||'—'} · ${result.preload.files} Dateien, ${fmt(result.preload.bytes)} · Doppelabrufe: ${result.preload.duplicates.length?result.preload.duplicates.join(', '):'keine'}${result.preload.finished?'':' · NICHT FERTIG'}`);
+  if(result.preload?.otherRepeats.length)console.log(`  (außerhalb der Warteschlange erneut abgerufen, Cache im Prüfstand aus: ${result.preload.otherRepeats.join(', ')})`);
   if(result.errors.length)console.log('Seitenfehler: '+result.errors.join(' | '));
-  console.log(result.ok?'PASS':'FEHLER: Ladebudget überschritten');
+  console.log(result.ok?'PASS':'FEHLER: Ladebudget oder Ladefolge verletzt');
 }
 for(const c of comparisons){
   console.log(`== Vergleich Einzelmodule (bisheriger Ladeweg), Netz ${c.network}`);

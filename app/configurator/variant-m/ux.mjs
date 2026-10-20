@@ -26,6 +26,7 @@ import {parseDirectLink,applyLinkText,withoutDirectLinkParams} from './design-ga
 import {createSessionGuard,uploadReferences} from './session-guard.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
 import {installSurfaceTabs} from './surface-tabs.mjs';
+import {installBackgroundLoading} from './background-loading.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
@@ -427,6 +428,8 @@ export async function installUX(el,config,legacy){
   const takeEarlyPhoto=()=>{const early=el.uxEarlyPhoto;if(!early)return;el.uxEarlyPhoto=null;acceptCustomerFiles(early.files,'photo',early.slotId).catch(error=>say(error.message));};
   el.addEventListener('gravuru-early-photo',takeEarlyPhoto);takeEarlyPhoto();
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
+  // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).
+  if(config)installBackgroundLoading({el,r,config});
   const assistant=document.createElement('script');assistant.src='/assistant.js';assistant.dataset.api=location.origin;document.body.append(assistant);
   return {showTab,update,isDirty:()=>dirty};
 }

@@ -98,3 +98,6 @@
 :host([data-ux-mobile="true"]) .ux-preview > .ux-conflict-hints{position:absolute;left:6px;right:6px;bottom:6px;margin:0!important;max-height:45%;overflow:auto;z-index:9}
 :host([data-ux-mobile="true"]) .ux-shell > .ux-session-note{position:absolute;left:8px;right:8px;top:calc(var(--ux-vv-top,0px) + 58px);z-index:9100;margin:0;padding:6px 8px;font-size:13px;display:flex;align-items:center;gap:8px}
 :host([data-ux-mobile="true"]) .ux-shell > .ux-session-note[hidden]{display:none!important}
+
+/* Ziehen mit dem Finger: Geste gehört der Platte, nicht dem Seitenscrollen (Fehler 20.10.2026). */
+:host([data-ux-mobile="true"]) .ux-preview .scene,:host([data-ux-mobile="true"]) .ux-preview .plate-holder{touch-action:none!important}

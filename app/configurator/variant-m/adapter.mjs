@@ -3,7 +3,7 @@ import {designAreaPreview} from './design-area.mjs';
 import {textsNearHoles,holeHintText} from '../../platform/sources/app/shared/models/hole-proximity.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
-import {surfacePreview,embedSurface,scenePreview} from './material-surface.mjs';
+import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl} from './material-surface.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 // Fototipp auf der Platte, bevor die Kundenoberfläche fertig ist (build.mjs ruft es direkt nach mount auf).
@@ -29,9 +29,9 @@ export function installUniversal(configInput) {
   const activeSurface = () => el?.state?.uxSurface === 'back' ? 'back' : 'front';
   const profile = (surface = activeSurface()) => { const sp = selectedProfile(config, options); return surface === 'back' ? {...sp, geometry:surfaceGeometry(sp.geometry, 'back')} : sp; };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
-  const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front'} = {}) => {
+  const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
     const visible={...design,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
-    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
+    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,p.geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
@@ -39,7 +39,10 @@ export function installUniversal(configInput) {
   };
   const locked = o => !!o?.uxLocked;
 
-  window.Funkklingel.thumb = (element, d) => { el = element; return svg(p.designs.find(x => x.id === d.id) || d); };
+  // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
+  // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
+  const thumbCache=new Map();
+  window.Funkklingel.thumb = (element, d) => { el = element; const design=p.designs.find(x => x.id === d.id) || d; const key=JSON.stringify(design); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
     el = element; originalPrepare(el);
     const {width, height, shape, cornerRadiusMm=0} = p.geometry;
@@ -53,9 +56,9 @@ export function installUniversal(configInput) {
       const outline = shape === 'ellipse' ? `M0 ${height/2}a${width/2} ${height/2} 0 1 0 ${width} 0a${width/2} ${height/2} 0 1 0 -${width} 0` : `M0 0H${width}V${height}H0Z`;
       return {outline, clip:outline, holes:profile().geometry.holes.map(h => ({...h, r:h.diameter/2})), gap:0};
     };
-    el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o)})).querySelector('[data-object]')?.outerHTML || '';
+    el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o),bare:true})).querySelector('[data-object]')?.outerHTML || '';
     el.svgBody = function(preview=true, guides=false) {
-      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front'}));
+      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front',screen:preview}));
       if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[]);for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
       return doc.documentElement.innerHTML;
     };
@@ -216,7 +219,12 @@ export function installUniversal(configInput) {
     // (`uxThumbnailDeferred`, höchstens `uxThumbnailBudget` neue Miniaturen je Durchlauf)
     // bestimmen; ausgeblendete oder aufgeschobene Karten behalten ihre bisherige Miniatur.
     // Rückgabe: Anzahl sichtbarer Karten, die nur wegen des Budgets warten.
+    // Während der Kunde ein Element zieht, keine Miniaturen neu zeichnen; nach dem Loslassen einmal nachholen.
+    let dragging=false;
+    r.addEventListener('pointerdown',e=>{if(e.target.closest?.('.scene [data-object]'))dragging=el.uxDragging=true;},true);
+    for(const type of ['pointerup','pointercancel'])r.addEventListener(type,()=>{if(!dragging)return;dragging=el.uxDragging=false;setTimeout(()=>renderThumbnails(),0);},true);
     function renderThumbnails(){
+      if(dragging)return 0;
       const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
       for(const card of r.querySelectorAll('[data-c-design]')){
@@ -224,7 +232,7 @@ export function installUniversal(configInput) {
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
-          else{budget--;thumbnail={key:thumbnailKey,markup:svg(el.uxThumbnailDesign?.(design)||design)};}
+          else{budget--;thumbnail={key:thumbnailKey,markup:svg(el.uxThumbnailDesign?.(design)||design,{screen:true})};}
         }
         // The legacy sync replaces the SVG with its portrait doorbell preview.
         // Restore the product geometry even when the cached rendering is valid.

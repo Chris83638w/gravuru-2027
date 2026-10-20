@@ -184,6 +184,9 @@ export async function installMobileSteps(api){
   }
   el.uxMobileSteps={get active(){return active;},get current(){return current;},get steps(){return steps.map(s=>s.id);},show:showStep,applyViewport:(override=null)=>{viewportOverride=override;applyViewport();}};
   const notes=new Map();
+  // Die Altvorschau (.mobile-preview) zeichnet das ganze Schild bei jedem sync neu; im Handy-Zustand ist
+  // die Platte immer sichtbar und die Altvorschau ausgeblendet – dort nichts zeichnen (Leistung 20.10.2026).
+  if(typeof el.updateMobilePreview==='function'&&!el.updateMobilePreview.uxMobileGuard){const original=el.updateMobilePreview;el.updateMobilePreview=function(...args){if(active)return;return original.apply(this,args);};el.updateMobilePreview.uxMobileGuard=true;}
   function enter(){
     if(active)return;active=true;r.host.dataset.uxMobile='true';
     relocate($('.fk-buy-button'),cartSlot);const cart=$('.fk-buy-button');if(cart)cart.hidden=false;

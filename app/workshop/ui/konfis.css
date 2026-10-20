@@ -1,0 +1,41 @@
+/* B1: Konfis und Mandanten – Karten im Stil der Produktliste. */
+.konfi-summary{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.konfi-summary .konfi-search{flex:1;min-width:230px;max-width:520px}
+.konfi-summary .search input{background:#fff;min-height:46px}
+.konfi-help{font-size:13px;color:#606975;margin:0 0 18px;max-width:880px}
+.konfi-list{display:grid;gap:16px}
+.konfi-list .empty-state{padding:60px 20px;border:1px dashed #cbd2d7;border-radius:14px;background:#fff;text-align:center}
+.konfi-card{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.4fr) auto;gap:8px 24px;align-items:start;background:#fff;border:1px solid #e1e4e6;border-radius:11px;padding:16px 20px;min-width:0}
+.konfi-main{min-width:0}
+.konfi-main h2{font-size:17px;line-height:1.3;letter-spacing:-.3px;margin:0 0 3px;overflow-wrap:anywhere}
+.konfi-main h2 a{color:#17222d;text-decoration:none}.konfi-main h2 a:hover{text-decoration:underline}
+.konfi-meta{font-size:12px;color:#657077;margin:0 0 7px;overflow-wrap:anywhere}.konfi-meta code{font-family:inherit;font-size:11px}
+.konfi-info{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0}
+.konfi-label{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#657077;font-weight:600;margin-bottom:2px}
+.konfi-shop{display:flex;flex-direction:column;gap:2px;font-size:13px;margin:0;color:#17222d;min-width:0}.konfi-shop span:not(.konfi-label){color:#606975;overflow-wrap:anywhere;font-size:12px}.konfi-shop a{color:#17614f;font-weight:600}
+.konfi-side{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.konfi-status{font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;background:#f0f3f4;color:#526069;white-space:nowrap}
+.konfi-status[data-status=released]{background:#eaf3ef;color:#17614f}
+.konfi-status[data-status=paused]{background:#fff4e9;color:#8b472e}
+.konfi-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.konfi-actions button{min-height:38px;padding:8px 14px}
+.konfi-foot{grid-column:1/-1;display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid #edf0f1;padding-top:10px;margin-top:4px;font-size:13px}
+.konfi-foot details{min-width:0}.konfi-foot details[open]{flex-basis:100%}.konfi-foot summary{cursor:pointer;color:#17614f;font-weight:600;width:max-content}
+.konfi-embed textarea{font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;min-height:64px;background:#f8faf9;margin:8px 0 0;resize:vertical}
+.konfi-embed-row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}.konfi-embed-row button{min-height:36px;padding:7px 12px}.konfi-embed-row small{font-size:11px}
+.konfi-events{margin-top:8px;font-size:12px;color:#606975}.konfi-events ol{margin:0;padding-left:18px}.konfi-events li{margin:4px 0}
+body.konfi-page,body.tenant-page{--ink:#17222d;--muted:#606975;--green:#17614f;--line:#e2e7e8;--soft:#edf5f1}
+.konfi-page .overview-filters button[aria-pressed=true]{background:#17614f;border-color:#17614f;color:#fff}
+.konfi-page button.primary:hover:not(:disabled){background:#124f41}
+.card-categories{display:flex;gap:6px;flex-wrap:wrap;font-size:12px}.card-categories span{padding:3px 9px;border-radius:12px;background:#eef4ef;color:#315c4d}
+.konfi-muted{color:#7b858c}
+.card-categories .category-unknown{background:#fff4e9;color:#8b472e}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.tenant-hint{margin-top:-8px}
+.tenant-table{background:#fff;border:1px solid #e1e4e6;border-radius:11px;overflow:hidden}
+.tenant-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1.4fr) .7fr .9fr .9fr;gap:16px;padding:14px 20px;border-top:1px solid #edf0f1;font-size:14px;align-items:center}
+.tenant-row:first-child{border-top:0}.tenant-row small{display:block;font-size:12px;color:#657077;margin-top:2px}
+.tenant-header{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:#657077;font-weight:600;background:#f8faf9}
+#tenant-create:disabled{opacity:.55}
+@media(max-width:1000px){.konfi-card{grid-template-columns:minmax(0,1fr) auto}.konfi-info{grid-column:1/-1;grid-row:2}}
+@media(max-width:620px){.konfi-card{padding:14px 16px;grid-template-columns:minmax(0,1fr)}.konfi-info{grid-row:auto;grid-template-columns:1fr}.konfi-side{flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap}.konfi-summary .overview-filters{width:100%;flex-wrap:wrap}
+ .tenant-header{display:none}.tenant-row{grid-template-columns:1fr 1fr;gap:10px 16px;padding:14px 16px}.tenant-row>span:first-child{grid-column:1/-1}}

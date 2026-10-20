@@ -90,6 +90,8 @@ export function createShopDraftJournal({database: db, tenantId}) {
   const publicRow = row => row ? {id: row.id, state: row.state, sourceSha256: row.source_sha, result: row.result ? JSON.parse(row.result) : null, createdAt: row.created_at} : null;
   return {
     get: identity => publicRow(byIdentity(identity)),
+    // B1 (Konfis): abgeschlossene Übertragungen je Produkt, nur lesend (Shopify-Produkt-ID und Handle aus dem Journal).
+    completed: () => db.prepare("SELECT request,result FROM shop_draft_transfers WHERE state='completed' AND tenant_id=? ORDER BY rowid DESC").all(tenant).map(row => {const request = JSON.parse(row.request), result = JSON.parse(row.result || 'null'); return {productId: request.productId, revision: request.revision, shopDomain: request.shopDomain, shopifyProductId: result?.shopifyProductId || null, handle: result?.handle || request.handle || null, status: result?.status || null};}),
     claim(request) {
       db.exec('BEGIN IMMEDIATE');
       try {

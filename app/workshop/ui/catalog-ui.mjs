@@ -15,7 +15,7 @@ export function installCatalog({state,loadList,notify,api,selection,setBusy}){
   for(const [selector,key,rows,label] of [['#catalog-material','material',c.facets.materials,'Alle Materialien'],['#catalog-category','category',c.facets.categories,'Alle Kategorien']]){
    const selected=state.catalogFilters[key],node=$(selector),items=[new Option(label,'')];
    if(key==='category')items.push(new Option('Ohne Kategorie','__none__'));
-   for(const r of rows)if(r.id)items.push(new Option((key==='material'?materialNames[r.id]||r.id:r.id.replaceAll('-',' '))+' ('+r.count+')',r.id));
+   for(const r of rows)if(r.id){const l=c.categoryLabels?.[r.id];items.push(new Option((key==='material'?materialNames[r.id]||r.id:l?l.label+(l.known?'':' (Kürzel ohne Klarnamen)'):r.id.replaceAll('-',' '))+' ('+r.count+')',r.id));}
    if(selected&&!items.some(o=>o.value===selected))items.push(new Option(selected,selected));
    node.replaceChildren(...items);node.value=selected;
   }

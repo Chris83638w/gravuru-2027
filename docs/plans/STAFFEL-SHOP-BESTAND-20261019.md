@@ -30,10 +30,11 @@ Beides gilt, als Daten in `app/workshop/quantity-tier-defaults.json` (erste pass
 
 | Regel | Gilt für | Stufen |
 | --- | --- | --- |
+| `entscheidung-20261020-gedenktafeln` | Linie Gedenktafeln 30 × 20; Themen Gedenktafeln, Tiergedenktafeln (vor allen anderen Regeln) | ab 2 / 3 Stück: 6 / 10 % |
 | `entscheidung-20261019-nr4` | Linien Brettchen, Schlüsselanhänger, Boxen-/Pferdeschilder; Themen Firmenschilder, Hinweisschilder (auch auf Türschild-Linien) | ab 5 / 10 / 25 Stück: 5 / 10 / 15 % |
 | `shop-bestand-tuerschild-hausnummer` | Linien Edelstahl- und Acryl-Türschilder; Thema Hausnummern | ab 3 / 5 / 10 Stück: 5 / 10 / 15 % (wie Shop-Bestand) |
 
-Gedenktafeln bleiben ohne Staffel. Offen bleibt nur die Anbindung im Shopify-Warenkorb (siehe unten).
+Offen bleibt nur die Anbindung im Shopify-Warenkorb (siehe unten).
 
 ## Was Chris entscheiden musste (erledigt 20.10.2026)
 

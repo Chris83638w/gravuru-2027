@@ -3,6 +3,27 @@
  "note": "K14 / Ü11.1: Vorgabe-Mengenstaffeln je Linie bzw. Thema der Katalog-Unterkategorie, wenn weder Unterkategorie (priceOverrides.quantityTiers) noch Familie/Größe (quantityTiers) eine Staffel nennen. Erste passende Regel gilt; tiers [] = ausdrücklich keine Staffel. percentOff null = offen: die Staffel wird bis zur Angabe weder gerechnet noch angezeigt. Werte nur als Daten ändern, nie raten. Grundlage und offener Abgleich mit dem Shop-Bestand: docs/plans/STAFFEL-SHOP-BESTAND-20261019.md.",
  "rules": [
   {
+   "id": "entscheidung-20261020-gedenktafeln",
+   "label": "Entscheidung Chris 20.10.2026: Gedenktafeln und Tiergedenktafeln – ab 2 Stück 6 %, ab 3 Stück 10 %",
+   "lineIds": [
+    "gedenktafeln-30x20"
+   ],
+   "themeIds": [
+    "gedenktafeln",
+    "tiergedenktafeln"
+   ],
+   "tiers": [
+    {
+     "minQuantity": 2,
+     "percentOff": 6
+    },
+    {
+     "minQuantity": 3,
+     "percentOff": 10
+    }
+   ]
+  },
+  {
    "id": "entscheidung-20261019-nr4",
    "label": "Entscheidung Chris 19.10.2026 Nr. 4, Prozentwerte bestätigt 20.10.2026: Firmenschilder, Boxenschilder, Schlüsselanhänger, Hinweisschilder, Brettchen – ab 5 / 10 / 25 Stück 5 / 10 / 15 %",
    "lineIds": [

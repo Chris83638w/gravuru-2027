@@ -43,7 +43,7 @@ export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=n
  return {profileId:profile.id,profileRevision:profile.revision,items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
 }
 
-export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null}={}){
+export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null}={}){
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').');
  const report={line:{id:line.id,name:line.name,status:line.status??null,file:katalog.files.get('linie:'+line.id)},families:[],subcategories:[],designs:{masters:katalog.designs.masters.length,bestand:0,considered:0,withSeries:0,oldSize:[],withoutTheme:0,failed:[]},counts:{products:0,new:0,update:0,unchanged:0,blocked:0,templates:0,sizes:0,pricesOpen:0,designsWithoutSeries:0,fit:{passt:0,'prüfen':0,'passt nicht':0}},notes:[]};
  if(!line.families.length)report.notes.push('Linie „'+line.id+'“ hat noch keine Familie (Status: '+(line.status??'offen')+').');
@@ -73,9 +73,19 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
    const {fonts,missing:glyphsMissing}=await katalog.fontResources([...new Set(themed.flatMap(a=>a.design.fonts||[]))],{available,converter});
    const subReport={id:sub.id,name:sub.name,family:familyId,themeId:sub.themeId??null,fontSet:fontSet.id,fontProfileId:set.profileId,fonts:{set:fontSet.fonts,missing:set.missing,imported:set.imported,templateFontsMissing:glyphsMissing},designs:themed.length,designsWithoutTheme:withoutTheme,products:[]};
    const converted=new Map();
-   const templateFor=a=>{
+   const templateFor=async a=>{
     if(converted.has(a.design.id))return converted.get(a.design.id);
     let result;try{result={ok:true,...katalogDesignToTemplate(a.design,doc,theme,{fonts})};}catch(e){result={ok:false,error:e.message};report.designs.failed.push({design:a.design.id,subcategory:sub.id,error:e.message});}
+    // Platzhalterbilder (Musterfoto mit Upload-Hinweis) als Werkstatt-Designressource; ohne Ablage bleibt das Fotofeld neutral.
+    if(result.ok&&result.placeholders?.length&&assets&&a.design.dir){
+     result.examples=[];
+     for(const ph of result.placeholders){
+      const file=path.join(a.design.dir,ph.file);
+      if(!fs.existsSync(file)){report.notes.push(a.design.id+': Platzhalterbild '+ph.file+' fehlt.');continue;}
+      try{const asset=await assets.importPhotoExample({bytes:fs.readFileSync(file).toString('base64'),widthMm:ph.widthMm,heightMm:ph.heightMm});result.examples.push({slotId:ph.slotId,assetId:asset.assetId});}
+      catch(e){report.notes.push(a.design.id+': Platzhalterbild nicht übernommen – '+e.message);}
+     }
+    }
     converted.set(a.design.id,result);return result;
    };
    const offered=Array.isArray(sub.sizesOffered)?doc.sizes.filter(s=>sub.sizesOffered.includes(s.key)):doc.sizes;
@@ -83,13 +93,13 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
     const key=importKey(line.id,sub.id,size.key),entry={key,sizeKey:size.key,label:size.label,templates:[],fit:{passt:0,'prüfen':0,'passt nicht':0},excluded:[]};
     const templates=[];
     for(const a of themed.filter(a=>a.sizes.includes(size.key))){
-     const t=templateFor(a);if(!t.ok)continue;
+     const t=await templateFor(a);if(!t.ok)continue;
      try{
       const scaled=scaleTemplate(t.template,t.template.katalog.plateMm,[size.widthMm,size.heightMm],fonts),motifs=scaleEmbeddedMotifs(t.motifs,scaled.katalog.scale);
       const fit=templateFit(scaled,doc,size,fonts);entry.fit[fit.status]++;report.counts.fit[fit.status]++;
       if(fit.status==='passt nicht'){entry.excluded.push({design:a.design.id,issues:fit.issues});continue;}
       scaled.katalog.fit=fit.status;if(fit.issues.length)scaled.katalog.review=fit.issues;
-      templates.push({template:scaled,motifs,rights:t.rights});entry.templates.push({design:a.design.id,fit:fit.status,issues:fit.issues});
+      templates.push({template:scaled,motifs,rights:t.rights,examples:t.examples});entry.templates.push({design:a.design.id,fit:fit.status,issues:fit.issues});
      }catch(e){entry.excluded.push({design:a.design.id,issues:[e.message]});}
     }
     try{

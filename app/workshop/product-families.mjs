@@ -73,7 +73,10 @@ export function quantityTierGaps(f){
 // Offene, aber nicht sperrende Angaben (Staffel, Aufpreis Rückseite) – fürs Briefing.
 export const familyOpenNotes=f=>[...quantityTierGaps(f),...(hasBack(f)&&backSurface(f).priceCents===null?['Aufpreis „Rückseite gestalten“ (bis dahin nicht buchbar)']:[])];
 export function validateFamily(f){
- only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers','surfaces'],'Produktfamilie');
+ only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers','surfaces','photo'],'Produktfamilie');
+ // Fotopreis je Familie (Schiefer-Gedenktafel 22 × 14, Chris 20.10.2026: 1. Foto im Grundpreis, jedes
+ // weitere 8,99 €). Ohne Angabe bleibt es bei der bisherigen Vorgabe (0 inklusive, 0 Cent). null = offen.
+ if(f.photo!==undefined){only(f.photo,['includedCount','extraPriceCents','note'],'Fotopreis');if(!Number.isSafeInteger(f.photo.includedCount)||f.photo.includedCount<0||f.photo.includedCount>4||!(open(f.photo.extraPriceCents)||cents(f.photo.extraPriceCents))||(f.photo.note!==undefined&&!text(f.photo.note,400)))invalid('Fotopreis: 0 bis 4 Fotos inklusive und Aufpreis je weiterem Foto in Cent (oder offen).');}
  // K14 / Ü15.1: zweite Fläche nur, wo das Produkt physisch eine Rückseite hat (Entscheidung Chris
  // 19.10.2026: Brettchen, Schlüsselanhänger, Autoanhänger, Lesezeichen; Platten bleiben einseitig,
  // Acryl „von hinten“ ist Spiegelung im Profil). Aufpreis null = offen → Rückseite nicht buchbar.
@@ -166,6 +169,7 @@ export function familyGaps(f){
  if(open(f.material.thicknessMm))gaps.push('Materialstärke');
  if(open(f.designArea.marginMm))gaps.push('Gestaltungsrand');
  for(const r of f.mountingRules){if(!ruleComplete(r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
+ if(f.photo&&open(f.photo.extraPriceCents))gaps.push('Aufpreis weiteres Foto');
  const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
  for(const g of f.options||[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
@@ -205,7 +209,7 @@ export function familyProductConfig(f,s,revision){
   optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values}]};
  const fields=familyOptionFields(f,s);if(fields.length)profile.optionFields=fields;
  if(f.surfaces!==undefined)profile.surfaces=structuredClone(f.surfaces);
- const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:0,extraPriceCents:0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
+ const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:f.photo?.includedCount??0,extraPriceCents:f.photo?.extraPriceCents??0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
  const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
  if(f.material.kind==='steel'){c.materialSurface=steelPreviewSurface();return nativeSpecimenConfig(c);}
  return nativeSlateConfig(c);

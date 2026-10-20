@@ -40,7 +40,9 @@ test('Zeichen ohne Randleerzeichen, Zeilen über Umbruch, deutsche Meldungen',()
 test('Pflichtfeld: Mustertext (getrimmt, Groß/Klein egal) gilt nicht als Eingabe',()=>{
  assert.equal(sameSampleText(' familie MUSTERMANN ','Familie Mustermann'),true);
  assert.equal(sameSampleText('Familie Koch','Familie Mustermann'),false);
- assert.equal(requiredFieldMessage({id:'t1',fieldKey:'names'}),'Bitte das Feld „names“ ausfüllen.');
+ assert.equal(requiredFieldMessage({id:'t1',fieldKey:'names'}),'Bitte das Feld „Namen“ ausfüllen.');
+ assert.equal(requiredFieldMessage({id:'t1',fieldKey:'daten'}),'Bitte das Feld „Lebensdaten“ ausfüllen.');
+ assert.equal(requiredFieldMessage({id:'t1',fieldKey:'kennzeichen'}),'Bitte das Feld „kennzeichen“ ausfüllen.');
  assert.equal(requiredFieldMessage({id:'t1'}),'Bitte das Feld „t1“ ausfüllen.');
 });
 test('Editor-Eingabe: kein weiteres Zeichen, zusätzliche Zeilen werden abgewiesen',()=>{

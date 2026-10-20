@@ -141,7 +141,9 @@ export function parseDesignSvg(svgText){
    if(!mask)fail('Ebene „'+id+'“: Fotofeld braucht eine Maske (rect, circle, ellipse oder path).');
    const bounds=shapeBounds(mask);
    if(mask.tag==='path')notes.push('Fotofeld „'+id+'“: Maske ist ein Pfad – als Rechteck übernommen, bitte prüfen.');
-   layers.push({id,kind,shape:mask.tag==='circle'||mask.tag==='ellipse'&&Math.abs(num(mask.attrs.rx,'rx')-num(mask.attrs.ry,'ry'))<0.01?'circle':'rect',bounds:[bounds[0]+t.dx,bounds[1]+t.dy,bounds[2],bounds[3]].map(round),rotation:t.rotation});
+   // Platzhalterbild im Fotofeld (Musterfoto samt Upload-Hinweis aus der Vorlage): nur Vorschau, nie Fertigung.
+   const image=findAll(node,['image'])[0],href=image?(image.attrs.href||image.attrs['xlink:href']||''):'';
+   layers.push({id,kind,shape:mask.tag==='circle'||mask.tag==='ellipse'&&Math.abs(num(mask.attrs.rx,'rx')-num(mask.attrs.ry,'ry'))<0.01?'circle':'rect',bounds:[bounds[0]+t.dx,bounds[1]+t.dy,bounds[2],bounds[3]].map(round),rotation:t.rotation,...(/^[\w.-]+\.(png|jpe?g)$/i.test(href)?{placeholder:href}:{})});
   }else{
    const parts=(node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node]).map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill||node.attrs.fill||null,transform:transformOf(n===node?'':n.attrs.transform)})).filter(p=>p.d);
    if(!parts.length)fail('Ebene „'+id+'“ enthält keine Vektorpfade.');
@@ -156,6 +158,9 @@ export function parseDesignSvg(svgText){
 
 // ---- Design → Vorlage ----
 const fieldRule=(design,layerId)=>{const f=design.fields?.[layerId];if(f===undefined)return {};if(!f||typeof f!=='object'||Array.isArray(f))fail(design.id+': design.json fields.'+layerId+' ist kein Objekt.');for(const k of Object.keys(f))if(!['required','maxLength','maxLines','locked','label'].includes(k))fail(design.id+': design.json fields.'+layerId+' kennt „'+k+'“ nicht.');for(const k of ['required','locked'])if(f[k]!==undefined&&typeof f[k]!=='boolean')fail(design.id+': fields.'+layerId+'.'+k+' ist true oder false.');for(const k of ['maxLength','maxLines']){const [min,max]=TEXT_LIMIT_RANGES[k];if(f[k]!==undefined&&!(Number.isInteger(f[k])&&f[k]>=min&&f[k]<=max))fail(design.id+': fields.'+layerId+'.'+k+' ist eine ganze Zahl von '+min+' bis '+max+'.');}return f;};
+// design.json `movable: true` (Vorgabe Chris 20.10.2026 für Gedenktafeln 22 × 14): alle Elemente
+// verschiebbar – Texte wie bisher, dazu Motive und das Fotofeld (ohne Skalieren, Ersetzen bleibt beim Foto).
+const movableAll=design=>design.json?.movable===true||design.movable===true;
 const samePlate=(a,b)=>Math.abs(a[0]-b[0])<0.5&&Math.abs(a[1]-b[1])<0.5;
 
 // `fonts`: Glyphenressourcen (Name → {regular:{units,glyphs}}) aller Schriften, die das
@@ -165,7 +170,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
  const parsed=parseDesignSvg(svgText??design.svg()),plate=design.plateMm||[parsed.widthMm,parsed.heightMm];
  if(!samePlate(plate,[parsed.widthMm,parsed.heightMm]))fail(design.id+': SVG-Maß '+parsed.widthMm+' × '+parsed.heightMm+' mm widerspricht dem Plattenmaß '+plate[0]+' × '+plate[1]+' mm.');
  const print=process.method==='print',ink=process.ink,templateId='katalog-'+slug(design.id),themeId=theme?.id??design.themes?.[0]??null;
- const objects=[],motifs=[],rights={},notes=[...parsed.notes],usedFonts=new Set(),fieldKeys=new Set();
+ const objects=[],motifs=[],rights={},notes=[...parsed.notes],usedFonts=new Set(),fieldKeys=new Set(),placeholders=[];
  // Namensfeld = Feldschlüssel mit name/familie/hausnummer, sonst der Text mit der größten Schrift.
  const texts=parsed.layers.filter(l=>l.kind==='text');
  const nameLayer=texts.find(l=>/name|familie|hausnummer/i.test(l.fieldKey||''))||texts.reduce((best,l)=>!best||l.size>best.size?l:best,null);
@@ -197,22 +202,24 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    const [bx,by,bw,bh]=layer.bounds,fieldKey='photo-'+id;
    if(fieldKeys.has(fieldKey))fail(design.id+': Fotofeld „'+fieldKey+'“ doppelt.');fieldKeys.add(fieldKey);
    objects.push({id,type:'photoSlot',fieldKey,photoShape:layer.shape,required:rule.required??true,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),templateOrigin:true,customerEditable:true});
-   rights[id]={content:false,color:false,replace:true,move:false,scale:false,delete:false};photo=true;
+   rights[id]={content:false,color:false,replace:true,move:movableAll(design),scale:false,delete:false};photo=true;
+   if(layer.placeholder)placeholders.push({slotId:id,file:layer.placeholder,widthMm:round(bw),heightMm:round(bh)});
   }else{
    const [bx,by,bw,bh]=layer.bounds;
    if(samePlate([bw,bh],plate)&&Math.abs(bx)<0.5&&Math.abs(by)<0.5){notes.push('Ebene „'+layer.id+'“ füllt die ganze Platte (Plattenfläche aus Corel) und wird nicht übernommen.');continue;}
    const key=templateId+'-'+id;
    motifs.push({key,svgFragment:layer.paths.map(d=>'<path d="'+d+'" fill="currentColor" fill-rule="nonzero"/>').join(''),bounds:[round(bx),round(by),round(bw),round(bh)],embeddedOnly:true});
-   const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:print&&!guide};
+   const movable=movableAll(design)&&!guide;
+   const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:(print||movable)&&!guide};
    if(!o.customerEditable)o.locked=true;if(guide)o.role='guide';
-   rights[id]={content:false,color:print&&!guide,replace:false,move:false,scale:false,delete:false};
+   rights[id]={content:false,color:print&&!guide,replace:false,move:movable,scale:false,delete:false};
    objects.push(o);
   }
  }
  if(!objects.length)fail(design.id+': keine Ebenen text-/motiv-/deko-/foto- gefunden.');
  if(objects.length>20)fail(design.id+': höchstens 20 Elemente je Vorlage ('+objects.length+' gefunden).');
  const template={id:templateId,name:design.name,objects,marks:[],themes:design.themes??[],bestseller:design.bestseller===true,katalog:{designId:design.id,source:design.source,plateMm:[plate[0],plate[1]]}};
- return {template,motifs,rights,photo,fonts:[...usedFonts],notes,process:process.id};
+ return {template,motifs,rights,photo,placeholders,fonts:[...usedFonts],notes,process:process.id};
 }
 
 // ---- Formatreihen ----
@@ -362,9 +369,20 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
  config.localResources.fonts=localFonts;
  config.localResources.motifs=[...config.localResources.motifs,...templates.flatMap(t=>t.motifs)];
  if(templates.length){
-  const ordered=[...templates.filter(t=>t.template.bestseller),...templates.filter(t=>!t.template.bestseller)];
+  // Startdesign der Unterkategorie (Hauptbild im Shop = erstes Design im Konfigurator), dann Bestseller, dann Katalogfolge.
+  const start=subcategory.startDesign?templates.find(t=>t.template.katalog?.designId===subcategory.startDesign):null;
+  if(subcategory.startDesign&&!start)fail('Unterkategorie „'+subcategory.id+'“: Startdesign „'+subcategory.startDesign+'“ ist für '+s.label+' nicht verfügbar.');
+  const rest=templates.filter(t=>t!==start);
+  const ordered=[...(start?[start]:[]),...rest.filter(t=>t.template.bestseller),...rest.filter(t=>!t.template.bestseller)];
   if(ordered.length>60)fail('Höchstens 60 Vorlagen je Produkt ('+ordered.length+' für '+s.label+').');
   p.designs=ordered.map(t=>t.template);p.defaultDesignId=p.designs[0].id;
+  // Musterfoto als Platzhalter (Werkstatt-Designressource): im Editor sichtbar, Klick lädt das Kundenfoto,
+  // nie Teil von Design oder Fertigung. Der Upload-Hinweis steckt schon im Bild → eigener Hinweis aus.
+  const examples=templates.flatMap(t=>(t.examples||[]).map(e=>({designId:t.template.id,slotId:e.slotId,assetId:e.assetId})));
+  if(examples.length){
+   config.localResources.photoExamples=[...(config.localResources.photoExamples||[]),...examples];
+   config.photo={...config.photo,hints:[...(config.photo.hints||[]),...examples.map(e=>({designId:e.designId,slotId:e.slotId,text:'Foto-Upload hier klicken',enabled:false}))]};
+  }
  }
  if(templates.some(t=>t.template.objects.some(o=>o.type==='photoSlot'))){if(!process?.tools.photo)fail('Fotofeld in einer Vorlage, aber das Verfahren sieht kein Foto vor.');config.photo={...config.photo,enabled:true};}
  if(subcategory.themeId)p.themeId=subcategory.themeId;

@@ -43,6 +43,16 @@ export function mechanicalHints(profile,state){
 export function hintKey(hint,objects,context){return JSON.stringify([hint.code,hint.ids.map(id=>objects.find(o=>o.id===id)).map(o=>o&&[o.id,o.x,o.y,o.w,o.h,o.rotation,o.text,o.font,o.uxHidden]),hint.hole||null,context]);}
 
 
+// Überlagerungen, die schon in der unveränderten Vorlage bestehen, sind vom Designer gewollt (Rosenranke
+// hinter dem Spruch, Kreuz über dem Datumsstrich): kein Hinweis, solange keines der beteiligten Elemente
+// verschoben, gedreht oder skaliert wurde. Der Textinhalt zählt dabei nicht (Kunde tippt Name/Daten).
+export function templateOverlap(ids,objects,design){
+ if(!Array.isArray(design?.objects)||!ids?.length)return false;
+ const near=(a,b)=>Math.abs((a??0)-(b??0))<0.01;
+ return ids.every(id=>{const o=objects.find(o=>o.id===id),t=design.objects.find(t=>t.id===id);
+  return !!o&&!!t&&near(o.x,t.x)&&near(o.y,t.y)&&near(o.rotation,t.rotation)&&(o.type==='text'?near(o.size,t.size):near(o.w,t.w)&&near(o.h,t.h));});
+}
+
 // Master rule: printed layers may intentionally overlap; mechanical warnings are independent.
 export function showOverlapWarnings(profile){
  if(profile?.kind==='layered-doorbell'&&!profile.processing)return true;

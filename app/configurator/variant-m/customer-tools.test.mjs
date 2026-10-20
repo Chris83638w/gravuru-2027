@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {customerLayoutIssue} from './contract.mjs';
-import {showOverlapWarnings,centerTexts,motifScore,overlaps,overlapHints,mechanicalHints,hintKey} from './customer-tools-model.mjs';
+import {showOverlapWarnings,centerTexts,motifScore,overlaps,overlapHints,mechanicalHints,hintKey,templateOverlap} from './customer-tools-model.mjs';
 test('Mehrfachzentrierung erhält Höhe, Abstand, Drehung und gesperrte Texte',()=>{const objects=[{id:'a',type:'text',x:4,y:20,w:10,h:5,rotation:25},{id:'b',type:'text',x:25,y:35,w:10,h:5},{id:'locked',type:'text',x:7,uxLocked:true}];centerTexts(objects,['a','b','locked'],80);assert.deepEqual(objects.map(o=>o.x),[80,80,7]);assert.deepEqual(objects.slice(0,2).map(o=>o.y),[20,35]);assert.equal(objects[0].rotation,25);});
 test('Motivsuche berücksichtigt verwandte deutsche und englische Begriffe und bevorzugt genaue Treffer',()=>{assert(motifScore({name:'Labrador',category:'Tiere'},'Hund')>0);assert(motifScore({name:'Anker',category:'Motive'},'maritim')>0);assert(motifScore({name:'Herz',category:'Liebe'},'heart')>0);assert(motifScore({name:'Hund'},'Hund')>motifScore({name:'Labrador'},'Hund'));assert.equal(motifScore({name:'Anker'},'Katze'),0);assert(motifScore({name:'Baum'},'Bäume')>0);});
 test('Überlagerung beachtet Rotation, ausgeblendete Objekte und reine Randberührung',()=>{const a={id:'a',x:0,y:0,w:10,h:10};assert(overlaps(a,{...a,x:9}));assert(!overlaps(a,{...a,x:10}));assert(!overlaps({x:0,y:0,w:20,h:1,rotation:45},{x:0,y:6,w:20,h:1,rotation:45}));assert.equal(overlapHints([a,{...a,id:'b',uxHidden:true}]).length,0);});
@@ -24,4 +24,16 @@ test('Motivbibliothek: Kategorien des Themas liegen ohne Suchbegriff vorn, Suche
  const sorted=[...entries].sort((a,b)=>motifScore(b,'',theme)-motifScore(a,'',theme));
  assert.deepEqual(sorted.map(e=>e.name),['Pfote','Anker']);
  assert(motifScore({name:'Anker',category:'Maritim'},'Anker',theme)>motifScore({name:'Pfote',category:'Tiere'},'Anker',theme));
+});
+
+test('Überlagerung aus der unveränderten Vorlage ist gewollt; nach Verschieben, Drehen oder Skalieren wieder ein Hinweis',()=>{
+ const design={objects:[{id:'motiv-1',type:'motif',x:50,y:40,w:20,h:10,rotation:0},{id:'text-1',type:'text',x:52,y:38,w:30,h:6,size:5,text:'*12.09.2015'}]};
+ const objects=structuredClone(design.objects);
+ assert.equal(templateOverlap(['motiv-1','text-1'],objects,design),true);
+ objects[1].text='*01.01.2020 – 02.02.2024';objects[1].w=44;assert.equal(templateOverlap(['motiv-1','text-1'],objects,design),true);
+ assert.equal(templateOverlap(['motiv-1','text-1'],[{...objects[0],x:51},objects[1]],design),false);
+ assert.equal(templateOverlap(['motiv-1','text-1'],[{...objects[0],rotation:5},objects[1]],design),false);
+ assert.equal(templateOverlap(['motiv-1','text-1'],[objects[0],{...objects[1],size:6}],design),false);
+ assert.equal(templateOverlap(['motiv-1','neu'],[...objects,{id:'neu',type:'motif',x:50,y:40,w:5,h:5}],design),false);
+ assert.equal(templateOverlap(['motiv-1','text-1'],objects,null),false);
 });

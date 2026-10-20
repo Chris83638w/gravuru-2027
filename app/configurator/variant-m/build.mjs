@@ -94,6 +94,9 @@ export function build({outputDirectory=OUTPUT}={}){
   // Ladezeit: alle Editor-Module als ein Bündel (bundle-build.mjs, Route /_bundle/); `?module=einzeln` lädt Einzelmodule.
   const bundle=buildEditorBundle(outputDirectory);
   source=patchEditorBundle(source,bundle.url);
+  // Design-Karten/Galerie: Größenregeln nur für das äußere Vorschau-SVG, nie für verschachtelte Motiv-SVGs
+  // (sonst werden Kreuz, Rose usw. in der Designauswahl aufgeblasen und verschoben; Fehler 20.10.2026).
+  source=source.replace(/(\.c-design-card svg|\.c-gallery svg)(?=\s*[,{])/g,'$1:not(svg svg)');
   fs.writeFileSync(path.join(outputDirectory,'editor.html'),source);
   return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source),lazyResources:{fonts:lazy.fonts,motifs:lazy.motifs},bundle:{url:bundle.url,modules:bundle.modules.length,styles:bundle.styles.length,bytes:bundle.bytes,gzipBytes:bundle.gzipBytes}};
 }

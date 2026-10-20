@@ -99,14 +99,24 @@ test('Überschreibung je Unterkategorie (Liste und je Größe) schlägt Familie 
  assert.equal(f.quantityTiers.length,3,'Familie selbst bleibt unverändert');
 });
 
-test('Vorgaben als Daten: fünf entschiedene Linien mit 5/10/25 offen, Türschilder/Hausnummern/Gedenktafeln ohne',()=>{
+test('Vorgaben als Daten (Entscheidungen 19./20.10.2026): Gedenktafeln 2/3, Türschilder/Hausnummern 3/5/10, fünf Linien/Themen 5/10/25',()=>{
  const defaults=quantityTierDefaults();
- for(const [lineId,themeId] of [['brettchen','namensschilder'],['schluesselanhaenger','hundeschilder'],['pferdeschilder','pferdeschilder'],['edelstahl-tuerschilder','firmenschilder'],['acryl-tuerschilder','hinweisschilder']]){
+ const NR4=[{minQuantity:5,percentOff:5},{minQuantity:10,percentOff:10},{minQuantity:25,percentOff:15}];
+ const SHOP=[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}];
+ const GEDENK=[{minQuantity:2,percentOff:6},{minQuantity:3,percentOff:10}];
+ const cases=[
+  [['brettchen','namensschilder'],'entscheidung-20261019-nr4',NR4],[['schluesselanhaenger','hundeschilder'],'entscheidung-20261019-nr4',NR4],
+  [['pferdeschilder','pferdeschilder'],'entscheidung-20261019-nr4',NR4],[['edelstahl-tuerschilder','firmenschilder'],'entscheidung-20261019-nr4',NR4],
+  [['acryl-tuerschilder','hinweisschilder'],'entscheidung-20261019-nr4',NR4],
+  [['edelstahl-tuerschilder','namensschilder'],'shop-bestand-tuerschild-hausnummer',SHOP],[['acryl-tuerschilder','familienschilder'],'shop-bestand-tuerschild-hausnummer',SHOP],
+  [['alu-dibond-30x20','hausnummern'],'shop-bestand-tuerschild-hausnummer',SHOP],
+  [['gedenktafeln-30x20','gedenktafeln'],'entscheidung-20261020-gedenktafeln',GEDENK],[['edelstahl-tuerschilder','tiergedenktafeln'],'entscheidung-20261020-gedenktafeln',GEDENK],
+ ];
+ for(const [[lineId,themeId],ruleId,tiers] of cases){
   const hit=defaultQuantityTiers({id:lineId},{themeId},defaults);
-  assert.deepEqual(hit.tiers,OPEN,lineId+'/'+themeId);assert.equal(hit.ruleId,'entscheidung-20261019-nr4');
+  assert.equal(hit?.ruleId,ruleId,lineId+'/'+themeId);assert.deepEqual(hit.tiers,tiers,lineId+'/'+themeId);
  }
- for(const [lineId,themeId] of [['edelstahl-tuerschilder','namensschilder'],['edelstahl-tuerschilder','hausnummern'],['gedenktafeln-30x20','gedenktafeln'],['acryl-tuerschilder','familienschilder']])
-  assert.equal(defaultQuantityTiers({id:lineId},{themeId},defaults),null,lineId+'/'+themeId);
+ assert.equal(defaultQuantityTiers({id:'lineale'},{themeId:'geschenkartikel'},defaults),null,'ohne Regel keine Staffel');
  // Vorgabe greift nur ohne eigene Angabe – und ist ohne Codeänderung austauschbar (z. B. Shop-Bestand 3/5/10).
  const shop=validateQuantityTierDefaults({schema:'gravuru-quantity-tier-defaults/v1',rules:[{id:'shop',themeIds:['namensschilder'],tiers:[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}]}]});
  const c=product(namen,family,{tierDefaults:shop}).config;

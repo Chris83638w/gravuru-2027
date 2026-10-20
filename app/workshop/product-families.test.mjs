@@ -191,12 +191,12 @@ test('K10: family process profile – id validated, null stays open, engraving s
  const open={...f,material:{...f.material,processingProfileId:null}};validateFamily(open);
  assert.ok(familyGaps(open).includes('Verfahrensprofil'));assert.equal(familyProcess(open),null);
  assert.throws(()=>familyProductConfig(open,open.sizes[0],1),/Verfahrensprofil/);
- const slate=familyProcess(f);assert.equal(slate.id,'slate-engraving');assert.equal(slate.tools.textColor,false);assert.deepEqual(slate.palette,[]);assert.equal(slate.minTextMm,4);assert.equal(slate.mirror,false);
+ const slate=familyProcess(f);assert.equal(slate.id,'slate-engraving');assert.equal(slate.tools.textColor,false);assert.deepEqual(slate.palette,[]);assert.equal(slate.minTextMm,3);assert.equal(slate.mirror,false);
  // UV-Druck ist materialneutral und für jede Familie zulässig.
  validateFamily({...f,material:{...f.material,processingProfileId:'color-print'}});assert.equal(familyProcess({...f,material:{...f.material,processingProfileId:'color-print'}}).minTextMm,3);
  const standoff=id=>JSON.parse(fs.readFileSync(new URL('../designs/acrylic-standoff-signs/'+id+'.json',import.meta.url)));
  assert.equal(familyProcess(standoff('aa')).mirror,true);assert.equal(familyProcess(standoff('ss')).mirror,false);assert.equal(familyProcess(memorial('acryl-schwarz')).mirror,true);
- assert.match(familyBriefing(standoff('aa'),1),/Profil „acrylic-engraving“/);assert.match(familyBriefing(standoff('aa'),1),/Mindestschriftgröße 4 mm/);assert.match(familyBriefing(standoff('aa'),1),/Spiegelung für die Fertigung: ja/);
+ assert.match(familyBriefing(standoff('aa'),1),/Profil „acrylic-engraving“/);assert.match(familyBriefing(standoff('aa'),1),/Mindestschriftgröße 3 mm/);assert.match(familyBriefing(standoff('aa'),1),/Spiegelung für die Fertigung: ja/);
  assert.match(familyBriefing(open,1),/Verfahren offen/);
  // Excel-Rundlauf: Spalte „Verfahrensprofil“ wird geschrieben und exakt zurückgelesen (auch die Gravurseite).
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-family-excel-')),xlsx=path.join(dir,'stamm.xlsx'),root=new URL('../../',import.meta.url).pathname;

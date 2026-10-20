@@ -17,14 +17,14 @@ export const UV_PRINT_PALETTE=Object.freeze([
 ].map(([name,colors])=>Object.freeze([name,Object.freeze(colors.map(Object.freeze))])));
 const UV_HEX=Object.freeze(UV_PRINT_PALETTE.flatMap(([,colors])=>colors.map(([,hex])=>hex)));
 
-// Mindestschriftgröße: Vorgabe Benchmark (Gravur 4 mm, Druck 3 mm), vom Nutzer zu bestätigen.
+// Mindestschriftgröße: Gravur 3 mm (Entscheidung Chris 20.10.2026, vorher Benchmark 4 mm), Druck 3 mm.
 // Mindestlinienstärke: offen (null) – kein Maschinenwert bekannt.
 // Soll-DPI: Druck 300 und Rastergravur (Foto) 300 nach bestehender Ausgabe
 // (formEngravingSettings/formPrintSettings Standard 300); kein Maschinenwert.
 // Spiegelung: Acrylglas wird von hinten graviert (Familien AA/AS, engravingSide 'back');
 // eine Familie mit engravingSide 'front' (S/S) überschreibt das über processMirror().
 // Ausgabeformat: beschreibt die bestehende Ausgabe (Proof-PDF), ändert sie nicht.
-const ENGRAVING={tools:{textColor:false,photo:true,motifRecolor:false},palette:[],minTextMm:4,minStrokeMm:null,targetDpi:300,mirror:false,outputFormat:'pdf'};
+const ENGRAVING={tools:{textColor:false,photo:true,motifRecolor:false},palette:[],minTextMm:3,minStrokeMm:null,targetDpi:300,mirror:false,outputFormat:'pdf'};
 const RULES=Object.freeze({
  'steel-engraving':{...ENGRAVING},
  'wood-engraving':{...ENGRAVING},

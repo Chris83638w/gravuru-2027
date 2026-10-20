@@ -101,7 +101,7 @@ test('Master → Zielgröße: reine Skalierung mit Schriftgröße, Bohrbild aus 
  assert.deepEqual(templateFit(scaled,f,big,fonts()),{status:'passt',issues:[]});
  // Kleinere Größe: Texte unter 4 mm → prüfen; Übergroß → passt nicht (Element verlässt die Fläche).
  const small=f.sizes.find(s=>s.key==='TS-RE-60X40'),down=scaleTemplate(r.template,[90,60],[60,40],fonts());
- const fit=templateFit(down,f,small,fonts());assert.equal(fit.status,'prüfen');assert.match(fit.issues[0],/zusatz: 2.667 mm unter der Mindestgröße 4 mm/);
+ const fit=templateFit(down,f,small,fonts());assert.equal(fit.status,'prüfen');assert.match(fit.issues[0],/zusatz: 2.667 mm unter der Mindestgröße 3 mm/);
  const wide={...r.template,objects:r.template.objects.map(o=>o.id==='text-1'?{...o,size:40}:o)};
  const bad=templateFit(scaleTemplate(wide,[90,60],[90,60],fonts()),f,f.sizes[0],fonts());assert.equal(bad.status,'passt nicht');assert.match(bad.issues[0],/name: Element ragt über die Gestaltungsfläche hinaus/);
  // Eingepasst (Reihe ±1 %) → prüfen mit Hinweis; andere Reihe → Fehler.

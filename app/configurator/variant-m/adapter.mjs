@@ -6,6 +6,8 @@ import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs
 import {surfacePreview,embedSurface,scenePreview} from './material-surface.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
+// Fototipp auf der Platte, bevor die Kundenoberfläche fertig ist (build.mjs ruft es direkt nach mount auf).
+export {installEarlyPhotoTap} from './photo-upload.mjs';
 import {getProcessingProfile, elementColor} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc, filteredDesigns} from '../../platform/sources/app/shared/models/design-content.mjs';

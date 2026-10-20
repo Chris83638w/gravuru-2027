@@ -2,6 +2,7 @@ import {previewResourceURL} from './preview-resource.mjs';
 import {ACRYLIC_BASES,acrylicSelection,acrylicOptions,containAcrylicObject} from './acrylic-product.mjs';
 import {money,quote} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
+import {PHOTO_ACCEPT} from './photo-upload.mjs';
 // Kundenansicht: WebP-Fassungen (customer-images.json); PNG-Originale bleiben für Fertigung/Referenz.
 const ROOT='/acrylic-assets/';
 export async function installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles}) {
@@ -31,7 +32,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    const replaceable=el.uxCanEdit?.(o,'replace')!==false;
    const hintSetting=config.photo?.hints?.find(h=>h.designId===el.state.designId&&h.slotId===o.id);
    const hintText=String(hintSetting?.text||'Hier tippen & eigenes Foto hochladen').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-   const hint=example&&replaceable&&hintSetting?.enabled!==false?`<g data-preview-only="true" data-role="guide" transform="translate(0 31)"><rect x="-53" y="-9" width="106" height="18" rx="3" fill="white" fill-opacity=".96"/><text text-anchor="middle" y="-.5" font-size="4.2" font-family="Arial" fill="#332d27">${hintText}</text><text text-anchor="middle" y="5.5" font-size="3.1" font-family="Arial" fill="#63564c">Beispielfoto ersetzen</text></g>`:'';
+   const hint=example&&replaceable&&hintSetting?.enabled!==false?`<g data-preview-only="true" data-role="guide" data-ux-photo-hint="true" transform="translate(0 31)"><rect x="-53" y="-9" width="106" height="18" rx="3" fill="white" fill-opacity=".96"/><text text-anchor="middle" y="-.5" font-size="4.2" font-family="Arial" fill="#332d27">${hintText}</text><text text-anchor="middle" y="5.5" font-size="3.1" font-family="Arial" fill="#63564c">Beispielfoto ersetzen</text></g>`:'';
    return `<g data-object="${o.id}" ${replaceable?`data-ux-empty-photo-slot="true" role="button" tabindex="0" aria-label="${example?'Eigenes Foto hochladen':'Foto ersetzen'}"`:'data-ux-static-photo="true" aria-hidden="true" tabindex="-1" focusable="false"'} transform="translate(${o.x} ${o.y})"><defs><clipPath id="acryl-photo-clip"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2"/></clipPath></defs><g clip-path="url(#acryl-photo-clip)">${picture}</g>${hint}<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/></g>`;
  };
  // Keep native editor tools and event handling; only the scene and physical options are extended.
@@ -44,7 +45,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  };
  const fixedSource=()=>config.profile.designs.find(design=>design.id===el.state.designId)?.objects.filter(object=>object.acrylicFixed)||[];
  const isFixed=o=>!!o&&fixedSource().some(source=>source.id===o.id);
- const photoInput=document.createElement('input');photoInput.type='file';photoInput.accept='image/png,image/jpeg,image/webp';photoInput.hidden=true;r.append(photoInput);
+ const photoInput=document.createElement('input');photoInput.type='file';photoInput.accept=PHOTO_ACCEPT;photoInput.hidden=true;r.append(photoInput);
  photoInput.addEventListener('change',async()=>{await acceptFiles(photoInput.files,'photo','photo-main');photoInput.value='';});
  r.addEventListener('click',e=>{if(e.target.closest('[data-object="photo-main"]')&&files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId)){e.preventDefault();e.stopImmediatePropagation();photoInput.click();}},true);
  r.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)&&e.target.closest('[data-object="photo-main"]')&&files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId)){e.preventDefault();e.stopImmediatePropagation();photoInput.click();}},true);

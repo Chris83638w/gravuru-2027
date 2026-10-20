@@ -31,4 +31,6 @@
 :host([data-ux-neutral]) .fk-buy-dock button.completion-finish{background:#343a40!important;color:#fff!important;border-color:#343a40!important}
 :host([data-ux-neutral]) .ux-shell .ux-panel .ux-primary{color:#fff!important}
 
-:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) button:is(.ux-primary,.fk-buy-button,.completion-finish,[data-direct-done],.ux-photo-quick-apply){background:#343a40!important;color:#fff!important;border-color:#343a40!important}
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) button:is(.ux-primary,.fk-buy-button,.completion-finish,[data-direct-done],.ux-photo-quick-apply,.ux-file-select){background:#343a40!important;color:#fff!important;border-color:#343a40!important}
+/* Fotoauswahl: Hauptaktion, nicht blass (dunkle Schrift auf grünem Grund wirkte deaktiviert). */
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog) button.ux-file-select:hover{background:#22272d!important;color:#fff!important}

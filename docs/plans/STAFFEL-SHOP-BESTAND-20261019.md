@@ -24,7 +24,18 @@ Der Shop-Bestand sagt das Gegenteil: Die Metafelder gibt es **nur** bei Türschi
 - Angelegt ist nur die Entscheidung Nr. 4: Linien `brettchen`, `schluesselanhaenger`, `pferdeschilder` (Boxen- und Stallschilder) und die Themen `firmenschilder`, `hinweisschilder` mit Stufen ab 5 / 10 / 25 Stück und **`percentOff: null` (offen)**. Eine offene Staffel wird weder gerechnet noch angezeigt.
 - Für Türschilder und Hausnummern ist **nichts** gesetzt, bis Chris entscheidet.
 
-## Was Chris entscheiden muss
+## Entscheidung 20.10.2026 (Chris)
+
+Beides gilt, als Daten in `app/workshop/quantity-tier-defaults.json` (erste passende Regel gewinnt):
+
+| Regel | Gilt für | Stufen |
+| --- | --- | --- |
+| `entscheidung-20261019-nr4` | Linien Brettchen, Schlüsselanhänger, Boxen-/Pferdeschilder; Themen Firmenschilder, Hinweisschilder (auch auf Türschild-Linien) | ab 5 / 10 / 25 Stück: 5 / 10 / 15 % |
+| `shop-bestand-tuerschild-hausnummer` | Linien Edelstahl- und Acryl-Türschilder; Thema Hausnummern | ab 3 / 5 / 10 Stück: 5 / 10 / 15 % (wie Shop-Bestand) |
+
+Gedenktafeln bleiben ohne Staffel. Offen bleibt nur die Anbindung im Shopify-Warenkorb (siehe unten).
+
+## Was Chris entscheiden musste (erledigt 20.10.2026)
 
 1. **Welche Produkttypen** bekommen eine Staffel – die fünf aus der Entscheidung, die zwei aus dem Shop-Bestand (Türschild, Hausnummer) oder beide?
 2. **Welche Stufen** – 5 / 10 / 25 (Entscheidung) oder 3 / 5 / 10 (Shop-Bestand)?

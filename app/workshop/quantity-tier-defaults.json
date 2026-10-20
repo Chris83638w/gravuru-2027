@@ -4,13 +4,54 @@
  "rules": [
   {
    "id": "entscheidung-20261019-nr4",
-   "label": "Entscheidung Chris 19.10.2026 Nr. 4: Firmenschilder, Boxenschilder, Schlüsselanhänger, Hinweisschilder, Brettchen – Stufen ab 5 / 10 / 25 Stück; Prozentwerte offen (sollten aus rabatt_stufe1–3 des alten Shops kommen, dort für diese Typen nicht gesetzt)",
-   "lineIds": ["brettchen", "schluesselanhaenger", "pferdeschilder"],
-   "themeIds": ["firmenschilder", "hinweisschilder"],
+   "label": "Entscheidung Chris 19.10.2026 Nr. 4, Prozentwerte bestätigt 20.10.2026: Firmenschilder, Boxenschilder, Schlüsselanhänger, Hinweisschilder, Brettchen – ab 5 / 10 / 25 Stück 5 / 10 / 15 %",
+   "lineIds": [
+    "brettchen",
+    "schluesselanhaenger",
+    "pferdeschilder"
+   ],
+   "themeIds": [
+    "firmenschilder",
+    "hinweisschilder"
+   ],
    "tiers": [
-    {"minQuantity": 5, "percentOff": null},
-    {"minQuantity": 10, "percentOff": null},
-    {"minQuantity": 25, "percentOff": null}
+    {
+     "minQuantity": 5,
+     "percentOff": 5
+    },
+    {
+     "minQuantity": 10,
+     "percentOff": 10
+    },
+    {
+     "minQuantity": 25,
+     "percentOff": 15
+    }
+   ]
+  },
+  {
+   "id": "shop-bestand-tuerschild-hausnummer",
+   "label": "Bestätigt Chris 20.10.2026: Shop-Bestand beibehalten – Türschilder und Hausnummern ab 3 / 5 / 10 Stück 5 / 10 / 15 % (Metafelder rabatt_stufe1–3 im Shop)",
+   "lineIds": [
+    "edelstahl-tuerschilder",
+    "acryl-tuerschilder"
+   ],
+   "themeIds": [
+    "hausnummern"
+   ],
+   "tiers": [
+    {
+     "minQuantity": 3,
+     "percentOff": 5
+    },
+    {
+     "minQuantity": 5,
+     "percentOff": 10
+    },
+    {
+     "minQuantity": 10,
+     "percentOff": 15
+    }
    ]
   }
  ]

@@ -197,7 +197,8 @@ export function selectedProfile(config, values = {}) {
     if (value.holes !== undefined) {
       if (holeSelection) fail('Mehrere Optionen bestimmen gleichzeitig das Bohrbild.');
       profile.geometry.holes = clone(value.holes); holeSelection = true;
-      profile.mountingPreview={spacers:value.spacers===true,diameter:12,finish:value.spacerFinish||'silver',...(Number.isFinite(value.mountingRule?.keepoutMm)?{keepoutMm:value.mountingRule.keepoutMm}:{})};
+      // Zubehör aus der Familie (accessory) zeigt die Vorschau ebenfalls: Abstandshalter und Schrauben (Chris 20.10.2026).
+      profile.mountingPreview={spacers:value.spacers===true||value.mountingRule?.accessory==='standoffs',screws:value.mountingRule?.accessory==='screws',diameter:12,finish:value.spacerFinish||'silver',...(Number.isFinite(value.mountingRule?.keepoutMm)?{keepoutMm:value.mountingRule.keepoutMm}:{})};
     }
   }
   return profile;

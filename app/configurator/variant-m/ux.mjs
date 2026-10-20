@@ -188,9 +188,16 @@ export async function installUX(el,config,legacy){
     event.preventDefault();event.stopImmediatePropagation();
     replacing=slot.id;uploadKind='photo';say('Wähle jetzt ein Foto für diesen Platzhalter aus.');$('[data-ux-file]').click();
   }
+  // Tipp (ohne Ziehen) auf ein schon hochgeladenes Foto öffnet ebenfalls die Dateiauswahl zum Wechseln
+  // (Chris 20.10.2026: „Wenn ich auf das Foto klicke passiert nichts“); Ziehen verschiebt es weiter.
+  function uploadedSlotFromEvent(event){
+    if(!photoEnabled||event.button!==0)return null;
+    const node=event.target?.closest?.('.scene [data-object]'),slot=node&&el.state.objects.find(o=>o.id===node.dataset.object);
+    return slot?.type==='photoSlot'&&slot.uxUploadId&&!slot.uxHidden&&!slot.uxLocked&&el.uxCanEdit?.(slot,'replace')!==false?{slot,through:false}:null;
+  }
   const photoTap=tapTracker();
   r.addEventListener('pointerdown',event=>{
-    const hit=event.button===0?emptySlotFromEvent(event):null;
+    const hit=event.button===0?(emptySlotFromEvent(event)||uploadedSlotFromEvent(event)):null;
     photoTap.down(event,hit);
     // Tipp durch den festen Rahmen: Rahmen weder wählen noch ziehen, der Tipp gilt dem Foto.
     if(hit?.through){event.preventDefault();event.stopImmediatePropagation();}
@@ -199,6 +206,7 @@ export async function installUX(el,config,legacy){
     const id=photoTap.up(event);if(!id)return;
     const slot=el.state.objects.find(o=>o.id===id);
     if(replaceablePhotoSlot(slot,o=>el.uxCanEdit?.(o,'replace')))uploadFromEmptySlot(event,slot);
+    else if(slot?.type==='photoSlot'&&slot.uxUploadId&&el.uxCanEdit?.(slot,'replace')!==false){replacing=slot.id;uploadKind=slot.uxUploadKind||'photo';say('Wähle ein neues Foto für diesen Bereich aus.');$('[data-ux-file]').click();}
   },true);
   r.addEventListener('pointercancel',()=>photoTap.cancel(),true);
   r.addEventListener('keydown',event=>{

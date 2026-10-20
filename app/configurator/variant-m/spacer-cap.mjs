@@ -12,3 +12,14 @@ export function spacerCap(finishId='silver'){
  return `<circle cy=".55" r="6" fill="#000" opacity=".2"/><circle r="6" fill="${finish.base}"/><circle r="5.85" fill="${finish.face}"/>${sectors}${rings}<circle r="5.78" fill="none" stroke="${finish.shine}" stroke-width=".08" opacity=".55"/>`;
 }
 
+
+// Schraubenkopf für die Vorschau (Kreuzschlitz, Edelstahl, ca. 8 mm). Nur Ansicht, nie Gravurgeometrie.
+export function screwHead(diameterMm=8){
+ const r=diameterMm/2,c=r*.42,w=r*.16;
+ return `<circle cy="${(r*.12).toFixed(3)}" r="${r}" fill="#000" opacity=".28"/>`
+  +`<circle r="${r}" fill="#6f7477"/><circle r="${(r*.94).toFixed(3)}" fill="#b9bec1"/>`
+  +`<circle r="${(r*.94).toFixed(3)}" fill="none" stroke="#eef1f2" stroke-width="${(r*.08).toFixed(3)}" stroke-dasharray="${(r*1.6).toFixed(3)} ${(r*4.3).toFixed(3)}" transform="rotate(200)" opacity=".8"/>`
+  +`<circle cx="${(-r*.28).toFixed(3)}" cy="${(-r*.3).toFixed(3)}" r="${(r*.42).toFixed(3)}" fill="#f4f6f7" opacity=".35"/>`
+  +`<path d="M${-c} ${-w}H${-w}V${-c}H${w}V${-w}H${c}V${w}H${w}V${c}H${-w}V${w}H${-c}Z" fill="#3b3f42"/>`
+  +`<path d="M${-c} ${w}H${-w}V${c}" fill="none" stroke="#e6e9ea" stroke-width="${(r*.05).toFixed(3)}" opacity=".7"/>`;
+}

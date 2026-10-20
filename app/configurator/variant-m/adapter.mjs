@@ -1,4 +1,4 @@
-import {spacerPreview,keepoutPreview} from './option-media.mjs';
+import {spacerPreview,screwPreview,keepoutPreview} from './option-media.mjs';
 import {designAreaPreview} from './design-area.mjs';
 import {textsNearHoles,holeHintText} from '../../platform/sources/app/shared/models/hole-proximity.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
@@ -35,7 +35,9 @@ export function installUniversal(configInput) {
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
-    return scenePreview(designAreaPreview(keepoutPreview(spacerPreview(result,profile(surface)),profile(surface),{show:keepout,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
+    // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026); Texte nahe an Löchern
+    // meldet weiter der Hinweis. Schrauben/Abstandshalter erscheinen, wenn die Befestigung sie enthält.
+    return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,profile(surface)),profile(surface)),profile(surface),{show:false,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
 

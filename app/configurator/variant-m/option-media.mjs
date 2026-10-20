@@ -1,6 +1,6 @@
 // Small, self-contained option thumbnails survive product copies and exports.
 export const MAX_THUMBNAIL_LENGTH=350000;
-import {SPACER_FINISHES,spacerCap} from './spacer-cap.mjs';
+import {SPACER_FINISHES,spacerCap,screwHead} from './spacer-cap.mjs';
 import {OPTION_STANDARD_IMAGES} from './option-standard-images.mjs';
 export {SPACER_FINISHES};
 export function validateThumbnail(value){
@@ -43,6 +43,13 @@ export function spacerPreview(svg,profile){
   return end<0?svg:svg.slice(0,end)+`<g data-m-spacers="true" data-role="guide" aria-label="Abstandshalter" pointer-events="none">${caps}</g>`+svg.slice(end);
 }
 
+// Schrauben (Befestigung „mit Schrauben“): Kopf in jedem Bohrloch, nur Vorschau.
+export function screwPreview(svg,profile){
+  if(!profile.mountingPreview?.screws)return svg;
+  const heads=(profile.geometry.holes||[]).map(({x,y})=>'<g transform="translate('+Number(x)+' '+Number(y)+')">'+screwHead()+'</g>').join('');
+  const end=svg.lastIndexOf('</svg>');
+  return end<0||!heads?svg:svg.slice(0,end)+`<g data-m-screws="true" data-role="guide" aria-label="Schrauben" pointer-events="none">${heads}</g>`+svg.slice(end);
+}
 
 // Drill-hole protection zones: preview aid only, never part of production files.
 export function keepoutPreview(svg,profile,{show=true,emphasis=false}={}){

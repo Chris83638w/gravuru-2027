@@ -77,7 +77,7 @@ function renderList(){
  for(const b of $$('[data-view]')){b.classList.toggle('active',b.dataset.view===state.view);b.setAttribute('aria-pressed',String(b.dataset.view===state.view));}
  for(const b of $$('[data-filter]')){const key=b.dataset.filter;b.setAttribute('aria-pressed',String(key===state.filter));b.querySelector('span').textContent='('+ (state.catalog?.counts[key]??(key==='archived'?scope.length-active.length:key==='all'?active.length:active.filter(p=>p.overview?.method===key).length))+')';}
  if(!visible.length){$('#product-list').innerHTML='<div class="empty-state"><strong>'+($('#search').value?'Keine passende Konfiguration.':state.filter==='archived'?'Das Archiv ist leer.':'Hier ist Platz für deine nächste Idee.')+'</strong><p>'+($('#search').value?'Versuche einen anderen Namen oder eine Konfigurations-ID.':'Wähle einen anderen Filter oder lege eine Konfiguration an.')+'</p><button data-action="new">Konfiguration anlegen</button></div>';overview?.rendered([]);syncControls();return;}
- $('#product-list').innerHTML=productCards(visible,badge,state.session);
+ $('#product-list').innerHTML=productCards(visible,badge,{...state.session,categoryLabels:state.catalog?.categoryLabels});
  overview?.rendered(visible);
  syncControls();
 }
@@ -204,7 +204,7 @@ async function loadProfiles(){const data=await api('/api/workshop/profiles');sta
 function inheritedProfileLabel(type){
  if(!state.profileSettings)return 'Bibliothek noch nicht geladen';
  let assignment=state.profileSettings.defaults[type],source='Standard';
- for(const category of state.draft.categoryIds||[]){const value=state.profileSettings.categories[category]?.[type];if(value&&value.mode!=='inherit'){assignment=value;source='Kategorie '+category;}}
+ for(const category of state.draft.categoryIds||[]){const value=state.profileSettings.categories[category]?.[type];if(value&&value.mode!=='inherit'){assignment=value;source='Kategorie '+(state.catalog?.categoryLabels?.[category]?.label||category);}}
  if(!assignment||assignment.mode==='inherit')return 'Vorhandene Produktauswahl';
  return source+' · '+(assignment.mode==='empty'?'Keine':state.profiles.find(profile=>profile.id===assignment.profileId)?.name||'Profil nicht verfügbar');
 }

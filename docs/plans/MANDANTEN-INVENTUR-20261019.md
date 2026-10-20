@@ -32,6 +32,7 @@ Stand nach K13. „Anweisungen“ = SQL-Literale mit SELECT/INSERT/UPDATE/DELETE
 | `ai-design-jobs.mjs` | ai_design_jobs | 16 | 16 |
 | `ai-batch-jobs.mjs` | ai_design_batches, ai_design_batch_items | 17 | 17 |
 | `import-job-store.mjs` | batch_jobs, variant_batch_jobs (`${table}`) | 6 | 6 |
+| `konfi-status.mjs` (B1, 20.10.) | konfi_status, konfi_status_events | 6 | 6 |
 | `tenant.mjs` (neu) | tenants, tenant_settings | – | Mandanten-Register selbst |
 
 Summe: 58 Werkstatt-Tabellen + 2 Register-Tabellen; 57 Tabellen tragen `tenant_id TEXT NOT NULL DEFAULT 'gravuru'` (Ausnahme `design_sources`), 258 Anweisungen, davon 247 mit `tenant_id` im Literal, 11 begründete Ausnahmen.
@@ -58,6 +59,10 @@ Summe: 58 Werkstatt-Tabellen + 2 Register-Tabellen; 57 Tabellen tragen `tenant_i
 - `product-catalog.mjs`: `… ${from} WHERE ${search|where}` – Filter steht in der Konstante `search` (`p.tenant_id=?`), `from` verbindet `c.tenant_id=p.tenant_id`.
 - `FROM sqlite_master` (profile-library, export-jobs, production-release): Schema-Abfragen, keine Mandantendaten.
 - `design_sources` (design-assets): gemeinsamer inhaltsadressierter Byte-Speicher; Zugriff nur über eine mandantengefilterte Zeile in `design_assets`/`photo_example_sources`.
+
+## 3a. Plattformsicht (B1, 20.10.2026)
+
+- `tenant-overview.mjs`: Mandantenliste mit Anzahl Produkte/Konfis über alle Mandanten (bewusst ohne Mandantenfilter, nicht im Grep-Test). Erreichbar nur über `GET /api/workshop/tenants` in der Werkstatt des Standardmandanten (`platformOverview`); jeder andere Mandant bekommt 404. Liest nur, legt nichts an.
 
 ## 4. Bewusst offen
 

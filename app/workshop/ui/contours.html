@@ -5,16 +5,20 @@
   <title>Formkonturen · Gravuru Werkstatt</title>
   <link rel="stylesheet" href="/workshop-ui/style.css"><link rel="stylesheet" href="/workshop-ui/dashboard.css"><link rel="stylesheet" href="/workshop-ui/contours.css">
   <script type="module" src="/workshop-ui/contours-ui.mjs"></script>
-</head>
-<body class="dashboard-page contours-page">
-<a class="skip-link" href="#main">Zum Inhalt</a>
+<link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><script type="module" src="/workshop-ui/workshop-shell.mjs"></script></head>
+<body class="ws-page dashboard-page contours-page">
+<a class="ws-skip" href="#main">Zum Inhalt</a>
+<!-- werkstatt-kopf: erzeugt aus app/workshop/workshop-shell-markup.mjs, nicht von Hand ändern -->
+<header class="ws-topbar">
+<a class="ws-brand" href="/werkstatt/"><em>gravuru</em> werkstatt</a>
+<nav class="ws-nav" aria-label="Hauptnavigation"><a class="ws-nav-item" href="/werkstatt/"><img class="ws-icon" src="/workshop-ui/editor-icons/cube.svg" alt="" aria-hidden="true">Produkte</a><a class="ws-nav-item" href="/werkstatt/?view=masters"><img class="ws-icon" src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Mastervorlagen</a><a class="ws-nav-item" href="/werkstatt/serien/"><img class="ws-icon" src="/workshop-ui/editor-icons/stack-2.svg" alt="" aria-hidden="true">Stapelverarbeitung</a><a class="ws-nav-item" href="/werkstatt/bestellungen/"><img class="ws-icon" src="/workshop-ui/editor-icons/shopping-cart.svg" alt="" aria-hidden="true">Bestellungen</a><a class="ws-nav-item" href="/werkstatt/konfis/"><img class="ws-icon" src="/workshop-ui/editor-icons/adjustments-horizontal.svg" alt="" aria-hidden="true">Konfis</a></nav>
+<div class="ws-tools"><span data-workshop-session role="status">Verbindung wird geprüft …</span><details class="management-menu"><summary class="ws-current">Verwaltung</summary><nav aria-label="Verwaltung"><a href="/werkstatt/familien/">Produktfamilien</a><a href="/werkstatt/profile/">Schriften &amp; Profile</a><a href="/werkstatt/ausgaben/">Ausgaben</a><a href="/werkstatt/fertigung/">Fertigungsprofile</a><a href="/werkstatt/ausfuehrungen/">Ausführungen</a><a href="/werkstatt/konturen/" aria-current="page">Formkonturen</a><a href="/werkstatt/pruefstaende/">Prüfstände</a><a href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a><a href="/werkstatt/mandanten/">Mandanten</a></nav></details></div>
+</header>
+<!-- /werkstatt-kopf -->
 <div class="app-layout">
-  <aside class="sidebar" aria-label="Werkstattnavigation">
-    <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span><em>gravuru</em>werkstatt</span></a>
-    <nav aria-label="Hauptnavigation"><a class="nav-item" href="/werkstatt/">Produkte</a><a class="nav-item active" href="/werkstatt/konturen/" aria-current="page">Formkonturen</a><a class="nav-item" href="/werkstatt/serien/">Stapelverarbeitung</a><a class="nav-item" href="/werkstatt/profile/">Profile</a></nav>
-  </aside>
+  
   <main id="main">
-    <header class="page-heading"><div><h1>Die Form beginnt hier.</h1><p>Eigene Außenkonturen und Ausschnitte. In Originalgröße, getrennt vom Design.</p></div><a class="button" href="/werkstatt/">← Zur Werkstatt</a></header>
+    <header class="page-heading"><div><h1>Die Form beginnt hier.</h1><p>Eigene Außenkonturen und Ausschnitte. In Originalgröße, getrennt vom Design.</p></div></header>
     <div class="contour-workspace">
       <section class="contour-upload" aria-labelledby="upload-title">
         <span class="contour-kicker">01 / IMPORTIEREN</span><h2 id="upload-title">Deine Formkontur</h2><p>Eine geschlossene Außenform, auf Wunsch mit Bohrungen und Innenausschnitten.</p>

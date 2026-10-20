@@ -22,6 +22,7 @@ import {createVariantBatchJobs} from './variant-batch-report.mjs';
 import {createFontLibrary} from './font-library.mjs';
 import {createContourStore} from './contours.mjs';
 import {createProfileLibrary} from './profile-library.mjs';
+import {createKonfiStatus} from './konfi-status.mjs';
 import {build} from '../configurator/variant-m/build.mjs';
 import {createWorkshop} from './http.mjs';
 
@@ -167,7 +168,7 @@ test('Datenbank: jede Tabelle der Werkstatt trägt tenant_id (Ausnahmen begründ
   const dir=tmp(t,'g27-tenant-schema-'),w=path.join(dir,'workshop.sqlite'),p=path.join(dir,'profiles.sqlite'),a=path.join(dir,'design-assets.sqlite');
   const repo=createProductRepository({filename:w}),stores=[repo,createProductFamilies({filename:w,repository:repo})];
   const ai=createAiDesignJobs({filename:w,repository:repo});stores.push(ai,createAiBatchJobs({filename:w,repository:repo,aiJobs:ai}));
-  const v=createFormVariants({filename:w,repository:repo});stores.push(v,createBatchJobs({filename:w,repository:repo,assets:null}),createVariantBatchJobs({filename:w,variants:v}),createFormCustomerStore({filename:w}));
+  const v=createFormVariants({filename:w,repository:repo});stores.push(v,createBatchJobs({filename:w,repository:repo,assets:null}),createVariantBatchJobs({filename:w,variants:v}),createFormCustomerStore({filename:w}));stores.push(createKonfiStatus({filename:w}));
   stores.push(createProductionProfiles({filename:p}),createProfileLibrary({filename:path.join(dir,'profile-library.sqlite'),catalog:{fonts:[],motifs:[]}}),createFontLibrary({filename:a}),createContourStore({filename:a}),createDesignAssetStore({filename:a}));
   stores.push({close:()=>registry.close()});const registry=new DatabaseSync(w);createTenantRegistry({database:registry});
   t.after(()=>{for(const s of stores)s.close();});
@@ -183,7 +184,7 @@ test('Datenbank: jede Tabelle der Werkstatt trägt tenant_id (Ausnahmen begründ
 });
 
 // Grep-Test: jede SELECT/INSERT/UPDATE/DELETE-Anweisung, die an prepare( geht, nennt tenant_id – oder steht hier mit Grund.
-const FILTERED_MODULES=['repository.mjs','product-catalog.mjs','product-families.mjs','production-profiles.mjs','profile-library.mjs','form-variants.mjs','form-customer-store.mjs','export-jobs.mjs','output-checks.mjs','order-intake.mjs','order-status.mjs','production-release.mjs','customer-downloads.mjs','shop-draft-transfer.mjs','cart-handoff-journal.mjs','cart-configuration.mjs','acrylic-draft-store.mjs','customer-draft-store.mjs','font-library.mjs','design-assets.mjs','contours.mjs','ai-design-jobs.mjs','ai-batch-jobs.mjs','import-job-store.mjs'];
+const FILTERED_MODULES=['konfi-status.mjs','repository.mjs','product-catalog.mjs','product-families.mjs','production-profiles.mjs','profile-library.mjs','form-variants.mjs','form-customer-store.mjs','export-jobs.mjs','output-checks.mjs','order-intake.mjs','order-status.mjs','production-release.mjs','customer-downloads.mjs','shop-draft-transfer.mjs','cart-handoff-journal.mjs','cart-configuration.mjs','acrylic-draft-store.mjs','customer-draft-store.mjs','font-library.mjs','design-assets.mjs','contours.mjs','ai-design-jobs.mjs','ai-batch-jobs.mjs','import-job-store.mjs'];
 const FILTER_EXCEPTIONS=[
   {module:'product-catalog.mjs',match:/\$\{from\} WHERE \$\{(search|where)\}/,reason:'Filter steht in der Konstante `search` (p.tenant_id=? …), `where` baut auf `search` auf; `from` verbindet über c.tenant_id=p.tenant_id.'},
   {module:/./,match:/FROM sqlite_master/,reason:'Schema-Abfrage (Tabellen vorhanden?), keine Mandantendaten.'},

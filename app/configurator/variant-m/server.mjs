@@ -58,7 +58,16 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
           headers['Content-Length']=bytes.length;
           res.writeHead(200,headers);
           return res.end(req.method==='HEAD'?undefined:bytes);
-        }catch(error){return fail(error.status||422);}
+        }catch(error){
+          // B1: verständliche Meldung (z. B. pausierter Konfi) statt leerer Antwort.
+          const status=error.status||422,bytes=Buffer.from(JSON.stringify({error:{code:error.code||'model_unavailable',message:status>=500?'Das Produkt kann gerade nicht geladen werden.':error.message}}));
+          res.writeHead(status,{'Content-Type':types['.json'],'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});return res.end(req.method==='HEAD'?undefined:bytes);
+        }
+      }
+      // B1: Pausierte Konfis liefert die Kundenansicht nicht aus, sondern zeigt eine Hinweisseite.
+      if(workshop?.pausedPage&&['/','/form-editor.html','/konfigurator/form','/konfigurator/form/'].includes(pathname)){
+        const page=workshop.pausedPage(url.searchParams.get('configuration'));
+        if(page){const bytes=Buffer.from(page);res.writeHead(423,{'Content-Type':types['.html'],'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'self'"});return res.end(req.method==='HEAD'?undefined:bytes);}
       }
       let base,relative;
       const fixed={
@@ -70,7 +79,9 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       };
       if(adminHost){fixed['/_merchant-editor.html']=[outputDirectory,'editor.html'];fixed['/_merchant-form-editor.html']=[path.join(ROOT,'workshop/ui'),'form-customer.html'];}
       if(workshop){fixed['/form-editor.html']=[path.join(ROOT,'workshop/ui'),'form-customer.html'];fixed['/konfigurator/ausfuehrungen/']=[path.join(ROOT,'workshop/ui'),'form-variant-picker.html'];fixed['/konfigurator/form']=[path.join(ROOT,'workshop/ui'),'form-customer.html'];fixed['/konfigurator/form/']=fixed['/konfigurator/form'];fixed['/werkstatt']=[path.join(ROOT,'workshop/ui'),'index.html'];fixed['/werkstatt/']=fixed['/werkstatt'];for(const [route,file] of [['kundenansicht','customer-preview.html'],['ausfuehrungen-import','variant-batch.html'],['ausfuehrungen','form-variants.html'],['serien','batch.html'],['profile','profiles.html'],['familien','families.html'],['fertigung','production-profiles.html'],['ausgaben','export-jobs.html'],['shopvorbereitung','shop-preparation.html'],['bestellungen','orders.html'],['warenkorbpruefung','cart-handoff.html'],['konturen','contours.html'],['formprodukt','form-product.html'],['pruefstaende','review-snapshots.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}}
+      if(workshop)for(const [route,file] of [['konfis','konfis.html'],['mandanten','tenants.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}
       if(fixed[pathname])[base,relative]=fixed[pathname];
+      else if(workshop&&/^\/workshop-ui\/(konfis-ui\.mjs|tenants-ui\.mjs|konfis\.css)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
       else if(workshop&&['/workshop-ui/design-source-path.mjs','/workshop-ui/design-zip.mjs'].includes(pathname)){base=path.join(ROOT,'workshop');relative=pathname.split('/').pop();}
       // Der Kundeneditor importiert die Themenlimits aus dem Vertrag (contract.mjs → ../../workshop/theme-limits.mjs).
       else if(pathname==='/workshop/theme-limits.mjs'){base=path.join(ROOT,'workshop');relative='theme-limits.mjs';}

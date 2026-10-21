@@ -216,17 +216,6 @@ export function installUniversal(configInput) {
     // (`uxThumbnailDeferred`, höchstens `uxThumbnailBudget` neue Miniaturen je Durchlauf)
     // bestimmen; ausgeblendete oder aufgeschobene Karten behalten ihre bisherige Miniatur.
     // Rückgabe: Anzahl sichtbarer Karten, die nur wegen des Budgets warten.
-    // Miniatur wie im Editor: Musterfoto im leeren Fotofeld (nur Bild, keine Klickfläche – die Karte ist
-    // schon ein Knopf). Verschachtelte <svg> der Motive behalten ihre Größe: die Galerie-Regeln
-    // „.c-design-card svg{width:100%;height:…!important}“ (auch im Legacy-Editor) trafen sonst auch
-    // sie, Motive wurden riesig neben die Platte gezeichnet. Inline-!important schlägt die Regeln.
-    function thumbnailMarkup(design){
-      const doc=svgDocument(svg(design));
-      decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo?.hints||[]);
-      for(const g of doc.querySelectorAll('[data-ux-empty-photo-slot]')){for(const a of ['data-ux-empty-photo-slot','role','tabindex','aria-label'])g.removeAttribute(a);g.style.removeProperty('cursor');}
-      for(const n of doc.documentElement.querySelectorAll('svg')){const w=n.getAttribute('width'),h=n.getAttribute('height');if(/^\d*\.?\d+$/.test(w||'')&&/^\d*\.?\d+$/.test(h||''))n.setAttribute('style',(n.getAttribute('style')||'').replace(/;?\s*$/,';')+'width:'+w+'px!important;height:'+h+'px!important');}
-      return doc.documentElement.outerHTML;
-    }
     function renderThumbnails(){
       const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
@@ -235,7 +224,7 @@ export function installUniversal(configInput) {
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
-          else{budget--;thumbnail={key:thumbnailKey,markup:thumbnailMarkup(el.uxThumbnailDesign?.(design)||design)};}
+          else{budget--;thumbnail={key:thumbnailKey,markup:svg(el.uxThumbnailDesign?.(design)||design)};}
         }
         // The legacy sync replaces the SVG with its portrait doorbell preview.
         // Restore the product geometry even when the cached rendering is valid.

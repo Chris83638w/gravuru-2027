@@ -11,7 +11,8 @@ export {installEarlyPhotoTap} from './photo-upload.mjs';
 import {getProcessingProfile, elementColor} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc, filteredDesigns} from '../../platform/sources/app/shared/models/design-content.mjs';
-import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, editedDesignTexts, validatePhotoFile, newEditableObject, resolvedOptions} from './contract.mjs';
+import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, validatePhotoFile, newEditableObject, resolvedOptions} from './contract.mjs';
+import {changedCustomerTexts, transferTexts} from './workflow-model.mjs';
 import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
 import {objectSurface, surfaceGeometry} from './surfaces.mjs';
 
@@ -198,11 +199,12 @@ export function installUniversal(configInput) {
     el.restoreDraft=function(input,{draft=false}={}){const restored=readDraft(config,input,this.fontData,motifs(),{draft});this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);this.state.selected=null;photos.clear();photoDesign='';this.sync();return restored;};
     el.draftPayload=function({draft=false}={}){return saveDraft(config,this.state,options,this.fontData,motifs(),{draft});};
     el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const input=JSON.parse(await file.text());await this.uxEnsureDraftResources?.(input);this.restoreDraft(input);$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
-    el.chooseDesign=function(id){
+    el.chooseDesign=function(id,{carry=true}={}){
       const d=p.designs.find(d=>d.id===id);if(!d)return;
-      this.record();const texts=editedDesignTexts(config,this.state);
+      // Chris 21.10.2026: nur geänderte Namen/Lebensdaten wandern mit (workflow-model.mjs).
+      this.record();const texts=carry?changedCustomerTexts(this.state.objects,p.designs.find(x=>x.id===this.state.designId)):[];
       this.state.designId=id;this.state.objects=clone(d.objects);this.state.selected=null;
-      for(const o of this.state.objects)if(o.type==='text'&&o.customerEditable!==false&&texts.has(o.fieldKey))o.text=texts.get(o.fieldKey);
+      if(texts.length)transferTexts(texts,this.state.objects);
       this.normalize();this.sync();
     };
     el.add=function(input){
@@ -234,7 +236,10 @@ export function installUniversal(configInput) {
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
-          else{budget--;thumbnail={key:thumbnailKey,markup:svg(el.uxThumbnailDesign?.(design)||design,{screen:true})};}
+          else{budget--;const shown=el.uxThumbnailDesign?.(design)||design;
+            // Chris 21.10.2026: Miniaturen zeigen das Musterfoto wie die Vorschau, nicht den Schriftzug „Dein Foto“.
+            let markup=svg(shown,{screen:true});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})));markup=doc.documentElement.outerHTML;}}catch{}
+            thumbnail={key:thumbnailKey,markup};}
         }
         // The legacy sync replaces the SVG with its portrait doorbell preview.
         // Restore the product geometry even when the cached rendering is valid.
@@ -270,7 +275,8 @@ export function installUniversal(configInput) {
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';
         $('[data-fk-breakdown]').textContent=price?.additionalMotifs ? price.additionalMotifs+' zusätzliche Motive · '+money(price.additionalMotifs*config.extraMotifCents) : '';
-        saveDraft(config,el.state,options,el.fontData,motifs()); issue.textContent='';
+        // Chris 21.10.2026: Pflichtfelder meldet erst der Abschluss (Textreiter + „Gestaltung fertig“), nicht dauerhaft hier.
+        saveDraft(config,el.state,options,el.fontData,motifs(),{draft:true}); issue.textContent='';
       }catch(error){issue.textContent=error.message;}
       $('.fk-buy-button').disabled=true;$('.fk-order-status').textContent='Prüfvorschau · Bestellung und Fotoübertragung noch nicht verbunden.';
       colorControl.querySelector('input').disabled=!el.selected()||!!locked(el.selected());

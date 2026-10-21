@@ -37,3 +37,14 @@
 :host([data-ux-neutral]) .ux-direct-edit button[aria-pressed=true]{background:#ffffff40!important;color:#fff!important}
 :host([data-ux-neutral]) .ux-direct-edit [data-direct-done]{background:#fff!important;color:#17634d!important}
 :host([data-ux-neutral]) .ux-direct-input{color:#353b42!important;border-color:#17634d!important}
+/* Chris 21.10.2026: unter der Vorschau keine Produktzeile mehr („Nicht notwendige Infos raus“). */
+:host([data-ux-neutral]) .ux-preview .stage:not(.acryl-scene) > .ux-preview-caption > span{display:none!important}
+/* Chris 21.10.2026: Designs wieder nebeneinander und dann untereinander. */
+:host([data-ux-neutral]) .ux-shell .ux-design-reveal .c-gallery{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))!important;gap:10px!important}
+:host([data-ux-neutral]) .ux-shell .ux-design-reveal .c-design-card{min-height:0!important;padding:6px!important;display:flex!important;flex-direction:column!important;align-items:stretch!important}
+:host([data-ux-neutral]) .ux-shell .ux-design-reveal .c-design-card svg:not(svg svg){height:auto!important;width:100%!important;aspect-ratio:var(--ux-plate-ratio,22/14)}
+:host([data-ux-neutral]) .ux-shell .ux-design-reveal .c-design-card>span{font-size:13px!important;line-height:17px!important;text-align:center}
+/* Fotobereich aufgeräumt: ein Knopf, kurze Preiszeile. */
+:host([data-ux-neutral]) #ux-panel-upload .ux-upload-drop{display:grid!important;grid-template-columns:1fr!important;gap:6px!important;padding:14px!important;justify-items:stretch!important}
+:host([data-ux-neutral]) #ux-panel-upload .ux-upload-drop>p:empty{display:none!important}
+:host([data-ux-neutral]) #ux-panel-upload > p small{color:#6b7178}

@@ -18,3 +18,19 @@ test('Tab Designs: Thema zuerst mit Bestseller vorn, Designs ohne Thema sichtbar
  const thumb=thumbnailDesign({id:'a',objects:[{id:'t',type:'text',fieldKey:'name',text:'Muster'}]},[{id:'s',type:'text',fieldKey:'name',text:'Anna'}]);
  assert.equal(thumb.objects[0].text,'Anna');
 });
+// Chris 21.10.2026: beim Designwechsel wandern nur geänderte Namen und Lebensdaten, keine Sprüche.
+import {changedCustomerTexts} from './workflow-model.mjs';
+test('Designwechsel: nur geänderte Namen/Daten, Vor-/Nachname und Datumsfelder werden zugeordnet',()=>{
+ const tpl={objects:[{id:'n',type:'text',fieldKey:'name',text:'Elisabeth Meyer'},{id:'d',type:'text',fieldKey:'daten',text:'19.04.1951 - 16.06.2020'},{id:'s',type:'text',fieldKey:'spruch',text:'Muster'}]};
+ const state=structuredClone(tpl.objects);
+ assert.deepEqual(changedCustomerTexts(state,tpl),[]);
+ state[2].text='Eigener Spruch';assert.deepEqual(changedCustomerTexts(state,tpl),[]);
+ state[0].text='Anna Schmidt';state[1].text='01.02.1940 - 03.04.2021';
+ const source=changedCustomerTexts(state,tpl);assert.deepEqual(source.map(o=>o.fieldKey),['name','daten']);
+ const split=[{id:'a',type:'text',fieldKey:'name',text:'Klaus'},{id:'b',type:'text',fieldKey:'name-2',text:'Herrmann'},{id:'c',type:'text',fieldKey:'daten',text:'*19.07.1992'},{id:'e',type:'text',fieldKey:'daten-2',text:'† 20.09.2020'},{id:'f',type:'text',fieldKey:'spruch',text:'Bleibt'}];
+ assert.deepEqual(transferTexts(source,split),[]);
+ assert.deepEqual(split.map(o=>o.text),['Anna','Schmidt','*01.02.1940','† 03.04.2021','Bleibt']);
+ const back=[{id:'x',type:'text',fieldKey:'name',text:'Muster'},{id:'y',type:'text',fieldKey:'daten',text:'1.1.2000 - 2.2.2020'}];
+ transferTexts(changedCustomerTexts(split,{objects:[{id:'a',type:'text',fieldKey:'name',text:'Klaus'}]}),back);
+ assert.equal(back[0].text,'Anna Schmidt');
+});

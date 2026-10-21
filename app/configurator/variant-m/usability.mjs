@@ -107,7 +107,8 @@ export async function installUsability(api) {
   const drop=document.createElement('div');drop.className='ux-upload-drop';
   const enabledKinds=[['photo','Foto'],['logo','Logo']].filter(([kind])=>uploadButtons.querySelector(`[data-ux=${kind}-upload]`));
   let uploadKind=enabledKinds[0]?.[0]||'photo';
-  drop.innerHTML='<div class="ux-upload-kind" role="group" aria-label="Art des Uploads">'+enabledKinds.map(([kind,label])=>button('upload-kind',label,`data-kind="${kind}" aria-pressed="${kind===uploadKind}"`)).join('')+'</div><p>Bilder hierher ziehen oder auswählen</p>'+button('choose-upload','↑ Dateien auswählen','class="ux-file-select"');
+  // Chris 21.10.2026: ein Knopf, keine Auswahl „Foto/Logo“, wenn es nur eine Art gibt.
+  drop.innerHTML=(enabledKinds.length>1?'<div class="ux-upload-kind" role="group" aria-label="Art des Uploads">'+enabledKinds.map(([kind,label])=>button('upload-kind',label,`data-kind="${kind}" aria-pressed="${kind===uploadKind}"`)).join('')+'</div>':'')+button('choose-upload',enabledKinds.length>1?'↑ Dateien auswählen':uploadKind==='photo'?'↑ Foto hochladen':'↑ Logo hochladen','class="ux-file-select"')+'<p></p>';
   uploadButtons.before(drop);uploadButtons.hidden=true;
   r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(!b)return;
     if(b.dataset.ux==='upload-kind'){uploadKind=b.dataset.kind;for(const choice of drop.querySelectorAll('[data-kind]'))choice.setAttribute('aria-pressed',String(choice===b));}
@@ -117,7 +118,7 @@ export async function installUsability(api) {
   for(const type of ['dragenter','dragover'])drop.addEventListener(type,e=>{e.preventDefault();drop.classList.add('is-dragover');});
   drop.addEventListener('dragleave',()=>drop.classList.remove('is-dragover'));
   drop.addEventListener('drop',async e=>{e.preventDefault();drop.classList.remove('is-dragover');await acceptFiles(e.dataTransfer.files,uploadKind,null);});
-  const uploadedTitle=document.createElement('h3');uploadedTitle.textContent='Deine Bilder';$('.ux-uploads').before(uploadedTitle);
+  const uploadedTitle=document.createElement('h3');uploadedTitle.textContent='Hochgeladen';$('.ux-uploads').before(uploadedTitle);
 
   // K10 / Ü1.2: Farbwerkzeug nur, wenn das Verfahrensprofil es erlaubt (Gravur: keines).
   // Die Swatches sind genau die Profilpalette (Produktauswahl grenzt ein); eine freie
@@ -220,7 +221,7 @@ export async function installUsability(api) {
     mutate(()=>{o.size=size;el.state.selected=o.id;});say('Text auf '+el.uxDisplayTextSize(o).toLocaleString('de-DE')+' mm angepasst.');
   });
   const render=el.render;el.render=function(...args){const value=render.apply(this,args);drawAlignment();namespaceAll();return value;};
-  const sync=el.sync;el.sync=function(...args){const value=sync.apply(this,args);updateWarnings();updatePalette();uploadedTitle.hidden=!$('.ux-upload-row');const full=new Set(el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4;drop.querySelector('[data-ux=choose-upload]').disabled=full;drop.querySelector('p').textContent=full?'Vier Dateien vorhanden. Entferne ein Bild, um ein neues hinzuzufügen.':'Bilder hierher ziehen oder auswählen';namespaceAll();return value;};
+  const sync=el.sync;el.sync=function(...args){const value=sync.apply(this,args);updateWarnings();updatePalette();uploadedTitle.hidden=!$('.ux-upload-row');const full=new Set(el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4;drop.querySelector('[data-ux=choose-upload]').disabled=full;drop.querySelector('p').textContent=full?'Vier Dateien vorhanden. Entferne ein Bild, um ein neues hinzuzufügen.':'';namespaceAll();return value;};
   // Update after catalogue search rebuilds cards without calling the main sync method.
   const gallery=$('.c-gallery');new MutationObserver(()=>{
     for(const card of all('[data-c-design]')){const note=card.querySelector('small');if(note)note.hidden=true;}

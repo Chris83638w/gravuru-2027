@@ -117,7 +117,6 @@ export async function installRefinements(api){
   await installCustomerTools(api);
   await installWorkflow(api);
   installDirectEditing({...api,editPhoto});
-  $('#ux-panel-upload > p.ux-small').textContent='Dein Bild wird direkt übernommen. Über „Bild bearbeiten“ kannst du es zuschneiden oder anpassen.';
   // K11: geführte Schritte unter 768 px (eigenes Modul, Desktop-Reiter bleiben unverändert).
   await installMobileSteps(api);
   updateSelection();

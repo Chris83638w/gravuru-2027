@@ -96,7 +96,6 @@ export async function installCustomerTools(api){
  });
  const sync=el.sync;el.sync=function(...args){const value=sync.apply(this,args);updateAlignment();updateHints();scheduleCheck();return value;};
  const render=el.render;el.render=function(...args){const value=render.apply(this,args);draw();return value;};
- const drop=$('.ux-upload-drop');drop.insertAdjacentHTML('afterbegin','<span class="ux-upload-symbol" aria-hidden="true">↑</span><strong>Dein Bild. Dein Unikat.</strong>');
  updateAlignment();updateHints();scheduleCheck();
 }
 

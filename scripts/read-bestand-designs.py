@@ -90,15 +90,36 @@ def render_placeholder(photo_file, img_box, area, hints, out_png, px_per_mm=8):
     ix, iy, iw, ih = img_box
     sx, sy = src.width / iw, src.height / ih
     crop = src.crop((round((ax - ix) * sx), round((ay - iy) * sy), round((ax + aw - ix) * sx), round((ay + ah - iy) * sy))).resize((W, H), Image.LANCZOS)
-    # Gravur auf Schiefer: Schwarz bleibt ungraviert → im Platzhalter durchsichtig (wie beim echten Ergebnis)
-    # Hintergrund des Musterfotos (Randstreifen, meist schwarz oder dunkelgrau) wird durchsichtig, damit kein
-    # dunkler Kasten auf dem Stein steht; dunkle Stellen bleiben ungraviert wie beim echten Ergebnis.
+    # Freistellen (Chris 21.10.2026: „Das Foto auf der Tafel sieht komisch aus“): kein Helligkeits-Alpha mehr
+    # (das machte Haare/Kleidung löchrig und gab Säume), sondern eine saubere Maske der Person:
+    # – Bild mit Transparenz: dessen Maske, Streupixel entfernt, Rand 2 px nach innen (schwarze Säume weg);
+    # – Bild ohne Transparenz: Hintergrund per Flutfüllung vom Rand aus (nur gleichfarbige, zusammenhängende Fläche).
+    # Innen bleibt das Foto deckend; der Rand wird leicht weich gezeichnet.
     import numpy as np
-    L = np.asarray(crop.convert('L'), dtype=np.float32); bw = max(2, int(min(W, H) * 0.04))
-    border = np.concatenate([L[:bw].ravel(), L[-bw:].ravel(), L[:, :bw].ravel(), L[:, -bw:].ravel()])
-    bg = float(np.median(border))
-    alpha = np.clip((L - bg - 4) * (255 / 34), 0, 255).astype(np.uint8)
-    crop.putalpha(Image.fromarray(alpha).filter(ImageFilter.GaussianBlur(0.8)))
+    from scipy import ndimage as ndi
+    A0 = np.asarray(crop.getchannel('A'), dtype=np.float32)
+    L = np.asarray(crop.convert('L'), dtype=np.float32)
+    if A0.min() < 250:
+        person = A0 > 128
+    else:
+        bw = max(2, int(min(W, H) * 0.02))
+        border = np.concatenate([L[:bw].ravel(), L[-bw:].ravel(), L[:, :bw].ravel(), L[:, -bw:].ravel()])
+        bg = float(np.median(border))
+        cand = np.abs(ndi.median_filter(L, 3) - bg) < 9
+        lab, _ = ndi.label(cand)
+        edge = np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
+        back = np.isin(lab, edge[edge > 0])
+        person = ~back if back.mean() > 0.05 else np.ones_like(back)
+    lab, n = ndi.label(person)
+    if n > 1:
+        sizes = ndi.sum(person, lab, range(1, n + 1))
+        person = np.isin(lab, 1 + np.flatnonzero(sizes >= 0.02 * sizes.max()))
+    # Taschen, die nur zur Unterkante offen sind (Schultern/Kleidung bei Brustbildern), gehören zur Person.
+    person = ndi.binary_fill_holes(np.vstack([person, np.ones((1, person.shape[1]), bool)]))[:-1]
+    er = max(1, round(min(W, H) / 400))
+    person = ndi.binary_erosion(person, iterations=er + (1 if A0.min() < 250 else 0))
+    alpha = ndi.gaussian_filter(person.astype(np.float32) * 255, sigma=max(0.8, er * 0.9))
+    crop.putalpha(Image.fromarray(np.clip(alpha, 0, 255).astype(np.uint8)))
     import cairosvg
     # Button nie im Gesicht: unten im Fotofeld (Porträts haben das Gesicht oben), etwas durchsichtig
     btn_w = min(aw * 0.62, 70); btn_h = btn_w * 0.36; bx = ax + (aw - btn_w) / 2; by = ay + ah - btn_h - max(2.0, ah * 0.05)
@@ -163,8 +184,11 @@ def convert(folder, target, prefix, ersatz, files, s_fix=None):
         if cur: parts.append(cur)
         if len(parts) > 1 and lines_iter: warn.append(f'Text mit {len(text)} Zeichen in {len(parts)} Textfelder geteilt (höchstens 180 Zeichen)')
         row = 0
+        # Teilfelder aus der 180-Zeichen-Teilung stehen im Konfigurator mit dessen fester Zeilenhöhe (1,2 × Schriftgröße
+        # nach Ersatzschrift-Anpassung) untereinander – sonst überlappen sie (D14, Chris 21.10.2026).
+        step = 1.2 * t['sizePt'] * PT if lines_iter else t['lineHeightMm']
         for part in parts:
-            u = dict(t, text='\n'.join(part), anchorMm=[t['anchorMm'][0], round(t['anchorMm'][1] + row * t['lineHeightMm'], 2)], group=len(texts) - row if row else len(texts)); row += len(part)
+            u = dict(t, text='\n'.join(part), anchorMm=[t['anchorMm'][0], round(t['anchorMm'][1] + row * step, 2)], group=len(texts) - row if row else len(texts)); row += len(part)
             texts.append(u)
     # ---- Fotofeld (Clip ∩ Platte)
     photos = []
@@ -250,6 +274,30 @@ _field_keys = rpd.field_keys
 def field_keys(texts):
     """Wie read-pdf-designs, aber Teile eines geteilten Textes behalten den Feldnamen des ersten Teils (name, name-2 …)."""
     keys = _field_keys(texts); first = {}; used = set()
+    # Name (Chris 21.10.2026: beim Designwechsel wandern nur Name und Lebensdaten): kurze, einzeilige Texte ohne
+    # Datum und ohne Satzzeichen am Ende, mindestens halb so groß wie der größte Text, die keine Teilzeile eines
+    # Spruchs sind. Der größte davon ist „name“; gleich gesetzte Nachbarn (Vor-/Nachname getrennt, D72/D100) auch.
+    # Der größte Text allein reicht nicht (D60: der Schlusssatz in Schreibschrift ist größer als der Name).
+    if texts:
+        big = max(t['sizePt'] for t in texts)
+        parents = {t.get('group', i) for i, t in enumerate(texts) if t.get('group', i) != i}
+        def cand(i, t):
+            x = t['text'].strip()
+            return ('\n' not in x or len(x) <= 40) and len(x) <= 40 and not rpd.DATE.search(x) and x[-1:] not in '.!?,;:…' \
+                and t['sizePt'] >= 0.5 * big and i not in parents and t.get('group', i) == i
+        names = [i for i, t in enumerate(texts) if cand(i, t)]
+        if names:
+            main = max(names, key=lambda i: texts[i]['sizePt'])
+            m = texts[main]; sz = m['sizePt'] * PT
+            near = [i for i in names if i == main or (texts[i]['font'] == m['font'] and abs(texts[i]['anchorMm'][1] - m['anchorMm'][1]) <= 3 * sz)]
+            for i in range(len(texts)):
+                if i in near: keys[i] = 'name'
+                elif keys[i] == 'name' or keys[i].startswith('name-'): keys[i] = 'spruch'
+            # Zähler neu vergeben (name, name-2 …, spruch, spruch-2 …)
+            seen = {}
+            for i in range(len(keys)):
+                base = keys[i].split('-')[0]; seen[base] = seen.get(base, 0) + 1
+                keys[i] = base if seen[base] == 1 else f'{base}-{seen[base]}'
     for i, t in enumerate(texts):
         g = t.get('group', i)
         if g in first and g != i:
@@ -291,6 +339,7 @@ def main():
         z = zu.get(f'D{d["designNo"]}', {})
         themes = z.get('themen') or [t for t in a.themen.split(',') if t]
         zg, uk = folder.parts[-3], folder.parts[-2]
+        if z.get('name'): d['name'] = z['name']  # Kundenname nach Motiv (Chris 21.10.2026)
         d['themes'] = themes
         d['katalog'] = {'key': f'{a.serie}-D{d["designNo"]}', 'series': a.serie, 'zielgruppe': z.get('zielgruppe', zg), 'unterkategorie': z.get('unterkategorie', uk), 'themen': themes}
         tgt = target_dir(d['id'])

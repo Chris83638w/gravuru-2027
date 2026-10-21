@@ -1,8 +1,14 @@
-## 21.10.2026 – Aufgabenbranch für vollständige Quellsicherung und Komplettpreisstaffel reserviert
+## 21.10.2026 – Vollständiger Händlerquellstand und Komplettpreisstaffel gesichert
 
-Branch `task/staffel-komplettpreis-20261021`, Basis `a3fbaef116d67aeaf7ed9a5b07c2066112830880`. Sicherungsumfang: vollständiger geprüfter Händler-Quellbaum aus dem privat wiederhergestellten Release d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb, isolierte vier Preisänderungen, Tests und Herkunftsnachweise unter `tools/tier-update-20261021/`. Keine Datenbanken, Kundendaten, Zugangsdaten, generierten Vorschauen oder node_modules. Keine Änderungen an main und keine Veröffentlichung durch diesen Sicherungsschritt.
+Aufgabenbranch `task/staffel-komplettpreis-20261021`, Ausgangsbasis `a3fbaef116d67aeaf7ed9a5b07c2066112830880`. [Gesicherter Quellbaum und Anleitung](tools/tier-update-20261021/README.md): alle **436** Manifestdateien des privat verifizierten aktiven Releases d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb, davon genau vier Preisdateien gezielt angepasst. Der historische Manifestcommit ist nicht direkt über GitHub abrufbar; deshalb wird der vollständige Dateibaum mit Herkunft, ursprünglichen und neuen SHA-256 gesichert. Unverändertes Originalmanifest und historischer Stagebeleg liegen separat unter `evidence/`.
 
-Verbindlicher Nutzerstand: Mengenstaffel 6 % ab zwei und 10 % ab drei identischen Exemplaren auf den vollständigen Stückpreis einschließlich Foto, Motiven und Befestigung; `quantityTierScope: complete-unit`. Preisregel und Konfigurator-/Shopify-Testbestellungen sind noch getrennt abzugleichen. Nächster Schritt: vollständigen Quellstand und lokale Prüfnachweise auf diesem Branch sichern, danach Ergebniscommit direkt verifizieren.
+**Nutzerregel:** 6 % ab zwei und 10 % ab drei identischen Exemplaren auf den ganzen Stückpreis einschließlich Fotos, Motiven und Befestigung. Expliziter Umfang `quantityTierScope: complete-unit`, einmaliges Runden pro Stück. 22,99 € + 9,99 € Foto ergeben 2 × 31,00 € = **62,00 €** bzw. 3 × 29,68 € = **89,04 €**. Keine stille Änderung alter Produkte ohne Staffel. Neue kaufbare Preisbindungen verlangen gleiche ausdrückliche Staffel und gleichen Umfang in Produkt und app-eigenem Shopify-Metafeld.
+
+**Prüfungen:** 50 Tests gegen den hier vollständig gesicherten Baum bestanden (29 Preis-/UX-, 21 Backend-/SQLite-Bestelleingang). Zusätzlich 45 exakte Legacy-Vergleiche mit neun Befestigungen und fünf Mengen gegen unveränderte Originalberechnung. Keine privaten Produktinhalte in den öffentlichen Prüffällen. Preisübersicht korrigiert: Listenaufschläge bleiben sichtbar, kompletter Mengenrabatt separat. Originalquellen und private DBs unverändert.
+
+**Grenzen:** Dieser Commit veröffentlicht nur Quellen auf einem eigenen Aufgabenbranch, keine Liveaktivierung und keinen main-Merge. Keine Datenbanken, Kunden-/Bestelldaten, Zugangsdaten, node_modules oder generierten Vorschauen. Vollständiger echter Start benötigt weiterhin getrennte private Daten/Konfiguration und Laufzeitvoraussetzungen. Ops-Helfer sowie das gesonderte Shopify-Function-Projekt folgen separat. Echte Shopify-Testbestellungen für Mengen 2/3, neue immutable Produktrevision und Preisbindung sind noch gesondert nachzuweisen.
+
+**Nächster Schritt:** Ergebniscommit direkt anhand aller Git-Blobs verifizieren, noch bearbeitete Ops-/Function-Quellen ergänzen, erst anschließend abgestimmten Integrations- und Testbestellweg fortsetzen. Kein automatischer Abgleich anderer Chats.
 
 ---
 

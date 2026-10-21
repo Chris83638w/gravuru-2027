@@ -1,0 +1,56 @@
+{
+  "schema": "gravuru-material-preview-provenance/v1",
+  "createdAt": "2026-10-05",
+  "method": "Separate image_gen-derived undecorated texture atlas from the four existing reference images; originals unchanged.",
+  "use": "Preview only. No manufacturer photograph, calibrated color, confirmed thickness or manufacturing approval. Never part of print or engraving artwork.",
+  "file": "wood-leather-derived-v1.png",
+  "sha256": "74bc3f6e77dd22c6de2eaa3827d4b576c46eead83658f445842ac90f8dee5d7a",
+  "sourceArchive": "REFERENZ-MATERIALIEN-20260930.zip",
+  "sourceArchiveSha256": "4623981f3825be5b04830f1e88c041c48476bc365753a84c80cbf169cf7c793d",
+  "tiles": [
+    {
+      "materialId": "oak",
+      "viewBox": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "source": "material-references/eiche-5mm-muster.png",
+      "sourceSha256": "924aa1646412ecab8aab9614280e8890635243439f86d0ad35bd135fec0a4e01"
+    },
+    {
+      "materialId": "beech",
+      "viewBox": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "source": "material-references/buche-5mm-muster.png",
+      "sourceSha256": "cbc1ea62a52c71c047311fcae824ae97d79e0936346921cbd5bd21164c47a200"
+    },
+    {
+      "materialId": "cherry",
+      "viewBox": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "source": "material-references/kirsche-5mm-muster.png",
+      "sourceSha256": "3af5de26787a0d1ec60e7d199feac318820e2ea0b5caed6152cc9690730b913e"
+    },
+    {
+      "materialId": "leather-brown",
+      "viewBox": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "source": "material-references/leder-2mm-muster.png",
+      "sourceSha256": "0f94df666521693b9f726d3bcb998e986f94522d5143b9bfe1d31b4a84facc98"
+    }
+  ]
+}

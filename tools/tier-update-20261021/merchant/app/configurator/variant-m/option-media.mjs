@@ -1,0 +1,45 @@
+// Small, self-contained option thumbnails survive product copies and exports.
+export const MAX_THUMBNAIL_LENGTH=350000;
+import {SPACER_FINISHES,spacerCap} from './spacer-cap.mjs';
+import {OPTION_STANDARD_IMAGES} from './option-standard-images.mjs';
+export {SPACER_FINISHES};
+export function validateThumbnail(value){
+  if(value===undefined||value==='')return;
+  if(typeof value!=='string'||value.length>MAX_THUMBNAIL_LENGTH||!/^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(value))throw Error('Optionsbild bitte als kleine PNG-Vorschau hochladen.');
+  const raw=atob(value.slice(22)),bytes=Uint8Array.from(raw,c=>c.charCodeAt(0));
+  if(bytes.length<45||![137,80,78,71,13,10,26,10].every((v,i)=>bytes[i]===v)||raw.slice(12,16)!=='IHDR'||raw.slice(-8,-4)!=='IEND')throw Error('Optionsbild ist keine gültige PNG-Vorschau.');
+  const view=new DataView(bytes.buffer),w=view.getUint32(16),h=view.getUint32(20);
+  if(!w||!h||w>320||h>320)throw Error('Optionsbilder dürfen höchstens 320 × 320 Pixel groß sein.');
+}
+export function hasSpacers(option){return option.spacers??['B02-AH02','B04-AH04'].includes(option.id);}
+export function expandSpacerColors(rows){
+  const existing=new Set(rows.map(o=>o.id));
+  return rows.flatMap(o=>{
+    if(!hasSpacers(o)||o.spacerFinish!==undefined)return [{...o}];
+    const cents=Math.round(Number(String(o.price).replace(',','.'))*100);
+    return SPACER_FINISHES.map((finish,index)=>({...o,id:index?o.id+'-'+finish.id.toUpperCase():o.id,label:o.label+' · '+finish.label,spacers:true,spacerFinish:finish.id,price:(cents+(index?100:0))/100,thumbnail:index?'':o.thumbnail||''})).filter((value,index)=>!index||!existing.has(value.id));
+  });
+}
+export function optionThumbnail(option){
+  if(option.thumbnailDisabled)return '';
+  if(option.thumbnail)return option.thumbnail;
+  const count=option.holeCount??option.holes?.length??0;
+  const key=hasSpacers(option)?'AH'+count+'-'+(option.spacerFinish||'silver'):OPTION_STANDARD_IMAGES[option.id]?option.id:count===2?'B02':count===4?'B04':null;
+  return OPTION_STANDARD_IMAGES[key]||'';
+}
+export function validateOptionPresentation(option){
+  if(option.thumbnailDisabled!==undefined&&typeof option.thumbnailDisabled!=='boolean')throw Error('Optionsbild-Anzeige prüfen.');
+  if(option.spacers!==undefined&&typeof option.spacers!=='boolean')throw Error('Abstandshalter bitte ein- oder ausschalten.');
+  if(option.spacerFinish!==undefined&&!SPACER_FINISHES.some(f=>f.id===option.spacerFinish))throw Error('Farbe der Abstandshalter prüfen.');
+  validateThumbnail(option.thumbnail);
+}
+// Decorative hardware belongs only to the preview, never engraving geometry.
+export function spacerPreview(svg,profile){
+  if(!profile.mountingPreview?.spacers)return svg;
+  const finish=profile.mountingPreview.finish||'silver';
+  const cap=spacerCap(finish);
+  const caps=(profile.geometry.holes||[]).map(({x,y})=>'<g transform="translate('+Number(x)+' '+Number(y)+')">'+cap+'</g>').join('');
+  const end=svg.lastIndexOf('</svg>');
+  return end<0?svg:svg.slice(0,end)+`<g data-m-spacers="true" aria-label="Abstandshalter" pointer-events="none">${caps}</g>`+svg.slice(end);
+}
+

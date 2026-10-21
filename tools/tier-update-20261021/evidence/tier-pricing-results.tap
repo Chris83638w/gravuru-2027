@@ -1,0 +1,184 @@
+TAP version 13
+# Subtest: products without a quantityTiers key keep the exact legacy return shape and values
+ok 1 - products without a quantityTiers key keep the exact legacy return shape and values
+  ---
+  duration_ms: 3.4535
+  type: 'test'
+  ...
+# Subtest: explicit complete-unit tier boundary quantity 1, including photo
+ok 2 - explicit complete-unit tier boundary quantity 1, including photo
+  ---
+  duration_ms: 0.5831
+  type: 'test'
+  ...
+# Subtest: explicit complete-unit tier boundary quantity 2, including photo
+ok 3 - explicit complete-unit tier boundary quantity 2, including photo
+  ---
+  duration_ms: 0.2516
+  type: 'test'
+  ...
+# Subtest: explicit complete-unit tier boundary quantity 3, including photo
+ok 4 - explicit complete-unit tier boundary quantity 3, including photo
+  ---
+  duration_ms: 0.2449
+  type: 'test'
+  ...
+# Subtest: explicit complete-unit tier boundary quantity 4, including photo
+ok 5 - explicit complete-unit tier boundary quantity 4, including photo
+  ---
+  duration_ms: 0.1993
+  type: 'test'
+  ...
+# Subtest: explicit complete-unit tier boundary quantity 99, including photo
+ok 6 - explicit complete-unit tier boundary quantity 99, including photo
+  ---
+  duration_ms: 0.1674
+  type: 'test'
+  ...
+# Subtest: all nine observed mounting surcharges and photo participate in the complete-unit tier
+ok 7 - all nine observed mounting surcharges and photo participate in the complete-unit tier
+  ---
+  duration_ms: 0.7446
+  type: 'test'
+  ...
+# Subtest: additional motifs participate in the tier; template credit and duplicate handling stay unchanged
+ok 8 - additional motifs participate in the tier; template credit and duplicate handling stay unchanged
+  ---
+  duration_ms: 0.8967
+  type: 'test'
+  ...
+# Subtest: hidden photos are not charged and duplicate uses of the same upload are charged once
+ok 9 - hidden photos are not charged and duplicate uses of the same upload are charged once
+  ---
+  duration_ms: 0.2605
+  type: 'test'
+  ...
+# Subtest: included photo allowance is free and chargeable logo participates in the complete-unit tier
+ok 10 - included photo allowance is free and chargeable logo participates in the complete-unit tier
+  ---
+  duration_ms: 0.2883
+  type: 'test'
+  ...
+# Subtest: an explicit empty schedule prevents any fallback discount
+ok 11 - an explicit empty schedule prevents any fallback discount
+  ---
+  duration_ms: 0.2535
+  type: 'test'
+  ...
+# Subtest: an open tier disables the entire schedule as in the pinned bf5c contract
+ok 12 - an open tier disables the entire schedule as in the pinned bf5c contract
+  ---
+  duration_ms: 0.6349
+  type: 'test'
+  ...
+# Subtest: invalid schedules fail before a price can be returned
+ok 13 - invalid schedules fail before a price can be returned
+  ---
+  duration_ms: 1.3212
+  type: 'test'
+  ...
+# Subtest: quantity boundaries are enforced and nothing accepts numeric strings
+ok 14 - quantity boundaries are enforced and nothing accepts numeric strings
+  ---
+  duration_ms: 0.363
+  type: 'test'
+  ...
+# Subtest: half-cent rounding is per unit before multiplication, including two-decimal percentages
+ok 15 - half-cent rounding is per unit before multiplication, including two-decimal percentages
+  ---
+  duration_ms: 0.1719
+  type: 'test'
+  ...
+# Subtest: safe-integer rounding remains exact and overflow or negative prices fail closed
+ok 16 - safe-integer rounding remains exact and overflow or negative prices fail closed
+  ---
+  duration_ms: 0.2968
+  type: 'test'
+  ...
+# Subtest: fixed-base tier replaces only the base; variable-price acrylic and steel reject this shape
+ok 17 - fixed-base tier replaces only the base; variable-price acrylic and steel reject this shape
+  ---
+  duration_ms: 17.5865
+  type: 'test'
+  ...
+# Subtest: no tier is inferred from material, name or a desired-looking customer object
+ok 18 - no tier is inferred from material, name or a desired-looking customer object
+  ---
+  duration_ms: 0.2652
+  type: 'test'
+  ...
+# Subtest: read-only configuration/state remain byte-equivalent after repeated quotes
+ok 19 - read-only configuration/state remain byte-equivalent after repeated quotes
+  ---
+  duration_ms: 0.2608
+  type: 'test'
+  ...
+# Subtest: unscoped historical tier keeps its former before-photo arithmetic and has no new scope field
+ok 20 - unscoped historical tier keeps its former before-photo arithmetic and has no new scope field
+  ---
+  duration_ms: 0.1893
+  type: 'test'
+  ...
+# Subtest: complete-unit scope is explicit and rejects unknown scope, missing tiers or fixed-base tiers
+ok 21 - complete-unit scope is explicit and rejects unknown scope, missing tiers or fixed-base tiers
+  ---
+  duration_ms: 0.3448
+  type: 'test'
+  ...
+# Subtest: complete-unit rounding happens once after photos, not independently on each component
+ok 22 - complete-unit rounding happens once after photos, not independently on each component
+  ---
+  duration_ms: 0.1227
+  type: 'test'
+  ...
+# Subtest: actual UX price updater shows mounting list price and full-unit discount separately after photos
+ok 23 - actual UX price updater shows mounting list price and full-unit discount separately after photos
+  ---
+  duration_ms: 5.7189
+  type: 'test'
+  ...
+# Subtest: actual UX price updater retains unscoped and no-tier totals, without a discount line for quantity one
+ok 24 - actual UX price updater retains unscoped and no-tier totals, without a discount line for quantity one
+  ---
+  duration_ms: 8.3508
+  type: 'test'
+  ...
+# Subtest: fixed Shopify price remains usable at quantity one but refuses an active tier
+ok 25 - fixed Shopify price remains usable at quantity one but refuses an active tier
+  ---
+  duration_ms: 0.8378
+  type: 'test'
+  ...
+# Subtest: CartTransform binding retains undiscounted variant base and carries the final tier amount
+ok 26 - CartTransform binding retains undiscounted variant base and carries the final tier amount
+  ---
+  duration_ms: 0.5635
+  type: 'test'
+  ...
+# Subtest: legacy variable steel price still takes format/option prices rather than adding the nominal base
+ok 27 - legacy variable steel price still takes format/option prices rather than adding the nominal base
+  ---
+  duration_ms: 0.1582
+  type: 'test'
+  ...
+# Subtest: legacy acrylic combination pricing, base surcharge and included photo stay unchanged
+ok 28 - legacy acrylic combination pricing, base surcharge and included photo stay unchanged
+  ---
+  duration_ms: 0.4812
+  type: 'test'
+  ...
+# Subtest: copied dependency closure remains byte-identical to the audited release
+ok 29 - copied dependency closure remains byte-identical to the audited release
+  ---
+  duration_ms: 5.6061
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 197.4441

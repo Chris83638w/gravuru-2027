@@ -1,0 +1,203 @@
+{
+  "sourceRepository": "Chris83638w/gravuru-shopify",
+  "sourceCommit": "d34535968b40ad4dfed496e081b9241059a6863f",
+  "sourcePath": "platform/sources/workshop-seed/import.json",
+  "sourceSha256": "eac9ef4d0a0943ed5216c074c8fd5bdf9cbdb594ddcd3e166a843411969559b2",
+  "product": {
+    "key": "GR-ES-RE-90X60-T15",
+    "label": "9 × 6 cm",
+    "widthMm": 90,
+    "heightMm": 60,
+    "cornerRadiusMm": 0,
+    "shape": "rect",
+    "baseCents": 1099,
+    "holeOptions": [
+      {
+        "count": 2,
+        "edgeMm": 6,
+        "holes": [
+          {
+            "x": 6,
+            "y": 30,
+            "diameter": 4
+          },
+          {
+            "x": 84,
+            "y": 30,
+            "diameter": 4
+          }
+        ],
+        "sourceRow": 23,
+        "sku": "GR-ES-RE-90X60-T15-B02",
+        "netWeightG": 62
+      }
+    ],
+    "id": "GR-ES-RE-90X60-T15",
+    "groupKey": "RE",
+    "groupName": "Rechteck",
+    "material": "Edelstahl",
+    "configured": true
+  },
+  "designs": [
+    {
+      "id": "RE-90X60-HOC-08",
+      "title": "Unser Heimathafen",
+      "category": "Hochzeitsschilder",
+      "productId": "GR-ES-RE-90X60-T15",
+      "state": {
+        "width": 90,
+        "height": 60,
+        "holes": false,
+        "spacers": false,
+        "mountingKey": "K00",
+        "holeCount": 0,
+        "objects": [
+          {
+            "id": "RE-90X60-HOC-08-1",
+            "type": "motif",
+            "motif": "import-59b5854feb26a2bf2754a477",
+            "x": 18,
+            "y": 27.5,
+            "w": 23.452381,
+            "h": 23.452381,
+            "rotation": 0,
+            "color": "#000000",
+            "templateOrigin": true
+          },
+          {
+            "id": "RE-90X60-HOC-08-2",
+            "type": "text",
+            "text": "Anna & Ben",
+            "font": "Allura",
+            "size": 10.2910448,
+            "x": 58.1398134,
+            "y": 21.573806,
+            "w": 47.5343358,
+            "h": 12.3492537,
+            "bold": false,
+            "rotation": 0,
+            "color": "#000000",
+            "templateOrigin": true
+          },
+          {
+            "id": "RE-90X60-HOC-08-3",
+            "type": "text",
+            "text": "Unser gemeinsamer Hafen",
+            "font": "Lora Italic",
+            "size": 4.1075897,
+            "x": 57.9383862,
+            "y": 38.0481651,
+            "w": 49.5128857,
+            "h": 4.9291076,
+            "bold": false,
+            "rotation": 0,
+            "color": "#000000",
+            "templateOrigin": true
+          },
+          {
+            "id": "RE-90X60-HOC-08-4",
+            "type": "text",
+            "text": "12.06.2027",
+            "font": "Montserrat",
+            "size": 5.4722222,
+            "x": 57.6368056,
+            "y": 50,
+            "w": 27.4213056,
+            "h": 6.5666667,
+            "bold": false,
+            "rotation": 0,
+            "color": "#000000",
+            "templateOrigin": true
+          }
+        ],
+        "personalItems": [],
+        "motifBoundsVersion": 0,
+        "selected": null,
+        "showHero": false,
+        "designId": null
+      },
+      "source": "Bestehende Designbibliothek"
+    },
+    {
+      "id": "RE-90X60-EIN-10",
+      "title": "Unser Heimathafen",
+      "category": "Namensschilder Eingang",
+      "productId": "GR-ES-RE-90X60-T15",
+      "state": {
+        "width": 90,
+        "height": 60,
+        "holes": false,
+        "spacers": false,
+        "mountingKey": "K00",
+        "holeCount": 0,
+        "objects": [
+          {
+            "id": "RE-90X60-EIN-10-1",
+            "type": "motif",
+            "motif": "import-3ccabb87d2e31f2fc9e44ce6",
+            "x": 19.5,
+            "y": 30.5,
+            "w": 27.9359244,
+            "h": 27.9359244,
+            "rotation": 0,
+            "color": "#000000",
+            "templateOrigin": true
+          },
+          {
+            "id": "RE-90X60-EIN-10-2",
+            "type": "text",
+            "text": "HEIMATHAFEN",
+            "font": "Montserrat",
+            "size": 6.0818792,
+            "x": 60.0304094,
+            "y": 12.5,
+            "w": 46.6784228,
+            "h": 7.298255,
+            "bold": false,
+            "rotation": 0,
+            "color": "#000000",
+            "templateOrigin": true
+          },
+          {
+            "id": "RE-90X60-EIN-10-3",
+            "type": "text",
+            "text": "Familie",
+            "font": "Lora",
+            "size": 7.5769231,
+            "x": 59.9621154,
+            "y": 30.1515385,
+            "w": 25.2614615,
+            "h": 9.0923077,
+            "bold": false,
+            "rotation": 0,
+            "color": "#000000",
+            "templateOrigin": true
+          },
+          {
+            "id": "RE-90X60-EIN-10-4",
+            "type": "text",
+            "text": "Neumann",
+            "font": "Allura",
+            "size": 12.989011,
+            "x": 59.7793407,
+            "y": 44.0712088,
+            "w": 44.0457363,
+            "h": 15.5868132,
+            "bold": false,
+            "rotation": 0,
+            "color": "#000000",
+            "templateOrigin": true
+          }
+        ],
+        "personalItems": [],
+        "motifBoundsVersion": 0,
+        "selected": null,
+        "showHero": false,
+        "designId": null
+      },
+      "source": "Bestehende Designbibliothek"
+    }
+  ],
+  "motifExtraCents": 169,
+  "note": "Vorhandene bearbeitbare Heimathafen-Entwürfe; nicht identisch mit der flachen Materialreferenz Charlotte Groner v4. Keine Shop-Freigaben oder alten Shopify-IDs übernommen."
+}

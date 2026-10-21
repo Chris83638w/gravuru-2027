@@ -1,0 +1,17 @@
+{
+  "name": "gravuru-2027-merchant-test",
+  "version": "0.1.0-precise.20261016+d18bc6cb8fdb",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node app.cjs",
+    "plesk:prepare": "node ops/plesk/prepare.mjs",
+    "plesk:check": "node ops/plesk/check.mjs",
+    "shopify:preflight": "node ops/plesk/shopify-preflight.mjs",
+    "plesk:merchant:prepare": "node ops/plesk/merchant-manage.mjs prepare",
+    "plesk:merchant:check": "node ops/plesk/merchant-manage.mjs check"
+  }
+}

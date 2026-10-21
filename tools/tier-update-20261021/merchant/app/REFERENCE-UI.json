@@ -1,0 +1,725 @@
+{
+  "schema": "gravuru-source-selection/v1",
+  "origin": "Frozen reference archives 20260930",
+  "note": "sourceSha256 records original bytes; active modules may be changed after selection",
+  "files": [
+    {
+      "source": "configurator/variant-m/adapter.mjs",
+      "sourceSha256": "34853d32e3461155a0253e6bd60b0fae7039fb34daee02131370fb49213b413f",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/ux.mjs",
+      "sourceSha256": "2c21f1daf8429070c3bfa1a3aa40ac1e51d1df907e5da218e1d1eefe623b023d",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/ux.css",
+      "sourceSha256": "0bb4c2d48ae5ce1b6fb807ba6e2ae36c2a7ae752d0a3a362d093b3fe887dffa0",
+      "reason": "Stylesheet loaded by selected UI module"
+    },
+    {
+      "source": "configurator/variant-m/acrylic-base-anchors.mjs",
+      "sourceSha256": "97996d4cf7b4073bd08ef3a444c340a3305abb4901c6171b3f5ebb6c28b96fe3",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/help.mjs",
+      "sourceSha256": "9f85510202aa6386ea60e6ebd4f66a5fc62b6727ccf7cb2d97e2be6b0085c04d",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/option-media.mjs",
+      "sourceSha256": "8c4278fba799a06295a99051ca3c2b0682242f4086df407ce7546bf3daf401ef",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "platform/sources/app/shared/models/studio-svg.mjs",
+      "sourceSha256": "5c84c623083da32b9ff7f3ebf4ef1aa6f0cd8f362198361081283c7f2be1aa2b",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/material-surface.mjs",
+      "sourceSha256": "fa638375cd5bded58040963ff06f6eb6bc0513e54b1f709ea87686fcd3adad08",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/photo-placeholder.mjs",
+      "sourceSha256": "22fdc7ef05059e788f8dc10d35c5f1d730f28d45e39d198b52914ce9d350ce26",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "platform/sources/app/shared/models/processing-profiles.mjs",
+      "sourceSha256": "9a3686ec5cbc081b4f2a0f7e9ed7a7885234b9d5377a1c3d930e6ce81f04c814",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "platform/sources/app/shared/models/doorbell-preview.mjs",
+      "sourceSha256": "3cea50522fc66afee54f1bfced58959c51b39a436c59daab9c9cff7df9f2decc",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "platform/sources/app/shared/models/design-content.mjs",
+      "sourceSha256": "866876d9b845b033a71687e03b5bd7635c3259be1daa86dacf022313e88d4d57",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/design-edit.mjs",
+      "sourceSha256": "628e4f4333eb79899281f57a494493fc3b1200b2a80d8cea5e7acd914e4f7c85",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/refinements.mjs",
+      "sourceSha256": "2445d86f8d6b7337dbdde67553163babda1d1e456ee43a3219e0c6fde9d664e0",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/refinements.css",
+      "sourceSha256": "e4528c2dc779b2fbf72254e5345f2337faf96b93634ac11bb4806ddb736873d0",
+      "reason": "Stylesheet loaded by selected UI module"
+    },
+    {
+      "source": "configurator/variant-m/commerce.mjs",
+      "sourceSha256": "39648b82f487eaa1a2a9e1b65e0e6f72b3647d3d439cd554acef791333b07683",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/usability-model.mjs",
+      "sourceSha256": "17b9899c205c82a6abaea49af3d5ccfce92a69dbdcaf988226cc30bd256a25ee",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/acrylic-scene.mjs",
+      "sourceSha256": "d222446ce26bf7c95688f68594070ee86b85fa7a1fce30264e4b2954a6c19a39",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/acrylic-scene.css",
+      "sourceSha256": "7df4fd9e235d433a5ff9f342e4a6018aec4ece21602c8d16dea9177dbfd24726",
+      "reason": "Stylesheet loaded by selected UI module"
+    },
+    {
+      "source": "configurator/variant-m/spacer-cap.mjs",
+      "sourceSha256": "349ac8759b93ccbeed17c0a3e2f849ad8dfdb5ed214348b7ebd86bd16fa4b753",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/option-standard-images.mjs",
+      "sourceSha256": "3eaa4a40b2d6c5f99f0516948cf2dcfeafc214c8a73ed02c934fbe7d60a523c7",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "sourceSha256": "b7ca4450b19559a1d50eb381adcee94b82449674be4cd17789d9beba7e6122a1",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/image-processing.mjs",
+      "sourceSha256": "f65110b2fbc9e0b3199c0c7ca5abdc8830cd30d906f44caffe89a3d3d6276b2d",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/photo-editor.mjs",
+      "sourceSha256": "a24ed4c61621665e5239ce65758ce6109bdc6a1ee7ef396af5f4590b747a43a3",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/usability.mjs",
+      "sourceSha256": "d6d1e8ad456c44a5cb5e86ce6ffc2cdf9422bf214e3eb4d42e99b4dd7af822cd",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/usability.css",
+      "sourceSha256": "6953912f8f2584192d582e63b85e5edb487f3ed752e8f7d8d72e18465bb448a2",
+      "reason": "Stylesheet loaded by selected UI module"
+    },
+    {
+      "source": "configurator/variant-m/workflow.mjs",
+      "sourceSha256": "5d7d3d09c17a6b1aaab33cf22f1a3ac7b8ae8505cca1b7d2e1048a3ce700db15",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/workflow.css",
+      "sourceSha256": "10ebebc99125751284d10087f8e281342e742d48de89f98b13136ac112f3e8f5",
+      "reason": "Stylesheet loaded by selected UI module"
+    },
+    {
+      "source": "configurator/variant-m/customer-tools.mjs",
+      "sourceSha256": "c1851b38dde9acd591d65834b4c5528f599dc3d90759669d5b721a16e51c4002",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/customer-tools.css",
+      "sourceSha256": "95209ed79095f824ae7105aff0e689d31d09aa1860053d12b8755e44d7c6c346",
+      "reason": "Stylesheet loaded by selected UI module"
+    },
+    {
+      "source": "configurator/variant-m/commerce-model.mjs",
+      "sourceSha256": "4e6504b55fead0113f52e65a6e754d84d06ee38c618516e6da906ff75c6e1c58",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/commerce-export.mjs",
+      "sourceSha256": "d54c39367bbc0482fe69fa7835382f6c00f25cb86181ec368581ae207095913d",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/completion.mjs",
+      "sourceSha256": "02144225e4e3af46e61c72616da9e7e52699ecd26108d8b4d0b7bc199b05706f",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/completion.css",
+      "sourceSha256": "2c30cbcd58786dd18a94e1fe5df5b4506f05743c57e363d2e207b3de8d1696ef",
+      "reason": "Stylesheet loaded by selected UI module"
+    },
+    {
+      "source": "configurator/variant-m/workflow-model.mjs",
+      "sourceSha256": "f4544edc2ff97ec05d6ff27dec7d88c9e81849df710cebd94131180290d100e1",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "configurator/variant-m/customer-tools-model.mjs",
+      "sourceSha256": "0fe81f5a93b7d02de65fee22a02848a23b2c8a2d11770b423087028e6cf59d73",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "platform/sources/app/shared/models/mounting-access.mjs",
+      "sourceSha256": "12426c3c998479e38d2924b3dcdde61ce6dcbb7d57d3ceead0647a3d30f72e2b",
+      "reason": "Transitive dependency of the existing customer editor"
+    },
+    {
+      "source": "references/aosu-upgrade-2026-09-21/verification/editor-source.html",
+      "sourceSha256": "fd716737e882098a636498817adfa7afac66103d8a4b4abafbccd337aef7adb2",
+      "reason": "Existing renderer shell and local help dependency; customer use only"
+    },
+    {
+      "source": "references/aosu-upgrade-2026-09-21/verification/profile-source.json",
+      "sourceSha256": "7648c2538462e6f92f3e227ead91548d5d1812cb879aba328a89a6e4b713df4d",
+      "reason": "Existing renderer shell and local help dependency; customer use only"
+    },
+    {
+      "source": "platform/sources/assistant/static/gravuru-chat.js",
+      "sourceSha256": "4cc2ef063d572e1ceea9e3c80b71a3093b9fe19c242b3d05bf1f67b9457e4a8a",
+      "reason": "Existing renderer shell and local help dependency; customer use only"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-buche-v2.png",
+      "sourceSha256": "4803dffa70e97d2d98c4e625442a59e594ed13df7879e87d2759413036fa8262",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-buche.png",
+      "sourceSha256": "8bf34797e3b0861e4423863f7fcc414e39846ddf97d3b4b211956b57bc9ae08c",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-eiche-v2.png",
+      "sourceSha256": "60751404e382c9fab41c475f2458fcf26290cd83d02e8d82ba7061bb3b5965b6",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-eiche.png",
+      "sourceSha256": "0c0becd76c41284e561634ef2ba05bcec25fbe31007ba240eb811524f6e4c566",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-holz-flach-v2.png",
+      "sourceSha256": "bafe3fe84800c9f9fbf0cc346267aa6748f56c3cbfe2324def0d17c587265d09",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-holz-flach.png",
+      "sourceSha256": "12e523f2f79d08a2448347e6eca153ce1d2ae6f222b2a156cfaa01cdf02549d4",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-klar-v2.png",
+      "sourceSha256": "3c85ee8882f8c2b3778422b4e04b12943afa35018c0a55b18428cdcd308f08f1",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-klar.png",
+      "sourceSha256": "d7eeffdb73e1aabc3830747a138f00a07e5efb86ffb527e480cbbfc8d802bb8d",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-nussbaum-v2.png",
+      "sourceSha256": "32c06de5557bfdb31125399ab1d33c70a2ae9f92a186c053e2b3eace841293c0",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-nussbaum.png",
+      "sourceSha256": "d03754acfb972a415d4fd58148b39406fad56e640c45f0c5157bf55754183608",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-satiniert-v2.png",
+      "sourceSha256": "1ee601d7287ca59c62f13accbcb5c72512faac04cc716d13a7c2b4555a230b63",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/base-satiniert.png",
+      "sourceSha256": "0b1ddf5062c04ebc0535f1e1047444fd4a53ba4a9cf21f7c76cce0e83912cfbd",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/reference.png",
+      "sourceSha256": "68b1000ddce2d1cd92446ed3565b75eab9e35680fea4d58a93d983447db44d74",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/resources.json",
+      "sourceSha256": "6b72446051190cb0b93f82774b84fd24c670c9df1d082e9995506898582571a6",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/scene-empty-v2.png",
+      "sourceSha256": "0272e621528bb423ff699563061c940264fe9eeff3fa44bf1287658003ac1ca2",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/scene-empty.png",
+      "sourceSha256": "9ff9869b6bd7853191bcccea47e4691e8cced9cfecaa12b00d527195e01a4324",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/acrylic-unser-anfang/source.json",
+      "sourceSha256": "af25418642fcef37b55060dd9eb8f452aa9a7db7d47f42ad60a4c605a92c82b7",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/.gitattributes",
+      "sourceSha256": "0c6bed3a365e88811bbdd87036d806d1e4871fa44fd8d7a20081734a4453ead1",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/.gitignore",
+      "sourceSha256": "2f02381d299b8434d3ee6d847c5be87961c624ce06cbf9f50fa65316efd67014",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/build-preview.py",
+      "sourceSha256": "68d371d0641c0d74cf0a827f778d4807274c1992ed5c503aa97f0dc216bdef16",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/design.json",
+      "sourceSha256": "81af18dcbdc4dedd82d121f2d43c5e30b70fed71a567962e87ee12dc657623b4",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/image-source-verification.json",
+      "sourceSha256": "c75a0ffc6be6d65234b15dbd3c07444089d6e5b18103a2d6d3fd988cab133094",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/motif.json",
+      "sourceSha256": "42af28fe08b37b290efb84ec56888118a60a56dfb98831df61453f061f6407b3",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/README.md",
+      "sourceSha256": "ce1dd7c6f933c7d34cee1255823b50302cd73a977e72d329f7bc04c1f261bd41",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/refresh-inventory.py",
+      "sourceSha256": "8d241e170ba3ba640c60f9bbb8c33a30260280184f982f6167c6fac5cd2ee72d",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/RESOURCE-INVENTORY.json",
+      "sourceSha256": "6d7a383c4796c5f1acc42750770ec0c5f5c8e156933e3fa7ebb801a9d8ddc01f",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/resource-provenance.json",
+      "sourceSha256": "d36fb240f3ceb7e3714c4317c9f9f3dc72d57b0211b55bfc33f16d85339df6c4",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/RIGHTS-AND-DEPENDENCIES.md",
+      "sourceSha256": "6638ebe8bc2919c6fbe2cebe2b3d12fc0991d630ee0f573035323964fbac2ea9",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/SETUP.md",
+      "sourceSha256": "f6009b29d8e6d813fc759a7340324c7458bffd5f348e3c82f76587bab838288c",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/start-preview.py",
+      "sourceSha256": "03eac482e0d79af0529e0b53a6ea93cc5d26d0a474f0d4c97e4a4b5eba6aae52",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/START-TEST.md",
+      "sourceSha256": "458b98e2a325bf624542672b8345787820b21f760569609e9a0972167634613c",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/assets/labrador-solid.svg",
+      "sourceSha256": "18f987a47a3081f36dc52c928da7dc319a84a5356db99945ccaf054b0925a054",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/assets/Michroma-OFL.txt",
+      "sourceSha256": "33c39ce59a45bfb0dae3280e98bdb46be59d6d68efc62d4dc5fae90a26d2f393",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/assets/Michroma-Regular.ttf",
+      "sourceSha256": "b62301163788bc5b7f8fcac0b74b184e34e1827e577b499ecb724da065098f87",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/assets/michroma-vectors.json",
+      "sourceSha256": "33edec2a4d4076d8faa21797dbdd69c5b05fdff86cca547bf012894ea4e999fc",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/assets/michroma-vectors.json.gz",
+      "sourceSha256": "f22f0a0b809aef390f3480afc260c87692cc93b2dc7cb3c31ed7293539cf9f30",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-00.txt",
+      "sourceSha256": "41ca6aa7e3c716b286bde5d3a2e5e37ca20aa78633d54b79d761c519df33c7d1",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-01.txt",
+      "sourceSha256": "0ad228c3190277b9b6ef21d79b96294f0ab10e1dd926676e4d240f6556cec282",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-02.txt",
+      "sourceSha256": "a24a5cf16a81277543f85a76c5a505276d7054362333a9196083ed8963a4d376",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-03.txt",
+      "sourceSha256": "3cd34a225744b91224d1432ca2778ac8b93b564df6bdc780ef812755ee4da112",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-04.txt",
+      "sourceSha256": "921d01c3f42006c8a4bb230bc147af52ea1dee20494dfbe7c7ad645f5707f001",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-05.txt",
+      "sourceSha256": "8917efe3458155cb0b7ee34ca76927f1c769a75c57cefbed5e524b227baa19a7",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-06.txt",
+      "sourceSha256": "7d63c6ee2b23cace79bccec42d05de15a3080056db833a79812fe417c41e7e0d",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-07.txt",
+      "sourceSha256": "db7844f173cf2bf7c0d4781333c800342fded8dfb98e7bd8e875f83dd3c572bb",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-08.txt",
+      "sourceSha256": "153fc0ee45bb21f42827f404fe692be19b71f5ec9990758ef26882477c1d68a8",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-09.txt",
+      "sourceSha256": "51478afc8be6967f701688e2ceaf1c745106018016773f985a69f9b40c4e0316",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-10.txt",
+      "sourceSha256": "b46c6a55a370ae75ee365e91c2c3b516153c8d0bbd3af3c2865e836c8ac4857a",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-11.txt",
+      "sourceSha256": "88597258b9ad137a8eca9bcec8448500a32b7fe6e5eb333d47d059888ed482de",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-12.txt",
+      "sourceSha256": "9de06ab9a3e945fa3bdc0a1928d28af593dfa376cb5c7331b4721e492a7bc218",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-13.txt",
+      "sourceSha256": "18534f167d8c940cdaaa3d58d1f4412a189c4915103bfa5e17a1ee3c035c0dd7",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52.json",
+      "sourceSha256": "d2720002076c3ad5c22f78840b5eb6de874c0dff26674a096d6f5154392e4e0d",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-00.txt",
+      "sourceSha256": "061eca7ca2f25ef716c6253ddde58d96fef4f538d1964f0f74ed6e739cb261e5",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-01.txt",
+      "sourceSha256": "07f554e587abf48633a7fcd9d0b4fb712a722b6fdc35b5020c3f0dc2e2e4ec0e",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-02.txt",
+      "sourceSha256": "f197fe1e37a2dfa8e906279da7be73dd2c71d80da202e8ac251a16010580c57f",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-03.txt",
+      "sourceSha256": "ab84d5fe90857c9bad99a11a532ccc16437e99cd1a835dfa30286bd9a096a495",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-04.txt",
+      "sourceSha256": "b68aeebff4b448348105edfc84bab28e23117c5d4215830570f596b543a67421",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-05.txt",
+      "sourceSha256": "ebf1bb83c2517ea2bfcedd8ca9ddf44826ee4d2de70ae0b3c4cbcfa91ffdcf90",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-06.txt",
+      "sourceSha256": "1726244a5f6a139acb529c823bb48dfda70a163364b290065d7d13ce24072b97",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-07.txt",
+      "sourceSha256": "1a33857fd1a9884401a27e229342d78fcff35cafdd647d032b690692196e5b22",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-08.txt",
+      "sourceSha256": "ffc59d95fa23959789c509cac367d3cda168914f631b80503cd106469b3e669a",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-09.txt",
+      "sourceSha256": "14e21c002c9ca429317b1af4ae3f08225b9a2b35f5001f0f48137c1d02115192",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-10.txt",
+      "sourceSha256": "73db66138059bfc12decc39b85f05ce8c67cc18bb8f9efa2a9671fbed0b0c9d9",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-11.txt",
+      "sourceSha256": "abd086fda9438df80fcc2bae4ee7eec9944de1f11ef962de5a6a9bfe197a159a",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-12.txt",
+      "sourceSha256": "1b604c207cbcaf6cb313a8398f5b4f230dbe505dfd0721021bacaad11a6c8ac9",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-13.txt",
+      "sourceSha256": "eddb4c20147d129d199a78538057196837b6dd9c4052b7c818b186f353fbbfa7",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-14.txt",
+      "sourceSha256": "b09a9f4b914fdfd3527085e933903edc8321118261ea7ceba32cbbe40c324117",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-fonts-15.txt",
+      "sourceSha256": "9982ac0fa3f6046ff05858f92c5141532d2e58360f278d219b50db5c2f8588b2",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-00.txt",
+      "sourceSha256": "29ffd3eeed62802e6b0afab65df29a8779c77fb60aceabf152172c86b54e82c5",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-01.txt",
+      "sourceSha256": "921f248b06f3ce3f4c6b5819ca710f25342d5a5310442b6534f432972f3e9196",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-02.txt",
+      "sourceSha256": "9c8bf99180d91e9548169fd9b9fec3ce2601fe4b8397167d36857710e8a637be",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-03.txt",
+      "sourceSha256": "d021966021773270dfe73684f146cb9374bf3b9bbc190cb77842b224ecc2b4c4",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-04.txt",
+      "sourceSha256": "56779c9416366c4ef41dff5cb22f64f42391d45aa48045d806065f0fd129b40e",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-05.txt",
+      "sourceSha256": "31b42bcfb313ab3d370096512f86339650b0168cce3d55f942416ec595e4760d",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-06.txt",
+      "sourceSha256": "f5b04f04a88c54e2592e3acae3ba28069c6b98754e758788d3474416e5e4442e",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-07.txt",
+      "sourceSha256": "7748ceb9bb849dc932b9c395fac2fdd100730cd05fb14f98ab570cca902915ed",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-08.txt",
+      "sourceSha256": "d4647a9e3697aa90c9c9b30f60b580b01bdc601ded38c05a7b00897d78d9c334",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-09.txt",
+      "sourceSha256": "30f428a755761245c90214091d9357b353edef3db2cd0775c9f69ea0295e305c",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-10.txt",
+      "sourceSha256": "f2f46f0070ae1d5ac3abde743d9dde64732801d1b7ceb57bf488aa4c5a637c58",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-11.txt",
+      "sourceSha256": "5ea005603a03a6ab590036fdd5f00c03ad4e9a3daac58d0a7709b9f5ca2c1aff",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-12.txt",
+      "sourceSha256": "56bfd328ab83e807725404a01d380730a13d7f1c8644ee52c0118e7d29179f9c",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-13.txt",
+      "sourceSha256": "22ace9bbbb57616f5f4664d6085e415fa7a96353324785219d2af9ac2db542ea",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-14.txt",
+      "sourceSha256": "ecaecc92606425f7500bdd159797a1114a78fcde968c9218d956876a1f0ec063",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-15.txt",
+      "sourceSha256": "f340b97eab6e1d6bfc0e2511663a42df68f66d3d2252fa91251e44c86168c9b9",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-16.txt",
+      "sourceSha256": "e1ae01a5f0d123a21d26ac711cb6bb0b4a4c0b7298e6ff97b06d0c7d45bbe8c7",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-17.txt",
+      "sourceSha256": "1e754764ea6f046809b9e9a9cb2f0a4a13a3a4d8e40c3b95d5c18d32e5770893",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-18.txt",
+      "sourceSha256": "18dd39b0f60ad4e3f0eb30258bc15d99e5426b34e578f6bb9dfb16896d754413",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-19.txt",
+      "sourceSha256": "e8e23d9c83fcb65ab8563ff5a621acd52be41313a4322497a007973fdec6b24f",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/gravuru-entwurf-motive-20.txt",
+      "sourceSha256": "bfaac98de786db2a4a2504c62d3b5cab82ccf97cacccf30edcc9ac7a03131a9d",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/images/aosu-pro-v8p1ax11.png",
+      "sourceSha256": "c29572815095b05a2f0e4fe25969599ba58c7faa5b873d5a253f4365da24d226",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png",
+      "sourceSha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.png",
+      "sourceSha256": "27f4c392b3891b1923791bfce9b429a876a43f9374418693b863c87c691905ae",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "designs/aosu-labrador/runtime/licenses/gravuru-font-licenses.json",
+      "sourceSha256": "f1312a3acb25f4f169502f9140dcb314a3705699ddab9a8ef1375bb4697c6a4e",
+      "reason": "Original motif/font runtime or acrylic preview assets, unchanged"
+    },
+    {
+      "source": "platform/sources/app/shared/models/studio-products.mjs",
+      "sourceSha256": "3875aae10b8579e9ee8fec9919d2129d5c87c222c6dc3e3da05aab5506d201bc",
+      "reason": "Transitive dependency discovered from integrated build and contract"
+    },
+    {
+      "source": "platform/sources/app/shared/models/universal-elements.mjs",
+      "sourceSha256": "b9237d7e1194b84778e38fc57850561cee7fefb2b49ce5a42f093b98f20b7d17",
+      "reason": "Transitive dependency discovered from integrated build and contract"
+    },
+    {
+      "source": "configurator/variant-m/local-pilot.mjs",
+      "sourceSha256": "0bf5905327dd6bee01a996dbcf740867be803257bc7f9b11cc694895c566f9f0",
+      "reason": "Transitive dependency discovered from integrated build and contract"
+    },
+    {
+      "source": "platform/sources/app/shared/models/motifs.mjs",
+      "sourceSha256": "afeac5688d2fe48a31bf72dff08ebf68f6804175e6a2da6d593ce574f5498547",
+      "reason": "Transitive dependency discovered from integrated build and contract"
+    },
+    {
+      "source": "platform/sources/app/shared/models/doorbells.mjs",
+      "sourceSha256": "8565b82ae0457c270af682606ba8b9e6e5438309f23e6f285b357b4965d9f2d0",
+      "reason": "Transitive dependency discovered from integrated build and contract"
+    },
+    {
+      "source": "platform/sources/app/shared/models/runtime-contract.mjs",
+      "sourceSha256": "89195038cf8fdfe8a4603307bb3e692cd1c468c82c2ce7803201cb03c758f669",
+      "reason": "Transitive dependency discovered from integrated build and contract"
+    },
+    {
+      "source": "platform/sources/app/shared/models/doorbell-release.mjs",
+      "sourceSha256": "acf56d71c97f11478b4d96ebbca03645221dafd4bd660d393d5d72b88ef62c30",
+      "reason": "Transitive dependency discovered from integrated build and contract"
+    },
+    {
+      "source": "configurator/variant-m/customer-tools.test.mjs",
+      "sourceSha256": "33723c862c79e5005f5bfeafd73cd8da27c2be328e7b6b7e11ea6d47e8cc0122",
+      "reason": "Existing regression tests for reused text/geometry/upload/motif UI helpers"
+    },
+    {
+      "source": "configurator/variant-m/usability.test.mjs",
+      "sourceSha256": "c7a7ed057a7cd27b1508ce1cb5caf17da4cca2368d8394d3d2990328ab87133d",
+      "reason": "Existing regression tests for reused text/geometry/upload/motif UI helpers"
+    },
+    {
+      "source": "configurator/variant-m/workflow.test.mjs",
+      "sourceSha256": "aca40d6151afde280d72721b5c8d718e4d9d15fb1d7240b89d126c5991cc13bd",
+      "reason": "Existing regression tests for reused text/geometry/upload/motif UI helpers"
+    },
+    {
+      "source": "configurator/variant-m/image-processing.test.mjs",
+      "sourceSha256": "63f2dbe9111f2e4cbcad84d1d929e5f7ed5ec0d651a142c148f165371279b9f2",
+      "reason": "Existing regression tests for reused text/geometry/upload/motif UI helpers"
+    }
+  ],
+  "deliberatelyExcluded": [
+    "review-proposal.mjs: required customer corrections now belong to normal UI, not a query-string mode"
+  ]
+}

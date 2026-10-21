@@ -1,0 +1,3568 @@
+{
+  "schema": "gravuru-complete-merchant-source-snapshot/v1",
+  "preparedAt": "2026-10-21T19:27:52.299Z",
+  "repositoryBaseCommit": "a3fbaef116d67aeaf7ed9a5b07c2066112830880",
+  "originalReleaseManifestCommit": "d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb",
+  "originalCommitDirectlyReadableOnGitHub": false,
+  "originalManifestSha256": "94cb8b5f513b07d6e4c1ea7221db18fb87deb5b3df40eb74d7e367b2fa9567b0",
+  "sourceBasis": "All 436 files from the SHA256-verified and privately restored active release; repository snapshot preserves the source itself because its manifest commit could not be fetched.",
+  "merchantFileCount": 436,
+  "merchantBytes": 37839991,
+  "changedAppFiles": [
+    "app/configurator/variant-m/contract.mjs",
+    "app/configurator/variant-m/commerce-model.mjs",
+    "app/configurator/variant-m/ux.mjs",
+    "app/workshop/cart-personalization.mjs"
+  ],
+  "originalSourceFilesPreserved": 432,
+  "quantityTierScope": "complete-unit",
+  "rule": {
+    "tiers": [
+      {
+        "minQuantity": 2,
+        "percentOff": 6
+      },
+      {
+        "minQuantity": 3,
+        "percentOff": 10
+      }
+    ],
+    "scope": "complete-unit",
+    "rounding": "integer half-up once per full unit before quantity multiplication",
+    "example": {
+      "baseCents": 2299,
+      "photoCents": 999,
+      "quantity2TotalCents": 6200,
+      "quantity3TotalCents": 8904
+    }
+  },
+  "tests": {
+    "runtime": "v24.19.0",
+    "count": 50,
+    "passed": 50,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "Relocated tests against this self-contained merchant source; no external original source imports, network, DB mutation, deployment or live Shopify test."
+  },
+  "testRelocations": [
+    {
+      "path": "tests/tier-pricing.test.mjs",
+      "originalPath": "app/configurator/variant-m/tier-pricing.test.mjs",
+      "originalSha256": "dcdb6815dd79b18e3065c33a8f0e5f170d6e7a83c31c3254444023c29eb0b165",
+      "sha256": "9c19e597bad3ee13d00ceb2367dc813df7e88f05600e040442f5e6cdadb6a5d2",
+      "change": "Only imports/resource-relative paths relocated; test logic unchanged."
+    },
+    {
+      "path": "tests/cart-personalization-tier.test.mjs",
+      "originalPath": "backend-tests/cart-personalization-tier.test.mjs",
+      "originalSha256": "f19c5267cc3fcb12cbe788f67ca7189adf8a29ba7504545b52a47ac8b06e9b5c",
+      "sha256": "3c439dabfb2bf688b188162311bc9c19a027de6a68e794f796643f334f6fa225",
+      "change": "Only imports/resource-relative paths relocated; test logic unchanged."
+    }
+  ],
+  "files": [
+    {
+      "path": "INSTALLATION.md",
+      "bytes": 8461,
+      "sha256": "3b49989ae554f9398817b755104793ced5e5b7a731a7af74ea757f3096b96c87",
+      "gitBlobSha": "7a5ed8f702e8eff46df4e1d7ca378e7e6fb5482c",
+      "originalSha256": "3b49989ae554f9398817b755104793ced5e5b7a731a7af74ea757f3096b96c87",
+      "modified": false
+    },
+    {
+      "path": "app.cjs",
+      "bytes": 41,
+      "sha256": "8e02a9c2b0b58ad5e537b2a327b6d3458468b666d2c5f7975302c6b59f633bb4",
+      "gitBlobSha": "82d3f733d0c6b3a1a68a95f85f629ad38925275c",
+      "originalSha256": "8e02a9c2b0b58ad5e537b2a327b6d3458468b666d2c5f7975302c6b59f633bb4",
+      "modified": false
+    },
+    {
+      "path": "app/REFERENCE-UI.json",
+      "bytes": 36654,
+      "sha256": "b27ddca33f19c5684a15a905c46bbb0716170328a7bd74aaa9da8d7486dac4b3",
+      "gitBlobSha": "b46f3eb5ca3910e6b6e09b0909fe2c7771797355",
+      "originalSha256": "b27ddca33f19c5684a15a905c46bbb0716170328a7bd74aaa9da8d7486dac4b3",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-base-anchors.mjs",
+      "bytes": 871,
+      "sha256": "b19e6ebed60abb1eedeca578ed4d7d4a7ef7826ef14c15cd2b5bdda450336679",
+      "gitBlobSha": "6f2d6492625ae8581196ae191e366929b53d947d",
+      "originalSha256": "b19e6ebed60abb1eedeca578ed4d7d4a7ef7826ef14c15cd2b5bdda450336679",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-draft-client.mjs",
+      "bytes": 2371,
+      "sha256": "4b22c0275991af5f81b9a26959a57ef5cfa7858705ccbbc3a30bc0cdad8fa7fb",
+      "gitBlobSha": "e37aa06c13dcbe1b39968e905269ec0e7c93cba4",
+      "originalSha256": "4b22c0275991af5f81b9a26959a57ef5cfa7858705ccbbc3a30bc0cdad8fa7fb",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-product.mjs",
+      "bytes": 7370,
+      "sha256": "ad3a25d3ec6ea67272ef11a7c925f5ae0d57bf82335f9b65a9cb04fe5d0cbe8f",
+      "gitBlobSha": "08c11fcf62b6b73619c22462dfb0e10586827b9f",
+      "originalSha256": "ad3a25d3ec6ea67272ef11a7c925f5ae0d57bf82335f9b65a9cb04fe5d0cbe8f",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "bytes": 3771,
+      "sha256": "1863f9faa7a64df6eeba8c6fd0af808069277ae7356dd6808e591807e7590827",
+      "gitBlobSha": "b5c0b460b23e5c445ecb40330d37332f27376834",
+      "originalSha256": "1863f9faa7a64df6eeba8c6fd0af808069277ae7356dd6808e591807e7590827",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.mjs",
+      "bytes": 13250,
+      "sha256": "65286e549df2c8fd5aa9a0ff5c5110cad219c9aa5cbf38c6c8010eabdc1856f6",
+      "gitBlobSha": "a36c6f652972a973524e7388a59812a5e3942e7b",
+      "originalSha256": "65286e549df2c8fd5aa9a0ff5c5110cad219c9aa5cbf38c6c8010eabdc1856f6",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/adapter.mjs",
+      "bytes": 23245,
+      "sha256": "98627ba1345ca88160c84304c3e867b81f991b3100176300d8972bd46742865c",
+      "gitBlobSha": "4baf60edb84a466a9bee8110a0288a6b93e6ec86",
+      "originalSha256": "98627ba1345ca88160c84304c3e867b81f991b3100176300d8972bd46742865c",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/artwork-resource.mjs",
+      "bytes": 1459,
+      "sha256": "11b75cf83c6d893ba5260fa6211a93171dc4e9497868727071f8eb56e45f78a0",
+      "gitBlobSha": "04473b73a92ba8c4441edc84b1269b66591c9f27",
+      "originalSha256": "11b75cf83c6d893ba5260fa6211a93171dc4e9497868727071f8eb56e45f78a0",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "bytes": 9554,
+      "sha256": "820e67d32e337382c0ea848eb304e03d87290e18e222e958d002384bc8ea50f4",
+      "gitBlobSha": "4ba0f5fe608648b3b885da520456183b2c6b4c44",
+      "originalSha256": "820e67d32e337382c0ea848eb304e03d87290e18e222e958d002384bc8ea50f4",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/commerce-export.mjs",
+      "bytes": 8648,
+      "sha256": "d54c39367bbc0482fe69fa7835382f6c00f25cb86181ec368581ae207095913d",
+      "gitBlobSha": "c718c63a8d5cd69877b04adf2a5869d5d74961e1",
+      "originalSha256": "d54c39367bbc0482fe69fa7835382f6c00f25cb86181ec368581ae207095913d",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/commerce-model.mjs",
+      "bytes": 4113,
+      "sha256": "99ebdecc4359b41069776496924ca5f53e3876a7442ece8c387733c5ba7c1f3d",
+      "gitBlobSha": "d07f751d630c2400484afaa440003359d20d44ac",
+      "originalSha256": "b1d8664f4197f8fe54ca7bee1c36ed61b30816763f40431447794092115f061d",
+      "modified": true
+    },
+    {
+      "path": "app/configurator/variant-m/commerce.mjs",
+      "bytes": 3587,
+      "sha256": "39648b82f487eaa1a2a9e1b65e0e6f72b3647d3d439cd554acef791333b07683",
+      "gitBlobSha": "ebcd711544fed4cdffc57d342ff6f003a0af0064",
+      "originalSha256": "39648b82f487eaa1a2a9e1b65e0e6f72b3647d3d439cd554acef791333b07683",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/completion.css",
+      "bytes": 6881,
+      "sha256": "301e0e19d744c27b196ecce843cd7635f5a532fd84a22fcd85c40f11f2b464d4",
+      "gitBlobSha": "ffe06b2a8e530943a87f1a8f7d5a4db52efcfca2",
+      "originalSha256": "301e0e19d744c27b196ecce843cd7635f5a532fd84a22fcd85c40f11f2b464d4",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/completion.mjs",
+      "bytes": 10568,
+      "sha256": "07cb32944700aa358cded59e052d734338842d3ddec6564a9fed17ad5d73338b",
+      "gitBlobSha": "68b86f344e610cd22c344bf1d8b6d560ceb0b164",
+      "originalSha256": "07cb32944700aa358cded59e052d734338842d3ddec6564a9fed17ad5d73338b",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "bytes": 22600,
+      "sha256": "dfd4d014f0f3619a28860e339d5bfc7661dfb9ee85b2ea8dc3b43557b32e6793",
+      "gitBlobSha": "d10e4dbf4f2fcf1d7fd7800c267d0769f9fcbb32",
+      "originalSha256": "b37a0c3525a140aac071cb8712fbbd7dd076d24f4309e28a83a5ae41de2c2d78",
+      "modified": true
+    },
+    {
+      "path": "app/configurator/variant-m/customer-rights.mjs",
+      "bytes": 8885,
+      "sha256": "fcd72aa41cb5cf8983e469b009da94cd71a6353cec4f023d05dc2ef1084c2815",
+      "gitBlobSha": "4e6a598a8aae3a29d9aa36f3e15e2804e49ca164",
+      "originalSha256": "fcd72aa41cb5cf8983e469b009da94cd71a6353cec4f023d05dc2ef1084c2815",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools-model.mjs",
+      "bytes": 3602,
+      "sha256": "1ed6e8a281add3cee6b96003431e5e757f159670658753c2507eab4576732bab",
+      "gitBlobSha": "46b33be63a4a37c51062180c869203cf5839cc0b",
+      "originalSha256": "1ed6e8a281add3cee6b96003431e5e757f159670658753c2507eab4576732bab",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.css",
+      "bytes": 4571,
+      "sha256": "95209ed79095f824ae7105aff0e689d31d09aa1860053d12b8755e44d7c6c346",
+      "gitBlobSha": "499d27228d6ad0b6aac226d2acecce8fd485d4a0",
+      "originalSha256": "95209ed79095f824ae7105aff0e689d31d09aa1860053d12b8755e44d7c6c346",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.mjs",
+      "bytes": 12253,
+      "sha256": "953a09baa76b050af9a7533de12cd6aa05646c77cfb4d434d8d04c09b353f8f1",
+      "gitBlobSha": "103d2612e69d0ea47a2a9972cd70a17e04784cc5",
+      "originalSha256": "953a09baa76b050af9a7533de12cd6aa05646c77cfb4d434d8d04c09b353f8f1",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/design-area.mjs",
+      "bytes": 1474,
+      "sha256": "83ad76b238998fbec9c93ec9669c4cd361399c2f817969e126cb275542aeeb7a",
+      "gitBlobSha": "2820d8b79e2c5a6d78cc9b9cc1f187e2a1e17ef6",
+      "originalSha256": "83ad76b238998fbec9c93ec9669c4cd361399c2f817969e126cb275542aeeb7a",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/design-edit.mjs",
+      "bytes": 1163,
+      "sha256": "628e4f4333eb79899281f57a494493fc3b1200b2a80d8cea5e7acd914e4f7c85",
+      "gitBlobSha": "dcb001818ab84f6d8595a18e47b3b4683126a9d3",
+      "originalSha256": "628e4f4333eb79899281f57a494493fc3b1200b2a80d8cea5e7acd914e4f7c85",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/direct-editing.mjs",
+      "bytes": 8209,
+      "sha256": "108644cb7a6b23beccce53fa0e32bebf35bfd014e795eaec5bccfc667f94b5d4",
+      "gitBlobSha": "5ca4d99eb18a7c23ae896ebb048897fc818d064c",
+      "originalSha256": "108644cb7a6b23beccce53fa0e32bebf35bfd014e795eaec5bccfc667f94b5d4",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "bytes": 3363,
+      "sha256": "feaa08fc3f4fdb6685bcd927e68d84db0c60165d455a5bd5a20a84d401e591c0",
+      "gitBlobSha": "73e2ec4d26802ded7ecb4999fbfc106b227f8445",
+      "originalSha256": "feaa08fc3f4fdb6685bcd927e68d84db0c60165d455a5bd5a20a84d401e591c0",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/field-mapping.mjs",
+      "bytes": 2321,
+      "sha256": "e31fa9379980d9b9f4a284da7248f83a948d838c5de6cb9a7dc6ed3bb679e711",
+      "gitBlobSha": "4b7ed849a1fa369987b106f7f7c2062b4146bcc3",
+      "originalSha256": "e31fa9379980d9b9f4a284da7248f83a948d838c5de6cb9a7dc6ed3bb679e711",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/first-text-focus.mjs",
+      "bytes": 1066,
+      "sha256": "79c11a514c4236ea706cbb7639393b932a9aac4b2c78166093fccb18babc7aeb",
+      "gitBlobSha": "db5cbdd03f4d4184e451991f9947889629e580a4",
+      "originalSha256": "79c11a514c4236ea706cbb7639393b932a9aac4b2c78166093fccb18babc7aeb",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/fixtures/native-profile.json",
+      "bytes": 37087,
+      "sha256": "1fa675944b92e903464cecb6de15eb8c9b41e3dd526acbdb0488634f182ea67f",
+      "gitBlobSha": "9b27910105316cc6ee53459f43d07ff8f258fd0b",
+      "originalSha256": "1fa675944b92e903464cecb6de15eb8c9b41e3dd526acbdb0488634f182ea67f",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/form-panels.css",
+      "bytes": 3649,
+      "sha256": "d2134fbc85fa118d1e1e1bb2bec7453f397f999219c969d9c13466d3b304b781",
+      "gitBlobSha": "2e4a66f87d0efc6e5739529eca6b600c5c8e5b79",
+      "originalSha256": "d2134fbc85fa118d1e1e1bb2bec7453f397f999219c969d9c13466d3b304b781",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/form-panels.mjs",
+      "bytes": 6202,
+      "sha256": "cc1cdc053c28c3e6d28735366ee56fcea77d015f2f535d5b2d82818ffd843998",
+      "gitBlobSha": "a9d3ba35217aecb4742e31df97bcd7c4434e8a1c",
+      "originalSha256": "cc1cdc053c28c3e6d28735366ee56fcea77d015f2f535d5b2d82818ffd843998",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/help.mjs",
+      "bytes": 9105,
+      "sha256": "8b1871973446a7f0fc32bdb6e56b8bde62435a7aa4da0ad569621c60ef1d4094",
+      "gitBlobSha": "a8defa78c1a09b08b9492b67aadcf7a9853e97c0",
+      "originalSha256": "8b1871973446a7f0fc32bdb6e56b8bde62435a7aa4da0ad569621c60ef1d4094",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/image-processing.mjs",
+      "bytes": 2495,
+      "sha256": "0209dda1c31e61e7f51a83aaf1a81c70889aa141d5a75c7f1dc55175d5cee959",
+      "gitBlobSha": "273204f5c681482fa5a877db585c1ab5eff283e6",
+      "originalSha256": "0209dda1c31e61e7f51a83aaf1a81c70889aa141d5a75c7f1dc55175d5cee959",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/index.html",
+      "bytes": 5744,
+      "sha256": "7916eb29dd707f948ba0adc18b5623471384ec5c5ac2ed97e2030e46eb1b2c9a",
+      "gitBlobSha": "c4ac6067db54bd0da720113773049b809983058a",
+      "originalSha256": "7916eb29dd707f948ba0adc18b5623471384ec5c5ac2ed97e2030e46eb1b2c9a",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/local-pilot.mjs",
+      "bytes": 3742,
+      "sha256": "68943dc7a966e3303d82cde604e73cb582c24a00ec6ad9e9d6061f790c3e4059",
+      "gitBlobSha": "0088390ef8080668c8079f50ceb584dd71e62df5",
+      "originalSha256": "68943dc7a966e3303d82cde604e73cb582c24a00ec6ad9e9d6061f790c3e4059",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/material-surface.mjs",
+      "bytes": 2112,
+      "sha256": "673c100141b3d224faff29b14717b6b01db1360c3bd45fb1792a5db59a0e7ff9",
+      "gitBlobSha": "f3704dcbc85db76bdd26f7851a6e01bf2781d073",
+      "originalSha256": "673c100141b3d224faff29b14717b6b01db1360c3bd45fb1792a5db59a0e7ff9",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/motif-placement.mjs",
+      "bytes": 3570,
+      "sha256": "d1ee9229ecc3f97eb0e256ab95525cb07bb4eee843e19b4ed763b87458a48902",
+      "gitBlobSha": "05c14960a9ce39e2533c05a6dfe0a70d39690a16",
+      "originalSha256": "d1ee9229ecc3f97eb0e256ab95525cb07bb4eee843e19b4ed763b87458a48902",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/neutral-theme.css",
+      "bytes": 10577,
+      "sha256": "75442988aa12397b090199d6a12e5386383031f27a153a78ceaf0ca8aeacd0f3",
+      "gitBlobSha": "f48f39eb6cb0b924d95e6fb4d1d093a464d5a30f",
+      "originalSha256": "75442988aa12397b090199d6a12e5386383031f27a153a78ceaf0ca8aeacd0f3",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/option-media.mjs",
+      "bytes": 3143,
+      "sha256": "8c4278fba799a06295a99051ca3c2b0682242f4086df407ce7546bf3daf401ef",
+      "gitBlobSha": "dc027fb46288565d7ac6ba884a239618b0409ce3",
+      "originalSha256": "8c4278fba799a06295a99051ca3c2b0682242f4086df407ce7546bf3daf401ef",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/option-standard-images.mjs",
+      "bytes": 112882,
+      "sha256": "3eaa4a40b2d6c5f99f0516948cf2dcfeafc214c8a73ed02c934fbe7d60a523c7",
+      "gitBlobSha": "51c9995de4cf34a2c16c03cfd5fabd4664b6ddca",
+      "originalSha256": "3eaa4a40b2d6c5f99f0516948cf2dcfeafc214c8a73ed02c934fbe7d60a523c7",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/photo-editor.mjs",
+      "bytes": 10594,
+      "sha256": "8049af8ef433417ce3696d6c835003ae132640e4077cd3dd1cbf4cd1a4e63f7e",
+      "gitBlobSha": "ce21550217f80672d08ff9dcc13d6c4d9c7a43d7",
+      "originalSha256": "8049af8ef433417ce3696d6c835003ae132640e4077cd3dd1cbf4cd1a4e63f7e",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/photo-placeholder.mjs",
+      "bytes": 6125,
+      "sha256": "84671e50ae89d4de714f0f0e358260746853c7539027ed393c9b951842ae5cb2",
+      "gitBlobSha": "549be5d5979bb79d9f5c272d06b6a4746be85d28",
+      "originalSha256": "84671e50ae89d4de714f0f0e358260746853c7539027ed393c9b951842ae5cb2",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/photo-position-model.mjs",
+      "bytes": 1049,
+      "sha256": "59d68762ba8d060b2046868eecf3d24f9e0d080c91e87487064722128e06e36a",
+      "gitBlobSha": "bbee0ec4224b8b31feb3f8c7dea66fa17575edc9",
+      "originalSha256": "59d68762ba8d060b2046868eecf3d24f9e0d080c91e87487064722128e06e36a",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/photo-position.mjs",
+      "bytes": 7332,
+      "sha256": "15e3986eb901126940504666397bd3002fa6afeaa76841d3ef956e137a21a3b2",
+      "gitBlobSha": "c190cde781c8b733298551d72b54bc620a381c47",
+      "originalSha256": "15e3986eb901126940504666397bd3002fa6afeaa76841d3ef956e137a21a3b2",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/preview-feedback.mjs",
+      "bytes": 4779,
+      "sha256": "4e03c1909035c61fb4bd0dbbf43da41e459915140f09025a3389bf2ebc9f3720",
+      "gitBlobSha": "c984c66dfc7f3aa2a537bc4a55f65489d0b30308",
+      "originalSha256": "4e03c1909035c61fb4bd0dbbf43da41e459915140f09025a3389bf2ebc9f3720",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/preview-resource.mjs",
+      "bytes": 565,
+      "sha256": "bee34763c67a30645112078ea770bfdcc3831562808272c572e6d347d9496285",
+      "gitBlobSha": "f5927ee836a7e1e86a7142d1dffad7b148719f0c",
+      "originalSha256": "bee34763c67a30645112078ea770bfdcc3831562808272c572e6d347d9496285",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/print-export-model.mjs",
+      "bytes": 16531,
+      "sha256": "e3f021cd0dd20b8fe8e26a6907d5801c42e32a57cf87a03b4da69ad51ce23571",
+      "gitBlobSha": "564fed7ae23e6418063af106ac96f7b0e33cbab6",
+      "originalSha256": "e3f021cd0dd20b8fe8e26a6907d5801c42e32a57cf87a03b4da69ad51ce23571",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/print-export.mjs",
+      "bytes": 21046,
+      "sha256": "6609e237445663f18dd12068a843e24e429ab9ddb7b277606905a00b42ff1784",
+      "gitBlobSha": "aa387c9a7d3cc4e739e0a524c1aff8b2e5fa0c6c",
+      "originalSha256": "6609e237445663f18dd12068a843e24e429ab9ddb7b277606905a00b42ff1784",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/print-geometry.mjs",
+      "bytes": 878,
+      "sha256": "3dae2e85c37b69a9e9e74c326d7f49fa15552320b93d6dfdebabacbf70eef5bc",
+      "gitBlobSha": "af7b71af83c0a97207bf8c6b7f278f48162f02b5",
+      "originalSha256": "3dae2e85c37b69a9e9e74c326d7f49fa15552320b93d6dfdebabacbf70eef5bc",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/product-scene-preview.mjs",
+      "bytes": 2366,
+      "sha256": "f2561a1ad7a773b7d9cb37c7ffb78e1378be42dc6ccc97b899a9a659c0ef1c68",
+      "gitBlobSha": "e47b59506ba801b7ab318faeb4eec0fdcf262ec5",
+      "originalSha256": "f2561a1ad7a773b7d9cb37c7ffb78e1378be42dc6ccc97b899a9a659c0ef1c68",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.mjs",
+      "bytes": 1790,
+      "sha256": "e09f0f2c4ffe85159b9d15e7ad74bd34022bc0c10b5695c9cd2872d314e2f7c1",
+      "gitBlobSha": "33f8a8f69d0f7cbd46016c5e1cf774c222e598de",
+      "originalSha256": "e09f0f2c4ffe85159b9d15e7ad74bd34022bc0c10b5695c9cd2872d314e2f7c1",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.css",
+      "bytes": 23980,
+      "sha256": "ce6e17922a6a240ae85cd48bf0436b6f11dbfcef7dafefee7f8ad992370193bf",
+      "gitBlobSha": "cb7f0e61edde3460ef9bd7b99ac4aa4985d3a737",
+      "originalSha256": "ce6e17922a6a240ae85cd48bf0436b6f11dbfcef7dafefee7f8ad992370193bf",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.mjs",
+      "bytes": 15985,
+      "sha256": "80a2c53d579c919d48c89bae67c5c434cca6036fa8e451a140fb818895d9b71b",
+      "gitBlobSha": "379a06b34e464effadcf15ee2c5a8d0bbbc48668",
+      "originalSha256": "80a2c53d579c919d48c89bae67c5c434cca6036fa8e451a140fb818895d9b71b",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/server.mjs",
+      "bytes": 8978,
+      "sha256": "3bc7f2d17cee1baa2fbd21effec291fa45f9740d2111f501f04e0a59ab058bc0",
+      "gitBlobSha": "d0e38368e447291f63219ac9752cc0058b343118",
+      "originalSha256": "3bc7f2d17cee1baa2fbd21effec291fa45f9740d2111f501f04e0a59ab058bc0",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/spacer-cap.mjs",
+      "bytes": 1730,
+      "sha256": "349ac8759b93ccbeed17c0a3e2f849ad8dfdb5ed214348b7ebd86bd16fa4b753",
+      "gitBlobSha": "e049aaf46c412f253223a82e7b95ed4571c883b2",
+      "originalSha256": "349ac8759b93ccbeed17c0a3e2f849ad8dfdb5ed214348b7ebd86bd16fa4b753",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/steel-formats.mjs",
+      "bytes": 5013,
+      "sha256": "89687b0e59d21ac3d4a6a013924064305de7f648e1ae13ccdf85c05f2041fbc6",
+      "gitBlobSha": "15105f877d9b3ea5a93162498bbbe539021e9e50",
+      "originalSha256": "89687b0e59d21ac3d4a6a013924064305de7f648e1ae13ccdf85c05f2041fbc6",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/template-deletion.mjs",
+      "bytes": 4348,
+      "sha256": "aca209b9b6fea87d524265d181e568e10e8afe52efb813a5b33f56e7b3b56394",
+      "gitBlobSha": "4ac74e8de7a543bbe37ce05db31c2a4003a6c97f",
+      "originalSha256": "aca209b9b6fea87d524265d181e568e10e8afe52efb813a5b33f56e7b3b56394",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/text-ink-bounds.mjs",
+      "bytes": 4284,
+      "sha256": "d46fb799cfd4505f0ef3405d58c7b04427c40758cfcd4443a959f8bddfb6e2e2",
+      "gitBlobSha": "c0bc184a4621bb9b70c47e0f23341d69538d470f",
+      "originalSha256": "d46fb799cfd4505f0ef3405d58c7b04427c40758cfcd4443a959f8bddfb6e2e2",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/usability-model.mjs",
+      "bytes": 3112,
+      "sha256": "e1d3aca7b0232c51b18214af002aa09b178b9ce78e6e9e4b772d9776e424256e",
+      "gitBlobSha": "9d31b88e677a2baa5a34cfd34474c1673330c3d6",
+      "originalSha256": "e1d3aca7b0232c51b18214af002aa09b178b9ce78e6e9e4b772d9776e424256e",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/usability.css",
+      "bytes": 19833,
+      "sha256": "a9efa675ef812aed641ff4ca5fe597c59d6c650e5f2e0f5342a4b43e06add1d4",
+      "gitBlobSha": "6d249289efacad7f99f4ffc32fbf26c87ebead8b",
+      "originalSha256": "a9efa675ef812aed641ff4ca5fe597c59d6c650e5f2e0f5342a4b43e06add1d4",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/usability.mjs",
+      "bytes": 20594,
+      "sha256": "7e094cf6ea18aaeb00633b9e1e0b2af99cf3f535cf7d9e89ad8e3f575b8fef7b",
+      "gitBlobSha": "bf6f82506be91fd01d4d0261350ac0e4db3c4a80",
+      "originalSha256": "7e094cf6ea18aaeb00633b9e1e0b2af99cf3f535cf7d9e89ad8e3f575b8fef7b",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "bytes": 3987,
+      "sha256": "9ccbb6d5c00ff4a7943a7309996e858c6a97c09b476410d6f74e2e0ee8a4d3b5",
+      "gitBlobSha": "7edec731a92e44bd79427dc61215b7d662b3b4b0",
+      "originalSha256": "9ccbb6d5c00ff4a7943a7309996e858c6a97c09b476410d6f74e2e0ee8a4d3b5",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/ux.css",
+      "bytes": 20710,
+      "sha256": "0bb4c2d48ae5ce1b6fb807ba6e2ae36c2a7ae752d0a3a362d093b3fe887dffa0",
+      "gitBlobSha": "4c47717ad33237ff892b88c60a322cdfa2f6f880",
+      "originalSha256": "0bb4c2d48ae5ce1b6fb807ba6e2ae36c2a7ae752d0a3a362d093b3fe887dffa0",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "bytes": 53256,
+      "sha256": "30ad17d322db11b1e7d376af1a2d4be6f1173a9ffd1f6f2c25e7a38ac22aa99c",
+      "gitBlobSha": "178d502309fa3a940590ee68041c298640075c8f",
+      "originalSha256": "c10b4b897421a769f4809a2a5515dc87b613edc8cad352a8658da78a6cf13112",
+      "modified": true
+    },
+    {
+      "path": "app/configurator/variant-m/workflow-model.mjs",
+      "bytes": 2547,
+      "sha256": "f4544edc2ff97ec05d6ff27dec7d88c9e81849df710cebd94131180290d100e1",
+      "gitBlobSha": "638877629a3bea13a3f9e119edf9373e221161a5",
+      "originalSha256": "f4544edc2ff97ec05d6ff27dec7d88c9e81849df710cebd94131180290d100e1",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.css",
+      "bytes": 3608,
+      "sha256": "ef2c95a412ba47fc449bb394ebdd5b5aa36c7e9f77138a92c8fbe7a226d1ed04",
+      "gitBlobSha": "0847b41a6d792847cdf7290c3482468aaff2b523",
+      "originalSha256": "ef2c95a412ba47fc449bb394ebdd5b5aa36c7e9f77138a92c8fbe7a226d1ed04",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "bytes": 15164,
+      "sha256": "0b0c919ba616071e52de3ec07117cbf84ca662305ac54cb44ad41f8a130a0a3a",
+      "gitBlobSha": "3c0661bd41625f2d6fb8094ddefd8a39124119e9",
+      "originalSha256": "0b0c919ba616071e52de3ec07117cbf84ca662305ac54cb44ad41f8a130a0a3a",
+      "modified": false
+    },
+    {
+      "path": "app/configurator/variant-m/workshop-review.mjs",
+      "bytes": 9147,
+      "sha256": "2960a0c06b0e834292064fa313eb6429cf875a5fc98cd2a63045e84346de526f",
+      "gitBlobSha": "97978e81bfa260a483bff56a75d5477d8b5817fd",
+      "originalSha256": "2960a0c06b0e834292064fa313eb6429cf875a5fc98cd2a63045e84346de526f",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-buche-v2.png",
+      "bytes": 355594,
+      "sha256": "4803dffa70e97d2d98c4e625442a59e594ed13df7879e87d2759413036fa8262",
+      "gitBlobSha": "5b6cc26a6afe0d5b0a0564985b88059f26f2aa75",
+      "originalSha256": "4803dffa70e97d2d98c4e625442a59e594ed13df7879e87d2759413036fa8262",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-buche.png",
+      "bytes": 826404,
+      "sha256": "8bf34797e3b0861e4423863f7fcc414e39846ddf97d3b4b211956b57bc9ae08c",
+      "gitBlobSha": "b3ed99da9f0b54270c4b055ab6f83c3e256c97d5",
+      "originalSha256": "8bf34797e3b0861e4423863f7fcc414e39846ddf97d3b4b211956b57bc9ae08c",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-eiche-v2.png",
+      "bytes": 310200,
+      "sha256": "60751404e382c9fab41c475f2458fcf26290cd83d02e8d82ba7061bb3b5965b6",
+      "gitBlobSha": "419745028eb2d5e21871f24aae7bb5547103aaeb",
+      "originalSha256": "60751404e382c9fab41c475f2458fcf26290cd83d02e8d82ba7061bb3b5965b6",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-eiche.png",
+      "bytes": 868156,
+      "sha256": "0c0becd76c41284e561634ef2ba05bcec25fbe31007ba240eb811524f6e4c566",
+      "gitBlobSha": "ede272cd534cc00c63d52f0757638f578fe0f24d",
+      "originalSha256": "0c0becd76c41284e561634ef2ba05bcec25fbe31007ba240eb811524f6e4c566",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-holz-flach-v2.png",
+      "bytes": 218123,
+      "sha256": "bafe3fe84800c9f9fbf0cc346267aa6748f56c3cbfe2324def0d17c587265d09",
+      "gitBlobSha": "2917eab4e41a3dc0620f3fc0b2b6e79255c0b514",
+      "originalSha256": "bafe3fe84800c9f9fbf0cc346267aa6748f56c3cbfe2324def0d17c587265d09",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-holz-flach.png",
+      "bytes": 458165,
+      "sha256": "12e523f2f79d08a2448347e6eca153ce1d2ae6f222b2a156cfaa01cdf02549d4",
+      "gitBlobSha": "679a7e7b4f5560eacf327015d956bab6a65a1d58",
+      "originalSha256": "12e523f2f79d08a2448347e6eca153ce1d2ae6f222b2a156cfaa01cdf02549d4",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-klar-v2.png",
+      "bytes": 240812,
+      "sha256": "3c85ee8882f8c2b3778422b4e04b12943afa35018c0a55b18428cdcd308f08f1",
+      "gitBlobSha": "fa3e6ecda6f544c867c5ff02a42249c86d5b5ed6",
+      "originalSha256": "3c85ee8882f8c2b3778422b4e04b12943afa35018c0a55b18428cdcd308f08f1",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-klar.png",
+      "bytes": 465926,
+      "sha256": "d7eeffdb73e1aabc3830747a138f00a07e5efb86ffb527e480cbbfc8d802bb8d",
+      "gitBlobSha": "b81071445638b9c0dce4e15070f49b1703ef361d",
+      "originalSha256": "d7eeffdb73e1aabc3830747a138f00a07e5efb86ffb527e480cbbfc8d802bb8d",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-nussbaum-v2.png",
+      "bytes": 374283,
+      "sha256": "32c06de5557bfdb31125399ab1d33c70a2ae9f92a186c053e2b3eace841293c0",
+      "gitBlobSha": "d1071812d6ca4053af6973277c81f0fa629fb67a",
+      "originalSha256": "32c06de5557bfdb31125399ab1d33c70a2ae9f92a186c053e2b3eace841293c0",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-nussbaum.png",
+      "bytes": 917454,
+      "sha256": "d03754acfb972a415d4fd58148b39406fad56e640c45f0c5157bf55754183608",
+      "gitBlobSha": "8cb24b3481d8241fd6462bda40784a224054144c",
+      "originalSha256": "d03754acfb972a415d4fd58148b39406fad56e640c45f0c5157bf55754183608",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-satiniert-v2.png",
+      "bytes": 204381,
+      "sha256": "1ee601d7287ca59c62f13accbcb5c72512faac04cc716d13a7c2b4555a230b63",
+      "gitBlobSha": "331a609fde379b1d87b0248729a28359cb63064f",
+      "originalSha256": "1ee601d7287ca59c62f13accbcb5c72512faac04cc716d13a7c2b4555a230b63",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-satiniert.png",
+      "bytes": 343556,
+      "sha256": "0b1ddf5062c04ebc0535f1e1047444fd4a53ba4a9cf21f7c76cce0e83912cfbd",
+      "gitBlobSha": "51d1fca4de8449836d214f042b8a97db36370a0d",
+      "originalSha256": "0b1ddf5062c04ebc0535f1e1047444fd4a53ba4a9cf21f7c76cce0e83912cfbd",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/reference.png",
+      "bytes": 1869856,
+      "sha256": "68b1000ddce2d1cd92446ed3565b75eab9e35680fea4d58a93d983447db44d74",
+      "gitBlobSha": "54bb04d7b66f9c8d155b9de0d41b604c659fae83",
+      "originalSha256": "68b1000ddce2d1cd92446ed3565b75eab9e35680fea4d58a93d983447db44d74",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/resources.json",
+      "bytes": 390206,
+      "sha256": "6b72446051190cb0b93f82774b84fd24c670c9df1d082e9995506898582571a6",
+      "gitBlobSha": "ab3e83de675ecce1f83ae26052364e2a3a5c7c5a",
+      "originalSha256": "6b72446051190cb0b93f82774b84fd24c670c9df1d082e9995506898582571a6",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/scene-empty-v2.png",
+      "bytes": 1259362,
+      "sha256": "0272e621528bb423ff699563061c940264fe9eeff3fa44bf1287658003ac1ca2",
+      "gitBlobSha": "0642a876adf40351a1127616b2ef82f1e3f1190b",
+      "originalSha256": "0272e621528bb423ff699563061c940264fe9eeff3fa44bf1287658003ac1ca2",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/scene-empty.png",
+      "bytes": 1212596,
+      "sha256": "9ff9869b6bd7853191bcccea47e4691e8cced9cfecaa12b00d527195e01a4324",
+      "gitBlobSha": "29b07bb5be5b78cba6744ba3037f5b1f657fc503",
+      "originalSha256": "9ff9869b6bd7853191bcccea47e4691e8cced9cfecaa12b00d527195e01a4324",
+      "modified": false
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/source.json",
+      "bytes": 169,
+      "sha256": "af25418642fcef37b55060dd9eb8f452aa9a7db7d47f42ad60a4c605a92c82b7",
+      "gitBlobSha": "ebf3598042499686e96268f2c99d0191679fbd88",
+      "originalSha256": "af25418642fcef37b55060dd9eb8f452aa9a7db7d47f42ad60a4c605a92c82b7",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/.gitattributes",
+      "bytes": 68,
+      "sha256": "0c6bed3a365e88811bbdd87036d806d1e4871fa44fd8d7a20081734a4453ead1",
+      "gitBlobSha": "7c71a51515b5ef6712d2e11cfbb908401203cf33",
+      "originalSha256": "0c6bed3a365e88811bbdd87036d806d1e4871fa44fd8d7a20081734a4453ead1",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/.gitignore",
+      "bytes": 23,
+      "sha256": "2f02381d299b8434d3ee6d847c5be87961c624ce06cbf9f50fa65316efd67014",
+      "gitBlobSha": "0a013e756caf1113d62ac602981575fd0a4758da",
+      "originalSha256": "2f02381d299b8434d3ee6d847c5be87961c624ce06cbf9f50fa65316efd67014",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/README.md",
+      "bytes": 3297,
+      "sha256": "ce1dd7c6f933c7d34cee1255823b50302cd73a977e72d329f7bc04c1f261bd41",
+      "gitBlobSha": "25f3be98e132e524b00a1e5f38ae24f365fcdf96",
+      "originalSha256": "ce1dd7c6f933c7d34cee1255823b50302cd73a977e72d329f7bc04c1f261bd41",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/RESOURCE-INVENTORY.json",
+      "bytes": 41276,
+      "sha256": "6d7a383c4796c5f1acc42750770ec0c5f5c8e156933e3fa7ebb801a9d8ddc01f",
+      "gitBlobSha": "b75bdce3905881a52c19fc9f1db0398a28cf6ee5",
+      "originalSha256": "6d7a383c4796c5f1acc42750770ec0c5f5c8e156933e3fa7ebb801a9d8ddc01f",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/RIGHTS-AND-DEPENDENCIES.md",
+      "bytes": 3230,
+      "sha256": "6638ebe8bc2919c6fbe2cebe2b3d12fc0991d630ee0f573035323964fbac2ea9",
+      "gitBlobSha": "21a473a6237e62a235e54000ff37bc9f0c7006e1",
+      "originalSha256": "6638ebe8bc2919c6fbe2cebe2b3d12fc0991d630ee0f573035323964fbac2ea9",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/SETUP.md",
+      "bytes": 4263,
+      "sha256": "f6009b29d8e6d813fc759a7340324c7458bffd5f348e3c82f76587bab838288c",
+      "gitBlobSha": "85a92d4e4f91d267b2fbdb26778aa053c3ad22c3",
+      "originalSha256": "f6009b29d8e6d813fc759a7340324c7458bffd5f348e3c82f76587bab838288c",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/START-TEST.md",
+      "bytes": 3660,
+      "sha256": "458b98e2a325bf624542672b8345787820b21f760569609e9a0972167634613c",
+      "gitBlobSha": "abfebd89a2e57e466282d0fd7e904cef557b6153",
+      "originalSha256": "458b98e2a325bf624542672b8345787820b21f760569609e9a0972167634613c",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/Michroma-OFL.txt",
+      "bytes": 4395,
+      "sha256": "33c39ce59a45bfb0dae3280e98bdb46be59d6d68efc62d4dc5fae90a26d2f393",
+      "gitBlobSha": "2d0610cd97822b7b638c99f6e089ce664954de00",
+      "originalSha256": "33c39ce59a45bfb0dae3280e98bdb46be59d6d68efc62d4dc5fae90a26d2f393",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/Michroma-Regular.ttf",
+      "bytes": 64344,
+      "sha256": "b62301163788bc5b7f8fcac0b74b184e34e1827e577b499ecb724da065098f87",
+      "gitBlobSha": "59e8c534349962143f45b48152f80524fe9045bc",
+      "originalSha256": "b62301163788bc5b7f8fcac0b74b184e34e1827e577b499ecb724da065098f87",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/labrador-solid.svg",
+      "bytes": 14707,
+      "sha256": "18f987a47a3081f36dc52c928da7dc319a84a5356db99945ccaf054b0925a054",
+      "gitBlobSha": "c0b424bb2be48b95768cfd4c94ec3ac465afcecf",
+      "originalSha256": "18f987a47a3081f36dc52c928da7dc319a84a5356db99945ccaf054b0925a054",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/michroma-vectors.json",
+      "bytes": 412085,
+      "sha256": "33edec2a4d4076d8faa21797dbdd69c5b05fdff86cca547bf012894ea4e999fc",
+      "gitBlobSha": "59ecd0c49ff9b7ac28ce9daeed7366750852c4ab",
+      "originalSha256": "33edec2a4d4076d8faa21797dbdd69c5b05fdff86cca547bf012894ea4e999fc",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/assets/michroma-vectors.json.gz",
+      "bytes": 98265,
+      "sha256": "f22f0a0b809aef390f3480afc260c87692cc93b2dc7cb3c31ed7293539cf9f30",
+      "gitBlobSha": "1d2aeed7b71246fc4e12146f15ad18cfe43cb952",
+      "originalSha256": "f22f0a0b809aef390f3480afc260c87692cc93b2dc7cb3c31ed7293539cf9f30",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/build-preview.py",
+      "bytes": 4677,
+      "sha256": "68d371d0641c0d74cf0a827f778d4807274c1992ed5c503aa97f0dc216bdef16",
+      "gitBlobSha": "4ef39890ac325e8e46fef5394bf94b040b484e60",
+      "originalSha256": "68d371d0641c0d74cf0a827f778d4807274c1992ed5c503aa97f0dc216bdef16",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/design.json",
+      "bytes": 1003,
+      "sha256": "81af18dcbdc4dedd82d121f2d43c5e30b70fed71a567962e87ee12dc657623b4",
+      "gitBlobSha": "b503a2344e89f43d918dbda5fe0d4f898e4c3a35",
+      "originalSha256": "81af18dcbdc4dedd82d121f2d43c5e30b70fed71a567962e87ee12dc657623b4",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/image-source-verification.json",
+      "bytes": 1239,
+      "sha256": "c75a0ffc6be6d65234b15dbd3c07444089d6e5b18103a2d6d3fd988cab133094",
+      "gitBlobSha": "f15b29bd95d45fbf192788da7c4ae137d09ed8f1",
+      "originalSha256": "c75a0ffc6be6d65234b15dbd3c07444089d6e5b18103a2d6d3fd988cab133094",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/motif.json",
+      "bytes": 15027,
+      "sha256": "42af28fe08b37b290efb84ec56888118a60a56dfb98831df61453f061f6407b3",
+      "gitBlobSha": "1816d533ae1c94032d1aec56c967a0501c62d2e1",
+      "originalSha256": "42af28fe08b37b290efb84ec56888118a60a56dfb98831df61453f061f6407b3",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/refresh-inventory.py",
+      "bytes": 1577,
+      "sha256": "8d241e170ba3ba640c60f9bbb8c33a30260280184f982f6167c6fac5cd2ee72d",
+      "gitBlobSha": "4852eb348257e71ad96137fd2c94c886ee9cf05a",
+      "originalSha256": "8d241e170ba3ba640c60f9bbb8c33a30260280184f982f6167c6fac5cd2ee72d",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/resource-provenance.json",
+      "bytes": 34301,
+      "sha256": "d36fb240f3ceb7e3714c4317c9f9f3dc72d57b0211b55bfc33f16d85339df6c4",
+      "gitBlobSha": "4aa4bea6cc9c5da40505fe0ef6bf6e58cde26d31",
+      "originalSha256": "d36fb240f3ceb7e3714c4317c9f9f3dc72d57b0211b55bfc33f16d85339df6c4",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-00.txt",
+      "bytes": 400357,
+      "sha256": "41ca6aa7e3c716b286bde5d3a2e5e37ca20aa78633d54b79d761c519df33c7d1",
+      "gitBlobSha": "cf15a0036add0aa719e73010e1787dd5ad17cf87",
+      "originalSha256": "41ca6aa7e3c716b286bde5d3a2e5e37ca20aa78633d54b79d761c519df33c7d1",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-01.txt",
+      "bytes": 400313,
+      "sha256": "0ad228c3190277b9b6ef21d79b96294f0ab10e1dd926676e4d240f6556cec282",
+      "gitBlobSha": "a29e1a3fd4f52dcaa24e847e19000354cc430b60",
+      "originalSha256": "0ad228c3190277b9b6ef21d79b96294f0ab10e1dd926676e4d240f6556cec282",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-02.txt",
+      "bytes": 400270,
+      "sha256": "a24a5cf16a81277543f85a76c5a505276d7054362333a9196083ed8963a4d376",
+      "gitBlobSha": "bc29200d87fac14978a2812d188dea53d7a2a3db",
+      "originalSha256": "a24a5cf16a81277543f85a76c5a505276d7054362333a9196083ed8963a4d376",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-03.txt",
+      "bytes": 400242,
+      "sha256": "3cd34a225744b91224d1432ca2778ac8b93b564df6bdc780ef812755ee4da112",
+      "gitBlobSha": "c9356b9dadc17d0efac1f4a228cef4a8da1dc795",
+      "originalSha256": "3cd34a225744b91224d1432ca2778ac8b93b564df6bdc780ef812755ee4da112",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-04.txt",
+      "bytes": 400237,
+      "sha256": "921d01c3f42006c8a4bb230bc147af52ea1dee20494dfbe7c7ad645f5707f001",
+      "gitBlobSha": "a84566bcc4c624dc395522729a88b4475242b17d",
+      "originalSha256": "921d01c3f42006c8a4bb230bc147af52ea1dee20494dfbe7c7ad645f5707f001",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-05.txt",
+      "bytes": 400170,
+      "sha256": "8917efe3458155cb0b7ee34ca76927f1c769a75c57cefbed5e524b227baa19a7",
+      "gitBlobSha": "e95a387be4000a06f086a21b88b62cb6638c1415",
+      "originalSha256": "8917efe3458155cb0b7ee34ca76927f1c769a75c57cefbed5e524b227baa19a7",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-06.txt",
+      "bytes": 400158,
+      "sha256": "7d63c6ee2b23cace79bccec42d05de15a3080056db833a79812fe417c41e7e0d",
+      "gitBlobSha": "b8c0fc4b190c3d039844f13c79b4bbf73f8c938c",
+      "originalSha256": "7d63c6ee2b23cace79bccec42d05de15a3080056db833a79812fe417c41e7e0d",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-07.txt",
+      "bytes": 400200,
+      "sha256": "db7844f173cf2bf7c0d4781333c800342fded8dfb98e7bd8e875f83dd3c572bb",
+      "gitBlobSha": "7c96bd8ad446670e510c7fe4411fb0c729b23631",
+      "originalSha256": "db7844f173cf2bf7c0d4781333c800342fded8dfb98e7bd8e875f83dd3c572bb",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-08.txt",
+      "bytes": 400370,
+      "sha256": "153fc0ee45bb21f42827f404fe692be19b71f5ec9990758ef26882477c1d68a8",
+      "gitBlobSha": "07215c4af70624dc36a0dbb631a23f7c8bd65430",
+      "originalSha256": "153fc0ee45bb21f42827f404fe692be19b71f5ec9990758ef26882477c1d68a8",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-09.txt",
+      "bytes": 400360,
+      "sha256": "51478afc8be6967f701688e2ceaf1c745106018016773f985a69f9b40c4e0316",
+      "gitBlobSha": "104c133c2aea28f609fe393086a9f48135be0b8a",
+      "originalSha256": "51478afc8be6967f701688e2ceaf1c745106018016773f985a69f9b40c4e0316",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-10.txt",
+      "bytes": 400260,
+      "sha256": "b46c6a55a370ae75ee365e91c2c3b516153c8d0bbd3af3c2865e836c8ac4857a",
+      "gitBlobSha": "fe4dc9a6f24009c1a65556c0cf430078b179e3ef",
+      "originalSha256": "b46c6a55a370ae75ee365e91c2c3b516153c8d0bbd3af3c2865e836c8ac4857a",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-11.txt",
+      "bytes": 400034,
+      "sha256": "88597258b9ad137a8eca9bcec8448500a32b7fe6e5eb333d47d059888ed482de",
+      "gitBlobSha": "349894bd00b9d27ddeb508c8d0cea12439fca878",
+      "originalSha256": "88597258b9ad137a8eca9bcec8448500a32b7fe6e5eb333d47d059888ed482de",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-12.txt",
+      "bytes": 400039,
+      "sha256": "9de06ab9a3e945fa3bdc0a1928d28af593dfa376cb5c7331b4721e492a7bc218",
+      "gitBlobSha": "0ad96d9abeac7d3da4466431c828f0c1acc9ce20",
+      "originalSha256": "9de06ab9a3e945fa3bdc0a1928d28af593dfa376cb5c7331b4721e492a7bc218",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-13.txt",
+      "bytes": 146960,
+      "sha256": "18534f167d8c940cdaaa3d58d1f4412a189c4915103bfa5e17a1ee3c035c0dd7",
+      "gitBlobSha": "4af13be3f4038efa7e8f295dffa54e128631ec0f",
+      "originalSha256": "18534f167d8c940cdaaa3d58d1f4412a189c4915103bfa5e17a1ee3c035c0dd7",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52.json",
+      "bytes": 727,
+      "sha256": "d2720002076c3ad5c22f78840b5eb6de874c0dff26674a096d6f5154392e4e0d",
+      "gitBlobSha": "c27f5a1c7b79411ebfe9e54116323fffc985d85e",
+      "originalSha256": "d2720002076c3ad5c22f78840b5eb6de874c0dff26674a096d6f5154392e4e0d",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-00.txt",
+      "bytes": 280000,
+      "sha256": "061eca7ca2f25ef716c6253ddde58d96fef4f538d1964f0f74ed6e739cb261e5",
+      "gitBlobSha": "2979b8427ca520d5fae65dcce1d6c1cdeaabc848",
+      "originalSha256": "061eca7ca2f25ef716c6253ddde58d96fef4f538d1964f0f74ed6e739cb261e5",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-01.txt",
+      "bytes": 280000,
+      "sha256": "07f554e587abf48633a7fcd9d0b4fb712a722b6fdc35b5020c3f0dc2e2e4ec0e",
+      "gitBlobSha": "2e8330c0cbb254c1b7691f44a336dff5e788d8f1",
+      "originalSha256": "07f554e587abf48633a7fcd9d0b4fb712a722b6fdc35b5020c3f0dc2e2e4ec0e",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-02.txt",
+      "bytes": 280000,
+      "sha256": "f197fe1e37a2dfa8e906279da7be73dd2c71d80da202e8ac251a16010580c57f",
+      "gitBlobSha": "65a55f6e843d674519bb24083ffce317a9006a7f",
+      "originalSha256": "f197fe1e37a2dfa8e906279da7be73dd2c71d80da202e8ac251a16010580c57f",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-03.txt",
+      "bytes": 280000,
+      "sha256": "ab84d5fe90857c9bad99a11a532ccc16437e99cd1a835dfa30286bd9a096a495",
+      "gitBlobSha": "12a3a4d3ebd6c8ca6c5dcca2b3439096c91ae055",
+      "originalSha256": "ab84d5fe90857c9bad99a11a532ccc16437e99cd1a835dfa30286bd9a096a495",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-04.txt",
+      "bytes": 280000,
+      "sha256": "b68aeebff4b448348105edfc84bab28e23117c5d4215830570f596b543a67421",
+      "gitBlobSha": "e81618305daa210d7d5da3d7b64f60f5fe65f36d",
+      "originalSha256": "b68aeebff4b448348105edfc84bab28e23117c5d4215830570f596b543a67421",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-05.txt",
+      "bytes": 280000,
+      "sha256": "ebf1bb83c2517ea2bfcedd8ca9ddf44826ee4d2de70ae0b3c4cbcfa91ffdcf90",
+      "gitBlobSha": "be8a66c53127bc568ef71f43e44c6ceea9679af8",
+      "originalSha256": "ebf1bb83c2517ea2bfcedd8ca9ddf44826ee4d2de70ae0b3c4cbcfa91ffdcf90",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-06.txt",
+      "bytes": 280000,
+      "sha256": "1726244a5f6a139acb529c823bb48dfda70a163364b290065d7d13ce24072b97",
+      "gitBlobSha": "6761d8b74990ab68b8ebed8e3265c6584c28b34e",
+      "originalSha256": "1726244a5f6a139acb529c823bb48dfda70a163364b290065d7d13ce24072b97",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-07.txt",
+      "bytes": 280000,
+      "sha256": "1a33857fd1a9884401a27e229342d78fcff35cafdd647d032b690692196e5b22",
+      "gitBlobSha": "a741a92d2da606ec443b8af1cdd6554592ba0dd5",
+      "originalSha256": "1a33857fd1a9884401a27e229342d78fcff35cafdd647d032b690692196e5b22",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-08.txt",
+      "bytes": 280000,
+      "sha256": "ffc59d95fa23959789c509cac367d3cda168914f631b80503cd106469b3e669a",
+      "gitBlobSha": "601aee88bb7007897963e0da0be88738cbd28ea7",
+      "originalSha256": "ffc59d95fa23959789c509cac367d3cda168914f631b80503cd106469b3e669a",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-09.txt",
+      "bytes": 280000,
+      "sha256": "14e21c002c9ca429317b1af4ae3f08225b9a2b35f5001f0f48137c1d02115192",
+      "gitBlobSha": "5125dc7629a7b23e096f0c3a538c794827c5213b",
+      "originalSha256": "14e21c002c9ca429317b1af4ae3f08225b9a2b35f5001f0f48137c1d02115192",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-10.txt",
+      "bytes": 280000,
+      "sha256": "73db66138059bfc12decc39b85f05ce8c67cc18bb8f9efa2a9671fbed0b0c9d9",
+      "gitBlobSha": "4c9f32a068fa00b1ed7c381c5c4677a5b29a3aa6",
+      "originalSha256": "73db66138059bfc12decc39b85f05ce8c67cc18bb8f9efa2a9671fbed0b0c9d9",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-11.txt",
+      "bytes": 280000,
+      "sha256": "abd086fda9438df80fcc2bae4ee7eec9944de1f11ef962de5a6a9bfe197a159a",
+      "gitBlobSha": "fb277ea961290f84f4dcdf818ae1a4b1d94fddf9",
+      "originalSha256": "abd086fda9438df80fcc2bae4ee7eec9944de1f11ef962de5a6a9bfe197a159a",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-12.txt",
+      "bytes": 280000,
+      "sha256": "1b604c207cbcaf6cb313a8398f5b4f230dbe505dfd0721021bacaad11a6c8ac9",
+      "gitBlobSha": "d6010abbd03682b55be94d846d19c7fcb5ac98fa",
+      "originalSha256": "1b604c207cbcaf6cb313a8398f5b4f230dbe505dfd0721021bacaad11a6c8ac9",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-13.txt",
+      "bytes": 280000,
+      "sha256": "eddb4c20147d129d199a78538057196837b6dd9c4052b7c818b186f353fbbfa7",
+      "gitBlobSha": "a625e2e59dad985c2d368430277d44eb03d2a2f7",
+      "originalSha256": "eddb4c20147d129d199a78538057196837b6dd9c4052b7c818b186f353fbbfa7",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-14.txt",
+      "bytes": 280000,
+      "sha256": "b09a9f4b914fdfd3527085e933903edc8321118261ea7ceba32cbbe40c324117",
+      "gitBlobSha": "882aa797f017d3a240032e97f6c4709ffcc4b19e",
+      "originalSha256": "b09a9f4b914fdfd3527085e933903edc8321118261ea7ceba32cbbe40c324117",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-15.txt",
+      "bytes": 161772,
+      "sha256": "9982ac0fa3f6046ff05858f92c5141532d2e58360f278d219b50db5c2f8588b2",
+      "gitBlobSha": "99d6df2bb71b9c914eaddd96f8ab2efdd98e6bec",
+      "originalSha256": "9982ac0fa3f6046ff05858f92c5141532d2e58360f278d219b50db5c2f8588b2",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-00.txt",
+      "bytes": 280000,
+      "sha256": "29ffd3eeed62802e6b0afab65df29a8779c77fb60aceabf152172c86b54e82c5",
+      "gitBlobSha": "d0016dd228d2e94154ccee5d28d3615d073977fe",
+      "originalSha256": "29ffd3eeed62802e6b0afab65df29a8779c77fb60aceabf152172c86b54e82c5",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-01.txt",
+      "bytes": 280000,
+      "sha256": "921f248b06f3ce3f4c6b5819ca710f25342d5a5310442b6534f432972f3e9196",
+      "gitBlobSha": "b16f7d39a5561372655907dc5c0e942aa8c4e534",
+      "originalSha256": "921f248b06f3ce3f4c6b5819ca710f25342d5a5310442b6534f432972f3e9196",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-02.txt",
+      "bytes": 280000,
+      "sha256": "9c8bf99180d91e9548169fd9b9fec3ce2601fe4b8397167d36857710e8a637be",
+      "gitBlobSha": "b7dcaef09e4c95861bd61f970bd4f0c45db9189b",
+      "originalSha256": "9c8bf99180d91e9548169fd9b9fec3ce2601fe4b8397167d36857710e8a637be",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-03.txt",
+      "bytes": 280000,
+      "sha256": "d021966021773270dfe73684f146cb9374bf3b9bbc190cb77842b224ecc2b4c4",
+      "gitBlobSha": "b6cbc0e337beaeea4c5addc9673065b053dd198a",
+      "originalSha256": "d021966021773270dfe73684f146cb9374bf3b9bbc190cb77842b224ecc2b4c4",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-04.txt",
+      "bytes": 280000,
+      "sha256": "56779c9416366c4ef41dff5cb22f64f42391d45aa48045d806065f0fd129b40e",
+      "gitBlobSha": "d1a905e4792a09e21927f46a5ea71f8ba1bcd666",
+      "originalSha256": "56779c9416366c4ef41dff5cb22f64f42391d45aa48045d806065f0fd129b40e",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-05.txt",
+      "bytes": 280000,
+      "sha256": "31b42bcfb313ab3d370096512f86339650b0168cce3d55f942416ec595e4760d",
+      "gitBlobSha": "c74e05dc79548c03e0b0e9f98c947e185f7deafb",
+      "originalSha256": "31b42bcfb313ab3d370096512f86339650b0168cce3d55f942416ec595e4760d",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-06.txt",
+      "bytes": 280000,
+      "sha256": "f5b04f04a88c54e2592e3acae3ba28069c6b98754e758788d3474416e5e4442e",
+      "gitBlobSha": "836ecc96c0bb73050582c79a03262e95e4813633",
+      "originalSha256": "f5b04f04a88c54e2592e3acae3ba28069c6b98754e758788d3474416e5e4442e",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-07.txt",
+      "bytes": 280000,
+      "sha256": "7748ceb9bb849dc932b9c395fac2fdd100730cd05fb14f98ab570cca902915ed",
+      "gitBlobSha": "f8e4772e8fc9dc022561b1a295a147ab436540d7",
+      "originalSha256": "7748ceb9bb849dc932b9c395fac2fdd100730cd05fb14f98ab570cca902915ed",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-08.txt",
+      "bytes": 280000,
+      "sha256": "d4647a9e3697aa90c9c9b30f60b580b01bdc601ded38c05a7b00897d78d9c334",
+      "gitBlobSha": "302c30529c44e5d0c658a7d3de92b6c51abd6f73",
+      "originalSha256": "d4647a9e3697aa90c9c9b30f60b580b01bdc601ded38c05a7b00897d78d9c334",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-09.txt",
+      "bytes": 280000,
+      "sha256": "30f428a755761245c90214091d9357b353edef3db2cd0775c9f69ea0295e305c",
+      "gitBlobSha": "a9e345d87b7a1fefcf7b9e125c26c830cdc0374d",
+      "originalSha256": "30f428a755761245c90214091d9357b353edef3db2cd0775c9f69ea0295e305c",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-10.txt",
+      "bytes": 280000,
+      "sha256": "f2f46f0070ae1d5ac3abde743d9dde64732801d1b7ceb57bf488aa4c5a637c58",
+      "gitBlobSha": "686507535450be6f2007699e825d65c570f2bfbe",
+      "originalSha256": "f2f46f0070ae1d5ac3abde743d9dde64732801d1b7ceb57bf488aa4c5a637c58",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-11.txt",
+      "bytes": 280000,
+      "sha256": "5ea005603a03a6ab590036fdd5f00c03ad4e9a3daac58d0a7709b9f5ca2c1aff",
+      "gitBlobSha": "b2392cf60c1e2f43547778160b4b330efcbe90c0",
+      "originalSha256": "5ea005603a03a6ab590036fdd5f00c03ad4e9a3daac58d0a7709b9f5ca2c1aff",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-12.txt",
+      "bytes": 280000,
+      "sha256": "56bfd328ab83e807725404a01d380730a13d7f1c8644ee52c0118e7d29179f9c",
+      "gitBlobSha": "6137bd0236075e812c40013d983c7d1d6089060d",
+      "originalSha256": "56bfd328ab83e807725404a01d380730a13d7f1c8644ee52c0118e7d29179f9c",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-13.txt",
+      "bytes": 280000,
+      "sha256": "22ace9bbbb57616f5f4664d6085e415fa7a96353324785219d2af9ac2db542ea",
+      "gitBlobSha": "b9a4fa57dde586d9183258a03ddffb262a7e237f",
+      "originalSha256": "22ace9bbbb57616f5f4664d6085e415fa7a96353324785219d2af9ac2db542ea",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-14.txt",
+      "bytes": 280000,
+      "sha256": "ecaecc92606425f7500bdd159797a1114a78fcde968c9218d956876a1f0ec063",
+      "gitBlobSha": "1483940c13ade9acc1f95c0efbd1ad3dc73bdee9",
+      "originalSha256": "ecaecc92606425f7500bdd159797a1114a78fcde968c9218d956876a1f0ec063",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-15.txt",
+      "bytes": 280000,
+      "sha256": "f340b97eab6e1d6bfc0e2511663a42df68f66d3d2252fa91251e44c86168c9b9",
+      "gitBlobSha": "c03e197f8504d26c540b70d40425e1aabad34578",
+      "originalSha256": "f340b97eab6e1d6bfc0e2511663a42df68f66d3d2252fa91251e44c86168c9b9",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-16.txt",
+      "bytes": 280000,
+      "sha256": "e1ae01a5f0d123a21d26ac711cb6bb0b4a4c0b7298e6ff97b06d0c7d45bbe8c7",
+      "gitBlobSha": "cfd98426dea760ba42b039c7eff157548c72d249",
+      "originalSha256": "e1ae01a5f0d123a21d26ac711cb6bb0b4a4c0b7298e6ff97b06d0c7d45bbe8c7",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-17.txt",
+      "bytes": 280000,
+      "sha256": "1e754764ea6f046809b9e9a9cb2f0a4a13a3a4d8e40c3b95d5c18d32e5770893",
+      "gitBlobSha": "aa27db70ebb5a9e312cd85edc9d881470187f9f3",
+      "originalSha256": "1e754764ea6f046809b9e9a9cb2f0a4a13a3a4d8e40c3b95d5c18d32e5770893",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-18.txt",
+      "bytes": 280000,
+      "sha256": "18dd39b0f60ad4e3f0eb30258bc15d99e5426b34e578f6bb9dfb16896d754413",
+      "gitBlobSha": "5cca7dfc1f38de5887eca6c353ee111f2238845d",
+      "originalSha256": "18dd39b0f60ad4e3f0eb30258bc15d99e5426b34e578f6bb9dfb16896d754413",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-19.txt",
+      "bytes": 280000,
+      "sha256": "e8e23d9c83fcb65ab8563ff5a621acd52be41313a4322497a007973fdec6b24f",
+      "gitBlobSha": "e882dc289aeb2222653d7f862218b0397f67599f",
+      "originalSha256": "e8e23d9c83fcb65ab8563ff5a621acd52be41313a4322497a007973fdec6b24f",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-20.txt",
+      "bytes": 150044,
+      "sha256": "bfaac98de786db2a4a2504c62d3b5cab82ccf97cacccf30edcc9ac7a03131a9d",
+      "gitBlobSha": "9431eee7d7b3cbe9ae884151e07096f6ea1c12fb",
+      "originalSha256": "bfaac98de786db2a4a2504c62d3b5cab82ccf97cacccf30edcc9ac7a03131a9d",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/aosu-pro-v8p1ax11.png",
+      "bytes": 292592,
+      "sha256": "c29572815095b05a2f0e4fe25969599ba58c7faa5b873d5a253f4365da24d226",
+      "gitBlobSha": "58d3cd4fa5bfd5e36320ec384d0f708c996f8928",
+      "originalSha256": "c29572815095b05a2f0e4fe25969599ba58c7faa5b873d5a253f4365da24d226",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png",
+      "bytes": 1440952,
+      "sha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6",
+      "gitBlobSha": "9df419d01b15f2707989a644ec2b07be6a4ee9e5",
+      "originalSha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.png",
+      "bytes": 2590743,
+      "sha256": "27f4c392b3891b1923791bfce9b429a876a43f9374418693b863c87c691905ae",
+      "gitBlobSha": "13a34b86ae2568dc1d5286a921640a85ea176394",
+      "originalSha256": "27f4c392b3891b1923791bfce9b429a876a43f9374418693b863c87c691905ae",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/licenses/gravuru-font-licenses.json",
+      "bytes": 19539,
+      "sha256": "f1312a3acb25f4f169502f9140dcb314a3705699ddab9a8ef1375bb4697c6a4e",
+      "gitBlobSha": "e8dcdfb5d319bf512593444020bb8a04ca49e2d4",
+      "originalSha256": "f1312a3acb25f4f169502f9140dcb314a3705699ddab9a8ef1375bb4697c6a4e",
+      "modified": false
+    },
+    {
+      "path": "app/designs/aosu-labrador/start-preview.py",
+      "bytes": 2141,
+      "sha256": "03eac482e0d79af0529e0b53a6ea93cc5d26d0a474f0d4c97e4a4b5eba6aae52",
+      "gitBlobSha": "d2b9847b8fc0cec42f07a16b6499624ee6382ff5",
+      "originalSha256": "03eac482e0d79af0529e0b53a6ea93cc5d26d0a474f0d4c97e4a4b5eba6aae52",
+      "modified": false
+    },
+    {
+      "path": "app/designs/steel-heimathafen/README.md",
+      "bytes": 1486,
+      "sha256": "f7cf31c4824b7f8ca955a3a2ce6b904180697dae451489ed222117def6f65802",
+      "gitBlobSha": "43bf1118375810b9467115b498f9962f49c7db86",
+      "originalSha256": "f7cf31c4824b7f8ca955a3a2ce6b904180697dae451489ed222117def6f65802",
+      "modified": false
+    },
+    {
+      "path": "app/designs/steel-heimathafen/source.json",
+      "bytes": 5549,
+      "sha256": "541136b1ee18fbf1bcf72b883dfcd4faa335d7c959790e4620efee2b7a551c15",
+      "gitBlobSha": "d0f4572a7cf552af0145153eb5e57f502ba80518",
+      "originalSha256": "541136b1ee18fbf1bcf72b883dfcd4faa335d7c959790e4620efee2b7a551c15",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/design-content.mjs",
+      "bytes": 11184,
+      "sha256": "c49e43b7e74c3c5049e02f5a1e8dc378e060a75a73c6aef1e9ab1add51898060",
+      "gitBlobSha": "27bd7a89b97b79bbe3bb200502830bf33aee0ecc",
+      "originalSha256": "c49e43b7e74c3c5049e02f5a1e8dc378e060a75a73c6aef1e9ab1add51898060",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbell-preview.mjs",
+      "bytes": 4035,
+      "sha256": "25c1ad075539607d1111a198995bf4e50f297ae1ba6076fea87f7acfdb7ac392",
+      "gitBlobSha": "ed7016ee73c4716db3fe508e55bc94843af9e169",
+      "originalSha256": "25c1ad075539607d1111a198995bf4e50f297ae1ba6076fea87f7acfdb7ac392",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbell-release.mjs",
+      "bytes": 2538,
+      "sha256": "acf56d71c97f11478b4d96ebbca03645221dafd4bd660d393d5d72b88ef62c30",
+      "gitBlobSha": "df00e3e396fad9ac6283da154ca095113d01249b",
+      "originalSha256": "acf56d71c97f11478b4d96ebbca03645221dafd4bd660d393d5d72b88ef62c30",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbells.mjs",
+      "bytes": 9588,
+      "sha256": "0b2b5e150b3a31edcccd7e19673f2f289b5e5f78e2389ba41bbe2da2f745f8cd",
+      "gitBlobSha": "70d0fa6dd149a263d777e7788e4257c76762c388",
+      "originalSha256": "0b2b5e150b3a31edcccd7e19673f2f289b5e5f78e2389ba41bbe2da2f745f8cd",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/motifs.mjs",
+      "bytes": 4137,
+      "sha256": "afeac5688d2fe48a31bf72dff08ebf68f6804175e6a2da6d593ce574f5498547",
+      "gitBlobSha": "d22bedcefae544cd481a3fa74502797a79a54689",
+      "originalSha256": "afeac5688d2fe48a31bf72dff08ebf68f6804175e6a2da6d593ce574f5498547",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/mounting-access.mjs",
+      "bytes": 2361,
+      "sha256": "12426c3c998479e38d2924b3dcdde61ce6dcbb7d57d3ceead0647a3d30f72e2b",
+      "gitBlobSha": "55d63dd2988c1fe129a91ba6aca35d15f67e92f0",
+      "originalSha256": "12426c3c998479e38d2924b3dcdde61ce6dcbb7d57d3ceead0647a3d30f72e2b",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/photo-shape.mjs",
+      "bytes": 1587,
+      "sha256": "0eaded212bce8370d94430d197069e968323c3cc497e237dadc1786e6555504c",
+      "gitBlobSha": "6913e3a4897f4b1804958e794429b2fe2bfe939c",
+      "originalSha256": "0eaded212bce8370d94430d197069e968323c3cc497e237dadc1786e6555504c",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/processing-profiles.mjs",
+      "bytes": 2651,
+      "sha256": "e7870d83de272737ef1797714899cacf9819d558cd118578de6e26bffdd75efd",
+      "gitBlobSha": "4c1481fd4391116e56b68b61b3e4b31334267425",
+      "originalSha256": "e7870d83de272737ef1797714899cacf9819d558cd118578de6e26bffdd75efd",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/runtime-contract.mjs",
+      "bytes": 6363,
+      "sha256": "89195038cf8fdfe8a4603307bb3e692cd1c468c82c2ce7803201cb03c758f669",
+      "gitBlobSha": "b242c75e549766d03bba43c8e61509a0aebc09bd",
+      "originalSha256": "89195038cf8fdfe8a4603307bb3e692cd1c468c82c2ce7803201cb03c758f669",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-products.mjs",
+      "bytes": 6961,
+      "sha256": "9ce730b4240c64fb756636cefad667934e0d5015725e90fa3cbbfa88493ef89d",
+      "gitBlobSha": "e6ee8d6c49e15c115a7db376273cce122b57f5b6",
+      "originalSha256": "9ce730b4240c64fb756636cefad667934e0d5015725e90fa3cbbfa88493ef89d",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-svg.mjs",
+      "bytes": 12390,
+      "sha256": "dbaebf3352c6a6cec737cb5aaddd033545e93a6508a894e8aaae17622065d79b",
+      "gitBlobSha": "dae85c2e75ec0b389f323bdb2a0180456a35ff9d",
+      "originalSha256": "dbaebf3352c6a6cec737cb5aaddd033545e93a6508a894e8aaae17622065d79b",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/universal-elements.mjs",
+      "bytes": 4607,
+      "sha256": "b9237d7e1194b84778e38fc57850561cee7fefb2b49ce5a42f093b98f20b7d17",
+      "gitBlobSha": "a42229090ed496bf405809d6cc07ce7118a6499f",
+      "originalSha256": "b9237d7e1194b84778e38fc57850561cee7fefb2b49ce5a42f093b98f20b7d17",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "bytes": 90922,
+      "sha256": "b7ca4450b19559a1d50eb381adcee94b82449674be4cd17789d9beba7e6122a1",
+      "gitBlobSha": "82af0fdb655f00655d2da3354c4533744edcde6e",
+      "originalSha256": "b7ca4450b19559a1d50eb381adcee94b82449674be4cd17789d9beba7e6122a1",
+      "modified": false
+    },
+    {
+      "path": "app/platform/sources/assistant/static/gravuru-chat.js",
+      "bytes": 46126,
+      "sha256": "4cc2ef063d572e1ceea9e3c80b71a3093b9fe19c242b3d05bf1f67b9457e4a8a",
+      "gitBlobSha": "298359afa4dc093de9485539b9f532a345ce5ffd",
+      "originalSha256": "4cc2ef063d572e1ceea9e3c80b71a3093b9fe19c242b3d05bf1f67b9457e4a8a",
+      "modified": false
+    },
+    {
+      "path": "app/references/aosu-upgrade-2026-09-21/verification/editor-source.html",
+      "bytes": 461318,
+      "sha256": "fd716737e882098a636498817adfa7afac66103d8a4b4abafbccd337aef7adb2",
+      "gitBlobSha": "4b453369722422b81c34c583055062ad49560cc2",
+      "originalSha256": "fd716737e882098a636498817adfa7afac66103d8a4b4abafbccd337aef7adb2",
+      "modified": false
+    },
+    {
+      "path": "app/references/aosu-upgrade-2026-09-21/verification/profile-source.json",
+      "bytes": 39735,
+      "sha256": "7648c2538462e6f92f3e227ead91548d5d1812cb879aba328a89a6e4b713df4d",
+      "gitBlobSha": "da8caecf6f80a7d5217568f25a23342bd2769329",
+      "originalSha256": "7648c2538462e6f92f3e227ead91548d5d1812cb879aba328a89a6e4b713df4d",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/acrylic-artwork.mjs",
+      "bytes": 7694,
+      "sha256": "3382216ce28a49e75f3eb47a100f1f5dbce8fb5afbe9ea7b52512cbc0cca7cf4",
+      "gitBlobSha": "d1c6180109ca67a249424d8f4368d9832741830d",
+      "originalSha256": "3382216ce28a49e75f3eb47a100f1f5dbce8fb5afbe9ea7b52512cbc0cca7cf4",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/acrylic-draft-store.mjs",
+      "bytes": 4621,
+      "sha256": "dc6735a24dbad480786dd7cedab6d10925ec0c58c7fbab8bad98f8bb0124a865",
+      "gitBlobSha": "ae61536ed5ee764d773680fe4ee2832efbcfcebf",
+      "originalSha256": "dc6735a24dbad480786dd7cedab6d10925ec0c58c7fbab8bad98f8bb0124a865",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/acrylic-engraving-proof.mjs",
+      "bytes": 2771,
+      "sha256": "0668ee386d301a0daaf2a88622a06664cadfef5d4a2d2f37b8d9ec9b82f16038",
+      "gitBlobSha": "16799fe38e1aa3783cb9ae491d6f6e886e3aee64",
+      "originalSha256": "0668ee386d301a0daaf2a88622a06664cadfef5d4a2d2f37b8d9ec9b82f16038",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/acrylic-order-product.mjs",
+      "bytes": 6433,
+      "sha256": "b80d3a488b54a1accbd223290e531ed813ab4373b15c7f2e1469fbe36ab86c0a",
+      "gitBlobSha": "29d008583f7e31a3eb53f37ae1271f0f9e9dab2c",
+      "originalSha256": "b80d3a488b54a1accbd223290e531ed813ab4373b15c7f2e1469fbe36ab86c0a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/acrylic-photo-resolution.mjs",
+      "bytes": 1223,
+      "sha256": "f63e2065cc82b3ae91ff38318823f45f6bc86c50beb598c1f471cb97979cc877",
+      "gitBlobSha": "5cdec9633922c231bbc1c854afbf0a042607be4a",
+      "originalSha256": "f63e2065cc82b3ae91ff38318823f45f6bc86c50beb598c1f471cb97979cc877",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/acrylic-print-proof.mjs",
+      "bytes": 3902,
+      "sha256": "94b0e94af7f28c558ecc82be82ef1cd19c83b60806b0db984921cc9180e65a46",
+      "gitBlobSha": "c2a20263008b0f5f3c56f54669e215973c824ddf",
+      "originalSha256": "94b0e94af7f28c558ecc82be82ef1cd19c83b60806b0db984921cc9180e65a46",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/acrylic-review.mjs",
+      "bytes": 9322,
+      "sha256": "3ba70fa1838cffe5ae0ce19dbabfe5497b91aca18eee5497f280b7c001b61b65",
+      "gitBlobSha": "e4bfb5b17064c7c0b01f17484afbb15f4118f8df",
+      "originalSha256": "3ba70fa1838cffe5ae0ce19dbabfe5497b91aca18eee5497f280b7c001b61b65",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ai-batch-jobs.mjs",
+      "bytes": 10041,
+      "sha256": "68bbfc3eaa0fe6d382804faab0e1bd96fc07b23df6006f80f3c522c979372a8b",
+      "gitBlobSha": "eda2f00d7c5b6a117d3573e6778f3fcfdc37c171",
+      "originalSha256": "68bbfc3eaa0fe6d382804faab0e1bd96fc07b23df6006f80f3c522c979372a8b",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ai-design-jobs.mjs",
+      "bytes": 10255,
+      "sha256": "c01aa3c40a81379ecc4b0bbeb6f72135e495382652490cc963bd40fa69fbef38",
+      "gitBlobSha": "f9472a5f7e8ebb63736d59145da5bf229141fdb3",
+      "originalSha256": "c01aa3c40a81379ecc4b0bbeb6f72135e495382652490cc963bd40fa69fbef38",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ai-design-plan.mjs",
+      "bytes": 7510,
+      "sha256": "853dbc9ff42d6957dcf619537725a80b3dcaa200cec098f308e54851b779067e",
+      "gitBlobSha": "952942f3377acd039ef92c01fd631961a85e4171",
+      "originalSha256": "853dbc9ff42d6957dcf619537725a80b3dcaa200cec098f308e54851b779067e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ai-image-plan.mjs",
+      "bytes": 3751,
+      "sha256": "4fa83e2c78f757b56e9305535bfca031c1e7dd2301bc19c4cf77a27df4c4be53",
+      "gitBlobSha": "8401b1fac57e572b501830c1334b77ae1f323f5d",
+      "originalSha256": "4fa83e2c78f757b56e9305535bfca031c1e7dd2301bc19c4cf77a27df4c4be53",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/approved-customer-preview.mjs",
+      "bytes": 8232,
+      "sha256": "1bb6f5e50af326c10d4cae111a11c234f8c1921b16e26a50f0323617caf10043",
+      "gitBlobSha": "c74edd3e6530f984bfc4cf71d503839614cd669c",
+      "originalSha256": "1bb6f5e50af326c10d4cae111a11c234f8c1921b16e26a50f0323617caf10043",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/approved-design-batch.mjs",
+      "bytes": 4193,
+      "sha256": "49a8975b7d83e121b163ba97d065e99d3d7ff2cdc88946b7dcd33d73e6981663",
+      "gitBlobSha": "2501eea6e7bab6d371aaf76b6903f45b52fa1452",
+      "originalSha256": "49a8975b7d83e121b163ba97d065e99d3d7ff2cdc88946b7dcd33d73e6981663",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/approved-design-editability.mjs",
+      "bytes": 1742,
+      "sha256": "c545aef251548ad53e93909b5ab86da800adec2522fab5b3cf209af805227115",
+      "gitBlobSha": "db4eb93a3cc2db89f4b1b97a1efdc5d535508f78",
+      "originalSha256": "c545aef251548ad53e93909b5ab86da800adec2522fab5b3cf209af805227115",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/batch-jobs.mjs",
+      "bytes": 921,
+      "sha256": "e8c93004b923d666f92aa395f89491935192c071e2f63d89cf7691e0cc1d1933",
+      "gitBlobSha": "64678d3306f438722305afe46fa8a08dd25f572f",
+      "originalSha256": "e8c93004b923d666f92aa395f89491935192c071e2f63d89cf7691e0cc1d1933",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/batch-report.mjs",
+      "bytes": 3650,
+      "sha256": "f613c6522b223d4c1e29d151720b82f2101f399cdab4920acdd0dd1a5ea2c826",
+      "gitBlobSha": "d422d70bf59e13f12a505ce5edbbf3ce01fe7462",
+      "originalSha256": "f613c6522b223d4c1e29d151720b82f2101f399cdab4920acdd0dd1a5ea2c826",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/batch-report.py",
+      "bytes": 7786,
+      "sha256": "4ac0bd5417708a6938b7e614f303fe3ea9899b5f4c67947f8d1da16aa79c45ff",
+      "gitBlobSha": "0df53aadc0d64c5ab0d01884823fe70e620dcda8",
+      "originalSha256": "4ac0bd5417708a6938b7e614f303fe3ea9899b5f4c67947f8d1da16aa79c45ff",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/batch.mjs",
+      "bytes": 16575,
+      "sha256": "fc4432f6fb006a2fb383fed27b261209a881b99a2b89bff16e75a2921e8ebfdf",
+      "gitBlobSha": "3c415ffc3ab038b84381bfb7aa290420ef99da47",
+      "originalSha256": "fc4432f6fb006a2fb383fed27b261209a881b99a2b89bff16e75a2921e8ebfdf",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/cart-handoff-journal.mjs",
+      "bytes": 7122,
+      "sha256": "72831e54ecda3e672feb053fc43256df544f4f60ed6dd188464958b527647b77",
+      "gitBlobSha": "81a6b4a645b747f84689702b0ac2a8d04a968316",
+      "originalSha256": "72831e54ecda3e672feb053fc43256df544f4f60ed6dd188464958b527647b77",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/cart-http-gate.mjs",
+      "bytes": 2822,
+      "sha256": "d9c357ade1d6dc93713139eb083c047af037decf4d86ca268784601efc709a96",
+      "gitBlobSha": "303ab990c039b65a61f43156b5dd1ac904e54ded",
+      "originalSha256": "d9c357ade1d6dc93713139eb083c047af037decf4d86ca268784601efc709a96",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/cart-personalization.mjs",
+      "bytes": 6276,
+      "sha256": "38b6309375da6edd80d405b501f65cdc03d575dc6a4a74ba488d0d44fcd068dc",
+      "gitBlobSha": "4d881ed38ffe1636bb307ec1f468b778a2799deb",
+      "originalSha256": "a6098e3e25c33eeac5f9727994dce3e526cf6ae1c6e6845bdfb9ce9656b1dfd8",
+      "modified": true
+    },
+    {
+      "path": "app/workshop/catalog.mjs",
+      "bytes": 1899,
+      "sha256": "f755fb2712b4c1feb628bd003a015151fa472147966d24dda12b262d84c78adb",
+      "gitBlobSha": "ea25d7779822c85dcda87dfda7e99d3dbd2ff6ff",
+      "originalSha256": "f755fb2712b4c1feb628bd003a015151fa472147966d24dda12b262d84c78adb",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/contour-converter.py",
+      "bytes": 16022,
+      "sha256": "6e79cf399fc70925793671a877ee82b01ce36919f7913d4d9c74408f7e7a431a",
+      "gitBlobSha": "9442759dacd840511b1f55c829b229547066ed90",
+      "originalSha256": "6e79cf399fc70925793671a877ee82b01ce36919f7913d4d9c74408f7e7a431a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/contour-pdf.py",
+      "bytes": 1947,
+      "sha256": "8121a883f9b55007018e181f7e4e0bcc7a424feca5a318e6bc3e395aadd5b55c",
+      "gitBlobSha": "23f9a372321d6bcf204c01aad7a61a3f7e9a1671",
+      "originalSha256": "8121a883f9b55007018e181f7e4e0bcc7a424feca5a318e6bc3e395aadd5b55c",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/contours.mjs",
+      "bytes": 6024,
+      "sha256": "7245bdcd1818e75dba1824ede00058326390dbe5666689a7a4f6743ebaa0095e",
+      "gitBlobSha": "59900d923c6fa1300a300e1206947e0b0513009b",
+      "originalSha256": "7245bdcd1818e75dba1824ede00058326390dbe5666689a7a4f6743ebaa0095e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/customer-downloads.mjs",
+      "bytes": 6423,
+      "sha256": "db3e0ddef5aa19465831322bfb8aafba6f04f3eaf46f36f599a255e3902ab9ea",
+      "gitBlobSha": "a562606589b40433e9dd4c5d3ca85bbfec5cb5d2",
+      "originalSha256": "db3e0ddef5aa19465831322bfb8aafba6f04f3eaf46f36f599a255e3902ab9ea",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/customer-fields.mjs",
+      "bytes": 7144,
+      "sha256": "169ba0e8a3b34617d1e59e9d21eec057fdcb9896e099989d8520156289b2d9c6",
+      "gitBlobSha": "9cb415cdd8b80e2ccb560a6eafa0cb52edf91bca",
+      "originalSha256": "169ba0e8a3b34617d1e59e9d21eec057fdcb9896e099989d8520156289b2d9c6",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/customer-photo.mjs",
+      "bytes": 1938,
+      "sha256": "8c1ce08f3b933f9bfb7987f4b8334b57d4816dc1606c66a34fca8875a7d0dbab",
+      "gitBlobSha": "46c83c8ffdcfaf2ecf090f65fbae1f8e6ad41024",
+      "originalSha256": "8c1ce08f3b933f9bfb7987f4b8334b57d4816dc1606c66a34fca8875a7d0dbab",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/design-assets.mjs",
+      "bytes": 11946,
+      "sha256": "ab55d000a2546c2f0cd917f193878c7db16b0832fdb6dc1746017785819f2158",
+      "gitBlobSha": "f54dcd5bd551348e5242bf4c1175108db920b9bb",
+      "originalSha256": "ab55d000a2546c2f0cd917f193878c7db16b0832fdb6dc1746017785819f2158",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/design-converter.py",
+      "bytes": 25124,
+      "sha256": "9fdf232f1539d431b8f9635c86d59f9879d2ac80ed438ce2bed13773378f7e2d",
+      "gitBlobSha": "ec136a132c193b78d82ee3b136bffc81818135bc",
+      "originalSha256": "9fdf232f1539d431b8f9635c86d59f9879d2ac80ed438ce2bed13773378f7e2d",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/design-export.mjs",
+      "bytes": 1932,
+      "sha256": "de4c7525cfdb7841439a697e20fcd9b008e794017648e7b8bbf2d0de453d9c26",
+      "gitBlobSha": "1019f9d76f45423862c36f4322101f67dbee59d0",
+      "originalSha256": "de4c7525cfdb7841439a697e20fcd9b008e794017648e7b8bbf2d0de453d9c26",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/design-export.py",
+      "bytes": 4541,
+      "sha256": "2ea467c90f8b7c9b9ebef87f71c77b86ba99bc95c14684dd4d06b34f00b7ca83",
+      "gitBlobSha": "12735fc67311fcaac26657ba56226d29846d165b",
+      "originalSha256": "2ea467c90f8b7c9b9ebef87f71c77b86ba99bc95c14684dd4d06b34f00b7ca83",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/design-import.mjs",
+      "bytes": 4010,
+      "sha256": "337441e1aa1c1a5ebd4aed4c5103535c86f0292b45a358623a73e0283cd9edda",
+      "gitBlobSha": "f03a530823cefceebfdc9684b0c784e715924068",
+      "originalSha256": "337441e1aa1c1a5ebd4aed4c5103535c86f0292b45a358623a73e0283cd9edda",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/design-source-path.mjs",
+      "bytes": 3516,
+      "sha256": "62c05dac1666a9b535edc4467aed096654877cea454e6bbf354c3872a83556d3",
+      "gitBlobSha": "0b110c1dcf1c7bb68d67f2844a4e9a923d91c25f",
+      "originalSha256": "62c05dac1666a9b535edc4467aed096654877cea454e6bbf354c3872a83556d3",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/design-zip.mjs",
+      "bytes": 7407,
+      "sha256": "41e185551832c1d29d8974f2f7ecb311919bb9951762b3c21c24b4090274de69",
+      "gitBlobSha": "b2b4354e056ef5315b3cdbfdc95c75cdceb67b9e",
+      "originalSha256": "41e185551832c1d29d8974f2f7ecb311919bb9951762b3c21c24b4090274de69",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/draft-cart-handoff.mjs",
+      "bytes": 3310,
+      "sha256": "392ab1fbd15dbfae2fe446b7daf789c7efad12cca38ed3a8fb0249188123fd8d",
+      "gitBlobSha": "0a92450349c2edf27a403ec5603338c48b842aad",
+      "originalSha256": "392ab1fbd15dbfae2fe446b7daf789c7efad12cca38ed3a8fb0249188123fd8d",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/editable-design.mjs",
+      "bytes": 3703,
+      "sha256": "abcbd7a282abb4e8acfd5d7501f663f39a4ec98f1c1d7c9abe7feb294229210b",
+      "gitBlobSha": "27d8df59caa30a9ac9583c79b67dde5b4319b278",
+      "originalSha256": "abcbd7a282abb4e8acfd5d7501f663f39a4ec98f1c1d7c9abe7feb294229210b",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/export-jobs.mjs",
+      "bytes": 7614,
+      "sha256": "5e52b5fe598f37038398261f866ec54a45837930c5751c98a0acb0244e7d181a",
+      "gitBlobSha": "40e2b620f5cc9a7d54c21e155e255f3e4e6c0a6a",
+      "originalSha256": "5e52b5fe598f37038398261f866ec54a45837930c5751c98a0acb0244e7d181a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/font-import.py",
+      "bytes": 2159,
+      "sha256": "96f50abe07d144c9c1f02d43c323d58c892dcf561552eb0d65fc1e9f96f2cfa5",
+      "gitBlobSha": "e16a52350fe33ea9f416db8ec7eacf57d4f2d791",
+      "originalSha256": "96f50abe07d144c9c1f02d43c323d58c892dcf561552eb0d65fc1e9f96f2cfa5",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/font-library.mjs",
+      "bytes": 3683,
+      "sha256": "b75c911b5272bf5675770f219df4494d53c012c6a91441489c105b14d142a63c",
+      "gitBlobSha": "36a4657617125b641a5e28a79a8cdd48a0a68709",
+      "originalSha256": "b75c911b5272bf5675770f219df4494d53c012c6a91441489c105b14d142a63c",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-additions.mjs",
+      "bytes": 4451,
+      "sha256": "d88d68fc558b4619cc509680b7bdb358a7c1e10ceb73b5986622222ea568a4a8",
+      "gitBlobSha": "bc1afb4b148f5c940f6cc3d8b2b7dd2a501cb8f9",
+      "originalSha256": "d88d68fc558b4619cc509680b7bdb358a7c1e10ceb73b5986622222ea568a4a8",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-batch.mjs",
+      "bytes": 2157,
+      "sha256": "e3a8df45d082bb76340d1e95195b1e00512e77039b865abb789e1be1d71849f9",
+      "gitBlobSha": "3d1961ee2bc321067728e351d7eb8c18ebcd2f9f",
+      "originalSha256": "e3a8df45d082bb76340d1e95195b1e00512e77039b865abb789e1be1d71849f9",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-contour-pdf.mjs",
+      "bytes": 1596,
+      "sha256": "72bee58b83e8b2f634b92633e5de19f1d7be770e53d3330dd22d3cacf39d1a7a",
+      "gitBlobSha": "35f7777aadfbfd8b7e62b36169611197b83a80fd",
+      "originalSha256": "72bee58b83e8b2f634b92633e5de19f1d7be770e53d3330dd22d3cacf39d1a7a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-customer-model.mjs",
+      "bytes": 6591,
+      "sha256": "be9f9dbfea63c3d8cb2efafe0a03826d627e2437bb263d4d14973f86443b1b4b",
+      "gitBlobSha": "8ca0a6ea2146cd3c867bdb7f20b21bd9bb4b47c2",
+      "originalSha256": "be9f9dbfea63c3d8cb2efafe0a03826d627e2437bb263d4d14973f86443b1b4b",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-customer-store.mjs",
+      "bytes": 9704,
+      "sha256": "026a58c8c565ebde872134dfdde45dd74f3378b6378930bf96efebeb2dc97e2e",
+      "gitBlobSha": "f36eeb550932aa2d89c0b346f65187600a6ef46e",
+      "originalSha256": "026a58c8c565ebde872134dfdde45dd74f3378b6378930bf96efebeb2dc97e2e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-designs.mjs",
+      "bytes": 6837,
+      "sha256": "5709695655f19a97791cfa486d6ac629256b76078395cc3ceb46f817a77cdd11",
+      "gitBlobSha": "8f27ebb412da2d84341d16a930a9138847dbf28d",
+      "originalSha256": "5709695655f19a97791cfa486d6ac629256b76078395cc3ceb46f817a77cdd11",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-engraving-proof.mjs",
+      "bytes": 4187,
+      "sha256": "d54856b06f430206533830d2f789dd43e471799a86cdfda8ed024fc206a302d8",
+      "gitBlobSha": "87380bbcd8ce8cd9e5430e1ba668c8415267f858",
+      "originalSha256": "d54856b06f430206533830d2f789dd43e471799a86cdfda8ed024fc206a302d8",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-engraving-worker.py",
+      "bytes": 3246,
+      "sha256": "7e08bb82128f0d4aab8837159a265fa29fa4eef6229399fe4cee86acaea2f7e0",
+      "gitBlobSha": "5367919be0eb942cf20bb427f486d35bfcbe2485",
+      "originalSha256": "7e08bb82128f0d4aab8837159a265fa29fa4eef6229399fe4cee86acaea2f7e0",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-print-proof.mjs",
+      "bytes": 5634,
+      "sha256": "1521c9f8bf3bf970590144ec0c8f3eb570a3138fd0f8c44efb0a86fe5c978cdd",
+      "gitBlobSha": "4d3af11bc8c2906add3fbeaa44be78e75e593bfe",
+      "originalSha256": "1521c9f8bf3bf970590144ec0c8f3eb570a3138fd0f8c44efb0a86fe5c978cdd",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-print-text.py",
+      "bytes": 2763,
+      "sha256": "a9a30d65ffd5b9e54a46916e6800cc62c8bbe224ad6531e3990c152b516777e0",
+      "gitBlobSha": "cd4c701ea8ccca8bd87e8d4f50ad34a98de72564",
+      "originalSha256": "a9a30d65ffd5b9e54a46916e6800cc62c8bbe224ad6531e3990c152b516777e0",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-print-worker.py",
+      "bytes": 13865,
+      "sha256": "e1e8e5d7ea8739c262f4b84193b947260613d03fd4a92ed52f594196f9c421c8",
+      "gitBlobSha": "2e364963298b4f0e65efbca33fad52572342b879",
+      "originalSha256": "e1e8e5d7ea8739c262f4b84193b947260613d03fd4a92ed52f594196f9c421c8",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-product-preview.mjs",
+      "bytes": 1757,
+      "sha256": "4d93539a7a687a9842d6d0dcb3b9b917f24240ad1b478b04d69113799b319bb0",
+      "gitBlobSha": "cc46f6d81a20e863112e348e0703acf173c83d42",
+      "originalSha256": "4d93539a7a687a9842d6d0dcb3b9b917f24240ad1b478b04d69113799b319bb0",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-product.mjs",
+      "bytes": 7501,
+      "sha256": "77f51ac92d93a8989951610bf4ecd3b6ff978a1bd72f468c895ba343c1b1cb4e",
+      "gitBlobSha": "8193ab95aa7065b822393b5bd5e9079f95ccb49f",
+      "originalSha256": "77f51ac92d93a8989951610bf4ecd3b6ff978a1bd72f468c895ba343c1b1cb4e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-review-snapshot.mjs",
+      "bytes": 6838,
+      "sha256": "0884fed96644eed81e536657f3c1694d0748464fa81d1d0d9f0cff21d205d71a",
+      "gitBlobSha": "25e4d5b770312c8e8e7e679dda7c90ea59de03bc",
+      "originalSha256": "0884fed96644eed81e536657f3c1694d0748464fa81d1d0d9f0cff21d205d71a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/form-variants.mjs",
+      "bytes": 9181,
+      "sha256": "98d95009363a5e8a6aa238aee7ec50e7a20b8783d79228607fca8832958dc89c",
+      "gitBlobSha": "98bac04f697baa72c0f5f12b87455f80aeeec9dd",
+      "originalSha256": "98d95009363a5e8a6aa238aee7ec50e7a20b8783d79228607fca8832958dc89c",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "bytes": 78640,
+      "sha256": "d6d2ee2e3d93cf54d0d6ee65d9533fb9b87bf68cee8210b4e4644064c2303cd6",
+      "gitBlobSha": "d2851b37c8bbb157f8bc57441bcfb22df5d294f9",
+      "originalSha256": "d6d2ee2e3d93cf54d0d6ee65d9533fb9b87bf68cee8210b4e4644064c2303cd6",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/import-job-store.mjs",
+      "bytes": 3051,
+      "sha256": "bd53166e9c48e0c25e77026623013fd8754a4ce7271234d1900b78fc7d0dd221",
+      "gitBlobSha": "f9f846d3f5883cbc7294673de6c9339a34832321",
+      "originalSha256": "bd53166e9c48e0c25e77026623013fd8754a4ce7271234d1900b78fc7d0dd221",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/material-presentation.mjs",
+      "bytes": 8564,
+      "sha256": "748487f351822a67b08f9859c53b79c10570c3e4ab4cddad80c64b699bf165ba",
+      "gitBlobSha": "868be60020e500d4d0ee872302d40d0243eb69f2",
+      "originalSha256": "748487f351822a67b08f9859c53b79c10570c3e4ab4cddad80c64b699bf165ba",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/material-preview.mjs",
+      "bytes": 4279,
+      "sha256": "39289090cdab1fa8a1c368d0d806ed0ef733812f3b1deca7c3e9d1a1c58848e6",
+      "gitBlobSha": "f796ab03435ce99802687cf865701deb406cad06",
+      "originalSha256": "39289090cdab1fa8a1c368d0d806ed0ef733812f3b1deca7c3e9d1a1c58848e6",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/merchant-test-cart.mjs",
+      "bytes": 4964,
+      "sha256": "864a2e66ec4a4234c2012b4b31d8be52157d70db9ca1bd26cbff8771bd5ffa55",
+      "gitBlobSha": "6b432a095dd362242aca4e169e05af9dd098da7f",
+      "originalSha256": "864a2e66ec4a4234c2012b4b31d8be52157d70db9ca1bd26cbff8771bd5ffa55",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/native-font-replacement.mjs",
+      "bytes": 2732,
+      "sha256": "596cb21d5305abb9c970716715451c4741914f155b3c15daa1ea9570402af61f",
+      "gitBlobSha": "7e1836d325f6c14e964a125105d72a400a4e3e2f",
+      "originalSha256": "596cb21d5305abb9c970716715451c4741914f155b3c15daa1ea9570402af61f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/native-review-schema.mjs",
+      "bytes": 379,
+      "sha256": "7411452340592d8b037e1db962e5806b0029ca56dc81e3cc571057e94026e554",
+      "gitBlobSha": "0e22f190447b325f817cb28686a7cd6946abf7bd",
+      "originalSha256": "7411452340592d8b037e1db962e5806b0029ca56dc81e3cc571057e94026e554",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/openai-design-provider.mjs",
+      "bytes": 3985,
+      "sha256": "788807998d7d253c412915bac0500d67e17b20f0e814d75bf044a77fce508035",
+      "gitBlobSha": "47d8dc836834783011c3f5474d57d9b89b1445c7",
+      "originalSha256": "788807998d7d253c412915bac0500d67e17b20f0e814d75bf044a77fce508035",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/openai-image-provider.mjs",
+      "bytes": 4187,
+      "sha256": "a6038815ee298c4117459190711897cd08aa5f3f3329d6518ae9a71e620aa474",
+      "gitBlobSha": "1da9f940bef7304a0b93bff44238de940492cbd2",
+      "originalSha256": "a6038815ee298c4117459190711897cd08aa5f3f3329d6518ae9a71e620aa474",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/order-intake.mjs",
+      "bytes": 22721,
+      "sha256": "bd39118bf132db2515ed1fbe5e96ed0bd57ccd3de8046523323061f352fb3a19",
+      "gitBlobSha": "91133ed09c1ee73f66b25d9024e821d3aede1995",
+      "originalSha256": "bd39118bf132db2515ed1fbe5e96ed0bd57ccd3de8046523323061f352fb3a19",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/order-product-draft.mjs",
+      "bytes": 4471,
+      "sha256": "204c31a4f85bc6cf1d3922ad1edefca7da59af0543421e59024eeb505d1b7820",
+      "gitBlobSha": "4f2f94c6faaa6389ed56ef601e6f32506cb96c76",
+      "originalSha256": "204c31a4f85bc6cf1d3922ad1edefca7da59af0543421e59024eeb505d1b7820",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/order-refunds.mjs",
+      "bytes": 3870,
+      "sha256": "4d64b034cf99f8387974c523b2ed33ca4c63ccf0cee8ac713861449209a9e79d",
+      "gitBlobSha": "5f4ba5061b27ed431a9d16e1d76d39b94cd12dfd",
+      "originalSha256": "4d64b034cf99f8387974c523b2ed33ca4c63ccf0cee8ac713861449209a9e79d",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/order-status.mjs",
+      "bytes": 4837,
+      "sha256": "e7775ab33dc117694536c333bb2c255d814982e84f53f2087811ddb7d1f0361e",
+      "gitBlobSha": "f48a18b705c95e7e2926d768ef0124a0ac7d4e10",
+      "originalSha256": "e7775ab33dc117694536c333bb2c255d814982e84f53f2087811ddb7d1f0361e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/output-checks.mjs",
+      "bytes": 4581,
+      "sha256": "b5a6f31895de53d6baec987f3d6af3cde571adc563496ce59dac5ef63c2929c9",
+      "gitBlobSha": "451c0d8c3956926d79f88cedb31c79d05fe67a76",
+      "originalSha256": "b5a6f31895de53d6baec987f3d6af3cde571adc563496ce59dac5ef63c2929c9",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/output-specification.mjs",
+      "bytes": 877,
+      "sha256": "77c1b849301d8619806f68bdb3aab1fe101e0d23bde86a1d4b64790f1a1d9847",
+      "gitBlobSha": "5ec764cd51929ced4485aa915ae9eab3bd88fb97",
+      "originalSha256": "77c1b849301d8619806f68bdb3aab1fe101e0d23bde86a1d4b64790f1a1d9847",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/photo-frame-coverage.mjs",
+      "bytes": 1765,
+      "sha256": "b9cccfba3d3752f475e943163f61f28ab434b9abab80ab4d83903116c58125ec",
+      "gitBlobSha": "2fd26dd6df2efb63676b75c99bdb51f624125c6b",
+      "originalSha256": "b9cccfba3d3752f475e943163f61f28ab434b9abab80ab4d83903116c58125ec",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/photo-import.py",
+      "bytes": 1628,
+      "sha256": "dfc4784f7ed70b0b78e8e955879e273641a01e3eb86575bde055656f6c6d1e64",
+      "gitBlobSha": "1b36ca9596a28ac799a6a32779033c0fa6dd6040",
+      "originalSha256": "dfc4784f7ed70b0b78e8e955879e273641a01e3eb86575bde055656f6c6d1e64",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/prepared-design-native.mjs",
+      "bytes": 7081,
+      "sha256": "265c6c0dbafd1b09aa070ebb564afc530c5752bb6422f967f36687b23986faf1",
+      "gitBlobSha": "4c5d5e4d13913c52507145f8428120bea230d021",
+      "originalSha256": "265c6c0dbafd1b09aa070ebb564afc530c5752bb6422f967f36687b23986faf1",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/prepared-design.mjs",
+      "bytes": 7073,
+      "sha256": "80ca2f3ba6fdfea548c3a7ad4297cccd157492a6ff902be3894042e6ab789329",
+      "gitBlobSha": "cbbb934871a5348dcba21232e606163b5cb0e540",
+      "originalSha256": "80ca2f3ba6fdfea548c3a7ad4297cccd157492a6ff902be3894042e6ab789329",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/preview-assets/provenance.json",
+      "bytes": 925,
+      "sha256": "5685042a987315641c7cc07322bd7e4cd79afa02b2b25a4d7a9521d1b2a0aca1",
+      "gitBlobSha": "72b9921a9e69d71c4ab6cdd0d9b2425cea958c6d",
+      "originalSha256": "5685042a987315641c7cc07322bd7e4cd79afa02b2b25a4d7a9521d1b2a0aca1",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/preview-assets/reference.jpg",
+      "bytes": 63988,
+      "sha256": "610bbd72544d67751710aeba176cf20d33ccabec913f78e9b63657b96e67e18a",
+      "gitBlobSha": "8b210dfe2d8f97042d236e36ab39475858849e1b",
+      "originalSha256": "610bbd72544d67751710aeba176cf20d33ccabec913f78e9b63657b96e67e18a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/preview-assets/scene-empty-v2.jpg",
+      "bytes": 21917,
+      "sha256": "bfcc8d121c44f78abcd349c6e317baf39840c066934c8f356f9f5777009a4512",
+      "gitBlobSha": "04384b6dc78494d146861ba2398336fca01e7268",
+      "originalSha256": "bfcc8d121c44f78abcd349c6e317baf39840c066934c8f356f9f5777009a4512",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/print-delivery.mjs",
+      "bytes": 2038,
+      "sha256": "f11274f29ad7eca8c4dcbc6bdcfa1aa33317c33860396a83522536a5b28d12ff",
+      "gitBlobSha": "a0630a2312bdc2de4615d0caa1c2b535814ec98c",
+      "originalSha256": "f11274f29ad7eca8c4dcbc6bdcfa1aa33317c33860396a83522536a5b28d12ff",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/print-preview.mjs",
+      "bytes": 2597,
+      "sha256": "54effd0bdd9e2e4bc84be9ffbc635bc61d207c9b982126520cc8cc10f75dc7c9",
+      "gitBlobSha": "6e94cc6135211a73d512d8365174929def32a9e5",
+      "originalSha256": "54effd0bdd9e2e4bc84be9ffbc635bc61d207c9b982126520cc8cc10f75dc7c9",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/print-preview.py",
+      "bytes": 1780,
+      "sha256": "3edf226f203400495417a04f2cdf5846886196d89c1988134089e9aef4583c21",
+      "gitBlobSha": "ada449cbe4b6dce99250262480550875ad54c11f",
+      "originalSha256": "3edf226f203400495417a04f2cdf5846886196d89c1988134089e9aef4583c21",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/product-catalog.mjs",
+      "bytes": 4333,
+      "sha256": "bf39a6719998e78d991b789a37a9fb685ab638e699c1396015f5d9e35bce0b92",
+      "gitBlobSha": "27d8bc80fc8078754575646e00ee827c4f961930",
+      "originalSha256": "bf39a6719998e78d991b789a37a9fb685ab638e699c1396015f5d9e35bce0b92",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/product-model.mjs",
+      "bytes": 13632,
+      "sha256": "1a26f391f45038e483def6fb67ccfd0eb15efa833eaa4abf9c71d0de3396f9f1",
+      "gitBlobSha": "5a8a8972433b44d8a65b497dec47ae09f1673c28",
+      "originalSha256": "1a26f391f45038e483def6fb67ccfd0eb15efa833eaa4abf9c71d0de3396f9f1",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/product-preview.mjs",
+      "bytes": 6691,
+      "sha256": "5d35f67c8e0bec351ecf0437c193d8e367a48130306b766d7a2500c2cb8a0004",
+      "gitBlobSha": "78c1e558c1afe9a85d6056b2334471ed280697e7",
+      "originalSha256": "5d35f67c8e0bec351ecf0437c193d8e367a48130306b766d7a2500c2cb8a0004",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/product-profile-assignments.mjs",
+      "bytes": 1853,
+      "sha256": "e7cb3a1e36d1744b6aadee9b9f97c3e5c5928524fc13b73414f90682e66a162f",
+      "gitBlobSha": "6d9a9b1aafceb84948f71a9a2ce59496a62d883f",
+      "originalSha256": "e7cb3a1e36d1744b6aadee9b9f97c3e5c5928524fc13b73414f90682e66a162f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/product-revision-compare.mjs",
+      "bytes": 4025,
+      "sha256": "c6b7fba848f2f60a8205ae1d249a3a91bf192e6ec73fbc060e1bf44bfe31d9d3",
+      "gitBlobSha": "c5f055df315bdbe7834112ec070328a0ac91d474",
+      "originalSha256": "c6b7fba848f2f60a8205ae1d249a3a91bf192e6ec73fbc060e1bf44bfe31d9d3",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/production-profiles.mjs",
+      "bytes": 6433,
+      "sha256": "af7a0ee8f7298ebf7de4054a2a1c8af8050ab6fe5ad4018cde7688c81357176c",
+      "gitBlobSha": "0ee6208425f6fb17a27d4efc246ccf773469e8a0",
+      "originalSha256": "af7a0ee8f7298ebf7de4054a2a1c8af8050ab6fe5ad4018cde7688c81357176c",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/profile-impact.mjs",
+      "bytes": 4219,
+      "sha256": "cedb8add30846872e17334d070659a529aa264b5dd6eaf57149f1f6ba852ca21",
+      "gitBlobSha": "c8f3d538e23080ad490e4ab360380cf3ea122c36",
+      "originalSha256": "cedb8add30846872e17334d070659a529aa264b5dd6eaf57149f1f6ba852ca21",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/profile-library.mjs",
+      "bytes": 16783,
+      "sha256": "e934cb78d55eb5651b3b20456c07562b22ba5a9c05fc7a3653f93674fd83d97a",
+      "gitBlobSha": "be15671b1c7c367e60bcfb433d1a4df9feb8b43a",
+      "originalSha256": "e934cb78d55eb5651b3b20456c07562b22ba5a9c05fc7a3653f93674fd83d97a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/repository.mjs",
+      "bytes": 18374,
+      "sha256": "02bcc591f9e73590438564724507ced47359fe7c5ddb68ce3c364cd70976c6e3",
+      "gitBlobSha": "22d173c142c7c115f90db5b2b7757a61cc79087d",
+      "originalSha256": "02bcc591f9e73590438564724507ced47359fe7c5ddb68ce3c364cd70976c6e3",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/requirements-contours.txt",
+      "bytes": 141,
+      "sha256": "c611355f9205c6f8212e89b24f208504cde822a61f30e49ac78dd287d04984eb",
+      "gitBlobSha": "6e03ef22885bb0e7aa6f7cfd1973dbb09b7b09da",
+      "originalSha256": "c611355f9205c6f8212e89b24f208504cde822a61f30e49ac78dd287d04984eb",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/requirements-excel.txt",
+      "bytes": 101,
+      "sha256": "8ca9b24c1b5b6f043620d29ea0231c703d6d5d0aaea9edeedfc0cd6e097842eb",
+      "gitBlobSha": "941db1ad75213aed7b266210f400459303817b79",
+      "originalSha256": "8ca9b24c1b5b6f043620d29ea0231c703d6d5d0aaea9edeedfc0cd6e097842eb",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/requirements-import.txt",
+      "bytes": 92,
+      "sha256": "cfdcc5d9b3435670047ec7af4ac296ac412e012821634b60ec6c2b4f11d01336",
+      "gitBlobSha": "1e3b9aa34edc761230f370af463d5f3c0da20ea8",
+      "originalSha256": "cfdcc5d9b3435670047ec7af4ac296ac412e012821634b60ec6c2b4f11d01336",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/requirements-photos.txt",
+      "bytes": 106,
+      "sha256": "163f15fcad56887f971582dafebf742c62cbe453a3635a79a0cd02294f32328f",
+      "gitBlobSha": "e483f410325c1589812ce6dd666340172729a3a7",
+      "originalSha256": "163f15fcad56887f971582dafebf742c62cbe453a3635a79a0cd02294f32328f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/requirements-print.txt",
+      "bytes": 173,
+      "sha256": "89e4239fcd00e3b8c2190b473a0cfcea6f18b2f8e25a1a5331da3ed2bbf93bf0",
+      "gitBlobSha": "371e3a7a51ab18b7fc37245fa394197238303bd3",
+      "originalSha256": "89e4239fcd00e3b8c2190b473a0cfcea6f18b2f8e25a1a5331da3ed2bbf93bf0",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/review-package.mjs",
+      "bytes": 1597,
+      "sha256": "cada9d27d4bc9460c4d2617e987eabb6cc38616f2c18846bedbf65ce1f4b4fdf",
+      "gitBlobSha": "5ddefeda3cc8c4cc26ed729a6670f4420f92674a",
+      "originalSha256": "cada9d27d4bc9460c4d2617e987eabb6cc38616f2c18846bedbf65ce1f4b4fdf",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shop-draft-transfer.mjs",
+      "bytes": 13866,
+      "sha256": "877d6adedc02a5c1c5764b81bcb41448619b672af22db1f4bfc58ae708994a3f",
+      "gitBlobSha": "fc07bb79f050e9245e05ab2a52b66c7269fb50ad",
+      "originalSha256": "877d6adedc02a5c1c5764b81bcb41448619b672af22db1f4bfc58ae708994a3f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "bytes": 4320,
+      "sha256": "a72c181ba6c170a813b559d144153418b20e6880e25ecc9485912194647b6de1",
+      "gitBlobSha": "b54c871ed01195013c0c90f2549269dd6f482e17",
+      "originalSha256": "a72c181ba6c170a813b559d144153418b20e6880e25ecc9485912194647b6de1",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shopify-admin-host.mjs",
+      "bytes": 4200,
+      "sha256": "185ad4d283a15b73034fdd7d6fad63726e7495b2e46e0d11b2b31dca16d59c77",
+      "gitBlobSha": "17100eae981cccbc56558018ac1839e0cab94ea9",
+      "originalSha256": "185ad4d283a15b73034fdd7d6fad63726e7495b2e46e0d11b2b31dca16d59c77",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shopify-admin-readonly.mjs",
+      "bytes": 8646,
+      "sha256": "42588fd64fc9e23486d7a2565b235ae118644e4b835b856bb4678e921e53adec",
+      "gitBlobSha": "33d6cb5d953aa4254d3566eb974d9cfa6b191223",
+      "originalSha256": "42588fd64fc9e23486d7a2565b235ae118644e4b835b856bb4678e921e53adec",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shopify-admin-test-server.mjs",
+      "bytes": 3726,
+      "sha256": "434922b7791690be9bcffb06b5fc7ab9c49ba770a2d8410ce27393a623ee7aa9",
+      "gitBlobSha": "af516b874856443183dafe20d844022ea7394f5d",
+      "originalSha256": "434922b7791690be9bcffb06b5fc7ab9c49ba770a2d8410ce27393a623ee7aa9",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shopify-draft-token.mjs",
+      "bytes": 2119,
+      "sha256": "11eff3eda504a475061db567db667dfb9bcc4672831961b36409aa3e48e4e015",
+      "gitBlobSha": "6387b3ca7dc64a187cc5f69490ed32af7a36e719",
+      "originalSha256": "11eff3eda504a475061db567db667dfb9bcc4672831961b36409aa3e48e4e015",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shopify-order-webhook.mjs",
+      "bytes": 3074,
+      "sha256": "9134858490135caf0fdc9d5e7164b157158fa24be57194c27b75c5685dad8904",
+      "gitBlobSha": "4d843c0db6a12553aa5ba3a223926481ea8e6d2a",
+      "originalSha256": "9134858490135caf0fdc9d5e7164b157158fa24be57194c27b75c5685dad8904",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shopify-runtime-config.mjs",
+      "bytes": 3455,
+      "sha256": "ef00293165adaa056cf6477d78da23d93150b48d12636435751db0f9790ace12",
+      "gitBlobSha": "9b582c6a4a7784c447c75d2f5a7fe4f22854df78",
+      "originalSha256": "ef00293165adaa056cf6477d78da23d93150b48d12636435751db0f9790ace12",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shopify-session.mjs",
+      "bytes": 3085,
+      "sha256": "b500315df3e6b3265fd463004140c24f30ff479d0f83428db1dc33b4e2bbd466",
+      "gitBlobSha": "283a191e82df5082928733d7a234494d7c7db7ad",
+      "originalSha256": "b500315df3e6b3265fd463004140c24f30ff479d0f83428db1dc33b4e2bbd466",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/shopify-variant-preflight.mjs",
+      "bytes": 3379,
+      "sha256": "13428ec50f90940b504bae35ef62639c5a5bea0bfde26b0f7c206737c8cb453d",
+      "gitBlobSha": "f6df03efe53e00c238fde6e554d29338b55475c7",
+      "originalSha256": "13428ec50f90940b504bae35ef62639c5a5bea0bfde26b0f7c206737c8cb453d",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/slate-import.mjs",
+      "bytes": 2551,
+      "sha256": "dfe955ef52bbc51e5a950c06a35b75f2b627993c1c8cdf272852858d0e49560d",
+      "gitBlobSha": "7149dc053aaa85519cd66cac462dfa02ac08e089",
+      "originalSha256": "dfe955ef52bbc51e5a950c06a35b75f2b627993c1c8cdf272852858d0e49560d",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/slate-product.mjs",
+      "bytes": 2913,
+      "sha256": "e963c96c293745d2709b290124aa57ad7b718a8fe847a4c2055e92b60112fec7",
+      "gitBlobSha": "7d186daf4f43a6e59aa3ebf3ec3f2cbdde1e65d3",
+      "originalSha256": "e963c96c293745d2709b290124aa57ad7b718a8fe847a4c2055e92b60112fec7",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/specimen-import.mjs",
+      "bytes": 962,
+      "sha256": "9a9e2bb66e747a123e2cf79e572c8a47dc08386fa4049e3e512bfe047bfd53b2",
+      "gitBlobSha": "0f1b83f6a956f03c3af3c98e73004ebe1d89540b",
+      "originalSha256": "9a9e2bb66e747a123e2cf79e572c8a47dc08386fa4049e3e512bfe047bfd53b2",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/specimen-product.mjs",
+      "bytes": 7475,
+      "sha256": "aaa2401705d4511e00ff08f4bd750b78f25e3237a33d6fa9d5d3b566c2da0262",
+      "gitBlobSha": "4634fdf56af91584ecb1f08991eb8c69487abd8b",
+      "originalSha256": "aaa2401705d4511e00ff08f4bd750b78f25e3237a33d6fa9d5d3b566c2da0262",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/storefront-cart.mjs",
+      "bytes": 4360,
+      "sha256": "d8b9fca3041716c664ab3abfaa63cf448cebbca7dedeec3a6d726ecd980a76e3",
+      "gitBlobSha": "d8441a07ea9d13ed42b35ca49e50dff0470fb4fc",
+      "originalSha256": "d8b9fca3041716c664ab3abfaa63cf448cebbca7dedeec3a6d726ecd980a76e3",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/storefront-transport.mjs",
+      "bytes": 5826,
+      "sha256": "d6cfe63a080867405012f0268a73c8d98d55efc1a79cbdb0fb7674c84ee5df36",
+      "gitBlobSha": "c4a27a430f7691b8b10b986fa9848e320c37e323",
+      "originalSha256": "d6cfe63a080867405012f0268a73c8d98d55efc1a79cbdb0fb7674c84ee5df36",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/templates/ausfuehrungen.xlsx",
+      "bytes": 12698,
+      "sha256": "d08a280a277378362aacb8339d4bc47f6a6d81b800b271ac035fc474ff511fec",
+      "gitBlobSha": "1e5747b812580e556eb73d395f1185895574f81f",
+      "originalSha256": "d08a280a277378362aacb8339d4bc47f6a6d81b800b271ac035fc474ff511fec",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/templates/produktserie.xlsx",
+      "bytes": 21613,
+      "sha256": "17972174f2c09a156c34264c63ba6db04217c5ff6af783ef290026a08f2310fd",
+      "gitBlobSha": "ac271584ed983709006b34716c369550f4da3243",
+      "originalSha256": "17972174f2c09a156c34264c63ba6db04217c5ff6af783ef290026a08f2310fd",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/ai-batch-ui.mjs",
+      "bytes": 12245,
+      "sha256": "0a91b1297656e5226578a494cbbb29c4b9d8f016615b8990ba442c19ab7e7bb9",
+      "gitBlobSha": "40047fb25e8d6ffe0b33d942d7e10484ca21676c",
+      "originalSha256": "0a91b1297656e5226578a494cbbb29c4b9d8f016615b8990ba442c19ab7e7bb9",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/ai-design-ui.mjs",
+      "bytes": 10868,
+      "sha256": "a2d4347b99a5aa8dddd3ec48864d0415585d259660f41716f75233e3bf11298e",
+      "gitBlobSha": "e0b78873d6c105b12e9bf63d9d4ef98b3a676460",
+      "originalSha256": "a2d4347b99a5aa8dddd3ec48864d0415585d259660f41716f75233e3bf11298e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/app.mjs",
+      "bytes": 43960,
+      "sha256": "207c7648d0e4aee77398dbc75c6c364588257a9d25811817e7438a182818f65c",
+      "gitBlobSha": "985113dc67dd38bdbfebdc69dee525c3ea349d83",
+      "originalSha256": "207c7648d0e4aee77398dbc75c6c364588257a9d25811817e7438a182818f65c",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/approved-customer-preview-ui.mjs",
+      "bytes": 1662,
+      "sha256": "eb9be444258376cf2743f6bfb69089935da918a5863b7d367f255bb0537e3ead",
+      "gitBlobSha": "903b0a152c3e929eec1d2f37b73c1c768b6225bf",
+      "originalSha256": "eb9be444258376cf2743f6bfb69089935da918a5863b7d367f255bb0537e3ead",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/approved-customer-preview.html",
+      "bytes": 622,
+      "sha256": "da8c41daf7a1e1c4408e64d3d3a842bec786aa60203b9191fab15dd1287136fa",
+      "gitBlobSha": "dec7a9e6f69ed9a5d5d64141ced47d92159984f1",
+      "originalSha256": "da8c41daf7a1e1c4408e64d3d3a842bec786aa60203b9191fab15dd1287136fa",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/batch-reader.mjs",
+      "bytes": 7051,
+      "sha256": "3e33708c3223ba54c3058ceda812d23a965aa764af8e25e3d7df5a91a9e03210",
+      "gitBlobSha": "3db171e10dd26d7270cb0d6b3a68162144d6aed4",
+      "originalSha256": "3e33708c3223ba54c3058ceda812d23a965aa764af8e25e3d7df5a91a9e03210",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/batch-ui.mjs",
+      "bytes": 21877,
+      "sha256": "64a9ed3f91f79ffd6b08b9e4386d3e938c4331900f9c84e251e31af777661ce0",
+      "gitBlobSha": "3faa3a2be1ce495ca28b581d1afab0ab4b31eade",
+      "originalSha256": "64a9ed3f91f79ffd6b08b9e4386d3e938c4331900f9c84e251e31af777661ce0",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/batch.html",
+      "bytes": 11216,
+      "sha256": "ed1d80f06d44a2976d631dd1f04722eaeeb2b919514fcaa370462e177ea9c46c",
+      "gitBlobSha": "9dc329d74d1525b921a5ab8c00b28715aec17e78",
+      "originalSha256": "ed1d80f06d44a2976d631dd1f04722eaeeb2b919514fcaa370462e177ea9c46c",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/cart-handoff-ui.mjs",
+      "bytes": 4953,
+      "sha256": "9114390af60fd7457b584a8ed9b9b183c89a83ae7e16133d1f57c8049cb56597",
+      "gitBlobSha": "0f4b62c329fef63f9e8c0be3868184c4e7d5676f",
+      "originalSha256": "9114390af60fd7457b584a8ed9b9b183c89a83ae7e16133d1f57c8049cb56597",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/cart-handoff.html",
+      "bytes": 3356,
+      "sha256": "6604e9b15ec056e72fd27ca79b476ccbb6e0ca4d28de869e836cf29991a7bb07",
+      "gitBlobSha": "0fe18928aedffafead6da08e541456dab611f018",
+      "originalSha256": "6604e9b15ec056e72fd27ca79b476ccbb6e0ca4d28de869e836cf29991a7bb07",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/catalog-ui.mjs",
+      "bytes": 4724,
+      "sha256": "d07f0e693015be61039fd7b6d341d9d6e942ea1f0a50da2ed5893dd6a5d07e55",
+      "gitBlobSha": "120e54c4e3da804026aa940c7ef25b1f28fd006d",
+      "originalSha256": "d07f0e693015be61039fd7b6d341d9d6e942ea1f0a50da2ed5893dd6a5d07e55",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/catalog.css",
+      "bytes": 2827,
+      "sha256": "89ffe1b169c4a9e60f159b3bad35e19fb456042997a0be058ccbfbef1080e69e",
+      "gitBlobSha": "b2e413d14ee9a1c1a502763baf69c0d4cf5929a6",
+      "originalSha256": "89ffe1b169c4a9e60f159b3bad35e19fb456042997a0be058ccbfbef1080e69e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/contours-ui.mjs",
+      "bytes": 6389,
+      "sha256": "c683421a4e8bd35060eaf4b7ce4057062fb24ef19a56586fdbc87d8ddf7f0f9b",
+      "gitBlobSha": "53764a8ee8783cd758f441b05326057d545739af",
+      "originalSha256": "c683421a4e8bd35060eaf4b7ce4057062fb24ef19a56586fdbc87d8ddf7f0f9b",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/contours.css",
+      "bytes": 5580,
+      "sha256": "3994c41afd15e89b9447e9b8ea7cf5bddf620fd4321d8bc8c9585690e6972b96",
+      "gitBlobSha": "83db84b0a194b9783875fc0e6e40eb7fdf887027",
+      "originalSha256": "3994c41afd15e89b9447e9b8ea7cf5bddf620fd4321d8bc8c9585690e6972b96",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/contours.html",
+      "bytes": 5198,
+      "sha256": "9704107c349d7038ec9023bbafd6f447c88f2908890b2934d06235660980c641",
+      "gitBlobSha": "c91bbc7f0183fd81017e2d344901110584a7647f",
+      "originalSha256": "9704107c349d7038ec9023bbafd6f447c88f2908890b2934d06235660980c641",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/customer-fields-ui.mjs",
+      "bytes": 12534,
+      "sha256": "72a53e2270ec4d356988af212f590e24a229c3a2efd429f4ac6b4a29d359cf05",
+      "gitBlobSha": "ad3250353020d1100e3c96c86591534edb3788c5",
+      "originalSha256": "72a53e2270ec4d356988af212f590e24a229c3a2efd429f4ac6b4a29d359cf05",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/customer-preview-link.mjs",
+      "bytes": 586,
+      "sha256": "4d8b155f9c5724c66d07096d7c7a55aa0ee492873b83c904a472bc01b42715af",
+      "gitBlobSha": "05dd68c005588ad67f6d7297d1eef32dd660f281",
+      "originalSha256": "4d8b155f9c5724c66d07096d7c7a55aa0ee492873b83c904a472bc01b42715af",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/customer-preview.css",
+      "bytes": 532,
+      "sha256": "f61081ec4abf25b378fcbdf04b9486205a9facc255b8bbb606fc636eb62c6490",
+      "gitBlobSha": "d0535954584d08d70a67ce5822d12a0468a51fef",
+      "originalSha256": "f61081ec4abf25b378fcbdf04b9486205a9facc255b8bbb606fc636eb62c6490",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/customer-preview.html",
+      "bytes": 607,
+      "sha256": "406dcb22f4be8db998a928bb2242dead0e2e4c9c9304972624cce378df23af5e",
+      "gitBlobSha": "4912524cab07b84b40832a56f68d9d32a4c4473e",
+      "originalSha256": "406dcb22f4be8db998a928bb2242dead0e2e4c9c9304972624cce378df23af5e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/customer-preview.mjs",
+      "bytes": 2955,
+      "sha256": "ac5551ce9201fc27d1d30ec012fb5d9a513704c0be0c8c18e3c8a6fdc724f0b6",
+      "gitBlobSha": "b07b59267ecfaaa7b7818d188237862e4290feaf",
+      "originalSha256": "ac5551ce9201fc27d1d30ec012fb5d9a513704c0be0c8c18e3c8a6fdc724f0b6",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/dashboard.css",
+      "bytes": 10992,
+      "sha256": "26133357bf241ec783684b7682a578f28bafb8e3bca73fab25382bef702f6a35",
+      "gitBlobSha": "cdadac0e8a47cf45c2a41e679ff99e6a9881784d",
+      "originalSha256": "26133357bf241ec783684b7682a578f28bafb8e3bca73fab25382bef702f6a35",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/design-authoring.mjs",
+      "bytes": 7156,
+      "sha256": "2b13e48824c1f40b5b49059ab41d87ebe4f5e15a281e8928b0fdb598ee12dbd5",
+      "gitBlobSha": "0770e83821eb0f71eece02c60a42ca6ad15a50d4",
+      "originalSha256": "2b13e48824c1f40b5b49059ab41d87ebe4f5e15a281e8928b0fdb598ee12dbd5",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/design-import-ui.mjs",
+      "bytes": 11988,
+      "sha256": "9299a968b05f68d378173249f331f488bf69c6ab53bc9beb08875016ec8ffe44",
+      "gitBlobSha": "70719250bce7fb8855060631eaff0abbba74e2c7",
+      "originalSha256": "9299a968b05f68d378173249f331f488bf69c6ab53bc9beb08875016ec8ffe44",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-guides.mjs",
+      "bytes": 2150,
+      "sha256": "83e47c68beb66d597f97b5b2ff211f4aaee69af0e58d3916e664b8e66f0a9427",
+      "gitBlobSha": "e3752fc60b464ce76465330c822fb968598d05fb",
+      "originalSha256": "83e47c68beb66d597f97b5b2ff211f4aaee69af0e58d3916e664b8e66f0a9427",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/LICENSE",
+      "bytes": 1073,
+      "sha256": "5a3b65e1ad6a081759fde376fe14e2cd88552a9ebea89a8168f34eab1e96109f",
+      "gitBlobSha": "73cfc6be67ecb4ef7a4b279ca1aece65760ff5cd",
+      "originalSha256": "5a3b65e1ad6a081759fde376fe14e2cd88552a9ebea89a8168f34eab1e96109f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/README.md",
+      "bytes": 355,
+      "sha256": "7459303adfd95de78b45b4e32251240819ad036ae89c2fc2950eb2784243c898",
+      "gitBlobSha": "00a06b0603903e92fe0be7a87c6054d8c83cae6e",
+      "originalSha256": "7459303adfd95de78b45b4e32251240819ad036ae89c2fc2950eb2784243c898",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/archive.svg",
+      "bytes": 508,
+      "sha256": "e034249a3d00b0d54bf3943af995a05842bdd5386aab68aeaf91a3083391bd04",
+      "gitBlobSha": "03af7585e048c62c31fad1dd4d0ef9167e7cb4b2",
+      "originalSha256": "e034249a3d00b0d54bf3943af995a05842bdd5386aab68aeaf91a3083391bd04",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/cube.svg",
+      "bytes": 650,
+      "sha256": "8489d6c69aa99241bb852f196381ed32c93c80fda010829b9f1fbd675b5e44bb",
+      "gitBlobSha": "24e986db7c2a2983f8105463c380a9984b3f1328",
+      "originalSha256": "8489d6c69aa99241bb852f196381ed32c93c80fda010829b9f1fbd675b5e44bb",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/device-floppy.svg",
+      "bytes": 510,
+      "sha256": "a73b4984265b034ec17da5380beceb530a1abffc4143a5e0f2c2f895c14ed5d5",
+      "gitBlobSha": "03621810627d87729af02a0d9d4958826abc153f",
+      "originalSha256": "a73b4984265b034ec17da5380beceb530a1abffc4143a5e0f2c2f895c14ed5d5",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/dimensions.svg",
+      "bytes": 598,
+      "sha256": "f18474f3cf118ad626262be0e6c13faf609a6f0d1601b2dac47de6cdb0323747",
+      "gitBlobSha": "38576ab04ef32085b542846cda75160e25a91c58",
+      "originalSha256": "f18474f3cf118ad626262be0e6c13faf609a6f0d1601b2dac47de6cdb0323747",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/dots.svg",
+      "bytes": 493,
+      "sha256": "eac5a17d49b31133c6def86e9e2bc592aef4b15410fbaf516066b14cff4e6082",
+      "gitBlobSha": "858a472ecc998f67560fb245ef1133e3db0388e3",
+      "originalSha256": "eac5a17d49b31133c6def86e9e2bc592aef4b15410fbaf516066b14cff4e6082",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/eye.svg",
+      "bytes": 473,
+      "sha256": "4a99b60c52f23f25444b0c6dea6094b04703857a36cc3e099a85fda00b77a91a",
+      "gitBlobSha": "e9410b889aafe4488152de616434fb8080301224",
+      "originalSha256": "4a99b60c52f23f25444b0c6dea6094b04703857a36cc3e099a85fda00b77a91a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/files.svg",
+      "bytes": 529,
+      "sha256": "3c411478dcab6fb9236413623f53fb9bf54839acdd7e320257737591ee38a629",
+      "gitBlobSha": "4d7f698e93a29b1d3252f6a1a209b2ca3de6095c",
+      "originalSha256": "3c411478dcab6fb9236413623f53fb9bf54839acdd7e320257737591ee38a629",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/heart.svg",
+      "bytes": 419,
+      "sha256": "bb9a3cee324f2caed9f62ed282605cca71c1d09c2d5acd2de005876ec2cb1a80",
+      "gitBlobSha": "bd038a5fd22e3e42c60e88d60ec12b8d02104cef",
+      "originalSha256": "bb9a3cee324f2caed9f62ed282605cca71c1d09c2d5acd2de005876ec2cb1a80",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/link.svg",
+      "bytes": 515,
+      "sha256": "0ac4d84a204e22ea6c9482a02f34575f46a1f19297a8a30f2e96a4b68f0ce6b1",
+      "gitBlobSha": "705effb1beb8dae5f8bf285952c6e41b9ee1f922",
+      "originalSha256": "0ac4d84a204e22ea6c9482a02f34575f46a1f19297a8a30f2e96a4b68f0ce6b1",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/pencil.svg",
+      "bytes": 428,
+      "sha256": "4e34b0d618a5f3d1fc90580a016627abdf71198891309a011187140c008aea2f",
+      "gitBlobSha": "b5421d2cdb840f7b42189e2933b40ec43dd061f3",
+      "originalSha256": "4e34b0d618a5f3d1fc90580a016627abdf71198891309a011187140c008aea2f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/photo.svg",
+      "bytes": 562,
+      "sha256": "4c5c53100851d5a29cb313ba44ef5e0c39a3a145d2bb3c42dcae3166ae88c79e",
+      "gitBlobSha": "81df5250f9b542a314ee55616094ff95dd2fb6d2",
+      "originalSha256": "4c5c53100851d5a29cb313ba44ef5e0c39a3a145d2bb3c42dcae3166ae88c79e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/plus.svg",
+      "bytes": 378,
+      "sha256": "a5cea9aefd4dbc1eae981946f1ceba5c8bdd7a0be4dd62cec8837e7f963cf15f",
+      "gitBlobSha": "418e7bc1849190c90e1a59d917d6230055f607d4",
+      "originalSha256": "a5cea9aefd4dbc1eae981946f1ceba5c8bdd7a0be4dd62cec8837e7f963cf15f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/printer.svg",
+      "bytes": 577,
+      "sha256": "da402844e7a4c73955d89a76f1aa71c409f64e5b9e974b46c343e18e68678b9f",
+      "gitBlobSha": "4f63b663dc543bd06ee8c174985e9a308933ac4a",
+      "originalSha256": "da402844e7a4c73955d89a76f1aa71c409f64e5b9e974b46c343e18e68678b9f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/rectangle.svg",
+      "bytes": 426,
+      "sha256": "a4e985d9a485eeadeb9c24c66861d0c8cd6d850606d1395dd1a50c9c15a07912",
+      "gitBlobSha": "3298e8812db6e7535875da4950331ce6f4983cd0",
+      "originalSha256": "a4e985d9a485eeadeb9c24c66861d0c8cd6d850606d1395dd1a50c9c15a07912",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/refresh.svg",
+      "bytes": 438,
+      "sha256": "19846b56344f057bb35724fe086c922d7442e5de5d78ffde8eb158d24f25ccf3",
+      "gitBlobSha": "19f5981a968ccce862eb255ab56cc928ebdacb79",
+      "originalSha256": "19846b56344f057bb35724fe086c922d7442e5de5d78ffde8eb158d24f25ccf3",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/search.svg",
+      "bytes": 414,
+      "sha256": "c4951b0e905e9f01eceef1f1c52ae37732e5d02e92592c6b410e9bbb074a6ba5",
+      "gitBlobSha": "374b642a95939b7eaf63a5a7ac7ee638ffbb24e9",
+      "originalSha256": "c4951b0e905e9f01eceef1f1c52ae37732e5d02e92592c6b410e9bbb074a6ba5",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/settings.svg",
+      "bytes": 919,
+      "sha256": "3e1f110886f6c39b462fc8bca41af4a84b803add39751bb57825983c9660bd0f",
+      "gitBlobSha": "684c85e996c30e91de34365e7dbf8e29d11c36d5",
+      "originalSha256": "3e1f110886f6c39b462fc8bca41af4a84b803add39751bb57825983c9660bd0f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/shopping-cart.svg",
+      "bytes": 513,
+      "sha256": "ab4f09ed7db3a85d850ed474930ed6df6377ffb9e11cce24a98e982e53a394a2",
+      "gitBlobSha": "f18b03e2672424b2a8f83058eacc74aa09cf4fa6",
+      "originalSha256": "ab4f09ed7db3a85d850ed474930ed6df6377ffb9e11cce24a98e982e53a394a2",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/stack-2.svg",
+      "bytes": 430,
+      "sha256": "f50a521eeceea1ead08d1515460360b6388b1985066a0ee268701a3d529223aa",
+      "gitBlobSha": "c24102606a272e928e44920a8bb735918d2cfdde",
+      "originalSha256": "f50a521eeceea1ead08d1515460360b6388b1985066a0ee268701a3d529223aa",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/tag.svg",
+      "bytes": 560,
+      "sha256": "96b90605ae422a9778de2748fdf9c661753a4890f26f794f641608de62daa558",
+      "gitBlobSha": "be0ea9a4f96f508729d90cb6cfc14f37e5de448f",
+      "originalSha256": "96b90605ae422a9778de2748fdf9c661753a4890f26f794f641608de62daa558",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/typography.svg",
+      "bytes": 482,
+      "sha256": "ab7b329f14a699adfb7f40b2c15717b66daabbf10130b3a808f46338df6b3321",
+      "gitBlobSha": "cd89502b22787248a125e617a5870ff8ae1c706c",
+      "originalSha256": "ab7b329f14a699adfb7f40b2c15717b66daabbf10130b3a808f46338df6b3321",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-icons/upload.svg",
+      "bytes": 441,
+      "sha256": "76b2ad8a612335ebcbcea68fe79882bfece30fa577c2cb347f09f710c85d47b6",
+      "gitBlobSha": "bfb4f397b53a2b6d60b366d7a304bd5edabfd807",
+      "originalSha256": "76b2ad8a612335ebcbcea68fe79882bfece30fa577c2cb347f09f710c85d47b6",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor-selection.mjs",
+      "bytes": 1686,
+      "sha256": "ff0f043ff6c75e58d31515f0675648e2702935d05c8ace071a644ead64759b60",
+      "gitBlobSha": "ab7ea8910a144d90e7b0d7b64f92e64d12d79365",
+      "originalSha256": "ff0f043ff6c75e58d31515f0675648e2702935d05c8ace071a644ead64759b60",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/editor.css",
+      "bytes": 18472,
+      "sha256": "eb525bbd27645d0ff93893d34d4f4f3f24dd0a1f432e8e57cb172fabd6701144",
+      "gitBlobSha": "67985c68de791e4394f38994f64aaad5d0648135",
+      "originalSha256": "eb525bbd27645d0ff93893d34d4f4f3f24dd0a1f432e8e57cb172fabd6701144",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/export-jobs-ui.mjs",
+      "bytes": 9455,
+      "sha256": "66f85b2c130f5e92d2ad65d7c0187368d9354e396818e22efffa199b0d92d8fa",
+      "gitBlobSha": "0a262a69f7107c513f8d733ca377c3471ce1a17a",
+      "originalSha256": "66f85b2c130f5e92d2ad65d7c0187368d9354e396818e22efffa199b0d92d8fa",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/export-jobs.html",
+      "bytes": 7922,
+      "sha256": "f291a46a9ca8cb98ce7d349cc734922cb7462d0b70079322bd5fa201023dad8e",
+      "gitBlobSha": "2ded4cd4d473d4fe8d48a3c584727fef299d3b7d",
+      "originalSha256": "f291a46a9ca8cb98ce7d349cc734922cb7462d0b70079322bd5fa201023dad8e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-customer-ui.mjs",
+      "bytes": 33717,
+      "sha256": "f5384e1a5d3711a58dc8cdaef4ec72201403883790f2110d3974eccc80c67234",
+      "gitBlobSha": "f98c500e07ef4ab781d068536d0e6bc761ae2fb2",
+      "originalSha256": "f5384e1a5d3711a58dc8cdaef4ec72201403883790f2110d3974eccc80c67234",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-customer.css",
+      "bytes": 9596,
+      "sha256": "cd1aba8600a7747c3df123ff7e78d72f57b935c4f4bd593145bc002c48bf84a7",
+      "gitBlobSha": "bce4020f925701a536618d473533c8bed61f821b",
+      "originalSha256": "cd1aba8600a7747c3df123ff7e78d72f57b935c4f4bd593145bc002c48bf84a7",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-customer.html",
+      "bytes": 3930,
+      "sha256": "4fa9f5e8995e743b9b803fa20a76fbc634634c4644e7504984f766a8fa3f286b",
+      "gitBlobSha": "be63d9edd97fa0b5c69fb7e9e4156b7f1d4b1fa9",
+      "originalSha256": "4fa9f5e8995e743b9b803fa20a76fbc634634c4644e7504984f766a8fa3f286b",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-design-ui.mjs",
+      "bytes": 14796,
+      "sha256": "535f669a0e980d87905c05daa2c77cf871ba2dd49f3c9ac42947d8f895f3cd74",
+      "gitBlobSha": "e12fefd511c4b9b3d845724ef872f33d83b0d7e7",
+      "originalSha256": "535f669a0e980d87905c05daa2c77cf871ba2dd49f3c9ac42947d8f895f3cd74",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-interaction.mjs",
+      "bytes": 1670,
+      "sha256": "0c6f375dffa0c7ff85e163df604db321b75303ce00f4322da8f49b95765ae500",
+      "gitBlobSha": "7e5e0717f9e4e2eb05eaef7e28bafe0da4f300d9",
+      "originalSha256": "0c6f375dffa0c7ff85e163df604db321b75303ce00f4322da8f49b95765ae500",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-product-ui.mjs",
+      "bytes": 15931,
+      "sha256": "61e738cc81db108297d35177d13f9ec5ff43f1894be23afe2988d201a8afba1f",
+      "gitBlobSha": "302cc100df82d4a3fc3fab2a249b6e0caf8f9b7e",
+      "originalSha256": "61e738cc81db108297d35177d13f9ec5ff43f1894be23afe2988d201a8afba1f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-product.css",
+      "bytes": 5464,
+      "sha256": "25764b2d2204fcfa96a26f04537acd723a6e7d15b2b7b9ed7f891c69b606b3fd",
+      "gitBlobSha": "531fb55980e6a1871d510b3ef087126ff9cfa745",
+      "originalSha256": "25764b2d2204fcfa96a26f04537acd723a6e7d15b2b7b9ed7f891c69b606b3fd",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-product.html",
+      "bytes": 7174,
+      "sha256": "891d6e39fe1d4d2b86286587adcf719a65c84cdc4e20633e8a1e0a0a08ad2cbb",
+      "gitBlobSha": "f02564eed0ebf637bf2967f4fea02a7219c7861a",
+      "originalSha256": "891d6e39fe1d4d2b86286587adcf719a65c84cdc4e20633e8a1e0a0a08ad2cbb",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-variant-picker.html",
+      "bytes": 1015,
+      "sha256": "cfefa251ee75cf8c07e549b0e7c2e57e2a28a18a072865625af3249cb57e97a2",
+      "gitBlobSha": "4b8c6ee56d4d3cc66f220d22b436c244099d1a4f",
+      "originalSha256": "cfefa251ee75cf8c07e549b0e7c2e57e2a28a18a072865625af3249cb57e97a2",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-variant-picker.mjs",
+      "bytes": 2539,
+      "sha256": "861932376bcdd84b3aeb01d34a0be35caa1221bbe59513a4fad34679db3ac7f8",
+      "gitBlobSha": "0ca9aeebf6b6355c1f9a268aaa61c686e2ae28d5",
+      "originalSha256": "861932376bcdd84b3aeb01d34a0be35caa1221bbe59513a4fad34679db3ac7f8",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-variants-ui.mjs",
+      "bytes": 7427,
+      "sha256": "8c30266af2a313092054a717a0e7d06e37b6d800ddb9b0f1f9df4608a9620db0",
+      "gitBlobSha": "8655e04b186394534e67fcac9297890c35bde2b7",
+      "originalSha256": "8c30266af2a313092054a717a0e7d06e37b6d800ddb9b0f1f9df4608a9620db0",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-variants.css",
+      "bytes": 3684,
+      "sha256": "eace278681f8ccb59cd359c4601b4ce5894d228182b04d66d342413449075ff1",
+      "gitBlobSha": "d33ad374fd482c29d8b0f3bb20d53d223e7e9d99",
+      "originalSha256": "eace278681f8ccb59cd359c4601b4ce5894d228182b04d66d342413449075ff1",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/form-variants.html",
+      "bytes": 2063,
+      "sha256": "06b725ad845ccff723066e3544d289ab3a01047da8abf2bc304ebd209bafb657",
+      "gitBlobSha": "a5f18f3f2f6c52b058e544f0740127ba7b76a2fc",
+      "originalSha256": "06b725ad845ccff723066e3544d289ab3a01047da8abf2bc304ebd209bafb657",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/index.html",
+      "bytes": 15800,
+      "sha256": "bf9988c6d387bfbad3ded113eb29165fd3f282fdcdd07b5503d24138fde51cf4",
+      "gitBlobSha": "c5ba7dada8f5951add4e78bf60a2a77968c2cbc1",
+      "originalSha256": "bf9988c6d387bfbad3ded113eb29165fd3f282fdcdd07b5503d24138fde51cf4",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/material-surfaces/acrylic-provenance.json",
+      "bytes": 1963,
+      "sha256": "0b7804bdaf109dd560358c57181151035acc7ed45191a0b6f809b1ac6af025e7",
+      "gitBlobSha": "459f6d82459d96df4e18c35e1cb522024827ec38",
+      "originalSha256": "0b7804bdaf109dd560358c57181151035acc7ed45191a0b6f809b1ac6af025e7",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/material-surfaces/provenance.json",
+      "bytes": 1721,
+      "sha256": "7b4b77a8d742c05f7c1b2513890c199407c651e6809363a421ae916f6f4731ae",
+      "gitBlobSha": "1fc3b1fd3370b7aa998004b0aa0c29b9c7d5bb2a",
+      "originalSha256": "7b4b77a8d742c05f7c1b2513890c199407c651e6809363a421ae916f6f4731ae",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/material-surfaces/steel-reference-v4.png",
+      "bytes": 1342459,
+      "sha256": "bceaac4cd6bdba8aa1b5428625856d6eeec37a2d40ba0210bbbcb670b36198f4",
+      "gitBlobSha": "c5cf8d14da4cf67448b82cd4c52e98f693a1d99b",
+      "originalSha256": "bceaac4cd6bdba8aa1b5428625856d6eeec37a2d40ba0210bbbcb670b36198f4",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/material-surfaces/wood-leather-derived-v1.png",
+      "bytes": 2693305,
+      "sha256": "74bc3f6e77dd22c6de2eaa3827d4b576c46eead83658f445842ac90f8dee5d7a",
+      "gitBlobSha": "3154e71be9a648c08f15a4b622e6ed8cab86a063",
+      "originalSha256": "74bc3f6e77dd22c6de2eaa3827d4b576c46eead83658f445842ac90f8dee5d7a",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/merchant-downloads.mjs",
+      "bytes": 2173,
+      "sha256": "a6dbf20718a73e12547f6e10b959f40fe722a9849660c0b1d13901da32ad93cb",
+      "gitBlobSha": "abd48b09cead3e7cc49b1621b9e5a7929f348f96",
+      "originalSha256": "a6dbf20718a73e12547f6e10b959f40fe722a9849660c0b1d13901da32ad93cb",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/merchant-media.mjs",
+      "bytes": 4610,
+      "sha256": "88589dd11637765c3a604d9c02ac126944c6a1f647dc9e18d524deba81e8d6a7",
+      "gitBlobSha": "f1f301c591b8ffb9dfd10c597c1c04601b9943bb",
+      "originalSha256": "88589dd11637765c3a604d9c02ac126944c6a1f647dc9e18d524deba81e8d6a7",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/merchant-navigation.mjs",
+      "bytes": 1821,
+      "sha256": "7acca71b0fdbed5314fa55dbaaf3c42b9b869d6bcc801e5b1525c3b8d490f7e0",
+      "gitBlobSha": "5dc64fb625f0e3ce2da42325c38e05d4b1176bd4",
+      "originalSha256": "7acca71b0fdbed5314fa55dbaaf3c42b9b869d6bcc801e5b1525c3b8d490f7e0",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/merchant-request.mjs",
+      "bytes": 3066,
+      "sha256": "f5adf61a669b425be2238b01ff6bac9159ed4ff8221ff8dc8ef2398784dbb0d0",
+      "gitBlobSha": "c854fc8b53f6b6dbddf537142e400e08c29bab70",
+      "originalSha256": "f5adf61a669b425be2238b01ff6bac9159ed4ff8221ff8dc8ef2398784dbb0d0",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/native-production-ui.mjs",
+      "bytes": 4536,
+      "sha256": "4c761e8d4c0fd82e4595d605e899c1cf993ff21414775dd11bce8faaa63e4c5d",
+      "gitBlobSha": "ee65571813823e1ff34d67331c169e90f0a704fe",
+      "originalSha256": "4c761e8d4c0fd82e4595d605e899c1cf993ff21414775dd11bce8faaa63e4c5d",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/order-file-grants-ui.mjs",
+      "bytes": 4221,
+      "sha256": "f503bcb0d04229f57432b9db3cb8531e3212962eba54c465b8a230e50da8567c",
+      "gitBlobSha": "1fef530dee787cc5a2797bf95b09e3f27f902bf5",
+      "originalSha256": "f503bcb0d04229f57432b9db3cb8531e3212962eba54c465b8a230e50da8567c",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/order-output-context.mjs",
+      "bytes": 827,
+      "sha256": "24d40db49f21a8fc8a035758d12b0845be86a38b037de79a3e5314058171bfeb",
+      "gitBlobSha": "60ed9c6100de10a7933a52a6a036d42bd90b6dcb",
+      "originalSha256": "24d40db49f21a8fc8a035758d12b0845be86a38b037de79a3e5314058171bfeb",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/order-product-ui.mjs",
+      "bytes": 3151,
+      "sha256": "259b8ae84488f7760f30583f0d9565e27adc767f4f7902faf993d26c348a243f",
+      "gitBlobSha": "be1b1745b96a166936f2e42dd53eb4f315465e3c",
+      "originalSha256": "259b8ae84488f7760f30583f0d9565e27adc767f4f7902faf993d26c348a243f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/orders-ui.mjs",
+      "bytes": 5954,
+      "sha256": "02206a06039024f3f853b03575549bc4fcfc6f3923234dd5a25a615a2c1da5ca",
+      "gitBlobSha": "cb46764ed1c5e6e7ab8ddbe4a2af960ee74197ac",
+      "originalSha256": "02206a06039024f3f853b03575549bc4fcfc6f3923234dd5a25a615a2c1da5ca",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/orders.html",
+      "bytes": 4753,
+      "sha256": "f979cae5ffc43cd7cc8dfe1c0deeb959f9f26f28b9f8a039ae54a6a82e307db2",
+      "gitBlobSha": "5c1fc9f699c1c01f7d766a16a91f2c9110e6e2fd",
+      "originalSha256": "f979cae5ffc43cd7cc8dfe1c0deeb959f9f26f28b9f8a039ae54a6a82e307db2",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/output-checks-ui.mjs",
+      "bytes": 4763,
+      "sha256": "213cbd5af8843c28e44325b46b47ee6d83aa3b94e7a0d005dc6d9d6bda542d4b",
+      "gitBlobSha": "7ebb25b6a7cae430a0a2f9495a18fcc09a611a9b",
+      "originalSha256": "213cbd5af8843c28e44325b46b47ee6d83aa3b94e7a0d005dc6d9d6bda542d4b",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/output-specification.mjs",
+      "bytes": 2779,
+      "sha256": "46cdc727e7b3c983ade53ba607b17e9656c09b42750132087a033f029d925712",
+      "gitBlobSha": "8488344b8714d76e17121e6be1b750ca29036eb1",
+      "originalSha256": "46cdc727e7b3c983ade53ba607b17e9656c09b42750132087a033f029d925712",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/output-summary.mjs",
+      "bytes": 970,
+      "sha256": "225b3ecdfeba1d038a4d56f09799699a31c1a8d9dc27eb455f6331fd8a5735f1",
+      "gitBlobSha": "6d33e2cddec59b1395f372fa0c6af9fb6a2b4a28",
+      "originalSha256": "225b3ecdfeba1d038a4d56f09799699a31c1a8d9dc27eb455f6331fd8a5735f1",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/product-editor-ui.mjs",
+      "bytes": 43906,
+      "sha256": "1f0e0396bc00f2f0125481fc6578442a22e66190650f05c46788a592817c8d9e",
+      "gitBlobSha": "b002c3b2b995f2e576dfb6f14f5224d532ecf3c3",
+      "originalSha256": "1f0e0396bc00f2f0125481fc6578442a22e66190650f05c46788a592817c8d9e",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/product-options-ui.mjs",
+      "bytes": 4673,
+      "sha256": "4b93d388fbd79a23498caf696355449ab7992dd3ec48c04940f796ea42ef1ce8",
+      "gitBlobSha": "34a79b1675972815ac1a3575bab341004bbf6d9b",
+      "originalSha256": "4b93d388fbd79a23498caf696355449ab7992dd3ec48c04940f796ea42ef1ce8",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/product-overview-ui.mjs",
+      "bytes": 8962,
+      "sha256": "c3d06128c3139cc4995bc1e347beebac275f389c2f8e9562c02a7571fbca9ff8",
+      "gitBlobSha": "3df693c222592e5c9b96b212ee17849f69989008",
+      "originalSha256": "c3d06128c3139cc4995bc1e347beebac275f389c2f8e9562c02a7571fbca9ff8",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/production-profiles-ui.mjs",
+      "bytes": 8155,
+      "sha256": "8aff5c65bdcd4b6a077a107386db138890842ade6a618c8c0e4a4a4eec6eec2f",
+      "gitBlobSha": "1e68211af9cef4dee3640e6c643937a98e0980dc",
+      "originalSha256": "8aff5c65bdcd4b6a077a107386db138890842ade6a618c8c0e4a4a4eec6eec2f",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/production-profiles.css",
+      "bytes": 1455,
+      "sha256": "9975c9ae63350445228a8cd4d4580bc87b5262c60bef285787b8d1c778eb0718",
+      "gitBlobSha": "714686b7a278092bcd5b744b4a558dcb2fe9aa86",
+      "originalSha256": "9975c9ae63350445228a8cd4d4580bc87b5262c60bef285787b8d1c778eb0718",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/production-profiles.html",
+      "bytes": 4758,
+      "sha256": "fb065257011736a6d7ccfaf20754f5d127f770ba9d417b21bd456fc5eba840d8",
+      "gitBlobSha": "ba982389b507102953e9cf4359e93ac10dbc7f43",
+      "originalSha256": "fb065257011736a6d7ccfaf20754f5d127f770ba9d417b21bd456fc5eba840d8",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/profile-impact-ui.mjs",
+      "bytes": 3465,
+      "sha256": "54fbc213865f7287c2d790f2340ff9493d4100b59733afe7b18a1e70823f3a70",
+      "gitBlobSha": "1fa68343674dd43f6fe75f491e6d18846f4d6710",
+      "originalSha256": "54fbc213865f7287c2d790f2340ff9493d4100b59733afe7b18a1e70823f3a70",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/profiles-ui.mjs",
+      "bytes": 19472,
+      "sha256": "3f03e9ffa1ae0826744622122d22ca773949f7561577f4377eaf820cf3300356",
+      "gitBlobSha": "64072c2cfdc82ee15e195b662e192424b40e3a40",
+      "originalSha256": "3f03e9ffa1ae0826744622122d22ca773949f7561577f4377eaf820cf3300356",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/profiles.html",
+      "bytes": 8774,
+      "sha256": "915dc947361ec2b314f4bd70b9160c883e8377bde33d0eb4e7bfef940f12dd90",
+      "gitBlobSha": "9e9b1aaec84659d0e4bec215b366017517a05853",
+      "originalSha256": "915dc947361ec2b314f4bd70b9160c883e8377bde33d0eb4e7bfef940f12dd90",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/review-snapshots-ui.mjs",
+      "bytes": 11603,
+      "sha256": "42cde5d050575f4b69162433b7e8bba821be73dc19ccacbf861b9fd0368441ba",
+      "gitBlobSha": "0226cbf11c9e563f030eb3142febd185653003c4",
+      "originalSha256": "42cde5d050575f4b69162433b7e8bba821be73dc19ccacbf861b9fd0368441ba",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/review-snapshots.css",
+      "bytes": 4526,
+      "sha256": "4b22b50893307852c5105166a916893aea2e9f3d1239e55357c13d3e24ef3e39",
+      "gitBlobSha": "9131982c6bb541682db1c5eea6a309bfae01e1f6",
+      "originalSha256": "4b22b50893307852c5105166a916893aea2e9f3d1239e55357c13d3e24ef3e39",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/review-snapshots.html",
+      "bytes": 7068,
+      "sha256": "c42d92c8fba0b41ca66ef3bd5d7cc8b53e3c304bc43b88021a262093cd438f49",
+      "gitBlobSha": "aed7ff9005438cc14eaf8b6e0b3537735a8c53a2",
+      "originalSha256": "c42d92c8fba0b41ca66ef3bd5d7cc8b53e3c304bc43b88021a262093cd438f49",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/revision-compare-ui.mjs",
+      "bytes": 3246,
+      "sha256": "01ad682da8b3ff9f0a3a3db07e5e4a0745dbb25a1f9f9ad364406bf4689299ca",
+      "gitBlobSha": "288d34c347288ff64dc4bec428ffc276fad43321",
+      "originalSha256": "01ad682da8b3ff9f0a3a3db07e5e4a0745dbb25a1f9f9ad364406bf4689299ca",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/revision-compare.css",
+      "bytes": 1246,
+      "sha256": "b1fb7a7673c75b69986971d414ba146077b98957907e5dcd7b918d77c074e791",
+      "gitBlobSha": "74538b84e1df5a0830139da94216bdef6455f5f6",
+      "originalSha256": "b1fb7a7673c75b69986971d414ba146077b98957907e5dcd7b918d77c074e791",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/shop-preparation-ui.mjs",
+      "bytes": 6866,
+      "sha256": "84039a04f77a90b7e359a25ea7a0920111a909f4e8a19d040c0552ad10941376",
+      "gitBlobSha": "153a87012c78e95c1918135b32e8a9e903dae405",
+      "originalSha256": "84039a04f77a90b7e359a25ea7a0920111a909f4e8a19d040c0552ad10941376",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/shop-preparation.html",
+      "bytes": 3054,
+      "sha256": "a75ee90d93cadbfd4684ce35af3a1f94a5545259c15163860987be7165a84143",
+      "gitBlobSha": "0d293f46a130dbfad5ffce08870ae51eaf4ef6af",
+      "originalSha256": "a75ee90d93cadbfd4684ce35af3a1f94a5545259c15163860987be7165a84143",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/shop-transfer-ui.mjs",
+      "bytes": 4970,
+      "sha256": "f2df48f3cb132438f0d4efc264eaa69f6a93a4d1b8ced4cdf1c085508ba115df",
+      "gitBlobSha": "c0f8d1c24232210266c4c16d93b59de871238db8",
+      "originalSha256": "f2df48f3cb132438f0d4efc264eaa69f6a93a4d1b8ced4cdf1c085508ba115df",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/steel-options-ui.mjs",
+      "bytes": 8721,
+      "sha256": "9443593168afc5f65eddf2ba658719e221bb28f8c08d948d056f08768f7f9ce2",
+      "gitBlobSha": "83ee44af049d5a06c891c38105d7c90c4ddbc855",
+      "originalSha256": "9443593168afc5f65eddf2ba658719e221bb28f8c08d948d056f08768f7f9ce2",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/style.css",
+      "bytes": 27207,
+      "sha256": "04ce55cc1091cbcb24c5cbf2a21648a13def1dc862e051a05dd828a6684eae74",
+      "gitBlobSha": "fe33f80216c3981d1512b4fa648bf18bc5d6b7ae",
+      "originalSha256": "04ce55cc1091cbcb24c5cbf2a21648a13def1dc862e051a05dd828a6684eae74",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/variant-batch-reader.mjs",
+      "bytes": 938,
+      "sha256": "45339b3390115ee67b9a7622de97245d3ec7e58553e9534aba0cdcc617730df6",
+      "gitBlobSha": "b373689719894387484ef6204ba5866f7871b7d1",
+      "originalSha256": "45339b3390115ee67b9a7622de97245d3ec7e58553e9534aba0cdcc617730df6",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/variant-batch-ui.mjs",
+      "bytes": 10449,
+      "sha256": "4f9f84144594853502db7a9ae1455871472ef48f144a09abce8649aaed3e7180",
+      "gitBlobSha": "4ec9c60cdc3461b88ffd857dcd619b51e35a6f2d",
+      "originalSha256": "4f9f84144594853502db7a9ae1455871472ef48f144a09abce8649aaed3e7180",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/variant-batch.html",
+      "bytes": 4736,
+      "sha256": "3ae8477205e4c27ba03a9fbc8984f1b13ff083471b9a747929f56722c3b7705b",
+      "gitBlobSha": "4aeba77847a3638b40160656ccd5629d8ae5300d",
+      "originalSha256": "3ae8477205e4c27ba03a9fbc8984f1b13ff083471b9a747929f56722c3b7705b",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/workshop-shell.css",
+      "bytes": 2827,
+      "sha256": "74b373b4b7faf5e266e435b972672b8047df5176f3e850a5afe24c2f2bc7f21d",
+      "gitBlobSha": "bffe742bdfc3ea293de6cdd86406f4c13c2c64b6",
+      "originalSha256": "74b373b4b7faf5e266e435b972672b8047df5176f3e850a5afe24c2f2bc7f21d",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/ui/workshop-shell.mjs",
+      "bytes": 1686,
+      "sha256": "c745ad36fdc7f7fc5f87f29a5d58315e6d4ca45ace57449c2d0976b5cf5323f7",
+      "gitBlobSha": "a7ea48a386938efa6b3d7ac39134770d0acfdb5c",
+      "originalSha256": "c745ad36fdc7f7fc5f87f29a5d58315e6d4ca45ace57449c2d0976b5cf5323f7",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/variant-batch-report.mjs",
+      "bytes": 2632,
+      "sha256": "ce2d5e89ea2807835af535685f377a8954520494c5edbde70764c4c65d51ab19",
+      "gitBlobSha": "bcd668798b8f831f138ad0b7c708ea613a720762",
+      "originalSha256": "ce2d5e89ea2807835af535685f377a8954520494c5edbde70764c4c65d51ab19",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/variant-batch.mjs",
+      "bytes": 5179,
+      "sha256": "a7ec08feb0d2e9e16648cbcce69997b60d89d7b9091e9aead748a8dc7d300c72",
+      "gitBlobSha": "db8556548cd82dedf0dd24e4a1e0302989c5b32f",
+      "originalSha256": "a7ec08feb0d2e9e16648cbcce69997b60d89d7b9091e9aead748a8dc7d300c72",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/variant-export.mjs",
+      "bytes": 3844,
+      "sha256": "c0e8c23aaf9906e52acc9a2e48bfb4c63fbd8134f0962294bd671c94770765b6",
+      "gitBlobSha": "d16c9820a45c08288d2bc3529ace9fc1ff00bb05",
+      "originalSha256": "c0e8c23aaf9906e52acc9a2e48bfb4c63fbd8134f0962294bd671c94770765b6",
+      "modified": false
+    },
+    {
+      "path": "app/workshop/variant-export.py",
+      "bytes": 3742,
+      "sha256": "d8fe508870d8e85c2201372f9d35ec36f9d23490c937463c6a7f397b33c32fb6",
+      "gitBlobSha": "c61fdf9b32740bd2da5548d8bf714b79a5573eb3",
+      "originalSha256": "d8fe508870d8e85c2201372f9d35ec36f9d23490c937463c6a7f397b33c32fb6",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/AI-DESIGN.md",
+      "bytes": 11861,
+      "sha256": "87115774692b36dee18c35a7507619614c2aeb69998bf902915c52bfd10261a8",
+      "gitBlobSha": "d0c0af8e75ab195d667a87b69a671494221b92e1",
+      "originalSha256": "87115774692b36dee18c35a7507619614c2aeb69998bf902915c52bfd10261a8",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/MERCHANT-README.md",
+      "bytes": 8461,
+      "sha256": "3b49989ae554f9398817b755104793ced5e5b7a731a7af74ea757f3096b96c87",
+      "gitBlobSha": "7a5ed8f702e8eff46df4e1d7ca378e7e6fb5482c",
+      "originalSha256": "3b49989ae554f9398817b755104793ced5e5b7a731a7af74ea757f3096b96c87",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/README.md",
+      "bytes": 19373,
+      "sha256": "4cc41e44807d3184851c4aa906db49d3c2e91af310617a8731e185252b703620",
+      "gitBlobSha": "23d549bcd355ff606e4f019e66e69a1684f834cf",
+      "originalSha256": "4cc41e44807d3184851c4aa906db49d3c2e91af310617a8731e185252b703620",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/activate-merchant-release.py",
+      "bytes": 5708,
+      "sha256": "86dccbf157fce10568014032e8f21c10f2c67b84950b9113f87ee3059c128948",
+      "gitBlobSha": "e4c915a2b5cda83b258a5d05e958a58bff720461",
+      "originalSha256": "86dccbf157fce10568014032e8f21c10f2c67b84950b9113f87ee3059c128948",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/activate-merchant-release.test.py",
+      "bytes": 4001,
+      "sha256": "29ebe011e1ce68de0a027b79982b81f3fc3cad340d2b188754dc2bf617be2123",
+      "gitBlobSha": "d317dc73c089d9dddd057fe80ea6894c42db2fb5",
+      "originalSha256": "29ebe011e1ce68de0a027b79982b81f3fc3cad340d2b188754dc2bf617be2123",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/ai-design-config.mjs",
+      "bytes": 2223,
+      "sha256": "8247d62b18a60806fd033a36af4e3cf69abb8e82a4ccf0dee7270729cf45d282",
+      "gitBlobSha": "6100edecbc4685d2e7bb88cbabd188cf553b9f51",
+      "originalSha256": "8247d62b18a60806fd033a36af4e3cf69abb8e82a4ccf0dee7270729cf45d282",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/app.cjs",
+      "bytes": 1162,
+      "sha256": "2f88143dd8ce892b59978199c231b488144971e9149e05326105ad57bfe4b9b7",
+      "gitBlobSha": "c11db70f7307e834a5f1e6431d414c086231567c",
+      "originalSha256": "2f88143dd8ce892b59978199c231b488144971e9149e05326105ad57bfe4b9b7",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/check.mjs",
+      "bytes": 1625,
+      "sha256": "5cb9a336e4df0a290611745cc8165e5f00fd890b59c44518b9e21bec24aac335",
+      "gitBlobSha": "fc60ddf3657dadf68b2f8f70473bd32a513445a5",
+      "originalSha256": "5cb9a336e4df0a290611745cc8165e5f00fd890b59c44518b9e21bec24aac335",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/config.mjs",
+      "bytes": 5426,
+      "sha256": "5ff971d5436ad55dab3c9b23bd1f8b62a4b71c66a2e851ee80a6bfef89753775",
+      "gitBlobSha": "88bc29bfa9eb19c3e8d9b8af0fa1985927f5e77c",
+      "originalSha256": "5ff971d5436ad55dab3c9b23bd1f8b62a4b71c66a2e851ee80a6bfef89753775",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/diagnostics.cjs",
+      "bytes": 1142,
+      "sha256": "cbb824c91e40f36bc730898fcc59cf31aa4ef25e7415a289c791d1c26b67f276",
+      "gitBlobSha": "50e57ee43e4a8fe9ec36024d079adab2c09d07ee",
+      "originalSha256": "cbb824c91e40f36bc730898fcc59cf31aa4ef25e7415a289c791d1c26b67f276",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/enable-approved-design-editing.mjs",
+      "bytes": 5754,
+      "sha256": "08c38a1333ff746296d8a3a5626f4e3052613093787577c1f6513e0f140867ef",
+      "gitBlobSha": "433d535583d6c13c693852c66610c868719be235",
+      "originalSha256": "08c38a1333ff746296d8a3a5626f4e3052613093787577c1f6513e0f140867ef",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/enable-merchant-test-cart.mjs",
+      "bytes": 2522,
+      "sha256": "d5cd04fb69b61660be0a94a62aac9af6418bf352869b41b633d2d2e4b35dafc2",
+      "gitBlobSha": "63df435209a2f1f1a93fdf3dd32e3329992d77a8",
+      "originalSha256": "d5cd04fb69b61660be0a94a62aac9af6418bf352869b41b633d2d2e4b35dafc2",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/enable-order-webhook.mjs",
+      "bytes": 2404,
+      "sha256": "1cf39adcb10612b05d5e6d59be77c477e6c24cbabbbbaae6ce2bde1c6661cc6a",
+      "gitBlobSha": "873260fdc2dee7cfbddc529bcecb637a2827b250",
+      "originalSha256": "1cf39adcb10612b05d5e6d59be77c477e6c24cbabbbbaae6ce2bde1c6661cc6a",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/fix-approved-photo-masks.mjs",
+      "bytes": 5841,
+      "sha256": "f64aa175b37137cfb3d002dfbf2426780bb3ad2318b451aafca3b5cb3e41c1fc",
+      "gitBlobSha": "375ac8054827f8392143894d2ab1a78810ddac6f",
+      "originalSha256": "f64aa175b37137cfb3d002dfbf2426780bb3ad2318b451aafca3b5cb3e41c1fc",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/import-approved-designs.mjs",
+      "bytes": 5372,
+      "sha256": "94f9b83fb02faf6e4f2282b40783ea31343bbd2a4bd6a3a612f213375bb00fcf",
+      "gitBlobSha": "0fa473b7e704725a27f285b83728bc6be0788948",
+      "originalSha256": "94f9b83fb02faf6e4f2282b40783ea31343bbd2a4bd6a3a612f213375bb00fcf",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/import-existing-specimens.mjs",
+      "bytes": 3192,
+      "sha256": "80acd28b115b2dc096e0fd9fba7802e746d33fc52e08f8bc46415366318e90e8",
+      "gitBlobSha": "1ca90c5de84de283e0c388df0f456e051b618040",
+      "originalSha256": "80acd28b115b2dc096e0fd9fba7802e746d33fc52e08f8bc46415366318e90e8",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/install-archive.py",
+      "bytes": 6825,
+      "sha256": "fe0b6551480414b18347e4ac76c4cf8157b2eb7477383db3d00d5e766e79015e",
+      "gitBlobSha": "645ed2dbb1d7698308c3386a8e5baca9bce83792",
+      "originalSha256": "fe0b6551480414b18347e4ac76c4cf8157b2eb7477383db3d00d5e766e79015e",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/lock.mjs",
+      "bytes": 1138,
+      "sha256": "5991c860d0079259bda1b184a0b89e4162824e4b31b4cdf531b537a91e70fb75",
+      "gitBlobSha": "c41c8301daa239e13f0d51aa48223d5618ba5e51",
+      "originalSha256": "5991c860d0079259bda1b184a0b89e4162824e4b31b4cdf531b537a91e70fb75",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/merchant-app.cjs",
+      "bytes": 1032,
+      "sha256": "3b181f932d39fec5d5a3d2d7793e27d4b803b056cef42ebde9df49b12bf64c34",
+      "gitBlobSha": "94462bec9c4fadba3b12872c722d3d8256d751e9",
+      "originalSha256": "3b181f932d39fec5d5a3d2d7793e27d4b803b056cef42ebde9df49b12bf64c34",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/merchant-config.mjs",
+      "bytes": 7706,
+      "sha256": "56508afbaf6ad82defdc5ca99b65872071ec77ede96615a50530f8333a6f9d02",
+      "gitBlobSha": "05588c6f66dc8806c73dd1fb0190f2151eb0f31b",
+      "originalSha256": "56508afbaf6ad82defdc5ca99b65872071ec77ede96615a50530f8333a6f9d02",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/merchant-manage.mjs",
+      "bytes": 793,
+      "sha256": "3b7d0347b9ef8837479c51fb2d6a41e24ec595cbfb3fd9f545ee006f91917b50",
+      "gitBlobSha": "da356d715f123f16e181d0a1c02808f473ee0aaf",
+      "originalSha256": "3b7d0347b9ef8837479c51fb2d6a41e24ec595cbfb3fd9f545ee006f91917b50",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/merchant-runtime.mjs",
+      "bytes": 5898,
+      "sha256": "42ed8509430783b6f0d4e39bd2bef712518102a7e9b45b4eca48faed961874e0",
+      "gitBlobSha": "0c2be0631d4c980f09d693924904e2b0df82ca5e",
+      "originalSha256": "42ed8509430783b6f0d4e39bd2bef712518102a7e9b45b4eca48faed961874e0",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/order-webhook-probe.mjs",
+      "bytes": 826,
+      "sha256": "7a4a566ad45e139ef893293a309ee0eb0b90afbc3133c68df88160c5e8dc8d76",
+      "gitBlobSha": "27131b94ccd96f2ab7a4c71185cce83a01aa49c2",
+      "originalSha256": "7a4a566ad45e139ef893293a309ee0eb0b90afbc3133c68df88160c5e8dc8d76",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/order-webhook-registration.mjs",
+      "bytes": 5623,
+      "sha256": "8e4f217542804bd6539005dce1d90f6e472baf7e92b530462c05ef3ff4654599",
+      "gitBlobSha": "42b817039dc8ff0a5316983860aef0f4e9be3091",
+      "originalSha256": "8e4f217542804bd6539005dce1d90f6e472baf7e92b530462c05ef3ff4654599",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/pin-merchant-test-cart.mjs",
+      "bytes": 5190,
+      "sha256": "a5c30a0a0f2331ae7b0c24ad815dd7db7de5cf955ab373b2bfa697c5f3150cf5",
+      "gitBlobSha": "4991e2f0181324f7e54c8ee632f48cfa4b818b80",
+      "originalSha256": "a5c30a0a0f2331ae7b0c24ad815dd7db7de5cf955ab373b2bfa697c5f3150cf5",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/prepare.mjs",
+      "bytes": 2358,
+      "sha256": "5f2871a963498b1e8cf234134825f1e4586fe1c689925408c67f01c37db06677",
+      "gitBlobSha": "3f768cbd2eef685fb812b9b61fd141a08fc8ccde",
+      "originalSha256": "5f2871a963498b1e8cf234134825f1e4586fe1c689925408c67f01c37db06677",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/register-order-webhook.mjs",
+      "bytes": 1400,
+      "sha256": "3936256578be2836e03feee1d7808678f6536f97fb587335fd5de87f41643e13",
+      "gitBlobSha": "507da234341095c11c78cad9e59e8cc978f08728",
+      "originalSha256": "3936256578be2836e03feee1d7808678f6536f97fb587335fd5de87f41643e13",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/requirements.txt",
+      "bytes": 249,
+      "sha256": "d4d9abcfb2c3f5b2f42a409fa2dae58e584b4abdb3041f1d1e3503834ee3735c",
+      "gitBlobSha": "cd6affdd001bbb8192f0c120e622bc8269ec1ef2",
+      "originalSha256": "d4d9abcfb2c3f5b2f42a409fa2dae58e584b4abdb3041f1d1e3503834ee3735c",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/runtime.mjs",
+      "bytes": 4900,
+      "sha256": "cbbd131db4abb7fc476d78744638c7287cc824e0a06600c1df5973d76170e0ce",
+      "gitBlobSha": "41ab8058326cd238f17369e2c64057c57bdda534",
+      "originalSha256": "cbbd131db4abb7fc476d78744638c7287cc824e0a06600c1df5973d76170e0ce",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/shopify-preflight.mjs",
+      "bytes": 2808,
+      "sha256": "a98e8f87c7ba178deeda3eadd2a649c6bd60b22e0bdae3014f869365fe154316",
+      "gitBlobSha": "61767a2b4eaae720f86501dd87b47613f6cd620a",
+      "originalSha256": "a98e8f87c7ba178deeda3eadd2a649c6bd60b22e0bdae3014f869365fe154316",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/snapshot-merchant-data.py",
+      "bytes": 2206,
+      "sha256": "3f0924c62bc6befc8f88c49eda7ca02691e0feb45584a1d6f1ea311622293840",
+      "gitBlobSha": "01a61c75985067a98966190408b328ed17036361",
+      "originalSha256": "3f0924c62bc6befc8f88c49eda7ca02691e0feb45584a1d6f1ea311622293840",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/stage-merchant-release.py",
+      "bytes": 2658,
+      "sha256": "11e33d5fcc80f97cf6f45c963a59b2e83b00aaa856eb42242408b3d817c7d41a",
+      "gitBlobSha": "3d61f0d89f1d7b3b61e60a4212027c6488f170fe",
+      "originalSha256": "11e33d5fcc80f97cf6f45c963a59b2e83b00aaa856eb42242408b3d817c7d41a",
+      "modified": false
+    },
+    {
+      "path": "ops/plesk/upgrade-memorial-font.mjs",
+      "bytes": 5533,
+      "sha256": "5edf89849f3922ae44fef7bb975354a48891c8ecdefb09455b98b5013bb12d64",
+      "gitBlobSha": "ead5739803af15a6332c0da366156483bd07b32a",
+      "originalSha256": "5edf89849f3922ae44fef7bb975354a48891c8ecdefb09455b98b5013bb12d64",
+      "modified": false
+    },
+    {
+      "path": "package.json",
+      "bytes": 532,
+      "sha256": "67e713b187ecc0a1e408768e39d7a78171cb37e31df3f0f8517fe2f27db5fe51",
+      "gitBlobSha": "532b8ea92ee174dae4fb6187f4c61dcc31510335",
+      "originalSha256": "67e713b187ecc0a1e408768e39d7a78171cb37e31df3f0f8517fe2f27db5fe51",
+      "modified": false
+    },
+    {
+      "path": "public/robots.txt",
+      "bytes": 26,
+      "sha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+      "gitBlobSha": "1f53798bb4fe33c86020be7f10c44f29486fd190",
+      "originalSha256": "331ea9090db0c9f6f597bd9840fd5b171830f6e0b3ba1cb24dfa91f0c95aedc1",
+      "modified": false
+    }
+  ],
+  "excluded": [
+    "Private databases and snapshots",
+    "Customer and order data",
+    "Credentials and runtime configuration",
+    "node_modules and runtimes",
+    "Generated .public-preview or cache",
+    "New Ops helpers still being finalized",
+    "Shopify Function project: separate follow-up"
+  ],
+  "boundaries": [
+    "Source snapshot is not a claim that the original manifest commit exists in GitHub.",
+    "No deployment or main merge by this commit.",
+    "Product revision 6, trusted app metafield update, Function deployment and real test orders require separate evidence.",
+    "Standalone source startup requires separately held private data/configuration and documented runtime prerequisites."
+  ]
+}

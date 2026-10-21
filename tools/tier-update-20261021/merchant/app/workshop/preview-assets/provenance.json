@@ -1,0 +1,24 @@
+{
+  "purpose": "Dashboard-only previews; original production assets unchanged",
+  "generator": "PyMuPDF Pixmap resize 543x724, JPEG quality 82",
+  "files": [
+    {
+      "source": "app/designs/acrylic-unser-anfang/reference.png",
+      "sourceSha256": "68b1000ddce2d1cd92446ed3565b75eab9e35680fea4d58a93d983447db44d74",
+      "output": "app/workshop/preview-assets/reference.jpg",
+      "width": 543,
+      "height": 724,
+      "bytes": 63988,
+      "sha256": "610bbd72544d67751710aeba176cf20d33ccabec913f78e9b63657b96e67e18a"
+    },
+    {
+      "source": "app/designs/acrylic-unser-anfang/scene-empty-v2.png",
+      "sourceSha256": "0272e621528bb423ff699563061c940264fe9eeff3fa44bf1287658003ac1ca2",
+      "output": "app/workshop/preview-assets/scene-empty-v2.jpg",
+      "width": 543,
+      "height": 724,
+      "bytes": 21917,
+      "sha256": "bfcc8d121c44f78abcd349c6e317baf39840c066934c8f356f9f5777009a4512"
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "schema": "gravuru-isolated-tier-pricing-sources/v1",
+  "sourceCommit": "d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb",
+  "note": "Pricing dependency closure from the audited release, plus the original UX price-display source. Only contract.mjs, commerce-model.mjs and the price updater/import in ux.mjs changed here. Other dependency bytes remain unchanged. No private product data or credentials copied by this change.",
+  "files": [
+    {
+      "path": "app/configurator/variant-m/acrylic-product.mjs",
+      "bytes": 7370,
+      "sha256": "ad3a25d3ec6ea67272ef11a7c925f5ae0d57bf82335f9b65a9cb04fe5d0cbe8f"
+    },
+    {
+      "path": "app/configurator/variant-m/artwork-resource.mjs",
+      "bytes": 1459,
+      "sha256": "11b75cf83c6d893ba5260fa6211a93171dc4e9497868727071f8eb56e45f78a0"
+    },
+    {
+      "path": "app/configurator/variant-m/commerce-model.mjs",
+      "bytes": 3207,
+      "sha256": "b1d8664f4197f8fe54ca7bee1c36ed61b30816763f40431447794092115f061d"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "bytes": 18087,
+      "sha256": "b37a0c3525a140aac071cb8712fbbd7dd076d24f4309e28a83a5ae41de2c2d78"
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "bytes": 3363,
+      "sha256": "feaa08fc3f4fdb6685bcd927e68d84db0c60165d455a5bd5a20a84d401e591c0"
+    },
+    {
+      "path": "app/configurator/variant-m/field-mapping.mjs",
+      "bytes": 2321,
+      "sha256": "e31fa9379980d9b9f4a284da7248f83a948d838c5de6cb9a7dc6ed3bb679e711"
+    },
+    {
+      "path": "app/configurator/variant-m/local-pilot.mjs",
+      "bytes": 3742,
+      "sha256": "68943dc7a966e3303d82cde604e73cb582c24a00ec6ad9e9d6061f790c3e4059"
+    },
+    {
+      "path": "app/configurator/variant-m/material-surface.mjs",
+      "bytes": 2112,
+      "sha256": "673c100141b3d224faff29b14717b6b01db1360c3bd45fb1792a5db59a0e7ff9"
+    },
+    {
+      "path": "app/configurator/variant-m/option-media.mjs",
+      "bytes": 3143,
+      "sha256": "8c4278fba799a06295a99051ca3c2b0682242f4086df407ce7546bf3daf401ef"
+    },
+    {
+      "path": "app/configurator/variant-m/option-standard-images.mjs",
+      "bytes": 112882,
+      "sha256": "3eaa4a40b2d6c5f99f0516948cf2dcfeafc214c8a73ed02c934fbe7d60a523c7"
+    },
+    {
+      "path": "app/configurator/variant-m/spacer-cap.mjs",
+      "bytes": 1730,
+      "sha256": "349ac8759b93ccbeed17c0a3e2f849ad8dfdb5ed214348b7ebd86bd16fa4b753"
+    },
+    {
+      "path": "app/configurator/variant-m/steel-formats.mjs",
+      "bytes": 5013,
+      "sha256": "89687b0e59d21ac3d4a6a013924064305de7f648e1ae13ccdf85c05f2041fbc6"
+    },
+    {
+      "path": "app/configurator/variant-m/text-ink-bounds.mjs",
+      "bytes": 4284,
+      "sha256": "d46fb799cfd4505f0ef3405d58c7b04427c40758cfcd4443a959f8bddfb6e2e2"
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "bytes": 3987,
+      "sha256": "9ccbb6d5c00ff4a7943a7309996e858c6a97c09b476410d6f74e2e0ee8a4d3b5"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "bytes": 52901,
+      "sha256": "c10b4b897421a769f4809a2a5515dc87b613edc8cad352a8658da78a6cf13112"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/design-content.mjs",
+      "bytes": 11184,
+      "sha256": "c49e43b7e74c3c5049e02f5a1e8dc378e060a75a73c6aef1e9ab1add51898060"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbell-preview.mjs",
+      "bytes": 4035,
+      "sha256": "25c1ad075539607d1111a198995bf4e50f297ae1ba6076fea87f7acfdb7ac392"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbell-release.mjs",
+      "bytes": 2538,
+      "sha256": "acf56d71c97f11478b4d96ebbca03645221dafd4bd660d393d5d72b88ef62c30"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/doorbells.mjs",
+      "bytes": 9588,
+      "sha256": "0b2b5e150b3a31edcccd7e19673f2f289b5e5f78e2389ba41bbe2da2f745f8cd"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/motifs.mjs",
+      "bytes": 4137,
+      "sha256": "afeac5688d2fe48a31bf72dff08ebf68f6804175e6a2da6d593ce574f5498547"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/mounting-access.mjs",
+      "bytes": 2361,
+      "sha256": "12426c3c998479e38d2924b3dcdde61ce6dcbb7d57d3ceead0647a3d30f72e2b"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/processing-profiles.mjs",
+      "bytes": 2651,
+      "sha256": "e7870d83de272737ef1797714899cacf9819d558cd118578de6e26bffdd75efd"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/runtime-contract.mjs",
+      "bytes": 6363,
+      "sha256": "89195038cf8fdfe8a4603307bb3e692cd1c468c82c2ce7803201cb03c758f669"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-products.mjs",
+      "bytes": 6961,
+      "sha256": "9ce730b4240c64fb756636cefad667934e0d5015725e90fa3cbbfa88493ef89d"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/universal-elements.mjs",
+      "bytes": 4607,
+      "sha256": "b9237d7e1194b84778e38fc57850561cee7fefb2b49ce5a42f093b98f20b7d17"
+    },
+    {
+      "path": "app/platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "bytes": 90922,
+      "sha256": "b7ca4450b19559a1d50eb381adcee94b82449674be4cd17789d9beba7e6122a1"
+    }
+  ],
+  "tierReference": {
+    "repository": "Chris83638w/gravuru-2027",
+    "commit": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
+    "paths": [
+      "app/configurator/variant-m/contract.mjs",
+      "app/configurator/variant-m/commerce-model.mjs",
+      "app/workshop/quantity-tier-defaults.json"
+    ],
+    "ruleId": "entscheidung-20261020-gedenktafeln",
+    "integration": "Only quantity-tier helpers/price metadata/discount gate ported; no dev UI, rights, field/back, geometry or assets copied."
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "schema": "gravuru-isolated-tier-update-verification/v1",
+  "verifiedAt": "2026-10-21T19:23:42.650Z",
+  "runtime": "v24.19.0",
+  "sourceCommit": "d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb",
+  "ruleReferenceCommit": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
+  "userRuleOverride": "2026-10-21 explicit complete-unit discount including photos, motifs and mounting; one per-unit half-up rounding",
+  "modifiedModules": [
+    {
+      "file": "app/configurator/variant-m/contract.mjs",
+      "beforeSha256": "b37a0c3525a140aac071cb8712fbbd7dd076d24f4309e28a83a5ae41de2c2d78",
+      "afterSha256": "dfd4d014f0f3619a28860e339d5bfc7661dfb9ee85b2ea8dc3b43557b32e6793"
+    },
+    {
+      "file": "app/configurator/variant-m/commerce-model.mjs",
+      "beforeSha256": "b1d8664f4197f8fe54ca7bee1c36ed61b30816763f40431447794092115f061d",
+      "afterSha256": "99ebdecc4359b41069776496924ca5f53e3876a7442ece8c387733c5ba7c1f3d"
+    },
+    {
+      "file": "app/configurator/variant-m/ux.mjs",
+      "beforeSha256": "c10b4b897421a769f4809a2a5515dc87b613edc8cad352a8658da78a6cf13112",
+      "afterSha256": "30ad17d322db11b1e7d376af1a2d4be6f1173a9ffd1f6f2c25e7a38ac22aa99c"
+    }
+  ],
+  "automatedTests": {
+    "count": 29,
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0
+  },
+  "actualProductRead": {
+    "productId": "cfg_b4fd3f0c-1d36-4708-b65a-2450134c4ef1",
+    "sourceRevision": 5,
+    "sourceDocumentSha256": "4fbef90a3f872cc2b56bf7f381211205af8acfa12faa309484c22f0d6d0b557f",
+    "mode": "readonly immutable restore DB",
+    "sourcePhotoBytesRead": false,
+    "uploadMarkerSynthetic": true
+  },
+  "candidateRule": {
+    "quantityTiers": [
+      {
+        "minQuantity": 2,
+        "percentOff": 6
+      },
+      {
+        "minQuantity": 3,
+        "percentOff": 10
+      }
+    ],
+    "quantityTierScope": "complete-unit",
+    "persistence": "in-memory clone only; no product revision created or modified"
+  },
+  "legacyExactComparisons": {
+    "passed": 45,
+    "mountingOptions": 9,
+    "quantities": [
+      1,
+      2,
+      3,
+      4,
+      99
+    ],
+    "meaning": "Deep-equal full return values versus unchanged actual-release commercePrice without quantityTiers"
+  },
+  "candidateResults": [
+    {
+      "quantity": 1,
+      "unitCents": 3298,
+      "totalCents": 3298,
+      "listUnitCents": 3298,
+      "quantityTierScope": "complete-unit",
+      "quantityTier": null,
+      "quantityTierDiscountCents": 0,
+      "chargedUploads": 1,
+      "additionalMotifs": 0,
+      "passed": true
+    },
+    {
+      "quantity": 2,
+      "unitCents": 3100,
+      "totalCents": 6200,
+      "listUnitCents": 3298,
+      "quantityTierScope": "complete-unit",
+      "quantityTier": {
+        "minQuantity": 2,
+        "percentOff": 6
+      },
+      "quantityTierDiscountCents": 198,
+      "chargedUploads": 1,
+      "additionalMotifs": 0,
+      "passed": true
+    },
+    {
+      "quantity": 3,
+      "unitCents": 2968,
+      "totalCents": 8904,
+      "listUnitCents": 3298,
+      "quantityTierScope": "complete-unit",
+      "quantityTier": {
+        "minQuantity": 3,
+        "percentOff": 10
+      },
+      "quantityTierDiscountCents": 330,
+      "chargedUploads": 1,
+      "additionalMotifs": 0,
+      "passed": true
+    },
+    {
+      "quantity": 4,
+      "unitCents": 2968,
+      "totalCents": 11872,
+      "listUnitCents": 3298,
+      "quantityTierScope": "complete-unit",
+      "quantityTier": {
+        "minQuantity": 3,
+        "percentOff": 10
+      },
+      "quantityTierDiscountCents": 330,
+      "chargedUploads": 1,
+      "additionalMotifs": 0,
+      "passed": true
+    },
+    {
+      "quantity": 99,
+      "unitCents": 2968,
+      "totalCents": 293832,
+      "listUnitCents": 3298,
+      "quantityTierScope": "complete-unit",
+      "quantityTier": {
+        "minQuantity": 3,
+        "percentOff": 10
+      },
+      "quantityTierDiscountCents": 330,
+      "chargedUploads": 1,
+      "additionalMotifs": 0,
+      "passed": true
+    }
+  ],
+  "sideEffects": {
+    "network": false,
+    "browser": false,
+    "databaseChanged": false,
+    "sourceChanged": false,
+    "deploy": false,
+    "shopify": false
+  },
+  "boundaries": [
+    "No current live Konfigurator or Shopify behavior verified.",
+    "Root must create explicit new immutable product revision and bind its real Shopify complete-unit tier contract.",
+    "No new fields/backside/geometry/rights functionality ported.",
+    "UX updatePrice executes with DOM sinks in unit tests; visual/live-browser validation remains separate.",
+    "Historical unscoped rules retain their earlier arithmetic but backend refuses new purchase bindings without complete-unit scope."
+  ]
+}

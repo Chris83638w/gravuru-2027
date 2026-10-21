@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#183e35">
+  <title>Profile · Gravuru 2027 Werkstatt</title>
+  <link rel="stylesheet" href="/workshop-ui/style.css"><link rel="stylesheet" href="/workshop-ui/revision-compare.css"><script type="module" src="/workshop-ui/profiles-ui.mjs"></script>
+<link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><script type="module" src="/workshop-ui/workshop-shell.mjs"></script></head>
+<body class="library-page">
+<a class="skip-link" href="#main">Zum Inhalt</a>
+<div class="app-layout">
+  <aside class="sidebar" aria-label="Werkstattnavigation">
+    <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span>gravuru<small>WERKSTATT · 2027</small></span></a>
+<nav aria-label="Hauptnavigation"><a class="nav-item" href="/werkstatt/"><img src="/workshop-ui/editor-icons/cube.svg" alt="" aria-hidden="true">Produkte</a><a class="nav-item" href="/werkstatt/?view=masters"><img src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Mastervorlagen</a><a class="nav-item" href="/werkstatt/serien/"><img src="/workshop-ui/editor-icons/stack-2.svg" alt="" aria-hidden="true">Stapelverarbeitung</a><a class="nav-item" href="/werkstatt/bestellungen/"><img src="/workshop-ui/editor-icons/shopping-cart.svg" alt="" aria-hidden="true">Bestellungen</a></nav><div class="workshop-tools"><span data-workshop-session role="status">Verbindung wird geprüft …</span><details class="management-menu"><summary>Verwaltung</summary><nav aria-label="Verwaltung"><a href="/werkstatt/profile/" aria-current="page">Schriften &amp; Profile</a><a href="/werkstatt/ausgaben/">Ausgaben</a><a href="/werkstatt/fertigung/">Fertigungsprofile</a><a href="/werkstatt/ausfuehrungen/">Ausführungen</a><a href="/werkstatt/konturen/">Formkonturen</a><a href="/werkstatt/pruefstaende/">Prüfstände</a><a href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a></nav></details></div>
+</aside>
+  <main id="main">
+    <header class="page-heading"><div><p class="eyebrow">DEINE PROFILBIBLIOTHEK</p><h1>Die passende Auswahl. Für jedes Produkt.</h1><p>Schriften, Motive, Farben und Bestseller einmal zusammenstellen und gezielt zuordnen.</p></div><button class="primary" id="new-profile" type="button" disabled>＋ Neues Profil</button></header>
+    <div id="profile-notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="library-editor" aria-labelledby="font-upload-heading"><h2 id="font-upload-heading">Schriften hochladen</h2><p>TTF oder OTF bis 8 MB. Anschließend unter „Neues Profil“ → „Schriften“ zu einer Gruppe zusammenstellen.</p><label>Schriftdatei<input id="font-upload-file" type="file" disabled accept=".ttf,.otf"></label><p id="font-upload-status" role="status"></p></section>
+<section class="overview" aria-label="Gespeicherte Profile">
+      <h2>Deine Profile <span id="profile-count" class="count">–</span></h2>
+      <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="profile-search" type="search" placeholder="Profilname suchen" aria-label="Profile suchen"></label><label class="library-filter">Profilart<select id="profile-filter"><option value="">Alle Arten</option><option value="fonts">Schriften</option><option value="motifs">Motive</option><option value="colors">Farben</option><option value="bestsellers">Bestseller</option></select></label><button id="refresh-profiles" type="button">Aktualisieren</button></div>
+      <div id="profile-list" class="product-list"><p class="empty-state">Profile werden geladen …</p></div>
+    </section>
+    <section id="profile-editor" class="overview library-editor" hidden aria-label="Profil bearbeiten">
+      <div class="editor-heading"><div><p class="eyebrow" id="profile-record-id">NEUES PROFIL</p><h2 id="profile-title">Profil zusammenstellen</h2><small id="profile-save-state"></small></div><button class="primary" id="save-profile" form="profile-form" type="submit">Profil speichern</button></div>
+      <div id="profile-conflict" class="conflict-banner" hidden><strong>Dieses Profil wurde zwischenzeitlich geändert.</strong><p>Deine Auswahl bleibt erhalten. Lade den aktuellen Stand oder sichere deine Auswahl als neues Profil.</p><div class="button-row"><button id="reload-profile" type="button">Aktuellen Stand laden …</button><button id="save-profile-copy" type="button">Als neues Profil sichern</button></div></div>
+      <form id="profile-form" autocomplete="off"><div class="form-grid"><label>Profilname<input id="profile-name" required maxlength="200" placeholder="Zum Beispiel: Schriften für Acrylglasbilder"></label><label>Profilart<select id="profile-type"><option value="fonts">Schriften</option><option value="motifs">Motive</option><option value="colors">Farben</option><option value="bestsellers">Bestseller</option></select><p class="field-help">Die Art eines gespeicherten Profils bleibt erhalten.</p></label></div>
+        <div class="library-choices"><section aria-label="Verfügbare Einträge"><h3 id="catalog-title">Aus dem Katalog auswählen</h3><div id="catalog-controls"><label>Eintrag suchen<input id="catalog-search" type="search" placeholder="Name oder Kennung"></label><div id="catalog-list" class="catalog-list"></div></div>
+          <div id="color-controls" hidden><p>Stelle die angebotenen Vorschaufarben mit dem Farbwähler oder einem Farbwert zusammen.</p><div class="color-entry"><input type="color" id="profile-color-picker" value="#1e5747" aria-label="Farbe auswählen"><label>Farbwert<input id="profile-color-hex" value="#1e5747" maxlength="7" spellcheck="false" aria-label="Farbwert als Hexcode"></label><button id="add-profile-color" type="button">Hinzufügen</button></div></div>
+        </section><section aria-label="Ausgewählte Einträge"><h3>Deine Auswahl <span id="selected-count" class="count">0</span></h3><p class="field-help">Die Reihenfolge wird übernommen. Über die Pfeile kannst du sie ändern.</p><ol id="selected-items" class="selected-items"></ol></section></div>
+      </form>
+    </section>
+    <section class="overview library-settings" aria-label="Standard und Kategorien">
+      <div class="section-heading"><div><p class="eyebrow">ZUORDNUNGEN</p><h2>Standard und Kategorien</h2><p>Ein Produkt erbt den Standard und dann seine Kategorieprofile. Eine eigene Produktzuordnung hat Vorrang. Bei mehreren Kategorien gewinnt die letzte abweichende Zuordnung in der Kategorienliste des Produkts.</p></div></div>
+      <form id="assignment-form" autocomplete="off"><div class="form-grid"><label>Gilt für<select id="assignment-scope"><option value="default">Alle Produkte · Standard</option><option value="category">Eine Kategorie</option></select></label><label id="category-field" hidden>Kategorie-ID<input id="assignment-category" list="known-categories" maxlength="128" pattern="[A-Za-z0-9][A-Za-z0-9._:\-]{0,127}" placeholder="Deine bestehende Kategorie-ID"><datalist id="known-categories"></datalist><p class="field-help">Dieselbe ID wie in der Kategorie-Zuordnung deiner Produkte.</p></label><label>Profilart<select id="assignment-type"><option value="fonts">Schriften</option><option value="motifs">Motive</option><option value="colors">Farben</option><option value="bestsellers">Bestseller</option></select></label><label>Auswahl<select id="assignment-mode"><option value="inherit">Vererben</option><option value="empty">Keine · leere Auswahl</option><option value="override">Gespeichertes Profil</option></select></label><label id="assignment-profile-field">Profil<select id="assignment-profile"></select></label></div><p id="assignment-help" class="profile-info"></p><div class="button-row"><button id="save-assignment" type="submit" class="primary">Zuordnung speichern</button><button id="reload-assignment" type="button">Gespeicherte Zuordnung laden</button><small id="assignment-state"></small></div></form>
+      <details class="assignment-overview"><summary>Gespeicherte Zuordnungen ansehen</summary><div id="assignment-list"></div></details>
+    </section>
+    <footer class="page-footer">Gravuru 2027 <span>·</span> Profile steuern die Auswahl im Konfigurator. Vorhandene Designinhalte bleiben erhalten.</footer>
+  </main>
+</div>
+<dialog id="profile-discard-dialog" aria-labelledby="profile-discard-title"><form method="dialog"><h2 id="profile-discard-title">Änderungen noch nicht gespeichert.</h2><p>Wenn du fortfährst, werden die Änderungen im geöffneten Profil verworfen.</p><div class="dialog-actions"><button value="cancel">Hier bleiben</button><button class="danger" value="discard">Änderungen verwerfen</button></div></form></dialog>
+</body>
+</html>

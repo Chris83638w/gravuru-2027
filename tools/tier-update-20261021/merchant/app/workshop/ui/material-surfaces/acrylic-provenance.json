@@ -1,0 +1,43 @@
+{
+  "schema": "gravuru-material-preview-provenance/v1",
+  "createdAt": "2026-10-05",
+  "method": "Procedural SVG surface and rim approximation after visual inspection of the archived reference images. No reference pixels, text, designs or sample geometry copied or edited. Original archive unchanged.",
+  "renderer": "app/workshop/material-presentation.mjs",
+  "use": "Preview only. Not a manufacturer photo, calibrated color, ray-traced optical simulation or production approval. All numeric surface colors and opacities are preview approximations. Thickness uses product data only; never filenames.",
+  "sourceArchive": "REFERENZ-MATERIALIEN-20260930.zip",
+  "sourceArchiveSha256": "4623981f3825be5b04830f1e88c041c48476bc365753a84c80cbf169cf7c793d",
+  "references": [
+    {
+      "file": "material-references/acryl-anthrazit-3mm.png",
+      "sha256": "9dd7303c08680f1bee1c1fd0f3f8cfa6de7a2cdf683b7129b13fde0c9cfd047e",
+      "referenceId": "acryl-anthrazit"
+    },
+    {
+      "file": "material-references/acryl-schwarz-3mm.png",
+      "sha256": "be4b1987e802ddd9aeecb45683c26804683a4ca9e6bb4aa1c21b70573e13d72d",
+      "referenceId": "acryl-schwarz"
+    },
+    {
+      "file": "material-references/acryl-uv-bunt-3mm.png",
+      "sha256": "91a3bbf60a04926c734f25e6d6878fa523dc732d622f3e443733ec61cc34af3d",
+      "referenceId": "acryl-uv-bunt-3"
+    },
+    {
+      "file": "material-references/acryl-satiniert-weisse-gravur-v2.png",
+      "sha256": "3dc117f22fd07a306acbb272492b29732bbfde7d2af5c1ef192f15e9187a1c9e",
+      "referenceId": "acryl-satiniert"
+    }
+  ],
+  "materials": [
+    "acrylic-clear",
+    "acrylic-satin",
+    "acrylic-anthracite",
+    "acrylic-black"
+  ],
+  "depth": "Fixed 2D projection: horizontal 0.22 × saved thickness, vertical 0.48 × saved thickness; original frontal geometry unchanged; front and holes masked out of the edge and shadow. Not a technical side view.",
+  "scenes": [
+    "transparent",
+    "studio",
+    "warm"
+  ]
+}

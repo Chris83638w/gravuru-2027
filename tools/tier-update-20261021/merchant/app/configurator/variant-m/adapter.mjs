@@ -1,0 +1,235 @@
+import {spacerPreview} from './option-media.mjs';
+import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
+import {surfacePreview,embedSurface,scenePreview} from './material-surface.mjs';
+import {physicalGeometry} from './print-geometry.mjs';
+import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
+import {getProcessingProfile, elementColor} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
+import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {escapeXml as esc, filteredDesigns} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, editedDesignTexts, validatePhotoFile, newEditableObject} from './contract.mjs';
+
+const clone = value => structuredClone(value);
+const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
+
+export function installUniversal(configInput) {
+  const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
+  const originalPrepare = window.Funkklingel.prepare, originalFinish = window.Funkklingel.finish;
+  let options = {}, quantity = 1, el, renderId = 0;
+  const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
+  const thumbnails=new WeakMap();
+  const current = () => designFromState(config, el.state);
+  const profile = () => selectedProfile(config, options);
+  const motifs = () => {const local=new Map((config.localResources?.motifs||[]).map(m=>[m.key,m]));return Object.entries(el.motifs).map(([key, svgFragment]) => ({key, svgFragment, bounds:el.catalog.motif_bounds?.[key] || [0,0,100,100],embeddedOnly:local.get(key)?.embeddedOnly===true,...(local.get(key)?.artwork?{artwork:local.get(key).artwork}:{})}));};
+  const svg = (design, {guides=false, selected='', handles=false} = {}) => {
+    const visible={...design,objects:design.objects.filter(o=>!o.uxHidden)};
+    let result=surfacePreview(studioSvg(profile(), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
+    if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
+    if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
+    return scenePreview(spacerPreview(result,profile()),config.sceneBackground);
+  };
+  const locked = o => !!o?.uxLocked;
+
+  window.Funkklingel.thumb = (element, d) => { el = element; return svg(p.designs.find(x => x.id === d.id) || d); };
+  window.Funkklingel.prepare = element => {
+    el = element; originalPrepare(el);
+    const {width, height, shape, cornerRadiusMm=0} = p.geometry;
+    const format = {...el.stainlessFormat(), widthMm:width, heightMm:height, shape, cornerRadiusMm,
+      key:p.id, label:width + ' × ' + height + ' mm', allowedMountings:['K00']};
+    el.stainlessGroup = {...el.stainlessGroup, name:p.name, formats:[format]};
+    el.state.width = width; el.state.height = height;
+    el.$('[data-stainless=size]').replaceChildren(new Option(format.label, format.key));
+    el.stainlessFormat = () => format;
+    el.geometry = () => {
+      const outline = shape === 'ellipse' ? `M0 ${height/2}a${width/2} ${height/2} 0 1 0 ${width} 0a${width/2} ${height/2} 0 1 0 -${width} 0` : `M0 0H${width}V${height}H0Z`;
+      return {outline, clip:outline, holes:profile().geometry.holes.map(h => ({...h, r:h.diameter/2})), gap:0};
+    };
+    el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]})).querySelector('[data-object]')?.outerHTML || '';
+    el.svgBody = function(preview=true, guides=false) {
+      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview&&!this.uxExternalSelection}));
+      if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[]);for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
+      return doc.documentElement.innerHTML;
+    };
+    el.svg = function() { return svg(current()); };
+    el.png = async function() {
+      const url = URL.createObjectURL(new Blob([await embedSurface(this.svg(true),config.materialSurface)], {type:'image/svg+xml'}));
+      try {
+        const image = new Image(); image.src = url; await image.decode();
+        const canvas = document.createElement('canvas'), scale = 1600 / Math.max(width, height);
+        canvas.width = Math.round((width + Math.max(width,height)*.07) * scale);
+        canvas.height = Math.round((height + Math.max(width,height)*.07) * scale);
+        canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+        return await new Promise((resolve,reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(Error('Vorschau konnte nicht erstellt werden.')), 'image/png'));
+      } finally { URL.revokeObjectURL(url); }
+    };
+    el.normalize = function() {
+      this.state.width=width; this.state.height=height;
+      for (const o of this.state.objects) if (o.type==='text') {
+        try { measureText(o, this.fontData); } catch { /* Keep typed characters so the customer can correct them. */ }
+      }
+    };
+  };
+
+  window.Funkklingel.finish = element => {
+    el = element; originalFinish(el);
+    const r=el.shadowRoot, $=selector=>r.querySelector(selector);
+    r.host.dataset.universalProfile = p.id;
+    const style = document.createElement('style');
+    style.textContent = '.m-photo{margin:18px 0;padding:14px;background:#f5f4f0;border-radius:9px}.m-photo label{display:block;margin:10px 0}.m-photo input{background:#fff!important}.m-photo p{font-size:12px;line-height:1.5}.m-filters{display:flex;gap:8px;margin:8px 0}.m-filters label{flex:1;min-width:0}.m-color{display:block;padding:8px 0}.m-color input{width:70px;height:40px;padding:3px!important}[data-m-invalid]{font-size:13px;color:#873422}.fk-options fieldset,.fk-frame-field,.fk-frame-pictures,.fk-options>[data-fk-mount-note],.fk-options>label,.fk-scope-note{display:none!important}.fk-options:empty{display:none!important}.m-options>label{display:block!important;margin:10px 0}.fk-font-section{margin-top:18px}@media(max-width:720px){.c-gallery{max-height:none!important;overflow:visible!important;overscroll-behavior:auto!important;touch-action:pan-y!important}.stage{touch-action:pan-y!important}.m-filters{flex-wrap:wrap}}';
+    style.textContent += '.c-gallery [hidden]{display:none!important}.c-gallery .c-design-card svg{width:100%;height:95px!important}.stage{height:auto!important;min-height:330px!important}.plate-holder{width:min(100%,520px)!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}.dimension-x span,.dimension-y span{position:relative;background:#fff!important;padding:0 5px!important;z-index:1}.fk-options .m-options>label{display:block!important}@media(max-width:720px){.stage{min-height:230px!important}.plate-holder{width:min(100%,430px)!important}.c-gallery .c-design-card svg{height:75px!important}}';
+    style.textContent += '.stage-wrap>.stage .plate-holder{width:min(100%,520px)!important;height:auto!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}.c-large-preview .fk-live-preview .plate-holder{width:min(100cqw,calc(100cqh * '+p.geometry.width+' / '+p.geometry.height+'))!important;height:min(100cqh,calc(100cqw * '+p.geometry.height+' / '+p.geometry.width+'))!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}';
+    style.textContent += '@media(max-width:720px){.stage-wrap>.stage .plate-holder{touch-action:pan-y!important}.c-large-preview .plate-holder{touch-action:none!important}}';
+    r.append(style);
+    const optionPanel = $('.fk-options');
+    optionPanel.querySelector('h2').textContent = 'Deine Ausführung';
+    const picks=document.createElement('div'); picks.className='m-options';
+    picks.innerHTML=(p.optionGroups||[]).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(config.steelFormats&&g.id==='size'?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
+    optionPanel.append(picks);
+    const pictures=document.createElement('div');pictures.className='m-option-pictures';
+    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+' – Bilder">'+g.values.filter(v=>v.thumbnail).map(v=>'<button type="button" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false"><img src="'+esc(v.thumbnail)+'" alt=""><span>'+esc(v.label)+'</span></button>').join('')+'</div>').join('');
+    picks.append(pictures);
+    style.textContent+='.m-option-pictures>div{display:flex;flex-wrap:wrap;gap:8px}.m-option-pictures button{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;width:112px;min-height:110px;border:1px solid #c4cbc6;border-radius:8px;background:#fff;padding:6px;color:#1c3327}.m-option-pictures button[aria-pressed=true]{outline:2px solid #28543f}.m-option-pictures img{width:70px;height:70px;object-fit:contain;display:block;margin:auto;flex:none}.m-option-pictures span{display:block;font-size:12px;white-space:normal}';
+    pictures.addEventListener('click',e=>{const button=e.target.closest('[data-picture-option]');if(!button)return;el.record();options={...options,[button.dataset.pictureGroup]:button.dataset.pictureOption};el.state.mOptions=clone(options);el.sync();});
+    options=Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId]));
+    for(const select of picks.querySelectorAll('select')) select.value=options[select.dataset.mOption];
+    picks.addEventListener('change',e=>{el.record();options={...options,[e.target.dataset.mOption]:e.target.value};el.state.mOptions=clone(options);el.sync();});
+
+    const photoSection=document.createElement('section'); photoSection.className='m-photo';photoSection.setAttribute('aria-label','Foto hochladen');
+    $('.fk-font-section').after(photoSection);
+    let photoDesign='';
+    function updatePhotos() {
+      const slots=current().objects.filter(o=>o.type==='photoSlot');
+      photoSection.hidden=!config.photo.enabled||!slots.length;
+      if(photoDesign===el.state.designId)return;
+      photoDesign=el.state.designId;
+      photoSection.innerHTML='<h3>Dein Foto</h3><p>Wähle dein Foto für die Gravur. Es wird hier nicht als Bildvorschau dargestellt.</p>'+slots.map((o,i)=>'<label>Foto '+(i+1)+(o.required?' · erforderlich':' · optional')+'<input type="file" accept="image/jpeg,image/png,image/webp" data-m-photo="'+esc(o.fieldKey)+'" aria-label="Foto '+(i+1)+' auswählen"></label><p data-photo-status="'+esc(o.fieldKey)+'" role="status"></p>').join('');
+      for(const slot of slots) updatePhotoStatus(slot.fieldKey);
+    }
+    function updatePhotoStatus(key) {
+      const node=photoSection.querySelector('[data-photo-status="'+CSS.escape(key)+'"]'), file=photos.get(key);
+      if(node)node.textContent=file ? file.name+' · lokal ausgewählt, noch nicht übertragen.' : 'Noch kein Foto ausgewählt.';
+    }
+    photoSection.addEventListener('change',e=>{
+      const key=e.target.dataset.mPhoto;if(!key)return;
+      try{const file=e.target.files[0];if(!file)return;validatePhotoFile(file);photos.set(key,file);updatePhotoStatus(key);}
+      catch(error){photos.delete(key);e.target.value='';photoSection.querySelector('[data-photo-status="'+CSS.escape(key)+'"]').textContent=error.message;}
+    });
+
+    const filterPanel=document.createElement('div');filterPanel.className='m-filters';
+    const categories=[...new Set(p.designs.map(d=>d.category).filter(Boolean))], collections=[...new Set(p.designs.flatMap(d=>d.collections||[]))];
+    // A category on an asset is metadata, not permission to expose a customer filter.
+    const enabledFilters=config.customerUI?.designFilters||{};
+    filterPanel.innerHTML=[['category','Designkategorie',categories],['collection','Designkollektion',collections]].filter(([key,,items])=>enabledFilters[key]===true&&items.length>0).map(([key,label,items])=>'<label>'+label+'<select data-m-filter="'+key+'" aria-label="'+label+'"><option value="">Alle</option>'+items.map(v=>'<option>'+esc(v)+'</option>').join('')+'</select></label>').join('');
+    filterPanel.hidden=!filterPanel.childElementCount;
+    $('.c-gallery').before(filterPanel);
+    const filters={category:'',collection:''};
+    filterPanel.addEventListener('change',e=>{filters[e.target.dataset.mFilter]=e.target.value;update();});
+
+    const colorControl=document.createElement('label'); colorControl.className='m-color';colorControl.hidden=processing.method!=='print';
+    colorControl.innerHTML='Farbe des ausgewählten Elements <input type="color" aria-label="Elementfarbe" value="#202824">';
+    $('.fk-font-section').append(colorControl);
+    colorControl.addEventListener('input',e=>{const o=el.selected();if(o&&!locked(o)){el.record();o.color=e.target.value;el.sync();}});
+    const issue=document.createElement('p');issue.dataset.mInvalid='';issue.setAttribute('role','status');$('.guided-download').before(issue);
+    const exports=$('.export-type');exports.replaceChildren(new Option('Produktvorschau · PNG','png'),new Option('Vektorentwurf ohne Foto · SVG 1:1','vectors'));
+    el.export=async function(){
+      try{
+        const draft=saveDraft(config,el.state,options,el.fontData,motifs());
+        if(exports.value==='png')this.download(await this.png(),p.id+'-vorschau.png');
+        else {
+          const design=current();
+          const vector=design.objects.filter(o=>o.type!=='photoSlot').map(o=>this.objectSVG(o)).join('');
+          const marks='<g fill="none">'+(design.marks||[]).map(m=>'<path d="'+esc(m.d)+'" stroke="'+elementColor(p,m)+'" stroke-width="'+m.width+'"/>').join('')+'</g>';
+          const {width,height}=physicalGeometry(config,{mOptions:options});
+          this.download(new Blob([`<svg xmlns="http://www.w3.org/2000/svg" width="${width}mm" height="${height}mm" viewBox="0 0 ${p.geometry.width} ${p.geometry.height}"><metadata>${esc(JSON.stringify({profileId:p.id,revision:p.revision,designId:draft.design.id,purpose:'vector-draft-not-production',photoIncluded:false}))}</metadata>${vector}${marks}</svg>`],{type:'image/svg+xml'}),p.id+'-vektorentwurf.svg');
+        }
+        $('.status').textContent='Entwurf gespeichert. Fotodatei und Fertigungsfreigabe sind separat erforderlich.';
+      }catch(error){$('.status').textContent=error.message;}
+    };
+    const action=el.action;
+    el.action=async function(key,...args){
+      if(locked(this.selected())&&['delete','duplicate','grow','shrink','center','centerX','resetRotation'].includes(key))return;
+      if(key==='save'){try{this.download(new Blob([JSON.stringify(saveDraft(config,this.state,options,this.fontData,motifs()),null,2)],{type:'application/json'}),p.id+'-entwurf.json');$('.status').textContent='Entwurf gespeichert. Das Foto bleibt separat und muss beim erneuten Öffnen ausgewählt werden.';}catch(error){$('.status').textContent=error.message;}return;}
+      return action.call(this,key,...args);
+    };
+    el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const restored=readDraft(config,JSON.parse(await file.text()),this.fontData,motifs());this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);this.state.selected=null;photos.clear();photoDesign='';this.sync();$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
+    el.chooseDesign=function(id){
+      const d=p.designs.find(d=>d.id===id);if(!d)return;
+      this.record();const texts=editedDesignTexts(config,this.state);
+      this.state.designId=id;this.state.objects=clone(d.objects);this.state.selected=null;
+      for(const o of this.state.objects)if(o.type==='text'&&o.customerEditable!==false&&texts.has(o.fieldKey))o.text=texts.get(o.fieldKey);
+      this.normalize();this.sync();
+    };
+    el.add=function(input){
+      try {
+        if(this.state.objects.length>=20)throw Error('Du kannst bis zu 20 Elemente gestalten.');
+        const object=newEditableObject(config,input,this.id(),this.fontData,motifs(),options);
+        this.record();this.state.objects.push(object);this.state.selected=object.id;this.state.showHero=false;
+        this.normalize();this.sync();
+      }catch(error){$('.status').textContent=error.message;}
+    };
+    const edit=el.edit;el.edit=function(field){if(!locked(this.selected()))return edit.call(this,field);};
+    r.addEventListener('pointerdown',e=>{const o=el.state.objects.find(o=>o.id===e.target.closest('[data-object]')?.dataset.object);if(locked(o)){e.preventDefault();e.stopImmediatePropagation();}},true);
+    const qty=$('[data-fk-quantity]');qty.addEventListener('input',()=>{quantity=Number(qty.value);update();});
+    function update(){
+      const d=current(), visible=new Set(filteredDesigns(p.designs,filters).map(d=>d.id));
+      const physical=physicalGeometry(config,{mOptions:options});
+      $('.stage-top>span').textContent=(config.doorbell?'Edelstahl mit Acrylglasauflage':processing.name.replace('Gravur auf ',''))+' · '+physical.width+' × '+physical.height+' mm';
+      if(config.steelFormats){for(const [selector,value] of [['.dimension-x span',physical.width],['.dimension-y span',physical.height]]){const node=$(selector);if(node)node.textContent=new Intl.NumberFormat('de-DE',{maximumFractionDigits:3}).format(value)+' mm';}}
+      $('.c-preview-caption>span').textContent='';
+      $('.c-preview-caption').nextElementSibling.textContent='Klicke einen Text oder ein Motiv an, um es zu gestalten.';
+      $('.c-section-heading small').textContent=p.designs.length+' Vorlagen';
+      $('.fk-scroll-hint').textContent='Wähle dein Design';
+      $('.fk-material-note').textContent=config.doorbell?'Edelstahl 1,5 mm · Gravur auf Acrylglas 3 mm':processing.name+' · '+p.material.thicknessMm+' mm';
+      $('.fk-options>[data-fk-mount-note]')?.setAttribute('hidden','');
+      const thumbnailKey=JSON.stringify(options);
+      for(const card of r.querySelectorAll('[data-c-design]')){
+        card.hidden=!visible.has(card.dataset.cDesign);card.querySelector('small').textContent='Vorlage inklusive';
+        const design=p.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
+        let thumbnail=thumbnails.get(card);
+        if(!thumbnail||thumbnail.key!==thumbnailKey)thumbnail={key:thumbnailKey,markup:svg(design)};
+        // The legacy sync replaces the SVG with its portrait doorbell preview.
+        // Restore the product geometry even when the cached rendering is valid.
+        if(thumbnail.node!==card.querySelector('svg')){card.querySelector('svg').outerHTML=thumbnail.markup;thumbnail.node=card.querySelector('svg');}
+        thumbnails.set(card,thumbnail);
+      }
+      const name=current().name;$('.guided-review dl').innerHTML='<div><dt>Design</dt><dd>'+esc(name)+'</dd></div><div><dt>Material</dt><dd>'+esc(processing.name)+'</dd></div>';
+      $('[data-setting=guides]').closest('.check-guide').hidden=false;
+      for(const select of picks.querySelectorAll('select'))select.value=options[select.dataset.mOption];
+      for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
+      try{
+        const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
+        $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';
+        $('[data-fk-breakdown]').textContent=price?.additionalMotifs ? price.additionalMotifs+' zusätzliche Motive · '+money(price.additionalMotifs*config.extraMotifCents) : '';
+        saveDraft(config,el.state,options,el.fontData,motifs()); issue.textContent='';
+      }catch(error){issue.textContent=error.message;}
+      $('.fk-buy-button').disabled=true;$('.fk-order-status').textContent='Prüfvorschau · Bestellung und Fotoübertragung noch nicht verbunden.';
+      colorControl.querySelector('input').disabled=!el.selected()||!!locked(el.selected());
+      if(el.selected()?.color)colorControl.querySelector('input').value=el.selected().color;
+      updatePhotos();
+    }
+    const sync=el.sync;
+    el.sync=function(...args){
+      options=clone(this.state.mOptions||options);
+      this.normalize();const result=sync.apply(this,args);update();return result;
+    };
+    $('[data-setting=guides]').checked=false;
+    el.state.objects=[];el.state.mOptions=clone(options);el.chooseDesign(p.defaultDesignId||p.designs[0].id);
+    el.history=[];el.future=[];
+    window.parent.postMessage({type:'gravuru-universal-ready',profileId:p.id},location.origin);
+  };
+}
+
+export function hardenDoorbell(el) {
+  const update=()=>{
+    const r=el.shadowRoot, count=el.catalog.designs.length;
+    const heading=r.querySelector('.c-section-heading small');if(heading)heading.textContent=count+' Vorlagen · mit jeder Rahmenform kombinierbar';
+    const gallery=r.querySelector('.c-gallery');
+    if(gallery)for(const design of el.catalog.designs)if(!gallery.querySelector('[data-c-design="'+CSS.escape(design.id)+'"]')){
+      const button=document.createElement('button');button.type='button';button.className='c-design-card';button.dataset.cDesign=design.id;
+      button.setAttribute('aria-label','Design '+design.name);button.setAttribute('aria-pressed',String(el.state.designId===design.id));
+      button.innerHTML=window.Funkklingel.thumb(el,design)+'<span>'+esc(design.name)+'</span><small></small>';gallery.append(button);
+    }
+    const note=r.querySelector('[data-fk-mount-note]');if(note&&el.state.fkMounting==='K00')note.textContent='Lieferung ohne Befestigungsmaterial.';
+  };
+  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);update();return result;};
+  update();
+}

@@ -1,0 +1,93 @@
+"""Private, editable correction workbook. User text is never an Excel formula."""
+import io
+import json
+import sys
+from openpyxl import Workbook
+from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.utils import get_column_letter
+
+
+def export(data):
+    book = Workbook()
+    book.remove(book.active)
+    variants = data.get('kind') == 'variants'
+    main_name = 'Gruppen' if variants else 'Produkte'
+    child_name = 'Varianten' if variants else 'Designs'
+    report_columns = ['source_record', 'correction_excel_row', 'import_key', 'name', 'status', 'message', 'product_id', 'expected_revision', 'master_id', 'master_revision', 'profile_bindings']
+    if variants:
+        report_columns = ['source_record', 'correction_excel_row', 'import_key', 'name', 'status', 'message', 'group_id', 'expected_revision']
+    for name, columns, rows in [(main_name, data['columns'], data['rows']), (child_name, data['designColumns'], data['variantRows'] if variants else data['designRows']), ('Pruefbericht', report_columns, data['report'])]:
+        sheet = book.create_sheet(name)
+        sheet.append(columns)
+        sheet.freeze_panes = 'C2'
+        sheet.sheet_view.showGridLines = False
+        for index, row in enumerate(rows, 2):
+            for column, key in enumerate(columns, 1):
+                cell = sheet.cell(index, column, row.get(key, ''))
+                if isinstance(cell.value, str):
+                    cell.data_type = 's'
+                    cell.number_format = '@'
+                cell.alignment = Alignment(wrap_text=True, vertical='top')
+            sheet.row_dimensions[index].height = 42
+        for cell in sheet[1]:
+            cell.font = Font(name='Arial', bold=True, color='FFFFFF')
+            cell.fill = PatternFill('solid', fgColor='3E4B57')
+        for index, key in enumerate(columns, 1):
+            sheet.column_dimensions[get_column_letter(index)].width = 70 if key == 'message' else 42 if key in ['import_key', 'name', 'design_name', 'product_id', 'master_id', 'group_id'] else 24
+        sheet.auto_filter.ref = sheet.dimensions
+    if not variants:
+        settings = book.create_sheet('Einstellungen')
+        settings.append(['key', 'value'])
+        for key, value in data.get('settings', {'schema_version': '1', 'design_root': ''}).items():
+            cell = settings.cell(settings.max_row + 1, 1, key)
+            target = settings.cell(cell.row, 2, value)
+            target.data_type = 's'
+            target.number_format = '@'
+        settings.column_dimensions['A'].width = 26
+        settings.column_dimensions['B'].width = 70
+        settings.freeze_panes = 'B2'
+        for cell in settings[1]:
+            cell.font = Font(name='Arial', bold=True, color='FFFFFF')
+            cell.fill = PatternFill('solid', fgColor='3E4B57')
+    guide = book.create_sheet('Anleitung')
+    rules = [
+        ('Stand', data['createdAt']),
+        ('Umfang', 'Produkte enthält nur die aktuell fehlerhaften Datensätze.' if data['mode'] == 'errors' else 'Produkte enthält alle eingereichten Datensätze, auch bereits ausgeführte.'),
+        ('Pruefbericht', 'Aktuelle erneute Prüfung beim Download. source_record ist die ursprüngliche Datensatznummer; correction_excel_row die Zeile im Blatt Produkte dieser Datei. Leer bedeutet: nicht in dieser Korrektur enthalten. Der Bericht wird nicht importiert.'),
+        ('Korrigieren', 'Fehler im Blatt Produkte oder Designs korrigieren, Datei speichern und im Dashboard erneut prüfen. Es wird nichts automatisch angewendet.'),
+        ('Design-Dateien', 'Die betroffenen Designzuordnungen bleiben vollständig erhalten. Zugehörige PDF-/SVG-Dateien beim erneuten Prüfen zusätzlich auswählen. Diese Excel-Datei enthält keine Originalbilder.'),
+        ('Profile', 'font_profile/motif_profile: leer erhält die Vorlage, inherit vererbt Kategorie/Standard, empty sperrt neue Auswahl, sonst Profil-ID. production_profile_id zusammen mit fester production_profile_revision; empty ohne Revision entfernt die Fertigungszuordnung. Erneute Prüfung bindet die zu diesem Zeitpunkt gültigen Auswahlprofile; gespeicherte Produktrevisionen bleiben unverändert.'),
+        ('Quellordner', 'Einstellungen: design_root bleibt als gemeinsamer Ordner erhalten. design_folder in Produkte oder Designs ersetzt ihn nur für diese Zeile; leer übernimmt ihn, . verwendet die Auswahlwurzel. design_file wird daran angehängt. Kein automatischer Zugriff auf lokale Pfade oder Drive.'),
+        ('Wiederholung', 'Importschlüssel bei Wiederholung beibehalten. Bereits angewendete unveränderte Zeilen werden nicht doppelt ausgeführt. Eine neue Änderung an einem bereits importierten Produkt braucht einen neuen Importschlüssel und action=update mit product_id und expected_revision.'),
+        ('Konflikte', 'Doppelte/fehlende Importschlüssel und veraltete expected_revision bewusst prüfen. Revisionen werden nicht automatisch erhöht; zwischenzeitliche Änderungen bleiben geschützt.'),
+        ('Master', 'Verwendete Master-ID und Revision stehen in den Produktzeilen. Ungültige Angaben bleiben zur Korrektur erhalten. Die Auswahl eines anderen Masters im Dashboard überschreibt diese Angaben nicht.'),
+        ('Datum', 'Numerische Datumswerte bleiben als Fehler erkennbar. Datum als gewünschten Text eingeben, beispielsweise 06.10.2026. Keine Formeln verwenden.'),
+        ('Privat', 'Diese Datei enthält die eingereichten Produktdaten. Privat aufbewahren. Für spätere Wiederaufnahme die Prüfung im Dashboard privat speichern oder diese Datei und die benötigten Design-Dateien erneut auswählen.'),
+    ]
+    if variants:
+        rules = [
+            ('Stand', data['createdAt']),
+            ('Umfang', 'Gruppen enthält nur aktuell fehlerhafte Gruppen.' if data['mode'] == 'errors' else 'Gruppen enthält alle eingereichten Gruppen.'),
+            ('Pruefbericht', 'Frische Prüfung beim Download. source_record ist der ursprüngliche Datensatz; correction_excel_row die Zeile im Blatt Gruppen dieser Datei. Der Bericht wird nicht importiert.'),
+            ('Korrektur', 'Fehler im Blatt Gruppen oder Varianten korrigieren, speichern und erneut prüfen. Alle zugehörigen Varianten einer fehlerhaften Gruppe bleiben enthalten. Es wird nichts automatisch angewendet.'),
+            ('Produktstände', 'product_id und product_revision bleiben exakt erhalten. Preise, Materialien, Maße und Designs stammen weiterhin aus diesen gespeicherten Produktständen. Es werden keine Produktdaten neu berechnet.'),
+            ('Wiederholung', 'Importschlüssel bei Wiederholung behalten. Für neue Änderungen bereits übernommener Gruppen neuen Importschlüssel sowie action=update, group_id und expected_revision verwenden.'),
+            ('Konflikte', 'Veraltete Gruppenrevisionen, archivierte Produkte und ungültige Zuordnungen bewusst korrigieren. Keine automatischen Revisionssprünge. Je Gruppe höchstens eine Standardausführung.'),
+            ('Grenzen', '1 bis 100 Gruppen, höchstens 50 Ausführungen je Gruppe und 5000 Ausführungszeilen insgesamt. Keine Formeln. Entfernen erfolgt bewusst in der Gruppenverwaltung.'),
+            ('Privat', 'Diese Datei enthält eingereichte Gruppendaten und Produktzuordnungen. Privat aufbewahren. Gruppen- und Produktserien sind getrennte Importstrecken.'),
+        ]
+    for row in rules:
+        guide.append(row)
+    guide.column_dimensions['A'].width = 28
+    guide.column_dimensions['B'].width = 110
+    for row in guide:
+        for cell in row:
+            cell.alignment = Alignment(wrap_text=True, vertical='top')
+        guide.row_dimensions[row[0].row].height = 65
+    output = io.BytesIO()
+    book.save(output)
+    return output.getvalue()
+
+
+if __name__ == '__main__':
+    sys.stdout.buffer.write(export(json.load(sys.stdin)))

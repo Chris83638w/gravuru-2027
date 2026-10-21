@@ -1,0 +1,26 @@
+[
+  {
+    "name": "aosu-pro-v8p1ax11.png",
+    "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-model-aosu-pro-v8p1ax11.png?v=1789823893",
+    "sha256": "c29572815095b05a2f0e4fe25969599ba58c7faa5b873d5a253f4365da24d226",
+    "bytes": 292592,
+    "matchesArchive": false,
+    "archiveSha256": "928ba9bbfd22200e2be7b2dd11fa8e57f1a439e3f87a583a8aa04d2c25f2561e"
+  },
+  {
+    "name": "gravuru-schraubenkopf-fotorealistisch.png",
+    "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-schraubenkopf-fotorealistisch.png?v=1789420385",
+    "sha256": "27f4c392b3891b1923791bfce9b429a876a43f9374418693b863c87c691905ae",
+    "bytes": 2590743,
+    "matchesArchive": true,
+    "archiveSha256": "27f4c392b3891b1923791bfce9b429a876a43f9374418693b863c87c691905ae"
+  },
+  {
+    "name": "gravuru-edelstahl-feine-maserung-vorschau.png",
+    "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-edelstahl-feine-maserung-vorschau.png?v=1789419154",
+    "sha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6",
+    "bytes": 1440952,
+    "matchesArchive": true,
+    "archiveSha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6"
+  }
+]

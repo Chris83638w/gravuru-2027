@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Formkonturen · Gravuru Werkstatt</title>
+  <link rel="stylesheet" href="/workshop-ui/style.css"><link rel="stylesheet" href="/workshop-ui/dashboard.css"><link rel="stylesheet" href="/workshop-ui/contours.css">
+  <script type="module" src="/workshop-ui/contours-ui.mjs"></script>
+</head>
+<body class="dashboard-page contours-page">
+<a class="skip-link" href="#main">Zum Inhalt</a>
+<div class="app-layout">
+  <aside class="sidebar" aria-label="Werkstattnavigation">
+    <a class="brand" href="/werkstatt/"><span class="brand-mark" aria-hidden="true">g.</span><span><em>gravuru</em>werkstatt</span></a>
+    <nav aria-label="Hauptnavigation"><a class="nav-item" href="/werkstatt/">Produkte</a><a class="nav-item active" href="/werkstatt/konturen/" aria-current="page">Formkonturen</a><a class="nav-item" href="/werkstatt/serien/">Stapelverarbeitung</a><a class="nav-item" href="/werkstatt/profile/">Profile</a></nav>
+  </aside>
+  <main id="main">
+    <header class="page-heading"><div><h1>Die Form beginnt hier.</h1><p>Eigene Außenkonturen und Ausschnitte. In Originalgröße, getrennt vom Design.</p></div><a class="button" href="/werkstatt/">← Zur Werkstatt</a></header>
+    <div class="contour-workspace">
+      <section class="contour-upload" aria-labelledby="upload-title">
+        <span class="contour-kicker">01 / IMPORTIEREN</span><h2 id="upload-title">Deine Formkontur</h2><p>Eine geschlossene Außenform, auf Wunsch mit Bohrungen und Innenausschnitten.</p>
+        <form id="contour-form">
+          <label class="contour-drop" for="contour-file"><img src="/workshop-ui/editor-icons/upload.svg" alt=""><strong>SVG oder PDF auswählen</strong><span>Vektorpfade · maximal 15 MB</span><input id="contour-file" name="file" type="file" accept=".svg,.pdf" required aria-describedby="file-help"><span id="contour-filename">Noch keine Datei ausgewählt</span></label>
+          <p id="file-help" class="field-help">SVG mit festen Abmessungen; PDF mit genau einer Seite. Texte vorher in Pfade umwandeln. Keine Fotos oder Designgrafiken.</p>
+          <button class="primary" type="submit" id="contour-import" disabled>Kontur prüfen und speichern</button>
+        </form>
+        <div id="contour-status" role="status" aria-live="polite"></div>
+        <div class="contour-note"><strong>Original bleibt erhalten</strong><p>Keine Skalierung. Seitenränder und Linienstärke zählen nicht zum Bauteilmaß. Jede neue Datei wird als eigene Formvorlage gesichert.</p></div>
+      </section>
+      <section class="contour-detail" aria-labelledby="preview-title" aria-busy="false">
+        <div class="contour-detail-heading"><div><span class="contour-kicker">02 / KONTROLLIEREN</span><h2 id="preview-title">Deine Kontur im Überblick</h2></div><span id="contour-badge" hidden>Geprüft</span></div>
+        <div class="contour-canvas" id="contour-canvas"><div id="contour-empty"><span aria-hidden="true">⌑</span><h3>Platz für deine nächste Form.</h3><p>Nach dem Import siehst du hier die Außenform<br>und alle vorhandenen Ausschnitte.</p></div><img id="contour-preview" alt="" hidden></div>
+        <div id="contour-details" hidden>
+          <dl class="contour-metrics"><div><dt>Breite</dt><dd id="contour-width"></dd></div><div><dt>Höhe</dt><dd id="contour-height"></dd></div><div><dt>Ausschnitte</dt><dd id="contour-holes"></dd></div></dl>
+          <div class="contour-source"><span id="contour-name"></span><a id="contour-original" class="button">Original herunterladen</a></div>
+          <button class="primary" id="create-form-product" type="button">Produkt aus dieser Form anlegen</button>
+          <p id="contour-source-size" class="field-help"></p><ul id="contour-warnings"></ul>
+          <details class="contour-proof"><summary>Dateinachweis</summary><p>Original SHA-256</p><code id="contour-hash"></code></details>
+        </div>
+      </section>
+    </div>
+    <section class="contour-library" aria-labelledby="library-title"><div class="contour-library-heading"><div><span class="contour-kicker">DEINE FORMVORLAGEN</span><h2 id="library-title">Für später gespeichert</h2></div><span id="contour-count"></span></div><div id="contour-list" aria-live="polite"><p>Formkonturen werden geladen …</p></div></section>
+    <p class="contour-scope">Die Vorlagen bleiben unabhängig von deinen Designs. Lege aus einer Kontur ein Formprodukt an und ordne Material und Stärke zu. Design und Fertigungsfreigabe folgen separat.</p>
+  </main>
+</div>
+<dialog id="form-create-dialog" aria-labelledby="form-create-title"><form id="form-create-form"><h2 id="form-create-title">Aus deiner Form wird ein Produkt.</h2><p>Kontur und Originalmaß bleiben erhalten. Material, Stärke und Preis legst du anschließend fest.</p><label>Produktname<input id="form-create-name" maxlength="200" required></label><p id="form-create-error" role="alert"></p><div class="button-row"><button type="button" id="form-create-cancel">Abbrechen</button><button type="submit" class="primary" id="form-create-submit">Produkt anlegen</button></div></form></dialog></body></html>

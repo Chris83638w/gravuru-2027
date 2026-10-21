@@ -1,0 +1,206 @@
+/* Confirmed September 25 correction. Readable controls, compact spacing. */
+.ux-preview .stage{height:var(--ux-preview-height,560px)!important;padding:62px 56px 64px 48px!important;container-type:size;overflow:clip!important;display:flex!important;align-items:center!important;justify-content:center!important}
+.ux-preview .stage .plate-holder{width:min(100cqw,calc(100cqh * var(--ux-product-width) / var(--ux-product-height)))!important;height:min(100cqh,calc(100cqw * var(--ux-product-height) / var(--ux-product-width)))!important;max-width:none!important;max-height:none!important;min-width:0!important;margin:auto!important;flex:none;aspect-ratio:var(--ux-preview-ratio)!important}
+.ux-preview .stage .scene{width:100%!important;height:100%!important;max-height:none!important}
+.ux-canvas-title{position:absolute;top:8px;left:12px;right:12px;margin:0;text-align:center;font-size:16px;line-height:22px;color:#243a32}
+.ux-heading{padding-bottom:8px;margin-bottom:8px;border:0}
+.ux-heading button{padding:5px 10px!important;min-height:44px!important;font-size:14px!important}
+.ux-shell .ux-enlarge{top:30px;left:6px;font-size:14px!important;min-height:44px!important;padding:5px 8px!important}
+.ux-preview-tools{top:30px;right:6px}
+.ux-preview-tools button{min-height:44px!important;width:44px!important;padding:8px!important}
+.ux-preview-size{position:absolute;right:0;top:88px;bottom:65px;width:44px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;z-index:8;font-size:14px}
+.ux-preview-size[hidden],.ux-tabs button[hidden],.m-filters[hidden],.ux-photo-controls label[hidden]{display:none!important}
+.ux-tabbar .ux-tabs{grid-template-columns:repeat(var(--ux-tab-count,5),minmax(0,1fr))!important}
+.ux-shell .ux-color-palette .ux-swatches{display:grid!important;grid-template-columns:repeat(auto-fill,44px)!important;gap:12px!important;justify-content:start!important}
+.ux-shell .ux-color-palette .ux-swatches button{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important;aspect-ratio:1!important;border-radius:50%!important;padding:0!important;box-sizing:border-box!important;flex:none!important}
+.ux-shell .ux-color-palette .ux-swatches button[aria-pressed=true]{outline:2px solid #18614f;outline-offset:3px}
+.ux-shell .ux-design-reveal .c-gallery{grid-template-columns:minmax(0,1fr)!important;max-height:none!important;overflow:visible!important}
+.stage>.ux-selection-handles{z-index:30!important}
+.ux-preview-size>span:first-child{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.ux-preview-size input{writing-mode:vertical-lr;direction:rtl;appearance:auto;min-height:90px!important;height:100%;width:44px!important;accent-color:#235f48;padding:10px!important;border:0!important;background:transparent!important;touch-action:none}
+.ux-preview .ux-guides-row,.c-large-preview .ux-guides-row{font-size:14px;min-height:44px;bottom:0;left:6px}
+.ux-preview .ux-preview-caption{font-size:14px;right:8px;bottom:12px;max-width:51%}
+.c-large-preview .ux-canvas-title,.c-large-preview .ux-preview-size{display:none}
+.ux-mini:not([hidden]){background:#fff!important}
+.ux-preview .dimension-x span,.ux-preview .dimension-y span,.c-large-preview .dimension-x span,.c-large-preview .dimension-y span{font-size:14px!important;background:transparent!important}
+.ux-selection-handles button{width:44px!important;height:44px!important;min-height:44px!important;padding:14px!important;border:0!important;box-shadow:none!important;background:transparent!important;isolation:isolate}
+.ux-selection-handles button::before{inset:13px!important;border:1px solid #235f48;background:white;border-radius:3px;z-index:-1}
+.ux-selection-handles button svg{width:16px;height:16px}
+.ux-selection-handles [data-ux-handle=rotate]{font-size:16px!important;padding:0!important}
+.ux-selection-handles [data-ux-handle=rotate]::before{border-radius:50%}
+.ux-shell .ux-tabbar{padding:2px 0;margin:0 0 6px;gap:0}
+.ux-tabs button{font-size:14px!important}
+.ux-panel input,.ux-panel textarea,.ux-dialog input,.ux-dialog textarea,.fk-buy-dock input{font-size:16px!important}
+.ux-panel p,.ux-dialog p{font-size:15px!important;line-height:1.4}
+.ux-panel label,.ux-size-label,.ux-small,.ux-tip,.ux-size-value>span{font-size:14px!important}
+.ux-text-row textarea{min-height:40px!important;height:40px;max-height:240px!important;padding:7px 10px!important;line-height:24px;resize:none;font-size:16px!important}
+.ux-text-row textarea:focus{min-height:44px!important}
+.ux-fields{gap:4px;margin-top:8px}
+.ux-add{min-height:44px!important;padding:7px 10px!important;font-size:14px!important;margin-top:4px!important}
+.ux-stepper button,.ux-align button{min-width:44px!important;width:auto!important;min-height:44px!important;font-size:16px!important;padding:6px 8px!important}
+.ux-stepper button{font-size:22px!important}
+.ux-size-label{margin-bottom:3px}
+.ux-font-row [data-ux=fonts]{min-height:44px!important;font-size:15px!important}
+.ux-more-options{grid-column:1/-1}
+.ux-more-options>summary{font-size:15px;min-height:44px;cursor:pointer;padding:10px 0}
+.ux-more-options .ux-precise{border:0;margin-top:6px}
+.ux-more-options .ux-precise summary{min-height:44px}
+.ux-category-control{display:block;margin:5px 0 10px}
+.ux-category-control [data-ux=categories]{width:100%;min-height:48px!important}
+.ux-category-control [data-ux=categories]>span:last-child{font-size:24px;line-height:1;margin-left:auto}
+.ux-category-list button{min-height:48px!important}
+.ux-font-dialog{width:min(560px,calc(100vw - 20px))!important}
+.ux-font-dialog .ux-font-grid{display:grid!important;grid-template-columns:1fr!important;max-height:55dvh;overflow-y:auto;overscroll-behavior:auto;touch-action:pan-y;gap:5px;padding:4px}
+.ux-font-grid button{display:grid!important;grid-template-columns:minmax(0,1fr) 115px;align-items:center;min-height:66px!important;padding:8px 10px!important;gap:12px}
+.ux-font-grid button svg{width:100%;height:30px!important;max-height:30px}
+.ux-font-grid button span{text-align:right;font-size:14px;min-width:0;overflow-wrap:anywhere;white-space:normal}
+.ux-font-grid button span small{display:block;font-size:12px;line-height:1.4;margin-top:4px}
+.ux-font-dialog .ux-font-grid button{height:auto!important;min-width:0;white-space:normal}
+.ux-font-dialog .ux-font-grid button:disabled{opacity:.8!important}
+.ux-font-dialog .ux-font-grid button svg{min-width:0;max-width:100%;height:48px!important;max-height:none}
+.ux-font-dialog>[data-ux=font-apply]{position:sticky;bottom:0;min-height:44px;margin-top:8px!important}
+@media(max-width:600px){
+  .ux-font-dialog[open]{display:flex;flex-direction:column;overflow:hidden;padding:12px;max-height:calc(100dvh - 24px)}
+  .ux-font-dialog>header,.ux-font-dialog>p,.ux-font-dialog>[data-ux=font-apply]{flex-shrink:0}
+  .ux-font-dialog .ux-font-grid{min-height:0;max-height:55dvh;overflow-x:hidden}
+  .ux-font-dialog .ux-font-grid button{grid-template-columns:minmax(0,1fr)!important;gap:8px;padding:12px!important}
+  .ux-font-dialog .ux-font-grid button svg{width:100%;height:48px!important}
+  .ux-font-dialog .ux-font-grid button span{text-align:center}
+}
+.ux-shell .c-gallery,.ux-shell .motifs.ux-scroll-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-content:start;gap:6px;max-height:290px!important;overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:auto!important;touch-action:pan-y!important;padding:4px!important}
+.ux-shell .c-gallery.ux-list-expanded,.ux-shell .motifs.ux-list-expanded{max-height:520px!important}
+.ux-shell .c-design-card{padding:5px!important;min-height:105px!important;border:0!important;box-shadow:none!important;background:#f5f7f5!important;border-radius:6px!important}
+.ux-shell .c-design-card[aria-pressed=true]{box-shadow:inset 0 0 0 2px #235f48!important;background:#edf5ef!important}
+.ux-shell .c-design-card svg{height:76px!important;width:100%!important;margin:0!important}
+.ux-shell .c-design-card>span{font-size:15px!important;line-height:20px!important;min-height:0!important;margin:3px 0 0!important}
+.ux-shell .c-design-card small,.c-gallery-actions,.c-section-heading small,.fk-scroll-hint{display:none!important}
+.ux-shell [data-c-count],.ux-shell [data-library-count]{font-size:14px!important;margin:5px 0!important}
+.ux-shell .motifs>button[data-motif]{min-height:100px!important;padding:6px!important;font-size:14px!important}
+.ux-shell .motifs>button svg{height:48px!important;width:100%!important;margin-bottom:3px}
+.ux-shell button.ux-list-edge{display:block;width:100%;margin:0!important;min-height:44px!important;padding:6px 12px!important;border-radius:0 0 9px 9px!important;background:#edf5ef!important;border:1px solid #afc7b7!important;color:#235f48!important;font-size:14px!important;font-weight:600;position:relative;z-index:1}
+.ux-list-edge::after{content:'';position:absolute;width:32px;height:3px;border-radius:4px;background:#96b3a1;left:calc(50% - 16px);bottom:3px}
+.ux-search-empty button{min-height:44px!important;font-size:14px!important}
+.ux-search-empty>div{display:flex;gap:5px;flex-wrap:wrap}
+.ux-text-row.ux-overflow textarea{border:2px solid #ad3d29!important}
+[data-ux-overflow-message]{grid-column:2;font-size:14px;color:#91321f}
+[data-ux-overflow-message]>span{display:block}
+[data-ux-overflow-message] button{font-size:14px!important;min-height:44px!important;color:#91321f!important;margin-top:4px}
+.scene .ux-outside{filter:drop-shadow(0 0 1px #cc3826)}
+.ux-boundary-status{position:absolute;left:4px;right:48px;top:76px;background:#fff2e8;color:#8d301b;padding:4px 8px;font-size:14px;margin:0;z-index:7;text-align:center;border-radius:5px;pointer-events:none}
+.fk-buy-dock .ux-price-details{min-height:44px!important;font-size:14px!important;padding:7px!important}
+.fk-buy-dock .fk-price-area a{display:inline-flex;align-items:center;min-height:30px}
+.fk-buy-dock .fk-price-area small,.fk-buy-dock .fk-tax-note{font-size:14px!important}
+.fk-buy-dock .fk-buy-button{font-size:15px!important}
+.fk-buy-dock .fk-quantity input{min-height:44px!important}
+.ux-shell .fk-frame-pictures button{min-height:68px!important;font-size:14px!important}
+.ux-shell .fk-frame-pictures svg{filter:contrast(1.2)}
+.ux-shell .fk-frame-pictures button span{font-size:14px!important;line-height:1.25}
+.ux-shell [hidden],.ux-dialog [hidden]{display:none!important}
+@media(max-width:900px){
+  :host{padding-bottom:108px!important}
+  .ux-shell{padding:4px 8px}
+  .ux-heading{gap:6px;margin-bottom:4px;padding:0}
+  .ux-heading button{min-height:44px!important;padding:4px 8px!important;font-size:14px!important}
+  .ux-preview .stage{padding:62px 48px 60px 42px!important}
+  .ux-canvas-title{top:4px;font-size:15px;line-height:22px}
+  .ux-shell .ux-enlarge,.ux-preview-tools{top:25px}
+  .ux-shell .ux-enlarge{font-size:14px!important}
+  .ux-preview .ux-preview-caption{font-size:12px;max-width:51%;bottom:13px}
+  .ux-preview .ux-guides-row{font-size:14px!important}
+  .ux-tabs button{font-size:13px!important;min-height:60px!important}
+  .ux-tabs .ux-tab-icon{width:33px!important;height:33px!important}
+  .ux-panel{padding:9px}
+  .ux-panel h2{font-size:19px!important}
+  .ux-panel>p{font-size:15px!important}
+  .ux-text-row{grid-template-columns:47px minmax(0,1fr);gap:5px}
+  .ux-text-row label{font-size:14px!important}
+  .ux-text-row textarea{padding:7px 9px!important}
+  .ux-preview-size{top:77px;bottom:66px}
+  .ux-shell .ux-mini:not([hidden]){background:#fff!important}
+  .ux-font-grid button{grid-template-columns:minmax(0,1fr) 100px}
+  .ux-shell .c-gallery,.ux-shell .motifs.ux-scroll-list{max-height:260px!important}
+  .ux-shell .c-gallery.ux-list-expanded,.ux-shell .motifs.ux-list-expanded{max-height:430px!important}
+  .fk-buy-dock .fk-buy-inner{grid-template-columns:minmax(104px,1fr) 44px minmax(115px,1.15fr) 44px!important;gap:4px!important}
+  .fk-buy-dock .fk-price-area{position:relative!important}
+  .fk-buy-dock .fk-price-area strong{font-size:19px!important}
+  .fk-buy-dock .ux-price-details{position:absolute!important;inset:0 auto auto 0;width:104px;min-height:28px!important;padding:0!important;opacity:0!important}
+  .fk-buy-dock .ux-price-details:focus-visible{opacity:1!important;background:#fff!important}
+  .fk-buy-dock .fk-price-area small,.fk-buy-dock .fk-tax-note{font-size:12px!important}
+  .fk-buy-dock .fk-quantity input{width:44px!important;font-size:16px!important}
+  .fk-buy-dock .fk-buy-button{font-size:14px!important;line-height:1.25!important;padding:5px!important;min-height:48px!important}
+  .fk-buy-dock .ux-dock-help{min-height:48px!important;font-size:13px!important}
+  .fk-buy-dock .fk-price-area a{min-height:24px}
+}
+
+/* Follow-up: controls belong to the canvas; full-size feedback stays visible on mobile. */
+.ux-preview .stage{padding-top:48px!important;padding-bottom:140px!important}
+.ux-shell .ux-enlarge{top:6px!important}
+.ux-preview .ux-preview-tools,.c-large-preview .ux-preview-tools{position:absolute!important;top:auto!important;right:auto!important;left:6px!important;bottom:44px!important;display:flex!important;gap:8px!important;margin:0!important;z-index:8}
+.ux-preview-tools button,.ux-preview-tools .ux-canvas-help{position:static!important;min-height:44px!important;height:44px!important;width:auto!important;min-width:44px!important;padding:8px!important;box-shadow:none!important;background:#fff!important;border:1px solid #c9d9ce!important;border-radius:8px!important;font-size:14px!important;color:#235f48!important}
+.ux-preview-tools .ux-canvas-help{margin-left:8px!important}
+.ux-preview-tools svg{width:20px;height:20px}
+.ux-preview .ux-guides-row,.c-large-preview .ux-guides-row{bottom:0!important;left:6px!important;margin:0!important;justify-content:flex-start!important}
+.ux-preview .ux-preview-caption,.c-large-preview .ux-preview-caption{bottom:12px!important;max-width:48%!important}
+.ux-preview-size{bottom:112px!important;top:60px!important}
+.c-large-preview .stage-top{display:none!important}
+.c-large-preview[open]>.fk-live-preview{padding:44px 0 0!important}
+.c-large-preview .fk-large-hint{margin:0 0 2px!important;line-height:18px!important}
+.c-large-preview .stage{padding:0 34px 140px!important;min-height:100px!important}
+.c-large-preview .stage .plate-holder{margin:0 auto auto!important}
+.ux-preview-tools [data-ux=contents],.ux-preview-tools label[hidden]{display:none!important}
+.fk-buy-dock .fk-buy-inner{grid-template-columns:minmax(130px,1fr) 65px minmax(160px,280px)!important}
+.ux-handle-delete{color:#b13b35!important;cursor:pointer}
+.ux-handle-delete::before{border-color:#b13b35!important}
+.ux-font-columns{display:grid;grid-template-columns:minmax(0,1fr) 115px;gap:12px;padding:0 14px 6px;font-size:14px;font-weight:600;color:#4f6559}
+.ux-font-columns span:last-child{text-align:right}
+.ux-alignment-help{margin:4px 0 8px}
+.ux-alignment-help button{min-height:44px!important;border:0!important;padding:5px 0!important;background:transparent!important;color:#235f48!important;font-size:14px!important;text-decoration:underline;text-underline-offset:3px}
+.ux-alignment-help p{font-size:14px!important;margin:0!important}
+.ux-print-color{display:none!important}
+.ux-color-palette{border-top:1px solid #d6e2d9;padding-top:10px;grid-column:1/-1}
+.ux-color-palette h3{margin:0 0 6px;font-size:16px}
+.ux-color-palette fieldset{margin:4px 0 8px;padding:0;border:0;min-width:0}
+.ux-color-palette legend{font-size:14px;margin-bottom:4px}
+.ux-swatches{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px}
+.ux-swatches button{position:relative;min-height:44px!important;height:44px;padding:0!important;background:transparent!important;border:1px solid transparent!important;border-radius:8px!important}
+.ux-swatches button::after{content:'';display:block;position:absolute;inset:8px;border:1px solid #aebbb2;border-radius:50%;background:var(--swatch)}
+.ux-swatches button[aria-pressed=true]{border:2px solid #235f48!important;background:#e7f1e9!important}
+.ux-color-palette>label{display:flex;align-items:center;gap:10px;font-size:14px}
+.ux-color-palette input{width:58px;min-height:44px;padding:4px!important}
+.ux-color-palette>[data-ux=original-colors]{font-size:14px!important;min-height:44px;margin:8px 0}
+.ux-color-palette p{font-size:13px!important}
+.ux-design-reveal{position:relative;padding-bottom:22px}
+.ux-shell .ux-design-reveal .c-gallery{max-height:232px!important;overflow:hidden!important;scrollbar-width:none!important;touch-action:pan-y!important}
+.ux-design-reveal.has-more:not(.is-expanded)::after{content:'';pointer-events:none;position:absolute;left:0;right:0;bottom:22px;height:94px;background:linear-gradient(transparent,#fff 92%)}
+.ux-shell .ux-design-reveal.is-expanded .c-gallery,.ux-shell .ux-design-reveal:not(.has-more) .c-gallery{max-height:none!important;overflow:visible!important}
+.ux-shell .ux-design-toggle{position:relative;z-index:2;display:block;margin:-20px auto 0!important;min-height:44px!important;border:2px solid #5b8c6b!important;background:#fff!important;color:#235f48!important;border-radius:28px!important;padding:8px 24px!important;font-size:15px!important;font-weight:600}
+.ux-design-reveal.is-expanded .ux-design-toggle{margin:12px auto 0!important}
+.ux-upload-buttons[hidden]{display:none!important}
+.ux-upload-drop{padding:14px;border:2px dashed #9ac4ab;background:#edf7f0;border-radius:12px;text-align:center;margin:12px 0}
+.ux-upload-drop.is-dragover{border-color:#235f48;background:#dcefe2}
+.ux-upload-kind{display:flex;justify-content:center;gap:5px}
+.ux-upload-kind button{min-height:44px!important;min-width:80px;font-size:15px!important;background:#fff!important}
+.ux-upload-kind button[aria-pressed=true]{border-color:#235f48!important;box-shadow:inset 0 0 0 1px #235f48!important;color:#235f48!important}
+.ux-shell .ux-file-select{font-size:16px!important;font-weight:600;padding:10px 18px!important;min-height:48px!important;background:#fff!important;border:2px solid #5b8c6b!important;color:#235f48!important}
+.ux-uploads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ux-upload-row{border:1px solid #d5e1d8;border-radius:10px;padding:10px;min-width:0;position:relative;align-content:start;background:#fff}
+.ux-upload-row>strong{font-size:14px}.ux-upload-row>span{font-size:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ux-upload-row .ux-upload-thumb{width:100%;height:88px;object-fit:contain;margin:0}
+.ux-upload-row .ux-upload-select{padding:0!important;border:0!important;background:transparent!important;min-height:88px!important}
+.ux-upload-actions{display:flex;flex-wrap:wrap;gap:4px}
+.ux-upload-actions button{font-size:13px!important;min-height:44px!important;padding:5px 7px!important}
+.ux-upload-actions .ux-remove-upload{background:#b63e36!important;color:white!important;border-color:#b63e36!important}
+@media(max-width:900px){
+ .ux-preview .stage{padding-top:45px!important;padding-bottom:140px!important}
+ .ux-preview-size{top:56px!important;bottom:111px!important}
+ .ux-shell .ux-mini:not([hidden]){height:132px!important;gap:14px;padding:6px 12px!important}
+ .ux-mini [data-mini-art]{height:117.6px!important;width:103.2px!important;flex:none}
+ .ux-mini [data-mini-art] svg{width:100%!important;height:100%!important;max-height:none!important;max-width:none!important;margin:0!important}
+ .ux-shell[data-mini-visible=true] .ux-tabbar{top:132px!important}
+ .ux-shell[data-mini-visible=true] .ux-panel{scroll-margin-top:198px}
+ .ux-mini small{font-size:12px!important}
+ .ux-font-columns{grid-template-columns:minmax(0,1fr) 100px}
+ .fk-buy-dock .fk-buy-inner{grid-template-columns:minmax(100px,1fr) 44px minmax(135px,1.45fr)!important}
+ .ux-upload-drop{padding:12px 8px}
+ .ux-upload-drop p{font-size:15px!important}
+}

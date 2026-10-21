@@ -1,0 +1,3 @@
+# Additional SVG rasterizer for technical form-print proofs. Requires system libcairo.
+# Also install requirements-contours.txt and requirements-photos.txt.
+CairoSVG==2.8.2

@@ -1,0 +1,1607 @@
+{
+  "schema": "gravuru-layered-doorbell-profile/v1",
+  "schemaVersion": 3,
+  "profileKey": "funkklingel",
+  "id": "funkklingel-160x280",
+  "name": "Klingelschild für AOSU Pro V8P1AX11 · 16 × 28 cm",
+  "revision": "modelle-live-20260919-v1",
+  "kind": "layered-doorbell",
+  "renderer": "variant-c-funkklingel/v5",
+  "geometry": {
+    "width": 160,
+    "height": 280,
+    "bell": {
+      "x": 54.499969,
+      "y": 116.630415,
+      "width": 51.000025,
+      "height": 135.999996
+    },
+    "cutPaths": [
+      "M 79.199987 225.280396 L 80.799975 225.280396 C 82.011696 225.280396 82.999968 226.268703 82.999968 227.480389 L 82.999968 227.580402 C 82.999968 228.792087 82.011696 229.780394 80.799975 229.780394 L 79.199987 229.780394 C 77.988301 229.780394 76.999994 228.792087 76.999994 227.580402 L 76.999994 227.480389 C 76.999994 226.268703 77.988301 225.280396 79.199987 225.280396 Z",
+      "M 79.199987 139.880411 L 80.799975 139.880411 C 82.011696 139.880411 82.999968 140.868717 82.999968 142.080403 L 82.999968 142.180416 C 82.999968 143.392102 82.011696 144.380409 80.799975 144.380409 L 79.199987 144.380409 C 77.988301 144.380409 76.999994 143.392102 76.999994 142.180416 L 76.999994 142.080403 C 76.999994 140.868717 77.988301 139.880411 79.199987 139.880411 Z",
+      "M 69.799976 150.130404 L 90.199986 150.130404 C 90.750778 150.130404 91.199970 150.579596 91.199970 151.130388 L 91.199970 173.130422 C 91.199970 173.681214 90.750778 174.130406 90.199986 174.130406 L 69.799976 174.130406 C 69.249184 174.130406 68.799992 173.681214 68.799992 173.130422 L 68.799992 151.130388 C 68.799992 150.579596 69.249184 150.130404 69.799976 150.130404 Z"
+    ],
+    "cutBoundsMm": [
+      {
+        "x": 76.999994,
+        "y": 225.280396,
+        "width": 5.999974,
+        "height": 4.499998
+      },
+      {
+        "x": 76.999994,
+        "y": 139.880411,
+        "width": 5.999974,
+        "height": 4.499998
+      },
+      {
+        "x": 68.799992,
+        "y": 150.130404,
+        "width": 22.399978,
+        "height": 24.000001
+      }
+    ],
+    "optionalCornerPaths": [
+      "M 154.999972 6.999993 C 156.104590 6.999993 156.999975 6.104608 156.999975 4.999990 C 156.999975 3.895408 156.104590 3.000022 154.999972 3.000022 C 153.895390 3.000022 152.999969 3.895408 152.999969 4.999990 C 152.999969 6.104608 153.895390 6.999993 154.999972 6.999993 Z",
+      "M 4.999990 6.999993 C 6.104572 6.999993 6.999993 6.104608 6.999993 4.999990 C 6.999993 3.895408 6.104572 3.000022 4.999990 3.000022 C 3.895372 3.000022 2.999987 3.895408 2.999987 4.999990 C 2.999987 6.104608 3.895372 6.999993 4.999990 6.999993 Z",
+      "M 154.999972 277.000018 C 156.104590 277.000018 156.999975 276.104597 156.999975 275.000014 C 156.999975 273.895397 156.104590 273.000011 154.999972 273.000011 C 153.895390 273.000011 152.999969 273.895397 152.999969 275.000014 C 152.999969 276.104597 153.895390 277.000018 154.999972 277.000018 Z",
+      "M 4.999990 277.000018 C 6.104572 277.000018 6.999993 276.104597 6.999993 275.000014 C 6.999993 273.895397 6.104572 273.000011 4.999990 273.000011 C 3.895372 273.000011 2.999987 273.895397 2.999987 275.000014 C 2.999987 276.104597 3.895372 277.000018 4.999990 277.000018 Z"
+    ],
+    "steelThicknessMm": 1.5,
+    "acrylicThicknessMm": 3,
+    "bellImageBounds": {
+      "x": 54.604498,
+      "y": 116.130403,
+      "width": 50.791107,
+      "height": 137.000001
+    },
+    "source": "Aosu Pro V8P1AX11 16x28.pdf; Originalvektoren in mm, Bezug linke obere Ecke der Plattenkontur"
+  },
+  "designs": [
+    {
+      "id": "FK-RUNDUM",
+      "name": "Strichdesign",
+      "note": "Rand rundherum",
+      "borderKey": "FK-RUNDUM",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 10,
+        "y": 10,
+        "width": 140,
+        "height": 260,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Montserrat",
+          "size": 8,
+          "x": 56,
+          "y": 45,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 12,
+          "x": 80,
+          "y": 66,
+          "w": 78,
+          "h": 14.399999999999999,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Montserrat",
+          "size": 15,
+          "x": 125,
+          "y": 256,
+          "w": 29.25,
+          "h": 18,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M22 87H138V237",
+          "width": 0.65
+        }
+      ]
+    },
+    {
+      "id": "FK-SEITLICH",
+      "name": "Klar & modern",
+      "note": "Rand links & rechts",
+      "borderKey": "FK-SEITLICH",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 10,
+        "y": 0,
+        "width": 140,
+        "height": 280,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Montserrat",
+          "size": 8,
+          "x": 80,
+          "y": 42,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 12,
+          "x": 80,
+          "y": 63,
+          "w": 78,
+          "h": 14.399999999999999,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Montserrat",
+          "size": 18,
+          "x": 80,
+          "y": 94,
+          "w": 35.1,
+          "h": 21.599999999999998,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": []
+    },
+    {
+      "id": "FK-OBENUNTEN",
+      "name": "Große Hausnummer",
+      "note": "Rand oben & unten",
+      "borderKey": "FK-OBENUNTEN",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 0,
+        "y": 10,
+        "width": 160,
+        "height": 260,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Montserrat",
+          "size": 32,
+          "x": 80,
+          "y": 44,
+          "w": 62.400000000000006,
+          "h": 38.4,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 10,
+          "x": 80,
+          "y": 81,
+          "w": 65,
+          "h": 12,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "street",
+          "type": "text",
+          "text": "Musterstraße",
+          "font": "Montserrat",
+          "size": 6.5,
+          "x": 80,
+          "y": 99,
+          "w": 50.7,
+          "h": 7.8,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "street"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M38 66H122",
+          "width": 0.4
+        }
+      ]
+    },
+    {
+      "id": "FK-VERDECKT",
+      "name": "Pur",
+      "note": "Ohne sichtbaren Rand",
+      "borderKey": "FK-VERDECKT",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 0,
+        "y": 0,
+        "width": 160,
+        "height": 280,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 11,
+          "x": 80,
+          "y": 54,
+          "w": 71.5,
+          "h": 13.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Josefin Sans",
+          "size": 21,
+          "x": 80,
+          "y": 88,
+          "w": 40.95,
+          "h": 25.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": []
+    },
+    {
+      "id": "FK-D05",
+      "name": "Zwei Zeilen",
+      "note": "Rand rundherum",
+      "borderKey": "FK-RUNDUM",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 10,
+        "y": 10,
+        "width": 140,
+        "height": 260,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Raleway",
+          "size": 8,
+          "x": 80,
+          "y": 37,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Raleway",
+          "size": 12,
+          "x": 80,
+          "y": 63,
+          "w": 78,
+          "h": 14.399999999999999,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "street",
+          "type": "text",
+          "text": "Musterstraße",
+          "font": "Montserrat",
+          "size": 6.5,
+          "x": 80,
+          "y": 94,
+          "w": 50.7,
+          "h": 7.8,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "street"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M29 79H131",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "FK-D06",
+      "name": "Nummer im Kreis",
+      "note": "Rand links & rechts",
+      "borderKey": "FK-SEITLICH",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 10,
+        "y": 0,
+        "width": 140,
+        "height": 280,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Poppins",
+          "size": 21,
+          "x": 80,
+          "y": 44,
+          "w": 40.95,
+          "h": 25.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 10,
+          "x": 80,
+          "y": 92,
+          "w": 65,
+          "h": 12,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M102 44A22 22 0 1 1 58 44A22 22 0 1 1 102 44",
+          "width": 0.65
+        }
+      ]
+    },
+    {
+      "id": "FK-D07",
+      "name": "Klassische Eleganz",
+      "note": "Rand oben & unten",
+      "borderKey": "FK-OBENUNTEN",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 0,
+        "y": 10,
+        "width": 160,
+        "height": 260,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Libre Baskerville",
+          "size": 8,
+          "x": 80,
+          "y": 34,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Libre Baskerville",
+          "size": 11,
+          "x": 80,
+          "y": 56,
+          "w": 71.5,
+          "h": 13.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Libre Baskerville",
+          "size": 18,
+          "x": 80,
+          "y": 89,
+          "w": 35.1,
+          "h": 21.599999999999998,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M32 70H70M90 70H128M76 70L80 66L84 70L80 74Z",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "FK-D08",
+      "name": "Handschrift",
+      "note": "Ohne sichtbaren Rand",
+      "borderKey": "FK-VERDECKT",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 0,
+        "y": 0,
+        "width": 160,
+        "height": 280,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Caveat",
+          "size": 8,
+          "x": 80,
+          "y": 33,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Caveat",
+          "size": 18,
+          "x": 80,
+          "y": 56,
+          "w": 116,
+          "h": 21.599999999999998,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Caveat",
+          "size": 22,
+          "x": 80,
+          "y": 94,
+          "w": 42.9,
+          "h": 26.4,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M30 72Q75 68 128 73",
+          "width": 0.55
+        }
+      ]
+    },
+    {
+      "id": "FK-D09",
+      "name": "Architektur",
+      "note": "Rand rundherum",
+      "borderKey": "FK-RUNDUM",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 10,
+        "y": 10,
+        "width": 140,
+        "height": 260,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Josefin Sans",
+          "size": 26,
+          "x": 52,
+          "y": 45,
+          "w": 50.7,
+          "h": 31.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 10,
+          "x": 80,
+          "y": 81,
+          "w": 65,
+          "h": 12,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "street",
+          "type": "text",
+          "text": "Musterstraße",
+          "font": "Montserrat",
+          "size": 6.5,
+          "x": 80,
+          "y": 99,
+          "w": 50.7,
+          "h": 7.8,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "street"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M25 62V24H72M135 26V105H91",
+          "width": 0.8
+        }
+      ]
+    },
+    {
+      "id": "FK-D10",
+      "name": "Unser Zuhause",
+      "note": "Rand links & rechts",
+      "borderKey": "FK-SEITLICH",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 10,
+        "y": 0,
+        "width": 140,
+        "height": 280,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "welcome",
+          "type": "text",
+          "text": "Zuhause",
+          "font": "Sacramento",
+          "size": 18,
+          "x": 80,
+          "y": 55,
+          "w": 81.9,
+          "h": 21.599999999999998,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "welcome"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 10,
+          "x": 80,
+          "y": 81,
+          "w": 65,
+          "h": 12,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Montserrat",
+          "size": 15,
+          "x": 126,
+          "y": 256,
+          "w": 29.25,
+          "h": 18,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M56 29L80 16L104 29M65 27V35M95 27V35",
+          "width": 0.6
+        }
+      ]
+    },
+    {
+      "id": "FK-D11",
+      "name": "Doppellinie",
+      "note": "Rand oben & unten",
+      "borderKey": "FK-OBENUNTEN",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 0,
+        "y": 10,
+        "width": 160,
+        "height": 260,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Montserrat",
+          "size": 8,
+          "x": 80,
+          "y": 35,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 11,
+          "x": 80,
+          "y": 56,
+          "w": 71.5,
+          "h": 13.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Montserrat",
+          "size": 21,
+          "x": 80,
+          "y": 94,
+          "w": 40.95,
+          "h": 25.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M25 73H135",
+          "width": 0.8
+        },
+        {
+          "d": "M25 77H135",
+          "width": 0.3
+        }
+      ]
+    },
+    {
+      "id": "FK-D12",
+      "name": "Nordisch",
+      "note": "Ohne sichtbaren Rand",
+      "borderKey": "FK-VERDECKT",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 0,
+        "y": 0,
+        "width": 160,
+        "height": 280,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Josefin Sans",
+          "size": 28,
+          "x": 80,
+          "y": 39,
+          "w": 54.6,
+          "h": 33.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Josefin Sans",
+          "size": 10,
+          "x": 80,
+          "y": 76,
+          "w": 65,
+          "h": 12,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "street",
+          "type": "text",
+          "text": "Musterstraße",
+          "font": "Josefin Sans",
+          "size": 6.5,
+          "x": 80,
+          "y": 98,
+          "w": 50.7,
+          "h": 7.8,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "street"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M42 61H118",
+          "width": 0.4
+        }
+      ]
+    },
+    {
+      "id": "FK-D13",
+      "name": "Herzstück",
+      "note": "Rand rundherum",
+      "borderKey": "FK-RUNDUM",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 10,
+        "y": 10,
+        "width": 140,
+        "height": 260,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Nunito",
+          "size": 8,
+          "x": 80,
+          "y": 46,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Nunito",
+          "size": 12,
+          "x": 80,
+          "y": 70,
+          "w": 78,
+          "h": 14.399999999999999,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Nunito",
+          "size": 17,
+          "x": 80,
+          "y": 98,
+          "w": 33.15,
+          "h": 20.4,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M80 33C64 25 69 15 76 20L80 24L84 20C91 15 96 25 80 33Z",
+          "width": 0.6
+        }
+      ]
+    },
+    {
+      "id": "FK-D14",
+      "name": "Versetzt",
+      "note": "Rand links & rechts",
+      "borderKey": "FK-SEITLICH",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 10,
+        "y": 0,
+        "width": 140,
+        "height": 280,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Montserrat",
+          "size": 22,
+          "x": 46,
+          "y": 38,
+          "w": 42.9,
+          "h": 26.4,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        },
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Montserrat",
+          "size": 8,
+          "x": 104,
+          "y": 43,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Montserrat",
+          "size": 11,
+          "x": 80,
+          "y": 72,
+          "w": 71.5,
+          "h": 13.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "street",
+          "type": "text",
+          "text": "Musterstraße",
+          "font": "Montserrat",
+          "size": 6.5,
+          "x": 80,
+          "y": 96,
+          "w": 50.7,
+          "h": 7.8,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "street"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M73 22V52M25 85H135",
+          "width": 0.5
+        }
+      ]
+    },
+    {
+      "id": "FK-D15",
+      "name": "Feiner Rahmen",
+      "note": "Rand oben & unten",
+      "borderKey": "FK-OBENUNTEN",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 0,
+        "y": 10,
+        "width": 160,
+        "height": 260,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "name",
+          "type": "text",
+          "text": "Familie",
+          "font": "Cormorant Garamond",
+          "size": 8,
+          "x": 80,
+          "y": 36,
+          "w": 36.4,
+          "h": 9.6,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "name"
+        },
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Cormorant Garamond",
+          "size": 16,
+          "x": 80,
+          "y": 58,
+          "w": 104,
+          "h": 19.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Cormorant Garamond",
+          "size": 22,
+          "x": 80,
+          "y": 87,
+          "w": 42.9,
+          "h": 26.4,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M23 22H137V106H23Z",
+          "width": 0.35
+        }
+      ]
+    },
+    {
+      "id": "FK-D16",
+      "name": "Signatur",
+      "note": "Ohne sichtbaren Rand",
+      "borderKey": "FK-VERDECKT",
+      "width_mm": 160,
+      "height_mm": 280,
+      "acrylic": {
+        "x": 0,
+        "y": 0,
+        "width": 160,
+        "height": 280,
+        "thicknessMm": 3
+      },
+      "objects": [
+        {
+          "id": "quote",
+          "type": "text",
+          "text": "Mustermann",
+          "font": "Allura",
+          "size": 16,
+          "x": 80,
+          "y": 48,
+          "w": 104,
+          "h": 19.2,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "quote"
+        },
+        {
+          "id": "street",
+          "type": "text",
+          "text": "Musterstraße",
+          "font": "Montserrat",
+          "size": 6.5,
+          "x": 80,
+          "y": 76,
+          "w": 50.7,
+          "h": 7.8,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "street"
+        },
+        {
+          "id": "number",
+          "type": "text",
+          "text": "12a",
+          "font": "Playfair Display",
+          "size": 18,
+          "x": 123,
+          "y": 255,
+          "w": 35.1,
+          "h": 21.599999999999998,
+          "bold": false,
+          "rotation": 0,
+          "color": "#000000",
+          "templateOrigin": true,
+          "fieldKey": "number"
+        }
+      ],
+      "marks": [
+        {
+          "d": "M22 92H138M138 92V234",
+          "width": 0.45
+        },
+        {
+          "d": "M24 257H103",
+          "width": 0.45
+        }
+      ]
+    }
+  ],
+  "features": {
+    "textEditable": true,
+    "bellEditable": false,
+    "separateSteelOption": true,
+    "largePreviewEditable": true,
+    "alignmentGuides": true,
+    "orderEnabled": true,
+    "productionConfirmed": true,
+    "logoAllowed": false,
+    "motifsAllowed": true
+  },
+  "manufacturing": {
+    "outerContour": {
+      "color": "#0000ff",
+      "operation": "reference-only"
+    },
+    "innerCuts": {
+      "color": "#ff0000",
+      "operation": "cut",
+      "hairline": true
+    },
+    "bellImage": false,
+    "positionGuide": false,
+    "mountingHoles": {
+      "steel": "four-corners-for-B04S",
+      "acrylic": "only-where-full-hole-inside-acrylic",
+      "separateSteelExport": true
+    }
+  },
+  "binding": {
+    "kind": "shopify-product",
+    "shop": "gravuru-design.myshopify.com",
+    "productId": "gid://shopify/Product/16124413084028",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+    "url": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-pro-v8p1ax11-personalisiert"
+  },
+  "source": {
+    "filename": "Aosu Pro V8P1AX11 16x28.pdf",
+    "pdfSha256": "23feebfd90a02adc98559b1c72da16c77c512d67dc282152ab2a4a9733259420",
+    "bellImageSha256": "928ba9bbfd22200e2be7b2dd11fa8e57f1a439e3f87a583a8aa04d2c25f2561e",
+    "note": "Originalmaße aus dem PDF. Positionskästchen und Bildplatzierung getrennt gespeichert."
+  },
+  "frames": [
+    {
+      "key": "FK-RUNDUM",
+      "name": "Ganzer Rahmen",
+      "note": "1 cm Edelstahl an allen Seiten",
+      "acrylic": {
+        "x": 10,
+        "y": 10,
+        "width": 140,
+        "height": 260,
+        "thicknessMm": 3
+      }
+    },
+    {
+      "key": "FK-VERDECKT",
+      "name": "Ohne sichtbaren Rahmen",
+      "note": "Edelstahl vollständig verdeckt",
+      "acrylic": {
+        "x": 0,
+        "y": 0,
+        "width": 160,
+        "height": 280,
+        "thicknessMm": 3
+      }
+    },
+    {
+      "key": "FK-SEITLICH",
+      "name": "Rahmen links & rechts",
+      "note": "Oben und unten bündig",
+      "acrylic": {
+        "x": 10,
+        "y": 0,
+        "width": 140,
+        "height": 280,
+        "thicknessMm": 3
+      }
+    },
+    {
+      "key": "FK-OBENUNTEN",
+      "name": "Rahmen oben & unten",
+      "note": "Links und rechts bündig",
+      "acrylic": {
+        "x": 0,
+        "y": 10,
+        "width": 160,
+        "height": 260,
+        "thicknessMm": 3
+      }
+    }
+  ],
+  "materials": {
+    "acrylic": {
+      "thicknessMm": 3,
+      "colors": [
+        {
+          "key": "schwarz",
+          "name": "Schwarz"
+        },
+        {
+          "key": "anthrazit",
+          "name": "Anthrazit"
+        }
+      ]
+    },
+    "steel": {
+      "widthMm": 160,
+      "heightMm": 280,
+      "appearance": "brushed-stainless",
+      "thicknessMm": 1.5
+    }
+  },
+  "mounting": {
+    "holeDiameterMm": 4,
+    "holeCenterEdgeMm": 5,
+    "holes": [
+      {
+        "x": 5,
+        "y": 5
+      },
+      {
+        "x": 155,
+        "y": 5
+      },
+      {
+        "x": 155,
+        "y": 275
+      },
+      {
+        "x": 5,
+        "y": 275
+      }
+    ],
+    "options": [
+      {
+        "key": "K00",
+        "name": "Keine Befestigung",
+        "visibleScrews": false,
+        "surchargeCents": 0
+      },
+      {
+        "key": "GWS",
+        "name": "Verdeckte Bolzen",
+        "visibleScrews": false,
+        "surchargeCents": 599
+      },
+      {
+        "key": "KRA",
+        "name": "Selbstklebend – raue Flächen",
+        "visibleScrews": false,
+        "surchargeCents": 499
+      },
+      {
+        "key": "SIL",
+        "name": "Mit Silikon",
+        "visibleScrews": false,
+        "surchargeCents": 499
+      },
+      {
+        "key": "B04S",
+        "name": "Bohrlöcher mit Schrauben",
+        "visibleScrews": true,
+        "surchargeCents": 369
+      }
+    ],
+    "screwImageSource": "gravuru-schraubenkopf-fotorealistisch.png",
+    "screwHeadPreviewDiameterMm": 7
+  },
+  "purchasing": {
+    "basePriceCents": 4999,
+    "currency": "EUR",
+    "bellModel": "AOSU Pro V8P1AX11",
+    "mountingTemplateLabel": "AOSU Pro V8P1AX11 · Original-Bohrvorlage",
+    "bellIncluded": false,
+    "scopeLabel": "Klingelschild ohne Funkklingel",
+    "variants": [
+      {
+        "key": "schwarz|FK-RUNDUM|K00",
+        "variantId": "57465408291196",
+        "sku": "FK-AV2A-16x28-0001",
+        "priceCents": 4999
+      },
+      {
+        "key": "schwarz|FK-RUNDUM|GWS",
+        "variantId": "57465409634684",
+        "sku": "FK-AV2A-16x28-0002",
+        "priceCents": 5598
+      },
+      {
+        "key": "schwarz|FK-RUNDUM|KRA",
+        "variantId": "57465409667452",
+        "sku": "FK-AV2A-16x28-0003",
+        "priceCents": 5498
+      },
+      {
+        "key": "schwarz|FK-RUNDUM|SIL",
+        "variantId": "57465409700220",
+        "sku": "FK-AV2A-16x28-0004",
+        "priceCents": 5498
+      },
+      {
+        "key": "schwarz|FK-RUNDUM|B04S",
+        "variantId": "57465409732988",
+        "sku": "FK-AV2A-16x28-0005",
+        "priceCents": 5368
+      },
+      {
+        "key": "schwarz|FK-VERDECKT|K00",
+        "variantId": "57465409765756",
+        "sku": "FK-AV2A-16x28-0006",
+        "priceCents": 4999
+      },
+      {
+        "key": "schwarz|FK-VERDECKT|GWS",
+        "variantId": "57465409798524",
+        "sku": "FK-AV2A-16x28-0007",
+        "priceCents": 5598
+      },
+      {
+        "key": "schwarz|FK-VERDECKT|KRA",
+        "variantId": "57465409831292",
+        "sku": "FK-AV2A-16x28-0008",
+        "priceCents": 5498
+      },
+      {
+        "key": "schwarz|FK-VERDECKT|SIL",
+        "variantId": "57465409864060",
+        "sku": "FK-AV2A-16x28-0009",
+        "priceCents": 5498
+      },
+      {
+        "key": "schwarz|FK-VERDECKT|B04S",
+        "variantId": "57465409896828",
+        "sku": "FK-AV2A-16x28-0010",
+        "priceCents": 5368
+      },
+      {
+        "key": "schwarz|FK-SEITLICH|K00",
+        "variantId": "57465409929596",
+        "sku": "FK-AV2A-16x28-0011",
+        "priceCents": 4999
+      },
+      {
+        "key": "schwarz|FK-SEITLICH|GWS",
+        "variantId": "57465409962364",
+        "sku": "FK-AV2A-16x28-0012",
+        "priceCents": 5598
+      },
+      {
+        "key": "schwarz|FK-SEITLICH|KRA",
+        "variantId": "57465409995132",
+        "sku": "FK-AV2A-16x28-0013",
+        "priceCents": 5498
+      },
+      {
+        "key": "schwarz|FK-SEITLICH|SIL",
+        "variantId": "57465410027900",
+        "sku": "FK-AV2A-16x28-0014",
+        "priceCents": 5498
+      },
+      {
+        "key": "schwarz|FK-SEITLICH|B04S",
+        "variantId": "57465410060668",
+        "sku": "FK-AV2A-16x28-0015",
+        "priceCents": 5368
+      },
+      {
+        "key": "schwarz|FK-OBENUNTEN|K00",
+        "variantId": "57465410093436",
+        "sku": "FK-AV2A-16x28-0016",
+        "priceCents": 4999
+      },
+      {
+        "key": "schwarz|FK-OBENUNTEN|GWS",
+        "variantId": "57465410126204",
+        "sku": "FK-AV2A-16x28-0017",
+        "priceCents": 5598
+      },
+      {
+        "key": "schwarz|FK-OBENUNTEN|KRA",
+        "variantId": "57465410158972",
+        "sku": "FK-AV2A-16x28-0018",
+        "priceCents": 5498
+      },
+      {
+        "key": "schwarz|FK-OBENUNTEN|SIL",
+        "variantId": "57465410191740",
+        "sku": "FK-AV2A-16x28-0019",
+        "priceCents": 5498
+      },
+      {
+        "key": "schwarz|FK-OBENUNTEN|B04S",
+        "variantId": "57465410224508",
+        "sku": "FK-AV2A-16x28-0020",
+        "priceCents": 5368
+      },
+      {
+        "key": "anthrazit|FK-RUNDUM|K00",
+        "variantId": "57465410257276",
+        "sku": "FK-AV2A-16x28-0021",
+        "priceCents": 4999
+      },
+      {
+        "key": "anthrazit|FK-RUNDUM|GWS",
+        "variantId": "57465410290044",
+        "sku": "FK-AV2A-16x28-0022",
+        "priceCents": 5598
+      },
+      {
+        "key": "anthrazit|FK-RUNDUM|KRA",
+        "variantId": "57465410322812",
+        "sku": "FK-AV2A-16x28-0023",
+        "priceCents": 5498
+      },
+      {
+        "key": "anthrazit|FK-RUNDUM|SIL",
+        "variantId": "57465410355580",
+        "sku": "FK-AV2A-16x28-0024",
+        "priceCents": 5498
+      },
+      {
+        "key": "anthrazit|FK-RUNDUM|B04S",
+        "variantId": "57465410388348",
+        "sku": "FK-AV2A-16x28-0025",
+        "priceCents": 5368
+      },
+      {
+        "key": "anthrazit|FK-VERDECKT|K00",
+        "variantId": "57465410421116",
+        "sku": "FK-AV2A-16x28-0026",
+        "priceCents": 4999
+      },
+      {
+        "key": "anthrazit|FK-VERDECKT|GWS",
+        "variantId": "57465410453884",
+        "sku": "FK-AV2A-16x28-0027",
+        "priceCents": 5598
+      },
+      {
+        "key": "anthrazit|FK-VERDECKT|KRA",
+        "variantId": "57465410486652",
+        "sku": "FK-AV2A-16x28-0028",
+        "priceCents": 5498
+      },
+      {
+        "key": "anthrazit|FK-VERDECKT|SIL",
+        "variantId": "57465410519420",
+        "sku": "FK-AV2A-16x28-0029",
+        "priceCents": 5498
+      },
+      {
+        "key": "anthrazit|FK-VERDECKT|B04S",
+        "variantId": "57465410552188",
+        "sku": "FK-AV2A-16x28-0030",
+        "priceCents": 5368
+      },
+      {
+        "key": "anthrazit|FK-SEITLICH|K00",
+        "variantId": "57465410584956",
+        "sku": "FK-AV2A-16x28-0031",
+        "priceCents": 4999
+      },
+      {
+        "key": "anthrazit|FK-SEITLICH|GWS",
+        "variantId": "57465410617724",
+        "sku": "FK-AV2A-16x28-0032",
+        "priceCents": 5598
+      },
+      {
+        "key": "anthrazit|FK-SEITLICH|KRA",
+        "variantId": "57465410650492",
+        "sku": "FK-AV2A-16x28-0033",
+        "priceCents": 5498
+      },
+      {
+        "key": "anthrazit|FK-SEITLICH|SIL",
+        "variantId": "57465410683260",
+        "sku": "FK-AV2A-16x28-0034",
+        "priceCents": 5498
+      },
+      {
+        "key": "anthrazit|FK-SEITLICH|B04S",
+        "variantId": "57465410716028",
+        "sku": "FK-AV2A-16x28-0035",
+        "priceCents": 5368
+      },
+      {
+        "key": "anthrazit|FK-OBENUNTEN|K00",
+        "variantId": "57465410748796",
+        "sku": "FK-AV2A-16x28-0036",
+        "priceCents": 4999
+      },
+      {
+        "key": "anthrazit|FK-OBENUNTEN|GWS",
+        "variantId": "57465410781564",
+        "sku": "FK-AV2A-16x28-0037",
+        "priceCents": 5598
+      },
+      {
+        "key": "anthrazit|FK-OBENUNTEN|KRA",
+        "variantId": "57465410814332",
+        "sku": "FK-AV2A-16x28-0038",
+        "priceCents": 5498
+      },
+      {
+        "key": "anthrazit|FK-OBENUNTEN|SIL",
+        "variantId": "57465410847100",
+        "sku": "FK-AV2A-16x28-0039",
+        "priceCents": 5498
+      },
+      {
+        "key": "anthrazit|FK-OBENUNTEN|B04S",
+        "variantId": "57465410879868",
+        "sku": "FK-AV2A-16x28-0040",
+        "priceCents": 5368
+      }
+    ]
+  },
+  "review": {
+    "status": "prepared",
+    "reasons": [],
+    "sourceImagePlacement": true,
+    "changes": [],
+    "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen.",
+    "activation": "Christopher: direkte Aktivierung am 19.09.2026 freigegeben"
+  }
+}

@@ -1,3 +1,11 @@
+## 21.10.2026 – Aufgabenbranch für vollständige Quellsicherung und Komplettpreisstaffel reserviert
+
+Branch `task/staffel-komplettpreis-20261021`, Basis `a3fbaef116d67aeaf7ed9a5b07c2066112830880`. Sicherungsumfang: vollständiger geprüfter Händler-Quellbaum aus dem privat wiederhergestellten Release d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb, isolierte vier Preisänderungen, Tests und Herkunftsnachweise unter `tools/tier-update-20261021/`. Keine Datenbanken, Kundendaten, Zugangsdaten, generierten Vorschauen oder node_modules. Keine Änderungen an main und keine Veröffentlichung durch diesen Sicherungsschritt.
+
+Verbindlicher Nutzerstand: Mengenstaffel 6 % ab zwei und 10 % ab drei identischen Exemplaren auf den vollständigen Stückpreis einschließlich Foto, Motiven und Befestigung; `quantityTierScope: complete-unit`. Preisregel und Konfigurator-/Shopify-Testbestellungen sind noch getrennt abzugleichen. Nächster Schritt: vollständigen Quellstand und lokale Prüfnachweise auf diesem Branch sichern, danach Ergebniscommit direkt verifizieren.
+
+---
+
 ## 21.10.2026 – Aktiven Serverstand privat gesichert; Anschlussänderungen vorbereitet
 
 Aktueller Übergabestand: [Bestandsanschluss-Pilot](tools/bestand-konfi-pilot-20261021/README.md). Dieser Nachtrag ergänzt die früheren Beobachtungen unten. Nur der Aufgabenbranch wird aktualisiert; kein Merge, kein neuer Dienst, kein Releasewechsel und keine Änderung an bestehenden Konfiguratoren.

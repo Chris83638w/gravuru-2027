@@ -1,9 +1,9 @@
 {
   "schema": "gravuru-gt22x14-product-plan/v1",
-  "asOf": "2026-10-20",
+  "asOf": "2026-10-21",
   "state": "draft-series-source",
   "scope": {
-    "productCount": 5,
+    "productCount": 4,
     "animal": "dog",
     "designCount": 16,
     "identicalGalleryForAllProducts": true
@@ -18,16 +18,17 @@
     "widthMm": 220,
     "heightMm": 140,
     "thicknessMm": 5,
-    "holeDiameterMm": 5,
+    "holeDiameterMm": 4,
     "holeEdgeMm": 19,
     "designMarginMm": 0,
     "keepoutMm": 1,
     "standoffHeadDiameterMm": 12,
-    "holeEdgeSource": "Direkte Nutzerkorrektur vom 20.10.2026: 19 mm von Lochmitte zum Rand; ersetzt die bisherigen 12 mm."
+    "holeEdgeSource": "Direkte Nutzerkorrektur vom 20.10.2026: 19 mm von Lochmitte zum Rand; ersetzt die bisherigen 12 mm.",
+    "standoffHoleDiameterMm": 8
   },
   "prices": {
     "baseCents": 2599,
-    "holes2OnlyCents": 299,
+    "holes2OnlyCents": 309,
     "holes4OnlyCents": 399,
     "holes2WithScrewsCents": 339,
     "holes4WithScrewsCents": 449,
@@ -222,52 +223,6 @@
         "publicationAuthorized": false,
         "mutationPerformed": false
       }
-    },
-    {
-      "id": "hund-regenbogen",
-      "title": "Hunde-Gedenktafel aus Schiefer mit Foto und Regenbogen – 22 × 14 cm",
-      "defaultDesignId": "GT-S-22x14-D222",
-      "designIds": [
-        "GT-S-22x14-D204",
-        "GT-S-22x14-D207",
-        "GT-S-22x14-D209",
-        "GT-S-22x14-D210",
-        "GT-S-22x14-D212",
-        "GT-S-22x14-D213",
-        "GT-S-22x14-D214",
-        "GT-S-22x14-D215",
-        "GT-S-22x14-D220",
-        "GT-S-22x14-D222",
-        "GT-S-22x14-D224",
-        "GT-S-22x14-D225",
-        "GT-S-22x14-D228",
-        "GT-S-22x14-D231",
-        "GT-S-22x14-D233",
-        "GT-S-22x14-D236"
-      ],
-      "seo": {
-        "title": "Hunde-Gedenktafel mit Foto & Regenbogen | Schiefer 22×14",
-        "description": "Ein Andenken an deinen Hund: Schiefer-Gedenktafel mit Foto, Name und Regenbogen. 22 × 14 cm mit heller Gravur. Alle Hunde-Designs stehen zur Auswahl.",
-        "handle": "hunde-gedenktafel-schiefer-foto-regenbogen-22x14"
-      },
-      "contentOutline": {
-        "motif": "Regenbogen",
-        "personalization": [
-          "Foto",
-          "Name",
-          "Lebensdaten",
-          "Spruch"
-        ],
-        "gallery": "Alle 16 freigegebenen Hunde-Designs",
-        "backgroundRemoval": "Inklusive; Kunde kann Hintergrund behalten wählen",
-        "photoMask": "Form bleibt erhalten; Foto innerhalb der Maske verschiebbar"
-      },
-      "shopify": {
-        "plannedStatus": "DRAFT",
-        "productId": null,
-        "publicationAuthorized": false,
-        "mutationPerformed": false
-      }
     }
   ],
   "reuseAndConflictRule": "Bestehende Produkt-/Variantenbindungen und parallele Claude-Entwürfe vor jedem Schreiben abgleichen. Kein automatisches Überschreiben oder Löschen.",
@@ -286,5 +241,17 @@
       "source": "Direkte Nutzerkorrektur 20.10.2026",
       "appliesTo": "Bohrbilder mit 2 bzw. 4 Löchern einschließlich Abstandshalter-Ausführung"
     }
-  ]
+  ],
+  "latestDecision": {
+    "at": "2026-10-21",
+    "productCount": 4,
+    "regularHoleDiameterMm": 4,
+    "standoffHoleDiameterMm": 8,
+    "holeEdgeMm": 19,
+    "screwSurcharge2Cents": 30,
+    "screwSurcharge4Cents": 50,
+    "derivedHoles2OnlyCents": 309,
+    "derivedHoles4OnlyCents": 399,
+    "source": "Direkte nachgereichte Nutzerantwort; ersetzt den bisherigen Fuenfer-Plan und Ø 5 mm."
+  }
 }

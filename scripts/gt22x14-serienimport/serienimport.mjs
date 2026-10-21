@@ -59,14 +59,14 @@ export function description(product,plan){
  '<p>Das Hauptbild zeigt das Startdesign. In diesem Produkt stehen dir alle '+plan.scope.designCount+' Hunde-Designs dieser Serie zur Auswahl. Du kannst also mit dieser Vorlage beginnen oder im Konfigurator ein anderes Hunde-Design wählen.</p>'+
  '<h3>Foto, Name und persönlicher Text</h3><p>Das erste Foto ist im Grundpreis von 25,99 € enthalten. Weitere Fotos kosten jeweils 8,99 €. Wir stellen dein Foto ohne zusätzlichen Aufpreis frei. Möchtest du den Hintergrund mitgravieren lassen, wählst du „Hintergrund behalten“. Eine gewählte Herz- oder Kreisform bleibt erhalten; innerhalb der Maske kannst du das Foto passend verschieben.</p>'+
  '<p>Texte, Motive und das Foto lassen sich auf der Platte verschieben. Die Bearbeitung kostet nichts zusätzlich. Für jedes zusätzlich hinzugefügte Motiv berechnen wir 1,60 €. Die Motive des gewählten Startdesigns sind enthalten. Der Upload-Hinweis gehört zur Bedienung und wird nicht graviert.</p>'+
- '<h3>Format und Ausführung</h3><ul><li>Naturschiefer, 22 × 14 cm, Stärke 5 mm</li><li>Helle Gravur von Foto, Text und Motiven</li><li>Bei Bohrungen: Ø 5 mm, Lochmitte 19 mm vom Rand</li><li>Alle Hunde-Designs der Serie auswählbar</li></ul>'+
+ '<h3>Format und Ausführung</h3><ul><li>Naturschiefer, 22 × 14 cm, Stärke 5 mm</li><li>Helle Gravur von Foto, Text und Motiven</li><li>Bei Bohrungen: Ø 4 mm, Lochmitte 19 mm vom Rand</li><li>Alle Hunde-Designs der Serie auswählbar</li></ul>'+
  '<h3>Befestigung und Zubehör kombinieren</h3><p>Du wählst ohne Bohrung, zwei oder vier Bohrlöcher ohne Schrauben, zwei oder vier Bohrlöcher mit Schrauben oder zwei Abstandshalter mit Edelstahlknopf. Zusätzlich lassen sich Acrylständer in Klar oder Schwarz und Silikon 40 ml kombinieren.</p>'+
- '<ul><li>2 Bohrlöcher ohne Schrauben: +2,99 €; mit Schrauben: +3,39 €</li><li>4 Bohrlöcher ohne Schrauben: +3,99 €; mit Schrauben: +4,49 €</li><li>2 Abstandshalter: +5,99 €</li><li>Acrylständer klar: +11,99 €; schwarz: +13,99 €</li><li>Silikon 40 ml: +5,99 €</li></ul>'+
+ '<ul><li>2 Bohrlöcher ohne Schrauben: +3,09 €; mit Schrauben: +3,39 €</li><li>4 Bohrlöcher ohne Schrauben: +3,99 €; mit Schrauben: +4,49 €</li><li>2 Abstandshalter, Bohrung Ø 8 mm: +5,99 €</li><li>Acrylständer klar: +11,99 €; schwarz: +13,99 €</li><li>Silikon 40 ml: +5,99 €</li></ul>'+
  '<h3>Mengenstaffel</h3><p>Ab zwei Stück gelten 6 % Mengenrabatt, ab drei Stück 10 %. Verschiedene Hunde-Designs können kombiniert werden.</p>'+
  '<h3>Lieferumfang</h3><p>Eine personalisierte Schiefer-Gedenktafel mit dem gewählten Design, dem ersten Foto und deinen Texten. Zubehör ist entsprechend deiner Auswahl enthalten.</p>';
 }
 export function buildBatch(plan,{mediaByProduct={},runId='codex-gt22x14-dogs-20261020'}={}){
- if(plan.scope.productCount!==5||plan.products.length!==5)fail('Genau fünf Produkte erforderlich.');
+ if(plan.scope.productCount!==4||plan.products.length!==4)fail('Genau vier Produkte erforderlich.');
  if(plan.scope.animal!=='dog'||plan.scope.designCount!==16)fail('Nur die geprüfte Hunde-Serie verwenden.');
  for(const [k,v]of Object.entries(plan.prices))if(!cents(v))fail('Preis offen: '+k);
  if(plan.geometry.holeEdgeMm!==19)fail('19 mm Loch-Randabstand erforderlich.');
@@ -84,7 +84,7 @@ export function buildBatch(plan,{mediaByProduct={},runId='codex-gt22x14-dogs-202
   const images=mediaByProduct[p.id]||[];
   if(images.some(x=>!x.id||!x.alt?.trim()))fail('Bild-ID oder Alt-Text fehlt.');
   const config={schema:'gravuru-codex-draft-config/v1',lineId:'gedenktafeln-22x14-hunde',identity,
-   geometry:plan.geometry,holePatterns:{2:holes(plan.geometry,2),4:holes(plan.geometry,4)},
+   geometry:plan.geometry,holePatterns:{2:holes(plan.geometry,2),4:holes(plan.geometry,4),standoffs:holes({...plan.geometry,holeDiameterMm:plan.geometry.standoffHoleDiameterMm},2)},
    designIds:gallery,startDesign:p.defaultDesignId,prices:plan.prices,quantityTiers:[{minQuantity:2,percentOff:6},{minQuantity:3,percentOff:10}],
    photo:{includedCount:1,extraPriceCents:899,backgroundRemovalDefault:true,customerCanKeepBackground:true,preserveShape:true,panInsideMask:true,uploadHintInProduction:false},
    extraMotifCents:160,allElementsMovable:true,publicationReady:false};
@@ -122,6 +122,15 @@ export function verifyRead(record,expected){
  for(const image of expected.images)if(!record.media.nodes.some(x=>x.id===image.id&&x.alt===image.alt&&x.image?.url))fail('Bild oder Alt-Text nicht bestätigt.');
  return {id:record.id,handle:record.handle,status:'DRAFT',variants:record.variants.nodes.length,images:expected.images.length,sourceSha256:expected.sourceSha256};
 }
+
+export function ownedUpdateInput(record,before,after){
+ verifyRead(record,before);
+ if(after.input.status!=='DRAFT'||before.identity!==after.identity||before.handle!==after.handle)fail('Produktidentität darf nicht geändert werden.');
+ const ids=new Map(record.variants.nodes.map(v=>[v.sku,v.id]));
+ if(after.variants.length!==before.variants.length||after.variants.some(v=>!ids.has(v.sku)))fail('Variantenstruktur wurde geändert; gesonderte Migration erforderlich.');
+ return {...after.input,id:record.id,variants:after.input.variants.map(v=>({...v,id:ids.get(v.sku)}))};
+}
+
 export async function applyBatch(batch,{transport,journalDir,shopDomain}){
  if(!/^[a-z0-9-]+\.myshopify\.com$/.test(shopDomain))fail('Shop-Domain fehlt.');
  await fs.mkdir(journalDir,{recursive:true});

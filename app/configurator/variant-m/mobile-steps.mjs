@@ -10,6 +10,10 @@ export const MOBILE_QUERY='(max-width:'+MOBILE_MAX_WIDTH+'px)';
 export const PREVIEW_FRACTION=.4;
 export const PREVIEW_FRACTION_KEYBOARD=.25;
 export const PREVIEW_MIN_PX=120;
+// Kleine Bildschirme (z. B. Webansicht in einer App, < 760 px hoch): Platte etwas niedriger, damit der
+// Bearbeitungsbereich zwischen Platte und Schrittleiste bedienbar bleibt (Fehler 20.10.2026).
+export const PREVIEW_FRACTION_SMALL=.34;
+export const SMALL_VIEWPORT_PX=760;
 
 // Reihenfolge der geführten Schritte. `tabs` sind die Desktop-Reiter (`data-ux-tab`),
 // die der Schritt gemeinsam zeigt; „Prüfen“ hat keinen Reiter.
@@ -17,7 +21,9 @@ export const STEPS=Object.freeze([
   {id:'options',label:'Optionen',tabs:['options']},
   {id:'design',label:'Design',tabs:['design']},
   {id:'text',label:'Text',tabs:['text']},
-  {id:'media',label:'Foto / Motiv',tabs:['upload','motif']},
+  // Foto und Motiv sind getrennte Schritte (Chris 20.10.2026: „Foto und Motiv dürfen nicht zusammen sein“).
+  {id:'media',label:'Foto',tabs:['upload']},
+  {id:'motif',label:'Motive',tabs:['motif']},
   {id:'review',label:'Prüfen',tabs:[]}
 ]);
 
@@ -29,10 +35,7 @@ export function availableSteps(tabs={},labels={}){
     const present=step.tabs.filter(tab=>tabs[tab]);
     if(step.tabs.length&&!present.length)continue;
     let label=step.label;
-    if(step.id==='media'){
-      const upload=labels.upload||'Foto';
-      label=present.length===2?upload+' / Motiv':present[0]==='upload'?upload:'Motive';
-    }
+    if(step.id==='media')label=labels.upload||'Foto';
     steps.push({id:step.id,label,tabs:present});
   }
   return steps;
@@ -51,7 +54,7 @@ export function progress(steps,current){
 
 // Höhe der festen Vorschau: 40 % des sichtbaren Bereichs, bei Texteingabe 25 %.
 export function previewHeight({viewportHeight,keyboardOpen=false}){
-  const fraction=keyboardOpen?PREVIEW_FRACTION_KEYBOARD:PREVIEW_FRACTION;
+  const fraction=keyboardOpen?PREVIEW_FRACTION_KEYBOARD:Number(viewportHeight||0)<SMALL_VIEWPORT_PX?PREVIEW_FRACTION_SMALL:PREVIEW_FRACTION;
   return Math.max(PREVIEW_MIN_PX,Math.round(Number(viewportHeight||0)*fraction));
 }
 
@@ -179,10 +182,18 @@ export async function installMobileSteps(api){
     r.host.dataset.uxKeyboard=String(keyboardOpen);
   }
   el.uxMobileSteps={get active(){return active;},get current(){return current;},get steps(){return steps.map(s=>s.id);},show:showStep,applyViewport:(override=null)=>{viewportOverride=override;applyViewport();}};
+  const notes=new Map();
+  // Die Altvorschau (.mobile-preview) zeichnet das ganze Schild bei jedem sync neu; im Handy-Zustand ist
+  // die Platte immer sichtbar und die Altvorschau ausgeblendet – dort nichts zeichnen (Leistung 20.10.2026).
+  if(typeof el.updateMobilePreview==='function'&&!el.updateMobilePreview.uxMobileGuard){const original=el.updateMobilePreview;el.updateMobilePreview=function(...args){if(active)return;return original.apply(this,args);};el.updateMobilePreview.uxMobileGuard=true;}
   function enter(){
     if(active)return;active=true;r.host.dataset.uxMobile='true';
     relocate($('.fk-buy-button'),cartSlot);const cart=$('.fk-buy-button');if(cart)cart.hidden=false;
     relocate($('label.fk-quantity'),review.querySelector('[data-ux-mobile-quantity]'));
+    // Hinweise (Stand wiederhergestellt, Überlagerung …) nicht über/in der Platte, sondern oben im
+    // Bearbeitungsbereich – sonst schrumpft die feste Platte auf einen Streifen (Fehler 20.10.2026).
+    const editor=$('.ux-editor');
+    for(const node of [$('.ux-session-note'),$('.ux-conflict-hints')])if(node&&editor&&!notes.has(node)){notes.set(node,{parent:node.parentNode,next:node.nextSibling});editor.prepend(node);}
     bar.hidden=false;renderSteps();current=stepForTab(steps,selectedTab())||steps[0]?.id||'options';
     showStep(current,{scroll:false});applyViewport();updateTotal();
   }
@@ -190,6 +201,7 @@ export async function installMobileSteps(api){
     if(!active)return;active=false;delete r.host.dataset.uxMobile;delete r.host.dataset.uxKeyboard;delete r.host.dataset.uxStep;
     for(const name of ['--ux-vv-height','--ux-vv-top','--ux-mobile-preview-h'])r.host.style.removeProperty(name);
     bar.hidden=true;review.hidden=true;restoreAll();
+    for(const [node,place] of notes){if(place.parent)place.parent.insertBefore(node,place.next&&place.next.parentNode===place.parent?place.next:null);}notes.clear();
     const tab=selectedTab();applying=true;try{showTab(tab);}finally{applying=false;}
   }
   function updateTotal(){const total=$('[data-fk-total]')?.textContent.trim()||'';const node=bar.querySelector('[data-ux-mobile-total]');if(node&&node.textContent!==total)node.textContent=total;}
@@ -199,13 +211,13 @@ export async function installMobileSteps(api){
   window.addEventListener('resize',applyViewport);
   r.addEventListener('focusin',e=>{if(!active)return;applyViewport();const field=e.target;
     // Direktbearbeitung auf der Platte (uxTextTap → uxEditText) gehört zum Schritt Text.
-    if(field.closest('.ux-direct-input')&&!['text','media'].includes(current))showStep('text',{scroll:false});
+    if(field.closest('.ux-direct-input')&&!['text','media','motif'].includes(current))showStep('text',{scroll:false});
     if(field.closest('.ux-editor')&&fieldFocused())setTimeout(()=>{if(r.activeElement===field)field.scrollIntoView({block:'center',behavior:'smooth'});},280);});
   r.addEventListener('focusout',()=>{if(active)setTimeout(applyViewport,0);});
   r.addEventListener('click',e=>{
     if(!active)return;const b=e.target.closest('[data-ux]');if(!b||b.disabled)return;const key=b.dataset.ux;
     // Schrittwechsel über die Leiste: Auswahl auf der Platte nur in Text/Foto/Motiv behalten.
-    const go=id=>{if(!id)return;if(!['text','media'].includes(id)&&el.state.selected){el.state.selected=null;el.sync();}showStep(id);};
+    const go=id=>{if(!id)return;if(!['text','media','motif'].includes(id)&&el.state.selected){el.state.selected=null;el.sync();}showStep(id);};
     if(key==='mobile-step'||key==='mobile-goto'){go(b.dataset.step);return;}
     if(key==='mobile-prev'||key==='mobile-next'){go(neighbourStep(steps,current,key==='mobile-next'?1:-1));return;}
     if(key==='mobile-issue'){el.uxRevealTextIssue?.(b.dataset.id);return;}

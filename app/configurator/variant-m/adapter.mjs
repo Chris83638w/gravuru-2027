@@ -1,9 +1,9 @@
-import {spacerPreview,keepoutPreview} from './option-media.mjs';
+import {spacerPreview,screwPreview,keepoutPreview} from './option-media.mjs';
 import {designAreaPreview} from './design-area.mjs';
 import {textsNearHoles,holeHintText} from '../../platform/sources/app/shared/models/hole-proximity.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
-import {surfacePreview,embedSurface,scenePreview} from './material-surface.mjs';
+import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl} from './material-surface.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 // Fototipp auf der Platte, bevor die Kundenoberfläche fertig ist (build.mjs ruft es direkt nach mount auf).
@@ -11,7 +11,8 @@ export {installEarlyPhotoTap} from './photo-upload.mjs';
 import {getProcessingProfile, elementColor} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc, filteredDesigns} from '../../platform/sources/app/shared/models/design-content.mjs';
-import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, editedDesignTexts, validatePhotoFile, newEditableObject, resolvedOptions} from './contract.mjs';
+import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, validatePhotoFile, newEditableObject, resolvedOptions} from './contract.mjs';
+import {changedCustomerTexts, transferTexts} from './workflow-model.mjs';
 import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
 import {objectSurface, surfaceGeometry} from './surfaces.mjs';
 
@@ -29,17 +30,22 @@ export function installUniversal(configInput) {
   const activeSurface = () => el?.state?.uxSurface === 'back' ? 'back' : 'front';
   const profile = (surface = activeSurface()) => { const sp = selectedProfile(config, options); return surface === 'back' ? {...sp, geometry:surfaceGeometry(sp.geometry, 'back')} : sp; };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
-  const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front'} = {}) => {
+  const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
     const visible={...design,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
-    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),config.materialSurface,p.geometry);
+    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,p.geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
-    return scenePreview(designAreaPreview(keepoutPreview(spacerPreview(result,profile(surface)),profile(surface),{show:keepout,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
+    // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026); Texte nahe an Löchern
+    // meldet weiter der Hinweis. Schrauben/Abstandshalter erscheinen, wenn die Befestigung sie enthält.
+    return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,profile(surface)),profile(surface)),profile(surface),{show:false,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
 
-  window.Funkklingel.thumb = (element, d) => { el = element; return svg(p.designs.find(x => x.id === d.id) || d); };
+  // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
+  // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
+  const thumbCache=new Map();
+  window.Funkklingel.thumb = (element, d) => { el = element; const design=p.designs.find(x => x.id === d.id) || d; const key=JSON.stringify(design); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
     el = element; originalPrepare(el);
     const {width, height, shape, cornerRadiusMm=0} = p.geometry;
@@ -53,9 +59,9 @@ export function installUniversal(configInput) {
       const outline = shape === 'ellipse' ? `M0 ${height/2}a${width/2} ${height/2} 0 1 0 ${width} 0a${width/2} ${height/2} 0 1 0 -${width} 0` : `M0 0H${width}V${height}H0Z`;
       return {outline, clip:outline, holes:profile().geometry.holes.map(h => ({...h, r:h.diameter/2})), gap:0};
     };
-    el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o)})).querySelector('[data-object]')?.outerHTML || '';
+    el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o),bare:true})).querySelector('[data-object]')?.outerHTML || '';
     el.svgBody = function(preview=true, guides=false) {
-      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front'}));
+      const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front',screen:preview}));
       if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[]);for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
       return doc.documentElement.innerHTML;
     };
@@ -85,7 +91,7 @@ export function installUniversal(configInput) {
     r.host.dataset.universalProfile = p.id;
     const style = document.createElement('style');
     style.textContent = '.m-photo{margin:18px 0;padding:14px;background:#f5f4f0;border-radius:9px}.m-photo label{display:block;margin:10px 0}.m-photo input{background:#fff!important}.m-photo p{font-size:12px;line-height:1.5}.m-filters{display:flex;gap:8px;margin:8px 0}.m-filters label{flex:1;min-width:0}.m-color{display:block;padding:8px 0}.m-color input{width:70px;height:40px;padding:3px!important}[data-m-invalid]{font-size:13px;color:#873422}.fk-options fieldset,.fk-frame-field,.fk-frame-pictures,.fk-options>[data-fk-mount-note],.fk-options>label,.fk-scope-note{display:none!important}.fk-options:empty{display:none!important}.m-options>label{display:block!important;margin:10px 0}.fk-font-section{margin-top:18px}@media(max-width:720px){.c-gallery{max-height:none!important;overflow:visible!important;overscroll-behavior:auto!important;touch-action:pan-y!important}.stage{touch-action:pan-y!important}.m-filters{flex-wrap:wrap}}';
-    style.textContent += '.c-gallery [hidden]{display:none!important}.c-gallery .c-design-card svg{width:100%;height:95px!important}.stage{height:auto!important;min-height:330px!important}.plate-holder{width:min(100%,520px)!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}.dimension-x span,.dimension-y span{position:relative;background:#fff!important;padding:0 5px!important;z-index:1}.fk-options .m-options>label{display:block!important}@media(max-width:720px){.stage{min-height:230px!important}.plate-holder{width:min(100%,430px)!important}.c-gallery .c-design-card svg{height:75px!important}}';
+    style.textContent += '.c-gallery [hidden]{display:none!important}.c-gallery .c-design-card svg:not(svg svg){width:100%;height:95px!important}.stage{height:auto!important;min-height:330px!important}.plate-holder{width:min(100%,520px)!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}.dimension-x span,.dimension-y span{position:relative;background:#fff!important;padding:0 5px!important;z-index:1}.fk-options .m-options>label{display:block!important}@media(max-width:720px){.stage{min-height:230px!important}.plate-holder{width:min(100%,430px)!important}.c-gallery .c-design-card svg:not(svg svg){height:75px!important}}';
     style.textContent += '.stage-wrap>.stage .plate-holder{width:min(100%,520px)!important;height:auto!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}.c-large-preview .fk-live-preview .plate-holder{width:min(100cqw,calc(100cqh * '+p.geometry.width+' / '+p.geometry.height+'))!important;height:min(100cqh,calc(100cqw * '+p.geometry.height+' / '+p.geometry.width+'))!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}';
     style.textContent += '@media(max-width:720px){.stage-wrap>.stage .plate-holder{touch-action:pan-y!important}.c-large-preview .plate-holder{touch-action:none!important}}';
     r.append(style);
@@ -193,11 +199,12 @@ export function installUniversal(configInput) {
     el.restoreDraft=function(input,{draft=false}={}){const restored=readDraft(config,input,this.fontData,motifs(),{draft});this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);this.state.selected=null;photos.clear();photoDesign='';this.sync();return restored;};
     el.draftPayload=function({draft=false}={}){return saveDraft(config,this.state,options,this.fontData,motifs(),{draft});};
     el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const input=JSON.parse(await file.text());await this.uxEnsureDraftResources?.(input);this.restoreDraft(input);$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
-    el.chooseDesign=function(id){
+    el.chooseDesign=function(id,{carry=true}={}){
       const d=p.designs.find(d=>d.id===id);if(!d)return;
-      this.record();const texts=editedDesignTexts(config,this.state);
+      // Chris 21.10.2026: nur geänderte Namen/Lebensdaten wandern mit (workflow-model.mjs).
+      this.record();const texts=carry?changedCustomerTexts(this.state.objects,p.designs.find(x=>x.id===this.state.designId)):[];
       this.state.designId=id;this.state.objects=clone(d.objects);this.state.selected=null;
-      for(const o of this.state.objects)if(o.type==='text'&&o.customerEditable!==false&&texts.has(o.fieldKey))o.text=texts.get(o.fieldKey);
+      if(texts.length)transferTexts(texts,this.state.objects);
       this.normalize();this.sync();
     };
     el.add=function(input){
@@ -216,7 +223,12 @@ export function installUniversal(configInput) {
     // (`uxThumbnailDeferred`, höchstens `uxThumbnailBudget` neue Miniaturen je Durchlauf)
     // bestimmen; ausgeblendete oder aufgeschobene Karten behalten ihre bisherige Miniatur.
     // Rückgabe: Anzahl sichtbarer Karten, die nur wegen des Budgets warten.
+    // Während der Kunde ein Element zieht, keine Miniaturen neu zeichnen; nach dem Loslassen einmal nachholen.
+    let dragging=false;
+    r.addEventListener('pointerdown',e=>{if(e.target.closest?.('.scene [data-object]'))dragging=el.uxDragging=true;},true);
+    for(const type of ['pointerup','pointercancel'])r.addEventListener(type,()=>{if(!dragging)return;dragging=el.uxDragging=false;setTimeout(()=>renderThumbnails(),0);},true);
     function renderThumbnails(){
+      if(dragging)return 0;
       const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
       for(const card of r.querySelectorAll('[data-c-design]')){
@@ -224,7 +236,10 @@ export function installUniversal(configInput) {
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
-          else{budget--;thumbnail={key:thumbnailKey,markup:svg(el.uxThumbnailDesign?.(design)||design)};}
+          else{budget--;const shown=el.uxThumbnailDesign?.(design)||design;
+            // Chris 21.10.2026: Miniaturen zeigen das Musterfoto wie die Vorschau, nicht den Schriftzug „Dein Foto“.
+            let markup=svg(shown,{screen:true});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})));markup=doc.documentElement.outerHTML;}}catch{}
+            thumbnail={key:thumbnailKey,markup};}
         }
         // The legacy sync replaces the SVG with its portrait doorbell preview.
         // Restore the product geometry even when the cached rendering is valid.
@@ -260,7 +275,8 @@ export function installUniversal(configInput) {
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';
         $('[data-fk-breakdown]').textContent=price?.additionalMotifs ? price.additionalMotifs+' zusätzliche Motive · '+money(price.additionalMotifs*config.extraMotifCents) : '';
-        saveDraft(config,el.state,options,el.fontData,motifs()); issue.textContent='';
+        // Chris 21.10.2026: Pflichtfelder meldet erst der Abschluss (Textreiter + „Gestaltung fertig“), nicht dauerhaft hier.
+        saveDraft(config,el.state,options,el.fontData,motifs(),{draft:true}); issue.textContent='';
       }catch(error){issue.textContent=error.message;}
       $('.fk-buy-button').disabled=true;$('.fk-order-status').textContent='Prüfvorschau · Bestellung und Fotoübertragung noch nicht verbunden.';
       colorControl.querySelector('input').disabled=!el.selected()||!!locked(el.selected());

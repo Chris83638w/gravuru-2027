@@ -2,7 +2,7 @@
 // mit Kundentext und Direktlink. Reine Regeln ohne DOM, damit Vertrag, Editor
 // und Tests dieselbe Reihenfolge und dieselben Prüfungen verwenden.
 import {themeId as resolveThemeId,textLimits,clampText,TEXT_LIMIT_RANGES} from '../../workshop/theme-limits.mjs';
-import {transferTexts} from './workflow-model.mjs';
+import {transferTexts,changedCustomerTexts} from './workflow-model.mjs';
 import {inThemeCategory} from './customer-tools-model.mjs';
 
 export const DIRECT_LINK_PARAMS=Object.freeze(['design','size','text']);
@@ -48,7 +48,8 @@ export function orderMotifCategories(categories,theme){
 export {inThemeCategory};
 // Kundentexte, die vom Mustertext der aktuellen Vorlage abweichen (gleiche Regel wie der Designwechsel).
 export function customerTexts(objects,template){
- return (objects||[]).filter(o=>o.type==='text'&&!o.uxHidden&&o.fieldKey&&String(o.text??'').trim()&&(o.uxCustomerText||o.uxPersonal||o.text!==template?.objects?.find(t=>t.fieldKey===o.fieldKey)?.text));
+ // Chris 21.10.2026: nur geänderte Namen und Lebensdaten (Sprüche bleiben beim Design).
+ return changedCustomerTexts(objects,template).filter(o=>o.fieldKey);
 }
 export const thumbnailSignature=source=>JSON.stringify(source.map(o=>[o.fieldKey,o.text]));
 // Miniatur eines anderen Designs mit dem aktuellen Kundentext (Textübernahme wie beim

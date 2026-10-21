@@ -36,6 +36,12 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     .ux-direct-presets{display:flex;gap:4px;align-items:center}.ux-direct-edit .ux-direct-presets button{width:24px!important;min-width:24px!important;height:24px!important;min-height:24px!important;padding:0!important;background:var(--preset-color)!important;border:1px solid #afb4bb!important;border-radius:50%!important}.ux-direct-edit .ux-direct-presets button[aria-pressed=true]{outline:2px solid #555e68;outline-offset:2px}
     .ux-direct-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
     @media(max-width:480px){.ux-direct-edit{top:auto!important;bottom:8px;padding:4px;max-width:calc(100% - 16px)}.ux-direct-edit button{padding:4px 7px!important;font-size:11px!important}.ux-direct-actions,.ux-direct-edit [data-direct-confirm]{gap:1px}}
+    /* Werkzeugleiste farbig hervorgehoben (Chris 20.10.2026): Markengrün, weiße Schrift */
+    .ux-direct-edit{background:#17634d!important;border-color:#17634d!important;box-shadow:0 6px 22px #17634d4d!important;color:#fff!important}
+    .ux-direct-edit button,.ux-direct-edit label,.ux-direct-edit input[type=number]{color:#fff!important}
+    .ux-direct-edit button:hover{background:#ffffff26!important}.ux-direct-edit button[aria-pressed=true]{background:#ffffff40!important;color:#fff!important}
+    .ux-direct-edit button:focus-visible{outline:2px solid #fff!important}.ux-direct-edit [data-direct-size-label]{border-left-color:#ffffff59!important}
+    .ux-direct-edit input[type=number]{background:#ffffff1f!important}.ux-direct-edit [data-direct-done]{background:#fff!important;color:#17634d!important}.ux-direct-edit [data-direct-cancel]{color:#d8ebe2!important}
   `;r.append(style);
   let editing=null;
   const can=(o,right)=>o&&!o.uxLocked&&!o.uxHidden&&el.uxCanEdit?.(o,right)!==false;

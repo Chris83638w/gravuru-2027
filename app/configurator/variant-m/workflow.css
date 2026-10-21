@@ -13,9 +13,9 @@
 .ux-motif-browser-dialog p,.ux-motif-browser-dialog h3{margin:8px 0!important}
 .ux-motif-browser-dialog .ux-list-edge{display:none!important}
 .workflow-motif-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;max-height:none!important;height:auto!important;overflow:visible!important}
-.workflow-motif-grid button{min-width:0!important}.workflow-motif-grid svg{max-height:86px}
+.workflow-motif-grid button{min-width:0!important}.workflow-motif-grid svg:not(svg svg){max-height:86px}
 .workflow-hover-preview{position:fixed;z-index:9999;width:240px;height:310px;padding:12px;border:1px solid #dae5de;background:white;border-radius:16px;box-shadow:0 10px 40px #173b2933;pointer-events:none}
-.workflow-hover-preview[hidden]{display:none!important}.workflow-hover-preview svg{width:100%;height:100%}
+.workflow-hover-preview[hidden]{display:none!important}.workflow-hover-preview svg:not(svg svg){width:100%;height:100%}
 [data-design-enlarge]{display:block;padding:6px 4px;margin-top:5px;color:#17634d;font-size:12px;border-top:1px solid #e5ece8}
 [data-design-enlarge]:focus-visible{outline:2px solid #17634d}
 .ux-design-preview-dialog{width:min(500px,90vw)!important}[data-design-preview-art]{height:min(65dvh,550px);margin:10px 0}[data-design-preview-art]>svg{width:100%;height:100%}
@@ -27,9 +27,9 @@
 /* Denser motif catalogue; preserve labels and touch targets. */
 .ux-motif-browser-dialog .workflow-motif-grid{grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:6px!important}
 .ux-motif-browser-dialog .workflow-motif-grid button{padding:6px!important;min-height:70px!important;height:auto!important}
-.ux-motif-browser-dialog .workflow-motif-grid svg{height:58px!important;max-height:58px!important;width:100%}
+.ux-motif-browser-dialog .workflow-motif-grid svg:not(svg svg){height:58px!important;max-height:58px!important;width:100%}
 .workflow-motif-entry [data-bestsellers]{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important}
-@media(max-width:600px){.ux-motif-browser-dialog .workflow-motif-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.ux-motif-browser-dialog .workflow-motif-grid svg{height:48px!important}.workflow-motif-entry [data-bestsellers]{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:600px){.ux-motif-browser-dialog .workflow-motif-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}.ux-motif-browser-dialog .workflow-motif-grid svg:not(svg svg){height:48px!important}.workflow-motif-entry [data-bestsellers]{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 /* K9: Design-Galerie je Thema, Bestseller, Direktlink */
 .workflow-more-designs,.workflow-share-design{display:block;width:100%;margin:10px 0;padding:10px 14px;border:1px solid #c4cbc6;border-radius:8px;background:#fff;color:#1c3327;font:inherit;cursor:pointer}
 .workflow-more-designs[hidden]{display:none!important}

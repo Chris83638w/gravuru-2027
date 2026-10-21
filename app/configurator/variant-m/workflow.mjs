@@ -1,7 +1,7 @@
 import {placeNewMotif} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
 import {transformedCorners} from './usability-model.mjs';
-import {fitText,freePosition,transferTexts,alignGroup} from './workflow-model.mjs';
+import {fitText,freePosition,transferTexts,changedCustomerTexts,alignGroup} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
 import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
@@ -52,8 +52,8 @@ export async function installWorkflow(api){
  const transfer=dialog('design-transfer','Design wechseln','<p>Deine Texte im neuen Design verwenden? Schrift und Anordnung kommen von der neuen Vorlage.</p>'+button('transfer-yes','Deine Texte übernehmen','class="ux-primary"')+button('transfer-no','Beispieltexte verwenden')+button('close','Abbrechen'));
  let requestedDesign=null,changing=false;
  const choose=el.chooseDesign;
- function finishChange(carry){const source=el.state.objects.filter(o=>o.type==='text'),id=requestedDesign;requestedDesign=null;if(!id)return;transfer.close();changing=true;try{choose.call(el,id);if(carry){const target=el.state.objects;const unmatched=transferTexts(source,target);const kept=[];for(const old of unmatched){let existing=target.find(o=>o.id===old.id);if(!existing){existing={...old,id:el.id(),uxPersonal:true,uxCustomerText:true};target.push(existing);place(existing);}kept.push(old.text);}if(kept.length)say('Zusätzliche Texte erhalten: '+kept.map(t=>'„'+t+'“').join(', ')+'. Bitte die Position prüfen.');}known=new Set(el.state.objects.map(o=>o.id));el.normalize();el.sync();}finally{changing=false;}}
- el.chooseDesign=function(id){if(id===this.state.designId)return;const template=profile.designs.find(d=>d.id===this.state.designId);const changed=this.state.objects.some(o=>o.type==='text'&&(o.uxCustomerText||o.uxPersonal||o.text!==template?.objects.find(t=>t.fieldKey&&t.fieldKey===o.fieldKey)?.text));if(changed){requestedDesign=id;transfer.showModal();return;}changing=true;try{return choose.call(this,id);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=false;}};
+ function finishChange(carry){const source=changedCustomerTexts(el.state.objects,profile.designs.find(d=>d.id===el.state.designId)),id=requestedDesign;requestedDesign=null;if(!id)return;transfer.close();changing=true;try{choose.call(el,id,{carry:false});if(carry){const target=el.state.objects;const unmatched=transferTexts(source,target);const kept=[];for(const old of unmatched){let existing=target.find(o=>o.id===old.id);if(!existing){existing={...old,id:el.id(),uxPersonal:true,uxCustomerText:true};target.push(existing);place(existing);}kept.push(old.text);}if(kept.length)say('Zusätzliche Texte erhalten: '+kept.map(t=>'„'+t+'“').join(', ')+'. Bitte die Position prüfen.');}known=new Set(el.state.objects.map(o=>o.id));el.normalize();el.sync();}finally{changing=false;}}
+ el.chooseDesign=function(id){if(id===this.state.designId)return;const template=profile.designs.find(d=>d.id===this.state.designId);const changed=changedCustomerTexts(this.state.objects,template).length>0;if(changed){requestedDesign=id;transfer.showModal();return;}changing=true;try{return choose.call(this,id);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=false;}};
  r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(key==='transfer-yes'||key==='transfer-no')finishChange(key==='transfer-yes');});
  transfer.addEventListener('close',()=>{requestedDesign=null;});
  // Full motif browser: existing controls and event handlers move intact.
@@ -120,7 +120,8 @@ export async function installWorkflow(api){
  // Ü10.2: „Link zu diesem Design“ – Direktlink ohne Kundentext.
  const linkDialog=dialog('design-link','Link zu diesem Design','<p>Dieser Link öffnet den Editor mit dem gewählten Design und der gewählten Größe. Deine Texte werden nicht mitgeschickt.</p><input type="text" readonly data-design-link aria-label="Link zu diesem Design"><div class="ux-actions">'+button('copy-design-link','Link kopieren','class="ux-primary"')+button('close','Schließen')+'</div><p class="ux-small" data-design-link-status role="status"></p>');
  const shareButton=document.createElement('button');shareButton.type='button';shareButton.className='workflow-share-design';shareButton.dataset.ux='share-design';shareButton.textContent='Link zu diesem Design';
- ($('.m-filters')||$('.ux-design-reveal')||gallery).before(shareButton);
+ // Chris 21.10.2026 („Wozu Link kopieren?“): Knopf wird nicht mehr angezeigt; Direktlinks (?design=) gelten weiter.
+ void shareButton;
  function hostHref(){try{if(window.parent!==window&&window.parent.location.origin===location.origin)return window.parent.location.href;}catch{}return location.href;}
  r.addEventListener('click',async e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;
   if(key==='share-design'){const link=designLink(hostHref(),{designId:el.state.designId,sizeId:el.state.mOptions?.size||null});$('[data-design-link]').value=link;$('[data-design-link-status]').textContent='';linkDialog.showModal();$('[data-design-link]').select();}

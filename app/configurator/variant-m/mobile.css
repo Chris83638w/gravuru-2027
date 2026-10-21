@@ -13,7 +13,8 @@
 /* Vorschau: feste Höhe aus --ux-mobile-preview-h, Platte bleibt bei offener Tastatur sichtbar. */
 :host([data-ux-mobile="true"]) .ux-preview{position:relative;top:auto;flex:none;height:var(--ux-mobile-preview-h,40dvh);overflow:hidden;background:#f3f5f3;border-bottom:1px solid var(--ux-border);display:flex;flex-direction:column;align-items:center;justify-content:center}
 :host([data-ux-mobile="true"]) [data-ux-stage]{height:100%;width:100%;display:flex;align-items:center;justify-content:center;min-height:0;position:relative}
-:host([data-ux-mobile="true"]) .ux-preview .stage{height:100%!important;width:100%!important;padding:34px 30px 50px!important;border-radius:0}
+:host([data-ux-mobile="true"]) .ux-preview .stage{height:100%!important;width:100%!important;padding:30px 60px 46px 42px!important;border-radius:0}
+:host([data-ux-mobile="true"]) .ux-preview .stage-wrap{height:100%;width:100%;min-height:0;display:flex;align-items:center;justify-content:center;margin:0!important;padding:0!important}
 :host([data-ux-mobile="true"]) .ux-preview .stage.acryl-scene{height:auto!important;width:min(100%,calc(var(--ux-mobile-preview-h,40dvh) * 1086 / 1448))!important;max-height:100%;padding:0!important;margin:0 auto!important}
 :host([data-ux-mobile="true"]) .ux-preview-help,:host([data-ux-mobile="true"]) .acryl-preview-note,:host([data-ux-mobile="true"]) .acryl-below .ux-preview-caption,:host([data-ux-mobile="true"]) .acryl-below .acryl-details,:host([data-ux-mobile="true"]) .ux-preview-size{display:none!important}
 :host([data-ux-mobile="true"]) .acryl-below{position:absolute;right:4px;top:50%;transform:translateY(-50%);z-index:8}
@@ -22,7 +23,7 @@
 :host([data-ux-mobile="true"]) .ux-shell .ux-enlarge{top:6px!important;left:6px!important;min-height:44px;width:44px;padding:8px!important;justify-content:center}
 :host([data-ux-mobile="true"]) .ux-shell .ux-enlarge span{display:none}
 /* Direkt-Werkzeug am Element nur in den Schritten Text und Foto/Motiv, nie über der Tastatur. */
-:host([data-ux-mobile="true"]:not([data-ux-step="text"]):not([data-ux-step="media"])) .ux-direct-edit,:host([data-ux-mobile="true"][data-ux-keyboard="true"]) .ux-direct-edit{display:none!important}
+:host([data-ux-mobile="true"]:not([data-ux-step="text"]):not([data-ux-step="media"]):not([data-ux-step="motif"])) .ux-direct-edit,:host([data-ux-mobile="true"][data-ux-keyboard="true"]) .ux-direct-edit{display:none!important}
 
 /* Bearbeitungsbereich: ein Schritt je Bildschirm, scrollt unter der festen Platte. */
 :host([data-ux-mobile="true"]) .ux-editor{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 24px;overscroll-behavior:contain;display:flex;flex-direction:column}
@@ -37,8 +38,8 @@
 :host([data-ux-mobile="true"]) .ux-panel{border:0;padding:4px 0 12px;border-radius:0}
 :host([data-ux-mobile="true"]) .ux-panel h2{font-size:19px!important}
 :host([data-ux-mobile="true"]) #ux-panel-motif:not([hidden]){border-top:1px solid var(--ux-border);margin-top:8px;padding-top:14px}
-:host([data-ux-mobile="true"]) .ux-text-row{grid-template-columns:76px minmax(0,1fr)}
-:host([data-ux-mobile="true"]) .ux-text-row label{overflow-wrap:anywhere;font-size:14px}
+:host([data-ux-mobile="true"]) .ux-text-row{grid-template-columns:92px minmax(0,1fr)}
+:host([data-ux-mobile="true"]) .ux-text-row label{overflow-wrap:normal;word-break:normal;hyphens:auto;font-size:14px}
 :host([data-ux-mobile="true"]) .ux-text-row textarea{min-height:48px;font-size:16px!important}
 :host([data-ux-mobile="true"]) .ux-text-issue{display:block}
 
@@ -76,3 +77,30 @@
 .ux-mobile-quantity label.fk-quantity{display:flex!important;align-items:center;gap:10px;font-size:14px!important;margin:4px 0 10px}
 .ux-mobile-quantity .fk-quantity input{width:72px!important;min-height:44px;height:44px!important}
 .ux-mobile-order-status{font-size:13px;color:var(--ux-muted);margin:0}
+
+/* Standardschild (nicht Acryl): Werkzeuge rechts als Spalte wie beim Acryl, Fußzeile mit Produktname
+   ausgeblendet, damit hohe Formate (Quadrat, Oval) nicht überdeckt werden (Fehler 20.10.2026). */
+:host([data-ux-mobile="true"]) .ux-preview .stage:not(.acryl-scene) > .ux-preview-tools{position:absolute!important;left:auto!important;right:6px!important;bottom:auto!important;top:50%!important;transform:translateY(-50%);width:auto!important;z-index:8;display:flex!important;flex-direction:column;gap:6px!important;margin:0!important}
+:host([data-ux-mobile="true"]) .ux-shell .ux-preview .stage:not(.acryl-scene) > .ux-preview-caption{display:none!important}
+/* Einzeilige Textfelder (Textarea) nicht umbrechen, sondern seitlich scrollen. */
+:host([data-ux-mobile="true"]) textarea[data-ux-text]:not([data-ux-multiline]){white-space:pre;overflow-x:auto;overflow-y:hidden}
+
+/* Hinweise oben im Bearbeitungsbereich: kompakt (Fehler 20.10.2026). */
+:host([data-ux-mobile="true"]) .ux-editor > .ux-session-note{order:0;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;margin:0 0 8px;padding:6px 8px;font-size:13px;border-radius:10px}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-session-note[hidden]{display:none!important}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-session-note span{flex:1;min-width:0}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-session-note button{min-height:36px!important;padding:6px 10px!important;font-size:13px!important;margin:0!important}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-conflict-hints{order:0;margin:0 0 8px!important;gap:6px}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-conflict-hints .ux-conflict{padding:8px 10px;font-size:13px}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-conflict-hints .ux-conflict p{margin:3px 0}
+:host([data-ux-mobile="true"]) .ux-editor > .ux-conflict-hints .ux-conflict button{min-height:36px;padding:6px 10px}
+/* Rückfall, falls die Hinweise noch an ihrem Desktop-Platz stehen: als schmale Einblendung, nie als Flex-Glied. */
+:host([data-ux-mobile="true"]) .ux-preview > .ux-conflict-hints{position:absolute;left:6px;right:6px;bottom:6px;margin:0!important;max-height:45%;overflow:auto;z-index:9}
+:host([data-ux-mobile="true"]) .ux-shell > .ux-session-note{position:absolute;left:8px;right:8px;top:calc(var(--ux-vv-top,0px) + 58px);z-index:9100;margin:0;padding:6px 8px;font-size:13px;display:flex;align-items:center;gap:8px}
+:host([data-ux-mobile="true"]) .ux-shell > .ux-session-note[hidden]{display:none!important}
+
+/* Ziehen mit dem Finger: Geste gehört der Platte, nicht dem Seitenscrollen (Fehler 20.10.2026). */
+:host([data-ux-mobile="true"]) .ux-preview .scene,:host([data-ux-mobile="true"]) .ux-preview .plate-holder{touch-action:none!important}
+
+/* Feldnamen wie „Lebensdaten“ nicht mitten im Wort umbrechen (Silbentrennung statt „Lebensdate|n“) */
+.ux-fields label{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:normal;word-break:normal}

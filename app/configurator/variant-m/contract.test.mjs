@@ -226,20 +226,20 @@ test('K10 / Ü1.2 server gate: engraving rejects colour changes, print allows ex
  s=state();s.objects.find(o=>o.id===textId).color='#245cac';assert.doesNotThrow(()=>printSave(s,{workshopProfiles:{selections:{fonts:null,motifs:null,colors:['#245cac'],bestsellers:null}}}));
  s=state();s.objects.find(o=>o.id===textId).uxHidden=true;s.objects.find(o=>o.id===textId).color='#123456';assert.doesNotThrow(()=>printSave(s),'ausgeblendete Elemente werden nicht gefertigt');
 });
-test('K10 / Ü1.1 server gate: text below the process minimum is rejected (engraving 4 mm, print 3 mm); templates and non-scalable texts are exempt',()=>{
+test('K10 / Ü1.1 server gate: text below the process minimum is rejected (engraving 3 mm since 20.10.2026, print 3 mm); templates and non-scalable texts are exempt',()=>{
  const textId=config.profile.designs[0].objects.find(o=>o.type==='text').id;
- let s=state();s.objects.find(o=>o.id===textId).size=3.9;assert.throws(()=>save(s),/Text zu klein: mindestens 4 mm bei diesem Verfahren\./);
- s=state();s.objects.find(o=>o.id===textId).size=3.996;assert.doesNotThrow(()=>save(s),'Rundung auf Hundertstel');
- s=state();s.objects.find(o=>o.id===textId).size=4;assert.doesNotThrow(()=>save(s));
+ let s=state();s.objects.find(o=>o.id===textId).size=2.9;assert.throws(()=>save(s),/Text zu klein: mindestens 3 mm bei diesem Verfahren\./);
+ s=state();s.objects.find(o=>o.id===textId).size=2.996;assert.doesNotThrow(()=>save(s),'Rundung auf Hundertstel');
+ s=state();s.objects.find(o=>o.id===textId).size=3;assert.doesNotThrow(()=>save(s));
  const printFixture=structuredClone(config);printFixture.profile.processing.profileId='color-print';printFixture.profile.material.kind='other';const print=prepareConfig(printFixture);
  s=state();s.objects.find(o=>o.id===textId).size=3.2;assert.doesNotThrow(()=>saveDraft(print,s,{},fonts,motifs));
  s=state();s.objects.find(o=>o.id===textId).size=2.9;assert.throws(()=>saveDraft(print,s,{},fonts,motifs),/mindestens 3 mm/);
  // Vorlagenprüfung der Werkstatt (template:true) prüft die Mindestgröße nicht; ohne Skalierrecht bleibt die Vorlagengröße maßgeblich.
- const small=structuredClone(config);small.profile.designs[0].objects.find(o=>o.id===textId).size=3.5;const smallConfig=prepareConfig(small);
+ const small=structuredClone(config);small.profile.designs[0].objects.find(o=>o.id===textId).size=2.5;const smallConfig=prepareConfig(small);
  assert.doesNotThrow(()=>validateDesign(smallConfig,structuredClone(smallConfig.profile.designs[0]),{},fonts,motifs,{template:true}));
  const designId=config.profile.designs[0].id,rights=Object.fromEntries(config.profile.designs[0].objects.map(o=>[o.id,{content:true,color:false,replace:true,move:true,scale:o.id!==textId,delete:true}]));
  assert.doesNotThrow(()=>saveDraft({...smallConfig,workshopElementRights:{[designId]:rights}},{designId,objects:structuredClone(smallConfig.profile.designs[0].objects)},{},fonts,motifs));
  rights[textId].scale=true;assert.throws(()=>saveDraft({...smallConfig,workshopElementRights:{[designId]:rights}},{designId,objects:structuredClone(smallConfig.profile.designs[0].objects)},{},fonts,motifs),/Text zu klein/);
  // Neue Texte entstehen nie unter der Mindestgröße.
- assert.ok(newEditableObject(config,{type:'text',text:'Neu',font:'Montserrat',size:1},'tiny',fonts,motifs).size>=4);
+ assert.ok(newEditableObject(config,{type:'text',text:'Neu',font:'Montserrat',size:1},'tiny',fonts,motifs).size>=3);
 });

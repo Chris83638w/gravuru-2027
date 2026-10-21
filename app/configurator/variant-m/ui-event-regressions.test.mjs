@@ -1,5 +1,6 @@
 import {previewResourceURL} from './preview-resource.mjs';
 import test from 'node:test';
+import {fontDisplayName} from './font-display.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
@@ -48,7 +49,7 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   vm.runInContext(line('ux.mjs','const esc=value=>'),env);
   vm.runInContext(line('ux.mjs','const fieldLabel='),env);
   // K1: Limits und Feldhinweise aus dem echten Modul, Vorlage mit Pflichtfeld und Thema.
-  Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,design:()=>env.profile.designs[0]});
+  Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,fontDisplayName,design:()=>env.profile.designs[0]});
   env.profile.designs[0].themes=['namensschilder'];env.profile.designs[0].objects=[{id:'name',type:'text',text:'Anna',required:true}];
   for(const marker of ['const templateText=','const limitsFor=','const textIndex='])vm.runInContext(line('ux.mjs',marker),env);
   vm.runInContext(block('ux.mjs','  function textFieldIssue(o){','\n  }'),env);

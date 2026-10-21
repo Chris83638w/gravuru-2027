@@ -29,6 +29,8 @@ import {createSessionGuard,uploadReferences} from './session-guard.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
 import {installSurfaceTabs} from './surface-tabs.mjs';
 import {installBackgroundLoading} from './background-loading.mjs';
+import {installEdgeClamp} from './edge-clamp.mjs';
+import {fontDisplayName} from './font-display.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
@@ -96,7 +98,7 @@ export async function installUX(el,config,legacy){
   const additions=customerAdditionPolicy(config);
   if(!additions.text)$('[data-ux=add-text]').hidden=true;
   if(!additions.motifs){const library=$('#panel-motif');if(library)library.hidden=true;}
-  $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Deine Fotos':'Deine Logos'}</h2><p>${(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} Foto(s) inklusive · weitere Dateien ${money(config.photo.extraPriceCents)} · maximal vier insgesamt.`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}<br>JPG, PNG oder WebP · bis 15 MB.</p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><p class="ux-small">${config&&photoEnabled?'Dein Foto erscheint direkt auf deinem Schild. ':''}Deine Dateien bleiben auf diesem Gerät, bis du den Entwurf in deinem Kundenkonto speicherst.</p><input type="file" accept="${PHOTO_ACCEPT}" data-ux-file hidden>`;
+  $('#ux-panel-upload').innerHTML=`<h2>${photoEnabled&&logoEnabled?'Deine Fotos & Logos':photoEnabled?'Dein Foto':'Deine Logos'}</h2><p>${(config?.reviewOnly&&config.basePriceCents===null)?'Preise noch offen · maximal vier Dateien insgesamt.':!photoEnabled?`Je Logo ${money(config?.photo?.extraPriceCents??999)} · maximal vier Dateien insgesamt.`:config?.photo?.includedCount!==undefined?`${config.photo.includedCount} ${config.photo.includedCount===1?'Foto':'Fotos'} inklusive · weitere Fotos je ${money(config.photo.extraPriceCents)}`:'Je Datei <strong>+9,99 €</strong> · maximal vier insgesamt.'}<br><small>JPG, PNG oder WebP · bis 15 MB · höchstens vier</small></p><div class="ux-upload-buttons">${photoEnabled?button('photo-upload','+ Foto hochladen','class="ux-primary"'):''}${logoEnabled?button('logo-upload','+ Logo hochladen'):''}</div><div class="ux-uploads"></div><input type="file" accept="${PHOTO_ACCEPT}" data-ux-file hidden>`;
   const dialogs={};
   function dialog(key,title,body){const d=document.createElement('dialog');d.className='ux-dialog ux-'+key+'-dialog';d.setAttribute('aria-label',title);d.innerHTML=`<header><h2>${title}</h2>${button('close','✕','aria-label="Fenster schließen"')}</header>${body}`;d.addEventListener('click',e=>{if(e.target.closest('[data-ux=close]'))d.close();});const show=d.showModal.bind(d);d.showModal=()=>{window.GravuruChat?.close?.();for(const other of all('dialog[open]'))if(other!==d&&!other.matches('.c-large-preview'))other.close();show();};r.append(d);dialogs[key]=d;return d;}
   dialog('font','Schrift auswählen','<p>Dein Text als Schriftprobe. Bei eingeschränkten PDF-Schriften zeigen wir ein Beispiel aus dem Design.</p><div class="ux-font-columns" aria-hidden="true"><span>Dein Text</span><span>Schriftname</span></div><div class="ux-font-grid" tabindex="0" aria-label="Schriftproben"></div>'+button('font-apply','Schrift übernehmen','class="ux-primary"'));
@@ -163,7 +165,7 @@ export async function installUX(el,config,legacy){
       return result;
     };
   }
-  const oldChoose=el.chooseDesign;el.chooseDesign=function(id){const keep=this.state.objects.map(clone);oldChoose.call(this,id);this.state.uxDecorationsFor=null;const transfer=mapPersonalObjects(keep,this.state.objects);this.state.objects=transfer.objects;addDecoration();this.state.selected=null;this.normalize();this.sync();dirty=true;if(transfer.unmappedUploads.length)say('Dein Foto konnte im neuen Design nicht eindeutig zugeordnet werden. Bitte den gewünschten Fotobereich wählen und das Foto dort ersetzen.');};
+  const oldChoose=el.chooseDesign;el.chooseDesign=function(id,...rest){const keep=this.state.objects.map(clone);oldChoose.call(this,id,...rest);this.state.uxDecorationsFor=null;const transfer=mapPersonalObjects(keep,this.state.objects);this.state.objects=transfer.objects;addDecoration();this.state.selected=null;this.normalize();this.sync();dirty=true;if(transfer.unmappedUploads.length)say('Dein Foto konnte im neuen Design nicht eindeutig zugeordnet werden. Bitte den gewünschten Fotobereich wählen und das Foto dort ersetzen.');};
   const oldAdd=el.add;el.add=function(object,...args){
     if(object?.type==='motif'&&Array.isArray(this.uxMotifChoiceIds)&&!this.uxMotifChoiceIds.includes(object.motif))return say('Dieses Motiv steht für dieses Produkt nicht zur Auswahl.');
     if(object?.type==='text'){
@@ -187,9 +189,16 @@ export async function installUX(el,config,legacy){
     event.preventDefault();event.stopImmediatePropagation();
     replacing=slot.id;uploadKind='photo';say('Wähle jetzt ein Foto für diesen Platzhalter aus.');$('[data-ux-file]').click();
   }
+  // Tipp (ohne Ziehen) auf ein schon hochgeladenes Foto öffnet ebenfalls die Dateiauswahl zum Wechseln
+  // (Chris 20.10.2026: „Wenn ich auf das Foto klicke passiert nichts“); Ziehen verschiebt es weiter.
+  function uploadedSlotFromEvent(event){
+    if(!photoEnabled||event.button!==0)return null;
+    const node=event.target?.closest?.('.scene [data-object]'),slot=node&&el.state.objects.find(o=>o.id===node.dataset.object);
+    return slot?.type==='photoSlot'&&slot.uxUploadId&&!slot.uxHidden&&!slot.uxLocked&&el.uxCanEdit?.(slot,'replace')!==false?{slot,through:false}:null;
+  }
   const photoTap=tapTracker();
   r.addEventListener('pointerdown',event=>{
-    const hit=event.button===0?emptySlotFromEvent(event):null;
+    const hit=event.button===0?(emptySlotFromEvent(event)||uploadedSlotFromEvent(event)):null;
     photoTap.down(event,hit);
     // Tipp durch den festen Rahmen: Rahmen weder wählen noch ziehen, der Tipp gilt dem Foto.
     if(hit?.through){event.preventDefault();event.stopImmediatePropagation();}
@@ -198,6 +207,7 @@ export async function installUX(el,config,legacy){
     const id=photoTap.up(event);if(!id)return;
     const slot=el.state.objects.find(o=>o.id===id);
     if(replaceablePhotoSlot(slot,o=>el.uxCanEdit?.(o,'replace')))uploadFromEmptySlot(event,slot);
+    else if(slot?.type==='photoSlot'&&slot.uxUploadId&&el.uxCanEdit?.(slot,'replace')!==false){replacing=slot.id;uploadKind=slot.uxUploadKind||'photo';say('Wähle ein neues Foto für diesen Bereich aus.');$('[data-ux-file]').click();}
   },true);
   r.addEventListener('pointercancel',()=>photoTap.cancel(),true);
   r.addEventListener('keydown',event=>{
@@ -233,7 +243,7 @@ export async function installUX(el,config,legacy){
       const issue=o.uxHidden||o.customerEditable===false?'':textFieldIssue(o),count=textLength(o.text)+'/'+limits.maxLength;row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
       const countNode=row.querySelector('[data-ux-text-count]'),issueNode=row.querySelector('[data-ux-text-issue]');if(countNode&&countNode.textContent!==count)countNode.textContent=count;if(issueNode&&issueNode.textContent!==issue)issueNode.textContent=issue;}
     const o=selected(),isText=o?.type==='text';$('.ux-controls').hidden=!isText;
-    if(isText){$('[data-ux-font-name]').textContent=o.font;if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
+    if(isText){$('[data-ux-font-name]').textContent=fontDisplayName(o.font);if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
   }
   function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=availableFonts();
     $('[data-ux=font-apply]').disabled=!fonts.includes(fontChoice)||!fontFits({...o,bold:false},fontChoice);
@@ -243,9 +253,9 @@ export async function installUX(el,config,legacy){
         unavailable=true;
         const sample=profile.designs.flatMap(d=>d.objects||[]).find(v=>v.type==='text'&&v.font===name&&v.text?.trim());
         text.text=sample?.text||Object.keys(el.fontData[name]?.regular?.glyphs||{}).filter(c=>c.trim()).slice(0,12).join('');
-        try{measureText(text,el.fontData);}catch{return `<button disabled><span>${esc(name)}</span><small>Keine Schriftprobe verfügbar</small></button>`;}
+        try{measureText(text,el.fontData);}catch{return `<button disabled><span>${esc(fontDisplayName(name))}</span><small>Keine Schriftprobe verfügbar</small></button>`;}
       }
-      return `<button type="button" data-ux-font="${esc(name)}" aria-pressed="${fontChoice===name}" aria-label="Schrift ${esc(name)}" ${unavailable?'disabled':''}><svg viewBox="${-text.w/2-2} ${-text.h/2-2} ${text.w+4} ${text.h+4}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" fill="#243a32"><g data-font-ink>${textPaths(text,el.fontData)}</g></svg><span>${esc(name)}${unavailable?'<small>Designbeispiel · Zeichen für deinen Text fehlen</small>':''}</span></button>`;
+      return `<button type="button" data-ux-font="${esc(name)}" aria-pressed="${fontChoice===name}" aria-label="Schrift ${esc(fontDisplayName(name))}" ${unavailable?'disabled':''}><svg viewBox="${-text.w/2-2} ${-text.h/2-2} ${text.w+4} ${text.h+4}" preserveAspectRatio="xMidYMid meet" aria-hidden="true" fill="#243a32"><g data-font-ink>${textPaths(text,el.fontData)}</g></svg><span>${esc(fontDisplayName(name))}${unavailable?'<small>Designbeispiel · Zeichen für deinen Text fehlen</small>':''}</span></button>`;
     }).join(''):'<p>Für dieses Produkt sind keine weiteren Schriften freigegeben. Die Schrift aus deinem Design bleibt erhalten.</p>';
     // Letter advances omit calligraphic overhangs. Fit the actual ink once the
     // dialog is visible, so Safari and Chromium measure a rendered SVG.
@@ -262,7 +272,7 @@ export async function installUX(el,config,legacy){
     }
     const o=selected();$('[data-ux-object-tools]').innerHTML=o?`<h3>${esc(label(o))}</h3><div class="ux-precise-fields">${[['x','Horizontal · mm'],['y','Vertikal · mm'],['rotation','Drehung · °'],...(o.type==='text'?[['size','Schriftgröße · mm']]:[['w','Breite · mm'],['h','Höhe · mm']])].map(([key,title])=>`<label>${title}<input type="number" value="${key==='size'?displayTextSize(o):Math.round((o[key]||0)*10)/10}" data-ux-content-prop="${key}" ${o.uxLocked?'disabled':''} step="1"></label>`).join('')}</div><div class="ux-actions">${button('duplicate','Duplizieren')}${button('layer-front','Nach vorn')}${button('layer-back','Nach hinten')}</div>`:'';
   }
-  function updateUploads(){const available=photoAvailableForDesign(config,el.state.designId),tab=$('#ux-tab-upload');if(tab){tab.hidden=!available&&!logoEnabled;tab.disabled=tab.hidden;if(tab.hidden&&activeTab==='upload')showTab('options');$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);}for(const b of all('[data-ux=photo-upload]'))b.hidden=!available;$('.ux-uploads').innerHTML=el.state.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId).map((o,i)=>`<div class="ux-upload-row"><strong>Fotoplatzhalter ${i+1}</strong><span>Dein Foto übernimmt Position, Größe und Form aus dem Design.</span><div class="ux-upload-actions">${button('fill-photo-slot','Foto für diesen Platzhalter hochladen',`data-id="${esc(o.id)}" ${o.uxLocked?'disabled':''}`)}</div></div>`).join('')+el.state.objects.filter(o=>o.uxUploadId).map(o=>`<div class="ux-upload-row">${files.get(o.uxUploadId)?.url?`<button type="button" class="ux-upload-select" data-ux="select-upload" data-id="${esc(o.id)}" aria-label="${esc(label(o))} auswählen"><img class="ux-upload-thumb" src="${esc(files.get(o.uxUploadId).url)}" alt="${esc(label(o))} – Vorschau"></button>`:''}<strong>${esc(label(o))}</strong><span>${esc(files.get(o.uxUploadId)?.file.name||'Datei erneut auswählen')} · ${o.uxHidden?'ausgeblendet':(config?.reviewOnly&&config.basePriceCents===null)?'Preis offen':config?.acrylic?'inklusive':config?.photo?.includedCount!==undefined?'nach Fotopreisregel':'9,99 €'}</span><div class="ux-upload-actions">${button('replace-upload','Ersetzen',`data-id="${esc(o.id)}"`)}${button('remove-content','Entfernen',`data-id="${esc(o.id)}" class="ux-remove-upload"`)}</div></div>`).join('');for(const b of all('[data-ux=photo-upload],[data-ux=logo-upload]'))b.disabled=new Set(el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4;}
+  function updateUploads(){const available=photoAvailableForDesign(config,el.state.designId),tab=$('#ux-tab-upload');if(tab){tab.hidden=!available&&!logoEnabled;tab.disabled=tab.hidden;if(tab.hidden&&activeTab==='upload')showTab('options');$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);}for(const b of all('[data-ux=photo-upload]'))b.hidden=!available;$('.ux-uploads').innerHTML=el.state.objects.filter(o=>o.uxUploadId).map((o,i)=>`<div class="ux-upload-row">${files.get(o.uxUploadId)?.url?`<button type="button" class="ux-upload-select" data-ux="select-upload" data-id="${esc(o.id)}" aria-label="${esc(label(o))} auswählen"><img class="ux-upload-thumb" src="${esc(files.get(o.uxUploadId).url)}" alt="${esc(label(o))} – Vorschau"></button>`:''}<strong>${esc(label(o))}</strong><span>${esc(files.get(o.uxUploadId)?.file.name||'Datei erneut auswählen')} · ${o.uxHidden?'ausgeblendet':(config?.reviewOnly&&config.basePriceCents===null)?'Preis offen':config?.acrylic?'inklusive':config?.photo?.includedCount!==undefined?(i<config.photo.includedCount?'inklusive':money(config.photo.extraPriceCents)):'9,99 €'}</span><div class="ux-upload-actions">${button('replace-upload','Ersetzen',`data-id="${esc(o.id)}"`)}${button('remove-content','Entfernen',`data-id="${esc(o.id)}" class="ux-remove-upload"`)}</div></div>`).join('');for(const b of all('[data-ux=photo-upload],[data-ux=logo-upload]'))b.disabled=new Set(el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4;}
   function updatePrice(){if(config?.reviewOnly&&config.basePriceCents===null){$('[data-fk-total]').textContent='Preis noch offen';$('[data-ux-price-lines]').innerHTML='<p>Grundpreis und Fotozuschläge sind für dieses Produkt noch offen. Die Optionen zeigen die übernommenen Referenzaufschläge.</p>';return;}try{const quantity=Number($('[data-fk-quantity]').value||1),extra=uploadQuote(el.state.objects,quantity,false,config?.photo?.includedCount!==undefined?config.photo:undefined);let total,base,options=0,motifs=0;
     let tierLine='';
     if(config){const q=quote(config,el.state.objects,el.state.designId,el.state.mOptions,quantity);total=q.totalCents+extra.totalCents;base=config.basePriceCents;motifs=q.additionalMotifs*config.extraMotifCents;options=(q.listUnitCents??q.unitCents)-base-motifs;
@@ -368,6 +378,7 @@ export async function installUX(el,config,legacy){
   dialogs.help.addEventListener('close',()=>window.speechSynthesis?.cancel());
   // A portable draft payload is provided to the future authenticated server adapter, not downloaded.
   el.uxDraft=()=>customerDraft(el.state,profile);
+  installEdgeClamp(el);
   await installRefinements({el,r,profile,config,files,pending:()=>uploadPending,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles:acceptCustomerFiles,changeObject});
   if(el.uxMotifChoiceIds?.length===0){
     const entry=$('.workflow-motif-entry');

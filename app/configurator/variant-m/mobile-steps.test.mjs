@@ -3,19 +3,19 @@ import assert from 'node:assert/strict';
 import {STEPS,MOBILE_QUERY,availableSteps,stepForTab,neighbourStep,progress,previewHeight,summaryRows,materialLabel} from './mobile-steps.mjs';
 
 test('Reihenfolge der geführten Schritte folgt Entscheidung A6; Grenze liegt unter 768 px',()=>{
-  assert.deepEqual(STEPS.map(s=>s.id),['options','design','text','media','review']);
-  assert.deepEqual(STEPS.map(s=>s.label),['Optionen','Design','Text','Foto / Motiv','Prüfen']);
+  assert.deepEqual(STEPS.map(s=>s.id),['options','design','text','media','motif','review']);
+  assert.deepEqual(STEPS.map(s=>s.label),['Optionen','Design','Text','Foto','Motive','Prüfen']);
   assert.equal(MOBILE_QUERY,'(max-width:767px)');
 });
 test('Versteckte Reiter lassen ihren Schritt weg; Foto/Motiv folgt den vorhandenen Reitern',()=>{
   const full=availableSteps({options:true,design:true,text:true,motif:true,upload:true},{upload:'Foto / Logo'});
-  assert.deepEqual(full.map(s=>s.id),['options','design','text','media','review']);
-  assert.equal(full[3].label,'Foto / Logo / Motiv');
-  assert.deepEqual(full[3].tabs,['upload','motif']);
+  assert.deepEqual(full.map(s=>s.id),['options','design','text','media','motif','review']);
+  assert.equal(full[3].label,'Foto / Logo');
+  assert.deepEqual(full[3].tabs,['upload']);assert.deepEqual(full[4].tabs,['motif']);
   const pilot=availableSteps({options:true,design:false,text:true,motif:true,upload:true});
-  assert.deepEqual(pilot.map(s=>s.id),['options','text','media','review']);
-  assert.equal(pilot[2].label,'Foto / Motiv');
-  assert.equal(availableSteps({options:true,text:true,motif:true}).find(s=>s.id==='media').label,'Motive');
+  assert.deepEqual(pilot.map(s=>s.id),['options','text','media','motif','review']);
+  assert.equal(pilot[2].label,'Foto');assert.equal(pilot[3].label,'Motive');
+  assert.equal(availableSteps({options:true,text:true,motif:true}).find(s=>s.id==='motif').label,'Motive');assert.equal(availableSteps({options:true,text:true,motif:true}).find(s=>s.id==='media'),undefined);
   assert.equal(availableSteps({options:true,text:true,upload:true},{upload:'Logo'}).find(s=>s.id==='media').label,'Logo');
   // „Prüfen“ bleibt immer, auch ohne jeden Reiter.
   assert.deepEqual(availableSteps({}).map(s=>s.id),['review']);
@@ -23,19 +23,20 @@ test('Versteckte Reiter lassen ihren Schritt weg; Foto/Motiv folgt den vorhanden
 test('Reiterwechsel aus ux.mjs landet im passenden Schritt; Weiter/Zurück sind begrenzt',()=>{
   const steps=availableSteps({options:true,text:true,motif:true,upload:true});
   assert.equal(stepForTab(steps,'upload'),'media');
-  assert.equal(stepForTab(steps,'motif'),'media');
+  assert.equal(stepForTab(steps,'motif'),'motif');
   assert.equal(stepForTab(steps,'text'),'text');
   assert.equal(stepForTab(steps,'design'),null);
   assert.equal(neighbourStep(steps,'options',1),'text');
-  assert.equal(neighbourStep(steps,'media',1),'review');
+  assert.equal(neighbourStep(steps,'media',1),'motif');assert.equal(neighbourStep(steps,'motif',1),'review');
   assert.equal(neighbourStep(steps,'review',1),null);
   assert.equal(neighbourStep(steps,'options',-1),null);
   assert.equal(neighbourStep(steps,'unbekannt',1),'options');
-  assert.deepEqual(progress(steps,'media'),{index:2,count:4,percent:75});
-  assert.deepEqual(progress(steps,'review'),{index:3,count:4,percent:100});
+  assert.deepEqual(progress(steps,'media'),{index:2,count:5,percent:60});
+  assert.deepEqual(progress(steps,'review'),{index:4,count:5,percent:100});
 });
 test('Platte oben: 40 % des sichtbaren Bereichs, bei Tastatur mindestens 25 %, nie unter 120 px',()=>{
   assert.equal(previewHeight({viewportHeight:844}),338);
+  assert.equal(previewHeight({viewportHeight:690}),235,'kleiner Bildschirm (App-Webansicht)');
   assert.equal(previewHeight({viewportHeight:844,keyboardOpen:true}),211);
   assert.equal(previewHeight({viewportHeight:500,keyboardOpen:true}),125);
   assert.equal(previewHeight({viewportHeight:300,keyboardOpen:true}),120);

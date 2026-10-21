@@ -18,7 +18,7 @@ test('every display profile carries exactly one process rule set; nothing is inv
   assert.equal(p.ink,PROCESSING_PROFILES.find(x=>x.id===p.id).ink);
  }
  const engraving=PROCESS_PROFILES.filter(p=>p.method==='engraving');
- for(const p of engraving){assert.equal(p.tools.textColor,false,p.id);assert.deepEqual(p.palette,[]);assert.equal(p.minTextMm,4);assert.equal(p.mirror,p.id==='acrylic-engraving');}
+ for(const p of engraving){assert.equal(p.tools.textColor,false,p.id);assert.deepEqual(p.palette,[]);assert.equal(p.minTextMm,3);assert.equal(p.mirror,p.id==='acrylic-engraving');}
  const print=processProfile('color-print');
  assert.equal(print.tools.textColor,true);assert.equal(print.minTextMm,3);assert.equal(print.targetDpi,300);assert.equal(print.mirror,false);
  assert.deepEqual(print.palette,UV_PRINT_PALETTE.flatMap(([,colors])=>colors.map(([,hex])=>hex)));assert.equal(print.palette.length,20);

@@ -94,6 +94,14 @@ export function build({outputDirectory=OUTPUT}={}){
   // Ladezeit: alle Editor-Module als ein Bündel (bundle-build.mjs, Route /_bundle/); `?module=einzeln` lädt Einzelmodule.
   const bundle=buildEditorBundle(outputDirectory);
   source=patchEditorBundle(source,bundle.url);
+  // Design-Karten/Galerie: Größenregeln nur für das äußere Vorschau-SVG, nie für verschachtelte Motiv-SVGs
+  // (sonst werden Kreuz, Rose usw. in der Designauswahl aufgeblasen und verschoben; Fehler 20.10.2026).
+  source=source.replace(/(\.c-design-card svg|\.c-gallery svg)(?=\s*[,{])/g,'$1:not(svg svg)');
+  // Leistung mobil (20.10.2026): Die Altgalerie zeichnet bei jedem sync alle Vorlagenkarten neu – beim Ziehen je Fingerbewegung.
+  // Die Karten hängen nicht von der Lage des gezogenen Elements ab; solange `uxDragging` gesetzt ist (adapter.mjs), überspringen.
+  {const loop="for(const card of r.querySelectorAll('[data-c-design]')){\n        const item=designs.find(d=>d.id===card.dataset.cDesign);";
+   if(source.split(loop).length!==2)throw Error('Galerie-Schleife für Zieh-Schutz nicht eindeutig gefunden.');
+   source=source.replace(loop,'if(!this.uxDragging)'+loop);}
   fs.writeFileSync(path.join(outputDirectory,'editor.html'),source);
   return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source),lazyResources:{fonts:lazy.fonts,motifs:lazy.motifs},bundle:{url:bundle.url,modules:bundle.modules.length,styles:bundle.styles.length,bytes:bundle.bytes,gzipBytes:bundle.gzipBytes}};
 }

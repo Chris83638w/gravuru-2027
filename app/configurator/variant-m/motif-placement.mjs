@@ -26,5 +26,6 @@ export async function placeNewMotif({el,config,files,say},object){
  const insertion=config.acrylic?acrylicSelection(acrylicOptions(state.mOptions),config.acrylic.pricing).base.insertionMm:0;
  const position=emptyPixelPosition(ctx.getImageData(0,0,canvas.width,canvas.height).data,canvas.width,canvas.height,object.w*sx*scale,object.h*sy*scale,(x,y)=>y/scale<g.height-insertion&&insideContour(g,x/scale,y/scale));
  if(position){object.x=position.x/scale/sx;object.y=position.y/scale/sy;el.sync();say('Motiv in einer freien Fläche platziert.');}
- else{el.state.objects=el.state.objects.filter(o=>o.id!==object.id);if(el.state.selected===object.id)el.state.selected=null;el.sync();say('Kein ausreichend freier Platz. Das Motiv wurde nicht hinzugefügt. Bitte zuerst Platz schaffen.');}
+ // Chris 21.10.2026: kein Hinweis „kein freier Platz“ – das Motiv bleibt mittig und kann verschoben werden.
+ else{object.x=config.profile.geometry.width/2;object.y=config.profile.geometry.height/2;el.state.selected=object.id;el.sync();}
 }

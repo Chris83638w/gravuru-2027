@@ -71,12 +71,12 @@
 .ux-shell .c-gallery.ux-list-expanded,.ux-shell .motifs.ux-list-expanded{max-height:520px!important}
 .ux-shell .c-design-card{padding:5px!important;min-height:105px!important;border:0!important;box-shadow:none!important;background:#f5f7f5!important;border-radius:6px!important}
 .ux-shell .c-design-card[aria-pressed=true]{box-shadow:inset 0 0 0 2px #235f48!important;background:#edf5ef!important}
-.ux-shell .c-design-card svg{height:76px!important;width:100%!important;margin:0!important}
+.ux-shell .c-design-card svg:not(svg svg){height:76px!important;width:100%!important;margin:0!important}
 .ux-shell .c-design-card>span{font-size:15px!important;line-height:20px!important;min-height:0!important;margin:3px 0 0!important}
 .ux-shell .c-design-card small,.c-gallery-actions,.c-section-heading small,.fk-scroll-hint{display:none!important}
 .ux-shell [data-c-count],.ux-shell [data-library-count]{font-size:14px!important;margin:5px 0!important}
 .ux-shell .motifs>button[data-motif]{min-height:100px!important;padding:6px!important;font-size:14px!important}
-.ux-shell .motifs>button svg{height:48px!important;width:100%!important;margin-bottom:3px}
+.ux-shell .motifs>button svg:not(svg svg){height:48px!important;width:100%!important;margin-bottom:3px}
 .ux-shell button.ux-list-edge{display:block;width:100%;margin:0!important;min-height:44px!important;padding:6px 12px!important;border-radius:0 0 9px 9px!important;background:#edf5ef!important;border:1px solid #afc7b7!important;color:#235f48!important;font-size:14px!important;font-weight:600;position:relative;z-index:1}
 .ux-list-edge::after{content:'';position:absolute;width:32px;height:3px;border-radius:4px;background:#96b3a1;left:calc(50% - 16px);bottom:3px}
 .ux-search-empty button{min-height:44px!important;font-size:14px!important}

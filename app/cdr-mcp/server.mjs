@@ -6,6 +6,7 @@
 //
 // Konfiguration (Umgebung oder JSON-Datei {"values": {...}}):
 //   CDR_MCP_TOKEN    geheimer Pfadteil, ≥ 32 Zeichen → Endpunkt https://<host>/mcp/<token>
+//   CDR_MCP_TOKEN_FILE  ohne CDR_MCP_TOKEN: Token aus dieser Datei, beim ersten Start dort erzeugt (Rechte 600)
 //   CDR_MCP_ORIGIN   öffentliche Adresse ohne / am Ende (für Download-Links), z. B. https://cdr.example.de
 //   CDR_MCP_PYTHON   Python 3.10+ (Standard: python3)
 //   CDR2RAW          Pfad zu cdr2raw (Standard: cdr2raw bzw. ./vendor/libcdr/cdr2raw)
@@ -33,12 +34,12 @@ const MAX_TEXT = 120_000;           // größte Textantwort an das Modell (Zeich
 const KEEP_MS = 24 * 3600_000;      // Downloads/Ergebnisse 24 h
 const CACHE_MS = 30 * 60_000;       // geladene CDR 30 min (mehrere Werkzeuge auf dieselbe Datei)
 
-export function loadConfig(argv = process.argv.slice(2), env = process.env) {
+export function loadConfig(argv = process.argv.slice(2), env = process.env, defaults = {}) {
   const arg = argv.find((a) => a.startsWith('--config='));
   let file = {};
   const cfgPath = arg ? arg.slice(9) : env.CDR_MCP_CONFIG;
   if (cfgPath) file = JSON.parse(fs.readFileSync(cfgPath, 'utf8')).values || {};
-  const v = (k, d) => (env[k] ?? file[k] ?? d);
+  const v = (k, d) => (env[k] ?? file[k] ?? defaults[k] ?? d);
   const vendored = path.join(HERE, 'vendor', 'libcdr', 'cdr2raw');
   const cfg = {
     token: String(v('CDR_MCP_TOKEN', '')),
@@ -54,6 +55,17 @@ export function loadConfig(argv = process.argv.slice(2), env = process.env) {
     memMb: Number(v('CDR_MCP_MEM_MB', 3072)),        // Speichergrenze je Auswertung
     diskBytes: Number(v('CDR_MCP_DISK_MB', 3072)) * 1024 * 1024,  // Gesamtgrenze Zwischenspeicher
   };
+  // Ohne gesetztes Token: aus privater Datei lesen bzw. beim ersten Start selbst erzeugen (niemand muss es abtippen)
+  const tokenFile = String(v('CDR_MCP_TOKEN_FILE', ''));
+  if (!cfg.token && tokenFile) {
+    try { cfg.token = fs.readFileSync(tokenFile, 'utf8').trim(); }
+    catch (e) {
+      if (e.code !== 'ENOENT') throw e;
+      cfg.token = randomBytes(30).toString('base64url').replace(/[-_]/g, 'x');
+      fs.mkdirSync(path.dirname(tokenFile), { recursive: true, mode: 0o700 });
+      fs.writeFileSync(tokenFile, cfg.token + '\n', { mode: 0o600, flag: 'wx' });
+    }
+  }
   if (cfg.token.length < 32 || !/^[A-Za-z0-9_-]+$/.test(cfg.token)) throw new Error('CDR_MCP_TOKEN fehlt oder ist zu kurz (mindestens 32 Zeichen, nur A–Z, a–z, 0–9, _ und -)');
   return cfg;
 }
@@ -300,14 +312,14 @@ export function createCdrServer(cfg) {
     return { file, name: name || 'datei.cdr', cached: false };
   }
 
-  function publish(id, name) { return cfg.origin ? `${cfg.origin}/dl/${id}/${encodeURIComponent(name)}` : null; }
+  function publish(id, name, origin) { const o = cfg.origin || origin; return o ? `${o}/dl/${id}/${encodeURIComponent(name)}` : null; }
 
-  async function storeOut(name, data) {
+  async function storeOut(name, data, origin) {
     const id = randomBytes(18).toString('base64url');
     const dir = path.join(cfg.data, 'out', id);
     await fsp.mkdir(dir, { mode: 0o700 });
     await fsp.writeFile(path.join(dir, name), data);
-    return { id, url: publish(id, name) };
+    return { id, url: publish(id, name, origin) };
   }
 
   function shrink(res, cmd) {
@@ -325,7 +337,7 @@ export function createCdrServer(cfg) {
     return { res: copy, full: txt };
   }
 
-  async function callTool(name, args = {}) {
+  async function callTool(name, args = {}, origin = null) {
     const tool = TOOLS.find((t) => t.name === name);
     if (!tool) throw new RpcError(-32602, `Unbekanntes Werkzeug: ${name}`);
     const posInt = (k, max) => { if (args[k] != null && (!Number.isInteger(args[k]) || args[k] < 1 || args[k] > max)) throw new ToolError(`${k} muss eine ganze Zahl von 1 bis ${max} sein`); };
@@ -355,20 +367,20 @@ export function createCdrServer(cfg) {
         const content = [];
         if (tool.cmd === 'svg') {
           const svg = await fsp.readFile(outFile);
-          const st = await storeOut(`${base}-seite-${res.seite}.svg`, svg);
+          const st = await storeOut(`${base}-seite-${res.seite}.svg`, svg, origin);
           res.download = st.url;
 
           content.push({ type: 'text', text: JSON.stringify(res) });
           if (svg.length <= 60_000) content.push({ type: 'text', text: svg.toString('utf8') });
         } else if (tool.cmd === 'png') {
           const png = await fsp.readFile(outFile);
-          const st = await storeOut(`${base}-seite-${res.seite}.png`, png);
+          const st = await storeOut(`${base}-seite-${res.seite}.png`, png, origin);
           res.download = st.url;
           content.push({ type: 'image', data: png.toString('base64'), mimeType: 'image/png' });
           content.push({ type: 'text', text: JSON.stringify(res) });
         } else {
           const { res: small, full } = shrink(res, tool.cmd);
-          if (full) { const st = await storeOut(`${base}-${tool.cmd}.json`, full); small.vollstaendigesErgebnis = st.url; }
+          if (full) { const st = await storeOut(`${base}-${tool.cmd}.json`, full, origin); small.vollstaendigesErgebnis = st.url; }
           content.push({ type: 'text', text: JSON.stringify(small) });
           log({ tool: name, ms: Date.now() - t0, cached: input.cached });
           return { content, structuredContent: small, isError: false };
@@ -381,7 +393,7 @@ export function createCdrServer(cfg) {
     });
   }
 
-  async function handleRpc(msg) {
+  async function handleRpc(msg, origin) {
     if (!msg || msg.jsonrpc !== '2.0' || typeof msg.method !== 'string') return rpcErr(msg?.id ?? null, -32600, 'Ungültige Anfrage');
     const isNote = msg.id === undefined;
     try {
@@ -400,7 +412,7 @@ export function createCdrServer(cfg) {
         case 'ping': result = {}; break;
         case 'tools/list': result = { tools: toolList() }; break;
         case 'tools/call':
-          try { result = await callTool(msg.params?.name, msg.params?.arguments || {}); }
+          try { result = await callTool(msg.params?.name, msg.params?.arguments || {}, origin); }
           catch (e) {
             if (e instanceof RpcError) throw e;
             const text = e instanceof ToolError ? e.message : 'Interner Fehler beim Lesen der Datei';
@@ -456,11 +468,14 @@ export function createCdrServer(cfg) {
       for await (const c of req) { size += c.length; if (size > 2_000_000) return send(413, JSON.stringify(rpcErr(null, -32600, 'Anfrage zu groß'))); chunks.push(c); }
       let body;
       try { body = JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch { return send(400, JSON.stringify(rpcErr(null, -32700, 'JSON unlesbar'))); }
+      // Download-Links: feste Adresse aus der Konfiguration, sonst der aufgerufene Host (hinter Plesk immer https)
+      const host = String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim().toLowerCase();
+      const origin = /^[a-z0-9.-]+(:\d+)?$/.test(host) ? `https://${host}` : null;
       if (Array.isArray(body)) {
-        const out = (await Promise.all(body.map(handleRpc))).filter(Boolean);
+        const out = (await Promise.all(body.map((m) => handleRpc(m, origin)))).filter(Boolean);
         return out.length ? send(200, JSON.stringify(out)) : send(202, '');
       }
-      const out = await handleRpc(body);
+      const out = await handleRpc(body, origin);
       return out ? send(200, JSON.stringify(out)) : send(202, '');
     } catch (e) {
       log({ error: String(e?.stack || e).slice(0, 500) });

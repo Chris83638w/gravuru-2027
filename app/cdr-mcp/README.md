@@ -33,19 +33,14 @@ Das Paket enthält libcdr portabel (cdr2raw mit allen Bibliotheken und eigenem L
 
 1. **Subdomain** anlegen, z. B. `cdr.gravuru-designwerkstatt.de`, mit Let’s-Encrypt-Zertifikat und Weiterleitung HTTP → HTTPS.
 2. **Dateimanager:** ZIP in den neuen App-Ordner hochladen (z. B. `/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-cdr-mcp`) und dort entpacken. Direkt darin liegen `app.cjs`, `server.mjs`, `vendor/`, `public/`.
-3. **Private Konfiguration** außerhalb des Webroots anlegen: `/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-cdr-mcp-config.json`
+3. **Keine Konfiguration nötig.** Beim ersten Start legt die App im Ordner `private/` neben dem App-Ordner selbst an: `gravuru-cdr-mcp-token.txt` (Zugangscode, 40 Zeichen, Rechte 600) und `gravuru-cdr-mcp-data/` (Zwischenspeicher). Den Code nur aus dieser Datei kopieren (Plesk-Dateimanager) und in ChatGPT eintragen; niemand muss ihn abtippen oder im Chat weitergeben. Optional überschreibt `private/gravuru-cdr-mcp-config.json` die Werte:
 
    ```json
-   {"schema": 1, "values": {
-     "CDR_MCP_TOKEN": "<40 Zeichen aus dem Passwortmanager, nur Buchstaben und Ziffern>",
-     "CDR_MCP_ORIGIN": "https://cdr.gravuru-designwerkstatt.de",
-     "CDR_MCP_DATA": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-cdr-mcp-data",
-     "CDR_MCP_PYTHON": "python3"
-   }}
+   {"schema": 1, "values": {"CDR_MCP_ORIGIN": "https://cdr.gravuru-designwerkstatt.de", "CDR_MCP_PYTHON": "python3"}}
    ```
-   Rechte der Datei: nur der Besitzer darf lesen (600).
+   Download-Links nutzen sonst automatisch den aufgerufenen Host.
 4. **Node.js** für die Subdomain: Node 22 oder neuer, Modus production, Application Root = App-Ordner, Document Root = `public`, Startup File = `app.cjs`.
-5. **Skript ausführen:** `check` → erwartet `"ready": true`. Für Vorschaubilder einmal `node check.cjs --setup` (legt `private/gravuru-cdr-mcp-python` mit CairoSVG an), dann `CDR_MCP_PYTHON` auf `<dieser Ordner>/bin/python` setzen und App neu starten. Ohne CairoSVG funktioniert alles außer `cdr_preview`.
+5. **Skript ausführen:** `check` → erwartet `"ready": true` (vor dem ersten Start steht dort `firstStart: true`, das ist in Ordnung). Für Vorschaubilder einmal `node check.cjs --setup` (legt `private/gravuru-cdr-mcp-python` mit CairoSVG an), dann `CDR_MCP_PYTHON` auf `<dieser Ordner>/bin/python` setzen und App neu starten. Ohne CairoSVG funktioniert alles außer `cdr_preview`.
 6. **Prüfen:** `https://cdr.gravuru-designwerkstatt.de/health` → `{"ok":true,…}`.
 
 ## In ChatGPT verbinden

@@ -16,7 +16,13 @@ try {
   out.configured = typeof values.CDR_MCP_TOKEN === 'string' && values.CDR_MCP_TOKEN.length >= 32;
   out.configPrivate = (mode & 0o077) === 0;
   out.origin = values.CDR_MCP_ORIGIN || null;
-} catch (e) { out.configError = e.code === 'ENOENT' ? 'Konfigurationsdatei fehlt' : 'Konfigurationsdatei unlesbar'; }
+} catch (e) { if (e.code !== 'ENOENT') out.configError = 'Konfigurationsdatei unlesbar'; }
+// Ohne Konfiguration: Token-Datei (erzeugt die App beim ersten Start); Inhalt wird nie ausgegeben
+const tokenFile = values.CDR_MCP_TOKEN_FILE || path.join(privDir, path.basename(appDir) + '-token.txt');
+if (!out.configured) {
+  try { out.configured = fs.readFileSync(tokenFile, 'utf8').trim().length >= 32; out.tokenFile = tokenFile; }
+  catch { out.tokenFile = tokenFile + ' (entsteht beim ersten Start der App)'; out.configured = true; out.firstStart = true; }
+}
 
 if (process.argv.includes('--setup')) {
   const venv = path.join(privDir, path.basename(appDir) + '-python');

@@ -25,6 +25,10 @@ export async function installRefinements(api){
   $('.ux-preview-help').textContent='Element antippen oder anklicken. Größe und Drehung direkt am Rahmen ändern.';
   const help=$('.ux-help-button');help.classList.add('ux-canvas-help');$('.ux-preview-tools').append(help);stageToolsToCanvas();
   function stageToolsToCanvas(){$('.stage').append($('.ux-preview-tools'));}
+  // Chris 21.10.2026: Rückgängig, Wiederholen und Hilfe oben in einer Reihe mit „Vollbild“ (spart Platz).
+  {const tools=$('.ux-preview-tools'),enlarge=$('.ux-enlarge');
+   const align=()=>{if(!tools||!enlarge||!enlarge.offsetWidth)return;tools.style.setProperty('--ux-tools-left',(enlarge.offsetLeft+enlarge.offsetWidth+8)+'px');tools.style.setProperty('--ux-tools-top',enlarge.offsetTop+'px');tools.style.setProperty('--ux-tools-h',enlarge.offsetHeight+'px');};
+   if(tools&&enlarge){align();if(typeof ResizeObserver==='function')new ResizeObserver(align).observe(enlarge);addEventListener('resize',align);}}
   const tabbar=document.createElement('div');tabbar.className='ux-tabbar';$('.ux-tabs').before(tabbar);tabbar.append($('.ux-tabs'));
   const mini=document.createElement('button');mini.type='button';mini.className='ux-mini';mini.dataset.ux='enlarge';mini.setAttribute('aria-label','Aktuelle Produktminiatur – Vollbild öffnen');mini.innerHTML='<span data-mini-art></span><span>Dein Produkt<small>Zum Vergrößern tippen</small></span>'+expand;$('.ux-shell').append(mini);
   const stage=$('.stage'),holder=$('.plate-holder');

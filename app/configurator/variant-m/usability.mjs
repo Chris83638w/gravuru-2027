@@ -196,6 +196,7 @@ export async function installUsability(api) {
     try{return fitsSurface(o,textBounds(o),surface())?[]:[{id:o.id,code:'outside-surface',message:'Text ragt über die Gestaltungsfläche.'}];}
     catch{return [{id:o.id,code:'font-invalid',message:'Die Schrift kann diesen Text nicht vollständig darstellen.'}];}
   });}
+  el.uxTextBounds=textBounds; // Randsperre nach Buchstaben (edge-clamp.mjs)
   el.uxValidateDesign=issues; // Same gate can be called by the future trusted order adapter.
   function updateWarnings(){
     const problem=issues(),ids=new Set(problem.map(p=>p.id));

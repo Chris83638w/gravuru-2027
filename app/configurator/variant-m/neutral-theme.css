@@ -48,3 +48,6 @@
 :host([data-ux-neutral]) #ux-panel-upload .ux-upload-drop{display:grid!important;grid-template-columns:1fr!important;gap:6px!important;padding:14px!important;justify-items:stretch!important}
 :host([data-ux-neutral]) #ux-panel-upload .ux-upload-drop>p:empty{display:none!important}
 :host([data-ux-neutral]) #ux-panel-upload > p small{color:#6b7178}
+/* Chris 21.10.2026: Rückgängig/Wiederholen/Hilfe oben neben „Vollbild“ (nicht beim Acryl-Konfi). */
+:host([data-ux-neutral]:not([data-acrylic-scene])) .ux-shell .ux-preview .stage:not(.acryl-scene) > .ux-preview-tools{position:absolute!important;top:var(--ux-tools-top,12px)!important;left:var(--ux-tools-left,124px)!important;right:auto!important;bottom:auto!important;transform:none!important;flex-direction:row!important;display:flex!important;gap:6px!important;margin:0!important;z-index:4!important}
+:host([data-ux-neutral]:not([data-acrylic-scene])) .ux-shell .ux-preview .stage:not(.acryl-scene) > .ux-preview-tools :is(button,.ux-canvas-help){height:var(--ux-tools-h,40px)!important;min-height:var(--ux-tools-h,40px)!important;margin:0!important}

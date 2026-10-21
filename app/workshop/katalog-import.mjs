@@ -65,7 +65,9 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
   report.counts.sizes+=doc.sizes.length;report.counts.pricesOpen+=priceOpen.length;
   for(const sub of line.subcategories){
    const theme=sub.themeId?katalog.theme(sub.themeId):null,fontSet=katalog.fontSet(sub,theme);
-   const themed=assigned.filter(a=>!a.oldSize&&(a.design.themes?a.design.themes.includes(sub.themeId):false));
+   const hasPhotoField=d=>Array.isArray(d.json?.photos)?d.json.photos.length>0:/class="[^"]*\bfoto\b/.test(d.svg?.()||'');
+   const photoMatch=a=>sub.photoDesigns==null||(sub.photoDesigns==='mit')===hasPhotoField(a.design);
+   const themed=assigned.filter(a=>!a.oldSize&&(a.design.themes?a.design.themes.includes(sub.themeId):false)&&photoMatch(a));
    const withoutTheme=assigned.filter(a=>!a.oldSize&&!a.design.themes).length;
    // Schrift-Set als Profil (nicht je Produkt eingebettet); Glyphen nur für Vorlagenschriften.
    const setKey=fontSet.id??'ohne';if(!fontSets.has(setKey))fontSets.set(setKey,await ensureFontSet(katalog,{id:setKey,fonts:fontSet.fonts},{fontLibrary,profiles,runtimeFonts:available}));

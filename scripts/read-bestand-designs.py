@@ -82,8 +82,8 @@ def font_files(katalog):
     return out
 
 
-def render_placeholder(photo_file, img_box, area, hints, out_png, px_per_mm=8):
-    """Musterfoto (Ausschnitt `area` in mm des Masters) + Button „Foto-Upload hier klicken“ → ein RGBA-Bild."""
+def placeholder_cutout(photo_file, img_box, area, px_per_mm=8):
+    """Musterfoto-Ausschnitt `area` (mm des Masters) als RGBA, Person freigestellt."""
     ax, ay, aw, ah = area
     W, H = max(1, round(aw * px_per_mm)), max(1, round(ah * px_per_mm))
     src = Image.open(photo_file).convert('RGBA')
@@ -120,9 +120,65 @@ def render_placeholder(photo_file, img_box, area, hints, out_png, px_per_mm=8):
     person = ndi.binary_erosion(person, iterations=er + (1 if A0.min() < 250 else 0))
     alpha = ndi.gaussian_filter(person.astype(np.float32) * 255, sigma=max(0.8, er * 0.9))
     crop.putalpha(Image.fromarray(np.clip(alpha, 0, 255).astype(np.uint8)))
+    return crop
+
+
+def person_box(crop, area):
+    """Außenmaß der freigestellten Person in mm des Masters (oder None)."""
+    import numpy as np
+    A = np.asarray(crop.getchannel('A')) > 128
+    if not A.any(): return None
+    ys, xs = np.flatnonzero(A.any(axis=1)), np.flatnonzero(A.any(axis=0))
+    k = area[2] / crop.width
+    return [area[0] + xs[0] * k, area[1] + ys[0] * k, area[0] + (xs[-1] + 1) * k, area[1] + (ys[-1] + 1) * k]
+
+
+def avoid_texts(photo_file, img_box, area, texts, px_per_mm=8):
+    """Chris 21.10.2026 („der Mann ist im Text“): reicht die Person in einen Textblock, wird das Fotofeld auf der
+    Textseite bis vor den Text gekürzt und der Musterausschnitt entsprechend verschoben – nur, wenn auf der
+    anderen Seite genug leere Fläche ist (die Person wird nie abgeschnitten). Gibt (Fotofeld, Ausschnitt) zurück."""
+    pb = person_box(placeholder_cutout(photo_file, img_box, area, px_per_mm), area)
+    ax, ay, aw, ah = area
+    if not pb: return area, area
+    cx = (pb[0] + pb[2]) / 2; cut_r = cut_l = 0.0
+    for t in texts:
+        x0, y0, x1, y1 = t
+        vert = min(y1, pb[3]) - max(y0, pb[1])
+        if vert <= 0.3 * (y1 - y0) or x1 <= pb[0] or x0 >= pb[2]: continue
+        if x0 > cx: cut_r = max(cut_r, pb[2] - x0 + 2)
+        elif x1 < cx: cut_l = max(cut_l, x1 - pb[0] + 2)
+    cut_r = min(cut_r, pb[0] - ax, 0.3 * aw) if cut_r > 0 else 0
+    cut_l = min(cut_l, ax + aw - pb[2], 0.3 * aw) if cut_l > 0 else 0
+    if cut_r < 1 and cut_l < 1: return area, area
+    if cut_r >= cut_l:
+        return [ax, ay, aw - cut_r, ah], [ax + cut_r, ay, aw - cut_r, ah]
+    return [ax + cut_l, ay, aw - cut_l, ah], [ax, ay, aw - cut_l, ah]
+
+
+def render_placeholder(photo_file, img_box, area, hints, out_png, px_per_mm=8, window=None):
+    """Musterfoto + Button „Foto-Upload hier klicken“ → ein RGBA-Bild für das Fotofeld `area`.
+    `window` ist der Bildausschnitt (mm des Masters), falls er vom Fotofeld abweicht (avoid_texts)."""
+    import numpy as np
+    win = window or area
+    crop = placeholder_cutout(photo_file, img_box, win, px_per_mm)
+    ax, ay, aw, ah = area; W, H = crop.size
     import cairosvg
-    # Button nie im Gesicht: unten im Fotofeld (Porträts haben das Gesicht oben), etwas durchsichtig
-    btn_w = min(aw * 0.62, 70); btn_h = btn_w * 0.36; bx = ax + (aw - btn_w) / 2; by = ay + ah - btn_h - max(2.0, ah * 0.05)
+    # Button auf der Person (Brusthöhe, nie im Gesicht), mittig über dem sichtbaren Oberkörper; ganz im Fotofeld.
+    A = np.asarray(crop.getchannel('A')) > 128; k = aw / W
+    btn_w = min(aw * 0.62, 70); btn_h = btn_w * 0.36
+    if A.any():
+        ys = np.flatnonzero(A.any(axis=1)); top, bot = ys[0] * k, (ys[-1] + 1) * k
+        cy = top + 0.74 * (bot - top)
+        band = A[max(0, int((cy - btn_h / 2) / k)):max(1, int((cy + btn_h / 2) / k))]
+        cols = np.flatnonzero(band.any(axis=0))
+        if cols.size:
+            pw = (cols[-1] - cols[0] + 1) * k; btn_w = min(btn_w, max(0.75 * pw, 34)); btn_h = btn_w * 0.36
+            cxp = (cols[0] + cols[-1] + 1) / 2 * k
+        else: cxp = aw / 2
+    else: cy, cxp = ah - btn_h, aw / 2
+    margin = max(2.0, ah * 0.04)
+    bx = ax + min(max(cxp - btn_w / 2, margin), aw - btn_w - margin)
+    by = ay + min(max(cy - btn_h / 2, margin), ah - btn_h - margin)
     fs = btn_h * 0.27
     svg = (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{ax} {ay} {aw} {ah}" width="{W}" height="{H}">'
            f'<rect x="{bx:.2f}" y="{by:.2f}" width="{btn_w:.2f}" height="{btn_h:.2f}" rx="{btn_h * 0.22:.2f}" fill="#ffffff" fill-opacity="0.72" stroke="#1b1b1b" stroke-opacity="0.6" stroke-width="{btn_h * 0.03:.2f}"/>'
@@ -191,6 +247,16 @@ def convert(folder, target, prefix, ersatz, files, s_fix=None):
             u = dict(t, text='\n'.join(part), anchorMm=[t['anchorMm'][0], round(t['anchorMm'][1] + row * step, 2)], group=len(texts) - row if row else len(texts)); row += len(part)
             texts.append(u)
     # ---- Fotofeld (Clip ∩ Platte)
+    def text_boxes_master():
+        out = []
+        for t in texts:
+            lines = t['text'].split('\n'); sz = t['sizePt'] * PT
+            f = files.get(t['font'])
+            w = max(text_width(f, l, sz) for l in lines) if f else max(len(l) for l in lines) * sz * 0.55
+            x = t['anchorMm'][0]; x0 = {'left': x, 'center': x - w / 2, 'right': x - w}[t['align']]
+            y0 = t['anchorMm'][1] - 0.8 * sz; y1 = t['anchorMm'][1] + (len(lines) - 1) * 1.2 * sz + 0.25 * sz
+            out.append([(x0 - ox) / s, (y0 - oy) / s, (x0 + w - ox) / s, (y1 - oy) / s])
+        return out
     photos = []
     clips = {c.get('id'): c for c in svg.iter('{%s}clipPath' % NS['svg'])}
     for im in svg.iter('{%s}image' % NS['svg']):
@@ -206,11 +272,15 @@ def convert(folder, target, prefix, ersatz, files, s_fix=None):
         x1, y1 = min(cb[0] + cb[2], ib[0] + ib[2], W0), min(cb[1] + cb[3], ib[1] + ib[3], H0)
         area = [x0, y0, x1 - x0, y1 - y0]
         k = len(photos) + 1; file = f'foto-{k}.png'
-        px = render_placeholder(folder / href, ib, area, None, target_dir(did) / file)
+        area, window = avoid_texts(folder / href, ib, area, text_boxes_master())
+        if window != area or area[2] != x1 - x0:
+            warn.append(f'Fotofeld {k} um {(x1 - x0 - area[2]) * s:.1f} mm gekürzt, damit die Person nicht im Text steht')
+        px = render_placeholder(folder / href, ib, area, None, target_dir(did) / file, window=window)
+        x0, y0 = area[0], area[1]
         tx, ty = T(x0, y0)
         photos.append({'box': [round(tx, 2), round(ty, 2), round(area[2] * s, 2), round(area[3] * s, 2)], 'file': file, 'px': px,
                        'alpha': False, 'customerClip': 'rechteck', 'shape': 'rect', 'placeholder': True, 'engrave': False,
-                       'source': {'masterFile': href, 'masterArea': [round(v, 2) for v in area]}})
+                       'source': {'masterFile': href, 'masterArea': [round(v, 2) for v in area], 'masterWindow': [round(v, 2) for v in window]}})
     # ---- Motive
     paths = []
     for el in svg.iter('{%s}path' % NS['svg']):

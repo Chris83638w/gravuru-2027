@@ -2,6 +2,9 @@
 // setzen, aber nicht weiter.“ Gilt für Ziehen, Skalieren, Drehen und Pfeiltasten, weil die Lage vor jedem
 // Zeichnen geprüft wird. Maßgeblich ist die Außenbox des (gedrehten) Elements; ist sie größer als die
 // Platte, wird das Element auf der Platte zentriert.
+// Chris 21.10.2026: Bei Text zählen die Buchstaben, nicht der Textrahmen mit Zeilenabstand – sonst lässt sich
+// ein Name nicht ganz nach oben setzen.
+import {transformedCorners} from './usability-model.mjs';
 
 export function boundingSize(o){
   const a=(Number(o.rotation)||0)*Math.PI/180,w=Math.max(0,Number(o.w)||0),h=Math.max(0,Number(o.h)||0);
@@ -14,17 +17,23 @@ const clampAxis=(c,size,max,margin)=>{
 };
 
 // Gibt true zurück, wenn das Element verschoben wurde.
-export function clampToPlate(o,width,height,margin=0){
+export function clampToPlate(o,width,height,margin=0,bounds=null){
   if(!o||o.uxHidden||o.locked||o.uxLocked||o.role==='guide'||o.uxDecoration&&o.customerEditable===false)return false;
   if(!(width>0&&height>0)||!Number.isFinite(o.x)||!Number.isFinite(o.y))return false;
-  const b=boundingSize(o),x=clampAxis(o.x,b.w,width,margin),y=clampAxis(o.y,b.h,height,margin);
+  let x,y;
+  if(bounds&&bounds.width>0&&bounds.height>0){
+   const c=transformedCorners({...o,x:0,y:0},bounds),xs=c.map(p=>p.x),ys=c.map(p=>p.y);
+   const loX=margin-Math.min(...xs),hiX=width-margin-Math.max(...xs),loY=margin-Math.min(...ys),hiY=height-margin-Math.max(...ys);
+   x=loX>hiX?(loX+hiX)/2:Math.min(hiX,Math.max(loX,o.x));y=loY>hiY?(loY+hiY)/2:Math.min(hiY,Math.max(loY,o.y));
+  }else{const b=boundingSize(o);x=clampAxis(o.x,b.w,width,margin);y=clampAxis(o.y,b.h,height,margin);}
   const moved=Math.abs(x-o.x)>1e-6||Math.abs(y-o.y)>1e-6;
   if(moved){o.x=Math.round(x*100)/100;o.y=Math.round(y*100)/100;}
   return moved;
 }
 
 export function installEdgeClamp(el){
-  const clampAll=self=>{const s=self.state;if(!s?.objects)return;for(const o of s.objects)clampToPlate(o,s.width,s.height);};
+  const glyphs=o=>{if(o.type!=='text'||o.uxHidden||!String(o.text??'').trim()||!el.uxTextBounds)return null;try{return el.uxTextBounds(o);}catch{return null;}};
+  const clampAll=self=>{const s=self.state;if(!s?.objects)return;for(const o of s.objects)clampToPlate(o,s.width,s.height,0,glyphs(o));};
   const render=el.render;
   el.render=function(...args){clampAll(this);return render.apply(this,args);};
 }

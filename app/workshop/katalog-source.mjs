@@ -63,6 +63,8 @@ export function validateLine(line,{families,themes,fontSets,file='linie'}={}){
   if(s.sizesOffered!==null&&s.sizesOffered!==undefined&&(!Array.isArray(s.sizesOffered)||s.sizesOffered.some(k=>!id(k))))fail(file,'Unterkategorie „'+s.id+'“: sizesOffered ist null oder eine Liste von Größen-Schlüsseln.');
   if(s.options!==null&&s.options!==undefined&&(!Array.isArray(s.options)||s.options.some(k=>!id(k))))fail(file,'Unterkategorie „'+s.id+'“: options ist null oder eine Liste von Optionsgruppen.');
   if(s.collectionHandle!==null&&s.collectionHandle!==undefined&&!text(s.collectionHandle,200))fail(file,'Unterkategorie „'+s.id+'“: collectionHandle prüfen.');
+  // Chris 21.10.2026: „Die Fotos sind eine Linie und ohne Fotos eine extra Linie“ – Designs mit/ohne Fotofeld getrennt.
+  if(s.photoDesigns!==null&&s.photoDesigns!==undefined&&!['mit','ohne'].includes(s.photoDesigns))fail(file,'Unterkategorie „'+s.id+'“: photoDesigns ist null, „mit“ oder „ohne“.');
   // Startdesign: Design-Kennung, die im Konfigurator als erstes steht (= Hauptbild im Shop).
   if(s.startDesign!==null&&s.startDesign!==undefined&&!(typeof s.startDesign==='string'&&/^[A-Za-z0-9][A-Za-z0-9_.,:-]{0,119}$/.test(s.startDesign)))fail(file,'Unterkategorie „'+s.id+'“: startDesign ist eine Design-Kennung.');
  }

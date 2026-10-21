@@ -33,6 +33,7 @@ out.python = py.status === 0 ? py.stdout.trim() : 'nicht startbar: ' + python;
 const cairo = spawnSync(python, ['-I', '-c', 'import cairosvg;cairosvg.svg2png(bytestring=b"<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'4\' height=\'4\'/>");print("ok")'], { encoding: 'utf8' });
 out.preview = cairo.status === 0 ? true : 'CairoSVG fehlt – Vorschau aus, alles andere geht';
 const vendored = path.join(appDir, 'vendor', 'libcdr', 'cdr2raw');
+for (const f of ['vendor/libcdr/cdr2raw', 'vendor/libcdr/bin/cdr2raw', 'vendor/libcdr/lib/ld-linux-x86-64.so.2']) { try { fs.chmodSync(path.join(appDir, f), 0o755); } catch {} }
 const cdr = values.CDR2RAW || (fs.existsSync(vendored) ? vendored : 'cdr2raw');
 const r = spawnSync(cdr, ['/dev/null'], { encoding: 'utf8' });
 out.libcdr = r.error ? 'nicht startbar: ' + r.error.code : true;

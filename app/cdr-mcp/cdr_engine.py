@@ -56,6 +56,21 @@ def r2(v): return round(v + 0.0, 2)
 
 # ---------------------------------------------------------------- Einlesen
 
+MAX_UNZIP = 2000 * 1024 * 1024       # Summe aller entpackten Einträge (Schutz vor Zip-Bomben)
+MAX_RAW = 1000 * 1024 * 1024         # größte cdr2raw-Ausgabe
+MEM_MB = int(os.environ.get('CDR_MEM_MB', '3072'))
+
+
+def limit_child():
+    """Grenzen für cdr2raw: Arbeitsspeicher und Dateigröße (nur Linux/Unix)."""
+    try:
+        import resource
+        resource.setrlimit(resource.RLIMIT_AS, (MEM_MB * 1024 * 1024,) * 2)
+        resource.setrlimit(resource.RLIMIT_FSIZE, (MAX_RAW + 1,) * 2)
+    except Exception:
+        pass
+
+
 def light_copy(cdr, tmpdir):
     """Kopie mit genulltem Bitmap-Speicher (libcdr liest dann Sekunden statt Minuten, ohne Bitmaps)."""
     try:
@@ -64,39 +79,72 @@ def light_copy(cdr, tmpdir):
         return cdr, False  # ältere CDR (vor X4) sind kein ZIP – libcdr liest sie direkt
     with z:
         infos = z.infolist()
+        if sum(i.file_size for i in infos) > MAX_UNZIP or len(infos) > 20000:
+            raise EngineError('Datei ist entpackt zu groß (über 2 GB) – bitte Bilder aus der Datei entfernen oder Seiten einzeln speichern')
         if not any(i.filename.lower().endswith('bitmaps.dat') for i in infos):
             return cdr, False
         dst_path = Path(tmpdir) / 'light.cdr'
+        block = bytes(1 << 20)
         with zipfile.ZipFile(dst_path, 'w') as dst:
-            # librevenge liest keine Zip64-/Datenbeschreiber-Einträge: Einträge einzeln und klassisch schreiben
+            # librevenge liest keine Zip64-Einträge: klassische Einträge, blockweise kopiert und mitgezählt
             for i in infos:
-                if i.filename == 'mimetype':
-                    dst.writestr(zipfile.ZipInfo('mimetype'), z.read(i.filename), compress_type=zipfile.ZIP_STORED)
-                elif i.filename.lower().endswith('bitmaps.dat'):
-                    dst.writestr(i.filename, bytes(i.file_size), compress_type=zipfile.ZIP_DEFLATED)
-                else:
-                    dst.writestr(i.filename, z.read(i.filename), compress_type=zipfile.ZIP_DEFLATED)
+                if i.is_dir(): continue
+                zi = zipfile.ZipInfo(i.filename, date_time=i.date_time)
+                zi.compress_type = zipfile.ZIP_STORED if i.filename == 'mimetype' else zipfile.ZIP_DEFLATED
+                zi.file_size = i.file_size
+                with dst.open(zi, 'w') as out:
+                    if i.filename.lower().endswith('bitmaps.dat'):
+                        left = i.file_size
+                        while left > 0:
+                            n = min(left, len(block)); out.write(block[:n]); left -= n
+                    else:
+                        got = 0
+                        with z.open(i) as src:
+                            while True:
+                                b = src.read(1 << 20)
+                                if not b: break
+                                got += len(b)
+                                if got > i.file_size: raise EngineError('Datei ist beschädigt (Größenangabe falsch)')
+                                out.write(b)
         return dst_path, True
 
 
 def raw_lines(cdr):
     with tempfile.TemporaryDirectory() as td:
-        src, light = light_copy(cdr, td)
         try:
-            proc = subprocess.Popen([CDR2RAW, str(src)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            src, light = light_copy(cdr, td)
+        except EngineError:
+            raise
+        except (zipfile.BadZipFile, zipfile.LargeZipFile, NotImplementedError, RuntimeError, EOFError, OSError, ValueError) as e:
+            raise EngineError('Datei ist beschädigt oder verschlüsselt (' + type(e).__name__ + ')')
+        except Exception as e:
+            import zlib
+            if isinstance(e, zlib.error): raise EngineError('Datei ist beschädigt (Kompression)')
+            raise
+        raw_path = Path(td) / 'raw.txt'
+        try:
+            with open(raw_path, 'wb') as out, open(Path(td) / 'err.txt', 'wb') as errf:
+                proc = subprocess.Popen([CDR2RAW, str(src)], stdout=out, stderr=errf, preexec_fn=limit_child if os.name == 'posix' else None)
+                try:
+                    proc.wait(timeout=TIMEOUT)
+                except subprocess.TimeoutExpired:
+                    proc.kill(); proc.wait()
+                    raise EngineError(f'libcdr brauchte länger als {TIMEOUT} s – Datei zu komplex')
         except FileNotFoundError:
             raise EngineError('cdr2raw (libcdr) ist auf dem Server nicht installiert')
-        lines = []
-        try:
-            out, err = proc.communicate(timeout=TIMEOUT)
-        except subprocess.TimeoutExpired:
-            proc.kill(); raise EngineError(f'libcdr brauchte länger als {TIMEOUT} s – Datei zu komplex')
-        for raw in out.split(b'\n'):
-            if b'drawGraphicObject' in raw[:80]:
-                raw = raw[:80] + b' ... ' + raw[-600:]  # Bilddaten weg, Lage/Größe stehen am Ende
-            lines.append(raw.decode('utf-8', 'replace'))
-        if not any(l.strip().startswith('startPage') for l in lines):
-            msg = err.decode('utf-8', 'replace').strip()[:200]
+        if raw_path.stat().st_size > MAX_RAW:
+            raise EngineError('Datei ist zu komplex (Ausgabe über 1 GB)')
+        lines = []; has_page = False
+        with open(raw_path, 'rb') as f:
+            for raw in f:
+                if b'drawGraphicObject' in raw[:80]:
+                    raw = raw[:80] + b' ... ' + raw.rstrip(b'\n')[-600:]  # Bilddaten weg, Lage/Größe stehen am Ende
+                line = raw.decode('utf-8', 'replace').rstrip('\n')
+                if not has_page and line.lstrip().startswith('startPage'): has_page = True
+                lines.append(line)
+        if not has_page:
+            msg = (Path(td) / 'err.txt').read_bytes().decode('utf-8', 'replace').strip()[:200]
+            if proc.returncode and proc.returncode < 0: msg = 'libcdr abgebrochen (Speichergrenze)'
             raise EngineError('Datei ist keine lesbare CorelDRAW-Datei' + (f' ({msg})' if msg else ''))
         return lines, light
 
@@ -591,6 +639,7 @@ def cmd_png(doc, a):
         raise EngineError('Vorschau auf diesem Server nicht verfügbar (CairoSVG fehlt) – Maße, Texte und SVG funktionieren')
     i = pick(doc, a.page or 1)[0]
     p = doc['pages'][i]
+    if p['widthMm'] <= 0 or p['heightMm'] <= 0: raise EngineError('Seite hat kein Maß – keine Vorschau möglich')
     px = a.px or 1600
     scale = px / max(p['widthMm'], p['heightMm'])
     svg = page_svg(p, min_stroke=1.2 / scale).replace('<g id="pfade">', f'<rect width="{p["widthMm"]}" height="{p["heightMm"]}" fill="#ffffff"/><g id="pfade">', 1)
@@ -613,6 +662,8 @@ def main(argv=None):
         res = {'info': cmd_info, 'measure': cmd_measure, 'texts': cmd_texts, 'svg': cmd_svg, 'png': cmd_png}[a.cmd](doc, a)
     except EngineError as e:
         print(json.dumps({'error': str(e)}, ensure_ascii=False)); return 2
+    except MemoryError:
+        print(json.dumps({'error': 'Datei ist zu groß für den Arbeitsspeicher des Servers'}, ensure_ascii=False)); return 2
     print(json.dumps(res, ensure_ascii=False))
     return 0
 

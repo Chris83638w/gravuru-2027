@@ -8,7 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { createCdrServer, loadConfig, TOOLS } from './server.mjs';
+import { createCdrServer, loadConfig, TOOLS, isPrivateIp } from './server.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), 'cdr-mcp-test-'));
@@ -110,6 +110,31 @@ test('Engine: Fehler als Meldung, keine Ausnahme', () => {
   assert.match(r.error, /Seite 4 gibt es nicht/);
 });
 
+test('Engine: Zip mit gefälschter Größenangabe wird abgelehnt (keine Speicherbombe)', () => {
+  const bomb = path.join(TMP, 'bombe.cdr');
+  const py = `
+import zipfile, struct, sys
+p = sys.argv[1]
+with zipfile.ZipFile(p, 'w') as z:
+    z.writestr('mimetype', 'application/x-vnd.corel.zcf.draw.document+zip')
+    z.writestr('content/data/Bitmaps.dat', b'x' * 10)
+b = bytearray(open(p, 'rb').read())
+i = b.find(b'PK\\x01\\x02', b.find(b'PK\\x01\\x02') + 4)
+struct.pack_into('<I', b, i + 24, 0xF0000000)
+open(p, 'wb').write(b)
+`;
+  spawnSync('python3', ['-I', '-c', py, bomb]);
+  const r = engine('info', bomb);
+  assert.match(r.error, /zu groß/);
+});
+
+test('Sperrliste interner Adressen', () => {
+  for (const ip of ['127.0.0.1', '10.1.2.3', '172.20.0.1', '192.168.1.1', '169.254.169.254', '100.64.0.1', '0.0.0.0', '198.18.0.1', '::1', '::', '::ffff:127.0.0.1', '::ffff:7f00:1', '0:0:0:0:0:ffff:7f00:1', 'fe80::1', 'fd00::1', 'fec0::1', '64:ff9b::7f00:1', '2002:7f00:1::', '::7f00:1', 'kein-ip'])
+    assert.equal(isPrivateIp(ip), true, ip);
+  for (const ip of ['8.8.8.8', '20.60.1.1', '2a00:1450:4001:80b::200e', '2606:4700::1111'])
+    assert.equal(isPrivateIp(ip), false, ip);
+});
+
 test('Konfiguration verlangt langes Token', () => {
   assert.throws(() => loadConfig([], { CDR_MCP_TOKEN: 'kurz' }), /CDR_MCP_TOKEN/);
 });
@@ -190,6 +215,10 @@ test('MCP: Fehler kommen als isError zurück (keine Datei, keine CDR, unbekannte
   assert.equal(b.isError, true); assert.match(b.content[0].text, /keine CorelDRAW-Datei/);
   const c = (await rpc('tools/call', { name: 'gibtsnicht', arguments: {} })).body;
   assert.equal(c.error.code, -32602);
+  for (const args of [{ file: fileArg('probe.cdr'), max_plates: -5 }, { file: fileArg('probe.cdr'), page: 0 }, { file: { download_url: 1, file_id: 'x' } }, { file: { ...fileArg('probe.cdr'), file_name: 7 } }]) {
+    const d = (await rpc('tools/call', { name: 'cdr_measure', arguments: args })).body.result;
+    assert.equal(d.isError, true, JSON.stringify(args));
+  }
 });
 
 test('MCP: interne Adressen sind ohne Testschalter gesperrt', async () => {
@@ -197,11 +226,11 @@ test('MCP: interne Adressen sind ohne Testschalter gesperrt', async () => {
   const s2 = createCdrServer(cfg);
   await new Promise((r) => s2.listen(0, '127.0.0.1', r));
   try {
-    for (const u of ['http://127.0.0.1/x.cdr', 'https://127.0.0.1/x.cdr', 'https://10.0.0.5/x.cdr', 'https://[::1]/x.cdr', 'https://user:pw@example.com/x.cdr']) {
+    for (const u of ['http://127.0.0.1/x.cdr', 'https://127.0.0.1/x.cdr', 'https://10.0.0.5/x.cdr', 'https://[::1]/x.cdr', 'https://[::ffff:127.0.0.1]/x.cdr', 'https://user:pw@example.com/x.cdr', 'https://example.com:8443/x.cdr', 'https://localhost/x.cdr']) {
       const r = await fetch(`http://127.0.0.1:${s2.address().port}/mcp/${TOKEN}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'cdr_info', arguments: { url: u } } }) });
       const res = (await r.json()).result;
       assert.equal(res.isError, true, u);
-      assert.match(res.content[0].text, /https|Interne|Zugangsdaten/, u);
+      assert.match(res.content[0].text, /https|Interne|Zugangsdaten|Port|nicht erreichbar/, u);
     }
   } finally { s2.close(); }
 });

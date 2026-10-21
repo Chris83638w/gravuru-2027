@@ -15,7 +15,10 @@
 import http from 'node:http';
 import { spawn } from 'node:child_process';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
-import { lookup } from 'node:dns/promises';
+import dns from 'node:dns';
+import https from 'node:https';
+import { Transform } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import net from 'node:net';
@@ -48,6 +51,8 @@ export function loadConfig(argv = process.argv.slice(2), env = process.env) {
     host: String(v('CDR_MCP_HOST', '127.0.0.1')),
     allowPrivate: v('CDR_MCP_ALLOW_PRIVATE_URLS', '') === '1',   // nur für lokale Tests
     jobs: Number(v('CDR_MCP_JOBS', 2)),
+    memMb: Number(v('CDR_MCP_MEM_MB', 3072)),        // Speichergrenze je Auswertung
+    diskBytes: Number(v('CDR_MCP_DISK_MB', 3072)) * 1024 * 1024,  // Gesamtgrenze Zwischenspeicher
   };
   if (cfg.token.length < 32 || !/^[A-Za-z0-9_-]+$/.test(cfg.token)) throw new Error('CDR_MCP_TOKEN fehlt oder ist zu kurz (mindestens 32 Zeichen, nur A–Z, a–z, 0–9, _ und -)');
   return cfg;
@@ -115,74 +120,115 @@ function toolList() {
 
 class ToolError extends Error {}
 
-function isPrivateIp(ip) {
-  if (net.isIPv4(ip)) {
-    const [a, b] = ip.split('.').map(Number);
-    return a === 10 || a === 127 || a === 0 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 100 && b >= 64 && b <= 127) || a >= 224;
-  }
-  const s = ip.toLowerCase();
-  if (s.startsWith('::ffff:')) return isPrivateIp(s.slice(7));
-  return s === '::1' || s === '::' || s.startsWith('fc') || s.startsWith('fd') || s.startsWith('fe8') || s.startsWith('fe9') || s.startsWith('fea') || s.startsWith('feb') || s.startsWith('ff');
+// Nur öffentliche Unicast-Adressen sind als Download-Ziel erlaubt (Schutz vor Zugriff auf interne Dienste)
+// getrennte Listen: Node prüft IPv4 sonst auch gegen ::ffff:0:0/96
+const BLOCKED = new net.BlockList();
+const BLOCKED6 = new net.BlockList();
+for (const [a, p] of [['0.0.0.0', 8], ['10.0.0.0', 8], ['100.64.0.0', 10], ['127.0.0.0', 8], ['169.254.0.0', 16], ['172.16.0.0', 12], ['192.0.0.0', 24], ['192.0.2.0', 24],
+  ['192.88.99.0', 24], ['192.168.0.0', 16], ['198.18.0.0', 15], ['198.51.100.0', 24], ['203.0.113.0', 24], ['224.0.0.0', 4], ['240.0.0.0', 4]]) BLOCKED.addSubnet(a, p, 'ipv4');
+for (const [a, p] of [['::', 96], ['::ffff:0:0', 96], ['64:ff9b::', 96], ['64:ff9b:1::', 48], ['100::', 64], ['2001::', 23], ['2001:db8::', 32], ['2002::', 16],
+  ['fc00::', 7], ['fe80::', 10], ['fec0::', 10], ['ff00::', 8]]) BLOCKED6.addSubnet(a, p, 'ipv6');
+
+export function isPrivateIp(ip) {
+  const s = String(ip).toLowerCase().replace(/^\[|\]$/g, '');
+  if (net.isIPv4(s)) return BLOCKED.check(s, 'ipv4');
+  if (!net.isIPv6(s)) return true;
+  // IPv4 in IPv6 (::ffff:a.b.c.d oder ::ffff:7f00:1) → als IPv4 prüfen; alles in ::/96 und ::ffff:0:0/96 ist ohnehin gesperrt
+  const m = /^::ffff:/.test(s) || /^0{0,4}(:0{0,4}){4}:ffff:/.test(s);
+  if (m) return true; // gemappte IPv4 (::ffff:…) nie zulassen – ein echter Server liefert sie nicht
+  return BLOCKED6.check(s, 'ipv6');
 }
 
-async function checkUrl(u, cfg) {
+function checkUrl(u, cfg) {
   let url;
   try { url = new URL(u); } catch { throw new ToolError('Adresse der Datei ist ungültig'); }
   if (url.protocol !== 'https:' && !(cfg.allowPrivate && url.protocol === 'http:')) throw new ToolError('Nur https-Adressen sind erlaubt');
   if (url.username || url.password) throw new ToolError('Adressen mit Zugangsdaten sind nicht erlaubt');
   if (!cfg.allowPrivate) {
+    if (url.port && url.port !== '443') throw new ToolError('Nur der Standard-Port 443 ist erlaubt');
     const host = url.hostname.replace(/^\[|\]$/g, '');
-    const addrs = net.isIP(host) ? [{ address: host }] : await lookup(host, { all: true }).catch(() => { throw new ToolError('Server der Datei nicht erreichbar'); });
-    if (addrs.some((a) => isPrivateIp(a.address))) throw new ToolError('Interne Adressen sind nicht erlaubt');
+    if (net.isIP(host) && isPrivateIp(host)) throw new ToolError('Interne Adressen sind nicht erlaubt');
   }
   return url;
 }
 
-async function download(u, dest, cfg, redirects = 3) {
-  const url = await checkUrl(u, cfg);
+// DNS-Auflösung genau einmal je Verbindung: geprüft wird dieselbe Adresse, mit der verbunden wird (kein DNS-Rebinding)
+function safeLookup(cfg) {
+  return (hostname, options, cb) => {
+    dns.lookup(hostname, { all: true }, (err, addrs) => {
+      if (err) return cb(new ToolError('Server der Datei nicht erreichbar'));
+      const ok = cfg.allowPrivate ? addrs : addrs.filter((a) => !isPrivateIp(a.address));
+      if (!ok.length) return cb(new ToolError('Interne Adressen sind nicht erlaubt'));
+      if (options && options.all) return cb(null, ok);
+      cb(null, ok[0].address, ok[0].family);
+    });
+  };
+}
+
+function getOnce(url, cfg, signal) {
+  const mod = url.protocol === 'https:' ? https : http;
+  return new Promise((resolve, reject) => {
+    const req = mod.request(url, { method: 'GET', lookup: safeLookup(cfg), signal, headers: { 'user-agent': `gravuru-cdr-mcp/${VERSION}`, accept: '*/*' } }, resolve);
+    req.on('error', reject);
+    req.end();
+  });
+}
+
+const MB = (n) => `${Math.round(n / 1048576)} MB`;
+
+async function download(u, dest, cfg) {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), 120_000);
   try {
-    const res = await fetch(url, { redirect: 'manual', signal: ctl.signal, headers: { 'user-agent': `gravuru-cdr-mcp/${VERSION}` } });
-    if ([301, 302, 303, 307, 308].includes(res.status)) {
-      if (!redirects) throw new ToolError('Zu viele Weiterleitungen');
-      const next = new URL(res.headers.get('location') || '', url).toString();
-      return download(next, dest, cfg, redirects - 1);
+    let url = checkUrl(u, cfg);
+    let res;
+    for (let hop = 0; ; hop++) {
+      res = await getOnce(url, cfg, ctl.signal);
+      if (![301, 302, 303, 307, 308].includes(res.statusCode)) break;
+      res.resume();
+      if (hop >= 3) throw new ToolError('Zu viele Weiterleitungen');
+      url = checkUrl(new URL(res.headers.location || '', url).toString(), cfg);
     }
-    if (!res.ok) throw new ToolError(`Datei nicht abrufbar (HTTP ${res.status})`);
-    const len = Number(res.headers.get('content-length') || 0);
-    if (len > cfg.maxBytes) throw new ToolError(`Datei ist größer als ${cfg.maxBytes / 1048576} MB`);
-    const out = fs.createWriteStream(dest);
-    let n = 0; const head = [];
-    for await (const chunk of res.body) {
-      n += chunk.length;
-      if (n > cfg.maxBytes) { out.destroy(); throw new ToolError(`Datei ist größer als ${cfg.maxBytes / 1048576} MB`); }
-      if (head.length < 1) head.push(Buffer.from(chunk.subarray(0, 8)));
-      if (!out.write(chunk)) await new Promise((r) => out.once('drain', r));
-    }
-    await new Promise((r, j) => out.end((e) => (e ? j(e) : r())));
-    const sig = head[0] || Buffer.alloc(0);
+    if (res.statusCode < 200 || res.statusCode >= 300) { res.resume(); throw new ToolError('Datei nicht abrufbar'); }
+    if (Number(res.headers['content-length'] || 0) > cfg.maxBytes) { res.resume(); throw new ToolError(`Datei ist größer als ${MB(cfg.maxBytes)}`); }
+    let n = 0; let head = null;
+    const count = new Transform({
+      transform(chunk, _enc, done) {
+        n += chunk.length;
+        if (!head) head = Buffer.from(chunk.subarray(0, 8));
+        if (n > cfg.maxBytes) return done(new ToolError(`Datei ist größer als ${MB(cfg.maxBytes)}`));
+        done(null, chunk);
+      },
+    });
+    await pipeline(res, count, fs.createWriteStream(dest, { mode: 0o600 }));
+    const sig = head || Buffer.alloc(0);
     // CDR ab X4 = ZIP (PK), ältere = RIFF
     if (!(sig[0] === 0x50 && sig[1] === 0x4b) && sig.toString('latin1', 0, 4) !== 'RIFF') throw new ToolError('Das ist keine CorelDRAW-Datei (.cdr)');
     return n;
   } catch (e) {
-    if (e.name === 'AbortError') throw new ToolError('Download dauerte zu lange');
-    throw e;
+    if (e instanceof ToolError) throw e;
+    if (e.name === 'AbortError' || ctl.signal.aborted) throw new ToolError('Download dauerte zu lange');
+    if (e.code === 'ENOSPC') throw new ToolError('Server-Speicher voll – bitte später erneut');
+    throw new ToolError('Datei nicht abrufbar');
   } finally { clearTimeout(timer); }
 }
 
 function runEngine(cfg, args, timeoutMs = 170_000) {
   return new Promise((resolve, reject) => {
+    // eigene Prozessgruppe: bei Zeitüberschreitung werden Python und cdr2raw gemeinsam beendet
     const p = spawn(cfg.python, ['-I', path.join(HERE, 'cdr_engine.py'), ...args], {
-      env: { PATH: process.env.PATH || '/usr/bin:/bin', CDR2RAW: cfg.cdr2raw, CDR_TIMEOUT_S: '150', HOME: cfg.data, LANG: 'C.UTF-8', ...(process.env.FONTCONFIG_FILE ? { FONTCONFIG_FILE: process.env.FONTCONFIG_FILE } : {}) },
-      stdio: ['ignore', 'pipe', 'pipe'],
+      env: { PATH: process.env.PATH || '/usr/bin:/bin', CDR2RAW: cfg.cdr2raw, CDR_TIMEOUT_S: '120', CDR_MEM_MB: String(cfg.memMb), HOME: cfg.data, LANG: 'C.UTF-8', ...(process.env.FONTCONFIG_FILE ? { FONTCONFIG_FILE: process.env.FONTCONFIG_FILE } : {}) },
+      stdio: ['ignore', 'pipe', 'pipe'], detached: true,
     });
-    const out = []; const err = [];
-    const t = setTimeout(() => { p.kill('SIGKILL'); reject(new ToolError('Auswertung dauerte zu lange')); }, timeoutMs);
-    p.stdout.on('data', (d) => out.push(d)); p.stderr.on('data', (d) => { if (err.length < 50) err.push(d); });
-    p.on('error', (e) => { clearTimeout(t); reject(new ToolError('Python nicht startbar: ' + e.message)); });
+    const out = []; let outLen = 0; const err = [];
+    const kill = () => { try { process.kill(-p.pid, 'SIGKILL'); } catch { try { p.kill('SIGKILL'); } catch {} } };
+    const t = setTimeout(() => { kill(); reject(new ToolError('Auswertung dauerte zu lange')); }, timeoutMs);
+    p.stdout.on('data', (d) => { outLen += d.length; if (outLen > 64 * 1048576) { kill(); return; } out.push(d); });
+    p.stderr.on('data', (d) => { if (err.length < 50) err.push(d); });
+    p.on('error', () => { clearTimeout(t); reject(new ToolError('Auswertung auf dem Server nicht startbar')); });
     p.on('close', () => {
       clearTimeout(t);
+      if (outLen > 64 * 1048576) return reject(new ToolError('Ergebnis zu groß'));
       const txt = Buffer.concat(out).toString('utf8').trim();
       let json; try { json = JSON.parse(txt); } catch { return reject(new Error('Engine-Ausgabe unlesbar: ' + Buffer.concat(err).toString('utf8').slice(-400))); }
       if (json.error) return reject(new ToolError(json.error));
@@ -212,14 +258,30 @@ export function createCdrServer(cfg) {
   async function cleanup() {
     const now = Date.now();
     for (const [k, v] of cache) if (now - v.at > CACHE_MS) { cache.delete(k); fsp.rm(v.file, { force: true }).catch(() => {}); }
-    for (const sub of ['out']) {
-      for (const d of await fsp.readdir(path.join(cfg.data, sub)).catch(() => [])) {
-        const p = path.join(cfg.data, sub, d);
-        const st = await fsp.stat(p).catch(() => null);
-        if (st && now - st.mtimeMs > KEEP_MS) await fsp.rm(p, { recursive: true, force: true }).catch(() => {});
-      }
+    // Eingänge (auch nach Neustart verwaiste) nach Alter löschen, danach Gesamtgröße begrenzen (älteste zuerst)
+    const inDir = path.join(cfg.data, 'in'); const keep = [];
+    for (const d of await fsp.readdir(inDir).catch(() => [])) {
+      const p = path.join(inDir, d); const st = await fsp.stat(p).catch(() => null);
+      if (!st) continue;
+      const inUse = [...cache.values()].some((v) => v.file === p);
+      if (!inUse && now - st.mtimeMs > CACHE_MS) await fsp.rm(p, { force: true }).catch(() => {});
+      else keep.push({ p, size: st.size, t: st.mtimeMs });
+    }
+    let total = keep.reduce((a, b) => a + b.size, 0);
+    for (const f of keep.sort((a, b) => a.t - b.t)) {
+      if (total <= cfg.diskBytes) break;
+      await fsp.rm(f.p, { force: true }).catch(() => {}); total -= f.size;
+      for (const [k, v] of cache) if (v.file === f.p) cache.delete(k);
+    }
+    for (const d of await fsp.readdir(path.join(cfg.data, 'out')).catch(() => [])) {
+      const p = path.join(cfg.data, 'out', d);
+      const st = await fsp.stat(p).catch(() => null);
+      if (st && now - st.mtimeMs > KEEP_MS) await fsp.rm(p, { recursive: true, force: true }).catch(() => {});
     }
   }
+  let lastSweep = 0;
+  const sweepSoon = () => { if (Date.now() - lastSweep > 60_000) { lastSweep = Date.now(); cleanup().catch(() => {}); } };
+  sweepSoon();
   const sweeper = setInterval(() => cleanup().catch(() => {}), 10 * 60_000); sweeper.unref();
 
   async function fetchInput(args) {
@@ -266,20 +328,26 @@ export function createCdrServer(cfg) {
   async function callTool(name, args = {}) {
     const tool = TOOLS.find((t) => t.name === name);
     if (!tool) throw new RpcError(-32602, `Unbekanntes Werkzeug: ${name}`);
-    if (args.page != null && (!Number.isInteger(args.page) || args.page < 1)) throw new ToolError('page muss eine ganze Zahl ab 1 sein');
+    const posInt = (k, max) => { if (args[k] != null && (!Number.isInteger(args[k]) || args[k] < 1 || args[k] > max)) throw new ToolError(`${k} muss eine ganze Zahl von 1 bis ${max} sein`); };
+    posInt('page', 9999); posInt('max_plates', 2000); posInt('max_texts', 5000); posInt('pixels', 2400);
+    if (args.file != null && (typeof args.file !== 'object' || typeof args.file.download_url !== 'string' || (args.file.file_name != null && typeof args.file.file_name !== 'string'))) throw new ToolError('file ist ungültig');
+    if (args.url != null && typeof args.url !== 'string') throw new ToolError('url muss eine Zeichenkette sein');
+    sweepSoon();
     return limit(async () => {
       const t0 = Date.now();
       const input = await fetchInput(args);
-      const base = input.name.replace(/\.cdr$/i, '').replace(/[^\p{L}\p{N} ._-]+/gu, '_').slice(0, 80) || 'datei';
+      let base = input.name.replace(/\.cdr$/i, '').replace(/[^\p{L}\p{N} ._-]+/gu, '_').replace(/^[.\s]+/, '');
+      while (Buffer.byteLength(base) > 120) base = base.slice(0, -1);
+      base ||= 'datei';
       const ea = [tool.cmd, input.file];
       if (args.page) ea.push('--page', String(args.page));
-      if (tool.cmd === 'measure' && args.max_plates) ea.push('--max', String(Math.min(2000, args.max_plates | 0)));
-      if (tool.cmd === 'texts' && args.max_texts) ea.push('--max', String(Math.min(5000, args.max_texts | 0)));
+      if (tool.cmd === 'measure' && args.max_plates) ea.push('--max', String(args.max_plates));
+      if (tool.cmd === 'texts' && args.max_texts) ea.push('--max', String(args.max_texts));
       let outFile = null;
       if (tool.cmd === 'svg' || tool.cmd === 'png') {
         outFile = path.join(cfg.data, 'out', randomBytes(9).toString('hex') + (tool.cmd === 'svg' ? '.svg' : '.png'));
         ea.push('--out', outFile);
-        if (tool.cmd === 'png') ea.push('--px', String(Math.max(300, Math.min(2400, args.pixels | 0 || 1600))));
+        if (tool.cmd === 'png') ea.push('--px', String(Math.max(300, args.pixels || 1600)));
       }
       try {
         const res = await runEngine(cfg, ea);
@@ -369,7 +437,7 @@ export function createCdrServer(cfg) {
       if (url.pathname === '/health') return send(200, JSON.stringify({ ok: true, version: VERSION }));
       const dl = url.pathname.match(/^\/dl\/([A-Za-z0-9_-]{24})\/([^/]+)$/);
       if (dl && req.method === 'GET') {
-        const name = decodeURIComponent(dl[2]);
+        let name; try { name = decodeURIComponent(dl[2]); } catch { return send(404, '{}'); }
         if (name.includes('/') || name.includes('\\') || name.startsWith('.')) return send(404, '{}');
         const p = path.join(cfg.data, 'out', dl[1], name);
         const st = await fsp.stat(p).catch(() => null);
@@ -377,7 +445,7 @@ export function createCdrServer(cfg) {
         const type = name.endsWith('.svg') ? 'image/svg+xml' : name.endsWith('.png') ? 'image/png' : 'application/json; charset=utf-8';
         res.writeHead(200, { 'content-type': type, 'content-length': st.size, 'cache-control': 'private, max-age=3600', 'x-content-type-options': 'nosniff',
           'content-disposition': `attachment; filename*=UTF-8''${encodeURIComponent(name)}`, 'content-security-policy': "default-src 'none'; style-src 'unsafe-inline'" });
-        return fs.createReadStream(p).pipe(res);
+        return pipeline(fs.createReadStream(p), res).catch(() => res.destroy());
       }
       const m = url.pathname.match(/^\/mcp\/([^/]+)\/?$/);
       if (!m || !tokenOk(m[1])) return send(404, JSON.stringify({ error: 'nicht gefunden' }));

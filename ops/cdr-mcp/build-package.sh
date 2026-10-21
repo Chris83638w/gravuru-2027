@@ -43,7 +43,7 @@ dpkg-query -W -f='${Package} ${Version}\n' libcdr-0.1-1 libcdr-tools librevenge-
 env -i "$PKG/vendor/libcdr/lib/$LOADER" --list --library-path "$PKG/vendor/libcdr/lib" "$PKG/vendor/libcdr/bin/cdr2raw" | grep -v "$PKG/vendor/libcdr/lib" | grep -v 'linux-vdso' && { echo "Bündel zieht noch Systembibliotheken" >&2; exit 1; } || true
 
 COMMIT="$(git -C "$ROOT" rev-parse --short HEAD 2>/dev/null || echo unbekannt)"
-( cd "$PKG" && find . -type f ! -name PACKAGE-MANIFEST.json -print0 | sort -z | xargs -0 sha256sum ) > "$PKG/PACKAGE-MANIFEST.sha256"
+( cd "$PKG" && find . -type f ! -name PACKAGE-MANIFEST.json ! -name PACKAGE-MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum ) > "$PKG/PACKAGE-MANIFEST.sha256"
 printf '{"package":"gravuru-cdr-mcp","sourceCommit":"%s","built":"%s"}\n' "$COMMIT" "$(date -u +%FT%TZ)" > "$PKG/PACKAGE-MANIFEST.json"
 mkdir -p "$OUT"
 ZIP="$OUT/gravuru-cdr-mcp-$(date +%Y%m%d)-$COMMIT.zip"

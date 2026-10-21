@@ -7,9 +7,15 @@ const appDir = __dirname;
 const defaultCfg = path.join(path.dirname(appDir), 'private', path.basename(appDir) + '-config.json');
 if (!process.env.CDR_MCP_CONFIG && fs.existsSync(defaultCfg)) process.env.CDR_MCP_CONFIG = defaultCfg;
 
+// Ausführrechte gehen beim Entpacken im Plesk-Dateimanager mitunter verloren
+for (const f of ['vendor/libcdr/cdr2raw', 'vendor/libcdr/bin/cdr2raw', 'vendor/libcdr/lib/ld-linux-x86-64.so.2']) {
+  try { fs.chmodSync(path.join(appDir, f), 0o755); } catch {}
+}
+
 import('./server.mjs').then(({ loadConfig, createCdrServer }) => {
   const cfg = loadConfig([], process.env);
   const server = createCdrServer(cfg);
-  // Passenger/LiteSpeed übernehmen den Socket; lokal gilt PORT bzw. 8975
-  server.listen(process.env.PORT || cfg.port, () => console.log('gravuru-cdr-mcp bereit'));
+  // Passenger/LiteSpeed setzen PORT und übernehmen den Socket; ohne sie nur lokal (127.0.0.1) lauschen
+  if (process.env.PORT) server.listen(process.env.PORT, () => console.log('gravuru-cdr-mcp bereit'));
+  else server.listen(cfg.port, cfg.host, () => console.log(`gravuru-cdr-mcp bereit auf ${cfg.host}:${cfg.port}`));
 }).catch((e) => { console.error('gravuru-cdr-mcp Start fehlgeschlagen:', e.message); process.exit(1); });

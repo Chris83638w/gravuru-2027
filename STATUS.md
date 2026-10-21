@@ -25,3 +25,10 @@ G27-01 aus `UMSETZUNGSPAKETE.md` bearbeiten. Die Referenzen anhand `QUELLEN-UND-
 ## Fortschritt pro Paket ergänzen
 
 Paket / Status / Branch und Commit / betroffene Dateien / konkret ausgeführte Tests / Ergebnislink / offene Grenzen / nächstes Paket. Historische Tests nicht als aktuelle Ergebnisse neuer Änderungen fortschreiben.
+
+## CDR-Werkzeuge für ChatGPT/Claude (21.10.2026, Branch `dev/cdr-mcp-20261021`)
+
+- `app/cdr-mcp/`: MCP-Server (Streamable HTTP, ohne npm-Abhängigkeiten) + `cdr_engine.py` (libcdr): `cdr_info`, `cdr_measure` (Platten, Bohrlöcher, Rand- und Lochabstände in mm), `cdr_texts`, `cdr_to_svg`, `cdr_preview`. ChatGPT-Dateiübergabe über `openai/fileParams`.
+- Paket für Plesk: `ops/cdr-mcp/build-package.sh` (portables libcdr, ~18 MB ZIP; nicht im Repo). Einrichtung und ChatGPT-Verbindung: `app/cdr-mcp/README.md`.
+- Geprüft: `node --test app/cdr-mcp/cdr-mcp.test.mjs` 13/13; echte CDR-Dateien lokal (siehe README „Prüfung“); MCP-Python-Client-Durchlauf; Plesk-Ordneraufbau mit `check.cjs` simuliert.
+- Offen: Subdomain + Upload in Plesk (Chris), Token im Passwortmanager, Verbindung in ChatGPT und ein echter Test mit hochgeladener CDR (Dateiübergabe von ChatGPT ist nur nach Doku geprüft).

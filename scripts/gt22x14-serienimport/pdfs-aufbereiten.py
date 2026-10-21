@@ -9,7 +9,7 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pdf", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
-    ap.add_argument("--plan", type=Path, default=root.parent/"Produktplan-5-Hundeprodukte.json")
+    ap.add_argument("--plan", type=Path, default=root.parent/"Produktplan-4-Hundeprodukte.json")
     ap.add_argument("--fonts", type=Path, default=root/"Fonts")
     ap.add_argument("--python-libs", type=Path)
     ap.add_argument("--poppler", type=Path)

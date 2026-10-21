@@ -2,225 +2,585 @@ TAP version 13
 # Subtest: September customerDraft is translated without scaling, repricing or rewriting objects
 ok 1 - September customerDraft is translated without scaling, repricing or rewriting objects
   ---
-  duration_ms: 3.0154
+  duration_ms: 5.7572
   type: 'test'
   ...
 # Subtest: native profile/UUID/revision must agree: no historical or other-product reinterpretation
 ok 2 - native profile/UUID/revision must agree: no historical or other-product reinterpretation
   ---
-  duration_ms: 1.2639
+  duration_ms: 4.2694
   type: 'test'
   ...
 # Subtest: 300×200 cannot be imported into the 220×140 fixture and model geometry stays unchanged
 ok 3 - 300×200 cannot be imported into the 220×140 fixture and model geometry stays unchanged
   ---
-  duration_ms: 0.3068
+  duration_ms: 0.7865
   type: 'test'
   ...
 # Subtest: AOSU, steel, demos and unsupported extra surfaces are rejected
 ok 4 - AOSU, steel, demos and unsupported extra surfaces are rejected
   ---
-  duration_ms: 0.5874
+  duration_ms: 1.569
   type: 'test'
   ...
 # Subtest: foreign designs and option groups are rejected; defaults come only from the loaded product
 ok 5 - foreign designs and option groups are rejected; defaults come only from the loaded product
   ---
-  duration_ms: 0.75
+  duration_ms: 1.5228
   type: 'test'
   ...
 # Subtest: universal v1 draft preserves content and rejects changed fixed marks
 ok 6 - universal v1 draft preserves content and rejects changed fixed marks
   ---
-  duration_ms: 0.5303
+  duration_ms: 1.1985
   type: 'test'
   ...
 # Subtest: objects are never silently filtered, rounded or dropped
 ok 7 - objects are never silently filtered, rounded or dropped
   ---
-  duration_ms: 0.4608
+  duration_ms: 1.5607
   type: 'test'
   ...
 # Subtest: required photo, original and explicit background instructions cannot be missing
 ok 8 - required photo, original and explicit background instructions cannot be missing
   ---
-  duration_ms: 1.4389
+  duration_ms: 2.565
   type: 'test'
   ...
 # Subtest: original and edited bytes plus keep/remove survive; photoEdit stays separate with a send blocker
 ok 9 - original and edited bytes plus keep/remove survive; photoEdit stays separate with a send blocker
   ---
-  duration_ms: 1.2743
+  duration_ms: 2.2721
   type: 'test'
   ...
 # Subtest: hidden photo is retained in reopening but not illegally added to native media
 ok 10 - hidden photo is retained in reopening but not illegally added to native media
   ---
-  duration_ms: 0.5302
+  duration_ms: 0.9097
   type: 'test'
   ...
 # Subtest: duplicate uses of one image produce one native media entry and retain object references
 ok 11 - duplicate uses of one image produce one native media entry and retain object references
   ---
-  duration_ms: 0.4422
+  duration_ms: 0.4624
   type: 'test'
   ...
 # Subtest: missing edited bytes, missing parameters and ambiguous source cannot claim complete reopening
 ok 12 - missing edited bytes, missing parameters and ambiguous source cannot claim complete reopening
   ---
-  duration_ms: 1.5793
+  duration_ms: 11.4834
   type: 'test'
   ...
 # Subtest: inert inherited AOSU shell state is kept outside the native contract, never used as mounting
 ok 13 - inert inherited AOSU shell state is kept outside the native contract, never used as mounting
   ---
-  duration_ms: 0.2145
+  duration_ms: 0.5028
   type: 'test'
   ...
 # Subtest: a native mask or layer role lost by the old serializer blocks sending and stays recoverable
 ok 14 - a native mask or layer role lost by the old serializer blocks sending and stays recoverable
   ---
-  duration_ms: 0.3207
+  duration_ms: 1.3339
   type: 'test'
   ...
 # Subtest: quantity and preview contracts reject invalid values, URLs and excessive encoded preview
 ok 15 - quantity and preview contracts reject invalid values, URLs and excessive encoded preview
   ---
-  duration_ms: 0.5803
+  duration_ms: 2.5914
   type: 'test'
   ...
 # Subtest: a concurrent model/draft mutation cannot switch the product bound before encoding
 ok 16 - a concurrent model/draft mutation cannot switch the product bound before encoding
   ---
-  duration_ms: 0.2592
+  duration_ms: 0.613
   type: 'test'
   ...
 # Subtest: only literal loopback HTTP with explicit unprivileged port; no parser normalization bypass
 ok 17 - only literal loopback HTTP with explicit unprivileged port; no parser normalization bypass
   ---
-  duration_ms: 1.3309
+  duration_ms: 2.3472
   type: 'test'
   ...
 # Subtest: wrong pilot identity prevents workload calls
 ok 18 - wrong pilot identity prevents workload calls
   ---
-  duration_ms: 29.4602
+  duration_ms: 87.4553
   type: 'test'
   ...
 # Subtest: redirect is rejected; second local endpoint is never followed
 ok 19 - redirect is rejected; second local endpoint is never followed
   ---
-  duration_ms: 5.1054
+  duration_ms: 12.8243
   type: 'test'
   ...
 # Subtest: route whitelist prevents write or general proxy routes
 ok 20 - route whitelist prevents write or general proxy routes
   ---
-  duration_ms: 0.4356
+  duration_ms: 3.1784
   type: 'test'
   ...
 # Subtest: bounded synthetic stage reports response statistics, only GET requests
 ok 21 - bounded synthetic stage reports response statistics, only GET requests
   ---
-  duration_ms: 170.3293
+  duration_ms: 175.7842
   type: 'test'
   ...
 # Subtest: busy target stops load escalation
 ok 22 - busy target stops load escalation
   ---
-  duration_ms: 5.9516
+  duration_ms: 11.7102
   type: 'test'
   ...
 # Subtest: full source manifest verified; no file changes or private values returned
 ok 23 - full source manifest verified; no file changes or private values returned
   ---
-  duration_ms: 16.1934
+  duration_ms: 30.1986
   type: 'test'
   ...
 # Subtest: manifest traversal, secrets, databases and duplicate entries cannot be read as release code
 ok 24 - manifest traversal, secrets, databases and duplicate entries cannot be read as release code
   ---
-  duration_ms: 5.0487
+  duration_ms: 10.7153
   type: 'test'
   ...
 # Subtest: storage inspection does not open SQLite, read configuration, acquire lock or change files
 ok 25 - storage inspection does not open SQLite, read configuration, acquire lock or change files
   ---
-  duration_ms: 8.7068
+  duration_ms: 16.9737
   type: 'test'
   ...
 # Subtest: host preflight labels unavailable app limits and never mistakes probe process for app
 ok 26 - host preflight labels unavailable app limits and never mistakes probe process for app
   ---
-  duration_ms: 0.8258
+  duration_ms: 1.6648
+  type: 'test'
+  ...
+# Subtest: wire packet deduplicates native bytes while separately transporting hidden/intermediate sources; hydration is exact
+ok 27 - wire packet deduplicates native bytes while separately transporting hidden/intermediate sources; hydration is exact
+  ---
+  duration_ms: 3.5626
+  type: 'test'
+  ...
+# Subtest: four maximum 15 MiB originals stay below existing 100 MiB body limit, with no duplicate Base64 in sidecar
+ok 28 - four maximum 15 MiB originals stay below existing 100 MiB body limit, with no duplicate Base64 in sidecar
+  ---
+  duration_ms: 316.0043
+  type: 'test'
+  ...
+# Subtest: exact request-size boundary is checked before send and caller cannot raise server limit
+ok 29 - exact request-size boundary is checked before send and caller cannot raise server limit
+  ---
+  duration_ms: 9.986
+  type: 'test'
+  ...
+# Subtest: invalid reference indexes, arbitrary property names, double source and missing bytes cannot hydrate
+ok 30 - invalid reference indexes, arbitrary property names, double source and missing bytes cannot hydrate
+  ---
+  duration_ms: 0.9733
+  type: 'test'
+  ...
+# Subtest: encoded body is immutable even if caller changes the source afterward
+ok 31 - encoded body is immutable even if caller changes the source afterward
+  ---
+  duration_ms: 0.4357
+  type: 'test'
+  ...
+# Subtest: JSON roundtrip retains actual serializer draft, unknown native fields, exact original/edited bytes and photoEdit
+ok 32 - JSON roundtrip retains actual serializer draft, unknown native fields, exact original/edited bytes and photoEdit
+  ---
+  duration_ms: 35.5692
+  type: 'test'
+  ...
+# Subtest: hidden and guide photos, shared image references and keep/remove choices are retained without activating them
+ok 33 - hidden and guide photos, shared image references and keep/remove choices are retained without activating them
+  ---
+  duration_ms: 4.2698
+  type: 'test'
+  ...
+# Subtest: second editing source may be a historical intermediate file; restore retains source distinct from original and current result
+ok 34 - second editing source may be a historical intermediate file; restore retains source distinct from original and current result
+  ---
+  duration_ms: 5.2227
+  type: 'test'
+  ...
+# Subtest: explicit editSourceBlob supports exact source when old URL history is no longer retained
+ok 35 - explicit editSourceBlob supports exact source when old URL history is no longer retained
+  ---
+  duration_ms: 2.6843
+  type: 'test'
+  ...
+# Subtest: missing and conflicting source bytes, missing original and missing photoEdit fail without any network fallback
+ok 36 - missing and conflicting source bytes, missing original and missing photoEdit fail without any network fallback
+  ---
+  duration_ms: 5.8723
+  type: 'test'
+  ...
+# Subtest: unedited file does not manufacture editing parameters and deduplicates all byte references
+ok 37 - unedited file does not manufacture editing parameters and deduplicates all byte references
+  ---
+  duration_ms: 2.9068
+  type: 'test'
+  ...
+# Subtest: cross-product/revision/template/geometry mismatch never reopens into the target product
+ok 38 - cross-product/revision/template/geometry mismatch never reopens into the target product
+  ---
+  duration_ms: 2.3877
+  type: 'test'
+  ...
+# Subtest: native input hash binds exact input including options, quantity, photos and preview
+ok 39 - native input hash binds exact input including options, quantity, photos and preview
+  ---
+  duration_ms: 9.9873
+  type: 'test'
+  ...
+# Subtest: tampering is detected before creating URLs, including independently re-signed modified image bytes
+ok 40 - tampering is detected before creating URLs, including independently re-signed modified image bytes
+  ---
+  duration_ms: 3.414
+  type: 'test'
+  ...
+# Subtest: malformed schema, unsafe keys, excessive metadata, corrupt base64 and orphan files are rejected
+ok 41 - malformed schema, unsafe keys, excessive metadata, corrupt base64 and orphan files are rejected
+  ---
+  duration_ms: 16.978
+  type: 'test'
+  ...
+# Subtest: oversized photo, blob declaration, missing media and invalid editing controls cannot claim complete package
+ok 42 - oversized photo, blob declaration, missing media and invalid editing controls cannot claim complete package
+  ---
+  duration_ms: 18.2343
+  type: 'test'
+  ...
+# Subtest: state is a candidate only; permissions cannot be elevated by payload or a claimed capability
+ok 43 - state is a candidate only; permissions cannot be elevated by payload or a claimed capability
+  ---
+  duration_ms: 4.7809
+  type: 'test'
+  ...
+# Subtest: partial URL creation is revoked on error and validation allocates no URLs
+ok 44 - partial URL creation is revoked on error and validation allocates no URLs
+  ---
+  duration_ms: 5.6714
+  type: 'test'
+  ...
+# Subtest: model, editor metadata and byte relations are snapshotted before asynchronous encoding
+ok 45 - model, editor metadata and byte relations are snapshotted before asynchronous encoding
+  ---
+  duration_ms: 1.9322
+  type: 'test'
+  ...
+# Subtest: server-side structural validator needs no browser URLs and still grants no state or order authority
+ok 46 - server-side structural validator needs no browser URLs and still grants no state or order authority
+  ---
+  duration_ms: 5.026
+  type: 'test'
+  ...
+# Subtest: native request with same product but different customer objects cannot be bound to this sidecar
+ok 47 - native request with same product but different customer objects cannot be bound to this sidecar
+  ---
+  duration_ms: 0.8536
+  type: 'test'
+  ...
+# Subtest: undeclared huge image strings are rejected by length before digest or decoding
+ok 48 - undeclared huge image strings are rejected by length before digest or decoding
+  ---
+  duration_ms: 1.3156
+  type: 'test'
+  ...
+# Subtest: native request cannot point at different pixels from the same upload ID in the sidecar
+ok 49 - native request cannot point at different pixels from the same upload ID in the sidecar
+  ---
+  duration_ms: 1.7026
+  type: 'test'
+  ...
+# Subtest: native input snapshot deeply detaches and freezes customer contents before asynchronous review work
+ok 50 - native input snapshot deeply detaches and freezes customer contents before asynchronous review work
+  ---
+  duration_ms: 7.0324
+  type: 'test'
+  ...
+# Subtest: native review patch binds digest in archived manifest before package SHA and freezes before validation/await
+ok 51 - native review patch binds digest in archived manifest before package SHA and freezes before validation/await
+  ---
+  duration_ms: 4.021
+  type: 'test'
+  ...
+# Subtest: non-JSON hidden data cannot silently disappear from native input digest
+ok 52 - non-JSON hidden data cannot silently disappear from native input digest
+  ---
+  duration_ms: 0.91
+  type: 'test'
+  ...
+# Subtest: actual patched native store atomically persists bundle, revision and photo packet, survives DB close/reopen
+ok 53 - actual patched native store atomically persists bundle, revision and photo packet, survives DB close/reopen
+  ---
+  duration_ms: 69.8033
+  type: 'test'
+  ...
+# Subtest: failed photo insert rolls native archive, draft head and revision back together
+ok 54 - failed photo insert rolls native archive, draft head and revision back together
+  ---
+  duration_ms: 6.8084
+  type: 'test'
+  ...
+# Subtest: native archive failure also leaves no photo data or draft rows
+ok 55 - native archive failure also leaves no photo data or draft rows
+  ---
+  duration_ms: 5.7713
+  type: 'test'
+  ...
+# Subtest: save appends immutable history; failure and stale expectedRevision retain previous complete revision
+ok 56 - save appends immutable history; failure and stale expectedRevision retain previous complete revision
+  ---
+  duration_ms: 15.0561
+  type: 'test'
+  ...
+# Subtest: two real SQLite connections reject competing stale writer without partial snapshots
+ok 57 - two real SQLite connections reject competing stale writer without partial snapshots
+  ---
+  duration_ms: 69.0073
+  type: 'test'
+  ...
+# Subtest: wrong token, other tenant, nonexistent revision and forged serialized ticket cannot access or attach data
+ok 58 - wrong token, other tenant, nonexistent revision and forged serialized ticket cannot access or attach data
+  ---
+  duration_ms: 58.8421
+  type: 'test'
+  ...
+# Subtest: legacy drafts remain supported; existing photo-persistent draft cannot silently downgrade
+ok 59 - legacy drafts remain supported; existing photo-persistent draft cannot silently downgrade
+  ---
+  duration_ms: 7.7599
+  type: 'test'
+  ...
+# Subtest: all referenced bytes pass explicit decoder before a write; missing decoder, corrupt image and mismatched dimensions are blocked
+ok 60 - all referenced bytes pass explicit decoder before a write; missing decoder, corrupt image and mismatched dimensions are blocked
+  ---
+  duration_ms: 10.4716
+  type: 'test'
+  ...
+# Subtest: ticket remains tied to exact native snapshot/archive and strict upstream patch refuses newer source
+ok 61 - ticket remains tied to exact native snapshot/archive and strict upstream patch refuses newer source
+  ---
+  duration_ms: 5.7837
+  type: 'test'
+  ...
+# Subtest: review A cannot receive sidecar/input B with different text but identical product/design/revision
+ok 62 - review A cannot receive sidecar/input B with different text but identical product/design/revision
+  ---
+  duration_ms: 3.2396
+  type: 'test'
+  ...
+# Subtest: mutation after native review cannot switch the content associated with its frozen digest
+ok 63 - mutation after native review cannot switch the content associated with its frozen digest
+  ---
+  duration_ms: 3.1713
+  type: 'test'
+  ...
+# Subtest: deduplicated wire request hydrates into the exact packet and commits with the existing native draft
+ok 64 - deduplicated wire request hydrates into the exact packet and commits with the existing native draft
+  ---
+  duration_ms: 5.2616
+  type: 'test'
+  ...
+# Subtest: HTTP patch changes existing native-draft path only, keeps original auth/CSRF/body and native prepare sequence
+ok 65 - HTTP patch changes existing native-draft path only, keeps original auth/CSRF/body and native prepare sequence
+  ---
+  duration_ms: 9.0437
+  type: 'test'
+  ...
+# Subtest: different HTTP revision cannot be patched without renewed source review
+ok 66 - different HTTP revision cannot be patched without renewed source review
+  ---
+  duration_ms: 2.4153
+  type: 'test'
+  ...
+# Subtest: fixed endpoint, app identity, API and only the three requested result fields
+ok 67 - fixed endpoint, app identity, API and only the three requested result fields
+  ---
+  duration_ms: 44.0023
+  type: 'test'
+  ...
+# Subtest: existing write_cart_transforms grants the paired read, no new scopes requested
+ok 68 - existing write_cart_transforms grants the paired read, no new scopes requested
+  ---
+  duration_ms: 4.5306
+  type: 'test'
+  ...
+# Subtest: missing scope stops before cartTransforms request
+ok 69 - missing scope stops before cartTransforms request
+  ---
+  duration_ms: 2.2889
+  type: 'test'
+  ...
+# Subtest: scope revoked between fixed queries is rejected
+ok 70 - scope revoked between fixed queries is rejected
+  ---
+  duration_ms: 3.7372
+  type: 'test'
+  ...
+# Subtest: rejects unexpected shop
+ok 71 - rejects unexpected shop
+  ---
+  duration_ms: 1.3236
+  type: 'test'
+  ...
+# Subtest: rejects unexpected app
+ok 72 - rejects unexpected app
+  ---
+  duration_ms: 1.2123
+  type: 'test'
+  ...
+# Subtest: rejects unexpected scope shape
+ok 73 - rejects unexpected scope shape
+  ---
+  duration_ms: 1.1828
+  type: 'test'
+  ...
+# Subtest: different API response version fails closed
+ok 74 - different API response version fails closed
+  ---
+  duration_ms: 1.0077
+  type: 'test'
+  ...
+# Subtest: false blockOnFailure is returned honestly, not interpreted as enabled
+ok 75 - false blockOnFailure is returned honestly, not interpreted as enabled
+  ---
+  duration_ms: 1.3172
+  type: 'test'
+  ...
+# Subtest: rejects partial page
+ok 76 - rejects partial page
+  ---
+  duration_ms: 1.592
+  type: 'test'
+  ...
+# Subtest: rejects duplicate
+ok 77 - rejects duplicate
+  ---
+  duration_ms: 1.3029
+  type: 'test'
+  ...
+# Subtest: rejects missing boolean
+ok 78 - rejects missing boolean
+  ---
+  duration_ms: 1.2608
+  type: 'test'
+  ...
+# Subtest: rejects invalid function
+ok 79 - rejects invalid function
+  ---
+  duration_ms: 1.2731
+  type: 'test'
+  ...
+# Subtest: empty list is allowed and does not claim a deployed function
+ok 80 - empty list is allowed and does not claim a deployed function
+  ---
+  duration_ms: 1.8264
+  type: 'test'
+  ...
+# Subtest: GraphQL error, invalid token and upstream transport errors are sanitized
+ok 81 - GraphQL error, invalid token and upstream transport errors are sanitized
+  ---
+  duration_ms: 1.5699
+  type: 'test'
+  ...
+# Subtest: private config only supplies the existing external secret file
+ok 82 - private config only supplies the existing external secret file
+  ---
+  duration_ms: 1.4946
+  type: 'test'
+  ...
+# Subtest: CLI prints only the bounded audit result, never config, secret or token
+ok 83 - CLI prints only the bounded audit result, never config, secret or token
+  ---
+  duration_ms: 1.2483
+  type: 'test'
+  ...
+# Subtest: CLI rejects unknown arguments/config names before file access or network
+ok 84 - CLI rejects unknown arguments/config names before file access or network
+  ---
+  duration_ms: 0.3045
+  type: 'test'
+  ...
+# Subtest: CLI never prints raw filesystem/upstream errors or credentials
+ok 85 - CLI never prints raw filesystem/upstream errors or credentials
+  ---
+  duration_ms: 0.1795
+  type: 'test'
+  ...
+# Subtest: helper imports only filesystem/path/url builtins and no DB/runtime modules
+ok 86 - helper imports only filesystem/path/url builtins and no DB/runtime modules
+  ---
+  duration_ms: 1.491
   type: 'test'
   ...
 # Subtest: pinning and adapter gate prevent incompatible data from being sent
-ok 27 - pinning and adapter gate prevent incompatible data from being sent
+ok 87 - pinning and adapter gate prevent incompatible data from being sent
   ---
-  duration_ms: 1.6361
+  duration_ms: 3.6402
   type: 'test'
   ...
 # Subtest: one private draft is revised; token is in header, never return value or URL
-ok 28 - one private draft is revised; token is in header, never return value or URL
+ok 88 - one private draft is revised; token is in header, never return value or URL
   ---
-  duration_ms: 0.6505
+  duration_ms: 2.8753
   type: 'test'
   ...
 # Subtest: network ambiguity blocks repeat to avoid duplicate drafts
-ok 29 - network ambiguity blocks repeat to avoid duplicate drafts
+ok 89 - network ambiguity blocks repeat to avoid duplicate drafts
   ---
-  duration_ms: 0.4884
+  duration_ms: 1.1939
   type: 'test'
   ...
 # Subtest: review_busy is an explicit non-writing refusal and allows a later manual attempt
-ok 30 - review_busy is an explicit non-writing refusal and allows a later manual attempt
+ok 90 - review_busy is an explicit non-writing refusal and allows a later manual attempt
   ---
-  duration_ms: 0.3931
+  duration_ms: 0.8978
   type: 'test'
   ...
 # Subtest: parallel double click makes one write
-ok 31 - parallel double click makes one write
+ok 91 - parallel double click makes one write
   ---
-  duration_ms: 0.296
+  duration_ms: 0.7305
   type: 'test'
   ...
 # Subtest: incorrect success revision remains unknown instead of pretending to save
-ok 32 - incorrect success revision remains unknown instead of pretending to save
+ok 92 - incorrect success revision remains unknown instead of pretending to save
   ---
-  duration_ms: 0.2543
+  duration_ms: 0.6319
   type: 'test'
   ...
 # Subtest: merchant grant must pin the exact product revision; local operator is insufficient
-ok 33 - merchant grant must pin the exact product revision; local operator is insufficient
+ok 93 - merchant grant must pin the exact product revision; local operator is insufficient
   ---
-  duration_ms: 0.264
+  duration_ms: 0.6055
   type: 'test'
   ...
 # Subtest: adapter-to-transport preserves the original photo and keep instruction in a synthetic save
-ok 34 - adapter-to-transport preserves the original photo and keep instruction in a synthetic save
+ok 94 - adapter-to-transport preserves the original photo and keep instruction in a synthetic save
   ---
-  duration_ms: 1.7801
+  duration_ms: 3.0023
   type: 'test'
   ...
 # Subtest: a success belonging to another product, revision or design cannot be accepted
-ok 35 - a success belonging to another product, revision or design cannot be accepted
+ok 95 - a success belonging to another product, revision or design cannot be accepted
   ---
-  duration_ms: 1.1815
+  duration_ms: 1.754
   type: 'test'
   ...
 # Subtest: local probe cannot accept writes or expose arbitrary paths
-ok 36 - local probe cannot accept writes or expose arbitrary paths
+ok 96 - local probe cannot accept writes or expose arbitrary paths
   ---
-  duration_ms: 56.03
+  duration_ms: 107.5742
   type: 'test'
   ...
-1..36
-# tests 36
+1..96
+# tests 96
 # suites 0
-# pass 36
+# pass 96
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 342.8683
+# duration_ms 571.4142

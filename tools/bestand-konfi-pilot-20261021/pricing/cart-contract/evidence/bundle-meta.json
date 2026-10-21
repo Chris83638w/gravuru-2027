@@ -1,0 +1,327 @@
+{
+  "inputs": {
+    "proposed/legacy-cart-transform.js": {
+      "bytes": 1418,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/utils.js": {
+      "bytes": 9356,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/_md.js": {
+      "bytes": 5615,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/utils.js",
+          "kind": "import-statement",
+          "original": "./utils.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/_u64.js": {
+      "bytes": 3081,
+      "imports": [],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/sha2.js": {
+      "bytes": 16773,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/_md.js",
+          "kind": "import-statement",
+          "original": "./_md.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/_u64.js",
+          "kind": "import-statement",
+          "original": "./_u64.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/utils.js",
+          "kind": "import-statement",
+          "original": "./utils.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js": {
+      "bytes": 8404,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/utils.js",
+          "kind": "import-statement",
+          "original": "@noble/hashes/utils.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/utils.js",
+          "kind": "import-statement",
+          "original": "@noble/hashes/utils.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/modular.js": {
+      "bytes": 21210,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js",
+          "kind": "import-statement",
+          "original": "../utils.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/curve.js": {
+      "bytes": 18375,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js",
+          "kind": "import-statement",
+          "original": "../utils.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/modular.js",
+          "kind": "import-statement",
+          "original": "./modular.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/edwards.js": {
+      "bytes": 22561,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js",
+          "kind": "import-statement",
+          "original": "../utils.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/curve.js",
+          "kind": "import-statement",
+          "original": "./curve.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/modular.js",
+          "kind": "import-statement",
+          "original": "./modular.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/hash-to-curve.js": {
+      "bytes": 8460,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js",
+          "kind": "import-statement",
+          "original": "../utils.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/modular.js",
+          "kind": "import-statement",
+          "original": "./modular.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/montgomery.js": {
+      "bytes": 6194,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js",
+          "kind": "import-statement",
+          "original": "../utils.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/curve.js",
+          "kind": "import-statement",
+          "original": "./curve.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/modular.js",
+          "kind": "import-statement",
+          "original": "./modular.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/oprf.js": {
+      "bytes": 14276,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js",
+          "kind": "import-statement",
+          "original": "../utils.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/curve.js",
+          "kind": "import-statement",
+          "original": "./curve.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/hash-to-curve.js",
+          "kind": "import-statement",
+          "original": "./hash-to-curve.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/modular.js",
+          "kind": "import-statement",
+          "original": "./modular.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/ed25519.js": {
+      "bytes": 21883,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/sha2.js",
+          "kind": "import-statement",
+          "original": "@noble/hashes/sha2.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/utils.js",
+          "kind": "import-statement",
+          "original": "@noble/hashes/utils.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/curve.js",
+          "kind": "import-statement",
+          "original": "./abstract/curve.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/edwards.js",
+          "kind": "import-statement",
+          "original": "./abstract/edwards.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/hash-to-curve.js",
+          "kind": "import-statement",
+          "original": "./abstract/hash-to-curve.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/modular.js",
+          "kind": "import-statement",
+          "original": "./abstract/modular.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/montgomery.js",
+          "kind": "import-statement",
+          "original": "./abstract/montgomery.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/oprf.js",
+          "kind": "import-statement",
+          "original": "./abstract/oprf.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js",
+          "kind": "import-statement",
+          "original": "./utils.js"
+        }
+      ],
+      "format": "esm"
+    },
+    "proposed/quantity-tiers.mjs": {
+      "bytes": 2973,
+      "imports": [],
+      "format": "esm"
+    },
+    "proposed/price-contract.mjs": {
+      "bytes": 6576,
+      "imports": [
+        {
+          "path": "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/ed25519.js",
+          "kind": "import-statement",
+          "original": "@noble/curves/ed25519.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/sha2.js",
+          "kind": "import-statement",
+          "original": "@noble/hashes/sha2.js"
+        },
+        {
+          "path": "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/utils.js",
+          "kind": "import-statement",
+          "original": "@noble/hashes/utils.js"
+        },
+        {
+          "path": "proposed/quantity-tiers.mjs",
+          "kind": "import-statement",
+          "original": "./quantity-tiers.mjs"
+        }
+      ],
+      "format": "esm"
+    },
+    "proposed/cart_transform_run.js": {
+      "bytes": 2839,
+      "imports": [
+        {
+          "path": "proposed/legacy-cart-transform.js",
+          "kind": "import-statement",
+          "original": "./legacy-cart-transform.js"
+        },
+        {
+          "path": "proposed/price-contract.mjs",
+          "kind": "import-statement",
+          "original": "./price-contract.mjs"
+        }
+      ],
+      "format": "esm"
+    }
+  },
+  "outputs": {
+    "evidence/cart-transform.bundle.mjs": {
+      "imports": [],
+      "exports": [
+        "cartTransformRun"
+      ],
+      "entryPoint": "proposed/cart_transform_run.js",
+      "inputs": {
+        "proposed/legacy-cart-transform.js": {
+          "bytesInOutput": 1471
+        },
+        "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/utils.js": {
+          "bytesInOutput": 4247
+        },
+        "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/_md.js": {
+          "bytesInOutput": 3116
+        },
+        "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/_u64.js": {
+          "bytesInOutput": 1468
+        },
+        "node_modules/.pnpm/@noble+hashes@2.0.1/node_modules/@noble/hashes/sha2.js": {
+          "bytesInOutput": 9655
+        },
+        "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/utils.js": {
+          "bytesInOutput": 2466
+        },
+        "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/modular.js": {
+          "bytesInOutput": 9596
+        },
+        "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/curve.js": {
+          "bytesInOutput": 6945
+        },
+        "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/abstract/edwards.js": {
+          "bytesInOutput": 13887
+        },
+        "node_modules/.pnpm/@noble+curves@2.0.1/node_modules/@noble/curves/ed25519.js": {
+          "bytesInOutput": 2412
+        },
+        "proposed/quantity-tiers.mjs": {
+          "bytesInOutput": 2601
+        },
+        "proposed/price-contract.mjs": {
+          "bytesInOutput": 4764
+        },
+        "proposed/cart_transform_run.js": {
+          "bytesInOutput": 2727
+        }
+      },
+      "bytes": 66644
+    }
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-10-21T16:32:58.022Z",
+  "files": [
+    {
+      "file": ".gitignore",
+      "bytes": 15,
+      "sha256": "448d3355d084f9242af39bc2428a9d9c59f9c25609158c97a36465df9d072ad8"
+    },
+    {
+      "file": "contract.test.mjs",
+      "bytes": 10972,
+      "sha256": "efac4ba3f912d4f1773647f7210d34948e5e8305cf26c034acc02d10378f3f5b"
+    },
+    {
+      "file": "evidence/bundle-meta.json",
+      "bytes": 11351,
+      "sha256": "9fe3210e821e43da5a911e510051a6ffe5ca030171fbf8961d58fa3b63910987"
+    },
+    {
+      "file": "evidence/cart-transform.bundle.mjs",
+      "bytes": 66644,
+      "sha256": "b82365ef67d8631064342780848ece877cd3424c3d64625fb616d100d0207c7b"
+    },
+    {
+      "file": "evidence/quantity-1.json",
+      "bytes": 3561,
+      "sha256": "b860522257f488b20de3f5a36cc18798a42e6c968df0ec8ea586ee218d244213"
+    },
+    {
+      "file": "evidence/quantity-2.json",
+      "bytes": 3561,
+      "sha256": "33d369cae0145769b2ba90f440bc0236d947a0c6bd1c5e5ea8341b3d2bb0de84"
+    },
+    {
+      "file": "evidence/quantity-3.json",
+      "bytes": 3561,
+      "sha256": "78723732b9255f1c23ee997c373de99d5eab31b598c31115e0bea56d7b9d3ab1"
+    },
+    {
+      "file": "evidence/quantity-4.json",
+      "bytes": 3563,
+      "sha256": "5dc04493a8d5c2a07edd851d9b8fdd0ca95eb1a48154d23216929ae8dcdbfe2c"
+    },
+    {
+      "file": "evidence/quantity-99.json",
+      "bytes": 3568,
+      "sha256": "37790ace18500009b3b58700ad572e3caf3a30ca120a56e1c13551de4dde15e2"
+    },
+    {
+      "file": "fixtures.mjs",
+      "bytes": 2374,
+      "sha256": "5b6dadc04e8188e5abbc0c0b7b8ef466335ad5c524afd023278ae045ef86cb3e"
+    },
+    {
+      "file": "original/cart_transform_run.graphql",
+      "bytes": 499,
+      "sha256": "76ac337b0c4e73a763b6dcc2ea167c641b1d09428753f3a0292118eec9c0d735"
+    },
+    {
+      "file": "original/cart_transform_run.js",
+      "bytes": 1417,
+      "sha256": "f8249a49cd6c3317d9e1b959401aed4b8595116d5ff877d470fc08ad7082e426"
+    },
+    {
+      "file": "original/schema.graphql",
+      "bytes": 95131,
+      "sha256": "4f5024326918113b836e52af66991ca0fd69884e18ca74a07a92fd57e64c2789"
+    },
+    {
+      "file": "package.json",
+      "bytes": 290,
+      "sha256": "e9e356383b6bba210f60044926ba19b42142309b5230aa750de73c0627500232"
+    },
+    {
+      "file": "pnpm-lock.yaml",
+      "bytes": 1087,
+      "sha256": "26f665ab9bdbd56fd9c31eb60b270b7827b61e4beb2bfc1adc3493b21499ab68"
+    },
+    {
+      "file": "proposed/cart_transform_run.graphql",
+      "bytes": 1006,
+      "sha256": "68e502e73cc0ddb86166341e22fe4dba6b483c446d90a3890be257a70a1e36c3"
+    },
+    {
+      "file": "proposed/cart_transform_run.js",
+      "bytes": 2839,
+      "sha256": "328039729728991a756c692f7a3d1f593bf22bbf99bc1aec1bb967a747da1395"
+    },
+    {
+      "file": "proposed/legacy-cart-transform.js",
+      "bytes": 1418,
+      "sha256": "4da8c4cde4f8d897b1ba9563f42f3341c8af8c5fcb9d1e6ba66b18731484f842"
+    },
+    {
+      "file": "proposed/price-contract.mjs",
+      "bytes": 6576,
+      "sha256": "aa81d61848bf237158d626fd0939b4941bd105571b6ec2ceb2961e1360c00b95"
+    },
+    {
+      "file": "proposed/quantity-tiers.mjs",
+      "bytes": 2973,
+      "sha256": "993acf44354832215d5a04a7435398dc58e5943aa28edae21ffbf0e46a45724e"
+    },
+    {
+      "file": "proposed/server-price-quote.mjs",
+      "bytes": 2298,
+      "sha256": "93dc98f5b143b887408794747fd0a6358121afcc42fd8e56c4daa4c32aad2527"
+    },
+    {
+      "file": "provenance.json",
+      "bytes": 3476,
+      "sha256": "3161e88e70cc167c37c71a1bf0cff43ed548955ad1ed2c496f30ef7e5d632c1e"
+    },
+    {
+      "file": "README.txt",
+      "bytes": 12436,
+      "sha256": "a9c5681bf295c8f49207dd319c439bac26aac7b7766dbf69e0aaec180a2085a0"
+    },
+    {
+      "file": "save-evidence.mjs",
+      "bytes": 2216,
+      "sha256": "a7083eeb6d881fc52ed566f82c76c528511919b439a3dced156d91f40324017b"
+    }
+  ]
+}

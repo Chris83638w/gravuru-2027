@@ -1,0 +1,9 @@
+{
+  "name": "gravuru-cart-contract-isolated-proposal",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"test": "node --test contract.test.mjs"},
+  "dependencies": {"@noble/hashes": "2.0.1", "@noble/curves": "2.0.1"},
+  "devDependencies": {"graphql": "16.11.0"}
+}

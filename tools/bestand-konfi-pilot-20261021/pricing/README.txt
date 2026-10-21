@@ -6,13 +6,31 @@ Commit: bf5c059f13e0868d7c554616b7c35ff7a328ae62
 
 Start
   In diesem Ordner ausführen: node run.mjs
-  Benötigt: Node.js 24; keine npm-Installation, kein Server, kein Netzwerk.
+  Benötigt: Node.js 24; für die ergänzten Vertragstests zuerst in cart-contract
+  pnpm install --frozen-lockfile --ignore-scripts. Tests danach ohne Netzwerk.
   Ergebnisse: results.tap und report.json.
 
 Ergebnis des ausgeführten Laufs
-  28 Tests bestanden, 0 Fehler, 0 übersprungen.
+  52 Tests bestanden, 0 Fehler, 0 übersprungen (28 Preisfälle +24 Vertragstests).
+  Die getrennte Function-/Vertrags-Proposal und alle Grenzen stehen in
+  cart-contract/README.txt. Kein WASM-Build, keine Live-Freigabe behauptet.
   10 abgelegte Quellen werden vor jedem Lauf gegen ihre Git-Blob-SHA-1 geprüft.
   report.json enthält zusätzlich die SHA-256-Prüfsummen und direkten GitHub-Links.
+
+Live-Nachweis der bestehenden Preisfunktion, 21.10.2026
+  Der Koordinator hat den getrennten Einmalhelfer über die bestehende App
+  erfolgreich ausgeführt. Rückgabe:
+    id: gid://shopify/CartTransform/172523900
+    functionId: 01a0e45d-c47f-70b9-9d5a-a2c72120ae01
+    blockOnFailure: true
+  Beleg: live-preflight/observed-20261021.json. Der Helfer liegt separat unter
+  live-preflight/audit-cart-transform.mjs; seine 20 lokalen Tests bestanden.
+  Seine geprüfte SHA-256-Prüfsumme lautet:
+  43eac0bb5e012516eed18720f2e7577c6ed5eff29c35a979dd228bbaa5e2e5ba
+  Keine Schreibmutation, keine Scope-Erweiterung und keine Runtimeänderung.
+  Damit sind vorhandene Funktion und Sperrschalter aktuell bestätigt, nicht die
+  neue Staffelimplementierung oder deren Verhalten im echten Checkout.
+  WASM-Build, Instruktionsbudget und negative Checkout-Tests bleiben offen.
 
 Arbeitsweise
   Die Preisfunktionen werden aus den unveränderten GitHub-Dateien geladen.
@@ -81,6 +99,8 @@ Für den echten Shopify-Preisabgleich benötigt
 
 Nicht erfolgt
   Keine Änderungen am Konfigurator 8966 oder September-Original.
-  Keine Datenbankzugriffe, keine Shopify-Anfragen, kein neuer Server, kein Deployment.
+  Keine Datenbankzugriffe, kein neuer Server, kein Deployment.
+  Einzige ergänzte Liveprüfung: die oben dokumentierte lesende Funktionsabfrage
+  durch den Koordinator. Keine Shopify-Schreibmutation und kein Live-Warenkorb.
   Keine vollständige Produkt-, UI-, Konto- oder Bestellstreckenabnahme.
 

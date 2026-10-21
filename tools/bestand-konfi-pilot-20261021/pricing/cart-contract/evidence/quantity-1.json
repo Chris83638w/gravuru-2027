@@ -1,0 +1,115 @@
+{
+  "provenance": "Synthetic IDs; manually observed product prices; requested GitHub tiers; public test key only",
+  "input": {
+    "presentmentCurrencyRate": "1.0",
+    "shop": {
+      "quoteKeys": {
+        "jsonValue": {
+          "schema": "gravuru-quote-public-keys/v1",
+          "keys": {
+            "public-test-key": "d04ab232742bb4ab3a1368bd4615e4e6d0224ab71a016baf8520a332c9778737"
+          }
+        }
+      }
+    },
+    "cart": {
+      "lines": [
+        {
+          "id": "gid://shopify/CartLine/test",
+          "quantity": 1,
+          "cost": {
+            "amountPerQuantity": {
+              "currencyCode": "EUR"
+            }
+          },
+          "revision": {
+            "value": "5"
+          },
+          "designFile": {
+            "value": "proof_isolated_test:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          },
+          "q0": {
+            "value": "[2,\"gid://shopify/Product/123456789\",\"gid://shopify/ProductVariant/987654321\",\"5\",1,0,1,0,0,3298,3298,\"proof_isolated_test\",\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"1a588d648a0e3c3d40974db4d8e6dc10cef0c95f1557fbe4"
+          },
+          "q1": {
+            "value": "5e9347a36b723133\",\"public-test-key\"]"
+          },
+          "q2": {
+            "value": "."
+          },
+          "q3": {
+            "value": "."
+          },
+          "signature": {
+            "value": "dd578b3d19e760b705036a3a53124226fb7d6b47b47085f078cc932da6a5f65fb33db75eb6ba892d4d305f01b30aa881d9311ccae1af90ede196d3cb24305f08"
+          },
+          "merchandise": {
+            "__typename": "ProductVariant",
+            "id": "gid://shopify/ProductVariant/987654321",
+            "product": {
+              "id": "gid://shopify/Product/123456789",
+              "pricing": {
+                "jsonValue": {
+                  "schema": "gravuru-personalization-pricing/v2",
+                  "enabled": true,
+                  "productId": "gid://shopify/Product/123456789",
+                  "revision": "5",
+                  "currency": "EUR",
+                  "baseCents": 2299,
+                  "variants": {
+                    "987654321": 2299
+                  },
+                  "extraMotifCents": 169,
+                  "extraPhotoCents": 999,
+                  "quantityTiers": [
+                    {
+                      "minQuantity": 2,
+                      "percentOff": 6
+                    },
+                    {
+                      "minQuantity": 3,
+                      "percentOff": 10
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "expected": {
+    "operations": [
+      {
+        "lineUpdate": {
+          "cartLineId": "gid://shopify/CartLine/test",
+          "price": {
+            "adjustment": {
+              "fixedPricePerUnit": {
+                "amount": "32.98"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "quote": {
+    "version": 2,
+    "productId": "gid://shopify/Product/123456789",
+    "variantId": "gid://shopify/ProductVariant/987654321",
+    "revision": "5",
+    "quantity": 1,
+    "motifs": 0,
+    "uploads": 1,
+    "fieldCents": 0,
+    "backCents": 0,
+    "unitCents": 3298,
+    "totalCents": 3298,
+    "snapshotId": "proof_isolated_test",
+    "snapshotSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "pricingSha256": "1a588d648a0e3c3d40974db4d8e6dc10cef0c95f1557fbe45e9347a36b723133",
+    "keyId": "public-test-key"
+  }
+}

@@ -1,0 +1,608 @@
+--- a/app/workshop/acrylic-draft-store.mjs
++++ b/app/workshop/acrylic-draft-store.mjs
+@@ -1,4 +1,5 @@
+ import {createHash, randomBytes, randomUUID, timingSafeEqual} from 'node:crypto';
++import {createNativePhotoReopeningStore} from './photo-persistence/server/native-photo-reopening-store.mjs';
+ import {isNativeReviewSchema} from './native-review-schema.mjs';
+ import {tenantOption, ensureTenantColumns, TENANT_COLUMN} from './tenant.mjs';
+ 
+@@ -25,6 +26,7 @@ export function createAcrylicDraftStore({database: db, capture, tenantId}) {
+     CREATE TRIGGER IF NOT EXISTS acrylic_customer_revision_no_delete BEFORE DELETE ON acrylic_customer_revisions
+       BEGIN SELECT RAISE(ABORT,'Acrylic revisions require explicit retention'); END;`);
+   ensureTenantColumns(db, ['acrylic_customer_drafts', 'acrylic_customer_revisions']);
++  const photoReopening = createNativePhotoReopeningStore({database:db,tenantId:tenant});
+   const transaction = fn => {
+     db.exec('BEGIN IMMEDIATE');
+     try {const result = fn(); db.exec('COMMIT'); return result;}
+@@ -52,20 +54,31 @@ export function createAcrylicDraftStore({database: db, capture, tenantId}) {
+   }
+   return {
+     get: (id, token) => publicRow(auth(id, token)),
+-    create(bundle) {
++    photoReopeningCapability: () => photoReopening.capability(),
++    preparePhotoReopening: value => photoReopening.prepare(value),
++    reopening(id, token, version) {
++      const row = auth(id, token), revision = version ?? row.revision;
++      if (!Number.isSafeInteger(revision) || revision < 1 || revision > row.revision) fail(404, 'Entwurfsrevision nicht vorhanden.');
++      return photoReopening.read(id, revision);
++    },
++    create(bundle, reopeningTicket) {
+       const m = validate(bundle);
++      if (reopeningTicket !== undefined) photoReopening.assertPrepared(bundle, reopeningTicket);
+       return transaction(() => {
+         const id = 'adraft_' + randomUUID(), token = randomBytes(32).toString('hex'), at = new Date().toISOString();
+         capture(bundle);
+         db.prepare('INSERT INTO acrylic_customer_drafts(id,token_hash,product_id,product_revision,design_id,revision,snapshot_id,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?,?)')
+           .run(id, hash(token), m.product.id, m.product.revision, m.source.designId, 1, m.id, at, tenant);
+         revision(id, 1, m.id, at);
++        if (reopeningTicket !== undefined) photoReopening.capture({draftId:id,revision:1,bundle,ticket:reopeningTicket});
+         return {...publicRow(auth(id, token)), token};
+       });
+     },
+-    save(id, token, expectedRevision, bundle) {
++    save(id, token, expectedRevision, bundle, reopeningTicket) {
++      if (reopeningTicket !== undefined) photoReopening.assertPrepared(bundle, reopeningTicket);
+       return transaction(() => {
+         const row = auth(id, token);
++        if (reopeningTicket === undefined && photoReopening.has(id, row.revision)) fail(422, 'Die vorhandene Fotowiederöffnung muss in jeder neuen Revision erhalten bleiben.');
+         if (row.revision !== expectedRevision) fail(409, 'Der Acrylentwurf wurde inzwischen geändert. Bitte den aktuellen Stand laden.');
+         const m = validate(bundle);
+         if (m.product.id !== row.product_id || m.product.revision !== row.product_revision || m.source.designId !== row.design_id)
+@@ -74,6 +87,7 @@ export function createAcrylicDraftStore({database: db, capture, tenantId}) {
+         const version = row.revision + 1;
+         revision(id, version, m.id, new Date().toISOString());
+         db.prepare('UPDATE acrylic_customer_drafts SET revision=?,snapshot_id=? WHERE id=? AND tenant_id=?').run(version, m.id, id, tenant);
++        if (reopeningTicket !== undefined) photoReopening.capture({draftId:id,revision:version,bundle,ticket:reopeningTicket});
+         return publicRow(auth(id, token));
+       });
+     },
+--- a/app/workshop/acrylic-review.mjs
++++ b/app/workshop/acrylic-review.mjs
+@@ -1,3 +1,4 @@
++import {snapshotNativeInput} from './photo-persistence/server/native-input-binding.mjs';
+ import {acrylicPhotoResolution,resolutionTargetDpi} from './acrylic-photo-resolution.mjs';
+ import {NATIVE_REVIEW} from './native-review-schema.mjs';
+ import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
+@@ -41,6 +42,7 @@ export function validateAcrylicReview(record,config,input){
+ }
+ 
+ export async function prepareAcrylicReview({record,config,input,assets,preparePhoto=prepareCustomerPhoto}){
++ const boundInput=snapshotNativeInput(input);input=boundInput.input;
+  const state=validateAcrylicReview(record,config,input),files=[],photos=[];
+  let total=0;const add=(path,bytes,purpose)=>{const b=Buffer.from(bytes);total+=b.length;if(total>100*1024*1024)fail('Prüfstand ist größer als 100 MB.');files.push({path,bytes:b,purpose});return {path,bytes:b.length,sha256:sha(b)};};
+  const frozen=structuredClone(config),ref=record.document.productionProfile,productionProfile=record.metadata?.productionProfile||null;
+@@ -78,7 +80,7 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
+  const method=getProcessingProfile(config.profile).method;
+  // Production note (not a blocker): customer kept a text inside a drill-hole protection zone.
+  const holeWarnings=config.acrylic?[]:textsNearHoles(state.design,selectedProfile(config,state.options),config.localResources.fonts).map(n=>'Prüfvermerk Bohrloch: Text „'+String(n.text).trim().slice(0,60)+'“ liegt im Schutzbereich des Bohrlochs bei '+n.hole.x+' | '+n.hole.y+' mm. Kunde wurde vor der Bestellung darauf hingewiesen.');
+- const id='proof_'+randomUUID(),manifest={schema:config.acrylic?ACRYLIC_REVIEW:NATIVE_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:config.profile.material,method,processingProfileId:process.id,widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:choiceOptions(config,state.options),labels:config.profile.optionGroups.filter(g=>state.options[g.id]!==undefined).map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),...(config.profile.optionFields===undefined?{}:{fields:optionFieldEntries(config,state.options)}),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,photoHints,capabilities:{contour:!config.doorbell,print:!config.doorbell&&method==='print',engraving:!config.doorbell&&method==='engraving',cart:false},blockers:[...(config.doorbell?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,...holeWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
++ const id='proof_'+randomUUID(),manifest={schema:config.acrylic?ACRYLIC_REVIEW:NATIVE_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id,nativeInputSha256:boundInput.sha256},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:config.profile.material,method,processingProfileId:process.id,widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:choiceOptions(config,state.options),labels:config.profile.optionGroups.filter(g=>state.options[g.id]!==undefined).map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),...(config.profile.optionFields===undefined?{}:{fields:optionFieldEntries(config,state.options)}),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,photoHints,capabilities:{contour:!config.doorbell,print:!config.doorbell&&method==='print',engraving:!config.doorbell&&method==='engraving',cart:false},blockers:[...(config.doorbell?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,...holeWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
+  add('manifest.json',json(manifest),'Prüfsummen und Geltungsgrenzen.');
+  const archive=await zip(files);return {manifest:{...manifest,packageSha256:sha(archive)},preview,contourPdf:Buffer.alloc(0),package:archive,photos:await zip(files.filter(f=>f.path.startsWith('fotos/')&&f.path.includes('-original.')))};
+ }
+--- a/app/workshop/http.mjs
++++ b/app/workshop/http.mjs
+@@ -9,6 +9,7 @@ import {printPreview} from './print-preview.mjs';
+ import {outputDownload,outputFormats} from './print-delivery.mjs';
+ import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
+ import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicContourProof} from './acrylic-print-proof.mjs';
++import {hydratePhotoReopeningTransport} from './photo-persistence/photo-reopening-transport.mjs';
+ import {prepareAcrylicReview} from './acrylic-review.mjs';
+ import {isNativeReviewSchema} from './native-review-schema.mjs';
+ import {createHash} from 'node:crypto';
+@@ -520,11 +521,12 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
+       const acrylicDraftMatch=pathname.match(/^\/api\/workshop\/acrylic-drafts\/(adraft_[a-f0-9-]+)$/);
+       if(pathname==='/api/workshop/acrylic-drafts'||acrylicDraftMatch){
+         const token=req.headers['x-gravuru-draft'],draft=acrylicDraftMatch?customerDrafts.acrylicDrafts.get(acrylicDraftMatch[1],token):null;
+-        if(draft&&method==='GET')return json(res,200,{draft,review:customerDrafts.review(draft.snapshotId).manifest});
++        if(!draft&&method==='GET'&&url.searchParams.get('capabilities')==='1')return json(res,200,{photoPersistence:customerDrafts.acrylicDrafts.photoReopeningCapability()});
++        if(draft&&method==='GET')return json(res,200,{draft,review:customerDrafts.review(draft.snapshotId).manifest,...(url.searchParams.get('reopening')==='1'?{reopening:customerDrafts.acrylicDrafts.reopening(draft.id,token)}:{})});
+         if(method!=='POST')fail(405,'method_not_allowed','Acrylentwürfe mit POST sichern oder einen privaten Entwurf lesen.');
+         if(reviewJobs.size>=2)fail(409,'review_busy','Eine Gestaltung wird gerade gesichert. Bitte kurz warten.');
+         const job=randomUUID();reviewJobs.add(job);try{
+-          const data=await body(req,100*1024*1024),allowed=draft?['input','expectedRevision']:['input'];
++          const data=await body(req,100*1024*1024),allowed=draft?['input','expectedRevision','reopening']:['input','reopening'];
+           if(Object.keys(data).some(k=>!allowed.includes(k))||!data.input||typeof data.input!=='object'||Array.isArray(data.input))fail(422,'acrylic_draft_fields','Bitte die vollständige Gestaltung übergeben.');
+           if(draft&&data.expectedRevision!==draft.revision)fail(409,'stale_customer_draft','Der Acrylentwurf wurde inzwischen geändert.');
+           const input=data.input;
+@@ -534,7 +536,8 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
+           if(isFormProduct(record.document)||record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'acrylic_required','Bitte ein aktives Acrylprodukt verwenden.');
+           assertKonfiAvailable(record.id);
+           const bundle=await prepareAcrylicReview({record,config:model(record.id,record.revision).universal,input,assets});
+-          const saved=draft?customerDrafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle):customerDrafts.acrylicDrafts.create(bundle);
++          const reopeningTicket=data.reopening===undefined?undefined:await customerDrafts.acrylicDrafts.preparePhotoReopening({packet:hydratePhotoReopeningTransport({reopening:data.reopening,input}),model:model(record.id,record.revision),input,bundle,preparePhoto:prepareCustomerPhoto});
++          const saved=draft?customerDrafts.acrylicDrafts.save(draft.id,token,data.expectedRevision,bundle,reopeningTicket):customerDrafts.acrylicDrafts.create(bundle,reopeningTicket);
+           // Ü5.2: Auflösungs-Hinweis als Text an den Editor; nie eine Sperre, keine Bestätigung.
+           return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
+         }finally{reviewJobs.delete(job);}
+--- /dev/null
++++ b/app/workshop/photo-persistence/photo-reopening.mjs
+@@ -0,0 +1,291 @@
++// Private, network-free persistence proposal. Never applies state to the editor.
++// The deployed contract at bf5c059 does NOT accept this sidecar.
++export const PHOTO_REOPENING_SCHEMA = 'gravuru-photo-reopening/v1';
++export const PHOTO_REOPENING_LIMITS = Object.freeze({maxPhotos:4,maxBlobs:12,maxBlobBytes:15*1024*1024,maxTotalBytes:60*1024*1024,maxMetadataBytes:2*1024*1024,maxJsonBytes:84*1024*1024});
++const CFG = /^cfg_[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
++const HEX = /^[a-f0-9]{64}$/;
++const MIME = ['image/jpeg','image/png','image/webp'];
++const EDIT_KEYS = ['angle','flip','zoom','x','y','shape','color'];
++const ASSET_BINARY_KEYS = new Set(['file','blob','editSourceBlob','url','originalUrl','editSourceUrl']);
++const PROTECTED_FIELDS = ['customerEditable','technicalLocked','locked','role','surfaceId','acrylicFixed','photoMaskAssetId','assetId'];
++const fail = (code,message) => {throw Object.assign(new Error(message),{code});};
++const record = v => v!==null && typeof v==='object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
++const clone = v => structuredClone(v);
++const canonical = v => Array.isArray(v)?'['+v.map(canonical).join(',')+']':record(v)?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
++const equal = (a,b) => canonical(a)===canonical(b);
++const exactKeys = (v,allowed,label) => {if(!record(v)||Object.keys(v).some(k=>!allowed.includes(k)))fail('invalid_shape',label);};
++function jsonData(value,depth=0) {
++  if(depth>40)fail('metadata_depth','Zu tief verschachtelte Metadaten.');
++  if(value===null||['string','boolean'].includes(typeof value))return;
++  if(typeof value==='number'&&Number.isFinite(value))return;
++  if(Array.isArray(value)){for(const v of value)jsonData(v,depth+1);return;}
++  if(record(value)){
++    for(const [k,v] of Object.entries(value)){
++      if(['__proto__','prototype','constructor'].includes(k))fail('unsafe_key','Unzulässiger Metadatenschlüssel.');
++      jsonData(v,depth+1);
++    }return;
++  }
++  fail('invalid_json','Metadaten müssen vollständige JSON-Daten sein.');
++}
++function jsonSnapshot(value) {
++  jsonData(value);
++  if(new TextEncoder().encode(JSON.stringify(value)).length>PHOTO_REOPENING_LIMITS.maxMetadataBytes)fail('metadata_size','Metadaten sind zu groß.');
++  return clone(value);
++}
++async function sha(bytes) {return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');}
++async function jsonSha(value) {return sha(new TextEncoder().encode(canonical(value)));}
++function b64(bytes) {let text='';for(let i=0;i<bytes.length;i+=32768)text+=String.fromCharCode(...bytes.subarray(i,i+32768));return btoa(text);}
++function decode(value,size) {
++  if(typeof value!=='string'||value.length!==Math.ceil(size/3)*4||value.length%4||!/^[A-Za-z0-9+/]*={0,2}$/.test(value))fail('base64','Ungültige Bildkodierung.');
++  let binary;try{binary=atob(value);}catch{fail('base64','Ungültige Bildkodierung.');}
++  if(binary.length!==size||btoa(binary)!==value)fail('base64','Nicht kanonische Bildkodierung.');
++  return Uint8Array.from(binary,c=>c.charCodeAt(0));
++}
++function checkBlob(blob) {
++  if(!(blob instanceof Blob)||!MIME.includes(blob.type)||blob.size<1||blob.size>PHOTO_REOPENING_LIMITS.maxBlobBytes)fail('image_file','JPG/PNG/WebP bis 15 MB erforderlich.');
++}
++function checkEdit(edit) {
++  exactKeys(edit,EDIT_KEYS,'Unbekannte Fotobearbeitungsparameter.');
++  if(EDIT_KEYS.some(k=>edit[k]===undefined)||![edit.angle,edit.flip,edit.zoom,edit.x,edit.y].every(Number.isFinite)||
++    ![1,-1].includes(edit.flip)||edit.zoom<1||edit.zoom>4||Math.abs(edit.x)>1||Math.abs(edit.y)>1||Math.abs(edit.angle)>3600||
++    !['original','square','portrait','landscape','circle'].includes(edit.shape)||!['original','grayscale','sepia'].includes(edit.color))fail('photo_edit','Ungültige oder unvollständige Fotobearbeitung.');
++}
++function dimensions(metadata) {
++  if(metadata.width!==undefined||metadata.height!==undefined)
++    if(![metadata.width,metadata.height].every(v=>Number.isSafeInteger(v)&&v>0&&v<=100000))fail('dimensions','Ungültige Bildabmessungen.');
++}
++function modelBinding(model,designId) {
++  const b=model?.configuration,p=model?.universal?.profile;
++  if(!CFG.test(b?.id||'')||!Number.isSafeInteger(b.revision)||b.revision<1||p?.id!==b.id||p?.binding?.productId!==b.id||p?.revision!==b.id+':'+b.revision)fail('product_binding','Feste Produkt-/Profilrevision erforderlich.');
++  const template=p.designs?.find(d=>d.id===designId);
++  if(!template||!Array.isArray(template.objects))fail('design_binding','Design gehört nicht zum Produkt.');
++  return {binding:{productId:b.id,productRevision:b.revision,profileRevision:p.revision,designId},profile:p,templateObjects:template.objects};
++}
++function objectsOf(draft) {
++  if(draft?.schema==='gravuru-customer-design/v2')return draft.state?.objects;
++  if(draft?.schema==='gravuru-universal-customer-draft/v1')return draft.design?.objects;
++  fail('draft_schema','Nicht unterstütztes Entwurfsformat.');
++}
++function nativeBinding(input,binding,documents) {
++  if(input.productId!==binding.productId||input.productRevision!==binding.productRevision||input.designId!==binding.designId)fail('native_binding','Native Eingabe gehört zu einer anderen Produktrevision.');
++  const options=documents.draft.state?.mOptions??documents.draft.options??{};
++  if(!equal(input.objects,objectsOf(documents.draft))||!record(input.options)||Object.keys(options).some(k=>!equal(options[k],input.options[k])))
++    fail('native_state_mismatch','Native Eingabe und gesicherter Entwurf beschreiben unterschiedliche Inhalte.');
++}
++function nativeMediaBinding(input,media,blobs) {
++  const active=new Set(input.objects.filter(o=>!o.uxHidden&&o.role!=='guide'&&o.uxUploadId).map(o=>o.uxUploadId));
++  if(!Array.isArray(input.media)||input.media.length!==active.size||new Set(input.media.map(m=>m?.id)).size!==active.size)fail('native_media_mismatch','Native Bildzuordnung ist nicht vollständig.');
++  for(const entry of input.media){
++    exactKeys(entry,['id','original','edited'],'Unbekannte native Medienfelder.');
++    const preserved=media.find(m=>m.id===entry.id);
++    if(!active.has(entry.id)||!preserved||entry.original!==blobs[preserved.original.blobId]?.base64||
++      entry.edited!==(preserved.edited?blobs[preserved.edited.blobId]?.base64:undefined))fail('native_media_mismatch','Native Bestellung und Wiederöffnungsstand enthalten unterschiedliche Bildfassungen.');
++  }
++}
++function validateDocuments(documents,binding,profile,templateObjects) {
++  exactKeys(documents,['draft','editorState','templateObjects'],'Unbekannte Dokumentfelder.');
++  const {draft,editorState:state}=documents,objects=objectsOf(draft);
++  if(draft.productId!==binding.productId||draft.profileId!==binding.productId||draft.profileRevision!==binding.profileRevision||state?.designId!==binding.designId||
++    (draft.state?.designId??draft.design?.id)!==binding.designId)fail('draft_binding','Entwurf oder Editor gehört zu einer anderen Produktrevision.');
++  if(state.width!==profile.geometry?.width||state.height!==profile.geometry?.height||
++    draft.schema==='gravuru-customer-design/v2'&&(draft.state.width!==state.width||draft.state.height!==state.height))fail('geometry','Geometrie wird nicht umgerechnet.');
++  if(!Array.isArray(objects)||!Array.isArray(state.objects)||objects.length>120||state.objects.length!==objects.length||
++    new Set(state.objects.map(o=>o?.id)).size!==objects.length)fail('objects','Objektzuordnung ist nicht eindeutig.');
++  for(let i=0;i<objects.length;i++){
++    const serialized=objects[i],raw=state.objects[i];
++    if(!record(serialized)||!record(raw)||typeof raw.id!=='string'||!raw.id||raw.id!==serialized.id||
++      Object.keys(serialized).some(k=>!equal(serialized[k],raw[k])))fail('draft_state_mismatch','Entwurf und vollständiger Editorzustand widersprechen sich.');
++  }
++  const options=draft.state?.mOptions??draft.options??{};
++  if(!equal(options,state.mOptions??{}))fail('draft_state_mismatch','Ausführungsoptionen stimmen nicht überein.');
++  if(!equal(documents.templateObjects,templateObjects))fail('template_mismatch','Vorlagendaten stimmen nicht mit dem fest gebundenen Serverprodukt überein.');
++  return state.objects;
++}
++function protectionBlockers(objects,templateObjects) {
++  const blockers=[];
++  for(const object of objects){
++    const original=templateObjects.find(o=>o.id===object.id);
++    if(!original)continue;
++    for(const field of PROTECTED_FIELDS){
++      if(original[field]!==undefined&&!equal(original[field],object[field]))blockers.push({code:'protected_template_field_changed',objectId:object.id,field});
++      else if(original[field]===undefined&&object[field]!==undefined)blockers.push({code:'unverified_template_field_added',objectId:object.id,field});
++    }
++  }
++  return blockers;
++}
++function gates(objects,templateObjects) {
++  return {localRoundtripComplete:true,serverPersistenceSupported:false,nativeSendAllowed:false,checkoutAllowed:false,productionAllowed:false,
++    stateApplicationAllowed:false,requiresServerObjectRightsValidation:true,
++    blockers:[{code:'server_photo_persistence_not_deployed'},...protectionBlockers(objects,templateObjects)]};
++}
++function references(objects) {
++  const used=new Map();
++  for(const o of objects){
++    if(o.uxUploadId===undefined)continue;
++    if(typeof o.uxUploadId!=='string'||!o.uxUploadId||!['photo','logo'].includes(o.uxUploadKind)||
++      (o.uxUploadKind==='photo'&&!['keep','remove'].includes(o.uxPhotoBackground)))fail('photo_reference','Fotozuordnung oder Freistellwunsch fehlt.');
++    if(!used.has(o.uxUploadId))used.set(o.uxUploadId,[]);
++    used.get(o.uxUploadId).push(o.id);
++  }
++  if(used.size>PHOTO_REOPENING_LIMITS.maxPhotos)fail('photo_count','Höchstens vier referenzierte Bilder.');
++  return used;
++}
++function fileDetails(blob) {
++  const result={};
++  if(typeof blob.name==='string')result.name=blob.name;
++  if(blob.lastModified!==undefined){if(!Number.isSafeInteger(blob.lastModified)||blob.lastModified<0)fail('file_metadata','Ungültiger Dateizeitpunkt.');result.lastModified=blob.lastModified;}
++  return result;
++}
++
++/** Capture only currently referenced images, including hidden/guide objects.
++ *  editorState is the state BEFORE September cleanObject strips native fields.
++ *  editSourceBlob is optional explicit source data when URL-to-Blob history is absent.
++ *  No URLs are fetched or persisted; no credentials or network clients accepted.
++ */
++export async function capturePhotoReopening({model,draft,editorState,files,nativeInput}) {
++  const modelCopy=jsonSnapshot(model),draftCopy=jsonSnapshot(draft),stateCopy=jsonSnapshot(editorState);
++  const {binding,profile,templateObjects}=modelBinding(modelCopy,stateCopy.designId);
++  const documents={draft:draftCopy,editorState:stateCopy,templateObjects:clone(templateObjects)};
++  const objects=validateDocuments(documents,binding,profile,templateObjects),used=references(objects);
++  if(!(files instanceof Map))fail('files','Editor-Dateizuordnung fehlt.');
++  const snapshots=new Map(),sources=new Map();
++  const index=(url,blob)=>{if(typeof url==='string'&&url&&blob instanceof Blob){const list=sources.get(url)||[];list.push(blob);sources.set(url,list);}};
++  for(const [id,asset] of files){
++    if(!record(asset))fail('file_record','Ungültiger Dateieintrag.');
++    // Snapshot all URL-to-Blob relations before the first await. Blob bytes are immutable.
++    index(asset.url,asset.blob||asset.file);index(asset.originalUrl,asset.file);index(asset.editSourceUrl,asset.editSourceBlob);
++    if(!used.has(id))continue;
++    const metadata=jsonSnapshot(Object.fromEntries(Object.entries(asset).filter(([k])=>!ASSET_BINARY_KEYS.has(k))));
++    snapshots.set(id,{file:asset.file,blob:asset.blob,editSourceBlob:asset.editSourceBlob,url:asset.url,editSourceUrl:asset.editSourceUrl,metadata});
++  }
++  let nativeInputSha256,nativeCopy;
++  if(nativeInput!==undefined){
++    jsonData(nativeInput);
++    nativeBinding(nativeInput,binding,documents);
++    nativeCopy=clone(nativeInput);nativeInputSha256=await jsonSha(nativeCopy);
++  }
++  const blobs={},cache=new WeakMap();let total=0;
++  async function saveBlob(blob){
++    checkBlob(blob);if(cache.has(blob))return cache.get(blob);
++    const bytes=new Uint8Array(await blob.arrayBuffer()),hash=await sha(bytes),id='sha256:'+hash;
++    if(blobs[id]&&blobs[id].mimeType!==blob.type)fail('mime_conflict','Identische Bytes mit widersprüchlichem MIME-Typ.');
++    if(!blobs[id]){
++      total+=bytes.length;if(total>PHOTO_REOPENING_LIMITS.maxTotalBytes||Object.keys(blobs).length>=PHOTO_REOPENING_LIMITS.maxBlobs)fail('package_size','Sicherung überschreitet die Paketgrenze.');
++      blobs[id]={sha256:hash,mimeType:blob.type,bytes:bytes.length,base64:b64(bytes)};
++    }
++    cache.set(blob,id);return id;
++  }
++  const media=[];
++  for(const [id,objectIds] of used){
++    const asset=snapshots.get(id);if(!asset?.file)fail('missing_original','Originalbild fehlt.');
++    const metadata=asset.metadata;dimensions(metadata);
++    if(asset.blob&&!metadata.photoEdit)fail('missing_photo_edit','Bearbeitetes Ergebnis ohne Wiederöffnungsparameter.');
++    if(metadata.photoEdit){checkEdit(metadata.photoEdit);if(!asset.blob)fail('missing_edited','Bearbeitetes Ergebnis fehlt.');}
++    if(metadata.edited===true&&!asset.blob)fail('missing_edited','Bearbeitetes Ergebnis fehlt.');
++    const original={blobId:await saveBlob(asset.file),...fileDetails(asset.file)};
++    const edited=asset.blob?{blobId:await saveBlob(asset.blob)}:null;
++    let editSourceId=original.blobId;
++    if(metadata.photoEdit){
++      const sourceUrl=asset.editSourceUrl||asset.url;
++      const candidates=asset.editSourceBlob?[asset.editSourceBlob]:(sources.get(sourceUrl)||[]);
++      if(!candidates.length)fail('missing_edit_source','Die tatsächlichen Bytes der Bearbeitungsquelle fehlen. Keine URL wird nachgeladen.');
++      const ids=new Set();for(const candidate of candidates)ids.add(await saveBlob(candidate));
++      if(ids.size!==1)fail('ambiguous_edit_source','Eine Quell-URL bezeichnet verschiedene Bildfassungen.');
++      editSourceId=[...ids][0];
++    }
++    media.push({id,objectIds:clone(objectIds),original,...(edited?{edited}:{}),editSource:{blobId:editSourceId},metadata});
++  }
++  if(nativeCopy)nativeMediaBinding(nativeCopy,media,blobs);
++  const metadata={schema:PHOTO_REOPENING_SCHEMA,binding,documents,media,...(nativeInputSha256?{nativeInputSha256}:{})};
++  jsonSnapshot(metadata);
++  const body={...metadata,blobs},packet={...body,integrity:{algorithm:'sha256',sha256:await jsonSha(body)}};
++  return {packet,gates:gates(objects,templateObjects)};
++}
++
++/** Portable structural/integrity verification for a future private server store.
++ *  Hashes detect corruption, NOT authorship. Image decoding and rights checks
++ *  remain required; this function neither authenticates nor writes files.
++ */
++export async function validatePhotoReopening({packet,model,nativeInput}) {
++  let value=packet;
++  if(typeof value==='string'){
++    if(value.length>PHOTO_REOPENING_LIMITS.maxJsonBytes)fail('package_size','Sicherung ist zu groß.');
++    try{value=JSON.parse(value);}catch{fail('invalid_json','Ungültige Sicherungsdatei.');}
++  }
++  exactKeys(value,['schema','binding','documents','media','nativeInputSha256','blobs','integrity'],'Unbekannte Paketfelder.');
++  if(value.schema!==PHOTO_REOPENING_SCHEMA)fail('schema','Unbekannte Sicherungsversion.');
++  exactKeys(value.integrity,['algorithm','sha256'],'Ungültige Integritätsangabe.');
++  if(value.integrity.algorithm!=='sha256'||!HEX.test(value.integrity.sha256))fail('integrity','Prüfsumme fehlt.');
++  exactKeys(value.binding,['productId','productRevision','profileRevision','designId'],'Ungültige Produktbindung.');
++  if(!Array.isArray(value.media)||value.media.length>PHOTO_REOPENING_LIMITS.maxPhotos||!record(value.blobs)||Object.keys(value.blobs).length>PHOTO_REOPENING_LIMITS.maxBlobs)fail('package_size','Zu viele Bilddaten.');
++  const {blobs:inputBlobs,integrity,...inputMetadata}=value;
++  const metadata=jsonSnapshot(inputMetadata),binaryRecords={};let total=0;
++  for(const [id,data] of Object.entries(inputBlobs)){
++    exactKeys(data,['sha256','mimeType','bytes','base64'],'Unbekannte Binärfelder.');
++    if(!HEX.test(data.sha256)||id!=='sha256:'+data.sha256||!MIME.includes(data.mimeType)||!Number.isSafeInteger(data.bytes)||data.bytes<1||data.bytes>PHOTO_REOPENING_LIMITS.maxBlobBytes)fail('blob_record','Ungültige Binärbeschreibung.');
++    if(typeof data.base64!=='string'||data.base64.length!==Math.ceil(data.bytes/3)*4)fail('base64','Bildkodierung überschreitet ihre deklarierte Größe.');
++    total+=data.bytes;if(total>PHOTO_REOPENING_LIMITS.maxTotalBytes)fail('package_size','Zu große Bildsumme.');
++    // Copy individual string-bearing records before awaiting so caller mutations cannot race validation.
++    binaryRecords[id]={...data};
++  }
++  const content={...metadata,blobs:binaryRecords},expectedHash=integrity.sha256;
++  const current=jsonSnapshot(model),known=modelBinding(current,metadata.binding.designId);
++  if(!equal(known.binding,metadata.binding))fail('product_binding','Sicherung gehört zu einer anderen Produktrevision.');
++  const objects=validateDocuments(metadata.documents,known.binding,known.profile,known.templateObjects),used=references(objects);
++  let nativeCopy;
++  if(metadata.nativeInputSha256!==undefined){
++    if(!HEX.test(metadata.nativeInputSha256)||!nativeInput)fail('native_input_required','Die zugehörige native Eingabe muss zur Prüfung vorliegen.');
++    jsonData(nativeInput);nativeCopy=clone(nativeInput);nativeBinding(nativeCopy,known.binding,metadata.documents);
++    if(await jsonSha(nativeCopy)!==metadata.nativeInputSha256)fail('native_input_mismatch','Sicherung und native Eingabe gehören nicht zusammen.');
++  }
++  if(await jsonSha(content)!==expectedHash)fail('integrity','Die Sicherung wurde verändert oder ist beschädigt.');
++  const decoded=new Map();
++  for(const [id,data] of Object.entries(binaryRecords)){
++    const bytes=decode(data.base64,data.bytes);
++    if(await sha(bytes)!==data.sha256)fail('blob_integrity','Bilddatei stimmt nicht mit ihrer Prüfsumme überein.');
++    decoded.set(id,new Blob([bytes],{type:data.mimeType}));
++  }
++  const referenced=new Set(),ids=new Set();
++  for(const entry of metadata.media){
++    exactKeys(entry,['id','objectIds','original','edited','editSource','metadata'],'Unbekannte Medienfelder.');
++    if(!used.has(entry.id)||ids.has(entry.id)||!equal(entry.objectIds,used.get(entry.id)))fail('media_binding','Bildzuordnung stimmt nicht mit dem Editorzustand überein.');
++    ids.add(entry.id);exactKeys(entry.original,['blobId','name','lastModified'],'Ungültiges Original.');
++    if(entry.original.name!==undefined&&typeof entry.original.name!=='string'||entry.original.lastModified!==undefined&&(!Number.isSafeInteger(entry.original.lastModified)||entry.original.lastModified<0))fail('file_metadata','Ungültige Originalmetadaten.');
++    if(entry.edited)exactKeys(entry.edited,['blobId'],'Ungültiges Ergebnis.');
++    exactKeys(entry.editSource,['blobId'],'Ungültige Bearbeitungsquelle.');
++    for(const ref of [entry.original,entry.edited,entry.editSource].filter(Boolean)){
++      if(typeof ref.blobId!=='string'||!decoded.has(ref.blobId))fail('missing_blob','Referenzierte Bilddatei fehlt.');referenced.add(ref.blobId);
++    }
++    if(!record(entry.metadata)||Object.keys(entry.metadata).some(k=>ASSET_BINARY_KEYS.has(k)))fail('asset_metadata','Datei-/URL-Felder sind nicht als Metadaten zulässig.');
++    dimensions(entry.metadata);
++    if(entry.edited&&!entry.metadata.photoEdit||entry.metadata.edited===true&&!entry.edited)fail('missing_photo_edit','Bildbearbeitungsstand ist unvollständig.');
++    if(entry.metadata.photoEdit){checkEdit(entry.metadata.photoEdit);if(!entry.edited)fail('missing_edited','Bearbeitetes Ergebnis fehlt.');}
++    else if(entry.editSource.blobId!==entry.original.blobId)fail('edit_source','Ein unbearbeitetes Foto muss das Original als Quelle behalten.');
++  }
++  if(ids.size!==used.size||referenced.size!==decoded.size)fail('media_binding','Bilder fehlen oder unzugeordnete Dateien sind enthalten.');
++  if(nativeCopy)nativeMediaBinding(nativeCopy,metadata.media,binaryRecords);
++  return {binding:clone(known.binding),draft:clone(metadata.documents.draft),candidateEditorState:clone(metadata.documents.editorState),
++    templateObjects:clone(known.templateObjects),media:clone(metadata.media),blobs:decoded,packetSha256:expectedHash,gates:gates(objects,known.templateObjects)};
++}
++
++/** Restore URL-backed file records only after full structural verification.
++ *  No state is applied to an editor; returned state remains a rights-unverified candidate.
++ */
++export async function restorePhotoReopening({packet,model,nativeInput,createObjectURL,revokeObjectURL}) {
++  if(typeof createObjectURL!=='function'||typeof revokeObjectURL!=='function')fail('url_adapter','Lokale URL-Erzeugung und Freigabe müssen ausdrücklich bereitgestellt werden.');
++  const validated=await validatePhotoReopening({packet,model,nativeInput}),decoded=validated.blobs;
++  const urls=new Map(),created=[],files=new Map();let disposed=false;
++  const dispose=()=>{if(disposed)return;disposed=true;for(const url of created)revokeObjectURL(url);};
++  const urlFor=id=>{if(!urls.has(id)){const url=createObjectURL(decoded.get(id));if(typeof url!=='string'||!url.startsWith('blob:'))fail('url_adapter','URL-Erzeuger muss eine lokale Blob-URL liefern.');urls.set(id,url);created.push(url);}return urls.get(id);};
++  try{
++    for(const entry of validated.media){
++      const blob=decoded.get(entry.original.blobId);
++      const file=entry.original.name!==undefined?new File([blob],entry.original.name,{type:blob.type,lastModified:entry.original.lastModified??0}):blob;
++      files.set(entry.id,{...clone(entry.metadata),file,...(entry.edited?{blob:decoded.get(entry.edited.blobId)}:{}),
++        originalUrl:urlFor(entry.original.blobId),url:urlFor(entry.edited?.blobId??entry.original.blobId),
++        editSourceUrl:urlFor(entry.editSource.blobId),editSourceBlob:decoded.get(entry.editSource.blobId)});
++    }
++  }catch(error){dispose();throw error;}
++  return {binding:validated.binding,draft:validated.draft,candidateEditorState:validated.candidateEditorState,
++    templateObjects:validated.templateObjects,files,dispose,gates:validated.gates};
++}
+--- /dev/null
++++ b/app/workshop/photo-persistence/photo-reopening-transport.mjs
+@@ -0,0 +1,60 @@
++import {PHOTO_REOPENING_SCHEMA,PHOTO_REOPENING_LIMITS} from './photo-reopening.mjs';
++export const PHOTO_REOPENING_WIRE_SCHEMA='gravuru-photo-reopening-wire/v1';
++export const EXISTING_NATIVE_REQUEST_LIMIT=100*1024*1024;
++const fail=(code,message)=>{throw Object.assign(Error(message),{status:413,code});};
++const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
++const keys=(v,list)=>{if(!record(v)||Object.keys(v).some(k=>!list.includes(k)))fail('photo_transport_contract','Unbekannter Foto-Transportvertrag.');};
++function packetShape(packet){
++  keys(packet,['schema','binding','documents','media','nativeInputSha256','blobs','integrity']);
++  if(packet.schema!==PHOTO_REOPENING_SCHEMA||!record(packet.blobs)||Object.keys(packet.blobs).length>PHOTO_REOPENING_LIMITS.maxBlobs)fail('photo_transport_contract','Ungültiges Fotopaket.');
++}
++function description(id,value){
++  if(!/^[a-f0-9]{64}$/.test(value.sha256||'')||id!=='sha256:'+value.sha256||!['image/png','image/jpeg','image/webp'].includes(value.mimeType)||
++    !Number.isSafeInteger(value.bytes)||value.bytes<1||value.bytes>PHOTO_REOPENING_LIMITS.maxBlobBytes)fail('photo_transport_contract','Ungültige Bildbeschreibung.');
++}
++function media(input){
++  if(!record(input)||!Array.isArray(input.media)||input.media.length>4)fail('photo_transport_contract','Native Bildzuordnung fehlt.');
++  for(const m of input.media){keys(m,['id','original','edited']);if(typeof m.id!=='string'||typeof m.original!=='string'||m.edited!==undefined&&typeof m.edited!=='string')fail('photo_transport_contract','Ungültiges natives Bild.');}
++  return input.media;
++}
++/** Encode the complete HTTP body once. Send serializedBody exactly; it is immutable.
++ *  Native input bytes are referenced, never duplicated in reopening.blobs.
++ *  The structural encoder is not an image/rights validator or a send authorization.
++ */
++export function encodePhotoReopeningTransport({packet,input,expectedRevision,maxRequestBytes=EXISTING_NATIVE_REQUEST_LIMIT}){
++  packetShape(packet);const native=media(input),blobs={};let total=0;
++  if(!Number.isSafeInteger(maxRequestBytes)||maxRequestBytes<1||maxRequestBytes>EXISTING_NATIVE_REQUEST_LIMIT)fail('photo_transport_limit','Das bestehende Requestlimit darf nicht erhöht werden.');
++  for(const [id,value]of Object.entries(packet.blobs)){
++    keys(value,['sha256','mimeType','bytes','base64']);description(id,value);total+=value.bytes;
++    if(total>PHOTO_REOPENING_LIMITS.maxTotalBytes||typeof value.base64!=='string'||value.base64.length!==Math.ceil(value.bytes/3)*4)fail('photo_transport_contract','Ungültiger Bildumfang.');
++    let nativeRef=null;
++    for(let index=0;index<native.length&&!nativeRef;index++)for(const field of ['original','edited'])if(native[index][field]===value.base64){nativeRef={mediaIndex:index,field};break;}
++    const {base64,...metadata}=value;blobs[id]=nativeRef?{...metadata,nativeRef}:{...metadata,base64};
++  }
++  const reopening={schema:PHOTO_REOPENING_WIRE_SCHEMA,packet:{...packet,blobs}},body={input,reopening};
++  if(expectedRevision!==undefined){if(!Number.isSafeInteger(expectedRevision)||expectedRevision<1)fail('photo_transport_revision','Erwartete Entwurfsrevision fehlt.');body.expectedRevision=expectedRevision;}
++  const serializedBody=JSON.stringify(body),byteLength=new TextEncoder().encode(serializedBody).length;
++  if(byteLength>maxRequestBytes)fail('photo_transport_size','Gestaltung einschließlich Fotos überschreitet die vorhandene Uploadgrenze. Es wurde nichts gesendet.');
++  return {serializedBody,byteLength,transportSchema:PHOTO_REOPENING_WIRE_SCHEMA,gates:{transportFitsExistingBodyLimit:true,serverPersistenceSupported:false,nativeSendAllowed:false}};
++}
++/** Server-side expansion after the existing bounded HTTP body reader. No URL,
++ *  path or arbitrary object key can be referenced. Core validation follows it.
++ */
++export function hydratePhotoReopeningTransport({reopening,input}){
++  keys(reopening,['schema','packet']);if(reopening.schema!==PHOTO_REOPENING_WIRE_SCHEMA)fail('photo_transport_version','Nicht unterstützte Foto-Transportversion.');
++  packetShape(reopening.packet);const native=media(input),blobs={};let total=0;
++  for(const [id,value]of Object.entries(reopening.packet.blobs)){
++    keys(value,['sha256','mimeType','bytes','base64','nativeRef']);description(id,value);total+=value.bytes;
++    if(total>PHOTO_REOPENING_LIMITS.maxTotalBytes||(value.base64!==undefined)===(value.nativeRef!==undefined))fail('photo_transport_contract','Bildquelle muss genau einmal angegeben sein.');
++    let base64=value.base64;
++    if(value.nativeRef!==undefined){
++      keys(value.nativeRef,['mediaIndex','field']);const {mediaIndex,field}=value.nativeRef;
++      if(!Number.isSafeInteger(mediaIndex)||mediaIndex<0||mediaIndex>=native.length||!['original','edited'].includes(field))fail('photo_transport_reference','Ungültiger Verweis auf native Bilddaten.');
++      base64=native[mediaIndex][field];
++    }
++    if(typeof base64!=='string'||base64.length!==Math.ceil(value.bytes/3)*4)fail('photo_transport_reference','Referenzierte Bildbytes fehlen oder haben die falsche Größe.');
++    blobs[id]={sha256:value.sha256,mimeType:value.mimeType,bytes:value.bytes,base64};
++  }
++  // Referenced strings remain shared with input; no second Base64 payload is allocated here.
++  return {...reopening.packet,blobs};
++}
+--- /dev/null
++++ b/app/workshop/photo-persistence/server/native-photo-reopening-store.mjs
+@@ -0,0 +1,113 @@
++import {createHash} from 'node:crypto';
++import {validatePhotoReopening,PHOTO_REOPENING_SCHEMA,PHOTO_REOPENING_LIMITS} from '../photo-reopening.mjs';
++import {snapshotNativeInput} from './native-input-binding.mjs';
++
++export const NATIVE_PHOTO_REOPENING_CAPABILITY=Object.freeze({schema:'gravuru-photo-persistence-capability/v1',packetSchema:PHOTO_REOPENING_SCHEMA,
++  contractVersion:1,atomicWithNativeDraft:true,privateDraftTokenRequired:true,expectedRevisionRequired:true,active:false});
++const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
++const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
++const copy=value=>JSON.parse(JSON.stringify(value));
++const canonical=v=>Array.isArray(v)?'['+v.map(canonical).join(',')+']':v&&typeof v==='object'?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
++function bundleIdentity(bundle){
++  const m=bundle?.manifest;
++  if(!['gravuru-native-review/v1','gravuru-acrylic-review/v1'].includes(m?.schema)||typeof m.id!=='string'||
++    typeof m.product?.id!=='string'||!Number.isSafeInteger(m.product.revision)||typeof m.source?.designId!=='string'||! /^[a-f0-9]{64}$/.test(m.source.nativeInputSha256||'')||
++    !Buffer.isBuffer(bundle.package)||sha(bundle.package)!==m.packageSha256)fail(422,'photo_bundle','Serverseitiger nativer Prüfstand fehlt.');
++  return {snapshotId:m.id,packageSha256:m.packageSha256,productId:m.product.id,productRevision:m.product.revision,designId:m.source.designId,nativeInputSha256:m.source.nativeInputSha256};
++}
++function sameIdentity(a,b){return ['snapshotId','packageSha256','productId','productRevision','designId','nativeInputSha256'].every(k=>a[k]===b[k]);}
++
++/** One extension table in the EXISTING native-draft DatabaseSync connection.
++ *  No connection, filesystem directory, HTTP route, service or credential is created.
++ *  preparePhoto is the existing production decoder, required explicitly per preparation.
++ *  The capture method MUST run in the outer acrylic-draft-store transaction.
++ */
++export function createNativePhotoReopeningStore({database:db,tenantId}){
++  if(!db?.prepare||!db?.exec||typeof tenantId!=='string'||!/^[a-z0-9][a-z0-9-]{0,39}$/.test(tenantId))throw TypeError('Existing database and explicit tenant required.');
++  db.exec(`CREATE TABLE IF NOT EXISTS native_photo_reopening (
++    tenant_id TEXT NOT NULL, draft_id TEXT NOT NULL, revision INTEGER NOT NULL CHECK(revision>=1),
++    snapshot_id TEXT NOT NULL, packet_schema TEXT NOT NULL, packet_sha256 TEXT NOT NULL,
++    package_sha256 TEXT NOT NULL, packet_json TEXT NOT NULL CHECK(json_valid(packet_json)),
++    input_json TEXT NOT NULL CHECK(json_valid(input_json)), created_at TEXT NOT NULL,
++    PRIMARY KEY(tenant_id,draft_id,revision), UNIQUE(tenant_id,snapshot_id));
++    CREATE TRIGGER IF NOT EXISTS native_photo_reopening_immutable BEFORE UPDATE ON native_photo_reopening
++      BEGIN SELECT RAISE(ABORT,'Photo reopening revisions are immutable'); END;
++    CREATE TRIGGER IF NOT EXISTS native_photo_reopening_no_delete BEFORE DELETE ON native_photo_reopening
++      BEGIN SELECT RAISE(ABORT,'Photo reopening requires explicit retention'); END;`);
++  const prepared=new WeakMap();
++  function ticketFor(bundle,ticket){
++    const record=ticket&&prepared.get(ticket);
++    if(!record||!sameIdentity(record.identity,bundleIdentity(bundle)))fail(422,'photo_ticket','Kein passendes intern vorbereitetes Fotopaket.');
++    return record;
++  }
++  return {
++    // Wiring this helper alone is not evidence that HTTP/ownership checks are deployed.
++    capability:()=>({...NATIVE_PHOTO_REOPENING_CAPABILITY}),
++    async prepare({packet,model,input,bundle,preparePhoto}){
++      if(typeof preparePhoto!=='function')fail(503,'photo_decoder_required','Der vorhandene serverseitige Bilddecoder ist erforderlich.');
++      const identity=bundleIdentity(bundle);
++      // Snapshot first; no caller mutation can exchange input, package or product during decoding.
++      const packetJSON=JSON.stringify(packet),inputJSON=JSON.stringify(input);
++      if(typeof packetJSON!=='string'||Buffer.byteLength(packetJSON)>PHOTO_REOPENING_LIMITS.maxJsonBytes||
++        typeof inputJSON!=='string'||Buffer.byteLength(inputJSON)>100*1024*1024)fail(413,'photo_persistence_size','Privates Fotopaket überschreitet die Grenze.');
++      const savedPacket=JSON.parse(packetJSON),savedInput=JSON.parse(inputJSON),savedModel=copy(model);
++      if(!savedPacket.nativeInputSha256)fail(422,'photo_native_binding','Serverpersistenz benötigt die Bindung an den nativen Input.');
++      if(savedPacket.nativeInputSha256!==identity.nativeInputSha256||snapshotNativeInput(savedInput).sha256!==identity.nativeInputSha256)
++        fail(409,'photo_review_input_mismatch','Serverprüfstand und Fotowiederöffnung stammen aus unterschiedlichen Eingaben.');
++      const checked=await validatePhotoReopening({packet:savedPacket,model:savedModel,nativeInput:savedInput});
++      const b=checked.binding;
++      if(identity.productId!==b.productId||identity.productRevision!==b.productRevision||identity.designId!==b.designId)fail(409,'photo_bundle_binding','Fotopaket und Prüfstand gehören nicht zusammen.');
++      // No privilege or fixed template change is accepted through candidate metadata.
++      if(checked.gates.blockers.some(b=>b.code!=='server_photo_persistence_not_deployed'))fail(422,'photo_candidate_rights','Vorlagenrechte oder feste Felder unterscheiden sich.');
++      const dimensions=new Map();
++      for(const [id,blob] of checked.blobs){
++        const original=Buffer.from(await blob.arrayBuffer()),decoded=await preparePhoto(original.toString('base64'));
++        if(!Buffer.isBuffer(decoded?.original)||!decoded.original.equals(original)||
++          ![decoded.width,decoded.height].every(v=>Number.isSafeInteger(v)&&v>0))fail(422,'photo_decoder_result','Bilddecoder bestätigt nicht dieselben Originalbytes und Abmessungen.');
++        dimensions.set(id,{width:decoded.width,height:decoded.height});
++      }
++      for(const media of checked.media)if(media.metadata.width!==undefined){
++        const size=dimensions.get(media.edited?.blobId??media.original.blobId);
++        if(media.metadata.width!==size.width||media.metadata.height!==size.height)fail(422,'photo_dimensions','Bildabmessungen passen nicht zu den dekodierten Bytes.');
++      }
++      const ticket=Object.freeze({kind:'native-photo-reopening-prepared/v1'});
++      prepared.set(ticket,{identity,packetJSON,inputJSON,packetSha256:checked.packetSha256});
++      return ticket;
++    },
++    assertPrepared(bundle,ticket){ticketFor(bundle,ticket);},
++    has(draftId,revision){return !!db.prepare('SELECT 1 FROM native_photo_reopening WHERE tenant_id=? AND draft_id=? AND revision=?').get(tenantId,draftId,revision);},
++    capture({draftId,revision,bundle,ticket}){
++      if(db.isTransaction!==true)fail(500,'photo_transaction_required','Fotopaket muss innerhalb derselben Entwurfstransaktion gespeichert werden.');
++      const entry=ticketFor(bundle,ticket);
++      const row=db.prepare(`SELECT d.product_id,d.product_revision,d.design_id,r.snapshot_id
++        FROM acrylic_customer_drafts d JOIN acrylic_customer_revisions r ON r.draft_id=d.id AND r.tenant_id=d.tenant_id
++        WHERE d.id=? AND d.tenant_id=? AND r.revision=?`).get(draftId,tenantId,revision);
++      if(!row||row.snapshot_id!==entry.identity.snapshotId||row.product_id!==entry.identity.productId||row.product_revision!==entry.identity.productRevision||row.design_id!==entry.identity.designId)
++        fail(409,'photo_revision_binding','Private Entwurfsrevision und Fotopaket gehören nicht zusammen.');
++      // Verify the native archive was captured on this SAME connection, in this transaction.
++      const review=db.prepare('SELECT manifest,package FROM form_review_snapshots WHERE id=? AND tenant_id=?').get(row.snapshot_id,tenantId);
++      if(!review||JSON.parse(review.manifest).packageSha256!==entry.identity.packageSha256||JSON.parse(review.manifest).source?.nativeInputSha256!==entry.identity.nativeInputSha256||sha(Buffer.from(review.package))!==entry.identity.packageSha256)
++        fail(409,'photo_snapshot_missing','Der native Prüfstand fehlt in derselben Datenbanktransaktion.');
++      db.prepare(`INSERT INTO native_photo_reopening(tenant_id,draft_id,revision,snapshot_id,packet_schema,packet_sha256,package_sha256,packet_json,input_json,created_at)
++        VALUES(?,?,?,?,?,?,?,?,?,?)`).run(tenantId,draftId,revision,row.snapshot_id,PHOTO_REOPENING_SCHEMA,entry.packetSha256,entry.identity.packageSha256,entry.packetJSON,entry.inputJSON,new Date().toISOString());
++    },
++    // Internal read only. Public access MUST go through patched draftStore.reopening(id,token,...).
++    read(draftId,revision){
++      const row=db.prepare(`SELECT p.*,d.product_id,d.product_revision,d.design_id,r.snapshot_id AS current_snapshot
++        FROM native_photo_reopening p JOIN acrylic_customer_drafts d ON d.id=p.draft_id AND d.tenant_id=p.tenant_id
++        JOIN acrylic_customer_revisions r ON r.draft_id=p.draft_id AND r.tenant_id=p.tenant_id AND r.revision=p.revision
++        WHERE p.tenant_id=? AND p.draft_id=? AND p.revision=?`).get(tenantId,draftId,revision);
++      if(!row)fail(404,'photo_reopening_missing','Für diese private Entwurfsrevision gibt es keine Fotowiederöffnung.');
++      if(row.current_snapshot!==row.snapshot_id)fail(409,'photo_revision_binding','Fotopaket gehört nicht zur Entwurfsrevision.');
++      const packet=JSON.parse(row.packet_json),input=JSON.parse(row.input_json),binding=packet.binding;
++      const {integrity,...content}=packet;
++      if(packet.schema!==PHOTO_REOPENING_SCHEMA||packet.integrity?.sha256!==row.packet_sha256||
++        sha(Buffer.from(canonical(content)))!==row.packet_sha256||sha(Buffer.from(canonical(input)))!==packet.nativeInputSha256||
++        binding?.productId!==row.product_id||binding.productRevision!==row.product_revision||binding.designId!==row.design_id)fail(500,'photo_store_corrupt','Gespeicherte Fotobindung ist beschädigt.');
++      return {schema:'gravuru-private-photo-reopening-response/v1',draftId,revision,snapshotId:row.snapshot_id,packet,input,
++        persistedCapability:{...NATIVE_PHOTO_REOPENING_CAPABILITY,active:false,storedAtomically:true},
++        // Persisted != publicly deployable/production-authorized.
++        nativeSendAllowed:false,stateApplicationAllowed:false,checkoutAllowed:false,productionAllowed:false};
++    }
++  };
++}
+--- /dev/null
++++ b/app/workshop/photo-persistence/server/native-input-binding.mjs
+@@ -0,0 +1,15 @@
++import {createHash} from 'node:crypto';
++const plain=v=>v!==null&&typeof v==='object'&&!Array.isArray(v)&&[Object.prototype,null].includes(Object.getPrototypeOf(v));
++const fail=()=>{throw Object.assign(Error('Native Eingabe muss vollständige begrenzte JSON-Daten enthalten.'),{status:422,code:'native_input_snapshot'});};
++function valid(v,depth=0){
++  if(depth>40)fail();
++  if(v===null||['string','boolean'].includes(typeof v)||typeof v==='number'&&Number.isFinite(v))return;
++  if(Array.isArray(v)){for(const item of v)valid(item,depth+1);return;}
++  if(plain(v)){for(const [key,value]of Object.entries(v)){if(['__proto__','constructor','prototype'].includes(key))fail();valid(value,depth+1);}return;}fail();
++}
++const canonical=v=>Array.isArray(v)?'['+v.map(canonical).join(',')+']':plain(v)?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
++const freeze=v=>{if(v&&typeof v==='object'){Object.values(v).forEach(freeze);Object.freeze(v);}return v;};
++export function snapshotNativeInput(value){
++  valid(value);const json=JSON.stringify(value);if(Buffer.byteLength(json)>100*1024*1024)fail();
++  const input=freeze(JSON.parse(json));return Object.freeze({input,sha256:createHash('sha256').update(canonical(input)).digest('hex')});
++}

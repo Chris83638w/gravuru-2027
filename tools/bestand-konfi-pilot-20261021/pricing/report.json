@@ -1,12 +1,12 @@
 {
-  "checkedAt": "2026-10-21T16:06:20.577Z",
+  "checkedAt": "2026-10-21T16:41:30.997Z",
   "node": "v24.19.0",
   "repository": "Chris83638w/gravuru-2027",
   "branch": "dev/konfi-neu-20261019",
   "commit": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
   "exitCode": 0,
-  "tests": 28,
-  "passed": 28,
+  "tests": 52,
+  "passed": 52,
   "failed": 0,
   "skipped": 0,
   "sources": [

@@ -1,0 +1,42 @@
+{
+  "schema": "gravuru-private-restore-synthetic-verification/v1",
+  "date": "2026-10-21",
+  "python": "3.12.14",
+  "platform": "Windows",
+  "testCommand": "python -I ops/restore-private-snapshot.test.py",
+  "tests": 15,
+  "passed": 15,
+  "failed": 0,
+  "syntheticDataOnly": true,
+  "sqliteConnectionBackupExercised": true,
+  "liveDatabaseAccess": false,
+  "linuxFlockExercised": false,
+  "servicesChanged": false,
+  "applicationStarted": false,
+  "networkRequestsByHelpers": false,
+  "originalSnapshotHelperChanged": false,
+  "snapshotSourceGitBlob": "01a61c75985067a98966190408b328ed17036361",
+  "snapshotSourceSha256": "3f0924c62bc6befc8f88c49eda7ca02691e0feb45584a1d6f1ea311622293840",
+  "helperSha256": {
+    "restore-private-snapshot.py": "bd731ae51a26fc4d94347ee9d53b8729852dbd833d4598cde212ab2c474d7d8b",
+    "inventory-private-sqlite.py": "ee9250c716e9e35b1c9623f602c6a2794ce5495fa157e60bf3ac446ec06a123b"
+  },
+  "coverage": [
+    "three SQLite database backup/restore with identical snapshot/copy hashes",
+    "rejected design and native acrylic/doorbell positions retained unchanged",
+    "original/preview/material/customer-photo/review-package hashes",
+    "product/profile/manufacturing and customer review revision references",
+    "native archive preparation request is distinct from private adraft ownership/revision",
+    "form geometry/source binding and tenant isolation",
+    "receipt tampering, WAL, existing target, Git directory and no-receipt refusal",
+    "inventory returns only counts/schema hashes and no customer strings",
+    "CLI requires explicit confirmation of private standalone snapshot paths"
+  ],
+  "limitations": [
+    "No real private snapshot restored yet",
+    "No Windows proof of Linux flock or live quiescence",
+    "No complete application restore or physical production proof",
+    "Legacy 171 designs/seven plate templates require source mapping",
+    "Separate installed release, marker, private configuration and secret recovery required"
+  ]
+}

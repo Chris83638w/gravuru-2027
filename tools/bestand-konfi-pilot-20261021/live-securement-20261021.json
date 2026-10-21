@@ -1,0 +1,55 @@
+{
+  "schema": "gravuru-live-securement-observations/v1",
+  "observationDate": "2026-10-21",
+  "method": "Authenticated Plesk File Manager and unsaved, inactive Run Now task; commands executed as gravuru_werkstatt; no recurring task saved",
+  "devHead": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
+  "release": {
+    "sourceCommit": "d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb",
+    "directory": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-merchant-release-d18bc6c",
+    "manifestEntries": 436,
+    "matchedSourceFiles": 436,
+    "mismatches": [],
+    "archive": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-merchant-release-d18bc6c/quellsicherung-d18bc6c-20261021.zip",
+    "archiveBytes": 28980925,
+    "archiveSha256": "57bff9f9dd1c978718e0687241fb9c43b16703cc91bd040db72d83ee3fa10460",
+    "archiveMode": "0600",
+    "archiveEntries": 475,
+    "archiveCrcError": null,
+    "restoreDirectory": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-source-restore-check-20261021",
+    "restoredManifestFilesVerified": 436,
+    "privateReceipt": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-source-restore-receipt-20261021.json",
+    "runtimeStartedFromRestoration": false,
+    "localDownload": "Chrome ERR_BLOCKED_BY_CLIENT; no local archive claimed"
+  },
+  "runtimeConfigurationAllowlist": {
+    "dataDirectory": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-merchant-data",
+    "python": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python311/bin/python",
+    "merchantCartProductRevision": 5,
+    "secretValuesPrinted": false,
+    "shopifyReadOnlyHelperUsesExistingPrivateCredential": true
+  },
+  "databaseBackupCreated": true,
+  "snapshotDirectory": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-snapshot-20261021",
+  "snapshotMethod": "Unchanged installed snapshot-merchant-data.py; exclusive runtime lock held; SQLite Connection.backup for all three databases; quick_check and SHA-256 receipt",
+  "databases": [
+    {"file":"workshop.sqlite","bytes":352133120,"sha256":"fc3c4d028dcf3f4f90233b07e4f30ea765a26d667949a4aeb0082c5c6bcb3a6c","integrityCheck":"ok","foreignKeys":"ok"},
+    {"file":"profiles.sqlite","bytes":45056,"sha256":"e9f6590ee18d85fc40a24b9ef4ed4c702531230d7209fccad1e590f553e9fb3c","integrityCheck":"ok","foreignKeys":"ok"},
+    {"file":"design-assets.sqlite","bytes":165879808,"sha256":"3fa677fcc380b65d9636c79f31c7c555d9268923ab4b72c4165314b7640b779a","integrityCheck":"ok","foreignKeys":"ok"}
+  ],
+  "databaseRestoreVerified": true,
+  "privateHandover": {"archive":"/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-handover-20261021/gravuru-private-handover-20261021.zip","bytes":547051372,"sha256":"715bca5a25b0b51e21e078818554576e72c08b886a8dc6a7c6d81fd3726bd555","members":12,"mode":"0600","allMemberSha256Verified":true,"allMemberCrcVerified":true,"packingReceipt":"/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-handover-20261021/PACKING-RECEIPT.json","helperSha256":"a29615d1c8a6f921fcc9e5fea6f0a49edf6e424232cf0d408b16464ad2c707b3","encrypted":false,"localDownloadVerified":false,"downloadObservation":"Authenticated File Manager download attempted with browser download event; no download delivered within 15 seconds. Earlier source archive attempt reported ERR_BLOCKED_BY_CLIENT. No protection bypass and no local package claimed."},
+  "restoreDirectory": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-restorecheck-20261021",
+  "restoreHelperSha256": "bd731ae51a26fc4d94347ee9d53b8729852dbd833d4598cde212ab2c474d7d8b",
+  "restore": {"sourceFilesUnchanged":true,"allDatabaseBytesPreserved":true,"relationsValid":true,"issues":{},"counts":{"designOriginals":102,"historicalDesignAssignments":98,"currentDesignAssignments":36,"currentArchivedProducts":0,"products":34,"productRevisions":94,"profiles":1,"profileRevisions":2,"designAssets":102,"formContours":0,"materialOriginals":1,"reviewSnapshots":15},"runtimeStartedFromCopy":false,"migrationsRun":false,"completeApplicationRestoreProven":false},
+  "maintenanceApproval": "Explicit user approval: Ja, kurze Wartungspause durchführen",
+  "maintenance": {"pleskNodeDisabledThenEnabled":true,"initialSnapshotAttempt":"Refused while runtime lock held; no destination created","stopMethod":"Fresh UID/canonical-cwd/exe process identity verification, then SIGTERM; no SIGKILL or lock deletion","sameStartupFile":"start-r5.cjs","releaseChanged":false,"recoveryVerified":"Existing Shopify embedded merchant product list loaded after restarting; screenshot saved locally"},
+  "processObservation": {"uid":10005,"cwd":"/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant","exe":"/opt/plesk/node/24/bin/node","cgroup":"12:pids:/lve10005","memoryImageInspected":false},
+  "shopifyReadOnly": {"plan":"Shopify Plus","currency":"EUR","cartTransformId":"gid://shopify/CartTransform/172523900","functionId":"01a0e45d-c47f-70b9-9d5a-a2c72120ae01","blockOnFailure":true,"scopeExpanded":false,"mutations":0,"newTierCheckoutTested":false},
+  "limitations": [
+    "Private snapshot and source archive remain on the same server until a separate private transfer is verified.",
+    "Older 171 designs and seven plate templates are not mapped to this merchant inventory; no completeness claim for those historical sources.",
+    "Full isolated application startup, native millimetre geometry recalculation, all cart/order rules and production validation were not performed.",
+    "Manifest equality proves package integrity, not equivalence to a currently retrievable GitHub commit.",
+    "No release switch, main merge, Shopify publication or new service."
+  ]
+}

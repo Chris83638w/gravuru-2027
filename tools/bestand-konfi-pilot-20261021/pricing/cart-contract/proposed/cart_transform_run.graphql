@@ -1,0 +1,33 @@
+query CartTransformRunInput {
+  presentmentCurrencyRate
+  shop {
+    quoteKeys: metafield(namespace: "$app", key: "quote_verification") { jsonValue }
+  }
+  cart {
+    lines {
+      id
+      quantity
+      cost { amountPerQuantity { currencyCode } }
+      motifs: attribute(key: "_gravuru_motifs") { value }
+      uploads: attribute(key: "_gravuru_uploads") { value }
+      revision: attribute(key: "_gravuru_revision") { value }
+      designFile: attribute(key: "Bearbeitbarer Entwurf") { value }
+      q0: attribute(key: "_gravuru_q0") { value }
+      q1: attribute(key: "_gravuru_q1") { value }
+      q2: attribute(key: "_gravuru_q2") { value }
+      q3: attribute(key: "_gravuru_q3") { value }
+      signature: attribute(key: "_gravuru_qsig") { value }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            id
+            pricing: metafield(namespace: "$app", key: "personalization") { jsonValue }
+          }
+        }
+      }
+    }
+  }
+}
+

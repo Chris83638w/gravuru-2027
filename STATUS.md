@@ -1,3 +1,23 @@
+## 21.10.2026 – Aktiven Serverstand privat gesichert; Anschlussänderungen vorbereitet
+
+Aktueller Übergabestand: [Bestandsanschluss-Pilot](tools/bestand-konfi-pilot-20261021/README.md). Dieser Nachtrag ergänzt die früheren Beobachtungen unten. Nur der Aufgabenbranch wird aktualisiert; kein Merge, kein neuer Dienst, kein Releasewechsel und keine Änderung an bestehenden Konfiguratoren.
+
+**Tatsächliche Sicherung:** Nach ausdrücklicher Freigabe kurze Wartungspause der Händler-Testanwendung. Alle 436 Manifestdateien des aktiven Releases d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb bestätigt, privat archiviert und getrennt wiederhergestellt. Vorhandener Offline-Snapshotweg mit Anwendungssperre und SQLite-Backupfunktion ausgeführt. Drei DBs in einem getrennten privaten Ordner bytegleich wiederhergestellt; Integrität, Fremdschlüssel und unterstützte Zuordnungen bestanden. Dieselbe Anwendung ist wieder online; Produktliste in Shopify geladen.
+
+Privates Übergabepaket: 547.051.372 Bytes, zwölf geprüfte Mitglieder, SHA-256 715bca5a25b0b51e21e078818554576e72c08b886a8dc6a7c6d81fd3726bd555. Speicherort/Umfang/Übernahmeweg: [Privates Paket](tools/bestand-konfi-pilot-20261021/ops/PRIVATE-HANDOVER-PACK.md). DBs und Kundendaten liegen ausschließlich privat auf Plesk; zusätzlicher privater Transfer noch nicht verifiziert. Konfiguration/Geheimnisse bewusst ausgeschlossen. Kein vollständiger Anwendungsstart aus dem Paket, keine automatische Synchronisierung. Historische 171 Designs/sieben Plattenvorlagen weiterhin gezielt zuzuordnen.
+
+**Aktueller geprüfter Bestand:** 34 Produkte, 94 Produktrevisionen, 102 Designoriginale, 36 aktuelle/98 historische Designzuordnungen, 15 Prüfstände, ein Materialoriginal, ein Profil/zwei Profilrevisionen. Dies sind Merchant-Zahlen, keine Gleichsetzung mit Altbeständen.
+
+**Anschlussbausteine:** verlustfreier Foto-/Bearbeitungszustand, deduplizierter Transport innerhalb des bestehenden 100-MiB-Limits; konkret anwendbarer Serverpatch auf die vorhandene SQLite-Transaktion, keine zweite Datenbank. Vorgeschlagene Erweiterung der vorhandenen Shopify-Preisfunktion mit signiertem Staffel-/Zusatzpreisvertrag und unverändertem Legacy-Pfad. Alle diese Änderungen sind isoliert vorbereitet, noch nicht eingebaut oder aktiviert.
+
+**Prüfungen:** 96 gemeinsame JavaScript-Tests + 52 Preis-/Function-Vertragstests + 15 separate Python-Tests bestanden. Serverpatch auf Wegwerfkopie tatsächlich geprüft/angewendet, sieben Dateien identisch zum Builderergebnis. Neutraler JS-Function-Build und fünf reproduzierbare Mengenfälle bestanden. Kein WASM-/Instruktionsbudget- oder realer Checkoutnachweis.
+
+**Live lesend bestätigt:** Shopify Plus/EUR; vorhandene CartTransform 172523900, Function 01a0e45d-c47f-70b9-9d5a-a2c72120ae01, blockOnFailure:true. Bestehende Appauth, keine Scope-Erweiterung oder Shopify-Mutation. Aktiver Prozess dem Konto lve10005 zugeordnet; 1G RAM/1MB/s I/O bleiben relevante Kontogrenzen. Vollständige Belege: [Sicherungsbeobachtungen](tools/bestand-konfi-pilot-20261021/live-securement-20261021.json).
+
+**Nächster Schritt:** private Zweitkopie bestätigen und Release zuordnen; anschließend Backendpatch mit realem Bilddecoder/Sitzung/HTTP und Editor-Wiederöffnung integrieren. Vorhandene Shopify-Function als WASM bauen und negativ im Testcheckout prüfen; öffentliche Kundengrenze und verbindliche Preisbindung abnehmen. Repräsentative Last erst getrennt testen. [Cloud-Einordnung](tools/bestand-konfi-pilot-20261021/ops/CLOUD-EMPFEHLUNG-20261021.md): verwaltete Dienste sinnvoller Kandidat, kein Cloudumzug begonnen.
+
+---
+
 ## 21.10.2026 – Getrennter Bestandsanschluss geprüft, Livebetrieb unverändert
 
 Eigenständig startbarer Prüfstand: [tools/bestand-konfi-pilot-20261021](tools/bestand-konfi-pilot-20261021/README.md). Grundlage ist dev/konfi-neu-20261019 @ bf5c059f13e0868d7c554616b7c35ff7a328ae62. Bestehende September-Oberfläche und Funktionen bleiben erhalten. Enthalten sind Vertragsadapter, noch nicht eingebauter Händlertransport, Preisprüfungen, lesender Preflight und lokaler synthetischer Lasttreiber.

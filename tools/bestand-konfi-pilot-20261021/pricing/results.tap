@@ -1,178 +1,322 @@
 TAP version 13
-# Subtest: manual observation and requested tier are explicitly distinct from live Shopify verification
-ok 1 - manual observation and requested tier are explicitly distinct from live Shopify verification
+# Subtest: real proposed Function: observed-price case qty 1
+ok 1 - real proposed Function: observed-price case qty 1
   ---
-  duration_ms: 1.1028
+  duration_ms: 51.8548
+  type: 'test'
+  ...
+# Subtest: real proposed Function: observed-price case qty 2
+ok 2 - real proposed Function: observed-price case qty 2
+  ---
+  duration_ms: 4.0993
+  type: 'test'
+  ...
+# Subtest: real proposed Function: observed-price case qty 3
+ok 3 - real proposed Function: observed-price case qty 3
+  ---
+  duration_ms: 3.5469
+  type: 'test'
+  ...
+# Subtest: real proposed Function: observed-price case qty 4
+ok 4 - real proposed Function: observed-price case qty 4
+  ---
+  duration_ms: 3.3975
+  type: 'test'
+  ...
+# Subtest: real proposed Function: observed-price case qty 99
+ok 5 - real proposed Function: observed-price case qty 99
+  ---
+  duration_ms: 3.5513
+  type: 'test'
+  ...
+# Subtest: serializer roundtrip, separate signature, bounded attributes and public-key verification
+ok 6 - serializer roundtrip, separate signature, bounded attributes and public-key verification
+  ---
+  duration_ms: 4.5228
+  type: 'test'
+  ...
+# Subtest: modified amount, photo count, field price, reverse side or quantity cannot reuse a signature
+ok 7 - modified amount, photo count, field price, reverse side or quantity cannot reuse a signature
+  ---
+  duration_ms: 14.3638
+  type: 'test'
+  ...
+# Subtest: v2 never falls back when signature or chunks are removed
+ok 8 - v2 never falls back when signature or chunks are removed
+  ---
+  duration_ms: 3.2638
+  type: 'test'
+  ...
+# Subtest: v2 ignores untrusted legacy amount/count attributes
+ok 9 - v2 ignores untrusted legacy amount/count attributes
+  ---
+  duration_ms: 3.5496
+  type: 'test'
+  ...
+# Subtest: quantity, variant, product, revision and snapshot changes fail closed
+ok 10 - quantity, variant, product, revision and snapshot changes fail closed
+  ---
+  duration_ms: 15.2316
+  type: 'test'
+  ...
+# Subtest: changed authoritative pricing invalidates existing signed quote
+ok 11 - changed authoritative pricing invalidates existing signed quote
+  ---
+  duration_ms: 2.5333
+  type: 'test'
+  ...
+# Subtest: unknown public key, invalid signature and currency mismatch block v2
+ok 12 - unknown public key, invalid signature and currency mismatch block v2
+  ---
+  duration_ms: 3.0065
+  type: 'test'
+  ...
+# Subtest: all four field kinds plus back and motif are included before tier; photo after it
+ok 13 - all four field kinds plus back and motif are included before tier; photo after it
+  ---
+  duration_ms: 3.1103
+  type: 'test'
+  ...
+# Subtest: hidden fields do not leak their value or surcharge into the offer
+ok 14 - hidden fields do not leak their value or surcharge into the offer
+  ---
+  duration_ms: 0.8371
+  type: 'test'
+  ...
+# Subtest: open price data cannot be signed or published
+ok 15 - open price data cannot be signed or published
+  ---
+  duration_ms: 0.851
+  type: 'test'
+  ...
+# Subtest: original half-up rounding is used in emitted Shopify cents
+ok 16 - original half-up rounding is used in emitted Shopify cents
+  ---
+  duration_ms: 2.6076
+  type: 'test'
+  ...
+# Subtest: unitCents tier changes base only; option/photo add-ons keep exact source semantics
+ok 17 - unitCents tier changes base only; option/photo add-ons keep exact source semantics
+  ---
+  duration_ms: 4.1738
+  type: 'test'
+  ...
+# Subtest: proposal equals pinned original prices across all9 mountings and quantities1..99
+ok 18 - proposal equals pinned original prices across all9 mountings and quantities1..99
+  ---
+  duration_ms: 134.662
+  type: 'test'
+  ...
+# Subtest: Shopify response must contain exact real amounts and immutable reference
+ok 19 - Shopify response must contain exact real amounts and immutable reference
+  ---
+  duration_ms: 2.1359
+  type: 'test'
+  ...
+# Subtest: unmigrated v1 route produces exactly historical operation shape
+ok 20 - unmigrated v1 route produces exactly historical operation shape
+  ---
+  duration_ms: 1.3424
+  type: 'test'
+  ...
+# Subtest: v2 missing, disabled or downgraded metadata throws; ordinary foreign product still passes
+ok 21 - v2 missing, disabled or downgraded metadata throws; ordinary foreign product still passes
+  ---
+  duration_ms: 2.4325
+  type: 'test'
+  ...
+# Subtest: legacy unsafe sums or exchange rate cannot produce Infinity or inaccurate amounts
+ok 22 - legacy unsafe sums or exchange rate cannot produce Infinity or inaccurate amounts
+  ---
+  duration_ms: 1.3702
+  type: 'test'
+  ...
+# Subtest: extracted tier functions are unchanged source bodies
+ok 23 - extracted tier functions are unchanged source bodies
+  ---
+  duration_ms: 1.1537
+  type: 'test'
+  ...
+# Subtest: proposed GraphQL query validates against the existing pinned Function schema
+ok 24 - proposed GraphQL query validates against the existing pinned Function schema
+  ---
+  duration_ms: 38.5196
+  type: 'test'
+  ...
+# Subtest: manual observation and requested tier are explicitly distinct from live Shopify verification
+ok 25 - manual observation and requested tier are explicitly distinct from live Shopify verification
+  ---
+  duration_ms: 2.3791
   type: 'test'
   ...
 # Subtest: observed revision-5 base plus one chargeable photo, desired tier at quantity 1
-ok 2 - observed revision-5 base plus one chargeable photo, desired tier at quantity 1
+ok 26 - observed revision-5 base plus one chargeable photo, desired tier at quantity 1
   ---
-  duration_ms: 0.7235
+  duration_ms: 0.9991
   type: 'test'
   ...
 # Subtest: observed revision-5 base plus one chargeable photo, desired tier at quantity 2
-ok 3 - observed revision-5 base plus one chargeable photo, desired tier at quantity 2
+ok 27 - observed revision-5 base plus one chargeable photo, desired tier at quantity 2
   ---
-  duration_ms: 0.1503
+  duration_ms: 0.2258
   type: 'test'
   ...
 # Subtest: observed revision-5 base plus one chargeable photo, desired tier at quantity 3
-ok 4 - observed revision-5 base plus one chargeable photo, desired tier at quantity 3
+ok 28 - observed revision-5 base plus one chargeable photo, desired tier at quantity 3
   ---
-  duration_ms: 0.1094
+  duration_ms: 0.1631
   type: 'test'
   ...
 # Subtest: observed revision-5 base plus one chargeable photo, desired tier at quantity 4
-ok 5 - observed revision-5 base plus one chargeable photo, desired tier at quantity 4
+ok 29 - observed revision-5 base plus one chargeable photo, desired tier at quantity 4
   ---
-  duration_ms: 0.122
+  duration_ms: 0.3129
   type: 'test'
   ...
 # Subtest: all nine manually observed mounting prices participate before discount
-ok 6 - all nine manually observed mounting prices participate before discount
+ok 30 - all nine manually observed mounting prices participate before discount
   ---
-  duration_ms: 0.3792
+  duration_ms: 0.8755
   type: 'test'
   ...
 # Subtest: all 10 source files match the pinned Git blob hashes
-ok 7 - all 10 source files match the pinned Git blob hashes
+ok 31 - all 10 source files match the pinned Git blob hashes
   ---
-  duration_ms: 0.916
+  duration_ms: 1.056
   type: 'test'
   ...
 # Subtest: confirmed tier values and first matching theme priority
-ok 8 - confirmed tier values and first matching theme priority
+ok 32 - confirmed tier values and first matching theme priority
   ---
-  duration_ms: 0.7725
+  duration_ms: 1.4364
   type: 'test'
   ...
 # Subtest: actual source family supplies 2999-cent base and 299/399-cent mounting
-ok 9 - actual source family supplies 2999-cent base and 299/399-cent mounting
+ok 33 - actual source family supplies 2999-cent base and 299/399-cent mounting
   ---
-  duration_ms: 0.1304
+  duration_ms: 0.1632
   type: 'test'
   ...
 # Subtest: memorial tier boundary quantity 1
-ok 10 - memorial tier boundary quantity 1
+ok 34 - memorial tier boundary quantity 1
   ---
-  duration_ms: 0.7539
+  duration_ms: 1.2911
   type: 'test'
   ...
 # Subtest: memorial tier boundary quantity 2
-ok 11 - memorial tier boundary quantity 2
+ok 35 - memorial tier boundary quantity 2
   ---
-  duration_ms: 0.1784
+  duration_ms: 0.2677
   type: 'test'
   ...
 # Subtest: memorial tier boundary quantity 3
-ok 12 - memorial tier boundary quantity 3
+ok 36 - memorial tier boundary quantity 3
   ---
-  duration_ms: 0.1293
+  duration_ms: 0.1751
   type: 'test'
   ...
 # Subtest: memorial tier boundary quantity 4
-ok 13 - memorial tier boundary quantity 4
+ok 37 - memorial tier boundary quantity 4
   ---
-  duration_ms: 0.1059
+  duration_ms: 0.132
   type: 'test'
   ...
 # Subtest: memorial tier boundary quantity 99
-ok 14 - memorial tier boundary quantity 99
+ok 38 - memorial tier boundary quantity 99
   ---
-  duration_ms: 0.1193
+  duration_ms: 0.1614
   type: 'test'
   ...
 # Subtest: invalid quantity 0 rejected
-ok 15 - invalid quantity 0 rejected
+ok 39 - invalid quantity 0 rejected
   ---
-  duration_ms: 0.4165
+  duration_ms: 0.6423
   type: 'test'
   ...
 # Subtest: invalid quantity 100 rejected
-ok 16 - invalid quantity 100 rejected
+ok 40 - invalid quantity 100 rejected
   ---
-  duration_ms: 0.1866
+  duration_ms: 0.2284
   type: 'test'
   ...
 # Subtest: invalid quantity 1.5 rejected
-ok 17 - invalid quantity 1.5 rejected
+ok 41 - invalid quantity 1.5 rejected
   ---
-  duration_ms: 0.2128
+  duration_ms: 0.5791
   type: 'test'
   ...
 # Subtest: mounting discounted BEFORE adding the non-discounted extra photo
-ok 18 - mounting discounted BEFORE adding the non-discounted extra photo
+ok 42 - mounting discounted BEFORE adding the non-discounted extra photo
   ---
-  duration_ms: 0.5067
+  duration_ms: 0.7798
   type: 'test'
   ...
 # Subtest: one included photo stays free; a logo does not consume the photo allowance
-ok 19 - one included photo stays free; a logo does not consume the photo allowance
+ok 43 - one included photo stays free; a logo does not consume the photo allowance
   ---
-  duration_ms: 0.4116
+  duration_ms: 0.2788
   type: 'test'
   ...
 # Subtest: percentage includes extra motif, filled field and designed reverse side
-ok 20 - percentage includes extra motif, filled field and designed reverse side
+ok 44 - percentage includes extra motif, filled field and designed reverse side
   ---
-  duration_ms: 0.505
+  duration_ms: 0.4851
   type: 'test'
   ...
 # Subtest: half cent rounds up PER UNIT before multiplying quantity
-ok 21 - half cent rounds up PER UNIT before multiplying quantity
+ok 45 - half cent rounds up PER UNIT before multiplying quantity
   ---
-  duration_ms: 0.1722
+  duration_ms: 0.1989
   type: 'test'
   ...
 # Subtest: open tier disables the WHOLE tier schedule rather than blocking purchase
-ok 22 - open tier disables the WHOLE tier schedule rather than blocking purchase
+ok 46 - open tier disables the WHOLE tier schedule rather than blocking purchase
   ---
-  duration_ms: 0.3463
+  duration_ms: 0.3557
   type: 'test'
   ...
 # Subtest: explicitly no tier does not fall back to a discount in pricing
-ok 23 - explicitly no tier does not fall back to a discount in pricing
+ok 47 - explicitly no tier does not fall back to a discount in pricing
   ---
-  duration_ms: 0.098
+  duration_ms: 0.1388
   type: 'test'
   ...
 # Subtest: open reverse-side surcharge blocks a designed back
-ok 24 - open reverse-side surcharge blocks a designed back
+ok 48 - open reverse-side surcharge blocks a designed back
   ---
-  duration_ms: 0.1821
+  duration_ms: 0.2278
   type: 'test'
   ...
 # Subtest: unconfirmed photo surcharge is rejected
-ok 25 - unconfirmed photo surcharge is rejected
+ok 49 - unconfirmed photo surcharge is rejected
   ---
-  duration_ms: 0.131
+  duration_ms: 0.2762
   type: 'test'
   ...
 # Subtest: fixed Shopify price blocks the first active tier, not quantity one
-ok 26 - fixed Shopify price blocks the first active tier, not quantity one
+ok 50 - fixed Shopify price blocks the first active tier, not quantity one
   ---
-  duration_ms: 0.2959
+  duration_ms: 0.5085
   type: 'test'
   ...
 # Subtest: server personalization agrees with discounted mounting plus undiscounted photo
-ok 27 - server personalization agrees with discounted mounting plus undiscounted photo
+ok 51 - server personalization agrees with discounted mounting plus undiscounted photo
   ---
-  duration_ms: 0.479
+  duration_ms: 0.6643
   type: 'test'
   ...
 # Subtest: current server personalization rejects separately priced reverse-side or field amounts
-ok 28 - current server personalization rejects separately priced reverse-side or field amounts
+ok 52 - current server personalization rejects separately priced reverse-side or field amounts
   ---
-  duration_ms: 0.203
+  duration_ms: 0.2632
   type: 'test'
   ...
-1..28
-# tests 28
+1..52
+# tests 52
 # suites 0
-# pass 28
+# pass 52
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 99.5201
+# duration_ms 571.9979

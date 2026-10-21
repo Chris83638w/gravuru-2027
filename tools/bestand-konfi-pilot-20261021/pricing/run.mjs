@@ -4,7 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {manifest,sourceEvidence} from './load-pricing.mjs';
 import {observedSummary} from './observed-product.mjs';
 const cwd=fileURLToPath(new URL('.',import.meta.url));
-const result=spawnSync(process.execPath,['--test','--test-reporter=tap','pricing.test.mjs','observed-product.test.mjs'],{cwd,encoding:'utf8',timeout:60000});
+const result=spawnSync(process.execPath,['--test','--test-reporter=tap','pricing.test.mjs','observed-product.test.mjs','cart-contract/contract.test.mjs'],{cwd,encoding:'utf8',timeout:60000});
 const text=(result.stdout||'')+(result.stderr||'');
 fs.writeFileSync(new URL('./results.tap',import.meta.url),text);
 const count=name=>Number(text.match(new RegExp('^# '+name+' (\\d+)$','m'))?.[1]||0);

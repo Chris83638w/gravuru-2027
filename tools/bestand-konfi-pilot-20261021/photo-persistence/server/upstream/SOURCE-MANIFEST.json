@@ -1,0 +1,41 @@
+{
+  "repository": "Chris83638w/gravuru-2027",
+  "commit": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
+  "files": [
+    {
+      "path": "app/workshop/acrylic-draft-store.mjs",
+      "bytes": 5090,
+      "gitBlobSha": "7fe346a334926cf17bd15d082261f8b8b84b45d0",
+      "sha256": "ebd846e8faff8e3b1620cbf99bcd3272ac8450005a39f313f4e5d5e83d9bd938",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/acrylic-draft-store.mjs"
+    },
+    {
+      "path": "app/workshop/tenant.mjs",
+      "bytes": 9227,
+      "gitBlobSha": "5b2189ff6c543657aa8b58f0004faf0c7dea0dd8",
+      "sha256": "3d946fc14a2c1435cd995776c4b441b3430cd8606f6afb55524855edda6c09e8",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/tenant.mjs"
+    },
+    {
+      "path": "app/workshop/native-review-schema.mjs",
+      "bytes": 379,
+      "gitBlobSha": "0e22f190447b325f817cb28686a7cd6946abf7bd",
+      "sha256": "7411452340592d8b037e1db962e5806b0029ca56dc81e3cc571057e94026e554",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/native-review-schema.mjs"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "bytes": 103374,
+      "gitBlobSha": "34e23d8ba4d29a831642879d036c53db3a320801",
+      "sha256": "77d92b9c85acad2f34c1609a613a38566fb7303e6a545e23d29d493085f07942",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/http.mjs"
+    },
+    {
+      "path": "app/workshop/acrylic-review.mjs",
+      "bytes": 11014,
+      "gitBlobSha": "9f0b85a7ee9416fe084fe6ebb434baf2af679c1b",
+      "sha256": "27d9f10e80c1ec31da1407ca7769cb604b95e02210297ce7066305a2950f7bc2",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/acrylic-review.mjs"
+    }
+  ]
+}

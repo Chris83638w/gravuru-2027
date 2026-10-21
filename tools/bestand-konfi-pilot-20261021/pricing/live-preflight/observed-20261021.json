@@ -1,0 +1,23 @@
+{
+  "schema": "gravuru-cart-transform-readonly-observation/v1",
+  "observedDate": "2026-10-21",
+  "reportedBy": "coordinating agent /root",
+  "method": "Existing Shopify app; isolated private read-only helper",
+  "helper": "audit-cart-transform.mjs",
+  "helperSha256": "43eac0bb5e012516eed18720f2e7577c6ed5eff29c35a979dd228bbaa5e2e5ba",
+  "helperHashVerified": true,
+  "result": [
+    {
+      "id": "gid://shopify/CartTransform/172523900",
+      "functionId": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01",
+      "blockOnFailure": true
+    }
+  ],
+  "shopifyWriteMutation": false,
+  "scopesChanged": false,
+  "runtimeChanged": false,
+  "wasmBuildVerified": false,
+  "instructionBudgetVerified": false,
+  "negativeCheckoutVerified": false,
+  "newPricingLiveVerified": false
+}

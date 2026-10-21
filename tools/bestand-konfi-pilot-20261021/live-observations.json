@@ -1,5 +1,6 @@
 {
   "date": "2026-10-21",
+  "historicalObservation": "Earlier read-only observation before approved maintenance. Later source audit, process cgroup, SQLite snapshot/restore and Shopify CartTransform verification are documented in live-securement-20261021.json; this earlier evidence is retained unchanged.",
   "evidence": "Authenticated Plesk and Shopify UI read-only observations by the parent agent; not an automated runtime attestation",
   "host": "app-2027.gravuru-designwerkstatt.de",
   "runtime": {

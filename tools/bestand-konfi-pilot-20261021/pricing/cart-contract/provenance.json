@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-10-21T16:27:00.815Z",
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "dev/konfi-neu-20261019",
+  "commit": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
+  "status": "ISOLATED PROPOSAL — no deployment or live cart writes",
+  "legacyFunction": {
+    "repository": "Chris83638w/gravuru-shopify",
+    "commit": "b564422edadaf56a27a09f99e1140a546e5e7145",
+    "files": [
+      {
+        "file": "original/cart_transform_run.js",
+        "path": "platform/sources/app/extensions/gravuru-personalization-price/src/cart_transform_run.js",
+        "gitBlobSha1": "a1a5146136c6d1f11ea93b07b5c8f64a3f5ab7d7"
+      },
+      {
+        "file": "original/cart_transform_run.graphql",
+        "path": "platform/sources/app/extensions/gravuru-personalization-price/src/cart_transform_run.graphql",
+        "gitBlobSha1": "086ee615d08191d3d085fb7c544af694ea9dfca2"
+      },
+      {
+        "file": "original/schema.graphql",
+        "path": "platform/sources/app/extensions/gravuru-personalization-price/schema.graphql",
+        "gitBlobSha1": "e98d5cbffc8eea3a1ec0795218d2b34c4f2dac24"
+      }
+    ]
+  },
+  "checks": {
+    "nodeSourceTests": 52,
+    "passed": 52,
+    "inputGraphqlValidAgainstPinnedLegacySchema": true,
+    "neutralJavascriptBundle": true,
+    "wasmBuild": false,
+    "wasmRun": false,
+    "instructionBudgetVerified": false,
+    "liveCheckoutVerified": false
+  },
+  "liveStatus": {
+    "shopPlusEUR": "Reported verified by parent via Shopify get_shop_info 2026-10-21; not queried by this agent",
+    "cartTransformCurrent": "Parent checking; historical record ID172523900 blockOnFailure=true is not current evidence"
+  },
+  "constraints": [
+    "No live signing key generated or loaded",
+    "Known synthetic test seed only; never provision it in Shopify",
+    "EUR only, quantity1..99 and exactly signed quantity; snapshot renewal required after changes",
+    "Full saved-document validation and real product/variant/revision binding must precede signing",
+    "Fail-closed behavior requires existing CartTransform blockOnFailure=true, verified live and by negative checkout tests",
+    "Open optional tier in original editor disables tier; new signed publishing contract deliberately blocks unresolved tiers"
+  ],
+  "sources": [
+    "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/configurator/variant-m/contract.mjs",
+    "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/configurator/variant-m/commerce-model.mjs",
+    "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/cart-personalization.mjs",
+    "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/quantity-tier-defaults.json",
+    "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/docs/releases/20261011/orders/shopify-extension-check.json"
+  ],
+  "officialReferences": [
+    "https://shopify.dev/docs/api/storefront/2026-07/input-objects/CartLineInput",
+    "https://shopify.dev/docs/api/functions/2026-07/cart-transform",
+    "https://shopify.dev/docs/api/storefront/2026-07/objects/CartLineCost",
+    "https://shopify.dev/docs/api/admin-graphql/2026-07/mutations/cartTransformCreate",
+    "https://shopify.dev/docs/apps/build/metafields",
+    "https://github.com/paulmillr/noble-curves",
+    "https://github.com/paulmillr/noble-hashes"
+  ]
+}

@@ -135,6 +135,15 @@ test('Sperrliste interner Adressen', () => {
     assert.equal(isPrivateIp(ip), false, ip);
 });
 
+test('Ohne Token: wird einmal in privater Datei erzeugt und danach wiederverwendet', () => {
+  const tf = path.join(TMP, 'priv', 'tok.txt');
+  const a = loadConfig([], {}, { CDR_MCP_TOKEN_FILE: tf });
+  assert.match(a.token, /^[A-Za-z0-9]{40}$/);
+  assert.equal(fs.statSync(tf).mode & 0o777, 0o600);
+  const b = loadConfig([], {}, { CDR_MCP_TOKEN_FILE: tf });
+  assert.equal(b.token, a.token);
+});
+
 test('Konfiguration verlangt langes Token', () => {
   assert.throws(() => loadConfig([], { CDR_MCP_TOKEN: 'kurz' }), /CDR_MCP_TOKEN/);
 });
@@ -150,7 +159,7 @@ test.before(async () => {
     res.writeHead(200); fs.createReadStream(f).pipe(res);
   });
   await new Promise((r) => files.listen(0, '127.0.0.1', r));
-  const cfg = loadConfig([], { CDR_MCP_TOKEN: TOKEN, CDR2RAW: FAKE, CDR_MCP_DATA: path.join(TMP, 'data'), CDR_MCP_ALLOW_PRIVATE_URLS: '1', CDR_MCP_ORIGIN: 'https://cdr.example', CDR_MCP_PYTHON: 'python3' });
+  const cfg = loadConfig([], { CDR_MCP_TOKEN: TOKEN, CDR2RAW: FAKE, CDR_MCP_DATA: path.join(TMP, 'data'), CDR_MCP_ALLOW_PRIVATE_URLS: '1', CDR_MCP_PYTHON: 'python3' });
   process.env.CDR_MCP_QUIET = '1';
   srv = createCdrServer(cfg);
   await new Promise((r) => srv.listen(0, '127.0.0.1', r));
@@ -159,7 +168,7 @@ test.before(async () => {
 test.after(() => { srv?.close(); files?.close(); fs.rmSync(TMP, { recursive: true, force: true }); });
 
 async function rpc(method, params, token = TOKEN) {
-  const r = await fetch(`${base}/mcp/${token}`, { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) });
+  const r = await fetch(`${base}/mcp/${token}`, { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream', 'x-forwarded-host': 'cdr.example' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }) });
   return { status: r.status, body: r.status === 200 ? await r.json() : null };
 }
 const fileArg = (name) => ({ download_url: `http://127.0.0.1:${files.address().port}/${name}`, file_id: 'file_' + name, file_name: name });

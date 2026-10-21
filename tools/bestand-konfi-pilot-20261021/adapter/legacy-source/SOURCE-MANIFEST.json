@@ -1,0 +1,137 @@
+{
+  "schema": "gravuru-legacy-source-manifest/v1",
+  "purpose": "Self-contained, unchanged static dependencies of the September customerDraft serializer for adapter tests only.",
+  "capturedAt": "2026-10-21T16:03:14.411Z",
+  "sourceWorkspaceRelative": "work/konfigurator-update-bis-20261016",
+  "entrypoint": "configurator/variant-m/ux-model.mjs",
+  "provenance": {
+    "kind": "local-working-copy-snapshot",
+    "historicalRepository": "Chris83638w/gravuru-shopify",
+    "historicalBranch": "task/konfigurator-bedienung-20260927",
+    "historicalHandoverCommit": "d299ddfa139971130ec59996cc6365709435d3e5",
+    "note": "The captured local working copy has subsequent changes. The historical commit is background provenance only, not a claim of byte equality. Per-file SHA-256 hashes identify this exact snapshot. No runtime data, material assets, images, fonts, databases or credentials are copied."
+  },
+  "fileCount": 13,
+  "totalBytes": 158584,
+  "files": [
+    {
+      "path": "configurator/variant-m/contract.mjs",
+      "bytes": 10523,
+      "sha256": "b8082a208c411d0ac848809fcc4df7d5774ec3974ba366dc607cc7ee48e777ee",
+      "staticImports": [
+        "../../platform/sources/app/shared/models/studio-products.mjs",
+        "../../platform/sources/app/shared/models/processing-profiles.mjs",
+        "../../platform/sources/app/shared/models/design-content.mjs",
+        "../../platform/sources/app/shared/models/universal-elements.mjs",
+        "../../platform/sources/app/shared/models/doorbell-preview.mjs",
+        "./local-pilot.mjs"
+      ]
+    },
+    {
+      "path": "configurator/variant-m/local-pilot.mjs",
+      "bytes": 3433,
+      "sha256": "0046dc59513d8790c789e326d885726d2ff3eaf26a8b87418c8a20fda3106a08",
+      "staticImports": [
+        "../../platform/sources/app/shared/models/doorbell-preview.mjs",
+        "../../platform/sources/app/shared/models/design-content.mjs"
+      ]
+    },
+    {
+      "path": "configurator/variant-m/ux-model.mjs",
+      "bytes": 3150,
+      "sha256": "b2f8b9636be166ce95322e6012b159f169a244b4715a7e559a9c255f25e863c2",
+      "staticImports": [
+        "./contract.mjs"
+      ]
+    },
+    {
+      "path": "platform/sources/app/shared/models/design-content.mjs",
+      "bytes": 10858,
+      "sha256": "08b2a82024134890fa7b6caa55f812cdebc7c96f4ab73e16dde2a0b4b1279245",
+      "staticImports": [
+        "../vendor/fflate-0.8.3.mjs"
+      ]
+    },
+    {
+      "path": "platform/sources/app/shared/models/doorbell-preview.mjs",
+      "bytes": 3637,
+      "sha256": "3cea50522fc66afee54f1bfced58959c51b39a436c59daab9c9cff7df9f2decc",
+      "staticImports": [
+        "../vendor/fflate-0.8.3.mjs"
+      ]
+    },
+    {
+      "path": "platform/sources/app/shared/models/doorbell-release.mjs",
+      "bytes": 2538,
+      "sha256": "acf56d71c97f11478b4d96ebbca03645221dafd4bd660d393d5d72b88ef62c30",
+      "staticImports": [
+        "./motifs.mjs"
+      ]
+    },
+    {
+      "path": "platform/sources/app/shared/models/doorbells.mjs",
+      "bytes": 9186,
+      "sha256": "045bc179d26c40957f2a4467e0a26c48e14a008a30deb5a575062bf79c192c2c",
+      "staticImports": [
+        "./motifs.mjs",
+        "./design-content.mjs",
+        "./runtime-contract.mjs",
+        "./doorbell-release.mjs"
+      ]
+    },
+    {
+      "path": "platform/sources/app/shared/models/motifs.mjs",
+      "bytes": 4137,
+      "sha256": "afeac5688d2fe48a31bf72dff08ebf68f6804175e6a2da6d593ce574f5498547",
+      "staticImports": []
+    },
+    {
+      "path": "platform/sources/app/shared/models/processing-profiles.mjs",
+      "bytes": 2651,
+      "sha256": "9a3686ec5cbc081b4f2a0f7e9ed7a7885234b9d5377a1c3d930e6ce81f04c814",
+      "staticImports": []
+    },
+    {
+      "path": "platform/sources/app/shared/models/runtime-contract.mjs",
+      "bytes": 6363,
+      "sha256": "89195038cf8fdfe8a4603307bb3e692cd1c468c82c2ce7803201cb03c758f669",
+      "staticImports": [
+        "./design-content.mjs"
+      ]
+    },
+    {
+      "path": "platform/sources/app/shared/models/studio-products.mjs",
+      "bytes": 6907,
+      "sha256": "3875aae10b8579e9ee8fec9919d2129d5c87c222c6dc3e3da05aab5506d201bc",
+      "staticImports": [
+        "./motifs.mjs",
+        "./doorbells.mjs",
+        "./design-content.mjs",
+        "./processing-profiles.mjs",
+        "./universal-elements.mjs"
+      ]
+    },
+    {
+      "path": "platform/sources/app/shared/models/universal-elements.mjs",
+      "bytes": 4279,
+      "sha256": "07c419b2caa7bd63d4f53de967d8afb48f72c02c0e7867b63bdd27246a49901a",
+      "staticImports": [
+        "./design-content.mjs",
+        "./processing-profiles.mjs"
+      ]
+    },
+    {
+      "path": "platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "bytes": 90922,
+      "sha256": "b7ca4450b19559a1d50eb381adcee94b82449674be4cd17789d9beba7e6122a1",
+      "staticImports": []
+    }
+  ],
+  "licenseFiles": [
+    {
+      "path": "platform/sources/app/shared/vendor/fflate-LICENSE.txt",
+      "bytes": 1069,
+      "sha256": "0a1df3a083d0c010560aa342e87959c8c1070e6fd54545741f083f22d0c8b551"
+    }
+  ]
+}

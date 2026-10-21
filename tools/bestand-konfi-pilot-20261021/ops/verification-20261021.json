@@ -1,0 +1,49 @@
+{
+  "schema": "gravuru-pilot-ops-verification/v1",
+  "date": "2026-10-21",
+  "reference": {
+    "repository": "Chris83638w/gravuru-2027",
+    "branch": "dev/konfi-neu-20261019",
+    "commit": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
+    "sourcesRead": [
+      "ops/plesk/merchant-runtime.mjs",
+      "ops/plesk/lock.mjs",
+      "ops/plesk/snapshot-merchant-data.py",
+      "ops/plesk/merchant-app.cjs",
+      "ops/plesk/merchant-config.mjs",
+      "ops/plesk/diagnostics.cjs",
+      "ops/plesk/MERCHANT-README.md",
+      "scripts/build-plesk-test-package.py",
+      "app/workshop/http.mjs",
+      "app/workshop/acrylic-review.mjs"
+    ]
+  },
+  "verification": {
+    "runtime": "Node v24.19.0 on Windows",
+    "command": "node --test ops/ops.test.mjs",
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "fixtures": "Temporary synthetic manifests/files and local HTTP listeners on ephemeral loopback ports",
+    "boundaries": [
+      "Literal loopback URL validation rejects normalized IPv4 spellings, DNS names, credentials, queries, fragments and privileged ports",
+      "Wrong pilot identity prevents model workload",
+      "HTTP redirect does not reach even a second local fixture",
+      "Only GET /pilot/health and GET /pilot/model accepted",
+      "Bounded stage records latency, response size and status without response bodies",
+      "HTTP 409 stops escalation",
+      "Manifest hashes checked without changes; traversal, database and private paths refused",
+      "SQLite metadata only; file bytes and directory contents remain unchanged",
+      "Host probe never asserts that the probe process is the application"
+    ]
+  },
+  "notPerformed": [
+    "Plesk or Shopify load test",
+    "Any deployment, server start/restart or production migration",
+    "Private configuration or environment dump",
+    "Actual app PID/cgroup inspection on Plesk",
+    "Private database open, copy, lock, backup or restore",
+    "Real photo/draft/checkout/production capacity measurement"
+  ],
+  "productionCapacityProven": false
+}

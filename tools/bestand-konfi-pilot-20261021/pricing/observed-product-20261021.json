@@ -1,0 +1,99 @@
+{
+  "schema": "gravuru-pricing-observation/v1",
+  "source": {
+    "kind": "manual-ui-observation",
+    "reportedBy": "coordinating agent",
+    "observedAt": "2026-10-21T17:30:00+02:00",
+    "surface": "existing Shopify editor",
+    "configurationId": "cfg_b4fd3f0c-1d36-4708-b65a-2450134c4ef1",
+    "productRevision": 5,
+    "widthMm": 220,
+    "heightMm": 140,
+    "shopifyPriceApiRead": false
+  },
+  "observed": {
+    "baseCents": 2299,
+    "photoCents": 999,
+    "motifCents": 169,
+    "mounting": [
+      {
+        "id": "observed-none",
+        "label": "Ohne Befestigung",
+        "priceCents": 0
+      },
+      {
+        "id": "observed-hole2",
+        "label": "2 Bohrlöcher",
+        "priceCents": 299
+      },
+      {
+        "id": "observed-hole4",
+        "label": "4 Bohrlöcher",
+        "priceCents": 399
+      },
+      {
+        "id": "observed-spacer2-silver",
+        "label": "2 Abstandshalter Silber",
+        "priceCents": 898
+      },
+      {
+        "id": "observed-spacer2-black",
+        "label": "2 Abstandshalter Schwarz",
+        "priceCents": 998
+      },
+      {
+        "id": "observed-spacer4-silver",
+        "label": "4 Abstandshalter Silber",
+        "priceCents": 1398
+      },
+      {
+        "id": "observed-stand-clear",
+        "label": "Ständer klar",
+        "priceCents": 1299
+      },
+      {
+        "id": "observed-stand-black",
+        "label": "Ständer schwarz",
+        "priceCents": 1499
+      },
+      {
+        "id": "observed-silicone",
+        "label": "Silikon",
+        "priceCents": 499
+      }
+    ]
+  },
+  "requestedPricing": {
+    "repository": "Chris83638w/gravuru-2027",
+    "commit": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
+    "file": "app/workshop/quantity-tier-defaults.json",
+    "ruleId": "entscheidung-20261020-gedenktafeln",
+    "tiers": [
+      {
+        "minQuantity": 2,
+        "percentOff": 6
+      },
+      {
+        "minQuantity": 3,
+        "percentOff": 10
+      }
+    ],
+    "liveVerified": false,
+    "meaning": "Desired calculation from current GitHub contract, not an observed live Shopify discount"
+  },
+  "testScope": {
+    "chargedPhotos": 1,
+    "includedCountForTest": 0,
+    "photoAllowanceLiveVerified": false,
+    "quantityRange": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "syntheticOptionIds": true,
+    "shopifyVariantMapping": null,
+    "changesToProduct": false
+  }
+}
+

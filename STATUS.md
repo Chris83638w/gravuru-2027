@@ -1,3 +1,21 @@
+## 21.10.2026 – Getrennter Bestandsanschluss geprüft, Livebetrieb unverändert
+
+Eigenständig startbarer Prüfstand: [tools/bestand-konfi-pilot-20261021](tools/bestand-konfi-pilot-20261021/README.md). Grundlage ist dev/konfi-neu-20261019 @ bf5c059f13e0868d7c554616b7c35ff7a328ae62. Bestehende September-Oberfläche und Funktionen bleiben erhalten. Enthalten sind Vertragsadapter, noch nicht eingebauter Händlertransport, Preisprüfungen, lesender Preflight und lokaler synthetischer Lasttreiber.
+
+**Tatsächlich geprüft:** 36 Adapter-/Transport-/Ops-Tests und 28 Preistests bestanden; vollständige getrennte Kopie ebenfalls startbar. 100 synthetische lokale GETs ohne Fehler, null externe Lastaufrufe. Keine Foto-/SQLite-/Warenkorb-Kapazität daraus ableiten. Ein beim unabhängigen Review gefundener fehlender Produkt-/Designvergleich der Sicherungsantwort wurde ergänzt und mit Negativfällen geprüft.
+
+**Lesend live geprüft:** Plesk app-2027, Node 24.22.0, Startkette start-r5.cjs → app.cjs → private/gravuru-merchant-release-d18bc6c/ops/plesk/merchant-app.cjs. Dessen Manifest nennt d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb und Version 0.1.0-precise.20261016+d18bc6cb8fdb. Dieser Commit war über GitHub in gravuru-2027 und gravuru-shopify nicht abrufbar (422). Vollständiger Dateihash- und laufender Prozessabgleich fehlen; eine Manifestangabe bestätigt keine unveränderten Bytes.
+
+Der Host hat 16 Kerne und 96 GB RAM. Das CloudLinux-Konto gravuru_werkstatt (UID 10005) ist jedoch auf SPEED 100 %, PMEM 1G, IO 1 MB/s, IOPS 1024, EP 20 und NPROC 100 begrenzt. Zuordnung des laufenden Prozesses zur cgroup steht aus. Plesk zeigt 21 Backups, neuestes vom 21.10. um 02:11 Uhr in Google Drive; kein heutiger SQLite-Wiederherstellungstest.
+
+Schiefer cfg_b4fd3f0c-1d36-4708-b65a-2450134c4ef1, Stand 5: 220 × 140 mm, neun Befestigungen, 2299 Cent Basis / 999 Cent Foto / 169 Cent Motiv in der angemeldeten Werkstatt abgelesen. Staffel mit aktuellen GitHub-Vorgaben lokal geprüft, nicht als live aktiviert bestätigt.
+
+**Offene Sperren:** Alte Entwurfsfunktion verliert native Fotomasken-/Rollen-/Seitenfelder; Serververtrag speichert vollständige photoEdit-Parameter und versteckte Fotos nicht. Adapter erkennt und sperrt Verlustfälle. Öffentlicher Kundenzugriff und vollständiger Shopify-Staffel-/Zusatzpreisvertrag fehlen. Keine echte Ende-zu-Ende-Abnahme, kein Testkauf, keine Installation/Limitänderung, keine zweite Datenbank oder neuer Plesk-Dienst.
+
+**Nächster notwendiger Schritt:** Aktiven Serverquellstand nachvollziehbar sichern und zuordnen, vorhandenen privaten Sicherungsweg samt Wiederherstellung prüfen und verlustfreien Entwurfsvertrag schließen. Anschließend ein echtes Produkt über Sicherung, Wiederöffnung und Shopify-Testwarenkorb abnehmen; danach repräsentative Last auf separater Testumgebung messen.
+
+---
+
 ## Gedenktafel Schiefer 22 × 14 aus Corel-PDFs (Branch `dev/konfi-neu-gt22x14-schiefer`, nach `dev/konfi-neu-20261019` gemergt, nicht installiert) · 20.10.2026
 
 - `scripts/read-pdf-designs.py`: Einzel-Design-PDF (Corel) → Lieferform 2. Rote Haarlinie = Platte, Text-Objekte bleiben Text (Ligaturen aus dem Private-Use-Bereich über Glyphnamen zurück, doppelt gesetzte Zeichen einmal, Datumsläufe getrennt, > 180 Zeichen zeilenweise geteilt, Feldnamen name/daten/spruch), Pfade direkt aus dem Inhaltsstrom (ein Malbefehl = ein Pfad, Löcher bleiben), Motivgruppen ≤ 12, Bild + SMask = Platzhalterbild im Fotofeld. Ersatzschriften per Tabelle, Größe auf die Originalbreite angepasst.

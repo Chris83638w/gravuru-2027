@@ -1,0 +1,226 @@
+TAP version 13
+# Subtest: September customerDraft is translated without scaling, repricing or rewriting objects
+ok 1 - September customerDraft is translated without scaling, repricing or rewriting objects
+  ---
+  duration_ms: 3.0154
+  type: 'test'
+  ...
+# Subtest: native profile/UUID/revision must agree: no historical or other-product reinterpretation
+ok 2 - native profile/UUID/revision must agree: no historical or other-product reinterpretation
+  ---
+  duration_ms: 1.2639
+  type: 'test'
+  ...
+# Subtest: 300×200 cannot be imported into the 220×140 fixture and model geometry stays unchanged
+ok 3 - 300×200 cannot be imported into the 220×140 fixture and model geometry stays unchanged
+  ---
+  duration_ms: 0.3068
+  type: 'test'
+  ...
+# Subtest: AOSU, steel, demos and unsupported extra surfaces are rejected
+ok 4 - AOSU, steel, demos and unsupported extra surfaces are rejected
+  ---
+  duration_ms: 0.5874
+  type: 'test'
+  ...
+# Subtest: foreign designs and option groups are rejected; defaults come only from the loaded product
+ok 5 - foreign designs and option groups are rejected; defaults come only from the loaded product
+  ---
+  duration_ms: 0.75
+  type: 'test'
+  ...
+# Subtest: universal v1 draft preserves content and rejects changed fixed marks
+ok 6 - universal v1 draft preserves content and rejects changed fixed marks
+  ---
+  duration_ms: 0.5303
+  type: 'test'
+  ...
+# Subtest: objects are never silently filtered, rounded or dropped
+ok 7 - objects are never silently filtered, rounded or dropped
+  ---
+  duration_ms: 0.4608
+  type: 'test'
+  ...
+# Subtest: required photo, original and explicit background instructions cannot be missing
+ok 8 - required photo, original and explicit background instructions cannot be missing
+  ---
+  duration_ms: 1.4389
+  type: 'test'
+  ...
+# Subtest: original and edited bytes plus keep/remove survive; photoEdit stays separate with a send blocker
+ok 9 - original and edited bytes plus keep/remove survive; photoEdit stays separate with a send blocker
+  ---
+  duration_ms: 1.2743
+  type: 'test'
+  ...
+# Subtest: hidden photo is retained in reopening but not illegally added to native media
+ok 10 - hidden photo is retained in reopening but not illegally added to native media
+  ---
+  duration_ms: 0.5302
+  type: 'test'
+  ...
+# Subtest: duplicate uses of one image produce one native media entry and retain object references
+ok 11 - duplicate uses of one image produce one native media entry and retain object references
+  ---
+  duration_ms: 0.4422
+  type: 'test'
+  ...
+# Subtest: missing edited bytes, missing parameters and ambiguous source cannot claim complete reopening
+ok 12 - missing edited bytes, missing parameters and ambiguous source cannot claim complete reopening
+  ---
+  duration_ms: 1.5793
+  type: 'test'
+  ...
+# Subtest: inert inherited AOSU shell state is kept outside the native contract, never used as mounting
+ok 13 - inert inherited AOSU shell state is kept outside the native contract, never used as mounting
+  ---
+  duration_ms: 0.2145
+  type: 'test'
+  ...
+# Subtest: a native mask or layer role lost by the old serializer blocks sending and stays recoverable
+ok 14 - a native mask or layer role lost by the old serializer blocks sending and stays recoverable
+  ---
+  duration_ms: 0.3207
+  type: 'test'
+  ...
+# Subtest: quantity and preview contracts reject invalid values, URLs and excessive encoded preview
+ok 15 - quantity and preview contracts reject invalid values, URLs and excessive encoded preview
+  ---
+  duration_ms: 0.5803
+  type: 'test'
+  ...
+# Subtest: a concurrent model/draft mutation cannot switch the product bound before encoding
+ok 16 - a concurrent model/draft mutation cannot switch the product bound before encoding
+  ---
+  duration_ms: 0.2592
+  type: 'test'
+  ...
+# Subtest: only literal loopback HTTP with explicit unprivileged port; no parser normalization bypass
+ok 17 - only literal loopback HTTP with explicit unprivileged port; no parser normalization bypass
+  ---
+  duration_ms: 1.3309
+  type: 'test'
+  ...
+# Subtest: wrong pilot identity prevents workload calls
+ok 18 - wrong pilot identity prevents workload calls
+  ---
+  duration_ms: 29.4602
+  type: 'test'
+  ...
+# Subtest: redirect is rejected; second local endpoint is never followed
+ok 19 - redirect is rejected; second local endpoint is never followed
+  ---
+  duration_ms: 5.1054
+  type: 'test'
+  ...
+# Subtest: route whitelist prevents write or general proxy routes
+ok 20 - route whitelist prevents write or general proxy routes
+  ---
+  duration_ms: 0.4356
+  type: 'test'
+  ...
+# Subtest: bounded synthetic stage reports response statistics, only GET requests
+ok 21 - bounded synthetic stage reports response statistics, only GET requests
+  ---
+  duration_ms: 170.3293
+  type: 'test'
+  ...
+# Subtest: busy target stops load escalation
+ok 22 - busy target stops load escalation
+  ---
+  duration_ms: 5.9516
+  type: 'test'
+  ...
+# Subtest: full source manifest verified; no file changes or private values returned
+ok 23 - full source manifest verified; no file changes or private values returned
+  ---
+  duration_ms: 16.1934
+  type: 'test'
+  ...
+# Subtest: manifest traversal, secrets, databases and duplicate entries cannot be read as release code
+ok 24 - manifest traversal, secrets, databases and duplicate entries cannot be read as release code
+  ---
+  duration_ms: 5.0487
+  type: 'test'
+  ...
+# Subtest: storage inspection does not open SQLite, read configuration, acquire lock or change files
+ok 25 - storage inspection does not open SQLite, read configuration, acquire lock or change files
+  ---
+  duration_ms: 8.7068
+  type: 'test'
+  ...
+# Subtest: host preflight labels unavailable app limits and never mistakes probe process for app
+ok 26 - host preflight labels unavailable app limits and never mistakes probe process for app
+  ---
+  duration_ms: 0.8258
+  type: 'test'
+  ...
+# Subtest: pinning and adapter gate prevent incompatible data from being sent
+ok 27 - pinning and adapter gate prevent incompatible data from being sent
+  ---
+  duration_ms: 1.6361
+  type: 'test'
+  ...
+# Subtest: one private draft is revised; token is in header, never return value or URL
+ok 28 - one private draft is revised; token is in header, never return value or URL
+  ---
+  duration_ms: 0.6505
+  type: 'test'
+  ...
+# Subtest: network ambiguity blocks repeat to avoid duplicate drafts
+ok 29 - network ambiguity blocks repeat to avoid duplicate drafts
+  ---
+  duration_ms: 0.4884
+  type: 'test'
+  ...
+# Subtest: review_busy is an explicit non-writing refusal and allows a later manual attempt
+ok 30 - review_busy is an explicit non-writing refusal and allows a later manual attempt
+  ---
+  duration_ms: 0.3931
+  type: 'test'
+  ...
+# Subtest: parallel double click makes one write
+ok 31 - parallel double click makes one write
+  ---
+  duration_ms: 0.296
+  type: 'test'
+  ...
+# Subtest: incorrect success revision remains unknown instead of pretending to save
+ok 32 - incorrect success revision remains unknown instead of pretending to save
+  ---
+  duration_ms: 0.2543
+  type: 'test'
+  ...
+# Subtest: merchant grant must pin the exact product revision; local operator is insufficient
+ok 33 - merchant grant must pin the exact product revision; local operator is insufficient
+  ---
+  duration_ms: 0.264
+  type: 'test'
+  ...
+# Subtest: adapter-to-transport preserves the original photo and keep instruction in a synthetic save
+ok 34 - adapter-to-transport preserves the original photo and keep instruction in a synthetic save
+  ---
+  duration_ms: 1.7801
+  type: 'test'
+  ...
+# Subtest: a success belonging to another product, revision or design cannot be accepted
+ok 35 - a success belonging to another product, revision or design cannot be accepted
+  ---
+  duration_ms: 1.1815
+  type: 'test'
+  ...
+# Subtest: local probe cannot accept writes or expose arbitrary paths
+ok 36 - local probe cannot accept writes or expose arbitrary paths
+  ---
+  duration_ms: 56.03
+  type: 'test'
+  ...
+1..36
+# tests 36
+# suites 0
+# pass 36
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 342.8683

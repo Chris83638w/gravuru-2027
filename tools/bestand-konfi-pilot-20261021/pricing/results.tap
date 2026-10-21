@@ -1,0 +1,178 @@
+TAP version 13
+# Subtest: manual observation and requested tier are explicitly distinct from live Shopify verification
+ok 1 - manual observation and requested tier are explicitly distinct from live Shopify verification
+  ---
+  duration_ms: 1.1028
+  type: 'test'
+  ...
+# Subtest: observed revision-5 base plus one chargeable photo, desired tier at quantity 1
+ok 2 - observed revision-5 base plus one chargeable photo, desired tier at quantity 1
+  ---
+  duration_ms: 0.7235
+  type: 'test'
+  ...
+# Subtest: observed revision-5 base plus one chargeable photo, desired tier at quantity 2
+ok 3 - observed revision-5 base plus one chargeable photo, desired tier at quantity 2
+  ---
+  duration_ms: 0.1503
+  type: 'test'
+  ...
+# Subtest: observed revision-5 base plus one chargeable photo, desired tier at quantity 3
+ok 4 - observed revision-5 base plus one chargeable photo, desired tier at quantity 3
+  ---
+  duration_ms: 0.1094
+  type: 'test'
+  ...
+# Subtest: observed revision-5 base plus one chargeable photo, desired tier at quantity 4
+ok 5 - observed revision-5 base plus one chargeable photo, desired tier at quantity 4
+  ---
+  duration_ms: 0.122
+  type: 'test'
+  ...
+# Subtest: all nine manually observed mounting prices participate before discount
+ok 6 - all nine manually observed mounting prices participate before discount
+  ---
+  duration_ms: 0.3792
+  type: 'test'
+  ...
+# Subtest: all 10 source files match the pinned Git blob hashes
+ok 7 - all 10 source files match the pinned Git blob hashes
+  ---
+  duration_ms: 0.916
+  type: 'test'
+  ...
+# Subtest: confirmed tier values and first matching theme priority
+ok 8 - confirmed tier values and first matching theme priority
+  ---
+  duration_ms: 0.7725
+  type: 'test'
+  ...
+# Subtest: actual source family supplies 2999-cent base and 299/399-cent mounting
+ok 9 - actual source family supplies 2999-cent base and 299/399-cent mounting
+  ---
+  duration_ms: 0.1304
+  type: 'test'
+  ...
+# Subtest: memorial tier boundary quantity 1
+ok 10 - memorial tier boundary quantity 1
+  ---
+  duration_ms: 0.7539
+  type: 'test'
+  ...
+# Subtest: memorial tier boundary quantity 2
+ok 11 - memorial tier boundary quantity 2
+  ---
+  duration_ms: 0.1784
+  type: 'test'
+  ...
+# Subtest: memorial tier boundary quantity 3
+ok 12 - memorial tier boundary quantity 3
+  ---
+  duration_ms: 0.1293
+  type: 'test'
+  ...
+# Subtest: memorial tier boundary quantity 4
+ok 13 - memorial tier boundary quantity 4
+  ---
+  duration_ms: 0.1059
+  type: 'test'
+  ...
+# Subtest: memorial tier boundary quantity 99
+ok 14 - memorial tier boundary quantity 99
+  ---
+  duration_ms: 0.1193
+  type: 'test'
+  ...
+# Subtest: invalid quantity 0 rejected
+ok 15 - invalid quantity 0 rejected
+  ---
+  duration_ms: 0.4165
+  type: 'test'
+  ...
+# Subtest: invalid quantity 100 rejected
+ok 16 - invalid quantity 100 rejected
+  ---
+  duration_ms: 0.1866
+  type: 'test'
+  ...
+# Subtest: invalid quantity 1.5 rejected
+ok 17 - invalid quantity 1.5 rejected
+  ---
+  duration_ms: 0.2128
+  type: 'test'
+  ...
+# Subtest: mounting discounted BEFORE adding the non-discounted extra photo
+ok 18 - mounting discounted BEFORE adding the non-discounted extra photo
+  ---
+  duration_ms: 0.5067
+  type: 'test'
+  ...
+# Subtest: one included photo stays free; a logo does not consume the photo allowance
+ok 19 - one included photo stays free; a logo does not consume the photo allowance
+  ---
+  duration_ms: 0.4116
+  type: 'test'
+  ...
+# Subtest: percentage includes extra motif, filled field and designed reverse side
+ok 20 - percentage includes extra motif, filled field and designed reverse side
+  ---
+  duration_ms: 0.505
+  type: 'test'
+  ...
+# Subtest: half cent rounds up PER UNIT before multiplying quantity
+ok 21 - half cent rounds up PER UNIT before multiplying quantity
+  ---
+  duration_ms: 0.1722
+  type: 'test'
+  ...
+# Subtest: open tier disables the WHOLE tier schedule rather than blocking purchase
+ok 22 - open tier disables the WHOLE tier schedule rather than blocking purchase
+  ---
+  duration_ms: 0.3463
+  type: 'test'
+  ...
+# Subtest: explicitly no tier does not fall back to a discount in pricing
+ok 23 - explicitly no tier does not fall back to a discount in pricing
+  ---
+  duration_ms: 0.098
+  type: 'test'
+  ...
+# Subtest: open reverse-side surcharge blocks a designed back
+ok 24 - open reverse-side surcharge blocks a designed back
+  ---
+  duration_ms: 0.1821
+  type: 'test'
+  ...
+# Subtest: unconfirmed photo surcharge is rejected
+ok 25 - unconfirmed photo surcharge is rejected
+  ---
+  duration_ms: 0.131
+  type: 'test'
+  ...
+# Subtest: fixed Shopify price blocks the first active tier, not quantity one
+ok 26 - fixed Shopify price blocks the first active tier, not quantity one
+  ---
+  duration_ms: 0.2959
+  type: 'test'
+  ...
+# Subtest: server personalization agrees with discounted mounting plus undiscounted photo
+ok 27 - server personalization agrees with discounted mounting plus undiscounted photo
+  ---
+  duration_ms: 0.479
+  type: 'test'
+  ...
+# Subtest: current server personalization rejects separately priced reverse-side or field amounts
+ok 28 - current server personalization rejects separately priced reverse-side or field amounts
+  ---
+  duration_ms: 0.203
+  type: 'test'
+  ...
+1..28
+# tests 28
+# suites 0
+# pass 28
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 99.5201

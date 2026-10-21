@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-21",
+  "evidence": "Authenticated Plesk and Shopify UI read-only observations by the parent agent; not an automated runtime attestation",
+  "host": "app-2027.gravuru-designwerkstatt.de",
+  "runtime": {
+    "node": "24.22.0",
+    "applicationRoot": "/gravuru-2027-merchant",
+    "documentRoot": "/gravuru-2027-merchant/public",
+    "startupFile": "start-r5.cjs",
+    "startupChain": ["start-r5.cjs", "app.cjs", "/var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-merchant-release-d18bc6c/ops/plesk/merchant-app.cjs"],
+    "manifestVersion": "0.1.0-precise.20261016+d18bc6cb8fdb",
+    "manifestSourceCommit": "d18bc6cb8fdbe9e69008d9be18b2b74ce72365eb",
+    "manifestSourceCommitGithubLookup": {"gravuru-2027": 422, "gravuru-shopify": 422},
+    "fullFileHashAuditPerformed": false,
+    "processImageVerified": false
+  },
+  "machine": {"cpu": "AMD EPYC 9174F", "cores": 16, "ramHardwareGB": 96, "ramAvailableGB": 63.48, "loadAverage": [1.63,1.71,1.95], "websiteFilesystemFreeGB": 412.37},
+  "hostingAccount": {"name": "gravuru_werkstatt", "uid": 10005, "domain": "gravuru-designwerkstatt.de", "speedPercent": 100, "physicalMemory": "1G", "io": "1MB/s", "iops": 1024, "entryProcesses": 20, "processes": 100, "package": "Admin Simple", "activeProcessCgroupVerified": false},
+  "backupListing": {"count": 21, "totalDisplayedSize": "617 G", "latestLocalTimestamp": "2026-10-21 02:11:00", "latestType": "incremental", "latestDisplayedSize": "+13.2 GB", "storage": "Google Drive Backup", "sqliteConsistencyVerified": false, "restorePerformed": false},
+  "product": {"id": "cfg_b4fd3f0c-1d36-4708-b65a-2450134c4ef1", "revision": 5, "widthMm": 220, "heightMm": 140, "mountingChoices": 9, "basePriceCents": 2299, "extraPhotoCents": 999, "extraMotifCents": 169, "newTierPricingLiveVerified": false},
+  "mutations": {"plesk": 0, "shopify": 0, "existingConfiguratorFiles": 0},
+  "liveLoadTestPerformed": false
+}

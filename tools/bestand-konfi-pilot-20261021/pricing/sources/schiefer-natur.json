@@ -1,0 +1,82 @@
+{
+ "schema": "gravuru-product-family/v2",
+ "id": "gedenktafel-30x20-schiefer-natur",
+ "name": "Gedenktafel 30 × 20 · Naturschiefer",
+ "material": {
+  "kind": "slate",
+  "label": "Naturschiefer, natürliche Bruchkante",
+  "thicknessMm": 5,
+  "processingProfileId": "slate-engraving",
+  "variant": "natur"
+ },
+ "designArea": {
+  "marginMm": 10,
+  "keepoutMm": 1
+ },
+ "groups": [
+  {
+   "key": "RE",
+   "name": "Rechteck",
+   "shape": "rect",
+   "cornerRadiusMm": 0
+  }
+ ],
+ "mountingRules": [
+  {
+   "id": "B02-E12-D5",
+   "label": "2 Bohrlöcher Ø 5 mm",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 5,
+   "edgeMm": 12,
+   "priceCents": 299,
+   "skuSuffix": "B02"
+  },
+  {
+   "id": "B04-E12-D5",
+   "label": "4 Bohrlöcher Ø 5 mm",
+   "layout": "corners",
+   "count": 4,
+   "diameterMm": 5,
+   "edgeMm": 12,
+   "priceCents": 399,
+   "skuSuffix": "B04"
+  }
+ ],
+ "sizes": [
+  {
+   "key": "GT-SN-RE-300X200",
+   "groupKey": "RE",
+   "label": "30 × 20 cm",
+   "widthMm": 300,
+   "heightMm": 200,
+   "baseCents": 2999,
+   "mounting": [
+    "B02-E12-D5",
+    "B04-E12-D5"
+   ]
+  }
+ ],
+ "withoutMounting": true,
+ "fonts": [
+  "Montserrat",
+  "Great Vibes",
+  "Cinzel",
+  "Cormorant Garamond",
+  "Allura",
+  "Lora",
+  "Parisienne",
+  "Josefin Sans",
+  "Dancing Script",
+  "Lora Italic",
+  "Caveat",
+  "Kalam",
+  "Oswald"
+ ],
+ "briefingNotes": "Gedenktafel 30 × 20 cm: ruhige, würdige Gestaltung. Name groß, Lebensdaten klar lesbar, Spruch zurückhaltend; Motive dezent. Ein Design gilt für alle Materialien dieser Größe – nur schwarz auf weiß gestalten, die Werkstatt zeigt die Gravur je Material.",
+ "sizeKeyPrefix": "GT-SN",
+ "sizeKeySuffix": "",
+ "source": {
+  "note": "Übernommen aus app/configurator/variant-m/fixtures/native-profile.json („Hunde-Gedenktafel Schiefer 30 × 20 cm“): 5 mm, Rand 10 mm, Grundpreis 29,99 €, B02 Ø 5 mm/12 mm 2,99 €, B04 Ø 5 mm/12 mm 3,99 €. Werte bitte mit der Stammdaten-Excel bestätigen. Zubehör (Acrylständer, Silikon, Abstandshalter) noch nicht im Familienmodell."
+ }
+}

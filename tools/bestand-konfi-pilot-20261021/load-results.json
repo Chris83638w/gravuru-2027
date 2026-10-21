@@ -1,0 +1,107 @@
+{
+  "schema": "gravuru-loopback-transport-test/v1",
+  "checkedAt": "2026-10-21T15:59:54.074Z",
+  "origin": "http://127.0.0.1:64127",
+  "identity": {
+    "schema": "gravuru-integration-pilot/v1",
+    "mode": "synthetic-only",
+    "externalNetwork": false,
+    "privateData": false
+  },
+  "methods": [
+    "GET"
+  ],
+  "routes": [
+    "/pilot/health",
+    "/pilot/model"
+  ],
+  "externalRequests": 0,
+  "stages": [
+    {
+      "concurrency": 1,
+      "requestRateCap": 25,
+      "durationRequestedMs": 1000,
+      "elapsedMs": 962.11,
+      "completed": 25,
+      "bytes": 41050,
+      "statuses": {
+        "200": 25
+      },
+      "errors": {},
+      "stoppedOnBusyOrFailure": false,
+      "requestsPerSecond": 25.98,
+      "latencyMs": {
+        "p50": 1.88,
+        "p95": 2.43,
+        "p99": 2.51
+      },
+      "scope": "GET synthetic model transport only; no customer capacity claim"
+    },
+    {
+      "concurrency": 2,
+      "requestRateCap": 25,
+      "durationRequestedMs": 1000,
+      "elapsedMs": 964.32,
+      "completed": 25,
+      "bytes": 41050,
+      "statuses": {
+        "200": 25
+      },
+      "errors": {},
+      "stoppedOnBusyOrFailure": false,
+      "requestsPerSecond": 25.93,
+      "latencyMs": {
+        "p50": 1.81,
+        "p95": 2.11,
+        "p99": 2.14
+      },
+      "scope": "GET synthetic model transport only; no customer capacity claim"
+    },
+    {
+      "concurrency": 4,
+      "requestRateCap": 25,
+      "durationRequestedMs": 1000,
+      "elapsedMs": 965.16,
+      "completed": 25,
+      "bytes": 41050,
+      "statuses": {
+        "200": 25
+      },
+      "errors": {},
+      "stoppedOnBusyOrFailure": false,
+      "requestsPerSecond": 25.9,
+      "latencyMs": {
+        "p50": 1.61,
+        "p95": 1.96,
+        "p99": 1.98
+      },
+      "scope": "GET synthetic model transport only; no customer capacity claim"
+    },
+    {
+      "concurrency": 8,
+      "requestRateCap": 25,
+      "durationRequestedMs": 1000,
+      "elapsedMs": 965.36,
+      "completed": 25,
+      "bytes": 41050,
+      "statuses": {
+        "200": 25
+      },
+      "errors": {},
+      "stoppedOnBusyOrFailure": false,
+      "requestsPerSecond": 25.9,
+      "latencyMs": {
+        "p50": 1.68,
+        "p95": 1.95,
+        "p99": 1.95
+      },
+      "scope": "GET synthetic model transport only; no customer capacity claim"
+    }
+  ],
+  "productionCapacityProven": false,
+  "limits": [
+    "Closed-loop test with global rate cap, not a realistic marketing arrival model.",
+    "No photo upload, image validation, SQLite persistence, Shopify cart or production rendering is exercised.",
+    "No traffic is sent to Plesk, Shopify, a DNS hostname or an HTTP proxy."
+  ]
+}

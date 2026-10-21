@@ -1,0 +1,68 @@
+{
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "dev/konfi-neu-20261019",
+  "commit": "bf5c059f13e0868d7c554616b7c35ff7a328ae62",
+  "retrievedOn": "2026-10-21",
+  "files": [
+    {
+      "file": "sources/contract.mjs",
+      "repositoryPath": "app/configurator/variant-m/contract.mjs",
+      "gitBlobSha1": "4e09c4bd06bee3f1b6787faad3c0ccdf876d3975",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/configurator/variant-m/contract.mjs"
+    },
+    {
+      "file": "sources/commerce-model.mjs",
+      "repositoryPath": "app/configurator/variant-m/commerce-model.mjs",
+      "gitBlobSha1": "768a3c90129ab33d35097b2251ec214189589fb7",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/configurator/variant-m/commerce-model.mjs"
+    },
+    {
+      "file": "sources/ux-model.mjs",
+      "repositoryPath": "app/configurator/variant-m/ux-model.mjs",
+      "gitBlobSha1": "7edec731a92e44bd79427dc61215b7d662b3b4b0",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/configurator/variant-m/ux-model.mjs"
+    },
+    {
+      "file": "sources/option-fields.mjs",
+      "repositoryPath": "app/configurator/variant-m/option-fields.mjs",
+      "gitBlobSha1": "27d3600597afd528a0091fe69c97965f5ee8f4a2",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/configurator/variant-m/option-fields.mjs"
+    },
+    {
+      "file": "sources/surfaces.mjs",
+      "repositoryPath": "app/configurator/variant-m/surfaces.mjs",
+      "gitBlobSha1": "2bce3e1da882a352b9a52954e2842da32437503f",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/configurator/variant-m/surfaces.mjs"
+    },
+    {
+      "file": "sources/cart-personalization.mjs",
+      "repositoryPath": "app/workshop/cart-personalization.mjs",
+      "gitBlobSha1": "ce1b07e7079f12f08f980ac317bf80b8205bf945",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/cart-personalization.mjs"
+    },
+    {
+      "file": "sources/katalog-convert.mjs",
+      "repositoryPath": "app/workshop/katalog-convert.mjs",
+      "gitBlobSha1": "02677066eebf650b9eefdd86606b244cd163eaa8",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/katalog-convert.mjs"
+    },
+    {
+      "file": "sources/quantity-tier-defaults.json",
+      "repositoryPath": "app/workshop/quantity-tier-defaults.json",
+      "gitBlobSha1": "7c0cdd0efea7f5a9eff232d4a42bf702edfc5664",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/workshop/quantity-tier-defaults.json"
+    },
+    {
+      "file": "sources/schiefer-natur.json",
+      "repositoryPath": "app/designs/gedenktafeln-30x20/schiefer-natur.json",
+      "gitBlobSha1": "20fa987bfed5ca002bf6398224e27410fefe21ca",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/app/designs/gedenktafeln-30x20/schiefer-natur.json"
+    },
+    {
+      "file": "sources/STAFFEL-SHOP-BESTAND-20261019.md",
+      "repositoryPath": "docs/plans/STAFFEL-SHOP-BESTAND-20261019.md",
+      "gitBlobSha1": "3b2af6a0d25349e2f430315877b5d97bdaa30bcd",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/bf5c059f13e0868d7c554616b7c35ff7a328ae62/docs/plans/STAFFEL-SHOP-BESTAND-20261019.md"
+    }
+  ]
+}

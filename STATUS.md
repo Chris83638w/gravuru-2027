@@ -1,3 +1,11 @@
+# Codex: Hunde-Gedenktafel 22 × 14, Serienimport · 21.10.2026
+
+Eigener Aufgabenbranch `codex/gt22x14-hunde-serienimport-20261020`. `scripts/gt22x14-serienimport/`: PDF-Stapelimport mit Quellenprüfung/Schriftzuordnung, fünf Produktpläne mit derselben Auswahl aus 16 Hunde-Designs, Shopify-DRAFT-Anlage samt Wiederholschutz und vollständigem Rücklesevergleich. Bohrgeometrie aus dem vorhandenen gemeinsamen Modell; 19 mm Lochmitte zum Rand, Halterkopf Ø 12 mm, alle Zubehörkombinationen laut diesem Nutzerchat. 48 echte Zubehörvarianten je Produkt (6 Befestigungen × 4 Ständer × Silikon ja/nein).
+
+Ergebnis: fünf neue, getrennte Shopify-Entwürfe mit `-codex-test`, jeweils 16 JPGs/Alt-Texte und eigener SEO-Beschreibung. Kein vorhandenes Produkt geändert. Acht Adaptertests bestanden; vollständiger PDF-Neuimport 16/16 ohne offene Textwarnung; echte Shopify-Rücklesevergleiche 5/5, 240 Varianten, 80 Bildzuordnungen, Hauptbild/Metadaten/SEO bestätigt. Konfigurationsdaten im isolierten Namespace `gravuru_codex`; dies installiert keinen Konfigurator.
+
+Offen vor Bestellfreigabe: Händlerinstallation von Konfi neu gemäß bestehendem Releaseprozess; native Vorlagen-/Variantenbindung; Herzmaske D236 ohne Rechteckersatz; D213-Blütenrahmen beim Fototausch; Hintergrundoption, Zusatzfoto 899/Zusatzmotiv 160, Mengenstaffel im tatsächlichen Warenkorb und Fertigung ohne Upload-Hinweis. Vorhandene Linien/Entwürfe anderer Bearbeiter unverändert. Datenplan separat im gleichnamigen Katalog-Aufgabenbranch unter `entwuerfe/gt22x14-hunde-codex/`. Genau nächster Schritt: native Import-/Maskenabnahme, danach Händlerinstallation und Warenkorb-/Fertigungsabnahme im freigegebenen Umfang.
+
 ## Gedenktafel Schiefer 22 × 14 aus Corel-PDFs (Branch `dev/konfi-neu-gt22x14-schiefer`, nach `dev/konfi-neu-20261019` gemergt, nicht installiert) · 20.10.2026
 
 - `scripts/read-pdf-designs.py`: Einzel-Design-PDF (Corel) → Lieferform 2. Rote Haarlinie = Platte, Text-Objekte bleiben Text (Ligaturen aus dem Private-Use-Bereich über Glyphnamen zurück, doppelt gesetzte Zeichen einmal, Datumsläufe getrennt, > 180 Zeichen zeilenweise geteilt, Feldnamen name/daten/spruch), Pfade direkt aus dem Inhaltsstrom (ein Malbefehl = ein Pfad, Löcher bleiben), Motivgruppen ≤ 12, Bild + SMask = Platzhalterbild im Fotofeld. Ersatzschriften per Tabelle, Größe auf die Originalbreite angepasst.

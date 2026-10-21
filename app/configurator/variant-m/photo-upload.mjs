@@ -22,6 +22,8 @@ export const replaceablePhotoSlot=(slot,canReplace=()=>true)=>slot?.type==='phot
 export function emptyPhotoSlotAt(root,objects,target,point,{canReplace}={}){
   const byId=id=>objects.find(o=>o.id===id);
   if(target?.closest?.('[data-resize]'))return null;
+  // Chris 21.10.2026: Fotos hochladen nur auf der Tafel – nicht über Design-Miniaturen, Designvorschau oder Dialoge.
+  if(target?.closest?.('[data-c-design],.c-gallery,dialog,.ux-design-reveal'))return null;
   const direct=target?.closest?.('[data-ux-empty-photo-slot]');
   if(direct){const slot=byId(direct.dataset.object);return replaceablePhotoSlot(slot,canReplace)?{slot,through:false}:null;}
   if(!point||typeof root?.elementsFromPoint!=='function')return null;

@@ -27,8 +27,11 @@ export async function installRefinements(api){
   function stageToolsToCanvas(){$('.stage').append($('.ux-preview-tools'));}
   // Chris 21.10.2026: Rückgängig, Wiederholen und Hilfe oben in einer Reihe mit „Vollbild“ (spart Platz).
   {const tools=$('.ux-preview-tools'),enlarge=$('.ux-enlarge');
-   const align=()=>{if(!tools||!enlarge||!enlarge.offsetWidth)return;tools.style.setProperty('--ux-tools-left',(enlarge.offsetLeft+enlarge.offsetWidth+8)+'px');tools.style.setProperty('--ux-tools-top',enlarge.offsetTop+'px');tools.style.setProperty('--ux-tools-h',enlarge.offsetHeight+'px');};
-   if(tools&&enlarge){align();if(typeof ResizeObserver==='function')new ResizeObserver(align).observe(enlarge);addEventListener('resize',align);}}
+   const align=()=>{if(!tools||!enlarge||!enlarge.offsetWidth)return;const preview=$('.ux-preview');if(preview){const pr=preview.getBoundingClientRect(),tr=tools.getBoundingClientRect();void pr;void tr;}tools.style.setProperty('--ux-tools-left',(enlarge.offsetLeft+enlarge.offsetWidth+8)+'px');tools.style.setProperty('--ux-tools-top',enlarge.offsetTop+'px');tools.style.setProperty('--ux-tools-h',enlarge.offsetHeight+'px');};
+   // Warnhinweise direkt unter der Tafel (inkl. Bemaßung), nicht am unteren Rand des Vorschaufelds.
+   const placeHints=()=>{const preview=$('.ux-preview'),scene=$('.ux-preview .scene');if(!preview||!scene)return;const pr=preview.getBoundingClientRect(),sr=scene.getBoundingClientRect();if(sr.height)preview.style.setProperty('--ux-hints-top',Math.round(sr.bottom-pr.top+6)+'px');};
+   {const sync=el.sync;el.sync=function(...args){const v=sync.apply(this,args);requestAnimationFrame(placeHints);return v;};addEventListener('resize',placeHints);requestAnimationFrame(placeHints);}
+   if(tools&&enlarge){align();requestAnimationFrame(align);if(typeof ResizeObserver==='function'){const ro=new ResizeObserver(align);ro.observe(enlarge);ro.observe(tools);const pv=$('.ux-preview');if(pv)ro.observe(pv);}addEventListener('resize',align);}}
   const tabbar=document.createElement('div');tabbar.className='ux-tabbar';$('.ux-tabs').before(tabbar);tabbar.append($('.ux-tabs'));
   const mini=document.createElement('button');mini.type='button';mini.className='ux-mini';mini.dataset.ux='enlarge';mini.setAttribute('aria-label','Aktuelle Produktminiatur – Vollbild öffnen');mini.innerHTML='<span data-mini-art></span><span>Dein Produkt<small>Zum Vergrößern tippen</small></span>'+expand;$('.ux-shell').append(mini);
   const stage=$('.stage'),holder=$('.plate-holder');

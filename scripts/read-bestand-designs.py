@@ -190,7 +190,7 @@ def render_placeholder(photo_file, img_box, area, hints, out_png, px_per_mm=8, w
     return [W, H]
 
 
-def convert(folder, target, prefix, ersatz, files, s_fix=None):
+def convert(folder, target, prefix, ersatz, files, s_fix=None, photo_override=None):
     meta = json.loads((folder / 'design.json').read_text())
     svg = ET.parse(folder / 'design.svg').getroot()
     W0, H0 = meta['plate']['widthMm'], meta['plate']['heightMm']
@@ -272,15 +272,23 @@ def convert(folder, target, prefix, ersatz, files, s_fix=None):
         x1, y1 = min(cb[0] + cb[2], ib[0] + ib[2], W0), min(cb[1] + cb[3], ib[1] + ib[3], H0)
         area = [x0, y0, x1 - x0, y1 - y0]
         k = len(photos) + 1; file = f'foto-{k}.png'
-        area, window = avoid_texts(folder / href, ib, area, text_boxes_master())
+        # Anderes Musterfoto aus dem Bestand (Zuordnung „musterfoto“, Chris 21.10.2026 zu D14): füllt die Bildbox
+        # mittig („cover“), Fotofeld und Clip bleiben wie im Master.
+        src_file = folder / href
+        if photo_override:
+            src_file = Path(photo_override); ow, oh = Image.open(src_file).size
+            k_ = max(ib[2] / ow, ib[3] / oh); nw, nh = ow * k_, oh * k_
+            ib = [ib[0] + (ib[2] - nw) / 2, ib[1] + (ib[3] - nh) / 2, nw, nh]
+            warn.append(f'Musterfoto {k} ersetzt durch {src_file.parent.name}/{src_file.name}')
+        area, window = avoid_texts(src_file, ib, area, text_boxes_master())
         if window != area or area[2] != x1 - x0:
             warn.append(f'Fotofeld {k} um {(x1 - x0 - area[2]) * s:.1f} mm gekürzt, damit die Person nicht im Text steht')
-        px = render_placeholder(folder / href, ib, area, None, target_dir(did) / file, window=window)
+        px = render_placeholder(src_file, ib, area, None, target_dir(did) / file, window=window)
         x0, y0 = area[0], area[1]
         tx, ty = T(x0, y0)
         photos.append({'box': [round(tx, 2), round(ty, 2), round(area[2] * s, 2), round(area[3] * s, 2)], 'file': file, 'px': px,
                        'alpha': False, 'customerClip': 'rechteck', 'shape': 'rect', 'placeholder': True, 'engrave': False,
-                       'source': {'masterFile': href, 'masterArea': [round(v, 2) for v in area], 'masterWindow': [round(v, 2) for v in window]}})
+                       'source': {'masterFile': href if not photo_override else f'{Path(photo_override).parent.name}/{Path(photo_override).name}', 'masterArea': [round(v, 2) for v in area], 'masterWindow': [round(v, 2) for v in window]}})
     # ---- Motive
     paths = []
     for el in svg.iter('{%s}path' % NS['svg']):
@@ -405,8 +413,11 @@ def main():
     for key in a.designs.split(','):
         folder = folders.get(key.strip())
         if not folder: raise SystemExit(f'Bestandsdesign fehlt: {key}')
-        d = convert(folder, target, a.praefix, ersatz, files)
-        z = zu.get(f'D{d["designNo"]}', {})
+        no = json.loads((folder / 'design.json').read_text())['katalog']['designNo']
+        z = zu.get(f'D{no}', {})
+        override = next((p.parent / z['musterfoto'].split('/')[-1] for p in Path(a.bestand).glob('*/*/' + z['musterfoto'].split('/')[0] + '/design.json')), None) if z.get('musterfoto') else None
+        if z.get('musterfoto') and not (override and override.exists()): raise SystemExit(f'Musterfoto fehlt: {z["musterfoto"]}')
+        d = convert(folder, target, a.praefix, ersatz, files, photo_override=override)
         themes = z.get('themen') or [t for t in a.themen.split(',') if t]
         zg, uk = folder.parts[-3], folder.parts[-2]
         if z.get('name'): d['name'] = z['name']  # Kundenname nach Motiv (Chris 21.10.2026)

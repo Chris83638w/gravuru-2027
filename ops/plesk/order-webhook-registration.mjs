@@ -1,6 +1,6 @@
 import {ORDER_WEBHOOK_URI,probeOrderWebhook} from './order-webhook-probe.mjs';
 export {ORDER_WEBHOOK_URI} from './order-webhook-probe.mjs';
-export const ORDER_FIELDS=Object.freeze(['id','test','financial_status','cancelled_at','currency','updated_at','line_items.id','line_items.variant_id','line_items.quantity','line_items.price','line_items.properties','customer.id']);
+export const ORDER_FIELDS=Object.freeze(['id','test','financial_status','cancelled_at','currency','updated_at','line_items.id','line_items.product_id','line_items.variant_id','line_items.quantity','line_items.price','line_items.properties','customer.id']);
 export const ORDER_QUERY='query GravuruOrderWebhookSubscriptions { webhookSubscriptions(first: 100, topics: [ORDERS_PAID]) { nodes { id topic uri format filter includeFields apiVersion { handle } } pageInfo { hasNextPage } } }';
 export const ORDER_MUTATION='mutation GravuruCreateOrderWebhook($subscription: WebhookSubscriptionInput!) { webhookSubscriptionCreate(topic: ORDERS_PAID, webhookSubscription: $subscription) { webhookSubscription { id topic uri format filter includeFields apiVersion { handle } } userErrors { field message } } }';
 const identityQuery='query GravuruOrderWebhookIdentity { shop { myshopifyDomain } currentAppInstallation { app { id } accessScopes { handle } } }';

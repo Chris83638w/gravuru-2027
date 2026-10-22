@@ -9,6 +9,7 @@ import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
 import {planShopProductBindings} from './shop-product-binding-plan.mjs';
 import {makeFormProduct} from './form-product.mjs';
 import {addFormDesign} from './form-designs.mjs';
+import {ORDER_FIELDS} from '../../ops/plesk/order-webhook-registration.mjs';
 const original=fs.readFileSync(new URL('../../legacy-patches/fixtures/order-intake.mjs.txt',import.meta.url),'utf8');
 // The unchanged old intake/status/refund sources execute against synthetic DBs.
 // Shared pure product/price imports use this staging tree, deliberately without
@@ -99,4 +100,15 @@ test('legacy rejects foreign selected offer, invalid raw HMAC and product mismat
  assert.throws(()=>a.orders.receive(e.raw,e.headers,config,{acceptedLineIds:[102]}));
  assert.throws(()=>a.orders.receive(e.raw,{...e.headers,'x-shopify-hmac-sha256':'A'.repeat(43)+'='},config,{acceptedLineIds:[101]}));
  const bad=event([{...line(101,oa),product_id:999}]);assert.throws(()=>a.orders.receive(bad.raw,bad.headers,config),/Shopify-Produkt/);assert.equal(a.orders.list().length,0);
+});
+test('actual webhook field selection supplies product ID to the strict legacy intake',t=>{
+ const f=fixture(t),offer=f.offer(),source=line(101,offer);
+ const project=fields=>Object.fromEntries(Object.entries(source).filter(([key])=>fields.includes('line_items.'+key)));
+ const old=event([project(ORDER_FIELDS.filter(k=>k!=='line_items.product_id'))],'synthetic-old-field-selection');
+ assert.throws(()=>f.orders.receive(old.raw,old.headers,config),{status:422});
+ assert.equal(f.orders.list().length,0);
+ const fixed=event([project(ORDER_FIELDS)],'synthetic-fixed-field-selection');
+ assert.equal(f.orders.receive(fixed.raw,fixed.headers,config).lines.length,1);
+ assert.equal(f.orders.receive(fixed.raw,fixed.headers,config).duplicate,true);
+ assert.equal(f.orders.list().length,1);
 });

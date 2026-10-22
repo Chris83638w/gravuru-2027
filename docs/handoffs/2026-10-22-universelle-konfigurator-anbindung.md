@@ -1,5 +1,7 @@
 # Universelle Konfigurator-Anbindung – geprüfter Einstieg, 22.10.2026
 
+**Dieser Einstieg dokumentiert den ersten Baustein. Aktueller Ergebnisstand:** [Serveraktivierung, Staffelpreise, Testbestellungen #1024/#1025 und bestätigter Werkstatteingang](../ID-PREISSTAND-20261022.md). Die dort ausdrücklich aufgeführten Grenzen gelten weiterhin; insbesondere noch keine öffentliche Freigabe oder vollständige Browsereditor-Abnahme.
+
 ## Ergebnis und verbindlicher Umfang
 
 Ein gemeinsamer Anschluss für alle Produktarten: **Shop + ProductGID + VariantGID → privater Datenbestand → bestehende Bindungs-ID → cfg-ID mit fester Revision → Kundenentwurf → unveränderlicher Prüfstand → Warenkorb-/Bestellposition → Fertigungsauftrag.**

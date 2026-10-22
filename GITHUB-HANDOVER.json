@@ -1,0 +1,27 @@
+{
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "task/universelle-konfi-anbindung-20261022",
+  "parentCommit": "6b2139bb2c0dd81cc373d8fa4f7b9bb02edebc69",
+  "readme": "docs/ID-PREISSTAND-20261022.md",
+  "serverDeployed": true,
+  "shopifyModified": true,
+  "privateBackupCreated": true,
+  "privateBackupRestoreVerified": true,
+  "shopifyAppVersion": "1177374556161",
+  "legacyVariantAssignments": 9,
+  "acrylVariantAssignments": 1,
+  "testOrders": [
+    {"name":"#1024","id":"13745774461308","quantity":2,"itemsCents":6200,"shippingCents":499,"totalCents":6699,"workshopReceived":true},
+    {"name":"#1025","id":"13745779016060","quantity":3,"itemsCents":8904,"shippingCents":0,"totalCents":8904,"workshopReceived":true}
+  ],
+  "originalPhotoHashesVerified": true,
+  "configurationRevisionsVerified": true,
+  "webhookProductIdFixed": true,
+  "repairLocalTestsPassed": 15,
+  "repairServerTestsPassed": 5,
+  "embeddedEditorBrowserFlowVerified": false,
+  "allShopProductsIndividuallyBound": false,
+  "publicReleaseEnabled": false,
+  "productionReleased": false,
+  "privateDataIncludedInGithub": false
+}

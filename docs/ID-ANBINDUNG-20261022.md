@@ -1,5 +1,7 @@
 # Geschützte Anbindung über Shopify-IDs – Arbeitsstand 22.10.2026
 
+**Historischer Vorbereitungsstand.** Aktivierung, Preisumstellung und die inzwischen abgeschlossenen Testbestellungen #1024/#1025 samt automatischem Werkstatteingang sind in [ID-PREISSTAND-20261022.md](ID-PREISSTAND-20261022.md) dokumentiert. Die nachfolgenden offenen Punkte beschreiben den damaligen Zeitpunkt.
+
 Aufgabenbranch: `task/universelle-konfi-anbindung-20261022`, Ausgangsbasis `48d7a63d32b0d7d4560ec16e9473bb3cb8eecb1c`.
 
 ## Enthaltener Quellstand

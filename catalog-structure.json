@@ -1,0 +1,911 @@
+{
+  "schema": "gravuru-workshop-structure/v1",
+  "revision": 1,
+  "updatedAt": "2026-10-21T21:39:46.270Z",
+  "source": {
+    "repository": "Chris83638w/gravuru-katalog.",
+    "baseCommit": "567906f6e8787d0cdfcee421d4cd17d8b61f5058",
+    "approval": "Chris, 22.10.2026: Struktur mit Unterkategorien in der Werkstatt anlegen und Katalog abgleichen"
+  },
+  "lines": [
+    {
+      "id": "acryl-schilder-abstandshalter",
+      "name": "Acrylglas Schilder mit Abstandshaltern (AA / AS / S/S)",
+      "enabled": true,
+      "order": 1,
+      "status": "Familien da, Preise offen",
+      "sourcePath": "linien/acryl-schilder-abstandshalter.json",
+      "familyIds": [
+        "acryl-aa-abstandshalter",
+        "acryl-as-abstandshalter",
+        "acryl-ss-abstandshalter"
+      ],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "hausnummern",
+          "name": "Hausnummern",
+          "themeId": "hausnummern",
+          "fontSet": "hausnummern"
+        },
+        {
+          "id": "namensschilder",
+          "name": "Namensschilder",
+          "themeId": "namensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "familienschilder",
+          "name": "Familienschilder",
+          "themeId": "familienschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "firmenschilder",
+          "name": "Firmen- und Praxisschilder",
+          "themeId": "firmenschilder",
+          "fontSet": "firmenschilder"
+        },
+        {
+          "id": "willkommensschilder",
+          "name": "Willkommensschilder",
+          "themeId": "willkommensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "hundeschilder",
+          "name": "Hundeschilder",
+          "themeId": "hundeschilder",
+          "fontSet": "hundeschilder"
+        }
+      ]
+    },
+    {
+      "id": "acryl-tuerschilder",
+      "name": "Acrylglas Türschilder 3 mm",
+      "enabled": true,
+      "order": 2,
+      "status": "798 Werkstattausführungen; 79 Form-/Größenkombinationen; 40 Designs; beide Farben preisgleich; Kundenanbindung ausstehend",
+      "sourcePath": "linien/acryl-tuerschilder.json",
+      "familyIds": [],
+      "seriesRefs": [
+        "serien/acryl-tuerschilder-2027.json"
+      ],
+      "subcategories": [
+        {
+          "id": "namensschilder",
+          "name": "Namensschilder",
+          "themeId": "namensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "familienschilder",
+          "name": "Familienschilder",
+          "themeId": "familienschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "hundeschilder",
+          "name": "Hundeschilder",
+          "themeId": "hundeschilder",
+          "fontSet": "hundeschilder"
+        },
+        {
+          "id": "hochzeitsschilder",
+          "name": "Hochzeitsschilder",
+          "themeId": "hochzeitsschilder",
+          "fontSet": "andenken"
+        },
+        {
+          "id": "firmenschilder",
+          "name": "Firmen- und Praxisschilder",
+          "themeId": "firmenschilder",
+          "fontSet": "firmenschilder"
+        },
+        {
+          "id": "hinweisschilder",
+          "name": "Hinweisschilder",
+          "themeId": "hinweisschilder",
+          "fontSet": "firmenschilder"
+        }
+      ]
+    },
+    {
+      "id": "alu-dibond-30x20",
+      "name": "Alu-Dibond 30 × 20 (Druck)",
+      "enabled": true,
+      "order": 3,
+      "status": "Familie offen (3 mm, eckig, Ø 4, 2/4 Löcher oder Schrauben, selbstklebend glatt/rau, vollflächiger Druck)",
+      "sourcePath": "linien/alu-dibond-30x20.json",
+      "familyIds": [],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "gedenktafeln",
+          "name": "Gedenktafeln",
+          "themeId": "gedenktafeln",
+          "fontSet": "andenken"
+        },
+        {
+          "id": "hausnummern",
+          "name": "Hausnummern",
+          "themeId": "hausnummern",
+          "fontSet": "hausnummern"
+        },
+        {
+          "id": "hundeschilder",
+          "name": "Hundeschilder",
+          "themeId": "hundeschilder",
+          "fontSet": "hundeschilder"
+        },
+        {
+          "id": "geschenkartikel",
+          "name": "Geschenkartikel",
+          "themeId": "geschenkartikel",
+          "fontSet": "geschenkartikel"
+        },
+        {
+          "id": "wanddeko",
+          "name": "Wanddeko",
+          "themeId": "wanddeko",
+          "fontSet": "geschenkartikel"
+        }
+      ]
+    },
+    {
+      "id": "brettchen",
+      "name": "Brettchen",
+      "enabled": true,
+      "order": 4,
+      "status": "Familie offen",
+      "sourcePath": "linien/brettchen.json",
+      "familyIds": [],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "namensschilder",
+          "name": "Namensschilder",
+          "themeId": "namensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "familienschilder",
+          "name": "Familienschilder",
+          "themeId": "familienschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "hochzeitsschilder",
+          "name": "Hochzeitsschilder",
+          "themeId": "hochzeitsschilder",
+          "fontSet": "andenken"
+        },
+        {
+          "id": "geschenkartikel",
+          "name": "Geschenkartikel",
+          "themeId": "geschenkartikel",
+          "fontSet": "geschenkartikel"
+        }
+      ]
+    },
+    {
+      "id": "edelstahl-tuerschilder",
+      "name": "Edelstahl Türschilder",
+      "enabled": true,
+      "order": 5,
+      "status": "Neue Serie: 399 lokale Werkstattausführungen, 79 Form-/Größenkombinationen, 40 Designs. Ältere 61-Größen-Familie unverändert als Bestand.",
+      "sourcePath": "linien/edelstahl-tuerschilder.json",
+      "familyIds": [
+        "steel-door-signs"
+      ],
+      "seriesRefs": [
+        "serien/edelstahl-tuerschilder-2027.json"
+      ],
+      "subcategories": [
+        {
+          "id": "namensschilder",
+          "name": "Namensschilder",
+          "themeId": "namensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "familienschilder",
+          "name": "Familienschilder",
+          "themeId": "familienschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "hausnummern",
+          "name": "Hausnummern",
+          "themeId": "hausnummern",
+          "fontSet": "hausnummern"
+        },
+        {
+          "id": "hundeschilder",
+          "name": "Hundeschilder",
+          "themeId": "hundeschilder",
+          "fontSet": "hundeschilder"
+        },
+        {
+          "id": "katzenschilder",
+          "name": "Katzenschilder",
+          "themeId": "katzenschilder",
+          "fontSet": "hundeschilder"
+        },
+        {
+          "id": "hochzeitsschilder",
+          "name": "Hochzeitsschilder",
+          "themeId": "hochzeitsschilder",
+          "fontSet": "andenken"
+        },
+        {
+          "id": "firmenschilder",
+          "name": "Firmen- und Praxisschilder",
+          "themeId": "firmenschilder",
+          "fontSet": "firmenschilder"
+        },
+        {
+          "id": "willkommensschilder",
+          "name": "Willkommensschilder",
+          "themeId": "willkommensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "hinweisschilder",
+          "name": "Hinweisschilder",
+          "themeId": "hinweisschilder",
+          "fontSet": "firmenschilder"
+        },
+        {
+          "id": "pferdeschilder",
+          "name": "Pferdeschilder",
+          "themeId": "pferdeschilder",
+          "fontSet": "pferdeschilder"
+        }
+      ]
+    },
+    {
+      "id": "gedenktafeln-22x14-tiere",
+      "name": "Tier-Gedenktafeln Schiefer 22 × 14",
+      "enabled": true,
+      "order": 6,
+      "status": "4 aktuelle Hunde-Entwürfe mit je 48 Varianten; 6 ältere Parallelentwürfe getrennt gekennzeichnet",
+      "sourcePath": "linien/gedenktafeln-22x14-tiere.json",
+      "familyIds": [
+        "gedenktafel-22x14-schiefer-natur"
+      ],
+      "seriesRefs": [
+        "serien/hunde-gedenktafeln-22x14-2027.json"
+      ],
+      "subcategories": [
+        {
+          "id": "hundegedenktafeln",
+          "name": "Hunde-Gedenktafeln",
+          "themeId": "hundegedenktafeln",
+          "sourceIds": [
+            "hund-knochenherz",
+            "hund-rosen",
+            "hund-klassisch",
+            "hund-sternschnuppe"
+          ]
+        },
+        {
+          "id": "katzengedenktafeln",
+          "name": "Katzen-Gedenktafeln",
+          "themeId": "katzengedenktafeln",
+          "sourceIds": [
+            "katze-pfotenherz",
+            "katze-blaetterzweig"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gedenktafeln-30x20",
+      "name": "Gedenktafeln 30 × 20",
+      "enabled": true,
+      "order": 7,
+      "status": "Schiefer natur vollständig, Rest offen",
+      "sourcePath": "linien/gedenktafeln-30x20.json",
+      "familyIds": [
+        "gedenktafel-30x20-edelstahl",
+        "gedenktafel-30x20-schiefer-natur",
+        "gedenktafel-30x20-schiefer-premium",
+        "gedenktafel-30x20-acryl-schwarz",
+        "gedenktafel-30x20-acryl-anthrazit"
+      ],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "gedenktafeln",
+          "name": "Gedenktafeln",
+          "themeId": "gedenktafeln",
+          "fontSet": "andenken"
+        },
+        {
+          "id": "tiergedenktafeln",
+          "name": "Tiergedenktafeln",
+          "themeId": "tiergedenktafeln",
+          "fontSet": "andenken"
+        }
+      ]
+    },
+    {
+      "id": "lineale",
+      "name": "Lineale",
+      "enabled": true,
+      "order": 8,
+      "status": "Familie offen",
+      "sourcePath": "linien/lineale.json",
+      "familyIds": [],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "namensschilder",
+          "name": "Namensschilder",
+          "themeId": "namensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "geschenkartikel",
+          "name": "Geschenkartikel",
+          "themeId": "geschenkartikel",
+          "fontSet": "geschenkartikel"
+        },
+        {
+          "id": "firmenschilder",
+          "name": "Firmen- und Praxisschilder",
+          "themeId": "firmenschilder",
+          "fontSet": "firmenschilder"
+        }
+      ]
+    },
+    {
+      "id": "pferdeschilder",
+      "name": "Pferdeschilder (Boxen- und Stallschilder)",
+      "enabled": true,
+      "order": 9,
+      "status": "Familie offen",
+      "sourcePath": "linien/pferdeschilder.json",
+      "familyIds": [],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "pferdeschilder",
+          "name": "Pferdeschilder",
+          "themeId": "pferdeschilder",
+          "fontSet": "pferdeschilder"
+        },
+        {
+          "id": "hinweisschilder",
+          "name": "Hinweisschilder",
+          "themeId": "hinweisschilder",
+          "fontSet": "firmenschilder"
+        }
+      ]
+    },
+    {
+      "id": "schluesselanhaenger",
+      "name": "Schlüsselanhänger",
+      "enabled": true,
+      "order": 10,
+      "status": "Familie offen",
+      "sourcePath": "linien/schluesselanhaenger.json",
+      "familyIds": [],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "namensschilder",
+          "name": "Namensschilder",
+          "themeId": "namensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "hochzeitsschilder",
+          "name": "Hochzeitsschilder",
+          "themeId": "hochzeitsschilder",
+          "fontSet": "andenken"
+        },
+        {
+          "id": "hundeschilder",
+          "name": "Hundeschilder",
+          "themeId": "hundeschilder",
+          "fontSet": "hundeschilder"
+        },
+        {
+          "id": "firmenschilder",
+          "name": "Firmen- und Praxisschilder",
+          "themeId": "firmenschilder",
+          "fontSet": "firmenschilder"
+        },
+        {
+          "id": "geschenkartikel",
+          "name": "Geschenkartikel",
+          "themeId": "geschenkartikel",
+          "fontSet": "geschenkartikel"
+        }
+      ]
+    },
+    {
+      "id": "stifthalter",
+      "name": "Stifthalterdosen",
+      "enabled": true,
+      "order": 11,
+      "status": "Familie offen",
+      "sourcePath": "linien/stifthalter.json",
+      "familyIds": [],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "namensschilder",
+          "name": "Namensschilder",
+          "themeId": "namensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "geschenkartikel",
+          "name": "Geschenkartikel",
+          "themeId": "geschenkartikel",
+          "fontSet": "geschenkartikel"
+        },
+        {
+          "id": "firmenschilder",
+          "name": "Firmen- und Praxisschilder",
+          "themeId": "firmenschilder",
+          "fontSet": "firmenschilder"
+        }
+      ]
+    },
+    {
+      "id": "tuerklingeln",
+      "name": "Türklingeln (zurückgestellt)",
+      "enabled": false,
+      "order": 12,
+      "status": "Familie offen",
+      "sourcePath": "linien/tuerklingeln.json",
+      "familyIds": [],
+      "seriesRefs": [],
+      "subcategories": [
+        {
+          "id": "namensschilder",
+          "name": "Namensschilder",
+          "themeId": "namensschilder",
+          "fontSet": "tuerschilder"
+        },
+        {
+          "id": "hausnummern",
+          "name": "Hausnummern",
+          "themeId": "hausnummern",
+          "fontSet": "hausnummern"
+        },
+        {
+          "id": "firmenschilder",
+          "name": "Firmen- und Praxisschilder",
+          "themeId": "firmenschilder",
+          "fontSet": "firmenschilder"
+        }
+      ]
+    }
+  ],
+  "mainProducts": [
+    {
+      "id": "gid://shopify/Product/16168645525884",
+      "title": "Gedenktafel Hund Naturschiefer mit Foto und Knochenherz 22×14 cm",
+      "handle": "gedenktafel-hund-naturschiefer-foto-knochenherz-22x14",
+      "status": "DRAFT",
+      "variantCount": 9,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168645525884",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": null,
+      "designCount": null,
+      "familyId": null,
+      "role": "parallelbestand",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168645525884",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168659321212",
+      "title": "Gedenktafel Hund Naturschiefer mit Foto und Rosen 22×14 cm",
+      "handle": "gedenktafel-hund-naturschiefer-foto-rosen-22x14",
+      "status": "DRAFT",
+      "variantCount": 9,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168659321212",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": null,
+      "designCount": null,
+      "familyId": null,
+      "role": "parallelbestand",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168659321212",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168667775356",
+      "title": "Gedenktafel Hund Naturschiefer mit Foto und Blüten 22×14 cm",
+      "handle": "gedenktafel-hund-naturschiefer-foto-blueten-22x14",
+      "status": "DRAFT",
+      "variantCount": 9,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168667775356",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": null,
+      "designCount": null,
+      "familyId": null,
+      "role": "parallelbestand",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168667775356",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168669512060",
+      "title": "Gedenktafel Hund Naturschiefer mit Foto und Sternschnuppe 22×14 cm",
+      "handle": "gedenktafel-hund-naturschiefer-foto-sternschnuppe-22x14",
+      "status": "DRAFT",
+      "variantCount": 9,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168669512060",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": null,
+      "designCount": null,
+      "familyId": null,
+      "role": "parallelbestand",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168669512060",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168671183228",
+      "title": "Gedenktafel Katze Naturschiefer mit Foto und Pfotenherz 22×14 cm",
+      "handle": "gedenktafel-katze-naturschiefer-foto-pfotenherz-22x14",
+      "status": "DRAFT",
+      "variantCount": 9,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168671183228",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "katzengedenktafeln",
+      "groupId": null,
+      "startDesignId": null,
+      "designCount": null,
+      "familyId": null,
+      "role": "parallelbestand",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168671183228",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168672756092",
+      "title": "Gedenktafel Katze Naturschiefer mit Foto und Blätterzweig 22×14 cm",
+      "handle": "gedenktafel-katze-naturschiefer-foto-blaetterzweig-22x14",
+      "status": "DRAFT",
+      "variantCount": 9,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168672756092",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "katzengedenktafeln",
+      "groupId": null,
+      "startDesignId": null,
+      "designCount": null,
+      "familyId": null,
+      "role": "parallelbestand",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168672756092",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168868348284",
+      "title": "Hunde-Gedenktafel aus Schiefer mit Foto und Knochenherz – 22 × 14 cm",
+      "handle": "hunde-gedenktafel-schiefer-foto-knochenherz-22x14-codex-test",
+      "status": "DRAFT",
+      "variantCount": 48,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168868348284",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": "GT-S-22x14-D220",
+      "designCount": 16,
+      "familyId": "gedenktafel-22x14-schiefer-hunde-2027",
+      "role": "hauptprodukt",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168868348284",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168869429628",
+      "title": "Gedenktafel für Hunde aus Schiefer mit Foto und Rosen – 22 × 14 cm",
+      "handle": "hunde-gedenktafel-schiefer-foto-rosen-22x14-codex-test",
+      "status": "DRAFT",
+      "variantCount": 48,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168869429628",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": "GT-S-22x14-D207",
+      "designCount": 16,
+      "familyId": "gedenktafel-22x14-schiefer-hunde-2027",
+      "role": "hauptprodukt",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168869429628",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168869659004",
+      "title": "Hunde-Gedenktafel aus Schiefer mit Foto und Blüten – 22 × 14 cm",
+      "handle": "hunde-gedenktafel-schiefer-foto-blueten-22x14-codex-test",
+      "status": "DRAFT",
+      "variantCount": 48,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168869659004",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": "GT-S-22x14-D215",
+      "designCount": 16,
+      "familyId": "gedenktafel-22x14-schiefer-hunde-2027",
+      "role": "hauptprodukt",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168869659004",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168869724540",
+      "title": "Gedenktafel für Hunde mit Foto und Sternschnuppe – Schiefer 22 × 14 cm",
+      "handle": "hunde-gedenktafel-schiefer-foto-sternschnuppe-22x14-codex-test",
+      "status": "DRAFT",
+      "variantCount": 48,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168869724540",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": "GT-S-22x14-D212",
+      "designCount": 16,
+      "familyId": "gedenktafel-22x14-schiefer-hunde-2027",
+      "role": "hauptprodukt",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168869724540",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16168869888380",
+      "title": "Hunde-Gedenktafel aus Schiefer mit Foto und Regenbogen – 22 × 14 cm",
+      "handle": "hunde-gedenktafel-schiefer-foto-regenbogen-22x14-codex-test",
+      "status": "ARCHIVED",
+      "variantCount": 48,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16168869888380",
+      "lineId": "gedenktafeln-22x14-tiere",
+      "subcategoryId": "hundegedenktafeln",
+      "groupId": null,
+      "startDesignId": null,
+      "designCount": null,
+      "familyId": null,
+      "role": "archiviert",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16168869888380",
+      "workshopUrl": null,
+      "customerBinding": "pending-new-configurator"
+    },
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "title": "Acryl-Türschild selbst gestalten – Schwarz & Anthrazit",
+      "handle": "acryl-tuerschilder-schwarz-anthrazit-2027",
+      "status": "DRAFT",
+      "variantCount": 798,
+      "checkedAt": "2026-10-21T21:37:26.217Z",
+      "key": "shopify-16175627665788",
+      "lineId": "acryl-tuerschilder",
+      "subcategoryId": null,
+      "groupId": "variants_ebc11a46-9d5c-43be-87f0-366e75e2668f",
+      "startDesignId": null,
+      "designCount": 40,
+      "familyId": null,
+      "role": "hauptprodukt",
+      "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16175627665788",
+      "workshopUrl": "/werkstatt/acryl/",
+      "customerBinding": "pending-new-configurator"
+    }
+  ],
+  "families": [
+    {
+      "id": "acryl-aa-abstandshalter",
+      "name": "Acrylglas anthrazit 5 mm · Abstandshalter (AA)",
+      "material": "Acrylglas anthrazit",
+      "sizeCount": 33,
+      "sourcePath": "familien/acryl/acryl-aa-abstandshalter.json",
+      "gaps": [
+        "Aufpreis „2 Abstandshalter“",
+        "Aufpreis „2 Abstandshalter“",
+        "Aufpreis „4 Abstandshalter“",
+        "Aufpreis „4 Abstandshalter“",
+        "Grundpreis: 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm, 15 × 8 cm, 22,5 × 12 cm, 30 × 16 cm, 15 × 10 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 21 × 7 cm, 24 × 7 cm, 27 × 9 cm, 36 × 12 cm, 45 × 15 cm, 16 × 16 cm, 20 × 20 cm, 26 × 26 cm, 30 × 30 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm",
+        "Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)"
+      ]
+    },
+    {
+      "id": "acryl-as-abstandshalter",
+      "name": "Acrylglas schwarz 5 mm · Abstandshalter (AS)",
+      "material": "Acrylglas schwarz",
+      "sizeCount": 33,
+      "sourcePath": "familien/acryl/acryl-as-abstandshalter.json",
+      "gaps": [
+        "Aufpreis „2 Abstandshalter“",
+        "Aufpreis „2 Abstandshalter“",
+        "Aufpreis „4 Abstandshalter“",
+        "Aufpreis „4 Abstandshalter“",
+        "Grundpreis: 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm, 15 × 8 cm, 22,5 × 12 cm, 30 × 16 cm, 15 × 10 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 21 × 7 cm, 24 × 7 cm, 27 × 9 cm, 36 × 12 cm, 45 × 15 cm, 16 × 16 cm, 20 × 20 cm, 26 × 26 cm, 30 × 30 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm",
+        "Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)"
+      ]
+    },
+    {
+      "id": "acryl-ss-abstandshalter",
+      "name": "Acrylglas schwarz satiniert 3 mm + Rückplatte schwarz (S/S)",
+      "material": "Acrylglas satiniert, Front",
+      "sizeCount": 33,
+      "sourcePath": "familien/acryl/acryl-ss-abstandshalter.json",
+      "gaps": [
+        "Aufpreis „2 Abstandshalter“",
+        "Aufpreis „2 Abstandshalter“",
+        "Aufpreis „4 Abstandshalter“",
+        "Aufpreis „4 Abstandshalter“",
+        "Grundpreis: 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm, 15 × 8 cm, 22,5 × 12 cm, 30 × 16 cm, 15 × 10 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 21 × 7 cm, 24 × 7 cm, 27 × 9 cm, 36 × 12 cm, 45 × 15 cm, 16 × 16 cm, 20 × 20 cm, 26 × 26 cm, 30 × 30 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm",
+        "Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)"
+      ]
+    },
+    {
+      "id": "gedenktafel-30x20-acryl-anthrazit",
+      "name": "Gedenktafel 30 × 20 · Acrylglas anthrazit",
+      "material": "Acrylglas anthrazit",
+      "sizeCount": 1,
+      "sourcePath": "familien/acryl/gedenktafel-30x20-acryl-anthrazit.json",
+      "gaps": [
+        "Materialstärke",
+        "Gestaltungsrand",
+        "Grundpreis: 30 × 20 cm"
+      ]
+    },
+    {
+      "id": "gedenktafel-30x20-acryl-schwarz",
+      "name": "Gedenktafel 30 × 20 · Acrylglas schwarz",
+      "material": "Acrylglas schwarz",
+      "sizeCount": 1,
+      "sourcePath": "familien/acryl/gedenktafel-30x20-acryl-schwarz.json",
+      "gaps": [
+        "Materialstärke",
+        "Gestaltungsrand",
+        "Grundpreis: 30 × 20 cm"
+      ]
+    },
+    {
+      "id": "gedenktafel-30x20-edelstahl",
+      "name": "Gedenktafel 30 × 20 · Edelstahl",
+      "material": "Edelstahl gebürstet",
+      "sizeCount": 1,
+      "sourcePath": "familien/edelstahl/gedenktafel-30x20-edelstahl.json",
+      "gaps": [
+        "Materialstärke",
+        "Gestaltungsrand",
+        "Bohrbild „4 Bohrlöcher“: Durchmesser und Randabstand"
+      ]
+    },
+    {
+      "id": "steel-door-signs",
+      "name": "Edelstahl-Türschilder",
+      "material": "Edelstahl gebürstet",
+      "sizeCount": 61,
+      "sourcePath": "familien/edelstahl/steel-door-signs.json",
+      "gaps": []
+    },
+    {
+      "id": "gedenktafel-22x14-schiefer-hunde-2027",
+      "name": "Hunde-Gedenktafel 22 × 14 · Naturschiefer",
+      "material": "Naturschiefer, natürliche Bruchkante, helle Gravur",
+      "sizeCount": 1,
+      "sourcePath": "familien/schiefer/gedenktafel-22x14-schiefer-hunde-2027.json",
+      "gaps": []
+    },
+    {
+      "id": "gedenktafel-22x14-schiefer-natur",
+      "name": "Gedenktafel 22 × 14 · Naturschiefer (helle Gravur)",
+      "material": "Naturschiefer, natürliche Bruchkante, helle Gravur",
+      "sizeCount": 1,
+      "sourcePath": "familien/schiefer/gedenktafel-22x14-schiefer-natur.json",
+      "gaps": []
+    },
+    {
+      "id": "gedenktafel-30x20-schiefer-natur",
+      "name": "Gedenktafel 30 × 20 · Naturschiefer",
+      "material": "Naturschiefer, natürliche Bruchkante",
+      "sizeCount": 1,
+      "sourcePath": "familien/schiefer/gedenktafel-30x20-schiefer-natur.json",
+      "gaps": []
+    },
+    {
+      "id": "gedenktafel-30x20-schiefer-premium",
+      "name": "Gedenktafel 30 × 20 · Premium-Schiefer",
+      "material": "Premium-Schiefer",
+      "sizeCount": 1,
+      "sourcePath": "familien/schiefer/gedenktafel-30x20-schiefer-premium.json",
+      "gaps": [
+        "Materialstärke",
+        "Gestaltungsrand",
+        "Grundpreis: 30 × 20 cm"
+      ]
+    }
+  ],
+  "series": [
+    {
+      "id": "acryl-tuerschilder-2027",
+      "lineId": "acryl-tuerschilder",
+      "name": "Acryl-Türschilder · 3 mm",
+      "variantCount": 798,
+      "shapeSizeCount": 79,
+      "designCount": 40,
+      "sourcePath": "serien/acryl-tuerschilder-2027.json",
+      "groupId": "variants_ebc11a46-9d5c-43be-87f0-366e75e2668f",
+      "groupRevision": 5
+    },
+    {
+      "id": "edelstahl-tuerschilder-2027",
+      "lineId": "edelstahl-tuerschilder",
+      "name": "Edelstahl · Türschilder und Familienschilder",
+      "variantCount": 399,
+      "shapeSizeCount": 79,
+      "designCount": 40,
+      "sourcePath": "serien/edelstahl-tuerschilder-2027.json",
+      "groupId": "variants_5500718d-0f63-4e9c-b29e-32956336ef4f",
+      "groupRevision": 5
+    }
+  ],
+  "checks": [
+    {
+      "id": "acryl",
+      "state": "matched",
+      "title": "Acrylserie übernommen",
+      "detail": "798 Ausführungen, 79 Form-/Größenkombinationen, 40 Designs und 399 preisgleiche Farbpaare. Konturen und Produktkennungen erhalten."
+    },
+    {
+      "id": "steel",
+      "state": "matched",
+      "title": "Neue Edelstahlserie erfasst",
+      "detail": "399 lokale Ausführungen, 79 Form-/Größenkombinationen, 40 Designs. Ältere Familie und vorhandene Shopprodukte bleiben separat."
+    },
+    {
+      "id": "dogs",
+      "state": "matched",
+      "title": "Vier Hunde-Hauptprodukte zugeordnet",
+      "detail": "Je 48 Varianten, 16 Designs. Neue Hundefamilie enthält Ø4/Ø8-Bohrungen und 19 mm Randabstand; ältere Tierfamilie bleibt erhalten."
+    },
+    {
+      "id": "parallel",
+      "state": "attention",
+      "title": "Sechs ältere Gedenktafel-Entwürfe",
+      "detail": "Vier Hunde- und zwei Katzenprodukte mit je neun Varianten sind Parallelbestand. Keine automatische Übernahme oder Veröffentlichung."
+    },
+    {
+      "id": "klingeln",
+      "state": "deferred",
+      "title": "Türklingeln zurückgestellt",
+      "detail": "Historische Linie bleibt erhalten; Funkklingelschilder sind ausgeschlossen."
+    },
+    {
+      "id": "customer",
+      "state": "deferred",
+      "title": "Kundenanbindung mit neuem Konfigurator",
+      "detail": "Warenkorb, Bestell- und Fertigungszuordnung werden gesondert mit dem neuen Konfigurator angebunden."
+    }
+  ],
+  "customerBinding": "pending-new-configurator",
+  "automaticPublication": false
+}

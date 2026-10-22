@@ -1,3 +1,26 @@
+## Katalogstruktur und Übergabe für neuen Konfigurator · 22.10.2026
+
+- Neue Mitarbeiterseite /werkstatt/katalog/: elf aktive Produktlinien, 48 Unterkategorien, Hauptprodukte zuordnen und Anzahl je Unterkategorie planen. Gemeinsame, versionierte Speicherung; keine automatische Shopify-Anlage oder Veröffentlichung.
+- Katalogabgleich: Acryl 798 und Edelstahl 399 exakte Varianten mit stabilen Kennungen; vier aktuelle Hunde-Entwürfe mit je 48 Varianten, sechs ältere Parallelentwürfe, ein archivierter Artikel. Offene Stammdaten bleiben offen; Türklingeln zurückgestellt.
+- Vollständiger bereinigter Acryl-Quellsnapshot und Anleitung: [Übergabe an die andere KI](docs/handoffs/2026-10-22-katalog-und-neuer-konfigurator.md). 798 Produktdokumente, 40 Designquellen, 160 Konturen, 12 Schriften; keine Datenbanken, Schlüssel oder Kundendaten.
+- Tests Katalog/Team: 9 bestanden. Lokaler Browsertest mit Speichern, Mehrfachzuordnung und Neuladen bestanden; Serverabnahme noch offen; bestehende Acrylinstallation siehe folgenden Abschnitt.
+- Kundenanbindung ausdrücklich für den neuen Konfigurator zurückgestellt. Keine Artikel veröffentlicht.
+
+## Acryl-Mitarbeiterinstallation aktiv und im Shopify-Browser geprüft · 22.10.2026
+
+- Isolierte Mitarbeiter-Galerie unter /werkstatt/acryl/ aktiviert. Authentifizierter Shopify-Browser zeigt 1 reales Hauptprodukt, 798 Varianten und 40 Designs. Älterer RESTORED.json-Beleg ist historisch; ACTIVATED.json wurde bei erneuter Aktivierung aktualisiert. Bisheriger Release und Datenbanken bleiben erhalten.
+- Live geprüft: Gesamtzahl 3 ergibt 1 vorhanden + 2 neue SEO-Vorschauen (nicht abgesendet); Kategorien mit 764 Motiven, Blumen15; Motiv hinzufügen und Undo; Textvergrößerung mit Feldanpassung und Undo; Hilfslinien, Einrasten und Maße. D13 Schwarz gemeinsam gespeichert, idempotent weiter Korrekturstand1, Shopify unverändert. Größenliste 79/79, Retro2-Filter 7/79 und Anthrazitpreise geprüft.
+- Vier Statusdateien zusätzlich vor Änderung gesichert (status-fix-20261022). Gemeinsame Korrekturen richtig bezeichnet; Blau vergleicht tatsächliche Designprüfsummen. Artikel-online allein ist keine bestätigte Designveröffentlichung. Vier gezielte Statustests bestanden.
+- Genau ein Shopify-DRAFT 16175627665788, keine zusätzlichen Produkte, keine öffentliche Veröffentlichung. canPublish:false: Kundenkonfigurator/Warenkorb/Bestell- und Fertigungszuordnung für die neue Serie noch nicht öffentlich angebunden und abgenommen.
+- Belege: outputs/Acryl-Serie-2027/Server-Pruefung.json sowie Server-Screenshots im Chat-Workspace. Fortsetzung: work/FORTSETZUNG-AKTUELL.md.
+
+## Historischer Zwischenstand vor erneuter Aktivierung · 21.10.2026
+
+- Gesamtzahl Hauptprodukte 1–20 mit vorhandenen Produkten, separater SEO-Vorschau und gemeinsamer Designbibliothek umgesetzt (ed7d11d). Genau ein echter Shopify-DRAFT 16175627665788, 798 Varianten vollständig rückgeprüft. Keine zusätzlichen Produkte oder Veröffentlichung.
+- Vollständige Serversicherung abgeschlossen. Isoliertes Acryl-Paket mit v3/v4/v5 vorbereitet; Startprüfung bestanden einschließlich anonym401/Fremdhost403/Fremdorigin403. Node24-fetch ignorierte den Test-Host; Prüfung verwendet nun http.get.
+- Nach kurzfristiger Aktivierung blanker Shopify-iframe in neuen Chrome-Tabs, auch mit unverändertem bisherigen Einstieg. Originalstarter atomar wiederhergestellt und SHA bestätigt, bisherige Werkstatt HTTP200, privateAPI401. Acryl ist damit derzeit NICHT aktiv. Keine Daten gelöscht. Nutzervergleich der Einbettung angefragt.
+- Öffentliche Kundenkonfiguration/Warenkorb/Bestellung/Fertigung der neuen Formserie und serverseitige Mitarbeiterabnahme bleiben offen; canPublish:false. Detaillierte Fortsetzung im Chat-Workspace work/FORTSETZUNG-AKTUELL.md, Nachweis outputs/Acryl-Serie-2027/Server-Pruefung.json.
+
 ## Gedenktafel Schiefer 22 × 14 aus Corel-PDFs (Branch `dev/konfi-neu-gt22x14-schiefer`, nach `dev/konfi-neu-20261019` gemergt, nicht installiert) · 20.10.2026
 
 - `scripts/read-pdf-designs.py`: Einzel-Design-PDF (Corel) → Lieferform 2. Rote Haarlinie = Platte, Text-Objekte bleiben Text (Ligaturen aus dem Private-Use-Bereich über Glyphnamen zurück, doppelt gesetzte Zeichen einmal, Datumsläufe getrennt, > 180 Zeichen zeilenweise geteilt, Feldnamen name/daten/spruch), Pfade direkt aus dem Inhaltsstrom (ein Malbefehl = ein Pfad, Löcher bleiben), Motivgruppen ≤ 12, Bild + SMask = Platzhalterbild im Fotofeld. Ersatzschriften per Tabelle, Größe auf die Originalbreite angepasst.
@@ -1286,3 +1309,39 @@ Aktuelle Implementierung weiterverwenden. G27-02 auf Materialien, freie Formen/B
 ## Fortschritt pro Paket ergänzen
 
 Paket / Status / Branch und Commit / betroffene Dateien / konkret ausgeführte Tests / Ergebnislink / offene Grenzen / nächstes Paket. Historische Tests nicht als aktuelle Ergebnisse neuer Änderungen fortschreiben.
+
+
+## Lokaler Acryl-Serienentwurf 2026-10-21
+798 DRAFT-Ausführungen, 79 Größen, gemeinsame Farbpreise, 40 Bestandsdesigns und 12 Originalschriften in isolierter Werkstatt angelegt. Achsenauswahl und Dezimalschriftgrößen ergänzt. Build, Syntax, Datenreadback und gezielte Funktionsprüfung bestanden. 17 Layouts, Preis-Excel, Material-/Hauswandansicht, Browser-End-to-End und Fertigungsabnahme bleiben offen. Kein Shop-Import oder Release. Details: ../../work/FORTSETZUNG.md.
+
+## Acryl-Preisübernahme 2026-10-21
+79 von Chris eingetragene Grundpreise auf 798 bestehende DRAFT-Produkte übertragen. Artikel und Auswahlgruppe jetzt Revision 2, IDs unverändert; alte Revisionen erhalten. 798 Endpreise und Auswahlreferenzen, 399 Farbpaare und unveränderte Geometrien/Designs zurückgeprüft. Excel-Formelergebnisse stimmen centgenau mit Grundpreis plus Befestigung überein. Erstanlage gegen Rückschreiben vorläufiger Preise gesperrt; Preisimport wiederholbar über vorhandenes Importjournal. Preisstatus im lokalen Auswahlhinweis bereinigt. Syntax und git diff --check bestanden. Prüfbericht: ../../outputs/Acryl-Serie-2027/Preisuebernahme.json. Historische offenen Punkte zu Layout/Material/Browser/Bestellung/Fertigung bleiben bestehen.
+
+## Acryl-Galerie und manuelle Originalelemente 2026-10-21
+Galerie auf Basis der bestehenden Edelstahl-Gestaltung erstellt: 40 Designs/7 Motivgruppen, Such-/Sortierfilter, SW/AN, 8 Formbeispiele und 79 Größen. Native Originalmotive auf allen 798 bestehenden Artikeln als Rev3 aktiviert; IDs, Textpositionen, Konturen und bestätigte Preise unverändert. Vorhandener Kundeneditor mit dauerhaft wiederöffnbaren Acryl-Korrekturständen verknüpft. 40 Designs/40 Motive über echte API-Handler gespeichert und nach Neustart wieder geladen; Konflikt-/Tokenprüfung bestanden. Im IAB Galerie, Farben, Größen und Text-/Motivspeicherung mit Neuladen erfolgreich geprüft. Lokaler Server 8976 über exec_command; Node-REPL-Server bleibt im Netzwerk isoliert. Screenshots/Prüfberichte unter ../../outputs/Acryl-Serie-2027/. Keine Veröffentlichung. Offen: markierte Layouts, Material-/Hauswanddarstellung, Bestellung/Fertigung.
+
+
+## 21.10.2026 – Edelstahl-Korrekturen auf Acryl übertragen
+798 bestehende Acryl-DRAFTs und Auswahlgruppe jetzt Revision 4. Aktuelle 40 Edelstahl-Designs aus fixiertem Quellstand Gruppe Revision 4 übernommen, D29/D32/D63 ersetzen D02/D70/D71. Originale exakte Acrylkonturen und alle Preise/IDs erhalten. 30.996 passende Design-/Artikelzuordnungen, 160 Geometriefälle, 399 identische Farbpaare, 4 mm Abstand zum Lochrand, minimale Ausgangsschrift 3,022 mm. Alte Revisionen bleiben erhalten.
+Dateien: scripts/apply-steel-corrections-to-acryl.mjs, app/workshop/edelstahl-series-layout.mjs (unveränderte Korrekturregeln aus Edelstahl), drei zusätzliche Originalmotive, aktualisierte Galerie, scripts/verify-acryl-corrections.mjs.
+Prüfung: alle 798 Dokumente/Variantenauswahlen zurückgelesen; alle übrigen Felder und alten Revisionen unverändert; alle Felder innerhalb Kontur und Sicherheitsabstand. 40 Designs/43 Motive in separater Datenkopie geändert/gespeichert/nach Neustart gelesen; Konflikt und Fremdtoken abgewiesen. Build und Syntax bestanden. Browser D14/AN, D47/SW und D32/SW Textspeichern/Neuladen bestanden; Testtext wiederhergestellt.
+Aktueller Server 127.0.0.1:8977, exec-Sitzung 10366, Galerie-Tab 6. Bisheriger User-Editor auf 8976/Revision 3 bleibt offen und unverändert. Netzwerkfreigabe vor exec-Start erforderlich; CUA-Datei-URLs gesperrt.
+Offene Grenze: D32 meldet überlappende Textrahmen, visuell getrennte Glyphen. Kleine Formate schließen 187 Design-/Geometriepaare wegen Schrift unter 3 mm aus. Keine neue Shop-/Fertigungsfreigabe. Nächster Schritt: Korrekturstand in aktualisierter Galerie prüfen.
+
+## 21.10.2026 – Prüfung 6x2/8x2 Schwarz und Anthrazit
+Auf Nutzerwunsch aus Edelstahl-Chat alle 798 aktuellen Konturen auf vollständige Außenform, konsistente Bohrungszahl und 3 mm Stärke geprüft. Acht native Materialansichten (2 Größen × 2 Farben × mit/ohne Bohrungen) gerendert und Material-/Lochflächen geprüft; keine Invertierung gefunden. Produkt-/Preis-/Layoutdaten unverändert. Nachweis: outputs/Acryl-Serie-2027/Pruefung-6x2-8x2/Pruefung.json und acht SVG/PNG-Paare. Nächster Schritt bleibt die visuelle Freigabe des vorhandenen Acrylstands.
+
+
+## 21.10.2026 – freie Korrekturbearbeitung und Shopify-Ampel
+798 Produkte und Auswahlgruppe auf Revision 5: additions text/motifs aktiviert, alle Felder beweglich/skalierbar/löschbar, Text-/Motivfarben wählbar; insgesamt höchstens 19 Elemente. IDs, exakte Konturen, Preise und Ausgangslayouts unverändert. Backup vorher: work/Vor-Bearbeitungsfreigaben. Journal acryl-editor-full-v1 schützt vor doppelter Anlage.
+Text-/Motivskalierung proportional; Schriftgröße bleibt exakt statt ganzzahliger Rundung. Opt-in fitText misst den Text serverseitig und erweitert seinen Rahmen, bestehende Feldrechte bleiben bindend. UI übernimmt normalisierte Werte. Motivwechsel nach Textauswahl im Browser repariert (fehlende Größe wurde früher mit toFixed gelesen). Neue Revision übernimmt eigene gespeicherte Korrekturen nur bei gleicher Geometrie und Layout sowie gültigem privatem Token; Fotos werden nicht zwischen Entwürfen kopiert.
+Ampel in Galerie/Editor und read-only design-status: aktuell rot für alle lokalen Acryl-DRAFTs, 0 Shopify-Bindings/Transfers. Grün und Blau nur aus ausdrücklich verifizierten Shopify-Fakten; diese Logik ist mit simulierten Fakten getestet, HTTP hat noch keinen Live-Shopify-Provider. Verknüpft ohne Live-Beleg bleibt neutral/unbestätigt. Shopify-Update deaktiviert; lokale Korrekturspeicherung ändert weder Serienvorlage noch Shopify. Kein Shopzugriff, keine Veröffentlichung.
+Prüfung: 798 vollständige Readbacks; API-Integration auf separater Datenkopie inkl. vier Eckgriffen, additions, Restart, Altstandübernahme, Token/Revision/Permission-Schutz bestanden. 14 Regressionstests bestanden. Windows-Testlauncher setzt TEMP/TMP in work und leitet ausschließlich Test-python3 auf GRAVURU_PYTHON um; Contour-Libs aus Edelstahl-Workspace. Browser D03/AN Größe A+ und Eckgriff, Herz/Stern einfügen, speichern/neuladen bestanden. Testelemente wieder entfernt, ursprüngliche Geometriewerte wiederhergestellt. 40 rote Designampeln je Farbe.
+Aktiver Server 8977 jetzt exec-Sitzung 60504 (10366 beendet). Neue Galerie Tab 7 und Editor Tab 8 als Deliverables; alte User-Tabs nicht neu geladen. Berichte und Screenshot Editor-Ampel.jpg unter outputs/Acryl-Serie-2027. Parallele Änderungen an material-presentation.mjs, acryl-series-wall.mjs und house-wall-v3.jpg gehören nicht zu diesem Paket und wurden bewahrt.
+
+## 21.10.2026 – Mitarbeitergalerie, Motivkategorien und Hauptprodukte (in Arbeit)
+Kunden-Motivkategorien mit Suche/Vorschaubildern und vorhandene Ausrichtungshilfen angeschlossen. Gemeinsame Korrekturen werden revisionsgebunden gespeichert und gegen gleichzeitiges Überschreiben geschützt. Hauswand-v3-Änderungen aus dem Edelstahl-Handoff übernommen, bestehende Layoutdateien bewahrt. Zwei alte Korrekturen D44/SW und D14/AN bleiben mit Quellrevision 3 separat als frühere Stände erreichbar.
+Echter Shopify-DRAFT 16175627665788 mit 798 Varianten angelegt, alle 798 SKUs/Preise/Optionen über vier Seiten zurückgelesen und bestätigt. Keine Veröffentlichung; Shop-Kundenkonfigurator/Warenkorb/Bestellbindung für diese Formserie noch offen.
+Neu anlegen erlaubt eine gewünschte Gesamtzahl von 1 bis 20 Hauptprodukten. Jedes neue Hauptprodukt erhält dieselbe Ausführungsgruppe und alle 40 Serien-Designs; SEO-Texte je Artikel vor Anlage bearbeitbar. Vorhandene Hauptprodukte zählen mit und werden nicht erneut erstellt. Bisher weiterhin genau ein tatsächlicher Shopify-Artikel.
+17 gezielte Tests (inkl. Mehrfachanlage, Idempotenz, vollständiger Rückprüfung, Mitarbeiterkonflikten, Authentifizierung, Kategorien, Ausrichtung und Status) bestanden; Build 76 Ressourcen/81 Module/9 Styles bestanden. Browser-Mengenwahl für 3 Hauptprodukte lokal geprüft, keine zusätzlichen Shopify-Artikel angelegt.
+Serverpaket und Ergänzung nach Plesk privat übertragen und per SHA geprüft. Bestehende App bleibt noch unverändert auf Release d18bc6c. Einmaliger Plesk-Auftrag führt frische Sicherung und Vorabprüfung aus; erster SSH-Backupversuch wurde durch Konsolenabbruch beendet und als unvollständig bewahrt. Installation darf erst nach COMPLETE.json und preflight.ok aktiviert werden. Details in work/FORTSETZUNG.md.

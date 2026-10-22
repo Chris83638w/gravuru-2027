@@ -21,7 +21,8 @@ HERE = Path(__file__).resolve().parent
 READER = HERE / 'read-corel-design-sheets.py'
 FORMS = {'TRE': 'Rechteck', 'TQ': 'Quadrat', 'TO': 'Oval', 'TAE': 'Rechteck abgerundete Ecken', 'TAS': 'Rechteck abgerundete Seiten',
          'TR1': 'Retro 1', 'TR2': 'Retro 2', 'KSRE': 'Kordelschild Rechteck', 'TREUV': 'Rechteck', 'TQUV': 'Quadrat', 'TOUV': 'Oval'}
-SHEET = re.compile(r'^(?P<base>[A-Z0-9]+(?:-[A-Z0-9()., ]+)*?-[\d.,]+(?:x[\d.,]+)?(?:\([\d.,x]+\))?)[_-]Designs?(?:_.*)?$', re.I)
+# Bogenname: <Basis-SKU>[_mB|-mB]_Designs[.cdr]; „mB“ = Variante mit Bohrung, eigener Bogen → Basis + „-mB“
+SHEET = re.compile(r'^(?P<base>[A-Z0-9]+(?:-[A-Z0-9()., ]+)*?-[\d.,]+(?:x[\d.,]+)?(?:\([\d.,x]+\))?)(?P<variant>[_-]mB)?[_-]Designs?(?:_.*)?$', re.I)
 
 
 def slug(text):
@@ -31,7 +32,8 @@ def slug(text):
 
 def base_sku(cdr):
     m = SHEET.match(cdr.stem)
-    return m.group('base') if m else None
+    if not m: return None
+    return m.group('base') + ('-mB' if m.group('variant') else '')
 
 
 def meta_from_path(cdr, root, linie, prozess, material):

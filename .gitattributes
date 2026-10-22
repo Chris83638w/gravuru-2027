@@ -14,3 +14,4 @@ app/references/** -text
 # Codex-Anschlussdateien (CRLF, hashgeprüft) bytegleich lassen
 legacy-patches/** -text
 ops/legacy-host-overlay/** -text
+scripts/gt22x14-serienimport/** -text

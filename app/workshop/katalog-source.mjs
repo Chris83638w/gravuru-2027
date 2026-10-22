@@ -28,7 +28,9 @@ function readJson(file){
 }
 const exists=file=>{try{return fs.statSync(file).isFile();}catch{return false;}};
 const isDir=dir=>{try{return fs.statSync(dir).isDirectory();}catch{return false;}};
-const listDirs=dir=>isDir(dir)?fs.readdirSync(dir,{withFileTypes:true}).filter(e=>e.isDirectory()).map(e=>e.name).sort():[];
+// Natürliche Reihenfolge (D1, D2, D23 → D1, D2, D3 … D23): Katalogfolge der Designs im Konfigurator (Chris 22.10.2026).
+const natural=new Intl.Collator('de',{numeric:true,sensitivity:'base'});
+const listDirs=dir=>isDir(dir)?fs.readdirSync(dir,{withFileTypes:true}).filter(e=>e.isDirectory()).map(e=>e.name).sort(natural.compare):[];
 const listFiles=(dir,ext)=>isDir(dir)?fs.readdirSync(dir).filter(n=>n.toLowerCase().endsWith(ext)).sort():[];
 
 // Linie (`linien/<linie>.json`, Schema gravuru-line/v2): physisches Produkt mit

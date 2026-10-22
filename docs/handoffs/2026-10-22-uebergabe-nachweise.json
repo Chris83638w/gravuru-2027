@@ -1,0 +1,126 @@
+{
+  "schema": "gravuru-complete-handover-evidence/v1",
+  "date": "2026-10-22",
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "task/universelle-konfi-anbindung-20261022",
+  "baseCommit": "b4d944e1409bc66647d582cc3d00710549d9d3f5",
+  "lastDeployedApplicationChangeCommit": "5301ce97d8170c08f05033deeed25df61c61da1b",
+  "handoverChanges": {
+    "documentation": true,
+    "application": false,
+    "server": false,
+    "shopify": false,
+    "databases": false,
+    "main": false
+  },
+  "localWorkingCopy": {
+    "gitCheckout": false,
+    "scope": "targeted partial source folder",
+    "byteMatches": 497,
+    "trailingWhitespaceOnlyMatches": 5,
+    "githubFilesNotInPartialLocalCopy": 263
+  },
+  "completeCurrentSourceArchive": {
+    "archive": "Gravuru-Vollquellen-20261022-v2.zip",
+    "bytes": 74930132,
+    "sha256": "73dcb4c4df29c396500a88820e3597bbb61af4ac9e38baa16fe05add7c3bccb2",
+    "files": 1877,
+    "crcPassed": true,
+    "allMemberHashesVerified": true,
+    "sourceOnly": true,
+    "deploymentPerformed": false
+  },
+  "historicalSourceArchive": {
+    "archive": "Gravuru-Historische-Vollquellen-20261022.zip",
+    "bytes": 94956747,
+    "sha256": "c3c8b71160737e12023e966eef9a0b26f44a8ebcef66858bba36343a1e9e7e39",
+    "files": 798,
+    "legacyOriginalSourcesVerified": 285,
+    "crcPassed": true,
+    "allMemberHashesVerified": true,
+    "historicalOnly": true
+  },
+  "newIsolatedCoreCheck": {
+    "schema": "gravuru-combined-private-restoration/v1",
+    "testedAt": "2026-10-22T18:11:52.119Z",
+    "publicListener": false,
+    "originalsOpenedForWriting": false,
+    "shopifyRequests": false,
+    "combinedGatewayReady": true,
+    "excludedOperationalColumn": "tenant_settings.updated_at (existing runtime refreshes timestamp on startup; all setting values compared)",
+    "stores": [
+      {
+        "store": "legacy",
+        "productCount": 34,
+        "originalTablesUnchanged": 50,
+        "registryCreated": true,
+        "cartLedgerReady": true
+      },
+      {
+        "store": "acryl",
+        "productCount": 799,
+        "originalTablesUnchanged": 65,
+        "registryCreated": true,
+        "cartLedgerReady": true
+      }
+    ]
+  },
+  "privateTwoStoreBackup": {
+    "archive": "gravuru-two-stores-20261022.zip",
+    "bytes": 473613729,
+    "sha256": "07746a50adc6ba101cc5a5e2a241864d7154c55d68e9746a4fb78790d99baaf2",
+    "databases": 6,
+    "files": 1758,
+    "restoreVerified": true,
+    "predatesLatestPricingBindingAndOrderChanges": true
+  },
+  "historicalPrivateWorkshop": {
+    "archive": "Gravuru-private-Datenuebergabe-2026-09-23.zip",
+    "bytes": 23398513,
+    "sha256": "6eb02fa2bf3c59bc10e9ddfa6c7efd5b2fe2098b27c177fda36370706cd369ff",
+    "designs": 171,
+    "revisions": 175,
+    "plateTemplates": 7,
+    "deferredDesigns": 8,
+    "removedTemplates": 2,
+    "notMergedIntoCurrentStores": true
+  },
+  "confirmedActiveBindings": {
+    "legacyVariants": 9,
+    "acrylVariants": 1,
+    "allProducts": false
+  },
+  "photo": {
+    "maxBytes": 15728640,
+    "separateUploadMegapixelLimit": null,
+    "automaticCutoutService": false,
+    "originalPreserved": true
+  },
+  "startup": {
+    "independentHtmlStatus": 200,
+    "existingSavedEditorReopened": true,
+    "manualSameTabAddressConfirmationUsed": true,
+    "browserDocumentPauseObserved": true,
+    "applicationRootCauseConfirmed": false,
+    "permanentFixVerified": false
+  },
+  "releaseGaps": [
+    "normal fresh embedded start",
+    "fresh full live database snapshot including latest changes",
+    "isolated full Linux/Plesk replacement start",
+    "remaining explicit variant bindings",
+    "general form pricing and add-on contracts",
+    "public customer authorization and sales flow",
+    "complete photo edit parameter round trip",
+    "subcategory production profile assignment flow",
+    "full preserved feature/accessibility review",
+    "representative isolated load and recovery check"
+  ],
+  "privacy": {
+    "privatePackageUploadedToGitHub": false,
+    "externalCredentialsIncluded": false,
+    "automaticChatOrMachineSynchronization": false
+  },
+  "privateTransferBundle": "Gravuru-Komplettuebergabe-20261022.zip",
+  "transferReceipt": "TRANSFER-PRUEFUNG.json and adjacent SHA256.txt, private only"
+}

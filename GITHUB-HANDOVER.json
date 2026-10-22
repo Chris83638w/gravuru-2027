@@ -1,95 +1,59 @@
 {
+  "schema": "gravuru-complete-handover-index/v2",
   "repository": "Chris83638w/gravuru-2027",
   "branch": "task/universelle-konfi-anbindung-20261022",
-  "parentCommit": "1382509d689a954f6f7801f7f52c94b2dbacdd92",
-  "readme": "docs/BROWSER-PREIS-ABNAHME-20261022.md",
-  "serverDeployed": true,
-  "shopifyModified": true,
-  "privateBackupCreated": true,
-  "privateBackupRestoreVerified": true,
-  "shopifyAppVersion": "1177374556161",
-  "legacyVariantAssignments": 9,
-  "acrylVariantAssignments": 1,
-  "testOrders": [
-    {
-      "name": "#1024",
-      "id": "13745774461308",
-      "quantity": 2,
-      "itemsCents": 6200,
-      "shippingCents": 499,
-      "totalCents": 6699,
-      "workshopReceived": true
-    },
-    {
-      "name": "#1025",
-      "id": "13745779016060",
-      "quantity": 3,
-      "itemsCents": 8904,
-      "shippingCents": 0,
-      "totalCents": 8904,
-      "workshopReceived": true
-    }
-  ],
-  "originalPhotoHashesVerified": true,
-  "configurationRevisionsVerified": true,
-  "webhookProductIdFixed": true,
-  "repairLocalTestsPassed": 15,
-  "repairServerTestsPassed": 5,
-  "embeddedEditorBrowserFlowVerified": false,
-  "existingEmbeddedEditorUsable": true,
-  "freshEmbeddedAppStillBlank": true,
-  "previewPriceUsesCommercePrice": true,
-  "previewPriceTestsPassedPerEditor": 6,
-  "previewPriceEditorVersionsTested": 2,
-  "photoMaxBytes": 15728640,
-  "photoUploadMegapixelLimit": null,
-  "photoLocalTestsPassed": 8,
-  "photoLinuxTestsPassed": 10,
-  "photoWorkerUpdatedInBothStores": true,
-  "privatePhotoSavedAndOriginalVerified": true,
-  "newPhotoBrowserTestOrder": {
-    "id": "13746109022588",
-    "quantity": 2,
-    "itemsCents": 6200,
-    "shippingCents": 499,
-    "totalCents": 6699,
-    "workshopReceived": true,
-    "productionReady": false
-  },
-  "savedProofReopenedInDashboard": true,
-  "freshEditorPriceAndReopenBrowserCheckPending": false,
-  "allShopProductsIndividuallyBound": false,
-  "publicReleaseEnabled": false,
-  "productionReleased": false,
-  "privateDataIncludedInGithub": false,
-  "savedRevisionReopenedInEditor": true,
-  "visiblePhotoTierPriceChecks": [
-    {
-      "quantity": 2,
-      "barTotalCents": 6200,
-      "detailsTotalCents": 6200,
-      "photoCount": 1
-    },
-    {
-      "quantity": 3,
-      "barTotalCents": 8904,
-      "detailsTotalCents": 8904,
-      "photoCount": 1
-    }
-  ],
-  "browserQuantityRestoredTo": 2,
-  "manualAddressConfirmationRequiredForReopen": true,
-  "priceCheckCreatedNewOrder": false,
-  "latestStep": "Direkter App-Start untersucht: Browsersteuerung hält Dokumentantwort an; dauerhafter Ladefix nicht nachgewiesen, gespeicherte Gestaltung erhalten.",
-  "startupDiagnosis": {
-    "document": "docs/APP-START-DIAGNOSE-20261022.md",
-    "browserDocumentResponsePaused": true,
-    "directHtmlHttpStatus": 200,
-    "applicationRootCauseConfirmed": false,
-    "permanentFixVerified": false,
+  "baseCommit": "b4d944e1409bc66647d582cc3d00710549d9d3f5",
+  "readme": "docs/handoffs/2026-10-22-vollstaendige-uebergabe.md",
+  "decisions": "docs/handoffs/2026-10-22-entscheidungen-und-funktionserhalt.md",
+  "review": "docs/handoffs/2026-10-22-pruefauftrag.md",
+  "evidence": "docs/handoffs/2026-10-22-uebergabe-nachweise.json",
+  "status": "STATUS-UEBERGABE-20261022.md",
+  "thisHandover": {
+    "date": "2026-10-22",
+    "documentationOnly": true,
     "applicationChanged": false,
     "serverChanged": false,
     "shopifyChanged": false,
-    "savedDesignPreserved": true
-  }
+    "databaseChanged": false,
+    "privatePackageUploadedToGitHub": false
+  },
+  "previouslyVerifiedWork": {
+    "lastApplicationChangeCommit": "5301ce97d8170c08f05033deeed25df61c61da1b",
+    "scope": "existing private merchant test installation; not a public release",
+    "legacyVariantBindings": 9,
+    "acrylVariantBindings": 1,
+    "paidTestOrdersVerified": 3,
+    "visibleQuantitiesWithPhotoChecked": [
+      2,
+      3
+    ],
+    "originalPhotoPreserved": true,
+    "photoMaxBytes": 15728640
+  },
+  "handoverVerification": {
+    "completeSourceCopiesPrepared": true,
+    "historicalOriginalSourcesVerified": 285,
+    "isolatedCoreStoresChecked": 2,
+    "existingTablesPreserved": 115,
+    "tableComparisonException": "tenant_settings.updated_at only; all setting values compared"
+  },
+  "stillOpen": {
+    "permanentNormalAppStartFix": true,
+    "latestCompleteLiveDatabaseSnapshot": true,
+    "fullIsolatedLinuxPleskReplacementStart": true,
+    "remainingProductBindings": true,
+    "generalFormVariablePricing": true,
+    "publicCustomerSalesRelease": true,
+    "productionRelease": true
+  },
+  "privateTransfer": {
+    "bundle": "Gravuru-Komplettuebergabe-20261022.zip",
+    "receipt": "TRANSFER-PRUEFUNG.json beside private archive",
+    "credentialsIncluded": false,
+    "containsPrivateOriginalsAndDatabases": true,
+    "transferToAnotherMachineCompleted": false,
+    "automaticChatSynchronization": false
+  },
+  "privacy": "Exact order, configuration, webhook and runtime location identifiers are in the private handover, not this index.",
+  "history": "Earlier detailed handover indexes remain in Git history. Existing long STATUS.md and START_HERE.md are unchanged; use the current readme above."
 }

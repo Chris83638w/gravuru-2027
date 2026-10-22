@@ -27,9 +27,10 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SourceError, sourceConfig, sourceStatus, listSource, snapshotSource } from './source.mjs';
+import { bridgeConfig, createBridge } from './bridge.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const VERSION = '1.1.0';
+const VERSION = '1.2.0';
 const PROTOCOLS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
 const MAX_TEXT = 120_000;           // größte Textantwort an das Modell (Zeichen); Rest als Download
 const KEEP_MS = 24 * 3600_000;      // Downloads/Ergebnisse 24 h
@@ -69,6 +70,7 @@ export function loadConfig(argv = process.argv.slice(2), env = process.env, defa
     }
   }
   if (cfg.token.length < 32 || !/^[A-Za-z0-9_-]+$/.test(cfg.token)) throw new Error('CDR_MCP_TOKEN fehlt oder ist zu kurz (mindestens 32 Zeichen, nur A–Z, a–z, 0–9, _ und -)');
+  Object.assign(cfg, bridgeConfig(v, cfg.sourceRoot, cfg.token));
   return cfg;
 }
 
@@ -278,6 +280,7 @@ function limiter(n) {
 // ------------------------------------------------------------------ Server
 
 export function createCdrServer(cfg) {
+  const bridge = createBridge(cfg);
   fs.mkdirSync(path.join(cfg.data, 'in'), { recursive: true, mode: 0o700 });
   fs.mkdirSync(path.join(cfg.data, 'out'), { recursive: true, mode: 0o700 });
   const limit = limiter(cfg.jobs);
@@ -480,6 +483,7 @@ export function createCdrServer(cfg) {
     };
     try {
       if (url.pathname === '/health') return send(200, JSON.stringify({ ok: true, version: VERSION }));
+      if (url.pathname === '/bridge/v1/file') return await bridge(req, res);
       const dl = url.pathname.match(/^\/dl\/([A-Za-z0-9_-]{24})\/([^/]+)$/);
       if (dl && req.method === 'GET') {
         let name; try { name = decodeURIComponent(dl[2]); } catch { return send(404, '{}'); }

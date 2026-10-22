@@ -6,6 +6,7 @@ import path from 'node:path';
 import { createHash, randomBytes } from 'node:crypto';
 import { Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
+import { readReceipt } from './bridge.mjs';
 
 export class SourceError extends Error {}
 export const SOURCE_PREFIXES = ['V:\\Produkte', '\\\\bi-srv01-fs01\\Neue-Struktur\\Produkte', '\\\\bi-srv01-fs01.lan.gravuru.de\\Neue-Struktur\\Produkte'];
@@ -79,6 +80,10 @@ export async function sourceStatus(cfg) {
     await dir.close();
     result.erreichbar = true;
     result.hinweis = 'Ordner lesbar. Mit cdr_list_files die erwarteten Unterordner und eine bekannte CDR prüfen; ein leerer Mountpunkt belegt keine Serververbindung.';
+    if (cfg.bridgeEnabled) {
+      result.quelle = 'übertragene Kopien';
+      result.hinweis = 'Lokale Kopien nach ausgehender Übertragung vom Firmenrechner. Kein Live-Zugriff auf V:. Jede gelesene CDR enthält Quellzeit, Empfangszeit und SHA-256. Fehlende und später gelöschte Originale werden nicht automatisch abgeglichen.';
+    }
   } catch (e) { result.hinweis = e.message; }
   return result;
 }
@@ -138,7 +143,13 @@ export async function snapshotSource(cfg, input, activeSources = new Set()) {
     const after = await handle.stat({ bigint: true });
     if (after.size !== before.size || after.mtimeNs !== before.mtimeNs || after.ctimeNs !== before.ctimeNs || BigInt(bytes) !== after.size)
       throw new SourceError('Quelldatei wurde während des Lesens geändert; bitte erneut versuchen');
-    return { file: target, name: path.basename(real), cached: false, temporary: true, source: { server_path: rel, sha256: hash.digest('hex'), bytes, geaendert: new Date(Number(after.mtimeMs)).toISOString() } };
+    const sha256 = hash.digest('hex');
+    let receipt;
+    if (cfg.bridgeEnabled) {
+      receipt = await readReceipt(real, rel, sha256, bytes);
+      if (!receipt) throw new SourceError('Kopie ohne passende Übertragungsbestätigung; lokalen Helfer erneut ausführen');
+    }
+    return { file: target, name: path.basename(real), cached: false, temporary: true, source: { server_path: rel, sha256, bytes, geaendert: receipt?.sourceModified || new Date(Number(after.mtimeMs)).toISOString(), ...(receipt ? { typ: 'übertragene Kopie', empfangen: receipt.receivedAt, hinweis: 'Stand der letzten Übertragung; kein Live-Zugriff auf V:' } : {}) } };
   } catch (e) {
     if (target) await fsp.rm(target, { force: true }).catch(() => {});
     activeSources.delete(target);

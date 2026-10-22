@@ -21,6 +21,7 @@ Liest CorelDRAW-Dateien (`.cdr`) ohne CorelDRAW – mit derselben Technik, mit d
 - `server.mjs` – MCP über Streamable HTTP (zustandslos, JSON-Antworten), ohne npm-Abhängigkeiten. Endpunkt `https://<host>/mcp/<token>`; das Token ist der Zugangsschutz (≥ 32 Zeichen, nur im Passwortmanager). Lädt die Datei (nur https auf Port 443, keine internen Adressen – geprüft wird die tatsächlich verbundene IP, auch nach Weiterleitungen –, höchstens 200 MB, 120 s), höchstens 2 Auswertungen gleichzeitig, Warteschlange 8; je Auswertung höchstens 3 GB Arbeitsspeicher und 2 GB entpackte Datei (Schutz vor Zip-Bomben). Dateien 30 min im Zwischenspeicher (mehrere Werkzeuge auf dieselbe Datei, insgesamt höchstens 3 GB), Ergebnisse 24 h als Download, danach gelöscht – auch nach einem Neustart. Protokolliert nur Werkzeug, Dauer, Fehler – keine Dateiinhalte. Hinweis: Das Token steht im Pfad und damit im Zugriffsprotokoll des Webservers (nur für Plesk-Admins sichtbar); bei Verdacht Token tauschen und in ChatGPT neu eintragen.
 - `cdr_engine.py` – Auswertung, nur Python-Standardbibliothek (3.10+; geprüft 3.11–3.13); Vorschau braucht CairoSVG.
 - `source.mjs` – optionaler, ausschließlich lesender Zugriff auf einen vom Betreiber eingebundenen Produktordner. Keine eigene SMB-Anmeldung oder Netzwerkeinrichtung.
+- `bridge.mjs` – optionaler HTTPS-Empfänger für ausgehende CDR-Kopien vom Firmenrechner; separat authentifiziert und standardmäßig deaktiviert.
 - `app.cjs` – Startdatei für Plesk; `check.cjs` – Prüfung/Einrichtung.
 - ChatGPT übergibt hochgeladene Dateien über `_meta["openai/fileParams"]` (Feld `file` mit `download_url`, `file_id`, `mime_type`, `file_name`); Claude und andere geben `url` an.
 
@@ -52,7 +53,7 @@ Die laufende Plesk-App allein stellt noch keine Verbindung zum Windows-Dateiserv
 
 1. Betreiber stellt die Einbindung über das vorhandene private Netz bereit. Der Plesk-App-Benutzer benötigt Lese- und Verzeichniszugriff; Quelle nach Möglichkeit bereits beim Mount nur lesbar einbinden. Zugangsdaten bleiben in der Serververwaltung.
 2. In den bestehenden `values` der privaten Konfigurationsdatei **ergänzen**, nicht die Datei ersetzen: `"CDR_MCP_SOURCE_ROOT": "/tatsaechlicher/pfad/zu/Produkte"`. Alternativ dieselbe Umgebungsvariable in der App setzen. Der Beispielpfad ist ein Platzhalter. Ohne Einstellung funktionieren Uploads weiter; Serverzugriff meldet „nicht eingerichtet“.
-3. Beim Upgrade `server.mjs` **und** `source.mjs` aus demselben Stand in den bestehenden App-Ordner übernehmen (oder das neue Paket verwenden). Private Konfiguration, Token, libcdr und Python bleiben bestehen. App neu starten und die Werkzeugdefinitionen des Konnektors aktualisieren: fünf bestehende Werkzeuge erhalten `server_path`, zwei neue Werkzeuge kommen hinzu.
+3. Beim Upgrade `server.mjs`, `source.mjs` **und** `bridge.mjs` aus demselben Stand in den bestehenden App-Ordner übernehmen (oder das neue Paket verwenden). Private Konfiguration, Token, libcdr und Python bleiben bestehen. App neu starten und die Werkzeugdefinitionen des Konnektors aktualisieren: fünf bestehende Werkzeuge erhalten `server_path`, zwei neue Werkzeuge kommen hinzu.
 4. `cdr_source_status {}` aufrufen. `erreichbar: true` belegt einen lesbaren Ordner, noch keine erfolgreiche Verbindung zur erwarteten Freigabe. Mit `cdr_list_files` bekannte Unterordner prüfen und anschließend die konkrete CDR auslesen.
 
 Beispiel für den aus der CSV bekannten 7×2-Bogen (dessen Existenz und Inhalte sind noch live zu prüfen):
@@ -86,3 +87,12 @@ Als eigenen Remote-MCP-Konnektor mit derselben URL hinzufügen. Claude kann Date
 
 - `node --test app/cdr-mcp/*.test.mjs` – Engine, Protokoll und Serverquelle mit synthetischer libcdr-Ausgabe (keine Kundendateien im Repo). Neu: V:/UNC-Zuordnung, Umlaute/Klammern, Status, Listen/Seitenaufteilung, Pfadgrenzen/Symlinks, Größenlimit, Aktualität, D-Nummer/Textfarbe sowie Entfernen der Lesekopien bei Erfolg und Fehler.
 - Echte Dateien (21.10.2026, lokal, nicht im Repo): Edelstahl-Sammelbogen (21 Platten, 18 Löcher, darunter 18 × 12 aus Einzellinien), Gedenktafel-Designbogen 78 MB (24 Platten, 6,5 s), Schlüsselanhänger-Bogen (368 Platten, 367 Löcher, 1,3 s), Schablonen; Durchlauf mit dem offiziellen MCP-Python-Client gegen den Server; portables libcdr-Bündel mit leerer Umgebung = identisches Ergebnis wie System-libcdr; Python 3.11/3.12/3.13 identisch.
+
+## Ausgehende Übertragung vom Firmenrechner (ab 1.2.0)
+
+Für V:\Produkte ohne Verbindung von Plesk ins Firmennetz: Der lokale Helfer in
+`ops/cdr-bridge/` sendet geprüfte CDR-Kopien ausgehend per HTTPS. Die Einrichtung,
+Windows-Starter und Grenzen stehen in dessen README. Der Upload-Empfänger ist
+standardmäßig aus und benötigt einen eigenen privaten Kopienordner und ein
+separates Upload-Token. Die bestehenden MCP-Lesewerkzeuge geben für Kopien
+Quellzeit, Empfangszeit und SHA-256 zurück. Sie behaupten keinen Livezugriff auf V:.

@@ -10,7 +10,7 @@ STAGE="$(mktemp -d)"; trap 'rm -rf "$STAGE"' EXIT
 PKG="$STAGE/gravuru-cdr-mcp"
 mkdir -p "$PKG/vendor/libcdr/bin" "$PKG/vendor/libcdr/lib" "$PKG/vendor/libcdr/licenses" "$PKG/public"
 
-cp "$ROOT/app/cdr-mcp/server.mjs" "$ROOT/app/cdr-mcp/source.mjs" "$ROOT/app/cdr-mcp/cdr_engine.py" "$ROOT/app/cdr-mcp/app.cjs" "$ROOT/app/cdr-mcp/README.md" "$PKG/"
+cp "$ROOT/app/cdr-mcp/server.mjs" "$ROOT/app/cdr-mcp/source.mjs" "$ROOT/app/cdr-mcp/bridge.mjs" "$ROOT/app/cdr-mcp/cdr_engine.py" "$ROOT/app/cdr-mcp/app.cjs" "$ROOT/app/cdr-mcp/README.md" "$PKG/"
 printf '{\n  "name": "gravuru-cdr-mcp",\n  "private": true,\n  "type": "commonjs",\n  "engines": {"node": ">=22"},\n  "scripts": {"start": "node app.cjs", "check": "node check.cjs"}\n}\n' > "$PKG/package.json"
 cp "$ROOT/app/cdr-mcp/check.cjs" "$PKG/"
 printf 'User-agent: *\nDisallow: /\n' > "$PKG/public/robots.txt"

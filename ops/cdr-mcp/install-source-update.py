@@ -81,10 +81,12 @@ def main():
         env['PATH'] = str(Path(a.python).parent) + os.pathsep + env.get('PATH', '')
         env['CDR_MCP_QUIET'] = '1'
         with (stage / 'preflight.log').open('w') as out:
-            result = subprocess.run([a.node, '--test', 'cdr-mcp.test.mjs', 'source.test.mjs'], cwd=str(testdir), env=env, stdout=out, stderr=subprocess.STDOUT, timeout=120)
+            tests = sorted(p.name for p in testdir.glob('*.test.mjs'))
+            assert tests, 'No test files in payload'
+            result = subprocess.run([a.node, '--test', *tests], cwd=str(testdir), env=env, stdout=out, stderr=subprocess.STDOUT, timeout=120)
         assert result.returncode == 0, 'Preflight failed; inspect preflight.log'
         marker.write_text(json.dumps({'manifestSha256': digest(stage / 'manifest.json')}))
-        print(json.dumps({'preflight': 'passed', 'tests': 23, 'appChanged': False}))
+        print(json.dumps({'preflight': 'passed', 'testFiles': tests, 'appChanged': False}))
         return
     assert json.loads(marker.read_text())['manifestSha256'] == digest(stage / 'manifest.json')
     assert not backup.exists() and not receipt.exists(), 'Update already staged/applied'
@@ -113,7 +115,7 @@ def main():
             elif (app / name).exists():
                 os.replace(app / name, backup / ('added-' + name))
         raise
-    print(json.dumps({'installed': '1.1.0', 'backupComplete': True, 'configChanged': False, 'networkChanged': False}))
+    print(json.dumps({'installed': manifest.get('version', '1.1.0'), 'backupComplete': True, 'configChanged': False, 'networkChanged': False}))
 
 
 if __name__ == '__main__':

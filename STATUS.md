@@ -3,7 +3,7 @@
 - Neue Mitarbeiterseite /werkstatt/katalog/: elf aktive Produktlinien, 48 Unterkategorien, Hauptprodukte zuordnen und Anzahl je Unterkategorie planen. Gemeinsame, versionierte Speicherung; keine automatische Shopify-Anlage oder Veröffentlichung.
 - Katalogabgleich: Acryl 798 und Edelstahl 399 exakte Varianten mit stabilen Kennungen; vier aktuelle Hunde-Entwürfe mit je 48 Varianten, sechs ältere Parallelentwürfe, ein archivierter Artikel. Offene Stammdaten bleiben offen; Türklingeln zurückgestellt.
 - Vollständiger bereinigter Acryl-Quellsnapshot und Anleitung: [Übergabe an die andere KI](docs/handoffs/2026-10-22-katalog-und-neuer-konfigurator.md). 798 Produktdokumente, 40 Designquellen, 160 Konturen, 12 Schriften; keine Datenbanken, Schlüssel oder Kundendaten.
-- Tests Katalog/Team: 9 bestanden. Lokaler Browsertest mit Speichern, Mehrfachzuordnung und Neuladen bestanden; Serverabnahme noch offen; bestehende Acrylinstallation siehe folgenden Abschnitt.
+- Tests Katalog/Team: 9 bestanden. Lokaler Browsertest mit Speichern, Mehrfachzuordnung und Neuladen bestanden; Server installiert und zehn Datei-Prüfsummen bestätigt; vollständige Datenbanksicherung, HTTP-/Zugangsschutzprüfung bestanden. Chris bestätigt die sichtbare Übersicht mit 11 Linien und 48 Unterkategorien. [Installationsnachweis](docs/handoffs/2026-10-22-katalog-installation.json). Bestehende Acrylinstallation siehe folgenden Abschnitt.
 - Kundenanbindung ausdrücklich für den neuen Konfigurator zurückgestellt. Keine Artikel veröffentlicht.
 
 ## Acryl-Mitarbeiterinstallation aktiv und im Shopify-Browser geprüft · 22.10.2026

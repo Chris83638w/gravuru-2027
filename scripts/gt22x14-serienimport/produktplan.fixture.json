@@ -1,0 +1,257 @@
+{
+  "schema": "gravuru-gt22x14-product-plan/v1",
+  "asOf": "2026-10-21",
+  "state": "draft-series-source",
+  "scope": {
+    "productCount": 4,
+    "animal": "dog",
+    "designCount": 16,
+    "identicalGalleryForAllProducts": true
+  },
+  "catalogSource": {
+    "repository": "Chris83638w/gravuru-katalog.",
+    "ref": "1f58499a564a09ed52581e017094fdcd55756106",
+    "path": "familien/schiefer/gedenktafel-22x14-schiefer-natur.json",
+    "blobSha": "d29882b85075cb527ff0b0885b54285e3e45c2d4"
+  },
+  "geometry": {
+    "widthMm": 220,
+    "heightMm": 140,
+    "thicknessMm": 5,
+    "holeDiameterMm": 4,
+    "holeEdgeMm": 19,
+    "designMarginMm": 0,
+    "keepoutMm": 1,
+    "standoffHeadDiameterMm": 12,
+    "holeEdgeSource": "Direkte Nutzerkorrektur vom 20.10.2026: 19 mm von Lochmitte zum Rand; ersetzt die bisherigen 12 mm.",
+    "standoffHoleDiameterMm": 8
+  },
+  "prices": {
+    "baseCents": 2599,
+    "holes2OnlyCents": 309,
+    "holes4OnlyCents": 399,
+    "holes2WithScrewsCents": 339,
+    "holes4WithScrewsCents": 449,
+    "standoffSet2Cents": 599,
+    "standBlackCents": 1399,
+    "standClearCents": 1199,
+    "silicone40MlCents": 599,
+    "extraPhotoCents": 899,
+    "extraMotifCents": 160
+  },
+  "products": [
+    {
+      "id": "hund-knochenherz",
+      "title": "Hunde-Gedenktafel aus Schiefer mit Foto und Knochenherz – 22 × 14 cm",
+      "defaultDesignId": "GT-S-22x14-D220",
+      "designIds": [
+        "GT-S-22x14-D204",
+        "GT-S-22x14-D207",
+        "GT-S-22x14-D209",
+        "GT-S-22x14-D210",
+        "GT-S-22x14-D212",
+        "GT-S-22x14-D213",
+        "GT-S-22x14-D214",
+        "GT-S-22x14-D215",
+        "GT-S-22x14-D220",
+        "GT-S-22x14-D222",
+        "GT-S-22x14-D224",
+        "GT-S-22x14-D225",
+        "GT-S-22x14-D228",
+        "GT-S-22x14-D231",
+        "GT-S-22x14-D233",
+        "GT-S-22x14-D236"
+      ],
+      "seo": {
+        "title": "Hunde-Gedenktafel mit Foto & Knochenherz | Schiefer 22×14",
+        "description": "Erinnere dich an deinen Hund: Schiefer-Gedenktafel mit Foto, Name und Spruch. 22 × 14 cm, helle Gravur und Knochenherz. Alle Hunde-Designs auswählbar.",
+        "handle": "hunde-gedenktafel-schiefer-foto-knochenherz-22x14"
+      },
+      "contentOutline": {
+        "motif": "Knochenherz",
+        "personalization": [
+          "Foto",
+          "Name",
+          "Lebensdaten",
+          "Spruch"
+        ],
+        "gallery": "Alle 16 freigegebenen Hunde-Designs",
+        "backgroundRemoval": "Inklusive; Kunde kann Hintergrund behalten wählen",
+        "photoMask": "Form bleibt erhalten; Foto innerhalb der Maske verschiebbar"
+      },
+      "shopify": {
+        "plannedStatus": "DRAFT",
+        "productId": null,
+        "publicationAuthorized": false,
+        "mutationPerformed": false
+      }
+    },
+    {
+      "id": "hund-rosen",
+      "title": "Gedenktafel für Hunde aus Schiefer mit Foto und Rosen – 22 × 14 cm",
+      "defaultDesignId": "GT-S-22x14-D207",
+      "designIds": [
+        "GT-S-22x14-D204",
+        "GT-S-22x14-D207",
+        "GT-S-22x14-D209",
+        "GT-S-22x14-D210",
+        "GT-S-22x14-D212",
+        "GT-S-22x14-D213",
+        "GT-S-22x14-D214",
+        "GT-S-22x14-D215",
+        "GT-S-22x14-D220",
+        "GT-S-22x14-D222",
+        "GT-S-22x14-D224",
+        "GT-S-22x14-D225",
+        "GT-S-22x14-D228",
+        "GT-S-22x14-D231",
+        "GT-S-22x14-D233",
+        "GT-S-22x14-D236"
+      ],
+      "seo": {
+        "title": "Gedenktafel Hund mit Foto & Rosen | Schiefer 22×14 cm",
+        "description": "Gestalte eine Hunde-Gedenktafel aus Schiefer mit Foto, Name und persönlichem Spruch. Rosen als Startdesign, 22 × 14 cm und alle Hunde-Designs zur Wahl.",
+        "handle": "hunde-gedenktafel-schiefer-foto-rosen-22x14"
+      },
+      "contentOutline": {
+        "motif": "Rosen",
+        "personalization": [
+          "Foto",
+          "Name",
+          "Lebensdaten",
+          "Spruch"
+        ],
+        "gallery": "Alle 16 freigegebenen Hunde-Designs",
+        "backgroundRemoval": "Inklusive; Kunde kann Hintergrund behalten wählen",
+        "photoMask": "Form bleibt erhalten; Foto innerhalb der Maske verschiebbar"
+      },
+      "shopify": {
+        "plannedStatus": "DRAFT",
+        "productId": null,
+        "publicationAuthorized": false,
+        "mutationPerformed": false
+      }
+    },
+    {
+      "id": "hund-blueten",
+      "title": "Hunde-Gedenktafel aus Schiefer mit Foto und Blüten – 22 × 14 cm",
+      "defaultDesignId": "GT-S-22x14-D215",
+      "designIds": [
+        "GT-S-22x14-D204",
+        "GT-S-22x14-D207",
+        "GT-S-22x14-D209",
+        "GT-S-22x14-D210",
+        "GT-S-22x14-D212",
+        "GT-S-22x14-D213",
+        "GT-S-22x14-D214",
+        "GT-S-22x14-D215",
+        "GT-S-22x14-D220",
+        "GT-S-22x14-D222",
+        "GT-S-22x14-D224",
+        "GT-S-22x14-D225",
+        "GT-S-22x14-D228",
+        "GT-S-22x14-D231",
+        "GT-S-22x14-D233",
+        "GT-S-22x14-D236"
+      ],
+      "seo": {
+        "title": "Hunde-Gedenktafel mit Foto & Blüten | Schiefer 22×14 cm",
+        "description": "Persönliches Andenken an deinen Hund: Schiefer-Gedenktafel mit Foto, Namen und Blüten. 22 × 14 cm, helle Gravur und frei wählbare Hunde-Designs.",
+        "handle": "hunde-gedenktafel-schiefer-foto-blueten-22x14"
+      },
+      "contentOutline": {
+        "motif": "Blüten",
+        "personalization": [
+          "Foto",
+          "Name",
+          "Lebensdaten",
+          "Spruch"
+        ],
+        "gallery": "Alle 16 freigegebenen Hunde-Designs",
+        "backgroundRemoval": "Inklusive; Kunde kann Hintergrund behalten wählen",
+        "photoMask": "Form bleibt erhalten; Foto innerhalb der Maske verschiebbar"
+      },
+      "shopify": {
+        "plannedStatus": "DRAFT",
+        "productId": null,
+        "publicationAuthorized": false,
+        "mutationPerformed": false
+      }
+    },
+    {
+      "id": "hund-sternschnuppe",
+      "title": "Gedenktafel für Hunde mit Foto und Sternschnuppe – Schiefer 22 × 14 cm",
+      "defaultDesignId": "GT-S-22x14-D212",
+      "designIds": [
+        "GT-S-22x14-D204",
+        "GT-S-22x14-D207",
+        "GT-S-22x14-D209",
+        "GT-S-22x14-D210",
+        "GT-S-22x14-D212",
+        "GT-S-22x14-D213",
+        "GT-S-22x14-D214",
+        "GT-S-22x14-D215",
+        "GT-S-22x14-D220",
+        "GT-S-22x14-D222",
+        "GT-S-22x14-D224",
+        "GT-S-22x14-D225",
+        "GT-S-22x14-D228",
+        "GT-S-22x14-D231",
+        "GT-S-22x14-D233",
+        "GT-S-22x14-D236"
+      ],
+      "seo": {
+        "title": "Gedenktafel Hund mit Foto & Sternen | Schiefer 22×14",
+        "description": "Hunde-Gedenktafel aus Naturschiefer mit Foto, Name und Lebensdaten. Sternschnuppe als Startdesign, 22 × 14 cm und alle Hunde-Designs auswählbar.",
+        "handle": "hunde-gedenktafel-schiefer-foto-sternschnuppe-22x14"
+      },
+      "contentOutline": {
+        "motif": "Sternschnuppe",
+        "personalization": [
+          "Foto",
+          "Name",
+          "Lebensdaten",
+          "Spruch"
+        ],
+        "gallery": "Alle 16 freigegebenen Hunde-Designs",
+        "backgroundRemoval": "Inklusive; Kunde kann Hintergrund behalten wählen",
+        "photoMask": "Form bleibt erhalten; Foto innerhalb der Maske verschiebbar"
+      },
+      "shopify": {
+        "plannedStatus": "DRAFT",
+        "productId": null,
+        "publicationAuthorized": false,
+        "mutationPerformed": false
+      }
+    }
+  ],
+  "reuseAndConflictRule": "Bestehende Produkt-/Variantenbindungen und parallele Claude-Entwürfe vor jedem Schreiben abgleichen. Kein automatisches Überschreiben oder Löschen.",
+  "notes": [
+    "Die Auswahl der fünf Hauptdesigns ist eine konkrete Umsetzungsauswahl für den lokalen Entwurfsplan; keine neue Produktart.",
+    "Die Preise nur für Bohrlöcher waren im Katalog als aus 30×20 übernommen markiert. Sie werden aufgrund der aktuellen Nutzeranweisung zu unveränderten früheren Werten übernommen; keine Behauptung, die ursprüngliche Nutzernachricht selbst gefunden zu haben.",
+    "Originale Referenzbilder weiterverwenden und anpassen; Bilder hier noch nicht neu erstellt.",
+    "SEO-Entwurf vorhanden; ausführliche Beschreibungen, Medien, Konfiguratorübernahme, Preflight und Shopify-Upload noch auszuführen."
+  ],
+  "masterDataOverrides": [
+    {
+      "field": "holeEdgeMm",
+      "previous": 12,
+      "value": 19,
+      "unit": "mm",
+      "source": "Direkte Nutzerkorrektur 20.10.2026",
+      "appliesTo": "Bohrbilder mit 2 bzw. 4 Löchern einschließlich Abstandshalter-Ausführung"
+    }
+  ],
+  "latestDecision": {
+    "at": "2026-10-21",
+    "productCount": 4,
+    "regularHoleDiameterMm": 4,
+    "standoffHoleDiameterMm": 8,
+    "holeEdgeMm": 19,
+    "screwSurcharge2Cents": 30,
+    "screwSurcharge4Cents": 50,
+    "derivedHoles2OnlyCents": 309,
+    "derivedHoles4OnlyCents": 399,
+    "source": "Direkte nachgereichte Nutzerantwort; ersetzt den bisherigen Fuenfer-Plan und Ø 5 mm."
+  }
+}

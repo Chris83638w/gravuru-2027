@@ -227,3 +227,39 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
 });
+// Chris 22./23.10.2026: Ohne Foto im Produkt/Verfahren und ohne Foto-/Logo-Ebene in einem Design verschwindet der
+// Reiter „Foto / Logo“ vollständig – unabhängig von der Logo-Einstellung. Produkte mit Foto bleiben unverändert.
+test('Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten Logos), mit Foto wie bisher',async()=>{
+ const {uploadTabVisible,designsHaveUploadLayer}=await import('./ux-model.mjs');
+ const textOnly={photo:{enabled:false},logo:{enabled:true},profile:{designs:[{id:'a',objects:[{id:'t',type:'text'}]},{id:'b',objects:[{id:'m',type:'motif'}]}]}};
+ const withSlot={photo:{enabled:true},logo:{enabled:true},profile:{designs:[{id:'a',objects:[{id:'p',type:'photoSlot'}]},{id:'b',importedSource:'x.pdf',objects:[{id:'t',type:'text'}]}]}};
+ assert.equal(designsHaveUploadLayer(textOnly),false);assert.equal(designsHaveUploadLayer(withSlot),true);
+ // Kein Foto (Produkt oder Verfahren), keine Ebene: weg – egal ob Logos erlaubt sind.
+ assert.equal(uploadTabVisible(textOnly,'a',{photoEnabled:false,logoEnabled:true}),false);
+ assert.equal(uploadTabVisible(textOnly,'a',{photoEnabled:false,logoEnabled:false}),false);
+ // Verfahren ohne Foto (tools.photo false), aber ein Design hat eine Fotoebene: bisherige Regel (Logo entscheidet).
+ assert.equal(uploadTabVisible(withSlot,'a',{photoEnabled:false,logoEnabled:true}),true);
+ assert.equal(uploadTabVisible({...withSlot,photo:{enabled:false}},'a',{photoEnabled:false,logoEnabled:false}),false);
+ // Produkt mit Foto: unverändert – Fotobereich im gewählten Design oder Logos erlaubt.
+ assert.equal(uploadTabVisible(withSlot,'a',{photoEnabled:true,logoEnabled:false}),true);
+ assert.equal(uploadTabVisible(withSlot,'b',{photoEnabled:true,logoEnabled:false}),false,'importierte Vorlage ohne Fotobereich, keine Logos');
+ assert.equal(uploadTabVisible(withSlot,'b',{photoEnabled:true,logoEnabled:true}),true);
+ assert.equal(uploadTabVisible(undefined,undefined,{photoEnabled:true,logoEnabled:true}),true,'Klingelschild-Altpfad ohne Produktkonfiguration');
+ // Der echte updateUploads-Block aus ux.mjs setzt den Reiter samt Hilfe-Knopf nach dieser Regel.
+ const {photoAvailableForDesign}=await import('./ux-model.mjs');
+ const run=(config,photoEnabled,logoEnabled)=>{
+  const tab={hidden:false,disabled:false},guide={hidden:false},shown=[];
+  const nodes={'#ux-tab-upload':tab,'[data-ux=guide-upload]':guide,'.ux-tabs':{style:{setProperty(){}}},'.ux-uploads':{innerHTML:''}};
+  const env={config,photoEnabled,logoEnabled,activeTab:'upload',showTab:k=>shown.push(k),photoAvailableForDesign,uploadTabVisible,files:new Map(),el:{state:{designId:config.profile.designs[0].id,objects:[]}},$:s=>nodes[s],all:()=>[],label:()=>'',esc:v=>String(v),money:()=>'',button:()=>''};
+  vm.createContext(env);vm.runInContext(block('ux.mjs','  function updateUploads(){','\n  function updatePrice').replace('\n  function updatePrice',''),env);vm.runInContext('updateUploads()',env);
+  return {tab,guide,shown};
+ };
+ const gone=run(textOnly,false,true);assert.equal(gone.tab.hidden,true);assert.equal(gone.tab.disabled,true);assert.equal(gone.guide.hidden,true);assert.deepEqual(gone.shown,['options']);
+ const kept=run(withSlot,true,false);assert.equal(kept.tab.hidden,false);assert.equal(kept.guide.hidden,false);assert.deepEqual(kept.shown,[]);
+ // Reiter und Hilfe-Knopf werden gar nicht erst erzeugt, wenn kein Upload angeboten wird (uploadOffered).
+ const offered=line('ux.mjs','const uploadOffered=');
+ const offers=(photoEnabled,logoEnabled,config)=>{const env={photoEnabled,logoEnabled,config,designsHaveUploadLayer};vm.createContext(env);vm.runInContext(offered,env);return vm.runInContext('uploadOffered',env);};
+ assert.equal(offers(false,true,textOnly),false);assert.equal(offers(false,true,withSlot),true);assert.equal(offers(true,false,textOnly),true);assert.equal(offers(false,false,withSlot),false);
+ assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title,icon\]\)/,'Reiterleiste nutzt uploadOffered');
+ assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title\]\)=>button\('guide-'/,'Hilfe-Dialog nutzt uploadOffered');
+});

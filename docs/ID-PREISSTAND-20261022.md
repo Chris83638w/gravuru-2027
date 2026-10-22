@@ -1,5 +1,7 @@
 # ID-Anbindung und Preisstand – 22.10.2026
 
+Aktuelle Fortsetzung: [Browserprüfung, korrigierte Preisanzeige und Fotoprüfung](BROWSER-PREIS-ABNAHME-20261022.md). Die folgenden Bestellnachweise bleiben bestehen; der Browser-Zwischenstand wird durch diese Ergänzung präzisiert.
+
 Ergänzung zu `ID-ANBINDUNG-20261022.md`. Ausgangscommit der Schnittstellenquellen: `2c454cf28fa5837001208d6a801ea04aea3267ff`, Aufgabenbranch `task/universelle-konfi-anbindung-20261022`. Kein Merge nach main.
 
 ## Tatsächlich ausgeführt

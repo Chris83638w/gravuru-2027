@@ -1,3 +1,9 @@
+## Browserpreis, Foto bis 15 MB und weitere Testbestellung · 22.10.2026
+
+Die zwei unterschiedlichen Editorfassungen verwenden jetzt die gemeinsame vollständige Stückpreisberechnung, einschließlich rabattierter Fotoaufschläge. Neueste Nutzerentscheidung umgesetzt: höchstens 15 MB je Foto, keine zusätzliche Megapixelgrenze beim Upload. Linux-Worker begrenzen stattdessen Speicher, CPU-Zeit und Parallelität; Originale bleiben byteidentisch. Acht lokale Fototests und zehn Linux-Prüfungen bestanden; sechs gezielte Preisprüfungen je Editorfassung und 29 bestehende Staffelprüfungen bestanden. Änderungen auf dem Testhost mit Quellbackup und Hashprüfung installiert.
+
+Das vom Nutzer hochgeladene Foto wurde im bestehenden Browserentwurf gesichert und bis zur Shopify-Testbestellung geprüft: ID 13746109022588, zwei Stück, Artikel 62,00 EUR + 4,99 EUR Versand. Automatischer Werkstatteingang und unverändertes Originalfoto bestätigt; keine Fertigungsfreigabe. Privates Prüfpaket lokal gesichert und geprüft. Offen bleiben die Sichtprüfung der frisch geladenen Preisanzeige/Wiederöffnung im Editor, das separat leere neue App-Fenster und die Zuordnung der übrigen Produkt-IDs. Details und überprüfbare Grenzen: [Browser-/Fotoabnahme](docs/BROWSER-PREIS-ABNAHME-20261022.md).
+
 ## Universelle Konfigurator-Anbindung: ID-Abgleich und erster Anschlussbaustein · 22.10.2026
 
 - Eigener Branch task/universelle-konfi-anbindung-20261022 ab 1638bd2; Konfigurator- und Katalogstände gezielt verglichen. Beide vorhandenen Produktschemata und alle Originalkennungen bleiben erhalten.

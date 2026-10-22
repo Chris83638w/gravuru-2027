@@ -345,7 +345,7 @@ const cleanId=v=>String(v).toLowerCase().replace(/[^a-z0-9._:-]+/g,'-').replace(
 // Unterkategorie wird nicht je Produkt eingebettet, sondern als Schriftprofil der
 // Profilbibliothek zugeordnet (`fontProfileId` → profileAssignments.fonts, siehe
 // katalog-import.mjs `ensureFontSet`); fehlende Set-Schriften werden gemeldet, nie erfunden.
-export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,fontSet=null,fontProfileId=null,fonts={},templates=[],revision=1,tierDefaults}={}){
+export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,fontSet=null,fontProfileId=null,fonts={},templates=[],revision=1,tierDefaults,mainProduct=null}={}){
  if(!size)fail('Größe fehlt.');
  if(Array.isArray(subcategory.sizesOffered)&&!subcategory.sizesOffered.includes(size.key))fail('Größe '+size.key+' wird in „'+subcategory.name+'“ nicht angeboten.');
  const f=applyPriceOverrides(family,subcategory),s=f.sizes.find(x=>x.key===size.key);
@@ -360,7 +360,7 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
  const config=familyProductConfig(view,s,revision),p=config.profile;
  // Eigene Produktkennung je Linie, Unterkategorie und Größe (Sitzungsschutz K7 und
  // Direktlinks K9 unterscheiden Produkte über binding.productId).
- p.id=cleanId('katalog-'+line.id+'-'+subcategory.id+'-'+s.key);p.binding={kind:'local-review',productId:'local-'+p.id};
+ p.id=cleanId('katalog-'+line.id+'-'+subcategory.id+'-'+s.key+(mainProduct?'-'+mainProduct.id:''));p.binding={kind:'local-review',productId:'local-'+p.id};
  const process=familyProcess(f);
  const setFonts=[...new Set([...FONT_SET_ALWAYS,...(fontSet?.fonts??[])])],fontsMissing=setFonts.filter(n=>!fonts[n]&&!(fontSet?.available??[]).includes(n));
  const localFonts={...config.localResources.fonts};
@@ -388,8 +388,14 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
  if(templates.some(t=>t.template.objects.some(o=>o.type==='photoSlot'))){if(!process?.tools.photo)fail('Fotofeld in einer Vorlage, aber das Verfahren sieht kein Foto vor.');config.photo={...config.photo,enabled:true};}
  if(subcategory.themeId)p.themeId=subcategory.themeId;
  p.name=productName(line,subcategory,f,s);
+ if(mainProduct){
+  // Hauptprodukt: eigener Name (Katalog) oder Name des Startdesigns als Zusatz; externe Kennungen (z. B. Amazon-Custom) nur als Backend-Kategorie.
+  const startName=p.designs?.[0]?.name||mainProduct.startDesign;
+  p.name=mainProduct.name?mainProduct.name:p.name+' – '+startName;
+ }
  const document=makeProductDocument(config,{name:p.name,kind:'product'});
- document.categoryIds=[...new Set(['familie-'+f.id,'form-'+s.groupKey.toLowerCase(),'linie-'+cleanId(line.id),'unterkategorie-'+cleanId(line.id)+'-'+cleanId(subcategory.id),...(subcategory.themeId?['thema-'+cleanId(subcategory.themeId)]:[])])];
+ document.categoryIds=[...new Set(['familie-'+f.id,'form-'+s.groupKey.toLowerCase(),'linie-'+cleanId(line.id),'unterkategorie-'+cleanId(line.id)+'-'+cleanId(subcategory.id),...(subcategory.themeId?['thema-'+cleanId(subcategory.themeId)]:[]),
+  ...(mainProduct?['hauptprodukt-'+cleanId(mainProduct.id),...Object.entries(mainProduct.externalIds||{}).map(([k,v])=>cleanId('extern-'+k+'-'+v))]:[])])];
  for(const t of templates)document.elementRights[t.template.id]=structuredClone(t.rights);
  if(fontProfileId)document.profileAssignments.fonts={mode:'override',profileId:fontProfileId};
  return {document:validateProductDocument(document),fontsMissing,fontSet:fontSet?.id??null,fontProfileId,themeId:theme?.id??subcategory.themeId??null};

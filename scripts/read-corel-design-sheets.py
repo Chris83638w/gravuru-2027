@@ -23,6 +23,8 @@ TEXTURE_MAX_PX = 700   # längste Seite einer Materialtextur in _texturen/<key>.
 SKU = re.compile(r'^[A-Z]{2,6}[A-Z0-9]*(?:-[A-Z0-9]+)*?-(?:\([\d.,]+x[\d.,]+\))?[\d.,]+(?:x[\d.,]+)?(?:\([\d.,]+x[\d.,]+\))?[a-zA-Z]{0,3}-D\d+$')  # Größe WxH oder Einzelmaß, auch mit Klammerzusatz (30x8(28x6)) oder Kürzel (30x8ae); Präfix ein oder mehrere Segmente
 PROP = re.compile(r'([a-z0-9:-]+): ([^,()]+?)(?=, [a-z0-9:-]+: |\)$|$)')
 NUM = re.compile(r'-?\d+(?:\.\d+)?')
+CUSTOMIZATION_ID = re.compile(r'\d{7}(?:\s+\d{7})*')  # Amazon-Custom-Kennungen der Hauptprodukte auf dem Bogen
+PRODUCTION_MARK = re.compile(r'^\s*Produktion\s*:?\s*$', re.I)
 
 
 def props(s):
@@ -205,7 +207,8 @@ def parse_sheet(cdr):
         if text is not None:
             if s.startswith('openParagraph'):
                 p = props(s[len('openParagraph ('):-1]) if '(' in s else {}
-                text['paras'].append({'align': p.get('fo:text-align', 'left'), 'spans': []})
+                # librevenge liefert auch 'start'/'end' (fo:text-align): auf left/center/right vereinheitlichen
+                text['paras'].append({'align': {'start': 'left', 'end': 'right', 'middle': 'center'}.get(p.get('fo:text-align', 'left'), p.get('fo:text-align', 'left')), 'spans': []})
             elif s.startswith('openSpan'):
                 p = props(s[len('openSpan('):-1])
                 text['paras'][-1]['spans'].append({'font': p.get('style:font-name', ''), 'sizePt': inch(p.get('fo:font-size', '0')), 'color': p.get('fo:color', ''), 'bold': p.get('fo:font-weight') == 'bold', 'italic': p.get('fo:font-style') == 'italic', 'text': ''})
@@ -320,7 +323,15 @@ def build_design(sku, items, label_item, meta):
             if (m.get('fill') or '').lower() in ('#ffffff', '#fdfdfd', '#fefefe') and m['d'].count('M') == 1 and abs(m['box'][2] - m['box'][3]) < 1.5 and m['box'][2] >= 0.6 * b[2]: m['hint'] = True
     plate_rec = {'widthMm': round(W, 1), 'heightMm': round(H, 1), 'source': plate_source}
     if plate is not None and not plate['rect']: plate_rec['outline'] = to_svg_d(plate['acts'], ox, oy)
-    return {'id': sku, **meta, 'plate': plate_rec, 'texts': texts, 'fonts': fonts, 'motifs': motifs, 'images': images}
+    # Kundenkennungen der Hauptprodukte (7-stellige Nummern unter dem Etikett, z. B. 3100000) sind keine Designtexte
+    ids = sorted({n for t in texts for n in re.findall(r'\b\d{7}\b', t['text']) if CUSTOMIZATION_ID.fullmatch(t['text'].strip())})
+    texts = [t for t in texts if not CUSTOMIZATION_ID.fullmatch(t['text'].strip())]
+    fonts = [f for f in fonts if any(t['font'] == f for t in texts)]  # Schriften der Kennungen (meist Arial) gehören nicht zum Design
+    label_color = ''
+    if label_item is not None:
+        sp = next((sp for p in label_item['paras'] for sp in p['spans'] if sp['text'].strip()), None)
+        label_color = (sp or {}).get('color', '') or ''
+    return {'id': sku, **meta, 'plate': plate_rec, 'labelColor': label_color.lower(), 'customizationIds': ids, 'sheetBoxMm': [round(pb[0] * IN, 2), round(pb[1] * IN, 2), round(W, 2), round(H, 2)], 'texts': texts, 'fonts': fonts, 'motifs': motifs, 'images': images}
 
 
 def cutout_white(data):
@@ -748,6 +759,21 @@ def main():
             # Einzel-Export eines Designs (ohne SKU-Etikett): alles gehört zu diesem Design
             items = [it for g in groups for it in g] + loose
             if items: designs.append(build_design(cdr.stem, items, None, meta))
+        # Doppelte Design-Nummern: die Fassung mit Vermerk „Produktion:“ links daneben ist die Gravurfassung
+        marks = [it for it in loose + [it for g in groups for it in g] if it['kind'] == 'text' and PRODUCTION_MARK.match(text_plain(it))]
+        def marked(d):
+            x, y, w, h = d['sheetBoxMm']
+            return any(abs((m['bbox'][1] + m['bbox'][3]) / 2 * IN - (y + h / 2)) < h and -60 < x - m['bbox'][2] * IN < 30 for m in marks)
+        by_id = {}
+        for d in designs: by_id.setdefault(d['id'], []).append(d)
+        for sku, same in by_id.items():
+            if len(same) < 2: continue
+            prod = [d for d in same if marked(d)]
+            if len(prod) == 1 and len(same) == 2:
+                prod[0]['production'] = True; prod[0]['productionOf'] = sku; prod[0]['id'] = sku + '-PRODUKTION'
+            else:
+                for i, d in enumerate(same[1:], 2): d['id'] = f'{sku}-DOPPELT{i}'; d['duplicateOf'] = sku
+                print(f'{cdr.name}: {sku} {len(same)}× ohne eindeutigen Produktionsvermerk')
         n_png = 0
         mark_sheet_textures(designs)
         for d in designs:
@@ -762,7 +788,8 @@ def main():
             if d['id'] in seen: index[seen[d['id']]] = slim
             else: seen[d['id']] = len(index); index.append(slim)
         if not a.no_png: contact_sheet(designs, out, f"{meta['process']} {meta['material']} {meta['form']} – {meta['sheetLabel'] or cdr.stem}")
-        print(f"{cdr.name}: {len(groups)} Gruppen → {len(designs)} Designs, {sum(len(d['texts']) for d in designs)} Texte, {n_png} Vorschauen")
+        greens = sum(1 for d in designs if d.get('labelColor') == '#00ff00'); prods = sum(1 for d in designs if d.get('production'))
+        print(f"{cdr.name}: {len(groups)} Gruppen → {len(designs)} Designs ({greens} grün, {prods} Produktionsfassungen), {sum(len(d['texts']) for d in designs)} Texte, {n_png} Vorschauen")
     (out / 'designs.json').write_text(json.dumps(index, ensure_ascii=False, indent=1), encoding='utf-8')
 
 

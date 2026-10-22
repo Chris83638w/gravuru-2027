@@ -86,3 +86,29 @@ test('ensureFontSet ohne Bibliothek liefert nur die Lücken; Import-Journal verh
  assert.ok(twice.products.every(p=>p.action==='vorhanden'),'gleicher Plan zweimal: Produkte bleiben, nichts doppelt');
  assert.equal(ws.repository.list().length,5);
 });
+
+test('Hauptprodukte: je Hauptprodukt ein Produkt mit eigenem Startdesign, Namen und Backend-Kennungen; `only` begrenzt den Lauf',async t=>{
+ const ws=workshop(t),dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-katalog-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ fs.cpSync(FIXTURE,dir,{recursive:true});
+ const lineFile=path.join(dir,'linien/test-linie.json'),line=JSON.parse(fs.readFileSync(lineFile,'utf8'));
+ line.subcategories[1].mainProducts=[
+  {id:'3100000',startDesign:'test-herz',sizesOffered:['TS-RE-90X60'],externalIds:{amazonCustom:'3100000'}},
+  {id:'3200000',name:'Hundeschild mit Foto',startDesign:'test-foto'}];
+ fs.writeFileSync(lineFile,JSON.stringify(line));
+ const plan=await planKatalogImport(openKatalog(dir),'test-linie',options(ws)),hunde=plan.report.subcategories[1];
+ assert.deepEqual(hunde.products.map(p=>[p.mainProduct,p.sizeKey,p.action,p.templates.map(x=>x.design)]),[
+  ['3100000','TS-RE-90X60','neu',['test-foto','test-herz']],
+  ['3200000','TS-RE-90X60','neu',['test-foto','test-herz']],['3200000','TS-RE-60X40','gesperrt',['test-foto','test-herz']]],'alle Designs des Themas bleiben wählbar; Größenliste je Hauptprodukt');
+ const a=plan.items.find(i=>i.key===importKey('test-linie','hundeschilder','TS-RE-90X60')+':3100000').document,b=plan.items.find(i=>i.key===importKey('test-linie','hundeschilder','TS-RE-90X60')+':3200000').document;
+ assert.equal(a.config.profile.id,'katalog-test-linie-hundeschilder-ts-re-90x60-3100000');assert.notEqual(a.config.profile.id,b.config.profile.id);
+ assert.deepEqual([a.config.profile.defaultDesignId,b.config.profile.defaultDesignId],['katalog-test-herz','katalog-test-foto'],'Startdesign je Hauptprodukt');
+ assert.equal(a.name,'Test Linie – Hundeschilder · Rechteck 9 × 6 cm – Herz mit Namen');assert.equal(b.name,'Hundeschild mit Foto');
+ assert.ok(a.categoryIds.includes('hauptprodukt-3100000')&&a.categoryIds.includes('extern-amazoncustom-3100000'),'Backend-Kennungen als Kategorien');
+ assert.ok(!b.categoryIds.some(c=>c.startsWith('extern-')));
+ assert.equal(plan.report.counts.products,7);
+ const part=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),only:{subcategories:['hundeschilder'],sizes:['TS-RE-90X60'],mainProducts:['3200000']}});
+ assert.deepEqual(part.report.subcategories.map(s=>s.products.map(p=>p.key)),[[importKey('test-linie','hundeschilder','TS-RE-90X60')+':3200000']],'only begrenzt auf Unterkategorie, Größe und Hauptprodukt');
+ applyKatalogImport(plan,options(ws));
+ assert.equal(ws.repository.list().length,1+3+2,'Namensschilder 3 + Hundeschilder 2 (gesperrte bleiben aus)');
+ await assert.rejects(async()=>{line.subcategories[1].mainProducts.push({id:'3100000',startDesign:'test-herz'});fs.writeFileSync(lineFile,JSON.stringify(line));openKatalog(dir).line('test-linie');},/Hauptprodukt „3100000“ doppelt/);
+});

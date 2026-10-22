@@ -60,7 +60,7 @@ export function createCartHandoffJournal({database: db, tenantId}) {
   };
 }
 
-function safeResult(result, offer, shopDomain, replace = null) {
+function safeResult(result, offer, shopDomain, replace = null, addTo = null) {
   let url;
   try { url = new URL(result?.checkoutUrl); } catch { /* Reject without logging raw URLs. */ }
   const mode = result?.mode ?? 'create', lineId = result?.lineId;
@@ -68,15 +68,15 @@ function safeResult(result, offer, shopDomain, replace = null) {
       typeof result?.cartId !== 'string' || !result.cartId.startsWith('gid://shopify/Cart/') ||
       result.quantity !== offer.quantity || result.unitCents !== offer.unitCents ||
       result.totalCents !== offer.unitCents * offer.quantity || result.currency !== 'EUR' || result.paymentConfirmed !== false ||
-      !['create', 'update'].includes(mode) || (lineId !== undefined && (typeof lineId !== 'string' || !CART_LINE_ID.test(lineId))) ||
+      !['create', 'update','add'].includes(mode) || (lineId !== undefined && (typeof lineId !== 'string' || !CART_LINE_ID.test(lineId))) ||
       // K8: Ersetzen muss genau die angefragte Zeile im angefragten Warenkorb bestätigen; Anlegen darf keine Zeile ersetzen.
-      (replace ? mode !== 'update' || result.cartId !== replace.cartId || lineId !== replace.lineId : mode !== 'create') ||
+      (replace ? mode !== 'update' || result.cartId !== replace.cartId || (lineId !== replace.lineId && result.previousLineId !== replace.lineId) : addTo ? mode !== 'add' || result.cartId !== addTo.cartId : mode !== 'create') ||
       (offer.configuration !== undefined && lineId === undefined)) {
     throw fail(502, 'cart_result', 'Warenkorbergebnis nicht bestätigt. Keine erneute automatische Anlage.');
   }
   return {cartId: result.cartId, checkoutUrl: url.href, quantity: result.quantity,
     unitCents: result.unitCents, totalCents: result.totalCents, currency: 'EUR', paymentConfirmed: false,
-    ...(lineId === undefined ? {} : {lineId}), mode};
+    ...(lineId === undefined ? {} : {lineId}), ...(replace&&lineId!==replace.lineId?{previousLineId:replace.lineId}:{}), mode};
 }
 
 export function createPersistentCartHandoff({journal, transport, shopDomain, apiVersion}) {
@@ -87,12 +87,13 @@ export function createPersistentCartHandoff({journal, transport, shopDomain, api
   }
   // `replace` (cartId/lineId) ersetzt eine bestehende Warenkorbzeile (K8). Die Zielzeile ist Teil der
   // unveränderlichen Anfrageidentität: dasselbe Angebot darf nicht einmal anlegen und einmal ersetzen.
-  return async function handoff(offer, {principalId, buyerIp, signal, replace} = {}) {
+  return async function handoff(offer, {principalId, buyerIp, signal, replace, addTo} = {}) {
     if (typeof principalId !== 'string' || principalId.length < 1 || principalId.length > 512 || /[\x00-\x1f\x7f]/.test(principalId)) {
       throw fail(401, 'cart_principal', 'Ein authentifizierter privater Zugriff ist erforderlich.');
     }
-    prepareCartRequest(offer, replace);
+    prepareCartRequest(offer, replace, addTo);
     const target = replace ? Object.freeze({cartId: replace.cartId, lineId: replace.lineId}) : null;
+    const added = addTo ? Object.freeze({cartId:addTo.cartId}) : null;
     // Capture only established fields; photos, credentials and arbitrary metadata
     // never enter the journal. The raw offer token is stored only as a hash.
     const fixed = Object.freeze({scope: offer.scope, variantId: offer.variantId, quantity: offer.quantity,
@@ -105,18 +106,18 @@ export function createPersistentCartHandoff({journal, transport, shopDomain, api
     let ticket;
     try {
       ticket = journal.claim({offerKey: hash(JSON.stringify([shopDomain, fixed.property.value])),
-        principalHash: hash(principalId), requestHash: hash(JSON.stringify([shopDomain, apiVersion, fixed, ...(target ? [target] : [])]))});
+        principalHash: hash(principalId), requestHash: hash(JSON.stringify([shopDomain, apiVersion, fixed, ...(target ? [target] : []),...(added?[{addTo:added}]:[])]))});
     } catch (error) {
       if (['cart_private', 'cart_changed'].includes(error?.code)) throw error;
       throw fail(503, 'cart_storage', 'Warenkorbübergabe konnte nicht privat gesichert werden. Anfrage nicht versendet.');
     }
     if (!ticket.claimed) {
-      if (ticket.state === 'completed') return {...safeResult(ticket.result, fixed, shopDomain, target), duplicate: true};
+      if (ticket.state === 'completed') return {...safeResult(ticket.result, fixed, shopDomain, target,added), duplicate: true};
       throw fail(409, 'cart_review', 'Warenkorbübergabe bereits begonnen oder fehlgeschlagen. Status prüfen; nicht automatisch erneut anlegen.');
     }
     let result;
     try {
-      result = safeResult(await transport(fixed, {buyerIp, signal, ...(target ? {replace: target} : {})}), fixed, shopDomain, target);
+      result = safeResult(await transport(fixed, {buyerIp, signal, ...(target ? {replace: target} : {}),...(added?{addTo:added}:{})}), fixed, shopDomain, target,added);
     } catch (error) {
       // Even a restart with an unfinished 'started' entry blocks another send.
       // No transport error messages or response bodies are persisted or exposed.

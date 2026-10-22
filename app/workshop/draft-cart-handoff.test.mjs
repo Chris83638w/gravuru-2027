@@ -29,8 +29,10 @@ function setup(t, changes = {}) {
   const cart = {id: 'gid://shopify/Cart/synthetic', lines: []}, requests = [];
   const euro = c => (c / 100).toFixed(2);
   const fetchImpl = async (url, options) => {
+    const read=JSON.parse(options.body);
+    if(read.query.includes('query GravuruCartRead'))return Response.json({data:{cart:{id:cart.id,checkoutUrl:'https://'+config.shopDomain+'/checkout/synthetic',lines:{nodes:structuredClone(cart.lines),pageInfo:{hasNextPage:false}}}}});
     calls++; assert.equal(url, `https://${config.shopDomain}/api/${config.apiVersion}/graphql.json`);
-    const body = JSON.parse(options.body), update = body.query.includes('cartLinesUpdate'), line = update ? body.variables.lines[0] : body.variables.input.lines[0];
+    const body = JSON.parse(options.body), update = body.query.includes('cartLinesUpdate'),add=body.query.includes('cartLinesAdd'), line = update||add ? body.variables.lines[0] : body.variables.input.lines[0];
     requests.push(body); const prices = {'gid://shopify/ProductVariant/301': 2999, 'gid://shopify/ProductVariant/302': 3499};
     assert.ok(prices[line.merchandiseId], 'unknown variant');
     if (duringSend) await duringSend();
@@ -39,7 +41,7 @@ function setup(t, changes = {}) {
       merchandise: {id: line.merchandiseId}, cost: {amountPerQuantity: {amount: euro(unit), currencyCode: 'EUR'}, totalAmount: {amount: euro(unit * line.quantity), currencyCode: 'EUR'}}};
     if (update) {assert.equal(body.variables.cartId, cart.id); const i = cart.lines.findIndex(l => l.id === line.id); assert.ok(i >= 0, 'unknown cart line'); cart.lines[i] = node;}
     else cart.lines.push(node);
-    return Response.json({data: {[update ? 'cartLinesUpdate' : 'cartCreate']: {userErrors: [], warnings: [], cart: {
+    return Response.json({data: {[update ? 'cartLinesUpdate' : add ? 'cartLinesAdd' : 'cartCreate']: {userErrors: [], warnings: [], cart: {
       id: cart.id, checkoutUrl: `https://${config.shopDomain}/checkout/synthetic?key=synthetic-capability`,
       lines: {pageInfo: {hasNextPage: false}, nodes: update ? cart.lines : [node]}}}}});
   };
@@ -154,6 +156,17 @@ test('network failure cannot mint a fresh offer or resend on repeated calls', as
 
 // K8 (Ü9.1): Konfigurations-ID und Revision in der Warenkorbzeile, Bearbeiten ersetzt die Zeile.
 const attribute = (line, key) => line.attributes.filter(a => a.key === key).map(a => a.value);
+
+test('a second private form design adds to a server-owned cart without merging equal variants; browser cart injection is rejected',async t=>{
+ const f=setup(t),first=await f.submit(),other=f.store.create(f.record,'design_synthetic',{text:'second design'});
+ const manifest={...f.manifest,id:'review_second',source:{...f.manifest.source,draftId:other.id}};
+ f.store.capture(other.id,other.token,1,{manifest,preview:Buffer.from('<svg/>'),contourPdf:Buffer.from('synthetic'),package:Buffer.from('synthetic'),photos:Buffer.from('synthetic')});
+ const binding=f.store.orderIntake.bindings()[0],offer=f.store.orderIntake.offer({bindingId:binding.id,snapshotId:manifest.id,quantity:2});
+ const input={draftId:other.id,expectedRevision:1,snapshotId:manifest.id,offerId:offer.id,offerToken:offer.property.value},context={draftToken:other.token,buyerIp:'192.0.2.5',existingCart:{cartId:first.cartId}};
+ await assert.rejects(f.submit({...input,existingCart:context.existingCart},context),e=>e.code==='cart_fields');
+ const second=await f.submit(input,context);assert.equal(second.mode,'add');assert.equal(second.cartId,first.cartId);assert.notEqual(second.configuration.id,first.configuration.id);assert.equal(f.cart.lines.length,2);assert.deepEqual(f.cart.lines.map(l=>l.quantity),[2,2]);
+ assert.equal((await f.submit(input,context)).duplicate,true);assert.equal(f.calls,2);
+});
 test('first handoff carries a stable configuration ID, revision 1 and an optional visible edit link', async t => {
   const f = setup(t), result = await f.submit(f.input, f.context, {editUrl: 'https://shop.example/products/tafel?size=m'});
   assert.match(result.configuration.id, /^konfig_[a-f0-9-]{36}$/); assert.equal(result.configuration.rev, 1);

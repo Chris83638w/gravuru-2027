@@ -2,7 +2,7 @@
 // immediately before use and are never written to storage or URLs.
 export function createMerchantRequest({fetchImpl = globalThis.fetch, bridge = () => globalThis.shopify, bridgeWaitMs = 5000, tokenWaitMs = 15000, required = () => globalThis.document?.querySelector('meta[name=gravuru-merchant-auth]')?.content === 'required'} = {}) {
   return async (path, options = {}) => {
-    if (typeof path !== 'string' || !/^\/api\/workshop\/[A-Za-z0-9/_?=&.%+-]+$/.test(path) || /%2f|%5c|%2e|\.\./i.test(path.split('?')[0])) throw Error('Unzulässiges Werkstattziel.');
+    if (typeof path !== 'string' || !(/^\/api\/workshop\/[A-Za-z0-9/_?=&.%+-]+$/.test(path) || /^\/api\/configurator-test\/(session|sessions|model|cart)$/.test(path)) || /%2f|%5c|%2e|\.\./i.test(path.split('?')[0])) throw Error('Unzulässiges Werkstattziel.');
     const headers = new Headers(options.headers);
     let appBridge = bridge();
     if(required() && !appBridge?.idToken){

@@ -25,7 +25,8 @@ export function createShopifyTestRuntime(env,{merchantCsrfToken=null,orderWebhoo
     orderWebhookHandler=orderWebhook?createOrderWebhookHandler({intake:workshop.orderIntake,config:orderWebhook}):null;
     server=createPreviewServer({workshop,embeddedApp:config.embeddedApp});
   }catch(e){workshop.close();throw e;}
-  server.once('close',()=>workshop.close());return {server,port:config.port,orderWebhookHandler};
+  // Private host composition only; this reference is never serialized or routed.
+  server.once('close',()=>workshop.close());return {server,port:config.port,orderWebhookHandler,workshop};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const args=process.argv.slice(2);
@@ -37,3 +38,4 @@ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.ur
     catch{console.error('Shopify-Teststart nicht möglich. npm run shopify:check zeigt fehlende Feldnamen; keine Schlüssel ausgeben.');process.exitCode=1;}
   }
 }
+

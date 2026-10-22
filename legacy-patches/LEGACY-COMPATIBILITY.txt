@@ -1,0 +1,48 @@
+Minimaler Anschluss an den tatsächlich gesicherten mandantenlosen Altrelease
+
+Die private Originalquelle und sämtliche Datenbanken bleiben unverändert.
+apply-order-intake-compat.mjs exportiert patchLegacyOrderIntakeSource(source).
+Die reine Funktion akzeptiert ausschließlich SHA256
+bd39118bf132db2515ed1fbe5e96ed0bd57ccd3de8046523323061f352fb3a19
+und liefert neuen Quelltext für eine separate Arbeits-/Releasekopie. Keine I/O-
+oder Deploymentfunktion. Ein bereits veränderter Altrelease erfordert einen
+erneuten gezielten Abgleich; niemals einen Hashschutz umgehen.
+order-intake.d18bc6c.patch zeigt dieselben zehn abgegrenzten Änderungen.
+
+Ergänzt werden die Module shop-product-binding-legacy.mjs, der ID-Store und seine
+Plan-/Leseadapter-Abhängigkeiten. Die bestehenden Produkt-/Preis-/Shopmodule des
+Altreleases werden durch diesen Patch nicht ersetzt. Importvollständigkeit und
+das gesamte kombinierte Release sind vor Übernahme gesondert zu prüfen.
+
+Die alte orderIntake-Instanz nutzt weiterhin genau ihre vorhandene Verbindung.
+Der Patch ergänzt additive Methoden, einen festen serverinternen gravuru-Scope,
+legacySingleStore:true sowie Filterhooks im vorhandenen Webhookablauf.
+Die produkt- und bestelltragenden Alt-Tabellen behalten ihre ursprünglichen
+Spalten. Der Registry-Modus legacySingleStore:true akzeptiert ausdrücklich nur
+tenantlose products/product_revisions/form_shop_bindings/
+form_shop_binding_selections. Gemischte Schemata sind gesperrt.
+
+Serverfactory:
+  createLegacyShopBindingReadAdapter({storeId,shopDomain,workshop,
+    legacySingleStore:true})
+  workshop.orderIntake.idBindings({storeId,shopDomain,adapter})
+Eine Routingfacade darf ausdrücklich tenantId:'gravuru' ausweisen. Dies ist die
+Bestätigung eines einzelnen privaten Stores durch dessen Serverfactory, keine
+Behauptung mandantenfähiger Alt-Tabellen. Browserparameter dürfen diesen Scope
+nicht bestimmen. Originalinstanzen und deren Shopcontext werden bei jedem
+Adapteraufruf erneut geprüft; keine neuen Instanzen oder DB-Konstruktoren.
+
+Die alten Dreiargument-Webhooks behalten ihre bisherige Übernahme-/Fehlerlogik.
+Der optionale interne Teilmengenweg nutzt denselben unveränderten HMAC-Payload,
+verankert seine Auswahl atomar im Ereignisjournal und erlaubt sichere Wiederholung.
+Auch hier keine Auswahl der neuesten Zuordnung; ProductGID-Beleg zum Angebot
+kommt ausschließlich aus der unveränderlichen Bindungshistorie.
+
+Tests: 8/8 neue Legacytests bestanden, mit neuer synthetischer SQLite-Datenbank
+und der tatsächlichen gepatchten alten order-intake-Quelle. Originale alte
+order-status/order-refunds-Quellen sind als unveränderte Quellfixtures vorhanden.
+Die gemeinsam genutzten reinen Produkt-/Preisimporte stammen im Test aus diesem
+Arbeitsbaum. Dies prüft Patch, alte SQL-Spalten, CAS, Routing, HMAC, Wiederholung
+und Scope; es ersetzt keinen kompletten Build des alten Servers und keine
+Abnahme seiner historischen Preisregeln. Kein Kundendatensatz als Testfixture.
+SOURCE-PROVENANCE.json dokumentiert die exakten Quellbytes und SHA256-Werte.

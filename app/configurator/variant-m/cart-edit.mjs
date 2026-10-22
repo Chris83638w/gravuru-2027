@@ -4,7 +4,7 @@
 // außer den bereits vorhandenen privaten Entwurfszugängen.
 import {cleanObject} from './contract.mjs';
 
-const CONFIG = /^konfig_[a-f0-9-]{36}$/, STORAGE_PREFIX = 'gravuru-acrylic-private:';
+const CONFIG = /^konfig_[a-f0-9-]{36}$/, STORAGE_PREFIXES = ['gravuru-acrylic-private:','gravuru-form-draft:'];
 
 export function cartEditParams(search) {
   const params = new URLSearchParams(search), configId = params.get('config'), rev = Number(params.get('rev')), line = params.get('line');
@@ -17,7 +17,7 @@ function storedTokens(storage) {
   const tokens = [];
   try {
     for (let i = 0; i < storage.length; i++) {
-      const key = storage.key(i); if (!key?.startsWith(STORAGE_PREFIX)) continue;
+      const key = storage.key(i); if (!STORAGE_PREFIXES.some(prefix=>key?.startsWith(prefix))) continue;
       const value = JSON.parse(storage.getItem(key) || 'null');
       if (value && /^[a-f0-9]{64}$/.test(value.token || '')) tokens.push(value.token);
     }
@@ -55,11 +55,12 @@ export async function installCartEdit(api, {request = window.parent?.GravuruMerc
   const say = message => {const node = api.r.querySelector('.fk-order-status') || api.r.querySelector('[data-ux-status]'); if (node) {node.textContent = message; node.style.removeProperty('display');}};
   try {
     const loaded = await loadCartRevision({request, storage, params}), endpoint = '/api/workshop/cart-configurations/' + params.configId + '/' + params.rev;
+    if(loaded.editorKind&&loaded.editorKind!=='native')throw Error('Diese gespeicherte Gestaltung benötigt den Formeditor.');
     const blocking = loaded.hints.filter(h => !/bereits Revision/.test(h));
     if (blocking.length) {say(blocking.join(' ')); return null;}
     for (const photo of loaded.photos) {
       const file = await photoFile(request, endpoint, loaded.token, photo.uploadId, false), url = URL.createObjectURL(file);
-      const entry = {file, url, width: photo.width, height: photo.height};
+      const entry = {file, url, editSourceUrl:url, width: photo.width, height: photo.height};
       if (photo.edited) {const blob = await photoFile(request, endpoint, loaded.token, photo.uploadId, true); Object.assign(entry, {blob, edited: true, originalUrl: url, url: URL.createObjectURL(blob), width: photo.edited.width, height: photo.edited.height});}
       api.files.set(photo.uploadId, entry);
     }

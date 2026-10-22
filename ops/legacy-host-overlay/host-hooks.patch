@@ -1,0 +1,35 @@
+--- a/app/workshop/shopify-admin-test-server.mjs
++++ b/app/workshop/shopify-admin-test-server.mjs
+@@ -27,7 +27,7 @@
+     const customerPreview=createApprovedCustomerPreview({workshop,catalog:readApprovedPreviewCatalog(directory),origin:config.embeddedApp.origin});
+     server=createPreviewServer({workshop,embeddedApp:config.embeddedApp,customerPreview});
+   }catch(e){workshop.close();throw e;}
+-  server.once('close',()=>workshop.close());return {server,port:config.port,orderWebhookHandler};
++  server.once('close',()=>workshop.close());return {server,port:config.port,orderWebhookHandler,workshop};
+ }
+ if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
+   const args=process.argv.slice(2);
+--- a/ops/plesk/merchant-runtime.mjs
++++ b/ops/plesk/merchant-runtime.mjs
+@@ -15,11 +15,11 @@
+   process.umask(0o077); process.env.GRAVURU_PYTHON = config.python; delete process.env.PYTHONPATH;
+   // Bound numerical-library worker threads on the shared Plesk host.
+   process.env.OPENBLAS_NUM_THREADS='1'; process.env.OMP_NUM_THREADS='1';
+-  const lock = await lockTestData(config), released = once(lock, 'exit'); let inner,orderWebhookHandler;
++  const lock = await lockTestData(config), released = once(lock, 'exit'); let inner,orderWebhookHandler,workshop;
+   try {
+     const merchantCsrfToken = createHmac('sha256', config.runtime.shopifySessions.secret)
+       .update(JSON.stringify(['gravuru-merchant-test-csrf/v1', config.origin, config.runtime.shopifySessions.clientId])).digest('hex');
+-    ({server: inner,orderWebhookHandler} = createShopifyTestRuntime(config.runtimeEnv, {merchantCsrfToken,orderWebhook:config.orderWebhook,merchantTestCart:config.merchantTestCart,aiDesign:aiDesignOverride??config.aiDesign}));
++    ({server: inner,orderWebhookHandler,workshop} = createShopifyTestRuntime(config.runtimeEnv, {merchantCsrfToken,orderWebhook:config.orderWebhook,merchantTestCart:config.merchantTestCart,aiDesign:aiDesignOverride??config.aiDesign}));
+     inner.once('close', () => lock.stdin.end());
+     // Only the outer server may be claimed by LiteSpeed/Passenger.
+     inner.address = net.Server.prototype.address;
+@@ -70,5 +70,7 @@
+   server.once('close', () => {inner.close(); inner.closeAllConnections();});
+   lock.once('exit', () => {server.close(); server.closeAllConnections(); inner.close(); inner.closeAllConnections();});
+   server.runtimeClosed = released;
++  // Private host composition only; no new route and no second database open.
++  Object.defineProperty(server,'workshop',{value:workshop});
+   return server;
+ }

@@ -8,6 +8,9 @@ import {build} from '../configurator/variant-m/build.mjs';
 import {createWorkshop} from './http.mjs';
 import {createDraftCartHandoff} from './draft-cart-handoff.mjs';
 import {readDraft} from '../configurator/variant-m/contract.mjs';
+import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
+import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
+import {createHash} from 'node:crypto';
 
 // K8 (Ü9.1): Bearbeiten-Link lädt genau die gespeicherte Revision aus dem Prüfstand – mit Entwurfstoken, sonst nichts.
 async function request(workshop, pathname, method = 'GET', input, headers = {}) {
@@ -19,6 +22,20 @@ async function request(workshop, pathname, method = 'GET', input, headers = {}) 
   return res;
 }
 const shop = 'gravuru-synthetic.myshopify.com';
+
+test('form reopening reads the exact frozen customer state, hidden photo recipe and original after newer edits; foreign source fails',async()=>{
+ const configId='konfig_'+'1'.repeat(36),draftId='draft_'+'2'.repeat(36),photo=Buffer.from([137,80,78,71,1,2,3]),digest=b=>createHash('sha256').update(b).digest('hex');
+ const customer={fields:[{id:'photo',mediaId:'media-original',deleted:true,crop:{zoom:1.4,x:.2,y:-.1,angle:90},tone:'grayscale'}]},product={schema:'gravuru-form-product/v1',name:'Original revision',basePriceCents:4799};
+ const input=Buffer.from(JSON.stringify({schema:'gravuru-form-review-input/v1',product,customer,designId:'design',profiles:null}));
+ const manifest={schema:'gravuru-form-review/v1',id:'proof_frozen',source:{draftId,draftRevision:1,designId:'design'},product:{id:'cfg_form',revision:2},photos:[{fieldId:'photo',mediaId:'media-original',path:'fotos/photo-original.png',width:40,height:60,crop:customer.fields[0].crop,tone:'grayscale'}],files:[{path:'produkt-und-gestaltung.json',bytes:input.length,sha256:digest(input)},{path:'fotos/photo-original.png',bytes:photo.length,sha256:digest(photo)}]};
+ const files=[{name:'produkt-und-gestaltung.json',blob:new Blob([input])},{name:'fotos/photo-original.png',blob:new Blob([photo])},{name:'manifest.json',blob:new Blob([JSON.stringify(manifest)])}],archive=Buffer.from(await (await zipFiles(files)).arrayBuffer());
+ const head={id:draftId,revision:3,productId:'cfg_form',productRevision:2,designId:'design',state:{fields:[]}};
+ const draft={cartConfigurations:{revision:()=>({draftId,draftRevision:1,snapshotId:manifest.id,offerId:'offer_old',lineId:'gid://shopify/CartLine/old'}),latest:()=>({rev:2})},get:(id,token)=>{assert.equal(id,draftId);if(token!=='private-synthetic')throw Error('private');return head;},review:()=>({manifest:{...manifest,packageSha256:digest(archive)}}),downloadSnapshot:()=>archive,orderIntake:{offerSummary:()=>({quantity:3})}};
+ const args={drafts:draft,repository:{get:()=>({revision:2,status:'draft'})},configId,rev:1,draftToken:'private-synthetic'};
+ const loaded=loadCartRevision(args);assert.equal(loaded.editorKind,'form');assert.equal(loaded.quantity,3);assert.deepEqual(loaded.customer,customer);assert.deepEqual(loaded.product,product);assert.equal(loaded.photos[0].hidden,true);assert.equal(loaded.photos[0].mediaId,'media-original');assert.equal(loaded.draft.revision,3);assert.match(loaded.hints.join(' '),/Revision 2/);
+ assert.deepEqual(loadCartRevisionPhoto({...args,uploadId:'photo'}).bytes,photo);assert.throws(()=>loadCartRevisionPhoto({...args,uploadId:'another'}));assert.throws(()=>loadCartRevision({...args,draftToken:'wrong'}));
+ manifest.source.draftId='draft_foreign';assert.throws(()=>loadCartRevision(args),e=>e.code==='cart_private');
+});
 
 test('a configuration revision is loaded as editor draft with photos only for the private draft owner; stale and unknown revisions are explained', async t => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'g27-cart-edit-'));

@@ -10,6 +10,9 @@ import {prepareCartRequest,verifyCartResponse} from './storefront-cart.mjs';
 import {capturePersonalization,personalizationAttributes} from './cart-personalization.mjs';
 import {createStorefrontCartTransport} from './storefront-transport.mjs';
 import {createCartHandoffJournal,createPersistentCartHandoff} from './cart-handoff-journal.mjs';
+import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
+import {personalizationForSnapshot} from './cart-personalization.mjs';
+import {applyQuantityTier} from '../configurator/variant-m/contract.mjs';
 
 const shop='gravuru-synthetic.myshopify.com';
 function fixture(t) {
@@ -47,6 +50,43 @@ function response(offer) {
       cost:{amountPerQuantity:{amount:(offer.unitCents/100).toFixed(2),currencyCode:'EUR'},totalAmount:{amount:(offer.unitCents*offer.quantity/100).toFixed(2),currencyCode:'EUR'}}}]}}}}};
 }
 function offer(f) {const binding=f.intake.bind(f.args);return f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});}
+
+test('complete-unit tiers use actual catalog prices, include photo, motif and mounting once, and round half a cent upwards',t=>{
+ const f=fixture(t),config=f.record.document.config,tiers=[{minQuantity:2,percentOff:6},{minQuantity:3,percentOff:10}];
+ config.quantityTiers=tiers;config.quantityTierScope='complete-unit';f.pricing.quantityTiers=structuredClone(tiers);f.pricing.quantityTierScope='complete-unit';
+ const objects=[...config.profile.designs[0].objects,{id:'upload',type:'photoSlot',uxUploadId:'one',uxUploadKind:'photo'}];
+ const state={objects,designId:'test',mOptions:{mounting:'none'}};
+ const contract=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ for(const [quantity,unit] of [[1,3298],[2,3100],[3,2968],[4,2968],[99,2968]]){
+  const price=commercePrice(config,state,quantity);assert.equal(price.unitCents,unit);assert.equal(price.totalCents,unit*quantity);
+  const m={...f.m,product:{...f.m.product,basePriceCents:unit},selection:{price}};assert.equal(personalizationForSnapshot(contract,m).unitCents,unit);
+ }
+ const withExtras={...state,objects:[...objects,{id:'added',type:'motif',motif:'synthetic'}],mOptions:{mounting:'feet'}};
+ const p=commercePrice(config,withExtras,2);assert.equal(p.listUnitCents,2299+499+169+999);assert.equal(p.unitCents,3728);
+ assert.equal(applyQuantityTier(5,{minQuantity:2,percentOff:10}),5);
+ config.basePriceCents=5199;const actual=commercePrice(config,state,2);assert.equal(actual.listUnitCents,6198);assert.equal(actual.unitCents,5826,'no pilot base fallback');
+ for(const n of [Infinity,Number.MAX_SAFE_INTEGER,-1])assert.throws(()=>applyQuantityTier(n,{minQuantity:2,percentOff:6}));
+});
+test('binding rejects missing scope, open tiers, different product rules and forged snapshot discount',t=>{
+ const f=fixture(t),rules=[{minQuantity:2,percentOff:6},{minQuantity:3,percentOff:10}];
+ Object.assign(f.record.document.config,{quantityTiers:rules,quantityTierScope:'complete-unit'});Object.assign(f.pricing,{quantityTiers:structuredClone(rules),quantityTierScope:'complete-unit'});
+ const args={variantId:'301',baseCents:2299,document:f.record.document};
+ for(const patch of [{quantityTierScope:undefined},{quantityTierScope:'before-photo'},{quantityTiers:[{minQuantity:2,percentOff:null}]},{quantityTiers:[{minQuantity:2,percentOff:5}]},{quantityTiers:[{minQuantity:2,unitCents:2000}]}])assert.throws(()=>capturePersonalization({...f.pricing,...patch},args));
+ const c=capturePersonalization(f.pricing,args),price=commercePrice(f.record.document.config,{objects:[],designId:'test',mOptions:{mounting:'none'}},2),manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+ for(const patch of [{quantityTierScope:undefined},{quantityTier:{minQuantity:2,percentOff:5}},{listUnitCents:1},{quantityTierDiscountCents:1},{fieldCents:100},{backCents:100}])assert.throws(()=>personalizationForSnapshot(c,{...manifest,selection:{price:{...price,...patch}}}));
+});
+
+test('complete-unit uses each saved product family tier and keeps field/back charges in the editor calculation',t=>{
+ const f=fixture(t),config=f.record.document.config,state={designId:'test',mOptions:{mounting:'none'},objects:[{id:'photo',type:'photoSlot',uxUploadId:'one',uxUploadKind:'photo'}]};config.quantityTierScope='complete-unit';
+ config.quantityTiers=[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}];
+ for(const [q,unit] of [[2,3298],[3,3133],[4,3133],[5,2968],[9,2968],[10,2803]])assert.equal(commercePrice(config,state,q).unitCents,unit);
+ config.quantityTiers=[{minQuantity:5,percentOff:5},{minQuantity:10,percentOff:10},{minQuantity:25,percentOff:15}];
+ for(const [q,unit] of [[3,3298],[5,3133],[10,2968],[25,2803]])assert.equal(commercePrice(config,state,q).unitCents,unit);
+ config.quantityTiers=[{minQuantity:2,percentOff:6},{minQuantity:3,percentOff:10}];
+ config.profile.optionFields=[{id:'extra',kind:'checkbox',label:'Zusatz',priceCents:700}];config.profile.surfaces=[{id:'front'},{id:'back',priceCents:350}];
+ const p=commercePrice(config,{...state,mOptions:{...state.mOptions,extra:true},objects:[...state.objects,{id:'back-text',type:'text',surfaceId:'back'}]},2);
+ assert.equal(p.fieldCents,700);assert.equal(p.backCents,350);assert.equal(p.listUnitCents,4348);assert.equal(p.unitCents,4087);assert.equal(p.totalCents,8174);
+});
 
 test('native slate offer pins shop revision, extras and private proof through reopening and signed test order',t=>{
   const f=fixture(t),o=offer(f),attributes=prepareCartRequest(o).variables.input.lines[0].attributes;

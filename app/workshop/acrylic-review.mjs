@@ -33,7 +33,8 @@ export function validateAcrylicReview(record,config,input){
  const design=validateProductDesign(record.document,{...structuredClone(source),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  const resolved=resolveProduct(record.document,{options:input.options,designId:source.id});
  const price=commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity);
- const used=new Set(design.objects.filter(o=>!o.uxHidden&&!isGuideObject(o)&&o.uxUploadId).map(o=>o.uxUploadId));
+ // Hidden layers remain editable; their originals belong to this immutable revision.
+ const used=new Set(design.objects.filter(o=>!isGuideObject(o)&&o.uxUploadId).map(o=>o.uxUploadId));
  if(!Array.isArray(input.media)||input.media.length!==used.size||used.size>4)fail('Alle verwendeten Originalbilder müssen mitgesichert werden.');
  const ids=new Set();for(const m of input.media){keys(m,['id','original','edited']);if(typeof m.id!=='string'||!used.has(m.id)||ids.has(m.id))fail('Bildzuordnung ist nicht eindeutig.');ids.add(m.id);}
  for(const o of design.objects)if(!o.uxHidden&&!isGuideObject(o)&&o.type==='photoSlot'&&o.required&&!o.uxUploadId)fail('Bitte das erforderliche eigene Foto hochladen.');

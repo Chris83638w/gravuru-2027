@@ -12,6 +12,8 @@ async function referencePng(svg,geometry){
 export function installWorkshopReview(api,footer){
  const binding=window.parent.GravuruWorkshopReview;
  const request=window.parent.GravuruMerchantRequest||fetch;
+ const testGate=window.parent.GravuruConfiguratorTest;
+ const universalTest=()=>typeof testGate?.submitCart==='function'&&testGate.productId===binding.productId&&testGate.productRevision===binding.productRevision;
  if(!binding||(!api.config?.acrylic&&!api.config?.doorbell&&!['slate','steel'].includes(api.config?.profile?.material?.kind)))return;
  const button=document.createElement('button'),status=document.createElement('p'),link=document.createElement('a');
  button.type='button';button.textContent='Für die Werkstattprüfung sichern';button.dataset.acrylicReview='';status.setAttribute('role','status');status.setAttribute('aria-live','polite');link.textContent='Gesicherten Stand im Dashboard öffnen →';link.target='_blank';link.rel='noopener';link.hidden=true;link.dataset.acrylicReviewLink='';
@@ -31,8 +33,10 @@ export function installWorkshopReview(api,footer){
    const edit=editContext();
    status.textContent=edit?.cartLineId?'Warenkorbposition wird mit dem neuen Stand und Preis ersetzt …':'Test-Warenkorb wird mit dem gespeicherten Preis geprüft …';
    const body={draftId:saved.result.draftId,expectedRevision:saved.result.revision,...(edit?{configId:edit.configId,...(edit.cartLineId?{cartLineId:edit.cartLineId}:{})}:{})};
-   const response=await request('/api/workshop/merchant-test-cart',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':saved.csrfToken,'X-Gravuru-Draft':saved.result.draftToken},body:JSON.stringify(body)});
-   const result=await response.json();if(!response.ok)throw Error(result.error?.message||'Test-Warenkorb konnte nicht bestätigt werden.');
+   let result;
+   if(universalTest())result=await testGate.submitCart({...body,quantity:Number(api.r.querySelector('[data-fk-quantity]').value||1)},{draftToken:saved.result.draftToken});
+   else {const response=await request('/api/workshop/merchant-test-cart',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':saved.csrfToken,'X-Gravuru-Draft':saved.result.draftToken},body:JSON.stringify(body)});
+    result=await response.json();if(!response.ok)throw Error(result.error?.message||'Test-Warenkorb konnte nicht bestätigt werden.');}
    if(saved.fingerprint!==fingerprint())throw Error('Die Gestaltung wurde während der Übergabe geändert. Bitte zuerst erneut sichern.');
    const target=new URL(result.checkoutUrl);if(target.protocol!=='https:'||target.hostname!=='gravuru-design.myshopify.com'||target.port||target.username||target.password||result.testOnly!==true||result.productionReady!==false||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents))throw Error('Die Test-Checkout-Antwort ist nicht bestätigt.');
    checkout.href=target.href;checkout.hidden=false;
@@ -45,7 +49,7 @@ export function installWorkshopReview(api,footer){
   if(busy)return;busy=true;button.disabled=true;link.hidden=true;testButton.hidden=true;checkout.hidden=true;checkout.removeAttribute('href');saved=null;status.textContent='Gestaltung und Originalbilder werden gesichert …';
   try{
    if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
-   const fingerprint=JSON.stringify(api.el.state),art=await printArtwork(api),used=new Set(api.el.state.objects.filter(o=>!o.uxHidden&&o.uxUploadId).map(o=>o.uxUploadId)),media=[];
+   const fingerprint=JSON.stringify(api.el.state),art=await printArtwork(api),used=new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)),media=[];
    for(const id of used){const asset=api.files.get(id);if(!asset?.file)throw Error('Ein Originalfoto fehlt. Bitte erneut hochladen.');media.push({id,original:await base64(asset.file),...(asset.blob?{edited:await base64(asset.blob)}:{})});}
    const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:Number(api.r.querySelector('[data-fk-quantity]').value||1),media,preview:await referencePng(art.svg,art.geometry)};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut sichern.');
@@ -53,7 +57,7 @@ export function installWorkshopReview(api,footer){
    savePrivate??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:request});
    const result=await savePrivate(payload,credentials.csrfToken);
    saved={result,csrfToken:credentials.csrfToken,fingerprint:JSON.stringify([JSON.parse(fingerprint),payload.quantity])};
-   testButton.hidden=credentials.merchantTestCart?.productId!==binding.productId||credentials.merchantTestCart?.productRevision!==binding.productRevision;labelTestButton();
+   testButton.hidden=!universalTest()&&(credentials.merchantTestCart?.productId!==binding.productId||credentials.merchantTestCart?.productRevision!==binding.productRevision);labelTestButton();
    if(api.el.cartEdit&&api.el.cartEdit.draftId!==result.draftId)status.textContent='Hinweis: Diese Gestaltung gehört zu einem neuen Entwurf; die alte Warenkorbposition bleibt bestehen. ';
    for(const item of footer.querySelectorAll('[data-unconnected-cart]'))item.hidden=!testButton.hidden;
    const target=new URL('/werkstatt/pruefstaende/',location.origin);target.searchParams.set('snapshot',result.id);if(window.parent.GravuruMerchantRequest){for(const key of ['shop','host','embedded']){const value=new URL(window.parent.location.href).searchParams.get(key);if(value)target.searchParams.set(key,value);}link.target='_parent';}link.href=target.pathname+target.search;link.hidden=false;

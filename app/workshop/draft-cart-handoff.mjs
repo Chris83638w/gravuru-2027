@@ -25,7 +25,7 @@ export function createDraftCartHandoff({drafts, config, reviewPolicy = null}, tr
   const shopDomain = config.shopDomain, ledger = drafts.cartConfigurations;
   if (typeof ledger?.assign !== 'function') fail(503, 'cart_config', 'Das Konfigurationsregister ist nicht eingerichtet.');
 
-  return async function submit(input, {draftToken, buyerIp, signal} = {}) {
+  return async function submit(input, {draftToken, buyerIp, signal, existingCart} = {}) {
     if (!input || typeof input !== 'object' || Array.isArray(input) ||
         Object.keys(input).some(key => !fields.includes(key) && !optional.includes(key)) ||
         !Number.isSafeInteger(input.expectedRevision) || input.expectedRevision < 1 ||
@@ -36,6 +36,8 @@ export function createDraftCartHandoff({drafts, config, reviewPolicy = null}, tr
     }
     // Copy before awaiting transport: caller mutations cannot switch ownership.
     const request = Object.freeze(Object.fromEntries([...fields, ...optional].filter(key => input[key] !== undefined).map(key => [key, input[key]])));
+    // Only the authenticated server gateway may supply a previously owned cart.
+    const addTo=existingCart===undefined?undefined:Object.freeze({...existingCart});
     function resolve() {
       const acrylic = request.draftId.startsWith('adraft_');
       const draft = acrylic ? drafts.acrylicDrafts.get(request.draftId, draftToken) : drafts.get(request.draftId, draftToken);
@@ -52,7 +54,9 @@ export function createDraftCartHandoff({drafts, config, reviewPolicy = null}, tr
       // Ein Bearbeiten-Link darf nur die Konfiguration des zugänglichen Entwurfs nennen.
       const known = ledger.forDraft(draft.id);
       if (request.configId !== undefined && (!known || known.id !== request.configId)) fail(404, 'cart_private', 'Diese Konfiguration gehört nicht zum zugänglichen Entwurf.');
-      return {draft, offer: drafts.orderIntake.resolveCartOffer({...request, shopDomain})};
+      const offer=drafts.orderIntake.resolveCartOffer({...request, shopDomain});
+      if(acrylic && m.selection?.price && offer.quantity!==m.selection.price.quantity)fail(409,'cart_stale','Menge und gesicherter Prüfstand stimmen nicht überein.');
+      return {draft, offer};
     }
     const {draft, offer} = resolve();
     // Revision 1 bei der ersten Übergabe, sonst n+1; dasselbe Angebot behält seine Revision (Wiederholung).
@@ -63,10 +67,11 @@ export function createDraftCartHandoff({drafts, config, reviewPolicy = null}, tr
       // Bearbeiten: die zuletzt bestätigte Warenkorbzeile dieser Konfiguration wird ersetzt – nie dupliziert.
       const anchor = ledger.lastCartLine(assigned.id, {before: assigned.rev});
       if (!anchor) fail(409, 'cart_line_unknown', 'Zu dieser Konfiguration ist keine Warenkorbzeile bekannt. Bitte die Gestaltung normal in den Warenkorb legen.');
-      if (CART_LINE_ID.test(request.cartLineId) && request.cartLineId !== anchor.lineId) fail(409, 'cart_line_mismatch', 'Die Warenkorbzeile gehört nicht zu dieser Konfiguration. Bitte den Warenkorb neu laden.');
+      if (!CART_LINE_ID.test(request.cartLineId) || request.cartLineId !== anchor.lineId) fail(409, 'cart_line_mismatch', 'Die Warenkorbzeile gehört nicht zu dieser Konfiguration. Bitte den Warenkorb neu laden.');
+      if(addTo && (Object.keys(addTo).length!==1 || addTo.cartId!==anchor.cartId))fail(409,'cart_line_mismatch','Der bestehende Warenkorb passt nicht zur Konfiguration.');
       replace = {cartId: anchor.cartId, lineId: anchor.lineId};
     }
-    const result = await handoff({...offer, configuration}, {principalId: 'draft:' + request.draftId, buyerIp, signal, ...(replace ? {replace} : {})});
+    const result = await handoff({...offer, configuration}, {principalId: 'draft:' + request.draftId, buyerIp, signal, ...(replace ? {replace} : addTo ? {addTo} : {})});
     ledger.attachCartLine(assigned.id, assigned.rev, {cartId: result.cartId, lineId: result.lineId});
     // A draft can change or an order arrive during the network request. Keep the
     // journal, but never return a stale checkout capability or automatically retry.

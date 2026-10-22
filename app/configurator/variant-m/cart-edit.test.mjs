@@ -27,3 +27,9 @@ test('loading a revision tries only the private draft tokens of this tab and nev
   const failing = async () => Response.json({error: {message: 'Formprodukt'}}, {status: 409});
   await assert.rejects(loadCartRevision({request: failing, storage: store, params: {configId: konfig, rev: 1, cartLineId: null}}), /Formprodukt/);
 });
+
+test('form edit uses only existing private form draft credentials',async()=>{
+ const token='e'.repeat(64),store=storage({'gravuru-form-draft:cfg_x:5:d':JSON.stringify({id:'draft_x',token})}),calls=[];
+ const loaded=await loadCartRevision({storage:store,params:{configId:konfig,rev:2},request:async(url,options)=>{calls.push({url,options});return Response.json({editorKind:'form',draft:{id:'draft_x'},photos:[],hints:[]});}});
+ assert.equal(loaded.editorKind,'form');assert.equal(calls[0].options.headers['X-Gravuru-Draft'],token);assert.ok(!calls[0].url.includes(token));
+});

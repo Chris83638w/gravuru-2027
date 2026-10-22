@@ -1,0 +1,68 @@
+--- a/app/workshop/order-intake.mjs
++++ b/app/workshop/order-intake.mjs
+@@ -1,4 +1,5 @@
+ import {prepareShopProduct} from './shop-preparation.mjs';
++import {createLegacyOrderIntakeAccess,createLegacyOrderRouting} from './shop-product-binding-legacy.mjs';
+ import {createOrderStatus} from './order-status.mjs';
+ import {resolveProduct,PRODUCT_SCHEMA} from './product-model.mjs';
+ import {createHash,createHmac,randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
+@@ -48,6 +49,7 @@
+  CREATE TRIGGER IF NOT EXISTS form_order_line_fixed BEFORE UPDATE ON form_order_lines BEGIN SELECT RAISE(ABORT,'Order lines are immutable');END;
+  CREATE TRIGGER IF NOT EXISTS form_order_line_no_delete BEFORE DELETE ON form_order_lines BEGIN SELECT RAISE(ABORT,'Order lines require explicit retention');END;
+  CREATE TRIGGER IF NOT EXISTS form_order_event_fixed BEFORE UPDATE ON form_order_events BEGIN SELECT RAISE(ABORT,'Order events are immutable');END;`);
++ const legacyRouting=createLegacyOrderRouting({database:db});
+  const tx=fn=>{if(db.isTransaction)return fn();db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}},at=()=>new Date(clock()).toISOString();
+  const binding=id=>{const r=db.prepare('SELECT * FROM form_shop_bindings WHERE id=?').get(id);if(!r)fail(404,'Shop-Zuordnung nicht gefunden.');return r;};
+  const selection=id=>{const r=db.prepare('SELECT options FROM form_shop_binding_selections WHERE binding_id=?').get(id);return r?JSON.parse(r.options):null;};
+@@ -56,7 +58,7 @@
+  const offerPricing=id=>{const row=db.prepare('SELECT document FROM form_offer_personalization WHERE offer_id=?').get(id);return row?JSON.parse(row.document):null;};
+  const statuses=createOrderStatus({database:db,clock});
+  const get=id=>{const r=db.prepare('SELECT document FROM form_order_lines WHERE id=?').get(id);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
+- return {get,customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
++ const intake={get,customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=?').get(line.shopDomain,line.orderId)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines ORDER BY rowid DESC LIMIT 200').all().map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings ORDER BY rowid DESC').all().map(safeBinding),
+   // Caller supplies the actual saved product record, never a browser price.
+   bind({shopDomain,variantId,record,snapshotId,options:selected,personalizationPricing}){
+    if(!domain(shopDomain))fail(422,'Bitte die myshopify.com-Domain des Entwicklungsstores angeben.');variantId=identifier(variantId);
+@@ -142,7 +144,8 @@
+    if(m.packageSha256!==o.package_sha256||m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR')fail(409,'Der gesicherte Angebotsstand stimmt nicht überein.');
+    return {id:o.id,property:{name:'_gravuru_offer',value:offerToken},variantId:b.variant_id,quantity:o.quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{})};
+   },
+-  receive(raw,headers,config){
++  receive(raw,headers,config,routing){
++   if(routing!==undefined&&headers['x-shopify-topic']!=='orders/paid')fail(422,'Eine Positionsauswahl ist nur für Zahlungsnachrichten vorgesehen.');
+    if(['orders/updated','orders/cancelled'].includes(headers['x-shopify-topic'])){
+     const v=verifyOrderWebhook(raw,headers,config,['orders/updated','orders/cancelled']);
+     return tx(()=>{
+@@ -151,18 +154,20 @@
+      return {...result,orderId:v.orderId,matchedLines:lines.length,statuses:lines.map(l=>({id:l.id,...statuses.forLine(get(l.id))}))};
+     });
+    }
+-   const verified=verifyPaidWebhook(raw,headers,config);return tx(()=>{
++   const verified=verifyPaidWebhook(raw,headers,config),accepted=legacyRouting.prepare(verified,routing);return tx(()=>{
+    if(db.prepare('SELECT 1 FROM form_order_status_events WHERE shop=? AND event_id=? AND topic!=\'orders/paid\'').get(verified.shopDomain,verified.eventId))fail(409,'Ereignis-ID gehört bereits zu einer Statusnachricht.');
+    const {shopDomain:shop,eventId,bodySha256,orderId,payload}=verified,existing=db.prepare('SELECT body_sha256 FROM form_order_events WHERE shop=? AND event_id=?').get(shop,eventId);
+-   if(existing){if(existing.body_sha256!==bodySha256)fail(409,'Ereignis-ID wurde mit anderem Inhalt erneut geliefert.');return {duplicate:true,lines:db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=?').all(shop,orderId).map(r=>JSON.parse(r.document))};}
++   if(existing){legacyRouting.replay(verified,accepted);if(existing.body_sha256!==bodySha256)fail(409,'Ereignis-ID wurde mit anderem Inhalt erneut geliefert.');return {duplicate:true,lines:db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=?').all(shop,orderId).map(r=>JSON.parse(r.document))};}
+    const result=[],seen=new Set();
+    for(const line of payload.line_items){
+     const lineId=identifier(line.id);if(seen.has(lineId))fail(422,'Doppelte Bestellposition.');seen.add(lineId);
++    if(accepted&&!accepted.has(lineId))continue;
+     const properties=line.properties||[];if(!Array.isArray(properties))fail(422,'Ungültige Positionszuordnung.');const refs=properties.filter(p=>p?.name==='_gravuru_offer');
+     if(!refs.length){if(line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=?').get(shop,identifier(line.variant_id)))fail(422,'Für diese konfigurierte Variante fehlt der gesicherte Entwurf.');continue;}
+     if(refs.length!==1||typeof refs[0].value!=='string'||!/^[a-f0-9]{64}$/.test(refs[0].value))fail(422,'Ungültige Entwurfszuordnung.');
+     const o=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=?').get(sha(refs[0].value));if(!o)fail(422,'Entwurfszuordnung nicht gefunden.');const b=binding(o.binding_id),extra=offerPricing(o.id),unit=extra?.unitCents??b.unit_cents;
+     if(b.shop!==shop||b.variant_id!==identifier(line.variant_id)||line.quantity!==o.quantity||money(line.price)!==unit)fail(422,'Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.');
++    legacyRouting.assertProduct(b,line,shop);
+     for(const expected of personalizationAttributes(extra?.personalization)){
+      const actual=properties.filter(p=>p?.name===expected.key);
+      if(actual.length!==1||actual[0].value!==expected.value)fail(422,'Bestellung hat die gesicherte Entwurfs- oder Aufpreiszuordnung verändert.');
+@@ -181,7 +186,9 @@
+     if(!owner&&!db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND order_id=?').get(shop,orderId))db.prepare('INSERT INTO form_order_customers VALUES(?,?,?)').run(shop,orderId,customerId);
+    }
+    if(payload.updated_at)statuses.record(verified);
++   legacyRouting.complete(verified,accepted);
+    db.prepare('INSERT INTO form_order_events VALUES(?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at());return {duplicate:false,lines:result};
+   });}
+  };
++ return createLegacyOrderIntakeAccess({database:db,orderIntake:intake,clock});
+ }

@@ -1,0 +1,20 @@
+{
+  "schema": "gravuru-legacy-host-hooks/v1",
+  "sourceOnly": true,
+  "databaseOpened": false,
+  "runtimeStarted": false,
+  "files": [
+    {
+      "path": "app/workshop/shopify-admin-test-server.mjs",
+      "sourceSha256": "434922b7791690be9bcffb06b5fc7ab9c49ba770a2d8410ce27393a623ee7aa9",
+      "overlaySha256": "b24be8cf504add7411cd1843f5e129196e5d8f3aad25cc634a4036b2141151d1",
+      "bytes": 3735
+    },
+    {
+      "path": "ops/plesk/merchant-runtime.mjs",
+      "sourceSha256": "42ed8509430783b6f0d4e39bd2bef712518102a7e9b45b4eca48faed961874e0",
+      "overlaySha256": "7a8fb22e1b68331833d85a5752fe7a462e90f26104db2f2bbcecf94936618d15",
+      "bytes": 6055
+    }
+  ]
+}

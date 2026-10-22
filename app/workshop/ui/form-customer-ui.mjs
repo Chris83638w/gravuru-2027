@@ -1,4 +1,5 @@
 import {installAcrylShop} from './acryl-shop-ui.mjs';
+import {cartEditParams,loadCartRevision} from '/configurator/variant-m/cart-edit.mjs';
 import {installFormMotifLibrary} from '/configurator/variant-m/form-motif-library.mjs';
 import {installFormGuides} from './editor-guides.mjs';
 // The merchant preview provides a same-origin request broker with fresh App Bridge tokens.
@@ -14,6 +15,15 @@ const needsTeamSave=()=>correctionMode&&result&&JSON.stringify(sharedCorrection?
 async function readTeamCorrection(id=productId,rev=productRevision,design=result?.draft.designId){return (await api('/api/workshop/design-corrections?'+new URLSearchParams({productId:id,productRevision:rev,designId:design}))).correction;}
 async function saveTeamCorrection(){sharedCorrection=(await api('/api/workshop/design-corrections',{productId,productRevision:Number(productRevision),designId:result.draft.designId,state,expectedRevision:sharedCorrection?.revision||0})).correction;credential.sharedRevision=sharedCorrection.revision;draftStorage.setItem(key(result.draft.designId),JSON.stringify(credential));}
 let shopPanel;
+const cartGate=(()=>{try{return window.parent.GravuruConfiguratorTest||null;}catch{return null;}})();
+let testCartUI=null,cartEdit=null,checkoutFingerprint=null;
+const cartFingerprint=()=>JSON.stringify([productId,productRevision,result?.draft.id,result?.draft.revision,state,testCartUI?.quantity.value]);
+function syncTestCart(){
+ if(!testCartUI)return;
+ testCartUI.button.disabled=busy||!valid||!result||cartGate.productId!==productId||cartGate.productRevision!==Number(productRevision);
+ testCartUI.button.textContent=cartEdit?.draftId===result?.draft.id&&cartEdit.cartLineId?'Warenkorb aktualisieren (Test)':'Test-Warenkorb erstellen';
+ if(checkoutFingerprint!==cartFingerprint()){testCartUI.link.hidden=true;testCartUI.link.removeAttribute('href');}
+}
 const firstFocus=new Set(),unlocked=new Set(),stages=[$('#customer-preview'),$('#direct-preview')];
 const correctionMode=params.get('correction')==='acryl';
 const draftStorage=correctionMode?localStorage:sessionStorage;
@@ -25,7 +35,7 @@ const sources=()=>[...(result?.product.sourceFields||[]).filter(f=>!f.customerAd
 const value=()=>fields().find(f=>f.id===selected),source=()=>sources().find(f=>f.id===selected);
 function notice(message,error=false){$('#customer-status').textContent=message;$('#customer-status').classList.toggle('error',error);$('#direct-status').textContent=message;$('#direct-status').classList.toggle('error',error);}
 async function api(url,data,method='POST',privateRequest=false,access=credential){const headers={...(privateRequest?{'X-Gravuru-Draft':access.token}:{}),...(data?{'Content-Type':'application/json','X-Gravuru-CSRF':csrf}:{})};const r=await request(url,{headers,...(data?{method,body:JSON.stringify(data)}:{})}),v=await r.json();if(!r.ok)throw Object.assign(Error(v.error?.message||'Anfrage fehlgeschlagen.'),{status:r.status});return v;}
-function sync(){for(const e of document.querySelectorAll('button,input,select,textarea'))e.disabled=busy;$('#save-draft').disabled=busy||(!dirty&&!needsTeamSave())||!valid;$('#apply-direct').disabled=busy||!valid;$('#capture-review').disabled=busy||!valid||!result;$('#undo').disabled=busy||!history.length;$('#save-state').textContent=dirty?'Ungespeicherte Änderungen':'Entwurf gespeichert';if(!busy){applyRights();syncAdditions();}panels?.sync();guideUI?.sync();renderPublicationStatus();}
+function sync(){for(const e of document.querySelectorAll('button,input,select,textarea'))e.disabled=busy;$('#save-draft').disabled=busy||(!dirty&&!needsTeamSave())||!valid;$('#apply-direct').disabled=busy||!valid;$('#capture-review').disabled=busy||!valid||!result;$('#undo').disabled=busy||!history.length;$('#save-state').textContent=dirty?'Ungespeicherte Änderungen':'Entwurf gespeichert';if(!busy){applyRights();syncAdditions();}panels?.sync();guideUI?.sync();renderPublicationStatus();syncTestCart();}
 function renderPublicationStatus(){
  if(!correctionMode)return;$('#publish-correction').disabled=true;$('#correction-save-status').textContent=dirty||needsTeamSave()?'Noch nicht für Mitarbeiter gespeichert':'Gemeinsamer Stand '+(sharedCorrection?.revision||0);
  const light=publication?.trafficLight;const color=light?.color==='green'&&dirty?'blue':light?.color||'unknown';$('#shop-status').dataset.light=color;$('#shop-status').textContent=light?.color==='green'&&dirty?'Änderungen vorhanden · noch lokal speichern':light?.label||publication?.shopify.label||'Shopify-Status wird geprüft …';
@@ -117,7 +127,43 @@ window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.return
 panels=installFormPanels({getResult:()=>result,getSources:sources,getSelected:value,changeDesign});
 motifLibrary=installFormMotifLibrary({getMotifs:availableMotifs,onChange:()=>{motifCount=36;renderMotifs();}});
 guideUI=installFormGuides({stages,getGeometry:()=>result?.product.geometry,getFields:fields,getSelected:value,getSource:source,isBusy:()=>busy,alignSelected:axis=>{const f=value(),g=result.product.geometry;if(!f||!source()?.allowMove)return;checkpoint();f[axis==='x'?'xMm':'yMm']=(g[axis==='x'?'widthMm':'heightMm']-f[axis==='x'?'widthMm':'heightMm'])/2;renderControls();changed();}});
-try{if(!/^cfg_[a-f0-9-]+$/.test(productId||''))throw Error('Bitte die Kundenansicht aus einem gespeicherten Formprodukt öffnen.');csrf=(await api('/api/workshop/session')).csrfToken;fonts=(await api('/api/workshop/form-fonts')).fonts;motifs=(await api('/api/workshop/form-motifs')).motifs;renderMotifs();await openDraft(params.get('design')||undefined);await setupVariants();if(correctionMode&&params.get('group'))shopPanel=installAcrylShop({group:params.get('group'),anchor:document.querySelector('main'),beforeOpen:async()=>!dirty||await saveDraft()});}catch(e){notice(e.message,true);}
+try{if(!/^cfg_[a-f0-9-]+$/.test(productId||''))throw Error('Bitte die Kundenansicht aus einem gespeicherten Formprodukt öffnen.');csrf=(await api('/api/workshop/session')).csrfToken;fonts=(await api('/api/workshop/form-fonts')).fonts;motifs=(await api('/api/workshop/form-motifs')).motifs;renderMotifs();if(cartEditParams(location.search))await reopenCartDraft();else await openDraft(params.get('design')||undefined);await setupVariants();if(correctionMode&&params.get('group'))shopPanel=installAcrylShop({group:params.get('group'),anchor:document.querySelector('main'),beforeOpen:async()=>!dirty||await saveDraft()});if(cartGate&&!correctionMode)installTestCart();}catch(e){notice(e.message,true);}
+
+async function reopenCartDraft(){
+ const edit=cartEditParams(location.search),loaded=await loadCartRevision({request,storage:sessionStorage,params:edit});
+ if(loaded.editorKind!=='form'||loaded.draft.productId!==productId||loaded.draft.productRevision!==Number(productRevision))throw Error('Die Warenkorbgestaltung gehört zu einem anderen Produktstand.');
+ const blockers=loaded.hints.filter(h=>!/bereits Revision/.test(h));if(blockers.length)throw Error(blockers.join(' '));
+ credential={id:loaded.draft.id,token:loaded.token};
+ const current=await api(draftUrl(),null,'GET',true),next=await api(draftUrl()+'/preview',{state:loaded.customer,expectedRevision:current.draft.revision,fitText:false},'POST',true);
+ accept(next,{initialize:true});dirty=JSON.stringify(current.draft.state)!==JSON.stringify(next.draft.state);
+ draftStorage.setItem(key(loaded.designId),JSON.stringify(credential));
+ cartEdit={configId:edit.configId,rev:edit.rev,cartLineId:edit.cartLineId&&loaded.configuration.cartLineId?loaded.configuration.cartLineId:null,draftId:loaded.draft.id,quantity:loaded.quantity};
+ notice('Deine gespeicherte Gestaltung aus dem Warenkorb ist geladen. Frühere Bestellstände bleiben erhalten.');sync();
+}
+function installTestCart(){
+ if(testCartUI||typeof cartGate.submitCart!=='function')return;
+ const wrap=document.createElement('section'),label=document.createElement('label'),quantity=document.createElement('input'),button=document.createElement('button'),status=document.createElement('p'),link=document.createElement('a');
+ wrap.setAttribute('aria-label','Shopify-Testbestellung');label.textContent='Menge';quantity.type='number';quantity.min='1';quantity.max='99';quantity.step='1';quantity.value=String(cartEdit?.quantity||1);label.append(quantity);
+ button.type='button';button.className='primary';button.textContent='Test-Warenkorb erstellen';status.setAttribute('role','status');status.setAttribute('aria-live','polite');link.textContent='Test-Checkout bei Shopify öffnen →';link.target='_blank';link.rel='noopener noreferrer';link.hidden=true;
+ wrap.append(label,button,status,link);$('#capture-review').after(wrap);testCartUI={quantity,button,status,link};quantity.oninput=syncTestCart;
+ link.onclick=e=>{if(checkoutFingerprint!==cartFingerprint()){e.preventDefault();syncTestCart();}};
+ button.onclick=async()=>{
+  if(busy||!valid)return;const count=Number(quantity.value);
+  if(!Number.isSafeInteger(count)||count<1||count>99){status.textContent='Bitte eine ganze Menge von 1 bis 99 angeben.';return;}
+  if(dirty&&!await saveDraft())return;busy=true;sync();status.textContent='Gestaltung und Preis werden für Shopify geprüft …';
+  try{
+   await api(draftUrl()+'/review',{expectedRevision:result.draft.revision},'POST',true);
+   const before=cartFingerprint(),edit=cartEdit?.draftId===credential.id?cartEdit:null;
+   const response=await cartGate.submitCart({draftId:credential.id,expectedRevision:result.draft.revision,quantity:count,...(edit?{configId:edit.configId,...(edit.cartLineId?{cartLineId:edit.cartLineId}:{})}:{})},{draftToken:credential.token});
+   if(before!==cartFingerprint())throw Error('Die Gestaltung wurde während der Übergabe geändert. Bitte erneut prüfen.');
+   const target=new URL(response.checkoutUrl);
+   if(target.protocol!=='https:'||target.hostname!=='gravuru-design.myshopify.com'||target.port||target.username||target.password||response.testOnly!==true||response.productionReady!==false||response.paymentConfirmed!==false||!Number.isSafeInteger(response.totalCents))throw Error('Die Testbestellung konnte nicht bestätigt werden.');
+   if(response.configuration?.id&&response.lineId)cartEdit={configId:response.configuration.id,rev:response.configuration.rev,cartLineId:response.lineId,draftId:credential.id,quantity:count};
+   checkoutFingerprint=before;link.href=target.href;link.hidden=false;
+   status.textContent='Test-Warenkorb: '+new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(response.totalCents/100)+'. Nur im Shopify-Zahlungstestmodus abschließen. Keine Fertigung freigegeben.';
+  }catch(e){link.hidden=true;link.removeAttribute('href');status.textContent=e.message;}finally{busy=false;sync();}
+ };syncTestCart();
+}
 
 function syncAdditions(){if(!result)return;const p=result.product.additions,full=(state.additions||[]).length>=p.maxElements||fields().length>=19;$('#add-elements').hidden=!p.text&&!p.motifs;$('#add-own-text').hidden=!p.text;$('#add-own-text').disabled=busy||!valid||full||!availableFonts().length||choices()?.colors?.length===0;$('#motif-library').hidden=!p.motifs;for(const b of $('#motif-grid').querySelectorAll('button'))b.disabled=busy||!valid||full||choices()?.colors?.length===0;$('#addition-note').textContent=choices()?.colors?.length===0?'Für neue Elemente ist keine Farbe freigegeben.':!availableFonts().length&&!availableMotifs().length?'Für neue Elemente sind keine Schriften oder Motive freigegeben.':full?'Die freigegebene Anzahl ist erreicht. Entferne eine Ergänzung, um eine neue einzufügen.':'Eigene Elemente sind im Produktpreis enthalten. Die Vorlage bleibt erhalten.';}
 function renderMotifs(){const term=$('#motif-search').value.trim(),found=motifLibrary.view(term,motifCount);$('#motif-grid').innerHTML=found.slice(0,motifCount).map(m=>`<button data-add-motif="${esc(m.key)}" title="${esc(m.name)}"><svg viewBox="${m.bounds.join(' ')}" aria-hidden="true">${m.svgFragment}</svg><span>${esc(m.name)}</span></button>`).join('');$('#more-motifs').hidden=found.length<=motifCount;syncAdditions();panels?.sync();}

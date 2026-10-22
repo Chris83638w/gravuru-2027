@@ -29,6 +29,13 @@ function fixture(t) {
 }
 const rows = db => db.prepare('SELECT * FROM storefront_cart_handoffs').all();
 
+test('add-to-existing-cart is immutable, persisted and cannot replay as a new cart or another target',async t=>{
+ const f=fixture(t),db=f.open(),o={...offer(),configuration:{id:'konfig_'+'1'.repeat(36),rev:1}},addTo={cartId:'gid://shopify/Cart/synthetic'};let calls=0;
+ const send=db.handoff(async(_offer,context)=>{calls++;assert.deepEqual(context.addTo,addTo);return {...result(),lineId:'gid://shopify/CartLine/new',mode:'add'};});
+ const first=await send(o,{...owner,addTo});assert.equal(first.mode,'add');assert.equal((await send(o,{...owner,addTo})).duplicate,true);assert.equal(calls,1);
+ await assert.rejects(send(o,owner),e=>e.code==='cart_changed');await assert.rejects(send(o,{...owner,addTo:{cartId:'gid://shopify/Cart/another'}}),e=>e.code==='cart_changed');assert.equal(calls,1);
+});
+
 test('completed handoff is reused after reopening the private database without sending a second cart', async t => {
   const f = fixture(t); let current = f.open(), calls = 0;
   const transport = async () => {calls++; return {...result(), raw: 'private-upstream-response'};};

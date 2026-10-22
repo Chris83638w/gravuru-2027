@@ -15,6 +15,41 @@ async function fixture(t,handler,options={}){
  return {seen,calls,create:createStorefrontCartTransport(config(),{fetchImpl,...options})};
 }
 const safeError=(code)=>e=>{assert.equal(e.code,code);assert.equal(e.retryable,false);assert.equal(e.mayHaveCreatedCart,true);for(const secret of [token,'upstream-secret','a'.repeat(64)])assert.ok(!String(e.stack).includes(secret));return true;};
+
+function existingCartFixture({count=1,changeAfter,changeBefore,update=false,failAfter=false}={}){
+ const o={...offer(),configuration:{id:'konfig_'+'1'.repeat(36),rev:update?2:1}},cartId='gid://shopify/Cart/existing?key=synthetic-secret',lineId='gid://shopify/CartLine/old';
+ const node=(id,attrs=[])=>({id,quantity:2,attributes:attrs,merchandise:{id:'gid://shopify/ProductVariant/301'},cost:{amountPerQuantity:{amount:'29.99',currencyCode:'EUR'},totalAmount:{amount:'59.98',currencyCode:'EUR'}}});
+ let lines=Array.from({length:count},(_,i)=>node('gid://shopify/CartLine/unrelated-'+i,[{key:'custom',value:String(i)}])),mutations=0,reads=0;
+ if(update)lines.push(node(lineId,[{key:'_gravuru_config',value:o.configuration.id},{key:'_gravuru_rev',value:'1'},{key:'_gravuru_offer',value:'b'.repeat(64)}]));
+ changeBefore?.(lines,o);
+ const cart=nodes=>({id:cartId,checkoutUrl:`https://${shop}/checkout/synthetic`,lines:{nodes,pageInfo:{hasNextPage:false}}});
+ const fetchImpl=async(_url,init)=>{
+  const body=JSON.parse(init.body);
+  if(body.query.includes('query GravuruCartRead')){
+   reads++;if(failAfter&&mutations)throw Error('private-upstream-detail');
+   const start=body.variables.after?Number(body.variables.after):0,nodes=structuredClone(lines.slice(start,start+100)),hasNextPage=start+100<lines.length;
+   return Response.json({data:{cart:{...cart(nodes),lines:{nodes,pageInfo:{hasNextPage,endCursor:hasNextPage?String(start+100):null}}}}});
+  }
+  mutations++;const line=body.variables.lines[0],created=node('gid://shopify/CartLine/new',line.attributes);
+  if(update)lines=lines.filter(l=>l.id!==lineId);lines.push(created);changeAfter?.(lines,o);
+  return Response.json({data:{[update?'cartLinesUpdate':'cartLinesAdd']:{userErrors:[],warnings:[],cart:cart([])}}});
+ };
+ return {o,cartId,lineId,counts:()=>({mutations,reads}),run:()=>createStorefrontCartTransport(config(),{fetchImpl})(o,{buyerIp,...(update?{replace:{cartId,lineId}}:{addTo:{cartId}})})};
+}
+
+test('adding to a paginated existing cart preserves every unrelated design, even for the same Shopify variant',async()=>{
+ const f=existingCartFixture({count:105}),r=await f.run();assert.equal(r.mode,'add');assert.equal(r.cartId,f.cartId);assert.equal(r.lineId,'gid://shopify/CartLine/new');assert.deepEqual(f.counts(),{mutations:1,reads:4});
+});
+test('update accepts Shopify changing its line id only after proving the old configuration and preserved remaining lines',async()=>{
+ const f=existingCartFixture({update:true}),r=await f.run();assert.equal(r.mode,'update');assert.equal(r.previousLineId,f.lineId);assert.equal(r.lineId,'gid://shopify/CartLine/new');assert.deepEqual(f.counts(),{mutations:1,reads:2});
+});
+test('existing duplicate configuration fails before a mutation',async()=>{
+ const f=existingCartFixture({changeBefore:(lines,o)=>lines[0].attributes.push({key:'_gravuru_config',value:o.configuration.id})});await assert.rejects(f.run,e=>e.mayHaveCreatedCart===false);assert.equal(f.counts().mutations,0);
+});
+test('unrelated removals, changed price, merged designs and lost post-read never return checkout or retry',async t=>{
+ for(const changeAfter of [lines=>lines.shift(),lines=>lines[0].cost.totalAmount.amount='1.00',lines=>lines.at(-1).quantity+=2,lines=>lines.push(structuredClone(lines.at(-1)))])await t.test(String(changeAfter),async()=>{const f=existingCartFixture({changeAfter});await assert.rejects(f.run,e=>e.mayHaveCreatedCart===true);assert.equal(f.counts().mutations,1);});
+ const f=existingCartFixture({failAfter:true});await assert.rejects(f.run,e=>e.mayHaveCreatedCart===true&&!e.message.includes('private-upstream'));assert.equal(f.counts().mutations,1);
+});
 test('server transport sends one bound HTTPS request with private auth and buyer IP, returning only verified cart details',async t=>{
  const o=offer(),f=await fixture(t,(_q,r)=>json(r,payload(o)));
  const result=await f.create({...o,photo:'private-artwork'},{buyerIp});assert.equal(result.paymentConfirmed,false);assert.equal(result.totalCents,5998);assert.equal(result.checkoutUrl,`https://${shop}/checkout/synthetic`);

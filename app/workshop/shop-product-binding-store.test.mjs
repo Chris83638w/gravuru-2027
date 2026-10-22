@@ -1,0 +1,172 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {createHash} from 'node:crypto';
+import {DatabaseSync} from 'node:sqlite';
+import {createProductRepository} from './repository.mjs';
+import {createOrderIntake} from './order-intake.mjs';
+import {createShopBindingReadAdapter} from './shop-product-binding-adapter.mjs';
+import {planShopProductBindings} from './shop-product-binding-plan.mjs';
+import {makeFormProduct} from './form-product.mjs';
+import {addFormDesign} from './form-designs.mjs';
+import {makeProductDocument} from './product-model.mjs';
+import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
+import {prepareShopProduct} from './shop-preparation.mjs';
+
+// Synthetic documents and a NEW temporary SQLite database only. No backup, live
+// application, Shopify request or production profile is opened or manufactured.
+const tenantId='gravuru',shopDomain='binding-synthetic.myshopify.com',storeId='synthetic-store';
+const pair=(n=1)=>({shopifyProductId:'gid://shopify/Product/'+n,shopifyVariantId:'gid://shopify/ProductVariant/'+(100+n)});
+const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
+function formDocument(){
+ const geometry={schema:'gravuru-contour/v1',unit:'mm',measurement:'path-centerline',widthMm:120,heightMm:80,pageWidthMm:120,pageHeightMm:80,sourceOriginMm:[0,0],holeCount:1,
+  contours:[{role:'outer',d:'M0 0 L120 0 L110 80 L0 80 Z'},{role:'hole',d:'M5 5 L7 5 L7 7 L5 7 Z'}],warnings:[]};
+ let d=makeFormProduct({id:'a'.repeat(64),sourceSha256:'b'.repeat(64),geometrySha256:hash(geometry),geometry},'Synthetic fixed form');
+ d.material={id:'steel',thicknessMm:1.5,surfaceNotes:'Synthetic'};d.processingMethod='engraving';d.basePriceCents=2599;
+ return addFormDesign(d,{assetId:'c'.repeat(64),sourceSha256:'d'.repeat(64),originalName:'synthetic.svg',widthMm:100,heightMm:60},{name:'Synthetic design',designId:'synthetic-design'});
+}
+function nativeDocument(){const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));return makeProductDocument(makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64)),{name:'Synthetic native'});}
+function fixture(t,document=formDocument()){
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-id-binding-')),filename=path.join(dir,'workshop.sqlite');
+ const repository=createProductRepository({filename,tenantId}),db=new DatabaseSync(filename);db.exec('PRAGMA foreign_keys=ON;PRAGMA busy_timeout=0;');
+ let time=Date.parse('2026-10-22T12:00:00Z');const clock=()=>time;
+ const orders=createOrderIntake({database:db,tenantId,clock,snapshot:()=>{throw Error('No customer snapshot in ID tests');}});
+ const workshop={tenantId,repository,orderIntake:orders,productionProfiles:{resolve(){throw Error('No invented profile');}},sessionContext:{shopDomain}};
+ const adapter=createShopBindingReadAdapter({storeId,tenantId,shopDomain,workshop,productionProfileScope:{storeId,tenantId}});
+ const registry=orders.idBindings({storeId,shopDomain,adapter}),record=repository.create(document);
+ t.after(()=>{db.close();repository.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const f={dir,filename,repository,db,orders,adapter,registry,record,clock,advance:ms=>time+=ms};
+ f.plan=(items=[{record:f.repository.get(f.record.id),...pair(),options:{}}],chosenAdapter=adapter)=>{
+   const selections=items.map(({record,...p})=>({...p,productId:record.id,productRevision:record.revision}));
+   const products=new Map();for(const item of items){const resolved=chosenAdapter.resolveSelection(chosenAdapter.getCurrentProduct(item.record.id),item.options);
+    if(!products.has(item.shopifyProductId))products.set(item.shopifyProductId,{id:item.shopifyProductId,variants:[]});products.get(item.shopifyProductId).variants.push({id:item.shopifyVariantId,productId:item.shopifyProductId,priceCents:resolved.unitCents});}
+   return planShopProductBindings({tenantId,shopDomain,adapter:chosenAdapter,purpose:'id-binding',now:clock(),maxEvidenceAgeMs:60000,
+    shopifyEvidence:{tenantId,shopDomain,complete:true,readAt:new Date(clock()).toISOString(),products:[...products.values()]},selections});
+ };
+ f.persist=(plan=f.plan(),revision=null,registryOverride=registry)=>registryOverride.persist({plan,expectedHeads:plan.entries.map(e=>({shopifyVariantId:e.shopifyVariantId,revision}))});
+ return f;
+}
+const tables=['form_shop_bindings','form_shop_binding_selections','shop_product_binding_heads','shop_product_binding_revisions'];
+const counts=f=>Object.fromEntries(tables.map(table=>[table,f.db.prepare('SELECT count(*) AS n FROM '+table).get().n]));
+
+test('exact ID assignment persists on the existing connection with real form geometry and no profile release',t=>{
+ const f=fixture(t),before=f.repository.get(f.record.id),saved=f.persist();
+ assert.equal(saved.createdBindings,1);assert.equal(saved.changedAssignments,1);assert.equal(saved.written,true);
+ const active=f.registry.resolve(pair());assert.equal(active.productId,f.record.id);assert.equal(active.productRevision,1);assert.equal(active.assignmentRevision,1);
+ assert.deepEqual(active.options,{});assert.equal(active.unitCents,2599);assert.equal(active.storeId,storeId);assert.equal(active.tenantId,tenantId);
+ assert.equal(active.productionStatus,'profile-assignment-pending');assert.equal(active.productionReady,false);assert.equal(active.publicAccess,false);assert.equal(active.checkoutEnabled,false);
+ assert.deepEqual(f.repository.get(f.record.id),before);assert.equal(f.registry.history(pair()).length,1);
+ for(const ids of [{...pair(),shopifyProductId:pair(2).shopifyProductId},pair(2)])assert.throws(()=>f.registry.resolve(ids),{code:'shop_binding_active_not_found'});
+ assert.throws(()=>f.registry.resolve({shopifyVariantId:pair().shopifyVariantId}),{code:'shop_binding_identity'});
+});
+
+test('existing bindings are not activated implicitly and their immutable price contracts are preserved on reuse',t=>{
+ const f=fixture(t),record=f.repository.get(f.record.id),mapping=prepareShopProduct(record).variants[0];
+ const prior=f.orders.bindVariants({record,shopDomain,mappings:[{key:mapping.key,variantId:'101'}]}).bindings[0];
+ const raw='{"synthetic":"existing immutable contract is deliberately not recaptured"}';
+ f.db.prepare('INSERT INTO form_shop_binding_personalization(binding_id,document,tenant_id) VALUES(?,?,?)').run(prior.id,raw,tenantId);
+ assert.throws(()=>f.registry.resolve(pair()),{code:'shop_binding_active_not_found'});
+ const original=f.orders.bindVariants;f.orders.bindVariants=()=>{throw Error('Existing binding must be reused');};
+ const result=f.persist();f.orders.bindVariants=original;assert.equal(result.createdBindings,0);assert.equal(result.assignments[0].bindingId,prior.id);
+ assert.equal(f.db.prepare('SELECT document FROM form_shop_binding_personalization WHERE binding_id=?').get(prior.id).document,raw);
+});
+
+test('native option rows are reused, copied on output and never duplicated into the registry',t=>{
+ const f=fixture(t,nativeDocument()),options={size:'large',base:'eiche',wall:'wall'};
+ const plan=f.plan([{record:f.record,...pair(),options}]);const result=f.persist(plan);assert.equal(result.assignments[0].unitCents,3697);
+ assert.deepEqual(result.assignments[0].options,options);assert.equal(counts(f).form_shop_binding_selections,1);
+ result.assignments[0].options.base='wrong';assert.deepEqual(f.registry.resolve(pair()).options,options);
+ assert.ok(!f.db.prepare('PRAGMA table_info(shop_product_binding_revisions)').all().some(c=>c.name==='options'));
+});
+
+test('explicit head CAS preserves historical revisions and a new source revision is never silently selected',t=>{
+ const f=fixture(t),first=f.persist().assignments[0],doc=structuredClone(f.record.document);doc.basePriceCents=2699;
+ const next=f.repository.save(f.record.id,doc,1);assert.equal(f.registry.resolve(pair()).productRevision,1);assert.equal(f.registry.resolve(pair()).unitCents,2599);
+ const plan=f.plan([{record:next,...pair(),options:{}}]),before=counts(f);
+ assert.throws(()=>f.persist(plan,null),{code:'shop_binding_head_conflict'});assert.deepEqual(counts(f),before);
+ const saved=f.persist(plan,1);assert.equal(saved.assignments[0].assignmentRevision,2);assert.equal(saved.assignments[0].productRevision,2);assert.notEqual(saved.assignments[0].bindingId,first.bindingId);
+ assert.equal(f.orders.bindings().length,2);assert.equal(f.registry.history(pair()).length,2);
+ const fresh=f.plan(),same=f.persist(fresh,2);assert.equal(same.written,false);assert.equal(same.changedAssignments,0);assert.equal(same.createdBindings,0);
+ assert.throws(()=>f.persist(f.plan(),1),{code:'shop_binding_head_conflict'});
+});
+
+test('a product changed or archived after planning cannot create any binding or active assignment',t=>{
+ const f=fixture(t),plan=f.plan();f.repository.save(f.record.id,{...f.record.document,name:'new source'},1);const before=counts(f);
+ assert.throws(()=>f.persist(plan),/Produktstand|geändert/);assert.deepEqual(counts(f),before);
+ const fresh=f.plan();f.repository.setArchived(f.record.id,{expectedRevision:2,archived:true});assert.throws(()=>f.persist(fresh));assert.deepEqual(counts(f),before);
+});
+
+test('SQL head CAS rejects a stale adapter even when its own in-memory proof is internally consistent',t=>{
+ const f=fixture(t),snapshot=structuredClone(f.record),cachedRepo={tenantId,get:()=>structuredClone(snapshot)},workshop={tenantId,repository:cachedRepo,orderIntake:f.orders,productionProfiles:{resolve:()=>null},sessionContext:{shopDomain}};
+ const adapter=createShopBindingReadAdapter({storeId,tenantId,shopDomain,workshop,productionProfileScope:{storeId,tenantId}}),registry=f.orders.idBindings({storeId,shopDomain,adapter});
+ const plan=f.plan([{record:snapshot,...pair(),options:{}}],adapter);
+ f.repository.save(f.record.id,{...f.record.document,name:'actual newer DB head'},1);const before=counts(f);
+ assert.throws(()=>f.persist(plan,null,registry),{code:'shop_binding_cfg_changed'});assert.deepEqual(counts(f),before);
+});
+
+test('a matching cfg ID/revision from a different database is not accepted as a source',t=>{
+ const f=fixture(t),wrong=structuredClone(f.record);wrong.document.basePriceCents=2799;
+ const workshop={tenantId,repository:{tenantId,get:()=>structuredClone(wrong)},orderIntake:f.orders,productionProfiles:{resolve:()=>null},sessionContext:{shopDomain}};
+ const adapter=createShopBindingReadAdapter({storeId,tenantId,shopDomain,workshop,productionProfileScope:{storeId,tenantId}}),registry=f.orders.idBindings({storeId,shopDomain,adapter});
+ const plan=f.plan([{record:wrong,...pair(),options:{}}],adapter);assert.throws(()=>f.persist(plan,null,registry),{code:'shop_binding_cfg_changed'});assert.equal(counts(f).form_shop_bindings,0);
+});
+
+test('all new legacy bindings and ID assignments roll back when a later SQL write fails',t=>{
+ const f=fixture(t),second=f.repository.create(formDocument());const plan=f.plan([{record:f.record,...pair(),options:{}},{record:second,...pair(2),options:{}}]);
+ f.db.exec("CREATE TRIGGER synthetic_late_failure BEFORE INSERT ON shop_product_binding_revisions WHEN NEW.variant_gid='gid://shopify/ProductVariant/102' BEGIN SELECT RAISE(ABORT,'synthetic failure');END;");
+ const before=counts(f);assert.throws(()=>f.persist(plan),/synthetic failure/);assert.deepEqual(counts(f),before);assert.equal(f.db.isTransaction,false);
+});
+
+test('nested failures roll back only this operation and a successful outer rollback removes the entire assignment',t=>{
+ const f=fixture(t),plan=f.plan();f.db.exec('CREATE TABLE synthetic_outer(note TEXT);BEGIN IMMEDIATE;INSERT INTO synthetic_outer VALUES(\'kept\');');
+ assert.throws(()=>f.registry.persist({plan,expectedHeads:[{shopifyVariantId:pair().shopifyVariantId,revision:5}]}),{code:'shop_binding_head_conflict'});
+ assert.equal(f.db.isTransaction,true);assert.equal(f.db.prepare('SELECT count(*) AS n FROM synthetic_outer').get().n,1);assert.equal(counts(f).form_shop_bindings,0);
+ f.persist(plan);assert.equal(counts(f).form_shop_bindings,1);f.db.exec('ROLLBACK');assert.equal(counts(f).form_shop_bindings,0);assert.equal(counts(f).shop_product_binding_heads,0);
+});
+
+test('a second SQLite writer cannot change the product between locked head check and binding insertion',t=>{
+ const f=fixture(t),other=new DatabaseSync(f.filename);other.exec('PRAGMA busy_timeout=0;');
+ const bind=f.orders.bindVariants;let observedLock=false;
+ f.orders.bindVariants=function(input){assert.equal(f.db.isTransaction,true);assert.throws(()=>other.prepare('UPDATE products SET name=? WHERE id=?').run('parallel',f.record.id),/locked/);observedLock=true;return bind.call(this,input);};
+ try{f.persist();assert.equal(observedLock,true);assert.equal(other.prepare('SELECT count(*) AS n FROM shop_product_binding_heads').get().n,1);
+ assert.doesNotThrow(()=>other.prepare('UPDATE products SET name=? WHERE id=?').run('after commit',f.record.id));}finally{other.close();}
+});
+
+test('forged or expired plans and incomplete head expectations are rejected without writes',t=>{
+ const f=fixture(t),plan=f.plan(),before=counts(f);
+ assert.throws(()=>f.persist(structuredClone(plan)),{code:'shop_binding_plan'});assert.deepEqual(counts(f),before);
+ for(const expectedHeads of [[],[{shopifyVariantId:pair().shopifyVariantId,revision:0}],[{shopifyVariantId:pair(2).shopifyVariantId,revision:null}],
+  [{shopifyVariantId:pair().shopifyVariantId,revision:null,priceCents:1}]])assert.throws(()=>f.registry.persist({plan,expectedHeads}));
+ f.advance(60001);assert.throws(()=>f.persist(plan),{code:'shop_binding_freshness'});assert.deepEqual(counts(f),before);
+});
+
+test('explicit ID mapping cannot be switched to another Shopify product, store, tenant or cfg',t=>{
+ const f=fixture(t);f.persist();
+ const changedPair={...pair(),shopifyProductId:pair(2).shopifyProductId};const changed=f.plan([{record:f.record,...changedPair,options:{}}]);
+ assert.throws(()=>f.persist(changed,1),{code:'shop_binding_active_conflict'});
+ const otherStore={...f.adapter,storeId:'another-store'},registry=f.orders.idBindings({storeId:'another-store',shopDomain,adapter:otherStore});
+ assert.throws(()=>registry.resolve(pair()),{code:'shop_binding_store_scope'});
+ assert.throws(()=>f.orders.idBindings({storeId,shopDomain,adapter:{...f.adapter,tenantId:'foreign'}}),{code:'shop_binding_store_scope'});
+ const other=f.repository.create(formDocument());assert.throws(()=>f.plan([{record:other,...pair(),options:{}}]),{code:'shop_binding_existing_conflict'});
+});
+
+test('active assignment revisions are append-only and archive changes block use without deleting history',t=>{
+ const f=fixture(t);f.persist();
+ assert.throws(()=>f.db.exec("UPDATE shop_product_binding_revisions SET store_id='changed'"),/immutable/);
+ assert.throws(()=>f.db.exec('DELETE FROM shop_product_binding_revisions'),/immutable/);
+ assert.throws(()=>f.db.exec('DELETE FROM shop_product_binding_heads'),/explicit transition/);
+ f.repository.setArchived(f.record.id,{expectedRevision:1,archived:true});assert.throws(()=>f.registry.resolve(pair()),{code:'shop_binding_cfg_changed'});assert.equal(f.registry.history(pair()).length,1);
+});
+
+test('asynchronous personalization provider is rejected and partial legacy writes remain absent',t=>{
+ const f=fixture(t),registry=f.orders.idBindings({storeId,shopDomain,adapter:f.adapter,personalizationPricingFor:()=>Promise.resolve({})});
+ assert.throws(()=>f.persist(f.plan(),null,registry),{code:'shop_binding_store_async'});assert.equal(counts(f).form_shop_bindings,0);assert.equal(counts(f).shop_product_binding_heads,0);
+});
+
+test('evidence expiring during a synchronous write rolls back before commit',t=>{
+ const f=fixture(t),plan=f.plan(),original=f.orders.bindVariants;
+ f.orders.bindVariants=function(input){const result=original.call(this,input);f.advance(60001);return result;};
+ const before=counts(f);assert.throws(()=>f.persist(plan),{code:'shop_binding_freshness'});assert.deepEqual(counts(f),before);
+});

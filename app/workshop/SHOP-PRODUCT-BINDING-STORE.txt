@@ -1,0 +1,66 @@
+Private exakte ID-Zuordnung / Stand 22.10.2026
+
+Einbau auf der vorhandenen Bestellinstanz:
+  const registry = orderIntake.idBindings({storeId, shopDomain, adapter,
+    personalizationPricingFor});
+  registry.persist({plan, expectedHeads:[{shopifyVariantId, revision:null}]});
+  registry.resolve({shopifyProductId, shopifyVariantId});
+  registry.history({shopifyProductId, shopifyVariantId});
+
+plan ist das tatsächliche, intern markierte Ergebnis von planShopProductBindings
+mit purpose:'id-binding', frischer vertrauenswürdiger Shopify-ID-Prüfung und
+maxEvidenceAgeMs <= 60000. Kein JSON-Nachbau aus einem HTTP-Body. expectedHeads
+enthält für jede Variante ausdrücklich null (erste Zuordnung) oder den zuletzt
+gelesenen assignmentRevision-Wert. Eine bereits anders zugeordnete Variante wird
+nicht überschrieben. Ein neuer cfg-Stand benötigt einen neuen bestätigten Plan.
+
+Die vorhandene DB-Verbindung führt BEGIN IMMEDIATE aus; innerhalb einer äußeren
+Transaktion wird ein eigener SAVEPOINT verwendet. Produktkopf, Dokument,
+Metadaten, Status und Bindung werden auf genau dieser Verbindung vor dem Schreiben
+geprüft. Die Evidenz darf auch vor Abschluss nicht abgelaufen sein. Rücknahme
+umfasst neue alte Bindungszeilen und neue aktive Zuordnungen gemeinsam.
+
+Nur zwei zusätzliche ID-Tabellen: shop_product_binding_revisions (unveränderlich)
+und shop_product_binding_heads (explizite CAS-Fortschreibung). Optionen bleiben
+in form_shop_binding_selections. Vorhandene Preisverträge bleiben unverändert;
+eine wiederverwendete Bindung wird nicht erneut geschrieben. Der optionale
+synchrone personalizationPricingFor(entry)-Callback stammt ausschließlich aus
+dem Server und wird nur für neue Bindungen verwendet. Hier keine Preisformel.
+
+resolve liefert konkrete Shop-, Store-, Binding-, Produkt- und Revisions-IDs,
+kopierte Optionen sowie assignmentRevision. Es fällt weder auf die erste noch
+auf die neueste Bindung zurück. Ein neuer Produktkopf ändert eine bestehende
+Zuordnung nicht. Archivieren sperrt die Verwendung; die Historie bleibt erhalten.
+productionReady/publicAccess/checkoutEnabled bleiben false. Ein fehlendes
+Fertigungsprofil verhindert die ID-Sicherung nicht, erlaubt aber keine Fertigung.
+
+Webhook-Zusätze auf orderIntake:
+  ownsOfferToken(token,{shopDomain}) -> bool
+  receive(originalRaw, originalHeaders, config, {acceptedLineIds})
+  offerSummary({offerId,snapshotId,productId,productRevision}) -> {quantity}
+Der gemeinsame interne Router muss vor dem ersten Store-Aufruf alle Positionen
+eindeutig einem Store zuordnen und die unveränderte Raw-HMAC prüfen. Jeder Store
+prüft dieselbe HMAC erneut. Die akzeptierte Teilmenge wird pro Ereignis atomar
+festgeschrieben; ein Retry mit anderer Teilmenge wird abgelehnt. Normale bisherige
+Dreiargumentaufrufe bleiben möglich. Bekannte Varianten ohne Angebot behalten
+ihren bisherigen Fehlerpfad. Ein vorhandener ProductGID-Beleg wird über das feste
+Angebot und seine historische bindingId geprüft, nicht über den aktiven Kopf.
+
+Zwischen zwei separaten SQLite-Dateien gibt es keine gemeinsame Transaktion.
+Nach Teilfehler wird dieselbe vollständige Nachricht mit denselben Teilmengen
+wiederholt: der bereits erfolgreiche Store erkennt das Ereignis, der andere
+setzt seine atomare Übernahme fort. Keine künstlich gekürzte Shopify-Nachricht.
+offerSummary ist ausschließlich für den privaten Loader nach Prüfung von
+Entwurfstoken, Ledger und Paket bestimmt, keine öffentliche Angebotsabfrage.
+
+Altbestand d18bc6c:
+Siehe ../../legacy-patches/LEGACY-COMPATIBILITY.txt. Fester expliziter einzelner
+Store ohne Nachrüstung von tenant_id-Spalten; kein automatisches Downgrade.
+
+Lokal ausgeführt: 15 neue SQLite-/CAS-/Konkurrenztests, 8 Webhookroutingtests,
+8 Legacy-Patchtests, alle 31 bestanden. Zusätzlich 6 von 7 vorhandenen Tests in
+shop-preparation.test.mjs bestanden; der Konturimporttest konnte wegen fehlender
+Python-Konturpakete nicht starten (contour_dependencies_missing).
+Kein echter Datenbestand geöffnet/geändert, keine Shopify-/Plesk-Ausführung,
+keine Bestell- oder Fertigungsfreigabe. Die Hostintegration muss die Eindeutigkeit
+über beide Stores vor Persistierung und Auflösung zusätzlich prüfen.

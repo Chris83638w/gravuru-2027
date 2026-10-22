@@ -13,11 +13,11 @@ import {lockTestData} from './lock.mjs';
 export async function createMerchantRuntime(env,{aiDesign:aiDesignOverride}={}) {
   const config = merchantConfig(env); verifyMerchantStorage(config);
   process.umask(0o077); process.env.GRAVURU_PYTHON = config.python; delete process.env.PYTHONPATH;
-  const lock = await lockTestData(config), released = once(lock, 'exit'); let inner,orderWebhookHandler;
+  const lock = await lockTestData(config), released = once(lock, 'exit'); let inner,orderWebhookHandler,workshop;
   try {
     const merchantCsrfToken = createHmac('sha256', config.runtime.shopifySessions.secret)
       .update(JSON.stringify(['gravuru-merchant-test-csrf/v1', config.origin, config.runtime.shopifySessions.clientId])).digest('hex');
-    ({server: inner,orderWebhookHandler} = createShopifyTestRuntime(config.runtimeEnv, {merchantCsrfToken,orderWebhook:config.orderWebhook,merchantTestCart:config.merchantTestCart,aiDesign:aiDesignOverride??config.aiDesign}));
+    ({server: inner,orderWebhookHandler,workshop} = createShopifyTestRuntime(config.runtimeEnv, {merchantCsrfToken,orderWebhook:config.orderWebhook,merchantTestCart:config.merchantTestCart,aiDesign:aiDesignOverride??config.aiDesign}));
     inner.once('close', () => lock.stdin.end());
     // Only the outer server may be claimed by LiteSpeed/Passenger.
     inner.address = net.Server.prototype.address;
@@ -68,5 +68,8 @@ export async function createMerchantRuntime(env,{aiDesign:aiDesignOverride}={}) 
   server.once('close', () => {inner.close(); inner.closeAllConnections();});
   lock.once('exit', () => {server.close(); server.closeAllConnections(); inner.close(); inner.closeAllConnections();});
   server.runtimeClosed = released;
+  // Existing locked instance for the optional two-store host. No second DB open.
+  Object.defineProperty(server,'workshop',{value:workshop});
   return server;
 }
+

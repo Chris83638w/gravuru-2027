@@ -6,6 +6,7 @@ import {createHash,createHmac,randomBytes,randomUUID,timingSafeEqual} from 'node
 import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {capturePersonalization,personalizationForSnapshot,personalizationAttributes,tierUnitCents} from './cart-personalization.mjs';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
+import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 // K14 / Ü12.1: Zusatzfelder des Prüfstands als sichtbare Warenkorb-Eigenschaften (Bezeichnung → Anzeige).
@@ -47,6 +48,9 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  CREATE TRIGGER IF NOT EXISTS form_binding_selection_no_delete BEFORE DELETE ON form_shop_binding_selections BEGIN SELECT RAISE(ABORT,'Selections are immutable');END;
  CREATE TABLE IF NOT EXISTS form_order_offers(id TEXT PRIMARY KEY,token_hash TEXT NOT NULL UNIQUE,binding_id TEXT NOT NULL,snapshot_id TEXT NOT NULL,package_sha256 TEXT NOT NULL,quantity INTEGER NOT NULL,created_at TEXT NOT NULL,expires_at INTEGER NOT NULL,${TENANT_COLUMN});
  CREATE TABLE IF NOT EXISTS form_order_events(shop TEXT NOT NULL,event_id TEXT NOT NULL,body_sha256 TEXT NOT NULL,order_id TEXT NOT NULL,created_at TEXT NOT NULL,${TENANT_COLUMN},PRIMARY KEY(shop,event_id));
+ CREATE TABLE IF NOT EXISTS form_order_event_selections(shop TEXT NOT NULL,event_id TEXT NOT NULL,line_ids TEXT NOT NULL,${TENANT_COLUMN},PRIMARY KEY(tenant_id,shop,event_id));
+ CREATE TRIGGER IF NOT EXISTS form_order_event_selection_fixed BEFORE UPDATE ON form_order_event_selections BEGIN SELECT RAISE(ABORT,'Event routing is immutable');END;
+ CREATE TRIGGER IF NOT EXISTS form_order_event_selection_keep BEFORE DELETE ON form_order_event_selections BEGIN SELECT RAISE(ABORT,'Event routing is immutable');END;
  CREATE TABLE IF NOT EXISTS form_order_customers(shop TEXT NOT NULL,order_id TEXT NOT NULL,customer_id TEXT,${TENANT_COLUMN},PRIMARY KEY(shop,order_id));
  CREATE TRIGGER IF NOT EXISTS form_order_customer_fixed BEFORE UPDATE ON form_order_customers BEGIN SELECT RAISE(ABORT,'Order customers are immutable');END;
  CREATE TRIGGER IF NOT EXISTS form_order_customer_keep BEFORE DELETE ON form_order_customers BEGIN SELECT RAISE(ABORT,'Order customers are immutable');END;
@@ -58,7 +62,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  CREATE TRIGGER IF NOT EXISTS form_order_event_fixed BEFORE UPDATE ON form_order_events BEGIN SELECT RAISE(ABORT,'Order events are immutable');END;
  CREATE TABLE IF NOT EXISTS form_order_line_errors(id TEXT PRIMARY KEY,shop TEXT NOT NULL,order_id TEXT NOT NULL,line_id TEXT NOT NULL,event_id TEXT NOT NULL,document TEXT NOT NULL,created_at TEXT NOT NULL,${TENANT_COLUMN},UNIQUE(shop,order_id,line_id,event_id));
  CREATE TRIGGER IF NOT EXISTS form_order_line_error_fixed BEFORE UPDATE ON form_order_line_errors BEGIN SELECT RAISE(ABORT,'Order line errors are immutable');END;`);
- ensureTenantColumns(db,['form_shop_bindings','form_shop_binding_personalization','form_offer_personalization','form_shop_binding_selections','form_order_offers','form_order_events','form_order_customers','form_order_lines','form_order_line_errors']);
+ ensureTenantColumns(db,['form_shop_bindings','form_shop_binding_personalization','form_offer_personalization','form_shop_binding_selections','form_order_offers','form_order_events','form_order_event_selections','form_order_customers','form_order_lines','form_order_line_errors']);
  const tx=fn=>{if(db.isTransaction)return fn();db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}},at=()=>new Date(clock()).toISOString();
  const binding=id=>{const r=db.prepare('SELECT * FROM form_shop_bindings WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'Shop-Zuordnung nicht gefunden.');return r;};
  const selection=id=>{const r=db.prepare('SELECT options FROM form_shop_binding_selections WHERE binding_id=? AND tenant_id=?').get(id,tenant);return r?JSON.parse(r.options):null;};
@@ -79,6 +83,20 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  const forSnapshot=snapshotId=>typeof snapshotId==='string'?db.prepare("SELECT document FROM form_order_lines WHERE json_extract(document,'$.snapshotId')=? AND tenant_id=? ORDER BY rowid").all(snapshotId,tenant).map(r=>JSON.parse(r.document)):[];
  return {tenantId:tenant,get,forSnapshot,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings WHERE tenant_id=? ORDER BY rowid DESC').all(tenant).map(safeBinding),
   // Caller supplies the actual saved product record, never a browser price.
+  idBindings({storeId,shopDomain,adapter,personalizationPricingFor}={}){
+   return createShopProductBindingStore({database:db,orderIntake:this,tenantId:tenant,storeId,shopDomain,adapter,clock,personalizationPricingFor});
+  },
+  // Internal routing probe only; never return tokens, offers or customer data.
+  ownsOfferToken(token,{shopDomain}={}){
+   if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)||(shopDomain!==undefined&&!domain(shopDomain)))return false;
+   return Boolean(db.prepare('SELECT 1 FROM form_order_offers o JOIN form_shop_bindings b ON b.id=o.binding_id AND b.tenant_id=o.tenant_id WHERE o.token_hash=? AND o.tenant_id=?'+(shopDomain===undefined?'':' AND b.shop=?')).get(sha(token),tenant,...(shopDomain===undefined?[]:[shopDomain])));
+  },
+  // Private draft loader only, after authenticated ledger/package validation.
+  offerSummary({offerId,snapshotId,productId,productRevision}={}){
+   if(typeof offerId!=='string'||typeof snapshotId!=='string'||typeof productId!=='string'||!Number.isSafeInteger(productRevision)||productRevision<1)fail(404,'Dieses Angebot ist nicht zugänglich.');
+   const row=db.prepare('SELECT o.quantity FROM form_order_offers o JOIN form_shop_bindings b ON b.id=o.binding_id AND b.tenant_id=o.tenant_id WHERE o.id=? AND o.snapshot_id=? AND b.product_id=? AND b.product_revision=? AND o.tenant_id=?').get(offerId,snapshotId,productId,productRevision,tenant);
+   if(!row)fail(404,'Dieses Angebot ist nicht zugänglich.');return {quantity:row.quantity};
+  },
   bind({shopDomain,variantId,record,snapshotId,options:selected,personalizationPricing}){
    if(!domain(shopDomain))fail(422,'Bitte die myshopify.com-Domain des Entwicklungsstores angeben.');variantId=identifier(variantId);
    const d=record.document;let options=null,unit=d.basePriceCents;
@@ -164,7 +182,13 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    if(m.packageSha256!==o.package_sha256||m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR')fail(409,'Der gesicherte Angebotsstand stimmt nicht überein.');
    return {id:o.id,property:{name:'_gravuru_offer',value:offerToken},variantId:b.variant_id,quantity:o.quantity,unitCents:unit,currency:'EUR',scope:'test-checkout-only',...(extra?{personalization:extra.personalization}:{}),...offerFields(m)};
   },
-  receive(raw,headers,config){
+  receive(raw,headers,config,routing){
+   let accepted=null;
+   if(routing!==undefined){
+    if(!routing||typeof routing!=='object'||Array.isArray(routing)||Object.keys(routing).length!==1||!Array.isArray(routing.acceptedLineIds)||!routing.acceptedLineIds.length||routing.acceptedLineIds.length>250)fail(422,'Interne Positionszuordnung fehlt oder ist ungültig.');
+    accepted=new Set(routing.acceptedLineIds.map(identifier));if(accepted.size!==routing.acceptedLineIds.length)fail(422,'Interne Positionszuordnung ist nicht eindeutig.');
+    if(headers['x-shopify-topic']!=='orders/paid')fail(422,'Eine Positionsauswahl ist nur für die Zahlungsübernahme vorgesehen.');
+   }
    if(['orders/updated','orders/cancelled'].includes(headers['x-shopify-topic'])){
     const v=verifyOrderWebhook(raw,headers,config,['orders/updated','orders/cancelled']);
     return tx(()=>{
@@ -174,10 +198,23 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
      return {...result,orderId:v.orderId,matchedLines:lines.length,statuses:lines.map(l=>({id:l.id,...statuses.forLine(get(l.id))}))};
     });
    }
-   const verified=verifyPaidWebhook(raw,headers,config);return tx(()=>{
+   const verified=verifyPaidWebhook(raw,headers,config);
+   if(accepted){
+    const ids=new Set();for(const line of verified.payload.line_items){const id=identifier(line.id);if(ids.has(id))fail(422,'Doppelte Bestellposition.');ids.add(id);
+     if(accepted.has(id)){const refs=Array.isArray(line.properties)?line.properties.filter(p=>p?.name==='_gravuru_offer'):[];
+      const owned=refs.length===1&&this.ownsOfferToken(refs[0].value,{shopDomain:verified.shopDomain});
+      const missingKnown=!refs.length&&line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=? AND tenant_id=?').get(verified.shopDomain,identifier(line.variant_id),tenant);
+      if(!owned&&!missingKnown)fail(422,'Die ausgewählte Position gehört nicht eindeutig zu diesem Datenspeicher.');}}
+    if([...accepted].some(id=>!ids.has(id)))fail(422,'Eine ausgewählte Bestellposition fehlt in der unveränderten Nachricht.');
+   }
+   const selectionJson=accepted?JSON.stringify([...accepted].sort()):null;
+   return tx(()=>{
    if(db.prepare('SELECT 1 FROM form_order_status_events WHERE shop=? AND event_id=? AND topic!=\'orders/paid\' AND tenant_id=?').get(verified.shopDomain,verified.eventId,tenant))fail(409,'Ereignis-ID gehört bereits zu einer Statusnachricht.');
    const {shopDomain:shop,eventId,bodySha256,orderId,payload}=verified,existing=db.prepare('SELECT body_sha256 FROM form_order_events WHERE shop=? AND event_id=? AND tenant_id=?').get(shop,eventId,tenant);
-   if(existing){if(existing.body_sha256!==bodySha256)fail(409,'Ereignis-ID wurde mit anderem Inhalt erneut geliefert.');return {duplicate:true,lines:db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=? AND tenant_id=?').all(shop,orderId,tenant).map(r=>JSON.parse(r.document)),errors:errorRows(' AND e.shop=? AND e.order_id=?',shop,orderId)};}
+   if(existing){if(existing.body_sha256!==bodySha256)fail(409,'Ereignis-ID wurde mit anderem Inhalt erneut geliefert.');
+    const priorSelection=db.prepare('SELECT line_ids FROM form_order_event_selections WHERE shop=? AND event_id=? AND tenant_id=?').get(shop,eventId,tenant)?.line_ids??null;
+    if(priorSelection!==selectionJson)fail(409,'Die gespeicherte Positionsauswahl dieses Ereignisses darf nicht wechseln.');
+    return {duplicate:true,lines:db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=? AND tenant_id=?').all(shop,orderId,tenant).map(r=>JSON.parse(r.document)),errors:errorRows(' AND e.shop=? AND e.order_id=?',shop,orderId)};}
    const result=[],errors=[],seen=new Set();
    // E3 (P2-9): one invalid position is rejected alone. Valid positions are still
    // admitted, the event is recorded and the webhook answers 200 (no Shopify retry storm).
@@ -188,6 +225,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    };
    for(const line of payload.line_items){
     const lineId=identifier(line.id);if(seen.has(lineId))fail(422,'Doppelte Bestellposition.');seen.add(lineId);
+    if(accepted&&!accepted.has(lineId))continue;
     try{admit(line,lineId);}catch(error){if(!Number.isInteger(error?.status)||error.status>=500)throw error;reject(line,lineId,error.message);}
    }
    function configurationFor(properties,offerId){
@@ -203,6 +241,12 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(refs.length!==1||typeof refs[0].value!=='string'||!/^[a-f0-9]{64}$/.test(refs[0].value))fail(422,'Ungültige Entwurfszuordnung.');
     const o=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=? AND tenant_id=?').get(sha(refs[0].value),tenant);if(!o)fail(422,'Entwurfszuordnung nicht gefunden.');const b=binding(o.binding_id),extra=offerPricing(o.id),unit=extra?.unitCents??b.unit_cents;
     if(b.shop!==shop||b.variant_id!==identifier(line.variant_id)||line.quantity!==o.quantity||money(line.price)!==unit)fail(422,'Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.');
+    // If an exact-ID assignment exists, validate its immutable history for THIS
+    // offer's binding. A newer active head must not rewrite a purchased design.
+    if(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='shop_product_binding_revisions'").get()){
+     const identities=db.prepare('SELECT DISTINCT product_gid FROM shop_product_binding_revisions WHERE tenant_id=? AND shop=? AND binding_id=?').all(tenant,shop,b.id);
+     if(identities.length&&(identities.length!==1||identities[0].product_gid!=='gid://shopify/Product/'+identifier(line.product_id)))fail(422,'Das Shopify-Produkt passt nicht zur festen Entwurfsbindung.');
+    }
     for(const expected of personalizationAttributes(extra?.personalization)){
      const actual=properties.filter(p=>p?.name===expected.key);
      if(actual.length!==1||actual[0].value!==expected.value)fail(422,'Bestellung hat die gesicherte Entwurfs- oder Aufpreiszuordnung verändert.');
@@ -224,6 +268,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(!owner&&!db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND order_id=? AND tenant_id=?').get(shop,orderId,tenant))db.prepare('INSERT INTO form_order_customers(shop,order_id,customer_id,tenant_id) VALUES(?,?,?,?)').run(shop,orderId,customerId,tenant);
    }
    if(payload.updated_at)statuses.record(verified);
+   if(accepted)db.prepare('INSERT INTO form_order_event_selections(shop,event_id,line_ids,tenant_id) VALUES(?,?,?,?)').run(shop,eventId,selectionJson,tenant);
    db.prepare('INSERT INTO form_order_events(shop,event_id,body_sha256,order_id,created_at,tenant_id) VALUES(?,?,?,?,?,?)').run(shop,eventId,bodySha256,orderId,at(),tenant);
    // Eine frühere Storno-/Erstattungsmeldung sperrt die Position sofort.
    for(const l of result)release.syncShop(l.id);
@@ -231,3 +276,4 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
   });}
  };
 }
+

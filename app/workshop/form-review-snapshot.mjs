@@ -35,15 +35,18 @@ export async function prepareFormReview({record,draft,assets,contours,fonts,medi
  add('quellen/design-original.'+source.format,assets.read(design.assetId,true),'Byteidentisches Designoriginal.');
  add('quellen/design-vorschau.svg',assets.read(design.assetId),'Geprüfte importierte Designvorschau.');
  add('quellen/kontur-original.'+contour.format,contours.original(contour.id),'Byteidentische Originalkontur.');
- for(const f of design.fields.filter(f=>f.type==='photo')){
+ // resolveFormCustomer removes hidden fields only from the rendered copy. Keep
+ // their original media and customer recipe in the package for later reopening.
+ for(const f of originalDesign.fields.filter(f=>f.type==='photo')){
   const photo=resolved.photos.get(f.id);if(!photo)continue;
   const ext=photo.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':photo.original.subarray(1,4).toString()==='PNG'?'png':'webp';
   const file=add('fotos/'+f.id+'-original.'+ext,photo.original,'Unverändertes privates Originalfoto.');
   const placement=photoPlacement({w:f.widthMm,h:f.heightMm},{width:photo.width,height:photo.height},photo.crop),effectiveDpi=Math.floor(Math.min(photo.width/placement.w,photo.height/placement.h)*25.4);
   // Ü5.1/Ü5.2: Ampel gegen das Soll des Fertigungsprofils; nie eine Sperre, Vermerk für Summary und Freigabe.
   const note=photoResolutionNote(effectiveDpi,resolutionTargetDpi(record.metadata?.productionProfile));
-  photos.push({fieldId:f.id,...file,width:photo.width,height:photo.height,effectiveDpi,photoResolution:{grade:note.grade,effectiveDpi:note.effectiveDpi,targetDpi:note.targetDpi},crop:photo.crop,tone:photo.tone});
-  if(note.grade!=='gruen')warnings.push(note.productionNote+': Foto „'+f.label+'“ erreicht im gewählten Ausschnitt etwa '+effectiveDpi+' dpi (Soll '+note.targetDpi+' dpi). Foto wurde angenommen; bitte in der Freigabe prüfen. Hochrechnen ergänzt keine Bilddetails.');
+  const value=draft.state.fields.find(v=>v.id===f.id);
+  photos.push({fieldId:f.id,mediaId:value.mediaId,hidden:value.deleted===true,...file,width:photo.width,height:photo.height,effectiveDpi,photoResolution:{grade:note.grade,effectiveDpi:note.effectiveDpi,targetDpi:note.targetDpi},crop:photo.crop,tone:photo.tone});
+  if(!value.deleted&&note.grade!=='gruen')warnings.push(note.productionNote+': Foto „'+f.label+'“ erreicht im gewählten Ausschnitt etwa '+effectiveDpi+' dpi (Soll '+note.targetDpi+' dpi). Foto wurde angenommen; bitte in der Freigabe prüfen. Hochrechnen ergänzt keine Bilddetails.');
  }
  const photoMarkup=f=>customerPhotoMarkup(f,resolved.photos.get(f.id));
  const preview=Buffer.from(formProductPreview(document,{assets,fonts,contours,photoMarkup}));

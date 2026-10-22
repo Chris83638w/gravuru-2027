@@ -61,7 +61,10 @@ export const quantityTiersOpen = tiers => Array.isArray(tiers) && tiers.some(t =
 // Gerechnete Staffel: vorhanden, nicht leer und ohne offenen Wert – sonst keine.
 export function activeQuantityTiers(config) {
   const tiers = config?.quantityTiers;
-  return Array.isArray(tiers) && tiers.length && !quantityTiersOpen(tiers) ? tiers : null;
+  if(tiers===undefined){if(config?.quantityTierScope!==undefined)fail('Mengenstaffel-Geltung braucht gespeicherte Stufen.');return null;}
+  if(config.quantityTierScope!==undefined&&config.quantityTierScope!=='complete-unit')fail('Unbekannte Mengenstaffel-Geltung.');
+  const issue=quantityTiersIssue(tiers,{allowUnitCents:config.quantityTierScope!=='complete-unit'&&!config.acrylic&&!config.steelFormats});if(issue)fail(issue);
+  return tiers.length && !quantityTiersOpen(tiers) ? tiers : null;
 }
 export function quantityTierFor(config, quantity) {
   let hit = null;
@@ -71,7 +74,9 @@ export function quantityTierFor(config, quantity) {
 // Kaufmännisch gerundet auf ganze Cent (halbe Cent nach oben), rein ganzzahlig.
 const roundHalfUp = (numerator, denominator) => Math.floor((2 * numerator + denominator) / (2 * denominator));
 export function applyQuantityTier(listUnitCents, tier, baseCents = 0) {
+  if(!Number.isSafeInteger(listUnitCents)||listUnitCents<0||listUnitCents>100000000||!Number.isSafeInteger(baseCents)||baseCents<0||baseCents>100000000)fail('Ungültiger Gesamtpreis.');
   if (!tier) return listUnitCents;
+  if(quantityTiersIssue([tier])||tierValue(tier)===null)fail('Mengenstaffel noch offen oder ungültig.');
   if (Object.hasOwn(tier, 'percentOff')) return roundHalfUp(listUnitCents * (10000 - Math.round(tier.percentOff * 100)), 10000);
   return Math.max(0, listUnitCents - baseCents + tier.unitCents);
 }
@@ -137,7 +142,7 @@ export function prepareConfig(input) {
     if(!slot||hintKeys.has(key)||typeof h.text!=='string'||!h.text.trim()||h.text.length>100||typeof h.enabled!=='boolean'||Object.keys(h).some(k=>!['designId','slotId','text','enabled'].includes(k)))fail('Ungültiger Fotohinweis.');
     hintKeys.add(key);
   }
-  if(config.quantityTiers!==undefined){const issue=quantityTiersIssue(config.quantityTiers,{allowUnitCents:!config.acrylic&&!config.steelFormats});if(issue)fail(issue);}
+  activeQuantityTiers(config);
   getProcessingProfile(p);
   if(config.acrylic)acrylicSelection(acrylicOptions(resolvedOptions(config)),config.acrylic.pricing);
   return config;
@@ -234,7 +239,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   const listUnitCents = unitCents, tier = quantityTierFor(config, quantity);
   unitCents = applyQuantityTier(listUnitCents, tier, config.basePriceCents);
   if (!Number.isSafeInteger(unitCents * quantity)) fail('Ungültiger Gesamtpreis.');
-  const tiers = config.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents};
+  const tiers = config.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents,...(config.quantityTierScope===undefined?{}:{quantityTierScope:config.quantityTierScope})};
   return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
 }
 

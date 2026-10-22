@@ -118,6 +118,13 @@ def main():
                 t = themes.get(sc.get('themeId'), {}); ov = sc.get('priceOverrides') or {}
                 n_ov = sum(len(v.get('sizes', {})) + len(v.get('mounting', {})) + sum(len(x) for x in v.get('options', {}).values()) for v in ov.values())
                 md.append(f"| {sc['name']} | `{sc.get('themeId', '')}` | `{sc.get('fontSet', t.get('fontSet', 'offen'))}` | {', '.join(t.get('motifCategories', [])) or '–'} | {'wie Familie' if not n_ov else str(n_ov) + ' abweichend'} | {sc.get('status', 'offen')} |")
+            # Hauptprodukte (Linie → Unterkategorie → Hauptprodukt → Ausführungen): eigene Shop-Produkte mit Startdesign
+            mains = [(sc, m) for sc in l.get('subcategories', []) for m in (sc.get('mainProducts') or [])]
+            if mains:
+                md += ['', '| Hauptprodukt | Unterkategorie | Startdesign | Größen | Externe Kennungen | Status |', '| --- | --- | --- | --- | --- | --- |']
+                for sc, m in mains:
+                    ext = ', '.join(f"{k} {v}" for k, v in (m.get('externalIds') or {}).items()) or '–'
+                    md.append(f"| {m.get('name') or m['id']} (`{m['id']}`) | {sc['name']} | `{m['startDesign']}` | {', '.join('`' + k + '`' for k in m['sizesOffered']) if m.get('sizesOffered') else 'alle der Unterkategorie'} | {ext} | {m.get('status', 'offen')} |")
             md.append('')
     elif lines_md.exists(): md += ['## Produktlinien', '', f'Siehe [linien/README.md](linien/README.md).', '']
     md += ['## Familien auf einen Blick', '', '| Material | Familie | Größen | Formen | Bohrbilder | Preise | Stand |', '| --- | --- | --- | --- | --- | --- | --- |']

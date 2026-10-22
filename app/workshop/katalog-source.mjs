@@ -28,7 +28,9 @@ function readJson(file){
 }
 const exists=file=>{try{return fs.statSync(file).isFile();}catch{return false;}};
 const isDir=dir=>{try{return fs.statSync(dir).isDirectory();}catch{return false;}};
-const listDirs=dir=>isDir(dir)?fs.readdirSync(dir,{withFileTypes:true}).filter(e=>e.isDirectory()).map(e=>e.name).sort():[];
+// Natürliche Reihenfolge (D1, D2, D23 → D1, D2, D3 … D23): Katalogfolge der Designs im Konfigurator (Chris 22.10.2026).
+const natural=new Intl.Collator('de',{numeric:true,sensitivity:'base'});
+const listDirs=dir=>isDir(dir)?fs.readdirSync(dir,{withFileTypes:true}).filter(e=>e.isDirectory()).map(e=>e.name).sort(natural.compare):[];
 const listFiles=(dir,ext)=>isDir(dir)?fs.readdirSync(dir).filter(n=>n.toLowerCase().endsWith(ext)).sort():[];
 
 // Linie (`linien/<linie>.json`, Schema gravuru-line/v2): physisches Produkt mit
@@ -63,6 +65,22 @@ export function validateLine(line,{families,themes,fontSets,file='linie'}={}){
   if(s.sizesOffered!==null&&s.sizesOffered!==undefined&&(!Array.isArray(s.sizesOffered)||s.sizesOffered.some(k=>!id(k))))fail(file,'Unterkategorie „'+s.id+'“: sizesOffered ist null oder eine Liste von Größen-Schlüsseln.');
   if(s.options!==null&&s.options!==undefined&&(!Array.isArray(s.options)||s.options.some(k=>!id(k))))fail(file,'Unterkategorie „'+s.id+'“: options ist null oder eine Liste von Optionsgruppen.');
   if(s.collectionHandle!==null&&s.collectionHandle!==undefined&&!text(s.collectionHandle,200))fail(file,'Unterkategorie „'+s.id+'“: collectionHandle prüfen.');
+  // Hauptprodukte (Chris 22.10.2026, Struktur Linie → Unterkategorie → Hauptprodukt → Ausführungen):
+  // mehrere Shop-Produkte derselben Unterkategorie mit eigenem Startdesign; alle Designs des Themas bleiben wählbar.
+  if(s.mainProducts!==null&&s.mainProducts!==undefined){
+   if(!Array.isArray(s.mainProducts)||s.mainProducts.length>50)fail(file,'Unterkategorie „'+s.id+'“: mainProducts ist eine Liste (höchstens 50).');
+   const ids=new Set();
+   for(const m of s.mainProducts){
+    if(!record(m)||!id(m.id))fail(file,'Unterkategorie „'+s.id+'“: Hauptprodukt ohne Kennung.');
+    if(ids.has(m.id))fail(file,'Unterkategorie „'+s.id+'“: Hauptprodukt „'+m.id+'“ doppelt.');ids.add(m.id);
+    if(Object.keys(m).some(k=>!['id','name','startDesign','sizesOffered','externalIds','status'].includes(k)))fail(file,'Hauptprodukt „'+m.id+'“: kennt nur id, name, startDesign, sizesOffered, externalIds, status.');
+    if(typeof m.startDesign!=='string'||!/^[A-Za-z0-9][A-Za-z0-9_.,:-]{0,119}$/.test(m.startDesign))fail(file,'Hauptprodukt „'+m.id+'“: startDesign (Design-Kennung) fehlt.');
+    if(m.name!==undefined&&m.name!==null&&!text(m.name,160))fail(file,'Hauptprodukt „'+m.id+'“: Name prüfen.');
+    if(m.sizesOffered!==null&&m.sizesOffered!==undefined&&(!Array.isArray(m.sizesOffered)||!m.sizesOffered.length||m.sizesOffered.some(k=>!id(k))))fail(file,'Hauptprodukt „'+m.id+'“: sizesOffered ist eine Liste von Größen-Schlüsseln.');
+    if(m.externalIds!==undefined&&m.externalIds!==null&&(!record(m.externalIds)||Object.entries(m.externalIds).some(([k,v])=>!id(k)||!(typeof v==='string'&&/^[A-Za-z0-9._:-]{1,64}$/.test(v)))))fail(file,'Hauptprodukt „'+m.id+'“: externalIds ist eine Zuordnung Kennung → Wert.');
+    if(m.status!==undefined&&typeof m.status!=='string')fail(file,'Hauptprodukt „'+m.id+'“: Status prüfen.');
+   }
+  }
   // Chris 21.10.2026: „Die Fotos sind eine Linie und ohne Fotos eine extra Linie“ – Designs mit/ohne Fotofeld getrennt.
   if(s.photoDesigns!==null&&s.photoDesigns!==undefined&&!['mit','ohne'].includes(s.photoDesigns))fail(file,'Unterkategorie „'+s.id+'“: photoDesigns ist null, „mit“ oder „ohne“.');
   // Startdesign: Design-Kennung, die im Konfigurator als erstes steht (= Hauptbild im Shop).

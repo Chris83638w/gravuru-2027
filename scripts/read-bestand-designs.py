@@ -197,7 +197,7 @@ def convert(folder, target, prefix, ersatz, files, s_fix=None, photo_override=No
     W1, H1 = target
     s = s_fix or min(W1 / W0, H1 / H0); ox = (W1 - W0 * s) / 2; oy = (H1 - H0 * s) / 2
     T = lambda x, y: (x * s + ox, y * s + oy)
-    no = meta['katalog']['designNo']; did = f'{prefix}-D{no}'
+    no = meta.get('katalog', {}).get('designNo') or int(re.search(r'-D(\d+)', folder.name).group(1)); did = f'{prefix}-D{no}'
     warn = []
     jtexts = [t for t in meta['texts'] if not t.get('hint')]
     # ---- Texte
@@ -342,7 +342,7 @@ def convert(folder, target, prefix, ersatz, files, s_fix=None, photo_override=No
          'motifs': motifs, 'photos': photos, 'warnings': warn,
          'name': f'D{no} {big["text"].splitlines()[0]}' if big else f'D{no}',
          'plateMm': [W1, H1], 'movable': True,
-         'transfer': {'from': meta['id'], 'fromKey': meta['katalog']['key'], 'scale': round(s, 4), 'offsetMm': [round(ox, 2), round(oy, 2)],
+         'transfer': {'from': meta['id'], 'fromKey': meta.get('katalog', {}).get('key', meta['id']), 'scale': round(s, 4), 'offsetMm': [round(ox, 2), round(oy, 2)],
                       'decided': '2026-10-20', 'by': 'Chris („du kannst die auch 1:1 übernehmen“)'}}
     return d
 
@@ -408,18 +408,20 @@ def main():
     ersatz = {k: v for k, v in (json.loads(Path(a.ersatz).read_text()) if a.ersatz else {}).items() if not k.startswith('_')}
     files = font_files(a.katalog)
     zu = json.loads(Path(a.zuordnung).read_text()) if a.zuordnung else {}
-    folders = {p.parent.name: p.parent for p in Path(a.bestand).glob('*/*/*/design.json')}
+    # Bestand je Linie (Zielgruppe/Unterkategorie/Schlüssel) oder je Bogen (flach: Schlüssel/design.json)
+    folders = {p.parent.name: p.parent for p in list(Path(a.bestand).glob('*/*/*/design.json')) + list(Path(a.bestand).glob('*/design.json'))}
     index = []
     for key in a.designs.split(','):
         folder = folders.get(key.strip())
         if not folder: raise SystemExit(f'Bestandsdesign fehlt: {key}')
-        no = json.loads((folder / 'design.json').read_text())['katalog']['designNo']
+        meta0 = json.loads((folder / 'design.json').read_text())
+        no = meta0.get('katalog', {}).get('designNo') or int(re.search(r'-D(\d+)', key).group(1))
         z = zu.get(f'D{no}', {})
         override = next((p.parent / z['musterfoto'].split('/')[-1] for p in Path(a.bestand).glob('*/*/' + z['musterfoto'].split('/')[0] + '/design.json')), None) if z.get('musterfoto') else None
         if z.get('musterfoto') and not (override and override.exists()): raise SystemExit(f'Musterfoto fehlt: {z["musterfoto"]}')
         d = convert(folder, target, a.praefix, ersatz, files, photo_override=override)
         themes = z.get('themen') or [t for t in a.themen.split(',') if t]
-        zg, uk = folder.parts[-3], folder.parts[-2]
+        zg, uk = (folder.parts[-3], folder.parts[-2]) if 'katalog' in meta0 else ('offen', 'offen')
         if z.get('name'): d['name'] = z['name']  # Kundenname nach Motiv (Chris 21.10.2026)
         d['themes'] = themes
         d['katalog'] = {'key': f'{a.serie}-D{d["designNo"]}', 'series': a.serie, 'zielgruppe': z.get('zielgruppe', zg), 'unterkategorie': z.get('unterkategorie', uk), 'themen': themes}

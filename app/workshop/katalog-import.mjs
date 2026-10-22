@@ -43,7 +43,8 @@ export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=n
  return {profileId:profile.id,profileRevision:profile.revision,items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
 }
 
-export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null}={}){
+export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null,only=null}={}){
+ // `only`: {subcategories:[ids], sizes:[keys], mainProducts:[ids]} begrenzt den Lauf (z. B. ein Muster); ohne Angabe die ganze Linie.
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').');
  const report={line:{id:line.id,name:line.name,status:line.status??null,file:katalog.files.get('linie:'+line.id)},families:[],subcategories:[],designs:{masters:katalog.designs.masters.length,bestand:0,considered:0,withSeries:0,oldSize:[],withoutTheme:0,failed:[]},counts:{products:0,new:0,update:0,unchanged:0,blocked:0,templates:0,sizes:0,pricesOpen:0,designsWithoutSeries:0,fit:{passt:0,'prüfen':0,'passt nicht':0}},notes:[]};
  if(!line.families.length)report.notes.push('Linie „'+line.id+'“ hat noch keine Familie (Status: '+(line.status??'offen')+').');
@@ -64,6 +65,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
   report.families.push({id:familyId,name:doc.name,file:katalog.files.get('familie:'+familyId),material:FAMILY_MATERIALS[doc.material.kind].name,action:familyAction,revision,sizes:doc.sizes.length,series:series.map(r=>({key:r.key,sizes:r.sizes.length,designs:assigned.filter(a=>a.series===r.key).length})),ready:ready.ready,reason:ready.ready?null:ready.reason,pricesOpen:priceOpen,designsOldSize:old.length});
   report.counts.sizes+=doc.sizes.length;report.counts.pricesOpen+=priceOpen.length;
   for(const sub of line.subcategories){
+   if(only?.subcategories&&!only.subcategories.includes(sub.id))continue;
    const theme=sub.themeId?katalog.theme(sub.themeId):null,fontSet=katalog.fontSet(sub,theme);
    const hasPhotoField=d=>Array.isArray(d.json?.photos)?d.json.photos.length>0:/class="[^"]*\bfoto\b/.test(d.svg?.()||'');
    const photoMatch=a=>sub.photoDesigns==null||(sub.photoDesigns==='mit')===hasPhotoField(a.design);
@@ -90,9 +92,13 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
     }
     converted.set(a.design.id,result);return result;
    };
-   const offered=Array.isArray(sub.sizesOffered)?doc.sizes.filter(s=>sub.sizesOffered.includes(s.key)):doc.sizes;
+   // Hauptprodukte der Unterkategorie (eigenes Startdesign, eigene Größenliste); ohne Angabe ein Produkt je Größe.
+   const mains=Array.isArray(sub.mainProducts)&&sub.mainProducts.length?sub.mainProducts.filter(m=>!only?.mainProducts||only.mainProducts.includes(m.id)):[null];
+   for(const main of mains){
+   const effective=main?{...sub,startDesign:main.startDesign,sizesOffered:main.sizesOffered??sub.sizesOffered}:sub;
+   const offered=(Array.isArray(effective.sizesOffered)?doc.sizes.filter(s=>effective.sizesOffered.includes(s.key)):doc.sizes).filter(s=>!only?.sizes||only.sizes.includes(s.key));
    for(const size of offered){
-    const key=importKey(line.id,sub.id,size.key),entry={key,sizeKey:size.key,label:size.label,templates:[],fit:{passt:0,'prüfen':0,'passt nicht':0},excluded:[]};
+    const key=importKey(line.id,sub.id,size.key)+(main?':'+main.id:''),entry={key,sizeKey:size.key,label:size.label,...(main?{mainProduct:main.id,startDesign:main.startDesign}:{}),templates:[],fit:{passt:0,'prüfen':0,'passt nicht':0},excluded:[]};
     const templates=[];
     for(const a of themed.filter(a=>a.sizes.includes(size.key))){
      const t=await templateFor(a);if(!t.ok)continue;
@@ -105,7 +111,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
      }catch(e){entry.excluded.push({design:a.design.id,issues:[e.message]});}
     }
     try{
-     const product=katalogFamilyToProduct(doc,line,sub,{size,theme,fontSet:{...fontSet,available:set.available},fontProfileId:set.profileId,fonts,templates,revision});
+     const product=katalogFamilyToProduct(doc,line,effective,{size,theme,fontSet:{...fontSet,available:set.available},fontProfileId:set.profileId,fonts,templates,revision,mainProduct:main});
      const prior=repository.importItem(key),current=prior?repository.get(prior.id):null;
      const action=!prior?'neu':JSON.stringify(current.document)===JSON.stringify(product.document)?'unverändert':'aktualisieren';
      Object.assign(entry,{action,productId:prior?.id??null,productRevision:current?.revision??null,name:product.document.name,fontsMissing:product.fontsMissing});
@@ -113,6 +119,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
      report.counts[action==='neu'?'new':action==='aktualisieren'?'update':'unchanged']++;report.counts.templates+=templates.length;
     }catch(e){entry.action='gesperrt';entry.reason=e.message;report.counts.blocked++;}
     report.counts.products++;subReport.products.push(entry);
+   }
    }
    report.subcategories.push(subReport);
   }

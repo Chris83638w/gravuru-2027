@@ -1,0 +1,33 @@
+{
+  "schema": "gravuru-catalog-deployment/v1",
+  "appliedAt": "2026-10-22T04:33:05.135554+00:00",
+  "files": 10,
+  "allHashesMatch": true,
+  "backupBytes": 258023424,
+  "preflight": "passed",
+  "shopifyWrites": false,
+  "customerBinding": "deferred",
+  "receiptSha256": "7a21b0eb78cfe5ae629734730525f160bfeb5c3b14a9a426bc15659929cfb34a",
+  "verifiedAt": "2026-10-22T04:58:01.854Z",
+  "github": {
+    "codeCommit": "6091f83b05c55bb6cd1cf66fecfed32ef6af8d6a",
+    "catalogCommit": "48a1a89b33756aa79a4e1f2b08d589483dedbaf7",
+    "codeFilesVerified": 76,
+    "catalogFilesVerified": 21
+  },
+  "httpChecks": {
+    "catalogPage": 200,
+    "acrylGallery": 200,
+    "catalogScript": 200,
+    "anonymousPrivateApi": 401,
+    "untrustedHost": 403,
+    "untrustedOrigin": 403
+  },
+  "verification": {
+    "automatedTestsPassed": 9,
+    "localUi": "save target, assign multiple categories, reload and search passed",
+    "serverUi": "User confirmed visible catalogue with 11 lines and 48 subcategories on 2026-10-22",
+    "browserAutomationLimitation": "New Shopify embedded frames returned an empty automation view despite user-visible catalogue"
+  },
+  "productPublication": false
+}

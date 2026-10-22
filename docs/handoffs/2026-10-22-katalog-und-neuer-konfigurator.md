@@ -5,8 +5,8 @@ Stand: 22.10.2026. Auftrag von Chris: Katalogstruktur in der Werkstatt anlegen u
 ## Hier beginnen
 
 - Codebasis: Remote-Commit bf5c059f13e0868d7c554616b7c35ff7a328ae62 auf dev/konfi-neu-20261019. Dieser Übergabe-Branch enthält zusätzlich die gesamte Acryl-Arbeit und die neue Katalogübersicht. Neuere parallele Konfigurator-Arbeit erst vergleichen, nicht überschreiben.
-- Katalog: https://github.com/Chris83638w/gravuru-katalog. – struktur.json, serien/ und KATALOG.md. Die Serien enthalten exakte Konturen und SKU/Produkt-Revisionszuordnung; niemals auf ein Rechteck/Ellipse reduzieren.
-- Arbeitsoberfläche: /werkstatt/katalog/; Acryl-Galerie: /werkstatt/acryl/. Die Katalogseite ist bis zur separat dokumentierten Serverinstallation nur im Übergabecode vorhanden.
+- Katalog: https://github.com/Chris83638w/gravuru-katalog./tree/task/katalog-struktur-20261022 – struktur.json, serien/ und KATALOG.md. Die Serien enthalten exakte Konturen und SKU/Produkt-Revisionszuordnung; niemals auf ein Rechteck/Ellipse reduzieren.
+- Arbeitsoberfläche: /werkstatt/katalog/; Acryl-Galerie: /werkstatt/acryl/. Die Katalogseite wurde am 22.10.2026 installiert; Mitarbeiterzugang: https://admin.shopify.com/store/gravuru-design/apps/gravuru-konfigurator/werkstatt/katalog/ .
 - Bestehende Shopify-App: https://admin.shopify.com/store/gravuru-design/apps/gravuru-konfigurator/werkstatt/acryl/ . Der Serverstand vor dieser Katalogerweiterung wurde am 22.10. mit realem Shopify-Browser geprüft.
 
 ## Quellen und reproduzierbarer Stand
@@ -55,4 +55,11 @@ ACTIVATED.json und rollback/COMPLETE.json sind aktuelle Installations-/Sicherung
 
 ## Abnahme dieser Erweiterung
 
-Neun gezielte Tests für Katalog/Team bestanden (Node 24): atomare Speicherung, Versionskonflikte, Mandantentrennung, unveränderte Produktdaten, Zugriff/Herkunft/CSRF, Routen und bestehende Acryl-Hauptproduktlogik. Lokaler Browsertest bestanden: Anzahl speichern, zwei Unterkategorien zuordnen, Neuladen, Suche nach Hunde-/Katzenprodukten. Zwei im Sichttest gefundene Dialogfehler wurden behoben und nachgeprüft. Serverinstallation läuft separat mit vollständiger Datenbanksicherung; ihr Abschluss wird erst nach Rückprüfung bestätigt.
+Neun gezielte Tests für Katalog/Team bestanden (Node 24): atomare Speicherung, Versionskonflikte, Mandantentrennung, unveränderte Produktdaten, Zugriff/Herkunft/CSRF, Routen und bestehende Acryl-Hauptproduktlogik. Lokaler Browsertest bestanden: Anzahl speichern, zwei Unterkategorien zuordnen, Neuladen, Suche nach Hunde-/Katzenprodukten. Zwei im Sichttest gefundene Dialogfehler wurden behoben und nachgeprüft. Serverinstallation am 22.10.2026 um 04:33 UTC abgeschlossen. Zehn Dateien rückgeprüft: alle SHA-256 stimmen; vorherige Werkstatt-Datenbank vollständig gesichert (258.023.424 Byte). Katalog/Galerie/JS HTTP 200; Zugangsschutz 401/403 bestanden. Chris bestätigt die sichtbare Katalogseite mit 11 Produktlinien und 48 Unterkategorien. Die Browsersteuerung zeigt bei neuen Shopify-Einbettungen teilweise eine leere Ansicht; dies ist separat von der erfolgreichen Server- und Nutzersichtprüfung dokumentiert. [Installationsnachweis](2026-10-22-katalog-installation.json).
+
+
+## Veröffentlicht auf GitHub
+
+Beide Übergabezweige heißen `task/katalog-struktur-20261022`. Der vollständige Code- und Quellstand wurde in Commit 6091f83b05c55bb6cd1cf66fecfed32ef6af8d6a rückgeprüft (76 Dateien), der Katalog in 48a1a89b33756aa79a4e1f2b08d589483dedbaf7 (21 Dateien). Dieser Nachtrag ergänzt nur Dokumentation. Die Hauptzweige und parallele Konfiguratorarbeiten wurden nicht überschrieben.
+
+Server-Rückweg: private/acryl-employee-20261021-v1/catalog-structure-20261022 enthält APPLIED.json, PREPARED.json, MANIFEST.before.json, die vorherigen Code-Dateien und workshop.sqlite. Vor einem Rücksetzen aktuelle Mitarbeiteränderungen sichern; die gesicherte Datenbank nicht pauschal über neue Änderungen schreiben. Keine Zugangsdaten oder privaten Datenbanken auf GitHub.

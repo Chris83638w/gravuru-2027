@@ -1,6 +1,20 @@
 import {printArtwork,physicalGeometry} from './print-export.mjs';
 import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {insideContour} from './print-export-model.mjs';
+import {PLACEMENT_STEP,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
+
+// Mindestgröße eines Motivs bei der Platzsuche (Chris 22./23.10.2026): 10 mm längste Seite, physisch.
+// Begründung: Motive sind Strichzeichnungen; die Mindestlinienstärke der Verfahren ist offen (null), die
+// Mindestschriftgröße 3 mm. Bei 10 mm bleiben Konturen gravier-/druckbar erkennbar (etwa dreifache
+// Mindesttexthöhe), und das Motiv bleibt in der Vorschau antippbar (ca. 5–6 px/mm → ≥ 50 px, über dem
+// üblichen Touch-Ziel von 44 px). Kleiner darf der Kunde selbst skalieren; die Suche geht nicht darunter.
+export const MOTIF_MIN_MM=10;
+// Verkleinerungsstufen 1, 0.9, 0.81 … bis minScale (letzter Schritt genau minScale); minScale ≥ 1 → nur [1].
+export function placementScales(minScale,step=PLACEMENT_STEP){
+ const floor=Number.isFinite(minScale)?Math.min(1,Math.max(0.01,minScale)):1,scales=[1];
+ for(let s=1;s>floor+1e-9;){s=Math.max(floor,s*step);scales.push(s);}
+ return scales;
+}
 
 // Search the actual visible artwork, including transparent template layers.
 export function emptyPixelPosition(alpha,width,height,boxWidth,boxHeight,allowed=()=>true){
@@ -14,7 +28,11 @@ export function emptyPixelPosition(alpha,width,height,boxWidth,boxHeight,allowed
  }
  return best;
 }
-export async function placeNewMotif({el,config,files,say},object){
+// Chris 22./23.10.2026: Platzsuche über die ganze Gestaltungsfläche innerhalb des Randes (safeMarginMm) in
+// Originalgröße, danach schrittweise kleiner bis zur Mindestgröße (minScale, vom Aufrufer aus MOTIF_MIN_MM).
+// Bestehende Elemente werden nie verschoben. Erst wenn selbst bei Mindestgröße nichts frei ist: mittig,
+// ausgewählt und kurzer Hinweis NO_FREE_SPACE_MESSAGE (ersetzt die Regel vom 21.10.2026 „kein Hinweis“).
+export async function placeNewMotif({el,config,files,say},object,{minScale=1}={}){
  const before=JSON.stringify(el.state.objects),state={...el.state,selected:null,objects:el.state.objects.filter(o=>o.id!==object.id)};
  const facade={state,fontData:el.fontData,objectSVG:o=>el.objectSVG(o),uxObjectSVG:o=>el.uxObjectSVG(o)};
  const art=await printArtwork({el:facade,config,files}),g=physicalGeometry(config,state),scale=2;
@@ -24,8 +42,15 @@ export async function placeNewMotif({el,config,files,say},object){
  if(before!==JSON.stringify(el.state.objects))return say('Die Gestaltung wurde während der Platzsuche geändert. Bitte die Position des neuen Motivs prüfen.');
  const sx=g.width/config.profile.geometry.width,sy=g.height/config.profile.geometry.height;
  const insertion=config.acrylic?acrylicSelection(acrylicOptions(state.mOptions),config.acrylic.pricing).base.insertionMm:0;
- const position=emptyPixelPosition(ctx.getImageData(0,0,canvas.width,canvas.height).data,canvas.width,canvas.height,object.w*sx*scale,object.h*sy*scale,(x,y)=>y/scale<g.height-insertion&&insideContour(g,x/scale,y/scale));
- if(position){object.x=position.x/scale/sx;object.y=position.y/scale/sy;el.sync();say('Motiv in einer freien Fläche platziert.');}
- // Chris 21.10.2026: kein Hinweis „kein freier Platz“ – das Motiv bleibt mittig und kann verschoben werden.
- else{object.x=config.profile.geometry.width/2;object.y=config.profile.geometry.height/2;el.state.selected=object.id;el.sync();}
+ const margin=Number.isFinite(g.safeMarginMm)?Math.max(0,g.safeMarginMm):2; // Gestaltungsrand wie objectIssue/designArea (Standard 2 mm)
+ const allowed=(x,y)=>y/scale<g.height-insertion&&insideContour(g,x/scale,y/scale,-margin);
+ const alpha=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+ for(const s of placementScales(minScale)){
+  const position=emptyPixelPosition(alpha,canvas.width,canvas.height,object.w*s*sx*scale,object.h*s*sy*scale,allowed);
+  if(!position)continue;
+  object.x=position.x/scale/sx;object.y=position.y/scale/sy;
+  if(s<1){object.w*=s;object.h*=s;}
+  el.sync();say(s<1?'Motiv in einer freien Fläche platziert – dafür verkleinert.':'Motiv in einer freien Fläche platziert.');return;
+ }
+ object.x=config.profile.geometry.width/2;object.y=config.profile.geometry.height/2;el.state.selected=object.id;el.sync();say(NO_FREE_SPACE_MESSAGE);
 }

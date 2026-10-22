@@ -1,7 +1,8 @@
-import {placeNewMotif} from './motif-placement.mjs';
+import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
 import {transformedCorners} from './usability-model.mjs';
-import {fitText,freePosition,transferTexts,changedCustomerTexts,alignGroup} from './workflow-model.mjs';
+import {designArea} from './design-area.mjs';
+import {fitText,freePlacement,transferTexts,changedCustomerTexts,alignGroup,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
 import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
@@ -45,7 +46,25 @@ export async function installWorkflow(api){
  el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),surface(),min);if(size!==null&&size<o.size){o.size=size;measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){o.size=min;measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
  r.addEventListener('input',e=>{if(e.target.dataset.uxText){const o=el.state.objects.find(o=>o.id===e.target.dataset.uxText);if(o)o.uxCustomerText=true;}},true);
  let placementJob=Promise.resolve();
- function place(o){if(o.type==='motif'&&config){say('Freie Fläche für das Motiv wird gesucht …');placementJob=placementJob.then(()=>placeNewMotif({...api},o)).catch(()=>say('Freie Fläche konnte nicht geprüft werden. Bitte die Motivposition prüfen.'));return;}const p=freePosition(o,surface(),el.state.objects,obstacles());if(p)Object.assign(o,p);else{const f=surface();o.x=f.x+f.width/2;o.y=f.y+f.height/2;el.state.selected=o.id;}} // Chris 21.10.2026: kein Hinweis „kein freier Platz“ – mittig und ausgewählt
+ // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz – Suche über die ganze
+ // Gestaltungsfläche innerhalb des Randes, danach schrittweise kleiner bis zur Mindestgröße (Text:
+ // Mindestschriftgröße des Verfahrens, 3 mm; Motiv/Foto/Logo: MOTIF_MIN_MM längste Seite). Bestehende
+ // Elemente werden nie verschoben. Erst wenn selbst bei Mindestgröße nichts frei ist: mittig, ausgewählt
+ // und kurzer Hinweis (ersetzt die Regel vom 21.10.2026 „kein Hinweis“).
+ const physicalScale=()=>el.uxTextScale?.()||1;
+ function placementMinScale(o){
+  if(o.type==='text'){const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/physicalScale();return o.size>0?Math.min(1,min/o.size):1;}
+  const longest=Math.max(o.w||0,o.h||0)*physicalScale();return longest>0?Math.min(1,MOTIF_MIN_MM/longest):1;
+ }
+ // Gestaltungsfläche innerhalb des Randes (design-area.mjs); Klingelschild-Altpfad: Acrylfläche des Rahmens.
+ function placementSurface(){if(!config)return surface();const a=designArea(config);return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:profile.geometry.shape};}
+ function shrinkTo(o,scale){if(o.type==='text')o.size*=scale;o.w*=scale;o.h*=scale;}
+ function place(o){
+  if(o.type==='motif'&&config){say('Freie Fläche für das Motiv wird gesucht …');placementJob=placementJob.then(()=>placeNewMotif({...api},o,{minScale:placementMinScale(o)})).catch(()=>say('Freie Fläche konnte nicht geprüft werden. Bitte die Motivposition prüfen.'));return;}
+  const hit=freePlacement(o,placementSurface(),el.state.objects,obstacles(),{minScale:placementMinScale(o)});
+  if(hit){o.x=hit.x;o.y=hit.y;if(hit.scale<1){shrinkTo(o,hit.scale);say((o.type==='text'?'Text':'Element')+' in einer freien Fläche platziert – dafür verkleinert.');}}
+  else{const f=surface();o.x=f.x+f.width/2;o.y=f.y+f.height/2;el.state.selected=o.id;say(NO_FREE_SPACE_MESSAGE);}
+ }
  const add=el.add;el.add=function(...args){const before=new Set(this.state.objects.map(o=>o.id));const result=add.apply(this,args);for(const o of this.state.objects.filter(o=>!before.has(o.id))){place(o);if(o.type==='text')o.uxCustomerText=true;}this.sync();return result;};
  // New uploads use the same free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));

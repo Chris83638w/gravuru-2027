@@ -227,6 +227,47 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
 });
+// Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz. Die echte place()-Funktion aus workflow.mjs:
+// Gestaltungsfläche innerhalb des Randes, Verkleinerung bis zur Mindestgröße (Text 3 mm, Motiv 10 mm), sonst mittig + Hinweis.
+test('Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur Mindestgröße, sonst mittig mit Hinweis',async()=>{
+ const {freePlacement,NO_FREE_SPACE_MESSAGE}=await import('./workflow-model.mjs');
+ const {MOTIF_MIN_MM}=await import('./motif-placement.mjs');
+ const {designArea}=await import('./design-area.mjs');
+ const geometry={width:90,height:60,shape:'rect',cornerRadiusMm:0,safeMarginMm:2,holes:[]};
+ const make=objects=>{
+  const said=[],motifCalls=[];
+  const env={config:{profile:{geometry}},profile:{geometry},el:{state:{objects,selected:null},uxMinTextMm:3,uxTextScale:()=>1},say:m=>said.push(m),designArea,freePlacement,NO_FREE_SPACE_MESSAGE,MOTIF_MIN_MM,
+   surface:()=>({x:0,y:0,width:90,height:60}),obstacles:()=>[],api:{},placementJob:Promise.resolve(),placeNewMotif:(_api,o,opts)=>{motifCalls.push({id:o.id,...opts});return Promise.resolve();}};
+  vm.createContext(env);
+  for(const marker of ['const physicalScale=','function placementSurface(){','function shrinkTo(o,scale){'])vm.runInContext(line('workflow.mjs',marker),env);
+  vm.runInContext(block('workflow.mjs',' function placementMinScale(o){','\n }'),env);
+  vm.runInContext(block('workflow.mjs',' function place(o){','\n }'),env);
+  return {env,said,motifCalls,place:o=>vm.runInContext('place',env)(o)};
+ };
+ // Gestaltungsfläche = Rand 2 mm: 86 × 56 mm.
+ const {env:e0}=make([]);assert.deepEqual(structuredClone(vm.runInContext('placementSurface()',e0)),{x:2,y:2,width:86,height:56,shape:'rect'});
+ // Mindestmaßstab: Text 12 mm → 3/12; Text schon unter 3 mm → 1 (nicht weiter verkleinern); Motiv 40 mm → 10/40; Motiv 8 mm → 1.
+ assert.equal(vm.runInContext("placementMinScale({type:'text',size:12,w:30,h:12})",e0),0.25);
+ assert.equal(vm.runInContext("placementMinScale({type:'text',size:2.5,w:10,h:3})",e0),1);
+ assert.equal(vm.runInContext("placementMinScale({type:'motif',w:40,h:20})",e0),0.25);
+ assert.equal(vm.runInContext("placementMinScale({type:'photoSlot',w:8,h:6})",e0),1);
+ // (a) Freie Fläche: Originalgröße, kein Hinweis.
+ const a=make([]),ta={id:'t',type:'text',size:10,w:30,h:10,rotation:0};a.env.el.state.objects.push(ta);a.place(ta);
+ assert.equal(ta.size,10);assert.deepEqual(a.said,[]);assert.ok(ta.x>=17&&ta.x<=73&&ta.y>=7&&ta.y<=53);
+ // (b) Nur eine schmale Lücke unten (Rand 2 bis 58 mm, Wand bis 47,5 mm → 10,5 mm): Text 10 mm hoch passt mit 1 mm Abstand
+ //     zum Nachbarn (Außenbox +2 mm) erst verkleinert (0,9 → 9 mm) – nie unter 3 mm; der Nachbar wird nicht verschoben.
+ const wall={id:'w',type:'motif',x:45,y:24,w:86,h:47,rotation:0};
+ const b=make([structuredClone(wall)]),tb={id:'t',type:'text',size:10,w:30,h:10,rotation:0};b.env.el.state.objects.push(tb);b.place(tb);
+ assert.ok(Math.abs(tb.size-9)<1e-9,String(tb.size));assert.ok(Math.abs(tb.w/30-tb.size/10)<1e-9,'Breite skaliert mit der Größe');
+ assert.ok(tb.y+tb.h/2<=58.001&&tb.y-tb.h/2>=48.5-1e-6,JSON.stringify(tb));assert.deepEqual(b.env.el.state.objects[0],wall);
+ assert.deepEqual(b.said,['Text in einer freien Fläche platziert – dafür verkleinert.']);assert.equal(b.env.el.state.selected,null);
+ // (c) Alles belegt: mittig, ausgewählt, kurzer Hinweis – auch bei Mindestgröße kein Platz.
+ const c=make([{id:'w',type:'motif',x:45,y:30,w:90,h:60,rotation:0}]),tc={id:'t',type:'text',size:10,w:30,h:10,rotation:0};c.env.el.state.objects.push(tc);c.place(tc);
+ assert.deepEqual([tc.x,tc.y,tc.size],[45,30,10]);assert.equal(c.env.el.state.selected,'t');assert.deepEqual(c.said,[NO_FREE_SPACE_MESSAGE]);
+ // (d) Motive gehen über die Pixelsuche mit Mindestmaßstab aus MOTIF_MIN_MM.
+ const d=make([]),m={id:'m',type:'motif',w:40,h:20,rotation:0};d.env.el.state.objects.push(m);d.place(m);await d.env.placementJob;
+ assert.deepEqual(d.motifCalls,[{id:'m',minScale:0.25}]);assert.deepEqual(d.said,['Freie Fläche für das Motiv wird gesucht …']);
+});
 // Chris 22./23.10.2026: Beim Farbdruck bleiben Palette und runde Schnellfarbpunkte, zusätzlich ist der Farbwähler
 // (freie Farbe) erlaubt; Gravurprofile unverändert ohne Farbwahl. Die echten Zeilen aus ux.mjs, direct-editing.mjs
 // und usability.mjs, mit den Verfahrensprofilen ausgewertet.

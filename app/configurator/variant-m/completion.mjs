@@ -1,14 +1,17 @@
 import {installWorkshopReview} from './workshop-review.mjs';
 import {installCartEdit} from './cart-edit.mjs';
+import {MOUNT_ICONS,mountIconSvg} from './option-media.mjs';
 export async function installCompletion(api){
  const {el,r,profile,config,button,esc,mutate,dialog}=api,$=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/completion.css').then(v=>{if(!v.ok)throw Error('Abschlussoberfläche fehlt');return v.text();});r.append(style);
- const icon=paths=>'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths+'</svg>';
+ const icon=mountIconSvg;
  const magnify=icon('<circle cx="13" cy="13" r="8"/><path d="m19 19 8 8M9 13h8m-4-4v8"/>');
- const mountIcons={K00:'<rect x="5" y="5" width="22" height="22" rx="2"/><path d="m10 22 12-12"/>',GWS:'<path d="M8 4v24m0-17h17m-17 10h17m-7-13v6m4-6v6m-4 4v6m4-6v6"/>',KRA:'<path d="M5 25V7h22v10L17 27H5m12 0V17h10M9 11h12M9 15h5"/>',SIL:'<path d="m6 26 12-12 7 7-7 7m-1-15 3-3 7 7-3 3M6 26l-3 3m15-17 5-5 3 3-5 5M23 7l4-4 2 2-3 5"/>',B04S:'<rect x="4" y="4" width="24" height="24" rx="2"/><circle cx="10" cy="10" r="2"/><circle cx="22" cy="10" r="2"/><circle cx="10" cy="22" r="2"/><circle cx="22" cy="22" r="2"/>'};
+ // Befestigungssymbole liegen in option-media.mjs, damit die Kacheln der Universalprodukte (adapter.mjs) dieselben nutzen.
+ const mountIcons=MOUNT_ICONS;
  const mount=$('[data-fk-mount]');
  if(mount){mount.closest('label').hidden=true;const cards=document.createElement('fieldset');cards.className='completion-mount';cards.innerHTML='<legend>Befestigungsart wählen</legend><div>'+[...mount.options].map(o=>{const parts=o.textContent.split(' · ');return button('mount-choice',icon(mountIcons[o.value]||mountIcons.K00)+'<strong>'+esc(parts[0])+'</strong><small>'+esc(parts.slice(1).join(' · '))+'</small>',`data-mount="${esc(o.value)}" aria-pressed="${o.selected}"`);}).join('')+'</div>';mount.closest('label').after(cards);}
- const choices='[data-c-design],[data-fk-frame],[data-fk-color],[data-ux-font],[data-ux=category-pick],[data-ux=upload-kind],[data-ux=mount-choice]';
+ // Chris 22./23.10.2026: Die Optionskacheln der Universalprodukte ([data-picture-option], adapter.mjs) tragen denselben Auswahlhaken wie Designs.
+ const choices='[data-c-design],[data-fk-frame],[data-fk-color],[data-ux-font],[data-ux=category-pick],[data-ux=upload-kind],[data-ux=mount-choice],[data-picture-option]';
  function marks(){for(const c of all(choices)){c.classList.add('completion-choice');let badge=c.querySelector(':scope > .completion-check');if(!badge){badge=document.createElement('span');badge.className='completion-check';badge.setAttribute('aria-hidden','true');badge.textContent='✓';c.append(badge);}const hidden=c.getAttribute('aria-pressed')!=='true';if(badge.hidden!==hidden)badge.hidden=hidden;}for(const c of all('[data-design-enlarge]'))if(!c.querySelector('svg'))c.innerHTML=magnify+'<span>Vorschau</span>';}
  let markQueued=false;new MutationObserver(()=>{if(markQueued)return;markQueued=true;queueMicrotask(()=>{markQueued=false;marks();});}).observe(r,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-pressed']});
  // Bestseller preview expands with the document, like the design overview.

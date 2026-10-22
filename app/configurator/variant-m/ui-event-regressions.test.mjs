@@ -263,3 +263,42 @@ test('Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten L
  assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title,icon\]\)/,'Reiterleiste nutzt uploadOffered');
  assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title\]\)=>button\('guide-'/,'Hilfe-Dialog nutzt uploadOffered');
 });
+// Chris 22./23.10.2026: Befestigung bei Universal-/Katalogprodukten als Kacheln mit Icon, Bezeichnung und Aufpreis
+// („+2,99 €“ / „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount]; Auswahlhaken einheitlich wie bei Designs.
+test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und Aufpreis; Auswahlliste bleibt, Haken wie Designs',async()=>{
+ const {optionTileIcon,optionTilePrice,MOUNT_ICONS,optionThumbnail}=await import('./option-media.mjs');
+ const {money}=await import('./contract.mjs');
+ const {familyProductConfig}=await import('../../workshop/product-families.mjs');
+ const {escapeXml}=await import('../../platform/sources/app/shared/models/design-content.mjs');
+ const family=JSON.parse(fs.readFileSync(new URL('../../designs/steel-door-signs/family.json',import.meta.url)));
+ const config=familyProductConfig(family,family.sizes.find(s=>s.key==='GR-ES-OV-90X60-T15'),1),p=config.profile;
+ const mounting=p.optionGroups.find(g=>g.id==='mounting');
+ assert.deepEqual(mounting.values.map(v=>v.id),['K00','KGL','KRA','B02','B02S']);
+ // Icon: Standardbild (Bohrbild) als <img>, sonst Strichsymbol; KGL teilt das Klebesymbol mit KRA, Unbekanntes → „ohne Bohrung“.
+ assert.match(optionTileIcon(mounting.values.find(v=>v.id==='B02')),/^<img src="data:image\/png;base64,[A-Za-z0-9+/=]+" alt="">$/);
+ assert.equal(optionTileIcon({id:'B02',holes:[{},{}],thumbnailDisabled:true}),optionTileIcon({id:'FREMD'}),'Bild abgeschaltet → Symbol „ohne Bohrung“');
+ assert.ok(optionTileIcon({id:'K00'}).includes(MOUNT_ICONS.K00)&&optionTileIcon({id:'K00'}).startsWith('<svg viewBox="0 0 32 32"'));
+ assert.equal(optionTileIcon({id:'KGL'}),optionTileIcon({id:'KRA'}));assert.ok(optionTileIcon({id:'KRA'}).includes(MOUNT_ICONS.KRA));
+ assert.equal(optionThumbnail({id:'K00'}),'','K00 hat kein Standardbild – daher das Symbol');
+ // Preistext wie in der Auswahlliste; Größen mit Komplettpreis zeigen den Preis selbst.
+ assert.equal(optionTilePrice({priceCents:0},money),'ohne Aufpreis');assert.equal(optionTilePrice({priceCents:299},money),'+'+money(299));assert.equal(optionTilePrice({priceCents:1990},money,{fullPrice:true}),money(1990));
+ // Der echte Kachelaufbau aus adapter.mjs: alle fünf Befestigungen, Kennung/Gruppe für die Auswahl, Bezeichnung + Aufpreis, aria-pressed.
+ const env={pictures:{innerHTML:''},p,config,esc:escapeXml,money,optionTileIcon,optionTilePrice};vm.createContext(env);
+ vm.runInContext(line('adapter.mjs','const tileValues=g=>'),env);vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
+ const html=env.pictures.innerHTML;
+ assert.equal((html.match(/<button type="button" class="m-option-tile" data-picture-group="mounting" data-picture-option="/g)||[]).length,5);
+ assert.match(html,/<div role="group" aria-label="Befestigung">/);
+ assert.match(html,/data-picture-option="K00" aria-pressed="false"><svg [^>]*>.*?<\/svg><strong>Ohne Bohrung<\/strong><small>ohne Aufpreis<\/small><\/button>/);
+ assert.match(html,new RegExp('data-picture-option="KGL" aria-pressed="false"><svg .*?<strong>Selbstklebend – glatte Flächen</strong><small>\\+'+money(299).replace(/\s/g,'\\s')+'</small>'));
+ assert.match(html,new RegExp('data-picture-option="B02S" aria-pressed="false"><img src="data:image/png;base64,[^"]+" alt=""><strong>Mit 2 Schrauben</strong><small>\\+'+money(269).replace(/\s/g,'\\s')+'</small>'));
+ // Andere Gruppen (z. B. ohne Optionsbild) bekommen weiterhin keine Kacheln; Werte mit Bild schon.
+ env.p={optionGroups:[{id:'size',name:'Größe',values:[{id:'a',label:'A',priceCents:100},{id:'b',label:'B',priceCents:0,thumbnail:'data:image/png;base64,AAAA'}]}]};
+ vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
+ assert.equal((env.pictures.innerHTML.match(/data-picture-option=/g)||[]).length,1);assert.match(env.pictures.innerHTML,/data-picture-option="b"[^>]*><img src="data:image\/png;base64,AAAA" alt=""><strong>B<\/strong><small>ohne Aufpreis<\/small>/);
+ // Auswahlliste (select) bleibt als barrierefreie Alternative; Klick auf die Kachel setzt nur die Option (keine Preislogik hier).
+ assert.match(source('adapter.mjs'),/picks\.innerHTML=\(p\.optionGroups\|\|\[\]\)\.map\(g=>'<label>'\+esc\(g\.name\)\+'<select data-m-option=/);
+ assert.match(source('adapter.mjs'),/pictures\.addEventListener\('click',e=>\{const button=e\.target\.closest\('\[data-picture-option\]'\);if\(!button\)return;el\.record\(\);options=\{\.\.\.options,\[button\.dataset\.pictureGroup\]:button\.dataset\.pictureOption\};/);
+ // Einheitlicher Auswahlhaken: completion.mjs markiert die Kacheln wie Designs und nutzt dieselben Symbole.
+ assert.match(line('completion.mjs',"const choices='"),/\[data-ux=mount-choice\],\[data-picture-option\]'/);
+ assert.match(source('completion.mjs'),/import \{MOUNT_ICONS,mountIconSvg\} from '\.\/option-media\.mjs'/);
+});

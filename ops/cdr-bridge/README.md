@@ -9,8 +9,10 @@ Livezugriff auf das Netzlaufwerk. Es löscht weder Originale noch entfernte Kopi
 
 ## Stand am 22.10.2026
 
-Code für Version 1.2.0 vorbereitet; produktiver Empfänger noch nicht aktiviert.
-Der bestehende Plesk-Dienst läuft weiterhin mit Version 1.1.0. Der echte 7×2-Bogen
+Version 1.2.0 ist nach ausdrücklicher Freigabe auf Plesk aktiviert. Live geprüft:
+HTTPS-Übertragung, SHA-256, HEAD, getrennte Anmeldung, Ablehnung falscher Prüfsummen
+und MCP-Ordnerliste/Herkunft als Kopie. Der synthetische Test ist privat archiviert.
+Der echte 7×2-Bogen
 ist noch nicht übertragen oder ausgewertet. Die Windows-Starter sind vorbereitet,
 aber mangels Windows-/V:-Zugriff hier nicht auf Chris' Rechner ausgeführt.
 
@@ -19,9 +21,12 @@ aber mangels Windows-/V:-Zugriff hier nicht auf Chris' Rechner ausgeführt.
 1. Paket auf dem Windows-Rechner entpacken, auf dem `V:\Produkte` lesbar ist.
 2. `7x2-pruefen.cmd` doppelklicken. Voraussetzung: Python 3.10 oder neuer
    (`py -3` oder `python`). Der Prüflauf zeigt nur Pfad und Dateigröße, ohne Netzwerkzugriff.
-3. Nach Aktivierung des Empfängers `7x2-senden.cmd` starten und das separate
-   Upload-Token verdeckt eingeben. Das Token über den eigenen Passwortmanager
-   bereitstellen, nicht in einen Chat schreiben. Das bestehende MCP-Token gilt nicht.
+3. `7x2-senden.cmd` starten. Liegt `cdr-bridge-token.txt` im entpackten Ordner,
+   wird der separate Upload-Zugang automatisch verwendet; sonst wird er verdeckt
+   abgefragt. Den Zugang nicht in einen Chat schreiben. Das bestehende MCP-Token gilt nicht.
+   Das vorbereitete Paket mit Zugang liegt ausschließlich im privaten Plesk-Ordner:
+   `private/Gravuru-CDR-7x2-Start.zip`. Nur auf dem eigenen Firmenrechner entpacken,
+   nicht auf einem gemeinsamen Laufwerk ablegen oder weitergeben.
 4. `7x2-ergebnis.json` enthält Pfad, SHA-256, Größe, Quellzeit und Transferergebnis,
    keine Zugangsdaten. Erst „übertragen“ mit bestätigter Prüfsumme oder „unverändert“
    belegt eine passende, bereits bestätigte Kopie.
@@ -67,9 +72,9 @@ gemeinsamer Ordner ablegen. Kein Zeitplan wird von diesem Paket installiert.
 
 ## Plesk-Empfänger aktivieren (Betreiber)
 
-Vorbereitung/Codeprüfung sind erfolgt; die Aktivierung schafft einen neuen,
-dauerhaften Upload-Zugang und ist ein eigener Schritt. Noch keine produktiven
-Zugangsdaten erzeugt, keine Firmen-CDRs im Repository.
+Am 22.10.2026 nach Freigabe durchgeführt; die folgenden Schritte dokumentieren
+die Einrichtung. Separater Upload-Zugang und privater Kopienordner sind aktiv,
+Dateien und Konfiguration gesichert. Zugangsdaten und Firmen-CDRs liegen nicht im Repository.
 
 - Runtime `server.mjs`, `source.mjs`, `bridge.mjs` gemeinsam installieren,
   vorhandene Dateien/Prüfsummen sichern und synthetische Tests auf dem Host prüfen.
@@ -128,8 +133,8 @@ echten Windows-/Firmenserverlauf noch eine echte CDR-Inhaltsprüfung.
 > Lies die beiliegende README und führe zuerst nur `cdr_bridge.py` ohne `--send`
 > aus. Quelle ausschließlich V:\Produkte oder die entsprechende dokumentierte
 > UNC-Freigabe. Ziel zunächst der genaue 7×2-Designbogen. Prüfe Python 3.10+ und
-> Dateizugriff, ändere keine Originale. Nach Aktivierung des Plesk-Empfängers und
-> lokalem Bereitstellen des separaten Upload-Tokens den 7×2-Lauf ausführen und
+> Dateizugriff, ändere keine Originale. Mit dem bereits aktivierten Plesk-Empfänger und
+> lokal bereitgestellten separaten Upload-Token den 7×2-Lauf ausführen und
 > `7x2-ergebnis.json` bereitstellen. Token niemals im Chat ausgeben. Keine
 > Shopify-Produkte anlegen; zuerst echte D-Nummern/grüne Überschriften und die
 > darunterliegenden Gravurfassungen gemeinsam prüfen.

@@ -1,0 +1,22 @@
+{
+  "commit": "896a3d11a6f78f15328f34c673c84c13e139e87f",
+  "expected": {
+    "server.mjs": "6365e5361f4fb31e914c374251c4851e9cdda6565887a42741469082e76c53ec",
+    "README.md": "88dc6b431dbdb4ef1660551a92137d90ed724d744ce9a5a3a33573ca9a7b3f84",
+    "cdr_engine.py": "d8f4116edfb3bc188e7c3f7d05c23ba59109d79ad0e4dbb3c3afe97a7f173917",
+    "app.cjs": "71550d3e2ee3ad7447470888443499b1e812c697b825ce3cef3c1bdfac00d997",
+    "source.mjs": null
+  },
+  "payload": {
+    "source.mjs": "82fdb86c9f482b851d04f9038dfa0edb977efac1d5aa4f66a08c2d5249c0cd90",
+    "server.mjs": "ef51df5b25a3abc472a6b67e602a083b0ec46a6c48fcd4f5e2ac86687a1c7471",
+    "README.md": "bf311e6a0332716ea491ed546a2986449e34523ad269d0938309b8b2ffd26f88",
+    "cdr-mcp.test.mjs": "6e886691777f4d55ada5f56ee4f705e22cf368bb2a74fa3ba1dfb6a0b7e11a6f",
+    "source.test.mjs": "0484ae5e98a22c50889557ac6036e5d1d968c2974b624be8ea1f99a3fa10a328"
+  },
+  "install": [
+    "source.mjs",
+    "README.md",
+    "server.mjs"
+  ]
+}

@@ -71,6 +71,12 @@ Offen vor Bestellfreigabe: Händlerinstallation von Konfi neu gemäß bestehende
 
 Nachgereichte Nutzerantwort 21.10.: Vier Produkte; Ø 4 mm normal und Ø 8 mm für Abstandshalter. Schraubenaufschläge 30/50 Cent → ohne Schrauben 309/399 Cent, mit Schrauben unverändert 339/449 Cent. Bestehende 192 Varianten-IDs bei der Korrektur erhalten. Zusätzlicher Regenbogen-Entwurf archiviert, Design D222 in allen vier Produkten weiter vorhanden. Zehn Tests und vier korrigierte echte Rücklesevergleiche bestanden.
 
+## Bestandskonfigurator und bestehende Anbindung abgeglichen · 21.10.2026
+
+Separater Dokumentationsbranch `docs/konfi-bestandsanschluss-20261021`, geprüfte Entwicklungsbasis `bf5c059f13e0868d7c554616b7c35ff7a328ae62`. [Anschlussmatrix, Preisentscheidung und nächster Schritt](docs/reviews/BESTANDSKONFI-ANBINDUNG-20261021.md). Mikail bestätigt die neuen Staffelpreise; die frühere 15-Prozent-Zweitexemplarregel gilt nicht mehr. Bestehende Oberfläche/Funktionen erhalten, vorhandenen Plesk-Dienst und private Stores wiederverwenden. Die lokale Vorschau 8966 ist noch nicht angeschlossen; Produktrevisionen, öffentliche Kundengrenze und identischer Shopify-Preisvertrag sind die wesentlichen Anschlusslücken.
+
+Lesend geprüft: lokale sechs Prüfmodelle, Händlerseite HTTP 200, geschützte Sitzung HTTP 401; ein neueres öffentliches Modul bytegleich mit GitHub, zugehöriges CSS abweichend. Vollständiger installierter Release und aktuelle Staffelaktivierung im Shop bleiben unbestimmt. Historische „nicht gemergt“-/„Staffel offen“-Einträge unten sind teilweise überholt. Keine Anwendungs-, Daten-, Server- oder Shopify-Änderung; keine neue Bestellung oder Regression behauptet. Nächster Schritt: installierten Release und eine passende echte Produktrevision bestimmen, anschließend getrennten Anschlussadapter unter Erhalt der Oberfläche vorbereiten.
+
 ## Gedenktafel Schiefer 22 × 14 aus Corel-PDFs (Branch `dev/konfi-neu-gt22x14-schiefer`, nach `dev/konfi-neu-20261019` gemergt, nicht installiert) · 20.10.2026
 
 - `scripts/read-pdf-designs.py`: Einzel-Design-PDF (Corel) → Lieferform 2. Rote Haarlinie = Platte, Text-Objekte bleiben Text (Ligaturen aus dem Private-Use-Bereich über Glyphnamen zurück, doppelt gesetzte Zeichen einmal, Datumsläufe getrennt, > 180 Zeichen zeilenweise geteilt, Feldnamen name/daten/spruch), Pfade direkt aus dem Inhaltsstrom (ein Malbefehl = ein Pfad, Löcher bleiben), Motivgruppen ≤ 12, Bild + SMask = Platzhalterbild im Fotofeld. Ersatzschriften per Tabelle, Größe auf die Originalbreite angepasst.

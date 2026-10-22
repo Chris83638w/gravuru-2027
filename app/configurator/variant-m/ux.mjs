@@ -11,7 +11,7 @@ import {textPaths,measureText} from '../../platform/sources/app/shared/models/do
 import {quote,money,productProcess,quantityTierLabels,visibleGroups} from './contract.mjs';
 // Hilfetext „Fotos & Logos“ aus der Fotopreisregel des Produkts (vorher fest 9,99 €).
 const uploadPriceSentence=p=>p?.includedCount===undefined?'Jede sichtbare Datei kostet 9,99 Euro extra.':!p.extraPriceCents?'Fotos und Logos kosten nichts extra.':(p.includedCount===1?'Ein Foto ist im Preis enthalten, jede weitere Datei kostet ':p.includedCount>1?p.includedCount+' Fotos sind im Preis enthalten, jede weitere Datei kostet ':'Jede sichtbare Datei kostet ')+money(p.extraPriceCents)+' extra.';
-import {processPalette} from '../../workshop/process-profiles.mjs';
+import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {uploadAllowed,uploadQuote,validateUpload,customerDraft,additionalMotifCount,mapPersonalObjects,uploadTarget,photoAvailableForDesign,uploadTabVisible,designsHaveUploadLayer} from './ux-model.mjs';
 import {installRefinements} from './refinements.mjs';
@@ -51,7 +51,8 @@ export async function installUX(el,config,legacy){
   // K10 / Ü1: Das Verfahrensprofil steuert Werkzeuge (Farbe, Foto), Palette und Mindestschriftgröße.
   // Ohne Produktkonfiguration (Klingelschild-Altpfad) bleibt das bisherige Verhalten.
   const process=config?productProcess(config):null,colorTool=!!process?.tools.textColor;
-  const colorPalette=colorTool?processPalette(process,config?.workshopProfiles?.selections?.colors??null):[],freeColor=colorTool&&colorPalette===null;
+  // Freie Farbe (Farbwähler) zusätzlich zur Palette: processFreeColor – Farbdruck ja (Chris 22./23.10.2026), Gravur nein.
+  const colorPalette=colorTool?processPalette(process,config?.workshopProfiles?.selections?.colors??null):[],freeColor=colorTool&&processFreeColor(process,config?.workshopProfiles?.selections?.colors??null);
   const minTextMm=process?.minTextMm??4;
   el.uxProcess=process;el.uxMinTextMm=minTextMm;
   const profileChoices=config?.workshopProfiles?.selections;

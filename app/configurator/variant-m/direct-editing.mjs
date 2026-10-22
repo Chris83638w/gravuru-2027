@@ -1,12 +1,14 @@
 import {textLength,clampText} from '../../workshop/theme-limits.mjs';
-import {processPalette} from '../../workshop/process-profiles.mjs';
+import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 // Reuse the editor's state, rights, text-size controls and photo editor at the selection.
 export function installDirectEditing({el,r,config,selected,editPhoto,changeObject}) {
   const stage=r.querySelector('.stage');
   // K10 / Ü1.2: Farbwerkzeuge nur nach Verfahrensprofil (el.uxProcess, gesetzt in ux.mjs).
-  // Gravur: keine Farbwahl. Druck: genau die Profilpalette als Presets; freie Farbe nur bei palette null.
+  // Gravur: keine Farbwahl. Druck: die Profilpalette als runde Schnellfarbpunkte und zusätzlich der
+  // Farbwähler für eine freie Farbe (processFreeColor, Chris 22./23.10.2026).
   const process=el.uxProcess||null,colorTool=!!process?.tools.textColor,minTextMm=el.uxMinTextMm||4;
-  const paletteColors=colorTool?processPalette(process,config?.workshopProfiles?.selections?.colors??null):[],freeColor=colorTool&&paletteColors===null;
+  const colorSelection=config?.workshopProfiles?.selections?.colors??null;
+  const paletteColors=colorTool?processPalette(process,colorSelection):[],freeColor=colorTool&&processFreeColor(process,colorSelection);
   const presetColors=paletteColors===null?[['Schwarz','#202124'],['Weiß','#ffffff'],['Grau','#80868b'],['Terrakotta','#b86a45'],['Dunkelgrün','#365b49'],['Goldton','#c5a15b']]:paletteColors.map(hex=>[hex.toUpperCase(),hex]);
   const panel=document.createElement('section');
   panel.className='ux-direct-edit';panel.hidden=true;panel.setAttribute('aria-label','Ausgewähltes Element bearbeiten');

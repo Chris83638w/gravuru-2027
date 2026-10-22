@@ -227,6 +227,32 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
 });
+// Chris 22./23.10.2026: Beim Farbdruck bleiben Palette und runde Schnellfarbpunkte, zusätzlich ist der Farbwähler
+// (freie Farbe) erlaubt; Gravurprofile unverändert ohne Farbwahl. Die echten Zeilen aus ux.mjs, direct-editing.mjs
+// und usability.mjs, mit den Verfahrensprofilen ausgewertet.
+test('Freie Farbe: Farbdruck zeigt Palette + Farbwähler, Gravur keine Farbwahl, Produktauswahl nur Palette',async()=>{
+ const {processProfile,processPalette,processFreeColor}=await import('../../workshop/process-profiles.mjs');
+ // Modulweite const-Deklarationen landen im Kontext, nicht am Objekt: Ergebnis per Ausdruck lesen.
+ const evaluate=(file,markers,env,result)=>{vm.createContext(env);for(const m of markers)vm.runInContext(line(file,m),env);return structuredClone(vm.runInContext(result,env));};
+ const run=(profileId,colors=null)=>{
+  const process=processProfile(profileId),config={workshopProfiles:{selections:{colors}}},colorTool=!!process.tools.textColor;
+  const ux=evaluate('ux.mjs',['const colorPalette=colorTool?processPalette'],{process,config,colorTool,processPalette,processFreeColor},'({palette:colorPalette,free:freeColor})');
+  const direct=evaluate('direct-editing.mjs',['const colorSelection=config?.workshopProfiles','const paletteColors=colorTool?processPalette','const presetColors=paletteColors===null'],{process,config,colorTool,processPalette,processFreeColor},'({palette:paletteColors,free:freeColor,presets:presetColors.length})');
+  const usability=evaluate('usability.mjs',['const freeChoice=processFreeColor(process,colorSelection);'],{process,colorSelection:colors,processFreeColor},'freeChoice');
+  return {ux,direct,usability};
+ };
+ const print=run('color-print');
+ assert.equal(print.ux.palette.length,20);assert.equal(print.ux.free,true);
+ assert.equal(print.direct.palette.length,20,'runde Schnellfarbpunkte bleiben');assert.equal(print.direct.presets,20);assert.equal(print.direct.free,true,'Farbwähler in der Werkzeugleiste');
+ assert.equal(print.usability,true,'Farbwähler im Farbbereich');
+ for(const id of ['steel-engraving','slate-engraving','wood-engraving','acrylic-engraving']){const e=run(id);assert.deepEqual(e.ux.palette,[]);assert.equal(e.ux.free,false,id);assert.equal(e.direct.free,false,id);assert.equal(e.direct.presets,0);assert.equal(e.usability,false,id);}
+ const narrowed=run('color-print',['#245cac','#c93232']);
+ assert.deepEqual(narrowed.ux.palette,['#c93232','#245cac']);assert.equal(narrowed.ux.free,false,'Produktauswahl des Händlers: nur diese Farben');assert.equal(narrowed.direct.free,false);assert.equal(narrowed.usability,false);
+ // Der Farbwähler der Werkzeugleiste wird bei freier Farbe eingeblendet (Text/Motiv), die Presets bleiben daneben sichtbar.
+ assert.match(source('direct-editing.mjs'),/color\.parentElement\.hidden=!\(text\|\|motif\)\|\|!freeColor;/);
+ assert.match(source('direct-editing.mjs'),/presets\.hidden=!colorTool\|\|!\(text\|\|motif\)\|\|\(paletteColors===null&&!motif\);/);
+ assert.match(source('usability.mjs'),/\(freeChoice\?'<label>Ausgewählte Farbe <input type="color" data-free-color/);
+});
 // Chris 22./23.10.2026: Ohne Foto im Produkt/Verfahren und ohne Foto-/Logo-Ebene in einem Design verschwindet der
 // Reiter „Foto / Logo“ vollständig – unabhängig von der Logo-Einstellung. Produkte mit Foto bleiben unverändert.
 test('Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten Logos), mit Foto wie bisher',async()=>{

@@ -209,20 +209,23 @@ test('photo alignment survives the actual render/draft contract and rejects inva
  for(const invalid of [{zoom:0,x:0,y:0},{zoom:1,x:2,y:0},{zoom:1,x:0,y:0,angle:'15'},{zoom:1,x:0,y:0,url:'untrusted'},null]){photo.uxPhotoCrop=invalid;assert.throws(()=>save(s),/Foto-Ausrichtung/);}
  delete photo.uxPhotoCrop;s.objects.find(o=>o.type==='text').uxPhotoCrop={zoom:1,x:0,y:0};assert.throws(()=>save(s),/Foto-Ausrichtung/);
 });
-test('K10 / Ü1.2 server gate: engraving rejects colour changes, print allows exactly the profile palette',()=>{
+test('K10 / Ü1.2 server gate: engraving rejects colour changes, print allows the profile palette plus a free colour (Chris 22./23.10.2026); a product selection stays binding',()=>{
  const textId=config.profile.designs[0].objects.find(o=>o.type==='text').id,motifId=config.profile.designs[0].objects.find(o=>o.type==='motif'&&!o.technicalLocked).id;
  // Gravur (Schiefer): jede Abweichung von der Vorlagenfarbe ist eine Farbwahl – auch mit Elementrecht.
  let s=state();s.objects.find(o=>o.id===textId).color='#c93232';assert.throws(()=>save(s),/Dieses Verfahren erlaubt keine Farbwahl\./);
  s=state();s.objects.find(o=>o.id===motifId).color='#ffffff';assert.throws(()=>save(s),/keine Farbwahl/);
  s=state();s.objects.push(newEditableObject(config,{type:'text',text:'Neu',font:'Montserrat',size:8},'own',fonts,motifs));assert.doesNotThrow(()=>save(s),'neue Elemente tragen die Profiltinte');
- // UV-Druck: Palette des Profils, Vorlagenfarbe und Tinte sind zulässig, alles andere nicht.
+ // UV-Druck: Palette des Profils, Vorlagenfarbe und Tinte sind zulässig – und seit 22./23.10.2026 jede gültige freie Farbe.
  const printFixture=structuredClone(config);printFixture.profile.processing.profileId='color-print';printFixture.profile.material.kind='other';
  const print=prepareConfig(printFixture),printSave=(st,extra={})=>saveDraft({...print,...extra},st,{},fonts,motifs);
  s=state();s.objects.find(o=>o.id===textId).color='#c93232';assert.doesNotThrow(()=>printSave(s));
  s=state();s.objects.find(o=>o.id===textId).color='#EFCA37';assert.doesNotThrow(()=>printSave(s),'Groß-/Kleinschreibung egal');
  s=state();s.objects.find(o=>o.id===textId).color='#202824';assert.doesNotThrow(()=>printSave(s),'Profiltinte');
- s=state();s.objects.find(o=>o.id===textId).color='#123456';assert.throws(()=>printSave(s),/Farbe nicht in der Palette\./);
- s=state();s.objects.find(o=>o.id===textId).color='#c93232';assert.throws(()=>printSave(s,{workshopProfiles:{selections:{fonts:null,motifs:null,colors:['#245cac'],bestsellers:null}}}),/nicht in der Palette/,'Produktauswahl grenzt die Palette ein');
+ s=state();s.objects.find(o=>o.id===textId).color='#123456';assert.doesNotThrow(()=>printSave(s),'freie Farbe beim Farbdruck');
+ s=state();s.objects.find(o=>o.id===motifId).color='#0a0b0c';assert.doesNotThrow(()=>printSave(s),'freie Farbe auch für Motive');
+ s=state();s.objects.find(o=>o.id===textId).color='rot';assert.throws(()=>printSave(s),/gültige RGB-Farbe|Ungültige Farbe/,'kein Hex, keine Farbe – auch bei freier Farbwahl');
+ s=state();s.objects.find(o=>o.id===textId).color='#c93232';assert.throws(()=>printSave(s,{workshopProfiles:{selections:{fonts:null,motifs:null,colors:['#245cac'],bestsellers:null}}}),/nicht in der Palette/,'Produktauswahl grenzt die Palette ein – dann keine freie Farbe');
+ s=state();s.objects.find(o=>o.id===textId).color='#123456';assert.throws(()=>printSave(s,{workshopProfiles:{selections:{fonts:null,motifs:null,colors:['#245cac'],bestsellers:null}}}),/nicht in der Palette/);
  s=state();s.objects.find(o=>o.id===textId).color='#245cac';assert.doesNotThrow(()=>printSave(s,{workshopProfiles:{selections:{fonts:null,motifs:null,colors:['#245cac'],bestsellers:null}}}));
  s=state();s.objects.find(o=>o.id===textId).uxHidden=true;s.objects.find(o=>o.id===textId).color='#123456';assert.doesNotThrow(()=>printSave(s),'ausgeblendete Elemente werden nicht gefertigt');
 });

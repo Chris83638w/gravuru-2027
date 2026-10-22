@@ -71,19 +71,25 @@ def run_sheet(job, out_dir, no_png):
 def design_signature(folder):
     try: d = json.loads((folder / 'design.json').read_text(encoding='utf-8'))
     except OSError: return None
-    # Toleranz 0,5 mm: Produktionsfassungen weichen in Pfadbreite/Kontur minimal ab, sind aber dasselbe Design
-    r = lambda v: round(v * 2) / 2
-    texts = [(t.get('text'), t.get('font'), t.get('sizePt'), t.get('align'), tuple(r(v) for v in t.get('box', []))) for t in d.get('texts', [])]
-    motifs = [(m.get('fill'), tuple(r(v) for v in m.get('box', []))) for m in d.get('motifs', [])]
     plate = d.get('plate') or {}
-    return (tuple(texts), tuple(motifs), plate.get('widthMm'), plate.get('heightMm'), len(d.get('images', [])))
+    return {'texts': [((t.get('text'), t.get('font'), t.get('sizePt'), t.get('align')), list(t.get('box', []))) for t in d.get('texts', [])],
+            'motifs': [(m.get('fill'), list(m.get('box', []))) for m in d.get('motifs', [])],
+            'plate': (plate.get('widthMm'), plate.get('heightMm')), 'images': len(d.get('images', []))}
+
+
+def same_design(a, b, tolerance=1.0):
+    """Gleiche Fassung: gleiche Texte/Schriften/Größen, gleiche Motivfarben, alle Lagen innerhalb der Toleranz (mm).
+    Produktions-/Zweitfassungen weichen in Pfadbreite, Kontur oder Lage minimal ab, sind aber dasselbe Design."""
+    if not a or not b or a['plate'] != b['plate'] or a['images'] != b['images'] or len(a['texts']) != len(b['texts']) or len(a['motifs']) != len(b['motifs']): return False
+    near = lambda x, y: len(x) == len(y) and all(abs(p - q) <= tolerance for p, q in zip(x, y))
+    return all(ta == tb and near(ba, bb) for (ta, ba), (tb, bb) in zip(a['texts'], b['texts'])) and all(fa == fb and near(ba, bb) for (fa, ba), (fb, bb) in zip(a['motifs'], b['motifs']))
 
 
 def compare_duplicates(out_dir, designs):
     identical = differing = 0
     for d in designs:
         if not d.get('duplicateOf'): continue
-        same = design_signature(out_dir / d['id']) == design_signature(out_dir / d['duplicateOf'])
+        same = same_design(design_signature(out_dir / d['id']), design_signature(out_dir / d['duplicateOf']))
         d['identicalDuplicate'] = bool(same)
         if same: identical += 1
         else: differing += 1

@@ -1,0 +1,51 @@
+{
+  "schema": "gravuru-universal-binding-verification/v1",
+  "checkedAt": "2026-10-22T06:10:45.958Z",
+  "sourceCommit": "1638bd2e95fced82129e12056201304e63f1d976",
+  "tests": {
+    "passed": 34,
+    "failed": 0,
+    "files": [
+      "app/workshop/shop-product-binding-plan.test.mjs",
+      "app/configurator/variant-m/commerce.test.mjs",
+      "app/configurator/variant-m/option-fields.test.mjs",
+      "app/configurator/variant-m/cart-edit.test.mjs"
+    ],
+    "kind": "local unit tests; not Shopify E2E"
+  },
+  "serverReadOnly": {
+    "entrySha256": "0eadb4721352e67e5cb92bbc80df3b6d40e78ed0c810f3e5c6012facdc285452",
+    "catalogHashesMatch": 10,
+    "acryl": {
+      "currentMaster": 1,
+      "currentFormProducts": 798,
+      "productRevisions": 3991,
+      "designCorrections": 7,
+      "shopBindings": 0,
+      "pinnedProductionProfiles": 0,
+      "manufacturingProfiles": 0
+    },
+    "legacy": {
+      "currentNativeDocuments": 34,
+      "shopBindings": 2295,
+      "pinnedProductionProfiles": 0,
+      "manufacturingProfiles": 0
+    }
+  },
+  "mutations": {
+    "deployed": false,
+    "shopify": false,
+    "sourceDatabases": false,
+    "newBackup": false,
+    "scheduledTaskSaved": false
+  },
+  "sourceFilesChanged": [
+    "app/configurator/variant-m/commerce.mjs"
+  ],
+  "limitations": [
+    "ID module is plan-only",
+    "No new full private backup or restore",
+    "No complete customer cart/order/production test",
+    "Compressed source snapshot not locally reverified"
+  ]
+}

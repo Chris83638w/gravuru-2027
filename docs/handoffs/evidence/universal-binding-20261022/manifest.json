@@ -1,0 +1,381 @@
+{
+  "schema": "gravuru-readonly-catalog-binding-audit/v1",
+  "observedAt": "2026-10-22T05:47:10.891Z",
+  "sourceCode": {
+    "repository": "Chris83638w/gravuru-2027",
+    "branch": "task/katalog-struktur-20261022",
+    "commit": "b5a51053573647a9aff946020ef947e671512d71"
+  },
+  "sourceCatalog": {
+    "repository": "Chris83638w/gravuru-katalog.",
+    "branch": "task/katalog-struktur-20261022",
+    "commit": "48a1a89b33756aa79a4e1f2b08d589483dedbaf7",
+    "acrylFile": "serien/acryl-tuerschilder-2027.json",
+    "acrylGitBlobSha1": "96fc708f906ba5dc23788c17d8f57f4b85097872"
+  },
+  "shopDomain": "gravuru-design.myshopify.com",
+  "currency": "EUR",
+  "sourceOperation": {
+    "readOnly": true,
+    "schemaInspected": true,
+    "validationToolCalled": true,
+    "validationToolResult": "Delegated validation to graphql_query",
+    "query": "query GravuruCatalogVariantAudit($id:ID!,$first:Int!,$after:String){ shop { myshopifyDomain currencyCode } product(id:$id) { id title handle status updatedAt variants(first:$first,after:$after) { nodes { id sku price product { id } } pageInfo {hasNextPage endCursor} } } }",
+    "pageSize": 50,
+    "pageCount": 16,
+    "productUpdatedAt": "2026-10-21T19:57:19Z",
+    "firstRead": "2026-10-22T05:45:22.026Z",
+    "lastRead": "2026-10-22T05:45:50.884Z"
+  },
+  "checks": {
+    "count": 798,
+    "uniqueSku": 798,
+    "uniqueVariantIds": 798,
+    "duplicateSkus": [],
+    "missing": [],
+    "extra": [],
+    "priceMismatches": [],
+    "wrongOwner": [],
+    "productUpdatedAtStable": true,
+    "productStatus": "DRAFT",
+    "firstRead": "2026-10-22T05:45:22.026Z",
+    "lastRead": "2026-10-22T05:45:50.884Z",
+    "scope": "read-only candidate mapping, not installed binding",
+    "processingProfile": "not yet read/verified for each live cfg; no profile guessed"
+  },
+  "catalogChecks": {
+    "acryl": {
+      "key": "acryl",
+      "variants": 798,
+      "uniqueSku": 798,
+      "uniqueCfg": 798,
+      "revisions": [
+        5
+      ],
+      "shapeSizes": 79,
+      "declaredSizes": 81,
+      "duplicateSizeDefinitions": [
+        [
+          "RE|30x20",
+          [
+            {
+              "skuRoot": "TS-Acryl-RE-300X200-T30",
+              "form": "RE",
+              "label": "30x20",
+              "widthMm": 300,
+              "heightMm": 200,
+              "baseCents": 4499,
+              "allowedMounting": [
+                "K00",
+                "KGL",
+                "KRA",
+                "B02",
+                "B02S"
+              ],
+              "sourceExcelRow": 32
+            },
+            {
+              "skuRoot": "TS-Acryl-RE-300X200-T30",
+              "form": "RE",
+              "label": "30x20",
+              "widthMm": 300,
+              "heightMm": 200,
+              "baseCents": 4499,
+              "allowedMounting": [
+                "B04",
+                "B04S"
+              ],
+              "sourceExcelRow": 33
+            }
+          ]
+        ],
+        [
+          "AB|30x20",
+          [
+            {
+              "skuRoot": "TS-Acryl-AB-300X200-T30",
+              "form": "AB",
+              "label": "30x20",
+              "widthMm": 300,
+              "heightMm": 200,
+              "baseCents": 4499,
+              "allowedMounting": [
+                "K00",
+                "KGL",
+                "KRA",
+                "B02",
+                "B02S"
+              ],
+              "sourceExcelRow": 44
+            },
+            {
+              "skuRoot": "TS-Acryl-AB-300X200-T30",
+              "form": "AB",
+              "label": "30x20",
+              "widthMm": 300,
+              "heightMm": 200,
+              "baseCents": 4499,
+              "allowedMounting": [
+                "B04",
+                "B04S"
+              ],
+              "sourceExcelRow": 45
+            }
+          ]
+        ]
+      ],
+      "variantsWithMissingGeometry": 0,
+      "variantsWithMissingDesignSet": 0,
+      "variantsWithMissingDefault": 0,
+      "invalidDesignRefs": [],
+      "allPricesValid": true,
+      "priceMin": 699,
+      "priceMax": 7798,
+      "groupMappingMismatch": 0,
+      "pricePairs": 399,
+      "badPairs": [],
+      "designCounts": [
+        20,
+        21,
+        26,
+        33,
+        35,
+        37,
+        38,
+        39,
+        40
+      ],
+      "designAssignments": 30996,
+      "mountings": [
+        "K00",
+        "KGL",
+        "KRA",
+        "B02",
+        "B02S",
+        "B04",
+        "B04S"
+      ],
+      "shopifyIdFields": 0
+    },
+    "steel": {
+      "key": "steel",
+      "variants": 399,
+      "uniqueSku": 399,
+      "uniqueCfg": 399,
+      "revisions": [
+        5
+      ],
+      "shapeSizes": 79,
+      "declaredSizes": 81,
+      "duplicateSizeDefinitions": [
+        [
+          "RE|30x20",
+          [
+            {
+              "skuRoot": "TS-V2A-RE-300X200-T15",
+              "form": "RE",
+              "label": "30x20",
+              "widthMm": 300,
+              "heightMm": 200,
+              "baseCents": 7999,
+              "allowedMounting": [
+                "K00",
+                "KGL",
+                "KRA",
+                "B02",
+                "B02S"
+              ],
+              "sourceExcelRow": 32
+            },
+            {
+              "skuRoot": "TS-V2A-RE-300X200-T15",
+              "form": "RE",
+              "label": "30x20",
+              "widthMm": 300,
+              "heightMm": 200,
+              "baseCents": 7999,
+              "allowedMounting": [
+                "B04",
+                "B04S"
+              ],
+              "sourceExcelRow": 33
+            }
+          ]
+        ],
+        [
+          "AB|30x20",
+          [
+            {
+              "skuRoot": "TS-V2A-AB-300X200-T15",
+              "form": "AB",
+              "label": "30x20",
+              "widthMm": 300,
+              "heightMm": 200,
+              "baseCents": 7999,
+              "allowedMounting": [
+                "K00",
+                "KGL",
+                "KRA",
+                "B02",
+                "B02S"
+              ],
+              "sourceExcelRow": 44
+            },
+            {
+              "skuRoot": "TS-V2A-AB-300X200-T15",
+              "form": "AB",
+              "label": "30x20",
+              "widthMm": 300,
+              "heightMm": 200,
+              "baseCents": 7999,
+              "allowedMounting": [
+                "B04",
+                "B04S"
+              ],
+              "sourceExcelRow": 45
+            }
+          ]
+        ]
+      ],
+      "variantsWithMissingGeometry": 0,
+      "variantsWithMissingDesignSet": 0,
+      "variantsWithMissingDefault": 0,
+      "invalidDesignRefs": [],
+      "allPricesValid": true,
+      "priceMin": 799,
+      "priceMax": 16398,
+      "groupMappingMismatch": 0,
+      "pricePairs": 399,
+      "badPairs": [],
+      "designCounts": [
+        20,
+        21,
+        26,
+        33,
+        35,
+        37,
+        38,
+        39,
+        40
+      ],
+      "designAssignments": 15498,
+      "mountings": [
+        "K00",
+        "KGL",
+        "KRA",
+        "B02",
+        "B02S",
+        "B04",
+        "B04S"
+      ],
+      "shopifyIdFields": 0,
+      "axisExplanation": "Steel has form/size/mounting axes; V2A is single material color, not a choice axis."
+    }
+  },
+  "status": "Candidate mapping evidence only. No live bindings or product records written. Full per-cfg profile/revision and current server corrections still require verification.",
+  "privateData": "No customer/order/media contents or credentials were queried or stored.",
+  "exampleDefaults": [
+    {
+      "shopifyProductId": "gid://shopify/Product/16175627665788",
+      "shopifyVariantId": "gid://shopify/ProductVariant/57778071273852",
+      "sku": "TS-Acryl-RE-150X100-T30-SW-K00",
+      "configurationId": "cfg_d8bc2048-2f32-4e54-9134-7a0e8cfd38e0",
+      "configurationRevision": 5,
+      "unitPriceCents": 1899,
+      "color": "SW",
+      "form": "RE",
+      "size": "15x10",
+      "mounting": "K00",
+      "geometrySha256": "f501751180e5b1f33b76a868f9433d17d323a2e85e13bcb0a2475cc5619f4463",
+      "contourId": "92f65f9282c9e1ddc5b8849267ba3f6cb7e79c640011552fcd2283be5e6d8914",
+      "designSetSha256": "96bb8bb849b81b218767ec40c67b0afd7f41644aa34720dfe68b61b448b7d2ad",
+      "defaultDesignId": "TS-Acryl-D1"
+    },
+    {
+      "shopifyProductId": "gid://shopify/Product/16175627665788",
+      "shopifyVariantId": "gid://shopify/ProductVariant/57778071306620",
+      "sku": "TS-Acryl-RE-150X100-T30-AN-K00",
+      "configurationId": "cfg_81380430-04a9-44f1-b604-5ef7c4f4cb91",
+      "configurationRevision": 5,
+      "unitPriceCents": 1899,
+      "color": "AN",
+      "form": "RE",
+      "size": "15x10",
+      "mounting": "K00",
+      "geometrySha256": "f501751180e5b1f33b76a868f9433d17d323a2e85e13bcb0a2475cc5619f4463",
+      "contourId": "92f65f9282c9e1ddc5b8849267ba3f6cb7e79c640011552fcd2283be5e6d8914",
+      "designSetSha256": "96bb8bb849b81b218767ec40c67b0afd7f41644aa34720dfe68b61b448b7d2ad",
+      "defaultDesignId": "TS-Acryl-D1"
+    }
+  ],
+  "sourceEvidenceSha256": "903927dd5e42e1d5f1beeac6781fd7a3a02bfc4c2ee80be35310d4ad9b808b27",
+  "candidateFiles": [
+    {
+      "file": "acryl-candidates-01.json",
+      "count": 75,
+      "bytes": 45827,
+      "sha256": "9bba74286d7d0b253e8e9171d3064b492507fbdce9962788e4bd020a96fcc8dc"
+    },
+    {
+      "file": "acryl-candidates-02.json",
+      "count": 75,
+      "bytes": 45868,
+      "sha256": "30dd41240f3279c5bbabdba5ab4d881ba44447c035a5ae0c4d360e964f38bda5"
+    },
+    {
+      "file": "acryl-candidates-03.json",
+      "count": 75,
+      "bytes": 45910,
+      "sha256": "1b39f811f1bc8023dd7da4dea991ecece892a6fa40454f8380c7edf3d849f68b"
+    },
+    {
+      "file": "acryl-candidates-04.json",
+      "count": 75,
+      "bytes": 45850,
+      "sha256": "7dc2fa8e4feeed6022771c824242ab233b01fc2d61285c36b213532fcb49589f"
+    },
+    {
+      "file": "acryl-candidates-05.json",
+      "count": 75,
+      "bytes": 45918,
+      "sha256": "505f6b3f8f1fc52e606c0c2010874b4ec0473bcce5baeae4c0eed2f83688b476"
+    },
+    {
+      "file": "acryl-candidates-06.json",
+      "count": 75,
+      "bytes": 45931,
+      "sha256": "39bfb67140717bad6a80fed4eb655b908a8caf965496dca9436efdb5c32869e8"
+    },
+    {
+      "file": "acryl-candidates-07.json",
+      "count": 75,
+      "bytes": 45834,
+      "sha256": "65f4cdd4511cd2a19734e511587748580562dc0dd5cad9291a449a7bd9444b19"
+    },
+    {
+      "file": "acryl-candidates-08.json",
+      "count": 75,
+      "bytes": 45892,
+      "sha256": "3bdd987a83c1281c1f0e2cb01f1b1a25961c0233aea687d0ce6007a7b30b5135"
+    },
+    {
+      "file": "acryl-candidates-09.json",
+      "count": 75,
+      "bytes": 45872,
+      "sha256": "ab64988347c0f8f9e9311938497cf1918de818ead741df8296d5c153e0a7e843"
+    },
+    {
+      "file": "acryl-candidates-10.json",
+      "count": 75,
+      "bytes": 45874,
+      "sha256": "43848a5482fa154ff968fc532ad859956f970d5182be7f0d6e6afca6c80b0023"
+    },
+    {
+      "file": "acryl-candidates-11.json",
+      "count": 48,
+      "bytes": 29522,
+      "sha256": "86e5679752b9969e0286c15cdd9197a2aeb2bbd72d1a3a4866d6b456b6bdb4bd"
+    }
+  ],
+  "sizeRowNote": "81 Größenzeilen: RE und AB 30x20 haben getrennte Bohrungs-/Befestigungsausführungen; keine zu löschenden Dubletten."
+}

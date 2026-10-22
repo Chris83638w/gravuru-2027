@@ -1,0 +1,226 @@
+Universelle Produktzuordnung – lokale Anschlussplanung, 22.10.2026
+
+Basis der gezielten Quellprüfung:
+Chris83638w/gravuru-2027, task/katalog-struktur-20261022,
+b5a51053573647a9aff946020ef947e671512d71.
+Paralleler Anbindungsbranch task/konfi-anbindung-20261022:
+1638bd2e95fced82129e12056201304e63f1d976; nur STATUS + Analyse hinzugefügt,
+kein paralleler Codeanschluss. Neuer Arbeitsbranch wird von der Hauptaufgabe verwaltet.
+
+Neue Dateien:
+shop-product-binding-plan.mjs
+shop-product-binding-plan.test.mjs
+SHOP-PRODUCT-BINDING-PLAN.txt
+
+Für dieses Planmodul keine bestehende Laufzeitdatei geändert. Keine Tabelle, Migration, HTTP-Route,
+Shopify-Anfrage, neue Preisformel, Warenkorblogik oder Aktivierung angelegt.
+Die Arbeitskopie enthält zunächst nur gezielt beschaffte Quellen und ist kein
+vollständiger Runtime-Checkout. Die beiden neuen JS-Dateien benötigen nur Node.
+
+Schnittstelle
+
+planShopProductBindings({tenantId,shopDomain,shopifyEvidence,selections,adapter,
+                        now,maxEvidenceAgeMs})
+
+shopifyEvidence = {
+  tenantId, shopDomain, readAt: ISO-Zeit des tatsächlichen Admin-Abgleichs,
+  complete:true,
+  products:[{id:ProductGID,
+             variants:[{id:VariantGID,productId:ProductGID,priceCents}]}]
+}
+complete bedeutet vollständige Variantenlisten für alle Produkte dieses Belegs,
+nicht zwingend den gesamten Shop. Der Aufrufer muss Pagination/Fehler zuvor prüfen.
+Der Plan selbst macht keine Netzabfragen und kann die Herkunft eines Belegs nicht
+kryptografisch beweisen. Nur vom Server erzeugte, vertraute Belege verwenden.
+maxEvidenceAgeMs ist eine explizite Betreiber-/Aufruferentscheidung; kein stiller
+Standard. Abgelaufene oder zukünftige Belege werden verworfen.
+
+selections = [{shopifyProductId:ProductGID,shopifyVariantId:VariantGID,
+               productId:cfg_ID,productRevision:INTEGER,options:{...}}]
+Ein expliziter Zielstand je Shopify-Variante. Keine SKU-Suche im Kundenpfad.
+SKU darf beim einmaligen Import helfen, muss dort eindeutig auf IDs aufgelöst sein.
+
+adapter = {
+  tenantId, shopDomain, storeId,
+  getCurrentProduct(id),
+  resolveSelection(record,options),
+  resolveProductionProfile(document),
+  getBindings()
+}
+
+storeId ist eine vom Server festgelegte interne Kennung des privaten Datenspeichers,
+kein Pfad und keine Kundeneingabe. Zwei Datenbanken desselben Shops/Tenants bleiben
+so unterscheidbar. Beim Auflösen muss die storeId weiterhin übereinstimmen.
+Alle Adapter sind synchrone, private Lesezugriffe. Der spätere Host muss sicherstellen,
+dass Repository, OrderIntake und Profilspeicher demselben Tenant und Shop gehören.
+Bei der späteren Verdrahtung:
+- getCurrentProduct -> repository.get(id), ohne historische Revision auszuwählen.
+- getBindings -> orderIntake.bindings().filter(b=>b.shopDomain===shopDomain),
+  aktueller tenantgebundener Store. Die vorhandene API listet tenantweit alle Shops.
+- resolveProductionProfile -> productionProfiles.resolve(document).
+- resolveSelection -> exakt eine Variantenzeile aus prepareShopProduct(record).variants
+  anhand kanonischer options wählen; Rückgabe {options:variant.options,
+  unitCents:variant.priceCents}. Das nutzt bestehende Varianten-/Preislogik für
+  native und form; keine Kontur-/Designkonvertierung. Vollständige resolvedOptions
+  dürfen Kunden-Zusatzfelder enthalten und sind deshalb hier NICHT die Quelle.
+  Der Plan sperrt native Auswahlkeys außerhalb der echten optionGroups zusätzlich.
+
+Die Auflöser prüfen Verfahren/Material/Stärke weiterhin nach ihren bestehenden Regeln.
+Der Plan setzt ein tatsächlich zugeordnetes, auflösbares Fertigungsprofil voraus und
+liefert dessen ID, Revision und SHA. Fehlt es, entsteht ein expliziter Planungsfehler.
+Das ist keine Fertigungsfreigabe; Profilblocker, ICC und reale Maschinenprobe bleiben offen.
+
+resolveShopProductBinding(plan,{tenantId,shopDomain,shopifyProductId,shopifyVariantId,
+                               adapter,now})
+
+Die Auflösung erfordert exakt beide Shopify-GIDs und denselben Kontext. Sie prüft
+Aktualität und Unverändertheit von Produktdokument, Optionen, Profilstand und Bindung
+erneut. In einem neuen Prozess muss ein Plan aus aktuellen Belegen neu erstellt werden;
+deserialisiertes JSON wird nicht als geprüfter Plan akzeptiert.
+
+Ausgabe pro Zuordnung:
+- Shopify-Produkt-/Varianten-GID; numerische variantId für die bestehende Binding-API.
+- cfg-ID, feste Revision, Schema, Dokument-SHA, normalisierte Optionen, Basispreis.
+- productionProfileRef:{id,revision,sha256}.
+- binding:{mode:'reuse',id:existingBindingId} oder {mode:'bind-required',id:null}.
+- immer mode:'plan-only', publicAccess:false, checkoutEnabled:false.
+
+Vorhandene historische Bindungen bleiben unberührt und werden nicht automatisch
+auf die neueste Produktrevision umgebogen. 'bind-required' führt keinerlei bind()-Aufruf
+aus. Ein späterer separater Aktivierungsschritt muss die bestehenden bind()-Validierungen,
+Preisverträge und CAS-/Freigaberegeln weiterverwenden und dann einen frischen Plan bilden.
+Der Plan ist weder Kunden-Authentifizierung noch dauerhaftes Aktivierungsregister.
+
+Prüfung
+
+node --test app/workshop/shop-product-binding-plan.test.mjs
+21/21 synthetische Tests bestanden am 22.10.2026:
+native/form, Mehrfach-cfg je Shop-Produkt, unveränderte Originalzuordnung,
+bestehende/historische/fehlende Bindungen, Dubletten, Variantenzugehörigkeit,
+Shop/Tenant/Datenspeicher, alte Revisionen, archivierte Produkte/Profile, Basispreisabweichungen,
+Optionen, Ausschluss von Kunden-Zusatzfeldern, ID-Format, NaN, Belegalter,
+Manipulation und erneute Aktualitätsprüfung.
+Keine Aussage über echte Shopify-/Serverintegration oder Produktionsbereitschaft.
+
+Weiter vorhandene Anschlusslücken aus der Quelle 1638bd2
+
+1. acryl-employee-host.mjs:19,24: eigene Acryl-Datenbank ohne orderWebhook/
+   merchantTestCart-Verdrahtung; globale Webhooks fallen an die alte Runtime.
+   Der universelle Resolver muss den richtigen privaten Datenspeicher auswählen.
+2. http.mjs:139,324-325: bisher nur paused-Sperre plus Händler-Session/CSRF.
+   Eigene schmale Kundengrenze nötig; nicht Mitarbeiter-API freischalten.
+3. storefront-cart.mjs:66-70: create oder update, kein add in bestehenden gemeinsamen
+   Warenkorb. cart-edit-revision.mjs:15 akzeptiert noch keine form-Drafts.
+4. cart-handoff-journal.mjs:113-124: unbekannter Ausgang wird sicher blockiert,
+   automatische Wiederabgleich-/Fortsetzungsfunktion fehlt noch.
+5. cart-personalization.mjs:25-26 und commerce-model.mjs:9-11 rabattieren Fotos
+   weiterhin nicht. Nutzerentscheidung complete-unit muss mit dem zuständigen
+   Preis-/Function-Paket abgeglichen werden, nicht in diesem Resolver nachgebaut.
+6. production-release.mjs:25,29-35,66 sperrt nur Storno/vollständige Erstattung und
+   kennt keine vollständige Pflichtprüfmatrix. order-status.mjs:51 meldet mehr
+   requiresReview-Fälle. Kundenbestellung und physische Produktionsfreigabe getrennt
+   absichern; Testbestellungen niemals versehentlich zur Fertigung freigeben.
+
+Korrekturen zur parallelen Analyse:
+- commerce/v2 verbietet nicht mehrere cfg je Shopify-Produkt. Seine Variantenliste
+  muss nur genau den Optionskombinationen der jeweiligen cfg entsprechen.
+- form_shop_binding_selections existiert bereits; keinen zweiten Optionsschlüssel
+  oder Preisweg ohne nachgewiesene Lücke einführen.
+- acryl-shop-service.mjs:36-38 liest bereits tatsächliche Varianten-IDs/SKU/Preis/
+  Optionen und speichert das Abgleichergebnis. Es fehlt die kontrollierte Bindungs-
+  übernahme; der Grundabgleich muss nicht neu erfunden werden.
+- Keine Galerieablösung, cfg-ID-Neuvergabe oder Reduktion freier Retro-Konturen nötig.
+
+Operativer nächster Schritt: Sicherung BEIDER Stores vor einem Runtimepaket
+
+Nur Anleitung, am 22.10.2026 nicht ausgeführt. Für den lokalen Anschlussplan ist
+keine Serveränderung erforderlich. Kein neues Backupskript entwickelt.
+Der heutige Katalogbeleg mit 258.023.424 Byte einer workshop.sqlite und zehn
+Code-Dateien ist KEIN Nachweis einer aktuellen Vollsicherung beider Stores.
+
+1. Vor einem späteren Runtimeupdate Datenpfade und tatsächlich verwendete Helfer
+   lesend bestätigen; keine Konfiguration mit Geheimnissen ausgeben:
+   - Legacy: nur GRAVURU_PRIVATE_DATA_DIR aus der bestehenden privaten Datei
+     /var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-merchant-shopify.json
+     prüfen. Zuletzt bekannter Wert:
+     /var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-merchant-data
+   - Acryl:
+     /var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data
+   - Je Store gehören workshop.sqlite, profiles.sqlite und design-assets.sqlite
+     zusammen. Beide Stores enthalten eigene Revisionen und private Zustände.
+
+2. Die Hauptaufgabe organisiert ein abgestimmtes Wartungsfenster und stoppt die
+   vollständige Hüll-App einschließlich Hintergrundarbeit. Automatischen Neustart
+   während BEIDER Sicherungen verhindern. Keine weiteren Import-/Schreibprozesse.
+   HTTP-Nichterreichbarkeit allein ist kein Nachweis, dass alle Schreiber beendet sind.
+   Die Hülle hält zwei .runtime.lock-Sperren, eine pro Store. Sperrdateien niemals
+   löschen: der vorhandene Helfer muss die echte exklusive flock-Sperre erhalten.
+
+3. Unveränderten ops/plesk/snapshot-merchant-data.py verwenden. Erwarteter SHA-256
+   des gelesenen, lokal gegenprüften Quellstands:
+   3f0924c62bc6befc8f88c49eda7ca02691e0feb45584a1d6f1ea311622293840
+   Tatsächliche Serverdatei vor Ausführung gegen diesen Hash prüfen. Bei Abweichung
+   stoppen und Quelle abgleichen; nicht nur einen gleichnamigen Helfer verwenden.
+   Bereits bekannter Pythonpfad, ebenfalls vor Verwendung prüfen:
+   /var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python311/bin/python
+
+4. Zwei frische, nicht vorhandene private Snapshot-Zielordner unter private/ wählen,
+   zum Beispiel snapshot-legacy-<UTC-Zeit> und snapshot-acryl-<UTC-Zeit>.
+   Namen im konkreten Auftrag festlegen, nichts Vorhandenes überschreiben.
+   Die bestehende Legacy-Konfiguration wird unverändert als --config verwendet.
+   Für Acryl erst im genehmigten Wartungsauftrag eine minimale private Datei mit
+   Modus 0600 und ausschließlich folgendem Inhalt anlegen (kein App-Startconfig):
+   {"purpose":"shopify-merchant-test-runtime","values":{"GRAVURU_PRIVATE_DATA_DIR":"/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data"}}
+   Keine Schlüssel oder vollständige Legacy-Konfiguration dafür kopieren.
+
+5. Jeweils denselben vorhandenen, hashgeprüften Snapshot-Helfer ausführen:
+   <geprüftes Python> <geprüfter snapshot-merchant-data.py>
+       --config <bestehende Legacy-Konfiguration>
+       --destination <neuer privater Legacy-Snapshotordner>
+   danach:
+   <geprüftes Python> <derselbe snapshot-merchant-data.py>
+       --config <minimale private Acryl-Sicherungsbeschreibung>
+       --destination <neuer privater Acryl-Snapshotordner>
+   Diese Angaben sind getrennte Befehlsvorlagen, hier NICHT ausgeführt.
+   Helfer nutzt SQLite backup(), nicht das Kopieren laufender DB-Dateien; er hält
+   je Store die Sperre über alle drei Datenbanken, prüft quick_check und erzeugt
+   SNAPSHOT.json. Die App bleibt bis zum Abschluss beider Sicherungen offline.
+   Die Sperre ist advisory: die Hauptaufgabe muss alle sonstigen Schreiber ausschließen.
+   Wenn eine Sicherung fehlschlägt: Teilordner erhalten, keinen Erfolg behaupten,
+   keine neuen Runtime-/Migrationsschritte beginnen; Dienstwiederaufnahme separat
+   anhand des unveränderten Originalstands entscheiden.
+
+6. Für JEDEN abgeschlossenen Snapshot prüfen: genau drei DBs plus SNAPSHOT.json,
+   runtimeLockHeld:true, quickCheck:"ok" je DB, tatsächliche Bytes/SHA passend zum
+   Beleg. Gemeinsamer Abschlussbeleg muss beide Quellpfade und beide Snapshotbelege
+   unterscheiden. Eine einzelne erfolgreiche Sicherung ersetzt die andere nicht.
+
+7. Vorhandenen Wiederherstellungsprüfer getrennt auf beide fertigen Snapshots anwenden:
+   lokale Quelle work/konfi-integration-pilot-20261021/ops/restore-private-snapshot.py
+   SHA-256 am 22.10.2026:
+   bd731ae51a26fc4d94347ee9d53b8729852dbd833d4598cde212ab2c474d7d8b
+   <geprüftes Python> <geprüfter vorhandener restore-private-snapshot.py>
+       --snapshot <fertiger privater Snapshotordner>
+       --destination <NEUER separater privater Testordner>
+       --private-paths-confirmed
+   Je Store ein eigener Testordner. Der Prüfer kopiert ausschließlich bereits
+   abgeschlossene beleggebundene Backupdateien, öffnet Kopien read-only, prüft
+   integrity_check, foreign_key_check, Original-/Paketprüfsummen und bekannte
+   Produkt-/Design-/Profil-/Entwurfsbezüge. Kein Runtimeimport, keine Migration.
+
+8. Für den aktuellen Acrylstand zusätzlich rein lesend auf den Restorekopien prüfen:
+   - form_variant_sets/-revisions/-members: Gruppenstand, Dokumenthash und exakte
+     cfg-/Produktrevisionszuordnung, einschließlich aller 798 Acrylvarianten.
+   - design_corrections: komplette Historie, gespeicherter state-SHA, gültige
+     Produktrevision/Designkennung; aktuelle Mitarbeiterkorrekturen erhalten.
+   - catalog_structure_settings: jüngster Stand und vollständige Historie pro Tenant.
+   Der vorhandene Prüfer sichert deren Bytes mit, hat für diese jüngeren Tabellen
+   aber noch keine vollständige eigene semantische Prüfung. Keine tatsächlichen
+   Bestandszahlen oder bestandenen Prüfungen vorwegnehmen.
+
+9. Für einen vollständigen Wiederanlauf zusätzlich die tatsächlich verwendeten
+   Quellen BEIDER Releases, app.cjs/Entry, Speicherkennzeichnungen und benötigte
+   Abhängigkeiten nachvollziehbar privat sichern. Konfigurationen/Geheimnisse nur
+   getrennt und sicher übertragen. Datenbank-Restore allein beweist keinen Appstart.
+   Keine aktuelle DB durch einen alten Katalogbackupstand ersetzen, keine neuen
+   Mitarbeiteränderungen überschreiben und keine Produktionsfreigaben ändern.

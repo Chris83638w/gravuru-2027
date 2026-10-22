@@ -1,5 +1,5 @@
 import {validateCommerce,selectCommerceVariant} from './commerce-model.mjs';
-import {designFromState,validateDesign,money} from './contract.mjs';
+import {designFromState,validateDesign,money,optionFieldEntries} from './contract.mjs';
 import {exportCommerce} from './commerce-export.mjs';
 
 export function installCommerce({el,config,files,pending}){

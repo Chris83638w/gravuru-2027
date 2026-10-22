@@ -1,3 +1,12 @@
+## Universelle Konfigurator-Anbindung: ID-Abgleich und erster Anschlussbaustein · 22.10.2026
+
+- Eigener Branch task/universelle-konfi-anbindung-20261022 ab 1638bd2; Konfigurator- und Katalogstände gezielt verglichen. Beide vorhandenen Produktschemata und alle Originalkennungen bleiben erhalten.
+- Frischer Shopify-Abgleich: alle 798 Acryl-VariantIDs/SKUs/Preise eindeutig, keine Abweichung, weiterhin DRAFT. Vollständige datierte Kandidatenbelege gespeichert; noch keine aktiven Bindungen.
+- Plesk lesend geprüft: zehn Katalogdateien unverändert; 798 Formprodukte + ein Master, sieben Korrekturen. Acryl-Store ohne Shop-Bindungen und ohne feste Fertigungsprofilzuordnungen. Keine neue Vollsicherung oder Serveränderung ausgeführt.
+- Privater ID-Planer ergänzt; Shop/Mandant/Store, ProductGID/VariantGID, cfg-Revision, Optionen, Preis und Profil geprüft. Ausschließlich plan-only, keine Veröffentlichung oder Checkoutfreischaltung.
+- Fehlenden optionFieldEntries-Import in commerce.mjs ergänzt. 21 neue Planertests und 13 vorhandene Commerce-/Options-/Edit-Tests grün; keine E2E- oder Fertigungsabnahme behauptet.
+- [Geprüfte Schnittstelle, Befunde, Korrekturen zur vorigen Analyse und nächste Schritte](docs/handoffs/2026-10-22-universelle-konfigurator-anbindung.md). Vor Runtimeinstallation frische konsistente Zweistore-Sicherung mit getrenntem Restore erforderlich.
+
 ## Katalogstruktur und Übergabe für neuen Konfigurator · 22.10.2026
 
 - Neue Mitarbeiterseite /werkstatt/katalog/: elf aktive Produktlinien, 48 Unterkategorien, Hauptprodukte zuordnen und Anzahl je Unterkategorie planen. Gemeinsame, versionierte Speicherung; keine automatische Shopify-Anlage oder Veröffentlichung.

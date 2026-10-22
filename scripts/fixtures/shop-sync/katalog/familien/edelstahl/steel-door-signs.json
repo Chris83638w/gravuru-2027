@@ -1,0 +1,133 @@
+{
+ "schema": "gravuru-product-family/v2",
+ "id": "steel-door-signs",
+ "name": "Edelstahl-Türschilder (Fixture-Auszug)",
+ "material": {
+  "kind": "steel",
+  "label": "Edelstahl gebürstet",
+  "thicknessMm": 1.5,
+  "processingProfileId": "steel-engraving"
+ },
+ "designArea": {
+  "marginMm": 0,
+  "keepoutMm": 1
+ },
+ "groups": [
+  {
+   "key": "RE",
+   "name": "Rechteck",
+   "shape": "rect",
+   "cornerRadiusMm": 0
+  }
+ ],
+ "mountingRules": [
+  {
+   "id": "KGL",
+   "label": "Selbstklebend – glatte Flächen",
+   "layout": "none",
+   "count": 0,
+   "diameterMm": null,
+   "edgeMm": null,
+   "priceCents": 299,
+   "skuSuffix": "KGL"
+  },
+  {
+   "id": "KRA",
+   "label": "Selbstklebend – raue Flächen",
+   "layout": "none",
+   "count": 0,
+   "diameterMm": null,
+   "edgeMm": null,
+   "priceCents": 399,
+   "skuSuffix": "KRA"
+  },
+  {
+   "id": "B02-E6-D4",
+   "label": "Mit 2 Bohrlöchern",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 4,
+   "edgeMm": 6,
+   "priceCents": 249,
+   "skuSuffix": "B02"
+  },
+  {
+   "id": "B02S-E6-D4",
+   "label": "Mit 2 Schrauben",
+   "layout": "left-right",
+   "count": 2,
+   "diameterMm": 4,
+   "edgeMm": 6,
+   "priceCents": 269,
+   "skuSuffix": "B02S",
+   "accessory": "screws"
+  }
+ ],
+ "sizes": [
+  {
+   "key": "GR-ES-RE-80X20-T15",
+   "groupKey": "RE",
+   "label": "8 × 2 cm",
+   "widthMm": 80,
+   "heightMm": 20,
+   "baseCents": 899,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 18
+  },
+  {
+   "key": "GR-ES-RE-70X23P3-T15",
+   "groupKey": "RE",
+   "label": "7 × 2 cm",
+   "widthMm": 70,
+   "heightMm": 23.3,
+   "baseCents": 899,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 16
+  },
+  {
+   "key": "GR-ES-RE-120X80-T15",
+   "groupKey": "RE",
+   "label": "12 × 8 cm",
+   "widthMm": 120,
+   "heightMm": 80,
+   "baseCents": 1999,
+   "mounting": [
+    "KGL",
+    "KRA",
+    "B02-E6-D4",
+    "B02S-E6-D4"
+   ],
+   "netWeightG": 112
+  }
+ ],
+ "withoutMounting": true,
+ "fonts": [
+  "Montserrat",
+  "Great Vibes",
+  "Cinzel",
+  "Cormorant Garamond",
+  "Allura",
+  "Lora",
+  "Parisienne",
+  "Josefin Sans",
+  "Dancing Script",
+  "Lora Italic",
+  "Caveat",
+  "Kalam",
+  "Oswald"
+ ],
+ "briefingNotes": "Fixture für scripts/shop-sync.test.mjs – Auszug aus steel-door-signs (Stand 23.10.2026), keine Stammdaten.",
+ "source": {
+  "note": "Fixture-Auszug"
+ }
+}

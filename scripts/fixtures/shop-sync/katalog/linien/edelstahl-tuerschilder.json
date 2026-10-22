@@ -1,0 +1,88 @@
+{
+ "schema": "gravuru-line/v2",
+ "id": "edelstahl-tuerschilder",
+ "name": "Edelstahl Türschilder",
+ "families": [
+  "steel-door-signs"
+ ],
+ "status": "Fixture für scripts/shop-sync.test.mjs – Auszug der Linie (Stand 23.10.2026) plus synthetische Hauptprodukte 9900000/9910000/9920000.",
+ "subcategories": [
+  {
+   "id": "namensschilder",
+   "name": "Namensschilder",
+   "themeId": "namensschilder",
+   "fontSet": "tuerschilder",
+   "priceOverrides": {},
+   "sizesOffered": null,
+   "options": null,
+   "collectionHandle": null,
+   "status": "ohne Hauptprodukte – kein Shop-Abgleich"
+  },
+  {
+   "id": "familienschilder",
+   "name": "Familienschilder",
+   "themeId": "familienschilder",
+   "fontSet": "tuerschilder",
+   "priceOverrides": {},
+   "sizesOffered": null,
+   "options": null,
+   "collectionHandle": null,
+   "status": "Muster 7x2",
+   "mainProducts": [
+    {
+     "id": "3100000",
+     "name": "Türschild Edelstahl 7 × 2 cm – Familienschild mit Zierlinien",
+     "startDesign": "TRE-V2A-7x2-D5",
+     "sizesOffered": ["GR-ES-RE-70X23P3-T15"],
+     "externalIds": {"customizationId": "3100000"}
+    },
+    {
+     "id": "3200000",
+     "name": "Türschild Edelstahl 7 × 2 cm – Namensschild mit Glocke",
+     "startDesign": "TRE-V2A-7x2-D26",
+     "sizesOffered": ["GR-ES-RE-70X23P3-T15"],
+     "externalIds": {"customizationId": "3200000"}
+    },
+    {
+     "id": "3300000",
+     "name": "Türschild Edelstahl 7 × 2 cm – Familienschild mit Katze",
+     "startDesign": "TRE-V2A-7x2-D35",
+     "sizesOffered": ["GR-ES-RE-70X23P3-T15"],
+     "externalIds": {"customizationId": "3300000"}
+    },
+    {
+     "id": "9900000",
+     "name": "Türschild Edelstahl – Fixture zwei Größen",
+     "startDesign": "TRE-V2A-7x2-D1",
+     "sizesOffered": ["GR-ES-RE-80X20-T15", "GR-ES-RE-120X80-T15"],
+     "externalIds": {"customizationId": "9900000", "sku-gr-es-re-80x20-t15": "TRE-V2A-8x2-D1"}
+    },
+    {
+     "id": "9910000",
+     "startDesign": "TRE-V2A-7x2-D2",
+     "sizesOffered": ["GR-ES-RE-70X23P3-T15"]
+    }
+   ]
+  },
+  {
+   "id": "hausnummern",
+   "name": "Hausnummern",
+   "themeId": "namensschilder",
+   "fontSet": "tuerschilder",
+   "priceOverrides": {"sizes": {"GR-ES-RE-120X80-T15": 2499}, "mounting": {"KGL": 349}},
+   "sizesOffered": null,
+   "options": null,
+   "collectionHandle": null,
+   "status": "Fixture: Preisüberschreibung",
+   "mainProducts": [
+    {
+     "id": "9920000",
+     "name": "Hausnummer Edelstahl 12 × 8 cm – Fixture",
+     "startDesign": "TRE-V2A-7x2-D3",
+     "sizesOffered": ["GR-ES-RE-120X80-T15"],
+     "externalIds": {"customizationId": "9920000", "sku": "TRH-V2A-12x8-D3"}
+    }
+   ]
+  }
+ ]
+}

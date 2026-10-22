@@ -1,0 +1,27 @@
+{
+ "sets": [
+  {
+   "id": "tuerschilder",
+   "name": "Türschilder / Namensschilder",
+   "note": "Familie, Praxis, Büro – ruhig und gut lesbar, dazu elegante Scripts",
+   "fonts": [
+    "Michroma",
+    "Lato",
+    "Cinzel",
+    "Comfortaa",
+    "Raleway",
+    "Rounded Elegance",
+    "Alex Brush",
+    "Allura",
+    "Dancing Script",
+    "Great Vibes",
+    "Homage",
+    "Cormorant Garamond",
+    "Playfair Display",
+    "Lora",
+    "Montserrat",
+    "Josefin Sans"
+   ]
+  }
+ ]
+}

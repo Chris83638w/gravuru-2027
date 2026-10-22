@@ -1,0 +1,35 @@
+{
+ "schema": "gravuru-themes/v1",
+ "note": "Fixture-Auszug",
+ "themes": [
+  {
+   "id": "namensschilder",
+   "name": "Namensschilder",
+   "fontSet": "tuerschilder",
+   "motifCategories": [
+    "Ornamente",
+    "Linien mit Verzierungen",
+    "Herzen"
+   ],
+   "designTags": [
+    "name",
+    "familie"
+   ]
+  },
+  {
+   "id": "familienschilder",
+   "name": "Familienschilder",
+   "fontSet": "tuerschilder",
+   "motifCategories": [
+    "Figuren",
+    "Herzen",
+    "Haus",
+    "Bäume"
+   ],
+   "designTags": [
+    "familie",
+    "willkommen"
+   ]
+  }
+ ]
+}

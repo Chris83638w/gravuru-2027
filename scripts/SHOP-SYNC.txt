@@ -1,0 +1,118 @@
+Shop-Export, Shop-Abgleich und Variantenbindung je Katalog-Linie — 23.10.2026
+
+Drei Skripte (Node ≥ 22, Tests mit `node --test scripts/shop-*.test.mjs`):
+scripts/shop-export.mjs   Shopify → Dateien (läuft auf dem Händlerhost, nur node:*)
+scripts/shop-sync.mjs     Katalog-Soll ↔ Export → productSet-Plan, optional --apply
+scripts/shop-bind.mjs     Shop-Variante → Konfi-Produkt (katalog-…) → Prüfung/Aktivierung über
+                          shop-product-binding-check / orderIntake.idBindings
+Fixtures: scripts/fixtures/shop-sync/ (Katalog-Auszug Edelstahl 7x2 + Export-Auszug mit den drei
+Hauptprodukten 3100000/3200000/3300000 nach dem Shopify-Stand vom 22.10.2026, doppelte SKU
+GT-PS-30x20, zwei synthetische Produkte 16099000000001/2). Keine Geheimnisse, keine Kundendaten.
+
+Grundsätze
+- Nichts erfinden: offener Preis, fehlende Basis-SKU oder fehlender Titel → Aktion „offen“ mit Grund.
+- Stabile Kennungen: Konfi-Produkt `katalog-<linie>-<unterkategorie>-<größe>-<hauptprodukt>` (wie
+  katalog-convert.cleanId), Import-Journal `katalog:<linie>:<sub>:<größe>:<hauptprodukt>` (wie
+  katalog-import.importKey+':'+hauptprodukt), Shopify-Varianten-IDs bleiben erhalten.
+- Option-Labels exakt die Werkstatt-Labels (familyProductConfig: „Ohne Bohrung“ für K00, dann
+  mountingRules[].label der Größe), Optionsgruppe heißt im Shop „Befestigung“, in der Werkstatt `mounting`,
+  Werte = SKU-Endung (K00, KGL, KRA, B02, B02S …). Test: shop-sync.test „Befestigungswerte entsprechen
+  exakt der Werkstatt“ vergleicht gegen familyProductConfig.
+- Geheimnisse nur im Speicher: Fehlertexte nennen Feldnamen, Token/Secret werden aus Meldungen
+  entfernt (redact), Dateien/Journale enthalten keine Zugangsdaten. Netzwerk nur über injizierbares
+  fetchImpl; Tests laufen mit einem Fake-Shop.
+- Kein Upload ohne --apply; --apply braucht Zugang (siehe unten) und schreibt ein Journal je Produkt.
+
+1. shop-export.mjs
+   node scripts/shop-export.mjs --out <ordner> [--max-pages n] [--page-size 250] [--variants-first 100]
+   Zugang (Reihenfolge): GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN (direkt) → GRAVURU_SHOPIFY_CLIENT_SECRET_FILE
+   (Datei, Inhalt getrimmt) → GRAVURU_SHOPIFY_CLIENT_SECRET. Mit Geheimnis: client_credentials gegen
+   https://gravuru-design.myshopify.com/admin/oauth/access_token (clientId 9640dd7a6907f0c73e7013ea8c24869b,
+   wie ops/plesk/order-webhook-registration.mjs), Token wird zwischengespeichert und bei 401 erneuert.
+   Abfrage: products(first:$first, after, sortKey:ID) mit id title handle status productType vendor tags
+   updatedAt options{id name position values} metafield(custom.customization_id){value}
+   variants(first:$variants){id sku title price compareAtPrice inventoryItem{tracked} selectedOptions};
+   Varianten über $variants hinaus werden je Produkt nachgeladen (product(id).variants(after)).
+   Kosten: Shopify bepreist Verbindungen logarithmisch (2 + Kinder × ⌊2·ln(first)⌋), 250/100 liegt
+   deutlich unter 1000 Punkten; vor jeder Anfrage wird gewartet, wenn throttleStatus.currentlyAvailable
+   nicht reicht, THROTTLED/429/5xx/Netzfehler werden mit Backoff (Retry-After, sonst 0,5 s·2^n, max 30 s)
+   bis 6× wiederholt. API 2026-07.
+   Ausgabe im --out-Ordner: products.json {schema gravuru-shop-export/v1, shopDomain, apiVersion,
+   exportedAt, complete, products[]} · sku-index.json {skus:{sku:{productId,variantId,price,status,
+   handle}}, duplicates:[{sku,entries[]}], counts} – doppelte SKUs stehen NICHT in skus, nur in
+   duplicates · summary.json (Zähler, Dauer, Kosten, Wiederholungen, lastCursor; keine Geheimnisse).
+   --max-pages n bricht nach n Seiten ab (complete:false, Cursor in summary.json).
+
+2. shop-sync.mjs
+   node scripts/shop-sync.mjs --katalog <pfad> --linie <id> --export <products.json> --out <plan.json>
+     [--unterkategorie a,b] [--groesse k1,k2] [--hauptprodukt id] [--sku-map <json>]
+     [--apply [--create] [--journal <ordner>]]
+   Soll je Hauptprodukt × Größe (nur Unterkategorien mit mainProducts; Preisüberschreibungen der
+   Unterkategorie über katalog-convert.applyPriceOverrides): Basis-SKU aus --sku-map
+   {konfiProductId: sku} > externalIds.sku-<größe klein> > externalIds.sku (nur bei genau einer Größe) >
+   startDesign (nur bei genau einer Größe; bei Edelstahl 7x2 ist die Design-Kennung die Bestands-SKU) >
+   sonst offen. Varianten: SKU = Basis (K00) bzw. Basis-'-'+skuSuffix, Preis = baseCents + priceCents,
+   inventoryItem.tracked=false, Metafeld custom.customization_id = externalIds.customizationId
+   (fehlt es, wird kein Metafeld gesendet; ein vorhandener Shop-Wert bleibt), Status unverändert.
+   Zuordnung Shop-Produkt: alle Soll-SKUs im Export suchen → genau ein Produkt. Eine SKU auf mehreren
+   Produkten oder Soll-SKUs auf mehreren Produkten → „konflikt“. Kein Treffer: „create“ (nur bei
+   vollständigem Export und vorhandenem mainProducts[].name, als DRAFT ohne Texte/Bilder), sonst „offen“.
+   Shop-Produkt mit Fremdoptionen, mit Varianten ohne Soll-Entsprechung (productSet würde sie löschen)
+   oder doppelter SKU → „konflikt“. Standardvariante „Title/Default Title“ wird die erste Soll-Variante
+   (ID bleibt) – so wurden die drei 7x2-Produkte am 22.10.2026 aktualisiert. Keine Änderung → „unverändert“.
+   Plan (gravuru-shop-sync-plan/v1): je Eintrag action, reasons, changes, shopify{productId,handle,
+   status,optionId}, variants[{mountingKey,label,sku,priceCents,shopifyVariantId,state}], input
+   (ProductSetInput: id, productOptions[{id?,name,position,values}], variants[{id?,price,sku,position,
+   optionValues,inventoryItem}], metafields), sourceSha256, expectedShop (Stand aus dem Export).
+   Regression: die drei 7x2-Hauptprodukte gegen docs/handoffs/2026-10-22-shopify-7x2-hauptprodukte.json
+   und den Export ergeben „unverändert“ mit identischen Varianten-IDs (Test, zusätzlich lokal gegen
+   .local-data/shopify-products-partial.json, wenn vorhanden).
+   --apply: Zugang wie shop-export; je Eintrag „update“: Produkt per ID neu lesen und mit expectedShop
+   vergleichen (Abweichung → Abbruch „Export erneuern“), Journal <konfiProductId>.json state started →
+   productSet(synchronous:true) → Rücklesen (Option, SKUs, Preise, tracked, Metafeld, Varianten-IDs) →
+   completed. Fehler → unknown/rejected; ein unbestätigter Lauf blockiert den nächsten, bis das Journal von
+   Hand aufgelöst ist. Gleicher sourceSha256 mit completed → „bereits erledigt“. writer.lock wie
+   gt22x14-serienimport. „create“ nur mit --create. Journal-Standard: <plan-ordner>/.shop-sync-journal/.
+
+3. shop-bind.mjs
+   node scripts/shop-bind.mjs (--plan <sync-plan.json> | --katalog <pfad> --linie <id> --export <products.json>)
+     --out <bind.json> [--db <workshop.sqlite> --store-id <kennung> [--tenant gravuru]
+     [--live | --trust-export] [--apply]]
+   Auswahl nur aus Einträgen „unverändert“ (Shop = Soll): je Variante shopifyProductId, shopifyVariantId,
+   sku, options {mounting:<Schlüssel>}, expectedUnitCents; andere Einträge „ausstehend“ mit Grund.
+   Mit --db: Konfi-Produkt → cfg-ID/fester Stand über repository.importItem(importKey) (katalog-import
+   --commit), sonst genau ein Produkt mit profile.id = konfiProductId; dann createShopProductBindingCheck
+   (Blöcke ≤ 100) mit Leseadapter createShopBindingReadAdapter auf Repository, OrderIntake und
+   profiles.sqlite neben der DB. Shopify-Beleg: --live = createShopifyAdminReadonly (Client-Geheimnis),
+   sonst Offline-Leser aus dem Export (evidence:"export:<exportedAt>"). Ergebnis: Status
+   id-plan-ready/blocked, Werkstattpreis je Variante, Preisabgleich Katalog ↔ Werkstatt, Blocker.
+   --apply: orderIntake.idBindings({storeId,shopDomain,adapter}).persist mit expectedHeads aus dem
+   aktuellen Stand (null = erste Zuordnung); nur mit --live oder ausdrücklich --trust-export. Bestehende
+   Bindungen werden wiederverwendet, nichts wird überschrieben. productionReady/publicAccess/
+   checkoutEnabled bleiben false.
+   --store-id muss der späteren Serverkonfiguration (shopBindingRead.storeId) entsprechen: die
+   Store-Tabellen lehnen eine zweite Store-Kennung auf derselben DB ab.
+
+Prüfung (23.10.2026)
+node --test scripts/shop-export.test.mjs   6/6
+node --test scripts/shop-sync.test.mjs     8/8 (inkl. Parität mit familyProductConfig, Regression 7x2)
+node --test scripts/shop-bind.test.mjs     4/4 (temporäre Werkstatt-DB mit den drei 7x2-Produkten,
+                                           15 Zuordnungen geschrieben und erneut aufgelöst)
+Kein echter Shopify-Zugriff, keine echte Datenbank, nichts hochgeladen.
+
+Befund aus dem Teilexport (300 von 1240 Produkten, 23.10.2026)
+Doppelte SKU GT-PS-30x20: gid://shopify/Product/16014817001852 (gedenktafel-premiumschiefer-mit-foto-
+gravur-30x20-cm, DRAFT, 19,99 €, Variante 56859514569084) und gid://shopify/Product/16015589867900
+(tier-andenken-premiumschiefer-mit-fotogravur-30x20-cm, DRAFT, 49,95 €, Variante 56861854138748).
+153 von 421 Varianten ohne SKU.
+
+Offen
+- Basis-SKU-Quelle für Hauptprodukte mit mehreren Größen und für SKUs mit Komma/Klammern
+  (TRE-S-8x3,5-D1, TRE-AV2A-9x6(7x4)-D3): externalIds erlaubt solche Werte nicht → --sku-map oder
+  Katalogschema erweitern.
+- productSet-Verhalten beim Ersetzen von „Title/Default Title“ durch „Befestigung“ ohne Options-ID ist im
+  Rücklesen abgesichert, aber erst beim ersten --apply live bestätigt (die 22.10.-Aktualisierung lief
+  manuell per productSet).
+- Vollexport (shop-export auf dem Host) steht aus; mit Teilexport wird nichts neu angelegt.
+- Konfi-Produkte müssen auf dem Händlerhost importiert sein (katalog-import --commit), bevor shop-bind
+  --db auflösen kann; storeId der Serverkonfiguration festlegen.

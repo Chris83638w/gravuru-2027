@@ -1,0 +1,479 @@
+{
+ "schema": "gravuru-shop-export/v1",
+ "shopDomain": "gravuru-design.myshopify.com",
+ "apiVersion": "2026-07",
+ "exportedAt": "2026-10-23T00:33:00.000Z",
+ "complete": false,
+ "note": "Fixture: Auszug aus dem Teilexport 23.10.2026 (drei Hauptprodukte 7x2 nach der Aktualisierung vom 22.10.2026, doppelte SKU GT-PS-30x20) plus zwei synthetische Produkte (16099000000001/2).",
+ "products": [
+  {
+   "id": "gid://shopify/Product/16014817001852",
+   "title": "Gedenktafel Premiumschiefer mit Foto-Gravur 30×20 cm",
+   "handle": "gedenktafel-premiumschiefer-mit-foto-gravur-30x20-cm",
+   "status": "DRAFT",
+   "productType": "Gedenktafel",
+   "vendor": "Gravuru GmbH",
+   "tags": [
+    "Außenbereich",
+    "Bestseller",
+    "Fotogravur",
+    "Gedenktafel",
+    "Imprägniert",
+    "Mit Datum",
+    "Mit Foto",
+    "Mit Namen",
+    "Personalisiert",
+    "Premiumschiefer",
+    "Trauer"
+   ],
+   "options": [
+    {
+     "name": "Title",
+     "values": [
+      "Default Title"
+     ]
+    }
+   ],
+   "metafield": null,
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/56859514569084",
+      "sku": "GT-PS-30x20",
+      "title": "Default Title",
+      "price": "19.99",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Title",
+        "value": "Default Title"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/16015589867900",
+   "title": "Tier Andenken Premiumschiefer mit Fotogravur 30x20 cm",
+   "handle": "tier-andenken-premiumschiefer-mit-fotogravur-30x20-cm",
+   "status": "DRAFT",
+   "productType": "Tier Andenken",
+   "vendor": null,
+   "tags": [],
+   "options": [
+    {
+     "name": "Title",
+     "values": [
+      "Default Title"
+     ]
+    }
+   ],
+   "metafield": null,
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/56861854138748",
+      "sku": "GT-PS-30x20",
+      "title": "Default Title",
+      "price": "49.95",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Title",
+        "value": "Default Title"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/16077793821052",
+   "title": "Türschild Edelstahl V2A personalisiert 7×2 cm",
+   "handle": "tuerschild-edelstahl-v2a-personalisiert-7x2",
+   "status": "ACTIVE",
+   "productType": "Türschild",
+   "vendor": null,
+   "tags": [],
+   "options": [
+    {
+     "name": "Befestigung",
+     "values": [
+      "Ohne Bohrung",
+      "Selbstklebend – glatte Flächen",
+      "Selbstklebend – raue Flächen",
+      "Mit 2 Bohrlöchern",
+      "Mit 2 Schrauben"
+     ]
+    }
+   ],
+   "metafield": {
+    "value": "3100000"
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/57265872109948",
+      "sku": "TRE-V2A-7x2-D5",
+      "title": "Ohne Bohrung",
+      "price": "8.99",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Ohne Bohrung"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793642496380",
+      "sku": "TRE-V2A-7x2-D5-KGL",
+      "title": "Selbstklebend – glatte Flächen",
+      "price": "11.98",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Selbstklebend – glatte Flächen"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793642529148",
+      "sku": "TRE-V2A-7x2-D5-KRA",
+      "title": "Selbstklebend – raue Flächen",
+      "price": "12.98",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Selbstklebend – raue Flächen"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793642561916",
+      "sku": "TRE-V2A-7x2-D5-B02",
+      "title": "Mit 2 Bohrlöchern",
+      "price": "11.48",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Mit 2 Bohrlöchern"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793642594684",
+      "sku": "TRE-V2A-7x2-D5-B02S",
+      "title": "Mit 2 Schrauben",
+      "price": "11.68",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Mit 2 Schrauben"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/16077793984892",
+   "title": "Türschild Edelstahl V2A personalisiert – Klingel 7×2 cm",
+   "handle": "tuerschild-edelstahl-v2a-personalisiert-klingel-7x2",
+   "status": "ACTIVE",
+   "productType": "Türschild",
+   "vendor": null,
+   "tags": [],
+   "options": [
+    {
+     "name": "Befestigung",
+     "values": [
+      "Ohne Bohrung",
+      "Selbstklebend – glatte Flächen",
+      "Selbstklebend – raue Flächen",
+      "Mit 2 Bohrlöchern",
+      "Mit 2 Schrauben"
+     ]
+    }
+   ],
+   "metafield": {
+    "value": "3200000"
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/57265873846652",
+      "sku": "TRE-V2A-7x2-D26",
+      "title": "Ohne Bohrung",
+      "price": "8.99",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Ohne Bohrung"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793719271804",
+      "sku": "TRE-V2A-7x2-D26-KGL",
+      "title": "Selbstklebend – glatte Flächen",
+      "price": "11.98",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Selbstklebend – glatte Flächen"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793719304572",
+      "sku": "TRE-V2A-7x2-D26-KRA",
+      "title": "Selbstklebend – raue Flächen",
+      "price": "12.98",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Selbstklebend – raue Flächen"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793719337340",
+      "sku": "TRE-V2A-7x2-D26-B02",
+      "title": "Mit 2 Bohrlöchern",
+      "price": "11.48",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Mit 2 Bohrlöchern"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793719370108",
+      "sku": "TRE-V2A-7x2-D26-B02S",
+      "title": "Mit 2 Schrauben",
+      "price": "11.68",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Mit 2 Schrauben"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/16077794148732",
+   "title": "Türschild Edelstahl V2A personalisiert – Katze 7×2 cm",
+   "handle": "tuerschild-edelstahl-v2a-personalisiert-katze-7x2",
+   "status": "ACTIVE",
+   "productType": "Türschild",
+   "vendor": null,
+   "tags": [],
+   "options": [
+    {
+     "name": "Befestigung",
+     "values": [
+      "Ohne Bohrung",
+      "Selbstklebend – glatte Flächen",
+      "Selbstklebend – raue Flächen",
+      "Mit 2 Bohrlöchern",
+      "Mit 2 Schrauben"
+     ]
+    }
+   ],
+   "metafield": {
+    "value": "3300000"
+   },
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/57265874796924",
+      "sku": "TRE-V2A-7x2-D35",
+      "title": "Ohne Bohrung",
+      "price": "8.99",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Ohne Bohrung"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793804697980",
+      "sku": "TRE-V2A-7x2-D35-KGL",
+      "title": "Selbstklebend – glatte Flächen",
+      "price": "11.98",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Selbstklebend – glatte Flächen"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793804730748",
+      "sku": "TRE-V2A-7x2-D35-KRA",
+      "title": "Selbstklebend – raue Flächen",
+      "price": "12.98",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Selbstklebend – raue Flächen"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793804763516",
+      "sku": "TRE-V2A-7x2-D35-B02",
+      "title": "Mit 2 Bohrlöchern",
+      "price": "11.48",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Mit 2 Bohrlöchern"
+       }
+      ]
+     },
+     {
+      "id": "gid://shopify/ProductVariant/57793804796284",
+      "sku": "TRE-V2A-7x2-D35-B02S",
+      "title": "Mit 2 Schrauben",
+      "price": "11.68",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Befestigung",
+        "value": "Mit 2 Schrauben"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/16099000000001",
+   "title": "Türschild Edelstahl V2A personalisiert 8×2 cm (Fixture)",
+   "handle": "tuerschild-edelstahl-v2a-personalisiert-8x2-fixture",
+   "status": "ACTIVE",
+   "productType": "Türschild",
+   "vendor": null,
+   "tags": [],
+   "options": [
+    {
+     "name": "Title",
+     "values": [
+      "Default Title"
+     ]
+    }
+   ],
+   "metafield": null,
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/57299000000001",
+      "sku": "TRE-V2A-8x2-D1",
+      "title": "Default Title",
+      "price": "19.90",
+      "inventoryItem": {
+       "tracked": true
+      },
+      "selectedOptions": [
+       {
+        "name": "Title",
+        "value": "Default Title"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "gid://shopify/Product/16099000000002",
+   "title": "Hausnummer Edelstahl 12×8 cm (Fixture)",
+   "handle": "hausnummer-edelstahl-12x8-fixture",
+   "status": "DRAFT",
+   "productType": "Hausnummer",
+   "vendor": null,
+   "tags": [],
+   "options": [
+    {
+     "name": "Größe",
+     "values": [
+      "12 × 8 cm"
+     ]
+    }
+   ],
+   "metafield": null,
+   "variants": {
+    "nodes": [
+     {
+      "id": "gid://shopify/ProductVariant/57299000000002",
+      "sku": "TRH-V2A-12x8-D3",
+      "title": "12 × 8 cm",
+      "price": "24.99",
+      "inventoryItem": {
+       "tracked": false
+      },
+      "selectedOptions": [
+       {
+        "name": "Größe",
+        "value": "12 × 8 cm"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}

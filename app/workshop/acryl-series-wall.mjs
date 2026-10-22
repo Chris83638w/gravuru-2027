@@ -1,0 +1,16 @@
+import {readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+const bytes=readFileSync(new URL('./ui/material-surfaces/house-wall-v3.jpg',import.meta.url));
+export const HOUSE_WALL={sha256:createHash('sha256').update(bytes).digest('hex'),href:'data:image/jpeg;base64,'+bytes.toString('base64')};
+export function usesAcrylicSeriesWall(document){return document.categoryIds?.includes('acryl-tuerschilder-2027')&&['acrylic-black','acrylic-anthracite'].includes(document.material?.id)&&document.presentation?.scene==='studio';}
+const n=v=>Number(v.toFixed(5));
+export function acrylicSeriesWallLayers(document){
+ const g=document.form.geometry,t=document.material.thicknessMm,thickness=Number.isFinite(t)&&t>0?t:0,pad=g.widthMm*.055;
+ const box=[-pad,-pad,g.widthMm+2*pad,g.heightMm+2*pad].map(n),[x,y,w,h]=box,d=g.contours.map(c=>c.d+' Z').join(' '),holes=g.contours.filter(c=>c.role==='hole'),holePath=holes.map(c=>c.d+' Z').join(' '),edgeY=n(thickness*.05),boreX=n(thickness*.053333),boreY=n(thickness*.146667);
+ const black=document.material.id==='acrylic-black',side=black?'#111619':'#30383c',light=black?'#586164':'#798387';
+ const defs='<defs><path id="material-edge-shape" d="'+d+'" fill-rule="evenodd"/><filter id="wall-ambient" filterUnits="userSpaceOnUse" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation=".65"/><feOffset dx=".5" dy=".8"/></filter><filter id="wall-contact" filterUnits="userSpaceOnUse" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation=".12"/><feOffset dx=".06" dy=".15"/></filter><clipPath id="wall-bore-front">'+holes.map(c=>'<path d="'+c.d+'"/>').join('')+'</clipPath><mask id="wall-bore-back" maskUnits="userSpaceOnUse" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="white"/><path d="'+holePath+'" transform="translate('+boreX+' '+boreY+')" fill="black"/></mask><linearGradient id="wall-bore-side" x2=".7" y2="1"><stop stop-color="'+side+'"/><stop offset=".68" stop-color="'+light+'"/><stop offset="1" stop-color="'+side+'"/></linearGradient></defs>';
+ const backdrop='<g data-preview-scene="house-wall" data-wall-sha256="'+HOUSE_WALL.sha256+'" pointer-events="none"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="#f2efea"/><image href="'+HOUSE_WALL.href+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" preserveAspectRatio="xMidYMid slice" opacity=".60"/></g>';
+ const shadow='<g data-preview-shadow="true" fill="#101318" pointer-events="none"><use href="#material-edge-shape" opacity=".13" filter="url(#wall-ambient)"/><use href="#material-edge-shape" opacity=".13" filter="url(#wall-contact)"/></g>';
+ const edge=thickness?'<g data-preview-depth-mm="'+thickness+'" pointer-events="none"><use href="#material-edge-shape" transform="translate(0 '+edgeY+')" fill="'+side+'"/><g data-preview-bore-depth-mm="'+thickness+'" clip-path="url(#wall-bore-front)"><path d="'+holePath+'" fill="url(#wall-bore-side)" mask="url(#wall-bore-back)"/><path d="'+holePath+'" transform="translate('+boreX+' '+boreY+')" fill="none" stroke="'+light+'" stroke-width=".025" opacity=".6"/></g></g>':'';
+ return {box,defs,backdrop,shadow,edge,thickness,scene:'house-wall'};
+}

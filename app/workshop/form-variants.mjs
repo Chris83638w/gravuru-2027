@@ -28,11 +28,14 @@ export function createFormVariants({filename,repository,tenantId}){
  // Product revisions are validated through the repository, also for isolated :memory: stores.
  // Existing product snapshots cannot be deleted or updated.
  function validate(input){
-  exact(input,['name','defaultVariantId','archived','variants']);const d=structuredClone(input);d.name=label(d.name,160);
-  if(typeof d.archived!=='boolean'||!Array.isArray(d.variants)||!d.variants.length||d.variants.length>50)fail(422,'Bitte 1 bis 50 Ausführungen zuordnen.');
-  const ids=new Set(),names=new Set(),products=new Set();
+  exact(input,['name','defaultVariantId','archived','variants',...(input.axes!==undefined?['axes']:[])]);const d=structuredClone(input);d.name=label(d.name,160);
+  if(typeof d.archived!=='boolean'||!Array.isArray(d.variants)||!d.variants.length||d.variants.length>1000)fail(422,'Bitte 1 bis 1000 Ausführungen zuordnen.');
+  const ids=new Set(),names=new Set(),products=new Set(),axisIds=new Set();
+  if(d.axes!==undefined){if(!Array.isArray(d.axes)||!d.axes.length||d.axes.length>6)fail(422,'Ungültige Auswahlfelder.');for(const axis of d.axes){exact(axis,['id','label','values']);if(!/^[a-z][a-z0-9_]{0,31}$/.test(axis.id)||axisIds.has(axis.id)||!Array.isArray(axis.values)||!axis.values.length||axis.values.length>200)fail(422,'Ungültiges Auswahlfeld.');axisIds.add(axis.id);axis.label=label(axis.label,80);const values=new Set();for(const value of axis.values){exact(value,['id','label']);value.id=label(value.id,80);value.label=label(value.label,100);if(values.has(value.id))fail(422,'Doppelte Auswahl.');values.add(value.id);}}}
+  const choiceKeys=new Set();
   for(const v of d.variants){
-   exact(v,['id','label','productId','productRevision']);v.label=label(v.label,100);version(v.productRevision);
+   exact(v,['id','label','productId','productRevision',...(d.axes?['choices']:[])]);
+   if(d.axes){exact(v.choices,[...axisIds]);for(const axis of d.axes)if(!axis.values.some(value=>value.id===v.choices[axis.id]))fail(422,'Auswahl fehlt im Auswahlfeld.');const key=d.axes.map(a=>v.choices[a.id]).join('|');if(choiceKeys.has(key))fail(422,'Auswahlkombination ist doppelt.');choiceKeys.add(key);}v.label=label(v.label,100);version(v.productRevision);
    if(typeof v.id!=='string'||!/^[a-zA-Z0-9][\w-]{0,79}$/.test(v.id)||ids.has(v.id)||names.has(v.label.toLocaleLowerCase('de-DE'))||products.has(v.productId))fail(422,'Ausführungs-ID, Name und Produkt dürfen nicht doppelt vorkommen.');
    if(typeof v.productId!=='string'||!/^cfg_[a-f0-9-]+$/.test(v.productId))fail(422,'Eine gespeicherte Produkt-ID ist erforderlich.');
    const record=repository.get(v.productId,{revision:v.productRevision}),current=repository.get(v.productId),p=record.document;
@@ -56,8 +59,8 @@ export function createFormVariants({filename,repository,tenantId}){
   })};
  }
  function select(id,revision,variantId){
-  version(revision);const group=options(id,revision,{customer:true}),v=group.variants.find(v=>v.id===(variantId??group.document.defaultVariantId));if(!v||!v.available)fail(422,'Diese Ausführung ist nicht verfügbar.');
-  const record=repository.get(v.productId,{revision:v.productRevision});repository.validate(record.document);
+  version(revision);const group=get(id,revision),currentGroup=get(id);if(group.document.archived||currentGroup.document.archived)fail(422,'Diese Ausführungsgruppe ist nicht verfügbar.');const v=group.document.variants.find(v=>v.id===(variantId??group.document.defaultVariantId));if(!v)fail(422,'Diese Ausführung ist nicht verfügbar.');
+  const current=repository.get(v.productId);if(current.status==='archived'||current.document.kind!=='product')fail(422,'Diese Ausführung ist nicht verfügbar.');const record=repository.get(v.productId,{revision:v.productRevision});repository.validate(record.document);
   return {groupId:id,groupRevision:revision,variantId:v.id,productId:v.productId,productRevision:v.productRevision,basePriceCents:record.document.basePriceCents,href:'/?'+new URLSearchParams({configuration:v.productId,revision:v.productRevision,group:id,groupRevision:revision,variant:v.id})};
  }
  const store={get,options,select,validate,tenantId:tenant,

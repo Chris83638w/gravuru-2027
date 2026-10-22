@@ -84,7 +84,7 @@ def family_section(f, path, kat, pdf_ok):
 
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument('--katalog', required=True); a = ap.parse_args()
+    ap = argparse.ArgumentParser(); ap.add_argument('--katalog', required=True); ap.add_argument('--metadata-only', action='store_true', help='Nur Markdown aktualisieren, keine PDF- oder Excel-Dateien ersetzen'); a = ap.parse_args()
     kat = Path(a.katalog).resolve(); fam_dir = kat / 'familien'; out_dir = kat / 'kataloge'; (out_dir / 'png').mkdir(parents=True, exist_ok=True)
     families = []
     for p in sorted(fam_dir.glob('*/*.json')):
@@ -96,12 +96,25 @@ def main():
     lines = [json.loads(p.read_text(encoding='utf-8')) for p in sorted((kat / 'linien').glob('*.json'))]
     fam_by_id = {f['id']: f for _, f in families}
     themes = {t['id']: t for t in json.loads((kat / 'themen.json').read_text(encoding='utf-8'))['themes']} if (kat / 'themen.json').exists() else {}
+    structure_path = kat / 'struktur.json'
+    structure = json.loads(structure_path.read_text(encoding='utf-8')) if structure_path.exists() else None
+    if structure:
+        md += ['## Abgeglichener Werkstattstand', '', 'Produktlinie → Unterkategorie → Hauptprodukt → Ausführungen. Maßgeblich für die Werkstatt ist [struktur.json](struktur.json). Die nachfolgenden älteren Familien bleiben als eigene Quellen erhalten.', '', '| Serie | Ausführungen | Formen / Größen | Designs |', '| --- | --- | --- | --- |']
+        for s in structure['series']:
+            md.append(f"| [{s['name']}]({s['sourcePath']}) | {s['variantCount']} | {s['shapeSizeCount']} | {s['designCount']} |")
+        md += ['', '### Zugeordnete Hauptprodukte', '', '| Linie | Produkt | Shopify-ID | Varianten | Stand |', '| --- | --- | --- | --- | --- |']
+        for p in structure['mainProducts']:
+            md.append(f"| {p['lineId']} | [{p['title']}]({p['adminUrl']}) | {p['id'].split('/')[-1]} | {p['variantCount']} | {p['role']} · {p['status']} |")
+        md += ['', '### Abgleich und offene Punkte', '']
+        for c in structure['checks']: md.append(f"- **{c['title']}:** {c['detail']}")
+        md += ['', 'Kundenanbindung und Veröffentlichung sind zurückgestellt. Geplante Anzahlen und Zuordnungen werden in der Mitarbeiter-Werkstatt gespeichert; sie erzeugen keine Shopify-Artikel.', '']
     if lines:
         md += ['## Produktlinien und Unterkategorien', '', 'Linie = was physisch verkauft wird (Familien); Unterkategorie = Thema/Zielgruppe innerhalb der Linie (Name im Shop „Linie – Unterkategorie“). Je Unterkategorie: Schrift-Set, Design-Themen und Motivkategorien aus [themen.json](themen.json), eigene Preise nur wo abweichend (`priceOverrides`). Status „Vorschlag“ = vom Nutzer noch zu bestätigen.', '']
         for l in lines:
             fams_txt = ', '.join(f"[{fam_by_id[i]['name']}](#{i})" if i in fam_by_id else f'`{i}` (fehlt)' for i in l.get('families', [])) or 'Familie offen'
             md += [f"### {l['name']}", '', f"Familien: {fams_txt} · Stand: {l.get('status', 'offen')}", '', '| Unterkategorie | Thema | Schrift-Set | Motivkategorien | Preise | Status |', '| --- | --- | --- | --- | --- | --- |']
-            for sc in l.get('subcategories', []):
+            normalized = next((x['subcategories'] for x in structure['lines'] if x['id'] == l['id']), l.get('subcategories', [])) if structure else l.get('subcategories', [])
+            for sc in normalized:
                 t = themes.get(sc.get('themeId'), {}); ov = sc.get('priceOverrides') or {}
                 n_ov = sum(len(v.get('sizes', {})) + len(v.get('mounting', {})) + sum(len(x) for x in v.get('options', {}).values()) for v in ov.values())
                 md.append(f"| {sc['name']} | `{sc.get('themeId', '')}` | `{sc.get('fontSet', t.get('fontSet', 'offen'))}` | {', '.join(t.get('motifCategories', [])) or '–'} | {'wie Familie' if not n_ov else str(n_ov) + ' abweichend'} | {sc.get('status', 'offen')} |")
@@ -114,6 +127,7 @@ def main():
         md.append(f"| {MAT.get(f['material']['kind'], f['material']['kind'])} | [{f['name']}](#{f['id']}) | {len(f['sizes'])} | {', '.join(dict.fromkeys(g['name'] for g in f['groups']))} | {len(f['mountingRules'])} | {'hinterlegt' if all(s['baseCents'] is not None for s in f['sizes']) else 'offen'} | {'vollständig' if not gaps else str(len(gaps)) + ' offen'} |")
         pdf = out_dir / f"{f['id']}.pdf"; pdf_ok = False
         try:
+            if a.metadata_only: raise RuntimeError('Metadatenlauf: bestehende PDF bleibt unverändert')
             subprocess.run([sys.executable, str(ROOT / 'scripts/plate-catalog-pdf.py'), str(p), '--out', str(pdf)], check=True, capture_output=True, timeout=300)
             import pymupdf
             d = pymupdf.open(pdf); d[min(1, d.page_count - 1)].get_pixmap(dpi=70).save(out_dir / 'png' / f"{f['id']}.png"); pdf_ok = True
@@ -123,6 +137,7 @@ def main():
     md += ['', '## Familien im Einzelnen', ''] + sections
     xlsx = out_dir / 'Stammdaten-Gravuru.xlsx'
     try:
+        if a.metadata_only: raise RuntimeError('Metadatenlauf: bestehende Excel bleibt unverändert')
         subprocess.run([sys.executable, str(ROOT / 'scripts/family-excel.py'), 'export', '--out', str(xlsx)] + [str(p) for p, _ in families], check=True, capture_output=True, timeout=300)
         md.append(f'\nStammdaten-Excel (alle Familien): [kataloge/Stammdaten-Gravuru.xlsx](kataloge/Stammdaten-Gravuru.xlsx)')
     except Exception as e:

@@ -1,3 +1,4 @@
+import {usesAcrylicSeriesWall,acrylicSeriesWallLayers} from './acryl-series-wall.mjs';
 // Presentation only: these choices never define production colors or geometry.
 export const PRINT_SURFACES=Object.freeze(['front','reverse']);
 export const MATERIAL_SCENES=Object.freeze(['transparent','studio','warm']);
@@ -10,6 +11,7 @@ export const ACRYLIC_SURFACES=Object.freeze({
 const n=v=>Number(v.toFixed(5));
 const path=g=>g.contours.map(c=>c.d+' Z').join(' ');
 export function presentationLayers(document){
+ if(usesAcrylicSeriesWall(document))return acrylicSeriesWallLayers(document);
  const g=document.form.geometry,a=ACRYLIC_SURFACES[document.material.id],d=path(g),t=document.material.thicknessMm;
  const thickness=Number.isFinite(t)&&t>0&&t<=100?t:0;
  // Fixed oblique 2D edge projection; front coordinates remain original mm.
@@ -29,10 +31,10 @@ export function presentationLayers(document){
 }
 export function acrylicSurface(document){
  const a=ACRYLIC_SURFACES[document.material.id];if(!a)return null;
- const g=document.form.geometry,d=path(g),[c1,c2,c3]=a.colors;
+ const g=document.form.geometry,d=path(g),[c1,c2,c3]=a.colors,wall=usesAcrylicSeriesWall(document);
  const defs=`<defs><linearGradient id="material-acrylic-face" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="${c1}"/><stop offset=".56" stop-color="${c2}"/><stop offset="1" stop-color="${c3}"/></linearGradient><linearGradient id="material-reflection" x1="0" y1="0" x2="1" y2=".5"><stop stop-color="white" stop-opacity=".05"/><stop offset=".12" stop-color="white" stop-opacity=".23"/><stop offset=".24" stop-color="white" stop-opacity=".02"/><stop offset=".8" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white" stop-opacity=".08"/></linearGradient><linearGradient id="material-rim" x2=".6" y2="1"><stop stop-color="white"/><stop offset=".38" stop-color="${a.edge}"/><stop offset=".6" stop-color="white"/><stop offset="1" stop-color="${a.edge}"/></linearGradient></defs>`;
  const face=`${defs}<path data-preview-acrylic="${document.material.id}" d="${d}" fill="url(#material-acrylic-face)" fill-opacity="${a.opacity}" fill-rule="evenodd"/>`;
- const finish=`<g data-preview-finish="acrylic" pointer-events="none" clip-path="url(#material-form-clip)">${a.gloss?`<path d="${d}" fill="url(#material-reflection)" fill-rule="evenodd"/>`:''}<path d="${d}" fill="none" stroke="url(#material-rim)" stroke-width=".55"/><path d="${d}" fill="none" stroke="${a.edge}" stroke-opacity=".7" stroke-width=".1"/></g>`;
+ const finish=`<g data-preview-finish="acrylic" pointer-events="none" clip-path="url(#material-form-clip)">${a.gloss?`<path d="${d}" fill="url(#material-reflection)" fill-rule="evenodd"/>`:''}<path d="${d}" fill="none" stroke="url(#material-rim)" stroke-width="${wall?.045:.55}"/><path d="${d}" fill="none" stroke="${a.edge}" stroke-opacity=".7" stroke-width="${wall?.025:.1}"/></g>`;
  return {label:a.label,face,finish};
 }
 // Fine, deterministic preview texture. Composite against source alpha: never

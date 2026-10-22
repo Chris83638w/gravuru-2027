@@ -8,7 +8,7 @@ function box(o,w,h){if(![o.xMm,o.yMm,o.widthMm,o.heightMm].every(Number.isFinite
 
 export function validateFormDesigns(d){
  if(d.designs===undefined&&d.defaultDesignId===undefined)return;
- if(!Array.isArray(d.designs)||d.designs.length>30)fail('Höchstens 30 Designs pro Formprodukt.');
+ if(!Array.isArray(d.designs)||d.designs.length>60)fail('Höchstens 60 Designs pro Formprodukt.');
  const ids=new Set(),g=d.form.geometry;
  for(const a of d.designs){
   exact(a,['id','name','assetId','sourceSha256','originalName','xMm','yMm','widthMm','heightMm','sourcePrepared','fields',...(a.additions!==undefined?['additions']:[])]);validateAdditionPolicy(a);
@@ -22,7 +22,7 @@ export function validateFormDesigns(d){
    if(!id(f.id)||fields.has(f.id)||typeof f.label!=='string'||!f.label.trim()||f.label.length>80||!['text','photo','motif'].includes(f.type)||!['allowMove','allowScale','allowDelete'].every(k=>typeof f[k]==='boolean'))fail('Ungültiges Kundenfeld oder fehlende Freigabe.');
    fields.add(f.id);box(f,g.widthMm,g.heightMm);
    if(f.type==='text'){
-    if(typeof f.text!=='string'||!f.text.trim()||f.text.length>500||typeof f.font!=='string'||!Number.isInteger(f.sizeMm)||f.sizeMm<1||f.sizeMm>100||!/^#[a-fA-F0-9]{6}$/.test(f.color)||!['bold','italic','allowColor'].every(k=>typeof f[k]==='boolean'))fail('Text benötigt eine vorhandene Schrift, ganze mm und eine gültige Farbe.');
+    if(typeof f.text!=='string'||!f.text.trim()||f.text.length>500||typeof f.font!=='string'||!Number.isFinite(f.sizeMm)||f.sizeMm<1||f.sizeMm>100||!/^#[a-fA-F0-9]{6}$/.test(f.color)||!['bold','italic','allowColor'].every(k=>typeof f[k]==='boolean'))fail('Text benötigt eine vorhandene Schrift, eine endliche Größe in mm und eine gültige Farbe.');
    }else if(f.type==='motif'){
     if(!hash(f.motifSha256)||!/^#[a-fA-F0-9]{6}$/.test(f.color)||typeof f.allowColor!=='boolean'||!Number.isFinite(f.rotation)||Math.abs(f.rotation)>360)fail('Ungültige Motivfarbe oder Drehung.');formMotif(f.motifKey,f.motifSha256);
    }else if(!['rect','circle'].includes(f.shape)||typeof f.required!=='boolean'||f.shape==='circle'&&f.widthMm!==f.heightMm)fail('Ungültiger Fotobereich; runde Bereiche benötigen gleiche Breite und Höhe.');
@@ -39,7 +39,7 @@ export function verifyFormDesignSources(d,assets,fonts){
   for(const f of a.fields)if(f.type==='text'){
    if(!Object.hasOwn(fonts,f.font)||f.bold&&!fonts[f.font].bold)fail('Die gewählte Schrift oder ihr Fettschnitt ist nicht verfügbar.');
    const measured=measureText({...f,size:f.sizeMm},fonts);
-   if(measured.w>f.widthMm+.001||measured.h>f.heightMm+.001)fail('Der Text passt nicht in sein Feld. Feld vergrößern oder kleinere ganze Schriftgröße wählen.');
+   if(measured.w>f.widthMm+.001||measured.h>f.heightMm+.001)fail('Der Text passt nicht in sein Feld. Feld vergrößern oder kleinere Schriftgröße wählen.');
   }
  }
  return d;

@@ -22,3 +22,27 @@ export function drawGuides(stage,parent,geometry,lines){
  }
  parent.append(group);
 }
+
+// Native form-customer adapter. Coordinates are millimetres; overlays are UI-only.
+const formObject=f=>({id:f.id,x:f.xMm+f.widthMm/2,y:f.yMm+f.heightMm/2,w:f.widthMm,h:f.heightMm,rotation:f.rotation||0,uxHidden:!!f.deleted});
+export function alignedFormPosition(field,geometry,fields,options={}){
+ const g={width:geometry.widthMm,height:geometry.heightMm,safeMarginMm:2};
+ const aligned=alignedPosition(formObject(field),g,fields.filter(f=>!f.deleted).map(formObject),options);
+ return {position:options.snap===false?{xMm:field.xMm,yMm:field.yMm}:{xMm:Math.max(0,Math.min(geometry.widthMm-field.widthMm,aligned.object.x-field.widthMm/2)),yMm:Math.max(0,Math.min(geometry.heightMm-field.heightMm,aligned.object.y-field.heightMm/2))},lines:aligned.lines};
+}
+export function installFormGuides({stages,getGeometry,getFields,getSelected,getSource,isBusy,alignSelected}){
+ let settings={guides:true,snap:true,dimensions:false},lines=[];try{settings={...settings,...JSON.parse(localStorage.getItem('gravuru-form-guides-v1')||'{}')};}catch{}
+ const controls=[];
+ const style=document.createElement('style');style.textContent='.form-guide-tools{display:flex;gap:8px 14px;align-items:center;flex-wrap:wrap;padding:10px 0;font-size:13px}.form-guide-tools label{display:flex;gap:5px;align-items:center;margin:0}.form-guide-tools input{width:auto!important;margin:0}.form-guide-tools button{padding:6px 9px;font-size:12px}.form-guide-help{font-size:12px;color:#586963;margin:3px 0 8px}';document.head.append(style);
+ for(const stage of stages){const tools=document.createElement('div');tools.className='form-guide-tools';tools.setAttribute('aria-label','Ausrichthilfen');tools.innerHTML='<label><input type="checkbox" data-guide-setting="guides"> Hilfslinien</label><label><input type="checkbox" data-guide-setting="snap"> Einrasten</label><label><input type="checkbox" data-guide-setting="dimensions"> Maße</label><button type="button" data-form-align="x" title="Waagerecht in der Schildmitte ausrichten">↔ Mitte</button><button type="button" data-form-align="y" title="Senkrecht in der Schildmitte ausrichten">↕ Mitte</button>';stage.after(tools);const help=document.createElement('p');help.className='form-guide-help';help.textContent='Grün: Schildmitte · Rosa: Ausrichtung · Rot: 4 mm Abstand zum Bohrloch. Hilfslinien werden nicht exportiert.';tools.after(help);controls.push(tools);
+  tools.onchange=e=>{const key=e.target.dataset.guideSetting;if(!key)return;settings[key]=e.target.checked;try{localStorage.setItem('gravuru-form-guides-v1',JSON.stringify(settings));}catch{}sync();render();};
+  tools.onclick=e=>{const axis=e.target.closest('[data-form-align]')?.dataset.formAlign;if(!axis||isBusy()||!getSelected()||!getSource()?.allowMove)return;alignSelected(axis);};
+ }
+ function sync(){for(const tools of controls){for(const input of tools.querySelectorAll('[data-guide-setting]')){input.checked=!!settings[input.dataset.guideSetting];input.disabled=isBusy();}for(const button of tools.querySelectorAll('[data-form-align]'))button.disabled=isBusy()||!getSelected()||getSelected().deleted||!getSource()?.allowMove;}}
+ function render(){const g=getGeometry();if(!g)return;for(const stage of stages){const svg=stage.querySelector('svg');if(!svg)continue;clearGuides(stage);stage.querySelector('[data-form-guide-zones]')?.remove();
+  if(settings.guides){drawGuides(stage,svg,{width:g.widthMm,height:g.heightMm},lines);const group=document.createElementNS('http://www.w3.org/2000/svg','g'),clip='guide-interior-'+stage.id,outer=(g.contours||[]).filter(c=>c.role==='outer').map(c=>c.d).join(' ');group.dataset.formGuideZones='true';group.setAttribute('pointer-events','none');group.innerHTML='<defs><clipPath id="'+clip+'"><path d="'+outer+'"/></clipPath></defs><g clip-path="url(#'+clip+')"><path d="'+outer+'" fill="none" stroke="#b87535" stroke-width="4" stroke-opacity=".12"/>'+(g.contours||[]).filter(c=>c.role==='hole').map(c=>'<path data-hole-safety-mm="4" d="'+c.d+'" fill="none" stroke="#de4b4b" stroke-width="8" stroke-opacity=".2"/>').join('')+'</g>'+getFields().filter(f=>!f.deleted).map(f=>'<circle cx="'+(f.xMm+f.widthMm/2)+'" cy="'+(f.yMm+f.heightMm/2)+'" r="'+Math.max(.18,g.widthMm/500)+'" fill="#c83e8e" stroke="white" stroke-width=".08"/>').join('');svg.append(group);}
+  if(settings.dimensions){const f=getSelected();if(f&&!f.deleted){let group=svg.querySelector('[data-form-guide-zones]');if(!group){group=document.createElementNS('http://www.w3.org/2000/svg','g');group.dataset.formGuideZones='true';group.setAttribute('pointer-events','none');svg.append(group);}const text=document.createElementNS('http://www.w3.org/2000/svg','text');text.setAttribute('x',f.xMm+f.widthMm/2);text.setAttribute('y',Math.max(2,f.yMm-1));text.setAttribute('text-anchor','middle');text.setAttribute('font-size',Math.max(1.5,g.widthMm/65));text.setAttribute('fill','#177560');text.setAttribute('stroke','white');text.setAttribute('stroke-width','.25');text.setAttribute('paint-order','stroke');text.textContent=f.widthMm.toFixed(1)+' × '+f.heightMm.toFixed(1)+' mm';group.append(text);}}
+ }sync();}
+ function align(field,geometry,fields,event,stage){const scale=stage.querySelector('svg')?.getScreenCTM()?.a||1;const value=alignedFormPosition(field,geometry,fields,{threshold:Math.min(2,6/scale),snap:settings.snap&&!event.altKey});lines=settings.guides?value.lines:[];render();return value.position;}
+ return {render,sync,align,clearAlignment(){lines=[];render();}};
+}

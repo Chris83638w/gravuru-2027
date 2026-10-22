@@ -1,0 +1,19 @@
+{
+  "schema": "gravuru-acryl-source-snapshot/v2",
+  "createdAt": "2026-10-22T04:17:45.929Z",
+  "scope": "local-source-products-only",
+  "products": 798,
+  "assets": 40,
+  "contours": 160,
+  "fonts": 12,
+  "uncompressedBytes": 19126872,
+  "compressedBytes": 5120835,
+  "sha256": "1aa8a0c6cf86c9873e72f589562e65b8502e2f86a8212ace8dca18d555c92640",
+  "uncompressedSha256": "543085dbcde3402995d768ffd82b6ce4ec9c3fb88aee3708c86822a7c61938d1",
+  "groupId": "variants_ebc11a46-9d5c-43be-87f0-366e75e2668f",
+  "groupRevision": 5,
+  "serverCorrectionsAuthoritative": true,
+  "shopifyProductId": "gid://shopify/Product/16175627665788",
+  "shopifyVariantMapping": "Fetch authenticated live product variant IDs by exact SKU; catalogue contains internal configuration IDs, not Shopify Variant IDs.",
+  "chunks": 2093
+}

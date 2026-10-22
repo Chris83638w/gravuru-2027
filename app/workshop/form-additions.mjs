@@ -21,7 +21,7 @@ export function formMotifs(){
    const svgFragment=m.svgFragment.trim().startsWith('<svg')?m.svgFragment:`<g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">${m.svgFragment}</g>`;
    const sha256=createHash('sha256').update(JSON.stringify({key:m.key,bounds:m.bounds,svgFragment})).digest('hex');
    const translated={branch:'Zweig',wreath:'Kranz',mountain:'Berge',sun:'Sonne',infinity:'Unendlichkeit',frame:'Rahmen',line:'Linie',circle:'Kreis',flower:'Blume',moon:'Mond',wings:'Flügel',tree:'Baum',compass:'Kompass'};
-   catalog.set(m.key,{key:m.key,name:translated[m.key]||names.get(m.key)||m.key,bounds:m.bounds,svgFragment,sha256});
+   catalog.set(m.key,{key:m.key,name:translated[m.key]||names.get(m.key)||m.key,bounds:m.bounds,category:m.category||'Grundmotive',svgFragment,sha256});
   }
  }
  return [...catalog.values()];

@@ -1,0 +1,1 @@
+import cp from 'node:child_process';import {syncBuiltinESMExports} from 'node:module';if(process.platform==='win32'){const original=cp.execFileSync;cp.execFileSync=function(file,...args){return original(file==='python3'?process.env.GRAVURU_PYTHON:file,...args)};syncBuiltinESMExports();}

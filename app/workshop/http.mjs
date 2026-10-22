@@ -1,3 +1,7 @@
+import {createAcrylShopService} from './acryl-shop-service.mjs';
+import {createDesignCorrections} from './design-corrections.mjs';
+import {fitFormTextFrames} from './form-text-sizing.mjs';
+import {designPublicationStatus,acrylDesignTrafficLight} from './design-publication-status.mjs';
 import {createAiDesignJobs} from './ai-design-jobs.mjs';
 import {createFontLibrary,MAX_FONT_BYTES} from './font-library.mjs';
 import {prepareEditableDesign} from './editable-design.mjs';
@@ -65,6 +69,7 @@ import {planCustomerFields,applyCustomerFields} from './customer-fields.mjs';
 import {parseThemeCatalog} from './theme-catalog.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {DEFAULT_TENANT,createTenantRegistry,tenantFromRequest} from './tenant.mjs';
+import {createCatalogStructure} from './catalog-structure.mjs';
 import {categoryLabels} from './category-labels.mjs';
 import {tenantOverview} from './tenant-overview.mjs';
 import {createKonfiStatus,isCustomerCapable,pausedCustomerPage,PAUSED_MESSAGE} from './konfi-status.mjs';
@@ -127,6 +132,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(ownsBundled&&!repository.firstId())repository.create(seed);
   const families=createProductFamilies({filename,repository,tenantId});
+  const catalogStructure=createCatalogStructure({filename,tenantId});
   // B1: Klarnamen für Kategorie-Kennungen (nur Anzeige) und Kundenstatus je Konfi.
   const labelCategories=ids=>categoryLabels(ids,families.labelSources());
   const konfis=createKonfiStatus({filename,tenantId});
@@ -142,6 +148,8 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const localActor='werkstatt:'+createHash('sha256').update(csrfToken).digest('hex').slice(0,12);
   // Automatische Fertigungsfreigabe nur, wenn der fest zugeordnete Profilstand sie ausdrücklich erlaubt.
   const autoRelease=line=>Boolean(line.productionProfile)&&productionProfiles.get(line.productionProfile.id,line.productionProfile.revision).document.autoRelease===true;
+  const corrections=createDesignCorrections({filename,tenantId});
+  const acrylShop=createAcrylShopService({filename,tenantId,repository,variants,corrections,config:shopDrafts?.config});
   const customerDrafts=createFormCustomerStore({filename,autoRelease,tenantId}),photoJobs=new Set(),reviewJobs=new Set(),printPreviewJobs=new Set();
   const exportJobs=customerDrafts.exportJobs,orderIntake=customerDrafts.orderIntake;
   // Explicit server configuration only; constructing the default preview never enables Shopify writes.
@@ -156,11 +164,12 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.capabilities?.engraving===false&&m.product.method==='engraving')fail(422,'assembly_output_pending','Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const native=isNativeReviewSchema(m.schema),settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings});exportWorker.kick();return job;}
   function enqueuePrint(id,overrides){const m=customerDrafts.review(id).manifest;if(m.product.method!=='print')fail(422,'print_required','Dieser Ausgabeauftrag benötigt ein Druckprodukt.');const settings=formPrintSettings({...m.productionProfile?.document.output,...overrides}),native=isNativeReviewSchema(m.schema),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_PRINT_RECIPE:FORM_PRINT_RECIPE,recipeKey:native?acrylicPrintKey(settings):formPrintKey(settings),settings});exportWorker.kick();return job;}
   function customerRecord(id,version){assertKonfiAvailable(id);const record=repository.get(id,{revision:revision(version)});if(!isFormProduct(record.document)||!record.document.designs?.length)fail(422,'customer_design_missing','Bitte zuerst ein Formprodukt mit Design speichern.');verifyForm(record.document);return record;}
-  function customerResult(draft,token,state=draft.state){
+  function customerResult(draft,token,state=draft.state,fitText=false){
     const record=customerRecord(draft.productId,draft.productRevision),source=record.document.designs.find(d=>d.id===draft.designId);
+    if(fitText)state=fitFormTextFrames(record.document,draft.designId,state,formFonts);
     const resolved=resolveFormCustomer(record.document,draft.designId,state,{assets,fonts:formFonts,profiles:record.metadata.profiles,media:id=>customerDrafts.photo(draft.id,token,id)});
     const surface=materialPreview(record.document),base=surface.svg||contours.preview(record.document.form.contourId).toString(),overlay=formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')});
-    return {draft:{...draft,state},product:{id:record.id,revision:record.revision,profiles:record.metadata.profiles||null,name:record.document.name,materialName:FORM_MATERIALS.find(m=>m.id===record.document.material.id)?.name||record.document.material.id,thicknessMm:record.document.material.thicknessMm,basePriceCents:record.document.basePriceCents,method:record.document.processingMethod,geometry:{widthMm:record.document.form.geometry.widthMm,heightMm:record.document.form.geometry.heightMm,holeCount:record.document.form.geometry.holeCount},designs:record.document.designs.map(d=>({id:d.id,name:d.name})),sourceFields:[...source.fields,...resolved.addedFields.map(f=>({...f,customerAdded:true}))],additions:additionPolicy(source)},svg:composeMaterialPreview(base,overlay),artworkSvg:`<svg xmlns="http://www.w3.org/2000/svg" width="${record.document.form.geometry.widthMm}mm" height="${record.document.form.geometry.heightMm}mm" viewBox="0 0 ${record.document.form.geometry.widthMm} ${record.document.form.geometry.heightMm}">${formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')})}</svg>`,contourPath:record.document.form.geometry.contours.map(c=>c.d+' Z').join(' '),warnings:resolved.warnings,ready:resolved.ready,photos:[...resolved.photos.values()].map(p=>({mediaId:p.mediaId,width:p.width,height:p.height})),surfaceAvailable:Boolean(surface.svg)};
+    return {draft:{...draft,state},product:{id:record.id,revision:record.revision,profiles:record.metadata.profiles||null,name:record.document.name,materialName:FORM_MATERIALS.find(m=>m.id===record.document.material.id)?.name||record.document.material.id,thicknessMm:record.document.material.thicknessMm,basePriceCents:record.document.basePriceCents,method:record.document.processingMethod,geometry:{widthMm:record.document.form.geometry.widthMm,heightMm:record.document.form.geometry.heightMm,holeCount:record.document.form.geometry.holeCount,contours:record.document.form.geometry.contours},designs:record.document.designs.map(d=>({id:d.id,name:d.name})),sourceFields:[...source.fields,...resolved.addedFields.map(f=>({...f,customerAdded:true}))],additions:additionPolicy(source)},svg:composeMaterialPreview(base,overlay),artworkSvg:`<svg xmlns="http://www.w3.org/2000/svg" width="${record.document.form.geometry.widthMm}mm" height="${record.document.form.geometry.heightMm}mm" viewBox="0 0 ${record.document.form.geometry.widthMm} ${record.document.form.geometry.heightMm}">${formDesignOverlay(resolved.document,formFonts,draft.designId,{photoMarkup:f=>customerPhotoMarkup(f,resolved.photos.get(f.id)),sourceHref:id=>'data:image/svg+xml;base64,'+assets.read(id).toString('base64')})}</svg>`,contourPath:record.document.form.geometry.contours.map(c=>c.d+' Z').join(' '),warnings:resolved.warnings,ready:resolved.ready,photos:[...resolved.photos.values()].map(p=>({mediaId:p.mediaId,width:p.width,height:p.height})),surfaceAvailable:Boolean(surface.svg)};
   }
   function privateProductPreview(model,options){
     model=structuredClone(model);
@@ -314,6 +323,11 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/catalog-structure'){
+        if(method==='GET')return json(res,200,catalogStructure.read());
+        if(method==='PATCH')return json(res,200,catalogStructure.save(await body(req,16384)));
+        fail(405,'method_not_allowed','Die Katalogstruktur unterstützt Lesen und Speichern.');
+      }
       if(pathname==='/api/workshop/ai-design/status'&&method==='GET')return json(res,200,aiJobs.status());
       if(pathname==='/api/workshop/ai-batches/prepare'&&method==='POST'){const data=await body(req,32768);if(Object.keys(data).join(',')!=='products')fail(422,'ai_batch_invalid','Ungültige Produktauswahl.');return json(res,200,aiBatches.prepare(data.products));}
       if(pathname==='/api/workshop/ai-batches'){
@@ -552,10 +566,50 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
           return json(res,201,customerDrafts.captureAcrylicReview(key,bundle));
         }finally{reviewJobs.delete(job);}
       }
+      if(pathname==='/api/workshop/acryl-shop'){
+        const data=method==='GET'?Object.fromEntries(url.searchParams):await body(req,16384);
+        if(method==='GET')return json(res,200,await acrylShop.status(data.group,{fresh:data.fresh==='1'}));
+        if(method==='POST')return json(res,200,await acrylShop.act(data.group,data,merchantSession));
+        fail(405,'method','Aktion nicht unterstützt.');
+      }
+      if(pathname==='/api/workshop/acryl-gallery'&&method==='GET'){
+        const name=url.searchParams.get('kind')==='forms'?'Formvorlagen.html':'Designgalerie.html';
+        return json(res,200,{html:fs.readFileSync(new URL('./acryl-gallery/'+name,import.meta.url),'utf8')});
+      }
+      if(pathname==='/api/workshop/design-correction-history'&&method==='GET'){return json(res,200,{corrections:corrections.history().filter(row=>{try{return repository.get(row.productId).revision!==row.productRevision;}catch{return false;}})});}
+      if(pathname==='/api/workshop/design-preview'&&method==='GET'){
+        const record=customerRecord(url.searchParams.get('productId'),revision(url.searchParams.get('productRevision'))),designId=url.searchParams.get('designId'),source=record.document.designs.find(d=>d.id===designId);
+        if(!source)fail(404,'design_missing','Design nicht gefunden.');
+        const correction=corrections.get(record.id,record.revision,designId),state=correction?.state||initialFormCustomerState(source);
+        const view=customerResult({productId:record.id,productRevision:record.revision,designId,state},null);
+        return json(res,200,{svg:view.svg,correction});
+      }
+      if(pathname==='/api/workshop/design-corrections'){
+        const data=method==='GET'?Object.fromEntries(url.searchParams):await body(req),record=customerRecord(data.productId,revision(data.productRevision)),designId=data.designId;
+        if(!record.document.designs.some(d=>d.id===designId))fail(404,'design_missing','Design nicht gefunden.');
+        if(method==='GET')return json(res,200,{correction:corrections.get(record.id,record.revision,designId)});
+        if(method!=='POST'||Object.keys(data).some(k=>!['productId','productRevision','designId','state','expectedRevision'].includes(k)))fail(422,'correction_fields','Ungültige Korrekturdaten.');
+        const state=fitFormTextFrames(record.document,designId,data.state,formFonts),resolved=resolveFormCustomer(record.document,designId,state,{assets,fonts:formFonts,profiles:record.metadata.profiles});
+        if(state.fields.some(f=>f.mediaId))fail(422,'correction_private_photo','Private Kundenfotos können nicht als gemeinsame Designvorlage gespeichert werden.');
+        return json(res,200,{correction:corrections.save({productId:record.id,productRevision:record.revision,designId,state,expectedRevision:data.expectedRevision,actor:merchantSession?.subject||localActor})});
+      }
       if(pathname==='/api/workshop/customer-drafts'&&method==='POST'){
         const data=await body(req),record=customerRecord(data.productId,data.productRevision),design=record.document.designs.find(d=>d.id===(data.designId||record.document.defaultDesignId));
         if(!design||repository.get(record.id).status==='archived')fail(422,'customer_design_missing','Bitte ein aktives Produkt und gültiges Design wählen.');
-        const {token,...draft}=customerDrafts.create(record,design.id,initialFormCustomerState(design));return json(res,201,{...customerResult(draft,token),token});
+        let initial=initialFormCustomerState(design),inheritedFromRevision=null;
+        if(data.inherit){
+         const previous=customerDrafts.get(data.inherit.id,data.inherit.token),old=customerRecord(previous.productId,previous.productRevision);
+         const shape=d=>JSON.stringify(d.form.geometry),layout=d=>{const x=structuredClone(d);delete x.additions;for(const f of x.fields)for(const k of ['allowMove','allowScale','allowDelete','allowColor'])delete f[k];return JSON.stringify(x);};
+         const oldDesign=old.document.designs.find(d=>d.id===design.id);
+         if(previous.productId===record.id&&previous.designId===design.id&&previous.productRevision<record.revision&&oldDesign&&shape(old.document)===shape(record.document)&&layout(oldDesign)===layout(design)){
+          initial=fitFormTextFrames(record.document,design.id,previous.state,formFonts);
+          resolveFormCustomer(record.document,design.id,initial,{assets,fonts:formFonts,profiles:record.metadata.profiles,media:id=>customerDrafts.photo(previous.id,data.inherit.token,id)});
+          // Photo IDs belong to their original draft; never move them across drafts.
+          if(!initial.fields.some(f=>f.mediaId))inheritedFromRevision=previous.productRevision;else initial=initialFormCustomerState(design);
+         }
+        }
+        if(data.shared===true){const shared=corrections.get(record.id,record.revision,design.id);if(shared)initial=shared.state;}
+        const {token,...draft}=customerDrafts.create(record,design.id,initial);return json(res,201,{...customerResult(draft,token),token,inheritedFromRevision});
       }
       if(pathname==='/api/workshop/export-jobs'){
         if(method==='GET')return json(res,200,{jobs:exportJobs.list()});
@@ -637,8 +691,8 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
             const placement=photoPlacement({w:photoField.widthMm,h:photoField.heightMm},{width:photo.width,height:photo.height}),effectiveDpi=Math.floor(Math.min(photo.width/placement.w,photo.height/placement.h)*25.4),note=photoResolutionNote(effectiveDpi,resolutionTargetDpi(photoRecord.metadata?.productionProfile));
             return json(res,201,{...customerDrafts.addPhoto(draft.id,token,photo),photoResolution:{grade:note.grade,effectiveDpi:note.effectiveDpi,targetDpi:note.targetDpi},hint:note.hint});}finally{photoJobs.delete(draft.id);}
         }
-        if(action==='preview'&&method==='POST')return json(res,200,customerResult(draft,token,data.state));
-        if(!action&&method==='PATCH'){customerResult(draft,token,data.state);const saved=customerDrafts.save(draft.id,token,data.state,data.expectedRevision);return json(res,200,customerResult(saved,token));}
+        if(action==='preview'&&method==='POST')return json(res,200,customerResult(draft,token,data.state,data.fitText===true));
+        if(!action&&method==='PATCH'){const checked=customerResult(draft,token,data.state,data.fitText===true);const saved=customerDrafts.save(draft.id,token,checked.draft.state,data.expectedRevision);return json(res,200,customerResult(saved,token));}
         fail(405,'method_not_allowed','Aktion nicht unterstützt.');
       }
       if(pathname==='/api/workshop/form-materials'&&method==='GET')return json(res,200,{materials:FORM_MATERIALS});
@@ -879,6 +933,15 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         if(method==='POST'){const data=await body(req,16*1024*1024);return json(res,201,repository.create(data.document));}
         fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       }
+      const designStatus=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)\/design-status$/);
+      if(designStatus&&method==='GET'){
+       const record=repository.get(designStatus[1],{revision:revision(url.searchParams.get('revision'))}),designId=url.searchParams.get('design')||record.document.defaultDesignId;
+       if(!record.document.designs?.some(d=>d.id===designId))fail(404,'design_missing','Design nicht gefunden.');
+       const status=designPublicationStatus({record,head:repository.get(record.id),designId,bindings:orderIntake.bindings(),transfers:customerDrafts.shopDraftTransfers.completed()});
+       const group=url.searchParams.get('group')||variants.list().find(g=>g.document.variants.some(v=>v.productId===record.id))?.id;
+       if(group&&acrylShop.enabled){const live=await acrylShop.status(group);status.shopify={...status.shopify,linked:Boolean(live.product),liveVerified:live.verified,online:live.product?.status==='ACTIVE'&&Boolean(live.product.onlineStoreUrl),label:live.product?'Shopify-Artikel verbunden':'Noch kein Shopify-Artikel'};status.trafficLight=acrylDesignTrafficLight(live,designId);status.saveEffect='shared-correction-only';status.publishReason=live.error||live.publishReason;status.shopify.adminUrl=live.product?.adminUrl;}
+       return json(res,200,status);
+      }
       const match=pathname.match(/^\/api\/workshop\/products\/(cfg_[a-f0-9-]+)(?:\/(copy|archive|publish|revisions|compare|restore|resolve|validate-design|shop-preparation|shop-bindings))?$/);
       if(!match)fail(404,'not_found','Werkstattfunktion nicht gefunden.');
       const [,id,action]=match;
@@ -929,7 +992,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {tenantId,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }
 
 /** Loopback preview; optional test session gate is not a public deployment.

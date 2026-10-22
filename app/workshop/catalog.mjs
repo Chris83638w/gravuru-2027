@@ -10,6 +10,7 @@ export function workshopCatalog(localResources={}){
     const catalog=JSON.parse(manifest.parts.map(name=>fs.readFileSync(path.join(runtime,name),'utf8')).join(''));
     const decode=kind=>JSON.parse(gunzipSync(Buffer.from(fs.readdirSync(runtime).filter(name=>new RegExp('^gravuru-entwurf-'+kind+'-[0-9]+\\.txt$').test(name)).sort().map(name=>fs.readFileSync(path.join(runtime,name),'utf8')).join(''),'base64')).toString('utf8'));
     const extraFonts=decode('fonts'),motifs=decode('motive');
+    const acrylicFile=path.join(runtime,'acryl-original-motifs.json');if(fs.existsSync(acrylicFile))motifs.push(...JSON.parse(fs.readFileSync(acrylicFile,'utf8')));
     resources={fonts:{...catalog.fonts,...extraFonts},motifs:[...Object.entries(catalog.motifs).map(([key,svgFragment])=>({key,svgFragment,bounds:catalog.motif_bounds[key]})),...motifs]};
     loaded={fonts:[...new Set([...Object.keys(catalog.fonts),...Object.keys(extraFonts)])].map(id=>({id,name:id})),motifs:[...Object.keys(catalog.motifs).map(id=>({id,name:({paw:'Pfote',dog:'Hund',heart:'Herz',rainbow:'Regenbogen',star:'Stern',house:'Haus'})[id]||id})),...motifs.map(m=>({id:m.key,name:m.name}))]};
   }

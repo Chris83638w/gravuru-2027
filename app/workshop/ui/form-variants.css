@@ -2,3 +2,5 @@
 .variant-import-row{padding:18px;border:1px solid #dfe4e8;border-radius:12px;margin:16px 0;overflow-wrap:anywhere}.variant-import-row h3{margin:0;font-size:18px}.variant-import-row p{margin:8px 0}.variant-import-row small{display:block;color:#6b7784;margin:4px 0}.variant-import-row ul{padding-left:20px;max-height:360px;overflow:auto}.variant-import-row li{margin:12px 0;font-size:13px}#result{margin-top:24px}#check{margin-top:20px}
 
 .export-panel{margin-bottom:24px}#export-groups{max-height:320px;overflow:auto}#export-groups .check{padding:12px;border-bottom:1px solid #e5e8ec;margin:0}#export-groups small{display:block;margin-top:5px;color:#64717c}#export-groups span{overflow-wrap:anywhere;min-width:0}#export-notice{font-size:13px}
+
+.series-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin:24px 0}.series-options label{display:grid;gap:8px;font-weight:600}.series-options select{width:100%;padding:12px;background:white;border:1px solid #b7c4c2;border-radius:8px;font:inherit}.variant-grid:has(.variant-choice:only-child){grid-template-columns:minmax(280px,680px)}.variant-choice img{object-fit:contain}

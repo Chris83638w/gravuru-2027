@@ -1,3 +1,9 @@
+## Sichtprüfung: gespeicherte Gestaltung mit Foto, zwei/drei Exemplare · 22.10.2026
+
+Ausgangscommit 5301ce97d8170c08f05033deeed25df61c61da1b. Gespeicherte Konfigurationsrevision nach manueller Bestätigung der Adresszeile im bisherigen Chrome-Tab wieder geöffnet. Tatsächlicher Mengenwechsel und Preisdetails geprüft: 2 × 31,00 EUR = 62,00 EUR; 3 × 29,68 EUR = 89,04 EUR, jeweils einschließlich Foto vor Versand. Foto, beide Texte, Befestigung, Format und vier Ebenen erhalten; anschließend wieder Menge 2. Keine erneute Speicherung oder Bestellung, keine Anwendung-/Server-/Shopify-Änderung. Private Screenshots und Quittung lokal gesichert. Der folgende historische Hinweis zur offenen Sichtprüfung ist damit überholt.
+
+Der zeitweise leere App-Bereich bei direkter Navigation ist noch nicht allgemein behoben. Nächster Schritt: diesen Ladefehler gezielt untersuchen und anschließend weitere konkrete Produkt-/Variantenbindungen prüfen. [Abnahme und Grenzen](docs/BROWSER-PREIS-ABNAHME-20261022.md).
+
 ## Browserpreis, Foto bis 15 MB und weitere Testbestellung · 22.10.2026
 
 Die zwei unterschiedlichen Editorfassungen verwenden jetzt die gemeinsame vollständige Stückpreisberechnung, einschließlich rabattierter Fotoaufschläge. Neueste Nutzerentscheidung umgesetzt: höchstens 15 MB je Foto, keine zusätzliche Megapixelgrenze beim Upload. Linux-Worker begrenzen stattdessen Speicher, CPU-Zeit und Parallelität; Originale bleiben byteidentisch. Acht lokale Fototests und zehn Linux-Prüfungen bestanden; sechs gezielte Preisprüfungen je Editorfassung und 29 bestehende Staffelprüfungen bestanden. Änderungen auf dem Testhost mit Quellbackup und Hashprüfung installiert.

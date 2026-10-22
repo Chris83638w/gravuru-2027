@@ -1,7 +1,7 @@
 {
   "repository": "Chris83638w/gravuru-2027",
   "branch": "task/universelle-konfi-anbindung-20261022",
-  "parentCommit": "5246eddb7211d16929e003cd3d3a0a17cdafdfc9",
+  "parentCommit": "5301ce97d8170c08f05033deeed25df61c61da1b",
   "readme": "docs/BROWSER-PREIS-ABNAHME-20261022.md",
   "serverDeployed": true,
   "shopifyModified": true,
@@ -11,8 +11,24 @@
   "legacyVariantAssignments": 9,
   "acrylVariantAssignments": 1,
   "testOrders": [
-    {"name":"#1024","id":"13745774461308","quantity":2,"itemsCents":6200,"shippingCents":499,"totalCents":6699,"workshopReceived":true},
-    {"name":"#1025","id":"13745779016060","quantity":3,"itemsCents":8904,"shippingCents":0,"totalCents":8904,"workshopReceived":true}
+    {
+      "name": "#1024",
+      "id": "13745774461308",
+      "quantity": 2,
+      "itemsCents": 6200,
+      "shippingCents": 499,
+      "totalCents": 6699,
+      "workshopReceived": true
+    },
+    {
+      "name": "#1025",
+      "id": "13745779016060",
+      "quantity": 3,
+      "itemsCents": 8904,
+      "shippingCents": 0,
+      "totalCents": 8904,
+      "workshopReceived": true
+    }
   ],
   "originalPhotoHashesVerified": true,
   "configurationRevisionsVerified": true,
@@ -31,11 +47,38 @@
   "photoLinuxTestsPassed": 10,
   "photoWorkerUpdatedInBothStores": true,
   "privatePhotoSavedAndOriginalVerified": true,
-  "newPhotoBrowserTestOrder": {"id":"13746109022588","quantity":2,"itemsCents":6200,"shippingCents":499,"totalCents":6699,"workshopReceived":true,"productionReady":false},
+  "newPhotoBrowserTestOrder": {
+    "id": "13746109022588",
+    "quantity": 2,
+    "itemsCents": 6200,
+    "shippingCents": 499,
+    "totalCents": 6699,
+    "workshopReceived": true,
+    "productionReady": false
+  },
   "savedProofReopenedInDashboard": true,
-  "freshEditorPriceAndReopenBrowserCheckPending": true,
+  "freshEditorPriceAndReopenBrowserCheckPending": false,
   "allShopProductsIndividuallyBound": false,
   "publicReleaseEnabled": false,
   "productionReleased": false,
-  "privateDataIncludedInGithub": false
+  "privateDataIncludedInGithub": false,
+  "savedRevisionReopenedInEditor": true,
+  "visiblePhotoTierPriceChecks": [
+    {
+      "quantity": 2,
+      "barTotalCents": 6200,
+      "detailsTotalCents": 6200,
+      "photoCount": 1
+    },
+    {
+      "quantity": 3,
+      "barTotalCents": 8904,
+      "detailsTotalCents": 8904,
+      "photoCount": 1
+    }
+  ],
+  "browserQuantityRestoredTo": 2,
+  "manualAddressConfirmationRequiredForReopen": true,
+  "priceCheckCreatedNewOrder": false,
+  "latestStep": "Browser-Sichtprüfung nach manueller Wiederöffnung bestanden; direkter App-Ladefehler separat offen."
 }

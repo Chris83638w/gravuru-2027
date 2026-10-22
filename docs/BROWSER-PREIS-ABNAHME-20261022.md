@@ -49,7 +49,24 @@ Technische Grundlagen: [Pillow zur Pixelwarnung](https://pillow.readthedocs.io/e
 - Originalfoto serverseitig und im anschließend heruntergeladenen privaten Prüfpaket byteidentisch bestätigt. Paket lokal 5.692.074 Bytes; ZIP-Prüfung und alle acht enthaltenen Dateiprüfsummen bestanden. Private Quittungen, Paket und Checkout-Screenshot liegen im bestehenden lokalen privaten Sicherungsordner unter `shopify-tier-tests/browser-abnahme/`, nicht in GitHub.
 - Der gesicherte Stand wurde im Dashboard erneut geöffnet: 62,00 €, Menge 2, ein Originalfoto und unveränderte Originalpixelmaße sichtbar. Die früheren Prüfstände bleiben vorhanden.
 
-## Offene Prüfgrenzen und genau nächster Schritt
+## Sichtprüfung nach Wiederöffnung bestanden · 22.10.2026
+
+Die gespeicherte Konfigurationsrevision wurde im ursprünglichen Chrome-Tab tatsächlich wieder im frisch geladenen Editor geöffnet. Der Nutzer bestätigte dafür die Adresszeile manuell; direkte automatische Navigation hatte weiterhin einen leeren App-Bereich gezeigt. Diese erfolgreiche Wiederöffnung ist keine allgemeine Behebung des Ladefehlers.
+
+Geprüft über die sichtbaren Bedienelemente und den Preisdetails-Dialog:
+
+| Menge | Grundpreis je Stück | Foto je Stück vor Rabatt | Staffelrabatt je Stück | Stückpreis | Gesamt vor Versand |
+|---|---:|---:|---:|---:|---:|
+| 2 | 22,99 EUR | 9,99 EUR | 1,98 EUR (6 %) | 31,00 EUR | 62,00 EUR |
+| 3 | 22,99 EUR | 9,99 EUR | 3,30 EUR (10 %) | 29,68 EUR | 89,04 EUR |
+
+Beide Summen erschienen sowohl in der Preisleiste als auch im Preisdetails-Dialog. Ein gespeichertes Originalfoto, beide Texte, die Ausführung ohne Befestigung, das Format 220 × 140 mm und vier Ebenen blieben erhalten. Die Fotoansicht zeigt weiterhin Bildbearbeitung, Ersetzen, Entfernen und den gewählten Freistellwunsch. Nach dem Test wurde nur die sichtbare Menge wieder auf 2 gestellt; die Anzeige beträgt wieder 62,00 EUR.
+
+Keine erneute Speicherung, keine neue Konfigurationsrevision, keine neue Bestellung und keine Änderungen an Anwendung, Server oder Shopify vorgenommen. Das private Sicherungspaket hat weiterhin dieselbe SHA-256-Prüfsumme. Screenshots der beiden Preisdetails und der erhaltenen Gestaltung sowie eine private Prüfquittung liegen lokal im bestehenden Ordner `shopify-tier-tests/browser-abnahme/`; keine Fotos, Gestaltungen oder Sitzungsdaten wurden in GitHub aufgenommen.
+
+Die vorher als offen markierte sichtbare Mengen-/Fotopreisprüfung und Wiederöffnung ist damit bestanden. Offen bleiben der gelegentlich leere App-Bereich bei direkter Navigation sowie weitere konkrete Produkt-/Variantenbindungen. Die neun Legacy- und eine Acryl-Zuordnung sind weiterhin kein Nachweis für die Freigabe sämtlicher Produkte.
+
+## Historischer Zwischenstand vor der jetzt bestandenen Sichtprüfung
 
 Die neu geladene Preisanzeige ist über die tatsächliche ausgeführte UI-Funktion geprüft. Der bis zur Bestellung verwendete Browserentwurf hatte noch die vor dem Fix geladene Anzeige von 63,20 €; sein bestätigter Warenkorb und Checkout zeigten korrekt 62,00 €. Das vollständige Wiederöffnen dieser Konfigurationsrevision im frisch geladenen Editor und der sichtbare Wechsel zwischen zwei/drei Exemplaren (62,00 €/89,04 €) sind deshalb noch separat abzunehmen. Die erfolgreiche neue Fotobestellung ersetzt diese offene UI-Prüfung nicht. Die frühere Drei-Stück-Testbestellung bleibt nachgewiesen; mit dem neuen Foto wurde jetzt die Zwei-Stück-Strecke geprüft.
 

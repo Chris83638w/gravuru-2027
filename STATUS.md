@@ -1,3 +1,7 @@
+## Direkter App-Start: Browsersteuerung hält Dokumentantwort an · 22.10.2026
+
+Ausgangsstand 1382509d689a954f6f7801f7f52c94b2dbacdd92. Leerer App-Frame in separater Vorschau reproduziert; Browsersteuerung meldet eine angehaltene Dokumentantwort. Separater HTTPS-Abruf liefert vollständiges Start-HTML (200); gespeicherte Gestaltung im ursprünglichen Tab weiterhin mit Foto, vier Ebenen und 62,00 EUR sichtbar. Kein belegter Konfiguratorcodefehler und kein dauerhafter Ladefix; keine Anwendung-/Server-/Shopify- oder Datenänderung. [Diagnose, Nachweisgrenzen und nächster Schritt](docs/APP-START-DIAGNOSE-20261022.md). Vor weiteren Eingriffen den Start unabhängig von der angehaltenen Browsersteuerung prüfen.
+
 ## Sichtprüfung: gespeicherte Gestaltung mit Foto, zwei/drei Exemplare · 22.10.2026
 
 Ausgangscommit 5301ce97d8170c08f05033deeed25df61c61da1b. Gespeicherte Konfigurationsrevision nach manueller Bestätigung der Adresszeile im bisherigen Chrome-Tab wieder geöffnet. Tatsächlicher Mengenwechsel und Preisdetails geprüft: 2 × 31,00 EUR = 62,00 EUR; 3 × 29,68 EUR = 89,04 EUR, jeweils einschließlich Foto vor Versand. Foto, beide Texte, Befestigung, Format und vier Ebenen erhalten; anschließend wieder Menge 2. Keine erneute Speicherung oder Bestellung, keine Anwendung-/Server-/Shopify-Änderung. Private Screenshots und Quittung lokal gesichert. Der folgende historische Hinweis zur offenen Sichtprüfung ist damit überholt.

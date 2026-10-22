@@ -1,7 +1,7 @@
 {
   "repository": "Chris83638w/gravuru-2027",
   "branch": "task/universelle-konfi-anbindung-20261022",
-  "parentCommit": "5301ce97d8170c08f05033deeed25df61c61da1b",
+  "parentCommit": "1382509d689a954f6f7801f7f52c94b2dbacdd92",
   "readme": "docs/BROWSER-PREIS-ABNAHME-20261022.md",
   "serverDeployed": true,
   "shopifyModified": true,
@@ -80,5 +80,16 @@
   "browserQuantityRestoredTo": 2,
   "manualAddressConfirmationRequiredForReopen": true,
   "priceCheckCreatedNewOrder": false,
-  "latestStep": "Browser-Sichtprüfung nach manueller Wiederöffnung bestanden; direkter App-Ladefehler separat offen."
+  "latestStep": "Direkter App-Start untersucht: Browsersteuerung hält Dokumentantwort an; dauerhafter Ladefix nicht nachgewiesen, gespeicherte Gestaltung erhalten.",
+  "startupDiagnosis": {
+    "document": "docs/APP-START-DIAGNOSE-20261022.md",
+    "browserDocumentResponsePaused": true,
+    "directHtmlHttpStatus": 200,
+    "applicationRootCauseConfirmed": false,
+    "permanentFixVerified": false,
+    "applicationChanged": false,
+    "serverChanged": false,
+    "shopifyChanged": false,
+    "savedDesignPreserved": true
+  }
 }

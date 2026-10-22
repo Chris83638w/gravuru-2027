@@ -1,6 +1,5 @@
 import {spacerPreview,screwPreview,keepoutPreview,optionTileIcon,optionTilePrice} from './option-media.mjs';
 import {designAreaPreview} from './design-area.mjs';
-import {textsNearHoles,holeHintText} from '../../platform/sources/app/shared/models/hole-proximity.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl} from './material-surface.mjs';
@@ -36,8 +35,9 @@ export function installUniversal(configInput) {
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
-    // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026); Texte nahe an Löchern
-    // meldet weiter der Hinweis. Schrauben/Abstandshalter erscheinen, wenn die Befestigung sie enthält.
+    // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026), und seit 22./23.10.2026
+    // auch keinen Hinweis zu Texten nahe an Löchern (nur noch mechanische Prüfung). Schrauben/Abstandshalter
+    // erscheinen, wenn die Befestigung sie enthält.
     return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,profile(surface)),profile(surface)),profile(surface),{show:false,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
@@ -178,7 +178,9 @@ export function installUniversal(configInput) {
     $('.fk-font-section').append(colorControl);
     colorControl.addEventListener('input',e=>{const o=el.selected();if(o&&!locked(o)){el.record();o.color=e.target.value;el.sync();}});
     const issue=document.createElement('p');issue.dataset.mInvalid='';issue.setAttribute('role','status');$('.guided-download').before(issue);
-    const holeHint=document.createElement('p');holeHint.dataset.mHoleHint='';holeHint.setAttribute('role','status');holeHint.hidden=true;holeHint.style.cssText='background:#fff4e5;border:1px solid #f0c27b;border-radius:10px;padding:10px 12px;font-size:14px;margin:10px 16px';($('.stage-wrap')||$('.guided-download').parentElement).append(holeHint);
+    // Chris 22./23.10.2026: Kein Kundenhinweis „Text in der Bohrloch-Schutzzone“ mehr (vorher hole-proximity.mjs
+    // hier). Die mechanische Prüfung (mounting-access.mjs, nicht ignorierbar) und die Überlagerungswarnung bei
+    // Gravur (customer-tools-model.mjs) bleiben; Werkstatt-Prüfvermerk und Händlervorschau nutzen hole-proximity weiter.
     const exports=$('.export-type');exports.replaceChildren(new Option('Produktvorschau · PNG','png'),new Option('Vektorentwurf ohne Foto · SVG 1:1','vectors'));
     el.export=async function(){
       try{
@@ -274,8 +276,6 @@ export function installUniversal(configInput) {
       for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=options[select.dataset.mOption];
       updateOptionVisibility();
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
-      // Independent of validity: the drill-hole hint must also show while another issue is open.
-      try{const shown=current();const hint=holeHintText(textsNearHoles({...shown,objects:shown.objects.filter(o=>objectSurface(o)===activeSurface())},profile(),el.fontData));holeHint.textContent=hint;holeHint.hidden=!hint;}catch{holeHint.hidden=true;}
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';

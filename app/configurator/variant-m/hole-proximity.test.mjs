@@ -33,6 +33,23 @@ test('texts touching the protection zone get a hint; motifs and photos never do'
  assert.equal(textsNearHoles({objects:[{id:'r',type:'text',text:'x',x:20,y:30,w:24,h:3,rotation:90}]},p,null).length,0);
 });
 
+// Chris 22./23.10.2026: Der Kundenhinweis „Text in der Bohrloch-Schutzzone“ entfällt im Kundeneditor; die
+// mechanische Prüfung (mounting-access, nicht ignorierbar) und die Überlagerungswarnung bei Gravur bleiben.
+// Das Modell hole-proximity bleibt für Werkstatt-Prüfvermerk (acrylic-review) und Händlervorschau (product-preview).
+test('Bohrloch-Hinweis: nicht mehr im Kundeneditor (adapter), weiter in Werkstatt-Prüfung und Händlervorschau',()=>{
+ const read=file=>fs.readFileSync(new URL(file,import.meta.url),'utf8');
+ const adapter=read('./adapter.mjs');
+ assert.doesNotMatch(adapter,/import [^;]*hole-proximity|textsNearHoles\(|holeHintText\(|mHoleHint/,'Kundeneditor erzeugt keinen Bohrloch-Hinweis mehr');
+ assert.match(adapter,/Kein Kundenhinweis „Text in der Bohrloch-Schutzzone“ mehr/);
+ assert.match(read('../../workshop/acrylic-review.mjs'),/textsNearHoles\(state\.design,selectedProfile\(config,state\.options\)/,'Werkstatt-Prüfvermerk bleibt');
+ assert.match(read('../../workshop/product-preview.mjs'),/holeHintText\(textsNearHoles\(d,p,config\.localResources\.fonts\)\)/,'Händlervorschau bleibt');
+ // Mechanische Prüfung bleibt unverändert und nicht ignorierbar; Überlagerungswarnung nur bei Gravur.
+ const tools=read('./customer-tools.mjs');
+ assert.match(tools,/const issue=mechanicalHints\(profile,el\.state\)\[0\];if\(!issue\)return;e\.preventDefault\(\);e\.stopImmediatePropagation\(\);say\(issue\.message\);/);
+ assert.match(tools,/if\(hint&&hint\.code!=='mounting-access'\)ignored\.add\(hint\.key\)/);
+ assert.match(read('./customer-tools-model.mjs'),/return getProcessingProfile\(profile\)\.method==='engraving';/);
+});
+
 test('protection zones are a preview layer only and appear only when requested',()=>{
  const p=selectedProfile(config,{mounting:'B02'}),svg='<svg viewBox="0 0 90 60"><rect/></svg>';
  assert.equal(keepoutPreview(svg,p,{show:false}),svg);

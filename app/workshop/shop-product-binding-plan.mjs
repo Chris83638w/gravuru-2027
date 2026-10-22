@@ -54,7 +54,7 @@ function checkAdapter(adapter, expected) {
   for (const method of ['getCurrentProduct', 'resolveSelection', 'resolveProductionProfile', 'getBindings'])
     if (typeof adapter[method] !== 'function') fail('shop_binding_adapter', 'Ein erforderlicher Leseadapter fehlt.');
 }
-function productSelection(adapter, item) {
+function productSelection(adapter, item, purpose) {
   if (!object(item) || !configId.test(item.productId) || !integer(item.productRevision)) fail('shop_binding_product', 'Produkt-ID und fester Produktstand sind erforderlich.');
   const record = read(adapter, 'getCurrentProduct', item.productId);
   if (!object(record) || record.id !== item.productId || record.revision !== item.productRevision) fail('shop_binding_revision', 'Der ausgewählte Produktstand ist nicht mehr aktuell.');
@@ -69,12 +69,28 @@ function productSelection(adapter, item) {
   const resolved = read(adapter, 'resolveSelection', record, selected);
   if (!object(resolved) || !equal(options(resolved.options), selected) || !cents(resolved.unitCents)) fail('shop_binding_selection', 'Ausführung oder bestätigter Basispreis stimmen nicht überein.');
   if (record.document.schema === 'gravuru-form-product/v1' && Object.keys(selected).length) fail('shop_binding_options', 'Formprodukt ist bereits eine feste Ausführung.');
-  const ref = record.document.productionProfile, profile = read(adapter, 'resolveProductionProfile', record.document);
-  if (!object(ref) || !profileId.test(ref.id) || !integer(ref.revision) || !object(profile) || profile.id !== ref.id ||
-      profile.revision !== ref.revision || !sha.test(profile.sha256) || !object(profile.document) || profile.document.archived === true) fail('shop_binding_profile', 'Passender fester Fertigungsprofilstand fehlt.');
+  const ref = record.document.productionProfile;
+  let productionProfileRef = null;
+  if (ref == null) {
+    if (purpose !== 'id-binding') {
+      // Preserve the strict adapter's established missing-profile error. An
+      // adapter returning null (or any value without a reference) still fails.
+      read(adapter, 'resolveProductionProfile', record.document);
+      fail('shop_binding_profile', 'Passender fester Fertigungsprofilstand fehlt.');
+    }
+  } else {
+    // ID planning permits only an actually absent assignment. Never suppress a
+    // malformed, missing revision, archived or incompatible existing reference.
+    if (!object(ref) || Object.keys(ref).length !== 2 || !profileId.test(ref.id) || !integer(ref.revision))
+      fail('shop_binding_profile', 'Der gespeicherte Fertigungsprofilverweis ist ungültig.');
+    const profile = read(adapter, 'resolveProductionProfile', record.document);
+    if (!object(profile) || profile.id !== ref.id || profile.revision !== ref.revision || !sha.test(profile.sha256) ||
+        !object(profile.document) || profile.document.archived === true) fail('shop_binding_profile', 'Passender fester Fertigungsprofilstand fehlt.');
+    productionProfileRef = {id: profile.id, revision: profile.revision, sha256: profile.sha256};
+  }
   return {productId: record.id, productRevision: record.revision, productSchema: record.document.schema,
     documentSha256: digest(record.document), options: selected, baseUnitCents: resolved.unitCents,
-    productionProfileRef: {id: profile.id, revision: profile.revision, sha256: profile.sha256}};
+    productionProfileRef};
 }
 function evidenceTime(evidence, now, maxAgeMs) {
   if (!Number.isSafeInteger(now) || !integer(maxAgeMs) || maxAgeMs > 86400000 || typeof evidence.readAt !== 'string') fail('shop_binding_freshness', 'Explizite Gültigkeitsdauer des Shop-Belegs fehlt.');
@@ -94,6 +110,10 @@ function bindings(adapter) {
   return rows;
 }
 function existingBinding(rows, target) {
+  if (rows.some(row => row.variantId === target.variantId && row.productId !== target.productId) ||
+      rows.some(row => row.productId === target.productId && row.productRevision === target.productRevision &&
+        equal(options(row.options ?? {}), target.options) && row.variantId !== target.variantId))
+    fail('shop_binding_existing_conflict', 'Bestehende Varianten- und Konfigurationszuordnungen sind nicht eindeutig.');
   const matches = rows.filter(r => r.variantId === target.variantId && r.productId === target.productId && r.productRevision === target.productRevision);
   if (matches.length > 1) fail('shop_binding_ambiguous', 'Mehrere bestehende Bindungen passen zur selben Ausführung.');
   const row = matches[0];
@@ -109,7 +129,8 @@ function existingBinding(rows, target) {
  * Kunden-Zusatzfelder gehören später in den privaten Entwurf, nicht in diese Bindung.
  * Kein SKU-Lookup: der einmalige SKU-Abgleich muss bereits eindeutig konkrete IDs geliefert haben.
  */
-export function planShopProductBindings({tenantId, shopDomain, shopifyEvidence, selections, adapter, now = Date.now(), maxEvidenceAgeMs} = {}) {
+export function planShopProductBindings({tenantId, shopDomain, shopifyEvidence, selections, adapter, purpose = 'profile-bound', now = Date.now(), maxEvidenceAgeMs} = {}) {
+  if (!['id-binding', 'profile-bound'].includes(purpose)) fail('shop_binding_purpose', 'Ein unterstützter serverseitiger Planzweck ist erforderlich.');
   const ctx = {tenantId, shopDomain}; context(ctx); checkAdapter(adapter, ctx); context(shopifyEvidence, ctx);
   evidenceTime(shopifyEvidence, now, maxEvidenceAgeMs);
   if (shopifyEvidence.complete !== true || !Array.isArray(shopifyEvidence.products) || !Array.isArray(selections) || !selections.length) fail('shop_binding_incomplete', 'Vollständiger Shop-Beleg und explizite Auswahl sind erforderlich.');
@@ -134,12 +155,14 @@ export function planShopProductBindings({tenantId, shopDomain, shopifyEvidence, 
     if (!shopVariant || shopVariant.productId !== item.shopifyProductId) fail('shop_binding_ownership', 'Shopify-Produkt und Variante sind nicht gemeinsam bestätigt.');
     if (chosen.has(item.shopifyVariantId)) fail('shop_binding_ambiguous', 'Eine Variante hat mehrere ausgewählte Zielkonfigurationen.');
     chosen.add(item.shopifyVariantId);
-    const selected = productSelection(adapter, item);
+    const selected = productSelection(adapter, item, purpose);
     if (selected.baseUnitCents !== shopVariant.priceCents) fail('shop_binding_price', 'Shop-Basispreis weicht vom bestehenden Produktauflöser ab.');
     const target = {...selected, shopifyProductId: item.shopifyProductId, shopifyVariantId: item.shopifyVariantId, variantId};
     return {...target, binding: existingBinding(prior, target)};
   });
-  const plan = freeze({schema: SHOP_BINDING_PLAN_SCHEMA, ...ctx, storeId: adapter.storeId, mode: 'plan-only', publicAccess: false, checkoutEnabled: false,
+  const plan = freeze({schema: SHOP_BINDING_PLAN_SCHEMA, ...ctx, storeId: adapter.storeId, purpose, mode: 'plan-only',
+    productionStatus: entries.some(entry => entry.productionProfileRef === null) ? 'profile-assignment-pending' : 'not-released',
+    productionReady: false, publicAccess: false, checkoutEnabled: false,
     evidenceReadAt: shopifyEvidence.readAt, maxEvidenceAgeMs, entries});
   plans.add(plan); return plan;
 }
@@ -152,9 +175,11 @@ export function resolveShopProductBinding(plan, {tenantId, shopDomain, shopifyPr
   gid(shopifyProductId, 'Product'); gid(shopifyVariantId, 'ProductVariant');
   const found = plan.entries.filter(e => e.shopifyProductId === shopifyProductId && e.shopifyVariantId === shopifyVariantId);
   if (found.length !== 1) fail('shop_binding_unknown', 'Keine eindeutige geplante Zuordnung für diese Shopify-IDs.');
-  const entry = found[0], current = productSelection(adapter, entry);
+  const entry = found[0], current = productSelection(adapter, entry, plan.purpose);
   for (const key of ['productId', 'productRevision', 'productSchema', 'documentSha256', 'options', 'baseUnitCents', 'productionProfileRef'])
     if (!equal(current[key], entry[key])) fail('shop_binding_changed', 'Produkt-, Options- oder Profilbeleg hat sich seit der Planung geändert.');
   if (!equal(existingBinding(bindings(adapter), entry), entry.binding)) fail('shop_binding_changed', 'Shop-Bindung hat sich seit der Planung geändert.');
-  return freeze({...entry, tenantId, shopDomain, storeId: plan.storeId, mode: 'plan-only', publicAccess: false, checkoutEnabled: false});
+  return freeze({...entry, tenantId, shopDomain, storeId: plan.storeId, purpose: plan.purpose, mode: 'plan-only',
+    productionStatus: entry.productionProfileRef === null ? 'profile-assignment-pending' : 'not-released',
+    productionReady: false, publicAccess: false, checkoutEnabled: false});
 }

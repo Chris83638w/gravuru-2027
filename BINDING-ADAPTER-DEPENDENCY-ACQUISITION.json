@@ -1,0 +1,648 @@
+{
+  "repository": "Chris83638w/gravuru-2027",
+  "commit": "4d660594b21560f048fcadcd9a4683661471c81b",
+  "mode": "missing-files-only-no-overwrite",
+  "files": [
+    {
+      "path": "app/workshop/product-model.mjs",
+      "sha": "95c9f6a9dd4700e7fa8125e274ab7a76140ef217",
+      "sha256": "800cfa53ae357eb7a5763b0deeec36dc03f7a98f780c67cf91923fd60a03d33f"
+    },
+    {
+      "path": "app/workshop/shop-preparation.test.mjs",
+      "sha": "77185fb0e92e34967cb3e9b6a54cf4c98f7cbe16",
+      "sha256": "8160011cc4a2ca06f5bf2fb5c34cbe05cbbce710fc62b63f1da98cca0a6062d2"
+    },
+    {
+      "path": "app/workshop/contours.mjs",
+      "sha": "584965c73f91a6db7de8fa51d2c56d3274b718cb",
+      "sha256": "51066191ceb990ea60bf1109a4456346dca1dac779c5fa0cb0a73aba3dc1cad7"
+    },
+    {
+      "path": "app/workshop/form-designs.mjs",
+      "sha": "1e34b4064cd5b37baf0f644c050100d773815aff",
+      "sha256": "cef90fb0b3c2ce0cf046d4566f3cca497acc76a7cebe60e8c2783fbb1147d3ec"
+    },
+    {
+      "path": "app/workshop/material-presentation.mjs",
+      "sha": "ac9ad7d8fc055eddea8ec83902515df6fcd5ae7b",
+      "sha256": "7c62dad32baaa26e12f93767a7e1a3a73c32ef894382edbe602d3d5cb4e11429"
+    },
+    {
+      "path": "app/workshop/specimen-product.mjs",
+      "sha": "0ea1ae80caed9f0f5601c201831612267d1ba1d5",
+      "sha256": "5c1ebeb7ed13806828b6e8b2e9f6a14932fe8c5e7937a69658f3c1b86dbfc096"
+    },
+    {
+      "path": "app/configurator/variant-m/print-geometry.mjs",
+      "sha": "0bf01ea906f54f7d8e2ca1e4bbcb095d78be1ec9",
+      "sha256": "25391a6a9fd216b469c5d4ba55880e5ec457b39e816df2312e0056b141aa4f9b"
+    },
+    {
+      "path": "app/workshop/acryl-shop-service.mjs",
+      "sha": "e3bf9e4db2e0b47eb2e55c2f0ebd60df5d526c46",
+      "sha256": "66f74f38f93a13ce3c7dac37efc526f437d96d135f953500cefedb531151d086"
+    },
+    {
+      "path": "app/workshop/design-corrections.mjs",
+      "sha": "11956ff5d6ee7f081bae756d3735b5f61641addf",
+      "sha256": "f4181834cd99f44110c7e4d64871c2b072de09035d2df9e3b717be2c93ebb8df"
+    },
+    {
+      "path": "app/workshop/form-text-sizing.mjs",
+      "sha": "8ebb47f7a5010ce94301bbc2cb84a7f21638a88d",
+      "sha256": "f81e7daa3d2268b5a5bbcaf6591314bbfc1a4de84973fed0f55c7c389465cbe6"
+    },
+    {
+      "path": "app/workshop/design-publication-status.mjs",
+      "sha": "7e9f43e2868f9643ab67f5830827d3ec42a7de7d",
+      "sha256": "eef9bb89ecbb6929a43b3db914d88ad3f00d994aa90b1b6b7cdaf71fd4c7fef4"
+    },
+    {
+      "path": "app/workshop/ai-design-jobs.mjs",
+      "sha": "271cf27196f9f8db443da6fd5d474235209eefd8",
+      "sha256": "200500324b525c21bc124c1a5548fabd22ec62efe3a162af8e010be502c4bf01"
+    },
+    {
+      "path": "app/workshop/font-library.mjs",
+      "sha": "21ffe89458d954f73b738317eae6f1893fb36044",
+      "sha256": "fa34d4855716547b5c4ebfa453b036f9ab73a6e73c417f834e03aee87a89415b"
+    },
+    {
+      "path": "app/workshop/design-assets.mjs",
+      "sha": "93f202628e603486365804982d7b98b68d77ad3b",
+      "sha256": "38e6f1eaecb06a83ffe83149a1528f00e2faf0468e3de7f39b6272709046e645"
+    },
+    {
+      "path": "app/workshop/product-preview.mjs",
+      "sha": "96af6696ff04364c6d9585a344fe931ca5075622",
+      "sha256": "f5256126bad53f36bd8d1bcedb14e259f088232ffe02932f4b4ea2fc6d5b1a54"
+    },
+    {
+      "path": "app/workshop/print-delivery.mjs",
+      "sha": "1f9c05a471e8d1f2c201c6209007928149107cb3",
+      "sha256": "52673b9a49229f1df9805b6ec0166dcb7a3af27022b9431817fbce19c30001cb"
+    },
+    {
+      "path": "app/workshop/acrylic-engraving-proof.mjs",
+      "sha": "c4ce066cebddc0ea6b7c7f7c79c1e33338714683",
+      "sha256": "587a6056076f0e11c0b9746cefb0348c0e64ee910558b96f76f1ff30630a753c"
+    },
+    {
+      "path": "app/workshop/acrylic-print-proof.mjs",
+      "sha": "82c8d348af9a04aa435addb935f6648d41575ae5",
+      "sha256": "4666f9f1e61ed5397f86da01637e98ed368e922ac7826c368369051c36cc041a"
+    },
+    {
+      "path": "app/workshop/acrylic-review.mjs",
+      "sha": "9f0b85a7ee9416fe084fe6ebb434baf2af679c1b",
+      "sha256": "27d9f10e80c1ec31da1407ca7769cb604b95e02210297ce7066305a2950f7bc2"
+    },
+    {
+      "path": "app/configurator/variant-m/design-area.mjs",
+      "sha": "422f35eea81b54349657f02b103470db6de7f5ce",
+      "sha256": "60b331adb6f0ac959b8ca9e540db7101a04c0e5574f8f97391d442c55102e518"
+    },
+    {
+      "path": "app/workshop/batch-jobs.mjs",
+      "sha": "b48e47231ca60081e034cf516de80c84ba46f2ae",
+      "sha256": "b0c65f64831ffe16df32ade02abfea1f3e690c945df3d2e8cfd6086157652e5e"
+    },
+    {
+      "path": "app/workshop/ai-batch-jobs.mjs",
+      "sha": "367e755185441165b43dfa5ee03bcdf9810fb56c",
+      "sha256": "399ff2583575bde9bfced9e6a2313611e87cc6753b081805e5f67261d480040e"
+    },
+    {
+      "path": "app/workshop/variant-batch-report.mjs",
+      "sha": "912fc9b271c07117147dd98ef629080f635dff41",
+      "sha256": "eaa13f5c9025737d58c05d43ac6fc54dbf46aa47bf1366cf28b678bdf5533c08"
+    },
+    {
+      "path": "app/workshop/form-variants.mjs",
+      "sha": "aebbf6285df62b6dc34740e104840bd2615601ce",
+      "sha256": "757072cfe6e828827ddfcec60e293b5af0f12e2c8c67c65f05a714a395a8f73e"
+    },
+    {
+      "path": "app/workshop/form-additions.mjs",
+      "sha": "e72b79263972b091591e1c093159206f2a2f5fb5",
+      "sha256": "429a485d94a1eee775bf73f3278aec64652c4465a69c97b6d2fc4073099c2212"
+    },
+    {
+      "path": "app/workshop/merchant-test-cart.mjs",
+      "sha": "8ef5463dde5349d9749bbcd43d72ec2545ad7275",
+      "sha256": "e895fbc62f89c0f7b98f22733ab26814d2d033d3b6583dde82dc10eeebe234ef"
+    },
+    {
+      "path": "app/workshop/draft-cart-handoff.mjs",
+      "sha": "408e5be1b2860ff2442308de45fef142339899fa",
+      "sha256": "bcfe2f7f9ce4d1d716125c46c7a5393d39090ffdb0816885970d7c317728ef43"
+    },
+    {
+      "path": "app/workshop/cart-edit-revision.mjs",
+      "sha": "1e98e2f6a67e4e0c06816b1edaac601e4c253474",
+      "sha256": "75b90465ea93ee14f4e65c5851ada1084f46b06880c092f18d0cd8c10ba40708"
+    },
+    {
+      "path": "app/workshop/shopify-app-proxy.mjs",
+      "sha": "f3c8535328029b24bea2034582639706d3fa3573",
+      "sha256": "33d30a0f30a7041f17f97dc7fb45d0a1eb93a1d272c5224d22e648680250e961"
+    },
+    {
+      "path": "app/workshop/shop-draft-transfer.mjs",
+      "sha": "6fb03cb11db65adf1cd98b7ea48002ed380eac8a",
+      "sha256": "7577cecce30d450365276e9653b619910ebe275063d2742f41beb71dd9234434"
+    },
+    {
+      "path": "app/workshop/form-engraving-proof.mjs",
+      "sha": "5c0bff4e52e6ec109094f985e952baf9a6ffb844",
+      "sha256": "3a0f071e9ced73b8cf9a8f1a83193c91739dca26bdad2e1b3d8988aff87764c1"
+    },
+    {
+      "path": "app/workshop/export-jobs.mjs",
+      "sha": "622a09f3b5e1d5488631e063c61a9dd71bf4011a",
+      "sha256": "455c3caa48d1d0ee06b1004eb27388ba0f918a537add4048a942852902f9e923"
+    },
+    {
+      "path": "app/workshop/form-print-proof.mjs",
+      "sha": "d9e11abfb96aaed1f723b824a44c38261a28acc9",
+      "sha256": "6396073c354bac86f16597c650261449017d99ba2e2aeea16a2550add136c7e8"
+    },
+    {
+      "path": "app/workshop/form-customer-store.mjs",
+      "sha": "24183c057539e7f081d42fbb28cea8e833a594df",
+      "sha256": "8e9f4160300669ec1268724e98eb1fcd3c735e0d4c7a9d15948d044824c9d7f8"
+    },
+    {
+      "path": "app/workshop/acrylic-photo-resolution.mjs",
+      "sha": "ecae86a1de30d4af1994b5a76d6283bef1cd500c",
+      "sha256": "1ec50ec5832bde88824252a1e08f4b1bf9b40d44ff75be20be15acbfeb21046b"
+    },
+    {
+      "path": "app/workshop/output-orientation.mjs",
+      "sha": "40bcb3ff1f095fdf78107ab0b8961b5fff6b7e1f",
+      "sha256": "3bf0275753f805868531a2a14bf3dfd66fc841e36d7a877689fdb05e4fd765c7"
+    },
+    {
+      "path": "app/workshop/form-review-snapshot.mjs",
+      "sha": "b68ef2972b92e18435d7d4312f5207e54913f260",
+      "sha256": "1ea22c7e9f49433f42b7761e3f8873dcdfc99482de25ac86be7c538700289f15"
+    },
+    {
+      "path": "app/workshop/prepared-design.mjs",
+      "sha": "8facb889fb424253978c31abb3aabb8de4b7c903",
+      "sha256": "7c01ba148b4f110872e3071e56550d88028bb1c7b97fe3bdedf2f57933b08dd8"
+    },
+    {
+      "path": "app/workshop/product-families.mjs",
+      "sha": "2b0c7935abfceeae836e7e49762d2c1aaab48f3d",
+      "sha256": "1e021caa209ea6b7c1c4d8c1196faf4bc05994746dd7e6a488a2cf2b7841752c"
+    },
+    {
+      "path": "app/workshop/product-catalog.mjs",
+      "sha": "d8b8be5eaefd95ee333e6cd45a6cf82be0875865",
+      "sha256": "814a3dbd27ae0a08e5494ea044466e4ad6ff12d779197ba8416eefefe0713eb9"
+    },
+    {
+      "path": "app/workshop/profile-library.mjs",
+      "sha": "c67b4b3cbdcee96b497fa8a3f429afac0d75cfb5",
+      "sha256": "d3aa96dd7800f3e98bd2706b20bb2a0eb5b47adc9172099547453225e8460e51"
+    },
+    {
+      "path": "app/workshop/catalog.mjs",
+      "sha": "3574a3b372d790124d65cf9f890c06c0dc175f3b",
+      "sha256": "0d236f7873f3fae1bdaed174511164a08fc3af0a4424c993481730f8dcb88459"
+    },
+    {
+      "path": "app/workshop/customer-fields.mjs",
+      "sha": "294b6b2ce16d72aacaaa970cfda6e3da6fd501f4",
+      "sha256": "b71f1fa96e963a60684c74b793fe692a6fd6a2d84ccf6d03b920065e9bfacf85"
+    },
+    {
+      "path": "app/workshop/theme-catalog.mjs",
+      "sha": "31cdd12e3abda16f7ff7913d56842ec413f46da0",
+      "sha256": "5568ac26b66a374c0ef1bcaab7669ced3aeaefcfcbe7ab975e34852844c5da66"
+    },
+    {
+      "path": "app/workshop/catalog-structure.mjs",
+      "sha": "210363b8348bf19cdc2deae02ae35f22dcc3d4db",
+      "sha256": "a87666b657f77f7196ea0f2f00432544854c529f299dc6b6f2ad3d98887fc1d2"
+    },
+    {
+      "path": "app/workshop/category-labels.mjs",
+      "sha": "a86f559c8cc33c147c8aeb427ea52b4452912e06",
+      "sha256": "026ffedc41e61c358172986a502157957e56cb995e543f5ba4f97ad242e0bf42"
+    },
+    {
+      "path": "app/workshop/tenant-overview.mjs",
+      "sha": "36409e3a7352b5827a259e1ecbe5dfe30528ebb6",
+      "sha256": "5c830841ccfd4f780c3b082963fcf242e77b6487807aa72517b55b859f63fe97"
+    },
+    {
+      "path": "app/workshop/konfi-status.mjs",
+      "sha": "02225c220a4159353789f9df4d71f37acca4aecf",
+      "sha256": "a0e58a1c9f76865f5a14196911f261b0429b8f53d81afed95b2baec100168860"
+    },
+    {
+      "path": "app/workshop/acryl-series-wall.mjs",
+      "sha": "e000f135a56a66f71eab5343013893b2ca574f7e",
+      "sha256": "9a760417ee93308be13c26c7f91fb53d0425cd829b16faf5c55064e77eff9c44"
+    },
+    {
+      "path": "app/workshop/acryl-shop-operations.mjs",
+      "sha": "9fe6d575e31122b010b66de82e8d47c39389bee1",
+      "sha256": "b20ad29d1fac5c2a60d8d6af12d5bbfff45e80f537da8f86af55698906c8b6bc"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-svg.mjs",
+      "sha": "ee290bb13f9ca8908021f8ec1fa4d3e2950040d5",
+      "sha256": "9f543a8f6c9ab2591f64ffeb3e0021d661ceca1528a903a4085177dca49dc2de"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/hole-proximity.mjs",
+      "sha": "6414082ae67534da0b5e8fbe1294bf47ac18a2aa",
+      "sha256": "8c0c32f06852c590cd3e6fda060c5df5e0f1bb30931c01434dcc19f9d4950f05"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-placeholder.mjs",
+      "sha": "45709a98e60f4193577a6d3d7169a9604e799737",
+      "sha256": "fb6061241b29fd31280f95bd73e0b2d3da050c2f03b27d916c05cbfaf385949f"
+    },
+    {
+      "path": "app/configurator/variant-m/print-export-model.mjs",
+      "sha": "0f35834f2bba21e3785fa458385c32e4e5c4a27f",
+      "sha256": "5e55a88683d62c391edf091fa4754b82fcd6c11de890cc48927017697a70adfa"
+    },
+    {
+      "path": "app/workshop/acrylic-artwork.mjs",
+      "sha": "105c86dce01413fd34ca7e08dd3d9fa938b4f574",
+      "sha256": "7630be9445f722c1151e1016c3b5695a309d3a6cc8a7fd4462f757aa1b9978eb"
+    },
+    {
+      "path": "app/workshop/production-summary.mjs",
+      "sha": "1ecc553a3bb909fd30e9762d7a2e739eac0bc0e7",
+      "sha256": "a17dd08b75d0e3bdfff85db203715e9a9e22eabdd89eff0156db8430e651e8df"
+    },
+    {
+      "path": "app/workshop/import-job-store.mjs",
+      "sha": "f944ec48308682766a4907d59ebaf6530e964668",
+      "sha256": "469eb5aa7d09bfac428d76c3b76956891eb48cc6d712f98479c84aa76fb719d8"
+    },
+    {
+      "path": "app/workshop/cart-handoff-journal.mjs",
+      "sha": "4a1ab6f7080bf7947350fe3ebb3f9811b15d03ac",
+      "sha256": "a1cd23834c001fbfb40f64c2cd16f5fce7bfa0f503561b1f7f9b6b4e7084f04b"
+    },
+    {
+      "path": "app/workshop/storefront-transport.mjs",
+      "sha": "2ea495f4aa19caaa08c6474ca4336efe0dccbff8",
+      "sha256": "f1af8db9b5ce50aba7db384b99e3b6247a17b2a985ea5d19b0079c215f9717ca"
+    },
+    {
+      "path": "app/workshop/output-checks.mjs",
+      "sha": "5434a190f54d1112bcea85fd149c8030d2c0356e",
+      "sha256": "45f500fde98ebec15a162dcd8b638e67ffbdd22c9b5eb9349a11e1748e4e09eb"
+    },
+    {
+      "path": "app/workshop/order-status.mjs",
+      "sha": "7fc3fcc341e9d982a38bcb0ed06b06cf333a978f",
+      "sha256": "5c73739ac55a2991453c01a3035e62ef66475c147847d1f6c216244af33cbe08"
+    },
+    {
+      "path": "app/workshop/production-release.mjs",
+      "sha": "5959f4baa24e0725368729f46fd6a1b40727d3d5",
+      "sha256": "b9cfe808b1ddb976f1c21adee7171f83b8e08ddedf7914604f6fbb06e02c63b6"
+    },
+    {
+      "path": "app/workshop/customer-downloads.mjs",
+      "sha": "6e6bf0bab95715b8518838d067c31fc6df7154fc",
+      "sha256": "b748bc0e4e982762dc28f801c50f19ab6105a4d920ee6d2e96116cef98c7a331"
+    },
+    {
+      "path": "app/workshop/acrylic-draft-store.mjs",
+      "sha": "7fe346a334926cf17bd15d082261f8b8b84b45d0",
+      "sha256": "ebd846e8faff8e3b1620cbf99bcd3272ac8450005a39f313f4e5d5e83d9bd938"
+    },
+    {
+      "path": "app/workshop/customer-draft-store.mjs",
+      "sha": "939c7c5d82e00d02fb82ed4fdef4924d3cb9c119",
+      "sha256": "83795546ca5362a2cf6509745ff226c3738f6c9334b0764254f80e34ea0f5d18"
+    },
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "sha": "5eca88abc70c2edaea83e2fe3372209c288b5ad1",
+      "sha256": "3d42b0fe7c84a8bec0275aba9d8e1391c28ee4a93b441be57638242316a7e1d0"
+    },
+    {
+      "path": "app/configurator/variant-m/server.mjs",
+      "sha": "396c9641109685b4ac2abe09f439928624b42c68",
+      "sha256": "0f991d8388f9b47c687ef8bb569225a276e4f57d8ffa5602d526adfdb95073a5"
+    },
+    {
+      "path": "app/workshop/shopify-admin-host.mjs",
+      "sha": "97bc75b99dab7f031edaa4142a2e65e904391e2a",
+      "sha256": "04908d148aecd9c3716590aa66e317285c15a6780183b8174a1f9f656d45b75e"
+    },
+    {
+      "path": "app/configurator/variant-m/help.mjs",
+      "sha": "104ad8bcef4bc27ce814810f25b7da5ca16bc342",
+      "sha256": "6c9ee7383347efff39cdbb4fda492802360e971b48e6cfec52e4cecaf0d0e63d"
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources-build.mjs",
+      "sha": "2e53063b7ddda53ec6e28ddf5c11a5dbfd13992e",
+      "sha256": "54311762f0fd24aeb8f177bddc894bd38d6e290f341fbc0632d24ca9d17c0ac6"
+    },
+    {
+      "path": "app/configurator/variant-m/bundle-build.mjs",
+      "sha": "0450da6e2c8da191a63987664f97ae485ae44624",
+      "sha256": "b161e5ae8df02324620ede9a1eec046c8b9a04a711e115f1bdc1a013f7e2f188"
+    },
+    {
+      "path": "app/workshop/katalog-source.mjs",
+      "sha": "d5d5a9288efef2fcfb05fadbe2475b8158d9cf1b",
+      "sha256": "f380fc46a227158e35d3e56e582129fd7d2416347bddb8b679e862853b3a7bd1"
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources-model.mjs",
+      "sha": "5d1964588df999293e4b9bf6ec312083c0389ef2",
+      "sha256": "d0656e2c5ad88869f845e037d6f38a7eeab5e838e4cefd3aa0cef70a8bd2f8e0"
+    },
+    {
+      "path": "app/workshop/ui/material-surfaces/house-wall-v3.jpg",
+      "sha": "701791188cc65bc546e85a34d533b740260c5705",
+      "sha256": "a30b198d89c5f948d4978fe16e45c45066967ae0f9ab208659660f6fb5a83065",
+      "mode": "existing-static-asset-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/adapter.mjs",
+      "sha": "c53c26171733aa3c56baf844a42bb775b511112c",
+      "sha256": "7aa6cb6003986731ee5d18426e5f9818a31ce32897ed2d624a5f84c5475abfab"
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources.mjs",
+      "sha": "439a47a531c19814c9a1211d0d908d83cc6c1f8b",
+      "sha256": "f487c6aa453ad3b6e110e2ab35dd3a17fabf035e4757e22c637df059a9698cfb"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "sha": "6b512ba82a228285b54319f152ba35855aa8d8dd",
+      "sha256": "5a43141e43eecc4ffeb1f9856319ff4392b5fa13047d72f4caffb2d35e5cab53"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-motifs.mjs",
+      "sha": "734dd010a9b00d9511eb49596229995c5579947a",
+      "sha256": "0d5830ddb44b6eb616ef1bbfa26be9fffc50aee661b490b6d7516954e3e8d19c"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-upload.mjs",
+      "sha": "92fa58a328935efa39e89df341592219c42ac77f",
+      "sha256": "5015eec49fea29f528697c401c59b6218427631b01fef6e920a427b1e20e534f"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow-model.mjs",
+      "sha": "9b6e9080c28ee488cc0cc3a11c9ff2085bb67013",
+      "sha256": "821bdd845f19df819e39d464c40e0efff4db92afd8da854a042f714ed15ccac5"
+    },
+    {
+      "path": "app/configurator/variant-m/print-export.mjs",
+      "sha": "80b45a0ea208206e04b687c35f24fd7012913c65",
+      "sha256": "3b6df42a9bf547c651f64c5974a2e325f9f9fcd710c9c3ef458331265fc2c8a9"
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.mjs",
+      "sha": "3c81be5ccbedaed373d42583fc61a1b00c5ac6dd",
+      "sha256": "ef9fa9fcdc75e1e53223ebb9dbc7c48b2cb1f5c3ad85a25749c037bf36716d60"
+    },
+    {
+      "path": "app/configurator/variant-m/usability-model.mjs",
+      "sha": "067639683e5818e09015c680d38e23e13b29a6c4",
+      "sha256": "f985b6341b7f1b0c1a5b984962805f427f039b63641c6fb5c05800f4cd25d3aa"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.mjs",
+      "sha": "7f35e226008337c4d416bcaa30c7578ce584bed1",
+      "sha256": "cf53c9d4ac87abfc4e05909a9058a003121daf6ee1034fa7d0c621784b3db084"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-rights.mjs",
+      "sha": "0d6940465ab82329042f0993903f1a4c89da27b7",
+      "sha256": "bc2d4e57b2f1d620593de8e67bdb68ff9bc8efdc387f986c0c5d41237e43d6d2"
+    },
+    {
+      "path": "app/configurator/variant-m/design-gallery-model.mjs",
+      "sha": "eabaf37f3239577761196f4c120222047050e736",
+      "sha256": "cbf62bbcff7d5a18210d5c1cac05d349619aee0478cc98f1046e416d7b114c3e"
+    },
+    {
+      "path": "app/configurator/variant-m/session-guard.mjs",
+      "sha": "f39c47eeee65c9115e2cd298f1264df84ccdcd15",
+      "sha256": "8a7585cafa56eeed36ac35730828abd06b86ee4066ec59fc844838428a6737ee"
+    },
+    {
+      "path": "app/configurator/variant-m/account-drafts.mjs",
+      "sha": "fec60bc1dc467688a573804b88aa93f47061f43a",
+      "sha256": "5c3029370b2fb051d8dacd312584c3f743b5280f1d7d7141deb88fedc64a3f13"
+    },
+    {
+      "path": "app/configurator/variant-m/surface-tabs.mjs",
+      "sha": "7f9854b733a921aa68ed77c8171b86d4b8187323",
+      "sha256": "b31c893479703889ef39918f25f84a1e79b6e3437292616cf63bcb4508fe3d00"
+    },
+    {
+      "path": "app/configurator/variant-m/background-loading.mjs",
+      "sha": "f9896c1443ce8b14c8da13096196168a203009af",
+      "sha256": "7eb139d14960d64cfbbe2b09b7ecf5ac018a504bedd132901b86b54f4046d6f6"
+    },
+    {
+      "path": "app/configurator/variant-m/edge-clamp.mjs",
+      "sha": "a5993eac8422b33c7635c6cf0d5289368ddc8fe7",
+      "sha256": "1ced5c9a79455c801b42045a539b8b2e5019995919161b4f918d25e0533de086"
+    },
+    {
+      "path": "app/configurator/variant-m/font-display.mjs",
+      "sha": "62e3425fb50eddd6e18f3227254e31043fd1772a",
+      "sha256": "65c0bc92435638681f5e63830a88e35ddfd9aed40f3353a5eee3c68532b9ae60"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools-model.mjs",
+      "sha": "81e2ac26445011caf9de4388624e819454796f74",
+      "sha256": "d0a44e27d1febee205b79edceab1daa853900d8ed23899cb08a8f457bfcb02de",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/direct-editing.mjs",
+      "sha": "cbc937ab0ff504aff55bc761122d9d1f37bbdcdb",
+      "sha256": "45f3a1aaf1151da5546a3d29f725859846c5fe2576de199daf4dc851bc668122",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-position.mjs",
+      "sha": "a9392a0178a94bb058f20375b8f6ce6e7584dd92",
+      "sha256": "575d80b94b61b6b81d94c9fb67fc6cd9da6a106673b35dfaa3bc64ad4daabcf1",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/image-processing.mjs",
+      "sha": "aea5d6349bb94d2897ed2eba96f958cf10834985",
+      "sha256": "2a821a1c0829382ad94df6f30a74326bceab50c3307057a1617e230b2bbbf7bf",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-editor.mjs",
+      "sha": "dd61aebff0252f4bc70b2522b38056136c04f4f8",
+      "sha256": "f26c4684a5fb531acc0acd7c4e10ecb1ea2e9b42376afa457e87834420c6c00b",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.mjs",
+      "sha": "d031e40af6d297dcd5a0e0b9c0f76c46403ef964",
+      "sha256": "607c610cc76caf35795005723408d152036209f04cd0d5ab5a2c40c8430f922f",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "sha": "b5ee2d25f668a3f578e3fe2fc3d9eb35ec27e492",
+      "sha256": "829119a835738c67869d2ef8a95ff858362c1017c3df0e8378c7ebf74910549a",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.mjs",
+      "sha": "66165e0c662ea8364767340e8483aedc60e4aaee",
+      "sha256": "5204f288799b977da60991c066fb79030cd81b16586d0b23ef0cbca07257076c",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/account-draft-client.mjs",
+      "sha": "5f3525dc0b4d1868dd59345ad65ba407bd0e82d5",
+      "sha256": "b70e46685b947f4a8f5a9f2dc180acb215cdf70bbbd78fc17350301071049d67",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/preload-queue.mjs",
+      "sha": "726d536c975ec1e029aaf22b53af3fa8ad100b72",
+      "sha256": "b1e256915563fe3911073d51a87a91913935a26c1b1c834641820340b861a45d",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/motif-placement.mjs",
+      "sha": "e58b8ee81a7356c924725309b7b5eb3e6228ace3",
+      "sha256": "6248d069224550e134017f11874cb7c13289ad43589058c07fa681ab142c1a04",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/completion.mjs",
+      "sha": "9624791a7ba97d1f9b90188ea58b802f5a1e9201",
+      "sha256": "840237b1bb93aff62bd2ad4ae0caa3db1748e2c8c2f6ced9936221b1cad0ae3f",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/workshop-review.mjs",
+      "sha": "496e7256bef755b152ec885049f79abe26f93e51",
+      "sha256": "05592230df8e08a0626b1a60314347a0f3d4f0807d16bc4ca68c08e35aa751d1",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-draft-client.mjs",
+      "sha": "6b1e8bc35877a6df87513f6809ce629cf02bc86f",
+      "sha256": "e3a9b2eadc540a031af0c0c7f088f39410ca68cb6ea4b347535e23b64bd54d06",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.css",
+      "sha": "95ba098f671c361f6a924c00d363d77f3c49a5ff",
+      "sha256": "e3ef28b880c0d713d923d62f38632dd30b5b700e45b0ab7188ca2626a8dc2fb3",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/neutral-theme.css",
+      "sha": "431e8f54fe960a6039adcd362ecb8b046607f475",
+      "sha256": "11fdb56cab274b100aaf568e44939efd5ea47990301eca6a69d38ac79bd319f2",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.css",
+      "sha": "a9648046f1ff5ec8d354cbdca8bd32b9de27b22c",
+      "sha256": "13e5420ebc17860f890d2570f4a7ab3f60bfa01b2d0b587e94e00dfdc64ceda3",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.css",
+      "sha": "18df3805e58ae7a9f96284a2c85c50a594baf7f2",
+      "sha256": "976c809d6495286661487a13db18a35ed62830dfb7b44fab652d6f82451123be",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.css",
+      "sha": "bd709fed1ec2da14a210534cacaacb134c8a42c2",
+      "sha256": "733d09e285e8d80b9dcaeee99747d064b8384ee1c53bb7f7a724a86c17212829",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/completion.css",
+      "sha": "e54466074ccea71f4f15db78700141ac5b2ce2c8",
+      "sha256": "24ac80c636a3418f65d92bcf3250fb5e12f09031a767408c462a12785c0715d1",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/mobile.css",
+      "sha": "b5e76719576b4d7695f7042d0acbba567737fdd2",
+      "sha256": "9e0e53fe3fb2a1f7dd5f877eb4ffaecebb542015f4ec3384c7b470d5a0626d5a",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "sha": "c5183c917dc2b720a5fc02700585f2d9df5db678",
+      "sha256": "597d501ce2cf1b235a9b0cdc956a1a6336a9fe5077d74eb7327c395401ba263a",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/workshop/ui/form-product.html",
+      "sha": "270abf42221baee2e69fe7434add18db3f2f901d",
+      "sha256": "605c0f849b572e35a0c81b9acd3cbee946f1253fea91d6f322963acaae8353df",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/workshop/ui/index.html",
+      "sha": "3530b50c7213ff7745e229bee82c553def090c9f",
+      "sha256": "f4ea48b083d2820888371bc10e4a35802d9ada3fba4aa46a15789d9b3adfee1d",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/workshop/ui/shop-preparation.html",
+      "sha": "ff9d152dab2280462ca13befcf1d8b8c5fb3bc2c",
+      "sha256": "4c0ae1a382a9e17e3b57793ccf61856cf888f49d70c5cc0eeb25be6c870634db",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/workshop/ui/batch.html",
+      "sha": "99be65e2e952b496e4f5b90bc9fd18444878b3e9",
+      "sha256": "f6dbcf325f38201107d247db76a68c44f1cd0f50a52b986fd09fbe85dbdf8505",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/workshop/ui/orders.html",
+      "sha": "10d81568425e63fc8ef121bb2c5b24d69cdfd1f4",
+      "sha256": "f7683c4de229239f1ba949c9671d2c2b47a5269039f5b1be148f1a726b864af2",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/workshop/ui/customer-preview.mjs",
+      "sha": "7830a9833a4b3b478ffe8a406a52dcc138bb7283",
+      "sha256": "759e66966a1def236a586bab4c288711bfb61cc2b6187736b258494bea770eea",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/workshop/data/catalog-structure.json",
+      "sha": "cd0fab100138a4ca11fee870edf16b9a8ce25863",
+      "sha256": "8b070005df12e3e09c16e12de5ed89e1a815b4915470067b970810e32f213686",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/acryl-original-motifs.json",
+      "sha": "260c3037a59845bf0fe1d270686152dda37de945",
+      "sha256": "4c49047ba19baa06275c248194a6ac4c6dd9b41a090450903ea548ae30f26ae6",
+      "mode": "existing-source-copy-verified-against-pinned-github-blob"
+    }
+  ]
+}

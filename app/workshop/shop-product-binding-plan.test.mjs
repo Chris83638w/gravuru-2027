@@ -41,6 +41,9 @@ test('form preserves exact cfg/revision/profile and reuses existing binding with
   assert.deepEqual(resolved.productionProfileRef, {id: PROFILE, revision: 2, sha256: 'a'.repeat(64)});
   assert.deepEqual(resolved.binding, {mode: 'reuse', id: BINDING});
   assert.equal(resolved.mode, 'plan-only'); assert.equal(resolved.publicAccess, false); assert.equal(resolved.checkoutEnabled, false);
+  assert.equal(plan.purpose, 'profile-bound'); assert.equal(resolved.purpose, 'profile-bound');
+  assert.equal(plan.productionReady, false); assert.equal(resolved.productionReady, false);
+  assert.equal(plan.productionStatus, 'not-released'); assert.equal(resolved.productionStatus, 'not-released');
   assert.deepEqual({record: f.record, prior: f.prior, profile: f.profile}, before);
   assert.ok(Object.isFrozen(plan)); assert.ok(Object.isFrozen(plan.entries[0].options));
 });
@@ -141,4 +144,93 @@ test('asynchronous adapters and malformed lists fail closed', () => {
   rejectFixture(f => f.adapter.getBindings = () => Promise.resolve([]), 'shop_binding_adapter');
   rejectFixture(f => f.input.selections = [null], 'shop_binding_incomplete');
   rejectFixture(f => f.input.shopifyEvidence.products = [null], 'shop_binding_incomplete');
+});
+
+test('missing profile remains forbidden by default and explicit profile-bound purpose', () => {
+  for (const purpose of [undefined, 'profile-bound']) for (const absent of [undefined, null]) {
+    const f = fixture(); f.record.document.productionProfile = absent; f.input.purpose = purpose;
+    assert.throws(() => planShopProductBindings(f.input), {code: 'shop_binding_profile'});
+    let calls = 0;
+    f.adapter.resolveProductionProfile = () => { calls++; throw Object.assign(new Error('Missing stored profile'), {code: 'production_profile_missing'}); };
+    assert.throws(() => planShopProductBindings(f.input), {code: 'production_profile_missing'});
+    assert.equal(calls, 1);
+    f.adapter.resolveProductionProfile = () => { calls++; return null; };
+    assert.throws(() => planShopProductBindings(f.input), {code: 'shop_binding_profile'});
+    assert.equal(calls, 2);
+  }
+});
+
+test('only explicit server id-binding permits a genuinely absent profile and never resolves a dummy', () => {
+  for (const native of [false, true]) for (const absent of [undefined, null]) {
+    const f = fixture({native}); f.record.document.productionProfile = absent;
+    if (absent === undefined) delete f.record.document.productionProfile;
+    f.adapter.resolveProductionProfile = () => { throw new Error('No profile may be fabricated or resolved'); };
+    const plan = planShopProductBindings({...f.input, purpose: 'id-binding'});
+    const resolved = resolveShopProductBinding(plan, {...f.request, purpose: 'profile-bound'});
+    assert.equal(plan.purpose, 'id-binding'); assert.equal(resolved.purpose, 'id-binding');
+    assert.equal(plan.entries[0].productionProfileRef, null); assert.equal(resolved.productionProfileRef, null);
+    for (const result of [plan, resolved]) {
+      assert.equal(result.productionStatus, 'profile-assignment-pending');
+      for (const flag of ['productionReady', 'publicAccess', 'checkoutEnabled']) assert.equal(result[flag], false);
+    }
+    assert.equal(resolved.binding.mode, 'reuse'); assert.ok(Object.isFrozen(plan));
+    assert.throws(() => { plan.purpose = 'profile-bound'; }, TypeError);
+  }
+});
+
+test('unknown or misleading planning purposes fail closed', () => {
+  for (const purpose of [null, '', false, 'shopify-test', 'ID-BINDING', {}]) {
+    const f = fixture(); assert.throws(() => planShopProductBindings({...f.input, purpose}), {code: 'shop_binding_purpose'});
+  }
+});
+
+test('id-binding still rejects malformed or unresolved existing profile assignments', () => {
+  for (const ref of [false, '', {}, {id: PROFILE}, {id: PROFILE, revision: 0}, {id: 'mfg_missing', revision: 2},
+    {id: PROFILE, revision: 2, unchecked: true}]) {
+    const f = fixture(); f.record.document.productionProfile = ref;
+    assert.throws(() => planShopProductBindings({...f.input, purpose: 'id-binding'}), {code: 'shop_binding_profile'});
+  }
+  for (const change of [f => { f.profile.document.archived = true; }, f => { f.profile.revision++; },
+    f => { f.profile.id = 'mfg_99999999-9999-4999-8999-999999999999'; }, f => { f.profile.sha256 = 'bad'; },
+    f => { f.adapter.resolveProductionProfile = () => null; }]) {
+    const f = fixture(); change(f);
+    assert.throws(() => planShopProductBindings({...f.input, purpose: 'id-binding'}), {code: 'shop_binding_profile'});
+  }
+  const incompatible = fixture();
+  incompatible.adapter.resolveProductionProfile = () => { throw Object.assign(new Error('Synthetic material mismatch'), {code: 'production_profile_invalid'}); };
+  assert.throws(() => planShopProductBindings({...incompatible.input, purpose: 'id-binding'}), {code: 'production_profile_invalid'});
+});
+
+test('adding a profile later invalidates an earlier id-only plan even at the same product revision', () => {
+  const f = fixture(); delete f.record.document.productionProfile;
+  const plan = planShopProductBindings({...f.input, purpose: 'id-binding'});
+  f.record.document.productionProfile = {id: PROFILE, revision: 2};
+  assert.throws(() => resolveShopProductBinding(plan, f.request), {code: 'shop_binding_changed'});
+});
+
+test('id-binding with a pinned profile retains profile change and deletion checks', () => {
+  for (const change of [f => { delete f.record.document.productionProfile; }, f => { f.profile.sha256 = 'b'.repeat(64); },
+    f => { f.record.document.basePriceCents++; }]) {
+    const f = fixture(), plan = planShopProductBindings({...f.input, purpose: 'id-binding'}); change(f);
+    assert.throws(() => resolveShopProductBinding(plan, f.request), {code: 'shop_binding_changed'});
+  }
+});
+
+test('ambiguous and conflicting existing bindings still fail when a profile is absent', () => {
+  for (const [change, code] of [
+    [f => f.prior.push(clone(f.prior[0])), 'shop_binding_existing'],
+    [f => f.prior.push({...clone(f.prior[0]), id: 'binding_55555555-5555-4555-8555-555555555555'}), 'shop_binding_ambiguous'],
+    [f => { f.prior[0].productId = CFG2; }, 'shop_binding_existing_conflict'],
+    [f => { f.prior[0].variantId = '201'; }, 'shop_binding_existing_conflict'],
+  ]) {
+    const f = fixture(); delete f.record.document.productionProfile; change(f);
+    assert.throws(() => planShopProductBindings({...f.input, purpose: 'id-binding'}), {code});
+  }
+});
+
+test('new binding conflicts after id-only planning invalidate resolution', () => {
+  const f = fixture({existing: false}); delete f.record.document.productionProfile;
+  const plan = planShopProductBindings({...f.input, purpose: 'id-binding'});
+  f.prior.push({id: BINDING, shopDomain: f.adapter.shopDomain, variantId: '200', productId: CFG2, productRevision: 1, unitCents: 1899});
+  assert.throws(() => resolveShopProductBinding(plan, f.request), {code: 'shop_binding_existing_conflict'});
 });

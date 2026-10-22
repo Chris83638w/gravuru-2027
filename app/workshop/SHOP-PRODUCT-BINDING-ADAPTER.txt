@@ -1,0 +1,60 @@
+Private Leseanbindung vorhandener Werkstattinstanzen — 2026-10-22
+
+createShopBindingReadAdapter({storeId, tenantId, shopDomain, workshop,
+  productionProfileScope: {storeId, tenantId}})
+
+Alle Parameter stammen aus der vertrauenswürdigen Serverfactory. workshop enthält
+die bereits geöffneten repository-, orderIntake- und productionProfiles-Instanzen
+sowie tenantId und sessionContext.shopDomain. Der Adapter öffnet keine Datenbank,
+führt keine Migration aus, erstellt keine Instanz und sendet keine Shopify-Anfrage.
+productionProfileScope ist eine ausdrückliche Serverfactory-Zuordnung, kein
+kryptografischer oder selbständiger Datenbanknachweis. Niemals Requestfelder nutzen.
+
+Vertrag
+- getCurrentProduct(cfgId) liefert eine Kopie des aktuellen gespeicherten Records.
+- resolveSelection(record, options) nutzt ausschließlich die echten Varianten von
+  prepareShopProduct. Auswahl und Preis werden nicht neu berechnet oder erfunden.
+- resolveProductionProfile(document) akzeptiert nur das unveränderte document einer
+  von diesem Adapter ausgegebenen Recordkopie. Die Referenz muss als Objekt erhalten
+  bleiben; ein JSON-Roundtrip verliert bewusst diesen privaten Herkunftsbeleg.
+- getBindings() filtert die vorhandenen tenantgebundenen Bindungen nach exakt diesem
+  Shop. Historische Revisionen bleiben erhalten, keine automatische Neueste-Auswahl.
+- readiness(cfgId | record) liefert productId, productRevision, productSchema,
+  sourceReady, blockers [{code,message}], ready, productionProfileRef und getrennte
+  productionBlockers. Ein übergebener Record muss vollständig dem aktuellen Stand
+  entsprechen, einschließlich Status und Metadaten. Scope-/Instanzdrift bleibt ein
+  harter Fehler; fehlende Produktgrundlagen oder Profile werden konkrete Blocker.
+
+Native und freie Formprodukte verwenden unverändert ihre jeweiligen echten
+Quellverträge. Freie Konturen, Bohrlöcher, Materialien, Optionen und Revisionen werden
+nicht in ein vereinfachtes Ersatzschema überführt. Backendseitig nicht unterstützte
+Produkt-/Profilkombinationen werden dadurch nicht freigeschaltet.
+
+Sicherheit und Integrationsgrenze
+Der Adapter arbeitet synchron mit Rückgabekopien; thenables werden abgelehnt. Jeder
+Zugriff prüft den festen Mandanten-/Shop-/Instanzkontext. Die privaten Store-IDs müssen
+bei zwei Datenbanken desselben Shops verschieden sein. Fehlendes Profil bleibt ein
+harter Blocker der vollständigen Profilbereitschaft. Die reine ID-Prüfung kann
+seit der Nutzerentscheidung vom 22.10.2026 dagegen erfolgreich sein: Der separate
+Checkservice weist ein fehlendes Profil als ausstehende Fertigungszuordnung aus.
+Ungültige vorhandene Profilverweise bleiben Fehler. Der strikte Standard des
+Planers bleibt erhalten; nur sein ausdrücklicher serverseitiger Zweck id-binding
+erlaubt einen noch nicht vorhandenen Profilverweis. Keine Fertigungsfreigabe.
+Bestehende mehrdeutige Variantenbindungen werden gemeldet. Konflikte einer erst zu
+prüfenden neuen Shopify-Zuordnung prüft der aufrufende Checkservice zusätzlich.
+
+ready bedeutet ausschließlich vollständige private Zuordnungsgrundlagen.
+productionReady, publicAccess und checkoutEnabled bleiben ausdrücklich false.
+Maschinenabnahme, Shopify-Liveabgleich, Persistierung und öffentliche Freigabe sind
+keine Leistungen dieses Leseadapters. Seine Tests sind keine Live-Ende-zu-Ende-Abnahme.
+
+Prüfung
+node --test app/workshop/shop-product-binding-adapter.test.mjs
+15/15 Tests bestanden: echte native 28 Ausführungen, zehn Formmaterialien jeweils
+für Druck/Gravur, Geometrieerhalt, Profil-/Revisions-/Scopegrenzen, Rückgabekopien,
+historische Bindungen und bestehender Planer/Resolver. Fixtures sind synthetisch;
+es werden keine Datenbank-/Runtime-Konstruktoren benötigt.
+
+Unveränderte Testabhängigkeiten stammen aus gravuru-2027 Commit
+4d660594b21560f048fcadcd9a4683661471c81b. BINDING-ADAPTER-DEPENDENCY-ACQUISITION.json
+belegt die ausschließlich ergänzten Dateien mit Git-Blob- und SHA-256-Prüfsummen.

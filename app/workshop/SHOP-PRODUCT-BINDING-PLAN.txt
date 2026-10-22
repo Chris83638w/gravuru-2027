@@ -1,5 +1,22 @@
 Universelle Produktzuordnung – lokale Anschlussplanung, 22.10.2026
 
+Aktualisierung nach Nutzerentscheidung: Fertigungsvorgaben werden später beim
+Erstellen je Unterkategorie übernommen, mit möglichen Ausnahmen je Produkt.
+ID-Planung und Fertigungsfreigabe sind deshalb ausdrücklich getrennt.
+Der Planer behält seinen strikten Standard purpose:'profile-bound'. Der neue
+private ID-Prüfdienst setzt serverseitig purpose:'id-binding': Nur ein tatsächlich
+noch fehlender Profilverweis darf dann productionProfileRef:null ergeben.
+Vorhandene ungültige, archivierte oder unpassende Verweise bleiben Fehler.
+Der Auflöser verwendet den unveränderlichen Planzweck und prüft alle übrigen
+Belege erneut. Auch ein gültiger ID-Plan hat productionReady:false,
+publicAccess:false und checkoutEnabled:false; er schreibt keine Bindung.
+Neue HTTP-Prüfung, tatsächliche Sicherungen und aktuelle Tests sind beschrieben in
+docs/handoffs/2026-10-22-private-sicherung-und-id-pruefung.md.
+
+Die folgende ursprüngliche Anleitung dokumentiert den früheren, streng an ein
+Profil gebundenen Planer und den damaligen Sicherungsauftrag. Aussagen wie
+„nicht ausgeführt“ darin sind historisch; maßgeblich ist der neue Übergabebericht.
+
 Basis der gezielten Quellprüfung:
 Chris83638w/gravuru-2027, task/katalog-struktur-20261022,
 b5a51053573647a9aff946020ef947e671512d71.
@@ -131,96 +148,4 @@ Korrekturen zur parallelen Analyse:
   übernahme; der Grundabgleich muss nicht neu erfunden werden.
 - Keine Galerieablösung, cfg-ID-Neuvergabe oder Reduktion freier Retro-Konturen nötig.
 
-Operativer nächster Schritt: Sicherung BEIDER Stores vor einem Runtimepaket
-
-Nur Anleitung, am 22.10.2026 nicht ausgeführt. Für den lokalen Anschlussplan ist
-keine Serveränderung erforderlich. Kein neues Backupskript entwickelt.
-Der heutige Katalogbeleg mit 258.023.424 Byte einer workshop.sqlite und zehn
-Code-Dateien ist KEIN Nachweis einer aktuellen Vollsicherung beider Stores.
-
-1. Vor einem späteren Runtimeupdate Datenpfade und tatsächlich verwendete Helfer
-   lesend bestätigen; keine Konfiguration mit Geheimnissen ausgeben:
-   - Legacy: nur GRAVURU_PRIVATE_DATA_DIR aus der bestehenden privaten Datei
-     /var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-merchant-shopify.json
-     prüfen. Zuletzt bekannter Wert:
-     /var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-merchant-data
-   - Acryl:
-     /var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data
-   - Je Store gehören workshop.sqlite, profiles.sqlite und design-assets.sqlite
-     zusammen. Beide Stores enthalten eigene Revisionen und private Zustände.
-
-2. Die Hauptaufgabe organisiert ein abgestimmtes Wartungsfenster und stoppt die
-   vollständige Hüll-App einschließlich Hintergrundarbeit. Automatischen Neustart
-   während BEIDER Sicherungen verhindern. Keine weiteren Import-/Schreibprozesse.
-   HTTP-Nichterreichbarkeit allein ist kein Nachweis, dass alle Schreiber beendet sind.
-   Die Hülle hält zwei .runtime.lock-Sperren, eine pro Store. Sperrdateien niemals
-   löschen: der vorhandene Helfer muss die echte exklusive flock-Sperre erhalten.
-
-3. Unveränderten ops/plesk/snapshot-merchant-data.py verwenden. Erwarteter SHA-256
-   des gelesenen, lokal gegenprüften Quellstands:
-   3f0924c62bc6befc8f88c49eda7ca02691e0feb45584a1d6f1ea311622293840
-   Tatsächliche Serverdatei vor Ausführung gegen diesen Hash prüfen. Bei Abweichung
-   stoppen und Quelle abgleichen; nicht nur einen gleichnamigen Helfer verwenden.
-   Bereits bekannter Pythonpfad, ebenfalls vor Verwendung prüfen:
-   /var/www/vhosts/gravuru-designwerkstatt.de/private/gravuru-2027-test-python311/bin/python
-
-4. Zwei frische, nicht vorhandene private Snapshot-Zielordner unter private/ wählen,
-   zum Beispiel snapshot-legacy-<UTC-Zeit> und snapshot-acryl-<UTC-Zeit>.
-   Namen im konkreten Auftrag festlegen, nichts Vorhandenes überschreiben.
-   Die bestehende Legacy-Konfiguration wird unverändert als --config verwendet.
-   Für Acryl erst im genehmigten Wartungsauftrag eine minimale private Datei mit
-   Modus 0600 und ausschließlich folgendem Inhalt anlegen (kein App-Startconfig):
-   {"purpose":"shopify-merchant-test-runtime","values":{"GRAVURU_PRIVATE_DATA_DIR":"/var/www/vhosts/gravuru-designwerkstatt.de/private/acryl-employee-20261021-v1/data"}}
-   Keine Schlüssel oder vollständige Legacy-Konfiguration dafür kopieren.
-
-5. Jeweils denselben vorhandenen, hashgeprüften Snapshot-Helfer ausführen:
-   <geprüftes Python> <geprüfter snapshot-merchant-data.py>
-       --config <bestehende Legacy-Konfiguration>
-       --destination <neuer privater Legacy-Snapshotordner>
-   danach:
-   <geprüftes Python> <derselbe snapshot-merchant-data.py>
-       --config <minimale private Acryl-Sicherungsbeschreibung>
-       --destination <neuer privater Acryl-Snapshotordner>
-   Diese Angaben sind getrennte Befehlsvorlagen, hier NICHT ausgeführt.
-   Helfer nutzt SQLite backup(), nicht das Kopieren laufender DB-Dateien; er hält
-   je Store die Sperre über alle drei Datenbanken, prüft quick_check und erzeugt
-   SNAPSHOT.json. Die App bleibt bis zum Abschluss beider Sicherungen offline.
-   Die Sperre ist advisory: die Hauptaufgabe muss alle sonstigen Schreiber ausschließen.
-   Wenn eine Sicherung fehlschlägt: Teilordner erhalten, keinen Erfolg behaupten,
-   keine neuen Runtime-/Migrationsschritte beginnen; Dienstwiederaufnahme separat
-   anhand des unveränderten Originalstands entscheiden.
-
-6. Für JEDEN abgeschlossenen Snapshot prüfen: genau drei DBs plus SNAPSHOT.json,
-   runtimeLockHeld:true, quickCheck:"ok" je DB, tatsächliche Bytes/SHA passend zum
-   Beleg. Gemeinsamer Abschlussbeleg muss beide Quellpfade und beide Snapshotbelege
-   unterscheiden. Eine einzelne erfolgreiche Sicherung ersetzt die andere nicht.
-
-7. Vorhandenen Wiederherstellungsprüfer getrennt auf beide fertigen Snapshots anwenden:
-   lokale Quelle work/konfi-integration-pilot-20261021/ops/restore-private-snapshot.py
-   SHA-256 am 22.10.2026:
-   bd731ae51a26fc4d94347ee9d53b8729852dbd833d4598cde212ab2c474d7d8b
-   <geprüftes Python> <geprüfter vorhandener restore-private-snapshot.py>
-       --snapshot <fertiger privater Snapshotordner>
-       --destination <NEUER separater privater Testordner>
-       --private-paths-confirmed
-   Je Store ein eigener Testordner. Der Prüfer kopiert ausschließlich bereits
-   abgeschlossene beleggebundene Backupdateien, öffnet Kopien read-only, prüft
-   integrity_check, foreign_key_check, Original-/Paketprüfsummen und bekannte
-   Produkt-/Design-/Profil-/Entwurfsbezüge. Kein Runtimeimport, keine Migration.
-
-8. Für den aktuellen Acrylstand zusätzlich rein lesend auf den Restorekopien prüfen:
-   - form_variant_sets/-revisions/-members: Gruppenstand, Dokumenthash und exakte
-     cfg-/Produktrevisionszuordnung, einschließlich aller 798 Acrylvarianten.
-   - design_corrections: komplette Historie, gespeicherter state-SHA, gültige
-     Produktrevision/Designkennung; aktuelle Mitarbeiterkorrekturen erhalten.
-   - catalog_structure_settings: jüngster Stand und vollständige Historie pro Tenant.
-   Der vorhandene Prüfer sichert deren Bytes mit, hat für diese jüngeren Tabellen
-   aber noch keine vollständige eigene semantische Prüfung. Keine tatsächlichen
-   Bestandszahlen oder bestandenen Prüfungen vorwegnehmen.
-
-9. Für einen vollständigen Wiederanlauf zusätzlich die tatsächlich verwendeten
-   Quellen BEIDER Releases, app.cjs/Entry, Speicherkennzeichnungen und benötigte
-   Abhängigkeiten nachvollziehbar privat sichern. Konfigurationen/Geheimnisse nur
-   getrennt und sicher übertragen. Datenbank-Restore allein beweist keinen Appstart.
-   Keine aktuelle DB durch einen alten Katalogbackupstand ersetzen, keine neuen
-   Mitarbeiteränderungen überschreiben und keine Produktionsfreigaben ändern.
+Sicherungs- und Wiederherstellungsnachweise liegen vollständig in der privaten Übergabe beim Nutzer. Der neue datierte Übergabebericht dokumentiert den geprüften Umfang und offene Grenzen. Konkrete Serveranweisungen und Sicherungsorte werden hier nicht veröffentlicht.

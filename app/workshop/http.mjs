@@ -34,6 +34,8 @@ import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
 import {readDraft,decorationMotifs} from '../configurator/variant-m/contract.mjs';
 import {createShopDraftTransfer,createShopDraftTransport,shopDraftRequest} from './shop-draft-transfer.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
+import {createShopBindingReadAdapter} from './shop-product-binding-adapter.mjs';
+import {createShopProductBindingCheck} from './shop-product-binding-check.mjs';
 import {createFormEngravingProof,formEngravingSettings,formEngravingKey,FORM_ENGRAVING_RECIPE} from './form-engraving-proof.mjs';
 import {createExportWorker} from './export-jobs.mjs';
 import {createProductionProfiles,PRODUCTION_MACHINES} from './production-profiles.mjs';
@@ -96,7 +98,7 @@ function checkSessionOptions({operatorCsrfToken=null,merchantCsrfToken=null,shop
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
 }
 /** Werkstatt genau eines Mandanten (K13): alle Stores werden mit diesem Mandanten angelegt und lesen/schreiben nur ihn. */
-function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,aiDesign=null,themes=null,appProxy=null,tenant=null,platformOverview=null}){
+function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,shopBindingRead=null,aiDesign=null,themes=null,appProxy=null,tenant=null,platformOverview=null}){
   // K9: Themen-Definition (themen.json aus dem Katalog) für Galerie und Motivkategorien im Kundeneditor.
   const themeCatalog=themes===null?null:parseThemeCatalog(themes);
   checkSessionOptions({operatorCsrfToken,merchantCsrfToken,shopifySessions});
@@ -159,6 +161,14 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const configuredMerchantCart=()=>merchantCart??=createMerchantTestCart({drafts:customerDrafts,repository,settings:merchantTestCart});
   let transferGate=null;
   const configuredTransfer=()=>transferGate??=createShopDraftTransfer({repository,orders:orderIntake,journal:customerDrafts.shopDraftTransfers,config:shopDrafts.config,transport:createShopDraftTransport(shopDrafts.config,shopDrafts.transportOptions)});
+  let bindingCheck=null;
+  const configuredBindingCheck=()=>{
+    if(!shopBindingRead||!shopifySessions)fail(503,'shop_binding_disabled','Die private ID-Prüfung ist für diesen Datenspeicher noch nicht eingerichtet.');
+    return bindingCheck??=createShopProductBindingCheck({reader:shopBindingRead.reader,
+      adapter:createShopBindingReadAdapter({storeId:shopBindingRead.storeId,tenantId,shopDomain:shopifySessions.shopDomain,
+        productionProfileScope:{storeId:shopBindingRead.storeId,tenantId},
+        workshop:{tenantId,repository,orderIntake,productionProfiles,sessionContext:{shopDomain:shopifySessions.shopDomain}}})});
+  };
   const outputRecipes=[FORM_PRINT_RECIPE,FORM_ENGRAVING_RECIPE,ACRYLIC_PRINT_RECIPE,ACRYLIC_ENGRAVING_RECIPE];
   const exportWorker=createExportWorker({jobs:exportJobs,recipe:outputRecipes,render:job=>{const review=customerDrafts.review(job.snapshotId);const render=job.recipe===ACRYLIC_ENGRAVING_RECIPE?createAcrylicEngravingProof:job.recipe===ACRYLIC_PRINT_RECIPE?createAcrylicPrintProof:job.recipe===FORM_ENGRAVING_RECIPE?createFormEngravingProof:createFormPrintProof;return render(customerDrafts.downloadSnapshot(job.snapshotId,'package'),review.manifest.packageSha256,job.settings,{orderLines:orderIntake.forSnapshot(job.snapshotId)});}});
   function enqueueOutput(id,overrides){const m=customerDrafts.review(id).manifest;if(m.capabilities?.engraving===false&&m.product.method==='engraving')fail(422,'assembly_output_pending','Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');if(m.product.method!=='engraving')return enqueuePrint(id,overrides);const native=isNativeReviewSchema(m.schema),settings=formEngravingSettings({...m.productionProfile?.document.output,...overrides}),job=exportJobs.enqueue({snapshotId:id,recipe:native?ACRYLIC_ENGRAVING_RECIPE:FORM_ENGRAVING_RECIPE,recipeKey:native?acrylicEngravingKey(settings):formEngravingKey(settings),settings});exportWorker.kick();return job;}
@@ -323,6 +333,12 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/shop-product-bindings/check'){
+        if(method!=='POST')fail(405,'method_not_allowed','Die ID-Prüfung benötigt POST.');
+        if(!merchantSession)fail(503,'shop_binding_login_required','Die ID-Prüfung benötigt eine bestätigte Händleranmeldung.');
+        const checker=configuredBindingCheck(),data=await body(req,65536);
+        return json(res,200,await checker.check(data));
+      }
       if(pathname==='/api/workshop/catalog-structure'){
         if(method==='GET')return json(res,200,catalogStructure.read());
         if(method==='PATCH')return json(res,200,catalogStructure.save(await body(req,16384)));
@@ -1034,3 +1050,4 @@ export function createWorkshop(options){
   return {...primary,handle,tenants,forTenant:id=>workshopFor(tenants.require(id)),
     close:()=>{for(const w of others.values())w.close();primary.close();registryDb.close();}};
 }
+

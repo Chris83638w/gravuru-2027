@@ -26,9 +26,11 @@ import net from 'node:net';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SourceError, sourceConfig, sourceStatus, listSource, snapshotSource } from './source.mjs';
+import { bridgeConfig, createBridge } from './bridge.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const VERSION = '1.0.0';
+const VERSION = '1.2.0';
 const PROTOCOLS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05'];
 const MAX_TEXT = 120_000;           // größte Textantwort an das Modell (Zeichen); Rest als Download
 const KEEP_MS = 24 * 3600_000;      // Downloads/Ergebnisse 24 h
@@ -42,6 +44,7 @@ export function loadConfig(argv = process.argv.slice(2), env = process.env, defa
   const v = (k, d) => (env[k] ?? file[k] ?? defaults[k] ?? d);
   const vendored = path.join(HERE, 'vendor', 'libcdr', 'cdr2raw');
   const cfg = {
+    ...sourceConfig(v),
     token: String(v('CDR_MCP_TOKEN', '')),
     origin: String(v('CDR_MCP_ORIGIN', '')).replace(/\/+$/, ''),
     python: String(v('CDR_MCP_PYTHON', 'python3')),
@@ -67,6 +70,7 @@ export function loadConfig(argv = process.argv.slice(2), env = process.env, defa
     }
   }
   if (cfg.token.length < 32 || !/^[A-Za-z0-9_-]+$/.test(cfg.token)) throw new Error('CDR_MCP_TOKEN fehlt oder ist zu kurz (mindestens 32 Zeichen, nur A–Z, a–z, 0–9, _ und -)');
+  Object.assign(cfg, bridgeConfig(v, cfg.sourceRoot, cfg.token));
   return cfg;
 }
 
@@ -82,6 +86,7 @@ const FILE_SCHEMA = {
 const COMMON = {
   file: FILE_SCHEMA,
   url: { type: 'string', description: 'Alternative zu file: öffentliche https-Adresse einer .cdr-Datei (z. B. für Claude).' },
+  server_path: { type: 'string', description: 'Alternative zu file/url: CDR-Pfad im eingerichteten Produktordner, relativ oder mit freigegebenem V:\\Produkte-/UNC-Präfix. Zuerst cdr_source_status prüfen. Genau eine Quelle angeben.' },
   page: { type: 'integer', minimum: 1, description: 'Seite (ab 1). Ohne Angabe: alle Seiten bzw. Seite 1.' },
 };
 const READ_ONLY = { readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true };
@@ -91,7 +96,7 @@ export const TOOLS = [
     name: 'cdr_info',
     title: 'CDR: Überblick',
     description: 'Überblick über eine CorelDRAW-Datei (.cdr) ohne CorelDRAW: Seiten mit Maß in mm, Anzahl Pfade/Texte/Bitmaps, verwendete Schriften. Zuerst aufrufen, wenn unklar ist, was in der Datei steckt.',
-    inputSchema: { type: 'object', properties: { file: COMMON.file, url: COMMON.url }, additionalProperties: false },
+    inputSchema: { type: 'object', properties: { file: COMMON.file, url: COMMON.url, server_path: COMMON.server_path }, additionalProperties: false },
     cmd: 'info',
   },
   {
@@ -122,10 +127,24 @@ export const TOOLS = [
     inputSchema: { type: 'object', properties: { ...COMMON, pixels: { type: 'integer', minimum: 300, maximum: 2400, description: 'Längste Bildseite in Pixel (Standard 1600).' } }, additionalProperties: false },
     cmd: 'png',
   },
+  {
+    name: 'cdr_source_status', title: 'CDR: Produktordner prüfen',
+    description: 'Prüft, ob der Betreiber einen Produktordner auf dem Plesk-Server eingerichtet hat und der App-Benutzer ihn lesen kann. Ein leerer Mountpunkt belegt noch keine Verbindung zum Dateiserver. Keine Zugangsdaten erforderlich.',
+    inputSchema: { type: 'object', properties: {}, additionalProperties: false }, cmd: 'source_status',
+  },
+  {
+    name: 'cdr_list_files', title: 'CDR: Ordner und Designbögen auflisten',
+    description: 'Listet Unterordner und .cdr-Dateien im eingerichteten Produktordner. Genau eine Ordnerebene; mit offset fortsetzen. Die zurückgegebenen server_path-Werte direkt an cdr_texts, cdr_measure usw. übergeben. Nur lesender Zugriff.',
+    inputSchema: { type: 'object', properties: {
+      server_path: { type: 'string', description: 'Ordner relativ zum Produktordner oder mit freigegebenem V:\\Produkte-/UNC-Präfix. Leer = Wurzel.' },
+      offset: { type: 'integer', minimum: 0, maximum: 10000 },
+      limit: { type: 'integer', minimum: 1, maximum: 200 },
+    }, additionalProperties: false }, cmd: 'source_list',
+  },
 ];
 
 function toolList() {
-  return TOOLS.map(({ cmd, ...t }) => ({ ...t, annotations: READ_ONLY, _meta: { 'openai/fileParams': ['file'], 'openai/toolInvocation/invoking': 'Lese CDR …', 'openai/toolInvocation/invoked': 'CDR gelesen' } }));
+  return TOOLS.map(({ cmd, ...t }) => ({ ...t, annotations: READ_ONLY, _meta: { ...(t.inputSchema.properties.file ? { 'openai/fileParams': ['file'] } : {}), 'openai/toolInvocation/invoking': 'Lese CDR …', 'openai/toolInvocation/invoked': 'CDR gelesen' } }));
 }
 
 // ------------------------------------------------------------------ Hilfen
@@ -261,10 +280,12 @@ function limiter(n) {
 // ------------------------------------------------------------------ Server
 
 export function createCdrServer(cfg) {
+  const bridge = createBridge(cfg);
   fs.mkdirSync(path.join(cfg.data, 'in'), { recursive: true, mode: 0o700 });
   fs.mkdirSync(path.join(cfg.data, 'out'), { recursive: true, mode: 0o700 });
   const limit = limiter(cfg.jobs);
   const cache = new Map(); // key → {file, at}
+  const activeSources = new Set(); // lokale Lesekopien während Übertragung/Auswertung
   const tokenBuf = Buffer.from(cfg.token);
 
   async function cleanup() {
@@ -275,6 +296,7 @@ export function createCdrServer(cfg) {
     for (const d of await fsp.readdir(inDir).catch(() => [])) {
       const p = path.join(inDir, d); const st = await fsp.stat(p).catch(() => null);
       if (!st) continue;
+      if (activeSources.has(p)) continue;
       const inUse = [...cache.values()].some((v) => v.file === p);
       if (!inUse && now - st.mtimeMs > CACHE_MS) await fsp.rm(p, { force: true }).catch(() => {});
       else keep.push({ p, size: st.size, t: st.mtimeMs });
@@ -297,9 +319,12 @@ export function createCdrServer(cfg) {
   const sweeper = setInterval(() => cleanup().catch(() => {}), 10 * 60_000); sweeper.unref();
 
   async function fetchInput(args) {
+    const sources = ['file', 'url', 'server_path'].filter((k) => args[k] != null);
+    if (sources.length > 1) throw new ToolError('Genau eine Quelle angeben: file, url oder server_path');
+    if (sources[0] === 'server_path') return snapshotSource(cfg, args.server_path, activeSources);
     const f = args.file;
     const src = f && typeof f === 'object' ? f.download_url : args.url;
-    if (!src || typeof src !== 'string') throw new ToolError('Keine Datei: bitte eine .cdr hochladen (file) oder eine https-Adresse angeben (url)');
+    if (!src || typeof src !== 'string') throw new ToolError('Keine Datei: .cdr hochladen (file), https-Adresse (url) oder eingerichteten Serverpfad (server_path) angeben');
     const key = createHash('sha256').update(f?.file_id ? 'id:' + f.file_id : 'url:' + src).digest('hex').slice(0, 32);
     const hit = cache.get(key);
     if (hit && fs.existsSync(hit.file)) { hit.at = Date.now(); return { file: hit.file, name: f?.file_name || path.basename(new URL(src).pathname) || 'datei.cdr', cached: true }; }
@@ -344,8 +369,13 @@ export function createCdrServer(cfg) {
     posInt('page', 9999); posInt('max_plates', 2000); posInt('max_texts', 5000); posInt('pixels', 2400);
     if (args.file != null && (typeof args.file !== 'object' || typeof args.file.download_url !== 'string' || (args.file.file_name != null && typeof args.file.file_name !== 'string'))) throw new ToolError('file ist ungültig');
     if (args.url != null && typeof args.url !== 'string') throw new ToolError('url muss eine Zeichenkette sein');
+    if (args.server_path != null && typeof args.server_path !== 'string') throw new ToolError('server_path muss eine Zeichenkette sein');
     sweepSoon();
     return limit(async () => {
+      if (tool.cmd === 'source_status' || tool.cmd === 'source_list') {
+        const result = tool.cmd === 'source_status' ? await sourceStatus(cfg) : await listSource(cfg, args);
+        return { content: [{ type: 'text', text: JSON.stringify(result) }], structuredContent: result, isError: false };
+      }
       const t0 = Date.now();
       const input = await fetchInput(args);
       let base = input.name.replace(/\.cdr$/i, '').replace(/[^\p{L}\p{N} ._-]+/gu, '_').replace(/^[.\s]+/, '');
@@ -364,6 +394,7 @@ export function createCdrServer(cfg) {
       try {
         const res = await runEngine(cfg, ea);
         res.datei = input.name;
+        if (input.source) res.quelle = input.source;
         const content = [];
         if (tool.cmd === 'svg') {
           const svg = await fsp.readFile(outFile);
@@ -389,6 +420,10 @@ export function createCdrServer(cfg) {
         return { content, structuredContent: res, isError: false };
       } finally {
         if (outFile) fsp.rm(outFile, { force: true }).catch(() => {});
+        if (input.temporary) {
+          await fsp.rm(input.file, { force: true }).catch(() => {});
+          activeSources.delete(input.file);
+        }
       }
     });
   }
@@ -405,7 +440,7 @@ export function createCdrServer(cfg) {
             protocolVersion: PROTOCOLS.includes(want) ? want : PROTOCOLS[0],
             capabilities: { tools: { listChanged: false } },
             serverInfo: { name: 'gravuru-cdr', title: 'gravuru CDR-Werkzeuge', version: VERSION },
-            instructions: 'Werkzeuge für CorelDRAW-Dateien (.cdr) ohne CorelDRAW. Maße immer in mm, 1:1 aus der Datei. Für Plattengrößen und Bohrbilder cdr_measure, für Texte/Schriften cdr_texts, zum Ansehen cdr_preview, zum Weiterverarbeiten cdr_to_svg. Werte nicht runden oder „vereinheitlichen“; was die Datei nicht enthält, als unbekannt nennen.',
+            instructions: 'Werkzeuge für CorelDRAW-Dateien (.cdr) ohne CorelDRAW. Maße immer in mm, 1:1 aus der Datei. Für Serverdateien erst cdr_source_status, dann cdr_list_files oder den bekannten server_path verwenden. Für Plattengrößen und Bohrbilder cdr_measure, für Texte/Schriften und D-Nummern cdr_texts, zum Ansehen cdr_preview, zum Weiterverarbeiten cdr_to_svg. Werte nicht runden oder „vereinheitlichen“; was die Datei nicht enthält, als unbekannt nennen.',
           };
           break;
         }
@@ -415,8 +450,9 @@ export function createCdrServer(cfg) {
           try { result = await callTool(msg.params?.name, msg.params?.arguments || {}, origin); }
           catch (e) {
             if (e instanceof RpcError) throw e;
-            const text = e instanceof ToolError ? e.message : 'Interner Fehler beim Lesen der Datei';
-            if (!(e instanceof ToolError)) log({ error: String(e?.stack || e).slice(0, 500) });
+            const known = e instanceof ToolError || e instanceof SourceError;
+            const text = known ? e.message : 'Interner Fehler beim Lesen der Datei';
+            if (!known) log({ error: String(e?.stack || e).slice(0, 500) });
             result = { content: [{ type: 'text', text }], isError: true };
           }
           break;
@@ -447,6 +483,7 @@ export function createCdrServer(cfg) {
     };
     try {
       if (url.pathname === '/health') return send(200, JSON.stringify({ ok: true, version: VERSION }));
+      if (url.pathname === '/bridge/v1/file') return await bridge(req, res);
       const dl = url.pathname.match(/^\/dl\/([A-Za-z0-9_-]{24})\/([^/]+)$/);
       if (dl && req.method === 'GET') {
         let name; try { name = decodeURIComponent(dl[2]); } catch { return send(404, '{}'); }

@@ -181,10 +181,13 @@ test('MCP: initialize, tools/list mit Datei-Parametern für ChatGPT', async () =
   const tools = l.body.result.tools;
   assert.deepEqual(tools.map((t) => t.name), TOOLS.map((t) => t.name));
   for (const t of tools) {
-    assert.deepEqual(t._meta['openai/fileParams'], ['file']);
     const f = t.inputSchema.properties.file;
-    assert.deepEqual(Object.keys(f.properties).sort(), ['download_url', 'file_id', 'file_name', 'mime_type']);
-    assert.deepEqual(f.required, ['download_url', 'file_id']);
+    if (f) {
+      assert.deepEqual(t._meta['openai/fileParams'], ['file']);
+      assert.deepEqual(Object.keys(f.properties).sort(), ['download_url', 'file_id', 'file_name', 'mime_type']);
+      assert.deepEqual(f.required, ['download_url', 'file_id']);
+      assert.equal(t.inputSchema.properties.server_path.type, 'string');
+    } else assert.equal(t._meta['openai/fileParams'], undefined);
     assert.equal(t.annotations.readOnlyHint, true);
     assert.equal(t.annotations.destructiveHint, false);
     assert.equal(t.annotations.openWorldHint, false);

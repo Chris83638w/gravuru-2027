@@ -1,0 +1,161 @@
+{
+ "schema": "gravuru-shop-mapping/v1",
+ "shopDomain": "gravuru-design.myshopify.com",
+ "date": "2026-10-22",
+ "line": "edelstahl-tuerschilder",
+ "subcategory": "familienschilder",
+ "sizeKey": "GR-ES-RE-70X23P3-T15",
+ "optionGroup": {
+  "id": "mounting",
+  "name": "Befestigung"
+ },
+ "metafield": {
+  "namespace": "custom",
+  "key": "customization_id",
+  "definition": "gid://shopify/MetafieldDefinition/397781762428"
+ },
+ "note": "Bestehende Shopify-Produkte (Matrixify 10.08.2026) per productSet aktualisiert: Preis, Option Befestigung, SKUs, Metafeld. Titel/Texte/Bilder/übrige Metafelder unverändert. Alle Varianten ohne Bestandsverfolgung (Fertigung auf Bestellung). Konfi-Produktkennung = profile.id in der Werkstatt (binding local-review), Werkstatt-Record-ID aus der lokalen Entwicklungs-DB – auf dem Händlerhost nach dem Import neu ermitteln.",
+ "products": [
+  {
+   "mainProductId": "3100000",
+   "customizationId": "3100000",
+   "skuBase": "TRE-V2A-7x2-D5",
+   "shopifyProductId": "gid://shopify/Product/16077793821052",
+   "handle": "tuerschild-edelstahl-v2a-personalisiert-7x2",
+   "shopifyTitle": "Türschild Edelstahl V2A personalisiert 7×2 cm",
+   "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-70x23p3-t15-3100000",
+   "localWorkshopRecord": "cfg_92cd80be-b67c-411a-ba1a-20287d9dc1cf",
+   "variants": [
+    {
+     "mountingKey": "K00",
+     "optionValue": "Ohne Bohrung",
+     "priceCents": 899,
+     "sku": "TRE-V2A-7x2-D5",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57265872109948"
+    },
+    {
+     "mountingKey": "KGL",
+     "optionValue": "Selbstklebend – glatte Flächen",
+     "priceCents": 1198,
+     "sku": "TRE-V2A-7x2-D5-KGL",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793642496380"
+    },
+    {
+     "mountingKey": "KRA",
+     "optionValue": "Selbstklebend – raue Flächen",
+     "priceCents": 1298,
+     "sku": "TRE-V2A-7x2-D5-KRA",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793642529148"
+    },
+    {
+     "mountingKey": "B02",
+     "optionValue": "Mit 2 Bohrlöchern",
+     "priceCents": 1148,
+     "sku": "TRE-V2A-7x2-D5-B02",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793642561916"
+    },
+    {
+     "mountingKey": "B02S",
+     "optionValue": "Mit 2 Schrauben",
+     "priceCents": 1168,
+     "sku": "TRE-V2A-7x2-D5-B02S",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793642594684"
+    }
+   ]
+  },
+  {
+   "mainProductId": "3200000",
+   "customizationId": "3200000",
+   "skuBase": "TRE-V2A-7x2-D26",
+   "shopifyProductId": "gid://shopify/Product/16077793984892",
+   "handle": "tuerschild-edelstahl-v2a-personalisiert-klingel-7x2",
+   "shopifyTitle": "Türschild Edelstahl V2A personalisiert – Klingel 7×2 cm",
+   "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-70x23p3-t15-3200000",
+   "localWorkshopRecord": "cfg_a2a13f54-a29f-4578-a5aa-debffc79b119",
+   "variants": [
+    {
+     "mountingKey": "K00",
+     "optionValue": "Ohne Bohrung",
+     "priceCents": 899,
+     "sku": "TRE-V2A-7x2-D26",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57265873846652"
+    },
+    {
+     "mountingKey": "KGL",
+     "optionValue": "Selbstklebend – glatte Flächen",
+     "priceCents": 1198,
+     "sku": "TRE-V2A-7x2-D26-KGL",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793719271804"
+    },
+    {
+     "mountingKey": "KRA",
+     "optionValue": "Selbstklebend – raue Flächen",
+     "priceCents": 1298,
+     "sku": "TRE-V2A-7x2-D26-KRA",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793719304572"
+    },
+    {
+     "mountingKey": "B02",
+     "optionValue": "Mit 2 Bohrlöchern",
+     "priceCents": 1148,
+     "sku": "TRE-V2A-7x2-D26-B02",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793719337340"
+    },
+    {
+     "mountingKey": "B02S",
+     "optionValue": "Mit 2 Schrauben",
+     "priceCents": 1168,
+     "sku": "TRE-V2A-7x2-D26-B02S",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793719370108"
+    }
+   ]
+  },
+  {
+   "mainProductId": "3300000",
+   "customizationId": "3300000",
+   "skuBase": "TRE-V2A-7x2-D35",
+   "shopifyProductId": "gid://shopify/Product/16077794148732",
+   "handle": "tuerschild-edelstahl-v2a-personalisiert-katze-7x2",
+   "shopifyTitle": "Türschild Edelstahl V2A personalisiert – Katze 7×2 cm",
+   "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-70x23p3-t15-3300000",
+   "localWorkshopRecord": "cfg_dea36706-7f5c-432c-a41e-9bd557b7a7e2",
+   "variants": [
+    {
+     "mountingKey": "K00",
+     "optionValue": "Ohne Bohrung",
+     "priceCents": 899,
+     "sku": "TRE-V2A-7x2-D35",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57265874796924"
+    },
+    {
+     "mountingKey": "KGL",
+     "optionValue": "Selbstklebend – glatte Flächen",
+     "priceCents": 1198,
+     "sku": "TRE-V2A-7x2-D35-KGL",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793804697980"
+    },
+    {
+     "mountingKey": "KRA",
+     "optionValue": "Selbstklebend – raue Flächen",
+     "priceCents": 1298,
+     "sku": "TRE-V2A-7x2-D35-KRA",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793804730748"
+    },
+    {
+     "mountingKey": "B02",
+     "optionValue": "Mit 2 Bohrlöchern",
+     "priceCents": 1148,
+     "sku": "TRE-V2A-7x2-D35-B02",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793804763516"
+    },
+    {
+     "mountingKey": "B02S",
+     "optionValue": "Mit 2 Schrauben",
+     "priceCents": 1168,
+     "sku": "TRE-V2A-7x2-D35-B02S",
+     "shopifyVariantId": "gid://shopify/ProductVariant/57793804796284"
+    }
+   ]
+  }
+ ]
+}

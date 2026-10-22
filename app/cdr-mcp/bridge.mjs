@@ -72,9 +72,17 @@ async function usage(root) {
 
 export function createBridge(cfg) {
   return async (req, res) => {
-    const send = (status, body = {}, extra = {}) => {
+    let lock, temp, pending;
+    const writeResponse = (status, body = {}, extra = {}) => {
+      if (res.destroyed) return;
       res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', ...extra });
       res.end(req.method === 'HEAD' ? undefined : JSON.stringify(body));
+    };
+    // A client may start its next file as soon as it sees this response. Do not
+    // acknowledge a PUT while its temporary file or upload lock still exists.
+    const send = (status, body = {}, extra = {}) => {
+      if (lock) pending = [status, body, extra];
+      else writeResponse(status, body, extra);
     };
     if (!cfg.bridgeEnabled) return send(404, { error: 'nicht gefunden' });
     const auth = /^Bearer ([A-Za-z0-9_-]+)$/.exec(String(req.headers.authorization || ''));
@@ -84,7 +92,6 @@ export function createBridge(cfg) {
     // This endpoint is for the local helper; browser-origin requests have no use here.
     if (req.headers.origin) return send(403, { error: 'Browser-Aufruf nicht erlaubt' });
     if (!['HEAD', 'PUT'].includes(req.method)) return send(405, { error: 'Nur HEAD und PUT' }, { allow: 'HEAD, PUT' });
-    let lock, temp;
     const lockPath = path.join(cfg.bridgeRoot, '.bridge-upload.lock');
     try {
       const { rel, parts } = relativePath(req.headers['x-cdr-path']);
@@ -147,8 +154,13 @@ export function createBridge(cfg) {
     } catch (e) {
       if (!res.headersSent && !res.destroyed) send(e instanceof BridgeError ? e.status : 503, { error: e instanceof BridgeError ? e.message : 'Übertragung nicht bestätigt; Verbindung oder Speicher prüfen' });
     } finally {
-      if (temp) await fsp.rm(temp, { force: true }).catch(() => {});
-      if (lock) { await lock.close(); await fsp.rm(lockPath, { force: true }); }
+      try {
+        if (temp) await fsp.rm(temp, { force: true });
+        if (lock) { await lock.close(); await fsp.rm(lockPath, { force: true }); }
+      } catch {
+        pending = [503, { error: 'Übertragung nicht bestätigt; temporäre Dateien oder Sperre prüfen' }];
+      }
+      if (pending) writeResponse(...pending);
     }
   };
 }

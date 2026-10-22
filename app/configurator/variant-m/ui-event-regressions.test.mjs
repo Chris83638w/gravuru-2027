@@ -277,7 +277,7 @@ test('Freie Farbe: Farbdruck zeigt Palette + Farbwähler, Gravur keine Farbwahl,
  const evaluate=(file,markers,env,result)=>{vm.createContext(env);for(const m of markers)vm.runInContext(line(file,m),env);return structuredClone(vm.runInContext(result,env));};
  const run=(profileId,colors=null)=>{
   const process=processProfile(profileId),config={workshopProfiles:{selections:{colors}}},colorTool=!!process.tools.textColor;
-  const ux=evaluate('ux.mjs',['const colorPalette=colorTool?processPalette'],{process,config,colorTool,processPalette,processFreeColor},'({palette:colorPalette,free:freeColor})');
+  const ux=evaluate('ux.mjs',['const freeColor=colorTool&&processFreeColor('],{process,config,colorTool,processFreeColor,processPalette},'({palette:colorTool?processPalette(process,config.workshopProfiles.selections.colors):[],free:freeColor})');
   const direct=evaluate('direct-editing.mjs',['const colorSelection=config?.workshopProfiles','const paletteColors=colorTool?processPalette','const presetColors=paletteColors===null'],{process,config,colorTool,processPalette,processFreeColor},'({palette:paletteColors,free:freeColor,presets:presetColors.length})');
   const usability=evaluate('usability.mjs',['const freeChoice=processFreeColor(process,colorSelection);'],{process,colorSelection:colors,processFreeColor},'freeChoice');
   return {ux,direct,usability};

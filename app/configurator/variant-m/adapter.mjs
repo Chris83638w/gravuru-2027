@@ -1,6 +1,5 @@
-import {spacerPreview,screwPreview,keepoutPreview} from './option-media.mjs';
+import {spacerPreview,screwPreview,keepoutPreview,optionTileIcon,optionTilePrice} from './option-media.mjs';
 import {designAreaPreview} from './design-area.mjs';
-import {textsNearHoles,holeHintText} from '../../platform/sources/app/shared/models/hole-proximity.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl} from './material-surface.mjs';
@@ -36,8 +35,9 @@ export function installUniversal(configInput) {
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
-    // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026); Texte nahe an Löchern
-    // meldet weiter der Hinweis. Schrauben/Abstandshalter erscheinen, wenn die Befestigung sie enthält.
+    // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026), und seit 22./23.10.2026
+    // auch keinen Hinweis zu Texten nahe an Löchern (nur noch mechanische Prüfung). Schrauben/Abstandshalter
+    // erscheinen, wenn die Befestigung sie enthält.
     return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,profile(surface)),profile(surface)),profile(surface),{show:false,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
@@ -100,10 +100,15 @@ export function installUniversal(configInput) {
     const picks=document.createElement('div'); picks.className='m-options';
     picks.innerHTML=(p.optionGroups||[]).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(config.steelFormats&&g.id==='size'?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
     optionPanel.append(picks);
+    // Chris 22./23.10.2026: Befestigung als Kacheln mit Icon, Bezeichnung und Aufpreis („+2,99 €“ oder
+    // „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount] in completion.mjs; der Auswahlhaken kommt von
+    // dort (completion-choice). Andere Gruppen zeigen weiterhin nur Werte mit hinterlegtem Optionsbild. Die
+    // Auswahlliste darüber bleibt als barrierefreie Alternative. Preis- und Auswahllogik bleiben unverändert.
     const pictures=document.createElement('div');pictures.className='m-option-pictures';
-    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+' – Bilder">'+g.values.filter(v=>v.thumbnail).map(v=>'<button type="button" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false"><img src="'+esc(v.thumbnail)+'" alt=""><span>'+esc(v.label)+'</span></button>').join('')+'</div>').join('');
+    const tileValues=g=>g.id==='mounting'?g.values:g.values.filter(v=>v.thumbnail);
+    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+optionTileIcon(v)+'<strong>'+esc(v.label)+'</strong><small>'+esc(optionTilePrice(v,money,{fullPrice:!!config.steelFormats&&g.id==='size'}))+'</small></button>').join('')+'</div>').join('');
     picks.append(pictures);
-    style.textContent+='.m-option-pictures>div{display:flex;flex-wrap:wrap;gap:8px}.m-option-pictures button{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;width:112px;min-height:110px;border:1px solid #c4cbc6;border-radius:8px;background:#fff;padding:6px;color:#1c3327}.m-option-pictures button[aria-pressed=true]{outline:2px solid #28543f}.m-option-pictures img{width:70px;height:70px;object-fit:contain;display:block;margin:auto;flex:none}.m-option-pictures span{display:block;font-size:12px;white-space:normal}';
+    style.textContent+='.m-option-pictures>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:6px 0 10px}.m-option-pictures>div:empty{display:none}.m-option-pictures button{display:grid;justify-items:center;align-content:center;gap:6px;min-height:110px;padding:12px 18px;border:1px solid #dce5df;border-radius:12px;background:#fff;color:#1c3327;position:relative}.m-option-pictures button[aria-pressed=true]{border-color:#17634d;background:#edf5f0}.m-option-pictures svg{width:32px;height:32px;display:block;flex:none}.m-option-pictures img{width:56px;height:40px;object-fit:contain;display:block;flex:none}.m-option-pictures strong{font-size:14px;font-weight:600;line-height:1.3;text-align:center}.m-option-pictures small{font-size:12px;color:#526b5d}@media(max-width:600px){.m-option-pictures button{min-height:95px}.m-option-pictures svg{width:27px;height:27px}}';
     pictures.addEventListener('click',e=>{const button=e.target.closest('[data-picture-option]');if(!button)return;el.record();options={...options,[button.dataset.pictureGroup]:button.dataset.pictureOption};el.state.mOptions=clone(options);el.sync();});
     // K14 / Ü12.1: Zusatzfelder ohne Vorschau (Text, Datum, Auswahlliste, Ankreuzfeld) im Reiter „Optionen“.
     const fieldBox=document.createElement('div');fieldBox.className='m-option-fields';
@@ -173,7 +178,9 @@ export function installUniversal(configInput) {
     $('.fk-font-section').append(colorControl);
     colorControl.addEventListener('input',e=>{const o=el.selected();if(o&&!locked(o)){el.record();o.color=e.target.value;el.sync();}});
     const issue=document.createElement('p');issue.dataset.mInvalid='';issue.setAttribute('role','status');$('.guided-download').before(issue);
-    const holeHint=document.createElement('p');holeHint.dataset.mHoleHint='';holeHint.setAttribute('role','status');holeHint.hidden=true;holeHint.style.cssText='background:#fff4e5;border:1px solid #f0c27b;border-radius:10px;padding:10px 12px;font-size:14px;margin:10px 16px';($('.stage-wrap')||$('.guided-download').parentElement).append(holeHint);
+    // Chris 22./23.10.2026: Kein Kundenhinweis „Text in der Bohrloch-Schutzzone“ mehr (vorher hole-proximity.mjs
+    // hier). Die mechanische Prüfung (mounting-access.mjs, nicht ignorierbar) und die Überlagerungswarnung bei
+    // Gravur (customer-tools-model.mjs) bleiben; Werkstatt-Prüfvermerk und Händlervorschau nutzen hole-proximity weiter.
     const exports=$('.export-type');exports.replaceChildren(new Option('Produktvorschau · PNG','png'),new Option('Vektorentwurf ohne Foto · SVG 1:1','vectors'));
     el.export=async function(){
       try{
@@ -269,8 +276,6 @@ export function installUniversal(configInput) {
       for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=options[select.dataset.mOption];
       updateOptionVisibility();
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
-      // Independent of validity: the drill-hole hint must also show while another issue is open.
-      try{const shown=current();const hint=holeHintText(textsNearHoles({...shown,objects:shown.objects.filter(o=>objectSurface(o)===activeSurface())},profile(),el.fontData));holeHint.textContent=hint;holeHint.hidden=!hint;}catch{holeHint.hidden=true;}
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';

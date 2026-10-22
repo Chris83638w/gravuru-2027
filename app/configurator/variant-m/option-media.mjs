@@ -27,6 +27,31 @@ export function optionThumbnail(option){
   const key=hasSpacers(option)?'AH'+count+'-'+(option.spacerFinish||'silver'):OPTION_STANDARD_IMAGES[option.id]?option.id:count===2?'B02':count===4?'B04':null;
   return OPTION_STANDARD_IMAGES[key]||'';
 }
+// Befestigungskacheln (Chris 22./23.10.2026): Universal-/Katalogprodukte zeigen dieselben Kacheln wie die
+// alte Auswahl [data-fk-mount] (completion.mjs) – Icon, Bezeichnung, Aufpreis. Icons: hinterlegtes
+// Optionsbild bzw. Standardbild (optionThumbnail), sonst das Strichsymbol je Befestigungsart; unbekannte
+// Kennungen erhalten das Symbol „ohne Bohrung“. KGL (selbstklebend glatt) teilt das Klebesymbol mit KRA.
+export const MOUNT_ICONS=Object.freeze({
+  K00:'<rect x="5" y="5" width="22" height="22" rx="2"/><path d="m10 22 12-12"/>',
+  GWS:'<path d="M8 4v24m0-17h17m-17 10h17m-7-13v6m4-6v6m-4 4v6m4-6v6"/>',
+  KRA:'<path d="M5 25V7h22v10L17 27H5m12 0V17h10M9 11h12M9 15h5"/>',
+  SIL:'<path d="m6 26 12-12 7 7-7 7m-1-15 3-3 7 7-3 3M6 26l-3 3m15-17 5-5 3 3-5 5M23 7l4-4 2 2-3 5"/>',
+  B04S:'<rect x="4" y="4" width="24" height="24" rx="2"/><circle cx="10" cy="10" r="2"/><circle cx="22" cy="10" r="2"/><circle cx="10" cy="22" r="2"/><circle cx="22" cy="22" r="2"/>'
+});
+const MOUNT_ICON_ALIASES=Object.freeze({KGL:'KRA'});
+const attr=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export const mountIconSvg=paths=>'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths+'</svg>';
+export function optionTileIcon(option){
+  const image=optionThumbnail(option);
+  if(image)return '<img src="'+attr(image)+'" alt="">';
+  return mountIconSvg(MOUNT_ICONS[option.id]||MOUNT_ICONS[MOUNT_ICON_ALIASES[option.id]]||MOUNT_ICONS.K00);
+}
+// Preistext der Kachel wie in der Auswahlliste: „+2,99 €“ oder „ohne Aufpreis“; Größen mit Komplettpreis
+// (steelFormats) zeigen den Preis selbst. Reine Darstellung – die Preislogik bleibt im Vertrag (contract.mjs).
+export function optionTilePrice(value,money,{fullPrice=false}={}){
+  if(fullPrice)return money(value.priceCents);
+  return value.priceCents?'+'+money(value.priceCents):'ohne Aufpreis';
+}
 export function validateOptionPresentation(option){
   if(option.thumbnailDisabled!==undefined&&typeof option.thumbnailDisabled!=='boolean')throw Error('Optionsbild-Anzeige prüfen.');
   if(option.spacers!==undefined&&typeof option.spacers!=='boolean')throw Error('Abstandshalter bitte ein- oder ausschalten.');

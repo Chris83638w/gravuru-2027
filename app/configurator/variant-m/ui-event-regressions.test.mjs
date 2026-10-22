@@ -227,3 +227,145 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
 });
+// Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz. Die echte place()-Funktion aus workflow.mjs:
+// Gestaltungsfläche innerhalb des Randes, Verkleinerung bis zur Mindestgröße (Text 3 mm, Motiv 10 mm), sonst mittig + Hinweis.
+test('Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur Mindestgröße, sonst mittig mit Hinweis',async()=>{
+ const {freePlacement,NO_FREE_SPACE_MESSAGE}=await import('./workflow-model.mjs');
+ const {MOTIF_MIN_MM}=await import('./motif-placement.mjs');
+ const {designArea}=await import('./design-area.mjs');
+ const geometry={width:90,height:60,shape:'rect',cornerRadiusMm:0,safeMarginMm:2,holes:[]};
+ const make=objects=>{
+  const said=[],motifCalls=[];
+  const env={config:{profile:{geometry}},profile:{geometry},el:{state:{objects,selected:null},uxMinTextMm:3,uxTextScale:()=>1},say:m=>said.push(m),designArea,freePlacement,NO_FREE_SPACE_MESSAGE,MOTIF_MIN_MM,
+   surface:()=>({x:0,y:0,width:90,height:60}),obstacles:()=>[],api:{},placementJob:Promise.resolve(),placeNewMotif:(_api,o,opts)=>{motifCalls.push({id:o.id,...opts});return Promise.resolve();}};
+  vm.createContext(env);
+  for(const marker of ['const physicalScale=','function placementSurface(){','function shrinkTo(o,scale){'])vm.runInContext(line('workflow.mjs',marker),env);
+  vm.runInContext(block('workflow.mjs',' function placementMinScale(o){','\n }'),env);
+  vm.runInContext(block('workflow.mjs',' function place(o){','\n }'),env);
+  return {env,said,motifCalls,place:o=>vm.runInContext('place',env)(o)};
+ };
+ // Gestaltungsfläche = Rand 2 mm: 86 × 56 mm.
+ const {env:e0}=make([]);assert.deepEqual(structuredClone(vm.runInContext('placementSurface()',e0)),{x:2,y:2,width:86,height:56,shape:'rect'});
+ // Mindestmaßstab: Text 12 mm → 3/12; Text schon unter 3 mm → 1 (nicht weiter verkleinern); Motiv 40 mm → 10/40; Motiv 8 mm → 1.
+ assert.equal(vm.runInContext("placementMinScale({type:'text',size:12,w:30,h:12})",e0),0.25);
+ assert.equal(vm.runInContext("placementMinScale({type:'text',size:2.5,w:10,h:3})",e0),1);
+ assert.equal(vm.runInContext("placementMinScale({type:'motif',w:40,h:20})",e0),0.25);
+ assert.equal(vm.runInContext("placementMinScale({type:'photoSlot',w:8,h:6})",e0),1);
+ // (a) Freie Fläche: Originalgröße, kein Hinweis.
+ const a=make([]),ta={id:'t',type:'text',size:10,w:30,h:10,rotation:0};a.env.el.state.objects.push(ta);a.place(ta);
+ assert.equal(ta.size,10);assert.deepEqual(a.said,[]);assert.ok(ta.x>=17&&ta.x<=73&&ta.y>=7&&ta.y<=53);
+ // (b) Nur eine schmale Lücke unten (Rand 2 bis 58 mm, Wand bis 47,5 mm → 10,5 mm): Text 10 mm hoch passt mit 1 mm Abstand
+ //     zum Nachbarn (Außenbox +2 mm) erst verkleinert (0,9 → 9 mm) – nie unter 3 mm; der Nachbar wird nicht verschoben.
+ const wall={id:'w',type:'motif',x:45,y:24,w:86,h:47,rotation:0};
+ const b=make([structuredClone(wall)]),tb={id:'t',type:'text',size:10,w:30,h:10,rotation:0};b.env.el.state.objects.push(tb);b.place(tb);
+ assert.ok(Math.abs(tb.size-9)<1e-9,String(tb.size));assert.ok(Math.abs(tb.w/30-tb.size/10)<1e-9,'Breite skaliert mit der Größe');
+ assert.ok(tb.y+tb.h/2<=58.001&&tb.y-tb.h/2>=48.5-1e-6,JSON.stringify(tb));assert.deepEqual(b.env.el.state.objects[0],wall);
+ assert.deepEqual(b.said,['Text in einer freien Fläche platziert – dafür verkleinert.']);assert.equal(b.env.el.state.selected,null);
+ // (c) Alles belegt: mittig, ausgewählt, kurzer Hinweis – auch bei Mindestgröße kein Platz.
+ const c=make([{id:'w',type:'motif',x:45,y:30,w:90,h:60,rotation:0}]),tc={id:'t',type:'text',size:10,w:30,h:10,rotation:0};c.env.el.state.objects.push(tc);c.place(tc);
+ assert.deepEqual([tc.x,tc.y,tc.size],[45,30,10]);assert.equal(c.env.el.state.selected,'t');assert.deepEqual(c.said,[NO_FREE_SPACE_MESSAGE]);
+ // (d) Motive gehen über die Pixelsuche mit Mindestmaßstab aus MOTIF_MIN_MM.
+ const d=make([]),m={id:'m',type:'motif',w:40,h:20,rotation:0};d.env.el.state.objects.push(m);d.place(m);await d.env.placementJob;
+ assert.deepEqual(d.motifCalls,[{id:'m',minScale:0.25}]);assert.deepEqual(d.said,['Freie Fläche für das Motiv wird gesucht …']);
+});
+// Chris 22./23.10.2026: Beim Farbdruck bleiben Palette und runde Schnellfarbpunkte, zusätzlich ist der Farbwähler
+// (freie Farbe) erlaubt; Gravurprofile unverändert ohne Farbwahl. Die echten Zeilen aus ux.mjs, direct-editing.mjs
+// und usability.mjs, mit den Verfahrensprofilen ausgewertet.
+test('Freie Farbe: Farbdruck zeigt Palette + Farbwähler, Gravur keine Farbwahl, Produktauswahl nur Palette',async()=>{
+ const {processProfile,processPalette,processFreeColor}=await import('../../workshop/process-profiles.mjs');
+ // Modulweite const-Deklarationen landen im Kontext, nicht am Objekt: Ergebnis per Ausdruck lesen.
+ const evaluate=(file,markers,env,result)=>{vm.createContext(env);for(const m of markers)vm.runInContext(line(file,m),env);return structuredClone(vm.runInContext(result,env));};
+ const run=(profileId,colors=null)=>{
+  const process=processProfile(profileId),config={workshopProfiles:{selections:{colors}}},colorTool=!!process.tools.textColor;
+  const ux=evaluate('ux.mjs',['const freeColor=colorTool&&processFreeColor('],{process,config,colorTool,processFreeColor,processPalette},'({palette:colorTool?processPalette(process,config.workshopProfiles.selections.colors):[],free:freeColor})');
+  const direct=evaluate('direct-editing.mjs',['const colorSelection=config?.workshopProfiles','const paletteColors=colorTool?processPalette','const presetColors=paletteColors===null'],{process,config,colorTool,processPalette,processFreeColor},'({palette:paletteColors,free:freeColor,presets:presetColors.length})');
+  const usability=evaluate('usability.mjs',['const freeChoice=processFreeColor(process,colorSelection);'],{process,colorSelection:colors,processFreeColor},'freeChoice');
+  return {ux,direct,usability};
+ };
+ const print=run('color-print');
+ assert.equal(print.ux.palette.length,20);assert.equal(print.ux.free,true);
+ assert.equal(print.direct.palette.length,20,'runde Schnellfarbpunkte bleiben');assert.equal(print.direct.presets,20);assert.equal(print.direct.free,true,'Farbwähler in der Werkzeugleiste');
+ assert.equal(print.usability,true,'Farbwähler im Farbbereich');
+ for(const id of ['steel-engraving','slate-engraving','wood-engraving','acrylic-engraving']){const e=run(id);assert.deepEqual(e.ux.palette,[]);assert.equal(e.ux.free,false,id);assert.equal(e.direct.free,false,id);assert.equal(e.direct.presets,0);assert.equal(e.usability,false,id);}
+ const narrowed=run('color-print',['#245cac','#c93232']);
+ assert.deepEqual(narrowed.ux.palette,['#c93232','#245cac']);assert.equal(narrowed.ux.free,false,'Produktauswahl des Händlers: nur diese Farben');assert.equal(narrowed.direct.free,false);assert.equal(narrowed.usability,false);
+ // Der Farbwähler der Werkzeugleiste wird bei freier Farbe eingeblendet (Text/Motiv), die Presets bleiben daneben sichtbar.
+ assert.match(source('direct-editing.mjs'),/color\.parentElement\.hidden=!\(text\|\|motif\)\|\|!freeColor;/);
+ assert.match(source('direct-editing.mjs'),/presets\.hidden=!colorTool\|\|!\(text\|\|motif\)\|\|\(paletteColors===null&&!motif\);/);
+ assert.match(source('usability.mjs'),/\(freeChoice\?'<label>Ausgewählte Farbe <input type="color" data-free-color/);
+});
+// Chris 22./23.10.2026: Ohne Foto im Produkt/Verfahren und ohne Foto-/Logo-Ebene in einem Design verschwindet der
+// Reiter „Foto / Logo“ vollständig – unabhängig von der Logo-Einstellung. Produkte mit Foto bleiben unverändert.
+test('Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten Logos), mit Foto wie bisher',async()=>{
+ const {uploadTabVisible,designsHaveUploadLayer}=await import('./ux-model.mjs');
+ const textOnly={photo:{enabled:false},logo:{enabled:true},profile:{designs:[{id:'a',objects:[{id:'t',type:'text'}]},{id:'b',objects:[{id:'m',type:'motif'}]}]}};
+ const withSlot={photo:{enabled:true},logo:{enabled:true},profile:{designs:[{id:'a',objects:[{id:'p',type:'photoSlot'}]},{id:'b',importedSource:'x.pdf',objects:[{id:'t',type:'text'}]}]}};
+ assert.equal(designsHaveUploadLayer(textOnly),false);assert.equal(designsHaveUploadLayer(withSlot),true);
+ // Kein Foto (Produkt oder Verfahren), keine Ebene: weg – egal ob Logos erlaubt sind.
+ assert.equal(uploadTabVisible(textOnly,'a',{photoEnabled:false,logoEnabled:true}),false);
+ assert.equal(uploadTabVisible(textOnly,'a',{photoEnabled:false,logoEnabled:false}),false);
+ // Verfahren ohne Foto (tools.photo false), aber ein Design hat eine Fotoebene: bisherige Regel (Logo entscheidet).
+ assert.equal(uploadTabVisible(withSlot,'a',{photoEnabled:false,logoEnabled:true}),true);
+ assert.equal(uploadTabVisible({...withSlot,photo:{enabled:false}},'a',{photoEnabled:false,logoEnabled:false}),false);
+ // Produkt mit Foto: unverändert – Fotobereich im gewählten Design oder Logos erlaubt.
+ assert.equal(uploadTabVisible(withSlot,'a',{photoEnabled:true,logoEnabled:false}),true);
+ assert.equal(uploadTabVisible(withSlot,'b',{photoEnabled:true,logoEnabled:false}),false,'importierte Vorlage ohne Fotobereich, keine Logos');
+ assert.equal(uploadTabVisible(withSlot,'b',{photoEnabled:true,logoEnabled:true}),true);
+ assert.equal(uploadTabVisible(undefined,undefined,{photoEnabled:true,logoEnabled:true}),true,'Klingelschild-Altpfad ohne Produktkonfiguration');
+ // Der echte updateUploads-Block aus ux.mjs setzt den Reiter samt Hilfe-Knopf nach dieser Regel.
+ const {photoAvailableForDesign}=await import('./ux-model.mjs');
+ const run=(config,photoEnabled,logoEnabled)=>{
+  const tab={hidden:false,disabled:false},guide={hidden:false},shown=[];
+  const nodes={'#ux-tab-upload':tab,'[data-ux=guide-upload]':guide,'.ux-tabs':{style:{setProperty(){}}},'.ux-uploads':{innerHTML:''}};
+  const env={config,photoEnabled,logoEnabled,activeTab:'upload',showTab:k=>shown.push(k),photoAvailableForDesign,uploadTabVisible,files:new Map(),el:{state:{designId:config.profile.designs[0].id,objects:[]}},$:s=>nodes[s],all:()=>[],label:()=>'',esc:v=>String(v),money:()=>'',button:()=>''};
+  vm.createContext(env);vm.runInContext(block('ux.mjs','  function updateUploads(){','\n  function updatePrice').replace('\n  function updatePrice',''),env);vm.runInContext('updateUploads()',env);
+  return {tab,guide,shown};
+ };
+ const gone=run(textOnly,false,true);assert.equal(gone.tab.hidden,true);assert.equal(gone.tab.disabled,true);assert.equal(gone.guide.hidden,true);assert.deepEqual(gone.shown,['options']);
+ const kept=run(withSlot,true,false);assert.equal(kept.tab.hidden,false);assert.equal(kept.guide.hidden,false);assert.deepEqual(kept.shown,[]);
+ // Reiter und Hilfe-Knopf werden gar nicht erst erzeugt, wenn kein Upload angeboten wird (uploadOffered).
+ const offered=line('ux.mjs','const uploadOffered=');
+ const offers=(photoEnabled,logoEnabled,config)=>{const env={photoEnabled,logoEnabled,config,designsHaveUploadLayer};vm.createContext(env);vm.runInContext(offered,env);return vm.runInContext('uploadOffered',env);};
+ assert.equal(offers(false,true,textOnly),false);assert.equal(offers(false,true,withSlot),true);assert.equal(offers(true,false,textOnly),true);assert.equal(offers(false,false,withSlot),false);
+ assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title,icon\]\)/,'Reiterleiste nutzt uploadOffered');
+ assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title\]\)=>button\('guide-'/,'Hilfe-Dialog nutzt uploadOffered');
+});
+// Chris 22./23.10.2026: Befestigung bei Universal-/Katalogprodukten als Kacheln mit Icon, Bezeichnung und Aufpreis
+// („+2,99 €“ / „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount]; Auswahlhaken einheitlich wie bei Designs.
+test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und Aufpreis; Auswahlliste bleibt, Haken wie Designs',async()=>{
+ const {optionTileIcon,optionTilePrice,MOUNT_ICONS,optionThumbnail}=await import('./option-media.mjs');
+ const {money}=await import('./contract.mjs');
+ const {familyProductConfig}=await import('../../workshop/product-families.mjs');
+ const {escapeXml}=await import('../../platform/sources/app/shared/models/design-content.mjs');
+ const family=JSON.parse(fs.readFileSync(new URL('../../designs/steel-door-signs/family.json',import.meta.url)));
+ const config=familyProductConfig(family,family.sizes.find(s=>s.key==='GR-ES-OV-90X60-T15'),1),p=config.profile;
+ const mounting=p.optionGroups.find(g=>g.id==='mounting');
+ assert.deepEqual(mounting.values.map(v=>v.id),['K00','KGL','KRA','B02','B02S']);
+ // Icon: Standardbild (Bohrbild) als <img>, sonst Strichsymbol; KGL teilt das Klebesymbol mit KRA, Unbekanntes → „ohne Bohrung“.
+ assert.match(optionTileIcon(mounting.values.find(v=>v.id==='B02')),/^<img src="data:image\/png;base64,[A-Za-z0-9+/=]+" alt="">$/);
+ assert.equal(optionTileIcon({id:'B02',holes:[{},{}],thumbnailDisabled:true}),optionTileIcon({id:'FREMD'}),'Bild abgeschaltet → Symbol „ohne Bohrung“');
+ assert.ok(optionTileIcon({id:'K00'}).includes(MOUNT_ICONS.K00)&&optionTileIcon({id:'K00'}).startsWith('<svg viewBox="0 0 32 32"'));
+ assert.equal(optionTileIcon({id:'KGL'}),optionTileIcon({id:'KRA'}));assert.ok(optionTileIcon({id:'KRA'}).includes(MOUNT_ICONS.KRA));
+ assert.equal(optionThumbnail({id:'K00'}),'','K00 hat kein Standardbild – daher das Symbol');
+ // Preistext wie in der Auswahlliste; Größen mit Komplettpreis zeigen den Preis selbst.
+ assert.equal(optionTilePrice({priceCents:0},money),'ohne Aufpreis');assert.equal(optionTilePrice({priceCents:299},money),'+'+money(299));assert.equal(optionTilePrice({priceCents:1990},money,{fullPrice:true}),money(1990));
+ // Der echte Kachelaufbau aus adapter.mjs: alle fünf Befestigungen, Kennung/Gruppe für die Auswahl, Bezeichnung + Aufpreis, aria-pressed.
+ const env={pictures:{innerHTML:''},p,config,esc:escapeXml,money,optionTileIcon,optionTilePrice};vm.createContext(env);
+ vm.runInContext(line('adapter.mjs','const tileValues=g=>'),env);vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
+ const html=env.pictures.innerHTML;
+ assert.equal((html.match(/<button type="button" class="m-option-tile" data-picture-group="mounting" data-picture-option="/g)||[]).length,5);
+ assert.match(html,/<div role="group" aria-label="Befestigung">/);
+ assert.match(html,/data-picture-option="K00" aria-pressed="false"><svg [^>]*>.*?<\/svg><strong>Ohne Bohrung<\/strong><small>ohne Aufpreis<\/small><\/button>/);
+ assert.match(html,new RegExp('data-picture-option="KGL" aria-pressed="false"><svg .*?<strong>Selbstklebend – glatte Flächen</strong><small>\\+'+money(299).replace(/\s/g,'\\s')+'</small>'));
+ assert.match(html,new RegExp('data-picture-option="B02S" aria-pressed="false"><img src="data:image/png;base64,[^"]+" alt=""><strong>Mit 2 Schrauben</strong><small>\\+'+money(269).replace(/\s/g,'\\s')+'</small>'));
+ // Andere Gruppen (z. B. ohne Optionsbild) bekommen weiterhin keine Kacheln; Werte mit Bild schon.
+ env.p={optionGroups:[{id:'size',name:'Größe',values:[{id:'a',label:'A',priceCents:100},{id:'b',label:'B',priceCents:0,thumbnail:'data:image/png;base64,AAAA'}]}]};
+ vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
+ assert.equal((env.pictures.innerHTML.match(/data-picture-option=/g)||[]).length,1);assert.match(env.pictures.innerHTML,/data-picture-option="b"[^>]*><img src="data:image\/png;base64,AAAA" alt=""><strong>B<\/strong><small>ohne Aufpreis<\/small>/);
+ // Auswahlliste (select) bleibt als barrierefreie Alternative; Klick auf die Kachel setzt nur die Option (keine Preislogik hier).
+ assert.match(source('adapter.mjs'),/picks\.innerHTML=\(p\.optionGroups\|\|\[\]\)\.map\(g=>'<label>'\+esc\(g\.name\)\+'<select data-m-option=/);
+ assert.match(source('adapter.mjs'),/pictures\.addEventListener\('click',e=>\{const button=e\.target\.closest\('\[data-picture-option\]'\);if\(!button\)return;el\.record\(\);options=\{\.\.\.options,\[button\.dataset\.pictureGroup\]:button\.dataset\.pictureOption\};/);
+ // Einheitlicher Auswahlhaken: completion.mjs markiert die Kacheln wie Designs und nutzt dieselben Symbole.
+ assert.match(line('completion.mjs',"const choices='"),/\[data-ux=mount-choice\],\[data-picture-option\]'/);
+ assert.match(source('completion.mjs'),/import \{MOUNT_ICONS,mountIconSvg\} from '\.\/option-media\.mjs'/);
+});

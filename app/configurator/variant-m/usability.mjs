@@ -1,6 +1,6 @@
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
-import {processPalette} from '../../workshop/process-profiles.mjs';
+import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 import {money} from './contract.mjs';
 import {colorPalettes} from './profile-selection.mjs';
 
@@ -121,14 +121,14 @@ export async function installUsability(api) {
   const uploadedTitle=document.createElement('h3');uploadedTitle.textContent='Hochgeladen';$('.ux-uploads').before(uploadedTitle);
 
   // K10 / Ü1.2: Farbwerkzeug nur, wenn das Verfahrensprofil es erlaubt (Gravur: keines).
-  // Die Swatches sind genau die Profilpalette (Produktauswahl grenzt ein); eine freie
-  // Farbwahl gibt es nur bei palette === null.
+  // Die Swatches sind genau die Profilpalette (Produktauswahl grenzt ein); die freie Farbwahl
+  // (Farbwähler) kommt beim Farbdruck hinzu (processFreeColor, Chris 22./23.10.2026).
   let palette;
   const process=el.uxProcess||null,colorSelection=config?.workshopProfiles?.selections?.colors??null;
   colorPalettes(PRINT_PALETTES,colorSelection); // prüft die Produktauswahl (Hex), wie bisher
   const allowedColors=process?.tools.textColor?processPalette(process,colorSelection):[];
   if(process?.tools.textColor){
-    const freeChoice=allowedColors===null;
+    const freeChoice=processFreeColor(process,colorSelection);
     palette=document.createElement('section');palette.className='ux-color-palette';palette.hidden=true;
     palette.innerHTML='<h3 data-color-title>Elementfarbe</h3>'+paletteGroups(allowedColors).map(([name,colors])=>'<fieldset><legend>'+name+'</legend><div class="ux-swatches">'+colors.map(([label,color])=>button('swatch','',`data-color="${color}" style="--swatch:${color}" aria-label="${label}" title="${label}" aria-pressed="false"`)).join('')+'</div></fieldset>').join('')+(freeChoice?'<label>Ausgewählte Farbe <input type="color" data-free-color aria-label="Ausgewählte Farbe" value="#202824"></label>':'')+(process.tools.motifRecolor?button('original-colors','Originalfarben verwenden'):'')+'<p data-logo-color-note hidden>Einfarbige Logovorschau: Weiß wird transparent. Die Originaldatei bleibt erhalten.</p>';
     $('.ux-editor').append(palette);

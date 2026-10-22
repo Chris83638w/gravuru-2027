@@ -7,6 +7,16 @@ export function photoAvailableForDesign(config,designId){
   const design=config?.profile?.designs?.find(d=>d.id===designId);
   return !design?.importedSource||design.objects.some(o=>o.type==='photoSlot');
 }
+// Foto-/Logo-Reiter (Chris 22./23.10.2026): Sieht das Produkt oder Verfahren kein Foto vor
+// (photoEnabled = config.photo.enabled && process.tools.photo) und hat kein Design des Produkts
+// eine Foto- oder Logo-Ebene, verschwindet der Reiter vollständig – unabhängig von der
+// Logo-Einstellung. Sonst gilt die bisherige Regel: Reiter sichtbar, solange das gewählte Design
+// einen Fotobereich hat oder Logos erlaubt sind (Produkte mit Foto bleiben unverändert).
+export const designsHaveUploadLayer=config=>!!config?.profile?.designs?.some(d=>(d.objects||[]).some(o=>o.type==='photoSlot'||o.type==='image'));
+export function uploadTabVisible(config,designId,{photoEnabled=true,logoEnabled=true}={}){
+  if(!photoEnabled&&!designsHaveUploadLayer(config))return false;
+  return photoAvailableForDesign(config,designId)||logoEnabled;
+}
 export const UX_UPLOAD_POLICY = Object.freeze({maxFiles:4, priceCents:999, maxBytes:15*1024*1024});
 export const visibleObjects = objects => objects.filter(o => !o.uxHidden);
 export const uploadObjects = objects => objects.filter(o => !!o.uxUploadId);

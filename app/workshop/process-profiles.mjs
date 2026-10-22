@@ -24,13 +24,16 @@ const UV_HEX=Object.freeze(UV_PRINT_PALETTE.flatMap(([,colors])=>colors.map(([,h
 // Spiegelung: Acrylglas wird von hinten graviert (Familien AA/AS, engravingSide 'back');
 // eine Familie mit engravingSide 'front' (S/S) überschreibt das über processMirror().
 // Ausgabeformat: beschreibt die bestehende Ausgabe (Proof-PDF), ändert sie nicht.
-const ENGRAVING={tools:{textColor:false,photo:true,motifRecolor:false},palette:[],minTextMm:3,minStrokeMm:null,targetDpi:300,mirror:false,outputFormat:'pdf'};
+// Freie Farbe (Chris 22./23.10.2026): Beim Farbdruck bleiben Palette (Standard + Pastell) und
+// Schnellfarbpunkte, zusätzlich darf der Kunde eine freie Farbe über den Farbwähler setzen
+// (freeColor:true). Gravurprofile unverändert: feste Vorgabefarbe, keine Farbwahl.
+const ENGRAVING={tools:{textColor:false,photo:true,motifRecolor:false},palette:[],freeColor:false,minTextMm:3,minStrokeMm:null,targetDpi:300,mirror:false,outputFormat:'pdf'};
 const RULES=Object.freeze({
  'steel-engraving':{...ENGRAVING},
  'wood-engraving':{...ENGRAVING},
  'slate-engraving':{...ENGRAVING},
  'acrylic-engraving':{...ENGRAVING,mirror:true},
- 'color-print':{tools:{textColor:true,photo:true,motifRecolor:true},palette:UV_HEX,minTextMm:3,minStrokeMm:null,targetDpi:300,mirror:false,outputFormat:'pdf'}
+ 'color-print':{tools:{textColor:true,photo:true,motifRecolor:true},palette:UV_HEX,freeColor:true,minTextMm:3,minStrokeMm:null,targetDpi:300,mirror:false,outputFormat:'pdf'}
 });
 const deepFreeze=v=>{if(v&&typeof v==='object'&&!Object.isFrozen(v)){Object.freeze(v);for(const k of Object.keys(v))deepFreeze(v[k]);}return v;};
 export const PROCESS_PROFILES=Object.freeze(PROCESSING_PROFILES.map(p=>{
@@ -68,9 +71,18 @@ export function processPalette(profile,selection=null){
  return base.filter(c=>wanted.has(c));
 }
 
+// Freie Farbwahl (Farbwähler) zusätzlich zur Palette: bei Profilen ohne Palette (null) wie bisher,
+// beim Farbdruck durch freeColor:true (Chris 22./23.10.2026). Eine ausdrückliche Produktauswahl
+// (workshopProfiles.selections.colors) bleibt eine Einschränkung des Händlers: dann nur diese Farben.
+export function processFreeColor(profile,selection=null){
+ if(!profile.tools.textColor||selection!=null)return false;
+ return profile.palette===null||profile.freeColor===true;
+}
+
 // Serverseitige Farbprüfung (Ü1.2): Gravur erlaubt keine Farbänderung gegenüber der
 // Vorlage; Druck erlaubt die Profilpalette, die Farben der Vorlage (templateColor des
-// Elements, designColors aller Vorlagenelemente) und die Profiltinte.
+// Elements, designColors aller Vorlagenelemente), die Profiltinte und – bei freier
+// Farbwahl (processFreeColor) – jede gültige Farbe.
 // Rückgabe: Fehlertext oder '' (ohne Änderung nie ein Fehler).
 export function processColorIssue(profile,color,{templateColor=undefined,designColors=[],selection=null}={}){
  if(color===undefined||color===templateColor)return '';
@@ -79,6 +91,7 @@ export function processColorIssue(profile,color,{templateColor=undefined,designC
  // Editorfarbe, die die Ausgabe ohnehin durch die Tinte ersetzt (elementColor);
  // nur eine Abweichung von der Vorlagenfarbe ist eine Farbwahl.
  if(!profile.tools.textColor)return templateColor===undefined?'':'Dieses Verfahren erlaubt keine Farbwahl.';
+ if(processFreeColor(profile,selection))return '';
  const palette=processPalette(profile,selection);
  if(palette===null)return '';
  const allowed=new Set([...palette,profile.ink.toLowerCase(),...[templateColor,...designColors].filter(validColor).map(c=>c.toLowerCase())]);

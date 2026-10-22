@@ -22,6 +22,10 @@ Lokal öffnen: http://127.0.0.1:8961/?model=acryl · [Startanleitung](LOKAL-STAR
 
 **GitHub-Transport:** Solange der direkte Git-Zugriff fehlt, liegt die komplette aktive Anwendung im Übergabearchiv `GRAVURU-2027-G27-01.zip`. Dieses in einen neuen Ordner entpacken; darin liegen `app/`, `package.json` und die Startanleitung. Das Archiv stammt vom lokalen Commit `51d555e`; ein frisch daraus ausgeführter Build war erfolgreich. Dies ist kein gepushter Quellbaum. [Transportnachweis](G27-01-UEBERGABE.md).
 
+## CDR-Werkzeuge (MCP-Server für ChatGPT und Claude)
+
+CorelDRAW-Dateien ohne Corel ausmessen und auslesen: [app/cdr-mcp/README.md](app/cdr-mcp/README.md). Läuft auf https://cdr.gravuru-designwerkstatt.de (Plesk-Subdomain, Paket über `ops/cdr-mcp/build-package.sh`).
+
 ## Hier beginnen
 
 1. [Start und Übergabe für die nächste KI](START_HERE.md)

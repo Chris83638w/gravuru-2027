@@ -49,7 +49,7 @@ Das Paket enthält libcdr portabel (cdr2raw mit allen Bibliotheken und eigenem L
 
 ## Produktordner vom Dateiserver lesen (ab Version 1.1.0)
 
-Die laufende Plesk-App allein stellt noch keine Verbindung zum Windows-Dateiserver her. `V:\Produkte` ist laut `gravuru-katalog./STAND.md` die Freigabe `\\bi-srv01-fs01\Neue-Struktur\Produkte`. Auf Linux muss dieser **Produkte**-Ordner bereits an einem absoluten lokalen Pfad eingebunden sein; alternativ ist eine verwaltete Kopie möglich, deren Aktualität dann gesondert gesichert werden muss. Der tatsächliche Plesk-Pfad und die Erreichbarkeit dieser Freigabe wurden hier noch nicht geprüft.
+Die laufende Plesk-App allein stellt noch keine Verbindung zum Windows-Dateiserver her. `V:\Produkte` ist laut `gravuru-katalog./STAND.md` die Freigabe `\\bi-srv01-fs01\Neue-Struktur\Produkte`. Auf Linux muss dieser **Produkte**-Ordner bereits an einem absoluten lokalen Pfad eingebunden sein; alternativ ist eine verwaltete Kopie möglich, deren Aktualität dann gesondert gesichert werden muss. Die interne Freigabe ist vom Plesk-Host nicht erreichbar (22.10.2026: keine Route zum Dateiserver). Für den freigegebenen Ablauf wird daher der unten beschriebene private Kopienordner verwendet.
 
 1. Betreiber stellt die Einbindung über das vorhandene private Netz bereit. Der Plesk-App-Benutzer benötigt Lese- und Verzeichniszugriff; Quelle nach Möglichkeit bereits beim Mount nur lesbar einbinden. Zugangsdaten bleiben in der Serververwaltung.
 2. In den bestehenden `values` der privaten Konfigurationsdatei **ergänzen**, nicht die Datei ersetzen: `"CDR_MCP_SOURCE_ROOT": "/tatsaechlicher/pfad/zu/Produkte"`. Alternativ dieselbe Umgebungsvariable in der App setzen. Der Beispielpfad ist ein Platzhalter. Ohne Einstellung funktionieren Uploads weiter; Serverzugriff meldet „nicht eingerichtet“.
@@ -89,6 +89,8 @@ Als eigenen Remote-MCP-Konnektor mit derselben URL hinzufügen. Claude kann Date
 - Echte Dateien (21.10.2026, lokal, nicht im Repo): Edelstahl-Sammelbogen (21 Platten, 18 Löcher, darunter 18 × 12 aus Einzellinien), Gedenktafel-Designbogen 78 MB (24 Platten, 6,5 s), Schlüsselanhänger-Bogen (368 Platten, 367 Löcher, 1,3 s), Schablonen; Durchlauf mit dem offiziellen MCP-Python-Client gegen den Server; portables libcdr-Bündel mit leerer Umgebung = identisches Ergebnis wie System-libcdr; Python 3.11/3.12/3.13 identisch.
 
 ## Ausgehende Übertragung vom Firmenrechner (ab 1.2.0)
+
+Stand 22.10.2026: Nach ausdrücklicher Freigabe auf Plesk aktiviert. Live mit synthetischen Bytes über HTTPS geprüft: Upload/HEAD und SHA-256, getrennte Anmeldung, Fehlerablehnung sowie MCP-Quellenstatus/Dateiliste. Noch keine echten V:-Dateien übertragen; Windows-Start und 7×2-Inhaltsprüfung stehen aus. Betriebsbelege und Grenzen siehe `STATUS.md`.
 
 Für V:\Produkte ohne Verbindung von Plesk ins Firmennetz: Der lokale Helfer in
 `ops/cdr-bridge/` sendet geprüfte CDR-Kopien ausgehend per HTTPS. Die Einrichtung,

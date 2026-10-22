@@ -14,6 +14,8 @@ export const MAIN_NAVIGATION=Object.freeze([
   {key:'stapel',label:'Stapelverarbeitung',href:'/werkstatt/serien/',icon:'stack-2'},
   {key:'bestellungen',label:'Bestellungen',href:'/werkstatt/bestellungen/',icon:'shopping-cart'},
   {key:'konfis',label:'Konfis',href:'/werkstatt/konfis/',icon:'adjustments-horizontal'},
+  // Katalogseite (Codex 22.10.2026): Linien → Unterkategorien → Hauptprodukte; in die gemeinsame Kopfzeile aufgenommen (Zusammenführung 22.10.2026).
+  {key:'katalog',label:'Katalog',href:'/werkstatt/katalog/',icon:'files'},
 ]);
 
 /** Verwaltung ▾ */
@@ -24,6 +26,7 @@ export const MANAGEMENT_NAVIGATION=Object.freeze([
   {key:'fertigung',label:'Fertigungsprofile',href:'/werkstatt/fertigung/'},
   {key:'ausfuehrungen',label:'Ausführungen',href:'/werkstatt/ausfuehrungen/'},
   {key:'konturen',label:'Formkonturen',href:'/werkstatt/konturen/'},
+  {key:'acryl',label:'Acryl-Galerie',href:'/werkstatt/acryl/'},
   {key:'pruefstaende',label:'Prüfstände',href:'/werkstatt/pruefstaende/'},
   {key:'shopvorbereitung',label:'Shop vorbereiten',href:'/werkstatt/shopvorbereitung/'},
   {key:'mandanten',label:'Mandanten',href:'/werkstatt/mandanten/'},
@@ -47,6 +50,8 @@ export const WORKSHOP_PAGES=Object.freeze([
   {file:'shop-preparation.html',route:'/werkstatt/shopvorbereitung/',current:'shopvorbereitung'},
   {file:'form-product.html',route:'/werkstatt/formprodukt/',current:'produkte'},
   {file:'tenants.html',route:'/werkstatt/mandanten/',current:'mandanten'},
+  {file:'catalog-structure.html',route:'/werkstatt/katalog/',current:'katalog'},
+  {file:'acryl-gallery.html',route:'/werkstatt/acryl/',current:'acryl'},
 ]);
 
 const esc=v=>String(v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

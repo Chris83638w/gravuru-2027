@@ -23,7 +23,7 @@ TEXTURE_MAX_PX = 700   # längste Seite einer Materialtextur in _texturen/<key>.
 SKU = re.compile(r'^[A-Z]{2,6}[A-Z0-9]*(?:-[A-Z0-9]+)*?-(?:\([\d.,]+x[\d.,]+\))?[\d.,]+(?:x[\d.,]+)?(?:\([\d.,]+x[\d.,]+\))?[a-zA-Z]{0,3}-D\d+$')  # Größe WxH oder Einzelmaß, auch mit Klammerzusatz (30x8(28x6)) oder Kürzel (30x8ae); Präfix ein oder mehrere Segmente
 PROP = re.compile(r'([a-z0-9:-]+): ([^,()]+?)(?=, [a-z0-9:-]+: |\)$|$)')
 NUM = re.compile(r'-?\d+(?:\.\d+)?')
-CUSTOMIZATION_ID = re.compile(r'\d{7}(?:\s+\d{7})*')  # Amazon-Custom-Kennungen der Hauptprodukte auf dem Bogen
+CUSTOMIZATION_ID = re.compile(r'\d{7,8}(?:\s+\d{7,8})*')  # Amazon-Custom-Kennungen der Hauptprodukte auf dem Bogen
 PRODUCTION_MARK = re.compile(r'^\s*Produktion\s*:?\s*$', re.I)
 
 
@@ -324,7 +324,7 @@ def build_design(sku, items, label_item, meta):
     plate_rec = {'widthMm': round(W, 1), 'heightMm': round(H, 1), 'source': plate_source}
     if plate is not None and not plate['rect']: plate_rec['outline'] = to_svg_d(plate['acts'], ox, oy)
     # Kundenkennungen der Hauptprodukte (7-stellige Nummern unter dem Etikett, z. B. 3100000) sind keine Designtexte
-    ids = sorted({n for t in texts for n in re.findall(r'\b\d{7}\b', t['text']) if CUSTOMIZATION_ID.fullmatch(t['text'].strip())})
+    ids = sorted({n for t in texts for n in re.findall(r'\b\d{7,8}\b', t['text']) if CUSTOMIZATION_ID.fullmatch(t['text'].strip())})
     texts = [t for t in texts if not CUSTOMIZATION_ID.fullmatch(t['text'].strip())]
     fonts = [f for f in fonts if any(t['font'] == f for t in texts)]  # Schriften der Kennungen (meist Arial) gehören nicht zum Design
     label_color = ''

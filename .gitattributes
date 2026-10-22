@@ -11,3 +11,6 @@
 # Hash-verified source resources must retain their original bytes on every OS.
 app/designs/aosu-labrador/** -text
 app/references/** -text
+# Codex-Anschlussdateien (CRLF, hashgeprüft) bytegleich lassen
+legacy-patches/** -text
+ops/legacy-host-overlay/** -text

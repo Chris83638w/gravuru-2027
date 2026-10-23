@@ -130,8 +130,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  }
  function start(req,res,url){
   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
-  if(!startLimiter('start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const proxy=verifyProxy(url.searchParams),input=startParams(url.searchParams);
+  // Erst nach gültiger App-Proxy-Signatur zählen: unsignierte Direktaufrufe sollen echte Starts nicht sperren (Review 23.10.).
+  if(!startLimiter('start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const {store,binding}=resolve({shopifyProductId:input.shopifyProductId,shopifyVariantId:input.shopifyVariantId});
   modelFor(store,binding);
   const issued=sessions.issue(binding,{customerId:proxy.customerId});

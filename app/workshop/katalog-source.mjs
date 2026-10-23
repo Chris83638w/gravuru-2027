@@ -68,7 +68,7 @@ export function validateLine(line,{families,themes,fontSets,file='linie'}={}){
   // Hauptprodukte (Chris 22.10.2026, Struktur Linie → Unterkategorie → Hauptprodukt → Ausführungen):
   // mehrere Shop-Produkte derselben Unterkategorie mit eigenem Startdesign; alle Designs des Themas bleiben wählbar.
   if(s.mainProducts!==null&&s.mainProducts!==undefined){
-   if(!Array.isArray(s.mainProducts)||s.mainProducts.length>50)fail(file,'Unterkategorie „'+s.id+'“: mainProducts ist eine Liste (höchstens 50).');
+   if(!Array.isArray(s.mainProducts)||s.mainProducts.length>300)fail(file,'Unterkategorie „'+s.id+'“: mainProducts ist eine Liste (höchstens 300).');
    const ids=new Set();
    for(const m of s.mainProducts){
     if(!record(m)||!id(m.id))fail(file,'Unterkategorie „'+s.id+'“: Hauptprodukt ohne Kennung.');

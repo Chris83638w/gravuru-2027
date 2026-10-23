@@ -1,0 +1,108 @@
+# Shopify-Produkte mit Edelstahl-Basis-SKU (Hauptdesign) · Vollexport 23.10.2026 (private/shop-export-20261023 auf dem Händlerhost)
+# Spalten: Basis-SKU|Shopify-Produkt-ID|Status|Handle|Preis der Basisvariante|Variantenzahl|custom.customization_id|Titel
+# Nur Varianten ohne Befestigungsendung (K00/KGL/KRA/B02/B02S/B04/B04S). 105 Produkte = 105 Hauptprodukte in FancyCustomizationIDs.csv (Edelstahl __NEU).
+TAE-V2A-12x8-D10|16077799063932|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-laubbaum-12x8|19.90|1||Türschild Abger. Ecken V2A personalisiert – Laubbaum 12×8 cm
+TAE-V2A-12x8-D8|16077798965628|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8|19.90|1||Türschild Abger. Ecken V2A personalisiert – Leuchtturm 12×8 cm
+TAE-V2A-15x10-D12|16077799096700|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-pusteblume-15x10|19.90|1||Türschild Abger. Ecken V2A personalisiert – Pusteblume 15×10 cm
+TAE-V2A-15x10-D34|16077799162236|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-hund-silhouette-15x10|19.90|1||Türschild Abger. Ecken V2A personalisiert – Katze 15×10 cm
+TAE-V2A-18x12-D32|16077799227772|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-pfoten-18x12|19.90|1||Türschild Abger. Ecken V2A personalisiert – Pfoten 18×12 cm
+TAE-V2A-18x12-D62|16077799326076|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-schluessel-18x12|19.90|1||Türschild Abger. Ecken V2A personalisiert – Schlüssel 18×12 cm
+TAE-V2A-30x20-D24|16077799555452|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-haus-mit-herz-30x20|19.90|1||Türschild Abger. Ecken V2A personalisiert – Haus mit Herz 30×20 cm
+TAE-V2A-30x20-D65|16077799457148|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-herzen-30x20|19.90|1||Türschild Abger. Ecken V2A personalisiert – Herzen 30×20 cm
+TAE-V2A-8x5-D14|16077794541948|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-pusteblume-8x5|19.90|1||Türschild Abger. Ecken V2A personalisiert – Pusteblume 8×5 cm
+TAE-V2A-8x5-D33|16077794705788|ACTIVE|tuerschild-abger-ecken-v2a-personalisiert-pfoten-8x5|19.90|1||Türschild Abger. Ecken V2A personalisiert – Pfoten 8×5 cm
+TO-V2A-12x4-D12|16077800407420|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-pusteblume-12x4|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Pusteblume 12×4 cm
+TO-V2A-12x4-D31|16077800472956|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-hund-silhouette-12x4|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Hund Silhouette 12×4 cm
+TO-V2A-12x4-D48|16077800112508|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-schmetterlinge-12x4|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Vögel 12×4 cm
+TO-V2A-12x4-D52|16077800243580|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-herz-12x4|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Herz 12×4 cm
+TO-V2A-12x4-D58|16077800210812|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-herzranke-12x4|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Herzranke 12×4 cm
+TO-V2A-12x4-D60|16077800440188|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-ornament-12x4|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Ornament 12×4 cm
+TO-V2A-15x8-D10|16077800702332|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-laubbaum-15x8|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Laubbaum 15×8 cm
+TO-V2A-15x8-D19|16077800604028|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-pusteblume-15x8|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Rose 15×8 cm
+TO-V2A-15x8-D47|16077800505724|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-vogelpaar-15x8|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Vogelpaar 15×8 cm
+TO-V2A-21x14-D13|16077799883132|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-pusteblume-21x14|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Pusteblume 21×14 cm
+TO-V2A-21x14-D25|16077799817596|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-haus-21x14|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Haus 21×14 cm
+TO-V2A-21x14-D61|16077799981436|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-herz-21x14|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Herz 21×14 cm
+TO-V2A-9x6-D1|16077799588220|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-9x6|19.90|1||Türschild Oval Edelstahl V2A personalisiert 9×6 cm
+TO-V2A-9x6-D24|16077799653756|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-haus-mit-herz-9x6|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Haus mit Herz 9×6 cm
+TO-V2A-9x6-D7|16077799686524|ACTIVE|tuerschild-oval-edelstahl-v2a-personalisiert-segelboot-9x6|19.90|1||Türschild Oval Edelstahl V2A personalisiert – Segelboot 9×6 cm
+TQ-V2A-16x16-D12|16077801718140|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-pusteblume-16x16|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert – Pusteblume 16×16 cm
+TQ-V2A-16x16-D29|16077801849212|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-hundepfote-16x16|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert – Hundefigur 16×16 cm
+TQ-V2A-16x16-D6|16077801587068|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-anker-16x16|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert – Anker 16×16 cm
+TQ-V2A-20x20-D10|16077801947516|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-laubbaum-20x20|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert – Laubbaum 20×20 cm
+TQ-V2A-20x20-D25|16077802045820|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-haus-20x20|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert – Haus 20×20 cm
+TQ-V2A-20x20-D7|16077802078588|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-segelboot-20x20|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert – Segelboot 20×20 cm
+TQ-V2A-8x8-D33|16077801488764|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-pfoten-8x8|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert – Pfoten 8×8 cm
+TQ-V2A-8x8-D3|16077801324924|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-8x8|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert 8×8 cm
+TQ-V2A-8x8-D53|16077801390460|ACTIVE|tuerschild-quadrat-edelstahl-v2a-personalisiert-herz-8x8|19.90|1||Türschild Quadrat Edelstahl V2A personalisiert – Herz 8×8 cm
+TR1-V2A-9x6-D15|16077800833404|ACTIVE|tuerschild-retro-i-v2a-personalisiert-bluetenranke-9x6|19.90|1||Türschild Retro I V2A personalisiert – Blütenranke 9×6 cm
+TR1-V2A-9x6-D57|16077800800636|ACTIVE|tuerschild-retro-i-v2a-personalisiert-vogelsilhouetten-9x6|19.90|1||Türschild Retro I V2A personalisiert – Ranken-Ornament 9×6 cm
+TR2-V2A-12x8-D16|16077801193852|ACTIVE|tuerschild-retro-ii-edelstahl-v2a-personalisiert-katze-12x8|19.90|1||Türschild Retro II Edelstahl V2A personalisiert – Rose 12×8 cm
+TR2-V2A-12x8-D54|16077801259388|ACTIVE|tuerschild-retro-ii-edelstahl-v2a-personalisiert-lilie-12x8|19.90|1||Türschild Retro II Edelstahl V2A personalisiert – Lilie 12×8 cm
+TR2-V2A-9x6-D12|16077801062780|ACTIVE|tuerschild-retro-ii-edelstahl-v2a-personalisiert-pusteblume-9x6|19.90|1||Türschild Retro II Edelstahl V2A personalisiert – Pusteblume 9×6 cm
+TR2-V2A-9x6-D21|16077801128316|ACTIVE|tuerschild-retro-ii-edelstahl-v2a-personalisiert-sonne-9x6|19.90|1||Türschild Retro II Edelstahl V2A personalisiert – Sonne 9×6 cm
+TR2-V2A-9x6-D59|16077800898940|ACTIVE|tuerschild-retro-ii-edelstahl-v2a-personalisiert-rosen-9x6|19.90|1||Türschild Retro II Edelstahl V2A personalisiert – Rosen 9×6 cm
+TR2-V2A-9x6-D6|16077800931708|ACTIVE|tuerschild-retro-ii-edelstahl-v2a-personalisiert-anker-9x6|19.90|1||Türschild Retro II Edelstahl V2A personalisiert – Anker 9×6 cm
+TRE-V2A-12x12(10x10)-D7|16078727184764|ACTIVE|tuerschild-acrylglas-edelstahl-personalisiert-segelboot-12x12|49.90|1||Türschild Acrylglas + Edelstahl personalisiert – Schmetterlinge 12×12 cm
+TRE-V2A-12x5,25-D18|16077802439036|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-schmetterling-12x525|19.90|1||Türschild Edelstahl V2A personalisiert – Pusteblume 12×5,25 cm
+TRE-V2A-12x5,25-D28|16077802504572|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-dreieck-12x525|19.90|1||Türschild Edelstahl V2A personalisiert – Fußball-Symbol 12×5,25 cm
+TRE-V2A-12x5,25-D5|16077802275196|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-12x525|19.90|1||Türschild Edelstahl V2A personalisiert 12×5,25 cm
+TRE-V2A-12x8-D12|16078289404284|ACTIVE|tuerschild-edelstahl-personalisiert-pusteblume-12x8|29.90|1||Türschild Edelstahl personalisiert – Pusteblume 12×8 cm
+TRE-V2A-12x8-D24|16078289600892|ACTIVE|tuerschild-edelstahl-personalisiert-haus-mit-herz-12x8|29.90|1||Türschild Edelstahl personalisiert – Haus mit Herz 12×8 cm
+TRE-V2A-12x8-D49|16078289666428|ACTIVE|tuerschild-edelstahl-personalisiert-eulen-familie-12x8|29.90|1||Türschild Edelstahl personalisiert – Eulen Familie 12×8 cm
+TRE-V2A-15x10-D25|16078289797500|ACTIVE|tuerschild-edelstahl-personalisiert-haus-15x10|29.90|1||Türschild Edelstahl personalisiert – Haus 15×10 cm
+TRE-V2A-15x10-D34|16078289764732|ACTIVE|tuerschild-edelstahl-personalisiert-hund-silhouette-15x10|29.90|1||Türschild Edelstahl personalisiert – Katze 15×10 cm
+TRE-V2A-15x10-D65|16078289731964|ACTIVE|tuerschild-edelstahl-personalisiert-herzen-15x10|29.90|1||Türschild Edelstahl personalisiert – Herzen 15×10 cm
+TRE-V2A-16x7-D21|16077802537340|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-sonne-16x7|19.90|1||Türschild Edelstahl V2A personalisiert – Sonne 16×7 cm
+TRE-V2A-16x7-D29|16077802602876|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-hundepfote-16x7|19.90|1||Türschild Edelstahl V2A personalisiert – Hundefigur 16×7 cm
+TRE-V2A-16x7-D63|16077802668412|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-wimpelkette-16x7|19.90|1||Türschild Edelstahl V2A personalisiert – Wimpelkette 16×7 cm
+TRE-V2A-18x12-D15|16078289895804|ACTIVE|tuerschild-edelstahl-personalisiert-bluetenranke-18x12|34.90|1||Türschild Edelstahl personalisiert – Blütenranke 18×12 cm
+TRE-V2A-18x12-D58|16078289928572|ACTIVE|tuerschild-edelstahl-personalisiert-herzranke-18x12|34.90|1||Türschild Edelstahl personalisiert – Herzranke 18×12 cm
+TRE-V2A-18x12-D8|16078289863036|ACTIVE|tuerschild-edelstahl-personalisiert-leuchtturm-18x12|34.90|1||Türschild Edelstahl personalisiert – Leuchtturm 18×12 cm
+TRE-V2A-21x14-D11|16078290059644|ACTIVE|tuerschild-edelstahl-personalisiert-pusteblume-21x14|34.90|1||Türschild Edelstahl personalisiert – Pusteblume 21×14 cm
+TRE-V2A-21x14-D41|16078290092412|ACTIVE|tuerschild-edelstahl-personalisiert-kolibri-21x14|34.90|1||Türschild Edelstahl personalisiert – Kolibri 21×14 cm
+TRE-V2A-21x14-D60|16078290157948|ACTIVE|tuerschild-edelstahl-personalisiert-ornament-21x14|34.90|1||Türschild Edelstahl personalisiert – Ornament 21×14 cm
+TRE-V2A-24x10,5-D29|16077803028860|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-hundepfote-24x105|19.90|1||Türschild Edelstahl V2A personalisiert – Hundefigur 24×10,5 cm
+TRE-V2A-24x10,5-D71|16077802701180|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-pfeil-24x105|19.90|1||Türschild Edelstahl V2A personalisiert – Pfeil 24×10,5 cm
+TRE-V2A-24x10,5-D72|16077802832252|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-dreieck-24x105|19.90|1||Türschild Edelstahl V2A personalisiert – Dreieck 24×10,5 cm
+TRE-V2A-24x16-D21|16078290223484|ACTIVE|tuerschild-edelstahl-personalisiert-sonne-24x16|34.90|1||Türschild Edelstahl personalisiert – Sonne 24×16 cm
+TRE-V2A-24x16-D22|16078290256252|ACTIVE|tuerschild-edelstahl-personalisiert-strich-haus-24x16|34.90|1||Türschild Edelstahl personalisiert – Strich Haus 24×16 cm
+TRE-V2A-24x16-D31|16078290289020|ACTIVE|tuerschild-edelstahl-personalisiert-hund-silhouette-24x16|34.90|1||Türschild Edelstahl personalisiert – Hund Silhouette 24×16 cm
+TRE-V2A-24x8-D40|16077803880828|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-vogel-silhouette-24x8|19.90|1||Türschild Edelstahl V2A personalisiert – Vogel Silhouette 24×8 cm
+TRE-V2A-24x8-D64|16077803651452|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-eck-ornamente-24x8|19.90|1||Türschild Edelstahl V2A personalisiert – Eck-Ornamente 24×8 cm
+TRE-V2A-24x8-D68|16077803782524|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-pfeil-24x8|19.90|1||Türschild Edelstahl V2A personalisiert – Pfeil 24×8 cm
+TRE-V2A-30x20-D10|16078290518396|ACTIVE|tuerschild-edelstahl-personalisiert-laubbaum-30x20|49.90|1||Türschild Edelstahl personalisiert – Laubbaum 30×20 cm
+TRE-V2A-30x20-D1|16078290452860|ACTIVE|tuerschild-edelstahl-personalisiert-30x20|49.90|1||Türschild Edelstahl personalisiert 30×20 cm
+TRE-V2A-30x20-D32|16078290485628|ACTIVE|tuerschild-edelstahl-personalisiert-pfoten-30x20|49.90|1||Türschild Edelstahl personalisiert – Pfoten 30×20 cm
+TRE-V2A-42x28-D57|16078290813308|ACTIVE|tuerschild-edelstahl-personalisiert-vogelsilhouetten-42x28|49.90|1||Türschild Edelstahl personalisiert – Herz-Punkte-Ornament 42×28 cm
+TRE-V2A-42x28-D6|16078290616700|ACTIVE|tuerschild-edelstahl-personalisiert-anker-42x28|49.90|1||Türschild Edelstahl personalisiert – Anker 42×28 cm
+TRE-V2A-42x28-D72|16078290846076|ACTIVE|tuerschild-edelstahl-personalisiert-dreieck-42x28|49.90|1||Türschild Edelstahl personalisiert – Dreieck 42×28 cm
+TRE-V2A-45x30-D20|16078290682236|ACTIVE|tuerschild-edelstahl-personalisiert-lebensbaum-45x30|49.90|1||Türschild Edelstahl personalisiert – Lebensbaum 45×30 cm
+TRE-V2A-45x30-D33|16078290747772|ACTIVE|tuerschild-edelstahl-personalisiert-pfoten-45x30|49.90|1||Türschild Edelstahl personalisiert – Pfoten 45×30 cm
+TRE-V2A-45x30-D69|16078290649468|ACTIVE|tuerschild-edelstahl-personalisiert-pfeil-45x30|49.90|1||Türschild Edelstahl personalisiert – Pfeil 45×30 cm
+TRE-V2A-5x2-D1|16077792936316|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-5x2|19.90|1||Türschild Edelstahl V2A personalisiert 5×2 cm
+TRE-V2A-5x2-D27|16077793132924|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-brief-5x2|19.90|1||Türschild Edelstahl V2A personalisiert – Brief 5×2 cm
+TRE-V2A-5x2-D52|16077793263996|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-herz-5x2|19.90|1||Türschild Edelstahl V2A personalisiert – Herz 5×2 cm
+TRE-V2A-6x2-D23|16077793624444|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-haus-6x2|19.90|1||Türschild Edelstahl V2A personalisiert – Haus 6×2 cm
+TRE-V2A-6x2-D3|16077793329532|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-6x2|19.90|1||Türschild Edelstahl V2A personalisiert 6×2 cm
+TRE-V2A-6x2-D42|16077793755516|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-vogel-silhouette-6x2|19.90|1||Türschild Edelstahl V2A personalisiert – Vogel Silhouette 6×2 cm
+TRE-V2A-7x2-D26|16077793984892|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-klingel-7x2|8.99|5|3200000|Türschild Edelstahl V2A personalisiert – Klingel 7×2 cm
+TRE-V2A-7x2-D35|16077794148732|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-katze-7x2|8.99|5|3300000|Türschild Edelstahl V2A personalisiert – Katze 7×2 cm
+TRE-V2A-7x2-D5|16077793821052|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-7x2|8.99|5|3100000|Türschild Edelstahl V2A personalisiert 7×2 cm
+TRE-V2A-8x2-D2|16077794247036|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-8x2|19.90|1||Türschild Edelstahl V2A personalisiert 8×2 cm
+TRE-V2A-8x2-D30|16077794312572|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-schmetterling-8x2|19.90|1||Türschild Edelstahl V2A personalisiert – Dezentes Symbol 8×2 cm
+TRE-V2A-8x2-D6|16077794476412|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-anker-8x2|19.90|1||Türschild Edelstahl V2A personalisiert – Anker 8×2 cm
+TRE-V2A-8x3,5-D35|16077802176892|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-katze-8x35|19.90|1||Türschild Edelstahl V2A personalisiert – Katze 8×3,5 cm
+TRE-V2A-8x3,5-D4|16077802111356|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-8x35|19.90|1||Türschild Edelstahl V2A personalisiert 8×3,5 cm
+TRE-V2A-8x3,5-D62|16077802242428|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-schluessel-8x35|19.90|1||Türschild Edelstahl V2A personalisiert – Schlüssel 8×3,5 cm
+TRE-V2A-8x5-D27|16078289043836|ACTIVE|tuerschild-edelstahl-personalisiert-brief-8x5|24.90|1||Türschild Edelstahl personalisiert – Brief 8×5 cm
+TRE-V2A-8x5-D30|16078289076604|ACTIVE|tuerschild-edelstahl-personalisiert-schmetterling-8x5|24.90|1||Türschild Edelstahl personalisiert – Hund 8×5 cm
+TRE-V2A-8x5-D3|16077803946364|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-8x5|19.90|1||Türschild Edelstahl V2A personalisiert 8×5 cm
+TRE-V2A-9x3-D2|16077803094396|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-9x3|19.90|1||Türschild Edelstahl V2A personalisiert 9×3 cm
+TRE-V2A-9x3-D33|16077803291004|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-pfoten-9x3|19.90|1||Türschild Edelstahl V2A personalisiert – Pfoten 9×3 cm
+TRE-V2A-9x3-D39|16077803389308|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-schmetterling-9x3|19.90|1||Türschild Edelstahl V2A personalisiert – Schlichtes Design ohne Motiv 9×3 cm
+TRE-V2A-9x6-D14|16078289174908|ACTIVE|tuerschild-edelstahl-personalisiert-pusteblume-9x6|24.90|1||Türschild Edelstahl personalisiert – Pusteblume 9×6 cm
+TRE-V2A-9x6-D20|16077798867324|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-lebensbaum-9x6|19.90|1||Türschild Edelstahl V2A personalisiert – Lebensbaum 9×6 cm
+TRE-V2A-9x6-D55|16077794804092|ACTIVE|tuerschild-edelstahl-v2a-personalisiert-schnoerkel-mit-herz-9x6|19.90|1||Türschild Edelstahl V2A personalisiert – Schnörkel mit Herz 9×6 cm
+TRE-V2A-9x6-D5|16078289109372|ACTIVE|tuerschild-edelstahl-personalisiert-9x6|24.90|1||Türschild Edelstahl personalisiert 9×6 cm
+TRE-V2A-9x6-D64|16078289273212|ACTIVE|tuerschild-edelstahl-personalisiert-eck-ornamente-9x6|24.90|1||Türschild Edelstahl personalisiert – Eck-Ornamente 9×6 cm

@@ -238,9 +238,16 @@ export function seriesOf(series,plateMm,tolerance=SERIES_TOLERANCE){
  return series.find(r=>ratioMatch(plateMm[0]/plateMm[1],r.ratio,tolerance))||null;
 }
 // Design → Reihe der Familie; ohne passende Reihe `oldSize:true` (nur Einpassen, nie Übernahme).
+// Nennt `design.json` eine Liste `sizes` (Größen-Schlüssel der Familie, z. B. aus den Corel-Bögen:
+// grüne Überschrift = wählbar), gilt genau diese Liste – sonst alle Größen der Reihe gleichen
+// Seitenverhältnisses. So bleiben Rechteck, abgerundete Ecken und Oval derselben Proportion
+// getrennt (Edelstahl Türschilder, 23.10.2026); unbekannte Schlüssel werden ignoriert.
 export function assignSeries(family,designs,tolerance=SERIES_TOLERANCE){
- const series=formatSeries(family,tolerance);
- return designs.map(design=>{const hit=seriesOf(series,design.plateMm,tolerance);return {design,series:hit?hit.key:null,sizes:hit?hit.sizes:[],oldSize:!hit};});
+ const series=formatSeries(family,tolerance),known=new Set(family.sizes.map(s=>s.key));
+ return designs.map(design=>{
+  const hit=seriesOf(series,design.plateMm,tolerance),explicit=Array.isArray(design.json?.sizes)?design.json.sizes.filter(k=>typeof k==='string'&&known.has(k)):null;
+  return {design,series:hit?hit.key:null,sizes:explicit??(hit?hit.sizes:[]),explicitSizes:explicit!==null,oldSize:!hit};
+ });
 }
 
 // ---- Master → Zielgröße ----

@@ -88,6 +88,12 @@ test('Formatreihen ±1 %: Design nur in Größen seiner Reihe, alte Größe mark
  const assigned=assignSeries(f,k.designs.masters);
  assert.deepEqual(assigned.map(a=>[a.design.id,a.series,a.oldSize]).sort(),[['test-alt',null,true],['test-foto','60x40',false],['test-herz','60x40',false]]);
  assert.deepEqual(assigned.find(a=>a.design.id==='test-herz').sizes,['TS-RE-60X40','TS-RE-90X60','TS-RE-120X80']);
+ assert.equal(assigned.find(a=>a.design.id==='test-herz').explicitSizes,false);
+ // design.json `sizes` (Corel-Bogen: grün = wählbar) gilt vor der Reihe; unbekannte Schlüssel fallen weg, leere Liste = keine Größe.
+ const herzOnly={...k.designs.masters.find(d=>d.id==='test-herz'),json:{sizes:['TS-RE-90X60','TS-RE-120X80','TS-RE-999X1']}};
+ const explicit=assignSeries(f,[herzOnly,{...herzOnly,id:'test-leer',json:{sizes:[]}}]);
+ assert.deepEqual(explicit[0].sizes,['TS-RE-90X60','TS-RE-120X80']);assert.equal(explicit[0].explicitSizes,true);assert.equal(explicit[0].series,'60x40');
+ assert.deepEqual(explicit[1].sizes,[]);assert.equal(explicit[1].oldSize,false);
 });
 
 test('Master → Zielgröße: reine Skalierung mit Schriftgröße, Bohrbild aus der Familie; passt / prüfen / passt nicht',()=>{

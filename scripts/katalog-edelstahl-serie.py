@@ -35,7 +35,7 @@ def mm_key(v):
 
 
 def label_cm(w, h):
-    return f'{w/10:g} × {h/10:g} cm'
+    return f'{w/10:g} × {h/10:g} cm'.replace('.', ',')  # Katalogkonvention: „12 × 5,25 cm“
 
 
 def price_source(note):

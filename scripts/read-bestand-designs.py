@@ -302,6 +302,21 @@ def convert(folder, target, prefix, ersatz, files, s_fix=None, photo_override=No
         sw = float(el.get('stroke-width') or 0) * s
         paths.append({'d': d, 'fill': None if fill == 'none' else fill, 'stroke': None if stroke == 'none' else stroke,
                       'strokeMm': round(sw, 3), 'evenodd': el.get('fill-rule') == 'evenodd', 'opacity': 1, 'box': path_box(d)})
+    # Gravur kennt kein Fotofeld: Flächenformen, die der Bogenleser als Fotoplatzhalter deutete (graue Pfeile,
+    # Herzen – `<g class="foto">` mit Pfad, ohne Bild), sind Motive. Füllung aus dem Bestands-JSON (Original),
+    # sonst Schwarz (einfarbige Gravur). Türschilder Edelstahl __NEU, 23.10.2026.
+    if (meta.get('process') or '').lower().startswith('gravur') and not photos:
+        orig = {m['d']: m for m in meta.get('motifs', []) if isinstance(m, dict) and m.get('d')}
+        for g in svg.iter('{%s}g' % NS['svg']):
+            if 'foto' not in (g.get('class') or '') or g.find('svg:image', NS) is not None: continue
+            for el in g.findall('svg:path', NS):
+                m0 = orig.get(el.get('d'), {})
+                box0 = path_box(el.get('d'))
+                if box0 and box0[2] >= W0 - 1 and box0[3] >= H0 - 1: continue
+                d = transform_path(el.get('d'), s, ox, oy)
+                paths.append({'d': d, 'fill': m0.get('fill') or '#000000', 'stroke': m0.get('stroke') or None,
+                              'strokeMm': round(float(m0.get('strokeMm') or 0) * s, 3), 'evenodd': True, 'opacity': 1, 'box': path_box(d)})
+                warn.append(f'{g.get("id")}: Flächenform vom Bogenleser als Fotoplatzhalter gedeutet – als Motiv übernommen (Gravur ohne Foto)')
     budget = MAX_ELEMENTS - len(texts) - len(photos)
     # Ein Motiv besteht in Corel oft aus mehreren Pfaden (Kreuz + Taube, Baum + Blätter). Pfade, deren Boxen
     # sich berühren oder überlappen, sind ein Motiv – sonst zieht der Kunde nur ein Einzelteil weg (Chris 20.10.2026).

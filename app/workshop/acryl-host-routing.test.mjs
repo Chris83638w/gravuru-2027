@@ -8,7 +8,8 @@ test('native and form editor aliases remain in their own release',()=>{
   ['/_acryl-bundle/editor-0123456789abcdef.mjs','/_bundle/editor-0123456789abcdef.mjs'],
   ['/_acryl-runtime/lazy/fonts.json','/_runtime/lazy/fonts.json'],['/acryl-assets/stand.png','/acrylic-assets/stand.png'],
   ['/acryl-assistant.js','/assistant.js'],['/api/acryl-guides','/api/guides'],
-  ['/api/workshop/acryl/customer-drafts','/api/workshop/customer-drafts'],['/workshop-acryl-ui/form-customer-ui.mjs','/workshop-ui/form-customer-ui.mjs']])assert.equal(acrylRoute(outer),inner);
+  ['/api/workshop/acryl/customer-drafts','/api/workshop/customer-drafts'],['/workshop-acryl-ui/form-customer-ui.mjs','/workshop-ui/form-customer-ui.mjs'],
+  ['/werkstatt/katalog','/werkstatt/katalog/'],['/werkstatt/designs/','/werkstatt/designs/']])assert.equal(acrylRoute(outer),inner);
 });
 test('legacy paths and global integration endpoints keep their host dispatcher',()=>{
  for(const path of ['/_merchant-editor.html','/_bundle/editor-0123456789abcdef.mjs','/_runtime/fonts.json','/api/workshop/session','/api/configurator-test/session','/webhooks/shopify/orders-paid'])assert.equal(acrylRoute(path),null);

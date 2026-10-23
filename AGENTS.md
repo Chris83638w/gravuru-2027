@@ -16,3 +16,14 @@ Zuerst `START_HERE.md`, danach das aktive Paket in `UMSETZUNGSPAKETE.md` lesen. 
 - Nach jedem Paket `STATUS.md` knapp fortschreiben: Dateien/Commit, ausgeführte Prüfungen, offene Grenzen, genau nächster Schritt. Kurze deutsche Updates, nutzbare Links und sichtbare Ergebnisse für Mikail.
 
 Diese Regeln beantragen keine selbstständigen Parallelagenten und ändern keine Modellwahl. Der Nutzer legt fest, welches Modell arbeitet.
+
+## Zusammenarbeit mehrerer Accounts (Chris, 23.10.2026)
+
+Mehrere Claude- und ChatGPT-Accounts arbeiten am selben Projekt; der Operator-Account plant und baut, ein Upload-Account führt Shopify-/Matrixify-Schreibzugriffe aus, Codex-Läufe liefern lokale Ergebnisse. Damit sich alle verstehen:
+
+- **Ein Stand:** `main` (Code) und `main` im Katalog-Repo sind die Wahrheit. Jede Arbeit auf einem eigenen Branch `dev/<thema>-<datum>`; Merge nach `main` nur mit grünen gezielten Tests und einem Absatz in `STATUS.md`. Lokale Arbeitskopien (Codex-Ordner, `work/…`) zählen nicht, bis sie committet sind – Ergebnisse immer in eines der beiden Repos bringen.
+- **Übergaben** liegen in `docs/handoffs/<datum>-<thema>.md`: Zweck, Stand (Commit), was fertig/offen ist, genauer nächster Schritt, welche Freigaben von Chris fehlen. Ein neuer Chat liest zuerst die jüngste Übergabe, dann `STATUS.md`.
+- **`STATUS.md` ist das Logbuch:** neuester Abschnitt oben, Datum + Account („Claude als Operator“, „Upload-Account“, „Codex“), Kommandos ohne Geheimnisse, Zähler, zitierte Freigaben.
+- **Entscheidungen** von Chris als GitHub-Issue in `gravuru-2027` (Label `entscheidung`), Antwort dort oder im Chat – dann in die Übergabe übernehmen.
+- **Rollen:** Live-Systeme (Shopify, Amazon, Plesk) werden vom Operator nur gelesen/exportiert; Uploads, Imports, Theme-/App-Versionen macht der Upload-Account nach ausdrücklicher Freigabe von Chris im selben Chat (mit Zählern). Nichts löschen ohne Ankündigung. Katalogdaten ändern sich nur im Katalog-Repo (JSON), nie durch Kopieren aus Shopify.
+- **Dashboard-Bearbeitungen** (Design-Dashboard, Katalogseite) schreiben in den Arbeitsbaum des Katalog-Repos mit Protokoll (`_aenderungen.jsonl`); wer sie committet, baut danach `build-katalog.py` und nennt das im Commit.

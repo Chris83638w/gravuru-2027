@@ -1,3 +1,8 @@
+## Host auf c929cf3, Übergabe Upload-Account · 23.10.2026 (Claude als Operator)
+
+- Host: `main` per Plesk-Aufgabe (`git fetch` + `checkout -f` in `/private/gravuru-2027-main`, Logs `private/probe-main-20261023/09–11.log`) auf c929cf3, App neu gestartet (Node.js-Manager, Start `start-r5.cjs` → `app.cjs`). Danach `/werkstatt/designs/` 200, `/werkstatt/katalog/` 200, `/werkstatt/acryl/` 200, `/api/workshop/session` 401. **Auf dem Host ist kein Katalog verbunden** (`GRAVURU_KATALOG` fehlt) – Dashboard liefert dort 503, Katalogseite den eingebauten Stand; Schritt 1 der Übergabe.
+- `docs/handoffs/2026-10-23-upload-account-edelstahl.md`: Ablauf für den Upload-Account (Export → Dry-run → Freigabe → apply/create → Matrixify-Texte → shop-bind → Shop-Einstieg → Testbestellung) mit fehlenden Voraussetzungen. AGENTS.md (Code) und CLAUDE.md (Katalog): Abschnitt „Zusammenarbeit mehrerer Accounts“.
+
 ## Lokale Codex-Kopie `work/gravuru-2027` geprüft · 23.10.2026 (Claude als Operator)
 
 - Stand: untrackte Kopie von `task/katalog-struktur-20261022` (516 Dateien gleich, 22 geändert, 12 neu, dazu `.preview/`-Build). Die Änderungen sind der **Edelstahl-Testlauf** vom 21.10. (Chris: „nur getestet“): Startseite „Dein Edelstahlschild“, Acryl-Shop/Korrekturen/Katalogstruktur aus `http.mjs` entfernt, Materialvorschau auf `edelstahl-original-2027.png` + Hauswand v3 (`steel-original-presentation.mjs`), `form-interaction.test` auf ganze mm umgestellt (ohne Modulanpassung), `server.mjs` lässt Cross-Site-Dokumentnavigation auf Kundenseiten zu. Hilfslinien/Einrasten (`editor-guides.mjs`) sind auf `main` bereits enthalten.

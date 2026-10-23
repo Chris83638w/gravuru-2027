@@ -22,6 +22,7 @@ import fs from 'node:fs';
 import {makeProductDocument,validateProductDocument} from './product-model.mjs';
 import {textLimits,textLimitIssue,TEXT_LIMIT_RANGES} from './theme-limits.mjs';
 import {FONT_SET_ALWAYS} from './katalog-source.mjs';
+import {MAX_FORM_DESIGNS as MAX_TEMPLATES} from './form-designs.mjs';
 
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'katalog_design'});};
 export const SERIES_TOLERANCE=0.01;// ±1 % Seitenverhältnis (README Ebene 3)
@@ -382,7 +383,7 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
   if(subcategory.startDesign&&!start)fail('Unterkategorie „'+subcategory.id+'“: Startdesign „'+subcategory.startDesign+'“ ist für '+s.label+' nicht verfügbar.');
   const rest=templates.filter(t=>t!==start);
   const ordered=[...(start?[start]:[]),...rest.filter(t=>t.template.bestseller),...rest.filter(t=>!t.template.bestseller)];
-  if(ordered.length>60)fail('Höchstens 60 Vorlagen je Produkt ('+ordered.length+' für '+s.label+').');
+  if(ordered.length>MAX_TEMPLATES)fail('Höchstens '+MAX_TEMPLATES+' Vorlagen je Produkt ('+ordered.length+' für '+s.label+').');
   p.designs=ordered.map(t=>t.template);p.defaultDesignId=p.designs[0].id;
   // Musterfoto als Platzhalter (Werkstatt-Designressource): im Editor sichtbar, Klick lädt das Kundenfoto,
   // nie Teil von Design oder Fertigung. Der Upload-Hinweis steckt schon im Bild → eigener Hinweis aus.

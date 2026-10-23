@@ -3,6 +3,7 @@ import {fittedArtwork} from '../configurator/variant-m/design-area.mjs';
 import {objectIssue} from '../platform/sources/app/shared/models/design-content.mjs';
 import {validateProductDocument,validateProductDesign} from './product-model.mjs';
 import {studioSvg} from '../platform/sources/app/shared/models/studio-svg.mjs';
+import {MAX_FORM_DESIGNS} from './form-designs.mjs';
 const fail=(message,status=422)=>{throw Object.assign(Error(message),{status,code:'prepared_design_invalid'});};
 const validId=s=>typeof s==='string'&&/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,119}$/.test(s);
 const rights=type=>({content:type==='text',color:false,replace:type==='photoSlot',move:false,scale:false,delete:false});
@@ -32,7 +33,7 @@ export async function planPreparedDesign(repository,assets,id,input){
  if(![p.widthMm,p.heightMm].every(n=>Number.isFinite(n)&&n>0&&n<=2000)||!Array.isArray(p.layers)||p.layers.length<2||p.layers.length>20)fail('Ungültige Abmessungen oder Ebenenzahl.');
  const document=structuredClone(record.document),config=document.config;
  if(config.profile.designs.some(d=>d.id===p.designId))fail('Diese Design-ID ist bereits vorhanden. Eine vorhandene Vorlage wird nicht überschrieben.',409);
- if(config.profile.designs.length>=60)fail('Höchstens 60 Designs pro Produkt.');
+ if(config.profile.designs.length>=MAX_FORM_DESIGNS)fail('Höchstens '+MAX_FORM_DESIGNS+' Designs pro Produkt.');
  const {scale,ox,oy,fit}=preparedPlacement(config,p);
  const d={id:p.designId,name:p.name,objects:[],marks:[],customerFields:[],preparedTemplate:{schema:p.schema,sourceSha256:p.sourceSha256,packageSha256:sha256(JSON.stringify(p)),scale,fit}};
  const table={},seen=new Set();

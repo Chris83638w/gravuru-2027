@@ -1,5 +1,7 @@
 import {validateAdditionPolicy,defaultAdditions,formMotif,motifFieldMarkup} from './form-additions.mjs';
 import {measureText,textPaths} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
+// Höchstzahl Vorlagen/Designs je Konfi-Produkt. Chris 23.10.2026: 60 → 100 (Edelstahl-Themen haben bis 74 Designs je Größe); Aufräumen über „ausblenden“ im Design-Dashboard.
+export const MAX_FORM_DESIGNS=100;
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'invalid_form_design'});};
 const id=v=>typeof v==='string'&&/^[a-zA-Z0-9][\w-]{0,79}$/.test(v);
 const hash=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
@@ -8,7 +10,7 @@ function box(o,w,h){if(![o.xMm,o.yMm,o.widthMm,o.heightMm].every(Number.isFinite
 
 export function validateFormDesigns(d){
  if(d.designs===undefined&&d.defaultDesignId===undefined)return;
- if(!Array.isArray(d.designs)||d.designs.length>60)fail('Höchstens 60 Designs pro Formprodukt.');
+ if(!Array.isArray(d.designs)||d.designs.length>MAX_FORM_DESIGNS)fail('Höchstens '+MAX_FORM_DESIGNS+' Designs pro Formprodukt.');
  const ids=new Set(),g=d.form.geometry;
  for(const a of d.designs){
   exact(a,['id','name','assetId','sourceSha256','originalName','xMm','yMm','widthMm','heightMm','sourcePrepared','fields',...(a.additions!==undefined?['additions']:[])]);validateAdditionPolicy(a);

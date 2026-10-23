@@ -16,6 +16,8 @@ export const MAIN_NAVIGATION=Object.freeze([
   {key:'konfis',label:'Konfis',href:'/werkstatt/konfis/',icon:'adjustments-horizontal'},
   // Katalogseite (Codex 22.10.2026): Linien → Unterkategorien → Hauptprodukte; in die gemeinsame Kopfzeile aufgenommen (Zusammenführung 22.10.2026).
   {key:'katalog',label:'Katalog',href:'/werkstatt/katalog/',icon:'files'},
+  // Design-Dashboard (Chris 23.10.2026): Designs Linie für Linie prüfen und korrigieren.
+  {key:'designs',label:'Designs',href:'/werkstatt/designs/',icon:'pencil'},
 ]);
 
 /** Verwaltung ▾ */
@@ -52,6 +54,7 @@ export const WORKSHOP_PAGES=Object.freeze([
   {file:'tenants.html',route:'/werkstatt/mandanten/',current:'mandanten'},
   {file:'catalog-structure.html',route:'/werkstatt/katalog/',current:'katalog'},
   {file:'acryl-gallery.html',route:'/werkstatt/acryl/',current:'acryl'},
+  {file:'design-dashboard.html',route:'/werkstatt/designs/',current:'designs'},
 ]);
 
 const esc=v=>String(v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

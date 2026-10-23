@@ -1,0 +1,29 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Designs · Gravuru Werkstatt</title><link rel="stylesheet" href="/workshop-ui/design-dashboard.css"><script type="module" src="/workshop-ui/design-dashboard-ui.mjs"></script>
+<link rel="stylesheet" href="/workshop-ui/workshop-shell.css"><script type="module" src="/workshop-ui/workshop-shell.mjs"></script></head><body class="ws-page ws-plain designs-page">
+<a class="ws-skip" href="#main">Zum Inhalt</a>
+<!-- werkstatt-kopf: erzeugt aus app/workshop/workshop-shell-markup.mjs, nicht von Hand ändern -->
+<header class="ws-topbar">
+<a class="ws-brand" href="/werkstatt/"><em>gravuru</em> werkstatt</a>
+<nav class="ws-nav" aria-label="Hauptnavigation"><a class="ws-nav-item" href="/werkstatt/"><img class="ws-icon" src="/workshop-ui/editor-icons/cube.svg" alt="" aria-hidden="true">Produkte</a><a class="ws-nav-item" href="/werkstatt/?view=masters"><img class="ws-icon" src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Mastervorlagen</a><a class="ws-nav-item" href="/werkstatt/serien/"><img class="ws-icon" src="/workshop-ui/editor-icons/stack-2.svg" alt="" aria-hidden="true">Stapelverarbeitung</a><a class="ws-nav-item" href="/werkstatt/bestellungen/"><img class="ws-icon" src="/workshop-ui/editor-icons/shopping-cart.svg" alt="" aria-hidden="true">Bestellungen</a><a class="ws-nav-item" href="/werkstatt/konfis/"><img class="ws-icon" src="/workshop-ui/editor-icons/adjustments-horizontal.svg" alt="" aria-hidden="true">Konfis</a><a class="ws-nav-item" href="/werkstatt/katalog/"><img class="ws-icon" src="/workshop-ui/editor-icons/files.svg" alt="" aria-hidden="true">Katalog</a><a class="ws-nav-item" href="/werkstatt/designs/" aria-current="page"><img class="ws-icon" src="/workshop-ui/editor-icons/pencil.svg" alt="" aria-hidden="true">Designs</a></nav>
+<div class="ws-tools"><span data-workshop-session role="status">Verbindung wird geprüft …</span><details class="management-menu"><summary>Verwaltung</summary><nav aria-label="Verwaltung"><a href="/werkstatt/familien/">Produktfamilien</a><a href="/werkstatt/profile/">Schriften &amp; Profile</a><a href="/werkstatt/ausgaben/">Ausgaben</a><a href="/werkstatt/fertigung/">Fertigungsprofile</a><a href="/werkstatt/ausfuehrungen/">Ausführungen</a><a href="/werkstatt/konturen/">Formkonturen</a><a href="/werkstatt/acryl/">Acryl-Galerie</a><a href="/werkstatt/pruefstaende/">Prüfstände</a><a href="/werkstatt/shopvorbereitung/">Shop vorbereiten</a><a href="/werkstatt/mandanten/">Mandanten</a></nav></details></div>
+</header>
+<!-- /werkstatt-kopf -->
+<div class="app-layout">
+<main id="main"><div class="intro"><div><p class="eyebrow">DESIGNS JE LINIE</p><h1>Designs prüfen und korrigieren</h1><p>Linie für Linie: Lieferform 2 aus dem Katalog, Bestand aus den Corel-Bögen, Ampel je Design. Änderungen hier schreiben in den Katalog-Ordner; den Commit macht der Betreiber.</p></div><button id="refresh" type="button">Neu laden</button></div>
+<p id="status" role="status" aria-live="polite">Katalog wird geladen …</p>
+<div id="metrics" class="metrics" hidden></div>
+<div class="layout">
+<aside aria-label="Auswahl">
+<h2>Linie</h2><div id="lines" class="picker"></div>
+<h2>Formatreihe / Bogen</h2><div id="reihen" class="picker"></div>
+<h2>Material</h2><div id="materials" class="picker"></div>
+<div id="notes" class="notes"></div>
+</aside>
+<section id="detail" aria-label="Designs der Linie">
+<div class="controls"><label>Status<select id="filter-status"><option value="">Alle</option><option value="ok">ok</option><option value="prüfen">prüfen</option><option value="fehlt">fehlt (keine Lieferform 2)</option></select></label><label><input id="filter-selectable" type="checkbox" checked> nur wählbare (grün / Lieferform 2)</label><label class="grow">Suche<input id="search" type="search" placeholder="Name, Kennung oder Schrift …"></label><label>Ansicht<select id="view"><option value="table">Tabelle</option><option value="tiles">Kacheln</option></select></label></div>
+<p id="summary" class="summary"></p>
+<div id="rows"></div>
+<p class="footnote">Ampel: <b>ok</b> = Lieferform 2 ohne Befund · <b>prüfen</b> = Doppelt, abweichende Fassung, Schrift fehlt, Text unter 3 mm, Element außerhalb der Platte, alte Größe, Thema offen · <b>fehlt</b> = noch keine Lieferform 2 (nur Bestand). Vorschauen sind Bilder aus dem Katalog; nichts wird hochgeladen.</p>
+</section>
+</div></main>
+</div></body></html>

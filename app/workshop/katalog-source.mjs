@@ -159,8 +159,10 @@ export function readDesignFolder(dir,{source='lieferform2',index=null}={}){
  if(!plate)fail(svgFile,'Plattenmaß fehlt (design.json plateMm oder SVG-viewBox in mm).');
  const themes=json.themes===undefined?null:Array.isArray(json.themes)&&json.themes.every(t=>typeof t==='string')?json.themes.map(t=>t.trim().toLowerCase()).filter(Boolean):fail(jsonFile,'themes ist eine Liste von Themen-Kennungen.');
  if(json.bestseller!==undefined&&typeof json.bestseller!=='boolean')fail(jsonFile,'bestseller ist true oder false.');
+ // `hidden: true` (Design-Dashboard, Chris 23.10.2026): Master bleibt im Katalog, wird aber nicht in Konfi-Produkte übernommen.
+ if(json.hidden!==undefined&&typeof json.hidden!=='boolean')fail(jsonFile,'hidden ist true oder false.');
  if(json.fields!==undefined&&!record(json.fields))fail(jsonFile,'fields ist eine Zuordnung Ebene → Regeln.');
- return {id:designId,name:typeof json.name==='string'&&json.name.trim()?json.name.trim():designId,dir,svgFile,jsonFile:exists(jsonFile)?jsonFile:null,plateMm:plate,themes,bestseller:json.bestseller===true,fields:json.fields??{},fonts:Array.isArray(json.fonts)?json.fonts.filter(f=>typeof f==='string'):[],source,index,json,svg:()=>fs.readFileSync(svgFile,'utf8')};
+ return {id:designId,name:typeof json.name==='string'&&json.name.trim()?json.name.trim():designId,dir,svgFile,jsonFile:exists(jsonFile)?jsonFile:null,plateMm:plate,themes,bestseller:json.bestseller===true,hidden:json.hidden===true,fields:json.fields??{},fonts:Array.isArray(json.fonts)?json.fonts.filter(f=>typeof f==='string'):[],source,index,json,svg:()=>fs.readFileSync(svgFile,'utf8')};
 }
 function readMasters(root){
  const base=path.join(root,'designs'),list=[];

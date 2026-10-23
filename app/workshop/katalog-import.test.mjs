@@ -112,3 +112,15 @@ test('Hauptprodukte: je Hauptprodukt ein Produkt mit eigenem Startdesign, Namen 
  assert.equal(ws.repository.list().length,1+3+2,'Namensschilder 3 + Hundeschilder 2 (gesperrte bleiben aus)');
  await assert.rejects(async()=>{line.subcategories[1].mainProducts.push({id:'3100000',startDesign:'test-herz'});fs.writeFileSync(lineFile,JSON.stringify(line));openKatalog(dir).line('test-linie');},/Hauptprodukt „3100000“ doppelt/);
 });
+
+test('Ausgeblendete Master (hidden, Design-Dashboard) bleiben im Katalog, kommen aber in kein Produkt',async t=>{
+ const ws=workshop(t),dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-katalog-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ fs.cpSync(FIXTURE,dir,{recursive:true});
+ const file=path.join(dir,'designs/3-2/test-herz/design.json'),doc=JSON.parse(fs.readFileSync(file,'utf8'));doc.hidden=true;fs.writeFileSync(file,JSON.stringify(doc));
+ const k=openKatalog(dir);assert.equal(k.designs.masters.find(d=>d.id==='test-herz').hidden,true);
+ const plan=await planKatalogImport(k,'test-linie',options(ws));
+ assert.ok(plan.report.notes.some(n=>/Ausgeblendet \(hidden\): test-herz/.test(n)));
+ assert.ok(plan.items.every(i=>!(i.document.config.profile.designs||[]).some(d=>d.katalog?.designId==='test-herz')),'kein Produkt enthält das ausgeblendete Design');
+ doc.hidden='ja';fs.writeFileSync(file,JSON.stringify(doc));
+ assert.throws(()=>openKatalog(dir),/hidden ist true oder false/);
+});

@@ -72,6 +72,8 @@ import {parseThemeCatalog} from './theme-catalog.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {DEFAULT_TENANT,createTenantRegistry,tenantFromRequest} from './tenant.mjs';
 import {createCatalogStructure} from './catalog-structure.mjs';
+import {designDashboard,designFile,patchDesign} from './design-dashboard.mjs';
+import {katalogPath} from './katalog-source.mjs';
 import {categoryLabels} from './category-labels.mjs';
 import {tenantOverview} from './tenant-overview.mjs';
 import {createKonfiStatus,isCustomerCapable,pausedCustomerPage,PAUSED_MESSAGE} from './konfi-status.mjs';
@@ -98,7 +100,9 @@ function checkSessionOptions({operatorCsrfToken=null,merchantCsrfToken=null,shop
   if(shopifySessions&&shopifySessions.mode!=='test-only')fail(503,'shopify_session_config','Nur eine ausdrückliche Test-Sitzungsanbindung ist unterstützt.');
 }
 /** Werkstatt genau eines Mandanten (K13): alle Stores werden mit diesem Mandanten angelegt und lesen/schreiben nur ihn. */
-function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,shopBindingRead=null,aiDesign=null,themes=null,appProxy=null,tenant=null,platformOverview=null}){
+function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConverter,contourConverter,orderWebhook=null,storefront=null,shopifySessions=null,shopDrafts=null,operatorCsrfToken=null,merchantCsrfToken=null,merchantTestCart=null,shopBindingRead=null,aiDesign=null,themes=null,appProxy=null,tenant=null,platformOverview=null,katalogDir=undefined}){
+  // Design-Dashboard (K12/B1): Katalogpfad nur über Option oder katalogPath() (--katalog=<pfad>/GRAVURU_KATALOG), nie im Code.
+  const katalogRoot=()=>{const root=katalogDir===undefined?katalogPath():katalogDir;if(!root)fail(503,'katalog_missing','Kein Katalog verbunden. Server mit --katalog=<pfad> starten oder GRAVURU_KATALOG setzen.');return root;};
   // K9: Themen-Definition (themen.json aus dem Katalog) für Galerie und Motivkategorien im Kundeneditor.
   const themeCatalog=themes===null?null:parseThemeCatalog(themes);
   checkSessionOptions({operatorCsrfToken,merchantCsrfToken,shopifySessions});
@@ -343,6 +347,19 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         if(method==='GET')return json(res,200,catalogStructure.read());
         if(method==='PATCH')return json(res,200,catalogStructure.save(await body(req,16384)));
         fail(405,'method_not_allowed','Die Katalogstruktur unterstützt Lesen und Speichern.');
+      }
+      // Design-Dashboard: Designs je Linie aus dem Katalog-Repo (lesen), menschliche Korrekturen zurück in den Katalog (PATCH).
+      if(pathname==='/api/workshop/designs'||pathname==='/api/workshop/designs/svg'){
+        if(!ownsBundled)fail(503,'katalog_tenant','Für diesen Mandanten ist kein Katalog hinterlegt.');
+        const root=katalogRoot(),q=url.searchParams;
+        if(pathname==='/api/workshop/designs/svg'){
+          if(method!=='GET')fail(405,'method_not_allowed','Designdateien nur lesen.');
+          const {file,type}=designFile(root,{reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'}),bytes=fs.readFileSync(file);
+          return res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src data:"}).end(bytes);
+        }
+        if(method==='GET')return json(res,200,designDashboard(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),bestand:q.get('bestand'),repository}));
+        if(method==='PATCH')return json(res,200,patchDesign(root,await body(req,16384),{actor:merchantSession?.subject||localActor}));
+        fail(405,'method_not_allowed','Designs lesen (GET) oder ändern (PATCH).');
       }
       if(pathname==='/api/workshop/ai-design/status'&&method==='GET')return json(res,200,aiJobs.status());
       if(pathname==='/api/workshop/ai-batches/prepare'&&method==='POST'){const data=await body(req,32768);if(Object.keys(data).join(',')!=='products')fail(422,'ai_batch_invalid','Ungültige Produktauswahl.');return json(res,200,aiBatches.prepare(data.products));}

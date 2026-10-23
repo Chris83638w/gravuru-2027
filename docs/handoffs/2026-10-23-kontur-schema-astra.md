@@ -1,6 +1,6 @@
 # Paket A – Kontur im Katalogschema
 
-Arbeitsstand: in Umsetzung. Code-Basis 6e44085f, Katalog-Basis 0fcf3cf. Account: Astra High.
+Arbeitsstand: Paket A abgeschlossen; [Abschlussbericht und Übergabe an Claude](2026-10-24-paket-a-kontur-schema-astra.md). Code-Basis 6e44085f, Katalog-Basis 0fcf3cf. Account: Astra High.
 
 1. Aktuelles main, Übergabe, Arbeitsregeln und Issue #10 prüfen.
 2. Konturpfade streng validieren und ihre tatsächliche Ausdehnung auf ±0,05 mm prüfen.
@@ -13,4 +13,4 @@ Arbeitsstand: in Umsetzung. Code-Basis 6e44085f, Katalog-Basis 0fcf3cf. Account:
 9. Einmal unabhängiges Review, Befunde beheben und Prüfnachweise dokumentieren.
 10. Code- und Katalog-PR dem Boss übergeben; kein Merge und kein Livezugriff.
 
-Der Abschlussbericht ergänzt Ergebnisse, Zähler und verbleibende Grenzen.
+Dieser Startplan bleibt als Verlauf erhalten. Maßgeblich ist der verlinkte Abschlussbericht vom 24.10.2026.

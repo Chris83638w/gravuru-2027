@@ -76,7 +76,7 @@ def family_section(f, path, kat, pdf_ok):
                  + (f" · Rückplatte: {f['backing']['label']}, rundum {f['backing']['offsetMm']} mm" if f.get('backing') else '') + '.')
     gaps = list(dict.fromkeys(gaps_of(path)))
     open_prices = sum(1 for s in f['sizes'] if s['baseCents'] is None)
-    gaps = [f'Grundpreis: {"alle" if open_prices == len(f["sizes"]) else open_prices} {len(f["sizes"])} Größen'.replace('alle ' + str(len(f['sizes'])), 'alle ' + str(len(f['sizes']))) if g.startswith('Grundpreis:') and open_prices > 5 else g for g in gaps]
+    gaps = [f'Grundpreis: {"alle" if open_prices == len(f["sizes"]) else str(open_prices) + " von"} {len(f["sizes"])} Größen' if g.startswith('Grundpreis:') and open_prices > 5 else g for g in gaps]
     lines.append(('**Offen:** ' + '; '.join(gaps)) if gaps else '**Stammdaten vollständig.**')
     if pdf_ok:
         lines += ['', f"![{f['name']}](kataloge/png/{f['id']}.png)", '', f"Plattenkatalog: [kataloge/{f['id']}.pdf](kataloge/{f['id']}.pdf)"]

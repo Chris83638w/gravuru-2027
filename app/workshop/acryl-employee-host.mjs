@@ -30,6 +30,7 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   let url;try{url=new URL(req.url,config.origin);}catch{return res.writeHead(400).end();}
   if(req.headers.host!==config.host||req.headers['x-forwarded-proto']!=='https'||!req.url.startsWith('/')||req.url.startsWith('//'))return res.writeHead(403).end();
   if(integration?.gateway.matches(url.pathname))return void integration.gateway.handle(req,res,url);
+  if(integration?.shopEntry?.matches(url.pathname))return void integration.shopEntry.handle(req,res,url);
   if(integration?.webhook&&url.pathname===ORDER_WEBHOOK_PATH)return void integration.webhook(req,res);
   const target=acrylRoute(url.pathname);
   if(!target)return existing.emit('request',req,res);

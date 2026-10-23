@@ -1,0 +1,68 @@
+Öffentlicher Konfigurator-Einstieg „Jetzt personalisieren“ / Stand 23.10.2026
+
+Einbau im Zwei-Store-Host (acryl-employee-host.mjs → configurator-integration.mjs):
+  customerIntegration:{mode:'merchant-test-only',legacyStoreId,acrylStoreId,
+    shopEntry:{proxyPath:'/apps/konfigurator', pagePath?:'/konfigurator/shop/', ttlMs?:4h}}
+  integration.shopEntry.matches(pathname) / handle(req,res,url)   (eine Einhängestelle vor acrylRoute)
+Ohne `shopEntry` ändert sich nichts; das Händlertest-Gateway (/api/configurator-test/) bleibt bestehen.
+createShopEntry (shop-entry.mjs) erhält denselben Store-Satz wie das Gateway: registry (resolve),
+workshop (model, repository, assets, customerDrafts, orderIntake), cart (bound-test-cart), Editorpfad.
+Jeder Store wird beim Start auf diese Instanzen geprüft; sonst 503 und kein Einstieg.
+
+Routen (alle fail-closed auf Host/X-Forwarded-Proto https, Origin/Sec-Fetch-Site wie im Gateway):
+  GET <proxyPath>/start?product=<id>&variant=<id>[&config&rev&line][&back=/pfad]
+      App-Proxy-Signatur (shopify-app-proxy.mjs, 300 s, Shop fest, Kundenanmeldung optional) →
+      Registry-Auflösung {ProductGID, VariantGID} über alle Stores, genau ein Treffer → Modell der festen
+      cfg-Revision muss nativ (variant-m) sein → Sitzung → 302 auf origin+pagePath+'#s=<Token>[&config&rev&line&back]'
+      (HTML-Rückfall mit Meta-Refresh/Link). 404 „Dieses Produkt ist noch nicht für den Konfigurator
+      eingerichtet.“ bei fehlender Zuordnung oder Formprodukt, 409 bei Mehrfachtreffer, 423 pausiert, 401 Signatur.
+  GET <pagePath>, <pagePath>shop-entry-page.mjs, <pagePath>shop-entry-client.mjs   (statisch, eigene CSP)
+  GET /api/shop-entry/model                                  → {model (defaultValueId = Shopvariante), binding, editorPath, shopDomain, expiresAt}
+  GET /api/shop-entry/design-assets/<sha256>/preview.svg     → nur Grafiken, die dieses Modell selbst nennt
+  POST /api/shop-entry/acrylic-drafts[/<adraft>]            → prepareAcrylicReview + acrylicDrafts.create/save (≤ 100 MiB, 2 parallel)
+  POST /api/shop-entry/cart                                  → {draftId, expectedRevision, quantity, configId?, cartLineId?} + X-Gravuru-Draft
+  GET /api/shop-entry/cart-configurations/<konfig>/<rev>[/photos/<id>[?edited=1]]   → K8 Wiederöffnen (cart-edit-revision.mjs)
+Sitzung: Kopfzeile X-Gravuru-Shop-Session; nie in Pfad oder Query, nur im URL-Fragment der Seite.
+
+Sitzung (shop-entry-session.mjs): `gse1.<base64url(JSON)>.<HMAC-SHA256 base64url>`, Schlüssel aus dem
+App-Geheimnis abgeleitet (HMAC 'gravuru-shop-entry/v1'). Inhalt: storeId, Shopify-Produkt-/Varianten-ID,
+cfg-ID, cfg-Revision, bindingId, assignmentRevision, Kunden-GID oder null, zufällige sid, iat, exp
+(TTL Vorgabe 4 h, höchstens 12 h). Keine Kundendaten, kein Entwurfstoken, kein Preis. Jede Anfrage löst die
+Zuordnung erneut auf; abweichender Store, cfg-Stand, bindingId oder assignmentRevision → 409 „Produktseite
+neu öffnen“. Ablauf → 403 shop_entry_expired. Begrenzung: Start 120/min, je sid 240/min, Warenkorb je sid
+seriell (Beanspruchung vor dem Body), Entwürfe 2 parallel.
+
+Warenkorb: gewählter Weg (a) – bestehender Storefront-Pfad (bound-test-cart → draft-cart-handoff →
+cart-handoff-journal → storefront-transport), nicht /cart/add.js aus dem Theme. Gründe: der Preis wird
+serverseitig gegen die Shop-Antwort geprüft, bevor der Kunde eine Checkout-Adresse sieht; Journal und
+Konfigurationsregister (K8 ersetzen statt verdoppeln) sind vorhanden und mit Testbestellungen #1024/#1025
+belegt; der Bestelleingang bindet die Position über `_gravuru_offer` an genau den gesicherten Prüfstand und
+prüft Variante, Menge und Preis – keine zweite Bindungslogik über ein neues Property. Die Shopify-Variante
+bestimmt NICHT die Produktseite, sondern die im Editor gewählte Ausführung (manifest.selection.options):
+Kandidaten aus orderIntake.bindings() dieses cfg-Stands werden einzeln über registry.resolve({Shopify-Produkt
+der Sitzung, Variante}) bestätigt; genau ein Treffer, sonst 404 shop_entry_variant_unbound / 409 duplicate.
+Innerhalb einer Sitzung wird der zuletzt bestätigte Warenkorb ergänzt (existingCart wie im Gateway); nach
+einem Fehler wird er vergessen, damit der nächste Versuch (neue Sicherung = neues Angebot) neu anlegt.
+Preise: Varianten-/Befestigungspreis vom Shop; Foto-/Motivaufpreise nur über den Preisvertrag der Bindung
+(cart-personalization.mjs, Cart-Transform `gravuru-personalization-price`). Ohne Vertrag weist der
+Bestelleingang Prüfstände mit Aufpreisen ab (422); der Kunde erhält eine verständliche Erklärung.
+
+Editor (variant-m): shop-cart.mjs ersetzt im Abschlussdialog die Testknöpfe durch „In den Warenkorb“ /
+„Warenkorb aktualisieren“, wenn die Seite window.parent.GravuruShopEntry stellt (workshop-review.mjs,
+eine Zeile). Ablauf: Sicherung über acrylic-draft-client (fetchImpl = Kundensitzung) → submitCart →
+Prüfung der Checkout-Adresse (https, Shopdomain) → window.top.location.assign. Die Kundenseite
+(ui/shop-entry-page.mjs, ui/shop-entry-client.mjs) legt /api/workshop/… und /api/workshop/acryl/… des Editors
+auf die obigen Kundenrouten um; alle anderen Werkstattpfade werden abgewiesen.
+
+Theme: ops/shopify/theme-block/ (Block, Skript, optionales Warenkorb-Snippet), Deployment-Schritte in
+ops/shopify/SHOP-EINSTIEG.md – nicht ausgeführt. Der Block erscheint nur mit Metafeld custom.customization_id.
+
+Grenzen (bewusst): Formprodukte nicht angebunden; Registry-Zuordnungen, App-Proxy-Modul, Preisverträge und
+Theme-Veröffentlichung sind Freigaben von Chris; Mehrprodukt-Warenkorb über Produktseiten hinweg und das
+Verhalten der Storefront-Zeile im Theme-Warenkorb sind im echten Shop zu prüfen; productionReady bleibt false.
+
+Prüfung: node --test app/workshop/shop-entry-session.test.mjs app/workshop/shop-entry.test.mjs
+  app/workshop/shop-entry-client.test.mjs app/workshop/shop-entry-flow.test.mjs app/configurator/variant-m/shop-cart.test.mjs
+Fixture: die drei 7×2-Hauptprodukte aus docs/handoffs/2026-10-22-shopify-7x2-hauptprodukte.json (15 Varianten);
+der Durchlauf nutzt die echte Werkstatt mit Mustermodell, echtem Prüfstand, synthetischem Storefront und dem
+echten Bestelleingang (Position → Prüfstand, falscher Preis → Positionsfehler). Kein Shopify-Aufruf.

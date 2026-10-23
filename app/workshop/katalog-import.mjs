@@ -43,7 +43,7 @@ export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=n
  return {profileId:profile.id,profileRevision:profile.revision,items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
 }
 
-export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null,only=null}={}){
+export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null,only=null,allDesigns=false}={}){
  // `only`: {subcategories:[ids], sizes:[keys], mainProducts:[ids]} begrenzt den Lauf (z. B. ein Muster); ohne Angabe die ganze Linie.
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').');
  const report={line:{id:line.id,name:line.name,status:line.status??null,file:katalog.files.get('linie:'+line.id)},families:[],subcategories:[],designs:{masters:katalog.designs.masters.length,bestand:0,considered:0,withSeries:0,oldSize:[],withoutTheme:0,failed:[]},counts:{products:0,new:0,update:0,unchanged:0,blocked:0,templates:0,sizes:0,pricesOpen:0,designsWithoutSeries:0,fit:{passt:0,'prüfen':0,'passt nicht':0}},notes:[]};
@@ -51,7 +51,11 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
  // Ausgeblendete Master (`hidden: true` in design.json, gesetzt im Design-Dashboard) bleiben im Katalog, kommen aber nicht ins Produkt.
  const hidden=katalog.designs.masters.filter(d=>d.hidden).map(d=>d.id);
  if(hidden.length)report.notes.push('Ausgeblendet (hidden): '+hidden.join(', ')+'.');
- const designs=katalog.designs.masters.filter(d=>!d.hidden);
+ // Freigabe (Chris 23.10.2026): nur im Dashboard freigegebene Master kommen ins Produkt; `allDesigns` nur für Probeläufe.
+ const unreleased=allDesigns?[]:katalog.designs.masters.filter(d=>!d.hidden&&!d.released).map(d=>d.id);
+ if(unreleased.length)report.notes.push('Nicht freigegeben (Dashboard): '+unreleased.length+' Designs übersprungen.');
+ report.counts.unreleased=unreleased.length;
+ const designs=katalog.designs.masters.filter(d=>!d.hidden&&(allDesigns||d.released));
  if(bestand){const list=katalog.designs.bestand(bestand);report.designs.bestand=list.length;designs.push(...list);}
  const items=[],familyPlans=[],fontSets=new Map(),seenDesigns=new Map();
  for(const familyId of line.families){
@@ -113,6 +117,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
       templates.push({template:scaled,motifs,rights:t.rights,examples:t.examples});entry.templates.push({design:a.design.id,fit:fit.status,issues:fit.issues});
      }catch(e){entry.excluded.push({design:a.design.id,issues:[e.message]});}
     }
+    if(!templates.length&&!allDesigns&&katalog.designs.masters.some(d=>!d.hidden&&!d.released&&Array.isArray(d.themes)&&d.themes.includes(sub.themeId))){entry.action='gesperrt';entry.reason='Keine freigegebenen Designs für diese Größe (Dashboard: Freigabe).';report.counts.blocked++;report.counts.products++;subReport.products.push(entry);continue;}
     try{
      const product=katalogFamilyToProduct(doc,line,effective,{size,theme,fontSet:{...fontSet,available:set.available},fontProfileId:set.profileId,fonts,templates,revision,mainProduct:main});
      const prior=repository.importItem(key),current=prior?repository.get(prior.id):null;

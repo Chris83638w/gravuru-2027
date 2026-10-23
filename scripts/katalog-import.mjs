@@ -1,5 +1,6 @@
 // K12 / B1: Import-Lauf Katalog → Werkstatt je Linie.
-// Aufruf: node scripts/katalog-import.mjs --katalog <pfad> --linie <id> [--bestand <ordner>] [--db <sqlite>] [--json <bericht.json>] [--dry-run | --commit]
+// Aufruf: node scripts/katalog-import.mjs --katalog <pfad> --linie <id> [--bestand <ordner>] [--db <sqlite>] [--json <bericht.json>] [--alle-designs] [--dry-run | --commit]
+// Ohne `--alle-designs` kommen nur im Design-Dashboard freigegebene Designs (design.json freigabe.status = freigegeben) ins Produkt.
 // Ohne `--commit` wird nichts geschrieben (Dry-run gegen eine Datenbank im Speicher);
 // mit `--commit` schreibt das Skript Familie und Produkte in die Werkstatt-DB
 // (Standard `.local-data/workshop.sqlite` neben `app/`, wie der Server).
@@ -18,7 +19,7 @@ const flag=name=>process.argv.includes('--'+name);
 const katalogDir=arg('katalog')||katalogPath(),lineId=arg('linie'),bestand=arg('bestand')||null,commit=flag('commit');
 const list=name=>arg(name)?arg(name).split(',').map(v=>v.trim()).filter(Boolean):null;
 const only=(list('unterkategorie')||list('groesse')||list('hauptprodukt'))?{subcategories:list('unterkategorie'),sizes:list('groesse'),mainProducts:list('hauptprodukt')}:null;
-if(!katalogDir||!lineId){console.error('Aufruf: node scripts/katalog-import.mjs --katalog <pfad> --linie <id> [--bestand <ordner>] [--db <sqlite>] [--unterkategorie a,b] [--groesse k1,k2] [--hauptprodukt id] [--json <datei>] [--commit]');process.exit(2);}
+if(!katalogDir||!lineId){console.error('Aufruf: node scripts/katalog-import.mjs --katalog <pfad> --linie <id> [--bestand <ordner>] [--db <sqlite>] [--unterkategorie a,b] [--groesse k1,k2] [--hauptprodukt id] [--json <datei>] [--alle-designs] [--commit]');process.exit(2);}
 const dbFile=commit?(arg('db')||path.join(ROOT,'../.local-data/workshop.sqlite')):':memory:';
 
 const katalog=openKatalog(katalogDir);
@@ -27,7 +28,7 @@ const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json'),'utf8'))[0
 const workshop=createWorkshop({filename:dbFile,seedConfig:seed.universal,legacy:seed.legacy,themes:katalog.themes});
 try{
  const available={...workshopResources().fonts,...workshop.fonts.resources()};
- const plan=await planKatalogImport(katalog,lineId,{repository:workshop.repository,families:workshop.families,bestand,available,converter:convertFont,fontLibrary:workshop.fonts,profiles:workshop.profiles,assets:workshop.assets,only});
+ const plan=await planKatalogImport(katalog,lineId,{repository:workshop.repository,families:workshop.families,bestand,available,converter:convertFont,fontLibrary:workshop.fonts,profiles:workshop.profiles,assets:workshop.assets,only,allDesigns:flag('alle-designs')});
  console.log(formatReport(plan.report));
  const jsonFile=arg('json');if(jsonFile)fs.writeFileSync(jsonFile,JSON.stringify(plan.report,null,1)+'\n');
  if(!commit){console.log('\nDry-run: nichts geschrieben. Mit --commit werden '+plan.report.counts.new+' Produkte angelegt und '+plan.report.counts.update+' aktualisiert ('+dbFile+').');}

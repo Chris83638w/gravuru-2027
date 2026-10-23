@@ -4,7 +4,7 @@ import {merchantRequest} from './merchant-request.mjs';
 const $=s=>document.querySelector(s),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined&&text!==null)n.textContent=text;if(cls)n.className=cls;return n;};
 const natural=new Intl.Collator('de',{numeric:true,sensitivity:'base'});
 const params=new URLSearchParams(location.search);
-const state={csrf:null,lines:[],linie:params.get('linie')||null,reihe:params.get('reihe')||null,material:null,status:params.get('status')||'',selectable:true,query:'',view:localStorage.getItem('gravuru-designs-view')==='tiles'?'tiles':'table',data:null,busy:false,editing:null};
+const state={csrf:null,lines:[],linie:params.get('linie')||null,reihe:params.get('reihe')||null,material:null,status:params.get('status')||'',freigabe:params.get('freigabe')||'',selectable:true,query:'',view:localStorage.getItem('gravuru-designs-view')==='tiles'?'tiles':'table',data:null,busy:false,editing:null};
 const status=(text,error=false)=>{$('#status').textContent=text;$('#status').className=error?'error':'';$('#status').hidden=!text;};
 async function request(url,options){const r=await merchantRequest(url,options);const v=await r.json().catch(()=>({}));if(!r.ok)throw Error(v.error?.message||'Die Designs konnten nicht geladen werden.');return v;}
 const button=(text,fn,cls)=>{const b=el('button',text,cls);b.type='button';b.addEventListener('click',fn);return b;};
@@ -12,7 +12,7 @@ const mm=v=>Number.isFinite(v)?String(Math.round(v*10)/10).replace('.',','):'?';
 const plateText=p=>Array.isArray(p)?mm(p[0])+' × '+mm(p[1])+' mm':'Maß offen';
 const AMPEL={ok:'ok','prüfen':'prüfen',fehlt:'fehlt'};
 
-function pushUrl(){const q=new URLSearchParams();if(state.linie)q.set('linie',state.linie);if(state.reihe)q.set('reihe',state.reihe);if(state.status)q.set('status',state.status);history.replaceState(null,'',location.pathname+(q.size?'?'+q:''));}
+function pushUrl(){const q=new URLSearchParams();if(state.linie)q.set('linie',state.linie);if(state.reihe)q.set('reihe',state.reihe);if(state.status)q.set('status',state.status);if(state.freigabe)q.set('freigabe',state.freigabe);history.replaceState(null,'',location.pathname+(q.size?'?'+q:''));}
 
 async function loadLines(){
  const [session,data]=await Promise.all([request('/api/workshop/session'),request('/api/workshop/designs')]);
@@ -31,7 +31,7 @@ async function load(){state.busy=true;$('#refresh').disabled=true;status('Katalo
 function visibleRows(){
  const d=state.data;if(!d)return [];
  const q=state.query.trim().toLocaleLowerCase('de');
- return d.rows.filter(r=>(!state.reihe||r.reihe===state.reihe||r.formatreihe===state.reihe)&&(!state.material||r.material===state.material)&&(!state.status||r.status===state.status)&&(!state.selectable||r.selectable)&&(!q||[r.id,r.name,r.nameSheet||'',...r.fonts.map(f=>f.name),...r.themes.map(t=>t.name),...(r.texts.sample||[])].some(v=>String(v).toLocaleLowerCase('de').includes(q)))).sort((a,b)=>natural.compare(a.id,b.id));
+ return d.rows.filter(r=>(!state.reihe||r.reihe===state.reihe||r.formatreihe===state.reihe)&&(!state.material||r.material===state.material)&&(!state.status||r.status===state.status)&&(!state.freigabe||r.released===(state.freigabe==='ja'))&&(!state.selectable||r.selectable)&&(!q||[r.id,r.name,r.nameSheet||'',...r.fonts.map(f=>f.name),...r.themes.map(t=>t.name),...(r.texts.sample||[])].some(v=>String(v).toLocaleLowerCase('de').includes(q)))).sort((a,b)=>natural.compare(a.id,b.id));
 }
 function renderPicker(host,items,current,onPick,{all=null}={}){
  host.replaceChildren();
@@ -54,7 +54,9 @@ function editorCell(row){
  const box=el('div',undefined,'actions');
  if(row.konfi?.products?.length){const p=row.konfi.products[0];const a=el('a','Im Editor öffnen','button');a.href=p.href;a.title='Konfi-Produkt '+p.importKey+' (Stand '+p.revision+')';box.append(a);if(row.konfi.products.length>1)box.append(el('small',row.konfi.products.length+' Produkte','muted'));}
  else box.append(el('span',row.lieferform2?'noch nicht importiert':'keine Lieferform 2','muted'));
- if(row.lieferform2){box.append(button('Name ändern',()=>{state.editing=row.id;render();}));box.append(button(row.hidden?'Einblenden':'Ausblenden',()=>save(row,{hidden:!row.hidden}),'quiet'));}
+ if(row.lieferform2){box.append(button('Name ändern',()=>{state.editing=row.id;render();}));box.append(button(row.hidden?'Einblenden':'Ausblenden',()=>save(row,{hidden:!row.hidden}),'quiet'));
+  // Freigabe (Chris 23.10.2026): manuell geprüft → freigeben; erst dann Konfi-Import und Shop. Zurücknehmen jederzeit.
+  if(row.status!=='fehlt'||row.released){const b=button(row.released?'Freigabe zurücknehmen':'Freigeben',()=>save(row,{freigegeben:!row.released}),row.released?'quiet':'release');b.title=row.released?'Design wieder auf „offen“ setzen – kommt beim nächsten Import nicht mehr ins Produkt':'Design als geprüft freigeben – kommt beim nächsten Import ins Konfi-Produkt und in den Shop-Abgleich';box.append(b);}}
  return box;
 }
 function nameCell(row){
@@ -68,6 +70,7 @@ function nameCell(row){
   box.append(el('strong',row.name));
   if(row.nameSheet&&row.nameSheet!==row.name)box.append(el('small','Bogen: '+row.nameSheet,'muted'));
   if(row.hidden)box.append(el('span','ausgeblendet','flag'));
+  if(row.released)box.append(el('span','freigegeben'+(row.freigabe?.am?' '+new Date(row.freigabe.am).toLocaleDateString('de-DE'):''),'flag released'));
   if(row.bestseller)box.append(el('span','Bestseller','flag'));
  }
  return box;
@@ -124,19 +127,20 @@ function render(){
  $('#metrics').hidden=!d;
  if(d){
   const c=d.counts;
-  $('#metrics').replaceChildren(...[[c.total,'Designs'],[c.ok,'ok'],[c['prüfen'],'prüfen'],[c.fehlt,'fehlt'],[c.lieferform2,'Lieferform 2'],[c.selectable,'wählbar']].map(([n,t])=>{const m=el('div',undefined,'metric '+t.replace(/\W/g,''));m.append(el('strong',n),el('span',t));return m;}));
+  $('#metrics').replaceChildren(...[[c.total,'Designs'],[c.ok,'ok'],[c['prüfen'],'prüfen'],[c.fehlt,'fehlt'],[c.freigegeben,'freigegeben'],[c.lieferform2,'Lieferform 2'],[c.selectable,'wählbar']].map(([n,t])=>{const m=el('div',undefined,'metric '+t.replace(/\W/g,''));m.append(el('strong',n),el('span',t));return m;}));
   const reihen=[...d.reihen.map(r=>({key:r.key,label:r.key,count:r.counts.total,title:'ok '+r.counts.ok+' · prüfen '+r.counts['prüfen']+' · fehlt '+r.counts.fehlt}))];
   renderPicker($('#reihen'),reihen,state.reihe,key=>{state.reihe=key;pushUrl();render();},{all:{label:'Alle',count:d.counts.total}});
   renderPicker($('#materials'),d.materials.map(m=>({key:m.key,count:m.counts.total})),state.material,key=>{state.material=key;render();},{all:{label:'Alle',count:d.counts.total}});
   $('#notes').replaceChildren(...d.notes.map(n=>el('p',n,'notice')),...(d.bestand.overviews.length?[el('p','Bestand: '+d.bestand.overviews.map(o=>o.overview+' ('+o.grund+')').join(', ')+' – '+d.bestand.sheets.length+' Bögen','muted')]:[]));
  }else{$('#reihen').replaceChildren();$('#materials').replaceChildren();$('#notes').replaceChildren();}
  const rows=visibleRows();
- $('#summary').textContent=d?rows.length+' von '+d.counts.total+' Designs'+(state.reihe?' · '+state.reihe:'')+(state.status?' · Status '+state.status:'')+(state.selectable?' · nur wählbare':''):'';
+ $('#summary').textContent=d?rows.length+' von '+d.counts.total+' Designs'+(state.reihe?' · '+state.reihe:'')+(state.status?' · Status '+state.status:'')+(state.freigabe?(state.freigabe==='ja'?' · freigegeben':' · offen'):'')+(state.selectable?' · nur wählbare':''):'';
  renderRows(rows);
  for(const b of document.querySelectorAll('button'))if(b.id!=='refresh')b.disabled=state.busy;
 }
 $('#refresh').addEventListener('click',load);
 $('#filter-status').value=state.status;$('#filter-status').addEventListener('change',e=>{state.status=e.target.value;pushUrl();render();});
+$('#filter-freigabe').value=state.freigabe;$('#filter-freigabe').addEventListener('change',e=>{state.freigabe=e.target.value;pushUrl();render();});
 $('#filter-selectable').addEventListener('change',e=>{state.selectable=e.target.checked;render();});
 $('#search').addEventListener('input',e=>{state.query=e.target.value;render();});
 $('#view').value=state.view;$('#view').addEventListener('change',e=>{state.view=e.target.value;try{localStorage.setItem('gravuru-designs-view',state.view);}catch{}render();});

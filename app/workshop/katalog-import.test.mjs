@@ -16,7 +16,8 @@ function workshop(t){
  const ws=createWorkshop({filename:':memory:',seedConfig:makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'b'.repeat(64)),legacy:{purchasing:{},features:{}}});
  t.after(()=>ws.close());return ws;
 }
-const options=ws=>({repository:ws.repository,families:ws.families,fontLibrary:ws.fonts,profiles:ws.profiles,available:workshopResources().fonts});
+// Fixture-Designs tragen keine Freigabe; die Mechanik-Tests laufen daher mit allDesigns, die Freigabe-Regel hat einen eigenen Test.
+const options=ws=>({repository:ws.repository,families:ws.families,fontLibrary:ws.fonts,profiles:ws.profiles,available:workshopResources().fonts,allDesigns:true});
 
 test('Dry-run: Bericht je Linie ohne Schreiben; Commit legt Familie, Schriftprofile und Produkte an; zweiter Lauf ist unverändert',async t=>{
  const ws=workshop(t),k=openKatalog(FIXTURE);
@@ -35,7 +36,7 @@ test('Dry-run: Bericht je Linie ohne Schreiben; Commit legt Familie, Schriftprof
  assert.deepEqual(namen.products.map(p=>[p.sizeKey,p.action,p.templates.map(x=>x.design+':'+x.fit)]),[['TS-RE-90X60','neu',['test-herz:passt']],['TS-RE-120X80','neu',['test-herz:passt']],['TS-RE-60X40','gesperrt',['test-herz:prüfen']],['TS-QU-80X80','neu',[]]]);
  assert.equal(namen.products[2].reason,'Preis offen: 6 × 4 cm');
  assert.deepEqual(hunde.products.map(p=>[p.sizeKey,p.action,p.templates.map(x=>x.design+':'+x.fit)]),[['TS-RE-90X60','neu',['test-foto:passt','test-herz:passt']],['TS-RE-60X40','gesperrt',['test-foto:passt','test-herz:prüfen']]],'Bericht in Katalogreihenfolge');
- assert.deepEqual(r.counts,{products:6,new:4,update:0,unchanged:0,blocked:2,templates:4,sizes:4,pricesOpen:1,designsWithoutSeries:1,fit:{passt:5,'prüfen':2,'passt nicht':0}});
+ assert.deepEqual(r.counts,{products:6,new:4,update:0,unchanged:0,blocked:2,templates:4,sizes:4,pricesOpen:1,designsWithoutSeries:1,unreleased:0,fit:{passt:5,'prüfen':2,'passt nicht':0}});
  assert.equal(ws.repository.list().length,1,'Dry-run legt keine Produkte an');assert.deepEqual(ws.families.list(),[]);
  const text=formatReport(r);
  assert.match(text,/Summe: 6 Produkte \(neu 4, aktualisieren 0, unverändert 0, gesperrt 2\), 4 Vorlagen/);assert.match(text,/gesperrt ×2: Preis offen: 6 × 4 cm/);
@@ -123,4 +124,19 @@ test('Ausgeblendete Master (hidden, Design-Dashboard) bleiben im Katalog, kommen
  assert.ok(plan.items.every(i=>!(i.document.config.profile.designs||[]).some(d=>d.katalog?.designId==='test-herz')),'kein Produkt enthält das ausgeblendete Design');
  doc.hidden='ja';fs.writeFileSync(file,JSON.stringify(doc));
  assert.throws(()=>openKatalog(dir),/hidden ist true oder false/);
+});
+
+test('Freigabe: ohne allDesigns kommen nur freigegebene Master ins Produkt; Größen ohne freigegebenes Design sind gesperrt',async t=>{
+ const ws=workshop(t),dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-katalog-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ fs.cpSync(FIXTURE,dir,{recursive:true});
+ const blocked=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),allDesigns:false});
+ assert.equal(blocked.report.counts.unreleased,blocked.report.designs.masters,'alle Fixture-Master sind offen');
+ assert.ok(blocked.report.notes.some(n=>n.startsWith('Nicht freigegeben (Dashboard)')));
+ assert.ok(blocked.report.counts.blocked>0&&blocked.report.counts.new===0,'keine Produkte ohne freigegebene Designs');
+ const herz=path.join(dir,'designs','3-2','test-herz','design.json'),j=JSON.parse(fs.readFileSync(herz));
+ fs.writeFileSync(herz,JSON.stringify({...j,freigabe:{status:'freigegeben',am:'2026-10-23T10:00:00.000Z',von:'test'}},null,1));
+ const plan=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),allDesigns:false});
+ assert.equal(plan.report.counts.unreleased,blocked.report.counts.unreleased-1);
+ const templates=plan.report.subcategories.flatMap(s=>s.products).flatMap(p=>p.templates||[]).map(x=>x.design);
+ assert.ok(templates.length>0&&templates.every(d=>d==='test-herz'),'nur das freigegebene Design wird Vorlage: '+[...new Set(templates)].join(','));
 });

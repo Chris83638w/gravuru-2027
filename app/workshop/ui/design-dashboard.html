@@ -20,10 +20,10 @@
 <div id="notes" class="notes"></div>
 </aside>
 <section id="detail" aria-label="Designs der Linie">
-<div class="controls"><label>Status<select id="filter-status"><option value="">Alle</option><option value="ok">ok</option><option value="prüfen">prüfen</option><option value="fehlt">fehlt (keine Lieferform 2)</option></select></label><label><input id="filter-selectable" type="checkbox" checked> nur wählbare (grün / Lieferform 2)</label><label class="grow">Suche<input id="search" type="search" placeholder="Name, Kennung oder Schrift …"></label><label>Ansicht<select id="view"><option value="table">Tabelle</option><option value="tiles">Kacheln</option></select></label></div>
+<div class="controls"><label>Status<select id="filter-status"><option value="">Alle</option><option value="ok">ok</option><option value="prüfen">prüfen</option><option value="fehlt">fehlt (keine Lieferform 2)</option></select></label><label>Freigabe<select id="filter-freigabe"><option value="">Alle</option><option value="nein">offen</option><option value="ja">freigegeben</option></select></label><label><input id="filter-selectable" type="checkbox" checked> nur wählbare (grün / Lieferform 2)</label><label class="grow">Suche<input id="search" type="search" placeholder="Name, Kennung oder Schrift …"></label><label>Ansicht<select id="view"><option value="table">Tabelle</option><option value="tiles">Kacheln</option></select></label></div>
 <p id="summary" class="summary"></p>
 <div id="rows"></div>
-<p class="footnote">Ampel: <b>ok</b> = Lieferform 2 ohne Befund · <b>prüfen</b> = Doppelt, abweichende Fassung, Schrift fehlt, Text unter 3 mm, Element außerhalb der Platte, alte Größe, Thema offen · <b>fehlt</b> = noch keine Lieferform 2 (nur Bestand). Vorschauen sind Bilder aus dem Katalog; nichts wird hochgeladen.</p>
+<p class="footnote">Ampel: <b>ok</b> = Lieferform 2 ohne Befund · <b>prüfen</b> = Doppelt, abweichende Fassung, Schrift fehlt, Text unter 3 mm, Element außerhalb der Platte, alte Größe, Thema offen · <b>fehlt</b> = noch keine Lieferform 2 (nur Bestand). Vorschauen sind Bilder aus dem Katalog; nichts wird hochgeladen. <b>Freigabe:</b> nur freigegebene Designs kommen beim nächsten Import ins Konfi-Produkt und in den Shop-Abgleich; alles andere bleibt in der Prüf-Warteschlange.</p>
 </section>
 </div></main>
 </div></body></html>

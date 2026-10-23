@@ -53,7 +53,7 @@ test('Dashboard: Zeilen je Linie aus Lieferform 2 und Bestand, Ampel mit Gründe
  const repository=fakeRepository([{id:'cfg_1',revision:2,importKey:'katalog:test-linie:namensschilder:TS-RE-90X60:1000',document:{config:{profile:{id:'katalog-test-linie-namensschilder-ts-re-90x60-1000',designs:[{id:'katalog-T-D1',katalog:{designId:'T-D1'}}]}}}}]);
  const d=designDashboard(root,{linie:'test-linie',repository});
  assert.deepEqual(d.rows.map(r=>r.id),['T-D1','T-D2','T-D3','T-D4','T-D4-DOPPELT2','T-D5','T-D10'],'natürlich sortiert, Produktionsfassung keine eigene Zeile');
- assert.deepEqual(d.counts,{total:7,ok:1,'prüfen':2,fehlt:4,selectable:6,lieferform2:3,bestandOnly:4,hidden:0});
+ assert.deepEqual(d.counts,{total:7,ok:1,'prüfen':2,fehlt:4,selectable:6,lieferform2:3,bestandOnly:4,hidden:0,freigegeben:0});
  const by=Object.fromEntries(d.rows.map(r=>[r.id,r]));
  assert.equal(by['T-D1'].status,'ok');assert.deepEqual(by['T-D1'].reasons,[]);assert.equal(by['T-D1'].name,'Zwei Zeilen');assert.equal(by['T-D1'].nameSheet,'D1 Muster');
  assert.equal(by['T-D1'].formatreihe,'60x40');assert.deepEqual(by['T-D1'].plate,[90,60]);assert.equal(by['T-D1'].reihe,'test-reihe');
@@ -225,4 +225,21 @@ test('Rückschreiben: Händlerkorrekturen → design.json (Dry-run, Zuordnung nu
  const multi=updateSvgText('<svg><text id="text-1" x="1" y="2" font-family="A" font-size="3"><tspan>a</tspan></text></svg>','text-1',{text:'Zeile 1\nZeile <2>',font:'B & C',sizePt:14.17,anchorMm:[10,20]});
  assert.equal(multi,'<svg><text id="text-1" x="10.00" y="20.00" font-family="B &amp; C" font-size="5.00"><tspan x="10.00" dy="0.00">Zeile 1</tspan><tspan x="10.00" dy="6.00">Zeile &lt;2&gt;</tspan></text></svg>');
  assert.equal(updateSvgText('<svg/>','text-9',{text:'x',font:'A',sizePt:10,anchorMm:[0,0]}),null);
+});
+
+test('Freigabe: PATCH freigegeben schreibt freigabe {status, am, von}, Filter und Zähler folgen; fehlende Schrift blockiert die Freigabe',t=>{
+ const root=miniKatalog(t);
+ const r=patchDesign(root,{reihe:'test-reihe',designId:'T-D1',freigegeben:true},{actor:'merchant:chris',now:new Date('2026-10-23T11:00:00Z')});
+ assert.equal(r.changed,true);assert.deepEqual(r.design.freigabe,{status:'freigegeben',am:'2026-10-23T11:00:00.000Z',von:'merchant:chris'});assert.equal(r.design.released,true);
+ const j=JSON.parse(fs.readFileSync(path.join(root,'designs/test-reihe/T-D1/design.json'),'utf8'));assert.equal(j.freigabe.status,'freigegeben');
+ const d=designDashboard(root,{linie:'test-linie'});assert.equal(d.counts.freigegeben,1);assert.ok(d.rows.find(x=>x.id==='T-D1').released);
+ assert.deepEqual(designDashboard(root,{linie:'test-linie',freigabe:'ja'}).rows.map(x=>x.id),['T-D1']);
+ assert.ok(designDashboard(root,{linie:'test-linie',freigabe:'nein'}).rows.every(x=>!x.released));
+ assert.throws(()=>designDashboard(root,{linie:'test-linie',freigabe:'vielleicht'}),e=>e.status===422);
+ // unverändert → keine Änderung; zurücknehmen → offen
+ assert.equal(patchDesign(root,{reihe:'test-reihe',designId:'T-D1',freigegeben:true}).changed,false);
+ const back=patchDesign(root,{reihe:'test-reihe',designId:'T-D1',freigegeben:false},{actor:'merchant:chris'});assert.equal(back.design.released,false);assert.equal(back.design.freigabe.status,'offen');
+ // Schrift fehlt (T-D2: Fantasia ohne Datei/Ersatz) → keine Freigabe
+ assert.throws(()=>patchDesign(root,{reihe:'test-reihe',designId:'T-D2',freigegeben:true}),e=>e.status===422&&/Schrift fehlt/.test(e.message));
+ assert.throws(()=>patchDesign(root,{reihe:'test-reihe',designId:'T-D1',freigegeben:'ja'}),e=>e.status===422);
 });

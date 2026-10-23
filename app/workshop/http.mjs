@@ -357,7 +357,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
           const {file,type}=designFile(root,{reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'}),bytes=fs.readFileSync(file);
           return res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src data:"}).end(bytes);
         }
-        if(method==='GET')return json(res,200,designDashboard(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),bestand:q.get('bestand'),repository}));
+        if(method==='GET')return json(res,200,designDashboard(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),repository}));
         if(method==='PATCH')return json(res,200,patchDesign(root,await body(req,16384),{actor:merchantSession?.subject||localActor}));
         fail(405,'method_not_allowed','Designs lesen (GET) oder ändern (PATCH).');
       }

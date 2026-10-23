@@ -13,15 +13,15 @@ Regeln (CLAUDE.md des Katalogs: nichts erfinden, Zeichnung ist das Maß, Kennung
     Grundpreis nur, wenn er von Chris oder der Excel stammt – „Vorschlag Claude“ bleibt `null` (offen),
     der Vorschlag steht im Bericht. Befestigungen aus den Optionen und dem Lochabstand der Zeichnung
     (Regel B02-E<rand>-D4 / B02S-… muss in der Familie existieren).
-  * Retro 1 (eckig) und Retro 2 (geschwungen) haben freie Konturen; das Familienschema v2 kennt nur
-    rect/ellipse/plaque → werden NICHT angelegt, sondern als offen gemeldet (Entscheidung: Schema um
-    Konturform erweitern).
+  * Retro 1/2 erhalten shape:contour, outlinePath und feste holesMm aus der Zeichnung.
+    Beide 90 × 60 mm kosten 1499 ct; weitere Retro-Grundpreise bleiben offen.
+    Befestigungsaufpreise stammen aus vorhandenen Familienregeln, nie aus Vorschlagswerten.
   * Größen der Familie ohne Zeile in der Serie bleiben unverändert (gemeldet).
 
 Aufruf:
   python3 -I scripts/katalog-edelstahl-serie.py --katalog <katalog> [--bericht <datei.md>] [--apply]
 """
-import argparse, json, re
+import argparse, copy, json, re
 from pathlib import Path
 
 FORM = {'Rechteckig': 'RE', 'Abgerundete Ecken': 'AB', 'Quadratisch': 'QU', 'Oval': 'OV', 'Rund': 'R',
@@ -46,6 +46,45 @@ def price_source(note):
     return 'excel'
 
 
+
+def contour_size(row, fam):
+    """Use the drawing verbatim; mounting rules describe options, not hole positions."""
+    gk = FORM[row['form']]
+    if row.get('kind') != {'RT1': 'retro1', 'RT2': 'retro2'}[gk]:
+        raise ValueError(f'{row["id"]}: Form und kind widersprechen sich')
+    outline = row.get('outline')
+    if not isinstance(outline, str) or not re.search(r'[zZ]\s*$', outline):
+        raise ValueError(f'{row["id"]}: geschlossener Konturpfad fehlt')
+    holes = [{'x': h['x'], 'y': h['y'], 'diameterMm': h['diameter']} for h in row['holes']]
+    if not holes or any(h['diameterMm'] != 4 for h in holes):
+        raise ValueError(f'{row["id"]}: erwartetes festes Ø-4-Lochbild fehlt')
+    mounting = []
+    for opt in row['options']:
+        if opt == 'K00': continue
+        candidates = [r for r in fam['mountingRules'] if r['skuSuffix'] == opt and not r['id'].endswith('-KONTUR')]
+        values = {(r['count'], r['priceCents'], r.get('accessory'), r['label'], r['layout']) for r in candidates}
+        if len(values) != 1:
+            raise ValueError(f'{row["id"]}: bestehende Befestigung {opt} fehlt oder ist uneindeutig')
+        rule = copy.deepcopy(candidates[0])
+        if rule['layout'] == 'none':
+            mounting.append(rule['id']); continue
+        if rule['count'] != len(holes):
+            raise ValueError(f'{row["id"]}: Lochanzahl passt nicht zu {opt}')
+        rule.update(id=opt + '-KONTUR', edgeMm=None, diameterMm=4)
+        previous = next((r for r in fam['mountingRules'] if r['id'] == rule['id']), None)
+        if previous is not None and previous != rule:
+            raise ValueError(f'{row["id"]}: vorhandene Kontur-Befestigung {rule["id"]} widerspricht Quelle')
+        if previous is None: fam['mountingRules'].append(rule)
+        mounting.append(rule['id'])
+    w, h = row['widthMm'], row['heightMm']
+    price = 1499 if (w, h) == (90, 60) else None
+    if price is not None and (row['baseCents'] != price or price_source(row['sourceNote']) != 'chris'):
+        raise ValueError(f'{row["id"]}: bestätigter 9×6-Preis fehlt')
+    return {'key': f'GR-ES-{gk}-{mm_key(w)}X{mm_key(h)}-T15', 'groupKey': gk,
+            'label': label_cm(w, h), 'widthMm': w, 'heightMm': h, 'baseCents': price,
+            'mounting': mounting, 'netWeightG': row.get('weightG'), 'outlinePath': outline, 'holesMm': holes}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--katalog', required=True); ap.add_argument('--bericht'); ap.add_argument('--apply', action='store_true')
@@ -63,6 +102,20 @@ def main():
     prices, new, open_, skipped, notes, seen = [], [], [], [], [], set()
     for r in geo['rows']:
         gk = FORM[r['form']]; w, h = float(r['widthMm']), float(r['heightMm'])
+        if gk in CONTOUR:
+            size = contour_size(r, fam)
+            hit = by_geom.get((gk, w, h))
+            if hit is not None:
+                if hit != size: raise ValueError(f'{size["key"]}: vorhandene Konturgröße weicht von der Quelle ab – prüfen')
+                seen.add(hit['key']); continue
+            if gk not in groups:
+                fam['groups'].append({'key': gk, 'name': r['form'], 'shape': 'contour', 'cornerRadiusMm': 0})
+                groups.add(gk)
+            src = 'chris' if size['baseCents'] is not None else 'offen'
+            new.append((size['key'], r['id'], size['baseCents'], src, r['sourceNote']))
+            if size['baseCents'] is None: open_.append(f'{size["key"]}: Grundpreis offen – Vorschlag aus der Serie nicht übernommen')
+            if a.apply: fam['sizes'].append(size)
+            continue
         hit = None
         for x in (['OV', 'EL'] if gk == 'OV' else [gk]):
             hit = by_geom.get((x, w, h)) or hit
@@ -82,9 +135,6 @@ def main():
                     if a.apply: hit['baseCents'] = r['baseCents']
             if hit.get('netWeightG') != r.get('weightG') and r.get('weightG') is not None:
                 notes.append(f'{hit["key"]}: Gewicht Familie {hit.get("netWeightG")} g, Serie {r["weightG"]} g – unverändert')
-            continue
-        if gk in CONTOUR:
-            skipped.append(f'{r["id"]} ({r["form"]}, {label_cm(w, h)}, {r["baseCents"]} ct, {price_source(r["sourceNote"])}): freie Kontur – Familienschema v2 kennt nur rect/ellipse/plaque')
             continue
         if gk not in groups:
             if gk == 'R':
@@ -122,12 +172,14 @@ def main():
     if notes: rep += ['', '## Hinweise', ''] + [f'- {x}' for x in notes]
     if unmatched: rep += ['', '## Familie ohne Serienzeile (unverändert)', ''] + [f'- {k}' for k in unmatched]
     text = '\n'.join(rep) + '\n'
-    if a.bericht: Path(a.bericht).write_text(text, encoding='utf-8')
+    if a.bericht: Path(a.bericht).write_text(text, encoding='utf-8', newline='\n')
     print(text if not a.bericht else rep[3])
     if a.apply:
         src = fam.setdefault('source', {})  # erlaubt nur repository/commit/path/sha256/note/shopVariants (validateFamily)
-        src['note'] = (src.get('note') or '') + f' · Serie 2027 (23.10.2026): Grundpreise aus der Excel von Chris (21.10.) übernommen, Rund (R) neu; Quelle zeichnungen/edelstahl-schilder-2027/geometrie.json (Excel-SHA {geo["excelSha256"][:12]}…, Zeichnung-SHA {geo["drawingSha256"][:12]}…); Retro 1/2 offen (Kontur im Schema v2 nicht abbildbar). Bericht familien/edelstahl/quellen/edelstahl-serie-2027-abgleich.md'
-        fam_file.write_text(json.dumps(fam, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+        marker = 'Retro 1/2 als Kontur (23.10.2026)'
+        if marker not in (src.get('note') or ''):
+            src['note'] = (src.get('note') or '') + f' · {marker}: outlinePath und holesMm unverändert aus zeichnungen/edelstahl-schilder-2027/geometrie.json (Zeichnung-SHA {geo["drawingSha256"][:12]}…); 90×60 jeweils 1499 ct, übrige Retro-Preise offen. Befestigungsaufpreise aus bestehenden Familienregeln; Konfiguratoranschluss offen (Paket B).'
+        fam_file.write_text(json.dumps(fam, ensure_ascii=False, indent=1) + '\n', encoding='utf-8', newline='\n')
         print(f'{fam_file} geschrieben.')
 
 

@@ -8,12 +8,12 @@ Plattenkatalog-PDF plus PNG der ersten Zeichnungsseite in kataloge/ – damit di
 
     python scripts/build-katalog.py --katalog ../gravuru-katalog
 """
-import argparse, json, math, subprocess, sys
+import argparse, html, json, math, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MAT = {'steel': 'Edelstahl', 'slate': 'Schiefer', 'acrylic': 'Acrylglas', 'aluminium-composite': 'Alu-Dibond'}
-SHAPE = {'rect': 'Rechteck', 'ellipse': 'Oval', 'plaque': 'eingezogene Ecken'}
+SHAPE = {'rect': 'Rechteck', 'ellipse': 'Oval', 'plaque': 'eingezogene Ecken', 'contour': 'Kontur'}
 LAYOUT = {'left-right': 'seitlich mittig', 'top-bottom': 'oben/unten', 'corners': 'in den Ecken', 'top-center': 'oben mittig', 'none': 'ohne Löcher'}
 
 
@@ -43,13 +43,28 @@ def gaps_of(path):
     try:
         r = subprocess.run(['node', '--input-type=module', '-e',
                             "import fs from 'node:fs';import {validateFamily,familyGaps} from './app/workshop/product-families.mjs';const f=JSON.parse(fs.readFileSync(process.argv[1]));validateFamily(f);console.log(JSON.stringify(familyGaps(f)));",
-                            str(path)], cwd=ROOT, capture_output=True, text=True, timeout=60)
+                            str(path)], cwd=ROOT, capture_output=True, text=True, encoding='utf-8', timeout=60)
         if r.returncode != 0:
             INVALID.append(f'{path}: ' + (r.stderr.strip().splitlines()[-1][:200] if r.stderr.strip() else 'Prüfung fehlgeschlagen'))
             return ['Prüfung fehlgeschlagen: ' + (r.stderr.strip().splitlines()[-1][:120] if r.stderr.strip() else '')]
         return json.loads(r.stdout)
     except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError, IndexError):
         return []
+
+
+def contour_previews(f, out_dir):
+    """Show the stored millimetre path and fixed holes, without a rectangular substitute."""
+    contours = {g['key'] for g in f['groups'] if g['shape'] == 'contour'}
+    if not contours: return
+    target = out_dir / 'konturen'
+    target.mkdir(parents=True, exist_ok=True)
+    for s in f['sizes']:
+        if s['groupKey'] not in contours: continue
+        w, h = s['widthMm'], s['heightMm']
+        path = html.escape(s['outlinePath'], quote=True)
+        circles = ''.join(f'<circle cx="{hole["x"]}" cy="{hole["y"]}" r="{hole["diameterMm"]/2}" fill="white" stroke="#c33" stroke-width="0.3"/>' for hole in s['holesMm'])
+        svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}mm" height="{h}mm" viewBox="-0.5 -0.5 {w+1} {h+1}"><title>{html.escape(s["key"])}</title><path d="{path}" fill="#63686b" stroke="#c33" stroke-width="0.3"/>{circles}</svg>\n'
+        (target / f'{s["key"]}.svg').write_text(svg, encoding='utf-8', newline='\n')
 
 
 def family_section(f, path, kat, pdf_ok):
@@ -74,9 +89,18 @@ def family_section(f, path, kat, pdf_ok):
             g = groups[gk]; label = g['name'] + (f" R{g['cornerRadiusMm']:g}" if g['cornerRadiusMm'] and not g['name'].endswith(f"R{g['cornerRadiusMm']:g}") else '')
             cells = ', '.join(f"{s['label']}" + (f" R{s['cornerRadiusMm']:g}" if s.get('cornerRadiusMm') else '') + f" (`{s['key']}` · {euro(s['baseCents'])})" for s in ss)
             lines.append(f"| {ratio(ss[0]['widthMm'], ss[0]['heightMm'])} | {label} | {cells} |")
+    contour_sizes = [s for s in f['sizes'] if groups[s['groupKey']]['shape'] == 'contour']
+    if contour_sizes:
+        lines += ['', '#### Konturformen aus der Zeichnung', '', 'Pfad und feste Lochmitten in mm aus der Familie; Bohrungen gelten für die gebohrten Befestigungen. Konfiguratoranschluss noch offen (Paket B).', '', '| Größe | Kontur | Feste Lochmitten (x / y / Ø mm) |', '| --- | --- | --- |']
+        for s in contour_sizes:
+            holes = '; '.join(f'{h["x"]:g} / {h["y"]:g} / {h["diameterMm"]:g}' for h in s['holesMm'])
+            lines.append(f'| {s["key"]} | ![{s["label"]}](kataloge/konturen/{s["key"]}.svg) | {holes} |')
     lines += ['', '| Bohrbild | Lage | Löcher | Ø | Randabstand | Zubehör | Aufpreis |', '| --- | --- | --- | --- | --- | --- | --- |']
     for r in f['mountingRules']:
-        lines.append(f"| {r['label']} (`{r['id']}`) | {LAYOUT.get(r['layout'], r['layout'])} | {r['count']} | {r['diameterMm'] if r['diameterMm'] is not None else 'offen'} | {r['edgeMm'] if r['edgeMm'] is not None else 'offen'} | {r.get('accessory', '–')} | {euro(r['priceCents'])} |")
+        usages = [s for s in f['sizes'] if r['id'] in s['mounting']]
+        fixed = bool(usages) and all(groups[s['groupKey']]['shape'] == 'contour' for s in usages) and r['layout'] != 'none'
+        edge_label = 'feste Lochmitten je Größe' if fixed else r['edgeMm'] if r['edgeMm'] is not None else 'offen'
+        lines.append(f"| {r['label']} (`{r['id']}`) | {LAYOUT.get(r['layout'], r['layout'])} | {r['count']} | {r['diameterMm'] if r['diameterMm'] is not None else 'offen'} | {edge_label} | {r.get('accessory', '–')} | {euro(r['priceCents'])} |")
     if f.get('options'):
         lines += ['', '| Optionsgruppe | Art | Auswahl | Option | SKU-Endung | Aufpreis |', '| --- | --- | --- | --- | --- | --- |']
         for g in f['options']:
@@ -137,6 +161,7 @@ def main():
     sections = []
     for p, f in families:
         gaps = gaps_of(p)
+        if not any(str(p) + ':' in issue for issue in INVALID): contour_previews(f, out_dir)
         md.append(f"| {MAT.get(f['material']['kind'], f['material']['kind'])} | [{f['name']}](#{f['id']}) | {len(f['sizes'])} | {', '.join(dict.fromkeys(g['name'] for g in f['groups']))} | {len(f['mountingRules'])} | {'hinterlegt' if all(s['baseCents'] is not None for s in f['sizes']) else 'offen'} | {'vollständig' if not gaps else str(len(gaps)) + ' offen'} |")
         pdf = out_dir / f"{f['id']}.pdf"; pdf_ok = False
         try:
@@ -155,7 +180,7 @@ def main():
         md.append(f'\nStammdaten-Excel (alle Familien): [kataloge/Stammdaten-Gravuru.xlsx](kataloge/Stammdaten-Gravuru.xlsx)')
     except Exception as e:
         print('Excel nicht erzeugt:', str(e)[:100])
-    (kat / 'KATALOG.md').write_text('\n'.join(md) + '\n', encoding='utf-8')
+    (kat / 'KATALOG.md').write_text('\n'.join(md) + '\n', encoding='utf-8', newline='\n')
     print(f'{len(families)} Familien → {kat / "KATALOG.md"}')
     if INVALID:
         print('UNGÜLTIG (nicht committen):\n  ' + '\n  '.join(INVALID), file=sys.stderr); sys.exit(1)

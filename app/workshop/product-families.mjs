@@ -3,6 +3,7 @@ import {tenantOption,TENANT_COLUMN} from './tenant.mjs';
 import {createHash} from 'node:crypto';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
+import {validateContourOutline} from './contour-path.mjs';
 import {holesFor,validateMountingRule,keepoutZones,MOUNTING_LAYOUTS} from '../platform/sources/app/shared/models/mounting-rules.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc} from '../platform/sources/app/shared/models/design-content.mjs';
@@ -41,7 +42,7 @@ const mm=(v,min,max)=>Number.isFinite(v)&&v>=min&&v<=max;
 const sha=v=>createHash('sha256').update(v).digest('hex');
 const only=(o,keys,label)=>{if(!o||typeof o!=='object'||Array.isArray(o))invalid(label+' fehlt.');const extra=Object.keys(o).filter(k=>!keys.includes(k));if(extra.length)invalid(label+': unbekannte Felder '+extra.join(', '));};
 const unique=(list,key,label)=>{const seen=new Set();for(const v of list){if(seen.has(v[key]))invalid(label+' doppelt: '+v[key]);seen.add(v[key]);}};
-const SHAPES=['rect','ellipse','plaque'];// plaque = eingezogene Ecken (konkave Viertelkreise)
+const SHAPES=['rect','ellipse','plaque','contour'];// plaque = eingezogene Ecken (konkave Viertelkreise)
 const CORNERED=['rect','plaque'];
 const open=v=>v===null;
 // A drill rule with diameter and edge distance; null = Bohrbild noch offen.
@@ -49,6 +50,11 @@ const open=v=>v===null;
 // mit accessory 'screws' bohrt wie ihr Bohrbild und legt Schrauben bei.
 export const holeless=r=>r.layout==='none';
 export const ruleComplete=r=>holeless(r)||(!open(r.diameterMm)&&!open(r.edgeMm));
+// Fixed drawing holes replace edge rules only for rules used exclusively by contour sizes.
+const contourSize=(f,s)=>f.groups?.find(g=>g.key===s.groupKey)?.shape==='contour';
+const fixedContourRule=(f,r)=>{const sizes=Array.isArray(f.sizes)?f.sizes.filter(s=>s.mounting?.includes(r.id)):[];return sizes.length>0&&sizes.every(s=>contourSize(f,s));};
+const familyRuleComplete=(f,r)=>ruleComplete(r)||fixedContourRule(f,r);
+const familyHoles=(f,s,r)=>contourSize(f,s)?s.holesMm.map(h=>({x:h.x,y:h.y,diameter:h.diameterMm})):holesFor(geometryOf(f,s),r);
 export const ACCESSORIES=Object.freeze({screws:'Schrauben',standoffs:'Abstandshalter'});
 export const ENGRAVING_SIDES=['front','back'];
 // K10 / Ü1.1: Verfahrensprofil der Familie (material.processingProfileId, null = offen)
@@ -108,21 +114,30 @@ export function validateFamily(f){
  for(const r of f.mountingRules){only(r,['id','label','layout','count','diameterMm','edgeMm','priceCents','skuSuffix','accessory'],'Bohrbild-Regel');
   if(r.accessory!==undefined&&!ACCESSORIES[r.accessory])invalid(r.id+': unbekanntes Zubehör.');
   if(holeless(r)){if(r.count!==0||r.diameterMm!==null||r.edgeMm!==null)invalid(r.id+': Befestigung ohne Löcher hat Anzahl 0 und keine Lochmaße.');}if(!id(r.id)||!text(r.label,100)||!(open(r.priceCents)||cents(r.priceCents))||!/^[A-Z0-9]{1,8}$/.test(r.skuSuffix||''))invalid('Bohrbild-Regel '+(r.id||'')+' unvollständig.');
-  if(open(r.diameterMm)!==open(r.edgeMm))invalid(r.id+': Durchmesser und Randabstand gemeinsam angeben oder beide offen lassen.');
-  if(!holeless(r))try{validateMountingRule(ruleComplete(r)?r:{...r,diameterMm:4,edgeMm:4});}catch(e){invalid(r.id+': '+e.message);}}
+  if(open(r.diameterMm)!==open(r.edgeMm)&&!(fixedContourRule(f,r)&&open(r.edgeMm)&&mm(r.diameterMm,0.1,100)))invalid(r.id+': Durchmesser und Randabstand gemeinsam angeben oder beide offen lassen.');
+  if(!holeless(r)){if(fixedContourRule(f,r)&&open(r.edgeMm)){if(!MOUNTING_LAYOUTS[r.layout]||MOUNTING_LAYOUTS[r.layout].count!==r.count||!(open(r.diameterMm)||mm(r.diameterMm,1,12)))invalid(r.id+': ungültige feste Bohrbild-Regel.');}
+   else try{validateMountingRule(ruleComplete(r)?r:{...r,diameterMm:4,edgeMm:4});}catch(e){invalid(r.id+': '+e.message);}}}
  unique(f.mountingRules,'id','Bohrbild-Regel');
  if(typeof f.withoutMounting!=='boolean')invalid('Angeben, ob „Ohne Bohrung“ angeboten wird.');
  if(!Array.isArray(f.sizes)||!f.sizes.length||f.sizes.length>500)invalid('1 bis 500 Größen angeben.');
  const groups=new Map(f.groups.map(g=>[g.key,g])),rules=new Map(f.mountingRules.map(r=>[r.id,r]));
  for(const s of f.sizes){
-  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm','quantityTiers'],'Größe');
+  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm','quantityTiers','outlinePath','holesMm'],'Größe');
   tierIssue(s.quantityTiers,'Größe '+(s.key||''));
   if(s.cornerRadiusMm!==undefined&&(!mm(s.cornerRadiusMm,0,100)||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': eigener Eckenradius nur bei eckiger Form.');
   if(s.backingCornerRadiusMm!==undefined&&(!mm(s.backingCornerRadiusMm,0,100)||!f.backing||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': Eckenradius der Rückplatte nur mit Rückplatte und eckiger Form.');
   if(!id(s.key)||!groups.has(s.groupKey)||!text(s.label,60)||!mm(s.widthMm,10,1000)||!mm(s.heightMm,10,1000)||!(open(s.baseCents)||cents(s.baseCents))||!Array.isArray(s.mounting)||s.mounting.length>8||s.mounting.some(m=>!rules.has(m))||new Set(s.mounting).size!==s.mounting.length)invalid('Größe '+(s.key||'')+' unvollständig.');
+  if(contourSize(f,s)){
+   if(groups.get(s.groupKey).cornerRadiusMm!==0)invalid(s.key+': Kontur hat keinen zusätzlichen Eckenradius.');
+   try{validateContourOutline(s.outlinePath,s.widthMm,s.heightMm);}catch(e){invalid(s.key+': '+e.message);}
+   if(!Array.isArray(s.holesMm)||s.holesMm.length>64)invalid(s.key+': feste Bohrlöcher als holesMm angeben (höchstens 64).');
+   for(const h of s.holesMm){only(h,['x','y','diameterMm'],'Festes Bohrloch');if(!Number.isFinite(h.x)||!Number.isFinite(h.y)||!mm(h.diameterMm,.1,100)||h.x-h.diameterMm/2<0||h.y-h.diameterMm/2<0||h.x+h.diameterMm/2>s.widthMm||h.y+h.diameterMm/2>s.heightMm)invalid(s.key+': festes Bohrloch liegt außerhalb der Plattenmaße oder hat ungültige Maße.');}
+   if(new Set(s.holesMm.map(h=>h.x+'|'+h.y)).size!==s.holesMm.length)invalid(s.key+': festes Bohrloch doppelt.');
+   for(const rid of s.mounting){const r=rules.get(rid);if(!holeless(r)&&(r.count!==s.holesMm.length||r.diameterMm!==null&&s.holesMm.some(h=>Math.abs(h.diameterMm-r.diameterMm)>1e-9)))invalid(s.key+' · '+rid+': feste Bohrlöcher stimmen nicht mit Anzahl/Durchmesser der Befestigung überein.');}
+  }else if(s.outlinePath!==undefined||s.holesMm!==undefined)invalid(s.key+': outlinePath und holesMm sind nur bei Form „Kontur“ zulässig.');
   if(s.netWeightG!==undefined&&!mm(s.netWeightG,0,100000))invalid('Gewicht von '+s.key+' prüfen.');
   if(!f.withoutMounting&&!s.mounting.length)invalid(s.key+': mindestens eine Befestigung nötig.');
-  for(const m of s.mounting){if(holeless(rules.get(m))||!ruleComplete(rules.get(m)))continue;try{holesFor(geometryOf(f,s),rules.get(m));}catch(e){invalid(s.key+' · '+m+': '+e.message);}}
+  for(const m of s.mounting){if(contourSize(f,s)||holeless(rules.get(m))||!ruleComplete(rules.get(m)))continue;try{holesFor(geometryOf(f,s),rules.get(m));}catch(e){invalid(s.key+' · '+m+': '+e.message);}}
  }
  unique(f.sizes,'key','Größe');
  if(!Array.isArray(f.fonts)||!f.fonts.length||f.fonts.length>150||f.fonts.some(v=>!text(v,80)))invalid('Zugelassene Schriften angeben.');
@@ -168,11 +183,12 @@ export function familyGaps(f){
  if(open(f.material.processingProfileId))gaps.push('Verfahrensprofil');
  if(open(f.material.thicknessMm))gaps.push('Materialstärke');
  if(open(f.designArea.marginMm))gaps.push('Gestaltungsrand');
- for(const r of f.mountingRules){if(!ruleComplete(r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
+ for(const r of f.mountingRules){if(!familyRuleComplete(f,r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
  if(f.photo&&open(f.photo.extraPriceCents))gaps.push('Aufpreis weiteres Foto');
  const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
  for(const g of f.options||[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
+ if(f.groups.some(g=>g.shape==='contour'))gaps.push('Form „Kontur“ im Konfigurator noch nicht angeschlossen');
  if(f.groups.some(g=>g.shape==='plaque'))gaps.push('Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)');
  return gaps;
 }
@@ -182,7 +198,7 @@ export function familyReady(f){
  if(m.adapter==='steel'&&f.material.thicknessMm!==null&&f.material.thicknessMm!==1.5)return {ready:false,gaps,reason:'Das Edelstahl-Produktmodell ist für 1,5 mm freigegeben.'};
  return gaps.length?{ready:false,gaps,reason:'Stammdaten unvollständig: '+gaps.join(' · ')}:{ready:true,gaps:[]};
 }
-export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm,...(s.backingCornerRadiusMm!==undefined?{backingCornerRadiusMm:s.backingCornerRadiusMm}:{})};}
+export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm,...(g.shape==='contour'?{outlinePath:s.outlinePath,holesMm:s.holesMm.map(h=>({...h}))}:{}),...(s.backingCornerRadiusMm!==undefined?{backingCornerRadiusMm:s.backingCornerRadiusMm}:{})};}
 // Corner radius of an offset contour: a rounded corner grows outward, a concave corner shrinks.
 const offsetRadius=(g,d)=>g.shape==='plaque'?Math.max(0,g.cornerRadiusMm-d):g.cornerRadiusMm?Math.max(0,g.cornerRadiusMm+d):0;
 const ruleOf=(f,rid)=>f.mountingRules.find(r=>r.id===rid);
@@ -196,7 +212,7 @@ export function familyProductConfig(f,s,revision){
  const font=f.fonts.find(x=>resources.fonts[x])||'Montserrat';
  const values=[];
  if(f.withoutMounting)values.push({id:'K00',label:'Ohne Bohrung',priceCents:0,currency:'EUR',holes:[]});
- for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:holesFor(g,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,edgeMm:r.edgeMm,keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})}});}
+ for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:familyHoles(f,s,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,edgeMm:r.edgeMm,keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})}});}
  if(new Set(values.map(v=>v.id)).size!==values.length)invalid(s.key+': zwei Befestigungen mit gleicher SKU-Endung.');
  const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(g.height*.22,14),x:g.width/2,y:g.height/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
  measureText(text,resources.fonts);if(text.w>g.width*.6){text.size*=g.width*.6/text.w;measureText(text,resources.fonts);}
@@ -239,16 +255,16 @@ export function familyOptionFields(f,s){
 // per mounting option. A drawing aid, never production geometry.
 export function familyTemplate(f,s){
  const g=geometryOf(f,s),c=nativeContour({...g,holes:[]}),m=f.designArea.marginMm||0,k=f.designArea.keepoutMm,w=g.width,h=g.height;
- const inner=m>0?`<g id="nutzflaeche"><path d="${nativeContour({width:w-2*m,height:h-2*m,shape:g.shape,cornerRadiusMm:offsetRadius(g,-m),holes:[]}).contours[0].d}" transform="translate(${m} ${m})" fill="none" stroke="#2a7" stroke-width="0.2" stroke-dasharray="1 1"/></g>`:'';
+ const inner=g.shape==='contour'?(m>0?'<g id="nutzflaeche" data-status="offen"><desc>Innenversatz der Kontur folgt mit dem Konfigurator-Anschluss; kein maßhaltiger Gestaltungsrand dargestellt.</desc></g>':''):m>0?`<g id="nutzflaeche"><path d="${nativeContour({width:w-2*m,height:h-2*m,shape:g.shape,cornerRadiusMm:offsetRadius(g,-m),holes:[]}).contours[0].d}" transform="translate(${m} ${m})" fill="none" stroke="#2a7" stroke-width="0.2" stroke-dasharray="1 1"/></g>`:'';
  const b=f.backing?.offsetMm||0,vb=`${-b} ${-b} ${w+2*b} ${h+2*b}`;
- const backing=b?`<g id="rueckplatte" data-label="${esc(f.backing.label)}"><path d="${nativeContour({width:w+2*b,height:h+2*b,shape:g.shape,cornerRadiusMm:g.backingCornerRadiusMm??offsetRadius(g,b),holes:[]}).contours[0].d}" transform="translate(${-b} ${-b})" fill="none" stroke="#06c" stroke-width="0.3" stroke-dasharray="2 1"/></g>`:'';
- const patterns=s.mounting.filter(rid=>!holeless(ruleOf(f,rid))).map(rid=>{const r=ruleOf(f,rid);if(!ruleComplete(r))return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)} – Bohrbild offen"/>`;const holes=holesFor(g,r);return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)}">${holes.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="${p.diameter/2}" fill="#d33"/>`).join('')}${keepoutZones(holes,k).map(z=>`<circle cx="${z.x}" cy="${z.y}" r="${z.r}" fill="none" stroke="#d33" stroke-width="0.2" stroke-dasharray="0.6 0.6"/>`).join('')}</g>`;}).join('');
+ const backing=b&&g.shape==='contour'?'<g id="rueckplatte" data-status="offen"><desc>Rückplattenversatz der Kontur ist noch offen.</desc></g>':b?`<g id="rueckplatte" data-label="${esc(f.backing.label)}"><path d="${nativeContour({width:w+2*b,height:h+2*b,shape:g.shape,cornerRadiusMm:g.backingCornerRadiusMm??offsetRadius(g,b),holes:[]}).contours[0].d}" transform="translate(${-b} ${-b})" fill="none" stroke="#06c" stroke-width="0.3" stroke-dasharray="2 1"/></g>`:'';
+ const patterns=s.mounting.filter(rid=>!holeless(ruleOf(f,rid))).map(rid=>{const r=ruleOf(f,rid);if(!familyRuleComplete(f,r))return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)} – Bohrbild offen"/>`;const holes=familyHoles(f,s,r);return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)}">${holes.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="${p.diameter/2}" fill="#d33"/>`).join('')}${keepoutZones(holes,k).map(z=>`<circle cx="${z.x}" cy="${z.y}" r="${z.r}" fill="none" stroke="#d33" stroke-width="0.2" stroke-dasharray="0.6 0.6"/>`).join('')}</g>`;}).join('');
  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w+2*b}mm" height="${h+2*b}mm" viewBox="${vb}"><title>${esc(f.name)} · ${esc(s.label)} · Gestaltungsschablone (nicht drucken)</title>${backing}<g id="kontur"><path d="${c.contours[0].d}" fill="none" stroke="#000" stroke-width="0.3"/></g>${inner}${patterns}</svg>`;
 }
 
 export function familyBriefing(f,revision){
  const price=c=>c===null?'offen':(c/100).toFixed(2).replace('.',',')+' €',mat=FAMILY_MATERIALS[f.material.kind],gaps=familyGaps(f),process=familyProcess(f);
- const rows=f.sizes.map(s=>{const g=f.groups.find(x=>x.key===s.groupKey);const rad=geometryOf(f,s).cornerRadiusMm;return `| ${s.key} | ${g.name} | ${s.label} (${s.widthMm} × ${s.heightMm} mm${rad?(g.shape==='plaque'?', eingezogene Ecken R':', Ecken R')+rad:''}) | ${price(s.baseCents)} | ${s.mounting.map(id=>{const r=ruleOf(f,id);return r.label+' · '+(holeless(r)?'ohne Löcher':ruleComplete(r)?r.edgeMm+' mm Randabstand':'Bohrbild offen');}).join('; ')||'ohne'} | schablonen/${s.key}.svg |`;}).join('\n');
+ const rows=f.sizes.map(s=>{const g=f.groups.find(x=>x.key===s.groupKey);const rad=geometryOf(f,s).cornerRadiusMm;return `| ${s.key} | ${g.name} | ${s.label} (${s.widthMm} × ${s.heightMm} mm${rad?(g.shape==='plaque'?', eingezogene Ecken R':', Ecken R')+rad:''}) | ${price(s.baseCents)} | ${s.mounting.map(id=>{const r=ruleOf(f,id);return r.label+' · '+(holeless(r)?'ohne Löcher':contourSize(f,s)?'feste Lochpositionen aus Zeichnung':ruleComplete(r)?r.edgeMm+' mm Randabstand':'Bohrbild offen');}).join('; ')||'ohne'} | schablonen/${s.key}.svg |`;}).join('\n');
  return `# ${f.name} – Briefing für die Designerstellung
 
 Familienrevision ${revision}. Automatisch aus der Werkstatt erzeugt; nicht von Hand ändern, sondern in der Werkstatt pflegen und neu herunterladen.
@@ -259,7 +275,7 @@ Nur das **Design**: Texte, Motive, Foto. Form, Größe, Material, Bohrlöcher, B
 
 - Material: ${f.material.label}, ${f.material.thicknessMm===null?'Stärke offen':String(f.material.thicknessMm).replace('.',',')+' mm'}, Verfahren ${process?process.method==='print'?'UV-Druck':'Gravur':'offen'}${process?` (Profil „${process.id}“)`:''}. ${process?.method==='print'?'Farben aus der Profilpalette; die Werkstatt stellt den Druck dar.':mat.ink+' Gestaltet wird immer schwarz auf weiß; die Werkstatt stellt die Gravur je Material dar.'} Keine Graustufenflächen in Motiven.
 - Verfahrensregeln: Mindestschriftgröße ${process?String(process.minTextMm).replace('.',',')+' mm':'offen'}, Mindestlinienstärke ${process?.minStrokeMm!=null?String(process.minStrokeMm).replace('.',',')+' mm':'offen'}, Fotos ${process?(process.tools.photo?'möglich':'nicht vorgesehen'):'offen'}${process?.targetDpi?' (Soll '+process.targetDpi+' dpi)':''}, Spiegelung für die Fertigung: ${process?(process.mirror?'ja (Werkstatt spiegelt)':'nein'):'offen'}.
-${hasBack(f)?'- **Rückseite:** eigene Fläche, seitenrichtig gestalten; Bohrlöcher erscheinen von hinten gespiegelt. Die Werkstatt erzeugt je Seite eine eigene Produktionsdatei. Lieferform für Rückseiten-Designs ist im Katalog noch offen.\n':''}- Randabstand der Gestaltung: ${f.designArea.marginMm===null?'offen (bis zur Klärung mindestens 10 mm frei lassen)':f.designArea.marginMm+' mm'}.${f.material.engravingSide==='back'?' Gravur von der Rückseite (die Werkstatt spiegelt für die Fertigung; gestaltet wird seitenrichtig).':''}${f.backing?` Rückplatte „${f.backing.label}“ rundum ${f.backing.offsetMm} mm größer; sie ist in der Schablone gestrichelt blau eingezeichnet und wird nicht gestaltet.`:''} Schutzzone um Bohrlöcher: ${f.designArea.keepoutMm} mm um den Lochrand.
+${hasBack(f)?'- **Rückseite:** eigene Fläche, seitenrichtig gestalten; Bohrlöcher erscheinen von hinten gespiegelt. Die Werkstatt erzeugt je Seite eine eigene Produktionsdatei. Lieferform für Rückseiten-Designs ist im Katalog noch offen.\n':''}- Randabstand der Gestaltung: ${f.designArea.marginMm===null?'offen (bis zur Klärung mindestens 10 mm frei lassen)':f.designArea.marginMm+' mm'}.${f.material.engravingSide==='back'?' Gravur von der Rückseite (die Werkstatt spiegelt für die Fertigung; gestaltet wird seitenrichtig).':''}${f.backing?` Rückplatte „${f.backing.label}“ rundum ${f.backing.offsetMm} mm größer; ${f.groups.some(g=>g.shape==='contour')?'bei Konturformen ist der Rückplattenversatz noch offen (nicht dargestellt); andere Formen sind gestrichelt blau eingezeichnet. Die Rückplatte wird nicht gestaltet.':'sie ist in der Schablone gestrichelt blau eingezeichnet und wird nicht gestaltet.'}`:''} Schutzzone um Bohrlöcher: ${f.designArea.keepoutMm} mm um den Lochrand.
 - **Texte** nicht in die Schutzzonen legen (sonst sieht der Kunde einen Hinweis). **Motive dürfen über Bohrlöcher** gehen.
 - Zugelassene Schriften (exakt diese Namen verwenden): siehe \`schriften.txt\`.
 

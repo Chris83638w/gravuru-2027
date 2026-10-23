@@ -39,6 +39,28 @@ def load_sheets(katalog, series_prefix):
     return sheets
 
 
+def resolve_contour_sheets(katalog, sheets, family_sizes):
+    """Resolve previously open Retro sheets only against the authoritative drawing and family."""
+    source = katalog / 'zeichnungen/edelstahl-schilder-2027/geometrie.json'
+    if not source.exists(): return {}
+    resolved = {}
+    for row in json.loads(source.read_text(encoding='utf-8'))['rows']:
+        if row.get('kind') not in ('retro1', 'retro2'): continue
+        # Drawing SKU TRT1/TRT2 and historical sheet SKU TR1/TR2 are explicit source conventions.
+        base = re.sub(r'^TRT([12])-', r'TR\1-', row['id'])
+        if base not in sheets or sheets[base][1] is not None: continue
+        group = 'RT1' if row['kind'] == 'retro1' else 'RT2'
+        matching = [size for size in family_sizes.values()
+                    if size['groupKey'] == group and size['widthMm'] == row['widthMm']
+                    and size['heightMm'] == row['heightMm']
+                    and size.get('outlinePath') == row.get('outline')
+                    and size.get('holesMm') == [{'x': h['x'], 'y': h['y'], 'diameterMm': h['diameter']} for h in row['holes']]]
+        if len(matching) == 1:
+            resolved[base] = matching[0]['key']
+            sheets[base] = (sheets[base][0], matching[0]['key'])
+    return resolved
+
+
 def series_prefix(katalog, series):
     idx = json.loads((katalog / 'designs' / series / 'index.json').read_text(encoding='utf-8'))
     return re.sub(r'-D\d+$', '', idx[0]['key'])
@@ -63,6 +85,7 @@ def main():
     ap.add_argument('--sku-praefix', default='', help='Teilstring, den „Hauptdesign Artikelnummer“ enthalten muss (z. B. V2A)')
     ap.add_argument('--reihen', default='edelstahl-gravur-', help='Präfix der Design-Reihenordner')
     ap.add_argument('--extra-bogen', action='append', default=[], help='Bogen=Reihe=Größe für Reihen ohne Bogentabelle (z. B. TRE-V2A-7x2=edelstahl-gravur-70x23=GR-ES-RE-70X23P3-T15)')
+    ap.add_argument('--customization-id', action='append', default=[], help='Nur diese CSV-Kennung(en), mehrfach möglich')
     ap.add_argument('--shop'); ap.add_argument('--bericht'); ap.add_argument('--apply', action='store_true')
     a = ap.parse_args()
     katalog = Path(a.katalog)
@@ -76,10 +99,11 @@ def main():
             for s in d['sizes']: family_sizes[s['key']] = s
     csv_path = Path(a.csv) if Path(a.csv).is_absolute() else katalog / a.csv
     rows = [r for r in csv.DictReader(csv_path.open(encoding='utf-8-sig'), delimiter=';')
-            if r.get('CustomizationID') and a.pfad in (r.get('CDR Pfad') or '') and a.sku_praefix in (r.get('Hauptdesign Artikelnummer') or '')]
+            if r.get('CustomizationID') and (not a.customization_id or r['CustomizationID'].strip() in a.customization_id) and a.pfad in (r.get('CDR Pfad') or '') and a.sku_praefix in (r.get('Hauptdesign Artikelnummer') or '')]
     sheets = load_sheets(katalog, a.reihen)
     for x in a.extra_bogen:
         b, s, k = x.split('='); sheets.setdefault(b, (s, k or None))
+    resolved_contours = resolve_contour_sheets(katalog, sheets, family_sizes)
     shop = load_shop(a.shop)
     existing = {m['id'] for s in line['subcategories'] for m in (s.get('mainProducts') or [])}
     added, kept, offen, warn = [], [], [], []
@@ -98,13 +122,15 @@ def main():
         d = json.loads(dj.read_text(encoding='utf-8'))
         if key is None: offen.append((cid, sku, f'Bogen {base}: Größe fehlt in der Familie (Reihe {series})')); continue
         if key not in family_sizes: offen.append((cid, sku, f'Größe {key} nicht in den Familien der Linie')); continue
-        if isinstance(d.get('sizes'), list) and key not in d['sizes']: offen.append((cid, sku, f'{did}: Größe {key} auf dem Bogen nicht wählbar (nicht grün)')); continue
+        resolved_open = resolved_contours.get(base) == key and base in (d.get('sizesOpen') or [])
+        if isinstance(d.get('sizes'), list) and key not in d['sizes'] and not resolved_open: offen.append((cid, sku, f'{did}: Größe {key} auf dem Bogen nicht wählbar (nicht grün)')); continue
         themes = [t for t in (d.get('themes') or []) if t in subs]
         if not themes: offen.append((cid, sku, f'{did}: kein Thema, das einer Unterkategorie der Linie entspricht ({d.get("themes")})')); continue
         sub = subs[themes[0]]
         sz = family_sizes[key]
         s = shop.get(sku)
         notes = [f'Hauptdesign {sku} (Bogen {base}, Reihe {series}, Master {did})']
+        if resolved_open: notes.append('Bisher offene Konturgröße anhand Zeichnung und Familie zugeordnet; Designübertragung und Konfiguratoranschluss offen (Paket B)')
         if s:
             name = s['title']
             notes.append(f'Titel aus Shopify (Produkt {s["productId"]}, {s["status"]}, {s["variants"]} Variante(n), {s["price"]} €)')
@@ -112,7 +138,7 @@ def main():
         else:
             w, h = sz.get('widthMm'), sz.get('heightMm')
             name = f'{line["name"]} {w/10:g} × {h/10:g} cm – {d.get("name") or did}'
-            notes.append('kein Shopify-Produkt mit dieser SKU im Export – Name aus Katalog, prüfen')
+            notes.append('kein Shopify-Produkt mit dieser SKU im Export – Name aus Katalog, prüfen' if a.shop else 'kein Shopify-Export zum Abgleich angegeben – Name aus Katalog, externe Produkt-ID offen')
         if len(themes) > 1: notes.append('Themen laut Design: ' + ', '.join(d['themes']) + ' – Unterkategorie „' + sub['id'] + '“ gewählt, prüfen')
         if d.get('katalog', {}).get('themenVorschlag') or d.get('themesVorschlag'): notes.append('Themenvorschlag unsicher: ' + ', '.join(d.get('themesVorschlag') or d['katalog'].get('themenVorschlag')))
         if d.get('review'): notes.append('Design prüfen: ' + str(d['review']))
@@ -121,7 +147,7 @@ def main():
                  'status': '; '.join(notes) + ' (eingetragen 23.10.2026, katalog-hauptprodukte.py)'}
         sub.setdefault('mainProducts', [])
         if sub['mainProducts'] is None: sub['mainProducts'] = []
-        sub['mainProducts'].append(entry); added.append((cid, sku, sub['id'], did, key, name))
+        sub['mainProducts'].append(entry); existing.add(cid); added.append((cid, sku, sub['id'], did, key, name))
     rep = [f'# Hauptprodukte {line["name"]} · aus {csv_path.name}', '',
            f'{len(rows)} Zeilen, **{len(added)} eingetragen**, {len(kept)} schon vorhanden, {len(offen)} offen, {len(warn)} Warnungen. {"Geschrieben." if a.apply else "Dry-run – nichts geschrieben."}', '',
            '| CustomizationID | Hauptdesign | Unterkategorie | Startdesign | Größe | Name |', '| --- | --- | --- | --- | --- | --- |']
@@ -130,10 +156,10 @@ def main():
     if offen: rep += ['', '## Offen (nicht eingetragen)', ''] + [f'- {c} {s}: {why}' for c, s, why in offen]
     if warn: rep += ['', '## Warnungen', ''] + [f'- {c} {s}: {why}' for c, s, why in warn]
     text = '\n'.join(rep) + '\n'
-    if a.bericht: Path(a.bericht).write_text(text, encoding='utf-8')
+    if a.bericht: Path(a.bericht).write_text(text, encoding='utf-8', newline='\n')
     print(text if not a.bericht else rep[2])
     if a.apply:
-        line_file.write_text(json.dumps(line, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        line_file.write_text(json.dumps(line, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
         print(f'{line_file} geschrieben.')
 
 

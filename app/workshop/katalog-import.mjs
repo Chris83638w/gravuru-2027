@@ -106,6 +106,10 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
    const offered=(Array.isArray(effective.sizesOffered)?doc.sizes.filter(s=>effective.sizesOffered.includes(s.key)):doc.sizes).filter(s=>!only?.sizes||only.sizes.includes(s.key));
    for(const size of offered){
     const key=importKey(line.id,sub.id,size.key)+(main?':'+main.id:''),entry={key,sizeKey:size.key,label:size.label,...(main?{mainProduct:main.id,startDesign:main.startDesign}:{}),templates:[],fit:{passt:0,'prüfen':0,'passt nicht':0},excluded:[]};
+    // Kontur ist erst mit Paket B konfigurierbar; keine Vorlage ins Ersatzrechteck einpassen.
+    if(doc.groups.find(g=>g.key===size.groupKey)?.shape==='contour'){
+     entry.action='gesperrt';entry.reason='Kontur offen';report.counts.blocked++;report.counts.products++;subReport.products.push(entry);continue;
+    }
     const templates=[];
     for(const a of themed.filter(a=>a.sizes.includes(size.key))){
      const t=await templateFor(a);if(!t.ok)continue;

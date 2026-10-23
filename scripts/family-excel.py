@@ -19,7 +19,7 @@ from openpyxl.utils import get_column_letter
 ROOT = Path(__file__).resolve().parents[1]
 LAYOUTS = {'left-right': 'mittig links/rechts', 'top-bottom': 'mittig oben/unten', 'corners': 'vier Ecken', 'top-center': 'oben mittig', 'none': 'ohne Löcher'}
 LAYOUT_BY_TEXT = {v: k for k, v in LAYOUTS.items()}
-SHAPES = {'rect': 'eckig', 'ellipse': 'oval', 'plaque': 'eingezogene Ecken'}
+SHAPES = {'rect': 'eckig', 'ellipse': 'oval', 'plaque': 'eingezogene Ecken', 'contour': 'Kontur'}
 SHAPE_BY_TEXT = {v: k for k, v in SHAPES.items()}
 ACCESSORY = {'screws': 'Schrauben', 'standoffs': 'Abstandshalter'}
 OPTION_KIND = {'accessory': 'Zubehör', 'variant': 'Variante', 'text': 'Textfeld', 'date': 'Datum', 'select': 'Auswahlliste', 'checkbox': 'Ankreuzfeld'}; OPTION_KIND_BY_TEXT = {v: k for k, v in OPTION_KIND.items()}
@@ -118,9 +118,21 @@ def export(paths, out):
     sheet('Staffel', ['Familie', 'SKU', 'ab Stück', 'Rabatt %', 'Stückpreis €'], rows, [22, 26, 10, 10, 12])
     ws = wb.create_sheet('Lesen')
     for line in ['Leere Zelle = offen (noch nicht festgelegt). Nichts wird geraten.', 'Verfahrensprofil: exakte Kennung (' + ', '.join(PROCESS_IDS) + '); sie legt Werkzeuge, Palette, Mindestschriftgröße, Soll-dpi und Spiegelung fest. Leer = offen; dann zählt ersatzweise die Spalte Verfahren (Gravur je Material, Druck = color-print).', 'Blatt Optionen: optionales Zubehör und Varianten je Familie – Gruppe (z. B. Abstandshalter-Set), Art Zubehör/Variante, Auswahl eine/mehrere, je Option Aufpreis in €. Neue Zeilen = neue Optionen. Zusatzfelder ohne Vorschau: Art Textfeld/Datum/Auswahlliste/Ankreuzfeld (Auswahlliste: je Auswahl eine Zeile), Max. Zeichen nur bei Textfeldern; „Sichtbar wenn“ = „mounting: <Befestigungs-Kennung>, …“ oder „<Auswahlliste>: <Auswahl>“; „Aufpreis offen“ = ja, wenn der Aufpreis noch nicht feststeht. Preise je Linie (Unterkategorie) stehen in linien/<linie>.json des Katalogs.', 'Preise in Euro mit Komma, intern ganze Cent.', 'Blatt Staffel: Mengenstaffel je Familie (SKU leer) oder je Größe (SKU). Je Zeile eine Stufe: ab Stück (2–99), Rabatt % auf den Stückpreis inkl. Optionen ODER Stückpreis € (Grundpreis ab dieser Menge). Beides leer = Wert offen – die Staffel wird dann nicht gerechnet und nicht angezeigt. Zeile ohne „ab Stück“ = ausdrücklich keine Staffel.', 'Bohrlöcher: Randabstand = Rand bis Lochmitte. Löcher werden je Größe aus Lage, Ø und Randabstand berechnet, nicht skaliert.',
-                 'Befestigungen je Größe als Kennungen aus dem Blatt Befestigungen, mit Komma getrennt. Neue Kennung = neue Zeile dort.', 'Zurücklesen: python scripts/family-excel.py import --xlsx DATEI --out ORDNER']:
+                 'Konturformen: Pfad und feste Lochmitten bleiben in verborgenen Originaldaten erhalten; sie werden nicht aus Randabständen neu berechnet. Änderungen der Konturgeometrie erfolgen in der Zeichnung und Familie.', 'Befestigungen je Größe als Kennungen aus dem Blatt Befestigungen, mit Komma getrennt. Neue Kennung = neue Zeile dort.', 'Zurücklesen: python scripts/family-excel.py import --xlsx DATEI --out ORDNER']:
         ws.append([line])
     ws.column_dimensions['A'].width = 120
+    # Preserve drawing geometry outside the editable pricing sheets. Excel cells are limited
+    # to 32767 characters, so long paths are kept in numbered, lossless JSON chunks.
+    geometry_rows = []
+    for f in fams:
+        groups = {g['key']: g for g in f['groups']}
+        for s in f['sizes']:
+            if groups[s['groupKey']]['shape'] != 'contour': continue
+            value = json.dumps({'outlinePath': s['outlinePath'], 'holesMm': s['holesMm']}, ensure_ascii=False)
+            geometry_rows += [[f['id'], s['key'], n + 1, value[i:i + 30000]] for n, i in enumerate(range(0, len(value), 30000))]
+    if geometry_rows:
+        geometry = sheet('_Konturgeometrie', ['Familie', 'SKU', 'Teil', 'JSON'], geometry_rows, [22, 26, 8, 30])
+        geometry.sheet_state = 'hidden'
     wb.save(out)
     return fams
 
@@ -198,6 +210,19 @@ def import_(xlsx, out):
             if str(r.get('Standard') or '').strip().lower() == 'ja': c['default'] = True
             if r.get('Hinweis'): c['note'] = r['Hinweis']
             g['choices'].append(c)
+    contour_data = {}
+    if '_Konturgeometrie' in wb.sheetnames:
+        chunks = {}
+        for r in rows('_Konturgeometrie'):
+            parts = chunks.setdefault((r['Familie'], r['SKU']), {})
+            part = int(r['Teil'])
+            if part in parts: raise ValueError(f'{r["SKU"]}: doppelter Konturdatenteil {part}')
+            parts[part] = r['JSON'] or ''
+        for key, parts in chunks.items():
+            if sorted(parts) != list(range(1, len(parts) + 1)): raise ValueError(f'{key[1]}: Konturdaten unvollständig')
+            data = json.loads(''.join(parts[i] for i in sorted(parts)))
+            if set(data) != {'outlinePath', 'holesMm'}: raise ValueError(f'{key[1]}: Konturdaten prüfen')
+            contour_data[key] = data
     staffel = rows('Staffel') if 'Staffel' in wb.sheetnames else []
     for r in rows('Größen'):
         f = fams[r['Familie']]
@@ -208,6 +233,10 @@ def import_(xlsx, out):
                 'mounting': [x.strip() for x in str(r['Befestigungen (Kennungen)'] or '').split(',') if x.strip()], '_radius': radius}
         if r.get('Gewicht g') not in (None, ''): size['netWeightG'] = num(r['Gewicht g'])
         if r.get('Rückplatte Eckenradius mm') not in (None, ''): size['backingCornerRadiusMm'] = num(r['Rückplatte Eckenradius mm'])
+        if group['shape'] == 'contour':
+            geometry = contour_data.get((r['Familie'], r['SKU']))
+            if geometry is None: raise ValueError(f'{r["SKU"]}: originale Konturgeometrie fehlt im Excel – nicht importiert')
+            size.update(geometry)
         f['sizes'].append(size)
     # Group radius = common radius of its sizes; differing radii stay on the sizes (as drawn in Corel).
     for f in fams.values():
@@ -230,8 +259,8 @@ def import_(xlsx, out):
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
     report = []
     for fid, f in fams.items():
-        path = out / f'{fid}.json'; path.write_text(json.dumps(f, ensure_ascii=False, indent=1), encoding='utf-8')
-        check = subprocess.run(['node', '--input-type=module', '-e', "import fs from 'node:fs';import {validateFamily,familyGaps} from './app/workshop/product-families.mjs';const f=JSON.parse(fs.readFileSync(process.argv[1]));validateFamily(f);console.log(JSON.stringify(familyGaps(f)));", str(path)], cwd=ROOT, capture_output=True, text=True)
+        path = out / f'{fid}.json'; path.write_text(json.dumps(f, ensure_ascii=False, indent=1), encoding='utf-8', newline='\n')
+        check = subprocess.run(['node', '--input-type=module', '-e', "import fs from 'node:fs';import {validateFamily,familyGaps} from './app/workshop/product-families.mjs';const f=JSON.parse(fs.readFileSync(process.argv[1]));validateFamily(f);console.log(JSON.stringify(familyGaps(f)));", str(path)], cwd=ROOT, capture_output=True, text=True, encoding='utf-8')
         report.append((fid, 'gültig · offen: ' + (', '.join(json.loads(check.stdout)) or 'nichts') if check.returncode == 0 else 'FEHLER: ' + check.stderr.strip().splitlines()[-1][:200]))
     return report
 

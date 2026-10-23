@@ -285,7 +285,7 @@ function scaleArcAware(d,scale){
 // „prüfen“: eingepasst (Reihe ±1 %) oder Text unter der Mindestgröße des Verfahrens;
 // „passt nicht“: ein Element verlässt die Gestaltungsfläche (customerLayoutIssue).
 export function templateFit(template,family,size,fonts){
- const g=geometryOf(family,size),profile={kind:'universal-product',geometry:{width:g.width,height:g.height,shape:g.shape==='plaque'?'rect':g.shape,cornerRadiusMm:g.cornerRadiusMm,safeMarginMm:family.designArea.marginMm??0,holes:[]}};
+ const g=geometryOf(family,size),profile={kind:'universal-product',geometry:{width:g.width,height:g.height,shape:['plaque','contour'].includes(g.shape)?'rect':g.shape,cornerRadiusMm:g.cornerRadiusMm,safeMarginMm:family.designArea.marginMm??0,holes:[]}};
  const process=familyProcess(family),issues=[];
  for(const o of template.objects){
   const measured=o.type==='text'?measureText(structuredClone(o),fonts):o;
@@ -358,10 +358,12 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
  if(Array.isArray(subcategory.sizesOffered)&&!subcategory.sizesOffered.includes(size.key))fail('Größe '+size.key+' wird in „'+subcategory.name+'“ nicht angeboten.');
  const f=applyPriceOverrides(family,subcategory),s=f.sizes.find(x=>x.key===size.key);
  if(!s)fail('Unbekannte Größe '+size.key+'.');
+ // Paket A: Kontur bleibt vor Preis-/Vorlagenfehlern gesperrt, bis Paket B sie anschließt.
+ if(f.groups.find(g=>g.key===s.groupKey)?.shape==='contour')fail('Kontur offen');
  const gaps=priceGaps(f,s);if(gaps.length)fail(gaps.join(' · '));
  // Sicht der Familie auf diese eine Größe: offene Preise anderer Größen sperren dieses
  // Produkt nicht (die Prüfung oben nennt die Größe), unbenutzte Bohrbild-Regeln bleiben außen vor.
- const view={...f,sizes:[s],mountingRules:f.mountingRules.filter(r=>s.mounting.includes(r.id))};
+ const view={...f,groups:f.groups.filter(g=>g.key===s.groupKey),sizes:[s],mountingRules:f.mountingRules.filter(r=>s.mounting.includes(r.id))};
  // Staffel: Unterkategorie > Größe > Familie > Vorgabe je Linie/Thema (Daten, nie geraten).
  const fallback=sizeQuantityTiers(f,s)===undefined?defaultQuantityTiers(line,subcategory,tierDefaults):null;
  if(fallback)view.quantityTiers=fallback.tiers;

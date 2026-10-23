@@ -190,3 +190,36 @@ test('Gedenktafel 22 × 14 (20.10.2026): movable verschiebt alle Elemente, Fotof
  assert.throws(()=>validateFamily({...f,photo:{includedCount:1,extraPriceCents:899,preis:1}}),/unbekannte Felder/);
  assert.ok(familyGaps({...f,photo:{includedCount:1,extraPriceCents:null}}).includes('Aufpreis weiteres Foto'));
 });
+
+function withContourGroup(family){
+ const {_file,_material,...data}=family,f=structuredClone(data);
+ f.groups.push({key:'RT',name:'Kontur (Fixture)',shape:'contour',cornerRadiusMm:0});
+ f.mountingRules.push({id:'B02-KONTUR-D4',label:'Feste Bohrungen',layout:'left-right',count:2,diameterMm:4,edgeMm:null,priceCents:249,skuSuffix:'B02'});
+ f.sizes.push({key:'TS-RT-90X60',groupKey:'RT',label:'Kontur 9 × 6 cm',widthMm:90,heightMm:60,baseCents:null,mounting:['B02-KONTUR-D4'],outlinePath:'M0 30L45 0L90 30L45 60Z',holesMm:[{x:6,y:30,diameterMm:4},{x:84,y:30,diameterMm:4}]});
+ return validateFamily(f);
+}
+test('mixed contour family leaves existing rectangular products unchanged',()=>{
+ const k=katalog(),original=k.families.get('test-schilder'),f=withContourGroup(original),line=k.lines.get('test-linie'),sub=line.subcategories[0];
+ const before=katalogFamilyToProduct(original,line,sub,{size:original.sizes[0],fonts:fonts()});
+ const after=katalogFamilyToProduct(f,line,sub,{size:f.sizes[0],fonts:fonts()});
+ assert.deepEqual(after,before,'unselected contour group and its open price do not block or change a rectangle');
+ assert.ok(familyGaps(f).some(g=>g.includes('Kontur')),'whole family still reports unfinished contour support');
+});
+test('contour conversion reports exactly Kontur offen before price or start-design gaps',()=>{
+ const k=katalog(),f=withContourGroup(k.families.get('test-schilder')),line=k.lines.get('test-linie'),size=f.sizes.at(-1),sub={...line.subcategories[0],startDesign:'nicht-vorhanden'};
+ const r=katalogDesignToTemplate(herz(k),f,k.theme('namensschilder'),{fonts:fonts()});
+ for(const baseCents of [null,1499]){
+  size.baseCents=baseCents;
+  assert.throws(()=>katalogFamilyToProduct(f,line,sub,{size,fonts:fonts(),templates:[r]}),e=>e.message==='Kontur offen');
+ }
+ assert.equal(size.outlinePath,'M0 30L45 0L90 30L45 60Z','rejection preserves source contour');
+});
+test('contour templateFit is only a bounding-rectangle check and never changes source geometry',()=>{
+ const k=katalog(),f=withContourGroup(k.families.get('test-schilder')),size=f.sizes.at(-1),before=JSON.stringify(f);
+ // This corner lies outside the diamond, but within its bounding rectangle.
+ const template={objects:[{id:'corner',type:'motif',motif:'test',x:5,y:5,w:4,h:4,rotation:0}]};
+ assert.deepEqual(templateFit(template,f,size,fonts()),{status:'passt',issues:[]});
+ const outside={objects:[{...template.objects[0],x:100}]};
+ assert.equal(templateFit(outside,f,size,fonts()).status,'passt nicht');
+ assert.equal(JSON.stringify(f),before,'only fit uses a rectangle; stored path and holes stay untouched');
+});

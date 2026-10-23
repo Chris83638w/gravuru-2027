@@ -12,14 +12,14 @@ Je Platte: Rückplatte (blau), Platte (rot), Bohrlöcher; darunter Größe, Form
 Der Maßstab wird verkleinert, wenn die höchste Spalte sonst nicht auf eine Seite passt.
 Nur Lesen und Zeichnen; keine Werkstatt, kein Shop.
 """
-import argparse, json, math
+import argparse, html, json, math
 from pathlib import Path
 import cairosvg, pymupdf
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE_W, PAGE_H, MARGIN, HEAD = 420, 297, 12, 28  # A3 quer in mm
 LAYOUT_DE = {'left-right': 'seitlich mittig', 'top-bottom': 'oben/unten', 'corners': 'in den Ecken', 'top-center': 'oben mittig', 'none': 'ohne Löcher'}
-SHAPE_DE = {'rect': 'Rechteck', 'ellipse': 'Oval', 'plaque': 'Eingezogene Ecken'}
+SHAPE_DE = {'rect': 'Rechteck', 'ellipse': 'Oval', 'plaque': 'Eingezogene Ecken', 'contour': 'Kontur'}
 GAP, LABEL_H, LINE_H = 6, 4, 3.4
 
 
@@ -52,14 +52,20 @@ def plate_svg(x, y, it, s):
     """Plate with top-left corner of the plate itself at (x, y); backing drawn around it."""
     w, h, out = it['w'] * s, it['h'] * s, []
     b = (it['backing'] or 0) * s
-    if b:
+    if b and it['shape'] == 'contour':
+        out.append('<desc>Kontur-Rückplatte: Offsetpfad offen (Paket B); Rückplatte nicht dargestellt.</desc>')
+    if b and it['shape'] != 'contour':
         out.append(f'<path d="{contour(x - b, y - b, w + 2 * b, h + 2 * b, it["shape"], it["backingRadius"] * s)}" fill="#1c1c1c" stroke="#06c" stroke-width="0.35"/>')
-    out.append(f'<path d="{contour(x, y, w, h, it["shape"], it["radius"] * s)}" fill="#4a4d50" stroke="#d22" stroke-width="0.35"/>')
+    if it['shape'] == 'contour':
+        out.append(f'<path d="{html.escape(it["outlinePath"], quote=True)}" transform="translate({x} {y}) scale({s})" fill="#4a4d50" stroke="#d22" stroke-width="{0.35 / s}"/>')
+    else:
+        out.append(f'<path d="{contour(x, y, w, h, it["shape"], it["radius"] * s)}" fill="#4a4d50" stroke="#d22" stroke-width="0.35"/>')
     for hx, hy, d in it['holes']:
         out.append(f'<circle cx="{x + hx * s}" cy="{y + hy * s}" r="{d / 2 * s}" fill="#f2efe8" stroke="#d22" stroke-width="0.3"/>')
     ty = y + h + b + LABEL_H
     out.append(f'<text x="{x - b}" y="{ty}" font-family="Helvetica, Arial, sans-serif" font-size="3.2" font-weight="bold" fill="#222">{esc(it["label"])}</text>')
-    for i, l in enumerate(it['lines']):
+    labels = it['lines'] + (['Rückplattenkontur offen (Paket B)'] if b and it['shape'] == 'contour' else [])
+    for i, l in enumerate(labels):
         out.append(f'<text x="{x - b}" y="{ty + LINE_H * (i + 1)}" font-family="Helvetica, Arial, sans-serif" font-size="2.7" fill="#444">{esc(l)}</text>')
     return '\n'.join(out)
 
@@ -88,7 +94,7 @@ def wrap(t, n):
     return lines + [cur] if cur else lines
 
 
-def item_h(it, s): return (it['h'] + 2 * (it['backing'] or 0)) * s + LABEL_H + LINE_H * len(it['lines']) + GAP
+def item_h(it, s): return (it['h'] + 2 * (it['backing'] or 0)) * s + LABEL_H + LINE_H * (len(it['lines']) + int(bool(it['backing']) and it['shape'] == 'contour')) + GAP
 
 
 def item_w(it, s): return max((it['w'] + 2 * (it['backing'] or 0)) * s, len(it['label']) * 1.75, *[len(l) * 1.45 for l in it['lines']])
@@ -146,16 +152,17 @@ def main():
     for s in f['sizes']:
         g = groups[s['groupKey']]; radius = s.get('cornerRadiusMm', g['cornerRadiusMm'])
         for rid in s['mounting']:
-            r = rules[rid]; complete = r['layout'] == 'none' or (r['edgeMm'] is not None and r['diameterMm'] is not None)
-            holes = [] if r['layout'] == 'none' or not complete else holes_for(s['widthMm'], s['heightMm'], r)
+            r = rules[rid]; fixed = g['shape'] == 'contour'
+            complete = r['layout'] == 'none' or fixed or (r['edgeMm'] is not None and r['diameterMm'] is not None)
+            holes = [] if r['layout'] == 'none' or not complete else [(h['x'], h['y'], h['diameterMm']) for h in s['holesMm']] if fixed else holes_for(s['widthMm'], s['heightMm'], r)
             key = (s['widthMm'], s['heightMm'], g['shape'], radius or 0, r['count'], r['edgeMm'])
             col = drawn.get(key)
             # Without a drawing: one column per form and format series, mounting options stacked per size.
             colkey = ('drawn', col[0]) if col else ('extra', g['key'], (r['count'], r['layout']) if drawn else '', round(s['widthMm'] / s['heightMm'], 2))
-            item = {'w': s['widthMm'], 'h': s['heightMm'], 'shape': g['shape'], 'radius': radius, 'holes': holes, 'backing': backing,
+            item = {'w': s['widthMm'], 'h': s['heightMm'], 'shape': g['shape'], 'radius': radius, 'outlinePath': s.get('outlinePath'), 'holes': holes, 'backing': backing,
                     'backingRadius': s.get('backingCornerRadiusMm', (max(0, radius - backing) if g['shape'] == 'plaque' else radius + backing if radius else 0) if backing else 0),
                     'label': f"{s['label']} · {g['name']}" + (f' R{radius:g}' if radius and not g['cornerRadiusMm'] else ''),
-                    'lines': [r['label'] + (', ohne Löcher' if r['layout'] == 'none' else f", Rand {r['edgeMm']:g} mm" if complete else ', Bohrbild offen') + (f" · +{r['priceCents'] / 100:.2f} €".replace('.', ',') if r['priceCents'] else ''), f"{s['key']}-{r['skuSuffix']}"],
+                    'lines': [r['label'] + (', ohne Löcher' if r['layout'] == 'none' else ', Lochmitten aus Zeichnung' if fixed else f", Rand {r['edgeMm']:g} mm" if complete else ', Bohrbild offen') + (f" · +{r['priceCents'] / 100:.2f} €".replace('.', ',') if r['priceCents'] else ''), f"{s['key']}-{r['skuSuffix']}"],
                     'sort': (col[1] if col else (s['widthMm'] * s['heightMm'], list(rules).index(rid)))}
             entries.append((colkey, g, r, item))
     order = {}

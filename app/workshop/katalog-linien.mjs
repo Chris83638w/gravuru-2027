@@ -58,7 +58,8 @@ export function patchMainProduct(root,input,{actor='werkstatt',now=new Date()}={
  const file=lineFile(katalog,line.id);
  const raw=fs.readFileSync(file,'utf8'),next=JSON.parse(raw.replace(/^﻿/,''));
  const subs=next.subcategories;
- const locate=katalogId=>{for(const s of subs){const i=(s.mainProducts||[]).findIndex(m=>m.id===katalogId);if(i>=0)return {sub:s,index:i,entry:s.mainProducts[i]};}return null;};
+ const locate=(katalogId,subId=null)=>{for(const s of subs){if(subId&&s.id!==subId)continue;const i=(s.mainProducts||[]).findIndex(m=>m.id===katalogId);if(i>=0)return {sub:s,index:i,entry:s.mainProducts[i]};}return null;};
+ const clean=v=>typeof v==='string'?(v.trim()===''?null:v.trim()):v;
  const checkFields=(m,{partial=false}={})=>{
   if(m.name!==undefined&&m.name!==null&&!line1(m.name,160))fail(422,'katalog_patch','Name: 1 bis 160 Zeichen, eine Zeile.');
   if((!partial||m.startDesign!==undefined)&&!(typeof m.startDesign==='string'&&DESIGN_ID.test(m.startDesign)))fail(422,'katalog_patch','Startdesign (Design-Kennung) prüfen.');
@@ -71,30 +72,34 @@ export function patchMainProduct(root,input,{actor='werkstatt',now=new Date()}={
   const sub=subs.find(s=>s.id===input.subcategoryId);if(!sub)fail(422,'katalog_patch','Unterkategorie unbekannt.');
   katalogId=typeof input.katalogId==='string'?input.katalogId.trim():'';if(!MAIN_ID.test(katalogId))fail(422,'katalog_patch','Kennung des Hauptprodukts prüfen (Buchstaben, Ziffern, . _ -).');
   if(locate(katalogId))fail(409,'katalog_patch','Hauptprodukt „'+katalogId+'“ gibt es in dieser Linie schon.');
-  const entry={id:katalogId,name:input.name??null,startDesign:input.startDesign,sizesOffered:input.sizesOffered??null,externalIds:{},status:(input.status?input.status+' ':'')+'(angelegt '+now.toISOString().slice(0,10)+' Katalogseite, '+String(actor).slice(0,80)+')'};
-  checkFields(entry);if(entry.name===null)delete entry.name;if(entry.sizesOffered===null)entry.sizesOffered=null;
+  const note=clean(input.status);if(note!==null&&note!==undefined&&(typeof note!=='string'||note.length>1800))fail(422,'katalog_patch','Notiz (status): bis 1800 Zeichen beim Anlegen.');
+  const entry={id:katalogId,name:clean(input.name)??null,startDesign:clean(input.startDesign),sizesOffered:input.sizesOffered??null,externalIds:{},status:(note?note+' ':'')+'(angelegt '+now.toISOString().slice(0,10)+' Katalogseite, '+String(actor).slice(0,80)+')'};
+  checkFields(entry);if(entry.name===null)delete entry.name;
   (sub.mainProducts??=[]).push(entry);changes.added={subcategoryId:sub.id,entry};
  }else if(action==='edit'||action==='assign'){
-  katalogId=typeof input.katalogId==='string'?input.katalogId:String(input.productKey||'').split('/').pop();
-  const hit=locate(katalogId);if(!hit)fail(404,'katalog_patch','Hauptprodukt „'+katalogId+'“ nicht in der Linie.');
+  // productKey „katalog:<linie>/<unterkategorie>/<id>“ nennt die Unterkategorie – damit treffen wir den richtigen Eintrag, falls eine Kennung in zwei Unterkategorien vorkommt.
+  const keyParts=typeof input.productKey==='string'?input.productKey.replace(/^katalog:/,'').split('/'):[];
+  katalogId=typeof input.katalogId==='string'?input.katalogId:keyParts[keyParts.length-1]||'';
+  const hit=locate(katalogId,keyParts.length===3?keyParts[1]:null);if(!hit)fail(404,'katalog_patch','Hauptprodukt „'+katalogId+'“ nicht in der Linie.');
   const {sub,index,entry}=hit;
   if(action==='assign'){
    const ids=input.subcategoryIds;if(!Array.isArray(ids)||ids.length!==1)fail(422,'katalog_patch','Im Katalog gehört ein Hauptprodukt genau einer Unterkategorie (eine auswählen).');
    const target=subs.find(s=>s.id===ids[0]);if(!target)fail(422,'katalog_patch','Unterkategorie unbekannt.');
    if(target!==sub){sub.mainProducts.splice(index,1);(target.mainProducts??=[]).push(entry);changes.subcategoryId={from:sub.id,to:target.id};}
   }else{
-   const patch={};for(const k of ['name','startDesign','sizesOffered','status'])if(input[k]!==undefined)patch[k]=typeof input[k]==='string'?input[k].trim():input[k];
+   const patch={};for(const k of ['name','startDesign','sizesOffered','status'])if(input[k]!==undefined)patch[k]=clean(input[k]);
+   if(patch.startDesign===null)fail(422,'katalog_patch','Startdesign (Design-Kennung) prüfen.');
    checkFields(patch,{partial:true});
-   for(const [k,v] of Object.entries(patch)){const from=entry[k]??null,to=v===''?null:v;if(JSON.stringify(from)!==JSON.stringify(to)){changes[k]={from,to};if(to===null&&k!=='sizesOffered')delete entry[k];else entry[k]=to;}}
+   for(const [k,v] of Object.entries(patch)){const from=entry[k]??null,to=v;if(JSON.stringify(from)!==JSON.stringify(to)){changes[k]={from,to};if(to===null&&k!=='sizesOffered')delete entry[k];else entry[k]=to;}}
   }
  }else fail(422,'katalog_patch','Unbekannte Aktion (edit, assign, add).');
- const files=[];
+ const files=[];let warning=null;
  if(Object.keys(changes).length){
   try{validateLine(next,{families:katalog.families,themes:katalog.themes,fontSets:katalog.fonts.sets,file:path.basename(file)});}catch(e){fail(422,'katalog_patch','Linie bleibt ungültig: '+e.message);}
-  writeAtomic(file,JSON.stringify(next,null,2)+'\n');files.push('linien/'+path.basename(file));
+  // Liniendateien im Katalog sind mit 2 Leerzeichen eingerückt (geprüft 23.10.2026, alle 12); so bleibt der Diff klein.
+  writeAtomic(file,JSON.stringify(next,null,2)+'\n');files.push('linien/'+path.basename(file));forgetKatalog();
   const protocol=path.join(katalog.root,'linien','_aenderungen.jsonl');
-  fs.appendFileSync(protocol,JSON.stringify({at:now.toISOString(),actor:String(actor).slice(0,160),line:line.id,action,productId:katalogId,changes})+'\n');files.push('linien/_aenderungen.jsonl');
-  forgetKatalog();
+  try{fs.appendFileSync(protocol,JSON.stringify({at:now.toISOString(),actor:String(actor).slice(0,160),line:line.id,action,productId:katalogId,changes})+'\n');files.push('linien/_aenderungen.jsonl');}catch(e){warning='Gespeichert, aber Protokoll linien/_aenderungen.jsonl nicht schreibbar: '+e.message;}
  }
- return {changed:files.length>0,line:line.id,action,productId:katalogId,changes,files};
+ return {changed:files.length>0,line:line.id,action,productId:katalogId,changes,files,warning,uncommitted:files.length>0};
 }

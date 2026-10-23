@@ -38,8 +38,13 @@ test('Katalogseite liest Linien und Hauptprodukte aus linien/*.json; Änderungen
  const p2=n1.mainProducts.find(x=>x.katalogId==='P2');assert.equal(p2.id,null);assert.equal(p2.adminUrl,null);assert.match(p2.note,/angelegt \d{4}-\d{2}-\d{2} Katalogseite/);
  assert.throws(()=>structure.save({action:'add',lineId:'test-linie',subcategoryId:'namensschilder',katalogId:'P2',startDesign:'test-foto',expectedRevision:1,sourceSha256:n1.sourceSha256}),e=>e.status===409);
  assert.equal(fs.readFileSync(path.join(dir,'linien','_aenderungen.jsonl'),'utf8').trim().split('\n').length,3);
- // Ohne Änderung kein Protokolleintrag.
+ // Ohne Änderung kein Protokolleintrag; leerer Name/Notiz entfernt das Feld (Review B); Kennung in zwei Unterkategorien → productKey entscheidet (Review C).
  const same=patchMainProduct(dir,{action:'edit',lineId:'test-linie',katalogId:'P2',name:'Zweites'});assert.equal(same.changed,false);
+ const cleared=patchMainProduct(dir,{action:'edit',lineId:'test-linie',katalogId:'P2',name:'',status:''});assert.deepEqual(cleared.changes.name,{from:'Zweites',to:null});assert.equal('name' in lineJson(dir).subcategories[0].mainProducts[0],false);
+ assert.throws(()=>patchMainProduct(dir,{action:'edit',lineId:'test-linie',katalogId:'P2',startDesign:''}),e=>e.status===422);
+ const dup=lineJson(dir);dup.subcategories[1].mainProducts.push({id:'P2',name:'Doppelgänger',startDesign:'test-herz'});fs.writeFileSync(path.join(dir,'linien','test-linie.json'),JSON.stringify(dup,null,2)+'\n');forgetKatalog();
+ const hitSecond=patchMainProduct(dir,{action:'edit',lineId:'test-linie',productKey:'katalog:test-linie/hundeschilder/P2',name:'Zweiter in Hunde'});assert.equal(lineJson(dir).subcategories[1].mainProducts.find(m=>m.id==='P2').name,'Zweiter in Hunde');assert.equal(hitSecond.uncommitted,true);
+ assert.equal(lineJson(dir).subcategories[0].mainProducts[0].name,undefined);
 });
 
 test('ohne verbundenen Katalog bleibt der eingebaute Stand (v1) unverändert',()=>{const s=createCatalogStructure({tenantId:'gravuru'});try{assert.equal(s.read().schema,'gravuru-workshop-structure/v1');assert.equal(s.read().saveEffect,'organization-only');}finally{s.close();}});

@@ -138,7 +138,8 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(ownsBundled&&!repository.firstId())repository.create(seed);
   const families=createProductFamilies({filename,repository,tenantId});
-  const catalogStructure=createCatalogStructure({filename,tenantId});
+  // Katalogseite liest Linien/Hauptprodukte aus dem Katalog-Repo, sobald eines verbunden ist (sonst eingebauter Stand).
+  const catalogStructure=createCatalogStructure({filename,tenantId,katalogDir:()=>{if(!ownsBundled)return null;const root=katalogDir===undefined?katalogPath():katalogDir;return root||null;}});
   // B1: Klarnamen für Kategorie-Kennungen (nur Anzeige) und Kundenstatus je Konfi.
   const labelCategories=ids=>categoryLabels(ids,families.labelSources());
   const konfis=createKonfiStatus({filename,tenantId});
@@ -345,7 +346,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       }
       if(pathname==='/api/workshop/catalog-structure'){
         if(method==='GET')return json(res,200,catalogStructure.read());
-        if(method==='PATCH')return json(res,200,catalogStructure.save(await body(req,16384)));
+        if(method==='PATCH')return json(res,200,catalogStructure.save(await body(req,16384),{actor:merchantSession?.subject||localActor}));
         fail(405,'method_not_allowed','Die Katalogstruktur unterstützt Lesen und Speichern.');
       }
       // Design-Dashboard: Designs je Linie aus dem Katalog-Repo (lesen), menschliche Korrekturen zurück in den Katalog (PATCH).

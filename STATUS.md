@@ -1,3 +1,8 @@
+## Lokale Codex-Kopie `work/gravuru-2027` geprüft · 23.10.2026 (Claude als Operator)
+
+- Stand: untrackte Kopie von `task/katalog-struktur-20261022` (516 Dateien gleich, 22 geändert, 12 neu, dazu `.preview/`-Build). Die Änderungen sind der **Edelstahl-Testlauf** vom 21.10. (Chris: „nur getestet“): Startseite „Dein Edelstahlschild“, Acryl-Shop/Korrekturen/Katalogstruktur aus `http.mjs` entfernt, Materialvorschau auf `edelstahl-original-2027.png` + Hauswand v3 (`steel-original-presentation.mjs`), `form-interaction.test` auf ganze mm umgestellt (ohne Modulanpassung), `server.mjs` lässt Cross-Site-Dokumentnavigation auf Kundenseiten zu. Hilfslinien/Einrasten (`editor-guides.mjs`) sind auf `main` bereits enthalten.
+- Entscheidung: **nichts portiert** – die Kopie ist älter als `main` und entfernt dort Funktionen. Aufheben für später: die Edelstahl-Materialbilder (`app/designs/aosu-labrador/runtime/images/edelstahl-original-2027.png` 7,6 MB, `edelstahl-hauswand-v3.png` 4,1 MB, Motive `edelstahl-original-motifs.json`) und `steel-original-presentation.mjs` (Bohrungs-/Schattendarstellung) als Vorlage für eine Edelstahl-Materialszene, wenn der Konfigurator Edelstahl bekommt. Daten liegen weiter lokal unter `Documents/Codex/2026-10-21/…/work/gravuru-2027`; Produktdaten der Serie sind jetzt im Katalog (`zeichnungen/edelstahl-schilder-2027/geometrie.json`).
+
 ## Katalogseite liest und schreibt `linien/*.json` · 23.10.2026 (Claude als Operator)
 
 - Chris 23.10.: „Es kommt vom Katalog ins Dashboard, wir prüfen manuell und geben frei, dann geht es direkt an Shopify. Neue Produkte werden neu gelistet, alte nur aktualisiert, wenn wir das Design ändern. Es muss jederzeit im Dashboard/Katalog bearbeitbar sein.“ Umsetzung in drei Teilen:

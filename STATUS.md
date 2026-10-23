@@ -1,3 +1,7 @@
+## Rollen angepasst · 23.10.2026 23:05 (Claude als Operator)
+
+- Chris: Claude-Account 1 bleibt Boss (prüft, merged, Host/Shopify D+E), ChatGPT „Astra High“ (Codex, GPT-5 high) programmiert Pakete A → B → C per PR; weitere ChatGPT-Accounts F/G/H. Claude-Account 2 entfällt (kleiner Plan). Startprompts: `docs/handoffs/2026-10-23-startprompt-astra-high.md`, `-chatgpt1.md`, `-chatgpt2-3.md`; `-account2.md` bleibt als Reserve.
+
 ## Delegation an weitere Accounts · 23.10.2026 12:35 (Claude als Operator, Account 1)
 
 - Entscheidungen Chris (Issue #10): Vorlagen-Grenze 100 (umgesetzt 6ac782d/b60692b), Schriften (umgesetzt, Katalog 0fcf3cf), Kontur-Form Option A (offen → Paket A/B), 40 Excel-Preise gelten; offen: Rund 8,5/12/16/20, Retro-Preise außer 9×6.

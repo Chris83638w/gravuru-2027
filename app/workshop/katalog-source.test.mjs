@@ -20,7 +20,7 @@ test('openKatalog liest Familien, Linien, Themen, Schriften, Sets, Motive und De
  assert.deepEqual([...k.families.keys()],['test-schilder']);
  assert.equal(k.families.get('test-schilder').sizes.length,4);
  assert.ok(!('_file' in k.families.get('test-schilder')),'Familiendokument bleibt schemarein');
- assert.match(k.files.get('familie:test-schilder'),/familien\/edelstahl\/test-schilder\.json$/);
+ assert.match(k.files.get('familie:test-schilder'),/familien[\\/]edelstahl[\\/]test-schilder\.json$/);
  assert.deepEqual([...k.lines.keys()],['test-linie']);
  assert.equal(k.lines.get('test-linie').subcategories.length,2);
  assert.deepEqual(k.themes.map(t=>t.id),['namensschilder','hundeschilder','gedenktafeln']);

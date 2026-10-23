@@ -140,3 +140,37 @@ test('Freigabe: ohne allDesigns kommen nur freigegebene Master ins Produkt; Grö
  const templates=plan.report.subcategories.flatMap(s=>s.products).flatMap(p=>p.templates||[]).map(x=>x.design);
  assert.ok(templates.length>0&&templates.every(d=>d==='test-herz'),'nur das freigegebene Design wird Vorlage: '+[...new Set(templates)].join(','));
 });
+
+function contourFixture(t){
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-katalog-kontur-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ fs.cpSync(FIXTURE,dir,{recursive:true});
+ const file=path.join(dir,'familien/edelstahl/test-schilder.json'),f=JSON.parse(fs.readFileSync(file,'utf8'));
+ f.groups.push({key:'RT',name:'Kontur (Fixture)',shape:'contour',cornerRadiusMm:0});
+ f.mountingRules.push({id:'B02-KONTUR-D4',label:'Feste Bohrungen',layout:'left-right',count:2,diameterMm:4,edgeMm:null,priceCents:249,skuSuffix:'B02'});
+ f.sizes.push({key:'TS-RT-90X60',groupKey:'RT',label:'Kontur 9 × 6 cm',widthMm:90,heightMm:60,baseCents:null,mounting:['B02-KONTUR-D4'],outlinePath:'M0 30L45 0L90 30L45 60Z',holesMm:[{x:6,y:30,diameterMm:4},{x:84,y:30,diameterMm:4}]});
+ fs.writeFileSync(file,JSON.stringify(f));return dir;
+}
+test('mixed contour import keeps rectangle plans and counts, with no writable contour product',async t=>{
+ const ws=workshop(t),before=await planKatalogImport(openKatalog(FIXTURE),'test-linie',options(ws)),dir=contourFixture(t);
+ const plan=await planKatalogImport(openKatalog(dir),'test-linie',options(ws)),rows=plan.report.subcategories.flatMap(s=>s.products),contour=rows.filter(p=>p.sizeKey==='TS-RT-90X60');
+ assert.equal(contour.length,1);assert.equal(contour[0].action,'gesperrt');assert.equal(contour[0].reason,'Kontur offen');
+ assert.deepEqual(contour[0].templates,[]);assert.deepEqual(contour[0].excluded,[]);
+ assert.deepEqual(contour[0].fit,{passt:0,'prüfen':0,'passt nicht':0},'blocked contour is never fitted to a substitute rectangle');
+ assert.deepEqual(rows.filter(p=>p.sizeKey!=='TS-RT-90X60'),before.report.subcategories.flatMap(s=>s.products),'existing rectangle report remains identical');
+ assert.deepEqual(plan.items,before.items,'the only writable products are the unchanged rectangular plans');
+ assert.ok(plan.items.every(i=>!i.key.includes('TS-RT-')));
+ assert.deepEqual(plan.report.counts,{...before.report.counts,products:before.report.counts.products+1,blocked:before.report.counts.blocked+1,sizes:before.report.counts.sizes+1,pricesOpen:before.report.counts.pricesOpen+1});
+ assert.equal(ws.repository.list().length,1,'dry-run has not written products');
+});
+test('contour import reports Kontur offen ahead of open price, missing release and missing start design',async t=>{
+ const ws=workshop(t),dir=contourFixture(t),lineFile=path.join(dir,'linien/test-linie.json'),line=JSON.parse(fs.readFileSync(lineFile,'utf8'));
+ line.subcategories[0].mainProducts=[{id:'retro-test',startDesign:'nicht-vorhanden',sizesOffered:['TS-RT-90X60']}];
+ fs.writeFileSync(lineFile,JSON.stringify(line));
+ for(const allDesigns of [false,true]){
+  const plan=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),allDesigns,only:{subcategories:['namensschilder']}});
+  const rows=plan.report.subcategories.flatMap(s=>s.products);
+  assert.equal(rows.length,1);assert.equal(rows[0].reason,'Kontur offen');assert.equal(rows[0].action,'gesperrt');
+  assert.deepEqual(plan.items,[]);assert.deepEqual(rows[0].templates,[]);
+  assert.deepEqual([plan.report.counts.products,plan.report.counts.blocked,plan.report.counts.new],[1,1,0]);
+ }
+});

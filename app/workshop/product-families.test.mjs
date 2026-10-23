@@ -10,6 +10,7 @@ import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {createWorkshop} from './http.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
@@ -199,12 +200,12 @@ test('K10: family process profile – id validated, null stays open, engraving s
  assert.match(familyBriefing(standoff('aa'),1),/Profil „acrylic-engraving“/);assert.match(familyBriefing(standoff('aa'),1),/Mindestschriftgröße 3 mm/);assert.match(familyBriefing(standoff('aa'),1),/Spiegelung für die Fertigung: ja/);
  assert.match(familyBriefing(open,1),/Verfahren offen/);
  // Excel-Rundlauf: Spalte „Verfahrensprofil“ wird geschrieben und exakt zurückgelesen (auch die Gravurseite).
- const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-family-excel-')),xlsx=path.join(dir,'stamm.xlsx'),root=new URL('../../',import.meta.url).pathname;
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-family-excel-')),xlsx=path.join(dir,'stamm.xlsx'),root=fileURLToPath(new URL('../../',import.meta.url)),python=process.env.GRAVURU_PYTHON||'python3';
  try{
-  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'export','--out',xlsx,path.join(root,'app/designs/acrylic-standoff-signs/ss.json'),path.join(root,'app/designs/gedenktafeln-30x20/schiefer-natur.json')],{cwd:root});
-  const header=execFileSync('python3',['-c',"import sys;from openpyxl import load_workbook;wb=load_workbook(sys.argv[1]);print('|'.join(str(c.value) for c in wb['Familien'][1]));print('|'.join(str(c.value) for c in wb['Familien'][2]))",xlsx]).toString().split('\n');
+  execFileSync(python,[path.join(root,'scripts/family-excel.py'),'export','--out',xlsx,path.join(root,'app/designs/acrylic-standoff-signs/ss.json'),path.join(root,'app/designs/gedenktafeln-30x20/schiefer-natur.json')],{cwd:root});
+  const header=execFileSync(python,['-c',"import sys;from openpyxl import load_workbook;wb=load_workbook(sys.argv[1]);print('|'.join(str(c.value) for c in wb['Familien'][1]));print('|'.join(str(c.value) for c in wb['Familien'][2]))",xlsx]).toString().split('\n');
   assert.ok(header[0].split('|').includes('Verfahrensprofil'));assert.ok(header[1].split('|').includes('acrylic-engraving'));
-  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'import','--xlsx',xlsx,'--out',path.join(dir,'out')],{cwd:root});
+  execFileSync(python,[path.join(root,'scripts/family-excel.py'),'import','--xlsx',xlsx,'--out',path.join(dir,'out')],{cwd:root});
   const back=JSON.parse(fs.readFileSync(path.join(dir,'out','acryl-ss-abstandshalter.json')));
   assert.equal(back.material.processingProfileId,'acrylic-engraving');assert.equal(back.material.engravingSide,'front');assert.equal(familyProcess(validateFamily(back)).mirror,false);
   assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'out','gedenktafel-30x20-schiefer-natur.json'))).material.processingProfileId,'slate-engraving');
@@ -235,4 +236,53 @@ test('acrylic standoff families from the Corel drawing: per-size radius, standof
  assert.throws(()=>validateFamily({...ss,backing:{...ss.backing,offsetMm:-1}}),/Rückplatte/);
  const bad=structuredClone(ss);bad.sizes.find(s=>s.groupKey==='OV').cornerRadiusMm=5;assert.throws(()=>validateFamily(bad),/Eckenradius/);
  const noBacking=structuredClone(load('aa'));noBacking.sizes.find(s=>s.groupKey==='EE').backingCornerRadiusMm=12;assert.throws(()=>validateFamily(noBacking),/Rückplatte/);
+});
+
+const contourFamily=()=>{
+ const f=family();
+ f.groups=[{key:'RT2',name:'Retro 2',shape:'contour',cornerRadiusMm:0}];
+ f.mountingRules=[{id:'B02-KONTUR-D4',label:'Zwei Bohrungen aus Zeichnung',layout:'left-right',count:2,diameterMm:4,edgeMm:null,priceCents:249,skuSuffix:'B02'}];
+ f.sizes=[{key:'GR-ES-RT2-90X60-T15',groupKey:'RT2',label:'9 × 6 cm',widthMm:90,heightMm:60,baseCents:1499,mounting:['B02-KONTUR-D4'],outlinePath:'M0 5C5 5 5 0 10 0H80C85 0 85 5 90 5V55C85 55 85 60 80 60H10C5 60 5 55 0 55Z',holesMm:[{x:7.995,y:30,diameterMm:4},{x:82.005,y:30,diameterMm:4}]}];
+ f.designArea.marginMm=2;f.designArea.keepoutMm=3;return f;
+};
+test('contour family keeps exact outline and drawing holes independently of edge rules',()=>{
+ const f=validateFamily(contourFamily()),s=f.sizes[0],g=geometryOf(f,s);
+ assert.equal(g.shape,'contour');assert.equal(g.outlinePath,s.outlinePath);assert.deepEqual(g.holesMm,s.holesMm);
+ const svg=familyTemplate(f,s);
+ assert.ok(svg.includes('d="'+s.outlinePath+'"'));
+ assert.ok(svg.includes('cx="7.995" cy="30" r="2"'));
+ assert.ok(svg.includes('cx="82.005" cy="30" r="2"'));
+ assert.ok(svg.includes('id="nutzflaeche" data-status="offen"'));
+ assert.ok(!svg.includes('transform="translate(2 2)"'),'no false scaled contour margin');
+ assert.ok(familyBriefing(f,1).includes('feste Lochpositionen aus Zeichnung'));
+ assert.ok(familyGaps(f).includes('Form „Kontur“ im Konfigurator noch nicht angeschlossen'));
+ assert.ok(!familyGaps(f).some(g=>g.startsWith('Bohrbild')),'fixed drawing holes are complete');
+ assert.throws(()=>familyProductConfig(f,s,1),/Kontur/);
+ g.holesMm[0].x=999;assert.equal(s.holesMm[0].x,7.995,'geometry does not mutate drawing');
+});
+test('contour family validates physical bounds, fixed holes and form-only fields',()=>{
+ const invalidChange=fn=>{const f=contourFamily();fn(f,f.sizes[0]);assert.throws(()=>validateFamily(f));};
+ invalidChange((f,s)=>delete s.outlinePath);
+ invalidChange((f,s)=>s.outlinePath='M0 0H90V60H0');
+ invalidChange((f,s)=>s.widthMm=91);
+ invalidChange((f,s)=>s.outlinePath='M1 0H91V60H1Z');
+ invalidChange((f,s)=>delete s.holesMm);
+ invalidChange((f,s)=>s.holesMm[0].x=NaN);
+ invalidChange((f,s)=>s.holesMm[0].diameterMm=0);
+ invalidChange((f,s)=>s.holesMm[0].x=1);
+ invalidChange((f,s)=>s.holesMm[0].diameterMm=5);
+ invalidChange((f,s)=>s.holesMm.pop());
+ invalidChange((f,s)=>s.holesMm[1]={...s.holesMm[0]});
+ invalidChange(f=>f.groups[0].cornerRadiusMm=5);
+ invalidChange(f=>f.groups[0].shape='rect');
+ invalidChange((f,s)=>s.holesMm[0].onload='unsafe');
+ const f=contourFamily();f.mountingRules[0].diameterMm=null;assert.doesNotThrow(()=>validateFamily(f));
+});
+test('partially specified edge rules remain invalid for existing shapes',()=>{
+ const f=family(),r=f.mountingRules.find(r=>r.layout!=='none');r.diameterMm=4;r.edgeMm=null;assert.throws(()=>validateFamily(f),/Durchmesser und Randabstand/);
+});
+
+test('contour backing stays storable and explicitly open without a false rectangle offset',()=>{
+ const f=contourFamily();f.backing={label:'Rückplatte',offsetMm:5,thicknessMm:3};validateFamily(f);
+ const svg=familyTemplate(f,f.sizes[0]);assert.ok(svg.includes('id="rueckplatte" data-status="offen"'));assert.ok(!svg.includes('stroke="#06c"'));assert.ok(familyBriefing(f,1).includes('bei Konturformen ist der Rückplattenversatz noch offen'));
 });

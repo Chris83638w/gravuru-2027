@@ -15,7 +15,7 @@ export function validateStudio(p,original,{extraFontIds=[]}={}){
  if(!['steel','acrylic','wood','slate','other','print'].includes(p.material.kind)||!/^#[0-9a-f]{6}$/i.test(p.material.color)||!Number.isFinite(p.material.thicknessMm)||p.material.thicknessMm<=0||p.material.thicknessMm>100)throw Error('Bitte Material, Farbe und Stärke prüfen.');
  validateProcessingProfile(p);validateOptionGroups(p.optionGroups);
  validateGeometryHoles(p);
- if(!Array.isArray(p.designs)||!p.designs.length||p.designs.length>60||p.designs.some(d=>!d)||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error('Bitte 1 bis 60 Designs mit eindeutigen Kennungen verwenden.');
+ if(!Array.isArray(p.designs)||!p.designs.length||p.designs.length>DESIGN_LIMITS.maxDesigns||p.designs.some(d=>!d)||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error('Bitte 1 bis '+DESIGN_LIMITS.maxDesigns+' Designs mit eindeutigen Kennungen verwenden.');
  for(const d of p.designs){if(typeof d.name!=='string'||!d.name.trim()||d.name.length>200)throw Error('Jedes Design braucht einen Namen mit höchstens 200 Zeichen.');validateDesignContent(d,{universal:true,extraFontIds});validateUniversalElements(d);for(const o of d.objects){const issue=objectIssue(o,p);if(issue)throw Error(d.name+': '+issue);}}
  return p;
 }

@@ -1,6 +1,7 @@
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
 // These limits match the supported customer text/motif draft format.
-export const DESIGN_LIMITS=Object.freeze({maxObjects:20,maxTextLength:180,maxRotation:360,minFontSize:1,maxFontSize:100,maxIdLength:120});
+// maxDesigns: Vorlagen je Produkt (Chris 23.10.2026: 60 → 100, wie MAX_FORM_DESIGNS in der Werkstatt).
+export const DESIGN_LIMITS=Object.freeze({maxDesigns:100,maxObjects:20,maxTextLength:180,maxRotation:360,minFontSize:1,maxFontSize:100,maxIdLength:120});
 export const SUPPORTED_FONT_IDS=Object.freeze(['Montserrat','Lora','Lora Italic','Dancing Script','Source Code Pro','Ubuntu','Nunito','Open Sans','Raleway','Poppins','Roboto Condensed','Josefin Sans','Playfair Display','Libre Baskerville','Cormorant Garamond','Merriweather','Cinzel','Caveat','Kalam','Patrick Hand','Sacramento','Allura','Great Vibes','Parisienne','Pacifico','Amatic SC','Lobster','Oswald','Cutive Mono','Roboto Mono']);
 export const validContentId=id=>typeof id==='string'&&/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,119}$/.test(id);
 const EPSILON=.000001;

@@ -32,7 +32,7 @@ export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=n
   if(!meta?.file){missing.push(name+' (Datei fehlt im Katalog)');continue;}
   const bytes=fs.readFileSync(meta.file),hash=sha(bytes);
   let row=fontLibrary.list().find(r=>r.sha256===hash);
-  if(!row){try{row=await fontLibrary.import({name:path.basename(meta.file),bytes:bytes.toString('base64')});imported.push(name);}catch(e){missing.push(name+' ('+e.message+')');continue;}}
+  if(!row){try{row=await fontLibrary.import({name:path.basename(meta.file),bytes:bytes.toString('base64'),...(meta.glyphException?{allowMissing:true,reason:meta.glyphException.reason}:{})});imported.push(name);}catch(e){missing.push(name+' ('+e.message+')');continue;}}
   items.push(row.id);
  }
  profiles.registerFonts(fontLibrary.list());

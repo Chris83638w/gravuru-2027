@@ -35,13 +35,19 @@ def series(sizes):
 def euro(c): return 'offen' if c is None else f'{c / 100:.2f} €'.replace('.', ',')
 
 
+INVALID = []  # ungültige Familien → Exit 1 am Ende (CLAUDE.md Regel 3: ungültige Familien nie committen)
+
+
 def gaps_of(path):
     """Offene Stammdaten über die Werkstatt-Prüfung (node); ohne node: leer."""
     try:
         r = subprocess.run(['node', '--input-type=module', '-e',
                             "import fs from 'node:fs';import {validateFamily,familyGaps} from './app/workshop/product-families.mjs';const f=JSON.parse(fs.readFileSync(process.argv[1]));validateFamily(f);console.log(JSON.stringify(familyGaps(f)));",
                             str(path)], cwd=ROOT, capture_output=True, text=True, timeout=60)
-        return json.loads(r.stdout) if r.returncode == 0 else ['Prüfung fehlgeschlagen: ' + r.stderr.strip().splitlines()[-1][:120]]
+        if r.returncode != 0:
+            INVALID.append(f'{path}: ' + (r.stderr.strip().splitlines()[-1][:200] if r.stderr.strip() else 'Prüfung fehlgeschlagen'))
+            return ['Prüfung fehlgeschlagen: ' + (r.stderr.strip().splitlines()[-1][:120] if r.stderr.strip() else '')]
+        return json.loads(r.stdout)
     except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError, IndexError):
         return []
 
@@ -151,6 +157,8 @@ def main():
         print('Excel nicht erzeugt:', str(e)[:100])
     (kat / 'KATALOG.md').write_text('\n'.join(md) + '\n', encoding='utf-8')
     print(f'{len(families)} Familien → {kat / "KATALOG.md"}')
+    if INVALID:
+        print('UNGÜLTIG (nicht committen):\n  ' + '\n  '.join(INVALID), file=sys.stderr); sys.exit(1)
 
 
 if __name__ == '__main__':

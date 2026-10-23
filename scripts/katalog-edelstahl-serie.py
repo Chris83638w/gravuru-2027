@@ -125,8 +125,8 @@ def main():
     if a.bericht: Path(a.bericht).write_text(text, encoding='utf-8')
     print(text if not a.bericht else rep[3])
     if a.apply:
-        fam.setdefault('source', {})['edelstahlSerie2027'] = {'file': 'zeichnungen/edelstahl-schilder-2027/geometrie.json', 'excelSha256': geo['excelSha256'], 'drawingSha256': geo['drawingSha256'],
-            'note': 'Grundpreise aus der Excel von Chris (21.10.2026) übernommen; Rund (R) neu; Retro 1/2 offen (Kontur im Schema v2 nicht abbildbar). Bericht familien/edelstahl/quellen/edelstahl-serie-2027-abgleich.md'}
+        src = fam.setdefault('source', {})  # erlaubt nur repository/commit/path/sha256/note/shopVariants (validateFamily)
+        src['note'] = (src.get('note') or '') + f' · Serie 2027 (23.10.2026): Grundpreise aus der Excel von Chris (21.10.) übernommen, Rund (R) neu; Quelle zeichnungen/edelstahl-schilder-2027/geometrie.json (Excel-SHA {geo["excelSha256"][:12]}…, Zeichnung-SHA {geo["drawingSha256"][:12]}…); Retro 1/2 offen (Kontur im Schema v2 nicht abbildbar). Bericht familien/edelstahl/quellen/edelstahl-serie-2027-abgleich.md'
         fam_file.write_text(json.dumps(fam, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
         print(f'{fam_file} geschrieben.')
 

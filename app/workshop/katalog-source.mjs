@@ -103,7 +103,9 @@ function readFonts(root){
    if(fonts.has(f.name))fail(file,'Schrift „'+f.name+'“ doppelt.');
    const rel=typeof f.file==='string'&&f.file.trim()?f.file:null;
    const abs=rel?path.join(root,rel):null;
-   fonts.set(f.name,Object.freeze({name:f.name,category:f.category??null,license:f.license??null,status:f.status??null,inPlatform:f.inPlatform===true,file:abs&&exists(abs)?abs:null,fileListed:rel,glyphs:Number.isInteger(f.glyphs)?f.glyphs:null}));
+   fonts.set(f.name,Object.freeze({name:f.name,category:f.category??null,license:f.license??null,status:f.status??null,inPlatform:f.inPlatform===true,file:abs&&exists(abs)?abs:null,fileListed:rel,glyphs:Number.isInteger(f.glyphs)?f.glyphs:null,
+    // Ausnahme fehlender Pflichtzeichen (ß, €, Umlaute …) mit Begründung – Entscheidung von Chris in schriften.json (z. B. Versal- oder Signaturschrift).
+    glyphException:record(f.glyphException)&&typeof f.glyphException.reason==='string'&&f.glyphException.reason.trim().length>=3?Object.freeze({reason:f.glyphException.reason.trim().slice(0,200),by:f.glyphException.by??null,decided:f.glyphException.decided??null}):null}));
   }
  }
  const setsFile=path.join(root,'schriften','sets.json'),sets=new Map();

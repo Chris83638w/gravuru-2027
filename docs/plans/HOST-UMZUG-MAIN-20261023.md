@@ -1,5 +1,7 @@
 # Händlerhost auf `main` · Runbook 23.10.2026
 
+**Umgesetzt 23.10.2026 08:44** – Ablauf 1–3 durchgeführt, Prüfung bestanden (Details in STATUS.md). Abweichungen: Datenkopie und Sicherung mit `sqlite3 .backup` (Host-Python zu alt für die Backup-API); Preflight migrierte nichts (Schema blieb v4).
+
 Ziel: Der Host `app-2027` läuft mit dem Code von `main` (ein Konfigurator für alle Materialien, Hauptprodukte, Katalog-Import, Editor-Korrekturen). Datenbestände bleiben unangetastet; der alte Renderer-Store (Legacy-Pilot) läuft unverändert weiter, bis seine Produkte aus dem Katalog neu angelegt sind.
 
 ## Ist-Zustand (geprüft 23.10.)

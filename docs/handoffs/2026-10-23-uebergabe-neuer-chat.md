@@ -19,6 +19,7 @@ Kontext: Chris (Inhaber gravuru GmbH) hat Claude zum Operator des Projekts gravu
 ## WIP-Branches im Code-Repo (GitHub, ungeprüft, Agenten durch Sitzungslimit abgebrochen)
 
 - `dev/design-dashboard-20261023` (bbb95b0, Worktree `/home/claude/gravuru-2027-editor`): API `/api/workshop/designs` (+svg, PATCH), Seite `/werkstatt/designs/` (Shell eingetragen, alle Seiten re-synced), `app/workshop/design-dashboard.mjs`, `katalog-writeback.mjs`, `scripts/katalog-writeback.mjs`, `hidden` im Katalog-Import. Tests teils vorhanden; volle Suite nicht gelaufen.
+- `dev/designstrecke-edelstahl-20261023` (38c13b9): `scripts/build-design-reihe.py` (Lieferform 2 je Formatreihe aus dem Bestand) und erweitertes `read-bestand-designs.py` – die Werkzeuge zum Katalog-WIP, ungeprüft.
 - `dev/shop-einstieg-20261023` (cb71572, Worktree `/home/claude/gravuru-2027-anbindung`): `app/workshop/shop-entry*.mjs` (App-Proxy-Start, signierte Kundensitzung, Binding genau ein Treffer), `app/configurator/variant-m/shop-cart.mjs`, `ui/shop-entry*.{html,mjs}`, Einhängung in `acryl-employee-host.mjs`/`configurator-integration.mjs`, Theme-Block `ops/shopify/theme-block/`, `ops/shopify/SHOP-EINSTIEG.md`, Spec `SHOP-ENTRY.txt` (unvollständig). Warenkorb-Weg und Tests prüfen; drei Dateien mit CRLF-Warnung (nicht normalisieren).
 
 ## Host (app-2027.gravuru-designwerkstatt.de, Plesk über Chris’ Chrome „gravuru Shopify“, Tab-Sitzung 480 min)

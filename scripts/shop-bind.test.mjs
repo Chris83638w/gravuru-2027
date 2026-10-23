@@ -16,7 +16,7 @@ const KATALOG=path.join(FIXTURE,'katalog'),EXPORT=path.join(FIXTURE,'export-7x2.
 const HANDOFF=JSON.parse(fs.readFileSync(new URL('../docs/handoffs/2026-10-22-shopify-7x2-hauptprodukte.json',import.meta.url),'utf8'));
 const sha=v=>createHash('sha256').update(v).digest('hex');
 const exportDoc=()=>JSON.parse(fs.readFileSync(EXPORT,'utf8'));
-const syncPlan=(doc=exportDoc())=>planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder'),doc,{generatedAt:'2026-10-23T12:00:00.000Z'});
+const syncPlan=(doc=exportDoc())=>planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true}),doc,{generatedAt:'2026-10-23T12:00:00.000Z'});
 const STORE='fixture-store',SHOP=HANDOFF.shopDomain;
 
 // Temporäre Werkstatt-DB mit den drei 7x2-Hauptprodukten aus dem Fixture-Katalog (Import-Journal wie katalog-import).
@@ -118,7 +118,7 @@ test('run(): Dry-run ohne DB (nur Auswahl), mit DB (Prüfung), --apply nur mit -
  let out='';const dry=await run(['--plan',planFile,'--out',path.join(dir,'bind.json')],{stdout:{write:s=>out+=s},stderr:quiet});
  assert.equal(dry.schema,BIND_SCHEMA);assert.equal(dry.mode,'dry-run');assert.equal(dry.selections.length,15);assert.equal(dry.check,null);assert.equal(dry.selections[0].productId,undefined);
  assert.match(out,/15 Varianten aus 3 Konfi-Produkten, 4 ausstehend/);assert.match(out,/Dry-run: nichts geschrieben/);
- const checked=await run(['--katalog',KATALOG,'--linie','edelstahl-tuerschilder','--export',EXPORT,'--out',path.join(dir,'bind2.json'),'--db',filename,'--store-id',STORE],{stdout:quiet,stderr:quiet});
+ const checked=await run(['--katalog',KATALOG,'--linie','edelstahl-tuerschilder','--export',EXPORT,'--out',path.join(dir,'bind2.json'),'--alle-designs','--db',filename,'--store-id',STORE],{stdout:quiet,stderr:quiet});
  assert.equal(checked.mode,'dry-run');assert.equal(checked.evidence,'export:2026-10-23T00:33:00.000Z');assert.equal(checked.check[0].result.status,'id-plan-ready');assert.equal(checked.check[0].result.entries.length,15);assert.equal(checked.applied,null);
  assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'bind2.json'),'utf8')).check[0].result.status,'id-plan-ready');
  assert.match(formatBind(checked),/Prüfung Block 0\+15: id-plan-ready/);

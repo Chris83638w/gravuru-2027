@@ -13,8 +13,8 @@ Hauptprodukt `{id, name, startDesign, sizesOffered, externalIds, status}` in der
     Linie sein); weitere Themen stehen als Hinweis im Status – Zuordnung prüft Chris.
   * Name = Shopify-Titel (Datei `--shop`, Zeilen `SKU|ProduktID|Status|Handle|Preis|Varianten|CustomizationID|Titel`
     aus dem Vollexport), sonst „<Linie> <B> × <H> cm – <Designname>“ mit Hinweis.
-  * externalIds: customizationId (CSV) und shopifyProductId (Export), nie erfunden; die Shop-SKU steht im Status
-    (externalIds-Werte erlauben kein Komma, z. B. TRE-V2A-8x3,5-D4).
+  * externalIds: customizationId (CSV), sku (= Hauptdesign-Artikelnummer, Basis-SKU im Shop; shop-sync liest
+    externalIds.sku bei genau einer Größe) und shopifyProductId (Export) – nie erfunden.
   * Bestehende Hauptprodukte (gleiche id) bleiben unverändert.
 
 Aufruf:
@@ -117,7 +117,7 @@ def main():
         if d.get('katalog', {}).get('themenVorschlag') or d.get('themesVorschlag'): notes.append('Themenvorschlag unsicher: ' + ', '.join(d.get('themesVorschlag') or d['katalog'].get('themenVorschlag')))
         if d.get('review'): notes.append('Design prüfen: ' + str(d['review']))
         entry = {'id': cid, 'name': name[:160], 'startDesign': did, 'sizesOffered': [key],
-                 'externalIds': {'customizationId': cid, **({'shopifyProductId': s['productId']} if s else {})},
+                 'externalIds': {'customizationId': cid, 'sku': sku, **({'shopifyProductId': s['productId']} if s else {})},
                  'status': '; '.join(notes) + ' (eingetragen 23.10.2026, katalog-hauptprodukte.py)'}
         sub.setdefault('mainProducts', [])
         if sub['mainProducts'] is None: sub['mainProducts'] = []

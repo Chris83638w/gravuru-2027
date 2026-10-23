@@ -7,13 +7,14 @@ import {fileURLToPath} from 'node:url';
 import {openKatalog} from '../app/workshop/katalog-source.mjs';
 import {familyProductConfig} from '../app/workshop/product-families.mjs';
 import {applyPriceOverrides} from '../app/workshop/katalog-convert.mjs';
-import {mountingValues,skuBaseFor,konfiProductId,importKeyFor,targetsForLine,planShopSync,compareProduct,productSetInput,formatPlan,applyPlan,verifyApplied,toCents,run,PRODUCT_READ_QUERY,PRODUCT_SET_MUTATION,PLAN_SCHEMA} from './shop-sync.mjs';
+import {designFingerprint,DESIGN_METAFIELD,mountingValues,skuBaseFor,konfiProductId,importKeyFor,targetsForLine,planShopSync,compareProduct,productSetInput,formatPlan,applyPlan,verifyApplied,toCents,run,PRODUCT_READ_QUERY,PRODUCT_SET_MUTATION,PLAN_SCHEMA} from './shop-sync.mjs';
 
 const FIXTURE=fileURLToPath(new URL('./fixtures/shop-sync/',import.meta.url));
 const KATALOG=path.join(FIXTURE,'katalog'),EXPORT=path.join(FIXTURE,'export-7x2.json');
 const HANDOFF=JSON.parse(fs.readFileSync(new URL('../docs/handoffs/2026-10-22-shopify-7x2-hauptprodukte.json',import.meta.url),'utf8'));
 const exportDoc=()=>JSON.parse(fs.readFileSync(EXPORT,'utf8'));
-const plan=(doc=exportDoc(),only=null)=>planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{only}),doc,{generatedAt:'2026-10-23T12:00:00.000Z'});
+// Fixture-Katalog ohne Lieferform-2-Designs: Mechanik-Tests laufen mit allDesigns (Freigabe-/Design-Regel: eigener Test unten).
+const plan=(doc=exportDoc(),only=null)=>planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{only,allDesigns:true}),doc,{generatedAt:'2026-10-23T12:00:00.000Z'});
 const byMain=(p,id,size='GR-ES-RE-70X23P3-T15')=>p.entries.find(e=>e.mainProductId===id&&e.sizeKey===size);
 
 test('Befestigungswerte entsprechen exakt der Werkstatt (familyProductConfig): Kennung, Label, Aufpreis, Reihenfolge',()=>{
@@ -31,7 +32,7 @@ test('Befestigungswerte entsprechen exakt der Werkstatt (familyProductConfig): K
 });
 
 test('Soll je Hauptprodukt × Größe: Kennungen wie Handoff, Basis-SKU-Quelle, Preisüberschreibung, offene Punkte',()=>{
- const soll=targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder');
+ const soll=targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true});
  assert.deepEqual(soll.notes,['Unterkategorie „namensschilder“ ohne Hauptprodukte – kein Shop-Abgleich.']);
  assert.equal(soll.targets.length,7);
  for(const h of HANDOFF.products){
@@ -48,18 +49,18 @@ test('Soll je Hauptprodukt × Größe: Kennungen wie Handoff, Basis-SKU-Quelle, 
  assert.equal(haus.skuSource,'externalIds.sku');assert.equal(haus.basePriceCents,2499,'Preis der Unterkategorie');
  assert.deepEqual(haus.variants.map(v=>[v.sku,v.priceCents]),[['TRH-V2A-12x8-D3',2499],['TRH-V2A-12x8-D3-KGL',2848],['TRH-V2A-12x8-D3-KRA',2898],['TRH-V2A-12x8-D3-B02',2748],['TRH-V2A-12x8-D3-B02S',2768]],'Aufpreis KGL aus priceOverrides.mounting');
  // --sku-map hat Vorrang und schließt die offene Größe.
- const mapped=targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{skuMap:{'katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-120x80-t15-9900000':'TRE-V2A-12x8-D1'}}).targets.find(t=>t.mainProductId==='9900000'&&t.sizeKey==='GR-ES-RE-120X80-T15');
+ const mapped=targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true,skuMap:{'katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-120x80-t15-9900000':'TRE-V2A-12x8-D1'}}).targets.find(t=>t.mainProductId==='9900000'&&t.sizeKey==='GR-ES-RE-120X80-T15');
  assert.deepEqual([mapped.skuBase,mapped.skuSource,mapped.open],['TRE-V2A-12x8-D1','sku-map',[]]);
  assert.deepEqual(skuBaseFor({startDesign:'D1',externalIds:{sku:'X'}},{key:'A'},{sizesCount:2}).sku,null);
  // Filter wie katalog-import.
- assert.deepEqual(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{only:{subcategories:['hausnummern'],sizes:null,mainProducts:null}}).targets.map(t=>t.mainProductId),['9920000']);
- assert.deepEqual(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{only:{subcategories:null,sizes:null,mainProducts:['3200000']}}).targets.map(t=>t.konfiProductId),[HANDOFF.products[1].konfiProductId]);
+ assert.deepEqual(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true,only:{subcategories:['hausnummern'],sizes:null,mainProducts:null}}).targets.map(t=>t.mainProductId),['9920000']);
+ assert.deepEqual(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true,only:{subcategories:null,sizes:null,mainProducts:['3200000']}}).targets.map(t=>t.konfiProductId),[HANDOFF.products[1].konfiProductId]);
  assert.throws(()=>targetsForLine(openKatalog(KATALOG),'fremd'),{code:'line_missing'});
  // Offener Preis sperrt nur diese Größe.
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-shop-sync-katalog-'));fs.cpSync(KATALOG,dir,{recursive:true});
  try{
   const file=path.join(dir,'familien/edelstahl/steel-door-signs.json'),fam=JSON.parse(fs.readFileSync(file,'utf8'));fam.sizes.find(s=>s.key==='GR-ES-RE-70X23P3-T15').baseCents=null;fs.writeFileSync(file,JSON.stringify(fam));
-  const t=targetsForLine(openKatalog(dir),'edelstahl-tuerschilder').targets;
+  const t=targetsForLine(openKatalog(dir),'edelstahl-tuerschilder',{allDesigns:true}).targets;
   assert.deepEqual(t.find(x=>x.mainProductId==='3100000').open,['Preis offen: 7 × 2 cm']);assert.deepEqual(t.find(x=>x.mainProductId==='9920000').open,[]);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
@@ -91,7 +92,7 @@ test('Update: Standardvariante wird „Ohne Bohrung“ (ID bleibt), vier neue Va
  assert.match(e.sourceSha256,/^[a-f0-9]{64}$/);assert.deepEqual(e.expectedShop.variants,[{id:'gid://shopify/ProductVariant/57299000000001',sku:'TRE-V2A-8x2-D1',price:'19.90'}]);
  // Bestehende Option „Befestigung“ mit ID (Vollexport) wird über die ID angesprochen.
  const doc=exportDoc(),p=doc.products.find(x=>x.id===HANDOFF.products[0].shopifyProductId);p.options[0].id='gid://shopify/ProductOption/1';p.variants.nodes[1].price='9.99';
- const changed=byMain(planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder'),doc),'3100000');
+ const changed=byMain(planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true}),doc),'3100000');
  assert.equal(changed.action,'update');assert.deepEqual(changed.changes,['Preis TRE-V2A-7x2-D5-KGL: 9,99 € → 11,98 €']);
  assert.deepEqual(changed.variants.map(v=>v.state),['vorhanden','ändern','vorhanden','vorhanden','vorhanden']);
  assert.equal(changed.input.productOptions[0].id,'gid://shopify/ProductOption/1');assert.equal(changed.shopify.optionId,'gid://shopify/ProductOption/1');
@@ -118,10 +119,10 @@ test('Konflikt, offen und create: Fremdoption, doppelte SKU, überzählige Shop-
  const full2=exportDoc();full2.complete=true;full2.products=full2.products.filter(x=>x.handle!=='tuerschild-edelstahl-v2a-personalisiert-8x2-fixture');
  const n=byMain(plan(full2),'9900000','GR-ES-RE-80X20-T15');assert.equal(n.action,'create');
  assert.equal(n.input.id,undefined);assert.equal(n.input.status,'DRAFT');assert.equal(n.input.title,'Türschild Edelstahl – Fixture zwei Größen');assert.equal(n.input.variants.length,5);assert.ok(n.input.variants.every(v=>v.id===undefined));
- assert.throws(()=>planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder'),{...exportDoc(),shopDomain:'fremd.myshopify.com'}),{code:'shop_mismatch'});
- assert.throws(()=>planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder'),{}),{code:'export_format'});
+ assert.throws(()=>planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true}),{...exportDoc(),shopDomain:'fremd.myshopify.com'}),{code:'shop_mismatch'});
+ assert.throws(()=>planShopSync(targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true}),{}),{code:'export_format'});
  // Katalog ohne CustomizationID: Shop-Metafeld bleibt (Hinweis), kein Änderungsbedarf.
- const soll=targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder');const t=soll.targets.find(t=>t.mainProductId==='3300000');t.customizationId=null;
+ const soll=targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true});const t=soll.targets.find(t=>t.mainProductId==='3300000');t.customizationId=null;
  const noId=byMain(planShopSync(soll,exportDoc()),'3300000');assert.equal(noId.action,'unverändert');assert.match(noId.reasons[0],/^Hinweis: Shop trägt custom\.customization_id=3300000/);
  assert.equal(productSetInput(t,null,null).metafields,undefined);
  assert.deepEqual(compareProduct(t,exportDoc().products.find(x=>x.id===HANDOFF.products[2].shopifyProductId)).changes,[]);
@@ -130,7 +131,7 @@ test('Konflikt, offen und create: Fremdoption, doppelte SKU, überzählige Shop-
 test('Anwenden: Lesen vor Schreiben, productSet je Produkt, Rücklesen, Journal, Wiederholung ohne zweites Schreiben, Neuanlage nur mit --create',async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-shop-sync-journal-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
  const full=exportDoc();full.complete=true;
- const sollMitName=()=>{const s=targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder');s.targets.find(t=>t.mainProductId==='9910000').name='Türschild Edelstahl 7 × 2 cm – Fixture Neuanlage';return s;};
+ const sollMitName=()=>{const s=targetsForLine(openKatalog(KATALOG),'edelstahl-tuerschilder',{allDesigns:true});s.targets.find(t=>t.mainProductId==='9910000').name='Türschild Edelstahl 7 × 2 cm – Fixture Neuanlage';return s;};
  const p=planShopSync(sollMitName(),full,{generatedAt:'2026-10-23T12:00:00.000Z'});
  assert.equal(byMain(p,'9910000').action,'create');
  const shop=new Map(full.products.map(x=>[x.id,structuredClone(x)]));
@@ -183,10 +184,10 @@ test('Anwenden: Lesen vor Schreiben, productSet je Produkt, Rücklesen, Journal,
 
 test('run(): Dry-run schreibt den Plan und nichts sonst; --apply ohne Zugang bricht ohne Geheimnis ab',async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-shop-sync-run-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
- let out='';const {plan:p,results}=await run(['--katalog',KATALOG,'--linie','edelstahl-tuerschilder','--export',EXPORT,'--out',path.join(dir,'plan.json'),'--hauptprodukt','3100000,3300000'],{stdout:{write:s=>out+=s},stderr:{write(){}}});
+ let out='';const {plan:p,results}=await run(['--katalog',KATALOG,'--linie','edelstahl-tuerschilder','--export',EXPORT,'--out',path.join(dir,'plan.json'),'--hauptprodukt','3100000,3300000','--alle-designs'],{stdout:{write:s=>out+=s},stderr:{write(){}}});
  assert.equal(results,null);assert.deepEqual(p.entries.map(e=>e.mainProductId),['3100000','3300000']);
  assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'plan.json'),'utf8')).counts['unverändert'],2);assert.match(out,/Dry-run: nichts geschrieben/);
- await assert.rejects(run(['--katalog',KATALOG,'--linie','edelstahl-tuerschilder','--export',EXPORT,'--out',path.join(dir,'plan2.json'),'--apply'],{env:{},stdout:{write(){}},stderr:{write(){}}}),{code:'credentials_missing'});
+ await assert.rejects(run(['--katalog',KATALOG,'--linie','edelstahl-tuerschilder','--export',EXPORT,'--out',path.join(dir,'plan2.json'),'--apply','--alle-designs'],{env:{},stdout:{write(){}},stderr:{write(){}}}),{code:'credentials_missing'});
  await assert.rejects(run([],{stdout:{write(){}}}),/Aufruf/);
 });
 
@@ -195,4 +196,34 @@ test('Echter Katalog + Teilexport (lokal, wenn vorhanden): drei 7x2-Produkte unv
  const p=planShopSync(targetsForLine(openKatalog(REAL_KATALOG),'edelstahl-tuerschilder'),JSON.parse(fs.readFileSync(REAL_EXPORT,'utf8')));
  assert.deepEqual(p.entries.map(e=>[e.mainProductId,e.action]),[['3100000','unverändert'],['3200000','unverändert'],['3300000','unverändert']]);
  for(const h of HANDOFF.products)assert.deepEqual(byMain(p,h.mainProductId).variants.map(v=>v.shopifyVariantId),h.variants.map(v=>v.shopifyVariantId));
+});
+
+test('Freigabe und Design-Stand (Chris 23.10.2026): ohne Freigabe offen; erster Abgleich schreibt custom.design_sha256; gleicher Stand → unverändert trotz Datenabweichung, --daten-aktualisieren erzwingt',t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-shop-sync-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ fs.cpSync(KATALOG,dir,{recursive:true});
+ const ddir=path.join(dir,'designs','edelstahl-gravur-70x23','TRE-V2A-7x2-D5');fs.mkdirSync(ddir,{recursive:true});
+ fs.writeFileSync(path.join(ddir,'design.svg'),'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 23.3"><text id="text-1" x="35" y="12" font-size="5">Familie</text></svg>');
+ const json={id:'TRE-V2A-7x2-D5',name:'Zwei Zeilen mit Zierlinien',plateMm:[70,23.3],material:'Edelstahl',themes:['familienschilder']};
+ fs.writeFileSync(path.join(ddir,'design.json'),JSON.stringify(json));
+ const sollFor=()=>targetsForLine(openKatalog(dir),'edelstahl-tuerschilder',{only:{subcategories:null,sizes:null,mainProducts:['3100000']}});
+ // 1) nicht freigegeben → offen
+ let e=planShopSync(sollFor(),exportDoc()).entries[0];
+ assert.equal(e.action,'offen');assert.match(e.reasons[0],/nicht freigegeben \(Design-Dashboard\)/);
+ // 2) freigegeben, Shop ohne Design-Metafeld → update nur mit dem Metafeld; Fingerabdruck ignoriert freigabe/hidden
+ fs.writeFileSync(path.join(ddir,'design.json'),JSON.stringify({...json,freigabe:{status:'freigegeben',am:'2026-10-23T11:00:00.000Z',von:'test'},hidden:false}));
+ const k=openKatalog(dir),master=k.designs.masters.find(d=>d.id==='TRE-V2A-7x2-D5'),sha=designFingerprint(master);
+ assert.match(sha,/^[0-9a-f]{64}$/);assert.equal(sha,designFingerprint({...master,json:{...master.json,freigabe:null,hidden:true}}));
+ e=planShopSync(sollFor(),exportDoc()).entries[0];
+ assert.equal(e.action,'update');assert.deepEqual(e.changes.map(c=>c.split(':')[0]),['Metafeld '+DESIGN_METAFIELD.namespace+'.'+DESIGN_METAFIELD.key]);
+ assert.deepEqual(e.input.metafields.map(m=>[m.key,m.value]),[['customization_id','3100000'],['design_sha256',sha]]);assert.equal(e.expectedShop.designSha256,null);
+ // 3) Shop kennt denselben Stand → unverändert, auch wenn ein Preis abweicht; --daten-aktualisieren → update
+ const same=exportDoc();const prod=same.products.find(p=>p.id==='gid://shopify/Product/16077793821052');prod.designSha256=sha;
+ e=planShopSync(sollFor(),same).entries[0];assert.equal(e.action,'unverändert');assert.equal(e.dataChangesSkipped,undefined);
+ prod.variants.nodes[0].price='9.99';
+ e=planShopSync(sollFor(),same).entries[0];assert.equal(e.action,'unverändert');assert.equal(e.dataChangesSkipped,true);assert.match(e.reasons.at(-1),/Design unverändert/);assert.match(e.changes[0],/^Preis TRE-V2A-7x2-D5/);
+ e=planShopSync(sollFor(),same,{updateData:true}).entries[0];assert.equal(e.action,'update');assert.match(e.changes[0],/^Preis TRE-V2A-7x2-D5/);
+ // 4) Design geändert → update
+ fs.writeFileSync(path.join(ddir,'design.svg'),'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 23.3"><text id="text-1" x="35" y="14" font-size="5">Familie</text></svg>');
+ prod.variants.nodes[0].price='8.99';
+ e=planShopSync(sollFor(),same).entries[0];assert.equal(e.action,'update');assert.match(e.changes[0],/design_sha256/);
 });

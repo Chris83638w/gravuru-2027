@@ -54,6 +54,15 @@ Grundsätze
    sonst offen. Varianten: SKU = Basis (K00) bzw. Basis-'-'+skuSuffix, Preis = baseCents + priceCents,
    inventoryItem.tracked=false, Metafeld custom.customization_id = externalIds.customizationId
    (fehlt es, wird kein Metafeld gesendet; ein vorhandener Shop-Wert bleibt), Status unverändert.
+   Freigabe (Chris 23.10.2026: Katalog → Dashboard → manuelle Prüfung/Freigabe → Shopify): nur
+   Hauptprodukte, deren Startdesign im Katalog (Lieferform 2) liegt und im Design-Dashboard freigegeben
+   ist (design.json.freigabe.status = freigegeben), werden geplant; sonst „offen“ mit Grund. --alle-designs
+   hebt das für Tests auf. Design-Stand: Metafeld custom.design_sha256 = SHA-256 über design.svg +
+   design.json (ohne freigabe/hidden) des Startdesigns, wird bei create/update mitgesendet.
+   Bestehende Shop-Produkte werden nur angefasst, wenn sich der Design-Stand geändert hat (Metafeld ≠
+   Katalog) oder das Metafeld im Shop fehlt; gleicher Stand → „unverändert“, auch bei Datenabweichungen
+   (changes werden gelistet, dataChangesSkipped:true). --daten-aktualisieren erzwingt das Datenupdate.
+   shop-export liefert designSha256 je Produkt, shop-bind nimmt --alle-designs entgegen.
    Zuordnung Shop-Produkt: alle Soll-SKUs im Export suchen → genau ein Produkt. Eine SKU auf mehreren
    Produkten oder Soll-SKUs auf mehreren Produkten → „konflikt“. Kein Treffer: „create“ (nur bei
    vollständigem Export und vorhandenem mainProducts[].name, als DRAFT ohne Texte/Bilder), sonst „offen“.

@@ -16,7 +16,7 @@ export const SKU_INDEX_SCHEMA='gravuru-shop-sku-index/v1';
 export const SUMMARY_SCHEMA='gravuru-shop-export-summary/v1';
 export const METAFIELD={namespace:'custom',key:'customization_id'};
 const VARIANT_FIELDS='id sku title price compareAtPrice inventoryItem{tracked} selectedOptions{name value}';
-export const PRODUCTS_QUERY=`query GravuruShopExport($first:Int!,$after:String,$variants:Int!){products(first:$first,after:$after,sortKey:ID){nodes{id title handle status productType vendor tags updatedAt options{id name position optionValues{id name}} metafield(namespace:"${METAFIELD.namespace}",key:"${METAFIELD.key}"){value} variants(first:$variants){nodes{${VARIANT_FIELDS}} pageInfo{hasNextPage endCursor}}} pageInfo{hasNextPage endCursor}}}`;
+export const PRODUCTS_QUERY=`query GravuruShopExport($first:Int!,$after:String,$variants:Int!){products(first:$first,after:$after,sortKey:ID){nodes{id title handle status productType vendor tags updatedAt options{id name position optionValues{id name}} metafield(namespace:"${METAFIELD.namespace}",key:"${METAFIELD.key}"){value} designSha:metafield(namespace:"custom",key:"design_sha256"){value} variants(first:$variants){nodes{${VARIANT_FIELDS}} pageInfo{hasNextPage endCursor}}} pageInfo{hasNextPage endCursor}}}`;
 export const VARIANTS_QUERY=`query GravuruShopExportVariants($id:ID!,$first:Int!,$after:String){product(id:$id){id variants(first:$first,after:$after){nodes{${VARIANT_FIELDS}} pageInfo{hasNextPage endCursor}}}}`;
 
 const SECRET=/^[A-Za-z0-9_-]{16,256}$/,TOKEN=/^[\x21-\x7e]{16,4096}$/;
@@ -119,6 +119,7 @@ export function normalizeProduct(p){
   // Werte aus optionValues (API ≥ 2024-04); ältere Exporte liefern `values` direkt.
   options:(p.options||[]).map(o=>({id:o.id??null,name:o.name,position:o.position??null,values:Array.isArray(o.optionValues)?o.optionValues.map(v=>v.name):Array.isArray(o.values)?o.values:[],...(Array.isArray(o.optionValues)?{optionValueIds:o.optionValues.map(v=>v.id??null)}:{})})),
   metafield:p.metafield&&typeof p.metafield.value==='string'?{value:p.metafield.value}:null,
+  designSha256:p.designSha&&typeof p.designSha.value==='string'?p.designSha.value:null,
   variants:{nodes:(p.variants?.nodes||[]).map(normalizeVariant)}};
 }
 

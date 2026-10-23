@@ -1,7 +1,9 @@
 // Shop-Abgleich je Katalog-Linie: Soll-Daten der Hauptprodukte (Familie, Unterkategorie, Größe) gegen den
 // Shopify-Export (scripts/shop-export.mjs) → Plan mit productSet-Eingaben (update / create / konflikt / offen / unverändert).
 // Aufruf: node scripts/shop-sync.mjs --katalog <pfad> --linie <id> --export <products.json> --out <plan.json>
-//         [--unterkategorie a,b] [--groesse k1,k2] [--hauptprodukt id] [--sku-map <json>] [--apply [--create] [--journal <ordner>]]
+//         [--unterkategorie a,b] [--groesse k1,k2] [--hauptprodukt id] [--sku-map <json>] [--alle-designs] [--daten-aktualisieren] [--apply [--create] [--journal <ordner>]]
+// Nur Hauptprodukte mit freigegebenem Startdesign (Design-Dashboard) werden geplant (--alle-designs hebt das für Probeläufe auf).
+// Bestehende Shop-Produkte werden nur angefasst, wenn sich das Design geändert hat (Metafeld custom.design_sha256); --daten-aktualisieren erzwingt Datenupdates.
 // Ohne --apply wird nur geplant. --apply braucht GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN oder das Client-Geheimnis
 // (Datei/Umgebung, siehe shop-export.mjs) und schreibt je Produkt ein Journal. Spezifikation: scripts/SHOP-SYNC.txt.
 import fs from 'node:fs';
@@ -17,6 +19,15 @@ export {SHOP_DOMAIN,API_VERSION};
 export const PLAN_SCHEMA='gravuru-shop-sync-plan/v1';
 export const OPTION_NAME='Befestigung';
 export const METAFIELD=Object.freeze({namespace:'custom',key:'customization_id',type:'single_line_text_field'});
+// Design-Stand im Shop (Chris 23.10.2026: „Alte werden nur geupdatet, wenn wir das Design ändern“): SHA-256 über
+// design.svg + design.json (ohne freigabe/hidden) des Startdesigns, als Metafeld am Shop-Produkt. Gleicher Wert
+// im Export → Produkt bleibt unverändert, auch wenn Daten abweichen (nur --daten-aktualisieren greift).
+export const DESIGN_METAFIELD=Object.freeze({namespace:'custom',key:'design_sha256',type:'single_line_text_field'});
+export function designFingerprint(master){
+ if(!master)return null;
+ const json={...(master.json||{})};delete json.freigabe;delete json.hidden;
+ return createHash('sha256').update(master.svg()).update('\n').update(JSON.stringify(json)).digest('hex');
+}
 export const ACTIONS=Object.freeze(['unverändert','update','create','konflikt','offen']);
 const PRODUCT_FIELDS=`id handle title status options{id name position optionValues{id name}} metafield(namespace:"${METAFIELD.namespace}",key:"${METAFIELD.key}"){value} variants(first:100){nodes{id sku price inventoryItem{tracked} selectedOptions{name value}} pageInfo{hasNextPage}}`;
 export const PRODUCT_READ_QUERY=`query GravuruShopSyncRead($id:ID!){shop{myshopifyDomain currencyCode} product(id:$id){${PRODUCT_FIELDS}}}`;
@@ -60,7 +71,7 @@ export function skuBaseFor(main,size,{sizesCount,skuMap={},konfiId}={}){
 const stripFamily=f=>{const {_file,_material,...rest}=f;return structuredClone(rest);};
 
 // Soll je Hauptprodukt × Größe einer Linie. `only`: {subcategories, sizes, mainProducts} wie katalog-import.
-export function targetsForLine(katalog,lineId,{only=null,skuMap={}}={}){
+export function targetsForLine(katalog,lineId,{only=null,skuMap={},allDesigns=false}={}){
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').','line_missing');
  const targets=[],notes=[];
  if(!line.families.length)notes.push('Linie „'+line.id+'“ hat noch keine Familie.');
@@ -83,8 +94,12 @@ export function targetsForLine(katalog,lineId,{only=null,skuMap={}}={}){
      const variants=values.map(v=>({mountingKey:v.key,ruleId:v.ruleId,label:v.label,sku:base.sku?(v.key==='K00'?base.sku:base.sku+'-'+v.skuSuffix):null,surchargeCents:v.priceCents,priceCents:size.baseCents===null||v.priceCents===null?null:size.baseCents+v.priceCents}));
      if(!variants.length)open.push('Keine Befestigung für '+size.label+' (Familie ohne „Ohne Bohrung“ und ohne Regeln).');
      const customizationId=typeof main.externalIds?.customizationId==='string'?main.externalIds.customizationId:null;
+     const master=katalog.designs.masters.find(d=>d.id===main.startDesign)??null;
+     if(!master){if(!allDesigns)open.push('Startdesign „'+main.startDesign+'“ nicht im Katalog (Lieferform 2) – keine Freigabe möglich.');}
+     else if(!master.released&&!allDesigns)open.push('Startdesign „'+main.startDesign+'“ nicht freigegeben (Design-Dashboard).');
+     const designSha256=master?designFingerprint(master):null;
      targets.push({konfiProductId:id,importKey:importKeyFor(line.id,sub.id,size.key,main.id),line:line.id,subcategory:sub.id,family:familyId,sizeKey:size.key,sizeLabel:size.label,
-      mainProductId:main.id,startDesign:main.startDesign,name:main.name??null,customizationId,skuBase:base.sku,skuSource:base.source??null,basePriceCents:size.baseCents,variants,open});
+      mainProductId:main.id,startDesign:main.startDesign,designSha256,designReleased:master?.released===true,name:main.name??null,customizationId,skuBase:base.sku,skuSource:base.source??null,basePriceCents:size.baseCents,variants,open});
     }
    }
   }
@@ -139,6 +154,7 @@ export function compareProduct(target,shop){
  else if(JSON.stringify(befestigung.values)!==JSON.stringify(sollValues))changes.push('Optionswerte „'+OPTION_NAME+'“: ['+befestigung.values.join(' | ')+'] → ['+sollValues.join(' | ')+']');
  if(target.customizationId!==null){if(shop.metafield?.value!==target.customizationId)changes.push('Metafeld '+METAFIELD.namespace+'.'+METAFIELD.key+': '+(shop.metafield?.value??'(leer)')+' → '+target.customizationId);}
  else if(shop.metafield?.value)changes.push('Hinweis: Shop trägt '+METAFIELD.namespace+'.'+METAFIELD.key+'='+shop.metafield.value+', Katalog nennt keine CustomizationID (bleibt unverändert).');
+ if(target.designSha256&&(shop.designSha256??null)!==target.designSha256)changes.push('Metafeld '+DESIGN_METAFIELD.namespace+'.'+DESIGN_METAFIELD.key+': '+(shop.designSha256?shop.designSha256.slice(0,12)+'…':'(leer)')+' → '+target.designSha256.slice(0,12)+'… (Design geändert oder erster Abgleich)');
  // Alle Soll-SKUs im Shop vorhanden, aber doppelt → Konflikt (nie stiller Erster-Treffer).
  for(const sku of soll){const n=shop.variants.nodes.filter(s=>(s.sku||'').trim()===sku).length;if(n>1)conflicts.push('SKU '+sku+' kommt im Shop-Produkt '+n+'× vor.');}
  return {rows,changes:changes.filter(c=>!c.startsWith('Hinweis:')),notes:changes.filter(c=>c.startsWith('Hinweis:')),conflicts,optionId:befestigung?.id??null};
@@ -149,12 +165,13 @@ export function productSetInput(target,shop,rows){
  const existing=shop?.options.find(o=>o.name===OPTION_NAME);
  const options=[{...(existing?.id?{id:existing.id}:{}),name:OPTION_NAME,position:1,values:target.variants.map(v=>({name:v.label}))}];
  const variants=target.variants.map((v,i)=>{const id=rows?.[i]?.shopifyVariantId;return {...(id?{id}:{}),price:money(v.priceCents),sku:v.sku,position:i+1,optionValues:[{optionName:OPTION_NAME,name:v.label}],inventoryItem:{tracked:false}};});
- const metafields=target.customizationId===null?{}:{metafields:[{namespace:METAFIELD.namespace,key:METAFIELD.key,type:METAFIELD.type,value:target.customizationId}]};
+ const list=[...(target.customizationId===null?[]:[{namespace:METAFIELD.namespace,key:METAFIELD.key,type:METAFIELD.type,value:target.customizationId}]),...(target.designSha256?[{namespace:DESIGN_METAFIELD.namespace,key:DESIGN_METAFIELD.key,type:DESIGN_METAFIELD.type,value:target.designSha256}]:[])];
+ const metafields=list.length?{metafields:list}:{};
  if(shop)return {id:shop.id,productOptions:options,variants,...metafields};
  return {title:target.name,status:'DRAFT',productOptions:options,variants,...metafields};
 }
 
-export function planShopSync(soll,exportDoc,{shopDomain=SHOP_DOMAIN,generatedAt=new Date().toISOString(),katalogRoot=null}={}){
+export function planShopSync(soll,exportDoc,{shopDomain=SHOP_DOMAIN,generatedAt=new Date().toISOString(),katalogRoot=null,updateData=false}={}){
  const ex=indexExport(exportDoc);
  if(ex.shopDomain&&ex.shopDomain!==shopDomain)fail('Export stammt von '+ex.shopDomain+', Plan ist für '+shopDomain+'.','shop_mismatch');
  const entries=soll.targets.map(target=>{
@@ -177,9 +194,10 @@ export function planShopSync(soll,exportDoc,{shopDomain=SHOP_DOMAIN,generatedAt=
   const shopify={productId:shop.id,handle:shop.handle,title:shop.title,status:shop.status,optionId:cmp.optionId};
   if(cmp.conflicts.length)return {...base,action:'konflikt',reasons:cmp.conflicts,shopify,variants:cmp.rows,changes:cmp.changes,input:null,sourceSha256:null};
   if(!cmp.changes.length)return {...base,action:'unverändert',reasons:cmp.notes,shopify,variants:cmp.rows,changes:[],input:null,sourceSha256:null};
+  if(target.designSha256&&shop.designSha256===target.designSha256&&!updateData)return {...base,action:'unverändert',reasons:[...cmp.notes,'Design unverändert (Metafeld '+DESIGN_METAFIELD.key+' gleich) – '+cmp.changes.length+' Datenabweichung(en) bleiben, bis --daten-aktualisieren gesetzt ist.'],shopify,variants:cmp.rows,changes:cmp.changes,dataChangesSkipped:true,input:null,sourceSha256:null};
   const input=productSetInput(target,shop,cmp.rows);
   return {...base,action:'update',reasons:cmp.notes,shopify,variants:cmp.rows,changes:cmp.changes,input,sourceSha256:sha(input),
-   expectedShop:{variants:shop.variants.nodes.map(v=>({id:v.id,sku:v.sku??null,price:v.price})),options:shop.options.map(o=>o.name),metafield:shop.metafield?.value??null}};
+   expectedShop:{variants:shop.variants.nodes.map(v=>({id:v.id,sku:v.sku??null,price:v.price})),options:shop.options.map(o=>o.name),metafield:shop.metafield?.value??null,designSha256:shop.designSha256??null}};
  });
  const counts=Object.fromEntries(ACTIONS.map(a=>[a,entries.filter(e=>e.action===a).length]));
  return {schema:PLAN_SCHEMA,shopDomain,apiVersion:API_VERSION,generatedAt,katalog:katalogRoot,line:soll.line,export:{exportedAt:ex.exportedAt,complete:ex.complete,products:ex.products.length},notes:soll.notes,counts,entries};
@@ -264,16 +282,16 @@ export function parseArgs(argv){
  const value=name=>{const i=argv.indexOf('--'+name);return i>=0&&!String(argv[i+1]??'').startsWith('--')?argv[i+1]:undefined;};
  const list=name=>value(name)?value(name).split(',').map(v=>v.trim()).filter(Boolean):null;
  const only=(list('unterkategorie')||list('groesse')||list('hauptprodukt'))?{subcategories:list('unterkategorie'),sizes:list('groesse'),mainProducts:list('hauptprodukt')}:null;
- return {katalog:value('katalog')||process.env.GRAVURU_KATALOG,line:value('linie'),exportFile:value('export'),out:value('out'),skuMap:value('sku-map'),journal:value('journal'),only,apply:argv.includes('--apply'),create:argv.includes('--create'),quiet:argv.includes('--quiet')};
+ return {katalog:value('katalog')||process.env.GRAVURU_KATALOG,line:value('linie'),exportFile:value('export'),out:value('out'),skuMap:value('sku-map'),journal:value('journal'),only,apply:argv.includes('--apply'),create:argv.includes('--create'),allDesigns:argv.includes('--alle-designs'),updateData:argv.includes('--daten-aktualisieren'),quiet:argv.includes('--quiet')};
 }
 export async function run(argv,{env=process.env,fetchImpl=globalThis.fetch,stdout=process.stdout,stderr=process.stderr}={}){
  const args=parseArgs(argv);
  if(!args.katalog||!args.line||!args.exportFile||!args.out)fail('Aufruf: node scripts/shop-sync.mjs --katalog <pfad> --linie <id> --export <products.json> --out <plan.json> [--unterkategorie a,b] [--groesse k1,k2] [--hauptprodukt id] [--sku-map <json>] [--apply [--create] [--journal <ordner>]]');
  const log=m=>{if(!args.quiet)stderr.write(m+'\n');};
  const katalog=openKatalog(args.katalog),skuMap=args.skuMap?JSON.parse(fs.readFileSync(args.skuMap,'utf8')):{};
- const soll=targetsForLine(katalog,args.line,{only:args.only,skuMap});
+ const soll=targetsForLine(katalog,args.line,{only:args.only,skuMap,allDesigns:args.allDesigns});
  const exportDoc=JSON.parse(fs.readFileSync(args.exportFile,'utf8'));
- const plan=planShopSync(soll,exportDoc,{katalogRoot:katalog.root});
+ const plan=planShopSync(soll,exportDoc,{katalogRoot:katalog.root,updateData:args.updateData});
  fs.mkdirSync(path.dirname(path.resolve(args.out)),{recursive:true});
  fs.writeFileSync(args.out,JSON.stringify(plan,null,1)+'\n');
  stdout.write(formatPlan(plan)+'\nPlan: '+args.out+'\n');

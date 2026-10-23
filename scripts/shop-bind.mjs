@@ -125,7 +125,7 @@ export function parseArgs(argv){
  const value=name=>{const i=argv.indexOf('--'+name);return i>=0&&!String(argv[i+1]??'').startsWith('--')?argv[i+1]:undefined;};
  const list=name=>value(name)?value(name).split(',').map(v=>v.trim()).filter(Boolean):null;
  const only=(list('unterkategorie')||list('groesse')||list('hauptprodukt'))?{subcategories:list('unterkategorie'),sizes:list('groesse'),mainProducts:list('hauptprodukt')}:null;
- return {plan:value('plan'),katalog:value('katalog')||process.env.GRAVURU_KATALOG,line:value('linie'),exportFile:value('export'),out:value('out'),db:value('db'),storeId:value('store-id'),tenant:value('tenant')||'gravuru',only,apply:argv.includes('--apply'),live:argv.includes('--live'),trustExport:argv.includes('--trust-export'),quiet:argv.includes('--quiet')};
+ return {plan:value('plan'),katalog:value('katalog')||process.env.GRAVURU_KATALOG,line:value('linie'),exportFile:value('export'),out:value('out'),db:value('db'),storeId:value('store-id'),tenant:value('tenant')||'gravuru',only,allDesigns:argv.includes('--alle-designs'),apply:argv.includes('--apply'),live:argv.includes('--live'),trustExport:argv.includes('--trust-export'),quiet:argv.includes('--quiet')};
 }
 export async function run(argv,{env=process.env,fetchImpl=globalThis.fetch,stdout=process.stdout,stderr=process.stderr,clock=Date.now}={}){
  const args=parseArgs(argv);
@@ -135,7 +135,7 @@ export async function run(argv,{env=process.env,fetchImpl=globalThis.fetch,stdou
  if(args.apply)log('Aktivierung über Werkstatt-DB '+args.db+' (Store '+args.storeId+').');
  let syncPlan,exportDoc=null;
  if(args.plan){syncPlan=JSON.parse(fs.readFileSync(args.plan,'utf8'));if(args.exportFile)exportDoc=JSON.parse(fs.readFileSync(args.exportFile,'utf8'));}
- else{exportDoc=JSON.parse(fs.readFileSync(args.exportFile,'utf8'));syncPlan=planShopSync(targetsForLine(openKatalog(args.katalog),args.line,{only:args.only}),exportDoc);}
+ else{exportDoc=JSON.parse(fs.readFileSync(args.exportFile,'utf8'));syncPlan=planShopSync(targetsForLine(openKatalog(args.katalog),args.line,{only:args.only,allDesigns:args.allDesigns}),exportDoc);}
  const base=bindSelections(syncPlan);
  const doc={schema:BIND_SCHEMA,shopDomain:base.shopDomain,generatedAt:new Date(clock()).toISOString(),source:args.plan?{syncPlan:path.resolve(args.plan)}:{katalog:path.resolve(args.katalog),line:args.line,export:path.resolve(args.exportFile)},line:base.line,optionGroup:OPTION_GROUP,mode:'dry-run',selections:base.selections,pending:base.pending,check:null,applied:null};
  let ws=null;

@@ -77,7 +77,7 @@ export function validateLine(line,{families,themes,fontSets,file='linie'}={}){
     if(typeof m.startDesign!=='string'||!/^[A-Za-z0-9][A-Za-z0-9_.,:-]{0,119}$/.test(m.startDesign))fail(file,'Hauptprodukt „'+m.id+'“: startDesign (Design-Kennung) fehlt.');
     if(m.name!==undefined&&m.name!==null&&!text(m.name,160))fail(file,'Hauptprodukt „'+m.id+'“: Name prüfen.');
     if(m.sizesOffered!==null&&m.sizesOffered!==undefined&&(!Array.isArray(m.sizesOffered)||!m.sizesOffered.length||m.sizesOffered.some(k=>!id(k))))fail(file,'Hauptprodukt „'+m.id+'“: sizesOffered ist eine Liste von Größen-Schlüsseln.');
-    if(m.externalIds!==undefined&&m.externalIds!==null&&(!record(m.externalIds)||Object.entries(m.externalIds).some(([k,v])=>!id(k)||!(typeof v==='string'&&/^[A-Za-z0-9._:-]{1,64}$/.test(v)))))fail(file,'Hauptprodukt „'+m.id+'“: externalIds ist eine Zuordnung Kennung → Wert.');
+    if(m.externalIds!==undefined&&m.externalIds!==null&&(!record(m.externalIds)||Object.entries(m.externalIds).some(([k,v])=>!id(k)||!(typeof v==='string'&&/^[A-Za-z0-9._:,()-]{1,64}$/.test(v)))))fail(file,'Hauptprodukt „'+m.id+'“: externalIds ist eine Zuordnung Kennung → Wert.');
     if(m.status!==undefined&&typeof m.status!=='string')fail(file,'Hauptprodukt „'+m.id+'“: Status prüfen.');
    }
   }

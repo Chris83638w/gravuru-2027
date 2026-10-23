@@ -1,3 +1,9 @@
+## Delegation an weitere Accounts · 23.10.2026 12:35 (Claude als Operator, Account 1)
+
+- Entscheidungen Chris (Issue #10): Vorlagen-Grenze 100 (umgesetzt 6ac782d/b60692b), Schriften (umgesetzt, Katalog 0fcf3cf), Kontur-Form Option A (offen → Paket A/B), 40 Excel-Preise gelten; offen: Rund 8,5/12/16/20, Retro-Preise außer 9×6.
+- Account 1 ist nahe am Wochenlimit → Bauarbeit geht an Claude-Account 2 (Fable, Operator) und drei ChatGPT-Accounts. Aufgaben, Regeln und Startprompts: `docs/handoffs/2026-10-23-delegation.md` (Pakete A Kontur-Schema, B Kontur-Konfigurator, C Import speicherschonend, D Katalog auf den Host, E Shopify-Strecke; F Corel-Konturen, G Matrixify-Texte, H Bestandsbögen Acryl/Kunststoff).
+- Dry-run Edelstahl nach Schriftentscheidungen: 584 neu, 40 gesperrt (32 Rund-Preis offen, 8 Startdesign ≠ Größe); braucht derzeit ~6 GB Heap (Paket C).
+
 ## Host auf c929cf3, Übergabe Upload-Account · 23.10.2026 (Claude als Operator)
 
 - Katalog-Repo: `dev/bestand-edelstahl-neu-20261023` nach `main` gebracht (Merge-Commit c8fc575, Baum = Branch; der Branch war ein Wurzelcommit ohne gemeinsamen Vorfahren, 0 Löschungen gegenüber main). Entscheidungen für Chris gesammelt in Issue gravuru-2027 #10.

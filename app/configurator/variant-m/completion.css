@@ -16,3 +16,5 @@
 /* Keep checkout controls visible while the review content scrolls. */
 .ux-completion-dialog[open]{display:flex!important;flex-direction:column;overflow:hidden!important;max-height:calc(100dvh - 24px)!important}.ux-completion-dialog>header{flex:none}.completion-review-body{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding-bottom:12px}.completion-review-footer{flex:none;background:#fff;padding:12px 0 max(8px,env(safe-area-inset-bottom));margin-top:0;box-shadow:0 -6px 12px #203c2e0a}
 
+/* Shop-Einstieg (shop-cart.mjs): echte Kaufaktion im Abschlussdialog, farblich wie „Gestaltung fertig“. */
+.completion-review-footer .completion-cart{flex:1 1 100%;background:#175b42!important;color:#fff!important;border:1px solid #175b42!important;border-radius:10px!important;font-weight:700!important;min-height:46px}.completion-review-footer .completion-cart:disabled{opacity:.7}.completion-review-footer [data-shop-cart-status]{width:100%;font-size:13px;color:#2e4a3c;margin:0}.completion-review-footer [data-shop-cart-status][hidden]{display:none}

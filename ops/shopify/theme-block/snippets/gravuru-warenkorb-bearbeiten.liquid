@@ -1,0 +1,18 @@
+{%- comment -%}
+  Gravuru Konfigurator · „Bearbeiten“ in der Warenkorbzeile (K8, app/workshop/SHOP-ENTRY.txt).
+  Einbau im Theme (nicht in der App-Erweiterung): innerhalb der Schleife `for item in cart.items`
+    {% render 'gravuru-warenkorb-bearbeiten', item: item %}
+  Die versteckten Eigenschaften _gravuru_config/_gravuru_rev setzt der Server beim Anlegen der Zeile; sie
+  öffnen genau diese Konfigurations-Revision wieder – nur auf dem Gerät mit dem privaten Entwurfszugang.
+  `line` meldet, dass die Zeile noch im Warenkorb liegt (ersetzen statt neu anlegen); den tatsächlichen
+  Zeilenanker liest der Server aus seinem Register, nicht aus diesem Wert.
+{%- endcomment -%}
+{%- liquid
+  assign gv_config = item.properties['_gravuru_config']
+  assign gv_rev = item.properties['_gravuru_rev']
+  assign gv_subpath = subpath | default: 'konfigurator'
+-%}
+{%- if gv_config != blank and gv_rev != blank and item.product != blank and item.variant != blank -%}
+  <a class="gravuru-cart-edit" rel="nofollow"
+     href="/apps/{{ gv_subpath }}/start?product={{ item.product.id }}&amp;variant={{ item.variant.id }}&amp;config={{ gv_config | url_encode }}&amp;rev={{ gv_rev | url_encode }}&amp;line={{ item.key | url_encode }}&amp;back={{ item.product.url | split: '?' | first | url_encode }}">Bearbeiten</a>
+{%- endif -%}

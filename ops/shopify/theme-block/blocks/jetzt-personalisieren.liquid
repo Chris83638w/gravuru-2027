@@ -1,0 +1,56 @@
+{%- comment -%}
+  Gravuru Konfigurator · Theme-App-Block „Jetzt personalisieren“ (app/workshop/SHOP-ENTRY.txt).
+  Sichtbar nur auf Produktseiten, deren Produkt das Metafeld custom.customization_id trägt (die Konfi-Produkt-
+  kennung aus der Werkstatt, Shopify-Übergabe 22.10.2026). Der Knopf führt zum App-Proxy-Start
+  /apps/<subpath>/start mit Shopify-Produkt- und Varianten-ID; Shopify signiert die Anfrage, der Server löst die
+  Zuordnung ausschließlich über die Binding-Registry auf. Kein Preis, keine SKU, kein Handle wird übergeben.
+  Der Variantenwechsel auf der Seite wird vom Skript gravuru-personalisieren.js übernommen (Formularfeld
+  name="id", URL-Parameter ?variant=, Theme-Ereignisse); der Link bleibt auch ohne JavaScript nutzbar.
+{%- endcomment -%}
+{%- liquid
+  assign gv_konfi_id = product.metafields.custom.customization_id.value
+  assign gv_variant = product.selected_or_first_available_variant
+  assign gv_subpath = block.settings.subpath | default: 'konfigurator' | strip
+  assign gv_start = '/apps/' | append: gv_subpath | append: '/start'
+  assign gv_back = product.url | split: '?' | first
+-%}
+{%- if request.page_type == 'product' and product != blank and gv_konfi_id != blank and gv_variant != blank -%}
+  <div class="gravuru-personalisieren" {{ block.shopify_attributes }}
+       data-gravuru-personalisieren
+       data-start="{{ gv_start }}"
+       data-product-id="{{ product.id }}"
+       data-variant-id="{{ gv_variant.id }}"
+       data-back="{{ gv_back }}">
+    <a class="gravuru-personalisieren__button button button--primary"
+       data-gravuru-start
+       rel="nofollow"
+       href="{{ gv_start }}?product={{ product.id }}&amp;variant={{ gv_variant.id }}&amp;back={{ gv_back | url_encode }}">
+      {{ block.settings.label | default: 'Jetzt personalisieren' | escape }}
+    </a>
+    {%- if block.settings.hint != blank -%}
+      <p class="gravuru-personalisieren__hint">{{ block.settings.hint | escape }}</p>
+    {%- endif -%}
+  </div>
+  <style>
+    .gravuru-personalisieren{margin:12px 0 16px}
+    .gravuru-personalisieren__button{display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:48px;padding:12px 20px;font-weight:700;text-decoration:none;box-sizing:border-box}
+    .gravuru-personalisieren__hint{margin:8px 0 0;font-size:.9em;opacity:.8}
+  </style>
+{%- elsif request.design_mode and request.page_type == 'product' -%}
+  <div {{ block.shopify_attributes }} class="gravuru-personalisieren gravuru-personalisieren--hinweis">
+    Gravuru: Dieses Produkt trägt kein Metafeld <code>custom.customization_id</code>. Der Knopf „Jetzt personalisieren“ erscheint nur bei Konfi-Produkten.
+  </div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Jetzt personalisieren",
+  "target": "section",
+  "enabled_on": {"templates": ["product"]},
+  "javascript": "gravuru-personalisieren.js",
+  "settings": [
+    {"type": "text", "id": "label", "label": "Beschriftung", "default": "Jetzt personalisieren"},
+    {"type": "text", "id": "hint", "label": "Hinweis unter dem Knopf", "default": "Design wählen, Text gestalten, eigenes Foto hochladen."},
+    {"type": "text", "id": "subpath", "label": "App-Proxy-Unterpfad (wie in der App-Konfiguration)", "default": "konfigurator", "info": "Der Knopf öffnet /apps/<Unterpfad>/start. Muss zum App-Proxy der App „Gravuru Konfigurator“ passen."}
+  ]
+}
+{% endschema %}

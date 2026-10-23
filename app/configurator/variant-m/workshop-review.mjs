@@ -1,6 +1,7 @@
 import {cleanObject} from './contract.mjs';
 import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
+import {installShopCart} from './shop-cart.mjs';
 
 const base64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Die Bilddatei konnte nicht gelesen werden.'));reader.readAsDataURL(blob);});
 async function referencePng(svg,geometry){
@@ -15,6 +16,8 @@ export function installWorkshopReview(api,footer){
  const testGate=window.parent.GravuruConfiguratorTest;
  const universalTest=()=>typeof testGate?.submitCart==='function'&&testGate.productId===binding.productId&&testGate.productRevision===binding.productRevision;
  if(!binding||(!api.config?.acrylic&&!api.config?.doorbell&&!['slate','steel'].includes(api.config?.profile?.material?.kind)))return;
+ // Öffentlicher Shop-Einstieg (SHOP-ENTRY.txt): Kunden sehen „In den Warenkorb“ statt der Werkstatt-/Testknöpfe.
+ if(window.parent.GravuruShopEntry)return void installShopCart(api,footer,window.parent.GravuruShopEntry);
  const button=document.createElement('button'),status=document.createElement('p'),link=document.createElement('a');
  button.type='button';button.textContent='Für die Werkstattprüfung sichern';button.dataset.acrylicReview='';status.setAttribute('role','status');status.setAttribute('aria-live','polite');link.textContent='Gesicherten Stand im Dashboard öffnen →';link.target='_blank';link.rel='noopener';link.hidden=true;link.dataset.acrylicReviewLink='';
  const testButton=document.createElement('button'),checkout=document.createElement('a');

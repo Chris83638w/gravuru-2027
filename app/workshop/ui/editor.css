@@ -78,3 +78,48 @@ body.editing-product main{padding:0;max-width:none}.editing-product .page-footer
 .design-gallery-actions{display:flex;flex-wrap:wrap;gap:8px}.design-gallery-actions button{font-size:12px;padding:10px;white-space:normal}
 #workspace-product[hidden],#workspace-designs[hidden]{display:none}
 @media(max-width:760px){.workspace-tabs{padding:10px 12px 0}.workspace-tabs button{font-size:14px}#workspace-product,#workspace-designs{padding:12px}#editor-designs{grid-template-columns:repeat(auto-fill,minmax(105px,1fr));padding:12px 0}}
+
+/* Catalogue editing is the same stage and selection UI with a smaller action scope. */
+.editing-katalog [hidden]{display:none!important}
+.editing-katalog .workspace-tabs,.editing-katalog #workspace-product,.editing-katalog #workspace-designs,
+.editing-katalog .rail-secondary,.editing-katalog .record-aside,.editing-katalog .stage-toolbar label,
+.editing-katalog [data-editor-action=motif],.editing-katalog [data-editor-action=photo]{display:none}
+.editing-katalog .editor-heading{flex-wrap:wrap;gap:16px;padding:18px 24px}
+.editing-katalog .editor-heading .button-row{flex-wrap:wrap;gap:8px}
+.editing-katalog .editor-heading button,.editing-katalog .authoring-tools button,
+.editing-katalog #editor-elements button,.editing-katalog .element-actions button{min-height:44px}
+.editing-katalog .editor-panel input,.editing-katalog .editor-panel select{min-height:44px}
+.editing-katalog #record-revision{overflow-wrap:anywhere}
+.editing-katalog #editor-preview>svg{min-height:420px;height:560px;aspect-ratio:auto}
+.editing-katalog .stage-toolbar{min-height:42px}
+.editing-katalog .stage-toolbar #stage-status{max-width:none;text-align:left}
+.editing-katalog #stage-price:empty{display:none}
+.editing-katalog .element-rail{border-top:0;margin-top:10px;padding-top:0}
+.editing-katalog .editor-guide-toggle{display:flex;align-items:center;gap:8px;min-height:44px;font-size:13px}
+.editing-katalog .editor-panel,.editing-katalog .editor-rail{overflow-wrap:anywhere}
+#katalog-fit-dialog{width:min(760px,calc(100vw - 24px));max-width:calc(100vw - 24px);box-sizing:border-box;max-height:90dvh}
+#katalog-fit-dialog .dialog-actions{flex-wrap:wrap}
+#katalog-fit-dialog button{min-height:44px;white-space:normal}
+.katalog-fit-list{padding-left:20px;display:grid;gap:12px}
+.katalog-fit-list>li{padding:8px 0;border-bottom:1px solid #e2e7e8;overflow-wrap:anywhere}
+.katalog-fit-result{display:inline-block;font-weight:600;margin-left:12px}
+.katalog-fit-warning{border:2px solid #b7581d;background:#fff4e9;border-radius:8px;padding:12px}
+#katalog-fit-dialog .katalog-fit-ack{display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+#katalog-fit-dialog .katalog-fit-ack input{width:20px;height:20px;flex:none;margin:2px 0 0}
+@media(max-width:760px){
+ .editing-katalog .editor-heading{padding:14px 12px;gap:10px}
+ .editing-katalog .editor-heading>div:first-of-type{flex-basis:calc(100% - 90px)}
+ .editing-katalog .editor-heading .button-row{display:grid;grid-template-columns:1fr 1fr;width:100%}
+ .editing-katalog #save-product{grid-column:1/-1}
+ .editing-katalog .editor-heading button{white-space:normal;font-size:13px}
+ .editing-katalog #editor-preview{min-height:0}
+ .editing-katalog #editor-preview>svg{min-height:0;height:auto;max-height:58dvh;aspect-ratio:auto}
+ .editing-katalog .editor-panel{padding:16px}
+ .editing-katalog #editor-elements button{min-width:0;overflow-wrap:anywhere;white-space:normal}
+ #katalog-fit-dialog{padding:16px}
+}
+
+.katalog-master-note{font-size:13px;line-height:1.5;margin:0 14px 12px;padding:10px;background:#edf5f1;border-radius:8px}
+
+/* Konfi arrows extend 14 px beyond a corner plus half their 42 px hit area. */
+.editing-katalog #editor-preview{box-sizing:border-box;padding:36px}

@@ -53,7 +53,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   function close(cancel=false){
     if(!editing)return;
     const old=editing;editing=null;box.hidden=true;for(const g of r.querySelectorAll('[data-direct-active]')){g.style.visibility='';delete g.dataset.directActive;}
-    if(cancel){const o=el.state.objects.find(o=>o.id===old.id);if(o){o.text=old.text;o.size=old.size;o.font=old.font;o.bold=old.bold;o.italic=old.italic;o.color=old.color;o.uxCustomerText=old.customerText;el.normalize();el.sync();}}
+    if(cancel){const o=el.state.objects.find(o=>o.id===old.id);if(o){o.text=old.text;o.size=old.size;if(old.lineHeight===undefined)delete o.lineHeight;else o.lineHeight=old.lineHeight;o.font=old.font;o.bold=old.bold;o.italic=old.italic;o.color=old.color;o.uxCustomerText=old.customerText;el.normalize();el.sync();}}
     update();
   }
   function update(){
@@ -88,7 +88,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   function openText(id){
     const o=el.state.objects.find(o=>o.id===id&&o.type==='text');if(!can(o,'content'))return;
     if(editing?.id===id){field.focus({preventScroll:true});return;}
-    close();el.state.selected=id;el.sync();editing={id,text:o.text,size:o.size,customerText:o.uxCustomerText,font:o.font,bold:o.bold,italic:o.italic,color:o.color,recorded:false};
+    close();el.state.selected=id;el.sync();editing={id,text:o.text,size:o.size,lineHeight:o.lineHeight,customerText:o.uxCustomerText,font:o.font,bold:o.bold,italic:o.italic,color:o.color,recorded:false};
     const limits=limitsOf(o);if(limits)field.maxLength=limits.maxLength;else field.removeAttribute('maxlength');
     field.value=o.text;box.hidden=false;update();field.focus({preventScroll:true});field.select();
   }

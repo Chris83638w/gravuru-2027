@@ -1,3 +1,4 @@
+import {selectionScaleFactor} from './selection-arrows.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
 import test from 'node:test';
 import {fontDisplayName} from './font-display.mjs';
@@ -9,7 +10,7 @@ import {physicalTextSize,designTextSize,fittingTextSize} from './usability-model
 import {scaleObject} from './image-processing.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {prepareConfig,validateDesign} from './contract.mjs';
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {rightForProperty} from './element-rights.mjs';
 import {emptyPhotoMarkup,decorateEmptyPhotoSlots,examplePhotoMarkup} from './photo-placeholder.mjs';
 import {textLimits,textLimitIssue,textLength,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
@@ -28,7 +29,7 @@ function textEnvironment(){
  // K10: colorTool/minTextMm sind die Closure-Werte des Verfahrensprofils in installUX (Druck: Farbwahl, 4 mm).
  const env={r,el:{state:{objects:[object]},sync(){},normalize(){},uxCanEdit:()=>true},config:{},isPrint:true,colorTool:true,minTextMm:4,rightForProperty,
   selected:()=>object,selectable:()=>true,mutate:fn=>fn(),say(){},
-  textScale:()=>4/3,displayTextSize:o=>physicalTextSize(o,4/3),designTextSize,
+  textScale:()=>4/3,displayTextSize:o=>physicalTextSize(o,4/3),designTextSize,setTextSize,
   $:selector=>selector==='#ux-size'?input:selector==='[data-ux-color]'?null:noopNode,
   all:()=>[],fieldSignature:'name'};
  env.el.uxTextScale=env.textScale;env.el.uxDisplayTextSize=env.displayTextSize;
@@ -106,7 +107,7 @@ test('large text: layer size input uses the same mm conversion and size changes 
 });
 test('large text: pointer, handle keyboard and toolbar shrink never enlarge a 4-mm text',async()=>{
  for(const route of ['pointer','keyboard','toolbar']){
-  const {env,object,r}=textEnvironment();object.size=3;Object.assign(env,{scaleObject,resize:null});
+  const {env,object,r}=textEnvironment();object.size=3;Object.assign(env,{scaleObject,selectionScaleFactor,resize:null});
   if(route==='pointer'){
    env.resize={id:1,start:{x:object.x+2,y:object.y},object:{...object},kind:'scale',moved:false};env.el.point=()=>({x:object.x+1,y:object.y});env.el.render=()=>{};
    vm.runInContext(block('refinements.mjs',"  r.addEventListener('pointermove',","\n  },true);"),env);
@@ -237,7 +238,7 @@ test('Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur 
  const geometry={width:90,height:60,shape:'rect',cornerRadiusMm:0,safeMarginMm:2,holes:[]};
  const make=objects=>{
   const said=[],motifCalls=[];
-  const env={config:{profile:{geometry}},profile:{geometry},el:{state:{objects,selected:null},uxMinTextMm:3,uxTextScale:()=>1},say:m=>said.push(m),designArea,freePlacement,NO_FREE_SPACE_MESSAGE,MOTIF_MIN_MM,
+  const env={config:{profile:{geometry}},profile:{geometry},el:{state:{objects,selected:null},uxMinTextMm:3,uxTextScale:()=>1},say:m=>said.push(m),designArea,freePlacement,NO_FREE_SPACE_MESSAGE,MOTIF_MIN_MM,setTextSize,
    surface:()=>({x:0,y:0,width:90,height:60,shape:'rect'}),obstacles:()=>[],api:{},placementJob:Promise.resolve(),placeNewMotif:(_api,o,opts)=>{motifCalls.push({id:o.id,...opts});return Promise.resolve();}};
   vm.createContext(env);
   for(const marker of ['const physicalScale=','function placementSurface(){','function shrinkTo(o,scale){'])vm.runInContext(line('workflow.mjs',marker),env);
@@ -373,4 +374,47 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
  // Einheitlicher Auswahlhaken: completion.mjs markiert die Kacheln wie Designs und nutzt dieselben Symbole.
  assert.match(line('completion.mjs',"const choices='"),/\[data-ux=mount-choice\],\[data-picture-option\]'/);
  assert.match(source('completion.mjs'),/import \{MOUNT_ICONS,mountIconSvg\} from '\.\/option-media\.mjs'/);
+});
+
+test('workflow glyph bounds and autofit caches distinguish catalogue typography',()=>{
+ const object={id:'name',type:'text',text:'A\nA',font:'Source',size:5,bold:false,italic:false,w:10,letterSpacing:0,textAnchor:'middle',lineHeight:6};
+ let renders=0,rendered;
+ const env={el:{fontData:{},state:{fkFrame:'none'},uxTextScale:()=>1},r:{append(){}},
+  textPaths:o=>{renders++;rendered={x:o.textAnchor==='start'?-o.w/2:o.textAnchor==='end'?o.w/2:0,y:0,width:o.w+o.letterSpacing,height:o.lineHeight};return '<path/>';},
+  document:{createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>rendered},remove(){}})},object};
+ vm.createContext(env);
+ vm.runInContext(line('workflow.mjs','const boundsCache=new Map();'),env);
+ vm.runInContext(line('workflow.mjs','function bounds(o){'),env);
+ vm.runInContext(line('workflow.mjs','const fitted=new Map(),signature='),env);
+ const original=vm.runInContext('bounds(object)',env),signature=vm.runInContext('signature(object)',env);
+ assert.equal(original.height,6);assert.equal(renders,1);
+ assert.equal(vm.runInContext('bounds({...object,x:50,y:30})',env),original,'moving an unchanged shape can reuse its local bounds');
+ assert.equal(renders,1);
+ for(const change of [{lineHeight:20},{textAnchor:'start'},{letterSpacing:2},{w:30}]){
+  env.changed={...object,...change};const before=renders;
+  const measured=vm.runInContext('bounds(changed)',env);
+  assert.equal(renders,before+1,'changed typography must render fresh bounds');
+  assert.notEqual(vm.runInContext('signature(changed)',env),signature,'changed typography must rerun autofit');
+  assert.equal(vm.runInContext('bounds({...changed})',env),measured,'identical typography must reuse its bounds');
+  assert.equal(renders,before+1);
+  if(change.lineHeight)assert.equal(measured.height,20,'the second two-line field must not inherit the first field spacing');
+ }
+});
+
+
+test('LF2 customer size input and normalization preserve the source leading ratio',async()=>{
+ const {env,object,input,r}=textEnvironment();object.lineHeight=6.81;object.text='A\nAA';
+ vm.runInContext(line('ux.mjs',"const t=e.target,key=t.id==='ux-size'"),env);
+ await dispatch(r,'input',inertEvent(input));assert.equal(object.size,9);assert.equal(object.lineHeight,10.215);
+ env.measureText=()=>{};env.el.normalize=()=>{object.size=1;object.lineHeight=1;};
+ vm.runInContext(line('ux.mjs','const originalNormalize=el.normalize;'),env);env.el.normalize();
+ assert.equal(object.size,9);assert.equal(object.lineHeight,10.215,'normalizer restores requested size and its own leading together');
+});
+
+test('usability glyph cache distinguishes catalogue spacing and alignment for edge limits',()=>{
+ let renders=0,rendered;const object={text:'A\nA',font:'Source',size:5,w:10,lineHeight:6,textAnchor:'middle',letterSpacing:0};
+ const env={object,el:{fontData:{}},r:{append(){}},textPaths:o=>{renders++;rendered={x:0,y:0,width:o.w+o.letterSpacing,height:o.lineHeight};return '<path/>';},document:{createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>rendered},remove(){}})}};
+ vm.createContext(env);vm.runInContext(line('usability.mjs','const boundsCache=new Map();'),env);vm.runInContext(block('usability.mjs','  function textBounds(o){','\n  }'),env);
+ const original=vm.runInContext('textBounds(object)',env);assert.equal(original.height,6);
+ for(const change of [{lineHeight:20},{textAnchor:'start'},{letterSpacing:2},{w:30}]){env.changed={...object,...change};const before=renders,measured=vm.runInContext('textBounds(changed)',env);assert.equal(renders,before+1);assert.equal(vm.runInContext('textBounds({...changed})',env),measured);assert.equal(renders,before+1);if(change.lineHeight)assert.equal(measured.height,20);}
 });

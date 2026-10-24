@@ -30,7 +30,7 @@ export function defaultPhotoSvg(){
 }
 // Reuse the actual saved design, shared renderer and existing acrylic scene.
 // No customer uploads or scene are added to the saved product or print output.
-export function productPreview(model,{options={},examples=[],designId,layout='portrait',keepout=false}={}){
+export function productPreview(model,{options={},examples=[],designId,layout='portrait',keepout=false,designArea=keepout}={}){
  const c=model.universal,p=c.acrylic?c.profile:selectedProfile(c,options),d=structuredClone(p.designs.find(d=>d.id===(designId||p.defaultDesignId))||p.designs[0]);
  examples=examples.filter(e=>e.designId===d.id);
  const media=[];
@@ -51,7 +51,7 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
  let svg=studioSvg(p,d,c.localResources.fonts,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');
  for(const e of examples)svg=svg.replaceAll('href="blob:workshop-'+e.assetId+'"','href="'+e.url+'"');
- if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(surfacePreview(svg,c.materialSurface,p.geometry),p,{show:keepout}),c,p,{show:keepout}),c.sceneBackground);
+ if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(surfacePreview(svg,c.materialSurface,p.geometry),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
  backdrop??=image('scene-empty-v2.jpg');
  svg=svg.replace(/viewBox="[^"]+"/,'x="85.794" y="49.956" width="915.498" height="1196.048" viewBox="0 0 150 200"').replace('fill="url(#studio-product-card-surface)"','fill="transparent"');
  const choice=acrylicSelection(acrylicOptions(options),c.acrylic.pricing),b=choice.base;

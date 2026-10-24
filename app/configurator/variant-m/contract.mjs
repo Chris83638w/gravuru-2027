@@ -5,7 +5,7 @@ import {validateStudio} from '../../platform/sources/app/shared/models/studio-pr
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {validateDesignContent, surfaceObjectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements} from '../../platform/sources/app/shared/models/universal-elements.mjs';
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {localFontIds} from './local-pilot.mjs';
 import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {validSurface} from './material-surface.mjs';
@@ -347,7 +347,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
 
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','italic','motif','fieldKey',
-  'letterSpacing','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
+  'letterSpacing','textAnchor','lineHeight','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
   'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){
@@ -394,10 +394,10 @@ export function newEditableObject(config, input, id, fonts, motifs, options = {}
   if (o.surfaceId !== undefined && !(o.surfaceId === 'front' || (o.surfaceId === 'back' && hasBack(config.profile)))) fail('Dieses Produkt hat keine solche Seite.');
   if (o.type === 'text') {
     if (!fonts[o.font]) o.font = 'Montserrat';
-    o.size = Math.min(o.size || 14, height*.12); o.bold = !!o.bold;
+    setTextSize(o, Math.min(o.size || 14, height*.12)); o.bold = !!o.bold;
     measureText(o, fonts);
     // Nie unter die Mindestschriftgröße des Verfahrens (K10), in Designeinheiten.
-    o.size = Math.max(productProcess(config).minTextMm / physicalScale(config, options), o.size * Math.min(1, width*.6/o.w, height*.3/o.h));
+    setTextSize(o, Math.max(productProcess(config).minTextMm / physicalScale(config, options), o.size * Math.min(1, width*.6/o.w, height*.3/o.h)));
     measureText(o, fonts);
   } else {
     const item = motifs.find(m => m.key === o.motif);

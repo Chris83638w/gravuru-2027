@@ -22,7 +22,7 @@ test('local preview serves complete acrylic model but no write, shop or admin ro
     assert.equal(rows[0].key,'acryl');assert.equal(rows[0].universal.profile.binding.kind,'local-review');
     assert.equal(rows[0].universal.profile.features.orderEnabled,false);
     assert.equal(rows[0].universal.profile.optionGroups.find(g=>g.id==='base').values.length,7);
-    for(const route of ['/?model=acryl','/editor.html','/assistant.js','/api/guides','/configurator/variant-m/contract.mjs','/workshop/theme-limits.mjs','/workshop/process-profiles.mjs','/acrylic-assets/scene-empty-v2.png','/acrylic-assets/base-buche-v2.png','/acrylic-assets/base-eiche-v2.png','/acrylic-assets/base-nussbaum-v2.png','/acrylic-assets/base-klar-v2.png','/acrylic-assets/base-satiniert-v2.png','/acrylic-assets/base-holz-flach-v2.png']){
+    for(const route of ['/?model=acryl','/editor.html','/assistant.js','/api/guides','/configurator/variant-m/contract.mjs','/configurator/variant-m/selection-arrows.mjs','/workshop/theme-limits.mjs','/workshop/process-profiles.mjs','/acrylic-assets/scene-empty-v2.png','/acrylic-assets/base-buche-v2.png','/acrylic-assets/base-eiche-v2.png','/acrylic-assets/base-nussbaum-v2.png','/acrylic-assets/base-klar-v2.png','/acrylic-assets/base-satiniert-v2.png','/acrylic-assets/base-holz-flach-v2.png']){
       assert.equal((await request(route)).status,200,route);
     }
     const head=await request('/models.json',{method:'HEAD'});assert.equal(head.status,200);assert.equal(head.body.length,0);

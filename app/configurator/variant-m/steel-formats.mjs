@@ -1,5 +1,5 @@
 import {objectIssue,validateGeometryHoles} from '../../platform/sources/app/shared/models/design-content.mjs';
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {holesFor} from '../../platform/sources/app/shared/models/mounting-rules.mjs';
 
 const fail=message=>{throw Error(message);};
@@ -54,7 +54,7 @@ export function resizeSteelDocument(input,geometry){
   const maximum=Math.min((g.width-2*g.safeMarginMm)/(old.width-2*(old.safeMarginMm??2)),(g.height-2*g.safeMarginMm)/(old.height-2*(old.safeMarginMm??2)),...original.filter(o=>o.type==='text').map(o=>100/o.size));
   const at=scale=>original.map(o=>{
    const next={...o,x:g.width/2+(o.x-old.width/2)*scale,y:g.height/2+(o.y-old.height/2)*scale,w:o.w*scale,h:o.h*scale};
-   if(o.type==='text'){next.size=o.size*scale;if(o.letterSpacing!==undefined)next.letterSpacing=o.letterSpacing*scale;measureText(next,c.localResources.fonts);}
+   if(o.type==='text'){setTextSize(next,o.size*scale);if(o.letterSpacing!==undefined)next.letterSpacing=o.letterSpacing*scale;measureText(next,c.localResources.fonts);}
    if(o.strokeWidth!==undefined)next.strokeWidth=o.strokeWidth*scale;
    return next;
   });

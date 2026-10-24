@@ -1,5 +1,5 @@
 import {maskContourGuides} from './contour-guides.mjs';
-import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {textPaths,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 import {money} from './contract.mjs';
@@ -192,7 +192,7 @@ export async function installUsability(api) {
 
   const boundsCache=new Map();
   function textBounds(o){
-    const key=JSON.stringify([o.text,o.font,o.bold,o.italic,o.size]);if(boundsCache.has(key))return boundsCache.get(key);
+    const key=JSON.stringify([o.text,o.font,o.bold,o.italic,o.size,o.letterSpacing,o.textAnchor,o.lineHeight,o.w]);if(boundsCache.has(key))return boundsCache.get(key);
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
     svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';
     svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);
@@ -227,7 +227,7 @@ export async function installUsability(api) {
     const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked||objectSurface(o)!==(el.state.uxSurface==='back'?'back':'front'))return;
     const size=fittingTextSize(o,textBounds(o),surface(),el.uxTextScale?.()||1,el.uxMinTextMm);
     if(size===null){say('Auch mit '+String(el.uxMinTextMm||4).replace('.',',')+' mm passt der Text hier nicht. Bitte kürzen oder weiter nach innen verschieben.');return;}
-    mutate(()=>{o.size=size;el.state.selected=o.id;});say('Text auf '+el.uxDisplayTextSize(o).toLocaleString('de-DE')+' mm angepasst.');
+    mutate(()=>{setTextSize(o,size);el.state.selected=o.id;});say('Text auf '+el.uxDisplayTextSize(o).toLocaleString('de-DE')+' mm angepasst.');
   });
   const render=el.render;el.render=function(...args){const value=render.apply(this,args);drawAlignment();namespaceAll();return value;};
   const sync=el.sync;el.sync=function(...args){const value=sync.apply(this,args);updateWarnings();updatePalette();uploadedTitle.hidden=!$('.ux-upload-row');const full=new Set(el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4;drop.querySelector('[data-ux=choose-upload]').disabled=full;drop.querySelector('p').textContent=full?'Vier Dateien vorhanden. Entferne ein Bild, um ein neues hinzuzufügen.':'';namespaceAll();return value;};

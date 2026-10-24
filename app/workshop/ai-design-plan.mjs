@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 import {authorDesign} from './ui/design-authoring.mjs';
-import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {surfaceObjectIssue} from '../platform/sources/app/shared/models/design-content.mjs';
 
 export const aiFail=(status,code,message)=>Object.assign(Error(message),{status,code});
@@ -45,7 +45,7 @@ export function applyAiPlan(original,request,plan){
    if(o.type!=='text')reject('PDF-Schriftpfade müssen zuerst in Werkstatttext umgewandelt werden.');
    if(op.text!==null){if(!op.text.trim())reject('Text darf nicht leer sein.');o.text=op.text;}
    if(op.font!==null){if(!document.config.localResources.fonts[op.font])reject('Die Schrift ist nicht vorhanden.');o.font=op.font;}
-   if(op.size!==null){if(!Number.isInteger(op.size)||op.size<1||op.size>100)reject('Schriftgröße bitte in ganzen Millimetern angeben.');o.size=op.size;}
+   if(op.size!==null){if(!Number.isInteger(op.size)||op.size<1||op.size>100)reject('Schriftgröße bitte in ganzen Millimetern angeben.');setTextSize(o,op.size);}
    measureText(o,document.config.localResources.fonts);
   }
   if(['move','add_text','add_motif'].includes(op.action)){

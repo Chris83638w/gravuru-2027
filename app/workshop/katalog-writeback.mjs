@@ -2,17 +2,19 @@
 // Werkstatt-DB) als Lieferform-2-Änderung in `design.json` des passenden Katalogdesigns – Textinhalt,
 // Schrift, Größe und Lage in mm des Masters. Zuordnung nur über Katalogherkunft des Konfi-Produkts
 // (`katalog.designId` der Vorlage bzw. Vorlagen-ID `katalog-<Design>`); alles andere bleibt „offen“.
-// Dry-run ist Standard; `apply` schreibt design.json (und mit svg:true die Textebenen in design.svg).
+// Dry-run ist Standard; apply schreibt JSON + SVG + Audit gemeinsam. Der vollständige
+// Editor-/CLI-Rückweg darunter ersetzt die frühere Beschränkung auf Textebenen.
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction} from './katalog-transaction.mjs';
+import {planTemplateWriteback as planTemplateWritebackInternal,editorTextToMaster,masterTextLayout} from './katalog-template-writeback.mjs';
 import path from 'node:path';
 import {DatabaseSync} from 'node:sqlite';
 import {katalogFor,forgetKatalog} from './design-dashboard.mjs';
 
-const MM_PER_PT=25.4/72,BASELINE=0.35,LINE_HEIGHT=1.2;// Werkstattkonvention: Grundlinie = Mitte + 0,35 · Größe, Zeilenabstand 1,2 · Größe
 const round=v=>Math.round(v*100)/100;
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const writeAtomic=(file,text)=>{const tmp=file+'.'+process.pid+'.'+Date.now()+'.tmp';fs.writeFileSync(tmp,text);fs.renameSync(tmp,file);};
 
 // Letzte Korrektur je Produkt/Revision/Design samt Produktdokument (nur lesen).
 export function readCorrections(dbFile,{tenantId='gravuru'}={}){
@@ -58,7 +60,7 @@ export function planCorrectionWriteback(root,corrections){
   if(!origin.plateMm){item.reason='Produktmaß unbekannt – Umrechnung in Master-mm nicht möglich.';continue;}
   const scale=master.plateMm[0]/origin.plateMm[0],ratio=Math.abs((origin.plateMm[1]*scale)/master.plateMm[1]-1);
   if(ratio>0.01){item.reason='Produktmaß '+origin.plateMm.join(' × ')+' mm liegt nicht in der Formatreihe des Masters ('+master.plateMm.join(' × ')+' mm).';continue;}
-  item.scale=round(scale);
+  item.scale=round(scale);item.checksum=createHash('sha256').update(fs.readFileSync(path.join(master.dir,'design.json'))).update('\0').update(fs.readFileSync(path.join(master.dir,'design.svg'))).digest('hex');
   const texts=Array.isArray(master.json?.texts)?master.json.texts:[];
   if(!record(c.state)||!Array.isArray(c.state.fields)){item.reason='Korrekturstand unlesbar.';continue;}
   for(const value of c.state.fields){
@@ -72,12 +74,14 @@ export function planCorrectionWriteback(root,corrections){
    if(index<0){item.open.push(value.id+': keine eindeutige Textebene im Master.');continue;}
    const t=texts[index],sizeMm=Number(value.sizeMm)*scale,cx=(Number(value.xMm)+Number(value.widthMm)/2)*scale,cy=(Number(value.yMm)+Number(value.heightMm)/2)*scale;
    if(![sizeMm,cx,cy].every(Number.isFinite)){item.open.push(value.id+': Maße unvollständig.');continue;}
-   const next={text:String(value.text??t.text),font:String(value.font??t.font),sizePt:round(sizeMm/MM_PER_PT),anchorMm:[round(cx),round(cy+BASELINE*sizeMm)]};
+   const masterText=editorTextToMaster({after:{text:String(value.text??t.text),font:String(value.font??t.font),size:sizeMm,x:cx,y:cy,w:Number(value.widthMm)*scale,textAnchor:'middle'}});
+   const next={text:masterText.text,font:masterText.font,sizePt:round(masterText.sizePt),anchorMm:masterText.anchorMm.map(round),...(masterText.text.includes('\n')?{lineHeightMm:masterText.lineHeightMm}:{})};
    const diff=[];
    if(next.text!==t.text)diff.push({field:'text',from:t.text,to:next.text});
    if(next.font!==t.font)diff.push({field:'font',from:t.font,to:next.font});
    if(Math.abs(next.sizePt-Number(t.sizePt))>0.05)diff.push({field:'sizePt',from:t.sizePt,to:next.sizePt});
    if(!Array.isArray(t.anchorMm)||Math.abs(next.anchorMm[0]-t.anchorMm[0])>0.05||Math.abs(next.anchorMm[1]-t.anchorMm[1])>0.05)diff.push({field:'anchorMm',from:t.anchorMm??null,to:next.anchorMm});
+   if(next.lineHeightMm!==undefined&&Math.abs(next.lineHeightMm-Number(t.lineHeightMm??0))>0.00001)diff.push({field:'lineHeightMm',from:t.lineHeightMm??null,to:next.lineHeightMm});
    if(diff.length)item.changes.push({layer:'text-'+(index+1),index,diff,next});
   }
   item.status=item.changes.length?'bereit':(item.open.length?'offen':'unverändert');
@@ -90,32 +94,34 @@ export function planCorrectionWriteback(root,corrections){
 export function updateSvgText(svg,layer,next){
  const re=new RegExp('<text\\b([^>]*\\bid="'+layer+'"[^>]*)>([\\s\\S]*?)</text>');
  const m=svg.match(re);if(!m)return null;
- const sizeMm=round(next.sizePt*MM_PER_PT),[x,y]=next.anchorMm;
+ const {sizeMm,x,y,spans}=masterTextLayout(next,{precision:2});
  let attrs=m[1];
  const set=(name,value)=>{attrs=new RegExp('\\s'+name+'="').test(attrs)?attrs.replace(new RegExp('(\\s'+name+'=")[^"]*(")'),'$1'+value+'$2'):attrs+' '+name+'="'+value+'"';};
  set('x',x.toFixed(2));set('y',y.toFixed(2));set('font-family',esc(next.font));set('font-size',sizeMm.toFixed(2));
- const lines=String(next.text).split('\n'),spans=lines.map((line,i)=>'<tspan x="'+x.toFixed(2)+'" dy="'+(i?(LINE_HEIGHT*sizeMm).toFixed(2):'0.00')+'">'+esc(line)+'</tspan>').join('');
  return svg.replace(re,'<text'+attrs+'>'+spans+'</text>');
 }
 
-export function applyCorrectionWriteback(plan,{svg=false,actor='katalog-writeback',now=new Date()}={}){
- const written=[];
- for(const item of plan.items){
-  if(item.status!=='bereit')continue;
-  const dir=path.join(plan.root,item.katalog.dir),jsonFile=path.join(dir,'design.json'),svgFile=path.join(dir,'design.svg');
-  const json=JSON.parse(fs.readFileSync(jsonFile,'utf8'));
-  for(const ch of item.changes){const t=json.texts[ch.index];for(const d of ch.diff)t[d.field]=d.to;t.korrektur={productId:item.productId,productRevision:item.productRevision,designId:item.designId,correctionRevision:item.correctionRevision,at:now.toISOString()};}
-  json.korrekturen=[...(Array.isArray(json.korrekturen)?json.korrekturen:[]),{productId:item.productId,productRevision:item.productRevision,designId:item.designId,correctionRevision:item.correctionRevision,actor:item.actor,at:now.toISOString(),layers:item.changes.map(c=>c.layer)}];
-  writeAtomic(jsonFile,JSON.stringify(json,null,1)+'\n');
-  const files=[path.relative(plan.root,jsonFile)];
-  if(svg){let text=fs.readFileSync(svgFile,'utf8'),changed=false;for(const ch of item.changes){const n=updateSvgText(text,ch.layer,ch.next);if(n===null)item.open.push(ch.layer+': Textebene im SVG nicht gefunden.');else if(n!==text){text=n;changed=true;}}if(changed){writeAtomic(svgFile,text);files.push(path.relative(plan.root,svgFile));}}
-  const protocol=path.join(plan.root,'designs',item.katalog.reihe,'_aenderungen.jsonl');
-  fs.appendFileSync(protocol,JSON.stringify({at:now.toISOString(),actor,reihe:item.katalog.reihe,designId:item.katalog.designId,source:'design-corrections',productId:item.productId,productRevision:item.productRevision,correctionRevision:item.correctionRevision,changes:item.changes.map(c=>({layer:c.layer,diff:c.diff})),files})+'\n');
-  files.push(path.relative(plan.root,protocol));
-  written.push({designId:item.katalog.designId,files:files.map(f=>f.split(path.sep).join('/'))});
- }
- forgetKatalog();
- return written;
+export function applyCorrectionWriteback(plan,{actor='katalog-writeback',now=new Date()}={}){
+ return withKatalogWriteLock(plan.root,root=>{
+  const written=[];
+  for(const item of plan.items){
+   if(item.status!=='bereit')continue;
+   const reihe=item.katalog.reihe,designId=item.katalog.designId,source=readSource(root,{reihe,designId});
+   if(source.checksum!==item.checksum)throw Object.assign(Error('Das Design wurde seit dem Dry-run geändert. Bitte neu planen.'),{status:409,code:'design_conflict'});
+   const json=source.master.json;let svgText=source.master.svgText;
+   for(const ch of item.changes){const t=json.texts[ch.index];for(const d of ch.diff)t[d.field]=d.to;t.korrektur={productId:item.productId,productRevision:item.productRevision,designId:item.designId,correctionRevision:item.correctionRevision,at:now.toISOString()};
+    const next=updateSvgText(svgText,ch.layer,ch.next);if(next===null)throw Object.assign(Error('Textebene im SVG fehlt: '+ch.layer),{status:422,code:'design_edit'});svgText=next;
+   }
+   json.korrekturen=[...(Array.isArray(json.korrekturen)?json.korrekturen:[]),{productId:item.productId,productRevision:item.productRevision,designId:item.designId,correctionRevision:item.correctionRevision,actor:item.actor,at:now.toISOString(),layers:item.changes.map(c=>c.layer)}];
+   json.fonts=[...new Set((json.texts||[]).map(t=>t.font).filter(Boolean))];
+   json.freigabe={status:'offen',am:now.toISOString(),von:String(actor).slice(0,160)};
+   const base='designs/'+reihe+'/'+designId,protocol='designs/'+reihe+'/_aenderungen.jsonl',logFile=safeKatalogPath(root,protocol,{missing:true}),files=[base+'/design.json',base+'/design.svg'];
+   const entry={at:now.toISOString(),actor:String(actor).slice(0,160),reihe,designId,source:'design-corrections',productId:item.productId,productRevision:item.productRevision,correctionRevision:item.correctionRevision,changes:item.changes.map(c=>({layer:c.layer,diff:c.diff})),files};
+   writeKatalogTransaction(root,[{relative:files[0],text:JSON.stringify(json,null,1)+'\n'},{relative:files[1],text:svgText},{relative:protocol,text:(fs.existsSync(logFile)?fs.readFileSync(logFile,'utf8'):'')+JSON.stringify(entry)+'\n'}]);
+   written.push({designId,files:[...files,protocol]});
+  }
+  forgetKatalog();return written;
+ });
 }
 
 export function formatPlan(plan){
@@ -126,4 +132,36 @@ export function formatPlan(plan){
   for(const o of i.open)lines.push('    offen: '+o);
  }
  return lines.join('\n');
+}
+
+export {planTemplateWriteback} from './katalog-template-writeback.mjs';
+const segment=v=>typeof v==='string'&&/^[A-Za-z0-9][A-Za-z0-9_. ,+-]{0,180}$/.test(v)&&!v.includes('..')&&!/[. ]$/.test(v);
+function readSource(root,{reihe,designId}){
+ if(!segment(reihe)||reihe==='bestand'||!segment(designId))throw Object.assign(Error('Ungültiger Designpfad.'),{status:422,code:'design_edit'});
+ const base='designs/'+reihe+'/'+designId,jsonFile=safeKatalogPath(root,base+'/design.json'),svgFile=safeKatalogPath(root,base+'/design.svg');
+ let jsonText,svgText,json;
+ try{jsonText=fs.readFileSync(jsonFile,'utf8');svgText=fs.readFileSync(svgFile,'utf8');}
+ catch(error){if(error.code==='ENOENT')throw Object.assign(Error('Designquelle nicht mehr vorhanden.'),{status:404,code:'design_edit_missing'});throw Object.assign(Error('Designquelle ist nicht lesbar.'),{status:503,code:'design_edit_unreadable'});}
+ try{json=JSON.parse(jsonText.replace(/^\uFEFF/,''));}catch{throw Object.assign(Error('design.json ist kein gültiges JSON.'),{status:422,code:'design_edit'});}
+ const checksum=createHash('sha256').update(jsonText).update('\0').update(svgText).digest('hex');
+ if(json.id!==undefined&&json.id!==designId)throw Object.assign(Error('Designkennung widerspricht der Quelldatei.'),{status:422,code:'design_edit'});
+ const plateMm=json.plateMm??[json.plate?.widthMm,json.plate?.heightMm];
+ if(!plateMm.every(v=>Number.isFinite(v)&&v>0))throw Object.assign(Error('Master-Plattenmaß fehlt.'),{status:422,code:'design_edit'});
+ return {checksum,master:{id:designId,name:json.name??designId,json,jsonText,svgText,svg:()=>svgText,plateMm,seriesFolder:reihe,dir:path.dirname(jsonFile),source:json.source??'lieferform2',themes:json.themes??[],fields:json.fields??{},bestseller:json.bestseller===true}};
+}
+export function readDesignEditSource(root,input){return withKatalogWriteLock(root,root=>readSource(root,input));}
+export function saveTemplateWriteback(root,{reihe,designId,checksum,template,originalTemplate,fonts={},actor='werkstatt',now=new Date(),beforeReplace}={}){
+ return withKatalogWriteLock(root,root=>{
+  const source=readSource(root,{reihe,designId});
+  if(typeof checksum!=='string'||checksum!==source.checksum)throw Object.assign(Error('Das Design wurde inzwischen geändert. Bitte neu laden.'),{status:409,code:'design_conflict'});
+  const plan=planTemplateWritebackInternal({master:source.master,template,originalTemplate,fonts});
+  if(!plan.changed)return {changed:false,checksum:source.checksum,changes:[],files:[]};
+  const at=now.toISOString(),by=String(actor).slice(0,160),from=plan.json.freigabe??null;
+  plan.json.freigabe={status:'offen',am:at,von:by};
+  const base='designs/'+reihe+'/'+designId,protocol='designs/'+reihe+'/_aenderungen.jsonl',logFile=safeKatalogPath(root,protocol,{missing:true}),files=[base+'/design.json',base+'/design.svg'];
+  const entry={at,actor:by,reihe,designId,source:'dashboard-editor',changes:plan.changes,freigabe:{from,to:plan.json.freigabe},files};
+  writeKatalogTransaction(root,[{relative:files[0],text:JSON.stringify(plan.json,null,1)+'\n'},{relative:files[1],text:plan.svgText},{relative:protocol,text:(fs.existsSync(logFile)?fs.readFileSync(logFile,'utf8'):'')+JSON.stringify(entry)+'\n'}],{beforeReplace});
+  forgetKatalog();
+  return {changed:true,checksum:readSource(root,{reihe,designId}).checksum,changes:plan.changes,files:[...files,protocol],freigabe:plan.json.freigabe};
+ });
 }

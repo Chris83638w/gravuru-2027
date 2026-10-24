@@ -1,3 +1,4 @@
+import {selectionArrowMarkup,positionSelectionArrows,selectionScaleFactor} from './selection-arrows.mjs';
 import {completePreviewMini} from './preview-feedback.mjs';
 import {installDirectEditing} from './direct-editing.mjs';
 import {installPhotoPosition} from './photo-position.mjs';
@@ -37,7 +38,7 @@ export async function installRefinements(api){
   const stage=$('.stage'),holder=$('.plate-holder');
   // Keep controls in a sibling layer above product, glass and base occlusion.
   const handles=document.createElement('div');handles.className='ux-selection-handles';stage.append(handles);
-  handles.innerHTML=[[-1,-1],[1,-1],[-1,1],[1,1]].map(([x,y],i)=>`<button type="button" data-ux-handle="scale" data-corner="${x},${y}" aria-label="Elementgröße ziehen – Ecke ${i+1}" title="Zum Vergrößern ziehen">${icon('<path d="M5 14V5h9M5 5l14 14"/>')}</button>`).join('')+`<span class="ux-rotate-stem"></span><button type="button" data-ux-handle="rotate" aria-label="Element drehen – ziehen" title="Zum Drehen ziehen">↻</button>`+button('delete',icon('<path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/>'),'class="ux-handle-delete" aria-label="Ausgewähltes Element löschen"');
+  handles.innerHTML=selectionArrowMarkup()+`<span class="ux-rotate-stem"></span><button type="button" data-ux-handle="rotate" aria-label="Element drehen – ziehen" title="Zum Drehen ziehen">↻</button>`+button('delete',icon('<path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/>'),'class="ux-handle-delete" aria-label="Ausgewähltes Element löschen"');
   const editPhoto=createPhotoEditor(api);
   installPhotoPosition(api);
   function updateSelection(){
@@ -48,7 +49,7 @@ export async function installRefinements(api){
       // Ecken-Pfeile sitzen an den Ecken des Auswahlrahmens (Chris 20.10.2026), diagonal nach außen: die innere
       // Ecke des 28-px-Knopfs berührt die Rahmenecke, so verdeckt der Pfeil den Text nicht.
       const margin=14*el.state.width/Math.max(1,scene.width);
-      for(const h of handles.querySelectorAll('[data-corner]')){const [x,y]=h.dataset.corner.split(',').map(Number),p=point(x*(o.w/2+margin),y*(o.h/2+margin));h.style.left=p.x+'px';h.style.top=p.y+'px';}
+      positionSelectionArrows(handles,o,point,margin);
       const gap=36*el.state.width/Math.max(1,scene.width),p=point(0,-o.h/2-gap);const h=handles.querySelector('[data-ux-handle=rotate]');h.style.left=p.x+'px';h.style.top=p.y+'px';
       const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=d.x+'px';remove.style.top=d.y+'px';
     }
@@ -73,7 +74,7 @@ export async function installRefinements(api){
       if(window.GravuruGuided){const scene=$('.scene').getBoundingClientRect(),state={...el.state,objects:el.state.objects.filter(x=>!x.uxHidden)};const snapped=window.GravuruGuided.snap(state,o,7/Math.max(.1,scene.width/el.state.width),resize.locks);o.x=snapped.x;o.y=snapped.y;resize.locks=snapped.locks;}
     }
     else if(resize.kind==='rotate'){const from=Math.atan2(resize.start.y-start.y,resize.start.x-start.x),to=Math.atan2(p.y-start.y,p.x-start.x);o.rotation=Math.round((start.rotation||0)+(to-from)*180/Math.PI);}
-    else{const factor=Math.hypot(p.x-start.x,p.y-start.y)/Math.max(.1,Math.hypot(resize.start.x-start.x,resize.start.y-start.y));Object.assign(o,scaleObject(start,factor,el.uxTextScale?.()||1,el.uxMinTextMm));}
+    else{const factor=selectionScaleFactor(start,resize.start,p);Object.assign(o,scaleObject(start,factor,el.uxTextScale?.()||1,el.uxMinTextMm));}
     el.normalize();el.render();
   },true);
   function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);if(cancel)el.state=prior.old;else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}

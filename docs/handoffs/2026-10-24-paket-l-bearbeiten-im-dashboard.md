@@ -20,6 +20,9 @@ Konfi-Produkt**. Dazu gehören die richtige Platte (Master-`plateMm`, Form Recht
 Lochschutzzonen), Katalogschriften, Hilfslinien und Einrasten wie im Konfi. Keine zweite Editor- oder
 Geometrielogik: `katalogDesignToTemplate`/`scaleTemplate` hin, und zurück eine gemeinsame Umrechnung, die
 `katalog-writeback` erweitert und ersetzt. Das Skript nutzt danach dieselbe Funktion.
+**Material wie im Kunden-Konfi** (Nachtrag Chris 24.10.): Die Platte zeigt das Material der Familie, denselben Weg wie
+der Import (`familyProductConfig` → bei Edelstahl `materialSurface` = gebürstete Edelstahlstruktur, dunkle Gravur).
+Also kein graues Blatt.
 
 **Bearbeitbar (erste Stufe):** Texte (Inhalt, Schrift aus `schriften/schriften.json`, Größe, Lage, Ausrichtung,
 Laufweite), Text hinzufügen/entfernen, Motive verschieben/skalieren (seitenverhältnistreu) und entfernen. Lieferform

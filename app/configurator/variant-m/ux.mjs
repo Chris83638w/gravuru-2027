@@ -386,7 +386,7 @@ export async function installUX(el,config,legacy){
   dialogs.help.addEventListener('close',()=>window.speechSynthesis?.cancel());
   // A portable draft payload is provided to the future authenticated server adapter, not downloaded.
   el.uxDraft=()=>customerDraft(el.state,profile);
-  installEdgeClamp(el);
+  installEdgeClamp(el,{profile,motifs:config?.localResources?.motifs||[]});
   await installRefinements({el,r,profile,config,files,pending:()=>uploadPending,selected,select,mutate,showTab,say,dialog,dialogs,button,esc,acceptFiles:acceptCustomerFiles,changeObject});
   if(el.uxMotifChoiceIds?.length===0){
     const entry=$('.workflow-motif-entry');

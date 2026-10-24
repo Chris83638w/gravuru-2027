@@ -122,10 +122,11 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
      const t=await templateFor(a);if(!t.ok)continue;
      try{
       const scaled=scaleTemplate(t.template,t.template.katalog.plateMm,[size.widthMm,size.heightMm],fonts,{contain:doc.groups.find(g=>g.key===size.groupKey)?.shape==='contour'});
-      const fit=templateFit(scaled,doc,size,fonts);entry.fit[fit.status]++;report.counts.fit[fit.status]++;
+      let scaledMotifs;const motifsForFit=()=>scaledMotifs??=scaleEmbeddedMotifs(t.motifs,scaled.katalog.scale);
+      const fit=templateFit(scaled,doc,size,fonts,{motifs:motifsForFit});entry.fit[fit.status]++;report.counts.fit[fit.status]++;
       if(fit.status==='passt nicht'){entry.excluded.push({design:a.design.id,issues:fit.issues});continue;}
       scaled.katalog.fit=fit.status;if(fit.issues.length)scaled.katalog.review=fit.issues;
-      const motifs=scaleEmbeddedMotifs(t.motifs,scaled.katalog.scale);
+      const motifs=motifsForFit();
       templates.push({template:scaled,motifs,rights:t.rights,examples:t.examples});entry.templates.push({design:a.design.id,fit:fit.status,issues:fit.issues});
      }catch(e){entry.excluded.push({design:a.design.id,issues:[e.message]});}
     }

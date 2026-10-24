@@ -1,4 +1,5 @@
-import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry} from './contour-geometry.mjs';
+import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry,ellipseEdgeDistance} from './contour-geometry.mjs';
+import {embeddedMotifFits} from './embedded-motif-fit.mjs';
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
 // These limits match the supported customer text/motif draft format.
 // maxDesigns: Vorlagen je Produkt (Chris 23.10.2026: 60 → 100, wie MAX_FORM_DESIGNS in der Werkstatt).
@@ -11,18 +12,6 @@ function inRoundedRect(x,y,width,height,radius,inset=0){
  if(x<inset-EPSILON||x>right+EPSILON||y<inset-EPSILON||y>bottom+EPSILON)return false;
  const dx=Math.max(inset+r-x,0,x-(right-r)),dy=Math.max(inset+r-y,0,y-(bottom-r));
  return dx*dx+dy*dy<=r*r+EPSILON;
-}
-// Exact closest distance to an ellipse for a point inside it. Bisection solves
-// the normal on the closest quadrant; the axis case avoids the singularity.
-function ellipseEdgeDistance(x,y,a,b){
- x=Math.abs(x);y=Math.abs(y);
- if(a<b){[a,b]=[b,a];[x,y]=[y,x];}
- if(Math.abs(a-b)<EPSILON)return a-Math.hypot(x,y);
- if(y<EPSILON){const z=a*x/(a*a-b*b);return z<1?Math.hypot(a*z-x,b*Math.sqrt(1-z*z)):a-x;}
- let low=-b*b,high=0;
- for(let i=0;i<90;i++){const t=(low+high)/2,v=(a*x/(t+a*a))**2+(b*y/(t+b*b))**2;if(v>1)low=t;else high=t;}
- const t=(low+high)/2;
- return Math.hypot(a*a*x/(t+a*a)-x,b*b*y/(t+b*b)-y);
 }
 export function validateGeometryHoles(profile){
  const {width,height,shape,cornerRadiusMm=0,holes}=profile.geometry;
@@ -68,8 +57,16 @@ export function objectIssue(o,profile){
 }
 // Validate an object against the original product profile. Front is unchanged;
 // back uses the same physical reflection as preview and production.
-export function surfaceObjectIssue(object,profile){
- return objectIssue(object,object?.surfaceId==='back'?{...profile,geometry:surfaceGeometry(profile.geometry,'back')}:profile);
+export function surfaceObjectIssue(object,profile,{motifs=[]}={}){
+ const oriented=object?.surfaceId==='back'?{...profile,geometry:surfaceGeometry(profile.geometry,'back')}:profile;
+ const issue=objectIssue(object,oriented);
+ // A passing box remains the cheap prefilter. Only a geometric failure of a
+ // known embedded template motif may be replaced by its actual painted paths.
+ if(issue&&profile.kind!=='layered-doorbell'&&['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element liegt in einer Bohrloch-Schutzzone.'].includes(issue)){
+  const resources=typeof motifs==='function'?motifs():motifs;
+  if(embeddedMotifFits(object,oriented.geometry,resources.find(m=>m.key===object?.motif))===true)return '';
+ }
+ return issue;
 }
 export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
  if(!d||!validContentId(d.id))throw Error('Jedes Design benötigt eine gültige Kennung.');

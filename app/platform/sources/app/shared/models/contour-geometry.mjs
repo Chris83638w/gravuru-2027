@@ -6,7 +6,7 @@ const NUMBER=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/;
 const TAU=2*Math.PI;
 const mod=a=>(a%TAU+TAU)%TAU;
 
-function parseContourPath(path,emit=null,trace=null){
+function parseContourPath(path,emit=null,trace=null,toleranceMm=CONTOUR_TOLERANCE_MM,allowDegenerate=false){
  if(typeof path!=='string'||!path.trim()||path.length>200000)fail('geschlossenen SVG-Pfad mit höchstens 200000 Zeichen angeben.');
  let i=0,x=0,y=0,sx=0,sy=0,command='',previous='',control=null,started=false,closed=false,segments=0,valueRead=false;
  let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
@@ -26,7 +26,7 @@ function parseContourPath(path,emit=null,trace=null){
  };
  const polyCurve=(points,depth=0)=>{
   if(!emit)return;
-  if(points.slice(1,-1).every(p=>pointSegmentDistance(p,points[0],points.at(-1))<=CONTOUR_TOLERANCE_MM)){emit(points.at(-1));return;}
+  if(points.slice(1,-1).every(p=>pointSegmentDistance(p,points[0],points.at(-1))<=toleranceMm)){emit(points.at(-1));return;}
   if(depth>=24)fail('Kurve ist für die sichere Flächenprüfung zu komplex.');
   const levels=[points];while(levels.at(-1).length>1){const p=levels.at(-1);levels.push(p.slice(1).map((v,i)=>[(p[i][0]+v[0])/2,(p[i][1]+v[1])/2]));}
   polyCurve(levels.map(p=>p[0]),depth+1);polyCurve(levels.map(p=>p.at(-1)).reverse(),depth+1);
@@ -57,7 +57,7 @@ function parseContourPath(path,emit=null,trace=null){
   const start=Math.atan2(uy,ux);let delta=Math.atan2(ux*vy-uy*vx,ux*vx+uy*vy);
   if(sweep===0&&delta>0)delta-=TAU;if(sweep===1&&delta<0)delta+=TAU;
   if(emit){
-   const step=2*Math.acos(Math.max(-1,1-CONTOUR_TOLERANCE_MM/Math.max(rx,ry))),count=Math.max(1,Math.ceil(Math.abs(delta)/step));
+   const step=2*Math.acos(Math.max(-1,1-toleranceMm/Math.max(rx,ry))),count=Math.max(1,Math.ceil(Math.abs(delta)/step));
    if(count>20000)fail('Bogen ist für die sichere Flächenprüfung zu komplex.');
    for(let j=1;j<=count;j++){const t=start+delta*j/count;emit([cx+rx*cos*Math.cos(t)-ry*sin*Math.sin(t),cy+rx*sin*Math.cos(t)+ry*cos*Math.sin(t)]);}
   }
@@ -93,7 +93,7 @@ function parseContourPath(path,emit=null,trace=null){
  }
  if(!closed)fail('Pfad muss mit Z geschlossen sein.');
  const width=maxX-minX,height=maxY-minY;
- if(!(width>0&&height>0))fail('Außenkontur braucht eine positive Breite und Höhe.');
+ if(!allowDegenerate&&!(width>0&&height>0))fail('Außenkontur braucht eine positive Breite und Höhe.');
  return [minX,minY,width,height];
 }
 
@@ -131,7 +131,7 @@ function inside(points,p){
  let result=false;
  for(let i=0,j=points.length-1;i<points.length;j=i++){
   const a=points[j],b=points[i];
-  if(pointSegmentDistance(p,a,b)<EPS)return true;
+  if(p[0]>=Math.min(a[0],b[0])-EPS&&p[0]<=Math.max(a[0],b[0])+EPS&&p[1]>=Math.min(a[1],b[1])-EPS&&p[1]<=Math.max(a[1],b[1])+EPS&&pointSegmentDistance(p,a,b)<EPS)return true;
   if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])result=!result;
  }
  return result;
@@ -154,6 +154,23 @@ function flattened(path){
  if(cache.size>=32)cache.delete(cache.keys().next().value);cache.set(path,value);return value;
 }
 export function flattenContourPath(path){return flattened(path).points.map(p=>[...p]);}
+
+// Reuse the physical-path command/curve parser for one closed artwork subpath.
+// Unlike a plate outline, artwork may self-intersect. Its caller owns compound
+// fill rules and supplies a tolerance in the path's coordinate system.
+export function flattenClosedSvgPath(path,{toleranceMm=.0001}={}){
+ if(!Number.isFinite(toleranceMm)||toleranceMm<=0||toleranceMm>1)fail('Ungültige Pfadtoleranz.');
+ const points=[];
+ parseContourPath(path,p=>{
+  if(!points.length||distance(points.at(-1),p)>EPS){
+   if(points.length>=20000)fail('Motiv-Unterpfad ist zu komplex.');
+   points.push(p);
+  }
+ },null,toleranceMm,true);
+ if(points.length>1&&distance(points[0],points.at(-1))<EPS)points.pop();
+
+ return points;
+}
 export function validateContourGeometry(g){
  validateContourOutline(g?.outlinePath,g?.width,g?.height);
  flattened(g.outlinePath);
@@ -184,7 +201,8 @@ export function contourContainsPolygon(g,input,options={}){
  const required=marginMm+CONTOUR_TOLERANCE_MM;
  for(let i=0;i<polygon.length;i++){
   const a=polygon[i],b=polygon[(i+1)%polygon.length];
-  if(edges.some(e=>segmentDistance(a,b,e.a,e.b)+EPS<required))return false;
+  const minX=Math.min(a[0],b[0])-required,maxX=Math.max(a[0],b[0])+required,minY=Math.min(a[1],b[1])-required,maxY=Math.max(a[1],b[1])+required;
+  if(edges.some(e=>e.maxX>=minX&&e.minX<=maxX&&e.maxY>=minY&&e.minY<=maxY&&segmentDistance(a,b,e.a,e.b)+EPS<required))return false;
  }
  for(const h of holes){
   const p=[h.x,h.y],r=h.diameter/2+keepoutMm;
@@ -253,4 +271,17 @@ export function contourNearestBoundaryPoint(g,x,y){
 export function surfaceGeometry(geometry,surfaceId){
   if(surfaceId!=='back')return geometry;
   return {...geometry,...(geometry.shape==='contour'?{outlinePath:mirrorContourPath(geometry.outlinePath,geometry.width)}:{}),holes:(geometry.holes||[]).map(h=>({...h,x:Number((geometry.width-h.x).toFixed(6))}))};
+}
+
+// Exact closest distance to an ellipse for a point inside it. Bisection solves
+// the normal on the closest quadrant; the axis case avoids the singularity.
+export function ellipseEdgeDistance(x,y,a,b){
+ x=Math.abs(x);y=Math.abs(y);
+ if(a<b){[a,b]=[b,a];[x,y]=[y,x];}
+ if(Math.abs(a-b)<1e-6)return a-Math.hypot(x,y);
+ if(y<1e-6){const z=a*x/(a*a-b*b);return z<1?Math.hypot(a*z-x,b*Math.sqrt(1-z*z)):a-x;}
+ let low=-b*b,high=0;
+ for(let i=0;i<90;i++){const t=(low+high)/2,v=(a*x/(t+a*a))**2+(b*y/(t+b*b))**2;if(v>1)low=t;else high=t;}
+ const t=(low+high)/2;
+ return Math.hypot(a*a*x/(t+a*a)-x,b*b*y/(t+b*b)-y);
 }

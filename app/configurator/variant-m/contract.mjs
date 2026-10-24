@@ -19,7 +19,7 @@ const fail = message => { throw Error(message); };
 // A printed/engraved element does not obstruct a screw. Mechanical access belongs
 // to the model-bound plate assembly. Contour families explicitly carry hole
 // keepouts for every design object; preserve the existing policy for basic shapes.
-export const customerLayoutIssue=(object,profile)=>surfaceObjectIssue(object,profile.geometry.shape==='contour'?profile:{...profile,geometry:{...profile.geometry,holes:[]}});
+export const customerLayoutIssue=(object,profile,resources)=>surfaceObjectIssue(object,profile.geometry.shape==='contour'?profile:{...profile,geometry:{...profile.geometry,holes:[]}},resources);
 export const DRAFT_SCHEMA = 'gravuru-universal-customer-draft/v1';
 // Ü6.1: Ebenenrolle. 'guide' ist im Editor sichtbar, erscheint aber nie in der
 // Fertigungsausgabe. Standard ohne Angabe ist 'print'. Die Rolle ist ein
@@ -95,7 +95,7 @@ export function prepareConfig(input) {
   const extraFontIds=localFontIds(config);
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
-  validateStudio(p, p, {extraFontIds});
+  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[]});
   // Themenlimits und Pflichtkennzeichen der Vorlage sind Produktregeln: ungültige Werte laden nicht.
   for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
     if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');
@@ -321,7 +321,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
       if(!raster||raster.pixelWidth<Math.ceil(o.w*600/25.4)||raster.pixelHeight<Math.ceil(o.h*600/25.4))fail('Rastermotiv unterschreitet bei dieser Größe 600 dpi.');
     }
     const measured = o.type === 'text' ? measureText(clone(o), fonts) : o;
-    const issue = customerLayoutIssue(measured, p); if (issue) fail(issue);
+    const issue = customerLayoutIssue(measured, p, {motifs:config.localResources?.motifs||[]}); if (issue) fail(issue);
   }
   // Element rights (rights document or legacy flags), fixed template layer order
   // and the product's addition policy, enforced for every server entry point

@@ -4,7 +4,9 @@ import {fileURLToPath} from 'node:url';
 import {openKatalog} from './katalog-source.mjs';
 import {parseDesignSvg,pathBounds,katalogDesignToTemplate,formatSeries,seriesOf,assignSeries,scaleTemplate,scaleEmbeddedMotifs,templateFit,katalogFamilyToProduct,applyPriceOverrides,priceGaps} from './katalog-convert.mjs';
 import {workshopResources} from './catalog.mjs';
-import {resolveProduct,validateProductDesign} from './product-model.mjs';
+import {resolveProduct,validateProductDesign,validateProductDocument} from './product-model.mjs';
+import {installEdgeClamp} from '../configurator/variant-m/edge-clamp.mjs';
+import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {localFontIds} from '../configurator/variant-m/local-pilot.mjs';
 import {validateFamily,familyGaps} from './product-families.mjs';
 
@@ -247,4 +249,30 @@ test('Große Motivpfade behalten Bogenflags, Winkel und Koordinaten über Tokenb
  assert.equal(scaled[0].svgFragment,'<path d="M 0.5 3 A 4 6 45 0 1 8 10 '+Array.from({length:1200},()=> 'l 3 -4.5').join(' ')+' z" fill="currentColor"/>');
  assert.deepEqual(scaled[0].bounds,[0.5,3,8,10]);assert.equal(motifs[0].svgFragment,source,'Masterpfad unverändert');
  assert.equal(scaleEmbeddedMotifs([{key:'empty',bounds:[0,0,0,0],svgFragment:'<path d=""/>'}],1)[0].svgFragment,'<path d=""/>');
+});
+
+
+test('path-accurate imported motifs pass template, product and customer validation without changing the initial layout',()=>{
+ const k=katalog(),line=k.lines.get('test-linie'),theme=k.theme('namensschilder');
+ for(const shape of ['ellipse','contour']){
+  const f=withContourGroup(k.families.get('test-schilder'));f.designArea.marginMm=.2;
+  const size=shape==='contour'?f.sizes.at(-1):f.sizes[0];size.baseCents=1499;
+  if(shape==='ellipse')f.groups.find(g=>g.key===size.groupKey).shape='ellipse';
+  const master={id:'path-precise',name:'Original path motif',source:'lieferform2',plateMm:[90,60],themes:['namensschilder'],json:{movable:true},svg:()=>'<svg viewBox="0 0 90 60" width="90mm" height="60mm"><g id="motiv-1"><path d="M45 5L75 30L45 55L15 30Z" fill="#000"/></g></svg>'};
+  const r=katalogDesignToTemplate(master,f,theme,{fonts:fonts()}),template=scaleTemplate(r.template,[90,60],[90,60],fonts()),motifs=scaleEmbeddedMotifs(r.motifs,template.katalog.scale);
+  const before=structuredClone({template,motifs});
+  assert.equal(templateFit(template,f,size,fonts()).status,'passt nicht');
+  assert.equal(templateFit(template,f,size,fonts(),{motifs}).status,'passt');
+  const sub={...line.subcategories[0],startDesign:master.id};delete sub.sizesOffered;
+  const product=katalogFamilyToProduct(f,line,sub,{size,fonts:fonts(),templates:[{...r,template,motifs}]}).document;
+  assert.doesNotThrow(()=>validateProductDocument(product));
+  const config=product.config,design=config.profile.designs[0];
+  assert.doesNotThrow(()=>validateProductDesign(product,design,{fonts:fonts(),template:true}));
+  const el={state:{designId:design.id,width:90,height:60,objects:structuredClone(design.objects)},uxProfileGeometry:()=>selectedProfile(config).geometry,render(){}};
+  installEdgeClamp(el,{profile:config.profile,motifs:config.localResources.motifs});el.render();
+  assert.deepEqual(el.state.objects,design.objects,'initial editor render preserves imported coordinates');
+  assert.deepEqual({template,motifs},before,'validation does not shrink bounds or adjust source objects');
+  const outside=structuredClone(product);outside.config.profile.designs[0].objects[0].x+=100;
+  assert.throws(()=>validateProductDocument(outside),/Gestaltungsfläche/);
+ }
 });

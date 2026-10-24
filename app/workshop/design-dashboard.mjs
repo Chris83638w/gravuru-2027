@@ -5,6 +5,7 @@
 // hidden) in `zuordnung.json` bzw. `design.json`, atomar, mit Protokoll `_aenderungen.jsonl`.
 // Nichts wird erfunden: Unbekanntes bleibt null; der Katalogpfad kommt nur über katalogPath()/Option.
 import fs from 'node:fs';
+import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction,recoverKatalogIfNeeded} from './katalog-transaction.mjs';
 import path from 'node:path';
 import {openKatalog} from './katalog-source.mjs';
 import {formatSeries,seriesOf,assignSeries,applyPriceOverrides,priceGaps,katalogDesignToTemplate,scaleTemplate,scaleEmbeddedMotifs,templateFit} from './katalog-convert.mjs';
@@ -38,6 +39,7 @@ const opened=new Map();
 export function katalogFor(root,{maxAgeMs=2000,now=Date.now()}={}){
  if(typeof root!=='string'||!root.trim())fail(503,'katalog_missing','Kein Katalog verbunden. Server mit --katalog=<pfad> starten oder GRAVURU_KATALOG setzen.');
  root=path.resolve(root);
+ if(recoverKatalogIfNeeded(root))opened.delete(root);
  const hit=opened.get(root);if(hit&&now-hit.at<maxAgeMs)return hit.katalog;
  if(!isDir(root))fail(503,'katalog_missing','Katalog-Ordner nicht gefunden: '+root);
  let katalog;try{katalog=openKatalog(root);}catch(e){fail(503,'katalog_invalid','Katalog nicht lesbar: '+e.message);}
@@ -361,7 +363,6 @@ export function designFile(root,{reihe=null,bestand=null,id,file}){
 }
 
 // ---- Rückschreiben (nur menschliche Änderungen: name, themes, hidden) ----
-const writeAtomic=(file,text)=>{const tmp=file+'.'+process.pid+'.'+Date.now()+'.tmp';fs.writeFileSync(tmp,text);fs.renameSync(tmp,file);};
 // Ein Feld der obersten Ebene im JSON-Text ersetzen (Zeile ` "key": …`), damit die Datei sonst
 // unverändert bleibt (Python schreibt 70.0, JSON.stringify 70 – der Git-Diff soll nur die Änderung zeigen).
 function replaceTopLevel(text,key,value){
@@ -385,10 +386,11 @@ function rewriteJson(file,changes){
  let next=text;for(const [k,v] of Object.entries(changes)){next=next===null?null:replaceTopLevel(next,k,v);}
  let ok=false;try{ok=next!==null&&JSON.stringify(JSON.parse(next))===JSON.stringify(expected);}catch{ok=false;}
  if(!ok)next=JSON.stringify(expected,null,1)+'\n';// Rückfall: vollständig neu schreiben (gleicher Inhalt)
- writeAtomic(file,next);
+ return next;
 }
 const shortKey=id=>{const m=id.match(/-(D\d+)$/);return m?m[1]:null;};
-export function patchDesign(root,input,{actor='werkstatt',now=new Date()}={}){
+export function patchDesign(root,input,options={}){return withKatalogWriteLock(root,root=>patchDesignLocked(root,input,options));}
+function patchDesignLocked(root,input,{actor='werkstatt',now=new Date()}={}){
  const katalog=katalogFor(root);root=katalog.root;
  if(!record(input))fail(422,'design_patch','Änderung als Objekt senden.');
  const unknown=Object.keys(input).filter(k=>!PATCH_FIELDS.includes(k));if(unknown.length)fail(422,'design_patch','Unbekannte Felder: '+unknown.join(', ')+'. Erlaubt sind name, themes, hidden.');
@@ -398,6 +400,9 @@ export function patchDesign(root,input,{actor='werkstatt',now=new Date()}={}){
  const dir=path.join(root,'designs',reihe,designId),jsonFile=path.join(dir,'design.json');
  if(!isDir(dir)||!exists(path.join(dir,'design.svg')))fail(404,'design_missing','Design „'+designId+'“ hat in „'+reihe+'“ keine Lieferform 2 – nur Lieferform-2-Designs lassen sich hier ändern.');
  if(!exists(jsonFile))fail(404,'design_missing','design.json fehlt für „'+designId+'“.');
+ safeKatalogPath(root,'designs/'+reihe+'/'+designId+'/design.json');safeKatalogPath(root,'designs/'+reihe+'/'+designId+'/design.svg');
+ safeKatalogPath(root,'designs/'+reihe+'/_aenderungen.jsonl',{missing:true});
+ for(const relative of ['designs/'+reihe+'/zuordnung.json','designs/'+reihe+'-zuordnung.json','designs/'+reihe+'/index.json'])safeKatalogPath(root,relative,{missing:true});
  const current=readJson(jsonFile);if(!record(current))fail(422,'design_patch','design.json ist kein Objekt.');
  const changes={};
  if(input.name!==undefined){if(typeof input.name!=='string'||!input.name.trim()||input.name.length>160||/[\x00-\x1f]/.test(input.name))fail(422,'design_patch','Name: 1 bis 160 Zeichen, eine Zeile.');const name=input.name.trim();if(name!==(current.name??null))changes.name={from:current.name??null,to:name};}
@@ -414,12 +419,12 @@ export function patchDesign(root,input,{actor='werkstatt',now=new Date()}={}){
   }
  }
  if(input.name===undefined&&input.themes===undefined&&input.hidden===undefined&&input.freigegeben===undefined)fail(422,'design_patch','Keine Änderung angegeben (name, themes, hidden oder freigegeben).');
- const files=[];
+ const files=[],pending=[];
  const rel=f=>path.relative(root,f).split(path.sep).join('/');
  if(Object.keys(changes).length){
   const jsonChanges={};for(const [k,c] of Object.entries(changes))jsonChanges[k]=c.to;
   if(jsonChanges.hidden===false)jsonChanges.hidden=false;// bleibt ausdrücklich im Dokument (Verlauf im Diff)
-  rewriteJson(jsonFile,jsonChanges);files.push(rel(jsonFile));
+  pending.push({relative:rel(jsonFile),text:rewriteJson(jsonFile,jsonChanges)});files.push(rel(jsonFile));
   // Zuordnung (Kundennamen/Themen je Design): im Reihenordner oder daneben; Schlüssel D<n> oder volle Kennung.
   const zuordnungFile=[path.join(root,'designs',reihe,'zuordnung.json'),path.join(root,'designs',reihe+'-zuordnung.json')].find(exists);
   if(zuordnungFile&&(changes.name||changes.themes)){
@@ -429,17 +434,18 @@ export function patchDesign(root,input,{actor='werkstatt',now=new Date()}={}){
     const entry=record(z[key])?{...z[key]}:{};
     if(changes.name)entry.name=changes.name.to;
     if(changes.themes&&(entry.themen!==undefined||!record(z[key])))entry.themen=changes.themes.to;
-    z[key]=entry;writeAtomic(zuordnungFile,JSON.stringify(z,null,1)+'\n');files.push(rel(zuordnungFile));
+    z[key]=entry;pending.push({relative:rel(zuordnungFile),text:JSON.stringify(z,null,1)+'\n'});files.push(rel(zuordnungFile));
    }
   }
   // Erzeugter Index der Reihe (index.json) bleibt konsistent, wenn er das Design kennt.
   const indexFile=path.join(root,'designs',reihe,'index.json');
   if(exists(indexFile)&&(changes.name||changes.themes)){
    const idx=readJson(indexFile);
-   if(Array.isArray(idx)){const e=idx.find(x=>record(x)&&x.key===designId);if(e){if(changes.name)e.name=changes.name.to;if(changes.themes)e.themen=changes.themes.to;writeAtomic(indexFile,JSON.stringify(idx,null,1)+'\n');files.push(rel(indexFile));}}
+   if(Array.isArray(idx)){const e=idx.find(x=>record(x)&&x.key===designId);if(e){if(changes.name)e.name=changes.name.to;if(changes.themes)e.themen=changes.themes.to;pending.push({relative:rel(indexFile),text:JSON.stringify(idx,null,1)+'\n'});files.push(rel(indexFile));}}
   }
   const protocol=path.join(root,'designs',reihe,'_aenderungen.jsonl');
-  fs.appendFileSync(protocol,JSON.stringify({at:now.toISOString(),actor:String(actor).slice(0,160),reihe,designId,changes,files})+'\n');
+  pending.push({relative:rel(protocol),text:(fs.existsSync(protocol)?fs.readFileSync(protocol,'utf8'):'')+JSON.stringify({at:now.toISOString(),actor:String(actor).slice(0,160),reihe,designId,changes,files})+'\n'});
+  writeKatalogTransaction(root,pending);
   files.push(rel(protocol));
   forgetKatalog();
  }

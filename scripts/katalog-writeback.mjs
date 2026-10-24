@@ -4,9 +4,12 @@
 //       Dateien, git status) für den Commit durch den Betreiber.
 //   node scripts/katalog-writeback.mjs --korrekturen <werkstatt.sqlite> [--katalog <pfad>] [--apply] [--svg] [--json <datei>]
 //       Gespeicherte Händlerkorrekturen (design-corrections) als Lieferform-2-Änderung in design.json des
-//       passenden Katalogdesigns – Dry-run ist Standard, `--apply` schreibt design.json, `--apply --svg`
-//       zusätzlich die Textebenen in design.svg. Unklare Zuordnungen bleiben „offen“, nichts wird geraten.
+//       passenden Katalogdesigns. Dry-run ist Standard; --apply schreibt JSON + SVG + Protokoll
+//       gemeinsam. --svg bleibt als kompatibles, nun überflüssiges Argument akzeptiert.
+//   node scripts/katalog-writeback.mjs --katalog <pfad> --reihe <reihe> --design <id> --template <json> [--apply]
+//       Vollständiger Editorstand {checksum,template}: derselbe Fit- und Rückweg wie im Dashboard.
 import fs from 'node:fs';
+import {createDesignEditor} from '../app/workshop/design-editor.mjs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {katalogPath} from '../app/workshop/katalog-source.mjs';
@@ -25,8 +28,19 @@ function gitStatus(){
  catch{return null;}
 }
 
-const korrekturen=arg('korrekturen');
-if(!korrekturen){
+// --template contains {checksum,template}, exported from the editor. It uses the
+// same server-owned original template, fit calculation and atomic save as HTTP.
+const templateFile=arg('template'),korrekturen=arg('korrekturen');
+if(templateFile){
+ const input=JSON.parse(fs.readFileSync(path.resolve(templateFile),'utf8')),reihe=arg('reihe'),id=arg('design');
+ if(!reihe||!id||!input.checksum||!input.template)throw Error('--template benötigt --reihe, --design und JSON mit checksum/template.');
+ const editor=createDesignEditor(),opened=await editor.open(root,{reihe,id}),document=structuredClone(opened.document);
+ document.config.profile.designs[0]=input.template;
+ const request={reihe,id,checksum:input.checksum,document};
+ const result=flag('apply')?await editor.save(root,request,{actor:'katalog-writeback'}):await editor.fit(root,request);
+ console.log(JSON.stringify(result,null,1));
+ if(!flag('apply'))console.log('Dry-run: nichts geschrieben. --apply speichert design.json, design.svg und Protokoll gemeinsam.');
+}else if(!korrekturen){
  const pending=pendingChanges(root);
  console.log('Offene Katalogänderungen aus dem Design-Dashboard ('+root+'):');
  if(!pending.length)console.log('  keine Protokolle (designs/<reihe>/_aenderungen.jsonl).');
@@ -45,9 +59,9 @@ if(!korrekturen){
  const plan=planCorrectionWriteback(root,corrections);
  console.log(formatPlan(plan));
  const jsonFile=arg('json');if(jsonFile)fs.writeFileSync(jsonFile,JSON.stringify(plan,null,1)+'\n');
- if(!flag('apply'))console.log('\nDry-run: nichts geschrieben. Mit --apply werden '+plan.counts.bereit+' Katalogdesigns (design.json'+(flag('svg')?' + design.svg':'')+') geändert; Commit durch den Betreiber.');
+ if(!flag('apply'))console.log('\nDry-run: nichts geschrieben. Mit --apply werden '+plan.counts.bereit+' Katalogdesigns (design.json + design.svg) geändert; Commit durch den Betreiber.');
  else{
-  const written=applyCorrectionWriteback(plan,{svg:flag('svg')});
+  const written=applyCorrectionWriteback(plan);
   console.log('\nGeschrieben: '+(written.length?written.map(w=>w.designId+' ('+w.files.join(', ')+')').join('; '):'nichts')+'. Kein Commit – siehe `--katalog`-Übersicht.');
  }
 }

@@ -8,7 +8,7 @@ oder umdeuten. Was hier offen ist, bleibt offen.
 
 **Shop-Struktur**
 - Gravur und Druck sind **getrennte Produkte**, in Shopify und Amazon gleich.
-- SKU für Druck: Präfix **UV** statt GR, sonst gleich (z. B. `UV-ES-RE-120X80-T15`).
+- SKU für Druck: Präfix **UV** statt GR, sonst gleich (z. B. `GR-ES-RE-120X40-T15` → `UV-ES-RE-120X40-T15`).
 - **Eigenes Produkt je Material.** Ausführungen innerhalb eines Materials sind **je Linie verschieden** eigenes
   Produkt oder Variante:
   - Acryl: transparent, schwarz, anthrazit, weiß, rosa, satiniert, bedruckt, babyblau

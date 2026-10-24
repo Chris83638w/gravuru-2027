@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "createdAt": "2026-10-24T05:16:21.687Z",
+  "scope": "Production bundle step, actual generated payload, native ESM linking and focused surface helper invocation; no browser or full build",
+  "command": "node --experimental-vm-modules work/reports/paket-bc-revision-bundle-check.mjs",
+  "productionCommand": "npm run build",
+  "coordination": "catalog_scripts confirmed no tests running; independent output directory used; global build not invoked because writeLazyResources uses the shared LAZY path",
+  "sourceSha256": {
+    "usability.mjs": "f9ea09c0c7fcbfe46724537b16da581c059198305cfac3775c64c8685e295622",
+    "surfaces.mjs": "e16df81cb8c1db47d60db6fc47a57266494dbe3bae62d235c6fba14157fe6d6c",
+    "bundle-build.mjs": "b161e5ae8df02324620ede9a1eec046c8b9a04a711e115f1bdc1a013f7e2f188",
+    "build.mjs": "3d42b0fe7c84a8bec0275aba9d8e1391c28ee4a93b441be57638242316a7e1d0",
+    "server.mjs": "355327ecdde7abaed35ef889e9c8676d4daf4a4be58c08bf0ad0beb442022b3a"
+  },
+  "sourcesUnchanged": true,
+  "outputDirectory": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\paket-bc-bundle-check",
+  "bundle": {
+    "url": "/_bundle/editor-887f8b85f210956b.mjs",
+    "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\paket-bc-bundle-check\\bundle\\editor-887f8b85f210956b.mjs",
+    "sha256": "ebcfb43e373fc54b897a9a84d8ddb1b1b4e4bec5e347fd987f69760ee8b75fcc",
+    "hash": "887f8b85f210956b",
+    "bytes": 991051,
+    "gzipBytes": 333337,
+    "moduleCount": 84,
+    "styleCount": 9,
+    "gzipMatches": true
+  },
+  "objectSurface": {
+    "importFile": "app/configurator/variant-m/usability.mjs",
+    "importLine": 7,
+    "exportFile": "app/configurator/variant-m/surfaces.mjs",
+    "exportLine": 18,
+    "usabilityIndex": 58,
+    "surfacesIndex": 33,
+    "generatedImport": "import {objectSurface} from 'gravuru-bundle:33'",
+    "nativeEsmLinkPassed": true,
+    "allBundledModulesLinked": 84,
+    "focusedCalls": [
+      {
+        "side": "front",
+        "object": "front"
+      },
+      {
+        "side": "back",
+        "object": "back"
+      }
+    ]
+  },
+  "assetResolution": {
+    "usabilityPath": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\configurator\\variant-m\\usability.mjs",
+    "surfacesPath": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\configurator\\variant-m\\surfaces.mjs",
+    "usabilityStylesBundled": true,
+    "productionBuildCallsSameBundler": true,
+    "productionEditorLoaderUsesBundle": true,
+    "serverRouteReadsOutputBundle": true
+  },
+  "limitations": [
+    "No browser rendering or HTTP serving checked.",
+    "Full npm build not invoked to avoid shared .preview/lazy writes.",
+    "Proof is bound to the recorded source hashes; later edits require a new build."
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "source": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\production-summary-diagnosis\\main-production-summary.py",
+  "sourceSha256": "cd2be88f6314102358e1bfd8ef4d2f5749d559618df9ff0565f510d8e4e9185f",
+  "payloadSha256": "fa0a66221e1a05a971b265f2ace698dc52964bb596bae54c8b5a2ccd05d90cd1",
+  "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027",
+  "pymupdf": "2.0",
+  "fonts": {
+    "regular": "Arial Regular",
+    "bold": "Arial Bold",
+    "candidates": [
+      {
+        "regular": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "bold": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "present": false
+      },
+      {
+        "regular": "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "bold": "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "present": false
+      },
+      {
+        "regular": "C:/Windows/Fonts/arial.ttf",
+        "bold": "C:/Windows/Fonts/arialbd.ttf",
+        "present": true
+      },
+      {
+        "regular": "/Library/Fonts/Arial.ttf",
+        "bold": "/Library/Fonts/Arial Bold.ttf",
+        "present": false
+      }
+    ]
+  },
+  "pages": 1,
+  "text": "Fertigungspaket ꞏ Zusammenfassung\nAcryl ꞏ Zusammenfassung\nErzeugt: 24.10.2026 07:55 (Europe/Berlin)\nKeine Fertigungsfreigabe ꞏ Prüfstand proof_6bf91025­ed4d­4397­a5d4­f33e19ba5a63\nVorschau aus der Produktionsdatei\nProduktionsdatei ist gespiegelt\nAuftrag\nBestellnummer\n1001\nPositions­ID\norderline_fixture (Shop­Position 55)\nKonfiguration\nproof_6bf91025­ed4d­4397­a5d4­f33e19ba5a63 ꞏ\nEntwurf\nacrylic_d6d88819­4f5f­49d9­bc05­a7b27e70a679\nRev. 1\nProduktstand\ncfg_a3d1d6a9­5ffa­4c2a­a033­5bcf191edc32 ꞏ\nRevision 1\nDesign\nacryl­unser­anfang­01\nMenge ꞏ Preis\n2 × 23,98 EUR = 47,96 EUR\nProdukt\nMaterial\nAcrylglas ꞏ 3 mm ꞏ #f5f2eb\nGröße\n150 × 200 mm ꞏ Radius 2 mm\nBefestigung\nKeine Bohrungen ꞏ Befestigung laut Optionen\nVerfahren\nGravur auf Acrylglas\nOptionen\nGröße: 15 × 20 cm (Grundpreis 14,99 EUR); Sockel:\nMassiver Holzsockel ꞏ Buche (+8,99 EUR);\nUnsichtbare Wandhalterung: Ohne Wandhalterung\n(0,00 EUR)\nTextfelder\nFeld\nText\nSchrift\nGröße mm\nx mm\ny mm\nDrehung\nnames\nAnna & Lukas\nGaramond Acryl\n5\n100\n40\n15°\nPosition = Mittelpunkt des Felds in mm vom linken oberen Plattenrand; Größe = Schriftgröße in mm auf der Platte.\nFotos\nFeld\nDatei (fotos/)\nPixel\nEffektive Auflösung\nAmpel\nVermerk\nphoto­test\n1­original.png\n200 × 200 px\n254 dpi (Soll 300)\ngelb\nAuflösung knapp\nFertigungsprofil\nProfil\nKein Fertigungsprofil gebunden\nVerfahren\nGravur auf Acrylglas\nMaschine\noffen\nRIP / Software\noffen\nSpiegelung\nja\nAusgabe\ngravuru­acrylic­engraving­proof/v3 ꞏ mode: raster, dpi: 300, mirror: ja\nDateien\ntechnische­gravurpruefung.pdf, gravur­kontur­1zu1.pdf, gravurpruefung.json, gesicherte­gravurgestaltung.svg\nErzeugt 24.10.2026 07:55 (Europe/Berlin) ꞏ productionReady: nein ꞏ Gleiche Daten maschinenlesbar in summary.json\n",
+  "trace": [
+    {
+      "kind": "key_values",
+      "startY": 90,
+      "endY": 204.74999999999994,
+      "rows": [
+        {
+          "label": "Bestellnummer",
+          "lines": [
+            "1001"
+          ]
+        },
+        {
+          "label": "Positions-ID",
+          "lines": [
+            "orderline_fixture (Shop-Position 55)"
+          ]
+        },
+        {
+          "label": "Konfiguration",
+          "lines": [
+            "proof_6bf91025-ed4d-4397-a5d4-f33e19ba5a63 ·",
+            "Entwurf",
+            "acrylic_d6d88819-4f5f-49d9-bc05-a7b27e70a679",
+            "Rev. 1"
+          ]
+        },
+        {
+          "label": "Produktstand",
+          "lines": [
+            "cfg_a3d1d6a9-5ffa-4c2a-a033-5bcf191edc32 ·",
+            "Revision 1"
+          ]
+        },
+        {
+          "label": "Design",
+          "lines": [
+            "acryl-unser-anfang-01"
+          ]
+        },
+        {
+          "label": "Menge · Preis",
+          "lines": [
+            "2 × 23,98 EUR = 47,96 EUR"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "key_values",
+      "startY": 222.74999999999994,
+      "endY": 314.55000000000007,
+      "rows": [
+        {
+          "label": "Material",
+          "lines": [
+            "Acrylglas · 3 mm · #f5f2eb"
+          ]
+        },
+        {
+          "label": "Größe",
+          "lines": [
+            "150 × 200 mm · Radius 2 mm"
+          ]
+        },
+        {
+          "label": "Befestigung",
+          "lines": [
+            "Keine Bohrungen · Befestigung laut Optionen"
+          ]
+        },
+        {
+          "label": "Verfahren",
+          "lines": [
+            "Gravur auf Acrylglas"
+          ]
+        },
+        {
+          "label": "Optionen",
+          "lines": [
+            "Größe: 15 × 20 cm (Grundpreis 14,99 EUR); Sockel:",
+            "Massiver Holzsockel · Buche (+8,99 EUR);",
+            "Unsichtbare Wandhalterung: Ohne Wandhalterung",
+            "(0,00 EUR)"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "table",
+      "columns": [
+        "Feld",
+        "Text",
+        "Schrift",
+        "Größe mm",
+        "x mm",
+        "y mm",
+        "Drehung"
+      ],
+      "startY": 337.55000000000007,
+      "rowStartY": 353.95000000000005,
+      "rowHeights": [
+        16.4
+      ],
+      "limitY": 591.89,
+      "shown": 1,
+      "endY": 370.35
+    },
+    {
+      "kind": "table",
+      "columns": [
+        "Feld",
+        "Datei (fotos/)",
+        "Pixel",
+        "Effektive Auflösung",
+        "Ampel",
+        "Vermerk"
+      ],
+      "startY": 403.35,
+      "rowStartY": 419.75,
+      "rowHeights": [
+        16.4
+      ],
+      "limitY": 691.89,
+      "shown": 1,
+      "endY": 436.15
+    },
+    {
+      "kind": "key_values",
+      "startY": 459.15,
+      "endY": 534.7499999999999,
+      "rows": [
+        {
+          "label": "Profil",
+          "lines": [
+            "Kein Fertigungsprofil gebunden"
+          ]
+        },
+        {
+          "label": "Verfahren",
+          "lines": [
+            "Gravur auf Acrylglas"
+          ]
+        },
+        {
+          "label": "Maschine",
+          "lines": [
+            "offen"
+          ]
+        },
+        {
+          "label": "RIP / Software",
+          "lines": [
+            "offen"
+          ]
+        },
+        {
+          "label": "Spiegelung",
+          "lines": [
+            "ja"
+          ]
+        },
+        {
+          "label": "Ausgabe",
+          "lines": [
+            "gravuru-acrylic-engraving-proof/v3 · mode: raster, dpi: 300, mirror: ja"
+          ]
+        },
+        {
+          "label": "Dateien",
+          "lines": [
+            "technische-gravurpruefung.pdf, gravur-kontur-1zu1.pdf, gravurpruefung.json, gesicherte-gravurgestaltung.svg"
+          ]
+        }
+      ]
+    }
+  ]
+}

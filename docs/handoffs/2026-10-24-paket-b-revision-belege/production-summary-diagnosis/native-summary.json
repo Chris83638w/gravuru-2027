@@ -1,0 +1,143 @@
+{
+  "schema": "gravuru-production-summary/v1",
+  "createdAt": "2026-10-24T05:55:39.069Z",
+  "order": [
+    {
+      "orderId": "1001",
+      "lineId": "55",
+      "positionId": "orderline_fixture",
+      "shopDomain": "fixture.myshopify.com",
+      "quantity": 2,
+      "unitCents": 2398,
+      "totalCents": 4796,
+      "currency": "EUR",
+      "test": true
+    }
+  ],
+  "orderNote": null,
+  "configuration": {
+    "snapshotId": "proof_6bf91025-ed4d-4397-a5d4-f33e19ba5a63",
+    "draftId": "acrylic_d6d88819-4f5f-49d9-bc05-a7b27e70a679",
+    "draftRevision": 1,
+    "designId": "acryl-unser-anfang-01",
+    "productId": "cfg_a3d1d6a9-5ffa-4c2a-a033-5bcf191edc32",
+    "productRevision": 1,
+    "productName": "Acryl · Zusammenfassung",
+    "sourcePackageSha256": "b44e39153c3363e917cf21186d328f9fe271eadac8e844346f9711bb10da0af7"
+  },
+  "product": {
+    "material": {
+      "kind": "acrylic",
+      "label": "Acrylglas",
+      "thicknessMm": 3,
+      "colorHex": "#f5f2eb"
+    },
+    "widthMm": 150,
+    "heightMm": 200,
+    "shape": "rect",
+    "cornerRadiusMm": 2,
+    "mounting": {
+      "holeCount": 0,
+      "holes": [],
+      "option": null
+    },
+    "options": [
+      {
+        "groupId": "size",
+        "group": "Größe",
+        "valueId": "small",
+        "value": "15 × 20 cm",
+        "priceCents": 1499,
+        "priceKind": "base"
+      },
+      {
+        "groupId": "base",
+        "group": "Sockel",
+        "valueId": "buche",
+        "value": "Massiver Holzsockel · Buche",
+        "priceCents": 899,
+        "priceKind": "surcharge"
+      },
+      {
+        "groupId": "wall",
+        "group": "Unsichtbare Wandhalterung",
+        "valueId": "none",
+        "value": "Ohne Wandhalterung",
+        "priceCents": 0,
+        "priceKind": "surcharge"
+      }
+    ],
+    "fields": [],
+    "method": "engraving",
+    "methodLabel": "Gravur auf Acrylglas",
+    "quantity": 2,
+    "price": {
+      "unitCents": 2398,
+      "totalCents": 4796,
+      "currency": "EUR"
+    }
+  },
+  "textFields": [
+    {
+      "id": "text",
+      "label": "names",
+      "text": "Anna & Lukas",
+      "font": "Garamond Acryl",
+      "bold": false,
+      "italic": false,
+      "colorHex": "#731c19",
+      "sizeMm": 5,
+      "xMm": 100,
+      "yMm": 40,
+      "widthMm": 28.18,
+      "heightMm": 6,
+      "rotationDeg": 15,
+      "anchor": "center"
+    }
+  ],
+  "photos": [
+    {
+      "fieldId": "photo",
+      "label": "photo-test",
+      "path": "fotos/1-original.png",
+      "fileName": "1-original.png",
+      "sha256": "d74c76b22786f35ab1ecda9fca1564a5fccfcb3dff9a80bd0bc78ac7e88bb56b",
+      "width": 200,
+      "height": 200,
+      "editedPath": null,
+      "effectiveDpi": 254,
+      "targetDpi": 300,
+      "status": "gelb",
+      "note": "Auflösung knapp"
+    }
+  ],
+  "profile": {
+    "name": null,
+    "revision": null,
+    "method": "engraving",
+    "methodLabel": "Gravur auf Acrylglas",
+    "machine": null,
+    "rip": null,
+    "mirror": true,
+    "settingsOverridden": false
+  },
+  "output": {
+    "recipe": "gravuru-acrylic-engraving-proof/v3",
+    "settings": {
+      "mode": "raster",
+      "dpi": 300,
+      "mirror": true
+    },
+    "files": [
+      "technische-gravurpruefung.pdf",
+      "gravur-kontur-1zu1.pdf",
+      "gravurpruefung.json",
+      "gesicherte-gravurgestaltung.svg"
+    ],
+    "warnings": [
+      "Die helle Gravurfarbe der Produktvorschau ist kein Maschinenwert. Schrift und Bibliotheksmotive werden als schwarze Gravurpfade ausgegeben.",
+      "Material-, Maschinenparameter und Probegravur sind noch nicht freigegeben."
+    ],
+    "productionReady": false
+  }
+}

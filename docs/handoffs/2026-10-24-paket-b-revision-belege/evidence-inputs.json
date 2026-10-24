@@ -1,0 +1,93 @@
+[
+  {
+    "source": "paket-bc-revision-bundle-check.json",
+    "path": "paket-bc-revision-bundle-check.json",
+    "sourceSha256": "a239ad5e29a3ede44d19d7ba9e916120b54bf6cbe29dbad01bfd66ea0b410a55",
+    "sha256": "a239ad5e29a3ede44d19d7ba9e916120b54bf6cbe29dbad01bfd66ea0b410a55",
+    "bytes": 2970
+  },
+  {
+    "source": "paket-bc-revision-bundle-check.mjs",
+    "path": "paket-bc-revision-bundle-check.mjs",
+    "sourceSha256": "89b18ce132bfb060451fa7e296e4090626550f415269382600aea8bc98089301",
+    "sha256": "89b18ce132bfb060451fa7e296e4090626550f415269382600aea8bc98089301",
+    "bytes": 6033
+  },
+  {
+    "source": "paket-bc-revision-comparison.json",
+    "path": "paket-bc-revision-comparison.json",
+    "sourceSha256": "e261a3f4fba8bbab8928862f871a8e013fc3494215afea36265bcdc1ba113da0",
+    "sha256": "e261a3f4fba8bbab8928862f871a8e013fc3494215afea36265bcdc1ba113da0",
+    "bytes": 2520
+  },
+  {
+    "source": "paket-bc-revision-comparison.log",
+    "path": "paket-bc-revision-comparison.log",
+    "sourceSha256": "d472df3f4f4c32674bc1e890d5d78f80191e9cfa42b00aa18287d134b62c1ad8",
+    "sha256": "e18747826c5af2de37e433a10a9df979968d39a7513662cecbe0c09395e5b943",
+    "bytes": 1998
+  },
+  {
+    "source": "paket-bc-revision-dry-run.json",
+    "path": "paket-bc-revision-dry-run.json.gz",
+    "sourceSha256": "39dfdba983d465a11e276653a61d4521b7999996bba221607fadeb103c947b63",
+    "sha256": "aae1d3f38599eba2fc1664955e2c79daacf77a3e653629c2205b3a469c02fcb3",
+    "bytes": 30118
+  },
+  {
+    "source": "paket-bc-revision-dry-run.log",
+    "path": "paket-bc-revision-dry-run.log",
+    "sourceSha256": "741aeee250bd77735503bb1db87a242f952c403b449699cbdb276a44c7d7140d",
+    "sha256": "ac0006ee5f341f6f7858c022991a88eb6fc28bb42df46585ba02f7f1b432da9e",
+    "bytes": 4250
+  },
+  {
+    "source": "paket-bc-revision-import-files.json",
+    "path": "paket-bc-revision-import-files.json",
+    "sourceSha256": "753fd4f507eb14c61362c1131d939747663fc1993ea02dab73f3fdfb639674f1",
+    "sha256": "753fd4f507eb14c61362c1131d939747663fc1993ea02dab73f3fdfb639674f1",
+    "bytes": 1204
+  },
+  {
+    "source": "paket-bc-revision-import-handoff.md",
+    "path": "paket-bc-revision-import-handoff.md",
+    "sourceSha256": "48df38fd32f79dbfdead5c72f9b1f732af415b462ffab861c968443adebc5270",
+    "sha256": "48df38fd32f79dbfdead5c72f9b1f732af415b462ffab861c968443adebc5270",
+    "bytes": 4599
+  },
+  {
+    "source": "paket-bc-revision-import-tests.log",
+    "path": "paket-bc-revision-import-tests.log",
+    "sourceSha256": "a07c970e7639645d9ff770051b0c6a35a820774b8f4675739ef0046a6a61eced",
+    "sha256": "874e4a7ea5ac40d03fb4018bba3279089cad50245ece5cfa7473aa1763e6da6e",
+    "bytes": 2729
+  },
+  {
+    "source": "paket-bc-revision-inputs.json",
+    "path": "paket-bc-revision-inputs.json",
+    "sourceSha256": "0a74c7ab061236c919fa002f783ff6fd2d40ef18148075be1e0079f9afab60f9",
+    "sha256": "0a74c7ab061236c919fa002f783ff6fd2d40ef18148075be1e0079f9afab60f9",
+    "bytes": 1063
+  },
+  {
+    "source": "paket-bc-revision-metrics.json",
+    "path": "paket-bc-revision-metrics.json",
+    "sourceSha256": "b4e6923457a6eca9894bbad86ec89d485244881019edded9533dc35d9db22dba",
+    "sha256": "b4e6923457a6eca9894bbad86ec89d485244881019edded9533dc35d9db22dba",
+    "bytes": 415
+  },
+  {
+    "source": "paket-bc-revision-run.json",
+    "path": "paket-bc-revision-run.json",
+    "sourceSha256": "0c6f70576be90f0899e39e9d61c4447795d0734fb716b6d0ce1ce78f821ebcd8",
+    "sha256": "0f24156f474b17de8bc9331b87eda877319d94d6a4ff174a4ec65519e3d05547",
+    "bytes": 122
+  },
+  {
+    "source": "paket-bc-revision-summary.json",
+    "path": "paket-bc-revision-summary.json",
+    "sourceSha256": "bf05e9a063833e2e54ee4c1367fa1cd1e6cb3a204c06622723ec3d8985e87dd9",
+    "sha256": "bf05e9a063833e2e54ee4c1367fa1cd1e6cb3a204c06622723ec3d8985e87dd9",
+    "bytes": 4171
+  }
+]

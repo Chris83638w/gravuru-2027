@@ -1,0 +1,205 @@
+{
+  "source": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\production-summary-diagnosis\\main-production-summary.py",
+  "sourceSha256": "cd2be88f6314102358e1bfd8ef4d2f5749d559618df9ff0565f510d8e4e9185f",
+  "payloadSha256": "6c9bfba3442fb5f60c9f301d8195f312cbf7fbf26e7eae149b15b815627bcd90",
+  "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027",
+  "pymupdf": "2.0",
+  "fonts": {
+    "regular": "Arial Regular",
+    "bold": "Arial Bold",
+    "candidates": [
+      {
+        "regular": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "bold": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "present": false
+      },
+      {
+        "regular": "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+        "bold": "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
+        "present": false
+      },
+      {
+        "regular": "C:/Windows/Fonts/arial.ttf",
+        "bold": "C:/Windows/Fonts/arialbd.ttf",
+        "present": true
+      },
+      {
+        "regular": "/Library/Fonts/Arial.ttf",
+        "bold": "/Library/Fonts/Arial Bold.ttf",
+        "present": false
+      }
+    ]
+  },
+  "pages": 1,
+  "text": "Fertigungspaket ꞏ Zusammenfassung\nFreiform­Zusammenfassung\nErzeugt: 24.10.2026 07:55 (Europe/Berlin)\nKeine Fertigungsfreigabe ꞏ Prüfstand proof_f8541eef­57dd­40dd­b823­b183b8efebef\nVorschau aus der Produktionsdatei\nAuftrag\nBestellbezug\nBeim Erzeugen lag noch keine Bestellposition zu\ndiesem Prüfstand vor; Referenz ist die\nKonfigurations­ID.\nKonfiguration\nproof_f8541eef­57dd­40dd­b823­b183b8efebef ꞏ\nEntwurf\ndraft_2dd6a6ff­5531­4873­b278­26b7ad5321e6 Rev.\n2\nProduktstand\ncfg_0add0852­7d6c­43f6­85de­4f6340b219fa ꞏ\nRevision 1\nDesign\ndesign­print\nMenge ꞏ Preis\n– × 29,99 EUR\nProdukt\nMaterial\nEdelstahl ꞏ gebürstet ꞏ 1,5 mm\nGröße\n60 × 40 mm\nBefestigung\nlaut Bohrbild ꞏ 1 Ausschnitt(e) laut Kontur\nVerfahren\nUV­Druck\nOptionen\nKeine Optionsgruppen\nTextfelder\nFeld\nText\nSchrift\nGröße mm\nx mm\ny mm\nDrehung\nName\nHallo Wörld\nGaramond Acryl\n3\n19\n33,5\n0°\nPosition = Mittelpunkt des Felds in mm vom linken oberen Plattenrand; Größe = Schriftgröße in mm auf der Platte.\nFotos\nFeld\nDatei (fotos/)\nPixel\nEffektive Auflösung\nAmpel\nVermerk\nFoto\nphoto­original.png\n120 × 80 px\n127 dpi (Soll 300)\nrot\nAuflösung niedrig\nFertigungsprofil\nProfil\nKein Fertigungsprofil gebunden\nVerfahren\nUV­Druck\nMaschine\noffen\nRIP / Software\noffen\nSpiegelung\nnein\nAusgabe\ngravuru­form­print­proof/v5 ꞏ profile: roland, bleedMm: 0, white: motif, whiteBleedMm: 0, mirror: nein, dpi: 300\nDateien\ntechnische­druckpruefung.pdf, druckpruefung.json\nErzeugt 24.10.2026 07:55 (Europe/Berlin) ꞏ productionReady: nein ꞏ Gleiche Daten maschinenlesbar in summary.json\n",
+  "trace": [
+    {
+      "kind": "key_values",
+      "startY": 90,
+      "endY": 216.22499999999994,
+      "rows": [
+        {
+          "label": "Bestellbezug",
+          "lines": [
+            "Beim Erzeugen lag noch keine Bestellposition zu",
+            "diesem Prüfstand vor; Referenz ist die",
+            "Konfigurations-ID."
+          ]
+        },
+        {
+          "label": "Konfiguration",
+          "lines": [
+            "proof_f8541eef-57dd-40dd-b823-b183b8efebef ·",
+            "Entwurf",
+            "draft_2dd6a6ff-5531-4873-b278-26b7ad5321e6 Rev.",
+            "2"
+          ]
+        },
+        {
+          "label": "Produktstand",
+          "lines": [
+            "cfg_0add0852-7d6c-43f6-85de-4f6340b219fa ·",
+            "Revision 1"
+          ]
+        },
+        {
+          "label": "Design",
+          "lines": [
+            "design-print"
+          ]
+        },
+        {
+          "label": "Menge · Preis",
+          "lines": [
+            "– × 29,99 EUR"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "key_values",
+      "startY": 234.22499999999994,
+      "endY": 291.6,
+      "rows": [
+        {
+          "label": "Material",
+          "lines": [
+            "Edelstahl · gebürstet · 1,5 mm"
+          ]
+        },
+        {
+          "label": "Größe",
+          "lines": [
+            "60 × 40 mm"
+          ]
+        },
+        {
+          "label": "Befestigung",
+          "lines": [
+            "laut Bohrbild · 1 Ausschnitt(e) laut Kontur"
+          ]
+        },
+        {
+          "label": "Verfahren",
+          "lines": [
+            "UV-Druck"
+          ]
+        },
+        {
+          "label": "Optionen",
+          "lines": [
+            "Keine Optionsgruppen"
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "table",
+      "columns": [
+        "Feld",
+        "Text",
+        "Schrift",
+        "Größe mm",
+        "x mm",
+        "y mm",
+        "Drehung"
+      ],
+      "startY": 331.0,
+      "rowStartY": 347.4,
+      "rowHeights": [
+        16.4
+      ],
+      "limitY": 591.89,
+      "shown": 1,
+      "endY": 363.79999999999995
+    },
+    {
+      "kind": "table",
+      "columns": [
+        "Feld",
+        "Datei (fotos/)",
+        "Pixel",
+        "Effektive Auflösung",
+        "Ampel",
+        "Vermerk"
+      ],
+      "startY": 396.79999999999995,
+      "rowStartY": 413.19999999999993,
+      "rowHeights": [
+        16.4
+      ],
+      "limitY": 691.89,
+      "shown": 1,
+      "endY": 429.5999999999999
+    },
+    {
+      "kind": "key_values",
+      "startY": 452.5999999999999,
+      "endY": 528.1999999999999,
+      "rows": [
+        {
+          "label": "Profil",
+          "lines": [
+            "Kein Fertigungsprofil gebunden"
+          ]
+        },
+        {
+          "label": "Verfahren",
+          "lines": [
+            "UV-Druck"
+          ]
+        },
+        {
+          "label": "Maschine",
+          "lines": [
+            "offen"
+          ]
+        },
+        {
+          "label": "RIP / Software",
+          "lines": [
+            "offen"
+          ]
+        },
+        {
+          "label": "Spiegelung",
+          "lines": [
+            "nein"
+          ]
+        },
+        {
+          "label": "Ausgabe",
+          "lines": [
+            "gravuru-form-print-proof/v5 · profile: roland, bleedMm: 0, white: motif, whiteBleedMm: 0, mirror: nein, dpi: 300"
+          ]
+        },
+        {
+          "label": "Dateien",
+          "lines": [
+            "technische-druckpruefung.pdf, druckpruefung.json"
+          ]
+        }
+      ]
+    }
+  ]
+}

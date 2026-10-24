@@ -1,0 +1,2319 @@
+{
+  "ref": "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8",
+  "repository": "Chris83638w/gravuru-2027",
+  "completedAt": "2026-10-24T05:13:27.946Z",
+  "counts": [
+    {
+      "directory": "app/configurator/variant-m",
+      "pinnedCount": 38,
+      "pinnedPresent": 38,
+      "localCount": 40,
+      "extraLocal": [
+        "contour-print.test.mjs",
+        "contour-ui.test.mjs"
+      ]
+    },
+    {
+      "directory": "app/workshop",
+      "pinnedCount": 132,
+      "pinnedPresent": 132,
+      "localCount": 135,
+      "extraLocal": [
+        "contour-contract.test.mjs",
+        "contour-production.test.mjs",
+        "contour-surfaces.test.mjs"
+      ]
+    }
+  ],
+  "added": [
+    {
+      "path": "app/configurator/variant-m/account-drafts.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "48432a0977cfcc9720ee500a4357598ad79b18c9",
+      "bytes": 5181
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-product.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "14bd93ac91a3540ac38ed569bd697169a2525cbf",
+      "bytes": 5641
+    },
+    {
+      "path": "app/configurator/variant-m/bundle.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "72d7b015b83b989f22b97df1931ae2df54a1652d",
+      "bytes": 10359
+    },
+    {
+      "path": "app/configurator/variant-m/cart-edit.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "dc4148c2b272fe7c73cf87d71ef2146c8a54e7dc",
+      "bytes": 3457
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "fe0b06226d57b25f89f4345c40c31b0f1b2935ce",
+      "bytes": 5428
+    },
+    {
+      "path": "app/configurator/variant-m/design-gallery.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "4527d2a0e4eba9c80d05baaf89d7ecdd9430b827",
+      "bytes": 9023
+    },
+    {
+      "path": "app/configurator/variant-m/editor-additions.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "09b2a5b181e415d6d86daa98b8caf5076ad6bead",
+      "bytes": 3873
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "5cae7ee40626d3ffdbd1d74c9e1350b18a456b2c",
+      "bytes": 11161
+    },
+    {
+      "path": "app/configurator/variant-m/font-display.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "7540d026a22c7013a084e4d646977a4d654f4d58",
+      "bytes": 475
+    },
+    {
+      "path": "app/configurator/variant-m/hole-proximity.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "7cb05436cf61ccbbc38fef06bb8a17d04d14f5f6",
+      "bytes": 4877
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "b5521db719c30cfc38eafade28d6cfda3ce32815",
+      "bytes": 17360
+    },
+    {
+      "path": "app/configurator/variant-m/mobile-standard-plate.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "0fcc207b7633dc4df904e85b4426e1b7ff45390d",
+      "bytes": 1168
+    },
+    {
+      "path": "app/configurator/variant-m/mobile-steps.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "331df59c43adeb0d607e743aa2f586854deeddc9",
+      "bytes": 4869
+    },
+    {
+      "path": "app/configurator/variant-m/nested-svg-css.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "b68504d4bb82c3bf3f7092ff6cd06e28842c9bde",
+      "bytes": 1155
+    },
+    {
+      "path": "app/configurator/variant-m/option-fields.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "d41da254c5f499dac2121137a913153399d00535",
+      "bytes": 11442
+    },
+    {
+      "path": "app/configurator/variant-m/photo-upload.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "11265fa315af90ddcc66d5c227e4ab154493cab4",
+      "bytes": 7045
+    },
+    {
+      "path": "app/configurator/variant-m/preload-queue.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "6e202d8648d77033bd7d41b1705ba2f6c063de37",
+      "bytes": 12716
+    },
+    {
+      "path": "app/configurator/variant-m/preview-price.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "4f8bd7bf00adbffac738b58ed673ed9c760b84f9",
+      "bytes": 3433
+    },
+    {
+      "path": "app/configurator/variant-m/screw-preview.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "f1fdda896caf5b96d0e9a0fea6d6195e0b7a5abf",
+      "bytes": 1393
+    },
+    {
+      "path": "app/configurator/variant-m/server.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "c46d90d391b082d9bdd2284b346178b04b8c7729",
+      "bytes": 2914
+    },
+    {
+      "path": "app/configurator/variant-m/session-guard.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "f95df8a6df082910a55f1e497be98b036420d135",
+      "bytes": 11721
+    },
+    {
+      "path": "app/configurator/variant-m/shop-cart.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "77410ed7e25f474b970b8fe54360c0e4b350d4d6",
+      "bytes": 1889
+    },
+    {
+      "path": "app/workshop/account-draft-http.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "1e38323f9b9ce5145d7d0e1c7bcb3208dde65499",
+      "bytes": 8299
+    },
+    {
+      "path": "app/workshop/acryl-host-routing.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "a926713ed47eeb585d6ab0ec5b328e7f47b66466",
+      "bytes": 2572
+    },
+    {
+      "path": "app/workshop/acrylic-draft-store.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "45e6866c26a5234c5133023434b0da4522ea7a8e",
+      "bytes": 7796
+    },
+    {
+      "path": "app/workshop/acrylic-engraving.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "36fe4284f539ebaaf978ee094cd8517adc4dac15",
+      "bytes": 7229
+    },
+    {
+      "path": "app/workshop/acrylic-order-product.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "163a5103b930d6b50ac7084b34f895fa01d518f3",
+      "bytes": 8838
+    },
+    {
+      "path": "app/workshop/acrylic-order.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "7349b4bb82477eaea3aca2e9b988ad5de19ed288",
+      "bytes": 5157
+    },
+    {
+      "path": "app/workshop/acrylic-photo-resolution.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "9b474d7cfa7c10f86ec5f95ad7fe20a4a02705fd",
+      "bytes": 4235
+    },
+    {
+      "path": "app/workshop/acrylic-review.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "7209b04b5b0e8a24866b8f00757985037ca2a515",
+      "bytes": 16863
+    },
+    {
+      "path": "app/workshop/batch-jobs.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "78dc80e43e057a555b95a733fb1105c5ad882da6",
+      "bytes": 6973
+    },
+    {
+      "path": "app/workshop/bound-test-cart.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "1d3aff986397cdbe0ee77fb0272169d25e94455c",
+      "bytes": 6452
+    },
+    {
+      "path": "app/workshop/cart-configuration.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "9d06a93f2eba3a080fe40beeadb39684adde5741",
+      "bytes": 3171
+    },
+    {
+      "path": "app/workshop/cart-edit-revision.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "f4716614547df0b9680c950b42a695e294df5890",
+      "bytes": 10346
+    },
+    {
+      "path": "app/workshop/cart-handoff-journal.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "c5f30ea91babaa771670de462f8e139414727465",
+      "bytes": 15183
+    },
+    {
+      "path": "app/workshop/cart-http-gate.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "438cd3ace4d959b9f507bc74d8817d9de6fffdd0",
+      "bytes": 10362
+    },
+    {
+      "path": "app/workshop/cart-personalization.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "4d4eee229fb089136fabfe6c788d96950ba966cd",
+      "bytes": 13909
+    },
+    {
+      "path": "app/workshop/configurator-test-gateway.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "85709de9cc05b5bf6d0b89e689b58371eefa9427",
+      "bytes": 10172
+    },
+    {
+      "path": "app/workshop/cross-store-order-intake.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "375fc18504faba7974a3a39351134d94bbb58063",
+      "bytes": 3383
+    },
+    {
+      "path": "app/workshop/customer-draft-store.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "9fd10198ead03c8c8eb9c7fd6c42747723487e98",
+      "bytes": 6432
+    },
+    {
+      "path": "app/workshop/customer-fields.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "bfde95f2358541ca6288e0468679a42f92bdc6c1",
+      "bytes": 13598
+    },
+    {
+      "path": "app/workshop/dashboard-print-flow.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "19339cc405dc2b5f79e33b934f55607b26abdb5b",
+      "bytes": 19400
+    },
+    {
+      "path": "app/workshop/design-dashboard.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "1b209bb21591443bf67fc530bbe784a65bb53621",
+      "bytes": 29188
+    },
+    {
+      "path": "app/workshop/draft-cart-handoff.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "7844f57ca049685df3733952d47111d4751ac724",
+      "bytes": 20944
+    },
+    {
+      "path": "app/workshop/export-jobs.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "1bcd5dc76c6d3759ec3cedcda2e3f4ecb63ce386",
+      "bytes": 5446
+    },
+    {
+      "path": "app/workshop/font-library.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "0f736538b5ebc70399e9bfcc0e48c90a09e58aaa",
+      "bytes": 5137
+    },
+    {
+      "path": "app/workshop/form-review-snapshot.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "7825a7faa14f2524ce9b174482fed46897b87e3d",
+      "bytes": 9962
+    },
+    {
+      "path": "app/workshop/guide-layers.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "c79f35341bf23a37f100a55ecc6d5ff9ee39ba72",
+      "bytes": 8072
+    },
+    {
+      "path": "app/workshop/katalog-linien.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "31cf15c439f4bbe3c7e839497b42ba2ec213f4dc",
+      "bytes": 7608
+    },
+    {
+      "path": "app/workshop/konfis.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "1e7faddd68957e5d7d8107e5a43274248041db5c",
+      "bytes": 16454
+    },
+    {
+      "path": "app/workshop/merchant-repair.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "52a248ed1a1457348a7762a7b0240d08e26ee91b",
+      "bytes": 6152
+    },
+    {
+      "path": "app/workshop/merchant-test-cart.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "6a52e85f7765dcad8c625bb464f00db2a4dfb353",
+      "bytes": 11159
+    },
+    {
+      "path": "app/workshop/option-fields.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "3b7b7fc26c7f7f31d216abd9c5b07bf2962dd953",
+      "bytes": 8693
+    },
+    {
+      "path": "app/workshop/order-intake-routing.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "e63561269db5f6d0d8eaf44fbe23e0eaf4ab2146",
+      "bytes": 6638
+    },
+    {
+      "path": "app/workshop/order-intake.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "901b06f112d969fd6e2754a6acf6c0be83bf64d8",
+      "bytes": 18260
+    },
+    {
+      "path": "app/workshop/output-orientation.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "c89ddbaa41484de58352411b9e0417d91a4c884b",
+      "bytes": 11087
+    },
+    {
+      "path": "app/workshop/process-profiles.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "3128483b5c552384c29455f05626afd35a73a077",
+      "bytes": 7171
+    },
+    {
+      "path": "app/workshop/product-model.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "ed6fbc6bf1816241905b0ca3efb59097b6fc36e5",
+      "bytes": 10773
+    },
+    {
+      "path": "app/workshop/production-profiles.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "77313de76fbb3396896c91d1392187f856f5ea7d",
+      "bytes": 7235
+    },
+    {
+      "path": "app/workshop/production-release.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "100d90c7c796a6deeff9d231bc89ec02b336718b",
+      "bytes": 21164
+    },
+    {
+      "path": "app/workshop/production-summary.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "ac87e4b2cec4137444d7f25dce1b1baebe238fdc",
+      "bytes": 13579
+    },
+    {
+      "path": "app/workshop/quantity-tiers.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "c84a9b8f879cc1639211bdbc18b36180e44da8b6",
+      "bytes": 14053
+    },
+    {
+      "path": "app/workshop/repository.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "9036dee8694181816a6b9d7fdb10b94245777a35",
+      "bytes": 20431
+    },
+    {
+      "path": "app/workshop/shop-entry-client.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "063b52ce2f375057a62677cbe1ac9dafb1b0b33e",
+      "bytes": 4351
+    },
+    {
+      "path": "app/workshop/shop-entry-flow.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "8d0ed91b48ff3b87e676632365ef871703d1189a",
+      "bytes": 15052
+    },
+    {
+      "path": "app/workshop/shop-entry-session.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "2a20abfde039d9e45250753e06121ef0a0f829fb",
+      "bytes": 3227
+    },
+    {
+      "path": "app/workshop/shop-entry.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "bf1f4cdb4227b6afb0867755c840547a9bb4b151",
+      "bytes": 27930
+    },
+    {
+      "path": "app/workshop/shop-product-binding-adapter.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "9220270849e2c7ba293e65ff208bbcb9cfbf66f2",
+      "bytes": 12379
+    },
+    {
+      "path": "app/workshop/shop-product-binding-check.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "e64ca0c06df69b1f0af64397473864dfcf4ff934",
+      "bytes": 21329
+    },
+    {
+      "path": "app/workshop/shop-product-binding-http.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "b4687d31bc37229906b2855be1e5f7e29b32e247",
+      "bytes": 14175
+    },
+    {
+      "path": "app/workshop/shop-product-binding-legacy.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "b4e17eab2d9ca72bf587a19a7dff6bbee12e55e4",
+      "bytes": 12108
+    },
+    {
+      "path": "app/workshop/shop-product-binding-plan.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "4bc633db899fcc825aefc52f5e28b5593193252a",
+      "bytes": 17130
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "04313b62ccd49568c2d205a9cd55b985f4b59f73",
+      "bytes": 16094
+    },
+    {
+      "path": "app/workshop/shopify-app-proxy.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "2311d6850a204ed0f0a5e2729d515fca513cbcad",
+      "bytes": 2945
+    },
+    {
+      "path": "app/workshop/shopify-order-webhook.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "509d521fb892dee7ca145bdcd5f473d0c1514b84",
+      "bytes": 6006
+    },
+    {
+      "path": "app/workshop/storefront-cart.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "7396af08df058c1a026165ae2c5914f31a78c381",
+      "bytes": 10968
+    },
+    {
+      "path": "app/workshop/storefront-transport.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "9d64c1248825f180fede748531d998169f270357",
+      "bytes": 10946
+    },
+    {
+      "path": "app/workshop/tenant.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "8f4aec4dbdea70d9d87fd855bea6ca4fc851692e",
+      "bytes": 22939
+    },
+    {
+      "path": "app/workshop/theme-catalog.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "fd1542e9c0695539d9289a74062b896f16ceb48e",
+      "bytes": 955
+    },
+    {
+      "path": "app/workshop/theme-limits.test.mjs",
+      "status": "downloaded-verified",
+      "sha": "fd12f0139181892385958bfa87a157a1771a11a5",
+      "bytes": 4505
+    },
+    {
+      "path": "docs/handoffs/2026-10-22-shopify-7x2-hauptprodukte.json",
+      "status": "downloaded-verified",
+      "sha": "629826303f6593aef0db2d6846b95acb2bbb7ce0",
+      "bytes": 5623
+    },
+    {
+      "path": "legacy-patches/apply-order-intake-compat.mjs",
+      "status": "downloaded-verified",
+      "sha": "e621e808c62746677056ad069ec8eb85d9156297",
+      "bytes": 2501
+    },
+    {
+      "path": "ops/plesk/order-webhook-registration.mjs",
+      "status": "downloaded-verified",
+      "sha": "1dddf56f0df336f1b700ffebe282a96477cd8962",
+      "bytes": 5647
+    },
+    {
+      "path": "legacy-patches/fixtures/order-intake.mjs.txt",
+      "status": "downloaded-verified",
+      "sha": "91133ed09c1ee73f66b25d9024e821d3aede1995",
+      "bytes": 22721
+    },
+    {
+      "path": "legacy-patches/fixtures/order-status.mjs",
+      "status": "downloaded-verified",
+      "sha": "f48a18b705c95e7e2926d768ef0124a0ac7d4e10",
+      "bytes": 4837
+    },
+    {
+      "path": "ops/plesk/order-webhook-probe.mjs",
+      "status": "downloaded-verified",
+      "sha": "27131b94ccd96f2ab7a4c71185cce83a01aa49c2",
+      "bytes": 826
+    },
+    {
+      "path": "legacy-patches/fixtures/order-refunds.mjs",
+      "status": "downloaded-verified",
+      "sha": "5f4ba5061b27ed431a9d16e1d76d39b94cd12dfd",
+      "bytes": 3870
+    }
+  ],
+  "testInventory": [
+    {
+      "path": "app/configurator/variant-m/account-drafts.test.mjs",
+      "pinnedSha": "48432a0977cfcc9720ee500a4357598ad79b18c9",
+      "present": true,
+      "actualSha": "48432a0977cfcc9720ee500a4357598ad79b18c9",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-draft-client.test.mjs",
+      "pinnedSha": "b3684b00edada826143c9df294ec9c074d17d0a8",
+      "present": true,
+      "actualSha": "b3684b00edada826143c9df294ec9c074d17d0a8",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-product.test.mjs",
+      "pinnedSha": "14bd93ac91a3540ac38ed569bd697169a2525cbf",
+      "present": true,
+      "actualSha": "14bd93ac91a3540ac38ed569bd697169a2525cbf",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/bundle.test.mjs",
+      "pinnedSha": "72d7b015b83b989f22b97df1931ae2df54a1652d",
+      "present": true,
+      "actualSha": "72d7b015b83b989f22b97df1931ae2df54a1652d",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/cart-edit.test.mjs",
+      "pinnedSha": "dc4148c2b272fe7c73cf87d71ef2146c8a54e7dc",
+      "present": true,
+      "actualSha": "dc4148c2b272fe7c73cf87d71ef2146c8a54e7dc",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/commerce.test.mjs",
+      "pinnedSha": "06e5c65cd0c1fd6b906fe39b43ad957590a37c1f",
+      "present": true,
+      "actualSha": "06e5c65cd0c1fd6b906fe39b43ad957590a37c1f",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/contract.test.mjs",
+      "pinnedSha": "98200998609abc881796e076ead38e206b7892bb",
+      "present": true,
+      "actualSha": "98200998609abc881796e076ead38e206b7892bb",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/customer-motifs.test.mjs",
+      "pinnedSha": "c697cf6dcba2d2e873ff5fd173a1813d8fec0724",
+      "present": true,
+      "actualSha": "c697cf6dcba2d2e873ff5fd173a1813d8fec0724",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.test.mjs",
+      "pinnedSha": "fe0b06226d57b25f89f4345c40c31b0f1b2935ce",
+      "present": true,
+      "actualSha": "fe0b06226d57b25f89f4345c40c31b0f1b2935ce",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/design-area.test.mjs",
+      "pinnedSha": "4169878ca215582d787fbd3e843f6fb0d9667fe2",
+      "present": true,
+      "actualSha": "4169878ca215582d787fbd3e843f6fb0d9667fe2",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/design-gallery.test.mjs",
+      "pinnedSha": "4527d2a0e4eba9c80d05baaf89d7ecdd9430b827",
+      "present": true,
+      "actualSha": "4527d2a0e4eba9c80d05baaf89d7ecdd9430b827",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/edge-clamp.test.mjs",
+      "pinnedSha": "940669b6a08fad1438e91a24204c7153a542df88",
+      "present": true,
+      "actualSha": "940669b6a08fad1438e91a24204c7153a542df88",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/editor-additions.test.mjs",
+      "pinnedSha": "09b2a5b181e415d6d86daa98b8caf5076ad6bead",
+      "present": true,
+      "actualSha": "09b2a5b181e415d6d86daa98b8caf5076ad6bead",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.test.mjs",
+      "pinnedSha": "5cae7ee40626d3ffdbd1d74c9e1350b18a456b2c",
+      "present": true,
+      "actualSha": "5cae7ee40626d3ffdbd1d74c9e1350b18a456b2c",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/field-mapping.test.mjs",
+      "pinnedSha": "93fff614b334bb5715b4de0834664b5dff36201b",
+      "present": true,
+      "actualSha": "93fff614b334bb5715b4de0834664b5dff36201b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/font-display.test.mjs",
+      "pinnedSha": "7540d026a22c7013a084e4d646977a4d654f4d58",
+      "present": true,
+      "actualSha": "7540d026a22c7013a084e4d646977a4d654f4d58",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/hole-proximity.test.mjs",
+      "pinnedSha": "7cb05436cf61ccbbc38fef06bb8a17d04d14f5f6",
+      "present": true,
+      "actualSha": "7cb05436cf61ccbbc38fef06bb8a17d04d14f5f6",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/image-processing.test.mjs",
+      "pinnedSha": "df303e3d197a9b53f672b4f28cb2c21cc88ae552",
+      "present": true,
+      "actualSha": "df303e3d197a9b53f672b4f28cb2c21cc88ae552",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources.test.mjs",
+      "pinnedSha": "b5521db719c30cfc38eafade28d6cfda3ce32815",
+      "present": true,
+      "actualSha": "b5521db719c30cfc38eafade28d6cfda3ce32815",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/material-surface-preview.test.mjs",
+      "pinnedSha": "71ec8f615946b8a883064d64d7b629e4184b89ca",
+      "present": true,
+      "actualSha": "71ec8f615946b8a883064d64d7b629e4184b89ca",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/mobile-standard-plate.test.mjs",
+      "pinnedSha": "0fcc207b7633dc4df904e85b4426e1b7ff45390d",
+      "present": true,
+      "actualSha": "0fcc207b7633dc4df904e85b4426e1b7ff45390d",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/mobile-steps.test.mjs",
+      "pinnedSha": "331df59c43adeb0d607e743aa2f586854deeddc9",
+      "present": true,
+      "actualSha": "331df59c43adeb0d607e743aa2f586854deeddc9",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/nested-svg-css.test.mjs",
+      "pinnedSha": "b68504d4bb82c3bf3f7092ff6cd06e28842c9bde",
+      "present": true,
+      "actualSha": "b68504d4bb82c3bf3f7092ff6cd06e28842c9bde",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/option-fields.test.mjs",
+      "pinnedSha": "d41da254c5f499dac2121137a913153399d00535",
+      "present": true,
+      "actualSha": "d41da254c5f499dac2121137a913153399d00535",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/photo-position.test.mjs",
+      "pinnedSha": "343db47e1b1d5a4321a44962710ccde564c2dc1c",
+      "present": true,
+      "actualSha": "343db47e1b1d5a4321a44962710ccde564c2dc1c",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/photo-upload.test.mjs",
+      "pinnedSha": "11265fa315af90ddcc66d5c227e4ab154493cab4",
+      "present": true,
+      "actualSha": "11265fa315af90ddcc66d5c227e4ab154493cab4",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/preload-queue.test.mjs",
+      "pinnedSha": "6e202d8648d77033bd7d41b1705ba2f6c063de37",
+      "present": true,
+      "actualSha": "6e202d8648d77033bd7d41b1705ba2f6c063de37",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/preview-price.test.mjs",
+      "pinnedSha": "4f8bd7bf00adbffac738b58ed673ed9c760b84f9",
+      "present": true,
+      "actualSha": "4f8bd7bf00adbffac738b58ed673ed9c760b84f9",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/preview-resource.test.mjs",
+      "pinnedSha": "f98aab91cbd109f10ee02a749523ede75bd8d698",
+      "present": true,
+      "actualSha": "f98aab91cbd109f10ee02a749523ede75bd8d698",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/print-export.test.mjs",
+      "pinnedSha": "cb44ca3747f6ab7e49ff20b8ad5fe974305f25ce",
+      "present": true,
+      "actualSha": "cb44ca3747f6ab7e49ff20b8ad5fe974305f25ce",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.test.mjs",
+      "pinnedSha": "2bc8261d208700c0855ee8e2f25eafa805b60413",
+      "present": true,
+      "actualSha": "2bc8261d208700c0855ee8e2f25eafa805b60413",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/screw-preview.test.mjs",
+      "pinnedSha": "f1fdda896caf5b96d0e9a0fea6d6195e0b7a5abf",
+      "present": true,
+      "actualSha": "f1fdda896caf5b96d0e9a0fea6d6195e0b7a5abf",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/server.test.mjs",
+      "pinnedSha": "c46d90d391b082d9bdd2284b346178b04b8c7729",
+      "present": true,
+      "actualSha": "c46d90d391b082d9bdd2284b346178b04b8c7729",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/session-guard.test.mjs",
+      "pinnedSha": "f95df8a6df082910a55f1e497be98b036420d135",
+      "present": true,
+      "actualSha": "f95df8a6df082910a55f1e497be98b036420d135",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/shop-cart.test.mjs",
+      "pinnedSha": "77410ed7e25f474b970b8fe54360c0e4b350d4d6",
+      "present": true,
+      "actualSha": "77410ed7e25f474b970b8fe54360c0e4b350d4d6",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "pinnedSha": "33bdb1565248cf5906fcdec546a431b2887b66f9",
+      "present": true,
+      "actualSha": "33bdb1565248cf5906fcdec546a431b2887b66f9",
+      "sourceMatches": true,
+      "rootOwned": true
+    },
+    {
+      "path": "app/configurator/variant-m/usability.test.mjs",
+      "pinnedSha": "5b43e63da7ce0d38c45ecf13005a63e271174142",
+      "present": true,
+      "actualSha": "5b43e63da7ce0d38c45ecf13005a63e271174142",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.test.mjs",
+      "pinnedSha": "4771b49a628906aecf2f0291da14bb9ddda1070d",
+      "present": true,
+      "actualSha": "4771b49a628906aecf2f0291da14bb9ddda1070d",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/account-draft-http.test.mjs",
+      "pinnedSha": "1e38323f9b9ce5145d7d0e1c7bcb3208dde65499",
+      "present": true,
+      "actualSha": "1e38323f9b9ce5145d7d0e1c7bcb3208dde65499",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acryl-host-routing.test.mjs",
+      "pinnedSha": "a926713ed47eeb585d6ab0ec5b328e7f47b66466",
+      "present": true,
+      "actualSha": "a926713ed47eeb585d6ab0ec5b328e7f47b66466",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acryl-team.test.mjs",
+      "pinnedSha": "e1df557147c5a2912ca7c1e3a329c44126997fd4",
+      "present": true,
+      "actualSha": "e1df557147c5a2912ca7c1e3a329c44126997fd4",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-artwork.test.mjs",
+      "pinnedSha": "8459018391f838f431512075de5ea0f3f56019f2",
+      "present": true,
+      "actualSha": "1bb31bb8ec5cf1f36773d9696c34e0c7540ccb48",
+      "sourceMatches": false,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-draft-http.test.mjs",
+      "pinnedSha": "e1d14984f506df4e52394a282bbec15c4f4d1afb",
+      "present": true,
+      "actualSha": "e1d14984f506df4e52394a282bbec15c4f4d1afb",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-draft-store.test.mjs",
+      "pinnedSha": "45e6866c26a5234c5133023434b0da4522ea7a8e",
+      "present": true,
+      "actualSha": "45e6866c26a5234c5133023434b0da4522ea7a8e",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-engraving.test.mjs",
+      "pinnedSha": "36fe4284f539ebaaf978ee094cd8517adc4dac15",
+      "present": true,
+      "actualSha": "36fe4284f539ebaaf978ee094cd8517adc4dac15",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-import-tint.test.mjs",
+      "pinnedSha": "7dc9b01897512d45834556fffda598be6b535de4",
+      "present": true,
+      "actualSha": "7dc9b01897512d45834556fffda598be6b535de4",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-order-product.test.mjs",
+      "pinnedSha": "163a5103b930d6b50ac7084b34f895fa01d518f3",
+      "present": true,
+      "actualSha": "163a5103b930d6b50ac7084b34f895fa01d518f3",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-order.test.mjs",
+      "pinnedSha": "7349b4bb82477eaea3aca2e9b988ad5de19ed288",
+      "present": true,
+      "actualSha": "7349b4bb82477eaea3aca2e9b988ad5de19ed288",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-photo-resolution.test.mjs",
+      "pinnedSha": "9b474d7cfa7c10f86ec5f95ad7fe20a4a02705fd",
+      "present": true,
+      "actualSha": "9b474d7cfa7c10f86ec5f95ad7fe20a4a02705fd",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-production-profiles.test.mjs",
+      "pinnedSha": "e5e7e0f65e88b1ae28c0a428cb239700a03bca0a",
+      "present": true,
+      "actualSha": "e5e7e0f65e88b1ae28c0a428cb239700a03bca0a",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/acrylic-review.test.mjs",
+      "pinnedSha": "7209b04b5b0e8a24866b8f00757985037ca2a515",
+      "present": true,
+      "actualSha": "7209b04b5b0e8a24866b8f00757985037ca2a515",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/ai-batch.test.mjs",
+      "pinnedSha": "fe462c405fbb8486142d7d4a1f081c3ec2db0295",
+      "present": true,
+      "actualSha": "fe462c405fbb8486142d7d4a1f081c3ec2db0295",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/ai-design.test.mjs",
+      "pinnedSha": "a88d6332907834ff1f82c40b347cbed617483bde",
+      "present": true,
+      "actualSha": "a88d6332907834ff1f82c40b347cbed617483bde",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/ai-image.test.mjs",
+      "pinnedSha": "1f90c8fd6920c745001a587d899c9eae5e4aa1e6",
+      "present": true,
+      "actualSha": "1f90c8fd6920c745001a587d899c9eae5e4aa1e6",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/batch-assets.test.mjs",
+      "pinnedSha": "cd6eb9ca9580ea44df2800650a88fc6bd9a2eb63",
+      "present": true,
+      "actualSha": "cd6eb9ca9580ea44df2800650a88fc6bd9a2eb63",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/batch-jobs.test.mjs",
+      "pinnedSha": "78dc80e43e057a555b95a733fb1105c5ad882da6",
+      "present": true,
+      "actualSha": "78dc80e43e057a555b95a733fb1105c5ad882da6",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/batch-profiles.test.mjs",
+      "pinnedSha": "8df396669072d3060c30dcb16d912ff881274375",
+      "present": true,
+      "actualSha": "8df396669072d3060c30dcb16d912ff881274375",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/batch-report.test.mjs",
+      "pinnedSha": "9c2ba3d40e0a2e68cb44f4af24e01d4f400dcc95",
+      "present": true,
+      "actualSha": "9c2ba3d40e0a2e68cb44f4af24e01d4f400dcc95",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/batch.test.mjs",
+      "pinnedSha": "dacc14258d3ee3f7dd285d416bd22d7f71bca135",
+      "present": true,
+      "actualSha": "dacc14258d3ee3f7dd285d416bd22d7f71bca135",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/bound-test-cart.test.mjs",
+      "pinnedSha": "1d3aff986397cdbe0ee77fb0272169d25e94455c",
+      "present": true,
+      "actualSha": "1d3aff986397cdbe0ee77fb0272169d25e94455c",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/cart-configuration.test.mjs",
+      "pinnedSha": "9d06a93f2eba3a080fe40beeadb39684adde5741",
+      "present": true,
+      "actualSha": "9d06a93f2eba3a080fe40beeadb39684adde5741",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/cart-edit-revision.test.mjs",
+      "pinnedSha": "f4716614547df0b9680c950b42a695e294df5890",
+      "present": true,
+      "actualSha": "f4716614547df0b9680c950b42a695e294df5890",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/cart-handoff-journal.test.mjs",
+      "pinnedSha": "c5f30ea91babaa771670de462f8e139414727465",
+      "present": true,
+      "actualSha": "c5f30ea91babaa771670de462f8e139414727465",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/cart-http-gate.test.mjs",
+      "pinnedSha": "438cd3ace4d959b9f507bc74d8817d9de6fffdd0",
+      "present": true,
+      "actualSha": "438cd3ace4d959b9f507bc74d8817d9de6fffdd0",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/cart-personalization.test.mjs",
+      "pinnedSha": "4d4eee229fb089136fabfe6c788d96950ba966cd",
+      "present": true,
+      "actualSha": "4d4eee229fb089136fabfe6c788d96950ba966cd",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/catalog-structure.test.mjs",
+      "pinnedSha": "fc556ccd2f1ce1e75cd9e934767193ae37c4bb3e",
+      "present": true,
+      "actualSha": "fc556ccd2f1ce1e75cd9e934767193ae37c4bb3e",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/configurator-test-gateway.test.mjs",
+      "pinnedSha": "85709de9cc05b5bf6d0b89e689b58371eefa9427",
+      "present": true,
+      "actualSha": "85709de9cc05b5bf6d0b89e689b58371eefa9427",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/contour-path.test.mjs",
+      "pinnedSha": "4dbdc715f745befb6f5a3cd6a74e8ed231d6ffcb",
+      "present": true,
+      "actualSha": "4dbdc715f745befb6f5a3cd6a74e8ed231d6ffcb",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/contours.test.mjs",
+      "pinnedSha": "8a1e501913b88d1877b87f2f94c9766f149588a3",
+      "present": true,
+      "actualSha": "8a1e501913b88d1877b87f2f94c9766f149588a3",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/cross-store-order-intake.test.mjs",
+      "pinnedSha": "375fc18504faba7974a3a39351134d94bbb58063",
+      "present": true,
+      "actualSha": "375fc18504faba7974a3a39351134d94bbb58063",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/customer-downloads.test.mjs",
+      "pinnedSha": "6342207b8adef52946fe51eb3b80f038a1c5ae02",
+      "present": true,
+      "actualSha": "6342207b8adef52946fe51eb3b80f038a1c5ae02",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/customer-draft-store.test.mjs",
+      "pinnedSha": "9fd10198ead03c8c8eb9c7fd6c42747723487e98",
+      "present": true,
+      "actualSha": "9fd10198ead03c8c8eb9c7fd6c42747723487e98",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/customer-fields.test.mjs",
+      "pinnedSha": "bfde95f2358541ca6288e0468679a42f92bdc6c1",
+      "present": true,
+      "actualSha": "bfde95f2358541ca6288e0468679a42f92bdc6c1",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/dashboard-print-flow.test.mjs",
+      "pinnedSha": "19339cc405dc2b5f79e33b934f55607b26abdb5b",
+      "present": true,
+      "actualSha": "19339cc405dc2b5f79e33b934f55607b26abdb5b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/design-authoring.test.mjs",
+      "pinnedSha": "4fc426aa1460afdb1bfb5200fbe92b19becfd49f",
+      "present": true,
+      "actualSha": "4fc426aa1460afdb1bfb5200fbe92b19becfd49f",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/design-converter.test.mjs",
+      "pinnedSha": "bca5bb772aa0ac61cdfc82c2529aa0ac5656e434",
+      "present": true,
+      "actualSha": "bca5bb772aa0ac61cdfc82c2529aa0ac5656e434",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/design-dashboard.test.mjs",
+      "pinnedSha": "1b209bb21591443bf67fc530bbe784a65bb53621",
+      "present": true,
+      "actualSha": "1b209bb21591443bf67fc530bbe784a65bb53621",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/design-import.test.mjs",
+      "pinnedSha": "006c83410d600a0da633ea1045ccb578454fff39",
+      "present": true,
+      "actualSha": "006c83410d600a0da633ea1045ccb578454fff39",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/design-publication-status.test.mjs",
+      "pinnedSha": "2990bfe7bd520ef63df15631dd3cf14a75342f23",
+      "present": true,
+      "actualSha": "2990bfe7bd520ef63df15631dd3cf14a75342f23",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/design-source-path.test.mjs",
+      "pinnedSha": "4c94e9b8415f443608ee744f21a1959e9fccbc29",
+      "present": true,
+      "actualSha": "4c94e9b8415f443608ee744f21a1959e9fccbc29",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/design-source-settings.test.mjs",
+      "pinnedSha": "a39c9a004ecef69760f66d4497ab6282b7195819",
+      "present": true,
+      "actualSha": "a39c9a004ecef69760f66d4497ab6282b7195819",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/design-zip.test.mjs",
+      "pinnedSha": "3209643f54b1d70c2f8d6e6428d271e175cbcc60",
+      "present": true,
+      "actualSha": "3209643f54b1d70c2f8d6e6428d271e175cbcc60",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/draft-cart-handoff.test.mjs",
+      "pinnedSha": "7844f57ca049685df3733952d47111d4751ac724",
+      "present": true,
+      "actualSha": "7844f57ca049685df3733952d47111d4751ac724",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/editable-design.test.mjs",
+      "pinnedSha": "eb319c1f0d6d8d76e6f5107ff2ec81cd9b56b80a",
+      "present": true,
+      "actualSha": "eb319c1f0d6d8d76e6f5107ff2ec81cd9b56b80a",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/editor-preview.test.mjs",
+      "pinnedSha": "63b0a325586bed24f7352a9e6b41f8ed24d79dcd",
+      "present": true,
+      "actualSha": "63b0a325586bed24f7352a9e6b41f8ed24d79dcd",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/export-jobs.test.mjs",
+      "pinnedSha": "1bcd5dc76c6d3759ec3cedcda2e3f4ecb63ce386",
+      "present": true,
+      "actualSha": "1bcd5dc76c6d3759ec3cedcda2e3f4ecb63ce386",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/export-recovery.test.mjs",
+      "pinnedSha": "67bd4b361a350d6aec37324224edda81e24870ef",
+      "present": true,
+      "actualSha": "67bd4b361a350d6aec37324224edda81e24870ef",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/font-library.test.mjs",
+      "pinnedSha": "0f736538b5ebc70399e9bfcc0e48c90a09e58aaa",
+      "present": true,
+      "actualSha": "0f736538b5ebc70399e9bfcc0e48c90a09e58aaa",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-additions.test.mjs",
+      "pinnedSha": "8fa87d4d35f8c7832d751e528a0f720453d442e2",
+      "present": true,
+      "actualSha": "8fa87d4d35f8c7832d751e528a0f720453d442e2",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-batch.test.mjs",
+      "pinnedSha": "1e758c52851077b0ff1eae74e45184e2131e351d",
+      "present": true,
+      "actualSha": "1e758c52851077b0ff1eae74e45184e2131e351d",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-customer.test.mjs",
+      "pinnedSha": "73955f16b9beec05d1129896ef224e697d2695ac",
+      "present": true,
+      "actualSha": "73955f16b9beec05d1129896ef224e697d2695ac",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-designs.test.mjs",
+      "pinnedSha": "f519f6e81ca1dbcc12af1e45fab99eec8e64434c",
+      "present": true,
+      "actualSha": "f519f6e81ca1dbcc12af1e45fab99eec8e64434c",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-engraving-proof.test.mjs",
+      "pinnedSha": "380e886ee4ab6ef6f5c56d500bf6145478590180",
+      "present": true,
+      "actualSha": "380e886ee4ab6ef6f5c56d500bf6145478590180",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-interaction.test.mjs",
+      "pinnedSha": "e6f51243c5fc139fb8d77d17a6ff21953fb729ec",
+      "present": true,
+      "actualSha": "e6f51243c5fc139fb8d77d17a6ff21953fb729ec",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-motif-library.test.mjs",
+      "pinnedSha": "06f6761236c12a1b46f5740db92cca59a552ce84",
+      "present": true,
+      "actualSha": "06f6761236c12a1b46f5740db92cca59a552ce84",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-print-proof.test.mjs",
+      "pinnedSha": "81e262219583bd1b824386f723fce556f93251f5",
+      "present": true,
+      "actualSha": "81e262219583bd1b824386f723fce556f93251f5",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-product.test.mjs",
+      "pinnedSha": "db141cd0736a8b0f1811a4a508f7fde313aa540b",
+      "present": true,
+      "actualSha": "db141cd0736a8b0f1811a4a508f7fde313aa540b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-review-snapshot.test.mjs",
+      "pinnedSha": "7825a7faa14f2524ce9b174482fed46897b87e3d",
+      "present": true,
+      "actualSha": "7825a7faa14f2524ce9b174482fed46897b87e3d",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/form-variants.test.mjs",
+      "pinnedSha": "db3e966f6bd163dbced40a885cace683e1e3c4ed",
+      "present": true,
+      "actualSha": "db3e966f6bd163dbced40a885cace683e1e3c4ed",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/guide-layers.test.mjs",
+      "pinnedSha": "c79f35341bf23a37f100a55ecc6d5ff9ee39ba72",
+      "present": true,
+      "actualSha": "c79f35341bf23a37f100a55ecc6d5ff9ee39ba72",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/http.test.mjs",
+      "pinnedSha": "1bb840d25917ec43b183c3891e2d1ad4406df165",
+      "present": true,
+      "actualSha": "1bb840d25917ec43b183c3891e2d1ad4406df165",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "pinnedSha": "cbc234b908f0dd132c791953a59bee8b9f78aa2c",
+      "present": true,
+      "actualSha": "274b0bd401a0353a173a6db41d6076b098343344",
+      "sourceMatches": false,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "pinnedSha": "a561c9b0bfbca6f5996c847e239b715e0b0fab34",
+      "present": true,
+      "actualSha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0",
+      "sourceMatches": false,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/katalog-linien.test.mjs",
+      "pinnedSha": "31cf15c439f4bbe3c7e839497b42ba2ec213f4dc",
+      "present": true,
+      "actualSha": "31cf15c439f4bbe3c7e839497b42ba2ec213f4dc",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/katalog-source.test.mjs",
+      "pinnedSha": "037b521337f4a6bc92e2f82a3851147d697f7d3b",
+      "present": true,
+      "actualSha": "037b521337f4a6bc92e2f82a3851147d697f7d3b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/konfis.test.mjs",
+      "pinnedSha": "1e7faddd68957e5d7d8107e5a43274248041db5c",
+      "present": true,
+      "actualSha": "1e7faddd68957e5d7d8107e5a43274248041db5c",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/material-preview.test.mjs",
+      "pinnedSha": "2010be35dd7372ebdc792de0c799669d481f061c",
+      "present": true,
+      "actualSha": "2010be35dd7372ebdc792de0c799669d481f061c",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/material-surface-store.test.mjs",
+      "pinnedSha": "4532cbebc35496942c42bdeccf1e5319de938dbc",
+      "present": true,
+      "actualSha": "4532cbebc35496942c42bdeccf1e5319de938dbc",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/merchant-media.test.mjs",
+      "pinnedSha": "e71aba0553734cf63138497caf2dde6aa25181be",
+      "present": true,
+      "actualSha": "e71aba0553734cf63138497caf2dde6aa25181be",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/merchant-repair.test.mjs",
+      "pinnedSha": "52a248ed1a1457348a7762a7b0240d08e26ee91b",
+      "present": true,
+      "actualSha": "52a248ed1a1457348a7762a7b0240d08e26ee91b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/merchant-request.test.mjs",
+      "pinnedSha": "0aac04311f21f8b92f7aae829db9e20e064e94b3",
+      "present": true,
+      "actualSha": "0aac04311f21f8b92f7aae829db9e20e064e94b3",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/merchant-test-cart.test.mjs",
+      "pinnedSha": "6a52e85f7765dcad8c625bb464f00db2a4dfb353",
+      "present": true,
+      "actualSha": "6a52e85f7765dcad8c625bb464f00db2a4dfb353",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/option-fields.test.mjs",
+      "pinnedSha": "3b7b7fc26c7f7f31d216abd9c5b07bf2962dd953",
+      "present": true,
+      "actualSha": "3b7b7fc26c7f7f31d216abd9c5b07bf2962dd953",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/order-intake-routing.test.mjs",
+      "pinnedSha": "e63561269db5f6d0d8eaf44fbe23e0eaf4ab2146",
+      "present": true,
+      "actualSha": "e63561269db5f6d0d8eaf44fbe23e0eaf4ab2146",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/order-intake.test.mjs",
+      "pinnedSha": "901b06f112d969fd6e2754a6acf6c0be83bf64d8",
+      "present": true,
+      "actualSha": "901b06f112d969fd6e2754a6acf6c0be83bf64d8",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/order-product-draft.test.mjs",
+      "pinnedSha": "451338084c14d1b6c7b560694e6fec3848f81ce3",
+      "present": true,
+      "actualSha": "451338084c14d1b6c7b560694e6fec3848f81ce3",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/order-refund-intake.test.mjs",
+      "pinnedSha": "b3bc35321be396e415b1d00b69e3b3ad4eda9c51",
+      "present": true,
+      "actualSha": "b3bc35321be396e415b1d00b69e3b3ad4eda9c51",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/order-refunds.test.mjs",
+      "pinnedSha": "1e6854e8bde0cf6b77180657f9e3f022229369e3",
+      "present": true,
+      "actualSha": "1e6854e8bde0cf6b77180657f9e3f022229369e3",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/output-checks.test.mjs",
+      "pinnedSha": "3b83fb19742519bf0cdaf200a277136c1ae8e395",
+      "present": true,
+      "actualSha": "3b83fb19742519bf0cdaf200a277136c1ae8e395",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/output-orientation.test.mjs",
+      "pinnedSha": "c89ddbaa41484de58352411b9e0417d91a4c884b",
+      "present": true,
+      "actualSha": "c89ddbaa41484de58352411b9e0417d91a4c884b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/output-specification.test.mjs",
+      "pinnedSha": "1a5618574baebf7897a49c63656a1fc901c73ca9",
+      "present": true,
+      "actualSha": "1a5618574baebf7897a49c63656a1fc901c73ca9",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/photo-frame-coverage.test.mjs",
+      "pinnedSha": "169039d5a1b96b97618789d395637b7c88a94343",
+      "present": true,
+      "actualSha": "169039d5a1b96b97618789d395637b7c88a94343",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/prepared-design-placement.test.mjs",
+      "pinnedSha": "d4ca8040b6ef7d9c062afdf362f8a8b402940a9b",
+      "present": true,
+      "actualSha": "d4ca8040b6ef7d9c062afdf362f8a8b402940a9b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/prepared-design.test.mjs",
+      "pinnedSha": "22e9da3d5d4267f9fb386e3b47183a4fd11b4144",
+      "present": true,
+      "actualSha": "22e9da3d5d4267f9fb386e3b47183a4fd11b4144",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/print-delivery-vector.test.mjs",
+      "pinnedSha": "65dc49e9ed4f1bcd3e4439373e950ae0f290dd2c",
+      "present": true,
+      "actualSha": "65dc49e9ed4f1bcd3e4439373e950ae0f290dd2c",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/print-preview.test.mjs",
+      "pinnedSha": "ca585da99b646b77e35cf01871c529998bb534ea",
+      "present": true,
+      "actualSha": "ca585da99b646b77e35cf01871c529998bb534ea",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/process-profiles.test.mjs",
+      "pinnedSha": "3128483b5c552384c29455f05626afd35a73a077",
+      "present": true,
+      "actualSha": "3128483b5c552384c29455f05626afd35a73a077",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/product-catalog.test.mjs",
+      "pinnedSha": "5919b019bc1d50a5ac5231869975b623bfd427e8",
+      "present": true,
+      "actualSha": "5919b019bc1d50a5ac5231869975b623bfd427e8",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/product-families.test.mjs",
+      "pinnedSha": "c13fa62a0e841c3eee0510f96f7d71cdea83d740",
+      "present": true,
+      "actualSha": "4439942066c4938b4b1fc50809858d2045e2de0b",
+      "sourceMatches": false,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/product-model.test.mjs",
+      "pinnedSha": "ed6fbc6bf1816241905b0ca3efb59097b6fc36e5",
+      "present": true,
+      "actualSha": "ed6fbc6bf1816241905b0ca3efb59097b6fc36e5",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/product-options.test.mjs",
+      "pinnedSha": "d24349cb07c622dafa6339b08d281c6aa6014982",
+      "present": true,
+      "actualSha": "d24349cb07c622dafa6339b08d281c6aa6014982",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/product-overview.test.mjs",
+      "pinnedSha": "2b30f08bf851cd321ac317bc2d174b7996b9f3a3",
+      "present": true,
+      "actualSha": "2b30f08bf851cd321ac317bc2d174b7996b9f3a3",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/product-revision-compare.test.mjs",
+      "pinnedSha": "32b3bfd90c1c22939136dfb637d4ef21b11ec52a",
+      "present": true,
+      "actualSha": "32b3bfd90c1c22939136dfb637d4ef21b11ec52a",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/production-profiles.test.mjs",
+      "pinnedSha": "77313de76fbb3396896c91d1392187f856f5ea7d",
+      "present": true,
+      "actualSha": "77313de76fbb3396896c91d1392187f856f5ea7d",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/production-release.test.mjs",
+      "pinnedSha": "100d90c7c796a6deeff9d231bc89ec02b336718b",
+      "present": true,
+      "actualSha": "100d90c7c796a6deeff9d231bc89ec02b336718b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/production-summary.test.mjs",
+      "pinnedSha": "ac87e4b2cec4137444d7f25dce1b1baebe238fdc",
+      "present": true,
+      "actualSha": "ac87e4b2cec4137444d7f25dce1b1baebe238fdc",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/profile-impact.test.mjs",
+      "pinnedSha": "53efa9aa5b83a1cb32695d8858b367324f2ccc6e",
+      "present": true,
+      "actualSha": "53efa9aa5b83a1cb32695d8858b367324f2ccc6e",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/profile-library.test.mjs",
+      "pinnedSha": "294dbe59a127775068b4f358735aab42017641af",
+      "present": true,
+      "actualSha": "294dbe59a127775068b4f358735aab42017641af",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/quantity-tiers.test.mjs",
+      "pinnedSha": "c84a9b8f879cc1639211bdbc18b36180e44da8b6",
+      "present": true,
+      "actualSha": "c84a9b8f879cc1639211bdbc18b36180e44da8b6",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/repository.test.mjs",
+      "pinnedSha": "9036dee8694181816a6b9d7fdb10b94245777a35",
+      "present": true,
+      "actualSha": "9036dee8694181816a6b9d7fdb10b94245777a35",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-draft-transfer.test.mjs",
+      "pinnedSha": "c3b0dd575f45a2d680e204c52748eee12e294bfe",
+      "present": true,
+      "actualSha": "c3b0dd575f45a2d680e204c52748eee12e294bfe",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-entry-client.test.mjs",
+      "pinnedSha": "063b52ce2f375057a62677cbe1ac9dafb1b0b33e",
+      "present": true,
+      "actualSha": "063b52ce2f375057a62677cbe1ac9dafb1b0b33e",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-entry-flow.test.mjs",
+      "pinnedSha": "8d0ed91b48ff3b87e676632365ef871703d1189a",
+      "present": true,
+      "actualSha": "8d0ed91b48ff3b87e676632365ef871703d1189a",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-entry-session.test.mjs",
+      "pinnedSha": "2a20abfde039d9e45250753e06121ef0a0f829fb",
+      "present": true,
+      "actualSha": "2a20abfde039d9e45250753e06121ef0a0f829fb",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-entry.test.mjs",
+      "pinnedSha": "bf1f4cdb4227b6afb0867755c840547a9bb4b151",
+      "present": true,
+      "actualSha": "bf1f4cdb4227b6afb0867755c840547a9bb4b151",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-preparation.test.mjs",
+      "pinnedSha": "77185fb0e92e34967cb3e9b6a54cf4c98f7cbe16",
+      "present": true,
+      "actualSha": "77185fb0e92e34967cb3e9b6a54cf4c98f7cbe16",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-product-binding-adapter.test.mjs",
+      "pinnedSha": "9220270849e2c7ba293e65ff208bbcb9cfbf66f2",
+      "present": true,
+      "actualSha": "9220270849e2c7ba293e65ff208bbcb9cfbf66f2",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-product-binding-check.test.mjs",
+      "pinnedSha": "e64ca0c06df69b1f0af64397473864dfcf4ff934",
+      "present": true,
+      "actualSha": "e64ca0c06df69b1f0af64397473864dfcf4ff934",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-product-binding-http.test.mjs",
+      "pinnedSha": "b4687d31bc37229906b2855be1e5f7e29b32e247",
+      "present": true,
+      "actualSha": "b4687d31bc37229906b2855be1e5f7e29b32e247",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-product-binding-legacy.test.mjs",
+      "pinnedSha": "b4e17eab2d9ca72bf587a19a7dff6bbee12e55e4",
+      "present": true,
+      "actualSha": "b4e17eab2d9ca72bf587a19a7dff6bbee12e55e4",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-product-binding-plan.test.mjs",
+      "pinnedSha": "4bc633db899fcc825aefc52f5e28b5593193252a",
+      "present": true,
+      "actualSha": "4bc633db899fcc825aefc52f5e28b5593193252a",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.test.mjs",
+      "pinnedSha": "04313b62ccd49568c2d205a9cd55b985f4b59f73",
+      "present": true,
+      "actualSha": "04313b62ccd49568c2d205a9cd55b985f4b59f73",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shopify-admin-host.test.mjs",
+      "pinnedSha": "ca4aa32cd1b2be480837abef3d41b9d5c7e259c8",
+      "present": true,
+      "actualSha": "ca4aa32cd1b2be480837abef3d41b9d5c7e259c8",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shopify-admin-readonly.test.mjs",
+      "pinnedSha": "93e03d6382f4fe2882e0db1ad690c7075afd1e41",
+      "present": true,
+      "actualSha": "93e03d6382f4fe2882e0db1ad690c7075afd1e41",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shopify-app-proxy.test.mjs",
+      "pinnedSha": "2311d6850a204ed0f0a5e2729d515fca513cbcad",
+      "present": true,
+      "actualSha": "2311d6850a204ed0f0a5e2729d515fca513cbcad",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shopify-draft-token.test.mjs",
+      "pinnedSha": "da7a65752ce4d3e7c2f74307fb5e43b3ffc96f6b",
+      "present": true,
+      "actualSha": "da7a65752ce4d3e7c2f74307fb5e43b3ffc96f6b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shopify-order-webhook.test.mjs",
+      "pinnedSha": "509d521fb892dee7ca145bdcd5f473d0c1514b84",
+      "present": true,
+      "actualSha": "509d521fb892dee7ca145bdcd5f473d0c1514b84",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shopify-runtime-config.test.mjs",
+      "pinnedSha": "a94c106079546dfb610b15d72e19d6b8023dabb6",
+      "present": true,
+      "actualSha": "a94c106079546dfb610b15d72e19d6b8023dabb6",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shopify-session.test.mjs",
+      "pinnedSha": "d63fb0875fa643423c320a83658d2668cec32ad3",
+      "present": true,
+      "actualSha": "d63fb0875fa643423c320a83658d2668cec32ad3",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/shopify-variant-preflight.test.mjs",
+      "pinnedSha": "2df53aa9fb5d2de7039924dc38b68557e73f64bc",
+      "present": true,
+      "actualSha": "2df53aa9fb5d2de7039924dc38b68557e73f64bc",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/slate-product.test.mjs",
+      "pinnedSha": "5340bab5237cc445df542a22871edd8cbe0ca23f",
+      "present": true,
+      "actualSha": "5340bab5237cc445df542a22871edd8cbe0ca23f",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/specimen-product.test.mjs",
+      "pinnedSha": "3f1c555ef1e6c425613acbc47c9eb136c796089c",
+      "present": true,
+      "actualSha": "3f1c555ef1e6c425613acbc47c9eb136c796089c",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/steel-formats.test.mjs",
+      "pinnedSha": "1154efa8cd95160d2bbe59f1056c6bfeaef6b2d2",
+      "present": true,
+      "actualSha": "1154efa8cd95160d2bbe59f1056c6bfeaef6b2d2",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/steel-import-margin.test.mjs",
+      "pinnedSha": "0b18f3e0b88b75ace3a89b7634a2b25be83bbf7b",
+      "present": true,
+      "actualSha": "0b18f3e0b88b75ace3a89b7634a2b25be83bbf7b",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/storefront-cart.test.mjs",
+      "pinnedSha": "7396af08df058c1a026165ae2c5914f31a78c381",
+      "present": true,
+      "actualSha": "7396af08df058c1a026165ae2c5914f31a78c381",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/storefront-transport.test.mjs",
+      "pinnedSha": "9d64c1248825f180fede748531d998169f270357",
+      "present": true,
+      "actualSha": "9d64c1248825f180fede748531d998169f270357",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/surfaces.test.mjs",
+      "pinnedSha": "758461308695fd4a1327d3cf070aa380a933fa5a",
+      "present": true,
+      "actualSha": "758461308695fd4a1327d3cf070aa380a933fa5a",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/tenant.test.mjs",
+      "pinnedSha": "8f4aec4dbdea70d9d87fd855bea6ca4fc851692e",
+      "present": true,
+      "actualSha": "8f4aec4dbdea70d9d87fd855bea6ca4fc851692e",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/theme-catalog.test.mjs",
+      "pinnedSha": "fd1542e9c0695539d9289a74062b896f16ceb48e",
+      "present": true,
+      "actualSha": "fd1542e9c0695539d9289a74062b896f16ceb48e",
+      "sourceMatches": true,
+      "rootOwned": false
+    },
+    {
+      "path": "app/workshop/theme-limits.test.mjs",
+      "pinnedSha": "fd12f0139181892385958bfa87a157a1771a11a5",
+      "present": true,
+      "actualSha": "fd12f0139181892385958bfa87a157a1771a11a5",
+      "sourceMatches": true,
+      "rootOwned": false
+    }
+  ],
+  "staticSourceFilesRead": 495,
+  "unresolvedLiteralDependencies": [],
+  "blockedAcquisitions": [],
+  "dynamicallyChecked": [
+    {
+      "path": "app/designs/acrylic-unser-anfang/scene-empty-v2.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/scene-empty-v2.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/reference.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/reference.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-buche-v2.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-buche-v2.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-eiche-v2.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-eiche-v2.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-holz-flach-v2.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-holz-flach-v2.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-klar-v2.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-klar-v2.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-nussbaum-v2.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-nussbaum-v2.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-satiniert-v2.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/acrylic-unser-anfang/base-satiniert-v2.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-schraubenkopf-fotorealistisch.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.webp",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/references/aosu-upgrade-2026-09-21/verification/editor-source.html",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-00.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-01.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-02.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-03.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-04.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-05.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-06.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-07.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-08.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-09.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-10.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-11.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-12.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-catalog-51fa7e857d52-part-13.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-00.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-01.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-02.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-03.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-04.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-05.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-06.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-07.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-08.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-09.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-10.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-11.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-12.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-13.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-14.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-fonts-15.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-00.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-01.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-02.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-03.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-04.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-05.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-06.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-07.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-08.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-09.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-10.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-11.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-12.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-13.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-14.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-15.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-16.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-17.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-18.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-19.txt",
+      "exists": true,
+      "shaMatches": true
+    },
+    {
+      "path": "app/designs/aosu-labrador/runtime/gravuru-entwurf-motive-20.txt",
+      "exists": true,
+      "shaMatches": true
+    }
+  ],
+  "protectedTestReferences": [
+    {
+      "path": "app/workshop/catalog-structure.test.mjs",
+      "line": 5,
+      "kind": "write",
+      "reference": ".local-data",
+      "action": "Root notified: isolate temporary output before test run"
+    },
+    {
+      "path": "app/workshop/design-dashboard.test.mjs",
+      "line": 148,
+      "kind": "write",
+      "reference": ".local-data",
+      "action": "Root notified: isolate temporary output before test run"
+    },
+    {
+      "path": "app/workshop/design-converter.test.mjs",
+      "line": 12,
+      "kind": "optional-read",
+      "reference": "app/.local-data/python"
+    },
+    {
+      "path": "app/workshop/contours.test.mjs",
+      "line": 120,
+      "kind": "http-404-assertion",
+      "reference": "/.local-data/design-assets.sqlite"
+    },
+    {
+      "path": "app/workshop/http.test.mjs",
+      "line": 60,
+      "kind": "http-404-assertion",
+      "reference": "/.local-data/workshop.sqlite"
+    }
+  ],
+  "notes": [
+    "No tests executed by acquisition agent.",
+    "No existing files overwritten. Root-owned ui-event-regressions.test.mjs left untouched.",
+    "Only static dependency analysis and specified dynamic assets checked; runtime-generated paths require the requested test run.",
+    "No protected-directory writes and no remote mutations."
+  ]
+}

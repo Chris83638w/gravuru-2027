@@ -1,0 +1,53 @@
+{
+  "pymupdf": "2.0",
+  "ArialCmap": {
+    "0x20": "space",
+    "0xa0": "space",
+    "0x2d": "hyphen",
+    "0xad": "hyphen"
+  },
+  "cases": [
+    {
+      "font": "Arial",
+      "source": [
+        "Hallo Wörld",
+        "Anna & Lukas",
+        "UV-Druck"
+      ],
+      "extracted": "Hallo Wörld\nAnna & Lukas\nUV­Druck\n",
+      "glyphIds": {
+        "0x20": 3,
+        "0xa0": 3,
+        "0x2d": 16,
+        "0xad": 16
+      },
+      "toUnicode": [
+        {
+          "fontXref": 5,
+          "toUnicode": "6 0 R"
+        }
+      ]
+    },
+    {
+      "font": "Helvetica",
+      "source": [
+        "Hallo Wörld",
+        "Anna & Lukas",
+        "UV-Druck"
+      ],
+      "extracted": "Hallo Wörld\nAnna & Lukas\nUV-Druck\n",
+      "glyphIds": {
+        "0x20": 1,
+        "0xa0": 574,
+        "0x2d": 14,
+        "0xad": 575
+      },
+      "toUnicode": [
+        {
+          "fontXref": 5,
+          "toUnicode": "6 0 R"
+        }
+      ]
+    }
+  ]
+}

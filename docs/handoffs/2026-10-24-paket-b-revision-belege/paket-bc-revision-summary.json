@@ -1,0 +1,112 @@
+{
+  "refs": {
+    "main": "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8",
+    "b": "f4439c2163644091bd781b9e7b76f3d2641884fe"
+  },
+  "run": {
+    "exitCode": 0,
+    "seconds": 185.0801958,
+    "maxOldSpaceSizeMb": 2048,
+    "mode": "dry-run",
+    "codeTree": "paket-bc"
+  },
+  "metrics": {
+    "completed": true,
+    "mode": "dry-run",
+    "elapsedSeconds": 184.116225,
+    "heapLimitBytes": 2348810240,
+    "peakProcessMemoryUsage": {
+      "rss": 1018314752,
+      "heapTotal": 772370432,
+      "heapUsed": 588323392,
+      "external": 77461277,
+      "arrayBuffers": 47666023
+    },
+    "samples": 3299,
+    "sampling": "25 ms plus document/fingerprint/product boundaries",
+    "maxRssBytes": 1029869568,
+    "node": "v24.20.0"
+  },
+  "counts": {
+    "products": 744,
+    "new": 597,
+    "update": 0,
+    "unchanged": 0,
+    "blocked": 147,
+    "templates": 7920,
+    "sizes": 80,
+    "pricesOpen": 16,
+    "designsWithoutSeries": 0,
+    "fit": {
+      "passt": 8169,
+      "prüfen": 415,
+      "passt nicht": 788
+    },
+    "unreleased": 0
+  },
+  "designs": {
+    "masters": 737,
+    "bestand": 0,
+    "considered": 735,
+    "withSeries": 735,
+    "oldSize": [],
+    "withoutTheme": 0,
+    "failed": []
+  },
+  "blockedTotals": {
+    "price": 130,
+    "startDesign": 10,
+    "contourTemplate": 7,
+    "other": 0
+  },
+  "blocked": {
+    "Preis offen: 8,5 × 8,5 cm": 8,
+    "Preis offen: 12 × 12 cm": 8,
+    "Preis offen: 16 × 16 cm": 8,
+    "Preis offen: 20 × 20 cm": 8,
+    "Preis offen: 12 × 8 cm": 18,
+    "Preis offen: 15 × 10 cm": 16,
+    "Preis offen: 18 × 12 cm": 16,
+    "Preis offen: 21 × 14 cm": 16,
+    "Preis offen: 24 × 16 cm": 16,
+    "Preis offen: 30 × 20 cm": 16,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-9x6-D13“ ist für 21 × 14 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-9x6-D61“ ist für 21 × 14 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-12x4-D48“ ist für 12 × 4 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-12x4-D12“ ist für 12 × 4 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-15x8-D47“ ist für 15 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-15x8-D19“ ist für 15 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TRE-V2A-8x5-D49“ ist für 12 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TRE-V2A-8x5-D57“ ist für 42 × 28 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TR1-V2A-9x6-D15“ ist für 9 × 6 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TR2-V2A-9x6-D12“ ist für 9 × 6 cm nicht verfügbar.": 1,
+    "Keine passende Konturvorlage für 9 × 6 cm.": 7
+  },
+  "fontsMissing": {
+    "products": 0,
+    "sets": 0,
+    "templates": 0
+  },
+  "comparison": {
+    "equal": true,
+    "differenceCount": 0,
+    "productRowsExactlyEqual": true,
+    "catalogPathsExactlyEqual": true,
+    "onlyNormalization": "subcategories[*].fontProfileId: UUIDs replaced with verified bijective font-set identity",
+    "baselineSha256": "44c95cac0de0016f701062a74d6bf7130ca5fe080a5d2f1e69c6a8ddceb8858d",
+    "candidateSha256": "39dfdba983d465a11e276653a61d4521b7999996bba221607fadeb103c947b63"
+  },
+  "targetedTests": {
+    "passed": 23,
+    "failed": 0,
+    "durationMs": 10809.2215,
+    "log": "paket-bc-revision-import-tests.log"
+  },
+  "hashes": {
+    "paket-bc-revision-dry-run.json": "39dfdba983d465a11e276653a61d4521b7999996bba221607fadeb103c947b63",
+    "paket-bc-revision-metrics.json": "b4e6923457a6eca9894bbad86ec89d485244881019edded9533dc35d9db22dba",
+    "paket-bc-revision-dry-run.log": "741aeee250bd77735503bb1db87a242f952c403b449699cbdb276a44c7d7140d",
+    "paket-bc-revision-import-tests.log": "a07c970e7639645d9ff770051b0c6a35a820774b8f4675739ef0046a6a61eced",
+    "paket-bc-revision-import-files.json": "753fd4f507eb14c61362c1131d939747663fc1993ea02dab73f3fdfb639674f1"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "completed": true,
+  "mode": "dry-run",
+  "elapsedSeconds": 184.116225,
+  "heapLimitBytes": 2348810240,
+  "peakProcessMemoryUsage": {
+    "rss": 1018314752,
+    "heapTotal": 772370432,
+    "heapUsed": 588323392,
+    "external": 77461277,
+    "arrayBuffers": 47666023
+  },
+  "samples": 3299,
+  "sampling": "25 ms plus document/fingerprint/product boundaries",
+  "maxRssBytes": 1029869568,
+  "node": "v24.20.0"
+}

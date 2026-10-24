@@ -1,6 +1,6 @@
 # Paket B – Kontur im Konfigurator · 24.10.2026
 
-**Stand: implementiert und technisch geprüft; Browser-Sichtabnahme/Screenshot offen. Beide B-PRs bleiben Draft.** Das einmalige unabhängige Review fand zwei Rückseitenfehler; beide sind behoben und mit gezielten Regressionen geprüft.
+**Historischer Erstnachweis vor Claudes Review. Aktueller Stand: [B-Revision mit gemergtem C und Volltests](2026-10-24-paket-b-review-korrekturen-astra.md).** Die Browser-Sichtprüfung wurde inzwischen von Claude bestätigt; die folgenden Zähler und offenen Punkte beschreiben den damaligen B-Stand. Das einmalige unabhängige Review fand zwei Rückseitenfehler; beide sind behoben und mit gezielten Regressionen geprüft.
 
 - Code: [PR #12](https://github.com/Chris83638w/gravuru-2027/pull/12).
 - Katalog: [PR #3](https://github.com/Chris83638w/gravuru-katalog./pull/3).

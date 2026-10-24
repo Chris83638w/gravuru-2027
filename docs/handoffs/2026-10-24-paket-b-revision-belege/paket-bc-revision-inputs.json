@@ -1,0 +1,31 @@
+{
+  "bRef": "f4439c2163644091bd781b9e7b76f3d2641884fe",
+  "mainRef": "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8",
+  "files": [
+    {
+      "file": "app/workshop/katalog-convert.mjs",
+      "bBlobSha": "8ef53ced7ea39ae125e0bd8c9dc9834d06f4491a",
+      "cBlobSha": "39fe154a0bd8c4649f495b6a468736e1f20db951"
+    },
+    {
+      "file": "app/workshop/katalog-import.mjs",
+      "bBlobSha": "c530f7334c2b55b8491704ba5242d110c4fb3a84",
+      "cBlobSha": "ac9554601a94b32b68886ab4d688b940d6f00169"
+    },
+    {
+      "file": "app/workshop/katalog-convert.test.mjs",
+      "bBlobSha": "2d2e81365dbf7aac5b5500b13748f49d84a9471f",
+      "cBlobSha": "cbc234b908f0dd132c791953a59bee8b9f78aa2c"
+    },
+    {
+      "file": "app/workshop/katalog-import.test.mjs",
+      "bBlobSha": "659c65be44034dfe27200dd17a70a8b199e2a606",
+      "cBlobSha": "a561c9b0bfbca6f5996c847e239b715e0b0fab34"
+    },
+    {
+      "file": "scripts/katalog-import.mjs",
+      "bBlobSha": "853cab34631f6605df55dda93de1a19ce58bdc6c",
+      "cBlobSha": "d36d0df6941b3103e6f09b68485d69472117503a"
+    }
+  ]
+}

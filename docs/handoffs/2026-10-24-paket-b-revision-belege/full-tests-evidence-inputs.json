@@ -1,0 +1,121 @@
+[
+  {
+    "path": "full-tests-summary.json.gz",
+    "sourceSha256": "87400ccd37f75e98cd7ab87aace2b86dbe96ccd67752c4de65d81929ac03b6dc",
+    "sha256": "b59b272770a13a4b22f17579d5f08b9b3efd94a802930bcbb8534eaba8671737",
+    "bytes": 16829,
+    "gzip": true
+  },
+  {
+    "path": "full-tests.log.gz",
+    "sourceSha256": "7982c3e3b882934126f5f985c20dc6ea0c955b9613fda8685a8af2c36ce63fb2",
+    "sha256": "2aff6a885bb63d9c16d1c926da18fddba3e9398ab2ca05fecaeb06b340810b35",
+    "bytes": 67150,
+    "gzip": true
+  },
+  {
+    "path": "full-tests-inventory.json",
+    "sourceSha256": "aecb1465093adbd36626aa625a33c8df94a181e76dfa50edda0f07f0d4dd3463",
+    "sha256": "aecb1465093adbd36626aa625a33c8df94a181e76dfa50edda0f07f0d4dd3463",
+    "bytes": 28394,
+    "gzip": false
+  },
+  {
+    "path": "full-tests-integrity.json",
+    "sourceSha256": "c4e7192ecbbd66e33c5292600b284f31834a9fd1154d8f763501445a5159e079",
+    "sha256": "c4e7192ecbbd66e33c5292600b284f31834a9fd1154d8f763501445a5159e079",
+    "bytes": 56,
+    "gzip": false
+  },
+  {
+    "path": "full-tests-python-environment.json",
+    "sourceSha256": "661ed1a28258fbf49a36a94ad92d6096a2d3f589255e07df510f98392cf45d60",
+    "sha256": "661ed1a28258fbf49a36a94ad92d6096a2d3f589255e07df510f98392cf45d60",
+    "bytes": 1616,
+    "gzip": false
+  },
+  {
+    "path": "root-cwd-editable-design.test.mjs.raw.log.gz",
+    "sourceSha256": "cf5826cfec8cbf2384dba4ee36b2151ed42e7c914df3c6ed440a9f222a923c68",
+    "sha256": "427687d2f8ce2425134e0595e323d98e4d1bcb06602df314a7e0e476397e47a8",
+    "bytes": 297,
+    "gzip": true
+  },
+  {
+    "path": "root-cwd-inventory.json",
+    "sourceSha256": "163c7eb376328b92d13618e7ebeb769df34792d6224ad00869220a1a45b9d4fb",
+    "sha256": "163c7eb376328b92d13618e7ebeb769df34792d6224ad00869220a1a45b9d4fb",
+    "bytes": 1432,
+    "gzip": false
+  },
+  {
+    "path": "root-cwd-konfis.test.mjs.raw.log.gz",
+    "sourceSha256": "40971c49b98ba79f13916ee6724e6cbde6a245d4ff575879d2b9753a048fd85a",
+    "sha256": "902ea34d26d0681092af9661f540a4c0e7c25b754a34bff620037b1de506c6ed",
+    "bytes": 1152,
+    "gzip": true
+  },
+  {
+    "path": "root-cwd-shopify-runtime-config.test.mjs.raw.log.gz",
+    "sourceSha256": "5aa372d1bff9407777e683770baa80ac463ae6b5c95e9a97e14ee2a58bb5a581",
+    "sha256": "4c5d8ed184dc9c8714a66b262971d6c84df2a52eb6f131813ac057d891d1ebeb",
+    "bytes": 1797,
+    "gzip": true
+  },
+  {
+    "path": "root-cwd-summary.json",
+    "sourceSha256": "531e6c3b1c18735c01b4d715bc0967d828ad4ee9c5907d02ede4faaa7163bd93",
+    "sha256": "531e6c3b1c18735c01b4d715bc0967d828ad4ee9c5907d02ede4faaa7163bd93",
+    "bytes": 30373,
+    "gzip": false
+  },
+  {
+    "path": "run-full-tests.mjs",
+    "sourceSha256": "d066db3e93196259b58c1a7b5980dd51b82dc79f56b14a436eebe4e2170fef62",
+    "sha256": "d066db3e93196259b58c1a7b5980dd51b82dc79f56b14a436eebe4e2170fef62",
+    "bytes": 9803,
+    "gzip": false
+  },
+  {
+    "path": "full-tests-python-windows.mjs",
+    "sourceSha256": "24c2bd8c9022e5f7cb05753c0a2da748a994a124e192172999e38bd3b666bc6d",
+    "sha256": "24c2bd8c9022e5f7cb05753c0a2da748a994a124e192172999e38bd3b666bc6d",
+    "bytes": 1060,
+    "gzip": false
+  },
+  {
+    "path": "full-tests-events.mjs",
+    "sourceSha256": "b2453e6fe68ca9a10da19e52ed26ad9dbd8cd13f00003131bce07eb04a796e38",
+    "sha256": "b2453e6fe68ca9a10da19e52ed26ad9dbd8cd13f00003131bce07eb04a796e38",
+    "bytes": 579,
+    "gzip": false
+  },
+  {
+    "path": "run-runtime-config-root-cwd.mjs",
+    "sourceSha256": "fbb14d942a9b34bff3c93397d5245ec9d59ab4c420cd7c906db2b1c33f382845",
+    "sha256": "fbb14d942a9b34bff3c93397d5245ec9d59ab4c420cd7c906db2b1c33f382845",
+    "bytes": 5120,
+    "gzip": false
+  },
+  {
+    "path": "full-tests-README.md",
+    "sourceSha256": "006f66bf70ca1d4a48de26fb6258f6ddd9f591102d4b71c28ae5bab1e6309eb1",
+    "sha256": "006f66bf70ca1d4a48de26fb6258f6ddd9f591102d4b71c28ae5bab1e6309eb1",
+    "bytes": 4663,
+    "gzip": false
+  },
+  {
+    "path": "full-tests-cwd-scan.json",
+    "sourceSha256": "72c16c8b01eeebdb268f09c421c3970b1c6c24ee6e43c2888153159a9a95c216",
+    "sha256": "72c16c8b01eeebdb268f09c421c3970b1c6c24ee6e43c2888153159a9a95c216",
+    "bytes": 11472,
+    "gzip": false
+  },
+  {
+    "path": "test-source-acquisition-ed4b9c6.json",
+    "sourceSha256": "73283a9b997d129c9364421021d78b5198ed070b6b80260246f12704d7920031",
+    "sha256": "73283a9b997d129c9364421021d78b5198ed070b6b80260246f12704d7920031",
+    "bytes": 75528,
+    "gzip": false
+  }
+]

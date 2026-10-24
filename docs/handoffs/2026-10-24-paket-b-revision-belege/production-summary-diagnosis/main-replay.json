@@ -1,0 +1,110 @@
+[
+  {
+    "kind": "form",
+    "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027",
+    "textEqualsFrozenB": true,
+    "pages": 1,
+    "fonts": [
+      [
+        20,
+        "ttf",
+        "Type0",
+        "Arial Bold",
+        "F0",
+        "Identity-H",
+        0
+      ],
+      [
+        26,
+        "ttf",
+        "Type0",
+        "Arial Regular",
+        "F1",
+        "Identity-H",
+        0
+      ]
+    ],
+    "pdf": "form-main-repo.pdf"
+  },
+  {
+    "kind": "form",
+    "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du",
+    "textEqualsFrozenB": true,
+    "pages": 1,
+    "fonts": [
+      [
+        20,
+        "ttf",
+        "Type0",
+        "Arial Bold",
+        "F0",
+        "Identity-H",
+        0
+      ],
+      [
+        26,
+        "ttf",
+        "Type0",
+        "Arial Regular",
+        "F1",
+        "Identity-H",
+        0
+      ]
+    ],
+    "pdf": "form-main-workspace.pdf"
+  },
+  {
+    "kind": "native",
+    "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027",
+    "textEqualsFrozenB": true,
+    "pages": 1,
+    "fonts": [
+      [
+        19,
+        "ttf",
+        "Type0",
+        "Arial Bold",
+        "F0",
+        "Identity-H",
+        0
+      ],
+      [
+        25,
+        "ttf",
+        "Type0",
+        "Arial Regular",
+        "F1",
+        "Identity-H",
+        0
+      ]
+    ],
+    "pdf": "native-main-repo.pdf"
+  },
+  {
+    "kind": "native",
+    "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du",
+    "textEqualsFrozenB": true,
+    "pages": 1,
+    "fonts": [
+      [
+        19,
+        "ttf",
+        "Type0",
+        "Arial Bold",
+        "F0",
+        "Identity-H",
+        0
+      ],
+      [
+        25,
+        "ttf",
+        "Type0",
+        "Arial Regular",
+        "F1",
+        "Identity-H",
+        0
+      ]
+    ],
+    "pdf": "native-main-workspace.pdf"
+  }
+]

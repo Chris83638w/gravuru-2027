@@ -1,0 +1,31 @@
+✔ pathBounds: Hüllbox aus Stütz- und Kontrollpunkten, relative und absolute Befehle (4.4053ms)
+✔ parseDesignSvg liest Lieferform 2: Textebenen mit Zeilen, Motiv-/Deko-Pfade, Fotomaske, Hilfsebene (46.9044ms)
+✔ Design → Vorlage: Kundenfelder aus text-Ebenen, gesperrte Motive, Rechte und Guide-Rolle (287.6881ms)
+✔ Formatreihen ±1 %: Design nur in Größen seiner Reihe, alte Größe markiert (8.1762ms)
+✔ Master → Zielgröße: reine Skalierung mit Schriftgröße, Bohrbild aus der Familie; passt / prüfen / passt nicht (93.2184ms)
+✔ Familie → Produkt: Preise in Cent mit Überschreibung, Thema, Rechte, Vorlagen; offener Preis blockiert (331.0072ms)
+✔ Gedenktafel 22 × 14 (20.10.2026): movable verschiebt alle Elemente, Fotofeld mit Platzhalterbild, Startdesign zuerst (123.661ms)
+✔ mixed contour family leaves existing rectangular products unchanged (120.9706ms)
+✔ contour conversion preserves open prices and requires an available source start design (20.947ms)
+✔ contour templateFit respects the physical contour and never changes source geometry (6.9475ms)
+✔ proportional contour fitting centres objects without translating motif resource viewboxes twice (0.5214ms)
+✔ Große Motivpfade behalten Bogenflags, Winkel und Koordinaten über Tokenblockgrenzen (1.1108ms)
+✔ Dry-run: Bericht je Linie ohne Schreiben; Commit legt Familie, Schriftprofile und Produkte an; zweiter Lauf ist unverändert (1522.0646ms)
+✔ Geänderter Katalog → Familienrevision und neue Produktrevisionen; Preisänderung nur in der Unterkategorie (2790.8917ms)
+✔ ensureFontSet ohne Bibliothek liefert nur die Lücken; Import-Journal verhindert Doppelanlage (1065.0354ms)
+✔ Hauptprodukte: je Hauptprodukt ein Produkt mit eigenem Startdesign, Namen und Backend-Kennungen; `only` begrenzt den Lauf (1468.0938ms)
+✔ Ausgeblendete Master (hidden, Design-Dashboard) bleiben im Katalog, kommen aber in kein Produkt (475.1242ms)
+✔ Freigabe: ohne allDesigns kommen nur freigegebene Master ins Produkt; Größen ohne freigegebenes Design sind gesperrt (479.6557ms)
+✔ mixed contour import keeps rectangle plans and counts, with no writable contour product (823.4992ms)
+✔ contour import keeps source release, open price and start-design blockers (429.1262ms)
+✔ Berichtmodus streamt jedes Produkt mit Rückstau; Bericht und Token entsprechen dem schreibbaren Plan (880.8525ms)
+✔ Streamingfehler bricht ab und wird weder als Produktfehler verschluckt noch als vollständiger Bericht beendet (167.3988ms)
+✔ Streamingbericht ohne ausgewählte Unterkategorie bleibt vollständiges JSON (77.2451ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10809.2215

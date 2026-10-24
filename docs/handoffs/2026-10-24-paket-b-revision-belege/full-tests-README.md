@@ -1,0 +1,23 @@
+# Vollständiger Testlauf – Infrastruktur und Zählweise
+
+Stand: 2026-10-24. Alle 175 direkten Testdateien (40 Konfigurator, 135 Werkstatt) werden unverändert ausgeführt. Es gibt keine Namenfilter, Dateiausnahmen oder vom Runner eingefügten Skips. Testeigene Skip-/Todo-/Cancel-Ergebnisse werden separat unverändert gezählt.
+
+## Reproduzierbarkeit
+
+Start aus dem Aufgabenordner: `node work/reports/run-full-tests.mjs --run --expected-files 175`. Ohne `--run` wird ausschließlich das Inventar erstellt. Node 24 ist erforderlich. Python ist die vorhandene Umgebung `work/pyenv/Scripts/python.exe`; TEMP und TMP sind `work/test-tmp`. Keine Pakete werden installiert. Der Test-Preload bildet nur das Windows-Kommando `python3` auf diese Umgebung ab (spawn/spawnSync/execFile/execFileSync), einschließlich der execFile-Promisify-Rückgabe. Assertions, Fehler, Rückgabewerte und Exitcodes bleiben unverändert.
+
+Der gestartete Lauf liegt in `full-tests-2026-10-24T05-16-03-957Z-ta6XYd`. Jede Datei läuft seriell in einem eigenen Node-Testprozess mit 600 Sekunden Timeout. `inventory.json` hält SHA-256 je Testdatei, Node/Python, Umgebung und Arbeitsverzeichnis fest. `all.raw.log` enthält Dateitrenner und unveränderte Prozessausgabe; je Datei liegen zusätzliche rohe Logs und alle Node-Testereignisse als JSONL vor. `summary.json` wird nach jeder Datei aktualisiert; `complete:false` oder ein fehlender Root-Summary darf niemals als bestanden gelten. Die Summen sind die nativen Node-Root-Summary-Zähler pro Datei; Fehler beim Laden einer Datei können von Node selbst als ein Test gezählt werden. Datei- und Testzahlen sind deshalb getrennt.
+
+## Arbeitsverzeichnis
+
+Die tatsächlich gestartete Version verwendet für ALLE Dateien ein gemeinsames isoliertes CWD unter dem Laufordner. Dadurch bleiben die relativen `.local-data`-Schreibvorgänge in catalog-structure.test.mjs und design-dashboard.test.mjs außerhalb des Repositories. Noch vor Erreichen des betroffenen Tests wurde der Parent auf eine fachliche Ausnahme hingewiesen: shopify-runtime-config.test.mjs:27 verwendet process.cwd() absichtlich als ungültiges privates Datenverzeichnis innerhalb des Repositories. Für diesen Test ändert ein externes CWD die Testvoraussetzung. Zusätzlich lädt editable-design.test.mjs:67 den vorhandenen Python-Helfer app/workshop/form-print-worker.py relativ ohne cwd-Override; dies führt im isolierten CWD zu FileNotFoundError. Der laufende Runner wurde nicht nachträglich verändert.
+
+Die separate Gegenprobe ist vorbereitet: `node work/reports/run-runtime-config-root-cwd.mjs --run`. Sie verweigert den Start vor vollständigem Abschluss der 175 Dateien, prüft identischen Test-SHA, führt genau die drei unveränderten Dateien editable-design.test.mjs, konfis.test.mjs und shopify-runtime-config.test.mjs aus Repo-CWD aus und schreibt einen eigenen Ergebnisordner. Sie verändert oder ersetzt keine Fehlerzählung des ursprünglichen Laufs. Weitere Windows-Voraussetzungen dieser Datei (POSIX-/tmp-Pfade, chmod, Symlinks) bleiben unverändert sichtbar.
+
+## Schreibgrenzen und Umweltfehler
+
+Vor/nach dem Lauf werden .local-data, app/.local-data, deliverables und legacy-reference im Repository gehasht; Änderungen sowie geänderte Testdateien stehen in integrity.json und führen zu einem Fehlerstatus. Build-Tests schreiben zusätzlich generierte Daten nach app/configurator/variant-m/.preview/lazy, weil diese Strecke im bestehenden Build unabhängig von outputDirectory ist. Dieser Nebeneffekt ist bekannt; parallele Builds wurden vermieden. PYTHONDONTWRITEBYTECODE verhindert neue Python-Cachedateien. Bestehende GRAVURU_-Anwendungsvariablen werden bis auf den Testinterpreter nicht geerbt; Tests setzen ihre synthetischen Angaben selbst.
+
+Environment-Hints sind ausschließlich Diagnosekandidaten. EACCES/EPERM bei localhost, fehlende Module/DLLs, fehlende Quellen/Fixtures, Windows-Symlink-/Cleanup-Probleme bleiben rote Testergebnisse. Es gibt keine Umdeutung zu bestanden und keine Testentfernung. Der Lauf prüft Python-Importe separat und protokolliert das Ergebnis ohne Installation.
+
+Nach dem vollständigen Lauf erhält ausschließlich die separate konfis.test.mjs-Gegenprobe zusätzlich Node --test-force-exit. Das Flag ist in der lokalen Node-24-Hilfe bestätigt und beendet nach abgeschlossenen Testfällen trotz verbliebener Handles; es unterdrückt keine hookFailed-/Assertion-Ergebnisse. Anlass: alle sechs Konfis-Teiltests meldeten 3 pass/3 hookFailed (EPERM), danach blieb der Originalprozess offen. Der Original-Watchdog und alle Originalergebnisse bleiben unverändert. Die beiden CWD-Gegenproben erhalten kein force-exit.

@@ -43,7 +43,7 @@ export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=n
  return {profileId:profile.id,profileRevision:profile.revision,items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
 }
 
-export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null,only=null,allDesigns=false}={}){
+export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null,only=null,allDesigns=false,retainItems=true,reporter=null,onProgress=null}={}){
  // `only`: {subcategories:[ids], sizes:[keys], mainProducts:[ids]} begrenzt den Lauf (z. B. ein Muster); ohne Angabe die ganze Linie.
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').');
  const report={line:{id:line.id,name:line.name,status:line.status??null,file:katalog.files.get('linie:'+line.id)},families:[],subcategories:[],designs:{masters:katalog.designs.masters.length,bestand:0,considered:0,withSeries:0,oldSize:[],withoutTheme:0,failed:[]},counts:{products:0,new:0,update:0,unchanged:0,blocked:0,templates:0,sizes:0,pricesOpen:0,designsWithoutSeries:0,fit:{passt:0,'prüfen':0,'passt nicht':0}},notes:[]};
@@ -57,7 +57,10 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
  report.counts.unreleased=unreleased.length;
  const designs=katalog.designs.masters.filter(d=>!d.hidden&&(allDesigns||d.released));
  if(bestand){const list=katalog.designs.bestand(bestand);report.designs.bestand=list.length;designs.push(...list);}
- const items=[],familyPlans=[],fontSets=new Map(),seenDesigns=new Map();
+ // Berichtmodus: Dokumente nur für den aktuellen Produktvergleich halten. Der Token bleibt
+ // identisch zum vollständigen Plan; die kleinen Dokument-Prüfsummen reichen dafür.
+ const items=[],itemDigests=[],familyPlans=[],fontSets=new Map(),seenDesigns=new Map();
+ await reporter?.begin?.(report);
  for(const familyId of line.families){
   const family=katalog.families.get(familyId),doc=stripFamily(family);
   const ready=familyReady(doc),series=formatSeries(doc),assigned=assignSeries(doc,designs.filter(d=>materialMatch(doc,d)));
@@ -83,6 +86,14 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
    const set=fontSets.get(setKey);
    const {fonts,missing:glyphsMissing}=await katalog.fontResources([...new Set(themed.flatMap(a=>a.design.fonts||[]))],{available,converter});
    const subReport={id:sub.id,name:sub.name,family:familyId,themeId:sub.themeId??null,fontSet:fontSet.id,fontProfileId:set.profileId,fonts:{set:fontSet.fonts,missing:set.missing,imported:set.imported,templateFontsMissing:glyphsMissing},designs:themed.length,designsWithoutTheme:withoutTheme,products:[]};
+   await reporter?.beginSubcategory?.(subReport);
+   const recordProduct=async entry=>{
+    report.counts.products++;subReport.products.push(entry);
+    onProgress?.({phase:'product',counts:report.counts});
+    await reporter?.product?.(entry);
+   };
+   // Ein Master-SVG je Design in dieser Familie/Themenauslegung; skalierte Kopien
+   // gehören nur zum gerade geplanten Produkt und werden danach freigegeben.
    const converted=new Map();
    const templateFor=async a=>{
     if(converted.has(a.design.id))return converted.get(a.design.id);
@@ -110,26 +121,35 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
     for(const a of themed.filter(a=>a.sizes.includes(size.key))){
      const t=await templateFor(a);if(!t.ok)continue;
      try{
-      const scaled=scaleTemplate(t.template,t.template.katalog.plateMm,[size.widthMm,size.heightMm],fonts,{contain:doc.groups.find(g=>g.key===size.groupKey)?.shape==='contour'}),motifs=scaleEmbeddedMotifs(t.motifs,scaled.katalog.scale);
+      const scaled=scaleTemplate(t.template,t.template.katalog.plateMm,[size.widthMm,size.heightMm],fonts,{contain:doc.groups.find(g=>g.key===size.groupKey)?.shape==='contour'});
       const fit=templateFit(scaled,doc,size,fonts);entry.fit[fit.status]++;report.counts.fit[fit.status]++;
       if(fit.status==='passt nicht'){entry.excluded.push({design:a.design.id,issues:fit.issues});continue;}
       scaled.katalog.fit=fit.status;if(fit.issues.length)scaled.katalog.review=fit.issues;
+      const motifs=scaleEmbeddedMotifs(t.motifs,scaled.katalog.scale);
       templates.push({template:scaled,motifs,rights:t.rights,examples:t.examples});entry.templates.push({design:a.design.id,fit:fit.status,issues:fit.issues});
      }catch(e){entry.excluded.push({design:a.design.id,issues:[e.message]});}
     }
-    if(!templates.length&&!allDesigns&&katalog.designs.masters.some(d=>!d.hidden&&!d.released&&Array.isArray(d.themes)&&d.themes.includes(sub.themeId))){entry.action='gesperrt';entry.reason='Keine freigegebenen Designs für diese Größe (Dashboard: Freigabe).';report.counts.blocked++;report.counts.products++;subReport.products.push(entry);continue;}
+    if(!templates.length&&!allDesigns&&katalog.designs.masters.some(d=>!d.hidden&&!d.released&&Array.isArray(d.themes)&&d.themes.includes(sub.themeId))){entry.action='gesperrt';entry.reason='Keine freigegebenen Designs für diese Größe (Dashboard: Freigabe).';report.counts.blocked++;await recordProduct(entry);continue;}
+    let item=null;
     try{
      const product=katalogFamilyToProduct(doc,line,effective,{size,theme,fontSet:{...fontSet,available:set.available},fontProfileId:set.profileId,fonts,templates,revision,mainProduct:main});
      const prior=repository.importItem(key),current=prior?repository.get(prior.id):null;
      const action=!prior?'neu':JSON.stringify(current.document)===JSON.stringify(product.document)?'unverändert':'aktualisieren';
      Object.assign(entry,{action,productId:prior?.id??null,productRevision:current?.revision??null,name:product.document.name,fontsMissing:product.fontsMissing});
-     items.push({key,fingerprint:sha(key),document:product.document,action,productId:prior?.id??null,expectedRevision:current?.revision??null});
+     item={key,fingerprint:sha(key),document:product.document,action,productId:prior?.id??null,expectedRevision:current?.revision??null};
      report.counts[action==='neu'?'new':action==='aktualisieren'?'update':'unchanged']++;report.counts.templates+=templates.length;
     }catch(e){entry.action='gesperrt';entry.reason=e.message;report.counts.blocked++;}
-    report.counts.products++;subReport.products.push(entry);
+    if(item){
+     onProgress?.({phase:'document',counts:report.counts});
+     itemDigests.push([item.key,item.action,sha(JSON.stringify(item.document))]);
+     onProgress?.({phase:'fingerprint',counts:report.counts});
+     if(retainItems)items.push(item);
+    }
+    await recordProduct(entry);
    }
    }
    report.subcategories.push(subReport);
+   await reporter?.endSubcategory?.();
   }
  }
  report.designs.considered=seenDesigns.size;
@@ -137,10 +157,12 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
  report.designs.withSeries=seenDesigns.size-report.designs.oldSize.length;
  report.designs.withoutTheme=[...seenDesigns.values()].filter(d=>d.series&&!d.themed).length;
  report.counts.designsWithoutSeries=report.designs.oldSize.length;
- return {line:line.id,families:familyPlans,items,report,token:sha(JSON.stringify({line:line.id,items:items.map(i=>[i.key,i.action,sha(JSON.stringify(i.document))])}))};
+ await reporter?.end?.(report);
+ return {line:line.id,families:familyPlans,items,report,...(!retainItems?{reportOnly:true}:{}),token:sha(JSON.stringify({line:line.id,items:itemDigests}))};
 }
 
 export function applyKatalogImport(plan,{repository,families}){
+ if(plan.reportOnly)fail('Ein Berichtplan enthält keine Produktdokumente und kann nicht geschrieben werden.');
  const results={families:[],products:[]};
  for(const f of plan.families){
   // Wiederholter Lauf desselben Plans: bereits gleich angelegte Familie ist kein Fehler.
@@ -158,6 +180,23 @@ export function applyKatalogImport(plan,{repository,families}){
  }
  for(const item of plan.items.filter(i=>i.action==='unverändert'))results.products.push({key:item.key,id:item.productId,action:'unverändert'});
  return results;
+}
+
+// Schreibt gültiges JSON bereits während der Planung, ein Produkt pro Chunk.
+// Der Aufrufer besitzt den Stream; await write berücksichtigt dessen Rückstau.
+// Fehler beim Schreiben brechen den Lauf ab, statt als gesperrtes Produkt zu gelten.
+export function createKatalogReportWriter(write){
+ let subcategories=0,products=0;
+ return {
+  begin:report=>write('{"line":'+JSON.stringify(report.line)+',"subcategories":['),
+  async beginSubcategory(sub){
+   const {products:ignored,...metadata}=sub;products=0;
+   await write((subcategories++?',':'')+JSON.stringify(metadata).slice(0,-1)+',"products":[');
+  },
+  product:entry=>write((products++?',':'')+'\n'+JSON.stringify(entry)),
+  endSubcategory:()=>write(']}'),
+  end:report=>write('],"families":'+JSON.stringify(report.families)+',"designs":'+JSON.stringify(report.designs)+',"counts":'+JSON.stringify(report.counts)+',"notes":'+JSON.stringify(report.notes)+'}\n')
+ };
 }
 
 // Kurzer Bericht (Dry-run) als Text.

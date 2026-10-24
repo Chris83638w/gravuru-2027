@@ -1,0 +1,8 @@
+{
+  "equal": true,
+  "designs": 584,
+  "motifs": 633,
+  "designScaleComparisons": 2163,
+  "reference": "603fa4415121d305cff31755ffab2c6af653919a",
+  "method": "Every assigned catalog master with path layers, every distinct assigned width scale, full motif object including exact SVG string."
+}

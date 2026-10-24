@@ -1,3 +1,9 @@
+## Paket L gemerged und live · 24.10.2026 (Claude)
+
+- #19 (`33737a7`): Designs direkt im Dashboard bearbeiten (Editor mit Familienplatte, Edelstahl gebürstet, Konfi-Pfeile; Speichern transaktional in design.json + design.svg, 409 bei Konflikt, Freigabe-Rücksetzung, Protokoll). Geprüft: Linux-Vollauf 1384/1384; Katalogkopie: alle 102 Startdesigns Öffnen+Speichern ohne Änderung bytegleich; D57 echte Änderung konsistent, 409 bei altem Stand.
+- Nachgezogen: Katalog-.gitignore für Sperre/Journal (Katalog c11f968), `katalog-host.sh save` bricht bei laufender/unterbrochener Transaktion ab (1388d02), Live-Befund behoben: „Bearbeiten“ landete auf dem Händlerhost in der alten Werkstatt → eigener Pfad `/werkstatt/designs/bearbeiten/` über acrylRoute (6e8e70d).
+- Host: Code 6e8e70d, Katalog c11f968, App neu gestartet; live im Shopify-Admin geprüft (D8 im Editor geöffnet, nichts gespeichert). Offene Katalogzuordnung: GT-S-22x14-D234/D235 (Familie unklar, 422). Nächster Schritt: Chris bearbeitet/gibt frei, Pilot-Import + Shop-Abgleich für ein Hauptprodukt.
+
 ## Paket L · Katalogdesigns direkt bearbeiten · 24.10.2026 (Codex / Astra)
 
 - Branch dev/dashboard-bearbeiten-20261024-astra, Code dbf3addf54167ce1a4381275fa8f24d9ec4b12b0 auf main 196de81; Katalog 27d46be. Bearbeiten ohne Import/Produktanlage, Familienmaterial und Kontur/Bohrungen, originale Konfi-Pfeile auf Desktop/Handy, echte Bohrungen ohne rote Hilfsringe; gemeinsamer JSON/SVG-Rückweg mit Journal, 409, Fit-Bestätigung, Freigaberücksetzung und Master-Audit.

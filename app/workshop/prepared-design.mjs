@@ -53,6 +53,9 @@ export async function planPreparedDesign(repository,assets,id,input){
    if(layer.type==='text'){
     if(!Object.hasOwn(config.localResources.fonts,layer.font)||typeof layer.allowColor!=='boolean')fail('Vorhandene Schrift und Farbfreigabe angeben.');
     Object.assign(o,{text:layer.text,font:layer.font,size:layer.size*scale,letterSpacing:(layer.letterSpacing??0)*scale,color:layer.color,bold:false,w:1,h:1});
+    // Prepared customer-field packages keep their non-negative tracking contract.
+    // Catalogue masters may separately retain negative source tracking.
+    if(o.letterSpacing<0)fail('Zeichenabstand in vorbereiteten Kundenfeldern darf nicht negativ sein.');
    }else{
     if(!config.photo.enabled)fail('Fotofunktion nicht freigegeben.');
     Object.assign(o,{w:layer.widthMm*scale,h:layer.heightMm*scale,photoShape:layer.shape,required:layer.required,acrylicFixed:true});

@@ -1,0 +1,16 @@
+{
+  "verifiedResources": 76,
+  "models": 1,
+  "editorBytes": 463769,
+  "lazyResources": {
+    "fonts": 30,
+    "motifs": 703
+  },
+  "bundle": {
+    "url": "/_bundle/editor-acb8ce540e5d4f4c.mjs",
+    "modules": 84,
+    "styles": 9,
+    "bytes": 990986,
+    "gzipBytes": 333316
+  }
+}

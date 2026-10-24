@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {customerLayoutIssue} from '../gravuru-2027/app/configurator/variant-m/contract.mjs';
+import {surfaceGeometry} from '../gravuru-2027/app/configurator/variant-m/surfaces.mjs';
+import {validateStudio} from '../gravuru-2027/app/platform/sources/app/shared/models/studio-products.mjs';
+import {installEdgeClamp} from '../gravuru-2027/app/configurator/variant-m/edge-clamp.mjs';
+const geometry={width:90,height:60,shape:'contour',outlinePath:'M0 0H90V60H0V40Q16 30 0 20Z',holes:[],safeMarginMm:2,holeKeepoutMm:1};
+const p={kind:'universal-product',geometry};
+const back=surfaceGeometry(geometry,'back');
+const report={};
+for(const x of [6,84]){const o={id:'back',type:'graphic',shape:'rect',surfaceId:'back',x,y:30,w:2,h:4,rotation:0};report['backAt'+x]={actualValidator:customerLayoutIssue(o,p),correctBackGeometry:customerLayoutIssue(o,{...p,geometry:back})};}
+const object={id:'front',type:'graphic',shape:'rect',surfaceId:'front',x:84,y:30,w:2,h:4,rotation:0};
+const el={state:{objects:[object],width:90,height:60,uxSurface:'front'},uxProfileGeometry(){return surfaceGeometry(geometry,this.state.uxSurface)},render(){}};
+installEdgeClamp(el);el.render();const before=structuredClone(object);el.state.uxSurface='back';el.render();report.switchSurface={before,after:structuredClone(object)};
+assert.equal(report.backAt6.correctBackGeometry,'');assert.notEqual(report.backAt6.actualValidator,'');
+assert.equal(report.backAt84.actualValidator,'');assert.notEqual(report.backAt84.correctBackGeometry,'');
+assert.notEqual(before.x,object.x);
+report.studio={};
+for(const x of [6,84]){const o={id:'back',type:'graphic',shape:'rect',filled:true,strokeWidth:.1,color:'#000000',surfaceId:'back',x,y:30,w:2,h:4,rotation:0};const sp={id:'contour-review',name:'Contour review',kind:'universal-product',binding:{kind:'local-review'},geometry,material:{kind:'steel',color:'#bac2c4',thicknessMm:1.5},processing:{profileId:'steel-engraving'},optionGroups:[],surfaces:[{id:'front'},{id:'back',priceCents:0}],designs:[{id:'design',name:'Back design',objects:[o],marks:[]}]};try{validateStudio(sp,sp);report.studio[x]='accepted'}catch(e){report.studio[x]=e.message}}
+assert.equal(report.studio[84],'accepted');assert.notEqual(report.studio[6],'accepted');
+console.log(JSON.stringify(report,null,2));

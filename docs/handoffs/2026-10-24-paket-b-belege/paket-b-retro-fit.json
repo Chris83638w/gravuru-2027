@@ -1,0 +1,3210 @@
+{
+ "kind": "local-read-only-retro-fit",
+ "fontsMissing": [],
+ "designs": 129,
+ "counts": {
+  "passt": 34,
+  "passt nicht": 63,
+  "prüfen": 94
+ },
+ "rows": [
+  {
+   "design": "TR1-V2A-9x6-D1",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D2",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D3",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D4",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D5",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+    "motiv-2: Element ragt über die Gestaltungsfläche hinaus.",
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D6",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D7",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D8",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D9",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D10",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D11",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D12",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D13",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D14",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D15",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D16",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D17",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D18",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D19",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D20",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D21",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D22",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D23",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D24",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D25",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D26",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D27",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D28",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D29",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D30",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D31",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D32",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D33",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D34",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D35",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D37",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D38",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D39",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D40",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D41",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D42",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D43",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D44",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D45",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D46",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D47",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D48",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D52",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D53",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D54",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D55",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D56",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D57",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D58",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D59",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D60",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D61",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D62",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D63",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D65",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D66",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D67",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D68",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D69",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D70",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D71",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt",
+   "issues": [],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR1-V2A-9x6-D73",
+   "size": "GR-ES-RT1-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90,
+    60
+   ],
+   "scale": 1,
+   "offsetMm": [
+    0,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D1",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D1",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D2",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D2",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D3",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D3",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D4",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D4",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D5",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D5",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D6",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D6",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D7",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D7",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D8",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D8",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D9",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D9",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D10",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D10",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D11",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D11",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D12",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D12",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D13",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D13",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D15",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "motiv-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D15",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone.",
+    "motiv-2: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D16",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D16",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D18",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D18",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D20",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D20",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D21",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D21",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D22",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D22",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D23",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D23",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D24",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D24",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D25",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D25",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D26",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D26",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D27",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D27",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D29",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D29",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D30",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D30",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D31",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D31",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D32",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D32",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D33",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D33",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "spruch: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D34",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D34",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D35",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D35",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D37",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D37",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D38",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D38",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D39",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D39",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D40",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D40",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D41",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D41",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D42",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D42",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D43",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D43",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D44",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D44",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D45",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D45",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D46",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D46",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D47",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D47",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D48",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D48",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D52",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D52",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D53",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D53",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D54",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D54",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D55",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D55",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D56",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D56",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D57",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D57",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D58",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D58",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D59",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D59",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D60",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D60",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D61",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D61",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D62",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D62",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D65",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D65",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D66",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "name: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D66",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D67",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D67",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D68",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D68",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D69",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D69",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D70",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D70",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D71",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D71",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "prüfen",
+   "issues": [
+    "Seitenverhältnis weicht um 1.50 % ab (eingepasst)."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D73",
+   "size": "GR-ES-RT2-90X60-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 0.9787928221859706,
+   "offsetMm": [
+    0.661,
+    0
+   ]
+  },
+  {
+   "design": "TR2-V2A-9x6-D73",
+   "size": "GR-ES-RT2-120X80-T15",
+   "status": "passt nicht",
+   "issues": [
+    "motiv-1: Element ragt über die Kontur-Gestaltungsfläche oder in eine Bohrloch-Schutzzone."
+   ],
+   "sourceMm": [
+    90.6,
+    61.3
+   ],
+   "scale": 1.3050570962479608,
+   "offsetMm": [
+    0.881,
+    0
+   ]
+  }
+ ]
+}

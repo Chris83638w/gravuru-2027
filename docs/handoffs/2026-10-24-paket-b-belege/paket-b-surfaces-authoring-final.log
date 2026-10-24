@@ -1,0 +1,19 @@
+✔ original-profile validation mirrors back exactly once; oriented UI objectIssue stays raw (7.1323ms)
+✔ fixed asymmetric holes use the object surface, without moving source holes (1.9826ms)
+✔ all front objects retain the exact old geometry policy (6.7008ms)
+✔ studio and prepareConfig accept back x6, reject x84 and mirrored hole keepouts (249.1443ms)
+✔ customer validation and frozen review preserve valid back geometry and reject invalid edits (352.4491ms)
+✔ merchant and AI validation use each object surface with immutable source documents (102.081ms)
+✔ merchant creates a separate design, edits native text/motif/photo, and preserves the original and prices (698.5102ms)
+✔ merchant can remove fixed imported artwork after adding an element without relaxing customer locks (68.3441ms)
+✔ merchant movement stays inside actual plate dimensions including rotation (0.3923ms)
+✔ only imported artwork receives tonal engraving; original vector paint and source stay unchanged (25.9599ms)
+✔ photo examples accept WebP, keep the exact original privately and survive restart (1928.0322ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3043.9698

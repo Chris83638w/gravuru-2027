@@ -1,0 +1,11 @@
+✔ Vorderseite allein wie bisher: kein Reiter, kein Aufpreisfeld, Elemente ohne surfaceId liegen vorn (34.8155ms)
+✔ Rückseite validiert je Fläche: Aufpreis, Kontur/Rand, Seite der Vorlage, Limits; Reiter mit Preis (48.0139ms)
+✔ Offener Aufpreis sperrt die Rückseite (nur Entwurf und Vorlage dürfen sie tragen) (81.2834ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 740.8992

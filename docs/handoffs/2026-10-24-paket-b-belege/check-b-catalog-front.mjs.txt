@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {openKatalog} from '../gravuru-2027/app/workshop/katalog-source.mjs';
+import {katalogDesignToTemplate} from '../gravuru-2027/app/workshop/katalog-convert.mjs';
+import {workshopResources} from '../gravuru-2027/app/workshop/catalog.mjs';
+import {convertFont} from '../gravuru-2027/app/workshop/font-library.mjs';
+import {objectSurface} from '../gravuru-2027/app/configurator/variant-m/surfaces.mjs';
+import {surfaceObjectIssue,objectIssue} from '../gravuru-2027/app/platform/sources/app/shared/models/design-content.mjs';
+const k=openKatalog(fileURLToPath(new URL('../gravuru-katalog/',import.meta.url))),f=k.families.get('steel-door-signs'),designs=k.designs.masters.filter(d=>!d.hidden);
+const {fonts,missing}=await k.fontResources([...new Set(designs.flatMap(d=>d.fonts||[]))],{available:workshopResources().fonts,converter:convertFont});
+assert.deepEqual(missing,[]);const rows=[];
+for(const d of designs){const converted=katalogDesignToTemplate(d,f,d.themes?.[0]?k.theme(d.themes[0]):null,{fonts});const objects=converted.template.objects,front=objects.filter(o=>objectSurface(o)==='front').length,back=objects.length-front;assert.equal(back,0,d.id);
+const p={kind:'universal-product',geometry:{width:d.plateMm[0],height:d.plateMm[1],shape:'rect',safeMarginMm:0,holes:[]}};
+for(const o of objects)assert.equal(surfaceObjectIssue(o,p),objectIssue(o,p));
+rows.push({design:d.id,objects:objects.length,front,back,sourceSha256:createHash('sha256').update(JSON.stringify(d.json)).update(d.svg()).digest('hex')});}
+const report={kind:'read-only-catalog-front-identity',masters:k.designs.masters.length,hidden:k.designs.masters.filter(d=>d.hidden).length,converted:rows.length,objects:rows.reduce((n,r)=>n+r.objects,0),front:rows.reduce((n,r)=>n+r.front,0),back:rows.reduce((n,r)=>n+r.back,0),fontsMissing:missing,failed:[],rows};fs.writeFileSync(new URL('paket-b-surfaces-catalog-front.json',import.meta.url),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({...report,rows:undefined}));

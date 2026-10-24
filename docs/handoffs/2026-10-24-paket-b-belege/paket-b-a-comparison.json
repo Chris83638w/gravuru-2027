@@ -1,0 +1,25 @@
+{
+  "aSha256": "b46b020ac3dcbd98868152b10105b41467a642b734712b5219eb62296f3f6a47",
+  "bSha256": "44c95cac0de0016f701062a74d6bf7130ca5fe080a5d2f1e69c6a8ddceb8858d",
+  "compared": 624,
+  "normalizations": [],
+  "differences": [],
+  "counts": {
+    "products": 744,
+    "new": 597,
+    "update": 0,
+    "unchanged": 0,
+    "blocked": 147,
+    "templates": 7920,
+    "sizes": 80,
+    "pricesOpen": 16,
+    "designsWithoutSeries": 0,
+    "fit": {
+      "passt": 8169,
+      "prüfen": 415,
+      "passt nicht": 788
+    },
+    "unreleased": 0
+  },
+  "contourOpenBlocks": 0
+}

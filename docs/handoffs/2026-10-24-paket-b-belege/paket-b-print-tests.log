@@ -1,0 +1,20 @@
+✔ original RT1/RT2 cut PDFs retain curved physical bounds and fixed drilling within 0.1 mm (30269.5671ms)
+✔ PDF encoding uses the shared commands, keeps cubic controls and converts quadratic and arc segments (1.5034ms)
+✔ cut/white/containment use actual concave outline and holes; unsupported browser bleed fails closed (6.6571ms)
+✔ print settings keep cut size and independently bound color and white bleed (1.7178ms)
+✔ white silhouette produces closed merged runs and preserves transparent holes (0.5098ms)
+✔ Roland PDF has real spot resources, cut paths, bleed/trim boxes and actual four-channel CMYK artwork (3887.0885ms)
+✔ Mimaki combined is one PDF page with white vector layer, no RDG_WHITE resource (2557.0606ms)
+✔ separate Mimaki white is vector-only; no-white removes actual white paint (5729.99ms)
+✔ ZIP keeps original image bytes and readable member names (196.0095ms)
+✔ Roland motif white is spot-color vector paint, without raster or soft-mask painting (2852.1781ms)
+✔ generic CMYK separation preserves white, pure K neutrals and primary process inks (0.3645ms)
+✔ 600 dpi advice considers actual text scale and explicit thin strokes but does not change defaults (0.2766ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 30405.7076

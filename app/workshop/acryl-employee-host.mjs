@@ -8,6 +8,7 @@ export function acrylRoute(pathname){
  if(/^\/werkstatt\/designs\/?$/.test(pathname))return '/werkstatt/designs/';// Design-Dashboard (23.10.2026) gehört zum Acryl-Store wie die Katalogseite
  // Vorschaudateien kommen als URL in der JSON-Antwort (nicht umgeschrieben); ohne diese Zeile landeten sie in der alten Laufzeit.
  if(pathname==='/api/workshop/designs/svg')return pathname;
+ if(/^\/api\/workshop\/designs\/editor(?:\/(?:preview|fit|font))?$/.test(pathname))return pathname;
  if(pathname==='/_merchant-acryl-form-editor.html')return '/_merchant-form-editor.html';
  if(pathname==='/_merchant-acryl-editor.html')return '/_merchant-editor.html';
  for(const [from,to] of [...rewrites.slice(0,5),...nativeAssets])if(pathname.startsWith(to))return from+pathname.slice(to.length);

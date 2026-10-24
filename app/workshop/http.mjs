@@ -74,6 +74,7 @@ import {DEFAULT_TENANT,createTenantRegistry,tenantFromRequest} from './tenant.mj
 import {createCatalogStructure} from './catalog-structure.mjs';
 import {designDashboardWithFit,designFile,patchDesign} from './design-dashboard.mjs';
 import {designPreviewGlyphs,previewWarningHeader,PREVIEW_WARNING_HEADER} from './design-preview-glyphs.mjs';
+import {createDesignEditor} from './design-editor.mjs';
 import {katalogPath} from './katalog-source.mjs';
 import {categoryLabels} from './category-labels.mjs';
 import {tenantOverview} from './tenant-overview.mjs';
@@ -130,6 +131,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const downloadPrefix=ownsBundled?'Gravuru':(String(tenant?.name||tenantId).replace(/[^A-Za-z0-9-]+/g,'-').replace(/^-+|-+$/g,'')||tenantId);
   const fonts=createFontLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),tenantId});
   const formFonts={...seed.config.localResources.fonts,...workshopResources(seed.config.localResources).fonts,...fonts.resources()};
+  const designEditor=createDesignEditor({available:formFonts});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources),tenantId});
   profiles.registerFonts(fonts.list());
   const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),tenantId});
@@ -313,7 +315,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       const pathname=url.pathname,method=req.method;
       const accountDraft=pathname.match(/^\/api\/workshop\/account-drafts(?:\/(cdraft_[a-f0-9-]{36})(?:\/(preview\.png)|\/photos\/([A-Za-z0-9_-]{1,64}))?)?$/);
       if(accountDraft)return await accountDraftRoute(req,res,url,accountDraft);
-      if(!['GET','POST','PATCH'].includes(method))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      if(!['GET','POST','PATCH'].includes(method)&&!(method==='PUT'&&pathname==='/api/workshop/designs/editor'))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(pathname==='/api/workshop/order-webhook'){
         if(method!=='POST')fail(405,'method_not_allowed','Bestellnachrichten benötigen POST.');
         if(!orderWebhook)fail(503,'orders_disabled','Test-Bestellanbindung ist nicht eingerichtet.');
@@ -349,6 +351,16 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         if(method==='GET')return json(res,200,catalogStructure.read());
         if(method==='PATCH')return json(res,200,catalogStructure.save(await body(req,16384),{actor:merchantSession?.subject||localActor}));
         fail(405,'method_not_allowed','Die Katalogstruktur unterstützt Lesen und Speichern.');
+      }
+      const catalogEditor=pathname.match(/^\/api\/workshop\/designs\/editor(?:\/(preview|fit|font))?$/);
+      if(catalogEditor){
+        if(!ownsBundled)fail(503,'katalog_tenant','Für diesen Mandanten ist kein Katalog hinterlegt.');
+        const root=katalogRoot(),action=catalogEditor[1],q=url.searchParams;
+        if(method==='GET'&&!action)return json(res,200,await designEditor.open(root,{reihe:q.get('reihe'),id:q.get('id')}));
+        if(method==='GET'&&action==='font')return json(res,200,await designEditor.font(root,{reihe:q.get('reihe'),id:q.get('id'),font:q.get('font')}));
+        if(method==='POST'&&['preview','fit'].includes(action))return json(res,200,await designEditor[action](root,await body(req,16*1024*1024)));
+        if(method==='PUT'&&!action)return json(res,200,await designEditor.save(root,await body(req,16*1024*1024),{actor:merchantSession?.subject||localActor}));
+        fail(405,'method_not_allowed','Katalogdesign lesen, prüfen oder speichern.');
       }
       // Design-Dashboard: Designs je Linie aus dem Katalog-Repo (lesen), menschliche Korrekturen zurück in den Katalog (PATCH).
       if(pathname==='/api/workshop/designs'||pathname==='/api/workshop/designs/svg'){

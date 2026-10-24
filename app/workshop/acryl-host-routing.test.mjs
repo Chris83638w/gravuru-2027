@@ -29,3 +29,11 @@ test('integration is absent by default and refuses ambiguous activation',()=>{
  assert.throws(()=>createConfiguratorIntegration({settings:{mode:'public'}}));
  assert.throws(()=>createConfiguratorIntegration({settings:{mode:'merchant-test-only',legacyStoreId:'same',acrylStoreId:'same'}}));
 });
+
+test('catalogue editor routes remain narrow on the Acryl host',()=>{
+ for(const suffix of ['', '/preview','/fit','/font']){
+  assert.equal(acrylRoute('/api/workshop/designs/editor'+suffix),'/api/workshop/designs/editor'+suffix);
+  assert.equal(acrylRoute('/api/workshop/acryl/designs/editor'+suffix),'/api/workshop/designs/editor'+suffix);
+ }
+ for(const suffix of ['/save','/font/file','-other','/preview/extra'])assert.equal(acrylRoute('/api/workshop/designs/editor'+suffix),null);
+});

@@ -2,7 +2,7 @@
   "package": "L",
   "baseCode": "196de81e92d86d997f60c3a91732fe4f2b1a12ef",
   "catalogCommit": "27d46beeae8cd91748ae8096f0bb63a4c550573a",
-  "finalCode": "f3192223da07959a952b52679ada3cd52efdc81a",
+  "finalCode": "dbf3addf54167ce1a4381275fa8f24d9ec4b12b0",
   "sourceFiles": [
     {
       "path": "app/configurator/variant-m/acrylic-product.mjs",
@@ -106,11 +106,11 @@
     },
     {
       "path": "app/workshop/design-editor.mjs",
-      "sha256": "4fd19241f31e1c619f22702632579723fc76cf6c24509c25d3b5124f478231d4"
+      "sha256": "a62047e57e9eba5e89069f5f3c2a57f3fb586dc09a198b76d172fb34bd80f357"
     },
     {
       "path": "app/workshop/design-editor.test.mjs",
-      "sha256": "da7685fc1839e7cfc28d9f1d3a8932287b5c73616580a0501230b9559e7fe93b"
+      "sha256": "502cefda23e7ba392a60dc4a3544b33a08ab1fb81140ea9235903795c0391eff"
     },
     {
       "path": "app/workshop/editor-selection-arrows.test.mjs",
@@ -153,6 +153,10 @@
       "sha256": "5a6e9969a7ff76bdb4b9f0355b0d337e789ffff46f318945dc9d2adda5de5de7"
     },
     {
+      "path": "app/workshop/product-preview.mjs",
+      "sha256": "d1f7b701e00fa868c753227b5814c8416037ebbaffee06930668ac6b02b948b6"
+    },
+    {
       "path": "app/workshop/ui/app.mjs",
       "sha256": "23aea60a8bace6e6f3277bea27c4625ed40f547f05a894f257c8f8ae87a01e6b"
     },
@@ -188,7 +192,7 @@
   "screenshots": [
     {
       "path": "docs/handoffs/paket-l/desktop-01-editor.png",
-      "sha256": "fca12b74abbeb9b87087e23c26da117fc9e33d4fe891ee0035ff02de14549891"
+      "sha256": "d4d1b68136efd1999bcdac2502d03340deac8c55698779f2d4f6b3a21faaec50"
     },
     {
       "path": "docs/handoffs/paket-l/desktop-02-fit.png",
@@ -200,7 +204,7 @@
     },
     {
       "path": "docs/handoffs/paket-l/iphone13-01-editor.png",
-      "sha256": "4676b075a432ab7a244451c47fd1b28b72dadc8afa8cb7d164a32fdd82209a04"
+      "sha256": "6c946f3694548fde747f81fee6d783285d629b9612d61a54e1f323d1b12cca74"
     },
     {
       "path": "docs/handoffs/paket-l/iphone13-02-fit.png",
@@ -208,19 +212,19 @@
     },
     {
       "path": "docs/handoffs/paket-l/iphone13-03-dashboard-preview.png",
-      "sha256": "9ebe9032df1936dc78742bfa655cbdb49f5f3b2a53dcb3cb534b5d748fc27a72"
+      "sha256": "bcf979ac1fc449cff9c0d85a5f61e797c06dc109976c8748987823fd9bb478a4"
     },
     {
       "path": "docs/handoffs/paket-l/iphone13-04-saved-editor.png",
-      "sha256": "da6019148f72fc34e1b0eccdb6359ebd160416bf16bd79bb5a3434f2acb1b995"
+      "sha256": "fadf49a40f7c467bd26f4932d0d4d6381d347f6b6e26d5adf704cbe8186d0263"
     },
     {
       "path": "docs/handoffs/paket-l/iphone13-sample-contour.png",
-      "sha256": "3edf8d2f52e6ca4710f6307373934709923e70a6be72dc59c11f8a7e7d68e399"
+      "sha256": "05679ee82020b9a2e8a52610f563d46fb5bc21f30e90833543f298f063e90173"
     },
     {
       "path": "docs/handoffs/paket-l/iphone13-sample-ellipse.png",
-      "sha256": "c035b5325dbc5a241a89b7cab1e6a0f5dcccd46606921bcce5b69334ea39fd80"
+      "sha256": "02aa39a9ee30ff3ce63f7356170404407501f98560999395ed48f0d3ffdb4bef"
     }
   ],
   "platform": {
@@ -249,12 +253,13 @@
     "desktop": {
       "mode": "desktop",
       "viewport": "1280 × 900",
+      "catalogCopy": "<workspace>\\work\\paket-l-catalog-test",
       "checks": [
         "browser text add/remove keeps LF2 text IDs",
         "two consecutive keyboard arrow steps / stable focus / no focus steal",
         "Konfi green arrows / actual mouse drag / uniform scale / no blue frame",
         "D57 via dashboard without import",
-        "steel surface / master dimensions",
+        "steel surface / master dimensions / real holes without mechanical rings",
         "name edited / motif moved +1 mm",
         "all assigned sizes before save",
         "fit failure requires checkbox if present",
@@ -389,7 +394,7 @@
           ]
         },
         "checksumBefore": "0cc22b5170f40d936c8913247b15a02615ac53f46e8363f583586792ff5ca9be",
-        "checksumAfter": "23749f778bafa6f7e443b827179cf79aade60155b69a4c86af73fdacc4393259",
+        "checksumAfter": "8b2922133de722cc1673c902dd3b3fb5ba94d23cbe05c84eaaabe09730508dc2",
         "approvalBefore": {
           "status": "freigegeben",
           "am": "2026-10-24T00:00:00.000Z",
@@ -397,11 +402,11 @@
         },
         "approvalAfter": {
           "status": "offen",
-          "am": "2026-10-24T16:05:11.836Z",
+          "am": "2026-10-24T16:26:15.465Z",
           "von": "123"
         },
         "audit": {
-          "at": "2026-10-24T16:05:11.836Z",
+          "at": "2026-10-24T16:26:15.465Z",
           "actor": "123",
           "reihe": "edelstahl-gravur-80x53",
           "designId": "TRE-V2A-8x5-D57",
@@ -472,7 +477,7 @@
             },
             "to": {
               "status": "offen",
-              "am": "2026-10-24T16:05:11.836Z",
+              "am": "2026-10-24T16:26:15.465Z",
               "von": "123"
             }
           },
@@ -592,10 +597,11 @@
     "iphone13": {
       "mode": "iphone13",
       "viewport": "iPhone 13 / Chromium emulation",
+      "catalogCopy": "<workspace>\\work\\paket-l-catalog-test",
       "checks": [
         "Konfi green arrows / actual touch drag / uniform scale / no blue frame",
         "D57 via dashboard without import",
-        "steel surface / master dimensions",
+        "steel surface / master dimensions / real holes without mechanical rings",
         "name edited / motif moved +1 mm",
         "all assigned sizes before save",
         "fit failure requires checkbox if present",
@@ -734,7 +740,7 @@
           ]
         },
         "checksumBefore": "0cc22b5170f40d936c8913247b15a02615ac53f46e8363f583586792ff5ca9be",
-        "checksumAfter": "c0f035a97075799e63d3d562ab76f01557a76f4a888accf80b382bbef31c6e4b",
+        "checksumAfter": "282b500a8c2f63813d69f4c36718705014ae6a09b84e3ef76f79b16638df14da",
         "approvalBefore": {
           "status": "freigegeben",
           "am": "2026-10-24T00:00:00.000Z",
@@ -742,11 +748,11 @@
         },
         "approvalAfter": {
           "status": "offen",
-          "am": "2026-10-24T16:06:12.424Z",
+          "am": "2026-10-24T16:27:33.151Z",
           "von": "123"
         },
         "audit": {
-          "at": "2026-10-24T16:06:12.424Z",
+          "at": "2026-10-24T16:27:33.151Z",
           "actor": "123",
           "reihe": "edelstahl-gravur-80x53",
           "designId": "TRE-V2A-8x5-D57",
@@ -817,7 +823,7 @@
             },
             "to": {
               "status": "offen",
-              "am": "2026-10-24T16:06:12.424Z",
+              "am": "2026-10-24T16:27:33.151Z",
               "von": "123"
             }
           },
@@ -1003,6 +1009,12 @@
             "method": "POST"
           },
           {
+            "path": "/api/workshop/designs/editor/preview",
+            "status": 200,
+            "authenticated": true,
+            "method": "POST"
+          },
+          {
             "path": "/api/workshop/designs/editor?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D13",
             "status": 200,
             "authenticated": true,
@@ -1034,7 +1046,7 @@
       },
       "success": true
     },
-    "layoutCode": "d4e2df2c264cf1d7af938eb4f299578fad7f8b45",
+    "layoutCode": "dbf3addf54167ce1a4381275fa8f24d9ec4b12b0",
     "fullArrowHitAreas": [
       {
         "id": "TRE-V2A-8x5-D57",
@@ -1045,6 +1057,7 @@
           "height": 290.796875
         },
         "arrowHitAreasVisible": true,
+        "mechanicalRingsVisible": false,
         "arrows": [
           {
             "x": 52.78125,
@@ -1082,6 +1095,7 @@
           "height": 290.921875
         },
         "arrowHitAreasVisible": true,
+        "mechanicalRingsVisible": false,
         "arrows": [
           {
             "x": 51.46875,
@@ -1119,6 +1133,7 @@
           "height": 290.921875
         },
         "arrowHitAreasVisible": true,
+        "mechanicalRingsVisible": false,
         "arrows": [
           {
             "x": 36.09375,
@@ -1709,7 +1724,8 @@
     "catalogCommit": "27d46beeae8cd91748ae8096f0bb63a4c550573a",
     "sourceFiles": 1843,
     "changed": [],
-    "checkedAt": "2026-10-24T16:18:20.028Z"
+    "checkedAt": "2026-10-24T16:28:39.869Z",
+    "files": 1843
   },
   "liveAccess": false,
   "merged": false,
@@ -4696,12 +4712,27 @@
     "workshop": 142
   },
   "remoteCodeAudit": {
-    "commit": "f3192223da07959a952b52679ada3cd52efdc81a",
-    "changedFiles": 45,
+    "commit": "dbf3addf54167ce1a4381275fa8f24d9ec4b12b0",
+    "changedSourceFiles": 46,
+    "changedFilesIncludingDocs": 61,
     "removed": [],
     "allExpected": true
   },
   "closedRegressions": 1,
   "openKnownTestFailures": 0,
-  "recordedAt": "2026-10-24T16:17:40.704Z"
+  "recordedAt": "2026-10-24T16:29:13.900Z",
+  "holePreviewFollowup": {
+    "code": "dbf3addf54167ce1a4381275fa8f24d9ec4b12b0",
+    "files": 3,
+    "tests": 27,
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "scope": "design-editor, editor-preview, material-preview",
+    "mechanicalRingsVisible": false,
+    "physicalHolesPreserved": true,
+    "fitUnchanged": true,
+    "designBoundaryPreserved": true
+  }
 }

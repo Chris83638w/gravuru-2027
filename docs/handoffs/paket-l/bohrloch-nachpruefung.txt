@@ -1,0 +1,35 @@
+✔ opens catalogue master without product import, all catalogue fonts, real material and neutral private pricing (362.9729ms)
+✔ rect: no-op leaves exact JSON/SVG and approval untouched, including proportional-contain rounding (300.2899ms)
+✔ ellipse: no-op leaves exact JSON/SVG and approval untouched, including proportional-contain rounding (311.7317ms)
+✔ contour: no-op leaves exact JSON/SVG and approval untouched, including proportional-contain rounding (316.6008ms)
+✔ rect: preview retains physical holes without visible mechanical keepout rings (341.7124ms)
+✔ ellipse: preview retains physical holes without visible mechanical keepout rings (284.0654ms)
+✔ contour: preview retains physical holes without visible mechanical keepout rings (387.0426ms)
+✔ content, catalogue font, spacing, alignment, addition/removal persist and reset approval with session audit (843.0761ms)
+✔ rect: motif move/scale and overflowing fit are previewable and explicitly savable (621.1852ms)
+✔ ellipse: motif move/scale and overflowing fit are previewable and explicitly savable (405.5929ms)
+✔ contour: motif move/scale and overflowing fit are previewable and explicitly savable (389.0932ms)
+✔ contour drilling keepout uses shared physical fit and cannot be replaced from the client (274.8543ms)
+✔ conflicts, unknown fonts, motif replacement/distortion, authority fields and traversal fail before writing (535.2391ms)
+✔ font resources are selected only from the catalogue index and lazy load without a write (83.723ms)
+✔ actual embedded token route protects editor GET/preview/fit/PUT and logs the session actor without database products (1548.5595ms)
+✔ a missing catalogue font fails explicitly without substitute paths or writes (57.8918ms)
+✔ a source change is always a 409 before validating the now-obsolete object list (158.0716ms)
+✔ font replacement uses server glyphs and cannot replace master metadata, resources or geometry (268.5938ms)
+✔ server retains source line spacing, scales it with font size and rejects client authority over spacing (415.2738ms)
+✔ ambiguous family dimensions use only explicit matching catalogue lines and their real drilling (289.1662ms)
+✔ M02 draft preview resolves chosen design and base without saving; protects CSRF and revisions (1024.2241ms)
+✔ material preview uses the existing verified steel surface and preserves the original inner and outer geometry (2116.4116ms)
+✔ derived wood and leather previews use their documented atlas tile, keep holes and never change technical material data (2057.0822ms)
+✔ acrylic presentations preserve exact geometry, optional historical settings and explicit thickness (2185.2905ms)
+✔ UV presentation is opt-in, validated and keeps front ink above glass and reverse ink below (2621.5353ms)
+✔ all acrylic engraving previews use tonal light marks without mutating source or print views (2906.1736ms)
+✔ steel, wood and leather have material-specific engraving tones without changing print sources or geometry (2989.5586ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25390.1859

@@ -11,6 +11,9 @@
 #   katalog-host.sh save     Änderungen committen und nach GitHub host/werkstatt pushen (kein Force, nie auf main)
 #   katalog-host.sh update   GitHub-main holen und vorspulen – nur wenn nichts ungesichert ist (sonst erst save)
 #
+# Nach init läuft der Abgleich nur noch über den Remote „github“ mit dem eigenen Schlüssel (der Deploy-Key mit
+# Schreibrecht kann auch lesen). Das Plesk-Repo dient nur als schnelle Klonquelle: Plesk holt es mit einem eigenen
+# Schlüssel, ein normales `git fetch` im Benutzer-Shell würde den Schlüssel des Code-Repos nehmen und scheitern.
 # Nach einem Merge von host/werkstatt bitte mit Merge-Commit (nicht squash/rebase), damit `update` vorspulen kann.
 set -euo pipefail
 H=${GRAVURU_HOST_HOME:-/var/www/vhosts/gravuru-designwerkstatt.de}
@@ -22,6 +25,7 @@ GITHUB=${GRAVURU_KATALOG_GITHUB:-git@github.com:Chris83638w/gravuru-katalog..git
 BRANCH=host/werkstatt
 push_ssh="ssh -i $KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$KEYDIR/known_hosts"
 g(){ git -C "$WT" "$@"; }
+gh_fetch(){ GIT_SSH_COMMAND="$push_ssh" g fetch -q github main; }
 
 case "${1:-status}" in
  init)
@@ -43,6 +47,8 @@ case "${1:-status}" in
  status)
   g log --oneline -1
   n=$(g status --porcelain | wc -l); echo "Ungesicherte Änderungen: $n"; g status --short | head -50
+  if g rev-parse -q --verify github/main >/dev/null; then
+   echo "Commits über GitHub-main (Stand letzter Abgleich): $(g rev-list --count github/main..HEAD)"; fi
   ;;
  save)
   if [ -z "$(g status --porcelain)" ]; then echo "Nichts zu sichern."; else
@@ -50,17 +56,17 @@ case "${1:-status}" in
    files=$(g diff --cached --name-only | wc -l)
    g commit -q -m "Dashboard-Änderungen vom Händlerhost ($files Dateien, $(date -u +%Y-%m-%dT%H:%MZ))" -m "Gesichert mit scripts/katalog-host.sh save; Protokoll in den _aenderungen.jsonl der betroffenen Ordner."
   fi
-  # Alles, was lokal über origin/main hinausgeht, nach host/dashboard (vorspulen, kein Force).
-  if [ -n "$(g log --oneline origin/main..HEAD)" ]; then
+  # Alles, was lokal über GitHub-main hinausgeht, nach host/werkstatt (vorspulen, kein Force).
+  gh_fetch
+  if [ -n "$(g log --oneline github/main..HEAD)" ]; then
    GIT_SSH_COMMAND="$push_ssh" g push -q github "HEAD:refs/heads/$BRANCH"
-   echo "Gepusht nach $BRANCH:"; g log --oneline origin/main..HEAD | head -20
+   echo "Gepusht nach $BRANCH:"; g log --oneline github/main..HEAD | head -20
   else echo "Kein Commit über main hinaus – nichts gepusht."; fi
   ;;
  update)
   if [ -n "$(g status --porcelain)" ]; then echo "Abbruch: ungesicherte Dashboard-Änderungen – erst 'save'."; g status --short | head -20; exit 1; fi
-  git --git-dir="$BARE" fetch -q origin main:main
-  g fetch -q origin main
-  g merge -q --ff-only origin/main || { echo "Abbruch: kein Vorspulen möglich (host/werkstatt noch nicht gemerged?)."; exit 1; }
+  gh_fetch
+  g merge -q --ff-only github/main || { echo "Abbruch: kein Vorspulen möglich (host/werkstatt noch nicht gemerged?)."; exit 1; }
   g log --oneline -1
   ;;
  *) echo "Aufruf: $0 init|status|save|update"; exit 2;;

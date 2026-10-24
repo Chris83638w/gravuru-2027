@@ -82,8 +82,9 @@ jobs:
           test -f /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf
           test -f /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf
           sha256sum source-after/scripts/test-portability/*.mjs > "$ROOT/output/runner-sha256.txt"
-          git -C source-before ls-files 'app/configurator/variant-m/*.test.mjs' 'app/workshop/*.test.mjs' | sort > "$ROOT/output/before-test-files.txt"
-          git -C source-after ls-files 'app/configurator/variant-m/*.test.mjs' 'app/workshop/*.test.mjs' | sort > "$ROOT/output/after-test-files.txt"
+          for side in before after; do
+            node --input-type=module -e 'import fs from "node:fs"; import path from "node:path"; const repo=process.argv[1]; const dirs=["app/configurator/variant-m","app/workshop"]; console.log(dirs.flatMap(dir=>fs.readdirSync(path.join(repo,dir),{withFileTypes:true}).filter(e=>e.isFile()&&e.name.endsWith(".test.mjs")).map(e=>dir+"/"+e.name)).sort().join("\n"));' "source-$side" > "$ROOT/output/$side-test-files.txt"
+          done
           diff -u "$ROOT/output/before-test-files.txt" "$ROOT/output/after-test-files.txt"
           test "$(wc -l < "$ROOT/output/before-test-files.txt")" -eq 175
 

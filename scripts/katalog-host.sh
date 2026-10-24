@@ -51,6 +51,11 @@ case "${1:-status}" in
    echo "Commits über GitHub-main (Stand letzter Abgleich): $(g rev-list --count github/main..HEAD)"; fi
   ;;
  save)
+  # Paket L: Der Werkstatt-Editor schreibt transaktional (Sperre + Journal). Nur sichern, wenn keine Transaktion läuft
+  # oder unterbrochen ist – sonst könnte ein halber Stand gesichert werden. Die App räumt beim nächsten Zugriff auf.
+  if [ -e "$WT/designs/.werkstatt-write-journal.json" ] || [ -e "$WT/designs/.werkstatt-write.lock" ]; then
+   echo "Abbruch: Werkstatt-Editor schreibt gerade oder eine Transaktion ist unterbrochen (designs/.werkstatt-write*)."
+   echo "Design-Dashboard einmal neu laden (stellt wieder her) und danach erneut 'save'."; exit 1; fi
   if [ -z "$(g status --porcelain)" ]; then echo "Nichts zu sichern."; else
    g add -A
    files=$(g diff --cached --name-only | wc -l)

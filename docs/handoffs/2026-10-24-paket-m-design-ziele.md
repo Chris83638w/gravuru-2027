@@ -73,8 +73,15 @@ Branch `dev/design-ziele-20261024-astra` (Code und Katalog, falls Daten betroffe
      Bericht. Keine Familien, Größen oder Preise erfinden.
 4. **Varianten** für ein anderes Seitenverhältnis, eine andere Form oder eine andere Linie: Erzeugung wie in
    `scripts/build-design-reihe.py`. Text bleibt Text, Motive bleiben Pfade, `transfer.from` verweist aufs Original,
-   bei Contain-Einpassung wird die Abweichung in % angezeigt. Nie still strecken. Die Kennung folgt der README-Regel;
-   ist sie unklar, frag Claude. Jede Variante hat eigene Ziele und Freigaben und ist im Editor (Paket L) bearbeitbar.
+   bei Contain-Einpassung wird die Abweichung in % angezeigt. Nie still strecken. Jede Variante hat eigene Ziele und
+   Freigaben und ist im Editor (Paket L) bearbeitbar.
+   **Kennung, Ordner und Kollisionen** (Antwort Claude 24.10.): Es gilt `gravuru-katalog./designs/README.md`, Abschnitt
+   „Kennungen für Varianten“ (Katalog ≥ 579390292).
+   - Material oder Verfahren allein ergibt keine Variante, nur ein Ziel.
+   - Bei Format-, Form- oder Linienwechsel wird das entsprechende Segment getauscht, die D-Nummer bleibt.
+   - Das Feld `varianteVon` ist neu.
+   - Kollisionen: „Kennung belegt“, „schon vorhanden“, „Bestandsfassung vorhanden“ oder „Kennung offen“. Nie
+     überschreiben.
 5. **Regeln:**
    - Mindestschrift 3 mm für Druck und Gravur.
    - Gravur auf V2A: Linien unter 0,5 mm → Warnung „prüfen“, mit Ort. Das gilt für Konturen von Motiven; nichts
@@ -88,9 +95,12 @@ Branch `dev/design-ziele-20261024-astra` (Code und Katalog, falls Daten betroffe
 **Abnahme:**
 - Tests: Migration, Ziele, Freigabe/Rücksetzung je Ziel, Import/shop-sync je Ziel, Vorschläge, Varianten (Format,
   Form, Linie), Regeln, Themen-PATCH. Bestehende Tests grün; Linux-Vollauf macht Claude.
-- Beispiel auf einer **Katalogkopie**: ein Schiefer-Hunde-Design 22×14 mit den Vorschlägen und Zielen Schiefer ·
-  Gravur 22×14 (1:1), Edelstahl · Gravur 30×20 (Variante), Acryl 30×20 (Variante) und einer Form-Variante
-  (z. B. Herz, falls eine Familie existiert, sonst „Familie fehlt“). Screenshots Desktop und iPhone.
+- Beispiel auf einer **Katalogkopie**: `GT-S-22x14-D204` mit dem Ziel Schiefer · Gravur 22×14 (1:1). Der Vorschlag
+  Edelstahl/Acryl 30×20 führt zu `GT-S-30x20-D204` und zeigt „Bestandsfassung vorhanden“ (Bestandsvorschau, nichts
+  angelegt). Eine Form-Variante zeigt „Familie fehlt“ bzw. „Kennung offen“.
+- Automatisches Einpassen an einem Fall mit freier Kennung. Die echten Daten haben dafür kaum freie Fälle, daher eine
+  Testkopie nur in der Katalogkopie, im Bericht benannt.
+- Screenshots Desktop und iPhone.
 - Bericht: fehlende Familien (Druck je Material, Holz, Formen) als Liste für Chris.
 
 **Nicht in Paket M** (eigene Pakete danach):
@@ -98,6 +108,9 @@ Branch `dev/design-ziele-20261024-astra` (Code und Katalog, falls Daten betroffe
   Ausführungen und eine Preisliste zum Ausfüllen.
 - O: Hauptprodukte für Bestseller ableiten (Liste von Chris).
 - P: gerenderte Produktbilder je Material und Verfahren.
+- Q: Bestandsfassungen übernehmen. Die 30×20-Fassungen der 24 Gedenktafeln 22×14 aus
+  `bestand/gedenktafeln/**/gravur-rechteck-D2xx` werden in Lieferform 2 überführt, wie beim 22×14-Import
+  (Ersatzschriften, Fotofeld). Danach bekommen sie Ziele für Schiefer, Acryl und Edelstahl 30×20.
 - Import und Shop für Ausführungen als Variante.
 
 Regeln wie immer: keine Freigabe setzen, keine Live-Systeme, kein Import, kein Merge, kein Force-Push, nichts

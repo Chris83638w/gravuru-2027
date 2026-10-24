@@ -1,3 +1,9 @@
+## Paket K gemerged und live · 24.10.2026 (Claude)
+
+- #18 (`126177f`): Design-Dashboard auf dem Handy (Designs zuerst, Filter einklappbar, Kacheln unter 640 px) und SVG-Vorschau mit Texten als Glyphenpfaden aus den Katalogschriften. Anlass: Chris konnte auf dem Handy nichts öffnen, weil die Filterlisten über der Liste standen; außerdem zeigte das Handy Ersatzschriften.
+- Geprüft: 140/140 Tests unter Linux; Gegenprobe auf emuliertem Pixel 7 ohne installierte Schriften (D57 mit Cinzel/Italianno als Pfade, deckungsgleich mit Paket J); 14 Texte mit fehlender Schrift (Welcome, ParmaPetit, Testbeispiele) bleiben Text mit Hinweis-Header, keins davon ist ein Startdesign.
+- Host: Code 126177f, App neu gestartet, Desktop live unverändert. Anleitung für Chris: Claude-Doc „Startdesigns freigeben – Anleitung“. Nächster Schritt: Chris gibt frei (PC oder Handy), dann Paket E.
+
 ## Paket K · Handy-Dashboard und Glyphenvorschau · 24.10.2026 (Codex / Astra)
 
 - Branch `dev/dashboard-handy-20261024-astra` auf main `da750f1`, Katalog `27d46be`: mobile Filter einklappbar, Kacheln unter 640 px, 44-px-Tippflächen und Dialoge bei 360 px; Namensentwurf bleibt beim Drehen erhalten.

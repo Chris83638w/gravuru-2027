@@ -1,6 +1,6 @@
 #!/bin/bash
 # Katalog auf dem Händlerhost (Paket D, Chris 24.10.2026: Option A – Dashboard-Änderungen gehen per eigenem
-# Schreibschlüssel nur für das Katalog-Repo zurück nach GitHub, auf den Branch host/dashboard; Claude prüft und merged).
+# Schreibschlüssel nur für das Katalog-Repo zurück nach GitHub, auf den Branch host/werkstatt; Claude prüft und merged).
 #
 # Aufbau:  Plesk-Git zieht GitHub → $H/git/gravuru-katalog.git (Nur-Lese-Schlüssel „katalog“, Bereitstellung aus).
 #          Arbeitskopie $H/private/gravuru-katalog = normaler git-Klon dieses Plesk-Repos; die Werkstatt liest und
@@ -8,10 +8,10 @@
 #
 #   katalog-host.sh init     einmalig: Schreibschlüssel erzeugen (falls fehlt), Arbeitskopie klonen, öffentlichen Schlüssel zeigen
 #   katalog-host.sh status   Stand + geänderte Dateien (Dashboard-Änderungen)
-#   katalog-host.sh save     Änderungen committen und nach GitHub host/dashboard pushen (kein Force, nie auf main)
+#   katalog-host.sh save     Änderungen committen und nach GitHub host/werkstatt pushen (kein Force, nie auf main)
 #   katalog-host.sh update   GitHub-main holen und vorspulen – nur wenn nichts ungesichert ist (sonst erst save)
 #
-# Nach einem Merge von host/dashboard bitte mit Merge-Commit (nicht squash/rebase), damit `update` vorspulen kann.
+# Nach einem Merge von host/werkstatt bitte mit Merge-Commit (nicht squash/rebase), damit `update` vorspulen kann.
 set -euo pipefail
 H=${GRAVURU_HOST_HOME:-/var/www/vhosts/gravuru-designwerkstatt.de}
 BARE=$H/git/gravuru-katalog.git
@@ -19,7 +19,7 @@ WT=$H/private/gravuru-katalog
 KEYDIR=$H/private/katalog-push
 KEY=$KEYDIR/id_ed25519
 GITHUB=${GRAVURU_KATALOG_GITHUB:-git@github.com:Chris83638w/gravuru-katalog..git}  # Tests: lokales Ziel setzen, nie GitHub
-BRANCH=host/dashboard
+BRANCH=host/werkstatt
 push_ssh="ssh -i $KEY -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$KEYDIR/known_hosts"
 g(){ git -C "$WT" "$@"; }
 
@@ -60,7 +60,7 @@ case "${1:-status}" in
   if [ -n "$(g status --porcelain)" ]; then echo "Abbruch: ungesicherte Dashboard-Änderungen – erst 'save'."; g status --short | head -20; exit 1; fi
   git --git-dir="$BARE" fetch -q origin main:main
   g fetch -q origin main
-  g merge -q --ff-only origin/main || { echo "Abbruch: kein Vorspulen möglich (host/dashboard noch nicht gemerged?)."; exit 1; }
+  g merge -q --ff-only origin/main || { echo "Abbruch: kein Vorspulen möglich (host/werkstatt noch nicht gemerged?)."; exit 1; }
   g log --oneline -1
   ;;
  *) echo "Aufruf: $0 init|status|save|update"; exit 2;;

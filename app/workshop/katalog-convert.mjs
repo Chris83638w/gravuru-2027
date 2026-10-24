@@ -272,14 +272,18 @@ export function scaleEmbeddedMotifs(motifs,scale){
 }
 // Bogenbefehle: Radien und Endpunkt skalieren, Drehwinkel und Flags nicht.
 function scaleArcAware(d,scale){
- const tokens=d.match(/[MmLlHhVvCcSsQqTtAaZz]|-?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g)||[],out=[];
- let cmd='',k=0;
- for(const t of tokens){
-  if(/^[A-Za-z]$/.test(t)){cmd=t.toUpperCase();k=0;out.push(t);continue;}
-  const v=Number(t),pos=cmd==='A'?k%7:-1;
-  out.push(pos===2||pos===3||pos===4?t:String(round(v*scale)));k++;
+ // Große Motivpfade nicht gleichzeitig als Eingabe-, Token- und Ausgabe-Array halten.
+ // Die Ausgabe bleibt bytegleich (auch Bogenflags, Winkel und Rundung).
+ const token=/[MmLlHhVvCcSsQqTtAaZz]|-?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g,chunks=[];
+ let cmd='',k=0,part=[],match;
+ while((match=token.exec(d))){
+  const t=match[0];
+  if(/^[A-Za-z]$/.test(t)){cmd=t.toUpperCase();k=0;part.push(t);}
+  else{const pos=cmd==='A'?k%7:-1;part.push(pos===2||pos===3||pos===4?t:String(round(Number(t)*scale)));k++;}
+  if(part.length===1024){chunks.push(part.join(' '));part=[];}
  }
- return out.join(' ').replace(/\s+/g,' ').trim();
+ if(part.length)chunks.push(part.join(' '));
+ return chunks.join(' ');
 }
 // „passt“: reine Skalierung ohne Einpassen, alle Elemente in der Gestaltungsfläche;
 // „prüfen“: eingepasst (Reihe ±1 %) oder Text unter der Mindestgröße des Verfahrens;

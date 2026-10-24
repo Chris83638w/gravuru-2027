@@ -1,6 +1,7 @@
 // Design-Dashboard (/werkstatt/designs/): Designs einer Linie aus dem Katalog mit Ampel, Vorschau,
 // Filtern und Inline-Umbenennung (PATCH → Katalog). Liest nur über /api/workshop/designs.
 import {merchantRequest} from './merchant-request.mjs';
+import {merchantNavigation} from './merchant-navigation.mjs';
 import {setMerchantImage,merchantImagesRequired} from './merchant-media.mjs';
 import {designKey,releaseIssue,eligibleReleaseRows,retainVisibleSelection,releaseDesigns} from './design-dashboard-review.mjs';
 const $=s=>document.querySelector(s),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined&&text!==null)n.textContent=text;if(cls)n.className=cls;return n;};
@@ -17,7 +18,7 @@ const mm=v=>Number.isFinite(v)?String(Math.round(v*10)/10).replace('.',','):'?';
 const plateText=p=>Array.isArray(p)?mm(p[0])+' × '+mm(p[1])+' mm':'Maß offen';
 const AMPEL={ok:'ok','prüfen':'prüfen',fehlt:'fehlt'};
 
-function pushUrl(){const q=new URLSearchParams();if(state.linie)q.set('linie',state.linie);if(state.reihe)q.set('reihe',state.reihe);if(state.status)q.set('status',state.status);if(state.freigabe)q.set('freigabe',state.freigabe);if(state.startDesigns)q.set('startDesigns','true');history.replaceState(null,'',location.pathname+(q.size?'?'+q:''));}
+function pushUrl(){const q=new URLSearchParams();if(state.linie)q.set('linie',state.linie);if(state.reihe)q.set('reihe',state.reihe);if(state.status)q.set('status',state.status);if(state.freigabe)q.set('freigabe',state.freigabe);if(state.startDesigns)q.set('startDesigns','true');history.replaceState(null,'',merchantNavigation(location.pathname+(q.size?'?'+q:''),location.href));}
 
 function setFiltersOpen(open){
  const active=document.activeElement,toggle=$('#filter-toggle');
@@ -29,10 +30,13 @@ function setFiltersOpen(open){
 }
 function applyResponsiveView(){
  const view=preferredView();if(view===state.view)return;
- // Changing orientation must keep an unfinished name, caret and keyboard focus.
+ state.view=view;$('#view').value=view;renderPreservingRename();
+}
+function renderPreservingRename(){
+ // Rerendering must keep an unfinished name, caret and keyboard focus.
  const previous=$('#rows .rename'),input=previous?.querySelector('input');
  const draft=input?{value:input.value,start:input.selectionStart,end:input.selectionEnd,direction:input.selectionDirection,focusIndex:[...previous.querySelectorAll('input, button')].indexOf(document.activeElement)}:null;
- state.view=view;$('#view').value=view;render({focusEditor:false});
+ render({focusEditor:false});
  if(!draft)return;
  const form=$('#rows .rename'),replacement=form?.querySelector('input');if(!replacement)return;
  replacement.value=draft.value;
@@ -184,8 +188,14 @@ function mainProducts(row){
 
 function editorCell(row){
  const box=el('div',undefined,'actions');
+ if(row.lieferform2){
+  const query=new URLSearchParams({katalogReihe:row.lieferform2.reihe,katalogDesign:row.id,katalogLinie:state.linie});
+  const a=el('a','Bearbeiten','button');a.href=merchantNavigation('/werkstatt/?'+query,location.href);a.dataset.catalogEdit=designKey(row);
+  a.title='Katalogdesign bearbeiten: '+row.id;a.setAttribute('aria-disabled',String(state.busy));if(state.busy)a.tabIndex=-1;
+  a.addEventListener('click',event=>{if(state.busy)event.preventDefault();});box.append(a);
+ }
  if(row.konfi?.products?.length){const p=row.konfi.products[0];const a=el('a','Im Editor öffnen','button');a.href=p.href;a.title='Konfi-Produkt '+p.importKey+' (Stand '+p.revision+')';box.append(a);if(row.konfi.products.length>1)box.append(el('small',row.konfi.products.length+' Produkte','muted'));}
- else box.append(el('span',row.lieferform2?'noch nicht importiert':'keine Lieferform 2','muted'));
+ else if(!row.lieferform2)box.append(el('span','keine Lieferform 2','muted'));
  if(row.lieferform2){box.append(button('Name ändern',()=>{state.editing=designKey(row);render();}));box.append(button(row.hidden?'Einblenden':'Ausblenden',()=>save(row,{hidden:!row.hidden}),'quiet'));
   const issue=releaseIssue(row,state.seen),b=button(row.released?'Freigabe zurücknehmen':'Freigeben',()=>row.released?save(row,{freigegeben:false}):askRelease([row]),row.released?'quiet':'release');
   b.dataset.releaseKey=designKey(row);b.title=row.released?'Design wieder auf „offen“ setzen.':'Design nach der Sichtprüfung freigeben.';
@@ -339,4 +349,15 @@ $('#search').addEventListener('input',e=>{state.query=e.target.value;render();})
 $('#search').addEventListener('change',showFilteredDesigns);
 $('#search').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();showFilteredDesigns();}});
 $('#view').value=state.view;$('#view').addEventListener('change',e=>{state.view=e.target.value;try{localStorage.setItem(viewStorageKey(),state.view);}catch{}render();showFilteredDesigns();});
+// Browser Back may restore a cached dashboard after editing. Refresh the source
+// and clear the previous review gate before another approval can be made.
+window.addEventListener('storage',event=>{
+ if(event.key!=='gravuru-katalog-design-updated'||!event.newValue)return;
+ let changed;try{changed=JSON.parse(event.newValue);}catch{return;}
+ if(!state.data?.rows.some(row=>row.id===changed.id&&row.lieferform2?.reihe===changed.reihe))return;
+ state.seen.clear();state.selected.clear();releasePreview();$('#preview-dialog').close();$('#release-dialog').close();
+ if(state.busy||state.editing){renderPreservingRename();status('Das Design wurde in einem anderen Fenster geändert. Bitte nach deiner aktuellen Bearbeitung neu laden.',true);}
+ else void load();
+});
+window.addEventListener('pageshow',event=>{if(event.persisted){releasePreview();$('#preview-dialog').close();$('#release-dialog').close();void load();}});
 await load();

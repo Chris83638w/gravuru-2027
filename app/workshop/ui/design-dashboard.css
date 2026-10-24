@@ -145,3 +145,6 @@
  .designs-page .dialog-actions button{flex:1 1 100%;white-space:normal}
  .designs-page #release-list{padding-left:20px}
 }
+
+/* Keep the desktop action table inside its result panel. */
+.designs-page #rows{max-width:100%;overflow-x:auto}

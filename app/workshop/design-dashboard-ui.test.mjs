@@ -94,7 +94,7 @@ const dataset=rows=>({linie:'test',rows,counts:{total:rows.length,ok:rows.filter
 
 async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMedia,onLine,embedded=false,visibleThumbnails=false,search='?linie=test',width=1280}={}){
  const document=documentFixture({embedded}),requests=[],patches=[],mediaRequests=[],originals=structuredClone(rows),tokens=[],made=[],revoked=[],blobCalls=new WeakMap(),windowEvents=new Map(),intersections=new Set();
- const location={origin:'http://fixture.invalid',pathname:'/werkstatt/designs/',search};
+ const location={origin:'http://fixture.invalid',pathname:'/werkstatt/designs/',search,get href(){return this.origin+this.pathname+this.search;}};
  const localStorage={getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,String(value)),removeItem:key=>storage.delete(key)};
  const responseJSON=value=>({ok:true,status:200,json:async()=>structuredClone(value)});
  let lineReads=0;const queries=new Map();
@@ -122,7 +122,7 @@ async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMed
  class TestURL extends URL {static createObjectURL(blob){const url='blob:dashboard-test/'+made.length;made.push({url,blob,call:blobCalls.get(blob)});return url;}static revokeObjectURL(url){revoked.push(url);}}
  class MutationObserver {constructor(callback){this.callback=callback;this.queued=false;}observe(_root,options){this.options=options;document.observers.add(this);}disconnect(){document.observers.delete(this);}}
  class IntersectionObserver {constructor(callback){this.callback=callback;this.targets=new Set();intersections.add(this);}observe(target){this.targets.add(target);if(visibleThumbnails)queueMicrotask(()=>{if(this.targets.has(target))this.callback([{target,isIntersecting:true}]);});}unobserve(target){this.targets.delete(target);}disconnect(){this.targets.clear();intersections.delete(this);}}
- const context=vm.createContext({document,location,matchMedia,history:{replaceState(_state,_title,url){location.search=url.includes('?')?'?'+url.split('?')[1]:'';}},localStorage,URL:TestURL,URLSearchParams,Intl,Headers,Response,Blob,AbortController,Event,MutationObserver,IntersectionObserver,fetch,setTimeout,clearTimeout,console,
+ const context=vm.createContext({document,location,matchMedia,history:{replaceState(_state,_title,url){location.search=new URL(url,location.href).search;}},localStorage,URL:TestURL,URLSearchParams,Intl,Headers,Response,Blob,AbortController,Event,MutationObserver,IntersectionObserver,fetch,setTimeout,clearTimeout,console,
   addEventListener(type,listener){const listeners=windowEvents.get(type)||[];listeners.push(listener);windowEvents.set(type,listeners);},
   ...(embedded?{shopify:{async idToken(){tokens.push('synthetic-session-token');return 'synthetic-session-token';}}}:{})});
  context.window=context;context.parent=context;
@@ -143,7 +143,7 @@ async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMed
  const buttons=(text,within=document.body)=>within.querySelectorAll('button').filter(button=>button.textContent===text);
  const button=(text,within=document.body)=>{const found=buttons(text,within);assert.equal(found.length,1,'expected one button '+JSON.stringify(text));return found[0];};
  const dispose=()=>{for(const listener of windowEvents.get('pagehide')||[])listener({type:'pagehide'});};
- return {document,element,button,buttons,requests,patches,originals,storage,location,tokens,mediaRequests,made,revoked,dispose,resize,showThumbnails(){for(const observer of intersections)observer.callback([...observer.targets].map(target=>({target,isIntersecting:true})));}};
+ return {document,element,button,buttons,requests,patches,originals,storage,location,tokens,mediaRequests,made,revoked,dispose,resize,async storageChanged(newValue){for(const listener of windowEvents.get('storage')||[])listener({key:'gravuru-katalog-design-updated',newValue});await tick();},async pageShow(persisted){for(const listener of windowEvents.get('pageshow')||[])listener({persisted});await tick();},showThumbnails(){for(const observer of intersections)observer.callback([...observer.targets].map(target=>({target,isIntersecting:true})));}};
 }
 
 const keyed=(h,tag,key,id)=>{
@@ -489,4 +489,36 @@ test('compact resize moves focus out of hidden filters and desktop resize out of
   assert.equal(h.document.activeElement,h.element('filter-toggle'));assert.equal(h.document.scrolls.length,0);
   h.resize(1280);assert.equal(h.document.activeElement,h.element('summary'));assert.equal(h.document.scrolls.length,0);assert.equal(h.patches.length,0);
  }
+});
+
+
+test('Lieferform 2 opens the shared catalog editor without an imported product and keeps only public embedding context',async()=>{
+ const h=await harness({rows:[row('A & B'),row('Legacy',{lieferform2:null})],search:'?linie=test&host=public-host&shop=demo.myshopify.com&embedded=1&id_token=never-link&session=never-link&hmac=never-link',embedded:true,width:390});
+ const links=h.document.querySelectorAll('a').filter(e=>e.dataset.catalogEdit);
+ assert.equal(links.length,1);assert.equal(links[0].textContent,'Bearbeiten');
+ const target=new URL(links[0].href);assert.equal(target.pathname,'/werkstatt/');assert.equal(target.searchParams.get('katalogLinie'),'test');assert.equal(target.searchParams.get('katalogReihe'),'test');assert.equal(target.searchParams.get('katalogDesign'),'A & B');
+ for(const [key,value] of [['host','public-host'],['shop','demo.myshopify.com'],['embedded','1']])assert.equal(target.searchParams.get(key),value);
+ for(const key of ['id_token','session','hmac','configuration'])assert.equal(target.searchParams.has(key),false);
+ assert.equal(h.patches.length,0);assert.equal(selection(h,'A & B').disabled,true,'editing link does not bypass the preview gate');
+});
+
+test('returning through browser cache reloads catalog data and invalidates the earlier preview review',async()=>{
+ let reads=0;const original=row('A');const h=await harness({rows:[original],onLine:()=>{reads++;return dataset([row('A',{name:reads>1?'Gespeicherter Katalogtext':'Vorher',released:false})]);}});
+ await preview(h,'A');assert.equal(selection(h,'A').disabled,false);
+ await h.pageShow(true);assert.equal(reads,2);assert.equal(selection(h,'A').disabled,true);assert.ok(h.document.body.textContent.includes('Gespeicherter Katalogtext'));assert.equal(h.patches.length,0);
+});
+
+
+test('editing in another tab invalidates review and reloads the matching catalog design',async()=>{
+ let reads=0;const h=await harness({rows:[row('A')],onLine:()=>{reads++;return dataset([row('A',{name:reads>1?'Neuer Inhalt':'Vorher'})]);}});
+ await preview(h,'A');assert.equal(selection(h,'A').disabled,false);
+ await h.storageChanged(JSON.stringify({reihe:'test',id:'A',checksum:'changed'}));
+ assert.equal(reads,2);assert.equal(selection(h,'A').disabled,true);assert.ok(h.document.body.textContent.includes('Neuer Inhalt'));assert.equal(h.patches.length,0);
+});
+
+test('another-tab edit preserves an unfinished rename while invalidating preview permission',async()=>{
+ const h=await harness({rows:[row('A')]});await preview(h,'A');
+ await h.button('Name ändern').emit('click');const old=h.element('rows').querySelector('.rename input');old.value='Entwurf behalten';old.focus();old.setSelectionRange(3,9,'forward');
+ await h.storageChanged(JSON.stringify({reihe:'test',id:'A',checksum:'changed'}));
+ const input=h.element('rows').querySelector('.rename input');assert.equal(input.value,'Entwurf behalten');assert.equal(h.document.activeElement,input);assert.deepEqual([input.selectionStart,input.selectionEnd],[3,9]);assert.equal(selection(h,'A').disabled,true);assert.equal(h.patches.length,0);
 });

@@ -10,14 +10,15 @@ import {installNativeProduction} from './native-production-ui.mjs';
 import {installProductOptions} from './product-options-ui.mjs';
 import {productCards,installOverview} from './product-overview-ui.mjs';
 import {installProductEditor} from './product-editor-ui.mjs';
+import {katalogEditorRequest,installKatalogEditor} from './katalog-editor-ui.mjs';
 import {installCustomerFields} from './customer-fields-ui.mjs';
 import {installDesignImport,importedDesignInfo} from './design-import-ui.mjs';
 const $=selector=>document.querySelector(selector);
 const $$=selector=>[...document.querySelectorAll(selector)];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clone=value=>structuredClone(value);
-const state={record:null,draft:null,products:[],dirty:false,busy:false,loadingRecord:false,csrf:null,tab:'designs',view:new URLSearchParams(location.search).get('view')==='masters'?'masters':'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],historyError:null,historyRequest:0,historyLoading:false,profiles:[],profileSettings:null};
-let overview,productOptions,nativeProduction,steelOptions,catalogUI;
+const state={katalogEditor:katalogEditorRequest(location.search),record:null,draft:null,products:[],dirty:false,busy:false,loadingRecord:false,csrf:null,tab:'designs',view:new URLSearchParams(location.search).get('view')==='masters'?'masters':'products',filter:'all',listRequest:0,recordRequest:0,createMode:'seed',history:[],historyError:null,historyRequest:0,historyLoading:false,profiles:[],profileSettings:null};
+let overview,productOptions,nativeProduction,steelOptions,catalogUI,katalogEditor,customerFields,designImporter;
 const date=value=>{if(!value)return 'Datum nicht verfügbar';const d=new Date(value);return Number.isNaN(d.getTime())?'Datum nicht verfügbar':new Intl.DateTimeFormat('de-DE',{dateStyle:'medium',timeStyle:'short'}).format(d);};
 const euro=cents=>(Number(cents)/100).toFixed(2).replace('.',',');
 const pathValue=(object,path)=>path.split('.').reduce((value,key)=>value?.[key],object);
@@ -33,6 +34,11 @@ async function api(path,{method='GET',body,signal}={}){
 }
 function recordFrom(data){const record=data.record||data;if(!record?.id||!Number.isInteger(record.revision)||!record.document)throw Error('Die gespeicherte Konfiguration ist unvollständig.');return record;}
 function syncControls(){
+ if(state.katalogEditor){
+  $('#save-product').disabled=state.busy||!state.dirty;
+  for(const field of $$('#product-form input,#product-form select,#product-form textarea'))field.disabled=state.busy;
+  productEditor.sync();katalogEditor?.sync();return;
+ }
  for(const button of $$('[data-compare-revision]'))button.disabled=state.busy||state.loadingRecord||Number(button.dataset.compareRevision)===state.record?.revision;
  const archived=state.record?.status==='archived';
  $('#save-product').disabled=state.busy||!state.dirty||archived;
@@ -87,6 +93,7 @@ async function loadList(){
  state.products=data.products||[];state.catalog=data;renderList();
 }
 async function showOverview(view=state.view){
+ if(state.katalogEditor)return katalogEditor.leave();
  if(state.busy)return false;
  if(!await canDiscard())return false;
  state.dirty=false;if(view!==state.view)state.filter='all';state.view=view;state.catalogFilters.page=1;await loadList();$('#editor-section').hidden=true;$('.overview').hidden=false;$('.page-heading').hidden=false;document.body.classList.remove('editing-product');renderList();history.replaceState(null,'',merchantNavigation('/werkstatt/?view='+view,location.href));return true;
@@ -104,6 +111,7 @@ function applyRecord(record){
  history.replaceState(null,'',merchantNavigation('/werkstatt/?configuration='+encodeURIComponent(record.id),location.href));
 }
 async function loadRecord(id,{checkDirty=true}={}){
+ if(state.katalogEditor)return;
  if(state.busy)return;if(checkDirty&&!await canDiscard())return;
  // The discard decision precedes the request. Do not allow a new edit or another
  // record operation during the response, which would silently replace that edit.
@@ -121,6 +129,7 @@ function moneyField(label,path){
  return '<label>'+escape(label)+'<span class="input-suffix"><input type="text" inputmode="decimal" data-money="'+escape(path)+'" value="'+escape(euro(cents))+'" pattern="[0-9]+([.,][0-9]{1,2})?" required aria-label="'+escape(label)+' in Euro"><span>€</span></span></label>';
 }
 function renderEditor(){
+ if(state.katalogEditor)return katalogEditor.render();
  productEditor.prepare();
  const {record,draft}=state;
  $('#record-title').textContent=draft.name;
@@ -231,6 +240,7 @@ async function loadHistory(){
  }finally{if(ticket===state.historyRequest){state.historyLoading=false;syncControls();}}
 }
 function showTab(key,focus=false){
+ if(state.katalogEditor)key='designs';
  if(!$('#tab-'+key))key='designs';state.tab=key;productEditor.workspaceTab(key);
  if(key==='design-library')renderDesigns();if(key==='designs')productEditor.inspect();
  for(const tab of $$('[data-tab]')){const active=tab.dataset.tab===key;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;if(active&&focus)tab.focus();}
@@ -246,6 +256,7 @@ function mutationError(error){
  else notify(errorMessage(error),'error');
 }
 async function mutateRecord(action,body){
+ if(state.katalogEditor)return;
  if(!state.record||state.busy)return;
  if(state.dirty){notify('Speichere deine Änderungen zuerst, bevor du diesen Stand kopierst, freigibst oder archivierst.','info');return;}
  setBusy(true);
@@ -256,11 +267,13 @@ async function mutateRecord(action,body){
  }catch(error){mutationError(error);}finally{setBusy(false);}
 }
 async function save(){
+ if(state.katalogEditor)return katalogEditor.save();
  if(!state.record||state.busy||!state.dirty)return;setBusy(true);
  try{await steelOptions?.applyPending();if(!validateEditor())return;const record=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(state.record.id),{method:'PATCH',body:{expectedRevision:state.record.revision,document:state.draft}}));applyRecord(record);await Promise.all([loadList(),loadHistory()]);notify('Gespeichert. Stand '+record.revision+' ist jetzt in der Vorschau verfügbar.');}
  catch(error){mutationError(error);}finally{setBusy(false);}
 }
 function openCreate(mode='seed'){
+ if(state.katalogEditor)return;
  if(state.busy)return;
  if(mode==='copy'&&state.dirty){notify('Speichere deine Änderungen zuerst. Die Kopie verwendet den gespeicherten Stand.','info');return;}
  state.createMode=mode;$('#create-error').hidden=true;$('#master-choice-label').hidden=mode!=='master';
@@ -270,7 +283,7 @@ function openCreate(mode='seed'){
  $('#create-submit').textContent=mode==='copy'?'Kopie anlegen':'Konfiguration anlegen';$('#create-dialog').showModal();$('#create-name').focus();
 }
 $('#create-form').addEventListener('submit',async event=>{
- event.preventDefault();if(state.busy||!event.currentTarget.reportValidity())return;
+ event.preventDefault();if(state.katalogEditor||state.busy||!event.currentTarget.reportValidity())return;
  if(state.createMode==='separate'&&!validateEditor()){$('#create-dialog').close();return;}
  setBusy(true);$('#create-error').hidden=true;
  try{
@@ -308,6 +321,10 @@ $('#product-form').addEventListener('change',event=>{
  if(input.dataset.profileMode){const key=input.dataset.profileMode;state.draft.profileAssignments??={};state.draft.profileAssignments[key]={mode:input.value,profileId:input.value==='override'?state.draft.profileAssignments[key]?.profileId||null:null};const field=$('[data-profile-id="'+key+'"]');field.required=input.value==='override';field.value=state.draft.profileAssignments[key].profileId||'';markDirty();}
 });
 document.addEventListener('click',async event=>{
+ if(state.katalogEditor){
+  const action=event.target.closest('[data-action]')?.dataset.action;
+  if(action&&!['overview','save','reload-record','close-dialog'].includes(action)||event.target.closest('[data-design-action],[data-product-id],[data-restore],[data-compare-revision],[data-filter]')){event.preventDefault();return;}
+ }
  const view=event.target.closest('[data-view]');if(view){await showOverview(view.dataset.view);return;}
  const filter=event.target.closest('[data-filter]');if(filter){if(state.busy)return;state.filter=filter.dataset.filter;state.catalogFilters.page=1;await loadList();return;}
  const tab=event.target.closest('[data-tab]');if(tab){showTab(tab.dataset.tab);return;}
@@ -329,7 +346,7 @@ document.addEventListener('click',async event=>{
   if(action==='refresh')await loadList();
   if(action==='reload-history'){if(state.busy||state.historyLoading)return;await loadHistory();}
   if(action==='refresh-profiles'){await loadProfiles();notify('Profilbibliothek aktualisiert. Deine Produktänderungen bleiben erhalten.');}
-  if(action==='reload-record'){if(await canDiscard()){await loadRecord(state.record.id,{checkDirty:false});notify('Aktueller gespeicherter Stand geladen.');}}
+  if(action==='reload-record'){if(await canDiscard()){if(state.katalogEditor)await katalogEditor.load();else await loadRecord(state.record.id,{checkDirty:false});notify('Aktueller gespeicherter Stand geladen.');}}
   if(action==='publish')await mutateRecord('publish',{});
   if(action==='archive')await mutateRecord('archive',{archived:state.record.status!=='archived'});
   if(action==='copy-id'){await navigator.clipboard.writeText(state.record.id);notify('Konfigurations-ID kopiert.');}
@@ -340,24 +357,28 @@ $('.editor-tabs').addEventListener('keydown',event=>{
  const tabs=$$('.editor-tabs [data-tab]'),index=tabs.indexOf(event.target),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+(['ArrowRight','ArrowDown'].includes(event.key)?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab,true);
 });
 const productEditor=installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights});
+if(state.katalogEditor)katalogEditor=installKatalogEditor({state,api,productEditor,canDiscard,setBusy,notify});
+else {
 steelOptions=installSteelOptions({state,api,markDirty,renderEditor,notify});
 nativeProduction=installNativeProduction({state,api,markDirty});
 productOptions=installProductOptions({state,api,markDirty,syncControls,previewOptions:()=>productEditor.refreshOptions(true)});
 overview=installOverview({state,api,setBusy,notify,loadList,loadRecord,openCreate});
 catalogUI=installCatalog({state,loadList,notify,api,selection:()=>overview.selection(),setBusy});
 installAiBatch({api,selection:()=>overview.selection(),onSaved:loadList});
-const customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
+customerFields=installCustomerFields({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
 installAiDesign({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
-const designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
+designImporter=installDesignImport({state,api,setBusy,notify,onSaved:async record=>{applyRecord(record);await Promise.all([loadList(),loadHistory()]);showTab('designs');}});
+}
 let searchTimer;
 $('#search').addEventListener('input',()=>{clearTimeout(searchTimer);state.catalogFilters.page=1;searchTimer=setTimeout(()=>loadList().catch(error=>notify(errorMessage(error),'error')),180);});
 state.view=new URL(location.href).searchParams.get('view')==='masters'?'masters':'products';
 window.addEventListener('beforeunload',event=>{if(!state.dirty)return;event.preventDefault();event.returnValue='';});
 document.addEventListener('workshop-session-restored',async event=>{
  state.csrf=event.detail.csrfToken;state.session=event.detail;
+ if(state.katalogEditor){notify('Verbindung wiederhergestellt. Deine Eingaben bleiben erhalten.','info');if(!state.record&&!state.busy)try{await katalogEditor.load();}catch(error){notify(errorMessage(error),'error');}return;}
  if(state.busy){notify('Verbindung wiederhergestellt. Deine Eingaben bleiben erhalten.','info');return;}
  try{await Promise.all([loadList(),loadProfiles()]);notify('Verbindung wiederhergestellt. Produkte und Profile sind geladen.');}catch(error){notify(errorMessage(error),'error');}
 });
-(async()=>{try{const [session]=await Promise.all([api('/api/workshop/session'),loadList(),loadProfiles().catch(error=>notify('Profilbibliothek noch nicht geladen: '+errorMessage(error),'info'))]);state.csrf=session.csrfToken;state.session=session;renderList();const search=new URL(location.href).searchParams,id=search.get('configuration');if(id)await loadRecord(id,{checkDirty:false});
+(async()=>{try{if(state.katalogEditor){const session=await api('/api/workshop/session');state.csrf=session.csrfToken;state.session=session;await katalogEditor.load();return;}const [session]=await Promise.all([api('/api/workshop/session'),loadList(),loadProfiles().catch(error=>notify('Profilbibliothek noch nicht geladen: '+errorMessage(error),'info'))]);state.csrf=session.csrfToken;state.session=session;renderList();const search=new URL(location.href).searchParams,id=search.get('configuration');if(id)await loadRecord(id,{checkDirty:false});
 // Design-Dashboard (/werkstatt/designs/): `&design=<Vorlagen-ID>` springt zur Designkarte des geladenen Produkts.
 const focusDesign=search.get('design');if(id&&focusDesign&&state.record){const pick=$$('[data-editor-design]').find(node=>node.dataset.editorDesign===focusDesign);if(pick){pick.click();pick.scrollIntoView({block:'nearest'});}else notify('Design „'+focusDesign+'“ ist in diesem Produktstand nicht enthalten.','info');}}catch(error){notify(errorMessage(error),'error');$('#product-list').innerHTML='<p class="empty-state">Die Werkstatt konnte noch nicht geladen werden. Über „Aktualisieren“ kannst du es erneut versuchen.</p>';}})();

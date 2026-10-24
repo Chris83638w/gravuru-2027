@@ -1,3 +1,17 @@
+## Paket I · aktuelles main und Katalog 1be49ee · 24.10.2026 (Codex / Astra)
+
+- PR #16 im selben Branch auf main `3e42c13411003add34645bc258623851982e7809` neu aufgebaut; Code `06356c9947fa765e59822a16e082245af8211e44`. Alle drei Reviewkorrekturen bleiben erhalten. Neun Code-/Testdateien bytegleich zum geprüften R2-Code: **131/131 Tests**, 0 Fehler/Skips, bestehender Browsernachweis gültig; kein neuer Testvollauf.
+- Katalog `1be49ee792667357fff1061eb5d21bacf3b4e3c1` frisch gelesen: 104 Referenzen / 102 Designs, 0 offene Preise, Passung 89 passt / 5 prüfen / 10 gesperrt. Jetzt auch Rund 8,5 × 8,5 = 14,99 €. 131 Primärquellen und 307 Eingaben geprüft.
+- Berichte und Quellenlinks aktualisiert. Chris hat Paket J entschieden: Originalmotive bleiben, kein D1-Tausch; dort minimale Einpassung. Kein Merge, Livezugriff oder Katalogschreiben in Paket I.
+
+## Paket I · Reviewkorrektur R2, Sitzungstoken im Vorschau-Dialog · 24.10.2026 (Codex / Astra)
+
+- [PR #16](https://github.com/Chris83638w/gravuru-2027/pull/16), gleicher Branch `dev/dashboard-startdesigns-20261024-astra`, geprüfter Code `1508f6f7363ad700d4d94106090cf19e4c2597a3` direkt auf `main e0b2e81`. Aktuelle Host-/Media-Korrekturen erhalten.
+- Claudes drei Punkte behoben: Miniaturen mit authentifiziertem PNG→SVG-Fallback; eigener Token-/Blob-Pfad im Dialog mit frischer Bildprüfung bei jeder Öffnung, Abbruch/Revoke und gesperrten 401/403; elf neue eingebettete UI-Regressionen. PATCH, Urheber, Protokoll und Schriftsperre unverändert.
+- **131/131 gezielte Tests grün**, 0 fail/skip/cancel (109 in zwölf Dateien + 22 UI-Tests). Lokaler Browser mit synthetischem Sitzungstoken: Vorschau/Fallback/Reopen und 401-Sperre bestätigt, 28 API-Anfragen mit Token, 0 Schreibzugriffe. Kein neuer Gesamtvollauf oder Linux-Lauf.
+- Katalog `bf935fa` frisch gelesen: **104 Hauptproduktreferenzen / 102 Designs, 0 offene Hauptproduktpreise, 10 unveränderte Passungssperren** (89 passt / 5 prüfen / 10 passt nicht). 307 Eingaben unverändert, zehn Vorschläge neu geprüft, Quellenbericht aktualisiert. Alle geänderten Texte LF.
+- [Übergabe](docs/handoffs/2026-10-24-paket-i-dashboard-startdesigns-astra.md), [zehn Quellenfälle](docs/handoffs/2026-10-24-paket-i-startdesign-sperren.md), [Prüfnachweis](docs/handoffs/2026-10-24-paket-i-pruefung.json). Nächster Schritt: Claude prüft und übernimmt den vereinbarten Merge. Kein Merge, Livezugriff, Designfreigabe oder Katalogschreiben durch Astra.
+
 ## Paket D fertig: Katalog auf dem Händlerhost · 24.10.2026 (Claude)
 
 - Host-Arbeitskopie `private/gravuru-katalog` (Klon des Plesk-Repos, 55.916 Dateien) auf Katalog-main `bf935fa`; app-2027 liest sie über `GRAVURU_KATALOG` in `gravuru-2027-merchant/app.cjs` (Sicherung `app.cjs.bak-20261024`). App neu gestartet.

@@ -72,7 +72,7 @@ import {parseThemeCatalog} from './theme-catalog.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {DEFAULT_TENANT,createTenantRegistry,tenantFromRequest} from './tenant.mjs';
 import {createCatalogStructure} from './catalog-structure.mjs';
-import {designDashboard,designFile,patchDesign} from './design-dashboard.mjs';
+import {designDashboardWithFit,designFile,patchDesign} from './design-dashboard.mjs';
 import {katalogPath} from './katalog-source.mjs';
 import {categoryLabels} from './category-labels.mjs';
 import {tenantOverview} from './tenant-overview.mjs';
@@ -358,7 +358,11 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
           const {file,type}=designFile(root,{reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'}),bytes=fs.readFileSync(file);
           return res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src data:"}).end(bytes);
         }
-        if(method==='GET')return json(res,200,designDashboard(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),repository}));
+        if(method==='GET'){
+          const startDesigns=q.get('startDesigns');
+          if(startDesigns!==null&&!['true','false'].includes(startDesigns))fail(422,'designs_query','startDesigns ist true oder false.');
+          return json(res,200,await designDashboardWithFit(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),startDesigns:startDesigns==='true',repository,available:formFonts}));
+        }
         if(method==='PATCH')return json(res,200,patchDesign(root,await body(req,16384),{actor:merchantSession?.subject||localActor}));
         fail(405,'method_not_allowed','Designs lesen (GET) oder ändern (PATCH).');
       }

@@ -1,4 +1,5 @@
 import {merchantRequest} from './merchant-request.mjs';
+export const merchantImagesRequired=()=>required();
 const required=()=>{try{if(globalThis.window&&window.parent!==window&&typeof window.parent.GravuruMerchantRequest==='function')return true;}catch{}return globalThis.document?.querySelector('meta[name=gravuru-merchant-auth]')?.content==='required';};
 const escape = text => String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function merchantImageAttribute(url, svg=false, authenticated=required()) {
@@ -9,7 +10,10 @@ export function setMerchantImage(element,url,authenticated=required()) {
   if(authenticated){element.removeAttribute(attr);element.setAttribute('data-merchant-src',url);}
   else element.setAttribute(attr,url);
 }
-const validPath = path => /^\/api\/workshop\/(?:products\/cfg_[a-f0-9-]+|contours\/[a-f0-9]{64}|design-assets\/[a-f0-9]{64})\/preview\.svg(?:\?[A-Za-z0-9_=&.%+-]+)?$/.test(path) && !/%2f|%5c|%2e|\.\./i.test(path);
+// Design-Dashboard (Katalog): /api/workshop/designs/svg?reihe|bestand=…&id=…&file=… liefert SVG oder PNG (original.png/preview.png).
+const designFilePath = path => /^\/api\/workshop\/designs\/svg\?[A-Za-z0-9_=&.%+*-]+$/.test(path);
+const validPath = path => (/^\/api\/workshop\/(?:products\/cfg_[a-f0-9-]+|contours\/[a-f0-9]{64}|design-assets\/[a-f0-9]{64})\/preview\.svg(?:\?[A-Za-z0-9_=&.%+-]+)?$/.test(path) || designFilePath(path)) && !/%2f|%5c|%2e|\.\./i.test(path);
+const validType = (path,type) => /^image\/svg\+xml(?:;|$)/i.test(type) || (designFilePath(path) && /^image\/png(?:;|$)/i.test(type));
 
 export function createMerchantMediaLoader({request=merchantRequest,createURL=URL.createObjectURL,revokeURL=URL.revokeObjectURL}={}) {
   const active=new Map();
@@ -28,7 +32,7 @@ export function createMerchantMediaLoader({request=merchantRequest,createURL=URL
     state.promise=(async()=>{
       try{
         const response=await request(path,{signal:state.controller.signal});
-        if(!response.ok||!/^image\/svg\+xml(?:;|$)/i.test(response.headers.get('content-type')||''))throw Error('preview');
+        if(!response.ok||!validType(path,response.headers.get('content-type')||''))throw Error('preview');
         const blob=await response.blob();
         if(active.get(element)!==state||state.controller.signal.aborted||!element.isConnected)return false;
         state.url=createURL(blob);element.setAttribute(state.attr,state.url);return true;

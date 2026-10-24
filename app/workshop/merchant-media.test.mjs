@@ -45,3 +45,11 @@ for(const label of ['unauthorized','json','html','network'])test('failed preview
  const h=harness(async()=>{if(label==='network')throw Error('private-server-secret');return label==='unauthorized'?new Response('private-server-secret',{status:401}):new Response('private-server-secret',{headers:{'content-type':label==='json'?'application/json':'text/html'}});});
  const el=new Element();let errors=0;el.addEventListener('error',()=>errors++);assert.equal(await h.loader.load(el,path),false);assert.equal(errors,1);assert.equal(el.getAttribute('src'),null);assert.ok(!el.getAttribute('data-media-error').includes('secret'));assert.equal(h.made.length,0);
 });
+test('design dashboard files (SVG and PNG) load privately; PNG stays limited to the dashboard route',async()=>{
+ const png=new Uint8Array([137,80,78,71,13,10,26,10]),designSvg='/api/workshop/designs/svg?reihe=edelstahl-gravur-90x60&id=TRE-V2A-9x6-D5&file=design.svg',designPng='/api/workshop/designs/svg?bestand=D1+Rosenberg&id=D1-03&file=preview.png';
+ const seen=[];const h=harness(async p=>{seen.push(p);return p.includes('png')?new Response(png,{headers:{'content-type':'image/png'}}):response();});
+ assert.equal(await h.loader.load(new Element(),designSvg),true);assert.equal(await h.loader.load(new Element(),designPng),true);assert.deepEqual(seen,[designSvg,designPng]);
+ const productPng=harness(async()=>new Response(png,{headers:{'content-type':'image/png'}}));assert.equal(await productPng.loader.load(new Element(),path),false);
+ let calls=0;const strict=harness(()=>{calls++;});for(const p of ['/api/workshop/designs/svg?reihe=..&id=x','/api/workshop/designs/svg?id=a%2fb','/api/workshop/designs/svg?id=a%2e%2e','/api/workshop/designs/svg','/api/workshop/designs?id=x','/api/workshop/designs/svg?id=<x>'])await assert.rejects(strict.loader.load(new Element(),p));assert.equal(calls,0);
+ h.loader.dispose();productPng.loader.dispose();
+});

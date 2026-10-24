@@ -1,6 +1,7 @@
 // Design-Dashboard (/werkstatt/designs/): Designs einer Linie aus dem Katalog mit Ampel, Vorschau,
 // Filtern und Inline-Umbenennung (PATCH → Katalog). Liest nur über /api/workshop/designs.
 import {merchantRequest} from './merchant-request.mjs';
+import {setMerchantImage,merchantImagesRequired} from './merchant-media.mjs';
 const $=s=>document.querySelector(s),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined&&text!==null)n.textContent=text;if(cls)n.className=cls;return n;};
 const natural=new Intl.Collator('de',{numeric:true,sensitivity:'base'});
 const params=new URLSearchParams(location.search);
@@ -45,10 +46,20 @@ function fontList(row){
  if(!row.fonts.length)box.append(el('span','–','muted'));
  return box;
 }
+// Im Shopify-Admin (eingebettet) brauchen /api/workshop/-Bilder das Sitzungstoken: setMerchantImage lädt sie über
+// merchant-media (Blob-URL) statt über ein anonymes src; außerhalb bleibt es ein normales src.
 function preview(row,cls){
  const img=el('img',undefined,cls);img.loading='lazy';img.alt=row.name;img.decoding='async';
- const src=row.files.png||row.files.svg;if(src){img.src=src;if(row.files.png&&row.files.svg)img.addEventListener('error',()=>{if(img.src!==location.origin+row.files.svg)img.src=row.files.svg;},{once:true});}else img.classList.add('missing');
- const a=el('a');a.href=row.files.svg||row.files.png||'#';a.target='_blank';a.rel='noopener';a.title='Vorschau in neuem Tab öffnen';a.append(img);return a;
+ const src=row.files.png||row.files.svg;if(src){setMerchantImage(img,src);if(row.files.png&&row.files.svg)img.addEventListener('error',()=>setMerchantImage(img,row.files.svg),{once:true});}else img.classList.add('missing');
+ const a=el('a'),href=row.files.svg||row.files.png;a.title='Vorschau in neuem Tab öffnen';
+ if(href&&merchantImagesRequired()){a.href='#';a.addEventListener('click',e=>{e.preventDefault();openPrivate(href);});}
+ else{a.href=href||'#';a.target='_blank';a.rel='noopener';}
+ a.append(img);return a;
+}
+async function openPrivate(href){
+ const win=window.open('','_blank');if(!win)return status('Neues Fenster blockiert – bitte Pop-ups für die Werkstatt erlauben.',true);
+ try{const r=await merchantRequest(href);if(!r.ok)throw Error();const url=URL.createObjectURL(await r.blob());win.opener=null;win.location.href=url;setTimeout(()=>URL.revokeObjectURL(url),60000);}
+ catch{win.close();status('Vorschau konnte nicht geöffnet werden. Bitte Anmeldung prüfen.',true);}
 }
 function editorCell(row){
  const box=el('div',undefined,'actions');

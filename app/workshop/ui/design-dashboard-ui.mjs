@@ -190,7 +190,7 @@ function editorCell(row){
  const box=el('div',undefined,'actions');
  if(row.lieferform2){
   const query=new URLSearchParams({katalogReihe:row.lieferform2.reihe,katalogDesign:row.id,katalogLinie:state.linie});
-  const a=el('a','Bearbeiten','button');a.href=merchantNavigation('/werkstatt/?'+query,location.href);a.dataset.catalogEdit=designKey(row);
+  const a=el('a','Bearbeiten','button');a.href=merchantNavigation('/werkstatt/designs/bearbeiten/?'+query,location.href);a.dataset.catalogEdit=designKey(row);
   a.title='Katalogdesign bearbeiten: '+row.id;a.setAttribute('aria-disabled',String(state.busy));if(state.busy)a.tabIndex=-1;
   a.addEventListener('click',event=>{if(state.busy)event.preventDefault();});box.append(a);
  }

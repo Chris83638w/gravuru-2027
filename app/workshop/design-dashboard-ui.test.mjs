@@ -496,7 +496,7 @@ test('Lieferform 2 opens the shared catalog editor without an imported product a
  const h=await harness({rows:[row('A & B'),row('Legacy',{lieferform2:null})],search:'?linie=test&host=public-host&shop=demo.myshopify.com&embedded=1&id_token=never-link&session=never-link&hmac=never-link',embedded:true,width:390});
  const links=h.document.querySelectorAll('a').filter(e=>e.dataset.catalogEdit);
  assert.equal(links.length,1);assert.equal(links[0].textContent,'Bearbeiten');
- const target=new URL(links[0].href);assert.equal(target.pathname,'/werkstatt/');assert.equal(target.searchParams.get('katalogLinie'),'test');assert.equal(target.searchParams.get('katalogReihe'),'test');assert.equal(target.searchParams.get('katalogDesign'),'A & B');
+ const target=new URL(links[0].href);assert.equal(target.pathname,'/werkstatt/designs/bearbeiten/');assert.equal(target.searchParams.get('katalogLinie'),'test');assert.equal(target.searchParams.get('katalogReihe'),'test');assert.equal(target.searchParams.get('katalogDesign'),'A & B');
  for(const [key,value] of [['host','public-host'],['shop','demo.myshopify.com'],['embedded','1']])assert.equal(target.searchParams.get(key),value);
  for(const key of ['id_token','session','hmac','configuration'])assert.equal(target.searchParams.has(key),false);
  assert.equal(h.patches.length,0);assert.equal(selection(h,'A & B').disabled,true,'editing link does not bypass the preview gate');

@@ -5,7 +5,9 @@ const rewrites=[['/api/workshop/','/api/workshop/acryl/'],['/workshop-ui/','/wor
 const nativeAssets=[['/_bundle/','/_acryl-bundle/'],['/_runtime/','/_acryl-runtime/'],['/acrylic-assets/','/acryl-assets/']];
 export function acrylRoute(pathname){
  if(/^\/werkstatt\/katalog\/?$/.test(pathname))return '/werkstatt/katalog/';
- if(/^\/werkstatt\/designs\/?$/.test(pathname))return '/werkstatt/designs/';// Design-Dashboard (23.10.2026) gehört zum Acryl-Store wie die Katalogseite
+ if(/^\/werkstatt\/designs\/?$/.test(pathname))return '/werkstatt/designs/';
+ // Katalogeditor (Paket L) ist die neue Werkstatt-App; /werkstatt/ selbst gehört auf dem Händlerhost noch der alten Laufzeit.
+ if(/^\/werkstatt\/designs\/bearbeiten\/?$/.test(pathname))return '/werkstatt/designs/bearbeiten/';// Design-Dashboard (23.10.2026) gehört zum Acryl-Store wie die Katalogseite
  // Vorschaudateien kommen als URL in der JSON-Antwort (nicht umgeschrieben); ohne diese Zeile landeten sie in der alten Laufzeit.
  if(pathname==='/api/workshop/designs/svg')return pathname;
  if(/^\/api\/workshop\/designs\/editor(?:\/(?:preview|fit|font))?$/.test(pathname))return pathname;

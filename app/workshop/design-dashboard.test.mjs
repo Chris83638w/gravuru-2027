@@ -151,7 +151,7 @@ test('HTTP: Seite, Module, Designs-API (Herkunft, CSRF), SVG-Route mit Pfadprüf
  server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{await new Promise(r=>server.close(r));w.close();fs.rmSync(dir,{recursive:true,force:true});});
  const base='http://127.0.0.1:'+server.address().port;
- for(const uri of ['/werkstatt/designs/','/werkstatt/designs','/workshop-ui/design-dashboard-ui.mjs','/workshop-ui/design-dashboard.css'])assert.equal((await fetch(base+uri)).status,200,uri);
+ for(const uri of ['/werkstatt/designs/','/werkstatt/designs','/werkstatt/designs/bearbeiten/','/werkstatt/designs/bearbeiten','/workshop-ui/design-dashboard-ui.mjs','/workshop-ui/design-dashboard.css'])assert.equal((await fetch(base+uri)).status,200,uri);
  const page=await (await fetch(base+'/werkstatt/designs/')).text();assert.match(page,/href="\/werkstatt\/designs\/" aria-current="page"/);
  const lines=await (await fetch(base+'/api/workshop/designs')).json();assert.deepEqual(lines.linien.map(l=>l.id),['test-linie']);
  const d=await (await fetch(base+'/api/workshop/designs?linie=test-linie&status=ok')).json();assert.deepEqual(d.rows.map(r=>r.id),['T-D1']);assert.equal(d.counts.total,7);

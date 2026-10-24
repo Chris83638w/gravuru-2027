@@ -243,26 +243,43 @@ export function seriesOf(series,plateMm,tolerance=SERIES_TOLERANCE){
 // grüne Überschrift = wählbar), gilt genau diese Liste – sonst alle Größen der Reihe gleichen
 // Seitenverhältnisses. So bleiben Rechteck, abgerundete Ecken und Oval derselben Proportion
 // getrennt (Edelstahl Türschilder, 23.10.2026); unbekannte Schlüssel werden ignoriert.
+// The historical Retro masters explicitly list the green Corel sheet sizes in
+// sizesOpen. Resolve only those names to already drawn family sizes; never extend
+// a design to unlisted sizes or infer a new physical plate from the old canvas.
+export function sourceContourSizes(family,design){
+ if(family.material?.kind!=='steel')return [];
+ const keys=[];
+ for(const name of design.json?.sizesOpen||[]){
+  const m=/^TR([12])-V2A-(\d+(?:\.\d+)?)x(\d+(?:\.\d+)?)$/.exec(name);
+  if(!m)continue;
+  for(const s of family.sizes)if(s.groupKey==='RT'+m[1]&&family.groups.find(g=>g.key===s.groupKey)?.shape==='contour'&&Math.abs(s.widthMm-Number(m[2])*10)<.001&&Math.abs(s.heightMm-Number(m[3])*10)<.001)keys.push(s.key);
+ }
+ return [...new Set(keys)];
+}
 export function assignSeries(family,designs,tolerance=SERIES_TOLERANCE){
  const series=formatSeries(family,tolerance),known=new Set(family.sizes.map(s=>s.key));
  return designs.map(design=>{
   const hit=seriesOf(series,design.plateMm,tolerance),explicit=Array.isArray(design.json?.sizes)?design.json.sizes.filter(k=>typeof k==='string'&&known.has(k)):null;
-  return {design,series:hit?hit.key:null,sizes:explicit??(hit?hit.sizes:[]),explicitSizes:explicit!==null,oldSize:!hit};
+  const sourceKeys=sourceContourSizes(family,design),mapped=sourceKeys.length>0;
+  const sizes=mapped?[...new Set([...(explicit||[]),...sourceKeys])]:explicit??(hit?hit.sizes:[]);
+  const contourOnly=!hit&&sizes.length>0&&sizes.every(k=>family.groups.find(g=>g.key===family.sizes.find(s=>s.key===k)?.groupKey)?.shape==='contour');
+  const target=contourOnly?series.find(r=>r.sizes.includes(sizes[0])):null;
+  return {design,series:hit?.key??target?.key??null,sizes,explicitSizes:explicit!==null||mapped,oldSize:!hit&&!target,...(mapped?{sourceContourSizes:sourceKeys}:{}),...(contourOnly?{proportionalFit:true}:{})};
  });
 }
 
 // ---- Master → Zielgröße ----
-export function scaleTemplate(template,fromMm,toMm,fonts){
- const scale=toMm[0]/fromMm[0],deviation=Math.abs((fromMm[1]*scale)/toMm[1]-1);
- if(deviation>SERIES_TOLERANCE)fail('Vorlage „'+template.id+'“ gehört nicht zur Formatreihe von '+toMm[0]+' × '+toMm[1]+' mm.');
- const copy=structuredClone(template);
+export function scaleTemplate(template,fromMm,toMm,fonts,{contain=false}={}){
+ const widthScale=toMm[0]/fromMm[0],scale=contain?Math.min(widthScale,toMm[1]/fromMm[1]):widthScale,deviation=Math.abs((fromMm[1]*widthScale)/toMm[1]-1);
+ if(!contain&&deviation>SERIES_TOLERANCE)fail('Vorlage „'+template.id+'“ gehört nicht zur Formatreihe von '+toMm[0]+' × '+toMm[1]+' mm.');
+ const copy=structuredClone(template),dx=contain?(toMm[0]-fromMm[0]*scale)/2:0,dy=contain?(toMm[1]-fromMm[1]*scale)/2:0;
  copy.objects=copy.objects.map(o=>{
-  const n={...o,x:round(o.x*scale),y:round(o.y*scale),w:round(o.w*scale),h:round(o.h*scale)};
+  const n={...o,x:round(o.x*scale+dx),y:round(o.y*scale+dy),w:round(o.w*scale),h:round(o.h*scale)};
   if(o.type==='text'){n.size=round(o.size*scale);if(o.letterSpacing!==undefined)n.letterSpacing=round(o.letterSpacing*scale);measureText(n,fonts);}
   if(o.strokeWidth!==undefined)n.strokeWidth=round(o.strokeWidth*scale);
   return n;
  });
- copy.katalog={...copy.katalog,scale,targetMm:[toMm[0],toMm[1]],ratioDeviation:round(deviation)};
+ copy.katalog={...copy.katalog,scale,targetMm:[toMm[0],toMm[1]],ratioDeviation:round(deviation),...(contain?{fitMode:'proportional-contain',offsetMm:[round(dx),round(dy)],sourceMm:[...fromMm]}:{})};
  return copy;
 }
 // Motivpfade liegen in mm des Masters; `localFontIds` erlaubt kein transform im Fragment,
@@ -285,7 +302,7 @@ function scaleArcAware(d,scale){
 // „prüfen“: eingepasst (Reihe ±1 %) oder Text unter der Mindestgröße des Verfahrens;
 // „passt nicht“: ein Element verlässt die Gestaltungsfläche (customerLayoutIssue).
 export function templateFit(template,family,size,fonts){
- const g=geometryOf(family,size),profile={kind:'universal-product',geometry:{width:g.width,height:g.height,shape:['plaque','contour'].includes(g.shape)?'rect':g.shape,cornerRadiusMm:g.cornerRadiusMm,safeMarginMm:family.designArea.marginMm??0,holes:[]}};
+ const g=geometryOf(family,size),profile={kind:'universal-product',geometry:{width:g.width,height:g.height,...g,shape:g.shape==='plaque'?'rect':g.shape,safeMarginMm:family.designArea.marginMm??0,...(g.shape==='contour'?{holeKeepoutMm:family.designArea.keepoutMm,holes:g.holesMm.map(h=>({x:h.x,y:h.y,diameter:h.diameterMm}))}:{holes:[]})}};
  const process=familyProcess(family),issues=[];
  for(const o of template.objects){
   const measured=o.type==='text'?measureText(structuredClone(o),fonts):o;
@@ -358,9 +375,13 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
  if(Array.isArray(subcategory.sizesOffered)&&!subcategory.sizesOffered.includes(size.key))fail('Größe '+size.key+' wird in „'+subcategory.name+'“ nicht angeboten.');
  const f=applyPriceOverrides(family,subcategory),s=f.sizes.find(x=>x.key===size.key);
  if(!s)fail('Unbekannte Größe '+size.key+'.');
- // Paket A: Kontur bleibt vor Preis-/Vorlagenfehlern gesperrt, bis Paket B sie anschließt.
- if(f.groups.find(g=>g.key===s.groupKey)?.shape==='contour')fail('Kontur offen');
  const gaps=priceGaps(f,s);if(gaps.length)fail(gaps.join(' · '));
+ // A contour must use a source template that passed the physical fit check.
+ // Keep missing source start designs open instead of creating a neutral fallback.
+ if(f.groups.find(g=>g.key===s.groupKey)?.shape==='contour'&&!templates.length){
+  if(subcategory.startDesign)fail('Unterkategorie „'+subcategory.id+'“: Startdesign „'+subcategory.startDesign+'“ ist für '+s.label+' nicht verfügbar.');
+  fail('Keine passende Konturvorlage für '+s.label+'.');
+ }
  // Sicht der Familie auf diese eine Größe: offene Preise anderer Größen sperren dieses
  // Produkt nicht (die Prüfung oben nennt die Größe), unbenutzte Bohrbild-Regeln bleiben außen vor.
  const view={...f,groups:f.groups.filter(g=>g.key===s.groupKey),sizes:[s],mountingRules:f.mountingRules.filter(r=>s.mounting.includes(r.id))};

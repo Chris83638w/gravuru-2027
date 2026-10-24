@@ -3,7 +3,7 @@ import {tenantOption,TENANT_COLUMN} from './tenant.mjs';
 import {createHash} from 'node:crypto';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
-import {validateContourOutline} from './contour-path.mjs';
+import {validateContourGeometry,contourContainsPoint,contourSafeAreaSvg} from './contour-path.mjs';
 import {holesFor,validateMountingRule,keepoutZones,MOUNTING_LAYOUTS} from '../platform/sources/app/shared/models/mounting-rules.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc} from '../platform/sources/app/shared/models/design-content.mjs';
@@ -129,9 +129,10 @@ export function validateFamily(f){
   if(!id(s.key)||!groups.has(s.groupKey)||!text(s.label,60)||!mm(s.widthMm,10,1000)||!mm(s.heightMm,10,1000)||!(open(s.baseCents)||cents(s.baseCents))||!Array.isArray(s.mounting)||s.mounting.length>8||s.mounting.some(m=>!rules.has(m))||new Set(s.mounting).size!==s.mounting.length)invalid('Größe '+(s.key||'')+' unvollständig.');
   if(contourSize(f,s)){
    if(groups.get(s.groupKey).cornerRadiusMm!==0)invalid(s.key+': Kontur hat keinen zusätzlichen Eckenradius.');
-   try{validateContourOutline(s.outlinePath,s.widthMm,s.heightMm);}catch(e){invalid(s.key+': '+e.message);}
+   try{validateContourGeometry({outlinePath:s.outlinePath,width:s.widthMm,height:s.heightMm});}catch(e){invalid(s.key+': '+e.message);}
    if(!Array.isArray(s.holesMm)||s.holesMm.length>64)invalid(s.key+': feste Bohrlöcher als holesMm angeben (höchstens 64).');
    for(const h of s.holesMm){only(h,['x','y','diameterMm'],'Festes Bohrloch');if(!Number.isFinite(h.x)||!Number.isFinite(h.y)||!mm(h.diameterMm,.1,100)||h.x-h.diameterMm/2<0||h.y-h.diameterMm/2<0||h.x+h.diameterMm/2>s.widthMm||h.y+h.diameterMm/2>s.heightMm)invalid(s.key+': festes Bohrloch liegt außerhalb der Plattenmaße oder hat ungültige Maße.');}
+   for(const h of s.holesMm)if(!contourContainsPoint({outlinePath:s.outlinePath},h.x,h.y,{marginMm:h.diameterMm/2,holes:false}))invalid(s.key+': festes Bohrloch ragt über die Außenkontur hinaus.');
    if(new Set(s.holesMm.map(h=>h.x+'|'+h.y)).size!==s.holesMm.length)invalid(s.key+': festes Bohrloch doppelt.');
    for(const rid of s.mounting){const r=rules.get(rid);if(!holeless(r)&&(r.count!==s.holesMm.length||r.diameterMm!==null&&s.holesMm.some(h=>Math.abs(h.diameterMm-r.diameterMm)>1e-9)))invalid(s.key+' · '+rid+': feste Bohrlöcher stimmen nicht mit Anzahl/Durchmesser der Befestigung überein.');}
   }else if(s.outlinePath!==undefined||s.holesMm!==undefined)invalid(s.key+': outlinePath und holesMm sind nur bei Form „Kontur“ zulässig.');
@@ -188,7 +189,7 @@ export function familyGaps(f){
  const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
  for(const g of f.options||[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
- if(f.groups.some(g=>g.shape==='contour'))gaps.push('Form „Kontur“ im Konfigurator noch nicht angeschlossen');
+ if(f.backing?.offsetMm>0&&f.groups.some(g=>g.shape==='contour'))gaps.push('Rückplattenversatz der Kontur');
  if(f.groups.some(g=>g.shape==='plaque'))gaps.push('Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)');
  return gaps;
 }
@@ -208,18 +209,18 @@ const productKey=(f,s)=>'family:'+f.id+':'+s.key;
 // the rule they came from; one neutral starter design until real designs are imported.
 export function familyProductConfig(f,s,revision){
  const ready=familyReady(f);if(!ready.ready)invalid(ready.reason);
- const g=geometryOf(f,s),group=f.groups.find(x=>x.key===s.groupKey),resources=workshopResources();
+ const {holesMm,...g}=geometryOf(f,s),group=f.groups.find(x=>x.key===s.groupKey),resources=workshopResources();
  const font=f.fonts.find(x=>resources.fonts[x])||'Montserrat';
  const values=[];
  if(f.withoutMounting)values.push({id:'K00',label:'Ohne Bohrung',priceCents:0,currency:'EUR',holes:[]});
- for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:familyHoles(f,s,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,edgeMm:r.edgeMm,keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})}});}
+ for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:familyHoles(f,s,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,...(g.shape==='contour'?{fixed:true}:{edgeMm:r.edgeMm}),keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})}});}
  if(new Set(values.map(v=>v.id)).size!==values.length)invalid(s.key+': zwei Befestigungen mit gleicher SKU-Endung.');
  const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(g.height*.22,14),x:g.width/2,y:g.height/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
  measureText(text,resources.fonts);if(text.w>g.width*.6){text.size*=g.width*.6/text.w;measureText(text,resources.fonts);}
  if(text.h>g.height*.3){text.size*=g.height*.3/text.h;measureText(text,resources.fonts);}
  const design={id:'start',name:'Startdesign · '+group.name,objects:[text],marks:[]};
  const profile={id:'family-'+f.id+'-'+s.key.toLowerCase().replace(/[^a-z0-9-]/g,'-'),revision:'family-'+f.id+'-r'+revision,schemaVersion:1,kind:'universal-product',name:f.name+' · '+group.name+' '+s.label,
-  binding:{kind:'local-review',productId:'local-'+s.key},geometry:{...g,safeMarginMm:f.designArea.marginMm,holes:[]},
+  binding:{kind:'local-review',productId:'local-'+s.key},geometry:{...g,safeMarginMm:f.designArea.marginMm,...(g.shape==='contour'?{holeKeepoutMm:f.designArea.keepoutMm}:{}),holes:[]},
   material:{kind:f.material.kind,color:FAMILY_MATERIALS[f.material.kind].color(f.material.variant),thicknessMm:f.material.thicknessMm},processing:{profileId:f.material.processingProfileId},
   features:{orderEnabled:false,productionConfirmed:false,motifsAllowed:true},designs:[design],defaultDesignId:design.id,
   optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values}]};
@@ -255,7 +256,7 @@ export function familyOptionFields(f,s){
 // per mounting option. A drawing aid, never production geometry.
 export function familyTemplate(f,s){
  const g=geometryOf(f,s),c=nativeContour({...g,holes:[]}),m=f.designArea.marginMm||0,k=f.designArea.keepoutMm,w=g.width,h=g.height;
- const inner=g.shape==='contour'?(m>0?'<g id="nutzflaeche" data-status="offen"><desc>Innenversatz der Kontur folgt mit dem Konfigurator-Anschluss; kein maßhaltiger Gestaltungsrand dargestellt.</desc></g>':''):m>0?`<g id="nutzflaeche"><path d="${nativeContour({width:w-2*m,height:h-2*m,shape:g.shape,cornerRadiusMm:offsetRadius(g,-m),holes:[]}).contours[0].d}" transform="translate(${m} ${m})" fill="none" stroke="#2a7" stroke-width="0.2" stroke-dasharray="1 1"/></g>`:'';
+ const inner=g.shape==='contour'?(()=>{const area=contourSafeAreaSvg({...g,safeMarginMm:m,holes:[]},'nutzflaeche-maske');return '<defs>'+area.defs+'</defs><g id="nutzflaeche" '+area.attribute+'><rect width="'+w+'" height="'+h+'" fill="#2a7" fill-opacity=".12"/></g>';})():m>0?`<g id="nutzflaeche"><path d="${nativeContour({width:w-2*m,height:h-2*m,shape:g.shape,cornerRadiusMm:offsetRadius(g,-m),holes:[]}).contours[0].d}" transform="translate(${m} ${m})" fill="none" stroke="#2a7" stroke-width="0.2" stroke-dasharray="1 1"/></g>`:'';
  const b=f.backing?.offsetMm||0,vb=`${-b} ${-b} ${w+2*b} ${h+2*b}`;
  const backing=b&&g.shape==='contour'?'<g id="rueckplatte" data-status="offen"><desc>Rückplattenversatz der Kontur ist noch offen.</desc></g>':b?`<g id="rueckplatte" data-label="${esc(f.backing.label)}"><path d="${nativeContour({width:w+2*b,height:h+2*b,shape:g.shape,cornerRadiusMm:g.backingCornerRadiusMm??offsetRadius(g,b),holes:[]}).contours[0].d}" transform="translate(${-b} ${-b})" fill="none" stroke="#06c" stroke-width="0.3" stroke-dasharray="2 1"/></g>`:'';
  const patterns=s.mounting.filter(rid=>!holeless(ruleOf(f,rid))).map(rid=>{const r=ruleOf(f,rid);if(!familyRuleComplete(f,r))return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)} – Bohrbild offen"/>`;const holes=familyHoles(f,s,r);return `<g id="bohrbild-${esc(r.skuSuffix)}" data-label="${esc(r.label)}">${holes.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="${p.diameter/2}" fill="#d33"/>`).join('')}${keepoutZones(holes,k).map(z=>`<circle cx="${z.x}" cy="${z.y}" r="${z.r}" fill="none" stroke="#d33" stroke-width="0.2" stroke-dasharray="0.6 0.6"/>`).join('')}</g>`;}).join('');
@@ -314,6 +315,7 @@ export function familySyncTarget(document,f,s,revision){
  const t=familyProductConfig(f,s,revision),doc=structuredClone(document),p=doc.config.profile,mount=t.profile.optionGroups.find(g=>g.id==='mounting');
  doc.name=productName(f,s);doc.config.basePriceCents=t.basePriceCents;p.name=t.profile.name;p.revision=t.profile.revision;
  p.geometry={...p.geometry,width:t.profile.geometry.width,height:t.profile.geometry.height,shape:t.profile.geometry.shape,cornerRadiusMm:t.profile.geometry.cornerRadiusMm,safeMarginMm:t.profile.geometry.safeMarginMm};
+ for(const key of ['outlinePath','holeKeepoutMm']){if(t.profile.geometry[key]===undefined)delete p.geometry[key];else p.geometry[key]=t.profile.geometry[key];}
  const old=p.optionGroups.find(g=>g.id==='mounting'),group=structuredClone(mount);if(old&&group.values.some(v=>v.id===old.defaultValueId))group.defaultValueId=old.defaultValueId;
  p.optionGroups=p.optionGroups.map(g=>g.id==='mounting'?group:g);if(!old)p.optionGroups.push(group);
  return doc;
@@ -324,7 +326,8 @@ export function familyChanges(before,after){
  add('name','Name',before.name,after.name);
  add('price','Grundpreis',euroText(a.basePriceCents),euroText(b.basePriceCents));
  add('size','Maße',ga.width+' × '+ga.height+' mm',gb.width+' × '+gb.height+' mm');
- const shapeName=g=>(g.shape==='ellipse'?'oval':g.shape==='plaque'?'eingezogene Ecken':'eckig')+(g.cornerRadiusMm?' R'+g.cornerRadiusMm:'');add('shape','Form',shapeName(ga),shapeName(gb));
+ const shapeName=g=>(g.shape==='ellipse'?'oval':g.shape==='plaque'?'eingezogene Ecken':g.shape==='contour'?'Kontur':'eckig')+(g.cornerRadiusMm?' R'+g.cornerRadiusMm:'');add('shape','Form',shapeName(ga),shapeName(gb));
+ if(ga.outlinePath!==gb.outlinePath)add('outline','Außenkontur',ga.outlinePath?'bisherige Zeichnung':'Grundform',gb.outlinePath?'neue Zeichnung':'Grundform');
  add('margin','Gestaltungsrand',(ga.safeMarginMm??2)+' mm',gb.safeMarginMm+' mm');
  const mv=d=>d.config.profile.optionGroups.find(g=>g.id==='mounting')?.values||[];
  add('mounting','Befestigung',mountingText(mv(before)),mountingText(mv(after)));

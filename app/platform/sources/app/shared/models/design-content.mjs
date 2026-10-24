@@ -1,3 +1,4 @@
+import {contourContainsPoint,contourContainsPolygon,contourObjectCorners} from './contour-geometry.mjs';
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
 // These limits match the supported customer text/motif draft format.
 // maxDesigns: Vorlagen je Produkt (Chris 23.10.2026: 60 → 100, wie MAX_FORM_DESIGNS in der Werkstatt).
@@ -29,7 +30,9 @@ export function validateGeometryHoles(profile){
  for(const hole of holes){
   if(!hole||![hole.x,hole.y,hole.diameter].every(Number.isFinite)||hole.diameter<=0)throw Error('Bitte das Bohrbild prüfen.');
   const r=hole.diameter/2;
-  if(shape==='ellipse'){
+  if(shape==='contour'){
+   if(!contourContainsPoint(profile.geometry,hole.x,hole.y,{marginMm:r,holes:false}))throw Error('Bohrloch ragt über die Produktkontur hinaus.');
+  }else if(shape==='ellipse'){
    const x=hole.x-width/2,y=hole.y-height/2,a=width/2,b=height/2;
    if((x/a)**2+(y/b)**2>1||ellipseEdgeDistance(x,y,a,b)+EPSILON<r)throw Error('Bohrloch ragt über die ovale Produktkontur hinaus.');
   }else if(!inRoundedRect(hole.x,hole.y,width,height,cornerRadiusMm,r))throw Error('Bohrloch ragt über die Produktkontur hinaus.');
@@ -46,9 +49,13 @@ export function objectIssue(o,profile){
  // A merchant-fixed template canvas drawn exactly in plate size (prepared 1:1
  // import) is clipped by the plate contour itself: transparent corners of an
  // oval or rounded plate are not ink. Only without margin; never customer content.
- if(!doorbell&&margin<=0&&o.type==='motif'&&o.acrylicFixed===true&&o.templateOrigin===true&&!o.rotation&&[o.x-width/2,o.y-height/2,o.w-width,o.h-height].every(v=>Math.abs(v)<.01))return '';
+ if(!doorbell&&profile.geometry.shape!=='contour'&&margin<=0&&o.type==='motif'&&o.acrylicFixed===true&&o.templateOrigin===true&&!o.rotation&&[o.x-width/2,o.y-height/2,o.w-width,o.h-height].every(v=>Math.abs(v)<.01))return '';
  if(o.x-w/2<margin-.001||o.x+w/2>width-margin+.001||o.y-h/2<margin-.001||o.y+h/2>height-margin+.001)return 'Element ragt über die Gestaltungsfläche hinaus.';
  if(b&&Math.min(o.x+w/2,b.x+b.width)-Math.max(o.x-w/2,b.x)>.1&&Math.min(o.y+h/2,b.y+b.height)-Math.max(o.y-h/2,b.y)>.1)return 'Element liegt unter der Klingel.';
+ if(!doorbell&&profile.geometry.shape==='contour'){
+  const corners=contourObjectCorners(o);
+  if(!contourContainsPolygon(profile.geometry,corners,{marginMm:margin}))return contourContainsPolygon(profile.geometry,corners,{marginMm:margin,holes:false})?'Element liegt in einer Bohrloch-Schutzzone.':'Element ragt über die Kontur-Gestaltungsfläche hinaus.';
+ }
  // An ellipse with reduced axes is not a constant-distance inset. Check the
  // actual corner-to-contour distance to preserve the requested margin in mm.
  if(profile.geometry.shape==='ellipse')for(const [x,y] of [[-1,-1],[-1,1],[1,-1],[1,1]]){const px=o.x+x*o.w/2*Math.cos(a)-y*o.h/2*Math.sin(a)-width/2,py=o.y+x*o.w/2*Math.sin(a)+y*o.h/2*Math.cos(a)-height/2;if((px/(width/2))**2+(py/(height/2))**2>1+EPSILON||ellipseEdgeDistance(px,py,width/2,height/2)+EPSILON<margin)return 'Element ragt über die ovale Gestaltungsfläche hinaus.';}

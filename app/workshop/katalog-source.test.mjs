@@ -89,3 +89,29 @@ test('readDesignFolder nimmt das Plattenmaß aus design.json oder dem SVG-viewBo
  fs.writeFileSync(path.join(folder,'design.svg'),'<svg xmlns="http://www.w3.org/2000/svg"><text>x</text></svg>');
  assert.throws(()=>readDesignFolder(folder),/Plattenmaß fehlt/);
 });
+
+
+test('font cache uses file checksums across catalogues and refreshes metadata without reopening the catalogue',async t=>{
+ const dir=copyFixture(t),other=copyFixture(t),filename=path.join(dir,'schriften/dateien/Michroma/Michroma-Regular.ttf'),otherFile=path.join(other,'schriften/dateien/Michroma/Michroma-Regular.ttf');
+ for(const file of [filename,otherFile])fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(filename,'A');fs.writeFileSync(otherFile,'B');
+ const a=openKatalog(dir),b=openKatalog(other);let calls=0;const converter=async bytes=>{calls++;const n=Buffer.from(bytes,'base64')[0];return {font:{regular:{units:1000,glyphs:{A:{a:n,d:'M0 0'}}}}};};
+ const one=await a.fontResources(['Michroma'],{converter}),two=await b.fontResources(['Michroma'],{converter});assert.equal(one.fonts.Michroma.regular.glyphs.A.a,65);assert.equal(two.fonts.Michroma.regular.glyphs.A.a,66);assert.notEqual(one.versions.Michroma,two.versions.Michroma);assert.equal(calls,2);
+ const stat=fs.statSync(filename);fs.writeFileSync(filename,'C');fs.utimesSync(filename,stat.atime,stat.mtime);const replaced=await a.fontResources(['Michroma'],{converter});assert.equal(replaced.fonts.Michroma.regular.glyphs.A.a,67,'same size and mtime never reuse stale glyphs');assert.equal(calls,3);
+ const registry=path.join(dir,'schriften/schriften.json'),json=JSON.parse(fs.readFileSync(registry,'utf8'));json.fonts.find(f=>f.name==='Michroma').file='schriften/renamed.ttf';fs.writeFileSync(path.join(dir,'schriften/renamed.ttf'),'D');fs.writeFileSync(registry,JSON.stringify(json));
+ assert.equal((await a.fontResources(['Michroma'],{converter})).fonts.Michroma.regular.glyphs.A.a,68,'same open catalogue observes new file mapping');assert.equal(calls,4);
+ fs.rmSync(path.join(dir,'schriften/renamed.ttf'));assert.deepEqual((await a.fontResources(['Michroma'],{converter})).missing,['Michroma'],'removed font never served from warm cache');
+});
+
+test('font conversion coalesces concurrent requests, retries failures, and has bounded LRU retention',async t=>{
+ const dir=copyFixture(t),file=path.join(dir,'schriften/dateien/Michroma/Michroma-Regular.ttf');fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,'first');const k=openKatalog(dir);let calls=0,failOnce=true;
+ const converter=async bytes=>{calls++;await Promise.resolve();if(failOnce){failOnce=false;throw Error('temporary conversion failure');}return {font:{regular:{units:1000,glyphs:{A:{a:Buffer.from(bytes,'base64').length,d:'M0 0'}}}}};};
+ await assert.rejects(k.fontResources(['Michroma'],{converter}),/temporary conversion failure/);
+ const parallel=await Promise.all(Array.from({length:8},()=>k.fontResources(['Michroma'],{converter})));assert.equal(calls,2);assert.ok(parallel.every(r=>r.fonts.Michroma.regular.glyphs.A.a===5));
+ for(let i=0;i<34;i++){fs.writeFileSync(file,'font-'+i);await k.fontResources(['Michroma'],{converter});}const prior=calls;fs.writeFileSync(file,'first');await k.fontResources(['Michroma'],{converter});assert.equal(calls,prior+1,'old font version evicted rather than retained forever');
+});
+
+
+test('a catalog font absent at open time becomes available without metadata change',async t=>{
+ const dir=copyFixture(t),k=openKatalog(dir),file=path.join(dir,'schriften/dateien/Michroma/Michroma-Regular.ttf');let calls=0;const converter=async()=>{calls++;return {font:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0'}}}}};};
+ assert.deepEqual((await k.fontResources(['Michroma'],{converter})).missing,['Michroma']);assert.equal(calls,0);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,'now available');const added=await k.fontResources(['Michroma'],{converter});assert.deepEqual(added.missing,[]);assert.equal(added.fonts.Michroma.regular.glyphs.A.a,500);assert.equal(calls,1);
+});

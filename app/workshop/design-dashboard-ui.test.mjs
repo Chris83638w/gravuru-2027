@@ -15,6 +15,7 @@ class Element {
   this.tagName=tag.toUpperCase();this.localName=tag;this.children=[];this.parentElement=null;
   this.attributes=new Map();this.listeners=new Map();this.dataset={};this._text='';
   this.value='';this.checked=false;this.disabled=false;this.hidden=false;this.open=false;
+  this.selectionStart=0;this.selectionEnd=0;this.selectionDirection='none';
   this.className='';this.id='';this.naturalWidth=0;this.naturalHeight=0;this.complete=false;
   this.classList={add:(...names)=>{this.className=[...new Set([...this.className.split(/\s+/).filter(Boolean),...names])].join(' ');},remove:(...names)=>{this.className=this.className.split(/\s+/).filter(name=>!names.includes(name)).join(' ');},contains:name=>this.className.split(/\s+/).includes(name),toggle:(name,force)=>{const add=force??!this.classList.contains(name);add?this.classList.add(name):this.classList.remove(name);return add;}};
  }
@@ -59,7 +60,9 @@ class Element {
  closest(selector){return this.matches(selector)?this:this.parentElement?.closest(selector)??null;}
  showModal(){this.open=true;}
  close(){this.open=false;void this.emit('close');}
- focus(){}
+ focus(options){this.ownerDocument.activeElement=this;this.focusOptions=options;}
+ setSelectionRange(start,end,direction='none'){this.selectionStart=start;this.selectionEnd=end;this.selectionDirection=direction;}
+ scrollIntoView(options){this.ownerDocument.scrolls.push({element:this,options});}
  reportValidity(){return true;}
 }
 
@@ -77,7 +80,7 @@ function documentFixture({embedded=false}={}){
  }
  if(embedded){const meta=new Element('meta');meta.setAttribute('name','gravuru-merchant-auth');meta.setAttribute('content','required');root.querySelector('head').append(meta);}
  const observers=new Set(),events=[],srcAssignments=[];
- const document={body:root.querySelector('body'),documentElement:root.querySelector('html'),events,srcAssignments,observers,
+ const document={body:root.querySelector('body'),documentElement:root.querySelector('html'),events,srcAssignments,observers,scrolls:[],activeElement:null,
   createElement(tag){const element=new Element(tag);element.adopt(document);return element;},
   querySelector:selector=>root.querySelector(selector),querySelectorAll:selector=>root.querySelectorAll(selector),
   addEventListener(){},dispatchEvent(event){events.push(event.type);return true;},
@@ -89,11 +92,14 @@ function documentFixture({embedded=false}={}){
 const row=(id,overrides={})=>({id,name:'Design '+id,nameSheet:'',reihe:'Test',formatreihe:'Test',material:'Edelstahl',process:'Gravur',form:'Rechteck',plate:[90,60],status:'ok',reasons:[],selectable:true,released:false,hidden:false,lieferform2:{reihe:'test'},files:{png:'/preview/'+id+'.png',svg:'/preview/'+id+'.svg'},fonts:[{name:'Testfont',status:'vorhanden',file:true}],texts:{count:1,sample:['Anna']},themes:[{name:'Namensschilder'}],isStartDesign:true,mainProducts:[{id:'1000-'+id,name:'Hauptprodukt '+id,sizeKey:'SIZE-90X60',sizeLabel:'9 × 6 cm',basePriceCents:1499,fit:{status:'ok',issues:[]},blockers:[]}],...overrides});
 const dataset=rows=>({linie:'test',rows,counts:{total:rows.length,ok:rows.filter(r=>r.status==='ok').length,'prüfen':rows.filter(r=>r.status==='prüfen').length,fehlt:rows.filter(r=>r.status==='fehlt').length,freigegeben:rows.filter(r=>r.released).length,lieferform2:rows.length,selectable:rows.filter(r=>r.selectable).length},reihen:[{key:'Test',counts:{total:rows.length,ok:rows.length,'prüfen':0,fehlt:0}}],materials:[{key:'Edelstahl',counts:{total:rows.length}}],notes:[],bestand:{overviews:[],sheets:[]},startDesignSummary:{references:new Set(rows.filter(r=>r.isStartDesign).flatMap(r=>r.mainProducts.map(p=>JSON.stringify([p.lineId??'test',p.id])))).size,rows:rows.filter(r=>r.isStartDesign).length,assignments:rows.filter(r=>r.isStartDesign).reduce((n,r)=>n+r.mainProducts.length,0),missingReferences:0,fitChecked:true}});
 
-async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMedia,embedded=false,visibleThumbnails=false,search='?linie=test'}={}){
+async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMedia,onLine,embedded=false,visibleThumbnails=false,search='?linie=test',width=1280}={}){
  const document=documentFixture({embedded}),requests=[],patches=[],mediaRequests=[],originals=structuredClone(rows),tokens=[],made=[],revoked=[],blobCalls=new WeakMap(),windowEvents=new Map(),intersections=new Set();
  const location={origin:'http://fixture.invalid',pathname:'/werkstatt/designs/',search};
  const localStorage={getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,String(value)),removeItem:key=>storage.delete(key)};
  const responseJSON=value=>({ok:true,status:200,json:async()=>structuredClone(value)});
+ let lineReads=0;const queries=new Map();
+ const matchMedia=query=>{if(!queries.has(query)){const limit=Number(query.match(/max-width:\s*(\d+)px/)?.[1]);queries.set(query,{media:query,get matches(){return width<=limit;},listeners:[],addEventListener(type,listener){if(type==='change')this.listeners.push(listener);}});}return queries.get(query);};
+ const resize=next=>{const previous=new Map([...queries].map(([query,media])=>[query,media.matches]));width=next;for(const [query,media] of queries)if(previous.get(query)!==media.matches)for(const listener of media.listeners)listener({matches:media.matches,media:query});};
  const fetch=async(url,options={})=>{
   const normalizedHeaders=new Headers(options.headers),headers=Object.fromEntries(normalizedHeaders);if(normalizedHeaders.has('X-Gravuru-CSRF'))headers['X-Gravuru-CSRF']=normalizedHeaders.get('X-Gravuru-CSRF');
   const call={url,method:options.method||'GET',headers,authorization:normalizedHeaders.get('Authorization'),body:options.body?JSON.parse(options.body):null,signal:options.signal,credentials:options.credentials};requests.push(call);
@@ -105,7 +111,7 @@ async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMed
   }
   if(url==='/api/workshop/session')return responseJSON({csrfToken:'synthetic-csrf'});
   if(url==='/api/workshop/designs')return responseJSON({linien:[{id:'test',name:'Testlinie',designsLieferform2:originals.length,bestand:[]}]});
-  if(url.startsWith('/api/workshop/designs?'))return responseJSON(dataset(originals));
+  if(url.startsWith('/api/workshop/designs?'))return responseJSON(await onLine?.(++lineReads)??dataset(originals));
   if(url.startsWith('/api/workshop/designs/svg?')){
    mediaRequests.push(call);
    const response=await onMedia?.(call,mediaRequests.length)??new Response(url.includes('file=design.svg')?'<svg xmlns="http://www.w3.org/2000/svg"/>':'synthetic PNG',{headers:{'content-type':url.includes('file=design.svg')?'image/svg+xml':'image/png'}});
@@ -116,7 +122,7 @@ async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMed
  class TestURL extends URL {static createObjectURL(blob){const url='blob:dashboard-test/'+made.length;made.push({url,blob,call:blobCalls.get(blob)});return url;}static revokeObjectURL(url){revoked.push(url);}}
  class MutationObserver {constructor(callback){this.callback=callback;this.queued=false;}observe(_root,options){this.options=options;document.observers.add(this);}disconnect(){document.observers.delete(this);}}
  class IntersectionObserver {constructor(callback){this.callback=callback;this.targets=new Set();intersections.add(this);}observe(target){this.targets.add(target);if(visibleThumbnails)queueMicrotask(()=>{if(this.targets.has(target))this.callback([{target,isIntersecting:true}]);});}unobserve(target){this.targets.delete(target);}disconnect(){this.targets.clear();intersections.delete(this);}}
- const context=vm.createContext({document,location,history:{replaceState(_state,_title,url){location.search=url.includes('?')?'?'+url.split('?')[1]:'';}},localStorage,URL:TestURL,URLSearchParams,Intl,Headers,Response,Blob,AbortController,Event,MutationObserver,IntersectionObserver,fetch,setTimeout,clearTimeout,console,
+ const context=vm.createContext({document,location,matchMedia,history:{replaceState(_state,_title,url){location.search=url.includes('?')?'?'+url.split('?')[1]:'';}},localStorage,URL:TestURL,URLSearchParams,Intl,Headers,Response,Blob,AbortController,Event,MutationObserver,IntersectionObserver,fetch,setTimeout,clearTimeout,console,
   addEventListener(type,listener){const listeners=windowEvents.get(type)||[];listeners.push(listener);windowEvents.set(type,listeners);},
   ...(embedded?{shopify:{async idToken(){tokens.push('synthetic-session-token');return 'synthetic-session-token';}}}:{})});
  context.window=context;context.parent=context;
@@ -137,7 +143,7 @@ async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMed
  const buttons=(text,within=document.body)=>within.querySelectorAll('button').filter(button=>button.textContent===text);
  const button=(text,within=document.body)=>{const found=buttons(text,within);assert.equal(found.length,1,'expected one button '+JSON.stringify(text));return found[0];};
  const dispose=()=>{for(const listener of windowEvents.get('pagehide')||[])listener({type:'pagehide'});};
- return {document,element,button,buttons,requests,patches,originals,storage,location,tokens,mediaRequests,made,revoked,dispose,showThumbnails(){for(const observer of intersections)observer.callback([...observer.targets].map(target=>({target,isIntersecting:true})));}};
+ return {document,element,button,buttons,requests,patches,originals,storage,location,tokens,mediaRequests,made,revoked,dispose,resize,showThumbnails(){for(const observer of intersections)observer.callback([...observer.targets].map(target=>({target,isIntersecting:true})));}};
 }
 
 const keyed=(h,tag,key,id)=>{
@@ -388,4 +394,99 @@ test('closing an embedded dialog while its response body is pending creates no l
  await h.element('preview-dialog').emit('cancel');h.element('preview-dialog').close();assert.equal(h.mediaRequests[0].signal.aborted,true);
  bytes.resolve(new Blob(['<svg/>'],{type:'image/svg+xml'}));await tick();
  assert.equal(h.made.length,0);assert.equal(image.getAttribute('src'),null);assert.equal(selection(h,'A').disabled,true);assert.equal(h.patches.length,0);h.dispose();
+});
+
+
+test('phone defaults to tiles independently of desktop preference and keeps review gates',async()=>{
+ const storage=new Map([['gravuru-designs-view','table']]),h=await harness({width:360,storage});
+ assert.equal(h.element('view').value,'tiles');assert.equal(h.element('rows').querySelectorAll('article.tile').length,2);assert.equal(h.element('rows').querySelector('table'),null);
+ assert.equal(h.element('filter-toggle').getAttribute('aria-expanded'),'false');assert.equal(h.element('main').classList.contains('filters-open'),false);
+ assert.equal(selection(h,'A').disabled,true);assert.equal(release(h,'A').disabled,true);
+ await reviewed(h,'A');await select(h,'A');assert.equal(h.document.querySelector('.selection-bar').classList.contains('has-selection'),true);
+ await release(h,'A').emit('click');assert.equal(h.element('release-dialog').open,true);assert.equal(h.patches.length,0);
+ await h.element('release-cancel').emit('click');assert.equal(h.patches.length,0);
+});
+
+test('compact picker closes after a filter choice and focuses the visible result summary',async()=>{
+ for(const id of ['reihen','materials']){
+  const h=await harness({width:900});await h.element('filter-toggle').emit('click');
+  assert.equal(h.element('filter-toggle').getAttribute('aria-expanded'),'true');assert.equal(h.element('main').classList.contains('filters-open'),true);
+  await h.element(id).querySelectorAll('button').at(-1).emit('click');
+  assert.equal(h.element('filter-toggle').getAttribute('aria-expanded'),'false');assert.equal(h.element('main').classList.contains('filters-open'),false);
+  assert.equal(h.document.activeElement,h.element('summary'));assert.equal(h.document.scrolls.length,1);assert.equal(h.document.scrolls[0].element,h.element('summary'));
+  assert.equal(h.document.scrolls[0].options.block,'start');assert.equal(h.patches.length,0);
+ }
+});
+
+test('line picker returns to results only after the requested line finishes loading',async()=>{
+ const pending=deferred(),h=await harness({width:390,onLine:index=>index===2?pending.promise:undefined});
+ await h.element('filter-toggle').emit('click');await h.element('lines').querySelector('button').emit('click');
+ assert.equal(h.element('main').getAttribute('aria-busy'),'true');assert.equal(h.document.scrolls.length,0);
+ pending.resolve(dataset([row('Loaded')]));await tick();
+ assert.equal(h.element('main').getAttribute('aria-busy'),'false');assert.match(h.element('rows').textContent,/Design Loaded/);assert.equal(h.document.scrolls.length,1);assert.equal(h.element('filter-toggle').getAttribute('aria-expanded'),'false');assert.equal(h.patches.length,0);
+});
+
+test('compact status and release filters return to the list without approving designs',async()=>{
+ for(const [id,value]of [['filter-status','ok'],['filter-freigabe','nein'],['filter-selectable',false],['filter-start-designs',true]]){
+  const h=await harness({width:412});await h.element('filter-toggle').emit('click');await filter(h,id,value);
+  assert.equal(h.element('filter-toggle').getAttribute('aria-expanded'),'false');assert.equal(h.document.scrolls.length,1);assert.equal(h.document.activeElement,h.element('summary'));assert.equal(h.patches.length,0);assert.equal(selection(h,'A').disabled,true);
+ }
+});
+
+test('search keeps typing stable and returns to results after Enter or committed change',async()=>{
+ const h=await harness({width:360});await h.element('filter-toggle').emit('click');await filter(h,'search','Design A','input');
+ assert.equal(h.document.scrolls.length,0);assert.equal(h.element('filter-toggle').getAttribute('aria-expanded'),'true');assert.match(h.element('rows').textContent,/Design A/);assert.doesNotMatch(h.element('rows').textContent,/Design B/);
+ const event=await h.element('search').emit('keydown',{key:'Enter'});assert.equal(event.defaultPrevented,true);assert.equal(h.document.scrolls.length,1);assert.equal(h.document.activeElement,h.element('summary'));
+ await h.element('filter-toggle').emit('click');await h.element('search').emit('change');assert.equal(h.document.scrolls.length,2);assert.equal(h.element('filter-toggle').getAttribute('aria-expanded'),'false');assert.equal(h.patches.length,0);
+});
+
+test('desktop view and filter behavior stay unchanged across mobile preferences and resize',async()=>{
+ const storage=new Map(),h=await harness({width:1280,storage});assert.equal(h.element('view').value,'table');assert.ok(h.element('rows').querySelector('table'));
+ await filter(h,'filter-status','ok');assert.equal(h.document.scrolls.length,0);
+ await filter(h,'view','tiles');assert.equal(storage.get('gravuru-designs-view'),'tiles');h.resize(360);assert.equal(h.element('view').value,'tiles');
+ await filter(h,'view','table');assert.equal(storage.get('gravuru-designs-mobile-view'),'table');assert.equal(storage.get('gravuru-designs-view'),'tiles');
+ const cells=h.element('rows').querySelectorAll('td');assert.equal(cells[0].dataset.label,'Vorschau');assert.equal(cells[9].dataset.label,'Aktionen');
+ h.resize(1280);assert.equal(h.element('view').value,'tiles');h.resize(360);assert.equal(h.element('view').value,'table');assert.equal(h.patches.length,0);
+});
+
+
+test('phone rotation with the same view preserves the live rename input and selected text',async()=>{
+ const h=await harness({rows:[row('A')],width:390,storage:new Map([['gravuru-designs-view','tiles']])});
+ await h.button('Name ändern').emit('click');const input=h.element('rows').querySelector('.rename input');
+ input.value='Familie Müller';input.focus();input.setSelectionRange(8,14,'backward');
+ h.resize(844);await new Promise(resolve=>setTimeout(resolve,1));
+ assert.equal(h.element('view').value,'tiles');assert.equal(h.element('rows').querySelector('.rename input'),input);
+ assert.equal(input.value,'Familie Müller');assert.equal(h.document.activeElement,input);
+ assert.deepEqual([input.selectionStart,input.selectionEnd,input.selectionDirection],[8,14,'backward']);assert.equal(h.patches.length,0);
+});
+
+test('phone rotation between tiles and table preserves the rename draft caret and submitted value',async()=>{
+ const h=await harness({rows:[row('A')],width:390});
+ await h.button('Name ändern').emit('click');const previous=h.element('rows').querySelector('.rename input');
+ previous.value='Familie Müller';previous.focus();previous.setSelectionRange(7,13,'forward');
+ h.resize(844);await new Promise(resolve=>setTimeout(resolve,1));
+ const input=h.element('rows').querySelector('.rename input');assert.notEqual(input,previous);assert.equal(h.element('view').value,'table');
+ assert.equal(input.value,'Familie Müller');assert.equal(h.document.activeElement,input);
+ assert.deepEqual([input.selectionStart,input.selectionEnd,input.selectionDirection],[7,13,'forward']);assert.equal(h.patches.length,0);
+ await input.closest('form').emit('submit');assert.equal(h.patches.length,1);assert.equal(h.patches[0].body.name,'Familie Müller');assert.equal(Object.hasOwn(h.patches[0].body,'freigegeben'),false);
+});
+
+test('responsive rerender preserves rename button focus and does not steal focus from an open filter',async()=>{
+ const h=await harness({rows:[row('A')],width:390});
+ await h.button('Name ändern').emit('click');let input=h.element('rows').querySelector('.rename input');
+ input.value='Neuer Name';input.setSelectionRange(2,5,'forward');h.button('Speichern').focus();
+ h.resize(844);await new Promise(resolve=>setTimeout(resolve,1));
+ assert.equal(h.document.activeElement,h.button('Speichern'));input=h.element('rows').querySelector('.rename input');assert.equal(input.value,'Neuer Name');assert.deepEqual([input.selectionStart,input.selectionEnd],[2,5]);
+ await h.element('filter-toggle').emit('click');h.element('search').focus();h.resize(390);await new Promise(resolve=>setTimeout(resolve,1));
+ assert.equal(h.element('main').classList.contains('filters-open'),true);assert.equal(h.document.activeElement,h.element('search'));
+ input=h.element('rows').querySelector('.rename input');assert.equal(input.value,'Neuer Name');assert.deepEqual([input.selectionStart,input.selectionEnd],[2,5]);assert.equal(h.patches.length,0);
+});
+
+test('compact resize moves focus out of hidden filters and desktop resize out of the hidden toggle',async()=>{
+ for(const selector of ['#search','#lines button']){
+  const h=await harness({width:1280});h.document.querySelector(selector).focus();h.resize(900);
+  assert.equal(h.element('main').classList.contains('filters-open'),false);assert.equal(h.element('filter-toggle').getAttribute('aria-expanded'),'false');
+  assert.equal(h.document.activeElement,h.element('filter-toggle'));assert.equal(h.document.scrolls.length,0);
+  h.resize(1280);assert.equal(h.document.activeElement,h.element('summary'));assert.equal(h.document.scrolls.length,0);assert.equal(h.patches.length,0);
+ }
 });

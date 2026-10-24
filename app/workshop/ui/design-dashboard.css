@@ -59,8 +59,8 @@
 .designs-page .empty{color:#7e887f;padding:20px 0}
 .designs-page .footnote{font-size:13px;color:var(--muted);margin-top:22px;line-height:1.6}
 .designs-page button:focus-visible,.designs-page a:focus-visible,.designs-page input:focus-visible,.designs-page select:focus-visible{outline:3px solid #84ad97;outline-offset:3px}
-@media(max-width:1100px){.designs-page .layout{grid-template-columns:1fr}.designs-page aside{position:static;max-height:none}.designs-page .metrics{grid-template-columns:repeat(3,1fr)}.designs-page th{position:static}}
-@media(max-width:640px){.designs-page .metrics{grid-template-columns:repeat(2,1fr)}.designs-page .intro{flex-direction:column}.designs-page #detail{padding:12px;overflow:auto}}
+@media(max-width:1099px){.designs-page .layout{grid-template-columns:1fr}.designs-page aside{position:static;max-height:none}.designs-page .metrics{grid-template-columns:repeat(3,1fr)}.designs-page th{position:static}}
+@media(max-width:639px){.designs-page .metrics{grid-template-columns:repeat(2,1fr)}.designs-page .intro{flex-direction:column}.designs-page #detail{padding:12px;overflow:auto}}
 .designs-page .flag.released{background:#dcefe1;color:#1f6b3a;font-weight:700}
 .designs-page button.release{background:var(--green,#2f7a47);color:#fff;border-color:transparent}
 
@@ -89,4 +89,59 @@
 .designs-page .confirmation-dialog{max-width:620px;line-height:1.5}
 .designs-page #release-list{max-height:30dvh;overflow:auto;padding-left:22px}
 .designs-page .dialog-actions{display:flex;justify-content:flex-end;gap:12px;flex-wrap:wrap;margin-top:20px}
-@media(max-width:640px){.designs-page .review-dialog{padding:16px}.designs-page .dialog-head{flex-wrap:wrap}.designs-page .selection-bar{align-items:stretch}.designs-page .selection-bar p{flex-basis:100%}}
+@media(max-width:639px){.designs-page .review-dialog{padding:16px}.designs-page .dialog-head{flex-wrap:wrap}.designs-page .selection-bar{align-items:stretch}.designs-page .selection-bar p{flex-basis:100%}}
+
+/* Mobile filters stay closed until requested; desktop keeps its original sidebar. */
+.designs-page .filter-toggle{display:none}
+.designs-page #summary{scroll-margin-top:16px}
+@media(max-width:1099px){
+ .designs-page main .filter-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:88px;margin:12px 0}
+ .designs-page main:not(.filters-open) #filter-pickers,.designs-page main:not(.filters-open) #filter-controls{display:none}
+ .designs-page main button,.designs-page main .button,.designs-page .controls select,.designs-page .controls input:not([type=checkbox]),.designs-page .design-selection,.designs-page .controls label:has(input[type=checkbox]){min-height:44px;box-sizing:border-box}
+ .designs-page .design-selection{padding:4px 8px;margin:0;cursor:pointer}
+ .designs-page .controls label:has(input[type=checkbox]){padding:4px 0}
+ .designs-page .review-dialog button{min-height:44px;min-width:44px}
+}
+@media(max-width:639px){
+ .designs-page .intro{flex-direction:row;gap:12px;align-items:flex-start}
+ .designs-page main .intro h1{font-size:24px}
+ .designs-page .intro p:not(.eyebrow),.designs-page .metrics{display:none}
+ .designs-page .intro>div{min-width:0}
+ .designs-page #refresh{flex-shrink:0}
+ .designs-page #detail{padding:12px;overflow:visible}
+ .designs-page .layout{gap:12px}
+ .designs-page #filter-pickers{padding:12px}
+ .designs-page .picker button{min-width:0;overflow-wrap:anywhere}
+ .designs-page .controls{gap:12px}
+ .designs-page .controls label{min-width:0;max-width:100%;flex:1 1 100%}
+ .designs-page .controls label.grow{min-width:0}
+ .designs-page .controls input,.designs-page .controls select{min-width:0;max-width:100%;box-sizing:border-box}
+ .designs-page .tiles{grid-template-columns:minmax(0,1fr);gap:14px}
+ .designs-page .tile{min-width:0;overflow-wrap:anywhere}
+ .designs-page .tile-head{align-items:flex-start;flex-wrap:wrap}
+ .designs-page .tile-img{max-height:200px}
+ .designs-page main .preview-button{width:100%;min-height:44px}
+ .designs-page .preview-label{padding:10px 0}
+ .designs-page .actions{align-items:stretch;width:100%}
+ .designs-page .actions button,.designs-page .actions a.button{width:100%;text-align:center;white-space:normal}
+ .designs-page .rename input{min-width:0;width:100%}
+ .designs-page .main-products{min-width:0}
+ .designs-page .selection-bar:not(.has-selection){display:none}
+ .designs-page .selection-bar p{min-width:0}
+ .designs-page .selection-bar button{flex:1 1 100%;white-space:normal}
+ .designs-page .review-help{margin:8px 0 12px}
+ .designs-page table,.designs-page tbody,.designs-page tr,.designs-page td{display:block;box-sizing:border-box;width:100%;min-width:0}
+ .designs-page thead{display:none}
+ .designs-page tbody{display:grid;gap:14px}
+ .designs-page tr{border:1px solid var(--line);border-radius:12px;padding:12px;overflow-wrap:anywhere}
+ .designs-page td{padding:6px 0;border:0}
+ .designs-page td[data-label]:not(:first-child)::before{content:attr(data-label);display:block;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px}
+ .designs-page td .thumb{width:100%;max-height:200px}
+ .designs-page .review-dialog{max-width:calc(100vw - 24px);width:calc(100vw - 24px);padding:16px;overflow-wrap:anywhere}
+ .designs-page .dialog-head{gap:12px}
+ .designs-page .dialog-head h2{flex:1 1 100%}
+ .designs-page .dialog-head button{margin-left:auto}
+ .designs-page .dialog-actions{gap:8px}
+ .designs-page .dialog-actions button{flex:1 1 100%;white-space:normal}
+ .designs-page #release-list{padding-left:20px}
+}

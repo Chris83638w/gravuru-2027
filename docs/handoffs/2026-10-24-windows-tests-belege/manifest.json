@@ -1,0 +1,103 @@
+{
+  "schema": "gravuru-test-portability-manifest/v1",
+  "baseCommit": "a1170cb26b3e759824e84b32e7a08a19a887bbd9",
+  "testedCommit": "6a12ee8440ef8ad060918761ebbe106c37da3e03",
+  "sourceSnapshot": {
+    "filesEach": 994,
+    "unchangedFiles": 984,
+    "changedTestFiles": 10,
+    "afterSnapshotRehashed": true,
+    "changed": [
+      {
+        "path": "app/workshop/account-draft-http.test.mjs",
+        "beforeBlob": "1e38323f9b9ce5145d7d0e1c7bcb3208dde65499",
+        "afterBlob": "1d647d63dd8e7e40afcb445605283e8caad4a15f",
+        "afterSha256": "6005524e9279149aa18b4ad51449a36c94446e3dab6c4b3acd5377c46b16d5f8"
+      },
+      {
+        "path": "app/workshop/batch-assets.test.mjs",
+        "beforeBlob": "cd6eb9ca9580ea44df2800650a88fc6bd9a2eb63",
+        "afterBlob": "ccab2dccc38b57bf4f7822dcdb02f3daf5ea58c1",
+        "afterSha256": "62b30d7bc45f0400cb85477e364aa5722c2761b95de8bd5745502d5904cd6803"
+      },
+      {
+        "path": "app/workshop/export-jobs.test.mjs",
+        "beforeBlob": "1bcd5dc76c6d3759ec3cedcda2e3f4ecb63ce386",
+        "afterBlob": "9254de493711ae616018d34690244117ff613a56",
+        "afterSha256": "c9b14b4d5b939b6bb132bd09a868085f880ed05a0739f7fab3c6c4a875241f1e"
+      },
+      {
+        "path": "app/workshop/konfis.test.mjs",
+        "beforeBlob": "1e7faddd68957e5d7d8107e5a43274248041db5c",
+        "afterBlob": "a991f41b135166fcc22c8e01f693ee428de14774",
+        "afterSha256": "e02a2f89510d0eac3b3c73a3168706694a3415d307ac9c985dfcec55f4c971c7"
+      },
+      {
+        "path": "app/workshop/material-surface-store.test.mjs",
+        "beforeBlob": "4532cbebc35496942c42bdeccf1e5319de938dbc",
+        "afterBlob": "d47a208efe2241f01906b65554fc7ac522780bf8",
+        "afterSha256": "2803b7893ff8f7832e5bbede4cc6f99cdd07c4aba9fba7c01eda5080235bd364"
+      },
+      {
+        "path": "app/workshop/production-summary.test.mjs",
+        "beforeBlob": "ac87e4b2cec4137444d7f25dce1b1baebe238fdc",
+        "afterBlob": "45f327fcf7dda3c52a8efe0b3383c16a15a834aa",
+        "afterSha256": "723aa1566a5a1a34659be42ecbe29cec46f397157a7ebce124b71783b4a465eb"
+      },
+      {
+        "path": "app/workshop/profile-impact.test.mjs",
+        "beforeBlob": "53efa9aa5b83a1cb32695d8858b367324f2ccc6e",
+        "afterBlob": "b51fff07bd370dda4fefc48fc5662888720e189d",
+        "afterSha256": "344a296cb19729aa72b0f03a684218d06cf50026d9040868d9b4fb8988ed9101"
+      },
+      {
+        "path": "app/workshop/quantity-tiers.test.mjs",
+        "beforeBlob": "c84a9b8f879cc1639211bdbc18b36180e44da8b6",
+        "afterBlob": "283e6372d94e678bc23c6df9b941e60e628c7196",
+        "afterSha256": "d380ca30c7828eef582e6c2ba7d96d7c8ed944808b44d0eb4c359d9bd9115657"
+      },
+      {
+        "path": "app/workshop/shopify-runtime-config.test.mjs",
+        "beforeBlob": "a94c106079546dfb610b15d72e19d6b8023dabb6",
+        "afterBlob": "9142127da0b113c7ab20f7f382449d549f1dd652",
+        "afterSha256": "600e0d796696729b149057900cb300c32660416ef6569f444d925b17d0bb2236"
+      },
+      {
+        "path": "app/workshop/tenant.test.mjs",
+        "beforeBlob": "8f4aec4dbdea70d9d87fd855bea6ca4fc851692e",
+        "afterBlob": "2b28a872b71ed03d80b405a04c77cbd9087a409c",
+        "afterSha256": "aaf7521adfde195476091f12cfe3c511dafa2f69b235b18d1e8594519565fa94"
+      }
+    ]
+  },
+  "windows": [
+    {
+      "side": "after",
+      "file": "windows-after.json.gz",
+      "sha256": "e074a3b969961fc1211ad07f3cb79f7821464179b08d26c791b1a5641436f0b4",
+      "bytes": 296525,
+      "summarySha256": "b0d1a7e84d9d2c7a88fd8d14ff88a2cb6091011e156ae89aae4b4ed9795d95fc",
+      "includedInBranch": false
+    },
+    {
+      "side": "before",
+      "file": "windows-before.json.gz",
+      "sha256": "fd08912d3d5c9e7bf3682b7e10b2131b800bf6db463a986ad97d149982324bec",
+      "bytes": 314993,
+      "summarySha256": "883ba794e37f1ed02c8f809332cbc3a71d6a97189f6f54bbc40df7806fa27498",
+      "includedInBranch": false
+    }
+  ],
+  "linux": {
+    "runId": 40073906606,
+    "jobId": 120813063464,
+    "conclusion": "success",
+    "artifactId": 12552682727,
+    "artifactSha256": "cfa6af959097d3160f5ff80fc286617c2c1d5d768697dc230fb5798ba1859f73",
+    "artifactExpiresAt": "2026-11-07T07:47:09Z"
+  },
+  "publishedReports": [
+    "windows-results.json",
+    "linux-comparison.json"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "gravuru-linux-test-evidence/v1",
+  "beforeCommit": "a1170cb26b3e759824e84b32e7a08a19a887bbd9",
+  "testedCommit": "6a12ee8440ef8ad060918761ebbe106c37da3e03",
+  "runId": 40073906606,
+  "jobId": 120813063464,
+  "runUrl": "https://github.com/Chris83638w/gravuru-2027/actions/runs/40073906606",
+  "conclusion": "success",
+  "result": {
+    "verdict": "no-new-failures",
+    "before": {
+      "tests": 1222,
+      "suites": 0,
+      "passed": 1222,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "after": {
+      "tests": 1229,
+      "suites": 0,
+      "passed": 1229,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "newFailures": 0,
+    "missingTests": 0,
+    "changedExistingFailures": 0,
+    "newTestsNotPassed": 0
+  },
+  "artifact": {
+    "id": 12552682727,
+    "name": "linux-test-comparison-40073906606-1",
+    "size_in_bytes": 1157728,
+    "url": "https://api.github.com/repos/Chris83638w/gravuru-2027/actions/artifacts/12552682727",
+    "archive_download_url": "https://api.github.com/repos/Chris83638w/gravuru-2027/actions/artifacts/12552682727/zip",
+    "expired": false,
+    "created_at": "2026-10-24T07:47:11Z",
+    "expires_at": "2026-11-07T07:47:09Z",
+    "updated_at": "2026-10-24T07:47:11Z",
+    "digest": "sha256:cfa6af959097d3160f5ff80fc286617c2c1d5d768697dc230fb5798ba1859f73",
+    "workflow_run": {
+      "id": 40073906606,
+      "repository_id": 1397611510,
+      "head_repository_id": 1397611510,
+      "head_branch": "dev/windows-tests-20261024-astra",
+      "head_sha": "6a12ee8440ef8ad060918761ebbe106c37da3e03"
+    }
+  },
+  "localArtifactDownload": "not available; full raw test evidence remains in linked GitHub artifact until expiry",
+  "firstAttempt": {
+    "runId": 40073656465,
+    "outcome": "preparation failed before any application test: git pathspec counted one nested test outside requested direct-file scope; fixed in 6a12ee8"
+  }
+}

@@ -1,3 +1,10 @@
+## Paket I + J gemerged und live · 24.10.2026 (Claude)
+
+- Code #16 (`4de179a`, Startdesign-Filter, Mehrfachfreigabe nach geladener Vorschau, Dialog mit Sitzungstoken) und #17 (`9da930d`, pfadgenaue Motivprüfung, Startposition bleibt) sowie Katalog #4 (`27d46be`, 6 Designs minimal eingepasst) lokal signiert gemerged. Tests: #16 131/131, #17 387/387; json↔svg der 6 Designs numerisch gleich; build-katalog Exit 0.
+- Edelstahl-Startdesigns: 104 Zuordnungen / 102 Designs, 98 passt / 6 prüfen / **0 Sperren**; alle Grundpreise gesetzt (Rund 8,5 = 14,99 €, `1be49ee`).
+- Host: Code 9da930d, Katalog 27d46be, App neu gestartet; im Shopify-Admin geprüft: Filter „Nur Startdesigns“ (102), Vorschau-Dialog lädt, D57 42×28 „passt“. Keine Freigabe gesetzt.
+- Nächster Schritt: Chris gibt die Startdesigns im Dashboard frei; danach Paket E (frischer Shop-Export, shop-sync-Dry-run mit Zählern, Freigabe von Chris).
+
 ## Paket J · zehn Original-Startdesigns eingepasst · 24.10.2026 (Codex / Astra)
 
 - Code bc1c7ce671ddc616855ef7c5eafea22d06827665, Katalog fbf020e7bc5ac930ac75790b3325c0df8204c219, Basis 1be49ee. Sechs Designs minimal geändert, vier unverändert; kein D1-Tausch, keine Freigabe.

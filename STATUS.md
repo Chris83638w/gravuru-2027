@@ -1,3 +1,10 @@
+## Paket D fertig: Katalog auf dem Händlerhost · 24.10.2026 (Claude)
+
+- Host-Arbeitskopie `private/gravuru-katalog` (Klon des Plesk-Repos, 55.916 Dateien) auf Katalog-main `bf935fa`; app-2027 liest sie über `GRAVURU_KATALOG` in `gravuru-2027-merchant/app.cjs` (Sicherung `app.cjs.bak-20261024`). App neu gestartet.
+- Rückweg Option A: eigener Schlüssel, Deploy-Key „Plesk app-2027 Katalog push“ (Schreibrecht, nur Katalog-Repo). `scripts/katalog-host.sh save` pusht Dashboard-Änderungen nach `host/werkstatt` (nie main, kein Force); Claude prüft und merged mit Merge-Commit; `update` spult vor (d6e5e62: Abgleich über den eigenen Schlüssel, das Plesk-Repo dient nur als Klonquelle).
+- Live-Befund behoben: Vorschaubilder im eingebetteten Admin waren leer – Token fehlte (7938354) und die Datei-URL ging an die alte Laufzeit (5da0694). Jetzt sichtbar: Design-Dashboard mit 2724 Designs, 737 Lieferform 2, 0 freigegeben.
+- Tests: merchant-media/design-dashboard/shopify-admin-host/konfis/katalog-linien 49/49, acryl-host-routing 18/18 (zusammen mit merchant-media); alle 3409 Bild-URLs des Katalogs passieren die Pfadregel. Nächster Schritt: PR #16 (Paket I) nach Fix des Vorschau-Gates mergen, dann gibt Chris die Startdesigns frei.
+
 ## Windows-Testportabilität geprüft · 24.10.2026 (Codex / Astra)
 
 - PR #15, Branch `dev/windows-tests-20261024-astra`; Basis a1170cb, getesteter Code 6a12ee8. Zehn Testdateien korrigiert; produktive Module unverändert, keine bisherigen Tests entfernt.

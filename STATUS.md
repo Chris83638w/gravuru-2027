@@ -1,3 +1,10 @@
+## Paket L · Katalogdesigns direkt bearbeiten · 24.10.2026 (Codex / Astra)
+
+- Branch dev/dashboard-bearbeiten-20261024-astra, Code f3192223da07959a952b52679ada3cd52efdc81a auf main 196de81; Katalog 27d46be. Bearbeiten ohne Import/Produktanlage, Familienmaterial und Kontur/Bohrungen, originale Konfi-Pfeile auf Desktop/Handy; gemeinsamer JSON/SVG-Rückweg mit Journal, 409, Fit-Bestätigung, Freigaberücksetzung und Master-Audit.
+- Windows-Vollauf 183 Dateien: 1.355/1.363 bestanden, 1 behobene Prepared-Importregression, 7 Plattform-Skips. Nachläufe: 271/271 Konfi/Editor und 63/65 Import/Katalog (2 Link-Skips), zusätzlich 15/15 gemeinsame Modelle. Drei während des Vollaufs aktualisierte Testdateien sind im 271er-Nachlauf enthalten; kein zweiter Gesamtvollauf des finalen Commits. Keine offenen bekannten Testfehler.
+- Lokale Browserprüfung: Desktop 1280 und iPhone-13-Emulation, echte Maus-/Touch-Pfeile, Tastaturfokus, Undo/Redo, D57 speichern/Preview/Audit/Freigaberücksetzung auf Privatkopie; Retro II D12 und Oval D13 samt vollständigen Tippflächen. 759/761 LF2-No-op bytegleich, zwei fehlende Schriften; 1.843 Original-Katalogdateien unverändert.
+- Offen: eindeutige Familienzuordnung für GT-S-22x14-D234/D235; zwei bereits ausgeblendete Designs mit fehlenden Schriften bleiben gesperrt. Keine Katalogänderung, Freigabe, Liveaktion oder Merge. [Bericht/Bilder](docs/handoffs/2026-10-24-paket-l-bericht.md), [Prüfnachweis](docs/handoffs/paket-l/pruefung.json). Nächster Schritt: Claude prüft den PR, führt Linux-Vollauf und eigene Stichprobe aus und entscheidet über den Merge.
+
 ## Paket K gemerged und live · 24.10.2026 (Claude)
 
 - #18 (`126177f`): Design-Dashboard auf dem Handy (Designs zuerst, Filter einklappbar, Kacheln unter 640 px) und SVG-Vorschau mit Texten als Glyphenpfaden aus den Katalogschriften. Anlass: Chris konnte auf dem Handy nichts öffnen, weil die Filterlisten über der Liste standen; außerdem zeigte das Handy Ersatzschriften.

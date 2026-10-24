@@ -4,6 +4,16 @@ import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 import {money} from './contract.mjs';
 import {colorPalettes} from './profile-selection.mjs';
+import {objectSurface} from './surfaces.mjs';
+
+// The supplied geometry already faces the displayed side; inactive text is checked on its own side.
+export function surfaceTextIssues(objects,surfaceId,geometry,textBounds){
+  const active=surfaceId==='back'?'back':'front';
+  return objects.filter(o=>objectSurface(o)===active&&o.type==='text'&&!o.uxHidden&&o.text.trim()).flatMap(o=>{
+    try{return fitsSurface(o,textBounds(o),geometry)?[]:[{id:o.id,code:'outside-surface',message:'Text ragt über die Gestaltungsfläche.'}];}
+    catch{return [{id:o.id,code:'font-invalid',message:'Die Schrift kann diesen Text nicht vollständig darstellen.'}];}
+  });
+}
 
 export async function installUsability(api) {
   const {el,r,profile,config,esc,button,mutate,selected,say,acceptFiles,changeObject}=api;
@@ -193,10 +203,7 @@ export async function installUsability(api) {
     if(config)return {x:0,y:0,...(el.uxProfileGeometry?.()||profile.geometry)};
     return profile.frames.find(f=>f.key===el.state.fkFrame)?.acrylic||profile.frames[0].acrylic;
   }
-  function issues(){return el.state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.text.trim()).flatMap(o=>{
-    try{return fitsSurface(o,textBounds(o),surface())?[]:[{id:o.id,code:'outside-surface',message:'Text ragt über die Gestaltungsfläche.'}];}
-    catch{return [{id:o.id,code:'font-invalid',message:'Die Schrift kann diesen Text nicht vollständig darstellen.'}];}
-  });}
+  function issues(){return surfaceTextIssues(el.state.objects,el.state.uxSurface,surface(),textBounds);}
   el.uxTextBounds=textBounds; // Randsperre nach Buchstaben (edge-clamp.mjs)
   el.uxValidateDesign=issues; // Same gate can be called by the future trusted order adapter.
   function updateWarnings(){
@@ -217,7 +224,7 @@ export async function installUsability(api) {
   }
   const warning=document.createElement('p');warning.dataset.uxBoundaryStatus='';warning.className='ux-boundary-status';warning.hidden=true;stage.append(warning);
   r.addEventListener('click',e=>{const b=e.target.closest('[data-ux=fit-text]');if(!b)return;
-    const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked)return;
+    const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked||objectSurface(o)!==(el.state.uxSurface==='back'?'back':'front'))return;
     const size=fittingTextSize(o,textBounds(o),surface(),el.uxTextScale?.()||1,el.uxMinTextMm);
     if(size===null){say('Auch mit '+String(el.uxMinTextMm||4).replace('.',',')+' mm passt der Text hier nicht. Bitte kürzen oder weiter nach innen verschieben.');return;}
     mutate(()=>{o.size=size;el.state.selected=o.id;});say('Text auf '+el.uxDisplayTextSize(o).toLocaleString('de-DE')+' mm angepasst.');

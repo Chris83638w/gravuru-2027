@@ -1,4 +1,4 @@
-import {contourContainsPoint,contourContainsPolygon,contourObjectCorners} from './contour-geometry.mjs';
+import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry} from './contour-geometry.mjs';
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
 // These limits match the supported customer text/motif draft format.
 // maxDesigns: Vorlagen je Produkt (Chris 23.10.2026: 60 → 100, wie MAX_FORM_DESIGNS in der Werkstatt).
@@ -42,6 +42,8 @@ export const escapeXml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':
 export const categories=designs=>[...new Set(designs.map(d=>d.category||'Ohne Kategorie'))].sort((a,b)=>a.localeCompare(b,'de'));
 export const collections=designs=>[...new Set(designs.flatMap(d=>d.collections||[]))].sort((a,b)=>a.localeCompare(b,'de'));
 export function filteredDesigns(designs,{search='',category='',collection=''}={}){return designs.filter(d=>(!category||(d.category||'Ohne Kategorie')===category)&&(!collection||(d.collections||[]).includes(collection))&&[d.name,d.category,...(d.collections||[])].join(' ').toLocaleLowerCase('de').includes(search.trim().toLocaleLowerCase('de')));}
+// Validate against an already oriented geometry. UI placement and preview use
+// this low-level function; they must not mirror from surfaceId a second time.
 export function objectIssue(o,profile){
  if(!o||!['x','y','w','h','rotation'].every(k=>Number.isFinite(o[k]))||o.w<=0||o.h<=0||Math.abs(o.rotation)>DESIGN_LIMITS.maxRotation)return 'Ungültige Maße.';
  const a=o.rotation*Math.PI/180,w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a)),b=profile.geometry.bell;
@@ -63,6 +65,11 @@ export function objectIssue(o,profile){
  // Photos and other artwork may cross a drill hole. A physical second plate
  // blocking screw access is a separate mounting/plate-assembly constraint.
  return '';
+}
+// Validate an object against the original product profile. Front is unchanged;
+// back uses the same physical reflection as preview and production.
+export function surfaceObjectIssue(object,profile){
+ return objectIssue(object,object?.surfaceId==='back'?{...profile,geometry:surfaceGeometry(profile.geometry,'back')}:profile);
 }
 export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
  if(!d||!validContentId(d.id))throw Error('Jedes Design benötigt eine gültige Kennung.');

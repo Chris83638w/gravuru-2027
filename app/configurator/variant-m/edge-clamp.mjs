@@ -5,6 +5,7 @@
 // Chris 21.10.2026: Bei Text zählen die Buchstaben, nicht der Textrahmen mit Zeilenabstand – sonst lässt sich
 // ein Name nicht ganz nach oben setzen.
 import {transformedCorners,fitsSurface} from './usability-model.mjs';
+import {objectSurface} from './surfaces.mjs';
 
 export function boundingSize(o){
   const a=(Number(o.rotation)||0)*Math.PI/180,w=Math.max(0,Number(o.w)||0),h=Math.max(0,Number(o.h)||0);
@@ -48,14 +49,18 @@ export function clampToContour(o,geometry,bounds=null,previous=null){
 }
 
 export function installEdgeClamp(el){
-  const validPositions=new Map();let geometryKey='';
+  const surfacePositions=new Map();
   const glyphs=o=>{if(o.type!=='text'||o.uxHidden||!String(o.text??'').trim()||!el.uxTextBounds)return null;try{return el.uxTextBounds(o);}catch{return null;}};
   const clampAll=self=>{const s=self.state;if(!s?.objects)return;
     const geometry=self.uxProfileGeometry?.();
     if(geometry?.shape==='contour'){
-      const key=JSON.stringify(geometry);if(key!==geometryKey){validPositions.clear();geometryKey=key;}
-      const ids=new Set(s.objects.map(o=>o.id));for(const id of validPositions.keys())if(!ids.has(id))validPositions.delete(id);
-      for(const o of s.objects){const bounds=glyphs(o);clampToContour(o,geometry,bounds,validPositions.get(o.id));
+      // uxProfileGeometry already faces the active side. Other surfaces must not move.
+      const active=s.uxSurface==='back'?'back':'front',key=JSON.stringify(geometry);
+      let cache=surfacePositions.get(active);
+      if(cache?.geometryKey!==key){cache={geometryKey:key,positions:new Map()};surfacePositions.set(active,cache);}
+      const objects=s.objects.filter(o=>objectSurface(o)===active),validPositions=cache.positions;
+      const ids=new Set(objects.map(o=>o.id));for(const id of validPositions.keys())if(!ids.has(id))validPositions.delete(id);
+      for(const o of objects){const bounds=glyphs(o);clampToContour(o,geometry,bounds,validPositions.get(o.id));
         if(fitsSurface(o,bounds||{x:-o.w/2,y:-o.h/2,width:o.w,height:o.h},geometry))validPositions.set(o.id,{x:o.x,y:o.y});}
     }else for(const o of s.objects)clampToPlate(o,s.width,s.height,0,glyphs(o));
   };

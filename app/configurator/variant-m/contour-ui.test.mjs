@@ -1,4 +1,5 @@
 import {surfaceGeometry} from './surfaces.mjs';
+import {surfaceTextIssues} from './usability.mjs';
 import {alignedPosition} from '../../workshop/ui/editor-guides.mjs';
 import {validateSteelFormats,enableSteelFormats,steelPhysicalGeometry,resizeSteelDocument} from './steel-formats.mjs';
 import test from 'node:test';
@@ -9,7 +10,7 @@ import {designArea,designAreaOutline,designAreaPreview} from './design-area.mjs'
 import {surfacePreview} from './material-surface.mjs';
 import {fitsSurface,transformedCorners} from './usability-model.mjs';
 import {freePosition} from './workflow-model.mjs';
-import {clampToContour,clampToPlate} from './edge-clamp.mjs';
+import {clampToContour,clampToPlate,installEdgeClamp} from './edge-clamp.mjs';
 import {contourGuides} from './contour-guides.mjs';
 import {materialPreview} from '../../workshop/material-preview.mjs';
 import {composeMaterialPreview} from '../../workshop/material-presentation.mjs';
@@ -111,4 +112,57 @@ test('back-side preview mirrors the asymmetric source contour together with its 
  assert.equal(fitsSurface(object,bounds(object),geometry),false);
  assert.equal(fitsSurface(object,bounds(object),back),true);
  assert.equal(fitsSurface({...object,x:84},bounds(object),back),false);
+});
+
+
+test('switching contour surfaces preserves both designs; only the active object is clamped',()=>{
+ const front={id:'front',type:'graphic',shape:'rect',x:84,y:30,w:2,h:4,rotation:0};
+ const back={id:'back',type:'graphic',shape:'rect',surfaceId:'back',x:6,y:30,w:2,h:4,rotation:0};
+ const el={state:{objects:[front,back],width:90,height:60,uxSurface:'front'},
+  uxProfileGeometry(){return surfaceGeometry(geometry,this.state.uxSurface);},render(){return 'rendered';}};
+ const original=structuredClone(el.state.objects);
+ installEdgeClamp(el);
+ for(const side of ['front','back','front','back']){
+  el.state.uxSurface=side;assert.equal(el.render(),'rendered');
+  assert.deepEqual(el.state.objects,original,'switching to '+side+' must not edit either design');
+ }
+ back.x=84;el.render();
+ assert.notEqual(back.x,84,'the active back object still obeys its own contour');
+ assert.equal(fitsSurface(back,bounds(back),surfaceGeometry(geometry,'back')),true);
+ assert.deepEqual(front,original[0],'moving back never changes front');
+});
+
+test('contour position anchors survive surface changes independently when the centre is protected',()=>{
+ const g={...geometry,holes:[{x:45,y:30,diameter:4}]};
+ const front={id:'front',x:84,y:30,w:2,h:4,rotation:0};
+ const back={id:'back',surfaceId:'back',x:6,y:30,w:2,h:4,rotation:0};
+ const el={state:{objects:[front,back],width:90,height:60,uxSurface:'front'},
+  uxProfileGeometry(){return surfaceGeometry(g,this.state.uxSurface);},render(){}};
+ installEdgeClamp(el);
+ el.render();el.state.uxSurface='back';el.render();el.state.uxSurface='front';el.render();
+ assert.equal(fitsSurface({...back,x:45},bounds(back),surfaceGeometry(g,'back')),false,'centre cannot replace a cached valid anchor');
+ el.state.uxSurface='back';back.x=84;el.render();
+ assert.equal(fitsSurface(back,bounds(back),surfaceGeometry(g,'back')),true,'back retains its valid anchor across the front render');
+ assert.equal(front.x,84);
+ const savedBack=structuredClone(back);
+ el.state.uxSurface='front';front.x=6;el.render();
+ assert.equal(fitsSurface(front,bounds(front),g),true,'front retains its own anchor');
+ assert.deepEqual(back,savedBack);
+});
+
+
+test('text warnings use only the active surface and never test inactive text against the displayed outline',()=>{
+ const front={id:'front',type:'text',text:'Front',x:84,y:30,w:2,h:4,rotation:0};
+ const back={id:'back',type:'text',text:'Back',surfaceId:'back',x:6,y:30,w:2,h:4,rotation:0};
+ const objects=[front,back],original=structuredClone(objects),measured=[];
+ const textBounds=o=>{measured.push(o.id);return bounds(o);};
+ assert.deepEqual(surfaceTextIssues(objects,'front',geometry,textBounds),[]);
+ assert.deepEqual(measured,['front']);measured.length=0;
+ assert.deepEqual(surfaceTextIssues(objects,'back',surfaceGeometry(geometry,'back'),textBounds),[]);
+ assert.deepEqual(measured,['back']);assert.deepEqual(objects,original);
+ back.x=84;
+ assert.deepEqual(surfaceTextIssues(objects,'front',geometry,textBounds),[],'invalid inactive back text does not block front');
+ const before=structuredClone(objects),issues=surfaceTextIssues(objects,'back',surfaceGeometry(geometry,'back'),textBounds);
+ assert.deepEqual(issues.map(i=>[i.id,i.code]),[['back','outside-surface']]);
+ assert.deepEqual(objects,before,'warning checks never move either text');
 });

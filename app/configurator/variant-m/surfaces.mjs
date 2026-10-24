@@ -1,4 +1,4 @@
-import {mirrorContourPath} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
+export {surfaceGeometry} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {processProfile} from '../../workshop/process-profiles.mjs';
 
 // K14 / Ü15.1: Flächen eines Produkts. Ohne Angabe hat jedes Produkt genau eine
@@ -62,10 +62,6 @@ export function surfaceMirror(config,surfaceId,frontMirror){
 // Dateiname je Fläche: „name.pdf“ → „name-vorderseite.pdf“ / „name-rueckseite.pdf“.
 export const surfaceFileName=(name,surfaceId)=>name.replace(/(\.[a-z0-9]+)?$/i,m=>SURFACE_FILE_SUFFIX[surfaceId]+m);
 // Geometrie von hinten gesehen: freie Kontur und Bohrlöcher seitenrichtig spiegeln.
-export function surfaceGeometry(geometry,surfaceId){
-  if(surfaceId!=='back')return geometry;
-  return {...geometry,...(geometry.shape==='contour'?{outlinePath:mirrorContourPath(geometry.outlinePath,geometry.width)}:{}),holes:(geometry.holes||[]).map(h=>({...h,x:Number((geometry.width-h.x).toFixed(6))}))};
-}
 // Aufpreis der Rückseite für ein Design; offener Preis sperrt eine gestaltete Rückseite.
 export function backSurcharge(config,objects){
   if(!backDesigned(objects))return 0;

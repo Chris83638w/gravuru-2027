@@ -247,3 +247,10 @@ export function contourNearestBoundaryPoint(g,x,y){
  }
  return best;
 }
+
+// Orient an original front geometry once for a physical design surface.
+// Callers already holding a surface geometry must keep using it directly.
+export function surfaceGeometry(geometry,surfaceId){
+  if(surfaceId!=='back')return geometry;
+  return {...geometry,...(geometry.shape==='contour'?{outlinePath:mirrorContourPath(geometry.outlinePath,geometry.width)}:{}),holes:(geometry.holes||[]).map(h=>({...h,x:Number((geometry.width-h.x).toFixed(6))}))};
+}

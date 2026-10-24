@@ -30,11 +30,11 @@ function native(){
 const svg=(color='#ed2030',width=100,height=80)=>Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}mm" height="${height}mm" viewBox="0 0 ${width} ${height}"><path d="M0 0H${width}V${height}H0Z" fill="${color}" fill-opacity=".7"/></svg>`);
 function fixture(t){
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-batch-assets-')),filename=path.join(dir,'products.sqlite');
-  let assets,repository;
+  let assets,repository;const closers=[];
+  t.after(()=>{for(const close of [...closers].reverse())close();repository?.close();assets?.close();fs.rmSync(dir,{recursive:true,force:true});});
   const open=()=>{assets=createDesignAssetStore({filename:path.join(dir,'assets.sqlite')});repository=createProductRepository({filename,validateDocument:document=>assets.validateDocument(validateProductDocument(document))});};
   open();const master=repository.create(makeProductDocument(native(),{kind:'master',name:'Master mit zwei Designs'}));
-  t.after(()=>{repository.close();assets.close();fs.rmSync(dir,{recursive:true,force:true});});
-  return {dir,filename,master,get assets(){return assets;},get repository(){return repository;},restart(){repository.close();assets.close();open();}};
+  return {dir,filename,master,onClose(close){closers.push(close);},get assets(){return assets;},get repository(){return repository;},restart(){repository.close();repository=null;assets.close();assets=null;open();}};
 }
 async function upload(f,name,bytes=svg(),page=1){return f.assets.import({name,bytes:bytes.toString('base64'),page});}
 const file=(name,asset)=>({name,page:asset.page,assetId:asset.assetId});
@@ -65,13 +65,13 @@ test('source folder settings bind exact originals, isolate bad rows and invalida
 test('source settings survive private snapshots and correction reports without duplicating legacy snapshots',async t=>{
   const f=fixture(t),asset=await upload(f,'Design.svg'),input={...batch(f,[{import_key:'source-job',name:'Gesichert',design_file:'Design.svg'}],[file('Kollektion/Design.svg',asset)]),settings:{schema_version:'1',design_root:'Kollektion'}};
   let jobs=createBatchJobs({filename:f.filename,repository:f.repository,assets:f.assets});
-  t.after(()=>jobs.close());
+  f.onClose(()=>jobs?.close());
   const job=jobs.create({name:'Ordner',input});
   const legacy=batch(f,[{import_key:'legacy',name:'Ohne Einstellungen'}]);
   const old=jobs.create({name:'Alt',input:legacy});
   assert.equal(Object.hasOwn(jobs.review(old.id).input,'settings'),false);
   assert.equal(jobs.create({name:'Gleich',input:{...legacy,settings:{schema_version:'1',design_root:''}}}).id,old.id);
-  jobs.close();f.restart();jobs=createBatchJobs({filename:f.filename,repository:f.repository,assets:f.assets});
+  jobs.close();jobs=null;f.restart();jobs=createBatchJobs({filename:f.filename,repository:f.repository,assets:f.assets});
   const opened=jobs.review(job.id);assert.deepEqual(opened.input.settings,input.settings);assert.equal(opened.plan.report[0].artwork.assetId,asset.assetId);
   commitBatch(f.repository,{...opened.input,token:opened.plan.token},f.assets);
   assert.equal(jobs.review(job.id).plan.report[0].status,'existing');
@@ -188,7 +188,7 @@ test('masters with existing imports validate original assets even when rows sele
   const plan=planBatch(f.repository,batchInput,f.assets);assert.equal(plan.valid,true,JSON.stringify(plan.report));
   const copied=commitBatch(f.repository,{...batchInput,token:plan.token},f.assets);
   assert.equal(f.repository.get(copied.products[0].id).document.config.profile.designs[0].importedSource.assetId,asset.assetId);
-  const emptyAssets=createDesignAssetStore({filename:':memory:'});t.after(()=>emptyAssets.close());
+  const emptyAssets=createDesignAssetStore({filename:':memory:'});f.onClose(()=>emptyAssets.close());
   const missing=planBatch(f.repository,{...batchInput,rows:[{import_key:'lost-original',name:'Fehlendes Original'}]},emptyAssets);
   assert.equal(missing.valid,false);assert.equal(missing.report[0].status,'error');assert.equal(missing.entries.length,0);
 });
@@ -197,7 +197,7 @@ test('batch asset import rolls back products and import keys together on databas
   const f=fixture(t),asset=await upload(f,'Design.svg');
   const input=batch(f,[{import_key:'atomic-first',name:'Erstes',design_file:'Design.svg'},{import_key:'atomic-second',name:'Zweites',design_file:'Design.svg'}],[file('Design.svg',asset)]);
   const plan=planBatch(f.repository,input,f.assets);assert.equal(plan.valid,true,JSON.stringify(plan.report));
-  const raw=new DatabaseSync(f.filename);raw.exec("CREATE TRIGGER fail_asset_batch BEFORE INSERT ON import_items WHEN NEW.import_key='atomic-second' BEGIN SELECT RAISE(ABORT,'test rollback'); END");raw.close();
+  const raw=new DatabaseSync(f.filename);try{raw.exec("CREATE TRIGGER fail_asset_batch BEFORE INSERT ON import_items WHEN NEW.import_key='atomic-second' BEGIN SELECT RAISE(ABORT,'test rollback'); END");}finally{raw.close();}
   assert.throws(()=>commitBatch(f.repository,{...input,token:plan.token},f.assets));
   assert.equal(f.repository.list().length,1);assert.equal(f.repository.importItem('atomic-first'),null);assert.equal(f.repository.importItem('atomic-second'),null);
   assert.deepEqual(f.assets.read(asset.assetId,true),svg(),'uploaded source remains available for retry');
@@ -214,8 +214,9 @@ test('legacy batches without an asset store retain text personalization and pric
 
 test('HTTP uploads require CSRF and feed reviewed batch creation without changing the master',async t=>{
   const workshop=createWorkshop({filename:':memory:',seedConfig:native(),legacy:{purchasing:{},features:{}}});
-  const server=createPreviewServer({workshop});server.listen(0,'127.0.0.1');await once(server,'listening');
-  t.after(async()=>{await new Promise(resolve=>server.close(resolve));workshop.close();});
+  const server=createPreviewServer({workshop});
+  t.after(async()=>{if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));workshop.close();});
+  server.listen(0,'127.0.0.1');await once(server,'listening');
   const base=`http://127.0.0.1:${server.address().port}`,master=workshop.repository.get(workshop.defaultId);
   const {csrfToken}=await (await fetch(base+'/api/workshop/session')).json();
   const post=async(route,body,token=csrfToken)=>{

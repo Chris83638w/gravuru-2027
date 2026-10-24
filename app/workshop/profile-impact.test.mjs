@@ -75,11 +75,12 @@ test('preview rejects invalid edits and stale revisions using the same validatio
 });
 
 test('a profile containing a removed font can be reviewed and repaired without allowing it in normal resolution',t=>{
-  const directory=mkdtempSync(path.join(tmpdir(),'g27-profile-repair-'));t.after(()=>rmSync(directory,{recursive:true,force:true}));
-  const filename=path.join(directory,'profiles.sqlite');let profiles=createProfileLibrary({filename,catalog:{fonts:['old','new'],motifs:[]}});
-  const target=profiles.create({name:'Schriften',type:'fonts',items:['old']});profiles.setDefault('fonts',override(target.id),1);profiles.close();
-  profiles=createProfileLibrary({filename,catalog:{fonts:['new'],motifs:[]}});t.after(()=>profiles.close());
-  const repository=createProductRepository({filename:':memory:'});t.after(()=>repository.close());const product=repository.create(document('Vorhandenes Produkt'));
+  const directory=mkdtempSync(path.join(tmpdir(),'g27-profile-repair-'));let profiles,repository;
+  t.after(()=>{repository?.close();profiles?.close();rmSync(directory,{recursive:true,force:true});});
+  const filename=path.join(directory,'profiles.sqlite');profiles=createProfileLibrary({filename,catalog:{fonts:['old','new'],motifs:[]}});
+  const target=profiles.create({name:'Schriften',type:'fonts',items:['old']});profiles.setDefault('fonts',override(target.id),1);profiles.close();profiles=null;
+  profiles=createProfileLibrary({filename,catalog:{fonts:['new'],motifs:[]}});
+  repository=createProductRepository({filename:':memory:'});const product=repository.create(document('Vorhandenes Produkt'));
   assert.throws(()=>profiles.resolve(product.document),{code:'unknown_catalog_item'});
   const input=update(target,['new']),review=profileChangeImpact(repository,profiles,target.id,input,1);assert.deepEqual(review.products[0].changes[0].before,['old']);assert.deepEqual(review.products[0].changes[0].after,['new']);
   assert.throws(()=>profiles.resolve(product.document),{code:'unknown_catalog_item'});

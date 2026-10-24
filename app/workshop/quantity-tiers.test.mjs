@@ -153,7 +153,7 @@ test('Excel-Rundlauf: Blatt „Staffel“ je Familie und Größe, leerer Rabatt 
   f.sizes[0].quantityTiers=[];validateFamily(f);
   const src=path.join(dir,'familie.json'),xlsx=path.join(dir,'stamm.xlsx');fs.writeFileSync(src,JSON.stringify(f));
   execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'export','--out',xlsx,src],{cwd:root});
-  const rows=execFileSync('python3',['-c',"import sys;from openpyxl import load_workbook;ws=load_workbook(sys.argv[1])['Staffel'];print('\\n'.join('|'.join('' if c.value is None else str(c.value) for c in r) for r in ws.iter_rows()))",xlsx]).toString().trim().split('\n');
+  const rows=execFileSync('python3',['-c',"import sys;from openpyxl import load_workbook;ws=load_workbook(sys.argv[1])['Staffel'];print('\\n'.join('|'.join('' if c.value is None else str(c.value) for c in r) for r in ws.iter_rows()))",xlsx]).toString().trim().split(/\r?\n/);
   assert.equal(rows[0],'Familie|SKU|ab Stück|Rabatt %|Stückpreis €');assert.equal(rows.length,5);
   execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'import','--xlsx',xlsx,'--out',path.join(dir,'out')],{cwd:root});
   const back=validateFamily(JSON.parse(fs.readFileSync(path.join(dir,'out',f.id+'.json'))));

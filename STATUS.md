@@ -1,3 +1,10 @@
+## Windows-Testportabilität geprüft · 24.10.2026 (Codex / Astra)
+
+- PR #15, Branch `dev/windows-tests-20261024-astra`; Basis a1170cb, getesteter Code 6a12ee8. Zehn Testdateien korrigiert; produktive Module unverändert, keine bisherigen Tests entfernt.
+- Vollauf je 175 Dateien: Windows vorher native 1195 pass / 21 fail aus 174 Summaries, Konfis separat 3 pass / 3 fail ohne Abschluss; nachher 1225 pass / 0 fail / 5 Capability-Skips, alle 175 regulär beendet. Linux vorher 1222/1222, nachher 1229/1229, jeweils 0 fail/skip.
+- Linux-Vergleich https://github.com/Chris83638w/gravuru-2027/actions/runs/40073906606 grün; keine fehlenden Tests oder neuen Skips. LF geprüft. Kein Merge, keine produktiven Shop-/Hostzugriffe.
+- Übergabe: [Windows-Testportabilität](docs/handoffs/2026-10-24-windows-tests-astra.md), inklusive Einzelmatrix und Prüfsummen. Nächster Schritt: Claude prüft PR #15. Abschließender Beleg-Commit ändert nur Dokumentation und nutzt [skip ci]; getesteter Code bleibt identisch.
+
 ## Paket E offline vorbereitet · 24.10.2026 (Codex / Astra)
 
 - B+C auf Code-main `1a52b7f`, Katalog-main `b05b095` bestätigt. Neuer Branch `dev/shop-sync-offline-20261024-astra`: `scripts/shop-sync-dry-run.mjs` erstellt Katalog-Vorprüfung oder bestehenden Shop-Plan aus lokalem Export samt Markdown/JSON. Kein Netzwerk-/Credential-/Apply-Pfad, Freigaben bleiben wirksam.

@@ -8,14 +8,15 @@ import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {surfacePreview,validSurface} from '../configurator/variant-m/material-surface.mjs';
 
 test('material import retains byte-identical original and immutable PNG preview across restart',async t=>{
- const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-surface-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-surface-'));let store;
+ t.after(()=>{store?.close();fs.rmSync(dir,{recursive:true,force:true});});
  const filename=path.join(dir,'design-assets.sqlite'),original=fs.readFileSync(new URL('./preview-assets/reference.jpg',import.meta.url));
- let store=createDesignAssetStore({filename});t.after(()=>store.close());
+ store=createDesignAssetStore({filename});
  const first=await store.importMaterialSurface(original.toString('base64'));
  assert.equal(first.sha256,sha256(original));assert.equal(validSurface(first.url),true);
  const preview=store.materialSurface(first.sha256);assert.equal(preview.subarray(1,4).toString(),'PNG');
  const second=await store.importMaterialSurface(original.toString('base64'));assert.deepEqual(second,first);
- store.close();store=createDesignAssetStore({filename});
+ store.close();store=null;store=createDesignAssetStore({filename});
  assert.deepEqual(store.materialSurface(first.sha256,true),original);assert.deepEqual(store.materialSurface(first.sha256),preview);
  assert.throws(()=>store.validateDocument({config:{materialSurface:'/api/workshop/material-surfaces/'+'0'.repeat(64)+'.png'}}),/fehlt/);
  assert.throws(()=>store.materialSurface('../private'),/fehlt/);

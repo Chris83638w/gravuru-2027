@@ -1,0 +1,156 @@
+# Task-specific baseline comparison for the Windows portability PR.
+name: Linux test portability comparison
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    if: github.head_ref == 'dev/windows-tests-20261024-astra'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      BEFORE_SHA: a1170cb26b3e759824e84b32e7a08a19a887bbd9
+      AFTER_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Check out pinned baseline
+        uses: actions/checkout@v7
+        with:
+          ref: a1170cb26b3e759824e84b32e7a08a19a887bbd9
+          path: source-before
+          persist-credentials: false
+
+      - name: Check out exact PR head
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: source-after
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+
+      - name: Prepare shared dependencies and isolated run copies
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$RUNNER_TEMP/gravuru-test-portability"
+          mkdir -p "$ROOT/output" "$ROOT/run-before" "$ROOT/run-after" "$ROOT/tmp-before" "$ROOT/tmp-after"
+          echo "CI_ROOT=$ROOT" >> "$GITHUB_ENV"
+          test "$(git -C source-before rev-parse HEAD)" = "$BEFORE_SHA"
+          test "$(git -C source-after rev-parse HEAD)" = "$AFTER_SHA"
+          git -C source-before ls-tree -r HEAD > "$ROOT/output/before-tree.txt"
+          git -C source-after ls-tree -r HEAD > "$ROOT/output/after-tree.txt"
+          for req in requirements-import.txt requirements-excel.txt requirements-contours.txt requirements-print.txt requirements-photos.txt; do
+            cmp "source-before/app/workshop/$req" "source-after/app/workshop/$req"
+          done
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends libcairo2 fonts-dejavu-core
+          python -m venv "$ROOT/venv"
+          "$ROOT/venv/bin/python" -m pip install \
+            -r source-before/app/workshop/requirements-import.txt \
+            -r source-before/app/workshop/requirements-excel.txt \
+            -r source-before/app/workshop/requirements-contours.txt \
+            -r source-before/app/workshop/requirements-print.txt \
+            -r source-before/app/workshop/requirements-photos.txt \
+            fonttools==4.67.0
+          "$ROOT/venv/bin/python" -m pip freeze > "$ROOT/output/python-freeze.txt"
+          "$ROOT/venv/bin/python" -m pip check
+          "$ROOT/venv/bin/python" -c "import sys,svgpathtools,pymupdf,PIL,cairosvg,fontTools,openpyxl,numpy; print(sys.version)" > "$ROOT/output/python.txt"
+          node --version > "$ROOT/output/node.txt"
+          uname -a > "$ROOT/output/kernel.txt"
+          cat /etc/os-release > "$ROOT/output/os-release.txt"
+          printf 'before=%s\nafter=%s\n' "$BEFORE_SHA" "$AFTER_SHA" > "$ROOT/output/revisions.txt"
+          for side in before after; do
+            # Use versioned runtime sources only. Writable generated assets stay in the run copy.
+            git -C "source-$side" archive HEAD app scripts docs legacy-patches ops package.json | tar -x -C "$ROOT/run-$side"
+            test -f "$ROOT/run-$side/app/designs/aosu-labrador/assets/Michroma-Regular.ttf"
+            test -f "$ROOT/run-$side/app/designs/aosu-labrador/assets/michroma-vectors.json"
+            test ! -e "$ROOT/run-$side/.local-data"
+            test ! -e "$ROOT/run-$side/app/.local-data"
+          done
+          test -f /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf
+          test -f /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf
+          sha256sum source-after/scripts/test-portability/*.mjs > "$ROOT/output/runner-sha256.txt"
+          for side in before after; do
+            node --input-type=module -e 'import fs from "node:fs"; import path from "node:path"; const repo=process.argv[1]; const dirs=["app/configurator/variant-m","app/workshop"]; console.log(dirs.flatMap(dir=>fs.readdirSync(path.join(repo,dir),{withFileTypes:true}).filter(e=>e.isFile()&&e.name.endsWith(".test.mjs")).map(e=>dir+"/"+e.name)).sort().join("\n"));' "source-$side" > "$ROOT/output/$side-test-files.txt"
+          done
+          diff -u "$ROOT/output/before-test-files.txt" "$ROOT/output/after-test-files.txt"
+          test "$(wc -l < "$ROOT/output/before-test-files.txt")" -eq 175
+
+      - name: Record real platform capabilities
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module > "$CI_ROOT/output/capabilities.json" <<'NODE'
+          import fs from 'node:fs/promises';
+          import path from 'node:path';
+          import os from 'node:os';
+          import http from 'node:http';
+          import {DatabaseSync} from 'node:sqlite';
+          const result={platform:process.platform,node:process.version,checks:{}};
+          const dir=await fs.mkdtemp(path.join(os.tmpdir(),'gravuru-linux-caps-'));
+          try{await fs.writeFile(path.join(dir,'target'),'x');await fs.symlink(path.join(dir,'target'),path.join(dir,'link'));result.checks.symlink={available:true};}
+          catch(e){result.checks.symlink={available:false,code:e.code,message:e.message};}
+          const server=http.createServer((req,res)=>res.end('ok'));
+          try{await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});const body=await(await fetch('http://127.0.0.1:'+server.address().port)).text();result.checks.loopback={available:body==='ok'};}
+          catch(e){result.checks.loopback={available:false,code:e.code,message:e.message};}
+          finally{if(server.listening)await new Promise(resolve=>server.close(resolve));}
+          try{const db=new DatabaseSync(':memory:');db.exec('create table probe(id integer)');db.close();result.checks.sqlite={available:true};}
+          catch(e){result.checks.sqlite={available:false,code:e.code,message:e.message};}
+          await fs.rm(dir,{recursive:true,force:true});
+          console.log(JSON.stringify(result,null,2));
+          NODE
+
+      - name: Run the same 175-file suites before and after
+        shell: bash
+        run: |
+          set -euo pipefail
+          RUNNER="$GITHUB_WORKSPACE/source-after/scripts/test-portability/run-full-tests.mjs"
+          for side in before after; do
+            mkdir -p "$CI_ROOT/output/$side"
+            set +e
+            env -i PATH="$CI_ROOT/venv/bin:$PATH" LANG=C.UTF-8 LC_ALL=C.UTF-8 \
+              TMPDIR="$CI_ROOT/tmp-$side" TEMP="$CI_ROOT/tmp-$side" TMP="$CI_ROOT/tmp-$side" \
+              GRAVURU_PYTHON="$CI_ROOT/venv/bin/python" PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 NO_COLOR=1 \
+              node "$RUNNER" --run --repo "$CI_ROOT/run-$side" --python "$CI_ROOT/venv/bin/python" \
+                --temp "$CI_ROOT/tmp-$side" --output "$CI_ROOT/output/$side" \
+                --label "$side" --expected-files 175 --timeout-ms 600000 \
+                > "$CI_ROOT/output/$side/runner.log" 2>&1
+            status=$?
+            set -e
+            printf '%s\n' "$status" > "$CI_ROOT/output/$side/runner-exit-code.txt"
+          done
+
+      - name: Compare individual test outcomes and retained coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          before_dirs=("$CI_ROOT"/output/before/before-*)
+          after_dirs=("$CI_ROOT"/output/after/after-*)
+          test "${#before_dirs[@]}" -eq 1
+          test "${#after_dirs[@]}" -eq 1
+          test -f "${before_dirs[0]}/summary.json"
+          test -f "${after_dirs[0]}/summary.json"
+          # A green comparison means no new failures; it does not erase baseline failures.
+          node source-after/scripts/test-portability/compare-runs.mjs \
+            "${before_dirs[0]}" "${after_dirs[0]}" "$CI_ROOT/output/comparison.json"
+
+      - name: Preserve logs and comparison even on failure
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-test-comparison-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/gravuru-test-portability/output/
+          retention-days: 14
+          if-no-files-found: warn

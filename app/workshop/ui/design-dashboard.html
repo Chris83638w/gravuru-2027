@@ -37,8 +37,15 @@
 </dialog>
 <dialog id="release-dialog" class="review-dialog confirmation-dialog" aria-labelledby="release-count" aria-describedby="release-explanation">
 <h2 id="release-count">Designs freigeben?</h2>
-<p id="release-explanation">Bestätige, dass du die geöffneten Vorschauen geprüft hast. Die Designfreigabe wird im Katalog gespeichert. Angezeigte Produktbefunde wie offene Preise oder Größenkonflikte bleiben bestehen.</p>
+<p id="release-explanation">Bestätige, dass du die geöffneten Vorschauen geprüft hast. Die Freigabe wird nur für die ausgewählten Familienziele im Katalog gespeichert. Angezeigte Produktbefunde wie offene Preise oder Größenkonflikte bleiben bestehen.</p>
 <ul id="release-list"></ul>
 <div class="dialog-actions"><button id="release-cancel" type="button" autofocus>Abbrechen</button><button id="release-confirm" class="release" type="button">Freigabe bestätigen</button></div>
+</dialog>
+<dialog id="variant-dialog" class="review-dialog confirmation-dialog" aria-labelledby="variant-title">
+<div class="dialog-head"><h2 id="variant-title">Für ein anderes Ziel einpassen</h2><button id="variant-close" type="button" autofocus>Schließen</button></div>
+<p>Wähle eine vorhandene Familie, Größe und Linie. Die Kennung wird aus den Katalogregeln ermittelt. Eine neue Variante bleibt offen.</p>
+<div class="variant-fields"><label>Familie<select id="variant-family"></select></label><label>Größe<select id="variant-size"></select></label><label>Linie<select id="variant-line"></select></label></div>
+<button id="variant-prepare" type="button">Einpassung prüfen</button><p id="variant-status" role="status" aria-live="polite"></p><img id="variant-image" alt="Vorschau der Einpassung" hidden>
+<div id="variant-result"></div><button id="variant-confirm" type="button" disabled>Variante anlegen</button>
 </dialog>
 </body></html>

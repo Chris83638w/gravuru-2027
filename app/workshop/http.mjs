@@ -72,9 +72,11 @@ import {parseThemeCatalog} from './theme-catalog.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {DEFAULT_TENANT,createTenantRegistry,tenantFromRequest} from './tenant.mjs';
 import {createCatalogStructure} from './catalog-structure.mjs';
-import {designDashboardWithFit,designFile,patchDesign} from './design-dashboard.mjs';
+import {designDashboardWithFit,designFile,forgetKatalog} from './design-dashboard.mjs';
+import {targetDesignPreview,patchDesignWithTargetReview} from './design-target-preview.mjs';
 import {designPreviewGlyphs,previewWarningHeader,PREVIEW_WARNING_HEADER} from './design-preview-glyphs.mjs';
 import {createDesignEditor} from './design-editor.mjs';
+import {createDesignVariants} from './design-variants.mjs';
 import {katalogPath} from './katalog-source.mjs';
 import {categoryLabels} from './category-labels.mjs';
 import {tenantOverview} from './tenant-overview.mjs';
@@ -132,6 +134,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const fonts=createFontLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),tenantId});
   const formFonts={...seed.config.localResources.fonts,...workshopResources(seed.config.localResources).fonts,...fonts.resources()};
   const designEditor=createDesignEditor({available:formFonts});
+  const designVariants=createDesignVariants({available:formFonts});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources),tenantId});
   profiles.registerFonts(fonts.list());
   const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),tenantId});
@@ -363,7 +366,19 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         fail(405,'method_not_allowed','Katalogdesign lesen, prüfen oder speichern.');
       }
       // Design-Dashboard: Designs je Linie aus dem Katalog-Repo (lesen), menschliche Korrekturen zurück in den Katalog (PATCH).
-      if(pathname==='/api/workshop/designs'||pathname==='/api/workshop/designs/svg'){
+      if(pathname==='/api/workshop/designs/variant/prepare'||pathname==='/api/workshop/designs/variant'){
+        if(!ownsBundled)fail(503,'katalog_tenant','Für diesen Mandanten ist kein Katalog hinterlegt.');
+        if(method!=='POST')fail(405,'method_not_allowed','Varianten mit POST vorbereiten oder anlegen.');
+        const input=await body(req,16384),root=katalogRoot();
+        const result=pathname.endsWith('/prepare')?await designVariants.prepare(root,input):await designVariants.create(root,input,{actor:merchantSession?.subject||localActor});
+        if(result.changed)forgetKatalog();return json(res,200,result);
+      }
+      if(pathname==='/api/workshop/designs/target-preview'){
+   if(!ownsBundled)fail(503,'katalog_missing','Katalog nicht verfügbar.');
+   if(req.method!=='GET')fail(405,'method','GET verwenden.');
+   return json(res,200,await targetDesignPreview(katalogRoot(),Object.fromEntries(url.searchParams),{available:formFonts}));
+  }
+  if(pathname==='/api/workshop/designs'||pathname==='/api/workshop/designs/svg'){
         if(!ownsBundled)fail(503,'katalog_tenant','Für diesen Mandanten ist kein Katalog hinterlegt.');
         const root=katalogRoot(),q=url.searchParams;
         if(pathname==='/api/workshop/designs/svg'){
@@ -378,7 +393,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
           if(startDesigns!==null&&!['true','false'].includes(startDesigns))fail(422,'designs_query','startDesigns ist true oder false.');
           return json(res,200,await designDashboardWithFit(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),startDesigns:startDesigns==='true',repository,available:formFonts}));
         }
-        if(method==='PATCH')return json(res,200,patchDesign(root,await body(req,16384),{actor:merchantSession?.subject||localActor}));
+        if(method==='PATCH')return json(res,200,await patchDesignWithTargetReview(root,await body(req,16384),{actor:merchantSession?.subject||localActor,available:formFonts}));
         fail(405,'method_not_allowed','Designs lesen (GET) oder ändern (PATCH).');
       }
       if(pathname==='/api/workshop/ai-design/status'&&method==='GET')return json(res,200,aiJobs.status());

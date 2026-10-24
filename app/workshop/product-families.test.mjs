@@ -294,3 +294,15 @@ test('contour backing stays storable and explicitly open without a false rectang
  const f=contourFamily();f.backing={label:'Rückplatte',offsetMm:5,thicknessMm:3};validateFamily(f);
  const svg=familyTemplate(f,f.sizes[0]);assert.ok(svg.includes('id="rueckplatte" data-status="offen"'));assert.ok(!svg.includes('stroke="#06c"'));assert.ok(familyBriefing(f,1).includes('bei Konturformen ist der Rückplattenversatz noch offen'));
 });
+
+test('M: outdoor suitability is optional, explicit and never inferred',()=>{
+ const source=family(),plain=validateFamily(structuredClone(source));assert.equal(Object.hasOwn(plain,'outdoorSuitable'),false);for(const value of [null,true,false]){const f=validateFamily({...structuredClone(source),outdoorSuitable:value});assert.equal(f.outdoorSuitable,value);}for(const value of ['ja',1,{},[]])assert.throws(()=>validateFamily({...structuredClone(source),outdoorSuitable:value}),/außen geeignet/);
+});
+
+
+test('M: target preview option supports print and acrylic without enabling a production adapter',()=>{
+ const steel=JSON.parse(fs.readFileSync(new URL('./fixtures/katalog/familien/edelstahl/test-schilder.json',import.meta.url),'utf8'));
+ for(const [kind,process] of [['steel','color-print'],['acrylic','acrylic-engraving'],['slate','color-print']]){const family=structuredClone(steel);family.material.kind=kind;family.material.processingProfileId=process;family.groups=family.groups.filter(g=>g.key==='RE');family.sizes=family.sizes.filter(s=>s.groupKey==='RE');family.sizes.forEach(s=>s.baseCents=0);
+ const c=familyProductConfig(family,family.sizes[0],1,{previewOnly:true});assert.equal(c.profile.material.kind,kind);assert.equal(c.profile.processing.profileId,process);assert.equal(c.reviewOnly,true);assert.equal(c.profile.features.orderEnabled,false);assert.throws(()=>familyProductConfig(family,family.sizes[0],1));
+ family.material.thicknessMm=null;assert.throws(()=>familyProductConfig(family,family.sizes[0],1,{previewOnly:true}),e=>e.status===422&&/Materialstärke/.test(e.message));}
+});

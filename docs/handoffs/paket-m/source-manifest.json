@@ -1,0 +1,208 @@
+{
+  "schema": "paket-m-source-snapshot-v1",
+  "codeBase": "67b8f1c60e8e52e5c0cd03e5357d379a27820baf",
+  "branch": "dev/design-ziele-20261024-astra",
+  "files": [
+    {
+      "path": "app/platform/sources/app/shared/models/processing-profiles.mjs",
+      "gitBlobSHA1": "1c9017d19b75d6fadc96e5a13caff70f251ae3f0",
+      "bytes": 3062
+    },
+    {
+      "path": "app/workshop/design-dashboard-ui.test.mjs",
+      "gitBlobSHA1": "ba083560b2f87583fbe5f1304f219b72db45b0a6",
+      "bytes": 66306
+    },
+    {
+      "path": "app/workshop/design-dashboard.mjs",
+      "gitBlobSHA1": "06bf0f0c2581e7fcd8a091a7a42157f26d0a5243",
+      "bytes": 43574
+    },
+    {
+      "path": "app/workshop/design-dashboard.test.mjs",
+      "gitBlobSHA1": "b4e5ce8cfb3bdffad2339a03d28f136901e4ce9f",
+      "bytes": 29665
+    },
+    {
+      "path": "app/workshop/design-target-dashboard.mjs",
+      "gitBlobSHA1": "fcde410a7b5b91dd43707f0540fa6d4cabf141bc",
+      "bytes": 2794
+    },
+    {
+      "path": "app/workshop/design-target-preview.mjs",
+      "gitBlobSHA1": "2839e578db6b1bd7d8a6673ab57a842ccb833c16",
+      "bytes": 5943
+    },
+    {
+      "path": "app/workshop/design-target-preview.test.mjs",
+      "gitBlobSHA1": "82dd9d13432a8f1f9937ce1b76ca37c2d429b259",
+      "bytes": 16164
+    },
+    {
+      "path": "app/workshop/design-target-rules.mjs",
+      "gitBlobSHA1": "b07d5b6668b2571e42f0a573c89103150f53fa65",
+      "bytes": 6683
+    },
+    {
+      "path": "app/workshop/design-target-rules.test.mjs",
+      "gitBlobSHA1": "2380d294b85df5212204877dda28e22e4a276d7c",
+      "bytes": 5504
+    },
+    {
+      "path": "app/workshop/design-targets.mjs",
+      "gitBlobSHA1": "578596748f10ea92f1725c523a391cb38e7352d3",
+      "bytes": 14287
+    },
+    {
+      "path": "app/workshop/design-targets.test.mjs",
+      "gitBlobSHA1": "f20c7e05444bbfeeb016ade968ffb6ccfc367128",
+      "bytes": 12027
+    },
+    {
+      "path": "app/workshop/design-variants.mjs",
+      "gitBlobSHA1": "47362d87ba937e540932469b09aea53eb8c45854",
+      "bytes": 26787
+    },
+    {
+      "path": "app/workshop/design-variants.test.mjs",
+      "gitBlobSHA1": "aec7db36979fea26389aa7a3ddd94d8dafa5ea0e",
+      "bytes": 23762
+    },
+    {
+      "path": "app/workshop/form-product.mjs",
+      "gitBlobSHA1": "e013d0595f601c05a466e66f4988392a2ee77935",
+      "bytes": 7670
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "gitBlobSHA1": "6fddc20da8904aab2c49f636b79ed9fee27dd035",
+      "bytes": 116803
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "gitBlobSHA1": "9726c637a7494fa092899cd5a1cba85f5bdda929",
+      "bytes": 40061
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "gitBlobSHA1": "8f0883f30ccbf1ac0a9b22b4c359f598981fe8e7",
+      "bytes": 32052
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "gitBlobSHA1": "42159365f4428dc8274cc0bf083d91a949bd5c4c",
+      "bytes": 20333
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "gitBlobSHA1": "4a5df02100e32a57a010de2ceba7981f4871b2d4",
+      "bytes": 28095
+    },
+    {
+      "path": "app/workshop/katalog-source.mjs",
+      "gitBlobSHA1": "5959e1eec5c46bba9dfed3a0e16585d2eaba8a92",
+      "bytes": 23393
+    },
+    {
+      "path": "app/workshop/katalog-source.test.mjs",
+      "gitBlobSHA1": "4e0b3e30c487d404dc0ea0ce92979a1400eb5943",
+      "bytes": 12858
+    },
+    {
+      "path": "app/workshop/katalog-writeback.mjs",
+      "gitBlobSHA1": "b4e8cc115df77332d493b325316884acdd2a72e1",
+      "bytes": 15869
+    },
+    {
+      "path": "app/workshop/katalog-writeback.test.mjs",
+      "gitBlobSHA1": "716efb8ba0ab651670641857993044fbca42faf1",
+      "bytes": 17365
+    },
+    {
+      "path": "app/workshop/material-presentation.mjs",
+      "gitBlobSHA1": "b3d524ea060969ecf36ceabb07bac97bb7d589bc",
+      "bytes": 8941
+    },
+    {
+      "path": "app/workshop/material-preview.mjs",
+      "gitBlobSHA1": "54701f34c48736cc0055e0d219b5a71dea62e13a",
+      "bytes": 4644
+    },
+    {
+      "path": "app/workshop/material-preview.test.mjs",
+      "gitBlobSHA1": "4168acbc239b015ba7f068666960d31a4d91787b",
+      "bytes": 9766
+    },
+    {
+      "path": "app/workshop/product-families.mjs",
+      "gitBlobSHA1": "39c85e92906f1ce2d7c4be4779eb76871c59d343",
+      "bytes": 46756
+    },
+    {
+      "path": "app/workshop/product-families.test.mjs",
+      "gitBlobSHA1": "8c90f6c325336b95cefbb2fbbe2a732fddfda4bc",
+      "bytes": 29935
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard-review.mjs",
+      "gitBlobSHA1": "dad362746616537a89b087e40f3c5a843c0814a7",
+      "bytes": 2135
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard-ui.mjs",
+      "gitBlobSHA1": "1ad392032b557bc319432732c6efa427557cda9b",
+      "bytes": 43931
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard.css",
+      "gitBlobSHA1": "90d81762c1b48e52007b047cd2f8caba1946d8d1",
+      "bytes": 15078
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard.html",
+      "gitBlobSHA1": "969d1d1a7772ecef76c78fab05fec45cae70ef6c",
+      "bytes": 7689
+    },
+    {
+      "path": "scripts/katalog-import.mjs",
+      "gitBlobSHA1": "c423738f735d9e4857629b68e0b4b274b956a982",
+      "bytes": 5382
+    },
+    {
+      "path": "scripts/migrate-design-targets.mjs",
+      "gitBlobSHA1": "c7b28634a43a761bce252053f10db0a759aee6ab",
+      "bytes": 5691
+    },
+    {
+      "path": "scripts/shop-bind.mjs",
+      "gitBlobSHA1": "e954cd5780e989dd133f2ee1dc64a3a0ddc12f16",
+      "bytes": 15905
+    },
+    {
+      "path": "scripts/shop-bind.test.mjs",
+      "gitBlobSHA1": "82328a34e01c9adaace02721dd9a883071ade69a",
+      "bytes": 12534
+    },
+    {
+      "path": "scripts/shop-sync-dry-run.mjs",
+      "gitBlobSHA1": "eed5fbeb04f7f95a6bcb6aafdef64033e86b73aa",
+      "bytes": 10418
+    },
+    {
+      "path": "scripts/shop-sync-dry-run.test.mjs",
+      "gitBlobSHA1": "b6f3171c638d7bf4ec6ec5f0b32424eadff37700",
+      "bytes": 17709
+    },
+    {
+      "path": "scripts/shop-sync.mjs",
+      "gitBlobSHA1": "c02104237296bde3c41db54786764d0e845e1181",
+      "bytes": 32551
+    },
+    {
+      "path": "scripts/shop-sync.test.mjs",
+      "gitBlobSHA1": "15bdfe7f7e0c9ba9409957dc631a75b46f68d3a9",
+      "bytes": 35045
+    }
+  ],
+  "scope": "40 geaenderte/neue Quell- und Testdateien; Bericht, STATUS und Bildnachweise separat."
+}

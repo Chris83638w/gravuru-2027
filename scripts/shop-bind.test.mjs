@@ -21,7 +21,7 @@ const STORE='fixture-store',SHOP=HANDOFF.shopDomain;
 
 // Temporäre Werkstatt-DB mit den drei 7x2-Hauptprodukten aus dem Fixture-Katalog (Import-Journal wie katalog-import).
 function workshopDb(t){
- const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-shop-bind-')),filename=path.join(dir,'workshop.sqlite');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-shop-bind-')),filename=path.join(dir,'workshop.sqlite'),connections=[];
  const k=openKatalog(KATALOG),line=k.lines.get('edelstahl-tuerschilder'),{_file,_material,...doc}=k.families.get('steel-door-signs');
  const sub=line.subcategories.find(s=>s.id==='familienschilder'),size=doc.sizes.find(s=>s.key==='GR-ES-RE-70X23P3-T15');
  const repository=createProductRepository({filename,tenantId:'gravuru'});
@@ -32,8 +32,8 @@ function workshopDb(t){
  });
  const created=repository.importBatch(entries);
  repository.close();
- t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
- return {dir,filename,created};
+ t.after(()=>{for(const connection of connections.reverse())connection.close();fs.rmSync(dir,{recursive:true,force:true});});
+ return {dir,filename,created,closeBeforeCleanup:connection=>connections.push(connection)};
 }
 const clockAt=iso=>{let now=Date.parse(iso);return ()=>now+=5;};
 
@@ -51,8 +51,8 @@ test('Auswahl aus dem shop-sync-Plan: nur „unverändert“, jede Variante mit 
 });
 
 test('Werkstatt-DB: Konfi-Produkte über Import-Journal oder profile.id auflösen; Prüfung id-plan-ready mit Shop-Preisen aus dem Export',async t=>{
- const {filename}=workshopDb(t),clock=clockAt('2026-10-23T12:00:00Z');
- const ws=openWorkshopDb(filename,{tenantId:'gravuru',shopDomain:SHOP,storeId:STORE,clock});t.after(()=>ws.close());
+ const {filename,closeBeforeCleanup}=workshopDb(t),clock=clockAt('2026-10-23T12:00:00Z');
+ const ws=openWorkshopDb(filename,{tenantId:'gravuru',shopDomain:SHOP,storeId:STORE,clock});closeBeforeCleanup(ws);
  const selections=resolveRecords(bindSelections(syncPlan()).selections,ws.repository);
  assert.ok(selections.every(s=>/^cfg_[a-f0-9-]{36}$/.test(s.productId)&&s.productRevision===1&&s.resolution==='import-journal'));
  assert.equal(new Set(selections.map(s=>s.productId)).size,3);
@@ -84,8 +84,8 @@ test('Werkstatt-DB: Konfi-Produkte über Import-Journal oder profile.id auflöse
 });
 
 test('Aktivierung: 15 Zuordnungen über den bestehenden Store, Wiederholung ohne neue Bindungen, Auflösung je Shopify-ID-Paar',async t=>{
- const {filename}=workshopDb(t),clock=clockAt('2026-10-23T12:00:00Z');
- const ws=openWorkshopDb(filename,{tenantId:'gravuru',shopDomain:SHOP,storeId:STORE,clock});t.after(()=>ws.close());
+ const {filename,closeBeforeCleanup}=workshopDb(t),clock=clockAt('2026-10-23T12:00:00Z');
+ const ws=openWorkshopDb(filename,{tenantId:'gravuru',shopDomain:SHOP,storeId:STORE,clock});closeBeforeCleanup(ws);
  const selections=resolveRecords(bindSelections(syncPlan()).selections,ws.repository),reader=exportReader(exportDoc(),{shopDomain:SHOP});
  const blocks=await checkSelections(selections,{adapter:ws.adapter,reader,clock});
  const applied=applyChecks(blocks,{orderIntake:ws.orderIntake,storeId:STORE,shopDomain:SHOP,adapter:ws.adapter});
@@ -107,13 +107,13 @@ test('Aktivierung: 15 Zuordnungen über den bestehenden Store, Wiederholung ohne
  const skipped=applyChecks(await checkSelections(selections,{adapter:ws.adapter,reader:exportReader(off,{shopDomain:SHOP}),clock}),{orderIntake:ws.orderIntake,storeId:STORE,shopDomain:SHOP,adapter:ws.adapter});
  assert.equal(skipped[0].written,false);assert.match(skipped[0].reason,/Shopify-Grundpreis/);
  // Anderer Store-Name auf derselben DB wird abgewiesen (Spiegel der Store-Prüfung).
- const other=openWorkshopDb(filename,{tenantId:'gravuru',shopDomain:SHOP,storeId:'anderer-store',clock});t.after(()=>other.close());
+ const other=openWorkshopDb(filename,{tenantId:'gravuru',shopDomain:SHOP,storeId:'anderer-store',clock});closeBeforeCleanup(other);
  const otherBlocks=await checkSelections(selections,{adapter:other.adapter,reader,clock});assert.equal(otherBlocks[0].result.status,'id-plan-ready');
  assert.throws(()=>applyChecks(otherBlocks,{orderIntake:other.orderIntake,storeId:'anderer-store',shopDomain:SHOP,adapter:other.adapter}),{code:'shop_binding_store_scope'});
 });
 
 test('run(): Dry-run ohne DB (nur Auswahl), mit DB (Prüfung), --apply nur mit --live oder --trust-export',async t=>{
- const {filename}=workshopDb(t),dir=path.dirname(filename),quiet={write(){}};
+ const {filename,closeBeforeCleanup}=workshopDb(t),dir=path.dirname(filename),quiet={write(){}};
  const planFile=path.join(dir,'sync-plan.json');fs.writeFileSync(planFile,JSON.stringify(syncPlan()));
  let out='';const dry=await run(['--plan',planFile,'--out',path.join(dir,'bind.json')],{stdout:{write:s=>out+=s},stderr:quiet});
  assert.equal(dry.schema,BIND_SCHEMA);assert.equal(dry.mode,'dry-run');assert.equal(dry.selections.length,15);assert.equal(dry.check,null);assert.equal(dry.selections[0].productId,undefined);
@@ -127,7 +127,7 @@ test('run(): Dry-run ohne DB (nur Auswahl), mit DB (Prüfung), --apply nur mit -
  await assert.rejects(run(['--plan',planFile,'--out',path.join(dir,'b5.json'),'--db',filename,'--store-id',STORE,'--live'],{env:{},stdout:quiet,stderr:quiet}),{code:'credentials_missing'});
  const applied=await run(['--plan',planFile,'--export',EXPORT,'--out',path.join(dir,'b6.json'),'--db',filename,'--store-id',STORE,'--apply','--trust-export'],{stdout:quiet,stderr:quiet});
  assert.equal(applied.mode,'apply');assert.deepEqual(applied.applied.map(a=>[a.written,a.createdBindings]),[[true,15]]);
- const ws=openWorkshopDb(filename,{shopDomain:SHOP,storeId:STORE});t.after(()=>ws.close());
+ const ws=openWorkshopDb(filename,{shopDomain:SHOP,storeId:STORE});closeBeforeCleanup(ws);
  assert.equal(ws.orderIntake.bindings().length,15);
  await assert.rejects(run([],{stdout:quiet}),/Aufruf/);
 });

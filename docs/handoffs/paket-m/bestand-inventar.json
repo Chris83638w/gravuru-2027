@@ -1,0 +1,46 @@
+{
+  "schema": "gravuru-bestand-acquisition/v1",
+  "catalogueRepository": "Chris83638w/gravuru-katalog.",
+  "pinChain": {
+    "commit": "57939029216bda6fa058b788b9111aaa6156fcf3",
+    "designsTree": "66c054e4423f9d06f610b9d05fe0c879fd3b9a40",
+    "bestandTree": "08d2229e835303a9bc9fbb4301487aa750da3b33"
+  },
+  "counts": {
+    "remoteEntries": 72943,
+    "remoteBlobFiles": 52886,
+    "remoteBestandRootTrees": 55,
+    "remoteDesignJSON": 19356,
+    "remoteNonBoegenDesignJSON": 10855,
+    "remoteBoegenDesignJSON": 8501,
+    "boegen": 110,
+    "reconstructedGitTrees": 20058,
+    "treeMismatches": 0,
+    "localAcquiredFiles": 63,
+    "localFetchedFiles": 58,
+    "localExistingVerified": 1,
+    "localCacheCopied": 4,
+    "localBestandDesignJSON": 28,
+    "priorityGedenkDesigns": 24,
+    "priorityPreviews": 24,
+    "gedenkIndexRecords": 650,
+    "boegenLineIndexes": 6,
+    "localBlobMismatches": 0
+  },
+  "remoteInventoryComplete": true,
+  "localJSONCopyComplete": false,
+  "scope": "24 real memorial source JSON + previews; D204 SVG/photo; memorial index/README; 6 Boegen line indexes; light-pass documentation; 4 SHA-matching cache design JSON. No bulk 19356-file acquisition.",
+  "availabilityGuarantee": false,
+  "positiveCollision": {
+    "id": "GT-S-30x20-D204",
+    "path": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D204/design.json",
+    "sha": "3eec77d2635e5417e576ef0ce6bc8642652b751c",
+    "preview": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D204/preview.png",
+    "previewSHA": "238f0a64693728b325a33ced757d0953fdcba450"
+  },
+  "limitations": [
+    "Remote paths/tree blobs are complete, but JSON contents are acquired only for the explicit local subset.",
+    "Directory names must not be treated as proof of every design.id value.",
+    "No existing sources were overwritten; old cache was read only; no GitHub mutations."
+  ]
+}

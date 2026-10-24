@@ -1,0 +1,228 @@
+{
+  "schema": "gravuru-paket-m-demo-readback/v1",
+  "scope": "Private browser-created synthetic variant; source catalogue and repositories not mutated.",
+  "source": {
+    "reihe": "edelstahl-gravur-90x30",
+    "id": "TRE-V2A-9x3-D999998",
+    "files": [
+      {
+        "file": "designs/edelstahl-gravur-90x30/TRE-V2A-9x3-D999998/design.json",
+        "sha256": "e639e610d04e8b41e34119324cefcc4bb1259163ac2bdbfdfbc183c85b237300"
+      },
+      {
+        "file": "designs/edelstahl-gravur-90x30/TRE-V2A-9x3-D999998/design.svg",
+        "sha256": "b802483346719b7d26440cab0f6a533f1ef5ab0eb33f776167911da7eed59ea9"
+      }
+    ],
+    "checksum": "24c4ecd5079f3d06b420f6dcccf60d157a1edbd082c06d95c85c6867899ef0c1"
+  },
+  "target": {
+    "reihe": "edelstahl-gravur-120x80",
+    "id": "TRE-V2A-12x8-D999998",
+    "files": [
+      {
+        "file": "designs/edelstahl-gravur-120x80/TRE-V2A-12x8-D999998/design.json",
+        "sha256": "1b4cb7e90937dfe2781c252ec99cbb22877ad1546babc373ca0a87fb5b381c69"
+      },
+      {
+        "file": "designs/edelstahl-gravur-120x80/TRE-V2A-12x8-D999998/design.svg",
+        "sha256": "f249b9ceb48bd3aa0e8f61cac6531f9a1d035d9e7d767d52c21c33b06cc48b14"
+      }
+    ],
+    "checksum": "ece912c38b182668dcfa7bcf73514df339ee8866cdeb7cdc22da21cf75cde2d3"
+  },
+  "content": {
+    "textCount": {
+      "source": 2,
+      "target": 2
+    },
+    "textRemainsText": true,
+    "sourceTextMetadataPreserved": true,
+    "fontsUnchanged": true,
+    "motifCount": {
+      "source": 0,
+      "target": 0
+    },
+    "motifPathPreservation": "not-applicable-no-motifs-in-this-demo",
+    "note": "Die Demo stammt aus D1 Rosenberg: zwei editierbare Texte, keine Motive. Pfaderhalt wird hier nicht behauptet; separate Service-Tests decken Motivpfade ab."
+  },
+  "transfer": {
+    "from": "TRE-V2A-9x3-D999998",
+    "fromKey": "edelstahl-gravur-90x30-D999998",
+    "source": "designs/edelstahl-gravur-90x30/TRE-V2A-9x3-D999998/design.json",
+    "scale": 1.3333333333333333,
+    "offsetMm": [
+      0,
+      20
+    ],
+    "deviationPercent": 50,
+    "decided": "2026-10-24T19:43:53.946Z",
+    "by": "123"
+  },
+  "ziele": [
+    {
+      "familie": "steel-door-signs",
+      "freigabe": null
+    }
+  ],
+  "freigabe": null,
+  "index": {
+    "file": "designs/edelstahl-gravur-120x80/index.json",
+    "entries": [
+      {
+        "key": "TRE-V2A-12x8-D999998",
+        "name": "TESTKOPIE M · freie Kennung D999998",
+        "pfad": "TRE-V2A-12x8-D999998",
+        "quelle": "TRE-V2A-9x3-D999998",
+        "plateMm": [
+          120,
+          80
+        ],
+        "themen": [
+          "familienschilder",
+          "namensschilder"
+        ],
+        "groessen": [
+          "GR-ES-RE-120X80-T15"
+        ]
+      }
+    ]
+  },
+  "audit": {
+    "file": "designs/edelstahl-gravur-120x80/_aenderungen.jsonl",
+    "entries": [
+      {
+        "at": "2026-10-24T19:43:53.946Z",
+        "actor": "123",
+        "source": "design-variant",
+        "action": "create-variant",
+        "from": {
+          "reihe": "edelstahl-gravur-90x30",
+          "id": "TRE-V2A-9x3-D999998",
+          "checksum": "24c4ecd5079f3d06b420f6dcccf60d157a1edbd082c06d95c85c6867899ef0c1"
+        },
+        "designId": "TRE-V2A-12x8-D999998",
+        "reihe": "edelstahl-gravur-120x80",
+        "target": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-120X80-T15",
+          "lineId": "edelstahl-tuerschilder",
+          "plateMm": [
+            120,
+            80
+          ]
+        },
+        "transform": {
+          "scale": 1.3333333333333333,
+          "offsetMm": [
+            0,
+            20
+          ],
+          "deviationPercent": 50
+        },
+        "freigabe": null,
+        "files": [
+          "designs/edelstahl-gravur-120x80/TRE-V2A-12x8-D999998/design.json",
+          "designs/edelstahl-gravur-120x80/TRE-V2A-12x8-D999998/design.svg",
+          "designs/edelstahl-gravur-120x80/index.json"
+        ]
+      }
+    ]
+  },
+  "checks": {
+    "designNumber": true,
+    "ids": true,
+    "varianteVon": true,
+    "transferFrom": true,
+    "transferFromKey": true,
+    "transferSource": true,
+    "scale": true,
+    "offset": true,
+    "deviationPercent": true,
+    "activeGeometry": true,
+    "ownTargetOpen": true,
+    "index": true,
+    "audit": true,
+    "completeTestCatalogueUnchanged": true
+  },
+  "http": {
+    "method": "GET only",
+    "base": "http://127.0.0.1:63391",
+    "editor": {
+      "status": 200,
+      "checksumMatches": true,
+      "source": {
+        "reihe": "edelstahl-gravur-120x80",
+        "id": "TRE-V2A-12x8-D999998",
+        "plateMm": [
+          120,
+          80
+        ],
+        "editorMm": [
+          120,
+          80
+        ],
+        "familyId": "steel-door-signs",
+        "familySource": {
+          "type": "design-size"
+        },
+        "sizeKey": "GR-ES-RE-120X80-T15",
+        "shape": "rect",
+        "priceOpen": false,
+        "note": null
+      },
+      "textObjects": [
+        {
+          "id": "text-1",
+          "text": "Rosenberg",
+          "font": "Michroma",
+          "sizeMm": 11.293
+        },
+        {
+          "id": "text-2",
+          "text": "Familie",
+          "font": "Michroma",
+          "sizeMm": 11.293
+        }
+      ],
+      "motifObjects": 0,
+      "fit": {
+        "sizes": [
+          {
+            "size": "GR-ES-RE-120X80-T15",
+            "key": "GR-ES-RE-120X80-T15",
+            "label": "12 × 8 cm",
+            "status": "passt",
+            "issues": []
+          }
+        ]
+      },
+      "fonts": [
+        "Michroma"
+      ],
+      "hasRealGlyphs": true,
+      "responseSha256": "0858db62a1fdac88bb22cb6b66f94e1a4efefa72ff7cebd9d5d56d079380995b"
+    },
+    "preview": {
+      "status": 200,
+      "contentType": "image/svg+xml; charset=utf-8",
+      "fontWarning": null,
+      "hasSvg": true,
+      "glyphPreviewPaths": 17,
+      "bytes": 10264,
+      "sha256": "76262ff0a03095d9016970d5e10dd6b1a30b1a3bb44579581fc6ac0af6eea3b3",
+      "note": "Glyphenpfade nur in GET-Vorschau; Quell-SVG bleibt editierbarer Text."
+    }
+  },
+  "integrity": {
+    "filesBefore": 1968,
+    "filesAfter": 1968,
+    "beforeManifestSha256": "5dcdf4e6c7e34bf7eac799f3e3bee5aaa12afa0c981bb35704ae2a7191ad829d",
+    "afterManifestSha256": "5dcdf4e6c7e34bf7eac799f3e3bee5aaa12afa0c981bb35704ae2a7191ad829d",
+    "changed": [],
+    "removed": []
+  },
+  "passed": true,
+  "dataPassed": true,
+  "status": "verified"
+}

@@ -115,3 +115,19 @@ test('a catalog font absent at open time becomes available without metadata chan
  const dir=copyFixture(t),k=openKatalog(dir),file=path.join(dir,'schriften/dateien/Michroma/Michroma-Regular.ttf');let calls=0;const converter=async()=>{calls++;return {font:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0'}}}}};};
  assert.deepEqual((await k.fontResources(['Michroma'],{converter})).missing,['Michroma']);assert.equal(calls,0);fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,'now available');const added=await k.fontResources(['Michroma'],{converter});assert.deepEqual(added.missing,[]);assert.equal(added.fonts.Michroma.regular.glyphs.A.a,500);assert.equal(calls,1);
 });
+
+
+test('family targets are validated and explicit empty targets never inherit historical approval',t=>{
+ const root=copyFixture(t),file=path.join(root,'designs/3-2/test-herz/design.json'),original=JSON.parse(fs.readFileSync(file,'utf8'));
+ const write=ziele=>fs.writeFileSync(file,JSON.stringify({...original,freigabe:{status:'freigegeben',am:'2026-10-24',von:'123'},ziele}));
+ write([]);let master=openKatalog(root).designs.masters.find(d=>d.id==='test-herz');assert.equal(master.released,false);assert.deepEqual(master.targets,[]);assert.equal(master.targetSource,'explicit');assert.equal(master.freigabe.status,'freigegeben','historical data is preserved without authority');
+ write([{familie:'test-schilder',freigabe:{status:'freigegeben',am:'2026-10-24',von:'123'}}]);master=openKatalog(root).designs.masters.find(d=>d.id==='test-herz');assert.equal(master.released,true);assert.equal(master.targets[0].familie,'test-schilder');
+ write([{familie:'missing',freigabe:null}]);assert.throws(()=>openKatalog(root),e=>e.file===file&&/Familie fehlt/.test(e.message));
+ write([{familie:'test-schilder',freigabe:null},{familie:'test-schilder',freigabe:null}]);assert.throws(()=>readDesignFolder(path.dirname(file)),/doppelt/);
+});
+test('line execution choice is optional and validates only the existing product-or-variant declaration',()=>{
+ const line={schema:'gravuru-line/v2',id:'line',name:'Linie',families:[],subcategories:[]};
+ assert.equal(Object.hasOwn(validateLine(line),'ausfuehrungen'),false);
+ for(const modus of ['produkte','varianten'])assert.deepEqual(validateLine({...line,ausfuehrungen:{modus}}).ausfuehrungen,{modus});
+ for(const value of [null,[],{},'varianten',{modus:'automatic'},{modus:'produkte',material:'wood'}])assert.throws(()=>validateLine({...line,ausfuehrungen:value}),/ausfuehrungen/);
+});

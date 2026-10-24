@@ -1,3 +1,4 @@
+import {WALNUT_ENGRAVING_TONE} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {usesAcrylicSeriesWall,acrylicSeriesWallLayers} from './acryl-series-wall.mjs';
 // Presentation only: these choices never define production colors or geometry.
 export const PRINT_SURFACES=Object.freeze(['front','reverse']);
@@ -19,7 +20,7 @@ export function presentationLayers(document){
  const box=[-pad,-pad,g.widthMm+pad*2+dx,g.heightMm+pad*2+dy].map(n),[x,y,w,h]=box;
  const scene=document.presentation?.scene||'transparent';
  if(!MATERIAL_SCENES.includes(scene))throw Error('Unbekannte Vorschau-Szene.');
- const color=a?.edge||({steel:'#777e83',oak:'#88704c',beech:'#b19067',cherry:'#875134','leather-brown':'#654737'}[document.material.id]||'#727a7b');
+ const color=a?.edge||({steel:'#777e83',oak:'#88704c',walnut:'#49372c',beech:'#b19067',cherry:'#875134','leather-brown':'#654737'}[document.material.id]||'#727a7b');
  const defs=`<defs><path id="material-edge-shape" d="${d}"/><filter id="material-soft-shadow" filterUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}"><feGaussianBlur stdDeviation="${n(Math.max(g.widthMm,g.heightMm)*.009)}"/></filter><linearGradient id="material-scene" x2="0" y2="1"><stop stop-color="${scene==='warm'?'#f4eee5':'#f6f7f8'}"/><stop offset="1" stop-color="${scene==='warm'?'#d9cdbb':'#dbe0e3'}"/></linearGradient><radialGradient id="material-light"><stop stop-color="#ffffff" stop-opacity=".7"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient><linearGradient id="material-edge" x2=".7" y2="1"><stop stop-color="${color}"/><stop offset=".45" stop-color="${color}"/><stop offset=".6" stop-color="#eff1ed"/><stop offset=".8" stop-color="${color}"/><stop offset="1" stop-color="${color}"/></linearGradient><mask id="material-hole-clearance" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="white"/><path d="${g.contours[0].d} Z" fill="black"/></mask></defs>`;
  const backdrop=scene==='transparent'?'':`<g data-preview-scene="${scene}" pointer-events="none"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#material-scene)"/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#material-light)"/></g>`;
  // Stepped closed paths give arbitrary contours a continuous edge. Mask keeps
@@ -49,6 +50,7 @@ export const ACRYLIC_ENGRAVING_FILTER=`<defs><filter id="material-acrylic-engrav
 export const DARK_ENGRAVING_TONES=Object.freeze({
  steel:{rgb:[.055,.06,.06],label:'Dunkle Edelstahlgravur'},
  oak:{rgb:[.20,.095,.035],label:'Dunkelbraune Holzgravur'},
+ walnut:WALNUT_ENGRAVING_TONE,
  beech:{rgb:[.20,.095,.035],label:'Dunkelbraune Holzgravur'},
  cherry:{rgb:[.20,.095,.035],label:'Dunkelbraune Holzgravur'},
  'leather-brown':{rgb:[.12,.055,.025],label:'Dunkle Ledergravur'}

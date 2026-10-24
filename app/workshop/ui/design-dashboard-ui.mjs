@@ -3,7 +3,7 @@
 import {merchantRequest} from './merchant-request.mjs';
 import {merchantNavigation} from './merchant-navigation.mjs';
 import {setMerchantImage,merchantImagesRequired} from './merchant-media.mjs';
-import {designKey,releaseIssue,eligibleReleaseRows,retainVisibleSelection,releaseDesigns} from './design-dashboard-review.mjs';
+import {designKey,releaseKey,targetReviewRows,releaseIssue,eligibleReleaseRows,retainVisibleSelection,releaseDesigns} from './design-dashboard-review.mjs';
 const $=s=>document.querySelector(s),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined&&text!==null)n.textContent=text;if(cls)n.className=cls;return n;};
 const natural=new Intl.Collator('de',{numeric:true,sensitivity:'base'});
 const params=new URLSearchParams(location.search);
@@ -52,7 +52,7 @@ function showFilteredDesigns(){
 
 async function loadLines(){
  const [session,data]=await Promise.all([request('/api/workshop/session'),request('/api/workshop/designs')]);
- state.csrf=session.csrfToken;state.lines=data.linien;
+ state.csrf=session.csrfToken;state.lines=data.linien;state.themes=data.themes??[];
  if(!state.lines.some(l=>l.id===state.linie))state.linie=(state.lines.find(l=>l.designsLieferform2>0||l.bestand.length)||state.lines[0])?.id||null;
 }
 async function loadLine(){
@@ -118,6 +118,7 @@ function releasePreview(){
  state.previewToken++;clearPreviewSource();
 }
 function openPreview(row){
+ $('#target-size-control')?.remove();
  if(state.busy)return;
  const sources=[...new Set([row.files.png,row.files.svg].filter(Boolean))];if(!sources.length)return;
  releasePreview();
@@ -159,12 +160,108 @@ function openPreview(row){
  void loadSource(sources[next++]);
 }
 
+async function openTargetPreview(row,size=null){
+ if(state.busy)return;
+ releasePreview();$('#target-size-control')?.remove();
+ const dialog=$('#preview-dialog'),img=$('#preview-image'),token=state.previewToken,key=releaseKey(row),attempt={controller:new AbortController(),src:null,url:null};state.previewLoad=attempt;
+ const current=()=>token===state.previewToken&&state.previewLoad===attempt&&dialog.open&&!attempt.controller.signal.aborted;
+ state.seen.delete(key);state.selected.delete(key);row.target.fit=null;render();
+ $('#preview-title').textContent=row.id+' · '+row.target.name;$('#preview-status').textContent='Zielvorschau wird geladen …';img.alt=row.id+' auf '+row.target.name;
+ if(!dialog.open)dialog.showModal();
+ try{
+  const url=new URL(row.target.previewUrl,location.href);if(size)url.searchParams.set('size',size);
+  const result=await request(url.pathname+url.search,{signal:attempt.controller.signal});if(!current())return;
+  row.target.fit=result.reviewFit??result.fit;row.target.checksum=result.checksum;
+  const control=el('label',undefined,'target-size-control');control.id='target-size-control';control.append(el('span','Zielgröße '));const select=el('select');select.setAttribute('aria-label','Zielgröße');
+  for(const item of result.sizes??[]){const option=el('option',item.label);option.value=item.key;select.append(option);}select.value=result.size?.key;select.addEventListener('change',()=>void openTargetPreview(row,select.value));control.append(select);$('#preview-status').parentElement.append(control);
+  if(!result.svg){$('#preview-status').textContent=(row.target.fit.issues??[]).join(' ')||'Vorschau offen. Freigabe bleibt gesperrt.';render();return;}
+  img.onload=()=>{if(!current()||img.getAttribute('src')!==attempt.src||!img.naturalWidth)return;img.hidden=false;state.seen.add(key);$('#preview-status').textContent='Passung: '+row.target.fit.status+'. '+(row.target.fit.issues??[]).join(' ');render();};
+  img.onerror=()=>{if(!current())return;state.seen.delete(key);clearPreviewSource();$('#preview-status').textContent='Zielvorschau nicht verfügbar. Freigabe bleibt gesperrt.';render();};
+  attempt.url=URL.createObjectURL(new Blob([result.svg],{type:'image/svg+xml'}));attempt.src=attempt.url;img.src=attempt.src;
+ }catch(error){if(!current())return;state.seen.delete(key);clearPreviewSource();$('#preview-status').textContent=error.message+' Freigabe bleibt gesperrt.';render();}
+}
+function targetCards(row){
+ const box=el('div',undefined,'design-targets');box.append(el('strong','Familienziele'));
+ for(const issue of row.zielHinweise??[])box.append(el('p',issue,'notice'));
+ if(!row.ziele.length)box.append(el('p','Noch kein Familienziel bestätigt.','muted'));
+ for(const review of targetReviewRows([row])){
+  const target=review.target,card=el('section',undefined,'design-target');card.dataset.targetFamily=target.familie;
+  card.append(el('strong',target.name),el('small',[target.material,target.process].filter(Boolean).join(' · '),'muted'),el('small','Für außen: '+(target.outdoorSuitable===true?'Ja':target.outdoorSuitable===false?'Nein':'Unbekannt'),'muted'));
+  card.append(el('span',target.released?'freigegeben':'offen','flag '+(target.released?'released':'')));
+  const view=button('Zielvorschau öffnen',()=>void openTargetPreview(review));view.dataset.targetPreview=releaseKey(review);card.append(gate(view,target.missing?'Familie fehlt.':null),selection(review));
+  const issue=releaseIssue(review,state.seen),action=button(target.released?'Zielfreigabe zurücknehmen':'Ziel freigeben',()=>target.released?save(review,{freigegeben:false}):askRelease([review]),target.released?'quiet':'release');action.dataset.releaseKey=releaseKey(review);card.append(gate(action,target.released?null:issue));
+  if(!target.released&&issue)card.append(el('small',issue,'muted'));if(state.seen.has(releaseKey(review)))card.append(el('small','Zielvorschau in dieser Sitzung geöffnet.','reviewed'));box.append(card);
+ }
+ return box;
+}
+function targetSuggestions(row){
+ const box=el('details',undefined,'target-suggestions');box.append(el('summary','Ziele vorschlagen und bestätigen'));const selected=new Set();
+ for(const suggestion of row.zielVorschlaege??[]){
+  const label=el('label',undefined,'target-suggestion'),text=[suggestion.name,suggestion.material,suggestion.process].filter(Boolean).join(' · ');
+  if(suggestion.missing){label.append(el('span',text+' – Familie fehlt','notice'));}
+  else{const input=el('input');input.type='checkbox';input.dataset.suggestedFamily=suggestion.familie;input.addEventListener('change',()=>{if(input.checked)selected.add(suggestion.familie);else selected.delete(suggestion.familie);confirm.hidden=true;});label.append(input,el('span',text));}
+  label.append(el('small','Themen: '+(suggestion.reason??[]).join(', '),'muted'));box.append(label);
+ }
+ const confirm=el('div',undefined,'target-confirm');confirm.hidden=true;const count=el('p');confirm.append(count,button('Ziele bestätigen – noch nicht freigeben',()=>{if(selected.size)void save(row,{zieleHinzufuegen:[...selected]});}));
+ box.append(button('Ausgewählte Ziele übernehmen',()=>{if(!selected.size)return;count.textContent=selected.size+' Ziel'+(selected.size===1?'':'e')+' hinzufügen? Jedes Ziel muss anschließend separat geprüft und freigegeben werden.';confirm.hidden=false;}),confirm);return box;
+}
+function themeEditor(row){
+ const box=el('details',undefined,'design-themes');box.append(el('summary','Themen bearbeiten'));const selected=new Set(row.themes.map(t=>t.id));
+ for(const theme of state.themes??[]){const label=el('label'),input=el('input');input.type='checkbox';input.checked=selected.has(theme.id);input.dataset.theme=theme.id;input.addEventListener('change',()=>{if(input.checked)selected.add(theme.id);else selected.delete(theme.id);});label.append(input,el('span',theme.name));box.append(label);}
+ box.append(button('Themen speichern',()=>save(row,{themes:[...selected]})));return box;
+}
+
+const variantState={row:null,plan:null,input:null,token:0,url:null,comparisonUrls:[],busy:false,writing:false};
+function clearVariant(){variantState.token++;variantState.plan=null;variantState.input=null;if(variantState.url)URL.revokeObjectURL(variantState.url);variantState.url=null;for(const url of variantState.comparisonUrls)URL.revokeObjectURL(url);variantState.comparisonUrls=[];$('#variant-image').removeAttribute('src');$('#variant-image').hidden=true;$('#variant-confirm').disabled=true;$('#variant-result').replaceChildren();}
+function variantOptions(select,items,preferred){select.replaceChildren(...items.map(item=>{const option=el('option',item.name??item.label);option.value=item.id??item.key;return option;}));select.value=items.some(item=>(item.id??item.key)===preferred)?preferred:(items[0]?.id??items[0]?.key??'');}
+function variantFamily(){return state.data?.familien?.find(f=>f.id===$('#variant-family').value);}
+function variantFields(){clearVariant();const family=variantFamily();variantOptions($('#variant-size'),family?.sizes??[]);variantOptions($('#variant-line'),family?.linien??[],state.linie);$('#variant-status').textContent=family?'Einpassung zuerst prüfen.':'Keine vorhandene Familie verfügbar.';}
+function openVariant(row){if(state.busy)return;clearVariant();variantState.row=row;$('#variant-title').textContent=row.id+' · Für ein anderes Ziel einpassen';variantOptions($('#variant-family'),state.data?.familien??[],row.ziele?.[0]?.familie??row.familyId);variantFields();$('#variant-dialog').showModal();}
+async function prepareVariant(resolution=null){
+ if(resolution!=='add-target-to-existing')resolution=null;
+ if(variantState.busy)return;clearVariant();const token=variantState.token,row=variantState.row,family=variantFamily();if(!family||!$('#variant-size').value)return;
+ const input={source:{reihe:row.lieferform2.reihe,id:row.id},target:{familyId:family.id,sizeKey:$('#variant-size').value,...($('#variant-line').value?{lineId:$('#variant-line').value}:{})},...(resolution?{resolution}:{})};
+ variantState.busy=true;$('#variant-prepare').disabled=true;$('#variant-status').textContent='Einpassung wird geprüft …';
+ try{
+  const plan=await request('/api/workshop/designs/variant/prepare',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':state.csrf},body:JSON.stringify(input)});if(token!==variantState.token||!$('#variant-dialog').open)return;
+  variantState.plan=plan;variantState.input=input;$('#variant-status').textContent=plan.message??plan.status??'';
+  const result=$('#variant-result');if(plan.reason)result.append(el('p',plan.reason,'notice'));if(plan.identity)result.append(el('p','Kennung: '+plan.identity.id));if(Number.isFinite(plan.transform?.deviationPercent))result.append(el('p','Abweichung des Seitenverhältnisses: '+mm(plan.transform.deviationPercent)+' %. Proportional eingepasst.'));
+  if(resolution&&plan.existing)result.append(el('p','Vorhandenes Design: '+plan.existing.id+'. Nur dieses Ziel wird ergänzt; die Gestaltung bleibt erhalten.'));
+  if(plan.fit){result.append(el('p','Passung: '+plan.fit.status));for(const issue of plan.fit.issues??[])result.append(el('p',typeof issue==='string'?issue:issue.message,'notice'));}
+  if(plan.svg){variantState.url=URL.createObjectURL(new Blob([plan.svg],{type:'image/svg+xml'}));$('#variant-image').src=variantState.url;$('#variant-image').hidden=false;}else if(/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(plan.previewUrl??'')){$('#variant-image').src=plan.previewUrl;$('#variant-image').hidden=false;}
+  if(plan.action==='blocked'&&plan.allowAddTarget===true&&plan.existing?.id){
+   for(const [key,label]of [['source','Quelle '+row.id],['existing','Vorhandenes Design '+plan.existing.id]]){
+    const figure=el('figure');figure.append(el('figcaption',label));
+    if(plan[key+'Svg']){const img=el('img');img.alt=label;img.setAttribute('style','display:block;width:100%;height:auto');const url=URL.createObjectURL(new Blob([plan[key+'Svg']],{type:'image/svg+xml'}));variantState.comparisonUrls.push(url);img.src=url;figure.append(img);}
+    else figure.append(el('p',plan[key+'PreviewError']??'Vorschau nicht verfügbar.','notice'));
+    const fit=plan[key+'Fit'];if(fit){figure.append(el('p','Passung: '+fit.status));for(const issue of fit.issues??[])figure.append(el('p',typeof issue==='string'?issue:issue.message,'notice'));}result.append(figure);
+   }
+   result.append(el('p','Die Kennung ist bereits belegt. Die vorhandene Gestaltung kann nach erneuter Prüfung ein zusätzliches Ziel erhalten; sie wird nicht überschrieben.','notice'),button('Ziel zu '+plan.existing.id+' hinzufügen',()=>prepareVariant('add-target-to-existing')));
+  }
+  $('#variant-confirm').textContent=plan.action==='add-target'?'Ziel bestätigen – noch nicht freigeben':plan.action==='already-exists'?'Vorhandene Variante öffnen':'Variante anlegen – offen';$('#variant-confirm').disabled=plan.action==='blocked'||!['create-variant','add-target','already-exists'].includes(plan.action);
+ }catch(error){if(token===variantState.token)$('#variant-status').textContent=error.message;}
+ finally{variantState.busy=false;$('#variant-prepare').disabled=false;}
+}
+function variantEditorLink(editor){const query=new URLSearchParams({katalogReihe:editor.reihe,katalogDesign:editor.id,katalogLinie:$('#variant-line').value||state.linie}),link=el('a','Im Editor öffnen','button');link.href=merchantNavigation('/werkstatt/designs/bearbeiten/?'+query,location.href);$('#variant-result').append(link);}
+async function confirmVariant(){
+ if(variantState.busy||!variantState.plan||$('#variant-confirm').disabled)return;const plan=variantState.plan;
+ if(plan.action==='already-exists'){if(plan.editor)variantEditorLink(plan.editor);$('#variant-confirm').disabled=true;return;}
+ const token=variantState.token;variantState.busy=true;variantState.writing=true;$('#variant-close').disabled=true;for(const id of ['variant-family','variant-size','variant-line'])$('#'+id).disabled=true;$('#variant-confirm').disabled=true;$('#variant-prepare').disabled=true;
+ try{
+  const result=await request('/api/workshop/designs/variant',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':state.csrf},body:JSON.stringify({...variantState.input,source:{...variantState.input.source,checksum:plan.source.checksum},checksum:plan.checksum})});if(token!==variantState.token)return;
+  $('#variant-status').textContent=result.message??'Gespeichert. Das Ziel bleibt offen und muss separat geprüft werden.';if(result.editor)variantEditorLink(result.editor);variantState.plan=null;
+  state.seen.clear();state.selected.clear();void load();
+ }catch(error){if(token===variantState.token)$('#variant-status').textContent=error.message+' Bitte Einpassung erneut prüfen.';}
+ finally{variantState.busy=false;variantState.writing=false;$('#variant-close').disabled=false;for(const id of ['variant-family','variant-size','variant-line'])$('#'+id).disabled=false;$('#variant-prepare').disabled=false;}
+}
+
 function selection(row){
- const label=el('label',undefined,'design-selection'),input=el('input');input.type='checkbox';input.dataset.designKey=designKey(row);input.checked=state.selected.has(designKey(row));
+ if(Array.isArray(row.ziele)&&!row.targetFamily)return el('span');
+ const label=el('label',undefined,'design-selection'),input=el('input');input.type='checkbox';input.dataset.designKey=releaseKey(row);input.checked=state.selected.has(releaseKey(row));
  input.setAttribute('aria-label',row.id+' zur Freigabe auswählen');
  gate(input,releaseIssue(row,state.seen));input.addEventListener('change',()=>{
-  if(state.busy||releaseIssue(row,state.seen)){input.checked=state.selected.has(designKey(row));return;}
-  if(input.checked)state.selected.add(designKey(row));else state.selected.delete(designKey(row));render();
+  if(state.busy||releaseIssue(row,state.seen)){input.checked=state.selected.has(releaseKey(row));return;}
+  if(input.checked)state.selected.add(releaseKey(row));else state.selected.delete(releaseKey(row));render();
  });
  label.append(input,el('span','Auswählen'));return label;
 }
@@ -196,7 +293,8 @@ function editorCell(row){
  }
  if(row.konfi?.products?.length){const p=row.konfi.products[0];const a=el('a','Im Editor öffnen','button');a.href=p.href;a.title='Konfi-Produkt '+p.importKey+' (Stand '+p.revision+')';box.append(a);if(row.konfi.products.length>1)box.append(el('small',row.konfi.products.length+' Produkte','muted'));}
  else if(!row.lieferform2)box.append(el('span','keine Lieferform 2','muted'));
- if(row.lieferform2){box.append(button('Name ändern',()=>{state.editing=designKey(row);render();}));box.append(button(row.hidden?'Einblenden':'Ausblenden',()=>save(row,{hidden:!row.hidden}),'quiet'));
+ if(row.lieferform2){box.append(button('Für anderes Ziel einpassen',()=>openVariant(row)));box.append(button('Name ändern',()=>{state.editing=designKey(row);render();}));box.append(button(row.hidden?'Einblenden':'Ausblenden',()=>save(row,{hidden:!row.hidden}),'quiet'));
+  if(Array.isArray(row.ziele)){box.append(targetCards(row),targetSuggestions(row),themeEditor(row));return box;}
   const issue=releaseIssue(row,state.seen),b=button(row.released?'Freigabe zurücknehmen':'Freigeben',()=>row.released?save(row,{freigegeben:false}):askRelease([row]),row.released?'quiet':'release');
   b.dataset.releaseKey=designKey(row);b.title=row.released?'Design wieder auf „offen“ setzen.':'Design nach der Sichtprüfung freigeben.';
   box.append(gate(b,row.released?null:issue));
@@ -232,9 +330,15 @@ function flags(row){
  return box;
 }
 function patchDesign(row,change){
- return request('/api/workshop/designs',{method:'PATCH',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':state.csrf},body:JSON.stringify({reihe:row.lieferform2.reihe,designId:row.id,...change})});
+ return request('/api/workshop/designs',{method:'PATCH',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':state.csrf},body:JSON.stringify({reihe:row.lieferform2.reihe,designId:row.id,...(row.targetFamily?{familie:row.targetFamily,...(change.freigegeben===true?{checksum:row.target.checksum}:{})}:{}),...change})});
 }
 function applySaved(row,result,change){
+ if(row.targetFamily){
+  const parent=row._design,target=parent.ziele.find(t=>t.familie===row.targetFamily),saved=result.design?.ziele?.find(t=>t.familie===row.targetFamily);
+  if(saved)target.freigabe=saved.freigabe;target.released=change.freigegeben??target.released;
+  parent.released=parent.ziele.filter(t=>t.inLine!==false).length>0&&parent.ziele.filter(t=>t.inLine!==false).every(t=>t.released);
+  state.selected.delete(releaseKey(row));if(state.data)state.data.counts.freigegeben=state.data.rows.filter(r=>r.released).length;return;
+ }
  for(const key of ['name','hidden','released','freigabe'])if(result.design&&Object.hasOwn(result.design,key))row[key]=result.design[key];
  if(change.freigegeben!==undefined)row.released=change.freigegeben;
  if(state.data)state.data.counts.freigegeben=state.data.rows.filter(r=>r.released).length;
@@ -247,7 +351,7 @@ async function save(row,change){
  try{
   const result=await patchDesign(row,change);applySaved(row,result,change);state.editing=null;
   const message=result.changed?'Gespeichert: '+result.files.join(', ')+' – Commit im Katalog-Repo durch den Betreiber.':'Keine Änderung.';
-  if(change.name!==undefined||change.hidden!==undefined){
+  if(change.name!==undefined||change.hidden!==undefined||change.themes!==undefined||change.zieleHinzufuegen!==undefined){
    try{state.data=await request('/api/workshop/designs?'+new URLSearchParams({linie:state.linie}));}
    catch(e){status(message+' Die Ansicht konnte nicht aktualisiert werden: '+e.message,true);return;}
   }
@@ -258,14 +362,14 @@ async function save(row,change){
 function askRelease(rows){
  if(state.busy||$('#release-dialog').open)return;
  const eligible=eligibleReleaseRows(rows,state.seen);if(!eligible.length)return;
- state.pendingRelease=eligible.map(designKey);
- $('#release-count').textContent=eligible.length+' Design'+(eligible.length===1?'':'s')+' freigeben?';
- $('#release-list').replaceChildren(...eligible.map(row=>el('li',row.id+' · '+row.name)));
+ state.pendingRelease=eligible.map(releaseKey);
+ $('#release-count').textContent=eligible.length+(eligible.some(r=>r.targetFamily)?' Ziel'+(eligible.length===1?'':'e'):' Design'+(eligible.length===1?'':'s'))+' freigeben?';
+ $('#release-list').replaceChildren(...eligible.map(row=>el('li',row.id+' · '+row.name+(row.target?' · '+row.target.name:''))));
  $('#release-dialog').showModal();
 }
 async function confirmRelease(){
  if(state.busy||!state.pendingRelease)return;
- const keys=new Set(state.pendingRelease),rows=eligibleReleaseRows(visibleRows(),state.seen).filter(row=>keys.has(designKey(row)));
+ const keys=new Set(state.pendingRelease),rows=eligibleReleaseRows(targetReviewRows(visibleRows()),state.seen).filter(row=>keys.has(releaseKey(row)));
  state.pendingRelease=null;$('#release-dialog').close();
  if(rows.length!==keys.size){status('Die Auswahl hat sich geändert. Bitte erneut auswählen und bestätigen.',true);return;}
  state.busy=true;render();status(rows.length+' Design'+(rows.length===1?' wird':'s werden')+' freigegeben …');
@@ -315,26 +419,31 @@ function render({focusEditor=true}={}){
   const reihen=[...d.reihen.map(r=>({key:r.key,label:r.key,count:r.counts.total,title:'ok '+r.counts.ok+' · prüfen '+r.counts['prüfen']+' · fehlt '+r.counts.fehlt}))];
   renderPicker($('#reihen'),reihen,state.reihe,key=>{state.reihe=key;pushUrl();render();showFilteredDesigns();},{all:{label:'Alle',count:d.counts.total}});
   renderPicker($('#materials'),d.materials.map(m=>({key:m.key,count:m.counts.total})),state.material,key=>{state.material=key;render();showFilteredDesigns();},{all:{label:'Alle',count:d.counts.total}});
-  $('#notes').replaceChildren(...d.notes.map(n=>el('p',n,'notice')),...(d.bestand.overviews.length?[el('p','Bestand: '+d.bestand.overviews.map(o=>o.overview+' ('+o.grund+')').join(', ')+' – '+d.bestand.sheets.length+' Bögen','muted')]:[]));
+  $('#notes').replaceChildren(el('p','Ausführungen dieser Linie: '+(d.linie?.ausfuehrungen?.modus==='produkte'?'Separate Produkte':d.linie?.ausfuehrungen?.modus==='varianten'?'Varianten':'Unbekannt'),'muted'),...d.notes.map(n=>el('p',n,'notice')),...(d.bestand.overviews.length?[el('p','Bestand: '+d.bestand.overviews.map(o=>o.overview+' ('+o.grund+')').join(', ')+' – '+d.bestand.sheets.length+' Bögen','muted')]:[]));
  }else{$('#reihen').replaceChildren();$('#materials').replaceChildren();$('#notes').replaceChildren();}
  $('#filter-selectable').checked=state.selectable;gate($('#filter-selectable'),state.startDesigns?'Startdesigns zeigen auch fehlende oder nicht wählbare Designs.':null);
- const rows=visibleRows();state.selected=retainVisibleSelection(state.selected,rows,state.seen);
+ const rows=visibleRows();state.selected=retainVisibleSelection(state.selected,targetReviewRows(rows),state.seen);
  $('#summary').textContent=d?rows.length+' von '+d.counts.total+' Designs'+(state.reihe?' · '+state.reihe:'')+(state.status?' · Status '+state.status:'')+(state.freigabe?(state.freigabe==='ja'?' · freigegeben':' · offen'):'')+(state.selectable?' · nur wählbare':'')+(state.startDesigns?' · nur Startdesigns von Hauptprodukten':'')+(state.startDesigns&&Number.isInteger(d.startDesignSummary?.references)?' · insgesamt '+d.startDesignSummary.references+' Hauptprodukt-Zuordnungen in dieser Linie':''):'';
  renderRows(rows,{focusEditor});
  $('.selection-bar').classList.toggle('has-selection',state.selected.size>0);
- $('#selection-summary').textContent=state.selected.size+' ausgewählt · '+eligibleReleaseRows(rows,state.seen).length+' sichtbare Designs zur Freigabe bereit';
+ $('#selection-summary').textContent=state.selected.size+' ausgewählt · '+eligibleReleaseRows(targetReviewRows(rows),state.seen).length+' sichtbare Designs zur Freigabe bereit';
  gate($('#release-selected'),state.selected.size?null:'Erst Vorschauen öffnen und Designs auswählen.');
  gate($('#clear-selection'),state.selected.size?null:'Keine Designs ausgewählt.');
  for(const control of document.querySelectorAll('main button, main input, main select'))control.disabled=state.busy||control.dataset.blocked==='true';
  $('#main').setAttribute('aria-busy',String(state.busy));
 }
+$('#variant-family').addEventListener('change',variantFields);
+for(const id of ['variant-size','variant-line'])$('#'+id).addEventListener('change',()=>{clearVariant();$('#variant-status').textContent='Einpassung zuerst prüfen.';});
+$('#variant-close').addEventListener('click',()=>{if(variantState.writing)return;clearVariant();$('#variant-dialog').close();});
+$('#variant-dialog').addEventListener('cancel',event=>{if(variantState.writing)event.preventDefault();else clearVariant();});$('#variant-dialog').addEventListener('close',clearVariant);
+$('#variant-prepare').addEventListener('click',prepareVariant);$('#variant-confirm').addEventListener('click',confirmVariant);
 $('#preview-close').addEventListener('click',()=>{releasePreview();$('#preview-dialog').close();});
 $('#preview-dialog').addEventListener('cancel',releasePreview);
 $('#preview-dialog').addEventListener('close',()=>{if(!$('#preview-dialog').open)releasePreview();});
 $('#release-dialog').addEventListener('close',()=>{state.pendingRelease=null;});
 $('#release-cancel').addEventListener('click',()=>$('#release-dialog').close());
 $('#release-confirm').addEventListener('click',confirmRelease);
-$('#release-selected').addEventListener('click',()=>askRelease(visibleRows().filter(row=>state.selected.has(designKey(row)))));
+$('#release-selected').addEventListener('click',()=>askRelease(targetReviewRows(visibleRows()).filter(row=>state.selected.has(releaseKey(row)))));
 $('#clear-selection').addEventListener('click',()=>{if(state.busy)return;state.selected.clear();render();});
 $('#filter-toggle').addEventListener('click',()=>setFiltersOpen($('#filter-toggle').getAttribute('aria-expanded')!=='true'));
 compactLayout.addEventListener('change',()=>setFiltersOpen(false));

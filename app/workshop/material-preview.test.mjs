@@ -81,3 +81,7 @@ test('steel, wood and leather have material-specific engraving tones without cha
  }
  const d=makeFormProduct(c,'Unbekannte Oberfläche');d.material.id='slate';d.processingMethod='engraving';assert.equal(materialPreview(d).svg,null);
 });
+
+test('M: walnut preview is explicitly an approximation and preserves original contour holes',async t=>{
+ const {DARK_ENGRAVING_TONES}=await import('./material-presentation.mjs');const store=createContourStore({filename:':memory:'});t.after(()=>store.close());const c=await store.import({name:'Form.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="60mm" height="40mm" viewBox="0 0 60 40"><rect width="60" height="40"/><circle cx="8" cy="20" r="2"/></svg>').toString('base64')});const d=makeFormProduct(c,'Walnuss');d.material.id='walnut';d.processingMethod='engraving';const before=structuredClone(d),preview=materialPreview(d);assert.equal(preview.surface.approximate,true);assert.match(preview.note,/Näherung/);assert.match(preview.svg,/data-material-approximation="walnut"/);assert.equal(DARK_ENGRAVING_TONES.walnut.approximate,true);for(const p of c.geometry.contours)assert.ok(preview.svg.includes(p.d+' Z'));assert.deepEqual(d,before);
+});

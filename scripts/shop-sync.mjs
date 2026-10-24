@@ -11,8 +11,11 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
+import {approvedForFamily,designTargetCompatibility,assignTargetSeries} from '../app/workshop/design-targets.mjs';
+import {assessDesignTarget} from '../app/workshop/design-target-rules.mjs';
 import {openKatalog} from '../app/workshop/katalog-source.mjs';
-import {applyPriceOverrides,priceGaps} from '../app/workshop/katalog-convert.mjs';
+import {applyPriceOverrides,priceGaps,parseDesignSvg,katalogDesignToTemplate,scaleTemplate,scaleEmbeddedMotifs} from '../app/workshop/katalog-convert.mjs';
+import {convertFont} from '../app/workshop/font-library.mjs';
 import {readCredentials,createShopifyClient,SHOP_DOMAIN,API_VERSION} from './shop-export.mjs';
 
 export {SHOP_DOMAIN,API_VERSION};
@@ -20,12 +23,12 @@ export const PLAN_SCHEMA='gravuru-shop-sync-plan/v1';
 export const OPTION_NAME='Befestigung';
 export const METAFIELD=Object.freeze({namespace:'custom',key:'customization_id',type:'single_line_text_field'});
 // Design-Stand im Shop (Chris 23.10.2026: „Alte werden nur geupdatet, wenn wir das Design ändern“): SHA-256 über
-// design.svg + design.json (ohne freigabe/hidden) des Startdesigns, als Metafeld am Shop-Produkt. Gleicher Wert
+// design.svg + design.json (ohne freigabe/hidden/ziele) des Startdesigns, als Metafeld am Shop-Produkt. Gleicher Wert
 // im Export → Produkt bleibt unverändert, auch wenn Daten abweichen (nur --daten-aktualisieren greift).
 export const DESIGN_METAFIELD=Object.freeze({namespace:'custom',key:'design_sha256',type:'single_line_text_field'});
 export function designFingerprint(master){
  if(!master)return null;
- const json={...(master.json||{})};delete json.freigabe;delete json.hidden;
+ const json={...(master.json||{})};delete json.freigabe;delete json.hidden;delete json.ziele;
  return createHash('sha256').update(master.svg()).update('\n').update(JSON.stringify(json)).digest('hex');
 }
 export const ACTIONS=Object.freeze(['unverändert','update','create','konflikt','offen']);
@@ -71,7 +74,7 @@ export function skuBaseFor(main,size,{sizesCount,skuMap={},konfiId}={}){
 const stripFamily=f=>{const {_file,_material,...rest}=f;return structuredClone(rest);};
 
 // Soll je Hauptprodukt × Größe einer Linie. `only`: {subcategories, sizes, mainProducts} wie katalog-import.
-export function targetsForLine(katalog,lineId,{only=null,skuMap={},allDesigns=false}={}){
+export function targetsForLine(katalog,lineId,{only=null,skuMap={},allDesigns=false,fonts={},fontErrors={}}={}){
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').','line_missing');
  const targets=[],notes=[];
  if(!line.families.length)notes.push('Linie „'+line.id+'“ hat noch keine Familie.');
@@ -96,15 +99,44 @@ export function targetsForLine(katalog,lineId,{only=null,skuMap={},allDesigns=fa
      const customizationId=typeof main.externalIds?.customizationId==='string'?main.externalIds.customizationId:null;
      const master=katalog.designs.masters.find(d=>d.id===main.startDesign)??null;
      if(!master){if(!allDesigns)open.push('Startdesign „'+main.startDesign+'“ nicht im Katalog (Lieferform 2) – keine Freigabe möglich.');}
-     else if(!master.released&&!allDesigns)open.push('Startdesign „'+main.startDesign+'“ nicht freigegeben (Design-Dashboard).');
+     else if(!approvedForFamily(master,familyId,katalog)&&!allDesigns)open.push('Startdesign „'+main.startDesign+'“ nicht freigegeben (Design-Dashboard).');
+     if(master){
+      open.push(...designTargetCompatibility(master,priced,size,{katalog}).issues);
+      // Approval is historical evidence, not proof that the current artwork still fits.
+      // Use the same glyph metrics, scaling and source/material checks as the import.
+      try{
+       const svgText=master.svg(),source={...master,svg:()=>svgText},names=[...new Set(parseDesignSvg(svgText).layers.filter(l=>l.kind==='text'||l.text).map(l=>l.font))];
+       const missing=names.filter(name=>!fonts[name]);
+       if(missing.length)throw Error('Schrift fehlt: '+missing.map(name=>name+(fontErrors[name]?' ('+fontErrors[name]+')':'')).join(', ')+'.');
+       const converted=katalogDesignToTemplate(source,priced,katalog.theme(master.themes?.[0]),{fonts,svgText}),assigned=assignTargetSeries(priced,[source],katalog)[0];
+       const template=scaleTemplate(converted.template,master.plateMm,[size.widthMm,size.heightMm],fonts,{contain:assigned.proportionalFit===true});
+       const motifs=()=>scaleEmbeddedMotifs(converted.motifs,template.katalog.scale),fit=assessDesignTarget({master:source,template,family:priced,size,fonts,motifs});
+       if(fit.status==='passt nicht')open.push(...fit.issues);
+      }catch(error){open.push('Startdesign-Prüfung: '+error.message);}
+     }
      const designSha256=master?designFingerprint(master):null;
      targets.push({konfiProductId:id,importKey:importKeyFor(line.id,sub.id,size.key,main.id),line:line.id,subcategory:sub.id,family:familyId,sizeKey:size.key,sizeLabel:size.label,
-      mainProductId:main.id,startDesign:main.startDesign,designSha256,designReleased:master?.released===true,name:main.name??null,customizationId,skuBase:base.sku,skuSource:base.source??null,basePriceCents:size.baseCents,variants,open});
+      mainProductId:main.id,startDesign:main.startDesign,designSha256,designReleased:master?approvedForFamily(master,familyId,katalog):false,name:main.name??null,customizationId,skuBase:base.sku,skuSource:base.source??null,basePriceCents:size.baseCents,variants,open});
     }
    }
   }
  }
- return {line:{id:line.id,name:line.name},targets,notes};
+ return {line:{id:line.id,name:line.name},targets,notes,diagnosticOnly:allDesigns===true};
+}
+
+// Resolve only selected startdesign fonts before the synchronous planner. Direct callers
+// without resources fail closed for text; --alle-designs never bypasses actual fit.
+export async function prepareTargetsForLine(katalog,lineId,options={}){
+ const line=katalog.lines.get(lineId);if(!line)return targetsForLine(katalog,lineId,options);
+ const ids=new Set(line.subcategories.filter(sub=>!options.only?.subcategories||options.only.subcategories.includes(sub.id)).flatMap(sub=>(sub.mainProducts||[]).filter(main=>!options.only?.mainProducts||options.only.mainProducts.includes(main.id)).map(main=>main.startDesign))),names=new Set(),fonts={},fontErrors={};
+ for(const master of katalog.designs.masters.filter(m=>ids.has(m.id))){
+  try{for(const layer of parseDesignSvg(master.svg()).layers)if(layer.kind==='text'||layer.text)names.add(layer.font);}catch{/* the synchronous check reports the source error */}
+ }
+ for(const name of names){
+  try{const loaded=await katalog.fontResources([name],{available:options.available||{},converter:options.converter||convertFont});Object.assign(fonts,loaded.fonts);}
+  catch(error){fontErrors[name]=error.message;}
+ }
+ return targetsForLine(katalog,lineId,{...options,fonts,fontErrors});
 }
 
 // Export (products.json von shop-export oder Liste) → Indizes.
@@ -200,7 +232,7 @@ export function planShopSync(soll,exportDoc,{shopDomain=SHOP_DOMAIN,generatedAt=
    expectedShop:{variants:shop.variants.nodes.map(v=>({id:v.id,sku:v.sku??null,price:v.price})),options:shop.options.map(o=>o.name),metafield:shop.metafield?.value??null,designSha256:shop.designSha256??null}};
  });
  const counts=Object.fromEntries(ACTIONS.map(a=>[a,entries.filter(e=>e.action===a).length]));
- return {schema:PLAN_SCHEMA,shopDomain,apiVersion:API_VERSION,generatedAt,katalog:katalogRoot,line:soll.line,export:{exportedAt:ex.exportedAt,complete:ex.complete,products:ex.products.length},notes:soll.notes,counts,entries};
+ return {schema:PLAN_SCHEMA,diagnosticOnly:soll.diagnosticOnly===true,shopDomain,apiVersion:API_VERSION,generatedAt,katalog:katalogRoot,line:soll.line,export:{exportedAt:ex.exportedAt,complete:ex.complete,products:ex.products.length},notes:soll.notes,counts,entries};
 }
 
 export function formatPlan(plan){
@@ -242,6 +274,7 @@ function expectUnchanged(record,entry){
 async function atomic(file,value){const temp=file+'.new';await fsp.writeFile(temp,JSON.stringify(value,null,2));await fsp.rename(temp,file);}
 export async function applyPlan(plan,{transport,journalDir,shopDomain=SHOP_DOMAIN,includeCreate=false,log=()=>{}}){
  if(plan?.schema!==PLAN_SCHEMA)fail('Kein shop-sync-Plan.');
+ if(plan.diagnosticOnly===true)fail('Ein Diagnoseplan mit --alle-designs darf nicht angewendet werden. Familienziele freigeben und neu planen.','unapproved_diagnostic_plan');
  if(plan.shopDomain!==shopDomain)fail('Plan ist für '+plan.shopDomain+', nicht für '+shopDomain+'.');
  await fsp.mkdir(journalDir,{recursive:true});
  const lock=path.join(journalDir,'writer.lock');let handle;
@@ -284,12 +317,13 @@ export function parseArgs(argv){
  const only=(list('unterkategorie')||list('groesse')||list('hauptprodukt'))?{subcategories:list('unterkategorie'),sizes:list('groesse'),mainProducts:list('hauptprodukt')}:null;
  return {katalog:value('katalog')||process.env.GRAVURU_KATALOG,line:value('linie'),exportFile:value('export'),out:value('out'),skuMap:value('sku-map'),journal:value('journal'),only,apply:argv.includes('--apply'),create:argv.includes('--create'),allDesigns:argv.includes('--alle-designs'),updateData:argv.includes('--daten-aktualisieren'),quiet:argv.includes('--quiet')};
 }
-export async function run(argv,{env=process.env,fetchImpl=globalThis.fetch,stdout=process.stdout,stderr=process.stderr}={}){
+export async function run(argv,{env=process.env,fetchImpl=globalThis.fetch,stdout=process.stdout,stderr=process.stderr,available={},converter=convertFont}={}){
  const args=parseArgs(argv);
+ if(args.apply&&args.allDesigns)fail('--alle-designs ist nur für Dry-runs erlaubt; für --apply sind freigegebene Familienziele erforderlich.','unapproved_diagnostic_plan');
  if(!args.katalog||!args.line||!args.exportFile||!args.out)fail('Aufruf: node scripts/shop-sync.mjs --katalog <pfad> --linie <id> --export <products.json> --out <plan.json> [--unterkategorie a,b] [--groesse k1,k2] [--hauptprodukt id] [--sku-map <json>] [--apply [--create] [--journal <ordner>]]');
  const log=m=>{if(!args.quiet)stderr.write(m+'\n');};
  const katalog=openKatalog(args.katalog),skuMap=args.skuMap?JSON.parse(fs.readFileSync(args.skuMap,'utf8')):{};
- const soll=targetsForLine(katalog,args.line,{only:args.only,skuMap,allDesigns:args.allDesigns});
+ const soll=await prepareTargetsForLine(katalog,args.line,{only:args.only,skuMap,allDesigns:args.allDesigns,available,converter});
  const exportDoc=JSON.parse(fs.readFileSync(args.exportFile,'utf8'));
  const plan=planShopSync(soll,exportDoc,{katalogRoot:katalog.root,updateData:args.updateData});
  fs.mkdirSync(path.dirname(path.resolve(args.out)),{recursive:true});

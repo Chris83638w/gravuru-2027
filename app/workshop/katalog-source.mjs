@@ -3,6 +3,7 @@
 // `app/designs/`. Dieses Modul liest nur; es schreibt nie in den Katalog.
 // Pfad: Argument `--katalog=<pfad>` am Server bzw. Umgebung `GRAVURU_KATALOG`.
 // Fehler sind deutsch und nennen die Datei. Unbekanntes bleibt `null` (offen).
+import {validateDesignTargets,resolveDesignTargets} from './design-targets.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
@@ -50,6 +51,7 @@ export function validateLine(line,{families,themes,fontSets,file='linie'}={}){
  // Leere Familienliste = Familie noch offen (Status „Familie offen“); der Import meldet das.
  if(!Array.isArray(line.families)||line.families.some(f=>!id(f)))fail(file,'Linie „'+line.id+'“: families ist eine Liste von Familien-Kennungen.');
  for(const f of line.families)if(families&&!families.has(f))fail(file,'Linie „'+line.id+'“ verweist auf die unbekannte Familie „'+f+'“.');
+ if(line.ausfuehrungen!==undefined&&(!record(line.ausfuehrungen)||Object.keys(line.ausfuehrungen).length!==1||!['produkte','varianten'].includes(line.ausfuehrungen.modus)))fail(file,'ausfuehrungen ist {modus: produkte|varianten}; ohne Angabe ist die Aufteilung unbekannt.');
  if(line.status!==undefined&&typeof line.status!=='string')fail(file,'Status der Linie prüfen.');
  if(!Array.isArray(line.subcategories)||line.subcategories.length>100)fail(file,'Linie „'+line.id+'“: höchstens 100 Unterkategorien.');
  const seen=new Set();
@@ -167,8 +169,9 @@ export function readDesignFolder(dir,{source='lieferform2',index=null}={}){
  // `freigabe` (Design-Dashboard, Chris 23.10.2026: „wir prüfen manuell und geben frei, dann geht es an Shopify“):
  // {status:'freigegeben'|'offen', am, von}; fehlt = offen. Nur freigegebene Designs gehen in Konfi-Produkte und Shop.
  if(json.freigabe!==undefined&&json.freigabe!==null&&(!record(json.freigabe)||!['freigegeben','offen'].includes(json.freigabe.status)))fail(jsonFile,'freigabe ist {status: freigegeben|offen, am, von}.');
+ validateDesignTargets(json,{file:jsonFile});
  if(json.fields!==undefined&&!record(json.fields))fail(jsonFile,'fields ist eine Zuordnung Ebene → Regeln.');
- return {id:designId,name:typeof json.name==='string'&&json.name.trim()?json.name.trim():designId,dir,svgFile,jsonFile:exists(jsonFile)?jsonFile:null,plateMm:plate,themes,bestseller:json.bestseller===true,hidden:json.hidden===true,released:json.freigabe?.status==='freigegeben',freigabe:record(json.freigabe)?json.freigabe:null,fields:json.fields??{},fonts:Array.isArray(json.fonts)?json.fonts.filter(f=>typeof f==='string'):[],source,index,json,svg:()=>fs.readFileSync(svgFile,'utf8')};
+ return {id:designId,name:typeof json.name==='string'&&json.name.trim()?json.name.trim():designId,dir,svgFile,jsonFile:exists(jsonFile)?jsonFile:null,plateMm:plate,themes,bestseller:json.bestseller===true,hidden:json.hidden===true,released:Object.hasOwn(json,'ziele')?json.ziele.some(t=>t.freigabe?.status==='freigegeben'):json.freigabe?.status==='freigegeben',freigabe:record(json.freigabe)?json.freigabe:null,fields:json.fields??{},fonts:Array.isArray(json.fonts)?json.fonts.filter(f=>typeof f==='string'):[],source,index,json,svg:()=>fs.readFileSync(svgFile,'utf8')};
 }
 function readMasters(root){
  const base=path.join(root,'designs'),list=[];
@@ -223,6 +226,7 @@ export function openKatalog(root){
  }
  const motifs=readMotifs(root);
  const masters=readMasters(root);
+ for(const design of masters){validateDesignTargets(design,{families,file:design.jsonFile??design.svgFile});const resolved=resolveDesignTargets(design,{families,lines});design.targets=resolved.targets;design.targetIssues=resolved.issues;design.targetSource=resolved.source;design.released=resolved.targets.some(t=>t.freigabe?.status==='freigegeben');}
  const bestandLines=listDirs(path.join(root,'designs','bestand')).filter(n=>!n.startsWith('_')&&exists(path.join(root,'designs','bestand',n,'designs.json')));
  return {
   root,families,lines,themes,files,fonts:{list:fonts,sets,always:FONT_SET_ALWAYS},

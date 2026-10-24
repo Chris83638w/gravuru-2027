@@ -6,6 +6,7 @@ export const PROCESSING_PROFILES=Object.freeze([
  {id:'acrylic-engraving',name:'Gravur auf Acrylglas',method:'engraving',materialKind:'acrylic',ink:'#e1e4e5',colorMode:'monochrome'},
  {id:'color-print',name:'UV-Druck',method:'print',materialKind:null,ink:'#202824',colorMode:'full-color'},
 ].map(Object.freeze));
+export const WALNUT_ENGRAVING_TONE=Object.freeze({ink:'#33271f',rgb:Object.freeze([51/255,39/255,31/255]),label:'Walnussgravur · dunkle, kontrastarme Näherung',approximate:true,note:'Näherung ohne Material- oder Maschinenabnahme.'});
 export const MATERIAL_COLORS=Object.freeze({steel:'#bac2c4',wood:'#c7a275',slate:'#41494b',acrylic:'#17191b',other:'#f5f2eb',print:'#f5f2eb'});
 export const validColor=value=>typeof value==='string'&&/^#[0-9a-f]{6}$/i.test(value);
 export function getProcessingProfile(product){
@@ -13,7 +14,7 @@ export function getProcessingProfile(product){
  const id=explicit??(product.material?.kind==='print'?'color-print':product.material?.kind+'-engraving');
  const profile=PROCESSING_PROFILES.find(p=>p.id===id);
  if(!profile)throw Error('Bitte eines der fünf Bearbeitungsprofile auswählen.');
- return profile;
+ return profile.id==='wood-engraving'&&['walnut','walnuss'].includes(String(product.material?.variant??product.material?.id??'').toLowerCase())?{...profile,...WALNUT_ENGRAVING_TONE}:profile;
 }
 export function validateProcessingProfile(product){
  if(product.processing!==undefined&&(!product.processing||typeof product.processing!=='object'||Array.isArray(product.processing)||Object.keys(product.processing).some(k=>k!=='profileId')||!product.processing.profileId))throw Error('Ungültiges Bearbeitungsprofil.');

@@ -14,7 +14,7 @@
 // (`data-feld` name/familie/hausnummer, sonst der größte Text) – alles andere wird nicht geraten.
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {validColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
-import {validContentId} from '../platform/sources/app/shared/models/design-content.mjs';
+import {escapeXml,validContentId} from '../platform/sources/app/shared/models/design-content.mjs';
 import {customerLayoutIssue} from '../configurator/variant-m/contract.mjs';
 import {familyProductConfig,familyProcess,geometryOf,validateFamily,sizeQuantityTiers} from './product-families.mjs';
 import {quantityTiersIssue} from '../configurator/variant-m/contract.mjs';
@@ -150,7 +150,7 @@ export function parseDesignSvg(svgText){
    const image=findAll(node,['image'])[0],href=image?(image.attrs.href||image.attrs['xlink:href']||''):'';
    layers.push({id,kind,shape:mask.tag==='circle'||mask.tag==='ellipse'&&Math.abs(num(mask.attrs.rx,'rx')-num(mask.attrs.ry,'ry'))<0.01?'circle':'rect',bounds:[bounds[0]+t.dx,bounds[1]+t.dy,bounds[2],bounds[3]].map(round),rotation:t.rotation,...(/^[\w.-]+\.(png|jpe?g)$/i.test(href)?{placeholder:href}:{})});
   }else{
-   const parts=(node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node]).map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill||node.attrs.fill||null,fillRule:n.attrs['fill-rule']||node.attrs['fill-rule']||'nonzero',stroke:n.attrs.stroke||node.attrs.stroke||null,strokeMm:num(n.attrs['stroke-width']??node.attrs['stroke-width'],'stroke-width')??0,opacity:num(n.attrs.opacity??node.attrs.opacity,'opacity')??1,transform:transformOf(n===node?'':n.attrs.transform)})).filter(p=>p.d);
+   const parts=(node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node]).map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill||node.attrs.fill||null,fillRule:n.attrs['fill-rule']||node.attrs['fill-rule']||'nonzero',stroke:n.attrs.stroke||node.attrs.stroke||null,strokeMm:num(n.attrs['stroke-width']??node.attrs['stroke-width'],'stroke-width')??1,opacity:num(n.attrs.opacity??node.attrs.opacity,'opacity')??1,transform:transformOf(n===node?'':n.attrs.transform)})).filter(p=>p.d);
    if(!parts.length)fail('Ebene „'+id+'“ enthält keine Vektorpfade.');
    for(const p of parts){if(p.transform.rotation)fail('Ebene „'+id+'“: gedrehte Einzelpfade werden nicht unterstützt.');if(p.transform.dx||p.transform.dy)fail('Ebene „'+id+'“: verschobene Einzelpfade werden nicht unterstützt.');if(!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+$/.test(p.d))fail('Ebene „'+id+'“: Pfad enthält nicht erlaubte Zeichen.');}
    const nodes=node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node];
@@ -174,6 +174,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
  const process=familyProcess(family);if(!process)fail(design.id+': Verfahrensprofil der Familie „'+family.id+'“ ist offen.');
  const parsed=parseDesignSvg(svgText??design.svg()),plate=design.plateMm||[parsed.widthMm,parsed.heightMm];
  if(!samePlate(plate,[parsed.widthMm,parsed.heightMm]))fail(design.id+': SVG-Maß '+parsed.widthMm+' × '+parsed.heightMm+' mm widerspricht dem Plattenmaß '+plate[0]+' × '+plate[1]+' mm.');
+ const paint=(value)=>{const v=String(value);if(!/^(?:#[0-9a-f]{3}(?:[0-9a-f]{3})?|[a-z]+|rgba?\([\d\s.,%]+\))$/i.test(v))fail(design.id+': Druckfarbe enthält einen nicht unterstützten Wert: '+v);return escapeXml(v);};
  const print=process.method==='print',ink=process.ink,templateId='katalog-'+slug(design.id),themeId=theme?.id??design.themes?.[0]??null;
  const objects=[],motifs=[],rights={},notes=[...parsed.notes],usedFonts=new Set(),fieldKeys=new Set(),placeholders=[];
  // Namensfeld = Feldschlüssel mit name/familie/hausnummer, sonst der Text mit der größten Schrift.
@@ -213,7 +214,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    const [bx,by,bw,bh]=layer.bounds;
    if(samePlate([bw,bh],plate)&&Math.abs(bx)<0.5&&Math.abs(by)<0.5){notes.push('Ebene „'+layer.id+'“ füllt die ganze Platte (Plattenfläche aus Corel) und wird nicht übernommen.');continue;}
    const key=templateId+'-'+id;
-   motifs.push({key,svgFragment:layer.paths.map(d=>'<path d="'+d+'" fill="currentColor" fill-rule="nonzero"/>').join(''),bounds:[round(bx),round(by),round(bw),round(bh)],embeddedOnly:true});
+   motifs.push({key,svgFragment:layer.paths.map((d,i)=>{const a=layer.pathAttributes?.[i]||{};return '<path d="'+d+'" fill="'+(print?paint(a.fill??'#000000'):'currentColor')+'" fill-rule="'+(print&&a.evenodd?'evenodd':'nonzero')+'"'+(print&&a.stroke?' stroke="'+paint(a.stroke)+'" stroke-width="'+a.strokeMm+'"':'')+(print&&a.opacity!==undefined?' opacity="'+a.opacity+'"':'')+'/>';}).join(''),bounds:[round(bx),round(by),round(bw),round(bh)],embeddedOnly:true});
    const movable=movableAll(design)&&!guide;
    const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:(print||movable)&&!guide};
    if(!o.customerEditable)o.locked=true;if(guide)o.role='guide';
@@ -289,7 +290,7 @@ export function scaleTemplate(template,fromMm,toMm,fonts,{contain=false}={}){
 // Motivpfade liegen in mm des Masters; `localFontIds` erlaubt kein transform im Fragment,
 // deshalb werden die Pfadkoordinaten selbst skaliert.
 export function scaleEmbeddedMotifs(motifs,scale){
- return motifs.map(m=>({...m,bounds:m.bounds.map(v=>round(v*scale)),svgFragment:m.svgFragment.replace(/d="([^"]*)"/g,(_,d)=>'d="'+scaleArcAware(d,scale)+'"')}));
+ return motifs.map(m=>({...m,bounds:m.bounds.map(v=>round(v*scale)),svgFragment:m.svgFragment.replace(/d="([^"]*)"/g,(_,d)=>'d="'+scaleArcAware(d,scale)+'"').replace(/stroke-width="([^"]+)"/g,(_,width)=>'stroke-width="'+round(Number(width)*scale)+'"')}));
 }
 // Bogenbefehle: Radien und Endpunkt skalieren, Drehwinkel und Flags nicht.
 function scaleArcAware(d,scale){

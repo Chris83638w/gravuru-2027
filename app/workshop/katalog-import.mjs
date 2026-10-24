@@ -7,7 +7,9 @@
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import {katalogDesignToTemplate,assignSeries,formatSeries,scaleTemplate,scaleEmbeddedMotifs,templateFit,katalogFamilyToProduct,priceGaps} from './katalog-convert.mjs';
+import {katalogDesignToTemplate,formatSeries,scaleTemplate,scaleEmbeddedMotifs,katalogFamilyToProduct,priceGaps} from './katalog-convert.mjs';
+import {approvedForFamily,assignTargetSeries,designTargetCompatibility} from './design-targets.mjs';
+import {assessDesignTarget} from './design-target-rules.mjs';
 import {FAMILY_MATERIALS,familyReady} from './product-families.mjs';
 
 const sha=v=>createHash('sha256').update(v).digest('hex');
@@ -63,7 +65,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
  await reporter?.begin?.(report);
  for(const familyId of line.families){
   const family=katalog.families.get(familyId),doc=stripFamily(family);
-  const ready=familyReady(doc),series=formatSeries(doc),assigned=assignSeries(doc,designs.filter(d=>materialMatch(doc,d)));
+  const ready=familyReady(doc),series=formatSeries(doc),assigned=assignTargetSeries(doc,designs.filter(d=>materialMatch(doc,d)&&(allDesigns||approvedForFamily(d,familyId,katalog))),katalog);
   const priceOpen=doc.sizes.flatMap(s=>priceGaps(doc,s));
   const existing=families?.list().find(f=>f.id===familyId)?families.get(familyId):null;
   const familyAction=!existing?'neu':JSON.stringify(existing.document)===JSON.stringify(doc)?'unverändert':'aktualisieren';
@@ -118,19 +120,21 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
    for(const size of offered){
     const key=importKey(line.id,sub.id,size.key)+(main?':'+main.id:''),entry={key,sizeKey:size.key,label:size.label,...(main?{mainProduct:main.id,startDesign:main.startDesign}:{}),templates:[],fit:{passt:0,'prüfen':0,'passt nicht':0},excluded:[]};
     const templates=[];
-    for(const a of themed.filter(a=>a.sizes.includes(size.key))){
+    for(const a of themed.filter(a=>a.sizes.includes(size.key)||a.excludedTargets.some(e=>e.size===size.key))){
+     const compatibility=designTargetCompatibility(a.design,doc,size,{katalog});
+     if(compatibility.status==='passt nicht'){entry.excluded.push({design:a.design.id,issues:compatibility.issues});entry.fit['passt nicht']++;report.counts.fit['passt nicht']++;continue;}
      const t=await templateFor(a);if(!t.ok)continue;
      try{
       const scaled=scaleTemplate(t.template,t.template.katalog.plateMm,[size.widthMm,size.heightMm],fonts,{contain:doc.groups.find(g=>g.key===size.groupKey)?.shape==='contour'});
       let scaledMotifs;const motifsForFit=()=>scaledMotifs??=scaleEmbeddedMotifs(t.motifs,scaled.katalog.scale);
-      const fit=templateFit(scaled,doc,size,fonts,{motifs:motifsForFit});entry.fit[fit.status]++;report.counts.fit[fit.status]++;
+      const fit=assessDesignTarget({master:a.design,template:scaled,family:doc,size,fonts,motifs:motifsForFit});entry.fit[fit.status]++;report.counts.fit[fit.status]++;
       if(fit.status==='passt nicht'){entry.excluded.push({design:a.design.id,issues:fit.issues});continue;}
       scaled.katalog.fit=fit.status;if(fit.issues.length)scaled.katalog.review=fit.issues;
       const motifs=motifsForFit();
       templates.push({template:scaled,motifs,rights:t.rights,examples:t.examples});entry.templates.push({design:a.design.id,fit:fit.status,issues:fit.issues});
      }catch(e){entry.excluded.push({design:a.design.id,issues:[e.message]});}
     }
-    if(!templates.length&&!allDesigns&&katalog.designs.masters.some(d=>!d.hidden&&!d.released&&Array.isArray(d.themes)&&d.themes.includes(sub.themeId))){entry.action='gesperrt';entry.reason='Keine freigegebenen Designs für diese Größe (Dashboard: Freigabe).';report.counts.blocked++;await recordProduct(entry);continue;}
+    if(!templates.length&&!allDesigns&&katalog.designs.masters.some(d=>!d.hidden&&!approvedForFamily(d,familyId,katalog)&&Array.isArray(d.themes)&&d.themes.includes(sub.themeId))){entry.action='gesperrt';entry.reason='Keine freigegebenen Designs für diese Größe (Dashboard: Freigabe).';report.counts.blocked++;await recordProduct(entry);continue;}
     let item=null;
     try{
      const product=katalogFamilyToProduct(doc,line,effective,{size,theme,fontSet:{...fontSet,available:set.available},fontProfileId:set.profileId,fonts,templates,revision,mainProduct:main});
@@ -159,11 +163,12 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
  report.designs.withoutTheme=[...seenDesigns.values()].filter(d=>d.series&&!d.themed).length;
  report.counts.designsWithoutSeries=report.designs.oldSize.length;
  await reporter?.end?.(report);
- return {line:line.id,families:familyPlans,items,report,...(!retainItems?{reportOnly:true}:{}),token:sha(JSON.stringify({line:line.id,items:itemDigests}))};
+ return {line:line.id,families:familyPlans,items,report,diagnosticOnly:allDesigns,...(!retainItems?{reportOnly:true}:{}),token:sha(JSON.stringify({line:line.id,items:itemDigests}))};
 }
 
 export function applyKatalogImport(plan,{repository,families}){
  if(plan.reportOnly)fail('Ein Berichtplan enthält keine Produktdokumente und kann nicht geschrieben werden.');
+ if(plan.diagnosticOnly)fail('Ein Diagnoseplan mit nicht freigegebenen Designs darf nicht importiert werden. Bitte einen neuen Plan mit freigegebenen Familienzielen erstellen.');
  const results={families:[],products:[]};
  for(const f of plan.families){
   // Wiederholter Lauf desselben Plans: bereits gleich angelegte Familie ist kein Fehler.

@@ -115,8 +115,9 @@ export function applyCorrectionWriteback(plan,{actor='katalog-writeback',now=new
    json.korrekturen=[...(Array.isArray(json.korrekturen)?json.korrekturen:[]),{productId:item.productId,productRevision:item.productRevision,designId:item.designId,correctionRevision:item.correctionRevision,actor:item.actor,at:now.toISOString(),layers:item.changes.map(c=>c.layer)}];
    json.fonts=[...new Set((json.texts||[]).map(t=>t.font).filter(Boolean))];
    json.freigabe={status:'offen',am:now.toISOString(),von:String(actor).slice(0,160)};
+   const zielFreigaben=resetTargetApprovals(json,now.toISOString(),String(actor).slice(0,160));
    const base='designs/'+reihe+'/'+designId,protocol='designs/'+reihe+'/_aenderungen.jsonl',logFile=safeKatalogPath(root,protocol,{missing:true}),files=[base+'/design.json',base+'/design.svg'];
-   const entry={at:now.toISOString(),actor:String(actor).slice(0,160),reihe,designId,source:'design-corrections',productId:item.productId,productRevision:item.productRevision,correctionRevision:item.correctionRevision,changes:item.changes.map(c=>({layer:c.layer,diff:c.diff})),files};
+   const entry={at:now.toISOString(),actor:String(actor).slice(0,160),reihe,designId,source:'design-corrections',zielFreigaben,productId:item.productId,productRevision:item.productRevision,correctionRevision:item.correctionRevision,changes:item.changes.map(c=>({layer:c.layer,diff:c.diff})),files};
    writeKatalogTransaction(root,[{relative:files[0],text:JSON.stringify(json,null,1)+'\n'},{relative:files[1],text:svgText},{relative:protocol,text:(fs.existsSync(logFile)?fs.readFileSync(logFile,'utf8'):'')+JSON.stringify(entry)+'\n'}]);
    written.push({designId,files:[...files,protocol]});
   }
@@ -135,6 +136,11 @@ export function formatPlan(plan){
 }
 
 export {planTemplateWriteback} from './katalog-template-writeback.mjs';
+const resetTargetApprovals=(json,at,actor)=>{
+ const from=structuredClone(json.ziele??null);
+ if(Array.isArray(json.ziele))json.ziele=json.ziele.map(target=>({...target,freigabe:{status:'offen',am:at,von:actor}}));
+ return {from,to:structuredClone(json.ziele??null)};
+};
 const segment=v=>typeof v==='string'&&/^[A-Za-z0-9][A-Za-z0-9_. ,+-]{0,180}$/.test(v)&&!v.includes('..')&&!/[. ]$/.test(v);
 function readSource(root,{reihe,designId}){
  if(!segment(reihe)||reihe==='bestand'||!segment(designId))throw Object.assign(Error('Ungültiger Designpfad.'),{status:422,code:'design_edit'});
@@ -158,8 +164,9 @@ export function saveTemplateWriteback(root,{reihe,designId,checksum,template,ori
   if(!plan.changed)return {changed:false,checksum:source.checksum,changes:[],files:[]};
   const at=now.toISOString(),by=String(actor).slice(0,160),from=plan.json.freigabe??null;
   plan.json.freigabe={status:'offen',am:at,von:by};
+  const zielFreigaben=resetTargetApprovals(plan.json,at,by);
   const base='designs/'+reihe+'/'+designId,protocol='designs/'+reihe+'/_aenderungen.jsonl',logFile=safeKatalogPath(root,protocol,{missing:true}),files=[base+'/design.json',base+'/design.svg'];
-  const entry={at,actor:by,reihe,designId,source:'dashboard-editor',changes:plan.changes,freigabe:{from,to:plan.json.freigabe},files};
+  const entry={at,actor:by,reihe,designId,source:'dashboard-editor',changes:plan.changes,freigabe:{from,to:plan.json.freigabe},zielFreigaben,files};
   writeKatalogTransaction(root,[{relative:files[0],text:JSON.stringify(plan.json,null,1)+'\n'},{relative:files[1],text:plan.svgText},{relative:protocol,text:(fs.existsSync(logFile)?fs.readFileSync(logFile,'utf8'):'')+JSON.stringify(entry)+'\n'}],{beforeReplace});
   forgetKatalog();
   return {changed:true,checksum:readSource(root,{reihe,designId}).checksum,changes:plan.changes,files:[...files,protocol],freigabe:plan.json.freigabe};

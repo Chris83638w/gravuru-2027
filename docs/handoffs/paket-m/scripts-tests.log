@@ -1,0 +1,34 @@
+✔ Auswahl aus dem shop-sync-Plan: nur „unverändert“, jede Variante mit Werkstatt-Option {mounting:<Schlüssel>} und Soll-Preis (17.1646ms)
+✔ Werkstatt-DB: Konfi-Produkte über Import-Journal oder profile.id auflösen; Prüfung id-plan-ready mit Shop-Preisen aus dem Export (24701.9523ms)
+✔ Aktivierung: 15 Zuordnungen über den bestehenden Store, Wiederholung ohne neue Bindungen, Auflösung je Shopify-ID-Paar (56732.9207ms)
+✔ run(): Dry-run ohne DB (nur Auswahl), mit DB (Prüfung), --apply nur mit --live oder --trust-export (33084.4095ms)
+✔ catalog-only: real catalog targets, no shop counts or invented plan; missing approvals stay open (81.593ms)
+✔ unapproved local masters remain open even with an otherwise complete export (195.5486ms)
+✔ released TEMP masters: full and partial exports retain the genuine planner counts and creation safeguards (310.5841ms)
+✔ same design fingerprint keeps data-only differences unchanged: no implicit data-update bypass (213.9426ms)
+✔ run writes only new LF reports, plus the exact plan when given an export; inputs and credential values never enter the outputs (164.1304ms)
+✔ run rejects catalog-contained or existing output paths before writing anything (54.9341ms)
+✔ strict CLI refuses apply/create/bypass, unknown, duplicated and missing options; help needs no files (25.6606ms)
+✔ full export: a missing SKU cannot turn the existing 80x20 product from update into create; null remains valid (1405.9028ms)
+✔ malformed or wrong-shop exports fail before a report directory is created (766.395ms)
+✔ Befestigungswerte entsprechen exakt der Werkstatt (familyProductConfig): Kennung, Label, Aufpreis, Reihenfolge (292.07ms)
+✔ Soll je Hauptprodukt × Größe: Kennungen wie Handoff, Basis-SKU-Quelle, Preisüberschreibung, offene Punkte (87.7632ms)
+✔ Regression Edelstahl 7x2: die drei Hauptprodukte ergeben „unverändert“ mit den Varianten-IDs des Handoffs (17.5684ms)
+✔ Update: Standardvariante wird „Ohne Bohrung“ (ID bleibt), vier neue Varianten ohne ID, Option ohne ID, Metafeld, Bestand aus (21.2215ms)
+✔ Konflikt, offen und create: Fremdoption, doppelte SKU, überzählige Shop-Variante, Teilexport, fehlender Name, falscher Shop (58.4444ms)
+✔ Anwenden: Lesen vor Schreiben, productSet je Produkt, Rücklesen, Journal, Wiederholung ohne zweites Schreiben, Neuanlage nur mit --create (706.4446ms)
+✔ run(): Dry-run schreibt den Plan und nichts sonst; --apply ohne Zugang bricht ohne Geheimnis ab (176.278ms)
+﹣ Echter Katalog + Teilexport (lokal, wenn vorhanden): drei 7x2-Produkte unverändert (0.1764ms) # SKIP
+✔ Freigabe und Design-Stand (Chris 23.10.2026): ohne Freigabe offen; erster Abgleich schreibt custom.design_sha256; gleicher Stand → unverändert trotz Datenabweichung, --daten-aktualisieren erzwingt (673.5939ms)
+✔ shop targets use only their own approval; empty targets and incompatible shapes/formats never yield an applicable entry (189.469ms)
+✔ shop CLI rejects diagnostic --alle-designs with --apply before output, credentials or transport (2.8518ms)
+✔ shop planning validates current geometry and raw material rules even after historical approval, and never substitutes a missing font (328.9831ms)
+✔ public applyPlan rejects diagnostic plans before creating a journal or calling transport (8.0606ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 121035.058

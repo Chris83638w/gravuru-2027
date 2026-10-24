@@ -1,3 +1,4 @@
+import {setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 export const ACRYLIC_BASES = [
   {id:'none',label:'Ohne Sockel',priceCents:0,insertionMm:0,asset:null},
   {id:'buche',label:'Massiver Holzsockel · Buche',priceCents:899,insertionMm:7,asset:'base-buche.png'},
@@ -26,7 +27,7 @@ export function containAcrylicObject(o){
   const area=ACRYLIC_SAFE_AREA,a=(o.rotation||0)*Math.PI/180;
   let w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a));
   const scale=Math.min(1,(area.right-area.left)/w,(area.bottom-area.top)/h);
-  if(scale<1){o.w*=scale;o.h*=scale;if(o.type==='text')o.size*=scale;w*=scale;h*=scale;}
+  if(scale<1){o.w*=scale;o.h*=scale;if(o.type==='text')setTextSize(o,o.size*scale);w*=scale;h*=scale;}
   o.x=Math.min(area.right-w/2,Math.max(area.left+w/2,o.x));
   o.y=Math.min(area.bottom-h/2,Math.max(area.top+h/2,o.y));return o;
 }

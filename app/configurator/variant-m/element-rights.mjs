@@ -4,9 +4,12 @@ export const ELEMENT_RIGHT_FIELDS=Object.freeze({
   move:['x','y','rotation'], scale:['w','h','size'],
 });
 export const ELEMENT_RIGHTS=Object.freeze(['content','color','replace','move','scale','delete']);
-const structural=['letterSpacing','type','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed','role'];
+const structural=['letterSpacing','textAnchor','lineHeight','type','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed','role'];
 export const rightForProperty=key=>Object.entries(ELEMENT_RIGHT_FIELDS).find(([,fields])=>fields.includes(key))?.[0];
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+// Source leading is fixed relative to font size when the customer may scale text.
+const templateProperties=(original,object,permission)=>permission.scale&&original.type==='text'&&Number.isFinite(original.lineHeight)&&Number.isFinite(original.size)&&original.size>0&&Number.isFinite(object.size)&&object.size>0?{...original,lineHeight:original.lineHeight*(object.size/original.size)}:original;
+const sameTemplateProperty=(key,value,expected,permission)=>same(value,expected)||(key==='lineHeight'&&permission.scale&&Number.isFinite(value)&&Number.isFinite(expected)&&Math.abs(value-expected)<=1e-9*Math.max(1,Math.abs(expected)));
 
 // Rights derived from the legacy flags of a template element. This is the only
 // source when a product carries no rights document, and the upper bound a
@@ -72,7 +75,8 @@ export function restoreElementRights(source,objects,rights,previous=[]){
       index=Math.min(source.indexOf(original),result.length);result.splice(index,0,object);blocked.add(original.id);
     }
     if(!object)continue;
-    for(const key of structural)restore(object,original,key);
+    const template=templateProperties(original,object,permission);
+    for(const key of structural)if(!sameTemplateProperty(key,object[key],template[key],permission))restore(object,template,key);
     for(const [right,fields] of Object.entries(ELEMENT_RIGHT_FIELDS))if(!permission[right]){
       for(const key of fields){
         // Text width/height follow its permitted content; point size does not.
@@ -107,7 +111,8 @@ export function templateRightsIssue(config,design,source,objects){
     const matches=objects.filter(object=>object.id===id),current=matches[0],permission=rights[id];
     if(matches.length>1)return 'Das Vorlagenelement „'+label(original)+'“ darf nicht dupliziert werden.';
     if(!current||current.uxHidden===true&&original.uxHidden!==true||current.opacity===0&&original.opacity!==0)return 'Das Vorlagenelement „'+label(original)+'“ darf nicht entfernt oder ausgeblendet werden.';
-    if(structural.some(key=>!same(current[key],original[key])))return 'Das Vorlagenelement „'+label(original)+'“ darf seine Vorlageneigenschaften nicht ändern.';
+    const template=templateProperties(original,current,permission);
+    if(structural.some(key=>!sameTemplateProperty(key,current[key],template[key],permission)))return 'Das Vorlagenelement „'+label(original)+'“ darf seine Vorlageneigenschaften nicht ändern.';
     for(const [right,fields] of Object.entries(ELEMENT_RIGHT_FIELDS))if(!permission[right]&&fields.some(key=>!same(current[key],original[key])&&!(right==='scale'&&original.type==='text'&&permission.content&&['w','h'].includes(key))))return 'Das Vorlagenelement „'+label(original)+'“ darf nicht verändert werden (Recht '+right+' fehlt).';
   }
   const templateIds=objects.filter(object=>originals.has(object.id)).map(object=>object.id);

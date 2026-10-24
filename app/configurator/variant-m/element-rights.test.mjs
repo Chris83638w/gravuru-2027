@@ -4,7 +4,7 @@ import {canEditElement,restoreElementRights,rightForProperty,templateRightsIssue
 import fs from 'node:fs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {makeProductDocument,validateProductDesign} from '../../workshop/product-model.mjs';
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 const text={id:'name',type:'text',fieldKey:'name',text:'Anna',font:'Source',bold:false,size:8,w:40,h:10,x:60,y:150,rotation:0,color:'#112233',customerEditable:true};
 const photo={id:'photo',type:'photoSlot',fieldKey:'photo',w:100,h:90,x:75,y:60,rotation:0,acrylicFixed:true};
 const none={content:false,color:false,replace:false,move:false,scale:false,delete:false};
@@ -124,4 +124,40 @@ test('client repair agrees with server validation for the real acrylic design',(
   const validated=validateProductDesign(document,{...source,objects:repaired.objects});
   assert.equal(validated.objects.find(object=>object.id==='names').color,'#c93232');
   assert.equal(validated.objects.find(object=>object.id==='photo-main').uxUploadId,undefined);
+});
+
+test('template alignment and line spacing cannot bypass customer rights',()=>{
+  const original={...text,text:'Alpha\nBeta',textAnchor:'middle',lineHeight:9.6};
+  const source={id:'d',objects:[original]};
+  for(const permission of [none,Object.fromEntries(Object.keys(none).map(key=>[key,true]))]){
+    const config={profile:{designs:[source]},workshopElementRights:{d:{name:permission}}};
+    for(const change of [{textAnchor:'start'},{lineHeight:30},{textAnchor:undefined},{lineHeight:undefined}]){
+      const changed={...original,...change};
+      assert.match(templateRightsIssue(config,source,source,[changed]),/Vorlageneigenschaften nicht ändern/);
+      const repaired=restoreElementRights([original],[changed],{name:permission});
+      assert.deepEqual(repaired.objects,[original]);
+      assert.deepEqual(repaired.blockedIds,['name']);
+      assert.equal(templateRightsIssue(config,source,source,repaired.objects),null);
+    }
+  }
+  for(const change of [{textAnchor:'start'},{lineHeight:30}]){
+    const legacySource={id:'legacy',objects:[text]};
+    const config={profile:{designs:[legacySource]}};
+    assert.match(templateRightsIssue(config,legacySource,legacySource,[{...text,...change}]),/Vorlageneigenschaften nicht ändern/);
+    assert.deepEqual(restoreElementRights([text],[{...text,...change}],{name:Object.fromEntries(Object.keys(none).map(key=>[key,true]))}).objects,[text]);
+  }
+});
+
+test('scale permission keeps source line spacing proportional without granting independent leading changes',()=>{
+ const original={...text,text:'Alpha\nBeta',size:5.29,lineHeight:6.81},source={id:'d',objects:[original]},rights={name:{...none,scale:true}},config={profile:{designs:[source]},workshopElementRights:{d:rights}};
+ const scaled={...original};for(const size of [8.13,3.71,7.03])setTextSize(scaled,size);
+ assert.ok(Math.abs(scaled.lineHeight-original.lineHeight*scaled.size/original.size)<1e-12);
+ assert.equal(templateRightsIssue(config,source,source,[scaled]),null);
+ assert.deepEqual(restoreElementRights([original],[scaled],rights).objects,[scaled]);
+ assert.deepEqual(restoreElementRights([original],[scaled],rights).blockedIds,[]);
+ for(const lineHeight of [original.lineHeight,scaled.lineHeight+0.01,undefined,NaN]){
+  const forged={...scaled,lineHeight};assert.match(templateRightsIssue(config,source,source,[forged]),/Vorlageneigenschaften nicht ändern/);
+  const repaired=restoreElementRights([original],[forged],rights);assert.equal(repaired.objects[0].lineHeight,original.lineHeight*(scaled.size/original.size));assert.equal(templateRightsIssue(config,source,source,repaired.objects),null);
+ }
+ const fixed={...config,workshopElementRights:{d:{name:none}}};assert.ok(templateRightsIssue(fixed,source,source,[scaled]));assert.deepEqual(restoreElementRights([original],[scaled],{name:none}).objects,[original]);
 });

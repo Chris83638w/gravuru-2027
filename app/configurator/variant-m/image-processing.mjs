@@ -1,4 +1,5 @@
 // Deterministic local editing only. Original uploads are retained separately.
+import {setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {designTextSize} from './usability-model.mjs';
 export function removeConnectedBackground(data,width,height,seedX,seedY,tolerance=35){
   if(data.length!==width*height*4)throw Error('Ungültige Bildgröße.');
@@ -18,7 +19,7 @@ export function fittedSize(width,height,max=1600){
 }
 export function scaleObject(object,factor,physicalScale=1,minTextMm=undefined){
   if(!Number.isFinite(factor)||factor<=0)throw Error('Ungültige Skalierung.');
-  if(object.type==='text')return {...object,size:designTextSize(object.size*factor*physicalScale,physicalScale,minTextMm)};
+  if(object.type==='text')return setTextSize({...object},designTextSize(object.size*factor*physicalScale,physicalScale,minTextMm));
   const safe=Math.max(.05,Math.min(20,factor));return {...object,w:Math.max(1,object.w*safe),h:Math.max(1,object.h*safe)};
 }
 

@@ -1,3 +1,4 @@
+import {setTextSize} from './doorbell-preview.mjs';
 import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry,ellipseEdgeDistance} from './contour-geometry.mjs';
 import {embeddedMotifFits} from './embedded-motif-fit.mjs';
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
@@ -87,7 +88,9 @@ export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
    if(!Number.isFinite(o.size)||o.size<DESIGN_LIMITS.minFontSize||o.size>DESIGN_LIMITS.maxFontSize)throw Error('Schriftgröße: 1 bis 100 mm.');
    if(o.bold!==undefined&&typeof o.bold!=='boolean')throw Error('Ungültiger Schriftschnitt.');
   }
-  if(o.letterSpacing!==undefined&&(o.type!=='text'||!Number.isFinite(o.letterSpacing)||o.letterSpacing<0||o.letterSpacing>10))throw Error('Ungültiger Zeichenabstand.');
+  if(o.letterSpacing!==undefined&&(o.type!=='text'||!Number.isFinite(o.letterSpacing)||o.letterSpacing< -10||o.letterSpacing>10))throw Error('Ungültiger Zeichenabstand.');
+  if(o.lineHeight!==undefined&&(o.type!=='text'||!Number.isFinite(o.lineHeight)||o.lineHeight<=0||o.lineHeight>1000))throw Error('Ungültiger Zeilenabstand.');
+  if(o.textAnchor!==undefined&&(o.type!=='text'||!['start','middle','end'].includes(o.textAnchor)))throw Error('Ungültige Textausrichtung.');
   if((o.photoMaskAssetId!==undefined&&!/^[a-f0-9]{64}$/.test(o.photoMaskAssetId))||(o.photoShape==='template'&&!o.photoMaskAssetId))throw Error('Ungültige Original-Fotomaske.');
   if(o.photoShape==='arch'&&o.h<o.w/2)throw Error('Bogenfoto braucht mindestens eine halbe Breite als Höhe.');
   if(o.customerEditable!==undefined&&typeof o.customerEditable!=='boolean')throw Error('Ungültige Ebenenfreigabe.');
@@ -122,7 +125,7 @@ export function transformedObject(before,gesture,point,fonts,measure){
   // Enlarged hit targets need a relative gesture: grabbing off-centre must not jump.
   const start=gesture.start,dx=start?.x-o.x,dy=start?.y-o.y,sx=dx*Math.cos(angle)-dy*Math.sin(angle),sy=dx*Math.sin(angle)+dy*Math.cos(angle),norm=sx*sx+sy*sy;
   const relative=norm>1e-8?(x*sx+y*sy)/norm:Math.max(Math.abs(x)*2/o.w,Math.abs(y)*2/o.h);
-  const factor=Math.max(.05,Math.min(20,relative));o.w*=factor;o.h*=factor;if(o.type==='text'){o.size=Math.max(1,Math.min(100,o.size*factor));measure(o,fonts);}}
+  const factor=Math.max(.05,Math.min(20,relative));o.w*=factor;o.h*=factor;if(o.type==='text'){setTextSize(o,Math.max(1,Math.min(100,o.size*factor)));measure(o,fonts);}}
  for(const k of ['x','y','w','h','size'])if(Number.isFinite(o[k]))o[k]=Math.round(o[k]*1000)/1000;
  return o;
 }

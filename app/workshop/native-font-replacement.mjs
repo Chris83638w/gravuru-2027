@@ -1,5 +1,5 @@
 import {validateProductDocument,PRODUCT_SCHEMA} from './product-model.mjs';
-import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import fs from 'node:fs';
 import {isDeepStrictEqual} from 'node:util';
 import {gunzipSync} from 'node:zlib';
@@ -25,13 +25,13 @@ export function replaceNativeFont(document,{from,to,font}) {
   let changed=0;
   for(const design of result.config.profile.designs)for(const object of design.objects){
     if(object.type!=='text'||object.font!==from)continue;
-    const width=object.w,height=object.h;object.font=to;object.size=Math.floor(object.size);
+    const width=object.w,height=object.h;object.font=to;setTextSize(object,Math.floor(object.size));
     if(object.bold&&!font.bold)throw Error('Die tatsächlich verwendete fette Schriftvariante fehlt.');
     for(;;){
       if(object.size<1)throw Error('Der Text passt mit dieser Schrift nicht in seinen bisherigen Bereich.');
       measureText(object,result.config.localResources.fonts);
       if(object.w<=width+.001&&object.h<=height+.001)break;
-      object.size--;
+      setTextSize(object,object.size-1);
     }
     changed++;
   }

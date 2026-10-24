@@ -5,7 +5,7 @@ import {transformedCorners} from './usability-model.mjs';
 import {designArea} from './design-area.mjs';
 import {fitText,freePlacement,transferTexts,changedCustomerTexts,alignGroup,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
-import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
 export async function installWorkflow(api){
  const {el,r,profile,config,button,esc,mutate,selected,showTab,say,dialog}=api;
@@ -37,14 +37,14 @@ export async function installWorkflow(api){
  $('[data-ux=multi-center]').insertAdjacentHTML('beforebegin',button('multi-left','Links bündig')+button('multi-right','Rechts bündig'));
  r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(!['multi-left','multi-right'].includes(key))return;const ids=all('[data-align-id]:checked').map(n=>n.dataset.alignId);mutate(()=>alignGroup(el.state.objects,ids,key==='multi-left'?'left':'right',surface()));});
  const boundsCache=new Map();
- function bounds(o){const key=JSON.stringify([o.text,o.font,o.size,o.bold,o.italic]);if(boundsCache.has(key))return boundsCache.get(key);const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);const b=svg.firstElementChild.getBBox(),value={x:b.x,y:b.y,width:b.width,height:b.height};svg.remove();if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,value);return value;}
+ function bounds(o){const key=JSON.stringify([o.text,o.font,o.size,o.bold,o.italic,o.letterSpacing,o.textAnchor,o.lineHeight,o.w]);if(boundsCache.has(key))return boundsCache.get(key);const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);const b=svg.firstElementChild.getBBox(),value={x:b.x,y:b.y,width:b.width,height:b.height};svg.remove();if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,value);return value;}
  el.uxAlign=mode=>{const o=selected();if(!o||o.uxLocked)return;mutate(()=>{const xs=transformedCorners(o,bounds(o)).map(p=>p.x),a=surface();o.x+=(mode==='left'?a.x-Math.min(...xs):mode==='right'?a.x+a.width-Math.max(...xs):a.x+a.width/2-(Math.min(...xs)+Math.max(...xs))/2);});};
- const fitted=new Map(),signature=o=>JSON.stringify([o.text,o.font,o.bold,o.italic,o.size,el.state.fkFrame,el.uxTextScale?.()||1]);
+ const fitted=new Map(),signature=o=>JSON.stringify([o.text,o.font,o.bold,o.italic,o.size,o.letterSpacing,o.textAnchor,o.lineHeight,o.w,el.state.fkFrame,el.uxTextScale?.()||1]);
  const normalize=el.normalize;
  // Ü3.2: Autofit verkleinert bis zur Mindestgröße (K10: minTextMm des Verfahrensprofils, sonst 4 mm;
  // im Werkstatt-Editor 1 mm). Reicht das nicht, bleibt die Mindestgröße stehen und das Feld meldet
  // „Text zu lang“ (uxTextOverflow='length').
- el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),surface(),min);if(size!==null&&size<o.size){o.size=size;measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){o.size=min;measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
+ el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),surface(),min);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
  r.addEventListener('input',e=>{if(e.target.dataset.uxText){const o=el.state.objects.find(o=>o.id===e.target.dataset.uxText);if(o)o.uxCustomerText=true;}},true);
  let placementJob=Promise.resolve();
  // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz – Suche über die ganze
@@ -59,7 +59,7 @@ export async function installWorkflow(api){
  }
  // Gestaltungsfläche innerhalb des Randes (design-area.mjs); Klingelschild-Altpfad: Acrylfläche des Rahmens.
  function placementSurface(){if(!config)return surface();const current=surface(),geometry={...current,shape:current.shape??profile.geometry.shape},a=designArea(config,{geometry});return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:geometry.shape,...(geometry.shape==='contour'?{geometry}:{})};}
- function shrinkTo(o,scale){if(o.type==='text')o.size*=scale;o.w*=scale;o.h*=scale;}
+ function shrinkTo(o,scale){if(o.type==='text')setTextSize(o,o.size*scale);o.w*=scale;o.h*=scale;}
  function place(o){
   if(o.type==='motif'&&config){say('Freie Fläche für das Motiv wird gesucht …');placementJob=placementJob.then(()=>placeNewMotif({...api},o,{minScale:placementMinScale(o)})).catch(()=>say('Freie Fläche konnte nicht geprüft werden. Bitte die Motivposition prüfen.'));return;}
   const hit=freePlacement(o,placementSurface(),el.state.objects,obstacles(),{minScale:placementMinScale(o)});
@@ -131,7 +131,7 @@ export async function installWorkflow(api){
  let committed=thumbnailSignature(sourceTexts());
  el.uxThumbnailSignature=()=>{const live=thumbnailSignature(sourceTexts());if(live!==committed){clearTimeout(commitTimer);commitTimer=setTimeout(()=>{committed=live;refreshThumbnails();},250);}return committed;};
  el.uxThumbnailBudget=THUMBNAIL_BATCH;
- el.uxThumbnailDesign=design=>thumbnailDesign(design,sourceTexts(),o=>{measureText(o,el.fontData);try{const size=fitText(o,bounds(o),surface(),config?.workbench?.embedded?1:4/(el.uxTextScale?.()||1));if(size!==null&&size<o.size){o.size=size;measureText(o,el.fontData);}}catch{}});
+ el.uxThumbnailDesign=design=>thumbnailDesign(design,sourceTexts(),o=>{measureText(o,el.fontData);try{const size=fitText(o,bounds(o),surface(),config?.workbench?.embedded?1:4/(el.uxTextScale?.()||1));if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,el.fontData);}}catch{}});
  el.uxThumbnailDeferred=card=>!seen.has(card);
  const watcher=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{let due=false;for(const entry of entries){if(entry.isIntersecting){seen.add(entry.target);due=true;}else seen.delete(entry.target);}if(due)refreshThumbnails();},{rootMargin:'160px'}):null;
  function watchCards(){for(const card of all('[data-c-design]')){if(watcher){if(!card.dataset.thumbWatched){card.dataset.thumbWatched='';watcher.observe(card);}}else seen.add(card);}}

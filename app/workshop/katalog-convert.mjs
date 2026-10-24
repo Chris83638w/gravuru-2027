@@ -113,12 +113,16 @@ const shapePath=n=>{
  return '';
 };
 const textContent=node=>{
- const spans=findAll(node,['tspan']).filter(t=>t.children.some(c=>c.tag==='#text'));
- const own=node.children.filter(c=>c.tag==='#text').map(c=>c.text).join('');
- if(!spans.length)return {text:own.trim(),lines:1,firstY:undefined};
- const lines=spans.map(s=>({text:s.children.filter(c=>c.tag==='#text').map(c=>c.text).join('').trim(),y:num(s.attrs.y,'tspan y'),dy:num(s.attrs.dy,'tspan dy')}));
- const breaks=lines.filter((l,i)=>i>0&&(l.y!==undefined||l.dy)).length;
- return breaks?{text:lines.map(l=>l.text).join('\n'),lines:lines.length,firstY:lines[0].y}:{text:(own+lines.map(l=>l.text).join(' ')).trim(),lines:1,firstY:lines[0].y};
+ const spans=findAll(node,['tspan']),preserve=node.attrs['xml:space']==='preserve';
+ const text=n=>{const value=n.children.filter(c=>c.tag==='#text').map(c=>c.text).join('');return preserve?value:value.trim();};
+ if(!spans.length)return {text:text(node),lines:1,firstY:undefined,lineHeight:undefined};
+ let y=num(node.attrs.y,'text y')??0;const lines=spans.map(s=>{if(s.attrs.y!==undefined)y=num(s.attrs.y,'tspan y');y+=num(s.attrs.dy,'tspan dy')??0;return {text:text(s),y};});
+ const breaks=lines.some((l,i)=>i&&Math.abs(l.y-lines[i-1].y)>1e-9);
+ if(!breaks)return {text:text(node)+lines.map(l=>l.text).join(''),lines:1,firstY:lines[0].y,lineHeight:undefined};
+ const rows=[];for(const l of lines){if(rows.length&&Math.abs(l.y-rows.at(-1).y)<1e-9)rows.at(-1).text+=l.text;else rows.push({...l});}
+ const distances=rows.slice(1).map((l,i)=>l.y-rows[i].y),lineHeight=distances[0];
+ if(!(lineHeight>0)||distances.some(v=>Math.abs(v-lineHeight)>.000001))fail('SVG: ungleichmäßige oder rückwärts laufende Textzeilen benötigen eine Quellkorrektur.');
+ return {text:rows.map(l=>l.text).join('\n'),lines:rows.length,firstY:rows[0].y,lineHeight};
 };
 const fontFamily=v=>String(v??'').split(',')[0].trim().replace(/^["']|["']$/g,'');
 
@@ -136,7 +140,7 @@ export function parseDesignSvg(svgText){
    const inner=transformOf(el.attrs.transform),content=textContent(el);
    if(!content.text)fail('Ebene „'+id+'“: Text leer.');
    const size=num(el.attrs['font-size'],'font-size von „'+id+'“');if(!(size>0))fail('Ebene „'+id+'“: font-size in mm fehlt.');
-   layers.push({id,kind,fieldKey:node.attrs['data-feld']||el.attrs['data-feld']||null,text:content.text,lines:content.lines,font:fontFamily(el.attrs['font-family'])||fail('Ebene „'+id+'“: font-family fehlt.'),size,x:(num(el.attrs.x,'x')??0)+t.dx+inner.dx,y:(content.firstY??num(el.attrs.y,'y')??0)+t.dy+inner.dy,anchor:el.attrs['text-anchor']||'start',fill:el.attrs.fill||node.attrs.fill||null,rotation:t.rotation+inner.rotation});
+   layers.push({id,kind,fieldKey:node.attrs['data-feld']||el.attrs['data-feld']||null,text:content.text,lines:content.lines,lineHeight:content.lineHeight??size*1.2,font:fontFamily(el.attrs['font-family'])||fail('Ebene „'+id+'“: font-family fehlt.'),size,x:(num(el.attrs.x,'x')??0)+t.dx+inner.dx,y:(content.firstY??num(el.attrs.y,'y')??0)+t.dy+inner.dy,anchor:el.attrs['text-anchor']||'start',letterSpacing:num(el.attrs['letter-spacing'],'letter-spacing')??0,fill:el.attrs.fill||node.attrs.fill||null,rotation:t.rotation+inner.rotation});
   }else if(kind==='foto'){
    const mask=findAll(node,['rect','circle','ellipse','path']).find(n=>n.tag!=='path'||!n.attrs.d?.startsWith('M0'));
    if(!mask)fail('Ebene „'+id+'“: Fotofeld braucht eine Maske (rect, circle, ellipse oder path).');
@@ -146,12 +150,12 @@ export function parseDesignSvg(svgText){
    const image=findAll(node,['image'])[0],href=image?(image.attrs.href||image.attrs['xlink:href']||''):'';
    layers.push({id,kind,shape:mask.tag==='circle'||mask.tag==='ellipse'&&Math.abs(num(mask.attrs.rx,'rx')-num(mask.attrs.ry,'ry'))<0.01?'circle':'rect',bounds:[bounds[0]+t.dx,bounds[1]+t.dy,bounds[2],bounds[3]].map(round),rotation:t.rotation,...(/^[\w.-]+\.(png|jpe?g)$/i.test(href)?{placeholder:href}:{})});
   }else{
-   const parts=(node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node]).map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill||node.attrs.fill||null,transform:transformOf(n===node?'':n.attrs.transform)})).filter(p=>p.d);
+   const parts=(node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node]).map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill||node.attrs.fill||null,fillRule:n.attrs['fill-rule']||node.attrs['fill-rule']||'nonzero',stroke:n.attrs.stroke||node.attrs.stroke||null,strokeMm:num(n.attrs['stroke-width']??node.attrs['stroke-width'],'stroke-width')??0,opacity:num(n.attrs.opacity??node.attrs.opacity,'opacity')??1,transform:transformOf(n===node?'':n.attrs.transform)})).filter(p=>p.d);
    if(!parts.length)fail('Ebene „'+id+'“ enthält keine Vektorpfade.');
    for(const p of parts){if(p.transform.rotation)fail('Ebene „'+id+'“: gedrehte Einzelpfade werden nicht unterstützt.');if(p.transform.dx||p.transform.dy)fail('Ebene „'+id+'“: verschobene Einzelpfade werden nicht unterstützt.');if(!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+$/.test(p.d))fail('Ebene „'+id+'“: Pfad enthält nicht erlaubte Zeichen.');}
    const nodes=node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node];
    const boxes=nodes.filter(n=>shapePath(n).trim()).map(shapeBounds),x0=Math.min(...boxes.map(b=>b[0])),y0=Math.min(...boxes.map(b=>b[1])),x1=Math.max(...boxes.map(b=>b[0]+b[2])),y1=Math.max(...boxes.map(b=>b[1]+b[3]));
-   layers.push({id,kind,paths:parts.map(p=>p.d),fill:parts.find(p=>p.fill&&p.fill!=='none')?.fill||null,bounds:[x0+t.dx,y0+t.dy,x1-x0,y1-y0].map(round),rotation:t.rotation});
+   layers.push({id,kind,paths:parts.map(p=>p.d),pathAttributes:parts.map(p=>({fill:p.fill,evenodd:p.fillRule==='evenodd',stroke:p.stroke,strokeMm:p.strokeMm,opacity:p.opacity})),translation:[t.dx,t.dy],fill:parts.find(p=>p.fill&&p.fill!=='none')?.fill||null,bounds:[x0+t.dx,y0+t.dy,x1-x0,y1-y0].map(round),rotation:t.rotation});
   }
  }
  return {widthMm,heightMm,layers,notes};
@@ -182,12 +186,12 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    const font=layer.font;if(!fonts[font])fail(design.id+': Schrift fehlt: '+font+' (Ebene „'+layer.id+'“).');
    const fieldKey=layer.fieldKey||id;
    if(!validContentId(fieldKey)||fieldKeys.has(fieldKey))fail(design.id+': Feldschlüssel „'+fieldKey+'“ ungültig oder doppelt.');fieldKeys.add(fieldKey);
-   const o={id,type:'text',text:layer.text,font,size:round(layer.size),x:0,y:0,w:1,h:1,rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,bold:false,templateOrigin:true,customerEditable:!guide};
+   const o={id,type:'text',text:layer.text,font,size:round(layer.size),textAnchor:layer.anchor,letterSpacing:layer.letterSpacing||0,lineHeight:layer.lineHeight,x:0,y:0,w:1,h:1,rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,bold:false,templateOrigin:true,customerEditable:!guide};
    try{measureText(o,fonts);}catch(e){fail(design.id+': Ebene „'+layer.id+'“ – '+e.message);}
    // SVG: x/y = Grundlinie der ersten Zeile; Werkstatt: x/y = Mitte des Textkastens
    // (Grundlinie liegt bei Mitte + 0,35 · Größe, Zeilenabstand 1,2 · Größe, siehe textPaths).
    o.x=round(layer.anchor==='middle'?layer.x:layer.anchor==='end'?layer.x-o.w/2:layer.x+o.w/2);
-   o.y=round(layer.y-0.35*o.size+(layer.lines-1)/2*1.2*o.size);
+   o.y=round(layer.y-0.35*o.size+(layer.lines-1)/2*o.lineHeight);
    if(guide){o.role='guide';o.locked=true;rights[id]={content:false,color:false,replace:false,move:false,scale:false,delete:false};}
    else{
     o.fieldKey=fieldKey;o.required=rule.required??(layer===nameLayer);
@@ -275,7 +279,7 @@ export function scaleTemplate(template,fromMm,toMm,fonts,{contain=false}={}){
  const copy=structuredClone(template),dx=contain?(toMm[0]-fromMm[0]*scale)/2:0,dy=contain?(toMm[1]-fromMm[1]*scale)/2:0;
  copy.objects=copy.objects.map(o=>{
   const n={...o,x:round(o.x*scale+dx),y:round(o.y*scale+dy),w:round(o.w*scale),h:round(o.h*scale)};
-  if(o.type==='text'){n.size=round(o.size*scale);if(o.letterSpacing!==undefined)n.letterSpacing=round(o.letterSpacing*scale);measureText(n,fonts);}
+  if(o.type==='text'){n.size=round(o.size*scale);if(o.letterSpacing!==undefined)n.letterSpacing=round(o.letterSpacing*scale);if(o.lineHeight!==undefined)n.lineHeight=o.lineHeight*scale;measureText(n,fonts);}
   if(o.strokeWidth!==undefined)n.strokeWidth=round(o.strokeWidth*scale);
   return n;
  });
@@ -434,4 +438,30 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
  for(const t of templates)document.elementRights[t.template.id]=structuredClone(t.rights);
  if(fontProfileId)document.profileAssignments.fonts={mode:'override',profileId:fontProfileId};
  return {document:validateProductDocument(document),fontsMissing,fontSet:fontSet?.id??null,fontProfileId,themeId:theme?.id??subcategory.themeId??null};
+}
+
+/** Uniform vector transform in master mm. Same command handling as scaleArcAware;
+ * absolute coordinates receive an offset, relative deltas do not. Arc flags and
+ * rotations are preserved. No flattening and no change to the catalogue shape. */
+export function transformEmbeddedPath(d,scale,dx=0,dy=0){
+ if(![scale,dx,dy].every(Number.isFinite)||scale<=0)fail('Ungültige Motivskalierung.');
+ const tokens=d.match(/[MmLlHhVvCcSsQqTtAaZz]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g)||[];
+ if(d.replace(/[MmLlHhVvCcSsQqTtAaZz]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?|[\s,]/g,''))fail('Ungültiger Motivpfad.');
+ const arity={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7},out=[];let cmd='',first=true,i=0;
+ while(i<tokens.length){
+  if(/^[A-Za-z]$/.test(tokens[i])){cmd=tokens[i++];out.push(cmd);if(cmd.toUpperCase()==='Z')continue;}
+  const c=cmd.toUpperCase(),count=arity[c];if(!count||first&&c!=='M')fail('Unvollständiger Motivpfad.');
+  const values=tokens.slice(i,i+count);if(values.length!==count||values.some(v=>/^[A-Za-z]$/.test(v)))fail('Unvollständiger Motivpfad.');
+  const relative=cmd===cmd.toLowerCase();
+  for(let k=0;k<count;k++){
+   const value=Number(values[k]);if(!Number.isFinite(value))fail('Ungültige Motivkoordinate.');
+   let result;
+   if(c==='A'&&k>=2&&k<=4){if(k>=3&&value!==0&&value!==1)fail('Ungültiges Bogenflag.');result=value;}
+   else{const axis=c==='V'?1:c==='H'?0:c==='A'?k===6?1:0:k%2,offset=c==='A'&&k<2?0:!relative||first?(axis?dy:dx):0;result=value*scale+offset;}
+   out.push(String(Math.round(result*1e8)/1e8));
+  }
+  i+=count;first=false;
+  if(c==='M')cmd=relative?'l':'L';
+ }
+ return out.join(' ');
 }

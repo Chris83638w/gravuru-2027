@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -8,7 +9,7 @@ import {createWorkshop} from './http.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
 import {workshopResources} from './catalog.mjs';
 import {openKatalog} from './katalog-source.mjs';
-import {planKatalogImport,applyKatalogImport,formatReport,ensureFontSet,importKey} from './katalog-import.mjs';
+import {planKatalogImport,applyKatalogImport,formatReport,ensureFontSet,importKey,createKatalogReportWriter} from './katalog-import.mjs';
 
 const FIXTURE=fileURLToPath(new URL('./fixtures/katalog/',import.meta.url));
 function workshop(t){
@@ -173,4 +174,38 @@ test('contour import reports Kontur offen ahead of open price, missing release a
   assert.deepEqual(plan.items,[]);assert.deepEqual(rows[0].templates,[]);
   assert.deepEqual([plan.report.counts.products,plan.report.counts.blocked,plan.report.counts.new],[1,1,0]);
  }
+});
+
+
+test('Berichtmodus streamt jedes Produkt mit Rückstau; Bericht und Token entsprechen dem schreibbaren Plan',async t=>{
+ const ws=workshop(t),k=openKatalog(contourFixture(t));
+ const full=await planKatalogImport(k,'test-linie',options(ws)),chunks=[],phases=[];
+ let writes=0,active=false;
+ const writer=createKatalogReportWriter(async chunk=>{
+  assert.equal(active,false,'keine überlappenden Schreibvorgänge');active=true;
+  await new Promise(resolve=>setImmediate(resolve));chunks.push(chunk);writes++;active=false;
+ });
+ const reportOnly=await planKatalogImport(k,'test-linie',{...options(ws),retainItems:false,reporter:writer,onProgress:event=>{phases.push(event.phase);if(event.phase==='product')assert.ok(writes>0,'Bericht wird bereits während der Planung geschrieben');}});
+ assert.deepEqual(JSON.parse(chunks.join('')),full.report,'auch gesperrte Produkte, Rechte-/Preisfehler und Reihenfolge bleiben gleich');
+ assert.deepEqual(reportOnly.report,full.report);assert.equal(reportOnly.token,full.token);
+ const sha=value=>createHash('sha256').update(value).digest('hex');
+ assert.equal(full.token,sha(JSON.stringify({line:full.line,items:full.items.map(i=>[i.key,i.action,sha(JSON.stringify(i.document))])})),'Token bleibt kompatibel zum ursprünglichen vollständigen Plan');
+ assert.deepEqual(reportOnly.items,[]);assert.equal(reportOnly.reportOnly,true);
+ assert.equal(phases.filter(p=>p==='document').length,full.items.length);
+ assert.equal(phases.filter(p=>p==='product').length,full.report.counts.products);
+ assert.equal(chunks.filter(c=>c.startsWith('\n{')||c.startsWith(',\n{')).length,full.report.counts.products,'ein Produkt pro Chunk');
+ assert.throws(()=>applyKatalogImport(reportOnly,options(ws)),/Berichtplan/);
+ assert.deepEqual(ws.families.list(),[],'Schutz greift vor der ersten Familienänderung');assert.equal(ws.repository.list().length,1);
+});
+
+test('Streamingfehler bricht ab und wird weder als Produktfehler verschluckt noch als vollständiger Bericht beendet',async t=>{
+ const ws=workshop(t);let ended=false,products=0;
+ await assert.rejects(planKatalogImport(openKatalog(FIXTURE),'test-linie',{...options(ws),retainItems:false,reporter:{product:async()=>{products++;throw Error('Berichtsablage voll');},end:()=>{ended=true;}}}),/Berichtsablage voll/);
+ assert.equal(products,1);assert.equal(ended,false);assert.deepEqual(ws.families.list(),[]);assert.equal(ws.repository.list().length,1);
+});
+
+test('Streamingbericht ohne ausgewählte Unterkategorie bleibt vollständiges JSON',async t=>{
+ const ws=workshop(t),chunks=[];
+ const plan=await planKatalogImport(openKatalog(FIXTURE),'test-linie',{...options(ws),only:{subcategories:[]},retainItems:false,reporter:createKatalogReportWriter(chunk=>chunks.push(chunk))});
+ assert.deepEqual(JSON.parse(chunks.join('')),plan.report);assert.deepEqual(plan.report.subcategories,[]);assert.equal(plan.report.counts.products,0);
 });

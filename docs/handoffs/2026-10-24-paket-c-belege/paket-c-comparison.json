@@ -1,0 +1,54 @@
+{
+  "equal": true,
+  "ignored": [
+    "line.file",
+    "families[*].file",
+    "subcategories[*].fontProfileId (bijective set identity verified)"
+  ],
+  "timestampsPresent": false,
+  "differenceCount": 0,
+  "differences": [],
+  "baselineSha256": "b46b020ac3dcbd98868152b10105b41467a642b734712b5219eb62296f3f6a47",
+  "candidateSha256": "724f316f00c19be46a3007eff92cf83c875d180db3bfc9763862579ff99fa951",
+  "counts": {
+    "products": 744,
+    "new": 584,
+    "update": 0,
+    "unchanged": 0,
+    "blocked": 160,
+    "templates": 7660,
+    "sizes": 80,
+    "pricesOpen": 16,
+    "designsWithoutSeries": 62,
+    "fit": {
+      "passt": 8063,
+      "prüfen": 18,
+      "passt nicht": 552
+    },
+    "unreleased": 0
+  },
+  "designs": {
+    "masters": 737,
+    "bestand": 0,
+    "considered": 735,
+    "withSeries": 673,
+    "oldSize": 62,
+    "withoutTheme": 0,
+    "failed": []
+  },
+  "blocked": {
+    "Preis offen: 8,5 × 8,5 cm": 8,
+    "Preis offen: 12 × 12 cm": 8,
+    "Preis offen: 16 × 16 cm": 8,
+    "Preis offen: 20 × 20 cm": 8,
+    "Kontur offen": 120,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-9x6-D13“ ist für 21 × 14 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-9x6-D61“ ist für 21 × 14 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-12x4-D48“ ist für 12 × 4 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-12x4-D12“ ist für 12 × 4 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-15x8-D47“ ist für 15 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-15x8-D19“ ist für 15 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TRE-V2A-8x5-D49“ ist für 12 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TRE-V2A-8x5-D57“ ist für 42 × 28 cm nicht verfügbar.": 1
+  }
+}

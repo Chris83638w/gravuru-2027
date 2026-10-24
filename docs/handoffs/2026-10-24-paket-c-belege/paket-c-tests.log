@@ -1,0 +1,30 @@
+✔ pathBounds: Hüllbox aus Stütz- und Kontrollpunkten, relative und absolute Befehle (1.8036ms)
+✔ parseDesignSvg liest Lieferform 2: Textebenen mit Zeilen, Motiv-/Deko-Pfade, Fotomaske, Hilfsebene (73.3047ms)
+✔ Design → Vorlage: Kundenfelder aus text-Ebenen, gesperrte Motive, Rechte und Guide-Rolle (338.3591ms)
+✔ Formatreihen ±1 %: Design nur in Größen seiner Reihe, alte Größe markiert (23.8266ms)
+✔ Master → Zielgröße: reine Skalierung mit Schriftgröße, Bohrbild aus der Familie; passt / prüfen / passt nicht (135.3087ms)
+✔ Familie → Produkt: Preise in Cent mit Überschreibung, Thema, Rechte, Vorlagen; offener Preis blockiert (337.539ms)
+✔ Gedenktafel 22 × 14 (20.10.2026): movable verschiebt alle Elemente, Fotofeld mit Platzhalterbild, Startdesign zuerst (119.5706ms)
+✔ mixed contour family leaves existing rectangular products unchanged (118.6689ms)
+✔ contour conversion reports exactly Kontur offen before price or start-design gaps (17.7332ms)
+✔ contour templateFit is only a bounding-rectangle check and never changes source geometry (32.3229ms)
+✔ Große Motivpfade behalten Bogenflags, Winkel und Koordinaten über Tokenblockgrenzen (1.6647ms)
+✔ Dry-run: Bericht je Linie ohne Schreiben; Commit legt Familie, Schriftprofile und Produkte an; zweiter Lauf ist unverändert (1604.4642ms)
+✔ Geänderter Katalog → Familienrevision und neue Produktrevisionen; Preisänderung nur in der Unterkategorie (2743.427ms)
+✔ ensureFontSet ohne Bibliothek liefert nur die Lücken; Import-Journal verhindert Doppelanlage (1075.6387ms)
+✔ Hauptprodukte: je Hauptprodukt ein Produkt mit eigenem Startdesign, Namen und Backend-Kennungen; `only` begrenzt den Lauf (1209.9366ms)
+✔ Ausgeblendete Master (hidden, Design-Dashboard) bleiben im Katalog, kommen aber in kein Produkt (374.0754ms)
+✔ Freigabe: ohne allDesigns kommen nur freigegebene Master ins Produkt; Größen ohne freigegebenes Design sind gesperrt (502.3877ms)
+✔ mixed contour import keeps rectangle plans and counts, with no writable contour product (1119.1337ms)
+✔ contour import reports Kontur offen ahead of open price, missing release and missing start design (251.2851ms)
+✔ Berichtmodus streamt jedes Produkt mit Rückstau; Bericht und Token entsprechen dem schreibbaren Plan (930.8422ms)
+✔ Streamingfehler bricht ab und wird weder als Produktfehler verschluckt noch als vollständiger Bericht beendet (161.9823ms)
+✔ Streamingbericht ohne ausgewählte Unterkategorie bleibt vollständiges JSON (66.9429ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10531.5393

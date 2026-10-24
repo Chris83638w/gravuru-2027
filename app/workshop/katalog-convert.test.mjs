@@ -223,3 +223,13 @@ test('contour templateFit is only a bounding-rectangle check and never changes s
  assert.equal(templateFit(outside,f,size,fonts()).status,'passt nicht');
  assert.equal(JSON.stringify(f),before,'only fit uses a rectangle; stored path and holes stay untouched');
 });
+
+
+test('Große Motivpfade behalten Bogenflags, Winkel und Koordinaten über Tokenblockgrenzen',()=>{
+ const repeated=Array.from({length:1200},()=> 'l1.5,-2.25').join(''),source='<path d="M.25 1.5A2 3 45 0 1 4 5'+repeated+'z" fill="currentColor"/>';
+ const motifs=[{key:'large',bounds:[0.25,1.5,4,5],svgFragment:source,embeddedOnly:true}];
+ const scaled=scaleEmbeddedMotifs(motifs,2);
+ assert.equal(scaled[0].svgFragment,'<path d="M 0.5 3 A 4 6 45 0 1 8 10 '+Array.from({length:1200},()=> 'l 3 -4.5').join(' ')+' z" fill="currentColor"/>');
+ assert.deepEqual(scaled[0].bounds,[0.5,3,8,10]);assert.equal(motifs[0].svgFragment,source,'Masterpfad unverändert');
+ assert.equal(scaleEmbeddedMotifs([{key:'empty',bounds:[0,0,0,0],svgFragment:'<path d=""/>'}],1)[0].svgFragment,'<path d=""/>');
+});

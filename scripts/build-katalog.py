@@ -91,7 +91,7 @@ def family_section(f, path, kat, pdf_ok):
             lines.append(f"| {ratio(ss[0]['widthMm'], ss[0]['heightMm'])} | {label} | {cells} |")
     contour_sizes = [s for s in f['sizes'] if groups[s['groupKey']]['shape'] == 'contour']
     if contour_sizes:
-        lines += ['', '#### Konturformen aus der Zeichnung', '', 'Pfad und feste Lochmitten in mm aus der Familie; Bohrungen gelten für die gebohrten Befestigungen. Konfiguratoranschluss noch offen (Paket B).', '', '| Größe | Kontur | Feste Lochmitten (x / y / Ø mm) |', '| --- | --- | --- |']
+        lines += ['', '#### Konturformen aus der Zeichnung', '', 'Pfad und feste Lochmitten in mm aus der Familie; Bohrungen gelten für die gebohrten Befestigungen. Der Konfigurator verwendet diese Kontur mit Gestaltungsrand und Lochschutz.', '', '| Größe | Kontur | Feste Lochmitten (x / y / Ø mm) |', '| --- | --- | --- |']
         for s in contour_sizes:
             holes = '; '.join(f'{h["x"]:g} / {h["y"]:g} / {h["diameterMm"]:g}' for h in s['holesMm'])
             lines.append(f'| {s["key"]} | ![{s["label"]}](kataloge/konturen/{s["key"]}.svg) | {holes} |')

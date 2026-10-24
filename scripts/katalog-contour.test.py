@@ -194,6 +194,31 @@ class ContourCatalogTests(unittest.TestCase):
         self.assertIn('Rückplatte nicht dargestellt', svg.find('desc').text)
         self.assertIn('Rückplattenkontur offen', ''.join(svg.itertext()))
 
+    def test_catalog_reports_connected_contour_and_keeps_backing_offset_gap(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            f = family()
+            f.update(schema='gravuru-product-family/v2', id='test-contour', name='Kontur-Test',
+                     material={'kind': 'steel', 'label': 'Edelstahl', 'thicknessMm': 1.5, 'processingProfileId': 'steel-engraving'},
+                     designArea={'marginMm': 2, 'keepoutMm': 1}, withoutMounting=True,
+                     fonts=['Montserrat'], briefingNotes='')
+            f['sizes'] = [serie.contour_size(row(), f)]
+            f['groups'] = [{'key': 'RT2', 'name': 'Retro 2', 'shape': 'contour', 'cornerRadiusMm': 0}]
+            family_path = root / 'family.json'
+            for backing in [None, {'label': 'Rückplatte', 'offsetMm': 3, 'thicknessMm': 1.5}]:
+                with self.subTest(backing=backing):
+                    if backing:
+                        f['backing'] = backing
+                    family_path.write_text(json.dumps(f), encoding='utf-8')
+                    original = family_path.read_bytes()
+                    expected = ['Rückplattenversatz der Kontur'] if backing else []
+                    self.assertEqual(build.gaps_of(family_path), expected)
+                    markdown = build.family_section(f, family_path, root, False)
+                    self.assertIn('Der Konfigurator verwendet diese Kontur mit Gestaltungsrand und Lochschutz.', markdown)
+                    self.assertNotIn('Konfiguratoranschluss noch offen', markdown)
+                    self.assertIn('**Offen:** Rückplattenversatz der Kontur' if backing else '**Stammdaten vollständig.**', markdown)
+                    self.assertEqual(family_path.read_bytes(), original)
+
     def test_preview_preserves_actual_curve_and_exact_hole_centres(self):
         with tempfile.TemporaryDirectory() as tmp:
             f = family()

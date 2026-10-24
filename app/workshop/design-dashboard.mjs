@@ -7,7 +7,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {openKatalog} from './katalog-source.mjs';
-import {formatSeries,seriesOf} from './katalog-convert.mjs';
+import {formatSeries,seriesOf,assignSeries,applyPriceOverrides,priceGaps,katalogDesignToTemplate,scaleTemplate,templateFit} from './katalog-convert.mjs';
+import {convertFont} from './font-library.mjs';
 import {FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
 import {importKey} from './katalog-import.mjs';
 
@@ -158,8 +159,90 @@ function konfiProducts(repository,line,ctx,design){
  return {imported:products.length>0,products};
 }
 
-export function designDashboard(root,{linie=null,reihe=null,material=null,status=null,freigabe=null,bestand=null,repository=null}={}){
+// Hauptproduktreferenzen bleiben sichtbar, auch wenn der Import sie derzeit sperrt.
+// Eine Bindung je Hauptprodukt × angebotener Größe; CustomizationID wird nie aus main.id erfunden.
+// Freigabe ist weiterhin row.released und wird nicht mit dem fachlichen Größen-/Fitstatus vermischt.
+const mainReferences=line=>line.subcategories.flatMap(sub=>(sub.mainProducts||[]).map(main=>({sub,main})));
+const transferId=design=>design.json?.transfer?.fromKey??design.json?.transfer?.from??null;
+function referencedMasters(katalog,line){
+ const ids=new Set(mainReferences(line).map(({main})=>main.startDesign));
+ return katalog.designs.masters.filter(design=>ids.has(design.id)||ids.has(transferId(design)));
+}
+function missingReferenceRow(id,message){
+ return {id,name:id,nameSheet:null,source:'missing',reihe:null,formatreihe:null,familyId:null,series:null,
+  material:null,process:null,form:null,plate:null,labelColor:null,selectable:false,hidden:false,released:false,freigabe:null,bestseller:false,
+  production:{isProduction:false,hasVersion:false,of:null},duplicate:null,texts:{count:0,fonts:[],sample:[]},fonts:[],fontsOriginal:[],motifs:null,photos:null,themes:[],
+  lieferform2:null,bestand:null,files:{svg:null,png:null,production:null},reasons:[message],warnings:[],konfi:{imported:false,products:[]}};
+}
+function attachMainProducts(katalog,line,rows,{fonts=null}={}){
+ const references=mainReferences(line),masters=new Map(katalog.designs.masters.map(design=>[design.id,design])),pricedCache=new Map(),templateCache=new Map(),resolved=new Map();
+ for(const row of rows){row.mainProducts=[];row.isStartDesign=false;}
+ const blocker=(code,message)=>({code,message});
+ for(const {sub,main} of references){
+  // Direct IDs take precedence; only explicit transfer metadata may link a Bestand alias.
+  if(!resolved.has(main.startDesign)){
+   let row=rows.find(row=>row.id===main.startDesign),alias=false,ambiguous=false;
+   if(!row){const aliases=rows.filter(row=>row.lieferform2?.transferFrom===main.startDesign);if(aliases.length===1){row=aliases[0];alias=true;}else ambiguous=aliases.length>1;}
+   if(!row){row=missingReferenceRow(main.startDesign,ambiguous?'Startdesign „'+main.startDesign+'“ hat mehrere ausdrücklich verknüpfte Herkunftsdesigns; Zuordnung prüfen.':'Startdesign „'+main.startDesign+'“ fehlt im Designbestand der Linie.');row.mainProducts=[];rows.push(row);}
+   resolved.set(main.startDesign,{row,alias,ambiguous});
+  }
+  const {row,alias,ambiguous}=resolved.get(main.startDesign);
+  row.isStartDesign=true;
+  const master=row.lieferform2?masters.get(row.id):null,offered=main.sizesOffered??sub.sizesOffered;
+  const keys=Array.isArray(offered)?[...new Set(offered)]:[...new Set(line.families.flatMap(id=>katalog.families.get(id).sizes.map(size=>size.key)))];
+  const targets=keys.flatMap(sizeKey=>{const found=line.families.map(id=>katalog.families.get(id)).filter(family=>family.sizes.some(size=>size.key===sizeKey));return found.length?found.map(family=>({family,sizeKey})):[{family:null,sizeKey}];});
+  if(!targets.length)targets.push({family:null,sizeKey:null});
+  for(const {family,sizeKey} of targets){
+   const baseSize=family?.sizes.find(size=>size.key===sizeKey),entry={id:main.id,customizationId:main.externalIds?.customizationId??null,name:main.name??null,
+    lineId:line.id,subcategoryId:sub.id,startDesign:main.startDesign,resolvedDesignId:master?.id??null,
+    familyId:family?.id??null,sizeKey,sizeLabel:baseSize?.label??null,basePriceCents:null,fit:{status:'nicht geprüft',issues:[]},blockers:[]};
+   if(ambiguous)entry.blockers.push(blocker('design_ambiguous','Startdesign „'+main.startDesign+'“ ist über mehrere Herkunftsangaben verknüpft.'));
+   else if(!master)entry.blockers.push(blocker('design_missing','Startdesign „'+main.startDesign+'“ fehlt als Lieferform 2.'));
+   else if(alias)entry.blockers.push(blocker('design_alias','„'+main.startDesign+'“ ist die Herkunft von „'+master.id+'“. Der Import benötigt die eindeutige Lieferform-2-Kennung als startDesign.'));
+   if(!family){entry.blockers.push(blocker(sizeKey?'size_unknown':'size_missing',sizeKey?'Größe „'+sizeKey+'“ gehört zu keiner Familie der Linie.':'Keine angebotene Größe mit Familie vorhanden.'));row.mainProducts.push(entry);continue;}
+   const pricedKey=family.id+'\0'+sub.id;
+   if(!pricedCache.has(pricedKey)){try{pricedCache.set(pricedKey,{family:applyPriceOverrides(family,sub)});}catch(error){pricedCache.set(pricedKey,{error:error.message});}}
+   const priced=pricedCache.get(pricedKey);
+   if(priced.error)entry.blockers.push(blocker('price_configuration',priced.error));
+   else{const size=priced.family.sizes.find(size=>size.key===sizeKey);entry.basePriceCents=size.baseCents;entry.blockers.push(...priceGaps(priced.family,size).map(message=>blocker('price_open',message)));}
+   if(master){
+    const assigned=assignSeries(family,[master])[0],allowed=!assigned.oldSize&&assigned.sizes.includes(sizeKey);
+    if(!allowed)entry.blockers.push(blocker('size_mismatch','Startdesign „'+main.startDesign+'“ ist nach seiner Größenbindung nicht für '+baseSize.label+' ('+sizeKey+') vorgesehen.'));
+    if(!master.themes?.includes(sub.themeId))entry.blockers.push(blocker('theme_mismatch','Das Startdesign ist dem Thema der Unterkategorie „'+sub.id+'“ nicht zugeordnet.'));
+    if(master.hidden)entry.blockers.push(blocker('design_hidden','Das Startdesign ist ausgeblendet und wird nicht importiert.'));
+    if(sub.photoDesigns!=null){const hasPhoto=Array.isArray(master.json?.photos)?master.json.photos.length>0:/class="[^"]*\bfoto\b/.test(master.svg());if((sub.photoDesigns==='mit')!==hasPhoto)entry.blockers.push(blocker('photo_mismatch','Fotofeld-Zuordnung passt nicht zur Unterkategorie „'+sub.id+'“.'));}
+    if(allowed&&fonts!==null){
+     try{
+      const templateKey=family.id+'\0'+sub.themeId+'\0'+master.id;
+      if(!templateCache.has(templateKey)){try{templateCache.set(templateKey,{template:katalogDesignToTemplate(master,family,katalog.theme(sub.themeId),{fonts}).template});}catch(error){templateCache.set(templateKey,{error});}}
+      const converted=templateCache.get(templateKey);if(converted.error)throw converted.error;
+      const scaled=scaleTemplate(converted.template,converted.template.katalog.plateMm,[baseSize.widthMm,baseSize.heightMm],fonts,{contain:family.groups.find(group=>group.key===baseSize.groupKey)?.shape==='contour'});
+      entry.fit=templateFit(scaled,family,baseSize,fonts);
+      if(entry.fit.status==='passt nicht')entry.blockers.push(...entry.fit.issues.map(message=>blocker('size_fit',message)));
+     }catch(error){const missingFont=/Schrift fehlt|vorhandene Schriftart/.test(error.message);entry.fit={status:missingFont?'nicht geprüft':'passt nicht',issues:[error.message]};entry.blockers.push(blocker(missingFont?'fit_unavailable':'design_invalid',error.message));}
+    }
+   }
+   row.mainProducts.push(entry);
+  }
+ }
+ return {references:references.length,rows:rows.filter(row=>row.isStartDesign).length,assignments:rows.reduce((n,row)=>n+row.mainProducts.length,0),
+  missingReferences:references.filter(({main})=>!masters.has(main.startDesign)).length,fitChecked:fonts!==null};
+}
+
+// HTTP uses this asynchronous adapter to obtain real font metrics. The existing synchronous
+// dashboard remains usable without glyph conversion, with fit explicitly marked unverified.
+export async function designDashboardWithFit(root,options={}){
+ if(!options.linie)return designDashboard(root,options);
+ const katalog=katalogFor(root),line=katalog.lines.get(options.linie);
+ if(!line)return designDashboard(root,options);
+ const names=[...new Set(referencedMasters(katalog,line).flatMap(design=>design.fonts||[]))],fonts={},issues=[];
+ for(const name of names){try{const result=await katalog.fontResources([name],{available:options.available??{},converter:options.converter??convertFont});Object.assign(fonts,result.fonts);if(result.missing.length)issues.push('Fit-Prüfung: Schrift fehlt: '+name+'.');}catch(error){issues.push('Fit-Prüfung der Schrift „'+name+'“ nicht möglich: '+error.message);}}
+ const result=designDashboard(root,{...options,fonts});result.notes.push(...issues);return result;
+}
+
+export function designDashboard(root,{linie=null,reihe=null,material=null,status=null,freigabe=null,bestand=null,repository=null,startDesigns=false,fonts=null}={}){
  const katalog=katalogFor(root);root=katalog.root;
+ if(typeof startDesigns!=='boolean')fail(422,'designs_query','startDesigns ist true oder false.');
  if(linie===null||linie===undefined||linie===''){
   const overviews=bestandOverviews(root);
   return {linien:[...katalog.lines.values()].map(line=>{const ctx=lineContext(katalog,line);const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d));const b=resolveBestand(overviews,line,l2,null);return {id:line.id,name:line.name,status:line.status??null,families:line.families,materials:ctx.materials,subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>m.id)})),designsLieferform2:l2.length,bestand:b.overviews.map(o=>o.slug)};}),themes:katalog.themes.map(t=>({id:t.id,name:t.name}))};
@@ -171,7 +254,8 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  if(!ctx.families.length)notes.push('Linie ohne Familie: Formatreihen und Material sind offen; Lieferform-2-Designs lassen sich nicht zuordnen.');
  const themeName=id=>katalog.theme(id)?.name??id;
  // Lieferform 2
- const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d));
+ const referenced=new Set(referencedMasters(katalog,line));
+ const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d)||referenced.has(d));
  const rows=[],byBestandId=new Map();
  for(const d of l2){
   const j=d.json||{},texts=Array.isArray(j.texts)?j.texts.filter(record):[],motifs=Array.isArray(j.motifs)?j.motifs.filter(record):[];
@@ -238,18 +322,19 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
    }
   }
  }
+ const startDesignSummary=attachMainProducts(katalog,line,rows,{fonts});
  for(const row of rows)row.status=row.lieferform2?(row.reasons.length?'prüfen':'ok'):'fehlt';
  rows.sort((a,b)=>natural.compare(a.id,b.id));
- const count=list=>{const c={total:list.length,ok:0,'prüfen':0,fehlt:0,selectable:0,lieferform2:0,bestandOnly:0,hidden:0,freigegeben:0};for(const r of list){c[r.status]++;if(r.released)c.freigegeben++;if(r.selectable)c.selectable++;if(r.lieferform2)c.lieferform2++;else c.bestandOnly++;if(r.hidden)c.hidden++;}return c;};
+ const count=list=>{const c={total:list.length,ok:0,'prüfen':0,fehlt:0,selectable:0,lieferform2:0,bestandOnly:0,hidden:0,freigegeben:0};for(const r of list){c[r.status]++;if(r.released)c.freigegeben++;if(r.selectable)c.selectable++;if(r.lieferform2)c.lieferform2++;else if(r.source==='bestand')c.bestandOnly++;if(r.hidden)c.hidden++;}return c;};
  const groups=(key)=>{const m=new Map();for(const r of rows){const k=r[key]??'offen';if(!m.has(k))m.set(k,[]);m.get(k).push(r);}return [...m].sort((a,b)=>natural.compare(a[0],b[0])).map(([k,list])=>({key:k,counts:count(list)}));};
  const reihen=groups('reihe'),formatreihen=groups('formatreihe'),materials=groups('material');
- let filtered=rows;
+ let filtered=startDesigns?rows.filter(row=>row.isStartDesign):rows;
  if(reihe)filtered=filtered.filter(r=>r.reihe===reihe||r.formatreihe===reihe);
  if(material)filtered=filtered.filter(r=>materialKey(r.material)===materialKey(material));
  if(status)filtered=filtered.filter(r=>r.status===status);
  if(freigabe)filtered=filtered.filter(r=>r.released===(freigabe==='ja'));
  return {linie:{id:line.id,name:line.name,status:line.status??null,families:ctx.families.map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f)})),subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>({id:m.id,name:m.name??null,startDesign:m.startDesign}))}))},
-  themes:katalog.themes.map(t=>({id:t.id,name:t.name})),counts:count(rows),reihen,formatreihen,materials,bestand:bestandInfo,notes,filter:{reihe,material,status,freigabe},rows:filtered,minTextMm:MIN_TEXT_MM};
+  themes:katalog.themes.map(t=>({id:t.id,name:t.name})),counts:count(rows),reihen,formatreihen,materials,bestand:bestandInfo,notes,startDesignSummary,filter:{reihe,material,status,freigabe,startDesigns},rows:filtered,minTextMm:MIN_TEXT_MM};
 }
 // Lieferform-2-Design gehört zur Linie, wenn sein Plattenmaß in eine Formatreihe einer Familie der Linie
 // passt (±1 %, wie der Import) und das Material (falls angegeben) zur Familie passt – oder, ohne passende

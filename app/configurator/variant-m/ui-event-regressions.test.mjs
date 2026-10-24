@@ -1,3 +1,4 @@
+import {selectionScaleFactor} from './selection-arrows.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
 import test from 'node:test';
 import {fontDisplayName} from './font-display.mjs';
@@ -106,7 +107,7 @@ test('large text: layer size input uses the same mm conversion and size changes 
 });
 test('large text: pointer, handle keyboard and toolbar shrink never enlarge a 4-mm text',async()=>{
  for(const route of ['pointer','keyboard','toolbar']){
-  const {env,object,r}=textEnvironment();object.size=3;Object.assign(env,{scaleObject,resize:null});
+  const {env,object,r}=textEnvironment();object.size=3;Object.assign(env,{scaleObject,selectionScaleFactor,resize:null});
   if(route==='pointer'){
    env.resize={id:1,start:{x:object.x+2,y:object.y},object:{...object},kind:'scale',moved:false};env.el.point=()=>({x:object.x+1,y:object.y});env.el.render=()=>{};
    vm.runInContext(block('refinements.mjs',"  r.addEventListener('pointermove',","\n  },true);"),env);

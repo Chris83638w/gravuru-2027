@@ -1,9 +1,10 @@
+import {selectionScaleFactor} from '../../configurator/variant-m/selection-arrows.mjs';
 import {authorDesign,fitPosition} from './design-authoring.mjs';
 import {katalogEditorBody,katalogTextChange,katalogTextAddition} from './katalog-editor-ui.mjs';
 import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {artworkFragment} from '../../configurator/variant-m/artwork-resource.mjs';
 import {merchantImageAttribute} from './merchant-media.mjs';
-import {drawSelection} from './editor-selection.mjs';
+import {drawSelection,replaceEditorPreview} from './editor-selection.mjs';
 import {alignedPosition,drawGuides,clearGuides} from './editor-guides.mjs';
 // M02 view adapter. The existing draft, revision API and rights remain authoritative.
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -59,7 +60,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   }
   body+='<p class="field-help">Vorschau mit Material und Verfahren der Produktfamilie.</p><details class="element-geometry" open><summary>Position und Größe · mm</summary><div class="element-pair">'+input('Mitte X','x',o.x)+input('Mitte Y','y',o.y)+'</div>';
   if(o.type!=='text')body+='<div class="element-pair">'+input('Breite','w',o.w,{min:.01})+input('Höhe','h',o.h,{min:.01})+'</div><p class="field-help">Das Seitenverhältnis des Motivs bleibt erhalten.</p>';
-  body+='<p class="field-help">Direkt am Element ziehen. Eckgriffe ändern die Größe. Hilfslinien und Einrasten lassen sich links umschalten.</p></details><div class="element-actions"><button type="button" data-editor-action="remove">Element entfernen</button></div><p id="element-action-status" role="status"></p><div class="source-preserved"><strong>Neue Sichtprüfung nach Änderungen</strong><p>Speichern aktualisiert dieses Katalogdesign und setzt seine Freigabe zurück. Vorher werden alle zugeordneten Größen geprüft.</p></div>';
+  body+='<p class="field-help">Direkt am Element ziehen. Pfeile ändern die Größe. Hilfslinien und Einrasten lassen sich links umschalten.</p></details><div class="element-actions"><button type="button" data-editor-action="remove">Element entfernen</button></div><p id="element-action-status" role="status"></p><div class="source-preserved"><strong>Neue Sichtprüfung nach Änderungen</strong><p>Speichern aktualisiert dieses Katalogdesign und setzt seine Freigabe zurück. Vorher werden alle zugeordneten Größen geprüft.</p></div>';
   $('#panel-designs').innerHTML=body;syncControls();
  }
  function properties(){
@@ -101,7 +102,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    n.removeAttribute('aria-pressed');
   }
   const node=[...$('#editor-preview').querySelectorAll('[data-object]')].find(n=>n.dataset.object===objectId);
-  drawSelection($('#editor-preview'),node,selected(),{editable:!state.busy&&state.record?.status!=='archived'&&!selected()?.technicalLocked&&!katalogProtected(selected())});
+  drawSelection($('#editor-preview'),node,selected(),{arrows:!!state.katalogEditor,editable:!state.busy&&state.record?.status!=='archived'&&!selected()?.technicalLocked&&!katalogProtected(selected())});
  }
  async function preview(){
   if(!state.record||!design())return;
@@ -112,7 +113,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   try{
    const response=await api(state.katalogEditor?'/api/workshop/designs/editor/preview':`/api/workshop/products/${encodeURIComponent(id)}/editor-preview`,{method:'POST',signal:previewController.signal,body:state.katalogEditor?katalogEditorBody(state):{expectedRevision:state.record.revision,document:state.draft,designId,options}});
    if(request!==serial||id!==state.record?.id)return;
-   $('#editor-preview').innerHTML=response.svg;highlight();photoThumbnail();
+   replaceEditorPreview($('#editor-preview'),response.svg,{arrows:!!state.katalogEditor});highlight();photoThumbnail();
    let hint=$('#editor-hole-hint');if(!hint){hint=document.createElement('p');hint.id='editor-hole-hint';hint.setAttribute('role','status');hint.style.cssText='background:#fff4e5;border:1px solid #f0c27b;border-radius:10px;padding:10px 12px;font-size:14px;margin:10px 16px';$('#editor-preview').after(hint);}hint.textContent=response.holeHint||'';hint.hidden=!response.holeHint;
    const tile=[...$('#editor-designs').querySelectorAll('[data-editor-design]')].find(n=>n.dataset.editorDesign===designId),old=tile?.querySelector('img');
    if(old){const img=document.createElement('img');img.alt='';img.src='data:image/svg+xml;base64,'+btoa(Array.from(new TextEncoder().encode(response.svg.replace(/<g data-m-keepout="true"[\s\S]*?<\/g>/,'')),b=>String.fromCharCode(b)).join(''));old.replaceWith(img);}
@@ -334,7 +335,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  const stage=$('#editor-preview');
  let pick=null;
  function candidatesAt(x,y){const d=design();if(!d)return [];const ids=[...new Set(document.elementsFromPoint(x,y).map(n=>n.closest?.('[data-object]')).filter(n=>n&&stage.contains(n)).map(n=>n.dataset.object))];return ids.map(id=>d.objects.find(o=>o.id===id)).filter(o=>o&&!o.technicalLocked).sort((a,b)=>a.w*a.h-b.w*b.h);}
- stage.tabIndex=0;stage.setAttribute('aria-label','Gestaltungsfläche. Element anklicken und ziehen. Eckgriffe ändern die Größe. Pfeiltasten verschieben die Auswahl um einen Millimeter. Liegen Elemente übereinander, wählt ein weiterer Klick an derselben Stelle das darunterliegende.');
+ stage.tabIndex=0;stage.setAttribute('aria-label','Gestaltungsfläche. Element anklicken und ziehen. '+(state.katalogEditor?'Die Pfeile ändern die Größe.':'Eckgriffe ändern die Größe.')+' Pfeiltasten verschieben die Auswahl um einen Millimeter. Liegen Elemente übereinander, wählt ein weiterer Klick an derselben Stelle das darunterliegende.');
  new ResizeObserver(()=>highlight()).observe(stage);
  stage.addEventListener('pointerdown',e=>{
   if(e.button!==0||state.busy||!state.record||state.record.status==='archived'||!valid())return;
@@ -362,7 +363,7 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   const original=drag.original,next=structuredClone(original);
   try{
    if(drag.resize){
-    const vx=drag.start.x-original.x,vy=drag.start.y-original.y,scale=Math.max(.01,((point.x-original.x)*vx+(point.y-original.y)*vy)/(vx*vx+vy*vy));
+    const vx=drag.start.x-original.x,vy=drag.start.y-original.y,scale=Math.max(.01,state.katalogEditor?selectionScaleFactor(original,drag.start,point):((point.x-original.x)*vx+(point.y-original.y)*vy)/(vx*vx+vy*vy));
     if(next.type==='text'){setTextSize(next,state.katalogEditor?Math.min(100,Math.max(1,original.size*scale)):Math.max(1,Math.round(original.size*scale)));measureText(next,state.draft.config.localResources.fonts);}
     else {next.w=original.w*scale;next.h=original.h*scale;}
    }else {next.x=original.x+dx;next.y=original.y+dy;}
@@ -377,19 +378,20 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    Object.assign(drag.object,next);
    drag.node.setAttribute('transform',`translate(${next.x} ${next.y}) rotate(${next.rotation||0}) scale(${next.w/original.w} ${next.h/original.h})`);
    // Overlay reads the original local bounds while the artwork is scaled.
-   drawSelection(stage,drag.node,original);
+   drawSelection(stage,drag.node,original,{arrows:!!state.katalogEditor});
    $('#stage-status').textContent=drag.resize?'Größe ändern · loslassen zum Übernehmen':'Verschieben · loslassen zum Übernehmen';
   }catch(error){$('#stage-status').textContent=error.message;}
  });
  function finishDrag(e){if(!drag||drag.pointer!==e.pointerId)return;clearGuides(stage);const moved=drag.moved,cancelled=e.type==='pointercancel';if(cancelled){Object.assign(drag.object,drag.original);if(moved)undo.pop();}drag=null;if(moved)pick=null;if(moved&&!cancelled)markDirty();else changed();properties();}
  stage.addEventListener('pointerup',finishDrag);stage.addEventListener('pointercancel',finishDrag);stage.addEventListener('lostpointercapture',finishDrag);
  stage.addEventListener('keydown',e=>{
-  if(e.target!==stage||state.busy)return;
+  const arrow=state.katalogEditor&&e.target.closest('[data-editor-resize]');
+  if(e.target!==stage&&!arrow||state.busy)return;
   if(e.key==='Escape'&&drag){finishDrag({pointerId:drag.pointer,type:'pointercancel'});return;}
   const delta={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key],o=selected();
   if(!delta||!o||o.technicalLocked||katalogProtected(o)||state.record.status==='archived'||!valid())return;
   e.preventDefault();const next=structuredClone(o),step=e.shiftKey?10:1;
-  try{next.x+=delta[0]*step;next.y+=delta[1]*step;if(!state.katalogEditor)fitPosition(next,state.draft.config.profile.geometry);remember();Object.assign(o,next);markDirty();properties();}catch(error){$('#stage-status').textContent=error.message;}
+  try{if(arrow){const scale=1+(['ArrowUp','ArrowRight'].includes(e.key)?1:-1)*.03;if(next.type==='text'){setTextSize(next,Math.min(100,Math.max(1,next.size*scale)));measureText(next,state.draft.config.localResources.fonts);}else{next.w*=scale;next.h*=scale;}}else{next.x+=delta[0]*step;next.y+=delta[1]*step;}if(!state.katalogEditor)fitPosition(next,state.draft.config.profile.geometry);remember();Object.assign(o,next);markDirty();properties();}catch(error){$('#stage-status').textContent=error.message;}
  });
  return {render,changed,sync,refreshOptions,workspaceTab,resetHistory,inspect(){properties();photoThumbnail();},prepare(){for(const card of document.querySelectorAll("#product-form .record-card"))$(".record-aside").append(card);}};
 }

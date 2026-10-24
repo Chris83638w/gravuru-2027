@@ -64,7 +64,7 @@ test('Editor-Bündel enthält alle statisch erreichbaren Module unverändert (bi
     const sourceOf=url=>fs.readFileSync(fileForUrl(url),'utf8');
     for(const url of bundle.urls)for(const m of sourceOf(url).matchAll(specifier))assert.ok(set.has(new URL(m[1],'http://x'+url).pathname),url+' → '+m[1]);
     // Alle Editor-Module des Kundeneditors, die der Editor zur Laufzeit lädt, sind enthalten.
-    for(const name of ['ux.mjs','acrylic-scene.mjs','mobile-steps.mjs','photo-upload.mjs','lazy-resources.mjs','contract.mjs','refinements.mjs','completion.mjs'])assert.ok(set.has('/configurator/variant-m/'+name),name);
+    for(const name of ['ux.mjs','acrylic-scene.mjs','mobile-steps.mjs','photo-upload.mjs','lazy-resources.mjs','contract.mjs','refinements.mjs','selection-arrows.mjs','completion.mjs'])assert.ok(set.has('/configurator/variant-m/'+name),name);
     for(const url of ['/workshop/theme-limits.mjs','/workshop/process-profiles.mjs','/platform/sources/app/shared/vendor/fflate-0.8.3.mjs'])assert.ok(set.has(url),url);
     assert.ok(bundle.urls.length>=70,String(bundle.urls.length));
     // Quelltext unverändert bis auf die Modulangaben.

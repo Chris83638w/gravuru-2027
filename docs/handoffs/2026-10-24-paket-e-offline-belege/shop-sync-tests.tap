@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: Befestigungswerte entsprechen exakt der Werkstatt (familyProductConfig): Kennung, Label, Aufpreis, Reihenfolge
+ok 1 - Befestigungswerte entsprechen exakt der Werkstatt (familyProductConfig): Kennung, Label, Aufpreis, Reihenfolge
+  ---
+  duration_ms: 354.0136
+  type: 'test'
+  ...
+# Subtest: Soll je Hauptprodukt × Größe: Kennungen wie Handoff, Basis-SKU-Quelle, Preisüberschreibung, offene Punkte
+ok 2 - Soll je Hauptprodukt × Größe: Kennungen wie Handoff, Basis-SKU-Quelle, Preisüberschreibung, offene Punkte
+  ---
+  duration_ms: 75.8418
+  type: 'test'
+  ...
+# Subtest: Regression Edelstahl 7x2: die drei Hauptprodukte ergeben „unverändert“ mit den Varianten-IDs des Handoffs
+ok 3 - Regression Edelstahl 7x2: die drei Hauptprodukte ergeben „unverändert“ mit den Varianten-IDs des Handoffs
+  ---
+  duration_ms: 8.8608
+  type: 'test'
+  ...
+# Subtest: Update: Standardvariante wird „Ohne Bohrung“ (ID bleibt), vier neue Varianten ohne ID, Option ohne ID, Metafeld, Bestand aus
+ok 4 - Update: Standardvariante wird „Ohne Bohrung“ (ID bleibt), vier neue Varianten ohne ID, Option ohne ID, Metafeld, Bestand aus
+  ---
+  duration_ms: 15.5502
+  type: 'test'
+  ...
+# Subtest: Konflikt, offen und create: Fremdoption, doppelte SKU, überzählige Shop-Variante, Teilexport, fehlender Name, falscher Shop
+ok 5 - Konflikt, offen und create: Fremdoption, doppelte SKU, überzählige Shop-Variante, Teilexport, fehlender Name, falscher Shop
+  ---
+  duration_ms: 27.7128
+  type: 'test'
+  ...
+# Subtest: Anwenden: Lesen vor Schreiben, productSet je Produkt, Rücklesen, Journal, Wiederholung ohne zweites Schreiben, Neuanlage nur mit --create
+ok 6 - Anwenden: Lesen vor Schreiben, productSet je Produkt, Rücklesen, Journal, Wiederholung ohne zweites Schreiben, Neuanlage nur mit --create
+  ---
+  duration_ms: 49.4341
+  type: 'test'
+  ...
+# Subtest: run(): Dry-run schreibt den Plan und nichts sonst; --apply ohne Zugang bricht ohne Geheimnis ab
+ok 7 - run(): Dry-run schreibt den Plan und nichts sonst; --apply ohne Zugang bricht ohne Geheimnis ab
+  ---
+  duration_ms: 11.5978
+  type: 'test'
+  ...
+# Subtest: Echter Katalog + Teilexport (lokal, wenn vorhanden): drei 7x2-Produkte unverändert
+ok 8 - Echter Katalog + Teilexport (lokal, wenn vorhanden): drei 7x2-Produkte unverändert # SKIP
+  ---
+  duration_ms: 0.0918
+  type: 'test'
+  ...
+# Subtest: Freigabe und Design-Stand (Chris 23.10.2026): ohne Freigabe offen; erster Abgleich schreibt custom.design_sha256; gleicher Stand → unverändert trotz Datenabweichung, --daten-aktualisieren erzwingt
+ok 9 - Freigabe und Design-Stand (Chris 23.10.2026): ohne Freigabe offen; erster Abgleich schreibt custom.design_sha256; gleicher Stand → unverändert trotz Datenabweichung, --daten-aktualisieren erzwingt
+  ---
+  duration_ms: 67.432
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 854.1262

@@ -1,3 +1,10 @@
+## Paket E offline vorbereitet · 24.10.2026 (Codex / Astra)
+
+- B+C auf Code-main `1a52b7f`, Katalog-main `b05b095` bestätigt. Neuer Branch `dev/shop-sync-offline-20261024-astra`: `scripts/shop-sync-dry-run.mjs` erstellt Katalog-Vorprüfung oder bestehenden Shop-Plan aus lokalem Export samt Markdown/JSON. Kein Netzwerk-/Credential-/Apply-Pfad, Freigaben bleiben wirksam.
+- Kataloglauf mit `--max-old-space-size=2048`: **104 Hauptprodukte / 530 Soll-Varianten, 104 mit Shopify-ID, 0 freigegebene Ziele, 104 offen**; zusätzlich Preis offen für `7000000`/`7100000`. Kein Shop-Export verwendet, keine Shop-Aktionszähler ermittelt; Paket-G-Auswahl ohne Shopify-ID = **0**.
+- Tests: **9/9 neue + 8/8 ausführbare bestehende Tests grün**, 1 optionaler historischer Exporttest übersprungen. Windows-Sandbox-Temp-Journalfehler durch denselben Test und vollständige Bestandssuite mit Workspace-TEMP/TMP eingegrenzt. 865 gelesene Katalogdateien und 1474 Edelstahl-Designquellen identisch mit main; neue Texte LF.
+- [Übergabe und Belege](docs/handoffs/2026-10-24-paket-e-shop-sync-offline-astra.md). Nächster Schritt Claude: PR prüfen; Paket D/Freigaben, frischer Export und konkreter E-Plan folgen bei Claude. Kein Livezugriff, kein Katalogschreiben, keine Uploadfreigabe oder Merge.
+
 ## Paket B: Reviewkorrekturen und C integriert; Volltests ausgewertet · 24.10.2026 (Astra High)
 
 - [Code-PR #12](https://github.com/Chris83638w/gravuru-2027/pull/12): Merge-Commit `cd96934` mit Eltern `f4439c2` und main `ed4b9c6` (enthält C `42c6404` und A-LF-Korrektur). B-Konturlogik und C-Streaming erhalten. Beide gemeldeten UI-Regressionen behoben; UI-Datei **18/18**, echter Bundle-Nachweis **84 Module**. Claudes Browserabnahme übernommen.

@@ -28,7 +28,12 @@ import {createWorkshop} from './http.mjs';
 
 const OTHER='zweiter';
 const sha=b=>createHash('sha256').update(b).digest('hex');
-const tmp=(t,prefix)=>{const dir=fs.mkdtempSync(path.join(os.tmpdir(),prefix));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));return dir;};
+function fixture(t,prefix){
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),prefix)),resources=[];
+  // Close dependants before their stores, and every handle before deleting SQLite files.
+  t.after(async()=>{for(const resource of [...resources].reverse())await resource.close();fs.rmSync(dir,{recursive:true,force:true});});
+  return {dir,own(resource){resources.push(resource);return resource;}};
+}
 const jwt=(config,role='merchant',sub='123')=>{
   const now=Math.floor(Date.now()/1000),p={aud:config.clientId,dest:role==='merchant'?'https://'+config.shopDomain:config.shopDomain,sub:role==='merchant'?sub:'gid://shopify/Customer/456',...(role==='merchant'?{iss:'https://'+config.shopDomain+'/admin'}:{}),exp:now+60,nbf:now,iat:now,jti:randomUUID()};
   const input=[{alg:'HS256',typ:'JWT'},p].map(v=>Buffer.from(JSON.stringify(v)).toString('base64url')).join('.');
@@ -83,7 +88,7 @@ test('Migration: tenant_id wird idempotent angehängt, Altdaten gehören dem Sta
 });
 
 test('Ablage: <data>/<mandant>/…; den Altpfad kennt der Resolver nur für gravuru',t=>{
-  const data=tmp(t,'g27-tenant-path-');fs.mkdirSync(path.join(data,'uploads'));fs.writeFileSync(path.join(data,'uploads','alt.png'),'x');
+  const {dir:data}=fixture(t,'g27-tenant-path-');fs.mkdirSync(path.join(data,'uploads'));fs.writeFileSync(path.join(data,'uploads','alt.png'),'x');
   assert.equal(tenantDataPath(data,'gravuru','uploads/alt.png'),path.join(data,'uploads','alt.png'));
   assert.equal(tenantDataPath(data,'gravuru','uploads/neu.png'),path.join(data,'gravuru','uploads','neu.png'));
   assert.equal(tenantDataPath(data,OTHER,'uploads/alt.png'),path.join(data,OTHER,'uploads','alt.png'));
@@ -95,8 +100,8 @@ test('Ablage: <data>/<mandant>/…; den Altpfad kennt der Resolver nur für grav
 
 const doc=name=>({schema:'gravuru-product/v1',kind:'product',name,masterId:null,config:{}});
 test('Isolation repository/Familien/Assets/Profile: Produkt, Importschlüssel, Familie und Datei des einen sind für den anderen 404',async t=>{
-  const filename=path.join(tmp(t,'g27-tenant-repo-'),'workshop.sqlite');
-  const a=createProductRepository({filename}),b=createProductRepository({filename,tenantId:OTHER});t.after(()=>{a.close();b.close();});
+  const f=fixture(t,'g27-tenant-repo-'),filename=path.join(f.dir,'workshop.sqlite');
+  const a=f.own(createProductRepository({filename})),b=f.own(createProductRepository({filename,tenantId:OTHER}));
   const product=a.create(doc('Nur gravuru'));
   assert.equal(a.get(product.id).document.name,'Nur gravuru');
   assert.throws(()=>b.get(product.id),{status:404});assert.deepEqual(b.list(),[]);assert.equal(b.firstId(),null);
@@ -106,15 +111,15 @@ test('Isolation repository/Familien/Assets/Profile: Produkt, Importschlüssel, F
   const [ia]=a.importBatch([entry]),[ib]=b.importBatch([entry]);
   assert.notEqual(ia.id,ib.id);assert.equal(a.importItem(entry.key).id,ia.id);assert.equal(b.importItem(entry.key).id,ib.id);
   const family=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url),'utf8'));
-  const fa=createProductFamilies({filename,repository:a}),fb=createProductFamilies({filename,repository:b});t.after(()=>{fa.close();fb.close();});
+  const fa=f.own(createProductFamilies({filename,repository:a})),fb=f.own(createProductFamilies({filename,repository:b}));
   fa.create(family);assert.throws(()=>fb.get(family.id),{status:404});assert.deepEqual(fb.list(),[]);
   assert.equal(fb.create(family).id,family.id); // gleiche, vom Händler gewählte Kennung je Mandant zulässig
   const converter=async()=>({svg:'<svg xmlns="http://www.w3.org/2000/svg" width="10mm" height="10mm"/>',widthMm:10,heightMm:10,pageCount:1,page:1});
-  const assetsA=createDesignAssetStore({filename,converter}),assetsB=createDesignAssetStore({filename,converter,tenantId:OTHER});t.after(()=>{assetsA.close();assetsB.close();});
+  const assetsA=f.own(createDesignAssetStore({filename,converter})),assetsB=f.own(createDesignAssetStore({filename,converter,tenantId:OTHER}));
   const bytes=Buffer.from('<svg/>').toString('base64'),asset=await assetsA.import({name:'motiv.svg',bytes});
   assert.throws(()=>assetsB.get(asset.assetId),{status:404});assert.throws(()=>assetsB.read(asset.assetId,true),{status:404});assert.deepEqual(assetsB.list(),[]);
   assert.notEqual((await assetsB.import({name:'motiv.svg',bytes})).assetId,asset.assetId);
-  const pa=createProductionProfiles({filename}),pb=createProductionProfiles({filename,tenantId:OTHER});t.after(()=>{pa.close();pb.close();});
+  const pa=f.own(createProductionProfiles({filename})),pb=f.own(createProductionProfiles({filename,tenantId:OTHER}));
   const profile=pa.create({name:'Synthetisch',method:'engraving',materialId:'steel',thicknessMm:1,machine:'',rip:'',notes:'',output:{mode:'vector',dpi:600,mirror:false},archived:false});
   assert.throws(()=>pb.get(profile.id),{status:404});assert.deepEqual(pb.list(),[]);
 });
@@ -136,8 +141,8 @@ function populate(store){
 }
 const principal={shopDomain:'a-shop.myshopify.com',customerId:'gid://shopify/Customer/456'};
 test('Isolation order-intake/Entwürfe/Freigabe/Ausgaben: Bestellung, Prüfstand und Entwurf des einen sind für den anderen 404',t=>{
-  const filename=path.join(tmp(t,'g27-tenant-orders-'),'workshop.sqlite');
-  const a=createFormCustomerStore({filename}),b=createFormCustomerStore({filename,tenantId:OTHER});t.after(()=>{a.close();b.close();});
+  const fixtureStore=fixture(t,'g27-tenant-orders-'),filename=path.join(fixtureStore.dir,'workshop.sqlite');
+  const a=fixtureStore.own(createFormCustomerStore({filename})),b=fixtureStore.own(createFormCustomerStore({filename,tenantId:OTHER}));
   const f=populate(a);
   assert.equal(a.orderIntake.get(f.line.id).id,f.line.id);
   assert.throws(()=>b.orderIntake.get(f.line.id),{status:404});assert.deepEqual(b.orderIntake.list(),[]);assert.deepEqual(b.orderIntake.bindings(),[]);
@@ -165,20 +170,18 @@ test('Isolation order-intake/Entwürfe/Freigabe/Ausgaben: Bestellung, Prüfstand
 });
 
 test('Datenbank: jede Tabelle der Werkstatt trägt tenant_id (Ausnahmen begründet)',async t=>{
-  const dir=tmp(t,'g27-tenant-schema-'),w=path.join(dir,'workshop.sqlite'),p=path.join(dir,'profiles.sqlite'),a=path.join(dir,'design-assets.sqlite');
-  const repo=createProductRepository({filename:w}),stores=[repo,createProductFamilies({filename:w,repository:repo})];
-  const ai=createAiDesignJobs({filename:w,repository:repo});stores.push(ai,createAiBatchJobs({filename:w,repository:repo,aiJobs:ai}));
-  const v=createFormVariants({filename:w,repository:repo});stores.push(v,createBatchJobs({filename:w,repository:repo,assets:null}),createVariantBatchJobs({filename:w,variants:v}),createFormCustomerStore({filename:w}));stores.push(createKonfiStatus({filename:w}));
-  stores.push(createProductionProfiles({filename:p}),createProfileLibrary({filename:path.join(dir,'profile-library.sqlite'),catalog:{fonts:[],motifs:[]}}),createFontLibrary({filename:a}),createContourStore({filename:a}),createDesignAssetStore({filename:a}));
-  stores.push({close:()=>registry.close()});const registry=new DatabaseSync(w);createTenantRegistry({database:registry});
-  t.after(()=>{for(const s of stores)s.close();});
+  const f=fixture(t,'g27-tenant-schema-'),dir=f.dir,w=path.join(dir,'workshop.sqlite'),p=path.join(dir,'profiles.sqlite'),a=path.join(dir,'design-assets.sqlite');
+  const repo=f.own(createProductRepository({filename:w}));f.own(createProductFamilies({filename:w,repository:repo}));
+  const ai=f.own(createAiDesignJobs({filename:w,repository:repo}));f.own(createAiBatchJobs({filename:w,repository:repo,aiJobs:ai}));
+  const v=f.own(createFormVariants({filename:w,repository:repo}));f.own(createBatchJobs({filename:w,repository:repo,assets:null}));f.own(createVariantBatchJobs({filename:w,variants:v}));f.own(createFormCustomerStore({filename:w}));f.own(createKonfiStatus({filename:w}));
+  f.own(createProductionProfiles({filename:p}));f.own(createProfileLibrary({filename:path.join(dir,'profile-library.sqlite'),catalog:{fonts:[],motifs:[]}}));f.own(createFontLibrary({filename:a}));f.own(createContourStore({filename:a}));f.own(createDesignAssetStore({filename:a}));
+  const registry=f.own(new DatabaseSync(w));createTenantRegistry({database:registry});
   // design_sources: inhaltsadressierter Byte-Speicher, erreichbar nur über mandantengefilterte Ressourcenzeilen.
   // tenants: die Mandanten-Tabelle selbst. sqlite_sequence: interne SQLite-Tabelle.
   const exceptions=new Set(['design_sources','tenants','sqlite_sequence']),missing=[];let count=0;
   for(const file of [w,p,a,path.join(dir,'profile-library.sqlite')]){
     const db=new DatabaseSync(file);
-    for(const {name} of db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all()){if(exceptions.has(name))continue;count++;if(!db.prepare(`PRAGMA table_info(${name})`).all().some(c=>c.name==='tenant_id'))missing.push(name);}
-    db.close();
+    try{for(const {name} of db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all()){if(exceptions.has(name))continue;count++;if(!db.prepare(`PRAGMA table_info(${name})`).all().some(c=>c.name==='tenant_id'))missing.push(name);}}finally{db.close();}
   }
   assert.deepEqual(missing,[]);assert.ok(count>=55,'erwartet mindestens 55 Tabellen, gefunden '+count);
 });
@@ -207,18 +210,17 @@ test('Grep: keine Abfrage ohne Mandantenfilter in den mandantenfähigen Modulen'
 });
 
 test('HTTP: Mandant je Request; Produkt und Bestellung des Standardmandanten sind für den zweiten 404, unbestätigte Mandanten 503',async t=>{
-  const directory=tmp(t,'g27-tenant-http-');build({outputDirectory:directory});
+  const fixtureStore=fixture(t,'g27-tenant-http-'),directory=fixtureStore.dir;build({outputDirectory:directory});
   const seed=JSON.parse(fs.readFileSync(path.join(directory,'models.json')))[0];
   const a={...order},b={shopDomain:'b-shop.myshopify.com',clientId:'fixture-client-b',secret:randomBytes(32).toString('hex'),mode:'test-only'};
-  const w=createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:a,orderWebhook:a,
-    tenantSettings:{clientSecretRef:'GRAVURU_SHOPIFY_CLIENT_SECRET'},tenantOptions:tenant=>tenant.id===OTHER?{shopifySessions:b}:null});
-  t.after(()=>w.close());
+  const w=fixtureStore.own(createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:a,orderWebhook:a,
+    tenantSettings:{clientSecretRef:'GRAVURU_SHOPIFY_CLIENT_SECRET'},tenantOptions:tenant=>tenant.id===OTHER?{shopifySessions:b}:null}));
   w.tenants.ensure({id:OTHER,shopDomain:b.shopDomain,name:'Zweiter Händler'});w.tenants.ensure({id:'ohne-anbindung',shopDomain:'c-shop.myshopify.com'});
   assert.equal(w.tenants.get('gravuru').shopDomain,a.shopDomain);assert.equal(w.tenants.settings('gravuru').clientSecretRef,'GRAVURU_SHOPIFY_CLIENT_SECRET');
   const request=async(pathname,authorization)=>{
     const req=Readable.from([]);req.method='GET';req.headers={'content-type':'application/json',authorization};
     const res={headersSent:false,writeHead(status){this.status=status;this.headersSent=true;return this;},end(bytes){this.body=JSON.parse(Buffer.from(bytes).toString());}};
-    await w.handle(req,res,new URL(pathname,'http://127.0.0.1'));return res;
+    try {await w.handle(req,res,new URL(pathname,'http://127.0.0.1'));return res;} finally {req.destroy();}
   };
   const product=w.repository.copy(w.defaultId,{expectedRevision:1,name:'Nur gravuru',kind:'product'}),f=populate(w.customerDrafts);
   assert.equal((await request('/api/workshop/products/'+product.id,jwt(a))).status,200);

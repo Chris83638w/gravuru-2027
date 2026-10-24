@@ -22,20 +22,20 @@ async function request(workshop,pathname,method='GET',input,{query,headers={}}={
   req.method=method;req.headers={'content-type':'application/json',...headers};
   const res={headersSent:false,writeHead(status,headers){this.status=status;this.headers=headers;this.headersSent=true;return this;},end(bytes){this.raw=Buffer.from(bytes);try{this.body=JSON.parse(this.raw.toString());}catch{this.body=null;}}};
   const url=new URL(pathname,'http://127.0.0.1');if(query)for(const [k,v] of query)url.searchParams.append(k,v);
-  await workshop.handle(req,res,url);return res;
+  try {await workshop.handle(req,res,url);return res;} finally {req.destroy();}
 }
 
 test('Konto-Entwürfe: 503 ohne Anbindung, 401 ohne gültige Signatur/Anmeldung, CRUD nur für den angemeldeten Kunden', async t=>{
   const directory=fs.mkdtempSync(path.join(os.tmpdir(),'g27-account-draft-http-'));
+  let plain,w;
+  t.after(()=>{w?.close();plain?.close();fs.rmSync(directory,{recursive:true,force:true});});
   build({outputDirectory:directory});
   const seed=JSON.parse(fs.readFileSync(path.join(directory,'models.json')))[0],filename=path.join(directory,'workshop.sqlite');
-  const plain=createWorkshop({filename:path.join(directory,'plain.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
-  t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+  plain=createWorkshop({filename:path.join(directory,'plain.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
   assert.equal((await request(plain,'/api/workshop/account-drafts')).status,503);
   assert.equal((await request(plain,'/api/workshop/account-drafts')).body.error.code,'customer_account_disabled');
-  plain.close();
-  const w=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,appProxy:{shopDomain:shop,secret}});
-  t.after(()=>w.close());
+  plain.close();plain=null;
+  w=createWorkshop({filename,seedConfig:seed.universal,legacy:seed.legacy,appProxy:{shopDomain:shop,secret}});
   const record=w.repository.copy(w.defaultId,{expectedRevision:1,name:'Synthetischer Konto-Entwurf',kind:'product'});
   const config=w.model(record.id,record.revision).universal,source=config.profile.designs[0];
   const state={designId:source.id,objects:structuredClone(source.objects),mOptions:{}};

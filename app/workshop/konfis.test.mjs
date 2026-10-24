@@ -17,7 +17,12 @@ import {createWorkshop} from './http.mjs';
 import {build} from '../configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 
-const tmp=(t,prefix)=>{const dir=fs.mkdtempSync(path.join(os.tmpdir(),prefix));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));return dir;};
+function fixture(t,prefix){
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),prefix)),resources=[];
+  // Close dependants before their stores, and every handle before deleting SQLite files.
+  t.after(async()=>{for(const resource of [...resources].reverse())await resource.close();fs.rmSync(dir,{recursive:true,force:true});});
+  return {dir,own(resource){resources.push(resource);return resource;}};
+}
 const steelFamily=()=>JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url),'utf8'));
 
 test('Klarnamen: Familie und Formgruppen aus den Familiendaten, unbekannte Kürzel bleiben sichtbar mit Hinweis',()=>{
@@ -44,8 +49,7 @@ test('Kundenfähig: aktives Produkt; Formprodukt nur mit Design; Mastervorlagen 
 });
 
 test('Konfi-Status-Store: Übergänge, Konflikte, unveränderliches Protokoll, je Mandant getrennt',t=>{
-  const file=path.join(tmp(t,'g27-konfi-'),'workshop.sqlite'),a=createKonfiStatus({filename:file}),b=createKonfiStatus({filename:file,tenantId:'zweiter'});
-  t.after(()=>{a.close();b.close();});
+  const f=fixture(t,'g27-konfi-'),file=path.join(f.dir,'workshop.sqlite'),a=f.own(createKonfiStatus({filename:file})),b=f.own(createKonfiStatus({filename:file,tenantId:'zweiter'}));
   const id='cfg_'+randomUUID();
   assert.equal(a.get(id).status,'draft');assert.equal(a.paused(id),false);assert.equal(a.paused('kein-produkt'),false);
   assert.throws(()=>a.set(id,{to:'draft',expectedStatus:'draft',productRevision:1,actor:'test'}),{code:'konfi_status_invalid'});
@@ -56,7 +60,7 @@ test('Konfi-Status-Store: Übergänge, Konflikte, unveränderliches Protokoll, j
   assert.deepEqual(a.events(id).map(e=>[e.from,e.to]),[['released','paused'],['draft','released']]);
   // Anderer Mandant: dieselbe Produktkennung ist dort ein Entwurf ohne Verlauf.
   assert.equal(b.get(id).status,'draft');assert.equal(b.paused(id),false);assert.deepEqual(b.events(id),[]);assert.equal(b.all().size,0);
-  const db=new DatabaseSync(file);t.after(()=>db.close());
+  const db=f.own(new DatabaseSync(file));
   assert.throws(()=>db.exec("UPDATE konfi_status_events SET to_status='released'"),/immutable/);
   assert.throws(()=>db.exec('DELETE FROM konfi_status_events'),/immutable/);
   assert.deepEqual(db.prepare('SELECT DISTINCT tenant_id FROM konfi_status_events').all().map(r=>r.tenant_id),['gravuru']);
@@ -69,17 +73,16 @@ const jwt=(config,sub='123')=>{
 };
 
 test('Konfis über HTTP: Liste mit Klarnamen, Freigeben/Pausieren, Kundenroute mit Meldung gesperrt, Mandanten getrennt',async t=>{
-  const directory=tmp(t,'g27-konfi-http-');build({outputDirectory:directory});
+  const f=fixture(t,'g27-konfi-http-'),directory=f.dir;build({outputDirectory:directory});
   const seed=JSON.parse(fs.readFileSync(path.join(directory,'models.json')))[0];
   const a={shopDomain:'a-shop.myshopify.com',clientId:'fixture-a',secret:randomBytes(32).toString('hex'),mode:'test-only'},b={shopDomain:'b-shop.myshopify.com',clientId:'fixture-b',secret:randomBytes(32).toString('hex'),mode:'test-only'};
-  const w=createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:a,tenantOptions:tenant=>tenant.id==='zweiter'?{shopifySessions:b}:null});
-  t.after(()=>w.close());
+  const w=f.own(createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:a,tenantOptions:tenant=>tenant.id==='zweiter'?{shopifySessions:b}:null}));
   w.tenants.ensure({id:'zweiter',shopDomain:b.shopDomain,name:'Zweiter Händler'});
   const request=async(pathname,{auth=jwt(a),method='GET',body}={})=>{
     const req=Readable.from(body===undefined?[]:[Buffer.from(JSON.stringify(body))]);req.method=method;req.headers={'content-type':'application/json',authorization:auth};
     if(method!=='GET'){const s=await request('/api/workshop/session',{auth});req.headers['x-gravuru-csrf']=s.body.csrfToken;}
     const res={headersSent:false,writeHead(status){this.status=status;this.headersSent=true;return this;},end(bytes){this.body=JSON.parse(Buffer.from(bytes).toString());}};
-    await w.handle(req,res,new URL(pathname,'http://127.0.0.1'));return res;
+    try {await w.handle(req,res,new URL(pathname,'http://127.0.0.1'));return res;} finally {req.destroy();}
   };
   // Familie „Edelstahl-Türschilder“ übernehmen und zwei Produkte erzeugen (wie über die Schaltfläche).
   const family=(await request('/api/workshop/families',{method:'POST',body:{bundled:'steel-door-signs'}})).body;
@@ -132,11 +135,12 @@ test('Konfis über HTTP: Liste mit Klarnamen, Freigeben/Pausieren, Kundenroute m
 });
 
 test('Kundenseite: pausierter Konfi zeigt Hinweis statt Editor, models.json liefert die Meldung als JSON',async t=>{
-  const directory=tmp(t,'g27-konfi-page-');build({outputDirectory:directory});
+  const f=fixture(t,'g27-konfi-page-'),directory=f.dir;build({outputDirectory:directory});
   const seed=JSON.parse(fs.readFileSync(path.join(directory,'models.json')))[0];
-  const w=createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
-  const server=createPreviewServer({outputDirectory:directory,workshop:w});server.listen(0,'127.0.0.1');await once(server,'listening');
-  t.after(async()=>{server.close();await once(server,'close');});
+  const w=f.own(createWorkshop({filename:path.join(directory,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy}));
+  const server=createPreviewServer({outputDirectory:directory,workshop:w});
+  f.own({async close(){if(server.listening)await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));}});
+  server.listen(0,'127.0.0.1');await once(server,'listening');
   const port=server.address().port;
   const get=url=>new Promise((resolve,reject)=>{http.get({host:'127.0.0.1',port,path:url},res=>{const c=[];res.on('data',b=>c.push(b));res.on('end',()=>resolve({status:res.statusCode,headers:res.headers,body:Buffer.concat(c).toString()}));}).on('error',reject);});
   const product=w.repository.copy(w.defaultId,{expectedRevision:1,name:'Acrylglas · Pausentest',kind:'product'});

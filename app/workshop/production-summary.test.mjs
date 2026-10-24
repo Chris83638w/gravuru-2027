@@ -2,7 +2,10 @@ import test from 'node:test';import assert from 'node:assert/strict';import fs f
 import {build} from '../configurator/variant-m/build.mjs';import {createWorkshop} from './http.mjs';import {makeProductDocument} from './product-model.mjs';import {makeFormProduct} from './form-product.mjs';import {addFormDesign} from './form-designs.mjs';import {initialFormCustomerState} from './form-customer-model.mjs';import {prepareCustomerPhoto} from './customer-photo.mjs';import {prepareFormReview} from './form-review-snapshot.mjs';import {prepareAcrylicReview} from './acrylic-review.mjs';import {createFormPrintProof} from './form-print-proof.mjs';import {createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';import {createAcrylicPrintProof} from './acrylic-print-proof.mjs';import {readReviewPackage,digest} from './review-package.mjs';import {importEnvironment} from './design-assets.mjs';import {resolutionStatus,productionPackage,SUMMARY_FILES,PRODUCTION_SUMMARY_SCHEMA} from './production-summary.mjs';
 
 const png=(w,h)=>execFileSync('python3',['-c',`from PIL import Image,ImageDraw;import sys;im=Image.new('RGB',(${w},${h}),'white');ImageDraw.Draw(im).rectangle((0,0,${Math.floor(w/2)-1},${h-1}),fill='red');im.save(sys.stdout.buffer,format='PNG')`],{env:importEnvironment()});
-const pdfInfo=bytes=>JSON.parse(execFileSync('python3',['-c',"import sys,json,pymupdf as f;d=f.open(stream=sys.stdin.buffer.read(),filetype='pdf');p=d[0];print(json.dumps({'pages':len(d),'width':p.rect.width,'height':p.rect.height,'images':len(p.get_images()),'text':p.get_text()}))"],{input:bytes,env:importEnvironment()}).toString());
+// Windows-Arial/PyMuPDF ordnet SPACE/NBSP sowie Hyphen/SoftHyphen derselben Glyph-ID zu.
+// Nur diese belegten Extraktionsaliasse normalisieren; Inhalt, andere Abstände und Zeilen bleiben erhalten.
+const normalizePdfText=text=>text.replace(/\u00a0/g,' ').replace(/\u00ad/g,'-');
+const pdfInfo=bytes=>{const info=JSON.parse(execFileSync('python3',['-c',"import sys,json,pymupdf as f;d=f.open(stream=sys.stdin.buffer.read(),filetype='pdf');p=d[0];print(json.dumps({'pages':len(d),'width':p.rect.width,'height':p.rect.height,'images':len(p.get_images()),'text':p.get_text()}))"],{input:bytes,env:importEnvironment()}).toString());return {...info,text:normalizePdfText(info.text)};};
 function workshop(t,prefix){
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),prefix));build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0],w=createWorkshop({filename:path.join(dir,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
  t.after(()=>{w.close();fs.rmSync(dir,{recursive:true,force:true});});return {dir,seed,w};
@@ -26,6 +29,14 @@ async function acrylicFixture(t,{engraving=false,photo=true}={}){
  const input={productId:record.id,productRevision:1,designId:d.id,objects,options:{size:'small',base:'buche',wall:'none'},quantity:2,media:photo?[{id:'photo-test',original:raw.toString('base64')}]:[],preview:raw.toString('base64')},bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});w.customerDrafts.captureAcrylicReview('fixture',bundle);return {w,bundle,raw,config};
 }
 function unpack(result,schema){const {files,manifest}=readReviewPackage(result.archive,digest(result.archive),schema);const summary=JSON.parse(files.get(SUMMARY_FILES.json));return {files,manifest,summary};}
+
+test('PDF-Textextraktion normalisiert nur belegte Glyph-Aliasse und erhält Inhalt sowie Zeilen',()=>{
+ assert.equal(normalizePdfText('Hallo\u00a0Wörld\nAnna & Lukas'),'Hallo Wörld\nAnna & Lukas');
+ assert.equal(normalizePdfText('UV\u00adDruck'),'UV-Druck');
+ assert.ok(!normalizePdfText('UVDruck').includes('UV-Druck')); 
+ assert.equal(normalizePdfText('A  B\tC\nD\u202fE'), 'A  B\tC\nD\u202fE');
+ assert.ok(!normalizePdfText('Hallo\u00a0').includes('Hallo Wörld'));
+});
 
 test('Ampel nach Ü5.1: grün ab Soll-dpi, gelb ab 60 %, rot darunter, offen ohne Messwert',()=>{
  assert.equal(resolutionStatus(300,300),'gruen');assert.equal(resolutionStatus(180,300),'gelb');assert.equal(resolutionStatus(179,300),'rot');assert.equal(resolutionStatus(null,300),'offen');assert.equal(resolutionStatus(200,null),'offen');

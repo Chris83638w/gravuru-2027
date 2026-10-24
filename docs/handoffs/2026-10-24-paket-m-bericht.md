@@ -1,6 +1,6 @@
 # Paket M · Designziele und Varianten · 24.10.2026
 
-Basis: Code main 67b8f1c60e8e52e5c0cd03e5357d379a27820baf, Katalog main 57939029216bda6fa058b788b9111aaa6156fcf3. Branch in beiden Repositories: dev/design-ziele-20261024-astra. Die Änderungen sind zur PR-Prüfung vorbereitet; kein Live-Zugriff, Import, Merge oder Force-Push. Keine echten Designfreigaben und keine Migration des Originalkatalogs. Der Katalog-PR enthält ausschließlich Schema-Dokumentation.
+Basis: Code main 67b8f1c60e8e52e5c0cd03e5357d379a27820baf, Katalog main 57939029216bda6fa058b788b9111aaa6156fcf3. Branch in beiden Repositories: dev/design-ziele-20261024-astra. [Code-PR #20](https://github.com/Chris83638w/gravuru-2027/pull/20) und [Katalog-PR #5](https://github.com/Chris83638w/gravuru-katalog./pull/5) liegen zur Prüfung vor; kein Live-Zugriff, Import, Merge oder Force-Push. Keine echten Designfreigaben und keine Migration des Originalkatalogs. Der Katalog-PR enthält ausschließlich Schema-Dokumentation.
 
 ## Verhalten
 
@@ -36,7 +36,17 @@ GT-S-22x14-D234 und D235 bleiben mehrdeutig zwischen gedenktafel-22x14-schiefer-
 
 ## Prüfung
 
-Der Abschlussvollauf über alle 188 direkten Testsammlungen in app/configurator/variant-m und app/workshop läuft; die endgültigen Zähler werden vor dem Abschluss des Code-PRs eingetragen. Der erste Vorlauf wurde nach 61 Dateien / 356 bestandenen Tests zur Korrektur von drei Druckpfadbefunden abgebrochen und ist kein Abschlussnachweis. Die korrigierten Pfad-/Materialtests: 25/25. Zusätzliche Shop-/Offline-/Bind-Skripttests auf dem endgültigen Quellstand außerhalb dieses Vollaufumfangs: 26 Tests, 25 bestanden, 0 Fehler, 1 bestehender optionaler Realkatalog-Skip.
+Windows-Abschlussvollauf auf dem endgültigen Implementierungsstand dc8c481809cedbc7c66ff34f88030a7fc127915a: 188 Dateien; 1449 Tests, 1442 bestanden, 0 Fehler, 7 übersprungen, 0 abgebrochen. Alle direkten Testsammlungen in app/configurator/variant-m und app/workshop wurden erfasst. Testquellen und geschützte Datenverzeichnisse blieben unverändert; alle 40 Paket-M-Quelldateien entsprechen dem veröffentlichten Quellmanifest. Nach diesem Lauf wurden nur Dokumentation und Nachweise ergänzt. Der erste Vorlauf wurde nach 61 Dateien / 356 bestandenen Tests zur Korrektur von drei Druckpfadbefunden abgebrochen und ist kein Abschlussnachweis. Die korrigierten Pfad-/Materialtests: 25/25. Zusätzliche Shop-/Offline-/Bind-Skripttests auf dem endgültigen Quellstand außerhalb dieses Vollaufumfangs: 26 Tests, 25 bestanden, 0 Fehler, 1 bestehender optionaler Realkatalog-Skip.
+
+Übersprungene Fälle des Vollaufs (unveränderte vorhandene Plattform-/Umgebungsbedingungen):
+
+- app/workshop/katalog-writeback.test.mjs: Symlink/Junction als Designordner ist gesperrt — Dateisystem erlaubt hier keine Links.
+- app/workshop/katalog-writeback.test.mjs: Mehrfach verknüpfte Quelldatei wird vor jedem Schreiben gesperrt — Dateisystem erlaubt hier keine Hardlinks.
+- app/workshop/shopify-runtime-config.test.mjs: workshop.sqlite — File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+- app/workshop/shopify-runtime-config.test.mjs: profiles.sqlite-wal — File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+- app/workshop/shopify-runtime-config.test.mjs: design-assets.sqlite-shm — File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+- app/workshop/shopify-runtime-config.test.mjs: real authenticated server and databases with confirmed private permissions — Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+- app/workshop/shopify-runtime-config.test.mjs: Git ancestor guard after the private-permission check — Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
 
 Browser: Desktop 1440 × 1100 und iPhone-13-Emulation. Zielvorschau mit Glyphenpfaden, D204-Bestandssperre, getrennte Zielbestätigung, fehlende Geometrie, Themenvorschläge und freie Testvariante geprüft. Keine Browserfehler, keine externen Aufrufe; der emulierte Shopify-Admin benutzt einen synthetischen Sitzungstoken. Horizontale Überläufe im Dokument und im Varianten-Dialog geprüft. Keine Sichtprüfung auf einem physischen iPhone.
 
@@ -49,7 +59,7 @@ node --import ./scripts/test-portability/full-tests-python-windows.mjs --test --
 
 Für die zusätzliche Skriptprüfung waren GRAVURU_PYTHON, TEMP/TMP und PYTHONUTF8=1 wie beim Runner gesetzt. Der Runner inventarisiert beide vollständigen Verzeichnisse, startet jede Testsammlung separat, isoliert temporäre Daten, entfernt App-Zugänge aus der Umgebung und prüft unveränderte Testquellen und geschützte Datenverzeichnisse.
 
-Nachweise: [Quellstand](paket-m/source-manifest.json), [Originaldaten unverändert/Testkopie-Apply](paket-m/source-integrity.json), [Migration/104 Zuordnungen](paket-m/migration.json), [Demo-Readback](paket-m/demo-readback.json), [Bestandsinventar/Grenzen](paket-m/bestand-inventar.json), [Browserprotokoll](paket-m/browser.json), [zusätzliche Skripttests](paket-m/scripts-tests.log).
+Nachweise: [Vollauf-Zähler](paket-m/full-tests-summary.json), [Vollauf-Protokoll](paket-m/full-tests.log), [Testinventar](paket-m/full-tests-inventory.json), [Integrität](paket-m/full-tests-integrity.json), [abschließender Quellvergleich](paket-m/final-verification.json), [Quellstand](paket-m/source-manifest.json), [Originaldaten unverändert/Testkopie-Apply](paket-m/source-integrity.json), [Migration/104 Zuordnungen](paket-m/migration.json), [Demo-Readback](paket-m/demo-readback.json), [Bestandsinventar/Grenzen](paket-m/bestand-inventar.json), [Browserprotokoll](paket-m/browser.json), [zusätzliche Skripttests](paket-m/scripts-tests.log).
 
 ![D204 Schiefer – Desktop](paket-m/desktop-d204-schiefer.png)
 ![D204 Bestandsfassung – Desktop](paket-m/desktop-d204-bestand.png)
@@ -63,6 +73,6 @@ Weitere Bilder: [Themenvorschläge / Familie fehlt](paket-m/desktop-d204-vorschl
 
 ## Übergabe an Claude
 
-Codebasis 67b8f1c, Katalogbasis 579390292; [Katalog-PR #5](https://github.com/Chris83638w/gravuru-katalog./pull/5) dokumentiert nur das Schema. Bitte Code-PR und Katalog-PR zusammen prüfen, Linux-Vollauf ausführen und erst dann über Merge entscheiden. Besonders ansehen: explizite leere Ziele, Zielfreigabe unter Quelle/Familie/Font-Checksum und Schreiblock, Rücksetzung sämtlicher Zielfreigaben, Diagnose-Apply-Sperren, Kennungskollisionen und transaktionaler Varianten-Rückweg. Der Zusatzmodus previewOnly öffnet keine Produktionsadapter.
+Codebasis 67b8f1c, Katalogbasis 579390292; [Katalog-PR #5](https://github.com/Chris83638w/gravuru-katalog./pull/5) dokumentiert nur das Schema. Bitte [Code-PR #20](https://github.com/Chris83638w/gravuru-2027/pull/20) und Katalog-PR zusammen prüfen, Linux-Vollauf ausführen und erst dann über Merge entscheiden. Besonders ansehen: explizite leere Ziele, Zielfreigabe unter Quelle/Familie/Font-Checksum und Schreiblock, Rücksetzung sämtlicher Zielfreigaben, Diagnose-Apply-Sperren, Kennungskollisionen und transaktionaler Varianten-Rückweg. Der Zusatzmodus previewOnly öffnet keine Produktionsadapter.
 
 D234/D235 bleiben offen. Fehlende Druck-/Holz-/Formfamilien und physische Angaben sind oben gelistet; N/O/P/Q bleiben getrennte Folgepakete. Keine Freigabe von Chris durch dieses Paket vorweggenommen. Die echten Daten wurden nicht migriert. Nach Review ist eine spätere echte Migration separat mit Dry-run und Betreiberentscheidung auszuführen.

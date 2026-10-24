@@ -1,0 +1,54 @@
+{
+  "codeImplementationCommit": "dc8c481809cedbc7c66ff34f88030a7fc127915a",
+  "fullRun": "188 Dateien; 1449 Tests, 1442 bestanden, 0 Fehler, 7 übersprungen, 0 abgebrochen",
+  "sourceFiles": 40,
+  "sourceChanges": [],
+  "integrity": {
+    "protectedChanges": [],
+    "testSourceChanges": []
+  },
+  "skips": [
+    {
+      "file": "app/workshop/katalog-writeback.test.mjs",
+      "name": "Symlink/Junction als Designordner ist gesperrt",
+      "reason": "Dateisystem erlaubt hier keine Links."
+    },
+    {
+      "file": "app/workshop/katalog-writeback.test.mjs",
+      "name": "Mehrfach verknüpfte Quelldatei wird vor jedem Schreiben gesperrt",
+      "reason": "Dateisystem erlaubt hier keine Hardlinks."
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "name": "workshop.sqlite",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "name": "profiles.sqlite-wal",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "name": "design-assets.sqlite-shm",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "name": "real authenticated server and databases with confirmed private permissions",
+      "reason": "Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "name": "Git ancestor guard after the private-permission check",
+      "reason": "Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    }
+  ],
+  "additionalScriptTests": {
+    "tests": 26,
+    "passed": 25,
+    "failed": 0,
+    "skipped": 1
+  },
+  "rawLogNormalization": "CRLF to LF only"
+}

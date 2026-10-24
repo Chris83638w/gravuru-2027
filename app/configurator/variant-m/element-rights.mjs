@@ -1,6 +1,6 @@
 export const ELEMENT_RIGHT_FIELDS=Object.freeze({
   content:['text','font','bold','italic'], color:['color','preserveColors','opacity'],
-  replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground','uxPhotoCrop'],
+  replace:['motif','uxUploadId','uxUploadKind','uxPhotoBackground','uxPhotoCrop','uxPhotoColor'],
   move:['x','y','rotation'], scale:['w','h','size'],
 });
 export const ELEMENT_RIGHTS=Object.freeze(['content','color','replace','move','scale','delete']);

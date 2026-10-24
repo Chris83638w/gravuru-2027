@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-25",
+  "baseCommit": "33951c77faebd909bb4e8575b5d8cf657012b44f",
+  "scope": "customer photo uploads only; original template PNGs and target rules unchanged",
+  "sourceFiles": 24,
+  "tests": {
+    "variant": {
+      "tests": 286,
+      "pass": 286,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "workshopInitial": {
+      "tests": 35,
+      "pass": 20,
+      "fail": 15,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "workshopPython": {
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "photoFrame": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "workshopFinalDistinct": {
+      "files": 9,
+      "tests": 35,
+      "pass": 35,
+      "fail": 0,
+      "skipped": 0,
+      "note": "20 passed initially; all 15 Python-launch failures passed through the existing Windows preload. Repeated overlapping checks are counted once."
+    }
+  },
+  "browser": {
+    "devices": [
+      "desktop",
+      "iPhone 13 emulation"
+    ],
+    "completeFlow": true,
+    "freeCropArrows": 4,
+    "errors": 0
+  },
+  "fullSuite": "Prior 188-file/1449-test full run applies to 33951c7 before this follow-up; no new complete workshop full run claimed",
+  "liveAccess": false,
+  "catalogWrites": false,
+  "merged": false
+}

@@ -2,6 +2,10 @@
 
 Basis: Code main 67b8f1c60e8e52e5c0cd03e5357d379a27820baf, Katalog main 57939029216bda6fa058b788b9111aaa6156fcf3. Branch in beiden Repositories: dev/design-ziele-20261024-astra. [Code-PR #20](https://github.com/Chris83638w/gravuru-2027/pull/20) und [Katalog-PR #5](https://github.com/Chris83638w/gravuru-katalog./pull/5) liegen zur Prüfung vor; kein Live-Zugriff, Import, Merge oder Force-Push. Keine echten Designfreigaben und keine Migration des Originalkatalogs. Der Katalog-PR enthält ausschließlich Schema-Dokumentation.
 
+## Ergänzung vom 25.10. · Kundenfotos
+
+Automatische Graustufen ausschließlich für Kunden-Fotouploads auf Schiefer und bei Acrylgravur; Originalfarbe unter Bearbeiten wiederherstellbar. Echte Vorlagen-PNGs und Zielregeln unverändert. Fotofeld inklusive Maske gemeinsam verschiebbar, eigener Ausschnittmodus mit Konfi-Pfeilen. **286/286 Konfigurator-Tests**, **35/35 betroffene Werkstatt-Tests**; Desktop und iPhone geprüft. [Nachtrag mit Umfang, Windows-Gegenprobe und Screenshots](2026-10-25-paket-m-kundenfotos.md). Der nachfolgende 188-Dateien-Vollauf gehört zur Basis 33951c7 vor dieser Ergänzung.
+
 ## Verhalten
 
 - Familie als Ziel mit eigener Freigabe. Explizites ziele (auch []) verdrängt die historische globale Freigabe. Linien lesen Ziele; Import und Shop-Abgleich prüfen genau die betreffende Familie, Form, Größe, Originalfarben/Fotofelder, Schriften und geometrische Passung. Diagnosepläne mit allen Designs bleiben schreibgeschützt.

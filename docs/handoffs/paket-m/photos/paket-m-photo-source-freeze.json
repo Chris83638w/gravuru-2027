@@ -1,0 +1,170 @@
+[
+  {
+    "path": "app/platform/sources/app/shared/models/photo-color.mjs",
+    "bytes": 1804,
+    "sha256": "b173fa77428267a24d140754b52905ada7c8cb9ff0c8c5b3559e36f8da3b99ec",
+    "sha": "346fad0105be4a9ab28f4f82d84b4b452cbbefa8",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/ux.mjs",
+    "bytes": 68690,
+    "sha256": "8adcbb2491dec8f53dabbd67cb15780673b788517dbba3281bb1f0b5dbbe18f3",
+    "sha": "9012a16552b22ea4d7c2b3ca2e970755cae80ffb",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/photo-editor.mjs",
+    "bytes": 11221,
+    "sha256": "1277dd3ca25e81f5118a4e2cce6b8cc8e8c6cf9f4a04615107e4ac3e78a95406",
+    "sha": "e45f19f8b1bb3fe6b3e22ee8a5fabb4ff795d1b4",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/image-processing.mjs",
+    "bytes": 3162,
+    "sha256": "a426f120135e019ec85a57ec735ba5747174a9ed862c018ba0770933fe5f6731",
+    "sha": "c93713d96dc039d0249b0e5b99dcfc0c880c4747",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/contract.mjs",
+    "bytes": 34430,
+    "sha256": "fd14173930ec0fb670ba8e4ff7612c54dcd18cab9657621bbec1e709a06b3a4f",
+    "sha": "3d91c32a83853b2f48d9d4f14613f25015c1a27b",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/element-rights.mjs",
+    "bytes": 10593,
+    "sha256": "9586e29fd983e4d1adc3175e31e12cb9cb4a91a956e3368ceafec911586d9c6d",
+    "sha": "5985e5e852eec0905aef24ca9d1e62bfdd61f379",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/field-mapping.mjs",
+    "bytes": 2432,
+    "sha256": "7875f51f82e6f902f65864a229ec3795c5ab36eb9598c212eed93d913228b3ea",
+    "sha": "8ef22efe810b1efe5615dfb42fa29fcc42b0b6f4",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/print-export.mjs",
+    "bytes": 23026,
+    "sha256": "cc32a2c458ac2e1e830ad0a1e8089db9695d159ed52f07171eb2615aa09a67bb",
+    "sha": "14330212f88ed90084add2dd105c05f3b25c78e9",
+    "cr": false
+  },
+  {
+    "path": "app/workshop/acrylic-artwork.mjs",
+    "bytes": 10112,
+    "sha256": "536d4ded4c4bd12d696465847fe95a4136784e5baad043bd984885f5340cdc4c",
+    "sha": "7ae371569b392c2ba77e7ffc33648c5c25acfddc",
+    "cr": false
+  },
+  {
+    "path": "app/workshop/form-print-worker.py",
+    "bytes": 14924,
+    "sha256": "d7abf1eae7dd213841bad2231626fb9c6b348bbe542c9446d37491c0f8d3432a",
+    "sha": "e7aa32e6d4bb13db5707fe88cbf480e62b2a96ff",
+    "cr": false
+  },
+  {
+    "path": "app/workshop/acrylic-print-proof.mjs",
+    "bytes": 5615,
+    "sha256": "1225ce528f7ab75ead01d320be244ed9c2105ea253b0f554aec230ab3c5b45a2",
+    "sha": "0465f75026eb96a83df3b1582375c91ca45a1bb8",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/image-processing.test.mjs",
+    "bytes": 5668,
+    "sha256": "b9f931ceb0f71a22f381bd46bd034ca7d452984f9fcc59b11198a5ba69336caa",
+    "sha": "36cf4c1f978bd26ac52bc1f3aff7e32aecba687f",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/photo-editor.test.mjs",
+    "bytes": 5527,
+    "sha256": "01f639e3f4f4feb679bc2c81efa283971fb24be4c7ddcc09ed28e58fefd45491",
+    "sha": "b847a065b40df89ce531a3f73bc2c1ed5e311cbb",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/contract.test.mjs",
+    "bytes": 25098,
+    "sha256": "f898a2494e21acbbc1646755c4b75a2432f65a78ad6bc9de004ba26d404f7bf2",
+    "sha": "2ccf44b193a14acf97e5a16e5711c006d26e8572",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/element-rights.test.mjs",
+    "bytes": 14544,
+    "sha256": "73326bac1bde944b58cee58bdc19f618b5dfe5e51582b8d01d86690ac16eaddb",
+    "sha": "a35a1304359609e49118c9e3cec72ba24b3c650d",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/field-mapping.test.mjs",
+    "bytes": 4131,
+    "sha256": "36bc072f36cda41c017ed4e46b0d066a2e55d38b63b2ab8607400d34664543ff",
+    "sha": "91621adb6326fd758a55428fceff5c96c069d273",
+    "cr": false
+  },
+  {
+    "path": "app/workshop/photo-color-export.test.mjs",
+    "bytes": 3551,
+    "sha256": "b6ed3a481498a32a3cf635ce0fff32ce6b31f89db5722dd0b3b1a741ddb9e06c",
+    "sha": "9211228139ebbef81e8c1ec11f4dc33c7d8168b5",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+    "bytes": 41918,
+    "sha256": "4641da1602e78bbd47916522e680aebbc1cb264fe878072809fb022384279df2",
+    "sha": "940ef4d7e37da37607ac701ef1edddae00192db0",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/photo-position.mjs",
+    "bytes": 10279,
+    "sha256": "12e316584f8bb50cce668edee1f137b1600f954941169e2be88831f184480dc5",
+    "sha": "775cb17bfbc7c085fb519d729324bf225b2ccf34",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/customer-rights.mjs",
+    "bytes": 9250,
+    "sha256": "4efb66541d694b36254fafaa5ab18a1beef0b98628bffb616139517a0873356c",
+    "sha": "63b7eac45427d477ec7ceb1e7ff890355bae707a",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/refinements.mjs",
+    "bytes": 17702,
+    "sha256": "1230a023e8b48877c7bb7985e934a2628350972be009fc02e590bea3b5e239c7",
+    "sha": "7bf3abc849ba4e86c572cb47030d70b939ee556e",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/photo-position-ui.test.mjs",
+    "bytes": 21368,
+    "sha256": "8d4348f3c0efc05ed8a2e0cf67dc2c28fbad92e7674dd87ba999fee3b2c012f0",
+    "sha": "f2d8749198923544f4807cf7825590776d041591",
+    "cr": false
+  },
+  {
+    "path": "app/workshop/photo-mask-position.test.mjs",
+    "bytes": 8799,
+    "sha256": "a4bf205ae0f3583341f2d325463e8173e34a8b709d3a24073be5af1e3a086199",
+    "sha": "1d95594f640d75089077709873209136c9302978",
+    "cr": false
+  },
+  {
+    "path": "app/configurator/variant-m/direct-editing.mjs",
+    "bytes": 17525,
+    "sha256": "0c8362bc1ccec06eebafafaa82641b58ec77428e645c03ba004e8f56e89004eb",
+    "sha": "bc1d461eba4f8e17a6f5fca8dc3b312b3508ca26",
+    "cr": false
+  }
+]

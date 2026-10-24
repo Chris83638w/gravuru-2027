@@ -1,0 +1,558 @@
+✔ native contour preserves physical outline and fixed drilling coordinates (9.4869ms)
+✔ native contour rejects a missing, unsafe, open or wrongly sized path instead of drawing a rectangle (1.5792ms)
+✔ existing native rectangle, ellipse and plaque contours remain unchanged (0.5947ms)
+✔ generated holes oppose either contour orientation without rewriting the source path (4.4744ms)
+✖ native engraving uses dark production paths and original photo grayscale, separate contour, no print white, one mirror (1544.7616ms)
+✖ native vector engraving keeps paths and rejects incorrect package hashes (1057.6412ms)
+✖ native engraving backend jobs cache unchanged bytes and reject the print endpoint (1064.343ms)
+✔ hidden native photo originals and applied raster remain in the immutable package without entering the visible price (2554.4012ms)
+✔ native acrylic handoff pins rights, all 28 prices, originals and immutable snapshots; rejects forged requests (95711.792ms)
+✔ native full-area print extends only inked outer edges, keeps white inside and mirrors once (25787.3791ms)
+✔ PDF separates existing text, masked image and motif; originals and prices survive text replacement (14681.3968ms)
+✔ original photo mask survives replacement, customer rights and the self-contained production package (16666.4448ms)
+✖ free-form CMYK proof uses originals, leaves empty slots/holes transparent, defaults to motif white and 300 dpi (8125.4912ms)
+✖ edge bleed follows the free outer contour and mirror transforms ink, hole and white once (37756.1858ms)
+✖ backend print download enforces CSRF and settings and retains byte-identical cached PDF/ZIP (5951.8233ms)
+✖ frozen multiline italic text remains identical vector outlines at 300/600 dpi with exact white paths and one mirror (8473.38ms)
+✖ photo and vector text retain saved paint order without duplicate raster text (5045.5648ms)
+✖ acrylic scene, reflections and depth stay out of actual PDF ink and white separations (5127.6229ms)
+✖ front UV texture and reverse gloss leave identical production pixels, white and geometry (5757.6423ms)
+✖ Mimaki direct and queued downloads expose paired immutable PDFs, reject missing white and preserve older cached exports (7393.2216ms)
+✔ slate print server output matches grayscale default and explicit original with alpha retained (9985.2306ms)
+✔ already applied pixels, acrylic print and engraving production are never transformed twice (5149.0963ms)
+✔ native photo colour output uses a new recipe cache key (0.6934ms)
+✔ template photo references keep original PNG colour; customer defaults do not spill into templates (6485.9655ms)
+✔ photo coverage detects pan, shrink and rotation without changing free placement (2.529ms)
+✔ circle, ellipse and arch coverage use their masks instead of rectangular corners (1.1085ms)
+✖ coverage agrees with independently rasterized real mask and photo transforms (21.282ms)
+✔ moving a native masked photo survives server validation and draft roundtrip without changing crop or mask (128.472ms)
+✔ crop permission cannot move the masked field and move permission cannot change its crop (146.867ms)
+✔ moving rights never allow replacing or removing the original photo mask (125.3617ms)
+✔ review and production move the native heart mask with its photo while preserving original mask bytes (6958.5086ms)
+✖ saved Roland PDF renders isolated red artwork and white coverage with transparent empty area, without modifying PDF (8942.6832ms)
+✖ Mimaki preview uses the exact separate archived white PDF and full white is visibly different from motif white (13461.3124ms)
+✔ missing white, engraving, unknown modes and damaged PDFs fail instead of displaying an invented plate (4310.56ms)
+✖ raster and vector engraving previews render the exact stored PDF on white without changing output or orientation (14.0561ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 20
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 160306.8988
+
+✖ failing tests:
+
+test at app\workshop\acrylic-engraving.test.mjs:12:1
+✖ native engraving uses dark production paths and original photo grayscale, separate contour, no print white, one mirror (1544.7616ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:7:210)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:13:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image,ImageDraw;import sys;im=Image.new('RGB',(200,200),'white');ImageDraw.Draw(im).rectangle((0,0,99,199),fill='red');im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:7:210)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:13:16)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1397:25)
+        at Test.start (node:internal/test_runner/test:1257:17)
+        at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\acrylic-engraving.test.mjs:18:1
+✖ native vector engraving keeps paths and rejects incorrect package hashes (1057.6412ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:7:210)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:19:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image,ImageDraw;import sys;im=Image.new('RGB',(200,200),'white');ImageDraw.Draw(im).rectangle((0,0,99,199),fill='red');im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:7:210)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:19:16)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1397:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+        at Test.postRun (node:internal/test_runner/test:1537:19)
+        at Test.run (node:internal/test_runner/test:1462:12),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\acrylic-engraving.test.mjs:21:1
+✖ native engraving backend jobs cache unchanged bytes and reject the print endpoint (1064.343ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:7:210)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:22:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image,ImageDraw;import sys;im=Image.new('RGB',(200,200),'white');ImageDraw.Draw(im).rectangle((0,0,99,199),fill='red');im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:7:210)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/acrylic-engraving.test.mjs:22:16)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1397:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+        at Test.postRun (node:internal/test_runner/test:1537:19)
+        at Test.run (node:internal/test_runner/test:1462:12),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\form-print-proof.test.mjs:18:1
+✖ free-form CMYK proof uses originals, leaves empty slots/holes transparent, defaults to motif white and 300 dpi (8125.4912ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:19:17)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image;import sys;im=Image.new('RGB',(2400,1600),'red');im.paste('green',(1200,0,2400,1600));im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:19:17)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\form-print-proof.test.mjs:27:1
+✖ edge bleed follows the free outer contour and mirror transforms ink, hole and white once (37756.1858ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at inspect (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:13:51)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:28:260)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "import sys,json,pymupdf as f\np=f.open(stream=sys.stdin.buffer.read(),filetype='pdf');page=p[0];k=72/25.4;pix=page.get_pixmap(matrix=f.Matrix(2,2),alpha=True);layers=p.get_ocgs();objs='\\n'.join(p.xref_object(i) for i in range(1,p.xref_length()));white=[i for i,v in layers.items() if v['name'] in ['RDG_WHITE','Weissersatz Vektor']];pts=[[0.5,11],[5,11],[57,11],[53,21],[11,36]]\ndef samples(image):return [list(image.pixel(round(x*k*2),round(y*k*2))) for x,y in pts]\ncolor=samples(pix);p.set_layer(-1,on=white,off=[i for i in layers if i not in white]);q=f.open(stream=p.tobytes(),filetype='pdf');wp=q[0].get_pixmap(matrix=f.Matrix(2,2),alpha=True)\nprint(json.dumps({'width':page.rect.width/k,'height':page.rect.height/k,'layers':[v['name'] for v in layers.values()],'rdg':'/Separation /RDG_WHITE' in objs,'cut':'/Separation /CutContour' in objs,'images':[(i[2],i[3],i[5],i[2]*72/page.get_image_rects(i[0])[0].width) for i in page.get_images()],'color':color,'white':samples(wp),'drawings':len(page.get_drawings())}))" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at inspect (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:13:51)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:28:260)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\form-print-proof.test.mjs:31:1
+✖ backend print download enforces CSRF and settings and retains byte-identical cached PDF/ZIP (5951.8233ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:32:23)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image;import sys;im=Image.new('RGB',(2400,1600),'red');im.paste('green',(1200,0,2400,1600));im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:32:23)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\form-print-proof.test.mjs:48:1
+✖ frozen multiline italic text remains identical vector outlines at 300/600 dpi with exact white paths and one mirror (8473.38ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:49:17)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image;import sys;im=Image.new('RGB',(2400,1600),'red');im.paste('green',(1200,0,2400,1600));im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:49:17)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\form-print-proof.test.mjs:54:1
+✖ photo and vector text retain saved paint order without duplicate raster text (5045.5648ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:56:14)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image;import sys;im=Image.new('RGB',(2400,1600),'red');im.paste('green',(1200,0,2400,1600));im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:56:14)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\form-print-proof.test.mjs:61:1
+✖ acrylic scene, reflections and depth stay out of actual PDF ink and white separations (5127.6229ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:62:17)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image;import sys;im=Image.new('RGB',(2400,1600),'red');im.paste('green',(1200,0,2400,1600));im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:62:17)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\form-print-proof.test.mjs:73:2
+✖ front UV texture and reverse gloss leave identical production pixels, white and geometry (5757.6423ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:76:18)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image;import sys;im=Image.new('RGB',(2400,1600),'red');im.paste('green',(1200,0,2400,1600));im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:76:18)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\form-print-proof.test.mjs:86:1
+✖ Mimaki direct and queued downloads expose paired immutable PDFs, reject missing white and preserve older cached exports (7393.2216ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:87:23)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image;import sys;im=Image.new('RGB',(2400,1600),'red');im.paste('green',(1200,0,2400,1600));im.save(sys.stdout.buffer,format='PNG')" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at fixture (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:10:22)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/form-print-proof.test.mjs:87:23)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\photo-frame-coverage.test.mjs:26:1
+✖ coverage agrees with independently rasterized real mask and photo transforms (21.282ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/photo-frame-coverage.test.mjs:30:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "import sys,io,cairosvg;from PIL import Image;im=Image.open(io.BytesIO(cairosvg.svg2png(bytestring=sys.stdin.buffer.read()))).convert('RGBA');print(sum(1 for r,g,b,a in im.getdata() if a==255 and r<10 and g<10 and b<10))" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/photo-frame-coverage.test.mjs:30:21)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1397:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+        at Test.postRun (node:internal/test_runner/test:1537:19)
+        at Test.run (node:internal/test_runner/test:1462:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\print-preview.test.mjs:19:1
+✖ saved Roland PDF renders isolated red artwork and white coverage with transparent empty area, without modifying PDF (8942.6832ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at inspect (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:15:41)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:20:119)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image\nimport io,sys,json\nim=Image.open(io.BytesIO(sys.stdin.buffer.read())).convert('RGBA');w,h=im.size\nprint(json.dumps({'width':w,'height':h,'center':im.getpixel((w//2,h//2)),'corner':im.getpixel((0,0)),'empty':im.getpixel((w//10,h//10))}))" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at inspect (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:15:41)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:20:119)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\print-preview.test.mjs:23:1
+✖ Mimaki preview uses the exact separate archived white PDF and full white is visibly different from motif white (13461.3124ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at inspect (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:15:41)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:25:147)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "from PIL import Image\nimport io,sys,json\nim=Image.open(io.BytesIO(sys.stdin.buffer.read())).convert('RGBA');w,h=im.size\nprint(json.dumps({'width':w,'height':h,'center':im.getpixel((w//2,h//2)),'corner':im.getpixel((0,0)),'empty':im.getpixel((w//10,h//10))}))" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at inspect (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:15:41)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:25:147)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }
+
+test at app\workshop\print-preview.test.mjs:32:1
+✖ raster and vector engraving previews render the exact stored PDF on white without changing output or orientation (14.0561ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:34:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "import sys,pymupdf as p\nfrom PIL import Image\nimport io\nd=p.open();page=d.new_page(width=100,height=200)\nif 'raster'=='vector':page.draw_rect(p.Rect(10,50,40,150),color=None,fill=(0,0,0))\nelse:\n im=Image.new('L',(100,200),255)\n for y in range(50,150):\n  for x in range(10,40):im.putpixel((x,y),80)\n b=io.BytesIO();im.save(b,format='PNG');page.insert_image(page.rect,stream=b.getvalue())\nsys.stdout.buffer.write(d.tobytes())" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/paket-m/app/workshop/print-preview.test.mjs:34:13)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1397:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+        at Test.postRun (node:internal/test_runner/test:1537:19)
+        at Test.run (node:internal/test_runner/test:1462:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }

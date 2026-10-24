@@ -161,3 +161,10 @@ test('scale permission keeps source line spacing proportional without granting i
  }
  const fixed={...config,workshopElementRights:{d:{name:none}}};assert.ok(templateRightsIssue(fixed,source,source,[scaled]));assert.deepEqual(restoreElementRights([original],[scaled],{name:none}).objects,[original]);
 });
+
+test('photo colour is an explicit replacement right without granting other geometry changes',()=>{
+ const changed={...photo,uxUploadId:'upload',uxUploadKind:'photo',uxPhotoColor:'original',x:2};
+ assert.equal(rightForProperty('uxPhotoColor'),'replace');
+ assert.deepEqual(restoreElementRights([photo],[changed],{photo:{...none,replace:true}}).objects,[{...photo,uxUploadId:'upload',uxUploadKind:'photo',uxPhotoColor:'original'}]);
+ assert.deepEqual(restoreElementRights([photo],[changed],{photo:none}).objects,[photo]);
+});

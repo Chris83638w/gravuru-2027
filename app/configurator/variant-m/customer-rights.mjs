@@ -29,7 +29,8 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
     if(node.dataset.uxProp||node.dataset.uxContentProp||node.dataset.prop)right=rightForProperty(node.dataset.uxProp||node.dataset.uxContentProp||node.dataset.prop);
     if(node.dataset.uxHandle)right=node.dataset.uxHandle==='scale'?'scale':'move';
     if(['choose-upload','photo-upload'].includes(node.dataset.ux)){object=uploadObject();right=object?'replace':null;}
-    if(el.uxCanPositionPhoto?.(object)&&(node.dataset.uxHandle||['delete','remove-content','object-delete'].includes(node.dataset.ux)))right='replace';
+    if(node.dataset.photoPosition||node.dataset.ux?.startsWith('photo-position-'))right='replace';
+    if(el.uxPhotoPositionActive?.(object)&&node.dataset.uxHandle||el.uxCanPositionPhoto?.(object)&&['delete','remove-content','object-delete'].includes(node.dataset.ux))right='replace';
     return {object,right};
   }
   const denied=node=>{const {object,right}=restriction(node);return right&&object&&!can(object,right);};
@@ -39,7 +40,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
     if(node&&denied(node)){blocked(event);if(finalised)el.sync();return;}
     if(type==='click'){
       const item=event.target.closest('[data-object]'),object=item&&objectById(item.dataset.object);
-      if(object?.type==='photoSlot'&&!can(object,'replace')){blocked(event);select(object.id);return;}
+      if(object?.type==='photoSlot'&&!can(object,'replace')&&!can(object,'move')){blocked(event);select(object.id);return;}
       queueMicrotask(updateUI);
     }
   },true);
@@ -48,7 +49,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
     const handle=event.target.closest('[data-ux-handle],[data-resize]'),item=event.target.closest('.scene [data-object]');
     const object=handle?objectById(handle.dataset.resize)||selected():item&&objectById(item.dataset.object);
     if(!object)return;
-    const right=el.uxCanPositionPhoto?.(object)?'replace':handle?(handle.dataset.uxHandle==='rotate'?'move':'scale'):'move';
+    const right=el.uxPhotoPositionActive?.(object)?'replace':handle?(handle.dataset.uxHandle==='rotate'?'move':'scale'):'move';
     if(can(object,right)||!handle&&object.type==='photoSlot'&&can(object,'replace'))return;
     event.preventDefault();event.stopImmediatePropagation();select(object.id);
     if(object.type==='text'){el.revealEditor?.(object);if(can(object,'content'))el.uxTextTap?.(object.id);}
@@ -56,8 +57,10 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
   r.addEventListener('keydown',event=>{
     const handle=event.target.closest('[data-ux-handle]');
     if(!handle&&!event.target.closest('.scene'))return;
-    const right=['Delete','Backspace'].includes(event.key)?'delete':['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)?(handle?.dataset.uxHandle==='scale'?'scale':'move'):null;
-    if(right&&!el.uxCanPositionPhoto?.(selected())&&!can(selected(),right))blocked(event);
+    const object=objectById(event.target.closest('.scene [data-object]')?.dataset.object)||selected(),deleting=['Delete','Backspace'].includes(event.key);
+    let right=deleting?'delete':['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)?(handle?.dataset.uxHandle==='scale'?'scale':'move'):null;
+    if(right&&(el.uxPhotoPositionActive?.(object)||deleting&&el.uxCanPositionPhoto?.(object)))right='replace';
+    if(right&&!can(object,right))blocked(event);
   },true);
   r.addEventListener('dblclick',event=>{const item=event.target.closest('[data-object]'),object=item&&objectById(item.dataset.object);if(object?.type==='text'&&!can(object,'content'))blocked(event);},true);
 
@@ -90,9 +93,9 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
       const available=labels.filter(([right])=>can(object,right)).map(([,label])=>label);
       notice.textContent=available.length?'Für dieses Element änderbar: '+available.join(', ')+'.':'Dieses Element gehört fest zum Design.';
     }
-    for(const handle of all('[data-ux-handle]'))handle.hidden=!!object&&!el.uxCanPositionPhoto?.(object)&&!can(object,handle.dataset.uxHandle==='scale'?'scale':'move');
+    for(const handle of all('[data-ux-handle]'))handle.hidden=!!object&&!el.uxPhotoPositionActive?.(object)&&!can(object,handle.dataset.uxHandle==='scale'?'scale':'move');
     for(const handle of all('.ux-handle-delete'))handle.hidden=!!object&&!el.uxCanPositionPhoto?.(object)&&!can(object,'delete');
-    for(const handle of all('.ux-rotate-stem'))handle.hidden=!!object&&!can(object,'move');
+    for(const handle of all('.ux-rotate-stem'))handle.hidden=!!object&&!el.uxPhotoPositionActive?.(object)&&!can(object,'move');
     for(const handle of all('.scene [data-resize]'))handle.setAttribute('visibility',can(objectById(handle.dataset.resize),'scale')?'visible':'hidden');
     const photo=uploadObject(),drop=$('.ux-upload-drop');
     if(photo&&!can(photo,'replace')){

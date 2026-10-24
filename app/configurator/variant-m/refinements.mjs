@@ -42,7 +42,7 @@ export async function installRefinements(api){
   const editPhoto=createPhotoEditor(api);
   installPhotoPosition(api);
   function updateSelection(){
-    const o=selected(),enabled=o&&!o.uxHidden&&!o.uxLocked&&(!o.acrylicFixed||el.uxCanPositionPhoto?.(o));
+    const o=selected(),enabled=o&&!o.uxHidden&&!o.uxLocked&&(!o.acrylicFixed||el.uxPhotoPositionActive?.(o));
     handles.hidden=!enabled;
     if(enabled){const a=(o.rotation||0)*Math.PI/180,scene=$('.scene').getBoundingClientRect(),ph=stage.getBoundingClientRect();
       const point=(dx,dy)=>({x:(scene.left-ph.left)+(o.x+dx*Math.cos(a)-dy*Math.sin(a))*scene.width/el.state.width,y:(scene.top-ph.top)+(o.y+dx*Math.sin(a)+dy*Math.cos(a))*scene.height/el.state.height});
@@ -60,16 +60,26 @@ export async function installRefinements(api){
   const render=el.render;el.render=function(...args){const result=render.apply(this,args);updateSelection();return result;};
   const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);updateSelection();return result;};
   let resize=null;
+  const validPhotoGesture=prior=>prior.object.type!=='photoSlot'||el.state.designId===prior.old.designId&&selected()?.id===prior.object.id&&selected()?.uxUploadId===prior.object.uxUploadId&&!el.uxPhotoPositionActive?.(selected());
+  function cancelPhotoGesture(prior){
+    if(el.state.designId!==prior.old.designId)return;
+    const object=el.state.objects.find(o=>o.id===prior.object.id);if(!object)return;
+    // Cancel only this gesture's geometry, retaining a replacement upload,
+    // its crop and a newly selected object.
+    for(const key of ['x','y','w','h','rotation'])if(Object.hasOwn(prior.object,key))object[key]=prior.object[key];else delete object[key];
+  }
+  for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){if(resize?.object.type==='photoSlot'&&!validPhotoGesture(resize)){const prior=resize;resize=null;cancelPhotoGesture(prior);if(prior.target.hasPointerCapture(prior.id))prior.target.releasePointerCapture(prior.id);el.uxGuideGesture?.(false);}return original.apply(this,args);};}
   r.addEventListener('pointerdown',e=>{
     const h=e.target.closest('[data-ux-handle]'),item=e.target.closest('.scene [data-object]');if((!h&&!item)||e.button!==0)return;
     const o=item?el.state.objects.find(o=>o.id===item.dataset.object):selected();if(!o||o.uxLocked||o.uxHidden||o.acrylicFixed)return;
+    if(o.type==='photoSlot'&&(o.locked||o.technicalLocked||o.customerEditable===false||el.uxCanEdit?.(o,h?.dataset.uxHandle==='scale'?'scale':'move')===false))return;
     if(item&&el.uxToggleTextSelection?.(o.id)){e.preventDefault();e.stopImmediatePropagation();return;}
     e.preventDefault();e.stopImmediatePropagation();const old=structuredClone(el.state),point=el.point(e),target=h||holder;
     el.state.selected=o.id;el.uxGuideGesture?.(true);el.state.showHero=false;if(o.type==='text')showTab('text');el.sync();
     resize={id:e.pointerId,target,old,object:structuredClone(o),start:point,kind:h?.dataset.uxHandle||'move',moved:false};target.setPointerCapture(e.pointerId);
   },true);
-  r.addEventListener('pointermove',e=>{if(!resize||resize.id!==e.pointerId)return;e.preventDefault();e.stopImmediatePropagation();const p=el.point(e),o=selected(),start=resize.object;if(!o)return;
-    if(Math.hypot(p.x-resize.start.x,p.y-resize.start.y)<.3&&!resize.moved)return;resize.moved=true;
+  r.addEventListener('pointermove',e=>{if(!resize||resize.id!==e.pointerId)return;e.preventDefault();e.stopImmediatePropagation();const p=el.point(e),o=selected(),start=resize.object;if(!o||start.type==='photoSlot'&&!validPhotoGesture(resize)){finish(e,true);return;}
+    if(Math.hypot(p.x-resize.start.x,p.y-resize.start.y)<.3&&!resize.moved)return;resize.moved=true;if(start.type==='photoSlot')el.uxCancelPhotoTap?.();
     if(resize.kind==='move'){o.x=start.x+p.x-resize.start.x;o.y=start.y+p.y-resize.start.y;
       if(window.GravuruGuided){const scene=$('.scene').getBoundingClientRect(),state={...el.state,objects:el.state.objects.filter(x=>!x.uxHidden)};const snapped=window.GravuruGuided.snap(state,o,7/Math.max(.1,scene.width/el.state.width),resize.locks);o.x=snapped.x;o.y=snapped.y;resize.locks=snapped.locks;}
     }
@@ -77,10 +87,10 @@ export async function installRefinements(api){
     else{const factor=selectionScaleFactor(start,resize.start,p);Object.assign(o,scaleObject(start,factor,el.uxTextScale?.()||1,el.uxMinTextMm));}
     el.normalize();el.render();
   },true);
-  function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);if(cancel)el.state=prior.old;else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
+  function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);cancel=cancel||!validPhotoGesture(prior);if(cancel){if(prior.object.type==='photoSlot')cancelPhotoGesture(prior);else el.state=prior.old;}else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);
   r.addEventListener('lostpointercapture',e=>{if(resize?.id===e.pointerId)finish(e,true);},true);
-  r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate')o.rotation=(o.rotation||0)+direction;else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
+  r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate')o.rotation=(o.rotation||0)+direction;else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
   function areaResize(field){field.style.height='auto';field.style.height=Math.min(200,Math.max(44,field.scrollHeight))+'px';}
   r.addEventListener('focusin',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);});
   r.addEventListener('input',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);},true);

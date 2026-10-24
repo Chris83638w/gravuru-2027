@@ -1,3 +1,4 @@
+import {photoColorMode} from '../platform/sources/app/shared/models/photo-color.mjs';
 import {validateContourOutline,flattenContourPath} from './contour-path.mjs';
 import {graphicMarkup} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {readReviewPackage,digest} from './review-package.mjs';
@@ -53,7 +54,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
    const image=`<g data-photo-pan="${field}"><image href="data:image/png;base64,${photo.preview.toString('base64')}" x="${o.type==='photoSlot'?p.x:-o.w/2}" y="${o.type==='photoSlot'?p.y:-o.h/2}" width="${o.type==='photoSlot'?p.w:o.w}" height="${o.type==='photoSlot'?p.h:o.h}" preserveAspectRatio="xMidYMid meet"${o.type==='photoSlot'?` transform="rotate(${p.angle} ${p.cx} ${p.cy})"`:''}/></g>`;
    const mask=maskFor(o,clip);
    body=o.type==='photoSlot'?`<defs>${mask.defs}</defs><g ${mask.attribute}>${image}</g>`:image;
-   photos.push({fieldId:field,bytes:bytes.toString('base64'),width:photo.width,height:photo.height,tone:'original',...(o.uxUploadKind==='logo'&&o.uxLogoTint?{nativeTint:color}:{}),sourcePath:path});photoFields.push(field);
+   photos.push({fieldId:field,bytes:bytes.toString('base64'),width:photo.width,height:photo.height,...nativePhotoTreatment(config.profile,o,{edited:!!entry.edited,engraving}),...(o.uxUploadKind==='logo'&&o.uxLogoTint?{nativeTint:color}:{}),sourcePath:path});photoFields.push(field);
   }else if(o.type==='photoSlot'){
    const example=config.localResources.photoExamples?.find(e=>e.designId===design.id&&e.slotId===o.id);if(o.required&&!example)fail('Erforderliches eigenes Foto fehlt.');if(!example)continue;
    const bytes=files.get('quellen/'+example.assetId+'-vorschau.svg');if(!bytes)fail('Beispielfoto fehlt im gesicherten Stand.');const clip='native-example-'+index,mask=maskFor(o,clip);
@@ -79,4 +80,10 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  const clip=engraving?`<defs><clipPath id="native-engraving-contour"><path d="${geometry.contours.map(c=>c.d).join(' ')}" clip-rule="evenodd"/></clipPath></defs>`:'';
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${geometry.widthMm}mm" height="${geometry.heightMm}mm" viewBox="0 0 ${geometry.widthMm} ${geometry.heightMm}">${clip}<g data-native-design="true"${engraving?' clip-path="url(#native-engraving-contour)"':''}>${parts.join('')}</g></svg>`;
  return {files,manifest,svg,geometry,geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields,surfaceId,surfaces:producedSurfaces(config.profile,design.objects),mirrorFor:front=>surfaceMirror(config,surfaceId,front)};
+}
+
+// Applied customer edits already contain their colour transform. Gravure keeps
+// its established production luminance conversion; material light is preview-only.
+export function nativePhotoTreatment(profile,object,{edited=false,engraving=false}={}){
+ return {tone:edited||engraving||object.uxUploadKind!=='photo'?'original':photoColorMode(profile,object),nativeGrayscale:true};
 }

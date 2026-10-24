@@ -1,0 +1,103 @@
+{
+  "status": "environment-launcher-failure-confirmed",
+  "originalRun": {
+    "tests": 35,
+    "pass": 20,
+    "fail": 15,
+    "skip": 0,
+    "cancelled": 0,
+    "log": "work/reports/paket-m-photo-workshop.log",
+    "sha256": "3b1504590adf0bcb8b9723100a0705761bd0dc093e4f18737de3d9d13616bc97"
+  },
+  "failures": [
+    {
+      "source": "app\\workshop\\acrylic-engraving.test.mjs:12:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\acrylic-engraving.test.mjs:18:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\acrylic-engraving.test.mjs:21:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\form-print-proof.test.mjs:18:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\form-print-proof.test.mjs:27:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\form-print-proof.test.mjs:31:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\form-print-proof.test.mjs:48:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\form-print-proof.test.mjs:54:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\form-print-proof.test.mjs:61:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\form-print-proof.test.mjs:73:2",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\form-print-proof.test.mjs:86:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\photo-frame-coverage.test.mjs:26:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\print-preview.test.mjs:19:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\print-preview.test.mjs:23:1",
+      "error": "spawnSync python3 EACCES"
+    },
+    {
+      "source": "app\\workshop\\print-preview.test.mjs:32:1",
+      "error": "spawnSync python3 EACCES"
+    }
+  ],
+  "conclusion": "All 15 failures are spawnSync python3 EACCES before Python starts; no package/test assertion failure is established by this run.",
+  "launcher": {
+    "preload": "work/paket-m/scripts/test-portability/full-tests-python-windows.mjs",
+    "sha256": "24c2bd8c9022e5f7cb05753c0a2da748a994a124e192172999e38bd3b666bc6d",
+    "redirect": "python3 -> GRAVURU_PYTHON on Windows only; Linux is unchanged",
+    "nodeArgs": [
+      "--import",
+      "./scripts/test-portability/full-tests-python-windows.mjs",
+      "--test",
+      "--test-concurrency=1"
+    ],
+    "environment": {
+      "GRAVURU_PYTHON": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pyenv\\Scripts\\python.exe",
+      "TEMP": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp",
+      "TMP": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp",
+      "PYTHONUTF8": "1",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "probe": "Verified execFileSync python3 through preload returns selected work/pyenv/Scripts/python.exe"
+  },
+  "rerunFiles": [
+    "app/workshop/acrylic-engraving.test.mjs",
+    "app/workshop/form-print-proof.test.mjs",
+    "app/workshop/photo-frame-coverage.test.mjs",
+    "app/workshop/print-preview.test.mjs"
+  ],
+  "sourceChanges": false,
+  "extraTestRuns": false,
+  "linuxClaim": "This is Windows launcher verification, not an executed Linux test run."
+}

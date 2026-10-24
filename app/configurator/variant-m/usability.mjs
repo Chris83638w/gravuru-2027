@@ -1,3 +1,4 @@
+import {maskContourGuides} from './contour-guides.mjs';
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
@@ -159,7 +160,7 @@ export async function installUsability(api) {
     const state={...el.state,objects:el.state.objects.filter(o=>!o.uxHidden)},o=selected();
     for(const text of state.objects.filter(o=>o.type==='text'))markup+=anchor(text.x,text.y);
     if(o&&window.GravuruGuided){const targets=window.GravuruGuided.alignmentTargets(state,o);for(const axis of ['x','y'])for(const target of targets[axis].filter(t=>Math.abs(t.value-o[axis])<.03)){markup+=axis==='x'?line(target.line,0,target.line,h,true)+anchor(target.line,o.y):line(0,target.line,w,target.line,true)+anchor(o.x,target.line);}}
-    group.innerHTML=markup;scene.append(group);
+    group.innerHTML=markup;maskContourGuides(group,surface());scene.append(group);
   }
 
   // No repeated SVG ids between live product, gallery, mini preview and dialog.
@@ -189,7 +190,7 @@ export async function installUsability(api) {
     if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,bounds);return bounds;
   }
   function surface(){
-    if(config)return {x:0,y:0,...profile.geometry};
+    if(config)return {x:0,y:0,...(el.uxProfileGeometry?.()||profile.geometry)};
     return profile.frames.find(f=>f.key===el.state.fkFrame)?.acrylic||profile.frames[0].acrylic;
   }
   function issues(){return el.state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.text.trim()).flatMap(o=>{

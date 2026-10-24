@@ -1,3 +1,5 @@
+import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
+import {escapeXml} from '../../platform/sources/app/shared/models/design-content.mjs';
 // Material photographs are preview resources; geometry and production paths remain separate.
 export const validSurface=url=>/^\/api\/workshop\/material-surfaces\/[a-f0-9]{64}\.png$/.test(url)||/^\/api\/product-workbench\/assets\/[a-f0-9]{64}\.(png|jpg|webp)$/.test(url)||/^\/produktvorschau\/[a-f0-9]{48}\/material\/[a-f0-9]{64}\.(png|jpg|webp)$/.test(url)||/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(url);
 // Leistung (20.10.2026): Eine als data:-URI gelieferte Rohlingtextur (oft ~2 MB) stand in jeder Vorschau-Zeichnung
@@ -16,12 +18,12 @@ export function surfacePreview(svg,url,geometry){
  if(!url||!(trustedBlobs.has(url)||validSurface(url)))return svg;
  const {width,height,shape}=geometry;
  if(![width,height].every(n=>Number.isFinite(n)&&n>0))throw Error('Materialvorschau: Maße fehlen.');
- const clip=shape==='ellipse'?'<ellipse cx="'+width/2+'" cy="'+height/2+'" rx="'+width/2+'" ry="'+height/2+'"/>':'<rect width="'+width+'" height="'+height+'" rx="'+(geometry.cornerRadiusMm||0)+'"/>';
+ const clip=shape==='contour'?'<path d="'+escapeXml(contourPathWithHoles(geometry))+'" clip-rule="evenodd"/>':shape==='ellipse'?'<ellipse cx="'+width/2+'" cy="'+height/2+'" rx="'+width/2+'" ry="'+height/2+'"/>':'<rect width="'+width+'" height="'+height+'" rx="'+(geometry.cornerRadiusMm||0)+'"/>';
  // Chris 21.10.2026: hinter den Bruchkanten ist weiß zu sehen, keine dunkle Kante und keine Kontur. Die
  // Materialfläche bleibt (um den Bruchrand eingerückt) darunter, damit ohne Bild die Platte sichtbar bleibt.
  const inset=Math.min(4,width*.04,height*.04);
  const solid=fill=>shape==='ellipse'?'<ellipse cx="'+width/2+'" cy="'+height/2+'" rx="'+(width/2-inset)+'" ry="'+(height/2-inset)+'" fill="'+fill+'"/>':'<rect x="'+inset+'" y="'+inset+'" width="'+(width-2*inset)+'" height="'+(height-2*inset)+'" rx="'+Math.max(0,(geometry.cornerRadiusMm||0)-inset)+'" fill="'+fill+'"/>';
- return svg.replace(/(<\/defs>)(<(?:rect|ellipse)\b[^>]*\/>)/,(_,defs,base)=>defs+solid(/\sfill="([^"]*)"/.exec(base)?.[1]||'#fff')+'<defs><clipPath id="material-preview-clip">'+clip+'</clipPath></defs><image data-material-surface="true" href="'+url+'" width="'+width+'" height="'+height+'" preserveAspectRatio="none" clip-path="url(#material-preview-clip)"/>');
+ return svg.replace(/(<\/defs>)(<(?:rect|ellipse|path)\b[^>]*\/>)/,(_,defs,base)=>defs+(shape==='contour'?base:solid(/\sfill="([^"]*)"/.exec(base)?.[1]||'#fff'))+'<defs><clipPath id="material-preview-clip">'+clip+'</clipPath></defs><image data-material-surface="true" href="'+url+'" width="'+width+'" height="'+height+'" preserveAspectRatio="none" clip-path="url(#material-preview-clip)"/>');
 }
 export function scenePreview(svg,url){
  if(!url||!validSurface(url))return svg;

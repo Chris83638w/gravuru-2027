@@ -1,10 +1,12 @@
+import {contourContainsPolygon,contourObjectCorners,contourSafeAreaSvg} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
+let contourGuideSerial=0;
 const bounds=o=>{const a=(o.rotation||0)*Math.PI/180,w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a));return {x:[o.x-w/2,o.x,o.x+w/2],y:[o.y-h/2,o.y,o.y+h/2]};};
 export function alignedPosition(object,geometry,others,{threshold=1,snap=true}={}){
  const result={...object},lines=[],b=bounds(object);
  for(const [axis,extent] of [['x',geometry.width],['y',geometry.height]]){
   const m=geometry.safeMarginMm??2,targets=[{value:extent/2,kind:'center'},{value:m,kind:'margin'},{value:extent-m,kind:'margin'},...others.filter(o=>o.id!==object.id&&!o.uxHidden).flatMap(o=>bounds(o)[axis].map(value=>({value,kind:'element'})))];
   let best=null;
-  for(const from of b[axis])for(const target of targets){const delta=target.value-from;if(Math.abs(delta)<=threshold&&(!best||Math.abs(delta)<Math.abs(best.delta)))best={...target,delta};}
+  for(const from of b[axis])for(const target of targets){const delta=target.value-from;if(geometry.shape==='contour'&&!contourContainsPolygon(geometry,contourObjectCorners({...result,[axis]:result[axis]+delta})))continue;if(Math.abs(delta)<=threshold&&(!best||Math.abs(delta)<Math.abs(best.delta)))best={...target,delta};}
   if(best){if(snap)result[axis]+=best.delta;lines.push({axis,value:best.value,kind:best.kind});}
  }
  return {object:result,lines};
@@ -20,6 +22,7 @@ export function drawGuides(stage,parent,geometry,lines){
   for(const [key,v] of Object.entries(axis==='x'?{x1:value,x2:value,y1:0,y2:geometry.height}:{y1:value,y2:value,x1:0,x2:geometry.width}))line.setAttribute(key,v);
   line.setAttribute('stroke',kind==='center'?'#187361':'#bc3985');line.setAttribute('stroke-width','1');line.setAttribute('stroke-dasharray','5 4');line.setAttribute('vector-effect','non-scaling-stroke');group.append(line);
  }
+ if(geometry.shape==='contour'){const area=contourSafeAreaSvg(geometry,'editor-contour-guides-'+(++contourGuideSerial));group.innerHTML='<defs>'+area.defs+'</defs><g '+area.attribute+'>'+group.innerHTML+'</g>';}
  parent.append(group);
 }
 

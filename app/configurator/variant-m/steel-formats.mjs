@@ -6,6 +6,7 @@ const fail=message=>{throw Error(message);};
 export const steelSizeGroup=c=>c.profile.optionGroups.find(g=>g.id==='size');
 export function validateSteelFormats(c){
  if(c.steelFormats===undefined)return;
+ if(c.profile.geometry.shape==='contour')fail('Konturmaße stammen aus der Zeichnung. Bitte eine eigene Kataloggröße wählen.');
  if(c.steelFormats?.version!==1||Object.keys(c.steelFormats).length!==1)fail('Unbekannte Edelstahl-Formatversion.');
  const g=c.profile.geometry,group=steelSizeGroup(c);
  // Drill patterns stored as rules (product families) follow every resize in
@@ -21,12 +22,14 @@ export function validateSteelFormats(c){
 export function steelPhysicalGeometry(c,options={}){
  const g=structuredClone(c.profile.geometry);
  if(!c.steelFormats)return g;
+ if(g.shape==='contour')fail('Konturmaße stammen aus der Zeichnung. Bitte eine eigene Kataloggröße wählen.');
  const group=steelSizeGroup(c),v=group.values.find(v=>v.id===(options.size??group.defaultValueId));
  if(!v)fail('Unbekannte Schildgröße.');
  const scale=v.widthMm/g.width;
  return {...g,width:v.widthMm,height:v.heightMm,cornerRadiusMm:(g.cornerRadiusMm||0)*scale,safeMarginMm:(g.safeMarginMm??2)*scale,holes:g.holes.map(h=>({...h,x:h.x*scale,y:h.y*scale}))};
 }
 export function enableSteelFormats(c){
+ if(c.profile.geometry.shape==='contour')fail('Konturmaße stammen aus der Zeichnung. Bitte eine eigene Kataloggröße wählen.');
  if(c.steelFormats)return;
  const g=c.profile.geometry;
  c.steelFormats={version:1};
@@ -37,6 +40,7 @@ export function enableSteelFormats(c){
 // glyphs, motifs and photo masks; original revisions remain immutable.
 export function resizeSteelDocument(input,geometry){
  const d=structuredClone(input),c=d.config,p=c.profile,old=p.geometry;
+ if(old.shape==='contour')fail('Konturmaße stammen aus der Zeichnung. Bitte eine eigene Kataloggröße wählen.');
  if(c.doorbell||p.material.kind!=='steel')fail('Diese Formbearbeitung gilt für einlagige Edelstahlschilder.');
  const g={...old,...geometry};
  if(![g.width,g.height,g.cornerRadiusMm,g.safeMarginMm].every(Number.isFinite)||g.width<10||g.height<10||g.width>2000||g.height>2000||!['rect','ellipse'].includes(g.shape)||g.cornerRadiusMm<0||g.cornerRadiusMm>Math.min(g.width,g.height)/2||g.safeMarginMm<0||g.safeMarginMm*2>=Math.min(g.width,g.height))fail('Bitte gültige Schildmaße, Form und Randabstand eingeben.');

@@ -1,3 +1,4 @@
+import {maskContourGuides} from './contour-guides.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
 import {transformedCorners} from './usability-model.mjs';
@@ -10,7 +11,7 @@ export async function installWorkflow(api){
  const {el,r,profile,config,button,esc,mutate,selected,showTab,say,dialog}=api;
  const $=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/workflow.css').then(res=>{if(!res.ok)throw Error('Bedienung fehlt');return res.text();});r.append(style);
- const surface=()=>config?{x:0,y:0,...profile.geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;
+ const surface=()=>config?{x:0,y:0,...(el.uxProfileGeometry?.()||profile.geometry)}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;
  const obstacles=()=>!config&&profile.geometry.bell?[{x:profile.geometry.bell.x+profile.geometry.bell.width/2,y:profile.geometry.bell.y+profile.geometry.bell.height/2,w:profile.geometry.bell.width,h:profile.geometry.bell.height}]:[];
  function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent='Ausführungen';const contents=$('[data-ux=contents]');if(contents)contents.innerHTML='Ebenenverwaltung <span data-ux-count>('+el.state.objects.length+')</span>';const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
  rename();$('.fk-scope-note')?.setAttribute('hidden','');const mounting=$('[data-fk-mount-note]');if(mounting)mounting.classList.add('workflow-mount-note');
@@ -23,7 +24,7 @@ export async function installWorkflow(api){
  el.uxGuideGesture=active=>{activeGuides=active;};
  function guides(){const scene=$('.scene');if(!scene)return;scene.querySelectorAll('.ux-alignment-guides,.guided-alignment,.center-guides,[data-workflow-guides]').forEach(n=>n.remove());if(!activeGuides||!selected())return;
   const o=selected(),targets=window.GravuruGuided.alignmentTargets({...el.state,objects:el.state.objects.filter(x=>!x.uxHidden)},o),ns='http://www.w3.org/2000/svg';const g=document.createElementNS(ns,'g');g.dataset.workflowGuides='';g.setAttribute('pointer-events','none');
-  for(const axis of ['x','y'])for(const t of targets[axis].filter(t=>t.key.startsWith('plate-')||Math.abs(t.value-o[axis])<.05)){const l=document.createElementNS(ns,'line'),vertical=axis==='x';for(const [k,v]of Object.entries({x1:vertical?t.line:0,y1:vertical?0:t.line,x2:vertical?t.line:el.state.width,y2:vertical?el.state.height:t.line,stroke:'#278a72','stroke-width':1,'stroke-dasharray':'4 3','vector-effect':'non-scaling-stroke'}))l.setAttribute(k,v);g.append(l);}scene.append(g);
+  for(const axis of ['x','y'])for(const t of targets[axis].filter(t=>t.key.startsWith('plate-')||Math.abs(t.value-o[axis])<.05)){const l=document.createElementNS(ns,'line'),vertical=axis==='x';for(const [k,v]of Object.entries({x1:vertical?t.line:0,y1:vertical?0:t.line,x2:vertical?t.line:el.state.width,y2:vertical?el.state.height:t.line,stroke:'#278a72','stroke-width':1,'stroke-dasharray':'4 3','vector-effect':'non-scaling-stroke'}))l.setAttribute(k,v);g.append(l);}maskContourGuides(g,surface());scene.append(g);
  }
  // Capture before the old gesture listeners, including blank SVG/plate areas.
  r.addEventListener('pointerdown',e=>{if(e.button!==0||!e.target.closest('.stage,.c-large-preview'))return;if(e.target.closest('[data-object],[data-ux-handle],button,input,label,select,textarea,a'))return;el.state.selected=null;activeGuides=false;el.sync();},true);
@@ -57,7 +58,7 @@ export async function installWorkflow(api){
   const longest=Math.max(o.w||0,o.h||0)*physicalScale();return longest>0?Math.min(1,MOTIF_MIN_MM/longest):1;
  }
  // Gestaltungsfläche innerhalb des Randes (design-area.mjs); Klingelschild-Altpfad: Acrylfläche des Rahmens.
- function placementSurface(){if(!config)return surface();const a=designArea(config);return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:profile.geometry.shape};}
+ function placementSurface(){if(!config)return surface();const geometry=surface(),a=designArea(config,{geometry});return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:geometry.shape,...(geometry.shape==='contour'?{geometry}:{})};}
  function shrinkTo(o,scale){if(o.type==='text')o.size*=scale;o.w*=scale;o.h*=scale;}
  function place(o){
   if(o.type==='motif'&&config){say('Freie Fläche für das Motiv wird gesucht …');placementJob=placementJob.then(()=>placeNewMotif({...api},o,{minScale:placementMinScale(o)})).catch(()=>say('Freie Fläche konnte nicht geprüft werden. Bitte die Motivposition prüfen.'));return;}

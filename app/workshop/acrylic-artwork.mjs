@@ -1,4 +1,4 @@
-import {validateContourOutline} from './contour-path.mjs';
+import {validateContourOutline,flattenContourPath} from './contour-path.mjs';
 import {graphicMarkup} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {readReviewPackage,digest} from './review-package.mjs';
 import {NATIVE_REVIEW,NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
@@ -17,12 +17,16 @@ const dataSvg=bytes=>'data:image/svg+xml;base64,'+bytes.toString('base64');
 const number=v=>Number(v.toFixed(8));
 export function nativeContour(g){
  const w=g.width,h=g.height,r=g.cornerRadiusMm||0;
- const ellipse=(x,y,rx,ry)=>`M${x-rx} ${y}a${rx} ${ry} 0 1 0 ${2*rx} 0a${rx} ${ry} 0 1 0 ${-2*rx} 0Z`;
+ const ellipse=(x,y,rx,ry,sweep=0)=>`M${x-rx} ${y}a${rx} ${ry} 0 1 ${sweep} ${2*rx} 0a${rx} ${ry} 0 1 ${sweep} ${-2*rx} 0Z`;
  // sweep 1 = rounded (convex) corner, sweep 0 = eingezogene Ecke (concave quarter circle centred on the corner)
  const cornered=sw=>`M${r} 0H${w-r}A${r} ${r} 0 0 ${sw} ${w} ${r}V${h-r}A${r} ${r} 0 0 ${sw} ${w-r} ${h}H${r}A${r} ${r} 0 0 ${sw} 0 ${h-r}V${r}A${r} ${r} 0 0 ${sw} ${r} 0Z`;
  if(g.shape==='contour')try{validateContourOutline(g.outlinePath,w,h);}catch(e){fail(e.message);}
  const d=g.shape==='contour'?g.outlinePath:g.shape==='ellipse'?ellipse(w/2,h/2,w/2,h/2):r?cornered(g.shape==='plaque'?0:1):`M0 0H${w}V${h}H0Z`;
- return {schema:'gravuru-contour/v1',widthMm:w,heightMm:h,holeCount:g.holes.length,contours:[{role:'outer',d},...g.holes.map(h=>({role:'hole',d:ellipse(h.x,h.y,h.diameter/2,h.diameter/2)}))]};
+ // CairoSVG clips with nonzero winding even when clip-rule is evenodd. Keep
+ // the authoritative outer path untouched and orient generated holes against it.
+ const points=g.shape==='contour'?flattenContourPath(d):null;
+ const holeSweep=points&&points.reduce((sum,p,i)=>{const q=points[(i+1)%points.length];return sum+p[0]*q[1]-q[0]*p[1];},0)<0?1:0;
+ return {schema:'gravuru-contour/v1',widthMm:w,heightMm:h,holeCount:g.holes.length,contours:[{role:'outer',d},...g.holes.map(h=>({role:'hole',d:ellipse(h.x,h.y,h.diameter/2,h.diameter/2,holeSweep)}))]};
 }
 // K14 / Ü15.1: `surfaceId` wählt die Fläche (Standard vorn, wie bisher). Die Rückseite wird
 // seitenrichtig ausgegeben, ihre Kontur hat die von hinten gespiegelten Bohrlöcher.

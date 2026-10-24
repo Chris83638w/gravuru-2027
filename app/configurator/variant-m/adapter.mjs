@@ -1,3 +1,5 @@
+import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
+import {contourGuides} from './contour-guides.mjs';
 import {spacerPreview,screwPreview,keepoutPreview,optionTileIcon,optionTilePrice} from './option-media.mjs';
 import {designAreaPreview} from './design-area.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
@@ -31,7 +33,7 @@ export function installUniversal(configInput) {
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
   const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
     const visible={...design,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
-    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,p.geometry);
+    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
@@ -56,8 +58,9 @@ export function installUniversal(configInput) {
     el.$('[data-stainless=size]').replaceChildren(new Option(format.label, format.key));
     el.stainlessFormat = () => format;
     el.geometry = () => {
-      const outline = shape === 'ellipse' ? `M0 ${height/2}a${width/2} ${height/2} 0 1 0 ${width} 0a${width/2} ${height/2} 0 1 0 -${width} 0` : `M0 0H${width}V${height}H0Z`;
-      return {outline, clip:outline, holes:profile().geometry.holes.map(h => ({...h, r:h.diameter/2})), gap:0};
+      const geometry=profile().geometry;
+      const outline = shape === 'contour' ? geometry.outlinePath : shape === 'ellipse' ? `M0 ${height/2}a${width/2} ${height/2} 0 1 0 ${width} 0a${width/2} ${height/2} 0 1 0 -${width} 0` : `M0 0H${width}V${height}H0Z`;
+      return {outline, clip:shape==='contour'?contourPathWithHoles(geometry):outline, holes:geometry.holes.map(h => ({...h, r:h.diameter/2})), gap:0};
     };
     el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o),bare:true})).querySelector('[data-object]')?.outerHTML || '';
     el.svgBody = function(preview=true, guides=false) {
@@ -87,6 +90,8 @@ export function installUniversal(configInput) {
 
   window.Funkklingel.finish = element => {
     el = element; originalFinish(el);
+    el.uxProfileGeometry=()=>profile().geometry;
+    if(window.GravuruGuided)window.GravuruGuided=contourGuides(window.GravuruGuided,el.uxProfileGeometry);
     const r=el.shadowRoot, $=selector=>r.querySelector(selector);
     r.host.dataset.universalProfile = p.id;
     const style = document.createElement('style');

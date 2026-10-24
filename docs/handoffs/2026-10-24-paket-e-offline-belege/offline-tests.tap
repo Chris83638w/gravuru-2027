@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: catalog-only: real catalog targets, no shop counts or invented plan; missing approvals stay open
+ok 1 - catalog-only: real catalog targets, no shop counts or invented plan; missing approvals stay open
+  ---
+  duration_ms: 50.3222
+  type: 'test'
+  ...
+# Subtest: unapproved local masters remain open even with an otherwise complete export
+ok 2 - unapproved local masters remain open even with an otherwise complete export
+  ---
+  duration_ms: 269.3226
+  type: 'test'
+  ...
+# Subtest: released TEMP masters: full and partial exports retain the genuine planner counts and creation safeguards
+ok 3 - released TEMP masters: full and partial exports retain the genuine planner counts and creation safeguards
+  ---
+  duration_ms: 457.2325
+  type: 'test'
+  ...
+# Subtest: same design fingerprint keeps data-only differences unchanged: no implicit data-update bypass
+ok 4 - same design fingerprint keeps data-only differences unchanged: no implicit data-update bypass
+  ---
+  duration_ms: 277.5484
+  type: 'test'
+  ...
+# Subtest: run writes only new LF reports, plus the exact plan when given an export; inputs and credential values never enter the outputs
+ok 5 - run writes only new LF reports, plus the exact plan when given an export; inputs and credential values never enter the outputs
+  ---
+  duration_ms: 306.0031
+  type: 'test'
+  ...
+# Subtest: run rejects catalog-contained or existing output paths before writing anything
+ok 6 - run rejects catalog-contained or existing output paths before writing anything
+  ---
+  duration_ms: 139.268
+  type: 'test'
+  ...
+# Subtest: strict CLI refuses apply/create/bypass, unknown, duplicated and missing options; help needs no files
+ok 7 - strict CLI refuses apply/create/bypass, unknown, duplicated and missing options; help needs no files
+  ---
+  duration_ms: 49.2918
+  type: 'test'
+  ...
+# Subtest: full export: a missing SKU cannot turn the existing 80x20 product from update into create; null remains valid
+ok 8 - full export: a missing SKU cannot turn the existing 80x20 product from update into create; null remains valid
+  ---
+  duration_ms: 472.8856
+  type: 'test'
+  ...
+# Subtest: malformed or wrong-shop exports fail before a report directory is created
+ok 9 - malformed or wrong-shop exports fail before a report directory is created
+  ---
+  duration_ms: 874.4634
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3159.5702

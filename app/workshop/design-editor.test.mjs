@@ -7,6 +7,9 @@ import {fileURLToPath} from 'node:url';
 import {createHmac,randomUUID} from 'node:crypto';
 import {Readable} from 'node:stream';
 import {EventEmitter} from 'node:events';
+import {designAreaOutline} from '../configurator/variant-m/design-area.mjs';
+import {selectedProfile} from '../configurator/variant-m/contract.mjs';
+import {contourPathWithHoles} from '../platform/sources/app/shared/models/contour-geometry.mjs';
 import {createDesignEditor} from './design-editor.mjs';
 import {forgetKatalog} from './design-dashboard.mjs';
 import {createWorkshop} from './http.mjs';
@@ -50,6 +53,16 @@ for(const shape of ['rect','ellipse','contour'])test(`${shape}: no-op leaves exa
  assert.equal(fs.existsSync(path.join(f.root,'designs',f.reihe,'_aenderungen.jsonl')),false);
  if(shape==='contour'){assert.deepEqual(opened.source.editorMm,[90,60]);assert.match(opened.source.note,/90.6 × 61.3/);assert.equal(opened.document.config.profile.geometry.outlinePath,f.family.sizes[0].outlinePath);assert.equal(opened.document.config.profile.optionGroups[0].values.find(v=>v.id==='B02').holes.length,2);}
 });
+for(const shape of ['rect','ellipse','contour'])test(`${shape}: preview retains physical holes without visible mechanical keepout rings`,async t=>{
+ const f=fixture(t,{shape}),s=service(),opened=await s.open(f.root,f),data=input(f,opened),before=f.bytes();
+ const geometry=selectedProfile(opened.document.config,{}).geometry,fit=await s.fit(f.root,data);
+ assert.equal(geometry.holes.length,2);
+ const preview=await s.preview(f.root,data);assert.doesNotMatch(preview.svg,/data-m-keepout|#d0453a|#c0392b/);assert.equal(preview.svg.includes('data-m-design-area="true"'),Boolean(designAreaOutline(opened.document.config,selectedProfile(opened.document.config,{}))),'existing design boundary remains independent of mechanical rings');
+ if(shape==='contour'){const path=contourPathWithHoles(geometry);assert.notEqual(path,geometry.outlinePath);assert.ok(preview.svg.includes('d="'+path+'" fill-rule="evenodd"'),'plate cutouts retain actual hole geometry');}
+ else for(const hole of geometry.holes)assert.ok(preview.svg.includes('<circle cx="'+hole.x+'" cy="'+hole.y+'" r="'+hole.diameter/2+'" fill="#f4f5f3"'),'visible drill hole stays at its true position and diameter');
+ assert.deepEqual(await s.fit(f.root,data),fit,'hiding the overlay does not change fit checks');assert.deepEqual(f.bytes(),before);
+});
+
 test('content, catalogue font, spacing, alignment, addition/removal persist and reset approval with session audit',async t=>{
  const f=fixture(t),s=service(),opened=await s.open(f.root,f),data=input(f,opened),o=text(data);
  Object.assign(o,{text:'Neu',font:'Lato',size:6,letterSpacing:.2,textAnchor:'end',x:o.x+2});

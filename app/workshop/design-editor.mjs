@@ -141,7 +141,7 @@ export function createDesignEditor({available={},converter=convertFont}={}){
   async open(root,query){return presentation(await load(root,query));},
   async font(root,query){const ctx=await load(root,query,[query.font]);return {id:query.font,font:ctx.fonts[query.font]};},
   async fit(root,data){return (await prepare(root,data)).fit;},
-  async preview(root,data){const {document}=await prepare(root,data),config=document.config;return {svg:productPreview({universal:config},{keepout:true}),holeHint:previewHoleHint(config),designId:config.profile.defaultDesignId};},
+  async preview(root,data){const {document}=await prepare(root,data),config=document.config;return {svg:productPreview({universal:config},{keepout:false,designArea:true}),holeHint:previewHoleHint(config),designId:config.profile.defaultDesignId};},
   async save(root,data,{actor}={}){const {ctx,template,fit}=await prepare(root,data);const result=await saveTemplateWriteback(root,{reihe:data.reihe,designId:data.id,checksum:data.checksum,template,originalTemplate:ctx.original,fonts:ctx.fonts,actor});forgetKatalog();return {...presentation(await load(root,{reihe:data.reihe,id:data.id})),changed:result.changed,freigabeReset:result.changed,fit};}
  };
 }

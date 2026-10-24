@@ -1,0 +1,2541 @@
+{
+  "codeCommit": "cd969347e88e3c7af8de43d258099e0a63e77dd6",
+  "fileCount": 175,
+  "rawFullRun": {
+    "tests": 1216,
+    "suites": 0,
+    "passed": 1193,
+    "failed": 23,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "incompleteFiles": [
+      "app/workshop/konfis.test.mjs"
+    ]
+  },
+  "counterprobes": [
+    {
+      "file": "app/workshop/editable-design.test.mjs",
+      "forceExit": false,
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/konfis.test.mjs",
+      "forceExit": true,
+      "counts": {
+        "tests": 6,
+        "failed": 3,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "forceExit": false,
+      "counts": {
+        "tests": 16,
+        "failed": 6,
+        "passed": 10,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 16,
+        "suites": 0
+      }
+    }
+  ],
+  "counting": "Einzeldatei-Ergebnisse der drei expliziten Gegenproben ersetzen ausschließlich ihre ursprünglichen Ergebnisse; kein Addieren wiederholter Tests. Das ist eine transparente Aggregation, kein neuer kompletter Lauf.",
+  "latestPerFile": [
+    {
+      "file": "app/configurator/variant-m/account-drafts.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/acrylic-draft-client.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/acrylic-product.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/bundle.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/cart-edit.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/commerce.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/contour-print.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/contour-ui.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 12,
+        "failed": 0,
+        "passed": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 12,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/contract.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 26,
+        "failed": 0,
+        "passed": 26,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 26,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/customer-motifs.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/customer-tools.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 10,
+        "failed": 0,
+        "passed": 10,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 10,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/design-area.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/design-gallery.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 9,
+        "failed": 0,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/edge-clamp.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/editor-additions.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/element-rights.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/field-mapping.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/font-display.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/hole-proximity.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/image-processing.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/lazy-resources.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 12,
+        "failed": 0,
+        "passed": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 12,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/material-surface-preview.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/mobile-standard-plate.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/mobile-steps.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/nested-svg-css.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/option-fields.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/photo-position.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/photo-upload.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/preload-queue.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 12,
+        "failed": 0,
+        "passed": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 12,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/preview-price.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/preview-resource.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/print-export.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 9,
+        "failed": 0,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/profile-selection.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/screw-preview.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/server.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/session-guard.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/shop-cart.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 18,
+        "failed": 0,
+        "passed": 18,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 18,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/usability.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/configurator/variant-m/workflow.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 9,
+        "failed": 0,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/account-draft-http.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 1,
+        "failed": 1,
+        "passed": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acryl-host-routing.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acryl-team.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-artwork.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-draft-http.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-draft-store.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-engraving.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-import-tint.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-order-product.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-order.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-photo-resolution.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-production-profiles.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/acrylic-review.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/ai-batch.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 9,
+        "failed": 0,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/ai-design.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 17,
+        "failed": 0,
+        "passed": 17,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 17,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/ai-image.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/batch-assets.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 13,
+        "failed": 1,
+        "passed": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 13,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/batch-jobs.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/batch-profiles.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/batch-report.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/batch.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/bound-test-cart.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 12,
+        "failed": 0,
+        "passed": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 12,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/cart-configuration.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/cart-edit-revision.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/cart-handoff-journal.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 25,
+        "failed": 0,
+        "passed": 25,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 15,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/cart-http-gate.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 9,
+        "failed": 0,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/cart-personalization.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/catalog-structure.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/configurator-test-gateway.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 16,
+        "failed": 0,
+        "passed": 16,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 16,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/contour-contract.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/contour-path.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/contour-production.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/contour-surfaces.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/contours.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/cross-store-order-intake.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/customer-downloads.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 19,
+        "failed": 0,
+        "passed": 19,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 19,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/customer-draft-store.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/customer-fields.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 9,
+        "failed": 0,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/dashboard-print-flow.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/design-authoring.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/design-converter.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 10,
+        "failed": 0,
+        "passed": 10,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 10,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/design-dashboard.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/design-import.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 9,
+        "failed": 0,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/design-publication-status.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/design-source-path.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/design-source-settings.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/design-zip.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/draft-cart-handoff.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 18,
+        "failed": 0,
+        "passed": 18,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 18,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/editable-design.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/editor-preview.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/export-jobs.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 4,
+        "failed": 4,
+        "passed": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/export-recovery.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/font-library.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-additions.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-batch.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 15,
+        "failed": 0,
+        "passed": 15,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 15,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-customer.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-designs.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-engraving-proof.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-interaction.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-motif-library.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-print-proof.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-product.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-review-snapshot.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/form-variants.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 17,
+        "failed": 0,
+        "passed": 17,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 17,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/guide-layers.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/http.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/katalog-convert.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 12,
+        "failed": 0,
+        "passed": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 12,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/katalog-import.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 11,
+        "failed": 0,
+        "passed": 11,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 11,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/katalog-linien.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/katalog-source.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/konfis.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 6,
+        "failed": 3,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/material-preview.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/material-surface-store.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 3,
+        "failed": 1,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/merchant-media.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 12,
+        "failed": 0,
+        "passed": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 12,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/merchant-repair.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/merchant-request.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/merchant-test-cart.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/option-fields.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/order-intake-routing.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/order-intake.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 11,
+        "failed": 0,
+        "passed": 11,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 11,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/order-product-draft.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/order-refund-intake.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/order-refunds.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/output-checks.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/output-orientation.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/output-specification.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/photo-frame-coverage.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/prepared-design-placement.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/prepared-design.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/print-delivery-vector.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/print-preview.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/process-profiles.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/product-catalog.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/product-families.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 18,
+        "failed": 0,
+        "passed": 18,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 18,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/product-model.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 11,
+        "failed": 0,
+        "passed": 11,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 11,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/product-options.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/product-overview.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/product-revision-compare.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/production-profiles.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/production-release.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 9,
+        "failed": 0,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/production-summary.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 4,
+        "failed": 2,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/profile-impact.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 10,
+        "failed": 1,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 10,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/profile-library.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 10,
+        "failed": 0,
+        "passed": 10,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 10,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/quantity-tiers.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 8,
+        "failed": 1,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/repository.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 19,
+        "failed": 0,
+        "passed": 19,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 19,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-draft-transfer.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 22,
+        "failed": 0,
+        "passed": 22,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 22,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-entry-client.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-entry-flow.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-entry-session.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-entry.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 15,
+        "failed": 0,
+        "passed": 15,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 15,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-preparation.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-product-binding-adapter.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 15,
+        "failed": 0,
+        "passed": 15,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 15,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-product-binding-check.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 30,
+        "failed": 0,
+        "passed": 30,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 30,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-product-binding-http.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 10,
+        "failed": 0,
+        "passed": 10,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 10,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-product-binding-legacy.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 10,
+        "failed": 0,
+        "passed": 10,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 10,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-product-binding-plan.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 29,
+        "failed": 0,
+        "passed": 29,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 29,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 15,
+        "failed": 0,
+        "passed": 15,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 15,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-admin-host.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 18,
+        "failed": 0,
+        "passed": 18,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 18,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-admin-readonly.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 23,
+        "failed": 0,
+        "passed": 23,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 23,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-app-proxy.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-draft-token.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 2,
+        "failed": 0,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-order-webhook.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 4,
+        "failed": 0,
+        "passed": 4,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 16,
+        "failed": 6,
+        "passed": 10,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 16,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-session.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 15,
+        "failed": 0,
+        "passed": 15,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 15,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/shopify-variant-preflight.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 5,
+        "failed": 0,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 5,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/slate-product.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 8,
+        "failed": 0,
+        "passed": 8,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/specimen-product.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/steel-formats.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 3,
+        "failed": 0,
+        "passed": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/steel-import-margin.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/storefront-cart.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/storefront-transport.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 38,
+        "failed": 0,
+        "passed": 38,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 11,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/surfaces.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 7,
+        "failed": 0,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 7,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/tenant.test.mjs",
+      "status": "failed",
+      "counts": {
+        "tests": 9,
+        "failed": 4,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/theme-catalog.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 1,
+        "failed": 0,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      }
+    },
+    {
+      "file": "app/workshop/theme-limits.test.mjs",
+      "status": "passed",
+      "counts": {
+        "tests": 6,
+        "failed": 0,
+        "passed": 6,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 6,
+        "suites": 0
+      }
+    }
+  ],
+  "totals": {
+    "tests": 1222,
+    "passed": 1198,
+    "failed": 24,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0
+  },
+  "scopes": {
+    "app/configurator/variant-m/": {
+      "files": 40,
+      "tests": 236,
+      "passed": 236,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "todo": 0
+    },
+    "app/workshop/": {
+      "files": 135,
+      "tests": 986,
+      "passed": 962,
+      "failed": 24,
+      "skipped": 0,
+      "cancelled": 0,
+      "todo": 0
+    }
+  }
+}

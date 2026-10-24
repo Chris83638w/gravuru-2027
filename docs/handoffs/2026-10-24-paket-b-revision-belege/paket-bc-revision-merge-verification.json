@@ -1,0 +1,634 @@
+{
+  "repository": "Chris83638w/gravuru-2027",
+  "commit": "cd969347e88e3c7af8de43d258099e0a63e77dd6",
+  "treeSha": "bd2a808aeb18aa3dd938968bf63490f56cc4e744",
+  "expectedParents": [
+    "f4439c2163644091bd781b9e7b76f3d2641884fe",
+    "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8"
+  ],
+  "actualParents": [
+    "f4439c2163644091bd781b9e7b76f3d2641884fe",
+    "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8"
+  ],
+  "mainComparison": {
+    "base": "603fa4415121d305cff31755ffab2c6af653919a",
+    "head": "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8",
+    "mergeBase": "603fa4415121d305cff31755ffab2c6af653919a",
+    "commits": [
+      {
+        "sha": "0c1d892e09fe4622e48d54f0781954b7edf38292",
+        "message": "docs: Paket C auf gemergter A-Basis beginnen"
+      },
+      {
+        "sha": "d0a33deadfdfbe96cef1a23f66c7cf4591979ca0",
+        "message": "perf: Katalog-Dry-run produktweise planen und Bericht streamen"
+      },
+      {
+        "sha": "42c6404693d9117ce83e5afe9f478e0211d70793",
+        "message": "Paket C: vollständiger Katalog-Dry-run unter 2 GiB Heap (#13)"
+      },
+      {
+        "sha": "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8",
+        "message": "Belege Paket A: Zeilenenden auf LF normalisiert (.gitattributes eol=lf; Datei kam mit CRLF)"
+      }
+    ],
+    "fileCount": 18
+  },
+  "mainChanges": [
+    {
+      "path": "STATUS.md",
+      "status": "modified",
+      "mainSha": "48378e890aaed87843762270d79a1778bc14ff66",
+      "mergeSha": "ca99067eab4fb28012a04ea8f499f792f9ceb685",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "status": "modified",
+      "mainSha": "39fe154a0bd8c4649f495b6a468736e1f20db951",
+      "mergeSha": "3b3e31c38adc140eeb2851d461a1e7e99bd5fef8",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "status": "modified",
+      "mainSha": "cbc234b908f0dd132c791953a59bee8b9f78aa2c",
+      "mergeSha": "274b0bd401a0353a173a6db41d6076b098343344",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "status": "modified",
+      "mainSha": "ac9554601a94b32b68886ab4d688b940d6f00169",
+      "mergeSha": "c66e451fb5117dff6a38f3141f34d7fa2793eaa4",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "status": "modified",
+      "mainSha": "a561c9b0bfbca6f5996c847e239b715e0b0fab34",
+      "mergeSha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-a-belege/paket-a-serie-apply.md",
+      "status": "modified",
+      "mainSha": "2816b659924fa250d09a3c10ac2e43c1be6eb50d",
+      "mergeSha": "2816b659924fa250d09a3c10ac2e43c1be6eb50d",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-base/app/workshop/katalog-convert.mjs",
+      "status": "added",
+      "mainSha": "7506546db82c9c3f27077db80daadb9186931b6b",
+      "mergeSha": "7506546db82c9c3f27077db80daadb9186931b6b",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-compare.mjs",
+      "status": "added",
+      "mainSha": "50847035c1a544a5ee14f64429b8533b16c9ce3c",
+      "mergeSha": "50847035c1a544a5ee14f64429b8533b16c9ce3c",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-comparison.json",
+      "status": "added",
+      "mainSha": "0b480e1d97530b91451ff9ea4a30bc008b5fc5b8",
+      "mergeSha": "0b480e1d97530b91451ff9ea4a30bc008b5fc5b8",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-import.json.gz",
+      "status": "added",
+      "mainSha": "95e9356420ff7086a589ca43efc51ddfb9b4c72a",
+      "mergeSha": "95e9356420ff7086a589ca43efc51ddfb9b4c72a",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-import.log",
+      "status": "added",
+      "mainSha": "6bd7e55f1d469e80c1dfcd2c98cdf889bfffe445",
+      "mergeSha": "6bd7e55f1d469e80c1dfcd2c98cdf889bfffe445",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-metrics.json",
+      "status": "added",
+      "mainSha": "b89593d333fb31ef06c8be56366f851f3f579a10",
+      "mergeSha": "b89593d333fb31ef06c8be56366f851f3f579a10",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-svg-parity.json",
+      "status": "added",
+      "mainSha": "447402de53c4f8894400eb719b1a7d172d40f8fb",
+      "mergeSha": "447402de53c4f8894400eb719b1a7d172d40f8fb",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-svg-parity.mjs",
+      "status": "added",
+      "mainSha": "d69ec2cb44c2f733206379a6960804d1b4036dc2",
+      "mergeSha": "d69ec2cb44c2f733206379a6960804d1b4036dc2",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-tests.log",
+      "status": "added",
+      "mainSha": "0674c6615afa884c271d6d5cfcfc1279de99be8f",
+      "mergeSha": "0674c6615afa884c271d6d5cfcfc1279de99be8f",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-import-speicher-astra.md",
+      "status": "added",
+      "mainSha": "ef265945013f684941348265426299903c17219a",
+      "mergeSha": "ef265945013f684941348265426299903c17219a",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-start-astra.md",
+      "status": "added",
+      "mainSha": "1cd0183b5666a07f821387af7e1ab869f4534584",
+      "mergeSha": "1cd0183b5666a07f821387af7e1ab869f4534584",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "scripts/katalog-import.mjs",
+      "status": "modified",
+      "mainSha": "d36d0df6941b3103e6f09b68485d69472117503a",
+      "mergeSha": "d36d0df6941b3103e6f09b68485d69472117503a",
+      "identical": true,
+      "expectedCombined": false
+    }
+  ],
+  "parentDelta": [
+    {
+      "path": "STATUS.md",
+      "status": "modified",
+      "sha": "ca99067eab4fb28012a04ea8f499f792f9ceb685"
+    },
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "status": "modified",
+      "sha": "1563780cc8b9924951c6ce2593ca29ceb63935ae"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "status": "modified",
+      "sha": "e531eb3fbf6950a443ae97c327f40f4a621df31b"
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "status": "modified",
+      "sha": "3b3e31c38adc140eeb2851d461a1e7e99bd5fef8"
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "status": "modified",
+      "sha": "274b0bd401a0353a173a6db41d6076b098343344"
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "status": "modified",
+      "sha": "c66e451fb5117dff6a38f3141f34d7fa2793eaa4"
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "status": "modified",
+      "sha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-a-belege/paket-a-serie-apply.md",
+      "status": "modified",
+      "sha": "2816b659924fa250d09a3c10ac2e43c1be6eb50d"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-base/app/workshop/katalog-convert.mjs",
+      "status": "added",
+      "sha": "7506546db82c9c3f27077db80daadb9186931b6b"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-compare.mjs",
+      "status": "added",
+      "sha": "50847035c1a544a5ee14f64429b8533b16c9ce3c"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-comparison.json",
+      "status": "added",
+      "sha": "0b480e1d97530b91451ff9ea4a30bc008b5fc5b8"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-import.json.gz",
+      "status": "added",
+      "sha": "95e9356420ff7086a589ca43efc51ddfb9b4c72a"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-import.log",
+      "status": "added",
+      "sha": "6bd7e55f1d469e80c1dfcd2c98cdf889bfffe445"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-metrics.json",
+      "status": "added",
+      "sha": "b89593d333fb31ef06c8be56366f851f3f579a10"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-svg-parity.json",
+      "status": "added",
+      "sha": "447402de53c4f8894400eb719b1a7d172d40f8fb"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-svg-parity.mjs",
+      "status": "added",
+      "sha": "d69ec2cb44c2f733206379a6960804d1b4036dc2"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-tests.log",
+      "status": "added",
+      "sha": "0674c6615afa884c271d6d5cfcfc1279de99be8f"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-import-speicher-astra.md",
+      "status": "added",
+      "sha": "ef265945013f684941348265426299903c17219a"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-start-astra.md",
+      "status": "added",
+      "sha": "1cd0183b5666a07f821387af7e1ab869f4534584"
+    },
+    {
+      "path": "scripts/katalog-import.mjs",
+      "status": "modified",
+      "sha": "d36d0df6941b3103e6f09b68485d69472117503a"
+    }
+  ],
+  "codeBlobs": [
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "mergeSha": "1563780cc8b9924951c6ce2593ca29ceb63935ae"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "mergeSha": "e531eb3fbf6950a443ae97c327f40f4a621df31b"
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "mergeSha": "3b3e31c38adc140eeb2851d461a1e7e99bd5fef8"
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "mergeSha": "274b0bd401a0353a173a6db41d6076b098343344"
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "mergeSha": "c66e451fb5117dff6a38f3141f34d7fa2793eaa4"
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "mergeSha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0"
+    }
+  ],
+  "fullMergeTreeTruncated": false,
+  "sourceUrls": {
+    "commit": "https://api.github.com/repos/Chris83638w/gravuru-2027/git/commits/cd969347e88e3c7af8de43d258099e0a63e77dd6",
+    "mainComparison": "https://api.github.com/repos/Chris83638w/gravuru-2027/compare/603fa4415121d305cff31755ffab2c6af653919a...ed4b9c6eca8045ac0f650817fb242ace3f13b7e8",
+    "parentComparison": "https://api.github.com/repos/Chris83638w/gravuru-2027/compare/f4439c2163644091bd781b9e7b76f3d2641884fe...cd969347e88e3c7af8de43d258099e0a63e77dd6",
+    "mergeTree": "https://api.github.com/repos/Chris83638w/gravuru-2027/git/trees/cd969347e88e3c7af8de43d258099e0a63e77dd6?recursive=1"
+  },
+  "localCodeBlobs": [
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "mergeSha": "1563780cc8b9924951c6ce2593ca29ceb63935ae",
+      "localSha": "1563780cc8b9924951c6ce2593ca29ceb63935ae",
+      "bytes": 38077,
+      "identical": true
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "mergeSha": "e531eb3fbf6950a443ae97c327f40f4a621df31b",
+      "localSha": "e531eb3fbf6950a443ae97c327f40f4a621df31b",
+      "bytes": 23200,
+      "identical": true
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "mergeSha": "3b3e31c38adc140eeb2851d461a1e7e99bd5fef8",
+      "localSha": "3b3e31c38adc140eeb2851d461a1e7e99bd5fef8",
+      "bytes": 36619,
+      "identical": true
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "mergeSha": "274b0bd401a0353a173a6db41d6076b098343344",
+      "localSha": "274b0bd401a0353a173a6db41d6076b098343344",
+      "bytes": 24956,
+      "identical": true
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "mergeSha": "c66e451fb5117dff6a38f3141f34d7fa2793eaa4",
+      "localSha": "c66e451fb5117dff6a38f3141f34d7fa2793eaa4",
+      "bytes": 19442,
+      "identical": true
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "mergeSha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0",
+      "localSha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0",
+      "bytes": 22140,
+      "identical": true
+    }
+  ],
+  "pinnedMainBlobCrosscheck": [
+    {
+      "path": "STATUS.md",
+      "mainSha": "48378e890aaed87843762270d79a1778bc14ff66",
+      "previousVerifiedMainTreeSha": "48378e890aaed87843762270d79a1778bc14ff66",
+      "identical": true
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "mainSha": "39fe154a0bd8c4649f495b6a468736e1f20db951",
+      "previousVerifiedMainTreeSha": "39fe154a0bd8c4649f495b6a468736e1f20db951",
+      "identical": true
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "mainSha": "cbc234b908f0dd132c791953a59bee8b9f78aa2c",
+      "previousVerifiedMainTreeSha": "cbc234b908f0dd132c791953a59bee8b9f78aa2c",
+      "identical": true
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "mainSha": "ac9554601a94b32b68886ab4d688b940d6f00169",
+      "previousVerifiedMainTreeSha": "ac9554601a94b32b68886ab4d688b940d6f00169",
+      "identical": true
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "mainSha": "a561c9b0bfbca6f5996c847e239b715e0b0fab34",
+      "previousVerifiedMainTreeSha": "a561c9b0bfbca6f5996c847e239b715e0b0fab34",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-a-belege/paket-a-serie-apply.md",
+      "mainSha": "2816b659924fa250d09a3c10ac2e43c1be6eb50d",
+      "previousVerifiedMainTreeSha": "2816b659924fa250d09a3c10ac2e43c1be6eb50d",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-base/app/workshop/katalog-convert.mjs",
+      "mainSha": "7506546db82c9c3f27077db80daadb9186931b6b",
+      "previousVerifiedMainTreeSha": "7506546db82c9c3f27077db80daadb9186931b6b",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-compare.mjs",
+      "mainSha": "50847035c1a544a5ee14f64429b8533b16c9ce3c",
+      "previousVerifiedMainTreeSha": "50847035c1a544a5ee14f64429b8533b16c9ce3c",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-comparison.json",
+      "mainSha": "0b480e1d97530b91451ff9ea4a30bc008b5fc5b8",
+      "previousVerifiedMainTreeSha": "0b480e1d97530b91451ff9ea4a30bc008b5fc5b8",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-import.json.gz",
+      "mainSha": "95e9356420ff7086a589ca43efc51ddfb9b4c72a",
+      "previousVerifiedMainTreeSha": "95e9356420ff7086a589ca43efc51ddfb9b4c72a",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-import.log",
+      "mainSha": "6bd7e55f1d469e80c1dfcd2c98cdf889bfffe445",
+      "previousVerifiedMainTreeSha": "6bd7e55f1d469e80c1dfcd2c98cdf889bfffe445",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-metrics.json",
+      "mainSha": "b89593d333fb31ef06c8be56366f851f3f579a10",
+      "previousVerifiedMainTreeSha": "b89593d333fb31ef06c8be56366f851f3f579a10",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-svg-parity.json",
+      "mainSha": "447402de53c4f8894400eb719b1a7d172d40f8fb",
+      "previousVerifiedMainTreeSha": "447402de53c4f8894400eb719b1a7d172d40f8fb",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-svg-parity.mjs",
+      "mainSha": "d69ec2cb44c2f733206379a6960804d1b4036dc2",
+      "previousVerifiedMainTreeSha": "d69ec2cb44c2f733206379a6960804d1b4036dc2",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-tests.log",
+      "mainSha": "0674c6615afa884c271d6d5cfcfc1279de99be8f",
+      "previousVerifiedMainTreeSha": "0674c6615afa884c271d6d5cfcfc1279de99be8f",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-import-speicher-astra.md",
+      "mainSha": "ef265945013f684941348265426299903c17219a",
+      "previousVerifiedMainTreeSha": "ef265945013f684941348265426299903c17219a",
+      "identical": true
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-start-astra.md",
+      "mainSha": "1cd0183b5666a07f821387af7e1ab869f4534584",
+      "previousVerifiedMainTreeSha": "1cd0183b5666a07f821387af7e1ab869f4534584",
+      "identical": true
+    },
+    {
+      "path": "scripts/katalog-import.mjs",
+      "mainSha": "d36d0df6941b3103e6f09b68485d69472117503a",
+      "previousVerifiedMainTreeSha": "d36d0df6941b3103e6f09b68485d69472117503a",
+      "identical": true
+    }
+  ],
+  "parentsMatch": true,
+  "preservedMainChanges": [
+    {
+      "path": "docs/handoffs/2026-10-24-paket-a-belege/paket-a-serie-apply.md",
+      "status": "modified",
+      "mainSha": "2816b659924fa250d09a3c10ac2e43c1be6eb50d",
+      "mergeSha": "2816b659924fa250d09a3c10ac2e43c1be6eb50d",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-base/app/workshop/katalog-convert.mjs",
+      "status": "added",
+      "mainSha": "7506546db82c9c3f27077db80daadb9186931b6b",
+      "mergeSha": "7506546db82c9c3f27077db80daadb9186931b6b",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-compare.mjs",
+      "status": "added",
+      "mainSha": "50847035c1a544a5ee14f64429b8533b16c9ce3c",
+      "mergeSha": "50847035c1a544a5ee14f64429b8533b16c9ce3c",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-comparison.json",
+      "status": "added",
+      "mainSha": "0b480e1d97530b91451ff9ea4a30bc008b5fc5b8",
+      "mergeSha": "0b480e1d97530b91451ff9ea4a30bc008b5fc5b8",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-import.json.gz",
+      "status": "added",
+      "mainSha": "95e9356420ff7086a589ca43efc51ddfb9b4c72a",
+      "mergeSha": "95e9356420ff7086a589ca43efc51ddfb9b4c72a",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-import.log",
+      "status": "added",
+      "mainSha": "6bd7e55f1d469e80c1dfcd2c98cdf889bfffe445",
+      "mergeSha": "6bd7e55f1d469e80c1dfcd2c98cdf889bfffe445",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-metrics.json",
+      "status": "added",
+      "mainSha": "b89593d333fb31ef06c8be56366f851f3f579a10",
+      "mergeSha": "b89593d333fb31ef06c8be56366f851f3f579a10",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-svg-parity.json",
+      "status": "added",
+      "mainSha": "447402de53c4f8894400eb719b1a7d172d40f8fb",
+      "mergeSha": "447402de53c4f8894400eb719b1a7d172d40f8fb",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-svg-parity.mjs",
+      "status": "added",
+      "mainSha": "d69ec2cb44c2f733206379a6960804d1b4036dc2",
+      "mergeSha": "d69ec2cb44c2f733206379a6960804d1b4036dc2",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-belege/paket-c-tests.log",
+      "status": "added",
+      "mainSha": "0674c6615afa884c271d6d5cfcfc1279de99be8f",
+      "mergeSha": "0674c6615afa884c271d6d5cfcfc1279de99be8f",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-import-speicher-astra.md",
+      "status": "added",
+      "mainSha": "ef265945013f684941348265426299903c17219a",
+      "mergeSha": "ef265945013f684941348265426299903c17219a",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-c-start-astra.md",
+      "status": "added",
+      "mainSha": "1cd0183b5666a07f821387af7e1ab869f4534584",
+      "mergeSha": "1cd0183b5666a07f821387af7e1ab869f4534584",
+      "identical": true,
+      "expectedCombined": false
+    },
+    {
+      "path": "scripts/katalog-import.mjs",
+      "status": "modified",
+      "mainSha": "d36d0df6941b3103e6f09b68485d69472117503a",
+      "mergeSha": "d36d0df6941b3103e6f09b68485d69472117503a",
+      "identical": true,
+      "expectedCombined": false
+    }
+  ],
+  "intentionalCombinations": [
+    {
+      "path": "STATUS.md",
+      "status": "modified",
+      "mainSha": "48378e890aaed87843762270d79a1778bc14ff66",
+      "mergeSha": "ca99067eab4fb28012a04ea8f499f792f9ceb685",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "status": "modified",
+      "mainSha": "39fe154a0bd8c4649f495b6a468736e1f20db951",
+      "mergeSha": "3b3e31c38adc140eeb2851d461a1e7e99bd5fef8",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "status": "modified",
+      "mainSha": "cbc234b908f0dd132c791953a59bee8b9f78aa2c",
+      "mergeSha": "274b0bd401a0353a173a6db41d6076b098343344",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "status": "modified",
+      "mainSha": "ac9554601a94b32b68886ab4d688b940d6f00169",
+      "mergeSha": "c66e451fb5117dff6a38f3141f34d7fa2793eaa4",
+      "identical": false,
+      "expectedCombined": true
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "status": "modified",
+      "mainSha": "a561c9b0bfbca6f5996c847e239b715e0b0fab34",
+      "mergeSha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0",
+      "identical": false,
+      "expectedCombined": true
+    }
+  ],
+  "unexpectedDifferences": [],
+  "unexpectedParentDelta": [],
+  "checkedAt": "2026-10-24T05:35:13.662Z",
+  "status": "passed",
+  "scope": "Read-only Git-parent and blob-SHA verification only. No new review, no tests, no application edits, no GitHub mutation.",
+  "summary": {
+    "mainChanges": 18,
+    "preservedMainChanges": 13,
+    "preservedIdentically": 13,
+    "intentionalCombinations": 5,
+    "localCodeBlobs": 6,
+    "localCodeBlobsIdentical": 6
+  }
+}

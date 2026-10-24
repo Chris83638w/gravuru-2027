@@ -1,0 +1,83 @@
+{
+  "note": "LF-Normalisierung vorhandener Textbelege in dieser Revision. Historische Originalprüfsummen beziehen sich auf den B-Commit f4439c2163644091bd781b9e7b76f3d2641884fe; die aktuellen Bytes sind hier neu belegt.",
+  "files": [
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-catalog-build.log",
+      "priorBlob": "c9a89323d975dcb51d2dadb24b00c9211c311875",
+      "currentBlob": "d41a03080453fdb2d23fc176534323ae8971e89d",
+      "sha256": "e38385c935e506b59bd6195d4d40d792bf29c528a6869467c9ff8d072da2b05e"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-catalog-python.log",
+      "priorBlob": "cf92b8116158c5b176ba22abb28c04360e6bb4d2",
+      "currentBlob": "021f792e9285284da6d92dd673f219a8a88bef05",
+      "sha256": "36932d8166c3c6b19f9d88c84d5e183de44673af9215d09109fee692be314394"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-family-http-test.log",
+      "priorBlob": "40a957c1c61e63b054a5617216a7194dba8e2769",
+      "currentBlob": "eab621b472fafa3bc70d123b718f96ec23273145",
+      "sha256": "9c46ac52ed88a7adbc29592f5acaa3343a339100d5b9ee92edb19dc5482db236"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-final-build.log",
+      "priorBlob": "8442fc66313aa3b82c6a5ef2bfe5b500222a8c3e",
+      "currentBlob": "8e6e046201e91b3aaeef39523b93841e727f80da",
+      "sha256": "f4e4c4629a969948d2472048f6bb6d95cd10155245f5058f64c514c8a04ee0fc"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-import-final-run.json",
+      "priorBlob": "a8a74f57f4779473d3c440be210ae2aef7aa44c5",
+      "currentBlob": "ffb24df51ecd100c0a310d86aa1e2d1f79192484",
+      "sha256": "0e23cb1d5e9dbe2cabf331d943b56c51ecde89da04dc3dc4a8d72b0a344b9558"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-import-final.log",
+      "priorBlob": "20df0325a98d9567c9f72f10632298afaf2cf34b",
+      "currentBlob": "4e3dccfad848840da616697b0ec03c77679a5705",
+      "sha256": "cd8fd963afbadfd179795ca0e73c3f77373da319fdd6d5101a4ffb282afc82fd"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-regression-tests.log",
+      "priorBlob": "ec4443eb044ee14e9db960f84383eca8b44f8a38",
+      "currentBlob": "5d50ca0936e6b9fe22e1ad0a52542590bd2c5de3",
+      "sha256": "af05e94668066e978925170035b16ed218ee5106cb45d745ff77a41e550b8131"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-review-reproduce.json",
+      "priorBlob": "8e2b6d5c5ea86a6c7d8a640ea9b6c5e9f2adbfe2",
+      "currentBlob": "67e83c1c2d3c9ec28d4eaa60b801858f06d60e27",
+      "sha256": "590567930acec37675034ef9ed51f271529318341a37629563436cb660c7b549"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-surfaces-authoring-final.log",
+      "priorBlob": "2d46a6815a9307d0c9f9aceb9a105a373e969fde",
+      "currentBlob": "a224378ded726c225b4f3fe7e39c23bc2abcd989",
+      "sha256": "4368a7a68b7e12337e8c2ad5a15c153c441acfb5bb49fc59dd56e0917c42a5f6"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-surfaces-catalog-front.log",
+      "priorBlob": "68a5913c0c421ac25a698389925058c46b8956d1",
+      "currentBlob": "801a6b8f9adf309f03964bdbd60ff355afc15112",
+      "sha256": "4261156bc5d0bf49b9be4a738d0334fc74f894a1e1b36fee0f4c87f9bbe35084"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-surfaces-existing-tests.log",
+      "priorBlob": "c6fb6512242d0d04ed3b9535f1620687c5cc4c6e",
+      "currentBlob": "cbd2664c5cd66432ce6fa17e0db14e4959282f79",
+      "sha256": "bc6dbefe5b584ceea6c8a802b387677a8e153fd5c0538b2bf42490903ae5b7bc"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-surfaces-regression-tests.log",
+      "priorBlob": "f0b2c5b5c3c05d38cedc07c34241c053d2952032",
+      "currentBlob": "ad04045d74b51151b72e077929dcc2ec11b2db20",
+      "sha256": "c09f4308d53f7e61e5f6b34251839f6788ab8e29e0042adc758b1fd5cc12a6d5"
+    },
+    {
+      "path": "docs/handoffs/2026-10-24-paket-b-belege/paket-b-ui-review-fix-tests.log",
+      "priorBlob": "403ff98d8e761eb335bde296f4401fd961bded5f",
+      "currentBlob": "e069394437224a0825794e23be3fdb46106c8a94",
+      "sha256": "206122d10b9ecacd4a6c012c7ed94376f05c46fa836a9e88766d8f57899c90ae"
+    }
+  ]
+}

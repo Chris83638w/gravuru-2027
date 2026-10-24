@@ -1,0 +1,38 @@
+{
+  "backAt6": {
+    "actualValidator": "Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+    "correctBackGeometry": ""
+  },
+  "backAt84": {
+    "actualValidator": "",
+    "correctBackGeometry": "Element ragt über die Kontur-Gestaltungsfläche hinaus."
+  },
+  "switchSurface": {
+    "before": {
+      "id": "front",
+      "type": "graphic",
+      "shape": "rect",
+      "surfaceId": "front",
+      "x": 84,
+      "y": 30,
+      "w": 2,
+      "h": 4,
+      "rotation": 0
+    },
+    "after": {
+      "id": "front",
+      "type": "graphic",
+      "shape": "rect",
+      "surfaceId": "front",
+      "x": 78.99799999594688,
+      "y": 30,
+      "w": 2,
+      "h": 4,
+      "rotation": 0
+    }
+  },
+  "studio": {
+    "6": "Back design: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+    "84": "accepted"
+  }
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "file": "app/workshop/katalog-convert.mjs",
+    "bytes": 36619,
+    "sha256": "b8ea3a13bdc353b358a6a322f0978f52f5359906776345a5216028abb21abc91",
+    "gitBlobSha": "3b3e31c38adc140eeb2851d461a1e7e99bd5fef8",
+    "lfOnly": true
+  },
+  {
+    "file": "app/workshop/katalog-import.mjs",
+    "bytes": 19442,
+    "sha256": "f6d97a489bc494854492d0549233cd1d8ae764c6119cdd87a767277710074a46",
+    "gitBlobSha": "c66e451fb5117dff6a38f3141f34d7fa2793eaa4",
+    "lfOnly": true
+  },
+  {
+    "file": "app/workshop/katalog-convert.test.mjs",
+    "bytes": 24956,
+    "sha256": "e20dc79dbd440f2bee886f24084182e496dc972d04f89ccd7a026ca50f4c6793",
+    "gitBlobSha": "274b0bd401a0353a173a6db41d6076b098343344",
+    "lfOnly": true
+  },
+  {
+    "file": "app/workshop/katalog-import.test.mjs",
+    "bytes": 22140,
+    "sha256": "faa0697e2e1901c6d7f22cf9e30c3dbe4e790f800599aecc38a6be839ad07d21",
+    "gitBlobSha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0",
+    "lfOnly": true
+  },
+  {
+    "file": "scripts/katalog-import.mjs",
+    "bytes": 5186,
+    "sha256": "ac22c4701f39ff9205fd8f5ab2b25a3ee6d896c0fb6b42f86479a78fa9652ded",
+    "gitBlobSha": "d36d0df6941b3103e6f09b68485d69472117503a",
+    "lfOnly": true
+  }
+]

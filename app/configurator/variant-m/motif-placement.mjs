@@ -1,3 +1,4 @@
+import {contourContainsPoint} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {printArtwork,physicalGeometry} from './print-export.mjs';
 import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {insideContour} from './print-export-model.mjs';
@@ -43,7 +44,7 @@ export async function placeNewMotif({el,config,files,say},object,{minScale=1}={}
  const sx=g.width/config.profile.geometry.width,sy=g.height/config.profile.geometry.height;
  const insertion=config.acrylic?acrylicSelection(acrylicOptions(state.mOptions),config.acrylic.pricing).base.insertionMm:0;
  const margin=Number.isFinite(g.safeMarginMm)?Math.max(0,g.safeMarginMm):2; // Gestaltungsrand wie objectIssue/designArea (Standard 2 mm)
- const allowed=(x,y)=>y/scale<g.height-insertion&&insideContour(g,x/scale,y/scale,-margin);
+ const allowed=(x,y)=>y/scale<g.height-insertion&&(g.shape==='contour'?contourContainsPoint(g,x/scale,y/scale):insideContour(g,x/scale,y/scale,-margin));
  const alpha=ctx.getImageData(0,0,canvas.width,canvas.height).data;
  for(const s of placementScales(minScale)){
   const position=emptyPixelPosition(alpha,canvas.width,canvas.height,object.w*s*sx*scale,object.h*s*sy*scale,allowed);

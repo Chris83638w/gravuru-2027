@@ -1,0 +1,726 @@
+{
+  "mode": "run",
+  "repo": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027",
+  "node": "v24.20.0",
+  "nodeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+  "python": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pyenv\\Scripts\\python.exe",
+  "temp": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp",
+  "timeoutMs": 600000,
+  "files": [
+    {
+      "file": "app/configurator/variant-m/account-drafts.test.mjs",
+      "sha256": "b2b0756e8bfe568396f8a56d9d0c484c2900132048a8e1521c2a5ae2d652b1ae"
+    },
+    {
+      "file": "app/configurator/variant-m/acrylic-draft-client.test.mjs",
+      "sha256": "a79ec719dbc31436048928f47887d6d3d453ca2e4ffddec9f38f7d3f4745ae53"
+    },
+    {
+      "file": "app/configurator/variant-m/acrylic-product.test.mjs",
+      "sha256": "b70b0efe1a1377dc1fead7ecebf4286c3ad00b7f922d3ba0ded44b06fe7eb90a"
+    },
+    {
+      "file": "app/configurator/variant-m/bundle.test.mjs",
+      "sha256": "3d767a7984481dd8f5428670652ea8c72c285a9bf30a5dcd90b5b0fc1888474b"
+    },
+    {
+      "file": "app/configurator/variant-m/cart-edit.test.mjs",
+      "sha256": "514a90d0f608277ab4a0f8638c79ea0680d96a6bfcd53bac0fdb47eccc92fb38"
+    },
+    {
+      "file": "app/configurator/variant-m/commerce.test.mjs",
+      "sha256": "0e8de93936c20b2dfdc01dad2fe8eda8613bc55c2886786743a4cd2be21014ff"
+    },
+    {
+      "file": "app/configurator/variant-m/contour-print.test.mjs",
+      "sha256": "b63c128a2758ebc7a5ea895e2f44952d2654fffa2638ac82e0cc96c65704bcc0"
+    },
+    {
+      "file": "app/configurator/variant-m/contour-ui.test.mjs",
+      "sha256": "00752af78465afb40b22d4b9a638d1464784d36553eec9b99f44626d7665f232"
+    },
+    {
+      "file": "app/configurator/variant-m/contract.test.mjs",
+      "sha256": "cc1efc8652f8023af8539e0371e5815e1dbc54d071e7ab5b80e55d0e7e3c359b"
+    },
+    {
+      "file": "app/configurator/variant-m/customer-motifs.test.mjs",
+      "sha256": "44f599c5b08065f07722239d3409f2ecc1d61511f1599937b42f095021ca43f6"
+    },
+    {
+      "file": "app/configurator/variant-m/customer-tools.test.mjs",
+      "sha256": "c3d147955d40da1656a334c27babe67267b0564bbe03d71c89a41559b48c3121"
+    },
+    {
+      "file": "app/configurator/variant-m/design-area.test.mjs",
+      "sha256": "582733c48f75fa340d64270d11915b32c9592e9b240c700d7e021e5dda9c0fee"
+    },
+    {
+      "file": "app/configurator/variant-m/design-gallery.test.mjs",
+      "sha256": "1c170f67e4b58159148c199d5437b6e8a0a1e7721054ed7ed7f85841f79fd199"
+    },
+    {
+      "file": "app/configurator/variant-m/edge-clamp.test.mjs",
+      "sha256": "cb753f7e67dd5291941bf090279fb6ccfa0a360a33a87140a43d14240b340da2"
+    },
+    {
+      "file": "app/configurator/variant-m/editor-additions.test.mjs",
+      "sha256": "68d36ed9154bcd01ebc619f0a9d7539d5504d3ad66c7c9e94f8ef908becf0f76"
+    },
+    {
+      "file": "app/configurator/variant-m/element-rights.test.mjs",
+      "sha256": "82c211ad9ebd95e95a67b094b6672f05a5618a5281fcf499c3be61cce32b04e2"
+    },
+    {
+      "file": "app/configurator/variant-m/field-mapping.test.mjs",
+      "sha256": "b1e385c9b4a48272a369f79a58241d5262390fe9e598e98277e6dee879485562"
+    },
+    {
+      "file": "app/configurator/variant-m/font-display.test.mjs",
+      "sha256": "dce86399826aae081ea71ba5c7bb0aa53ced658ac1aa71316c78863ea0b6c020"
+    },
+    {
+      "file": "app/configurator/variant-m/hole-proximity.test.mjs",
+      "sha256": "06d2496770f7cecb92754ae3bec974ea221359d8a82eaddc0726cb90bbb9c45d"
+    },
+    {
+      "file": "app/configurator/variant-m/image-processing.test.mjs",
+      "sha256": "566140941ebed6c221e0adca29e7ff3d61467d1851d066428bf815367b12aa58"
+    },
+    {
+      "file": "app/configurator/variant-m/lazy-resources.test.mjs",
+      "sha256": "dc46eb3dc4d988daf3784641e0ed7b0d0a9760c7373697123d491086c071ff59"
+    },
+    {
+      "file": "app/configurator/variant-m/material-surface-preview.test.mjs",
+      "sha256": "2060c5e6ce6f4c99987a2f3fb61c619acc6a0f80935ab11e9e2db966b53b108d"
+    },
+    {
+      "file": "app/configurator/variant-m/mobile-standard-plate.test.mjs",
+      "sha256": "c3484365217070a6eb31bda015baa5fd12f2dac0b5c711ecdccafa688f6abf55"
+    },
+    {
+      "file": "app/configurator/variant-m/mobile-steps.test.mjs",
+      "sha256": "7192995c0903ab084bf67337d1feb814115c1b1b378a57861d47d8fa76a3e582"
+    },
+    {
+      "file": "app/configurator/variant-m/nested-svg-css.test.mjs",
+      "sha256": "30b1d69aa78b791dfad46024dd8e6a867840afcb1a89b76dd2b94d9c533c870b"
+    },
+    {
+      "file": "app/configurator/variant-m/option-fields.test.mjs",
+      "sha256": "88659df6625e1f2ca7733643939846b0bad58f8a6ddf6e57784f5ea38fed8bce"
+    },
+    {
+      "file": "app/configurator/variant-m/photo-position.test.mjs",
+      "sha256": "f16557c3e9c2d0b18186b69d2d696e2628fcc2828e1688b2a420476283cafdb2"
+    },
+    {
+      "file": "app/configurator/variant-m/photo-upload.test.mjs",
+      "sha256": "2d0a381ed59a813f66de4199c7c794a788721b78270a0ebbe6abbb4bca7c1e41"
+    },
+    {
+      "file": "app/configurator/variant-m/preload-queue.test.mjs",
+      "sha256": "58b4a7ae2461b25b1bca830ad719afd1ea924d99892859d23195b55ca753039d"
+    },
+    {
+      "file": "app/configurator/variant-m/preview-price.test.mjs",
+      "sha256": "4cf4a6e69b2741a776ae371bdbd59dfd615ef46277db6744de1a1d637a186763"
+    },
+    {
+      "file": "app/configurator/variant-m/preview-resource.test.mjs",
+      "sha256": "3e527bdbd125bb06ebf0c89512e268904bcfb6ff158e7d1d93b951d70e3e17f8"
+    },
+    {
+      "file": "app/configurator/variant-m/print-export.test.mjs",
+      "sha256": "60266d60170443c1d51e388243ef951a7b87c871a568b076cb8f27800bb0dd54"
+    },
+    {
+      "file": "app/configurator/variant-m/profile-selection.test.mjs",
+      "sha256": "77219fe71871f63a743682b49f5a73ef485d0c70fdd1633c80dee5f6fcc38fc7"
+    },
+    {
+      "file": "app/configurator/variant-m/screw-preview.test.mjs",
+      "sha256": "1a582bca27c265dbdb74fc8ac8ea094238d9e15eafcb3f8780ab40ace2d2944b"
+    },
+    {
+      "file": "app/configurator/variant-m/server.test.mjs",
+      "sha256": "d01da85d8aa4cb8a4759619353ad2bb4a606f964d6fd36e1b66acba8bfda8d68"
+    },
+    {
+      "file": "app/configurator/variant-m/session-guard.test.mjs",
+      "sha256": "2fc2603417329bbb37ec3fe0447ef80301379ab1e90a853f7af0730868003229"
+    },
+    {
+      "file": "app/configurator/variant-m/shop-cart.test.mjs",
+      "sha256": "a8e820b3c880a75f4e68f3a6a90b6ef6a135245f51694457f2334462f2a1744c"
+    },
+    {
+      "file": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "sha256": "403fe135e13f3a6af791914390b1a445d716d7cebba3cd38e3b8e64a378cdd10"
+    },
+    {
+      "file": "app/configurator/variant-m/usability.test.mjs",
+      "sha256": "467fe9e5be489074595cb5ad97edd2ec554d0a8ebe512e5b70ec89f910267f6b"
+    },
+    {
+      "file": "app/configurator/variant-m/workflow.test.mjs",
+      "sha256": "e395903f523463bd911ffc54cfbf58f5dda429f4af01acdce5bb09175d443e10"
+    },
+    {
+      "file": "app/workshop/account-draft-http.test.mjs",
+      "sha256": "daac96414c01766bfaa3d4dca820f3395cb18cec20045eed8643ee4b60090fa1"
+    },
+    {
+      "file": "app/workshop/acryl-host-routing.test.mjs",
+      "sha256": "6d94bfb71fe11057712b9b11c650e6676cdb7314e86ce1c972c60d7e2ad8d540"
+    },
+    {
+      "file": "app/workshop/acryl-team.test.mjs",
+      "sha256": "1800de6eef011f5399c85890e6ae99bec646e80363d1ade290bb94e574cfa157"
+    },
+    {
+      "file": "app/workshop/acrylic-artwork.test.mjs",
+      "sha256": "e5df85a9bdd7068ecfdf28e82d0482558f1cc9e15c3aa31ad0646e3c5c20c7b6"
+    },
+    {
+      "file": "app/workshop/acrylic-draft-http.test.mjs",
+      "sha256": "b8fff2e8796e573f29043daffa54375b36fdd2de20f105fd8b597fa0b2b77ce5"
+    },
+    {
+      "file": "app/workshop/acrylic-draft-store.test.mjs",
+      "sha256": "eb54c8c60c14f7479f0d9d1d6f5e68ccd0ab83960a899c7b2519012ff4169619"
+    },
+    {
+      "file": "app/workshop/acrylic-engraving.test.mjs",
+      "sha256": "0d6c6a2c238b4e3ad9227f2081df6ed76f63edbe9102203b6a0a9334bb6248f8"
+    },
+    {
+      "file": "app/workshop/acrylic-import-tint.test.mjs",
+      "sha256": "4b524b8647b1866547a6d5acb8eccf4fcff9ddf05bc78d738e6dba8fd46714c2"
+    },
+    {
+      "file": "app/workshop/acrylic-order-product.test.mjs",
+      "sha256": "cab44d87e9f18c5ec8194c148d9685006df6bb39c2dcd59efd5733e4110131ec"
+    },
+    {
+      "file": "app/workshop/acrylic-order.test.mjs",
+      "sha256": "d37b03ced3ce4e18e0419aec01501d00d317a7d1716b36ee426eb9a8083828a7"
+    },
+    {
+      "file": "app/workshop/acrylic-photo-resolution.test.mjs",
+      "sha256": "b5b50e20ad6d031ee6eea40e6b1a7ac7ebb262c9e1320fba64402608c2bce8d6"
+    },
+    {
+      "file": "app/workshop/acrylic-production-profiles.test.mjs",
+      "sha256": "14eee2496a4037a337c438fe55e31460207db6faa9c329be7e618324eefdeb7b"
+    },
+    {
+      "file": "app/workshop/acrylic-review.test.mjs",
+      "sha256": "820dd59ad0fc33b5dae0da8be9f164f7f05684acb7b3983df4bb605a0a28b681"
+    },
+    {
+      "file": "app/workshop/ai-batch.test.mjs",
+      "sha256": "c5278812a481453f895c4b95dedf35456ed6b5953dda534886a80dacb23d7cb2"
+    },
+    {
+      "file": "app/workshop/ai-design.test.mjs",
+      "sha256": "8a9d1e8e5f98e69faea1a4bfca0e84f40165339bea45fbd064a36211bd4665b7"
+    },
+    {
+      "file": "app/workshop/ai-image.test.mjs",
+      "sha256": "963f9fcecf879d121dc2672f0efb0e4dd89530d37e6af39c86ad755c4fa620a8"
+    },
+    {
+      "file": "app/workshop/batch-assets.test.mjs",
+      "sha256": "dbadc2cbc4f415c6e8f9c5251dd0e87a6af42f446e37d107f30aed54f7318ca3"
+    },
+    {
+      "file": "app/workshop/batch-jobs.test.mjs",
+      "sha256": "741f6e3c142c08089780ab4e19eba729804977c12673f4007137ab49a48e9906"
+    },
+    {
+      "file": "app/workshop/batch-profiles.test.mjs",
+      "sha256": "f4bf48f032ee6d6f782d5ea8464700c049b8dd47416fe85405e230f44d8f8a68"
+    },
+    {
+      "file": "app/workshop/batch-report.test.mjs",
+      "sha256": "8232fffa1000984dbaf9f291471b11775e47f369ec43aab4953695973f814676"
+    },
+    {
+      "file": "app/workshop/batch.test.mjs",
+      "sha256": "5164198485ad64929bb574aa749b922e8def4f3088dd4d0994bf2e9254829d2a"
+    },
+    {
+      "file": "app/workshop/bound-test-cart.test.mjs",
+      "sha256": "b2036b9a235288c7bafde68e00da851208f09b94a980b65969f806b99d71334b"
+    },
+    {
+      "file": "app/workshop/cart-configuration.test.mjs",
+      "sha256": "415c202decd2044a0633f28279d67c35267fae0a902d2b27af1bde57f8e5288f"
+    },
+    {
+      "file": "app/workshop/cart-edit-revision.test.mjs",
+      "sha256": "cfbfb52b3faac295c678e14a4a9e09d44695cadc137ca19c76b31feef805f37e"
+    },
+    {
+      "file": "app/workshop/cart-handoff-journal.test.mjs",
+      "sha256": "b15ffeac7cb7fd8aa5ff26d874b67395c9158ca241ea6158a06f7942ef72a90c"
+    },
+    {
+      "file": "app/workshop/cart-http-gate.test.mjs",
+      "sha256": "d5043115f01da7a91afa8ccd686a1022780d4469b6eb970519f46e9a58e897fc"
+    },
+    {
+      "file": "app/workshop/cart-personalization.test.mjs",
+      "sha256": "3a45fd0358ec57a63474785edae91c31fe0430569b9f25f0fb50bec717196f96"
+    },
+    {
+      "file": "app/workshop/catalog-structure.test.mjs",
+      "sha256": "d979958857724e8187518e29c188f05252f14d476ecd74e8c6d69e01e2133451"
+    },
+    {
+      "file": "app/workshop/configurator-test-gateway.test.mjs",
+      "sha256": "fb89fac9417fb27bded0eb700be34daaa7eb08795be2176e8514f6ad71c7a1ca"
+    },
+    {
+      "file": "app/workshop/contour-contract.test.mjs",
+      "sha256": "6f250cdb082426cd7084b1d696c753c9f3f8834f96c2d683b12227a6d588d2f3"
+    },
+    {
+      "file": "app/workshop/contour-path.test.mjs",
+      "sha256": "2f79b4ad96d8aeb4eebd9f6bba473b258dcf519f7d999edb731eda8cf5b44780"
+    },
+    {
+      "file": "app/workshop/contour-production.test.mjs",
+      "sha256": "a00fd36c0512d3e9412e4d3904c8d3f79f0f04621f4208969732790b4edad1fa"
+    },
+    {
+      "file": "app/workshop/contour-surfaces.test.mjs",
+      "sha256": "f8086728cf13a7c6b40160a61eebfa3a37825c44e9d9adb3b0f76b63ee5ead23"
+    },
+    {
+      "file": "app/workshop/contours.test.mjs",
+      "sha256": "d06d1d1270890604a3157c5a9e03867b1cd372b81c9d1006cc92414a5c2c910e"
+    },
+    {
+      "file": "app/workshop/cross-store-order-intake.test.mjs",
+      "sha256": "16b484775f7ed4c60e1190912d4e31950cefec6862cd015d4da091bcbad973d9"
+    },
+    {
+      "file": "app/workshop/customer-downloads.test.mjs",
+      "sha256": "204205c9d509519f6382cf9fd3cfd87c735902af195c773401da30ae138c6436"
+    },
+    {
+      "file": "app/workshop/customer-draft-store.test.mjs",
+      "sha256": "5b9da66dc0d2ecdd45d7f6401bb0c2ad32a1f5b3e0a4ad8443ad04be74d9b6a1"
+    },
+    {
+      "file": "app/workshop/customer-fields.test.mjs",
+      "sha256": "75cc5c4bf40dbe70bada2ce9ac52dccf1a2d3e0eb3477e12a6bad2aadbffb857"
+    },
+    {
+      "file": "app/workshop/dashboard-print-flow.test.mjs",
+      "sha256": "5f3ae48909b1f3d0d521fa479e11d80f0add85048362c535973385a85c32b7a5"
+    },
+    {
+      "file": "app/workshop/design-authoring.test.mjs",
+      "sha256": "284049b815e9de37e46e7d6222e111ec1f0152e963e98d4e390372488852bd6b"
+    },
+    {
+      "file": "app/workshop/design-converter.test.mjs",
+      "sha256": "c553f96f05aa30df35fd163317ce0dee0880e83e587e578e1990bc1d5419b8c7"
+    },
+    {
+      "file": "app/workshop/design-dashboard.test.mjs",
+      "sha256": "493aea5a6779f08575ba0d7fbacd99c28f13309764935ca48189cd25e206e94a"
+    },
+    {
+      "file": "app/workshop/design-import.test.mjs",
+      "sha256": "dbe3ab557ebef515cc27e87ffb236cb8ebe2bb709e1ff8c1deec62a66a4e7ffd"
+    },
+    {
+      "file": "app/workshop/design-publication-status.test.mjs",
+      "sha256": "874593ab41c1e915e1abf8764a2e9d03bd1424cf4399abb7eb353000e3819654"
+    },
+    {
+      "file": "app/workshop/design-source-path.test.mjs",
+      "sha256": "46d04654ac7b990a5c1daf446f4b3fdb9cce1ec9958232e88a2d4d91b41337ba"
+    },
+    {
+      "file": "app/workshop/design-source-settings.test.mjs",
+      "sha256": "1359c6e0f8f8bb2fe438a8461544f6e3cd2fc7db242dd31ab4890168befe657a"
+    },
+    {
+      "file": "app/workshop/design-zip.test.mjs",
+      "sha256": "ece6c671c0beddb8b6a71e5e65d1982d2a8c572bf9e233b5da52fda4ef64bb71"
+    },
+    {
+      "file": "app/workshop/draft-cart-handoff.test.mjs",
+      "sha256": "384dc0095499122f64067dd23d1d8f3bec2f7d8400e7cc1b6a693984c5d67e7c"
+    },
+    {
+      "file": "app/workshop/editable-design.test.mjs",
+      "sha256": "5ca9264dac8096af1c4ac6ab4edd9124a93be72bd350cae9c57ab323622890b6"
+    },
+    {
+      "file": "app/workshop/editor-preview.test.mjs",
+      "sha256": "49966a78e5307531853274a1fc849eaa5e1283ca0ed3e0c3b0b0545083f03334"
+    },
+    {
+      "file": "app/workshop/export-jobs.test.mjs",
+      "sha256": "30f997b4fa92095d379f914d76d3a351aebbc1b0e1a5c0e5a6c501f29197e812"
+    },
+    {
+      "file": "app/workshop/export-recovery.test.mjs",
+      "sha256": "90b1399f851e962a10108d1e383c047d4e8c2945272ad54697052d896236d20e"
+    },
+    {
+      "file": "app/workshop/font-library.test.mjs",
+      "sha256": "9b5886adffbce56147429d9bab525cfb00696a5dd163372c9ba52befc806ca72"
+    },
+    {
+      "file": "app/workshop/form-additions.test.mjs",
+      "sha256": "4788e91af2ee005af792063555aef231d6b076c247cb41ddd1d8304a06e38609"
+    },
+    {
+      "file": "app/workshop/form-batch.test.mjs",
+      "sha256": "c184ba26fbd5e881f7f9213bfa4c9f0db1365047e81982ba77a1663a029c8f2a"
+    },
+    {
+      "file": "app/workshop/form-customer.test.mjs",
+      "sha256": "50d2c662bf0efd9e5a8b364a70d159ca68e24362f4e75ac970e32a14bf4f11a9"
+    },
+    {
+      "file": "app/workshop/form-designs.test.mjs",
+      "sha256": "1922e0d55f87ff79e30ea6107ea8064e20d524bf771c15bed44d560e988bc2e8"
+    },
+    {
+      "file": "app/workshop/form-engraving-proof.test.mjs",
+      "sha256": "67d39ff770cf40fa1cd8e1d1fa483a56a5cb17399fd0684a8b073cbe177beeb8"
+    },
+    {
+      "file": "app/workshop/form-interaction.test.mjs",
+      "sha256": "44b6e5d2abc1069b8cec7f27e9e2feb8de6caf953062d7ae2d20f431356bda25"
+    },
+    {
+      "file": "app/workshop/form-motif-library.test.mjs",
+      "sha256": "33a9d58b6b9f72312cf41cd5bd73722e1f02428f28c0d24737de3fbc74f7a807"
+    },
+    {
+      "file": "app/workshop/form-print-proof.test.mjs",
+      "sha256": "47428162fbe4c47ef687c8b236216175a08e81cba14c3d401b777df0ff711ed9"
+    },
+    {
+      "file": "app/workshop/form-product.test.mjs",
+      "sha256": "ed8ee360b52831c463418eb100694f4715b0df2bfea502ec19016e032c7a4818"
+    },
+    {
+      "file": "app/workshop/form-review-snapshot.test.mjs",
+      "sha256": "8f008cfa8437e856342fac235f107ef4fb65c0b91312f8e2139508bb764b65e3"
+    },
+    {
+      "file": "app/workshop/form-variants.test.mjs",
+      "sha256": "98087aec32061274b9deb3a585b7e35fce3f6746ce36f872b9b6c07711c605de"
+    },
+    {
+      "file": "app/workshop/guide-layers.test.mjs",
+      "sha256": "ceb425ee9ce0226262fbae39725f56810aaf34ae5719df4737778e72629544d4"
+    },
+    {
+      "file": "app/workshop/http.test.mjs",
+      "sha256": "9155a6303cfe55f2893e47781f588eac44ef01373608474873ae286fc932479c"
+    },
+    {
+      "file": "app/workshop/katalog-convert.test.mjs",
+      "sha256": "e20dc79dbd440f2bee886f24084182e496dc972d04f89ccd7a026ca50f4c6793"
+    },
+    {
+      "file": "app/workshop/katalog-import.test.mjs",
+      "sha256": "faa0697e2e1901c6d7f22cf9e30c3dbe4e790f800599aecc38a6be839ad07d21"
+    },
+    {
+      "file": "app/workshop/katalog-linien.test.mjs",
+      "sha256": "37004624a95ee4f2adcb184081bb2cac86c6281fe3bd008940f9d47e9db34751"
+    },
+    {
+      "file": "app/workshop/katalog-source.test.mjs",
+      "sha256": "9b7f808bad082f959dd1040de204b6145ced51a130c7492b8331f2d0b43f43ce"
+    },
+    {
+      "file": "app/workshop/konfis.test.mjs",
+      "sha256": "724c89e59c70bac0288cf5ce470eb4e061f7ef9a32984ae4f6e48e73bc91e39a"
+    },
+    {
+      "file": "app/workshop/material-preview.test.mjs",
+      "sha256": "5fbd3bc2447c8d72d9164afe9af0f9ecb4569dc6463b3aa38baa6e33612bbab8"
+    },
+    {
+      "file": "app/workshop/material-surface-store.test.mjs",
+      "sha256": "82f4c985f53a25d732ace01b759622447d77c63de56005af56fd7631f0c1fbd9"
+    },
+    {
+      "file": "app/workshop/merchant-media.test.mjs",
+      "sha256": "8d9e346798f1baa63241cef82f21e12ac465be2c867d067aa98f5655d8a2d1bc"
+    },
+    {
+      "file": "app/workshop/merchant-repair.test.mjs",
+      "sha256": "5f0f8f497f770f0b218e3d456f668202cb6fd964471bf2eb45a95a5c78979bd3"
+    },
+    {
+      "file": "app/workshop/merchant-request.test.mjs",
+      "sha256": "d22a490b2360414c5b070c2a0ab40bb8b21be514e2e9eba7c48283f10254ec48"
+    },
+    {
+      "file": "app/workshop/merchant-test-cart.test.mjs",
+      "sha256": "c75ae29e1ddbadbfd8d73a1e60f7021cc23f5d371d3675498e4250e6fd4bfc4a"
+    },
+    {
+      "file": "app/workshop/option-fields.test.mjs",
+      "sha256": "3dc21b1cabe8e41234f8dcbf67c3eaf737d66d549e92e1368ae5f1d79aa67d9c"
+    },
+    {
+      "file": "app/workshop/order-intake-routing.test.mjs",
+      "sha256": "1b00b2cc83af62f42a1bf4b7a63512743ef7671ff23d3e8aea672635b92bbcfd"
+    },
+    {
+      "file": "app/workshop/order-intake.test.mjs",
+      "sha256": "a3005ea53bf08548827be09a1d4ba5d9e38052e3dfc0d8c51d1ba10e487a542f"
+    },
+    {
+      "file": "app/workshop/order-product-draft.test.mjs",
+      "sha256": "77f3464cb2e7e3b282d6adf9827a489e460989101599dea56beacf6c83eabfac"
+    },
+    {
+      "file": "app/workshop/order-refund-intake.test.mjs",
+      "sha256": "5221f555bd255719a3f948928d022a8d6097bddf72ff4ebd34896dcbe536f6ef"
+    },
+    {
+      "file": "app/workshop/order-refunds.test.mjs",
+      "sha256": "5ee56b70cb0f5b47999229324f7684e095c6b39c6ca27808f5b127ad63f6070a"
+    },
+    {
+      "file": "app/workshop/output-checks.test.mjs",
+      "sha256": "b5a8dc246515bee23a013ce6e276f90fea120fa05e430584dca256a475540da1"
+    },
+    {
+      "file": "app/workshop/output-orientation.test.mjs",
+      "sha256": "33ebdc3a3043c85154111dbf35cf6a1be2565419ef590683a69946d5593e618e"
+    },
+    {
+      "file": "app/workshop/output-specification.test.mjs",
+      "sha256": "b32901c3d1c086e5504fcf36d096997b15af49b342d64fb471d67caf28cb44c5"
+    },
+    {
+      "file": "app/workshop/photo-frame-coverage.test.mjs",
+      "sha256": "51bc33e614a524a581e0bb529e9c9d2263d0a5c54333c565d45d7d385466f19f"
+    },
+    {
+      "file": "app/workshop/prepared-design-placement.test.mjs",
+      "sha256": "edf3cf8c2b14d24ce75fcc49db9c82a4599f812f7084897ecd97fa5262b90833"
+    },
+    {
+      "file": "app/workshop/prepared-design.test.mjs",
+      "sha256": "940574a38b57ae4b329fcfdb3e736e0b004951734f5c215859daba9e59e5e75c"
+    },
+    {
+      "file": "app/workshop/print-delivery-vector.test.mjs",
+      "sha256": "d7d4cbb25f1c859789bcf19113ca1535b18794c09b0910ec81612df1ebab5226"
+    },
+    {
+      "file": "app/workshop/print-preview.test.mjs",
+      "sha256": "c372ecb0cbb589c1bee13945ed97f0c488e23871dad6da953aed8d00bf26649f"
+    },
+    {
+      "file": "app/workshop/process-profiles.test.mjs",
+      "sha256": "3776f13de2b0cc12b8d0c7ed1def0580c064f9be1be7a48c24ec6b1bede31cb4"
+    },
+    {
+      "file": "app/workshop/product-catalog.test.mjs",
+      "sha256": "407ae2aa80a64e0c6591b09eb509f01d1c67d85d07dbc8458910df9c11112f32"
+    },
+    {
+      "file": "app/workshop/product-families.test.mjs",
+      "sha256": "87c2f3f71b86b70c2007bc888a2046cef51c0b7b0046216be5b70d5d1c3a952e"
+    },
+    {
+      "file": "app/workshop/product-model.test.mjs",
+      "sha256": "bf441977a72c856fbb325ec251b6220829802b5d9fae1eef0acbce0f4f52ab0f"
+    },
+    {
+      "file": "app/workshop/product-options.test.mjs",
+      "sha256": "39e65a45ce6e378893f97df46b3827142d442f26c111a42cacd75d3286d57873"
+    },
+    {
+      "file": "app/workshop/product-overview.test.mjs",
+      "sha256": "1108a16feaaea0848b0dea5958190c88339abb4313c95b456abdbcfc40bbaa62"
+    },
+    {
+      "file": "app/workshop/product-revision-compare.test.mjs",
+      "sha256": "b036b1d2c4224a4416b0adae42096d5e75ea7b5be453898f7844cc315f3e7180"
+    },
+    {
+      "file": "app/workshop/production-profiles.test.mjs",
+      "sha256": "f20276299511e066962528c081cfcc5bfdfa12a6d36a9adaa789465bae5fa654"
+    },
+    {
+      "file": "app/workshop/production-release.test.mjs",
+      "sha256": "98f6257ce16cb59a2af5fc85a5882dfe4a86ac310ee2afea95ed46c3d30da442"
+    },
+    {
+      "file": "app/workshop/production-summary.test.mjs",
+      "sha256": "6e3ef781c8c3ae56b3cf5e2329501964005e32b2c59dba177468f68b7e6867c4"
+    },
+    {
+      "file": "app/workshop/profile-impact.test.mjs",
+      "sha256": "68a2e45820f4a80baaa04f085e70f2972a312ee84e5427d808351846be05df6c"
+    },
+    {
+      "file": "app/workshop/profile-library.test.mjs",
+      "sha256": "16ca8427da72c16c121cac9747fc000386fd4b34f0b229809b77af5dfe8411f5"
+    },
+    {
+      "file": "app/workshop/quantity-tiers.test.mjs",
+      "sha256": "d618532ca08d913bec22ac099289542be45d254853463a06f3ace0469851cce4"
+    },
+    {
+      "file": "app/workshop/repository.test.mjs",
+      "sha256": "e53bcc6d47af51feed4b1e7d4680f4868e851bef641461407c151063c6e6df09"
+    },
+    {
+      "file": "app/workshop/shop-draft-transfer.test.mjs",
+      "sha256": "23283b93ebc1e765e61b158fe6b08034755b154dac55d91bbff59c0f82a71159"
+    },
+    {
+      "file": "app/workshop/shop-entry-client.test.mjs",
+      "sha256": "6243522f568881563d59891b82d71818a089447ee54db34750b91fea5a716e22"
+    },
+    {
+      "file": "app/workshop/shop-entry-flow.test.mjs",
+      "sha256": "96262c9d64d2734e155342d86953d32a2bb7cac9b4ebd94576f21feb6437c858"
+    },
+    {
+      "file": "app/workshop/shop-entry-session.test.mjs",
+      "sha256": "833d1f913389fadacf8b917dfc2065ee4fc90035a0512d9f8b361e6d87149b00"
+    },
+    {
+      "file": "app/workshop/shop-entry.test.mjs",
+      "sha256": "649c998f55fb7de4a8375cd192d1222d5211d159ae132c6ebf01ae33944155a1"
+    },
+    {
+      "file": "app/workshop/shop-preparation.test.mjs",
+      "sha256": "8160011cc4a2ca06f5bf2fb5c34cbe05cbbce710fc62b63f1da98cca0a6062d2"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-adapter.test.mjs",
+      "sha256": "b08c3c094ea13483298d6ea920447814c0006c6404c736c7402557ff1b7e7585"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-check.test.mjs",
+      "sha256": "8b36c337babf19a17288237c0339d1c5c37063f602cddd0a4e8496bb0fa04a6b"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-http.test.mjs",
+      "sha256": "4f03171644b62b95b2679cd0490f2fb739eccb3b4963ed54db9804ad318c2a7e"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-legacy.test.mjs",
+      "sha256": "0d000ab782a679f3f53f1ec8e88c68d7c2bd8ddfec713e91cefcfdd59566680d"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-plan.test.mjs",
+      "sha256": "9a5db28b7a4574f0c7c22f5bfbd6d349b14f985a56e9df8a54b60217e5fe54e9"
+    },
+    {
+      "file": "app/workshop/shop-product-binding-store.test.mjs",
+      "sha256": "8348795f9cc0eafd0b3da27ee2c2a10fad10f97ecf6bb1a47937783d93577da0"
+    },
+    {
+      "file": "app/workshop/shopify-admin-host.test.mjs",
+      "sha256": "209bfce3d3942f2812a5af1b084a4e1f8b88b5e5d58c140b68588a9d8fe2c969"
+    },
+    {
+      "file": "app/workshop/shopify-admin-readonly.test.mjs",
+      "sha256": "3f46fed9a50ca309bd253d242c7d9d36d020ee73f1e06b9f2bb4c52a743cf03f"
+    },
+    {
+      "file": "app/workshop/shopify-app-proxy.test.mjs",
+      "sha256": "d7f94137751a611ff8975b5e0cd34aa31bde7f38cf763cbf957a8d0e99aef603"
+    },
+    {
+      "file": "app/workshop/shopify-draft-token.test.mjs",
+      "sha256": "f402242a6e5c0734ca2ec4aeca38cda756257215ff240383e73231c6b6d2bb96"
+    },
+    {
+      "file": "app/workshop/shopify-order-webhook.test.mjs",
+      "sha256": "5c4772963bb029849f4a81d6edeb4d3e772242171875f1a81ee6d29075b9f481"
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "sha256": "75bebd2019576a60349cec7e29705da732d141408ed0996dee81d3fa1705237e"
+    },
+    {
+      "file": "app/workshop/shopify-session.test.mjs",
+      "sha256": "f755502a7169e5b2143e1c2897de57435905f948bd3ef8226d6887f46f443b3d"
+    },
+    {
+      "file": "app/workshop/shopify-variant-preflight.test.mjs",
+      "sha256": "be993e760ea9475abd05eb714f808974b39c3c5880e558322ac2de71a31b744e"
+    },
+    {
+      "file": "app/workshop/slate-product.test.mjs",
+      "sha256": "ed0b0f2ca09b30b0bc14d47178bd3bb5e3fe270b714b8b59e1b6437c3b4b0bbb"
+    },
+    {
+      "file": "app/workshop/specimen-product.test.mjs",
+      "sha256": "575470bbb255b6e0c68e81c43bfb6d83bac50bbc900491508828e611e1c4f0c1"
+    },
+    {
+      "file": "app/workshop/steel-formats.test.mjs",
+      "sha256": "705574727e4520b5085be569faacfeaf7796b9ada699ef8d01fe8c0e1761910a"
+    },
+    {
+      "file": "app/workshop/steel-import-margin.test.mjs",
+      "sha256": "e0dd8df64c76d0f25630e4739eba0bdc35421b9f9fa70f811c511cca40135185"
+    },
+    {
+      "file": "app/workshop/storefront-cart.test.mjs",
+      "sha256": "437a5d0899d4cdbf1dc4f3522b52fd25390fa79b2ccc28ea8be3d70ea319f679"
+    },
+    {
+      "file": "app/workshop/storefront-transport.test.mjs",
+      "sha256": "a67be7298be4a4c2851a88e34026dc8752cce158f32f7dc621a2620a642f3299"
+    },
+    {
+      "file": "app/workshop/surfaces.test.mjs",
+      "sha256": "4de49cbc078dd950c8d2c1384d9a528eea72cf26059b3cad7c98917bb56d0fea"
+    },
+    {
+      "file": "app/workshop/tenant.test.mjs",
+      "sha256": "855a44b0c63659dd5d5fee62dee7347046e485d556cd45e0435507ab0ee97855"
+    },
+    {
+      "file": "app/workshop/theme-catalog.test.mjs",
+      "sha256": "67e4894f0fe215857e140d1c17ee149459afd731ab6c7ed0983d5b9d4a02fefb"
+    },
+    {
+      "file": "app/workshop/theme-limits.test.mjs",
+      "sha256": "1b4d2d16d10cbec946d883c450f1407706aad2aef87be35036d8b3e9a7b76570"
+    }
+  ],
+  "counts": {
+    "app/configurator/variant-m": 40,
+    "app/workshop": 135
+  },
+  "totalFiles": 175,
+  "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\cwd",
+  "environment": {
+    "GRAVURU_PYTHON": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pyenv\\Scripts\\python.exe",
+    "TEMP": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp",
+    "TMP": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp",
+    "PYTHONUTF8": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "NODE_OPTIONS_present": false,
+    "PYTHONPATH_present": false
+  }
+}

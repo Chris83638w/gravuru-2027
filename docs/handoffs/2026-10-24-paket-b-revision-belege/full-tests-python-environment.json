@@ -1,0 +1,36 @@
+{
+  "executable": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pyenv\\Scripts\\python.exe",
+  "version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "modules": {
+    "svgpathtools": {
+      "available": true,
+      "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\svgpathtools\\__init__.py"
+    },
+    "pymupdf": {
+      "available": true,
+      "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\pymupdf\\__init__.py"
+    },
+    "PIL": {
+      "available": true,
+      "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\PIL\\__init__.py"
+    },
+    "cairosvg": {
+      "available": true,
+      "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\cairosvg\\__init__.py"
+    },
+    "fontTools": {
+      "available": true,
+      "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\fontTools\\__init__.py"
+    },
+    "openpyxl": {
+      "available": true,
+      "file": "C:\\Users\\Christopher Koch\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\openpyxl\\__init__.py"
+    },
+    "numpy": {
+      "available": true,
+      "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\numpy\\__init__.py"
+    }
+  },
+  "exitCode": 0,
+  "error": null
+}

@@ -203,27 +203,42 @@ test('mixed contour family leaves existing rectangular products unchanged',()=>{
  const before=katalogFamilyToProduct(original,line,sub,{size:original.sizes[0],fonts:fonts()});
  const after=katalogFamilyToProduct(f,line,sub,{size:f.sizes[0],fonts:fonts()});
  assert.deepEqual(after,before,'unselected contour group and its open price do not block or change a rectangle');
- assert.ok(familyGaps(f).some(g=>g.includes('Kontur')),'whole family still reports unfinished contour support');
+ assert.ok(!familyGaps(f).some(g=>g.includes('im Konfigurator')),'contour support is connected; only its price stays open');
 });
-test('contour conversion reports exactly Kontur offen before price or start-design gaps',()=>{
+test('contour conversion preserves open prices and requires an available source start design',()=>{
  const k=katalog(),f=withContourGroup(k.families.get('test-schilder')),line=k.lines.get('test-linie'),size=f.sizes.at(-1),sub={...line.subcategories[0],startDesign:'nicht-vorhanden'};
  const r=katalogDesignToTemplate(herz(k),f,k.theme('namensschilder'),{fonts:fonts()});
- for(const baseCents of [null,1499]){
-  size.baseCents=baseCents;
-  assert.throws(()=>katalogFamilyToProduct(f,line,sub,{size,fonts:fonts(),templates:[r]}),e=>e.message==='Kontur offen');
- }
+ assert.throws(()=>katalogFamilyToProduct(f,line,sub,{size,fonts:fonts(),templates:[r]}),/Preis offen: Kontur/);
+ size.baseCents=1499;
+ assert.throws(()=>katalogFamilyToProduct(f,line,sub,{size,fonts:fonts(),templates:[r]}),/Startdesign „nicht-vorhanden“/);
+ assert.throws(()=>katalogFamilyToProduct(f,line,sub,{size,fonts:fonts(),templates:[]}),/Startdesign „nicht-vorhanden“/);
+ assert.throws(()=>katalogFamilyToProduct(f,line,{...sub,startDesign:undefined},{size,fonts:fonts(),templates:[]}),/Keine passende Konturvorlage/);
  assert.equal(size.outlinePath,'M0 30L45 0L90 30L45 60Z','rejection preserves source contour');
 });
-test('contour templateFit is only a bounding-rectangle check and never changes source geometry',()=>{
+
+test('contour templateFit respects the physical contour and never changes source geometry',()=>{
  const k=katalog(),f=withContourGroup(k.families.get('test-schilder')),size=f.sizes.at(-1),before=JSON.stringify(f);
  // This corner lies outside the diamond, but within its bounding rectangle.
  const template={objects:[{id:'corner',type:'motif',motif:'test',x:5,y:5,w:4,h:4,rotation:0}]};
- assert.deepEqual(templateFit(template,f,size,fonts()),{status:'passt',issues:[]});
+ assert.equal(templateFit(template,f,size,fonts()).status,'passt nicht');
  const outside={objects:[{...template.objects[0],x:100}]};
  assert.equal(templateFit(outside,f,size,fonts()).status,'passt nicht');
- assert.equal(JSON.stringify(f),before,'only fit uses a rectangle; stored path and holes stay untouched');
+ assert.equal(JSON.stringify(f),before,'stored path and holes stay untouched while fitting the actual contour');
 });
 
+test('proportional contour fitting centres objects without translating motif resource viewboxes twice',()=>{
+ const template={id:'retro-resource',objects:[{id:'motif',type:'motif',motif:'source',x:20,y:25,w:10,h:8}]};
+ const resource={key:'source',bounds:[15,21,10,8],svgFragment:'<path d="M15 21L25 21L25 29L15 29Z"/>'};
+ const scaled=scaleTemplate(template,[90.6,61.3],[90,60],fonts(),{contain:true}),factor=60/61.3;
+ const [motif]=scaleEmbeddedMotifs([resource],factor),o=scaled.objects[0];
+ assert.equal(scaled.katalog.scale,factor);
+ assert.deepEqual(scaled.katalog.offsetMm,[round((90-90.6*factor)/2),0]);
+ assert.equal(o.x,round(20*factor+(90-90.6*factor)/2));assert.equal(o.y,round(25*factor));
+ assert.deepEqual(motif.bounds,resource.bounds.map(v=>round(v*factor)));
+ assert.deepEqual(pathBounds(/d="([^"]*)"/.exec(motif.svgFragment)[1]).map(round),motif.bounds);
+ assert.equal(o.w,motif.bounds[2]);assert.equal(o.h,motif.bounds[3]);
+ assert.deepEqual(resource.bounds,[15,21,10,8]);assert.equal(template.objects[0].x,20);
+});
 
 test('Große Motivpfade behalten Bogenflags, Winkel und Koordinaten über Tokenblockgrenzen',()=>{
  const repeated=Array.from({length:1200},()=> 'l1.5,-2.25').join(''),source='<path d="M.25 1.5A2 3 45 0 1 4 5'+repeated+'z" fill="currentColor"/>';

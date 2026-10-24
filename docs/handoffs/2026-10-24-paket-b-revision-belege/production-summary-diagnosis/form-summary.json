@@ -1,0 +1,117 @@
+{
+  "schema": "gravuru-production-summary/v1",
+  "createdAt": "2026-10-24T05:55:27.672Z",
+  "order": null,
+  "orderNote": "Beim Erzeugen lag noch keine Bestellposition zu diesem Prüfstand vor; Referenz ist die Konfigurations-ID.",
+  "configuration": {
+    "snapshotId": "proof_f8541eef-57dd-40dd-b823-b183b8efebef",
+    "draftId": "draft_2dd6a6ff-5531-4873-b278-26b7ad5321e6",
+    "draftRevision": 2,
+    "designId": "design-print",
+    "productId": "cfg_0add0852-7d6c-43f6-85de-4f6340b219fa",
+    "productRevision": 1,
+    "productName": "Freiform-Zusammenfassung",
+    "sourcePackageSha256": "d7e1870048f42d4a352e0a3d1716302e3877eeab1d9675045d1ae6738f66562b"
+  },
+  "product": {
+    "material": {
+      "kind": "steel",
+      "label": "Edelstahl · gebürstet",
+      "thicknessMm": 1.5,
+      "colorHex": null,
+      "surfaceNotes": ""
+    },
+    "widthMm": 60,
+    "heightMm": 40,
+    "shape": "contour",
+    "cornerRadiusMm": null,
+    "mounting": {
+      "holeCount": 1,
+      "holes": [],
+      "option": null
+    },
+    "options": [],
+    "fields": [],
+    "method": "print",
+    "methodLabel": "UV-Druck",
+    "quantity": null,
+    "price": {
+      "unitCents": 2999,
+      "totalCents": null,
+      "currency": "EUR"
+    }
+  },
+  "textFields": [
+    {
+      "id": "text",
+      "label": "Name",
+      "text": "Hallo Wörld",
+      "font": "Garamond Acryl",
+      "bold": false,
+      "italic": false,
+      "colorHex": "#222222",
+      "sizeMm": 3,
+      "xMm": 19,
+      "yMm": 33.5,
+      "widthMm": 34,
+      "heightMm": 7,
+      "rotationDeg": 0,
+      "anchor": "center"
+    }
+  ],
+  "photos": [
+    {
+      "fieldId": "photo",
+      "label": "Foto",
+      "path": "fotos/photo-original.png",
+      "fileName": "photo-original.png",
+      "sha256": "ea20c491214355d3d7a0ec2322de731c282f74d870c2c2a795373f02fdee0139",
+      "width": 120,
+      "height": 80,
+      "editedPath": null,
+      "effectiveDpi": 127,
+      "targetDpi": 300,
+      "status": "rot",
+      "note": "Auflösung niedrig"
+    }
+  ],
+  "profile": {
+    "name": null,
+    "revision": null,
+    "method": "print",
+    "methodLabel": "UV-Druck",
+    "machine": null,
+    "rip": null,
+    "mirror": false,
+    "settingsOverridden": false
+  },
+  "output": {
+    "recipe": "gravuru-form-print-proof/v5",
+    "settings": {
+      "profile": "roland",
+      "bleedMm": 0,
+      "white": "motif",
+      "whiteBleedMm": 0,
+      "mirror": false,
+      "dpi": 300,
+      "geometry": {
+        "width": 60,
+        "height": 40,
+        "shape": "rect",
+        "cornerRadiusMm": 0,
+        "holes": []
+      },
+      "pageWidthMm": 60,
+      "pageHeightMm": 40,
+      "colorSpace": "DeviceCMYK"
+    },
+    "files": [
+      "technische-druckpruefung.pdf",
+      "druckpruefung.json"
+    ],
+    "warnings": [
+      "Auflösung niedrig: Foto „Foto“ erreicht im gewählten Ausschnitt etwa 127 dpi (Soll 300 dpi). Foto wurde angenommen; bitte in der Freigabe prüfen. Hochrechnen ergänzt keine Bilddetails."
+    ],
+    "productionReady": false
+  }
+}

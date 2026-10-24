@@ -1,0 +1,1499 @@
+{
+  "schema": "gravuru-full-test-diagnosis/v1",
+  "generatedAt": "2026-10-24T05:58:35.804Z",
+  "status": "diagnosed-not-green",
+  "original": {
+    "runDirectory": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd",
+    "command": "node work/reports/run-full-tests.mjs --run --expected-files 175",
+    "summarySha256": "87400ccd37f75e98cd7ab87aace2b86dbe96ccd67752c4de65d81929ac03b6dc",
+    "complete": true,
+    "executedFiles": 175,
+    "filesByStatus": {
+      "passed": 164,
+      "failed": 10,
+      "incomplete": 1,
+      "skipped": 0
+    },
+    "totals": {
+      "tests": 1216,
+      "suites": 0,
+      "passed": 1193,
+      "failed": 23,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "scopeCounters": [
+      {
+        "scope": "app/configurator/variant-m/",
+        "files": 40,
+        "fileStatus": {
+          "passed": 40,
+          "failed": 0,
+          "incomplete": 0
+        },
+        "counts": {
+          "tests": 236,
+          "passed": 236,
+          "failed": 0,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      },
+      {
+        "scope": "app/workshop/",
+        "files": 135,
+        "fileStatus": {
+          "passed": 124,
+          "failed": 10,
+          "incomplete": 1
+        },
+        "counts": {
+          "tests": 980,
+          "passed": 957,
+          "failed": 23,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        }
+      }
+    ],
+    "countMeaning": "Unchanged Node root-summary counters from 174 complete file processes; konfis had no root summary and is separately incomplete. No diagnostic rerun is merged into these original counts."
+  },
+  "partialFile": {
+    "file": "app/workshop/konfis.test.mjs",
+    "rootSummaryMissing": true,
+    "observedOutcomes": {
+      "passed": 3,
+      "failed": 3
+    },
+    "events": [
+      {
+        "type": "test:pass",
+        "name": "Klarnamen: Familie und Formgruppen aus den Familiendaten, unbekannte Kürzel bleiben sichtbar mit Hinweis",
+        "failureType": null
+      },
+      {
+        "type": "test:pass",
+        "name": "Kundenfähig: aktives Produkt; Formprodukt nur mit Design; Mastervorlagen und Archiv nicht",
+        "failureType": null
+      },
+      {
+        "type": "test:fail",
+        "name": "Konfi-Status-Store: Übergänge, Konflikte, unveränderliches Protokoll, je Mandant getrennt",
+        "failureType": "hookFailed"
+      },
+      {
+        "type": "test:fail",
+        "name": "Konfis über HTTP: Liste mit Klarnamen, Freigeben/Pausieren, Kundenroute mit Meldung gesperrt, Mandanten getrennt",
+        "failureType": "hookFailed"
+      },
+      {
+        "type": "test:fail",
+        "name": "Kundenseite: pausierter Konfi zeigt Hinweis statt Editor, models.json liefert die Meldung als JSON",
+        "failureType": "hookFailed"
+      },
+      {
+        "type": "test:pass",
+        "name": "Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster",
+        "failureType": null
+      }
+    ]
+  },
+  "observations": [
+    {
+      "file": "app/workshop/account-draft-http.test.mjs",
+      "test": "Konto-Entwürfe: 503 ohne Anbindung, 401 ohne gültige Signatur/Anmeldung, CRUD nur für den angemeldeten Kunden",
+      "category": "existing-test-windows-cleanup",
+      "cause": "after-Hook versucht temporären Ordner zu löschen, bevor der später registrierte w.close-Hook die SQLite-Verbindung schließt.",
+      "evidenceLines": [
+        33,
+        39
+      ],
+      "gitBlobSha1": "1e38323f9b9ce5145d7d0e1c7bcb3208dde65499",
+      "mainSourceIdentical": true,
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 1,
+        "failed": 1,
+        "passed": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 1,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\041-app--workshop--account-draft-http.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\041-app--workshop--account-draft-http.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "Konto-Entwürfe: 503 ohne Anbindung, 401 ohne gültige Signatur/Anmeldung, CRUD nur für den angemeldeten Kunden",
+          "line": 28,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-account-draft-http-Mm1pTL '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-account-draft-http-Mm1pTL'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-account-draft-http-Mm1pTL '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-account-draft-http-Mm1pTL'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/account-draft-http.test.mjs:33:18)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-account-draft-http-Mm1pTL",
+              "syscall": "rm"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/batch-assets.test.mjs",
+      "test": "source settings survive private snapshots and correction reports without duplicating legacy snapshots",
+      "category": "existing-test-windows-cleanup",
+      "cause": "Fixture-after-Hook schließt repository/assets und löscht Ordner; später registrierter jobs.close-Hook hat die zusätzliche SQLite-Verbindung noch offen.",
+      "evidenceLines": [
+        36,
+        68
+      ],
+      "gitBlobSha1": "cd6eb9ca9580ea44df2800650a88fc6bd9a2eb63",
+      "mainSourceIdentical": true,
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 13,
+        "failed": 1,
+        "passed": 12,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 13,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\057-app--workshop--batch-assets.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\057-app--workshop--batch-assets.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "source settings survive private snapshots and correction reports without duplicating legacy snapshots",
+          "line": 65,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-batch-assets-1v59o0 '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-batch-assets-1v59o0'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-batch-assets-1v59o0 '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-batch-assets-1v59o0'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/batch-assets.test.mjs:36:53)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-batch-assets-1v59o0",
+              "syscall": "rm"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/editable-design.test.mjs",
+      "test": "original photo mask survives replacement, customer rights and the self-contained production package",
+      "category": "runner-cwd",
+      "cause": "Python-importlib lädt app/workshop/form-print-worker.py relativ ohne cwd-Override; im externen CWD fehlt diese vorhandene Repo-Datei. Gegenprobe aus Repo-CWD vorbereitet. Gegenprobe aus Repo-CWD: 2/2 bestanden, unveränderte Testquelle; Runner-CWD-Ursache damit bestätigt.",
+      "evidenceLines": [
+        67,
+        71
+      ],
+      "gitBlobSha1": "eb319c1f0d6d8d76e6f5107ff2ec81cd9b56b80a",
+      "mainSourceIdentical": true,
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 2,
+        "failed": 1,
+        "passed": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 2,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\089-app--workshop--editable-design.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\089-app--workshop--editable-design.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "original photo mask survives replacement, customer rights and the self-contained production package",
+          "line": 45,
+          "error": {
+            "name": "Error",
+            "message": "Traceback (most recent call last):\r\n  File \"<string>\", line 3, in <module>\r\n  File \"<frozen importlib._bootstrap_external>\", line 995, in exec_module\r\n  File \"<frozen importlib._bootstrap_external>\", line 1132, in get_code\r\n  File \"<frozen importlib._bootstrap_external>\", line 1190, in get_data\r\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Christopher Koch\\\\Documents\\\\Codex\\\\2026-10-23\\\\files-pasted-by-the-user-du\\\\work\\\\reports\\\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\\\cwd\\\\app/workshop/form-print-worker.py'\r\n\n\n1 !== 0\n",
+            "stack": "Error [ERR_TEST_FAILURE]: Traceback (most recent call last):\r\n  File \"<string>\", line 3, in <module>\r\n  File \"<frozen importlib._bootstrap_external>\", line 995, in exec_module\r\n  File \"<frozen importlib._bootstrap_external>\", line 1132, in get_code\r\n  File \"<frozen importlib._bootstrap_external>\", line 1190, in get_data\r\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Christopher Koch\\\\Documents\\\\Codex\\\\2026-10-23\\\\files-pasted-by-the-user-du\\\\work\\\\reports\\\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\\\cwd\\\\app/workshop/form-print-worker.py'\r\n\n\n1 !== 0\n",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "AssertionError",
+              "message": "Traceback (most recent call last):\r\n  File \"<string>\", line 3, in <module>\r\n  File \"<frozen importlib._bootstrap_external>\", line 995, in exec_module\r\n  File \"<frozen importlib._bootstrap_external>\", line 1132, in get_code\r\n  File \"<frozen importlib._bootstrap_external>\", line 1190, in get_data\r\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Christopher Koch\\\\Documents\\\\Codex\\\\2026-10-23\\\\files-pasted-by-the-user-du\\\\work\\\\reports\\\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\\\cwd\\\\app/workshop/form-print-worker.py'\r\n\n\n1 !== 0\n",
+              "stack": "AssertionError [ERR_ASSERTION]: Traceback (most recent call last):\r\n  File \"<string>\", line 3, in <module>\r\n  File \"<frozen importlib._bootstrap_external>\", line 995, in exec_module\r\n  File \"<frozen importlib._bootstrap_external>\", line 1132, in get_code\r\n  File \"<frozen importlib._bootstrap_external>\", line 1190, in get_data\r\nFileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Christopher Koch\\\\Documents\\\\Codex\\\\2026-10-23\\\\files-pasted-by-the-user-du\\\\work\\\\reports\\\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\\\cwd\\\\app/workshop/form-print-worker.py'\r\n\n\n1 !== 0\n\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/editable-design.test.mjs:71:9)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Test.run (node:internal/test_runner/test:1404:7)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "generatedMessage": false,
+              "code": "ERR_ASSERTION",
+              "actual": 1,
+              "expected": 0,
+              "operator": "strictEqual",
+              "diff": "simple"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/export-jobs.test.mjs",
+      "test": "Alle vier Tests",
+      "category": "existing-test-windows-cleanup",
+      "cause": "Fixture registriert rm-Hook in Zeile2 vor den späteren close-Hooks der ExportJobStore-Verbindungen in Zeilen6/10/13/18; alle vier Ergebnisse hookFailed/EPERM, keine fachliche Assertion im Fehlerprotokoll.",
+      "evidenceLines": [
+        2,
+        6,
+        10,
+        13,
+        18
+      ],
+      "gitBlobSha1": "1bcd5dc76c6d3759ec3cedcda2e3f4ecb63ce386",
+      "mainSourceIdentical": true,
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 4,
+        "failed": 4,
+        "passed": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\091-app--workshop--export-jobs.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\091-app--workshop--export-jobs.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "queue deduplicates requests, fences expired workers and atomically retains first output and immutable request history",
+          "line": 5,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-tx0s2d '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-tx0s2d'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-tx0s2d '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-tx0s2d'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/export-jobs.test.mjs:2:465)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-tx0s2d",
+              "syscall": "rm"
+            }
+          }
+        },
+        {
+          "name": "failed jobs survive SQLite reopen, retry safely and retain a visible failure event",
+          "line": 9,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-CXYCEo '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-CXYCEo'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-CXYCEo '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-CXYCEo'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/export-jobs.test.mjs:2:465)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at runNextTicks (node:internal/process/task_queues:65:5)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-CXYCEo",
+              "syscall": "rm"
+            }
+          }
+        },
+        {
+          "name": "graceful worker close releases a job and a later worker resumes without the old renderer overwriting it",
+          "line": 12,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-4gWfkn '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-4gWfkn'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-4gWfkn '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-4gWfkn'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/export-jobs.test.mjs:2:465)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-4gWfkn",
+              "syscall": "rm"
+            }
+          }
+        },
+        {
+          "name": "position outputs filter by immutable snapshot before the global 200-job limit, never by product or recency",
+          "line": 17,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-IZ3mjj '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-IZ3mjj'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-IZ3mjj '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-IZ3mjj'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/export-jobs.test.mjs:2:465)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-queue-IZ3mjj",
+              "syscall": "rm"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/konfis.test.mjs",
+      "test": "Teiltests 3/4/5",
+      "category": "existing-test-windows-cleanup",
+      "cause": "tmp() registriert rm-Hook vor SQLite-/Workshop-/Server-close-Hooks. Drei hookFailed/EPERM und drei weitere Teiltests grün. Danach keine Root-Zusammenfassung; Watchdog beendete nach 605 s, Originaldatei incomplete/timedOut mit counts:null. Sechs Teilereignisse separat; keine Addition zu Originaltotals. Separate Gegenprobe nur hier mit --test-force-exit: reguläre Zusammenfassung 6 Tests, 3 pass/3 identische Cleanup-fail; Original bleibt unvollständig.",
+      "evidenceLines": [
+        20,
+        48,
+        59,
+        76,
+        139
+      ],
+      "gitBlobSha1": "1e7faddd68957e5d7d8107e5a43274248041db5c",
+      "mainSourceIdentical": true,
+      "originalStatus": "incomplete",
+      "originalCounts": null,
+      "timedOut": true,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\111-app--workshop--konfis.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\111-app--workshop--konfis.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "Konfi-Status-Store: Übergänge, Konflikte, unveränderliches Protokoll, je Mandant getrennt",
+          "line": 46,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-QiDeKX '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-QiDeKX'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-QiDeKX '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-QiDeKX'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/konfis.test.mjs:20:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-QiDeKX",
+              "syscall": "rm"
+            }
+          }
+        },
+        {
+          "name": "Konfis über HTTP: Liste mit Klarnamen, Freigeben/Pausieren, Kundenroute mit Meldung gesperrt, Mandanten getrennt",
+          "line": 71,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-xB3m62 '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-xB3m62'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-xB3m62 '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-xB3m62'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/konfis.test.mjs:20:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-xB3m62",
+              "syscall": "rm"
+            }
+          }
+        },
+        {
+          "name": "Kundenseite: pausierter Konfi zeigt Hinweis statt Editor, models.json liefert die Meldung als JSON",
+          "line": 134,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-nRJ9Uw '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-nRJ9Uw'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-nRJ9Uw '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-nRJ9Uw'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/konfis.test.mjs:20:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-nRJ9Uw",
+              "syscall": "rm"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/material-surface-store.test.mjs",
+      "test": "material import retains byte-identical original and immutable PNG preview across restart",
+      "category": "existing-test-windows-cleanup",
+      "cause": "rm-Hook Zeile11 wird vor store.close-Hook Zeile13 ausgeführt; ausschließlich hookFailed/EPERM im Löschvorgang.",
+      "evidenceLines": [
+        11,
+        13
+      ],
+      "gitBlobSha1": "4532cbebc35496942c42bdeccf1e5319de938dbc",
+      "mainSourceIdentical": true,
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 3,
+        "failed": 1,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 3,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\113-app--workshop--material-surface-store.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\113-app--workshop--material-surface-store.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "material import retains byte-identical original and immutable PNG preview across restart",
+          "line": 10,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\gravuru-surface-3OTnhH '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\gravuru-surface-3OTnhH'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\gravuru-surface-3OTnhH '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\gravuru-surface-3OTnhH'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/material-surface-store.test.mjs:11:85)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\gravuru-surface-3OTnhH",
+              "syscall": "rm"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/production-summary.test.mjs",
+      "test": "Form-Druckpaket und natives Gravurpaket",
+      "category": "existing-renderer-windows-font-unicode",
+      "cause": "Die erwarteten Texte sind vollständig enthalten (beide Texttabellen shown=1), die lokale Windows-Arial/PyMuPDF-2.0-Kombination extrahiert jedoch U+00A0 statt U+0020: Hallo\\u00a0Wörld bzw. Anna\\u00a0&\\u00a0Lukas. Zusätzlich teilen U+002D/U+00AD eine Glyph-ID. Minimalprobe ohne Gravuru-Code belegt Arial-Glyph3 für SPACE/NBSP und Glyph16 für Hyphen/SoftHyphen; ToUnicode mappt auf NBSP/SoftHyphen. Helvetica behält ASCII. Dieselben gesicherten Renderer-Eingaben mit gepinntem Main-Python aus Repo- und Workspace-CWD ergeben in allen vier Fällen exakt denselben extrahierten Text wie der eingefrorene B-Stand. Kein Textverlust, kein B- oder CWD-Effekt nachgewiesen; beide ursprünglichen Assertions bleiben fehlgeschlagen.",
+      "evidenceLines": [
+        39,
+        64
+      ],
+      "gitBlobSha1": "ac87e4b2cec4137444d7f25dce1b1baebe238fdc",
+      "mainSourceIdentical": true,
+      "diagnosticEvidence": {
+        "directory": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\production-summary-diagnosis",
+        "glyphProbe": "glyph-probe.json",
+        "toUnicode": "Arial-ToUnicode.txt",
+        "mainReplay": "main-replay.json",
+        "sourceEquality": "source-equality.jsonl",
+        "captureLog": "capture-tests.log",
+        "originalTestsRemainFailed": true,
+        "diagnosisMarkdown": "diagnosis.md",
+        "diagnosisJson": "diagnosis.json",
+        "checksums": "evidence-files.json"
+      },
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 4,
+        "failed": 2,
+        "passed": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 4,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\141-app--workshop--production-summary.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\141-app--workshop--production-summary.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "Form-Druckpaket enthält summary.pdf, summary.json und Originalfotos mit Manifest-Hashes; Textfelder in mm und Fotovermerk",
+          "line": 34,
+          "error": {
+            "name": "Error",
+            "message": "Hallo Wörld",
+            "stack": "Error [ERR_TEST_FAILURE]: Hallo Wörld",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "AssertionError",
+              "message": "Hallo Wörld",
+              "stack": "AssertionError [ERR_ASSERTION]: Hallo Wörld\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/production-summary.test.mjs:39:134)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Test.run (node:internal/test_runner/test:1404:7)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "generatedMessage": false,
+              "code": "ERR_ASSERTION",
+              "actual": false,
+              "expected": true,
+              "operator": "==",
+              "diff": "simple"
+            }
+          }
+        },
+        {
+          "name": "Natives Gravurpaket: Bestellbezug, Optionen mit Preis, skalierte Textposition und Drehung, Fotoampel aus photoResolution",
+          "line": 53,
+          "error": {
+            "name": "Error",
+            "message": "Anna & Lukas",
+            "stack": "Error [ERR_TEST_FAILURE]: Anna & Lukas",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "AssertionError",
+              "message": "Anna & Lukas",
+              "stack": "AssertionError [ERR_ASSERTION]: Anna & Lukas\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/production-summary.test.mjs:64:223)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async Test.run (node:internal/test_runner/test:1404:7)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "generatedMessage": false,
+              "code": "ERR_ASSERTION",
+              "actual": false,
+              "expected": true,
+              "operator": "==",
+              "diff": "simple"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/profile-impact.test.mjs",
+      "test": "a profile containing a removed font can be reviewed and repaired without allowing it in normal resolution",
+      "category": "existing-test-windows-cleanup",
+      "cause": "rm-Hook Zeile78 wird vor profiles.close-Hook Zeile81 ausgeführt; ausschließlich hookFailed/EPERM.",
+      "evidenceLines": [
+        78,
+        81
+      ],
+      "gitBlobSha1": "53efa9aa5b83a1cb32695d8858b367324f2ccc6e",
+      "mainSourceIdentical": true,
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 10,
+        "failed": 1,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 10,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\142-app--workshop--profile-impact.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\142-app--workshop--profile-impact.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "a profile containing a removed font can be reviewed and repaired without allowing it in normal resolution",
+          "line": 77,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-profile-repair-sD1Sgj '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-profile-repair-sD1Sgj'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-profile-repair-sD1Sgj '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-profile-repair-sD1Sgj'\n    at rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/profile-impact.test.mjs:78:86)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-profile-repair-sD1Sgj",
+              "syscall": "rm"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/quantity-tiers.test.mjs",
+      "test": "Excel-Rundlauf: Blatt „Staffel“ je Familie und Größe, leerer Rabatt bleibt offen",
+      "category": "existing-test-windows-line-ending",
+      "cause": "Test Zeile156 zerlegt Python-stdout mit split('\\n'); Win-Python print übersetzt in CRLF. Tatsächlicher Header ist erwarteter Header plus \\r. Testquelle hat 162 LF und 0 CRLF und ist main-identisch; read-only Python-print-Probe erzeugte 410d0a420d0a, ohne Appmodule.",
+      "evidenceLines": [
+        156,
+        157
+      ],
+      "gitBlobSha1": "c84a9b8f879cc1639211bdbc18b36180e44da8b6",
+      "mainSourceIdentical": true,
+      "runtimeProbe": {
+        "command": "python -B -c print('A\\nB')",
+        "stdoutHex": "410d0a420d0a"
+      },
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 8,
+        "failed": 1,
+        "passed": 7,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 8,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\144-app--workshop--quantity-tiers.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\144-app--workshop--quantity-tiers.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "Excel-Rundlauf: Blatt „Staffel“ je Familie und Größe, leerer Rabatt bleibt offen",
+          "line": 148,
+          "error": {
+            "name": "Error",
+            "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Familie|SKU|ab Stück|Rabatt %|Stückpreis €\\r'\n- 'Familie|SKU|ab Stück|Rabatt %|Stückpreis €'\n",
+            "stack": "Error [ERR_TEST_FAILURE]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Familie|SKU|ab Stück|Rabatt %|Stückpreis €\\r'\n- 'Familie|SKU|ab Stück|Rabatt %|Stückpreis €'\n",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "AssertionError",
+              "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Familie|SKU|ab Stück|Rabatt %|Stückpreis €\\r'\n- 'Familie|SKU|ab Stück|Rabatt %|Stückpreis €'\n",
+              "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'Familie|SKU|ab Stück|Rabatt %|Stückpreis €\\r'\n- 'Familie|SKU|ab Stück|Rabatt %|Stückpreis €'\n\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/quantity-tiers.test.mjs:157:10)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "generatedMessage": true,
+              "code": "ERR_ASSERTION",
+              "actual": "Familie|SKU|ab Stück|Rabatt %|Stückpreis €\r",
+              "expected": "Familie|SKU|ab Stück|Rabatt %|Stückpreis €",
+              "operator": "strictEqual",
+              "diff": "simple"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "test": "Sieben Teiltests",
+      "category": "existing-test-windows-and-runner-cwd",
+      "cause": "Vier Positivfälle nutzen POSIX-Literal /tmp/gravuru-test-not-created; Windows normalisiert zu C:\\tmp\\..., weshalb die absichtlich strenge Normalisierungsprüfung in shopify-runtime-config.mjs:17 ablehnt. Ein Fall verwendet externes process.cwd() statt Repository als angeblich unzulässigen Datenpfad (Runnerfehler). Ein Fall scheitert an symlinkSync EPERM. Ein Positivfall scheitert an privater Storage-Prüfung in shopify-admin-test-server.mjs:16; Windows-Tempmodus hier 040666 (&077=54), POSIX-Privatmodusannahme nicht erfüllt. Root-CWD-Gegenprobe bleibt getrennt. Gegenprobe aus Repo-CWD behebt exakt den CWD-Fall: 10/16 pass, 6 unveränderte Windows-/POSIX-Fehler.",
+      "evidenceLines": [
+        9,
+        13,
+        17,
+        21,
+        27,
+        35,
+        38,
+        45
+      ],
+      "gitBlobSha1": "a94c106079546dfb610b15d72e19d6b8023dabb6",
+      "mainSourceIdentical": true,
+      "categories": [
+        {
+          "category": "posix-path-fixture",
+          "count": 4
+        },
+        {
+          "category": "runner-cwd",
+          "count": 1
+        },
+        {
+          "category": "windows-symlink-privilege",
+          "count": 1
+        },
+        {
+          "category": "private-storage-permission-assumption",
+          "count": 1
+        }
+      ],
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 16,
+        "failed": 7,
+        "passed": 9,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 16,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\163-app--workshop--shopify-runtime-config.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\163-app--workshop--shopify-runtime-config.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "complete config wires matching host/session and keeps transfer disabled without optional token",
+          "line": 13,
+          "error": {
+            "name": "Error",
+            "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+            "stack": "Error [ERR_TEST_FAILURE]: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "Error",
+              "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+              "stack": "Error: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.\n    at invalid (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:11:40)\n    at shopifyRuntimeConfig (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:17:232)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:14:27)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)",
+              "code": "shopify_runtime_config"
+            }
+          }
+        },
+        {
+          "name": "optional Admin token enables only draft transfer in fixed shop and API version, without probing network",
+          "line": 17,
+          "error": {
+            "name": "Error",
+            "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+            "stack": "Error [ERR_TEST_FAILURE]: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "Error",
+              "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+              "stack": "Error: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.\n    at invalid (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:11:40)\n    at shopifyRuntimeConfig (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:17:232)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:18:99)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "code": "shopify_runtime_config"
+            }
+          }
+        },
+        {
+          "name": "explicit organization credential mode uses existing secret privately and enables drafts only",
+          "line": 21,
+          "error": {
+            "name": "Error",
+            "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+            "stack": "Error [ERR_TEST_FAILURE]: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "Error",
+              "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+              "stack": "Error: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.\n    at invalid (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:11:40)\n    at shopifyRuntimeConfig (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:17:232)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:22:76)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "code": "shopify_runtime_config"
+            }
+          }
+        },
+        {
+          "name": "invalid runtime configuration cannot start: GRAVURU_PRIVATE_DATA_DIR",
+          "line": 27,
+          "error": {
+            "name": "Error",
+            "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'invalid_configuration'\n",
+            "stack": "Error [ERR_TEST_FAILURE]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'invalid_configuration'\n",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "AssertionError",
+              "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'invalid_configuration'\n",
+              "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'invalid_configuration'\n\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:28:44)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "generatedMessage": true,
+              "code": "ERR_ASSERTION",
+              "expected": "invalid_configuration",
+              "operator": "strictEqual",
+              "diff": "simple"
+            }
+          }
+        },
+        {
+          "name": "symlinked database or WAL is rejected before any build/database opening",
+          "line": 33,
+          "error": {
+            "name": "Error",
+            "message": "EPERM: operation not permitted, symlink 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\outside' -> 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\private-QKUyYg\\workshop.sqlite'",
+            "stack": "Error [ERR_TEST_FAILURE]: EPERM: operation not permitted, symlink 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\outside' -> 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\private-QKUyYg\\workshop.sqlite'",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM: operation not permitted, symlink 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\outside' -> 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\private-QKUyYg\\workshop.sqlite'",
+              "stack": "Error: EPERM: operation not permitted, symlink 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\outside' -> 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\private-QKUyYg\\workshop.sqlite'\n    at Object.symlinkSync (node:fs:1938:11)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:35:218)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": -4048,
+              "code": "EPERM",
+              "syscall": "symlink",
+              "path": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\outside",
+              "dest": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-wfUKju\\private-QKUyYg\\workshop.sqlite"
+            }
+          }
+        },
+        {
+          "name": "explicit runtime constructs the real authenticated server with isolated private storage, no listener or shop writes",
+          "line": 37,
+          "error": {
+            "name": "Error",
+            "message": "Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.",
+            "stack": "Error [ERR_TEST_FAILURE]: Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "Error",
+              "message": "Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.",
+              "stack": "Error: Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.\n    at fail (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-admin-test-server.mjs:14:25)\n    at createShopifyTestRuntime (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-admin-test-server.mjs:16:190)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:38:147)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)"
+            }
+          }
+        },
+        {
+          "name": "verified public identity needs no user-provided key and never silently switches apps",
+          "line": 45,
+          "error": {
+            "name": "Error",
+            "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+            "stack": "Error [ERR_TEST_FAILURE]: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "testCodeFailure",
+            "cause": {
+              "name": "Error",
+              "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+              "stack": "Error: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.\n    at invalid (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:11:40)\n    at shopifyRuntimeConfig (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:17:232)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:45:209)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "code": "shopify_runtime_config"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "file": "app/workshop/tenant.test.mjs",
+      "test": "Vier Teiltests zu Isolation/Schema/HTTP",
+      "category": "existing-test-windows-cleanup",
+      "cause": "tmp()-rm-Hook Zeile31 vor Store-close-Hooks99/109/113/117,140,174,215; alle vier Fehler ausschließlich hookFailed/EPERM, keine Isolation-/Schema-/HTTP-Assertion im Fehlerprotokoll.",
+      "evidenceLines": [
+        31,
+        99,
+        109,
+        113,
+        117,
+        140,
+        174,
+        215
+      ],
+      "gitBlobSha1": "8f4aec4dbdea70d9d87fd855bea6ca4fc851692e",
+      "mainSourceIdentical": true,
+      "originalStatus": "failed",
+      "originalCounts": {
+        "tests": 9,
+        "failed": 4,
+        "passed": 5,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "topLevel": 9,
+        "suites": 0
+      },
+      "timedOut": false,
+      "rawLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\173-app--workshop--tenant.test.mjs.raw.log",
+      "eventLog": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\173-app--workshop--tenant.test.mjs.events.jsonl",
+      "failureCases": [
+        {
+          "name": "Isolation repository/Familien/Assets/Profile: Produkt, Importschlüssel, Familie und Datei des einen sind für den anderen 404",
+          "line": 97,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-repo-rS0s8p '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-repo-rS0s8p'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-repo-rS0s8p '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-repo-rS0s8p'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/tenant.test.mjs:31:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-repo-rS0s8p",
+              "syscall": "rm"
+            }
+          }
+        },
+        {
+          "name": "Isolation order-intake/Entwürfe/Freigabe/Ausgaben: Bestellung, Prüfstand und Entwurf des einen sind für den anderen 404",
+          "line": 138,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-orders-fMfqQH '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-orders-fMfqQH'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-orders-fMfqQH '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-orders-fMfqQH'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/tenant.test.mjs:31:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-orders-fMfqQH",
+              "syscall": "rm"
+            }
+          }
+        },
+        {
+          "name": "Datenbank: jede Tabelle der Werkstatt trägt tenant_id (Ausnahmen begründet)",
+          "line": 167,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-schema-LyxxA7 '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-schema-LyxxA7'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-schema-LyxxA7 '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-schema-LyxxA7'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/tenant.test.mjs:31:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-schema-LyxxA7",
+              "syscall": "rm"
+            }
+          }
+        },
+        {
+          "name": "HTTP: Mandant je Request; Produkt und Bestellung des Standardmandanten sind für den zweiten 404, unbestätigte Mandanten 503",
+          "line": 209,
+          "error": {
+            "name": "Error",
+            "message": "failed running after hook",
+            "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+            "code": "ERR_TEST_FAILURE",
+            "failureType": "hookFailed",
+            "cause": {
+              "name": "Error",
+              "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-http-1avWAi '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-http-1avWAi'",
+              "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-http-1avWAi '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-http-1avWAi'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/tenant.test.mjs:31:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+              "errno": 1,
+              "code": "EPERM",
+              "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-tenant-http-1avWAi",
+              "syscall": "rm"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "mainSourceEvidence": {
+    "ref": "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8",
+    "inventory": "work/reports/test-source-acquisition-ed4b9c6.json",
+    "policy": "Every listed failing pre-existing test file was read-only hashed as a Git blob and matched the pinned main test blob; this is not a claim that all application source is unchanged main.",
+    "allListedTestFilesMatchMain": true
+  },
+  "counterRun": {
+    "runDirectory": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\root-cwd-diagnostics-2026-10-24T05-54-15-785Z-6kbfwG",
+    "purpose": "Separate CWD diagnostics after full run; does not replace or alter original failures",
+    "complete": true,
+    "originalRun": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd",
+    "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027",
+    "plannedFiles": 3,
+    "executedFiles": 3,
+    "totals": {
+      "tests": 24,
+      "passed": 15,
+      "failed": 9,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "suites": 0
+    },
+    "results": [
+      {
+        "file": "app/workshop/editable-design.test.mjs",
+        "status": "passed",
+        "forceExit": false,
+        "originalCounts": {
+          "tests": 2,
+          "failed": 1,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "launchError": null,
+        "eventError": null,
+        "sourceUnchanged": true,
+        "failures": [],
+        "rawLog": "editable-design.test.mjs.raw.log",
+        "eventLog": "editable-design.test.mjs.events.jsonl",
+        "command": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--import",
+          "file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/reports/full-tests-python-windows.mjs",
+          "--test",
+          "--test-concurrency=1",
+          "--test-timeout=600000",
+          "--test-reporter=tap",
+          "--test-reporter-destination=stdout",
+          "--test-reporter=file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/reports/full-tests-events.mjs",
+          "--test-reporter-destination=C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\root-cwd-diagnostics-2026-10-24T05-54-15-785Z-6kbfwG\\editable-design.test.mjs.events.jsonl",
+          "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\editable-design.test.mjs"
+        ]
+      },
+      {
+        "file": "app/workshop/konfis.test.mjs",
+        "status": "failed",
+        "forceExit": true,
+        "originalCounts": null,
+        "counts": {
+          "tests": 6,
+          "failed": 3,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 1,
+        "signal": null,
+        "timedOut": false,
+        "launchError": null,
+        "eventError": null,
+        "sourceUnchanged": true,
+        "failures": [
+          {
+            "name": "Konfi-Status-Store: Übergänge, Konflikte, unveränderliches Protokoll, je Mandant getrennt",
+            "nesting": 0,
+            "testNumber": 3,
+            "testId": 3,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 39.7772,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "failed running after hook",
+                "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "hookFailed",
+                "cause": {
+                  "name": "Error",
+                  "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-VJPe8V '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-VJPe8V'",
+                  "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-VJPe8V '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-VJPe8V'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/konfis.test.mjs:20:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+                  "errno": 1,
+                  "code": "EPERM",
+                  "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-VJPe8V",
+                  "syscall": "rm"
+                }
+              }
+            },
+            "tags": [],
+            "line": 46,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\konfis.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\konfis.test.mjs"
+          },
+          {
+            "name": "Konfis über HTTP: Liste mit Klarnamen, Freigeben/Pausieren, Kundenroute mit Meldung gesperrt, Mandanten getrennt",
+            "nesting": 0,
+            "testNumber": 4,
+            "testId": 4,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 947.093,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "failed running after hook",
+                "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "hookFailed",
+                "cause": {
+                  "name": "Error",
+                  "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-D270Ag '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-D270Ag'",
+                  "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-D270Ag '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-D270Ag'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/konfis.test.mjs:20:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+                  "errno": 1,
+                  "code": "EPERM",
+                  "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-http-D270Ag",
+                  "syscall": "rm"
+                }
+              }
+            },
+            "tags": [],
+            "line": 71,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\konfis.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\konfis.test.mjs"
+          },
+          {
+            "name": "Kundenseite: pausierter Konfi zeigt Hinweis statt Editor, models.json liefert die Meldung als JSON",
+            "nesting": 0,
+            "testNumber": 5,
+            "testId": 5,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 447.0362,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "failed running after hook",
+                "stack": "Error [ERR_TEST_FAILURE]: failed running after hook",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "hookFailed",
+                "cause": {
+                  "name": "Error",
+                  "message": "EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-D0vXTa '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-D0vXTa'",
+                  "stack": "Error: EPERM, Permission denied: \\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-D0vXTa '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-D0vXTa'\n    at Object.rmSync (node:fs:1283:18)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/konfis.test.mjs:20:95)\n    at TestHook.runInAsyncScope (node:async_hooks:227:14)\n    at TestHook.run (node:internal/test_runner/test:1397:25)\n    at TestHook.run (node:internal/test_runner/test:1741:18)\n    at TestHook.run (node:internal/util:581:20)\n    at Test.runHook (node:internal/test_runner/test:1284:20)\n    at after (node:internal/test_runner/test:1337:20)\n    at Test.run (node:internal/test_runner/test:1423:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+                  "errno": 1,
+                  "code": "EPERM",
+                  "path": "\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-konfi-page-D0vXTa",
+                  "syscall": "rm"
+                }
+              }
+            },
+            "tags": [],
+            "line": 134,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\konfis.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\konfis.test.mjs"
+          }
+        ],
+        "rawLog": "konfis.test.mjs.raw.log",
+        "eventLog": "konfis.test.mjs.events.jsonl",
+        "command": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--test-force-exit",
+          "--import",
+          "file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/reports/full-tests-python-windows.mjs",
+          "--test",
+          "--test-concurrency=1",
+          "--test-timeout=600000",
+          "--test-reporter=tap",
+          "--test-reporter-destination=stdout",
+          "--test-reporter=file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/reports/full-tests-events.mjs",
+          "--test-reporter-destination=C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\root-cwd-diagnostics-2026-10-24T05-54-15-785Z-6kbfwG\\konfis.test.mjs.events.jsonl",
+          "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\konfis.test.mjs"
+        ]
+      },
+      {
+        "file": "app/workshop/shopify-runtime-config.test.mjs",
+        "status": "failed",
+        "forceExit": false,
+        "originalCounts": {
+          "tests": 16,
+          "failed": 7,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 16,
+          "suites": 0
+        },
+        "counts": {
+          "tests": 16,
+          "failed": 6,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 16,
+          "suites": 0
+        },
+        "exitCode": 1,
+        "signal": null,
+        "timedOut": false,
+        "launchError": null,
+        "eventError": null,
+        "sourceUnchanged": true,
+        "failures": [
+          {
+            "name": "complete config wires matching host/session and keeps transfer disabled without optional token",
+            "nesting": 0,
+            "testNumber": 2,
+            "testId": 2,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 0.2307,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                "stack": "Error [ERR_TEST_FAILURE]: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "testCodeFailure",
+                "cause": {
+                  "name": "Error",
+                  "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                  "stack": "Error: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.\n    at invalid (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:11:40)\n    at shopifyRuntimeConfig (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:17:232)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:14:27)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)",
+                  "code": "shopify_runtime_config"
+                }
+              }
+            },
+            "tags": [],
+            "line": 13,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs"
+          },
+          {
+            "name": "optional Admin token enables only draft transfer in fixed shop and API version, without probing network",
+            "nesting": 0,
+            "testNumber": 3,
+            "testId": 3,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 0.1135,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                "stack": "Error [ERR_TEST_FAILURE]: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "testCodeFailure",
+                "cause": {
+                  "name": "Error",
+                  "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                  "stack": "Error: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.\n    at invalid (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:11:40)\n    at shopifyRuntimeConfig (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:17:232)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:18:99)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+                  "code": "shopify_runtime_config"
+                }
+              }
+            },
+            "tags": [],
+            "line": 17,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs"
+          },
+          {
+            "name": "explicit organization credential mode uses existing secret privately and enables drafts only",
+            "nesting": 0,
+            "testNumber": 4,
+            "testId": 4,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 0.1223,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                "stack": "Error [ERR_TEST_FAILURE]: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "testCodeFailure",
+                "cause": {
+                  "name": "Error",
+                  "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                  "stack": "Error: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.\n    at invalid (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:11:40)\n    at shopifyRuntimeConfig (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:17:232)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:22:76)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+                  "code": "shopify_runtime_config"
+                }
+              }
+            },
+            "tags": [],
+            "line": 21,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs"
+          },
+          {
+            "name": "symlinked database or WAL is rejected before any build/database opening",
+            "nesting": 0,
+            "testNumber": 13,
+            "testId": 13,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 2.1429,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "EPERM: operation not permitted, symlink 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\outside' -> 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\private-GM8DQJ\\workshop.sqlite'",
+                "stack": "Error [ERR_TEST_FAILURE]: EPERM: operation not permitted, symlink 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\outside' -> 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\private-GM8DQJ\\workshop.sqlite'",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "testCodeFailure",
+                "cause": {
+                  "name": "Error",
+                  "message": "EPERM: operation not permitted, symlink 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\outside' -> 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\private-GM8DQJ\\workshop.sqlite'",
+                  "stack": "Error: EPERM: operation not permitted, symlink 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\outside' -> 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\private-GM8DQJ\\workshop.sqlite'\n    at Object.symlinkSync (node:fs:1938:11)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:35:218)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+                  "errno": -4048,
+                  "code": "EPERM",
+                  "syscall": "symlink",
+                  "path": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\outside",
+                  "dest": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp\\g27-runtime-links-bBbpHt\\private-GM8DQJ\\workshop.sqlite"
+                }
+              }
+            },
+            "tags": [],
+            "line": 33,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs"
+          },
+          {
+            "name": "explicit runtime constructs the real authenticated server with isolated private storage, no listener or shop writes",
+            "nesting": 0,
+            "testNumber": 14,
+            "testId": 14,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 1.5455,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.",
+                "stack": "Error [ERR_TEST_FAILURE]: Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "testCodeFailure",
+                "cause": {
+                  "name": "Error",
+                  "message": "Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.",
+                  "stack": "Error: Private Testablage nicht bestätigt. Vorhandene Daten nicht verändern; Pfad und Berechtigungen prüfen.\n    at fail (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-admin-test-server.mjs:14:25)\n    at createShopifyTestRuntime (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-admin-test-server.mjs:16:190)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:38:147)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)"
+                }
+              }
+            },
+            "tags": [],
+            "line": 37,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs"
+          },
+          {
+            "name": "verified public identity needs no user-provided key and never silently switches apps",
+            "nesting": 0,
+            "testNumber": 16,
+            "testId": 16,
+            "parentId": 0,
+            "details": {
+              "duration_ms": 0.1394,
+              "type": "test",
+              "error": {
+                "name": "Error",
+                "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                "stack": "Error [ERR_TEST_FAILURE]: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                "code": "ERR_TEST_FAILURE",
+                "failureType": "testCodeFailure",
+                "cause": {
+                  "name": "Error",
+                  "message": "Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.",
+                  "stack": "Error: Shopify-Testkonfiguration ungültig. Feldnamen und Vorgaben in der Projektübergabe prüfen; keine Schlüssel ausgeben.\n    at invalid (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:11:40)\n    at shopifyRuntimeConfig (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.mjs:17:232)\n    at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/gravuru-2027/app/workshop/shopify-runtime-config.test.mjs:45:209)\n    at Test.runInAsyncScope (node:async_hooks:227:14)\n    at Test.run (node:internal/test_runner/test:1397:25)\n    at Test.processPendingSubtests (node:internal/test_runner/test:969:18)\n    at Test.postRun (node:internal/test_runner/test:1537:19)\n    at Test.run (node:internal/test_runner/test:1462:12)\n    at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)",
+                  "code": "shopify_runtime_config"
+                }
+              }
+            },
+            "tags": [],
+            "line": 45,
+            "column": 1,
+            "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs",
+            "entryFile": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs"
+          }
+        ],
+        "rawLog": "shopify-runtime-config.test.mjs.raw.log",
+        "eventLog": "shopify-runtime-config.test.mjs.events.jsonl",
+        "command": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "--import",
+          "file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/reports/full-tests-python-windows.mjs",
+          "--test",
+          "--test-concurrency=1",
+          "--test-timeout=600000",
+          "--test-reporter=tap",
+          "--test-reporter-destination=stdout",
+          "--test-reporter=file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-10-23/files-pasted-by-the-user-du/work/reports/full-tests-events.mjs",
+          "--test-reporter-destination=C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\root-cwd-diagnostics-2026-10-24T05-54-15-785Z-6kbfwG\\shopify-runtime-config.test.mjs.events.jsonl",
+          "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\app\\workshop\\shopify-runtime-config.test.mjs"
+        ]
+      }
+    ],
+    "policy": "Separate diagnostics only; original totals/statuses remain unchanged. Force-exit applied solely to konfis, after test completion, preserving all 3 hook failures."
+  },
+  "environment": {
+    "node": "v24.20.0",
+    "python": {
+      "executable": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pyenv\\Scripts\\python.exe",
+      "version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+      "modules": {
+        "svgpathtools": {
+          "available": true,
+          "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\svgpathtools\\__init__.py"
+        },
+        "pymupdf": {
+          "available": true,
+          "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\pymupdf\\__init__.py"
+        },
+        "PIL": {
+          "available": true,
+          "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\PIL\\__init__.py"
+        },
+        "cairosvg": {
+          "available": true,
+          "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\cairosvg\\__init__.py"
+        },
+        "fontTools": {
+          "available": true,
+          "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\fontTools\\__init__.py"
+        },
+        "openpyxl": {
+          "available": true,
+          "file": "C:\\Users\\Christopher Koch\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\openpyxl\\__init__.py"
+        },
+        "numpy": {
+          "available": true,
+          "file": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pydeps\\numpy\\__init__.py"
+        }
+      },
+      "exitCode": 0,
+      "error": null
+    },
+    "temp": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp",
+    "cwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\cwd",
+    "noPackageInstall": true,
+    "noAppOrTestSourceChangeByDiagnosis": true,
+    "pythonAlias": "Test-only preload remaps python3 for child_process calls to existing work/pyenv/Scripts/python.exe.",
+    "cwdRunnerError": "The full runner isolated CWD for all files instead of only catalog-structure/design-dashboard; direct CWD assumptions in editable-design/runtime-config broke. Separate reruns confirmed both. Full runner not altered during execution.",
+    "buildSideEffect": "Existing build(outputDirectory) also generates app/configurator/variant-m/.preview/lazy. Build-using diagnostics serialized.",
+    "network": "No localhost permission failures observed in the completed run.",
+    "cwdScan": "work/reports/full-tests-cwd-scan.json"
+  },
+  "integrity": {
+    "protectedChanges": [],
+    "testSourceChanges": []
+  },
+  "overall": "Not green. Original 175-file run remains 1193 pass/23 fail with one incomplete process; separate latest-per-unchanged-file aggregation after exactly three diagnostic reruns is 1198/1222 pass,24 fail,zero skipped/cancelled,all175 files accounted for.",
+  "latestPerFileAggregation": {
+    "source": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027\\docs\\handoffs\\2026-10-24-paket-b-revision-belege\\full-tests-aggregate.json",
+    "codeCommit": "cd969347e88e3c7af8de43d258099e0a63e77dd6",
+    "policy": "Einzeldatei-Ergebnisse der drei expliziten Gegenproben ersetzen ausschließlich ihre ursprünglichen Ergebnisse; kein Addieren wiederholter Tests. Das ist eine transparente Aggregation, kein neuer kompletter Lauf.",
+    "fileCount": 175,
+    "filesByStatus": {
+      "passed": 165,
+      "failed": 10,
+      "incomplete": 0
+    },
+    "totals": {
+      "tests": 1222,
+      "passed": 1198,
+      "failed": 24,
+      "skipped": 0,
+      "cancelled": 0,
+      "todo": 0
+    },
+    "scopes": {
+      "app/configurator/variant-m/": {
+        "files": 40,
+        "tests": 236,
+        "passed": 236,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0,
+        "todo": 0
+      },
+      "app/workshop/": {
+        "files": 135,
+        "tests": 986,
+        "passed": 962,
+        "failed": 24,
+        "skipped": 0,
+        "cancelled": 0,
+        "todo": 0
+      }
+    },
+    "independentlyRecomputed": true
+  }
+}

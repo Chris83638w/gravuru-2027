@@ -13,6 +13,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createWorkshop} from './http.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {selectedProfile,customerLayoutIssue} from '../configurator/variant-m/contract.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
 
 const family=()=>JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
@@ -252,12 +253,19 @@ test('contour family keeps exact outline and drawing holes independently of edge
  assert.ok(svg.includes('d="'+s.outlinePath+'"'));
  assert.ok(svg.includes('cx="7.995" cy="30" r="2"'));
  assert.ok(svg.includes('cx="82.005" cy="30" r="2"'));
- assert.ok(svg.includes('id="nutzflaeche" data-status="offen"'));
+ assert.ok(svg.includes('id="nutzflaeche-maske"'));
  assert.ok(!svg.includes('transform="translate(2 2)"'),'no false scaled contour margin');
  assert.ok(familyBriefing(f,1).includes('feste Lochpositionen aus Zeichnung'));
- assert.ok(familyGaps(f).includes('Form „Kontur“ im Konfigurator noch nicht angeschlossen'));
+ assert.ok(!familyGaps(f).some(g=>g.includes('Kontur')));
  assert.ok(!familyGaps(f).some(g=>g.startsWith('Bohrbild')),'fixed drawing holes are complete');
- assert.throws(()=>familyProductConfig(f,s,1),/Kontur/);
+ const c=familyProductConfig(f,s,1),p=selectedProfile(c,{mounting:'B02'});
+ assert.equal(p.geometry.outlinePath,s.outlinePath);assert.equal(p.geometry.safeMarginMm,2);assert.equal(p.geometry.holeKeepoutMm,3);
+ assert.equal(p.geometry.holesMm,undefined,'profile carries selected holes only');
+ assert.deepEqual(p.geometry.holes,s.holesMm.map(h=>({x:h.x,y:h.y,diameter:h.diameterMm})));
+ assert.equal(p.optionGroups[0].values.find(v=>v.id==='B02').mountingRule.fixed,true);
+ assert.equal(p.optionGroups[0].values.find(v=>v.id==='B02').mountingRule.edgeMm,undefined,'no invented edge rule');
+ assert.match(customerLayoutIssue({type:'motif',x:7.995,y:30,w:2,h:2,rotation:0},p),/Bohrloch/);
+ assert.equal(customerLayoutIssue({type:'motif',x:7.995,y:30,w:2,h:2,rotation:0},selectedProfile(c,{mounting:'K00'})),'');
  g.holesMm[0].x=999;assert.equal(s.holesMm[0].x,7.995,'geometry does not mutate drawing');
 });
 test('contour family validates physical bounds, fixed holes and form-only fields',()=>{

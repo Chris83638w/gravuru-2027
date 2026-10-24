@@ -36,7 +36,7 @@ export function freePosition(object,surface,objects,obstacles=[]){
  for(const y of ys)for(const x of xs)grid.push({x,y,d:(x-cx)**2+(y-cy)**2});
  grid.sort((a,b)=>a.d-b.d);
  // Rasterpunkte liegen bei rechteckiger Fläche und ungedrehtem Element konstruktionsbedingt innerhalb (keine Konturprüfung nötig).
- const gridFits=surface.shape!=='ellipse'&&!(object.rotation||0);
+ const gridFits=surface.shape!=='ellipse'&&surface.shape!=='contour'&&!(object.rotation||0);
  for(const {x,y} of grid)candidates.push({x,y,grid:gridFits});
  for(const p of candidates){const next={...object,x:p.x,y:p.y};if(!p.grid&&!fitsSurface(next,bounds,surface))continue;if(blocked({...next,w:next.w+PLACEMENT_GAP_MM,h:next.h+PLACEMENT_GAP_MM}))continue;return {x:p.x,y:p.y};}return null;
 }

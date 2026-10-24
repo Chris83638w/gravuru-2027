@@ -4,6 +4,7 @@ import {fontDisplayName} from './font-display.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {objectSurface} from './surfaces.mjs';
 import {physicalTextSize,designTextSize,fittingTextSize} from './usability-model.mjs';
 import {scaleObject} from './image-processing.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
@@ -122,7 +123,7 @@ test('large text: pointer, handle keyboard and toolbar shrink never enlarge a 4-
 });
 test('large text: actual fit action reaches physical 4 mm and reports that value',async()=>{
  const {env,object,r}=textEnvironment();object.size=4;object.x=22.5;object.y=10;
- let message='';Object.assign(env,{fittingTextSize,textBounds:()=>({x:-30,y:-5,width:60,height:10}),surface:()=>({x:0,y:0,width:45,height:20}),say:value=>{message=value;}});
+ let message='';Object.assign(env,{objectSurface,fittingTextSize,textBounds:()=>({x:-30,y:-5,width:60,height:10}),surface:()=>({x:0,y:0,width:45,height:20}),say:value=>{message=value;}});
  vm.runInContext(block('usability.mjs',"  r.addEventListener('click',e=>{const b=e.target.closest('[data-ux=fit-text]')","\n  });"),env);
  await dispatch(r,'click',inertEvent({closest:()=>({dataset:{id:object.id}})}));
  assert.equal(object.size,3);assert.equal(message,'Text auf 4 mm angepasst.');
@@ -237,7 +238,7 @@ test('Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur 
  const make=objects=>{
   const said=[],motifCalls=[];
   const env={config:{profile:{geometry}},profile:{geometry},el:{state:{objects,selected:null},uxMinTextMm:3,uxTextScale:()=>1},say:m=>said.push(m),designArea,freePlacement,NO_FREE_SPACE_MESSAGE,MOTIF_MIN_MM,
-   surface:()=>({x:0,y:0,width:90,height:60}),obstacles:()=>[],api:{},placementJob:Promise.resolve(),placeNewMotif:(_api,o,opts)=>{motifCalls.push({id:o.id,...opts});return Promise.resolve();}};
+   surface:()=>({x:0,y:0,width:90,height:60,shape:'rect'}),obstacles:()=>[],api:{},placementJob:Promise.resolve(),placeNewMotif:(_api,o,opts)=>{motifCalls.push({id:o.id,...opts});return Promise.resolve();}};
   vm.createContext(env);
   for(const marker of ['const physicalScale=','function placementSurface(){','function shrinkTo(o,scale){'])vm.runInContext(line('workflow.mjs',marker),env);
   vm.runInContext(block('workflow.mjs',' function placementMinScale(o){','\n }'),env);
@@ -246,6 +247,10 @@ test('Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur 
  };
  // Gestaltungsfläche = Rand 2 mm: 86 × 56 mm.
  const {env:e0}=make([]);assert.deepEqual(structuredClone(vm.runInContext('placementSurface()',e0)),{x:2,y:2,width:86,height:56,shape:'rect'});
+ // Fehlende Form fällt auf das Profil zurück; eine explizite aktuelle Form bleibt maßgeblich.
+ const configuredSurface=e0.surface;e0.surface=()=>({x:0,y:0,width:90,height:60});
+ assert.deepEqual(structuredClone(vm.runInContext('placementSurface()',e0)),{x:2,y:2,width:86,height:56,shape:'rect'});
+ e0.surface=()=>({...configuredSurface(),shape:'ellipse'});assert.equal(vm.runInContext('placementSurface().shape',e0),'ellipse');e0.surface=configuredSurface;
  // Mindestmaßstab: Text 12 mm → 3/12; Text schon unter 3 mm → 1 (nicht weiter verkleinern); Motiv 40 mm → 10/40; Motiv 8 mm → 1.
  assert.equal(vm.runInContext("placementMinScale({type:'text',size:12,w:30,h:12})",e0),0.25);
  assert.equal(vm.runInContext("placementMinScale({type:'text',size:2.5,w:10,h:3})",e0),1);

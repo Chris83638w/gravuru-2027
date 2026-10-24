@@ -1,0 +1,30 @@
+✔ universal preview and material texture preserve the original contour and transparent fixed holes (5.0702ms)
+✔ design area uses a true inward mask with hole protection and is absent from production previews (1.0285ms)
+✔ fitting rejects the concave bite and a hole enclosed by an element; free placement respects both (7.9425ms)
+✔ dragging stops at the actual inset edge and never substitutes a rectangular boundary (7.4334ms)
+✔ snapping filters unsafe targets and rejects an unsafe combination of valid axis targets (0.77ms)
+✔ existing workshop material preview renders the same curved outer path and physical opening (0.997ms)
+✔ catalog contour dimensions cannot be rescaled by the rectangular steel size editor (0.8751ms)
+✔ workshop snapping also keeps the complete object clear of contour holes (0.5319ms)
+✔ back-side preview mirrors the asymmetric source contour together with its holes (1.3449ms)
+✔ switching contour surfaces preserves both designs; only the active object is clamped (3.855ms)
+✔ contour position anchors survive surface changes independently when the centre is protected (5.5166ms)
+✔ text warnings use only the active surface and never test inactive text against the displayed outline (0.677ms)
+✔ Elemente bis an den Rand, nicht darüber hinaus (1.2672ms)
+✔ gedrehte und zu große Elemente (0.1905ms)
+✔ vor jedem Zeichnen begrenzt (0.3116ms)
+✔ Customer sizes retain hundredths of millimetres, never below four (1.4789ms)
+✔ Surface changes with the frame; exact edge is allowed, overrun is not (0.5049ms)
+✔ Rotated text and ellipse edges are checked, hidden centering is not performed (0.6145ms)
+✔ Auto fit never reduces a long text under four millimetres (0.2765ms)
+✔ Print colours stay valid for text and graphics; photos remain original (0.5376ms)
+✔ Motifs and upload logos can restore original colours with separate draft flags (0.3381ms)
+✔ K10: palette swatches follow the process profile list; autofit honours the profile minimum (0.4907ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 214.7553

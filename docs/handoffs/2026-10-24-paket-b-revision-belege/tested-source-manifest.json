@@ -1,0 +1,291 @@
+{
+  "baseMain": "ed4b9c6eca8045ac0f650817fb242ace3f13b7e8",
+  "includesCMerge": "42c6404693d9117ce83e5afe9f478e0211d70793",
+  "oldB": "f4439c2163644091bd781b9e7b76f3d2641884fe",
+  "method": "merge commit with B first parent and main second parent; no force update",
+  "sourceFiles": [
+    {
+      "path": "app/workshop/product-families.mjs",
+      "sha": "38ec231aa012922132f144541828368ecbbbfa4d",
+      "sha256": "7bcf79ea87358837af156c3b3311acceef7553c10b3b23d582bb4866eefaf91c",
+      "bytes": 46193
+    },
+    {
+      "path": "app/workshop/product-families.test.mjs",
+      "sha": "4439942066c4938b4b1fc50809858d2045e2de0b",
+      "sha256": "87c2f3f71b86b70c2007bc888a2046cef51c0b7b0046216be5b70d5d1c3a952e",
+      "bytes": 28333
+    },
+    {
+      "path": "app/workshop/contour-path.mjs",
+      "sha": "da3208d4301d69cc0d8a1405a65e692c691c5eff",
+      "sha256": "ddfb077778673d425e7b3391e175971d98b72d663b923e6f015b68124e09c443",
+      "bytes": 159
+    },
+    {
+      "path": "app/workshop/contour-contract.test.mjs",
+      "sha": "1011c2a21f39e6fbef585c6c42aff2df76c24ea6",
+      "sha256": "6f250cdb082426cd7084b1d696c753c9f3f8834f96c2d683b12227a6d588d2f3",
+      "bytes": 5425
+    },
+    {
+      "path": "app/workshop/katalog-convert.mjs",
+      "sha": "3b3e31c38adc140eeb2851d461a1e7e99bd5fef8",
+      "sha256": "b8ea3a13bdc353b358a6a322f0978f52f5359906776345a5216028abb21abc91",
+      "bytes": 36619
+    },
+    {
+      "path": "app/workshop/katalog-convert.test.mjs",
+      "sha": "274b0bd401a0353a173a6db41d6076b098343344",
+      "sha256": "e20dc79dbd440f2bee886f24084182e496dc972d04f89ccd7a026ca50f4c6793",
+      "bytes": 24956
+    },
+    {
+      "path": "app/workshop/katalog-import.mjs",
+      "sha": "c66e451fb5117dff6a38f3141f34d7fa2793eaa4",
+      "sha256": "f6d97a489bc494854492d0549233cd1d8ae764c6119cdd87a767277710074a46",
+      "bytes": 19442
+    },
+    {
+      "path": "app/workshop/katalog-import.test.mjs",
+      "sha": "ef60794bb00d847a7d5e7113293ea2e03f47ebe0",
+      "sha256": "faa0697e2e1901c6d7f22cf9e30c3dbe4e790f800599aecc38a6be839ad07d21",
+      "bytes": 22140
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "sha": "c30b9acdc5b32e29c328e3857a20d03bfa0688b7",
+      "sha256": "52914b8a71164c6fd565a70b9ee9e5e6d9e274ccf3cc5450c8fbe62d5ad27a6b",
+      "bytes": 34064
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/contour-geometry.mjs",
+      "sha": "67b71cfea3dadc845dfb406e832c3913f975f301",
+      "sha256": "b34be5475b29d378c798c4b29dcde897b786321845ba85a912eb668e5b196f8f",
+      "bytes": 16515
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/contour-geometry.test.mjs",
+      "sha": "08d277f86d12a2e33777cc41c08efddd3cd50dc9",
+      "sha256": "b9230177a83983c76e421cdeff71d5b119909fdda1449d76dfe47a00c49be524",
+      "bytes": 5610
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/design-content.mjs",
+      "sha": "01c4b54064659a1d0a60b911716433ac7077181f",
+      "sha256": "38e8ffff97c67b05321e84ae4b450c3093c0cc555c8fcd4b48de6f44dd8634dc",
+      "bytes": 12920
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-products.mjs",
+      "sha": "6a9d6fa7cc6d301ca0991f6c712a80103d9feec3",
+      "sha256": "2a67399d2e5ee6178432b20ab948559b1752ce48f2becf69312c994eca2b01ed",
+      "bytes": 7332
+    },
+    {
+      "path": "app/workshop/specimen-product.mjs",
+      "sha": "5243663afcbcacd704e5e303689d4762aa57e508",
+      "sha256": "3314d01fec610583c5884f031c7e0052f7c467364161fe8adeec87f552464c16",
+      "bytes": 7657
+    },
+    {
+      "path": "app/workshop/test-fixtures/retro-contours.json",
+      "sha": "b5bfbddf8b7462f6c0f616d16098bb901bb2438d",
+      "sha256": "36cdadb485de8f420753571b7bbc7347e1c1d9ceb0a9e40c6615fde35796736a",
+      "bytes": 13118
+    },
+    {
+      "path": "app/workshop/test-fixtures/retro-designs.json",
+      "sha": "c5581418d6ba4971cf18ff43f8fa5c633e826fab",
+      "sha256": "7fb456127e5114711ba2ec7430d1126573ceab79a8a4bdf9a1792d8bab5366a2",
+      "bytes": 7172
+    },
+    {
+      "path": "app/workshop/acrylic-artwork.mjs",
+      "sha": "9d967440f3a9e88a96cd17c8479ddb53ab882a79",
+      "sha256": "d919c1889609dc86962424a43a7f4e11642463b5f7242cfd616bb1969fac2f8e",
+      "bytes": 9583
+    },
+    {
+      "path": "app/workshop/acrylic-artwork.test.mjs",
+      "sha": "1bb31bb8ec5cf1f36773d9696c34e0c7540ccb48",
+      "sha256": "e5df85a9bdd7068ecfdf28e82d0482558f1cc9e15c3aa31ad0646e3c5c20c7b6",
+      "bytes": 2344
+    },
+    {
+      "path": "app/workshop/contour-production.test.mjs",
+      "sha": "6ad57288573121f5b5f6ca29ce0793041aa09c99",
+      "sha256": "a00fd36c0512d3e9412e4d3904c8d3f79f0f04621f4208969732790b4edad1fa",
+      "bytes": 11236
+    },
+    {
+      "path": "app/workshop/test-fixtures/contour-production-inspect.py",
+      "sha": "cd02cd8c921843e2a1df907ebdc233590afb7b29",
+      "sha256": "44ddb3dcc3a3b126a821109132cb10ef011a8c815880895da57870b36d9d153c",
+      "bytes": 2624
+    },
+    {
+      "path": "app/configurator/variant-m/design-area.mjs",
+      "sha": "b9d7a1064aa5ad70a90b6357cfdf0de36df3c634",
+      "sha256": "0ce4aeb6c256f6fa38516ffb5a7c0e3bd99dfd503af20de11411d25c8ce3b5de",
+      "bytes": 3812
+    },
+    {
+      "path": "app/configurator/variant-m/usability-model.mjs",
+      "sha": "31c399d0e7e10f133bc234077f3149668905c230",
+      "sha256": "4fa2d19a014735f4383f9bc5b49dccc5a0916ce5f641635c59af95a8c8831a16",
+      "bytes": 4284
+    },
+    {
+      "path": "app/configurator/variant-m/workflow-model.mjs",
+      "sha": "34083d55143efb0eecd42887813f87e35b8c8fdf",
+      "sha256": "b6b1d5624831fa6fd7f91e68194438c1c63d7aeca5177e5f179863baa5f48fcd",
+      "bytes": 8797
+    },
+    {
+      "path": "app/configurator/variant-m/adapter.mjs",
+      "sha": "da8fdc8b96d737f0103efb5c5912baa4f6e7fc11",
+      "sha256": "61429329a93c0f18505caa3923f9e70705c0611a93e99e503e53911964d4d841",
+      "bytes": 33840
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "sha": "e531eb3fbf6950a443ae97c327f40f4a621df31b",
+      "sha256": "d528eb9f9de86e8ccece3ae4f796825959a189b3e683e8362f3fbbfccc7679a9",
+      "bytes": 23200
+    },
+    {
+      "path": "app/configurator/variant-m/usability.mjs",
+      "sha": "e6dba1b481e0e354b28eb33c5f1a44d3c1f2c2a5",
+      "sha256": "f9ea09c0c7fcbfe46724537b16da581c059198305cfac3775c64c8685e295622",
+      "bytes": 21355
+    },
+    {
+      "path": "app/configurator/variant-m/motif-placement.mjs",
+      "sha": "ceb4fd30a88b3ec47e6c1333a705eeafad40406e",
+      "sha256": "7b1a09d5ad56d5ee2865a4c5fa3b1bcc71c269933e090c8932e28b37320e5d2c",
+      "bytes": 4773
+    },
+    {
+      "path": "app/configurator/variant-m/edge-clamp.mjs",
+      "sha": "c1e04eb2f83d0bff5b0defef3709cfab5afd713d",
+      "sha256": "79b77ff8302b1c35ae1fb141ac07d2ea3c6282dba0eca8f52e407003d6ddc312",
+      "bytes": 4439
+    },
+    {
+      "path": "app/configurator/variant-m/material-surface.mjs",
+      "sha": "8f2cbece96d98264179146f1f224c680352a15d0",
+      "sha256": "562879be2e08d84bd5723233aef80a30cedb2df57a1bef9ba55220f478258ab1",
+      "bytes": 4079
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/studio-svg.mjs",
+      "sha": "b9561abcc3151b5e4be35e4a86743ee474125938",
+      "sha256": "8ea01ea218e1be610fe7c74e1e44f9ba2954b11e78c7f5a27cfc0ad9823b31b2",
+      "bytes": 13231
+    },
+    {
+      "path": "app/configurator/variant-m/steel-formats.mjs",
+      "sha": "78cd3d9f9660e8d291507248b534ec800e9d998c",
+      "sha256": "9404a87da88e6fb3ff6780f451126b1043ea8e9afc5dfaf782ef50229baf7a9d",
+      "bytes": 5991
+    },
+    {
+      "path": "app/workshop/ui/editor-guides.mjs",
+      "sha": "d9451687ae30b5b10730ced89701b07dd7e0a73c",
+      "sha256": "60249382206de191c86738240bd4d901960e6b5bff92b85aac75a7fe7e24c3db",
+      "bytes": 8139
+    },
+    {
+      "path": "app/configurator/variant-m/surfaces.mjs",
+      "sha": "b8c241f2f7c54a55a18c4c5efb7b091f6312885a",
+      "sha256": "e16df81cb8c1db47d60db6fc47a57266494dbe3bae62d235c6fba14157fe6d6c",
+      "bytes": 5198
+    },
+    {
+      "path": "app/configurator/variant-m/contour-guides.mjs",
+      "sha": "d084b54473e28f1a06322b408dafa0d6bcaeecac",
+      "sha256": "566ebbdeb28d6dfa5561508537fc3646a129abd43c97555ae994c19987b47b01",
+      "bytes": 1773
+    },
+    {
+      "path": "app/configurator/variant-m/contour-ui.test.mjs",
+      "sha": "c3990cfae8ffc7fb3bcd13501d568a7be9d0d1da",
+      "sha256": "00752af78465afb40b22d4b9a638d1464784d36553eec9b99f44626d7665f232",
+      "bytes": 11158
+    },
+    {
+      "path": "app/configurator/variant-m/print-export-model.mjs",
+      "sha": "681a24f38e570812147e1f0a83a53e216b09757a",
+      "sha256": "e8cccb25e7b5c127a6370e3fd2bb21d08645a22586aa07d534882e169f276c71",
+      "bytes": 18132
+    },
+    {
+      "path": "app/configurator/variant-m/print-export.mjs",
+      "sha": "3d056dd596f6d4ad56df1015265676519335974d",
+      "sha256": "8c3cd2f51020ca615bda5a98556782b7bdf0aca33833d99e33ec235df7941b24",
+      "bytes": 22840
+    },
+    {
+      "path": "app/configurator/variant-m/contour-pdf-path.mjs",
+      "sha": "a21928adafaeacde4a34f6febc8f73afa38165a6",
+      "sha256": "a8def0077f8972b9afbdc0678a273fe27009ab11fc187e8f2060fdfa56fd2cae",
+      "bytes": 2196
+    },
+    {
+      "path": "app/configurator/variant-m/contour-print.test.mjs",
+      "sha": "2508db208163a3418e95517d142ba9b7d5ebd846",
+      "sha256": "b63c128a2758ebc7a5ea895e2f44952d2654fffa2638ac82e0cc96c65704bcc0",
+      "bytes": 4470
+    },
+    {
+      "path": "scripts/preview-retro-contours.mjs",
+      "sha": "394d935027d212c19366bd46500e99924ca290cd",
+      "sha256": "fb7188c0a83182992bd8ddca73d68d29ac66bc4fe45b04207452cbdee0690077",
+      "bytes": 4640
+    },
+    {
+      "path": "scripts/build-katalog.py",
+      "sha": "5111031f5876d3d8258452b99c83086a8fe8b29d",
+      "sha256": "02aae7df5a547b14241150080f37882af0c0c7f8412780441e4852eeb467757b",
+      "bytes": 15513
+    },
+    {
+      "path": "scripts/katalog-contour.test.py",
+      "sha": "d306cc2ab0da808ca0f8c9ad79018f2be33b0d05",
+      "sha256": "22da7df43c0c8b72350a5754e96840db7403c66c5f7a1666415cf12f59311cfb",
+      "bytes": 14759
+    },
+    {
+      "path": "app/workshop/ui/design-authoring.mjs",
+      "sha": "858456009873cc5de9f18686df9b9591deb4f484",
+      "sha256": "7edf1c4889d476c90594944299e1bae5832ede0ad883389b24c11fc2cee83cf9",
+      "bytes": 7270
+    },
+    {
+      "path": "app/workshop/ai-design-plan.mjs",
+      "sha": "b4539171cb71b7d956a17b73d4e990199ef3d8f0",
+      "sha256": "e8d20c08cc1dd5fefc699d507f701860856c3531f8ab5381df102252cb30ff07",
+      "bytes": 7524
+    },
+    {
+      "path": "app/workshop/contour-surfaces.test.mjs",
+      "sha": "2f14fce58eac7f41e13f15fabbc8ca68fafcdf83",
+      "sha256": "f8086728cf13a7c6b40160a61eebfa3a37825c44e9d9adb3b0f76b63ee5ead23",
+      "bytes": 8046
+    },
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "sha": "1563780cc8b9924951c6ce2593ca29ceb63935ae",
+      "sha256": "403fe135e13f3a6af791914390b1a445d716d7cebba3cd38e3b8e64a378cdd10",
+      "bytes": 38077
+    },
+    {
+      "path": "scripts/katalog-import.mjs",
+      "sha": "d36d0df6941b3103e6f09b68485d69472117503a",
+      "sha256": "ac22c4701f39ff9205fd8f5ab2b25a3ee6d896c0fb6b42f86479a78fa9652ded",
+      "bytes": 5186
+    }
+  ],
+  "mergeCommit": "cd969347e88e3c7af8de43d258099e0a63e77dd6"
+}

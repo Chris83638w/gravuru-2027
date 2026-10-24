@@ -1,0 +1,42 @@
+[
+  {
+    "file": "app/platform/sources/app/shared/models/contour-geometry.mjs",
+    "bytes": 16515,
+    "sha256": "b34be5475b29d378c798c4b29dcde897b786321845ba85a912eb668e5b196f8f"
+  },
+  {
+    "file": "app/configurator/variant-m/surfaces.mjs",
+    "bytes": 5198,
+    "sha256": "e16df81cb8c1db47d60db6fc47a57266494dbe3bae62d235c6fba14157fe6d6c"
+  },
+  {
+    "file": "app/platform/sources/app/shared/models/design-content.mjs",
+    "bytes": 12920,
+    "sha256": "38e8ffff97c67b05321e84ae4b450c3093c0cc555c8fcd4b48de6f44dd8634dc"
+  },
+  {
+    "file": "app/configurator/variant-m/contract.mjs",
+    "bytes": 34064,
+    "sha256": "52914b8a71164c6fd565a70b9ee9e5e6d9e274ccf3cc5450c8fbe62d5ad27a6b"
+  },
+  {
+    "file": "app/platform/sources/app/shared/models/studio-products.mjs",
+    "bytes": 7332,
+    "sha256": "2a67399d2e5ee6178432b20ab948559b1752ce48f2becf69312c994eca2b01ed"
+  },
+  {
+    "file": "app/workshop/ui/design-authoring.mjs",
+    "bytes": 7270,
+    "sha256": "7edf1c4889d476c90594944299e1bae5832ede0ad883389b24c11fc2cee83cf9"
+  },
+  {
+    "file": "app/workshop/ai-design-plan.mjs",
+    "bytes": 7524,
+    "sha256": "e8d20c08cc1dd5fefc699d507f701860856c3531f8ab5381df102252cb30ff07"
+  },
+  {
+    "file": "app/workshop/contour-surfaces.test.mjs",
+    "bytes": 8046,
+    "sha256": "f8086728cf13a7c6b40160a61eebfa3a37825c44e9d9adb3b0f76b63ee5ead23"
+  }
+]

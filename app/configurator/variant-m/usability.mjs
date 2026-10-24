@@ -1,8 +1,19 @@
+import {maskContourGuides} from './contour-guides.mjs';
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 import {money} from './contract.mjs';
 import {colorPalettes} from './profile-selection.mjs';
+import {objectSurface} from './surfaces.mjs';
+
+// The supplied geometry already faces the displayed side; inactive text is checked on its own side.
+export function surfaceTextIssues(objects,surfaceId,geometry,textBounds){
+  const active=surfaceId==='back'?'back':'front';
+  return objects.filter(o=>objectSurface(o)===active&&o.type==='text'&&!o.uxHidden&&o.text.trim()).flatMap(o=>{
+    try{return fitsSurface(o,textBounds(o),geometry)?[]:[{id:o.id,code:'outside-surface',message:'Text ragt über die Gestaltungsfläche.'}];}
+    catch{return [{id:o.id,code:'font-invalid',message:'Die Schrift kann diesen Text nicht vollständig darstellen.'}];}
+  });
+}
 
 export async function installUsability(api) {
   const {el,r,profile,config,esc,button,mutate,selected,say,acceptFiles,changeObject}=api;
@@ -159,7 +170,7 @@ export async function installUsability(api) {
     const state={...el.state,objects:el.state.objects.filter(o=>!o.uxHidden)},o=selected();
     for(const text of state.objects.filter(o=>o.type==='text'))markup+=anchor(text.x,text.y);
     if(o&&window.GravuruGuided){const targets=window.GravuruGuided.alignmentTargets(state,o);for(const axis of ['x','y'])for(const target of targets[axis].filter(t=>Math.abs(t.value-o[axis])<.03)){markup+=axis==='x'?line(target.line,0,target.line,h,true)+anchor(target.line,o.y):line(0,target.line,w,target.line,true)+anchor(o.x,target.line);}}
-    group.innerHTML=markup;scene.append(group);
+    group.innerHTML=markup;maskContourGuides(group,surface());scene.append(group);
   }
 
   // No repeated SVG ids between live product, gallery, mini preview and dialog.
@@ -189,13 +200,10 @@ export async function installUsability(api) {
     if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,bounds);return bounds;
   }
   function surface(){
-    if(config)return {x:0,y:0,...profile.geometry};
+    if(config)return {x:0,y:0,...(el.uxProfileGeometry?.()||profile.geometry)};
     return profile.frames.find(f=>f.key===el.state.fkFrame)?.acrylic||profile.frames[0].acrylic;
   }
-  function issues(){return el.state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.text.trim()).flatMap(o=>{
-    try{return fitsSurface(o,textBounds(o),surface())?[]:[{id:o.id,code:'outside-surface',message:'Text ragt über die Gestaltungsfläche.'}];}
-    catch{return [{id:o.id,code:'font-invalid',message:'Die Schrift kann diesen Text nicht vollständig darstellen.'}];}
-  });}
+  function issues(){return surfaceTextIssues(el.state.objects,el.state.uxSurface,surface(),textBounds);}
   el.uxTextBounds=textBounds; // Randsperre nach Buchstaben (edge-clamp.mjs)
   el.uxValidateDesign=issues; // Same gate can be called by the future trusted order adapter.
   function updateWarnings(){
@@ -216,7 +224,7 @@ export async function installUsability(api) {
   }
   const warning=document.createElement('p');warning.dataset.uxBoundaryStatus='';warning.className='ux-boundary-status';warning.hidden=true;stage.append(warning);
   r.addEventListener('click',e=>{const b=e.target.closest('[data-ux=fit-text]');if(!b)return;
-    const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked)return;
+    const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked||objectSurface(o)!==(el.state.uxSurface==='back'?'back':'front'))return;
     const size=fittingTextSize(o,textBounds(o),surface(),el.uxTextScale?.()||1,el.uxMinTextMm);
     if(size===null){say('Auch mit '+String(el.uxMinTextMm||4).replace('.',',')+' mm passt der Text hier nicht. Bitte kürzen oder weiter nach innen verschieben.');return;}
     mutate(()=>{o.size=size;el.state.selected=o.id;});say('Text auf '+el.uxDisplayTextSize(o).toLocaleString('de-DE')+' mm angepasst.');

@@ -3,7 +3,7 @@ import {processProfile,processColorIssue} from '../../workshop/process-profiles.
 import {validateOptionPresentation} from './option-media.mjs';
 import {validateStudio} from '../../platform/sources/app/shared/models/studio-products.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
-import {validateDesignContent, objectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {validateDesignContent, surfaceObjectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements} from '../../platform/sources/app/shared/models/universal-elements.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {localFontIds} from './local-pilot.mjs';
@@ -17,8 +17,9 @@ import {validateSurfaces,objectSurface,hasBack,backSurcharge,surfaceProcess} fro
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
 // A printed/engraved element does not obstruct a screw. Mechanical access belongs
-// to the model-bound plate assembly; retain the native outer-contour checks here.
-export const customerLayoutIssue=(object,profile)=>objectIssue(object,{...profile,geometry:{...profile.geometry,holes:[]}});
+// to the model-bound plate assembly. Contour families explicitly carry hole
+// keepouts for every design object; preserve the existing policy for basic shapes.
+export const customerLayoutIssue=(object,profile)=>surfaceObjectIssue(object,profile.geometry.shape==='contour'?profile:{...profile,geometry:{...profile.geometry,holes:[]}});
 export const DRAFT_SCHEMA = 'gravuru-universal-customer-draft/v1';
 // Ü6.1: Ebenenrolle. 'guide' ist im Editor sichtbar, erscheint aber nie in der
 // Fertigungsausgabe. Standard ohne Angabe ist 'print'. Die Rolle ist ein

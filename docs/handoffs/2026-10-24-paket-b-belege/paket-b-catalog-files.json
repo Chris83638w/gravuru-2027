@@ -1,0 +1,95 @@
+{
+  "code": [
+    {
+      "path": "scripts/build-katalog.py",
+      "bytes": 15513,
+      "sha256": "02aae7df5a547b14241150080f37882af0c0c7f8412780441e4852eeb467757b"
+    },
+    {
+      "path": "scripts/katalog-contour.test.py",
+      "bytes": 14759,
+      "sha256": "22da7df43c0c8b72350a5754e96840db7403c66c5f7a1666415cf12f59311cfb"
+    }
+  ],
+  "catalog": [
+    {
+      "path": "KATALOG.md",
+      "before": "b6935a694fa1ba6d81858ae37fec854372e769b23397543ec29c988f4b863467",
+      "after": "84bfab9d07b212864dfb52c53cdf3d1039f98aba4c1634c041722a07d216fd98"
+    },
+    {
+      "path": "kataloge/acryl-aa-abstandshalter.pdf",
+      "before": "fab44816ee28bb3d42d8d6341808353058b6d92ab4b89d9da829bd0511fa2078",
+      "after": "a7dd6d2569a2b45c1355ee88fe865ea32df34b5809a2c19a23affe4df4cff541"
+    },
+    {
+      "path": "kataloge/acryl-as-abstandshalter.pdf",
+      "before": "194b36e58dfa0cdf332366c4e3e9ab269ae2334f8ac6c520d139882410843f74",
+      "after": "05707ca148cb8917683092115d76bcd3f232e050667ac0001fddc796c4e8d5bd"
+    },
+    {
+      "path": "kataloge/acryl-ss-abstandshalter.pdf",
+      "before": "38c27f6c2c3db652c0e3564dec409d9e0d54ccc9e1202881cacadf946f50d2bb",
+      "after": "c1908c85874087fd99dadfbfd724217752baeeb98af2c9d131cc5dea961d133d"
+    },
+    {
+      "path": "kataloge/gedenktafel-22x14-schiefer-hunde-2027.pdf",
+      "before": "2b156ea1e9b0f98888663c8ea0817998e9f845d315b50f8950cc6ae299cb5c9f",
+      "after": "fb0d61def7463bc2706a783f78ecf423f3ea5be057d4e9fcd224fabe4bcea4f5"
+    },
+    {
+      "path": "kataloge/gedenktafel-22x14-schiefer-natur.pdf",
+      "before": "2d7589cfa7d5bfbf49baf3ab578b8ec0cba8c367f44d48b1b92fa000898528e1",
+      "after": "a761b716d2c3d9914a0e3ddf7a14569d8b55c441f06d67ea3d84c9fe0426603a"
+    },
+    {
+      "path": "kataloge/gedenktafel-30x20-acryl-anthrazit.pdf",
+      "before": "4216ab25bee88af730c24b55ea586ad11ecee6328ea6341a495999c0915475d7",
+      "after": "3d82d53bd75356e846c53b031011eba0330cd78d8cbebf7c53883fb2188d9c86"
+    },
+    {
+      "path": "kataloge/gedenktafel-30x20-acryl-schwarz.pdf",
+      "before": "5a36a146cf2af605b50dc50905254772ebf3e9e5a9e629656257e4402d3eee55",
+      "after": "0def8ab8fc76a36a628e3ff06e54ec0119effbc4480c7addbc18d0968cbca0b0"
+    },
+    {
+      "path": "kataloge/gedenktafel-30x20-edelstahl.pdf",
+      "before": "2b75b340f4c92f4c47bcb68bce5e37d2e169a2a51e0b803273c5f84190b13136",
+      "after": "19f07593482773e3bfbb4d4b0d348b958419d66fc8f690fff45fbf4c0a21a646"
+    },
+    {
+      "path": "kataloge/gedenktafel-30x20-schiefer-natur.pdf",
+      "before": "644a52d61691fa8f6cad1b46e5a393889bb90bc8e57fc04055fba4e82bf415b1",
+      "after": "30d9c30605e9a7d9e6775e71d55476b6daec7d424f2f2da9f44127c4020f0590"
+    },
+    {
+      "path": "kataloge/gedenktafel-30x20-schiefer-premium.pdf",
+      "before": "767c5ecf7e68f0624016f7747809ffd490e74d40bf3f6f08ccc8fd4bedd73b19",
+      "after": "fa946f501eabd60ca117b23d1736b583a58478df78508b6c9c063d4d98a72304"
+    },
+    {
+      "path": "kataloge/Stammdaten-Gravuru.xlsx",
+      "before": "d8d8717311b2d1eb5239c14282e33f59682c61de817d24220fdbb67434f71235",
+      "after": "b187926230602b58ac2ae8ad79f84ecacfe63848ee13c8a12ec988a10b44a050"
+    },
+    {
+      "path": "kataloge/steel-door-signs.pdf",
+      "before": "77badd22a39a729ca4ea00211cde7d5b4226b1d3721d7471bda75f38baa2c319",
+      "after": "6d4edfb71af01bd2e8d35682c112d625b38ca7abbb4c8a111d2cbe70e7150124"
+    }
+  ],
+  "catalogFilesChecked": 1734,
+  "sourceFilesChanged": [],
+  "checks": {
+    "pythonTests": 11,
+    "buildFamilies": 11,
+    "catalog": {
+      "families": 11,
+      "lines": 12,
+      "masterDesigns": 737,
+      "steelGaps": [
+        "Grundpreis: 8,5 × 8,5 cm, 12 × 12 cm, 16 × 16 cm, 20 × 20 cm, 12 × 8 cm, 15 × 10 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 12 × 8 cm, 15 × 10 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm"
+      ]
+    }
+  }
+}

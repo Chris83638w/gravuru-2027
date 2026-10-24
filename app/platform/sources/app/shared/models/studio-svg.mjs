@@ -1,3 +1,4 @@
+import {contourPathWithHoles,contourSafeAreaSvg} from './contour-geometry.mjs';
 import {photoShape,photoClip,photoMaskURL} from './photo-shape.mjs';
 import {textPaths} from './doorbell-preview.mjs';
 import {escapeXml as esc} from './design-content.mjs';
@@ -79,7 +80,9 @@ function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleU
  const {width:w,height:h,shape,cornerRadiusMm:radius=0}=p.geometry,pad=Math.max(w,h)*.035,stroke=Math.max(w,h)*.002;
  const safeId='studio-'+String(id).replace(/[^a-zA-Z0-9_-]/g,'_');
  const processing=getProcessingProfile(p),ink=processing.ink;
- const plate=shape==='ellipse'?'<ellipse cx="'+w/2+'" cy="'+h/2+'" rx="'+w/2+'" ry="'+h/2+'"':'<rect width="'+w+'" height="'+h+'" rx="'+radius+'"';
+ const contour=shape==='contour'?contourPathWithHoles(p.geometry):null;
+ const safe=contour&&guides?contourSafeAreaSvg(p.geometry,safeId+'-design-area'):null;
+ const plate=contour?'<path d="'+esc(contour)+'" fill-rule="evenodd"':shape==='ellipse'?'<ellipse cx="'+w/2+'" cy="'+h/2+'" rx="'+w/2+'" ry="'+h/2+'"':'<rect width="'+w+'" height="'+h+'" rx="'+radius+'"';
  const objects=d.objects.map((o,index)=>{
   const key=safeId+'-element-'+index,color=elementColor(p,o);let content;
   if(o.type==='text')content=textPaths(o,fonts)||placeholder(o,'Schrift fehlt',stroke);
@@ -91,7 +94,7 @@ function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleU
   return '<g data-object="'+esc(o.id)+'"'+roleAttribute(o)+' transform="translate('+o.x+' '+o.y+') rotate('+(o.rotation||0)+')" fill="'+color+'" style="cursor:move"><rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="transparent"/>'+content+'</g>';
  }).join('');
  const surface=/^#[a-fA-F0-9]{6}$/.test(p.material.color)?p.material.color:'#eeeeee';
- return '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(d.name)+'" viewBox="'+[-pad,-pad,w+pad*2,h+pad*2].join(' ')+'"><defs><linearGradient id="'+safeId+'-surface" x2=".2" y2="1"><stop stop-color="'+surface+'"/><stop offset=".5" stop-color="'+(p.material.kind==='steel'?'#e3e8e7':surface)+'"/><stop offset="1" stop-color="'+surface+'"/></linearGradient><filter id="'+safeId+'-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+inkMatrix(ink)+'"/></filter></defs>'+plate+' fill="url(#'+safeId+'-surface)" stroke="#8c9991" stroke-width="'+stroke+'"/>'+objects+'<g fill="none" stroke="'+ink+'">'+(d.marks||[]).map(m=>'<path d="'+esc(m.d)+'" stroke="'+elementColor(p,m)+'" stroke-width="'+m.width+'"/>').join('')+'</g>'+(p.geometry.holes||[]).map(hole=>'<circle cx="'+hole.x+'" cy="'+hole.y+'" r="'+hole.diameter/2+'" fill="#f4f5f3" stroke="#84958c" stroke-width="'+stroke+'" pointer-events="none"/>').join('')+(guides?'<path d="M'+w/2+' 0V'+h+'M0 '+h/2+'H'+w+'" fill="none" stroke="#5da894" stroke-width="'+stroke+'" stroke-dasharray="'+stroke*3+' '+stroke*5+'" pointer-events="none"/>':'')+'</svg>';
+ return '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(d.name)+'" viewBox="'+[-pad,-pad,w+pad*2,h+pad*2].join(' ')+'"><defs><linearGradient id="'+safeId+'-surface" x2=".2" y2="1"><stop stop-color="'+surface+'"/><stop offset=".5" stop-color="'+(p.material.kind==='steel'?'#e3e8e7':surface)+'"/><stop offset="1" stop-color="'+surface+'"/></linearGradient><filter id="'+safeId+'-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+inkMatrix(ink)+'"/></filter>'+(contour?'<clipPath id="'+safeId+'-plate-clip"><path d="'+esc(contour)+'" clip-rule="evenodd"/></clipPath>':'')+(safe?.defs||'')+'</defs>'+plate+' fill="url(#'+safeId+'-surface)" stroke="#8c9991" stroke-width="'+stroke+'"/>'+(contour?'<g data-contour-artwork="true" clip-path="url(#'+safeId+'-plate-clip)">':'')+objects+'<g fill="none" stroke="'+ink+'">'+(d.marks||[]).map(m=>'<path d="'+esc(m.d)+'" stroke="'+elementColor(p,m)+'" stroke-width="'+m.width+'"/>').join('')+'</g>'+(contour?'</g>':'')+(contour?[]:p.geometry.holes||[]).map(hole=>'<circle cx="'+hole.x+'" cy="'+hole.y+'" r="'+hole.diameter/2+'" fill="#f4f5f3" stroke="#84958c" stroke-width="'+stroke+'" pointer-events="none"/>').join('')+(guides?'<path '+(safe?safe.attribute+' ':'')+'d="M'+w/2+' 0V'+h+'M0 '+h/2+'H'+w+'" fill="none" stroke="#5da894" stroke-width="'+stroke+'" stroke-dasharray="'+stroke*3+' '+stroke*5+'" pointer-events="none"/>':'')+'</svg>';
 }
 
 

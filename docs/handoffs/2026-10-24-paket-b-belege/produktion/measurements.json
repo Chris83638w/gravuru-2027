@@ -1,0 +1,672 @@
+{
+  "fixtureSha256": "36cdadb485de8f420753571b7bbc7347e1c1d9ceb0a9e40c6615fde35796736a",
+  "drawingSha256": "d5a021410ec2cb920496adb119e5d32d933f97a71092a42db1986b721bca53b1",
+  "sourceVerified": true,
+  "checks": [
+    {
+      "id": "TRT1-V2A-9x6",
+      "kind": "native-contour",
+      "widthMm": 89.99999745686848,
+      "heightMm": 59.99999830457899,
+      "pages": 1,
+      "images": [],
+      "fonts": 0,
+      "drawings": 3,
+      "rings": 3,
+      "outerBounds": [
+        0,
+        0,
+        89.99999745686848,
+        59.999998304579
+      ],
+      "outerCubicSegments": 4,
+      "curveDeviationMm": 0.0000026863720070715607,
+      "holes": [
+        {
+          "x": 6.000000335110558,
+          "y": 30.00000049802992,
+          "diameterX": 4.000002466307745,
+          "diameterY": 4.000000784132215
+        },
+        {
+          "x": 84.00000031789143,
+          "y": 30.00000049802992,
+          "diameterX": 3.999998092651367,
+          "diameterY": 4.000000784132215
+        }
+      ],
+      "sha256": "e3fec3a858ddecf7523f3a9e9dfdd33e280d13a23e6457d884834a626beb0d8f"
+    },
+    {
+      "id": "TRT1-V2A-9x6",
+      "kind": "vector-engraving",
+      "artwork": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 2,
+        "pixels": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            135,
+            135,
+            135
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      "contour": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 1,
+        "rings": 3,
+        "outerBounds": [
+          0,
+          0,
+          89.99960988362629,
+          59.99973992241753
+        ],
+        "outerCubicSegments": 4,
+        "curveDeviationMm": 0.0005897389927782983,
+        "holes": [
+          {
+            "x": 6.000044576327005,
+            "y": 29.999869961208773,
+            "diameterX": 3.999089044994779,
+            "diameterY": 3.9990883721245787
+          },
+          {
+            "x": 84.0002694659763,
+            "y": 29.999869961208773,
+            "diameterX": 4.000504091050914,
+            "diameterY": 3.9990883721245787
+          }
+        ]
+      },
+      "sha256": "d2450137fae0a0e6abbe66e7ef150337732be127535b88feab75229fc1f6d839",
+      "contourSha256": "12b71ae948f7f2d9c2947478cc7245ffba5c18a0ffa8812907b7dec31f521a31"
+    },
+    {
+      "id": "TRT1-V2A-30x20",
+      "kind": "native-contour",
+      "widthMm": 299.99999152289496,
+      "heightMm": 200.0000015258789,
+      "pages": 1,
+      "images": [],
+      "fonts": 0,
+      "drawings": 3,
+      "rings": 3,
+      "outerBounds": [
+        0,
+        -7.105427357601002e-15,
+        299.9999915228951,
+        200.0000015258789
+      ],
+      "outerCubicSegments": 4,
+      "curveDeviationMm": 0.000009048161573904589,
+      "holes": [
+        {
+          "x": 7.999999886088898,
+          "y": 100.00000076293944,
+          "diameterX": 4.000002802742857,
+          "diameterY": 3.999992709689664
+        },
+        {
+          "x": 291.99999533759217,
+          "y": 100.00000076293944,
+          "diameterX": 3.9999927096898205,
+          "diameterY": 3.999992709689664
+        }
+      ],
+      "sha256": "c597a49908c01945f3b47550101d8d205d76a36e4cb2152ccb4fce69ef0e26b2"
+    },
+    {
+      "id": "TRT1-V2A-30x20",
+      "kind": "vector-engraving",
+      "artwork": {
+        "widthMm": 299.99999152289496,
+        "heightMm": 200.0000015258789,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 2,
+        "pixels": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            135,
+            135,
+            135
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      "contour": {
+        "widthMm": 299.99999152289496,
+        "heightMm": 200.0000015258789,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 1,
+        "rings": 3,
+        "outerBounds": [
+          0,
+          -1.7763568394002505e-14,
+          300.00046522352443,
+          200.00030297173396
+        ],
+        "outerCubicSegments": 4,
+        "curveDeviationMm": 0.0004823927914048475,
+        "holes": [
+          {
+            "x": 8.00029426680671,
+            "y": 100.00015148586697,
+            "diameterX": 4.000500053829622,
+            "diameterY": 3.999088372124561
+          },
+          {
+            "x": 292.0001675923664,
+            "y": 100.00015148586697,
+            "diameterX": 4.000509474012915,
+            "diameterY": 3.999088372124561
+          }
+        ]
+      },
+      "sha256": "5ad035b9022ecb9935013dea17ae266bdf0dca4463c7afdac6221cb0d3c22e6b",
+      "contourSha256": "4ca57020092dfa64aa1c9ebc3cb052f7edac76aadcf45bda466c30e349943961"
+    },
+    {
+      "id": "TRT2-V2A-9x6",
+      "kind": "native-contour",
+      "widthMm": 89.99999745686848,
+      "heightMm": 59.99999830457899,
+      "pages": 1,
+      "images": [],
+      "fonts": 0,
+      "drawings": 3,
+      "rings": 3,
+      "outerBounds": [
+        3.340817199548596e-7,
+        -9.009383920566272e-7,
+        90.00000041087668,
+        59.999999506288624
+      ],
+      "outerCubicSegments": 48,
+      "curveDeviationMm": 0.0000033041630882190253,
+      "holes": [
+        {
+          "x": 7.9949991146723445,
+          "y": 30.00000049802992,
+          "diameterX": 3.9999987655215827,
+          "diameterY": 4.000000784132215
+        },
+        {
+          "x": 82.00499935150145,
+          "y": 30.00000049802992,
+          "diameterX": 3.9999980926513814,
+          "diameterY": 4.000000784132215
+        }
+      ],
+      "sha256": "3e44f43ca794fae65a202c82308cfc32f1be969d9215ff11675bdb5fc4d69885"
+    },
+    {
+      "id": "TRT2-V2A-9x6",
+      "kind": "vector-engraving",
+      "artwork": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 2,
+        "pixels": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            135,
+            135,
+            135
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      "contour": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 1,
+        "rings": 3,
+        "outerBounds": [
+          0.0003236891337139447,
+          0.000025665417054565598,
+          89.99951624953071,
+          59.9998330224078
+        ],
+        "outerCubicSegments": 48,
+        "curveDeviationMm": 0.0008351676431938742,
+        "holes": [
+          {
+            "x": 7.994650231467352,
+            "y": 29.999869961208773,
+            "diameterX": 4.000500053829627,
+            "diameterY": 3.9990883721245787
+          },
+          {
+            "x": 82.0049589792887,
+            "y": 29.999869961208773,
+            "diameterX": 4.000498708089253,
+            "diameterY": 3.9990883721245787
+          }
+        ]
+      },
+      "sha256": "565f634295b1579af147a5cc8e92efa38cd2d112e0c58ea4b5f6ce54ff69368a",
+      "contourSha256": "e2f7f3fe59d46e68c89a850715266d42992082d9883fdd22e268fda00c1721c6"
+    },
+    {
+      "id": "TRT2-V2A-9x6",
+      "kind": "vector-mirror-true",
+      "artwork": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 2,
+        "pixels": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            135,
+            135,
+            135
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      "contour": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 1,
+        "rings": 3,
+        "outerBounds": [
+          0.0003236891337139447,
+          0.000025665417054565598,
+          89.99951624953071,
+          59.9998330224078
+        ],
+        "outerCubicSegments": 48,
+        "curveDeviationMm": 0.0008351676418603846,
+        "holes": [
+          {
+            "x": 7.994650231467352,
+            "y": 29.999869961208773,
+            "diameterX": 4.000500053829627,
+            "diameterY": 3.9990883721245787
+          },
+          {
+            "x": 82.0049589792887,
+            "y": 29.999869961208773,
+            "diameterX": 4.000498708089253,
+            "diameterY": 3.9990883721245787
+          }
+        ]
+      },
+      "sha256": "44f3629930f32b9598dd4f8c567fa29d2417505c5f79fc1f8916b6c9531b9516",
+      "contourSha256": "7cfa1b86c7a6e0bc403ee6ee19f3253f707b1e42eb609fb74621ee359ed3eb1d"
+    },
+    {
+      "id": "TRT2-V2A-9x6",
+      "kind": "raster-mirror-false",
+      "artwork": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [
+          {
+            "width": 1063,
+            "height": 709,
+            "colorspace": "DeviceGray"
+          }
+        ],
+        "fonts": 0,
+        "drawings": 0,
+        "pixels": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            136,
+            136,
+            136
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      "contour": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 1,
+        "rings": 3,
+        "outerBounds": [
+          0.0003236891337139447,
+          0.000025665417054565598,
+          89.99951624953071,
+          59.9998330224078
+        ],
+        "outerCubicSegments": 48,
+        "curveDeviationMm": 0.0008351676431938742,
+        "holes": [
+          {
+            "x": 7.994650231467352,
+            "y": 29.999869961208773,
+            "diameterX": 4.000500053829627,
+            "diameterY": 3.9990883721245787
+          },
+          {
+            "x": 82.0049589792887,
+            "y": 29.999869961208773,
+            "diameterX": 4.000498708089253,
+            "diameterY": 3.9990883721245787
+          }
+        ]
+      },
+      "sha256": "7002df8c488f84700354a88239a902777ebf1d65b862b98375b8bd136293e6ab",
+      "contourSha256": "7a7688f114c9b33c4b53748fc91c85658a6114c54c5fbcc7ee2dc8bf7848fdc2"
+    },
+    {
+      "id": "TRT2-V2A-9x6",
+      "kind": "raster-mirror-true",
+      "artwork": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [
+          {
+            "width": 1063,
+            "height": 709,
+            "colorspace": "DeviceGray"
+          }
+        ],
+        "fonts": 0,
+        "drawings": 0,
+        "pixels": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            136,
+            136,
+            136
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      "contour": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 1,
+        "rings": 3,
+        "outerBounds": [
+          0.0003236891337139447,
+          0.000025665417054565598,
+          89.99951624953071,
+          59.9998330224078
+        ],
+        "outerCubicSegments": 48,
+        "curveDeviationMm": 0.0008351676418603846,
+        "holes": [
+          {
+            "x": 7.994650231467352,
+            "y": 29.999869961208773,
+            "diameterX": 4.000500053829627,
+            "diameterY": 3.9990883721245787
+          },
+          {
+            "x": 82.0049589792887,
+            "y": 29.999869961208773,
+            "diameterX": 4.000498708089253,
+            "diameterY": 3.9990883721245787
+          }
+        ]
+      },
+      "sha256": "b6411a8b574cb1db50988defe567335e8cb74623170336e7079d1463e3a33eec",
+      "contourSha256": "514cd713fe7ea46421a813f3401b721259b07085594a919647fcb392476aac41"
+    },
+    {
+      "id": "TRT2-V2A-30x20",
+      "kind": "native-contour",
+      "widthMm": 299.99999152289496,
+      "heightMm": 200.0000015258789,
+      "pages": 1,
+      "images": [],
+      "fonts": 0,
+      "drawings": 3,
+      "rings": 3,
+      "outerBounds": [
+        -0.0000011192815598803918,
+        0.000007553722309427968,
+        299.99999749867607,
+        199.99999520729347
+      ],
+      "outerCubicSegments": 48,
+      "curveDeviationMm": 0.000011533856005131793,
+      "holes": [
+        {
+          "x": 26.65000175899931,
+          "y": 100.00000076293944,
+          "diameterX": 3.999998092651399,
+          "diameterY": 3.999992709689664
+        },
+        {
+          "x": 273.35000322129986,
+          "y": 100.00000076293944,
+          "diameterX": 4.000014241536462,
+          "diameterY": 3.999992709689664
+        }
+      ],
+      "sha256": "56d1570c3cd07554dc40fc07388c92eeb80f6e119c98ac5581bd82b9005783ce"
+    },
+    {
+      "id": "TRT2-V2A-30x20",
+      "kind": "vector-engraving",
+      "artwork": {
+        "widthMm": 299.99999152289496,
+        "heightMm": 200.0000015258789,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 2,
+        "pixels": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            135,
+            135,
+            135
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ]
+      },
+      "contour": {
+        "widthMm": 299.99999152289496,
+        "heightMm": 200.0000015258789,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 1,
+        "rings": 3,
+        "outerBounds": [
+          0.0000647657487027331,
+          0.00012673057015355482,
+          299.9996133694574,
+          199.99975668356717
+        ],
+        "outerCubicSegments": 48,
+        "curveDeviationMm": 0.0009302866090580673,
+        "holes": [
+          {
+            "x": 26.649891408284503,
+            "y": 100.00015148586697,
+            "diameterX": 3.999088372124568,
+            "diameterY": 3.999088372124561
+          },
+          {
+            "x": 273.3498632642958,
+            "y": 100.00015148586697,
+            "diameterX": 4.000509474012574,
+            "diameterY": 3.999088372124561
+          }
+        ]
+      },
+      "sha256": "6c35b2138edb2e713f3bfdb731c67167a04c3449b676296cfe6ee705d821e339",
+      "contourSha256": "3d3b87a605cde3dd7e9973933cc80f3d36e20c32905f52b742404c70a948c4cb"
+    },
+    {
+      "id": "TRT2-V2A-9x6",
+      "kind": "frozen-D1-review-to-production",
+      "artwork": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 10
+      },
+      "contour": {
+        "widthMm": 89.99999745686848,
+        "heightMm": 59.99999830457899,
+        "pages": 1,
+        "images": [],
+        "fonts": 0,
+        "drawings": 1,
+        "rings": 3,
+        "outerBounds": [
+          0.0003236891337139447,
+          0.000025665417054565598,
+          89.99951624953071,
+          59.9998330224078
+        ],
+        "outerCubicSegments": 48,
+        "curveDeviationMm": 0.0008351676418603846,
+        "holes": [
+          {
+            "x": 7.994650231467352,
+            "y": 29.999869961208773,
+            "diameterX": 4.000500053829627,
+            "diameterY": 3.9990883721245787
+          },
+          {
+            "x": 82.0049589792887,
+            "y": 29.999869961208773,
+            "diameterX": 4.000498708089253,
+            "diameterY": 3.9990883721245787
+          }
+        ]
+      },
+      "sha256": "490469b5fee4162390efabb4a1f28d3b3720a335ea181786453d667eabb80ba4",
+      "packageSha256": "381766ca23e289e792aaa0c4caa1751c561653c003cbdfa28416f43e6cfae8aa",
+      "sourcePackageSha256": "4c67864def800bbde26fd13aec52f1f2f8ae026e4e81ceb4a6b588d00fc52fa2"
+    }
+  ],
+  "productionReady": false,
+  "catalogGeometrySha256": "0dd8cfcf31131281fe7c56baabbd6dd3a5b8858537f783a5452e7e080bbc3baa"
+}

@@ -1,3 +1,4 @@
+import {contourContainsPolygon} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {UV_PRINT_PALETTE} from '../../workshop/process-profiles.mjs';
 // Customer setting in nominal font millimetres, not the height of each glyph.
 // K10: the minimum comes from the process profile (minTextMm); 4 mm stays the
@@ -57,6 +58,7 @@ export function transformedCorners(object, bounds) {
 }
 
 export function fitsSurface(object, bounds, surface) {
+  if(surface.shape==='contour')return contourContainsPolygon(surface.geometry||surface,transformedCorners(object,bounds));
   const epsilon = 0.001;
   return transformedCorners(object,bounds).every(({x,y})=>{
     if(surface.shape==='ellipse') {

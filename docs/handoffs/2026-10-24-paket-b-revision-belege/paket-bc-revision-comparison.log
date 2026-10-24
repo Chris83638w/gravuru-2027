@@ -1,0 +1,44 @@
+{
+  "equal": true,
+  "differenceCount": 0,
+  "counts": {
+    "products": 744,
+    "new": 597,
+    "update": 0,
+    "unchanged": 0,
+    "blocked": 147,
+    "templates": 7920,
+    "sizes": 80,
+    "pricesOpen": 16,
+    "designsWithoutSeries": 0,
+    "fit": {
+      "passt": 8169,
+      "prüfen": 415,
+      "passt nicht": 788
+    },
+    "unreleased": 0
+  },
+  "blocked": {
+    "Preis offen: 8,5 × 8,5 cm": 8,
+    "Preis offen: 12 × 12 cm": 8,
+    "Preis offen: 16 × 16 cm": 8,
+    "Preis offen: 20 × 20 cm": 8,
+    "Preis offen: 12 × 8 cm": 18,
+    "Preis offen: 15 × 10 cm": 16,
+    "Preis offen: 18 × 12 cm": 16,
+    "Preis offen: 21 × 14 cm": 16,
+    "Preis offen: 24 × 16 cm": 16,
+    "Preis offen: 30 × 20 cm": 16,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-9x6-D13“ ist für 21 × 14 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-9x6-D61“ ist für 21 × 14 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-12x4-D48“ ist für 12 × 4 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-12x4-D12“ ist für 12 × 4 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-15x8-D47“ ist für 15 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TO-V2A-15x8-D19“ ist für 15 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TRE-V2A-8x5-D49“ ist für 12 × 8 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TRE-V2A-8x5-D57“ ist für 42 × 28 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TR1-V2A-9x6-D15“ ist für 9 × 6 cm nicht verfügbar.": 1,
+    "Unterkategorie „familienschilder“: Startdesign „TR2-V2A-9x6-D12“ ist für 9 × 6 cm nicht verfügbar.": 1,
+    "Keine passende Konturvorlage für 9 × 6 cm.": 7
+  }
+}

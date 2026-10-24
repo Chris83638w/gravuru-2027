@@ -24,7 +24,7 @@ export function nativeSpecimenConfig(input){
   const choices={frame:p.frames.map(v=>v.key),color:p.materials.acrylic.colors.map(v=>v.key),mounting:p.mounting.options.map(v=>v.key)};
   if(p.optionGroups.length!==3||p.optionGroups.some(g=>!choices[g.id]||!equal(g.values.map(v=>v.id),choices[g.id])))fail('AOSU: Originalausführungen fehlen.');
  }else {
-  if(p.kind!=='universal-product'||p.material?.kind!=='steel'||p.material.thicknessMm!==1.5||p.processing?.profileId!=='steel-engraving'||!['rect','ellipse'].includes(p.geometry?.shape)||!Array.isArray(p.optionGroups)||p.optionGroups.length!==(c.steelFormats?2:1)||p.optionGroups.some(g=>!['mounting',...(c.steelFormats?['size']:[])].includes(g.id)))fail('Edelstahlschild benötigt eine native Kontur und vollständige Ausführungen.');
+  if(p.kind!=='universal-product'||p.material?.kind!=='steel'||p.material.thicknessMm!==1.5||p.processing?.profileId!=='steel-engraving'||!['rect','ellipse','contour'].includes(p.geometry?.shape)||!Array.isArray(p.optionGroups)||p.optionGroups.length!==(c.steelFormats?2:1)||p.optionGroups.some(g=>!['mounting',...(c.steelFormats?['size']:[])].includes(g.id)))fail('Edelstahlschild benötigt eine native Kontur und vollständige Ausführungen.');
   validateSteelFormats(c);
  }
  if(!p.designs?.some(d=>d.id===p.defaultDesignId))fail('Das Standarddesign fehlt.');

@@ -1,0 +1,17 @@
+✔ universal preview and material texture preserve the original contour and transparent fixed holes (7.1876ms)
+✔ design area uses a true inward mask with hole protection and is absent from production previews (1.0727ms)
+✔ fitting rejects the concave bite and a hole enclosed by an element; free placement respects both (24.6223ms)
+✔ dragging stops at the actual inset edge and never substitutes a rectangular boundary (10.0068ms)
+✔ snapping filters unsafe targets and rejects an unsafe combination of valid axis targets (1.8369ms)
+✔ existing workshop material preview renders the same curved outer path and physical opening (2.0516ms)
+✔ catalog contour dimensions cannot be rescaled by the rectangular steel size editor (1.4086ms)
+✔ workshop snapping also keeps the complete object clear of contour holes (0.7938ms)
+✔ back-side preview mirrors the asymmetric source contour together with its holes (1.4423ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 273.3903

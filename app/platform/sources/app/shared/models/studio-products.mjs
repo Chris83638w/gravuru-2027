@@ -1,6 +1,7 @@
+import {validateContourGeometry} from './contour-geometry.mjs';
 import {request} from './motifs.mjs';
 import {LIST,ONE,SAVE,decode,saveDoorbell,publishDoorbell,validateProfile} from './doorbells.mjs';
-import {validateDesignContent,objectIssue,validateGeometryHoles,validContentId,DESIGN_LIMITS} from './design-content.mjs';
+import {validateDesignContent,surfaceObjectIssue,validateGeometryHoles,validContentId,DESIGN_LIMITS} from './design-content.mjs';
 import {MATERIAL_COLORS,getProcessingProfile,validateProcessingProfile,applyProcessingProfile} from './processing-profiles.mjs';
 import {validateUniversalElements,validateOptionGroups} from './universal-elements.mjs';
 export function dimensions(p){return p.kind==='layered-doorbell'?{width:160,height:280,margin:10,shape:'rect'}:{width:p.geometry.width,height:p.geometry.height,margin:p.geometry.safeMarginMm??2,shape:p.geometry.shape||'rect',radius:p.geometry.cornerRadiusMm||0};}
@@ -11,12 +12,13 @@ export function validateStudio(p,original,{extraFontIds=[]}={}){
  if(typeof p.name!=='string'||!p.name.trim()||p.name.length>200)throw Error('Bitte einen Produktnamen eingeben.');
  if(!p.geometry||!p.material)throw Error('Produktgeometrie oder Material fehlt.');
  const {width,height,margin,shape,radius}=dimensions(p);
- if(![width,height,margin,radius].every(Number.isFinite)||width<10||height<10||width>2000||height>2000||margin<0||margin*2>=Math.min(width,height)||!['rect','ellipse'].includes(shape)||radius<0||radius>Math.min(width,height)/2)throw Error('Bitte gültige Produktmaße und eine passende Form eingeben.');
+ if(![width,height,margin,radius].every(Number.isFinite)||width<10||height<10||width>2000||height>2000||margin<0||margin*2>=Math.min(width,height)||!['rect','ellipse','contour'].includes(shape)||radius<0||radius>Math.min(width,height)/2)throw Error('Bitte gültige Produktmaße und eine passende Form eingeben.');
  if(!['steel','acrylic','wood','slate','other','print'].includes(p.material.kind)||!/^#[0-9a-f]{6}$/i.test(p.material.color)||!Number.isFinite(p.material.thicknessMm)||p.material.thicknessMm<=0||p.material.thicknessMm>100)throw Error('Bitte Material, Farbe und Stärke prüfen.');
  validateProcessingProfile(p);validateOptionGroups(p.optionGroups);
+ if(shape==='contour'){validateContourGeometry(p.geometry);for(const group of p.optionGroups||[])for(const value of group.values||[])if(value.holes!==undefined)validateGeometryHoles({...p,geometry:{...p.geometry,holes:value.holes}});}
  validateGeometryHoles(p);
  if(!Array.isArray(p.designs)||!p.designs.length||p.designs.length>DESIGN_LIMITS.maxDesigns||p.designs.some(d=>!d)||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error('Bitte 1 bis '+DESIGN_LIMITS.maxDesigns+' Designs mit eindeutigen Kennungen verwenden.');
- for(const d of p.designs){if(typeof d.name!=='string'||!d.name.trim()||d.name.length>200)throw Error('Jedes Design braucht einen Namen mit höchstens 200 Zeichen.');validateDesignContent(d,{universal:true,extraFontIds});validateUniversalElements(d);for(const o of d.objects){const issue=objectIssue(o,p);if(issue)throw Error(d.name+': '+issue);}}
+ for(const d of p.designs){if(typeof d.name!=='string'||!d.name.trim()||d.name.length>200)throw Error('Jedes Design braucht einen Namen mit höchstens 200 Zeichen.');validateDesignContent(d,{universal:true,extraFontIds});validateUniversalElements(d);for(const o of d.objects){const issue=surfaceObjectIssue(o,p);if(issue)throw Error(d.name+': '+issue);}}
  return p;
 }
 export async function listStudioProducts(){const rows=[];let after=null;const seen=new Set();do{const page=(await request(LIST,{after})).metaobjects;rows.push(...page.nodes.map(decode).filter(r=>['layered-doorbell','universal-product'].includes(r.profile.kind)));if(!page.pageInfo.hasNextPage)break;after=page.pageInfo.endCursor;if(!after||seen.has(after))throw Error('Die Produktliste ist unvollständig.');seen.add(after);}while(true);return rows.sort((a,b)=>a.name.localeCompare(b.name,'de'));}

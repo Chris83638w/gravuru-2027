@@ -1,13 +1,17 @@
 // Operator-only proof exports. No RIP/ICC or production approval is implied.
+import {validateContourGeometry,contourContainsPoint,flattenContourPath,contourNearestBoundaryPoint} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
+import {contourPdfPath} from './contour-pdf-path.mjs';
 const enc=new TextEncoder();
 const b=s=>enc.encode(s), n=v=>Number(v.toFixed(6)), PT=72/25.4;
 export function exportSettings(geometry,input={}){
  const {width,height,shape='rect',cornerRadiusMm=0,holes=[]}=geometry;
- if(![width,height].every(v=>Number.isFinite(v)&&v>0&&v<=500)||!['rect','ellipse'].includes(shape)||!Number.isFinite(cornerRadiusMm)||cornerRadiusMm<0||cornerRadiusMm>Math.min(width,height)/2||!Array.isArray(holes)||holes.length>100)throw Error('Kontur oder Format wird vom Druckexport noch nicht unterstützt.');
+ if(![width,height].every(v=>Number.isFinite(v)&&v>0&&v<=500)||!['rect','ellipse','contour'].includes(shape)||!Number.isFinite(cornerRadiusMm)||cornerRadiusMm<0||cornerRadiusMm>Math.min(width,height)/2||!Array.isArray(holes)||holes.length>100)throw Error('Kontur oder Format wird vom Druckexport noch nicht unterstützt.');
  for(const h of holes)if(![h.x,h.y,h.diameter].every(Number.isFinite)||h.diameter<=0||h.x-h.diameter/2<0||h.y-h.diameter/2<0||h.x+h.diameter/2>width||h.y+h.diameter/2>height)throw Error('Ungültiges Bohrbild.');
+ if(shape==='contour')validateContourGeometry(geometry);
  const o={profile:'roland',bleedMm:0,white:'motif',whiteBleedMm:0,mirror:false,dpi:300,...input};
  if(![300,600].includes(o.dpi)||!['roland','mimaki'].includes(o.profile)||![0,1].includes(o.bleedMm)||![0,1].includes(o.whiteBleedMm)||!['motif','full','none'].includes(o.white)||typeof o.mirror!=='boolean'||o.whiteBleedMm>o.bleedMm)throw Error('Ungültige Exporteinstellungen. Weißüberdruck darf den Farbüberdruck nicht überschreiten.');
- return {...o,geometry:{width,height,shape,cornerRadiusMm,holes},pageWidthMm:width+2*o.bleedMm,pageHeightMm:height+2*o.bleedMm,colorSpace:'DeviceCMYK'};
+ if(shape==='contour'&&(o.bleedMm||o.whiteBleedMm))throw Error('Randüberdruck für freie Konturen bitte über die Werkstatt-Fertigungsprüfung erzeugen.');
+ return {...o,geometry:{width,height,shape,cornerRadiusMm,holes,...(shape==='contour'?{outlinePath:geometry.outlinePath}: {})},pageWidthMm:width+2*o.bleedMm,pageHeightMm:height+2*o.bleedMm,colorSpace:'DeviceCMYK'};
 }
 // Generic maximum-black separation. No measured printer/ink/media ICC transform.
 export function rgbToCmyk(rgb){
@@ -33,7 +37,8 @@ export function contourPath(g,offset=0){
  const {width:w,height:h,shape,cornerRadiusMm:r=0}=g,k=.5522847498307936;
  const ellipse=(cx,cy,rx,ry)=>`${n(cx+rx)} ${n(cy)} m ${n(cx+rx)} ${n(cy+ry*k)} ${n(cx+rx*k)} ${n(cy+ry)} ${n(cx)} ${n(cy+ry)} c ${n(cx-rx*k)} ${n(cy+ry)} ${n(cx-rx)} ${n(cy+ry*k)} ${n(cx-rx)} ${n(cy)} c ${n(cx-rx)} ${n(cy-ry*k)} ${n(cx-rx*k)} ${n(cy-ry)} ${n(cx)} ${n(cy-ry)} c ${n(cx+rx*k)} ${n(cy-ry)} ${n(cx+rx)} ${n(cy-ry*k)} ${n(cx+rx)} ${n(cy)} c h`;
  let outer;
- if(shape==='ellipse')outer=ellipse(w/2,h/2,w/2+offset,h/2+offset);
+ if(shape==='contour'){if(offset!==0)throw Error('Freie Kontur: Offset benötigt die Werkstatt-Fertigungsprüfung.');validateContourGeometry(g);outer=contourPdfPath(g.outlinePath);}
+ else if(shape==='ellipse')outer=ellipse(w/2,h/2,w/2+offset,h/2+offset);
  else if(r+offset===0)outer=`0 0 ${n(w)} ${n(h)} re`;
  else{
   const a=-offset,z=w+offset,t=-offset,u=h+offset,R=r+offset,c=R*(1-k);
@@ -44,6 +49,10 @@ export function contourPath(g,offset=0){
 // Point containment in physical mm. Used before vectorization so the motif white
 // layer contains only closed ink paths, not a full-page clipping container.
 export function insideContour(g,x,y,offset=0){
+ if(g.shape==='contour'){
+  if(offset<=0)return contourContainsPoint(g,x,y,{marginMm:-offset,keepoutMm:0});
+  const near=contourNearestBoundaryPoint(g,x,y);return (near.inside||near.distance<=offset)&&!(g.holes||[]).some(h=>(x-h.x)**2+(y-h.y)**2<(h.diameter/2)**2);
+ }
  const w=g.width,h=g.height;
  if(x < -offset || x > w+offset || y < -offset || y > h+offset)return false;
  let inside;
@@ -54,6 +63,14 @@ export function insideContour(g,x,y,offset=0){
 // Check pixels at the actual outer contour, including round corners and ellipses.
 export function hasContourInk(rgba,w,h,g){
  const sx=w/g.width,sy=h/g.height;
+ if(g.shape==='contour'){
+  const points=flattenContourPath(g.outlinePath);
+  for(let i=0;i<points.length;i++){const a=points[i],b=points[(i+1)%points.length],steps=Math.max(1,Math.ceil(Math.hypot((b[0]-a[0])*sx,(b[1]-a[1])*sy)*2));
+   for(let j=0;j<=steps;j++){const x=Math.floor((a[0]+(b[0]-a[0])*j/steps)*sx),y=Math.floor((a[1]+(b[1]-a[1])*j/steps)*sy);
+    for(const dx of [-1,0])for(const dy of [-1,0])if(x+dx>=0&&x+dx<w&&y+dy>=0&&y+dy<h&&rgba[((y+dy)*w+x+dx)*4+3]>0)return true;
+   }
+  }return false;
+ }
  const ink=(x,y)=>x>=0&&x<w&&y>=0&&y<h&&rgba[(y*w+x)*4+3]>0;
  for(let y=0;y<h;y++){
   const mm=(y+.5)/sy,r=g.cornerRadiusMm||0;
@@ -69,6 +86,7 @@ export function hasContourInk(rgba,w,h,g){
 }
 // Project an exterior pixel to the corresponding outer-contour ink sample.
 export function boundarySample(g,x,y){
+ if(g.shape==='contour'){const p=contourNearestBoundaryPoint(g,x,y);return [p.x,p.y];}
  if(g.shape==='ellipse'){const cx=g.width/2,cy=g.height/2,f=1/Math.sqrt(((x-cx)/cx)**2+((y-cy)/cy)**2);return [cx+(x-cx)*f,cy+(y-cy)*f];}
  const r=g.cornerRadiusMm||0,cx=Math.max(r,Math.min(g.width-r,x)),cy=Math.max(r,Math.min(g.height-r,y)),d=Math.hypot(x-cx,y-cy);
  return d?[cx+(x-cx)*r/d,cy+(y-cy)*r/d]:[x,y];

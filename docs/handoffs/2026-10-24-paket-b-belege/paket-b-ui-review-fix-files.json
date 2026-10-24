@@ -1,0 +1,30 @@
+{
+  "fix": "P2: contour surface switch must not edit the other surface; side-specific valid-position caches and active-side text warnings",
+  "files": [
+    {
+      "path": "app/configurator/variant-m/edge-clamp.mjs",
+      "bytes": 4439,
+      "sha256": "79b77ff8302b1c35ae1fb141ac07d2ea3c6282dba0eca8f52e407003d6ddc312",
+      "beforeSha256": "4285b8f42e696d8c417b8fc908bd66f1be3a63af9cbc44ea103b5a3ce3309fc7"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.mjs",
+      "bytes": 21355,
+      "sha256": "f9ea09c0c7fcbfe46724537b16da581c059198305cfac3775c64c8685e295622",
+      "beforeSha256": "034fdd5d3c940979b56453d8ae673f2759bc41bd7bc1f5c9358cb6d4628e10c2"
+    },
+    {
+      "path": "app/configurator/variant-m/contour-ui.test.mjs",
+      "bytes": 11158,
+      "sha256": "00752af78465afb40b22d4b9a638d1464784d36553eec9b99f44626d7665f232",
+      "beforeSha256": "448de2e057471282e4420af242f934679b181ef0294e8bd12f23a7a4a5018010"
+    }
+  ],
+  "test": {
+    "command": "node --test app/configurator/variant-m/contour-ui.test.mjs app/configurator/variant-m/edge-clamp.test.mjs app/configurator/variant-m/usability.test.mjs",
+    "exitCode": 0,
+    "passed": 22,
+    "failed": 0,
+    "rawLog": "paket-b-ui-review-fix-tests.log"
+  }
+}

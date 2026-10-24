@@ -154,28 +154,46 @@ function contourFixture(t){
 test('mixed contour import keeps rectangle plans and counts, with no writable contour product',async t=>{
  const ws=workshop(t),before=await planKatalogImport(openKatalog(FIXTURE),'test-linie',options(ws)),dir=contourFixture(t);
  const plan=await planKatalogImport(openKatalog(dir),'test-linie',options(ws)),rows=plan.report.subcategories.flatMap(s=>s.products),contour=rows.filter(p=>p.sizeKey==='TS-RT-90X60');
- assert.equal(contour.length,1);assert.equal(contour[0].action,'gesperrt');assert.equal(contour[0].reason,'Kontur offen');
- assert.deepEqual(contour[0].templates,[]);assert.deepEqual(contour[0].excluded,[]);
- assert.deepEqual(contour[0].fit,{passt:0,'prüfen':0,'passt nicht':0},'blocked contour is never fitted to a substitute rectangle');
+ assert.equal(contour.length,1);assert.equal(contour[0].action,'gesperrt');assert.equal(contour[0].reason,'Preis offen: Kontur 9 × 6 cm');
+ assert.deepEqual(contour[0].templates,[]);assert.equal(contour[0].excluded[0].design,'test-herz');
+ assert.deepEqual(contour[0].fit,{passt:0,'prüfen':0,'passt nicht':1},'outside artwork is checked against the actual contour');
  assert.deepEqual(rows.filter(p=>p.sizeKey!=='TS-RT-90X60'),before.report.subcategories.flatMap(s=>s.products),'existing rectangle report remains identical');
  assert.deepEqual(plan.items,before.items,'the only writable products are the unchanged rectangular plans');
  assert.ok(plan.items.every(i=>!i.key.includes('TS-RT-')));
- assert.deepEqual(plan.report.counts,{...before.report.counts,products:before.report.counts.products+1,blocked:before.report.counts.blocked+1,sizes:before.report.counts.sizes+1,pricesOpen:before.report.counts.pricesOpen+1});
+ assert.deepEqual(plan.report.counts,{...before.report.counts,products:before.report.counts.products+1,blocked:before.report.counts.blocked+1,sizes:before.report.counts.sizes+1,pricesOpen:before.report.counts.pricesOpen+1,fit:{...before.report.counts.fit,'passt nicht':before.report.counts.fit['passt nicht']+1}});
  assert.equal(ws.repository.list().length,1,'dry-run has not written products');
 });
-test('contour import reports Kontur offen ahead of open price, missing release and missing start design',async t=>{
+test('contour import keeps source release, open price and start-design blockers',async t=>{
  const ws=workshop(t),dir=contourFixture(t),lineFile=path.join(dir,'linien/test-linie.json'),line=JSON.parse(fs.readFileSync(lineFile,'utf8'));
  line.subcategories[0].mainProducts=[{id:'retro-test',startDesign:'nicht-vorhanden',sizesOffered:['TS-RT-90X60']}];
  fs.writeFileSync(lineFile,JSON.stringify(line));
  for(const allDesigns of [false,true]){
   const plan=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),allDesigns,only:{subcategories:['namensschilder']}});
   const rows=plan.report.subcategories.flatMap(s=>s.products);
-  assert.equal(rows.length,1);assert.equal(rows[0].reason,'Kontur offen');assert.equal(rows[0].action,'gesperrt');
+  assert.equal(rows.length,1);assert.equal(rows[0].action,'gesperrt');
+  assert.match(rows[0].reason,allDesigns?/Preis offen: Kontur/:/Keine freigegebenen Designs/);
   assert.deepEqual(plan.items,[]);assert.deepEqual(rows[0].templates,[]);
   assert.deepEqual([plan.report.counts.products,plan.report.counts.blocked,plan.report.counts.new],[1,1,0]);
  }
+ const familyFile=path.join(dir,'familien/edelstahl/test-schilder.json'),family=JSON.parse(fs.readFileSync(familyFile));
+ family.sizes.at(-1).baseCents=1499;fs.writeFileSync(familyFile,JSON.stringify(family));
+ const missing=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),only:{subcategories:['namensschilder']}});
+ assert.match(missing.report.subcategories[0].products[0].reason,/Startdesign „nicht-vorhanden“/);assert.equal(missing.items.length,0);
+ // An explicit fitting source design now traverses the real contour adapter.
+ const designDir=path.join(dir,'designs/3-2/test-herz'),designFile=path.join(designDir,'design.json'),design=JSON.parse(fs.readFileSync(designFile));
+ design.fields={};design.sizes=['TS-RT-90X60'];fs.writeFileSync(designFile,JSON.stringify(design));
+ fs.writeFileSync(path.join(designDir,'design.svg'),'<svg xmlns="http://www.w3.org/2000/svg" width="90mm" height="60mm" viewBox="0 0 90 60"><g id="text-1"><text x="45" y="30" text-anchor="middle" font-family="Montserrat" font-size="4">Test</text></g></svg>');
+ line.subcategories[0].mainProducts[0].startDesign='test-herz';fs.writeFileSync(lineFile,JSON.stringify(line));
+ const accepted=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),only:{subcategories:['namensschilder']}});
+ assert.equal(accepted.items.length,1);assert.equal(accepted.report.counts.new,1);
+ const g=accepted.items[0].document.config.profile.geometry;assert.equal(g.shape,'contour');assert.equal(g.outlinePath,family.sizes.at(-1).outlinePath);
+ const chunks=[],streamed=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),only:{subcategories:['namensschilder']},retainItems:false,reporter:createKatalogReportWriter(chunk=>chunks.push(chunk))});
+ assert.deepEqual(JSON.parse(chunks.join('')),accepted.report,'streaming preserves the accepted contour and real fit result');
+ assert.equal(streamed.token,accepted.token);assert.deepEqual(streamed.items,[]);assert.equal(streamed.reportOnly,true);
+ assert.throws(()=>applyKatalogImport(streamed,options(ws)),/Berichtplan/);
+ assert.deepEqual(accepted.items[0].document.config.profile.optionGroups[0].values.find(v=>v.id==='B02').holes,family.sizes.at(-1).holesMm.map(h=>({x:h.x,y:h.y,diameter:h.diameterMm})));
+ assert.equal(ws.repository.list().length,1,'all plans remain dry runs');
 });
-
 
 test('Berichtmodus streamt jedes Produkt mit Rückstau; Bericht und Token entsprechen dem schreibbaren Plan',async t=>{
  const ws=workshop(t),k=openKatalog(contourFixture(t));

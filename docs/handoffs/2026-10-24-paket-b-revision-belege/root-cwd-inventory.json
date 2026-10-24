@@ -1,0 +1,24 @@
+{
+  "purpose": "Separate CWD diagnostics after full run; does not replace or alter original failures",
+  "repo": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027",
+  "python": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\pyenv\\Scripts\\python.exe",
+  "temp": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\test-tmp",
+  "node": "v24.20.0",
+  "files": [
+    {
+      "file": "app/workshop/editable-design.test.mjs",
+      "sha256": "5ca9264dac8096af1c4ac6ab4edd9124a93be72bd350cae9c57ab323622890b6"
+    },
+    {
+      "file": "app/workshop/konfis.test.mjs",
+      "sha256": "724c89e59c70bac0288cf5ce470eb4e061f7ef9a32984ae4f6e48e73bc91e39a"
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "sha256": "75bebd2019576a60349cec7e29705da732d141408ed0996dee81d3fa1705237e"
+    }
+  ],
+  "originalRun": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd",
+  "originalCwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\reports\\full-tests-2026-10-24T05-16-03-957Z-ta6XYd\\cwd",
+  "diagnosticCwd": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\work\\gravuru-2027"
+}

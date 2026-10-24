@@ -1,0 +1,201 @@
+{
+  "checkedAt": "2026-10-24T05:28:58.604Z",
+  "filesScanned": 175,
+  "unhandledCwdDependencies": [
+    {
+      "file": "app/workshop/editable-design.test.mjs",
+      "line": 67,
+      "reason": "Python importlib loads app/workshop/form-print-worker.py relative to process CWD; spawn has no explicit cwd."
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "line": 27,
+      "reason": "Invalid-data-dir case assumes process.cwd() lies inside repository."
+    }
+  ],
+  "requiredIsolation": [
+    {
+      "file": "app/workshop/catalog-structure.test.mjs",
+      "line": 5
+    },
+    {
+      "file": "app/workshop/design-dashboard.test.mjs",
+      "line": 148
+    }
+  ],
+  "explicitRootCwd": [
+    "acrylic-import-tint.test.mjs:40",
+    "prepared-design.test.mjs:109",
+    "option-fields.test.mjs:54-55",
+    "product-families.test.mjs:206-209",
+    "quantity-tiers.test.mjs:155-158",
+    "surfaces.test.mjs:76-77"
+  ],
+  "candidates": [
+    {
+      "file": "app/configurator/variant-m/bundle.test.mjs",
+      "line": 26,
+      "text": "    '/configurator/variant-m/a.mjs':\"import {b} from './b.mjs'\\nimport * as c from \\\"../../platform/sources/app/shared/models/c.mjs\\\";\\nexport {d} from './d.mjs';\\nimport './e.mjs';\\nexport const a=b+c.c;\","
+    },
+    {
+      "file": "app/configurator/variant-m/bundle.test.mjs",
+      "line": 28,
+      "text": "    '/platform/sources/app/shared/models/c.mjs':\"export var c=1,x=2;\","
+    },
+    {
+      "file": "app/configurator/variant-m/bundle.test.mjs",
+      "line": 33,
+      "text": "  assert.deepEqual(order,['/configurator/variant-m/d.mjs','/configurator/variant-m/b.mjs','/platform/sources/app/shared/models/c.mjs','/configurator/variant-m/e.mjs','/configurator/variant-m/a.mjs']);"
+    },
+    {
+      "file": "app/configurator/variant-m/bundle.test.mjs",
+      "line": 34,
+      "text": "  assert.deepEqual(modules.get('/configurator/variant-m/a.mjs').deps,['/configurator/variant-m/b.mjs','/platform/sources/app/shared/models/c.mjs','/configurator/variant-m/d.mjs','/configurator/variant-m/e.mjs']);"
+    },
+    {
+      "file": "app/configurator/variant-m/bundle.test.mjs",
+      "line": 68,
+      "text": "    for(const url of ['/workshop/theme-limits.mjs','/workshop/process-profiles.mjs','/platform/sources/app/shared/vendor/fflate-0.8.3.mjs'])assert.ok(set.has(url),url);"
+    },
+    {
+      "file": "app/configurator/variant-m/lazy-resources.test.mjs",
+      "line": 101,
+      "text": "  const manifest=JSON.parse(fs.readFileSync(path.join(HERE,'customer-images.json'),'utf8')),repo=path.resolve(ROOT,'..');"
+    },
+    {
+      "file": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "line": 344,
+      "text": " const {escapeXml}=await import('../../platform/sources/app/shared/models/design-content.mjs');"
+    },
+    {
+      "file": "app/workshop/acrylic-import-tint.test.mjs",
+      "line": 30,
+      "text": "s=importlib.util.spec_from_file_location('w','app/workshop/form-print-worker.py');w=importlib.util.module_from_spec(s);s.loader.exec_module(w)"
+    },
+    {
+      "file": "app/workshop/acrylic-import-tint.test.mjs",
+      "line": 40,
+      "text": " const r=execFileSync(process.env.GRAVURU_PYTHON||'python3',['-c',script],{cwd:new URL('../../',import.meta.url),env:importEnvironment()}).toString();"
+    },
+    {
+      "file": "app/workshop/catalog-structure.test.mjs",
+      "line": 5,
+      "text": "test('catalogue UI and API use host, origin and CSRF gates; saved planning survives a reload',async t=>{const work=path.resolve('.local-data');fs.mkdirSync(work,{recursive:true});const dir=fs.mkdtempSync(path.join(work,'g27-catalog-http-'));build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0],w=createWorkshop({filename:path.join(dir,'db.sqlite'),seedConfig:seed.universal,legacy:seed.legacy}),server=createPreviewServer({outputDirectory:dir,workshop:w});server.listen(0,'127.0.0.1');await once(server,'listening');t.after(async()=>{await new Promise(r=>server.close(r));w.close();fs.rmSync(dir,{recursive:true,force:true});});const base='http://127.0.0.1:'+server.address().port;for(const uri of ['/werkstatt/katalog/','/workshop-ui/catalog-structure-ui.mjs','/workshop-ui/catalog-structure.css'])assert.equal((await fetch(base+uri)).status,200);const d=await (await fetch(base+'/api/workshop/catalog-structure')).json(),session=await (await fetch(base+'/api/workshop/session')).json(),change={action:'target',lineId:d.lines[0].id,subcategoryId:d.lines[0].subcategories[0].id,targetCount:3,expectedRevision:0,sourceSha256:d.sourceSha256},send=token=>fetch(base+'/api/workshop/catalog-structure',{method:'PATCH',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':token},body:JSON.stringify(change)});assert.equal((await send('invalid')).status,403);assert.equal((await send(session.csrfToken)).status,200);assert.equal((await send(session.csrfToken)).status,409);assert.equal((await fetch(base+'/api/workshop/catalog-structure',{headers:{Origin:'https://other.example'}})).status,403);assert.equal((await (await fetch(base+'/api/workshop/catalog-structure')).json()).settingsRevision,1);assert.equal(w.repository.list().length,1);});"
+    },
+    {
+      "file": "app/workshop/dashboard-print-flow.test.mjs",
+      "line": 119,
+      "text": "  if(process.env.GRAVURU_FLOW_OUTPUT_DIR){const out=path.resolve(process.env.GRAVURU_FLOW_OUTPUT_DIR);fs.mkdirSync(out,{recursive:true});for(const output of outputs){fs.writeFileSync(path.join(out,output.filename),output.bytes);fs.writeFileSync(path.join(out,output.filename+'.json'),JSON.stringify({synthetic:true,sha256:digest(output.bytes),...output.report},null,2));}}"
+    },
+    {
+      "file": "app/workshop/dashboard-print-flow.test.mjs",
+      "line": 156,
+      "text": "  if(process.env.GRAVURU_FLOW_OUTPUT_DIR){const out=path.resolve(process.env.GRAVURU_FLOW_OUTPUT_DIR);fs.mkdirSync(out,{recursive:true});for(const output of outputs){fs.writeFileSync(path.join(out,output.filename),output.bytes);fs.writeFileSync(path.join(out,output.filename+'.json'),JSON.stringify({synthetic:true,sha256:digest(output.bytes),...output.report},null,2));}}"
+    },
+    {
+      "file": "app/workshop/design-dashboard.test.mjs",
+      "line": 148,
+      "text": " const work=path.resolve('.local-data');fs.mkdirSync(work,{recursive:true});const dir=fs.mkdtempSync(path.join(work,'g27-designs-http-'));build({outputDirectory:dir});"
+    },
+    {
+      "file": "app/workshop/editable-design.test.mjs",
+      "line": 67,
+      "text": "spec=importlib.util.spec_from_file_location('worker','app/workshop/form-print-worker.py');p=importlib.util.module_from_spec(spec);spec.loader.exec_module(p)"
+    },
+    {
+      "file": "app/workshop/katalog-source.test.mjs",
+      "line": 13,
+      "text": " assert.equal(katalogPath({argv:['node','x','--katalog=/tmp/k'],env:{GRAVURU_KATALOG:'/env'}}),path.resolve('/tmp/k'));"
+    },
+    {
+      "file": "app/workshop/katalog-source.test.mjs",
+      "line": 14,
+      "text": " assert.equal(katalogPath({argv:[],env:{GRAVURU_KATALOG:'/env'}}),path.resolve('/env'));"
+    },
+    {
+      "file": "app/workshop/konfis.test.mjs",
+      "line": 163,
+      "text": "    assert.equal(withTopbar(html,page),html,page.file+' ist nicht mit workshop-shell-markup.mjs abgeglichen (node scripts/workshop-shell-sync.mjs).');"
+    },
+    {
+      "file": "app/workshop/option-fields.test.mjs",
+      "line": 46,
+      "text": "  const f=JSON.parse(fs.readFileSync(path.join(root,'app/designs/gedenktafeln-30x20/schiefer-natur.json')));"
+    },
+    {
+      "file": "app/workshop/option-fields.test.mjs",
+      "line": 54,
+      "text": "  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'export','--out',xlsx,src],{cwd:root});"
+    },
+    {
+      "file": "app/workshop/option-fields.test.mjs",
+      "line": 55,
+      "text": "  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'import','--xlsx',xlsx,'--out',path.join(dir,'out')],{cwd:root});"
+    },
+    {
+      "file": "app/workshop/prepared-design.test.mjs",
+      "line": 90,
+      "text": "s=importlib.util.spec_from_file_location('prepare','scripts/prepare-layered-design.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)"
+    },
+    {
+      "file": "app/workshop/prepared-design.test.mjs",
+      "line": 109,
+      "text": " const result=spawnSync(process.env.GRAVURU_PYTHON||'python3',['-c',script],{cwd:new URL('../../',import.meta.url),encoding:'utf8'});"
+    },
+    {
+      "file": "app/workshop/product-families.test.mjs",
+      "line": 206,
+      "text": "  execFileSync(python,[path.join(root,'scripts/family-excel.py'),'export','--out',xlsx,path.join(root,'app/designs/acrylic-standoff-signs/ss.json'),path.join(root,'app/designs/gedenktafeln-30x20/schiefer-natur.json')],{cwd:root});"
+    },
+    {
+      "file": "app/workshop/product-families.test.mjs",
+      "line": 209,
+      "text": "  execFileSync(python,[path.join(root,'scripts/family-excel.py'),'import','--xlsx',xlsx,'--out',path.join(dir,'out')],{cwd:root});"
+    },
+    {
+      "file": "app/workshop/profile-library.test.mjs",
+      "line": 15,
+      "text": "  const parent=path.resolve(tmpdir()),directory=mkdtempSync(path.join(parent,'g27-profiles-'));"
+    },
+    {
+      "file": "app/workshop/profile-library.test.mjs",
+      "line": 18,
+      "text": "    if(path.dirname(path.resolve(directory))!==parent||!path.basename(directory).startsWith('g27-profiles-'))throw Error('Ungültiger Testordner.');"
+    },
+    {
+      "file": "app/workshop/quantity-tiers.test.mjs",
+      "line": 151,
+      "text": "  const f=JSON.parse(fs.readFileSync(path.join(root,'app/designs/gedenktafeln-30x20/schiefer-natur.json')));"
+    },
+    {
+      "file": "app/workshop/quantity-tiers.test.mjs",
+      "line": 155,
+      "text": "  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'export','--out',xlsx,src],{cwd:root});"
+    },
+    {
+      "file": "app/workshop/quantity-tiers.test.mjs",
+      "line": 158,
+      "text": "  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'import','--xlsx',xlsx,'--out',path.join(dir,'out')],{cwd:root});"
+    },
+    {
+      "file": "app/workshop/shopify-runtime-config.test.mjs",
+      "line": 27,
+      "text": "for(const [key,value]of Object.entries({GRAVURU_SHOPIFY_SHOP_DOMAIN:'other.myshopify.com',GRAVURU_SHOPIFY_CLIENT_ID:'\"><script>',GRAVURU_SHOPIFY_CLIENT_SECRET:'short',GRAVURU_SHOPIFY_APP_ORIGIN:'http://workshop.example',GRAVURU_PRIVATE_DATA_DIR:process.cwd(),GRAVURU_SHOPIFY_TEST_PORT:'80',GRAVURU_SHOPIFY_ADMIN_ACCESS_TOKEN:'token\\nheader'}))test('invalid runtime configuration cannot start: '+key,()=>{"
+    },
+    {
+      "file": "app/workshop/surfaces.test.mjs",
+      "line": 74,
+      "text": "  const g=JSON.parse(fs.readFileSync(path.join(root,'app/designs/gedenktafeln-30x20/schiefer-natur.json')));g.surfaces=[{id:'front'},{id:'back',priceCents:350,processingProfileId:'slate-engraving',mirror:true}];validateFamily(g);"
+    },
+    {
+      "file": "app/workshop/surfaces.test.mjs",
+      "line": 76,
+      "text": "  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'export','--out',xlsx,src],{cwd:root});"
+    },
+    {
+      "file": "app/workshop/surfaces.test.mjs",
+      "line": 77,
+      "text": "  execFileSync('python3',[path.join(root,'scripts/family-excel.py'),'import','--xlsx',xlsx,'--out',path.join(dir,'out')],{cwd:root});"
+    }
+  ]
+}

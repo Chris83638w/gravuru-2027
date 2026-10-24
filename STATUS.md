@@ -1,3 +1,10 @@
+## Paket K · Handy-Dashboard und Glyphenvorschau · 24.10.2026 (Codex / Astra)
+
+- Branch `dev/dashboard-handy-20261024-astra` auf main `da750f1`, Katalog `27d46be`: mobile Filter einklappbar, Kacheln unter 640 px, 44-px-Tippflächen und Dialoge bei 360 px; Namensentwurf bleibt beim Drehen erhalten.
+- SVG-Vorschau mit echten Katalog-Glyphen und begrenztem Cache. 780 SVG / 1772 Texte: 1758 Pfadumwandlungen, 14 Originaltexte mit Hinweis wegen fehlender Schriften; PNG, Token, CSP und Freigabesperren erhalten. D57/TR2-D12 deckungsgleich mit Paket J.
+- Windows: **139/139 gezielte Tests**, 0 Fehler/Skips; lokale Chrome-Geräteemulation iPhone 13/Pixel 7 erfolgreich, 78 Anfragen / 0 Writes. Desktop-Startansicht 1280 × 900 unverändert; kein neuer Linux- oder Repository-Gesamtvollauf. 1843 Katalogdateien unverändert, LF geprüft.
+- [Bericht und Screenshots](docs/handoffs/2026-10-24-paket-k-bericht.md), [Prüfnachweis](docs/handoffs/2026-10-24-paket-k-pruefung.json). Nächster Schritt: Claude prüft den PR. Kein Merge, keine Designfreigabe, keine Katalogänderung oder Livezugriff durch Astra.
+
 ## Paket I + J gemerged und live · 24.10.2026 (Claude)
 
 - Code #16 (`4de179a`, Startdesign-Filter, Mehrfachfreigabe nach geladener Vorschau, Dialog mit Sitzungstoken) und #17 (`9da930d`, pfadgenaue Motivprüfung, Startposition bleibt) sowie Katalog #4 (`27d46be`, 6 Designs minimal eingepasst) lokal signiert gemerged. Tests: #16 131/131, #17 387/387; json↔svg der 6 Designs numerisch gleich; build-katalog Exit 0.

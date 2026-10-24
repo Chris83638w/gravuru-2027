@@ -12,16 +12,17 @@
 <main id="main"><div class="intro"><div><p class="eyebrow">DESIGNS JE LINIE</p><h1>Designs prüfen und korrigieren</h1><p>Linie für Linie: Lieferform 2 aus dem Katalog, Bestand aus den Corel-Bögen, Ampel je Design. Änderungen hier schreiben in den Katalog-Ordner; den Commit macht der Betreiber.</p></div><button id="refresh" type="button">Neu laden</button></div>
 <p id="status" role="status" aria-live="polite">Katalog wird geladen …</p>
 <div id="metrics" class="metrics" hidden></div>
+<button id="filter-toggle" class="filter-toggle" type="button" aria-expanded="false" aria-controls="filter-pickers filter-controls">Filter</button>
 <div class="layout">
-<aside aria-label="Auswahl">
+<aside id="filter-pickers" aria-label="Auswahl">
 <h2>Linie</h2><div id="lines" class="picker"></div>
 <h2>Formatreihe / Bogen</h2><div id="reihen" class="picker"></div>
 <h2>Material</h2><div id="materials" class="picker"></div>
 <div id="notes" class="notes"></div>
 </aside>
 <section id="detail" aria-label="Designs der Linie">
-<div class="controls"><label>Status<select id="filter-status"><option value="">Alle</option><option value="ok">ok</option><option value="prüfen">prüfen</option><option value="fehlt">fehlt (keine Lieferform 2)</option></select></label><label>Freigabe<select id="filter-freigabe"><option value="">Alle</option><option value="nein">offen</option><option value="ja">freigegeben</option></select></label><label><input id="filter-selectable" type="checkbox" checked> nur wählbare (grün / Lieferform 2)</label><label><input id="filter-start-designs" type="checkbox"> Nur Startdesigns von Hauptprodukten</label><label class="grow">Suche<input id="search" type="search" placeholder="Name, Kennung oder Schrift …"></label><label>Ansicht<select id="view"><option value="table">Tabelle</option><option value="tiles">Kacheln</option></select></label></div>
-<p id="summary" class="summary"></p>
+<div id="filter-controls" class="controls"><label>Status<select id="filter-status"><option value="">Alle</option><option value="ok">ok</option><option value="prüfen">prüfen</option><option value="fehlt">fehlt (keine Lieferform 2)</option></select></label><label>Freigabe<select id="filter-freigabe"><option value="">Alle</option><option value="nein">offen</option><option value="ja">freigegeben</option></select></label><label><input id="filter-selectable" type="checkbox" checked> nur wählbare (grün / Lieferform 2)</label><label><input id="filter-start-designs" type="checkbox"> Nur Startdesigns von Hauptprodukten</label><label class="grow">Suche<input id="search" type="search" placeholder="Name, Kennung oder Schrift …"></label><label>Ansicht<select id="view"><option value="table">Tabelle</option><option value="tiles">Kacheln</option></select></label></div>
+<p id="summary" class="summary" tabindex="-1"></p>
 <div class="selection-bar" aria-label="Mehrfachfreigabe"><p id="selection-summary" role="status" aria-live="polite">0 ausgewählt</p><button id="release-selected" class="release" type="button" disabled>Ausgewählte freigeben</button><button id="clear-selection" class="quiet" type="button" disabled>Auswahl aufheben</button></div>
 <p class="review-help">Öffne zuerst die Vorschau und prüfe das Design. Danach kannst du es auswählen und freigeben. Diese Prüfung gilt nur für die aktuelle Sitzung; nach dem Neuladen öffnest du die Vorschau erneut.</p>
 <div id="rows"></div>

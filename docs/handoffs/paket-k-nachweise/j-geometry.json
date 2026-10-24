@@ -1,0 +1,351 @@
+{
+  "schema": "gravuru-paket-k-vs-j-text-geometry/v1",
+  "catalogCommit": "27d46beeae8cd91748ae8096f0bb63a4c550573a",
+  "rendererSha256": "318d902bb5de62f12772dd2e3b923a00e0a4f42c2d1a92422bd5c42902c7056c",
+  "referenceRendererSha256": "adf9a95d60e7fd934e36ab12cc68b102b09b2f0ec1aba466656cfe2e6b4b0dd4",
+  "toleranceMm": 1e-06,
+  "method": "Original K delivery SVG via designPreviewGlyphs/convertFont; composed physical target matrices vs saved J contact-sheet SVG. Exact glyph d comparison and analytic Bezier BoundsPen after all transforms. Existing J PNG hashes and all source/font bytes verified. No browser-installed fonts, kerning or shaping.",
+  "fontFiles": {
+    "Cinzel": {
+      "path": "schriften/dateien/Cinzel/Cinzel-Regular.ttf",
+      "sha256": "8985857bcd5f622350f2b164358f0c047feb6ff8d2677996463c93bd1b9e36b6",
+      "unitsPerEm": 1000
+    },
+    "Italianno": {
+      "path": "schriften/dateien/Italianno/Italianno-Regular.ttf",
+      "sha256": "5bf8b1b27ab0d06afd977ad9ef9736cd28a60d0d7085381582458aeef67969b5",
+      "unitsPerEm": 1000
+    },
+    "Raleway": {
+      "path": "schriften/dateien/Raleway/Raleway-Regular.ttf",
+      "sha256": "ed3d4c95590fc1230bd09f6f5a7aa7ff80b8510974d89d3044efb58af5af1bd5",
+      "unitsPerEm": 1000
+    },
+    "Homage": {
+      "path": "schriften/dateien/Homage/Homage.ttf",
+      "sha256": "abeda1c9028b8b8c01c48c479a7f2205ebe9937beacd7d0e0201d7055bcf8a6b",
+      "unitsPerEm": 2048
+    }
+  },
+  "cases": [
+    {
+      "sample": "D57",
+      "designId": "TRE-V2A-8x5-D57",
+      "mainProductId": "12600000",
+      "sizeKey": "GR-ES-RE-420X280-T15",
+      "targetMm": [
+        420,
+        280
+      ],
+      "targetScale": 5.25,
+      "targetOffsetMm": [
+        0,
+        0
+      ],
+      "sourceSha256": "01d31513dc6f04695306b1b757c9e05449b322739403354aad38e1c731fd958d",
+      "jSvgSha256": "ed9488d88a0accb5533cb9b1356766d9daadea2b001a1c07783ca1ac2bf6ced9",
+      "jPngSha256": "76816beac05405a718156cdd95d36c015d5645fae74d17782e5f8e8a1e9ab1fd",
+      "kSvgSha256": "9ee16396b6d127fcbc4f5b1a818a09eeada889c8de072dd65cf32f01ed4e7458",
+      "text": [
+        {
+          "glyphPathCount": 7,
+          "glyphPathsIdentical": true,
+          "maxGlyphBoundsDifferenceMm": 2.842170943040401e-14,
+          "unionBoundsDifferenceMm": 0.0,
+          "referenceBoundsMm": [
+            138.9444,
+            93.33618,
+            291.55644,
+            123.15786
+          ],
+          "previewBoundsMm": [
+            138.9444,
+            93.33618,
+            291.55644,
+            123.15786
+          ],
+          "id": "text-1",
+          "text": "Familie",
+          "font": "Cinzel",
+          "anchor": "start",
+          "fontSizeMm": {
+            "J": 40.74,
+            "K": 40.74,
+            "difference": 0.0
+          },
+          "advanceMm": {
+            "J": 156.27864,
+            "K": 156.27864000000002,
+            "difference": 2.842170943040401e-14
+          },
+          "anchorMm": {
+            "J": [
+              136.5,
+              122.5875
+            ],
+            "K": [
+              136.5,
+              122.5875
+            ],
+            "maxDifference": 0.0
+          },
+          "baselineStartMm": {
+            "J": [
+              136.5,
+              122.5875
+            ],
+            "K": [
+              136.5,
+              122.5875
+            ],
+            "maxDifference": 0.0
+          },
+          "freshJUsingCurrentFontMaxBoundsDifferenceMm": 0.0
+        },
+        {
+          "glyphPathCount": 9,
+          "glyphPathsIdentical": true,
+          "maxGlyphBoundsDifferenceMm": 2.842170943040401e-14,
+          "unionBoundsDifferenceMm": 0.0,
+          "referenceBoundsMm": [
+            79.11246,
+            162.58452,
+            330.52019,
+            225.75924
+          ],
+          "previewBoundsMm": [
+            79.11246,
+            162.58452,
+            330.52019,
+            225.75924
+          ],
+          "id": "text-2",
+          "text": "Pielstädt",
+          "font": "Italianno",
+          "anchor": "start",
+          "fontSizeMm": {
+            "J": 99.96,
+            "K": 99.96000000000001,
+            "difference": 1.4210854715202004e-14
+          },
+          "advanceMm": {
+            "J": 241.10351999999997,
+            "K": 241.10352,
+            "difference": 2.842170943040401e-14
+          },
+          "anchorMm": {
+            "J": [
+              79.0125,
+              223.86
+            ],
+            "K": [
+              79.0125,
+              223.86
+            ],
+            "maxDifference": 0.0
+          },
+          "baselineStartMm": {
+            "J": [
+              79.0125,
+              223.86
+            ],
+            "K": [
+              79.0125,
+              223.86
+            ],
+            "maxDifference": 0.0
+          },
+          "freshJUsingCurrentFontMaxBoundsDifferenceMm": 0.0
+        }
+      ]
+    },
+    {
+      "sample": "TR2-D12",
+      "designId": "TR2-V2A-9x6-D12",
+      "mainProductId": "6800000",
+      "sizeKey": "GR-ES-RT2-90X60-T15",
+      "targetMm": [
+        90,
+        60
+      ],
+      "targetScale": 0.9787928221859706,
+      "targetOffsetMm": [
+        0.6606851549755319,
+        0
+      ],
+      "sourceSha256": "004d0dccfc6631dfd2977ca04956d7d5ab1a40ce6deafb47cf44a8c990b2a6a0",
+      "jSvgSha256": "4a1efd6d0872ba7c908ce6e6306dc196b790e952bd19bc35ab0fafaf003ed744",
+      "jPngSha256": "4722c5a2afddd63408561202db6e4041850fbba3d0d4f1ef8c5c08d0ec69c65d",
+      "kSvgSha256": "87298358ff3a3c1cbe546ed09ae216d89fe23816faa8961cc2f56f64ccaf583e",
+      "text": [
+        {
+          "glyphPathCount": 18,
+          "glyphPathsIdentical": true,
+          "maxGlyphBoundsDifferenceMm": 2.8990143619012088e-12,
+          "unionBoundsDifferenceMm": 2.8990143619012088e-12,
+          "referenceBoundsMm": [
+            32.453363784667005,
+            21.88815660685221,
+            81.70058075041074,
+            25.596606851550526
+          ],
+          "previewBoundsMm": [
+            32.453363784665584,
+            21.888156606851553,
+            81.70058075040784,
+            25.59660685154976
+          ],
+          "id": "text-1",
+          "text": "Herzlich Willkommen",
+          "font": "Raleway",
+          "anchor": "middle",
+          "fontSizeMm": {
+            "J": 5.01141924959217,
+            "K": 5.01141924959217,
+            "difference": 0.0
+          },
+          "advanceMm": {
+            "J": 50.04403262642741,
+            "K": 50.0440326264274,
+            "difference": 7.105427357601002e-15
+          },
+          "anchorMm": {
+            "J": [
+              57.029363784665584,
+              25.546492659053836
+            ],
+            "K": [
+              57.02936378466558,
+              25.546492659053836
+            ],
+            "maxDifference": 7.105427357601002e-15
+          },
+          "baselineStartMm": {
+            "J": [
+              32.00734747145188,
+              25.546492659053836
+            ],
+            "K": [
+              32.00734747145188,
+              25.546492659053836
+            ],
+            "maxDifference": 0.0
+          },
+          "freshJUsingCurrentFontMaxBoundsDifferenceMm": 2.8990143619012088e-12
+        },
+        {
+          "glyphPathCount": 8,
+          "glyphPathsIdentical": true,
+          "maxGlyphBoundsDifferenceMm": 2.5939087322512933e-08,
+          "unionBoundsDifferenceMm": 2.5939087322512933e-08,
+          "referenceBoundsMm": [
+            34.429037520393,
+            35.88472420473191,
+            79.39865575295961,
+            48.47816036653897
+          ],
+          "previewBoundsMm": [
+            34.42903752039152,
+            35.88472417879282,
+            79.3986557702447,
+            48.47816037866232
+          ],
+          "id": "text-2",
+          "text": "Bohlmann",
+          "font": "Homage",
+          "anchor": "start",
+          "fontSizeMm": {
+            "J": 8.290375203915172,
+            "K": 8.290375228972266,
+            "difference": 2.50570941773276e-08
+          },
+          "advanceMm": {
+            "J": 44.678159729302614,
+            "K": 44.67815974570962,
+            "difference": 1.640700730831668e-08
+          },
+          "anchorMm": {
+            "J": [
+              34.42903752039152,
+              44.466557911908644
+            ],
+            "K": [
+              34.42903752039152,
+              44.466557911908644
+            ],
+            "maxDifference": 0.0
+          },
+          "baselineStartMm": {
+            "J": [
+              34.42903752039152,
+              44.466557911908644
+            ],
+            "K": [
+              34.42903752039152,
+              44.466557911908644
+            ],
+            "maxDifference": 0.0
+          },
+          "freshJUsingCurrentFontMaxBoundsDifferenceMm": 2.8421709430404007e-12
+        },
+        {
+          "glyphPathCount": 10,
+          "glyphPathsIdentical": true,
+          "maxGlyphBoundsDifferenceMm": 2.5437429940211587e-12,
+          "unionBoundsDifferenceMm": 2.5437429940211587e-12,
+          "referenceBoundsMm": [
+            44.8042414355646,
+            30.540685154976444,
+            69.46042414355882,
+            34.24913539967476
+          ],
+          "previewBoundsMm": [
+            44.80424143556281,
+            30.54068515497553,
+            69.46042414355628,
+            34.24913539967373
+          ],
+          "id": "text-3",
+          "text": "bei Familie",
+          "font": "Raleway",
+          "anchor": "middle",
+          "fontSizeMm": {
+            "J": 5.01141924959217,
+            "K": 5.01141924959217,
+            "difference": 0.0
+          },
+          "advanceMm": {
+            "J": 25.182381729200653,
+            "K": 25.18238172920065,
+            "difference": 3.552713678800501e-15
+          },
+          "anchorMm": {
+            "J": [
+              57.01957585644372,
+              34.199021207177815
+            ],
+            "K": [
+              57.01957585644372,
+              34.199021207177815
+            ],
+            "maxDifference": 0.0
+          },
+          "baselineStartMm": {
+            "J": [
+              44.428384991843394,
+              34.199021207177815
+            ],
+            "K": [
+              44.428384991843394,
+              34.199021207177815
+            ],
+            "maxDifference": 0.0
+          },
+          "freshJUsingCurrentFontMaxBoundsDifferenceMm": 2.5437429940211587e-12
+        }
+      ]
+    }
+  ],
+  "maximumGlyphBoundsDifferenceMm": 2.5939087322512933e-08,
+  "allWithinTolerance": true
+}

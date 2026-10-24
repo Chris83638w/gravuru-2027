@@ -1,0 +1,2019 @@
+{
+  "schema": "gravuru-paket-k-validation/v1",
+  "date": "2026-10-24",
+  "branch": "dev/dashboard-handy-20261024-astra",
+  "baseCommit": "da750f1b4e7079092913d126220bb7e9857e5f47",
+  "catalogCommit": "27d46beeae8cd91748ae8096f0bb63a4c550573a",
+  "sources": [
+    {
+      "path": "app/workshop/ui/design-dashboard.html",
+      "sha256": "817b1836af0ecf9e53a91d89e1604eda82c2edcf149ee37174ebc13d6612df38",
+      "bytes": 6732,
+      "lf": true,
+      "gitBlob": "e3c8bcfa2ee0aeeb1589cac4aa61bf096d8f62c3"
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard.css",
+      "sha256": "1419bc99a6720cd41b1b5fada9a2d61bebb273552289fda21b680e382fd06929",
+      "bytes": 13504,
+      "lf": true,
+      "gitBlob": "07270e290d1e24fe3e3870fea4163f3384f1774f"
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard-ui.mjs",
+      "sha256": "2486b1ccc477ac8789653c960a73326b6a6ff7d0a9f8b1d8247ebc772f9346e9",
+      "bytes": 27266,
+      "lf": true,
+      "gitBlob": "738c16aaeda5277f6a4a26e85b9af2d9eb4b681b"
+    },
+    {
+      "path": "app/workshop/design-dashboard-ui.test.mjs",
+      "sha256": "38e18427eec938e95c1db5d551466c0c9cbfc17c33dfe69363709628c3fd7efd",
+      "bytes": 49071,
+      "lf": true,
+      "gitBlob": "23f06c132968e3905f204042527dc7c6028165cf"
+    },
+    {
+      "path": "app/workshop/design-preview-glyphs.mjs",
+      "sha256": "318d902bb5de62f12772dd2e3b923a00e0a4f42c2d1a92422bd5c42902c7056c",
+      "bytes": 12038,
+      "lf": true,
+      "gitBlob": "c1fdbb9e343c2bab34dd76f842bc69f24f3b8c75"
+    },
+    {
+      "path": "app/workshop/design-preview-glyphs.test.mjs",
+      "sha256": "eac9ce7075b2b403f4aae6d71c9d81ece4b2d8c02f1840c42b9a36a70b1bbdb4",
+      "bytes": 11547,
+      "lf": true,
+      "gitBlob": "967c21deb73816c9a9a79dba49f54522874f3cb7"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "sha256": "97888b7ecb7f7ab9c2e0e7bec0661ffd0c768f581f14c67c01f37cf871b9a119",
+      "bytes": 114404,
+      "lf": true,
+      "gitBlob": "14569165966b3cd8cba1548618ee7bcf86c58734"
+    },
+    {
+      "path": "app/workshop/katalog-source.mjs",
+      "sha256": "ad71cd71b117b71486b8294e1cea98a0becaa015e2e70b40857cbfe5bbdc6831",
+      "bytes": 22556,
+      "lf": true,
+      "gitBlob": "687d68655f44b802d1a43d6c4788a6e120243d85"
+    },
+    {
+      "path": "app/workshop/katalog-source.test.mjs",
+      "sha256": "d3c824720e05b103555c014772c7ffe699207c53c83167a972bc069368cdb8c8",
+      "bytes": 11041,
+      "lf": true,
+      "gitBlob": "77ccc4b7d56ae7161a3d8c3c675af25990e31f04"
+    }
+  ],
+  "tests": {
+    "platform": "Windows",
+    "node": "24.20.0",
+    "python": "3.12.14",
+    "files": [
+      "app/workshop/acryl-host-routing.test.mjs",
+      "app/workshop/design-preview-glyphs.test.mjs",
+      "app/workshop/design-dashboard.test.mjs",
+      "app/workshop/design-dashboard-ui.test.mjs",
+      "app/workshop/design-dashboard-startdesigns.test.mjs",
+      "app/workshop/font-library.test.mjs",
+      "app/workshop/katalog-source.test.mjs",
+      "app/workshop/katalog-convert.test.mjs",
+      "app/workshop/katalog-import.test.mjs",
+      "app/workshop/merchant-request.test.mjs",
+      "app/workshop/merchant-media.test.mjs",
+      "app/workshop/shopify-admin-host.test.mjs"
+    ],
+    "command": "node --import ./scripts/test-portability/full-tests-python-windows.mjs --test app/workshop/acryl-host-routing.test.mjs app/workshop/design-preview-glyphs.test.mjs app/workshop/design-dashboard.test.mjs app/workshop/design-dashboard-ui.test.mjs app/workshop/design-dashboard-startdesigns.test.mjs app/workshop/font-library.test.mjs app/workshop/katalog-source.test.mjs app/workshop/katalog-convert.test.mjs app/workshop/katalog-import.test.mjs app/workshop/merchant-request.test.mjs app/workshop/merchant-media.test.mjs app/workshop/shopify-admin-host.test.mjs",
+    "environment": "GRAVURU_PYTHON points to Python with fonttools/svgpathtools/PyMuPDF; TEMP and TMP point to writable test directory",
+    "tests": 139,
+    "pass": 139,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 19419.7807,
+    "scope": "12 targeted suites; no new entire-repository or Linux run",
+    "log": "paket-k-nachweise/tests.log"
+  },
+  "glyphs": {
+    "catalogCommit": "27d46beeae8cd91748ae8096f0bb63a4c550573a",
+    "catalogFiles": 780,
+    "timings": [
+      {
+        "id": "TRE-V2A-8x5-D57",
+        "coldMs": 1072.1499000000001,
+        "warmMs": 1.863299999999981,
+        "warmHit": true,
+        "convertedTexts": 2,
+        "warnings": [],
+        "identical": true
+      },
+      {
+        "id": "TR2-V2A-9x6-D12",
+        "coldMs": 665.6271999999999,
+        "warmMs": 3.115099999999984,
+        "warmHit": true,
+        "convertedTexts": 3,
+        "warnings": [],
+        "identical": true
+      }
+    ],
+    "corpusMs": 13143.6894,
+    "counts": {
+      "texts": 1772,
+      "converted": 1758,
+      "remaining": 14,
+      "warningFiles": 8
+    },
+    "cache": {
+      "previewEntries": 64,
+      "previewBytes": 16777216,
+      "fontEntries": 32,
+      "fontBytes": 67108864,
+      "keys": "SVG SHA-256 + requested font versions (file SHA-256 or available glyph-resource SHA-256); font conversion SHA-256 plus converter identity"
+    },
+    "warningDesigns": [
+      {
+        "id": "TQ-V2A-8x8-D14",
+        "file": "designs/edelstahl-gravur-80x80/TQ-V2A-8x8-D14/design.svg",
+        "sourceTexts": 2,
+        "convertedTexts": 1,
+        "remainingTexts": 1,
+        "warnings": [
+          "text-1: Schrift fehlt: Welcome"
+        ]
+      },
+      {
+        "id": "TO-V2A-9x6-D38",
+        "file": "designs/edelstahl-gravur-oval-90x60/TO-V2A-9x6-D38/design.svg",
+        "sourceTexts": 2,
+        "convertedTexts": 1,
+        "remainingTexts": 1,
+        "warnings": [
+          "text-1: Schrift fehlt: ParmaPetit"
+        ]
+      },
+      {
+        "id": "beispiele-10",
+        "file": "designs/_testlauf-beispiele/beispiele-10/design.svg",
+        "sourceTexts": 3,
+        "convertedTexts": 1,
+        "remainingTexts": 2,
+        "warnings": [
+          "Text: Schrift fehlt: Champagne&Limousines",
+          "Text: Schrift fehlt: Champagne&Limousines"
+        ]
+      },
+      {
+        "id": "beispiele-11",
+        "file": "designs/_testlauf-beispiele/beispiele-11/design.svg",
+        "sourceTexts": 3,
+        "convertedTexts": 1,
+        "remainingTexts": 2,
+        "warnings": [
+          "Text: Schrift fehlt: MINIMALIST",
+          "Text: Schrift fehlt: MINIMALIST"
+        ]
+      },
+      {
+        "id": "beispiele-13",
+        "file": "designs/_testlauf-beispiele/beispiele-13/design.svg",
+        "sourceTexts": 3,
+        "convertedTexts": 2,
+        "remainingTexts": 1,
+        "warnings": [
+          "Text: Schrift fehlt: Champagne&Limousines"
+        ]
+      },
+      {
+        "id": "beispiele-15",
+        "file": "designs/_testlauf-beispiele/beispiele-15/design.svg",
+        "sourceTexts": 4,
+        "convertedTexts": 2,
+        "remainingTexts": 2,
+        "warnings": [
+          "Text: Schrift fehlt: Champagne&Limousines",
+          "Text: Schrift fehlt: Champagne&Limousines"
+        ]
+      },
+      {
+        "id": "beispiele-16",
+        "file": "designs/_testlauf-beispiele/beispiele-16/design.svg",
+        "sourceTexts": 3,
+        "convertedTexts": 1,
+        "remainingTexts": 2,
+        "warnings": [
+          "Text: Schrift fehlt: Champagne&Limousines",
+          "Text: Schrift fehlt: Champagne&Limousines"
+        ]
+      },
+      {
+        "id": "beispiele-17",
+        "file": "designs/_testlauf-beispiele/beispiele-17/design.svg",
+        "sourceTexts": 3,
+        "convertedTexts": 0,
+        "remainingTexts": 3,
+        "warnings": [
+          "Text: Schrift fehlt: MINIMALIST",
+          "Text: Schrift fehlt: Champagne&Limousines",
+          "Text: Schrift fehlt: Champagne&Limousines"
+        ]
+      }
+    ],
+    "timingScope": "Windows renderer call, openKatalog outside timed region, includes requested TTF conversion in cold pass; no HTTP/browser startup included",
+    "productionLayout": "Glyph advances + (n-1)*letterSpacing; no kerning or GSUB/GPOS introduced"
+  },
+  "browser": {
+    "success": true,
+    "browser": "155.0.8059.85",
+    "playwright": "1.62.1",
+    "embedded": true,
+    "localSyntheticSession": true,
+    "realShopifyAccess": false,
+    "results": [
+      {
+        "device": "iphone-13",
+        "viewport": {
+          "width": 390,
+          "height": 664
+        },
+        "initial": {
+          "width": 390,
+          "scroll": 390,
+          "body": 390
+        },
+        "dimensions": {
+          "width": 390,
+          "scroll": 390,
+          "body": 390
+        },
+        "targets": [
+          {
+            "label": "Vorschau öffnen",
+            "width": 302,
+            "height": 237.59375,
+            "left": 44,
+            "right": 346
+          },
+          {
+            "label": "Auswählen",
+            "width": 302,
+            "height": 44,
+            "left": 44,
+            "right": 346
+          },
+          {
+            "label": "Name ändern",
+            "width": 302,
+            "height": 44,
+            "left": 44,
+            "right": 346
+          },
+          {
+            "label": "Ausblenden",
+            "width": 302,
+            "height": 44,
+            "left": 44,
+            "right": 346
+          },
+          {
+            "label": "Freigeben",
+            "width": 302,
+            "height": 44,
+            "left": 44,
+            "right": 346
+          }
+        ],
+        "preview": {
+          "x": 12,
+          "y": 114.40625,
+          "width": 366,
+          "height": 435.1875
+        },
+        "confirmation": {
+          "x": 12,
+          "y": 142,
+          "width": 366,
+          "height": 380
+        },
+        "glyphTextCount": 0
+      },
+      {
+        "device": "pixel-7",
+        "viewport": {
+          "width": 412,
+          "height": 839
+        },
+        "initial": {
+          "width": 412,
+          "scroll": 412,
+          "body": 412
+        },
+        "dimensions": {
+          "width": 412,
+          "scroll": 412,
+          "body": 412
+        },
+        "targets": [
+          {
+            "label": "Vorschau öffnen",
+            "width": 324,
+            "height": 237.59375,
+            "left": 44,
+            "right": 368
+          },
+          {
+            "label": "Auswählen",
+            "width": 324,
+            "height": 44,
+            "left": 44,
+            "right": 368
+          },
+          {
+            "label": "Name ändern",
+            "width": 324,
+            "height": 44,
+            "left": 44,
+            "right": 368
+          },
+          {
+            "label": "Ausblenden",
+            "width": 324,
+            "height": 44,
+            "left": 44,
+            "right": 368
+          },
+          {
+            "label": "Freigeben",
+            "width": 324,
+            "height": 44,
+            "left": 44,
+            "right": 368
+          }
+        ],
+        "preview": {
+          "x": 12,
+          "y": 179.234375,
+          "width": 388,
+          "height": 480.515625
+        },
+        "confirmation": {
+          "x": 12,
+          "y": 229.5,
+          "width": 388,
+          "height": 380
+        },
+        "glyphTextCount": 0
+      },
+      {
+        "device": "desktop",
+        "dimensions": {
+          "width": 1280,
+          "scroll": 1463,
+          "body": 1463
+        }
+      }
+    ],
+    "stats": {
+      "externalAborted": [],
+      "requests": [
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&startDesigns=true",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&startDesigns=true",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-ab-80x53&id=TAE-V2A-8x5-D8&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&startDesigns=true",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-ab-80x53&id=TAE-V2A-8x5-D8&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-ab-80x53&id=TAE-V2A-8x5-D10&file=design.svg",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET"
+        }
+      ]
+    },
+    "serverStats": {
+      "variant": "after",
+      "requests": [
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&startDesigns=true",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 22.819,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 15.246,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.271,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 12.763,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.398,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.803,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 14.094,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 13.892,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 12.779,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.03,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 10.697,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.071,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.517,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 11.25,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 10.163,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.32,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 15.568,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 949.427,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 0.95,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 7099.03,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 882.326,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 16.915,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 16.087,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 23.792,
+          "warning": null
+        },
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&startDesigns=true",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 22.046,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.626,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.992,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.885,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.435,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.857,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.088,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.874,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.77,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 11.841,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.23,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.661,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.317,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 13.347,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 5.814,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.848,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 0.894,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 887.907,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 0.564,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 2217.626,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 989.08,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 17.355,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 16.832,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 28.119,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 10.903,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 881.34,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 18.246,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 10.547,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 9.546,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 966.609,
+          "warning": null
+        },
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&startDesigns=true",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 22.645,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.294,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.338,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.834,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.13,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.531,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.344,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.721,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 10.969,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.016,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 10.318,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 5.707,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.895,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.246,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.742,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.509,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 1.847,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 913.572,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 0.857,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 2175.138,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 950.389,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 15.067,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 15.094,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 21.864,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 10.118,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 891.636,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 16.048,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 10.897,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 8.494,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-80x53&id=TRE-V2A-8x5-D57&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 900.199,
+          "warning": null
+        },
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&startDesigns=true",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 10.664,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 10.623,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 10.067,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.992,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.968,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 14.014,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.347,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.561,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.744,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.107,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.811,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 13.611,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.359,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 12.546,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.995,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.64,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 0.707,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 8.991,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 1.869,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 2152.696,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-ab-80x53&id=TAE-V2A-8x5-D8&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 906.402,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 16.015,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 15.624,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 10.344,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 9.941,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-retro2-91x61&id=TR2-V2A-9x6-D12&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 9.252,
+          "warning": null
+        },
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&startDesigns=true",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.402,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.343,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.356,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.429,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 6.291,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 10.343,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.478,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 11.2,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.171,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 9.501,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 7.787,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.508,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 12.994,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.218,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 12.913,
+          "warning": null
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": false,
+          "ms": 8.126,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 1.1,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 921.169,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/session",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 0.717,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 1984.577,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-ab-80x53&id=TAE-V2A-8x5-D8&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 878.899,
+          "warning": null
+        },
+        {
+          "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-ab-80x53&id=TAE-V2A-8x5-D10&file=design.svg",
+          "method": "GET",
+          "status": 200,
+          "authenticated": true,
+          "ms": 19.459,
+          "warning": null
+        }
+      ],
+      "blockedWrites": 0
+    },
+    "scope": "Local Chrome with Playwright device profiles; embedded mock Shopify host and synthetic session token. No physical iPhone/Pixel and no live Shopify access.",
+    "desktopComparison": {
+      "width": 1280,
+      "height": 900,
+      "pngByteIdentical": true,
+      "sha256": "a4a304ee3b45b359b619743d32c2bdc70d422f675f3dbeb442f3cafbea5ec104",
+      "scope": "Initial viewport; table preview images below viewport. Existing desktop document/body width 1463px remains unchanged.",
+      "beforeDimensions": {
+        "width": 1280,
+        "scroll": 1463,
+        "body": 1463
+      }
+    }
+  },
+  "catalogIntegrity": {
+    "verifiedFiles": 1843,
+    "designJson": 780,
+    "designSvg": 780,
+    "fontFiles": 81,
+    "modifiedFiles": 0,
+    "scope": "All locally acquired source inputs verified against pinned catalogue Git blobs, rehashed after tests. Historic designs/bestand and 116 other nonessential artifacts not acquired."
+  },
+  "jGeometry": {
+    "evidence": "paket-k-nachweise/j-geometry.json",
+    "samples": [
+      "TRE-V2A-8x5-D57",
+      "TR2-V2A-9x6-D12"
+    ],
+    "textLines": 5,
+    "identicalGlyphPaths": true,
+    "toleranceMm": 0.000001,
+    "maxDifferenceMm": 2.594e-8,
+    "scope": "K master preview transformed only for comparison to the saved J physical target matrices; production/font sources and original J PNG hashes verified.",
+    "metric": "Maximum absolute glyph bounding-box coordinate difference after analytic Bezier bounds; identical glyph paths separately checked"
+  },
+  "screenshots": [
+    {
+      "path": "docs/handoffs/paket-k-bilder/iphone-13-liste.png",
+      "bytes": 282814,
+      "sha256": "053d2078fceb39270b7d2b5837ede01f6dc77adf39e34fe85c5dd2afc0b1167d"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/iphone-13-vorschau.png",
+      "bytes": 290859,
+      "sha256": "dff778fdafd7fc038a00a8ed6c87d4b8f15c240004f2c28af64e73cfbfbd09f2"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/iphone-13-bestaetigung.png",
+      "bytes": 258021,
+      "sha256": "2abe6ee25f3902fafedea3d10e021ca642c69b3d8756f864f06eadc3528061ec"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/pixel-7-liste.png",
+      "bytes": 455198,
+      "sha256": "7339d68cb9885fe6ec4c4fd17bcea3f53a60f1e7f63d6f6988cb025260fa0421"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/pixel-7-vorschau.png",
+      "bytes": 413667,
+      "sha256": "1950799d907a4ccaf6ee8cb264a2e77a91938ed8940331680fd1f5fb21d325dc"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/pixel-7-bestaetigung.png",
+      "bytes": 427789,
+      "sha256": "a9581cd6b8e8439d8ebd34df89e8be483c0146f13efd9323647d3a62c3050fdf"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/handy-360-vorschau.png",
+      "bytes": 322235,
+      "sha256": "d73a35fb22f540c6cf897dc0450754e67d080604ac94d0c661aa1a036abbec25"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/handy-360-bestaetigung.png",
+      "bytes": 273489,
+      "sha256": "de8de3b0a283a0f1895654a3e65f3f7958c0e599fefa64afab73ddf9952d9044"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/desktop-1280-vorher.png",
+      "bytes": 96588,
+      "sha256": "a4a304ee3b45b359b619743d32c2bdc70d422f675f3dbeb442f3cafbea5ec104"
+    },
+    {
+      "path": "docs/handoffs/paket-k-bilder/desktop-1280-nachher.png",
+      "bytes": 96588,
+      "sha256": "a4a304ee3b45b359b619743d32c2bdc70d422f675f3dbeb442f3cafbea5ec104"
+    }
+  ],
+  "review": {
+    "openP1": 0,
+    "openP2": 0,
+    "resolved": [
+      "Font cache detects newly appearing missing font file",
+      "Unsupported typography remains complete original text with warning",
+      "Unicode-safe bounded warning header",
+      "Preserve rename draft/caret/focus across responsive rendering"
+    ]
+  },
+  "boundaries": {
+    "catalogWrites": 0,
+    "designApprovals": 0,
+    "liveAccess": false,
+    "merge": false,
+    "fontFilesAdded": false
+  }
+}

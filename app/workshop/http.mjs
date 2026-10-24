@@ -73,6 +73,7 @@ import {DatabaseSync} from 'node:sqlite';
 import {DEFAULT_TENANT,createTenantRegistry,tenantFromRequest} from './tenant.mjs';
 import {createCatalogStructure} from './catalog-structure.mjs';
 import {designDashboardWithFit,designFile,patchDesign} from './design-dashboard.mjs';
+import {designPreviewGlyphs,previewWarningHeader,PREVIEW_WARNING_HEADER} from './design-preview-glyphs.mjs';
 import {katalogPath} from './katalog-source.mjs';
 import {categoryLabels} from './category-labels.mjs';
 import {tenantOverview} from './tenant-overview.mjs';
@@ -355,8 +356,10 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         const root=katalogRoot(),q=url.searchParams;
         if(pathname==='/api/workshop/designs/svg'){
           if(method!=='GET')fail(405,'method_not_allowed','Designdateien nur lesen.');
-          const {file,type}=designFile(root,{reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'}),bytes=fs.readFileSync(file);
-          return res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src data:"}).end(bytes);
+          const {file,type}=designFile(root,{reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'});
+          const preview=type.startsWith('image/svg+xml')?await designPreviewGlyphs({file,root,available:formFonts}):{bytes:fs.readFileSync(file),warnings:[]};
+          const bytes=preview.bytes,warning=previewWarningHeader(preview.warnings);
+          return res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src data:",...(warning?{[PREVIEW_WARNING_HEADER]:warning}:{})}).end(bytes);
         }
         if(method==='GET'){
           const startDesigns=q.get('startDesigns');

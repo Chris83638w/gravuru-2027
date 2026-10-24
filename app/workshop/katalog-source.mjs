@@ -5,6 +5,7 @@
 // Fehler sind deutsch und nennen die Datei. Unbekanntes bleibt `null` (offen).
 import fs from 'node:fs';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {validateFamily} from './product-families.mjs';
 import {quantityTiersIssue} from '../configurator/variant-m/contract.mjs';
 import {parseThemeCatalog,findTheme} from './theme-catalog.mjs';
@@ -213,6 +214,7 @@ export function openKatalog(root){
  let themes=[];
  if(exists(themenFile)){try{themes=parseThemeCatalog(readJson(themenFile));}catch(e){fail(themenFile,e.message.replace(/^themen\.json: /,''));}}
  const {fonts,sets}=readFonts(root);
+ let resourceFonts=fonts,resourceRegistry=fontRegistryStamp(root);
  const lines=new Map();
  for(const name of listFiles(path.join(root,'linien'),'.json')){
   const file=path.join(root,'linien',name),line=validateLine(readJson(file),{families,themes,fontSets:sets,file});
@@ -237,18 +239,37 @@ export function openKatalog(root){
   // Glyphenressourcen für Schriften: vorhandene Werkstatt-Ressourcen zuerst, sonst die
   // Katalogdatei über den Schrift-Importer (font-import.py). Fehlende Dateien → `missing`.
   async fontResources(names,{available={},converter}={}){
-   const result={},missing=[],cache=glyphCache;
+   const result={},missing=[],versions={},stamp=fontRegistryStamp(root);
+   if(stamp!==resourceRegistry){resourceFonts=readFonts(root).fonts;resourceRegistry=stamp;}
    for(const name of new Set(names)){
-    if(available[name]){result[name]=available[name];continue;}
-    if(cache.has(name)){result[name]=cache.get(name);continue;}
-    const meta=fonts.get(name);
-    if(!meta?.file||!converter){missing.push(name);continue;}
-    const data=await converter(fs.readFileSync(meta.file).toString('base64'));
+    if(available[name]){result[name]=available[name];versions[name]=fontHash(JSON.stringify(available[name]));continue;}
+    const meta=resourceFonts.get(name);
+    const fontFile=meta?.fileListed?path.join(root,meta.fileListed):meta?.file;
+    if(!fontFile||!converter){missing.push(name);continue;}
+    let bytes;try{bytes=fs.readFileSync(fontFile);}catch{missing.push(name);continue;}
+    const data=await cachedFont(bytes,converter);
     if(!data?.font?.regular?.glyphs){missing.push(name);continue;}
-    cache.set(name,data.font);result[name]=data.font;
+    result[name]=data.font;versions[name]=fontHash(bytes);
    }
-   return {fonts:result,missing};
+   return {fonts:result,missing,versions};
   }
  };
 }
-const glyphCache=new Map();
+// A name is not a font version: catalogues may contain different files under the
+// same name. Only requested files are read; checksums catch same-size replacement.
+const fontHash=bytes=>createHash('sha256').update(bytes).digest('hex');
+function fontRegistryStamp(root){const file=path.join(root,'schriften','schriften.json');return exists(file)?fontHash(fs.readFileSync(file)):'';}
+const glyphCache=new Map(),converterIds=new WeakMap();let nextConverter=0,glyphBytes=0;
+const GLYPH_CACHE_ENTRIES=32,GLYPH_CACHE_BYTES=64*1024*1024;
+async function cachedFont(bytes,converter){
+ if(!converterIds.has(converter))converterIds.set(converter,++nextConverter);
+ const key=converterIds.get(converter)+':'+createHash('sha256').update(bytes).digest('hex');
+ let entry=glyphCache.get(key);
+ if(entry){glyphCache.delete(key);glyphCache.set(key,entry);return entry.job;}
+ entry={bytes:0,job:null};
+ entry.job=Promise.resolve().then(()=>converter(bytes.toString('base64'))).then(data=>{
+  if(glyphCache.get(key)===entry){entry.bytes=Buffer.byteLength(JSON.stringify(data));glyphBytes+=entry.bytes;trimGlyphCache();}return data;
+ },error=>{if(glyphCache.get(key)===entry){glyphCache.delete(key);glyphBytes-=entry.bytes;}throw error;});
+ glyphCache.set(key,entry);trimGlyphCache();return entry.job;
+}
+function trimGlyphCache(){while(glyphCache.size>GLYPH_CACHE_ENTRIES||glyphBytes>GLYPH_CACHE_BYTES){const key=glyphCache.keys().next().value;glyphBytes-=glyphCache.get(key).bytes;glyphCache.delete(key);}}

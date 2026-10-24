@@ -5,6 +5,7 @@
 // Chris 21.10.2026: Bei Text zählen die Buchstaben, nicht der Textrahmen mit Zeilenabstand – sonst lässt sich
 // ein Name nicht ganz nach oben setzen.
 import {transformedCorners,fitsSurface} from './usability-model.mjs';
+import {embeddedMotifFits} from '../../platform/sources/app/shared/models/embedded-motif-fit.mjs';
 import {objectSurface} from './surfaces.mjs';
 
 export function boundingSize(o){
@@ -48,8 +49,38 @@ export function clampToContour(o,geometry,bounds=null,previous=null){
  if(changed){o.x=position.x;o.y=position.y;}return changed;
 }
 
-export function installEdgeClamp(el){
-  const surfacePositions=new Map();
+export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
+  const surfacePositions=new Map(),starts=new Map();
+  let choosingTemplate=null;
+  const choose=el.chooseDesign;
+  if(typeof choose==='function')el.chooseDesign=function(id,...args){
+    choosingTemplate=id;try{return choose.call(this,id,...args);}finally{
+      // Inactive back objects are not visited by the render clamp. Reset their
+      // session marker too, but only for a newly loaded authentic instance.
+      if(this.state?.designId===id)for(const o of this.state.objects||[]){
+        const original=starts.get(id+'\0'+o.id);
+        if(original&&original.instance!==o&&signature(o)===original.signature){original.changed=false;original.instance=o;}
+      }
+      choosingTemplate=null;
+    }
+  };
+  const signature=o=>JSON.stringify([o.type,o.motif,o.templateOrigin,objectSurface(o),o.x,o.y,o.w,o.h,o.rotation]);
+  for(const design of profile?.designs||[])for(const o of design.objects||[]){
+    const resource=motifs.find(m=>m.key===o.motif&&m.embeddedOnly===true);
+    if(o.type==='motif'&&o.templateOrigin===true&&resource)starts.set(design.id+'\0'+o.id,{signature:signature(o),resource,fragment:resource.svgFragment,bounds:JSON.stringify(resource.bounds),changed:false});
+  }
+  const unchangedStart=(o,state,geometry)=>{
+    const original=starts.get(state.designId+'\0'+o.id);
+    if(!original)return false;
+    // chooseDesign loads a fresh copy from the authentic profile. A return to
+    // that template can preserve its start again; merely undoing a drag cannot.
+    if(choosingTemplate===state.designId&&original.instance!==o&&signature(o)===original.signature)original.changed=false;
+    original.instance=o;if(original.changed)return false;
+    if(signature(o)!==original.signature||original.resource.svgFragment!==original.fragment||JSON.stringify(original.resource.bounds)!==original.bounds){original.changed=true;return false;}
+    // Only the authentic, unchanged imported start position is preserved.
+    // After the first geometry edit the existing customer clamp owns placement.
+    return embeddedMotifFits(o,geometry,original.resource)===true;
+  };
   const glyphs=o=>{if(o.type!=='text'||o.uxHidden||!String(o.text??'').trim()||!el.uxTextBounds)return null;try{return el.uxTextBounds(o);}catch{return null;}};
   const clampAll=self=>{const s=self.state;if(!s?.objects)return;
     const geometry=self.uxProfileGeometry?.();
@@ -60,9 +91,9 @@ export function installEdgeClamp(el){
       if(cache?.geometryKey!==key){cache={geometryKey:key,positions:new Map()};surfacePositions.set(active,cache);}
       const objects=s.objects.filter(o=>objectSurface(o)===active),validPositions=cache.positions;
       const ids=new Set(objects.map(o=>o.id));for(const id of validPositions.keys())if(!ids.has(id))validPositions.delete(id);
-      for(const o of objects){const bounds=glyphs(o);clampToContour(o,geometry,bounds,validPositions.get(o.id));
+      for(const o of objects){if(unchangedStart(o,s,geometry))continue;const bounds=glyphs(o);clampToContour(o,geometry,bounds,validPositions.get(o.id));
         if(fitsSurface(o,bounds||{x:-o.w/2,y:-o.h/2,width:o.w,height:o.h},geometry))validPositions.set(o.id,{x:o.x,y:o.y});}
-    }else for(const o of s.objects)clampToPlate(o,s.width,s.height,0,glyphs(o));
+    }else for(const o of s.objects)if(!unchangedStart(o,s,geometry))clampToPlate(o,s.width,s.height,0,glyphs(o));
   };
   const render=el.render;
   el.render=function(...args){clampAll(this);return render.apply(this,args);};

@@ -7,7 +7,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {openKatalog} from './katalog-source.mjs';
-import {formatSeries,seriesOf,assignSeries,applyPriceOverrides,priceGaps,katalogDesignToTemplate,scaleTemplate,templateFit} from './katalog-convert.mjs';
+import {formatSeries,seriesOf,assignSeries,applyPriceOverrides,priceGaps,katalogDesignToTemplate,scaleTemplate,scaleEmbeddedMotifs,templateFit} from './katalog-convert.mjs';
 import {convertFont} from './font-library.mjs';
 import {FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
 import {importKey} from './katalog-import.mjs';
@@ -214,10 +214,10 @@ function attachMainProducts(katalog,line,rows,{fonts=null}={}){
     if(allowed&&fonts!==null){
      try{
       const templateKey=family.id+'\0'+sub.themeId+'\0'+master.id;
-      if(!templateCache.has(templateKey)){try{templateCache.set(templateKey,{template:katalogDesignToTemplate(master,family,katalog.theme(sub.themeId),{fonts}).template});}catch(error){templateCache.set(templateKey,{error});}}
+      if(!templateCache.has(templateKey)){try{templateCache.set(templateKey,katalogDesignToTemplate(master,family,katalog.theme(sub.themeId),{fonts}));}catch(error){templateCache.set(templateKey,{error});}}
       const converted=templateCache.get(templateKey);if(converted.error)throw converted.error;
       const scaled=scaleTemplate(converted.template,converted.template.katalog.plateMm,[baseSize.widthMm,baseSize.heightMm],fonts,{contain:family.groups.find(group=>group.key===baseSize.groupKey)?.shape==='contour'});
-      entry.fit=templateFit(scaled,family,baseSize,fonts);
+      entry.fit=templateFit(scaled,family,baseSize,fonts,{motifs:()=>scaleEmbeddedMotifs(converted.motifs,scaled.katalog.scale)});
       if(entry.fit.status==='passt nicht')entry.blockers.push(...entry.fit.issues.map(message=>blocker('size_fit',message)));
      }catch(error){const missingFont=/Schrift fehlt|vorhandene Schriftart/.test(error.message);entry.fit={status:missingFont?'nicht geprüft':'passt nicht',issues:[error.message]};entry.blockers.push(blocker(missingFont?'fit_unavailable':'design_invalid',error.message));}
     }

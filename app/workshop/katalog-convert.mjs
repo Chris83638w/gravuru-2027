@@ -305,12 +305,12 @@ function scaleArcAware(d,scale){
 // „passt“: reine Skalierung ohne Einpassen, alle Elemente in der Gestaltungsfläche;
 // „prüfen“: eingepasst (Reihe ±1 %) oder Text unter der Mindestgröße des Verfahrens;
 // „passt nicht“: ein Element verlässt die Gestaltungsfläche (customerLayoutIssue).
-export function templateFit(template,family,size,fonts){
+export function templateFit(template,family,size,fonts,{motifs=[]}={}){
  const g=geometryOf(family,size),profile={kind:'universal-product',geometry:{width:g.width,height:g.height,...g,shape:g.shape==='plaque'?'rect':g.shape,safeMarginMm:family.designArea.marginMm??0,...(g.shape==='contour'?{holeKeepoutMm:family.designArea.keepoutMm,holes:g.holesMm.map(h=>({x:h.x,y:h.y,diameter:h.diameterMm}))}:{holes:[]})}};
  const process=familyProcess(family),issues=[];
  for(const o of template.objects){
   const measured=o.type==='text'?measureText(structuredClone(o),fonts):o;
-  const issue=customerLayoutIssue(measured,profile);if(issue)issues.push((o.fieldKey||o.id)+': '+issue);
+  const issue=customerLayoutIssue(measured,profile,{motifs});if(issue)issues.push((o.fieldKey||o.id)+': '+issue);
  }
  if(issues.length)return {status:'passt nicht',issues};
  const review=[];

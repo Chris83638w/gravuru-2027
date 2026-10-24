@@ -1,3 +1,10 @@
+## Paket J · zehn Original-Startdesigns eingepasst · 24.10.2026 (Codex / Astra)
+
+- Code bc1c7ce671ddc616855ef7c5eafea22d06827665, Katalog fbf020e7bc5ac930ac75790b3325c0df8204c219, Basis 1be49ee. Sechs Designs minimal geändert, vier unverändert; kein D1-Tausch, keine Freigabe.
+- 104 Zuordnungen: 98 passt / 6 prüfen / 0 passt nicht; alle zehn Auftragsfälle ohne size_fit/design_invalid, 94 Fits unverändert. 17 Design-/Logdateien geändert, 1491 übrige lokale Design-Dateien bytegleich.
+- Windows: 178 Testdateien, 1265/1270 bestanden, 5 Skips, 0 Fehler/Abbrüche; zusätzlich 15/15 shared. Vollständiger Katalogbau geprüft. Code-/Katalogreview ohne offene P1/P2.
+- [Bericht und Bilder](docs/handoffs/2026-10-24-paket-j-bericht.md), [Prüfnachweis](docs/handoffs/2026-10-24-paket-j-pruefung.json). Abhängig von PR #16; Claude prüft/merged, Chris gibt Designs frei. Kein Livezugriff oder Merge durch Astra.
+
 ## Paket I · aktuelles main und Katalog 1be49ee · 24.10.2026 (Codex / Astra)
 
 - PR #16 im selben Branch auf main `3e42c13411003add34645bc258623851982e7809` neu aufgebaut; Code `06356c9947fa765e59822a16e082245af8211e44`. Alle drei Reviewkorrekturen bleiben erhalten. Neun Code-/Testdateien bytegleich zum geprüften R2-Code: **131/131 Tests**, 0 Fehler/Skips, bestehender Browsernachweis gültig; kein neuer Testvollauf.

@@ -5,7 +5,7 @@ import {validateDesignContent,surfaceObjectIssue,validateGeometryHoles,validCont
 import {MATERIAL_COLORS,getProcessingProfile,validateProcessingProfile,applyProcessingProfile} from './processing-profiles.mjs';
 import {validateUniversalElements,validateOptionGroups} from './universal-elements.mjs';
 export function dimensions(p){return p.kind==='layered-doorbell'?{width:160,height:280,margin:10,shape:'rect'}:{width:p.geometry.width,height:p.geometry.height,margin:p.geometry.safeMarginMm??2,shape:p.geometry.shape||'rect',radius:p.geometry.cornerRadiusMm||0};}
-export function validateStudio(p,original,{extraFontIds=[]}={}){
+export function validateStudio(p,original,{extraFontIds=[],motifs=[]}={}){
  if(!p||!original)throw Error('Ungültige Produktvorlage.');
  if(p.kind==='layered-doorbell'){validateOptionGroups(p.optionGroups);return validateProfile(p,original,{extraFontIds});}
  if(p.kind!=='universal-product'||!validContentId(p.id)||p.id!==original.id||JSON.stringify(p.binding)!==JSON.stringify(original.binding))throw Error('Ungültige Produktzuordnung.');
@@ -18,7 +18,7 @@ export function validateStudio(p,original,{extraFontIds=[]}={}){
  if(shape==='contour'){validateContourGeometry(p.geometry);for(const group of p.optionGroups||[])for(const value of group.values||[])if(value.holes!==undefined)validateGeometryHoles({...p,geometry:{...p.geometry,holes:value.holes}});}
  validateGeometryHoles(p);
  if(!Array.isArray(p.designs)||!p.designs.length||p.designs.length>DESIGN_LIMITS.maxDesigns||p.designs.some(d=>!d)||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error('Bitte 1 bis '+DESIGN_LIMITS.maxDesigns+' Designs mit eindeutigen Kennungen verwenden.');
- for(const d of p.designs){if(typeof d.name!=='string'||!d.name.trim()||d.name.length>200)throw Error('Jedes Design braucht einen Namen mit höchstens 200 Zeichen.');validateDesignContent(d,{universal:true,extraFontIds});validateUniversalElements(d);for(const o of d.objects){const issue=surfaceObjectIssue(o,p);if(issue)throw Error(d.name+': '+issue);}}
+ for(const d of p.designs){if(typeof d.name!=='string'||!d.name.trim()||d.name.length>200)throw Error('Jedes Design braucht einen Namen mit höchstens 200 Zeichen.');validateDesignContent(d,{universal:true,extraFontIds});validateUniversalElements(d);for(const o of d.objects){const issue=surfaceObjectIssue(o,p,{motifs});if(issue)throw Error(d.name+': '+issue);}}
  return p;
 }
 export async function listStudioProducts(){const rows=[];let after=null;const seen=new Set();do{const page=(await request(LIST,{after})).metaobjects;rows.push(...page.nodes.map(decode).filter(r=>['layered-doorbell','universal-product'].includes(r.profile.kind)));if(!page.pageInfo.hasNextPage)break;after=page.pageInfo.endCursor;if(!after||seen.has(after))throw Error('Die Produktliste ist unvollständig.');seen.add(after);}while(true);return rows.sort((a,b)=>a.name.localeCompare(b.name,'de'));}

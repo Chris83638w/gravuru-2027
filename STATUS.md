@@ -3,7 +3,7 @@
 - Chris hat das Repo **`gravuru-customer-amazon`** (privat) bestimmt und es ist angelegt (`main` 14515f0). Dort liegen ab jetzt der Auftrag Paket AMZ, die **Amazon-Referenz** (Regeln, Grenzen, Fehlercodes mit Quellen vom 25.10.) und später der gesamte Amazon-Code (Listing-Exporter, Custom-Vorlagen, Bestell-Importer).
 - Dieser Auftrag (`docs/handoffs/2026-10-25-paket-amz-amazon.md`) ist hier nur noch ein Zeiger. K15 (`scripts/import-amazon-order.py`) bleibt vorerst hier und wird beim Bau von AMZ in das neue Repo übernommen.
 - Befund aus dem Studium der Amazon-Hilfe und der Vorlagen: „10 statt 4 Textfelder“ war ein Bedienfehler (nicht benötigte Komponenten bleiben leer, Spalten werden nie entfernt). Nachweis in der Kundenvorschau steht aus.
-- Offen bei Chris: 7 Entscheidungen (Auftrag, letzter Abschnitt), darunter Designliste über 100 Optionen, Aufpreise, GTIN-Freistellung, GPSR-Kontakt und der Zugang des zweiten Accounts zum neuen Repo.
+- Offen bei Chris: 7 Entscheidungen (Auftrag, letzter Abschnitt), darunter Designliste über 100 Optionen, Aufpreise, GTIN-Freistellung, GPSR-Kontakt und der Zugang des Accounts von Astra zum neuen Repo. Programmiert wird mit Astra (Chris 25.10.).
 
 ## Paket M gemerged · 25.10.2026 (Claude)
 

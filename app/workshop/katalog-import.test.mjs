@@ -45,17 +45,17 @@ test('Dry-run: Bericht je Linie ohne Schreiben; Commit legt Familie, Schriftprof
  assert.equal(hunde.fontSet,'hundeschilder');assert.equal(hunde.designs,2);
  assert.deepEqual(namen.products.map(p=>[p.sizeKey,p.action,p.templates.map(x=>x.design+':'+x.fit)]),[['TS-RE-90X60','neu',['test-herz:prüfen']],['TS-RE-120X80','neu',['test-herz:prüfen']],['TS-RE-60X40','gesperrt',['test-herz:prüfen']],['TS-QU-80X80','neu',[]]]);
  assert.equal(namen.products[2].reason,'Preis offen: 6 × 4 cm');
- assert.ok([namen.products[0],namen.products[1],hunde.products[0]].every(p=>p.templates[0].issues.some(issue=>/Bohrloch|gebohrt/.test(issue))),'all offered mounting choices retain their drilling warning');
+ assert.ok([namen.products[0],namen.products[1],hunde.products[0]].every(p=>p.templates.find(x=>x.design==='test-herz').issues.some(issue=>/Bohrloch|gebohrt/.test(issue))),'all offered mounting choices retain their drilling warning');
  assert.equal(plan.diagnosticOnly,false,'only a plan with explicit fixture approvals is applicable');
- assert.deepEqual(hunde.products.map(p=>[p.sizeKey,p.action,p.templates.map(x=>x.design+':'+x.fit)]),[['TS-RE-90X60','neu',['test-herz:prüfen']],['TS-RE-60X40','gesperrt',['test-herz:prüfen']]],'Bericht in Katalogreihenfolge; Fotos sind auf einem Gravurziel gesperrt');
- assert.ok(hunde.products.every(p=>p.excluded.some(e=>e.design==='test-foto'&&e.issues.some(i=>/Fotofeld.*Foto.*Gravurziel/.test(i)))),'kein Foto wird still in Gravur umgewandelt');
- assert.deepEqual(r.counts,{products:6,new:4,update:0,unchanged:0,blocked:2,templates:3,sizes:4,pricesOpen:1,designsWithoutSeries:1,unreleased:0,fit:{passt:0,'prüfen':5,'passt nicht':2}});
+ assert.deepEqual(hunde.products.map(p=>[p.sizeKey,p.action,p.templates.map(x=>x.design+':'+x.fit)]),[['TS-RE-90X60','neu',['test-foto:passt','test-herz:prüfen']],['TS-RE-60X40','gesperrt',['test-foto:passt','test-herz:prüfen']]],'Bericht in Katalogreihenfolge; Fotogravur bleibt (Verfahren mit tools.photo)');
+ assert.ok(hunde.products.every(p=>!p.excluded.some(e=>e.design==='test-foto')),'Fotofeld auf einem Gravurziel mit Fotoverfahren wird nicht ausgeschlossen (Claude 25.10.: Fotogravur ist Produktwissen)');
+ assert.deepEqual(r.counts,{products:6,new:4,update:0,unchanged:0,blocked:2,templates:4,sizes:4,pricesOpen:1,designsWithoutSeries:1,unreleased:0,fit:{passt:2,'prüfen':5,'passt nicht':0}});
  assert.equal(ws.repository.list().length,1,'Dry-run legt keine Produkte an');assert.deepEqual(ws.families.list(),[]);
  const text=formatReport(r);
- assert.match(text,/Summe: 6 Produkte \(neu 4, aktualisieren 0, unverändert 0, gesperrt 2\), 3 Vorlagen/);assert.match(text,/gesperrt ×2: Preis offen: 6 × 4 cm/);
+ assert.match(text,/Summe: 6 Produkte \(neu 4, aktualisieren 0, unverändert 0, gesperrt 2\), 4 Vorlagen/);assert.match(text,/gesperrt ×2: Preis offen: 6 × 4 cm/);
  const bestseller=plan.items.find(i=>i.key===importKey('test-linie','hundeschilder','TS-RE-90X60')).document;
- assert.deepEqual(bestseller.config.profile.designs.map(d=>d.id),['katalog-test-herz'],'freigegebenes Verfahren: Herz bleibt Bestseller, Foto bleibt ausgeschlossen');
- assert.equal(bestseller.config.photo.enabled,false);assert.equal(bestseller.config.profile.themeId,'hundeschilder');
+ assert.deepEqual(bestseller.config.profile.designs.map(d=>d.id),['katalog-test-herz','katalog-test-foto'],'Bestseller zuerst');
+ assert.equal(bestseller.config.photo.enabled,true);assert.equal(bestseller.config.profile.themeId,'hundeschilder');
  // Commit
  const result=applyKatalogImport(plan,writableOptions(ws));
  assert.deepEqual(result.families,[{id:'test-schilder',action:'neu',revision:1}]);

@@ -86,7 +86,9 @@ Branch `dev/design-ziele-20261024-astra` (Code und Katalog, falls Daten betroffe
    - Mindestschrift 3 mm für Druck und Gravur.
    - Gravur auf V2A: Linien unter 0,5 mm → Warnung „prüfen“, mit Ort. Das gilt für Konturen von Motiven; nichts
      automatisch ändern.
-   - Farbige Elemente oder Fotos auf einem Gravurziel melden „passt nicht“ mit Grund.
+   - Farbige Elemente auf einem Gravurziel melden „passt nicht“ mit Grund. Fotofelder sind auf Gravur erlaubt, wo das
+     Verfahren Fotos vorsieht (`tools.photo`, heute alle Gravurprofile). *Korrektur Claude 25.10.:* Die erste Fassung
+     sperrte Fotos auf Gravur. Das widersprach dem Produktwissen und hätte die Gedenktafeln 22×14 gesperrt.
    - Ein einfarbiges Gravurdesign darf 1:1 auf ein Druckziel.
    - Walnuss-Gravurton in der Materialbibliothek ergänzen, als dunkle, kontrastarme Näherung, ausdrücklich als
      Näherung markiert.

@@ -43,7 +43,10 @@ export function designTargetRules(master,family,{scale=1,template=null}={}){
    const size=object?.size??layer.size*scale;if(size<TARGET_MIN_TEXT_MM-.005)add('text_below_minimum','prüfen',layer.id,layer.id+': Schrift '+n(size)+' mm unter der Mindestgröße 3 mm.',{sizeMm:n(size),location});
   }
   if(process.method==='engraving'){
-   if(layer.kind==='foto')add('photo_on_engraving','passt nicht',layer.id,layer.id+': Fotofeld/Foto ist für dieses Gravurziel nicht passend.',{location});
+   // Fotogravur gehört zum Produktwissen (Chris 24.10.: Gravur auf Schiefer, Edelstahl, Acryl, Holz) und zum
+   // Verfahrensprofil (tools.photo). Gesperrt ist ein Fotofeld nur, wenn das Verfahren kein Foto vorsieht –
+   // dieselbe Regel wie katalogDesignToTemplate. Farbige Vektoren bleiben unten gesperrt.
+   if(layer.kind==='foto'&&process.tools?.photo!==true)add('photo_on_engraving','passt nicht',layer.id,layer.id+': Fotofeld, aber das Verfahren „'+process.id+'“ sieht kein Foto vor.',{location});
    const paints=layer.pathAttributes?.flatMap(a=>[a.fill,a.stroke])??[layer.fill];if(paints.some(chromatic))add('color_on_engraving','passt nicht',layer.id,layer.id+': Farbige Elemente sind für dieses Gravurziel nicht passend.',{location});
   }
   if(process.id!=='steel-engraving'||!['motiv','deko'].includes(layer.kind))continue;

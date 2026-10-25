@@ -18,9 +18,10 @@ test('monochrome source transfers to print without a color restriction; colored 
  for(const fill of ['#ff0000','red','rgb(80,20,30)']){assert.equal(designTargetRules(master(text(3,fill)),family()).status,'passt nicht');assert.equal(designTargetRules(master(text(3,fill)),family('color-print')).status,'passt');}
  const colored=master(motif('M10 10H30V20H10Z','fill="#0000ff"'));assert.equal(designTargetRules(colored,family()).details[0].code,'color_on_engraving');
 });
-test('photo placeholders block engraving targets even before a customer photo is uploaded',()=>{
+test('photo placeholders follow the process profile: photo engraving is allowed where tools.photo is set',()=>{
  const source=master('<g id="foto-1"><rect x="20" y="20" width="20" height="20"/></g>');
- assert.equal(designTargetRules(source,family()).status,'passt nicht');assert.equal(designTargetRules(source,family('color-print')).status,'passt');
+ for(const profile of ['steel-engraving','slate-engraving','acrylic-engraving','wood-engraving','color-print'])assert.equal(designTargetRules(source,family(profile)).status,'passt',profile);
+ assert.ok(!designTargetRules(source,family()).details.some(d=>d.code==='photo_on_engraving'));
 });
 test('V2A strokes under 0.5 mm warn with motif/path/location and follow target scale',()=>{
  const source=master(motif('M10 10L30 20','fill="none" stroke="#000000" stroke-width="0.49"'));

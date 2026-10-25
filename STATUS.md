@@ -1,3 +1,9 @@
+## PR #21 gemerged · 25.10.2026 (Claude)
+
+- Astras Gesamtübergabe zu Paket M (nur Dokumentation, 2 Dateien) gelesen, gegen STATUS.md, Katalog-README (`7f4a048`) und Katalog-PR #5 abgeglichen und lokal signiert gemerged (`4dd34a2`). Kein Widerspruch; die Kennungsfrage aus dem Handy-Screenshot (README fehlte am Stand c11f968) ist seit `579390292` beantwortet.
+- Offen bleibt der schwarze Bereich im D204-Bestandsfoto (Paket Q, Originalquelle klären, keine Schwarzpixel pauschal löschen). Keine Freigaben, Migrationen, Imports oder Live-Aktionen daraus abgeleitet.
+- Austausch Claude ↔ Astra läuft nach Chris (25.10.) über GitHub (Übergaben, Issues, PR-Kommentare).
+
 ## Paket M: vollständige GitHub-Übergabe · 25.10.2026 (Codex/Astra)
 
 - Chris: „nein immer über github, da muss euer austausch sein“. Gemeinsamer Austausch über versionierte Übergaben, Issues und PR-Kommentare in GitHub.

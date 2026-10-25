@@ -1,0 +1,47 @@
+[
+  {
+    "name": "catalog-audit.json",
+    "bytes": 4324,
+    "sha256": "57ac22c757c47bdea34325f8a736ea92a553a05830c3dab72d2c6394d9cc79ff"
+  },
+  {
+    "name": "initial-app-tests.log.gz",
+    "bytes": 79319,
+    "sha256": "de5e12bf3fdf2ad15c0c91a7e5087f6e54243136e21fd1e67470171eefc3f789"
+  },
+  {
+    "name": "permission-recheck.log.gz",
+    "bytes": 15057,
+    "sha256": "ae3caf7b93d51226e14fe2bc5e1d333192f026935ddf6ec5b13521daadd4da98"
+  },
+  {
+    "name": "script-tests.log.gz",
+    "bytes": 2170,
+    "sha256": "f1edc4962199b30b365f477d80af95ced82a8ff3b97c5400291f995fc57f7de9"
+  },
+  {
+    "name": "shop-export-tests.log.gz",
+    "bytes": 570,
+    "sha256": "9cca91110ab747bffb954cacca149273d036b23fe5aee5ab896510c03786add8"
+  },
+  {
+    "name": "source-integrity.json",
+    "bytes": 222,
+    "sha256": "1ee781d9b7c16ca13005d54f4b2fba36466e57f9d66cf1366bd0599a6a852242"
+  },
+  {
+    "name": "source-manifest.json.gz",
+    "bytes": 36005,
+    "sha256": "fc2b10a7296634c4f0382577e66517a35805fa927c65ce83d9dde0badb2d145f"
+  },
+  {
+    "name": "test-inventory.json.gz",
+    "bytes": 9554,
+    "sha256": "6e9118d8921326484be0f8568249cf88d759ccbae59dcb13c015347b0fb1931c"
+  },
+  {
+    "name": "test-results.json",
+    "bytes": 93760,
+    "sha256": "8d0a8093c78f608b837590bd0fa1f5ff4e4af5ca24130c44612324f9af616df8"
+  }
+]

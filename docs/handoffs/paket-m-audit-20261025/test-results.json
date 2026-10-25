@@ -1,0 +1,3548 @@
+{
+  "code": "792c808dc1ee7a16a0c37cfdeff9439d5b022a84",
+  "catalog": "7f4a048148a3a35548909c92978e99360c0988e6",
+  "node": "v24.20.0",
+  "platform": "win32",
+  "initial": {
+    "files": 192,
+    "totals": {
+      "tests": 1494,
+      "suites": 0,
+      "passed": 1374,
+      "failed": 113,
+      "cancelled": 0,
+      "skipped": 7,
+      "todo": 0
+    }
+  },
+  "permissionRecheck": {
+    "files": 39,
+    "totals": {
+      "tests": 275,
+      "suites": 0,
+      "passed": 275,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "combinedAppCoverage": {
+    "files": 192,
+    "totals": {
+      "tests": 1494,
+      "suites": 0,
+      "passed": 1487,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 7,
+      "todo": 0
+    },
+    "rule": "Each test file counted once; replace the initial failed-file result with its unchanged recheck after localhost permission was granted. This is not a second complete single run.",
+    "results": [
+      {
+        "file": "app/configurator/variant-m/account-drafts.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "001-app--configurator--variant-m--account-drafts.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/acrylic-draft-client.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "002-app--configurator--variant-m--acrylic-draft-client.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/acrylic-product.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "003-app--configurator--variant-m--acrylic-product.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/bundle.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "001-app--configurator--variant-m--bundle.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/cart-edit.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "005-app--configurator--variant-m--cart-edit.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/commerce.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "006-app--configurator--variant-m--commerce.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/contour-print.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "007-app--configurator--variant-m--contour-print.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/contour-ui.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 12,
+          "failed": 0,
+          "passed": 12,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 12,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "008-app--configurator--variant-m--contour-ui.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/contract.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 27,
+          "failed": 0,
+          "passed": 27,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 27,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "009-app--configurator--variant-m--contract.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/customer-motifs.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "010-app--configurator--variant-m--customer-motifs.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/customer-tools.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 10,
+          "failed": 0,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 10,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "011-app--configurator--variant-m--customer-tools.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/design-area.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "012-app--configurator--variant-m--design-area.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/design-gallery.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "013-app--configurator--variant-m--design-gallery.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/edge-clamp.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "014-app--configurator--variant-m--edge-clamp.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/editor-additions.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "015-app--configurator--variant-m--editor-additions.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/element-rights.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 11,
+          "failed": 0,
+          "passed": 11,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 11,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "016-app--configurator--variant-m--element-rights.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/field-mapping.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "017-app--configurator--variant-m--field-mapping.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/font-display.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "018-app--configurator--variant-m--font-display.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/hole-proximity.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "019-app--configurator--variant-m--hole-proximity.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/image-processing.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "020-app--configurator--variant-m--image-processing.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/lazy-resources.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 12,
+          "failed": 0,
+          "passed": 12,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 12,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "002-app--configurator--variant-m--lazy-resources.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/material-surface-preview.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "022-app--configurator--variant-m--material-surface-preview.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/mobile-standard-plate.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "023-app--configurator--variant-m--mobile-standard-plate.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/mobile-steps.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "024-app--configurator--variant-m--mobile-steps.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/nested-svg-css.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "025-app--configurator--variant-m--nested-svg-css.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/option-fields.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "026-app--configurator--variant-m--option-fields.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/photo-editor.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "027-app--configurator--variant-m--photo-editor.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/photo-position-ui.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 24,
+          "failed": 0,
+          "passed": 24,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 24,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "028-app--configurator--variant-m--photo-position-ui.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/photo-position.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "029-app--configurator--variant-m--photo-position.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/photo-upload.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "030-app--configurator--variant-m--photo-upload.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/preload-queue.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 12,
+          "failed": 0,
+          "passed": 12,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 12,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "031-app--configurator--variant-m--preload-queue.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/preview-price.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "032-app--configurator--variant-m--preview-price.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/preview-resource.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "033-app--configurator--variant-m--preview-resource.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/print-export.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "034-app--configurator--variant-m--print-export.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/profile-selection.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "035-app--configurator--variant-m--profile-selection.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/screw-preview.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "036-app--configurator--variant-m--screw-preview.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/server.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "003-app--configurator--variant-m--server.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/session-guard.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "038-app--configurator--variant-m--session-guard.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/shop-cart.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "039-app--configurator--variant-m--shop-cart.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/template-start-position.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "040-app--configurator--variant-m--template-start-position.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/text-leading.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "041-app--configurator--variant-m--text-leading.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 21,
+          "failed": 0,
+          "passed": 21,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 21,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "042-app--configurator--variant-m--ui-event-regressions.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/usability.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "043-app--configurator--variant-m--usability.test.mjs.raw.log"
+      },
+      {
+        "file": "app/configurator/variant-m/workflow.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "044-app--configurator--variant-m--workflow.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/account-draft-http.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "045-app--workshop--account-draft-http.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acryl-host-routing.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "046-app--workshop--acryl-host-routing.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acryl-team.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "047-app--workshop--acryl-team.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-artwork.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "048-app--workshop--acrylic-artwork.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-draft-http.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "049-app--workshop--acrylic-draft-http.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-draft-store.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "050-app--workshop--acrylic-draft-store.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-engraving.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "004-app--workshop--acrylic-engraving.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-import-tint.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "052-app--workshop--acrylic-import-tint.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-order-product.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "053-app--workshop--acrylic-order-product.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-order.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "054-app--workshop--acrylic-order.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-photo-resolution.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "055-app--workshop--acrylic-photo-resolution.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-production-profiles.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "056-app--workshop--acrylic-production-profiles.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/acrylic-review.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "005-app--workshop--acrylic-review.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/ai-batch.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "058-app--workshop--ai-batch.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/ai-design.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 17,
+          "failed": 0,
+          "passed": 17,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 17,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "059-app--workshop--ai-design.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/ai-image.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "060-app--workshop--ai-image.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/batch-assets.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 13,
+          "failed": 0,
+          "passed": 13,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 13,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "006-app--workshop--batch-assets.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/batch-jobs.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "062-app--workshop--batch-jobs.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/batch-profiles.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "063-app--workshop--batch-profiles.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/batch-report.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "064-app--workshop--batch-report.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/batch.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "065-app--workshop--batch.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/bound-test-cart.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 12,
+          "failed": 0,
+          "passed": 12,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 12,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "066-app--workshop--bound-test-cart.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/cart-configuration.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "067-app--workshop--cart-configuration.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/cart-edit-revision.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "068-app--workshop--cart-edit-revision.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/cart-handoff-journal.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 25,
+          "failed": 0,
+          "passed": 25,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 15,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "069-app--workshop--cart-handoff-journal.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/cart-http-gate.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "070-app--workshop--cart-http-gate.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/cart-personalization.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "071-app--workshop--cart-personalization.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/catalog-structure.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "007-app--workshop--catalog-structure.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/configurator-test-gateway.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 16,
+          "failed": 0,
+          "passed": 16,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 16,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "008-app--workshop--configurator-test-gateway.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/contour-contract.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "074-app--workshop--contour-contract.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/contour-path.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "075-app--workshop--contour-path.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/contour-production.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "076-app--workshop--contour-production.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/contour-surfaces.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "077-app--workshop--contour-surfaces.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/contours.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "009-app--workshop--contours.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/cross-store-order-intake.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "079-app--workshop--cross-store-order-intake.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/customer-downloads.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 19,
+          "failed": 0,
+          "passed": 19,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 19,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "080-app--workshop--customer-downloads.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/customer-draft-store.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "081-app--workshop--customer-draft-store.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/customer-fields.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "010-app--workshop--customer-fields.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/dashboard-print-flow.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "083-app--workshop--dashboard-print-flow.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-authoring.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "084-app--workshop--design-authoring.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-converter.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 10,
+          "failed": 0,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 10,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "085-app--workshop--design-converter.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-dashboard-startdesigns.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 11,
+          "failed": 0,
+          "passed": 11,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 11,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "086-app--workshop--design-dashboard-startdesigns.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-dashboard-ui.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 48,
+          "failed": 0,
+          "passed": 48,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 48,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "087-app--workshop--design-dashboard-ui.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-dashboard.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "011-app--workshop--design-dashboard.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-editor.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 20,
+          "failed": 0,
+          "passed": 20,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 20,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "089-app--workshop--design-editor.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-import.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "012-app--workshop--design-import.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-preview-glyphs.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 12,
+          "failed": 0,
+          "passed": 12,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 12,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "091-app--workshop--design-preview-glyphs.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-publication-status.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "092-app--workshop--design-publication-status.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-source-path.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "093-app--workshop--design-source-path.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-source-settings.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "094-app--workshop--design-source-settings.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-target-preview.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "095-app--workshop--design-target-preview.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-target-rules.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "096-app--workshop--design-target-rules.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-targets.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 10,
+          "failed": 0,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 10,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "097-app--workshop--design-targets.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-variants.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 25,
+          "failed": 0,
+          "passed": 25,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 25,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "098-app--workshop--design-variants.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/design-zip.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "099-app--workshop--design-zip.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/draft-cart-handoff.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 18,
+          "failed": 0,
+          "passed": 18,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 18,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "100-app--workshop--draft-cart-handoff.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/editable-design.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "101-app--workshop--editable-design.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/editor-preview.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "013-app--workshop--editor-preview.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/editor-selection-arrows.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "103-app--workshop--editor-selection-arrows.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/export-jobs.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "104-app--workshop--export-jobs.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/export-recovery.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "014-app--workshop--export-recovery.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/font-library.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "106-app--workshop--font-library.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-additions.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "015-app--workshop--form-additions.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-batch.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 15,
+          "failed": 0,
+          "passed": 15,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 15,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "108-app--workshop--form-batch.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-customer.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "016-app--workshop--form-customer.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-designs.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "017-app--workshop--form-designs.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-engraving-proof.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "018-app--workshop--form-engraving-proof.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-interaction.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "112-app--workshop--form-interaction.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-motif-library.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "113-app--workshop--form-motif-library.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-print-proof.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "019-app--workshop--form-print-proof.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-product.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "020-app--workshop--form-product.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-review-snapshot.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "021-app--workshop--form-review-snapshot.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/form-variants.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 17,
+          "failed": 0,
+          "passed": 17,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 17,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "022-app--workshop--form-variants.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/guide-layers.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "118-app--workshop--guide-layers.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/http.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "023-app--workshop--http.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/katalog-convert.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 17,
+          "failed": 0,
+          "passed": 17,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 17,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "120-app--workshop--katalog-convert.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/katalog-editor-ui.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 16,
+          "failed": 0,
+          "passed": 16,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 16,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "121-app--workshop--katalog-editor-ui.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/katalog-import.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 14,
+          "failed": 0,
+          "passed": 14,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 14,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "122-app--workshop--katalog-import.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/katalog-linien.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "123-app--workshop--katalog-linien.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/katalog-source.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 10,
+          "failed": 0,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 10,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "124-app--workshop--katalog-source.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/katalog-writeback.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 25,
+          "failed": 0,
+          "passed": 23,
+          "cancelled": 0,
+          "skipped": 2,
+          "todo": 0,
+          "topLevel": 25,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "125-app--workshop--katalog-writeback.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/konfis.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "024-app--workshop--konfis.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/material-preview.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "127-app--workshop--material-preview.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/material-surface-store.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "128-app--workshop--material-surface-store.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/merchant-media.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 13,
+          "failed": 0,
+          "passed": 13,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 13,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "129-app--workshop--merchant-media.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/merchant-repair.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "130-app--workshop--merchant-repair.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/merchant-request.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "131-app--workshop--merchant-request.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/merchant-test-cart.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "132-app--workshop--merchant-test-cart.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/option-fields.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "133-app--workshop--option-fields.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/order-intake-routing.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "134-app--workshop--order-intake-routing.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/order-intake.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 11,
+          "failed": 0,
+          "passed": 11,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 11,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "025-app--workshop--order-intake.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/order-product-draft.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "026-app--workshop--order-product-draft.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/order-refund-intake.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "137-app--workshop--order-refund-intake.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/order-refunds.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "138-app--workshop--order-refunds.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/output-checks.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "139-app--workshop--output-checks.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/output-orientation.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "027-app--workshop--output-orientation.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/output-specification.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "141-app--workshop--output-specification.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/photo-color-export.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "142-app--workshop--photo-color-export.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/photo-frame-coverage.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "143-app--workshop--photo-frame-coverage.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/photo-mask-position.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "144-app--workshop--photo-mask-position.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/prepared-design-placement.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "145-app--workshop--prepared-design-placement.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/prepared-design.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "028-app--workshop--prepared-design.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/print-delivery-vector.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "147-app--workshop--print-delivery-vector.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/print-preview.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "148-app--workshop--print-preview.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/process-profiles.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "149-app--workshop--process-profiles.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/product-catalog.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "150-app--workshop--product-catalog.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/product-families.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 20,
+          "failed": 0,
+          "passed": 20,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 20,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "029-app--workshop--product-families.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/product-model.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 11,
+          "failed": 0,
+          "passed": 11,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 11,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "152-app--workshop--product-model.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/product-options.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "030-app--workshop--product-options.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/product-overview.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "031-app--workshop--product-overview.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/product-revision-compare.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "155-app--workshop--product-revision-compare.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/production-profiles.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "032-app--workshop--production-profiles.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/production-release.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "157-app--workshop--production-release.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/production-summary.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "158-app--workshop--production-summary.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/profile-impact.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 10,
+          "failed": 0,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 10,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "159-app--workshop--profile-impact.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/profile-library.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 10,
+          "failed": 0,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 10,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "160-app--workshop--profile-library.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/quantity-tiers.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "161-app--workshop--quantity-tiers.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/repository.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 19,
+          "failed": 0,
+          "passed": 19,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 19,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "162-app--workshop--repository.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-draft-transfer.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 22,
+          "failed": 0,
+          "passed": 22,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 22,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "163-app--workshop--shop-draft-transfer.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-entry-client.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "164-app--workshop--shop-entry-client.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-entry-flow.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "033-app--workshop--shop-entry-flow.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-entry-session.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "166-app--workshop--shop-entry-session.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-entry.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 15,
+          "failed": 0,
+          "passed": 15,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 15,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "034-app--workshop--shop-entry.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-preparation.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "035-app--workshop--shop-preparation.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-product-binding-adapter.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 15,
+          "failed": 0,
+          "passed": 15,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 15,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "169-app--workshop--shop-product-binding-adapter.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-product-binding-check.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 30,
+          "failed": 0,
+          "passed": 30,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 30,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "170-app--workshop--shop-product-binding-check.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-product-binding-http.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 10,
+          "failed": 0,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 10,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "036-app--workshop--shop-product-binding-http.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-product-binding-legacy.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 10,
+          "failed": 0,
+          "passed": 10,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 10,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "172-app--workshop--shop-product-binding-legacy.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-product-binding-plan.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 29,
+          "failed": 0,
+          "passed": 29,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 29,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "173-app--workshop--shop-product-binding-plan.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shop-product-binding-store.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 15,
+          "failed": 0,
+          "passed": 15,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 15,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "174-app--workshop--shop-product-binding-store.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shopify-admin-host.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 18,
+          "failed": 0,
+          "passed": 18,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 18,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "175-app--workshop--shopify-admin-host.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shopify-admin-readonly.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 23,
+          "failed": 0,
+          "passed": 23,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 23,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "176-app--workshop--shopify-admin-readonly.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shopify-app-proxy.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "177-app--workshop--shopify-app-proxy.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shopify-draft-token.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 2,
+          "failed": 0,
+          "passed": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 2,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "178-app--workshop--shopify-draft-token.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shopify-order-webhook.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 4,
+          "failed": 0,
+          "passed": 4,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 4,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "037-app--workshop--shopify-order-webhook.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shopify-runtime-config.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 23,
+          "failed": 0,
+          "passed": 18,
+          "cancelled": 0,
+          "skipped": 5,
+          "todo": 0,
+          "topLevel": 16,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "180-app--workshop--shopify-runtime-config.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shopify-session.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 15,
+          "failed": 0,
+          "passed": 15,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 15,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "181-app--workshop--shopify-session.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/shopify-variant-preflight.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 5,
+          "failed": 0,
+          "passed": 5,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 5,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "182-app--workshop--shopify-variant-preflight.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/slate-product.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 8,
+          "failed": 0,
+          "passed": 8,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 8,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "183-app--workshop--slate-product.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/specimen-product.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "184-app--workshop--specimen-product.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/steel-formats.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 3,
+          "failed": 0,
+          "passed": 3,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 3,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "185-app--workshop--steel-formats.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/steel-import-margin.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "186-app--workshop--steel-import-margin.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/storefront-cart.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "038-app--workshop--storefront-cart.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/storefront-transport.test.mjs",
+        "status": "passed",
+        "run": "permission-recheck",
+        "counts": {
+          "tests": 38,
+          "failed": 0,
+          "passed": 38,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 11,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "039-app--workshop--storefront-transport.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/surfaces.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 7,
+          "failed": 0,
+          "passed": 7,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 7,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "189-app--workshop--surfaces.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/tenant.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 9,
+          "failed": 0,
+          "passed": 9,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 9,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "190-app--workshop--tenant.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/theme-catalog.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 1,
+          "failed": 0,
+          "passed": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "191-app--workshop--theme-catalog.test.mjs.raw.log"
+      },
+      {
+        "file": "app/workshop/theme-limits.test.mjs",
+        "status": "passed",
+        "run": "initial",
+        "counts": {
+          "tests": 6,
+          "failed": 0,
+          "passed": 6,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 6,
+          "suites": 0
+        },
+        "exitCode": 0,
+        "timedOut": false,
+        "rawLog": "192-app--workshop--theme-limits.test.mjs.raw.log"
+      }
+    ]
+  },
+  "scripts": {
+    "firstThree": {
+      "tests": 26,
+      "failed": 0,
+      "passed": 25,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "topLevel": 26,
+      "suites": 0
+    },
+    "shopExport": {
+      "tests": 6,
+      "failed": 0,
+      "passed": 6,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "topLevel": 6,
+      "suites": 0
+    },
+    "sourceUnchanged": {
+      "testsUnchanged": true,
+      "fixturesUnchanged": true
+    },
+    "exportSourceUnchanged": {
+      "testsUnchanged": true,
+      "fixturesUnchanged": true
+    }
+  },
+  "integrity": {
+    "initial": {
+      "protectedChanges": [],
+      "testSourceChanges": []
+    },
+    "recheck": {
+      "protectedChanges": [],
+      "testSourceChanges": []
+    }
+  },
+  "newSourceProbe": {
+    "issue": 22,
+    "existingSuiteCoversBug": false,
+    "percentRgbExpected": "passt nicht",
+    "percentRgbActual": "passt"
+  },
+  "liveAccess": false
+}

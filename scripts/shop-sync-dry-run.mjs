@@ -5,7 +5,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
 import {openKatalog} from '../app/workshop/katalog-source.mjs';
-import {targetsForLine,planShopSync,ACTIONS,SHOP_DOMAIN} from './shop-sync.mjs';
+import {prepareTargetsForLine,planShopSync,ACTIONS,SHOP_DOMAIN} from './shop-sync.mjs';
 import {EXPORT_SCHEMA} from './shop-export.mjs';
 
 export const REPORT_SCHEMA='gravuru-shop-sync-dry-run/v1';
@@ -48,8 +48,8 @@ function sourceManifest(katalog,targets){
  return [...files].map(file=>({path:path.relative(katalog.root,file).split(path.sep).join('/'),sha256:digest(fs.readFileSync(file))})).sort((a,b)=>a.path.localeCompare(b.path,'en'));
 }
 
-export function prepareDryRun({katalogRoot,lineId,exportFile=null,generatedAt=new Date().toISOString()}){
- const katalog=openKatalog(katalogRoot),soll=targetsForLine(katalog,lineId);
+export async function prepareDryRun({katalogRoot,lineId,exportFile=null,generatedAt=new Date().toISOString(),available={},converter}){
+ const katalog=openKatalog(katalogRoot),soll=await prepareTargetsForLine(katalog,lineId,{available,converter});
  const line=katalog.lines.get(lineId),mains=line.subcategories.flatMap(sub=>(sub.mainProducts??[]).map(main=>({subcategory:sub.id,...main})));
  const sources=sourceManifest(katalog,soll.targets);
  const catalog={line:soll.line,counts:{mainProducts:mains.length,withShopifyProductId:mains.filter(m=>m.externalIds?.shopifyProductId).length,
@@ -121,13 +121,13 @@ function assertOutsideKatalog(out,katalogRoot){
  if(relative===''||(!relative.startsWith('..'+path.sep)&&relative!=='..'&&!path.isAbsolute(relative)))fail('Berichtordner muss außerhalb des Katalogs liegen.');
 }
 
-export function run(argv,{stdout=process.stdout}={}){
+export async function run(argv,{stdout=process.stdout,available={},converter}={}){
  const args=parseArgs(argv);
  if(args.help){stdout.write(HELP);return null;}
  const out=path.resolve(args.out);
  assertOutsideKatalog(out,args.katalogRoot);
  if(fs.existsSync(out))fail('Berichtordner existiert bereits; einen neuen --out Ordner wählen.');
- const report=prepareDryRun(args);
+ const report=await prepareDryRun({...args,available,converter});
  fs.mkdirSync(path.dirname(out),{recursive:true});
  fs.mkdirSync(out); // Vorhandene Berichte nicht überschreiben, auch bei konkurrierenden Aufrufen.
  fs.writeFileSync(path.join(out,'bericht.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx'});
@@ -138,5 +138,5 @@ export function run(argv,{stdout=process.stdout}={}){
 }
 
 if(process.argv[1]&&import.meta.url===pathToFileURL(path.resolve(process.argv[1])).href){
- try{run(process.argv.slice(2));}catch(error){process.stderr.write(error.message+'\n');process.exitCode=1;}
+ run(process.argv.slice(2)).catch(error=>{process.stderr.write(error.message+'\n');process.exitCode=1;});
 }

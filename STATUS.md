@@ -1,3 +1,14 @@
+## Paket M · Kundenfotos präzisiert · 25.10.2026 (Codex / Astra)
+
+Nur Kunden-Fotouploads auf Schiefer und bei Acrylgravur automatisch grau; Originalwahl unter Bearbeiten bleibt nach Reload erhalten. Vorlagen-PNGs, Beispiele, Logos und Zielregeln unverändert. Bewegliche Fotoform samt Maske gemeinsam verschiebbar, getrennter Ausschnittmodus mit freien Konfi-Pfeilen. [PR #20](https://github.com/Chris83638w/gravuru-2027/pull/20), gleicher Branch: 44 Konfigurator-Dateien **286/286 grün**, 9 betroffene Werkstatt-Dateien **35/35 unterschiedliche Tests grün** nach dokumentierter Python-Startkorrektur. Desktop/iPhone geprüft. Frühere 1449 Tests gelten für 33951c7, kein neuer Werkstatt-Gesamtvollauf behauptet. [Nachtrag und Grenzen des alten Bestandsbildes](docs/handoffs/2026-10-25-paket-m-kundenfotos.md). Keine echten PNG-/Katalogänderungen, keine Freigabe, keine Live-Systeme, kein Merge.
+
+## Paket M · Designziele und Varianten · 24.10.2026 (Codex / Astra)
+
+- Branch dev/design-ziele-20261024-astra auf Code main 67b8f1c, Katalog 579390292. Familienziele mit eigener Freigabe, echte Zielvorschau, Themenvorschläge, Rücksetzung aller Zielfreigaben, Import/Shop je freigegebenem Ziel und sichere proportionale Varianten gemäß beschlossener Kennung. D204 30×20 bleibt Bestandsfassung, Übernahme ist Q.
+- [Code-PR #20](https://github.com/Chris83638w/gravuru-2027/pull/20) zur Prüfung. Paket-M-Basisvollauf (33951c7, vor Fotoergänzung): 188 Dateien; 1449 Tests, 1442 bestanden, 0 Fehler, 7 übersprungen, 0 abgebrochen. Testquellen und geschützte Verzeichnisse unverändert. Zusätzliche Shop-/Offline-/Bind-Tests auf endgültigem Stand: 25 bestanden, 1 bestehender optionaler Skip, 0 Fehler. Desktop/iPhone-Emulation und private Testvariante D999998 mit 50 % Abweichung samt Editor/Index/Audit zurückgelesen.
+- Migration ausschließlich private Kopie: 761 Master, 759 migriert, 2 mehrdeutig (D234/D235), Freigaben 0 → 0; 104 Hauptproduktzuordnungen und 761 Designfingerprints unverändert. Originalkatalog: ausschließlich zwei README-Änderungen in [Katalog-PR #5](https://github.com/Chris83638w/gravuru-katalog./pull/5). Keine echten Freigaben, keine Live-Systeme, kein Import oder Merge.
+- [Bericht, Bilder und Grenzen](docs/handoffs/2026-10-24-paket-m-bericht.md). Nächster Schritt: Claude-Codeprüfung und Linux-Vollauf. Fehlende Familien und physische Angaben bleiben offen; N/O/P/Q bleiben Folgepakete.
+
 ## Paket L gemerged und live · 24.10.2026 (Claude)
 
 - #19 (`33737a7`): Designs direkt im Dashboard bearbeiten (Editor mit Familienplatte, Edelstahl gebürstet, Konfi-Pfeile; Speichern transaktional in design.json + design.svg, 409 bei Konflikt, Freigabe-Rücksetzung, Protokoll). Geprüft: Linux-Vollauf 1384/1384; Katalogkopie: alle 102 Startdesigns Öffnen+Speichern ohne Änderung bytegleich; D57 echte Änderung konsistent, 409 bei altem Stand.

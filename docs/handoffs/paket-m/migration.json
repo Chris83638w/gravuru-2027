@@ -1,0 +1,5896 @@
+{
+  "schema": "paket-m-migration-evidence-v1",
+  "catalogue": "579390292 (design data unchanged from c11f968)",
+  "generatedAt": "2026-10-24T19:14:05.509Z",
+  "mode": "dry-run",
+  "source": {
+    "files": 1957,
+    "beforeSha256": "f01504569fb69f7ca5c4c45d0a973d085bbd5ae86e30d0d8e065784ffe45aa4c",
+    "afterSha256": "f01504569fb69f7ca5c4c45d0a973d085bbd5ae86e30d0d8e065784ffe45aa4c",
+    "unchanged": true
+  },
+  "migration": {
+    "counts": {
+      "masters": 761,
+      "ready": 759,
+      "unchanged": 0,
+      "blocked": 2,
+      "legacyApproved": 0,
+      "blockedLegacyApproved": 0,
+      "approvedBefore": 0,
+      "approvedAfter": 0
+    },
+    "blocked": [
+      {
+        "id": "GT-S-22x14-D234",
+        "reihe": "gedenktafeln-22x14",
+        "source": "legacy",
+        "status": "blocked",
+        "targets": [],
+        "issues": [
+          {
+            "code": "family_ambiguous",
+            "message": "Die eigene Familie ist mehrdeutig. Eine eindeutige Größen- oder Linienzuordnung ist erforderlich.",
+            "candidates": [
+              "gedenktafel-22x14-schiefer-hunde-2027",
+              "gedenktafel-22x14-schiefer-natur"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "type": "geometry-material-process",
+            "families": [
+              "gedenktafel-22x14-schiefer-hunde-2027",
+              "gedenktafel-22x14-schiefer-natur"
+            ]
+          }
+        ],
+        "legacyApproved": false,
+        "approvedBefore": [],
+        "approvedAfter": []
+      },
+      {
+        "id": "GT-S-22x14-D235",
+        "reihe": "gedenktafeln-22x14",
+        "source": "legacy",
+        "status": "blocked",
+        "targets": [],
+        "issues": [
+          {
+            "code": "family_ambiguous",
+            "message": "Die eigene Familie ist mehrdeutig. Eine eindeutige Größen- oder Linienzuordnung ist erforderlich.",
+            "candidates": [
+              "gedenktafel-22x14-schiefer-hunde-2027",
+              "gedenktafel-22x14-schiefer-natur"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "type": "geometry-material-process",
+            "families": [
+              "gedenktafel-22x14-schiefer-hunde-2027",
+              "gedenktafel-22x14-schiefer-natur"
+            ]
+          }
+        ],
+        "legacyApproved": false,
+        "approvedBefore": [],
+        "approvedAfter": []
+      }
+    ]
+  },
+  "checks": {
+    "approvedBefore": 0,
+    "approvedAfter": 0,
+    "steelMainProducts": 104,
+    "steelMappingRows": 104,
+    "mappingBeforeSha256": "01f6cb57ef39c62e697b429c5329276c30a28d5c3510188110c372537bcb2242",
+    "mappingAfterSha256": "01f6cb57ef39c62e697b429c5329276c30a28d5c3510188110c372537bcb2242",
+    "designFingerprintsUnchanged": 761,
+    "compatibilityBlocked": []
+  },
+  "steelMainProductMapping": [
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3100000",
+      "startDesign": "TRE-V2A-7x2-D5",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-70X23P3-T15",
+      "customizationId": "3100000",
+      "skuBase": "TRE-V2A-7x2-D5",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-70x23p3-t15-3100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-70X23P3-T15:3100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-7x2-D5",
+          "surchargeCents": 0,
+          "priceCents": 899
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-7x2-D5-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-7x2-D5-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-7x2-D5-B02",
+          "surchargeCents": 249,
+          "priceCents": 1148
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-7x2-D5-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1168
+        }
+      ],
+      "designSha256": "f5385226fd0ab68911aca5ce29f7051799c4c2ad9c719ef9cdf2504f0c602d8d"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3200000",
+      "startDesign": "TRE-V2A-7x2-D26",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-70X23P3-T15",
+      "customizationId": "3200000",
+      "skuBase": "TRE-V2A-7x2-D26",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-70x23p3-t15-3200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-70X23P3-T15:3200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-7x2-D26",
+          "surchargeCents": 0,
+          "priceCents": 899
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-7x2-D26-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-7x2-D26-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-7x2-D26-B02",
+          "surchargeCents": 249,
+          "priceCents": 1148
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-7x2-D26-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1168
+        }
+      ],
+      "designSha256": "f913eb016cbfd4777889b86e69ca7614f57931d65b38336eb7d0bea5900ec8f4"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3300000",
+      "startDesign": "TRE-V2A-7x2-D35",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-70X23P3-T15",
+      "customizationId": "3300000",
+      "skuBase": "TRE-V2A-7x2-D35",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-70x23p3-t15-3300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-70X23P3-T15:3300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-7x2-D35",
+          "surchargeCents": 0,
+          "priceCents": 899
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-7x2-D35-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-7x2-D35-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-7x2-D35-B02",
+          "surchargeCents": 249,
+          "priceCents": 1148
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-7x2-D35-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1168
+        }
+      ],
+      "designSha256": "8697f0b289c64d65968586dd134281b7e7932ba8b27182c4ac5ee34f15d9711c"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "1600000",
+      "startDesign": "TRE-V2A-8x5-D30",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X53P3-T15",
+      "customizationId": "1600000",
+      "skuBase": "TRE-V2A-8x5-D30",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x53p3-t15-1600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X53P3-T15:1600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x5-D30",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x5-D30-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x5-D30-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x5-D30-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x5-D30-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "e124028d6a9310e721a59c2f203e312a3d04529837def32a05afbeed20db5679"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "2500000",
+      "startDesign": "TRE-V2A-5x2-D1",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-50X20-T15",
+      "customizationId": "2500000",
+      "skuBase": "TRE-V2A-5x2-D1",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-50x20-t15-2500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-50X20-T15:2500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-5x2-D1",
+          "surchargeCents": 0,
+          "priceCents": 799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-5x2-D1-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-5x2-D1-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E4-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-5x2-D1-B02",
+          "surchargeCents": 249,
+          "priceCents": 1048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E4-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-5x2-D1-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1068
+        }
+      ],
+      "designSha256": "65b85f53b4ae7b1e6d49f5f7d4c364ce0523bbf94f2ffe14221b3d7ab033449a"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "2600000",
+      "startDesign": "TRE-V2A-5x2-D27",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-50X20-T15",
+      "customizationId": "2600000",
+      "skuBase": "TRE-V2A-5x2-D27",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-50x20-t15-2600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-50X20-T15:2600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-5x2-D27",
+          "surchargeCents": 0,
+          "priceCents": 799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-5x2-D27-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-5x2-D27-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E4-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-5x2-D27-B02",
+          "surchargeCents": 249,
+          "priceCents": 1048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E4-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-5x2-D27-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1068
+        }
+      ],
+      "designSha256": "55712d92f5d11b6977b12638b02485bca57f30b932109413dd20b1cdfb0f7ff9"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "2700000",
+      "startDesign": "TRE-V2A-5x2-D52",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-50X20-T15",
+      "customizationId": "2700000",
+      "skuBase": "TRE-V2A-5x2-D52",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-50x20-t15-2700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-50X20-T15:2700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-5x2-D52",
+          "surchargeCents": 0,
+          "priceCents": 799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-5x2-D52-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-5x2-D52-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E4-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-5x2-D52-B02",
+          "surchargeCents": 249,
+          "priceCents": 1048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E4-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-5x2-D52-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1068
+        }
+      ],
+      "designSha256": "37da41072598c6077bd24dc0c843fc2fc90266df13a80218e3713ecf6da894f9"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "2800000",
+      "startDesign": "TRE-V2A-6x2-D3",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-60X20-T15",
+      "customizationId": "2800000",
+      "skuBase": "TRE-V2A-6x2-D3",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-60x20-t15-2800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-60X20-T15:2800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-6x2-D3",
+          "surchargeCents": 0,
+          "priceCents": 899
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-6x2-D3-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-6x2-D3-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-6x2-D3-B02",
+          "surchargeCents": 249,
+          "priceCents": 1148
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-6x2-D3-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1168
+        }
+      ],
+      "designSha256": "0f8627641fabb8e86a38c3b6d53da4c984532cfa942e0b75c015c34f8dcff7a5"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "2900000",
+      "startDesign": "TRE-V2A-6x2-D23",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-60X20-T15",
+      "customizationId": "2900000",
+      "skuBase": "TRE-V2A-6x2-D23",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-60x20-t15-2900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-60X20-T15:2900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-6x2-D23",
+          "surchargeCents": 0,
+          "priceCents": 899
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-6x2-D23-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-6x2-D23-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-6x2-D23-B02",
+          "surchargeCents": 249,
+          "priceCents": 1148
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-6x2-D23-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1168
+        }
+      ],
+      "designSha256": "0d83760593795d6e405e28f85ccbf75407e1eef4e5b9844ded76e0971b60b2b5"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3000000",
+      "startDesign": "TRE-V2A-6x2-D42",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-60X20-T15",
+      "customizationId": "3000000",
+      "skuBase": "TRE-V2A-6x2-D42",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-60x20-t15-3000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-60X20-T15:3000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-6x2-D42",
+          "surchargeCents": 0,
+          "priceCents": 899
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-6x2-D42-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-6x2-D42-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-6x2-D42-B02",
+          "surchargeCents": 249,
+          "priceCents": 1148
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-6x2-D42-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1168
+        }
+      ],
+      "designSha256": "15236180f0f54e983dc0d6c767bf4fd518dd7269e583d51d102803c0a04155de"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3400000",
+      "startDesign": "TRE-V2A-8x2-D2",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X20-T15",
+      "customizationId": "3400000",
+      "skuBase": "TRE-V2A-8x2-D2",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x20-t15-3400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X20-T15:3400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x2-D2",
+          "surchargeCents": 0,
+          "priceCents": 949
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x2-D2-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x2-D2-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1348
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x2-D2-B02",
+          "surchargeCents": 249,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x2-D2-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1218
+        }
+      ],
+      "designSha256": "50ebfa12c5f94c16b03150116c60082b82d94627115f0ecb21f1c0e2a4dbd530"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3500000",
+      "startDesign": "TRE-V2A-8x2-D30",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X20-T15",
+      "customizationId": "3500000",
+      "skuBase": "TRE-V2A-8x2-D30",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x20-t15-3500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X20-T15:3500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x2-D30",
+          "surchargeCents": 0,
+          "priceCents": 949
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x2-D30-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x2-D30-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1348
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x2-D30-B02",
+          "surchargeCents": 249,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x2-D30-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1218
+        }
+      ],
+      "designSha256": "fa7cc151200f3632fc6b4df89a939ffb36275e22ec204d1fc62223fc47d07b1e"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3600000",
+      "startDesign": "TRE-V2A-8x2-D6",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X20-T15",
+      "customizationId": "3600000",
+      "skuBase": "TRE-V2A-8x2-D6",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x20-t15-3600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X20-T15:3600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x2-D6",
+          "surchargeCents": 0,
+          "priceCents": 949
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x2-D6-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x2-D6-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1348
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x2-D6-B02",
+          "surchargeCents": 249,
+          "priceCents": 1198
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x2-D6-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1218
+        }
+      ],
+      "designSha256": "8dd474091cacfa9fa363cdb168890c55cf753ad0f49c473d466257459fd7547b"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3700000",
+      "startDesign": "TAE-V2A-8x5-D14",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-80X53P3-T15",
+      "customizationId": "3700000",
+      "skuBase": "TAE-V2A-8x5-D14",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-80x53p3-t15-3700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-80X53P3-T15:3700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-8x5-D14",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-8x5-D14-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-8x5-D14-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-8x5-D14-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-8x5-D14-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "baf67b6cf1f8dd217d1cc2df0b7256f22306878053d336aba6509e7f3f154597"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3800000",
+      "startDesign": "TAE-V2A-8x5-D33",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-80X53P3-T15",
+      "customizationId": "3800000",
+      "skuBase": "TAE-V2A-8x5-D33",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-80x53p3-t15-3800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-80X53P3-T15:3800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-8x5-D33",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-8x5-D33-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-8x5-D33-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-8x5-D33-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-8x5-D33-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "a20034204c75bf58152849b73820d4ab12133ef083b6713f3a17837f0accdd21"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "3900000",
+      "startDesign": "TRE-V2A-8x5-D55",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X60-T15",
+      "customizationId": "3900000",
+      "skuBase": "TRE-V2A-9x6-D55",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-90x60-t15-3900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-90X60-T15:3900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-9x6-D55",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-9x6-D55-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-9x6-D55-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-9x6-D55-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-9x6-D55-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "345ee98709501bb3c464196ca21e7e079bccc43c0d7a24708231ac9a5323cd36"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4000000",
+      "startDesign": "TRE-V2A-8x5-D20",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X60-T15",
+      "customizationId": "4000000",
+      "skuBase": "TRE-V2A-9x6-D20",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-90x60-t15-4000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-90X60-T15:4000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-9x6-D20",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-9x6-D20-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-9x6-D20-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-9x6-D20-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-9x6-D20-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "1429324c0187d13501aea72082bd616a1917ebce0d8904eaf9a7150a14ed7855"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4100000",
+      "startDesign": "TAE-V2A-8x5-D8",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-120X80-T15",
+      "customizationId": "4100000",
+      "skuBase": "TAE-V2A-12x8-D8",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-120x80-t15-4100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-120X80-T15:4100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-12x8-D8",
+          "surchargeCents": 0,
+          "priceCents": 1999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-12x8-D8-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-12x8-D8-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-12x8-D8-B02",
+          "surchargeCents": 249,
+          "priceCents": 2248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-12x8-D8-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2268
+        }
+      ],
+      "designSha256": "86abbc3ce11da44cb97f82b84c948c69f01d1e8bc7cf330dac9e299f4bf7ca6e"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4200000",
+      "startDesign": "TAE-V2A-8x5-D10",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-120X80-T15",
+      "customizationId": "4200000",
+      "skuBase": "TAE-V2A-12x8-D10",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-120x80-t15-4200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-120X80-T15:4200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-12x8-D10",
+          "surchargeCents": 0,
+          "priceCents": 1999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-12x8-D10-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-12x8-D10-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-12x8-D10-B02",
+          "surchargeCents": 249,
+          "priceCents": 2248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-12x8-D10-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2268
+        }
+      ],
+      "designSha256": "cf0499dcd917904829c79ca4218d481933d81db546e1d77478481699e0e3965e"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4300000",
+      "startDesign": "TAE-V2A-8x5-D12",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-150X100-T15",
+      "customizationId": "4300000",
+      "skuBase": "TAE-V2A-15x10-D12",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-150x100-t15-4300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-150X100-T15:4300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-15x10-D12",
+          "surchargeCents": 0,
+          "priceCents": 2399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-15x10-D12-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-15x10-D12-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-15x10-D12-B02",
+          "surchargeCents": 249,
+          "priceCents": 2648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-15x10-D12-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2668
+        }
+      ],
+      "designSha256": "8ccfac87ce414b5879af3551a8ef0fe37ec1234f8ad2d2a76656bfccc97b5636"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4400000",
+      "startDesign": "TAE-V2A-8x5-D34",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-150X100-T15",
+      "customizationId": "4400000",
+      "skuBase": "TAE-V2A-15x10-D34",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-150x100-t15-4400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-150X100-T15:4400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-15x10-D34",
+          "surchargeCents": 0,
+          "priceCents": 2399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-15x10-D34-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-15x10-D34-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-15x10-D34-B02",
+          "surchargeCents": 249,
+          "priceCents": 2648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-15x10-D34-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2668
+        }
+      ],
+      "designSha256": "9fa109f410431493fe358be614f43a59f0e82ce7582390e900d57e7e81aafa2c"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4500000",
+      "startDesign": "TAE-V2A-8x5-D32",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-180X120-T15",
+      "customizationId": "4500000",
+      "skuBase": "TAE-V2A-18x12-D32",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-180x120-t15-4500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-180X120-T15:4500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-18x12-D32",
+          "surchargeCents": 0,
+          "priceCents": 2999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-18x12-D32-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-18x12-D32-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-18x12-D32-B02",
+          "surchargeCents": 249,
+          "priceCents": 3248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-18x12-D32-B02S",
+          "surchargeCents": 269,
+          "priceCents": 3268
+        }
+      ],
+      "designSha256": "601031134b35b5e85bc1c23915e548f25ab4e248fffc05a356c22e7158940acd"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4600000",
+      "startDesign": "TAE-V2A-8x5-D62",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-180X120-T15",
+      "customizationId": "4600000",
+      "skuBase": "TAE-V2A-18x12-D62",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-180x120-t15-4600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-180X120-T15:4600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-18x12-D62",
+          "surchargeCents": 0,
+          "priceCents": 2999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-18x12-D62-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-18x12-D62-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-18x12-D62-B02",
+          "surchargeCents": 249,
+          "priceCents": 3248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-18x12-D62-B02S",
+          "surchargeCents": 269,
+          "priceCents": 3268
+        }
+      ],
+      "designSha256": "7cbb1321eb7b7403e31c81bbf3865ac500a94b481b092447400a17eeb347f5f3"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4700000",
+      "startDesign": "TAE-V2A-8x5-D65",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-300X200-T15",
+      "customizationId": "4700000",
+      "skuBase": "TAE-V2A-30x20-D65",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-300x200-t15-4700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-300X200-T15:4700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-30x20-D65",
+          "surchargeCents": 0,
+          "priceCents": 7999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-30x20-D65-KGL",
+          "surchargeCents": 299,
+          "priceCents": 8298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-30x20-D65-KRA",
+          "surchargeCents": 399,
+          "priceCents": 8398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-30x20-D65-B02",
+          "surchargeCents": 249,
+          "priceCents": 8248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-30x20-D65-B02S",
+          "surchargeCents": 269,
+          "priceCents": 8268
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E10-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TAE-V2A-30x20-D65-B04",
+          "surchargeCents": 289,
+          "priceCents": 8288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E10-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TAE-V2A-30x20-D65-B04S",
+          "surchargeCents": 309,
+          "priceCents": 8308
+        }
+      ],
+      "designSha256": "3309d63f739f56a490523c04843aaf5843edc241b975171ecc6df6b91c7ec611"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4800000",
+      "startDesign": "TAE-V2A-8x5-D24",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-300X200-T15",
+      "customizationId": "4800000",
+      "skuBase": "TAE-V2A-30x20-D24",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-300x200-t15-4800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-AB-300X200-T15:4800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TAE-V2A-30x20-D24",
+          "surchargeCents": 0,
+          "priceCents": 7999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TAE-V2A-30x20-D24-KGL",
+          "surchargeCents": 299,
+          "priceCents": 8298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TAE-V2A-30x20-D24-KRA",
+          "surchargeCents": 399,
+          "priceCents": 8398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TAE-V2A-30x20-D24-B02",
+          "surchargeCents": 249,
+          "priceCents": 8248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TAE-V2A-30x20-D24-B02S",
+          "surchargeCents": 269,
+          "priceCents": 8268
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E10-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TAE-V2A-30x20-D24-B04",
+          "surchargeCents": 289,
+          "priceCents": 8288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E10-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TAE-V2A-30x20-D24-B04S",
+          "surchargeCents": 309,
+          "priceCents": 8308
+        }
+      ],
+      "designSha256": "05fd3bcceecca7b6259f80911f0d30539bd817a4d25617f054bcaaa1fcc7443d"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "4900000",
+      "startDesign": "TO-V2A-9x6-D1",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-90X60-T15",
+      "customizationId": "4900000",
+      "skuBase": "TO-V2A-9x6-D1",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-90x60-t15-4900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-90X60-T15:4900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-9x6-D1",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-9x6-D1-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-9x6-D1-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-9x6-D1-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-9x6-D1-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "ee1687e6aa0de226d36accd691bc8c3d9b84bfdcd27b428f34d4330ebf57fd28"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5000000",
+      "startDesign": "TO-V2A-9x6-D24",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-90X60-T15",
+      "customizationId": "5000000",
+      "skuBase": "TO-V2A-9x6-D24",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-90x60-t15-5000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-90X60-T15:5000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-9x6-D24",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-9x6-D24-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-9x6-D24-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-9x6-D24-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-9x6-D24-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "2329d008b1494956aa423ae5dcd92ac805c13c63c07825d2279f5a3bdfb363ae"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5100000",
+      "startDesign": "TO-V2A-9x6-D7",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-90X60-T15",
+      "customizationId": "5100000",
+      "skuBase": "TO-V2A-9x6-D7",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-90x60-t15-5100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-90X60-T15:5100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-9x6-D7",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-9x6-D7-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-9x6-D7-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-9x6-D7-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-9x6-D7-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "9188c2abcaaf923540ee28325a995443e2d4d0652f532a028d45fa51b00ab0de"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5200000",
+      "startDesign": "TO-V2A-9x6-D25",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-210X140-T15",
+      "customizationId": "5200000",
+      "skuBase": "TO-V2A-21x14-D25",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-210x140-t15-5200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-210X140-T15:5200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-21x14-D25",
+          "surchargeCents": 0,
+          "priceCents": 3999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-21x14-D25-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-21x14-D25-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-21x14-D25-B02",
+          "surchargeCents": 249,
+          "priceCents": 4248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-21x14-D25-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4268
+        }
+      ],
+      "designSha256": "066111272696b823cefa76cf0108af21bdd322ab7ce1244158c102e30abc3187"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5300000",
+      "startDesign": "TO-V2A-9x6-D13",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-210X140-T15",
+      "customizationId": "5300000",
+      "skuBase": "TO-V2A-21x14-D13",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-210x140-t15-5300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-210X140-T15:5300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-21x14-D13",
+          "surchargeCents": 0,
+          "priceCents": 3999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-21x14-D13-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-21x14-D13-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-21x14-D13-B02",
+          "surchargeCents": 249,
+          "priceCents": 4248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-21x14-D13-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4268
+        }
+      ],
+      "designSha256": "1b997df11288339b694295cb74695a2a55f4ed2bdbcb90be93a31c25dc87ac71"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5400000",
+      "startDesign": "TO-V2A-9x6-D61",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-210X140-T15",
+      "customizationId": "5400000",
+      "skuBase": "TO-V2A-21x14-D61",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-210x140-t15-5400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-210X140-T15:5400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-21x14-D61",
+          "surchargeCents": 0,
+          "priceCents": 3999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-21x14-D61-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-21x14-D61-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-21x14-D61-B02",
+          "surchargeCents": 249,
+          "priceCents": 4248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-21x14-D61-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4268
+        }
+      ],
+      "designSha256": "f349813a6d7cf1537c3f377870317b26bc7c9380b293d8c4b64faa21b7eb3f51"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5500000",
+      "startDesign": "TO-V2A-12x4-D48",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-EL-120X40-T15",
+      "customizationId": "5500000",
+      "skuBase": "TO-V2A-12x4-D48",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-el-120x40-t15-5500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-EL-120X40-T15:5500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-12x4-D48",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-12x4-D48-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-12x4-D48-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-12x4-D48-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-12x4-D48-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "47e0817d1fd93127b1253b3c1d490d38d17243978f8ace9c4e878b12dae36732"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5600000",
+      "startDesign": "TO-V2A-12x4-D58",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-EL-120X40-T15",
+      "customizationId": "5600000",
+      "skuBase": "TO-V2A-12x4-D58",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-el-120x40-t15-5600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-EL-120X40-T15:5600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-12x4-D58",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-12x4-D58-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-12x4-D58-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-12x4-D58-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-12x4-D58-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "e63774ce4c042fd7e2acbeb2ba69b275e562ff2f9c1844cc7368821067272fc6"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5700000",
+      "startDesign": "TO-V2A-12x4-D52",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-EL-120X40-T15",
+      "customizationId": "5700000",
+      "skuBase": "TO-V2A-12x4-D52",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-el-120x40-t15-5700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-EL-120X40-T15:5700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-12x4-D52",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-12x4-D52-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-12x4-D52-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-12x4-D52-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-12x4-D52-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "635e154628aa8b36f844ffeb3a8e1ef95d312fff77b84154bcc9947cc2504bcc"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5800000",
+      "startDesign": "TO-V2A-12x4-D12",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-EL-120X40-T15",
+      "customizationId": "5800000",
+      "skuBase": "TO-V2A-12x4-D12",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-el-120x40-t15-5800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-EL-120X40-T15:5800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-12x4-D12",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-12x4-D12-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-12x4-D12-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-12x4-D12-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-12x4-D12-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "294e098547e6408d415af83b2c20fd3d395fe28d0abcfe29c4dea4575edaadf1"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "5900000",
+      "startDesign": "TO-V2A-12x4-D60",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-EL-120X40-T15",
+      "customizationId": "5900000",
+      "skuBase": "TO-V2A-12x4-D60",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-el-120x40-t15-5900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-EL-120X40-T15:5900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-12x4-D60",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-12x4-D60-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-12x4-D60-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-12x4-D60-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-12x4-D60-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "391c687fc80287cb649b4e82ba0cc810cab45780840f23f5fcd1e678e281b3c8"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6000000",
+      "startDesign": "TO-V2A-12x4-D31",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-EL-120X40-T15",
+      "customizationId": "6000000",
+      "skuBase": "TO-V2A-12x4-D31",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-el-120x40-t15-6000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-EL-120X40-T15:6000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-12x4-D31",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-12x4-D31-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-12x4-D31-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-12x4-D31-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-12x4-D31-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "10febb40d486c1eef26a2e3253a3e45c29f9525846e7b36cee2ff60178f4cfd3"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6100000",
+      "startDesign": "TO-V2A-15x8-D47",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-150X80-T15",
+      "customizationId": "6100000",
+      "skuBase": "TO-V2A-15x8-D47",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-150x80-t15-6100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-150X80-T15:6100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-15x8-D47",
+          "surchargeCents": 0,
+          "priceCents": 2199
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-15x8-D47-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2498
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-15x8-D47-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2598
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-15x8-D47-B02",
+          "surchargeCents": 249,
+          "priceCents": 2448
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-15x8-D47-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2468
+        }
+      ],
+      "designSha256": "e386106e1debe95e3c3d7dee0cbae1b76a9780c4c5c6cc162f1dd17896e0a368"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6200000",
+      "startDesign": "TO-V2A-15x8-D19",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-150X80-T15",
+      "customizationId": "6200000",
+      "skuBase": "TO-V2A-15x8-D19",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-150x80-t15-6200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-150X80-T15:6200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-15x8-D19",
+          "surchargeCents": 0,
+          "priceCents": 2199
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-15x8-D19-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2498
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-15x8-D19-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2598
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-15x8-D19-B02",
+          "surchargeCents": 249,
+          "priceCents": 2448
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-15x8-D19-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2468
+        }
+      ],
+      "designSha256": "91a059483d52ab8bcc88e20f837c8de5411d49d8acf2fdc5c0f5c40265b852a9"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6300000",
+      "startDesign": "TO-V2A-15x8-D10",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-150X80-T15",
+      "customizationId": "6300000",
+      "skuBase": "TO-V2A-15x8-D10",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-ov-150x80-t15-6300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-OV-150X80-T15:6300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TO-V2A-15x8-D10",
+          "surchargeCents": 0,
+          "priceCents": 2199
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TO-V2A-15x8-D10-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2498
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TO-V2A-15x8-D10-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2598
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TO-V2A-15x8-D10-B02",
+          "surchargeCents": 249,
+          "priceCents": 2448
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TO-V2A-15x8-D10-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2468
+        }
+      ],
+      "designSha256": "c829ae437d57233fe8172124b487473da006a08e9769b99fcfa09fc3e910ecda"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7200000",
+      "startDesign": "TQ-V2A-8x8-D3",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-80X80-T15",
+      "customizationId": "7200000",
+      "skuBase": "TQ-V2A-8x8-D3",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-80x80-t15-7200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-80X80-T15:7200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-8x8-D3",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-8x8-D3-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-8x8-D3-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TQ-V2A-8x8-D3-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TQ-V2A-8x8-D3-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "3b87ad78e8f2e50116c92f3c4562a1bf2d5538ff7960db7f63fd5296f470d858"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7300000",
+      "startDesign": "TQ-V2A-8x8-D53",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-80X80-T15",
+      "customizationId": "7300000",
+      "skuBase": "TQ-V2A-8x8-D53",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-80x80-t15-7300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-80X80-T15:7300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-8x8-D53",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-8x8-D53-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-8x8-D53-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TQ-V2A-8x8-D53-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TQ-V2A-8x8-D53-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "efc2e744f4a29bf20071a4e1469e47c94a329df60ed90bab5b2c5290deb6e913"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7400000",
+      "startDesign": "TQ-V2A-8x8-D33",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-80X80-T15",
+      "customizationId": "7400000",
+      "skuBase": "TQ-V2A-8x8-D33",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-80x80-t15-7400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-80X80-T15:7400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-8x8-D33",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-8x8-D33-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-8x8-D33-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TQ-V2A-8x8-D33-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TQ-V2A-8x8-D33-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "b6259c32498168ec97a2ca4870bbfc67b149134feeb1399003473bcd7e3fcacd"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7500000",
+      "startDesign": "TQ-V2A-8x8-D12",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-160X160-T15",
+      "customizationId": "7500000",
+      "skuBase": "TQ-V2A-16x16-D12",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-160x160-t15-7500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-160X160-T15:7500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-16x16-D12",
+          "surchargeCents": 0,
+          "priceCents": 3499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-16x16-D12-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-16x16-D12-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3898
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E6-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TQ-V2A-16x16-D12-B04",
+          "surchargeCents": 289,
+          "priceCents": 3788
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E6-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TQ-V2A-16x16-D12-B04S",
+          "surchargeCents": 309,
+          "priceCents": 3808
+        }
+      ],
+      "designSha256": "4a017ddc3134a2ca91ba208fd114fc9b6e80c3512035b6463637bc59217ac2ed"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7600000",
+      "startDesign": "TQ-V2A-8x8-D6",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-160X160-T15",
+      "customizationId": "7600000",
+      "skuBase": "TQ-V2A-16x16-D6",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-160x160-t15-7600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-160X160-T15:7600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-16x16-D6",
+          "surchargeCents": 0,
+          "priceCents": 3499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-16x16-D6-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-16x16-D6-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3898
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E6-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TQ-V2A-16x16-D6-B04",
+          "surchargeCents": 289,
+          "priceCents": 3788
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E6-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TQ-V2A-16x16-D6-B04S",
+          "surchargeCents": 309,
+          "priceCents": 3808
+        }
+      ],
+      "designSha256": "48049f95ac1e4c75c33a5e2f275d21bb37a7e663ca2a5a5e482c580c1f6c8f15"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7700000",
+      "startDesign": "TQ-V2A-8x8-D29",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-160X160-T15",
+      "customizationId": "7700000",
+      "skuBase": "TQ-V2A-16x16-D29",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-160x160-t15-7700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-160X160-T15:7700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-16x16-D29",
+          "surchargeCents": 0,
+          "priceCents": 3499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-16x16-D29-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-16x16-D29-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3898
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E6-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TQ-V2A-16x16-D29-B04",
+          "surchargeCents": 289,
+          "priceCents": 3788
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E6-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TQ-V2A-16x16-D29-B04S",
+          "surchargeCents": 309,
+          "priceCents": 3808
+        }
+      ],
+      "designSha256": "e3254da94aeabbab6c81dc0830e3da279d0156d692d46e8cc056fba73a6656f6"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7800000",
+      "startDesign": "TRE-V2A-8x5-D5",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X60-T15",
+      "customizationId": "7800000",
+      "skuBase": "TRE-V2A-9x6-D5",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-90x60-t15-7800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-90X60-T15:7800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-9x6-D5",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-9x6-D5-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-9x6-D5-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-9x6-D5-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-9x6-D5-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "679004b6a87af3266cb21145758cb26364bc48b47df3e27bb9a9df968932aa28"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7900000",
+      "startDesign": "TQ-V2A-8x8-D10",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-200X200-T15",
+      "customizationId": "7900000",
+      "skuBase": "TQ-V2A-20x20-D10",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-200x200-t15-7900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-200X200-T15:7900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-20x20-D10",
+          "surchargeCents": 0,
+          "priceCents": 4799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-20x20-D10-KGL",
+          "surchargeCents": 299,
+          "priceCents": 5098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-20x20-D10-KRA",
+          "surchargeCents": 399,
+          "priceCents": 5198
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E8-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TQ-V2A-20x20-D10-B04",
+          "surchargeCents": 289,
+          "priceCents": 5088
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E8-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TQ-V2A-20x20-D10-B04S",
+          "surchargeCents": 309,
+          "priceCents": 5108
+        }
+      ],
+      "designSha256": "c2040d464f595dad75b6e81f5d4dd16e8b9642abac1f19be5fd9838f6ac83680"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8000000",
+      "startDesign": "TQ-V2A-8x8-D25",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-200X200-T15",
+      "customizationId": "8000000",
+      "skuBase": "TQ-V2A-20x20-D25",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-200x200-t15-8000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-200X200-T15:8000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-20x20-D25",
+          "surchargeCents": 0,
+          "priceCents": 4799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-20x20-D25-KGL",
+          "surchargeCents": 299,
+          "priceCents": 5098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-20x20-D25-KRA",
+          "surchargeCents": 399,
+          "priceCents": 5198
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E8-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TQ-V2A-20x20-D25-B04",
+          "surchargeCents": 289,
+          "priceCents": 5088
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E8-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TQ-V2A-20x20-D25-B04S",
+          "surchargeCents": 309,
+          "priceCents": 5108
+        }
+      ],
+      "designSha256": "ce2d308f96a19121ace907ccc06cc68ff6ccacc66188ad563179cec2225374b0"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8100000",
+      "startDesign": "TQ-V2A-8x8-D7",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-QU-200X200-T15",
+      "customizationId": "8100000",
+      "skuBase": "TQ-V2A-20x20-D7",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-qu-200x200-t15-8100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-QU-200X200-T15:8100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TQ-V2A-20x20-D7",
+          "surchargeCents": 0,
+          "priceCents": 4799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TQ-V2A-20x20-D7-KGL",
+          "surchargeCents": 299,
+          "priceCents": 5098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TQ-V2A-20x20-D7-KRA",
+          "surchargeCents": 399,
+          "priceCents": 5198
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E8-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TQ-V2A-20x20-D7-B04",
+          "surchargeCents": 289,
+          "priceCents": 5088
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E8-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TQ-V2A-20x20-D7-B04S",
+          "surchargeCents": 309,
+          "priceCents": 5108
+        }
+      ],
+      "designSha256": "2e1259c637c05f3b54824f491c13a932b40574bf219bbe8076752bab3ed8debf"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8200000",
+      "startDesign": "TRE-V2A-8x3,5-D4",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X35-T15",
+      "customizationId": "8200000",
+      "skuBase": "TRE-V2A-8x3,5-D4",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x35-t15-8200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X35-T15:8200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x3,5-D4",
+          "surchargeCents": 0,
+          "priceCents": 999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x3,5-D4-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x3,5-D4-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x3,5-D4-B02",
+          "surchargeCents": 249,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x3,5-D4-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1268
+        }
+      ],
+      "designSha256": "75f47b9a37cf7265deb039a06f1748cc2dfe741b3c3147662d9fbf5c72c21a2f"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8300000",
+      "startDesign": "TRE-V2A-8x3,5-D35",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X35-T15",
+      "customizationId": "8300000",
+      "skuBase": "TRE-V2A-8x3,5-D35",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x35-t15-8300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X35-T15:8300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x3,5-D35",
+          "surchargeCents": 0,
+          "priceCents": 999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x3,5-D35-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x3,5-D35-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x3,5-D35-B02",
+          "surchargeCents": 249,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x3,5-D35-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1268
+        }
+      ],
+      "designSha256": "60b7a6a1be97efe03b4b6a568e20939137a0fe3fa3d2f19e55cc60faf19ddace"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8400000",
+      "startDesign": "TRE-V2A-8x3,5-D62",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X35-T15",
+      "customizationId": "8400000",
+      "skuBase": "TRE-V2A-8x3,5-D62",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x35-t15-8400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X35-T15:8400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x3,5-D62",
+          "surchargeCents": 0,
+          "priceCents": 999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x3,5-D62-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x3,5-D62-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x3,5-D62-B02",
+          "surchargeCents": 249,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x3,5-D62-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1268
+        }
+      ],
+      "designSha256": "830fd22b8558bd72647ae473806bda1e031181e668d050f41b4f514b764fc1f1"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8500000",
+      "startDesign": "TRE-V2A-8x3,5-D5",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-120X52P5-T15",
+      "customizationId": "8500000",
+      "skuBase": "TRE-V2A-12x5,25-D5",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-120x52p5-t15-8500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-120X52P5-T15:8500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-12x5,25-D5",
+          "surchargeCents": 0,
+          "priceCents": 1799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-12x5,25-D5-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-12x5,25-D5-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-12x5,25-D5-B02",
+          "surchargeCents": 249,
+          "priceCents": 2048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-12x5,25-D5-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2068
+        }
+      ],
+      "designSha256": "99a4ed1305003f746d9cc0eda6482b5d98e403a66a89d159987d44f36add2455"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8600000",
+      "startDesign": "TRE-V2A-8x3,5-D18",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-120X52P5-T15",
+      "customizationId": "8600000",
+      "skuBase": "TRE-V2A-12x5,25-D18",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-120x52p5-t15-8600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-120X52P5-T15:8600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-12x5,25-D18",
+          "surchargeCents": 0,
+          "priceCents": 1799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-12x5,25-D18-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-12x5,25-D18-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-12x5,25-D18-B02",
+          "surchargeCents": 249,
+          "priceCents": 2048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-12x5,25-D18-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2068
+        }
+      ],
+      "designSha256": "238ab25276c945accf8307077546d36cde9a6a50487d72c787f226d863139c7e"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8700000",
+      "startDesign": "TRE-V2A-8x3,5-D28",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-120X52P5-T15",
+      "customizationId": "8700000",
+      "skuBase": "TRE-V2A-12x5,25-D28",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-120x52p5-t15-8700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-120X52P5-T15:8700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-12x5,25-D28",
+          "surchargeCents": 0,
+          "priceCents": 1799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-12x5,25-D28-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-12x5,25-D28-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-12x5,25-D28-B02",
+          "surchargeCents": 249,
+          "priceCents": 2048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-12x5,25-D28-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2068
+        }
+      ],
+      "designSha256": "d310c47ccec7da1697f2a034ae2f1f9ba59b775b3b1525233b815bd704b3f2a6"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8800000",
+      "startDesign": "TRE-V2A-8x3,5-D21",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-160X70-T15",
+      "customizationId": "8800000",
+      "skuBase": "TRE-V2A-16x7-D21",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-160x70-t15-8800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-160X70-T15:8800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-16x7-D21",
+          "surchargeCents": 0,
+          "priceCents": 2299
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-16x7-D21-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2598
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-16x7-D21-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2698
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-16x7-D21-B02",
+          "surchargeCents": 249,
+          "priceCents": 2548
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-16x7-D21-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2568
+        }
+      ],
+      "designSha256": "77306c4b26f78360ca1902115a1763cf097a34b7c38a918343a41460e1e498a7"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "8900000",
+      "startDesign": "TRE-V2A-8x3,5-D29",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-160X70-T15",
+      "customizationId": "8900000",
+      "skuBase": "TRE-V2A-16x7-D29",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-160x70-t15-8900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-160X70-T15:8900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-16x7-D29",
+          "surchargeCents": 0,
+          "priceCents": 2299
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-16x7-D29-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2598
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-16x7-D29-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2698
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-16x7-D29-B02",
+          "surchargeCents": 249,
+          "priceCents": 2548
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-16x7-D29-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2568
+        }
+      ],
+      "designSha256": "c8334a2996c8dbe8d9323fd2789cc628a4a664e8ec59a1c1ec0a40309fb64dca"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9000000",
+      "startDesign": "TRE-V2A-8x3,5-D63",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-160X70-T15",
+      "customizationId": "9000000",
+      "skuBase": "TRE-V2A-16x7-D63",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-160x70-t15-9000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-160X70-T15:9000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-16x7-D63",
+          "surchargeCents": 0,
+          "priceCents": 2299
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-16x7-D63-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2598
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-16x7-D63-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2698
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-16x7-D63-B02",
+          "surchargeCents": 249,
+          "priceCents": 2548
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-16x7-D63-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2568
+        }
+      ],
+      "designSha256": "76e15a0a27704bcb72024f18e5fece3700020cebc2147db7fee1eec80fe91ba1"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9100000",
+      "startDesign": "TRE-V2A-8x3,5-D71",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X105-T15",
+      "customizationId": "9100000",
+      "skuBase": "TRE-V2A-24x10,5-D71",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-240x105-t15-9100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-240X105-T15:9100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x10,5-D71",
+          "surchargeCents": 0,
+          "priceCents": 3799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x10,5-D71-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x10,5-D71-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x10,5-D71-B02",
+          "surchargeCents": 249,
+          "priceCents": 4048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x10,5-D71-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4068
+        }
+      ],
+      "designSha256": "0b3428995c3264520011d43c1d0285cd5638266f8669902f15d1da21e266dc97"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9300000",
+      "startDesign": "TRE-V2A-8x3,5-D29",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X105-T15",
+      "customizationId": "9300000",
+      "skuBase": "TRE-V2A-24x10,5-D29",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-240x105-t15-9300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-240X105-T15:9300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x10,5-D29",
+          "surchargeCents": 0,
+          "priceCents": 3799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x10,5-D29-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x10,5-D29-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x10,5-D29-B02",
+          "surchargeCents": 249,
+          "priceCents": 4048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x10,5-D29-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4068
+        }
+      ],
+      "designSha256": "c8334a2996c8dbe8d9323fd2789cc628a4a664e8ec59a1c1ec0a40309fb64dca"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9400000",
+      "startDesign": "TRE-V2A-9x3-D2",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X30-T15",
+      "customizationId": "9400000",
+      "skuBase": "TRE-V2A-9x3-D2",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-90x30-t15-9400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-90X30-T15:9400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-9x3-D2",
+          "surchargeCents": 0,
+          "priceCents": 999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-9x3-D2-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-9x3-D2-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-9x3-D2-B02",
+          "surchargeCents": 249,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-9x3-D2-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1268
+        }
+      ],
+      "designSha256": "b2b73ad875ba97352dcb23dbbcfa47eea19b0b1b3e5f763c8d00b1da48ba1f13"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9500000",
+      "startDesign": "TRE-V2A-9x3-D33",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X30-T15",
+      "customizationId": "9500000",
+      "skuBase": "TRE-V2A-9x3-D33",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-90x30-t15-9500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-90X30-T15:9500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-9x3-D33",
+          "surchargeCents": 0,
+          "priceCents": 999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-9x3-D33-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-9x3-D33-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-9x3-D33-B02",
+          "surchargeCents": 249,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-9x3-D33-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1268
+        }
+      ],
+      "designSha256": "4e42300e19afe5823f65d2b06cfa81a613840f0f717f9e5276dae004a327e3ab"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9600000",
+      "startDesign": "TRE-V2A-9x3-D39",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X30-T15",
+      "customizationId": "9600000",
+      "skuBase": "TRE-V2A-9x3-D39",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-90x30-t15-9600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-90X30-T15:9600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-9x3-D39",
+          "surchargeCents": 0,
+          "priceCents": 999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-9x3-D39-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-9x3-D39-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-9x3-D39-B02",
+          "surchargeCents": 249,
+          "priceCents": 1248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-9x3-D39-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1268
+        }
+      ],
+      "designSha256": "72059969922f995dd6592ee862a397dce3575e696a3938df9a68c91236f37e59"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9700000",
+      "startDesign": "TRE-V2A-9x3-D64",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X80-T15",
+      "customizationId": "9700000",
+      "skuBase": "TRE-V2A-24x8-D64",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-240x80-t15-9700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-240X80-T15:9700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x8-D64",
+          "surchargeCents": 0,
+          "priceCents": 3299
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x8-D64-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3598
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x8-D64-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3698
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x8-D64-B02",
+          "surchargeCents": 249,
+          "priceCents": 3548
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x8-D64-B02S",
+          "surchargeCents": 269,
+          "priceCents": 3568
+        }
+      ],
+      "designSha256": "fa07b1976620cb3173f4c67dd33320092dc20fe03602c0e9d5903303bb4df585"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9800000",
+      "startDesign": "TRE-V2A-9x3-D68",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X80-T15",
+      "customizationId": "9800000",
+      "skuBase": "TRE-V2A-24x8-D68",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-240x80-t15-9800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-240X80-T15:9800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x8-D68",
+          "surchargeCents": 0,
+          "priceCents": 3299
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x8-D68-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3598
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x8-D68-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3698
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x8-D68-B02",
+          "surchargeCents": 249,
+          "priceCents": 3548
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x8-D68-B02S",
+          "surchargeCents": 269,
+          "priceCents": 3568
+        }
+      ],
+      "designSha256": "9e649982c199cf464ef157458ca4618829a01212becc6581da60f39de46f3792"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "9900000",
+      "startDesign": "TRE-V2A-9x3-D40",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X80-T15",
+      "customizationId": "9900000",
+      "skuBase": "TRE-V2A-24x8-D40",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-240x80-t15-9900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-240X80-T15:9900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x8-D40",
+          "surchargeCents": 0,
+          "priceCents": 3299
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x8-D40-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3598
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x8-D40-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3698
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x8-D40-B02",
+          "surchargeCents": 249,
+          "priceCents": 3548
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x8-D40-B02S",
+          "surchargeCents": 269,
+          "priceCents": 3568
+        }
+      ],
+      "designSha256": "2dd786518a28aef95dc44ca08eba815c64f386a7694e9c755f97472c2673e8bc"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10000000",
+      "startDesign": "TRE-V2A-8x5-D3",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X53P3-T15",
+      "customizationId": "10000000",
+      "skuBase": "TRE-V2A-8x5-D3",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x53p3-t15-10000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X53P3-T15:10000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x5-D3",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x5-D3-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x5-D3-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x5-D3-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x5-D3-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "edee06358ab4054e290b774136b36dd2095e600abd3cf4a24f257ee4b6ee5ad8"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10100000",
+      "startDesign": "TRE-V2A-8x5-D27",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-80X53P3-T15",
+      "customizationId": "10100000",
+      "skuBase": "TRE-V2A-8x5-D27",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-80x53p3-t15-10100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-80X53P3-T15:10100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-8x5-D27",
+          "surchargeCents": 0,
+          "priceCents": 1399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-8x5-D27-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-8x5-D27-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-8x5-D27-B02",
+          "surchargeCents": 249,
+          "priceCents": 1648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-8x5-D27-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1668
+        }
+      ],
+      "designSha256": "8c6250893838beae8a93e6797faadc4be8834d903030cc39c6b3e30ca602c81d"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10200000",
+      "startDesign": "TRE-V2A-8x5-D14",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X60-T15",
+      "customizationId": "10200000",
+      "skuBase": "TRE-V2A-9x6-D14",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-90x60-t15-10200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-90X60-T15:10200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-9x6-D14",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-9x6-D14-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-9x6-D14-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-9x6-D14-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-9x6-D14-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "a6b581eb8b9f40d42f8a7e8a3e26722e27fd202a3989fdf706e7b6e30ebab930"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10300000",
+      "startDesign": "TRE-V2A-8x5-D64",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X60-T15",
+      "customizationId": "10300000",
+      "skuBase": "TRE-V2A-9x6-D64",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-90x60-t15-10300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-90X60-T15:10300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-9x6-D64",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-9x6-D64-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-9x6-D64-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-9x6-D64-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-9x6-D64-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "41e7e7aac2718c0d8cfa40ed780ba0f558eb17bfd63ecf2f293aecb3bb5c82b6"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10400000",
+      "startDesign": "TRE-V2A-8x5-D12",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-120X80-T15",
+      "customizationId": "10400000",
+      "skuBase": "TRE-V2A-12x8-D12",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-120x80-t15-10400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-120X80-T15:10400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-12x8-D12",
+          "surchargeCents": 0,
+          "priceCents": 1999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-12x8-D12-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-12x8-D12-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-12x8-D12-B02",
+          "surchargeCents": 249,
+          "priceCents": 2248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-12x8-D12-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2268
+        }
+      ],
+      "designSha256": "dee5a2099a179225ebb4550db75958d57ee4ccf83056aa8cb294df77eb28e092"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10500000",
+      "startDesign": "TRE-V2A-8x5-D24",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-120X80-T15",
+      "customizationId": "10500000",
+      "skuBase": "TRE-V2A-12x8-D24",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-120x80-t15-10500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-120X80-T15:10500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-12x8-D24",
+          "surchargeCents": 0,
+          "priceCents": 1999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-12x8-D24-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-12x8-D24-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-12x8-D24-B02",
+          "surchargeCents": 249,
+          "priceCents": 2248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-12x8-D24-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2268
+        }
+      ],
+      "designSha256": "16da8685647cb06ca094c0480ce4557865c9880a41b129eb90494b82d5cf1763"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10600000",
+      "startDesign": "TRE-V2A-8x5-D49",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-120X80-T15",
+      "customizationId": "10600000",
+      "skuBase": "TRE-V2A-12x8-D49",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-120x80-t15-10600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-120X80-T15:10600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-12x8-D49",
+          "surchargeCents": 0,
+          "priceCents": 1999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-12x8-D49-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-12x8-D49-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-12x8-D49-B02",
+          "surchargeCents": 249,
+          "priceCents": 2248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-12x8-D49-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2268
+        }
+      ],
+      "designSha256": "e24c9fbfb9c99337a9ed12f0a581cb9b9596ade45824113bdface8cacdaa0b19"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10700000",
+      "startDesign": "TRE-V2A-8x5-D65",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-150X100-T15",
+      "customizationId": "10700000",
+      "skuBase": "TRE-V2A-15x10-D65",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-150x100-t15-10700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-150X100-T15:10700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-15x10-D65",
+          "surchargeCents": 0,
+          "priceCents": 2399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-15x10-D65-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-15x10-D65-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-15x10-D65-B02",
+          "surchargeCents": 249,
+          "priceCents": 2648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-15x10-D65-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2668
+        }
+      ],
+      "designSha256": "c9db043e682c8dec9790791072b363188b1a54c65ea8d1285c94908be88f1339"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10800000",
+      "startDesign": "TRE-V2A-8x5-D34",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-150X100-T15",
+      "customizationId": "10800000",
+      "skuBase": "TRE-V2A-15x10-D34",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-150x100-t15-10800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-150X100-T15:10800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-15x10-D34",
+          "surchargeCents": 0,
+          "priceCents": 2399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-15x10-D34-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-15x10-D34-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-15x10-D34-B02",
+          "surchargeCents": 249,
+          "priceCents": 2648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-15x10-D34-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2668
+        }
+      ],
+      "designSha256": "143fc043e1ab395a8f1ace766a24cb2695d03f158585c857402841727a68930c"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "10900000",
+      "startDesign": "TRE-V2A-8x5-D25",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-150X100-T15",
+      "customizationId": "10900000",
+      "skuBase": "TRE-V2A-15x10-D25",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-150x100-t15-10900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-150X100-T15:10900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-15x10-D25",
+          "surchargeCents": 0,
+          "priceCents": 2399
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-15x10-D25-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2698
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-15x10-D25-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2798
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E6-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-15x10-D25-B02",
+          "surchargeCents": 249,
+          "priceCents": 2648
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E6-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-15x10-D25-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2668
+        }
+      ],
+      "designSha256": "db5ef03478538ddc2dcae1a7a5ce62441b177ed9c6c4ea6677bba3aed40fa3df"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11000000",
+      "startDesign": "TRE-V2A-8x5-D8",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-180X120-T15",
+      "customizationId": "11000000",
+      "skuBase": "TRE-V2A-18x12-D8",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-180x120-t15-11000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-180X120-T15:11000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-18x12-D8",
+          "surchargeCents": 0,
+          "priceCents": 2999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-18x12-D8-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-18x12-D8-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-18x12-D8-B02",
+          "surchargeCents": 249,
+          "priceCents": 3248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-18x12-D8-B02S",
+          "surchargeCents": 269,
+          "priceCents": 3268
+        }
+      ],
+      "designSha256": "e037bde708269ad0f455a6d3a5a8c718798e4fc705217a1904268600cb0afc43"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11100000",
+      "startDesign": "TRE-V2A-8x5-D15",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-180X120-T15",
+      "customizationId": "11100000",
+      "skuBase": "TRE-V2A-18x12-D15",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-180x120-t15-11100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-180X120-T15:11100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-18x12-D15",
+          "surchargeCents": 0,
+          "priceCents": 2999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-18x12-D15-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-18x12-D15-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-18x12-D15-B02",
+          "surchargeCents": 249,
+          "priceCents": 3248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-18x12-D15-B02S",
+          "surchargeCents": 269,
+          "priceCents": 3268
+        }
+      ],
+      "designSha256": "8c6db3dfca7590c1e0827d18a8762b902e685b72acd525f7c11500c53dd74f4e"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11200000",
+      "startDesign": "TRE-V2A-8x5-D58",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-180X120-T15",
+      "customizationId": "11200000",
+      "skuBase": "TRE-V2A-18x12-D58",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-180x120-t15-11200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-180X120-T15:11200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-18x12-D58",
+          "surchargeCents": 0,
+          "priceCents": 2999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-18x12-D58-KGL",
+          "surchargeCents": 299,
+          "priceCents": 3298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-18x12-D58-KRA",
+          "surchargeCents": 399,
+          "priceCents": 3398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-18x12-D58-B02",
+          "surchargeCents": 249,
+          "priceCents": 3248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-18x12-D58-B02S",
+          "surchargeCents": 269,
+          "priceCents": 3268
+        }
+      ],
+      "designSha256": "d64523c35296a25264a7a091622c5cbf66ec2f1db9e9e18a534be60d1dc35b68"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11300000",
+      "startDesign": "TRE-V2A-8x5-D11",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-210X140-T15",
+      "customizationId": "11300000",
+      "skuBase": "TRE-V2A-21x14-D11",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-210x140-t15-11300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-210X140-T15:11300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-21x14-D11",
+          "surchargeCents": 0,
+          "priceCents": 3999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-21x14-D11-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-21x14-D11-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-21x14-D11-B02",
+          "surchargeCents": 249,
+          "priceCents": 4248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-21x14-D11-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4268
+        }
+      ],
+      "designSha256": "4d76ae4d853f150402f28fc4e20b4f20e718a3ff0828782d61d14ff375673523"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11400000",
+      "startDesign": "TRE-V2A-8x5-D41",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-210X140-T15",
+      "customizationId": "11400000",
+      "skuBase": "TRE-V2A-21x14-D41",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-210x140-t15-11400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-210X140-T15:11400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-21x14-D41",
+          "surchargeCents": 0,
+          "priceCents": 3999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-21x14-D41-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-21x14-D41-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-21x14-D41-B02",
+          "surchargeCents": 249,
+          "priceCents": 4248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-21x14-D41-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4268
+        }
+      ],
+      "designSha256": "43de1ae237a872118ef34fcf6b4cea040152f8d44d907a39ca769c2689e000ff"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11500000",
+      "startDesign": "TRE-V2A-8x5-D60",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-210X140-T15",
+      "customizationId": "11500000",
+      "skuBase": "TRE-V2A-21x14-D60",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-210x140-t15-11500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-210X140-T15:11500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-21x14-D60",
+          "surchargeCents": 0,
+          "priceCents": 3999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-21x14-D60-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-21x14-D60-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-21x14-D60-B02",
+          "surchargeCents": 249,
+          "priceCents": 4248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-21x14-D60-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4268
+        }
+      ],
+      "designSha256": "4bcd0e6ff13be42893d0dbc080af8c4e3d2ef95147a48eae8f5a39a5e4ac74c7"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11600000",
+      "startDesign": "TRE-V2A-8x5-D21",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X160-T15",
+      "customizationId": "11600000",
+      "skuBase": "TRE-V2A-24x16-D21",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-240x160-t15-11600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-240X160-T15:11600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x16-D21",
+          "surchargeCents": 0,
+          "priceCents": 4999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x16-D21-KGL",
+          "surchargeCents": 299,
+          "priceCents": 5298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x16-D21-KRA",
+          "surchargeCents": 399,
+          "priceCents": 5398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x16-D21-B02",
+          "surchargeCents": 249,
+          "priceCents": 5248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x16-D21-B02S",
+          "surchargeCents": 269,
+          "priceCents": 5268
+        }
+      ],
+      "designSha256": "ec199d4566f5b5a00c13894b8adfe87095c822468ca80b5aa97dbf6f43a184be"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11700000",
+      "startDesign": "TRE-V2A-8x5-D22",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X160-T15",
+      "customizationId": "11700000",
+      "skuBase": "TRE-V2A-24x16-D22",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-240x160-t15-11700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-240X160-T15:11700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x16-D22",
+          "surchargeCents": 0,
+          "priceCents": 4999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x16-D22-KGL",
+          "surchargeCents": 299,
+          "priceCents": 5298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x16-D22-KRA",
+          "surchargeCents": 399,
+          "priceCents": 5398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x16-D22-B02",
+          "surchargeCents": 249,
+          "priceCents": 5248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x16-D22-B02S",
+          "surchargeCents": 269,
+          "priceCents": 5268
+        }
+      ],
+      "designSha256": "c802bf0f1ca402f393df949b80c7e99e77487af3f2fd0ca70f6cee7875adc83a"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11800000",
+      "startDesign": "TRE-V2A-8x5-D31",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X160-T15",
+      "customizationId": "11800000",
+      "skuBase": "TRE-V2A-24x16-D31",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-240x160-t15-11800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-240X160-T15:11800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x16-D31",
+          "surchargeCents": 0,
+          "priceCents": 4999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x16-D31-KGL",
+          "surchargeCents": 299,
+          "priceCents": 5298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x16-D31-KRA",
+          "surchargeCents": 399,
+          "priceCents": 5398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x16-D31-B02",
+          "surchargeCents": 249,
+          "priceCents": 5248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x16-D31-B02S",
+          "surchargeCents": 269,
+          "priceCents": 5268
+        }
+      ],
+      "designSha256": "c9c326fd197b51c1c9a4a8f6bcfe74c6ae1ec444d3820d8dc200eaee0167763f"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "11900000",
+      "startDesign": "TRE-V2A-8x5-D1",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-300X200-T15",
+      "customizationId": "11900000",
+      "skuBase": "TRE-V2A-30x20-D1",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-300x200-t15-11900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-300X200-T15:11900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-30x20-D1",
+          "surchargeCents": 0,
+          "priceCents": 7999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-30x20-D1-KGL",
+          "surchargeCents": 299,
+          "priceCents": 8298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-30x20-D1-KRA",
+          "surchargeCents": 399,
+          "priceCents": 8398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-30x20-D1-B02",
+          "surchargeCents": 249,
+          "priceCents": 8248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-30x20-D1-B02S",
+          "surchargeCents": 269,
+          "priceCents": 8268
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E8-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-30x20-D1-B04",
+          "surchargeCents": 289,
+          "priceCents": 8288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E8-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-30x20-D1-B04S",
+          "surchargeCents": 309,
+          "priceCents": 8308
+        }
+      ],
+      "designSha256": "f35a63806bcc9809435d722da8f4c92f3a009592752f001e2a21c806ffe2c05d"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "12000000",
+      "startDesign": "TRE-V2A-8x5-D32",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-300X200-T15",
+      "customizationId": "12000000",
+      "skuBase": "TRE-V2A-30x20-D32",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-300x200-t15-12000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-300X200-T15:12000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-30x20-D32",
+          "surchargeCents": 0,
+          "priceCents": 7999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-30x20-D32-KGL",
+          "surchargeCents": 299,
+          "priceCents": 8298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-30x20-D32-KRA",
+          "surchargeCents": 399,
+          "priceCents": 8398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-30x20-D32-B02",
+          "surchargeCents": 249,
+          "priceCents": 8248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-30x20-D32-B02S",
+          "surchargeCents": 269,
+          "priceCents": 8268
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E8-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-30x20-D32-B04",
+          "surchargeCents": 289,
+          "priceCents": 8288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E8-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-30x20-D32-B04S",
+          "surchargeCents": 309,
+          "priceCents": 8308
+        }
+      ],
+      "designSha256": "9d5bcbcc1d1cf289c4bdc18057fcaff76246903a6ab73f31e993c234426edc35"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "12100000",
+      "startDesign": "TRE-V2A-8x5-D10",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-300X200-T15",
+      "customizationId": "12100000",
+      "skuBase": "TRE-V2A-30x20-D10",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-300x200-t15-12100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-300X200-T15:12100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-30x20-D10",
+          "surchargeCents": 0,
+          "priceCents": 7999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-30x20-D10-KGL",
+          "surchargeCents": 299,
+          "priceCents": 8298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-30x20-D10-KRA",
+          "surchargeCents": 399,
+          "priceCents": 8398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-30x20-D10-B02",
+          "surchargeCents": 249,
+          "priceCents": 8248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-30x20-D10-B02S",
+          "surchargeCents": 269,
+          "priceCents": 8268
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E8-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-30x20-D10-B04",
+          "surchargeCents": 289,
+          "priceCents": 8288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E8-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-30x20-D10-B04S",
+          "surchargeCents": 309,
+          "priceCents": 8308
+        }
+      ],
+      "designSha256": "6897f71c5bef6008488d71e45a9f79adce73bafc72956456d6b27af5adfdf5df"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "12200000",
+      "startDesign": "TRE-V2A-8x5-D6",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-420X280-T15",
+      "customizationId": "12200000",
+      "skuBase": "TRE-V2A-42x28-D6",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-420x280-t15-12200000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-420X280-T15:12200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-42x28-D6",
+          "surchargeCents": 0,
+          "priceCents": 10999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-42x28-D6-KGL",
+          "surchargeCents": 299,
+          "priceCents": 11298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-42x28-D6-KRA",
+          "surchargeCents": 399,
+          "priceCents": 11398
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E15-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-42x28-D6-B04",
+          "surchargeCents": 289,
+          "priceCents": 11288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E15-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-42x28-D6-B04S",
+          "surchargeCents": 309,
+          "priceCents": 11308
+        }
+      ],
+      "designSha256": "da5be9a891985023a0e8f79af5db3ef466d704743b32c5c5a89cffb19f817bf9"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "12300000",
+      "startDesign": "TRE-V2A-8x5-D69",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-450X300-T15",
+      "customizationId": "12300000",
+      "skuBase": "TRE-V2A-45x30-D69",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-450x300-t15-12300000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-450X300-T15:12300000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-45x30-D69",
+          "surchargeCents": 0,
+          "priceCents": 15999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-45x30-D69-KGL",
+          "surchargeCents": 299,
+          "priceCents": 16298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-45x30-D69-KRA",
+          "surchargeCents": 399,
+          "priceCents": 16398
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E15-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-45x30-D69-B04",
+          "surchargeCents": 289,
+          "priceCents": 16288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E15-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-45x30-D69-B04S",
+          "surchargeCents": 309,
+          "priceCents": 16308
+        }
+      ],
+      "designSha256": "d2b179b413111da97a3ab81e64e68a33a3a208468514ae8d7fa538008d69d946"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "12400000",
+      "startDesign": "TRE-V2A-8x5-D20",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-450X300-T15",
+      "customizationId": "12400000",
+      "skuBase": "TRE-V2A-45x30-D20",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-450x300-t15-12400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-450X300-T15:12400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-45x30-D20",
+          "surchargeCents": 0,
+          "priceCents": 15999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-45x30-D20-KGL",
+          "surchargeCents": 299,
+          "priceCents": 16298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-45x30-D20-KRA",
+          "surchargeCents": 399,
+          "priceCents": 16398
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E15-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-45x30-D20-B04",
+          "surchargeCents": 289,
+          "priceCents": 16288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E15-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-45x30-D20-B04S",
+          "surchargeCents": 309,
+          "priceCents": 16308
+        }
+      ],
+      "designSha256": "1429324c0187d13501aea72082bd616a1917ebce0d8904eaf9a7150a14ed7855"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "12500000",
+      "startDesign": "TRE-V2A-8x5-D33",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-450X300-T15",
+      "customizationId": "12500000",
+      "skuBase": "TRE-V2A-45x30-D33",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-450x300-t15-12500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-450X300-T15:12500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-45x30-D33",
+          "surchargeCents": 0,
+          "priceCents": 15999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-45x30-D33-KGL",
+          "surchargeCents": 299,
+          "priceCents": 16298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-45x30-D33-KRA",
+          "surchargeCents": 399,
+          "priceCents": 16398
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E15-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-45x30-D33-B04",
+          "surchargeCents": 289,
+          "priceCents": 16288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E15-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-45x30-D33-B04S",
+          "surchargeCents": 309,
+          "priceCents": 16308
+        }
+      ],
+      "designSha256": "fa062814d4a39c7762e2d2ec5db39e24744fdbdfd4aadce8d7dd4dbae585c090"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "12600000",
+      "startDesign": "TRE-V2A-8x5-D57",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-420X280-T15",
+      "customizationId": "12600000",
+      "skuBase": "TRE-V2A-42x28-D57",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-re-420x280-t15-12600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RE-420X280-T15:12600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-42x28-D57",
+          "surchargeCents": 0,
+          "priceCents": 10999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-42x28-D57-KGL",
+          "surchargeCents": 299,
+          "priceCents": 11298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-42x28-D57-KRA",
+          "surchargeCents": 399,
+          "priceCents": 11398
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E15-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-42x28-D57-B04",
+          "surchargeCents": 289,
+          "priceCents": 11288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E15-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-42x28-D57-B04S",
+          "surchargeCents": 309,
+          "priceCents": 11308
+        }
+      ],
+      "designSha256": "25b4c3be8fd1b0de1e86e34a256a5bd3edcdc5f9183459f62950179371e66d66"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6400000",
+      "startDesign": "TR1-V2A-9x6-D57",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-90X60-T15",
+      "customizationId": "6400000",
+      "skuBase": "TR1-V2A-9x6-D57",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-rt1-90x60-t15-6400000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RT1-90X60-T15:6400000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TR1-V2A-9x6-D57",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TR1-V2A-9x6-D57-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TR1-V2A-9x6-D57-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-KONTUR",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TR1-V2A-9x6-D57-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-KONTUR",
+          "label": "Mit 2 Schrauben",
+          "sku": "TR1-V2A-9x6-D57-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "4dcb3678b57bfd92da3bcc484063c6bedef91c20689ab2a3bc7f2a4c6791cf21"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6500000",
+      "startDesign": "TR1-V2A-9x6-D15",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-90X60-T15",
+      "customizationId": "6500000",
+      "skuBase": "TR1-V2A-9x6-D15",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-rt1-90x60-t15-6500000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RT1-90X60-T15:6500000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TR1-V2A-9x6-D15",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TR1-V2A-9x6-D15-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TR1-V2A-9x6-D15-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-KONTUR",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TR1-V2A-9x6-D15-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-KONTUR",
+          "label": "Mit 2 Schrauben",
+          "sku": "TR1-V2A-9x6-D15-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "57818713ea93596c7a825c81795257e76d3c85a2251d4a39057a7451ba816ed1"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6600000",
+      "startDesign": "TR2-V2A-9x6-D59",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-90X60-T15",
+      "customizationId": "6600000",
+      "skuBase": "TR2-V2A-9x6-D59",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-rt2-90x60-t15-6600000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RT2-90X60-T15:6600000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TR2-V2A-9x6-D59",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TR2-V2A-9x6-D59-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TR2-V2A-9x6-D59-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-KONTUR",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TR2-V2A-9x6-D59-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-KONTUR",
+          "label": "Mit 2 Schrauben",
+          "sku": "TR2-V2A-9x6-D59-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "281db1556040f6e20a462a61c7ec82c4e2430ff23c04c03e8785de9da1ada43d"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6700000",
+      "startDesign": "TR2-V2A-9x6-D6",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-90X60-T15",
+      "customizationId": "6700000",
+      "skuBase": "TR2-V2A-9x6-D6",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-rt2-90x60-t15-6700000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RT2-90X60-T15:6700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TR2-V2A-9x6-D6",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TR2-V2A-9x6-D6-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TR2-V2A-9x6-D6-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-KONTUR",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TR2-V2A-9x6-D6-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-KONTUR",
+          "label": "Mit 2 Schrauben",
+          "sku": "TR2-V2A-9x6-D6-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "ad7ddcef8d4d9107f10eb5d6fea7e6de99d8a11f6c2431c512a276990864f342"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6800000",
+      "startDesign": "TR2-V2A-9x6-D12",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-90X60-T15",
+      "customizationId": "6800000",
+      "skuBase": "TR2-V2A-9x6-D12",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-rt2-90x60-t15-6800000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RT2-90X60-T15:6800000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TR2-V2A-9x6-D12",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TR2-V2A-9x6-D12-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TR2-V2A-9x6-D12-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-KONTUR",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TR2-V2A-9x6-D12-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-KONTUR",
+          "label": "Mit 2 Schrauben",
+          "sku": "TR2-V2A-9x6-D12-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "e3d33f3cfd2c429596e49b93a97413c22100f277abb4e74b82bf379ad0afee19"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "6900000",
+      "startDesign": "TR2-V2A-9x6-D21",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-90X60-T15",
+      "customizationId": "6900000",
+      "skuBase": "TR2-V2A-9x6-D21",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-rt2-90x60-t15-6900000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RT2-90X60-T15:6900000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TR2-V2A-9x6-D21",
+          "surchargeCents": 0,
+          "priceCents": 1499
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TR2-V2A-9x6-D21-KGL",
+          "surchargeCents": 299,
+          "priceCents": 1798
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TR2-V2A-9x6-D21-KRA",
+          "surchargeCents": 399,
+          "priceCents": 1898
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-KONTUR",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TR2-V2A-9x6-D21-B02",
+          "surchargeCents": 249,
+          "priceCents": 1748
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-KONTUR",
+          "label": "Mit 2 Schrauben",
+          "sku": "TR2-V2A-9x6-D21-B02S",
+          "surchargeCents": 269,
+          "priceCents": 1768
+        }
+      ],
+      "designSha256": "b7f4013fb20b257083c13c2315941296c5007339f82d2470b710fcd011a1f904"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7000000",
+      "startDesign": "TR2-V2A-9x6-D16",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-120X80-T15",
+      "customizationId": "7000000",
+      "skuBase": "TR2-V2A-12x8-D16",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-rt2-120x80-t15-7000000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RT2-120X80-T15:7000000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TR2-V2A-12x8-D16",
+          "surchargeCents": 0,
+          "priceCents": 1999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TR2-V2A-12x8-D16-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TR2-V2A-12x8-D16-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-KONTUR",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TR2-V2A-12x8-D16-B02",
+          "surchargeCents": 249,
+          "priceCents": 2248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-KONTUR",
+          "label": "Mit 2 Schrauben",
+          "sku": "TR2-V2A-12x8-D16-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2268
+        }
+      ],
+      "designSha256": "c40b3a5b982aae4dadff0f1b456f04f727b661a54e09a63f7dc4b77b5e5d5ef9"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "familienschilder",
+      "mainProductId": "7100000",
+      "startDesign": "TR2-V2A-9x6-D54",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-120X80-T15",
+      "customizationId": "7100000",
+      "skuBase": "TR2-V2A-12x8-D54",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-familienschilder-gr-es-rt2-120x80-t15-7100000",
+      "importKey": "katalog:edelstahl-tuerschilder:familienschilder:GR-ES-RT2-120X80-T15:7100000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TR2-V2A-12x8-D54",
+          "surchargeCents": 0,
+          "priceCents": 1999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TR2-V2A-12x8-D54-KGL",
+          "surchargeCents": 299,
+          "priceCents": 2298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TR2-V2A-12x8-D54-KRA",
+          "surchargeCents": 399,
+          "priceCents": 2398
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-KONTUR",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TR2-V2A-12x8-D54-B02",
+          "surchargeCents": 249,
+          "priceCents": 2248
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-KONTUR",
+          "label": "Mit 2 Schrauben",
+          "sku": "TR2-V2A-12x8-D54-B02S",
+          "surchargeCents": 269,
+          "priceCents": 2268
+        }
+      ],
+      "designSha256": "972c08db8f45da856b92c0505a3b0e9867a9f21e52b79b37ae9d9e7bfc74e21f"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "hinweisschilder",
+      "mainProductId": "9200000",
+      "startDesign": "TRE-V2A-8x3,5-D72",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X105-T15",
+      "customizationId": "9200000",
+      "skuBase": "TRE-V2A-24x10,5-D72",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-hinweisschilder-gr-es-re-240x105-t15-9200000",
+      "importKey": "katalog:edelstahl-tuerschilder:hinweisschilder:GR-ES-RE-240X105-T15:9200000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-24x10,5-D72",
+          "surchargeCents": 0,
+          "priceCents": 3799
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-24x10,5-D72-KGL",
+          "surchargeCents": 299,
+          "priceCents": 4098
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-24x10,5-D72-KRA",
+          "surchargeCents": 399,
+          "priceCents": 4198
+        },
+        {
+          "mountingKey": "B02",
+          "ruleId": "B02-E8-D4",
+          "label": "Mit 2 Bohrlöchern",
+          "sku": "TRE-V2A-24x10,5-D72-B02",
+          "surchargeCents": 249,
+          "priceCents": 4048
+        },
+        {
+          "mountingKey": "B02S",
+          "ruleId": "B02S-E8-D4",
+          "label": "Mit 2 Schrauben",
+          "sku": "TRE-V2A-24x10,5-D72-B02S",
+          "surchargeCents": 269,
+          "priceCents": 4068
+        }
+      ],
+      "designSha256": "e4f737997fc765e1c077aad6463a414dd082904991552b8e38fbbba4b3732546"
+    },
+    {
+      "line": "edelstahl-tuerschilder",
+      "subcategory": "hinweisschilder",
+      "mainProductId": "12700000",
+      "startDesign": "TRE-V2A-8x5-D72",
+      "family": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-420X280-T15",
+      "customizationId": "12700000",
+      "skuBase": "TRE-V2A-42x28-D72",
+      "konfiProductId": "katalog-edelstahl-tuerschilder-hinweisschilder-gr-es-re-420x280-t15-12700000",
+      "importKey": "katalog:edelstahl-tuerschilder:hinweisschilder:GR-ES-RE-420X280-T15:12700000",
+      "variants": [
+        {
+          "mountingKey": "K00",
+          "ruleId": null,
+          "label": "Ohne Bohrung",
+          "sku": "TRE-V2A-42x28-D72",
+          "surchargeCents": 0,
+          "priceCents": 10999
+        },
+        {
+          "mountingKey": "KGL",
+          "ruleId": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "sku": "TRE-V2A-42x28-D72-KGL",
+          "surchargeCents": 299,
+          "priceCents": 11298
+        },
+        {
+          "mountingKey": "KRA",
+          "ruleId": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "sku": "TRE-V2A-42x28-D72-KRA",
+          "surchargeCents": 399,
+          "priceCents": 11398
+        },
+        {
+          "mountingKey": "B04",
+          "ruleId": "B04-E15-D4",
+          "label": "Mit 4 Bohrlöchern",
+          "sku": "TRE-V2A-42x28-D72-B04",
+          "surchargeCents": 289,
+          "priceCents": 11288
+        },
+        {
+          "mountingKey": "B04S",
+          "ruleId": "B04S-E15-D4",
+          "label": "Mit 4 Schrauben",
+          "sku": "TRE-V2A-42x28-D72-B04S",
+          "surchargeCents": 309,
+          "priceCents": 11308
+        }
+      ],
+      "designSha256": "16329f8f331b8a94d8d29cac9daded567a138c15f6871c60bec82cd7771f705e"
+    }
+  ]
+}

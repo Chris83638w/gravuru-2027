@@ -6,7 +6,7 @@ import {geometryContourPdf} from './form-contour-pdf.mjs';
 import {exportSettings} from '../configurator/variant-m/print-export-model.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
-export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v5';
+export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v6';
 export const acrylicPrintKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_PRINT_RECIPE,settings:formPrintSettings(settings)}));
 export async function acrylicContourProof(archive,archiveHash){
  const a=await acrylicArtwork(archive,archiveHash);

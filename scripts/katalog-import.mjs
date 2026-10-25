@@ -1,6 +1,6 @@
 // K12 / B1: Import-Lauf Katalog → Werkstatt je Linie.
 // Aufruf: node scripts/katalog-import.mjs --katalog <pfad> --linie <id> [--bestand <ordner>] [--db <sqlite>] [--json <bericht.json>] [--metrics <messung.json>] [--alle-designs] [--dry-run | --commit]
-// Ohne `--alle-designs` kommen nur im Design-Dashboard freigegebene Designs (design.json freigabe.status = freigegeben) ins Produkt.
+// Ohne `--alle-designs` kommen nur im Design-Dashboard freigegebene Designs (design.json ziele[].freigabe.status = freigegeben für die jeweilige Familie) ins Produkt.
 // Ohne `--commit` wird nichts geschrieben (Dry-run gegen eine Datenbank im Speicher);
 // mit `--commit` schreibt das Skript Familie und Produkte in die Werkstatt-DB
 // (Standard `.local-data/workshop.sqlite` neben `app/`, wie der Server).
@@ -21,6 +21,7 @@ const katalogDir=arg('katalog')||katalogPath(),lineId=arg('linie'),bestand=arg('
 const list=name=>arg(name)?arg(name).split(',').map(v=>v.trim()).filter(Boolean):null;
 const only=(list('unterkategorie')||list('groesse')||list('hauptprodukt'))?{subcategories:list('unterkategorie'),sizes:list('groesse'),mainProducts:list('hauptprodukt')}:null;
 if(!katalogDir||!lineId){console.error('Aufruf: node scripts/katalog-import.mjs --katalog <pfad> --linie <id> [--bestand <ordner>] [--db <sqlite>] [--unterkategorie a,b] [--groesse k1,k2] [--hauptprodukt id] [--json <datei>] [--alle-designs] [--commit]');process.exit(2);}
+if(commit&&flag('alle-designs')){console.error('--alle-designs ist nur für Dry-runs erlaubt; --commit benötigt freigegebene Familienziele.');process.exit(2);}
 const dbFile=commit?(arg('db')||path.join(ROOT,'../.local-data/workshop.sqlite')):':memory:';
 
 // Vollständige Dokumente benötigt nur --commit. Der Dry-run validiert ein Produkt

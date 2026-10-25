@@ -26,6 +26,7 @@ export async function printArtwork({el,config,files}){
  const g=physicalGeometry(config,el.state),base=config.profile.geometry;
  const doc=new DOMParser().parseFromString(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${g.width}mm" height="${g.height}mm" viewBox="0 0 ${base.width} ${base.height}">${markup.join('')}</svg>`,'image/svg+xml');
  if(doc.querySelector('parsererror'))throw Error('Das Motiv konnte nicht als SVG gelesen werden.');
+ for(const node of doc.querySelectorAll('[data-photo-preview-treatment]'))node.removeAttribute('filter'); // Material light effect is preview-only; grayscale and original pixels remain.
  for(const node of doc.querySelectorAll('[data-preview-only],[data-role="guide"],[data-resize],.ux-selection-handles'))node.remove(); // Ü6.1: Hilfsebenen nie in der Fertigungsdatei
  if(doc.querySelector('text'))throw Error('Nicht in Pfade umgewandelter Text im Motiv. Bitte die Vorlage prüfen.');
  for(const node of doc.querySelectorAll('*'))for(const a of [...node.attributes])if(a.name.startsWith('data-')||['role','tabindex','focusable','aria-label','aria-hidden'].includes(a.name))node.removeAttribute(a.name);

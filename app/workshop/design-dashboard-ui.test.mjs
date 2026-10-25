@@ -92,7 +92,7 @@ function documentFixture({embedded=false}={}){
 const row=(id,overrides={})=>({id,name:'Design '+id,nameSheet:'',reihe:'Test',formatreihe:'Test',material:'Edelstahl',process:'Gravur',form:'Rechteck',plate:[90,60],status:'ok',reasons:[],selectable:true,released:false,hidden:false,lieferform2:{reihe:'test'},files:{png:'/preview/'+id+'.png',svg:'/preview/'+id+'.svg'},fonts:[{name:'Testfont',status:'vorhanden',file:true}],texts:{count:1,sample:['Anna']},themes:[{name:'Namensschilder'}],isStartDesign:true,mainProducts:[{id:'1000-'+id,name:'Hauptprodukt '+id,sizeKey:'SIZE-90X60',sizeLabel:'9 × 6 cm',basePriceCents:1499,fit:{status:'ok',issues:[]},blockers:[]}],...overrides});
 const dataset=rows=>({linie:'test',rows,counts:{total:rows.length,ok:rows.filter(r=>r.status==='ok').length,'prüfen':rows.filter(r=>r.status==='prüfen').length,fehlt:rows.filter(r=>r.status==='fehlt').length,freigegeben:rows.filter(r=>r.released).length,lieferform2:rows.length,selectable:rows.filter(r=>r.selectable).length},reihen:[{key:'Test',counts:{total:rows.length,ok:rows.length,'prüfen':0,fehlt:0}}],materials:[{key:'Edelstahl',counts:{total:rows.length}}],notes:[],bestand:{overviews:[],sheets:[]},startDesignSummary:{references:new Set(rows.filter(r=>r.isStartDesign).flatMap(r=>r.mainProducts.map(p=>JSON.stringify([p.lineId??'test',p.id])))).size,rows:rows.filter(r=>r.isStartDesign).length,assignments:rows.filter(r=>r.isStartDesign).reduce((n,r)=>n+r.mainProducts.length,0),missingReferences:0,fitChecked:true}});
 
-async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMedia,onLine,embedded=false,visibleThumbnails=false,search='?linie=test',width=1280}={}){
+async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMedia,onLine,onTargetPreview,onVariant,embedded=false,visibleThumbnails=false,search='?linie=test',width=1280}={}){
  const document=documentFixture({embedded}),requests=[],patches=[],mediaRequests=[],originals=structuredClone(rows),tokens=[],made=[],revoked=[],blobCalls=new WeakMap(),windowEvents=new Map(),intersections=new Set();
  const location={origin:'http://fixture.invalid',pathname:'/werkstatt/designs/',search,get href(){return this.origin+this.pathname+this.search;}};
  const localStorage={getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,String(value)),removeItem:key=>storage.delete(key)};
@@ -109,8 +109,10 @@ async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMed
    const design=originals.find(candidate=>candidate.id===call.body.designId);if(design&&Object.hasOwn(call.body,'freigegeben'))design.released=call.body.freigegeben;
    return responseJSON({changed:true,files:['design.json']});
   }
+  if(url.startsWith('/api/workshop/designs/variant')){const result=await onVariant?.(call);if(result?.error)return {ok:false,status:409,json:async()=>({error:{message:result.error}})};return responseJSON(result);}
   if(url==='/api/workshop/session')return responseJSON({csrfToken:'synthetic-csrf'});
-  if(url==='/api/workshop/designs')return responseJSON({linien:[{id:'test',name:'Testlinie',designsLieferform2:originals.length,bestand:[]}]});
+  if(url==='/api/workshop/designs')return responseJSON({linien:[{id:'test',name:'Testlinie',designsLieferform2:originals.length,bestand:[]}],themes:[{id:'namensschilder',name:'Namensschilder'},{id:'hundeschilder',name:'Hundeschilder'}]});
+  if(url.startsWith('/api/workshop/designs/target-preview?')){const result=await onTargetPreview?.(call);if(result?.error)return {ok:false,status:result.status??422,json:async()=>({error:{message:result.error}})};return responseJSON(result??{svg:'<svg xmlns="http://www.w3.org/2000/svg"/>',checksum:'target-snapshot',fit:{status:'passt',issues:[]},reviewFit:{status:'passt',issues:[]},size:{key:'S',label:'9 × 6 cm'},sizes:[{key:'S',label:'9 × 6 cm'}]});}
   if(url.startsWith('/api/workshop/designs?'))return responseJSON(await onLine?.(++lineReads)??dataset(originals));
   if(url.startsWith('/api/workshop/designs/svg?')){
    mediaRequests.push(call);
@@ -521,4 +523,76 @@ test('another-tab edit preserves an unfinished rename while invalidating preview
  await h.button('Name ändern').emit('click');const old=h.element('rows').querySelector('.rename input');old.value='Entwurf behalten';old.focus();old.setSelectionRange(3,9,'forward');
  await h.storageChanged(JSON.stringify({reihe:'test',id:'A',checksum:'changed'}));
  const input=h.element('rows').querySelector('.rename input');assert.equal(input.value,'Entwurf behalten');assert.equal(h.document.activeElement,input);assert.deepEqual([input.selectionStart,input.selectionEnd],[3,9]);assert.equal(selection(h,'A').disabled,true);assert.equal(h.patches.length,0);
+});
+
+const target=(familie,extra={})=>({familie,name:familie,material:'Testmaterial',process:'Gravur',inLine:true,released:false,freigabe:null,previewUrl:'/api/workshop/designs/target-preview?reihe=test&id=A&familie='+familie,...extra});
+const targetControl=(h,tag,key,familie)=>{const found=h.document.querySelectorAll(tag).filter(e=>e.dataset[key]&&JSON.parse(e.dataset[key])[2]===familie);assert.equal(found.length,1);return found[0];};
+async function targetPreview(h,familie){await targetControl(h,'button','targetPreview',familie).emit('click');await tick();const img=h.element('preview-image');img.naturalWidth=900;await img.emit('load');await h.element('preview-close').emit('click');}
+test('target approval requires its own successful authenticated preview; source or other material does not unlock it',async()=>{
+ const h=await harness({rows:[row('A',{ziele:[target('steel'),target('slate')],zielVorschlaege:[]})],embedded:true,width:390});
+ await reviewed(h,'A');assert.equal(targetControl(h,'input','designKey','steel').disabled,true);
+ await targetPreview(h,'steel');assert.equal(targetControl(h,'input','designKey','steel').disabled,false);assert.equal(targetControl(h,'input','designKey','slate').disabled,true);
+ const call=h.requests.find(r=>r.url.includes('target-preview'));assert.equal(call.authorization,'Bearer synthetic-session-token');
+ await targetControl(h,'button','releaseKey','steel').emit('click');assert.match(h.element('release-list').textContent,/steel/);await h.element('release-confirm').emit('click');
+ assert.deepEqual(h.patches.map(p=>p.body),[{reihe:'test',designId:'A',familie:'steel',checksum:'target-snapshot',freigegeben:true}]);assert.equal(targetControl(h,'button','releaseKey','slate').disabled,true);h.dispose();
+});
+test('target fit failure and missing fonts block approval after image load, while prüfen remains reviewable',async()=>{
+ for(const [fit,fonts,blocked]of [['passt nicht',[{name:'Testfont',status:'vorhanden'}],true],['prüfen',[{name:'Testfont',status:'fehlt'}],true],['prüfen',[{name:'Testfont',status:'vorhanden'}],false]]){
+ const h=await harness({rows:[row('A',{fonts,ziele:[target('steel')]})],onTargetPreview:()=>({svg:'<svg/>',fit:{status:fit,issues:['Befund']},reviewFit:{status:fit,issues:['Befund']},sizes:[]})});await targetPreview(h,'steel');assert.equal(targetControl(h,'input','designKey','steel').disabled,blocked);assert.equal(h.patches.length,0);h.dispose();}
+});
+test('failed target reopen clears its previous review without unlocking another target or retaining a selection',async()=>{
+ let count=0;const h=await harness({rows:[row('A',{ziele:[target('steel'),target('slate')]})],onTargetPreview:()=>++count>1?{error:'Sitzung abgelaufen',status:401}:undefined});await targetPreview(h,'steel');
+ const input=targetControl(h,'input','designKey','steel');input.checked=true;await input.emit('change');assert.equal(h.element('release-selected').disabled,false);
+ await targetControl(h,'button','targetPreview','steel').emit('click');await tick();assert.equal(targetControl(h,'input','designKey','steel').disabled,true);assert.equal(h.element('release-selected').disabled,true);assert.equal(targetControl(h,'input','designKey','slate').disabled,true);h.dispose();
+});
+test('two family targets on one design remain distinct in sequential bulk approval and individual withdrawal',async()=>{
+ const h=await harness({rows:[row('A',{ziele:[target('steel'),target('slate')]})]});
+ for(const family of ['steel','slate']){await targetPreview(h,family);const input=targetControl(h,'input','designKey',family);input.checked=true;await input.emit('change');}
+ await h.element('release-selected').emit('click');assert.match(h.element('release-count').textContent,/^2 /);await h.element('release-confirm').emit('click');assert.deepEqual(h.patches.map(p=>p.body.familie),['steel','slate']);
+ await targetControl(h,'button','releaseKey','steel').emit('click');assert.equal(h.patches.at(-1).body.freigegeben,false);assert.equal(h.patches.at(-1).body.familie,'steel');assert.equal(targetControl(h,'button','releaseKey','slate').textContent,'Zielfreigabe zurücknehmen');h.dispose();
+});
+test('suggested targets require explicit confirmation and never approve; missing families have no selectable fabricated id',async()=>{
+ const h=await harness({rows:[row('A',{ziele:[target('steel')],zielVorschlaege:[target('slate',{reason:['namensschilder']}),{familie:null,name:'Edelstahl Druck',missing:true,reason:['namensschilder']} ]})]});
+ const choices=h.document.querySelectorAll('input[data-suggested-family]');assert.equal(choices.length,1);assert.equal(choices[0].dataset.suggestedFamily,'slate');choices[0].checked=true;await choices[0].emit('change');assert.equal(h.patches.length,0);await h.button('Ausgewählte Ziele übernehmen').emit('click');assert.equal(h.patches.length,0);await h.button('Ziele bestätigen – noch nicht freigeben').emit('click');assert.deepEqual(h.patches[0].body,{reihe:'test',designId:'A',zieleHinzufuegen:['slate']});h.dispose();
+});
+test('theme checkboxes use catalogue theme ids and the existing PATCH',async()=>{
+ const h=await harness({rows:[row('A',{themes:[{id:'namensschilder',name:'Namensschilder'}],ziele:[target('steel')]})]});const input=h.document.querySelector('input[data-theme="hundeschilder"]');input.checked=true;await input.emit('change');await h.button('Themen speichern').emit('click');assert.deepEqual(h.patches[0].body,{reihe:'test',designId:'A',themes:['namensschilder','hundeschilder']});h.dispose();
+});
+
+test('late target response after close or switching material cannot count as a viewed target',async()=>{
+ const pending=deferred(),h=await harness({rows:[row('A',{ziele:[target('steel'),target('slate')]})],onTargetPreview:call=>call.url.includes('familie=steel')?pending.promise:undefined});
+ await targetControl(h,'button','targetPreview','steel').emit('click');await tick();await h.element('preview-close').emit('click');await targetPreview(h,'slate');
+ pending.resolve({svg:'<svg/>',fit:{status:'passt',issues:[]},sizes:[]});await tick();assert.equal(targetControl(h,'input','designKey','steel').disabled,true);assert.equal(targetControl(h,'input','designKey','slate').disabled,false);h.dispose();
+});
+
+const variantFamilies=[{id:'steel',name:'Stahl',sizes:[{key:'S',label:'9 × 6 cm'},{key:'L',label:'30 × 20 cm'}],linien:[{id:'test',name:'Testlinie'}]}];
+const variantPlan=(action='create-variant')=>({action,message:'Plan geprüft',identity:{id:'VAR-TEST-D1'},source:{checksum:'source-snapshot'},checksum:'plan-snapshot',transform:{deviationPercent:4.76},fit:{status:'prüfen',issues:['Text prüfen']},svg:'<svg/>',editor:{reihe:'test-variante',id:'VAR-TEST-D1'}});
+test('variant preparation is read-only, displays source-derived identity and deviation, and creation confirms both checksums without approving',async()=>{
+ const rows=[row('A',{ziele:[target('steel')]})],calls=[];const h=await harness({rows,onLine:()=>({...dataset(rows),familien:variantFamilies}),onVariant:call=>{calls.push(call);return variantPlan();},embedded:true,width:390});
+ await h.button('Für anderes Ziel einpassen').emit('click');assert.equal(h.element('variant-confirm').disabled,true);await h.element('variant-prepare').emit('click');assert.equal(calls.length,1);assert.equal(calls[0].url,'/api/workshop/designs/variant/prepare');assert.equal(calls[0].authorization,'Bearer synthetic-session-token');assert.match(h.element('variant-result').textContent,/VAR-TEST-D1/);assert.match(h.element('variant-result').textContent,/4,8 %/);assert.equal(h.patches.length,0);
+ await h.element('variant-confirm').emit('click');assert.equal(calls.length,2);assert.deepEqual(calls[1].body,{source:{reihe:'test',id:'A',checksum:'source-snapshot'},target:{familyId:'steel',sizeKey:'S',lineId:'test'},checksum:'plan-snapshot'});assert.equal(h.patches.length,0);assert.match(h.element('variant-result').querySelector('a').href,/katalogReihe=test-variante/);h.dispose();
+});
+test('blocked existing source and changed variant options cannot be confirmed from an obsolete plan',async()=>{
+ const rows=[row('A',{ziele:[target('steel')]})],h=await harness({rows,onLine:()=>({...dataset(rows),familien:variantFamilies}),onVariant:()=>({...variantPlan('blocked'),svg:null,previewUrl:'data:image/png;base64,iVBORw0KGgo=',message:'Bestandsfassung vorhanden'})});
+ await h.button('Für anderes Ziel einpassen').emit('click');await h.element('variant-prepare').emit('click');assert.match(h.element('variant-status').textContent,/Bestandsfassung vorhanden/);assert.equal(h.element('variant-image').src,'data:image/png;base64,iVBORw0KGgo=');assert.equal(h.element('variant-confirm').disabled,true);h.dispose();
+ const h2=await harness({rows,onLine:()=>({...dataset(rows),familien:variantFamilies}),onVariant:()=>variantPlan()});await h2.button('Für anderes Ziel einpassen').emit('click');await h2.element('variant-prepare').emit('click');assert.equal(h2.element('variant-confirm').disabled,false);await filter(h2,'variant-size','L');assert.equal(h2.element('variant-confirm').disabled,true);assert.equal(h2.element('variant-result').textContent,'');h2.dispose();
+});
+test('an unavailable physical target explains the gap without counting as a successful review',async()=>{
+ const h=await harness({rows:[row('A',{ziele:[target('steel')]})],onTargetPreview:()=>({svg:null,fit:{status:'passt nicht',issues:['Vorschau offen: Stärke']},sizes:[]})});await targetControl(h,'button','targetPreview','steel').emit('click');await tick();assert.match(h.element('preview-status').textContent,/Vorschau offen: Stärke/);assert.equal(targetControl(h,'input','designKey','steel').disabled,true);assert.equal(h.made.length,0);h.dispose();
+});
+
+
+test('foreign LF2 collision compares both sources and needs a newly prepared explicit target-addition plan',async()=>{
+ const rows=[row('A',{ziele:[target('steel')]})],calls=[],blocked={...variantPlan('blocked'),svg:null,allowAddTarget:true,existing:{reihe:'existing',id:'EXIST-D1'},sourceSvg:'<svg id="source"/>',existingSvg:'<svg id="existing"/>',sourceFit:{status:'prüfen',issues:['Quelle prüfen']},existingFit:{status:'passt',issues:[]}};
+ const h=await harness({rows,onLine:()=>({...dataset(rows),familien:variantFamilies}),onVariant:call=>{calls.push(call);return call.body.resolution?{...variantPlan('add-target'),source:{checksum:'new-source'},checksum:'new-plan',existing:blocked.existing,editor:blocked.existing}:blocked;},embedded:true,width:390});
+ await h.button('Für anderes Ziel einpassen').emit('click');await h.element('variant-prepare').emit('click');
+ assert.equal(h.element('variant-confirm').disabled,true);assert.equal(calls.length,1);assert.equal(calls[0].body.resolution,undefined);const figures=h.element('variant-result').querySelectorAll('figure');assert.equal(figures.length,2);assert.match(figures[0].textContent,/Quelle A/);assert.match(figures[1].textContent,/Vorhandenes Design EXIST-D1/);assert.ok(figures.every(f=>f.querySelector('img').src.startsWith('blob:')));
+ const comparisonUrls=figures.map(f=>f.querySelector('img').src);await h.button('Ziel zu EXIST-D1 hinzufügen').emit('click');assert.equal(calls.length,2);assert.equal(calls[1].url,'/api/workshop/designs/variant/prepare');assert.equal(calls[1].body.resolution,'add-target-to-existing');assert.equal(h.element('variant-confirm').disabled,false);assert.match(h.element('variant-result').textContent,/Vorhandenes Design: EXIST-D1/);assert.equal(h.patches.length,0);
+ await h.element('variant-confirm').emit('click');assert.equal(calls.length,3);assert.equal(calls[2].body.resolution,'add-target-to-existing');assert.equal(calls[2].body.checksum,'new-plan');assert.equal(calls[2].body.source.checksum,'new-source');assert.equal(calls[2].body.freigegeben,undefined);assert.equal(calls[2].authorization,'Bearer synthetic-session-token');assert.equal(h.patches.length,0);
+ assert.ok(comparisonUrls.every(url=>h.revoked.includes(url)));h.dispose();
+});
+
+test('changing target after a foreign LF2 choice clears its resolution and obsolete confirmation',async()=>{
+ const rows=[row('A',{ziele:[target('steel')]})],calls=[],h=await harness({rows,onLine:()=>({...dataset(rows),familien:variantFamilies}),onVariant:call=>{calls.push(call);return call.body.resolution?variantPlan('add-target'):{...variantPlan('blocked'),svg:null,allowAddTarget:true,existing:{reihe:'existing',id:'EXIST-D1'},sourcePreviewError:'Schrift fehlt',existingPreviewError:'Vorschau offen'};}});
+ await h.button('Für anderes Ziel einpassen').emit('click');await h.element('variant-prepare').emit('click');assert.match(h.element('variant-result').textContent,/Schrift fehlt/);await h.button('Ziel zu EXIST-D1 hinzufügen').emit('click');assert.equal(h.element('variant-confirm').disabled,false);await filter(h,'variant-size','L');assert.equal(h.element('variant-confirm').disabled,true);await h.element('variant-prepare').emit('click');assert.equal(calls.at(-1).body.resolution,undefined);assert.equal(calls.at(-1).body.target.sizeKey,'L');h.dispose();
 });

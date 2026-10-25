@@ -26,3 +26,52 @@ test('photo output preserves crop source pixels, rotation and zoom without previ
  const tall=editedPhotoSize(100,40000);assert(tall.limited);assert.equal(tall.height,8192);
  assert.throws(()=>editedPhotoSize(4000,3000,{zoom:.5}));assert.throws(()=>editedPhotoSize(4000,3000,{angle:45}));
 });
+
+import {defaultPhotoColor,photoColorMode,photoColorFilter,photoEngravingPreviewFilter} from '../../platform/sources/app/shared/models/photo-color.mjs';
+import {retainedPhotoUrls} from './image-processing.mjs';
+test('photo defaults distinguish slate products, acrylic engraving and colour print',()=>{
+ const p=(kind,profileId)=>({material:{kind},processing:{profileId}});
+ assert.equal(defaultPhotoColor(p('slate','slate-engraving')),'grayscale');
+ assert.equal(defaultPhotoColor(p('slate','color-print')),'grayscale');
+ assert.equal(defaultPhotoColor(p('acrylic','acrylic-engraving')),'grayscale');
+ for(const profile of [p('acrylic','color-print'),p('steel','steel-engraving'),p('wood','wood-engraving')])assert.equal(defaultPhotoColor(profile),'original');
+ const explicit={type:'photoSlot',uxUploadKind:'photo',uxUploadId:'customer',uxPhotoColor:'original'},before=structuredClone(explicit);
+ for(const profile of [p('slate','slate-engraving'),p('acrylic','acrylic-engraving'),p('slate','color-print')])for(let sync=0;sync<3;sync++)assert.equal(photoColorMode(profile,explicit),'original');
+ assert.deepEqual(explicit,before);
+ assert.equal(photoColorFilter('original'),'');assert.match(photoColorFilter('grayscale'),/saturate/);
+});
+test('light engraving preview uses continuous luminance and multiplies original alpha without colour-key deletion',()=>{
+ const slate={material:{kind:'slate'},processing:{profileId:'slate-engraving'}};
+ const xml=photoEngravingPreviewFilter(slate,'grayscale');
+ const values=/values="([^"]+)"/.exec(xml)[1].split(/\s+/).map(Number),alpha=([r,g,b,a])=>(values[15]*r+values[16]*g+values[17]*b+values[18]*a+values[19])*a;
+ assert.equal(alpha([0,0,0,1]),0);assert.equal(alpha([1,1,1,1]),1);
+ assert(Math.abs(alpha([.05,.05,.05,.4])-.02)<1e-10,'dark fur is continuous ink strength, no threshold');
+ assert.equal(alpha([1,1,1,0]),0);assert.match(xml,/in2="SourceAlpha" operator="in"/);
+ assert.equal(photoEngravingPreviewFilter(slate,'original'),'');
+ assert.equal(photoEngravingPreviewFilter({...slate,processing:{profileId:'color-print'}},'grayscale'),'');
+});
+test('original photo URLs are recovered only from original retained bytes',()=>{
+ const original=new Blob(['source']),source={file:original,url:'blob:edited',edited:true},seen=[];
+ assert.deepEqual(retainedPhotoUrls(source,b=>{seen.push(b);return 'blob:source';}),{originalUrl:'blob:source',editSourceUrl:'blob:edited'});
+ assert.deepEqual(seen,[original]);assert.equal(source.originalUrl,undefined);
+ assert.deepEqual(retainedPhotoUrls({url:'blob:original'}),{originalUrl:'blob:original',editSourceUrl:'blob:original'});
+});
+
+test('only explicit customer photo uploads receive the automatic material colour',()=>{
+ const profile={material:{kind:'slate'},processing:{profileId:'slate-engraving'}};
+ const upload={type:'photoSlot',uxUploadKind:'photo',uxUploadId:'customer-upload'};
+ assert.equal(photoColorMode(profile,upload),'grayscale');
+ for(const template of [
+  {type:'photoSlot'},
+  {type:'photoSlot',media:{mediaId:'original-template-png',revisionId:'1'}},
+  {type:'photoSlot',placeholder:true,alpha:true},
+  {type:'photoSlot',uxUploadKind:'photo'},
+  {type:'photoSlot',uxUploadKind:'photo',uxUploadId:''},
+  {type:'image',uxUploadKind:'logo',uxUploadId:'logo'},
+  {type:'image',uxUploadKind:'photo',uxUploadId:'misclassified'}
+ ]){
+  const before=structuredClone(template);
+  assert.equal(photoColorMode(profile,template),'original');
+  assert.deepEqual(template,before);
+ }
+});

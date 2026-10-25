@@ -1,0 +1,23 @@
+✔ native engraving uses dark production paths and original photo grayscale, separate contour, no print white, one mirror (66358.5907ms)
+✔ native vector engraving keeps paths and rejects incorrect package hashes (27086.3807ms)
+✔ native engraving backend jobs cache unchanged bytes and reject the print endpoint (19126.895ms)
+✔ free-form CMYK proof uses originals, leaves empty slots/holes transparent, defaults to motif white and 300 dpi (89317.0338ms)
+✔ edge bleed follows the free outer contour and mirror transforms ink, hole and white once (62014.427ms)
+✔ backend print download enforces CSRF and settings and retains byte-identical cached PDF/ZIP (49349.5011ms)
+✔ frozen multiline italic text remains identical vector outlines at 300/600 dpi with exact white paths and one mirror (72204.0633ms)
+✔ photo and vector text retain saved paint order without duplicate raster text (69365.3802ms)
+✔ acrylic scene, reflections and depth stay out of actual PDF ink and white separations (32089.1644ms)
+✔ front UV texture and reverse gloss leave identical production pixels, white and geometry (60302.9213ms)
+✔ Mimaki direct and queued downloads expose paired immutable PDFs, reject missing white and preserve older cached exports (50053.5523ms)
+✔ saved Roland PDF renders isolated red artwork and white coverage with transparent empty area, without modifying PDF (12454.7258ms)
+✔ Mimaki preview uses the exact separate archived white PDF and full white is visibly different from motif white (17208.0186ms)
+✔ missing white, engraving, unknown modes and damaged PDFs fail instead of displaying an invented plate (6270.4987ms)
+✔ raster and vector engraving previews render the exact stored PDF on white without changing output or orientation (24579.6066ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 485634.1054

@@ -14,7 +14,7 @@ import {nativeSlateConfig} from './slate-product.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {nativeContour} from './acrylic-artwork.mjs';
 import {processProfile,isProcessProfileId,processMirror} from './process-profiles.mjs';
-import {quantityTiersIssue,quantityTiersOpen} from '../configurator/variant-m/contract.mjs';
+import {prepareConfig,quantityTiersIssue,quantityTiersOpen} from '../configurator/variant-m/contract.mjs';
 import {validateSurfaces,hasBack,backSurface} from '../configurator/variant-m/surfaces.mjs';
 
 // A product family holds everything a product series shares (material, shapes,
@@ -79,7 +79,8 @@ export function quantityTierGaps(f){
 // Offene, aber nicht sperrende Angaben (Staffel, Aufpreis Rückseite) – fürs Briefing.
 export const familyOpenNotes=f=>[...quantityTierGaps(f),...(hasBack(f)&&backSurface(f).priceCents===null?['Aufpreis „Rückseite gestalten“ (bis dahin nicht buchbar)']:[])];
 export function validateFamily(f){
- only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers','surfaces','photo'],'Produktfamilie');
+ only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers','surfaces','photo','outdoorSuitable'],'Produktfamilie');
+ if(f.outdoorSuitable!==undefined&&f.outdoorSuitable!==null&&typeof f.outdoorSuitable!=='boolean')invalid('Für außen geeignet: true, false oder null (unbekannt).');
  // Fotopreis je Familie (Schiefer-Gedenktafel 22 × 14, Chris 20.10.2026: 1. Foto im Grundpreis, jedes
  // weitere 8,99 €). Ohne Angabe bleibt es bei der bisherigen Vorgabe (0 inklusive, 0 Cent). null = offen.
  if(f.photo!==undefined){only(f.photo,['includedCount','extraPriceCents','note'],'Fotopreis');if(!Number.isSafeInteger(f.photo.includedCount)||f.photo.includedCount<0||f.photo.includedCount>4||!(open(f.photo.extraPriceCents)||cents(f.photo.extraPriceCents))||(f.photo.note!==undefined&&!text(f.photo.note,400)))invalid('Fotopreis: 0 bis 4 Fotos inklusive und Aufpreis je weiterem Foto in Cent (oder offen).');}
@@ -207,8 +208,9 @@ const productKey=(f,s)=>'family:'+f.id+':'+s.key;
 
 // Native steel product for one size: mounting options carry computed holes and
 // the rule they came from; one neutral starter design until real designs are imported.
-export function familyProductConfig(f,s,revision){
- const ready=familyReady(f);if(!ready.ready)invalid(ready.reason);
+export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
+ const previewGaps=previewOnly?familyGaps(f).filter(g=>g!=='Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen'):[];
+ const ready=previewOnly?{ready:previewGaps.length===0,reason:'Vorschau offen: '+previewGaps.join(' · ')}:familyReady(f);if(!ready.ready)invalid(ready.reason);
  const {holesMm,...g}=geometryOf(f,s),group=f.groups.find(x=>x.key===s.groupKey),resources=workshopResources();
  const font=f.fonts.find(x=>resources.fonts[x])||'Montserrat';
  const values=[];
@@ -228,6 +230,7 @@ export function familyProductConfig(f,s,revision){
  if(f.surfaces!==undefined)profile.surfaces=structuredClone(f.surfaces);
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:f.photo?.includedCount??0,extraPriceCents:f.photo?.extraPriceCents??0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
  const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
+ if(previewOnly){if(f.material.kind==='steel')c.materialSurface=steelPreviewSurface();return prepareConfig(c);}
  if(f.material.kind==='steel'){c.materialSurface=steelPreviewSurface();return nativeSpecimenConfig(c);}
  return nativeSlateConfig(c);
 }

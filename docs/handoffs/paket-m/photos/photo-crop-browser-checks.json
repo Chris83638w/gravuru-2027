@@ -1,0 +1,44 @@
+{
+  "results": [
+    {
+      "device": "iphone",
+      "complete": true,
+      "cropOnly": true,
+      "floatingHiddenDuringCrop": true,
+      "panelEditingAvailable": true,
+      "arrows": [
+        {
+          "x": 107.375,
+          "y": 115.625,
+          "width": 26,
+          "height": 26,
+          "uncovered": true
+        },
+        {
+          "x": 203.625,
+          "y": 115.625,
+          "width": 26,
+          "height": 26,
+          "uncovered": true
+        },
+        {
+          "x": 107.375,
+          "y": 211.875,
+          "width": 26,
+          "height": 26,
+          "uncovered": true
+        },
+        {
+          "x": 203.625,
+          "y": 211.875,
+          "width": 26,
+          "height": 26,
+          "uncovered": true
+        }
+      ],
+      "fieldModeToolbarRestored": true
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

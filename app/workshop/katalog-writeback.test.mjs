@@ -119,3 +119,16 @@ test('Quell-Zeilenabstand 6,81 mm bleibt beim Textedit erhalten; leere Zeile und
  o.text=' Gamma \n\nBeta';const empty=planTemplateWriteback({master,template,originalTemplate:original,fonts}),parsed=parseDesignSvg(empty.svgText).layers.find(l=>l.id==='text-1');assert.equal(parsed.text,o.text);assert.equal(parsed.lines,3);assert.ok(Math.abs(parsed.lineHeight-6.81)<1e-8);
  const again=katalogDesignToTemplate({...master,json:empty.json},family,null,{fonts,svgText:empty.svgText}).template.objects.find(o=>o.id==='text-1');assert.equal(again.text,o.text);assert.ok(Math.abs(again.y-o.y)<.001);assert.ok(Math.abs(again.h-(5.29*1.2+2*6.81))<1e-7);
 });
+
+function withTargets(f){
+ const file=path.join(f.dir,'design.json'),json=JSON.parse(fs.readFileSync(file));json.ziele=[{familie:'steel-a',freigabe:{status:'freigegeben',am:'2026-10-23T10:00:00Z',von:'team:a'}},{familie:'acrylic-b',freigabe:{status:'freigegeben',am:'2026-10-23T11:00:00Z',von:'team:b'}},{familie:'slate-c',freigabe:null}];fs.writeFileSync(file,JSON.stringify(json,null,1)+'\n');f.args.checksum=f.read().checksum;return json.ziele;
+}
+test('M: unchanged content retains every independent target approval byte for byte',t=>{
+ const f=fixture(t),targets=withTargets(f),before=f.bytes();assert.equal(f.save().changed,false);assert.deepEqual(f.bytes(),before);assert.deepEqual(f.read().master.json.ziele,targets);assert.equal(fs.existsSync(f.protocol),false);
+});
+test('M: content edit resets all targets and audits their previous independent actors',t=>{
+ const f=fixture(t),before=withTargets(f);object(f,'text-1').text='Neu';f.save();const after=f.read().master.json.ziele,entry=JSON.parse(fs.readFileSync(f.protocol));assert.deepEqual(after.map(t=>t.familie),before.map(t=>t.familie));for(const t of after)assert.deepEqual(t.freigabe,{status:'offen',am:'2026-10-24T12:00:00.000Z',von:'merchant:123'});assert.deepEqual(entry.zielFreigaben,{from:before,to:after});
+});
+test('M: failed write restores content and every target approval together',t=>{
+ const f=fixture(t);withTargets(f);const before=f.bytes();object(f,'text-1').text='Neu';assert.throws(()=>saveTemplateWriteback(f.root,{...f.args,beforeReplace:(_file,n)=>{if(n===2)throw Error('rollback-targets');}}),/rollback-targets/);assert.deepEqual(f.bytes(),before);assert.equal(fs.existsSync(f.protocol),false);
+});

@@ -8,6 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {designDashboard,designFile,patchDesign,pendingChanges,forgetKatalog,MIN_TEXT_MM} from './design-dashboard.mjs';
 import {readCorrections,planCorrectionWriteback,applyCorrectionWriteback,updateSvgText,formatPlan} from './katalog-writeback.mjs';
 import {createDesignCorrections} from './design-corrections.mjs';
+import {patchDesignWithTargetReview} from './design-target-preview.mjs';
 import {openKatalog} from './katalog-source.mjs';
 import {createWorkshop} from './http.mjs';
 import {build} from '../configurator/variant-m/build.mjs';
@@ -227,11 +228,12 @@ test('Rückschreiben: Händlerkorrekturen → design.json (Dry-run, Zuordnung nu
  assert.equal(updateSvgText('<svg/>','text-9',{text:'x',font:'A',sizePt:10,anchorMm:[0,0]}),null);
 });
 
-test('Freigabe: PATCH freigegeben schreibt freigabe {status, am, von}, Filter und Zähler folgen; fehlende Schrift blockiert die Freigabe',t=>{
+test('Freigabe: PATCH freigegeben schreibt zielgebundene freigabe {status, am, von}, Filter und Zähler folgen; fehlende Schrift blockiert die Freigabe',async t=>{
  const root=miniKatalog(t);
- const r=patchDesign(root,{reihe:'test-reihe',designId:'T-D1',freigegeben:true},{actor:'merchant:chris',now:new Date('2026-10-23T11:00:00Z')});
+ const font={regular:{units:1000,glyphs:Object.fromEntries([...new Set('FamilieMuster ')].map(c=>[c,{a:400,d:'M0 0 L300 0 L300 600 L0 600 Z'}]))}};
+ const r=await patchDesignWithTargetReview(root,{reihe:'test-reihe',designId:'T-D1',freigegeben:true},{available:{Michroma:font},actor:'merchant:chris',now:new Date('2026-10-23T11:00:00Z')});
  assert.equal(r.changed,true);assert.deepEqual(r.design.freigabe,{status:'freigegeben',am:'2026-10-23T11:00:00.000Z',von:'merchant:chris'});assert.equal(r.design.released,true);
- const j=JSON.parse(fs.readFileSync(path.join(root,'designs/test-reihe/T-D1/design.json'),'utf8'));assert.equal(j.freigabe.status,'freigegeben');
+ const j=JSON.parse(fs.readFileSync(path.join(root,'designs/test-reihe/T-D1/design.json'),'utf8'));assert.equal(j.ziele[0].familie,'test-schilder');assert.equal(j.ziele[0].freigabe.status,'freigegeben');assert.equal(j.freigabe,undefined,'keine neue globale Freigabe');
  const d=designDashboard(root,{linie:'test-linie'});assert.equal(d.counts.freigegeben,1);assert.ok(d.rows.find(x=>x.id==='T-D1').released);
  assert.deepEqual(designDashboard(root,{linie:'test-linie',freigabe:'ja'}).rows.map(x=>x.id),['T-D1']);
  assert.ok(designDashboard(root,{linie:'test-linie',freigabe:'nein'}).rows.every(x=>!x.released));

@@ -138,7 +138,7 @@ def prepare_svg(data):
    c.require(source.width*source.height<=20_000_000,'Foto zu groß.')
    im=ImageOps.exif_transpose(source).convert('RGBA');c.require(im.size==(p['width'],p['height']),'Fotoauflösung wurde verändert.')
    alpha=im.getchannel('A')
-   if p['tone']=='grayscale':im=ImageOps.grayscale(im).convert('RGBA');im.putalpha(alpha)
+   if p['tone']=='grayscale':im=(im.convert('RGB').convert('L',(.2126,.7152,.0722,0)) if p.get('nativeGrayscale') else ImageOps.grayscale(im)).convert('RGBA');im.putalpha(alpha)
    elif p['tone']=='sepia':
     a=np.asarray(im);rgb=a[:,:,:3].astype(np.float32);rgb=np.clip(rgb @ np.array([[.393,.349,.272],[.769,.686,.534],[.189,.168,.131]],dtype=np.float32),0,255).astype(np.uint8);im=Image.fromarray(np.dstack((rgb,a[:,:,3])))
    if p.get('nativeTint'):

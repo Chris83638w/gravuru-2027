@@ -54,3 +54,10 @@ test('explicitly personal elements survive without converting unmatched template
   assert.equal(result[0].uxUploadId,undefined);
   assert.deepEqual(carryPersonalObjects(previous,result),result);
 });
+
+test('explicit original photo colour follows the same semantic field through material/template changes',()=>{
+ const previous=[slot('old','portrait',{uxUploadId:'u',uxUploadKind:'photo',uxPhotoColor:'original'})];
+ const first=mapPersonalObjects(previous,[slot('next','portrait')]).objects;
+ const second=mapPersonalObjects(first,[slot('third','portrait')]).objects;
+ assert.equal(second[0].uxPhotoColor,'original');assert.equal(second[0].uxUploadId,'u');
+});

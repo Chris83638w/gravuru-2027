@@ -276,3 +276,43 @@ test('path-accurate imported motifs pass template, product and customer validati
   assert.throws(()=>validateProductDocument(outside),/Gestaltungsfläche/);
  }
 });
+
+
+test('M: print motif preview preserves separate fills, strokes and transparency; unsafe paint is rejected',()=>{
+ const k=katalog(),base=herz(k),family=structuredClone(k.families.get('test-schilder'));family.material.processingProfileId='color-print';
+ const svg='<svg viewBox="0 0 90 60"><g id="motiv-1"><path d="M10 10 L20 10 L20 20 Z" fill="#ff0000"/><path d="M22 10 L30 10 L30 20 Z" fill="#0066cc" fill-rule="evenodd" stroke="#112233" stroke-width="0.6" opacity="0.5"/></g></svg>';
+ const source={...base,svg:()=>svg};const converted=katalogDesignToTemplate(source,family,k.theme('namensschilder'),{fonts:fonts()});
+ assert.match(converted.motifs[0].svgFragment,/fill="#ff0000"/);assert.match(converted.motifs[0].svgFragment,/fill="#0066cc" fill-rule="evenodd" stroke="#112233" stroke-width="0.6" opacity="0.5"/);
+ assert.equal(source.svg(),svg);assert.equal(converted.template.objects[0].type,'motif');
+ assert.throws(()=>katalogDesignToTemplate({...source,svg:()=>svg.replace('#ff0000','url(https://foreign.invalid/paint)')},family,k.theme('namensschilder'),{fonts:fonts()}),/Druckfarbe/);
+ const engraved=katalogDesignToTemplate(source,k.families.get('test-schilder'),k.theme('namensschilder'),{fonts:fonts()});assert.doesNotMatch(engraved.motifs[0].svgFragment,/#ff0000|#0066cc/);assert.match(engraved.motifs[0].svgFragment,/currentColor/);
+});
+
+
+test('M: unpainted print paths keep SVG black, inherited group fill and explicit none independently of siblings',()=>{
+ const k=katalog(),family=structuredClone(k.families.get('test-schilder'));family.material.processingProfileId='color-print';
+ const body='<path d="M10 10 L20 10 L20 20 Z"/><path d="M22 10 L30 10 L30 20 Z" fill="#ff0000"/><path d="M32 10 L40 10 L40 20 Z" fill="none"/>';
+ const convert=attrs=>katalogDesignToTemplate({...herz(k),svg:()=>'<svg viewBox="0 0 90 60"><g id="motiv-1" '+attrs+'>'+body+'</g></svg>'},family,k.theme('namensschilder'),{fonts:fonts()}).motifs[0].svgFragment;
+ const fills=fragment=>[...fragment.matchAll(/\sfill="([^"]+)"/g)].map(match=>match[1]);
+ assert.deepEqual(fills(convert('')),['#000000','#ff0000','none'],'a red sibling cannot recolor the default black path');
+ assert.deepEqual(fills(convert('fill="#0066cc"')),['#0066cc','#ff0000','none'],'group inheritance still applies while explicit path fills win');
+});
+
+test('M: print stroke defaults to one source mm; inherited width and explicit zero remain authoritative',()=>{
+ const k=katalog(),family=structuredClone(k.families.get('test-schilder'));family.material.processingProfileId='color-print';
+ const body='<path d="M10 10 L20 20" fill="none" stroke="#0066cc"/><path d="M22 10 L30 20" fill="none" stroke="#ff0000" stroke-width="0"/>';
+ const convert=attrs=>katalogDesignToTemplate({...herz(k),svg:()=>'<svg viewBox="0 0 90 60"><g id="motiv-1" '+attrs+'>'+body+'</g></svg>'},family,k.theme('namensschilder'),{fonts:fonts()}).motifs[0].svgFragment;
+ const widths=fragment=>[...fragment.matchAll(/stroke-width="([^"]+)"/g)].map(match=>Number(match[1]));
+ assert.deepEqual(widths(convert('')),[1,0],'missing SVG stroke-width is 1, not an invisible zero');
+ assert.deepEqual(widths(convert('stroke-width="2"')),[2,0],'group width is inherited but explicit zero remains zero');
+});
+
+test('M: resizing a print motif scales painted stroke widths along with its paths and keeps source resources unchanged',()=>{
+ const k=katalog(),family=structuredClone(k.families.get('test-schilder'));family.material.processingProfileId='color-print';
+ const source='<svg viewBox="0 0 90 60"><g id="motiv-1"><path d="M10 10 L20 10 L20 20 Z" fill="none" stroke="#0066cc" stroke-width="0.6"/></g></svg>',converted=katalogDesignToTemplate({...herz(k),svg:()=>source},family,k.theme('namensschilder'),{fonts:fonts()}),before=structuredClone(converted.motifs);
+ for(const [targetMm,expectedBounds,expectedWidth]of [[[180,120],[20,20,20,20],1.2],[[45,30],[5,5,5,5],.3]]){
+  const template=scaleTemplate(converted.template,[90,60],targetMm,fonts()),motif=scaleEmbeddedMotifs(converted.motifs,template.katalog.scale)[0],d=motif.svgFragment.match(/d="([^"]+)"/)[1];
+  assert.deepEqual(pathBounds(d),expectedBounds);assert.deepEqual(motif.bounds,expectedBounds);assert.equal(Number(motif.svgFragment.match(/stroke-width="([^"]+)"/)[1]),expectedWidth);assert.match(motif.svgFragment,/stroke="#0066cc"/);assert.match(motif.svgFragment,/fill="none"/);
+ }
+ assert.deepEqual(converted.motifs,before);assert.equal(scaleEmbeddedMotifs(converted.motifs,1)[0].svgFragment.replace(/d="[^"]*"/,''),before[0].svgFragment.replace(/d="[^"]*"/,''),'identity scaling preserves every paint attribute; existing path whitespace normalization is unchanged');
+});

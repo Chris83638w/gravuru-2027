@@ -32,3 +32,12 @@ export function editedPhotoSize(width,height,{aspect=width/height,zoom=1,angle=0
   const scale=Math.min(1,8192/Math.max(availableWidth,availableHeight),Math.sqrt(20_000_000/(availableWidth*availableHeight)));
   return {width:Math.max(1,Math.floor(availableWidth*scale)),height:Math.max(1,Math.floor(availableHeight*scale)),limited:scale<1};
 }
+
+// Restored account drafts can contain an edited URL but no original URL yet.
+// Recover the source from its retained File; never treat edited PNG bytes as original.
+export function retainedPhotoUrls(source,createUrl=blob=>URL.createObjectURL(blob)){
+ if(!source)throw Error('Fotodatei fehlt.');
+ const originalUrl=source.originalUrl||(source.edited&&source.file?createUrl(source.file):source.url);
+ if(!originalUrl)throw Error('Originalfoto fehlt.');
+ return {originalUrl,editSourceUrl:source.editSourceUrl||source.url||originalUrl};
+}

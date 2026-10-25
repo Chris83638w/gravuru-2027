@@ -59,7 +59,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   function update(){
     const o=selected();if(editing&&o?.id!==editing.id)close();
     const text=o?.type==='text',photo=!!o?.uxUploadId,motif=o?.type==='motif';
-    panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
+    panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
     if(panel.hidden){if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent='Schriftart ▾';font.title=o.font||'Schrift wählen';color.parentElement.hidden=!(text||motif)||!freeColor;color.parentElement.title=motif?'Motivfarbe':'Textfarbe';color.setAttribute('aria-label',motif?'Motivfarbe direkt ändern':'Textfarbe direkt ändern');color.disabled=!can(o,'color');if((text||motif)&&r.activeElement!==color)color.value=o.color||'#202824';
     for(const b of panel.querySelectorAll('[data-direct-style]')){b.hidden=!text;b.disabled=!can(o,'content')||(b.dataset.directStyle==='bold'&&!el.fontData?.[o.font]?.bold&&!o.bold);b.title=b.dataset.directStyle==='bold'?(b.disabled?'Für diese Schrift ist kein Fettschnitt verfügbar':'Fett'):'Kursiv – Schrift neigen';b.setAttribute('aria-pressed',!!o[b.dataset.directStyle]);}

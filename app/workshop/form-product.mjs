@@ -8,6 +8,7 @@ export const FORM_PRODUCT_SCHEMA='gravuru-form-product/v1';
 export const FORM_MATERIALS=[
  {id:'steel',name:'Edelstahl · gebürstet',reference:'edelstahl-gewaehlte-originalfassung-v4.png',note:'Gewählte Referenz v4; dort 1,5 mm dokumentiert. Tatsächliche Stärke unten festlegen.'},
  {id:'leather-brown',name:'Leder · braun',reference:'leder-2mm-muster.png',note:'Gestaltetes Muster; die frühere 2-mm-Angabe war vorläufig.'},
+ {id:'walnut',name:'Holz · Walnuss (Näherung)',reference:null,note:'Dunkle, kontrastarme Näherung. Keine bestätigte Oberfläche, Stärke oder Fertigungsfreigabe.'},
  {id:'oak',name:'Holz · Eiche',reference:'eiche-5mm-muster.png',note:'Gestaltetes Muster; die frühere 5-mm-Angabe war vorläufig.'},
  {id:'beech',name:'Holz · Buche',reference:'buche-5mm-muster.png',note:'Gestaltetes Muster; die frühere 5-mm-Angabe war vorläufig.'},
  {id:'cherry',name:'Holz · Kirsche',reference:'kirsche-5mm-muster.png',note:'Gestaltetes Muster; die frühere 5-mm-Angabe war vorläufig.'},

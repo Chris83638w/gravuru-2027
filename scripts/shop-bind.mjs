@@ -16,7 +16,7 @@ import {createProductionProfiles} from '../app/workshop/production-profiles.mjs'
 import {createShopBindingReadAdapter} from '../app/workshop/shop-product-binding-adapter.mjs';
 import {createShopProductBindingCheck} from '../app/workshop/shop-product-binding-check.mjs';
 import {createShopifyAdminReadonly} from '../app/workshop/shopify-admin-readonly.mjs';
-import {targetsForLine,planShopSync,indexExport,toCents,PLAN_SCHEMA as SYNC_SCHEMA,SHOP_DOMAIN} from './shop-sync.mjs';
+import {prepareTargetsForLine,planShopSync,indexExport,toCents,PLAN_SCHEMA as SYNC_SCHEMA,SHOP_DOMAIN} from './shop-sync.mjs';
 import {readCredentials} from './shop-export.mjs';
 
 export const BIND_SCHEMA='gravuru-shop-bind-plan/v1';
@@ -135,7 +135,7 @@ export async function run(argv,{env=process.env,fetchImpl=globalThis.fetch,stdou
  if(args.apply)log('Aktivierung über Werkstatt-DB '+args.db+' (Store '+args.storeId+').');
  let syncPlan,exportDoc=null;
  if(args.plan){syncPlan=JSON.parse(fs.readFileSync(args.plan,'utf8'));if(args.exportFile)exportDoc=JSON.parse(fs.readFileSync(args.exportFile,'utf8'));}
- else{exportDoc=JSON.parse(fs.readFileSync(args.exportFile,'utf8'));syncPlan=planShopSync(targetsForLine(openKatalog(args.katalog),args.line,{only:args.only,allDesigns:args.allDesigns}),exportDoc);}
+ else{exportDoc=JSON.parse(fs.readFileSync(args.exportFile,'utf8'));syncPlan=planShopSync(await prepareTargetsForLine(openKatalog(args.katalog),args.line,{only:args.only,allDesigns:args.allDesigns}),exportDoc);}
  const base=bindSelections(syncPlan);
  const doc={schema:BIND_SCHEMA,shopDomain:base.shopDomain,generatedAt:new Date(clock()).toISOString(),source:args.plan?{syncPlan:path.resolve(args.plan)}:{katalog:path.resolve(args.katalog),line:args.line,export:path.resolve(args.exportFile)},line:base.line,optionGroup:OPTION_GROUP,mode:'dry-run',selections:base.selections,pending:base.pending,check:null,applied:null};
  let ws=null;

@@ -1,0 +1,429 @@
+{
+  "scope": "Isolated synthetic customer upload; template PNGs unchanged",
+  "devices": [
+    {
+      "device": "desktop",
+      "upload": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 80,
+          "y": 75,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "cb6978ef-3855-46af-b7c5-9f441602c4de",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(80 75) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/bbca541c-a777-49bb-a711-fd1c43778609\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>",
+        "focus": null
+      },
+      "moved": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 92.51583862304688,
+          "y": 82.15190887451172,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "cb6978ef-3855-46af-b7c5-9f441602c4de",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(92.51583862304688 82.15190887451172) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/bbca541c-a777-49bb-a711-fd1c43778609\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>"
+      },
+      "keyboard": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 94.51583862304688,
+          "y": 82.15190887451172,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "cb6978ef-3855-46af-b7c5-9f441602c4de",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(94.51583862304688 82.15190887451172) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/bbca541c-a777-49bb-a711-fd1c43778609\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>",
+        "focus": "portrait"
+      },
+      "beforeCrop": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 94.51583862304688,
+          "y": 82.15190887451172,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "cb6978ef-3855-46af-b7c5-9f441602c4de",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false
+        },
+        "cropMode": true,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(94.51583862304688 82.15190887451172) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Foto im Ausschnitt ausrichten: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/bbca541c-a777-49bb-a711-fd1c43778609\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>"
+      },
+      "crop": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 94.51583862304688,
+          "y": 82.15190887451172,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "cb6978ef-3855-46af-b7c5-9f441602c4de",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false,
+          "uxPhotoCrop": {
+            "zoom": 1,
+            "x": -0.24756610576923077,
+            "y": 0.13753662109375,
+            "angle": 0
+          }
+        },
+        "cropMode": true,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(94.51583862304688 82.15190887451172) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Foto im Ausschnitt ausrichten: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/bbca541c-a777-49bb-a711-fd1c43778609\" x=\"-40.5458984375\" y=\"-28.030059814453125\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 -8.0458984375 4.469940185546875)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>"
+      },
+      "original": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 94.51583862304688,
+          "y": 82.15190887451172,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "ce19825c-80ee-4689-9eed-f59faa4cf0ff",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false,
+          "uxPhotoColor": "original"
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(94.51583862304688 82.15190887451172) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/2ade2042-fd15-42cd-98ab-de78825f2963\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\"></image></g></g>"
+      },
+      "draft": {
+        "schema": "gravuru-universal-customer-draft/v1",
+        "profileId": "photo-position-synthetic",
+        "profileRevision": "20261025-photo-test",
+        "productId": "photo-position-synthetic",
+        "design": {
+          "id": "slate-test",
+          "name": "Synthetische Herzmaske",
+          "objects": [
+            {
+              "id": "portrait",
+              "type": "photoSlot",
+              "x": 94.51583862304688,
+              "y": 82.15190887451172,
+              "w": 65,
+              "h": 65,
+              "rotation": 0,
+              "fieldKey": "photo-portrait",
+              "customerEditable": true,
+              "templateOrigin": true,
+              "photoShape": "template",
+              "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "required": true,
+              "uxHidden": false,
+              "uxUploadId": "ce19825c-80ee-4689-9eed-f59faa4cf0ff",
+              "uxUploadKind": "photo",
+              "uxPhotoBackground": "remove",
+              "uxPhotoColor": "original"
+            }
+          ]
+        },
+        "options": {
+          "mounting": "none"
+        }
+      },
+      "reloaded": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "x": 94.51583862304688,
+          "y": 82.15190887451172,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "fieldKey": "photo-portrait",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "required": true,
+          "uxHidden": false,
+          "uxUploadId": "ce19825c-80ee-4689-9eed-f59faa4cf0ff",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxPhotoColor": "original"
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(94.51583862304688 82.15190887451172) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" rx=\"2\" fill=\"#dce8df\" stroke=\"#5a8c70\" stroke-width=\".5\"></rect><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"Arial\" fill=\"#294e3c\" font-size=\"5\">Dein Foto</text></g></g>"
+      },
+      "overflow": false,
+      "complete": true
+    },
+    {
+      "device": "iphone",
+      "upload": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 80,
+          "y": 75,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "2786148d-0214-455c-ac0f-1826d473b082",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(80 75) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/a8b743ab-af4b-49c2-9983-236cb758c20d\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>",
+        "focus": null
+      },
+      "moved": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 110,
+          "y": 90.23809814453125,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "2786148d-0214-455c-ac0f-1826d473b082",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(110 90.23809814453125) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/a8b743ab-af4b-49c2-9983-236cb758c20d\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>"
+      },
+      "keyboard": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 112,
+          "y": 90.23809814453125,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "2786148d-0214-455c-ac0f-1826d473b082",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(112 90.23809814453125) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/a8b743ab-af4b-49c2-9983-236cb758c20d\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>",
+        "focus": "portrait"
+      },
+      "beforeCrop": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 112,
+          "y": 90.23809814453125,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "2786148d-0214-455c-ac0f-1826d473b082",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false
+        },
+        "cropMode": true,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(112 90.23809814453125) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Foto im Ausschnitt ausrichten: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/a8b743ab-af4b-49c2-9983-236cb758c20d\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>"
+      },
+      "crop": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 112,
+          "y": 90.23809814453125,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "2786148d-0214-455c-ac0f-1826d473b082",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false,
+          "uxPhotoCrop": {
+            "zoom": 1,
+            "x": -0.5274726280799279,
+            "y": 0.2930401141826923,
+            "angle": 0
+          }
+        },
+        "cropMode": true,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(112 90.23809814453125) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Foto im Ausschnitt ausrichten: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><defs><filter id=\"uxv35-ux-logo-portrait-light\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\"0 0 0 0 0.9098039215686274 0 0 0 0 0.9137254901960784 0 0 0 0 0.8980392156862745 .2126 .7152 .0722 0 0\"></feColorMatrix><feComposite in2=\"SourceAlpha\" operator=\"in\"></feComposite></filter></defs><g data-photo-preview-treatment=\"engraving\" filter=\"url(#uxv35-ux-logo-portrait-light)\"><defs><filter id=\"uxv35-ux-logo-portrait\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"saturate\" values=\"0\"></feColorMatrix></filter></defs><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/a8b743ab-af4b-49c2-9983-236cb758c20d\" x=\"-49.642860412597656\" y=\"-22.9761962890625\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 -17.142860412597656 9.5238037109375)\" filter=\"url(#uxv35-ux-logo-portrait)\"></image></g></g></g>"
+      },
+      "original": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "fieldKey": "photo-portrait",
+          "x": 112,
+          "y": 90.23809814453125,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "required": true,
+          "uxUploadId": "b0c79d6c-5f36-42e8-98af-9bc1269266e0",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxHidden": false,
+          "uxPhotoColor": "original"
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(112 90.23809814453125) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><image data-ux-photo=\"photo\" href=\"blob:https://photo-fixture.example/9b6a358e-628f-4f90-9c0e-d9b9d91e63fb\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"xMidYMid meet\" transform=\"rotate(0 0 0)\"></image></g></g>"
+      },
+      "draft": {
+        "schema": "gravuru-universal-customer-draft/v1",
+        "profileId": "photo-position-synthetic",
+        "profileRevision": "20261025-photo-test",
+        "productId": "photo-position-synthetic",
+        "design": {
+          "id": "slate-test",
+          "name": "Synthetische Herzmaske",
+          "objects": [
+            {
+              "id": "portrait",
+              "type": "photoSlot",
+              "x": 112,
+              "y": 90.23809814453125,
+              "w": 65,
+              "h": 65,
+              "rotation": 0,
+              "fieldKey": "photo-portrait",
+              "customerEditable": true,
+              "templateOrigin": true,
+              "photoShape": "template",
+              "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "required": true,
+              "uxHidden": false,
+              "uxUploadId": "b0c79d6c-5f36-42e8-98af-9bc1269266e0",
+              "uxUploadKind": "photo",
+              "uxPhotoBackground": "remove",
+              "uxPhotoColor": "original"
+            }
+          ]
+        },
+        "options": {
+          "mounting": "none"
+        }
+      },
+      "reloaded": {
+        "object": {
+          "id": "portrait",
+          "type": "photoSlot",
+          "x": 112,
+          "y": 90.23809814453125,
+          "w": 65,
+          "h": 65,
+          "rotation": 0,
+          "fieldKey": "photo-portrait",
+          "customerEditable": true,
+          "templateOrigin": true,
+          "photoShape": "template",
+          "photoMaskAssetId": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "required": true,
+          "uxHidden": false,
+          "uxUploadId": "b0c79d6c-5f36-42e8-98af-9bc1269266e0",
+          "uxUploadKind": "photo",
+          "uxPhotoBackground": "remove",
+          "uxPhotoColor": "original"
+        },
+        "cropMode": false,
+        "markup": "<g xmlns=\"http://www.w3.org/2000/svg\" data-object=\"portrait\" transform=\"translate(112 90.23809814453125) rotate(0)\" tabindex=\"0\" role=\"group\" aria-label=\"Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen\" style=\"cursor: grab; touch-action: none;\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" fill=\"transparent\"></rect><defs><mask id=\"uxv35-ux-mask-portrait\" data-template-photo-mask=\"true\" maskUnits=\"userSpaceOnUse\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" mask-type=\"luminance\"><image href=\"/api/workshop/design-assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/preview.svg\" x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" preserveAspectRatio=\"none\"></image></mask></defs><g mask=\"url(#uxv35-ux-mask-portrait)\"><rect x=\"-32.5\" y=\"-32.5\" width=\"65\" height=\"65\" rx=\"2\" fill=\"#dce8df\" stroke=\"#5a8c70\" stroke-width=\".5\"></rect><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"Arial\" fill=\"#294e3c\" font-size=\"5\">Dein Foto</text></g></g>"
+      },
+      "overflow": false,
+      "complete": true
+    }
+  ],
+  "errors": [],
+  "blocked": []
+}

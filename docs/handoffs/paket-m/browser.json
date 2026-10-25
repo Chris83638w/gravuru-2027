@@ -1,0 +1,318 @@
+{
+  "evidence": [
+    {
+      "device": "desktop",
+      "preview": "Passung: passt nicht. 22 × 14 cm: foto-1: Fotofeld/Foto ist für dieses Gravurziel nicht passend.",
+      "stock": "Bestandsfassung vorhanden",
+      "confirmBlocked": true,
+      "overflow": false
+    },
+    {
+      "device": "iPhone13 emulation",
+      "preview": "Passung: passt nicht. 22 × 14 cm: foto-1: Fotofeld/Foto ist für dieses Gravurziel nicht passend.",
+      "stock": "Bestandsfassung vorhanden",
+      "confirmBlocked": true,
+      "overflow": false
+    }
+  ],
+  "stats": {
+    "externalAborted": [],
+    "requests": [
+      {
+        "path": "/werkstatt/designs/?linie=gedenktafeln-22x14-tiere",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/merchant-navigation.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/merchant-media.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/merchant-downloads.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/design-dashboard.css",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-ui.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.css",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/cube.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/files.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/stack-2.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/pencil.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/merchant-request.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-review.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs?linie=gedenktafeln-22x14-tiere",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=gedenktafeln-22x14&id=GT-S-22x14-D200&file=original.png",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=gedenktafeln-22x14&id=GT-S-22x14-D204&file=original.png",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=gedenktafeln-22x14&id=GT-S-22x14-D204&file=original.png",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=gedenktafeln-22x14&id=GT-S-22x14-D204&familie=gedenktafel-22x14-schiefer-natur",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/variant/prepare",
+        "status": 200,
+        "authenticated": true,
+        "method": "POST"
+      },
+      {
+        "path": "/werkstatt/designs/?linie=gedenktafeln-22x14-tiere",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/merchant-navigation.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/merchant-media.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/merchant-downloads.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/design-dashboard.css",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-ui.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.css",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/cube.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/files.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/stack-2.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/editor-icons/pencil.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/merchant-request.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-review.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs?linie=gedenktafeln-22x14-tiere",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=gedenktafeln-22x14&id=GT-S-22x14-D204&file=original.png",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=gedenktafeln-22x14&id=GT-S-22x14-D204&familie=gedenktafel-22x14-schiefer-natur",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=gedenktafeln-22x14&id=GT-S-22x14-D204&file=original.png",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET"
+      },
+      {
+        "path": "/api/workshop/designs/variant/prepare",
+        "status": 200,
+        "authenticated": true,
+        "method": "POST"
+      }
+    ]
+  },
+  "scope": "Lokaler Server, private Katalogkopie, emulierter Shopify-Admin mit synthetischem Sitzungstoken, alle externen Anfragen lokal beantwortet oder blockiert; keine Freigabe, kein Import, keine Live-Aufrufe."
+}

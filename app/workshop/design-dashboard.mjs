@@ -5,10 +5,13 @@
 // hidden) in `zuordnung.json` bzw. `design.json`, atomar, mit Protokoll `_aenderungen.jsonl`.
 // Nichts wird erfunden: Unbekanntes bleibt null; der Katalogpfad kommt nur über katalogPath()/Option.
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {designTargets} from './design-targets.mjs';
+import {dashboardDesignTargets} from './design-target-dashboard.mjs';
 import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction,recoverKatalogIfNeeded} from './katalog-transaction.mjs';
 import path from 'node:path';
 import {openKatalog} from './katalog-source.mjs';
-import {formatSeries,seriesOf,assignSeries,applyPriceOverrides,priceGaps,katalogDesignToTemplate,scaleTemplate,scaleEmbeddedMotifs,templateFit} from './katalog-convert.mjs';
+import {parseDesignSvg,formatSeries,seriesOf,assignSeries,applyPriceOverrides,priceGaps,katalogDesignToTemplate,scaleTemplate,scaleEmbeddedMotifs,templateFit} from './katalog-convert.mjs';
 import {convertFont} from './font-library.mjs';
 import {FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
 import {importKey} from './katalog-import.mjs';
@@ -16,7 +19,7 @@ import {importKey} from './katalog-import.mjs';
 export const MIN_TEXT_MM=3;// Chris 23.10.2026 („3 mm Text“): kleinere Mustertexte sind zu prüfen
 export const SELECTABLE_LABEL='#00ff00';// Bogenetikett grün = im Konfigurator wählbar
 export const DESIGN_FILES=Object.freeze(['design.svg','design-produktion.svg','original.png','preview.png']);
-export const PATCH_FIELDS=Object.freeze(['reihe','designId','name','themes','hidden','freigegeben']);
+export const PATCH_FIELDS=Object.freeze(['reihe','designId','name','themes','hidden','freigegeben','familie','zieleHinzufuegen','checksum']);
 const PT_TO_MM=25.4/72;
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
@@ -92,7 +95,7 @@ function lineContext(katalog,line){
  const processes=[...new Set(families.map(familyProcessName).filter(Boolean))];
  const series=families.map(f=>({family:f,series:formatSeries(f)}));
  const themeIds=new Set(line.subcategories.map(s=>s.themeId).filter(Boolean));
- return {families,materials,processes,series,themeIds};
+ return {families,materials,processes,series,themeIds,katalog,line};
 }
 // Design-Plattenmaß → Formatreihe einer Familie der Linie (±1 % wie der Import), sonst null.
 function seriesFor(ctx,plateMm){
@@ -247,7 +250,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  if(typeof startDesigns!=='boolean')fail(422,'designs_query','startDesigns ist true oder false.');
  if(linie===null||linie===undefined||linie===''){
   const overviews=bestandOverviews(root);
-  return {linien:[...katalog.lines.values()].map(line=>{const ctx=lineContext(katalog,line);const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d));const b=resolveBestand(overviews,line,l2,null);return {id:line.id,name:line.name,status:line.status??null,families:line.families,materials:ctx.materials,subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>m.id)})),designsLieferform2:l2.length,bestand:b.overviews.map(o=>o.slug)};}),themes:katalog.themes.map(t=>({id:t.id,name:t.name}))};
+  return {linien:[...katalog.lines.values()].map(line=>{const ctx=lineContext(katalog,line);const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d));const b=resolveBestand(overviews,line,l2,null);return {id:line.id,name:line.name,status:line.status??null,ausfuehrungen:line.ausfuehrungen??null,families:line.families,materials:ctx.materials,subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>m.id)})),designsLieferform2:l2.length,bestand:b.overviews.map(o=>o.slug)};}),themes:katalog.themes.map(t=>({id:t.id,name:t.name}))};
  }
  if(status!==null&&!['ok','prüfen','fehlt'].includes(status))fail(422,'designs_query','Status ist ok, prüfen oder fehlt.');
  if(freigabe!==null&&!['ja','nein'].includes(freigabe))fail(422,'designs_query','freigabe ist ja oder nein.');
@@ -271,6 +274,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
    motifs:motifs.length,photos:Array.isArray(j.photos)?j.photos.length:0,themes:(d.themes||[]).map(id=>({id,name:themeName(id)})),
    lieferform2:{reihe:d.seriesFolder,dir:path.relative(root,d.dir).split(path.sep).join('/'),transferFrom:j.transfer?.fromKey??j.transfer?.from??null},bestand:null,
    files:filesFor(root,{reihe:d.seriesFolder,id:d.id}),reasons:[],warnings:Array.isArray(j.warnings)?j.warnings.filter(w=>typeof w==='string'):[]};
+  Object.assign(row,dashboardDesignTargets(d,katalog,line));
   if(!series)row.reasons.push(ctx.families.length?'alte Größe: '+row.plate[0]+' × '+row.plate[1]+' mm passt in keine Formatreihe der Familie (nur Einpassen, keine Übernahme).':'Formatreihe offen (Linie ohne Familie).');
   if(!d.themes||!d.themes.length)row.reasons.push('kein Thema zugeordnet.');
   else if(!d.themes.some(t=>ctx.themeIds.has(t)))row.reasons.push('Thema passt zu keiner Unterkategorie der Linie ('+d.themes.join(', ')+').');
@@ -335,19 +339,12 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  if(material)filtered=filtered.filter(r=>materialKey(r.material)===materialKey(material));
  if(status)filtered=filtered.filter(r=>r.status===status);
  if(freigabe)filtered=filtered.filter(r=>r.released===(freigabe==='ja'));
- return {linie:{id:line.id,name:line.name,status:line.status??null,families:ctx.families.map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f)})),subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>({id:m.id,name:m.name??null,startDesign:m.startDesign}))}))},
+ return {linie:{id:line.id,name:line.name,status:line.status??null,ausfuehrungen:line.ausfuehrungen??null,families:ctx.families.map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f)})),subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>({id:m.id,name:m.name??null,startDesign:m.startDesign}))}))},
+  familien:[...katalog.families.values()].map(f=>({id:f.id,name:f.name,sizes:f.sizes.map(s=>({key:s.key,label:s.label})),linien:[...katalog.lines.values()].filter(l=>l.families.includes(f.id)).map(l=>({id:l.id,name:l.name}))})),
   themes:katalog.themes.map(t=>({id:t.id,name:t.name})),counts:count(rows),reihen,formatreihen,materials,bestand:bestandInfo,notes,startDesignSummary,filter:{reihe,material,status,freigabe,startDesigns},rows:filtered,minTextMm:MIN_TEXT_MM};
 }
-// Lieferform-2-Design gehört zur Linie, wenn sein Plattenmaß in eine Formatreihe einer Familie der Linie
-// passt (±1 %, wie der Import) und das Material (falls angegeben) zur Familie passt – oder, ohne passende
-// Reihe, wenn Material und ein Thema der Linie passen (dann „alte Größe“).
-function designOfLine(ctx,d){
- if(!ctx.families.length)return false;
- const material=materialMatches(ctx,d.json?.material);
- if(material===false)return false;
- if(seriesFor(ctx,d.plateMm))return true;
- return material===true&&Array.isArray(d.themes)&&d.themes.some(t=>ctx.themeIds.has(t));
-}
+// Bestätigte oder eindeutig aufgelöste Legacy-Ziele bestimmen die Linienzugehörigkeit.
+function designOfLine(ctx,d){return designTargets(d,ctx.katalog).some(target=>ctx.line.families.includes(target.familie));}
 
 // ---- Dateien unter designs/ (SVG/PNG-Vorschau) ----
 export function designFile(root,{reihe=null,bestand=null,id,file}){
@@ -390,8 +387,8 @@ function rewriteJson(file,changes){
 }
 const shortKey=id=>{const m=id.match(/-(D\d+)$/);return m?m[1]:null;};
 export function patchDesign(root,input,options={}){return withKatalogWriteLock(root,root=>patchDesignLocked(root,input,options));}
-function patchDesignLocked(root,input,{actor='werkstatt',now=new Date()}={}){
- const katalog=katalogFor(root);root=katalog.root;
+function patchDesignLocked(root,input,{actor='werkstatt',now=new Date(),targetReview=null,available={}}={}){
+ const katalog=katalogFor(root,{maxAgeMs:0});root=katalog.root;
  if(!record(input))fail(422,'design_patch','Änderung als Objekt senden.');
  const unknown=Object.keys(input).filter(k=>!PATCH_FIELDS.includes(k));if(unknown.length)fail(422,'design_patch','Unbekannte Felder: '+unknown.join(', ')+'. Erlaubt sind name, themes, hidden.');
  const {reihe,designId}=input;
@@ -408,17 +405,31 @@ function patchDesignLocked(root,input,{actor='werkstatt',now=new Date()}={}){
  if(input.name!==undefined){if(typeof input.name!=='string'||!input.name.trim()||input.name.length>160||/[\x00-\x1f]/.test(input.name))fail(422,'design_patch','Name: 1 bis 160 Zeichen, eine Zeile.');const name=input.name.trim();if(name!==(current.name??null))changes.name={from:current.name??null,to:name};}
  if(input.themes!==undefined){if(!Array.isArray(input.themes)||input.themes.length>20||input.themes.some(t=>typeof t!=='string'))fail(422,'design_patch','themes ist eine Liste von Themen-Kennungen.');const themes=[...new Set(input.themes.map(t=>t.trim().toLowerCase()))];const bad=themes.filter(t=>!katalog.theme(t));if(bad.length)fail(422,'design_patch','Unbekannte Themen: '+bad.join(', ')+' (themen.json).');if(JSON.stringify(themes)!==JSON.stringify(current.themes??null))changes.themes={from:current.themes??null,to:themes};}
  if(input.hidden!==undefined){if(typeof input.hidden!=='boolean')fail(422,'design_patch','hidden ist true oder false.');if(input.hidden!==(current.hidden===true))changes.hidden={from:current.hidden===true,to:input.hidden};}
- // Freigabe (Chris 23.10.2026): „wir prüfen manuell und geben frei, dann geht es an Shopify“. Nur Lieferform 2 mit
- // lesbaren Schriften (Status nicht „fehlt“); zurücknehmen ist jederzeit möglich. Wer/wann bleibt im Dokument.
+ // Ziele are authoritative; historical global approval is never widened.
+ const master=katalog.designs.masters.find(d=>d.seriesFolder===reihe&&d.id===designId),targets=designTargets(master??current,katalog).map(t=>structuredClone(t));
+ let selected=null;
+ if(input.zieleHinzufuegen!==undefined){
+  if(!Array.isArray(input.zieleHinzufuegen)||!input.zieleHinzufuegen.length||input.zieleHinzufuegen.length>100||input.zieleHinzufuegen.some(id=>typeof id!=='string'||!katalog.families.has(id)))fail(422,'design_patch','Neue Ziele müssen vorhandene Familien sein.');
+  if(input.freigegeben!==undefined)fail(422,'design_patch','Ziele bestätigen und freigeben sind getrennte Schritte.');
+  for(const familie of new Set(input.zieleHinzufuegen))if(!targets.some(t=>t.familie===familie))targets.push({familie,freigabe:null});
+ }
  if(input.freigegeben!==undefined){
   if(typeof input.freigegeben!=='boolean')fail(422,'design_patch','freigegeben ist true oder false.');
-  const was=current.freigabe?.status==='freigegeben';
+  const familyId=input.familie??(targets.length===1?targets[0].familie:null);
+  selected=targets.find(t=>t.familie===familyId);if(!selected)fail(422,'design_patch','Ein bestätigtes Ziel für diese Freigabe auswählen.');
+  const was=selected.freigabe?.status==='freigegeben';
   if(input.freigegeben!==was){
-   if(input.freigegeben){const replacements=fontReplacements(root),fonts=(Array.isArray(current.fonts)?current.fonts:[]).filter(f=>typeof f==='string').map(f=>fontStatus(f,katalog,replacements));const missing=fonts.filter(f=>f.status==='fehlt').map(f=>f.name);if(missing.length)fail(422,'design_patch','Freigabe nicht möglich: Schrift fehlt ('+missing.join(', ')+').');}
-   changes.freigabe={from:current.freigabe??null,to:{status:input.freigegeben?'freigegeben':'offen',am:now.toISOString(),von:String(actor).slice(0,160)}};
+   if(input.freigegeben){
+    const replacements=fontReplacements(root),fonts=(Array.isArray(current.fonts)?current.fonts:[]).filter(f=>typeof f==='string').map(f=>fontStatus(f,katalog,replacements)),missing=fonts.filter(f=>f.status==='fehlt').map(f=>f.name);
+    if(missing.length)fail(422,'design_patch','Freigabe nicht möglich: Schrift fehlt ('+missing.join(', ')+').');
+    if(!targetReview||targetReview.familie!==familyId||targetReview.fit?.status==='passt nicht')fail(422,'design_patch','Zielpassung muss vor der Freigabe serverseitig geprüft werden.');
+    if(targetReview.checksum!==designTargetChecksum(master,katalog.families.get(familyId),master.svg(),targetFontVersions(master,katalog,available)))fail(409,'design_conflict','Das Design oder die Familie wurde inzwischen geändert. Vorschau neu öffnen.');
+   }
+   selected.freigabe={status:input.freigegeben?'freigegeben':'offen',am:now.toISOString(),von:String(actor).slice(0,160)};
   }
  }
- if(input.name===undefined&&input.themes===undefined&&input.hidden===undefined&&input.freigegeben===undefined)fail(422,'design_patch','Keine Änderung angegeben (name, themes, hidden oder freigegeben).');
+ if(JSON.stringify(targets)!==JSON.stringify(designTargets(master??current,katalog)))changes.ziele={from:current.ziele??null,to:targets};
+ if(input.name===undefined&&input.themes===undefined&&input.hidden===undefined&&input.freigegeben===undefined&&input.zieleHinzufuegen===undefined)fail(422,'design_patch','Keine Änderung angegeben.');
  const files=[],pending=[];
  const rel=f=>path.relative(root,f).split(path.sep).join('/');
  if(Object.keys(changes).length){
@@ -450,7 +461,7 @@ function patchDesignLocked(root,input,{actor='werkstatt',now=new Date()}={}){
   forgetKatalog();
  }
  const after=readJson(jsonFile);
- return {changed:Object.keys(changes).length>0,reihe,designId,changes,files,design:{id:designId,name:after.name??designId,themes:Array.isArray(after.themes)?after.themes:null,hidden:after.hidden===true,released:after.freigabe?.status==='freigegeben',freigabe:after.freigabe??null}};
+ return {changed:Object.keys(changes).length>0,reihe,designId,changes,files,design:{id:designId,name:after.name??designId,themes:Array.isArray(after.themes)?after.themes:null,hidden:after.hidden===true,released:targets.length>0&&targets.every(t=>t.freigabe?.status==='freigegeben'),freigabe:selected?.freigabe??after.freigabe??null,ziele:targets}};
 }
 
 // Offene Änderungen (Protokolle je Reihe) für den Commit durch den Betreiber.
@@ -464,3 +475,14 @@ export function pendingChanges(root){
  }
  return out;
 }
+
+// The trusted review binds source geometry and family rules to the atomic write.
+export function targetFontVersions(master,katalog,available={}){
+ const versions={},names=[...new Set(parseDesignSvg(master.svg()).layers.filter(l=>l.text).map(l=>l.font))];
+ for(const name of names){if(available[name]){versions[name]=createHash('sha256').update(JSON.stringify(available[name])).digest('hex');continue;}
+  const meta=katalog.fonts.list.get(name);if(!meta?.file){versions[name]=null;continue;}
+  const file=safeKatalogPath(katalog.root,path.relative(katalog.root,meta.file).split(path.sep).join('/'));versions[name]=createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+ }
+ return versions;
+}
+export function designTargetChecksum(master,family,svgText=master.svg(),versions={}){return createHash('sha256').update(JSON.stringify(master.json)).update(svgText).update(JSON.stringify(family)).update(JSON.stringify(Object.entries(versions).sort(([a],[b])=>a.localeCompare(b)))).digest('hex');}

@@ -246,3 +246,10 @@ test('K10 / Ü1.1 server gate: text below the process minimum is rejected (engra
  // Neue Texte entstehen nie unter der Mindestgröße.
  assert.ok(newEditableObject(config,{type:'text',text:'Neu',font:'Montserrat',size:1},'tiny',fonts,motifs).size>=3);
 });
+
+test('explicit photo colour survives draft roundtrip and rejects invalid/non-photo values',()=>{
+ const s=state(),photo=s.objects.find(o=>o.type==='photoSlot');Object.assign(photo,{uxUploadId:'test-photo',uxUploadKind:'photo'});
+ for(const color of ['original','grayscale','sepia']){photo.uxPhotoColor=color;assert.equal(readDraft(config,save(s),fonts,motifs).design.objects.find(o=>o.id===photo.id).uxPhotoColor,color);}
+ for(const invalid of ['automatic',null,{},true]){photo.uxPhotoColor=invalid;assert.throws(()=>save(s),/Fotofarbe/);}
+ delete photo.uxPhotoColor;s.objects.find(o=>o.type==='text').uxPhotoColor='original';assert.throws(()=>save(s),/Fotofarbe/);
+});

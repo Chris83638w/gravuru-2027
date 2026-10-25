@@ -12,6 +12,7 @@ const FIXTURE = fileURLToPath(new URL('./fixtures/shop-sync/', import.meta.url))
 const KATALOG = path.join(FIXTURE, 'katalog');
 const EXPORT = path.join(FIXTURE, 'export-7x2.json');
 const LINE = 'edelstahl-tuerschilder';
+const FONT={regular:{units:1000,glyphs:Object.fromEntries([...new Set('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ')].map(c=>[c,{a:400,d:'M0 0 L300 0 L300 600 L0 600 Z'}]))}},FONTS={Michroma:FONT};
 const STAMP = '2026-10-24T12:00:00.000Z';
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const exportDoc = () => JSON.parse(fs.readFileSync(EXPORT, 'utf8'));
@@ -57,12 +58,13 @@ function temporary(t, {designs = null} = {}) {
   const exportFile = path.join(base, 'products.json');
   fs.copyFileSync(EXPORT, exportFile);
   if (designs !== null) {
-    const ids = new Set(targetsForLine(openKatalog(katalogRoot), LINE).targets.map(target => target.startDesign));
+    const katalog=openKatalog(katalogRoot),targets=targetsForLine(katalog,LINE).targets,ids=new Set(targets.map(target=>target.startDesign));
     for (const id of ids) {
       const dir = path.join(katalogRoot, 'designs', 'edelstahl-gravur-70x23', id);
       fs.mkdirSync(dir, {recursive:true});
-      fs.writeFileSync(path.join(dir, 'design.svg'), '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 23.3"><text id="text-1" x="35" y="12" font-size="5">Fixture</text></svg>');
-      const data = {id, name:'Offline test fixture', plateMm:[70,23.3], material:'Edelstahl', themes:['familienschilder']};
+      const target=targets.find(target=>target.startDesign===id),size=katalog.families.get(target.family).sizes.find(size=>size.key===target.sizeKey),plateMm=[size.widthMm,size.heightMm];
+      fs.writeFileSync(path.join(dir,'design.svg'),'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+plateMm.join(' ')+'"><text id="text-1" x="'+size.widthMm/2+'" y="'+size.heightMm/2+'" text-anchor="middle" font-size="5" font-family="Michroma">Fixture</text></svg>');
+      const data={id,name:'Offline test fixture',plateMm,sizes:[size.key],material:'Edelstahl',process:'Gravur',form:'Rechteck',themes:['familienschilder']};
       if (designs === 'released') data.freigabe = {status:'freigegeben', am:STAMP, von:'synthetic test only'};
       fs.writeFileSync(path.join(dir, 'design.json'), JSON.stringify(data) + '\n');
     }
@@ -70,15 +72,15 @@ function temporary(t, {designs = null} = {}) {
   return {base, katalogRoot, exportFile};
 }
 const inputs = context => ({catalog:snapshot(context.katalogRoot), export:sha256(fs.readFileSync(context.exportFile))});
-const prepare = context => prepareDryRun({...context, lineId:LINE, generatedAt:STAMP});
+const prepare = context => prepareDryRun({...context, lineId:LINE, generatedAt:STAMP,available:FONTS});
 const argv = (context, out, withExport = false) => ['--katalog', context.katalogRoot, '--linie', LINE, '--out', out, ...(withExport ? ['--export', context.exportFile] : [])];
 function capture() {
   let text = '';
-  return {stdout:{write(value) { text += value; }}, get text() { return text; }};
+  return {available:FONTS,stdout:{write(value) { text += value; }}, get text() { return text; }};
 }
 
 function assertCatalog(report, root) {
-  const catalog = openKatalog(root), expected = targetsForLine(catalog, LINE);
+  const catalog = openKatalog(root), expected = targetsForLine(catalog, LINE,{fonts:FONTS});
   const mains = catalog.lines.get(LINE).subcategories.flatMap(sub => sub.mainProducts ?? []);
   assert.deepEqual(report.catalog.line, expected.line);
   assert.deepEqual(report.catalog.targets, expected.targets);
@@ -98,7 +100,7 @@ function assertCatalog(report, root) {
 }
 
 function assertPlan(report, context, doc) {
-  const expected = planShopSync(targetsForLine(openKatalog(context.katalogRoot), LINE), doc, {generatedAt:STAMP});
+  const expected = planShopSync(targetsForLine(openKatalog(context.katalogRoot), LINE,{fonts:FONTS}), doc, {generatedAt:STAMP});
   assert.equal(report.mode, 'export-plan');
   assert.deepEqual(report.plan, expected, 'wrapper preserves the existing planner, including its defaults');
   assert.deepEqual(report.export, {
@@ -107,9 +109,9 @@ function assertPlan(report, context, doc) {
   });
 }
 
-test('catalog-only: real catalog targets, no shop counts or invented plan; missing approvals stay open', t => {
+test('catalog-only: real catalog targets, no shop counts or invented plan; missing approvals stay open', async t => {
   const context = temporary(t), before = inputs(context);
-  const report = prepareDryRun({katalogRoot:context.katalogRoot, lineId:LINE, generatedAt:STAMP});
+  const report = await prepareDryRun({katalogRoot:context.katalogRoot, lineId:LINE, generatedAt:STAMP,available:FONTS});
   assert.equal(report.schema, 'gravuru-shop-sync-dry-run/v1');
   assert.equal(report.generatedAt, STAMP);
   assert.equal(report.mode, 'catalog-only');
@@ -122,11 +124,11 @@ test('catalog-only: real catalog targets, no shop counts or invented plan; missi
   assert.deepEqual(inputs(context), before);
 });
 
-test('unapproved local masters remain open even with an otherwise complete export', t => {
+test('unapproved local masters remain open even with an otherwise complete export', async t => {
   const context = temporary(t, {designs:'unreleased'}), doc = exportDoc();
   doc.complete = true;
   fs.writeFileSync(context.exportFile, JSON.stringify(doc));
-  const before = inputs(context), report = prepare(context);
+  const before = inputs(context), report = await prepare(context);
   assertPlan(report, context, doc);
   assertCatalog(report, context.katalogRoot);
   assert.equal(report.plan.counts.offen, report.catalog.counts.targets);
@@ -135,14 +137,14 @@ test('unapproved local masters remain open even with an otherwise complete expor
   assert.deepEqual(inputs(context), before);
 });
 
-test('released TEMP masters: full and partial exports retain the genuine planner counts and creation safeguards', t => {
+test('released TEMP masters: full and partial exports retain the genuine planner counts and creation safeguards', async t => {
   const context = temporary(t, {designs:'released'}), doc = exportDoc();
   doc.products = doc.products.filter(product => product.id !== 'gid://shopify/Product/16099000000001');
   const results = [];
   for (const complete of [false, true]) {
     doc.complete = complete;
     fs.writeFileSync(context.exportFile, JSON.stringify(doc));
-    const before = inputs(context), report = prepare(context);
+    const before = inputs(context), report = await prepare(context);
     assertPlan(report, context, doc);
     assertCatalog(report, context.katalogRoot);
     assert.equal(report.export.complete, complete);
@@ -163,26 +165,26 @@ test('released TEMP masters: full and partial exports retain the genuine planner
   assert.notDeepEqual(results[0], results[1]);
 });
 
-test('same design fingerprint keeps data-only differences unchanged: no implicit data-update bypass', t => {
+test('same design fingerprint keeps data-only differences unchanged: no implicit data-update bypass', async t => {
   const context = temporary(t, {designs:'released'}), doc = exportDoc();
-  const target = targetsForLine(openKatalog(context.katalogRoot), LINE).targets.find(target => target.mainProductId === '3100000');
+  const target = targetsForLine(openKatalog(context.katalogRoot), LINE,{fonts:FONTS}).targets.find(target => target.mainProductId === '3100000');
   const product = doc.products.find(product => product.id === 'gid://shopify/Product/16077793821052');
   product.designSha256 = target.designSha256;
   product.variants.nodes[0].price = '9.99';
   fs.writeFileSync(context.exportFile, JSON.stringify(doc));
-  const before = inputs(context), report = prepare(context);
+  const before = inputs(context), report = await prepare(context);
   assertPlan(report, context, doc);
   assert.equal(byMain(report.plan, '3100000').action, 'unverändert');
   assert.equal(byMain(report.plan, '3100000').dataChangesSkipped, true);
   assert.deepEqual(inputs(context), before);
 });
 
-test('run writes only new LF reports, plus the exact plan when given an export; inputs and credential values never enter the outputs', t => {
+test('run writes only new LF reports, plus the exact plan when given an export; inputs and credential values never enter the outputs', async t => {
   const context = temporary(t, {designs:'released'}), before = inputs(context);
   for (const withExport of [false, true]) {
     // A sibling with the same prefix is outside the catalog and must be accepted.
     const out = path.join(context.base, 'katalog-bericht-' + withExport), output = capture();
-    const report = run(argv(context, out, withExport), output);
+    const report = await run(argv(context, out, withExport), output);
     assert.deepEqual(fs.readdirSync(out).sort(), withExport ? ['bericht.json','bericht.md','plan.json'] : ['bericht.json','bericht.md']);
     assert.deepEqual(readJson(path.join(out, 'bericht.json')), report);
     if (withExport) assert.deepEqual(readJson(path.join(out, 'plan.json')), report.plan);
@@ -204,51 +206,51 @@ test('run writes only new LF reports, plus the exact plan when given an export; 
   assert.deepEqual(inputs(context), before);
 });
 
-test('run rejects catalog-contained or existing output paths before writing anything', t => {
+test('run rejects catalog-contained or existing output paths before writing anything', async t => {
   const context = temporary(t), existing = path.join(context.base, 'already-there');
   fs.mkdirSync(existing);
   fs.writeFileSync(path.join(existing, 'keep.txt'), 'unchanged\n');
   const before = snapshot(context.base);
   for (const out of [context.katalogRoot, path.join(context.katalogRoot, 'reports'), path.join(context.katalogRoot, 'nested', 'reports'), existing]) {
-    assert.throws(() => run(argv(context, out), capture()), /außerhalb|existiert bereits/);
+    await assert.rejects(() => run(argv(context, out), capture()), /außerhalb|existiert bereits/);
     assert.deepEqual(snapshot(context.base), before);
   }
 });
 
-test('strict CLI refuses apply/create/bypass, unknown, duplicated and missing options; help needs no files', t => {
+test('strict CLI refuses apply/create/bypass, unknown, duplicated and missing options; help needs no files', async t => {
   const context = temporary(t), out = path.join(context.base, 'must-not-exist'), valid = argv(context, out);
   const before = snapshot(context.base);
   for (const option of ['--apply','--create','--alle-designs','--daten-aktualisieren','--unknown','unexpected-positional']) {
-    assert.throws(() => run([...valid, option], capture()), /nicht erlaubte Option/);
+    await assert.rejects(() => run([...valid, option], capture()), /nicht erlaubte Option/);
   }
   for (const [option, value] of [['--katalog',context.katalogRoot],['--linie',LINE],['--out',out],['--export',context.exportFile]]) {
     const first = option === '--export' ? [...valid, option, value] : valid;
-    assert.throws(() => run([...first, option, value], capture()), /doppelt/);
+    await assert.rejects(() => run([...first, option, value], capture()), /doppelt/);
   }
   for (const missing of [[], ['--katalog'], ['--katalog',context.katalogRoot,'--linie',LINE], [...valid,'--export'], [...valid,'--help']]) {
-    assert.throws(() => run(missing, capture()));
+    await assert.rejects(() => run(missing, capture()));
   }
   const output = capture();
-  assert.equal(run(['--help'], output), null);
+  assert.equal(await run(['--help'], output), null);
   assert.match(output.text, /--katalog/);
   assert.deepEqual(snapshot(context.base), before);
 });
 
-test('full export: a missing SKU cannot turn the existing 80x20 product from update into create; null remains valid', t => {
+test('full export: a missing SKU cannot turn the existing 80x20 product from update into create; null remains valid', async t => {
   const context = temporary(t, {designs:'released'}), doc = exportDoc();
   doc.complete = true;
   const product = doc.products.find(product => product.id === 'gid://shopify/Product/16099000000001');
   const variant = product.variants.nodes.find(variant => variant.sku === 'TRE-V2A-8x2-D1');
   assert.ok(variant, 'the fixture contains the existing product and its identifying SKU');
   fs.writeFileSync(context.exportFile, JSON.stringify(doc));
-  const baseline = prepare(context);
+  const baseline = await prepare(context);
   assertPlan(baseline, context, doc);
   assert.equal(byMain(baseline.plan, '9900000', 'GR-ES-RE-80X20-T15').action, 'update');
 
   delete variant.sku;
   fs.writeFileSync(context.exportFile, JSON.stringify(doc));
   const before = inputs(context), out = path.join(context.base, 'no-create-report'), output = capture();
-  assert.throws(() => run(argv(context, out, true), output), /SKU-Feld/);
+  await assert.rejects(() => run(argv(context, out, true), output), /SKU-Feld/);
   assert.equal(fs.existsSync(out), false, 'no create plan or report may be written from a missing-SKU export');
   assert.equal(output.text, '');
   assert.deepEqual(inputs(context), before);
@@ -256,13 +258,13 @@ test('full export: a missing SKU cannot turn the existing 80x20 product from upd
   variant.sku = 'TRE-V2A-8x2-D1';
   doc.products[0].variants.nodes[0].sku = null;
   fs.writeFileSync(context.exportFile, JSON.stringify(doc));
-  const nullBefore = inputs(context), withNull = prepare(context);
+  const nullBefore = inputs(context), withNull = await prepare(context);
   assertPlan(withNull, context, doc);
   assert.equal(byMain(withNull.plan, '9900000', 'GR-ES-RE-80X20-T15').action, 'update');
   assert.deepEqual(inputs(context), nullBefore);
 });
 
-test('malformed or wrong-shop exports fail before a report directory is created', t => {
+test('malformed or wrong-shop exports fail before a report directory is created', async t => {
   const context = temporary(t), out = path.join(context.base, 'must-not-exist');
   const cases = [
     ['array export', doc => doc.products],
@@ -287,7 +289,7 @@ test('malformed or wrong-shop exports fail before a report directory is created'
   for (const [name, mutate] of cases) {
     fs.writeFileSync(context.exportFile, JSON.stringify(mutate(exportDoc())));
     const before = inputs(context);
-    assert.throws(() => run(argv(context, out, true), capture()), /Export/, name);
+    await assert.rejects(() => run(argv(context, out, true), capture()), /Export/, name);
     assert.equal(fs.existsSync(out), false, name);
     assert.deepEqual(inputs(context), before, name);
   }

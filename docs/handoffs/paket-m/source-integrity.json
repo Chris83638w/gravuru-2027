@@ -1,0 +1,35 @@
+{
+  "schema": "paket-m-source-integrity-v1",
+  "catalogueBase": "57939029216bda6fa058b788b9111aaa6156fcf3",
+  "acquiredPrimaryFiles": 1894,
+  "unchangedPrimaryFiles": 1892,
+  "onlyChangedPrimaryFiles": [
+    "linien/README.md",
+    "designs/README.md"
+  ],
+  "realDesignJSONsMigrated": 0,
+  "realApprovalMutations": 0,
+  "privateCopyApply": {
+    "counts": {
+      "masters": 761,
+      "ready": 759,
+      "unchanged": 0,
+      "blocked": 2,
+      "legacyApproved": 0,
+      "blockedLegacyApproved": 0,
+      "approvedBefore": 0,
+      "approvedAfter": 0
+    },
+    "written": 759
+  },
+  "privateCopySecondDryRun": {
+    "masters": 761,
+    "ready": 0,
+    "unchanged": 759,
+    "blocked": 2,
+    "legacyApproved": 0,
+    "blockedLegacyApproved": 0,
+    "approvedBefore": 0,
+    "approvedAfter": 0
+  }
+}

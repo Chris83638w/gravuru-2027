@@ -43,8 +43,8 @@ Werkstatt und Dashboard angeschlossen, deshalb gelten die Schnittstellen unten v
 ## Paket AMZ · drei Werkzeuge mit festen Schnittstellen
 
 Branch `dev/amazon-20261025-<account>`, PR gegen `main`, Bericht `docs/handoffs/2026-10-25-paket-amz-bericht.md`,
-Absatz oben in `STATUS.md`. Pilot: **Edelstahl-Türschilder** (Katalog vollständig, Preise gesetzt), zuerst **ein**
-Hauptprodukt mit allen Größen, danach die Linie.
+Absatz oben in `STATUS.md`. Pilot: **Edelstahl-Türschilder** (Katalog vollständig, Preise gesetzt), zuerst **eine**
+Formatreihe mit allen ihren Größen (Vorschlag: Rechteck 3:2 wie `briefkasten855`), danach die Linie.
 
 ### A · Listing-Exporter (Flat File)
 
@@ -57,11 +57,18 @@ Hauptprodukt mit allen Größen, danach die Linie.
   zuerst lesen. Die PICTURE_FRAME-Vorlage der
   Acrylherzen passt nicht. Die Struktur wird aus der Vorlage gelesen (Einstellungszeile, Datendefinitionen, gültige
   Werte), nie fest codiert.
-- **Struktur:**
-  - Je Hauptprodukt ein Parent, die Größen als Kinder.
-  - `variation_theme` nur mit gültigem Enum der Vorlage. Bei SIGNAGE ist `FARBE/GRÖSSE` gültig, `GRÖSSE/FARBE` und
-    alle `*_NAME`-Werte sind veraltet.
-  - Die Befestigung läuft als Custom-Option mit Aufpreis, nicht als Variante.
+- **Struktur nach Chris' bewährtem Custom-Prinzip** (Vorlage `briefkasten855`, Claude am 25.10. gelesen):
+  - **Ein Listing je Formatreihe** (Material + Verfahren + Form + Seitenverhältnis). Der Listingpreis ist der Preis
+    der kleinsten Größe.
+  - **Größen, Designs und Befestigung sind Custom-Optionen mit Aufpreis**, keine Varianten. Das funktioniert, weil
+    alle Größen einer Formatreihe dasselbe Seitenverhältnis haben: ein Vorschaubild, eine Textfläche und eine
+    Umrechnung für alle Größen.
+  - Größen-Aufpreis = Katalogpreis der Größe minus Katalogpreis der kleinsten Größe. Befestigungsaufpreise aus der
+    Familie.
+  - Design-Aufpreis: **offen** (Chris; die Bestandsvorlage nutzt 0,50–2,00 €, „Ohne Motiv“ 0 €). Ohne Angabe von
+    Chris 0 € und Hinweis im Bericht.
+  - Varianten (Parent/Child) nur, wenn eine Linie es ausdrücklich verlangt. Dann `variation_theme` nur mit gültigem
+    Enum der Vorlage: Bei SIGNAGE ist `FARBE/GRÖSSE` gültig, `GRÖSSE/FARBE` und alle `*_NAME`-Werte sind veraltet.
   - SKU = Katalog-SKU (`GR-ES-RE-90X30-T15`, Druck `UV-…`).
   - Kennungen bleiben stabil. Keine ASIN, EAN oder GTIN erfinden: leer lassen bzw. Freistellungswert nur, wenn Chris
     ihn nennt.
@@ -84,10 +91,8 @@ Hauptprodukt mit allen Größen, danach die Linie.
 - Bewährte Angebotswerte aus dem Acrylherz-Upload vom 16.10. (in `konto.json` vorbelegt, je Linie änderbar):
   Versand durch Händler mit Prime-Vorlage, Bearbeitungszeit 1 Tag, Menge 999, Ursprungsland Deutschland. Gewicht
   je Größe aus dem Katalog; fehlt es, bleibt das Feld leer.
-- Variantenstruktur je Linie einstellbar. Chris kennt bei Amazon beide Muster:
-  - Standard für den Pilot: ein Parent je Hauptprodukt, Kinder = Größen, Designauswahl in Custom.
-  - Alternative, wie bei den Acrylherzen: Kinder = Designs (Thema FARBE), Größe als Custom-Option mit Aufpreis.
-  - Chris entscheidet am Pilot vor dem Upload.
+- Variantenstruktur je Linie einstellbar. Standard ist das Formatreihen-Prinzip oben. Die Alternative der Acrylherzen
+  (Kinder = Designs, Thema FARBE, Größe als Custom-Option) bleibt als Einstellung möglich.
 - Bilder: Felder für Produktbilder bleiben leer, bis Paket P sie liefert. Keine alten Amazon-Bild-URLs verwenden.
 
 ### B · Custom-Vorlagen-Exporter (Personalisierung)
@@ -100,6 +105,23 @@ Hauptprodukt mit allen Größen, danach die Linie.
 | `Custom-V2A-Edelstahl-2026-09-19.xlsx` | `briefkasten855` | 447 Spalten, **4 Textfelder** in 2 Schriftgruppen, Design-Optionen | **Basis für Edelstahl-Türschilder.** Hat schon 4 Felder und umgeht so das 10-statt-4-Problem. |
 | `Custom-Gedenktafel-Gravur-2026-10-19.xlsx` | `Boxenschild2443` | 423 Spalten, 10 Textfelder in 2 Gruppen, Foto, Designs D200–D236, Größe, Befestigung | Basis für Gedenktafeln (später) |
 | `Custom-GD-Test-2026-09-19.xlsx` | `Boxenschild2443` | 423 Spalten, gleicher Aufbau | Codex-Testbasis vom 19.09., nur zum Vergleich |
+
+**So ist `briefkasten855` aufgebaut** (das Muster für den Pilot):
+- **Oberfläche:** eine Fläche mit Grundbild (Platte) und Schnittmaske.
+- **Design-Auswahl** (Pflicht, mit „Ohne Motiv“): je Design Name mit Nummer („Anker D6“), dazu ein Overlay-PNG mit
+  dem Motiv an seiner Stelle, eine Miniatur und ein Aufpreis.
+  - Die D-Nummer im Namen ist der Schlüssel für den Importer.
+  - Das Overlay zeigt **nur Motive** (`motiv-*`/`deko-*`), keine Texte, denn die Texte setzt der Kunde frei.
+- **Größe** (Pflicht): 8×5, 9×6, 12×8 … 45×30 mit Aufpreisen. Alle Größen haben das Seitenverhältnis 3:2.
+- **Text:**
+  - 2 Schriftgruppen mit eigener Schriftwahl, die Farbe ist fest „Lasergravur“.
+  - 4 Textfelder „Zeile 1–4“ mit Zeichen- und Zeilenlimit; Zeile 3 und 4 kosten 1 € Aufpreis.
+  - Freie Platzierung in der Fläche x 9, y 73, 383 × 254 px im 400er Raster. Das ist genau die Corel-Formel für 3:2:
+    380 px breit, 253 px hoch, mittig.
+- **Befestigung** (Pflicht, mit „ohne“), **Anmerkung** (150 Zeichen), **Entwurf** (mit/ohne, Aufpreis).
+
+Daraus folgt: Eine Custom-Vorlage je Formatreihe und Material/Verfahren, nicht je Design oder Größe. So bleibt man
+deutlich unter 150.
 
 Die Vorlagen sind 1–5 Wochen alt. Ein Generieren in Seller Central („Vorlage erstellen“) belegt einen der
 150 Speicherplätze und ist ein Schreibvorgang; das macht nur Chris. Meldet Amazon beim Upload Schemafehler, bittet
@@ -171,7 +193,7 @@ Claude Chris um eine frische Vorlage, statt Spalten anzupassen.
   - URL-Prüfung (mit lokalem Testserver).
   - K15-Tests grün.
   - Bestehende Tests unverändert grün; den Linux-Vollauf macht Claude.
-- **Pilot-Ausgabe:** ein Edelstahl-Hauptprodukt mit allen Größen (Flat File + Custom-Datei + Bilder-ZIP +
+- **Pilot-Ausgabe:** eine Edelstahl-Formatreihe mit allen Größen (Flat File + Custom-Datei + Bilder-ZIP +
   URL-Liste), Vorschau-PNGs der Custom-Bilder im Bericht.
 - **Bericht:** offene Punkte für Chris (Marke, GPSR, Vorlage, Textfelder-Befund), was im Browser zu prüfen ist und
   was hochzuladen ist.

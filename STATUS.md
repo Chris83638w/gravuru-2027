@@ -1,3 +1,10 @@
+## Paket M: vollständige GitHub-Übergabe · 25.10.2026 (Codex/Astra)
+
+- Chris: „nein immer über github, da muss euer austausch sein“. Gemeinsamer Austausch über versionierte Übergaben, Issues und PR-Kommentare in GitHub.
+- [Vollständige Übergabe für Claude](docs/handoffs/2026-10-25-paket-m-gesamtuebergabe-claude.md): Paket M, Kennungsentscheidungen, spätere Foto-/Maskenwünsche, Graustufen nur für Kunden-Uploads, Claudes Nachbesserungen sowie historische und aktuelle Prüfnachweise auf Quellenbasis Code `7f849b9` / Katalog `7f4a048`.
+- Offene Grenze: schwarzer Bereich im D204-Bestandsfoto weiterhin Paket Q; echte Katalogmigration und Freigaben bleiben gesondert. Diese Änderung dokumentiert den Stand, verändert keinen Anwendungscode und führt keine Live-Aktion aus.
+- Prüfung: Quellen und Merge-Stand auf GitHub abgeglichen; LF-Zeilenenden. Nächster Schritt: Claude liest die Übergabe und hält Rückfragen/Ergebnisse im GitHub-PR oder Issue fest.
+
 ## Amazon-Strang in eigenem Repo · 25.10.2026 (Claude)
 
 - Chris hat das Repo **`gravuru-customer-amazon`** (privat) bestimmt und es ist angelegt (`main` 14515f0). Dort liegen ab jetzt der Auftrag Paket AMZ, die **Amazon-Referenz** (Regeln, Grenzen, Fehlercodes mit Quellen vom 25.10.) und später der gesamte Amazon-Code (Listing-Exporter, Custom-Vorlagen, Bestell-Importer).

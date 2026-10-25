@@ -3,8 +3,8 @@
 - Chris hat das Repo **`gravuru-customer-amazon`** (privat) bestimmt und es ist angelegt (`main` 14515f0). Dort liegen ab jetzt der Auftrag Paket AMZ, die **Amazon-Referenz** (Regeln, Grenzen, Fehlercodes mit Quellen vom 25.10.) und später der gesamte Amazon-Code (Listing-Exporter, Custom-Vorlagen, Bestell-Importer).
 - Dieser Auftrag (`docs/handoffs/2026-10-25-paket-amz-amazon.md`) ist hier nur noch ein Zeiger. K15 (`scripts/import-amazon-order.py`) bleibt vorerst hier und wird beim Bau von AMZ in das neue Repo übernommen.
 - Befund aus dem Studium der Amazon-Hilfe und der Vorlagen: „10 statt 4 Textfelder“ war ein Bedienfehler (nicht benötigte Komponenten bleiben leer, Spalten werden nie entfernt). Nachweis in der Kundenvorschau steht aus.
-- Entschieden von Chris (25.10., 13:40): alle 103 Designs im Pilot testen; Form als Amazon-Variante, Größe unter „Jetzt anpassen“ (Kind = Form + Seitenverhältnis, bei Edelstahl 13 Kinder); Design-Aufpreis fest 1,39 €; PDF-Upload nur bei bestimmten Produkten. Programmiert wird mit Astra (Chris 25.10.).
-- Offen bei Chris: GTIN-Freistellung für gravuru, GPSR-Kontakt, welche Produkte PDF-Upload bekommen, Zugang des Accounts von Astra zum neuen Repo, Freigabe der Startdesigns (0 von 102). Details im Auftrag im neuen Repo.
+- Entschieden von Chris (25.10., 13:40 und 14:00): alle 103 Designs im Pilot testen; Form als Amazon-Variante, Größe unter „Jetzt anpassen“ (Kind = Form + Seitenverhältnis, bei Edelstahl 13 Kinder); Design-Aufpreis fest 1,39 €; PDF-Upload bei Foto-Produkten; GTIN-Freistellung läuft über die Marke gravuru; Hersteller/GPSR gravuru GmbH (Angaben in `amazon/konto.json` im neuen Repo). Programmiert wird mit Astra (Chris 25.10.). Startprompt für Astra: `docs/handoffs/2026-10-25-startprompt-astra-amz.md` im neuen Repo (`main` ≥ 143d28a).
+- Offen bei Chris: Zugang des Accounts von Astra zum neuen Repo, Freigabe der Startdesigns (0 von 102, zugesagt).
 
 ## Paket M gemerged · 25.10.2026 (Claude)
 

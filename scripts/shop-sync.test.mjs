@@ -275,9 +275,10 @@ test('shop planning validates current geometry and raw material rules even after
   [text.replace('x="35"','x="1000"'),/Gestaltungsfläche/],
   ['<g id="motiv-1"><path d="M1000 10 L1005 10 L1005 15 L1000 15 Z"/></g>',/Gestaltungsfläche/],
   [text.replace('font-size="5"','font-size="5" fill="#ff0000"'),/Farbige/],
-  ['<g id="foto-1"><rect x="10" y="5" width="10" height="10"/></g>',/Foto/],
   [text.replace('Montserrat','Missing'),/Schrift fehlt: Missing/]
  ]){write(content);entry=await planFor();assert.equal(entry.action,'offen');assert.equal(entry.input,null);assert.match(entry.reasons.join(' '),reason);const diagnostic=await planFor({allDesigns:true});assert.equal(diagnostic.action,'offen','diagnostic approval bypass does not bypass fit');assert.equal(diagnostic.input,null);}
+ // Fotogravur ist Produktwissen (Claude 25.10.): Ein Fotofeld auf Edelstahl-Gravur ist „prüfen“, keine Sperre.
+ write('<g id="foto-1"><rect x="10" y="5" width="10" height="10"/></g>');entry=await planFor();assert.equal(entry.action,'update');
  fs.writeFileSync(path.join(folder,'design.svg'),normal);const withoutFonts=targetsForLine(openKatalog(dir),'edelstahl-tuerschilder',{only}).targets[0];assert.match(withoutFonts.open.join(' '),/Schrift fehlt/);
  entry=await planFor({available:{}});assert.equal(entry.action,'offen');assert.match(entry.reasons.join(' '),/Schrift fehlt/);
  // A compiler failure is a named blocker, not an approximation or a partial product plan.

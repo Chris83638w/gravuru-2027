@@ -23,8 +23,11 @@ test('monochrome source transfers to print without a color restriction; colored 
 });
 test('photo placeholders follow the process profile: photo engraving is allowed where tools.photo is set',()=>{
  const source=master('<g id="foto-1"><rect x="20" y="20" width="20" height="20"/></g>');
- for(const profile of ['steel-engraving','slate-engraving','acrylic-engraving','wood-engraving','color-print'])assert.equal(designTargetRules(source,family(profile)).status,'passt',profile);
- assert.ok(!designTargetRules(source,family()).details.some(d=>d.code==='photo_on_engraving'));
+ const withPhoto=profile=>({...family(profile),photo:{includedCount:1,extraPriceCents:899}});
+ for(const profile of ['steel-engraving','slate-engraving','acrylic-engraving','wood-engraving','color-print']){
+  assert.equal(designTargetRules(source,withPhoto(profile)).status,'passt',profile);
+  const open=designTargetRules(source,family(profile));assert.equal(open.status,'prüfen',profile);assert.deepEqual(open.details.map(d=>d.code),['photo_family_open'],'ohne Fotoangabe der Familie: prüfen, kein Ausschluss');
+ }
 });
 test('V2A strokes under 0.5 mm warn with motif/path/location and follow target scale',()=>{
  const source=master(motif('M10 10L30 20','fill="none" stroke="#000000" stroke-width="0.49"'));

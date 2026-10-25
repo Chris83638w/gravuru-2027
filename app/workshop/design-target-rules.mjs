@@ -47,6 +47,9 @@ export function designTargetRules(master,family,{scale=1,template=null}={}){
   if(layer.kind==='text'){
    const size=object?.size??layer.size*scale;if(size<TARGET_MIN_TEXT_MM-.005)add('text_below_minimum','prüfen',layer.id,layer.id+': Schrift '+n(size)+' mm unter der Mindestgröße 3 mm.',{sizeMm:n(size),location});
   }
+  // Ob ein Produkt Fotos hat, hängt am Produkt (Chris 24.10.): Ohne Fotoangabe der Familie (inklusive Fotos,
+  // Aufpreis) ist ein Fotofeld zu prüfen, aber kein Ausschluss.
+  if(layer.kind==='foto'&&process.tools?.photo===true&&family.photo===undefined)add('photo_family_open','prüfen',layer.id,layer.id+': Fotofeld – die Familie nennt keine Fotoangabe (inklusive Fotos, Aufpreis); bitte prüfen.',{location});
   if(process.method==='engraving'){
    // Fotogravur gehört zum Produktwissen (Chris 24.10.: Gravur auf Schiefer, Edelstahl, Acryl, Holz) und zum
    // Verfahrensprofil (tools.photo). Gesperrt ist ein Fotofeld nur, wenn das Verfahren kein Foto vorsieht –

@@ -8,13 +8,18 @@ export const TARGET_MIN_TEXT_MM=3;
 export const V2A_MIN_STROKE_MM=.5;
 const rank={'passt':0,'prüfen':1,'passt nicht':2};
 const n=v=>Number(v.toFixed(4));
+// Neutraltöne sind keine Farbe: Corel exportiert „Schwarz“ als #1b1918 bzw. #231f20 (aus CMYK). Ein Ton gilt erst
+// als farbig, wenn die RGB-Kanäle um mehr als NEUTRAL_TOLERANCE auseinanderliegen (Claude 25.10.: sonst sperrten
+// 68 Edelstahl-Texte/Motive, darunter drei Startdesigns).
+const NEUTRAL_TOLERANCE=16;
+const NEUTRAL_NAMES=['none','currentcolor','transparent','black','white','gray','grey','silver','dimgray','dimgrey','darkgray','darkgrey','lightgray','lightgrey','gainsboro','whitesmoke'];
 function chromatic(value){
- if(!value||['none','currentcolor','transparent','black','white','gray','grey'].includes(String(value).toLowerCase()))return false;
+ if(!value||NEUTRAL_NAMES.includes(String(value).toLowerCase()))return false;
  let raw=String(value).trim().toLowerCase(),rgb;
  if(/^#[a-f0-9]{3}$/.test(raw))rgb=raw.slice(1).split('').map(c=>parseInt(c+c,16));
  else if(/^#[a-f0-9]{6}$/.test(raw))rgb=[1,3,5].map(i=>parseInt(raw.slice(i,i+2),16));
  else if(/^rgba?\(/.test(raw)){const m=raw.match(/[\d.]+/g);if(m?.length>=3)rgb=m.slice(0,3).map(Number);}
- return rgb?Math.max(...rgb)!==Math.min(...rgb):true;
+ return rgb?Math.max(...rgb)-Math.min(...rgb)>NEUTRAL_TOLERANCE:true;
 }
 // A convex hull's minimum width is an upper bound for a filled contour's local
 // thickness. Only a width below the limit proves a thin component; it never

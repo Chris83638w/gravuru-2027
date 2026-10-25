@@ -17,6 +17,9 @@ test('monochrome source transfers to print without a color restriction; colored 
  for(const fill of ['#000000','#fff','rgb(80,80,80)'])assert.equal(designTargetRules(master(text(3,fill)),family('color-print')).status,'passt');
  for(const fill of ['#ff0000','red','rgb(80,20,30)']){assert.equal(designTargetRules(master(text(3,fill)),family()).status,'passt nicht');assert.equal(designTargetRules(master(text(3,fill)),family('color-print')).status,'passt');}
  const colored=master(motif('M10 10H30V20H10Z','fill="#0000ff"'));assert.equal(designTargetRules(colored,family()).details[0].code,'color_on_engraving');
+ // Corel-Schwarz aus CMYK und Grautöne sind neutral, keine Farbe.
+ for(const fill of ['#1b1918','#231f20','#999','#b3b3b3','silver'])assert.equal(designTargetRules(master(text(3,fill)),family()).status,'passt',fill);
+ assert.equal(designTargetRules(master(text(3,'#e0c8b0')),family()).status,'passt nicht','sichtbar getönte Farbe bleibt farbig');
 });
 test('photo placeholders follow the process profile: photo engraving is allowed where tools.photo is set',()=>{
  const source=master('<g id="foto-1"><rect x="20" y="20" width="20" height="20"/></g>');

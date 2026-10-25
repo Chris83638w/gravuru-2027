@@ -50,8 +50,11 @@ Hauptprodukt mit allen Größen, danach die Linie.
 
 - **Eingabe:** Katalog (Linie → Hauptprodukte → Familie/Größen/Befestigungen/Preise) und eine Textdatei je Produkt
   (siehe unten). **Ausgabe:** Amazon-Lagerbestandsdatei aus der **aktuellen Kategorie-Vorlage**, dazu ein Prüfbericht.
-- Für Türschilder ist das die SIGNAGE-Vorlage. Chris legt sie ab unter
-  `C:\Users\Christopher Koch\Documents\Codex\Amazon\05_Originale\Vorlagen\`. Die PICTURE_FRAME-Vorlage der
+- Für Türschilder ist das die SIGNAGE-Vorlage (Produkttyp „Beschilderung“, Amazon.de, Deutsch). Claude hat sie am
+  25.10. aus Seller Central geladen:
+  `C:\Users\Christopher Koch\Documents\Codex\Amazon\05_Originale\Vorlagen\SIGNAGE-Beschilderung-2026-10-25.xlsm`
+  (SHA-256 `9bfa3b78…a3997`). Amazon kennzeichnet sie als neue Vorlagenversion; das Blatt „Änderungen an der Vorlage“
+  zuerst lesen. Die PICTURE_FRAME-Vorlage der
   Acrylherzen passt nicht. Die Struktur wird aus der Vorlage gelesen (Einstellungszeile, Datendefinitionen, gültige
   Werte), nie fest codiert.
 - **Struktur:**

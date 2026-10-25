@@ -92,6 +92,19 @@ Hauptprodukt mit allen Größen, danach die Linie.
 
 ### B · Custom-Vorlagen-Exporter (Personalisierung)
 
+**Vorlagen** (Claude hat sie am 25.10. nur gelesen und abgelegt unter
+`C:\Users\Christopher Koch\Documents\Codex\Amazon\05_Originale\Vorlagen\`; Originale in Chris' Downloads):
+
+| Datei | SKU | Aufbau | Verwendung |
+| --- | --- | --- | --- |
+| `Custom-V2A-Edelstahl-2026-09-19.xlsx` | `briefkasten855` | 447 Spalten, **4 Textfelder** in 2 Schriftgruppen, Design-Optionen | **Basis für Edelstahl-Türschilder.** Hat schon 4 Felder und umgeht so das 10-statt-4-Problem. |
+| `Custom-Gedenktafel-Gravur-2026-10-19.xlsx` | `Boxenschild2443` | 423 Spalten, 10 Textfelder in 2 Gruppen, Foto, Designs D200–D236, Größe, Befestigung | Basis für Gedenktafeln (später) |
+| `Custom-GD-Test-2026-09-19.xlsx` | `Boxenschild2443` | 423 Spalten, gleicher Aufbau | Codex-Testbasis vom 19.09., nur zum Vergleich |
+
+Die Vorlagen sind 1–5 Wochen alt. Ein Generieren in Seller Central („Vorlage erstellen“) belegt einen der
+150 Speicherplätze und ist ein Schreibvorgang; das macht nur Chris. Meldet Amazon beim Upload Schemafehler, bittet
+Claude Chris um eine frische Vorlage, statt Spalten anzupassen.
+
 - **Eingabe:** dieselben Hauptprodukte und die Design-Master (Lieferform 2) samt Familie. **Ausgabe:** die
   Custom-Datei je SKU aus Amazons Vorlage (UTF-16 LE, BOM, Tab, CRLF, Kopfzeilen unverändert, keine Spalten
   entfernen), dazu ein Bilderpaket.

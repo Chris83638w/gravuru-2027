@@ -9,6 +9,11 @@
 - 20 Startdesigns sind neu „prüfen“, keine Sperre: V2A-Motivkonturen unter 0,5 mm, Text nahe Bohrloch.
 - Gedenktafeln 22×14: 74 passt, 4 prüfen (D212 „Daisy“ nahe Bohrloch).
 - Vollauf auf dem Merge-Stand mit allen Fixes: 1525 Tests, 1524 bestanden, 0 Fehler, 1 optionaler Skip.
+- Live-Befund nach dem Deploy behoben: Die Zielvorschau lief in die alte Laufzeit (`88469d0`, Route wie zuvor bei svg).
+- Host: Code 88469d0, Katalog 7f4a048, App neu gestartet. Im Shopify-Admin geprüft:
+  - Edelstahl unverändert: 2724 Designs, 671 ok, 102 Startdesigns, 104 Zuordnungen.
+  - Gedenktafeln 22×14: 22 ok, Zielvorschau D200 auf Naturschiefer „passt“, mit Fotofeld.
+  - Nichts freigegeben.
 - Echter Katalog nicht migriert: 0 Freigaben, der Legacy-Modus gilt weiter. Die Migration (`scripts/migrate-design-targets.mjs`) erst nach Rücksprache.
 
 ## Paket M · Kundenfotos präzisiert · 25.10.2026 (Codex / Astra)

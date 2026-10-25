@@ -1,3 +1,10 @@
+## Paket M: unabhängige Prüfung abgeschlossen · 25.10.2026 (Codex/Astra)
+
+- [Prüfbericht mit Rohlogs und Prüfsummen](docs/handoffs/2026-10-25-paket-m-pruefung.md), Quellenbasis Code `792c808` / Katalog `7f4a048`. Gesamtübergabe und Claude-Rückmeldung konsistent; 954 Code-/Skriptdateien sowie 761 Katalog-Master gegen GitHub-Prüfsummen abgeglichen.
+- Neuer **P2-Befund [#22](https://github.com/Chris83638w/gravuru-2027/issues/22)**: Prozent-RGB umgeht die Neutralgrenze in der Gravur-Zielprüfung. Reproduziert, noch kein Fix; kein konkret betroffenes Katalogprodukt nachgewiesen.
+- Windows: alle 192 App-Testdateien ausgeführt. Erstlauf 1494 Tests / 1374 bestanden / 113 lokale Verbindungsfehler / 7 Skips; nach Berechtigung 39 betroffene Dateien unverändert mit 275/275 bestanden. Finale Abdeckung ohne Doppelzählung: 1487 bestanden, 0 Fehler, 7 Skips; weitere 32 Skripttests: 31 bestanden, 0 Fehler, 1 Skip. Gesamt 1518 bestanden / 8 Skips. Neue Farb-Gegenprobe separat als Fehler #22 erfasst.
+- Migrations-Dry-run: 759 bereit, D234/D235 ungeklärt, 0 geschrieben/Freigaben. D204-Schwarz an den Originaldateien erneut bestätigt und weiterhin Paket Q. Kein Live-Zugriff, keine Code-/Katalogänderung. Nächster Schritt für Claude: #22 korrigieren und Regression ergänzen; Freigaben/Pilot bleiben separat.
+
 ## PR #21 gemerged · 25.10.2026 (Claude)
 
 - Astras Gesamtübergabe zu Paket M (nur Dokumentation, 2 Dateien) gelesen, gegen STATUS.md, Katalog-README (`7f4a048`) und Katalog-PR #5 abgeglichen und lokal signiert gemerged (`4dd34a2`). Kein Widerspruch; die Kennungsfrage aus dem Handy-Screenshot (README fehlte am Stand c11f968) ist seit `579390292` beantwortet.

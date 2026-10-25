@@ -1,0 +1,175 @@
+{
+  "reviewedAt": "2026-10-25",
+  "code": "792c808dc1ee7a16a0c37cfdeff9439d5b022a84",
+  "catalog": "7f4a048148a3a35548909c92978e99360c0988e6",
+  "verification": {
+    "masterJsons": {
+      "total": 761,
+      "gitBlobShaEqual": 761,
+      "explicitTargets": 0,
+      "globalApproved": 0,
+      "targetApproved": 0
+    },
+    "familyJsons": {
+      "total": 11,
+      "gitBlobShaEqual": 11
+    },
+    "lineJsons": {
+      "total": 12,
+      "gitBlobShaEqual": 12
+    },
+    "themesJson": {
+      "total": 1,
+      "gitBlobShaEqual": 1
+    },
+    "seriesIndexes": {
+      "total": 15,
+      "gitBlobShaEqual": 15
+    },
+    "stockCollisionJsons": {
+      "total": 24,
+      "gitBlobShaEqual": 24,
+      "correctIds": 24
+    },
+    "startDesigns": {
+      "mappings": 104,
+      "distinctIds": 102,
+      "duplicates": [
+        [
+          "TRE-V2A-8x5-D20",
+          [
+            {
+              "id": "4000000",
+              "size": [
+                "GR-ES-RE-90X60-T15"
+              ],
+              "subcategory": "familienschilder"
+            },
+            {
+              "id": "12400000",
+              "size": [
+                "GR-ES-RE-450X300-T15"
+              ],
+              "subcategory": "familienschilder"
+            }
+          ]
+        ],
+        [
+          "TRE-V2A-8x3,5-D29",
+          [
+            {
+              "id": "8900000",
+              "size": [
+                "GR-ES-RE-160X70-T15"
+              ],
+              "subcategory": "familienschilder"
+            },
+            {
+              "id": "9300000",
+              "size": [
+                "GR-ES-RE-240X105-T15"
+              ],
+              "subcategory": "familienschilder"
+            }
+          ]
+        ]
+      ]
+    },
+    "migration": {
+      "mode": "dry-run",
+      "masters": 761,
+      "ready": 759,
+      "blocked": [
+        "GT-S-22x14-D234",
+        "GT-S-22x14-D235"
+      ],
+      "written": 0,
+      "approvedBefore": 0,
+      "approvedAfter": 0,
+      "report": "catalog-dry-run.json"
+    },
+    "d204Assets": [
+      {
+        "path": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D204/foto-1.jpg",
+        "sha": "88b24bcea8dc57323f838ca3feffd2075e81fb4b",
+        "gitBlobShaEqual": true
+      },
+      {
+        "path": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D204/preview.png",
+        "sha": "238f0a64693728b325a33ced757d0953fdcba450",
+        "gitBlobShaEqual": true
+      },
+      {
+        "path": "designs/gedenktafeln-22x14/GT-S-22x14-D204/foto-1.png",
+        "sha": "aaddf91ae3e081950f6d891fe467d913553e30f6",
+        "gitBlobShaEqual": true
+      },
+      {
+        "path": "designs/gedenktafeln-22x14/GT-S-22x14-D204/original.png",
+        "sha": "fbc2bc41230bdee2408a7b8689d2537e46acc0d4",
+        "gitBlobShaEqual": true
+      }
+    ],
+    "imageInspection": {
+      "stockJpeg": {
+        "mode": "RGB",
+        "size": [
+          630,
+          800
+        ],
+        "alpha": false,
+        "blackBackdropVisible": true
+      },
+      "stockPreview": {
+        "mode": "RGB",
+        "size": [
+          600,
+          400
+        ],
+        "alpha": false,
+        "blackBackdropVisible": true
+      },
+      "lf2Photo": {
+        "mode": "RGBA",
+        "size": [
+          522,
+          662
+        ],
+        "alphaRange": [
+          0,
+          255
+        ],
+        "differentOrientation": true,
+        "uploadHintVisible": true
+      }
+    }
+  },
+  "findings": [
+    {
+      "priority": "P2",
+      "file": "app/workshop/design-target-rules.mjs",
+      "line": 21,
+      "title": "RGB percentages are not normalized before neutral tolerance",
+      "repro": [
+        {
+          "fill": "rgb(15%,0%,0%)",
+          "actual": "passt",
+          "expected": "passt nicht"
+        },
+        {
+          "fill": "rgb(38.25,0,0)",
+          "actual": "passt nicht"
+        },
+        {
+          "fill": "#260000",
+          "actual": "passt nicht"
+        }
+      ],
+      "impact": "Valid percentage-form colored SVG can bypass engraving color restriction; no current catalogue occurrence found.",
+      "suggestion": "Normalize RGB channels (including percentages) to 0..255 before comparing spread; regression test equivalent representations."
+    }
+  ],
+  "dataChanged": false,
+  "repoChanged": false,
+  "liveAccess": false
+}

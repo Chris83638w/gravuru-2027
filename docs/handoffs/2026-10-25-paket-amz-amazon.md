@@ -65,8 +65,11 @@ Formatreihe mit allen ihren Größen (Vorschlag: Rechteck 3:2 wie `briefkasten85
     Umrechnung für alle Größen.
   - Größen-Aufpreis = Katalogpreis der Größe minus Katalogpreis der kleinsten Größe. Befestigungsaufpreise aus der
     Familie.
-  - Design-Aufpreis: **offen** (Chris; die Bestandsvorlage nutzt 0,50–2,00 €, „Ohne Motiv“ 0 €). Ohne Angabe von
-    Chris 0 € und Hinweis im Bericht.
+  - **Design-Aufpreis immer** (Chris 25.10.): jedes Design kostet Aufpreis, nur „Ohne Motiv“/„Design frei“ ist
+    0 €. Die Beträge stehen in `amazon/design-aufpreise.json`.
+    - Der Exporter schlägt Stufen von 0,50/1,00/1,50/2,00 € nach Motivumfang vor; das ist die Spanne der
+      Bestandsvorlage.
+    - Chris bestätigt die Beträge. Ein Design ohne bestätigten Betrag wird nicht exportiert. Kein stilles 0 €.
   - Varianten (Parent/Child) nur, wenn eine Linie es ausdrücklich verlangt. Dann `variation_theme` nur mit gültigem
     Enum der Vorlage: Bei SIGNAGE ist `FARBE/GRÖSSE` gültig, `GRÖSSE/FARBE` und alle `*_NAME`-Werte sind veraltet.
   - SKU = Katalog-SKU (`GR-ES-RE-90X30-T15`, Druck `UV-…`).
@@ -122,6 +125,17 @@ Formatreihe mit allen ihren Größen (Vorschlag: Rechteck 3:2 wie `briefkasten85
 
 Daraus folgt: Eine Custom-Vorlage je Formatreihe und Material/Verfahren, nicht je Design oder Größe. So bleibt man
 deutlich unter 150.
+
+**Weitere Produkte mit Foto-Upload usw.** (Chris 25.10.): Der Exporter wird allgemein gebaut, nicht nur für
+Edelstahl. Muster dafür ist `Boxenschild2443` (Gedenktafel):
+- **Foto-Upload** (`ImageInputComponent` „Foto-Upload“): Bildfläche = Plattenfläche nach Corel-Formel (bei 3:2:
+  x 9, y 73, 381 × 254 px). Pflicht oder optional, Anzahl und Aufpreis für weitere Fotos aus `family.photo`.
+- **Mehr Textfelder:** bis 10 Felder in 2 Gruppen, Limits je Thema.
+- **Zusatzoptionen** aus der Familie (Befestigungen, Ständer, Silikon, Kordel, Pflegespray), jeweils mit Aufpreis
+  und kostenloser Alternative, wo die Auswahl Pflicht ist.
+- **Mehrere Oberflächen** (z. B. Vorder- und Rückseite) nur, wenn eine Familie zwei Gestaltungsflächen hat.
+- Ein Test erzeugt neben dem Edelstahl-Pilot auch eine Gedenktafel-Formatreihe mit Foto, nur als Testausgabe. Den
+  Rundlauf mit Foto deckt der K15-Importer bereits ab (`foto-1`).
 
 Die Vorlagen sind 1–5 Wochen alt. Ein Generieren in Seller Central („Vorlage erstellen“) belegt einen der
 150 Speicherplätze und ist ein Schreibvorgang; das macht nur Chris. Meldet Amazon beim Upload Schemafehler, bittet

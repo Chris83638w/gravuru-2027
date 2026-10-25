@@ -49,8 +49,11 @@ Hauptprodukt mit allen Größen, danach die Linie.
 ### A · Listing-Exporter (Flat File)
 
 - **Eingabe:** Katalog (Linie → Hauptprodukte → Familie/Größen/Befestigungen/Preise) und eine Textdatei je Produkt
-  (siehe unten). **Ausgabe:** Amazon-Lagerbestandsdatei aus der **aktuellen Kategorie-Vorlage** (liefert Chris), dazu
-  ein Prüfbericht.
+  (siehe unten). **Ausgabe:** Amazon-Lagerbestandsdatei aus der **aktuellen Kategorie-Vorlage**, dazu ein Prüfbericht.
+- Für Türschilder ist das die SIGNAGE-Vorlage. Chris legt sie ab unter
+  `C:\Users\Christopher Koch\Documents\Codex\Amazon\05_Originale\Vorlagen\`. Die PICTURE_FRAME-Vorlage der
+  Acrylherzen passt nicht. Die Struktur wird aus der Vorlage gelesen (Einstellungszeile, Datendefinitionen, gültige
+  Werte), nie fest codiert.
 - **Struktur:**
   - Je Hauptprodukt ein Parent, die Größen als Kinder.
   - `variation_theme` nur mit gültigem Enum der Vorlage. Bei SIGNAGE ist `FARBE/GRÖSSE` gültig, `GRÖSSE/FARBE` und
@@ -70,8 +73,18 @@ Hauptprodukt mit allen Größen, danach die Linie.
   - Du-Form.
   - Gravur-Listings ohne Druck-Wortschatz.
   - Fehlt die Textdatei, steht das Produkt im Bericht als „Texte fehlen“ und ist nicht exportiert.
-- Marke, Hersteller und GPSR-Kontakt kommen aus einer Konfigurationsdatei `amazon/konto.json`. **Werte offen, Chris
-  füllt sie.** Fehlt ein Wert, bricht der Export mit einer Meldung ab.
+- Marke, Hersteller und GPSR-Kontakt kommen aus `amazon/konto.json`.
+  - **Marke: gravuru** (Chris 25.10.2026), Konto gravuru GmbH.
+  - GTIN-Freistellung für die Marke gravuru: **offen**. Bekannt ist eine Freistellung nur für „CHRISCK design“
+    (Acrylherz-Upload 16.10.). Ohne Freistellung braucht jedes Kind eine EAN; der Export meldet das, statt zu raten.
+  - GPSR-Kontakt: offen, Chris füllt ihn. Fehlt ein Pflichtwert, bricht der Export mit einer Meldung ab.
+- Bewährte Angebotswerte aus dem Acrylherz-Upload vom 16.10. (in `konto.json` vorbelegt, je Linie änderbar):
+  Versand durch Händler mit Prime-Vorlage, Bearbeitungszeit 1 Tag, Menge 999, Ursprungsland Deutschland. Gewicht
+  je Größe aus dem Katalog; fehlt es, bleibt das Feld leer.
+- Variantenstruktur je Linie einstellbar. Chris kennt bei Amazon beide Muster:
+  - Standard für den Pilot: ein Parent je Hauptprodukt, Kinder = Größen, Designauswahl in Custom.
+  - Alternative, wie bei den Acrylherzen: Kinder = Designs (Thema FARBE), Größe als Custom-Option mit Aufpreis.
+  - Chris entscheidet am Pilot vor dem Upload.
 - Bilder: Felder für Produktbilder bleiben leer, bis Paket P sie liefert. Keine alten Amazon-Bild-URLs verwenden.
 
 ### B · Custom-Vorlagen-Exporter (Personalisierung)

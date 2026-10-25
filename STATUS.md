@@ -4,7 +4,7 @@
 - Review: Linux-Vollauf auf dem PR-Stand mit 1525 Tests: 1524 bestanden, 0 Fehler, 1 optionaler Realkatalog-Skip. Import-Dry-run je Linie, main gegen PR.
 - Gefunden und behoben (eigene Commits nach dem Merge):
   - `a0ddba6`/`42ff26a`: Fotofelder auf Gravur waren gesperrt. Der Fehler kam aus Claudes Übergabe. Die Linie gedenktafeln-22x14-tiere hätte dadurch 0 statt 78 Vorlagen gehabt. Jetzt gilt `tools.photo` des Verfahrens; ohne Fotoangabe der Familie „prüfen“.
-  - `d9b57c0`: Corel-Schwarz `#1b1918` galt als Farbe. Dadurch waren 473 Edelstahl-Vorlagen und 3 Hauptprodukte gesperrt (Startdesigns TRE-V2A-7x2-D35, TQ-V2A-8x8-D6, TR2-V2A-9x6-D54). Neu gilt eine Neutraltoleranz von 16/255.
+  - `d9b57c0`: Corel-Schwarz `#1b1918` galt als Farbe. Dadurch waren 294 Design-Größen-Kombinationen aus 36 Edelstahl-Designs und 3 Hauptprodukte gesperrt (korrigiert: „473“ zählte Meldungen, nicht Vorlagen) (Startdesigns TRE-V2A-7x2-D35, TQ-V2A-8x8-D6, TR2-V2A-9x6-D54). Neu gilt eine Neutraltoleranz von 16/255.
 - Danach Edelstahl wie main: 647 Produkte, dieselben 97 Sperren. Gewollt entfallen 52 Rechteck-Designs auf Ellipsenplatten (Formregel).
 - 20 Startdesigns sind neu „prüfen“, keine Sperre: V2A-Motivkonturen unter 0,5 mm, Text nahe Bohrloch.
 - Gedenktafeln 22×14: 74 passt, 4 prüfen (D212 „Daisy“ nahe Bohrloch).

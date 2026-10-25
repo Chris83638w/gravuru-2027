@@ -130,7 +130,9 @@ deutlich unter 150.
 Edelstahl. Muster dafür ist `Boxenschild2443` (Gedenktafel):
 - **Foto-Upload** (`ImageInputComponent` „Foto-Upload“): Bildfläche = Plattenfläche nach Corel-Formel (bei 3:2:
   x 9, y 73, 381 × 254 px). Pflicht oder optional, Anzahl und Aufpreis für weitere Fotos aus `family.photo`.
-- **Mehr Textfelder:** bis 10 Felder in 2 Gruppen, Limits je Thema.
+- **Textfelder: je Schriftgruppe genau 2, nicht mehr** (Chris 25.10.), bei 2 Gruppen also 4 Felder wie
+  `briefkasten855`. Längere Texte (Spruch, Daten) über `maxLines` je Feld, Zeichenlimits je Thema. Die 5 Felder je
+  Gruppe aus `Boxenschild2443` sind kein Muster für die Textfelder.
 - **Zusatzoptionen** aus der Familie (Befestigungen, Ständer, Silikon, Kordel, Pflegespray), jeweils mit Aufpreis
   und kostenloser Alternative, wo die Auswahl Pflicht ist.
 - **Mehrere Oberflächen** (z. B. Vorder- und Rückseite) nur, wenn eine Familie zwei Gestaltungsflächen hat.

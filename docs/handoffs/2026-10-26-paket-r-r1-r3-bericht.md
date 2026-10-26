@@ -1,10 +1,6 @@
 # Paket R · Folge-PR R1/R3 · 26.10.2026
 
-Codex / Astra. [PR #27](https://github.com/Chris83638w/gravuru-2027/pull/27). Code `b4301751890333b9b1f21c72b8512f3a1eab320c` auf R2 `ab6743f` ([PR #26](https://github.com/Chris83638w/gravuru-2027/pull/26)). Branch `dev/paket-r-r1-r3-20261026-astra`. Dieser Folge-PR enthält nur R1/R3; seine Vergleichsbasis ist der R2-Branch. Nach dessen Merge kann Claude die Basis auf main umstellen.
-
-## Offen zur fachlichen Entscheidung
-
-[Issue #25](https://github.com/Chris83638w/gravuru-2027/issues/25): Der Auftrag nennt bei unvollständigen Familien eine Freigabe- und Importsperre; die vorhandene Designprüfung erlaubt bewusst eine Designfreigabe bei offenen Preisen. Diese bestehende Regel wurde nicht stillschweigend geändert. Die Oberfläche zeigt die fehlenden Familienangaben. Der Folge-PR bleibt bis Claudes Entscheidung hierzu **Entwurf**, obwohl Implementierung und technische Abnahme der übrigen Punkte fertig sind.
+Historischer R1/R3-Funktionsbericht. PR #26 ist inzwischen gemerged; PR #27 richtet sich gegen main. Issue #25 ist entschieden und in den Nachträgen umgesetzt. Der aktuelle Stand, die neuen Testzähler und die Übergabe stehen im [Nachtragsbericht](2026-10-26-astra-nachtraege-bericht.md).
 
 ## R1 · Sammelzuordnung
 
@@ -55,7 +51,7 @@ Die 100-Kachel-Prüfung gehört zum separaten R2-Bericht und wurde dort bereits 
 
 ## Übergabe
 
-Claude: zuerst PR #26 prüfen. Danach diesen Folge-PR prüfen und Issue #25 entscheiden; bei Bedarf ausschließlich die explizit entschiedene Preis-/Freigaberegel ergänzen. Kein echter Katalog-PR ist nötig, da alle Mutationen Testkopien betrafen. Keine echten Freigaben, Familien, Preise, Kennungen, Importe oder Live-Systeme geändert. Kein Merge und kein Force-Push.
+Claude: Aktuelle Übergabe und Umsetzung der inzwischen entschiedenen Preisregel siehe Nachtragsbericht. Kein echter Katalog-PR ist nötig, da alle Mutationen Testkopien betrafen. Keine echten Freigaben, Familien, Preise, Kennungen, Importe oder Live-Systeme geändert. Kein Merge und kein Force-Push.
 
 ## Abgleich mit aktuellem main
 

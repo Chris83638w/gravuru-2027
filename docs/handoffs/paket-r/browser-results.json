@@ -1,0 +1,1201 @@
+{
+  "localOnly": true,
+  "catalogBase": "fd50c645996a216b57f6c573808bc2486e5970f4",
+  "checks": [
+    {
+      "name": "offscreen tile is not loaded or selectable",
+      "passed": true,
+      "id": "TO-V2A-9x6-D24"
+    },
+    {
+      "name": "editor back preserves document, filter, scroll and loaded image nodes",
+      "passed": true,
+      "before": {
+        "x": 0,
+        "y": 1100,
+        "href": "https://workshop.example/werkstatt/designs/?linie=edelstahl-tuerschilder&reihe=edelstahl-gravur-oval-90x60",
+        "view": "targets",
+        "search": ""
+      },
+      "after": {
+        "x": 0,
+        "y": 1100,
+        "href": "https://workshop.example/werkstatt/designs/?linie=edelstahl-tuerschilder&reihe=edelstahl-gravur-oval-90x60",
+        "view": "targets",
+        "search": "",
+        "sameDocument": true,
+        "sameCards": true,
+        "sameImages": true
+      }
+    },
+    {
+      "name": "unsaved return and Escape require explicit discard",
+      "passed": true
+    },
+    {
+      "name": "save replaces only the edited tile and retains the dashboard",
+      "passed": true,
+      "changedCards": [
+        {
+          "index": 0,
+          "connected": false
+        }
+      ],
+      "putCount": 1
+    },
+    {
+      "name": "Issue 24 uses compatible rounded default and distinct grouped size labels",
+      "passed": true,
+      "value": "GR-ES-AB-80X53P3-T15",
+      "selected": "8 × 5 cm · Abgerundete Ecken R5",
+      "groups": [
+        {
+          "name": "Abgerundete Ecken R5",
+          "options": [
+            {
+              "key": "GR-ES-AB-80X53P3-T15",
+              "label": "8 × 5 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-90X60-T15",
+              "label": "9 × 6 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-120X80-T15",
+              "label": "12 × 8 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-150X100-T15",
+              "label": "15 × 10 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-180X120-T15",
+              "label": "18 × 12 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-300X200-T15",
+              "label": "30 × 20 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-210X140-T15",
+              "label": "21 × 14 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-240X160-T15",
+              "label": "24 × 16 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-420X280-T15",
+              "label": "42 × 28 cm · Abgerundete Ecken R5"
+            },
+            {
+              "key": "GR-ES-AB-450X300-T15",
+              "label": "45 × 30 cm · Abgerundete Ecken R5"
+            }
+          ]
+        },
+        {
+          "name": "Rechteck",
+          "options": [
+            {
+              "key": "GR-ES-RE-80X20-T15",
+              "label": "8 × 2 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-70X23P3-T15",
+              "label": "7 × 2 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-60X20-T15",
+              "label": "6 × 2 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-90X30-T15",
+              "label": "9 × 3 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-120X40-T15",
+              "label": "12 × 4 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-150X50-T15",
+              "label": "15 × 5 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-180X60-T15",
+              "label": "18 × 6 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-210X70-T15",
+              "label": "21 × 7 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-240X80-T15",
+              "label": "24 × 8 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-270X90-T15",
+              "label": "27 × 9 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-50X20-T15",
+              "label": "5 × 2 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-80X35-T15",
+              "label": "8 × 3,5 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-120X52P5-T15",
+              "label": "12 × 5,25 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-160X70-T15",
+              "label": "16 × 7 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-240X105-T15",
+              "label": "24 × 10,5 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-320X140-T15",
+              "label": "32 × 14 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-400X175-T15",
+              "label": "40 × 17,5 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-80X53P3-T15",
+              "label": "8 × 5 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-90X60-T15",
+              "label": "9 × 6 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-120X80-T15",
+              "label": "12 × 8 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-150X100-T15",
+              "label": "15 × 10 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-180X120-T15",
+              "label": "18 × 12 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-210X140-T15",
+              "label": "21 × 14 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-240X160-T15",
+              "label": "24 × 16 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-300X200-T15",
+              "label": "30 × 20 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-420X280-T15",
+              "label": "42 × 28 cm · Rechteck"
+            },
+            {
+              "key": "GR-ES-RE-450X300-T15",
+              "label": "45 × 30 cm · Rechteck"
+            }
+          ]
+        },
+        {
+          "name": "Ellipse",
+          "options": [
+            {
+              "key": "GR-ES-EL-120X40-T15",
+              "label": "12 × 4 cm · Ellipse"
+            },
+            {
+              "key": "GR-ES-EL-150X50-T15",
+              "label": "15 × 5 cm · Ellipse"
+            },
+            {
+              "key": "GR-ES-EL-180X60-T15",
+              "label": "18 × 6 cm · Ellipse"
+            },
+            {
+              "key": "GR-ES-EL-210X70-T15",
+              "label": "21 × 7 cm · Ellipse"
+            },
+            {
+              "key": "GR-ES-EL-240X80-T15",
+              "label": "24 × 8 cm · Ellipse"
+            },
+            {
+              "key": "GR-ES-EL-270X90-T15",
+              "label": "27 × 9 cm · Ellipse"
+            },
+            {
+              "key": "GR-ES-EL-300X100-T15",
+              "label": "30 × 10 cm · Ellipse"
+            }
+          ]
+        },
+        {
+          "name": "Oval",
+          "options": [
+            {
+              "key": "GR-ES-OV-300X159P9-T15",
+              "label": "30 × 16 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-150X80-T15",
+              "label": "15 × 8 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-225X120-T15",
+              "label": "22,5 × 12 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-90X60-T15",
+              "label": "9 × 6 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-120X80-T15",
+              "label": "12 × 8 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-150X100-T15",
+              "label": "15 × 10 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-180X120-T15",
+              "label": "18 × 12 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-210X140-T15",
+              "label": "21 × 14 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-240X160-T15",
+              "label": "24 × 16 cm · Oval"
+            },
+            {
+              "key": "GR-ES-OV-300X200-T15",
+              "label": "30 × 20 cm · Oval"
+            }
+          ]
+        },
+        {
+          "name": "Quadrat",
+          "options": [
+            {
+              "key": "GR-ES-QU-80X80-T15",
+              "label": "8 × 8 cm · Quadrat"
+            },
+            {
+              "key": "GR-ES-QU-100X100-T15",
+              "label": "10 × 10 cm · Quadrat"
+            },
+            {
+              "key": "GR-ES-QU-120X120-T15",
+              "label": "12 × 12 cm · Quadrat"
+            },
+            {
+              "key": "GR-ES-QU-160X160-T15",
+              "label": "16 × 16 cm · Quadrat"
+            },
+            {
+              "key": "GR-ES-QU-200X200-T15",
+              "label": "20 × 20 cm · Quadrat"
+            },
+            {
+              "key": "GR-ES-QU-260X260-T15",
+              "label": "26 × 26 cm · Quadrat"
+            },
+            {
+              "key": "GR-ES-QU-300X300-T15",
+              "label": "30 × 30 cm · Quadrat"
+            }
+          ]
+        },
+        {
+          "name": "Rund",
+          "options": [
+            {
+              "key": "GR-ES-R-65X65-T15",
+              "label": "6,5 × 6,5 cm · Rund"
+            },
+            {
+              "key": "GR-ES-R-85X85-T15",
+              "label": "8,5 × 8,5 cm · Rund"
+            },
+            {
+              "key": "GR-ES-R-120X120-T15",
+              "label": "12 × 12 cm · Rund"
+            },
+            {
+              "key": "GR-ES-R-160X160-T15",
+              "label": "16 × 16 cm · Rund"
+            },
+            {
+              "key": "GR-ES-R-200X200-T15",
+              "label": "20 × 20 cm · Rund"
+            }
+          ]
+        },
+        {
+          "name": "Retro 1 (eckig)",
+          "options": [
+            {
+              "key": "GR-ES-RT1-90X60-T15",
+              "label": "9 × 6 cm · Retro 1 (eckig)"
+            },
+            {
+              "key": "GR-ES-RT1-120X80-T15",
+              "label": "12 × 8 cm · Retro 1 (eckig)"
+            },
+            {
+              "key": "GR-ES-RT1-150X100-T15",
+              "label": "15 × 10 cm · Retro 1 (eckig)"
+            },
+            {
+              "key": "GR-ES-RT1-180X120-T15",
+              "label": "18 × 12 cm · Retro 1 (eckig)"
+            },
+            {
+              "key": "GR-ES-RT1-210X140-T15",
+              "label": "21 × 14 cm · Retro 1 (eckig)"
+            },
+            {
+              "key": "GR-ES-RT1-240X160-T15",
+              "label": "24 × 16 cm · Retro 1 (eckig)"
+            },
+            {
+              "key": "GR-ES-RT1-300X200-T15",
+              "label": "30 × 20 cm · Retro 1 (eckig)"
+            }
+          ]
+        },
+        {
+          "name": "Retro 2 (geschwungen)",
+          "options": [
+            {
+              "key": "GR-ES-RT2-90X60-T15",
+              "label": "9 × 6 cm · Retro 2 (geschwungen)"
+            },
+            {
+              "key": "GR-ES-RT2-120X80-T15",
+              "label": "12 × 8 cm · Retro 2 (geschwungen)"
+            },
+            {
+              "key": "GR-ES-RT2-150X100-T15",
+              "label": "15 × 10 cm · Retro 2 (geschwungen)"
+            },
+            {
+              "key": "GR-ES-RT2-180X120-T15",
+              "label": "18 × 12 cm · Retro 2 (geschwungen)"
+            },
+            {
+              "key": "GR-ES-RT2-210X140-T15",
+              "label": "21 × 14 cm · Retro 2 (geschwungen)"
+            },
+            {
+              "key": "GR-ES-RT2-240X160-T15",
+              "label": "24 × 16 cm · Retro 2 (geschwungen)"
+            },
+            {
+              "key": "GR-ES-RT2-300X200-T15",
+              "label": "30 × 20 cm · Retro 2 (geschwungen)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "round family group explicitly reports zero compatible designs",
+      "passed": true,
+      "text": "Kompatible Designs im Gesamtbestand der Familie:\nRechteck: 275 Designs\nAbgerundete Ecken R5: 73 Designs\nQuadrat: 70 Designs\nOval: 137 Designs\nEllipse: 53 Designs\nRund: 0 Designs – keine kompatible Designreihe vorhanden\nRetro 1 (eckig): 67 Designs\nRetro 2 (geschwungen): 62 Designs"
+    },
+    {
+      "name": "Pixel 7 target cards fit viewport",
+      "passed": true,
+      "viewport": 412,
+      "document": 412
+    },
+    {
+      "name": "Pixel 7 editor opens and returns in place",
+      "passed": true
+    },
+    {
+      "name": "100 distinct tiles on five pages, bounded request concurrency and nonpassing bulk gate",
+      "passed": true,
+      "pages": [
+        {
+          "label": "Seite 1 von 31 · 737 Designs",
+          "tiles": 24
+        },
+        {
+          "label": "Seite 2 von 31 · 737 Designs",
+          "tiles": 24
+        },
+        {
+          "label": "Seite 3 von 31 · 737 Designs",
+          "tiles": 24
+        },
+        {
+          "label": "Seite 4 von 31 · 737 Designs",
+          "tiles": 24
+        },
+        {
+          "label": "Seite 5 von 31 · 737 Designs",
+          "tiles": 24
+        }
+      ],
+      "visitedCount": 100,
+      "loaded": 100,
+      "peakTargetRequests": 3,
+      "statuses": {
+        "passt": 73,
+        "prüfen": 27,
+        "passt nicht": 0
+      }
+    }
+  ],
+  "firstRunTermination": "Batch runner reached its original 180s limit after 25 HTTP200 responses. This is not presented as a completed batch. The explicit follow-up below reopened the private catalogue and completed its fresh confirmed selection.",
+  "batchFollowUp": {
+    "success": true,
+    "checks": [
+      {
+        "name": "100 distinct tiles on five pages, bounded request concurrency and nonpassing bulk gate",
+        "passed": true,
+        "pages": [
+          {
+            "label": "Seite 1 von 31 · 737 Designs",
+            "tiles": 24
+          },
+          {
+            "label": "Seite 2 von 31 · 737 Designs",
+            "tiles": 24
+          },
+          {
+            "label": "Seite 3 von 31 · 737 Designs",
+            "tiles": 24
+          },
+          {
+            "label": "Seite 4 von 31 · 737 Designs",
+            "tiles": 24
+          },
+          {
+            "label": "Seite 5 von 31 · 737 Designs",
+            "tiles": 24
+          }
+        ],
+        "visitedCount": 100,
+        "loaded": 97,
+        "peakTargetRequests": 3,
+        "statuses": {
+          "passt": 72,
+          "prüfen": 25,
+          "passt nicht": 0
+        }
+      },
+      {
+        "name": "bulk confirmation count equals authenticated individual PATCH calls on private catalogue",
+        "passed": true,
+        "confirmation": "47 Ziele freigeben?",
+        "count": 47,
+        "patches": 47,
+        "status": "47 freigegeben. Änderungen sind im Katalog gespeichert; den Commit macht der Betreiber."
+      },
+      {
+        "name": "no uncaught browser errors or external requests",
+        "passed": true
+      }
+    ],
+    "stats": {
+      "requests": 326,
+      "patches": 47,
+      "errors": [],
+      "routeErrors": [],
+      "externalRequests": []
+    }
+  },
+  "overlayFollowUp": {
+    "scope": "Local private test copy; navigation guard and compact mobile editor",
+    "started": "2026-10-26T14:03:52.546Z",
+    "navigationError": "frame.goto: net::ERR_BLOCKED_BY_RESPONSE at https://workshop.example/werkstatt/?view=masters\nCall log:\n\u001b[2m  - navigating to \"https://workshop.example/werkstatt/?view=masters\", waiting until \"domcontentloaded\"\u001b[22m\n",
+    "mobileHeaderHidden": true,
+    "parentClosesAfterNavigation": true,
+    "dashboardDocumentPreserved": true,
+    "success": true,
+    "finished": "2026-10-26T14:05:39.572Z",
+    "stats": {
+      "externalAborted": [],
+      "requests": [
+        {
+          "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&reihe=edelstahl-gravur-oval-90x60",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 398
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10536
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10599
+        },
+        {
+          "path": "/workshop-ui/merchant-downloads.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10629
+        },
+        {
+          "path": "/workshop-ui/design-dashboard.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10667
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10688
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10718
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10761
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10801
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10841
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10887
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10932
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10958
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10986
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 417
+        },
+        {
+          "path": "/workshop-ui/design-target-preview-cache.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 333
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-editor.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 347
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-review.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 361
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7293
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7291
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7233
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 9529
+        },
+        {
+          "path": "/api/workshop/designs",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 12908
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 12902
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 8455
+        },
+        {
+          "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 19019
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3105
+        },
+        {
+          "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D1&familie=steel-door-signs",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 1026
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 1673
+        },
+        {
+          "path": "/werkstatt/designs/bearbeiten/?katalogReihe=edelstahl-gravur-oval-90x60&katalogDesign=TO-V2A-9x6-D1&katalogOverlay=546373b1-6fcf-4119-aabb-6265edcad8c6&katalogLinie=edelstahl-tuerschilder",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 1609
+        },
+        {
+          "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&familie=steel-door-signs",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 2149
+        },
+        {
+          "path": "/workshop-ui/style.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10001
+        },
+        {
+          "path": "/workshop-ui/dashboard.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10008
+        },
+        {
+          "path": "/workshop-ui/editor.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10014
+        },
+        {
+          "path": "/workshop-ui/catalog.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10020
+        },
+        {
+          "path": "/workshop-ui/app.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10025
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.css",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10035
+        },
+        {
+          "path": "/workshop-ui/workshop-shell.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10047
+        },
+        {
+          "path": "/workshop-ui/editor-icons/cube.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10054
+        },
+        {
+          "path": "/workshop-ui/editor-icons/files.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10065
+        },
+        {
+          "path": "/workshop-ui/editor-icons/stack-2.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10066
+        },
+        {
+          "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10084
+        },
+        {
+          "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10099
+        },
+        {
+          "path": "/workshop-ui/editor-icons/pencil.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10112
+        },
+        {
+          "path": "/workshop-ui/editor-icons/upload.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10129
+        },
+        {
+          "path": "/workshop-ui/editor-icons/plus.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10143
+        },
+        {
+          "path": "/workshop-ui/editor-icons/search.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10151
+        },
+        {
+          "path": "/workshop-ui/editor-icons/refresh.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 10164
+        },
+        {
+          "path": "/workshop-ui/catalog-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 160
+        },
+        {
+          "path": "/workshop-ui/steel-options-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 164
+        },
+        {
+          "path": "/workshop-ui/ai-batch-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 176
+        },
+        {
+          "path": "/workshop-ui/ai-design-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 187
+        },
+        {
+          "path": "/workshop-ui/merchant-navigation.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 199
+        },
+        {
+          "path": "/workshop-ui/customer-preview-link.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 208
+        },
+        {
+          "path": "/workshop-ui/revision-compare-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 222
+        },
+        {
+          "path": "/workshop-ui/merchant-request.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 263
+        },
+        {
+          "path": "/workshop-ui/native-production-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 303
+        },
+        {
+          "path": "/workshop-ui/product-options-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 376
+        },
+        {
+          "path": "/workshop-ui/product-overview-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 450
+        },
+        {
+          "path": "/workshop-ui/product-editor-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 703
+        },
+        {
+          "path": "/workshop-ui/katalog-editor-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 1055
+        },
+        {
+          "path": "/workshop-ui/customer-fields-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 1208
+        },
+        {
+          "path": "/workshop-ui/design-import-ui.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 1393
+        },
+        {
+          "path": "/configurator/variant-m/steel-formats.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 8070
+        },
+        {
+          "path": "/workshop-ui/merchant-media.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7757
+        },
+        {
+          "path": "/configurator/variant-m/selection-arrows.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7494
+        },
+        {
+          "path": "/workshop-ui/design-authoring.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7447
+        },
+        {
+          "path": "/platform/sources/app/shared/models/doorbell-preview.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7459
+        },
+        {
+          "path": "/configurator/variant-m/artwork-resource.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7469
+        },
+        {
+          "path": "/workshop-ui/editor-selection.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7474
+        },
+        {
+          "path": "/workshop-ui/editor-guides.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7451
+        },
+        {
+          "path": "/workshop-ui/design-dashboard-editor.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 7236
+        },
+        {
+          "path": "/platform/sources/app/shared/models/design-content.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 134
+        },
+        {
+          "path": "/platform/sources/app/shared/models/mounting-rules.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 148
+        },
+        {
+          "path": "/platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 110
+        },
+        {
+          "path": "/platform/sources/app/shared/models/contour-geometry.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 83
+        },
+        {
+          "path": "/platform/sources/app/shared/models/embedded-motif-fit.mjs",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 5589
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 4
+        },
+        {
+          "path": "/workshop-ui/editor-icons/photo.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3450
+        },
+        {
+          "path": "/workshop-ui/editor-icons/tag.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3456
+        },
+        {
+          "path": "/workshop-ui/editor-icons/typography.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3463
+        },
+        {
+          "path": "/workshop-ui/editor-icons/settings.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3468
+        },
+        {
+          "path": "/workshop-ui/editor-icons/link.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3473
+        },
+        {
+          "path": "/workshop-ui/editor-icons/eye.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3480
+        },
+        {
+          "path": "/workshop-ui/editor-icons/device-floppy.svg",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3489
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3485
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 3486
+        },
+        {
+          "path": "/api/workshop/session",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 3
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 3122
+        },
+        {
+          "path": "/api/workshop/designs/editor?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D1",
+          "status": 200,
+          "authenticated": true,
+          "method": "GET",
+          "ms": 837
+        },
+        {
+          "path": "/__local-token",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 2016
+        },
+        {
+          "path": "/api/workshop/designs/editor/preview",
+          "status": 200,
+          "authenticated": true,
+          "method": "POST",
+          "ms": 3287
+        },
+        {
+          "path": "/werkstatt/?view=masters",
+          "status": 200,
+          "authenticated": false,
+          "method": "GET",
+          "ms": 1742
+        }
+      ],
+      "browserErrors": [],
+      "consoleErrors": [
+        "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+        "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+        "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+        "Framing 'https://workshop.example/' violates the following Content Security Policy directive: \"frame-ancestors https://fixture.myshopify.com https://admin.shopify.com\". The request has been blocked.\n"
+      ],
+      "routeErrors": []
+    }
+  },
+  "notes": [
+    "First full tile pass: 100 distinct tiles, 100 loaded; 73 passt, 27 prüfen; maximum 3 concurrent previews.",
+    "Fresh batch follow-up visited the same 100 tiles; 97 had loaded at sampling time, and only loaded/seen/passing/unreleased targets entered confirmation (47). No not-yet-loaded tile was approved."
+  ]
+}

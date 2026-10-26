@@ -1,0 +1,74 @@
+{
+  "codeCommit": "fc6b3cf0cc4281a7052b155842d5aa31742b2e0a",
+  "codeBase": "376b5b6537291a81c418b0e26835a9e14359f51b",
+  "catalogBase": "fd50c645996a216b57f6c573808bc2486e5970f4",
+  "platform": "Windows",
+  "node": "v24.20.0",
+  "testFiles": 198,
+  "fullRun": {
+    "tests": 1550,
+    "failed": 1,
+    "passed": 1541,
+    "cancelled": 0,
+    "skipped": 8,
+    "todo": 0,
+    "topLevel": 1506,
+    "suites": 0
+  },
+  "changedTestSources": [],
+  "followUp": {
+    "file": "app/workshop/shop-product-binding-legacy.test.mjs",
+    "tests": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "reason": "Historical test dependency ops/plesk/order-webhook-probe.mjs restored byte-identically from the repository; no source/assertion changed."
+  },
+  "aggregate": {
+    "tests": 1559,
+    "passed": 1551,
+    "failed": 0,
+    "skipped": 8
+  },
+  "aggregateExplanation": "The failed file loader in the full run counted as one placeholder. Replace that placeholder with the 10 actual tests from the successful follow-up; do not add it as another test.",
+  "skips": [
+    {
+      "name": "Symlink/Junction als Designordner ist gesperrt",
+      "reason": "Dateisystem erlaubt hier keine Links."
+    },
+    {
+      "name": "Mehrfach verknüpfte Quelldatei wird vor jedem Schreiben gesperrt",
+      "reason": "Dateisystem erlaubt hier keine Hardlinks."
+    },
+    {
+      "name": "workshop.sqlite",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "profiles.sqlite-wal",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "design-assets.sqlite-shm",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "real authenticated server and databases with confirmed private permissions",
+      "reason": "Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "Git ancestor guard after the private-permission check",
+      "reason": "Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "Echter Katalog + Teilexport (lokal, wenn vorhanden): drei 7x2-Produkte unverändert",
+      "reason": true
+    }
+  ],
+  "scope": [
+    "app/configurator/variant-m/*.test.mjs",
+    "app/workshop/*.test.mjs",
+    "scripts/*.test.mjs"
+  ],
+  "environment": "Repository cwd; workspace TEMP/TMP; GRAVURU_PYTHON and PYTHONPATH point to installed private test runtime; python3 shim redirects only the executable name. No assertions or results rewritten."
+}

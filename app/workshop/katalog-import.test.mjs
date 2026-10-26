@@ -276,3 +276,20 @@ test('the public apply API rejects a full diagnostic plan before touching any re
  assert.throws(()=>applyKatalogImport(plan,{repository:forbidden,families:forbidden}),error=>error.code==='katalog_import'&&/Diagnoseplan/.test(error.message));
  assert.deepEqual(ws.families.list(),[]);assert.equal(ws.repository.list().length,1);
 });
+
+test('--hauptprodukt excludes absent, empty and other main-product subcategories before profiles or products are planned',async t=>{
+ const ws=workshop(t),source=approvedFixture(openKatalog(FIXTURE)),k={...source,lines:new Map(source.lines)},line=structuredClone(k.lines.get('test-linie'));k.lines.set('test-linie',line);
+ const base=line.subcategories[0];line.subcategories=[
+ {...base,id:'selected',mainProducts:[{id:'wanted',name:'Gewähltes Hauptprodukt',startDesign:'test-herz',sizesOffered:['TS-RE-90X60']}]},
+ {...base,id:'absent',mainProducts:undefined},
+ {...base,id:'empty',mainProducts:[]},
+ {...base,id:'other',mainProducts:[{id:'other',name:'Anderes Hauptprodukt',startDesign:'test-herz',sizesOffered:['TS-RE-90X60']}]}
+ ];
+ const plan=await planKatalogImport(k,'test-linie',{...writableOptions(ws),only:{mainProducts:['wanted']}});
+ assert.deepEqual(plan.report.subcategories.map(s=>s.id),['selected']);assert.equal(plan.report.counts.products,1);
+ assert.deepEqual(plan.items.map(item=>item.key),['katalog:test-linie:selected:TS-RE-90X60:wanted']);
+ const missing=await planKatalogImport(k,'test-linie',{...writableOptions(ws),only:{mainProducts:['unknown']}});
+ assert.equal(missing.report.counts.products,0);assert.deepEqual(missing.report.subcategories,[]);assert.deepEqual(missing.items,[]);
+ const intersect=await planKatalogImport(k,'test-linie',{...writableOptions(ws),only:{mainProducts:['wanted'],subcategories:['other']}});
+ assert.equal(intersect.report.counts.products,0);assert.deepEqual(intersect.report.subcategories,[]);
+});

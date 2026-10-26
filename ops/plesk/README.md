@@ -1,5 +1,13 @@
 # Privates Plesk-Testpaket – Gravuru 2027
 
+## Verbindlicher Deploy-Abschluss · 26.10.2026
+
+Nach jedem Deploy in Plesk **„App neu starten“** ausführen und anschließend das Prozessalter des zugehörigen `lsnode` prüfen. **Node.js deaktivieren/aktivieren startet den LiteSpeed-Prozess nicht neu.** Ein erfolgreicher Dateiabgleich oder HTTP 200 beweist deshalb noch nicht, dass der neue Code läuft.
+
+In **Plesk-Aufgaben kein `%` im Befehlsfeld** verwenden: Cron behandelt es als Zeilenende, auch in vermeintlich geschützten Datums-/Formatbefehlen. Solche Logik in einer geprüften Skriptdatei ablegen; die Aufgabe enthält nur deren Aufruf ohne Prozentzeichen.
+
+Vor `katalog-import --commit` die ausgegebene absolute Zieldatei, den Mandanten, die vorhandene Produktanzahl und beide Schemastände prüfen. Bestehende workshop-Schemata unter 4 oder profiles-Schemata unter 2 brechen ab. `--migrieren` ausschließlich für die ausdrücklich beabsichtigte, gesicherte Migration des bestätigten Ziels verwenden; niemals zum Umgehen einer Warnung auf dem Legacy-Speicher. `--hauptprodukt <id>` begrenzt auch die Unterkategorien auf dieses Hauptprodukt.
+
 Dieses Paket enthält den aktuellen Neuaufbau einschließlich ZIP-Import, gemeinsamen Excel-Quellordnern und Schrift-/Motiv-/Fertigungsprofilzuordnung. `PACKAGE-MANIFEST.json` nennt den vollständigen Quellcommit und SHA-256 jeder enthaltenen Datei. Die nebenliegende `.sha256` gilt für das gesamte ZIP. Keine vorhandenen Datenbanken, Secrets, virtuellen Python-Umgebungen oder historischen Installationspakete enthalten.
 
 **Ziel:** separate, passwortgeschützte HTTPS-Testinstanz für genau einen App-Prozess. Kein Shopify-Login, keine Shop-Schreibzugriffe, kein Deployment über dieses Dokument ausgelöst. Der bisherige Shopify-Start bleibt im Quellcode vorhanden, wird von diesem Paketstart aber nicht verwendet. Änderungen an der bestehenden Shopify-App sind nicht erforderlich.

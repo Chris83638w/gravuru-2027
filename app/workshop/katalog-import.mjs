@@ -78,6 +78,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
   report.counts.sizes+=doc.sizes.length;report.counts.pricesOpen+=priceOpen.length;
   for(const sub of line.subcategories){
    if(only?.subcategories&&!only.subcategories.includes(sub.id))continue;
+   if(only?.mainProducts&&!sub.mainProducts?.some(main=>only.mainProducts.includes(main.id)))continue;
    const theme=sub.themeId?katalog.theme(sub.themeId):null,fontSet=katalog.fontSet(sub,theme);
    const hasPhotoField=d=>Array.isArray(d.json?.photos)?d.json.photos.length>0:/class="[^"]*\bfoto\b/.test(d.svg?.()||'');
    const photoMatch=a=>sub.photoDesigns==null||(sub.photoDesigns==='mit')===hasPhotoField(a.design);

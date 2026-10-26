@@ -1,0 +1,60 @@
+diff --git a/sections/cart-drawer.liquid b/sections/cart-drawer.liquid
+--- a/sections/cart-drawer.liquid
++++ b/sections/cart-drawer.liquid
+@@ -203,22 +203,28 @@
+                                 {{- item.product.title | escape -}}
+                               </a>
+                             </div>
++                            <div class="gravuru-cart-personalization flex flex-col gap-2">
++                              {%- render 'gravuru-warenkorb-bearbeiten', item: item -%}
++                            </div>
+                             {%- if item.product.has_only_default_variant == false or item.properties.size != 0 or item.selling_plan_allocation != null -%}
+                               <div class="cart-item__options-wrapper">
+                                 <div class="cart-item__options">
+                                   {%- if item.product.has_only_default_variant == false -%}
+                                     {%- assign last_index = item.options_with_values.size | minus: 1 -%}
+                                     {%- for option in item.options_with_values -%}
+                                       <span class="cart-item__option-value text-subtext">
+                                         {{ option.value }}{% unless forloop.index0 == last_index %}, {% endunless %}
+                                       </span>
+                                     {%- endfor -%}
+                                   {%- endif -%}
+ 
+                                   {%- assign card_properties = 0 -%}
+           
+                                   {%- for property in item.properties -%}
++                                    {%- if property.first == 'Bearbeiten' and item.properties['_gravuru_config'] != blank and item.properties['_gravuru_rev'] != blank -%}
++                                      {%- continue -%}
++                                    {%- endif -%}
+                                     {%- assign property_first_char = property.first | slice: 0 -%}
+                                     {%- if property.last != blank and property_first_char != '_' -%}
+                                       {%- assign card_properties = card_properties | plus: 1 -%}
+                                       <div class="flex gap-1 text-subtext">
+diff --git a/sections/main-cart.liquid b/sections/main-cart.liquid
+--- a/sections/main-cart.liquid
++++ b/sections/main-cart.liquid
+@@ -238,18 +238,24 @@
+                                       <a href="{{ item.url }}" class="cart-item__title text-pcard-title reversed-link">{{- item.product.title | escape -}}</a>
+                                     </div>
+                                   </div>
++                                  <div class="gravuru-cart-personalization flex flex-col gap-2">
++                                    {%- render 'gravuru-warenkorb-bearbeiten', item: item -%}
++                                  </div>
+                                   {%- if item.product.has_only_default_variant == false or item.properties.size != 0 or item.selling_plan_allocation != null -%}
+                                     <div class="cart-item__options">
+                                       {%- if item.product.has_only_default_variant == false -%}
+                                         {%- assign last_index = item.options_with_values.size | minus: 1 -%}
+                                         {%- for option in item.options_with_values -%}
+                                           <span class="cart-item__option-value text-sm text-subtext">
+                                             {{ option.value }}{% unless forloop.index0 == last_index %}, {% endunless %}
+                                           </span>
+                                         {%- endfor -%}
+                                       {%- endif -%}
+                                       {%- for property in item.properties -%}
++                                        {%- if property.first == 'Bearbeiten' and item.properties['_gravuru_config'] != blank and item.properties['_gravuru_rev'] != blank -%}
++                                          {%- continue -%}
++                                        {%- endif -%}
+                                         {%- assign property_first_char = property.first | slice: 0 -%}
+                                         {%- if property.last != blank and property_first_char != '_' -%}
+                                           <div class="flex gap-1 text-sm text-subtext">
+                                             <dt>{{ property.first }}:&nbsp;</dt>

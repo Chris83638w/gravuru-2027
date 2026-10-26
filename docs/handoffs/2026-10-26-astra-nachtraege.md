@@ -34,6 +34,19 @@ Schema v4 migriert (inzwischen zurückgesetzt, siehe STATUS).
 
 Tests für 5 und 6 (bestehende v3-DB → Abbruch; mit `--migrieren` → v4; Filter nur Unterkategorie mit Hauptprodukt).
 
+## D · Shop-Einstieg: zusätzliches Motiv bricht das Sichern ab (eigener kleiner PR)
+
+Befund Testkauf 26.10. (Host, Store `acryl`, Produkt 4100000 / `cfg_98436fb0…`): Kunde fügt im Shop-Editor ein
+weiteres Motiv aus der Motivbibliothek hinzu (Haus) → `POST /api/shop-entry/acrylic-drafts` antwortet **503**
+(„Der Konfigurator ist gerade nicht verfügbar“). Dieselbe Gestaltung ohne Zusatzmotiv → 201, Warenkorb 200, Checkout.
+Bitte lokal nachstellen (`prepareAcrylicReview` → `assets.get/read` für Motivquellen des Acryl-Mandanten,
+`drafts.acrylicDrafts.create`), Ursache beheben und eine verständliche Meldung statt 503 liefern. Falls Zusatzmotive
+im Shop kostenpflichtig sind: ohne Preisvertrag klar ablehnen (wie Foto-Aufpreise), nicht 503. Test mit Motiv.
+
+Zur Info, bereits behoben (Claude, `6516a66`): Die Warenkorb-Antwort sendete kein `paymentConfirmed:false`,
+`shop-entry-client.mjs` verlangt es → Seite lehnte einen gültigen Warenkorb ab. Bitte bei Client-/Server-Verträgen
+künftig einen gemeinsamen Test ohne nachgestellte Antwort.
+
 ## Nicht für Astra
 
 Weg zur Testbestellung (Shop-Bindung, App-Proxy, Theme-Block, Webhook) macht Claude mit Chris' Freigaben.

@@ -160,7 +160,7 @@ test('Kundenseite: pausierter Konfi zeigt Hinweis statt Editor, models.json lief
 test('Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster',()=>{
   const ui=new URL('./ui/',import.meta.url),files=new Set(fs.readdirSync(ui).filter(f=>f.endsWith('.html')));
   // Kundenseiten bekommen bewusst keine Werkstatt-Kopfzeile.
-  const customerPages=new Set(['form-customer.html','form-variant-picker.html','customer-preview.html','shop-entry.html']);
+  const customerPages=new Set(['form-customer.html','form-variant-picker.html','customer-preview.html','shop-entry.html','theme-cart.html']);
   assert.deepEqual([...files].filter(f=>!customerPages.has(f)).sort(),WORKSHOP_PAGES.map(p=>p.file).sort());
   for(const page of WORKSHOP_PAGES){
     const html=fs.readFileSync(new URL(page.file,ui),'utf8');

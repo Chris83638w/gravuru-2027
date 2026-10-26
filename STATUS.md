@@ -1,3 +1,7 @@
+## 26.10.2026 · Codex / Astra · Paket R: separater R2-Nachtrag (PR-Prüfung läuft)
+
+Zielkacheln mit echter Oberfläche, 24er-Seiten und begrenzten Vorschauabrufen; Freigabe nur für geladene/sichtbare „passt“-Ziele mit frischer Serverprüfung. Größen mit Formgruppen (Issue #24), eingebetteter Editor mit Sitzungstoken und Rückkehr ohne neues Dashboard-Dokument. Basis Code `376b5b6`, Katalog `fd50c6459`; Änderungen nur Code und private Testkopie. Gezielt 64/64 Dashboard/Cache, 14/14 Zielvorschau und 65/65 Editor/Host. Windows-Vollauf und Browsernachweise laufen; noch keine Abschlussabnahme. Bericht: [Paket R](docs/handoffs/2026-10-26-paket-r-bericht.md). R1/R3 separat danach, Fachfrage offene Preise in Issue #25. Kein Merge, Import oder Live-Zugriff.
+
 ## Zielmigration des echten Katalogs · 26.10.2026 (Claude)
 
 - Chris 26.10.: „ja“. Katalog `fd50c6459`: 759 von 761 Designs haben jetzt explizite Familienziele (Edelstahl 737, Schiefer 22×14 natur 22), Freigaben 0 → 0. Blockiert und unverändert: GT-S-22x14-D234/D235 (Familie mehrdeutig, Entscheidung offen).

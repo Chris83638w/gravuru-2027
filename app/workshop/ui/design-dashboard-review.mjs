@@ -7,6 +7,8 @@ export function releaseIssue(row,seen){
  if(!row.lieferform2)return 'Keine Lieferform 2 vorhanden.';
  if(Array.isArray(row.ziele)&&!row.targetFamily)return 'Ein Familienziel auswählen.';
  if(row.target?.missing)return 'Familie fehlt.';
+ if(row.targetFamily&&!['passt','prüfen','passt nicht'].includes(row.target?.fit?.status))return 'Zielvorschau zuerst laden und prüfen.';
+ if(row.target?.fit?.status==='prüfen'&&row.target.openedChecksum!==row.target.checksum)return 'Dieses Ziel einzeln öffnen und die Befunde prüfen.';
  if(row.target?.fit?.status==='passt nicht')return 'Ziel passt nicht: '+(row.target.fit.issues??[]).join(' ');
  if(row.released)return 'Bereits freigegeben.';
  const missing=(row.fonts??[]).filter(f=>f.status==='fehlt').map(f=>f.name);
@@ -36,3 +38,5 @@ export async function releaseDesigns(rows,{patch,onSuccess=()=>{}}){
  }
  return {succeeded,failed};
 }
+
+export function bulkReleaseIssue(row,seen){return releaseIssue(row,seen)||(row.targetFamily&&row.target?.fit?.status!=='passt'?'Nur Ziele mit „passt“ sind gemeinsam freigebbar.':null);}

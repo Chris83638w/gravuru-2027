@@ -34,6 +34,7 @@ class Element {
  appendChild(child){this.append(child);return child;}
  replaceChildren(...children){for(const child of this.children)if(child instanceof Element)child.parentElement=null;this.children=[];this._text='';this.append(...children);}
  remove(){if(this.parentElement){this.parentElement.children=this.parentElement.children.filter(child=>child!==this);this.ownerDocument?.changed('childList');}this.parentElement=null;}
+ replaceWith(next){if(!this.parentElement)return;const parent=this.parentElement,index=parent.children.indexOf(this);next.remove();parent.children[index]=next;next.parentElement=parent;next.adopt(this.ownerDocument);this.parentElement=null;this.ownerDocument?.changed('childList');}
  setAttribute(name,value){value=String(value);this.attributes.set(name,value);if(name==='id')this.id=value;if(name==='class')this.className=value;if(name.startsWith('data-'))this.dataset[name.slice(5).replace(/-([a-z])/g,(_,letter)=>letter.toUpperCase())]=value;if(name==='src'){this.complete=false;this.naturalWidth=0;this.ownerDocument?.srcAssignments.push({element:this,value});}this.ownerDocument?.changed('attributes',name);}
  getAttribute(name){if(name.startsWith('data-'))return this.dataset[name.slice(5).replace(/-([a-z])/g,(_,letter)=>letter.toUpperCase())]??null;return name==='id'?this.id||null:name==='class'?this.className||null:this.attributes.get(name)??null;}
  removeAttribute(name){this.attributes.delete(name);if(name.startsWith('data-'))delete this.dataset[name.slice(5).replace(/-([a-z])/g,(_,letter)=>letter.toUpperCase())];if(name==='src'){this.complete=false;this.naturalWidth=0;}this.ownerDocument?.changed('attributes',name);}
@@ -145,7 +146,7 @@ async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMed
  const buttons=(text,within=document.body)=>within.querySelectorAll('button').filter(button=>button.textContent===text);
  const button=(text,within=document.body)=>{const found=buttons(text,within);assert.equal(found.length,1,'expected one button '+JSON.stringify(text));return found[0];};
  const dispose=()=>{for(const listener of windowEvents.get('pagehide')||[])listener({type:'pagehide'});};
- return {document,element,button,buttons,requests,patches,originals,storage,location,tokens,mediaRequests,made,revoked,dispose,resize,async storageChanged(newValue){for(const listener of windowEvents.get('storage')||[])listener({key:'gravuru-katalog-design-updated',newValue});await tick();},async pageShow(persisted){for(const listener of windowEvents.get('pageshow')||[])listener({persisted});await tick();},showThumbnails(){for(const observer of intersections)observer.callback([...observer.targets].map(target=>({target,isIntersecting:true})));}};
+ return {document,element,button,buttons,requests,patches,originals,storage,location,tokens,mediaRequests,made,revoked,dispose,resize,async storageChanged(newValue){for(const listener of windowEvents.get('storage')||[])listener({key:'gravuru-katalog-design-updated',newValue});await tick();},async pageShow(persisted){for(const listener of windowEvents.get('pageshow')||[])listener({persisted});await tick();},intersect(element,visible=true,ratio=1){for(const observer of intersections)if(observer.targets.has(element))observer.callback([{target:element,isIntersecting:visible,intersectionRatio:ratio}]);},showThumbnails(){for(const observer of intersections)observer.callback([...observer.targets].map(target=>({target,isIntersecting:true})));}};
 }
 
 const keyed=(h,tag,key,id)=>{
@@ -529,7 +530,7 @@ const target=(familie,extra={})=>({familie,name:familie,material:'Testmaterial',
 const targetControl=(h,tag,key,familie)=>{const found=h.document.querySelectorAll(tag).filter(e=>e.dataset[key]&&JSON.parse(e.dataset[key])[2]===familie);assert.equal(found.length,1);return found[0];};
 async function targetPreview(h,familie){await targetControl(h,'button','targetPreview',familie).emit('click');await tick();const img=h.element('preview-image');img.naturalWidth=900;await img.emit('load');await h.element('preview-close').emit('click');}
 test('target approval requires its own successful authenticated preview; source or other material does not unlock it',async()=>{
- const h=await harness({rows:[row('A',{ziele:[target('steel'),target('slate')],zielVorschlaege:[]})],embedded:true,width:390});
+ const h=await harness({rows:[row('A',{ziele:[target('steel'),target('slate')],zielVorschlaege:[]})],embedded:true,width:1280});
  await reviewed(h,'A');assert.equal(targetControl(h,'input','designKey','steel').disabled,true);
  await targetPreview(h,'steel');assert.equal(targetControl(h,'input','designKey','steel').disabled,false);assert.equal(targetControl(h,'input','designKey','slate').disabled,true);
  const call=h.requests.find(r=>r.url.includes('target-preview'));assert.equal(call.authorization,'Bearer synthetic-session-token');
@@ -538,7 +539,7 @@ test('target approval requires its own successful authenticated preview; source 
 });
 test('target fit failure and missing fonts block approval after image load, while prüfen remains reviewable',async()=>{
  for(const [fit,fonts,blocked]of [['passt nicht',[{name:'Testfont',status:'vorhanden'}],true],['prüfen',[{name:'Testfont',status:'fehlt'}],true],['prüfen',[{name:'Testfont',status:'vorhanden'}],false]]){
- const h=await harness({rows:[row('A',{fonts,ziele:[target('steel')]})],onTargetPreview:()=>({svg:'<svg/>',fit:{status:fit,issues:['Befund']},reviewFit:{status:fit,issues:['Befund']},sizes:[]})});await targetPreview(h,'steel');assert.equal(targetControl(h,'input','designKey','steel').disabled,blocked);assert.equal(h.patches.length,0);h.dispose();}
+ const h=await harness({rows:[row('A',{fonts,ziele:[target('steel')]})],onTargetPreview:()=>({svg:'<svg/>',fit:{status:fit,issues:['Befund']},reviewFit:{status:fit,issues:['Befund']},sizes:[]})});await targetPreview(h,'steel');assert.equal(targetControl(h,'button','releaseKey','steel').disabled,blocked,'prüfen stays available only as an individual action after opening');assert.equal(targetControl(h,'input','designKey','steel').disabled,true,'prüfen is never selectable for a bulk approval');assert.equal(h.patches.length,0);h.dispose();}
 });
 test('failed target reopen clears its previous review without unlocking another target or retaining a selection',async()=>{
  let count=0;const h=await harness({rows:[row('A',{ziele:[target('steel'),target('slate')]})],onTargetPreview:()=>++count>1?{error:'Sitzung abgelaufen',status:401}:undefined});await targetPreview(h,'steel');
@@ -595,4 +596,84 @@ test('foreign LF2 collision compares both sources and needs a newly prepared exp
 test('changing target after a foreign LF2 choice clears its resolution and obsolete confirmation',async()=>{
  const rows=[row('A',{ziele:[target('steel')]})],calls=[],h=await harness({rows,onLine:()=>({...dataset(rows),familien:variantFamilies}),onVariant:call=>{calls.push(call);return call.body.resolution?variantPlan('add-target'):{...variantPlan('blocked'),svg:null,allowAddTarget:true,existing:{reihe:'existing',id:'EXIST-D1'},sourcePreviewError:'Schrift fehlt',existingPreviewError:'Vorschau offen'};}});
  await h.button('Für anderes Ziel einpassen').emit('click');await h.element('variant-prepare').emit('click');assert.match(h.element('variant-result').textContent,/Schrift fehlt/);await h.button('Ziel zu EXIST-D1 hinzufügen').emit('click');assert.equal(h.element('variant-confirm').disabled,false);await filter(h,'variant-size','L');assert.equal(h.element('variant-confirm').disabled,true);await h.element('variant-prepare').emit('click');assert.equal(calls.at(-1).body.resolution,undefined);assert.equal(calls.at(-1).body.target.sizeKey,'L');h.dispose();
+});
+
+
+const tileTargetRow=(id,{fit='passt',checksum='revision-'+id,families=['steel'],...overrides}={})=>row(id,{ziele:families.map(familie=>target(familie,{sourceRevision:checksum+'-'+familie,previewUrl:'/api/workshop/designs/target-preview?'+new URLSearchParams({reihe:'test',id,familie})})),...overrides});
+const tileResult=call=>{const params=new URL(call.url,'http://fixture.invalid').searchParams,id=params.get('id'),familie=params.get('familie');return {svg:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60"><ellipse cx="45" cy="30" rx="45" ry="30"/><circle cx="8" cy="30" r="2"/></svg>',checksum:'revision-'+id+'-'+familie,fit:{status:'passt',issues:[]},reviewFit:{status:'passt',issues:[]},size:{key:'OV-90X60',label:'9 × 6 cm · Oval',groupKey:'OV',groupName:'Oval',compatible:true},sizes:[{key:'OV-90X60',label:'9 × 6 cm · Oval',groupKey:'OV',groupName:'Oval',compatible:true}]};};
+const tileSurface=(h,id)=>h.element('rows').querySelectorAll('.target-tile').find(card=>JSON.parse(card.dataset.designRow)[1]===id)?.querySelector('.target-preview-surface');
+async function loadTile(h,id){const surface=tileSurface(h,id);assert.ok(surface);h.intersect(surface);await tick();await tick();const image=surface.querySelector('img');image.naturalWidth=900;image.naturalHeight=600;await image.emit('load');return {surface,image};}
+
+test('R2 target tile needs the actual image loaded and at least half visible, with session-token requests',async()=>{
+ const h=await harness({rows:[tileTargetRow('A')],embedded:true,width:390,onTargetPreview:tileResult});
+ assert.equal(h.requests.filter(call=>call.url.includes('target-preview')).length,0,'below-fold tiles are not requested before intersection');
+ const surface=tileSurface(h,'A');h.intersect(surface,true,.25);await tick();assert.equal(h.requests.filter(call=>call.url.includes('target-preview')).length,0,'sliver visibility is not a review');
+ h.intersect(surface,true,1);await tick();await tick();const img=surface.querySelector('img');assert.match(img.src,/^blob:/);assert.equal(h.element('release-seen').disabled,true,'fetch completion alone is not review');
+ h.intersect(surface,false,0);img.naturalWidth=900;await img.emit('load');assert.equal(h.element('release-seen').disabled,true,'loading after it left the viewport is not review');
+ h.intersect(surface,true,1);assert.equal(h.element('release-seen').disabled,false);assert.equal(h.requests.find(call=>call.url.includes('target-preview')).authorization,'Bearer synthetic-session-token');
+ assert.match(await h.made.at(-1).blob.text(),/<ellipse/);assert.match(await h.made.at(-1).blob.text(),/<circle/,'uses the supplied contour/holes SVG without replacing it');
+ await h.element('release-seen').emit('click');assert.match(h.element('release-count').textContent,/^1 Ziel/);await h.element('release-confirm').emit('click');
+ assert.deepEqual(h.patches[0].body,{reihe:'test',designId:'A',familie:'steel',checksum:'revision-A-steel',freigegeben:true,onlyPassing:true});h.dispose();
+});
+
+test('R2 prüfen remains blocked for bulk after tile review and needs explicit opening for individual approval',async()=>{
+ const h=await harness({rows:[tileTargetRow('A')],width:390,onTargetPreview:call=>({...tileResult(call),fit:{status:'prüfen',issues:['Motivlinie unter 0,5 mm']},reviewFit:{status:'prüfen',issues:['Motivlinie unter 0,5 mm']}})});
+ await loadTile(h,'A');assert.equal(h.element('release-seen').disabled,true);assert.equal(targetControl(h,'button','releaseKey','steel').disabled,true);assert.equal(targetControl(h,'input','designKey','steel').disabled,true);
+ await previewButton(h,'A').emit('click');await tick();const image=h.element('preview-image');image.naturalWidth=900;await image.emit('load');await h.element('preview-close').emit('click');assert.equal(targetControl(h,'button','releaseKey','steel').disabled,false);assert.equal(targetControl(h,'input','designKey','steel').disabled,true);
+ await targetControl(h,'button','releaseKey','steel').emit('click');await h.element('release-confirm').emit('click');assert.equal(h.patches.length,1);assert.equal(Object.hasOwn(h.patches[0].body,'onlyPassing'),false);h.dispose();
+});
+
+test('R2 paginates 100 target tiles and retains only reviewed passing designs across visited pages',async()=>{
+ const rows=Array.from({length:100},(_,i)=>tileTargetRow(String(i+1).padStart(3,'0'))),h=await harness({rows,width:390,onTargetPreview:tileResult});
+ assert.equal(h.element('rows').querySelectorAll('.target-tile').length,24);assert.match(h.element('target-page-summary').textContent,/Seite 1 von 5/);
+ await loadTile(h,'001');await h.element('target-page-next').emit('click');assert.equal(h.element('rows').querySelectorAll('.target-tile').length,24);await loadTile(h,'025');
+ await h.element('target-page-previous').emit('click');const calls=h.requests.filter(call=>call.url.includes('target-preview')).length;await loadTile(h,'001');assert.equal(h.requests.filter(call=>call.url.includes('target-preview')).length,calls,'unchanged checksums reuse decoded source data across pages');
+ await h.element('release-seen').emit('click');assert.match(h.element('release-count').textContent,/^2 Ziele/);await h.element('release-confirm').emit('click');assert.deepEqual(h.patches.map(call=>call.body.designId),['001','025']);
+ for(let i=0;i<4;i++)await h.element('target-page-next').emit('click');assert.equal(h.element('rows').querySelectorAll('.target-tile').length,4);assert.match(h.element('target-page-summary').textContent,/Seite 5 von 5/);h.dispose();
+});
+
+test('R2 a late previous-family preview cannot unlock the newly selected family',async()=>{
+ const pending=deferred(),h=await harness({rows:[tileTargetRow('A',{families:['steel','slate']})],width:390,onTargetPreview:call=>call.url.includes('familie=steel')?pending.promise:tileResult(call)});
+ const old=tileSurface(h,'A');h.intersect(old);await tick();await filter(h,'target-family','slate');const current=tileSurface(h,'A');assert.notEqual(current,old);
+ pending.resolve(tileResult({url:'/api/workshop/designs/target-preview?reihe=test&id=A&familie=steel'}));await tick();assert.equal(current.querySelector('img').src,'');assert.equal(h.element('release-seen').disabled,true);
+ await loadTile(h,'A');await h.element('release-seen').emit('click');await h.element('release-confirm').emit('click');assert.deepEqual(h.patches.map(call=>call.body.familie),['slate']);h.dispose();
+});
+
+test('R2 changed source checksum invalidates only that design and keeps other cached card nodes',async()=>{
+ let reads=0,changed=false;const initial=[tileTargetRow('A'),tileTargetRow('B')],h=await harness({rows:initial,width:390,onLine:()=>dataset(++reads===1?initial:[tileTargetRow('A',{checksum:'changed-A'}),tileTargetRow('B')]),onTargetPreview:call=>({...tileResult(call),...(changed&&call.url.includes('id=A')?{checksum:'changed-A-steel'}:{})})});
+ await loadTile(h,'A');await loadTile(h,'B');const other=tileSurface(h,'B');changed=true;await h.storageChanged(JSON.stringify({reihe:'test',id:'A',checksum:'changed'}));
+ assert.equal(tileSurface(h,'B'),other,'unmodified card and loaded image stay in the DOM');assert.equal(h.element('release-seen').disabled,false);
+ await h.element('release-seen').emit('click');assert.match(h.element('release-count').textContent,/^1 Ziel/);assert.match(h.element('release-list').textContent,/B/);await h.element('release-cancel').emit('click');await loadTile(h,'A');assert.equal(h.requests.filter(call=>call.url.includes('target-preview')&&call.url.includes('id=A')).length,2);h.dispose();
+});
+
+
+test('R2 current family and search filters limit bulk approval to the matching reviewed designs',async()=>{
+ const h=await harness({rows:[tileTargetRow('A',{families:['steel','slate']}),tileTargetRow('B',{families:['steel','slate']})],width:390,onTargetPreview:tileResult});
+ await loadTile(h,'A');await loadTile(h,'B');await filter(h,'target-family','slate');assert.equal(h.element('release-seen').disabled,true,'review of steel never counts for slate');
+ await loadTile(h,'A');await loadTile(h,'B');await filter(h,'search','Design A','input');
+ await h.element('release-seen').emit('click');assert.match(h.element('release-count').textContent,/^1 Ziel/);await h.element('release-confirm').emit('click');
+ assert.deepEqual(h.patches.map(call=>[call.body.designId,call.body.familie]),[['A','slate']]);h.dispose();
+});
+
+test('R2 target size selector groups the source-provided form names without dropping size labels',async()=>{
+ const h=await harness({rows:[tileTargetRow('A')],width:390,onTargetPreview:call=>({...tileResult(call),sizes:[{key:'OV-90X60',label:'9 × 6 cm · Oval',groupKey:'OV',groupName:'Oval',compatible:true},{key:'RE-120X80',label:'12 × 8 cm · Abgerundete Ecken R5',groupKey:'RE',groupName:'Abgerundete Ecken R5',compatible:false}]})});
+ await previewButton(h,'A').emit('click');await tick();const groups=h.element('target-size-control').querySelectorAll('optgroup');
+ assert.deepEqual(groups.map(group=>group.label),['Oval','Abgerundete Ecken R5']);assert.deepEqual(groups.map(group=>group.querySelector('option').textContent),['9 × 6 cm · Oval','12 × 8 cm · Abgerundete Ecken R5']);h.dispose();
+});
+
+
+test('R2 a saved target invalidates cached previews of every family belonging to the changed design',async()=>{
+ const h=await harness({rows:[tileTargetRow('A',{families:['steel','slate']})],width:390,onTargetPreview:tileResult});
+ await loadTile(h,'A');await filter(h,'target-family','slate');await loadTile(h,'A');
+ await h.element('release-seen').emit('click');await h.element('release-confirm').emit('click');
+ await filter(h,'target-family','steel');assert.equal(h.element('release-seen').disabled,true,'a write changed the design checksum even for its other family');
+ await loadTile(h,'A');assert.equal(h.requests.filter(call=>call.url.includes('target-preview')&&call.url.includes('familie=steel')).length,2,'the old family result is fetched again');assert.equal(h.element('release-seen').disabled,false);h.dispose();
+});
+
+
+test('R2 shows source-provided empty forms explicitly as family totals even under a search filter',async()=>{
+ const rows=[tileTargetRow('A',{families:['steel','slate']})],h=await harness({rows,width:390,onLine:()=>({...dataset(rows),availableFormGroups:[{familyId:'steel',familyName:'Stahl',groupKey:'OV',groupName:'Oval',count:8},{familyId:'steel',familyName:'Stahl',groupKey:'RU',groupName:'Rund',count:0},{familyId:'slate',familyName:'Schiefer',groupKey:'RE',groupName:'Rechteck',count:1}]})});
+ assert.match(h.element('target-form-summary').textContent,/Gesamtbestand der Familie/);assert.match(h.element('target-form-summary').textContent,/Rund: 0 Designs – keine kompatible Designreihe vorhanden/);
+ await filter(h,'search','Design A','input');assert.match(h.element('target-form-summary').textContent,/Oval: 8 Designs/,'the labels clearly remain totals, not filtered counts');
+ await filter(h,'target-family','slate');assert.doesNotMatch(h.element('target-form-summary').textContent,/Rund/);assert.match(h.element('target-form-summary').textContent,/Rechteck: 1 Design/);h.dispose();
 });

@@ -6,7 +6,7 @@
 // Nichts wird erfunden: Unbekanntes bleibt null; der Katalogpfad kommt nur über katalogPath()/Option.
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {designTargets} from './design-targets.mjs';
+import {designTargets,assignTargetSeries} from './design-targets.mjs';
 import {dashboardDesignTargets} from './design-target-dashboard.mjs';
 import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction,recoverKatalogIfNeeded} from './katalog-transaction.mjs';
 import path from 'node:path';
@@ -19,7 +19,7 @@ import {importKey} from './katalog-import.mjs';
 export const MIN_TEXT_MM=3;// Chris 23.10.2026 („3 mm Text“): kleinere Mustertexte sind zu prüfen
 export const SELECTABLE_LABEL='#00ff00';// Bogenetikett grün = im Konfigurator wählbar
 export const DESIGN_FILES=Object.freeze(['design.svg','design-produktion.svg','original.png','preview.png']);
-export const PATCH_FIELDS=Object.freeze(['reihe','designId','name','themes','hidden','freigegeben','familie','zieleHinzufuegen','checksum']);
+export const PATCH_FIELDS=Object.freeze(['reihe','designId','name','themes','hidden','freigegeben','familie','zieleHinzufuegen','checksum','onlyPassing']);
 const PT_TO_MM=25.4/72;
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
@@ -245,7 +245,7 @@ export async function designDashboardWithFit(root,options={}){
  const result=designDashboard(root,{...options,fonts});result.notes.push(...issues);return result;
 }
 
-export function designDashboard(root,{linie=null,reihe=null,material=null,status=null,freigabe=null,bestand=null,repository=null,startDesigns=false,fonts=null}={}){
+export function designDashboard(root,{linie=null,reihe=null,material=null,status=null,freigabe=null,bestand=null,repository=null,startDesigns=false,fonts=null,available={}}={}){
  const katalog=katalogFor(root);root=katalog.root;
  if(typeof startDesigns!=='boolean')fail(422,'designs_query','startDesigns ist true oder false.');
  if(linie===null||linie===undefined||linie===''){
@@ -261,7 +261,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  // Lieferform 2
  const referenced=new Set(referencedMasters(katalog,line));
  const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d)||referenced.has(d));
- const rows=[],byBestandId=new Map();
+ const rows=[],byBestandId=new Map(),targetVersionCache=new Map();
  for(const d of l2){
   const j=d.json||{},texts=Array.isArray(j.texts)?j.texts.filter(record):[],motifs=Array.isArray(j.motifs)?j.motifs.filter(record):[];
   const fonts=[...new Set([...(Array.isArray(j.fonts)?j.fonts:[]),...texts.map(t=>t.font)].filter(f=>typeof f==='string'&&f))].map(n=>fontStatus(n,katalog,replacements));
@@ -274,7 +274,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
    motifs:motifs.length,photos:Array.isArray(j.photos)?j.photos.length:0,themes:(d.themes||[]).map(id=>({id,name:themeName(id)})),
    lieferform2:{reihe:d.seriesFolder,dir:path.relative(root,d.dir).split(path.sep).join('/'),transferFrom:j.transfer?.fromKey??j.transfer?.from??null},bestand:null,
    files:filesFor(root,{reihe:d.seriesFolder,id:d.id}),reasons:[],warnings:Array.isArray(j.warnings)?j.warnings.filter(w=>typeof w==='string'):[]};
-  Object.assign(row,dashboardDesignTargets(d,katalog,line));
+  Object.assign(row,dashboardDesignTargets(d,katalog,line,{checksumFor:family=>{try{return designTargetChecksum(d,family,d.svg(),targetFontVersions(d,katalog,available,targetVersionCache));}catch{return null;}}}));
   if(!series)row.reasons.push(ctx.families.length?'alte Größe: '+row.plate[0]+' × '+row.plate[1]+' mm passt in keine Formatreihe der Familie (nur Einpassen, keine Übernahme).':'Formatreihe offen (Linie ohne Familie).');
   if(!d.themes||!d.themes.length)row.reasons.push('kein Thema zugeordnet.');
   else if(!d.themes.some(t=>ctx.themeIds.has(t)))row.reasons.push('Thema passt zu keiner Unterkategorie der Linie ('+d.themes.join(', ')+').');
@@ -341,7 +341,19 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  if(freigabe)filtered=filtered.filter(r=>r.released===(freigabe==='ja'));
  return {linie:{id:line.id,name:line.name,status:line.status??null,ausfuehrungen:line.ausfuehrungen??null,families:ctx.families.map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f)})),subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>({id:m.id,name:m.name??null,startDesign:m.startDesign}))}))},
   familien:[...katalog.families.values()].map(f=>({id:f.id,name:f.name,sizes:f.sizes.map(s=>({key:s.key,label:s.label})),linien:[...katalog.lines.values()].filter(l=>l.families.includes(f.id)).map(l=>({id:l.id,name:l.name}))})),
-  themes:katalog.themes.map(t=>({id:t.id,name:t.name})),counts:count(rows),reihen,formatreihen,materials,bestand:bestandInfo,notes,startDesignSummary,filter:{reihe,material,status,freigabe,startDesigns},rows:filtered,minTextMm:MIN_TEXT_MM};
+  themes:katalog.themes.map(t=>({id:t.id,name:t.name})),availableFormGroups:availableFormGroups(katalog,ctx.families,l2,rows),counts:count(rows),reihen,formatreihen,materials,bestand:bestandInfo,notes,startDesignSummary,filter:{reihe,material,status,freigabe,startDesigns},rows:filtered,minTextMm:MIN_TEXT_MM};
+}
+// Count only assigned target masters with a compatible size, never stock aliases or invented series.
+// No SVG/font conversion is needed: this is shape/size compatibility, not a review or approval.
+function availableFormGroups(katalog,families,masters,rows){
+ const targets=new Map(rows.filter(row=>row.lieferform2).map(row=>[JSON.stringify([row.lieferform2.reihe,row.id]),new Set((row.ziele??[]).map(target=>target.familie))]));
+ return families.flatMap(family=>{
+  const groups=new Map(family.groups.filter(group=>family.sizes.some(size=>size.groupKey===group.key)).map(group=>[group.key,{familyId:family.id,familyName:family.name,groupKey:group.key,groupName:group.name,shape:group.shape,count:0}]));
+  const sizeGroups=new Map(family.sizes.map(size=>[size.key,size.groupKey]));
+  const assigned=masters.filter(master=>targets.get(JSON.stringify([master.seriesFolder,master.id]))?.has(family.id));
+  for(const entry of assignTargetSeries(family,assigned,katalog))for(const key of new Set(entry.sizes.map(size=>sizeGroups.get(size))))groups.get(key).count++;
+  return [...groups.values()];
+ });
 }
 // Bestätigte oder eindeutig aufgelöste Legacy-Ziele bestimmen die Linienzugehörigkeit.
 function designOfLine(ctx,d){return designTargets(d,ctx.katalog).some(target=>ctx.line.families.includes(target.familie));}
@@ -391,6 +403,8 @@ function patchDesignLocked(root,input,{actor='werkstatt',now=new Date(),targetRe
  const katalog=katalogFor(root,{maxAgeMs:0});root=katalog.root;
  if(!record(input))fail(422,'design_patch','Änderung als Objekt senden.');
  const unknown=Object.keys(input).filter(k=>!PATCH_FIELDS.includes(k));if(unknown.length)fail(422,'design_patch','Unbekannte Felder: '+unknown.join(', ')+'. Erlaubt sind name, themes, hidden.');
+ if(input.onlyPassing!==undefined&&typeof input.onlyPassing!=='boolean')fail(422,'design_patch','onlyPassing ist true oder false.');
+ if(input.onlyPassing===true&&(input.freigegeben!==true||typeof input.checksum!=='string'||!/^[a-f0-9]{64}$/.test(input.checksum)))fail(422,'design_patch','Sammelfreigabe benötigt eine geprüfte Zielvorschau mit aktueller Prüfsumme.');
  const {reihe,designId}=input;
  if(!validSegment(reihe)||reihe.startsWith('_')||reihe==='bestand')fail(422,'design_patch','Formatreihe (Ordner unter designs/) prüfen.');
  if(!validSegment(designId))fail(422,'design_patch','Design-Kennung prüfen.');
@@ -423,6 +437,7 @@ function patchDesignLocked(root,input,{actor='werkstatt',now=new Date(),targetRe
     const replacements=fontReplacements(root),fonts=(Array.isArray(current.fonts)?current.fonts:[]).filter(f=>typeof f==='string').map(f=>fontStatus(f,katalog,replacements)),missing=fonts.filter(f=>f.status==='fehlt').map(f=>f.name);
     if(missing.length)fail(422,'design_patch','Freigabe nicht möglich: Schrift fehlt ('+missing.join(', ')+').');
     if(!targetReview||targetReview.familie!==familyId||targetReview.fit?.status==='passt nicht')fail(422,'design_patch','Zielpassung muss vor der Freigabe serverseitig geprüft werden.');
+    if(input.onlyPassing===true&&targetReview.fit?.status!=='passt')fail(422,'design_patch','Sammelfreigabe nur bei „passt“. Dieses Ziel muss einzeln geprüft werden.');
     if(targetReview.checksum!==designTargetChecksum(master,katalog.families.get(familyId),master.svg(),targetFontVersions(master,katalog,available)))fail(409,'design_conflict','Das Design oder die Familie wurde inzwischen geändert. Vorschau neu öffnen.');
    }
    selected.freigabe={status:input.freigegeben?'freigegeben':'offen',am:now.toISOString(),von:String(actor).slice(0,160)};
@@ -477,11 +492,11 @@ export function pendingChanges(root){
 }
 
 // The trusted review binds source geometry and family rules to the atomic write.
-export function targetFontVersions(master,katalog,available={}){
- const versions={},names=[...new Set(parseDesignSvg(master.svg()).layers.filter(l=>l.text).map(l=>l.font))];
- for(const name of names){if(available[name]){versions[name]=createHash('sha256').update(JSON.stringify(available[name])).digest('hex');continue;}
+export function targetFontVersions(master,katalog,available={},cache=null){
+ const versions={},names=[...new Set(parseDesignSvg(master.svg()).layers.filter(l=>l.kind==='text'||l.text).map(l=>l.font))];
+ for(const name of names){if(available[name]){const key=available[name];if(!cache?.has(key)){const hash=createHash('sha256').update(JSON.stringify(available[name])).digest('hex');cache?.set(key,hash);versions[name]=hash;}else versions[name]=cache.get(key);continue;}
   const meta=katalog.fonts.list.get(name);if(!meta?.file){versions[name]=null;continue;}
-  const file=safeKatalogPath(katalog.root,path.relative(katalog.root,meta.file).split(path.sep).join('/'));versions[name]=createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+  const file=safeKatalogPath(katalog.root,path.relative(katalog.root,meta.file).split(path.sep).join('/'));if(!cache?.has(file)){const hash=createHash('sha256').update(fs.readFileSync(file)).digest('hex');cache?.set(file,hash);versions[name]=hash;}else versions[name]=cache.get(file);
  }
  return versions;
 }

@@ -1,8 +1,8 @@
 import {designTargets,resolveDesignTargets} from './design-targets.mjs';
 import {FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
 const familyLabel=family=>({familie:family.id,name:family.name,material:FAMILY_MATERIALS[family.material.kind]?.name||family.material.kind,process:familyProcess(family)?.method==='print'?'Druck':familyProcess(family)?.method==='engraving'?'Gravur':'Verfahren offen',outdoorSuitable:family.outdoorSuitable??null});
-export function dashboardDesignTargets(master,katalog,line){
- const resolved=resolveDesignTargets(master,katalog),targets=resolved.targets.map(target=>{const family=katalog.families.get(target.familie);return {...(family?familyLabel(family):{familie:target.familie,name:target.familie,material:null,process:null,outdoorSuitable:null}),freigabe:target.freigabe,released:target.freigabe?.status==='freigegeben',missing:!family,inLine:line.families.includes(target.familie),previewUrl:family?'/api/workshop/designs/target-preview?'+new URLSearchParams({reihe:master.seriesFolder,id:master.id,familie:target.familie}):null};});
+export function dashboardDesignTargets(master,katalog,line,{checksumFor=()=>null}={}){
+ const resolved=resolveDesignTargets(master,katalog),targets=resolved.targets.map(target=>{const family=katalog.families.get(target.familie);return {...(family?familyLabel(family):{familie:target.familie,name:target.familie,material:null,process:null,outdoorSuitable:null}),freigabe:target.freigabe,released:target.freigabe?.status==='freigegeben',missing:!family,inLine:line.families.includes(target.familie),sourceRevision:family?checksumFor(family):null,previewUrl:family?'/api/workshop/designs/target-preview?'+new URLSearchParams({reihe:master.seriesFolder,id:master.id,familie:target.familie}):null};});
  return {ziele:targets,zielHinweise:resolved.issues.map(issue=>issue.message),zielVorschlaege:targetSuggestions(master,katalog),released:targets.some(t=>t.inLine)&&targets.filter(t=>t.inLine).every(t=>t.released)};
 }
 export function targetSuggestions(master,katalog){

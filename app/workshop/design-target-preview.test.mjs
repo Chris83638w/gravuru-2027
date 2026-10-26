@@ -68,7 +68,7 @@ test('embedded target GET and PATCH use the real session, CSRF and tenant envelo
  const now=Math.floor(Date.now()/1000),payload={aud:sessions.clientId,dest:'https://'+sessions.shopDomain,iss:'https://'+sessions.shopDomain+'/admin',sub:'123',iat:now,nbf:now,exp:now+60,jti:randomUUID()},unsigned=[{alg:'HS256'},payload].map(v=>Buffer.from(JSON.stringify(v)).toString('base64url')).join('.'),authorization='Bearer '+unsigned+'.'+createHmac('sha256',sessions.secret).update(unsigned).digest('base64url');
  const session=JSON.parse((await request('/api/workshop/session',{headers:{authorization}})).bytes),headers={authorization,origin:config.origin,'content-type':'application/json','x-gravuru-csrf':session.csrfToken,'sec-fetch-site':'same-origin'},route='/api/workshop/designs/target-preview?reihe=test&id=T-D1&familie=test-schilder';
  assert.equal((await request(route)).status,401);assert.equal((await request(route,{headers:{authorization:'Bearer invalid'}})).status,401);const opened=await request(route,{headers});assert.equal(opened.status,200,opened.bytes.toString());const review=JSON.parse(opened.bytes);assert.match(review.svg,/<path/);
- const data={reihe:'test',designId:'T-D1',familie:'test-schilder',freigegeben:true,checksum:review.checksum};
+ const data={reihe:'test',designId:'T-D1',familie:'test-schilder',freigegeben:true,checksum:review.checksum,onlyPassing:true};
  for(const patch of [{authorization:''},{'x-gravuru-csrf':'wrong'},{origin:'https://foreign.invalid'},{host:'foreign.invalid'},{'sec-fetch-site':'cross-site'}])assert.ok([401,403].includes((await request('/api/workshop/designs',{method:'PATCH',headers:{...headers,...patch},data})).status));
  const saved=await request('/api/workshop/designs',{method:'PATCH',headers,data});assert.equal(saved.status,200,saved.bytes.toString());assert.equal(f.read().ziele[0].freigabe.von,'123');assert.equal(workshop.repository.list().length,1);
  const variantInput={source:{reihe:'test',id:'T-D1'},target:{familyId:'test-schilder',sizeKey:'TS-RE-120X80',lineId:'test-schilder'}};
@@ -98,4 +98,71 @@ test('a changed font resource invalidates the viewed target both before review a
  await assert.rejects(patchDesignWithTargetReview(f.root,{reihe:'test',designId:'T-D1',familie:'test-schilder',freigegeben:true,checksum:old.checksum},nextOptions),e=>e.status===409);
  assert.throws(()=>patchDesign(f.root,{reihe:'test',designId:'T-D1',familie:'test-schilder',freigegeben:true},{...nextOptions,targetReview:{familie:'test-schilder',checksum:old.checksum,fit:old.reviewFit}}),e=>e.status===409);
  assert.equal(fs.readFileSync(path.join(f.root,f.base+'design.json'),'utf8'),before);assert.equal(fs.existsSync(path.join(f.root,'designs/test/_aenderungen.jsonl')),false);
+});
+
+test('target size options name the actual family groups and default to the first compatible shape',async t=>{
+ const f=fixture(t),file='familien/edelstahl/test-schilder.json',family=read(f.root,file);
+ family.groups.push({key:'AB',name:'Abgerundete Ecken R7',shape:'rect',cornerRadiusMm:7},{key:'OV',name:'Oval aus Katalog',shape:'ellipse',cornerRadiusMm:0});
+ const first=family.sizes[0],rounded={...structuredClone(first),key:'TS-AB-90X60',groupKey:'AB'},oval={...structuredClone(first),key:'TS-OV-90X60',groupKey:'OV'};
+ family.sizes=[first,oval,rounded,...family.sizes.slice(1)];write(f.root,file,family);
+ const source=f.read();source.form='Rechteck abgerundete Ecken';source.sizes=[first.key,rounded.key];write(f.root,f.base+'design.json',source);
+ const result=await f.preview('test-schilder');
+ assert.equal(result.size.key,rounded.key);assert.equal(result.size.compatible,true);assert.equal(result.variantRequired,false);
+ assert.equal(result.size.groupName,'Abgerundete Ecken R7');assert.equal(result.size.label,'9 × 6 cm · Abgerundete Ecken R7');
+ const sameLabels=result.sizes.filter(size=>size.sizeLabel==='9 × 6 cm');
+ assert.equal(sameLabels.length,3);assert.equal(new Set(sameLabels.map(size=>size.label)).size,3);
+ assert.deepEqual(sameLabels.map(size=>size.groupName),['Abgerundete Ecken R7','Rechteck','Oval aus Katalog']);
+ assert.equal(result.sizes[0].key,rounded.key);assert.ok(result.sizes.slice(1).every(size=>!size.compatible));
+ const wrong=await targetDesignPreview(f.root,{reihe:'test',id:'T-D1',familie:'test-schilder',size:first.key},options);
+ assert.equal(wrong.size.compatible,false);assert.equal(wrong.reviewFit.status,'passt nicht');
+});
+
+test('passing-tile approval requires a checksum and rechecks the actual warning status',async t=>{
+ const f=fixture(t),input={reihe:'test',designId:'T-D1',familie:'test-schilder',freigegeben:true,onlyPassing:true},first=await f.preview('test-schilder');
+ assert.equal(first.reviewFit.status,'passt');
+ await assert.rejects(patchDesignWithTargetReview(f.root,input,options),e=>e.status===422&&/Prüfsumme/.test(e.message));
+ await assert.rejects(patchDesignWithTargetReview(f.root,{...input,onlyPassing:'true',checksum:first.checksum},options),e=>e.status===422);
+ const file=path.join(f.root,f.base+'design.svg');fs.writeFileSync(file,fs.readFileSync(file,'utf8').replace('font-size="5"','font-size="2"'));
+ await assert.rejects(patchDesignWithTargetReview(f.root,{...input,checksum:first.checksum},options),e=>e.status===409);
+ const warning=await f.preview('test-schilder');assert.equal(warning.reviewFit.status,'prüfen');
+ await assert.rejects(patchDesignWithTargetReview(f.root,{...input,checksum:warning.checksum},options),e=>e.status===422&&/Sammelfreigabe/.test(e.message));
+ assert.throws(()=>patchDesign(f.root,{...input,checksum:warning.checksum},{...options,targetReview:{familie:'test-schilder',checksum:warning.checksum,fit:warning.reviewFit}}),e=>e.status===422&&/Sammelfreigabe/.test(e.message));
+ assert.equal(f.read().ziele[0].freigabe,null);assert.equal(fs.existsSync(path.join(f.root,'designs/test/_aenderungen.jsonl')),false);
+ const approved=await patchDesignWithTargetReview(f.root,{...input,onlyPassing:false,checksum:warning.checksum},{...options,actor:'merchant:single-review'});
+ assert.equal(approved.changed,true);assert.equal(f.read().ziele[0].freigabe.von,'merchant:single-review');
+});
+
+test('passing-tile approval preserves the individual write path and blocks missing fonts',async t=>{
+ const f=fixture(t),input={reihe:'test',designId:'T-D1',familie:'test-schilder',freigegeben:true,onlyPassing:true},review=await f.preview('test-schilder');
+ const result=await patchDesignWithTargetReview(f.root,{...input,checksum:review.checksum},{...options,actor:'merchant:tiles'});
+ assert.equal(result.changed,true);assert.equal(f.read().ziele[0].freigabe.von,'merchant:tiles');
+ const log=fs.readFileSync(path.join(f.root,'designs/test/_aenderungen.jsonl'),'utf8').trim().split('\n').map(JSON.parse);assert.equal(log.length,1);assert.equal(log[0].actor,'merchant:tiles');assert.ok(log[0].changes.ziele);
+ const missing=fixture(t),file=path.join(missing.root,missing.base+'design.svg');fs.writeFileSync(file,fs.readFileSync(file,'utf8').replace('Michroma','Missing'));
+ await assert.rejects(patchDesignWithTargetReview(missing.root,{...input,checksum:review.checksum},options),e=>e.status===422&&/Schrift fehlt/.test(e.message));
+ assert.equal(missing.read().ziele[0].freigabe,null);
+});
+
+test('dashboard target cache revisions match previews and change with design, family and font sources',async t=>{
+ const f=fixture(t),current=()=>designDashboard(f.root,{linie:'test-schilder',available:options.available}).rows[0].ziele[0].sourceRevision;
+ const first=current(),review=await f.preview('test-schilder');assert.match(first,/^[a-f0-9]{64}$/);assert.equal(first,review.checksum);assert.equal(current(),first);
+ const source=f.read();source.name='New name';write(f.root,f.base+'design.json',source);forgetKatalog();const named=current();assert.notEqual(named,first);assert.equal(named,(await f.preview('test-schilder')).checksum);
+ const family=read(f.root,'familien/edelstahl/test-schilder.json');family.name='New family';write(f.root,'familien/edelstahl/test-schilder.json',family);forgetKatalog();const familyChanged=current();assert.notEqual(familyChanged,named);assert.equal(familyChanged,(await f.preview('test-schilder')).checksum);
+ const changed=structuredClone(FONT);changed.regular.glyphs.T.a+=5;
+ const next=designDashboard(f.root,{linie:'test-schilder',available:{Michroma:changed}}).rows[0].ziele[0].sourceRevision;assert.notEqual(next,familyChanged);
+ assert.equal(next,(await targetDesignPreview(f.root,{reihe:'test',id:'T-D1',familie:'test-schilder'},{available:{Michroma:changed}})).checksum);
+});
+
+test('dashboard exposes actual form groups including zero compatible designs, counting a master once per group',t=>{
+ const f=fixture(t),file='familien/edelstahl/test-schilder.json',family=read(f.root,file),rect=family.sizes[0];
+ family.groups.push({key:'RU',name:'Rund laut Familie',shape:'ellipse',cornerRadiusMm:0});
+ family.sizes.push({...structuredClone(rect),key:'TS-RU-90',label:'Ø 9 cm',widthMm:90,heightMm:90,groupKey:'RU'});write(f.root,file,family);
+ const groups=()=>designDashboard(f.root,{linie:'test-schilder',...options}).availableFormGroups;
+ assert.deepEqual(groups().map(group=>[group.groupKey,group.groupName,group.count]),[['RE','Rechteck',1],['RU','Rund laut Familie',0]]);
+ assert.ok(groups().every(group=>group.familyId==='test-schilder'&&group.familyName===family.name));
+ const round={...f.read(),id:'T-D2',plateMm:[90,90],form:'Rund',sizes:['TS-RU-90'],ziele:[]};
+ write(f.root,'designs/test/T-D2/design.json',round);write(f.root,'designs/test/T-D2/design.svg',fs.readFileSync(path.join(f.root,f.base+'design.svg'),'utf8'));forgetKatalog();
+ assert.equal(groups().find(group=>group.groupKey==='RU').count,0,'a design without the confirmed family target does not count');
+ round.ziele=[{familie:'test-schilder',freigabe:null}];write(f.root,'designs/test/T-D2/design.json',round);forgetKatalog();
+ assert.equal(groups().find(group=>group.groupKey==='RU').count,1,'a confirmed compatible target counts without granting approval');
+ assert.equal(read(f.root,'designs/test/T-D2/design.json').ziele[0].freigabe,null);
 });

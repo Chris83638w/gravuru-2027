@@ -1,3 +1,9 @@
+## Paket R beauftragt, Acryl-Preise, Zielmigration · 26.10.2026 (Claude)
+
+- Chris (26.10.): „ja und ja“ zur Zielmigration des echten Katalogs und zu Paket R. Auftrag: [Paket R](docs/handoffs/2026-10-26-paket-r-sammelzuordnung-hauptprodukte.md) (Sammelzuordnung Material/Thema, Sammelfreigabe über Zielkacheln, Hauptprodukt im Dashboard anlegen, Größen mit Form = Issue #24) für Astra High.
+- Preis-Excel an Chris: Acryl-Türschilder 3 mm haben für 79 von 80 Edelstahl-Größen schon Preise aus `serien/acryl-tuerschilder-2027.json` (Serienplan 21.10.), es fehlt Ellipse 30 × 10. Schrauben bei Acryl 0,30 € teurer als Edelstahl (zur Bestätigung). „AA/AS“ im Katalog sind Acryl 5 mm mit Abstandshaltern (33 andere Größen, ohne Preise). Linie Acryl-Türschilder hat noch keine Familie; die baut Claude nach Rücklauf der Excel.
+- Live-Durchgang mit Chris im Dashboard (D8): funktioniert, 0 Freigaben. Befund Issue #24 (fünfmal „12 × 8 cm“ ohne Form).
+
 ## Issue #22 behoben · 26.10.2026 (Claude)
 
 - Astras unabhängige Prüfung (PR #23, nur Nachweise) fand: RGB-Prozentfarben wie `rgb(15%,0%,0%)` umgingen die Farbprüfung der Gravurziele. Korrigiert in `740b4c8` (Prozent → 0–255 vor der Neutralgrenze 16), Regressionstest dabei; ohne die Korrektur schlägt er fehl. Tests: `design-target-rules` und `katalog-import` 22/22.

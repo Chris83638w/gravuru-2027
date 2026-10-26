@@ -1,3 +1,10 @@
+## Zielmigration des echten Katalogs · 26.10.2026 (Claude)
+
+- Chris 26.10.: „ja“. Katalog `fd50c6459`: 759 von 761 Designs haben jetzt explizite Familienziele (Edelstahl 737, Schiefer 22×14 natur 22), Freigaben 0 → 0. Blockiert und unverändert: GT-S-22x14-D234/D235 (Familie mehrdeutig, Entscheidung offen).
+- Geprüft: design.json außer `ziele` inhaltsgleich (759/759), zweiter Probelauf 759 unverändert / 0 bereit; Import-Probelauf vorher/nachher gleich (Edelstahl 647 neu, 97 gesperrt, 8919 Vorlagen; Gedenktafeln 22×14 6 neu, 78 Vorlagen). Host vorher: Katalog 7f4a048, keine ungesicherten Dashboard-Änderungen, gleicher Probelauf (Log `private/probe-main-20261023/20261026-1.log`).
+- Chris 26.10.: Acryl-Türschilder 3 mm, Ellipse 30 × 10 cm = 34,99 €. Preis-Excel neu sortiert nach skalierbaren Reihen (Seitenverhältnis je Form), quadratische Platten als „Quadrat“ (Hinweis: die AA/AS/SS-Familien führen 16×16 bis 30×30 noch als RE).
+- Chris 26.10. (Excel): Acryl-Befestigungen kosten wie Edelstahl (Schrauben 2,69 / 3,09 statt 2,99 / 3,39). Abstandshalter-Familien: 24 × 7 wird 24 × 8 (Reihe 3 : 1, Bohrabstand wie 21 × 7, AH02-E10); Spalte „4 Abstandshalter möglich“ zur Prüfung durch Chris. Umsetzung in den Familien nach Rücklauf der Excel.
+
 ## Paket R beauftragt, Acryl-Preise, Zielmigration · 26.10.2026 (Claude)
 
 - Chris (26.10.): „ja und ja“ zur Zielmigration des echten Katalogs und zu Paket R. Auftrag: [Paket R](docs/handoffs/2026-10-26-paket-r-sammelzuordnung-hauptprodukte.md) (Sammelzuordnung Material/Thema, Sammelfreigabe über Zielkacheln, Hauptprodukt im Dashboard anlegen, Größen mit Form = Issue #24) für Astra High.

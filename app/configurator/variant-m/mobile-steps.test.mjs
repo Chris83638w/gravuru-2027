@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {STEPS,MOBILE_QUERY,availableSteps,stepForTab,neighbourStep,progress,previewHeight,summaryRows,materialLabel} from './mobile-steps.mjs';
+import {STEPS,MOBILE_QUERY,availableSteps,stepForTab,neighbourStep,progress,previewHeight,summaryRows,materialLabel,moveMobileCheckout} from './mobile-steps.mjs';
 
 test('Reihenfolge der geführten Schritte folgt Entscheidung A6; Grenze liegt unter 768 px',()=>{
   assert.deepEqual(STEPS.map(s=>s.id),['options','design','text','media','motif','review']);
@@ -66,4 +66,52 @@ test('Zusammenfassung für „Prüfen“: Größe, Material, Optionen, Preis aus
   assert.equal(materialLabel({kind:'steel'}),'Edelstahl');
   assert.equal(materialLabel('slate'),'Schiefer');
   assert.equal(materialLabel(null),'');
+});
+
+// Minimaler DOM für die echte Verschiebung: Identität, Listener und laufender Status
+// müssen beim Wechsel der Bildschirmbreite erhalten bleiben.
+class CheckoutNode extends EventTarget{
+  constructor(){super();this.children=[];this.parentNode=null;this.hidden=false;this.disabled=false;this.textContent='';}
+  get nextSibling(){const i=this.parentNode?.children.indexOf(this);return this.parentNode?.children[i+1]||null;}
+  append(node){this.insertBefore(node,null);}
+  insertBefore(node,next){if(node.parentNode){const list=node.parentNode.children;list.splice(list.indexOf(node),1);}const i=next?this.children.indexOf(next):this.children.length;this.children.splice(i,0,node);node.parentNode=this;}
+}
+function checkoutFixture(connected=true){
+ const footer=new CheckoutNode(),oldParent=new CheckoutNode(),cart=new CheckoutNode(),statusSlot=new CheckoutNode();
+ const legacy=new CheckoutNode(),legacyStatus=new CheckoutNode(),button=new CheckoutNode(),status=new CheckoutNode(),after=new CheckoutNode();
+ legacy.hidden=true;legacy.disabled=true;legacyStatus.textContent='Lokaler Prüfstand · Bestellung noch nicht verbunden';status.hidden=true;
+ oldParent.append(legacy);oldParent.append(legacyStatus);footer.append(button);footer.append(status);footer.append(after);
+ const nodes={'.fk-buy-button':legacy,'.fk-order-status':legacyStatus,...(connected?{'[data-shop-cart]':button,'[data-shop-cart-status]':status}:{})};
+ return {root:{querySelector:s=>nodes[s]||null},footer,oldParent,cart,statusSlot,legacy,legacyStatus,button,status,after};
+}
+
+test('Mobile nutzt den verbundenen Warenkorb statt des deaktivierten lokalen Knopfs; Listener bleibt einmalig',()=>{
+ const f=checkoutFixture();let calls=0;f.button.addEventListener('click',()=>calls++);
+ const restore=moveMobileCheckout(f.root,f.cart,f.statusSlot);
+ assert.deepEqual(f.cart.children,[f.button]);assert.deepEqual(f.statusSlot.children,[f.status]);
+ assert.equal(f.legacy.parentNode,f.oldParent);assert.equal(f.legacy.hidden,true);assert.equal(f.legacy.disabled,true);
+ assert.equal(f.button.hidden,false);assert.equal(f.button.disabled,false);f.button.dispatchEvent(new Event('click'));assert.equal(calls,1);
+ restore();assert.deepEqual(f.footer.children,[f.button,f.status,f.after]);assert.deepEqual(f.cart.children,[]);
+ const restoreAgain=moveMobileCheckout(f.root,f.cart,f.statusSlot);f.button.dispatchEvent(new Event('click'));assert.equal(calls,2);restoreAgain();
+});
+
+test('Speicherfortschritt und Fehler bleiben ohne sync sichtbar und überstehen den Wechsel zu Desktop',()=>{
+ const f=checkoutFixture();const restore=moveMobileCheckout(f.root,f.cart,f.statusSlot);
+ f.button.disabled=true;f.button.textContent='Wird vorbereitet …';f.status.hidden=false;f.status.textContent='Deine Gestaltung wird gesichert …';
+ assert.equal(f.statusSlot.children[0].textContent,'Deine Gestaltung wird gesichert …');assert.equal(f.statusSlot.children[0].hidden,false);
+ restore();assert.equal(f.button.disabled,true);assert.equal(f.status.hidden,false);assert.equal(f.status.parentNode,f.footer);
+ const restoreAgain=moveMobileCheckout(f.root,f.cart,f.statusSlot);
+ f.status.textContent='Bitte das erforderliche eigene Foto hochladen.';f.button.disabled=false;
+ assert.equal(f.statusSlot.children[0].textContent,'Bitte das erforderliche eigene Foto hochladen.');restoreAgain();
+ assert.equal(f.status.textContent,'Bitte das erforderliche eigene Foto hochladen.');assert.equal(f.status.hidden,false);
+});
+
+test('Nicht verbundene Vorschau bleibt gesperrt; bestehender Commerce-Knopf behält seinen eigenen Handler',()=>{
+ for(const connected of [false,true]){
+ const f=checkoutFixture(false);f.legacy.disabled=!connected;let calls=0;f.legacy.addEventListener('click',()=>calls++);
+ const restore=moveMobileCheckout(f.root,f.cart,f.statusSlot);
+ assert.deepEqual(f.cart.children,[f.legacy]);assert.equal(f.legacy.disabled,!connected);assert.equal(f.legacy.hidden,false);
+ assert.deepEqual(f.statusSlot.children,[f.legacyStatus]);if(connected){f.legacy.dispatchEvent(new Event('click'));assert.equal(calls,1);}
+ restore();assert.deepEqual(f.oldParent.children,[f.legacy,f.legacyStatus]);assert.equal(f.legacy.hidden,true);
+ }
 });

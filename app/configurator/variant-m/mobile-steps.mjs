@@ -99,6 +99,27 @@ export function summaryRows({profile,legacy,state,quantity=1,totalText='',design
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+// Beide Ansichten benutzen dieselben Steuerelemente und damit denselben geprüften
+// Speicher-/Warenkorbweg. Insbesondere darf der deaktivierte lokale Knopf den
+// verbundenen Shop-Knopf nicht verdecken. Statusmeldungen bleiben auch ohne sync sichtbar.
+export function moveMobileCheckout(root,cartSlot,statusSlot){
+  const shop=root.querySelector('[data-shop-cart]');
+  const button=shop||root.querySelector('.fk-buy-button');
+  const status=root.querySelector(shop?'[data-shop-cart-status]':'.fk-order-status');
+  const places=[];
+  for(const [node,target] of [[button,cartSlot],[status,statusSlot]]){
+    if(!node||!target)continue;
+    places.push({node,parent:node.parentNode,next:node.nextSibling,hidden:node.hidden});
+    target.append(node);
+  }
+  if(button)button.hidden=false;
+  return ()=>{for(const {node,parent,next,hidden} of [...places].reverse()){
+    if(node===button)node.hidden=hidden;
+    // Den laufenden Speicherzustand (disabled, Text, Status-Sichtbarkeit) erhalten.
+    if(parent)parent.insertBefore(node,next?.parentNode===parent?next:null);
+  }};
+}
+
 export async function installMobileSteps(api){
   const {el,r,profile,config,legacy,showTab,say,button}=api;
   const $=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
@@ -109,11 +130,11 @@ export async function installMobileSteps(api){
   bar.innerHTML=`<div class="ux-mobile-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Fortschritt"><span></span></div><ol class="ux-mobile-steps"></ol><div class="ux-mobile-nav">${button('mobile-prev','‹ Zurück','class="ux-mobile-prev"')}${button('price','<strong data-ux-mobile-total aria-live="polite"></strong><small>Preisdetails</small>','class="ux-mobile-price" aria-label="Preisdetails anzeigen"')}${button('mobile-next','Weiter ›','class="ux-mobile-next ux-primary"')}<span class="ux-mobile-cart" data-ux-mobile-cart hidden></span></div>`;
   shell.append(bar);
   const review=document.createElement('section');review.className='ux-panel ux-mobile-review';review.id='ux-panel-review';review.setAttribute('aria-label','Prüfen und bestellen');review.hidden=true;
-  review.innerHTML='<h2>Prüfen & bestellen</h2><p>Deine Auswahl im Überblick. Jeder Schritt bleibt frei erreichbar.</p><section class="ux-mobile-issues" data-ux-mobile-issues hidden></section><dl class="ux-mobile-summary" data-ux-mobile-summary></dl><div class="ux-mobile-quantity" data-ux-mobile-quantity></div><p class="ux-mobile-order-status" data-ux-mobile-status role="status"></p>';
+  review.innerHTML='<h2>Prüfen & bestellen</h2><p>Deine Auswahl im Überblick. Jeder Schritt bleibt frei erreichbar.</p><section class="ux-mobile-issues" data-ux-mobile-issues hidden></section><dl class="ux-mobile-summary" data-ux-mobile-summary></dl><div class="ux-mobile-quantity" data-ux-mobile-quantity></div><div class="ux-mobile-order-status" data-ux-mobile-status></div>';
   $('#ux-panel-upload').after(review);
   const stepsList=bar.querySelector('.ux-mobile-steps'),progressBar=bar.querySelector('.ux-mobile-progress'),prev=bar.querySelector('[data-ux=mobile-prev]'),next=bar.querySelector('[data-ux=mobile-next]'),cartSlot=bar.querySelector('[data-ux-mobile-cart]');
   const media=matchMedia(MOBILE_QUERY);
-  let active=false,current='options',steps=[],signature='',applying=false;
+  let active=false,current='options',steps=[],signature='',applying=false,restoreCheckout=null;
   const tabLabel=tab=>$('#ux-tab-'+tab)?.textContent.trim()||'';
   const tabState=()=>Object.fromEntries(all('[data-ux-tab]').map(b=>[b.dataset.uxTab,!b.hidden&&!b.disabled]));
   const selectedTab=()=>all('[data-ux-tab]').find(b=>b.getAttribute('aria-selected')==='true')?.dataset.uxTab||'options';
@@ -152,7 +173,6 @@ export async function installMobileSteps(api){
     const box=review.querySelector('[data-ux-mobile-issues]');
     box.hidden=!issues.length&&!missingPhoto.length;
     box.innerHTML=(issues.length||missingPhoto.length?'<h3>Bitte noch prüfen</h3>':'')+issues.map(issue=>`<p>${esc(issue.message)} ${button('mobile-issue','Zum Feld',`data-id="${esc(issue.id)}"`)}</p>`).join('')+missingPhoto.map(()=>`<p>Bitte dein Foto hochladen. ${button('mobile-goto','Zum Foto','data-step="media"')}</p>`).join('');
-    review.querySelector('[data-ux-mobile-status]').textContent=$('.fk-order-status')?.textContent.trim()||'';
   }
   function showStep(id,{scroll=true}={}){
     if(!active)return;
@@ -188,7 +208,7 @@ export async function installMobileSteps(api){
   if(typeof el.updateMobilePreview==='function'&&!el.updateMobilePreview.uxMobileGuard){const original=el.updateMobilePreview;el.updateMobilePreview=function(...args){if(active)return;return original.apply(this,args);};el.updateMobilePreview.uxMobileGuard=true;}
   function enter(){
     if(active)return;active=true;r.host.dataset.uxMobile='true';
-    relocate($('.fk-buy-button'),cartSlot);const cart=$('.fk-buy-button');if(cart)cart.hidden=false;
+    restoreCheckout=moveMobileCheckout(r,cartSlot,review.querySelector('[data-ux-mobile-status]'));
     relocate($('label.fk-quantity'),review.querySelector('[data-ux-mobile-quantity]'));
     // Hinweise (Stand wiederhergestellt, Überlagerung …) nicht über/in der Platte, sondern oben im
     // Bearbeitungsbereich – sonst schrumpft die feste Platte auf einen Streifen (Fehler 20.10.2026).
@@ -200,7 +220,7 @@ export async function installMobileSteps(api){
   function leave(){
     if(!active)return;active=false;delete r.host.dataset.uxMobile;delete r.host.dataset.uxKeyboard;delete r.host.dataset.uxStep;
     for(const name of ['--ux-vv-height','--ux-vv-top','--ux-mobile-preview-h'])r.host.style.removeProperty(name);
-    bar.hidden=true;review.hidden=true;restoreAll();
+    bar.hidden=true;review.hidden=true;restoreCheckout?.();restoreCheckout=null;restoreAll();
     for(const [node,place] of notes){if(place.parent)place.parent.insertBefore(node,place.next&&place.next.parentNode===place.parent?place.next:null);}notes.clear();
     const tab=selectedTab();applying=true;try{showTab(tab);}finally{applying=false;}
   }

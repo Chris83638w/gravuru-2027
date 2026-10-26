@@ -82,3 +82,23 @@ einpassen“).
 - Windows-Vollauf mit Zählern und Rohlog; Browser Desktop und Handy-Emulation (Pixel 7) inklusive 100 Kacheln.
 - Bericht `docs/handoffs/2026-10-2x-paket-r-bericht.md` mit Screenshots, Eintrag oben in `STATUS.md`. Kein Merge,
   kein Force-Push. Rückfragen als Kommentar im PR oder als Issue an Claude.
+
+## Nachtrag 26.10.2026 · Befunde von Chris beim Prüfen · Reihenfolge
+
+Chris prüft die Edelstahl-Designs je Form und skalierbarer Reihe (z. B. `edelstahl-gravur-oval-90x60`, Kacheln). Daraus:
+
+1. **Kacheln zeigen die echte Plattenform.** Heute zeigt jede Kachel das Design auf einem weißen Rechteck, auch bei Oval
+   ([Screenshot](paket-r/chris-oval-kacheln-ohne-kontur.png)). Chris: „Es wäre absolut hilfreich, wenn wir die ovale
+   Kontur zumindest sehen. Sonst muss ich ja in jedes Design zur Prüfung reingehen.“ Kachelbild = Zielvorschau
+   (Familie der Linie, erste kompatible Größe: Platte, Kontur, Bohrlöcher, Material). Das ist R2.
+2. **Freigabe aller geprüften Designs einer Reihe auf einmal.** Heute muss für jedes Design einzeln die Zielvorschau
+   geöffnet und „Auswählen“ gesetzt werden; es gibt kein „alle auswählen“. Mit R2 gilt eine geladene, sichtbare
+   Zielkachel als gesehen; Knopf „Alle gesehenen mit ‚passt‘ freigeben“ (Server prüft jedes Design neu).
+3. **Zurück aus „Bearbeiten“ ohne Neuladen.** Heute lädt „← Designs“ die ganze Übersicht neu
+   ([Screenshot](paket-r/chris-bearbeiten-zurueck.png)). Zurück muss Linie, Reihe, Filter, Ansicht, Scrollposition und
+   die geladenen Vorschauen behalten (z. B. Editor als Überlagerung oder Zustand im Verlauf plus Zwischenspeicher);
+   nach dem Speichern nur die geänderte Kachel neu laden.
+
+**Reihenfolge (Claude):** Zuerst ein eigener, kleiner PR mit R2 plus Punkt 3 und Issue #24, weil Chris gerade prüft
+und freigibt. Danach R1 und R3. Fehlt für eine Form jede kompatible Designreihe (heute „Rund“: 0 Designs), zeigt die
+Ansicht das ausdrücklich an.

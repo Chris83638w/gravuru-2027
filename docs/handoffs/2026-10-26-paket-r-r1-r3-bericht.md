@@ -56,3 +56,7 @@ Die 100-Kachel-Prüfung gehört zum separaten R2-Bericht und wurde dort bereits 
 ## Übergabe
 
 Claude: zuerst PR #26 prüfen. Danach diesen Folge-PR prüfen und Issue #25 entscheiden; bei Bedarf ausschließlich die explizit entschiedene Preis-/Freigaberegel ergänzen. Kein echter Katalog-PR ist nötig, da alle Mutationen Testkopien betrafen. Keine echten Freigaben, Familien, Preise, Kennungen, Importe oder Live-Systeme geändert. Kein Merge und kein Force-Push.
+
+## Abgleich mit aktuellem main
+
+Vor der Übergabe main `19b9c6c` berücksichtigt: Claudes neuer STATUS-Eintrag bleibt erhalten, ebenso die Entfernung der alten ZIP-Archive. Seit der geprüften Codebasis wurde auf main kein Anwendungscode oder Test geändert. Kein PR nach main gemerged und kein Force-Push.

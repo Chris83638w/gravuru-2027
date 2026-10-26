@@ -1,3 +1,15 @@
+## 26.10.2026 · Claude · Testbestellung D8 (4100000): Schritte 1–4 live
+
+Chris: „Ja, Du darfst die Schritte 1 bis 4 für die Testbestellung ausführen.“
+
+1. **Bindung:** Sicherung `pilot-20261026/acryl-vor-bindung.sqlite`, dann `shop-bind --store-id acryl --live --apply` (Hauptprodukt 4100000, 12×8 AB): 5 Varianten → `cfg_98436fb0…` r1, neu 5, Preise gleich (K00 19,99 · B02 22,48 · B02S 22,68 · KGL 22,98 · KRA 23,98).
+2. **Host:** Code `4cf4277` bereitgestellt; `app.cjs` setzt `GRAVURU_CUSTOMER_INTEGRATION=merchant-test-only` (Kopie `app.cjs.bak-20261026`), „App neu starten“. Prüfung: `/apps/konfigurator/start` 401 (Signatur nötig), `/api/configurator-test/session` 401, Webhook-GET 405, Legacy weiter v3/v1. Merchant-JSON hat `GRAVURU_SHOPIFY_ORDER_WEBHOOK=test-only-2026-07`.
+3. **Shopify-App:** `ops/shopify/stage-shop-entry.mjs` (Kopie des Projekts vom 22.10., `--no-build`): Kandidat `gravuru-2027-shop-einstieg-20261026-v1` (Version 1182290837505) geprüft – 8 Module (+`app_proxy`), Preisfunktion bytegleich (`22c9945b…`), Theme 20 → 22 Dateien (nur die zwei neuen) – und freigegeben. Rückweg: `gravuru-2027-ids-tier-20261022-v1`. Erster Versuch ohne `--no-build` scheiterte (fehlende Function-Bibliothek), nichts live.
+   Shop-Test: `https://gravuru-design.myshopify.com/apps/konfigurator/start?product=16077798965628&variant=57265913332092` → 302 in den Editor (Store acryl, Bindung aktiv); Editor zeigt D8 auf 120×80, 19,99 €.
+4. **Theme:** unveröffentlichte Kopie „Konfigurator-Test 26.10. (Kopie production)“ (`190557716860`) mit schlanker Vorlage `templates/product.konfi-test.json` (Titel, Preis, Varianten, Menge, Warenkorb, App-Block „Jetzt personalisieren“). Vorschau: `…/products/tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8?preview_theme_id=190557716860&view=konfi-test`. Live-Theme und Produkt unverändert.
+- Offen: Testzahlung durch Chris (Zahlungs-Testmodus), danach Bestelleingang prüfen. Danach: Bindung in den Shop-Abgleich einbauen (automatisch je Produkt), Block in die echte Produktvorlage.
+- Hinweis: Während der Sicherung (Plesk-Aufgabe) kam es einmal zu 503 der App – CloudLinux-Limit wird geteilt; lange Aufgaben möglichst außerhalb von Tests.
+
 ## 26.10.2026 · Claude · Legacy-Speicher zurückgesetzt, Paket R2 live
 
 - Chris 26.10.: „Ja, Du darfst den Code bereitstellen, die App neu starten und den alten Speicher zurücksetzen.“

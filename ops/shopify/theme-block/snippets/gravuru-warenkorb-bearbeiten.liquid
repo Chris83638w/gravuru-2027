@@ -1,18 +1,30 @@
 {%- comment -%}
-  Gravuru Konfigurator · „Bearbeiten“ in der Warenkorbzeile (K8, app/workshop/SHOP-ENTRY.txt).
-  Einbau im Theme (nicht in der App-Erweiterung): innerhalb der Schleife `for item in cart.items`
+  Gravuru: gesicherte Vorschau und Bearbeiten-Link je Warenkorbzeile.
+  Im Theme (Hauptwarenkorb UND Warenkorb-Drawer), innerhalb for item in cart.items:
     {% render 'gravuru-warenkorb-bearbeiten', item: item %}
-  Die versteckten Eigenschaften _gravuru_config/_gravuru_rev setzt der Server beim Anlegen der Zeile; sie
-  öffnen genau diese Konfigurations-Revision wieder – nur auf dem Gerät mit dem privaten Entwurfszugang.
-  `line` meldet, dass die Zeile noch im Warenkorb liegt (ersetzen statt neu anlegen); den tatsächlichen
-  Zeilenanker liest der Server aus seinem Register, nicht aus diesem Wert.
+  Private Entwurfszugänge werden nie als Eigenschaften oder URL übertragen.
+  line=theme ist nur der Bearbeiten-Modus; der Browser prüft den tatsächlichen alten
+  Zeilenschlüssel anhand Konfigurations-ID und Revision vor dem Ersetzen.
 {%- endcomment -%}
 {%- liquid
   assign gv_config = item.properties['_gravuru_config']
   assign gv_rev = item.properties['_gravuru_rev']
   assign gv_subpath = subpath | default: 'konfigurator'
+  assign gv_preview = item.properties['_Entwurf']
+  assign gv_preview_prefix = gv_preview | slice: 0, 23
+  assign gv_relative_prefix = gv_preview | slice: 0, 9
+  assign gv_line = item.key
+  if gv_preview != blank
+    assign gv_line = 'theme'
+  endif
 -%}
 {%- if gv_config != blank and gv_rev != blank and item.product != blank and item.variant != blank -%}
+  {%- if gv_preview_prefix == 'https://cdn.shopify.com/' or gv_relative_prefix == '/uploads/' -%}
+    <a href="{{ gv_preview | escape }}" target="_blank" rel="noopener" aria-label="Deine Gestaltung vergrößern">
+      <img class="gravuru-cart-preview" src="{{ gv_preview | escape }}" alt="Deine gespeicherte Gestaltung"
+           width="160" height="120" loading="lazy" style="object-fit:contain;max-width:100%">
+    </a>
+  {%- endif -%}
   <a class="gravuru-cart-edit" rel="nofollow"
-     href="/apps/{{ gv_subpath }}/start?product={{ item.product.id }}&amp;variant={{ item.variant.id }}&amp;config={{ gv_config | url_encode }}&amp;rev={{ gv_rev | url_encode }}&amp;line={{ item.key | url_encode }}&amp;back={{ item.product.url | split: '?' | first | url_encode }}">Bearbeiten</a>
+     href="/apps/{{ gv_subpath | escape }}/start?product={{ item.product.id }}&amp;variant={{ item.variant.id }}&amp;config={{ gv_config | url_encode }}&amp;rev={{ gv_rev | url_encode }}&amp;line={{ gv_line | url_encode }}&amp;back={{ item.product.url | split: '?' | first | url_encode }}">Bearbeiten</a>
 {%- endif -%}

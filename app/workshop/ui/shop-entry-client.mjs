@@ -55,5 +55,12 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(url.protocol!=='https:'||!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(url.hostname)||url.port||url.username||url.password||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents))fail('Der Warenkorb wurde nicht bestätigt.');
     return result;
   }
-  return Object.freeze({request,loadModel,loadResources,submitCart});
+
+  async function submitThemeCart(input,{draftToken}={}){
+    if(typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail('Der private Entwurfszugang fehlt.');
+    const result=await json(await fetchImpl(API+'theme-cart',{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json','X-Gravuru-Draft':draftToken}),body:JSON.stringify(input)}));
+    if(result.mode!=='theme'||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents)||typeof result.handoffUrl!=='string')fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
+    return result;
+  }
+  return Object.freeze({request,loadModel,loadResources,submitCart,submitThemeCart});
 }

@@ -17,6 +17,8 @@ const row = r => ({id: r.config_id, rev: r.rev, draftId: r.draft_id, draftRevisi
 
 export function createCartConfigurations({database: db, clock = Date.now, tenantId}) {
   const tenant = tenantOption({tenantId});
+  // Claim before the browser POST: a lost reply must not cause a second upload.
+  db.exec(`CREATE TABLE IF NOT EXISTS theme_cart_transfers (offer_id TEXT NOT NULL, nonce TEXT NOT NULL, created_at TEXT NOT NULL, tenant_id TEXT NOT NULL, PRIMARY KEY(offer_id,tenant_id));`);
   db.exec(`CREATE TABLE IF NOT EXISTS cart_configurations (
       id TEXT PRIMARY KEY, draft_id TEXT NOT NULL UNIQUE, product_id TEXT NOT NULL, created_at TEXT NOT NULL, ${TENANT_COLUMN});
     CREATE TABLE IF NOT EXISTS cart_configuration_revisions (
@@ -47,6 +49,15 @@ export function createCartConfigurations({database: db, clock = Date.now, tenant
   const latestRow = id => db.prepare('SELECT * FROM cart_configuration_revisions WHERE config_id=? AND tenant_id=? ORDER BY rev DESC LIMIT 1').get(id, tenant);
 
   return {
+    claimThemeTransfer(offerId,nonce){
+      if(typeof offerId!=='string'||!/^offer_[A-Za-z0-9_-]{1,100}$/.test(offerId)||typeof nonce!=='string'||!/^[a-f0-9]{64}$/.test(nonce))fail(422,'theme_cart_claim','Die Warenkorbübergabe ist ungültig.');
+      return tx(()=>{
+        if(!db.prepare('SELECT 1 FROM cart_configuration_revisions WHERE offer_id=? AND tenant_id=?').get(offerId,tenant))fail(404,'theme_cart_claim','Diese Gestaltung ist nicht bekannt.');
+        if(db.prepare('SELECT 1 FROM theme_cart_transfers WHERE offer_id=? AND tenant_id=?').get(offerId,tenant))fail(409,'theme_cart_uncertain','Diese Übertragung wurde bereits begonnen. Bitte den Warenkorb prüfen; die Gestaltung wird nicht erneut hinzugefügt.');
+        db.prepare('INSERT INTO theme_cart_transfers(offer_id,nonce,created_at,tenant_id) VALUES(?,?,?,?)').run(offerId,nonce,at(),tenant);
+        return {claimed:true};
+      });
+    },
     // Erste Übergabe eines Entwurfs: neue Kennung, Revision 1. Jede weitere Übergabe mit
     // einem anderen Angebot: Revision n+1. Dasselbe Angebot bekommt wieder dieselbe Revision.
     assign({draftId: draft, draftRevision, snapshotId, offerId, productId}) {

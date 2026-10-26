@@ -14,7 +14,7 @@ try{
   window.GravuruWorkshopReview={productId:model.configuration.id,productRevision:model.configuration.revision};
   window.GravuruMerchantRequest=client.request;
   const backUrl=shopUrl(data.shopDomain,fragment.get('back'));
-  window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,submitCart:client.submitCart,backUrl});
+  window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,submitCart:client.submitThemeCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl});
   title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;header.hidden=false;
   // K8: Bearbeiten-Verweis aus dem Warenkorb (config, rev, line) unverändert an den Editor weiterreichen.
   const edit=new URLSearchParams();for(const key of ['config','rev','line'])if(fragment.has(key))edit.set(key,fragment.get(key));

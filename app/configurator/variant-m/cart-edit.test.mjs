@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {cartEditParams, loadCartRevision} from './cart-edit.mjs';
+import {cartEditParams, loadCartRevision, installCartEdit} from './cart-edit.mjs';
 
 const konfig = 'konfig_' + '1'.repeat(8) + '-' + '1'.repeat(4) + '-' + '1'.repeat(4) + '-' + '1'.repeat(4) + '-' + '1'.repeat(12);
 const storage = entries => {const map = new Map(Object.entries(entries)); return {get length() {return map.size;}, key: i => [...map.keys()][i], getItem: k => map.get(k) ?? null};};
@@ -32,4 +32,17 @@ test('form edit uses only existing private form draft credentials',async()=>{
  const token='e'.repeat(64),store=storage({'gravuru-form-draft:cfg_x:5:d':JSON.stringify({id:'draft_x',token})}),calls=[];
  const loaded=await loadCartRevision({storage:store,params:{configId:konfig,rev:2},request:async(url,options)=>{calls.push({url,options});return Response.json({editorKind:'form',draft:{id:'draft_x'},photos:[],hints:[]});}});
  assert.equal(loaded.editorKind,'form');assert.equal(calls[0].options.headers['X-Gravuru-Draft'],token);assert.ok(!calls[0].url.includes(token));
+});
+
+test('theme cart edit retains its replacement mode only in the public theme-cart entry',async t=>{
+ const previous=globalThis.window;t.after(()=>{if(previous===undefined)delete globalThis.window;else globalThis.window=previous;});
+ const loaded={editorKind:'native',configuration:{cartLineId:null},hints:[],photos:[],document:{design:{objects:[]}},draft:{id:'adraft_x',revision:1}};
+ const token='a'.repeat(64),store=storage({'gravuru-acrylic-private:x':JSON.stringify({token})});
+ for(const mode of ['theme','storefront']){
+  globalThis.window={parent:{GravuruShopEntry:{cartMode:mode}}};
+  const status={textContent:'',style:{removeProperty(){}}},api={config:{},files:new Map(),el:{state:{objects:[]},import:async()=>{},sync(){}},r:{querySelector:s=>s.includes('status')?status:null}};
+  const result=await installCartEdit(api,{request:async()=>Response.json(loaded),storage:store,search:'?config='+konfig+'&rev=1&line=theme'});
+  assert.equal(result.cartLineId,mode==='theme'?'theme':null);
+  assert.equal(api.el.cartEdit,result);
+ }
 });

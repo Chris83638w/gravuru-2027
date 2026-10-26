@@ -6,7 +6,7 @@ Quelle für die **bestehende** Theme-App-Erweiterung `gravuru-storefront` der Ap
 | --- | --- | --- |
 | `blocks/jetzt-personalisieren.liquid` | `extensions/gravuru-storefront/blocks/` | App-Block für Produktsektionen: sichtbar nur, wenn das Produkt das Metafeld `custom.customization_id` trägt (Definition `gid://shopify/MetafieldDefinition/397781762428`, Konfi-Produktkennung). Link auf `/apps/<subpath>/start?product=<id>&variant=<id>&back=<Produktpfad>`. |
 | `assets/gravuru-personalisieren.js` | `extensions/gravuru-storefront/assets/` | Hält die Varianten-ID im Link aktuell (Produktformular `name="id"`, `?variant=`, Theme-Ereignisse). Ohne JavaScript bleibt der Link auf der beim Rendern gewählten Variante nutzbar. |
-| `snippets/gravuru-warenkorb-bearbeiten.liquid` | **Theme** (`snippets/`), nicht Erweiterung | Optional: „Bearbeiten“-Link je Warenkorbzeile aus `_gravuru_config`/`_gravuru_rev` (K8). Aufruf in `main-cart-items.liquid`: `{% render 'gravuru-warenkorb-bearbeiten', item: item %}`. |
+| `snippets/gravuru-warenkorb-bearbeiten.liquid` | **Theme** (`snippets/`), nicht Erweiterung | Gesicherte `_Entwurf`-Vorschau und „Bearbeiten“-Link je Warenkorbzeile aus `_gravuru_config`/`_gravuru_rev` (K8). Aufruf je Zeile in `main-cart-items.liquid` und im Warenkorb-Drawer: `{% render 'gravuru-warenkorb-bearbeiten', item: item %}`. |
 
 Übergeben werden ausschließlich Shopify-Produkt-ID, Varianten-ID, der Produktpfad für den Rücksprung und beim Bearbeiten `config`/`rev`/`line`. Kein Preis, keine SKU, kein Handle: Die Zuordnung zum Werkstattprodukt trifft der Server allein über die Binding-Registry {Produkt-ID, Varianten-ID}. Shopify signiert jede Proxy-Anfrage; der Server prüft Signatur, Shop und Zeit.
 

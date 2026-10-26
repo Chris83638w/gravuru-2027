@@ -145,3 +145,6 @@ function verifyPreservedCart(before,after,offer,t,a){
   const rest=after.lines.nodes.filter(l=>!l.attributes?.some(v=>v.key==='_gravuru_config'&&v.value===offer.configuration.id)).map(signature).sort();
   if(JSON.stringify(old)!==JSON.stringify(rest)||after.lines.nodes.length!==before.lines.nodes.length+(a?1:0))fail('Andere Warenkorbpositionen haben sich verändert; Warenkorb prüfen.');
 }
+
+// Shared server-derived attributes for the theme-cart handoff.
+export {lineInput as cartLineInput};

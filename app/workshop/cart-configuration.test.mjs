@@ -36,3 +36,16 @@ test('first handoff gets revision 1, each new offer n+1, the same offer keeps it
     'UPDATE cart_configuration_revisions SET rev=9 WHERE rev=1', 'UPDATE cart_configuration_revisions SET cart_id=\'x\' WHERE rev=1', 'DELETE FROM cart_configuration_revisions'])
     assert.throws(() => db.exec(sql), /immutable|once/);
 });
+
+test('theme upload claim is persistent across ledger instances and isolated by tenant; no second upload',t=>{
+ const db=new DatabaseSync(':memory:');t.after(()=>db.close());
+ const a=createCartConfigurations({database:db,tenantId:'gravuru'}),b=createCartConfigurations({database:db,tenantId:'other'});
+ a.assign(base);const nonce='a'.repeat(64);
+ assert.throws(()=>b.claimThemeTransfer(offer(1),nonce),e=>e.status===404);
+ assert.throws(()=>a.claimThemeTransfer(offer(9),nonce),e=>e.status===404);
+ assert.throws(()=>a.claimThemeTransfer(offer(1),'bad'),e=>e.status===422);
+ assert.deepEqual(a.claimThemeTransfer(offer(1),nonce),{claimed:true});
+ const reopened=createCartConfigurations({database:db,tenantId:'gravuru'});
+ for(const token of [nonce,'b'.repeat(64)])assert.throws(()=>reopened.claimThemeTransfer(offer(1),token),e=>e.status===409);
+ assert.equal(reopened.byOffer(offer(1)).snapshotId,base.snapshotId);
+});

@@ -58,15 +58,15 @@ Token ausschließlich als `SHOPIFY_APP_AUTOMATION_TOKEN` im Kindprozess aus der 
 ## 5. Theme: Block platzieren und Bearbeiten-Link
 
 1. Theme-Editor → Produktvorlage → in der Produktinformationssektion App-Block „Jetzt personalisieren“ hinzufügen (unter dem Kaufen-Knopf), Einstellwert `subpath` = `konfigurator`.
-2. Optional `theme-block/snippets/gravuru-warenkorb-bearbeiten.liquid` in das Theme kopieren und in `main-cart-items.liquid` je Zeile rendern (K8).
+2. `theme-block/snippets/gravuru-warenkorb-bearbeiten.liquid` in das Theme kopieren und je Zeile in `main-cart-items.liquid` sowie im Warenkorb-Drawer rendern: gesicherte `_Entwurf`-Vorschau und Bearbeiten-Link. Falls das Theme `_Entwurf` bereits als Vorschaubild nutzt, nur eine Bilddarstellung beibehalten. Dies ist eine Theme-Änderung und braucht die gesonderte Veröffentlichungsfreigabe.
 3. Vorschau am unveröffentlichten Theme prüfen, dann Theme-Veröffentlichung durch Chris.
 
 ## 6. Abnahme im echten Shop (Testzahlung)
 
 - Produktseite → Knopf → Editor öffnet mit richtiger Vorauswahl der Befestigung; Variantenwechsel auf der Seite ändert den Link.
 - Nicht angebundenes Produkt → Meldung „Dieses Produkt ist noch nicht für den Konfigurator eingerichtet.“ (404), kein Editor.
-- „In den Warenkorb“ → Checkout zeigt die Variante der im Editor gewählten Befestigung, Menge und Preis; Testzahlung → Bestellung erscheint in der Werkstatt als Position mit Prüfstand.
-- Bearbeiten aus dem Warenkorb → Zeile wird ersetzt, nicht verdoppelt (prüfen, ob Shopify die per Storefront-API angelegte Zeile im Theme-Warenkorb anzeigt; siehe README K8).
+- „In den Warenkorb“ → normaler Theme-Warenkorb zeigt Vorschau, Gravurtext und die Variante der im Editor gewählten Befestigung, Menge und Preis; Testzahlung → Bestellung erscheint in der Werkstatt als Position mit Prüfstand.
+- Bearbeiten aus dem Warenkorb → neue Vorschau und Position zurückprüfen, dann nur die genau bezeichnete alte Revision entfernen. Andere Positionen bleiben erhalten.
 - Mobil (Telefon): Seite, Editor, Abschlussdialog, Weiterleitung.
 
 ## Offen / zu entscheiden
@@ -75,5 +75,5 @@ Token ausschließlich als `SHOPIFY_APP_AUTOMATION_TOKEN` im Kindprozess aus der 
 - Aktive Registry-Zuordnungen für die 7×2-Hauptprodukte (und weitere) über den bestehenden Weg (`registry.persist` mit frischem ID-Plan); ohne Zuordnung bleibt der Knopf wirkungslos (404-Meldung).
 - Preisvertrag (`$app.personalization`, `extraMotifCents`/`extraPhotoCents`, Cart-Transform) je Bindung: ohne Vertrag werden Gestaltungen mit kostenpflichtigen Zusätzen abgewiesen, nichts wird kostenlos durchgereicht.
 - Formprodukte (Formeditor) sind im öffentlichen Einstieg noch nicht angebunden (404 mit Kundenmeldung).
-- Mehrere Konfi-Produkte in einem Warenkorb über verschiedene Produktseiten hinweg: innerhalb einer Sitzung wird der Warenkorb wiederverwendet; über Produktseiten hinweg hängt es davon ab, ob Shopify die Checkout-Adresse mit dem Theme-Warenkorb verknüpft (im echten Shop prüfen).
-- Tokenless-Storefront-Aufrufe ohne Käufer-IP (wie beim Händlertest) bei echtem Kundenverkehr beobachten.
+- Der Kundeneinstieg nutzt den bestehenden Shop-Cookie-Warenkorb über `/cart/add.js` und `/cart.js`; mehrere Produkte, Theme-Drawer und Bearbeiten im unveröffentlichten Theme prüfen. Abnahme am echten Shopify-Proxy steht aus.
+- Der alte Storefront-Endpunkt bleibt für bestehende Tests und Aufrufer verfügbar. Der neue Kundeneinstieg verwendet ihn nicht.

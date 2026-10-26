@@ -1,3 +1,7 @@
+## 26.10.2026 · Codex / Astra · Paket R2: Zielkacheln, Sammelfreigabe, Editor-Rückkehr – PR #26
+
+Code `fc6b3cf`, Basis `376b5b6`, Katalog `fd50c6459`. Echte Zieloberflächen, sichtbare/geladene „passt“-Kacheln gemeinsam prüfsummenbasiert freigeben, Größen mit Form (Issue #24), Editor mit Sitzungstoken und Rückkehr ohne Neuladen. Windows: 198 Dateien, Vollauf 1541 bestanden / 1 fehlende lokale Importabhängigkeit / 8 bedingte Skips; nach bytegleicher Ergänzung Legacy-Nachlauf 10/10, insgesamt 1551 bestanden und keine offenen Fehler (kein einzelner grüner Vollauf behauptet). Browser Desktop/Pixel 7: 100 geladene Kacheln, max.3 parallel, Rückkehr/Speichern, 47 bestätigte Einzel-PATCHs erfolgreich. [Bericht, Rohlogs und Screenshots](docs/handoffs/2026-10-26-paket-r-bericht.md), [PR #26](https://github.com/Chris83638w/gravuru-2027/pull/26). Nur private Katalogkopie, kein Import/Live-Zugriff/Merge. R1/R3 eigener Folge-PR; Preis-/Freigabefrage in Issue #25.
+
 ## Pilot Hauptprodukt 4100000 (D8 Leuchtturm 12 × 8) · 26.10.2026 (Claude)
 
 - D8 `TAE-V2A-8x5-D8` für Edelstahl-Türschilder freigegeben (Chris: „ok, freigabe“), Katalog `53d29d835` (Merge von host/werkstatt `ae2880cfa`).

@@ -81,7 +81,7 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       if(workshop){fixed['/form-editor.html']=[path.join(ROOT,'workshop/ui'),'form-customer.html'];fixed['/konfigurator/ausfuehrungen/']=[path.join(ROOT,'workshop/ui'),'form-variant-picker.html'];fixed['/konfigurator/form']=[path.join(ROOT,'workshop/ui'),'form-customer.html'];fixed['/konfigurator/form/']=fixed['/konfigurator/form'];fixed['/werkstatt']=[path.join(ROOT,'workshop/ui'),'index.html'];fixed['/werkstatt/']=fixed['/werkstatt'];for(const [route,file] of [['katalog','catalog-structure.html'],['acryl','acryl-gallery.html'],['acryl/formen','acryl-gallery.html'],['kundenansicht','customer-preview.html'],['ausfuehrungen-import','variant-batch.html'],['ausfuehrungen','form-variants.html'],['serien','batch.html'],['profile','profiles.html'],['familien','families.html'],['fertigung','production-profiles.html'],['ausgaben','export-jobs.html'],['shopvorbereitung','shop-preparation.html'],['bestellungen','orders.html'],['warenkorbpruefung','cart-handoff.html'],['konturen','contours.html'],['formprodukt','form-product.html'],['pruefstaende','review-snapshots.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}}
       if(workshop)for(const [route,file] of [['konfis','konfis.html'],['mandanten','tenants.html'],['designs','design-dashboard.html'],['designs/bearbeiten','index.html']]){fixed['/werkstatt/'+route]=[path.join(ROOT,'workshop/ui'),file];fixed['/werkstatt/'+route+'/']=fixed['/werkstatt/'+route];}
       if(fixed[pathname])[base,relative]=fixed[pathname];
-      else if(workshop&&/^\/workshop-ui\/(konfis-ui\.mjs|tenants-ui\.mjs|konfis\.css|design-dashboard-ui\.mjs|design-dashboard-review\.mjs|design-dashboard\.css)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
+      else if(workshop&&/^\/workshop-ui\/(konfis-ui\.mjs|tenants-ui\.mjs|konfis\.css|design-dashboard-ui\.mjs|design-dashboard-review\.mjs|design-dashboard-editor\.mjs|design-target-preview-cache\.mjs|design-dashboard\.css)$/.test(pathname)){base=path.join(ROOT,'workshop/ui');relative=pathname.split('/').pop();}
       else if(workshop&&['/workshop-ui/design-source-path.mjs','/workshop-ui/design-zip.mjs'].includes(pathname)){base=path.join(ROOT,'workshop');relative=pathname.split('/').pop();}
       // Der Kundeneditor importiert die Themenlimits aus dem Vertrag (contract.mjs → ../../workshop/theme-limits.mjs).
       else if(pathname==='/workshop/theme-limits.mjs'){base=path.join(ROOT,'workshop');relative='theme-limits.mjs';}
@@ -115,7 +115,7 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       if(within.startsWith('..')||path.isAbsolute(within)||!fs.statSync(file).isFile())return fail(404);
       let bytes=fs.readFileSync(file);const extension=path.extname(file);
       const transformed=adminHost&&extension==='.html';
-      if(transformed)bytes=adminHost.html(bytes,pathname);
+      if(transformed)bytes=adminHost.html(bytes,pathname,url.search);
       const headers={'Content-Type':types[extension]||'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':adminHost?.cspFor(pathname)||csp};
       // Kundenbilder (Szene, Sockel, Beispielfoto): einen Tag im Cache, damit vorgeladene Sockelansichten
       // (background-loading.mjs) beim Wechsel ohne neuen Abruf erscheinen. Alles andere bleibt no-store.

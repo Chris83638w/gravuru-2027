@@ -123,3 +123,6 @@ body.editing-product main{padding:0;max-width:none}.editing-product .page-footer
 
 /* Konfi arrows extend 14 px beyond a corner plus half their 42 px hit area. */
 .editing-katalog #editor-preview{box-sizing:border-box;padding:36px}
+
+/* Embedded catalogue editor: navigation remains in the owning dashboard. */
+.editing-katalog-overlay .ws-topbar,.editing-katalog-overlay .ws-skip,.editing-katalog-overlay .sidebar{display:none}

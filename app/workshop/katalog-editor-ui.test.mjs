@@ -131,3 +131,32 @@ test('existing workshop size input and pointer resize preserve explicit source l
  const resize=lines.find(line=>line.includes("if(next.type==='text'){setTextSize(next,"));assert.ok(resize);
  for(const katalogEditor of [null,{}]){const next={...original};vm.runInNewContext(resize,{next,original,scale:2,state:{...env.state,katalogEditor},measureText,setTextSize});assert.equal(next.size,20);assert.equal(next.lineHeight,13.62);}
 });
+
+function overlayWindow(t){
+ const messages=[],listeners=new Map(),origin='https://example.test',channel='12345678-abcd-4321-abcd-123456789012';
+ const parent={location:{origin},postMessage(data,targetOrigin){messages.push({data,targetOrigin});}};
+ const href=origin+'/werkstatt/designs/bearbeiten/?'+new URLSearchParams({katalogOverlay:channel,katalogReihe:'TRE-V2A-8x5',katalogDesign:'D57'});
+ globalThis.window={parent,location:{origin,href},document:{querySelector(){return null;}},addEventListener(type,listener){listeners.set(type,listener);}};
+ t.after(()=>{delete globalThis.window;});
+ return {messages,origin};
+}
+
+test('embedded catalogue save reports its exact identity and return closes the overlay without navigation',async t=>{
+ const w=overlayWindow(t),h=harness(t);await h.ui.load();
+ const before=location.href;h.state.draft.name='Edited';h.state.dirty=true;h.ui.sync();
+ assert.equal(w.messages.at(-1).data.dirty,true);
+ const saving=h.ui.save();await tick();h.dialog.close('save');await saving;
+ const saved=w.messages.find(message=>message.data.type==='gravuru-katalog-editor-saved');
+ assert.deepEqual(saved.data,{type:'gravuru-katalog-editor-saved',channel:'12345678-abcd-4321-abcd-123456789012',reihe:'TRE-V2A-8x5',id:'D57',changed:true,checksum:'new'});
+ await h.ui.leave();assert.equal(location.href,before);
+ assert.equal(w.messages.at(-1).data.type,'gravuru-katalog-editor-closed');assert.equal(h.state.dirty,false);
+ assert.ok(w.messages.every(message=>message.targetOrigin===w.origin));
+});
+
+test('embedded catalogue cancelled discard leaves the edited draft and its overlay open',async t=>{
+ const w=overlayWindow(t),h=harness(t,{discard:false});await h.ui.load();
+ h.state.draft.name='Unsaved';h.state.dirty=true;const before=location.href;
+ await h.ui.leave();assert.equal(location.href,before);assert.equal(h.state.draft.name,'Unsaved');assert.equal(h.state.dirty,true);
+ assert.equal(w.messages.at(-1).data.type,'gravuru-katalog-editor-close-cancelled');
+ assert.equal(w.messages.some(message=>message.data.type==='gravuru-katalog-editor-closed'),false);
+});

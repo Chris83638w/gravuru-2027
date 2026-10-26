@@ -1,5 +1,6 @@
 // Catalogue adapter for the existing product editor. No product is imported or saved.
 import {merchantNavigation} from './merchant-navigation.mjs';
+import {installCatalogueEditorBridge} from './design-dashboard-editor.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=selector=>document.querySelector(selector);
@@ -41,8 +42,17 @@ export function katalogFitNeedsConfirmation(fit){return fit.sizes.some(row=>!['o
 export function installKatalogEditor({state,api,productEditor,canDiscard,setBusy,notify}){
  const dialog=document.createElement('dialog');dialog.id='katalog-fit-dialog';dialog.className='authoring-dialog';dialog.setAttribute('aria-labelledby','katalog-fit-title');document.body.append(dialog);
  const back=()=>merchantNavigation('/werkstatt/designs/?'+new URLSearchParams({reihe:state.katalogEditor.reihe,...(state.katalogEditor.linie?{linie:state.katalogEditor.linie}:{})}),location.href);
- let request=0;
+ let request=0,leaving=false;
+ const bridge=installCatalogueEditorBridge({state,leave});
+ if(bridge)document.body.classList.add('editing-katalog-overlay');
+ async function leave(){
+  if(state.busy){bridge?.cancel();return;}
+  if(leaving)return;leaving=true;
+  try{if(!await canDiscard()){bridge?.cancel();return;}state.dirty=false;if(bridge)bridge.close();else location.href=back();}
+  finally{leaving=false;}
+ }
  function sync(){
+  bridge?.sync();
   $('#save-product').textContent=state.busy?'Wird geprüft …':'Im Katalog speichern';
   $('#katalog-discard').disabled=state.busy||!state.dirty;$('#katalog-fit').disabled=state.busy||!state.record;$('#katalog-reload').disabled=state.busy;
   $('#save-indicator').textContent=state.busy?'Bitte warten …':state.dirty?'Ungespeicherte Änderungen':state.record?'Katalogstand geladen':'Katalogdesign nicht geladen';
@@ -92,6 +102,7 @@ export function installKatalogEditor({state,api,productEditor,canDiscard,setBusy
    if(!await inspectFit({saving:true})||ticket!==request)return;
    const data=await api('/api/workshop/designs/editor',{method:'PUT',body:katalogEditorBody(state)});apply(data);
    try{localStorage.setItem('gravuru-katalog-design-updated',JSON.stringify({reihe:state.katalogEditor.reihe,id:state.katalogEditor.id,checksum:data.checksum}));}catch{}
+   bridge?.saved(data);
    notify(data.changed?'Im Katalog gespeichert. Die Designfreigabe wurde zurückgesetzt. Bitte die neue Vorschau im Dashboard prüfen.':'Der Katalogstand ist unverändert.');
   }catch(error){if(error.status===409)$('#conflict-banner').hidden=false;notify(error.message,'error');}
   finally{setBusy(false);}
@@ -107,5 +118,5 @@ export function installKatalogEditor({state,api,productEditor,canDiscard,setBusy
  for(const node of document.querySelectorAll('.editor-tabs [data-tab],.rail-secondary [data-tab]'))node.hidden=node.dataset.tab!=='designs';
  for(const node of document.querySelectorAll('.editor-panel'))node.hidden=node.id!=='panel-designs';
  sync();
- return {load,render,save,sync,async leave(){if(state.busy||!await canDiscard())return;state.dirty=false;location.href=back();}};
+ return {load,render,save,sync,leave};
 }

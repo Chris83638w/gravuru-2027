@@ -2,15 +2,17 @@
 // Filtern und Inline-Umbenennung (PATCH → Katalog). Liest nur über /api/workshop/designs.
 import {merchantRequest} from './merchant-request.mjs';
 import {merchantNavigation} from './merchant-navigation.mjs';
+import {createTargetPreviewCache,reviewPage} from './design-target-preview-cache.mjs';
+import {installDashboardEditor} from './design-dashboard-editor.mjs';
 import {setMerchantImage,merchantImagesRequired} from './merchant-media.mjs';
-import {designKey,releaseKey,targetReviewRows,releaseIssue,eligibleReleaseRows,retainVisibleSelection,releaseDesigns} from './design-dashboard-review.mjs';
+import {designKey,releaseKey,targetReviewRows,releaseIssue,bulkReleaseIssue,eligibleReleaseRows,retainVisibleSelection,releaseDesigns} from './design-dashboard-review.mjs';
 const $=s=>document.querySelector(s),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined&&text!==null)n.textContent=text;if(cls)n.className=cls;return n;};
 const natural=new Intl.Collator('de',{numeric:true,sensitivity:'base'});
 const params=new URLSearchParams(location.search);
 const compactLayout=window.matchMedia('(max-width:1099px)'),phoneLayout=window.matchMedia('(max-width:639px)');
 const viewStorageKey=()=>phoneLayout.matches?'gravuru-designs-mobile-view':'gravuru-designs-view';
-function preferredView(){try{const saved=localStorage.getItem(viewStorageKey());if(saved==='table'||saved==='tiles')return saved;}catch{}return phoneLayout.matches?'tiles':'table';}
-const state={csrf:null,lines:[],linie:params.get('linie')||null,reihe:params.get('reihe')||null,material:null,status:params.get('status')||'',freigabe:params.get('freigabe')||'',selectable:params.get('startDesigns')!=='true',startDesigns:params.get('startDesigns')==='true',query:'',view:preferredView(),data:null,busy:false,editing:null,seen:new Set(),selected:new Set(),pendingRelease:null,previewToken:0,previewLoad:null};
+function preferredView(){try{const saved=localStorage.getItem(viewStorageKey());if(saved==='table'||saved==='tiles'||saved==='targets')return saved;}catch{}return phoneLayout.matches?'tiles':'table';}
+const state={csrf:null,lines:[],linie:params.get('linie')||null,reihe:params.get('reihe')||null,material:null,status:params.get('status')||'',freigabe:params.get('freigabe')||'',selectable:params.get('startDesigns')!=='true',startDesigns:params.get('startDesigns')==='true',query:'',view:preferredView(),data:null,busy:false,editing:null,seen:new Set(),selected:new Set(),pendingRelease:null,previewToken:0,previewLoad:null,targetFamily:params.get('familie')||null,theme:params.get('thema')||'',page:1,reviewChecksums:new Map(),pendingOnlyPassing:false};
 const status=(text,error=false)=>{$('#status').textContent=text;$('#status').className=error?'error':'';$('#status').hidden=!text;};
 async function request(url,options){const r=await merchantRequest(url,options);const v=await r.json().catch(()=>({}));if(!r.ok)throw Error(v.error?.message||'Die Designs konnten nicht geladen werden.');return v;}
 const button=(text,fn,cls)=>{const b=el('button',text,cls);b.type='button';b.addEventListener('click',fn);return b;};
@@ -18,7 +20,7 @@ const mm=v=>Number.isFinite(v)?String(Math.round(v*10)/10).replace('.',','):'?';
 const plateText=p=>Array.isArray(p)?mm(p[0])+' × '+mm(p[1])+' mm':'Maß offen';
 const AMPEL={ok:'ok','prüfen':'prüfen',fehlt:'fehlt'};
 
-function pushUrl(){const q=new URLSearchParams();if(state.linie)q.set('linie',state.linie);if(state.reihe)q.set('reihe',state.reihe);if(state.status)q.set('status',state.status);if(state.freigabe)q.set('freigabe',state.freigabe);if(state.startDesigns)q.set('startDesigns','true');history.replaceState(null,'',merchantNavigation(location.pathname+(q.size?'?'+q:''),location.href));}
+function pushUrl(){const q=new URLSearchParams();if(state.linie)q.set('linie',state.linie);if(state.reihe)q.set('reihe',state.reihe);if(state.status)q.set('status',state.status);if(state.freigabe)q.set('freigabe',state.freigabe);if(state.startDesigns)q.set('startDesigns','true');if(state.targetFamily)q.set('familie',state.targetFamily);if(state.theme)q.set('thema',state.theme);history.replaceState(null,'',merchantNavigation(location.pathname+(q.size?'?'+q:''),location.href));}
 
 function setFiltersOpen(open){
  const active=document.activeElement,toggle=$('#filter-toggle');
@@ -57,14 +59,14 @@ async function loadLines(){
 }
 async function loadLine(){
  if(state.busy)return;
- state.selected.clear();state.editing=null;state.busy=true;render();status('Designs werden geladen …');
+ state.selected.clear();state.editing=null;state.page=1;state.targetFamily=null;state.busy=true;render();status('Designs werden geladen …');
  try{state.data=state.linie?await request('/api/workshop/designs?'+new URLSearchParams({linie:state.linie})):null;status('');}
  catch(e){state.data=null;status(e.message,true);}
  finally{state.busy=false;render();}
 }
 async function load(){
  if(state.busy)return;
- state.seen.clear();state.selected.clear();state.busy=true;render();status('Katalog wird geladen …');
+ state.seen.clear();state.reviewChecksums.clear();targetPreviewCache.invalidate();state.selected.clear();state.page=1;state.busy=true;render();status('Katalog wird geladen …');
  try{await loadLines();state.selected.clear();state.editing=null;state.data=state.linie?await request('/api/workshop/designs?'+new URLSearchParams({linie:state.linie})):null;status('');}
  catch(e){state.data=null;status(e.message,true);}
  finally{state.busy=false;render();}
@@ -73,7 +75,7 @@ async function load(){
 function visibleRows(){
  const d=state.data;if(!d)return [];
  const q=state.query.trim().toLocaleLowerCase('de');
- return d.rows.filter(r=>(!state.reihe||r.reihe===state.reihe||r.formatreihe===state.reihe)&&(!state.material||r.material===state.material)&&(!state.status||r.status===state.status)&&(!state.freigabe||r.released===(state.freigabe==='ja'))&&(!state.selectable||r.selectable)&&(!state.startDesigns||r.isStartDesign)&&(!q||[r.id,r.name,r.nameSheet||'',...(r.mainProducts??[]).flatMap(p=>[p.id,p.customizationId,p.name,p.sizeLabel]),...r.fonts.map(f=>f.name),...r.themes.map(t=>t.name),...(r.texts.sample||[])].some(v=>String(v).toLocaleLowerCase('de').includes(q)))).sort((a,b)=>natural.compare(a.id,b.id));
+ return d.rows.filter(r=>(!state.reihe||r.reihe===state.reihe||r.formatreihe===state.reihe)&&(!state.material||r.material===state.material)&&(!state.status||r.status===state.status)&&(!state.freigabe||r.released===(state.freigabe==='ja'))&&(!state.selectable||r.selectable)&&(!state.startDesigns||r.isStartDesign)&&(!state.theme||r.themes.some(t=>t.id===state.theme))&&(!q||[r.id,r.name,r.nameSheet||'',...(r.mainProducts??[]).flatMap(p=>[p.id,p.customizationId,p.name,p.sizeLabel]),...r.fonts.map(f=>f.name),...r.themes.map(t=>t.name),...(r.texts.sample||[])].some(v=>String(v).toLocaleLowerCase('de').includes(q)))).sort((a,b)=>natural.compare(a.id,b.id));
 }
 function renderPicker(host,items,current,onPick,{all=null}={}){
  host.replaceChildren();
@@ -98,7 +100,138 @@ function gate(control,issue){
  }
  control.dataset.blocked=String(Boolean(issue));control.disabled=state.busy||Boolean(issue);return control;
 }
+// Review data survives pagination and editor overlays, but never a changed source checksum.
+const targetPreviewCache=createTargetPreviewCache({limit:3,maxEntries:120});
+const tileViews=new Map(),tileUrls=new Set();let tileObserver=null;
+const targetView=()=>state.view==='tiles'||state.view==='targets';
+const tileCacheKey=row=>JSON.stringify([releaseKey(row),'default']);
+const targetRow=row=>targetReviewRows([row]).find(item=>item.targetFamily&&item.targetFamily===(state.targetFamily||row.ziele?.find(target=>target.inLine!==false)?.familie));
+const dashboardEditor=installDashboardEditor({request:merchantRequest,onSaved:refreshChangedDesign,onClosed:identity=>{const key=JSON.stringify([identity.reihe,identity.id]),link=[...document.querySelectorAll('[data-catalog-edit]')].find(node=>node.dataset.catalogEdit===key);link?.focus({preventScroll:true});for(const view of tileViews.values())markTileSeen(view);}});
+function appendTargetSizes(select,sizes){
+ const groups=new Map();
+ for(const item of sizes){const key=item.groupKey??'unknown';let group=groups.get(key);if(!group){group=el('optgroup');group.label=item.groupName||'Form offen';groups.set(key,group);select.append(group);}const option=el('option',item.label);option.value=item.key;group.append(option);}
+}
+function renderTargetFilters(){
+ const families=new Map();for(const row of state.data?.rows??[])for(const target of row.ziele??[])if(target.inLine!==false)families.set(target.familie,target);
+ if(!families.has(state.targetFamily))state.targetFamily=families.keys().next().value||null;
+ const family=$('#target-family');family.replaceChildren();
+ if(!families.size){const option=el('option','Keine Familie dieser Linie verfügbar');option.value='';family.append(option);}
+ for(const target of families.values()){const option=el('option',target.name+(target.missing?' · Familie fehlt':''));option.value=target.familie;family.append(option);}
+ family.value=state.targetFamily||'';gate(family,families.size?null:'Kein Familienziel verfügbar.');
+ const theme=$('#filter-theme');theme.replaceChildren();const all=el('option','Alle Themen');all.value='';theme.append(all);
+ for(const item of state.themes??[]){const option=el('option',item.name);option.value=item.id;theme.append(option);}theme.value=state.theme;
+ $('#target-review-controls').hidden=!targetView();
+ const groups=(state.data?.availableFormGroups??[]).filter(group=>group.familyId===state.targetFamily),summary=$('#target-form-summary');summary.hidden=!targetView()||!groups.length;summary.replaceChildren();
+ if(groups.length){summary.append(el('strong','Kompatible Designs im Gesamtbestand der Familie: '));for(const group of groups)summary.append(el('span',group.groupName+': '+group.count+' Design'+(group.count===1?'':'s')+(group.count===0?' – keine kompatible Designreihe vorhanden':''),group.count===0?'empty-target-group':''));}
+}
+function invalidateDesignReview(design){
+ for(const row of targetReviewRows([design])){const key=releaseKey(row);targetPreviewCache.invalidate(tileCacheKey(row));state.seen.delete(key);state.selected.delete(key);state.reviewChecksums.delete(key);if(row.target){row.target.sourceRevision=null;delete row.target.openedChecksum;}}
+}
+function adoptTargetReview(row,result){
+ const key=releaseKey(row),previous=state.reviewChecksums.get(key);
+ if(previous&&previous!==result.checksum){state.seen.delete(key);state.selected.delete(key);state.reviewChecksums.delete(key);delete row.target.openedChecksum;}
+ row.target.fit=result.reviewFit??result.fit;row.target.checksum=result.checksum;row.target.sourceRevision=result.checksum;
+}
+function retireTargetCard(card){
+ for(const [surface,view]of tileViews)if(surface.closest('.target-tile')===card){tileObserver?.unobserve(surface);tileViews.delete(surface);if(view.url){URL.revokeObjectURL(view.url);tileUrls.delete(view.url);}}
+}
+function clearTargetTiles(){
+ targetPreviewCache.cancelPending();tileObserver?.disconnect();tileObserver=null;tileViews.clear();
+ for(const url of tileUrls)URL.revokeObjectURL(url);tileUrls.clear();
+}
+function tileCanBeSeen(view){return view.visible&&view.loaded&&view.img.isConnected&&!view.img.hidden&&document.visibilityState!=='hidden'&&!dashboardEditor.isOpen&&!$('#preview-dialog').open&&!$('#release-dialog').open&&!$('#variant-dialog').open&&view.row.target.checksum===view.checksum;}
+function markTileSeen(view){
+ if(!tileCanBeSeen(view))return;
+ const key=releaseKey(view.row);state.seen.add(key);state.reviewChecksums.set(key,view.checksum);
+ syncReleaseControls();
+}
+function targetTilePreview(row,cls){
+ const img=el('img',undefined,cls);img.alt=row.id+' · '+row.target.name+' · Zielvorschau mit Plattenkontur';img.decoding='async';img.hidden=true;
+ const caption=el('span','Zielvorschau wird geladen …','target-preview-status');
+ const control=button('',()=>void openTargetPreview(row),'preview-button');control.dataset.previewKey=designKey(row);control.setAttribute('aria-label','Zielvorschau öffnen: '+row.id);control.append(img,caption);
+ // Observe the image-sized surface even before its image is loaded. A hidden img has no box.
+ const surface=el('span',undefined,'target-preview-surface');surface.append(img);control.replaceChildren(surface,caption);
+ const view={row,img,surface,caption,visible:false,loaded:false,started:false,checksum:null};tileViews.set(surface,view);
+ if(!tileObserver&&typeof IntersectionObserver!=='undefined')tileObserver=new IntersectionObserver(entries=>{for(const entry of entries){const item=tileViews.get(entry.target);if(!item)continue;item.visible=entry.isIntersecting&&(entry.intersectionRatio===undefined||entry.intersectionRatio>=.5);if(item.visible&&!item.started)void loadTargetTile(item);markTileSeen(item);}},{threshold:[0,.5,1]});
+ if(tileObserver)tileObserver.observe(surface);else{caption.textContent='Zielvorschau zum Prüfen öffnen.';gate(control,row.target.missing?'Familie fehlt.':null);}
+ return control;
+}
+async function loadTargetTile(view){
+ if(view.started||!view.surface.isConnected)return;view.started=true;
+ const row=view.row,key=releaseKey(row),revision=row.target.sourceRevision;
+ if(row.target.missing||!row.target.previewUrl){view.caption.textContent='Familie fehlt. Keine Zielvorschau.';return;}
+ if(state.reviewChecksums.has(key)&&state.reviewChecksums.get(key)!==revision){state.seen.delete(key);state.selected.delete(key);state.reviewChecksums.delete(key);delete row.target.openedChecksum;}
+ try{
+  const result=await targetPreviewCache.get(tileCacheKey(row),revision,signal=>request(row.target.previewUrl,{signal}));
+  if(!view.surface.isConnected||tileViews.get(view.surface)!==view)return;
+  adoptTargetReview(row,result);view.checksum=result.checksum;view.caption.textContent='Passung: '+row.target.fit.status+'. '+(row.target.fit.issues??[]).join(' ');
+  updateTargetCard(view.surface.closest('.target-tile'),row);
+  if(!result.svg){syncReleaseControls();return;}
+  const url=URL.createObjectURL(new Blob([result.svg],{type:'image/svg+xml'}));tileUrls.add(url);view.url=url;
+  view.img.onload=()=>{if(!view.img.isConnected||view.img.getAttribute('src')!==url||!view.img.naturalWidth)return;view.loaded=true;view.img.hidden=false;markTileSeen(view);};
+  view.img.onerror=()=>{if(!view.img.isConnected)return;view.loaded=false;state.seen.delete(key);state.selected.delete(key);view.caption.textContent='Zielvorschau konnte nicht geladen werden. Bitte einzeln öffnen.';syncReleaseControls();};view.img.src=url;
+ }catch(error){if(!view.surface.isConnected)return;view.caption.textContent=error.name==='AbortError'?'Zielvorschau neu öffnen.':error.message;syncReleaseControls();}
+}
+function updateTargetCard(card,row){
+ if(!card)return;const fit=row.target?.fit;
+ const badge=card.querySelector('.target-fit');if(badge){badge.textContent=fit?.status||'Noch nicht geprüft';badge.className='ampel target-fit '+(fit?.status==='passt'?'ok':fit?.status==='passt nicht'?'fehlt':'prüfen');}
+ const reason=card.querySelector('.target-issues');if(reason)reason.textContent=(fit?.issues??[]).join(' ');
+}
+function renderTargetCard(row,{focusEditor=true}={}){
+ const review=targetRow(row),card=el('article',undefined,'tile target-tile '+row.status);card.dataset.designRow=designKey(row);
+ if(!Array.isArray(row.ziele)){card.append(preview(row,'tile-img'));const head=el('div',undefined,'tile-head');head.append(ampel(row),el('code',row.id));card.append(head,selection(row),nameCell(row,{focusEditor}),fontList(row),flags(row),editorCell(row));return card;}
+ if(review){card.dataset.targetReviewKey=releaseKey(review);card.append(targetTilePreview(review,'tile-img'));}
+ else card.append(el('p','Kein bestätigtes Ziel dieser Familie. Ziel zuerst zuordnen.','notice'));
+ const head=el('div',undefined,'tile-head');head.append(el('span',review?'Noch nicht geprüft':'Ziel fehlt','ampel target-fit'),el('code',row.id));
+ card.append(head,nameCell(row,{focusEditor}));
+ if(review){card.append(el('p',review.target.name,'muted'),el('p',(review.target.fit?.issues??[]).join(' '),'target-issues'),selection(review));
+  const action=button(review.released?'Zielfreigabe zurücknehmen':'Ziel freigeben',()=>review.released?save(review,{freigegeben:false}):askRelease([review]),review.released?'quiet':'release');action.dataset.releaseKey=releaseKey(review);card.append(gate(action,review.released?null:releaseIssue(review,state.seen)));updateTargetCard(card,review);
+ }
+ card.append(fontList(row),flags(row),editorCell(row,{compactTarget:true}));return card;
+}
+function renderPagination(host,page){
+ const nav=el('nav',undefined,'target-pagination');nav.setAttribute('aria-label','Zielvorschauen seitenweise');
+ const move=number=>{state.page=number;render();$('#summary').focus({preventScroll:true});$('#summary').scrollIntoView({block:'start',behavior:'instant'});};
+ const previous=button('Vorherige Seite',()=>move(page.page-1)),next=button('Nächste Seite',()=>move(page.page+1));previous.id='target-page-previous';next.id='target-page-next';gate(previous,page.page===1?'Erste Seite.':null);gate(next,page.page===page.pages?'Letzte Seite.':null);
+ const label=el('span','Seite '+page.page+' von '+page.pages+' · '+page.total+' Designs');label.id='target-page-summary';nav.append(previous,label,next);host.append(nav);
+}
+function activeReviewRows(){const rows=targetReviewRows(visibleRows());return targetView()?rows.filter(row=>row.targetFamily===state.targetFamily):rows;}
+function passingSeenRows(){return eligibleReleaseRows(activeReviewRows(),state.seen).filter(row=>row.targetFamily&&row.target.fit?.status==='passt'&&state.reviewChecksums.get(releaseKey(row))===row.target.checksum);}
+function syncReleaseControls(){
+ const rows=activeReviewRows(),byKey=new Map(rows.map(row=>[releaseKey(row),row]));
+ for(const control of document.querySelectorAll('[data-design-key], [data-release-key]')){
+  const key=control.dataset.designKey??control.dataset.releaseKey,row=byKey.get(key);if(!row)continue;
+  const issue=releaseIssue(row,state.seen);if(control.dataset.designKey){gate(control,bulkReleaseIssue(row,state.seen));control.checked=state.selected.has(key);}else gate(control,row.released?null:issue);
+ }
+ const passing=passingSeenRows();$('.selection-bar').classList.toggle('has-selection',state.selected.size>0||targetView());
+ $('#selection-summary').textContent=state.selected.size+' ausgewählt · '+passing.length+' geprüfte Ziele mit „passt“';
+ gate($('#release-selected'),state.selected.size?null:'Erst Vorschauen öffnen und Designs auswählen.');gate($('#clear-selection'),state.selected.size?null:'Keine Designs ausgewählt.');
+ $('#release-seen').hidden=!targetView();gate($('#release-seen'),passing.length?null:'Noch keine sichtbaren, geladenen Zielkacheln mit „passt“.');
+}
+const pendingRowRefresh=new Map();
+async function refreshChangedDesign(changed){
+ const key=JSON.stringify([changed.reihe,changed.id]);if(!state.data?.rows.some(row=>designKey(row)===key))return;
+ if(pendingRowRefresh.has(key))return pendingRowRefresh.get(key);
+ const work=(async()=>{
+  const old=state.data.rows.find(row=>designKey(row)===key),line=state.linie;
+  invalidateDesignReview(old);
+  state.seen.delete(key);state.selected.delete(key);
+  if(state.editing||state.busy){renderPreservingRename();status('Das Design wurde in einem anderen Fenster geändert. Bitte nach deiner aktuellen Bearbeitung neu laden.',true);return;}
+  try{const fresh=await request('/api/workshop/designs?'+new URLSearchParams({linie:line}));if(state.linie!==line)return;
+   const replacement=fresh.rows.find(row=>designKey(row)===key),index=state.data.rows.indexOf(old);if(index<0)return;
+   if(replacement)state.data.rows[index]=replacement;else state.data.rows.splice(index,1);
+   state.data.counts=fresh.counts;
+   // Keep other cards, decoded previews and their scroll positions in place.
+   const current=[...$('#rows').querySelectorAll('[data-design-row]')].find(node=>node.dataset.designRow===key);
+   if(targetView()&&current&&replacement&&visibleRows().includes(replacement)){retireTargetCard(current);const next=renderTargetCard(replacement,{focusEditor:false});current.replaceWith(next);syncReleaseControls();}
+   else render({focusEditor:false});
+   status('Gespeichertes Design aktualisiert: '+changed.id+'. Andere Vorschauen bleiben erhalten.');
+  }catch(error){status('Das geänderte Design konnte nicht aktualisiert werden: '+error.message,true);}
+ })();pendingRowRefresh.set(key,work);try{await work;}finally{pendingRowRefresh.delete(key);}
+}
+
 function preview(row,cls){
+ if(targetView()){const target=targetRow(row);if(target)return targetTilePreview(target,cls);}
  const img=el('img',undefined,cls);img.loading='lazy';img.alt=row.name;img.decoding='async';
  const src=row.files.png||row.files.svg;
  if(src){setMerchantImage(img,src);if(row.files.png&&row.files.svg)img.addEventListener('error',()=>setMerchantImage(img,row.files.svg),{once:true});}
@@ -171,11 +304,11 @@ async function openTargetPreview(row,size=null){
  try{
   const url=new URL(row.target.previewUrl,location.href);if(size)url.searchParams.set('size',size);
   const result=await request(url.pathname+url.search,{signal:attempt.controller.signal});if(!current())return;
-  row.target.fit=result.reviewFit??result.fit;row.target.checksum=result.checksum;
+  adoptTargetReview(row,result);
   const control=el('label',undefined,'target-size-control');control.id='target-size-control';control.append(el('span','Zielgröße '));const select=el('select');select.setAttribute('aria-label','Zielgröße');
-  for(const item of result.sizes??[]){const option=el('option',item.label);option.value=item.key;select.append(option);}select.value=result.size?.key;select.addEventListener('change',()=>void openTargetPreview(row,select.value));control.append(select);$('#preview-status').parentElement.append(control);
+  appendTargetSizes(select,result.sizes??[]);select.value=result.size?.key;select.addEventListener('change',()=>void openTargetPreview(row,select.value));control.append(select);$('#preview-status').parentElement.append(control);
   if(!result.svg){$('#preview-status').textContent=(row.target.fit.issues??[]).join(' ')||'Vorschau offen. Freigabe bleibt gesperrt.';render();return;}
-  img.onload=()=>{if(!current()||img.getAttribute('src')!==attempt.src||!img.naturalWidth)return;img.hidden=false;state.seen.add(key);$('#preview-status').textContent='Passung: '+row.target.fit.status+'. '+(row.target.fit.issues??[]).join(' ');render();};
+  img.onload=()=>{if(!current()||img.getAttribute('src')!==attempt.src||!img.naturalWidth)return;img.hidden=false;state.seen.add(key);state.reviewChecksums.set(key,result.checksum);row.target.openedChecksum=result.checksum;$('#preview-status').textContent='Passung: '+row.target.fit.status+'. '+(row.target.fit.issues??[]).join(' ');render();};
   img.onerror=()=>{if(!current())return;state.seen.delete(key);clearPreviewSource();$('#preview-status').textContent='Zielvorschau nicht verfügbar. Freigabe bleibt gesperrt.';render();};
   attempt.url=URL.createObjectURL(new Blob([result.svg],{type:'image/svg+xml'}));attempt.src=attempt.url;img.src=attempt.src;
  }catch(error){if(!current())return;state.seen.delete(key);clearPreviewSource();$('#preview-status').textContent=error.message+' Freigabe bleibt gesperrt.';render();}
@@ -259,8 +392,8 @@ function selection(row){
  if(Array.isArray(row.ziele)&&!row.targetFamily)return el('span');
  const label=el('label',undefined,'design-selection'),input=el('input');input.type='checkbox';input.dataset.designKey=releaseKey(row);input.checked=state.selected.has(releaseKey(row));
  input.setAttribute('aria-label',row.id+' zur Freigabe auswählen');
- gate(input,releaseIssue(row,state.seen));input.addEventListener('change',()=>{
-  if(state.busy||releaseIssue(row,state.seen)){input.checked=state.selected.has(releaseKey(row));return;}
+ gate(input,bulkReleaseIssue(row,state.seen));input.addEventListener('change',()=>{
+  if(state.busy||bulkReleaseIssue(row,state.seen)){input.checked=state.selected.has(releaseKey(row));return;}
   if(input.checked)state.selected.add(releaseKey(row));else state.selected.delete(releaseKey(row));render();
  });
  label.append(input,el('span','Auswählen'));return label;
@@ -283,18 +416,18 @@ function mainProducts(row){
  box.append(el('small','Produktbefunde bleiben auch nach der Designfreigabe bestehen.','muted'));return box;
 }
 
-function editorCell(row){
+function editorCell(row,{compactTarget=false}={}){
  const box=el('div',undefined,'actions');
  if(row.lieferform2){
   const query=new URLSearchParams({katalogReihe:row.lieferform2.reihe,katalogDesign:row.id,katalogLinie:state.linie});
   const a=el('a','Bearbeiten','button');a.href=merchantNavigation('/werkstatt/designs/bearbeiten/?'+query,location.href);a.dataset.catalogEdit=designKey(row);
   a.title='Katalogdesign bearbeiten: '+row.id;a.setAttribute('aria-disabled',String(state.busy));if(state.busy)a.tabIndex=-1;
-  a.addEventListener('click',event=>{if(state.busy)event.preventDefault();});box.append(a);
+  a.addEventListener('click',event=>{if(event.button&&event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;event.preventDefault();if(!state.busy)void dashboardEditor.open({reihe:row.lieferform2.reihe,id:row.id,linie:state.linie,trigger:a});});box.append(a);
  }
  if(row.konfi?.products?.length){const p=row.konfi.products[0];const a=el('a','Im Editor öffnen','button');a.href=p.href;a.title='Konfi-Produkt '+p.importKey+' (Stand '+p.revision+')';box.append(a);if(row.konfi.products.length>1)box.append(el('small',row.konfi.products.length+' Produkte','muted'));}
  else if(!row.lieferform2)box.append(el('span','keine Lieferform 2','muted'));
  if(row.lieferform2){box.append(button('Für anderes Ziel einpassen',()=>openVariant(row)));box.append(button('Name ändern',()=>{state.editing=designKey(row);render();}));box.append(button(row.hidden?'Einblenden':'Ausblenden',()=>save(row,{hidden:!row.hidden}),'quiet'));
-  if(Array.isArray(row.ziele)){box.append(targetCards(row),targetSuggestions(row),themeEditor(row));return box;}
+  if(Array.isArray(row.ziele)){if(!compactTarget)box.append(targetCards(row));box.append(targetSuggestions(row),themeEditor(row));return box;}
   const issue=releaseIssue(row,state.seen),b=button(row.released?'Freigabe zurücknehmen':'Freigeben',()=>row.released?save(row,{freigegeben:false}):askRelease([row]),row.released?'quiet':'release');
   b.dataset.releaseKey=designKey(row);b.title=row.released?'Design wieder auf „offen“ setzen.':'Design nach der Sichtprüfung freigeben.';
   box.append(gate(b,row.released?null:issue));
@@ -333,6 +466,7 @@ function patchDesign(row,change){
  return request('/api/workshop/designs',{method:'PATCH',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':state.csrf},body:JSON.stringify({reihe:row.lieferform2.reihe,designId:row.id,...(row.targetFamily?{familie:row.targetFamily,...(change.freigegeben===true?{checksum:row.target.checksum}:{})}:{}),...change})});
 }
 function applySaved(row,result,change){
+ if(result.changed)invalidateDesignReview(row._design??row);
  if(row.targetFamily){
   const parent=row._design,target=parent.ziele.find(t=>t.familie===row.targetFamily),saved=result.design?.ziele?.find(t=>t.familie===row.targetFamily);
   if(saved)target.freigabe=saved.freigabe;target.released=change.freigegeben??target.released;
@@ -359,41 +493,41 @@ async function save(row,change){
  }catch(e){status(e.message,true);}
  finally{state.busy=false;render();}
 }
-function askRelease(rows){
+function askRelease(rows,{onlyPassing=false}={}){
  if(state.busy||$('#release-dialog').open)return;
- const eligible=eligibleReleaseRows(rows,state.seen);if(!eligible.length)return;
- state.pendingRelease=eligible.map(releaseKey);
+ const eligible=eligibleReleaseRows(rows,state.seen).filter(row=>!onlyPassing||!row.targetFamily||row.target?.fit?.status==='passt');if(!eligible.length)return;
+ state.pendingRelease=eligible.map(releaseKey);state.pendingOnlyPassing=onlyPassing;
  $('#release-count').textContent=eligible.length+(eligible.some(r=>r.targetFamily)?' Ziel'+(eligible.length===1?'':'e'):' Design'+(eligible.length===1?'':'s'))+' freigeben?';
  $('#release-list').replaceChildren(...eligible.map(row=>el('li',row.id+' · '+row.name+(row.target?' · '+row.target.name:''))));
  $('#release-dialog').showModal();
 }
 async function confirmRelease(){
  if(state.busy||!state.pendingRelease)return;
- const keys=new Set(state.pendingRelease),rows=eligibleReleaseRows(targetReviewRows(visibleRows()),state.seen).filter(row=>keys.has(releaseKey(row)));
+ const keys=new Set(state.pendingRelease),onlyPassing=state.pendingOnlyPassing,rows=eligibleReleaseRows(targetReviewRows(visibleRows()),state.seen).filter(row=>keys.has(releaseKey(row))&&(!onlyPassing||!row.targetFamily||row.target?.fit?.status==='passt'));
  state.pendingRelease=null;$('#release-dialog').close();
  if(rows.length!==keys.size){status('Die Auswahl hat sich geändert. Bitte erneut auswählen und bestätigen.',true);return;}
  state.busy=true;render();status(rows.length+' Design'+(rows.length===1?' wird':'s werden')+' freigegeben …');
  try{
-  const result=await releaseDesigns(rows,{patch:row=>patchDesign(row,{freigegeben:true}),onSuccess:(row,response)=>applySaved(row,response,{freigegeben:true})});
+  const result=await releaseDesigns(rows,{patch:row=>patchDesign(row,{freigegeben:true,...(onlyPassing&&row.targetFamily?{onlyPassing:true}:{})}),onSuccess:(row,response)=>applySaved(row,response,{freigegeben:true})});
   const errors=result.failed.map(({row,error})=>row.id+': '+error.message);
   status(result.succeeded.length+' freigegeben.'+(errors.length?' '+result.failed.length+' nicht freigegeben: '+errors.join(' · '):' Änderungen sind im Katalog gespeichert; den Commit macht der Betreiber.'),Boolean(errors.length));
  }finally{state.busy=false;render();}
 }
 
 function renderRows(rows,{focusEditor=true}={}){
- const host=$('#rows');host.replaceChildren();
- if(!rows.length){host.append(el('p',state.data?'Keine Designs für diese Auswahl.':'Keine Linie gewählt.','empty'));return;}
- if(state.view==='tiles'){
-  const grid=el('div',undefined,'tiles');
-  for(const r of rows){const card=el('article',undefined,'tile '+r.status);card.append(preview(r,'tile-img'));const head=el('div',undefined,'tile-head');head.append(ampel(r),el('code',r.id));card.append(head,selection(r),nameCell(r,{focusEditor}),el('p',plateText(r.plate)+' · '+(r.material||'?')+' · '+(r.process||'?'),'muted'),fontList(r),flags(r));if(r.reasons.length){const ul=el('ul',undefined,'reasons');for(const x of r.reasons)ul.append(el('li',x));card.append(ul);}card.append(editorCell(r));grid.append(card);}
-  host.append(grid);return;
+ clearTargetTiles();const host=$('#rows');host.replaceChildren();
+ if(!rows.length){host.append(el('p',state.data?'Keine kompatiblen Designs für diese Auswahl (0 Designs).'+(state.reihe?' Reihe: '+state.reihe+'.':''):'Keine Linie gewählt.','empty'));return;}
+ if(targetView()){
+  const page=reviewPage(rows,state.page);state.page=page.page;const grid=el('div',undefined,'tiles');
+  for(const r of page.rows)grid.append(renderTargetCard(r,{focusEditor}));
+  host.append(grid);renderPagination(host,page);return;
  }
  const table=el('table'),thead=el('thead'),tr=el('tr');
  const labels=['Vorschau','Kennung','Name','Reihe','Material · Verfahren · Form','Platte','Texte · Schriften','Themen','Status','Aktionen'];
  for(const h of labels)tr.append(el('th',h));
  thead.append(tr);table.append(thead);const tbody=el('tbody');
  for(const r of rows){
-  const row=el('tr',undefined,r.status);
+  const row=el('tr',undefined,r.status);row.dataset.designRow=designKey(r);
   const c1=el('td');c1.append(selection(r),preview(r,'thumb'));
   const c2=el('td');c2.append(el('code',r.id));if(r.lieferform2)c2.append(el('small',r.lieferform2.reihe,'muted'));else if(r.bestand)c2.append(el('small','Bogen '+r.bestand.base,'muted'));
   const c3=el('td');c3.append(nameCell(r,{focusEditor}),flags(r));
@@ -410,6 +544,7 @@ function renderRows(rows,{focusEditor=true}={}){
  table.append(tbody);host.append(table);
 }
 function render({focusEditor=true}={}){
+ renderTargetFilters();
  renderPicker($('#lines'),state.lines.map(l=>({key:l.id,label:l.name,count:l.designsLieferform2+(l.bestand.length?' + Bestand':''),title:l.status||''})),state.linie,key=>{if(state.busy)return;state.linie=key;state.reihe=null;state.material=null;pushUrl();void loadLine().then(showFilteredDesigns);});
  const d=state.data;
  $('#metrics').hidden=!d;
@@ -417,18 +552,15 @@ function render({focusEditor=true}={}){
   const c=d.counts;
   $('#metrics').replaceChildren(...[[c.total,'Designs'],[c.ok,'ok'],[c['prüfen'],'prüfen'],[c.fehlt,'fehlt'],[c.freigegeben,'freigegeben'],[c.lieferform2,'Lieferform 2'],[c.selectable,'wählbar']].map(([n,t])=>{const m=el('div',undefined,'metric '+t.replace(/\W/g,''));m.append(el('strong',n),el('span',t));return m;}));
   const reihen=[...d.reihen.map(r=>({key:r.key,label:r.key,count:r.counts.total,title:'ok '+r.counts.ok+' · prüfen '+r.counts['prüfen']+' · fehlt '+r.counts.fehlt}))];
-  renderPicker($('#reihen'),reihen,state.reihe,key=>{state.reihe=key;pushUrl();render();showFilteredDesigns();},{all:{label:'Alle',count:d.counts.total}});
-  renderPicker($('#materials'),d.materials.map(m=>({key:m.key,count:m.counts.total})),state.material,key=>{state.material=key;render();showFilteredDesigns();},{all:{label:'Alle',count:d.counts.total}});
+  renderPicker($('#reihen'),reihen,state.reihe,key=>{state.reihe=key;state.page=1;pushUrl();render();showFilteredDesigns();},{all:{label:'Alle',count:d.counts.total}});
+  renderPicker($('#materials'),d.materials.map(m=>({key:m.key,count:m.counts.total})),state.material,key=>{state.material=key;state.page=1;render();showFilteredDesigns();},{all:{label:'Alle',count:d.counts.total}});
   $('#notes').replaceChildren(el('p','Ausführungen dieser Linie: '+(d.linie?.ausfuehrungen?.modus==='produkte'?'Separate Produkte':d.linie?.ausfuehrungen?.modus==='varianten'?'Varianten':'Unbekannt'),'muted'),...d.notes.map(n=>el('p',n,'notice')),...(d.bestand.overviews.length?[el('p','Bestand: '+d.bestand.overviews.map(o=>o.overview+' ('+o.grund+')').join(', ')+' – '+d.bestand.sheets.length+' Bögen','muted')]:[]));
  }else{$('#reihen').replaceChildren();$('#materials').replaceChildren();$('#notes').replaceChildren();}
  $('#filter-selectable').checked=state.selectable;gate($('#filter-selectable'),state.startDesigns?'Startdesigns zeigen auch fehlende oder nicht wählbare Designs.':null);
  const rows=visibleRows();state.selected=retainVisibleSelection(state.selected,targetReviewRows(rows),state.seen);
  $('#summary').textContent=d?rows.length+' von '+d.counts.total+' Designs'+(state.reihe?' · '+state.reihe:'')+(state.status?' · Status '+state.status:'')+(state.freigabe?(state.freigabe==='ja'?' · freigegeben':' · offen'):'')+(state.selectable?' · nur wählbare':'')+(state.startDesigns?' · nur Startdesigns von Hauptprodukten':'')+(state.startDesigns&&Number.isInteger(d.startDesignSummary?.references)?' · insgesamt '+d.startDesignSummary.references+' Hauptprodukt-Zuordnungen in dieser Linie':''):'';
  renderRows(rows,{focusEditor});
- $('.selection-bar').classList.toggle('has-selection',state.selected.size>0);
- $('#selection-summary').textContent=state.selected.size+' ausgewählt · '+eligibleReleaseRows(targetReviewRows(rows),state.seen).length+' sichtbare Designs zur Freigabe bereit';
- gate($('#release-selected'),state.selected.size?null:'Erst Vorschauen öffnen und Designs auswählen.');
- gate($('#clear-selection'),state.selected.size?null:'Keine Designs ausgewählt.');
+ syncReleaseControls();
  for(const control of document.querySelectorAll('main button, main input, main select'))control.disabled=state.busy||control.dataset.blocked==='true';
  $('#main').setAttribute('aria-busy',String(state.busy));
 }
@@ -443,30 +575,30 @@ $('#preview-dialog').addEventListener('close',()=>{if(!$('#preview-dialog').open
 $('#release-dialog').addEventListener('close',()=>{state.pendingRelease=null;});
 $('#release-cancel').addEventListener('click',()=>$('#release-dialog').close());
 $('#release-confirm').addEventListener('click',confirmRelease);
-$('#release-selected').addEventListener('click',()=>askRelease(targetReviewRows(visibleRows()).filter(row=>state.selected.has(releaseKey(row)))));
+$('#release-selected').addEventListener('click',()=>askRelease(targetReviewRows(visibleRows()).filter(row=>state.selected.has(releaseKey(row))),{onlyPassing:true}));
+$('#release-seen').addEventListener('click',()=>askRelease(passingSeenRows(),{onlyPassing:true}));
 $('#clear-selection').addEventListener('click',()=>{if(state.busy)return;state.selected.clear();render();});
 $('#filter-toggle').addEventListener('click',()=>setFiltersOpen($('#filter-toggle').getAttribute('aria-expanded')!=='true'));
 compactLayout.addEventListener('change',()=>setFiltersOpen(false));
 phoneLayout.addEventListener('change',applyResponsiveView);
 $('#filter-start-designs').checked=state.startDesigns;
-$('#filter-start-designs').addEventListener('change',e=>{state.startDesigns=e.target.checked;if(state.startDesigns)state.selectable=false;pushUrl();render();showFilteredDesigns();});
+$('#filter-start-designs').addEventListener('change',e=>{state.startDesigns=e.target.checked;state.page=1;if(state.startDesigns)state.selectable=false;pushUrl();render();showFilteredDesigns();});
 $('#refresh').addEventListener('click',load);
-$('#filter-status').value=state.status;$('#filter-status').addEventListener('change',e=>{state.status=e.target.value;pushUrl();render();showFilteredDesigns();});
-$('#filter-freigabe').value=state.freigabe;$('#filter-freigabe').addEventListener('change',e=>{state.freigabe=e.target.value;pushUrl();render();showFilteredDesigns();});
-$('#filter-selectable').addEventListener('change',e=>{state.selectable=e.target.checked;render();showFilteredDesigns();});
-$('#search').addEventListener('input',e=>{state.query=e.target.value;render();});
+$('#filter-status').value=state.status;$('#filter-status').addEventListener('change',e=>{state.status=e.target.value;state.page=1;pushUrl();render();showFilteredDesigns();});
+$('#filter-freigabe').value=state.freigabe;$('#filter-freigabe').addEventListener('change',e=>{state.freigabe=e.target.value;state.page=1;pushUrl();render();showFilteredDesigns();});
+$('#filter-selectable').addEventListener('change',e=>{state.selectable=e.target.checked;state.page=1;render();showFilteredDesigns();});
+$('#search').addEventListener('input',e=>{state.query=e.target.value;state.page=1;render();});
 $('#search').addEventListener('change',showFilteredDesigns);
 $('#search').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();showFilteredDesigns();}});
-$('#view').value=state.view;$('#view').addEventListener('change',e=>{state.view=e.target.value;try{localStorage.setItem(viewStorageKey(),state.view);}catch{}render();showFilteredDesigns();});
-// Browser Back may restore a cached dashboard after editing. Refresh the source
-// and clear the previous review gate before another approval can be made.
+$('#view').value=state.view;$('#view').addEventListener('change',e=>{state.view=e.target.value;state.page=1;try{localStorage.setItem(viewStorageKey(),state.view);}catch{}render();showFilteredDesigns();});
+// Same-tab editing stays in an overlay; another window refreshes only the edited row.
 window.addEventListener('storage',event=>{
- if(event.key!=='gravuru-katalog-design-updated'||!event.newValue)return;
+ if(event.key!=='gravuru-katalog-design-updated'||!event.newValue||dashboardEditor.isOpen)return;
  let changed;try{changed=JSON.parse(event.newValue);}catch{return;}
- if(!state.data?.rows.some(row=>row.id===changed.id&&row.lieferform2?.reihe===changed.reihe))return;
- state.seen.clear();state.selected.clear();releasePreview();$('#preview-dialog').close();$('#release-dialog').close();
- if(state.busy||state.editing){renderPreservingRename();status('Das Design wurde in einem anderen Fenster geändert. Bitte nach deiner aktuellen Bearbeitung neu laden.',true);}
- else void load();
+ void refreshChangedDesign(changed);
 });
 window.addEventListener('pageshow',event=>{if(event.persisted){releasePreview();$('#preview-dialog').close();$('#release-dialog').close();void load();}});
+window.addEventListener('pagehide',()=>{clearTargetTiles();targetPreviewCache.invalidate();});
+$('#target-family').addEventListener('change',event=>{state.targetFamily=event.target.value||null;state.page=1;state.selected.clear();pushUrl();render();showFilteredDesigns();});
+$('#filter-theme').addEventListener('change',event=>{state.theme=event.target.value;state.page=1;pushUrl();render();showFilteredDesigns();});
 await load();

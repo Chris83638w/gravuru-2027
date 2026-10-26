@@ -220,3 +220,21 @@ test('merchant customer preview protects revision data and confines legacy scrip
  assert.equal((await request('/_merchant-editor.html',{headers:{'sec-fetch-site':'cross-site'}})).status,403);
  assert.equal((await request('/models.json',{headers})).status,404);
 });
+
+test('nested catalogue editor keeps the merchant session gate and only adds same-origin framing on its own route',async t=>{
+ const {request}=setup(t),channel='12345678-abcd-4321-abcd-123456789012';
+ const route='/werkstatt/designs/bearbeiten/',query='?'+new URLSearchParams({katalogOverlay:channel,katalogReihe:'TRE-V2A-8x5',katalogDesign:'D57',host:'public',embedded:'1'});
+ const page=await request(route+query);
+ assert.equal(page.status,200,page.bytes.toString());
+ assert.match(page.headers['content-security-policy'],/frame-ancestors 'self' https:\/\/fixture\.myshopify\.com https:\/\/admin\.shopify\.com/);
+ assert.doesNotMatch(page.headers['content-security-policy'],/unsafe-eval/);
+ assert.match(page.bytes.toString(),/<meta name="gravuru-merchant-auth" content="required">/);
+ assert.doesNotMatch(page.bytes.toString(),/app-bridge\.js/);
+ assert.match((await request(route)).bytes.toString(),/app-bridge\.js/);
+ assert.match((await request(route+'?katalogOverlay=invalid')).bytes.toString(),/app-bridge\.js/);
+ assert.doesNotMatch((await request('/werkstatt/designs/'+query)).headers['content-security-policy'],/frame-ancestors 'self'/);
+ assert.equal((await request('/workshop-ui/design-dashboard-editor.mjs')).status,200);
+ assert.equal((await request('/api/workshop/session'+query)).status,401,'presentation channel grants no API access');
+ assert.equal((await request('/api/workshop/designs/editor'+query)).status,401,'catalogue data still requires a session token');
+ assert.equal((await request('/api/workshop/session'+query,{headers:{authorization:jwt()}})).status,200);
+});

@@ -1,0 +1,57 @@
+{
+  "platform": "Windows",
+  "node": "v24.20.0",
+  "files": 201,
+  "scopes": [
+    "app/configurator/variant-m/*.test.mjs",
+    "app/workshop/*.test.mjs",
+    "scripts/*.test.mjs"
+  ],
+  "counts": {
+    "tests": 1602,
+    "failed": 0,
+    "passed": 1594,
+    "cancelled": 0,
+    "skipped": 8,
+    "todo": 0,
+    "topLevel": 1558,
+    "suites": 0
+  },
+  "exitCode": 0,
+  "changedTestSources": [],
+  "skips": [
+    {
+      "name": "Symlink/Junction als Designordner ist gesperrt",
+      "reason": "Dateisystem erlaubt hier keine Links."
+    },
+    {
+      "name": "Mehrfach verknüpfte Quelldatei wird vor jedem Schreiben gesperrt",
+      "reason": "Dateisystem erlaubt hier keine Hardlinks."
+    },
+    {
+      "name": "workshop.sqlite",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "profiles.sqlite-wal",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "design-assets.sqlite-shm",
+      "reason": "File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "real authenticated server and databases with confirmed private permissions",
+      "reason": "Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "Git ancestor guard after the private-permission check",
+      "reason": "Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+    },
+    {
+      "name": "Echter Katalog + Teilexport (lokal, wenn vorhanden): drei 7x2-Produkte unverändert",
+      "reason": true
+    }
+  ],
+  "codeCommit": "b4301751890333b9b1f21c72b8512f3a1eab320c"
+}

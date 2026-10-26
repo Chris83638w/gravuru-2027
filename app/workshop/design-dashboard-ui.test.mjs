@@ -776,3 +776,22 @@ test('R1 distinguishes price and geometry messages and keeps the family selectab
  assert.equal(h.element('assignment-options').querySelector('[data-assignment-family]').disabled,false);
  assert.equal(h.patches.length,0);h.dispose();
 });
+
+test('bulk approval reports progress, stops after the running PATCH and lists every outcome',async()=>{
+ const first=deferred(),second=deferred(),h=await harness({rows:['A','B','C'].map(id=>row(id)),onPatch:(_call,index)=>(index===1?first:second).promise});
+ for(const id of ['A','B','C']){await reviewed(h,id);await select(h,id);}
+ await h.element('release-selected').emit('click');const running=h.element('release-confirm').emit('click');await tick();
+ assert.equal(h.element('release-progress-panel').hidden,false);assert.match(h.element('release-progress').textContent,/Freigabe 1 von 3 · 0 abgelehnt/);assert.equal(h.element('release-stop').disabled,false);
+ first.resolve();await tick();assert.match(h.element('release-progress').textContent,/Freigabe 2 von 3/);
+ await h.element('release-stop').emit('click');assert.equal(h.patches.length,2);assert.equal(h.element('main').getAttribute('aria-busy'),'true');
+ second.resolve({error:'Quelle geändert'});await running;
+ assert.equal(h.patches.length,2);assert.equal(release(h,'A').textContent,'Freigabe zurücknehmen');assert.equal(release(h,'B').textContent,'Freigeben');
+ assert.deepEqual(h.element('release-results').children.map(e=>e.textContent),['A · ok','B · abgelehnt: Quelle geändert','C · abgebrochen: nicht begonnen']);
+ assert.match(h.element('release-progress').textContent,/Freigabe 2 von 3 · 1 abgelehnt · 1 abgebrochen/);
+ assert.equal(h.element('release-stop').hidden,true);assert.equal(h.element('main').getAttribute('aria-busy'),'false');h.dispose();
+});
+test('finished approval keeps a readable result list and a new batch replaces it',async()=>{
+ const h=await harness({rows:['A','B'].map(id=>row(id))});await reviewed(h,'A');await select(h,'A');await h.element('release-selected').emit('click');await h.element('release-confirm').emit('click');
+ assert.equal(h.element('release-results').textContent,'A · ok');assert.match(h.element('release-progress').textContent,/1 von 1 · 0 abgelehnt · abgeschlossen/);
+ await reviewed(h,'B');await select(h,'B');await h.element('release-selected').emit('click');await h.element('release-confirm').emit('click');assert.equal(h.element('release-results').textContent,'B · ok');h.dispose();
+});

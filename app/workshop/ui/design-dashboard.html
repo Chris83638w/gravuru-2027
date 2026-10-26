@@ -29,6 +29,12 @@
 <div id="assignment-toolbar" class="assignment-toolbar" aria-label="Mehrfachzuordnung" hidden></div>
 <div class="selection-bar" aria-label="Mehrfachfreigabe"><p id="selection-summary" role="status" aria-live="polite">0 ausgewählt</p><button id="release-seen" class="release" type="button" disabled hidden>Alle geprüften mit „passt“ freigeben</button><button id="release-selected" class="release" type="button" disabled>Ausgewählte freigeben</button><button id="clear-selection" class="quiet" type="button" disabled>Auswahl aufheben</button></div>
 <p class="review-help">Zielkacheln gelten als geprüft, sobald ihre Vorschau geladen und sichtbar war. „Alle geprüften mit passt freigeben“ umfasst die besuchten Seiten der aktuellen Auswahl. Ziele mit „prüfen“ öffnest du einzeln; „passt nicht“ und fehlende Schriften bleiben gesperrt. Nach dem Neuladen prüfst du erneut.</p>
+<section id="release-progress-panel" hidden aria-labelledby="release-progress-heading">
+<h2 id="release-progress-heading">Ergebnis der Freigabe</h2>
+<p id="release-progress" role="status" aria-live="polite"></p>
+<button id="release-stop" type="button">Abbrechen</button>
+<ol id="release-results"></ol>
+</section>
 <div id="rows"></div>
 <p class="footnote">Ampel: <b>ok</b> = Lieferform 2 ohne Befund · <b>prüfen</b> = Doppelt, abweichende Fassung, Schrift fehlt, Text unter 3 mm, Element außerhalb der Platte, alte Größe, Thema offen · <b>fehlt</b> = noch keine Lieferform 2 (nur Bestand). Zielkacheln zeigen die tatsächliche Plattenform und das Familienmaterial mit Kontur und Bohrungen. Ohne bestätigtes Familienziel bleibt die Zielprüfung offen. <b>Freigabe:</b> nur freigegebene Designs kommen beim nächsten Import ins Konfi-Produkt und in den Shop-Abgleich; alles andere bleibt in der Prüf-Warteschlange.</p>
 </section>

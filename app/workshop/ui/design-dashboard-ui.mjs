@@ -531,17 +531,27 @@ function askRelease(rows,{onlyPassing=false}={}){
  $('#release-list').replaceChildren(...eligible.map(row=>el('li',row.id+' · '+row.name+(row.target?' · '+row.target.name:''))));
  $('#release-dialog').showModal();
 }
+let releaseController=null;
+function releaseProgress(progress){
+ $('#release-progress').textContent='Freigabe '+(progress.completed+(progress.active?1:0))+' von '+progress.total+' · '+progress.rejected+' abgelehnt'+(releaseController?.signal.aborted?' · Abbruch angefordert, laufende Freigabe wird noch abgeschlossen':'');
+}
+function releaseResults(results){
+ $('#release-results').replaceChildren(...results.map(item=>el('li',item.row.id+(item.row.target?' · '+item.row.target.name:'')+' · '+(item.status==='ok'?'ok':item.status==='cancelled'?'abgebrochen: nicht begonnen':'abgelehnt: '+item.error.message))));
+}
 async function confirmRelease(){
  if(state.busy||!state.pendingRelease)return;
  const keys=new Set(state.pendingRelease),onlyPassing=state.pendingOnlyPassing,rows=eligibleReleaseRows(targetReviewRows(visibleRows()),state.seen).filter(row=>keys.has(releaseKey(row))&&(!onlyPassing||!row.targetFamily||row.target?.fit?.status==='passt'));
  state.pendingRelease=null;$('#release-dialog').close();
  if(rows.length!==keys.size){status('Die Auswahl hat sich geändert. Bitte erneut auswählen und bestätigen.',true);return;}
- state.busy=true;render();status(rows.length+' Design'+(rows.length===1?' wird':'s werden')+' freigegeben …');
+ releaseController=new AbortController();state.busy=true;render();
+ $('#release-progress-panel').hidden=false;$('#release-results').replaceChildren();$('#release-stop').hidden=false;$('#release-stop').disabled=false;$('#release-progress-panel').scrollIntoView({block:'nearest'});
+ status(rows.length+' Design'+(rows.length===1?' wird':'s werden')+' freigegeben …');
  try{
-  const result=await releaseDesigns(rows,{patch:row=>patchDesign(row,{freigegeben:true,...(onlyPassing&&row.targetFamily?{onlyPassing:true}:{})}),onSuccess:(row,response)=>applySaved(row,response,{freigegeben:true})});
+  const result=await releaseDesigns(rows,{patch:row=>patchDesign(row,{freigegeben:true,...(onlyPassing&&row.targetFamily?{onlyPassing:true}:{})}),onSuccess:(row,response)=>applySaved(row,response,{freigegeben:true}),signal:releaseController.signal,onProgress:releaseProgress});
+  releaseResults(result.results);$('#release-progress').textContent='Freigabe '+(result.succeeded.length+result.failed.length)+' von '+rows.length+' · '+result.failed.length+' abgelehnt'+(result.cancelled.length?' · '+result.cancelled.length+' abgebrochen':' · abgeschlossen');
   const errors=result.failed.map(({row,error})=>row.id+': '+error.message);
-  status(result.succeeded.length+' freigegeben.'+(errors.length?' '+result.failed.length+' nicht freigegeben: '+errors.join(' · '):' Änderungen sind im Katalog gespeichert; den Commit macht der Betreiber.'),Boolean(errors.length));
- }finally{state.busy=false;render();}
+  status(result.succeeded.length+' freigegeben.'+(result.cancelled.length?' '+result.cancelled.length+' abgebrochen.':'')+(errors.length?' '+result.failed.length+' nicht freigegeben: '+errors.join(' · '):' Änderungen sind im Katalog gespeichert; den Commit macht der Betreiber.'),Boolean(errors.length));
+ }finally{releaseController=null;$('#release-stop').hidden=true;state.busy=false;render();}
 }
 
 function renderRows(rows,{focusEditor=true}={}){
@@ -591,7 +601,7 @@ function render({focusEditor=true,preserveRows=false}={}){
  $('#summary').textContent=d?rows.length+' von '+d.counts.total+' Designs'+(state.reihe?' · '+state.reihe:'')+(state.status?' · Status '+state.status:'')+(state.freigabe?(state.freigabe==='ja'?' · freigegeben':' · offen'):'')+(state.selectable?' · nur wählbare':'')+(state.startDesigns?' · nur Startdesigns von Hauptprodukten':'')+(state.startDesigns&&Number.isInteger(d.startDesignSummary?.references)?' · insgesamt '+d.startDesignSummary.references+' Hauptprodukt-Zuordnungen in dieser Linie':''):'';
  if(!preserveRows)renderRows(rows,{focusEditor});
  syncReleaseControls();assignments.sync();
- for(const control of document.querySelectorAll('main button, main input, main select'))control.disabled=state.busy||control.dataset.blocked==='true';
+ for(const control of document.querySelectorAll('main button, main input, main select'))control.disabled=(state.busy&&control.id!=='release-stop')||control.dataset.blocked==='true';
  $('#main').setAttribute('aria-busy',String(state.busy));
 }
 $('#variant-family').addEventListener('change',variantFields);
@@ -605,6 +615,7 @@ $('#preview-dialog').addEventListener('close',()=>{if(!$('#preview-dialog').open
 $('#release-dialog').addEventListener('close',()=>{state.pendingRelease=null;});
 $('#release-cancel').addEventListener('click',()=>$('#release-dialog').close());
 $('#release-confirm').addEventListener('click',confirmRelease);
+$('#release-stop').addEventListener('click',()=>{if(!releaseController)return;releaseController.abort();$('#release-stop').disabled=true;$('#release-progress').textContent+=' · Abbruch angefordert, laufende Freigabe wird noch abgeschlossen';});
 $('#release-selected').addEventListener('click',()=>askRelease(targetReviewRows(visibleRows()).filter(row=>state.selected.has(releaseKey(row))),{onlyPassing:true}));
 $('#release-seen').addEventListener('click',()=>askRelease(passingSeenRows(),{onlyPassing:true}));
 $('#clear-selection').addEventListener('click',()=>{if(state.busy)return;state.selected.clear();render();});

@@ -1,5 +1,13 @@
 # Getrennter Shopify-Händlerstart auf Plesk
 
+## Verbindlicher Deploy-Abschluss · 26.10.2026
+
+Nach jedem Deploy in Plesk **„App neu starten“** ausführen und anschließend das Prozessalter des zugehörigen `lsnode` prüfen. **Node.js deaktivieren/aktivieren startet den LiteSpeed-Prozess nicht neu.** Ein erfolgreicher Dateiabgleich oder HTTP 200 beweist deshalb noch nicht, dass der neue Code läuft.
+
+In **Plesk-Aufgaben kein `%` im Befehlsfeld** verwenden: Cron behandelt es als Zeilenende, auch in vermeintlich geschützten Datums-/Formatbefehlen. Solche Logik in einer geprüften Skriptdatei ablegen; die Aufgabe enthält nur deren Aufruf ohne Prozentzeichen.
+
+Vor `katalog-import --commit` die ausgegebene absolute Zieldatei, den Mandanten, die vorhandene Produktanzahl und beide Schemastände prüfen. Bestehende workshop-Schemata unter 4 oder profiles-Schemata unter 2 brechen ab. `--migrieren` ausschließlich für die ausdrücklich beabsichtigte, gesicherte Migration des bestätigten Ziels verwenden; niemals zum Umgehen einer Warnung auf dem Legacy-Speicher. `--hauptprodukt <id>` begrenzt auch die Unterkategorien auf dieses Hauptprodukt.
+
 Dieses Paket startet die vorhandene neue Werkstatt mit App-Bridge-/Händler-Sitzungsprüfung. Es ist eine **getrennte Händler-Testinstanz**: keine neue Shopify-App, keine Produktpublikation, kein Warenkorbtransport und keine Bestell-Webhooks. Die öffentliche HTML-Hülle enthält keine privaten Produktdaten; alle Werkstatt-APIs verlangen eine gültige Händleridentität der bestehenden App. Für Schreibzugriffe bleibt zusätzlich CSRF erforderlich. Kein Basic-Anmeldeersatz und kein anonymer API-Rückfall.
 
 Die bestehende private Operator-Testinstanz und die laufende Werkstatt behalten ihre eigenen Verzeichnisse, Startdateien und Datenbanken. Dieses Paket nicht darüber entpacken. Auch eine erfolgreiche TLS-/Serverprüfung ersetzt nicht die echte Öffnung über Shopify und keine vollständige Bestellabnahme.

@@ -71,7 +71,16 @@ export function installDashboardEditor({request,onSaved=()=>{},onClosed=()=>{},w
    previousRequest=windowImpl.GravuruMerchantRequest;windowImpl.GravuruMerchantRequest=request;
    windowImpl.history.pushState({...windowImpl.history.state,[marker]:channel},'',active.href);
    documentImpl.body.style.overflow='hidden';title.textContent=id;closeButton.disabled=false;
-   frame=documentImpl.createElement('iframe');frame.className='catalog-editor-frame';frame.title='Katalogdesign bearbeiten';frame.src=url;dialog.append(frame);dialog.showModal();return true;
+   frame=documentImpl.createElement('iframe');frame.className='catalog-editor-frame';frame.title='Katalogdesign bearbeiten';frame.src=url;
+   const openedFrame=frame;
+   frame.addEventListener('load',()=>{
+    if(!active||frame!==openedFrame)return;
+    // A completed navigation has already left the editor's beforeunload guard.
+    // Read only the frame URL; a blocked/cross-origin page must remain closable.
+    let current;try{current=catalogueOverlayIdentity(openedFrame.contentWindow.location.href);}catch{}
+    if(current?.channel!==channel||current.reihe!==reihe||current.id!==id){active.ready=false;active.dirty=false;closeButton.disabled=false;}
+   });
+   dialog.append(frame);dialog.showModal();return true;
   }
  };
 }

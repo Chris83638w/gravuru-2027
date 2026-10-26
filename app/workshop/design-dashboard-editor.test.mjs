@@ -115,3 +115,21 @@ test('only the catalogue editor permits the extra same-origin frame and overlay 
  assert.match(host.html(page,'/werkstatt/',search).toString(),/app-bridge\.js/);
  assert.equal(host.authorize({method:'GET',headers:{host:'merchant.example.test',origin:'https://evil.test'}},'/api/workshop/designs'),false);
 });
+
+test('parent return stays usable after the frame navigates away from its editor channel',()=>{
+ const h=fixture(),ui=installDashboardEditor({request:()=>{},windowImpl:h.window,documentImpl:h.document});ui.open(identity);
+ const frame=h.frame,peer=frame.contentWindow,message=(type,extra={})=>h.window.emit('message',{origin,source:peer,data:{...identity,type,...extra}});
+ peer.location={href};
+ message('gravuru-katalog-editor-ready');message('gravuru-katalog-editor-state',{dirty:true,busy:true});frame.emit('load');
+ ui.requestClose();assert.equal(ui.isOpen,true,'the matching editor keeps its discard handshake');
+ assert.equal(peer.messages.at(-1).data.type,'gravuru-katalog-editor-request-close');
+ peer.location={href:origin+'/werkstatt/'};frame.emit('load');
+ let warned=false;h.window.emit('beforeunload',{preventDefault(){warned=true;}});assert.equal(warned,false,'a departed editor has no remaining draft');
+ assert.equal(h.dialog.children[0].children[0].disabled,false);
+ ui.requestClose();assert.equal(ui.isOpen,false);assert.equal(h.history.backs,1);
+ ui.open(identity);const inaccessible=h.frame;
+ h.window.emit('message',{origin,source:inaccessible.contentWindow,data:{...identity,type:'gravuru-katalog-editor-ready'}});
+ ui.requestClose();assert.equal(ui.isOpen,true);
+ Object.defineProperty(inaccessible.contentWindow,'location',{get(){throw Error('cross origin');}});inaccessible.emit('load');
+ ui.requestClose();assert.equal(ui.isOpen,false,'parent return also works when frame location cannot be read');
+});

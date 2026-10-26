@@ -4,7 +4,8 @@
 - Code `e5cc1d9` per Plesk Git bereitgestellt. App aus → Aufgabe `07-ruecksetzen` (Zählungsprüfung ohne Abweichung) → alte Dateien nach `private/pilot-20261026/nach-import/` verschoben (nichts gelöscht) → Kopien eingesetzt → 6 Import-Schriften aus `design-assets.sqlite` entfernt. Ergebnis: Legacy `workshop.sqlite` v3 / 34 Produkte, `profiles.sqlite` v1 / 1 Profil, Schriften 0; Acryl v4 / 800 Produkte.
 - **Wichtig:** „Node.js deaktivieren/aktivieren“ startet den LiteSpeed-Prozess (`lsnode`) **nicht** neu – der alte Prozess lief weiter. Erst „App neu starten“ hat neu gestartet (Prozessalter geprüft). Nach dem Neustart bleibt Legacy auf v3/v1.
 - Prüfung: `/`, `/werkstatt/acryl/`, `/werkstatt/designs/` 200, `/api/workshop/session` 401; Design-Dashboard lädt (Kaltstart ca. 1 Min.), Ovalreihe zeigt echte Ovalplatten mit Kontur und Bohrungen, „Rund: 0 Designs – keine kompatible Designreihe“.
-- Aufräumen später (nur mit Chris' Ok): `pilot-20261026/nach-import/` (~420 MB), `restore/`, `workshop-vor-import.sqlite`, `acryl-vor-import/`.
+- Aufräumen: `nach-import/` und `restore/` gelöscht (Chris: „Du entscheidest“; vorher geprüft: keine Schreibvorgänge nach dem Verschieben). Bleiben bis nach der Testbestellung: `workshop-vor-import.sqlite` (einzige Kopie Legacy), `acryl-vor-import/`.
+- Nächster Auftrag Astra: [Nachträge 26.10.](docs/handoffs/2026-10-26-astra-nachtraege.md) – PR #27 fertigstellen (#25), Fortschritt Sammelfreigabe, Größen nach skalierbaren Reihen, Import-Schutz.
 
 ## 26.10.2026 · Claude · Pilotfehler Legacy-Speicher, Neu-Import in den Acryl-Speicher, PR #26 gemergt
 

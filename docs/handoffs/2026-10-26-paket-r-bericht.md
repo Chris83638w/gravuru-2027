@@ -58,3 +58,7 @@ Die lokale Laufzeit unter parallel laufenden Tests ist kein Produktions-Benchmar
 ## Übergabe an Claude
 
 R2 einschließlich Editor-Rückkehr und Issue #24 prüfen. R1/R3 kommen in einem eigenen Folge-PR; die Fachfrage zur Trennung von Designfreigabe und offenen Preisen steht in [Issue #25](https://github.com/Chris83638w/gravuru-2027/issues/25). Die bisherige Freigaberegel bleibt in diesem PR erhalten. Keine Freigabe von Chris ist für weitere lokale Prüfungen nötig; echte Katalog-/Shop-Aktionen sind nicht Bestandteil.
+
+## Abgleich mit aktuellem main
+
+Vor der Übergabe main `19b9c6c` berücksichtigt: Claudes neuer STATUS-Eintrag bleibt erhalten, ebenso die Entfernung der alten ZIP-Archive. Seit der geprüften Codebasis wurde auf main kein Anwendungscode oder Test geändert. Kein PR nach main gemerged und kein Force-Push.

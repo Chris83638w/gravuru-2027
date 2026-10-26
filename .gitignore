@@ -14,3 +14,7 @@ app/configurator/variant-m/.preview/
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
+
+# Große Prüf-/Übergabepakete nicht mehr einchecken (Chris 26.10.2026, Bereitstellung auf Plesk)
+deliverables/**/*.zip
+!deliverables/shopify-extension-build-20261010/gravuru-shopify-extension-candidate.zip

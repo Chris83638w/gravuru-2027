@@ -1,3 +1,11 @@
+## 26.10.2026 · Claude · Legacy-Speicher zurückgesetzt, Paket R2 live
+
+- Chris 26.10.: „Ja, Du darfst den Code bereitstellen, die App neu starten und den alten Speicher zurücksetzen.“
+- Code `e5cc1d9` per Plesk Git bereitgestellt. App aus → Aufgabe `07-ruecksetzen` (Zählungsprüfung ohne Abweichung) → alte Dateien nach `private/pilot-20261026/nach-import/` verschoben (nichts gelöscht) → Kopien eingesetzt → 6 Import-Schriften aus `design-assets.sqlite` entfernt. Ergebnis: Legacy `workshop.sqlite` v3 / 34 Produkte, `profiles.sqlite` v1 / 1 Profil, Schriften 0; Acryl v4 / 800 Produkte.
+- **Wichtig:** „Node.js deaktivieren/aktivieren“ startet den LiteSpeed-Prozess (`lsnode`) **nicht** neu – der alte Prozess lief weiter. Erst „App neu starten“ hat neu gestartet (Prozessalter geprüft). Nach dem Neustart bleibt Legacy auf v3/v1.
+- Prüfung: `/`, `/werkstatt/acryl/`, `/werkstatt/designs/` 200, `/api/workshop/session` 401; Design-Dashboard lädt (Kaltstart ca. 1 Min.), Ovalreihe zeigt echte Ovalplatten mit Kontur und Bohrungen, „Rund: 0 Designs – keine kompatible Designreihe“.
+- Aufräumen später (nur mit Chris' Ok): `pilot-20261026/nach-import/` (~420 MB), `restore/`, `workshop-vor-import.sqlite`, `acryl-vor-import/`.
+
 ## 26.10.2026 · Claude · Pilotfehler Legacy-Speicher, Neu-Import in den Acryl-Speicher, PR #26 gemergt
 
 - **Fehler (Claude):** Der Pilot-Import 4100000 (03b) lief mit `--db` auf den **Legacy**-Datenordner `gravuru-2027-merchant-data` statt auf den Acryl-Speicher – Verstoß gegen „Legacy-Datenordner nie mit `main` öffnen“. Folgen dort: `workshop.sqlite` v3 → v4 (+13 Tabellen, 1 Produkt), `profiles.sqlite` v1 → v2 (+1 Schriftprofil), `design-assets.sqlite` +6 Schriften (vorher leer) und Mandantenspalten. Das Legacy-Release lehnt workshop > 3 und profiles > 1 ab (`unsupported_database_version`).

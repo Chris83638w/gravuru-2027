@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 import {setImmediate as nextTurn} from 'node:timers/promises';
 import {katalogFor,patchDesignDerived} from './design-dashboard.mjs';
 import {designTargets,assignTargetSeries} from './design-targets.mjs';
-import {familyReady} from './product-families.mjs';
+import {familyReadinessDetails} from './product-families.mjs';
 import {safeKatalogPath} from './katalog-transaction.mjs';
 
 const record=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
@@ -52,7 +52,7 @@ function masterFor(katalog,design){
  return master;
 }
 function readiness(ctx,family){
- if(!ctx.readiness.has(family.id)){const value=familyReady(family);ctx.readiness.set(family.id,{complete:value.ready,issues:value.gaps.length?value.gaps:value.ready?[]:[value.reason]});}
+ if(!ctx.readiness.has(family.id))ctx.readiness.set(family.id,familyReadinessDetails(family));
  return ctx.readiness.get(family.id);
 }
 function prepareOne(ctx,design){

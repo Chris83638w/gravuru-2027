@@ -681,7 +681,7 @@ test('R2 shows source-provided empty forms explicitly as family totals even unde
 });
 
 
-const assignmentFamily={id:'steel',name:'Edelstahl',material:'Edelstahl',process:'Gravur',linien:[{id:'test',name:'Testlinie'}],readiness:{complete:false,issues:['Grundpreis offen']}};
+const assignmentFamily={id:'steel',name:'Edelstahl',material:'Edelstahl',process:'Gravur',linien:[{id:'test',name:'Testlinie'}],readiness:{complete:false,issues:['Grundpreis offen'],geometry:{complete:true,issues:[]},prices:{complete:false,issues:['Grundpreis offen']}}};
 const assignmentDataset=rows=>({...dataset(rows),familien:[assignmentFamily]});
 const batchPlan=call=>({checksum:'plan-'+call.body.designs[0].id,counts:{designs:call.body.designs.length,pairs:call.body.designs.length,addable:call.body.designs.length,existing:0,incompatible:0,rejected:0},designs:call.body.designs.map(item=>({...item,status:'ready',sourceChecksum:'source-'+item.id,pairs:call.body.change.familyIds?.map(familyId=>({familyId,status:'addable',sizeKeys:['S'],reasons:[]}))??[],themesBefore:['unrelated'],themesAfter:['unrelated',...(call.body.change.themeAdd??[])]}))});
 const batchSaved=call=>({designs:call.body.designs.map(item=>({...item,status:'ok',changed:true,pairs:call.body.change.familyIds?.map(familyId=>({familyId,status:'added'}))??[]}))});
@@ -697,7 +697,7 @@ test('R1 selection is separate from approval, allows missing fonts, and excludes
 
 test('R1 material preview is read-only and confirmation sends current checksums with session and CSRF headers',async()=>{
  const rows=[row('A')],h=await harness({rows,embedded:true,onLine:()=>assignmentDataset(rows),onBatch:call=>call.url.endsWith('/prepare')?batchPlan(call):batchSaved(call)});
- await assignAll(h);await chooseAssignmentFamily(h);assert.match(h.element('assignment-options').textContent,/Familie unvollständig: Grundpreis offen/);await h.element('assignment-prepare').emit('click');
+ await assignAll(h);await chooseAssignmentFamily(h);assert.match(h.element('assignment-options').textContent,/Preise offen: Grundpreis offen – Import und Shop-Abgleich gesperrt, Designfreigabe möglich/);await h.element('assignment-prepare').emit('click');
  assert.equal(h.requests.filter(call=>call.url==='/api/workshop/designs/batch').length,0);assert.match(h.element('assignment-status').textContent,/1 Designs × 1 Familien/);await h.element('assignment-apply').emit('click');
  const apply=h.requests.find(call=>call.url==='/api/workshop/designs/batch');assert.deepEqual(apply.body,{designs:[{reihe:'test',id:'A',sourceChecksum:'source-A'}],change:{familyIds:['steel']},checksum:'plan-A'});assert.equal(apply.authorization,'Bearer synthetic-session-token');assert.equal(apply.headers['X-Gravuru-CSRF'],'synthetic-csrf');assert.equal(h.patches.length,0);assert.equal(h.requests.filter(call=>call.url.startsWith('/api/workshop/designs?')).length,2,'one initial read and one aggregate refresh');h.dispose();
 });
@@ -766,4 +766,13 @@ test('R3 aggregate refresh keeps an unchanged tile bound to a preview which fini
  const rows=[tileTargetRow('A'),tileTargetRow('B')],pending=deferred(),h=await harness({rows,width:390,onLine:()=>dataset(rows),onTargetPreview:call=>call.url.includes('id=B')?pending.promise:tileResult(call),onMainProduct:call=>call.method==='GET'?mainOptions():{changed:true,productId:'A-OV'}});
  await loadTile(h,'A');const surface=tileSurface(h,'B');h.intersect(surface);await tick();const call=h.requests.find(item=>item.url.includes('target-preview')&&item.url.includes('id=B'));
  await openMain(h);await h.element('main-product-create').emit('click');await h.element('main-product-close').emit('click');assert.equal(tileSurface(h,'B'),surface,'unchanged card stays in the DOM');pending.resolve(tileResult(call));await tick();await tick();const image=surface.querySelector('img');image.naturalWidth=900;await image.emit('load');assert.match(h.element('selection-summary').textContent,/2 geprüfte Ziele/);h.dispose();
+});
+
+test('R1 distinguishes price and geometry messages and keeps the family selectable',async()=>{
+ const rows=[row('A')],data=assignmentDataset(rows);data.familien[0].readiness.geometry={complete:false,issues:['Bohrbild: Randabstand']};
+ const h=await harness({rows,onLine:()=>data});await assignAll(h);await chooseAssignmentFamily(h);
+ assert.match(h.element('assignment-options').textContent,/Geometrie \/ Stammdaten offen: Bohrbild: Randabstand/);
+ assert.match(h.element('assignment-options').textContent,/Preise offen: Grundpreis offen – Import und Shop-Abgleich gesperrt, Designfreigabe möglich/);
+ assert.equal(h.element('assignment-options').querySelector('[data-assignment-family]').disabled,false);
+ assert.equal(h.patches.length,0);h.dispose();
 });

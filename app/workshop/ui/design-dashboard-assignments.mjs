@@ -37,7 +37,10 @@ export function installDesignAssignments({request,getContext,onChanged=async()=>
    for(const family of group.families){const label=node('label',undefined,'assignment-option'),input=node('input');input.type='checkbox';input.dataset.assignmentFamily=family.id;
     input.addEventListener('change',()=>{if(input.checked)familyIds.add(family.id);else familyIds.delete(family.id);for(const other of host.querySelectorAll('[data-assignment-family]'))if(other.dataset.assignmentFamily===family.id)other.checked=input.checked;change();});
     label.append(input,node('span',[family.name,family.material,family.process].filter(Boolean).join(' · ')));field.append(label);
-    if(family.readiness?.complete===false)field.append(node('p','Familie unvollständig: '+(family.readiness.issues??[]).join(' · ')+'. Die Zuordnung erteilt keine Freigabe. Offene Produktbefunde bleiben bestehen.','notice'));
+    const readiness=family.readiness;
+    if(readiness?.geometry?.complete===false)field.append(node('p','Geometrie / Stammdaten offen: '+readiness.geometry.issues.join(' · ')+' – Zielvorschau und Designfreigabe benötigen eine vollständige Prüfung.','notice'));
+    if(readiness?.prices?.complete===false)field.append(node('p','Preise offen: '+readiness.prices.issues.join(' · ')+' – Import und Shop-Abgleich gesperrt, Designfreigabe möglich','notice'));
+    if(readiness?.complete===false&&!readiness.geometry&&!readiness.prices)field.append(node('p','Familie unvollständig: '+(readiness.issues??[]).join(' · '),'notice'));
    }host.append(field);
   }
   if(!groups.size)host.append(node('p','Keine vorhandenen Familien verfügbar.','notice'));

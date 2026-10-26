@@ -13,7 +13,7 @@ import path from 'node:path';
 import {openKatalog} from './katalog-source.mjs';
 import {parseDesignSvg,formatSeries,seriesOf,assignSeries,applyPriceOverrides,priceGaps,katalogDesignToTemplate,scaleTemplate,scaleEmbeddedMotifs,templateFit} from './katalog-convert.mjs';
 import {convertFont} from './font-library.mjs';
-import {FAMILY_MATERIALS,familyProcess,familyReady} from './product-families.mjs';
+import {FAMILY_MATERIALS,familyProcess,familyReadinessDetails} from './product-families.mjs';
 import {importKey} from './katalog-import.mjs';
 
 export const MIN_TEXT_MM=3;// Chris 23.10.2026 („3 mm Text“): kleinere Mustertexte sind zu prüfen
@@ -340,7 +340,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  if(status)filtered=filtered.filter(r=>r.status===status);
  if(freigabe)filtered=filtered.filter(r=>r.released===(freigabe==='ja'));
  return {linie:{id:line.id,name:line.name,status:line.status??null,ausfuehrungen:line.ausfuehrungen??null,families:ctx.families.map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f)})),subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>({id:m.id,name:m.name??null,startDesign:m.startDesign}))}))},
-  familien:[...katalog.families.values()].map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f),readiness:(()=>{const r=familyReady(f);return {complete:r.ready,issues:r.gaps.length?r.gaps:r.ready?[]:[r.reason]};})(),sizes:f.sizes.map(s=>({key:s.key,label:s.label})),linien:[...katalog.lines.values()].filter(l=>l.families.includes(f.id)).map(l=>({id:l.id,name:l.name}))})),
+  familien:[...katalog.families.values()].map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f),readiness:familyReadinessDetails(f),sizes:f.sizes.map(s=>({key:s.key,label:s.label})),linien:[...katalog.lines.values()].filter(l=>l.families.includes(f.id)).map(l=>({id:l.id,name:l.name}))})),
   themes:katalog.themes.map(t=>({id:t.id,name:t.name})),availableFormGroups:availableFormGroups(katalog,ctx.families,l2,rows),counts:count(rows),reihen,formatreihen,materials,bestand:bestandInfo,notes,startDesignSummary,filter:{reihe,material,status,freigabe,startDesigns},rows:filtered,minTextMm:MIN_TEXT_MM};
 }
 // Count only assigned target masters with a compatible size, never stock aliases or invented series.

@@ -166,3 +166,11 @@ test('dashboard exposes actual form groups including zero compatible designs, co
  assert.equal(groups().find(group=>group.groupKey==='RU').count,1,'a confirmed compatible target counts without granting approval');
  assert.equal(read(f.root,'designs/test/T-D2/design.json').ziele[0].freigabe,null);
 });
+
+test('Issue 25: open prices are reported separately and do not prevent an actual target release',async t=>{
+ const f=fixture(t),family=designDashboard(f.root,{linie:'test-schilder',...options}).familien.find(f=>f.id==='test-schilder');
+ assert.equal(family.readiness.prices.complete,false);assert.equal(family.readiness.geometry.complete,true);assert.equal(family.readiness.complete,false);
+ const preview=await f.preview('test-schilder');assert.equal(preview.reviewFit.status,'passt');assert.ok(preview.svg);
+ const saved=await f.approve('test-schilder');assert.equal(saved.changed,true);assert.equal(f.read().ziele[0].freigabe.status,'freigegeben');
+ const after=read(f.root,'familien/edelstahl/test-schilder.json');assert.ok(after.sizes.every(s=>s.baseCents===null),'approval never fills prices');
+});

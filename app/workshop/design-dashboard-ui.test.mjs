@@ -93,7 +93,7 @@ function documentFixture({embedded=false}={}){
 const row=(id,overrides={})=>({id,name:'Design '+id,nameSheet:'',reihe:'Test',formatreihe:'Test',material:'Edelstahl',process:'Gravur',form:'Rechteck',plate:[90,60],status:'ok',reasons:[],selectable:true,released:false,hidden:false,lieferform2:{reihe:'test'},files:{png:'/preview/'+id+'.png',svg:'/preview/'+id+'.svg'},fonts:[{name:'Testfont',status:'vorhanden',file:true}],texts:{count:1,sample:['Anna']},themes:[{name:'Namensschilder'}],isStartDesign:true,mainProducts:[{id:'1000-'+id,name:'Hauptprodukt '+id,sizeKey:'SIZE-90X60',sizeLabel:'9 × 6 cm',basePriceCents:1499,fit:{status:'ok',issues:[]},blockers:[]}],...overrides});
 const dataset=rows=>({linie:'test',rows,counts:{total:rows.length,ok:rows.filter(r=>r.status==='ok').length,'prüfen':rows.filter(r=>r.status==='prüfen').length,fehlt:rows.filter(r=>r.status==='fehlt').length,freigegeben:rows.filter(r=>r.released).length,lieferform2:rows.length,selectable:rows.filter(r=>r.selectable).length},reihen:[{key:'Test',counts:{total:rows.length,ok:rows.length,'prüfen':0,fehlt:0}}],materials:[{key:'Edelstahl',counts:{total:rows.length}}],notes:[],bestand:{overviews:[],sheets:[]},startDesignSummary:{references:new Set(rows.filter(r=>r.isStartDesign).flatMap(r=>r.mainProducts.map(p=>JSON.stringify([p.lineId??'test',p.id])))).size,rows:rows.filter(r=>r.isStartDesign).length,assignments:rows.filter(r=>r.isStartDesign).reduce((n,r)=>n+r.mainProducts.length,0),missingReferences:0,fitChecked:true}});
 
-async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMedia,onLine,onTargetPreview,onVariant,embedded=false,visibleThumbnails=false,search='?linie=test',width=1280}={}){
+async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMedia,onLine,onTargetPreview,onVariant,onBatch,onMainProduct,embedded=false,visibleThumbnails=false,search='?linie=test',width=1280}={}){
  const document=documentFixture({embedded}),requests=[],patches=[],mediaRequests=[],originals=structuredClone(rows),tokens=[],made=[],revoked=[],blobCalls=new WeakMap(),windowEvents=new Map(),intersections=new Set();
  const location={origin:'http://fixture.invalid',pathname:'/werkstatt/designs/',search,get href(){return this.origin+this.pathname+this.search;}};
  const localStorage={getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,String(value)),removeItem:key=>storage.delete(key)};
@@ -104,6 +104,8 @@ async function harness({rows=[row('A'),row('B')],storage=new Map(),onPatch,onMed
  const fetch=async(url,options={})=>{
   const normalizedHeaders=new Headers(options.headers),headers=Object.fromEntries(normalizedHeaders);if(normalizedHeaders.has('X-Gravuru-CSRF'))headers['X-Gravuru-CSRF']=normalizedHeaders.get('X-Gravuru-CSRF');
   const call={url,method:options.method||'GET',headers,authorization:normalizedHeaders.get('Authorization'),body:options.body?JSON.parse(options.body):null,signal:options.signal,credentials:options.credentials};requests.push(call);
+  if(url.startsWith('/api/workshop/designs/batch')){const result=await onBatch?.(call);if(result?.error)return {ok:false,status:result.status??409,json:async()=>({error:{message:result.error}})};return responseJSON(result);}
+  if(url.startsWith('/api/workshop/designs/main-products')){const result=await onMainProduct?.(call);if(result?.error)return {ok:false,status:result.status??409,json:async()=>({error:{message:result.error}})};return responseJSON(result);}
   if(call.method==='PATCH'){
    patches.push(call);const result=await onPatch?.(call,patches.length);
    if(result?.error)return {ok:false,status:422,json:async()=>({error:{message:result.error}})};
@@ -676,4 +678,92 @@ test('R2 shows source-provided empty forms explicitly as family totals even unde
  assert.match(h.element('target-form-summary').textContent,/Gesamtbestand der Familie/);assert.match(h.element('target-form-summary').textContent,/Rund: 0 Designs – keine kompatible Designreihe vorhanden/);
  await filter(h,'search','Design A','input');assert.match(h.element('target-form-summary').textContent,/Oval: 8 Designs/,'the labels clearly remain totals, not filtered counts');
  await filter(h,'target-family','slate');assert.doesNotMatch(h.element('target-form-summary').textContent,/Rund/);assert.match(h.element('target-form-summary').textContent,/Rechteck: 1 Design/);h.dispose();
+});
+
+
+const assignmentFamily={id:'steel',name:'Edelstahl',material:'Edelstahl',process:'Gravur',linien:[{id:'test',name:'Testlinie'}],readiness:{complete:false,issues:['Grundpreis offen']}};
+const assignmentDataset=rows=>({...dataset(rows),familien:[assignmentFamily]});
+const batchPlan=call=>({checksum:'plan-'+call.body.designs[0].id,counts:{designs:call.body.designs.length,pairs:call.body.designs.length,addable:call.body.designs.length,existing:0,incompatible:0,rejected:0},designs:call.body.designs.map(item=>({...item,status:'ready',sourceChecksum:'source-'+item.id,pairs:call.body.change.familyIds?.map(familyId=>({familyId,status:'addable',sizeKeys:['S'],reasons:[]}))??[],themesBefore:['unrelated'],themesAfter:['unrelated',...(call.body.change.themeAdd??[])]}))});
+const batchSaved=call=>({designs:call.body.designs.map(item=>({...item,status:'ok',changed:true,pairs:call.body.change.familyIds?.map(familyId=>({familyId,status:'added'}))??[]}))});
+async function assignAll(h){await filter(h,'assignment-mode','assign');await h.element('assignment-select-all').emit('click');}
+async function chooseAssignmentFamily(h){await h.element('assignment-families').emit('click');const input=h.element('assignment-options').querySelector('[data-assignment-family]');input.checked=true;await input.emit('change');}
+
+test('R1 selection is separate from approval, allows missing fonts, and excludes source rows without Lieferform 2',async()=>{
+ const rows=[row('A',{fonts:[{name:'Missing',status:'fehlt'}],selectable:false}),row('B',{lieferform2:null,selectable:false})],h=await harness({rows,onLine:()=>assignmentDataset(rows)});
+ await filter(h,'filter-selectable',false);await assignAll(h);const inputs=h.element('rows').querySelectorAll('[data-assignment-key]');assert.equal(inputs.length,2);assert.equal(inputs.find(input=>JSON.parse(input.dataset.assignmentKey)[1]==='A').checked,true);assert.equal(inputs.find(input=>JSON.parse(input.dataset.assignmentKey)[1]==='B').disabled,true);
+ assert.match(h.element('assignment-count').textContent,/^1 Designs/);assert.equal(h.document.querySelector('.selection-bar').hidden,true);assert.equal(h.patches.length,0);
+ await filter(h,'assignment-mode','review');assert.equal(selection(h,'A').disabled,true,'assignment never grants preview/release eligibility');h.dispose();
+});
+
+test('R1 material preview is read-only and confirmation sends current checksums with session and CSRF headers',async()=>{
+ const rows=[row('A')],h=await harness({rows,embedded:true,onLine:()=>assignmentDataset(rows),onBatch:call=>call.url.endsWith('/prepare')?batchPlan(call):batchSaved(call)});
+ await assignAll(h);await chooseAssignmentFamily(h);assert.match(h.element('assignment-options').textContent,/Familie unvollständig: Grundpreis offen/);await h.element('assignment-prepare').emit('click');
+ assert.equal(h.requests.filter(call=>call.url==='/api/workshop/designs/batch').length,0);assert.match(h.element('assignment-status').textContent,/1 Designs × 1 Familien/);await h.element('assignment-apply').emit('click');
+ const apply=h.requests.find(call=>call.url==='/api/workshop/designs/batch');assert.deepEqual(apply.body,{designs:[{reihe:'test',id:'A',sourceChecksum:'source-A'}],change:{familyIds:['steel']},checksum:'plan-A'});assert.equal(apply.authorization,'Bearer synthetic-session-token');assert.equal(apply.headers['X-Gravuru-CSRF'],'synthetic-csrf');assert.equal(h.patches.length,0);assert.equal(h.requests.filter(call=>call.url.startsWith('/api/workshop/designs?')).length,2,'one initial read and one aggregate refresh');h.dispose();
+});
+
+test('R1 selection of 501 filtered designs is confirmed in two bounded chunks with one final refresh',async()=>{
+ const rows=Array.from({length:501},(_,i)=>row(String(i+1).padStart(3,'0'))),h=await harness({rows,width:390,onLine:()=>assignmentDataset(rows),onBatch:call=>call.url.endsWith('/prepare')?batchPlan(call):batchSaved(call)});
+ await assignAll(h);await chooseAssignmentFamily(h);assert.match(h.element('assignment-status').textContent,/501 Designs.*2 Teilpakete/);await h.element('assignment-prepare').emit('click');await h.element('assignment-apply').emit('click');
+ const prepared=h.requests.filter(call=>call.url.endsWith('/batch/prepare')),applied=h.requests.filter(call=>call.url.endsWith('/batch'));assert.deepEqual(prepared.map(call=>call.body.designs.length),[500,1]);assert.deepEqual(applied.map(call=>call.body.designs.length),[500,1]);assert.equal(new Set(applied.flatMap(call=>call.body.designs.map(item=>item.id))).size,501);assert.equal(h.requests.filter(call=>call.url.startsWith('/api/workshop/designs?')).length,2);h.dispose();
+});
+
+test('R1 theme edits send additions/removals, mutually exclude one theme, and clear obsolete plans',async()=>{
+ const rows=[row('A')],h=await harness({rows,onLine:()=>assignmentDataset(rows),onBatch:call=>call.url.endsWith('/prepare')?batchPlan(call):batchSaved(call)});await assignAll(h);await h.element('assignment-themes').emit('click');
+ const inputs=h.element('assignment-options').querySelectorAll('input'),add=inputs.find(input=>input.dataset.assignmentTheme==='hundeschilder'&&input.dataset.themeAction==='add'),remove=inputs.find(input=>input.dataset.assignmentTheme==='hundeschilder'&&input.dataset.themeAction==='remove');
+ add.checked=true;await add.emit('change');await h.element('assignment-prepare').emit('click');assert.equal(h.element('assignment-apply').disabled,false);remove.checked=true;await remove.emit('change');assert.equal(add.checked,false);assert.equal(h.element('assignment-apply').disabled,true);await h.element('assignment-apply').emit('click');assert.equal(h.requests.filter(call=>call.url.endsWith('/batch')).length,0);
+ await h.element('assignment-prepare').emit('click');await h.element('assignment-apply').emit('click');assert.deepEqual(h.requests.find(call=>call.url.endsWith('/batch')).body.change,{themeAdd:[],themeRemove:['hundeschilder']});h.dispose();
+});
+
+test('R1 failed designs remain selected while successful ones are not repeated, and stale closed previews are ignored',async()=>{
+ const rows=[row('A'),row('B')],h=await harness({rows,onLine:()=>assignmentDataset(rows),onBatch:call=>call.url.endsWith('/prepare')?batchPlan(call):{designs:call.body.designs.map(item=>({...item,status:item.id==='A'?'ok':'rejected',changed:item.id==='A',error:item.id==='B'?{message:'Quelle inzwischen geändert'}:undefined,pairs:[]}))}});
+ await assignAll(h);await chooseAssignmentFamily(h);await h.element('assignment-prepare').emit('click');await h.element('assignment-apply').emit('click');assert.match(h.element('assignment-results').textContent,/B: Quelle inzwischen geändert/);assert.match(h.element('assignment-count').textContent,/^1 Designs/);await h.element('assignment-prepare').emit('click');assert.deepEqual(h.requests.filter(call=>call.url.endsWith('/batch/prepare')).at(-1).body.designs.map(item=>item.id),['B'],'retry in the same open dialog excludes successful designs');h.dispose();
+ const pending=deferred(),late=await harness({rows:[row('A')],onLine:()=>assignmentDataset([row('A')]),onBatch:()=>pending.promise});await assignAll(late);await chooseAssignmentFamily(late);const operation=late.element('assignment-prepare').emit('click');await tick();const call=late.requests.find(item=>item.url.endsWith('/batch/prepare'));await late.element('assignment-close').emit('click');assert.equal(call.signal.aborted,true);pending.resolve(batchPlan(call));await operation;assert.equal(late.element('assignment-apply').disabled,true);assert.equal(late.element('assignment-dialog').open,false);late.dispose();
+});
+
+const mainOptions=({eligible=true,groupEligible=true,canDelete=false,existing=false,suggestedName='Namensschild Anna',nameBasis={productId:'OLD',name:'Namensschild Hans',rule:'Designname übernommen.'}}={})=>({source:{reihe:'test',id:'A',checksum:'source-A',name:'Design A',themes:['namensschilder']},lines:[{id:'test',name:'Testlinie',lineChecksum:'line-revision',subcategories:[{id:'names',name:'Namensschilder',themeId:'namensschilder',eligible,reason:eligible?null:'Thema fehlt – erst zuordnen.'}],families:[{id:'steel',name:'Edelstahl',previewUrl:'/api/workshop/designs/target-preview?reihe=test&id=A&familie=steel',groups:[{key:'OV',name:'Oval',sizes:[{key:'OV-90X60',label:'9 × 6 cm · Oval'},{key:'OV-120X80',label:'12 × 8 cm · Oval'}],proposedId:'A-OV',suggestedName,nameBasis,eligible:groupEligible,reason:groupEligible?null:'Kennung schon vorhanden.'}]}]}],existing:existing?[{lineId:'test',lineName:'Testlinie',lineChecksum:'line-revision',subcategoryId:'names',subcategoryName:'Namensschilder',id:'A-OV',name:'Vorhanden',canDelete,deleteReason:canDelete?null:'Mit Shopify verknüpft.'}]:[]});
+async function openMain(h){const action=h.element('rows').querySelector('[data-main-product-design]');assert.ok(action);await action.emit('click');await tick();await tick();}
+
+test('R3 options use confirmed targets and real source names; selected sizes create a catalog product without approval',async()=>{
+ const rows=[tileTargetRow('A')],h=await harness({rows,width:390,embedded:true,onLine:()=>dataset(rows),onTargetPreview:tileResult,onMainProduct:call=>call.method==='GET'?mainOptions():{changed:true,productId:'A-OV'}});await loadTile(h,'A');await openMain(h);
+ assert.equal(h.element('main-product-id').textContent,'A-OV');assert.match(h.element('main-product-name-basis').textContent,/Namensschild Hans/);assert.equal(h.element('main-product-sizes').querySelectorAll('input').filter(input=>input.checked).length,2);
+ const second=h.element('main-product-sizes').querySelectorAll('input')[1];second.checked=false;await second.emit('change');await h.element('main-product-create').emit('click');
+ const call=h.requests.find(item=>item.url==='/api/workshop/designs/main-products'&&item.method==='POST');assert.deepEqual(call.body,{source:{reihe:'test',id:'A',checksum:'source-A'},lineId:'test',lineChecksum:'line-revision',subcategoryId:'names',familyId:'steel',groupKey:'OV',sizeKeys:['OV-90X60'],name:'Namensschild Anna'});assert.equal(call.headers['X-Gravuru-CSRF'],'synthetic-csrf');assert.equal(call.authorization,'Bearer synthetic-session-token');assert.equal(h.patches.length,0);assert.equal(h.element('release-seen').disabled,false,'line-only changes retain the design review');h.dispose();
+});
+
+test('R3 missing theme, occupied identity, empty sizes or absent name each block creation without inventing values',async()=>{
+ for(const options of [mainOptions({eligible:false}),mainOptions({groupEligible:false}),mainOptions({suggestedName:'',nameBasis:null})]){const h=await harness({rows:[tileTargetRow('A')],onMainProduct:()=>options});await openMain(h);assert.equal(h.element('main-product-create').disabled,true);await h.element('main-product-create').emit('click');assert.equal(h.requests.filter(call=>call.method==='POST').length,0);h.dispose();}
+ const h=await harness({rows:[tileTargetRow('A')],onMainProduct:()=>mainOptions()});await openMain(h);for(const input of h.element('main-product-sizes').querySelectorAll('input')){input.checked=false;await input.emit('change');}assert.equal(h.element('main-product-create').disabled,true);h.dispose();
+});
+
+test('R3 deletion requires an unbound product and a separate confirmation using the current line checksum',async()=>{
+ for(const canDelete of [false,true]){const h=await harness({rows:[tileTargetRow('A')],onMainProduct:call=>call.method==='GET'?mainOptions({existing:true,canDelete}):{changed:true,productId:'A-OV'}});await openMain(h);const action=h.element('main-product-existing').querySelector('button');assert.equal(action.disabled,!canDelete);await action.emit('click');assert.equal(h.requests.filter(call=>call.method==='DELETE').length,0);
+  if(canDelete){assert.equal(h.element('main-product-delete-confirmation').hidden,false);await h.element('main-product-delete-confirm').emit('click');assert.deepEqual(h.requests.find(call=>call.method==='DELETE').body,{lineId:'test',lineChecksum:'line-revision',subcategoryId:'names',productId:'A-OV'});}else assert.match(h.element('main-product-existing').textContent,/Mit Shopify verknüpft/);h.dispose();}
+});
+
+test('R3 late options after close cannot repopulate a new dialog or enable creation',async()=>{
+ const pending=deferred(),h=await harness({rows:[tileTargetRow('A')],onMainProduct:()=>pending.promise});const action=h.element('rows').querySelector('[data-main-product-design]');await action.emit('click');await tick();const call=h.requests.find(item=>item.url.includes('/main-products/options'));await h.element('main-product-close').emit('click');assert.equal(call.signal.aborted,true);pending.resolve(mainOptions());await tick();assert.equal(h.element('main-product-dialog').open,false);assert.equal(h.element('main-product-create').disabled,true);h.dispose();
+});
+
+
+test('R3 an obsolete size preview cannot replace the newly selected size and creates no review permission',async()=>{
+ const pending=deferred(),h=await harness({rows:[tileTargetRow('A')],width:390,onMainProduct:()=>mainOptions(),onTargetPreview:call=>call.url.includes('size=OV-90X60')?pending.promise:{...tileResult(call),svg:'<svg xmlns="http://www.w3.org/2000/svg"><text>NEW SIZE</text></svg>'}});await openMain(h);const first=h.requests.find(call=>call.url.includes('size=OV-90X60'));
+ const input=h.element('main-product-sizes').querySelectorAll('input')[0];input.checked=false;await input.emit('change');await tick();assert.equal(first.signal.aborted,true);const image=h.element('main-product-image'),current=image.src;assert.match(await h.made.at(-1).blob.text(),/NEW SIZE/);
+ pending.resolve({...tileResult(first),svg:'<svg><text>OLD SIZE</text></svg>'});await tick();assert.equal(image.src,current);image.naturalWidth=900;await image.emit('load');assert.equal(h.element('release-seen').disabled,true,'main-product creation does not grant release eligibility');h.dispose();
+});
+
+test('R3 a completed write remains reported as saved when refreshing the overview fails',async()=>{
+ const rows=[tileTargetRow('A')],h=await harness({rows,onLine:count=>{if(count>1)throw Error('Übersicht nicht erreichbar');return dataset(rows);},onMainProduct:call=>call.method==='GET'?mainOptions():{changed:true,productId:'A-OV'}});await openMain(h);await h.element('main-product-create').emit('click');assert.match(h.element('main-product-status').textContent,/Hauptprodukt A-OV im Katalog angelegt/);assert.match(h.element('main-product-status').textContent,/Ansicht noch nicht vollständig aktualisiert/);assert.equal(h.requests.filter(call=>call.method==='POST'&&call.url.endsWith('/main-products')).length,1);h.dispose();
+});
+
+
+test('R1 assignment checkbox remains available when the tile has no target of the currently selected family',async()=>{
+ const rows=[tileTargetRow('A'),tileTargetRow('B',{families:['slate']})],h=await harness({rows,width:390,onLine:()=>assignmentDataset(rows)});await assignAll(h);
+ const inputs=h.element('rows').querySelectorAll('[data-assignment-key]');assert.equal(inputs.length,2);const b=inputs.find(input=>JSON.parse(input.dataset.assignmentKey)[1]==='B');assert.equal(b.checked,true);b.checked=false;await b.emit('change');assert.match(h.element('assignment-count').textContent,/^1 Designs/);h.dispose();
+});
+
+test('R3 aggregate refresh keeps an unchanged tile bound to a preview which finishes after the refresh',async()=>{
+ const rows=[tileTargetRow('A'),tileTargetRow('B')],pending=deferred(),h=await harness({rows,width:390,onLine:()=>dataset(rows),onTargetPreview:call=>call.url.includes('id=B')?pending.promise:tileResult(call),onMainProduct:call=>call.method==='GET'?mainOptions():{changed:true,productId:'A-OV'}});
+ await loadTile(h,'A');const surface=tileSurface(h,'B');h.intersect(surface);await tick();const call=h.requests.find(item=>item.url.includes('target-preview')&&item.url.includes('id=B'));
+ await openMain(h);await h.element('main-product-create').emit('click');await h.element('main-product-close').emit('click');assert.equal(tileSurface(h,'B'),surface,'unchanged card stays in the DOM');pending.resolve(tileResult(call));await tick();await tick();const image=surface.querySelector('img');image.naturalWidth=900;await image.emit('load');assert.match(h.element('selection-summary').textContent,/2 geprüfte Ziele/);h.dispose();
 });

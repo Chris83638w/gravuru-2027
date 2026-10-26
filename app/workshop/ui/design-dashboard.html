@@ -24,7 +24,9 @@
 <div id="filter-controls" class="controls"><label>Status<select id="filter-status"><option value="">Alle</option><option value="ok">ok</option><option value="prüfen">prüfen</option><option value="fehlt">fehlt (keine Lieferform 2)</option></select></label><label>Freigabe<select id="filter-freigabe"><option value="">Alle</option><option value="nein">offen</option><option value="ja">freigegeben</option></select></label><label><input id="filter-selectable" type="checkbox" checked> nur wählbare (grün / Lieferform 2)</label><label><input id="filter-start-designs" type="checkbox"> Nur Startdesigns von Hauptprodukten</label><label class="grow">Suche<input id="search" type="search" placeholder="Name, Kennung oder Schrift …"></label><label>Ansicht<select id="view"><option value="table">Tabelle</option><option value="tiles">Kacheln</option><option value="targets">Zielprüfung</option></select></label></div>
 <div id="target-review-controls" class="controls target-review-controls" hidden><label>Familienziel<select id="target-family"></select></label><label>Thema<select id="filter-theme"></select></label></div>
 <p id="target-form-summary" class="target-form-summary" hidden></p>
+<div class="dashboard-mode"><label>Arbeitsmodus<select id="assignment-mode"><option value="review">Prüfen und freigeben</option><option value="assign">Zuordnen</option></select></label></div>
 <p id="summary" class="summary" tabindex="-1"></p>
+<div id="assignment-toolbar" class="assignment-toolbar" aria-label="Mehrfachzuordnung" hidden></div>
 <div class="selection-bar" aria-label="Mehrfachfreigabe"><p id="selection-summary" role="status" aria-live="polite">0 ausgewählt</p><button id="release-seen" class="release" type="button" disabled hidden>Alle geprüften mit „passt“ freigeben</button><button id="release-selected" class="release" type="button" disabled>Ausgewählte freigeben</button><button id="clear-selection" class="quiet" type="button" disabled>Auswahl aufheben</button></div>
 <p class="review-help">Zielkacheln gelten als geprüft, sobald ihre Vorschau geladen und sichtbar war. „Alle geprüften mit passt freigeben“ umfasst die besuchten Seiten der aktuellen Auswahl. Ziele mit „prüfen“ öffnest du einzeln; „passt nicht“ und fehlende Schriften bleiben gesperrt. Nach dem Neuladen prüfst du erneut.</p>
 <div id="rows"></div>
@@ -49,5 +51,21 @@
 <div class="variant-fields"><label>Familie<select id="variant-family"></select></label><label>Größe<select id="variant-size"></select></label><label>Linie<select id="variant-line"></select></label></div>
 <button id="variant-prepare" type="button">Einpassung prüfen</button><p id="variant-status" role="status" aria-live="polite"></p><img id="variant-image" alt="Vorschau der Einpassung" hidden>
 <div id="variant-result"></div><button id="variant-confirm" type="button" disabled>Variante anlegen</button>
+</dialog>
+<dialog id="assignment-dialog" class="review-dialog batch-dialog" aria-labelledby="assignment-title">
+<div class="dialog-head"><h2 id="assignment-title">Designs zuordnen</h2><button id="assignment-close" type="button" autofocus>Schließen</button></div>
+<p id="assignment-status" role="status" aria-live="polite"></p><div id="assignment-options"></div>
+<div class="dialog-actions"><button id="assignment-prepare" type="button">Zuordnung prüfen</button><button id="assignment-apply" type="button" disabled>Änderungen bestätigen</button></div>
+<div id="assignment-plan"></div><div id="assignment-results" role="status"></div>
+</dialog>
+<dialog id="main-product-dialog" class="review-dialog main-product-dialog" aria-labelledby="main-product-title">
+<div class="dialog-head"><h2 id="main-product-title">Als Hauptprodukt anlegen</h2><button id="main-product-close" type="button" autofocus>Schließen</button></div>
+<p id="main-product-status" role="status" aria-live="polite"></p>
+<div class="main-product-fields"><label>Linie<select id="main-product-line"></select></label><label>Familie<select id="main-product-family"></select></label><label>Unterkategorie<select id="main-product-subcategory"></select></label><label>Formgruppe<select id="main-product-group"></select></label></div>
+<p id="main-product-theme-hint" class="notice"></p><p id="main-product-group-hint"></p><fieldset><legend>Größen</legend><div id="main-product-sizes"></div></fieldset>
+<label class="main-product-name">Name<input id="main-product-name" type="text" maxlength="160" required></label><p id="main-product-name-basis" class="muted"></p>
+<p>Kennung: <strong id="main-product-id"></strong></p><p id="main-product-preview-status" role="status"></p><img id="main-product-image" alt="Zielvorschau des Startdesigns" hidden>
+<div class="dialog-actions"><button id="main-product-create" type="button" disabled>Hauptprodukt im Katalog anlegen</button><button id="main-product-reload" type="button">Möglichkeiten neu laden</button></div>
+<div id="main-product-existing"></div><div id="main-product-delete-confirmation" class="notice" hidden><p id="main-product-delete-question"></p><div class="dialog-actions"><button id="main-product-delete-cancel" type="button">Abbrechen</button><button id="main-product-delete-confirm" type="button">Entfernen bestätigen</button></div></div>
 </dialog>
 </body></html>

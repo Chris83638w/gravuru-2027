@@ -49,3 +49,16 @@ test('Katalogseite liest Linien und Hauptprodukte aus linien/*.json; Änderungen
 
 test('ohne verbundenen Katalog bleibt der eingebaute Stand (v1) unverändert',()=>{const s=createCatalogStructure({tenantId:'gravuru'});try{assert.equal(s.read().schema,'gravuru-workshop-structure/v1');assert.equal(s.read().saveEffect,'organization-only');}finally{s.close();}});
 test('readKatalogStructure übernimmt Parallelbestand und Serien aus der eingebauten Datei nur für bekannte Linien',t=>{const dir=temp(t);const d=readKatalogStructure(dir,{statics:{lines:[],mainProducts:[{key:'x',id:'gid://shopify/Product/1',role:'parallelbestand',lineId:'fremd'}],series:[{lineId:'fremd'}],checks:[{id:'c'}]}});assert.equal(d.mainProducts.length,0);assert.equal(d.series.length,0);assert.equal(d.checks.length,1);});
+
+test('Katalogseite schreibt Linie und Protokoll gemeinsam und liest den aktuellen Stand unter der Sperre',t=>{
+ const dir=temp(t),file=path.join(dir,'linien','test-linie.json'),audit=path.join(dir,'linien','_aenderungen.jsonl'),before=fs.readFileSync(file,'utf8');
+ readKatalogStructure(dir); // Warm cache must not conceal the external update.
+ const changed=lineJson(dir);changed.note='Frische externe Notiz';fs.writeFileSync(file,JSON.stringify(changed,null,2)+'\n');
+ const input={action:'add',lineId:'test-linie',subcategoryId:'namensschilder',katalogId:'P1',startDesign:'test-herz'};
+ assert.throws(()=>patchMainProduct(dir,input,{beforeReplace(relative){if(relative.endsWith('_aenderungen.jsonl'))throw Error('audit failure');}}),/audit failure/);
+ assert.equal(lineJson(dir).note,'Frische externe Notiz');assert.equal(lineJson(dir).subcategories[0].mainProducts,undefined);assert.equal(fs.existsSync(audit),false);
+ const result=patchMainProduct(dir,input);assert.equal(result.changed,true);assert.equal(result.warning,null);assert.equal(lineJson(dir).note,'Frische externe Notiz');
+ const saved=fs.readFileSync(file,'utf8'),oldAudit=fs.readFileSync(audit,'utf8');
+ assert.throws(()=>patchMainProduct(dir,{action:'edit',lineId:'test-linie',katalogId:'P1',name:'Neuer Name'},{beforeReplace(relative){if(relative.endsWith('_aenderungen.jsonl'))throw Error('audit failure');}}),/audit failure/);
+ assert.equal(fs.readFileSync(file,'utf8'),saved);assert.equal(fs.readFileSync(audit,'utf8'),oldAudit);assert.notEqual(saved,before);
+});

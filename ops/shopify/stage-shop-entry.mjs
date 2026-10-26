@@ -3,6 +3,7 @@
 //   node ops/shopify/stage-shop-entry.mjs release <ordner> → genau diesen Kandidaten freigeben (keine Löschungen)
 // Quelle ist das vollständige Projekt der aktiven Version vom 22.10.2026 (unverändert kopiert). Ergänzt werden nur
 // [app_proxy] und zwei Theme-Dateien aus ops/shopify/theme-block. Zugang nur im Kindprozess, Logs ohne Token.
+// `--no-build` wie am 22.10.: die Preisfunktion wird nicht neu gebaut, `dist/function.wasm` bleibt bytegleich.
 // Rückweg: `app release --version gravuru-2027-ids-tier-20261022-v1`. Spezifikation: ops/shopify/SHOP-EINSTIEG.md.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -34,7 +35,7 @@ async function stage(){
  const token=readToken();
  const before=versions(project,work,token,'versions-before.json');
  if(before.active!==BASELINE)throw Error('Aktive Version ist nicht '+BASELINE+' (gelesen: '+before.active+'). Stopp.');
- const deploy=run(['app','deploy','--path',project,'--no-release','--no-input','--version',TAG,'--message','Shop-Einstieg: App-Proxy /apps/konfigurator und Block Jetzt personalisieren'],work,token);
+ const deploy=run(['app','deploy','--path',project,'--no-release','--no-build','--no-input','--version',TAG,'--message','Shop-Einstieg: App-Proxy /apps/konfigurator und Block Jetzt personalisieren'],work,token);
  fs.writeFileSync(work+'/deploy.log',deploy.log);
  const after=versions(project,work,token,'versions-after.json');
  const report={state:deploy.status===0?'staged':'failed',tag:TAG,work,activeBefore:before.active,activeAfter:after.active,deployStatus:deploy.status,candidateListed:fs.readFileSync(work+'/versions-after.json','utf8').includes(TAG),themeFilesAdded:ADDED,released:false};

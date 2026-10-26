@@ -2,6 +2,13 @@
 
 Branch `dev/shop-warenkorb-20261026-astra`, Basis `fccf2b1`. Der öffentliche native Einstieg sichert den privaten Prüfstand und übergibt Vorschau (`_Entwurf`), Gravurtext und bestehende Angebotskennungen über eine signierte Shop-Seite in den normalen Ajax-Warenkorb. Rückprüfung vor Weiterleitung, einmaliger Upload-Claim, gezieltes Ersetzen beim Bearbeiten; andere Gestaltungen bleiben erhalten. Hausmotiv-/Bibliotheksfehler beim Sichern behoben. Windows-Vollauf: 1.403 bestanden / 132 fehlgeschlagen / 14 übersprungen; dieselben 132 Fehler in allen 39 betroffenen Dateien auf unverändertem main reproduziert (fehlende Python-Abhängigkeiten). Finale gezielte Gegenprobe nach den Randfallabsicherungen: 88/88. Lokale Browserprüfung und Screenshots vorhanden. **Kein Merge, Deploy, Theme-Upload oder Live-Testkauf.** Theme-Snippet und echte Shopify-Proxy-/Warenkorb-Abnahme durch Claude nach Freigabe. Bericht und genaue Laufabgrenzung: [Shop-Warenkorb](docs/handoffs/2026-10-26-shop-warenkorb-bericht.md).
 
+## 26.10.2026 · Claude · PR #29 (Shop-Warenkorb) gemergt und live
+
+- Review (Reviewer-Agent + Claude): keine Blocker; Nachträge F1 (Handoff-Limit je Sitzung), F3 (Rate-Limit je Sitzung), F4 (Meldung nach Claim), Schriften `hasOwn`, F2 (Storefront-Domain vor Domainumzug; heute Hauptdomain `gravuru-design.myshopify.com`) als Folge-PR an Astra (PR-#29-Kommentar).
+- Linux-Vollauf: PR 1556 Tests / 118 rot, `main` 1536 / 117 rot (Umgebung Druck/Python); einziger neuer Fehler war die Kundenseiten-Liste (`theme-cart.html`), korrigiert `5fbfc9c`. Merge `3c2da3a`.
+- Chris: „Ja, Du darfst PR #29 nach erfolgreicher Prüfung bereitstellen und die App neu starten.“ → bereitgestellt, „App neu starten“ (Prozess frisch), `/apps/konfigurator/cart` 401 ohne Signatur, Legacy v3.
+- Live-Abnahme ohne Zahlung: Live-Produktseite → Knopf → Editor → „In den Warenkorb“ → normaler Warenkorb `/cart` mit Design, Format, Gravurtext, Bearbeiten-Link, 19,99 € ✅. Mit Bibliotheksmotiv „Haus“: 422 „Bitte eine vorhandene Schriftart auswählen.“ (vorher 503) → Nachtrag G an Astra. Bearbeiten-Link erscheint als Roh-URL → Snippet nötig.
+
 ## 26.10.2026 · Claude · Testbestellung D8 (4100000): Schritte 1–4 live
 
 Chris: „Ja, Du darfst die Schritte 1 bis 4 für die Testbestellung ausführen.“

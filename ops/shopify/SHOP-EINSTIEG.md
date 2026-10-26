@@ -34,7 +34,7 @@ Die bisherigen Blöcke `configurator.liquid`/`personalizer.liquid`, Snippets, As
 
 ## 3. Server: Einstieg einschalten
 
-`scripts/acryl-employee-entry.cjs` (Acryl-Release, wird von `ops/prepare-combined-id-release.mjs` gesetzt) bekommt im `customerIntegration` zusätzlich den Schlüssel `shopEntry`:
+Seit dem Host-Umzug auf `main` (Stand 26.10.2026) schaltet `scripts/acryl-employee-entry.cjs` die Kundenanbindung über die Hostvariable `GRAVURU_CUSTOMER_INTEGRATION=merchant-test-only` ein (Hilfsfunktion `customerIntegrationFromEnv` in `acryl-employee-host.mjs`). Ohne Variable (oder leer) bleibt `customerIntegration` `null`: kein Gateway, kein Einstieg, kein Bestelleingang über beide Stores; jeder andere Wert bricht den Start vor dem Öffnen der Datenbanken ab. Die Variable setzt der Host in `app.cjs` neben den drei bisherigen (Shopify-Konfigdatei, Legacy-Release, Acryl-Datenordner). Der Bestelleingang braucht zusätzlich `GRAVURU_SHOPIFY_ORDER_WEBHOOK` = `test-only-2026-07` in der privaten Shopify-Konfigdatei und nimmt nur `test:true` an. Die Variable erzeugt genau diese Einstellung (das Overlay `ops/prepare-combined-id-release.mjs` ist historisch):
 
 ```js
 customerIntegration:{mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator'}}

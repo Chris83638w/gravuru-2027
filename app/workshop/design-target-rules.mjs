@@ -18,7 +18,7 @@ function chromatic(value){
  let raw=String(value).trim().toLowerCase(),rgb;
  if(/^#[a-f0-9]{3}$/.test(raw))rgb=raw.slice(1).split('').map(c=>parseInt(c+c,16));
  else if(/^#[a-f0-9]{6}$/.test(raw))rgb=[1,3,5].map(i=>parseInt(raw.slice(i,i+2),16));
- else if(/^rgba?\(/.test(raw)){const m=raw.match(/[\d.]+/g);if(m?.length>=3)rgb=m.slice(0,3).map(Number);}
+ else if(/^rgba?\(/.test(raw)){const m=raw.match(/[\d.]+%?/g);if(m?.length>=3)rgb=m.slice(0,3).map(t=>t.endsWith('%')?Number.parseFloat(t)*2.55:Number(t));} // Prozentkanäle (0–100 %) auf 0–255 umrechnen (Issue #22)
  return rgb?Math.max(...rgb)-Math.min(...rgb)>NEUTRAL_TOLERANCE:true;
 }
 // A convex hull's minimum width is an upper bound for a filled contour's local

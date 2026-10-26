@@ -20,6 +20,10 @@ test('monochrome source transfers to print without a color restriction; colored 
  // Corel-Schwarz aus CMYK und Grautöne sind neutral, keine Farbe.
  for(const fill of ['#1b1918','#231f20','#999','#b3b3b3','silver'])assert.equal(designTargetRules(master(text(3,fill)),family()).status,'passt',fill);
  assert.equal(designTargetRules(master(text(3,'#e0c8b0')),family()).status,'passt nicht','sichtbar getönte Farbe bleibt farbig');
+ // Issue #22: RGB-Prozentkanäle werden wie 0–255 gewertet (15 % = 38,25 > Toleranz 16), Grau in Prozent bleibt neutral.
+ for(const fill of ['rgb(15%,0%,0%)','rgb(100%,0%,0%)','rgba(0%, 50%, 100%, 1)'])assert.equal(designTargetRules(master(text(3,fill)),family()).status,'passt nicht',fill);
+ for(const fill of ['rgb(0%,0%,0%)','rgb(50%,50%,50%)','rgb(10.5%, 10%, 9.8%)'])assert.equal(designTargetRules(master(text(3,fill)),family()).status,'passt',fill);
+ assert.equal(designTargetRules(master(text(3,'rgb(15%,0%,0%)')),family('color-print')).status,'passt');
 });
 test('photo placeholders follow the process profile: photo engraving is allowed where tools.photo is set',()=>{
  const source=master('<g id="foto-1"><rect x="20" y="20" width="20" height="20"/></g>');

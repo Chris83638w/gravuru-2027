@@ -1,3 +1,7 @@
+## 26.10.2026 · Astra · Gestaltung in den normalen Shop-Warenkorb (zur Prüfung)
+
+Branch `dev/shop-warenkorb-20261026-astra`, Basis `fccf2b1`. Der öffentliche native Einstieg sichert den privaten Prüfstand und übergibt Vorschau (`_Entwurf`), Gravurtext und bestehende Angebotskennungen über eine signierte Shop-Seite in den normalen Ajax-Warenkorb. Rückprüfung vor Weiterleitung, einmaliger Upload-Claim, gezieltes Ersetzen beim Bearbeiten; andere Gestaltungen bleiben erhalten. Hausmotiv-/Bibliotheksfehler beim Sichern behoben. Windows-Vollauf: 1.403 bestanden / 132 fehlgeschlagen / 14 übersprungen; dieselben 132 Fehler in allen 39 betroffenen Dateien auf unverändertem main reproduziert (fehlende Python-Abhängigkeiten). Finale gezielte Gegenprobe nach den Randfallabsicherungen: 88/88. Lokale Browserprüfung und Screenshots vorhanden. **Kein Merge, Deploy, Theme-Upload oder Live-Testkauf.** Theme-Snippet und echte Shopify-Proxy-/Warenkorb-Abnahme durch Claude nach Freigabe. Bericht und genaue Laufabgrenzung: [Shop-Warenkorb](docs/handoffs/2026-10-26-shop-warenkorb-bericht.md).
+
 ## 26.10.2026 · Claude · Testbestellung D8 (4100000): Schritte 1–4 live
 
 Chris: „Ja, Du darfst die Schritte 1 bis 4 für die Testbestellung ausführen.“

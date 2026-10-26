@@ -27,10 +27,10 @@ export function assertBoundTestReview(manifest,record,binding){
  if(!equal(m.blockers,expected))fail(409,'bound_test_blockers','Dieser Prüfstand enthält weitere ungeklärte Sperrgründe.');
 }
 
-export function createBoundTestCart({workshop,registry,shopDomain,transportOptions={},handoffFactory=createDraftCartHandoff}){
+// Shared preparation for Storefront and the normal theme cart. No Shopify mutation.
+export function prepareBoundCartOffer({workshop,registry,shopDomain},binding,input,{draftToken}={}){
  if(!workshop?.customerDrafts||!workshop.repository||typeof registry?.resolve!=='function'||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||workshop.sessionContext?.shopDomain!==shopDomain)fail(503,'bound_test_config','Der private Test-Warenkorb ist nicht eingerichtet.');
  const drafts=workshop.customerDrafts;
- return async(binding,input,{draftToken,signal,existingCart}={})=>{
   if(!input||Array.isArray(input)||Object.keys(input).some(k=>!['draftId','expectedRevision','quantity','configId','cartLineId'].includes(k))||!/^(?:adraft|draft)_[a-f0-9-]{36}$/.test(input.draftId||'')||!positive(input.expectedRevision)||!quantity(input.quantity)||(input.configId!==undefined&&typeof input.configId!=='string')||(input.cartLineId!==undefined&&typeof input.cartLineId!=='string')||typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail(422,'bound_test_fields','Privaten Entwurf, festen Stand und Menge angeben.');
   const fixed=structuredClone(input),native=fixed.draftId.startsWith('adraft_');
   function resolve(){
@@ -53,6 +53,14 @@ export function createBoundTestCart({workshop,registry,shopDomain,transportOptio
   const reviewPolicy=m=>assertBoundTestReview(m,current.record,binding);
   const stableToken=createHmac('sha256',draftToken).update(JSON.stringify(['gravuru-bound-test-cart/v1',binding.storeId,binding.tenantId,binding.bindingId,binding.assignmentRevision,current.draft.id,current.draft.revision,current.snapshotId,fixed.quantity])).digest('hex');
   const offer=drafts.orderIntake.offer({bindingId:binding.bindingId,snapshotId:current.snapshotId,quantity:fixed.quantity},{stableToken});
+ return {...current,offer,reviewPolicy,resolve,fixed};
+}
+
+export function createBoundTestCart({workshop,registry,shopDomain,transportOptions={},handoffFactory=createDraftCartHandoff}){
+ if(!workshop?.customerDrafts||!workshop.repository||typeof registry?.resolve!=='function'||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||workshop.sessionContext?.shopDomain!==shopDomain)fail(503,'bound_test_config','Der private Test-Warenkorb ist nicht eingerichtet.');
+ const drafts=workshop.customerDrafts;
+ return async(binding,input,{draftToken,signal,existingCart}={})=>{
+  const current=prepareBoundCartOffer({workshop,registry,shopDomain},binding,input,{draftToken}),{offer,reviewPolicy,resolve,fixed}=current;
   const submit=handoffFactory({drafts,config:{shopDomain,apiVersion:'2026-07',authentication:'tokenless',requestContext:'merchant-test'},reviewPolicy},transportOptions);
   const result=await submit({draftId:current.draft.id,expectedRevision:current.draft.revision,snapshotId:current.snapshotId,offerId:offer.id,offerToken:offer.property.value,...(fixed.configId===undefined?{}:{configId:fixed.configId}),...(fixed.cartLineId===undefined?{}:{cartLineId:fixed.cartLineId})},{draftToken,signal,...(existingCart===undefined?{}:{existingCart})});
   resolve();return {...result,testOnly:true,productionReady:false};

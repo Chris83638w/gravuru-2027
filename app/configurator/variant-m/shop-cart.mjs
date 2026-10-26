@@ -1,7 +1,7 @@
 // Kundenabschluss im öffentlichen Shop-Einstieg (app/workshop/SHOP-ENTRY.txt): „In den Warenkorb“ sichert die
 // Gestaltung mit Originalbildern als privaten Entwurf/Prüfstand (gleicher Weg wie die Werkstattprüfung) und
-// übergibt sie dem Server, der die echte Shopify-Variante, Menge und den geprüften Preis in den Warenkorb legt.
-// Der Preis kommt nie aus dem Browser; die Seite zeigt nur das Ergebnis und leitet zur Shopify-Checkout-Adresse.
+// übergibt sie dem Server, der die echte Shopify-Variante, Menge und den geprüften Preis festlegt.
+// Im Shop-Einstieg überträgt die Shop-Seite Vorschau und Eigenschaften in den normalen Warenkorb und prüft ihn zurück.
 import {cleanObject} from './contract.mjs';
 import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
@@ -16,7 +16,7 @@ const euro=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'
 // K8: Nur die Warenkorbzeile desselben Entwurfs wird ersetzt; eine andere Gestaltung wird neu hinzugefügt.
 export function shopCartRequest({saved,cartEdit,quantity}){
  const edit=cartEdit&&cartEdit.draftId===saved.draftId?cartEdit:null;
- return {draftId:saved.draftId,expectedRevision:saved.revision,quantity,...(edit?{configId:edit.configId,...(edit.cartLineId?{cartLineId:edit.cartLineId}:{})}:{})};
+ return {draftId:saved.draftId,expectedRevision:saved.revision,quantity,...(edit?{configId:edit.configId,...(edit.cartLineId?{cartLineId:edit.cartLineId,...(edit.cartLineId==='theme'?{cartRevision:edit.rev}:{})}:{})}:{})};
 }
 // Weiterleitung nur zur Checkout-Adresse des bestätigten Shops; Zahlung ist damit nicht bestätigt.
 export function checkoutTarget(result,shopDomain){
@@ -25,6 +25,12 @@ export function checkoutTarget(result,shopDomain){
  return target.href;
 }
 
+
+export function themeCartTarget(result,shopDomain,path){
+ let target;try{target=new URL(result?.handoffUrl);}catch{throw Error('Die Warenkorbübergabe wurde nicht bestätigt.');}
+ if(typeof path!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/cart$/.test(path)||target.protocol!=='https:'||target.hostname!==shopDomain||target.port||target.username||target.password||target.pathname!==path||target.search||!/^#handoff=[a-f0-9]{64}$/.test(target.hash)||result.mode!=='theme'||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents))throw Error('Die Warenkorbübergabe wurde nicht bestätigt.');
+ return target.href;
+}
 export function installShopCart(api,footer,gate){
  const binding=window.parent.GravuruWorkshopReview;
  if(!binding||typeof gate?.submitCart!=='function'||typeof gate.request!=='function'||gate.productId!==binding.productId||gate.productRevision!==binding.productRevision)return null;
@@ -54,9 +60,9 @@ export function installShopCart(api,footer,gate){
    say(body.cartLineId?'Deine Warenkorbposition wird mit dem neuen Stand ersetzt …':'Dein Warenkorb wird vorbereitet …');
    const result=await gate.submitCart(body,{draftToken:saved.draftToken});
    if(fingerprint!==JSON.stringify(api.el.state)||count!==quantity())throw Error('Die Gestaltung wurde während der Übergabe geändert. Bitte erneut in den Warenkorb legen.');
-   const target=checkoutTarget(result,gate.shopDomain);
+   const target=gate.cartMode==='theme'?themeCartTarget(result,gate.shopDomain,gate.themeCartPath):checkoutTarget(result,gate.shopDomain);
    if(result.configuration?.id&&result.lineId)api.el.cartEdit={configId:result.configuration.id,rev:result.configuration.rev,cartLineId:result.lineId,draftId:saved.draftId,draftToken:saved.draftToken,draftRevision:saved.revision};
-   say((result.mode==='update'?'Warenkorbposition aktualisiert: ':'Im Warenkorb: ')+euro(result.totalCents)+'. Weiter zu Shopify …');
+   say(gate.cartMode==='theme'?'Deine Gestaltung ist gesichert. Der Shop-Warenkorb wird geprüft …':(result.mode==='update'?'Warenkorbposition aktualisiert: ':'Im Warenkorb: ')+euro(result.totalCents)+'. Weiter zu Shopify …');
    window.top.location.assign(target);
   }catch(error){say(error.message||'Der Warenkorb konnte nicht vorbereitet werden.');}
   finally{busy=false;label();}

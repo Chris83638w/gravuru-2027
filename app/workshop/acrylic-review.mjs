@@ -1,3 +1,4 @@
+import {nativeReviewConfig} from './native-review-resources.mjs';
 import {acrylicPhotoResolution,resolutionTargetDpi} from './acrylic-photo-resolution.mjs';
 import {NATIVE_REVIEW} from './native-review-schema.mjs';
 import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
@@ -42,7 +43,9 @@ export function validateAcrylicReview(record,config,input){
 }
 
 export async function prepareAcrylicReview({record,config,input,assets,preparePhoto=prepareCustomerPhoto}){
- const state=validateAcrylicReview(record,config,input),files=[],photos=[];
+ config=nativeReviewConfig(config,input);
+ let state;try{state=validateAcrylicReview(record,config,input);}catch(error){if(error.constructor===Error&&error.status===undefined)Object.assign(error,{status:422,code:'acrylic_review_invalid'});throw error;}
+ const files=[],photos=[];
  let total=0;const add=(path,bytes,purpose)=>{const b=Buffer.from(bytes);total+=b.length;if(total>100*1024*1024)fail('Prüfstand ist größer als 100 MB.');files.push({path,bytes:b,purpose});return {path,bytes:b.length,sha256:sha(b)};};
  const frozen=structuredClone(config),ref=record.document.productionProfile,productionProfile=record.metadata?.productionProfile||null;
  if(ref?(!productionProfile||productionProfile.id!==ref.id||productionProfile.revision!==ref.revision):!!productionProfile)fail('Der gesicherte Fertigungsprofilstand fehlt oder passt nicht zur Produktrevision.');

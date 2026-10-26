@@ -1,5 +1,6 @@
 import fs from 'node:fs';
-import {createHash} from 'node:crypto';
+import {createHash,randomBytes} from 'node:crypto';
+import {prepareThemeCart} from './theme-cart.mjs';
 import {isDeepStrictEqual} from 'node:util';
 import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
 import {createShopEntrySessions} from './shop-entry-session.mjs';
@@ -66,6 +67,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  const pageHtml=Buffer.from(fs.readFileSync(ui('shop-entry.html'),'utf8').replaceAll('/konfigurator/shop/',pagePath)),pageFiles=new Map(PAGE_FILES.map(name=>[pagePath+name,fs.readFileSync(ui(name))]));
  const cartContexts=new Map(),reviewJobs=new Set(),assetIndex=new Map();
  const startPath=proxyPath+'/start';
+ const themeTransfers=new Map(),themePath=proxyPath+'/cart',themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs'].map(name=>[proxyPath+'/'+name,fs.readFileSync(ui(name))]));
 
  function resolve(identity){
   if(!gid(identity.shopifyProductId,'Product')||!gid(identity.shopifyVariantId,'ProductVariant'))fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');
@@ -144,7 +146,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   const html=Buffer.from(simplePage('Konfigurator wird geöffnet …','Einen Moment – der Konfigurator wird geöffnet.',{link:target}));
   res.writeHead(302,headersFor('text/html; charset=utf-8',{Location:target,'Content-Length':html.length}));res.end(html);
  }
- async function cart(req,res,context){
+ async function cart(req,res,context,theme=false){
   const {session,store,binding:selected}=context;
   for(const [key,entry]of cartContexts)if(!entry.busy&&entry.expiresAt<=clock())cartContexts.delete(key);
   let cartContext=cartContexts.get(session.sid);
@@ -156,9 +158,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   let usedExisting=null;
   try{
    const data=await body(req,limit.cartBytes),draftToken=req.headers['x-gravuru-draft'];
-   const fields=['draftId','expectedRevision','quantity','configId','cartLineId'];
+   const fields=['draftId','expectedRevision','quantity','configId','cartLineId',...(theme?['cartRevision']:[])];
    if(Object.keys(data).some(k=>!fields.includes(k))||!/^adraft_[a-f0-9-]{36}$/.test(data.draftId||'')||!Number.isSafeInteger(data.expectedRevision)||data.expectedRevision<1||!Number.isSafeInteger(data.quantity)||data.quantity<1||data.quantity>99||
-     (data.configId!==undefined&&(typeof data.configId!=='string'||!CART_CONFIG_ID.test(data.configId)))||(data.cartLineId!==undefined&&(typeof data.cartLineId!=='string'||!CART_LINE_ID.test(data.cartLineId)))||(data.cartLineId!==undefined&&data.configId===undefined)||typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail(422,'shop_entry_cart_fields','Bitte die gesicherte Gestaltung, ihren Stand und die Menge angeben.');
+     (data.configId!==undefined&&(typeof data.configId!=='string'||!CART_CONFIG_ID.test(data.configId)))||(data.cartLineId!==undefined&&(typeof data.cartLineId!=='string'||!(theme&&data.cartLineId==='theme')&&!CART_LINE_ID.test(data.cartLineId)))||(data.cartLineId!==undefined&&data.configId===undefined)||(data.cartRevision!==undefined&&(!Number.isSafeInteger(data.cartRevision)||data.cartRevision<1||data.configId===undefined))||typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail(422,'shop_entry_cart_fields','Bitte die gesicherte Gestaltung, ihren Stand und die Menge angeben.');
    const drafts=store.workshop.customerDrafts,draft=drafts.acrylicDrafts.get(data.draftId,draftToken);
    if(draft.productId!==session.productId||draft.productRevision!==session.productRevision)fail(409,'shop_entry_product','Die gesicherte Gestaltung gehört nicht zu diesem Produkt.');
    const manifest=drafts.review(draft.snapshotId).manifest,options=manifest.selection?.options;
@@ -174,6 +176,15 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
    if(bindings.length!==1)fail(bindings.length?409:404,bindings.length?'shop_entry_variant_duplicate':'shop_entry_variant_unbound',bindings.length?'Diese Ausführung ist im Shop mehrfach zugeordnet.':'Diese Ausführung ist im Shop noch nicht angebunden. Bitte eine andere Ausführung wählen.');
    const binding=bindings[0];
    if(binding.shopifyVariantId===selected.shopifyVariantId&&!isDeepStrictEqual(binding,selected))fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
+
+   if(theme){
+    for(const [token,t] of themeTransfers)if(t.expiresAt<=clock())themeTransfers.delete(token);
+    if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
+    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath};
+    const prepared=prepareThemeCart(args,binding,data,{draftToken}),token=randomBytes(32).toString('hex');
+    themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(data),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
+    return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});
+   }
    const key=createHash('sha256').update(JSON.stringify([store.storeId,binding.bindingId,binding.assignmentRevision,...fields.map(k=>data[k]??null),draftToken])).digest('hex');
    let operation=cartContext.operations.get(key);
    if(!operation){if(cartContext.operations.size>=256)fail(429,'shop_entry_busy','Bitte den vorhandenen Warenkorb abschließen.');operation={existingCart:!data.cartLineId&&cartContext.cartId?Object.freeze({cartId:cartContext.cartId}):undefined,completed:false};cartContext.operations.set(key,operation);}
@@ -212,6 +223,32 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
    return json(res,draft?200:201,{...saved,photoHints:bundle.manifest.photoHints||[],photoResolution:(bundle.manifest.photoResolution||[]).map(p=>({objectId:p.objectId,grade:p.grade,effectiveDpi:p.effectiveDpi,targetDpi:p.targetDpi}))});
   }finally{reviewJobs.delete(job);}
  }
+
+ function themeProxy(req,res,url){
+  const proxy=verifyProxy(url.searchParams);
+  if(!startLimiter('theme'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
+  if(url.pathname===themePath){
+   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+   const html=Buffer.from(fs.readFileSync(ui('theme-cart.html'),'utf8').replaceAll('__PROXY_PATH__',esc(proxyPath)));
+   res.writeHead(200,headersFor('text/html; charset=utf-8',{'Content-Length':html.length,'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.shopify.com; connect-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'"}));return res.end(html);
+  }
+  if(themeFiles.has(url.pathname)){
+   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+   const bytes=themeFiles.get(url.pathname);res.writeHead(200,headersFor('text/javascript; charset=utf-8',{'Content-Length':bytes.length}));return res.end(bytes);
+  }
+  if(req.headers.origin!==undefined&&req.headers.origin!=='https://'+shopDomain)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
+  const token=req.headers['x-gravuru-cart-handoff'],transfer=typeof token==='string'&&/^[a-f0-9]{64}$/.test(token)?themeTransfers.get(token):null;
+  if(!transfer||transfer.expiresAt<=clock())fail(403,'theme_cart_expired','Die Warenkorbübergabe ist abgelaufen. Bitte zum Konfigurator zurückkehren und erneut starten.');
+  const context=active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});
+  if((proxy.customerId??null)!==(context.session.customerId??null))fail(403,'theme_cart_customer','Bitte die Produktseite erneut öffnen.');
+  const prepared=prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken});
+  if(url.pathname===themePath+'/data'&&req.method==='GET')return json(res,200,prepared.payload);
+  if(url.pathname===themePath+'/claim'&&req.method==='POST'){
+   if(req.headers.origin!=='https://'+shopDomain)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
+   return json(res,200,prepared.claim(token));
+  }
+  fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+ }
  function checkOrigin(req,{mutating}){
   const requestOrigin=req.headers.origin,site=req.headers['sec-fetch-site'];
   if(mutating?requestOrigin!==origin:requestOrigin!==undefined&&requestOrigin!==origin)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
@@ -219,12 +256,13 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  }
  return Object.freeze({
   pagePath,startPath,
-  matches:pathname=>pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
+  matches:pathname=>pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
   async handle(req,res,url){
    try{
     if(req.headers.host!==address.host||req.headers['x-forwarded-proto']!=='https')fail(403,'shop_entry_host','Diese Anfrage ist nicht zulässig.');
     const pathname=url.pathname;
     if(pathname===startPath)return start(req,res,url);
+    if(pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname))return themeProxy(req,res,url);
     if(pathname===pagePath||pageFiles.has(pathname)){
      if(!['GET','HEAD'].includes(req.method))fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search)fail(404,'shop_entry_route','Diese Seite gibt es hier nicht.');
@@ -241,7 +279,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      checkOrigin(req,{mutating:false});
      const context=active(req),model=modelFor(context.store,context.binding);
      allowedAssets(context.store,context.binding,model);
-     return json(res,200,{model:presentedModel(model,context.binding),binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+     return json(res,200,{model:presentedModel(model,context.binding),binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
     }
     const asset=action.match(/^design-assets\/([a-f0-9]{64})\/preview\.svg$/);
     if(asset){
@@ -272,11 +310,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      checkOrigin(req,{mutating:true});
      return await saveDraft(req,res,active(req),draftRoute[1]||null);
     }
-    if(action==='cart'){
+    if(action==='cart'||action==='theme-cart'){
      if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:true});
-     return await cart(req,res,active(req));
+     return await cart(req,res,active(req),action==='theme-cart');
     }
     fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
    }catch(error){

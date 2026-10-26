@@ -71,7 +71,7 @@ export async function installCartEdit(api, {request = window.parent?.GravuruMerc
     if (quantity && Number.isSafeInteger(loaded.quantity)) {quantity.value = String(loaded.quantity); quantity.dispatchEvent(new Event('input', {bubbles: true}));}
     const legacyStatus = api.r.querySelector('.status'); if (legacyStatus) legacyStatus.textContent = '';
     api.el.sync();
-    const context = {configId: params.configId, rev: params.rev, cartLineId: params.cartLineId && loaded.configuration.cartLineId ? loaded.configuration.cartLineId : null,
+    const context = {configId: params.configId, rev: params.rev, cartLineId: params.cartLineId==='theme'&&window.parent?.GravuruShopEntry?.cartMode==='theme'?'theme':params.cartLineId && loaded.configuration.cartLineId ? loaded.configuration.cartLineId : null,
       draftId: loaded.draft.id, draftToken: loaded.token, draftRevision: loaded.draft.revision};
     api.el.cartEdit = context;
     say('Deine Gestaltung aus dem Warenkorb (Revision ' + params.rev + ') ist geladen.' + (context.cartLineId ? ' „Warenkorb aktualisieren“ ersetzt die bestehende Position.' : ' Die Warenkorbposition wurde nicht gefunden; die Gestaltung wird neu hinzugefügt.') + (loaded.hints.length ? ' ' + loaded.hints.join(' ') : ''));

@@ -1,3 +1,7 @@
+## 26.10.2026 · Codex / Astra · Import-Schutz (Nachtrag C)
+
+Code 2e71a62, Basis main af8f5545. Vor jedem Commit lesende Prüfung beider SQLite-Schemata, ältere vorhandene Ablagen nur mit ausdrücklichem --migrieren; Zielpfad, Mandant und Produktanzahl vor dem Schreiben. Hauptproduktfilter schließt fremde/leere Unterkategorien aus. Plesk-Neustart und Aufgaben dokumentiert. 68/68 Windows-Tests, 0 Fehler/Skips. [Bericht und Rohlog](docs/handoffs/2026-10-26-import-schutz-bericht.md). Ausschließlich temporäre Testdaten, kein Live-Zugriff/PR-Merge. Nächster Schritt: Claude prüft den separaten PR.
+
 ## 26.10.2026 · Claude · Legacy-Speicher zurückgesetzt, Paket R2 live
 
 - Chris 26.10.: „Ja, Du darfst den Code bereitstellen, die App neu starten und den alten Speicher zurücksetzen.“

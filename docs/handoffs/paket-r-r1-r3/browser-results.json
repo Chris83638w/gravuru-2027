@@ -1,0 +1,1013 @@
+{
+  "localOnly": true,
+  "codeScope": "R1/R3 after R2",
+  "catalogBase": "fd50c645996a216b57f6c573808bc2486e5970f4",
+  "catalogBaseline": {
+    "masterFiles": 761,
+    "mismatches": 0,
+    "approvals": 0
+  },
+  "assignmentChecks": [
+    {
+      "name": "Assignment selection remains separate from approval selection",
+      "passed": true,
+      "selected": 2,
+      "approvalSelected": 0
+    },
+    {
+      "name": "Read-only material plan shows 2 designs by 2 families and rejects incompatible shapes",
+      "passed": true,
+      "counts": {
+        "designs": 2,
+        "pairs": 4,
+        "addable": 2,
+        "existing": 0,
+        "incompatible": 2,
+        "rejected": 0
+      },
+      "pairs": [
+        {
+          "id": "TO-V2A-9x6-D1",
+          "pairs": [
+            {
+              "familyId": "acryl-aa-abstandshalter",
+              "status": "addable",
+              "sizeKeys": [
+                "AA-OV-150X100",
+                "AA-OV-180X120",
+                "AA-OV-210X140",
+                "AA-OV-240X160",
+                "AA-OV-300X200"
+              ],
+              "reasons": [],
+              "readiness": {
+                "complete": false,
+                "issues": [
+                  "Aufpreis „2 Abstandshalter“",
+                  "Aufpreis „2 Abstandshalter“",
+                  "Aufpreis „4 Abstandshalter“",
+                  "Aufpreis „4 Abstandshalter“",
+                  "Grundpreis: 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm, 15 × 8 cm, 22,5 × 12 cm, 30 × 16 cm, 15 × 10 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 21 × 7 cm, 24 × 7 cm, 27 × 9 cm, 36 × 12 cm, 45 × 15 cm, 16 × 16 cm, 20 × 20 cm, 26 × 26 cm, 30 × 30 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm",
+                  "Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)"
+                ]
+              }
+            },
+            {
+              "familyId": "gedenktafel-22x14-schiefer-natur",
+              "status": "incompatible",
+              "sizeKeys": [],
+              "reasons": [
+                "Keine passende Größe – Variante oder Klärung der Quelle nötig."
+              ],
+              "readiness": {
+                "complete": true,
+                "issues": []
+              }
+            }
+          ]
+        },
+        {
+          "id": "TO-V2A-9x6-D2",
+          "pairs": [
+            {
+              "familyId": "acryl-aa-abstandshalter",
+              "status": "addable",
+              "sizeKeys": [
+                "AA-OV-150X100",
+                "AA-OV-180X120",
+                "AA-OV-210X140",
+                "AA-OV-240X160",
+                "AA-OV-300X200"
+              ],
+              "reasons": [],
+              "readiness": {
+                "complete": false,
+                "issues": [
+                  "Aufpreis „2 Abstandshalter“",
+                  "Aufpreis „2 Abstandshalter“",
+                  "Aufpreis „4 Abstandshalter“",
+                  "Aufpreis „4 Abstandshalter“",
+                  "Grundpreis: 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm, 15 × 8 cm, 22,5 × 12 cm, 30 × 16 cm, 15 × 10 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 21 × 7 cm, 24 × 7 cm, 27 × 9 cm, 36 × 12 cm, 45 × 15 cm, 16 × 16 cm, 20 × 20 cm, 26 × 26 cm, 30 × 30 cm, 18 × 12 cm, 21 × 14 cm, 24 × 16 cm, 30 × 20 cm, 15 × 10 cm, 18 × 12 cm, 24 × 16 cm, 30 × 20 cm, 36 × 24 cm, 42 × 28 cm",
+                  "Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)"
+                ]
+              }
+            },
+            {
+              "familyId": "gedenktafel-22x14-schiefer-natur",
+              "status": "incompatible",
+              "sizeKeys": [],
+              "reasons": [
+                "Keine passende Größe – Variante oder Klärung der Quelle nötig."
+              ],
+              "readiness": {
+                "complete": true,
+                "issues": []
+              }
+            }
+          ]
+        }
+      ],
+      "incompleteFamilyNotice": true
+    },
+    {
+      "name": "Material batch adds only compatible targets",
+      "passed": true,
+      "counts": {
+        "designs": 2,
+        "changed": 2,
+        "unchanged": 0,
+        "rejected": 0,
+        "added": 2,
+        "existing": 0,
+        "incompatible": 2,
+        "rejectedPairs": 0
+      }
+    },
+    {
+      "name": "Existing approvals stay unchanged and new targets are unapproved",
+      "passed": true
+    },
+    {
+      "name": "Theme add and remove are applied through their reviewed plans",
+      "passed": true,
+      "added": 2,
+      "removed": 2,
+      "originalThemesRestored": true
+    },
+    {
+      "name": "Existing Shopify-linked product cannot be deleted in the dashboard",
+      "passed": true,
+      "productId": "4900000",
+      "lineId": "edelstahl-tuerschilder",
+      "buttonDisabled": true
+    }
+  ],
+  "mainProductChecks": [
+    {
+      "name": "Existing Shopify-linked product cannot be deleted in the dashboard",
+      "passed": true,
+      "productId": "4900000",
+      "lineId": "edelstahl-tuerschilder",
+      "buttonDisabled": true
+    },
+    {
+      "name": "Recovered the previously created, identified private test entry through confirmed UI deletion",
+      "passed": true,
+      "productId": "TO-V2A-9x6-D2-OV",
+      "identityVerified": true
+    },
+    {
+      "name": "Main product uses one compatible form group, unchanged design and empty external IDs",
+      "passed": true,
+      "productId": "TO-V2A-9x6-D2-OV",
+      "sizeKeys": [
+        "GR-ES-OV-90X60-T15",
+        "GR-ES-OV-210X140-T15"
+      ],
+      "missingThemeDisabled": true,
+      "countAfter": "Startdesign für 1 Hauptprodukt · 2 Größenzuordnungen\nID TO-V2A-9x6-D2-OV · 9 × 6 cm\nPRÜFKOPIE Paket R – Oval D2\nPassung: passt\nID TO-V2A-9x6-D2-OV · 21 × 14 cm\nPRÜFKOPIE Paket R – Oval D2\nPassung: passt\nProduktbefunde bleiben auch nach der Designfreigabe bestehen."
+    },
+    {
+      "name": "Pixel 7 supports create-result review and confirmed deletion, with refreshed product counter",
+      "passed": true,
+      "viewport": 412,
+      "document": 412,
+      "productId": "TO-V2A-9x6-D2-OV",
+      "lineRestored": true,
+      "counterRestored": true
+    },
+    {
+      "name": "Pixel 7 incompatible-only assignment remains read-only and cannot be applied",
+      "passed": true
+    },
+    {
+      "name": "All writes authenticated and confined to private test copy; no browser or route failures",
+      "passed": true,
+      "mainProductWrites": 3,
+      "approvalWrites": 0
+    }
+  ],
+  "mainProductRunSuccess": true,
+  "requests": {
+    "externalAborted": [],
+    "requests": [
+      {
+        "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&reihe=edelstahl-gravur-oval-90x60",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 11
+      },
+      {
+        "path": "/workshop-ui/merchant-navigation.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 10
+      },
+      {
+        "path": "/workshop-ui/merchant-media.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 9
+      },
+      {
+        "path": "/workshop-ui/merchant-downloads.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 12
+      },
+      {
+        "path": "/workshop-ui/design-dashboard.css",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 19
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-ui.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 21
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.css",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 23
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 29
+      },
+      {
+        "path": "/workshop-ui/editor-icons/cube.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 34
+      },
+      {
+        "path": "/workshop-ui/editor-icons/files.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 38
+      },
+      {
+        "path": "/workshop-ui/editor-icons/stack-2.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 41
+      },
+      {
+        "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 46
+      },
+      {
+        "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 49
+      },
+      {
+        "path": "/workshop-ui/editor-icons/pencil.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 53
+      },
+      {
+        "path": "/workshop-ui/merchant-request.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 48
+      },
+      {
+        "path": "/workshop-ui/design-target-preview-cache.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 36
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-editor.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 41
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-assignments.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 44
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-main-products.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 49
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-review.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 58
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 2
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 2
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 2
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 6
+      },
+      {
+        "path": "/api/workshop/designs",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 609
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 610
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 4619
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D1&file=design.svg",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 461
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 254
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 183
+      },
+      {
+        "path": "/api/workshop/designs/main-products/options?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D1",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 403
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D1&file=design.svg",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 413
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 5
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D1&familie=steel-door-signs&size=GR-ES-OV-90X60-T15",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 469
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 300
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 265
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&file=design.svg",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 7
+      },
+      {
+        "path": "/api/workshop/designs/main-products/options?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 424
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 3
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&familie=steel-door-signs&size=GR-ES-OV-90X60-T15",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 437
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 342
+      },
+      {
+        "path": "/api/workshop/designs/main-products",
+        "status": 200,
+        "authenticated": true,
+        "method": "DELETE",
+        "ms": 470
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 4753
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 2
+      },
+      {
+        "path": "/api/workshop/designs/main-products/options?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 404
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&file=design.svg",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 414
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 6
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&familie=steel-door-signs&size=GR-ES-OV-90X60-T15",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 417
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 170
+      },
+      {
+        "path": "/api/workshop/designs/main-products/options?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 386
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&familie=steel-door-signs&size=GR-ES-OV-90X60-T15",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 423
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 414
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 402
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 393
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&familie=steel-door-signs&size=GR-ES-OV-90X60-T15",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 399
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/main-products",
+        "status": 201,
+        "authenticated": true,
+        "method": "POST",
+        "ms": 419
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 4750
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/main-products/options?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 425
+      },
+      {
+        "path": "/api/workshop/designs/svg?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&file=design.svg",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 422
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&familie=steel-door-signs&size=GR-ES-OV-90X60-T15",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 508
+      },
+      {
+        "path": "/werkstatt/designs/?linie=edelstahl-tuerschilder&reihe=edelstahl-gravur-oval-90x60",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 105
+      },
+      {
+        "path": "/workshop-ui/merchant-navigation.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 6
+      },
+      {
+        "path": "/workshop-ui/merchant-media.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 7
+      },
+      {
+        "path": "/workshop-ui/merchant-downloads.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 7
+      },
+      {
+        "path": "/workshop-ui/design-dashboard.css",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 10
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-ui.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 12
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.css",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 14
+      },
+      {
+        "path": "/workshop-ui/workshop-shell.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 17
+      },
+      {
+        "path": "/workshop-ui/editor-icons/cube.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 20
+      },
+      {
+        "path": "/workshop-ui/editor-icons/files.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 23
+      },
+      {
+        "path": "/workshop-ui/editor-icons/stack-2.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 26
+      },
+      {
+        "path": "/workshop-ui/editor-icons/shopping-cart.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 29
+      },
+      {
+        "path": "/workshop-ui/editor-icons/adjustments-horizontal.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 31
+      },
+      {
+        "path": "/workshop-ui/editor-icons/pencil.svg",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 34
+      },
+      {
+        "path": "/workshop-ui/merchant-request.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 33
+      },
+      {
+        "path": "/workshop-ui/design-target-preview-cache.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 28
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-editor.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 30
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-assignments.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 32
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-main-products.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 35
+      },
+      {
+        "path": "/workshop-ui/design-dashboard-review.mjs",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 41
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 2
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 2
+      },
+      {
+        "path": "/api/workshop/designs",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 23
+      },
+      {
+        "path": "/api/workshop/session",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 23
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 4280
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D1&familie=steel-door-signs",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 417
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 237
+      },
+      {
+        "path": "/api/workshop/designs/main-products/options?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 417
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&familie=steel-door-signs&size=GR-ES-OV-90X60-T15",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 401
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/main-products",
+        "status": 200,
+        "authenticated": true,
+        "method": "DELETE",
+        "ms": 445
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 2
+      },
+      {
+        "path": "/api/workshop/designs?linie=edelstahl-tuerschilder",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 4746
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/main-products/options?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 436
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/target-preview?reihe=edelstahl-gravur-oval-90x60&id=TO-V2A-9x6-D2&familie=steel-door-signs&size=GR-ES-OV-90X60-T15",
+        "status": 200,
+        "authenticated": true,
+        "method": "GET",
+        "ms": 427
+      },
+      {
+        "path": "/__local-token",
+        "status": 200,
+        "authenticated": false,
+        "method": "GET",
+        "ms": 1
+      },
+      {
+        "path": "/api/workshop/designs/batch/prepare",
+        "status": 200,
+        "authenticated": true,
+        "method": "POST",
+        "ms": 367
+      }
+    ],
+    "browserErrors": [],
+    "consoleErrors": [
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe.",
+      "Blocked autofocusing on a <button> element in a cross-origin subframe."
+    ],
+    "routeErrors": []
+  },
+  "notes": [
+    "The initial run completed all assignment checks before the local Python executable for real font conversion was configured explicitly. No application source was changed for that environment correction.",
+    "The test proxy now forwards the exact request body length for DELETE as a real browser does. POST main-products correctly expects HTTP 201. The identified private leftover test entry was removed through the confirmed UI before the final successful create/delete run.",
+    "No real catalogue, approval, import or shop write."
+  ]
+}

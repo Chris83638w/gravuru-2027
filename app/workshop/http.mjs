@@ -74,6 +74,8 @@ import {DEFAULT_TENANT,createTenantRegistry,tenantFromRequest} from './tenant.mj
 import {createCatalogStructure} from './catalog-structure.mjs';
 import {designDashboardWithFit,designFile,forgetKatalog} from './design-dashboard.mjs';
 import {targetDesignPreview,patchDesignWithTargetReview} from './design-target-preview.mjs';
+import {prepareDesignAssignments,applyDesignAssignments} from './design-assignments.mjs';
+import {mainProductOptions,createDesignMainProduct,deleteDesignMainProduct} from './design-main-products.mjs';
 import {designPreviewGlyphs,previewWarningHeader,PREVIEW_WARNING_HEADER} from './design-preview-glyphs.mjs';
 import {createDesignEditor} from './design-editor.mjs';
 import {createDesignVariants} from './design-variants.mjs';
@@ -318,7 +320,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       const pathname=url.pathname,method=req.method;
       const accountDraft=pathname.match(/^\/api\/workshop\/account-drafts(?:\/(cdraft_[a-f0-9-]{36})(?:\/(preview\.png)|\/photos\/([A-Za-z0-9_-]{1,64}))?)?$/);
       if(accountDraft)return await accountDraftRoute(req,res,url,accountDraft);
-      if(!['GET','POST','PATCH'].includes(method)&&!(method==='PUT'&&pathname==='/api/workshop/designs/editor'))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
+      if(!['GET','POST','PATCH'].includes(method)&&!(method==='PUT'&&pathname==='/api/workshop/designs/editor')&&!(method==='DELETE'&&pathname==='/api/workshop/designs/main-products'))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
       if(pathname==='/api/workshop/order-webhook'){
         if(method!=='POST')fail(405,'method_not_allowed','Bestellnachrichten benötigen POST.');
         if(!orderWebhook)fail(503,'orders_disabled','Test-Bestellanbindung ist nicht eingerichtet.');
@@ -372,6 +374,25 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         const input=await body(req,16384),root=katalogRoot();
         const result=pathname.endsWith('/prepare')?await designVariants.prepare(root,input):await designVariants.create(root,input,{actor:merchantSession?.subject||localActor});
         if(result.changed)forgetKatalog();return json(res,200,result);
+      }
+      if(pathname==='/api/workshop/designs/batch/prepare'||pathname==='/api/workshop/designs/batch'){
+        if(!ownsBundled)fail(503,'katalog_tenant','Für diesen Mandanten ist kein Katalog hinterlegt.');
+        if(method!=='POST')fail(405,'method_not_allowed','Sammelzuordnungen mit POST vorbereiten oder anwenden.');
+        const root=katalogRoot(),input=await body(req,512*1024);
+        const result=pathname.endsWith('/prepare')?await prepareDesignAssignments(root,input):await applyDesignAssignments(root,input,{actor:merchantSession?.subject||localActor});
+        if(result.counts?.changed)forgetKatalog();return json(res,200,result);
+      }
+      if(pathname==='/api/workshop/designs/main-products/options'||pathname==='/api/workshop/designs/main-products'){
+        if(!ownsBundled)fail(503,'katalog_tenant','Für diesen Mandanten ist kein Katalog hinterlegt.');
+        const root=katalogRoot();
+        if(pathname.endsWith('/options')){
+          if(method!=='GET')fail(405,'method_not_allowed','Hauptprodukt-Optionen mit GET lesen.');
+          return json(res,200,await mainProductOptions(root,Object.fromEntries(url.searchParams)));
+        }
+        if(!['POST','DELETE'].includes(method))fail(405,'method_not_allowed','Hauptprodukte mit POST anlegen oder mit DELETE entfernen.');
+        const input=await body(req,32768),options={actor:merchantSession?.subject||localActor};
+        const result=method==='POST'?await createDesignMainProduct(root,input,options):await deleteDesignMainProduct(root,input,options);
+        if(result.changed)forgetKatalog();return json(res,method==='POST'?201:200,result);
       }
       if(pathname==='/api/workshop/designs/target-preview'){
    if(!ownsBundled)fail(503,'katalog_missing','Katalog nicht verfügbar.');

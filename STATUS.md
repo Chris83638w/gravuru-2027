@@ -1,3 +1,11 @@
+## 26.10.2026 · Codex / Astra · Nachträge A/B zu PR #27 fertig
+
+Issue #25 umgesetzt: Preise sperren Import/Shop-Abgleich, nicht die Designfreigabe; Geometrie und Preise getrennt. Sammelfreigabe mit Fortschritt, Abbrechen nach laufendem PATCH und Ergebnis je Design. Zielvorschau/R3 gruppieren Größen proportional, kompatible zuerst, Quadrate als Quadrat. Eigene Commits `f815a216`, `6416f882`, `86cdc84f`; aktuelles main `af8f5545` übernommen, CSS-Abschlusskorrektur `bfeca2d4`. Windows-Vollauf: 1616 Tests, **1607 bestanden / 1 Python-Timeout / 8 Skips**; unveränderte Fehlerdatei im Nachlauf **15/15**, main-Nachlauf **26/26**. Browser Desktop/Pixel 7 erfolgreich. [Bericht mit Rohlogs und Bildern](docs/handoffs/2026-10-26-astra-nachtraege-bericht.md). Import-Schutz separat in [PR #28](https://github.com/Chris83638w/gravuru-2027/pull/28), **68/68**. Nur lokale Testkopien, keine Live-Aktion, kein PR-Merge.
+
+## 26.10.2026 · Codex / Astra · Paket R1/R3: Sammelzuordnung und Hauptprodukte (PR #27)
+
+Code `b430175`, auf R2 `ab6743f`/PR #26. Eigene Zuordnungsauswahl mit schreibfreier Paarprüfung, höchstens 500 Designs je Teilpaket und Einzeltransaktionen; keine neuen Freigaben. Hauptprodukte aus bestätigten Zielen anlegen/entfernen, stabile IDs, frische Quellenprüfung, gemeinsamer atomarer Linienschreibweg und Shopify-Löschschutz. Windows-Vollauf: 201 Dateien, 1602 Tests, **1594 bestanden / 0 Fehler / 8 bedingte Skips**, Testquellen unverändert. Browser Desktop/Pixel7: kompatible/inkompatible Zuordnung, Themen, Anlegen201/Löschen200 und Zähler erfolgreich; keine Freigabeaufrufe/externen Zugriffe. [Bericht, Rohlog und Bilder](docs/handoffs/2026-10-26-paket-r-r1-r3-bericht.md). Issue #25 inzwischen entschieden: offene Preise sperren nur Import und Shop-Abgleich; Nachträge vom 26.10. werden in diesem PR ergänzt. Nur Testkopien, kein Live-Zugriff/Import/Merge.
+
 ## 26.10.2026 · Claude · Legacy-Speicher zurückgesetzt, Paket R2 live
 
 - Chris 26.10.: „Ja, Du darfst den Code bereitstellen, die App neu starten und den alten Speicher zurücksetzen.“

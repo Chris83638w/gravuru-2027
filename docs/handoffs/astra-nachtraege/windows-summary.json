@@ -1,0 +1,85 @@
+{
+  "platform": "Windows",
+  "node": "v24.20.0",
+  "fullRun": {
+    "code": "86cdc84f2d2a2af67d26c9747bc7382cbee8dd2b",
+    "base": "136de2a53bea8a989387c432ab69096dac510540",
+    "files": 204,
+    "scopes": [
+      "app/configurator/variant-m/*.test.mjs",
+      "app/workshop/*.test.mjs",
+      "scripts/*.test.mjs"
+    ],
+    "concurrency": 4,
+    "counts": {
+      "tests": 1616,
+      "failed": 1,
+      "passed": 1607,
+      "cancelled": 0,
+      "skipped": 8,
+      "todo": 0,
+      "topLevel": 1572,
+      "suites": 0
+    },
+    "changedTestSources": [],
+    "exitCode": 1
+  },
+  "failure": {
+    "name": "correction workbook retains every child design of a failed product and excludes successful siblings",
+    "source": "app/workshop/form-batch.test.mjs:90",
+    "cause": {
+      "killed": true,
+      "signal": "SIGTERM",
+      "timeoutMs": 15000,
+      "stdout": "",
+      "stderr": ""
+    },
+    "unchangedFileRerun": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "mainSync": {
+    "main": "af8f5545cce47ca5442bba5386059a7cd1e42efc",
+    "commit": "0289d256c811393a2e9f3357789e32c33c779023",
+    "files": [
+      "acryl-employee-entry.test.mjs",
+      "acryl-team.test.mjs",
+      "acryl-host-routing.test.mjs",
+      "catalog-structure.test.mjs",
+      "design-bulk-http.test.mjs"
+    ],
+    "tests": 26,
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0
+  },
+  "targeted": {
+    "A": {
+      "tests": 96,
+      "passed": 96
+    },
+    "B1": {
+      "tests": 76,
+      "passed": 76
+    },
+    "B2": {
+      "tests": 108,
+      "passed": 108
+    }
+  },
+  "browserVerifiedCssFollowUp": "bfeca2d4333e92c26128f8fe1c4597879a3efbb4",
+  "skips": [
+    "ok 998 - Symlink/Junction als Designordner ist gesperrt # SKIP Dateisystem erlaubt hier keine Links.",
+    "ok 1001 - Mehrfach verknüpfte Quelldatei wird vor jedem Schreiben gesperrt # SKIP Dateisystem erlaubt hier keine Hardlinks.",
+    "    ok 1 - workshop.sqlite # SKIP File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+    "    ok 2 - profiles.sqlite-wal # SKIP File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+    "    ok 3 - design-assets.sqlite-shm # SKIP File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+    "    ok 2 - real authenticated server and databases with confirmed private permissions # SKIP Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+    "    ok 2 - Git ancestor guard after the private-permission check # SKIP Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+    "ok 1567 - Echter Katalog + Teilexport (lokal, wenn vorhanden): drei 7x2-Produkte unverändert # SKIP"
+  ],
+  "note": "Do not recast the full run as fully green: its one timed-out process is preserved; the unchanged file passed on rerun. Main-only changes were tested separately; CSS-only follow-up verified in real browser."
+}

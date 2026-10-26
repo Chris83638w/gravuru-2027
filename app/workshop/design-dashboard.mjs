@@ -1,3 +1,4 @@
+import {formGroupLabel} from './design-size-order.mjs';
 // Design-Dashboard (Chris 23.10.2026: „Designs Linie für Linie bearbeiten“): liest die Designs einer
 // Katalog-Linie aus dem Katalog-Repo – Lieferform 2 (`designs/<reihe>/<id>/`) bevorzugt, sonst der
 // Corel-Rohbestand (`designs/bestand/boegen/<Basis-SKU>/designs.json`) – und bewertet jede Zeile mit
@@ -6,14 +7,14 @@
 // Nichts wird erfunden: Unbekanntes bleibt null; der Katalogpfad kommt nur über katalogPath()/Option.
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
-import {designTargets,assignTargetSeries} from './design-targets.mjs';
+import {designTargets,assignTargetSeries,validateDesignTargets} from './design-targets.mjs';
 import {dashboardDesignTargets} from './design-target-dashboard.mjs';
 import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction,recoverKatalogIfNeeded} from './katalog-transaction.mjs';
 import path from 'node:path';
 import {openKatalog} from './katalog-source.mjs';
 import {parseDesignSvg,formatSeries,seriesOf,assignSeries,applyPriceOverrides,priceGaps,katalogDesignToTemplate,scaleTemplate,scaleEmbeddedMotifs,templateFit} from './katalog-convert.mjs';
 import {convertFont} from './font-library.mjs';
-import {FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
+import {FAMILY_MATERIALS,familyProcess,familyReadinessDetails} from './product-families.mjs';
 import {importKey} from './katalog-import.mjs';
 
 export const MIN_TEXT_MM=3;// Chris 23.10.2026 („3 mm Text“): kleinere Mustertexte sind zu prüfen
@@ -340,7 +341,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  if(status)filtered=filtered.filter(r=>r.status===status);
  if(freigabe)filtered=filtered.filter(r=>r.released===(freigabe==='ja'));
  return {linie:{id:line.id,name:line.name,status:line.status??null,ausfuehrungen:line.ausfuehrungen??null,families:ctx.families.map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f)})),subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,mainProducts:(s.mainProducts||[]).map(m=>({id:m.id,name:m.name??null,startDesign:m.startDesign}))}))},
-  familien:[...katalog.families.values()].map(f=>({id:f.id,name:f.name,sizes:f.sizes.map(s=>({key:s.key,label:s.label})),linien:[...katalog.lines.values()].filter(l=>l.families.includes(f.id)).map(l=>({id:l.id,name:l.name}))})),
+  familien:[...katalog.families.values()].map(f=>({id:f.id,name:f.name,material:familyMaterialName(f),process:familyProcessName(f),readiness:familyReadinessDetails(f),sizes:f.sizes.map(s=>({key:s.key,label:s.label})),linien:[...katalog.lines.values()].filter(l=>l.families.includes(f.id)).map(l=>({id:l.id,name:l.name}))})),
   themes:katalog.themes.map(t=>({id:t.id,name:t.name})),availableFormGroups:availableFormGroups(katalog,ctx.families,l2,rows),counts:count(rows),reihen,formatreihen,materials,bestand:bestandInfo,notes,startDesignSummary,filter:{reihe,material,status,freigabe,startDesigns},rows:filtered,minTextMm:MIN_TEXT_MM};
 }
 // Count only assigned target masters with a compatible size, never stock aliases or invented series.
@@ -348,7 +349,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
 function availableFormGroups(katalog,families,masters,rows){
  const targets=new Map(rows.filter(row=>row.lieferform2).map(row=>[JSON.stringify([row.lieferform2.reihe,row.id]),new Set((row.ziele??[]).map(target=>target.familie))]));
  return families.flatMap(family=>{
-  const groups=new Map(family.groups.filter(group=>family.sizes.some(size=>size.groupKey===group.key)).map(group=>[group.key,{familyId:family.id,familyName:family.name,groupKey:group.key,groupName:group.name,shape:group.shape,count:0}]));
+  const groups=new Map(family.groups.filter(group=>family.sizes.some(size=>size.groupKey===group.key)).map(group=>[group.key,{familyId:family.id,familyName:family.name,groupKey:group.key,groupName:formGroupLabel(group,family.sizes.filter(s=>s.groupKey===group.key)),shape:group.shape,count:0}]));
   const sizeGroups=new Map(family.sizes.map(size=>[size.key,size.groupKey]));
   const assigned=masters.filter(master=>targets.get(JSON.stringify([master.seriesFolder,master.id]))?.has(family.id));
   for(const entry of assignTargetSeries(family,assigned,katalog))for(const key of new Set(entry.sizes.map(size=>sizeGroups.get(size))))groups.get(key).count++;
@@ -399,8 +400,13 @@ function rewriteJson(file,changes){
 }
 const shortKey=id=>{const m=id.match(/-(D\d+)$/);return m?m[1]:null;};
 export function patchDesign(root,input,options={}){return withKatalogWriteLock(root,root=>patchDesignLocked(root,input,options));}
-function patchDesignLocked(root,input,{actor='werkstatt',now=new Date(),targetReview=null,available={}}={}){
- const katalog=katalogFor(root,{maxAgeMs:0});root=katalog.root;
+// Internal callers derive deltas from fresh catalogue data under the same lock as the write.
+// The HTTP PATCH never accepts a callback or a client-computed review.
+export function patchDesignDerived(root,derive,options={}){
+ return withKatalogWriteLock(root,root=>{const katalog=katalogFor(root,{maxAgeMs:0}),input=derive(katalog);return input===null?{changed:false,changes:{},files:[]}:patchDesignLocked(root,input,options,katalog);});
+}
+function patchDesignLocked(root,input,{actor='werkstatt',now=new Date(),targetReview=null,available={},beforeReplace}={},katalog=katalogFor(root,{maxAgeMs:0})){
+ root=katalog.root;
  if(!record(input))fail(422,'design_patch','Änderung als Objekt senden.');
  const unknown=Object.keys(input).filter(k=>!PATCH_FIELDS.includes(k));if(unknown.length)fail(422,'design_patch','Unbekannte Felder: '+unknown.join(', ')+'. Erlaubt sind name, themes, hidden.');
  if(input.onlyPassing!==undefined&&typeof input.onlyPassing!=='boolean')fail(422,'design_patch','onlyPassing ist true oder false.');
@@ -443,6 +449,7 @@ function patchDesignLocked(root,input,{actor='werkstatt',now=new Date(),targetRe
    selected.freigabe={status:input.freigegeben?'freigegeben':'offen',am:now.toISOString(),von:String(actor).slice(0,160)};
   }
  }
+ validateDesignTargets({ziele:targets},{families:katalog.families});
  if(JSON.stringify(targets)!==JSON.stringify(designTargets(master??current,katalog)))changes.ziele={from:current.ziele??null,to:targets};
  if(input.name===undefined&&input.themes===undefined&&input.hidden===undefined&&input.freigegeben===undefined&&input.zieleHinzufuegen===undefined)fail(422,'design_patch','Keine Änderung angegeben.');
  const files=[],pending=[];
@@ -471,7 +478,7 @@ function patchDesignLocked(root,input,{actor='werkstatt',now=new Date(),targetRe
   }
   const protocol=path.join(root,'designs',reihe,'_aenderungen.jsonl');
   pending.push({relative:rel(protocol),text:(fs.existsSync(protocol)?fs.readFileSync(protocol,'utf8'):'')+JSON.stringify({at:now.toISOString(),actor:String(actor).slice(0,160),reihe,designId,changes,files})+'\n'});
-  writeKatalogTransaction(root,pending);
+  writeKatalogTransaction(root,pending,{beforeReplace});
   files.push(rel(protocol));
   forgetKatalog();
  }

@@ -4,6 +4,8 @@ import {merchantRequest} from './merchant-request.mjs';
 import {merchantNavigation} from './merchant-navigation.mjs';
 import {createTargetPreviewCache,reviewPage} from './design-target-preview-cache.mjs';
 import {installDashboardEditor} from './design-dashboard-editor.mjs';
+import {installDesignAssignments} from './design-dashboard-assignments.mjs';
+import {installDesignMainProducts} from './design-dashboard-main-products.mjs';
 import {setMerchantImage,merchantImagesRequired} from './merchant-media.mjs';
 import {designKey,releaseKey,targetReviewRows,releaseIssue,bulkReleaseIssue,eligibleReleaseRows,retainVisibleSelection,releaseDesigns} from './design-dashboard-review.mjs';
 const $=s=>document.querySelector(s),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined&&text!==null)n.textContent=text;if(cls)n.className=cls;return n;};
@@ -59,14 +61,14 @@ async function loadLines(){
 }
 async function loadLine(){
  if(state.busy)return;
- state.selected.clear();state.editing=null;state.page=1;state.targetFamily=null;state.busy=true;render();status('Designs werden geladen …');
+ assignments.reset();state.selected.clear();state.editing=null;state.page=1;state.targetFamily=null;state.busy=true;render();status('Designs werden geladen …');
  try{state.data=state.linie?await request('/api/workshop/designs?'+new URLSearchParams({linie:state.linie})):null;status('');}
  catch(e){state.data=null;status(e.message,true);}
  finally{state.busy=false;render();}
 }
 async function load(){
  if(state.busy)return;
- state.seen.clear();state.reviewChecksums.clear();targetPreviewCache.invalidate();state.selected.clear();state.page=1;state.busy=true;render();status('Katalog wird geladen …');
+ assignments.reset();state.seen.clear();state.reviewChecksums.clear();targetPreviewCache.invalidate();state.selected.clear();state.page=1;state.busy=true;render();status('Katalog wird geladen …');
  try{await loadLines();state.selected.clear();state.editing=null;state.data=state.linie?await request('/api/workshop/designs?'+new URLSearchParams({linie:state.linie})):null;status('');}
  catch(e){state.data=null;status(e.message,true);}
  finally{state.busy=false;render();}
@@ -104,12 +106,16 @@ function gate(control,issue){
 const targetPreviewCache=createTargetPreviewCache({limit:3,maxEntries:120});
 const tileViews=new Map(),tileUrls=new Set();let tileObserver=null;
 const targetView=()=>state.view==='tiles'||state.view==='targets';
+const operationContext=()=>({rows:visibleRows(),families:state.data?.familien??[],themes:state.themes??[],lineId:state.linie,familyId:state.targetFamily,csrf:state.csrf,busy:state.busy});
+const assignments=installDesignAssignments({request,getContext:operationContext,onChanged:refreshDashboardRows,onBusy:setOperationBusy});
+const mainProductEditor=installDesignMainProducts({request,getContext:operationContext,onChanged:refreshDashboardRows,onBusy:setOperationBusy});
+function setOperationBusy(value){state.busy=value;syncReleaseControls();assignments.sync();for(const control of document.querySelectorAll('main button, main input, main select'))control.disabled=value||control.dataset.blocked==='true';$('#main').setAttribute('aria-busy',String(value));}
 const tileCacheKey=row=>JSON.stringify([releaseKey(row),'default']);
 const targetRow=row=>targetReviewRows([row]).find(item=>item.targetFamily&&item.targetFamily===(state.targetFamily||row.ziele?.find(target=>target.inLine!==false)?.familie));
 const dashboardEditor=installDashboardEditor({request:merchantRequest,onSaved:refreshChangedDesign,onClosed:identity=>{const key=JSON.stringify([identity.reihe,identity.id]),link=[...document.querySelectorAll('[data-catalog-edit]')].find(node=>node.dataset.catalogEdit===key);link?.focus({preventScroll:true});for(const view of tileViews.values())markTileSeen(view);}});
 function appendTargetSizes(select,sizes){
  const groups=new Map();
- for(const item of sizes){const key=item.groupKey??'unknown';let group=groups.get(key);if(!group){group=el('optgroup');group.label=item.groupName||'Form offen';groups.set(key,group);select.append(group);}const option=el('option',item.label);option.value=item.key;group.append(option);}
+ for(const item of sizes){const key=item.seriesKey??item.groupKey??'unknown';let group=groups.get(key);if(!group){group=el('optgroup');group.label=(item.groupName||'Form offen')+(item.ratioLabel?' · Reihe '+item.ratioLabel:'')+(item.compatible===false?' · Variante nötig':'');groups.set(key,group);select.append(group);}const option=el('option',item.label);option.value=item.key;group.append(option);}
 }
 function renderTargetFilters(){
  const families=new Map();for(const row of state.data?.rows??[])for(const target of row.ziele??[])if(target.inLine!==false)families.set(target.familie,target);
@@ -139,7 +145,7 @@ function clearTargetTiles(){
  targetPreviewCache.cancelPending();tileObserver?.disconnect();tileObserver=null;tileViews.clear();
  for(const url of tileUrls)URL.revokeObjectURL(url);tileUrls.clear();
 }
-function tileCanBeSeen(view){return view.visible&&view.loaded&&view.img.isConnected&&!view.img.hidden&&document.visibilityState!=='hidden'&&!dashboardEditor.isOpen&&!$('#preview-dialog').open&&!$('#release-dialog').open&&!$('#variant-dialog').open&&view.row.target.checksum===view.checksum;}
+function tileCanBeSeen(view){return view.visible&&view.loaded&&view.img.isConnected&&!view.img.hidden&&document.visibilityState!=='hidden'&&!dashboardEditor.isOpen&&!assignments.isOpen&&!mainProductEditor.isOpen&&!$('#preview-dialog').open&&!$('#release-dialog').open&&!$('#variant-dialog').open&&view.row.target.checksum===view.checksum;}
 function markTileSeen(view){
  if(!tileCanBeSeen(view))return;
  const key=releaseKey(view.row);state.seen.add(key);state.reviewChecksums.set(key,view.checksum);
@@ -183,9 +189,9 @@ function renderTargetCard(row,{focusEditor=true}={}){
  if(review){card.dataset.targetReviewKey=releaseKey(review);card.append(targetTilePreview(review,'tile-img'));}
  else card.append(el('p','Kein bestätigtes Ziel dieser Familie. Ziel zuerst zuordnen.','notice'));
  const head=el('div',undefined,'tile-head');head.append(el('span',review?'Noch nicht geprüft':'Ziel fehlt','ampel target-fit'),el('code',row.id));
- card.append(head,nameCell(row,{focusEditor}));
- if(review){card.append(el('p',review.target.name,'muted'),el('p',(review.target.fit?.issues??[]).join(' '),'target-issues'),selection(review));
-  const action=button(review.released?'Zielfreigabe zurücknehmen':'Ziel freigeben',()=>review.released?save(review,{freigegeben:false}):askRelease([review]),review.released?'quiet':'release');action.dataset.releaseKey=releaseKey(review);card.append(gate(action,review.released?null:releaseIssue(review,state.seen)));updateTargetCard(card,review);
+ card.append(head,nameCell(row,{focusEditor}));if(assignments.active)card.append(assignments.selection(row));
+ if(review){card.append(el('p',review.target.name,'muted'),el('p',(review.target.fit?.issues??[]).join(' '),'target-issues'));if(!assignments.active)card.append(selection(review));
+  const action=button(review.released?'Zielfreigabe zurücknehmen':'Ziel freigeben',()=>review.released?save(review,{freigegeben:false}):askRelease([review]),review.released?'quiet':'release');action.dataset.releaseKey=releaseKey(review);action.hidden=assignments.active;card.append(gate(action,review.released?null:releaseIssue(review,state.seen)));updateTargetCard(card,review);
  }
  card.append(fontList(row),flags(row),editorCell(row,{compactTarget:true}));return card;
 }
@@ -203,10 +209,32 @@ function syncReleaseControls(){
   const key=control.dataset.designKey??control.dataset.releaseKey,row=byKey.get(key);if(!row)continue;
   const issue=releaseIssue(row,state.seen);if(control.dataset.designKey){gate(control,bulkReleaseIssue(row,state.seen));control.checked=state.selected.has(key);}else gate(control,row.released?null:issue);
  }
- const passing=passingSeenRows();$('.selection-bar').classList.toggle('has-selection',state.selected.size>0||targetView());
+ const passing=passingSeenRows();$('.selection-bar').hidden=assignments.active;$('.review-help').hidden=assignments.active;$('.selection-bar').classList.toggle('has-selection',state.selected.size>0||targetView());
  $('#selection-summary').textContent=state.selected.size+' ausgewählt · '+passing.length+' geprüfte Ziele mit „passt“';
  gate($('#release-selected'),state.selected.size?null:'Erst Vorschauen öffnen und Designs auswählen.');gate($('#clear-selection'),state.selected.size?null:'Keine Designs ausgewählt.');
  $('#release-seen').hidden=!targetView();gate($('#release-seen'),passing.length?null:'Noch keine sichtbaren, geladenen Zielkacheln mit „passt“.');
+}
+// Batch operations refresh once and preserve unaffected target cards and their review state.
+async function refreshDashboardRows({designs,invalidatePreview=true}){
+ const line=state.linie;if(!line||!state.data)return;const keys=new Set(designs.map(item=>JSON.stringify([item.reihe,item.id]))),oldRows=new Map(state.data.rows.map(row=>[designKey(row),row]));
+ if(invalidatePreview)for(const key of keys)if(oldRows.has(key))invalidateDesignReview(oldRows.get(key));
+ const fresh=await request('/api/workshop/designs?'+new URLSearchParams({linie:line}));if(state.linie!==line)return;
+ for(let index=0;index<fresh.rows.length;index++){
+  const row=fresh.rows[index],key=designKey(row),previous=oldRows.get(key);if(!previous)continue;
+  if(JSON.stringify((previous.ziele??[]).map(target=>target.familie))!==JSON.stringify((row.ziele??[]).map(target=>target.familie))){keys.add(key);invalidateDesignReview(previous);}
+  for(let targetIndex=0;targetIndex<(row.ziele??[]).length;targetIndex++){
+   const target=row.ziele[targetIndex],old=previous.ziele?.find(item=>item.familie===target.familie);
+   if(old&&target.sourceRevision&&old.sourceRevision===target.sourceRevision){
+    // The unchanged DOM and in-flight previews still reference this object.
+    // Preserve identity, not just a snapshot of fields from before the request.
+    const runtime={};for(const field of ['fit','checksum','openedChecksum'])if(old[field]!==undefined)runtime[field]=old[field];Object.assign(old,target,runtime);row.ziele[targetIndex]=old;
+   }else if(old){const review=targetReviewRows([previous]).find(item=>item.targetFamily===target.familie);state.seen.delete(releaseKey(review));state.selected.delete(releaseKey(review));state.reviewChecksums.delete(releaseKey(review));targetPreviewCache.invalidate(tileCacheKey(review));keys.add(key);}
+  }
+  if(!keys.has(key)){Object.assign(previous,row);fresh.rows[index]=previous;}
+ }
+ state.data=fresh;const cards=[...$('#rows').querySelectorAll('.target-tile')],next=reviewPage(visibleRows(),state.page).rows;
+ if(targetView()&&cards.length===next.length&&cards.every((card,index)=>card.dataset.designRow===designKey(next[index]))){for(let index=0;index<cards.length;index++)if(keys.has(cards[index].dataset.designRow)){retireTargetCard(cards[index]);cards[index].replaceWith(renderTargetCard(next[index],{focusEditor:false}));}render({focusEditor:false,preserveRows:true});}
+ else render({focusEditor:false});
 }
 const pendingRowRefresh=new Map();
 async function refreshChangedDesign(changed){
@@ -389,6 +417,7 @@ async function confirmVariant(){
 }
 
 function selection(row){
+ if(assignments.active)return row.targetFamily?el('span'):assignments.selection(row);
  if(Array.isArray(row.ziele)&&!row.targetFamily)return el('span');
  const label=el('label',undefined,'design-selection'),input=el('input');input.type='checkbox';input.dataset.designKey=releaseKey(row);input.checked=state.selected.has(releaseKey(row));
  input.setAttribute('aria-label',row.id+' zur Freigabe auswählen');
@@ -418,6 +447,7 @@ function mainProducts(row){
 
 function editorCell(row,{compactTarget=false}={}){
  const box=el('div',undefined,'actions');
+ const mainAction=mainProductEditor.button(row);if(mainAction)box.append(mainAction);
  if(row.lieferform2){
   const query=new URLSearchParams({katalogReihe:row.lieferform2.reihe,katalogDesign:row.id,katalogLinie:state.linie});
   const a=el('a','Bearbeiten','button');a.href=merchantNavigation('/werkstatt/designs/bearbeiten/?'+query,location.href);a.dataset.catalogEdit=designKey(row);
@@ -429,7 +459,7 @@ function editorCell(row,{compactTarget=false}={}){
  if(row.lieferform2){box.append(button('Für anderes Ziel einpassen',()=>openVariant(row)));box.append(button('Name ändern',()=>{state.editing=designKey(row);render();}));box.append(button(row.hidden?'Einblenden':'Ausblenden',()=>save(row,{hidden:!row.hidden}),'quiet'));
   if(Array.isArray(row.ziele)){if(!compactTarget)box.append(targetCards(row));box.append(targetSuggestions(row),themeEditor(row));return box;}
   const issue=releaseIssue(row,state.seen),b=button(row.released?'Freigabe zurücknehmen':'Freigeben',()=>row.released?save(row,{freigegeben:false}):askRelease([row]),row.released?'quiet':'release');
-  b.dataset.releaseKey=designKey(row);b.title=row.released?'Design wieder auf „offen“ setzen.':'Design nach der Sichtprüfung freigeben.';
+  b.dataset.releaseKey=designKey(row);b.hidden=assignments.active;b.title=row.released?'Design wieder auf „offen“ setzen.':'Design nach der Sichtprüfung freigeben.';
   box.append(gate(b,row.released?null:issue));
   if(!row.released&&issue)box.append(el('small',issue,'muted'));
   if(state.seen.has(designKey(row)))box.append(el('small','Vorschau in dieser Sitzung geöffnet.','reviewed'));
@@ -501,17 +531,27 @@ function askRelease(rows,{onlyPassing=false}={}){
  $('#release-list').replaceChildren(...eligible.map(row=>el('li',row.id+' · '+row.name+(row.target?' · '+row.target.name:''))));
  $('#release-dialog').showModal();
 }
+let releaseController=null;
+function releaseProgress(progress){
+ $('#release-progress').textContent='Freigabe '+(progress.completed+(progress.active?1:0))+' von '+progress.total+' · '+progress.rejected+' abgelehnt'+(releaseController?.signal.aborted?' · Abbruch angefordert, laufende Freigabe wird noch abgeschlossen':'');
+}
+function releaseResults(results){
+ $('#release-results').replaceChildren(...results.map(item=>el('li',item.row.id+(item.row.target?' · '+item.row.target.name:'')+' · '+(item.status==='ok'?'ok':item.status==='cancelled'?'abgebrochen: nicht begonnen':'abgelehnt: '+item.error.message))));
+}
 async function confirmRelease(){
  if(state.busy||!state.pendingRelease)return;
  const keys=new Set(state.pendingRelease),onlyPassing=state.pendingOnlyPassing,rows=eligibleReleaseRows(targetReviewRows(visibleRows()),state.seen).filter(row=>keys.has(releaseKey(row))&&(!onlyPassing||!row.targetFamily||row.target?.fit?.status==='passt'));
  state.pendingRelease=null;$('#release-dialog').close();
  if(rows.length!==keys.size){status('Die Auswahl hat sich geändert. Bitte erneut auswählen und bestätigen.',true);return;}
- state.busy=true;render();status(rows.length+' Design'+(rows.length===1?' wird':'s werden')+' freigegeben …');
+ releaseController=new AbortController();state.busy=true;render();
+ $('#release-progress-panel').hidden=false;$('#release-results').replaceChildren();$('#release-stop').hidden=false;$('#release-stop').disabled=false;$('#release-progress-panel').scrollIntoView({block:'nearest'});
+ status(rows.length+' Design'+(rows.length===1?' wird':'s werden')+' freigegeben …');
  try{
-  const result=await releaseDesigns(rows,{patch:row=>patchDesign(row,{freigegeben:true,...(onlyPassing&&row.targetFamily?{onlyPassing:true}:{})}),onSuccess:(row,response)=>applySaved(row,response,{freigegeben:true})});
+  const result=await releaseDesigns(rows,{patch:row=>patchDesign(row,{freigegeben:true,...(onlyPassing&&row.targetFamily?{onlyPassing:true}:{})}),onSuccess:(row,response)=>applySaved(row,response,{freigegeben:true}),signal:releaseController.signal,onProgress:releaseProgress});
+  releaseResults(result.results);$('#release-progress').textContent='Freigabe '+(result.succeeded.length+result.failed.length)+' von '+rows.length+' · '+result.failed.length+' abgelehnt'+(result.cancelled.length?' · '+result.cancelled.length+' abgebrochen':' · abgeschlossen');
   const errors=result.failed.map(({row,error})=>row.id+': '+error.message);
-  status(result.succeeded.length+' freigegeben.'+(errors.length?' '+result.failed.length+' nicht freigegeben: '+errors.join(' · '):' Änderungen sind im Katalog gespeichert; den Commit macht der Betreiber.'),Boolean(errors.length));
- }finally{state.busy=false;render();}
+  status(result.succeeded.length+' freigegeben.'+(result.cancelled.length?' '+result.cancelled.length+' abgebrochen.':'')+(errors.length?' '+result.failed.length+' nicht freigegeben: '+errors.join(' · '):' Änderungen sind im Katalog gespeichert; den Commit macht der Betreiber.'),Boolean(errors.length));
+ }finally{releaseController=null;$('#release-stop').hidden=true;state.busy=false;render();}
 }
 
 function renderRows(rows,{focusEditor=true}={}){
@@ -543,7 +583,7 @@ function renderRows(rows,{focusEditor=true}={}){
  }
  table.append(tbody);host.append(table);
 }
-function render({focusEditor=true}={}){
+function render({focusEditor=true,preserveRows=false}={}){
  renderTargetFilters();
  renderPicker($('#lines'),state.lines.map(l=>({key:l.id,label:l.name,count:l.designsLieferform2+(l.bestand.length?' + Bestand':''),title:l.status||''})),state.linie,key=>{if(state.busy)return;state.linie=key;state.reihe=null;state.material=null;pushUrl();void loadLine().then(showFilteredDesigns);});
  const d=state.data;
@@ -559,9 +599,9 @@ function render({focusEditor=true}={}){
  $('#filter-selectable').checked=state.selectable;gate($('#filter-selectable'),state.startDesigns?'Startdesigns zeigen auch fehlende oder nicht wählbare Designs.':null);
  const rows=visibleRows();state.selected=retainVisibleSelection(state.selected,targetReviewRows(rows),state.seen);
  $('#summary').textContent=d?rows.length+' von '+d.counts.total+' Designs'+(state.reihe?' · '+state.reihe:'')+(state.status?' · Status '+state.status:'')+(state.freigabe?(state.freigabe==='ja'?' · freigegeben':' · offen'):'')+(state.selectable?' · nur wählbare':'')+(state.startDesigns?' · nur Startdesigns von Hauptprodukten':'')+(state.startDesigns&&Number.isInteger(d.startDesignSummary?.references)?' · insgesamt '+d.startDesignSummary.references+' Hauptprodukt-Zuordnungen in dieser Linie':''):'';
- renderRows(rows,{focusEditor});
- syncReleaseControls();
- for(const control of document.querySelectorAll('main button, main input, main select'))control.disabled=state.busy||control.dataset.blocked==='true';
+ if(!preserveRows)renderRows(rows,{focusEditor});
+ syncReleaseControls();assignments.sync();
+ for(const control of document.querySelectorAll('main button, main input, main select'))control.disabled=(state.busy&&control.id!=='release-stop')||control.dataset.blocked==='true';
  $('#main').setAttribute('aria-busy',String(state.busy));
 }
 $('#variant-family').addEventListener('change',variantFields);
@@ -575,6 +615,7 @@ $('#preview-dialog').addEventListener('close',()=>{if(!$('#preview-dialog').open
 $('#release-dialog').addEventListener('close',()=>{state.pendingRelease=null;});
 $('#release-cancel').addEventListener('click',()=>$('#release-dialog').close());
 $('#release-confirm').addEventListener('click',confirmRelease);
+$('#release-stop').addEventListener('click',()=>{if(!releaseController)return;releaseController.abort();$('#release-stop').disabled=true;$('#release-progress').textContent+=' · Abbruch angefordert, laufende Freigabe wird noch abgeschlossen';});
 $('#release-selected').addEventListener('click',()=>askRelease(targetReviewRows(visibleRows()).filter(row=>state.selected.has(releaseKey(row))),{onlyPassing:true}));
 $('#release-seen').addEventListener('click',()=>askRelease(passingSeenRows(),{onlyPassing:true}));
 $('#clear-selection').addEventListener('click',()=>{if(state.busy)return;state.selected.clear();render();});
@@ -601,4 +642,5 @@ window.addEventListener('pageshow',event=>{if(event.persisted){releasePreview();
 window.addEventListener('pagehide',()=>{clearTargetTiles();targetPreviewCache.invalidate();});
 $('#target-family').addEventListener('change',event=>{state.targetFamily=event.target.value||null;state.page=1;state.selected.clear();pushUrl();render();showFilteredDesigns();});
 $('#filter-theme').addEventListener('change',event=>{state.theme=event.target.value;state.page=1;pushUrl();render();showFilteredDesigns();});
+$('#assignment-mode').value='review';$('#assignment-mode').addEventListener('change',event=>{if(state.busy)return;assignments.setMode(event.target.value==='assign');render();});
 await load();

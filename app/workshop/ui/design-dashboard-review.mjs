@@ -28,15 +28,21 @@ export function retainVisibleSelection(selection,rows,seen){
 
 // The caller supplies the confirmed, eligible rows. Each design receives the same
 // existing PATCH; a failure does not repeat earlier successes or stop later rows.
-export async function releaseDesigns(rows,{patch,onSuccess=()=>{}}){
- const succeeded=[],failed=[],keys=new Set();
- for(const row of rows){
-  const key=releaseKey(row);if(keys.has(key))continue;keys.add(key);
+export async function releaseDesigns(rows,{patch,onSuccess=()=>{},onProgress=()=>{},signal}){
+ const succeeded=[],failed=[],cancelled=[],results=[],keys=new Set();
+ const unique=rows.filter(row=>{const key=releaseKey(row);if(keys.has(key))return false;keys.add(key);return true;});
+ const progress=active=>onProgress({total:unique.length,completed:succeeded.length+failed.length,rejected:failed.length,active,results:[...results]});
+ progress(null);
+ for(let index=0;index<unique.length;index++){
+  if(signal?.aborted){for(const row of unique.slice(index)){const item={key:releaseKey(row),row,status:'cancelled'};cancelled.push(item);results.push(item);}break;}
+  const row=unique[index],key=releaseKey(row);progress(row);
   let result;
-  try{result=await patch(row);}catch(error){failed.push({key,row,error});continue;}
-  succeeded.push({key,row,result});onSuccess(row,result);
+  // Do not abort a PATCH already sent: its server write may have committed.
+  // Wait for its result and cancel only requests that have not started.
+  try{result=await patch(row);}catch(error){const item={key,row,error,status:'rejected'};failed.push(item);results.push(item);progress(null);continue;}
+  const item={key,row,result,status:'ok'};succeeded.push(item);results.push(item);onSuccess(row,result);progress(null);
  }
- return {succeeded,failed};
+ progress(null);return {succeeded,failed,cancelled,results};
 }
 
 export function bulkReleaseIssue(row,seen){return releaseIssue(row,seen)||(row.targetFamily&&row.target?.fit?.status!=='passt'?'Nur Ziele mit „passt“ sind gemeinsam freigebbar.':null);}

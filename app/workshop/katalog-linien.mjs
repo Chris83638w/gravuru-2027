@@ -8,12 +8,12 @@ import fs from 'node:fs';import path from 'node:path';import {createHash} from '
 import {validateLine} from './katalog-source.mjs';
 import {katalogFor,forgetKatalog} from './design-dashboard.mjs';
 import {familyGaps} from './product-families.mjs';
+import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction} from './katalog-transaction.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const ID=/^[a-z0-9][a-z0-9_.-]{0,79}$/i,MAIN_ID=/^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$/,DESIGN_ID=/^[A-Za-z0-9][A-Za-z0-9_.,:-]{0,119}$/;
 const line1=(v,max)=>typeof v==='string'&&v.trim().length>0&&v.length<=max&&!/[\x00-\x1f]/.test(v);
-const writeAtomic=(file,text)=>{const tmp=file+'.'+process.pid+'.'+Date.now()+'.tmp';fs.writeFileSync(tmp,text);fs.renameSync(tmp,file);};
 export const SHOPIFY_ADMIN='https://admin.shopify.com/store/gravuru-design/products/';
 
 const lineFile=(katalog,lineId)=>katalog.files.get('linie:'+lineId)||null;
@@ -50,12 +50,15 @@ export function readKatalogStructure(root,{statics=null}={}){
 }
 
 // Änderung eines Hauptprodukts im Katalog. input: {action:'edit'|'assign'|'add', lineId, productKey|katalogId, …}.
-export function patchMainProduct(root,input,{actor='werkstatt',now=new Date()}={}){
+export function patchMainProduct(root,input,options={}){
+ return withKatalogWriteLock(root,lockedRoot=>patchMainProductLocked(lockedRoot,input,options));
+}
+function patchMainProductLocked(root,input,{actor='werkstatt',now=new Date(),beforeReplace}={}){
  if(!record(input))fail(422,'katalog_patch','Änderung als Objekt senden.');
- const katalog=katalogFor(root);
+ const katalog=katalogFor(root,{maxAgeMs:0});
  if(typeof input.sourceSha256==='string'&&input.sourceSha256!==lineDigest(katalog))fail(409,'katalog_changed','Der Katalog wurde inzwischen geändert. Bitte neu laden.');
  const line=katalog.lines.get(input.lineId);if(!line)fail(422,'katalog_patch','Produktlinie unbekannt.');
- const file=lineFile(katalog,line.id);
+ const file=safeKatalogPath(katalog.root,path.relative(katalog.root,lineFile(katalog,line.id)).split(path.sep).join('/'));
  const raw=fs.readFileSync(file,'utf8'),next=JSON.parse(raw.replace(/^﻿/,''));
  const subs=next.subcategories;
  const locate=(katalogId,subId=null)=>{for(const s of subs){if(subId&&s.id!==subId)continue;const i=(s.mainProducts||[]).findIndex(m=>m.id===katalogId);if(i>=0)return {sub:s,index:i,entry:s.mainProducts[i]};}return null;};
@@ -93,13 +96,21 @@ export function patchMainProduct(root,input,{actor='werkstatt',now=new Date()}={
    for(const [k,v] of Object.entries(patch)){const from=entry[k]??null,to=v;if(JSON.stringify(from)!==JSON.stringify(to)){changes[k]={from,to};if(to===null&&k!=='sizesOffered')delete entry[k];else entry[k]=to;}}
   }
  }else fail(422,'katalog_patch','Unbekannte Aktion (edit, assign, add).');
- const files=[];let warning=null;
- if(Object.keys(changes).length){
-  try{validateLine(next,{families:katalog.families,themes:katalog.themes,fontSets:katalog.fonts.sets,file:path.basename(file)});}catch(e){fail(422,'katalog_patch','Linie bleibt ungültig: '+e.message);}
-  // Liniendateien im Katalog sind mit 2 Leerzeichen eingerückt (geprüft 23.10.2026, alle 12); so bleibt der Diff klein.
-  writeAtomic(file,JSON.stringify(next,null,2)+'\n');files.push('linien/'+path.basename(file));forgetKatalog();
-  const protocol=path.join(katalog.root,'linien','_aenderungen.jsonl');
-  try{fs.appendFileSync(protocol,JSON.stringify({at:now.toISOString(),actor:String(actor).slice(0,160),line:line.id,action,productId:katalogId,changes})+'\n');files.push('linien/_aenderungen.jsonl');}catch(e){warning='Gespeichert, aber Protokoll linien/_aenderungen.jsonl nicht schreibbar: '+e.message;}
- }
- return {changed:files.length>0,line:line.id,action,productId:katalogId,changes,files,warning,uncommitted:files.length>0};
+ const files=Object.keys(changes).length?writeKatalogLineChange(katalog,next,{actor,now,action,productId:katalogId,changes,beforeReplace}):[];
+ return {changed:files.length>0,line:line.id,action,productId:katalogId,changes,files,warning:null,uncommitted:files.length>0};
+}
+
+// Caller holds the shared catalogue lock. The line and its audit entry succeed
+// together; a failed replacement restores both, including the previous audit.
+export function writeKatalogLineChange(katalog,next,{actor='werkstatt',now=new Date(),action,productId,changes,beforeReplace}={}){
+ const file=lineFile(katalog,next.id);
+ if(!file)fail(422,'katalog_patch','Produktlinie unbekannt.');
+ try{validateLine(next,{families:katalog.families,themes:katalog.themes,fontSets:katalog.fonts.sets,file:path.basename(file)});}catch(e){fail(422,'katalog_patch','Linie bleibt ungültig: '+e.message);}
+ const relative=path.relative(katalog.root,file).split(path.sep).join('/');
+ safeKatalogPath(katalog.root,relative);
+ const protocolRelative='linien/_aenderungen.jsonl',protocol=safeKatalogPath(katalog.root,protocolRelative,{missing:true});
+ const previous=fs.existsSync(protocol)?fs.readFileSync(protocol,'utf8'):'';
+ const audit={at:now.toISOString(),actor:String(actor).slice(0,160),line:next.id,action,productId,changes};
+ const files=writeKatalogTransaction(katalog.root,[{relative,text:JSON.stringify(next,null,2)+'\n'},{relative:protocolRelative,text:previous+(previous&&!previous.endsWith('\n')?'\n':'')+JSON.stringify(audit)+'\n'}],{beforeReplace});
+ forgetKatalog();return files;
 }

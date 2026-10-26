@@ -180,25 +180,32 @@ const OPTION_KINDS=['accessory','variant'],OPTION_SELECTIONS=['single','multiple
 export const FIELD_KINDS=['text','date','select','checkbox'];
 // Everything still "offen" in a family, in plain words. Products are generated
 // only when this list is empty and the material has a native adapter.
-export function familyGaps(f){
+export function familyGaps(f,{prices=true}={}){
  const gaps=[],m=FAMILY_MATERIALS[f.material.kind];
  if(open(f.material.processingProfileId))gaps.push('Verfahrensprofil');
  if(open(f.material.thicknessMm))gaps.push('Materialstärke');
  if(open(f.designArea.marginMm))gaps.push('Gestaltungsrand');
- for(const r of f.mountingRules){if(!familyRuleComplete(f,r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
- if(f.photo&&open(f.photo.extraPriceCents))gaps.push('Aufpreis weiteres Foto');
- const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
- for(const g of f.options||[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
+ for(const r of f.mountingRules){if(!familyRuleComplete(f,r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(prices&&open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
+ if(prices&&f.photo&&open(f.photo.extraPriceCents))gaps.push('Aufpreis weiteres Foto');
+ const price=f.sizes.filter(s=>open(s.baseCents));if(prices&&price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
+ for(const g of prices?f.options||[]:[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
  if(f.backing?.offsetMm>0&&f.groups.some(g=>g.shape==='contour'))gaps.push('Rückplattenversatz der Kontur');
  if(f.groups.some(g=>g.shape==='plaque'))gaps.push('Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)');
  return gaps;
 }
-export function familyReady(f){
- const gaps=familyGaps(f),m=FAMILY_MATERIALS[f.material.kind];
+export function familyReady(f,options){
+ const gaps=familyGaps(f,options),m=FAMILY_MATERIALS[f.material.kind];
  if(!m.adapter)return {ready:false,gaps,reason:`${m.name}-Gravurplatten sind in der Werkstatt noch nicht als eigenes Produkt angeschlossen. Planen und Briefing gehen schon; Produkte erzeugen folgt mit diesem Anschluss.`};
  if(m.adapter==='steel'&&f.material.thicknessMm!==null&&f.material.thicknessMm!==1.5)return {ready:false,gaps,reason:'Das Edelstahl-Produktmodell ist für 1,5 mm freigegeben.'};
  return gaps.length?{ready:false,gaps,reason:'Stammdaten unvollständig: '+gaps.join(' · ')}:{ready:true,gaps:[]};
+}
+// Design review and import have separate prerequisites (Issue #25).
+export function familyReadinessDetails(f){
+ const all=familyReady(f),geometry=familyReady(f,{prices:false});
+ const issues=value=>value.gaps.length?value.gaps:value.ready?[]:[value.reason];
+ const priceIssues=all.gaps.filter(gap=>!geometry.gaps.includes(gap));
+ return {complete:all.ready,issues:issues(all),geometry:{complete:geometry.ready,issues:issues(geometry)},prices:{complete:!priceIssues.length,issues:priceIssues}};
 }
 export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm,...(g.shape==='contour'?{outlinePath:s.outlinePath,holesMm:s.holesMm.map(h=>({...h}))}:{}),...(s.backingCornerRadiusMm!==undefined?{backingCornerRadiusMm:s.backingCornerRadiusMm}:{})};}
 // Corner radius of an offset contour: a rounded corner grows outward, a concave corner shrinks.

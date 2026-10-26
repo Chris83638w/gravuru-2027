@@ -183,7 +183,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
    let checkout;try{checkout=new URL(result.checkoutUrl);}catch{}
    if(typeof result.cartId!=='string'||!result.cartId.startsWith('gid://shopify/Cart/')||result.cartId.length>2048||/[\x00-\x20\x7f]/.test(result.cartId)||!checkout||checkout.protocol!=='https:'||checkout.hostname!==shopDomain||checkout.username||checkout.password||result.paymentConfirmed!==false)fail(503,'shop_entry_cart_result','Der Warenkorb konnte nicht bestätigt werden.');
    if(!operation.completed){cartContext.cartId=result.cartId;operation.completed=true;cartContext.expiresAt=clock()+limit.contextTtlMs;}
-   return json(res,200,{cartId:result.cartId,checkoutUrl:checkout.href,lineId:result.lineId,...(result.previousLineId?{previousLineId:result.previousLineId}:{}),configuration:result.configuration,quantity:result.quantity,unitCents:result.unitCents,totalCents:result.totalCents,currency:result.currency,mode:result.mode,duplicate:result.duplicate===true,shopifyVariantId:binding.shopifyVariantId,shopDomain,productionReady:false});
+   return json(res,200,{cartId:result.cartId,checkoutUrl:checkout.href,lineId:result.lineId,...(result.previousLineId?{previousLineId:result.previousLineId}:{}),configuration:result.configuration,quantity:result.quantity,unitCents:result.unitCents,totalCents:result.totalCents,currency:result.currency,mode:result.mode,duplicate:result.duplicate===true,shopifyVariantId:binding.shopifyVariantId,shopDomain,paymentConfirmed:false,productionReady:false});
   }catch(error){
    // Ein nicht mehr gültiger gemerkter Warenkorb (z. B. bereits bestellt) darf den nächsten Versuch nicht blockieren.
    if(usedExisting&&cartContext.cartId===usedExisting.cartId)cartContext.cartId=null;

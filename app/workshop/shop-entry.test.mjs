@@ -149,7 +149,7 @@ test('cart uses the registry binding of the configured variant, never the page v
  const b02=f.first.variants.find(v=>v.mountingKey==='B02');
  assert.equal(f.cartCalls.length,1);assert.equal(f.cartCalls[0].binding.shopifyVariantId,b02.shopifyVariantId);assert.deepEqual(f.cartCalls[0].binding.options,{mounting:'B02'});assert.equal(f.cartCalls[0].binding.unitCents,1148);
  assert.deepEqual(f.cartCalls[0].input,{draftId:f.draft.id,expectedRevision:2,quantity:1});assert.equal(f.cartCalls[0].existingCart,undefined);
- assert.equal(cart.data.shopifyVariantId,b02.shopifyVariantId);assert.equal(cart.data.checkoutUrl,'https://'+shopDomain+'/checkouts/cn/synthetic');assert.equal(cart.data.productionReady,false);assert.equal(cart.data.totalCents,1148);assert.equal(cart.data.lineId,'gid://shopify/CartLine/1?cart=synthetic');
+ assert.equal(cart.data.shopifyVariantId,b02.shopifyVariantId);assert.equal(cart.data.checkoutUrl,'https://'+shopDomain+'/checkouts/cn/synthetic');assert.equal(cart.data.productionReady,false);assert.equal(cart.data.paymentConfirmed,false,'Die Seite verlangt paymentConfirmed:false (shop-entry-client.mjs).');assert.equal(cart.data.totalCents,1148);assert.equal(cart.data.lineId,'gid://shopify/CartLine/1?cart=synthetic');
  // Ein zweiter Entwurf derselben Sitzung ergänzt den gemerkten Warenkorb (kein zweiter Checkout).
  const second=await request('/api/shop-entry/cart','POST',{draftId:f.draft.id,expectedRevision:2,quantity:1,configId:'konfig_'+uuid(9)},headers);
  assert.equal(second.status,200);assert.deepEqual(f.cartCalls[1].existingCart,{cartId:'gid://shopify/Cart/synthetic'});

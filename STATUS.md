@@ -1,3 +1,8 @@
+## Issue #22 behoben · 26.10.2026 (Claude)
+
+- Astras unabhängige Prüfung (PR #23, nur Nachweise) fand: RGB-Prozentfarben wie `rgb(15%,0%,0%)` umgingen die Farbprüfung der Gravurziele. Korrigiert in `740b4c8` (Prozent → 0–255 vor der Neutralgrenze 16), Regressionstest dabei; ohne die Korrektur schlägt er fehl. Tests: `design-target-rules` und `katalog-import` 22/22.
+- Kein Katalogprodukt war betroffen (Astra: kein Fall nachgewiesen). Host läuft noch auf 88469d0; die Korrektur kommt mit dem nächsten Host-Update.
+
 ## PR #21 gemerged · 25.10.2026 (Claude)
 
 - Astras Gesamtübergabe zu Paket M (nur Dokumentation, 2 Dateien) gelesen, gegen STATUS.md, Katalog-README (`7f4a048`) und Katalog-PR #5 abgeglichen und lokal signiert gemerged (`4dd34a2`). Kein Widerspruch; die Kennungsfrage aus dem Handy-Screenshot (README fehlte am Stand c11f968) ist seit `579390292` beantwortet.

@@ -1,3 +1,12 @@
+## Pilot Hauptprodukt 4100000 (D8 Leuchtturm 12 × 8) · 26.10.2026 (Claude)
+
+- D8 `TAE-V2A-8x5-D8` für Edelstahl-Türschilder freigegeben (Chris: „ok, freigabe“), Katalog `53d29d835` (Merge von host/werkstatt `ae2880cfa`).
+- Code `5dd75a7` auf dem Host: 31 alte ZIP-Pakete aus `deliverables/` entfernt (853 MB, Chris: ok), Code jetzt 234 MB; Liste zum Wiederherstellen in `deliverables/ENTFERNTE-ZIP-PAKETE.md`.
+- Shopify-Export (nur lesen): 1240 Produkte vollständig, doppelte SKU GT-PS-30x20.
+- Befund Import: `--hauptprodukt` allein grenzt Unterkategorien ohne mainProducts nicht ein (Probelauf hätte 205 Konfi-Produkte angelegt, auch ohne Designs). Pilot daher mit `--unterkategorie familienschilder --groesse GR-ES-AB-120X80-T15 --hauptprodukt 4100000`. CLI braucht `GRAVURU_PYTHON` (venv mit fontTools), sonst „Schrift konnte nicht gelesen werden“. Mit 4 GB Heap auf dem Host vom Speicherlimit beendet (137), 1 GB reicht.
+- Chris 26.10.: „ok“ / „nein du darfst es machen“ → ausgeführt (Plesk-Aufgabe, Log `private/pilot-20261026/03b.log`): Sicherung `workshop-vor-import.sqlite`; Import 1 Konfi-Produkt `katalog-edelstahl-tuerschilder-familienschilder-gr-es-ab-120x80-t15-4100000` (1 Vorlage D8) in `gravuru-2027-merchant-data/workshop.sqlite`; Shopify-Produkt 16077798965628 per productSet: Preis 19,90 → 19,99 €, Option „Befestigung“ mit 5 Varianten (K00 19,99 · B02 22,48 · B02S 22,68 · KGL 22,98 · KRA 23,98), Metafelder customization_id 4100000 und design_sha256. Frischer Export danach: Abgleich „unverändert“ (Shop = Soll).
+- Offen bis zur Testbestellung: Variantenbindung (Store-Kennung der Server-App unklar), Shop-Einstieg auf der Produktseite, Bestelleingang. Wird geklärt.
+
 ## Zielmigration des echten Katalogs · 26.10.2026 (Claude)
 
 - Chris 26.10.: „ja“. Katalog `fd50c6459`: 759 von 761 Designs haben jetzt explizite Familienziele (Edelstahl 737, Schiefer 22×14 natur 22), Freigaben 0 → 0. Blockiert und unverändert: GT-S-22x14-D234/D235 (Familie mehrdeutig, Entscheidung offen).

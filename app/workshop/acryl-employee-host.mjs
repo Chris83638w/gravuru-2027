@@ -23,6 +23,16 @@ export function acrylRoute(pathname){
  return null;
 }
 export function acrylAssetText(text,pathname=''){if(pathname==='/workshop-ui/configurator-test-client.mjs')return text;const pairs=[...rewrites,...nativeAssets,['/_merchant-editor.html','/_merchant-acryl-editor.html'],['/assistant.js','/acryl-assistant.js'],['/api/guides','/api/acryl-guides']],replacements=new Map(pairs),pattern=new RegExp(pairs.map(([from])=>[...from].map(c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('')).join('|'),'g');return text.replace(pattern,value=>replacements.get(value));}
+// Kundeneinstieg (App-Proxy), Händlertest-Gateway und Bestelleingang laufen nur, wenn der Start ausdrücklich
+// `customerIntegration` übergibt. Der Einstiegsskript-Aufruf leitet es aus GRAVURU_CUSTOMER_INTEGRATION ab:
+// leer/fehlend → null (nichts ändert sich), `merchant-test-only` → beide Stores + Einstieg `/apps/konfigurator`,
+// alles andere → Fehler vor dem Öffnen von Datenbanken. Der Bestelleingang nimmt weiterhin nur `test:true` an.
+export function customerIntegrationFromEnv(env=process.env){
+ const value=env.GRAVURU_CUSTOMER_INTEGRATION;
+ if(value===undefined||value==='')return null;
+ if(value!=='merchant-test-only')throw Object.assign(Error('GRAVURU_CUSTOMER_INTEGRATION kennt nur den Wert merchant-test-only.'),{code:'customer_integration_env'});
+ return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator'}};
+}
 export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=process.env,customerIntegration=null}){
  const module=file=>import(pathToFileURL(path.join(legacyRelease,'ops/plesk',file)).href);
  const [{merchantConfig},{createMerchantRuntime},{lockTestData}]=await Promise.all([module('merchant-config.mjs'),module('merchant-runtime.mjs'),module('lock.mjs')]);

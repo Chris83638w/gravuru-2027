@@ -1,3 +1,4 @@
+import {formGroupLabel} from './design-size-order.mjs';
 // Design-Dashboard (Chris 23.10.2026: „Designs Linie für Linie bearbeiten“): liest die Designs einer
 // Katalog-Linie aus dem Katalog-Repo – Lieferform 2 (`designs/<reihe>/<id>/`) bevorzugt, sonst der
 // Corel-Rohbestand (`designs/bestand/boegen/<Basis-SKU>/designs.json`) – und bewertet jede Zeile mit
@@ -348,7 +349,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
 function availableFormGroups(katalog,families,masters,rows){
  const targets=new Map(rows.filter(row=>row.lieferform2).map(row=>[JSON.stringify([row.lieferform2.reihe,row.id]),new Set((row.ziele??[]).map(target=>target.familie))]));
  return families.flatMap(family=>{
-  const groups=new Map(family.groups.filter(group=>family.sizes.some(size=>size.groupKey===group.key)).map(group=>[group.key,{familyId:family.id,familyName:family.name,groupKey:group.key,groupName:group.name,shape:group.shape,count:0}]));
+  const groups=new Map(family.groups.filter(group=>family.sizes.some(size=>size.groupKey===group.key)).map(group=>[group.key,{familyId:family.id,familyName:family.name,groupKey:group.key,groupName:formGroupLabel(group,family.sizes.filter(s=>s.groupKey===group.key)),shape:group.shape,count:0}]));
   const sizeGroups=new Map(family.sizes.map(size=>[size.key,size.groupKey]));
   const assigned=masters.filter(master=>targets.get(JSON.stringify([master.seriesFolder,master.id]))?.has(family.id));
   for(const entry of assignTargetSeries(family,assigned,katalog))for(const key of new Set(entry.sizes.map(size=>sizeGroups.get(size))))groups.get(key).count++;

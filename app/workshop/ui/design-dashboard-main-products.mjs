@@ -30,7 +30,8 @@ export function installDesignMainProducts({request,getContext,onChanged=async()=
   $('#main-product-id').textContent=group?.proposedId||'Kennung offen';$('#main-product-name').value=group?.suggestedName??'';
   $('#main-product-name-basis').textContent=group?.nameBasis?'Namensvorschlag nach „'+group.nameBasis.name+'“ ('+group.nameBasis.productId+'). '+group.nameBasis.rule:'Kein eindeutiges Namensmuster vorhanden. Bitte einen Namen eingeben.';
   $('#main-product-group-hint').textContent=group?.eligible===false?(group.reason||'Diese Formgruppe ist nicht verfügbar.'):(group?'Standard: alle kompatiblen Größen dieser Formgruppe.':'Keine kompatible Formgruppe vorhanden.');
-  for(const size of group?.sizes??[]){const label=node('label',undefined,'main-product-size'),input=node('input');input.type='checkbox';input.value=size.key;input.checked=true;input.dataset.mainProductSize=size.key;input.addEventListener('change',()=>{ready();void loadPreview();});label.append(input,node('span',size.label));host.append(label);}
+  const series=new Map();
+  for(const size of group?.sizes??[]){let sizeHost=host;if(size.seriesKey){if(!series.has(size.seriesKey)){const field=node('fieldset');field.append(node('legend',(size.groupName||group.name)+' · Reihe '+size.ratioLabel));host.append(field);series.set(size.seriesKey,field);}sizeHost=series.get(size.seriesKey);}const label=node('label',undefined,'main-product-size'),input=node('input');input.type='checkbox';input.value=size.key;input.checked=true;input.dataset.mainProductSize=size.key;input.addEventListener('change',()=>{ready();void loadPreview();});label.append(input,node('span',size.label));sizeHost.append(label);}
   ready();void loadPreview();
  }
  function renderGroups(){const family=currentFamily();choose($('#main-product-group'),family?.groups??[]);renderSizes();}

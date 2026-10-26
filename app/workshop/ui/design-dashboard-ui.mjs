@@ -115,7 +115,7 @@ const targetRow=row=>targetReviewRows([row]).find(item=>item.targetFamily&&item.
 const dashboardEditor=installDashboardEditor({request:merchantRequest,onSaved:refreshChangedDesign,onClosed:identity=>{const key=JSON.stringify([identity.reihe,identity.id]),link=[...document.querySelectorAll('[data-catalog-edit]')].find(node=>node.dataset.catalogEdit===key);link?.focus({preventScroll:true});for(const view of tileViews.values())markTileSeen(view);}});
 function appendTargetSizes(select,sizes){
  const groups=new Map();
- for(const item of sizes){const key=item.groupKey??'unknown';let group=groups.get(key);if(!group){group=el('optgroup');group.label=item.groupName||'Form offen';groups.set(key,group);select.append(group);}const option=el('option',item.label);option.value=item.key;group.append(option);}
+ for(const item of sizes){const key=item.seriesKey??item.groupKey??'unknown';let group=groups.get(key);if(!group){group=el('optgroup');group.label=(item.groupName||'Form offen')+(item.ratioLabel?' · Reihe '+item.ratioLabel:'')+(item.compatible===false?' · Variante nötig':'');groups.set(key,group);select.append(group);}const option=el('option',item.label);option.value=item.key;group.append(option);}
 }
 function renderTargetFilters(){
  const families=new Map();for(const row of state.data?.rows??[])for(const target of row.ziele??[])if(target.inLine!==false)families.set(target.familie,target);

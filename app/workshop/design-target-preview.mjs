@@ -1,6 +1,7 @@
 import {katalogFor,patchDesign,designTargetChecksum} from './design-dashboard.mjs';
 import {designTargets,designTargetCompatibility,assignTargetSeries} from './design-targets.mjs';
 import {familyProductConfig} from './product-families.mjs';
+import {orderedFamilySizes} from './design-size-order.mjs';
 import {katalogDesignToTemplate,parseDesignSvg,scaleTemplate,scaleEmbeddedMotifs} from './katalog-convert.mjs';
 import {convertFont} from './font-library.mjs';
 import {productPreview} from './product-preview.mjs';
@@ -10,8 +11,8 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  const katalog=katalogFor(root,{maxAgeMs:0}),master=katalog.designs.masters.find(d=>d.seriesFolder===reihe&&d.id===id),family=katalog.families.get(familie);
  if(!master)fail(404,'Katalogdesign nicht gefunden.');if(!family)fail(422,'Familie fehlt.');
  if(!designTargets(master,katalog).some(t=>t.familie===familie))fail(422,'Dieses Ziel wurde noch nicht bestätigt.');
- const assigned=assignTargetSeries(family,[master],katalog)[0],applicable=family.sizes.filter(s=>assigned.sizes.includes(s.key));
- const size=requestedSize?family.sizes.find(s=>s.key===requestedSize):applicable[0]||family.sizes[0];
+ const assigned=assignTargetSeries(family,[master],katalog)[0],ordered=orderedFamilySizes(family,{compatible:new Set(assigned.sizes)}),applicable=ordered.filter(s=>s.compatible);
+ const size=requestedSize?ordered.find(s=>s.key===requestedSize):ordered[0];
  if(!size)fail(422,'Größe gehört nicht zu dieser Familie.');
  const svgText=master.svg(),sourceMaster={...master,svg:()=>svgText},names=[...new Set(parseDesignSvg(svgText).layers.filter(l=>l.kind==='text'||l.text).map(l=>l.font))],resources=await katalog.fontResources(names,{available,converter});
  const checksum=designTargetChecksum(master,family,svgText,resources.versions);
@@ -26,8 +27,8 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  if(variantRequired)reviewFit.issues.push(...fit.issues);
  if(!checks.length&&!reviewFit.issues.length)reviewFit.issues.push('Keine kompatible Zielgröße. Eine Variante oder Klärung der Quelle ist erforderlich.');
  const view=structuredClone(family),viewSize=structuredClone(size);view.groups=view.groups.filter(g=>g.key===size.groupKey);view.options=[];delete view.quantityTiers;delete view.backing;view.mountingRules=view.mountingRules.filter(r=>size.mounting.includes(r.id));for(const rule of view.mountingRules)rule.priceCents=0;viewSize.baseCents=0;delete viewSize.quantityTiers;if(view.photo)view.photo.extraPriceCents=0;view.sizes=[viewSize];
- const compatible=new Set(applicable.map(s=>s.key)),sizeOption=s=>{const group=family.groups.find(g=>g.key===s.groupKey);return {key:s.key,sizeLabel:s.label,label:s.label+' · '+group.name,groupKey:group.key,groupName:group.name,compatible:compatible.has(s.key)};};
- const sizes=family.sizes.map(sizeOption).sort((a,b)=>Number(b.compatible)-Number(a.compatible));
+ const sizeOption=s=>({key:s.key,sizeLabel:s.label,label:s.label+' · '+s.groupName,groupKey:s.groupKey,groupName:s.groupName,displayGroupKey:s.displayGroupKey,seriesKey:s.seriesKey,ratioLabel:s.ratioLabel,compatible:s.compatible});
+ const sizes=ordered.map(sizeOption);
  const response={checksum,reviewFit,fit,familie,size:sizeOption(size),sizes,variantRequired};
  let config;try{config=familyProductConfig(view,viewSize,1,{previewOnly:true});}catch(error){if(error.status!==422)throw error;const message=error.message.startsWith('Vorschau offen:')?error.message:'Vorschau offen: '+error.message;return {...response,svg:null,fit:{...fit,status:'passt nicht',issues:[...fit.issues,message]},reviewFit:{...reviewFit,status:'passt nicht',issues:[...reviewFit.issues,message]}};}
  config.localResources={...config.localResources,fonts,motifs};config.profile.designs=[scaled];config.profile.defaultDesignId=scaled.id;config.photo.enabled=scaled.objects.some(o=>o.type==='photoSlot');

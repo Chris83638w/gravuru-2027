@@ -174,3 +174,13 @@ test('Issue 25: open prices are reported separately and do not prevent an actual
  const saved=await f.approve('test-schilder');assert.equal(saved.changed,true);assert.equal(f.read().ziele[0].freigabe.status,'freigegeben');
  const after=read(f.root,'familien/edelstahl/test-schilder.json');assert.ok(after.sizes.every(s=>s.baseCents===null),'approval never fills prices');
 });
+
+test('target preview returns proportional rows in size order and labels square geometry as Quadrat',async t=>{
+ const f=fixture(t),file='familien/edelstahl/test-schilder.json',family=read(f.root,file),base=family.sizes[0];
+ family.sizes.push({...base,key:'TS-QU-60',label:'6 × 6 cm',widthMm:60,heightMm:60});
+ write(f.root,file,family);forgetKatalog();
+ const result=await f.preview('test-schilder');
+ assert.deepEqual(result.sizes.filter(s=>s.compatible).map(s=>s.key),['TS-RE-60X40','TS-RE-90X60','TS-RE-120X80']);
+ assert.equal(result.size.key,'TS-RE-60X40');assert.equal(result.sizes.at(-1).groupName,'Quadrat');assert.equal(result.sizes.at(-1).compatible,false);
+ assert.ok(result.sizes.slice(0,3).every(s=>s.ratioLabel==='3:2'));assert.match(result.sizes.at(-1).label,/Quadrat/);
+});

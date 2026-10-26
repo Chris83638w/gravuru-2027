@@ -660,7 +660,7 @@ test('R2 current family and search filters limit bulk approval to the matching r
 test('R2 target size selector groups the source-provided form names without dropping size labels',async()=>{
  const h=await harness({rows:[tileTargetRow('A')],width:390,onTargetPreview:call=>({...tileResult(call),sizes:[{key:'OV-90X60',label:'9 × 6 cm · Oval',groupKey:'OV',groupName:'Oval',compatible:true},{key:'RE-120X80',label:'12 × 8 cm · Abgerundete Ecken R5',groupKey:'RE',groupName:'Abgerundete Ecken R5',compatible:false}]})});
  await previewButton(h,'A').emit('click');await tick();const groups=h.element('target-size-control').querySelectorAll('optgroup');
- assert.deepEqual(groups.map(group=>group.label),['Oval','Abgerundete Ecken R5']);assert.deepEqual(groups.map(group=>group.querySelector('option').textContent),['9 × 6 cm · Oval','12 × 8 cm · Abgerundete Ecken R5']);h.dispose();
+ assert.deepEqual(groups.map(group=>group.label),['Oval','Abgerundete Ecken R5 · Variante nötig']);assert.deepEqual(groups.map(group=>group.querySelector('option').textContent),['9 × 6 cm · Oval','12 × 8 cm · Abgerundete Ecken R5']);h.dispose();
 });
 
 
@@ -794,4 +794,12 @@ test('finished approval keeps a readable result list and a new batch replaces it
  const h=await harness({rows:['A','B'].map(id=>row(id))});await reviewed(h,'A');await select(h,'A');await h.element('release-selected').emit('click');await h.element('release-confirm').emit('click');
  assert.equal(h.element('release-results').textContent,'A · ok');assert.match(h.element('release-progress').textContent,/1 von 1 · 0 abgelehnt · abgeschlossen/);
  await reviewed(h,'B');await select(h,'B');await h.element('release-selected').emit('click');await h.element('release-confirm').emit('click');assert.equal(h.element('release-results').textContent,'B · ok');h.dispose();
+});
+
+test('R3 renders separate proportional rows without losing size checkboxes',async()=>{
+ const data=mainOptions(),group=data.lines[0].families[0].groups[0];
+ group.sizes=[{key:'S1',label:'6 × 4 cm',groupName:'Oval',seriesKey:'OV:3:2',ratioLabel:'3:2'},{key:'S2',label:'9 × 6 cm',groupName:'Oval',seriesKey:'OV:3:2',ratioLabel:'3:2'},{key:'S3',label:'8 × 4 cm',groupName:'Oval',seriesKey:'OV:2:1',ratioLabel:'2:1'}];
+ const h=await harness({rows:[tileTargetRow('A')],onMainProduct:()=>data});await openMain(h);
+ assert.deepEqual(h.element('main-product-sizes').querySelectorAll('legend').map(e=>e.textContent),['Oval · Reihe 3:2','Oval · Reihe 2:1']);
+ assert.deepEqual(h.element('main-product-sizes').querySelectorAll('input').map(e=>[e.value,e.checked]),[['S1',true],['S2',true],['S3',true]]);h.dispose();
 });

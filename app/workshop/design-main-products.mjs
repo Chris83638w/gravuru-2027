@@ -1,3 +1,4 @@
+import {orderedFamilySizes,formGroupLabel} from './design-size-order.mjs';
 // Dashboard main products are catalogue entries only. No approval or shop write.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -85,10 +86,10 @@ export function mainProductOptions(root,query){
    const family=katalog.families.get(familyId);if(!family)continue;
    const compatible=new Set(assignTargetSeries(family,[master],katalog)[0].sizes);
    const groups=family.groups.map(group=>{
-    const sizes=family.sizes.filter(s=>s.groupKey===group.key&&compatible.has(s.key));if(!sizes.length)return null;
+    const sizes=orderedFamilySizes(family,{compatible}).filter(s=>s.groupKey===group.key&&s.compatible);if(!sizes.length)return null;
     const identity=proposedId(master,group),hit=products(line).find(({entry})=>entry.id===identity.value);
     const reason=!identity.valid?'Kennung nicht zulässig: höchstens 80 Zeichen, Buchstaben, Ziffern, Punkt, Unterstrich und Bindestrich.':hit?'Hauptprodukt schon vorhanden.':null;
-    return {key:group.key,name:group.name,shape:group.shape,sizes:sizes.map(s=>({key:s.key,label:s.label??s.key,widthMm:s.widthMm,heightMm:s.heightMm})),
+    return {key:group.key,name:formGroupLabel(group,sizes),shape:group.shape,sizes:sizes.map(s=>({key:s.key,label:s.label??s.key,widthMm:s.widthMm,heightMm:s.heightMm,groupName:s.groupName,seriesKey:s.seriesKey,ratioLabel:s.ratioLabel})),
      proposedId:identity.value,...suggestedName(katalog,line,family,group,master,sizes),existing:hit?existingDto(line,hit.sub,hit.entry,raw.checksum):null,eligible:!reason,reason};
    }).filter(Boolean);
    families.push({id:family.id,name:family.name,previewUrl:'/api/workshop/designs/target-preview?'+new URLSearchParams({reihe:master.seriesFolder,id:master.id,familie:family.id}),groups});

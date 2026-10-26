@@ -98,7 +98,7 @@ test('Kennung ersetzt nur Komma durch Unterstrich; zu lang wird weder gekürzt n
 test('Vorschlagsname verweist auf ein vorhandenes Hauptprodukt derselben Form',t=>{
  const root=temp(t),line=json(lineFile(root));line.subcategories[0].mainProducts=[{id:'P1',name:'Schild Foto rund 12x8 cm',startDesign:'test-foto',sizesOffered:['TS-RE-120X80'],externalIds:{}}];write(lineFile(root),line);
  const group=opts(root).lines[0].families[0].groups[0];
- assert.equal(group.suggestedName,'Schild Herz mit Namen 9 × 6 cm');assert.equal(group.nameBasis.productId,'P1');assert.equal(group.nameBasis.name,'Schild Foto rund 12x8 cm');
+ assert.equal(group.suggestedName,'Schild Herz mit Namen 6 × 4 cm');assert.equal(group.nameBasis.productId,'P1');assert.equal(group.nameBasis.name,'Schild Foto rund 12x8 cm');
 });
 test('Löschen nur unverbunden, mit aktuellem Linienstand und atomarem Protokoll',t=>{
  const root=temp(t);createDesignMainProduct(root,request(root));
@@ -162,4 +162,10 @@ test('Vorhandene Linienvalidierung begrenzt die Hauptprodukte; ein voller Bereic
  const input=request(root),before=fs.readFileSync(lineFile(root),'utf8');
  assert.throws(()=>createDesignMainProduct(root,input),error=>error.status===422&&/höchstens 300/.test(error.message));
  assert.equal(fs.readFileSync(lineFile(root),'utf8'),before);assert.equal(fs.existsSync(logFile(root)),false);
+});
+
+test('R3 orders real compatible sizes from small to large without changing their keys',t=>{
+ const root=temp(t),group=opts(root).lines[0].families[0].groups[0];
+ assert.deepEqual(group.sizes.map(s=>s.key),['TS-RE-60X40','TS-RE-90X60','TS-RE-120X80']);
+ assert.ok(group.sizes.every(s=>s.ratioLabel==='3:2'));assert.equal(new Set(group.sizes.map(s=>s.seriesKey)).size,1);
 });

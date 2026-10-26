@@ -5,8 +5,8 @@
 :host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) button:where(:not([data-ux=swatch]):not(.ux-handle-delete)){color:#353b42!important;border-color:#d9dde2!important}
 :host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview) button:not([data-ux=swatch]):hover{background:#eef0f2!important}
 :host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview) button[aria-pressed=true]:not([data-ux=swatch]){background:#e9ecef!important;border-color:#616973!important}
-:host([data-ux-neutral]) :is(.ux-primary,.fk-buy-button,[data-direct-done],.ux-photo-quick-apply){background:#343a40!important;color:white!important;border-color:#343a40!important}
-:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) :is(.ux-primary,.fk-buy-button,[data-direct-done],.ux-photo-quick-apply):hover{background:#22272d!important;color:white!important}
+:host([data-ux-neutral]) :is(.ux-primary,.fk-buy-button,.completion-cart,[data-direct-done],.ux-photo-quick-apply){background:#343a40!important;color:white!important;border-color:#343a40!important}
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) :is(.ux-primary,.fk-buy-button,.completion-cart,[data-direct-done],.ux-photo-quick-apply):hover{background:#22272d!important;color:white!important}
 :host([data-ux-neutral]) :is(.ux-tabs button,.ux-tab-icon){background:#f3f4f5!important;color:#525a63!important}
 :host([data-ux-neutral]) .ux-tabs button[aria-selected=true]{background:#e9ecef!important;border-color:#444c55!important;color:#252b32!important}
 :host([data-ux-neutral]) .ux-tabs button[aria-selected=true] .ux-tab-icon{background:#444c55!important;color:white!important}
@@ -27,7 +27,7 @@
 :host([data-ux-neutral]) .fk-buy-dock button.completion-finish{background:#343a40!important;color:#fff!important;border-color:#343a40!important}
 :host([data-ux-neutral]) .ux-shell .ux-panel .ux-primary{color:#fff!important}
 
-:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) button:is(.ux-primary,.fk-buy-button,.completion-finish,[data-direct-done],.ux-photo-quick-apply,.ux-file-select){background:#343a40!important;color:#fff!important;border-color:#343a40!important}
+:host([data-ux-neutral]) :is(.ux-shell,.ux-dialog,.c-large-preview,.fk-buy-dock) button:is(.ux-primary,.fk-buy-button,.completion-cart,.completion-finish,[data-direct-done],.ux-photo-quick-apply,.ux-file-select){background:#343a40!important;color:#fff!important;border-color:#343a40!important}
 /* Fotoauswahl: Hauptaktion, nicht blass (dunkle Schrift auf grünem Grund wirkte deaktiviert). */
 :host([data-ux-neutral]) :is(.ux-shell,.ux-dialog) button.ux-file-select:hover{background:#22272d!important;color:#fff!important}
 

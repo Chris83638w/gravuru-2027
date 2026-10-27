@@ -128,4 +128,10 @@ test('profile fonts that are present in the product library are accepted on save
  assert.ok(Object.hasOwn(frozen.localResources.fonts,id),'genutzte Profilschrift liegt im Paket');
  text.font='Nicht vorhanden · 000000000000';
  await assert.rejects(prepareAcrylicReview({record,config,input,assets:w.assets}),/Schrift/);
+ // Ohne Schriftauswahl im Profil bleibt es beim bisherigen Rahmen: Produktschriften und Grundset, keine Fremdschrift.
+ const open=structuredClone(config);open.workshopProfiles={...open.workshopProfiles,selections:{...open.workshopProfiles?.selections,fonts:null}};delete open.localResources.fonts[id];
+ text.font=id;
+ await assert.rejects(prepareAcrylicReview({record,config:open,input,assets:w.assets}),/nicht freigegeben/);
+ text.font='Montserrat';
+ await prepareAcrylicReview({record,config:open,input,assets:w.assets});
 });

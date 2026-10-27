@@ -20,7 +20,7 @@ export function planAcrylicOrderProduct({line,archive,input,assets}){
  });
  if(!design.objects.length)fail('Die Gestaltung enthält nach dem Entfernen privater Uploads keine wiederverwendbaren Elemente.');
  if(design.customerFields)design.customerFields=design.customerFields.filter(f=>design.objects.some(o=>o.id===f.id));
- const config=structuredClone(saved.product.config);config.localResources=structuredClone(frozen.localResources);
+ const config=structuredClone(saved.product.config);config.localResources=structuredClone(frozen.localResources);config.localResources.fonts={...structuredClone(saved.product.config.localResources?.fonts||{}),...config.localResources.fonts};
  config.profile.designs=[design];config.profile.defaultDesignId=design.id;
  config.profile.id='order-design-draft';config.profile.revision=1;config.profile.binding={kind:'local-review',productId:'order-design-draft'};config.reviewOnly=true;config.profile.features={...config.profile.features,orderEnabled:false,productionConfirmed:false};
  for(const group of config.profile.optionGroups)group.defaultValueId=saved.state.options[group.id];

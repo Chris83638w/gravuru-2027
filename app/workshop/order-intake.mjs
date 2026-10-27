@@ -213,7 +213,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(!variant||keys.has(m.key)||ids.has(variantId))fail(422,'Ausführung oder Shop-Variante fehlt oder wurde doppelt zugeordnet.');keys.add(m.key);ids.add(variantId);return {variant,variantId};
    });
    return tx(()=>{
-    const before=this.bindings().filter(b=>b.shopDomain===shopDomain&&b.productId===record.id&&b.productRevision===record.revision);
+    const before=db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? AND b.shop=? AND b.product_id=? AND b.product_revision=? ORDER BY b.rowid DESC').all(tenant,shopDomain,record.id,record.revision).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options)));
     for(const {variant,variantId} of mapped)if(before.some(b=>optionKey(b.options)===optionKey(variant.options)&&b.variantId!==variantId))fail(409,'Diese Ausführung ist bereits anders zugeordnet. Bestehende Bindungen bleiben erhalten; Änderungen benötigen einen neuen Produktstand.');
     const bindings=mapped.map(({variant,variantId})=>this.bind({record,shopDomain,variantId,...(record.document.schema===PRODUCT_SCHEMA?{options:variant.options}:{}),...(personalizationPricing===undefined?{}:{personalizationPricing})}));
     return {bindings,created:bindings.filter(b=>!before.some(old=>old.id===b.id)).length,configuration:plan.configuration,sourceSha256:plan.sha256,shopVerified:false,sent:false};

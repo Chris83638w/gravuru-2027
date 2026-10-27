@@ -1,4 +1,5 @@
 import {createHash} from 'node:crypto';
+import {isBindingReadSnapshot,withBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
 import {planShopProductBindings} from './shop-product-binding-plan.mjs';
 
 const fail = (code, message, status = 422) => { throw Object.assign(new Error(message), {code, status}); };
@@ -6,6 +7,8 @@ const plain = value => value !== null && typeof value === 'object' && !Array.isA
   [Object.prototype, null].includes(Object.getPrototypeOf(value));
 const fields = (value, keys) => plain(value) && Object.keys(value).length === keys.length && keys.every(key => Object.hasOwn(value, key));
 const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
+const bindingDigests=new WeakMap();
+function bindingDigest(rows){if(!isBindingReadSnapshot(rows))return digest(rows);if(!bindingDigests.has(rows))bindingDigests.set(rows,digest(rows));return bindingDigests.get(rows);}
 const allowed = ['shopifyProductId', 'shopifyVariantId', 'productId', 'productRevision', 'options'];
 const productGid = /^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/;
 const variantGid = /^gid:\/\/shopify\/ProductVariant\/[1-9][0-9]{0,19}$/;
@@ -81,11 +84,11 @@ export function createShopProductBindingCheck({adapter, reader, clock = Date.now
       productionProfileRef: !profileMissing && readiness.productionProfileRef ? {id: readiness.productionProfileRef.id,
         revision: readiness.productionProfileRef.revision, sha256: readiness.productionProfileRef.sha256} : null};
     return {unitCents: selected.unitCents, readiness: publicReadiness,
-      stateHash: digest({record, selected, readiness, bindings})};
+      stateHash: digest({record, selected, readiness, bindingsSha256:bindingDigest(bindings)})};
   }
   return Object.freeze({async check(input) {
     ensureScope();
-    const selections = selectionsFrom(input), before = selections.map(capture), started = clock();
+    const selections = selectionsFrom(input), before = withBindingReadSnapshot(adapter,()=>selections.map(capture)), started = clock();
     if (!Number.isSafeInteger(started) || started < 0) fail('shop_binding_freshness', 'Ungültige Prüfzeit.');
     let response;
     try { response = await reader.inspectVariants(selections.map(item => item.shopifyVariantId)); }
@@ -103,6 +106,7 @@ export function createShopProductBindingCheck({adapter, reader, clock = Date.now
         fail('shop_binding_shop_evidence', 'Shopify-Varianten sind nicht eindeutig.', 502);
       byId.set(variant.id, variant);
     }
+    return withBindingReadSnapshot(adapter,()=>{
     const products = new Map(), entries = selections.map((item, index) => {
       const current = capture(item), variant = byId.get(item.shopifyVariantId);
       if (current.stateHash !== before[index].stateHash) fail('shop_binding_changed', 'Produkt, Profil oder Zuordnung wurde während der Prüfung geändert.', 409);
@@ -123,5 +127,7 @@ export function createShopProductBindingCheck({adapter, reader, clock = Date.now
       productionStatus: entries.some(item => item.readiness.productionStatus === 'profile-assignment-pending') ? 'profile-assignment-pending' : 'not-released',
       productionReady: false, publicAccess: false, checkoutEnabled: false, written: false, shopifyWrites: false,
       shopIdentityConfirmed: true, completeness: 'requested-variants-only', entries, plan};
+    });
   }});
 }
+

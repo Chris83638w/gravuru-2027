@@ -1,3 +1,9 @@
+# Bindungsprüfung in synchronen Blöcken · 27.10.2026 (Codex)
+
+Basis `3775ae7`: vollständige Bindungsevidenz wird je synchronem Prüfschritt einmal gelesen, tief eingefroren, gehasht und indexiert. Neue Schritte vor/nach Shopify-await und innerhalb BEGIN IMMEDIATE; der Snapshot endet vor den Writes. Globale Konflikt-, Preis-, Revisions-, Profil-, Head- und 60-Sekunden-Frischeprüfungen bleiben erhalten. `bindVariants` liest seine zuvor ohnehin gefilterte Produktrevision nach jedem Insert frisch per SQL. Zusätzlich korrigiert der Shopify-Vorbereitungsplan den Journalverweis auf `verified-server-import.entry.id`.
+
+**18/18 gezielte Tests grün**, unabhängiger Review ohne Blocker. Derselbe lokale späte 100er-Block mit 15.120 Altbindungen: **30.727 → 4.685 ms, 601 → 3 vollständige Bindungsabfragen**, jeweils Exit 0 und 100 korrekt geschriebene Zuordnungen. Peak-RSS 348.228 → 324.208 KB. Synthetischer Shopify-Leser; keine Aussage über reale Netzwerklaufzeiten. Keine Livebereitstellung oder Shopify-/UI-Änderung durch dieses Paket. Nächster Schritt nach dem Merge: genaue Version für eine spätere zulässige Serverbereitstellung vorhalten; reale Kunden-/Warenkorbabnahme gesondert fortsetzen. [Messung, Abgrenzung und Testkommandos](docs/handoffs/2026-10-27-funkklingeln-binding-batches.md).
+
 # Bindungsaktivierung: Speicherbedarf und Bestandsabfragen · 27.10.2026 (Codex)
 
 Auf Basis `b5b241c` teilt `shop-product-binding-store` identische Produktrecords nur innerhalb einer gesperrten Transaktion, nachdem sämtliche bisherigen Einzelprüfungen bestanden sind. `order-intake.bindings()` nutzt einen mandantengebundenen LEFT JOIN statt N+1-Abfragen; `shop-product-binding-adapter.readiness()` indexiert die vollständige frisch gelesene Bindungsliste lokal. Globale Konflikte, Preise, Revisionen, atomarer Rollback und 60-Sekunden-Frischefrist bleiben erhalten.

@@ -1,6 +1,7 @@
 // Private synchronous reads over EXISTING server instances. No database constructor,
 // migration, binding write, Shopify request, price formula or material conversion.
 import {isDeepStrictEqual} from 'node:util';
+import {immutableBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 
 const object = v => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -48,6 +49,13 @@ export function createShopBindingReadAdapter({storeId, tenantId, shopDomain, wor
       !productionProfiles || typeof productionProfiles.resolve !== 'function')
     fail('shop_binding_adapter_instances', 'Vorhandene Repository-, Bindungs- und Profilinstanzen fehlen.');
   const documents = new WeakMap();
+  let bindingRead=null;
+  function withBindingReadSnapshot(read){
+    scope();
+    if(bindingRead||typeof read!=='function')fail('shop_binding_snapshot_scope','Only one synchronous binding read phase is allowed.');
+    bindingRead={rows:null,readiness:new Map()};
+    try{const value=read();if(value&&typeof value.then==='function')fail('shop_binding_adapter_async','A binding read phase must be synchronous.');return value;}finally{bindingRead=null;}
+  }
   function scope() {
     if (workshop.tenantId !== tenantId || repository.tenantId !== tenantId || orderIntake.tenantId !== tenantId ||
         workshop.sessionContext?.shopDomain !== shopDomain || workshop.repository !== repository ||
@@ -110,10 +118,12 @@ export function createShopBindingReadAdapter({storeId, tenantId, shopDomain, wor
   }
   function getBindings() {
     scope();
+    if(bindingRead?.rows)return bindingRead.rows;
     const values = sync(orderIntake, 'bindings');
     if (!Array.isArray(values) || values.some(row => !object(row) || typeof row.shopDomain !== 'string' ||
         (own(row, 'tenantId') && row.tenantId !== tenantId))) fail('shop_binding_existing', 'Der bestehende Bindungsbeleg ist ungültig oder mandantenfremd.');
-    return copy(values.filter(row => row.shopDomain === shopDomain));
+    const rows=copy(values.filter(row => row.shopDomain === shopDomain));
+    return bindingRead?(bindingRead.rows=immutableBindingReadSnapshot(rows)):rows;
   }
   function readiness(recordOrProductId) {
     scope(); // Configuration/identity failures must never be downgraded to product blockers.
@@ -135,18 +145,24 @@ export function createShopBindingReadAdapter({storeId, tenantId, shopDomain, wor
         if (error?.code === 'shop_binding_adapter_scope' || error?.code === 'shop_binding_adapter_async') throw error;
         add(error.code, error.message);
       }
-      const existing = getBindings(), current = existing.filter(row => row.productId === record.id && row.productRevision === record.revision);
-      // Index only this fresh complete read; cross-product conflicts remain visible.
-      const variantProducts=new Map(),selectionVariants=new Map();
-      for(const row of existing){
-        if(!variantProducts.has(row.variantId))variantProducts.set(row.variantId,new Set());
-        variantProducts.get(row.variantId).add(row.productId);
+      const existing=getBindings(),readKey=JSON.stringify([record.id,record.revision]);
+      let indexed=bindingRead?.readiness.get(readKey);
+      if(!indexed){
+        const current=existing.filter(row=>row.productId===record.id&&row.productRevision===record.revision);
+        const variantProducts=new Map(),selectionVariants=new Map();
+        for(const row of existing){
+          if(!variantProducts.has(row.variantId))variantProducts.set(row.variantId,new Set());
+          variantProducts.get(row.variantId).add(row.productId);
+        }
+        if(current.length>1)for(const row of current){
+          const selected=optionKey(row.options??{});
+          if(!selectionVariants.has(selected))selectionVariants.set(selected,new Set());
+          selectionVariants.get(selected).add(row.variantId);
+        }
+        indexed={current,variantProducts,selectionVariants};
+        bindingRead?.readiness.set(readKey,indexed);
       }
-      if(current.length>1)for(const row of current){
-        const selected=optionKey(row.options??{});
-        if(!selectionVariants.has(selected))selectionVariants.set(selected,new Set());
-        selectionVariants.get(selected).add(row.variantId);
-      }
+      const {current,variantProducts,selectionVariants}=indexed;
       for(const row of current){
         if(variantProducts.get(row.variantId).size>1)
           add('binding_variant_product_conflict', 'Eine bestehende Shopify-Variante ist mehreren Konfigurationsprodukten zugeordnet.');
@@ -161,5 +177,5 @@ export function createShopBindingReadAdapter({storeId, tenantId, shopDomain, wor
       productionBlockers: copy(profile?.blockers ?? []), productionReady: false,
       scope: 'private-readiness-only', publicAccess: false, checkoutEnabled: false};
   }
-  return Object.freeze({tenantId, shopDomain, storeId, getCurrentProduct, resolveSelection, resolveProductionProfile, getBindings, readiness});
+  return Object.freeze({tenantId, shopDomain, storeId, getCurrentProduct, resolveSelection, resolveProductionProfile, getBindings, readiness, withBindingReadSnapshot});
 }

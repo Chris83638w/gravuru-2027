@@ -103,7 +103,7 @@ export async function prepareDoorbellShopify({stage,source,images,out,skuMax=504
    reorderExisting:isNew?null:{productId:sourceProduct.id,positions:[{id:variants[0].shopifyVariantId,position:1}]},
    primaryMedia:{localFile:primaryFile,sha256:image.webpSha256,bytes:imageBytes.length,alt,mediaContentType:'IMAGE',originalSource:null},
    supportingMedia:isNew?supportingMedia:[],
-   activateAfterBinding:{metafield:{namespace:'custom',key:'customization_id',type:'single_line_text_field'},valueFrom:'verified-server-import.entry.productId',requiredPattern:'^cfg_[A-Za-z0-9_-]+$',requires:'120 exact live-verified variant bindings and the persisted revision-bound approval'},
+   activateAfterBinding:{metafield:{namespace:'custom',key:'customization_id',type:'single_line_text_field'},valueFrom:'verified-server-import.entry.id',requiredPattern:'^cfg_[A-Za-z0-9_-]+$',requires:'120 exact live-verified variant bindings and the persisted revision-bound approval'},
    publishAfterVerification:{publicationId:'gid://shopify/Publication/291556688252',required:isNew},
    sourceReadAt:snapshot.readAt});
  }

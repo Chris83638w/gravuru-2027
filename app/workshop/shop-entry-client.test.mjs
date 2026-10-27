@@ -161,12 +161,14 @@ test('global shop embed: product data from the theme block, own start link, buy 
  const match=(n,sel)=>sel.split(',').some(s=>{s=s.trim();
   if(s==='form[action*="/cart/add"]')return n.tag==='form'&&(n.attrs.action||'').includes('/cart/add');
   if(s==='[name="id"]')return n.attrs.name==='id';if(s==='[type="submit"]')return n.attrs.type==='submit';if(s==='[name="add"]')return n.attrs.name==='add';
-  if(s==='.shopify-payment-button')return (n.attrs.class||'').includes('shopify-payment-button');if(s==='[data-gravuru-personalisieren]')return 'data-gravuru-personalisieren' in n.attrs;return false;});
+  if(s==='.shopify-payment-button')return (n.attrs.class||'').includes('shopify-payment-button');if(s==='.product__block--quantity_selector')return (n.attrs.class||'').includes('product__block--quantity_selector');
+  if(s==='[name="quantity"]')return n.attrs.name==='quantity';if(s==='[name="quantity"][form]')return n.attrs.name==='quantity'&&!!n.attrs.form;if(s==='[data-gravuru-personalisieren]')return 'data-gravuru-personalisieren' in n.attrs;return false;});
  const addQuery=n=>{n.querySelectorAll=sel=>all(n).slice(1).filter(x=>match(x,sel));n.querySelector=sel=>n.querySelectorAll(sel)[0]||null;n.children.forEach(addQuery);return n;};
- const form=(variant,cls='')=>el('form',{action:'/cart/add',class:cls},[el('input',{name:'id',value:variant}),el('button',{type:'submit',name:'add'}),el('div',{class:'shopify-payment-button'})]);
+ const form=(variant,cls='')=>el('form',{action:'/cart/add',class:cls},[el('input',{name:'id',value:variant}),el('button',{type:'submit',name:'add'}),el('div',{class:'shopify-payment-button'}),el('input',{name:'quantity',value:'1'})]);
+ const qtyBlock=el('div',{class:'product__block product__block--quantity_selector'}),qtyOther=el('input',{name:'quantity',form:'fremd'});
  const main=form('11'),sticky=el('div',{class:'sticky-atc'},[form('11')]),other=form('99');
  const installment=el('form',{action:'/cart/add',class:'installment'},[el('input',{name:'id',value:'11'})]);
- const body=el('body',{},[el('script',{id:'gravuru-konfi',text:JSON.stringify({productId:5,variantId:12,variants:[11,12,'x'],back:'/products/schild'})}),installment,sticky,main,other]);
+ const body=el('body',{},[el('script',{id:'gravuru-konfi',text:JSON.stringify({productId:5,variantId:12,variants:[11,12,'x'],back:'/products/schild'})}),installment,qtyBlock,qtyOther,sticky,main,other]);
  const doc={body,getElementById:id=>all(body).find(n=>n.attrs.id===id)||null,createElement:tag=>addQuery(el(tag))};
  addQuery(body);doc.querySelectorAll=body.querySelectorAll;doc.querySelector=body.querySelector;
  const config=pageConfig(doc);
@@ -180,6 +182,7 @@ test('global shop embed: product data from the theme block, own start link, buy 
  assert.equal(box.children[0].href,'/apps/konfigurator/start?product=5&variant=11&back=%2Fproducts%2Fschild','aktuell gewählte Variante');
  for(const f of [main,sticky.children[0]])for(const n of f.children.slice(1))assert.ok('data-gravuru-hidden-buy' in n.attrs);
  for(const n of other.children)assert.ok(!('data-gravuru-hidden-buy' in n.attrs),'Kaufknöpfe anderer Produkte bleiben');
+ assert.ok('data-gravuru-hidden-buy' in qtyBlock.attrs,'Mengen-Block des Themes ausgeblendet');assert.ok(!('data-gravuru-hidden-buy' in qtyOther.attrs),'Mengenfeld eines fremden Formulars bleibt');
  assert.equal(prepareProductPage(config,doc),null,'kein zweiter Knopf');
  // Ohne/mit kaputten Daten: nichts tun.
  for(const text of ['','{',JSON.stringify({productId:'x',variants:[1]}),JSON.stringify({productId:5,variants:[]}),JSON.stringify({productId:5,variants:[1],back:'//evil.example'})]){

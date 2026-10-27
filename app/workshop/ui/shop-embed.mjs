@@ -71,13 +71,6 @@ export function prepareProductPage(config,doc=globalThis.document){
  box.append(link,note);main.after(box);return box;
 }
 
-// Vorladen (Chris 27.10.2026: „wenn die Seite geladen ist, kann der Konfi bereits laden“): nach dem Laden der
-// Produktseite im Leerlauf, sobald der Knopf sichtbar ist (oder bei Maus/Finger/Fokus darauf). Bei Datensparmodus
-// oder 2G nur bei dieser Absicht, damit Kunden ohne Interesse keine ~15 MB laden.
-export function eagerPreload(connection=globalThis.navigator?.connection){
- return !(connection?.saveData===true||/(^|-)2g$/.test(String(connection?.effectiveType||'')));
-}
-
 // Nur Nachrichten genau dieses Konfigurator-Fensters vom Konfigurator-Host werden angenommen.
 export function acceptedMessage(event,frame){
  if(!frame||event.origin!==EDITOR_ORIGIN||event.source!==frame.contentWindow)return null;
@@ -151,20 +144,9 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   const style=document.createElement('style');style.textContent='[data-gravuru-hidden-buy]{display:none!important}';document.head.append(style);
   let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;prepareProductPage(config);});}).observe(document.body,{childList:true,subtree:true});
  }
- const startLink=()=>document.querySelector('[data-gravuru-personalisieren] a[data-gravuru-start]');
- const warm=()=>{const link=startLink();if(!link)return;if(config)link.href=startHref(config,currentVariant(config,document));preload(startUrl(link));};
- const link=startLink();
- if(link){
-  for(const type of ['pointerenter','touchstart','focus'])link.addEventListener(type,warm,{once:true,passive:true});
-  if(eagerPreload()){
-   const idle=fn=>typeof requestIdleCallback==='function'?requestIdleCallback(fn,{timeout:3000}):setTimeout(fn,1500);
-   const begin=()=>idle(()=>{
-    if(typeof IntersectionObserver!=='function')return warm();
-    const watch=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){watch.disconnect();warm();}},{threshold:.5});watch.observe(link);
-   });
-   if(document.readyState==='complete')begin();else window.addEventListener('load',begin,{once:true});
-  }
- }
+ // Vorladen ist aus (Messung 27.10.2026, Chrome): ein unsichtbares Fenster lädt der Browser stark gebremst –
+ // nach 10 s war noch nicht einmal das Modell da, nach dem Klick dauerte es so lange wie ohne Vorladen. Es kostete
+ // nur Daten. Schneller wird das Öffnen über ein schlankeres Modell. preload() bleibt für spätere Versuche.
  document.addEventListener('click',event=>{
   const link=event.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]');
   if(!link||event.defaultPrevented)return;

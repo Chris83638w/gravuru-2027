@@ -87,3 +87,45 @@ p=f.open(stream=sys.stdin.buffer.read(),filetype='pdf');page=p[0];k=72/25.4;pix=
 def sample(pix,x,y):return list(pix.pixel(round(x*k*2),round(y*k*2)))
 color=[sample(pix,x,y) for x,y in [(10,100),(140,100),(.5,100)]];layers=p.get_ocgs();white=[i for i,v in layers.items() if v['name']=='RDG_WHITE'];p.set_layer(-1,on=white,off=[i for i in layers if i not in white]);q=f.open(stream=p.tobytes(),filetype='pdf');wp=q[0].get_pixmap(matrix=f.Matrix(2,2),alpha=True);print(json.dumps({'width':page.rect.width/k,'height':page.rect.height/k,'color':color,'white':[sample(wp,x,y)[-1] for x,y in [(.5,100),(10,100)]]}))`],{input:result.pdf,env:importEnvironment()}).toString());assert.ok(Math.abs(info.width-152)<.001);assert.ok(Math.abs(info.height-202)<.001);assert.ok(info.color[0][2]>info.color[0][0]);assert.ok(info.color[1][0]>info.color[1][2]);assert.equal(info.color[2][3],255);assert.deepEqual(info.white,[0,255]);
 });
+
+test('review package freezes only the fonts and motifs of this design and references the embedded material image by hash',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-slim-review-'));build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
+ const w=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy});t.after(()=>{w.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const record=w.repository.get(w.defaultId),config=w.model(record.id,record.revision).universal,design=config.profile.designs[0];
+ // Live-Modelle tragen das ganze Profil-Schriftset und das Materialbild als data:-URL (zusammen ~11 MB).
+ const unused={...Object.values(config.localResources.fonts)[0],note:'x'.repeat(2*1024*1024)};
+ const big={...config,materialSurface:'data:image/png;base64,'+Buffer.alloc(1536*1024,7).toString('base64'),localResources:{...config.localResources,fonts:{...config.localResources.fonts,'Ungenutzt · 000000000000':unused},motifs:[...config.localResources.motifs,{...config.localResources.motifs[0],key:'ungenutztes-motiv'}]}};
+ const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==','base64').toString('base64');
+ const objects=structuredClone(design.objects),media=[];
+ for(const [i,o] of objects.filter(o=>o.type==='photoSlot').entries()){Object.assign(o,{uxUploadId:'foto-'+i,uxUploadKind:'photo'});media.push({id:'foto-'+i,original:png,edited:png});}
+ const input={productId:record.id,productRevision:record.revision,designId:design.id,objects,options:Object.fromEntries(config.profile.optionGroups.map(g=>[g.id,g.defaultValueId])),quantity:1,media,preview:png};
+ const bundle=await prepareAcrylicReview({record,config:big,input,assets:w.assets});
+ const saved=readReviewPackage(bundle.package,bundle.manifest.packageSha256,ACRYLIC_REVIEW),frozen=JSON.parse(saved.files.get('konfigurator-quellen.json'));
+ const usedFonts=new Set(objects.filter(o=>typeof o.font==='string').map(o=>o.font)),usedMotifs=new Set(objects.filter(o=>typeof o.motif==='string').map(o=>o.motif));
+ assert.deepEqual(new Set(Object.keys(frozen.localResources.fonts)),new Set([...usedFonts].filter(id=>Object.hasOwn(big.localResources.fonts,id))));
+ assert.deepEqual(new Set(frozen.localResources.motifs.map(m=>m.key)),new Set([...usedMotifs].filter(k=>big.localResources.motifs.some(m=>m.key===k))));
+ assert.equal(frozen.localResources.scope,config.localResources.scope);
+ assert.equal(frozen.materialSurface,undefined);
+ assert.equal(frozen.embeddedImageReferences.materialSurface.sha256,digest(big.materialSurface));
+ assert.deepEqual(frozen.profile,JSON.parse(JSON.stringify(config.profile)));
+ assert.ok(bundle.package.length<1.5*1024*1024,'Paket bleibt klein: '+bundle.package.length);
+});
+
+test('profile fonts that are present in the product library are accepted on save; unknown fonts stay rejected',async t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-profile-font-'));build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
+ const w=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy});t.after(()=>{w.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const record=w.repository.get(w.defaultId),config=structuredClone(w.model(record.id,record.revision).universal),design=config.profile.designs[0];
+ // Live: importierte Profilschriften tragen eine Hash-Endung und stehen nicht in SUPPORTED_FONT_IDS.
+ const id='Lato Regular · c3d3cabdb582';config.localResources.fonts[id]=structuredClone(Object.values(config.localResources.fonts)[0]);
+ if(Array.isArray(config.workshopProfiles?.selections?.fonts))config.workshopProfiles.selections.fonts.push(id);
+ const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==','base64').toString('base64');
+ const objects=structuredClone(design.objects),media=[];
+ for(const [i,o] of objects.filter(o=>o.type==='photoSlot').entries()){Object.assign(o,{uxUploadId:'foto-'+i,uxUploadKind:'photo'});media.push({id:'foto-'+i,original:png,edited:png});}
+ const text=objects.find(o=>o.type==='text');assert.ok(text,'Seed-Design braucht einen Text');text.font=id;
+ const input={productId:record.id,productRevision:record.revision,designId:design.id,objects,options:Object.fromEntries(config.profile.optionGroups.map(g=>[g.id,g.defaultValueId])),quantity:1,media,preview:png};
+ const bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});
+ const frozen=JSON.parse(readReviewPackage(bundle.package,bundle.manifest.packageSha256,ACRYLIC_REVIEW).files.get('konfigurator-quellen.json'));
+ assert.ok(Object.hasOwn(frozen.localResources.fonts,id),'genutzte Profilschrift liegt im Paket');
+ text.font='Nicht vorhanden · 000000000000';
+ await assert.rejects(prepareAcrylicReview({record,config,input,assets:w.assets}),/Schrift/);
+});

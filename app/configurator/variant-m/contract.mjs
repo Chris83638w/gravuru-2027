@@ -209,7 +209,10 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   const source = selectedProfile(config,options).designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
   if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
-  validateDesignContent(design, {universal:true,extraFontIds:localFontIds(config)});
+  // Erlaubt ist jede Schrift, deren Pfade in der übergebenen Bibliothek tatsächlich vorliegen
+  // (Profil-Schriftset des Produkts, z. B. importierte „Lato Regular · …“). Ob die Schrift für
+  // das Produkt freigegeben ist, prüft der Aufrufer (nativeReviewConfig); measureText prüft die Pfade.
+  validateDesignContent(design, {universal:true,extraFontIds:[...new Set([...localFontIds(config),...Object.keys(fonts&&typeof fonts==='object'?fonts:{})])]});
   // Local logo uploads carry an opaque upload id, like photo slots. They are not
   // published media resources; the production media validator stays unchanged.
   validateUniversalElements({...design,objects:design.objects.map(o=>

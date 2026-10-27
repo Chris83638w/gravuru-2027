@@ -1,3 +1,9 @@
+## 27.10.2026 · Claude · Konfi-Geschwindigkeit: Server-Grenzen aufgehoben, Schnell-Korrektur
+
+- Live gemessen D8: „In den Warenkorb“ 38,6 s, davon Server-Sichern 31,5 s. Ursache: CloudLinux-Benutzer `gravuru_werkstatt` auf 1 Kern / 1 GB / **1 MB/s IO** (heute 324 IO-, 135 CPU-, 4 Speicher-Treffer). Chris hat selbst angehoben (400 %, 4G, 50 MB/s, IOPS 4096, EP 50, NPROC 200) → Sichern **1,2 s**, Warenkorb nach 6,2 s.
+- Branch `dev/schnelles-sichern-20261027-claude`: Prüfpaket nur mit Ressourcen des Designs (vorher ~12 MB je Klick), importierte Profilschriften beim Sichern zugelassen (vorher 422). Review-Befund (Freigabe ohne Profilauswahl) behoben.
+- Befund/Plan: [Konfi-Geschwindigkeit](docs/handoffs/2026-10-27-konfi-geschwindigkeit.md). Nächster Schritt: Korrektur aufspielen (Chris' Satz), dann Stufe 2 (Editor-Fenster auf der Produktseite, direkter Warenkorb).
+
 ## 27.10.2026 · Claude · PR #32 gemergt (Repo = Live-Stand), Nachträge an Astra
 
 - PR #32 geprüft (unabhängiger Review ohne Blocker) und als `cf13fd3` nach `main` übernommen. Konflikte mit der Funkklingel-Umstellung gelöst (`contract.mjs` beide Importe, `STATUS.md`). Voller Testvergleich in der Cloud (ohne Python/Druck): `main` 1609/1746, zusammengeführt 1634/1770, kein zusätzlicher Fehlschlag.

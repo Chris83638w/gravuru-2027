@@ -1,6 +1,7 @@
 // Native customer review uses the same bundled library as the editor. Only used
 // additions are frozen into the immutable snapshot; browser SVG/font sources are never accepted.
 import {workshopResources} from './catalog.mjs';
+import {SUPPORTED_FONT_IDS} from '../platform/sources/app/shared/models/design-content.mjs';
 import {isLayeredDoorbell,selectedDoorbellProfile} from '../configurator/variant-m/doorbell-selection.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'native_review_resource'});};
 export function nativeReviewConfig(config,input){
@@ -24,6 +25,8 @@ export function nativeReviewConfig(config,input){
  }
  for(const key of usedFonts)if(!Object.hasOwn(local.fonts,key)){
   const font=resources().fonts[key];if(!font)fail('Diese Schrift ist nicht in der Bibliothek.');
+  // Ohne Schriftauswahl im Profil gilt wie bisher: nur Produktschriften und das feste Grundset.
+  if(!Array.isArray(selections?.fonts)&&!SUPPORTED_FONT_IDS.includes(key))fail('Diese Schrift ist für das Produkt nicht freigegeben.');
   local.fonts[key]=structuredClone(font);
  }
  return copy;

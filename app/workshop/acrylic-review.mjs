@@ -33,7 +33,10 @@ export function validateAcrylicReview(record,config,input){
  if(!Number.isSafeInteger(input.quantity)||input.quantity<1||input.quantity>99)fail('Menge: 1 bis 99.');
  if(!Array.isArray(input.objects)||input.objects.length>120)fail('Ungültiger Elementumfang.');
  const source=config.profile.designs.find(d=>d.id===input.designId);if(!source)fail('Design gehört nicht zum Produkt.');
- const design=validateProductDesign(record.document,{...structuredClone(source),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
+ // Schriften, die nativeReviewConfig für dieses Produkt freigegeben und mit Pfaden geladen hat (z. B. importierte
+ // Profilschriften „Lato Regular · …“), gelten bei der Inhaltsprüfung als vorhanden – nur in diesem Prüfpfad.
+ const document={...record.document,config:{...record.document.config,localResources:{...record.document.config.localResources,fonts:{...record.document.config.localResources?.fonts,...config.localResources.fonts}}}};
+ const design=validateProductDesign(document,{...structuredClone(source),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  const resolved=resolveProduct(record.document,{options:input.options,designId:source.id});
  const price=commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity);
  // Hidden layers remain editable; their originals belong to this immutable revision.
@@ -44,6 +47,27 @@ export function validateAcrylicReview(record,config,input){
  return {design,options:resolved.resolvedOptions,geometry:resolved.physical,price};
 }
 
+// Eingefrorene Konfiguratorquelle für genau diese Gestaltung. Fertigung, Bestellprodukt und
+// Warenkorb-Bearbeiten lesen daraus nur Profil, Preis-/Materialangaben und die Schriften,
+// Motive und Fotovorgaben dieses Designs. Das komplette Schriftset des Profils und das
+// eingebettete Materialbild (live ~11 MB je Klick) werden nicht mehr in jedes Paket kopiert;
+// das Materialbild bleibt über Prüfsumme nachvollziehbar.
+export function reviewSources(config,design){
+ const {localResources:local,...rest}=config,frozen=structuredClone(rest),references={};
+ for(const key of ['materialSurface','sceneBackground'])if(typeof frozen[key]==='string'&&frozen[key].startsWith('data:')){references[key]={sha256:sha(frozen[key]),length:frozen[key].length};delete frozen[key];}
+ if(Object.keys(references).length)frozen.embeddedImageReferences=references;
+ if(!local)return frozen;
+ const fonts=new Set(),motifs=new Set();
+ for(const o of design.objects){if(typeof o.font==='string')fonts.add(o.font);if(typeof o.motif==='string')motifs.add(o.motif);}
+ const resources={};
+ for(const [key,value] of Object.entries(local))if(!['fonts','motifs','photoExamples','photoPlaceholders'].includes(key))resources[key]=structuredClone(value);
+ resources.fonts={};for(const id of fonts)if(Object.hasOwn(local.fonts||{},id))resources.fonts[id]=structuredClone(local.fonts[id]);
+ resources.motifs=(local.motifs||[]).filter(m=>motifs.has(m.key)).map(m=>structuredClone(m));
+ for(const key of ['photoExamples','photoPlaceholders'])if(Array.isArray(local[key]))resources[key]=local[key].filter(e=>e.designId===design.id).map(e=>structuredClone(e));
+ frozen.localResources=resources;
+ return frozen;
+}
+
 export async function prepareAcrylicReview({record,config,input,assets,preparePhoto=prepareCustomerPhoto}){
  config=nativeReviewConfig(config,input);
  const layered=isLayeredDoorbell(config);
@@ -51,7 +75,7 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  const files=[],photos=[];
  let total=0;const add=(path,bytes,purpose)=>{const b=Buffer.from(bytes);total+=b.length;if(total>100*1024*1024)fail('Prüfstand ist größer als 100 MB.');files.push({path,bytes:b,purpose});return {path,bytes:b.length,sha256:sha(b)};};
  if(layered)add('funkklingel-fertigung.json',json(doorbellSeparations(config,state.options)),'Feste getrennte Materialkonturen und Originalausschnitte, gleiche Revision wie Gestaltung und Preis.');
- const frozen=structuredClone(config),ref=record.document.productionProfile,productionProfile=record.metadata?.productionProfile||null;
+ const frozen=reviewSources(config,state.design),ref=record.document.productionProfile,productionProfile=record.metadata?.productionProfile||null;
  if(ref?(!productionProfile||productionProfile.id!==ref.id||productionProfile.revision!==ref.revision):!!productionProfile)fail('Der gesicherte Fertigungsprofilstand fehlt oder passt nicht zur Produktrevision.');
  if(productionProfile)add('fertigungsprofil.json',json(productionProfile),'Unveränderlicher Fertigungsprofilstand; keine Maschinenfreigabe.');
  // No ephemeral upload URLs or tokens are accepted from the browser.

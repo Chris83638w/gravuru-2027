@@ -1,3 +1,10 @@
+## 27.10.2026 · Claude · Fenster-Modus im Live-Theme hinter `?fenster=1`, Warenkorbbild mit Material
+
+- Live-Theme `185833718140`, Block `custom_liquid_mTPWzc`: Zeile `<script>if(/[?&]fenster=1(&|$)/.test(location.search))import('/apps/konfigurator/shop-embed.mjs');</script>` (nur Konfi-Produkte). Claude eingetragen, **Chris gespeichert 21:44**. Geprüft: mit `?fenster=1` installiert, ohne nicht → Kunden unverändert.
+- Chris (Handy): „im warenkorb ist das schild selbst nicht sichtbar“ – Warenkorbbild war die reine Gravur (schwarz auf transparent), nicht neu. Fix `d068d10` (Merge `8a53ab4`): Einstiegsseite rendert im Fenster-Modus `element.svg()` des Konfigurators (Platte + Material + Gravur wie im Überblick) mit verkleinertem Rohlingbild als JPEG (900 px, ~75 KB, ~0,15 s parallel zur Server-Vorbereitung) und schickt es mit der Übergabekennung; Shop-Seite nimmt nur JPEG/PNG ≤ 1,5 MB, sonst Gravurvorschau. Tests 45/45 gezielt.
+- Chris: „Ja, Du darfst das Warenkorbbild mit Material bereitstellen und die App neu starten.“ → 22:03 Pull/Bereitstellen/Neustart. Desktop-Durchlauf: `_Entwurf` = JPEG 900×620 mit Edelstahl-Platte, im Warenkorb sichtbar; eigene Testposition danach entfernt (Chris' Position bleibt).
+- Offen: iPhone-Test durch Chris; danach `?fenster=1`-Bedingung entfernen (Chris' OK). Nicht-Fenster-Weg zeigt weiter nur die Gravur.
+
 ## 27.10.2026 · Claude · Stufe 2 live auf dem Server (Fenster im Shop noch nicht eingeschaltet)
 
 - Chris: „Ja, Du darfst Stufe 2 (Fenster-Modus) nach erfolgreicher Prüfung bereitstellen und die App neu starten.“ → 21:28 Plesk Pull (`6a3a8d8`), Bereitstellen, „App neu starten“. Prüfung: `/werkstatt/` 200, `/konfigurator/shop/` 200 mit `frame-ancestors https://gravuru-design.myshopify.com`, Model ohne Sitzung 403, `/apps/konfigurator/shop-embed.mjs` über den Shop 200 mit `public, max-age=300`.

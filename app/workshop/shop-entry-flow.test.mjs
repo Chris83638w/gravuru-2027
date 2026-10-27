@@ -50,7 +50,7 @@ test('customer entry: start, model, saved design, real cart handoff and webhook 
   return Response.json({data:{[update?'cartLinesUpdate':'cartCreate']:{userErrors:[],warnings:[],cart:{id:cart.id,checkoutUrl:'https://'+shopDomain+'/checkouts/cn/synthetic',lines:{pageInfo:{hasNextPage:false},nodes:update?cart.lines:[node]}}}}});
  };
  const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now});
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,modelSlimmer:null});
  const server=http.createServer((req,res)=>entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
  const request=(pathname,method='GET',data,extra={})=>new Promise((resolve,reject)=>{

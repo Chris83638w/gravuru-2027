@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
 import {prepareThemeCart} from './theme-cart.mjs';
 import {isDeepStrictEqual} from 'node:util';
@@ -48,7 +49,7 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={}}){
+export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer}){
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
@@ -129,8 +130,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  }
  // Die auf der Produktseite gewählte Variante (Befestigung …) ist beim Öffnen vorausgewählt; Preise und
  // Prüfung bleiben beim unveränderten Servermodell (prepareAcrylicReview lädt es selbst erneut).
+ // Schlankes Kundenmodell (shop-model-slim.mjs): Katalog des ausgelieferten Editors einmal über den eigenen Host laden.
+ const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR)}):modelSlimmer;
  function presentedModel(model,binding){
   const copy=structuredClone(model);
+  if(slimmer){if(!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision:null});}
   for(const group of copy.universal.profile?.optionGroups||[]){const chosen=binding.options?.[group.id];if(typeof chosen==='string'&&group.values?.some(v=>v.id===chosen))group.defaultValueId=chosen;}
   return copy;
  }

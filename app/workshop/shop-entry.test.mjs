@@ -33,7 +33,7 @@ function fixture(){
   orderIntake:{bindings:()=>structuredClone(legacy)}};
  let cartResult=()=>({cartId:'gid://shopify/Cart/synthetic',checkoutUrl:'https://'+shopDomain+'/checkouts/cn/synthetic',lineId:'gid://shopify/CartLine/1?cart=synthetic',configuration:{id:'konfig_'+uuid(9),rev:1},quantity:1,unitCents:1148,totalCents:1148,currency:'EUR',paymentConfirmed:false,mode:'create',duplicate:false,testOnly:true,productionReady:false});
  const store={storeId,registry,workshop,apiPrefix:'/api/workshop/acryl/',nativeEditorPath:'/_merchant-acryl-editor.html',formEditorPath:'/_merchant-acryl-form-editor.html',cart:async(binding,input,context)=>{cartCalls.push({binding,input,existingCart:context.existingCart});return cartResult();}};
- const options={origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>time,limits:{startPerMinute:1000,requestsPerMinute:1000}};
+ const options={origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>time,limits:{startPerMinute:1000,requestsPerMinute:1000},modelSlimmer:null};
  return {bindings,legacy,models,ids,first,draft,manifests,store,options,cartCalls,setCart:fn=>{cartResult=fn;},tick:ms=>{time+=ms;},now:()=>time};
 }
 function signed(f,params){
@@ -298,3 +298,10 @@ test('embed scripts load on every product page without using up the cart rate li
  assert.notEqual((await request(proxyPath+'/cart?'+signed(f,{}))).status,429);
  assert.equal((await request(proxyPath+'/cart?'+signed(f,{}))).status,429);
 },f=>{f.options.limits={startPerMinute:1,requestsPerMinute:1000};}));
+test('customer model passes through the model slimmer with a revision key; the stored model stays complete',()=>run(async(f,request,{token})=>{
+ const {token:t}=await token();
+ const loaded=await request('/api/shop-entry/model',undefined,undefined,session(t));
+ assert.equal(loaded.status,200);assert.equal(loaded.data.model.universal.slimmed,true);
+ assert.match(f.slimKeys[0],/:3$|:\d+$/);
+ assert.equal(f.models.get(f.first.localWorkshopRecord).universal.slimmed,undefined,'gespeichertes Modell unverändert');
+},f=>{f.slimKeys=[];f.options.modelSlimmer={ready:()=>true,load(){},slim(universal,{key}){f.slimKeys.push(String(key));universal.slimmed=true;return {fonts:[],surface:false};}};}));

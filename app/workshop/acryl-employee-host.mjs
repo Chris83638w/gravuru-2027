@@ -4,6 +4,16 @@ import {ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
 import {DOORBELL_STATUS_WEBHOOK_PATH} from './doorbell-status-webhook.mjs';
 const rewrites=[['/api/workshop/','/api/workshop/acryl/'],['/workshop-ui/','/workshop-acryl-ui/'],['/configurator/','/acryl-configurator/'],['/platform/','/acryl-platform/'],['/workshop/','/acryl-workshop/'],['/_merchant-form-editor.html','/_merchant-acryl-form-editor.html'],['/werkstatt/kundenansicht','/werkstatt/acryl/kundenansicht'],['/acryl-galerie/Designgalerie.html','/werkstatt/acryl/'],['/acryl-galerie/Formvorlagen.html','/werkstatt/acryl/formen/']];
 const nativeAssets=[['/_bundle/','/_acryl-bundle/'],['/_runtime/','/_acryl-runtime/'],['/acrylic-assets/','/acryl-assets/']];
+// Ladezeit (Chris 27.10.2026, „prüfe alles“): statische Editor-Dateien durfte der Browser bisher nie behalten
+// (jedes Öffnen lud Editor-Seite und Nachlade-Schriften neu). Gehashte Pakete dauerhaft, Katalog/Schriften/Motive 1 h,
+// Editor-Seite 5 min (nur Browser). Alles andere bleibt „private, no-store“.
+export function acrylCacheControl(pathname,status){
+ if(status!==200)return null;
+ if(/^\/_acryl-bundle\/[A-Za-z0-9_.-]+-[a-f0-9]{16}\.m?js$/.test(pathname))return 'public, max-age=31536000, immutable';
+ if(/^\/_acryl-runtime\/lazy\/(?:katalog-kern\.json|motive-alle\.json|schriften\/[a-z0-9-]{1,80}\.json|motive\/[A-Za-z0-9_-]{1,80}\.json)$/.test(pathname))return 'public, max-age=3600';
+ if(pathname==='/_merchant-acryl-editor.html')return 'private, max-age=300';
+ return null;
+}
 export function acrylRoute(pathname){
  if(/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(pathname))return pathname;
  if(/^\/werkstatt\/katalog\/?$/.test(pathname))return '/werkstatt/katalog/';
@@ -63,7 +73,7 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   const headers={host:config.host};for(const key of ['authorization','accept','accept-language','content-type','content-length','origin','x-gravuru-csrf','x-gravuru-draft','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[key]!==undefined)headers[key]=req.headers[key];
   const upstream=http.request({hostname:'127.0.0.1',port,path:target+url.search,method:req.method,headers},response=>{
    const publicDoorbellImage=response.statusCode===200&&/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(target);
-   const head={...response.headers,'Cache-Control':publicDoorbellImage?(response.headers['cache-control']||'public, max-age=31536000, immutable'):'private, no-store','X-Robots-Tag':'noindex, nofollow, noarchive'};
+   const head={...response.headers,'Cache-Control':publicDoorbellImage?(response.headers['cache-control']||'public, max-age=31536000, immutable'):(acrylCacheControl(url.pathname,response.statusCode)||'private, no-store'),'X-Robots-Tag':'noindex, nofollow, noarchive'};delete head['cache-control'];
    if(!target.startsWith('/api/')&&/^(text\/html|text\/javascript|application\/javascript|text\/css)/.test(head['content-type']||'')){
     const chunks=[];let bytes=0;response.on('data',chunk=>{bytes+=chunk.length;if(bytes>20*1024*1024){upstream.destroy();return;}chunks.push(chunk);});response.on('end',()=>{const body=Buffer.from(acrylAssetText(Buffer.concat(chunks).toString('utf8'),target));delete head['content-length'];delete head['content-encoding'];res.writeHead(response.statusCode,{...head,'Content-Length':body.length});res.end(body);});
    }else{res.writeHead(response.statusCode,head);response.pipe(res);}

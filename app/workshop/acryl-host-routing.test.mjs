@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {acrylRoute,acrylAssetText} from './acryl-employee-host.mjs';
+import {acrylRoute,acrylAssetText,acrylCacheControl} from './acryl-employee-host.mjs';
 import {createConfiguratorIntegration} from './configurator-integration.mjs';
 test('native and form editor aliases remain in their own release',()=>{
  for(const [outer,inner]of [
@@ -36,4 +36,12 @@ test('catalogue editor routes remain narrow on the Acryl host',()=>{
   assert.equal(acrylRoute('/api/workshop/acryl/designs/editor'+suffix),'/api/workshop/designs/editor'+suffix);
  }
  for(const suffix of ['/save','/font/file','-other','/preview/extra'])assert.equal(acrylRoute('/api/workshop/designs/editor'+suffix),null);
+});
+test('static editor files may be cached by the browser; everything else stays private, no-store',()=>{
+ assert.equal(acrylCacheControl('/_acryl-bundle/editor-f0c9572974236922.mjs',200),'public, max-age=31536000, immutable');
+ assert.equal(acrylCacheControl('/_acryl-runtime/lazy/katalog-kern.json',200),'public, max-age=3600');
+ assert.equal(acrylCacheControl('/_acryl-runtime/lazy/schriften/lora-italic.json',200),'public, max-age=3600');
+ assert.equal(acrylCacheControl('/_merchant-acryl-editor.html',200),'private, max-age=300');
+ assert.equal(acrylCacheControl('/_acryl-runtime/lazy/motive-alle.json',200),'public, max-age=3600');assert.equal(acrylCacheControl('/_acryl-runtime/lazy/motive/leuchtturm_1.json',200),'public, max-age=3600');
+ for(const [p,s] of [['/_acryl-bundle/editor.mjs',200],['/_acryl-runtime/lazy/schriften/../x.json',200],['/_acryl-runtime/lazy/motive/../a.json',200],['/api/workshop/acryl/acrylic-drafts',200],['/_merchant-acryl-editor.html',404],['/werkstatt/',200]])assert.equal(acrylCacheControl(p,s),null,p);
 });

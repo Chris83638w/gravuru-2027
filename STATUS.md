@@ -1,3 +1,9 @@
+# AOSU-Pro-Pilot · drei Formate revisionsgebunden vorbereiten · 27.10.2026 (Codex)
+
+Der neue `scripts/doorbell-pilot-bind.mjs` setzt ausschließlich die drei konkret angelegten AOSU-Pro-Hauptprodukte mit je 120 Varianten zusammen. Er prüft Importjournal, Fingerprint, aktuelle native Dokumentrevision und Startwerte, verwendet anschließend die vorhandenen vollständigen Export-, LiveReader- und Bindingprüfungen. Die reguläre 126er-CLI und 60-Sekunden-Frischefrist bleiben unverändert. Standard ist Dryrun; --apply schreibt Bindings, --approve-live mit --approval-id erzeugt optional genau drei revisionsgebundene Freigaben. Keine Shopify-Produktmutation, Hostflagänderung oder Webhookregistrierung.
+
+Prüfung: `node --test scripts/doorbell-pilot-bind.test.mjs` 4/4 grün, einschließlich read-only DB-Hash, geänderter Importstände,360 Registry-Bindings / 3 Freigaben und idempotenter Wiederholung. Zusätzlich echte drei importierte AOSU-Dokumente und vorhandene Shopify-Eingabedateien in isoliertem Speicher:3 Produkte / 360 Varianten mit korrekten Format- und Farbstartwerten. Keine Liveprüfung durch diesen Commit. [Genauer Serveraufruf und Grenzen](docs/handoffs/2026-10-27-funkklingeln-aosu-pilot.md).
+
 ## 27.10.2026 · Codex · 42 Funkklingelmodelle mit 126 nativen Produkteinstiegen
 
 Branch `dev/funkklingeln-126-native-20261027`, Basis `d103019`. Drei exakte Formatprofile je Modell, 120 Preisvarianten je Einstieg und kostenlose Gegenposition. Originalkonturen, aufrechte Geräteabbildung, asymmetrische Aufnahmen, bearbeitbare Texte und feste Dekorationen bleiben erhalten. Import wiederholbar, 911 Quellen gehasht; 126 Dokumente mit 15.120 Preisprüfungen, ohne eingebettete Schriftglyphen. Konfigurator lädt zunächst nur die benötigte Standardschrift; übrige Designs werden sicher nachgeladen. 126 maßhaltige Hauptbilder gerendert.

@@ -22,21 +22,64 @@ export function shopUrl(shopDomain,path){
 // Zwischenseite zu schicken, erhält nur die Shop-Seite (genau dieser Origin) die einmalige Übergabekennung.
 // Erfolg: Die Shop-Seite wechselt selbst zum Warenkorb (das Versprechen bleibt offen, kein zweiter Seitenwechsel).
 // Fehler: Die Shop-Seite meldet ihn zurück; der Editor zeigt ihn und gibt den Knopf wieder frei.
-export function embeddedCart(submitThemeCart,shopOrigin,{target=globalThis.parent,listen=globalThis}={}){
+// image: liefert das Warenkorbbild (Platte mit Material) – parallel zur Server-Vorbereitung, Fehler ohne Wirkung.
+export function embeddedCart(submitThemeCart,shopOrigin,{target=globalThis.parent,listen=globalThis,image=null}={}){
   if(!/^https:\/\/[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(shopOrigin))fail('Die Shop-Verbindung ist ungültig.');
   return async(input,options)=>{
+    const picture=typeof image==='function'?Promise.resolve().then(image).catch(()=>null):Promise.resolve(null);
     const result=await submitThemeCart(input,options);
     let token=null;try{token=new URL(result.handoffUrl).hash.match(/^#handoff=([a-f0-9]{64})$/)?.[1]||null;}catch{}
     if(!token)fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
+    const cartImage=await picture;
     return new Promise((resolve,reject)=>{
       const onMessage=event=>{
         if(event.origin!==shopOrigin||event.source!==target||event.data?.type!=='gravuru-shop-handoff-result'||event.data.token!==token)return;
         if(event.data.ok===false){listen.removeEventListener('message',onMessage);reject(Error(String(event.data.message||'Die Übertragung konnte nicht bestätigt werden.').slice(0,300)));}
       };
       listen.addEventListener('message',onMessage);
-      target.postMessage({type:'gravuru-shop-handoff',token},shopOrigin);
+      target.postMessage({type:'gravuru-shop-handoff',token,...(typeof Blob!=='undefined'&&cartImage instanceof Blob?{cartImage}:{})},shopOrigin);
     });
   };
+}
+const SURFACE=/^data:(image\/(?:png|jpeg|webp));base64,([A-Za-z0-9+/=]+)$/;
+// Das Rohlingbild (Material) steht als ~2 MB data:-Adresse im Modell. Fürs Warenkorbbild genügt eine kleine
+// JPEG-Fassung; einmal je Seite berechnet (vorab im Leerlauf), danach ~0,15 s je Warenkorbbild statt ~1–3 s.
+export function surfaceThumbnail(surface,{maxEdge=700,quality=.82,doc=globalThis.document}={}){
+  let pending=null;
+  return ()=>pending??=(async()=>{
+    const match=typeof surface==='string'?SURFACE.exec(surface):null;if(!match)return null;
+    const bin=atob(match[2]),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+    const bitmap=await createImageBitmap(new Blob([bytes],{type:match[1]}));
+    try{
+      const scale=Math.min(1,maxEdge/Math.max(bitmap.width,bitmap.height)),canvas=doc.createElement('canvas');
+      canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+      canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);
+      const small=canvas.toDataURL('image/jpeg',quality);return SURFACE.test(small)?small:null;
+    }finally{bitmap.close?.();}
+  })().catch(()=>null);
+}
+// Ersetzt im Vorschau-SVG nur genau das bekannte Rohlingbild; ohne kleine Fassung bleibt das Original.
+export function cartPreviewSvg(svg,surface,small){
+  if(typeof svg!=='string'||!svg.startsWith('<svg'))return null;
+  return surface&&small&&SURFACE.test(surface)&&SURFACE.test(small)?svg.split('href="'+surface+'"').join('href="'+small+'"'):svg;
+}
+export function viewBoxSize(svg){
+  const box=/viewBox="([^"]+)"/.exec(svg)?.[1]?.trim().split(/[\s,]+/).map(Number);
+  return box?.length===4&&box.every(Number.isFinite)&&box[2]>0&&box[3]>0?{width:box[2],height:box[3]}:null;
+}
+// Warenkorbbild aus der Materialvorschau des Konfigurators (element.svg(): Platte mit Material und Gravur, wie im
+// Überblick), auf weißem Grund als JPEG – klein für den Upload in den Warenkorb.
+export async function previewJpeg(element,{surface=null,small=null,maxEdge=900,quality=.86,doc=globalThis.document}={}){
+  if(typeof element?.svg!=='function')return null;
+  const svg=cartPreviewSvg(element.svg(),surface,await small?.()),size=svg&&viewBoxSize(svg);if(!size)return null;
+  const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+  try{
+    const image=new Image();image.src=url;await image.decode();
+    const scale=maxEdge/Math.max(size.width,size.height),canvas=doc.createElement('canvas');
+    canvas.width=Math.max(1,Math.round(size.width*scale));canvas.height=Math.max(1,Math.round(size.height*scale));
+    const g=canvas.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,canvas.width,canvas.height);g.drawImage(image,0,0,canvas.width,canvas.height);
+    return await new Promise(resolve=>canvas.toBlob(blob=>resolve(blob&&blob.type==='image/jpeg'?blob:null),'image/jpeg',quality));
+  }finally{URL.revokeObjectURL(url);}
 }
 async function json(response){
   let body;try{body=await response.json();}catch{body={};}

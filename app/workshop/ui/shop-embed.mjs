@@ -3,7 +3,7 @@
 // meldet nur die einmalige Übergabekennung herauf; diese Seite holt die geprüften Werte über den App-Proxy und
 // legt sie wie die bisherige Zwischenseite (theme-cart-ui.mjs) in den normalen Warenkorb. Ohne JavaScript
 // oder bei Strg-/Mittelklick bleibt der normale Link (ganze Seite) unverändert.
-import {createThemeCartClient} from './theme-cart-client.mjs';
+import {createThemeCartClient,cartImage} from './theme-cart-client.mjs';
 
 const EDITOR_ORIGIN='__EDITOR_ORIGIN__',PROXY='__PROXY_PATH__';
 const TOKEN=/^[a-f0-9]{64}$/;
@@ -32,7 +32,8 @@ export function acceptedMessage(event,frame){
  if(!frame||event.origin!==EDITOR_ORIGIN||event.source!==frame.contentWindow)return null;
  const data=event.data;
  if(data?.type==='gravuru-shop-close')return {type:'close'};
- if(data?.type==='gravuru-shop-handoff'&&TOKEN.test(data.token||''))return {type:'handoff',token:data.token};
+ // cartImage: Platte mit Material, wie im Überblick des Konfigurators (nur Anzeige, sonst die Gravurvorschau).
+ if(data?.type==='gravuru-shop-handoff'&&TOKEN.test(data.token||''))return {type:'handoff',token:data.token,image:cartImage(data.cartImage)};
  return null;
 }
 
@@ -61,13 +62,13 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:{'X-Gravuru-Cart-Handoff':token}});
   const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');return data;
  }
- async function handoff(token,source){
+ async function handoff(token,source,image){
   if(busy)return;busy=true;say('Deine Gestaltung wird in den Warenkorb gelegt …');
   try{
    const payload=await request(token,'data');
    if(location.hostname!==payload.shopDomain)throw Error('Diese Übergabe gehört zu einem anderen Shop.');
    const client=createThemeCartClient({root,claim:()=>request(token,'claim','POST'),onProgress:text=>say(text)});
-   const submit=()=>client.submit(payload),result=navigator.locks?await navigator.locks.request('gravuru-theme-cart',submit):await submit();
+   const submit=()=>client.submit(payload,{image}),result=navigator.locks?await navigator.locks.request('gravuru-theme-cart',submit):await submit();
    say('Im Warenkorb – einen Moment …');location.assign(result.cartUrl);
   }catch(error){
    const message=error?.message||'Die Übertragung konnte nicht bestätigt werden. Bitte den Warenkorb prüfen.';
@@ -79,7 +80,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  window.addEventListener('message',event=>{
   const message=acceptedMessage(event,frame);if(!message)return;
   if(message.type==='close')hide();
-  else handoff(message.token,event.source);
+  else handoff(message.token,event.source,message.image);
  });
  document.addEventListener('click',event=>{
   const link=event.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]');

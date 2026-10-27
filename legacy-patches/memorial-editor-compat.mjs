@@ -44,3 +44,14 @@ export function completeMemorialModels(models, imported) {
  if(!faces)throw Error('Keine passende Originalschrift im Vorschaupaket.');
  return {models:result,faces,added};
 }
+
+export function patchPreviewManifest(manifest, files) {
+ if(manifest.schema!=='gravuru-product-preview/v1'||manifest.orderEnabled!==false||!Array.isArray(manifest.files))throw Error('Unbekanntes Vorschau-Manifest.');
+ const result=structuredClone(manifest);
+ for(const f of files){
+  const matches=result.files.filter(x=>x.path===f.path);
+  if(f.before===null){if(matches.length)throw Error('Neue Datei bereits im Manifest: '+f.path);result.files.push({path:f.path,bytes:f.bytes,sha256:f.after});}
+  else{if(matches.length!==1||matches[0].sha256!==f.before||matches[0].bytes!==f.beforeBytes)throw Error('Manifest und Original stimmen nicht überein: '+f.path);matches[0].sha256=f.after;matches[0].bytes=f.bytes;}
+ }
+ return result;
+}

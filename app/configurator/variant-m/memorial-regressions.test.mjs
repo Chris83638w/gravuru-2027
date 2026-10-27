@@ -43,3 +43,14 @@ test('editing after a rejected cart attempt clears its obsolete error; selection
  assert.equal(status.message('design-A'),'Drehung ist ungültig');assert.equal(status.message('design-B'),'');
  status.fail('Schrift fehlt','design-B');status.clear();assert.equal(status.message('design-B'),'');
 });
+
+import {patchPreviewManifest} from '../../../legacy-patches/memorial-editor-compat.mjs';
+test('preview repair updates the sealed file list and preserves all product metadata',()=>{
+ const source={schema:'gravuru-product-preview/v1',orderEnabled:false,shopifyProductId:'16138083107196',designIds:['GT-S-2-2'],files:[{path:'models.json',bytes:20,sha256:'old'},{path:'photo.webp',bytes:8,sha256:'photo'}]};
+ const result=patchPreviewManifest(source,[{path:'models.json',before:'old',beforeBytes:20,after:'new',bytes:30},{path:'configurator/variant-m/commerce-status.mjs',before:null,after:'status',bytes:5}]);
+ assert.deepEqual(result.files,[{path:'models.json',bytes:30,sha256:'new'},{path:'photo.webp',bytes:8,sha256:'photo'},{path:'configurator/variant-m/commerce-status.mjs',bytes:5,sha256:'status'}]);
+ assert.deepEqual({...result,files:source.files},source);assert.equal(source.files[0].sha256,'old');
+ assert.throws(()=>patchPreviewManifest(source,[{path:'models.json',before:'wrong',beforeBytes:20,after:'new',bytes:30}]),/nicht überein/);
+ assert.throws(()=>patchPreviewManifest(source,[{path:'models.json',before:null,after:'new',bytes:30}]),/bereits/);
+ assert.throws(()=>patchPreviewManifest({...source,orderEnabled:true},[]),/Unbekanntes/);
+});

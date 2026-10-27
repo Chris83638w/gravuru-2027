@@ -1,3 +1,4 @@
+import {commerceStatus} from './commerce-status.mjs';
 import {validateCommerce,selectCommerceVariant} from './commerce-model.mjs';
 import {designFromState,validateDesign,money,optionFieldEntries} from './contract.mjs';
 import {exportCommerce} from './commerce-export.mjs';
@@ -5,15 +6,15 @@ import {exportCommerce} from './commerce-export.mjs';
 export function installCommerce({el,config,files,pending}){
  const bridge=window.parent.GravuruCommerce;if(!bridge)return;
  const binding=validateCommerce(config,bridge.binding),r=el.shadowRoot,button=r.querySelector('.fk-buy-button'),status=r.querySelector('.fk-order-status');
- let busy=false,message='';
+ let busy=false,message='';const failure=commerceStatus();const fingerprint=()=>JSON.stringify(designFromState(config,el.state));
  // K1 (Ü2.2/Ü3.1): Pflichtfeld mit Mustertext oder Text über dem Limit sperrt den Warenkorb; der Kunde sieht welches Feld.
  const blockedBy=()=>{try{return el.uxTextIssues?.()[0]||null;}catch{return null;}};
- const update=()=>{const blocked=busy?null:blockedBy();button.disabled=busy||!!blocked;button.textContent=busy?'Wird vorbereitet …':el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'In den Warenkorb';const text=message||blocked?.message||'';status.textContent=text;status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.style.setProperty('display',text?'block':'none','important');};
+ const update=()=>{const blocked=busy?null:blockedBy();button.disabled=busy||!!blocked;button.textContent=busy?'Wird vorbereitet …':el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'In den Warenkorb';const text=(busy?message:failure.message(fingerprint()))||blocked?.message||'';status.textContent=text;status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.style.setProperty('display',text?'block':'none','important');};
  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);update();return result;};
- const fail=error=>{busy=false;message=error.message||'Übertragung fehlgeschlagen. Deine Gestaltung bleibt geöffnet.';update();};
+ const fail=error=>{busy=false;failure.fail(error.message||'Übertragung fehlgeschlagen. Deine Gestaltung bleibt geöffnet.',fingerprint());message='';update();};
  window.addEventListener('message',event=>{if(event.origin!==location.origin||event.source!==window.parent||event.data?.session!==bridge.session)return;if(event.data.type==='gravuru-cart-error')fail(Error(event.data.message));});
  button.addEventListener('click',async event=>{
-  event.preventDefault();event.stopImmediatePropagation();if(busy)return;
+  event.preventDefault();event.stopImmediatePropagation();if(busy)return;failure.clear();message='';update();
   try{
    if(pending())throw Error('Bitte warten, bis das Bild vollständig geladen ist.');
    if(r.querySelector('dialog[open]:not([data-commerce-review])'))throw Error('Bitte die Bildbearbeitung zuerst abschließen.');

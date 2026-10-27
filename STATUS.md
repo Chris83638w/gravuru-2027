@@ -2,6 +2,7 @@
 
 - Live gemessen D8: „In den Warenkorb“ 38,6 s, davon Server-Sichern 31,5 s. Ursache: CloudLinux-Benutzer `gravuru_werkstatt` auf 1 Kern / 1 GB / **1 MB/s IO** (heute 324 IO-, 135 CPU-, 4 Speicher-Treffer). Chris hat selbst angehoben (400 %, 4G, 50 MB/s, IOPS 4096, EP 50, NPROC 200) → Sichern **1,2 s**, Warenkorb nach 6,2 s.
 - Branch `dev/schnelles-sichern-20261027-claude`: Prüfpaket nur mit Ressourcen des Designs (vorher ~12 MB je Klick), importierte Profilschriften beim Sichern zugelassen (vorher 422). Review-Befund (Freigabe ohne Profilauswahl) behoben.
+- **Live 19:57–20:05:** `6f0fa2c` (inkl. PR #32) per Plesk Git bereitgestellt – dauerte nach der Limit-Anhebung **unter 30 s** statt ~20 min –, „App neu starten“, Prüfung: `/werkstatt/` 200, Session/Start 401, Webhook-GET 405. D8 mit Schrift „Lato Regular · c3d3cabdb582“ (vorher 422): gesichert in 1,5 s, Warenkorb 22,98 €, `/cart` nach 7,3 s.
 - Befund/Plan: [Konfi-Geschwindigkeit](docs/handoffs/2026-10-27-konfi-geschwindigkeit.md). Nächster Schritt: Korrektur aufspielen (Chris' Satz), dann Stufe 2 (Editor-Fenster auf der Produktseite, direkter Warenkorb).
 
 ## 27.10.2026 · Claude · PR #32 gemergt (Repo = Live-Stand), Nachträge an Astra

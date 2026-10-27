@@ -48,3 +48,11 @@ Erklärt auch ~20 min je Plesk-Deploy (1,08 GB bei 1 MB/s).
 - Unabhängiger Review: kein Blocker. R1 (Skriptabrufe zählten aufs Warenkorb-Limit) behoben: Skripte vor dem Limit, `Cache-Control: public, max-age=300`, Test. R2 (Shop-Domain) geprüft: Primärdomain ist `gravuru-design.myshopify.com`; bei späterer eigener Domain muss `shopDomain`/`frame-ancestors` erweitert werden. R4 Safari/iOS (sessionStorage im Fremd-iframe) nur am Gerät prüfbar.
 - Aktivierung im Shop = eine Zeile im Live-Block `custom_liquid_mTPWzc` (vor dem letzten `endif`): `<script type="module" src="/apps/konfigurator/shop-embed.mjs"></script>`. Test vorher ohne Theme-Änderung: Skript in der eigenen Browser-Sitzung per Konsole laden.
 - Offen danach: schlankes Modell (Schriften bei Bedarf, Materialbild als URL), Warenkorbbild mit Material, Text „Lokaler Prüfstand …“ (braucht Editor-Release-Build).
+
+## Stand 28.10.2026 (Claude)
+
+- Live seit 27.10. 23:35: schlankes Modell (Katalog-Doppel weg, WebP-Grundplatte), Cache-Kopfzeilen, Fenster-Modus global, Warenkorbbild mit Material.
+- `main` `bce123d` (noch nicht live): eigene Produktschriften ohne Designbezug als Datei `/konfigurator/shop/schriften/<sha256>.json`, Modell D8 3.781 → 563 KB.
+- Branch `dev/konfi-parallel-laden-20261028-claude` `edaebfa` (noch nicht in `main`): Editor-Seite, Paket und Kernkatalog parallel zum Modell vorwärmen, `preconnect` bei Absicht; Desktop 5,0–6,0 → 3,9–4,6 s.
+- CPU-Profil Editor-Start (mit beiden Änderungen): nur noch ~1,2 s Rechenzeit (Desktop), `localFontIds` 52 ms, `svgDocument` 190 ms – der Rest ist Netz (Proxy-Start ~0,7 s, Modell).
+- Freigabe: beide zusammen („Ja, Du darfst das Nachladen der Produktschriften und das parallele Laden des Konfigurators bereitstellen und die App neu starten.“) oder nur die Schriften. Danach mit `node scripts/konfi-messen.cjs` (+ `--handy`) live nachmessen, iPhone-Test Chris.

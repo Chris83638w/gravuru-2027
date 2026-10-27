@@ -4,6 +4,36 @@ Basis Code main d103019, Branch dev/gedenktafel-schrift-warenkorb-20261027-astra
 
 Auftrag Chris: alle vier Fehler beheben, echte Gedenktafel mit Foto und Hausmotiv bis in den Warenkorb testen, aktuelle Gestaltung erhalten. Frühere ausdrückliche Erlaubnis zur sicheren Bereitstellung gilt fort. Der bestehende Kundentab bleibt ohne Neuladen geöffnet. Kein Kauf und keine Zahlung.
 
+## Aktueller Abschluss: Foto-Vorschau und Bearbeiten (27.10.2026)
+
+Dieser Abschnitt ersetzt die weiter unten dokumentierte frühere Einschränkung beim Öffnen der PNG und bei der alten Gedenktafel-Warenkorbdarstellung.
+
+- Ursache der blockierten Einzelansicht: Shopify liefert die hochgeladenen Dateien mit `Content-Disposition: attachment`. Die Datei war vorhanden (HTTP 200); die direkte Navigation wurde vom Browser blockiert. Das Theme zeigt sie jetzt inline in einem zugänglichen Bilddialog.
+- Die Gedenktafel nutzt das ältere Schema `gravuru-shopify-design/v1` und andere Eigenschaften als native Konfigurationen. Das Snippet erkennt beide Wege. Gespeicherte Vorschau und **Bearbeiten** stehen zusammen in der Bildspalte. Technische Dateieigenschaften bleiben im Warenkorb gespeichert und werden in dieser Zeile nicht rechts aufgelistet.
+- Wiederherstellung lädt den zum exakten Cart-Key gehörenden Snapshot samt originalen und bearbeiteten Fotos. Nur Shopify-Uploadpfade desselben Shops; Produkt, Variante, Profilrevision, Mengen, Dateitypen und Größen werden geprüft. Die alte interne Profil-Produktkennung wird erst nach exaktem Vergleich mit der verifizierten Commerce-Produktkennung abgebildet. Es wird keine fremde oder ältere Revision still akzeptiert.
+- Das eingebettete Editorfenster bleibt beim Laden im Layout, aber unsichtbar und ohne Bedienung. `display:none` hatte dessen Initialisierung blockiert. Freigabe der Bedienung erst nach bestätigter Wiederherstellung; Origin, Quellfenster und Sitzung müssen auf beiden Übergabestufen passen.
+- Fotozuordnung, Masken/Ausschnitte, Texte und Objektanordnung werden exakt erhalten. Ersetzen erfolgt erst nach bestätigtem Upload und Preisrückprüfung; bei einer verlorenen Antwort wird die eindeutige Vorgangskennung abgeglichen. Erst danach wird genau der alte Cart-Key entfernt. Andere Positionen werden vor/nachher verglichen. Bei Fehler bleibt der bisherige Stand erhalten bzw. beide Stände sichtbar zur Prüfung.
+
+### Tatsächlich ausgeführte Abnahme
+
+1. Im vorhandenen Warenkorb: erste Gedenktafel mit Foto und Haus, GTD8B5-1, 220 × 140 mm, ohne Befestigung, Menge 1, 34,67 €.
+2. Gespeicherte PNG im großen Dialog geöffnet: Foto links, Baum mittig, Haus rechts oben, Texte vollständig sichtbar.
+3. **Bearbeiten** unter dieser Vorschau geöffnet. Editor bestätigt Wiederherstellung; Foto, Haus, Texte und Anordnung sichtbar gleich. Kein erneuter Foto-Upload.
+4. Abschlussdialog: Menge 1 und 34,67 €. Einmal **In den Warenkorb**.
+5. Rückkehr zu /cart: genau vier Positionen, aktualisierte Gedenktafel weiterhin 34,67 €, ein Zusatzmotiv und ein kostenpflichtiges Bild. Die drei übrigen Cart-Keys und Mengen unverändert.
+6. Neu gespeicherte PNG erneut im großen Dialog sichtbar geprüft. Keine Bestellung und keine Produktions-PDF-Abnahme. Original-Kundentab nicht verändert.
+
+Die lokalen Beweisbilder enthalten das Kundenfoto und werden deshalb nicht zu GitHub hochgeladen.
+
+### Code, Bereitstellung und Prüfungen
+
+- Neue Module: `legacy-cart-restore.mjs`, Theme-Asset `gravuru-legacy-cart.js`, eng begrenzter Legacy-Patch und `ops/repair-memorial-cart-edit.mjs`.
+- Server zuerst Dry-run (sechs Dateien), anschließend private Sicherung, SHA-Rückprüfung und Apply; danach Korrektur der internen Produktzuordnung mit separater Sicherung. Keine Preis-/Designänderung, keine Datenbank geöffnet. Sicherungen unter `private/gedenktafel-repair-20261027-astra/cart-edit-before` und `cart-edit-id-before`. Plesk **App neu starten** auf Domain gravuru-designwerkstatt.de / Anwendungsstamm gravuru-werkstatt; öffentlich ausgeliefertes neues Restore-Modul geprüft.
+- Gezielt Wiederherstellung **11/11**; vorher gemeinsame betroffene Tests **23/23** (vor zusätzlichem Kennungstest).
+- Finaler Konfigurator-Vollauf mit `--test-concurrency=1`: **316 / 308 bestanden / 8 fehlgeschlagen / 0 übersprungen**. Zwei EPERM beim Bundle-Rename, ein Kontur-Python- und fünf Druck-Python-Fehler wie die Basis. Zuvor paralleler Lauf 315 / 306 / 9; zusätzlicher gemeinsamer Build-Datei-Konflikt isoliert grün und im finalen seriellen Vollauf nicht vorhanden. Keine Assertion entfernt oder abgeschwächt.
+- Shopify-Liquid-Stateless-Prüfung: Snippet und beide Sections ohne Fehler. Bestehende Komplexitätswarnungen der großen Sections bleiben. Das ersetzt keine vollständige Prüfung aller Theme-Abhängigkeiten.
+- Vier Theme-Dateien im unveröffentlichten Theme **190557716860** angewendet und bytegleich zurückgelesen: zwei Sections (kleiner Integrationspatch), Snippet, neues JS-Asset. MAIN **185833718140** unverändert: Die Shopify-Anbindung erlaubt Theme-Schreibzugriffe nur auf unveröffentlichte Themes. Zur Live-Übernahme ausschließlich diese vier Dateien auf aktuelle MAIN-Quellen übertragen; nicht die gesamte Testkopie veröffentlichen.
+
 ## Befund
 
 Produkt 16138083107196, Gedenktafel für Menschen 220×140, Vorschaupaket 03f5f62bc283227cf014008036999cc0925f88e9a25b736c, Profil P-f087d73f-b29e-43f8-ba1e-543d1daa95a8 Revision 30. Diese gespeicherte Vorschau ist älter als die neue native Shopstrecke.

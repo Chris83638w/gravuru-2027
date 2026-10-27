@@ -12,14 +12,20 @@ Quelle für die **bestehende** Theme-App-Erweiterung `gravuru-storefront` der Ap
 
 Der Block-Einstellwert `subpath` (Vorgabe `konfigurator`) muss zum App-Proxy der App passen (`[app_proxy] prefix = "apps"`, `subpath = "konfigurator"`). Beide Werte sind in der Shop-Adresse sichtbar und eine Entscheidung von Chris.
 
-## Warenkorb: Bearbeiten unter dem Bild (27.10.2026)
+## Warenkorb: Vorschau und Bearbeiten unter dem Bild (27.10.2026)
 
-`cart-media-placement.patch` ist der kleine Integrationspatch für die beiden Sections des am 27.10. gelesenen Produktionsthemes. Zusammen mit `snippets/gravuru-warenkorb-bearbeiten.liquid` anwenden. Ein alter Aufruf des Snippets rechts bei den Produkteigenschaften muss entfallen; nicht zusätzlich rendern.
+`cart-media-placement.patch` integriert den Baustein in die Bildspalten von `sections/main-cart.liquid` und `sections/cart-drawer.liquid`. Zusätzlich übernehmen: `snippets/gravuru-warenkorb-bearbeiten.liquid` und `assets/gravuru-legacy-cart.js`. Insgesamt vier Theme-Dateien. Kein zusätzlicher Snippet-Aufruf rechts bei den Eigenschaften.
 
-Bei nativen Konfiguratorzeilen mit `_gravuru_config` und `_gravuru_rev` ersetzt die gespeicherte Vorschau das normale Produktbild. „Bearbeiten“ steht als Link direkt darunter. Die normale Eigenschaft `Bearbeiten` wird nur bei diesen Zeilen ausgeblendet. Andere Artikel behalten ihre bisherige Darstellung. Der erlaubte Vorschau-Host, Produkt-/Variantenbindung und die Bearbeiten-Parameter bleiben erhalten. Der Link nutzt die vorhandene Übersetzung `general.cart.edit`; keine neue Einstellung. Mobile Umbrüche und Mindesthöhe von 44 px für den Link sind enthalten.
+Native Konfigurationen verwenden weiterhin ihre signierte App-Proxy-Bearbeitung. Ältere Gedenktafeln werden anhand der vorhandenen Vorgangskennung plus bearbeitbarem Entwurf erkannt. Beide zeigen die gespeicherte Vorschau mit einem 44-px-Bearbeiten-Link darunter. Der Bilddialog zeigt Upload-PNGs inline trotz Download-Header. Technische Dateilinks der älteren Strecke bleiben an der Position gespeichert, werden aber nicht als lange öffentliche Eigenschaften angezeigt.
 
-Bereitgestellt und zurückgelesen ausschließlich im unveröffentlichten Testtheme `190557716860` (Konfigurator-Test 26.10., Kopie production). Produktion `185833718140` unverändert: Die Shopify-Anbindung sperrt MAIN-Theme-Dateischreibzugriffe. Keine Veröffentlichung der gesamten Testkopie; zur Übernahme genau diese drei Dateien bzw. den Patch im Theme-Projekt prüfen. Quellbasis-MD5: main-cart `e653c987ec228b80353a8754be5f5566`, cart-drawer `445189ac2e8c73c81c40fe3010873c37`. Bei zwischenzeitlichen Änderungen den kleinen Patch auf aktuelle Quellen übertragen.
+Das JS-Asset muss auch auf Produktseiten geladen sein: Die Einbindung in cart-drawer liegt deshalb außerhalb des Guards für die Drawer-Einstellung. Ohne diese Einbindung wäre der Bearbeiten-Rückweg auf der Produktseite wirkungslos.
 
-Desktop und 390×844 geprüft; Link öffnet die gespeicherte Türschild-Gestaltung mit Hausmotiv, Text und sieben Ebenen wieder. Ein erster Aufruf traf eine protokollierte HTTP-503-Unterbrechung des App-Hosts; erneutes Laden war erfolgreich. Der Shop öffnet über das Warenkorbsymbol die Warenkorbseite, daher keine gesonderte visuelle Drawer-Abnahme behaupten. Der Drawer verwendet denselben Bild-/Link-Baustein.
+Für die ältere Strecke benötigt der Host zusätzlich den geprüften Restore-Patch:
+`ops/repair-memorial-cart-edit.mjs --preview VORSCHAUORDNER --runtime AKTIVE_LAUFZEIT --out NEUER_PRIVATER_ORDNER`.
+Erst Dry-run; Apply nur mit `--apply --backup NEUER_PRIVATER_ORDNER`. Auf den geprüften Gedenktafelstand (Profilrevision 30, Shopify-Preisrevision 31) begrenzt. Danach Plesk **App neu starten**, da der Vorschau-Router Module im Prozess vorhält. Produkt-/Versionsprüfung, Fotos, exakte Geometrie und Sitzungsgrenzen bleiben erhalten. Andere Produkte werden damit nicht automatisch migriert.
 
-Shopify-Liquid-Prüfung: Snippet erfolgreich. Für die beiden nur teilweise lokal kopierten Sections vorher/nachher dieselben 97 fehlenden Theme-Referenzen/Übersetzungen, keine neuen Fehler. Die Shopify-Dateiübernahme meldet keine Fehler; Read-back stimmt.
+Echte Abnahme: Gedenktafel mit Foto und Haus für **34,67 €** aus dem Warenkorb wieder geöffnet und dieselbe Position erfolgreich aktualisiert. Vier Positionen vorher/nachher, andere drei unverändert; gespeicherte PNG danach sichtbar. Desktop/Handy-Darstellung des Links geprüft. Der Shop verwendet die Warenkorbseite, deshalb keine gesonderte visuelle Drawer-Abnahme behaupten.
+
+Ausschließlich im unveröffentlichten Testtheme **190557716860** bereitgestellt und zurückgelesen. MAIN **185833718140** ist durch die Anbindung schreibgesperrt. Zur Live-Übernahme nur diese vier Dateien auf den aktuellen Stand übertragen, nicht die gesamte Testkopie veröffentlichen. Patchbasis: main-cart MD5 `e653c987ec228b80353a8754be5f5566`, cart-drawer `445189ac2e8c73c81c40fe3010873c37`.
+
+Liquid-Stateless-Prüfung: Snippet und Sections ohne Fehler; bestehende Komplexitätswarnungen bleiben. Vollauf Konfigurator: **316 / 308 bestanden / 8 bekannte Windows-/Python-Fehler**, Wiederherstellung **11/11**. Kundenfoto und Dateiadressen bleiben außerhalb des Repositories.

@@ -1,3 +1,4 @@
+import {installLegacyCartRestore} from './legacy-cart-restore.mjs';
 import {photoColorMode,photoColorFilter,photoEngravingPreviewFilter} from '../../platform/sources/app/shared/models/photo-color.mjs';
 import {commercePrice} from './commerce-model.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
@@ -451,6 +452,7 @@ export async function installUX(el,config,legacy){
   // Vor der fertigen Oberfläche auf der Platte gewähltes Foto (photo-upload.mjs installEarlyPhotoTap) übernehmen.
   const takeEarlyPhoto=()=>{const early=el.uxEarlyPhoto;if(!early)return;el.uxEarlyPhoto=null;acceptCustomerFiles(early.files,'photo',early.slotId).catch(error=>say(error.message));};
   el.addEventListener('gravuru-early-photo',takeEarlyPhoto);takeEarlyPhoto();
+  if(config)installLegacyCartRestore({el,config,files});
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).
   if(config)installBackgroundLoading({el,r,config});

@@ -7,7 +7,17 @@
   assign gv_config = item.properties['_gravuru_config']
   assign gv_rev = item.properties['_gravuru_rev']
   assign gv_subpath = subpath | default: 'konfigurator'
+  assign gv_legacy = false
+  assign gv_native = false
+  if gv_config != blank and gv_rev != blank
+    assign gv_native = true
+  elsif item.properties['_Gravuru Vorgang'] != blank and item.properties['Bearbeitbarer Entwurf'] != blank
+    assign gv_legacy = true
+  endif
   assign gv_preview = item.properties['_Entwurf']
+  if gv_legacy
+    assign gv_preview = item.properties['Entwurf']
+  endif
   assign gv_preview_prefix = gv_preview | slice: 0, 24
   assign gv_relative_prefix = gv_preview | slice: 0, 9
   assign gv_line = item.key
@@ -15,10 +25,10 @@
     assign gv_line = 'theme'
   endif
 -%}
-{%- if gv_config != blank and gv_rev != blank and item.product != blank and item.variant != blank -%}
+{%- if gv_native or gv_legacy -%}
   <div class="gravuru-cart-personalization">
     {%- if gv_preview_prefix == 'https://cdn.shopify.com/' or gv_relative_prefix == '/uploads/' -%}
-      <a class="gravuru-cart-preview-link" href="{{ gv_preview | escape }}" target="_blank" rel="noopener">
+      <a class="gravuru-cart-preview-link" data-gravuru-preview data-close-label="{{ 'accessibility.close' | t | escape }}" href="{{ gv_preview | escape }}" target="_blank" rel="noopener">
         <img class="gravuru-cart-preview" src="{{ gv_preview | escape }}" alt="{{ item.product.title | escape }}"
              width="160" height="120" loading="lazy">
       </a>
@@ -27,12 +37,28 @@
         {{- item.image | image_url: width: 360 | image_tag: loading: 'lazy', widths: '180,360', class: 'gravuru-cart-preview' -}}
       </a>
     {%- endif -%}
+    {%- if gv_legacy -%}
+    <a class="gravuru-cart-edit" rel="nofollow"
+       aria-label="{{ 'general.cart.edit' | t | escape }}: {{ item.product.title | escape }}"
+       href="{{ item.product.url }}?variant={{ item.variant.id }}&amp;gravuru_cart={{ item.key | url_encode }}">{{ 'general.cart.edit' | t }}</a>
+    {%- else -%}
     <a class="gravuru-cart-edit" rel="nofollow"
        aria-label="{{ 'general.cart.edit' | t | escape }}: {{ item.product.title | escape }}"
        href="/apps/{{ gv_subpath | escape }}/start?product={{ item.product.id }}&amp;variant={{ item.variant.id }}&amp;config={{ gv_config | url_encode }}&amp;rev={{ gv_rev | url_encode }}&amp;line={{ gv_line | url_encode }}&amp;back={{ item.product.url | split: '?' | first | url_encode }}">{{ 'general.cart.edit' | t }}</a>
+    {%- endif -%}
   </div>
+  <script type="module" src="{{ 'gravuru-legacy-cart.js' | asset_url }}"></script>
 {%- endif -%}
 {% stylesheet %}
+  .gravuru-cart-image-dialog { padding: 16px; width: min(1000px, 96vw); max-height: 94dvh; border: 0; border-radius: 10px; }
+  .gravuru-cart-image-dialog img { display: block; width: 100%; height: auto; max-height: 80dvh; object-fit: contain; }
+  .gravuru-cart-image-dialog button, .gravuru-cart-editor-dialog > button { min-height: 44px; padding: 8px 16px; font: inherit; cursor: pointer; }
+  .gravuru-cart-editor-dialog { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; padding: 0; margin: 0; border: 0; }
+  .gravuru-cart-editor-dialog[open] { display: flex; flex-direction: column; }
+  .gravuru-cart-editor-dialog > p { padding: 8px 16px; margin: 0; }
+  .gravuru-cart-editor-dialog iframe { flex: 1; width: 100%; border: 0; min-height: 0; }
+  .gravuru-cart-editor-dialog iframe[hidden] { display: none; }
+  .gravuru-cart-image-dialog::backdrop, .gravuru-cart-editor-dialog::backdrop { background: #0008; }
   .gravuru-cart-personalization {
     display: flex;
     flex-direction: column;

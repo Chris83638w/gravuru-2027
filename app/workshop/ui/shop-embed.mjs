@@ -27,6 +27,42 @@ export function startUrl(link){
  return url.href;
 }
 
+// Global (Chris 27.10.2026: „universal, auch wenn ich ein neues Produkt anlege“): Ein Theme-Baustein im
+// Fußbereich schreibt auf jeder Produktseite mit Konfigurator-ID die Produktdaten als JSON (#gravuru-konfi).
+// Fehlt auf der Vorlage der eigene Knopf, setzt diese Datei ihn an die Stelle der Kaufknöpfe; die normalen
+// Kaufknöpfe dieses Produkts werden ausgeblendet (kein Kauf ohne Gestaltung).
+const ID=/^\d{1,20}$/;
+export function pageConfig(doc=globalThis.document){
+ const node=doc?.getElementById?.('gravuru-konfi');if(!node)return null;
+ let raw;try{raw=JSON.parse(node.textContent||'');}catch{return null;}
+ const productId=String(raw?.productId??''),variants=Array.isArray(raw?.variants)?[...new Set(raw.variants.map(String))].filter(v=>ID.test(v)):[];
+ if(!ID.test(productId)||!variants.length||variants.length>250)return null;
+ const variantId=variants.includes(String(raw.variantId))?String(raw.variantId):variants[0];
+ const back=typeof raw.back==='string'&&/^\/(?!\/)[^\s]{0,300}$/.test(raw.back)?raw.back:'/';
+ return {productId,variantId,variants,back};
+}
+export function startHref(config,variantId=config.variantId){
+ const params=new URLSearchParams({product:config.productId,variant:config.variants.includes(String(variantId))?String(variantId):config.variantId,back:config.back});
+ return PROXY+'/start?'+params;
+}
+// Kaufformulare genau dieses Produkts (auch die mitlaufende Kaufleiste), nicht die anderer Produkte auf der Seite.
+export function productForms(config,doc=globalThis.document){
+ return [...doc.querySelectorAll('form[action*="/cart/add"]')].filter(form=>config.variants.includes(String(form.querySelector('[name="id"]')?.value||'')));
+}
+const currentVariant=(config,doc)=>productForms(config,doc).map(form=>String(form.querySelector('[name="id"]')?.value||'')).find(v=>config.variants.includes(v))||config.variantId;
+export function prepareProductPage(config,doc=globalThis.document){
+ const forms=productForms(config,doc);
+ for(const form of forms)for(const node of form.querySelectorAll('[type="submit"],[name="add"],.shopify-payment-button'))node.setAttribute('data-gravuru-hidden-buy','');
+ if(doc.querySelector('[data-gravuru-personalisieren]')||!forms.length)return null;
+ const box=doc.createElement('div');box.className='gravuru-personalisieren';box.setAttribute('data-gravuru-personalisieren','');box.style.margin='12px 0 16px';
+ const link=doc.createElement('a');link.className='btn btn--primary btn--gravuru-primary';link.setAttribute('data-gravuru-start','');link.rel='nofollow';link.textContent='Jetzt personalisieren';link.href=startHref(config,currentVariant(config,doc));
+ const note=doc.createElement('p');note.style.cssText='margin:8px 0 0;font-size:.9em;opacity:.8;text-align:center';note.textContent='Design wählen, Text gestalten, eigenes Foto hochladen.';
+ // Hauptformular: hat einen Kaufknopf (nicht das Ratenzahlungs-Formular im Preisblock) und liegt nicht in der Kaufleiste.
+ const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
+ const main=forms.find(form=>buy(form)&&!sticky(form))||forms.find(buy)||forms[0];
+ box.append(link,note);main.after(box);return box;
+}
+
 // Nur Nachrichten genau dieses Konfigurator-Fensters vom Konfigurator-Host werden angenommen.
 export function acceptedMessage(event,frame){
  if(!frame||event.origin!==EDITOR_ORIGIN||event.source!==frame.contentWindow)return null;
@@ -82,9 +118,19 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   if(message.type==='close')hide();
   else handoff(message.token,event.source,message.image);
  });
+ const config=pageConfig();
+ if(config){
+  prepareProductPage(config);
+  // Varianten- und Abschnittswechsel des Themes bauen Kaufknöpfe neu auf: erneut ausblenden.
+  const style=document.createElement('style');style.textContent='[data-gravuru-hidden-buy]{display:none!important}';document.head.append(style);
+  let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;prepareProductPage(config);});}).observe(document.body,{childList:true,subtree:true});
+ }
  document.addEventListener('click',event=>{
   const link=event.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]');
-  if(!link||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  if(!link||event.defaultPrevented)return;
+  // Gerade gewählte Variante übernehmen (auch für Strg-/Mittelklick, die normal weiterlaufen).
+  if(config)link.href=startHref(config,currentVariant(config,document));
+  if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
   const url=startUrl(link);if(!url)return;
   event.preventDefault();open(url);
  });

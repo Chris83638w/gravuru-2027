@@ -7,14 +7,14 @@ import {DatabaseSync} from 'node:sqlite';
 import {createOrderIntake} from './order-intake.mjs';
 import {createOrderWebhookHandler,ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
 const config={mode:'test-only',apiVersion:'2026-07',shopDomain:'synthetic.myshopify.com',secret:'synthetic_secret_at_least_16'};
-async function fixture(t,{timeout=3000}={}){
+async function fixture(t,{timeout=3000,liveMode=false}={}){
  const db=new DatabaseSync(':memory:');
  const manifest={id:'proof_test',packageSha256:'a'.repeat(64),product:{id:'cfg_test',revision:1,name:'Synthetic',basePriceCents:1499,currency:'EUR'}};
  const intake=createOrderIntake({database:db,snapshot:()=>structuredClone(manifest)});
  const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record:{id:'cfg_test',revision:1,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:1499,designs:[{}]}}});
  const offer=intake.offer({bindingId:binding.id,snapshotId:manifest.id,quantity:2});
  const payload={id:101,test:true,financial_status:'paid',currency:'EUR',customer:{email:'private@example.invalid'},line_items:[{id:201,variant_id:301,quantity:2,price:'14.99',properties:[{name:'_gravuru_offer',value:offer.property.value}]}]};
- const handler=createOrderWebhookHandler({intake,config,bodyTimeoutMs:timeout});
+ const handler=createOrderWebhookHandler({intake,config:liveMode?{...config,mode:'doorbell-live-approved'}:config,bodyTimeoutMs:timeout});
  const server=http.createServer(handler);server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(()=>{server.close();server.closeAllConnections();db.close();});
  const request=(data=payload,{headers={},method='POST',route=ORDER_WEBHOOK_PATH,send=true}={})=>new Promise((resolve,reject)=>{
@@ -57,3 +57,13 @@ test('oversized and slow request bodies stop before intake and do not acknowledg
  assert.equal((await f.request('',{headers:{'content-length':'100'},send:false})).status,408);
  assert.equal(f.intake.list().length,0);
 });
+test('explicit live webhook mode cannot admit an unapproved old form product',async t=>{
+ const f=await fixture(t,{liveMode:true});
+ const payload={...f.payload,test:false,line_items:f.payload.line_items.map(l=>({...l,product_id:401}))};
+ const response=await f.request(payload);
+ assert.equal(response.status,200);
+ assert.deepEqual(JSON.parse(response.body),{accepted:true,duplicate:false,matchedLines:0,rejectedLines:1,testOnly:false});
+ assert.equal(f.intake.list().length,0);assert.equal(f.intake.errors()[0].test,false);
+ assert.match(f.intake.errors()[0].intakeError,/Live-Freigabe/);
+});
+

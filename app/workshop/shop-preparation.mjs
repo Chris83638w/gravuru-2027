@@ -4,8 +4,26 @@ import {validateProductDocument,resolveProduct} from './product-model.mjs';
 import {quote,variantCombinations} from '../configurator/variant-m/contract.mjs';
 import {variantKey} from '../configurator/variant-m/commerce-model.mjs';
 // Read-only preparation. No Shopify credentials, IDs, writes or publication are fabricated.
+// Native doorbells enumerate 120 commercial choices. Binding checks repeatedly
+// prepare the same saved revision; keep only these immutable product-derived
+// results, never customer selections. Validation still runs on every call.
+const doorbellPreparations=new Map(),DOORBELL_PREPARATION_LIMIT=32;
 export function prepareShopProduct(record){
- const d=validateProductDocument(record.document),form=isFormProduct(d),checks=[],variants=[];
+ const d=validateProductDocument(record.document);
+ if(d.config?.doorbell?.schema!=='gravuru-doorbell/v1')return prepareValidated(record,d);
+ const cacheKey=createHash('sha256').update(JSON.stringify({document:d,id:record.id,revision:record.revision,status:record.status,productionProfile:record.metadata?.productionProfile??null})).digest('hex');
+ if(doorbellPreparations.has(cacheKey)){
+  const value=doorbellPreparations.get(cacheKey);
+  doorbellPreparations.delete(cacheKey);doorbellPreparations.set(cacheKey,value);
+  return structuredClone(value);
+ }
+ const result=prepareValidated(record,d);
+ doorbellPreparations.set(cacheKey,structuredClone(result));
+ if(doorbellPreparations.size>DOORBELL_PREPARATION_LIMIT)doorbellPreparations.delete(doorbellPreparations.keys().next().value);
+ return result;
+}
+function prepareValidated(record,d){
+ const form=isFormProduct(d),checks=[],variants=[];
  const check=(id,ok,message)=>checks.push({id,status:ok?'ready':'open',message});
  check('availability',record.status!=='archived',record.status==='archived'?'Produkt ist archiviert.':'Gespeicherter Produktstand verfügbar.');
  check('kind',d.kind==='product',d.kind==='product'?'Eigenes Produkt.':'Master zuerst als eigenes Produkt kopieren.');
@@ -32,3 +50,4 @@ export function prepareShopProduct(record){
  const value={schema:'gravuru-shop-preparation/v1',configuration:{id:record.id,revision:record.revision,status:record.status},title:d.name,seo:d.seo,currency:'EUR',variants,extras,designs:designs.map(v=>({id:v.id,name:v.name})),productionProfile:profile?{id:profile.id,revision:profile.revision,sha256:profile.sha256}:null,checks,sourceReady:checks.filter(v=>['availability','kind','designs','material','method','price','variants'].includes(v.id)).every(v=>v.status==='ready'),shopReady:false,productionReady:false,shopifyProductId:null,scope:'preparation-only',formChecklist:form?formReadiness(d):[]};
  return {...value,sha256:createHash('sha256').update(JSON.stringify(value)).digest('hex')};
 }
+

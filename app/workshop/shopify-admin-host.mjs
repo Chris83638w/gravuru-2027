@@ -1,3 +1,4 @@
+import {isDoorbellImagePath} from './doorbell-image-resource.mjs';
 const reject = () => {throw Object.assign(Error('Shopify-Händlerhost ist nicht vollständig eingerichtet.'), {status:503});};
 const shopPattern = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.myshopify\.com$/;
 const bridgeURL = 'https://cdn.shopify.com/shopifycloud/app-bridge.js';
@@ -31,7 +32,7 @@ export function createShopifyAdminHost(config, sessionContext) {
       // URL host/shop parameters and forwarded headers never select a trust target.
       return true;
     },
-    allows(pathname) {return pathname==='/assistant.js' || /^\/acrylic-assets\/[a-z0-9-]+\.(png|webp)$/.test(pathname) || rendererPage(pathname) || pathname==='/api/guides' || pathname.startsWith('/_runtime/') || /^\/_bundle\/editor-[a-f0-9]{16}\.mjs$/.test(pathname) || pathname.startsWith('/configurator/variant-m/') || pathname==='/workshop/theme-limits.mjs' || pathname==='/workshop/process-profiles.mjs' || merchantPage(pathname) || pathname.startsWith('/api/workshop/') || pathname.startsWith('/workshop-ui/') || pathname.startsWith('/platform/sources/app/shared/');},
+    allows(pathname) {return isDoorbellImagePath(pathname) || pathname==='/assistant.js' || /^\/acrylic-assets\/[a-z0-9-]+\.(png|webp)$/.test(pathname) || rendererPage(pathname) || pathname==='/api/guides' || pathname.startsWith('/_runtime/') || /^\/_bundle\/editor-[a-f0-9]{16}\.mjs$/.test(pathname) || pathname.startsWith('/configurator/variant-m/') || pathname==='/workshop/theme-limits.mjs' || pathname==='/workshop/process-profiles.mjs' || merchantPage(pathname) || pathname.startsWith('/api/workshop/') || pathname.startsWith('/workshop-ui/') || pathname.startsWith('/platform/sources/app/shared/');},
     html(bytes, pathname, search='') {
       if(rendererPage(pathname))return bytes;
       if (!merchantPage(pathname)) reject();

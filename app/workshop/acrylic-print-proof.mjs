@@ -1,3 +1,4 @@
+import {renderDoorbellCutPdfs} from './doorbell-artwork.mjs';
 import {printDelivery} from './print-delivery.mjs';
 import {acrylicArtwork} from './acrylic-artwork.mjs';
 import {rasterizePrint,formPrintSettings} from './form-print-proof.mjs';
@@ -10,6 +11,7 @@ export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v6';
 export const acrylicPrintKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_PRINT_RECIPE,settings:formPrintSettings(settings)}));
 export async function acrylicContourProof(archive,archiveHash){
  const a=await acrylicArtwork(archive,archiveHash);
+ if(a.doorbellLayers)return (await renderDoorbellCutPdfs(a.doorbellLayers)).acrylic;
  return geometryContourPdf(a.geometry,`${a.manifest.product.id}:${a.manifest.product.revision}; geometry=${a.geometrySha256}`);
 }
 // Druckdatei einer Fläche (Raster, Weiß, Kontur) aus der gesicherten Gestaltung.
@@ -52,3 +54,4 @@ export async function createAcrylicPrintProof(archive,archiveHash,input={},conte
  const {archive:output}=await productionPackage({files:a.files,manifest:a.manifest,metadata,pdf,extras,orderLines:context.orderLines});
  return {pdf,archive:output,metadata};
 }
+

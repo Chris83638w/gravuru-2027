@@ -222,3 +222,54 @@ test('host integration takes the customer entry only as an explicit, well-formed
  // Ohne den Schlüssel bleibt die bisherige Prüfung unverändert (hier scheitert sie erst an den fehlenden echten Stores).
  assert.throws(()=>createConfiguratorIntegration({settings:base,...stores,shopifySessions:{shopDomain,secret,clientId:'c'}}),e=>!/Kundeneinstieg/.test(e.message));
 });
+
+function nativeDoorbellEntryFixture(f,{enabled=true}={}){
+ const model=f.models.get(f.first.localWorkshopRecord);
+ model.universal.doorbell={schema:'gravuru-doorbell/v1'};
+ model.universal.reviewOnly=true;
+ model.universal.profile.binding={kind:'local-review'};
+ model.universal.profile.features={orderEnabled:false,productionConfirmed:false};
+ f.store.doorbellLiveOrders=enabled;
+ f.store.workshop.repository.get=id=>({id,revision:3,status:'draft',document:{config:f.models.get(id)?.universal}});
+ f.approvedVariants=new Set();f.approvalCalls=[];
+ f.store.workshop.orderIntake.doorbellLiveApproval=identity=>{
+  f.approvalCalls.push(identity);
+  assert.equal(identity.shopDomain,shopDomain);assert.equal(identity.shopifyProductId,f.first.shopifyProductId);
+  assert.equal(identity.productId,f.first.localWorkshopRecord);assert.equal(identity.productRevision,3);
+  return f.approvedVariants.has(identity.shopifyVariantId)?{id:'approved-fixture-revision-3',approvedAt:'2026-10-27T00:00:00.000Z'}:null;
+ };
+}
+test('new doorbells require the exact live approval at start and on every private session request',()=>run(async(f,request,{open,token})=>{
+ assert.equal((await open()).status,404);
+ f.approvedVariants.add(f.ids.shopifyVariantId);
+ const {token:t}=await token();
+ const loaded=await request('/api/shop-entry/model',undefined,undefined,session(t));
+ assert.equal(loaded.status,200);assert.equal(loaded.data.model.universal.reviewOnly,true);
+ assert.equal(loaded.data.model.universal.profile.features.orderEnabled,false);
+ assert.equal(loaded.data.model.universal.profile.features.productionConfirmed,false);
+ assert.equal(loaded.data.productionReady,false);
+ f.approvedVariants.clear();
+ for(const path of ['/api/shop-entry/model','/api/shop-entry/design-assets/'+assetA+'/preview.svg'])assert.equal((await request(path,undefined,undefined,session(t))).status,404);
+ assert.equal((await request('/api/shop-entry/cart','POST',{draftId:f.draft.id,expectedRevision:2,quantity:1},{...session(t),'X-Gravuru-Draft':draftToken})).status,404);
+ assert.equal(f.cartCalls.length,0);
+},f=>nativeDoorbellEntryFixture(f)));
+
+test('an approved doorbell still cannot start while its live order intake is disabled',()=>run(async(f,request,{open})=>{
+ f.approvedVariants.add(f.ids.shopifyVariantId);
+ assert.equal((await open()).status,404);assert.equal(f.approvalCalls.length,0);
+},f=>nativeDoorbellEntryFixture(f,{enabled:false})));
+
+test('changing a doorbell variant rechecks its live approval before any cart handoff',()=>run(async(f,request,{token})=>{
+ f.approvedVariants.add(f.ids.shopifyVariantId);
+ const {token:t}=await token(),headers={...session(t),'X-Gravuru-Draft':draftToken},input={draftId:f.draft.id,expectedRevision:2,quantity:1};
+ const selected=f.first.variants.find(v=>v.mountingKey==='B02').shopifyVariantId;
+ assert.notEqual(selected,f.ids.shopifyVariantId);
+ const denied=await request('/api/shop-entry/cart','POST',input,headers);
+ assert.equal(denied.status,404);assert.equal(denied.data.error.code,'shop_entry_doorbell_unapproved');assert.equal(f.cartCalls.length,0);
+ f.approvedVariants.add(selected);
+ const allowed=await request('/api/shop-entry/cart','POST',input,headers);
+ assert.equal(allowed.status,200,JSON.stringify(allowed.data));assert.equal(f.cartCalls.length,1);
+ assert.equal(f.cartCalls[0].binding.shopifyVariantId,selected);
+ assert.equal(allowed.data.productionReady,false);assert.equal(allowed.data.paymentConfirmed,false);
+},f=>nativeDoorbellEntryFixture(f)));
+

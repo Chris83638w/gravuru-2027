@@ -1,3 +1,6 @@
+import {nativeDoorbellConfig} from './doorbell-product.mjs';
+import {workshopResources} from './catalog.mjs';
+import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {isFormProduct,validateFormProduct} from './form-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {nativeSpecimenConfig} from './specimen-product.mjs';
@@ -62,7 +65,7 @@ function nativeAcrylicConfig(input){
   return validated;
 }
 
-const nativeConfig = input => input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
+const nativeConfig = input => isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
 
 export function makeProductDocument(input,{name,kind='product',masterId=null}={}){
   const config=nativeConfig(input),title=text(name??config.profile.name,1,200,'Produktname');
@@ -113,9 +116,10 @@ export function validateProductDocument(document){
 export function resolveProduct(document,{options={},designId}={}){
   const product=validateProductDocument(document),config=product.config;
   const resolved=resolvedOptions(config,options),chosenId=designId===undefined?config.profile.defaultDesignId:designId;
-  const design=config.profile.designs.find(item=>item.id===chosenId);
+  const selected=selectedProfile(config,resolved);
+  const design=selected.designs.find(item=>item.id===chosenId);
   if(!design)fail('Das gewählte Design gehört nicht zu diesem Produkt.');
-  const profile=selectedProfile(config,resolved),selection=config.acrylic?acrylicSelection(acrylicOptions(resolved),config.acrylic.pricing):null;
+  const profile=selected,selection=config.acrylic?acrylicSelection(acrylicOptions(resolved),config.acrylic.pricing):null;
   const width=config.acrylic?.designWidth??profile.geometry.width,height=config.acrylic?.designHeight??profile.geometry.height;
   const physical=physicalGeometry(config,{mOptions:resolved});
   return {config,profile,designId:chosenId,design:structuredClone(design),resolvedOptions:resolved,
@@ -131,11 +135,12 @@ export function resolveProduct(document,{options={},designId}={}){
 // `elementRights`, followed by the content/geometry/media validation.
 export function validateProductDesign(document,design,{options={},fonts,motifs,template=false,draft=false}={}){
   const product=validateProductDocument(document),config=product.config;
-  const source=config.profile.designs.find(item=>item.id===design?.id);
+  const source=selectedProfile(config,options).designs.find(item=>item.id===design?.id);
   if(!source||!Array.isArray(design.objects))fail('Kundendesign gehört zu keiner Produktvorlage.');
-  const fontLibrary=fonts??config.localResources?.fonts??{};
+  const fontLibrary=fonts??(isLayeredDoorbell(config)&&design.objects.some(o=>o.type==='text')?workshopResources(config.localResources).fonts:config.localResources?.fonts??{});
   const validated=validateDesign({...config,workshopElementRights:product.elementRights},design,resolvedOptions(config,options),fontLibrary,motifs??config.localResources?.motifs??[],{template,draft});
   const result={...structuredClone(validated),objects:validated.objects.map(cleanObject)};
   for(const object of result.objects.filter(item=>item.type==='text'))measureText(object,fontLibrary);
   return result;
 }
+

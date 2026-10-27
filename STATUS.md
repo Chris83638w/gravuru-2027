@@ -1,3 +1,11 @@
+## 27.10.2026 · Claude · Konfigurator global live: jede Vorlage, jedes Produkt mit Konfigurator-ID
+
+- Chris: „bitte mach es jetzt universal global auch wenn ich ein neues produkt anlege“. `608ba91` (Merge `3ec1ad0`): `shop-embed.mjs` liest `#gravuru-konfi` (Produkt, Varianten, Rücksprung), setzt „Jetzt personalisieren“ hinter das Kaufformular, wenn die Vorlage keinen eigenen Knopf hat, blendet Kaufknöpfe/Express-Kauf genau dieses Produkts aus (Befund: D8 war bisher ohne Gestaltung kaufbar), übernimmt beim Klick die gewählte Variante. Tests 43/43 gezielt; Live-Simulation auf der Standardvorlage (Türklingel 9×4) inkl. Variantenwechsel.
+- Chris: „Ja, Du darfst den globalen Konfigurator-Knopf bereitstellen und die App neu starten.“ → 22:24 Pull/Bereitstellen/Neustart.
+- Theme `185833718140`, `sections/footer-group.json`: neuer Abschnitt `custom_liquid_xCyNJV` (Polsterung 0) mit `#gravuru-konfi`-JSON + `<script type="module" src="/apps/konfigurator/shop-embed.mjs">`, nur bei `request.page_type == 'product'` und `custom.customization_id`. Claude eingetragen, **Chris gespeichert 22:29**. Live geprüft: D8 → Daten (5 Varianten), Fenster installiert, 1 Knopf, „In den Warenkorb legen“ ausgeblendet, Klick öffnet Fenster; Türschild 8×2 (ohne Konfi-ID) und Startseite unverändert.
+- Neue Produkte: Konfigurator-ID (`custom.customization_id` + Bindung) genügt, Vorlage egal. Die `?fenster=1`-Zeile in `custom_liquid_mTPWzc` ist jetzt überflüssig (harmlos, gleiche Datei).
+- Offen: iPhone-Test (Chris); Mengenfeld des Themes bleibt neben dem Knopf sichtbar (Menge wählt man im Konfigurator).
+
 ## 27.10.2026 · Claude · Fenster-Modus im Live-Theme hinter `?fenster=1`, Warenkorbbild mit Material
 
 - Live-Theme `185833718140`, Block `custom_liquid_mTPWzc`: Zeile `<script>if(/[?&]fenster=1(&|$)/.test(location.search))import('/apps/konfigurator/shop-embed.mjs');</script>` (nur Konfi-Produkte). Claude eingetragen, **Chris gespeichert 21:44**. Geprüft: mit `?fenster=1` installiert, ohne nicht → Kunden unverändert.

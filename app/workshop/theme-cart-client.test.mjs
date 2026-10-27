@@ -4,7 +4,7 @@ import {createThemeCartClient,verifyThemeCartLine,validateThemeCartPayload} from
 const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
 function payload(rev=1){const id='konfig_11111111-1111-4111-8111-111111111111';return {schema:'gravuru-theme-cart/v1',shopDomain:'test.myshopify.com',variantId:'11',productId:'1',quantity:2,unitCents:1999,totalCents:3998,currency:'EUR',configuration:{id,rev},mode:rev===1?'create':'update',previousRevision:rev===1?null:rev-1,properties:{_gravuru_offer:String(rev).repeat(64),_gravuru_config:id,_gravuru_rev:String(rev),Design:'Leuchtturm',Gravurtext:'Familie Müller',Format:'120 × 80 mm'},preview:{type:'image/png',base64:png},paymentConfirmed:false,productionReady:false};}
 const line=p=>({key:p.variantId+':key'+p.configuration.rev,variant_id:Number(p.variantId),product_id:Number(p.productId),quantity:p.quantity,original_price:p.unitCents,original_line_price:p.totalCents,final_line_price:p.totalCents,properties:{...p.properties,_Entwurf:'https://cdn.shopify.com/s/files/1/uploads/design.png'}});
-function fixture(p,{old,lost=false,miss=false,alter,removeFails=false}={}){
+function fixture(p,{old,lost=false,miss=false,alter,removeFails=false,expectImage=null}={}){
  const foreign={key:'77:unrelated',variant_id:77,product_id:7,quantity:3,original_price:100,original_line_price:300,final_line_price:300,properties:{Hinweis:'unverändert'}};
  const cart={currency:'EUR',items:[foreign,...(old?[line(old)]:[])]},calls=[];let claims=0,upload=null,changes=0;
  const fetchImpl=async(url,options)=>{
@@ -13,7 +13,7 @@ function fixture(p,{old,lost=false,miss=false,alter,removeFails=false}={}){
   if(url==='/de/cart/add.js'){
    assert.ok(options.body instanceof FormData);upload=options.body;
    assert.equal(upload.get('items[0][id]'),p.variantId);assert.equal(upload.get('items[0][quantity]'),String(p.quantity));
-   const image=upload.get('items[0][properties][_Entwurf]');assert.equal(image.type,'image/png');assert.deepEqual(Buffer.from(await image.arrayBuffer()),Buffer.from(png,'base64'));
+   const image=upload.get('items[0][properties][_Entwurf]');if(expectImage){assert.equal(image.type,expectImage.type);assert.equal(image.name,expectImage.type==='image/jpeg'?'gravuru-gestaltung.jpg':'gravuru-gestaltung.png');assert.deepEqual(Buffer.from(await image.arrayBuffer()),Buffer.from(await expectImage.arrayBuffer()));}else{assert.equal(image.type,'image/png');assert.equal(image.name,'gravuru-gestaltung.png');assert.deepEqual(Buffer.from(await image.arrayBuffer()),Buffer.from(png,'base64'));}
    if(!miss){const added=line(p);alter?.(added,cart);cart.items.push(added);}
    if(lost)throw Error('synthetic lost reply');
    return Response.json({items:cart.items.slice(-1)});
@@ -67,4 +67,10 @@ test('two personalizations of the same product remain separate, editing one pres
  const edit=payload(4);edit.previousRevision=1;const e=fixture(edit,{old:payload(1)}),otherDesign=line(payload(3));e.cart.items.push(otherDesign);
  await e.client.submit(edit);assert.equal(e.changes(),1);assert.deepEqual(e.cart.items.find(l=>l.properties._gravuru_rev==='3'),otherDesign);
  assert.equal(e.cart.items.length,3);assert.ok(!e.cart.items.some(l=>l.properties._gravuru_rev==='1'));
+});
+
+test('a ready plate picture replaces the flat engraving preview in the cart; anything else keeps the server preview',async()=>{
+ const jpeg=new Blob([new Uint8Array([255,216,255,224,1,2,3])],{type:'image/jpeg'});
+ {const p=payload(),f=fixture(p,{expectImage:jpeg});await f.client.submit(p,{image:jpeg});assert.equal(f.cart.items.length,2);}
+ for(const bad of [new Blob(['x'],{type:'text/plain'}),new Blob([new Uint8Array(1536*1024+1)],{type:'image/jpeg'}),'x',null]){const p=payload(),f=fixture(p);await f.client.submit(p,{image:bad});assert.equal(f.cart.items.length,2);}
 });

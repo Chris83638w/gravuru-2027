@@ -2,7 +2,7 @@
 // (nie in Anfragen an fremde Hosts, nie im Referrer). Der Editor im iframe arbeitet wie in der Händler-
 // Kundenansicht über window.parent: Modell, private Designressourcen, Anfragefunktion und der Warenkorbzugang
 // (GravuruShopEntry, ausgewertet von shop-cart.mjs) liegen auf dieser Seite.
-import {createShopEntryClient,shopUrl,embeddedCart} from './shop-entry-client.mjs';
+import {createShopEntryClient,shopUrl,embeddedCart,previewJpeg,surfaceThumbnail} from './shop-entry-client.mjs';
 const status=document.querySelector('#status'),header=document.querySelector('header'),back=document.querySelector('#back'),title=document.querySelector('#title');
 const fragment=new URLSearchParams(location.hash.replace(/^#/,''));
 const toDataUrl=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
@@ -16,14 +16,19 @@ try{
   const backUrl=shopUrl(data.shopDomain,fragment.get('back'));
   // Fenster über der Produktseite (shop-embed.mjs): Übergabe und Schließen gehen an die Shop-Seite, kein Seitenwechsel.
   const embedded=fragment.get('embed')==='1'&&window.parent!==window,shopOrigin='https://'+data.shopDomain;
-  const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin):client.submitThemeCart;
+  // Warenkorbbild: die Platte mit Material aus dem Konfigurator selbst (gleiches Fenster, gleicher Origin).
+  let frame=null;
+  const surface=model.universal?.materialSurface||null,small=surfaceThumbnail(surface);
+  const image=()=>previewJpeg(frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small});
+  if(embedded&&surface)setTimeout(small,4000);
+  const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin,{image}):client.submitThemeCart;
   const leave=()=>embedded?window.parent.postMessage({type:'gravuru-shop-close'},shopOrigin):location.assign(backUrl);
   if(embedded)back.addEventListener('click',event=>{event.preventDefault();leave();});
   window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl});
   title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;header.hidden=false;
   // K8: Bearbeiten-Verweis aus dem Warenkorb (config, rev, line) unverändert an den Editor weiterreichen.
   const edit=new URLSearchParams();for(const key of ['config','rev','line'])if(fragment.has(key))edit.set(key,fragment.get(key));
-  const frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=data.editorPath+(edit.size?'?'+edit:'');
+  frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=data.editorPath+(edit.size?'?'+edit:'');
   document.querySelector('#editor').append(frame);status.hidden=true;
   window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===frame.contentWindow&&event.data?.type==='gravuru-fk-close')leave();});
 }catch(error){status.hidden=false;status.textContent=error.message;}

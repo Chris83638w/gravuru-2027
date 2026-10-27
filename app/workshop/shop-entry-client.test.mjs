@@ -92,18 +92,46 @@ test('embedded cart hands only the one-time token to the exact shop origin and s
  await assert.rejects(embeddedCart(async()=>({handoffUrl:shop+'/apps/konfigurator/cart'}),shop,{target,listen})({}),/nicht vorbereitet/);
  assert.throws(()=>embeddedCart(submit,'https://evil.example'),/ungültig/);
 });
+test('embedded cart sends the plate picture along with the token; a failing picture never blocks the cart',async()=>{
+ const {embeddedCart}=await import('./ui/shop-entry-client.mjs');
+ const shop='https://gravuru-design.myshopify.com',token='d'.repeat(64),sent=[];
+ const target={postMessage:(data,origin)=>sent.push({data,origin})},listen={addEventListener(){},removeEventListener(){}};
+ const submit=async()=>({mode:'theme',handoffUrl:shop+'/apps/konfigurator/cart#handoff='+token});
+ const picture=new Blob([new Uint8Array(4)],{type:'image/jpeg'});
+ embeddedCart(submit,shop,{target,listen,image:async()=>picture})({});
+ embeddedCart(submit,shop,{target,listen,image:async()=>{throw Error('kein Bild');}})({});
+ embeddedCart(submit,shop,{target,listen,image:()=>'kein Blob'})({});
+ await new Promise(r=>setTimeout(r,5));
+ assert.equal(sent.length,3);const withPicture=sent.filter(s=>s.data.cartImage);
+ assert.equal(withPicture.length,1);assert.equal(withPicture[0].data.cartImage,picture);
+ for(const s of sent.filter(s=>!s.data.cartImage))assert.deepEqual(s.data,{type:'gravuru-shop-handoff',token});
+});
+test('cart picture swaps only the known material image for its small copy and needs a valid view box',async()=>{
+ const {cartPreviewSvg,viewBoxSize}=await import('./ui/shop-entry-client.mjs');
+ const surface='data:image/png;base64,'+'A'.repeat(40),small='data:image/jpeg;base64,BBBB';
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4.2 -4.2 128.4 88.4"><image href="'+surface+'"/><image href="data:image/png;base64,CCCC"/></svg>';
+ const out=cartPreviewSvg(svg,surface,small);
+ assert.ok(out.includes('href="'+small+'"'));assert.ok(!out.includes(surface));assert.ok(out.includes('data:image/png;base64,CCCC'));
+ assert.equal(cartPreviewSvg(svg,surface,null),svg);assert.equal(cartPreviewSvg(svg,surface,'javascript:x'),svg);assert.equal(cartPreviewSvg('<html>',surface,small),null);
+ assert.deepEqual(viewBoxSize(svg),{width:128.4,height:88.4});assert.equal(viewBoxSize('<svg viewBox="0 0 0 5">'),null);assert.equal(viewBoxSize('<svg>'),null);
+});
 
 test('shop embed accepts messages only from the editor host and this frame, and only rewrites the own start link',async t=>{
  const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
- const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator').replace("import {createThemeCartClient} from './theme-cart-client.mjs';",'const createThemeCartClient=null;');
- fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
+ fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
  globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;
  const savedLocation=globalThis.location;globalThis.location={href:'https://gravuru-design.myshopify.com/products/x',origin:'https://gravuru-design.myshopify.com'};
  t.after(()=>{globalThis.location=savedLocation;delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
  const {acceptedMessage,startUrl}=await import(path.join(dir,'shop-embed.mjs'));
  const frame={contentWindow:{}},token='f'.repeat(64);
- assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-handoff',token}},frame),{type:'handoff',token});
+ assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-handoff',token}},frame),{type:'handoff',token,image:null});
+ // Warenkorbbild: nur JPEG/PNG bis 1,5 MB, sonst still verworfen (dann gilt die Gravurvorschau des Servers).
+ const jpeg=new Blob([new Uint8Array(10)],{type:'image/jpeg'});
+ assert.equal(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-handoff',token,cartImage:jpeg}},frame).image,jpeg);
+ for(const bad of [new Blob(['<svg/>'],{type:'image/svg+xml'}),new Blob([],{type:'image/png'}),new Blob([new Uint8Array(1536*1024+1)],{type:'image/jpeg'}),'data:image/png;base64,AAAA'])
+  assert.equal(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-handoff',token,cartImage:bad}},frame).image,null);
  assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-close'}},frame),{type:'close'});
  assert.equal(acceptedMessage({origin:'https://evil.example',source:frame.contentWindow,data:{type:'gravuru-shop-close'}},frame),null);
  assert.equal(acceptedMessage({origin:'https://app.example',source:{},data:{type:'gravuru-shop-close'}},frame),null);

@@ -10,6 +10,10 @@ export function validateThemeCartPayload(p){
  if(p.mode==='update'&&(!Number.isSafeInteger(p.previousRevision)||p.previousRevision<1||p.previousRevision>=p.configuration.rev))fail('Der bisherige Gestaltungsstand ist unklar.');
  return p;
 }
+export const CART_IMAGE_MAX_BYTES=1536*1024;
+export function cartImage(image){
+ return typeof Blob!=='undefined'&&image instanceof Blob&&/^image\/(jpeg|png)$/.test(image.type)&&image.size>0&&image.size<=CART_IMAGE_MAX_BYTES?image:null;
+}
 const stable=value=>JSON.stringify(Object.fromEntries(Object.entries(value||{}).sort(([a],[b])=>a.localeCompare(b))));
 const signature=line=>JSON.stringify([String(line.variant_id??line.id),line.quantity,stable(line.properties),line.selling_plan_allocation?.selling_plan?.id??null]);
 function cartData(cart){
@@ -51,7 +55,9 @@ export function createThemeCartClient({fetchImpl=globalThis.fetch,claim,root='/'
   return {line,cart,cartUrl:root+'cart',paymentConfirmed:false};
  }
  return {
-  async submit(input){
+  // image: optional fertiges Warenkorbbild (Platte mit Material, aus dem Konfigurator-Fenster). Nur Anzeige im
+  // Warenkorb; ohne gültiges Bild bleibt die gespeicherte Gravurvorschau des Servers.
+  async submit(input,{image=null}={}){
    if(busy)fail('Die Warenkorbübergabe läuft bereits.');busy=true;
    try{
     const p=validateThemeCartPayload(input);onProgress('Vorhandenen Warenkorb prüfen …');const before=await read(),existing=current(before,p);
@@ -63,7 +69,8 @@ export function createThemeCartClient({fetchImpl=globalThis.fetch,claim,root='/'
     if(bytes.length<8||bytes.slice(0,8).join(',')!=='137,80,78,71,13,10,26,10')fail('Die Gestaltungsvorschau ist ungültig.');
     const data=new FormData();data.set('items[0][id]',p.variantId);data.set('items[0][quantity]',String(p.quantity));
     for(const [k,v]of Object.entries(p.properties))data.set('items[0][properties]['+k+']',v);
-    data.append('items[0][properties][_Entwurf]',new Blob([bytes],{type:'image/png'}),'gravuru-gestaltung.png');
+    const picture=cartImage(image);
+    data.append('items[0][properties][_Entwurf]',picture||new Blob([bytes],{type:'image/png'}),picture?.type==='image/jpeg'?'gravuru-gestaltung.jpg':'gravuru-gestaltung.png');
     attempted=true;await claim();onProgress('Gestaltung und Vorschau an den Warenkorb übertragen …');
     let uploadError;try{await json('cart/add.js',{method:'POST',body:data});}catch(e){uploadError=e;}
     // Also read after a lost POST reply. Never automatically resend the upload.

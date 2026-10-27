@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import {once} from 'node:events';
 import {createShopEntry} from './shop-entry.mjs';
 import {appProxySignature} from './shopify-app-proxy.mjs';
+import {createModelSlimmer} from './shop-model-slim.mjs';
 
 // Fixture: die drei 7×2-Hauptprodukte (Edelstahl-Türschilder, Befestigung als Variante) aus der Shopify-
 // Übergabe vom 22.10.2026. Shopify-IDs und Preise stammen aus der Datei; Werkstattmodell, Registry, Entwürfe
@@ -305,3 +306,29 @@ test('customer model passes through the model slimmer with a revision key; the s
  assert.match(f.slimKeys[0],/:3$|:\d+$/);
  assert.equal(f.models.get(f.first.localWorkshopRecord).universal.slimmed,undefined,'gespeichertes Modell unverändert');
 },f=>{f.slimKeys=[];f.options.modelSlimmer={ready:()=>true,load(){},slim(universal,{key}){f.slimKeys.push(String(key));universal.slimmed=true;return {fonts:[],surface:false};}};}));
+test('own fonts no design uses are served as immutable files from the shop entry and listed for lazy loading',()=>run(async(f,request,{token,entry})=>{
+ const {token:t}=await token();
+ const loaded=await request('/api/shop-entry/model',undefined,undefined,session(t));
+ assert.equal(loaded.status,200);
+ const u=loaded.data.model.universal;assert.deepEqual(Object.keys(u.localResources.fonts),['Nutzt']);
+ assert.equal(u.localResources.lazyFonts.length,1);const url=u.localResources.lazyFonts[0].url;
+ assert.match(url,/^\/konfigurator\/shop\/schriften\/[a-f0-9]{64}\.json$/);assert.equal(entry.matches(url),true);
+ const file=await request(url);
+ assert.equal(file.status,200);assert.equal(file.headers['cache-control'],'public, max-age=31536000, immutable');assert.match(file.headers['content-type'],/application\/json/);
+ assert.deepEqual(file.data,{regular:{units:1000,glyphs:{A:{a:600,d:'M1 1'}}},bold:null});
+ assert.equal((await request(url,'HEAD')).status,200);
+ assert.equal((await request(url.replace(/[a-f0-9]{64}/,'0'.repeat(64)))).status,404);
+ assert.equal((await request(url+'?x=1')).status,404);
+ assert.equal((await request(url,'POST',{})).status,405);
+ assert.equal((await request(url,'GET',undefined,{'Sec-Fetch-Site':'cross-site'})).status,403);
+ // Verdrängt (anderes Produkt füllt den Speicher): die Route liefert geprüft aus dem gespeicherten Modell nach.
+ f.options.modelSlimmer.slim({profile:{designs:[]},localResources:{fonts:{Fremd:{regular:{units:1000,glyphs:{}},bold:null}}}},{key:'anderes:1'});
+ const refilled=await request(url);assert.equal(refilled.status,200);assert.deepEqual(refilled.data,file.data);
+ assert.equal(entry.matches('/konfigurator/shop/schriften/../x.json'),false);assert.equal(entry.matches('/konfigurator/shop/schriften/ABC.json'),false);
+ // Das gespeicherte Modell (Prüfung, Warenkorb) bleibt vollständig.
+ assert.ok(f.models.get(f.first.localWorkshopRecord).universal.localResources.fonts.Eigen);
+},f=>{
+ for(const m of f.models.values()){m.universal.localResources.fonts={Nutzt:{regular:{units:1000,glyphs:{A:{a:600,d:'M0 0'}}},bold:null},Eigen:{regular:{units:1000,glyphs:{A:{a:600,d:'M1 1'}}},bold:null}};m.universal.profile.designs[0].objects.push({id:'t1',type:'text',font:'Nutzt'});}
+ const slimmer=createModelSlimmer({fetchJson:async p=>{if(p.endsWith('katalog-kern.json'))return {font_index:[]};throw Error('404');},fontUrl:hash=>'/konfigurator/shop/schriften/'+hash+'.json',maxFontFiles:1});
+ slimmer.load();f.options.modelSlimmer=slimmer;
+}));

@@ -34,11 +34,23 @@ export function startNeeds(config,{baseMotifs=[]}={}){
 
 export function draftNeeds(draft,options){return resourceNeeds(objectsOf(draft?.design),options);}
 
+// Produktschriften (Shop-Einstieg, Chris 27.10.2026): eigene Schriften eines Produkts, die kein Design zum Start
+// braucht, liefert der Server nicht mehr im Modell, sondern als inhaltsadressierte Datei auf dem eigenen Host.
+export const PRODUCT_FONT_URL=/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/schriften\/[a-f0-9]{64}\.json$/;
+export function productFontIndex(config){
+  const list=config?.localResources?.lazyFonts;
+  if(list===undefined)return [];
+  if(!Array.isArray(list)||list.length>64)throw Error('Nachladbare Produktschriften ungültig.');
+  return list.map(f=>{
+    if(!f||typeof f.name!=='string'||!f.name.trim()||f.name.length>120||!PRODUCT_FONT_URL.test(f.url||''))throw Error('Nachladbare Produktschrift ungültig.');
+    return {name:f.name,url:f.url,...(typeof f.label==='string'?{label:f.label}:{}),...(typeof f.category==='string'?{category:f.category}:{})};
+  });
+}
 // Nur bekannte Namen werden angefragt; unbekannte meldet der Entwurfsprüfer wie bisher.
 export function lazyUrls({fonts=[],motifs=[]},{fontIndex=[],motifIndex=[]},base=LAZY_BASE){
-  const fontFiles=new Map(fontIndex.map(f=>[f.name,f.file])),motifKeys=new Set(motifIndex.map(m=>m.key));
+  const fontFiles=new Map(fontIndex.map(f=>[f.name,typeof f.url==='string'&&PRODUCT_FONT_URL.test(f.url)?f.url:typeof f.file==='string'?base+'schriften/'+encodeURIComponent(f.file):null]).filter(([,url])=>url)),motifKeys=new Set(motifIndex.map(m=>m.key));
   return {
-    fonts:fonts.filter(n=>fontFiles.has(n)).map(name=>({name,url:base+'schriften/'+encodeURIComponent(fontFiles.get(name))})),
+    fonts:fonts.filter(n=>fontFiles.has(n)).map(name=>({name,url:fontFiles.get(name)})),
     motifs:motifs.filter(k=>motifKeys.has(k)&&LAZY_MOTIF_KEY.test(k)).map(key=>({key,url:base+'motive/'+key+'.json'}))
   };
 }

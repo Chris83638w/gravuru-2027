@@ -131,10 +131,13 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  // Die auf der Produktseite gewählte Variante (Befestigung …) ist beim Öffnen vorausgewählt; Preise und
  // Prüfung bleiben beim unveränderten Servermodell (prepareAcrylicReview lädt es selbst erneut).
  // Schlankes Kundenmodell (shop-model-slim.mjs): Katalog des ausgelieferten Editors einmal über den eigenen Host laden.
- const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR)}):modelSlimmer;
- function presentedModel(model,binding){
+ // Eigene Schriften ohne Designbezug liefert der Shop-Einstieg als inhaltsadressierte Datei (unveränderlich, lange zwischenspeicherbar).
+ const fontRoute=new RegExp('^'+pagePath+'schriften/([a-f0-9]{64})\\.json$');
+ const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json'}):modelSlimmer;
+ function presentedModel(model,binding,store){
   const copy=structuredClone(model);
-  if(slimmer){if(!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision:null});}
+  // `source`: ausgelagerte Schriften lassen sich nach Verdrängung aus dem gespeicherten Modell nachliefern.
+  if(slimmer){if(!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision:null,source:()=>modelFor(store,binding).universal?.localResources?.fonts});}
   for(const group of copy.universal.profile?.optionGroups||[]){const chosen=binding.options?.[group.id];if(typeof chosen==='string'&&group.values?.some(v=>v.id===chosen))group.defaultValueId=chosen;}
   return copy;
  }
@@ -280,13 +283,22 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  }
  return Object.freeze({
   pagePath,startPath,
-  matches:pathname=>pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
+  matches:pathname=>fontRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
   async handle(req,res,url){
    try{
     if(req.headers.host!==address.host||req.headers['x-forwarded-proto']!=='https')fail(403,'shop_entry_host','Diese Anfrage ist nicht zulässig.');
     const pathname=url.pathname;
     if(pathname===startPath)return start(req,res,url);
     if(pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname))return themeProxy(req,res,url);
+    const fontFile=pathname.match(fontRoute);
+    if(fontFile){
+     if(!['GET','HEAD'].includes(req.method))fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+     if(url.search)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
+     checkOrigin(req,{mutating:false});
+     const bytes=typeof slimmer?.fontFile==='function'?slimmer.fontFile(fontFile[1]):null;
+     if(!bytes)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
+     res.writeHead(200,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable'}));return res.end(req.method==='HEAD'?undefined:bytes);
+    }
     if(pathname===pagePath||pageFiles.has(pathname)){
      if(!['GET','HEAD'].includes(req.method))fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search)fail(404,'shop_entry_route','Diese Seite gibt es hier nicht.');
@@ -303,7 +315,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      checkOrigin(req,{mutating:false});
      const context=active(req),model=modelFor(context.store,context.binding);
      allowedAssets(context.store,context.binding,model);
-     return json(res,200,{model:presentedModel(model,context.binding),binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+     return json(res,200,{model:presentedModel(model,context.binding,context.store),binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
     }
     const asset=action.match(/^design-assets\/([a-f0-9]{64})\/preview\.svg$/);
     if(asset){

@@ -2,15 +2,19 @@
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {validateDesignContent} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {isArtworkResource} from './artwork-resource.mjs';
+import {productFontIndex} from './lazy-resources-model.mjs';
 
 export function localFontIds(config) {
   if (!config.localResources) return [];
   if (config.reviewOnly !== true || config.profile.binding?.kind !== 'local-review' || config.profile.features?.orderEnabled !== false) throw Error('Eigene Schriftressourcen sind nur im lokalen Prüfprodukt erlaubt.');
   const resources=config.localResources;
   if(resources.scope!=='local-review-only'||!resources.fonts||!Array.isArray(resources.motifs))throw Error('Lokale Ressourcen unvollständig.');
-  const ids=Object.keys(resources.fonts);
+  // Nachladbare Produktschriften (Shop-Einstieg) zählen als bekannte Schriften; ihre Konturen prüft der Server
+  // beim Speichern des Produkts, im Editor werden sie erst bei Bedarf geladen.
+  const lazy=productFontIndex(config).map(f=>f.name).filter(name=>!Object.hasOwn(resources.fonts,name));
+  const ids=[...Object.keys(resources.fonts),...lazy];
   if(ids.length>64)throw Error('Lokale Schriftanzahl ungültig.');
-  for(const name of ids){
+  for(const name of Object.keys(resources.fonts)){
     const f=resources.fonts[name]?.regular;
     if(!f||!Number.isFinite(f.units)||f.units<=0||!f.glyphs)throw Error('Lokale Schrift ungültig.');
     for(const [character,g] of Object.entries(f.glyphs))if([...character].length!==1||!Number.isFinite(g.a)||typeof g.d!=='string'||!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]*$/.test(g.d))throw Error('Lokale Schrift enthält ungültige Pfade.');

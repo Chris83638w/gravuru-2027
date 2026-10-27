@@ -1,3 +1,12 @@
+## 28.10.2026 · Claude · Eigene Produktschriften erst bei Bedarf (Branch `dev/konfi-produktschriften-nachladen-20261028-claude`)
+
+- Chris: „setze alles um“ / „ne wir machen weiter“. Restliche 7 eigene Schriften (3,6 MB) im Kundenmodell: 6 davon nutzt beim Start kein Design.
+- Server (`shop-model-slim.mjs`, `shop-entry.mjs`): Schriften, die das Modell nirgends als `font` nennt (Designs, Funkklingel-Formate, Vorgaben), kommen als inhaltsadressierte Datei `/konfigurator/shop/schriften/<sha256>.json` (`public, max-age=31536000, immutable`, nur GET/HEAD, gleicher Origin) und stehen im Modell nur als `localResources.lazyFonts`. Gleichnamige, aber abweichende Katalogschriften bleiben eingebettet. Speicher nach Bytes (96 MB) mit Auffrischen bei Abruf; Verdrängtes wird aus dem gespeicherten Modell nachgeliefert (Hash geprüft). Prüfung/Warenkorb nutzen weiter das vollständige Modell.
+- Editor (`lazy-resources-model.mjs`, `lazy-resources.mjs`, `local-pilot.mjs`): `lazyFonts` (geprüftes URL-Muster, max. 64) kommt in den Schriftindex; Auswahl, Entwürfe und Warenkorb-Bearbeiten laden nach; Editor-Prüfung zählt sie als bekannte Schriften.
+- Prüfungen: gezielt 43/43 (slim 5, shop-entry 22, flows 2, lazy-resources 14); Gesamtsuite 1655/1662 – die 7 Fehlschläge sind die bekannten Editor-Tests von `main`. Unabhängiger Review: Namensgleichheit mit Katalog, Speicherverdrängung (404) und Funkklingel-Formate gemeldet → behoben + Tests. Ende-zu-Ende gegen den Live-Shop (lokales Editor-Paket + simulierte Serverumwandlung, Playwright): Design gleich (51 Pfade), 37 bekannte Schriften, „Lato Regular · c3d3cabdb582“ lädt über die neue Route nach; Modell **3.781 → 563 KB**. Bedienbar in ruhigen Läufen Desktop ~6,9 → ~5,7 s, Handy-Simulation 12,4 → 10,2 s (Messungen schwanken stark).
+- Live erst mit Chris' Satz (Deploy + Neustart; der Editor wird beim Start aus `main` gebaut).
+- Danach: Start ohne Proxy-Umweg (Zeitleiste: Klick → Proxy-Start 0,7 s → Seite 0,5 s → zwei Skripte nacheinander 0,6 s → Modell), Katalogschriften parallel statt nacheinander, Editor-CPU.
+
 ## 27.10.2026 · Claude · Konfigurator-Start schlanker live (Messskript `scripts/konfi-messen.cjs`)
 
 - Chris: „prüfe alles“ → Messung (Playwright, D8): 7,6 s bis bedienbar; Modell 11,2 MB (17 Schriften 9,3 MB, PNG-Grundplatte 1,9 MB); Editor-Seite/Nachlade-Schriften nie zwischengespeichert (Bundle bekam widersprüchlich `immutable` + `no-store`); CPU 0,7 s `localFontIds` (Pfadprüfung aller Schriften), 0,7 s `svgDocument`.

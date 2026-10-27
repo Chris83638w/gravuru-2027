@@ -282,6 +282,10 @@ test('embed start: window flag in the fragment, page framable only by the own sh
  assert.equal((await open({embed:'yes'})).status,422);
  const page=await request('/konfigurator/shop/');
  assert.match(page.headers['content-security-policy'],new RegExp("frame-ancestors https://"+shopDomain.replace(/\./g,'\\.')+"$"));
+ // Vorwärmen: Editor-Seite + Kernkatalog je Datenbereich als Hinweis, Client-Modul vorgeladen.
+ const html=page.body.toString(),warm=html.match(/<meta name="gravuru-warm" content="([^"]+)">/);
+ assert.deepEqual(JSON.parse(warm[1].replaceAll('&quot;','"')),{acryl:['/_merchant-acryl-editor.html','/_acryl-runtime/lazy/katalog-kern.json']});
+ assert.match(html,/<link rel="modulepreload" href="\/konfigurator\/shop\/shop-entry-client\.mjs">/);
  assert.doesNotMatch(page.headers['content-security-policy'],/frame-ancestors[^;]*\*/);
  const module=await request(proxyPath+'/shop-embed.mjs?'+signed(f,{}));
  assert.equal(module.status,200);assert.match(module.headers['content-type'],/text\/javascript/);

@@ -1,3 +1,11 @@
+## 28.10.2026 · Claude · Konfigurator lädt Editor parallel zu den Produktdaten (Branch `dev/konfi-parallel-laden-20261028-claude`)
+
+- Zeitleiste vorher: Seite → zwei Skripte nacheinander → Modell → erst dann Editor-Seite (0,5 s) → Paket → Kernkatalog (0,9 s).
+- `shop-entry.html`: `modulepreload` für `shop-entry-client.mjs`. Server setzt `<meta name="gravuru-warm">` (je storeId: Editor-Seite, beim Acryl-Bereich zusätzlich `katalog-kern.json`); `shop-entry-page.mjs` lädt diese parallel zum Modell mit niedriger Priorität in den Browser-Zwischenspeicher, aus der Editor-Seite auch das gehashte Paket (`warmTargets`/`warmEditor`, nur eigene absolute Pfade).
+- `shop-embed.mjs`: `connectOnIntent` – bei Zeiger/Fokus/Berührung am eigenen Knopf einmal `preconnect` zum Konfigurator-Host.
+- Prüfungen: gezielt 61/61 (shop-entry 22, client 13, flows 2, theme-cart 12, slim 5, routing 7). Browser (Playwright, Einstiegsseite per CDP mit lokalen Dateien, Cache aktiv, D8): Editor-Seite, Paket und Katalog im Fenster aus dem Zwischenspeicher; bedienbar Desktop 5,0–6,0 → 3,9–4,6 s, CPU 4x 9,6 → 8,0 s (noch mit 3,8-MB-Modell).
+- Live erst mit Chris' Satz.
+
 ## 28.10.2026 · Claude · Eigene Produktschriften erst bei Bedarf (Branch `dev/konfi-produktschriften-nachladen-20261028-claude`)
 
 - Chris: „setze alles um“ / „ne wir machen weiter“. Restliche 7 eigene Schriften (3,6 MB) im Kundenmodell: 6 davon nutzt beim Start kein Design.

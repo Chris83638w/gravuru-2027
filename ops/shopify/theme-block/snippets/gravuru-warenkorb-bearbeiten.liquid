@@ -11,7 +11,7 @@
   assign gv_rev = item.properties['_gravuru_rev']
   assign gv_subpath = subpath | default: 'konfigurator'
   assign gv_preview = item.properties['_Entwurf']
-  assign gv_preview_prefix = gv_preview | slice: 0, 23
+  assign gv_preview_prefix = gv_preview | slice: 0, 24
   assign gv_relative_prefix = gv_preview | slice: 0, 9
   assign gv_line = item.key
   if gv_preview != blank

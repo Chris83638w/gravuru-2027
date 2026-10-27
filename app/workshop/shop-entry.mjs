@@ -242,15 +242,17 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
 
  function themeProxy(req,res,url){
   const proxy=verifyProxy(url.searchParams);
+  // Skriptdateien sind öffentlicher, für alle gleicher Code und werden auf jeder Produktseite geladen:
+  // nicht auf das Warenkorb-Limit anrechnen (sonst blockieren Seitenaufrufe zahlende Kunden) und kurz zwischenspeichern.
+  if(themeFiles.has(url.pathname)){
+   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+   const bytes=themeFiles.get(url.pathname);res.writeHead(200,headersFor('text/javascript; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=300'}));return res.end(bytes);
+  }
   if(!startLimiter('theme'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   if(url.pathname===themePath){
    if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
    const html=Buffer.from(fs.readFileSync(ui('theme-cart.html'),'utf8').replaceAll('__PROXY_PATH__',esc(proxyPath)));
    res.writeHead(200,headersFor('text/html; charset=utf-8',{'Content-Length':html.length,'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.shopify.com; connect-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'"}));return res.end(html);
-  }
-  if(themeFiles.has(url.pathname)){
-   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
-   const bytes=themeFiles.get(url.pathname);res.writeHead(200,headersFor('text/javascript; charset=utf-8',{'Content-Length':bytes.length}));return res.end(bytes);
   }
   if(req.headers.origin!==undefined&&req.headers.origin!=='https://'+shopDomain)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
   const token=req.headers['x-gravuru-cart-handoff'],transfer=typeof token==='string'&&/^[a-f0-9]{64}$/.test(token)?themeTransfers.get(token):null;

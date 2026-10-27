@@ -31,7 +31,7 @@ Erklärt auch ~20 min je Plesk-Deploy (1,08 GB bei 1 MB/s).
 - Kundentext „Lokaler Prüfstand · Bestellung noch nicht verbunden“ (`variant-m/ux.mjs`, `.fk-order-status`).
 - Vorlage `product.test-temp-svenja-grid`: 9 Fancy-Product-Designer-Blöcke, FPD-App-Einbettung seit 28.09. deaktiviert → toter zweiter Knopf + „Designer lädt“.
 - `gravuru-legacy-cart.js` doppelt geladen (main-cart + cart-drawer).
-- Editor-Bundle des Shop-Einstiegs kommt aus der Release `gravuru-combined-id-20261022-v1/legacy` (nicht aus `main`) – Editor-Änderungen brauchen einen neuen Release-Build.
+- ~~Editor-Bundle kommt aus der Release~~ Korrektur 27.10. 23:40: Der Acryl-Editor wird beim App-Start aus `main` gebaut (`shopify-admin-test-server.mjs` → `build()`); Editor-Änderungen gehen mit Deploy + Neustart live.
 
 ## Plan
 

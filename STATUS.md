@@ -1,3 +1,12 @@
+## 27.10.2026 · Claude · Konfigurator-Start schlanker live (Messskript `scripts/konfi-messen.cjs`)
+
+- Chris: „prüfe alles“ → Messung (Playwright, D8): 7,6 s bis bedienbar; Modell 11,2 MB (17 Schriften 9,3 MB, PNG-Grundplatte 1,9 MB); Editor-Seite/Nachlade-Schriften nie zwischengespeichert (Bundle bekam widersprüchlich `immutable` + `no-store`); CPU 0,7 s `localFontIds` (Pfadprüfung aller Schriften), 0,7 s `svgDocument`.
+- `85ab2b6`: `shop-model-slim.mjs` (10 von 17 Schriften bytegleich im Katalog → entfallen; Grundplatte → Repo-WebP 97 KB), `acrylCacheControl` (Bundle immutable, Katalog/Schriften/Motive 1 h, Editor-Seite 5 min privat). Vorab am Live-Editor simuliert (gleiches Design, 37 bekannte Schriften, Schriftwechsel lädt nach). Tests 65/65 gezielt.
+- `751c6de`: `node scripts/konfi-messen.cjs [URL] [--handy]` – Gegenprüfung im Terminal (nichts in den Warenkorb).
+- Chris: „Ja, Du darfst den schlankeren Konfigurator-Start bereitstellen und die App neu starten.“ (Plesk war nach Update auf 18.0.82 abgemeldet, Chris angemeldet) → 23:35 bereitgestellt/neu gestartet. Messung danach: Modell **3.763 KB, 7 Schriften, image/webp**, Cache-Kopfzeilen korrekt; bedienbar Desktop 7,7 → 6,6–6,9 s (frischer Browser), Handy-Simulation (CPU 4x) 16,2 → 11,1 s.
+- Befund: Der Editor wird beim App-Start aus `main` gebaut (`shopify-admin-test-server.mjs` → `build()` → `variant-m/.preview`); Editor-Änderungen gehen also mit Deploy + Neustart live (Übergabe-Notiz „kommt aus der Release“ ist überholt).
+- Nächste Schritte: 7 eigene Schriften (3,6 MB) nachladbar machen (Editor `lazy-resources.mjs` + Schrift-Route), Start ohne Proxy-Umweg, CPU im Editor.
+
 ## 27.10.2026 · Claude · Vorladen versucht, gemessen, wieder aus
 
 - Chris: „wenn die seite geladen ist, kann der konfi bereits laden“. Geprüft: war nicht aktiv (Fenster erst beim Klick). Gebaut `fb7e5f2` (unsichtbares Fenster nach `load` + Leerlauf, sobald Knopf sichtbar; Datensparmodus nur bei Absicht; Start-Limit 120 → 600/min). Chris' Satz → 22:58 bereitgestellt.

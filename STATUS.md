@@ -1,3 +1,10 @@
+## 27.10.2026 · Claude · Stufe 2: Konfigurator als Fenster auf der Produktseite (noch nicht live)
+
+- Branch `dev/konfi-schnell-stufe2-20261027-claude` → `main`: `5d54c24` Modell-Cache je fester Revision, `eb4f03b` Fenster-Modus (`/apps/konfigurator/shop-embed.mjs`, Warenkorb direkt per `cart/add.js` ohne Zwischenseite), `d6f6312` Skripte nicht aufs Warenkorb-Limit (Review-Befund R1), Übergabe aktualisiert.
+- Prüfung: unabhängiger Review ohne Blocker; gezielte Tests 42/42; voller Lauf 1641/1648 – die 7 Fehlschläge (`editor-additions`, `hole-proximity`, `session-guard`, `ui-event-regressions`) scheitern identisch auf `main` 4a6b327, nicht durch diese Änderung.
+- Ohne `embed=1`/Skript unverändertes Verhalten. Live-Editor erlaubt den Shop als Rahmen bereits. Aktivierung im Shop erst nach Test in eigener Browser-Sitzung und Chris' OK (eine Zeile in `custom_liquid_mTPWzc`). Details: [Übergabe](docs/handoffs/2026-10-27-konfi-geschwindigkeit.md).
+- Nächster Schritt: Deploy nach Chris' Satz, dann Messung Klick → Warenkorb im Fenster-Modus.
+
 ## 27.10.2026 · Claude · Konfi-Geschwindigkeit: Server-Grenzen aufgehoben, Schnell-Korrektur
 
 - Live gemessen D8: „In den Warenkorb“ 38,6 s, davon Server-Sichern 31,5 s. Ursache: CloudLinux-Benutzer `gravuru_werkstatt` auf 1 Kern / 1 GB / **1 MB/s IO** (heute 324 IO-, 135 CPU-, 4 Speicher-Treffer). Chris hat selbst angehoben (400 %, 4G, 50 MB/s, IOPS 4096, EP 50, NPROC 200) → Sichern **1,2 s**, Warenkorb nach 6,2 s.

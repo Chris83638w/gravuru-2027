@@ -72,3 +72,44 @@ test('a failed private resource refuses the configurator before any cart can be 
  await assert.rejects(c.loadResources({profile:{designs:[]},localResources:{url:'/api/workshop/design-assets/'+sha+'/preview.svg'}},async()=>''),/Designgrafik/);
 });
 
+
+test('embedded cart hands only the one-time token to the exact shop origin and surfaces its error answer',async()=>{
+ const {embeddedCart}=await import('./ui/shop-entry-client.mjs');
+ const shop='https://gravuru-design.myshopify.com',token='a'.repeat(64),sent=[],listeners=new Set();
+ const target={postMessage:(data,origin)=>sent.push({data,origin})};
+ const listen={addEventListener:(t,fn)=>listeners.add(fn),removeEventListener:(t,fn)=>listeners.delete(fn)};
+ const submit=async()=>({mode:'theme',handoffUrl:shop+'/apps/konfigurator/cart#handoff='+token});
+ const cart=embeddedCart(submit,shop,{target,listen});
+ const pending=cart({draftId:'x'},{draftToken:'b'.repeat(64)});
+ await new Promise(r=>setTimeout(r,0));
+ assert.deepEqual(sent,[{data:{type:'gravuru-shop-handoff',token},origin:shop}]);
+ let settled=false;pending.then(()=>{settled=true;},()=>{settled=true;});
+ // Fremde Herkunft, fremde Quelle oder anderes Token werden ignoriert.
+ for(const fn of listeners){fn({origin:'https://evil.example',source:target,data:{type:'gravuru-shop-handoff-result',token,ok:false,message:'x'}});fn({origin:shop,source:{},data:{type:'gravuru-shop-handoff-result',token,ok:false,message:'x'}});fn({origin:shop,source:target,data:{type:'gravuru-shop-handoff-result',token:'c'.repeat(64),ok:false,message:'x'}});}
+ await new Promise(r=>setTimeout(r,0));assert.equal(settled,false);
+ for(const fn of [...listeners])fn({origin:shop,source:target,data:{type:'gravuru-shop-handoff-result',token,ok:false,message:'Warenkorb geändert'}});
+ await assert.rejects(pending,/Warenkorb geändert/);assert.equal(listeners.size,0);
+ await assert.rejects(embeddedCart(async()=>({handoffUrl:shop+'/apps/konfigurator/cart'}),shop,{target,listen})({}),/nicht vorbereitet/);
+ assert.throws(()=>embeddedCart(submit,'https://evil.example'),/ungültig/);
+});
+
+test('shop embed accepts messages only from the editor host and this frame, and only rewrites the own start link',async t=>{
+ const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator').replace("import {createThemeCartClient} from './theme-cart-client.mjs';",'const createThemeCartClient=null;');
+ fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);
+ globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;
+ const savedLocation=globalThis.location;globalThis.location={href:'https://gravuru-design.myshopify.com/products/x',origin:'https://gravuru-design.myshopify.com'};
+ t.after(()=>{globalThis.location=savedLocation;delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
+ const {acceptedMessage,startUrl}=await import(path.join(dir,'shop-embed.mjs'));
+ const frame={contentWindow:{}},token='f'.repeat(64);
+ assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-handoff',token}},frame),{type:'handoff',token});
+ assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-close'}},frame),{type:'close'});
+ assert.equal(acceptedMessage({origin:'https://evil.example',source:frame.contentWindow,data:{type:'gravuru-shop-close'}},frame),null);
+ assert.equal(acceptedMessage({origin:'https://app.example',source:{},data:{type:'gravuru-shop-close'}},frame),null);
+ assert.equal(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-handoff',token:'x'}},frame),null);
+ assert.equal(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-close'}},null),null);
+ assert.equal(startUrl({href:'/apps/konfigurator/start?product=1&variant=2&back=%2Fproducts%2Fx'}),'https://gravuru-design.myshopify.com/apps/konfigurator/start?product=1&variant=2&back=%2Fproducts%2Fx&embed=1');
+ assert.equal(startUrl({href:'https://evil.example/apps/konfigurator/start?product=1'}),null);
+ assert.equal(startUrl({href:'/apps/other/start?product=1'}),null);
+});

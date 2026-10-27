@@ -27,7 +27,8 @@ const ERROR_STATUSES=[400,401,403,404,405,409,413,415,422,423,429,502,503];
 const headersFor=(type,extra={})=>({'Content-Type':type,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Robots-Tag':'noindex, nofollow, noarchive',...extra});
 const json=(res,status,value)=>{const bytes=Buffer.from(JSON.stringify(value));res.writeHead(status,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length}));res.end(bytes);};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const PAGE_CSP="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
+// Die Kundenseite darf nur im eigenen Shop als Fenster über der Produktseite erscheinen (shop-embed.mjs).
+const pageCsp=shopDomain=>"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors https://"+shopDomain;
 const ui=name=>new URL('./ui/'+name,import.meta.url);
 
 async function body(req,limit){
@@ -68,7 +69,10 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  const pageHtml=Buffer.from(fs.readFileSync(ui('shop-entry.html'),'utf8').replaceAll('/konfigurator/shop/',pagePath)),pageFiles=new Map(PAGE_FILES.map(name=>[pagePath+name,fs.readFileSync(ui(name))]));
  const cartContexts=new Map(),reviewJobs=new Set(),assetIndex=new Map();
  const startPath=proxyPath+'/start';
- const themeTransfers=new Map(),themePath=proxyPath+'/cart',themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs'].map(name=>[proxyPath+'/'+name,fs.readFileSync(ui(name))]));
+ const PAGE_CSP=pageCsp(shopDomain);
+ // Shop-seitige Module über den App-Proxy; shop-embed.mjs kennt Konfigurator-Host und Proxy-Pfad fest.
+ const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
+ const themeTransfers=new Map(),themePath=proxyPath+'/cart';
 
  function resolve(identity){
   if(!gid(identity.shopifyProductId,'Product')||!gid(identity.shopifyVariantId,'ProductVariant'))fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');
@@ -137,7 +141,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   if((config===null)!==(rev===null)||(line!==null&&config===null))fail(422,'shop_entry_params','Der Bearbeiten-Verweis ist ungültig.');
   // Rücksprung nur als Pfad im Shop (keine fremden Adressen): /products/<handle> o. ä.
   const back=optional('back',v=>v.length<=512&&/^\/(?!\/)[A-Za-z0-9/_.~%-]*(?:\?[A-Za-z0-9=&_.~%-]*)?$/.test(v));
-  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back};
+  const embed=optional('embed',v=>v==='1')==='1';
+  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed};
  }
  function start(req,res,url){
   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -150,6 +155,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   const fragment=new URLSearchParams({s:issued.token});
   if(input.config){fragment.set('config',input.config);fragment.set('rev',input.rev);if(input.line)fragment.set('line',input.line);}
   if(input.back)fragment.set('back',input.back);
+  if(input.embed)fragment.set('embed','1');
   const target=origin+pagePath+'#'+fragment.toString();
   // Shopify reicht die Weiterleitung an den Browser durch; Meta-Refresh und Verweis sind der Rückfall.
   const html=Buffer.from(simplePage('Konfigurator wird geöffnet …','Einen Moment – der Konfigurator wird geöffnet.',{link:target}));
@@ -236,15 +242,17 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
 
  function themeProxy(req,res,url){
   const proxy=verifyProxy(url.searchParams);
+  // Skriptdateien sind öffentlicher, für alle gleicher Code und werden auf jeder Produktseite geladen:
+  // nicht auf das Warenkorb-Limit anrechnen (sonst blockieren Seitenaufrufe zahlende Kunden) und kurz zwischenspeichern.
+  if(themeFiles.has(url.pathname)){
+   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+   const bytes=themeFiles.get(url.pathname);res.writeHead(200,headersFor('text/javascript; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=300'}));return res.end(bytes);
+  }
   if(!startLimiter('theme'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   if(url.pathname===themePath){
    if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
    const html=Buffer.from(fs.readFileSync(ui('theme-cart.html'),'utf8').replaceAll('__PROXY_PATH__',esc(proxyPath)));
    res.writeHead(200,headersFor('text/html; charset=utf-8',{'Content-Length':html.length,'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.shopify.com; connect-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'"}));return res.end(html);
-  }
-  if(themeFiles.has(url.pathname)){
-   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
-   const bytes=themeFiles.get(url.pathname);res.writeHead(200,headersFor('text/javascript; charset=utf-8',{'Content-Length':bytes.length}));return res.end(bytes);
   }
   if(req.headers.origin!==undefined&&req.headers.origin!=='https://'+shopDomain)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
   const token=req.headers['x-gravuru-cart-handoff'],transfer=typeof token==='string'&&/^[a-f0-9]{64}$/.test(token)?themeTransfers.get(token):null;

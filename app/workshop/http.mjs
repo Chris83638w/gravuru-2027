@@ -204,8 +204,23 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     }
     return config;
   }
+  // Ein fest angefragter Produktstand (id + Revision) ist unveränderlich: Dokument, gespeicherte Profilauswahl
+  // (metadata.profiles), Materialbild und Motivquellen hängen nur daran. Der Shop-Einstieg baut das Modell sonst
+  // bei jeder Anfrage neu (Modell, jede Designgrafik, Sichern) – live ~11 MB je Aufbau. Aufrufer erhalten eine Kopie.
+  const modelCache=new Map(),MODEL_CACHE_SIZE=8;
   function model(id,version){
+    const pinned=version!==null&&version!==undefined;
     const record=repository.get(id,{revision:revision(version)});
+    const key=pinned&&!isFormProduct(record.document)?record.id+':'+record.revision:null;
+    if(key&&modelCache.has(key)){
+      const hit=modelCache.get(key);modelCache.delete(key);modelCache.set(key,hit);
+      return {...structuredClone(hit),configuration:{id:record.id,revision:record.revision,publishedRevision:record.publishedRevision}};
+    }
+    const built=buildModel(record,version);
+    if(key){modelCache.set(key,structuredClone(built));while(modelCache.size>MODEL_CACHE_SIZE)modelCache.delete(modelCache.keys().next().value);}
+    return built;
+  }
+  function buildModel(record,version){
     if(isFormProduct(record.document)){
       if(record.status==='archived'||repository.get(record.id).status==='archived'||!record.document.designs?.length)fail(422,'form_not_configurable','Dieses Produkt ist derzeit nicht zur Gestaltung verfügbar.');
       verifyForm(record.document);

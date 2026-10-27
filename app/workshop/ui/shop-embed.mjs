@@ -53,6 +53,13 @@ const currentVariant=(config,doc)=>productForms(config,doc).map(form=>String(for
 export function prepareProductPage(config,doc=globalThis.document){
  const forms=productForms(config,doc);
  for(const form of forms)for(const node of form.querySelectorAll('[type="submit"],[name="add"],.shopify-payment-button'))node.setAttribute('data-gravuru-hidden-buy','');
+ // Menge wählt der Kunde im Konfigurator; das Mengenfeld des Themes (Block oder Feld im Formular) ausblenden.
+ if(forms.length){
+  for(const node of doc.querySelectorAll('.product__block--quantity_selector'))node.setAttribute('data-gravuru-hidden-buy','');
+  const ids=new Set(forms.map(form=>form.id).filter(Boolean));
+  const fields=[...forms.flatMap(form=>[...form.querySelectorAll('[name="quantity"]')]),...[...doc.querySelectorAll('[name="quantity"][form]')].filter(q=>ids.has(q.getAttribute('form')))];
+  for(const q of fields)(q.closest?.('.product__block,.product-form__quantity,quantity-input')||q).setAttribute('data-gravuru-hidden-buy','');
+ }
  if(doc.querySelector('[data-gravuru-personalisieren]')||!forms.length)return null;
  const box=doc.createElement('div');box.className='gravuru-personalisieren';box.setAttribute('data-gravuru-personalisieren','');box.style.margin='12px 0 16px';
  const link=doc.createElement('a');link.className='btn btn--primary btn--gravuru-primary';link.setAttribute('data-gravuru-start','');link.rel='nofollow';link.textContent='Jetzt personalisieren';link.href=startHref(config,currentVariant(config,doc));

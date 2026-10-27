@@ -4,7 +4,8 @@
 - Chris: „Ja, Du darfst den globalen Konfigurator-Knopf bereitstellen und die App neu starten.“ → 22:24 Pull/Bereitstellen/Neustart.
 - Theme `185833718140`, `sections/footer-group.json`: neuer Abschnitt `custom_liquid_xCyNJV` (Polsterung 0) mit `#gravuru-konfi`-JSON + `<script type="module" src="/apps/konfigurator/shop-embed.mjs">`, nur bei `request.page_type == 'product'` und `custom.customization_id`. Claude eingetragen, **Chris gespeichert 22:29**. Live geprüft: D8 → Daten (5 Varianten), Fenster installiert, 1 Knopf, „In den Warenkorb legen“ ausgeblendet, Klick öffnet Fenster; Türschild 8×2 (ohne Konfi-ID) und Startseite unverändert.
 - Neue Produkte: Konfigurator-ID (`custom.customization_id` + Bindung) genügt, Vorlage egal. Die `?fenster=1`-Zeile in `custom_liquid_mTPWzc` ist jetzt überflüssig (harmlos, gleiche Datei).
-- Offen: iPhone-Test (Chris); Mengenfeld des Themes bleibt neben dem Knopf sichtbar (Menge wählt man im Konfigurator).
+- Mengenfeld: Chris „ja ausblenden“ → `9f9b3d8` (Mengen-Block `.product__block--quantity_selector` und Mengenfelder der eigenen Kaufformulare). Chris: „Ja, Du darfst das Ausblenden des Mengenfelds bereitstellen und die App neu starten.“ → 22:41 bereitgestellt/neu gestartet, live geprüft (D8: Block markiert, Kaufknopf aus, 1 Knopf; Türklingel ohne Konfi-ID unverändert). Hinweis: Skripte haben `max-age=300` – Änderungen erreichen Browser nach höchstens 5 min.
+- Offen: iPhone-Test (Chris).
 
 ## 27.10.2026 · Claude · Fenster-Modus im Live-Theme hinter `?fenster=1`, Warenkorbbild mit Material
 

@@ -127,6 +127,8 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       const now=clock();if(!Number.isSafeInteger(now)||now<0)fail('shop_binding_freshness','Ungültige Prüfzeit.',422);
       // All current heads and documents are checked AFTER BEGIN IMMEDIATE on the
       // exact connection which subsequently writes legacy bindings and ID heads.
+      // Reuse only identical records inside this locked transaction; all per-variant checks still run.
+      const checkedRecords=new Map();
       const checked=plan.entries.map(entry=>{
         if(!expected.has(entry.shopifyVariantId))fail('shop_binding_expected_head','Ein erwarteter Zuordnungsstand fehlt.',422);
         const resolved=resolveShopProductBinding(plan,{...scope,shopifyProductId:entry.shopifyProductId,shopifyVariantId:entry.shopifyVariantId,adapter,now});
@@ -138,7 +140,12 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
         if((old?.revision??null)!==expectedRevision)fail('shop_binding_head_conflict','Die aktive Zuordnung wurde inzwischen geändert.');
         if(old&&(old.product_gid!==resolved.shopifyProductId||old.store_id!==storeId||old.cfg_id!==resolved.productId))
           fail('shop_binding_active_conflict','Die Variante besitzt bereits eine andere aktive Produkt- oder Storezuordnung.');
-        return {entry:resolved,record,old};
+        const recordKey=resolved.productId+'@'+resolved.productRevision;
+        const previous=checkedRecords.get(recordKey);
+        if(previous&&!isDeepStrictEqual(previous,record))
+          fail('shop_binding_cfg_changed','Der Produktbeleg hat sich innerhalb der atomaren Pruefung geaendert.');
+        if(!previous)checkedRecords.set(recordKey,record);
+        return {entry:resolved,record:previous??record,old};
       });
       let createdBindings=0,changedAssignments=0;
       const assignments=checked.map(({entry,record,old})=>{

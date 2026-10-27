@@ -136,10 +136,21 @@ export function createShopBindingReadAdapter({storeId, tenantId, shopDomain, wor
         add(error.code, error.message);
       }
       const existing = getBindings(), current = existing.filter(row => row.productId === record.id && row.productRevision === record.revision);
-      for (const row of current) {
-        if (existing.some(other => other.variantId === row.variantId && other.productId !== record.id))
+      // Index only this fresh complete read; cross-product conflicts remain visible.
+      const variantProducts=new Map(),selectionVariants=new Map();
+      for(const row of existing){
+        if(!variantProducts.has(row.variantId))variantProducts.set(row.variantId,new Set());
+        variantProducts.get(row.variantId).add(row.productId);
+      }
+      if(current.length>1)for(const row of current){
+        const selected=optionKey(row.options??{});
+        if(!selectionVariants.has(selected))selectionVariants.set(selected,new Set());
+        selectionVariants.get(selected).add(row.variantId);
+      }
+      for(const row of current){
+        if(variantProducts.get(row.variantId).size>1)
           add('binding_variant_product_conflict', 'Eine bestehende Shopify-Variante ist mehreren Konfigurationsprodukten zugeordnet.');
-        if (current.some(other => other !== row && optionKey(other.options ?? {}) === optionKey(row.options ?? {}) && other.variantId !== row.variantId))
+        if(current.length>1&&selectionVariants.get(optionKey(row.options??{})).size>1)
           add('binding_selection_ambiguous', 'Dieselbe gespeicherte Ausführung besitzt mehrere Shopify-Variantenbindungen.');
       }
     }

@@ -1,3 +1,9 @@
+# Bindungsaktivierung: Speicherbedarf und Bestandsabfragen · 27.10.2026 (Codex)
+
+Auf Basis `b5b241c` teilt `shop-product-binding-store` identische Produktrecords nur innerhalb einer gesperrten Transaktion, nachdem sämtliche bisherigen Einzelprüfungen bestanden sind. `order-intake.bindings()` nutzt einen mandantengebundenen LEFT JOIN statt N+1-Abfragen; `shop-product-binding-adapter.readiness()` indexiert die vollständige frisch gelesene Bindungsliste lokal. Globale Konflikte, Preise, Revisionen, atomarer Rollback und 60-Sekunden-Frischefrist bleiben erhalten.
+
+Prüfung: **12/12 gezielte Tests unter 128-MB-Heap bestanden**, darunter 100 native Bindungen mit großem Record, 15.120 Bestandsbindungen mit genau einem SELECT, globale Konflikte und kompletter AOSU-Pilot mit 360 Bindungen/3 Freigaben. Unabhängiger Review ohne Blocker. Der reale Abbruch nach etwa 32 Sekunden ist dadurch **nicht als OOM bewiesen**; lesende Serverzählung meldet weiterhin 0 AOSU-Bindungen/0 Freigaben. Keine Liveänderung durch dieses Paket. Nächster Schritt: gezielte Hostprobe mit Stage-/Speicher-/Exitcodeprotokoll, dann UI-/Warenkorbabnahme. [Befund, Prüfungen und Grenzen](docs/handoffs/2026-10-27-funkklingeln-binding-memory.md).
+
 # AOSU-Pro-Pilot · drei Formate revisionsgebunden vorbereiten · 27.10.2026 (Codex)
 
 Der neue `scripts/doorbell-pilot-bind.mjs` setzt ausschließlich die drei konkret angelegten AOSU-Pro-Hauptprodukte mit je 120 Varianten zusammen. Er prüft Importjournal, Fingerprint, aktuelle native Dokumentrevision und Startwerte, verwendet anschließend die vorhandenen vollständigen Export-, LiveReader- und Bindingprüfungen. Die reguläre 126er-CLI und 60-Sekunden-Frischefrist bleiben unverändert. Standard ist Dryrun; --apply schreibt Bindings, --approve-live mit --approval-id erzeugt optional genau drei revisionsgebundene Freigaben. Keine Shopify-Produktmutation, Hostflagänderung oder Webhookregistrierung.

@@ -3,12 +3,19 @@ import {baseAnchors} from '../configurator/variant-m/acrylic-base-anchors.mjs';
 import fs from 'node:fs';
 import {studioSvg} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
-import {selectedProfile} from '../configurator/variant-m/contract.mjs';
+import {selectedProfile,resolvedOptions} from '../configurator/variant-m/contract.mjs';
 import {keepoutPreview} from '../configurator/variant-m/option-media.mjs';
 import {designAreaPreview} from '../configurator/variant-m/design-area.mjs';
 import {textsNearHoles,holeHintText} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {surfacePreview,scenePreview} from '../configurator/variant-m/material-surface.mjs';
 import {examplePhotoMarkup} from '../configurator/variant-m/photo-placeholder.mjs';
+import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
+import {workshopResources} from './catalog.mjs';
+
+// Resolve shared fonts only for the new model family, never persist the merged map.
+export function previewFonts(config,load=workshopResources){
+ return isLayeredDoorbell(config)?load(config.localResources).fonts:config.localResources.fonts;
+}
 
 // Illustration choice only; never writes a product option or customer default.
 export function overviewOptions(config){
@@ -31,7 +38,9 @@ export function defaultPhotoSvg(){
 // Reuse the actual saved design, shared renderer and existing acrylic scene.
 // No customer uploads or scene are added to the saved product or print output.
 export function productPreview(model,{options={},examples=[],designId,layout='portrait',keepout=false,designArea=keepout}={}){
- const c=model.universal,p=c.acrylic?c.profile:selectedProfile(c,options),d=structuredClone(p.designs.find(d=>d.id===(designId||p.defaultDesignId))||p.designs[0]);
+ const c=model.universal;
+ if(isLayeredDoorbell(c))options=resolvedOptions(c,options);
+ const p=c.acrylic?c.profile:selectedProfile(c,options),d=structuredClone(p.designs.find(d=>d.id===(designId||p.defaultDesignId))||p.designs[0]);
  examples=examples.filter(e=>e.designId===d.id);
  const media=[];
  if(c.acrylic){
@@ -48,7 +57,7 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
   }
   return '';
  };
- let svg=studioSvg(p,d,c.localResources.fonts,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
+ let svg=studioSvg(p,d,previewFonts(c),{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');
  for(const e of examples)svg=svg.replaceAll('href="blob:workshop-'+e.assetId+'"','href="'+e.url+'"');
  if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(surfacePreview(svg,c.materialSurface,p.geometry),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
@@ -78,5 +87,6 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
 export function previewHoleHint(config,{options={},designId}={}){
  if(config.acrylic)return '';
  const p=selectedProfile(config,options),d=p.designs.find(d=>d.id===(designId||p.defaultDesignId))||p.designs[0];
- return holeHintText(textsNearHoles(d,p,config.localResources.fonts));
+ return holeHintText(textsNearHoles(d,p,previewFonts(config)));
 }
+

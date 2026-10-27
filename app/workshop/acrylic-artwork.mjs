@@ -1,3 +1,5 @@
+import {doorbellSeparations} from './doorbell-artwork.mjs';
+import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {photoColorMode} from '../platform/sources/app/shared/models/photo-color.mjs';
 import {validateContourOutline,flattenContourPath} from './contour-path.mjs';
 import {graphicMarkup} from '../platform/sources/app/shared/models/studio-svg.mjs';
@@ -11,7 +13,7 @@ import {photoShape,photoClip,photoMaskURL} from '../platform/sources/app/shared/
 import {textPaths} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc} from '../platform/sources/app/shared/models/design-content.mjs';
 import {elementColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
-import {isGuideObject} from '../configurator/variant-m/contract.mjs';
+import {isGuideObject,selectedProfile} from '../configurator/variant-m/contract.mjs';
 import {objectSurface,surfaceGeometry,producedSurfaces,surfaceMirror,hasBack} from '../configurator/variant-m/surfaces.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'acrylic_artwork'});};
 const dataSvg=bytes=>'data:image/svg+xml;base64,'+bytes.toString('base64');
@@ -33,12 +35,15 @@ export function nativeContour(g){
 // seitenrichtig ausgegeben, ihre Kontur hat die von hinten gespiegelten Bohrlöcher.
 export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfaceId='front'}={}){
  const {files,manifest}=readReviewPackage(archive,archiveHash,NATIVE_REVIEW_SCHEMAS),saved=JSON.parse(files.get('produkt-und-gestaltung.json')),config=JSON.parse(files.get('konfigurator-quellen.json')),state=saved.state;
- if(config.doorbell)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
+ const layered=isLayeredDoorbell(config);
+ if(config.doorbell&&!layered)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
- if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind))||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
+ if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
  const design=validateProductDesign(saved.product,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  if(surfaceId!=='front'&&!(surfaceId==='back'&&hasBack(config.profile)))fail('Dieses Produkt hat keine solche Seite.');
- const viewport=artworkViewport(config,{mOptions:state.options}),geometry=nativeContour(surfaceGeometry(viewport.geometry,surfaceId)),parts=[],photos=[],textFields=[],photoFields=[];
+ const layers=layered?doorbellSeparations(config,state.options):null;
+ if(layers){if(surfaceId!=='front')fail('Die Funkklingel wird in einer gemeinsamen Vorderseitenregistrierung gefertigt.');let frozen;try{frozen=JSON.parse(files.get('funkklingel-fertigung.json'));}catch{fail('Die gesicherten Funkklingelkonturen fehlen.');}if(JSON.stringify(frozen)!==JSON.stringify(layers))fail('Die gesicherten Funkklingelkonturen stimmen nicht mit der Produktrevision überein.');}
+ const viewport=artworkViewport(config,{mOptions:state.options}),geometry=layers?.geometry??nativeContour(surfaceGeometry(viewport.geometry,surfaceId)),parts=[],photos=[],textFields=[],photoFields=[];
  if(geometry.widthMm!==manifest.product.widthMm||geometry.heightMm!==manifest.product.heightMm)fail('Das gesicherte Druckformat stimmt nicht überein.');
  const maskFor=(o,id)=>{const bytes=o.photoMaskAssetId&&files.get('quellen/'+o.photoMaskAssetId+'-vorschau.svg');if(o.photoShape==='template'&&!bytes)fail('Original-Fotomaske fehlt im gesicherten Stand.');const clip=photoClip(o,id,bytes?dataSvg(bytes):undefined);clip.defs=clip.defs.replace('<mask ',`<mask data-mask-scale="${viewport.scale}" `);return clip;};
  const transform=o=>`translate(${number(viewport.x)} ${number(viewport.y)}) scale(${number(viewport.scale)}) translate(${o.x} ${o.y}) rotate(${o.rotation||0})`;
@@ -69,7 +74,12 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
     // Engraving uses the preview rule: coverage = 1 − luminance (white stays
     // unengraved, photos keep tones); steel vectors are solid ink.
     const tonal=engraving?(config.profile.material.kind==='steel'&&motif.vectorOnly===true?'solid':'tone'):'flat';
-    const tint=engraving||o.preserveColors===false?` data-native-tint="${esc(color)}" data-native-tonal="${tonal}" data-raster-width-mm="${number(motif.artwork.widthMm*fit)}" data-raster-height-mm="${number(motif.artwork.heightMm*fit)}"`:'';
+    // Source decoration is already black vector artwork. Keep it as vectors
+    // only when the immutable selected template and verified asset agree.
+    const original=layered?selectedProfile(config,state.options).designs.find(d=>d.id===design.id)?.objects.find(v=>v.id===o.id):null;
+    const raw=bytes.toString('utf8'),paints=[...raw.matchAll(/\b(?:fill|stroke)\s*=\s*"([^"]*)"/g)].map(m=>m[1]);
+    const sourceVector=engraving&&layered&&original?.uxDecoration===true&&original.customerEditable===false&&original.templateOrigin===true&&original.motif===o.motif&&o.uxDecoration===true&&motif.vectorOnly===true&&motif.embeddedOnly===true&&digest(bytes)===motif.artwork.previewSha256&&paints.some(p=>p==='#000000')&&paints.every(p=>p==='#000000'||p==='none')&&!/<(?:image|text|style|script|filter|use|foreignObject)\b/.test(raw);
+    const tint=(engraving||o.preserveColors===false)&&!sourceVector?` data-native-tint="${esc(color)}" data-native-tonal="${tonal}" data-raster-width-mm="${number(motif.artwork.widthMm*fit)}" data-raster-height-mm="${number(motif.artwork.heightMm*fit)}"`:'';
     fragment=`<image href="${dataSvg(bytes)}" width="${motif.artwork.widthMm}" height="${motif.artwork.heightMm}" preserveAspectRatio="none"${tint}/>`;
    }else if(engraving||o.preserveColors===false){fragment=fragment.replace(/(fill|stroke)="(?!none\b)[^"]*"/g,`$1="${color}"`);}
    body=`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="${motif.bounds.join(' ')}" preserveAspectRatio="xMidYMid meet" color="${color}">${fragment}</svg>`;
@@ -79,7 +89,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  if(design.marks?.length)fail('Diese Vorlage enthält noch nicht übernommene Gestaltungslinien. Bitte vor der Fertigung prüfen.');
  const clip=engraving?`<defs><clipPath id="native-engraving-contour"><path d="${geometry.contours.map(c=>c.d).join(' ')}" clip-rule="evenodd"/></clipPath></defs>`:'';
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${geometry.widthMm}mm" height="${geometry.heightMm}mm" viewBox="0 0 ${geometry.widthMm} ${geometry.heightMm}">${clip}<g data-native-design="true"${engraving?' clip-path="url(#native-engraving-contour)"':''}>${parts.join('')}</g></svg>`;
- return {files,manifest,svg,geometry,geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields,surfaceId,surfaces:producedSurfaces(config.profile,design.objects),mirrorFor:front=>surfaceMirror(config,surfaceId,front)};
+ return {files,manifest,svg,geometry,...(layers?{doorbellLayers:layers}:{}),geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields,surfaceId,surfaces:producedSurfaces(config.profile,design.objects),mirrorFor:front=>surfaceMirror(config,surfaceId,front)};
 }
 
 // Applied customer edits already contain their colour transform. Gravure keeps

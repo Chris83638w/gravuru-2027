@@ -7,6 +7,7 @@ import {objectIssue} from '../../platform/sources/app/shared/models/design-conte
 export function designArea(config,profile=config.profile){
  if(config.acrylic)return {...ACRYLIC_SAFE_AREA};
  const g=profile.geometry,m=g.safeMarginMm??2;
+ if(config.doorbell?.schema==='gravuru-doorbell/v1'&&g.designArea)return {...g.designArea};
  if(g.shape==='contour')return contourSafeAreaSvg(g,'design-area-bounds').bounds;
  return {left:m,top:m,right:g.width-m,bottom:config.doorbell?g.bell.y-m:g.height-m};
 }
@@ -17,6 +18,7 @@ let contourAreaSerial=0;
 // Empty when nothing is hidden (margin 0 on a plain plate).
 export function designAreaOutline(config,profile=config.profile){
  const g=profile.geometry;
+ if(config.doorbell?.schema==='gravuru-doorbell/v1'&&g.designArea){const a=g.designArea;return `<rect x="${n(a.left)}" y="${n(a.top)}" width="${n(a.right-a.left)}" height="${n(a.bottom-a.top)}"/>`;}
  if(g.shape==='contour'){
   const area=contourSafeAreaSvg(g,'m-design-area-'+(++contourAreaSerial));
   return '<defs>'+area.defs+'</defs><g '+area.attribute+'><path d="'+g.outlinePath+'" fill="#278a72" fill-opacity=".08" stroke="none"/></g>';
@@ -58,3 +60,4 @@ export function fittedArtwork(config,width,height,{original=false}={}){
  if(!(scale>0)||objectIssue(at(scale),config.profile))throw Error('In dieser Kontur ist keine freie Gestaltungsfläche verfügbar.');
  return {...at(scale),scale};
 }
+

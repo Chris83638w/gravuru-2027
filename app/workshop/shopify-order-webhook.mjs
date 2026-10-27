@@ -7,7 +7,7 @@ const stop=status=>Object.assign(Error('Bestellnachricht nicht übernommen.'),{s
 // The host enforces TLS and its fixed hostname. This endpoint authenticates the
 // untouched bytes with Shopify HMAC, never a merchant JWT, cookie or query token.
 export function createOrderWebhookHandler({intake,config,bodyTimeoutMs=3000}) {
- if(config?.mode!=='test-only'||config.apiVersion!=='2026-07'||typeof intake?.receive!=='function'||
+ if(!['test-only','doorbell-live-approved'].includes(config?.mode)||config.apiVersion!=='2026-07'||typeof intake?.receive!=='function'||
    !Number.isInteger(bodyTimeoutMs)||bodyTimeoutMs<1||bodyTimeoutMs>3000)throw Error('Test-Bestelleingang nicht eingerichtet.');
  const fixed=Object.freeze({...config});
  return async function handle(req,res){
@@ -30,11 +30,12 @@ export function createOrderWebhookHandler({intake,config,bodyTimeoutMs=3000}) {
     const end=()=>finish(null,Buffer.concat(parts));const aborted=()=>finish(stop(400));
     req.on('data',data);req.once('end',end);req.once('aborted',aborted);req.once('error',aborted);
    });
-   verifyPaidWebhook(raw,req.headers,fixed);
+   const verified=verifyPaidWebhook(raw,req.headers,fixed);
    // Synchronous local transaction only: HTTP success follows durable commit.
    // No Admin API, artwork export, fulfillment or other slow work is performed.
    const result=intake.receive(raw,req.headers,fixed);
-   reply(200,{accepted:true,duplicate:result.duplicate,matchedLines:result.lines.length,rejectedLines:(result.errors||[]).length,testOnly:true});
+   reply(200,{accepted:true,duplicate:result.duplicate,matchedLines:result.lines.length,rejectedLines:(result.errors||[]).length,testOnly:verified.payload.test===true});
   }catch(error){req.resume();reply([400,401,403,404,405,408,409,413,415,422,503].includes(error.status)?error.status:503,{accepted:false});}
  };
 }
+

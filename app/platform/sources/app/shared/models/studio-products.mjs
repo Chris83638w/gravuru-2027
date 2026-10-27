@@ -1,12 +1,21 @@
+import {DOORBELL_SCHEMA,doorbellLayoutIssue} from '../../../../../configurator/variant-m/doorbell-selection.mjs';
 import {validateContourGeometry} from './contour-geometry.mjs';
 import {request} from './motifs.mjs';
 import {LIST,ONE,SAVE,decode,saveDoorbell,publishDoorbell,validateProfile} from './doorbells.mjs';
 import {validateDesignContent,surfaceObjectIssue,validateGeometryHoles,validContentId,DESIGN_LIMITS} from './design-content.mjs';
 import {MATERIAL_COLORS,getProcessingProfile,validateProcessingProfile,applyProcessingProfile} from './processing-profiles.mjs';
 import {validateUniversalElements,validateOptionGroups} from './universal-elements.mjs';
-export function dimensions(p){return p.kind==='layered-doorbell'?{width:160,height:280,margin:10,shape:'rect'}:{width:p.geometry.width,height:p.geometry.height,margin:p.geometry.safeMarginMm??2,shape:p.geometry.shape||'rect',radius:p.geometry.cornerRadiusMm||0};}
+export function dimensions(p){return p.kind==='layered-doorbell'&&p.doorbellSchema!==DOORBELL_SCHEMA?{width:160,height:280,margin:10,shape:'rect'}:{width:p.geometry.width,height:p.geometry.height,margin:p.geometry.safeMarginMm??2,shape:p.geometry.shape||'rect',radius:p.geometry.cornerRadiusMm||0};}
 export function validateStudio(p,original,{extraFontIds=[],motifs=[]}={}){
  if(!p||!original)throw Error('Ungültige Produktvorlage.');
+ if(p.kind==='layered-doorbell'&&p.doorbellSchema===DOORBELL_SCHEMA){
+  if(!validContentId(p.id)||p.id!==original.id||JSON.stringify(p.binding)!==JSON.stringify(original.binding)||!p.binding?.productId)throw Error('Ungültige native Funkklingelzuordnung.');
+  if(typeof p.name!=='string'||!p.name.trim()||p.name.length>200||!p.geometry||!Number.isFinite(p.geometry.width)||!Number.isFinite(p.geometry.height))throw Error('Ungültige native Funkklingelvorlage.');
+  validateProcessingProfile(p);validateOptionGroups(p.optionGroups);validateGeometryHoles(p);
+  if(!Array.isArray(p.designs)||!p.designs.length||p.designs.length>DESIGN_LIMITS.maxDesigns||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error('Eindeutige native Funkklingelvorlagen fehlen.');
+  for(const d of p.designs){validateDesignContent(d,{universal:true,extraFontIds});validateUniversalElements(d);for(const o of d.objects){const issue=doorbellLayoutIssue(o,p);if(issue)throw Error(d.name+': '+issue);}}
+  return p;
+ }
  if(p.kind==='layered-doorbell'){validateOptionGroups(p.optionGroups);return validateProfile(p,original,{extraFontIds});}
  if(p.kind!=='universal-product'||!validContentId(p.id)||p.id!==original.id||JSON.stringify(p.binding)!==JSON.stringify(original.binding))throw Error('Ungültige Produktzuordnung.');
  if(typeof p.name!=='string'||!p.name.trim()||p.name.length>200)throw Error('Bitte einen Produktnamen eingeben.');
@@ -37,3 +46,4 @@ export function newUniversalProfile({name,type,width,height,material,profileId,t
  applyProcessingProfile(p,profileId||getProcessingProfile(p).id);return p;
 }
 export async function createStudioProduct(profile){validateStudio(profile,profile);const rows=await listStudioProducts();if(rows.some(r=>r.profile.binding.productId===profile.binding.productId))throw Error('Für diesen Shopify-Artikel gibt es bereits eine Vorlage. Bitte öffne sie in der Übersicht.');const handle={type:'gravuru_configurator',handle:profile.id};const result=(await request(SAVE,{handle,metaobject:{fields:[{key:'name',value:profile.name},{key:'revision',value:profile.admin.draftRevision},{key:'configuration',value:JSON.stringify(profile)}]}})).metaobjectUpsert;if(result.userErrors?.length)throw Error(result.userErrors.map(e=>e.message).join(' · '));const saved=decode((await request(ONE,{handle})).metaobjectByHandle);if(saved.profile.id!==profile.id)throw Error('Anlegen konnte nicht bestätigt werden.');return saved;}
+

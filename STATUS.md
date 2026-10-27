@@ -1,3 +1,11 @@
+## 27.10.2026 · Claude · PR #32 gemergt (Repo = Live-Stand), Nachträge an Astra
+
+- PR #32 geprüft (unabhängiger Review ohne Blocker) und als `cf13fd3` nach `main` übernommen. Konflikte mit der Funkklingel-Umstellung gelöst (`contract.mjs` beide Importe, `STATUS.md`). Voller Testvergleich in der Cloud (ohne Python/Druck): `main` 1609/1746, zusammengeführt 1634/1770, kein zusätzlicher Fehlschlag.
+- Live bestätigt (nur lesend): vier Theme-Dateien im MAIN-Theme `185833718140` MD5-gleich mit dem Repo; Gedenktafel-Vorschau liefert den Bearbeiten-Patch (`parentOrigin` per Allowlist geprüft). Host-Code ist der Funkklingel-Stand von `main` (`shop-entry-client.mjs` = `3fa1c06`ff.). **Kein Deploy** mit diesem Merge.
+- `7e4a55f`: 26 Dateien auf LF normalisiert (CRLF aus Codex-Commits trotz `.gitattributes`).
+- Nachträge an Astra (eigener PR): Rabatt → doppelte Warenkorbzeile (`final_line_price`), klare Meldung bei Fehler nach Hinzufügen, Menge 2/3/5 end-to-end, Import-Test vor `--apply`.
+- Nächster Schritt: bezahlte Testbestellung D8 (Chris, Shopify-Payments-Testmodus), danach Deploy von `main` nur mit Chris' Satz.
+
 ## 27.10.2026 · Astra · Vier Theme-Dateien live geprüft; Gedenktafel mit Foto und Haus erfolgreich
 
 Chris hat die vier vorbereiteten Dateien persönlich im Live-Theme **185833718140** gespeichert. Alle vier anschließend bytegleich zurückgelesen (LF). Nach Verlassen der Testtheme-Vorschau im Live-Shop: gespeicherte Gedenktafel über **Bearbeiten unter dem Foto** geöffnet, Foto/Haus/Baum/Text erhalten und dieselbe Position erfolgreich für **34,67 €** aktualisiert. Weiter vier Positionen, Gesamt **99,33 €**; drei andere Positionen einschließlich Schlüssel, Links und Mengen unverändert. Neue gespeicherte Vorschau im Bilddialog geprüft. Original-Kundentab unverändert, keine Bestellung, kein Merge. Lokale Bildbelege bleiben wegen Kundenfoto außerhalb GitHub. Vollauf unverändert **316 / 308 bestanden / 8 bekannte Windows-/Python-Fehler / 0 übersprungen**. [Live-Abnahme und Prüfsummen](docs/handoffs/2026-10-27-gedenktafel-schrift-warenkorb.md).

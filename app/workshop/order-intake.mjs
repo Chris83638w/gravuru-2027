@@ -1,3 +1,4 @@
+import {choiceOptions} from '../configurator/variant-m/contract.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createOrderStatus} from './order-status.mjs';
 import {createProductionRelease} from './production-release.mjs';
@@ -23,12 +24,18 @@ function verifyOrderWebhook(raw,headers,config,topics){
  if(header('x-shopify-shop-domain')!==config.shopDomain||header('x-shopify-api-version')!==config.apiVersion||!topics.includes(header('x-shopify-topic')))fail(422,'Shop, API-Version oder Ereignis passen nicht zur Testanbindung.');
  const eventId=header('x-shopify-webhook-id');if(!/^[A-Za-z0-9-]{8,128}$/.test(eventId))fail(422,'Ungültige Ereignis-ID.');
  let payload;try{payload=JSON.parse(raw.toString('utf8'));}catch{fail(400,'Ungültige Bestellnachricht.');}
- if(!payload||Array.isArray(payload)||payload.test!==true)fail(422,'Diese Anbindung nimmt ausschließlich Testbestellungen an. Live-Bestellungen sind gesperrt.');
+ if(!payload||Array.isArray(payload)||(payload.test!==true&&!(payload.test===false&&config.mode==='doorbell-live-approved')))fail(422,'Diese Anbindung nimmt ausschließlich Testbestellungen an. Live-Bestellungen sind gesperrt.');
  return {shopDomain:config.shopDomain,eventId,bodySha256:sha(raw),orderId:identifier(payload.id),payload,topic:header('x-shopify-topic')};
 }
 export function verifyPaidWebhook(raw,headers,config){
  const v=verifyOrderWebhook(raw,headers,config,['orders/paid']),{payload}=v;
  if(payload.financial_status!=='paid'||payload.cancelled_at||payload.currency!=='EUR'||!Array.isArray(payload.line_items)||payload.line_items.length>250)fail(422,'Zahlungsstatus, Währung oder Bestellpositionen sind nicht geeignet.');
+ return v;
+}
+export function verifyDoorbellStatusWebhook(raw,headers,config){
+ if(config?.mode!=='doorbell-live-approved')fail(503,'Der Funkklingel-Statuseingang ist nicht freigegeben.');
+ const v=verifyOrderWebhook(raw,headers,config,['orders/updated','orders/cancelled']);
+ if(v.payload.test!==false||v.payload.currency!=='EUR'||!Array.isArray(v.payload.line_items)||v.payload.line_items.length>250)fail(422,'Keine geeignete echte Funkklingel-Statusnachricht.');
  return v;
 }
 // `autoRelease(line)` meldet, ob das Fertigungsprofil der Position automatische Freigabe erlaubt (http.mjs liefert es aus production-profiles.mjs).
@@ -66,10 +73,83 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  const tx=fn=>{if(db.isTransaction)return fn();db.exec('BEGIN IMMEDIATE');try{const v=fn();db.exec('COMMIT');return v;}catch(e){db.exec('ROLLBACK');throw e;}},at=()=>new Date(clock()).toISOString();
  const binding=id=>{const r=db.prepare('SELECT * FROM form_shop_bindings WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'Shop-Zuordnung nicht gefunden.');return r;};
  const selection=id=>{const r=db.prepare('SELECT options FROM form_shop_binding_selections WHERE binding_id=? AND tenant_id=?').get(id,tenant);return r?JSON.parse(r.options):null;};
- const safeBinding=r=>({id:r.id,shopDomain:r.shop,variantId:r.variant_id,productId:r.product_id,productRevision:r.product_revision,unitCents:r.unit_cents,...(selection(r.id)?{options:selection(r.id)}:{})});
+ const safeBinding=(r,selected=selection(r.id))=>({id:r.id,shopDomain:r.shop,variantId:r.variant_id,productId:r.product_id,productRevision:r.product_revision,unitCents:r.unit_cents,...(selected?{options:selected}:{})});
  const pricing=id=>{const row=db.prepare('SELECT document FROM form_shop_binding_personalization WHERE binding_id=? AND tenant_id=?').get(id,tenant);return row?JSON.parse(row.document):null;};
  const offerPricing=id=>{const row=db.prepare('SELECT document FROM form_offer_personalization WHERE offer_id=? AND tenant_id=?').get(id,tenant);return row?JSON.parse(row.document):null;};
  const get=id=>{const r=db.prepare('SELECT document FROM form_order_lines WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
+
+ // Explicit, immutable release ledger in this existing store. It is created only by
+ // the operator's approval command, never by receiving a webhook or opening a store.
+ function liveApproval(shop,b,shopifyProductId){
+  if(!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='doorbell_live_order_approvals'").get())fail(422,'Dieses Funkklingelprodukt hat keine gespeicherte Live-Freigabe.');
+  const row=db.prepare('SELECT * FROM doorbell_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenant,shop,shopifyProductId,b.product_id,b.product_revision);
+  if(!row||!JSON.parse(row.variants_json).includes(b.variant_id))fail(422,'Produkt, Variante und fester Stand sind nicht für echte Funkklingelbestellungen freigegeben.');
+  const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenant,b.product_id,b.product_revision);
+  if(!source||sha(source.document)!==row.document_sha256)fail(409,'Der freigegebene Funkklingelstand stimmt nicht mehr überein.');
+  return {id:row.approval_id,approvedAt:row.approved_at};
+ }
+ function doorbellLiveApproval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={}){
+  if(!domain(shopDomain)||!/^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/.test(shopifyProductId||'')||!/^gid:\/\/shopify\/ProductVariant\/[1-9][0-9]{0,19}$/.test(shopifyVariantId||'')||!/^cfg_[a-f0-9-]{36}$/.test(productId||'')||!Number.isSafeInteger(productRevision)||productRevision<1)return null;
+  const b=db.prepare('SELECT * FROM form_shop_bindings WHERE tenant_id=? AND shop=? AND variant_id=? AND product_id=? AND product_revision=?').get(tenant,shopDomain,shopifyVariantId.split('/').at(-1),productId,productRevision);
+  if(!b)return null;
+  try{return liveApproval(shopDomain,b,shopifyProductId);}catch(e){if([404,409,422].includes(e.status))return null;throw e;}
+ }
+ // Read-only routing probe after HMAC verification. A pending approved variant
+ // gets a retry; unrelated shop orders must not create status rows or retries.
+ function doorbellLiveOrderScope({shopDomain,orderId,lines}={}){
+  if(!domain(shopDomain)||!Array.isArray(lines)||lines.length>250)fail(422,'Ungültige Funkklingel-Statuszuordnung.');
+  const known=db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=? AND tenant_id=?').all(shopDomain,identifier(orderId),tenant).map(r=>JSON.parse(r.document));
+  if(known.length)return known.every(l=>l.test===false&&l.liveApproval)?'known':'unrelated';
+  for(const line of lines){
+   if(line?.variant_id==null||line?.product_id==null)continue;
+   const variants=db.prepare('SELECT * FROM form_shop_bindings WHERE tenant_id=? AND shop=? AND variant_id=?').all(tenant,shopDomain,identifier(line.variant_id));
+   for(const b of variants){try{if(liveApproval(shopDomain,b,'gid://shopify/Product/'+identifier(line.product_id)))return 'pending';}catch(e){if(![404,409,422].includes(e.status))throw e;}}
+  }
+  return 'unrelated';
+ }
+ function approveDoorbellLiveProducts({shopDomain,products,approvalId,registry}={}){
+  if(!domain(shopDomain)||!Array.isArray(products)||!products.length||products.length>126||typeof approvalId!=='string'||!/^[A-Za-z0-9_.:-]{1,160}$/.test(approvalId)||typeof registry?.resolve!=='function')fail(422,'Eine ausdrückliche Funkklingel-Freigabe mit festen Produktständen ist erforderlich.');
+  const ids=new Set(),shopIds=new Set();
+  // Re-read persisted source and all 120 active exact-ID bindings. Input cannot
+  // authorize an arbitrary in-memory configuration or silently widen the scope.
+  const entries=products.map(p=>{
+   if(!p||Object.keys(p).sort().join(',')!=='productId,productRevision,shopifyProductId'||!/^cfg_[a-f0-9-]{36}$/.test(p.productId||'')||!Number.isSafeInteger(p.productRevision)||p.productRevision<1||!/^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/.test(p.shopifyProductId||'')||ids.has(p.productId)||shopIds.has(p.shopifyProductId))fail(422,'Die Live-Freigabe muss eindeutige Konfigurator- und Shopify-Produkte nennen.');
+   ids.add(p.productId);shopIds.add(p.shopifyProductId);
+   const row=db.prepare('SELECT r.document,r.status,p.revision AS head,p.archived,p.kind FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id WHERE p.tenant_id=? AND p.id=? AND r.revision=?').get(tenant,p.productId,p.productRevision);
+   if(!row||row.head!==p.productRevision||row.archived||row.kind!=='product'||row.status==='archived')fail(409,'Der freizugebende Funkklingelstand ist nicht aktuell.');
+   const document=JSON.parse(row.document),config=document.config;
+   if(document.schema!==PRODUCT_SCHEMA||config?.doorbell?.schema!=='gravuru-doorbell/v1'||config.profile?.kind!=='layered-doorbell')fail(422,'Live-Freigaben gelten ausschließlich für neue modellgebundene Funkklingeln.');
+   if((config.profile.optionGroups||[]).map(g=>g.id).sort().join(',')!=='color,format,frame,mounting')fail(422,'Die vier Funkklingel-Ausführungsgruppen fehlen.');
+   const record={id:p.productId,revision:p.productRevision,status:row.status,document},plan=prepareShopProduct(record);
+   if(!plan.sourceReady||plan.variants.length!==120)fail(422,'Alle 120 Funkklingel-Ausführungen müssen vollständig vorbereitet sein.');
+   const rows=db.prepare('SELECT r.variant_gid FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision WHERE r.tenant_id=? AND r.shop=? AND r.store_id=? AND r.product_gid=? AND r.cfg_id=? AND r.cfg_revision=?').all(tenant,shopDomain,'acryl',p.shopifyProductId,p.productId,p.productRevision);
+   if(rows.length!==120)fail(422,'Vor Live-Freigabe müssen genau 120 aktive Variantenbindungen im Acryl-Speicher bestehen.');
+   const seen=new Set(),variants=rows.map(r=>{
+    const bound=registry.resolve({shopifyProductId:p.shopifyProductId,shopifyVariantId:r.variant_gid});
+    const key=optionKey(bound.options),expected=plan.variants.find(v=>optionKey(v.options)===key);
+    if(bound.storeId!=='acryl'||bound.productId!==p.productId||bound.productRevision!==p.productRevision||!expected||expected.priceCents!==bound.unitCents||seen.has(key))fail(422,'Eine aktive Funkklingelbindung passt nicht zum freigegebenen Stand.');
+    seen.add(key);return identifier(r.variant_gid.split('/').at(-1));
+   }).sort();
+   return {...p,documentSha256:sha(row.document),variants};
+  });
+  return tx(()=>{
+   for(const e of entries){
+    const current=db.prepare('SELECT p.revision,r.document FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id AND r.revision=p.revision WHERE p.tenant_id=? AND p.id=? AND p.archived=0').get(tenant,e.productId);
+    const variants=db.prepare('SELECT r.variant_gid FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision WHERE r.tenant_id=? AND r.shop=? AND r.store_id=? AND r.product_gid=? AND r.cfg_id=? AND r.cfg_revision=?').all(tenant,shopDomain,'acryl',e.shopifyProductId,e.productId,e.productRevision).map(r=>r.variant_gid.split('/').at(-1)).sort();
+    if(!current||current.revision!==e.productRevision||sha(current.document)!==e.documentSha256||JSON.stringify(variants)!==JSON.stringify(e.variants))fail(409,'Produkt oder Bindungen wurden während der Live-Freigabe geändert.');
+   }
+   db.exec(`CREATE TABLE IF NOT EXISTS doorbell_live_order_approvals(tenant_id TEXT NOT NULL,shop TEXT NOT NULL,product_gid TEXT NOT NULL,cfg_id TEXT NOT NULL,cfg_revision INTEGER NOT NULL,document_sha256 TEXT NOT NULL,variants_json TEXT NOT NULL,approval_id TEXT NOT NULL,approved_at TEXT NOT NULL,PRIMARY KEY(tenant_id,shop,product_gid,cfg_id,cfg_revision));
+    CREATE TRIGGER IF NOT EXISTS doorbell_live_approval_fixed BEFORE UPDATE ON doorbell_live_order_approvals BEGIN SELECT RAISE(ABORT,'Live approvals are immutable');END;
+    CREATE TRIGGER IF NOT EXISTS doorbell_live_approval_keep BEFORE DELETE ON doorbell_live_order_approvals BEGIN SELECT RAISE(ABORT,'Live approvals require explicit retention');END;`);
+   let created=0;
+   for(const e of entries){
+    const old=db.prepare('SELECT document_sha256,variants_json,approval_id FROM doorbell_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenant,shopDomain,e.shopifyProductId,e.productId,e.productRevision),variants=JSON.stringify(e.variants);
+    if(old){if(old.document_sha256!==e.documentSha256||old.variants_json!==variants||old.approval_id!==approvalId)fail(409,'Diese Live-Freigabe besitzt bereits einen anderen festen Stand oder Freigabenachweis.');continue;}
+    db.prepare('INSERT INTO doorbell_live_order_approvals(tenant_id,shop,product_gid,cfg_id,cfg_revision,document_sha256,variants_json,approval_id,approved_at) VALUES(?,?,?,?,?,?,?,?,?)').run(tenant,shopDomain,e.shopifyProductId,e.productId,e.productRevision,e.documentSha256,variants,approvalId,at());created++;
+   }
+   return {schema:'gravuru-doorbell-live-release/v1',shopDomain,approvalId,products:entries.length,created,productionReady:false};
+  });
+ }
  // E3: rejected single positions (status „fehler“). Append-only per delivery; the overview shows the latest reason
  // per shop line until that line is accepted by a later delivery.
  const errorRows=(where='',...args)=>db.prepare('SELECT e.document FROM form_order_line_errors e WHERE e.tenant_id=? AND e.rowid=(SELECT max(rowid) FROM form_order_line_errors x WHERE x.tenant_id=e.tenant_id AND x.shop=e.shop AND x.order_id=e.order_id AND x.line_id=e.line_id) AND NOT EXISTS(SELECT 1 FROM form_order_lines l WHERE l.tenant_id=e.tenant_id AND l.shop=e.shop AND l.order_id=e.order_id AND l.line_id=e.line_id)'+where+' ORDER BY e.rowid DESC LIMIT 200').all(tenant,...args).map(r=>JSON.parse(r.document));
@@ -81,7 +161,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  const statuses=createOrderStatus({database:db,clock,production:(line,shop)=>release.state(line.id,{shop}),tenantId:tenant});
  release=createProductionRelease({database:db,clock,line:lineOrRejected,shopStatus:line=>statuses.shopState(line),autoRelease,rejectedLines:()=>errorRows(),tenantId:tenant});
  const forSnapshot=snapshotId=>typeof snapshotId==='string'?db.prepare("SELECT document FROM form_order_lines WHERE json_extract(document,'$.snapshotId')=? AND tenant_id=? ORDER BY rowid").all(snapshotId,tenant).map(r=>JSON.parse(r.document)):[];
- return {tenantId:tenant,get,forSnapshot,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT * FROM form_shop_bindings WHERE tenant_id=? ORDER BY rowid DESC').all(tenant).map(safeBinding),
+ return {tenantId:tenant,get,forSnapshot,doorbellLiveApproval,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
   // Caller supplies the actual saved product record, never a browser price.
   idBindings({storeId,shopDomain,adapter,personalizationPricingFor}={}){
    return createShopProductBindingStore({database:db,orderIntake:this,tenantId:tenant,storeId,shopDomain,adapter,clock,personalizationPricingFor});
@@ -104,12 +184,12 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    if(d.schema===PRODUCT_SCHEMA){
     if(selected!==undefined){
      if(snapshotId||!selected||typeof selected!=='object'||Array.isArray(selected))fail(422,'Ausführung nicht eindeutig.');
-     const resolved=resolveProduct(d,{options:selected});options=resolved.resolvedOptions;unit=resolved.price.unitCents;
+     const resolved=resolveProduct(d,{options:selected});options=choiceOptions(d.config,resolved.resolvedOptions);unit=resolved.price.unitCents;
      if(optionKey(options)!==optionKey(selected))fail(422,'Die vollständige gespeicherte Ausführung angeben.');
     }else{
      if(!snapshotId)fail(422,'Für Acryl bitte zuerst einen festen Prüfstand auswählen.');const m=snapshot(snapshotId);
      if(!isNativeReviewSchema(m.schema)||m.product.id!==record.id||m.product.revision!==record.revision||!m.selection)fail(422,'Acryl-Prüfstand und Produktstand stimmen nicht überein.');
-     const resolved=resolveProduct(d,{options:m.selection.options});options=resolved.resolvedOptions;unit=resolved.price.unitCents;
+      const resolved=resolveProduct(d,{options:m.selection.options});options=choiceOptions(d.config,resolved.resolvedOptions);unit=resolved.price.unitCents;
      if(personalizationPricing===undefined&&m.selection.price.unitCents!==tierUnitCents(unit,m))fail(422,'Zusätzliche kostenpflichtige Elemente benötigen zuerst eine bestätigte Shop-Aufpreisbindung.');
     }
    }else if(d.schema!=='gravuru-form-product/v1'||unit===null||!d.designs?.length)fail(422,'Ein Produkt mit Design und Preis ist erforderlich.');
@@ -133,7 +213,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(!variant||keys.has(m.key)||ids.has(variantId))fail(422,'Ausführung oder Shop-Variante fehlt oder wurde doppelt zugeordnet.');keys.add(m.key);ids.add(variantId);return {variant,variantId};
    });
    return tx(()=>{
-    const before=this.bindings().filter(b=>b.shopDomain===shopDomain&&b.productId===record.id&&b.productRevision===record.revision);
+    const before=db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? AND b.shop=? AND b.product_id=? AND b.product_revision=? ORDER BY b.rowid DESC').all(tenant,shopDomain,record.id,record.revision).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options)));
     for(const {variant,variantId} of mapped)if(before.some(b=>optionKey(b.options)===optionKey(variant.options)&&b.variantId!==variantId))fail(409,'Diese Ausführung ist bereits anders zugeordnet. Bestehende Bindungen bleiben erhalten; Änderungen benötigen einen neuen Produktstand.');
     const bindings=mapped.map(({variant,variantId})=>this.bind({record,shopDomain,variantId,...(record.document.schema===PRODUCT_SCHEMA?{options:variant.options}:{}),...(personalizationPricing===undefined?{}:{personalizationPricing})}));
     return {bindings,created:bindings.filter(b=>!before.some(old=>old.id===b.id)).length,configuration:plan.configuration,sourceSha256:plan.sha256,shopVerified:false,sent:false};
@@ -191,6 +271,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    }
    if(['orders/updated','orders/cancelled'].includes(headers['x-shopify-topic'])){
     const v=verifyOrderWebhook(raw,headers,config,['orders/updated','orders/cancelled']);
+    if(v.payload.test===false){const known=db.prepare('SELECT document FROM form_order_lines WHERE shop=? AND order_id=? AND tenant_id=?').all(v.shopDomain,v.orderId,tenant).map(r=>JSON.parse(r.document));if(!known.length||known.some(l=>l.test!==false||!l.liveApproval))fail(422,'Keine freigegebene echte Funkklingelbestellung für diese Statusnachricht.');}
     return tx(()=>{
      if(db.prepare('SELECT 1 FROM form_order_events WHERE shop=? AND event_id=? AND tenant_id=?').get(v.shopDomain,v.eventId,tenant))fail(409,'Ereignis-ID gehört bereits zu einer Zahlungsnachricht.');
      const result=statuses.record(v),lines=db.prepare('SELECT id FROM form_order_lines WHERE shop=? AND order_id=? AND tenant_id=?').all(v.shopDomain,v.orderId,tenant);
@@ -219,7 +300,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    // E3 (P2-9): one invalid position is rejected alone. Valid positions are still
    // admitted, the event is recorded and the webhook answers 200 (no Shopify retry storm).
    const reject=(line,lineId,reason)=>{
-    const document={id:'ordererror_'+randomUUID(),shopDomain:shop,orderId,lineId,eventId,variantId:line.variant_id==null?null:String(line.variant_id),quantity:Number.isSafeInteger(line.quantity)?line.quantity:null,status:'fehler',intakeError:reason,test:true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
+    const document={id:'ordererror_'+randomUUID(),shopDomain:shop,orderId,lineId,eventId,variantId:line.variant_id==null?null:String(line.variant_id),quantity:Number.isSafeInteger(line.quantity)?line.quantity:null,status:'fehler',intakeError:reason,test:payload.test===true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
     db.prepare('INSERT INTO form_order_line_errors(id,shop,order_id,line_id,event_id,document,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?)').run(document.id,shop,orderId,lineId,eventId,JSON.stringify(document),at(),tenant);
     release.rejectIntake(document.id,reason);errors.push(document);
    };
@@ -240,6 +321,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(!refs.length){if(line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=? AND tenant_id=?').get(shop,identifier(line.variant_id),tenant))fail(422,'Für diese konfigurierte Variante fehlt der gesicherte Entwurf.');return;}
     if(refs.length!==1||typeof refs[0].value!=='string'||!/^[a-f0-9]{64}$/.test(refs[0].value))fail(422,'Ungültige Entwurfszuordnung.');
     const o=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=? AND tenant_id=?').get(sha(refs[0].value),tenant);if(!o)fail(422,'Entwurfszuordnung nicht gefunden.');const b=binding(o.binding_id),extra=offerPricing(o.id),unit=extra?.unitCents??b.unit_cents;
+    const approved=payload.test===false?liveApproval(shop,b,'gid://shopify/Product/'+identifier(line.product_id)):null;
     if(b.shop!==shop||b.variant_id!==identifier(line.variant_id)||line.quantity!==o.quantity||money(line.price)!==unit)fail(422,'Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.');
     // If an exact-ID assignment exists, validate its immutable history for THIS
     // offer's binding. A newer active head must not rewrite a purchased design.
@@ -257,7 +339,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     const old=db.prepare('SELECT * FROM form_order_lines WHERE shop=? AND order_id=? AND line_id=? AND tenant_id=?').get(shop,orderId,lineId,tenant);if(old){if(old.offer_id!==o.id)fail(409,'Bestellposition darf ihren Entwurf nicht wechseln.');result.push(JSON.parse(old.document));return;}
     if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=? AND tenant_id=?').get(o.id,tenant))fail(409,'Dieser Entwurf wurde bereits einer anderen Bestellposition zugeordnet.');
     if(o.expires_at<clock())fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');const m=snapshot(o.snapshot_id);if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
-    const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,...(configuration?{configuration}:{}),sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity:o.quantity,unitCents:unit,totalCents:unit*o.quantity,currency:'EUR',status:'test-paid-event-recorded',test:true,receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
+    const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,...(configuration?{configuration}:{}),sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity:o.quantity,unitCents:unit,totalCents:unit*o.quantity,currency:'EUR',status:payload.test===true?'test-paid-event-recorded':'paid-event-recorded',test:payload.test===true,...(approved?{liveApproval:approved,shopifyProductId:'gid://shopify/Product/'+identifier(line.product_id)}:{}),receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
     db.prepare('INSERT INTO form_order_lines(id,shop,order_id,line_id,offer_id,document,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?)').run(id,shop,orderId,lineId,o.id,JSON.stringify(document),at(),tenant);result.push(document);
    }
    if(result.length){
@@ -276,4 +358,5 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
   });}
  };
 }
+
 

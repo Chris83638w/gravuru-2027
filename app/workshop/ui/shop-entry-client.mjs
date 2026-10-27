@@ -41,11 +41,16 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     for(const d of universal.profile.designs||[])for(const o of d.objects||[])if(/^[a-f0-9]{64}$/.test(o.photoMaskAssetId||''))urls.add(WORKSHOP+'design-assets/'+o.photoMaskAssetId+'/preview.svg');
     for(const item of universal.localResources?.photoExamples||[])if(/^[a-f0-9]{64}$/.test(item.assetId||''))urls.add(WORKSHOP+'design-assets/'+item.assetId+'/preview.svg');
     const resources=Object.create(null);
-    for(const url of urls){
-      const result=await request(url);if(!result.ok)fail('Eine Designgrafik konnte nicht geladen werden.');
-      const dataUrl=await toDataUrl(await result.blob());
-      resources[url]=dataUrl;resources[url.replace(WORKSHOP,ACRYL)]=dataUrl;
-    }
+    // A model can carry decoration resources for three formats. Bound parallelism
+    // avoids serial network roundtrips while preserving the same private routes.
+    const pending=[...urls];
+    await Promise.all(Array.from({length:Math.min(6,pending.length)},async()=>{
+      for(let url;(url=pending.shift());){
+        const result=await request(url);if(!result.ok)fail('Eine Designgrafik konnte nicht geladen werden.');
+        const dataUrl=await toDataUrl(await result.blob());
+        resources[url]=dataUrl;resources[url.replace(WORKSHOP,ACRYL)]=dataUrl;
+      }
+    }));
     return resources;
   }
   async function submitCart(input,{draftToken}={}){
@@ -64,3 +69,4 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
   }
   return Object.freeze({request,loadModel,loadResources,submitCart,submitThemeCart});
 }
+

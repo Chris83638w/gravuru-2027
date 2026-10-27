@@ -2,7 +2,7 @@
 // lazy-resources-model.mjs, Dateien aus lazy-resources-build.mjs unter /_runtime/lazy/).
 // Ein Objekt erhält nur eine bereits geladene Schrift bzw. ein geladenes Motiv; Vorschau,
 // Entwurfsprüfung und Export rechnen deshalb immer mit vorhandenen Konturen.
-import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,libraryEntries,fontFileName} from './lazy-resources-model.mjs';
+import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,libraryEntries,fontFileName,resourceNeeds} from './lazy-resources-model.mjs';
 
 // `priority` (fetch-Priorität, Chromium): 'low' beim Vorladen im Hintergrund (preload-queue.mjs).
 const fetchJSON=async(url,{priority}={})=>{const response=await fetch(url,{credentials:'same-origin',...(priority?{priority}:{})});if(!response.ok)throw Error('Laden fehlgeschlagen: '+url.split('/').pop());return response.json();};
@@ -61,6 +61,7 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
     const urls=lazyUrls({motifs:[...new Set(keys)].filter(k=>el.motifs[k]===undefined)},{motifIndex},base).motifs;if(!urls.length)return;
     for(const m of await prepared(await Promise.all(urls.map(m=>loadMotif(m,get)))))addMotif(m);
   };
+  el.uxEnsureDesignResources=async design=>{const needs=resourceNeeds(design?.objects,{localFonts:Object.keys(el.fontData),localMotifs:Object.keys(el.motifs)});await Promise.all([el.uxEnsureFonts(needs.fonts),el.uxEnsureMotifs(needs.motifs)]);};
   // Entwurf (Sitzungsschutz, Kundenkonto, Warenkorb, Datei): genau seine Schriften und Motive vor readDraft.
   el.uxEnsureDraftResources=async draft=>{
     const needs=draftNeeds(draft,{localFonts:Object.keys(el.fontData),localMotifs:Object.keys(el.motifs)});
@@ -89,3 +90,4 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
     return loading;
   };
 }
+

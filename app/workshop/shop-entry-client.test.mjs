@@ -52,3 +52,23 @@ test('normal-cart preparation uses private headers and never treats a prepared U
  await assert.rejects(c.submitThemeCart(input,{draftToken:'bad'}));
  response.paymentConfirmed=true;await assert.rejects(c.submitThemeCart(input,{draftToken:'b'.repeat(64)}),/nicht vorbereitet/);
 });
+
+test('all three format resources load privately in bounded parallel batches',async()=>{
+ const urls=Array.from({length:19},(_,i)=>'/api/workshop/design-assets/'+i.toString(16).padStart(64,'0')+'/preview.svg');
+ let active=0,peak=0;const seen=[];
+ const c=createShopEntryClient({token,fetchImpl:async(url,options)=>{
+  active++;peak=Math.max(peak,active);seen.push(url);
+  assert.equal(options.headers['X-Gravuru-Shop-Session'],token);assert.equal(options.credentials,'omit');
+  await new Promise(resolve=>setTimeout(resolve,2));active--;return new Response('<svg/>');
+ }});
+ const model={profile:{designs:[]},doorbell:{formats:urls.map(url=>({profile:{resourceUrl:url}}))},localResources:{duplicate:urls[0]}};
+ const resources=await c.loadResources(model,async()=> 'data:image/svg+xml;base64,PHN2Zy8+');
+ assert.equal(seen.length,19);assert.equal(new Set(seen).size,19);assert.ok(peak>1&&peak<=6);
+ for(const url of urls){assert.ok(resources[url]);assert.equal(resources[url],resources[url.replace('/api/workshop/','/api/workshop/acryl/')]);}
+});
+
+test('a failed private resource refuses the configurator before any cart can be offered',async()=>{
+ const c=createShopEntryClient({token,fetchImpl:async()=>new Response('',{status:404})});
+ await assert.rejects(c.loadResources({profile:{designs:[]},localResources:{url:'/api/workshop/design-assets/'+sha+'/preview.svg'}},async()=>''),/Designgrafik/);
+});
+

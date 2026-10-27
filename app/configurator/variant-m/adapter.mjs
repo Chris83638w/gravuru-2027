@@ -16,12 +16,16 @@ import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, desi
 import {changedCustomerTexts, transferTexts} from './workflow-model.mjs';
 import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
 import {objectSurface, surfaceGeometry} from './surfaces.mjs';
+import {designResourcesReady} from './doorbell-lazy-designs.mjs';
+import {isLayeredDoorbell} from './doorbell-selection.mjs';
+import {doorbellOptionState,updateDoorbellViewport} from './doorbell-ui.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
 
 export function installUniversal(configInput) {
   const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
+  const dynamicDoorbell=isLayeredDoorbell(config);
   const originalPrepare = window.Funkklingel.prepare, originalFinish = window.Funkklingel.finish;
   let options = {}, quantity = 1, el, renderId = 0;
   const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
@@ -47,20 +51,20 @@ export function installUniversal(configInput) {
   // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
   // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
   const thumbCache=new Map();
-  window.Funkklingel.thumb = (element, d) => { el = element; const design=p.designs.find(x => x.id === d.id) || d; const key=JSON.stringify(design); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
+  window.Funkklingel.thumb = (element, d) => { el = element; const design=(dynamicDoorbell?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
     el = element; originalPrepare(el);
-    const {width, height, shape, cornerRadiusMm=0} = p.geometry;
+    const {width, height, shape, cornerRadiusMm=0} = profile().geometry;
     const format = {...el.stainlessFormat(), widthMm:width, heightMm:height, shape, cornerRadiusMm,
       key:p.id, label:width + ' × ' + height + ' mm', allowedMountings:['K00']};
     el.stainlessGroup = {...el.stainlessGroup, name:p.name, formats:[format]};
     el.state.width = width; el.state.height = height;
     el.$('[data-stainless=size]').replaceChildren(new Option(format.label, format.key));
-    el.stainlessFormat = () => format;
+    el.stainlessFormat = () => dynamicDoorbell?{...format,widthMm:profile().geometry.width,heightMm:profile().geometry.height,label:profile().geometry.width+' × '+profile().geometry.height+' mm'}:format;
     el.geometry = () => {
-      const geometry=profile().geometry;
+      const geometry=profile().geometry,{width,height,shape}=geometry;
       const outline = shape === 'contour' ? geometry.outlinePath : shape === 'ellipse' ? `M0 ${height/2}a${width/2} ${height/2} 0 1 0 ${width} 0a${width/2} ${height/2} 0 1 0 -${width} 0` : `M0 0H${width}V${height}H0Z`;
-      return {outline, clip:shape==='contour'?contourPathWithHoles(geometry):outline, holes:geometry.holes.map(h => ({...h, r:h.diameter/2})), gap:0};
+      return {outline, clip:shape==='contour'?contourPathWithHoles(geometry):outline, holes:(geometry.holes||[]).map(h => ({...h, r:h.diameter/2})), gap:0};
     };
     el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o),bare:true})).querySelector('[data-object]')?.outerHTML || '';
     el.svgBody = function(preview=true, guides=false) {
@@ -73,15 +77,18 @@ export function installUniversal(configInput) {
       const url = URL.createObjectURL(new Blob([await embedSurface(this.svg(true),config.materialSurface)], {type:'image/svg+xml'}));
       try {
         const image = new Image(); image.src = url; await image.decode();
+        const {width,height}=profile().geometry;
         const canvas = document.createElement('canvas'), scale = 1600 / Math.max(width, height);
-        canvas.width = Math.round((width + Math.max(width,height)*.07) * scale);
-        canvas.height = Math.round((height + Math.max(width,height)*.07) * scale);
+        const padding=dynamicDoorbell?16:Math.max(width,height)*.07;
+        canvas.width = Math.round((width + padding) * scale);
+        canvas.height = Math.round((height + padding) * scale);
         canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
         return await new Promise((resolve,reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(Error('Vorschau konnte nicht erstellt werden.')), 'image/png'));
       } finally { URL.revokeObjectURL(url); }
     };
     el.normalize = function() {
-      this.state.width=width; this.state.height=height;
+      const geometry=profile().geometry;
+      this.state.width=geometry.width; this.state.height=geometry.height;
       for (const o of this.state.objects) if (o.type==='text') {
         try { measureText(o, this.fontData); } catch { /* Keep typed characters so the customer can correct them. */ }
       }
@@ -91,19 +98,31 @@ export function installUniversal(configInput) {
   window.Funkklingel.finish = element => {
     el = element; originalFinish(el);
     el.uxProfileGeometry=()=>profile().geometry;
+    el.uxSelectedProfile=()=>profile();
+    el.style.setProperty('--m-plate-width',String(p.geometry.width));
+    el.style.setProperty('--m-plate-height',String(p.geometry.height));
     if(window.GravuruGuided)window.GravuruGuided=contourGuides(window.GravuruGuided,el.uxProfileGeometry);
     const r=el.shadowRoot, $=selector=>r.querySelector(selector);
     r.host.dataset.universalProfile = p.id;
     const style = document.createElement('style');
     style.textContent = '.m-photo{margin:18px 0;padding:14px;background:#f5f4f0;border-radius:9px}.m-photo label{display:block;margin:10px 0}.m-photo input{background:#fff!important}.m-photo p{font-size:12px;line-height:1.5}.m-filters{display:flex;gap:8px;margin:8px 0}.m-filters label{flex:1;min-width:0}.m-color{display:block;padding:8px 0}.m-color input{width:70px;height:40px;padding:3px!important}[data-m-invalid]{font-size:13px;color:#873422}.fk-options fieldset,.fk-frame-field,.fk-frame-pictures,.fk-options>[data-fk-mount-note],.fk-options>label,.fk-scope-note{display:none!important}.fk-options:empty{display:none!important}.m-options>label{display:block!important;margin:10px 0}.fk-font-section{margin-top:18px}@media(max-width:720px){.c-gallery{max-height:none!important;overflow:visible!important;overscroll-behavior:auto!important;touch-action:pan-y!important}.stage{touch-action:pan-y!important}.m-filters{flex-wrap:wrap}}';
-    style.textContent += '.c-gallery [hidden]{display:none!important}.c-gallery .c-design-card svg:not(svg svg){width:100%;height:95px!important}.stage{height:auto!important;min-height:330px!important}.plate-holder{width:min(100%,520px)!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}.dimension-x span,.dimension-y span{position:relative;background:#fff!important;padding:0 5px!important;z-index:1}.fk-options .m-options>label{display:block!important}@media(max-width:720px){.stage{min-height:230px!important}.plate-holder{width:min(100%,430px)!important}.c-gallery .c-design-card svg:not(svg svg){height:75px!important}}';
-    style.textContent += '.stage-wrap>.stage .plate-holder{width:min(100%,520px)!important;height:auto!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}.c-large-preview .fk-live-preview .plate-holder{width:min(100cqw,calc(100cqh * '+p.geometry.width+' / '+p.geometry.height+'))!important;height:min(100cqh,calc(100cqw * '+p.geometry.height+' / '+p.geometry.width+'))!important;aspect-ratio:'+p.geometry.width+'/'+p.geometry.height+'!important}';
+    style.textContent += '.c-gallery [hidden]{display:none!important}.c-gallery .c-design-card svg:not(svg svg){width:100%;height:95px!important}.stage{height:auto!important;min-height:330px!important}.plate-holder{width:min(100%,520px)!important;aspect-ratio:var(--m-plate-width)/var(--m-plate-height)!important}.dimension-x span,.dimension-y span{position:relative;background:#fff!important;padding:0 5px!important;z-index:1}.fk-options .m-options>label{display:block!important}@media(max-width:720px){.stage{min-height:230px!important}.plate-holder{width:min(100%,430px)!important}.c-gallery .c-design-card svg:not(svg svg){height:75px!important}}';
+    style.textContent += '.stage-wrap>.stage .plate-holder{width:min(100%,520px)!important;height:auto!important;aspect-ratio:var(--m-plate-width)/var(--m-plate-height)!important}.c-large-preview .fk-live-preview .plate-holder{width:min(100cqw,calc(100cqh * var(--m-plate-width) / var(--m-plate-height)))!important;height:min(100cqh,calc(100cqw * var(--m-plate-height) / var(--m-plate-width)))!important;aspect-ratio:var(--m-plate-width)/var(--m-plate-height)!important}';
     style.textContent += '@media(max-width:720px){.stage-wrap>.stage .plate-holder{touch-action:pan-y!important}.c-large-preview .plate-holder{touch-action:none!important}}';
     r.append(style);
     const optionPanel = $('.fk-options');
     optionPanel.querySelector('h2').textContent = 'Deine Ausführung';
     const picks=document.createElement('div'); picks.className='m-options';
-    picks.innerHTML=(p.optionGroups||[]).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(config.steelFormats&&g.id==='size'?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
+    const fullOptionPrice=g=>!!config.steelFormats&&g.id==='size'||dynamicDoorbell&&g.id==='format';
+    const changeOption=(key,value,{record=true}={})=>{
+      if(options[key]===value)return;
+      const next={...options,[key]:value};
+      const state=dynamicDoorbell?doorbellOptionState(config,el.state,next):{...el.state,mOptions:clone(next)};
+      if(record)el.record();
+      options=next;Object.assign(el.state,state);el.sync();
+    };
+    el.uxChangeOption=changeOption;
+    picks.innerHTML=(p.optionGroups||[]).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(fullOptionPrice(g)?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
     optionPanel.append(picks);
     // Chris 22./23.10.2026: Befestigung als Kacheln mit Icon, Bezeichnung und Aufpreis („+2,99 €“ oder
     // „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount] in completion.mjs; der Auswahlhaken kommt von
@@ -111,10 +130,10 @@ export function installUniversal(configInput) {
     // Auswahlliste darüber bleibt als barrierefreie Alternative. Preis- und Auswahllogik bleiben unverändert.
     const pictures=document.createElement('div');pictures.className='m-option-pictures';
     const tileValues=g=>g.id==='mounting'?g.values:g.values.filter(v=>v.thumbnail);
-    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+optionTileIcon(v)+'<strong>'+esc(v.label)+'</strong><small>'+esc(optionTilePrice(v,money,{fullPrice:!!config.steelFormats&&g.id==='size'}))+'</small></button>').join('')+'</div>').join('');
+    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+optionTileIcon(v)+'<strong>'+esc(v.label)+'</strong><small>'+esc(optionTilePrice(v,money,{fullPrice:!!fullOptionPrice(g)}))+'</small></button>').join('')+'</div>').join('');
     picks.append(pictures);
     style.textContent+='.m-option-pictures>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:6px 0 10px}.m-option-pictures>div:empty{display:none}.m-option-pictures button{display:grid;justify-items:center;align-content:center;gap:6px;min-height:110px;padding:12px 18px;border:1px solid #dce5df;border-radius:12px;background:#fff;color:#1c3327;position:relative}.m-option-pictures button[aria-pressed=true]{border-color:#17634d;background:#edf5f0}.m-option-pictures svg{width:32px;height:32px;display:block;flex:none}.m-option-pictures img{width:56px;height:40px;object-fit:contain;display:block;flex:none}.m-option-pictures strong{font-size:14px;font-weight:600;line-height:1.3;text-align:center}.m-option-pictures small{font-size:12px;color:#526b5d}@media(max-width:600px){.m-option-pictures button{min-height:95px}.m-option-pictures svg{width:27px;height:27px}}';
-    pictures.addEventListener('click',e=>{const button=e.target.closest('[data-picture-option]');if(!button)return;el.record();options={...options,[button.dataset.pictureGroup]:button.dataset.pictureOption};el.state.mOptions=clone(options);el.sync();});
+    pictures.addEventListener('click',e=>{const button=e.target.closest('[data-picture-option]');if(!button)return;changeOption(button.dataset.pictureGroup,button.dataset.pictureOption);});
     // K14 / Ü12.1: Zusatzfelder ohne Vorschau (Text, Datum, Auswahlliste, Ankreuzfeld) im Reiter „Optionen“.
     const fieldBox=document.createElement('div');fieldBox.className='m-option-fields';
     const surcharge=c=>c?' · +'+money(c):'';
@@ -127,12 +146,12 @@ export function installUniversal(configInput) {
     fieldBox.hidden=!fieldBox.childElementCount;picks.append(fieldBox);
     style.textContent+='.m-option-fields{display:grid;gap:10px;margin:12px 0}.m-option-fields label{display:grid!important;gap:4px;margin:0!important}.m-option-fields .m-field-check{grid-template-columns:auto 1fr;align-items:center}.m-option-fields .m-field-check small{grid-column:1/-1}.m-option-fields input[type=text],.m-option-fields input[type=date],.m-option-fields select{width:100%;box-sizing:border-box;min-height:40px}.m-option-fields small{font-size:12px;color:#46574d}.m-options label[hidden],.m-option-fields[hidden],.m-option-pictures [hidden]{display:none!important}';
     const fieldInput=input=>input.type==='checkbox'?input.checked:input.value;
-    fieldBox.addEventListener('focusin',e=>{if(e.target.dataset.mField&&e.target.type!=='checkbox')el.record();});
-    fieldBox.addEventListener('input',e=>{const key=e.target.dataset.mField;if(!key||e.target.type==='checkbox')return;options={...options,[key]:fieldInput(e.target)};el.state.mOptions=clone(options);el.sync();});
-    fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;if(e.target.type==='checkbox')el.record();options={...options,[key]:fieldInput(e.target)};el.state.mOptions=clone(options);el.sync();});
-    options=Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId]));
+    fieldBox.addEventListener('focusin',e=>{if(e.target.dataset.mField&&e.target.type!=='checkbox'&&e.target.tagName!=='SELECT')el.record();});
+    fieldBox.addEventListener('input',e=>{const key=e.target.dataset.mField;if(!key||e.target.type==='checkbox'||e.target.tagName==='SELECT')return;changeOption(key,fieldInput(e.target),{record:false});});
+    fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;changeOption(key,fieldInput(e.target),{record:e.target.type==='checkbox'||e.target.tagName==='SELECT'});});
+    options={...Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId])),...(dynamicDoorbell?{position:config.doorbell.defaultPosition||'standard'}:{})};
     for(const select of picks.querySelectorAll('select[data-m-option]')) select.value=options[select.dataset.mOption];
-    picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;el.record();options={...options,[e.target.dataset.mOption]:e.target.value};el.state.mOptions=clone(options);el.sync();});
+    picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;changeOption(e.target.dataset.mOption,e.target.value);});
     // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.
     function updateOptionVisibility(){
       let shown;try{shown=resolvedOptions(config,options);}catch{shown=null;}
@@ -196,7 +215,7 @@ export function installUniversal(configInput) {
           const vector=design.objects.filter(o=>o.type!=='photoSlot').map(o=>this.objectSVG(o)).join('');
           const marks='<g fill="none">'+(design.marks||[]).map(m=>'<path d="'+esc(m.d)+'" stroke="'+elementColor(p,m)+'" stroke-width="'+m.width+'"/>').join('')+'</g>';
           const {width,height}=physicalGeometry(config,{mOptions:options});
-          this.download(new Blob([`<svg xmlns="http://www.w3.org/2000/svg" width="${width}mm" height="${height}mm" viewBox="0 0 ${p.geometry.width} ${p.geometry.height}"><metadata>${esc(JSON.stringify({profileId:p.id,revision:p.revision,designId:draft.design.id,purpose:'vector-draft-not-production',photoIncluded:false}))}</metadata>${vector}${marks}</svg>`],{type:'image/svg+xml'}),p.id+'-vektorentwurf.svg');
+          this.download(new Blob([`<svg xmlns="http://www.w3.org/2000/svg" width="${width}mm" height="${height}mm" viewBox="0 0 ${profile().geometry.width} ${profile().geometry.height}"><metadata>${esc(JSON.stringify({profileId:p.id,revision:p.revision,designId:draft.design.id,purpose:'vector-draft-not-production',photoIncluded:false}))}</metadata>${vector}${marks}</svg>`],{type:'image/svg+xml'}),p.id+'-vektorentwurf.svg');
         }
         $('.status').textContent='Entwurf gespeichert. Fotodatei und Fertigungsfreigabe sind separat erforderlich.';
       }catch(error){$('.status').textContent=error.message;}
@@ -212,9 +231,10 @@ export function installUniversal(configInput) {
     el.draftPayload=function({draft=false}={}){return saveDraft(config,this.state,options,this.fontData,motifs(),{draft});};
     el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const input=JSON.parse(await file.text());await this.uxEnsureDraftResources?.(input);this.restoreDraft(input);$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
     el.chooseDesign=function(id,{carry=true}={}){
-      const d=p.designs.find(d=>d.id===id);if(!d)return;
+      const templates=dynamicDoorbell?profile().designs:p.designs;
+      const d=templates.find(d=>d.id===id);if(!d)return;
       // Chris 21.10.2026: nur geänderte Namen/Lebensdaten wandern mit (workflow-model.mjs).
-      this.record();const texts=carry?changedCustomerTexts(this.state.objects,p.designs.find(x=>x.id===this.state.designId)):[];
+      this.record();const texts=carry?changedCustomerTexts(this.state.objects,templates.find(x=>x.id===this.state.designId)):[];
       this.state.designId=id;this.state.objects=clone(d.objects);this.state.selected=null;
       if(texts.length)transferTexts(texts,this.state.objects);
       this.normalize();this.sync();
@@ -244,7 +264,8 @@ export function installUniversal(configInput) {
       const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
       for(const card of r.querySelectorAll('[data-c-design]')){
-        const design=p.designs.find(d=>d.id===card.dataset.cDesign);if(!design)continue;
+        const design=(dynamicDoorbell?profile().designs:p.designs).find(d=>d.id===card.dataset.cDesign);if(!design)continue;
+        if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))continue;
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
@@ -264,6 +285,7 @@ export function installUniversal(configInput) {
     function update(){
       const d=current(), visible=new Set(filteredDesigns(p.designs,filters).map(d=>d.id));
       const physical=physicalGeometry(config,{mOptions:options});
+      if(dynamicDoorbell)updateDoorbellViewport(el,physical);
       $('.stage-top>span').textContent=(config.doorbell?'Edelstahl mit Acrylglasauflage':processing.name.replace('Gravur auf ',''))+' · '+physical.width+' × '+physical.height+' mm';
       if(config.steelFormats){for(const [selector,value] of [['.dimension-x span',physical.width],['.dimension-y span',physical.height]]){const node=$(selector);if(node)node.textContent=new Intl.NumberFormat('de-DE',{maximumFractionDigits:3}).format(value)+' mm';}}
       $('.c-preview-caption>span').textContent='';
@@ -320,3 +342,4 @@ export function hardenDoorbell(el) {
   const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);update();return result;};
   update();
 }
+

@@ -8,6 +8,7 @@ import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
 import {PAUSED_MESSAGE} from './konfi-status.mjs';
+import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
 // `GET <proxyPath>/start?product=&variant=…&signature=…` auf; die Zuordnung läuft ausschließlich über die
@@ -80,6 +81,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   if(matches.length!==1)fail(matches.length?409:404,matches.length?'shop_entry_duplicate':'shop_entry_not_bound',matches.length?'Diese Variante ist mehreren Datenbereichen zugeordnet.':NOT_BOUND);
   return matches[0];
  }
+ function requireDoorbellApproval(store,binding,config){
+  const saved=config??store.workshop.repository.get(binding.productId,{revision:binding.productRevision}).document?.config;
+  if(!isLayeredDoorbell(saved))return;
+  const approved=store.doorbellLiveOrders===true&&typeof store.workshop.orderIntake.doorbellLiveApproval==='function'&&store.workshop.orderIntake.doorbellLiveApproval({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision});
+  if(!approved||typeof approved.id!=='string'||!approved.id)fail(404,'shop_entry_doorbell_unapproved',NOT_BOUND);
+ }
  function modelFor(store,binding){
   let model;
   try{model=store.workshop.model(binding.productId,binding.productRevision);}
@@ -87,6 +94,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   if(!model||model.configuration?.id!==binding.productId||model.configuration?.revision!==binding.productRevision||!['form','acryl'].includes(model.key))fail(409,'shop_entry_model','Das Modell gehört nicht zur festen Produktzuordnung.');
   // Der Formeditor hat eigene Kundenrouten (customer-drafts); er ist im öffentlichen Einstieg noch nicht angebunden.
   if(model.key!=='acryl'||!model.universal)fail(404,'shop_entry_form_pending',NOT_BOUND);
+  requireDoorbellApproval(store,binding,model.universal);
   return model;
  }
  // Sitzung prüfen und die Zuordnung erneut auflösen: eine zwischenzeitlich geänderte aktive Zuordnung
@@ -97,6 +105,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   const store=fixed.find(s=>s.storeId===session.storeId);if(!store)fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
   const current=resolve({shopifyProductId:session.shopifyProductId,shopifyVariantId:session.shopifyVariantId});
   if(current.store!==store||current.binding.productId!==session.productId||current.binding.productRevision!==session.productRevision||current.binding.bindingId!==session.bindingId||current.binding.assignmentRevision!==session.assignmentRevision)fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
+  requireDoorbellApproval(store,current.binding);
   return {session,store,binding:current.binding};
  }
  // Nur Ressourcen, die das Modell dieses Produktstands selbst nennt (Motivgrafiken, Fotomasken, Beispielfotos).
@@ -175,6 +184,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
    }
    if(bindings.length!==1)fail(bindings.length?409:404,bindings.length?'shop_entry_variant_duplicate':'shop_entry_variant_unbound',bindings.length?'Diese Ausführung ist im Shop mehrfach zugeordnet.':'Diese Ausführung ist im Shop noch nicht angebunden. Bitte eine andere Ausführung wählen.');
    const binding=bindings[0];
+   requireDoorbellApproval(store,binding);
    if(binding.shopifyVariantId===selected.shopifyVariantId&&!isDeepStrictEqual(binding,selected))fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
 
    if(theme){
@@ -241,6 +251,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   if(!transfer||transfer.expiresAt<=clock())fail(403,'theme_cart_expired','Die Warenkorbübergabe ist abgelaufen. Bitte zum Konfigurator zurückkehren und erneut starten.');
   const context=active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});
   if((proxy.customerId??null)!==(context.session.customerId??null))fail(403,'theme_cart_customer','Bitte die Produktseite erneut öffnen.');
+  requireDoorbellApproval(context.store,transfer.binding);
   const prepared=prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken});
   if(url.pathname===themePath+'/data'&&req.method==='GET')return json(res,200,prepared.payload);
   if(url.pathname===themePath+'/claim'&&req.method==='POST'){

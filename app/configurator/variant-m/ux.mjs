@@ -33,6 +33,7 @@ import {installAccountDrafts} from './account-drafts.mjs';
 import {installSurfaceTabs} from './surface-tabs.mjs';
 import {installBackgroundLoading} from './background-loading.mjs';
 import {installEdgeClamp} from './edge-clamp.mjs';
+import {installDoorbellDesignLoading} from './doorbell-lazy-designs.mjs';
 import {fontDisplayName} from './font-display.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -49,6 +50,8 @@ export function rasterMarkup(o,raster,selected=false){
 export async function installUX(el,config,legacy){
   const r=el.shadowRoot,$=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
   const profile=config?.profile||legacy, width=config?.profile.geometry.width||160,height=config?.profile.geometry.height||280;
+  const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
+  const currentSize=()=>el.uxProfileGeometry?.()||{width,height};
   const isPrint=config?.profile.processing?.profileId==='color-print';
   // K10 / Ü1: Das Verfahrensprofil steuert Werkzeuge (Farbe, Foto), Palette und Mindestschriftgröße.
   // Ohne Produktkonfiguration (Klingelschild-Altpfad) bleibt das bisherige Verhalten.
@@ -120,7 +123,7 @@ export async function installUX(el,config,legacy){
   const detailsButton=document.createElement('button');detailsButton.type='button';detailsButton.className='ux-price-details';detailsButton.dataset.ux='price';detailsButton.textContent='Preisdetails';$('[data-fk-total]').parentElement.append(detailsButton);
   let activeTab='options',fontChoice='',fontObject='',fieldSignature='',uploadKind=photoEnabled?'photo':'logo',replacing=null,dirty=false;
   const selected=()=>el.state.objects.find(o=>o.id===el.state.selected);
-  const design=()=>profile.designs.find(d=>d.id===el.state.designId);
+  const design=()=>chosenProfile().designs.find(d=>d.id===el.state.designId);
   const say=message=>{$('[data-ux-status]').textContent=message;};
   const finishCustomerRights=beginCustomerRights({el,r,config,selected,select,say});
   const finishTemplateDeletion=installTemplateDeletion({el,r,config,selected,mutate,say});
@@ -226,7 +229,7 @@ export async function installUX(el,config,legacy){
   },true);
   // Ab hier bedient diese Oberfläche den Fototipp; der frühe Handler (installEarlyPhotoTap) ruht.
   el.uxPhotoTapReady=true;
-  const fieldLabel=(object,index)=>profile.designs.find(d=>d.id===el.state.designId)?.customerFields?.find(f=>f.id===object.id)?.label||({heading:'Überschrift',names:'Namen',name:'Name',place:'Ort',date:'Datum',daten:'Lebensdaten',slogan:'Spruch',spruch:'Spruch'})[object.fieldKey]||'Text '+(index+1);
+  const fieldLabel=(object,index)=>chosenProfile().designs.find(d=>d.id===el.state.designId)?.customerFields?.find(f=>f.id===object.id)?.label||({heading:'Überschrift',names:'Namen',name:'Name',place:'Ort',date:'Datum',daten:'Lebensdaten',slogan:'Spruch',spruch:'Spruch'})[object.fieldKey]||'Text '+(index+1);
   // K1: Limits und Pflichtkennzeichen kommen aus dem Vorlagenelement, nie aus dem bearbeiteten Objekt.
   const templateText=o=>design()?.objects.find(t=>t.id===o.id&&t.type==='text');
   const limitsFor=o=>textLimits(templateText(o),design(),profile);
@@ -272,7 +275,7 @@ export async function installUX(el,config,legacy){
     for(const svg of all('.ux-font-grid svg')){const b=svg.querySelector('[data-font-ink]').getBBox();if(b.width>0&&b.height>0){const pad=Math.max(1,b.height*.12);svg.setAttribute('viewBox',`${b.x-pad} ${b.y-pad} ${b.width+2*pad} ${b.height+2*pad}`);}}
   }
   function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=profile.designs.length>1;tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note)note.hidden=true;}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
-  const designFor=id=>profile.designs.find(d=>d.id===id);
+  const designFor=id=>chosenProfile().designs.find(d=>d.id===id);
   function label(o){return o.uxDecoration?'Gestaltungslinie':o.uxUploadId?(o.uxUploadKind==='logo'?'Dein Logo':'Dein Foto'):o.type==='text'?(o.text||'Leerer Text'):o.type==='motif'?(el.catalog.motif_labels?.[o.motif]||'Motiv'):names[o.type]||'Element';}
   function renderContents(){if(!dialogs.contents.open||r.activeElement?.matches('[data-ux-content-prop]'))return;$('[data-ux-contents-list]').innerHTML=el.state.objects.map(o=>`<div class="ux-content-row">${button('select-content',`${esc(label(o))}<small>${o.uxHidden?'Ausgeblendet':'Auf deinem Produkt'}${o.uxLocked?' · gesperrt':''}</small>`,`data-id="${esc(o.id)}" aria-pressed="${o.id===el.state.selected}"`)}<label title="Anzeigen oder ausblenden"><input type="checkbox" data-ux-visible="${esc(o.id)}" aria-label="${esc(label(o))} anzeigen" ${o.uxHidden?'':'checked'}></label>${button('lock',o.uxLocked?'🔒':'🔓',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} ${o.uxLocked?'entsperren':'sperren'}" aria-pressed="${!!o.uxLocked}"`)}${button('remove-content',icons.delete||'×',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} löschen" ${o.uxLocked?'disabled':''}`)}</div>`).join('');
     for(const item of el.state.objects.filter(o=>o.type==='motif-raster')){
@@ -299,7 +302,7 @@ export async function installUX(el,config,legacy){
   const oldSync=el.sync;el.sync=function(...args){const result=oldSync.apply(this,args);update();notifyCorrection();sessionGuard?.touch();return result;};
   // K7: Entwurf im Vertragsformat in den Editor übernehmen. Ein anderes Design wird zuerst gewählt, damit seine Gestaltungslinien registriert sind.
   function restoreDraft(draft){
-    const target=profile.designs.find(d=>d.id===draft?.design?.id);if(!target)throw Error('Der Entwurf gehört zu keinem Design dieses Produkts.');
+    const target=chosenProfile().designs.find(d=>d.id===draft?.design?.id);if(!target)throw Error('Der Entwurf gehört zu keinem Design dieses Produkts.');
     const before=el.state.designId;if(target.id!==before)el.chooseDesign(target.id);
     try{el.restoreDraft(draft,{draft:true});}catch(error){if(target.id!==before)el.chooseDesign(before);throw error;}
   }
@@ -346,7 +349,7 @@ export async function installUX(el,config,legacy){
     if(action==='add-text'){const font=config?'Montserrat':'Nunito';try{await el.uxEnsureFonts?.(profileChoices?.fonts?selectionIds(el.uxKnownFonts(),profileChoices.fonts):[font]);}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
     if(action==='smaller'||action==='bigger'){changeObject('size',(selected()?displayTextSize(selected()):minTextMm)+(action==='bigger'?1:-1));return;}
     if(action==='bold'||action==='italic'){changeObject(action,!selected()?.[action]);return;}
-    if(['left','center','right'].includes(action)){if(el.uxAlign){el.uxAlign(action);return;}const o=selected();if(o)changeObject('x',action==='center'?width/2:action==='left'?o.w/2+8:width-o.w/2-8);return;}
+    if(['left','center','right'].includes(action)){if(el.uxAlign){el.uxAlign(action);return;}const o=selected();if(o)changeObject('x',action==='center'?currentSize().width/2:action==='left'?o.w/2+8:currentSize().width-o.w/2-8);return;}
     if(['layer-front','layer-back'].includes(action)){if(!selectable())return;const o=selected();if(!canEditElement(config,el.state.designId,o,'order'))return say('Die Reihenfolge der Vorlagenelemente ist fest. Eigene Elemente liegen immer darüber.');mutate(()=>{const templateIds=new Set((design()?.objects||[]).map(v=>v.id)),rest=el.state.objects.filter(v=>v.id!==o.id);if(action==='layer-front')rest.push(o);else rest.splice(rest.findLastIndex(v=>templateIds.has(v.id))+1,0,o);el.state.objects=rest;});return;}
     if(['undo','redo','delete','duplicate'].includes(action)){if(['delete','duplicate'].includes(action)&&selected()?.locked)return say('Das feste Rastermotiv kann verschoben und skaliert werden.');if(action==='duplicate'&&selected()?.uxUploadId)return say('Bitte Fotos und Logos über den Upload hinzufügen, damit Anzahl und Aufpreis eindeutig bleiben.');await el.action(action);return;}
   });
@@ -371,7 +374,7 @@ export async function installUX(el,config,legacy){
         if(prior?.uxLocked)throw Error('Bitte den Fotobereich zuerst entsperren.');
         validateUpload(file,el.state.objects,prior?.uxUploadId);
         const id=crypto.randomUUID();files.set(id,{file,url,width:image.naturalWidth,height:image.naturalHeight});url=null;
-        mutate(()=>{let o=prior;if(!o&&kind==='photo')o=el.state.objects.find(o=>o.type==='photoSlot'&&!o.uxUploadId);if(!o){o={id:el.id(),type:kind==='logo'?'image':'photoSlot',x:width/2,y:height*.35,w:Math.min(width*.3,50),h:Math.min(height*.25,50),rotation:0,customerEditable:true,uxPersonal:true};if(kind==='photo')Object.assign(o,{photoShape:'rect',fieldKey:'photo-'+crypto.randomUUID(),required:false});el.state.objects.push(o);}o.uxUploadId=id;delete o.uxPhotoCrop;delete o.uxPhotoColor;o.uxUploadKind=kind;if(kind==='photo')o.uxPhotoBackground=o.uxPhotoBackground==='keep'?'keep':'remove';else delete o.uxPhotoBackground;o.uxHidden=false;delete o.preserveColors;el.state.selected=o.id;revealedId=o.id;});say('Bild übernommen.');
+        mutate(()=>{let o=prior;if(!o&&kind==='photo')o=el.state.objects.find(o=>o.type==='photoSlot'&&!o.uxUploadId);if(!o){const {width,height}=currentSize();o={id:el.id(),type:kind==='logo'?'image':'photoSlot',x:width/2,y:height*.35,w:Math.min(width*.3,50),h:Math.min(height*.25,50),rotation:0,customerEditable:true,uxPersonal:true};if(kind==='photo')Object.assign(o,{photoShape:'rect',fieldKey:'photo-'+crypto.randomUUID(),required:false});el.state.objects.push(o);}o.uxUploadId=id;delete o.uxPhotoCrop;delete o.uxPhotoColor;o.uxUploadKind=kind;if(kind==='photo')o.uxPhotoBackground=o.uxPhotoBackground==='keep'?'keep':'remove';else delete o.uxPhotoBackground;o.uxHidden=false;delete o.preserveColors;el.state.selected=o.id;revealedId=o.id;});say('Bild übernommen.');
       }catch(error){if(url)URL.revokeObjectURL(url);say(error.message);break;}
     }}finally{uploadPending=false;replacing=null;
       if(revealedId){showTab('upload');requestAnimationFrame(()=>{const target=all('[data-ux=select-upload]').find(b=>b.dataset.id===revealedId);if(!target)return;target.focus({preventScroll:true});});}
@@ -400,7 +403,7 @@ export async function installUX(el,config,legacy){
   if($('[data-bestsellers]')?.hidden)$('[data-ux=bestsellers]')?.setAttribute('hidden','');
   // K14 / Ü15.1: Reiter Vorderseite/Rückseite über der Platte (nur Produkte mit Rückseite).
   if(config)installSurfaceTabs({el,r,config,button,say});
-  if(config)installCommerce({el,config,files,pending:()=>uploadPending});
+  if(config)installCommerce({el,config,files,pending:()=>uploadPending||el.uxDesignResourcePending===true});
   if(config?.acrylic)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles:acceptCustomerFiles});
   finishCustomerRights();
   finishTemplateDeletion();
@@ -442,8 +445,9 @@ export async function installUX(el,config,legacy){
     if(applied){for(const host of directLinkWindows()){try{const clean=withoutDirectLinkParams(host.location.href);if(clean)host.history.replaceState(host.history.state,'',clean);}catch{}}if(applied.notes.length)say(applied.notes.join(' '));}
     return applied;
   }
-  el.uxApplyDirectLink=applyDirectLink;
-  applyDirectLink();
+  const loadDoorbellGallery=installDoorbellDesignLoading(el,config,say);
+  el.uxApplyDirectLink=async()=>{if(loadDoorbellGallery)for(const host of directLinkWindows()){let id;try{id=new URL(host.location.href).searchParams.get('design');}catch{continue;}const d=chosenProfile().designs.find(d=>d.id===id);if(d)await el.uxEnsureDesignResources(d);}return applyDirectLink();};
+  await el.uxApplyDirectLink();
   window.addEventListener('pagehide',()=>{for(const asset of files.values())URL.revokeObjectURL(asset.url);},{once:true});
   if(config?.workbench)window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===window.parent&&event.data?.type==='gravuru-workbench-saved')say(event.data.message);});
   installPrintExport({el,config,files});
@@ -456,6 +460,8 @@ export async function installUX(el,config,legacy){
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).
   if(config)installBackgroundLoading({el,r,config});
+  if(loadDoorbellGallery)loadDoorbellGallery().catch(()=>say('Einige Designvorschauen werden beim Auswählen nachgeladen.'));
   const assistant=document.createElement('script');assistant.src='/assistant.js';assistant.dataset.api=location.origin;document.body.append(assistant);
   return {showTab,update,isDirty:()=>dirty};
 }
+

@@ -11,8 +11,9 @@ export async function installWorkflow(api){
  const {el,r,profile,config,button,esc,mutate,selected,showTab,say,dialog}=api;
  const $=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/workflow.css').then(res=>{if(!res.ok)throw Error('Bedienung fehlt');return res.text();});r.append(style);
- const surface=()=>config?{x:0,y:0,...(el.uxProfileGeometry?.()||profile.geometry)}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;
- const obstacles=()=>!config&&profile.geometry.bell?[{x:profile.geometry.bell.x+profile.geometry.bell.width/2,y:profile.geometry.bell.y+profile.geometry.bell.height/2,w:profile.geometry.bell.width,h:profile.geometry.bell.height}]:[];
+ const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
+ const surface=()=>{const geometry=el.uxProfileGeometry?.()||profile.geometry;if(config?.doorbell?.schema==='gravuru-doorbell/v1'&&geometry.designArea){const a=geometry.designArea;return {...geometry,x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top};}return config?{x:0,y:0,...geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;};
+ const obstacles=()=>{const bell=(el.uxProfileGeometry?.()||profile.geometry).bell;return (!config||config.doorbell)&&bell?[{x:bell.x+bell.width/2,y:bell.y+bell.height/2,w:bell.width,h:bell.height}]:[];};
  function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent='Ausführungen';const contents=$('[data-ux=contents]');if(contents)contents.innerHTML='Ebenenverwaltung <span data-ux-count>('+el.state.objects.length+')</span>';const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
  rename();$('.fk-scope-note')?.setAttribute('hidden','');const mounting=$('[data-fk-mount-note]');if(mounting)mounting.classList.add('workflow-mount-note');
  const mountSelect=$('[data-fk-mount]');if(mountSelect){const label=mountSelect.closest('label');if(label){const caption=label.querySelector('span');if(caption)caption.textContent='Befestigungsart wählen';else if(label.firstChild?.nodeType===3)label.firstChild.textContent='Befestigungsart wählen ';}mountSelect.setAttribute('aria-label','Befestigungsart wählen');}
@@ -39,7 +40,7 @@ export async function installWorkflow(api){
  const boundsCache=new Map();
  function bounds(o){const key=JSON.stringify([o.text,o.font,o.size,o.bold,o.italic,o.letterSpacing,o.textAnchor,o.lineHeight,o.w]);if(boundsCache.has(key))return boundsCache.get(key);const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);const b=svg.firstElementChild.getBBox(),value={x:b.x,y:b.y,width:b.width,height:b.height};svg.remove();if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,value);return value;}
  el.uxAlign=mode=>{const o=selected();if(!o||o.uxLocked)return;mutate(()=>{const xs=transformedCorners(o,bounds(o)).map(p=>p.x),a=surface();o.x+=(mode==='left'?a.x-Math.min(...xs):mode==='right'?a.x+a.width-Math.max(...xs):a.x+a.width/2-(Math.min(...xs)+Math.max(...xs))/2);});};
- const fitted=new Map(),signature=o=>JSON.stringify([o.text,o.font,o.bold,o.italic,o.size,o.letterSpacing,o.textAnchor,o.lineHeight,o.w,el.state.fkFrame,el.uxTextScale?.()||1]);
+ const fitted=new Map(),signature=o=>JSON.stringify([o.text,o.font,o.bold,o.italic,o.size,o.letterSpacing,o.textAnchor,o.lineHeight,o.w,el.state.fkFrame,el.state.mOptions,el.uxTextScale?.()||1]);
  const normalize=el.normalize;
  // Ü3.2: Autofit verkleinert bis zur Mindestgröße (K10: minTextMm des Verfahrensprofils, sonst 4 mm;
  // im Werkstatt-Editor 1 mm). Reicht das nicht, bleibt die Mindestgröße stehen und das Feld meldet
@@ -58,7 +59,7 @@ export async function installWorkflow(api){
   const longest=Math.max(o.w||0,o.h||0)*physicalScale();return longest>0?Math.min(1,MOTIF_MIN_MM/longest):1;
  }
  // Gestaltungsfläche innerhalb des Randes (design-area.mjs); Klingelschild-Altpfad: Acrylfläche des Rahmens.
- function placementSurface(){if(!config)return surface();const current=surface(),geometry={...current,shape:current.shape??profile.geometry.shape},a=designArea(config,{geometry});return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:geometry.shape,...(geometry.shape==='contour'?{geometry}:{})};}
+ function placementSurface(){if(!config)return surface();const current=el.uxProfileGeometry?.()||surface(),geometry={...current,shape:current.shape??profile.geometry.shape},a=designArea(config,{geometry});return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:geometry.shape,...(geometry.shape==='contour'?{geometry}:{})};}
  function shrinkTo(o,scale){if(o.type==='text')setTextSize(o,o.size*scale);o.w*=scale;o.h*=scale;}
  function place(o){
   if(o.type==='motif'&&config){say('Freie Fläche für das Motiv wird gesucht …');placementJob=placementJob.then(()=>placeNewMotif({...api},o,{minScale:placementMinScale(o)})).catch(()=>say('Freie Fläche konnte nicht geprüft werden. Bitte die Motivposition prüfen.'));return;}
@@ -72,8 +73,8 @@ export async function installWorkflow(api){
  const transfer=dialog('design-transfer','Design wechseln','<p>Deine Texte im neuen Design verwenden? Schrift und Anordnung kommen von der neuen Vorlage.</p>'+button('transfer-yes','Deine Texte übernehmen','class="ux-primary"')+button('transfer-no','Beispieltexte verwenden')+button('close','Abbrechen'));
  let requestedDesign=null,changing=false;
  const choose=el.chooseDesign;
- function finishChange(carry){const source=changedCustomerTexts(el.state.objects,profile.designs.find(d=>d.id===el.state.designId)),id=requestedDesign;requestedDesign=null;if(!id)return;transfer.close();changing=true;try{choose.call(el,id,{carry:false});if(carry){const target=el.state.objects;const unmatched=transferTexts(source,target);const kept=[];for(const old of unmatched){let existing=target.find(o=>o.id===old.id);if(!existing){existing={...old,id:el.id(),uxPersonal:true,uxCustomerText:true};target.push(existing);place(existing);}kept.push(old.text);}if(kept.length)say('Zusätzliche Texte erhalten: '+kept.map(t=>'„'+t+'“').join(', ')+'. Bitte die Position prüfen.');}known=new Set(el.state.objects.map(o=>o.id));el.normalize();el.sync();}finally{changing=false;}}
- el.chooseDesign=function(id){if(id===this.state.designId)return;const template=profile.designs.find(d=>d.id===this.state.designId);const changed=changedCustomerTexts(this.state.objects,template).length>0;if(changed){requestedDesign=id;transfer.showModal();return;}changing=true;try{return choose.call(this,id);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=false;}};
+ function finishChange(carry){const source=changedCustomerTexts(el.state.objects,chosenProfile().designs.find(d=>d.id===el.state.designId)),id=requestedDesign;requestedDesign=null;if(!id)return;transfer.close();changing=true;try{choose.call(el,id,{carry:false});if(carry){const target=el.state.objects;const unmatched=transferTexts(source,target);const kept=[];for(const old of unmatched){let existing=target.find(o=>o.id===old.id);if(!existing){existing={...old,id:el.id(),uxPersonal:true,uxCustomerText:true};target.push(existing);place(existing);}kept.push(old.text);}if(kept.length)say('Zusätzliche Texte erhalten: '+kept.map(t=>'„'+t+'“').join(', ')+'. Bitte die Position prüfen.');}known=new Set(el.state.objects.map(o=>o.id));el.normalize();el.sync();}finally{changing=false;}}
+ el.chooseDesign=function(id){if(id===this.state.designId)return;const template=chosenProfile().designs.find(d=>d.id===this.state.designId);const changed=changedCustomerTexts(this.state.objects,template).length>0;if(changed){requestedDesign=id;transfer.showModal();return;}changing=true;try{return choose.call(this,id);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=false;}};
  r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(key==='transfer-yes'||key==='transfer-no')finishChange(key==='transfer-yes');});
  transfer.addEventListener('close',()=>{requestedDesign=null;});
  // Full motif browser: existing controls and event handlers move intact.
@@ -111,7 +112,7 @@ export async function installWorkflow(api){
   if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);
   const more=new Set(order.more);let hiddenMore=0;
   for(const [id,card] of cards){
-   const design=profile.designs.find(d=>d.id===id),bestseller=design?.bestseller===true;
+   const design=chosenProfile().designs.find(d=>d.id===id),bestseller=design?.bestseller===true;
    card.classList.toggle('is-bestseller',bestseller);
    if(bestseller&&!card.querySelector('[data-design-bestseller]')){const badge=document.createElement('span');badge.dataset.designBestseller='';badge.textContent='Bestseller';card.prepend(badge);}
    const tucked=more.has(id)&&!moreExpanded&&id!==el.state.designId;
@@ -125,7 +126,7 @@ export async function installWorkflow(api){
  // Ü10.1: Miniaturen zeigen den aktuellen Kundentext (Textübernahme wie beim Designwechsel),
  // werden erst bei Sichtbarkeit gezeichnet und höchstens 24 je Durchlauf.
  const THUMBNAIL_BATCH=24;const seen=new Set();let thumbnailTimer=0,commitTimer=0;
- const currentTemplate=()=>profile.designs.find(d=>d.id===el.state.designId);
+ const currentTemplate=()=>chosenProfile().designs.find(d=>d.id===el.state.designId);
  const sourceTexts=()=>customerTexts(el.state.objects,currentTemplate());
  // Tippen zeichnet nicht bei jedem Zeichen neu: der Schlüssel folgt dem Kundentext mit 250 ms Verzögerung.
  let committed=thumbnailSignature(sourceTexts());
@@ -153,3 +154,4 @@ export async function installWorkflow(api){
  await installCompletion(api);
  el.sync();
 }
+

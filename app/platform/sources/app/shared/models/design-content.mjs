@@ -1,3 +1,4 @@
+import {DOORBELL_SCHEMA,doorbellLayoutIssue} from '../../../../../configurator/variant-m/doorbell-selection.mjs';
 import {setTextSize} from './doorbell-preview.mjs';
 import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry,ellipseEdgeDistance} from './contour-geometry.mjs';
 import {embeddedMotifFits} from './embedded-motif-fit.mjs';
@@ -36,6 +37,7 @@ export function filteredDesigns(designs,{search='',category='',collection=''}={}
 // this low-level function; they must not mirror from surfaceId a second time.
 export function objectIssue(o,profile){
  if(!o||!['x','y','w','h','rotation'].every(k=>Number.isFinite(o[k]))||o.w<=0||o.h<=0||Math.abs(o.rotation)>DESIGN_LIMITS.maxRotation)return 'Ungültige Maße.';
+ if(profile.doorbellSchema===DOORBELL_SCHEMA)return doorbellLayoutIssue(o,profile);
  const a=o.rotation*Math.PI/180,w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a)),b=profile.geometry.bell;
  const doorbell=profile.kind==='layered-doorbell',width=doorbell?160:profile.geometry.width,height=doorbell?280:profile.geometry.height,margin=doorbell?10:profile.geometry.safeMarginMm??2;
  // A merchant-fixed template canvas drawn exactly in plate size (prepared 1:1
@@ -132,4 +134,5 @@ export function transformedObject(before,gesture,point,fonts,measure){
  for(const k of ['x','y','w','h','size'])if(Number.isFinite(o[k]))o[k]=Math.round(o[k]*1000)/1000;
  return o;
 }
+
 

@@ -48,6 +48,7 @@ export function createOrderStatus({database:db,clock=Date.now,production=null,te
    const labels={cancelled:'Storniert',paid:'Bezahlt',partially_refunded:'Teilweise erstattet',refunded:'Erstattet',pending:'Zahlung offen',authorized:'Zahlung autorisiert',partially_paid:'Teilweise bezahlt',voided:'Zahlung verworfen',expired:'Zahlung abgelaufen',conflict:'Widersprüchliche Statusmeldungen'};
    const reports=db.prepare('SELECT s.updated_at,r.report FROM form_order_refund_reports r JOIN form_order_status_events s ON s.shop=r.shop AND s.event_id=r.event_id AND s.tenant_id=r.tenant_id WHERE s.shop=? AND s.order_id=? AND s.tenant_id=?').all(line.shopDomain,line.orderId,tenant).map(r=>({updatedAt:r.updated_at,report:JSON.parse(r.report)}));
    const refunds=lineRefunds(line,reports,latest?.updated_at);
-   return {state,label:labels[state],financialStatus,financialLabel:labels[financialStatus],cancelled,conflict,updatedAt:latest?.updated_at||null,eventCount:events.length,requiresReview:state!=='paid'||conflict||refunds.requiresReview,refunds,scope:'order-wide',test:true,customerDownloadAllowed:false,productionReady:false};
+   return {state,label:labels[state],financialStatus,financialLabel:labels[financialStatus],cancelled,conflict,updatedAt:latest?.updated_at||null,eventCount:events.length,requiresReview:state!=='paid'||conflict||refunds.requiresReview,refunds,scope:'order-wide',test:line.test!==false,customerDownloadAllowed:false,productionReady:false};
  }
 }
+

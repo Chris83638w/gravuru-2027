@@ -1,3 +1,4 @@
+import {isLayeredDoorbell,DOORBELL_SCHEMA,validateDoorbellDefinition,selectedDoorbellProfile,selectedDoorbellDesign,doorbellPriceBase,doorbellLayoutIssue} from './doorbell-selection.mjs';
 import {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 export {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions,designElementRights} from './element-rights.mjs';
@@ -21,7 +22,7 @@ const fail = message => { throw Error(message); };
 // A printed/engraved element does not obstruct a screw. Mechanical access belongs
 // to the model-bound plate assembly. Contour families explicitly carry hole
 // keepouts for every design object; preserve the existing policy for basic shapes.
-export const customerLayoutIssue=(object,profile,resources)=>surfaceObjectIssue(object,profile.geometry.shape==='contour'?profile:{...profile,geometry:{...profile.geometry,holes:[]}},resources);
+export const customerLayoutIssue=(object,profile,resources)=>profile.doorbellSchema===DOORBELL_SCHEMA?doorbellLayoutIssue(object,profile):surfaceObjectIssue(object,profile.geometry.shape==='contour'?profile:{...profile,geometry:{...profile.geometry,holes:[]}},resources);
 export const DRAFT_SCHEMA = 'gravuru-universal-customer-draft/v1';
 // Ü6.1: Ebenenrolle. 'guide' ist im Editor sichtbar, erscheint aber nie in der
 // Fertigungsausgabe. Standard ohne Angabe ist 'print'. Die Rolle ist ein
@@ -41,7 +42,9 @@ export const money = cents => new Intl.NumberFormat('de-DE', {style:'currency', 
 
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
-  const config = clone(input), p = config.profile;
+  const config = clone(input);
+  if(isLayeredDoorbell(config)){validateDoorbellDefinition(config);config.profile=selectedDoorbellProfile(config);}
+  const p = config.profile;
   if(config.sceneBackground!==undefined&&!validSurface(config.sceneBackground))fail('Ungültiges Szenenbild.');
   if(config.steelFormats){if(p.material?.kind!=='steel')fail('Edelstahlgrößen gehören zu einem Edelstahlschild.');validateSteelFormats(config);}
   const extraFontIds=localFontIds(config);
@@ -116,7 +119,7 @@ export function resolvedOptions(config, values = {}) {
   }
   for (const field of fields) {
     if (!visibleBy(field.visibleIf, result)) continue;
-    const value = fieldValue(field, values[field.id]);
+    const value = fieldValue(field, values[field.id]??(isLayeredDoorbell(config)&&field.id==='position'?(config.doorbell.defaultPosition??'standard'):undefined));
     if (value !== undefined) result[field.id] = value;
   }
   return result;
@@ -146,6 +149,7 @@ export function variantCombinations(config) {
 }
 
 export function selectedProfile(config, values = {}) {
+  if(isLayeredDoorbell(config))return selectedDoorbellProfile(config,resolvedOptions(config,values));
   const profile = clone(config.profile), options = resolvedOptions(config, values);
   let holeSelection = false;
   delete profile.mountingPreview;
@@ -166,7 +170,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   if(config.reviewOnly&&config.basePriceCents===null)fail('Preis noch offen.');
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) fail('Menge: 1 bis 99.');
   const options = resolvedOptions(config, values);
-  const design = config.profile.designs.find(d => d.id === designId);
+  const design = isLayeredDoorbell(config)?selectedDoorbellDesign(config,designId,options):config.profile.designs.find(d => d.id === designId);
   if (!design) fail('Unbekanntes Design.');
   // Original template motifs are included once. A duplicate must not inherit this credit.
   const included = new Map(design.objects.filter(o => o.type === 'motif').map(o => [o.id, o.motif]));
@@ -179,8 +183,8 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
     if (included.get(o.id) === o.motif && !seen.has(o.id)) seen.add(o.id);
     else additionalMotifs++;
   }
-  let unitCents = config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
-  if(!config.acrylic)for (const group of config.profile.optionGroups || []) if (options[group.id] !== undefined) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
+  let unitCents = isLayeredDoorbell(config)?doorbellPriceBase(config,options):config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
+  if(!config.acrylic)for (const group of config.profile.optionGroups || []) if (options[group.id] !== undefined&&!(isLayeredDoorbell(config)&&group.id==='format')) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
   // Zusatzfelder (Ü12.1): Aufpreis nur sichtbarer, ausgefüllter Felder.
   const fieldCents = optionFieldCents(config, options);
   // Rückseite gestalten (Ü15.1): Aufpreis je Stück, sobald die Rückseite gestaltet ist; offen = nicht buchbar.
@@ -202,7 +206,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
 // (Sitzungsschutz, Konto-Entwurf): alle Strukturregeln gelten, nur der noch
 // nicht ersetzte Mustertext eines Pflichtfelds ist erlaubt.
 export function validateDesign(config, design, options, fonts, motifs, {template=false,draft=false}={}) {
-  const source = config.profile.designs.find(d => d.id === design?.id);
+  const source = selectedProfile(config,options).designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
   if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
   validateDesignContent(design, {universal:true,extraFontIds:localFontIds(config)});
@@ -214,6 +218,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   if (JSON.stringify(design.marks || []) !== JSON.stringify(source.marks || [])) fail('Feste Gestaltungslinien wurden verändert.');
   for(const raw of source.objects.filter(o=>o.type==='motif-raster'&&!canDeleteTemplateElement(config,source.id,o)))if(!design.objects.some(o=>o.id===raw.id&&o.type==='motif-raster'&&o.assetId===raw.assetId&&o.locked===true))fail('Rastermotiv darf nicht entfernt oder ersetzt werden.');
   const p = selectedProfile(config, options);
+  if(isLayeredDoorbell(config))p.designs=[source]; // Fixed decoration exemptions belong only to this saved template.
   // Ebenenrolle (Ü6.1) ist Vorlagensache: Vorlagenobjekte behalten ihre Rolle,
   // neue Kundenobjekte sind immer Druck-/Gravurebenen.
   for (const o of design.objects) {
@@ -304,18 +309,18 @@ const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font'
   'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxPhotoColor','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){
- const source=config.profile.designs.find(d=>d.id===state.designId);
+ const source=selectedProfile(config,state.mOptions||{}).designs.find(d=>d.id===state.designId);
  return new Map(state.objects.filter(o=>o.type==='text'&&o.fieldKey&&o.customerEditable!==false&&
   o.text!==source?.objects.find(original=>original.fieldKey===o.fieldKey)?.text).map(o=>[o.fieldKey,o.text]));
 }
 
-export function designFromState(config, state) {
-  const source = config.profile.designs.find(d => d.id === state.designId);
+export function designFromState(config, state, values=state.mOptions||{}) {
+  const source = selectedProfile(config,values).designs.find(d => d.id === state.designId);
   if (!source) fail('Unbekanntes Design.');
   return {...clone(source), objects:state.objects.map(cleanObject)};
 }
 export function saveDraft(config, state, options, fonts, motifs, {draft=false}={}) {
-  const design = designFromState(config, state);
+  const design = designFromState(config, state, options);
   validateDesign(config, design, options, fonts, motifs, {draft});
   return {schema:DRAFT_SCHEMA, profileId:config.profile.id, profileRevision:config.profile.revision,
     productId:config.profile.binding.productId, design, options:resolvedOptions(config, options)};
@@ -341,7 +346,8 @@ export function newEditableObject(config, input, id, fonts, motifs, options = {}
   const policy=customerAdditionPolicy(config);
   if(!(input.type==='text'?policy.text:policy.motifs))fail(input.type==='text'?'Eigener Text ist bei diesem Produkt nicht vorgesehen.':'Eigene Motive sind bei diesem Produkt nicht vorgesehen.');
   const p = selectedProfile(config, options), {width,height} = p.geometry;
-  const o = {...cleanObject(input), id, x:width/2, y:height/2, rotation:0,
+  const area=isLayeredDoorbell(config)?p.geometry.designArea:null;
+  const o = {...cleanObject(input), id, x:area?(area.left+area.right)/2:width/2, y:area?(area.top+area.bottom)/2:height/2, rotation:0,
     color:getProcessingProfile(p).ink, customerEditable:true, templateOrigin:false};
   delete o.role; // Neue Kundenelemente sind immer Druck-/Gravurebenen (Ü6.1).
   if (o.surfaceId !== undefined && !(o.surfaceId === 'front' || (o.surfaceId === 'back' && hasBack(config.profile)))) fail('Dieses Produkt hat keine solche Seite.');
@@ -362,3 +368,4 @@ export function newEditableObject(config, input, id, fonts, motifs, options = {}
   const issue = customerLayoutIssue(o, p); if (issue) fail(issue);
   return o;
 }
+

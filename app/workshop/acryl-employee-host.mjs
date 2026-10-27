@@ -1,9 +1,11 @@
 import http from 'node:http';import net from 'node:net';import path from 'node:path';import {pathToFileURL} from 'node:url';import {once} from 'node:events';import {createHmac} from 'node:crypto';import {createShopifyTestRuntime} from './shopify-admin-test-server.mjs';
 import {createConfiguratorIntegration} from './configurator-integration.mjs';
 import {ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
+import {DOORBELL_STATUS_WEBHOOK_PATH} from './doorbell-status-webhook.mjs';
 const rewrites=[['/api/workshop/','/api/workshop/acryl/'],['/workshop-ui/','/workshop-acryl-ui/'],['/configurator/','/acryl-configurator/'],['/platform/','/acryl-platform/'],['/workshop/','/acryl-workshop/'],['/_merchant-form-editor.html','/_merchant-acryl-form-editor.html'],['/werkstatt/kundenansicht','/werkstatt/acryl/kundenansicht'],['/acryl-galerie/Designgalerie.html','/werkstatt/acryl/'],['/acryl-galerie/Formvorlagen.html','/werkstatt/acryl/formen/']];
 const nativeAssets=[['/_bundle/','/_acryl-bundle/'],['/_runtime/','/_acryl-runtime/'],['/acrylic-assets/','/acryl-assets/']];
 export function acrylRoute(pathname){
+ if(/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(pathname))return pathname;
  if(/^\/werkstatt\/katalog\/?$/.test(pathname))return '/werkstatt/katalog/';
  if(/^\/werkstatt\/designs\/?$/.test(pathname))return '/werkstatt/designs/';
  // Katalogeditor (Paket L) ist die neue Werkstatt-App; /werkstatt/ selbst gehört auf dem Händlerhost noch der alten Laufzeit.
@@ -26,12 +28,17 @@ export function acrylAssetText(text,pathname=''){if(pathname==='/workshop-ui/con
 // Kundeneinstieg (App-Proxy), Händlertest-Gateway und Bestelleingang laufen nur, wenn der Start ausdrücklich
 // `customerIntegration` übergibt. Der Einstiegsskript-Aufruf leitet es aus GRAVURU_CUSTOMER_INTEGRATION ab:
 // leer/fehlend → null (nichts ändert sich), `merchant-test-only` → beide Stores + Einstieg `/apps/konfigurator`,
-// alles andere → Fehler vor dem Öffnen von Datenbanken. Der Bestelleingang nimmt weiterhin nur `test:true` an.
+// alles andere → Fehler vor dem Öffnen von Datenbanken. Live-Funkklingeln benötigen zusätzlich den exakten
+// Freigabewert GRAVURU_DOORBELL_LIVE_ORDERS=approved-20261027 und die gespeicherte Produktfreigabe.
 export function customerIntegrationFromEnv(env=process.env){
- const value=env.GRAVURU_CUSTOMER_INTEGRATION;
- if(value===undefined||value==='')return null;
+ const value=env.GRAVURU_CUSTOMER_INTEGRATION,live=env.GRAVURU_DOORBELL_LIVE_ORDERS;
+ if(live!==undefined&&live!==''&&live!=='approved-20261027')throw Object.assign(Error('GRAVURU_DOORBELL_LIVE_ORDERS kennt nur den Wert approved-20261027.'),{code:'doorbell_live_orders_env'});
+ if(value===undefined||value===''){
+  if(live==='approved-20261027')throw Object.assign(Error('Live-Funkklingeln benötigen die bestehende customerIntegration.'),{code:'doorbell_live_orders_env'});
+  return null;
+ }
  if(value!=='merchant-test-only')throw Object.assign(Error('GRAVURU_CUSTOMER_INTEGRATION kennt nur den Wert merchant-test-only.'),{code:'customer_integration_env'});
- return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator'}};
+ return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator'},...(live==='approved-20261027'?{doorbellLiveOrders:true}:{})};
 }
 export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=process.env,customerIntegration=null}){
  const module=file=>import(pathToFileURL(path.join(legacyRelease,'ops/plesk',file)).href);
@@ -50,11 +57,13 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   if(integration?.gateway.matches(url.pathname))return void integration.gateway.handle(req,res,url);
   if(integration?.shopEntry?.matches(url.pathname))return void integration.shopEntry.handle(req,res,url);
   if(integration?.webhook&&url.pathname===ORDER_WEBHOOK_PATH)return void integration.webhook(req,res);
+  if(integration?.statusWebhook&&url.pathname===DOORBELL_STATUS_WEBHOOK_PATH)return void integration.statusWebhook(req,res);
   const target=acrylRoute(url.pathname);
   if(!target)return existing.emit('request',req,res);
   const headers={host:config.host};for(const key of ['authorization','accept','accept-language','content-type','content-length','origin','x-gravuru-csrf','x-gravuru-draft','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[key]!==undefined)headers[key]=req.headers[key];
   const upstream=http.request({hostname:'127.0.0.1',port,path:target+url.search,method:req.method,headers},response=>{
-   const head={...response.headers,'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow, noarchive'};
+   const publicDoorbellImage=response.statusCode===200&&/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(target);
+   const head={...response.headers,'Cache-Control':publicDoorbellImage?(response.headers['cache-control']||'public, max-age=31536000, immutable'):'private, no-store','X-Robots-Tag':'noindex, nofollow, noarchive'};
    if(!target.startsWith('/api/')&&/^(text\/html|text\/javascript|application\/javascript|text\/css)/.test(head['content-type']||'')){
     const chunks=[];let bytes=0;response.on('data',chunk=>{bytes+=chunk.length;if(bytes>20*1024*1024){upstream.destroy();return;}chunks.push(chunk);});response.on('end',()=>{const body=Buffer.from(acrylAssetText(Buffer.concat(chunks).toString('utf8'),target));delete head['content-length'];delete head['content-encoding'];res.writeHead(response.statusCode,{...head,'Content-Length':body.length});res.end(body);});
    }else{res.writeHead(response.statusCode,head);response.pipe(res);}
@@ -62,4 +71,5 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
  });
  server.once('close',()=>{inner.close();inner.closeAllConnections();existing.close();existing.closeAllConnections();lock.stdin.end();});lock.once('exit',()=>{server.close();server.closeAllConnections();});return server;
 }
+
 

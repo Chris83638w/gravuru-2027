@@ -3,6 +3,7 @@
 // Produkts verwendet (die Galerie zeichnet alle Designs des Produkts). Weitere Schriften lädt
 // die Schriftauswahl bzw. „Text hinzufügen“, die Motivbibliothek der Reiter „Motive“,
 // Entwürfe (Sitzungsschutz, Kundenkonto, Warenkorb) vor dem Einlesen genau ihre Ressourcen.
+import {isLayeredDoorbell} from './doorbell-selection.mjs';
 export const LAZY_BASE='/_runtime/lazy/';
 export const LAZY_MOTIF_KEY=/^[A-Za-z0-9_-]{1,80}$/;
 
@@ -26,7 +27,9 @@ export function resourceNeeds(objects,{localFonts=[],localMotifs=[],baseMotifs=[
 
 export function startNeeds(config,{baseMotifs=[]}={}){
   const local=config?.localResources;
-  return resourceNeeds((config?.profile?.designs||[]).flatMap(objectsOf),{localFonts:Object.keys(local?.fonts||{}),localMotifs:(local?.motifs||[]).map(m=>m.key),baseMotifs});
+  const designs=config?.profile?.designs||[];
+  const initial=isLayeredDoorbell(config)?[designs.find(d=>d.id===config.profile.defaultDesignId)||designs[0]].filter(Boolean):designs;
+  return resourceNeeds(initial.flatMap(objectsOf),{localFonts:Object.keys(local?.fonts||{}),localMotifs:(local?.motifs||[]).map(m=>m.key),baseMotifs});
 }
 
 export function draftNeeds(draft,options){return resourceNeeds(objectsOf(draft?.design),options);}

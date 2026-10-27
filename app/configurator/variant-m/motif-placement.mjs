@@ -41,10 +41,11 @@ export async function placeNewMotif({el,config,files,say},object,{minScale=1}={}
  const ctx=canvas.getContext('2d',{willReadFrequently:true}),url=URL.createObjectURL(new Blob([art.svg],{type:'image/svg+xml'})),img=new Image();
  try{img.src=url;await img.decode();ctx.drawImage(img,0,0,canvas.width,canvas.height);}finally{URL.revokeObjectURL(url);}
  if(before!==JSON.stringify(el.state.objects))return say('Die Gestaltung wurde während der Platzsuche geändert. Bitte die Position des neuen Motivs prüfen.');
- const sx=g.width/config.profile.geometry.width,sy=g.height/config.profile.geometry.height;
+ const doorbell=config.doorbell?.schema==='gravuru-doorbell/v1',area=doorbell?g.designArea:null;
+ const sx=doorbell?1:g.width/config.profile.geometry.width,sy=doorbell?1:g.height/config.profile.geometry.height;
  const insertion=config.acrylic?acrylicSelection(acrylicOptions(state.mOptions),config.acrylic.pricing).base.insertionMm:0;
  const margin=Number.isFinite(g.safeMarginMm)?Math.max(0,g.safeMarginMm):2; // Gestaltungsrand wie objectIssue/designArea (Standard 2 mm)
- const allowed=(x,y)=>y/scale<g.height-insertion&&(g.shape==='contour'?contourContainsPoint(g,x/scale,y/scale):insideContour(g,x/scale,y/scale,-margin));
+ const allowed=(x,y)=>(!area||(x/scale>=area.left&&x/scale<=area.right&&y/scale>=area.top&&y/scale<=area.bottom))&&y/scale<g.height-insertion&&(g.shape==='contour'?contourContainsPoint(g,x/scale,y/scale):insideContour(g,x/scale,y/scale,-margin));
  const alpha=ctx.getImageData(0,0,canvas.width,canvas.height).data;
  for(const s of placementScales(minScale)){
   const position=emptyPixelPosition(alpha,canvas.width,canvas.height,object.w*s*sx*scale,object.h*s*sy*scale,allowed);
@@ -53,5 +54,6 @@ export async function placeNewMotif({el,config,files,say},object,{minScale=1}={}
   if(s<1){object.w*=s;object.h*=s;}
   el.sync();say(s<1?'Motiv in einer freien Fläche platziert – dafür verkleinert.':'Motiv in einer freien Fläche platziert.');return;
  }
- object.x=config.profile.geometry.width/2;object.y=config.profile.geometry.height/2;el.state.selected=object.id;el.sync();say(NO_FREE_SPACE_MESSAGE);
+ object.x=area?(area.left+area.right)/2:config.profile.geometry.width/2;object.y=area?(area.top+area.bottom)/2:config.profile.geometry.height/2;el.state.selected=object.id;el.sync();say(NO_FREE_SPACE_MESSAGE);
 }
+

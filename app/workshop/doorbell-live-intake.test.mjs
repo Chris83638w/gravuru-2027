@@ -18,3 +18,9 @@ test('explicit live router never invokes legacy, authenticates before routing an
  assert.throws(()=>createDoorbellLiveIntake(stores.filter(s=>s.storeId!=='acryl')));
 });
 
+
+test('live orders with no Gravuru-owned line are acknowledged as unrelated without invoking either store',()=>{
+ const calls=[],stores=['legacy','acryl'].map(storeId=>({storeId,intake:{ownsOfferToken:()=>false,bindings:()=>[],receive(){calls.push(storeId);throw Error('must not invoke');}}}));
+ const router=createDoorbellLiveIntake(stores),payload={id:200,test:false,financial_status:'paid',currency:'EUR',line_items:[{id:201,product_id:301,variant_id:401,properties:[]}]},s=sign(payload);
+ assert.deepEqual(router.receive(s.raw,s.headers,config),{duplicate:false,lines:[],errors:[]});assert.deepEqual(calls,[]);
+});

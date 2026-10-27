@@ -24,6 +24,14 @@ PDF-Poppins-ExtraLight-ef6333db enthält kein kleines c. Der Renderer ließ es w
 - Konfigurator-Vollauf 290/298 bestanden; acht unveränderte Windows-/Python-Umgebungsfehler wie im vorherigen Hauptstand (Bundle-rename EPERM, Kontur-/PDF-Python).
 - Zusätzliche Werkstattprobe 7/18: elf Umgebungsfehler (Python/Fotoprüfung und temporäre Bundle-Datei); nicht als grüne Abnahme zählen.
 - Echter Paket-Probelauf: 14 Vorlagen byteinhaltlich unverändert, 1.157 vorhandene Glyphen unverändert; drei Poppins-Teilmengen um zusammen 1.312 fehlende Glyphen ergänzt. Wunschmann: zehn Pfade, bei 22 mm nominaler Schriftgröße 150,656 mm Textbreite. Preis-, Foto- und Geometrieeinstellungen unverändert.
-- Bereitstellung und echter Browser-Warenkorbtest noch ausstehend; werden nach Durchführung ergänzt.
+- Zusätzlicher Manifest-Test 7/7 auf Windows und Linux bestanden. Der Server prüft Dateigröße und SHA-256 im privaten Vorschau-Manifest. Das Reparaturskript aktualisiert dieses Manifest mit; die erste Dateibereitstellung ohne Manifest wurde unmittelbar zurückgenommen.
+- Die öffentliche Vorschau lädt gemeinsame Module aus der aktiven September-Laufzeit statt aus dem gespeicherten Paket. ops/repair-memorial-runtime.mjs aktualisiert deshalb ausschließlich vier geprüfte Module plus Fehlerstatus-Helfer mit eigener Sicherung und verlangt anschließend einen App-Neustart.
+- Vorschaupaket samt Manifest und zentrale Laufzeit sind gesichert bereitgestellt; Neustart und Browser-Warenkorbtest werden anschließend ergänzt.
 
 Private Fotos, Browser-Sitzungen und Kundengestaltungen gehören nicht ins Repository.
+
+## Nachtrag: Shopify 422 und Preisrevision
+
+Shopify fordert Preisrevision 31; die öffentliche Vorschau sendet 30. Identischer isolierter Warenkorbtest: 30 → HTTP 422, 31 → HTTP 200 / 24,68 € mit Hausmotiv. Reparatur verknüpft den vollständig geprüften Shopify-Preisvertrag (neun Varianten, Motiv/Foto, komplette Mengenstaffel ab 2 −6 %, ab 3 −10 %) mit unveränderter Gestaltungsrevision 30. Probelauf, zweite Preisabfrage, private Sicherung, Prüfsummen und Rücknahme; keine Shopify-Mutation oder DB-Migration. Vorschau/Übergabe verwenden dieselben ausgelagerten Rabattfunktionen. Vollauf 305: **297 bestanden, dieselben 8 Windows/Python-Fehler**, vorher 300: 292/8. 10 gezielte Prüfungen grün. Türschild mit Hausmotiv im Testtheme sichtbar bis /cart einschließlich Vorschau/Bearbeiten. Preisreparatur noch nicht angewendet; Fotoabnahme folgt. [Bericht](docs/handoffs/2026-10-27-gedenktafel-schrift-warenkorb.md).
+
+Server-Vorbereitung: `ops/repair-memorial-pricing.mjs --preview VORSCHAUORDNER --runtime AKTIVE_LAUFZEIT --credentials BESTEHENDE_PRIVATE_APP_JSON --out NEUER_PRIVATER_ORDNER`. Erst Probelauf; `--apply` verlangt `--backup NEUER_PRIVATER_ORDNER`. Das Skript liest nur das app-eigene personalisierungs-Metafeld. Alle neun Varianten und 169 Cent Motiv / 999 Cent Foto müssen exakt passen. Danach App neu starten, öffentlichen Stand und echten Warenkorb prüfen. Original-Kundentab bleibt ohne Neuladen erhalten. Chris hat Teiltests ausdrücklich erlaubt.

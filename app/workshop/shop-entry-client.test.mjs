@@ -141,3 +141,50 @@ test('shop embed accepts messages only from the editor host and this frame, and 
  assert.equal(startUrl({href:'https://evil.example/apps/konfigurator/start?product=1'}),null);
  assert.equal(startUrl({href:'/apps/other/start?product=1'}),null);
 });
+
+test('global shop embed: product data from the theme block, own start link, buy buttons of exactly this product hidden',async t=>{
+ const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-global-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
+ fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
+ globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
+ const {pageConfig,startHref,productForms,prepareProductPage}=await import(path.join(dir,'shop-embed.mjs'));
+ // Kleine Seiten-Nachbildung: nur was die Funktionen brauchen.
+ const el=(tag,attrs={},children=[])=>{const node={tag,attrs:{...attrs},children,parent:null,style:{},textContent:attrs.text||'',
+  setAttribute(k,v){this.attrs[k]=v;},getAttribute(k){return this.attrs[k]??null;},
+  append(...nodes){for(const n of nodes){n.parent=this;this.children.push(n);}},
+  after(n){const list=this.parent.children;n.parent=this.parent;list.splice(list.indexOf(this)+1,0,n);},
+  closest(sel){let n=this;while(n){if(sel.includes('sticky')&&/sticky/.test(n.attrs.class||''))return n;n=n.parent;}return null;},
+  get value(){return this.attrs.value;},set href(v){this.attrs.href=v;},get href(){return this.attrs.href;},set className(v){this.attrs.class=v;},set rel(v){this.attrs.rel=v;}};
+  for(const c of children)c.parent=node;return node;};
+ const all=n=>[n,...n.children.flatMap(all)];
+ const match=(n,sel)=>sel.split(',').some(s=>{s=s.trim();
+  if(s==='form[action*="/cart/add"]')return n.tag==='form'&&(n.attrs.action||'').includes('/cart/add');
+  if(s==='[name="id"]')return n.attrs.name==='id';if(s==='[type="submit"]')return n.attrs.type==='submit';if(s==='[name="add"]')return n.attrs.name==='add';
+  if(s==='.shopify-payment-button')return (n.attrs.class||'').includes('shopify-payment-button');if(s==='[data-gravuru-personalisieren]')return 'data-gravuru-personalisieren' in n.attrs;return false;});
+ const addQuery=n=>{n.querySelectorAll=sel=>all(n).slice(1).filter(x=>match(x,sel));n.querySelector=sel=>n.querySelectorAll(sel)[0]||null;n.children.forEach(addQuery);return n;};
+ const form=(variant,cls='')=>el('form',{action:'/cart/add',class:cls},[el('input',{name:'id',value:variant}),el('button',{type:'submit',name:'add'}),el('div',{class:'shopify-payment-button'})]);
+ const main=form('11'),sticky=el('div',{class:'sticky-atc'},[form('11')]),other=form('99');
+ const installment=el('form',{action:'/cart/add',class:'installment'},[el('input',{name:'id',value:'11'})]);
+ const body=el('body',{},[el('script',{id:'gravuru-konfi',text:JSON.stringify({productId:5,variantId:12,variants:[11,12,'x'],back:'/products/schild'})}),installment,sticky,main,other]);
+ const doc={body,getElementById:id=>all(body).find(n=>n.attrs.id===id)||null,createElement:tag=>addQuery(el(tag))};
+ addQuery(body);doc.querySelectorAll=body.querySelectorAll;doc.querySelector=body.querySelector;
+ const config=pageConfig(doc);
+ assert.deepEqual(config,{productId:'5',variantId:'12',variants:['11','12'],back:'/products/schild'});
+ assert.equal(startHref(config),'/apps/konfigurator/start?product=5&variant=12&back=%2Fproducts%2Fschild');
+ assert.equal(startHref(config,'99'),'/apps/konfigurator/start?product=5&variant=12&back=%2Fproducts%2Fschild','fremde Variante nie übernommen');
+ assert.deepEqual(productForms(config,doc),[installment,sticky.children[0],main]);
+ const box=prepareProductPage(config,doc);
+ assert.ok(box&&'data-gravuru-personalisieren' in box.attrs);
+ assert.equal(body.children[body.children.indexOf(main)+1],box,'Knopf direkt nach dem Hauptformular, nicht in der Kaufleiste');
+ assert.equal(box.children[0].href,'/apps/konfigurator/start?product=5&variant=11&back=%2Fproducts%2Fschild','aktuell gewählte Variante');
+ for(const f of [main,sticky.children[0]])for(const n of f.children.slice(1))assert.ok('data-gravuru-hidden-buy' in n.attrs);
+ for(const n of other.children)assert.ok(!('data-gravuru-hidden-buy' in n.attrs),'Kaufknöpfe anderer Produkte bleiben');
+ assert.equal(prepareProductPage(config,doc),null,'kein zweiter Knopf');
+ // Ohne/mit kaputten Daten: nichts tun.
+ for(const text of ['','{',JSON.stringify({productId:'x',variants:[1]}),JSON.stringify({productId:5,variants:[]}),JSON.stringify({productId:5,variants:[1],back:'//evil.example'})]){
+  const d={getElementById:()=>({textContent:text})};const c=pageConfig(d);
+  if(text.includes('evil'))assert.equal(c.back,'/');else assert.equal(c,null);
+ }
+ assert.equal(pageConfig({getElementById:()=>null}),null);
+});

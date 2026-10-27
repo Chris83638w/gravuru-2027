@@ -32,3 +32,11 @@ test('document, status, revision, identity and manufacturing metadata cannot reu
  assert.deepEqual(withProfile.productionProfile,profile);assert.notEqual(withProfile.sha256,base.sha256);
  assert.equal(prepareShopProduct(source).productionProfile,null);
 });
+
+test('cache cannot admit an invalid source whose JSON text matches a previously validated document',()=>{
+ const source=record();prepareShopProduct(source);
+ const invalid=structuredClone(source);invalid.document.unexpected=undefined;
+ assert.equal(JSON.stringify(invalid),JSON.stringify(source));
+ assert.throws(()=>prepareShopProduct(invalid),/JSON|unbekannt/);
+ assert.equal(prepareShopProduct(source).variants.length,120);
+});

@@ -1,3 +1,10 @@
+## 27.10.2026 · Claude · Vorladen versucht, gemessen, wieder aus
+
+- Chris: „wenn die seite geladen ist, kann der konfi bereits laden“. Geprüft: war nicht aktiv (Fenster erst beim Klick). Gebaut `fb7e5f2` (unsichtbares Fenster nach `load` + Leerlauf, sobald Knopf sichtbar; Datensparmodus nur bei Absicht; Start-Limit 120 → 600/min). Chris' Satz → 22:58 bereitgestellt.
+- Live-Messung (Chrome Desktop): Seite 1,8 s, Vorladen ab 2,0 s – nach 10 s war im unsichtbaren Fenster noch nicht einmal das Modell geladen; nach dem Klick ~5 s wie ohne Vorladen. Auch `opacity:0`/1-px-Streifen gebremst. Nutzen null, Kosten ~15 MB je Aufruf.
+- `1a8951d` Vorladen-Auslöser entfernt (Schließen behält das Fenster, Start-Limit 600 bleibt). Chris: „Ja, Du darfst das Abschalten des Vorladens bereitstellen und die App neu starten.“ → 23:05 bereitgestellt/neu gestartet; live: kein Start-Abruf beim Seitenaufruf, Klick öffnet Fenster, Kaufknopf aus.
+- Nächster Schritt: schlankes Modell (11 MB → Ziel 1–2 MB: nur genutzte Schriften, Materialbild als Datei statt data:-Adresse, Motive bei Bedarf), damit das Öffnen 1–2 s dauert.
+
 ## 27.10.2026 · Claude · Konfigurator global live: jede Vorlage, jedes Produkt mit Konfigurator-ID
 
 - Chris: „bitte mach es jetzt universal global auch wenn ich ein neues produkt anlege“. `608ba91` (Merge `3ec1ad0`): `shop-embed.mjs` liest `#gravuru-konfi` (Produkt, Varianten, Rücksprung), setzt „Jetzt personalisieren“ hinter das Kaufformular, wenn die Vorlage keinen eigenen Knopf hat, blendet Kaufknöpfe/Express-Kauf genau dieses Produkts aus (Befund: D8 war bisher ohne Gestaltung kaufbar), übernimmt beim Klick die gewählte Variante. Tests 43/43 gezielt; Live-Simulation auf der Standardvorlage (Türklingel 9×4) inkl. Variantenwechsel.

@@ -2,6 +2,8 @@
 // Leseadapter müssen aus genau einem vertrauenswürdigen Mandanten-Store kommen;
 // niemals Browserdaten als Produkt-, Preis-, Profil- oder Shopify-Beleg verwenden.
 import {createHash} from 'node:crypto';
+import {isBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
+const bindingIndexes=new WeakMap();
 
 export const SHOP_BINDING_PLAN_SCHEMA = 'gravuru-shop-product-binding-plan/v1';
 const plans = new WeakSet();
@@ -100,6 +102,9 @@ function evidenceTime(evidence, now, maxAgeMs) {
 function bindings(adapter) {
   const rows = read(adapter, 'getBindings');
   if (!Array.isArray(rows)) fail('shop_binding_existing', 'Bestehende Bindungen fehlen.');
+  const scope=JSON.stringify([adapter.tenantId,adapter.shopDomain,adapter.storeId]);
+  const cached=isBindingReadSnapshot(rows)?bindingIndexes.get(rows):null;
+  if(cached?.scope===scope)return cached;
   const ids = new Set();
   for (const row of rows) {
     if (!object(row) || typeof row.id !== 'string' || !/^binding_[a-f0-9-]{36}$/.test(row.id) || ids.has(row.id) ||
@@ -107,14 +112,33 @@ function bindings(adapter) {
         !integer(row.productRevision) || !cents(row.unitCents) || (own(row, 'tenantId') && row.tenantId !== adapter.tenantId)) fail('shop_binding_existing', 'Bestehende Bindung ist fremd, doppelt oder ungültig.');
     ids.add(row.id);
   }
-  return rows;
+  const byVariant=new Map(),byProductRevision=new Map(),choices=new Map();
+  for(const row of rows){
+    const key=JSON.stringify([row.productId,row.productRevision]);
+    if(!byVariant.has(row.variantId))byVariant.set(row.variantId,[]);
+    if(!byProductRevision.has(key))byProductRevision.set(key,[]);
+    byVariant.get(row.variantId).push(row);byProductRevision.get(key).push(row);
+  }
+  const indexed={scope,rows,byVariant,byProductRevision,choices};
+  if(isBindingReadSnapshot(rows))bindingIndexes.set(rows,indexed);
+  return indexed;
 }
 function existingBinding(rows, target) {
-  if (rows.some(row => row.variantId === target.variantId && row.productId !== target.productId) ||
-      rows.some(row => row.productId === target.productId && row.productRevision === target.productRevision &&
-        equal(options(row.options ?? {}), target.options) && row.variantId !== target.variantId))
+  const variants=rows.byVariant.get(target.variantId)||[],key=JSON.stringify([target.productId,target.productRevision]);
+  let choices=rows.choices.get(key);
+  if(!choices){
+    choices=new Map();
+    for(const row of rows.byProductRevision.get(key)||[]){
+      const selected=canonical(options(row.options??{}));
+      if(!choices.has(selected))choices.set(selected,[]);choices.get(selected).push(row);
+    }
+    rows.choices.set(key,choices);
+  }
+  const selected=choices.get(canonical(target.options))||[];
+  if (variants.some(row => row.productId !== target.productId) ||
+      selected.some(row => row.variantId !== target.variantId))
     fail('shop_binding_existing_conflict', 'Bestehende Varianten- und Konfigurationszuordnungen sind nicht eindeutig.');
-  const matches = rows.filter(r => r.variantId === target.variantId && r.productId === target.productId && r.productRevision === target.productRevision);
+  const matches = variants.filter(r => r.productId === target.productId && r.productRevision === target.productRevision);
   if (matches.length > 1) fail('shop_binding_ambiguous', 'Mehrere bestehende Bindungen passen zur selben Ausführung.');
   const row = matches[0];
   if (row && (row.unitCents !== target.baseUnitCents || !equal(options(row.options ?? {}), target.options))) fail('shop_binding_existing', 'Bestehende Bindung hat andere Optionen oder einen anderen Basispreis.');
@@ -183,3 +207,4 @@ export function resolveShopProductBinding(plan, {tenantId, shopDomain, shopifyPr
     productionStatus: entry.productionProfileRef === null ? 'profile-assignment-pending' : 'not-released',
     productionReady: false, publicAccess: false, checkoutEnabled: false});
 }
+

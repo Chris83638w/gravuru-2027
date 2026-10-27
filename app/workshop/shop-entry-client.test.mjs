@@ -148,7 +148,9 @@ test('global shop embed: product data from the theme block, own start link, buy 
  const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
  fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
  globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
- const {pageConfig,startHref,productForms,prepareProductPage}=await import(path.join(dir,'shop-embed.mjs'));
+ const {pageConfig,startHref,productForms,prepareProductPage,eagerPreload}=await import(path.join(dir,'shop-embed.mjs'));
+ assert.equal(eagerPreload({effectiveType:'4g'}),true);assert.equal(eagerPreload(undefined),true);
+ for(const c of [{saveData:true,effectiveType:'4g'},{effectiveType:'2g'},{effectiveType:'slow-2g'}])assert.equal(eagerPreload(c),false,'Datensparmodus/2G: nur bei Absicht vorladen');
  // Kleine Seiten-Nachbildung: nur was die Funktionen brauchen.
  const el=(tag,attrs={},children=[])=>{const node={tag,attrs:{...attrs},children,parent:null,style:{},textContent:attrs.text||'',
   setAttribute(k,v){this.attrs[k]=v;},getAttribute(k){return this.attrs[k]??null;},

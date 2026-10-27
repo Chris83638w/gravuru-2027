@@ -53,7 +53,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
   fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
- const limit={startPerMinute:120,requestsPerMinute:240,draftBytes:100*1024*1024,cartBytes:16*1024,concurrentReviews:2,maxContexts:1024,contextTtlMs:30*60*1000,...limits};
+ // Starts zählen jetzt auch das Vorladen beim Ansehen einer Produktseite (Konfigurator-Fenster).
+ const limit={startPerMinute:600,requestsPerMinute:240,draftBytes:100*1024*1024,cartBytes:16*1024,concurrentReviews:2,maxContexts:1024,contextTtlMs:30*60*1000,...limits};
  for(const [key,value] of Object.entries(limit))if(!Number.isSafeInteger(value)||value<1)fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
  const ids=new Set(),fixed=stores.map(s=>{
   const w=s?.workshop;

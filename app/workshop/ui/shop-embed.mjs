@@ -9,6 +9,7 @@ const EDITOR_ORIGIN='__EDITOR_ORIGIN__',PROXY='__PROXY_PATH__';
 const TOKEN=/^[a-f0-9]{64}$/;
 const STYLE=`.gv-embed{position:fixed;inset:0;z-index:2147483000;background:#fff;display:flex;flex-direction:column}
 .gv-embed[hidden]{display:none}
+.gv-embed.gv-embed--preload{visibility:hidden;pointer-events:none}
 .gv-embed__bar{display:flex;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid #dce5e1;background:#fff}
 .gv-embed__close{font:inherit;font-size:15px;min-height:40px;padding:6px 14px;border:1px solid #c9d3cf;border-radius:8px;background:#fff;color:#243238;cursor:pointer}
 .gv-embed__frame{flex:1;width:100%;border:0;display:block}
@@ -70,6 +71,13 @@ export function prepareProductPage(config,doc=globalThis.document){
  box.append(link,note);main.after(box);return box;
 }
 
+// Vorladen (Chris 27.10.2026: „wenn die Seite geladen ist, kann der Konfi bereits laden“): nach dem Laden der
+// Produktseite im Leerlauf, sobald der Knopf sichtbar ist (oder bei Maus/Finger/Fokus darauf). Bei Datensparmodus
+// oder 2G nur bei dieser Absicht, damit Kunden ohne Interesse keine ~15 MB laden.
+export function eagerPreload(connection=globalThis.navigator?.connection){
+ return !(connection?.saveData===true||/(^|-)2g$/.test(String(connection?.effectiveType||'')));
+}
+
 // Nur Nachrichten genau dieses Konfigurator-Fensters vom Konfigurator-Host werden angenommen.
 export function acceptedMessage(event,frame){
  if(!frame||event.origin!==EDITOR_ORIGIN||event.source!==frame.contentWindow)return null;
@@ -89,16 +97,27 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  const status=document.createElement('div');status.className='gv-embed__status';status.hidden=true;status.setAttribute('role','status');status.setAttribute('aria-live','polite');
  const box=document.createElement('div');box.className='gv-embed__box';status.append(box);
  shell.append(bar,status);document.body.append(shell);
- let frame=null,busy=false,lastFocus=null;
+ let frame=null,frameUrl=null,busy=false,lastFocus=null;
  const say=(text,{error=false}={})=>{box.replaceChildren(document.createTextNode(text));status.hidden=false;
   if(error){const again=document.createElement('button');again.type='button';again.textContent='Zurück zur Gestaltung';again.addEventListener('click',()=>{status.hidden=true;});
    const cart=document.createElement('a');cart.href=root+'cart';cart.textContent='Warenkorb öffnen';box.append(document.createElement('br'),again,cart);}};
+ function load(url){
+  frame?.remove();frame=document.createElement('iframe');frame.className='gv-embed__frame';frame.title='Produkt personalisieren';frame.setAttribute('allow','clipboard-write');
+  frame.src=url;frameUrl=url;shell.append(frame);
+ }
+ // Vorgeladen: unsichtbar, aber in voller Größe aufgebaut (sonst misst der Editor 0 px); nicht bedienbar, nicht fokussierbar.
+ function preload(url){
+  if(frame||!url)return;
+  shell.classList.add('gv-embed--preload');shell.setAttribute('aria-hidden','true');shell.hidden=false;load(url);
+ }
  function open(url){
   lastFocus=document.activeElement;status.hidden=true;
-  frame?.remove();frame=document.createElement('iframe');frame.className='gv-embed__frame';frame.title='Produkt personalisieren';frame.setAttribute('allow','clipboard-write');
-  frame.src=url;shell.append(frame);shell.hidden=false;document.documentElement.classList.add('gv-embed-open');close.focus();
+  if(!frame||frameUrl!==url)load(url);
+  shell.classList.remove('gv-embed--preload');shell.removeAttribute('aria-hidden');shell.hidden=false;
+  document.documentElement.classList.add('gv-embed-open');close.focus();
  }
- function hide(){if(busy)return;shell.hidden=true;frame?.remove();frame=null;status.hidden=true;document.documentElement.classList.remove('gv-embed-open');lastFocus?.focus?.();}
+ // Schließen behält das geladene Fenster: erneutes Öffnen ist sofort da (gleicher Stand).
+ function hide(){if(busy)return;shell.hidden=true;status.hidden=true;document.documentElement.classList.remove('gv-embed-open');lastFocus?.focus?.();}
  close.addEventListener('click',hide);
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!shell.hidden)hide();});
  async function request(token,path,method='GET'){
@@ -132,6 +151,20 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   const style=document.createElement('style');style.textContent='[data-gravuru-hidden-buy]{display:none!important}';document.head.append(style);
   let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;prepareProductPage(config);});}).observe(document.body,{childList:true,subtree:true});
  }
+ const startLink=()=>document.querySelector('[data-gravuru-personalisieren] a[data-gravuru-start]');
+ const warm=()=>{const link=startLink();if(!link)return;if(config)link.href=startHref(config,currentVariant(config,document));preload(startUrl(link));};
+ const link=startLink();
+ if(link){
+  for(const type of ['pointerenter','touchstart','focus'])link.addEventListener(type,warm,{once:true,passive:true});
+  if(eagerPreload()){
+   const idle=fn=>typeof requestIdleCallback==='function'?requestIdleCallback(fn,{timeout:3000}):setTimeout(fn,1500);
+   const begin=()=>idle(()=>{
+    if(typeof IntersectionObserver!=='function')return warm();
+    const watch=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){watch.disconnect();warm();}},{threshold:.5});watch.observe(link);
+   });
+   if(document.readyState==='complete')begin();else window.addEventListener('load',begin,{once:true});
+  }
+ }
  document.addEventListener('click',event=>{
   const link=event.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]');
   if(!link||event.defaultPrevented)return;
@@ -141,7 +174,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   const url=startUrl(link);if(!url)return;
   event.preventDefault();open(url);
  });
- return (window.__gravuruShopEmbed=Object.freeze({open,hide}));
+ return (window.__gravuruShopEmbed=Object.freeze({open,hide,preload}));
 }
 
 if(typeof window!=='undefined'&&typeof document!=='undefined'&&!globalThis.GRAVURU_SHOP_EMBED_NO_AUTO){

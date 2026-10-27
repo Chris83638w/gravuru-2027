@@ -1,3 +1,7 @@
+## 27.10.2026 · Codex/Astra · Gedenktafel-Schrift und Warenkorbfehler
+
+Branch `dev/gedenktafel-schrift-warenkorb-20261027-astra`, Basis `d103019`. Fehlende Glyphen der vorhandenen Poppins ExtraLight ergänzen, veraltete Textmaße verhindern, Kundenanzeige in ganzen mm und konkrete/aktuelle Warenkorbfehler. Gezielter Patch für das alte öffentliche Gedenktafel-Vorschaupaket mit Probelauf, Sicherung und Prüfsummen; keine DB-Migration. Gezielt 21/21, Konfigurator 290/298 (dieselben acht Umgebungsfehler), echte Vorlage mit zehn Buchstaben geprüft; 14 Vorlagen und 1.157 vorhandene Glyphen erhalten. Bereitstellung und Browser-Warenkorbtest folgen. [Bericht](docs/handoffs/2026-10-27-gedenktafel-schrift-warenkorb.md).
+
 ## 26.10.2026 · Codex/Astra · Mobiler Shop-Warenkorb und echter Hausmotiv-Test
 
 Basis `13c0159`, Branch `dev/shop-warenkorb-nachtrag-20261026-astra`. Unter 768 px wurde der alte deaktivierte lokale Knopf statt des verbundenen Shopknopfs angezeigt. Mobile verschiebt jetzt den bestehenden Shopknopf und dessen asynchronen Status; Desktop-Rückkehr erhält Listener und laufende Sicherung. Kontrast im neutralen Design korrigiert. Gezielt **21/21**, Konfigurator-Vollauf vorher **281/289**, nachher **284/292**, identische acht Umgebungsfehler. Echter D8-Test mit zusätzlichem Haus, „Test Haus“, 19,99 € erfolgreich bis in den normalen Shop-Warenkorb; 422-Schriftfehler dabei nicht reproduziert. Mobil lokal sichtbar geprüft; Live-Nachweis nach Bereitstellung im PR. Keine Zahlung. [Bericht und Screenshots](docs/handoffs/2026-10-26-shop-warenkorb-nachtrag.md).

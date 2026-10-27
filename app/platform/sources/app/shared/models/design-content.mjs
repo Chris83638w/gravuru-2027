@@ -81,7 +81,10 @@ export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
   for(const [key,seen] of [['fieldKey',fieldKeys],['customerFieldId',customerFieldIds]])if(o[key]!==undefined){if(!validContentId(o[key])||seen.has(o[key]))throw Error('Jedes Kundenfeld benötigt eine gültige, eindeutige Kennung.');seen.add(o[key]);}
   if(o.fontGroupId!==undefined&&!validContentId(o.fontGroupId))throw Error('Ungültige Schriftgruppenkennung.');
   if(!(universal?['text','motif','motif-raster','photoSlot','image','graphic']:['text','motif','photoSlot']).includes(o.type))throw Error('Nicht unterstütztes Vorlagenelement.');
-  if(!['x','y','w','h','rotation'].every(k=>Number.isFinite(o[k]))||o.w<=0||o.h<=0||Math.abs(o.rotation)>DESIGN_LIMITS.maxRotation)throw Error('Ungültige Elementmaße oder Drehung.');
+  const name=o.type==='text'&&typeof o.text==='string'?'Text „'+o.text.slice(0,32)+'“':'Element '+(d.objects.indexOf(o)+1);
+  if(!['x','y'].every(k=>Number.isFinite(o[k])))throw Error(name+': Position ist ungültig.');
+  if(!Number.isFinite(o.w)||!Number.isFinite(o.h)||o.w<=0||o.h<=0)throw Error(name+': Breite und Höhe müssen größer als 0 mm sein.');
+  if(!Number.isFinite(o.rotation)||Math.abs(o.rotation)>DESIGN_LIMITS.maxRotation)throw Error(name+': Drehung muss zwischen −360° und 360° liegen.');
   if(o.type==='text'){
    if(typeof o.text!=='string'||!o.text.trim()||o.text.length>DESIGN_LIMITS.maxTextLength||/[\u0000-\u0009\u000b-\u001f\u007f]/.test(o.text))throw Error('Text: 1 bis 180 Zeichen ohne Steuerzeichen.');
    if(!SUPPORTED_FONT_IDS.includes(o.font)&&!extraFontIds.includes(o.font))throw Error('Bitte eine vorhandene Schriftart auswählen.');

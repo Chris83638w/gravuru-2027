@@ -1,4 +1,10 @@
-## 27.10.2026 · Claude · Stufe 2: Konfigurator als Fenster auf der Produktseite (noch nicht live)
+## 27.10.2026 · Claude · Stufe 2 live auf dem Server (Fenster im Shop noch nicht eingeschaltet)
+
+- Chris: „Ja, Du darfst Stufe 2 (Fenster-Modus) nach erfolgreicher Prüfung bereitstellen und die App neu starten.“ → 21:28 Plesk Pull (`6a3a8d8`), Bereitstellen, „App neu starten“. Prüfung: `/werkstatt/` 200, `/konfigurator/shop/` 200 mit `frame-ancestors https://gravuru-design.myshopify.com`, Model ohne Sitzung 403, `/apps/konfigurator/shop-embed.mjs` über den Shop 200 mit `public, max-age=300`.
+- Test nur in Claudes Browser-Sitzung (Skript per Konsole geladen, Theme unverändert), D8 Leuchtturm 12×8: Fenster öffnet, Editor nach ~4–5 s; „In den Warenkorb“ → Nachricht 1,6 s, `data` 0,76 s, `claim` 0,63 s, `cart/add.js` (PNG-Upload) 1,20 s → `/cart` sichtbar nach **5,4 s** (vorher 8,7 s, heute Nachmittag 38,6 s). Position 19,99 € mit `_Entwurf`, `Bearbeiten`, Gravurtext. Testpositionen danach geleert.
+- Nächste Hebel: `data`+`claim` zu einem Aufruf (−0,6 s), Warenkorb-Schublade statt Seitenwechsel (−1 s), schlankes Modell fürs Öffnen.
+
+## 27.10.2026 · Claude · Stufe 2: Konfigurator als Fenster auf der Produktseite (geprüft)
 
 - Branch `dev/konfi-schnell-stufe2-20261027-claude` → `main`: `5d54c24` Modell-Cache je fester Revision, `eb4f03b` Fenster-Modus (`/apps/konfigurator/shop-embed.mjs`, Warenkorb direkt per `cart/add.js` ohne Zwischenseite), `d6f6312` Skripte nicht aufs Warenkorb-Limit (Review-Befund R1), Übergabe aktualisiert.
 - Prüfung: unabhängiger Review ohne Blocker; gezielte Tests 42/42; voller Lauf 1641/1648 – die 7 Fehlschläge (`editor-additions`, `hole-proximity`, `session-guard`, `ui-event-regressions`) scheitern identisch auf `main` 4a6b327, nicht durch diese Änderung.

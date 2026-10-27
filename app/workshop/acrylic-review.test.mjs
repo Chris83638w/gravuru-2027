@@ -131,7 +131,7 @@ test('profile fonts that are present in the product library are accepted on save
  // Ohne Schriftauswahl im Profil bleibt es beim bisherigen Rahmen: Produktschriften und Grundset, keine Fremdschrift.
  const open=structuredClone(config);open.workshopProfiles={...open.workshopProfiles,selections:{...open.workshopProfiles?.selections,fonts:null}};delete open.localResources.fonts[id];
  text.font=id;
- await assert.rejects(prepareAcrylicReview({record,config:open,input,assets:w.assets}),/nicht freigegeben/);
+ await assert.rejects(prepareAcrylicReview({record,config:open,input,assets:w.assets}),/nicht freigegeben|nicht in der Bibliothek/);
  text.font='Montserrat';
  await prepareAcrylicReview({record,config:open,input,assets:w.assets});
 });

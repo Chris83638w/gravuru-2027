@@ -13,8 +13,7 @@ export function nativeReviewConfig(config,input){
  for(const o of input.objects){
   const old=known.get(o.id);
   if(o.type==='motif'&&(!old||old.motif!==o.motif)&&Array.isArray(selections?.motifs)&&!selections.motifs.includes(o.motif))fail('Dieses Motiv ist für das Produkt nicht freigegeben.');
-  // Ohne Schriftauswahl im Profil gilt wie bisher: nur Produktschriften und das feste Grundset.
-  if(o.type==='text'&&(!old||old.font!==o.font)&&(Array.isArray(selections?.fonts)?!selections.fonts.includes(o.font):!Object.hasOwn(local.fonts,o.font)&&!SUPPORTED_FONT_IDS.includes(o.font)))fail('Diese Schrift ist für das Produkt nicht freigegeben.');
+  if(o.type==='text'&&(!old||old.font!==o.font)&&Array.isArray(selections?.fonts)&&!selections.fonts.includes(o.font))fail('Diese Schrift ist für das Produkt nicht freigegeben.');
  }
  let library;
  const resources=()=>library??=workshopResources(local);
@@ -26,6 +25,8 @@ export function nativeReviewConfig(config,input){
  }
  for(const key of usedFonts)if(!Object.hasOwn(local.fonts,key)){
   const font=resources().fonts[key];if(!font)fail('Diese Schrift ist nicht in der Bibliothek.');
+  // Ohne Schriftauswahl im Profil gilt wie bisher: nur Produktschriften und das feste Grundset.
+  if(!Array.isArray(selections?.fonts)&&!SUPPORTED_FONT_IDS.includes(key))fail('Diese Schrift ist für das Produkt nicht freigegeben.');
   local.fonts[key]=structuredClone(font);
  }
  return copy;

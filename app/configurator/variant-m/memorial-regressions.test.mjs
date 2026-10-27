@@ -54,3 +54,11 @@ test('preview repair updates the sealed file list and preserves all product meta
  assert.throws(()=>patchPreviewManifest(source,[{path:'models.json',before:null,after:'new',bytes:30}]),/bereits/);
  assert.throws(()=>patchPreviewManifest({...source,orderEnabled:true},[]),/Unbekanntes/);
 });
+
+import {patchMemorialWorkflow} from '../../../legacy-patches/memorial-editor-compat.mjs';
+test('legacy workflow cannot overwrite whole customer millimetres after synchronization',()=>{
+ const source="$('#ux-size').step='.01';$('#ux-size').value=selected().size;";
+ const patched=patchMemorialWorkflow(source);
+ function run(embedded){const field={};new Function('$','selected','config',patched)(()=>field,()=>({size:22.53}),{workbench:{embedded}});return field;}
+ assert.deepEqual(run(false),{step:'1',value:23});assert.deepEqual(run(true),{step:'.01',value:22.53});
+});

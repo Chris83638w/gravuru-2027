@@ -55,3 +55,8 @@ export function patchPreviewManifest(manifest, files) {
  }
  return result;
 }
+
+export function patchMemorialWorkflow(source){
+ source=once(source,"$('#ux-size').step='.01'","$('#ux-size').step=config?.workbench?.embedded?'.01':'1'");
+ return once(source,"$('#ux-size').value=selected().size","$('#ux-size').value=config?.workbench?.embedded?selected().size:Math.round(selected().size)");
+}

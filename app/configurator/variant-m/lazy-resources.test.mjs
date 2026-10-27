@@ -9,7 +9,8 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {build,LAZY,ROOT,HERE} from './build.mjs';
 import {createPreviewServer,acceptsGzip} from './server.mjs';
-import {fontFileName,startNeeds,draftNeeds,resourceNeeds,lazyUrls,libraryEntries,LAZY_BASE} from './lazy-resources-model.mjs';
+import {fontFileName,startNeeds,draftNeeds,resourceNeeds,lazyUrls,libraryEntries,LAZY_BASE,productFontIndex} from './lazy-resources-model.mjs';
+import {localFontIds} from './local-pilot.mjs';
 import {readRuntimeBundles,splitRuntimeBundles,patchEditorLoading,BASE_FONT_CATEGORIES} from './lazy-resources-build.mjs';
 // Jeder Test lädt eine eigene Modulinstanz (eigene Zwischenspeicher für Schriften/Bibliothek).
 const freshLoader=name=>import('./lazy-resources.mjs?'+name);
@@ -194,4 +195,37 @@ test('Kundenansicht verdrahtet: Reiter/Schritt Motive, Schriftauswahl, Text hinz
   assert.match(read('account-drafts.mjs'),/await el\.uxEnsureDraftResources\?\.\(draft\);\n\s*restoreDraft\(draft\);/);
   assert.match(read('adapter.mjs'),/await this\.uxEnsureDraftResources\?\.\(input\);this\.restoreDraft\(input\);/);
   assert.match(read('print-export.mjs'),/await el\.uxEnsureDraftResources\?\.\(\{design:\{objects:el\.state\.objects\}\}\);\n\s*const fingerprint=/);
+});
+
+test('Produktschriften: eigener Nachlade-Index mit inhaltsadressierter URL; Schriftauswahl und Entwürfe laden sie nach',async()=>{
+  const hash='a'.repeat(64),url='/konfigurator/shop/schriften/'+hash+'.json';
+  assert.deepEqual(productFontIndex({}),[]);
+  assert.deepEqual(productFontIndex({localResources:{lazyFonts:[{name:'Lato Regular · c3d3',url,label:'Lato',category:'Schlicht'}]}}),[{name:'Lato Regular · c3d3',url,label:'Lato',category:'Schlicht'}]);
+  for(const bad of ['x',[{name:'',url}],[{name:'A',url:'https://fremd.example/schriften/'+hash+'.json'}],[{name:'A',url:'/konfigurator/shop/schriften/../x.json'}],[{name:'A',url:'/k/schriften/abc.json'}]])
+    assert.throws(()=>productFontIndex({localResources:{lazyFonts:bad}}),/Produktschrift/);
+  // Nachlade-URLs: Produktschrift über ihre URL, Katalogschrift wie bisher.
+  const urls=lazyUrls({fonts:['Lato','Lora']},{fontIndex:[{name:'Lato',url},{name:'Lora',file:'lora.json'},{name:'Böse',url:'/../x'}]},'/l/');
+  assert.deepEqual(urls.fonts,[{name:'Lato',url},{name:'Lora',url:'/l/schriften/lora.json'}]);
+  assert.deepEqual(lazyUrls({fonts:['Böse']},{fontIndex:[{name:'Böse',url:'/../x'}]},'/l/').fonts,[]);
+  // Start: Produktschriften im gemeinsamen Index, aber nicht geladen.
+  const requests=[];
+  const get=async u=>{requests.push(u);if(u.endsWith('katalog-kern.json'))return {fonts:{},motifs:{},motif_bounds:{},font_index:[{name:'Lora',file:'lora.json'}],motif_index:[]};if(u===url)return {label:'Lato',regular:{units:1000,glyphs:{}}};throw Error('404');};
+  const loader=await freshLoader('produktschriften');
+  const config={localResources:{fonts:{},lazyFonts:[{name:'Lato',url,category:'Schlicht'},{name:'Lora',url}]},profile:{designs:[{objects:[]}]}};
+  const {catalog,entries}=await loader.loadStart(config,{get,base:'/l/'});
+  assert.deepEqual(catalog.font_index.map(f=>f.name),['Lora','Lato'],'Katalogschrift gewinnt bei gleichem Namen');
+  assert.deepEqual(requests,['/l/katalog-kern.json']);
+  const el={fontData:{},fontList:[],motifs:{},catalog:{motifs:{},motif_bounds:{}},labels:{},dataset:{},shadowRoot:null,dispatchEvent(){}};
+  loader.attach(el,{catalog,entries,prepare:()=>{},get,base:'/l/'});
+  assert.deepEqual(el.uxKnownFonts().sort(),['Lato','Lora']);
+  await el.uxEnsureDraftResources({design:{objects:[{type:'text',font:'Lato'}]}});
+  assert.deepEqual(requests,['/l/katalog-kern.json',url]);assert.equal(el.fontData.Lato.label,'Lato');assert.ok(el.fontList.includes('Lato'));
+});
+
+test('Produktschriften zählen in der Editor-Prüfung als bekannte Schriften (ohne Konturen im Modell)',()=>{
+  const hash='b'.repeat(64);
+  const config={reviewOnly:true,profile:{binding:{kind:'local-review'},features:{orderEnabled:false}},localResources:{scope:'local-review-only',motifs:[],
+    fonts:{Ashley:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0L1 1Z'}}}}},lazyFonts:[{name:'Lato',url:'/konfigurator/shop/schriften/'+hash+'.json'},{name:'Ashley',url:'/konfigurator/shop/schriften/'+hash+'.json'}]}};
+  assert.deepEqual(localFontIds(config),['Ashley','Lato']);
+  assert.throws(()=>localFontIds({...config,localResources:{...config.localResources,lazyFonts:[{name:'X',url:'/fremd'}]}}),/Produktschrift/);
 });

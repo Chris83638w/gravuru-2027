@@ -2,7 +2,7 @@
 // lazy-resources-model.mjs, Dateien aus lazy-resources-build.mjs unter /_runtime/lazy/).
 // Ein Objekt erhält nur eine bereits geladene Schrift bzw. ein geladenes Motiv; Vorschau,
 // Entwurfsprüfung und Export rechnen deshalb immer mit vorhandenen Konturen.
-import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,libraryEntries,fontFileName,resourceNeeds} from './lazy-resources-model.mjs';
+import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,libraryEntries,fontFileName,resourceNeeds,productFontIndex} from './lazy-resources-model.mjs';
 
 // `priority` (fetch-Priorität, Chromium): 'low' beim Vorladen im Hintergrund (preload-queue.mjs).
 const fetchJSON=async(url,{priority}={})=>{const response=await fetch(url,{credentials:'same-origin',...(priority?{priority}:{})});if(!response.ok)throw Error('Laden fehlgeschlagen: '+url.split('/').pop());return response.json();};
@@ -21,6 +21,9 @@ export async function loadStart(config,{get=fetchJSON,base=LAZY_BASE}={}){
   const guess=startNeeds(config);
   const early=lazyUrls({fonts:guess.fonts},{fontIndex:guess.fonts.map(name=>({name,file:fontFileName(name)}))},base).fonts.map(f=>loadFont(f,get).catch(()=>null));
   const catalog=await get(coreCatalogUrl(base));await Promise.all(early);
+  // Produktschriften gehören in denselben Index: Schriftauswahl, Entwürfe und Warenkorb-Bearbeiten laden sie nach.
+  const product=productFontIndex(config);
+  if(product.length){const known=new Set((catalog.font_index||[]).map(f=>f.name));catalog.font_index=[...(catalog.font_index||[]),...product.filter(f=>!known.has(f.name))];}
   const needs=startNeeds(config,{baseMotifs:Object.keys(catalog.motifs||{})});
   const urls=lazyUrls(needs,{fontIndex:catalog.font_index,motifIndex:catalog.motif_index},base);
   const [fontData,motifData]=await Promise.all([Promise.all(urls.fonts.map(f=>loadFont(f,get))),Promise.all(urls.motifs.map(m=>loadMotif(m,get)))]);

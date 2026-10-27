@@ -4,6 +4,29 @@ Basis Code main d103019, Branch dev/gedenktafel-schrift-warenkorb-20261027-astra
 
 Auftrag Chris: alle vier Fehler beheben, echte Gedenktafel mit Foto und Hausmotiv bis in den Warenkorb testen, aktuelle Gestaltung erhalten. Frühere ausdrückliche Erlaubnis zur sicheren Bereitstellung gilt fort. Der bestehende Kundentab bleibt ohne Neuladen geöffnet. Kein Kauf und keine Zahlung.
 
+## Live-Abnahme nach manueller Theme-Übernahme (27.10.2026)
+
+Chris hat die vier vorbereiteten Dateien einzeln im Shopify-Admin des Live-Themes **185833718140** (gravuru-shopify-theme/production, Rolle MAIN) gespeichert. Anschließend wurden alle vier Dateien per API vollständig zurückgelesen: bytegleich mit der geprüften Lieferung, ausschließlich LF-Zeilenenden. Die bestehenden Sections wurden vor dem Einfügen jeweils gegen die gesicherte Live-Quelle verglichen. Keine Veröffentlichung der gesamten Testkopie.
+
+| Live-Datei | Shopify-Prüfsumme MD5 |
+| --- | --- |
+| assets/gravuru-legacy-cart.js | 7b8198e8405adcdcc4b23cc0a9355fd9 |
+| snippets/gravuru-warenkorb-bearbeiten.liquid | 62fe3f4568d23eb44587cce516da312d |
+| sections/main-cart.liquid | cfe9ad015aaee9a226d5337ed744fd77 |
+| sections/cart-drawer.liquid | a97c0339a1a64b844357d90b4fa46519 |
+
+Danach wurde die Testtheme-Vorschau über **Exit preview** verlassen. Der neue Durchlauf fand im Live-Theme statt (Warenkorb-Section template--26592974733692, kein Vorschau-Balken):
+
+1. Vorhandene Gedenktafel mit Foto und Haus im Warenkorb geöffnet; große Vorschau sichtbar geprüft.
+2. **Bearbeiten** unter dem Bild öffnet die gespeicherte Gestaltung. Editor bestätigt die Wiederherstellung mit Fotos, unveränderte Anordnung von Foto, Baum, Haus und Text.
+3. Ohne Änderung der Gestaltung abgeschlossen und einmal **In den Warenkorb** gewählt.
+4. Erfolgreiche Rückkehr zu /cart: 220 × 140 mm, GTD8B5-1, ohne Befestigung, Menge 1, ein Zusatzmotiv und ein kostenpflichtiges Bild, **34,67 €**. Die alte Position ist ersetzt; weiterhin genau vier Positionen und **99,33 €** Gesamtsumme.
+5. Drei andere Positionen vollständig gleich in der DOM-Rückprüfung (angezeigte Werte, Cart-Keys, Links und Mengen). Neue gespeicherte Vorschau im Bilddialog erneut geprüft: Foto, Haus, Baum und Texte unverändert sichtbar. Keine Roh-URL rechts; **Bearbeiten** steht unter dem Bild.
+
+Original-Kundentab unverändert. Keine Bestellung, keine Zahlung und keine Produktions-PDF-Abnahme. Beweisbilder mit Kundenfoto sowie detaillierter Vergleich bleiben lokal und werden nicht auf GitHub hochgeladen. Keine weiteren Codeänderungen in dieser Abnahme; die unten dokumentierten Testzähler bleiben unverändert. PR #32 bleibt ungemergt.
+
+Die folgenden Abschnitte dokumentieren die vorherigen Schritte und ihre damaligen Einschränkungen; der Live-Stand oben ersetzt die frühere Aussage „MAIN unverändert“.
+
 ## Aktueller Abschluss: Foto-Vorschau und Bearbeiten (27.10.2026)
 
 Dieser Abschnitt ersetzt die weiter unten dokumentierte frühere Einschränkung beim Öffnen der PNG und bei der alten Gedenktafel-Warenkorbdarstellung.

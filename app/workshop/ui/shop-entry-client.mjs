@@ -18,6 +18,26 @@ export function shopUrl(shopDomain,path){
   if(typeof path==='string'&&/^\/(?!\/)/.test(path))try{const target=new URL(path,base);if(target.origin===base.origin)return target.href;}catch{}
   return base.href;
 }
+// Im Fenster über der Produktseite: Der Server bereitet die Übergabe wie bisher vor; statt die ganze Seite zur
+// Zwischenseite zu schicken, erhält nur die Shop-Seite (genau dieser Origin) die einmalige Übergabekennung.
+// Erfolg: Die Shop-Seite wechselt selbst zum Warenkorb (das Versprechen bleibt offen, kein zweiter Seitenwechsel).
+// Fehler: Die Shop-Seite meldet ihn zurück; der Editor zeigt ihn und gibt den Knopf wieder frei.
+export function embeddedCart(submitThemeCart,shopOrigin,{target=globalThis.parent,listen=globalThis}={}){
+  if(!/^https:\/\/[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(shopOrigin))fail('Die Shop-Verbindung ist ungültig.');
+  return async(input,options)=>{
+    const result=await submitThemeCart(input,options);
+    let token=null;try{token=new URL(result.handoffUrl).hash.match(/^#handoff=([a-f0-9]{64})$/)?.[1]||null;}catch{}
+    if(!token)fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
+    return new Promise((resolve,reject)=>{
+      const onMessage=event=>{
+        if(event.origin!==shopOrigin||event.source!==target||event.data?.type!=='gravuru-shop-handoff-result'||event.data.token!==token)return;
+        if(event.data.ok===false){listen.removeEventListener('message',onMessage);reject(Error(String(event.data.message||'Die Übertragung konnte nicht bestätigt werden.').slice(0,300)));}
+      };
+      listen.addEventListener('message',onMessage);
+      target.postMessage({type:'gravuru-shop-handoff',token},shopOrigin);
+    });
+  };
+}
 async function json(response){
   let body;try{body=await response.json();}catch{body={};}
   if(!response.ok)fail(body.error?.message||'Der Konfigurator konnte nicht geladen werden.');

@@ -273,3 +273,19 @@ test('changing a doorbell variant rechecks its live approval before any cart han
  assert.equal(allowed.data.productionReady,false);assert.equal(allowed.data.paymentConfirmed,false);
 },f=>nativeDoorbellEntryFixture(f)));
 
+
+test('embed start: window flag in the fragment, page framable only by the own shop, embed module served through the proxy',()=>run(async(f,request,{open,token})=>{
+ const embedded=await token({embed:'1',back:'/products/x'});
+ assert.equal(embedded.fragment.get('embed'),'1');assert.equal(embedded.fragment.get('back'),'/products/x');
+ assert.equal((await token()).fragment.get('embed'),null);
+ assert.equal((await open({embed:'yes'})).status,422);
+ const page=await request('/konfigurator/shop/');
+ assert.match(page.headers['content-security-policy'],new RegExp("frame-ancestors https://"+shopDomain.replace(/\./g,'\\.')+"$"));
+ assert.doesNotMatch(page.headers['content-security-policy'],/frame-ancestors[^;]*\*/);
+ const module=await request(proxyPath+'/shop-embed.mjs?'+signed(f,{}));
+ assert.equal(module.status,200);assert.match(module.headers['content-type'],/text\/javascript/);
+ const text=module.body.toString();
+ assert.ok(text.includes("const EDITOR_ORIGIN='"+origin+"',PROXY='"+proxyPath+"'"));assert.ok(!text.includes('__EDITOR_ORIGIN__'));
+ assert.ok(text.includes("from './theme-cart-client.mjs'"));
+ assert.equal((await request(proxyPath+'/shop-embed.mjs')).status,401,'nur über den signierten App-Proxy');
+}));

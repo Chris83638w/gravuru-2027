@@ -175,7 +175,21 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
   }
   async function loadDesignGallery(page=0){
     if(!Number.isSafeInteger(page)||page<0||page>10000)fail('Diese Seite der Designauswahl gibt es nicht.');
-    return json(await fetchImpl(API+'design-gallery?page='+page,{credentials:'omit',cache:'no-store',headers:headers({})}));
+    const controller=new AbortController();let timer;
+    const retry='Die Designauswahl ist gerade nicht erreichbar. Deine Gestaltung bleibt erhalten. Bitte erneut versuchen.';
+    try{
+      // A proxy can return HTML/502; do not route gallery failures through the
+      // configurator's generic model-loading error or leave the modal waiting.
+      const response=await Promise.race([
+        fetchImpl(API+'design-gallery?page='+page,{credentials:'omit',cache:'no-store',headers:headers({}),signal:controller.signal}),
+        new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(Error(retry));},5000);})
+      ]);
+      let data;try{data=await response.json();}catch{throw Error(retry);}
+      if(!response.ok)throw Error(response.status<500&&data?.error?.message?data.error.message:retry);
+      if(!Array.isArray(data?.items))throw Error(retry);
+      return data;
+    }catch(error){if(error instanceof TypeError||controller.signal.aborted)throw Error(retry);throw error;}
+    finally{clearTimeout(timer);}
   }
   async function designRequest(action,target){
     if(typeof target!=='string'||target.length>4096)fail('Bitte ein Design aus der Auswahl wählen.');

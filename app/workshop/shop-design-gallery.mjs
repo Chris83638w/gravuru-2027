@@ -12,7 +12,7 @@ const fields=['sid','storeId','productId','productRevision','bindingId','assignm
 // No catalogue imports or approvals happen here. Customer designs are taken
 // only from the fixed, already activated product model. Catalogue target
 // approval remains the importer's responsibility, just as for normal entry.
-export function createShopDesignGallery({secret,resolve,modelFor,allowedAssets,clock=Date.now,checkBinding=()=>{}}){
+export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFor,allowedAssets,checkBinding=()=>{},checkBindings,waitMs=4000}){
  const cache=new Map();
  const key=createHmac('sha256',secret).update('gravuru-shop-design-target/v1').digest();
  const sign=s=>createHmac('sha256',key).update(s).digest('base64url');
@@ -59,41 +59,66 @@ export function createShopDesignGallery({secret,resolve,modelFor,allowedAssets,c
     const current=validated?{store:context.store,binding:candidate}:resolve(identity(candidate));
     if(current.store!==context.store||!sameBinding(candidate,current.binding))continue;
     const binding=current.binding,key=binding.productId+':'+binding.productRevision;
-    if(key!==lastKey){model=modelFor(current.store,binding);lastKey=key;}
-    // Variant-specific approval must not be bypassed by model reuse.
-    checkBinding(current.store,binding,model);
+    if(key!==lastKey){model=cardFor(current.store,binding);lastKey=key;}
+    // Availability is checked on every response, including cache hits.
+    // A pause/resume or doorbell approval is not a product revision.
     const profile=selectedProfile(model.universal,binding.options);
     for(const design of profile.designs){
      let selected;try{selected=selection(binding,model,design.id);}catch{continue;}
      const {geometry,price}=selected,dedupe=JSON.stringify([binding.productId,design.id,geometry.width,geometry.height,geometry.shape]);
-     cards.push({binding,designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+     cards.push({binding,availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
     }
    }catch(error){if([404,409,422,423].includes(error.status))continue;throw error;}
   }
   return cards;
  }
+ function entryFor(context){
+  const revision=context.store.registry.galleryRevision();let entry=cache.get(context.store);
+  if(!entry||entry.revision!==revision){
+   entry={revision};
+   // Defer the cold work so startup/request handling can first return to the event loop.
+   entry.promise=new Promise(resolve=>setImmediate(resolve)).then(()=>build(context,true));
+   entry.promise.catch(()=>{if(cache.get(context.store)===entry)cache.delete(context.store);});
+   cache.delete(context.store);if(cache.size>=8)cache.delete(cache.keys().next().value);cache.set(context.store,entry);
+  }else{cache.delete(context.store);cache.set(context.store,entry);}
+  return entry;
+ }
  async function cachedCards(context){
   const registry=context.store.registry;
   if(typeof registry.galleryRevision!=='function'||typeof registry.listActiveForGallery!=='function')return build(context,false);
-  // One bounded LRU entry per configured store object. Tokens/current selection
-  // are generated per request and never kept in this shared cache.
   for(let attempt=0;attempt<2;attempt++){
-   const revision=registry.galleryRevision(),now=clock();let entry=cache.get(context.store);
-   if(!entry||entry.revision!==revision||entry.expiresAt<=now){
-    entry={revision,expiresAt:now+10000,promise:build(context,true)};
-    cache.delete(context.store);if(cache.size>=8)cache.delete(cache.keys().next().value);cache.set(context.store,entry);
-   }else{cache.delete(context.store);cache.set(context.store,entry);}
-   let cards;try{cards=await entry.promise;}catch(error){if(cache.get(context.store)===entry)cache.delete(context.store);throw error;}
-   if(registry.galleryRevision()===revision)return cards;
+   const entry=entryFor(context),cards=await entry.promise;
+   if(registry.galleryRevision()===entry.revision)return cards;
    if(cache.get(context.store)===entry)cache.delete(context.store);
   }
   unavailable();
  }
+ // Startup warming never creates sessions/tokens or changes product data.
+ // Catch at the caller; a failed build is discarded and the next call can retry.
+ function warm(context){return cachedCards(context);}
+ async function availableCards(context){
+  const cards=await cachedCards(context),unique=[...new Map(cards.map(row=>[row.binding.bindingId,row])).values()];
+  if(checkBindings){const allowed=await checkBindings(context.store,unique);return cards.filter(row=>allowed.has(row.binding.bindingId));}
+  const allowed=new Set();
+  for(let i=0;i<unique.length;i++){
+   if(i%8===0)await new Promise(resolve=>setImmediate(resolve));
+   const row=unique[i];try{checkBinding(context.store,row.binding,row.availability);allowed.add(row.binding.bindingId);}catch(error){if(![404,409,422,423].includes(error.status))throw error;}
+  }
+  return cards.filter(row=>allowed.has(row.binding.bindingId));
+ }
+ const preparing=Symbol('preparing');
+ async function boundedCards(context){
+  let timer;
+  try{return await Promise.race([availableCards(context),new Promise(resolve=>{timer=setTimeout(()=>resolve(preparing),waitMs);})]);}
+  finally{clearTimeout(timer);}
+ }
  async function list(context,{page=0}={}){
   if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
   if(typeof context.store.registry.listActive!=='function')return {items:[],nextPage:null,total:0};
+  const cards=await boundedCards(context);
+  if(cards===preparing)return {status:'preparing',message:'Designs werden vorbereitet – bitte gleich noch einmal versuchen.',items:[],nextPage:page,total:null};
   const choices=new Map();
-  for(const row of await cachedCards(context)){
+  for(const row of cards){
    const previous=choices.get(row.dedupe);
    if(previous&&row.binding.shopifyVariantId!==context.binding.shopifyVariantId&&(previous.binding.shopifyVariantId===context.binding.shopifyVariantId||previous.card.unitCents<=row.card.unitCents))continue;
    choices.set(row.dedupe,row);
@@ -109,5 +134,5 @@ export function createShopDesignGallery({secret,resolve,modelFor,allowedAssets,c
   const examples=(model.universal.localResources.photoExamples||[]).filter(e=>e.designId===t.design.id).map(e=>({...e,url:data(e.assetId)}));
   return productPreview(model,{options:t.binding.options,designId:t.design.id,examples,layout:'card',keepout:false,designArea:false}).replace(/href="\/api\/workshop\/design-assets\/([a-f0-9]{64})\/preview\.svg"/g,(_,id)=>'href="'+data(id)+'"');
  }
- return {list,target,preview};
+ return {list,target,preview,warm};
 }

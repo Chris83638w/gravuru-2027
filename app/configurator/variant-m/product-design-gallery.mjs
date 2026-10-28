@@ -34,7 +34,12 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
  async function load(){
   if(loading||next===null)return;loading=true;more.disabled=true;status.textContent='Designs werden geladen …';
   try{
-   const result=await api.load(next);next=result.nextPage;loaded=true;
+   const result=await api.load(next);
+   if(result.status==='preparing'){
+    status.textContent='Designs werden vorbereitet – bitte gleich noch einmal versuchen.';
+    more.textContent='Erneut versuchen';more.hidden=false;return;
+   }
+   next=result.nextPage;loaded=true;more.textContent='Weitere Designs';
    for(const item of result.items){
     const card=document.createElement('button');card.type='button';card.className='ux-product-card ux-choice-tile';card.setAttribute('aria-pressed',String(item.current&&item.designId===el.state.designId));
     const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;card.append(img);
@@ -46,7 +51,7 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
     img.previewRequest={item,img};if(observer)observer.observe(img);else queue.push({item,img});
    }
    if(!observer)pump();status.textContent=result.total?`${result.total} verfügbare Designs`:'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=next===null;
-  }catch(error){status.textContent=error.message;}finally{loading=false;more.disabled=false;}
+  }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}finally{loading=false;more.disabled=false;}
  }
  section.querySelector('.ux-product-open').onclick=()=>{gallery.showModal();if(!loaded)load();};more.onclick=load;
  confirm.querySelector('[data-product-confirm]').onclick=async()=>{

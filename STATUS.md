@@ -1,3 +1,9 @@
+## 28.10.2026 · Claude · Live: Direktstart (`main` `8540800`)
+
+- Chris (07:49): „Ja, Du darfst den Direktstart des Konfigurators bereitstellen und die App neu starten.“ → Merge `8540800` (STATUS-Konflikt zusammengeführt, gezielte Tests grün), Plesk Pull + Bereitstellen, Ziel geprüft (`input.ticket`, `createStartTickets`/`failedUntil`, `startResourceUrls`), App neu gestartet (grüner Hinweis).
+- Live (D8, Fenster-Modus über den echten Knopf, 3 Läufe): Startkarte über den Shopify-App-Proxy 200, Fenster öffnet direkt `app-2027…/konfigurator/shop/`, Klick → bedienbar **3,3–3,9 s** (27.10. abends 6,6–6,9 s). Modell 1 Schrift, 37 bekannt, Lato lädt nach, Design 51 Pfade. Erster Aufruf nach Neustart wie erwartet noch ungekürzt.
+- Offen: iPhone-Test Chris; danach bezahlte Testbestellung, Cloud-Server.
+
 ## 28.10.2026 · Claude · Live: Produktschriften bei Bedarf + paralleles Laden (`main` `7076fd0`)
 
 - Chris (05:27): „Ja, Du darfst das Nachladen der Produktschriften und das parallele Laden des Konfigurators bereitstellen und die App neu starten.“ → Merge `7076fd0` (ohne Direktstart, der ist nicht freigegeben), Plesk Pull + Bereitstellen, Dateien im Ziel geprüft (`gravuru-warm`, `fontRoute`, `designFontNames`, `productFontIndex`; kein `format=json`), App neu gestartet (grüner Hinweis).

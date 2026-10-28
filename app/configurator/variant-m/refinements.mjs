@@ -1,3 +1,4 @@
+import {uiIcon} from './ui-icons.mjs';
 import {selectionArrowMarkup,positionSelectionArrows,selectionScaleFactor} from './selection-arrows.mjs';
 import {completePreviewMini} from './preview-feedback.mjs';
 import {installDirectEditing} from './direct-editing.mjs';
@@ -15,7 +16,7 @@ export async function installRefinements(api){
   const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/refinements.css').then(res=>{if(!res.ok)throw Error('Bedienoberfläche fehlt.');return res.text();});r.append(style);
   const icon=(path)=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
   const expand=icon('<path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M3 3l6 6m12-6-6 6M3 21l6-6m12 6-6-6"/>');
-  $('#ux-tab-options .ux-tab-icon').innerHTML=icon('<path d="m10 2-.6 2.1-2 .9-2-.7-2 3.4 1.5 1.6-.2 2.3L3 13l2 3.5 2.1-.5 1.8 1.3.6 2.2h4l.6-2.2 1.8-1.3 2.1.5 2-3.5-1.7-1.4-.2-2.3 1.5-1.6-2-3.4-2 .7-2-.9L14 2Z"/><circle cx="11.9" cy="10.8" r="3"/>');
+  $('#ux-tab-options .ux-tab-icon').innerHTML=uiIcon('sliders');
   const enlarge=$('[data-ux=enlarge]');enlarge.innerHTML=expand+'<span>Vollbild</span>';enlarge.className='ux-enlarge';$('[data-ux-stage]').append(enlarge);
   $('.ux-preview').dataset.dimensions='true';$('[data-ux-dimensions]').checked=true;$('[data-ux-dimensions]').closest('label').hidden=true;
   const guide=$('[data-ux-guides]').closest('label');guide.classList.add('ux-guides-row');$('.stage').append(guide);
@@ -47,8 +48,8 @@ export async function installRefinements(api){
     if(enabled){const a=(o.rotation||0)*Math.PI/180,scene=$('.scene').getBoundingClientRect(),ph=stage.getBoundingClientRect();
       const point=(dx,dy)=>({x:(scene.left-ph.left)+(o.x+dx*Math.cos(a)-dy*Math.sin(a))*scene.width/el.state.width,y:(scene.top-ph.top)+(o.y+dx*Math.sin(a)+dy*Math.cos(a))*scene.height/el.state.height});
       // Ecken-Pfeile sitzen an den Ecken des Auswahlrahmens (Chris 20.10.2026), diagonal nach außen: die innere
-      // Ecke des 28-px-Knopfs berührt die Rahmenecke, so verdeckt der Pfeil den Text nicht.
-      const margin=14*el.state.width/Math.max(1,scene.width);
+      // Ecke des sichtbaren 19-px-Knopfs berührt die Rahmenecke, so verdeckt der Pfeil den Text nicht.
+      const margin=9.5*el.state.width/Math.max(1,scene.width);
       positionSelectionArrows(handles,o,point,margin);
       const gap=36*el.state.width/Math.max(1,scene.width),p=point(0,-o.h/2-gap);const h=handles.querySelector('[data-ux-handle=rotate]');h.style.left=p.x+'px';h.style.top=p.y+'px';
       const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=d.x+'px';remove.style.top=d.y+'px';
@@ -57,6 +58,7 @@ export async function installRefinements(api){
     const scene=$('.scene');if(scene){const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('role');copy.removeAttribute('data-ux-namespace');copy.setAttribute('aria-hidden','true');copy.querySelectorAll('[data-object]').forEach(n=>n.removeAttribute('data-object'));$('[data-mini-art]').replaceChildren(api.config?.acrylic&&!mini.hidden?completePreviewMini(stage,$('[data-mini-art]')):copy);}
     for(const row of all('.ux-upload-row')){const id=row.querySelector('[data-ux=replace-upload]')?.dataset.id;if(id&&!row.querySelector('[data-ux=edit-upload]'))row.querySelector('.ux-upload-actions').insertAdjacentHTML('afterbegin',button('edit-upload','Bild bearbeiten',`data-id="${esc(id)}"`));}
   }
+  el.uxRefreshSelectionHandles=updateSelection;
   const render=el.render;el.render=function(...args){const result=render.apply(this,args);updateSelection();return result;};
   const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);updateSelection();return result;};
   let resize=null;
@@ -88,13 +90,14 @@ export async function installRefinements(api){
     el.normalize();el.render();
   },true);
   function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);cancel=cancel||!validPhotoGesture(prior);if(cancel){if(prior.object.type==='photoSlot')cancelPhotoGesture(prior);else el.state=prior.old;}else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
+  el.uxCancelObjectGesture=()=>{if(resize)finish({pointerId:resize.id,stopImmediatePropagation(){}},true);};
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);
   r.addEventListener('lostpointercapture',e=>{if(resize?.id===e.pointerId)finish(e,true);},true);
   r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate')o.rotation=(o.rotation||0)+direction;else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
   function areaResize(field){field.style.height='auto';field.style.height=Math.min(200,Math.max(44,field.scrollHeight))+'px';}
   r.addEventListener('focusin',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);});
   r.addEventListener('input',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);},true);
-  r.addEventListener('focusout',e=>{if(e.target.matches('[data-ux-text]')){e.target.style.height='40px';e.target.scrollTop=0;}});
+  r.addEventListener('focusout',e=>{if(e.target.matches('[data-ux-text]')){e.target.style.height='44px';e.target.scrollTop=0;}});
   r.addEventListener('click',async e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;
     if(key==='edit-upload'){select(e.target.closest('[data-id]').dataset.id);await editPhoto(selected());}
     if(key==='edit-photo')await editPhoto(selected());
@@ -119,7 +122,7 @@ export async function installRefinements(api){
     const categoryDialog=dialog('categories','Motivkategorie wählen','<div class="ux-category-list"></div>');
     const selector=document.createElement('div');selector.className='ux-category-control';selector.innerHTML=button('categories','Kategorie wählen');category.after(selector);category.hidden=true;
     function setCategory(index){const options=choices(),i=(index+options.length)%options.length;category.value=options[i].value;category.dispatchEvent(new Event('change',{bubbles:true}));refreshCategory();}
-    function refreshCategory(){const chosen=choices().find(o=>o.selected);$('[data-ux=categories]').innerHTML=`<span aria-hidden="true"><svg viewBox="0 0 100 100">${imageFor(chosen.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg></span>${esc(chosen.textContent)}<span aria-hidden="true">⌄</span>`;}
+    function refreshCategory(){const chosen=choices().find(o=>o.selected);$('[data-ux=categories]').innerHTML=`<span aria-hidden="true"><svg viewBox="0 0 100 100">${imageFor(chosen.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg></span>${esc(chosen.textContent)}${uiIcon('chevron')}`;}
     r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(!b)return;const key=b.dataset.ux;if(key==='category-prev'||key==='category-next')setCategory(category.selectedIndex+(key==='category-next'?1:-1));
       if(key==='categories'){$('.ux-category-list').innerHTML=choices().map((o,i)=>button('category-pick',`<svg viewBox="0 0 100 100" aria-hidden="true">${imageFor(o.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg><span>${esc(o.textContent)}</span>`,`data-index="${i}" aria-pressed="${o.selected}"`)).join('');categoryDialog.showModal();}
       if(key==='category-pick'){setCategory(Number(b.dataset.index));categoryDialog.close();}

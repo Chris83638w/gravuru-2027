@@ -1,3 +1,11 @@
+import {installProductDesignGallery} from './product-design-gallery.mjs';
+import {installViewZoom} from './view-zoom.mjs';
+import {installMotifTileFit} from './motif-tile-fit.mjs';
+import {installUxDetails} from './ux-details.mjs';
+import {installDecisionHelp} from './decision-help.mjs';
+import {customerFieldLabel,installTextFields} from './text-fields.mjs';
+import {installLayout} from './layout.mjs';
+import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {installLegacyCartRestore} from './legacy-cart-restore.mjs';
 import {photoColorMode,photoColorFilter,photoEngravingPreviewFilter} from '../../platform/sources/app/shared/models/photo-color.mjs';
 import {commercePrice} from './commerce-model.mjs';
@@ -26,7 +34,7 @@ import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {selectionIds} from './profile-selection.mjs';
 import {rightForProperty,canEditElement,customerAdditionPolicy} from './element-rights.mjs';
 import {beginCustomerRights} from './customer-rights.mjs';
-import {textLimits,textLimitIssue,textLength,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
+import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
 import {parseDirectLink,applyLinkText,withoutDirectLinkParams} from './design-gallery-model.mjs';
 import {createSessionGuard,uploadReferences} from './session-guard.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
@@ -101,7 +109,7 @@ export async function installUX(el,config,legacy){
   $('[data-bestsellers]').open=false;
   $('#ux-panel-text').innerHTML=`<h2>Text bearbeiten</h2><p>Tippe die Zeile an, die du ändern möchtest.</p><div class="ux-fields"></div>${button('add-text','+ Text hinzufügen','class="ux-add"')}<div class="ux-controls">
     <div class="ux-font-row">${button('fonts','<span>Schrift ändern</span><strong data-ux-font-name>Schriftart</strong><span aria-hidden="true">›</span>')}</div>
-    <div class="ux-size-align"><div><label class="ux-size-label" for="ux-size">Schriftgröße</label><div class="ux-stepper">${button('smaller','−','aria-label="Schrift verkleinern"')}<span class="ux-size-value"><input id="ux-size" type="number" min="${minTextMm}" max="100" step="1" value="10" aria-label="Schriftgröße in Millimetern"><span aria-hidden="true">mm</span></span>${button('bigger','+','aria-label="Schrift vergrößern"')}</div></div><div><span class="ux-size-label">Auf dem Schild ausrichten</span><div class="ux-align">${button('left','Links')}${button('center','Mitte')}${button('right','Rechts')}</div></div></div>
+    <div class="ux-size-align"><div><label class="ux-size-label" for="ux-size">Schriftgröße</label><div class="ux-stepper">${button('smaller','−','aria-label="Schrift verkleinern"')}<span class="ux-size-value"><input id="ux-size" type="number" min="${minTextMm}" max="100" step="1" value="10" aria-label="Schriftgröße in Millimetern"><span aria-hidden="true">mm</span></span>${button('bigger','+','aria-label="Schrift vergrößern"')}</div></div><div><span class="ux-size-label">Auf dem Schild ausrichten</span><div class="ux-align">${['left','center','right'].map(mode=>button(mode,alignmentContent(mode),'aria-label="'+alignmentLabel(mode)+' auf dem Schild ausrichten"')).join('')}</div></div></div>
     <div class="ux-actions">${button('bold','Fett','aria-pressed="false"')}${button('italic','Kursiv','aria-pressed="false"')}${button('duplicate',`${icons.duplicate}Duplizieren`)}${button('delete',`${icons.delete}Löschen`)}</div>${freeColor?'<label class="ux-print-color">Druckfarbe <input type="color" data-ux-color aria-label="Druckfarbe des ausgewählten Texts" value="#202824"></label>':''}
     <details class="ux-precise"><summary>Position & Drehung</summary><div class="ux-precise-fields">${[['x','Horizontal · mm'],['y','Vertikal · mm'],['rotation','Drehung · °']].map(([key,label])=>`<label>${label}<input type="number" data-ux-prop="${key}" step="${config?.workbench?.embedded?'.01':'1'}"></label>`).join('')}</div></details>
     <p class="ux-tip">Hilfslinien helfen dir beim mittigen Ausrichten. Gestrichelte Linie = Gestaltungsrand; rote Kreise = Schutzzone um Bohrlöcher. Die Linien werden nicht mitgefertigt.</p></div>`;
@@ -229,10 +237,11 @@ export async function installUX(el,config,legacy){
   },true);
   // Ab hier bedient diese Oberfläche den Fototipp; der frühe Handler (installEarlyPhotoTap) ruht.
   el.uxPhotoTapReady=true;
-  const fieldLabel=(object,index)=>chosenProfile().designs.find(d=>d.id===el.state.designId)?.customerFields?.find(f=>f.id===object.id)?.label||({heading:'Überschrift',names:'Namen',name:'Name',place:'Ort',date:'Datum',daten:'Lebensdaten',slogan:'Spruch',spruch:'Spruch'})[object.fieldKey]||'Text '+(index+1);
+  const fieldLabel=(object,index)=>customerFieldLabel(object,index,chosenProfile().designs.find(d=>d.id===el.state.designId));
   // K1: Limits und Pflichtkennzeichen kommen aus dem Vorlagenelement, nie aus dem bearbeiteten Objekt.
   const templateText=o=>design()?.objects.find(t=>t.id===o.id&&t.type==='text');
-  const limitsFor=o=>textLimits(templateText(o),design(),profile);
+  const limitsFor=o=>textLimits(templateText(o),design(),profile,config);
+  const touchedText=new Set();let textValidationAttempted=false;
   const textIndex=o=>el.state.objects.filter(v=>v.type==='text').indexOf(o);
   function textFieldIssue(o){
     const t=templateText(o);
@@ -250,13 +259,16 @@ export async function installUX(el,config,legacy){
   el.uxTextLimits=limitsFor;el.uxTextIssues=textIssues;
   el.uxRevealTextIssue=id=>{showTab('text');select(id);const field=all('[data-ux-text]').find(f=>f.dataset.uxText===id);field?.scrollIntoView?.({block:'center',behavior:'smooth'});field?.focus({preventScroll:true});};
   // Abschluss und Warenkorb bleiben gesperrt, solange ein Textfeld einen Hinweis trägt; das Feld wird gezeigt.
-  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;const issue=textIssues()[0];if(!issue)return;e.preventDefault();e.stopImmediatePropagation();say(issue.message);el.uxRevealTextIssue(issue.id);},true);
-  function updateFields(){const texts=el.state.objects.filter(o=>o.type==='text');const signature=el.state.designId+'|'+texts.map((o,i)=>o.id+':'+fieldLabel(o,i)).join('|');if(signature!==fieldSignature){fieldSignature=signature;$('.ux-fields').innerHTML=texts.map((o,i)=>{const required=templateText(o)?.required===true,limits=limitsFor(o);return `<div class="ux-text-row" data-ux-row="${esc(o.id)}"><label for="ux-text-${i}">${esc(fieldLabel(o,i))}${required?' <span class="ux-text-required" title="Pflichtfeld">*</span>':''}</label><textarea id="ux-text-${i}" rows="1" data-ux-text="${esc(o.id)}" aria-label="${esc(fieldLabel(o,i))}" maxlength="${limits.maxLength}" ${required?'aria-required="true"':''} aria-describedby="ux-text-count-${i} ux-text-issue-${i}"></textarea><small class="ux-text-meta"><span id="ux-text-count-${i}" data-ux-text-count="${esc(o.id)}" aria-live="polite"></span><span id="ux-text-issue-${i}" class="ux-text-issue" data-ux-text-issue="${esc(o.id)}" role="alert"></span></small></div>`;}).join('');}
-    for(const field of all('[data-ux-text]')){const o=texts.find(o=>o.id===field.dataset.uxText),limits=limitsFor(o),row=field.closest('.ux-text-row');field.maxLength=limits.maxLength;if(r.activeElement!==field)field.value=o.text;field.disabled=!!o.uxLocked||!!o.uxHidden;row.classList.toggle('is-selected',el.state.selected===o.id);
-      const issue=o.uxHidden||o.customerEditable===false?'':textFieldIssue(o),count=textLength(o.text)+'/'+limits.maxLength;row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
+  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;textValidationAttempted=true;el.sync();const issue=textIssues()[0];if(!issue)return;e.preventDefault();e.stopImmediatePropagation();say(issue.message);el.uxRevealTextIssue(issue.id);},true);
+  r.addEventListener('focusout',event=>{const id=event.target.dataset.uxText;if(id){touchedText.add(id);el.sync();}});
+  const textControls=$('.ux-controls');
+  function updateFields(){const texts=el.state.objects.filter(o=>o.type==='text');const signature=el.state.designId+'|'+texts.map((o,i)=>o.id+':'+fieldLabel(o,i)).join('|');if(signature!==fieldSignature){if(textControls.closest('.ux-fields'))$('#ux-panel-text').append(textControls);fieldSignature=signature;$('.ux-fields').innerHTML=texts.map((o,i)=>{const required=templateText(o)?.required===true,limits=limitsFor(o);return `<div class="ux-text-row" data-ux-row="${esc(o.id)}"><label for="ux-text-${i}">${esc(fieldLabel(o,i))}${required?' <span class="ux-text-required" title="Pflichtfeld">*</span>':''}</label><textarea id="ux-text-${i}" rows="1" data-ux-text="${esc(o.id)}" aria-label="${esc(fieldLabel(o,i))}" ${limits.perLine?'':'maxlength="'+limits.maxLength+'"'} ${required?'aria-required="true"':''} aria-describedby="ux-text-count-${i} ux-text-issue-${i}"></textarea><small class="ux-text-meta"><span id="ux-text-count-${i}" data-ux-text-count="${esc(o.id)}" aria-live="polite"></span><span id="ux-text-issue-${i}" class="ux-text-issue" data-ux-text-issue="${esc(o.id)}" role="alert"></span></small></div>`;}).join('');}
+    for(const field of all('[data-ux-text]')){const o=texts.find(o=>o.id===field.dataset.uxText),limits=limitsFor(o),row=field.closest('.ux-text-row');if(limits.perLine)field.removeAttribute('maxlength');else field.maxLength=limits.maxLength;if(r.activeElement!==field)field.value=o.text;field.disabled=!!o.uxLocked||!!o.uxHidden;row.classList.toggle('is-selected',el.state.selected===o.id);
+      const issue=o.uxHidden||o.customerEditable===false||!textValidationAttempted&&!touchedText.has(o.id)?'':textFieldIssue(o),used=textLimitCount(o.text,limits),count=used>=limits.maxLength*.8?used+'/'+limits.maxLength+(limits.perLine?' je Zeile':''):'';row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
       const countNode=row.querySelector('[data-ux-text-count]'),issueNode=row.querySelector('[data-ux-text-issue]');if(countNode&&countNode.textContent!==count)countNode.textContent=count;if(issueNode&&issueNode.textContent!==issue)issueNode.textContent=issue;}
     const o=selected(),isText=o?.type==='text';$('.ux-controls').hidden=!isText;
     if(isText){$('[data-ux-font-name]').textContent=fontDisplayName(o.font);if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
+    el.uxUpdateTextUI?.();
   }
   function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=availableFonts();
     $('[data-ux=font-apply]').disabled=!fonts.includes(fontChoice)||!fontFits({...o,bold:false},fontChoice);
@@ -274,7 +286,7 @@ export async function installUX(el,config,legacy){
     // dialog is visible, so Safari and Chromium measure a rendered SVG.
     for(const svg of all('.ux-font-grid svg')){const b=svg.querySelector('[data-font-ink]').getBBox();if(b.width>0&&b.height>0){const pad=Math.max(1,b.height*.12);svg.setAttribute('viewBox',`${b.x-pad} ${b.y-pad} ${b.width+2*pad} ${b.height+2*pad}`);}}
   }
-  function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=profile.designs.length>1;tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note)note.hidden=true;}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
+  function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=el.uxHasProductDesignGallery===true||profile.designs.length>1;tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note)note.hidden=true;}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
   const designFor=id=>chosenProfile().designs.find(d=>d.id===id);
   function label(o){return o.uxDecoration?'Gestaltungslinie':o.uxUploadId?(o.uxUploadKind==='logo'?'Dein Logo':'Dein Foto'):o.type==='text'?(o.text||'Leerer Text'):o.type==='motif'?(el.catalog.motif_labels?.[o.motif]||'Motiv'):names[o.type]||'Element';}
   function renderContents(){if(!dialogs.contents.open||r.activeElement?.matches('[data-ux-content-prop]'))return;$('[data-ux-contents-list]').innerHTML=el.state.objects.map(o=>`<div class="ux-content-row">${button('select-content',`${esc(label(o))}<small>${o.uxHidden?'Ausgeblendet':'Auf deinem Produkt'}${o.uxLocked?' · gesperrt':''}</small>`,`data-id="${esc(o.id)}" aria-pressed="${o.id===el.state.selected}"`)}<label title="Anzeigen oder ausblenden"><input type="checkbox" data-ux-visible="${esc(o.id)}" aria-label="${esc(label(o))} anzeigen" ${o.uxHidden?'':'checked'}></label>${button('lock',o.uxLocked?'🔒':'🔓',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} ${o.uxLocked?'entsperren':'sperren'}" aria-pressed="${!!o.uxLocked}"`)}${button('remove-content',icons.delete||'×',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} löschen" ${o.uxLocked?'disabled':''}`)}</div>`).join('');
@@ -290,11 +302,11 @@ export async function installUX(el,config,legacy){
   function updateUploads(){const available=photoAvailableForDesign(config,el.state.designId),tab=$('#ux-tab-upload');if(tab){tab.hidden=!uploadTabVisible(config,el.state.designId,{photoEnabled,logoEnabled});tab.disabled=tab.hidden;if(tab.hidden&&activeTab==='upload')showTab('options');const guideUpload=$('[data-ux=guide-upload]');if(guideUpload)guideUpload.hidden=tab.hidden;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);}for(const b of all('[data-ux=photo-upload]'))b.hidden=!available;$('.ux-uploads').innerHTML=el.state.objects.filter(o=>o.uxUploadId).map((o,i)=>`<div class="ux-upload-row">${files.get(o.uxUploadId)?.url?`<button type="button" class="ux-upload-select" data-ux="select-upload" data-id="${esc(o.id)}" aria-label="${esc(label(o))} auswählen"><img class="ux-upload-thumb" src="${esc(files.get(o.uxUploadId).url)}" alt="${esc(label(o))} – Vorschau"></button>`:''}<strong>${esc(label(o))}</strong><span>${esc(files.get(o.uxUploadId)?.file.name||'Datei erneut auswählen')} · ${o.uxHidden?'ausgeblendet':(config?.reviewOnly&&config.basePriceCents===null)?'Preis offen':config?.acrylic?'inklusive':config?.photo?.includedCount!==undefined?(i<config.photo.includedCount?'inklusive':money(config.photo.extraPriceCents)):'9,99 €'}</span><div class="ux-upload-actions">${button('replace-upload','Ersetzen',`data-id="${esc(o.id)}"`)}${button('remove-content','Entfernen',`data-id="${esc(o.id)}" class="ux-remove-upload"`)}</div></div>`).join('');for(const b of all('[data-ux=photo-upload],[data-ux=logo-upload]'))b.disabled=new Set(el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4;}
   function updatePrice(){if(config?.reviewOnly&&config.basePriceCents===null){$('[data-fk-total]').textContent='Preis noch offen';$('[data-ux-price-lines]').innerHTML='<p>Grundpreis und Fotozuschläge sind für dieses Produkt noch offen. Die Optionen zeigen die übernommenen Referenzaufschläge.</p>';return;}try{const quantity=Number($('[data-fk-quantity]').value||1),extra=uploadQuote(el.state.objects,quantity,false,config?.photo?.includedCount!==undefined?config.photo:undefined);let total,base,options=0,motifs=0;
     let tierLine='';
-    if(config){const q=commercePrice(config,el.state,quantity);total=q.totalCents;base=config.basePriceCents;motifs=q.additionalMotifs*config.extraMotifCents;options=(q.listUnitCents??q.unitCents)-extra.unitCents-base-motifs;
+    if(config){const q=commercePrice(config,el.state,quantity);total=q.totalCents;base=config.basePriceCents;motifs=(q.chargedMotifs??q.additionalMotifs)*config.extraMotifCents;options=(q.listUnitCents??q.unitCents)-extra.unitCents-base-motifs;
       if(q.quantityTier){tierLine=`<p>Mengenstaffel ab ${q.quantityTier.minQuantity} Stück: −${money(q.quantityTierDiscountCents)} je Stück</p>`;tierNote.dataset.uxTierActive=String(q.quantityTier.minQuantity);}else delete tierNote.dataset.uxTierActive;}
     else{base=legacy.purchasing.basePriceCents;options=legacy.mounting.options.find(v=>v.key===el.state.fkMounting)?.surchargeCents||0;motifs=additionalMotifCount(el.state.objects,design()?.objects||[])*(legacy.purchasing.motifPriceCents??169);total=(base+options+motifs)*quantity+extra.totalCents;}
     const optionNames=config?visibleGroups(config,el.state.mOptions||{}).map(g=>g.values.find(v=>v.id===(el.state.mOptions?.[g.id]||g.defaultValueId))?.label).filter(Boolean).join(', '):legacy.mounting.options.find(v=>v.key===el.state.fkMounting)?.name;
-    $('[data-fk-total]').textContent=config?.demo?'Materialdemo':money(total);$('[data-ux-price-lines]').innerHTML=config?.demo?'<p>Reiner Profiltest ohne Artikelpreis oder Shopify-Zuordnung.</p>':`<p>Grundpreis: <strong>${money(base)}</strong></p><p>${esc(optionNames||'Optionen')}: ${money(options)}</p><p>Zusätzliche Motive: ${money(motifs)}</p><p>Fotos / Logos (${extra.count}): ${money(extra.unitCents)}</p>${tierLine}<p>Menge: ${quantity}</p><p>Gesamt: <strong>${money(total)}</strong></p><small>Inkl. MwSt. · zzgl. Versand. Berechnet werden nur Fotos und Logos, die auf deinem Produkt sichtbar sind.</small>`;
+    $('[data-fk-total]').textContent=config?.demo?'Materialdemo':money(total);$('[data-ux-price-lines]').innerHTML=config?.demo?'<p>Reiner Profiltest ohne Artikelpreis oder Shopify-Zuordnung.</p>':`<p>Grundpreis: <strong>${money(base)}</strong></p><p>${esc(optionNames||'Optionen')}: ${money(options)}</p><p>${config?.motifCharge==='all'?'Motive':'Zusätzliche Motive'}: ${money(motifs)}</p><p>Fotos / Logos (${extra.count}): ${money(extra.unitCents)}</p>${tierLine}<p>Menge: ${quantity}</p><p>Gesamt: <strong>${money(total)}</strong></p><small>Inkl. MwSt. · zzgl. Versand. Berechnet werden nur Fotos und Logos, die auf deinem Produkt sichtbar sind.</small>`;
   }catch(error){say(error.message);}}
   function update(){updateFields();updateGallery();updateUploads();updatePrice();$('[data-ux-guides]').checked=$('[data-setting=guides]').checked;$('[data-ux-count]').textContent=`(${el.state.objects.length})`;$('[data-ux=undo]').disabled=!el.history.length;$('[data-ux=redo]').disabled=!el.future.length;$('.fk-buy-button').disabled=true;$('.fk-order-status').textContent=config?.productPreview?'Produktvorschau · Bestellung noch nicht verbunden':'Lokaler Prüfstand · Bestellung noch nicht verbunden';renderContents();if(dialogs.contents.open&&freeColor&&selected()&&!$('[data-ux-content-color]'))$('[data-ux-object-tools]').insertAdjacentHTML('beforeend','<label class="ux-print-color">Druckfarbe <input type="color" data-ux-content-color aria-label="Druckfarbe des ausgewählten Elements" value="'+esc(selected().color||'#202824')+'"></label>');}
   let previousCorrection='',correctionReady=false;
@@ -412,10 +424,11 @@ export async function installUX(el,config,legacy){
   window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===window.parent&&e.data?.type==='gravuru-ux-open')startUnselected();});
   addDecoration();el.normalize();startUnselected();
   // Ladezeit: Schriften/Motive des gesicherten Stands vor dem (synchronen) Wiederherstellen laden.
-  if(sessionGuard&&!config?.workbench&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
+  const pendingDesignTransfer=!!window.parent.GravuruShopEntry?.designGallery?.hasPendingTransfer();
+  if(sessionGuard&&!config?.workbench&&!pendingDesignTransfer&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
   if(sessionGuard&&!config?.workbench){
     try{initialDraft=el.draftPayload({draft:true});}catch{initialDraft=null;}
-    const recovered=initialDraft?sessionGuard.recover():null;
+    const recovered=initialDraft&&!pendingDesignTransfer?sessionGuard.recover():null;
     if(recovered){
       $('[data-ux-session]').hidden=false;el.state.selected=null;el.sync();
       if(recovered.uploads.length)say('Dein letzter Stand wurde wiederhergestellt. Foto bitte erneut hochladen – Bilder bleiben nicht auf dem Server.');
@@ -453,10 +466,17 @@ export async function installUX(el,config,legacy){
   installPrintExport({el,config,files});
   installPreviewFeedback({el,r});
   const neutral=document.createElement('style');neutral.textContent=await fetch('/configurator/variant-m/neutral-theme.css').then(res=>{if(!res.ok)throw Error('Oberflächenstil fehlt');return res.text();});r.append(neutral);r.host.dataset.uxNeutral='true';
+  await installLayout({el,r,config});
+  await installUxDetails({el,r});
+  await installMotifTileFit(el);
+  await installViewZoom({el,r,selected});
+  installTextFields({el,r,selected,select});
+  installDecisionHelp({el,r,config});
   // Vor der fertigen Oberfläche auf der Platte gewähltes Foto (photo-upload.mjs installEarlyPhotoTap) übernehmen.
   const takeEarlyPhoto=()=>{const early=el.uxEarlyPhoto;if(!early)return;el.uxEarlyPhoto=null;acceptCustomerFiles(early.files,'photo',early.slotId).catch(error=>say(error.message));};
   el.addEventListener('gravuru-early-photo',takeEarlyPhoto);takeEarlyPhoto();
   if(config)installLegacyCartRestore({el,config,files});
+  await installProductDesignGallery({el,r,config,say,dialog,esc});
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).
   if(config)installBackgroundLoading({el,r,config});

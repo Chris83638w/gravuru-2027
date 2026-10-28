@@ -120,3 +120,9 @@ test('layered PDF keeps its selected physical page and vector artwork',{skip:!pd
  const source=spawnSync(python,['-c','import pymupdf,sys; d=pymupdf.open(); p=d.new_page(width=220*72/25.4,height=140*72/25.4); layer=d.add_ocg("Synthetic design layer"); p.draw_rect(pymupdf.Rect(10,10,80,60),color=(0,0,0),oc=layer); sys.stdout.buffer.write(d.tobytes())'],{env,maxBuffer:1024*1024});assert.equal(source.status,0);
  const result=convert(source.stdout,'pdf');assert.equal(result.error,undefined);assert.ok(Math.abs(result.widthMm-220)<.001);assert.ok(Math.abs(result.heightMm-140)<.001);assert.match(result.svg,/<(?:\w+:)?path/);assert.doesNotMatch(result.svg,/inkscape|groupmode/);
 });
+
+test('PDF source text block stays one multiline field, distinct block stays separate, original glyphs remain', {skip:!pdfAvailable?'PyMuPDF optional dependency unavailable':false},()=>{
+ const source=spawnSync(python,['-c',"import pymupdf,sys; d=pymupdf.open(); p=d.new_page(width=360,height=240); p.insert_text((20,40),'Forever in our hearts\\nA lasting memory',fontsize=12); p.insert_text((20,180),'Separate name',fontsize=16); sys.stdout.buffer.write(d.tobytes())"],{windowsHide:true,env});assert.equal(source.status,0,source.stderr.toString());
+ const result=spawnSync(python,[worker],{input:JSON.stringify({kind:'pdf',bytes:source.stdout.toString('base64'),parts:true}),encoding:'utf8',maxBuffer:32*1024*1024,windowsHide:true,env});assert.equal(result.status,0,result.stdout+result.stderr);
+ const data=JSON.parse(result.stdout),texts=data.parts.filter(p=>p.kind==='text');assert.deepEqual(texts.map(p=>p.text),['Forever in our hearts\nA lasting memory','Separate name']);for(const part of texts){assert.match(part.svg,/<use/);assert.doesNotMatch(part.svg,/<text/);assert.ok(part.widthMm>0&&part.heightMm>0);}
+});

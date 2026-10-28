@@ -1,0 +1,28 @@
+[
+  {
+    "suite": "editor-full.log",
+    "summary": [
+      "ℹ tests 404",
+      "ℹ pass 398",
+      "ℹ fail 6",
+      "ℹ skipped 0"
+    ],
+    "failBefore": 6,
+    "failAfter": 6,
+    "changed": [],
+    "gone": []
+  },
+  {
+    "suite": "workshop-full.log",
+    "summary": [
+      "ℹ tests 1372",
+      "ℹ pass 1207",
+      "ℹ fail 158",
+      "ℹ skipped 7"
+    ],
+    "failBefore": 158,
+    "failAfter": 158,
+    "changed": [],
+    "gone": []
+  }
+]

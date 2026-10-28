@@ -1,0 +1,134 @@
+[
+  {
+    "label": "375x548-text",
+    "fontMm": "10",
+    "plate": {
+      "bottom": 300,
+      "height": 225,
+      "top": 75,
+      "width": 337.5
+    },
+    "price": {
+      "bottom": 542,
+      "height": 47.9921875,
+      "top": 494.0078125,
+      "width": 165.9453125
+    },
+    "row1": {
+      "bottom": 375,
+      "height": 44,
+      "top": 331,
+      "width": 367
+    },
+    "row2": {
+      "bottom": 421,
+      "height": 44,
+      "top": 377,
+      "width": 367
+    },
+    "steps": {
+      "bottom": 548,
+      "height": 105.2890625,
+      "top": 442.7109375,
+      "width": 375
+    },
+    "toolbar": {
+      "bottom": 425,
+      "height": 99,
+      "top": 326,
+      "width": 375
+    },
+    "viewport": [
+      375,
+      548
+    ]
+  },
+  {
+    "label": "390x664-text",
+    "fontMm": "10",
+    "plate": {
+      "bottom": 333.5,
+      "height": 234,
+      "top": 99.5,
+      "width": 351
+    },
+    "price": {
+      "bottom": 658,
+      "height": 47.9921875,
+      "top": 610.0078125,
+      "width": 180.9453125
+    },
+    "row1": {
+      "bottom": 433,
+      "height": 44,
+      "top": 389,
+      "width": 382
+    },
+    "row2": {
+      "bottom": 479,
+      "height": 44,
+      "top": 435,
+      "width": 382
+    },
+    "steps": {
+      "bottom": 664,
+      "height": 105.2890625,
+      "top": 558.7109375,
+      "width": 390
+    },
+    "toolbar": {
+      "bottom": 483,
+      "height": 99,
+      "top": 384,
+      "width": 390
+    },
+    "viewport": [
+      390,
+      664
+    ]
+  },
+  {
+    "label": "desktop-text",
+    "fontMm": "10",
+    "plate": {
+      "bottom": 476.5,
+      "height": 419,
+      "top": 57.5,
+      "width": 628.5
+    },
+    "price": {
+      "bottom": 0,
+      "height": 0,
+      "top": 0,
+      "width": 0
+    },
+    "row1": {
+      "bottom": 0,
+      "height": 0,
+      "top": 0,
+      "width": 0
+    },
+    "row2": {
+      "bottom": 0,
+      "height": 0,
+      "top": 0,
+      "width": 0
+    },
+    "steps": {
+      "bottom": 0,
+      "height": 0,
+      "top": 0,
+      "width": 0
+    },
+    "toolbar": {
+      "bottom": 49.5,
+      "height": 54,
+      "top": -4.5,
+      "width": 643.9921875
+    },
+    "viewport": [
+      1440,
+      900
+    ]
+  }
+]

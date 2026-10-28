@@ -1,0 +1,67 @@
+{
+  "baseline": "7ac150539279018308d9d938acb6515c8634afe7",
+  "build": "editor-5d78be16948aa18d.mjs",
+  "environment": "Lokales Chromium, historische D8-Kopie, keine Live-Aktion, kein physisches iPhone",
+  "images": [
+    {
+      "file": "nachher-375x548-text.jpg",
+      "width": 375,
+      "height": 548,
+      "sha256": "abf86ea485467b1f337b59a09c45cc6e8a8d55d2a651b9760dd36beb945a2aa8"
+    },
+    {
+      "file": "nachher-375x548-vollbild.jpg",
+      "width": 375,
+      "height": 548,
+      "sha256": "084151d1e89a5d691d7c8555db770db4ecbfdbc3f7d296bec65e28aff5e54433"
+    },
+    {
+      "file": "nachher-390x664-text.jpg",
+      "width": 390,
+      "height": 664,
+      "sha256": "2bf2c60a740e8ee4256642184e6358541e59eebba6f5e42f928e971d797596c9"
+    },
+    {
+      "file": "nachher-desktop-text.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "c8d011e43e24900f4781a80907617d14115c86e29d69fbefc62f479e5333197e"
+    },
+    {
+      "file": "touch-batch-375x548.jpg",
+      "width": 375,
+      "height": 548,
+      "sha256": "0c07cbf1620254de3a661b66070d4b23deebb9c9bdf4a39499ac05e130533ff8"
+    },
+    {
+      "file": "touch-batch-390x664.jpg",
+      "width": 390,
+      "height": 664,
+      "sha256": "da41374ef55fbba91b077923c91aa1ef2c46981c95b79c9b16dbcc8d86178212"
+    },
+    {
+      "file": "touch-batch-desktop.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "5c7c1839735bdbe593c9231632de6e4b2376e29cd97eaf52a05b92fc0698a720"
+    },
+    {
+      "file": "vorher-375x548-text.jpg",
+      "width": 375,
+      "height": 548,
+      "sha256": "e48302f29efe1fcda46d85700f7998abbca6d82b842afac9696b76a1dbe37801"
+    },
+    {
+      "file": "vorher-390x664-text.jpg",
+      "width": 390,
+      "height": 664,
+      "sha256": "e01b3d030ff11b7ddf503947a53890274266f9f2789049dead47c8580c3bf923"
+    },
+    {
+      "file": "vorher-desktop-text.jpg",
+      "width": 1440,
+      "height": 900,
+      "sha256": "257ed92a097d2291427ffe37ba2ac9eee4c06cda9b9c1c63ddd27ad61ed8edce"
+    }
+  ]
+}

@@ -26,7 +26,7 @@ export const lineCount=text=>{const value=String(text??'').trim();return value?v
 // `object` ist das Vorlagenelement (Mustertext, optional maxLength/maxLines).
 // Ohne ausdrücklichen Objektwert bleibt der Mustertext der Vorlage immer
 // zulässig: bestehende Designs ohne Thema werden nicht unbestellbar.
-export function textLimits(object,design,product){
+export function textLimits(object,design,product,config){
  const result={...themeTextLimits(themeId(design,product))};
  for(const key of ['maxLength','maxLines']){
   const value=object?.[key],[min,max]=TEXT_LIMIT_RANGES[key];
@@ -37,10 +37,20 @@ export function textLimits(object,design,product){
   if(!Number.isInteger(value)||value<min||value>max)fail((key==='maxLength'?'Zeichenlimit':'Zeilenlimit')+': ganze Zahl von '+min+' bis '+max+'.');
   result[key]=value;
  }
+ // New product revisions opt into Chris' 50-character-per-line rule. Existing
+ // saved revisions retain their original whole-field contract.
+ if(config?.textRules?.maxCharsPerLine!==undefined){
+  const max=config.textRules.maxCharsPerLine;
+  if(!Number.isInteger(max)||max<1||max>500)fail('Zeichenlimit je Zeile: ganze Zahl von 1 bis 500.');
+  result.maxLength=max;result.perLine=true;
+ }
  return result;
 }
+export const longestTextLine=text=>Math.max(0,...String(text??'').replace(/\r\n?/g,'\n').split('\n').map(line=>[...line].length));
+export const textLimitCount=(text,limits)=>limits?.perLine?longestTextLine(text):textLength(text);
 export function textLimitIssue(text,limits){
- if(textLength(text)>limits.maxLength)return 'Text zu lang: höchstens '+limits.maxLength+' Zeichen.';
+ if(limits.perLine&&longestTextLine(text)>limits.maxLength)return 'Text zu lang: höchstens '+limits.maxLength+' Zeichen je Zeile.';
+ if(!limits.perLine&&textLength(text)>limits.maxLength)return 'Text zu lang: höchstens '+limits.maxLength+' Zeichen.';
  if(lineCount(text)>limits.maxLines)return 'Höchstens '+limits.maxLines+' Zeilen.';
  return '';
 }
@@ -53,6 +63,7 @@ export const requiredFieldMessage=template=>'Bitte das Feld „'+(FIELD_LABELS[t
 export function clampText(value,limits,previous=''){
  const text=String(value??'');
  if(text.split('\n').length>limits.maxLines)return previous;
+ if(limits.perLine)return text.replace(/\r\n?/g,'\n').split('\n').map(line=>[...line].slice(0,limits.maxLength).join('')).join('\n');
  const chars=[...text];
  return chars.length>limits.maxLength?chars.slice(0,limits.maxLength).join(''):text;
 }

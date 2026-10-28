@@ -6,6 +6,7 @@ import {keepoutPreview} from './option-media.mjs';
 import {selectedProfile} from './contract.mjs';
 import {familyProductConfig} from '../../workshop/product-families.mjs';
 import {workshopResources} from '../../workshop/catalog.mjs';
+import {previewHoleHint} from '../../workshop/product-preview.mjs';
 
 const family=JSON.parse(fs.readFileSync(new URL('../../designs/steel-door-signs/family.json',import.meta.url)));
 const config=familyProductConfig(family,family.sizes.find(s=>s.key==='GR-ES-OV-90X60-T15'),1),fonts=workshopResources().fonts;
@@ -42,7 +43,10 @@ test('Bohrloch-Hinweis: nicht mehr im Kundeneditor (adapter), weiter in Werkstat
  assert.doesNotMatch(adapter,/import [^;]*hole-proximity|textsNearHoles\(|holeHintText\(|mHoleHint/,'Kundeneditor erzeugt keinen Bohrloch-Hinweis mehr');
  assert.match(adapter,/Kein Kundenhinweis „Text in der Bohrloch-Schutzzone“ mehr/);
  assert.match(read('../../workshop/acrylic-review.mjs'),/textsNearHoles\(state\.design,selectedProfile\(config,state\.options\)/,'Werkstatt-Prüfvermerk bleibt');
- assert.match(read('../../workshop/product-preview.mjs'),/holeHintText\(textsNearHoles\(d,p,config\.localResources\.fonts\)\)/,'Händlervorschau bleibt');
+ assert.match(read('../../workshop/product-preview.mjs'),/holeHintText\(textsNearHoles\(d,p,previewFonts\(config\)\)\)/,'Händlervorschau bleibt mit aufgelösten Produktschriften');
+ const merchant={...config,localResources:{fonts},profile:{...config.profile,defaultDesignId:'near-hole',designs:[{id:'near-hole',objects:[text(14,30)]}]}};
+ assert.match(previewHoleHint(merchant,{options:{mounting:'B02'}}),/„Müller“ liegt im Bereich eines Bohrlochs/,'echte Händlervorschau meldet weiterhin Text neben der Bohrung');
+ assert.equal(previewHoleHint(merchant,{options:{mounting:'K00'}}),'','ohne Bohrung kein Händlerhinweis');
  // Mechanische Prüfung bleibt unverändert und nicht ignorierbar; Überlagerungswarnung nur bei Gravur.
  const tools=read('./customer-tools.mjs');
  assert.match(tools,/const issue=mechanicalHints\(profile,el\.state\)\[0\];if\(!issue\)return;e\.preventDefault\(\);e\.stopImmediatePropagation\(\);say\(issue\.message\);/);

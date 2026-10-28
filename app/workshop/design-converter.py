@@ -252,7 +252,7 @@ def sanitize_svg(raw):
             'pageCount': 1, 'page': 1, 'hasText': False, 'warnings': warnings}
 
 
-def editable_parts(result):
+def editable_parts(result, source_text=None):
     """Separate renderer objects without guessing text hidden inside bitmaps.
 
     Glyph outlines retain their appearance until the merchant explicitly replaces
@@ -265,13 +265,42 @@ def editable_parts(result):
     ns = '{' + SVG_NS + '}'
     defs = [copy.deepcopy(n) for n in root if n.tag == ns+'defs']
     groups = []
+    # PDF text blocks are source evidence. Never join unrelated lines by proximity.
+    # Only untransformed ancestor groups and exact glyph origins can use this map;
+    # unsupported geometry keeps the existing line groups and original vector art.
+    blocks = []
+    for block in (source_text or {}).get('blocks', []):
+        if block.get('type') != 0:
+            continue
+        lines = []
+        chars = []
+        for line in block.get('lines', []):
+            row = [c for span in line.get('spans', []) for c in span.get('chars', [])]
+            chars.extend(row)
+            lines.append(''.join(c.get('c', '') for c in row).replace('\u00a0', ' '))
+        blocks.append({'text': '\n'.join(lines), 'chars': chars})
+    def source_block(node, ancestors):
+        if any(a.get('transform') for a in ancestors):
+            return None
+        transform = node.get('transform', '')
+        values = re.findall(NUMBER, transform)
+        if not re.fullmatch(r'matrix\([^)]*\)', transform.strip()) or len(values) != 6:
+            return None
+        x, y = map(float, values[4:6])
+        character = node.get('data-text', '').replace('\u00a0', ' ')
+        candidates = [i for i, block in enumerate(blocks) if any(
+            c.get('c', '').replace('\u00a0', ' ') == character and
+            abs(c.get('origin', [float('inf')]*2)[0]-x) < .02 and
+            abs(c.get('origin', [float('inf')]*2)[1]-y) < .02
+            for c in block['chars'])]
+        return candidates[0] if len(candidates) == 1 else None
     def walk(parent, ancestors):
         run = []
         run_key = None
         def flush():
             nonlocal run, run_key
             if run:
-                groups.append(('text', list(run), ancestors))
+                groups.append(('text', list(run), ancestors, blocks[run_key[1]]['text'] if run_key and run_key[0] == 'pdf-block' else None))
                 run = []
                 run_key = None
         for n in parent:
@@ -280,7 +309,8 @@ def editable_parts(result):
                 continue
             if tag == 'use' and n.get('data-text'):
                 matrix = re.findall(NUMBER, n.get('transform', ''))
-                key = tuple(matrix[:4]+matrix[5:6])+ (n.get('fill'),)
+                block = source_block(n, ancestors)
+                key = ('pdf-block', block, *matrix[:4], n.get('fill')) if block is not None else tuple(matrix[:4]+matrix[5:6])+ (n.get('fill'),)
                 if run and key != run_key:
                     flush()
                 run_key = key
@@ -292,14 +322,14 @@ def editable_parts(result):
                 walk(n, ancestors+[shell])
             else:
                 kind = 'photo' if any(e.tag == ns+'image' for e in n.iter()) else 'motif'
-                groups.append((kind, [n], ancestors))
+                groups.append((kind, [n], ancestors, None))
         flush()
     walk(root, [])
     require(0 < len(groups) <= 20, 'Diese Datei enthält mehr als 20 getrennte Bestandteile. Bitte Motive in der Quelldatei gruppieren.', 'parts_limit')
     box = list(map(float, root.get('viewBox').split()))
     factor = min(2, 1400/max(box[2:]))
     parts = []
-    for kind, nodes, ancestors in groups:
+    for kind, nodes, ancestors, block_text in groups:
         layer = ET.Element(root.tag, root.attrib)
         for d in defs:
             layer.append(copy.deepcopy(d))
@@ -351,7 +381,9 @@ def editable_parts(result):
             whiten(mask_layer)
             part['maskSvg'] = sanitize_svg(ET.tostring(mask_layer))['svg']
         if kind=='text':
-            part['text']=''.join(n.get('data-text','') for n in nodes)
+            text = ''.join(n.get('data-text','') for n in nodes).replace('\u00a0', ' ')
+            compact = lambda s: ''.join(s.split())
+            part['text'] = block_text if block_text and compact(block_text) == compact(text) else text
         parts.append(part)
     require(parts, 'Keine getrennt sichtbaren Bestandteile gefunden.', 'parts_missing')
     return parts
@@ -420,7 +452,7 @@ def convert(request):
             if document.page_count > 1:
                 result['warnings'].append('Nur Seite ' + str(page_number) + ' von ' + str(document.page_count) + ' wurde übernommen.')
             if request.get('parts') is True:
-                result['parts'] = editable_parts(result)
+                result['parts'] = editable_parts(result, page.get_text('rawdict'))
             return result
     except ImportFailure:
         raise

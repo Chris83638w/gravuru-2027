@@ -1,0 +1,219 @@
+[
+  {
+    "file": "nachher-desktop-motive.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 111275,
+    "sha256": "de3b85cf741ea2e8d1fddea7ed3a5c3b857d50ae10456541d08b825373fde164"
+  },
+  {
+    "file": "nachher-desktop-motivinfo.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 92131,
+    "sha256": "770d71208dd018de4f574fd625537423fa59366ab98e6450c12c29b6db7d8d77"
+  },
+  {
+    "file": "nachher-desktop-optionen.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 106625,
+    "sha256": "454d593c7f66b1a3e9ff230b5e30ae9bcc9d3dcfedf0ff75d933845225bda4fd"
+  },
+  {
+    "file": "nachher-desktop-produktgalerie.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 94546,
+    "sha256": "ac1638587fdb445719a9097a76d744e546c2b28c357c80ccb0a4d197503a103f"
+  },
+  {
+    "file": "nachher-desktop-produktwechsel-hinweis.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 54628,
+    "sha256": "50647754fc856f26a26cb00e1c2ef4ffb76b0873cff377d64ca769caeb34b902"
+  },
+  {
+    "file": "nachher-desktop-produktwechsel.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 123828,
+    "sha256": "6c05074e18fcd90eb538123254b6d4022a127802917eb6284b6d51447c93e7b8"
+  },
+  {
+    "file": "nachher-desktop-testwarenkorb.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 53323,
+    "sha256": "52e5451432ac8ea60df4e50e572d3e47317277fd956c18f99d5fb309c5f230d4"
+  },
+  {
+    "file": "nachher-desktop-text-a.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 114142,
+    "sha256": "87da6ec0bf2c549480c79b28d3eb1b6f8cc5987cd93c7fba38d9c5b41408040a"
+  },
+  {
+    "file": "nachher-desktop-text-b.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 117629,
+    "sha256": "0d693a0ab77d468414d6c582de22502056b76178d7430a99f163991732037cc6"
+  },
+  {
+    "file": "nachher-desktop-vollbild-a.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 101486,
+    "sha256": "d0b575ba20e335f356eaf39d1525d30d12bae4582eab63db362cabb7980cbc3f"
+  },
+  {
+    "file": "nachher-desktop-vollbild-b.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 101439,
+    "sha256": "a3c3587a85fee4efd88cac619f3347dfe4b0676f927956bcd68d5b687121b1b6"
+  },
+  {
+    "file": "nachher-desktop-zoom.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 131004,
+    "sha256": "f3f7150712318a1d12ecf7442a8ad345a984ab35b8e08b01715afa2d990d2792"
+  },
+  {
+    "file": "nachher-desktop-zurueck-text-erhalten.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 111548,
+    "sha256": "8d4e111677a108766b32a3b2803a1f9ca8def3bd4a464c6d8d2ce2e76a2c769b"
+  },
+  {
+    "file": "nachher-iphone-motive.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 42975,
+    "sha256": "ba06c11c5264d14e5ce0cc5e31e70ed5ce009630fc0d6129fe007d104f390141"
+  },
+  {
+    "file": "nachher-iphone-motivinfo.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 38593,
+    "sha256": "647b3763d9954c65d40e8eea4b054b4c2ba0d03beadce4200c46329373bec8ef"
+  },
+  {
+    "file": "nachher-iphone-optionen.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 44180,
+    "sha256": "243f69165a02e12b2fe9e8b639bf66738749e833e52780cd0e106adea94cead6"
+  },
+  {
+    "file": "nachher-iphone-produktgalerie.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 50152,
+    "sha256": "e5a2664ba0a1bc12b2f04110c3779a7656611d27022d3372186ed9698bda4f37"
+  },
+  {
+    "file": "nachher-iphone-produktwechsel.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 45436,
+    "sha256": "b6fc04bca47234e6a9796fdfb9e66bee7ff3a99e5425aa4878f4ea28511cb387"
+  },
+  {
+    "file": "nachher-iphone-testwarenkorb.jpg",
+    "width": 375,
+    "height": 812,
+    "bytes": 35961,
+    "sha256": "6ccb5243a837423169fc73b3121d9e0776de6944211c36db59724a5920a2aa8b"
+  },
+  {
+    "file": "nachher-iphone-text.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 40764,
+    "sha256": "e4a6cfcc7d7898fa6650643225cbdc7cc04f7912fff6febf7733a75ea3bea59f"
+  },
+  {
+    "file": "nachher-iphone-vollbild.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 27259,
+    "sha256": "9694c3d7f79f485434d4883d6c8f46ac7e23c2e75e2b42ebad464b11db2bb935"
+  },
+  {
+    "file": "nachher-iphone-zoom.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 34069,
+    "sha256": "158b3442d27a4c86f47d79e171348db1499370b4117a658de12735a8998e6a58"
+  },
+  {
+    "file": "nachher-iphone-zusatzmotiv.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 47920,
+    "sha256": "8187737e8eab570d604fedf49f2523e693de477d2d9f5f6b4ffc73533e1a47c7"
+  },
+  {
+    "file": "vorher-desktop-motive.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 92120,
+    "sha256": "cf73446bb5a85c2668d08ee50d8a7316a5ed5ab114e32f77b4ac1586235dbab8"
+  },
+  {
+    "file": "vorher-desktop-optionen.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 92141,
+    "sha256": "6051d51de7861729e5543d960f0adfe16d4eeeaa875dd8710641da77234670c9"
+  },
+  {
+    "file": "vorher-desktop-text.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 90037,
+    "sha256": "f91e0651458705988c5ae5ea27fd367f88283e779d9279a9e83952835a435afc"
+  },
+  {
+    "file": "vorher-desktop-vollbild.jpg",
+    "width": 1440,
+    "height": 900,
+    "bytes": 96671,
+    "sha256": "bb8e7343f451efa8bb2a8067874157e510d385fa4ef4e5b7f6561d9250612d3f"
+  },
+  {
+    "file": "vorher-iphone-motive.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 42822,
+    "sha256": "c057cc02a1a228d886963ebbb219794d6e35c697841d74309b36e874de2bdfe6"
+  },
+  {
+    "file": "vorher-iphone-optionen.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 44842,
+    "sha256": "24d39f7ada4427bc3c8495efcabb60149557f80b7ca1c67b5284e2f7694bd709"
+  },
+  {
+    "file": "vorher-iphone-text.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 38747,
+    "sha256": "2500d232c5660767bb04ceee5ed16845ce1aee3f65c0e6db22b63b8187b1cb45"
+  },
+  {
+    "file": "vorher-iphone-vollbild.jpg",
+    "width": 390,
+    "height": 844,
+    "bytes": 22250,
+    "sha256": "fab7ddbdbf48e5d2908070d8caad0b08472d636d8b533d11cc67cd9fe772fa2e"
+  }
+]

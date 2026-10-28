@@ -14,11 +14,15 @@ export function previewSurfaceUrl(url){
  for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
  blob=URL.createObjectURL(new Blob([bytes],{type}));previewBlobs.set(url,blob);trustedBlobs.add(blob);return blob;
 }
+export function plateClipMarkup(geometry){
+ const {width,height,shape}=geometry;
+ return shape==='contour'?'<path d="'+escapeXml(contourPathWithHoles(geometry))+'" clip-rule="evenodd"/>':shape==='ellipse'?'<ellipse cx="'+width/2+'" cy="'+height/2+'" rx="'+width/2+'" ry="'+height/2+'"/>':'<rect width="'+width+'" height="'+height+'" rx="'+(geometry.cornerRadiusMm||0)+'"/>';
+}
 export function surfacePreview(svg,url,geometry){
  if(!url||!(trustedBlobs.has(url)||validSurface(url)))return svg;
  const {width,height,shape}=geometry;
  if(![width,height].every(n=>Number.isFinite(n)&&n>0))throw Error('Materialvorschau: Maße fehlen.');
- const clip=shape==='contour'?'<path d="'+escapeXml(contourPathWithHoles(geometry))+'" clip-rule="evenodd"/>':shape==='ellipse'?'<ellipse cx="'+width/2+'" cy="'+height/2+'" rx="'+width/2+'" ry="'+height/2+'"/>':'<rect width="'+width+'" height="'+height+'" rx="'+(geometry.cornerRadiusMm||0)+'"/>';
+ const clip=plateClipMarkup(geometry);
  // Chris 21.10.2026: hinter den Bruchkanten ist weiß zu sehen, keine dunkle Kante und keine Kontur. Die
  // Materialfläche bleibt (um den Bruchrand eingerückt) darunter, damit ohne Bild die Platte sichtbar bleibt.
  const inset=Math.min(4,width*.04,height*.04);

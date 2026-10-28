@@ -35,3 +35,17 @@ test('issue refuses incomplete bindings and configuration limits are enforced',(
  assert.throws(()=>createShopEntrySessions({secret,ttlMs:13*60*60*1000}));
  assert.throws(()=>createShopEntrySessions({secret,ttlMs:1000}));
 });
+
+test('switching sessions keeps the original expiry, including repeated hops and sub-minute remainder',()=>{
+ let now=1_800_000_000_000;const sessions=createShopEntrySessions({secret,clock:()=>now,ttlMs:3600000});
+ const first=sessions.issue(binding),deadline=first.expiresAt;let previous=first;
+ for(const elapsed of [1200000,1200000,1199000]){
+  now+=elapsed;previous=sessions.issue(binding,{expiresAt:sessions.verify(previous.token).expiresAt});
+  assert.equal(previous.expiresAt,deadline);
+ }
+ now=Date.parse(deadline);assert.throws(()=>sessions.issue(binding,{expiresAt:deadline}),{code:'shop_entry_expired'});
+ assert.throws(()=>sessions.verify(previous.token),{code:'shop_entry_expired'});
+ assert.throws(()=>sessions.issue(binding,{expiresAt:'invalid'}),{code:'shop_entry_expiry'});
+ const capped=sessions.issue(binding,{expiresAt:new Date(now+24*3600000).toISOString()});
+ assert.equal(Date.parse(capped.expiresAt),now+3600000);
+});

@@ -5,6 +5,7 @@
 import {cleanObject} from './contract.mjs';
 import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
+import {editorUi} from './toolbar-placement-model.mjs';
 
 const base64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Die Bilddatei konnte nicht gelesen werden.'));reader.readAsDataURL(blob);});
 async function referencePng(svg,geometry){
@@ -42,7 +43,7 @@ export function installShopCart(api,footer,gate){
  let busy=false,save=null;
  const quantity=()=>Number(api.r.querySelector('[data-fk-quantity]')?.value||1);
  const say=text=>{status.textContent=text;status.hidden=!text;};
- const label=()=>{button.textContent=busy?'Wird vorbereitet …':api.el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'In den Warenkorb';button.disabled=busy;};
+ const label=()=>{button.textContent=busy?'Wird vorbereitet …':api.el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'Jetzt in den Warenkorb';button.disabled=busy;};
  button.addEventListener('click',async()=>{
   if(busy)return;busy=true;label();
   try{
@@ -52,7 +53,8 @@ export function installShopCart(api,footer,gate){
    say('Deine Gestaltung wird gesichert …');
    const art=await printArtwork(api),used=new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)),media=[];
    for(const id of used){const asset=api.files.get(id);if(!asset?.file)throw Error('Ein Originalfoto fehlt. Bitte erneut hochladen.');media.push({id,original:await base64(asset.file),...(asset.blob?{edited:await base64(asset.blob)}:{})});}
-   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media,preview:await referencePng(art.svg,art.geometry)};
+   const ui=editorUi(api.el.state.ui);
+   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media,preview:await referencePng(art.svg,art.geometry),...(ui?{ui}:{})};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
    save??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:gate.request});
    const saved=await save(payload,gate.csrfToken||'shop-entry');

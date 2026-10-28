@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-28",
+  "environment": "Windows, Node.js; Python3 alias/worker unavailable",
+  "basis": "87154acb81dc9961156cc5a4eb278890f618c9b1",
+  "runs": [
+    {
+      "command": "node --test app/configurator/variant-m/*.test.mjs",
+      "total": 400,
+      "pass": 394,
+      "fail": 6,
+      "skipped": 0,
+      "note": "All six Python-start errors were present in the preceding PR run."
+    },
+    {
+      "command": "node --test app/workshop/*.test.mjs",
+      "total": 1372,
+      "pass": 1207,
+      "fail": 158,
+      "skipped": 7,
+      "note": "All 158 test names and normalized leading error signatures match preceding PR run. Intermediate run: one additional ECONNRESET; unchanged isolated webhook file 5/5, then passed in final full run."
+    },
+    {
+      "name": "Affected mobile, session, entry, gallery, bindings, queue and hidden-export tests",
+      "total": 96,
+      "pass": 96,
+      "fail": 0
+    },
+    {
+      "command": "node --test app/workshop/shop-design-gallery.load.test.mjs",
+      "total": 1,
+      "pass": 1,
+      "fail": 0
+    },
+    {
+      "command": "node --test app/configurator/variant-m/bundle.test.mjs app/configurator/variant-m/view-zoom.test.mjs",
+      "total": 10,
+      "pass": 10,
+      "fail": 0
+    },
+    {
+      "command": "node --test app/workshop/shopify-order-webhook.test.mjs",
+      "total": 5,
+      "pass": 5,
+      "fail": 0
+    }
+  ],
+  "load": {
+    "activeBindings": 150,
+    "sourceSurfaceBytes": 699182,
+    "cards": 40,
+    "coldFirstPageMs": 723.69,
+    "warmFirstPageMs": 22.66,
+    "coldEventLoopMaxMs": 41.06,
+    "warmEventLoopMaxMs": 15.77,
+    "modelsCold": 2,
+    "modelsAdditionalWarm": 0,
+    "duplicateExactResolves": 0
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 463769,
+    "lazyResources": {
+      "fonts": 30,
+      "motifs": 703
+    },
+    "bundle": {
+      "url": "/_bundle/editor-4217e9ec071b1566.mjs",
+      "modules": 108,
+      "styles": 14,
+      "bytes": 1157139,
+      "gzipBytes": 379045
+    }
+  },
+  "noLiveWrites": true
+}

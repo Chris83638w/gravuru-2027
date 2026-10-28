@@ -2,6 +2,7 @@ import {selectedProfile,designFromState,productionObjects} from './contract.mjs'
 import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {embedSurface} from './material-surface.mjs';
+import {editorUi} from './toolbar-placement-model.mjs';
 
 const dataURL=blob=>new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(Error('Bilddatei konnte nicht gelesen werden.'));r.readAsDataURL(blob);});
 const parse=svg=>new DOMParser().parseFromString(svg,'image/svg+xml');
@@ -24,6 +25,7 @@ export function jpegPDF(jpeg,pixels,widthMm,heightMm){
 }
 export async function exportCommerce({el,config,files,selection,binding}){
  const state=structuredClone(el.state),profile=selectedProfile(config,state.mOptions),design=designFromState(config,state),{width:w,height:h}=profile.geometry;
+ const ui=editorUi(state.ui);
  // Ü6.1: Hilfsebenen (role guide) bleiben Vorschau und gehen nie in Fertigungsdateien.
  const active=productionObjects(design.objects),assets=[],used=new Set(active.filter(o=>o.uxUploadId).map(o=>o.uxUploadId));
  const rasterObjects=active.filter(o=>o.type==='motif-raster'),rasterAssets=new Map();
@@ -66,7 +68,7 @@ export async function exportCommerce({el,config,files,selection,binding}){
  let rasterIndex=0;for(const blob of rasterAssets.values())add('Gravur Raster',blob,'gravur-raster-'+(++rasterIndex)+'.png');
  const uploadMap=[];let index=0;
  for(const id of used){const a=files.get(id);if(!a?.file)throw Error('Foto fehlt. Bitte erneut hochladen.');index++;const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp"}[a.file.type];const name=`bild-${index}-original.${ext}`;add('Originalbild '+index,a.file,name);const mapping={uploadId:id,original:name};if(a.blob){mapping.edited=`bild-${index}-bearbeitet.png`;add('Bearbeitetes Bild '+index,a.blob,mapping.edited);}uploadMap.push(mapping);}
- const snapshot={schema:'gravuru-shopify-design/v1',productId:binding.productId,profileId:profile.id,revision:profile.revision,design,geometry:profile.geometry,options:selection.options,price:selection,uploads:uploadMap,processing:profile.processing,photoProduction:`Originale und bearbeitete Bilder separat; Layout-PDF ist eine ${rasterObjects.length?600:300}-dpi-Rasterreferenz.`,rasterProduction:rasterObjects.map(o=>({assetId:o.assetId,x:o.x,y:o.y,w:o.w,h:o.h,rotation:o.rotation||0,opacity:o.opacity??1})),createdAt:new Date().toISOString()};
+ const snapshot={schema:'gravuru-shopify-design/v1',productId:binding.productId,profileId:profile.id,revision:profile.revision,design,geometry:profile.geometry,options:selection.options,price:selection,uploads:uploadMap,processing:profile.processing,...(ui?{ui}:{}),photoProduction:`Originale und bearbeitete Bilder separat; Layout-PDF ist eine ${rasterObjects.length?600:300}-dpi-Rasterreferenz.`,rasterProduction:rasterObjects.map(o=>({assetId:o.assetId,x:o.x,y:o.y,w:o.w,h:o.h,rotation:o.rotation||0,opacity:o.opacity??1})),createdAt:new Date().toISOString()};
  add('Bearbeitbarer Entwurf',new Blob([JSON.stringify(snapshot)],{type:'application/json'}),'gestaltung.json');
  return {assets,snapshot};
 }

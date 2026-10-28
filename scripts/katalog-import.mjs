@@ -40,7 +40,7 @@ try{
  if(partial)output=await fs.promises.open(partial,'wx');
  const reporter=output?createKatalogReportWriter(chunk=>output.writeFile(chunk,'utf8')):null;
  const available={...workshopResources().fonts,...workshop.fonts.resources()};
- const plan=await planKatalogImport(katalog,lineId,{repository:workshop.repository,families:workshop.families,bestand,available,converter:convertFont,fontLibrary:workshop.fonts,profiles:workshop.profiles,assets:workshop.assets,only,allDesigns:flag('alle-designs'),retainItems:commit,reporter,onProgress:metricsFile?sample:null});
+ const plan=await planKatalogImport(katalog,lineId,{repository:workshop.repository,families:workshop.families,bestand,available,converter:convertFont,fontLibrary:workshop.fonts,profiles:workshop.profiles,assets:workshop.assets,only,allDesigns:flag('alle-designs'),customerUx:flag('kunden-ux-20261028'),retainItems:commit,reporter,onProgress:metricsFile?sample:null});
  if(output){await output.close();output=null;await fs.promises.rename(partial,jsonFile);}
  console.log(formatReport(plan.report));
  if(!commit){console.log('\nDry-run: nichts geschrieben. Mit --commit werden '+plan.report.counts.new+' Produkte angelegt und '+plan.report.counts.update+' aktualisiert ('+dbFile+').');}

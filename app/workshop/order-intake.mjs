@@ -8,6 +8,7 @@ import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {capturePersonalization,personalizationForSnapshot,personalizationAttributes,tierUnitCents} from './cart-personalization.mjs';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
+import {SURCHARGE_UNAVAILABLE_MESSAGE} from '../configurator/variant-m/surcharge-availability.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 // K14 / Ü12.1: Zusatzfelder des Prüfstands als sichtbare Warenkorb-Eigenschaften (Bezeichnung → Anzeige).
@@ -224,7 +225,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    // K14: Bindung = Listenpreis je Stück; eine Mengenstaffel im Prüfstand senkt den Stückpreis nachprüfbar.
    const extra=contract?personalizationForSnapshot(contract,m):null,unit=extra?.unitCents??tierUnitCents(b.unit_cents,m);
    if(!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(422,'Menge: 1 bis 99.');
-   if(m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR')fail(422,'Prüfstand und Shop-/Preisbindung stimmen nicht überein.');
+   if(m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR'){
+    const p=m.selection?.price,missingExtras=!contract&&isNativeReviewSchema(m.schema)&&m.product.id===b.product_id&&m.product.revision===b.product_revision&&m.product.currency==='EUR'&&m.product.basePriceCents===p?.unitCents&&p.unitCents>unit&&[p.additionalMotifs,p.chargedUploads,p.fieldCents,p.backCents].some(n=>Number.isFinite(n)&&n>0);
+    fail(422,missingExtras?SURCHARGE_UNAVAILABLE_MESSAGE:'Prüfstand und Shop-/Preisbindung stimmen nicht überein.');
+   }
    const chosen=selection(b.id);
    if(isNativeReviewSchema(m.schema)){
     if(!chosen||optionKey(chosen)!==optionKey(m.selection?.options))fail(422,'Die Ausführung passt nicht zur Shop-Variante.');

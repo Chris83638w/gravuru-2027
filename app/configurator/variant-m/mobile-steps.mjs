@@ -10,9 +10,9 @@ export const MOBILE_QUERY='(max-width:'+MOBILE_MAX_WIDTH+'px)';
 export const PREVIEW_FRACTION=.4;
 export const PREVIEW_FRACTION_KEYBOARD=.25;
 export const PREVIEW_MIN_PX=120;
-// Kleine Bildschirme (z. B. Webansicht in einer App, < 760 px hoch): Platte etwas niedriger, damit der
-// Bearbeitungsbereich zwischen Platte und Schrittleiste bedienbar bleibt (Fehler 20.10.2026).
-export const PREVIEW_FRACTION_SMALL=.34;
+// Safari mit sichtbarer Browserleiste: auch auf kurzen Displays genügend Höhe
+// für 90 % Plattenbreite; der Bearbeitungsbereich bleibt separat scrollbar.
+export const PREVIEW_FRACTION_SMALL=.5;
 export const SMALL_VIEWPORT_PX=760;
 
 // Reihenfolge der geführten Schritte. `tabs` sind die Desktop-Reiter (`data-ux-tab`),
@@ -190,12 +190,12 @@ export async function installMobileSteps(api){
   }).observe($('.ux-tabs'),{attributes:true,subtree:true,attributeFilter:['aria-selected']});
   // Sichtbarer Bereich (visualViewport): Shell folgt der Tastatur, Platte bleibt im Bild.
   const vv=window.visualViewport;
-  const fieldFocused=()=>{const node=r.activeElement;return !!node&&!!node.closest('.ux-editor')&&node.matches('textarea,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=color]):not([type=button])');};
+  const fieldFocused=()=>{const node=r.activeElement;return !!node&&!!node.closest('.ux-editor,.ux-direct-input,.ux-direct-edit')&&node.matches('textarea,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=color]):not([type=button])');};
   let viewportOverride=null;
   function applyViewport(){
     if(!active)return;
     const height=viewportOverride?.height??(vv?vv.height:window.innerHeight),top=viewportOverride?.top??(vv?vv.offsetTop:0);
-    const keyboardOpen=fieldFocused()||(viewportOverride?.keyboardOpen===true);
+    const keyboardOpen=(fieldFocused()&&height<window.innerHeight*.75)||(viewportOverride?.keyboardOpen===true);
     r.host.style.setProperty('--ux-vv-height',Math.round(height)+'px');
     r.host.style.setProperty('--ux-vv-top',Math.round(top)+'px');
     r.host.style.setProperty('--ux-mobile-preview-h',previewHeight({viewportHeight:height,keyboardOpen})+'px');
@@ -213,7 +213,7 @@ export async function installMobileSteps(api){
     // Hinweise (Stand wiederhergestellt, Überlagerung …) nicht über/in der Platte, sondern oben im
     // Bearbeitungsbereich – sonst schrumpft die feste Platte auf einen Streifen (Fehler 20.10.2026).
     const editor=$('.ux-editor');
-    for(const node of [$('.ux-session-note'),$('.ux-conflict-hints')])if(node&&editor&&!notes.has(node)){notes.set(node,{parent:node.parentNode,next:node.nextSibling});editor.prepend(node);}
+    for(const node of [$('.ux-conflict-hints')])if(node&&editor&&!notes.has(node)){notes.set(node,{parent:node.parentNode,next:node.nextSibling});editor.prepend(node);}
     bar.hidden=false;renderSteps();current=stepForTab(steps,selectedTab())||steps[0]?.id||'options';
     showStep(current,{scroll:false});applyViewport();updateTotal();
   }

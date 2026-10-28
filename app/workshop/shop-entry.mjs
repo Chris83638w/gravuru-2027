@@ -5,6 +5,8 @@ import {prepareThemeCart} from './theme-cart.mjs';
 import {isDeepStrictEqual} from 'node:util';
 import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
 import {createShopEntrySessions} from './shop-entry-session.mjs';
+import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {queueGalleryPreview} from './shop-gallery-preview-queue.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
@@ -17,9 +19,9 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 // bekommt eine kurzlebige signierte Sitzung und die Editorseite auf dem App-Host. Alle API-Routen hier
 // lesen nur das gebundene Produkt und schreiben nur private Entwürfe/Prüfstände und den Storefront-
 // Warenkorb des vorhandenen Pfads (bound-test-cart → draft-cart-handoff). Keine Händleranmeldung,
-// keine Produktaufzählung, keine Preise aus dem Browser, keine Fertigungsfreigabe.
+// Galerie nur nach Sitzungsprüfung im selben Datenbereich; keine Preise aus dem Browser, keine Fertigungsfreigabe.
 const API='/api/shop-entry/';
-const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs'];
+const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs'];
 const WARM_RUNTIME={'/_merchant-acryl-editor.html':['/_acryl-runtime/lazy/katalog-kern.json']};
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const gid=(value,kind)=>typeof value==='string'&&new RegExp('^gid://shopify/'+kind+'/[1-9][0-9]{0,19}$').test(value);
@@ -146,6 +148,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   return copy;
  }
  function publicBinding(binding){return {shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision,options:structuredClone(binding.options||{})};}
+ const designGallery=createShopDesignGallery({secret,resolve,modelFor,allowedAssets,clock,checkBinding:(store,binding,model)=>requireDoorbellApproval(store,binding,model.universal)});
  function startParams(params){
   const number=(name,kind)=>{const values=params.getAll(name);if(values.length!==1)fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');const v=values[0].replace('gid://shopify/'+kind+'/','');if(!/^[1-9][0-9]{0,19}$/.test(v))fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');return 'gid://shopify/'+kind+'/'+v;};
   const optional=(name,test)=>{const values=params.getAll(name);if(!values.length||values[0]==='')return null;if(values.length!==1||!test(values[0]))fail(422,'shop_entry_params','Der Bearbeiten-Verweis ist ungültig.');return values[0];};
@@ -154,7 +157,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   // Rücksprung nur als Pfad im Shop (keine fremden Adressen): /products/<handle> o. ä.
   const back=optional('back',v=>v.length<=512&&/^\/(?!\/)[A-Za-z0-9/_.~%-]*(?:\?[A-Za-z0-9=&_.~%-]*)?$/.test(v));
   const embed=optional('embed',v=>v==='1')==='1',ticket=optional('format',v=>v==='json')==='json';
-  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed,ticket};
+  const toolbar=params.getAll('leiste'),leiste=toolbar.length===1&&['a','b'].includes(toolbar[0])?toolbar[0]:null;
+  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed,ticket,leiste};
  }
  function start(req,res,url){
   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -168,7 +172,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   const fragment=new URLSearchParams({s:issued.token});
   if(input.config){fragment.set('config',input.config);fragment.set('rev',input.rev);if(input.line)fragment.set('line',input.line);}
   if(input.back)fragment.set('back',input.back);
-  if(input.embed)fragment.set('embed','1');
+  if(input.embed){fragment.set('embed','1');if(input.leiste)fragment.set('leiste',input.leiste);}
   const target=origin+pagePath+'#'+fragment.toString();
   // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.
   if(input.ticket)return json(res,200,{url:target,expiresAt:issued.expiresAt});
@@ -229,9 +233,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   }catch(error){
    // Ein nicht mehr gültiger gemerkter Warenkorb (z. B. bereits bestellt) darf den nächsten Versuch nicht blockieren.
    if(usedExisting&&cartContext.cartId===usedExisting.cartId)cartContext.cartId=null;
-   // Ohne Preisvertrag der Bindung weist der Bestelleingang kostenpflichtige Zusätze ab (nichts wird kostenlos
-   // durchgereicht); der Kunde bekommt dafür eine verständliche Erklärung statt der internen Meldung.
-   if(error.code==='order_intake'&&error.status===422&&/Preisbindung/.test(error.message||''))error.message='Diese Gestaltung enthält kostenpflichtige Zusätze (z. B. weitere Motive oder Fotos), die für dieses Produkt im Shop noch nicht freigeschaltet sind. Bitte die Zusätze entfernen oder den Shop kontaktieren.';
+   // The intake distinguishes missing surcharge support from foreign/stale bindings.
+   // Preserve that distinction; a generic price-binding mismatch must not be relabelled as extra motifs.
    throw error;
   }finally{cartContext.busy=false;req.removeListener('aborted',abort);res.removeListener('close',abort);}
  }
@@ -324,6 +327,31 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      allowedAssets(context.store,context.binding,model);
      return json(res,200,{model:presentedModel(model,context.binding,context.store),binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
     }
+    if(action==='design-gallery'){
+     if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+     if([...url.searchParams.keys()].some(k=>k!=='page')||url.searchParams.getAll('page').length>1||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+     checkOrigin(req,{mutating:false});const context=active(req);modelFor(context.store,context.binding);
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0)});active(req);
+     return json(res,200,result);
+    }
+    if(action==='design-gallery-preview'){
+     if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+     if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
+     checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,8192);
+     modelFor(context.store,context.binding);
+     if(Object.keys(input).length!==1||typeof input.target!=='string')fail(422,'shop_gallery_fields','Bitte ein Design aus der Auswahl wählen.');
+     const bytes=await queueGalleryPreview(()=>{if(req.aborted||res.destroyed)fail(409,'shop_gallery_cancelled','Vorschau abgebrochen.');const current=active(req);return Buffer.from(designGallery.preview(current,input.target));});
+     res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}));return res.end(bytes);
+    }
+    if(action==='design-switch'){
+     if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+     if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
+     checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,8192);
+     modelFor(context.store,context.binding);
+     if(Object.keys(input).length!==1||typeof input.target!=='string')fail(422,'shop_gallery_fields','Bitte ein Design aus der Auswahl wählen.');
+     const chosen=designGallery.target(context,input.target),issued=sessions.issue(chosen.binding,{customerId:context.session.customerId,expiresAt:context.session.expiresAt});
+     return json(res,200,{token:issued.token,expiresAt:issued.expiresAt,designId:chosen.design.id,binding:publicBinding(chosen.binding),widthMm:chosen.geometry.width,heightMm:chosen.geometry.height,unitCents:chosen.price.unitCents,currency:chosen.price.currency,productionReady:false});
+    }
     const asset=action.match(/^design-assets\/([a-f0-9]{64})\/preview\.svg$/);
     if(asset){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -362,7 +390,10 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
     fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
    }catch(error){
     const status=ERROR_STATUSES.includes(error.status)?error.status:503,code=/^[a-z][a-z0-9_]{0,70}$/.test(error.code||'')?error.code:'shop_entry_unavailable';
-    const message=status>=500?(status===502?'Der Warenkorb konnte nicht bestätigt werden. Bitte noch einmal auf „In den Warenkorb“ klicken.':'Der Konfigurator ist gerade nicht verfügbar. Bitte später erneut versuchen.'):status===401?'Die Anfrage kommt nicht bestätigt aus dem Shop. Bitte die Produktseite neu öffnen.':(typeof error.message==='string'&&error.message?error.message:'Die Anfrage konnte nicht bestätigt werden.');
+    // This code covers invalid/stale contracts as well as unsupported prices. Only
+    // order-intake can identify a missing surcharge contract; preserve its message.
+    const priceUnconfirmed=status===422&&code==='cart_personalization';
+    const message=priceUnconfirmed?'Der Preis dieser Gestaltung konnte nicht bestätigt werden. Bitte öffne das Produkt erneut. Deine Gestaltung bleibt erhalten.':status>=500?(status===502?'Der Warenkorb konnte nicht bestätigt werden. Bitte noch einmal auf „In den Warenkorb“ klicken.':'Der Konfigurator ist gerade nicht verfügbar. Bitte später erneut versuchen.'):status===401?'Die Anfrage kommt nicht bestätigt aus dem Shop. Bitte die Produktseite neu öffnen.':(typeof error.message==='string'&&error.message?error.message:'Die Anfrage konnte nicht bestätigt werden.');
     if(res.headersSent||res.destroyed)return;
     if(url.pathname===startPath){const html=Buffer.from(simplePage(status===404?'Noch nicht eingerichtet':'Konfigurator nicht verfügbar',message));res.writeHead(status,headersFor('text/html; charset=utf-8',{'Content-Length':html.length}));return res.end(html);}
     json(res,status,{error:{code,message},productionReady:false});

@@ -31,16 +31,18 @@ function editor(config,resources){
   return el;
 }
 // Lädt die K7-Blöcke aus ux.mjs in einen Kontext: Guard anlegen, Sync-Hook, Wiederherstellung beim Start, „Neu beginnen“.
-function mountUx({config,resources,storage,timers}){
+function mountUx({config,resources,storage,timers,pendingDesignTransfer=false}){
   const el=editor(config,resources),said=[],banner={hidden:true},files=new Map();
   const env={el,config,profile:config.profile,files,uploadReferences,say:m=>said.push(m),said,banner,$:s=>s==='[data-ux-session]'?banner:{hidden:true},update(){},notifyCorrection(){},
     installAccountDrafts:()=>null,dialogs:{account:{}},button(){},esc:v=>v,uploadPending:false,URL:{revokeObjectURL(){}},location:{reload(){env.reloaded=true;}},
-    window:{localStorage:storage,addEventListener(type,fn){(env.listeners[type]||=[]).push(fn);}},listeners:{},
+    window:{parent:{GravuruShopEntry:{designGallery:{hasPendingTransfer:()=>pendingDesignTransfer}}},localStorage:storage,addEventListener(type,fn){(env.listeners[type]||=[]).push(fn);}},listeners:{},
     createSessionGuard:options=>createSessionGuard({...options,schedule:fn=>{timers.queued=fn;return 1;},cancel:()=>{timers.queued=null;}})};
   vm.createContext(env);
+  vm.runInContext(line('ux.mjs','const chosenProfile='),env);
   vm.runInContext(line('ux.mjs',"const oldSync=el.sync;el.sync=function(...args){"),env);
   vm.runInContext(block('ux.mjs','  function restoreDraft(draft){','\n  }'),env);
   vm.runInContext(block('ux.mjs','  let sessionGuard=null,initialDraft=null,accountDrafts=null;','\n  }'),env);
+  vm.runInContext(line('ux.mjs','const pendingDesignTransfer='),env);
   vm.runInContext(block('ux.mjs','  if(sessionGuard&&!config?.workbench){','  }else sessionGuard=null;'),env);
   vm.runInContext(line('ux.mjs',"if(config&&!config.workbench&&typeof el.draftPayload==='function')accountDrafts=installAccountDrafts("),env);
   env.restart=()=>{env.action='session-restart';vm.runInContext('(function(){'+line('ux.mjs',"if(action==='session-restart')")+'})()',env);};
@@ -87,6 +89,22 @@ test('Sitzungsschutz: Foto-Referenzen bleiben, Bilder nicht – Hinweis zum erne
   const second=mountUx({config,resources,storage,timers});
   assert.equal(second.el.state.objects.find(o=>o.type==='photoSlot').uxUploadId,'upload-1');
   assert.equal(second.files.size,0);assert.match(second.said.at(-1),/Foto bitte erneut hochladen/);
+});
+
+test('Sitzungsschutz: laufende Designübernahme hat Vorrang; alte Sitzung bleibt bis zur nächsten gültigen Änderung erhalten',()=>{
+  const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};
+  const previous=mountUx({config,resources,storage,timers});
+  previous.el.state.objects.find(o=>o.id==='names').text='Lena & Max';previous.el.sync();assert.equal(timers.queued(),true);timers.queued=null;
+  const key=previous.guard().key,stored=storage.data.get(key);
+  const incoming=mountUx({config,resources,storage,timers,pendingDesignTransfer:true});
+  assert.equal(text(incoming.el),config.profile.designs[0].objects.find(o=>o.id==='names').text,'ausstehende Übernahme wird nicht durch den alten Stand ersetzt');
+  assert.equal(incoming.banner.hidden,true);assert.deepEqual(incoming.said,[]);
+  assert.equal(storage.data.get(key),stored,'übersprungene Wiederherstellung löscht keinen gültigen Stand');
+  assert.equal(timers.queued,null,'Start ohne Änderung überschreibt den alten Stand nicht');
+  incoming.el.state.objects.find(o=>o.id==='names').text='Mia & Ben';incoming.el.sync();
+  assert.equal(typeof timers.queued,'function','nach der Übernahme bleibt der Sitzungsschutz aktiv');assert.equal(timers.queued(),true);timers.queued=null;
+  const reopened=mountUx({config,resources,storage,timers});
+  assert.equal(text(reopened.el),'Mia & Ben');assert.equal(reopened.banner.hidden,false);
 });
 
 test('Sitzungsschutz: ungültige, fremde oder abgelaufene Stände werden still verworfen; gesperrter Speicher stört nicht',()=>{

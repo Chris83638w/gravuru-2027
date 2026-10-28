@@ -4,7 +4,7 @@ import {spacerPreview,screwPreview,keepoutPreview,optionTileIcon,optionTilePrice
 import {designAreaPreview} from './design-area.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
-import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl} from './material-surface.mjs';
+import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl,plateClipMarkup} from './material-surface.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 // Fototipp auf der Platte, bevor die Kundenoberfläche fertig ist (build.mjs ruft es direkt nach mount auf).
@@ -40,6 +40,12 @@ export function installUniversal(configInput) {
     let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
+    // Clip artwork to the real plate for every universal shape; external edit handles remain outside.
+    // This is visual containment only. The shared placement and server validation still reject overflow.
+    if(!dynamicDoorbell&&!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
+      const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+plateClipMarkup(profile(surface).geometry)+'</clipPath>';root.prepend(defs);
+      for(const group of [...root.querySelectorAll('[data-object]')]){const wrapper=doc.createElementNS(ns,'g');wrapper.setAttribute('clip-path','url(#'+clipId+')');group.before(wrapper);wrapper.append(group);}result=root.outerHTML;
+    }
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
     // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026), und seit 22./23.10.2026
     // auch keinen Hinweis zu Texten nahe an Löchern (nur noch mechanische Prüfung). Schrauben/Abstandshalter
@@ -130,7 +136,7 @@ export function installUniversal(configInput) {
     // Auswahlliste darüber bleibt als barrierefreie Alternative. Preis- und Auswahllogik bleiben unverändert.
     const pictures=document.createElement('div');pictures.className='m-option-pictures';
     const tileValues=g=>g.id==='mounting'?g.values:g.values.filter(v=>v.thumbnail);
-    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+optionTileIcon(v)+'<strong>'+esc(v.label)+'</strong><small>'+esc(optionTilePrice(v,money,{fullPrice:!!fullOptionPrice(g)}))+'</small></button>').join('')+'</div>').join('');
+    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+optionTileIcon(v,{mounting:g.id==='mounting'})+'<strong>'+esc(v.label)+'</strong><small>'+esc(optionTilePrice(v,money,{fullPrice:!!fullOptionPrice(g)}))+'</small></button>').join('')+'</div>').join('');
     picks.append(pictures);
     style.textContent+='.m-option-pictures>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:6px 0 10px}.m-option-pictures>div:empty{display:none}.m-option-pictures button{display:grid;justify-items:center;align-content:center;gap:6px;min-height:110px;padding:12px 18px;border:1px solid #dce5df;border-radius:12px;background:#fff;color:#1c3327;position:relative}.m-option-pictures button[aria-pressed=true]{border-color:#17634d;background:#edf5f0}.m-option-pictures svg{width:32px;height:32px;display:block;flex:none}.m-option-pictures img{width:56px;height:40px;object-fit:contain;display:block;flex:none}.m-option-pictures strong{font-size:14px;font-weight:600;line-height:1.3;text-align:center}.m-option-pictures small{font-size:12px;color:#526b5d}@media(max-width:600px){.m-option-pictures button{min-height:95px}.m-option-pictures svg{width:27px;height:27px}}';
     pictures.addEventListener('click',e=>{const button=e.target.closest('[data-picture-option]');if(!button)return;changeOption(button.dataset.pictureGroup,button.dataset.pictureOption);});
@@ -155,7 +161,7 @@ export function installUniversal(configInput) {
     // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.
     function updateOptionVisibility(){
       let shown;try{shown=resolvedOptions(config,options);}catch{shown=null;}
-      for(const select of picks.querySelectorAll('select[data-m-option]')){const g=(p.optionGroups||[]).find(x=>x.id===select.dataset.mOption),visible=!g?.visibleIf||(shown?shown[g.id]!==undefined:true);select.closest('label').hidden=!visible;}
+      for(const select of picks.querySelectorAll('select[data-m-option]')){const g=(p.optionGroups||[]).find(x=>x.id===select.dataset.mOption),visible=!g?.visibleIf||(shown?shown[g.id]!==undefined:true);select.closest('label').hidden=!visible||g?.id==='mounting';}
       for(const group of pictures.querySelectorAll('[role=group]')){const id=group.querySelector('[data-picture-group]')?.dataset.pictureGroup;if(id)group.hidden=shown?shown[id]===undefined:false;}
       for(const f of optionFields(p)){
         const row=fieldBox.querySelector('[data-m-field-row="'+CSS.escape(f.id)+'"]'),input=row?.querySelector('[data-m-field]');if(!row)continue;
@@ -227,7 +233,7 @@ export function installUniversal(configInput) {
       return action.call(this,key,...args);
     };
     // K7: Entwurf im Vertragsformat lesen/schreiben (Sitzungsschutz, Konto-Entwurf). `draft:true` erlaubt unfertige Pflichttexte.
-    el.restoreDraft=function(input,{draft=false}={}){const restored=readDraft(config,input,this.fontData,motifs(),{draft});this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);this.state.selected=null;photos.clear();photoDesign='';this.sync();return restored;};
+    el.restoreDraft=function(input,{draft=false}={}){const restored=readDraft(config,input,this.fontData,motifs(),{draft});this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);if(restored.ui)this.state.ui=clone(restored.ui);this.state.selected=null;photos.clear();photoDesign='';this.sync();return restored;};
     el.draftPayload=function({draft=false}={}){return saveDraft(config,this.state,options,this.fontData,motifs(),{draft});};
     el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const input=JSON.parse(await file.text());await this.uxEnsureDraftResources?.(input);this.restoreDraft(input);$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
     el.chooseDesign=function(id,{carry=true}={}){
@@ -306,7 +312,7 @@ export function installUniversal(configInput) {
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';
-        $('[data-fk-breakdown]').textContent=price?.additionalMotifs ? price.additionalMotifs+' zusätzliche Motive · '+money(price.additionalMotifs*config.extraMotifCents) : '';
+        $('[data-fk-breakdown]').textContent=(price?.chargedMotifs??price?.additionalMotifs) ? (price.chargedMotifs??price.additionalMotifs)+(config.motifCharge==='all'?' Motive · ':' weitere/geänderte Motive · ')+money((price.chargedMotifs??price.additionalMotifs)*config.extraMotifCents) : '';
         // Chris 21.10.2026: Pflichtfelder meldet erst der Abschluss (Textreiter + „Gestaltung fertig“), nicht dauerhaft hier.
         saveDraft(config,el.state,options,el.fontData,motifs(),{draft:true}); issue.textContent='';
       }catch(error){issue.textContent=error.message;}

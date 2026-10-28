@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {emptyPixelPosition,placementScales,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {PLACEMENT_STEP,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import fs from 'node:fs';
+import vm from 'node:vm';
 import {textPaths,measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {cleanObject} from './contract.mjs';
 import {rightForProperty} from './element-rights.mjs';
@@ -31,7 +32,17 @@ test('Motivplatzsuche: Stufen 1 → 0,9ⁿ → Mindestgröße; Pixelsuche findet
  assert.match(code,/insideContour\(g,x\/scale,y\/scale,-margin\)/);
  assert.match(code,/for\(const s of placementScales\(minScale\)\)/);
  assert.match(code,/if\(s<1\)\{object\.w\*=s;object\.h\*=s;\}/);
- assert.match(code,/object\.x=config\.profile\.geometry\.width\/2;object\.y=config\.profile\.geometry\.height\/2;el\.state\.selected=object\.id;el\.sync\(\);say\(NO_FREE_SPACE_MESSAGE\);/);
+ // Execute the actual no-space fallback: normal plates use their centre;
+ // layered doorbells use the centre of the permitted design area.
+ const fallback=code.slice(code.lastIndexOf('\n object.x='),code.lastIndexOf('\n}'));
+ assert.ok(fallback.startsWith('\n object.x='),'echter Fallback ist vorhanden');
+ for(const [area,expected] of [[null,{x:60,y:40}],[{left:12,right:72,top:18,bottom:46},{x:42,y:32}]]){
+  const object={id:'new',w:10,h:8},messages=[];let synced=0;
+  const el={state:{selected:null},sync(){synced++;}};
+  vm.runInNewContext(fallback,{area,object,el,config:{profile:{geometry:{width:120,height:80}}},say:message=>messages.push(message),NO_FREE_SPACE_MESSAGE});
+  assert.deepEqual(object,{id:'new',w:10,h:8,...expected});assert.equal(el.state.selected,'new');assert.equal(synced,1);
+  assert.deepEqual(messages,[NO_FREE_SPACE_MESSAGE]);
+ }
  assert.equal(NO_FREE_SPACE_MESSAGE,'Kein freier Platz – Element liegt über anderen.');
 });
 test('Italic is retained, protected by content rights and rendered as vector geometry',()=>{

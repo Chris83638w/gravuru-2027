@@ -1,3 +1,4 @@
+import {alignmentContent} from './ui-icons.mjs';
 import {showOverlapWarnings,editableTexts,centerTexts,mechanicalHints,hintKey,motifScore,templateOverlap} from './customer-tools-model.mjs';
 import {themeDefinition,orderMotifCategories} from './design-gallery-model.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -16,7 +17,7 @@ export async function installCustomerTools(api){
  el.uxCollisionSVG=o=>{if(o.uxHidden||o.uxDecoration||o.type==='photoSlot'&&!o.uxUploadId)return '';const svg=el.objectSVG(o);return o.uxUploadId?svg:svg.replace(/(fill|stroke)="(?:#fff(?:fff)?|white|#f[0-9a-f]{5})"/gi,'$1="#000000"');};
  let multi=false;const ids=new Set();
  const alignment=document.createElement('section');alignment.className='ux-multi-align';
- alignment.innerHTML=button('multi-texts','Mehrere Texte auswählen','aria-pressed="false"')+'<div data-multi-body hidden><p>Texte hier oder auf dem Schild auswählen. Höhen und Abstände bleiben erhalten.</p><div data-multi-list></div>'+button('multi-center','Mittig untereinander ausrichten','class="ux-primary" disabled')+'</div>';
+ alignment.innerHTML=button('multi-texts','Mehrere Texte auswählen','aria-pressed="false"')+'<div data-multi-body hidden><p>Texte hier oder auf dem Schild auswählen. Höhen und Abstände bleiben erhalten.</p><div data-multi-list></div>'+'<div class="ux-group-align" role="group" aria-label="Ausgewählte Texte ausrichten">'+button('multi-center',alignmentContent('center'),'aria-label="Ausgewählte Texte mittig ausrichten" disabled')+'</div>'+'</div>';
  $('[data-ux=add-text]').after(alignment);
  const proposal=document.createElement('div');proposal.className='ux-center-proposal';proposal.hidden=true;proposal.innerHTML='<span>Dieses Element genau mittig ausrichten?</span>'+button('suggest-center','Ja, mittig ausrichten')+button('keep-center','Position beibehalten');$('.ux-preview').append(proposal);let proposedId=null;
  el.uxSuggestCenter=o=>{proposedId=o&&Math.abs(o.x-el.state.width/2)<=4&&Math.abs(o.x-el.state.width/2)>.05?o.id:null;proposal.hidden=!proposedId;};
@@ -25,8 +26,7 @@ export async function installCustomerTools(api){
  el.uxToggleTextSelection=toggleText;
  function updateAlignment(){const texts=editableTexts(el.state.objects);for(const id of ids)if(!texts.some(o=>o.id===id))ids.delete(id);
   $('[data-multi-list]').innerHTML=texts.map(o=>`<label><input type="checkbox" data-align-id="${esc(o.id)}" ${ids.has(o.id)?'checked':''}>${esc(name(o))}</label>`).join('');
-  $('[data-ux=multi-center]').disabled=ids.size<2;
-  $('[data-ux=multi-center]').textContent=`${ids.size||'Ausgewählte'} Texte mittig untereinander ausrichten`;
+  for(const control of all('.ux-group-align button'))control.disabled=ids.size<2;
  }
  r.addEventListener('change',e=>{if(e.target.matches('[data-align-id]'))toggleText(e.target.dataset.alignId);});
  r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;
@@ -35,11 +35,12 @@ export async function installCustomerTools(api){
  });
 
  // Ask after applying the chosen font to the original text. Keep locked/hidden texts unchanged.
- const fontDialog=dialog('font-transfer','Schrift auf weitere Texte übertragen?', '<p>Wähle die Textzeilen, die dieselbe Schrift erhalten sollen.</p><div data-font-targets></div>'+button('font-transfer-apply','Auf ausgewählte Texte übertragen','class="ux-primary"')+button('close','Nur diesen Text ändern'));
+ const fontDialog=dialog('font-transfer','Schrift auf weitere Texte übertragen?', '<p>Wähle die Texte, die dieselbe Schrift erhalten sollen.</p><label class="ux-font-all"><input type="checkbox" data-font-all checked>Alle auswählen</label><div data-font-targets></div><div class="ux-font-transfer-actions">'+button('font-transfer-apply','Auf ausgewählte Texte übertragen','class="ux-primary"')+button('close','Nur diesen Text ändern')+'</div>');
+ r.addEventListener('change',event=>{if(event.target.matches('[data-font-all]'))for(const input of all('[data-font-target]'))input.checked=event.target.checked;else if(event.target.matches('[data-font-target]')){const inputs=all('[data-font-target]'),selected=inputs.filter(input=>input.checked).length,master=$('[data-font-all]');master.checked=selected===inputs.length;master.indeterminate=selected>0&&selected<inputs.length;}});
  let transferFont='';
  r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;
   if(key==='font-apply'){const source=selected();if(!source||source.type!=='text')return;transferFont=source.font;const others=editableTexts(el.state.objects).filter(o=>o.id!==source.id);if(!others.length)return;
-   $('[data-font-targets]').innerHTML=others.map(o=>`<label><input type="checkbox" data-font-target="${esc(o.id)}" checked>${esc(name(o))}</label>`).join('');fontDialog.showModal();
+   $('[data-font-targets]').innerHTML=others.map(o=>`<label><input type="checkbox" data-font-target="${esc(o.id)}" checked>${esc(name(o))}</label>`).join('');$('[data-font-all]').checked=true;$('[data-font-all]').indeterminate=false;fontDialog.showModal();
   }
   if(key==='font-transfer-apply'){const targets=new Set(all('[data-font-target]:checked').map(n=>n.dataset.fontTarget));let skipped=0;mutate(()=>{for(const o of editableTexts(el.state.objects).filter(o=>targets.has(o.id))){try{const next={...o,font:transferFont};measureText(next,el.fontData);Object.assign(o,next);}catch{skipped++;}}});fontDialog.close();say(skipped?`Schrift übernommen. ${skipped} Text(e) enthalten nicht unterstützte Zeichen und bleiben unverändert.`:'Schrift auf die ausgewählten Texte übertragen.');}
  });

@@ -1,3 +1,4 @@
+import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
@@ -14,10 +15,9 @@ export async function installWorkflow(api){
  const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
  const surface=()=>{const geometry=el.uxProfileGeometry?.()||profile.geometry;if(config?.doorbell?.schema==='gravuru-doorbell/v1'&&geometry.designArea){const a=geometry.designArea;return {...geometry,x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top};}return config?{x:0,y:0,...geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;};
  const obstacles=()=>{const bell=(el.uxProfileGeometry?.()||profile.geometry).bell;return (!config||config.doorbell)&&bell?[{x:bell.x+bell.width/2,y:bell.y+bell.height/2,w:bell.width,h:bell.height}]:[];};
- function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent='Ausführungen';const contents=$('[data-ux=contents]');if(contents)contents.innerHTML='Ebenenverwaltung <span data-ux-count>('+el.state.objects.length+')</span>';const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
+ function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent='Ausführungen';const contents=$('[data-ux=contents]');if(contents)contents.innerHTML=uiIcon('layers')+'<span class="ux-tool-label">Ebenen</span> <span data-ux-count>('+el.state.objects.length+')</span>';if(contents){contents.setAttribute('aria-label','Ebenen ('+el.state.objects.length+')');contents.title='Ebenen ('+el.state.objects.length+')';}const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
  rename();$('.fk-scope-note')?.setAttribute('hidden','');const mounting=$('[data-fk-mount-note]');if(mounting)mounting.classList.add('workflow-mount-note');
  const mountSelect=$('[data-fk-mount]');if(mountSelect){const label=mountSelect.closest('label');if(label){const caption=label.querySelector('span');if(caption)caption.textContent='Befestigungsart wählen';else if(label.firstChild?.nodeType===3)label.firstChild.textContent='Befestigungsart wählen ';}mountSelect.setAttribute('aria-label','Befestigungsart wählen');}
- $('.ux-preview-size>span:last-child').textContent='Zoom';$('.ux-preview-size input').setAttribute('aria-label','Zoom – Produktvorschau vergrößern');
  // Guides no longer need a customer switch. Snapping is always available.
  $('.ux-guides-row').hidden=true;$('[data-setting=guides]').checked=false;$('[data-ux-guides]').checked=false;
  el.uxSuggestCenter=()=>{};$('.ux-center-proposal').hidden=true;
@@ -35,8 +35,9 @@ export async function installWorkflow(api){
  el.uxTextTap=id=>{const now=performance.now();if(tap?.id===id&&now-tap.time<900){tap=null;editText(id);}else tap={id,time:now};};
  r.addEventListener('dblclick',e=>{const id=e.target.closest('[data-object]')?.dataset.object||(e.target.closest('.plate-holder')?selected()?.id:null);if(id)editText(id);},true);
  // Direct group alignment, independent of guide visibility.
- $('[data-ux=multi-center]').insertAdjacentHTML('beforebegin',button('multi-left','Links bündig')+button('multi-right','Rechts bündig'));
- r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(!['multi-left','multi-right'].includes(key))return;const ids=all('[data-align-id]:checked').map(n=>n.dataset.alignId);mutate(()=>alignGroup(el.state.objects,ids,key==='multi-left'?'left':'right',surface()));});
+ $('[data-ux=multi-center]').insertAdjacentHTML('beforebegin',button('multi-left',alignmentContent('left'),'aria-label="Ausgewählte Texte links bündig ausrichten" disabled'));
+ $('[data-ux=multi-center]').insertAdjacentHTML('afterend',button('multi-right',alignmentContent('right'),'aria-label="Ausgewählte Texte rechts bündig ausrichten" disabled'));
+ r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(!['multi-left','multi-right'].includes(key))return;const ids=all('[data-align-id]:checked').map(n=>n.dataset.alignId);if(ids.length<2)return;mutate(()=>alignGroup(el.state.objects,ids,key==='multi-left'?'left':'right',surface()));});
  const boundsCache=new Map();
  function bounds(o){const key=JSON.stringify([o.text,o.font,o.size,o.bold,o.italic,o.letterSpacing,o.textAnchor,o.lineHeight,o.w]);if(boundsCache.has(key))return boundsCache.get(key);const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);const b=svg.firstElementChild.getBBox(),value={x:b.x,y:b.y,width:b.width,height:b.height};svg.remove();if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,value);return value;}
  el.uxAlign=mode=>{const o=selected();if(!o||o.uxLocked)return;mutate(()=>{const xs=transformedCorners(o,bounds(o)).map(p=>p.x),a=surface();o.x+=(mode==='left'?a.x-Math.min(...xs):mode==='right'?a.x+a.width-Math.max(...xs):a.x+a.width/2-(Math.min(...xs)+Math.max(...xs))/2);});};
@@ -107,7 +108,7 @@ export async function installWorkflow(api){
  const moreToggle=document.createElement('button');moreToggle.type='button';moreToggle.className='workflow-more-designs';moreToggle.dataset.ux='more-designs';moreToggle.hidden=true;moreToggle.setAttribute('aria-expanded','false');
  ($('.ux-design-reveal')||gallery).after(moreToggle);
  function arrangeGallery(){if(arranging||!gallery)return;arranging=true;try{
-  const order=galleryOrder(profile.designs,productTheme(profile)),cards=new Map(all('.c-gallery [data-c-design]').map(c=>[c.dataset.cDesign,c]));
+  const order=galleryOrder(profile.designs,config?.designSelection==='all-approved'?null:productTheme(profile)),cards=new Map(all('.c-gallery [data-c-design]').map(c=>[c.dataset.cDesign,c]));
   const ordered=[...order.primary,...order.more].map(id=>cards.get(id)).filter(Boolean);
   if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);
   const more=new Set(order.more);let hiddenMore=0;

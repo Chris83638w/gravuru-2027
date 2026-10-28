@@ -316,3 +316,12 @@ test('M: resizing a print motif scales painted stroke widths along with its path
  }
  assert.deepEqual(converted.motifs,before);assert.equal(scaleEmbeddedMotifs(converted.motifs,1)[0].svgFragment.replace(/d="[^"]*"/,''),before[0].svgFragment.replace(/d="[^"]*"/,''),'identity scaling preserves every paint attribute; existing path whitespace normalization is unchanged');
 });
+
+test('one source text group with several text nodes becomes one editable multiline field without dropping lines',()=>{
+ const xml='<svg viewBox="0 0 90 60"><g id="text-1" data-feld="spruch"><text x="45" y="20" font-size="4" font-family="Montserrat" text-anchor="middle">Für immer</text><text x="45" y="26" font-size="4" font-family="Montserrat" text-anchor="middle">in unseren Herzen</text></g></svg>';
+ const parsed=parseDesignSvg(xml);assert.equal(parsed.layers.length,1);assert.equal(parsed.layers[0].text,'Für immer\nin unseren Herzen');assert.equal(parsed.layers[0].lineHeight,6);assert.equal(parsed.layers[0].lines,2);
+ const k=katalog(),d={...herz(k),fields:{'text-1':{required:false,maxLength:60,maxLines:2}},svg:()=>xml};const result=katalogDesignToTemplate(d,k.families.get('test-schilder'),null,{fonts:fonts()});assert.equal(result.template.objects.length,1);assert.equal(result.template.objects[0].text,parsed.layers[0].text);assert.equal(result.template.objects[0].id,'text-1');
+ assert.throws(()=>parseDesignSvg(xml.replace('y="26"','y="19"')),/Quellkorrektur/);
+ assert.throws(()=>parseDesignSvg(xml.replace('in unseren Herzen</text>','in unseren Herzen</text>').replace('x="45" y="26"','x="40" y="26"')),/Quellgruppe/);
+ const separate=xml.replace('</text><text','</text></g><g id="text-2"><text');assert.equal(parseDesignSvg(separate).layers.length,2,'separate source fields never joined by proximity');
+});

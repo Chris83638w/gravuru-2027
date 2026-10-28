@@ -3,6 +3,7 @@
 // Kundenansicht über window.parent: Modell, private Designressourcen, Anfragefunktion und der Warenkorbzugang
 // (GravuruShopEntry, ausgewertet von shop-cart.mjs) liegen auf dieser Seite.
 import {createShopEntryClient,shopUrl,embeddedCart,previewJpeg,surfaceThumbnail,warmTargets,warmEditor,startResourceUrls} from './shop-entry-client.mjs';
+import {createDesignSwitch} from './shop-design-switch.mjs';
 const status=document.querySelector('#status'),header=document.querySelector('header'),back=document.querySelector('#back'),title=document.querySelector('#title');
 const fragment=new URLSearchParams(location.hash.replace(/^#/,''));
 const toDataUrl=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
@@ -12,26 +13,39 @@ try{
   const data=await client.loadModel(),model=data.model;
   // Startschriften/-motive aus dem Katalog sofort holen (das Fenster liest sie dann aus dem Zwischenspeicher).
   warm.catalog.then(catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath))fetch(url,{credentials:'same-origin'}).catch(()=>{});});
-  window.GravuruPreviewResources=await client.loadResources(model.universal,toDataUrl);
-  window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;
-  window.GravuruWorkshopReview={productId:model.configuration.id,productRevision:model.configuration.revision};
-  window.GravuruMerchantRequest=client.request;
+  const resources=await client.loadResources(model.universal,toDataUrl);
   const backUrl=shopUrl(data.shopDomain,fragment.get('back'));
   // Fenster über der Produktseite (shop-embed.mjs): Übergabe und Schließen gehen an die Shop-Seite, kein Seitenwechsel.
   const embedded=fragment.get('embed')==='1'&&window.parent!==window,shopOrigin='https://'+data.shopDomain;
   // Warenkorbbild: die Platte mit Material aus dem Konfigurator selbst (gleiches Fenster, gleicher Origin).
   let frame=null;
-  const surface=model.universal?.materialSurface||null,small=surfaceThumbnail(surface);
-  const image=()=>previewJpeg(frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small});
-  if(embedded&&surface)setTimeout(small,4000);
-  const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin,{image}):client.submitThemeCart;
   const leave=()=>embedded?window.parent.postMessage({type:'gravuru-shop-close'},shopOrigin):location.assign(backUrl);
   if(embedded)back.addEventListener('click',event=>{event.preventDefault();leave();});
-  window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl});
-  title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;header.hidden=false;
+  function activate(entry,designGallery){
+    const {client,data,resources}=entry,model=data.model;frame=entry.frame;
+    window.GravuruPreviewResources=resources;window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;
+    window.GravuruWorkshopReview={productId:model.configuration.id,productRevision:model.configuration.revision};window.GravuruMerchantRequest=client.request;
+    const surface=model.universal?.materialSurface||null,small=surfaceThumbnail(surface);
+    const image=()=>previewJpeg(entry.frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small});
+    const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin,{image}):client.submitThemeCart;
+    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery});
+    title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;
+    if(embedded&&surface)setTimeout(small,4000);
+  }
   // K8: Bearbeiten-Verweis aus dem Warenkorb (config, rev, line) unverändert an den Editor weiterreichen.
   const edit=new URLSearchParams();for(const key of ['config','rev','line'])if(fragment.has(key))edit.set(key,fragment.get(key));
+  const toolbar=fragment.getAll('leiste');if(embedded&&toolbar.length===1&&['a','b'].includes(toolbar[0]))edit.set('leiste',toolbar[0]);
   frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=data.editorPath+(edit.size?'?'+edit:'');
+  createDesignSwitch({initial:{client,data,resources,frame},fragment,container:document.querySelector('#editor'),activate,toDataUrl});header.hidden=false;
+  // Fenster-Modus: der Produktseite melden, dass die Seite da ist (sonst zeigt sie nach einer Weile einen Hinweis mit Ausweg).
+  if(embedded)frame.addEventListener('load',()=>window.parent.postMessage({type:'gravuru-shop-ready'},shopOrigin),{once:true});
   document.querySelector('#editor').append(frame);status.hidden=true;
-  window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===frame.contentWindow&&event.data?.type==='gravuru-fk-close')leave();});
-}catch(error){status.hidden=false;status.textContent=error.message;}
+  window.addEventListener('message',event=>{
+    if(event.origin!==location.origin||event.source!==frame.contentWindow)return;
+    if(event.data?.type==='gravuru-fk-close')leave();
+    if(event.data?.type==='gravuru-ux-ready'){header.hidden=true;if(embedded)window.parent.postMessage({type:'gravuru-shop-editor-ready'},shopOrigin);}
+  });
+}catch(error){status.hidden=false;status.textContent=error.message;
+  // Fenster-Modus: Fehler auch der Produktseite melden (nur Typ und Text, keine Sitzungsdaten); sie bietet den Ausweg an.
+  if(fragment.get('embed')==='1'&&window.parent!==window)window.parent.postMessage({type:'gravuru-shop-failed',message:String(error?.message||'').slice(0,300)},'*');
+}

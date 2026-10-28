@@ -51,6 +51,17 @@ function response(offer) {
 }
 function offer(f) {const binding=f.intake.bind(f.args);return f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});}
 
+test('native shop path keeps an included design orderable and explains unbound extras without weakening binding checks',t=>{
+ const f=fixture(t),binding=f.intake.bind({...f.args,snapshotId:undefined,personalizationPricing:undefined,options:{mounting:'none'}});
+ assert.throws(()=>f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2}),error=>error.status===422&&error.code==='order_intake'&&/kostenpflichtige Änderung.*derzeit noch nicht bestellbar.*Gestaltung bleibt erhalten/.test(error.message));
+ assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_offers').get().n,0);
+ const original=structuredClone(f.m);f.m.product.id='cfg_foreign';
+ assert.throws(()=>f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2}),/Prüfstand und Shop-\/Preisbindung/);
+ Object.assign(f.m,original);f.m.product.basePriceCents=2299;Object.assign(f.m.selection.price,{additionalMotifs:0,chargedUploads:0,unitCents:2299,totalCents:4598});
+ const o=f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});assert.equal(o.unitCents,2299);assert.equal(o.personalization,undefined);
+ assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_offers').get().n,1);
+});
+
 test('complete-unit tiers use actual catalog prices, include photo, motif and mounting once, and round half a cent upwards',t=>{
  const f=fixture(t),config=f.record.document.config,tiers=[{minQuantity:2,percentOff:6},{minQuantity:3,percentOff:10}];
  config.quantityTiers=tiers;config.quantityTierScope='complete-unit';f.pricing.quantityTiers=structuredClone(tiers);f.pricing.quantityTierScope='complete-unit';
@@ -147,4 +158,16 @@ test('explicit tokenless transport preserves personalization through the persist
   for(const cfg of [{authentication:'tokenless',privateToken:'synthetic-token'},{authentication:'private-token'},{authentication:'automatic'},{}]){
     assert.throws(()=>createStorefrontCartTransport({shopDomain:shop,apiVersion:'2026-07',...cfg}),e=>e.code==='storefront_config');
   }
+});
+
+test('all-motif revision prices template motifs through the secured snapshot and rejects count drift',t=>{
+ const f=fixture(t),config=f.record.document.config;config.motifCharge='all';
+ const original={id:'template-motif',type:'motif',motif:'test-motif',x:50,y:50,w:10,h:10};config.profile.designs[0].objects.push(original);
+ const contract=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ const price=commercePrice(config,{designId:'test',objects:[original],mOptions:{mounting:'none'}},2);
+ assert.equal(price.additionalMotifs,0);assert.equal(price.chargedMotifs,1);assert.equal(price.unitCents,2468);
+ const manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+ assert.equal(personalizationForSnapshot(contract,manifest).personalization.motifs,1);
+ for(const chargedMotifs of [undefined,-1,0,1.5,201])assert.throws(()=>personalizationForSnapshot(contract,{...manifest,selection:{price:{...price,chargedMotifs}}}));
+ const legacy={...contract};delete legacy.motifCharge;assert.throws(()=>personalizationForSnapshot(legacy,manifest));
 });

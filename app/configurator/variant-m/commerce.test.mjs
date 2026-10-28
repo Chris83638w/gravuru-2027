@@ -28,11 +28,24 @@ test('commerce still uses generic option prices for non-acrylic profiles',()=>{
 });
 test('extra motifs and photos cannot bypass the explicit surcharge integration',()=>{
  const c=config(),b=binding(c),s=state(c);c.extraMotifCents=169;s.objects.push({id:'extra',type:'motif',motif:'test-extra'});
- assert.throws(()=>selectCommerceVariant(c,b,s),/Aufpreisberechnung/);
+ assert.throws(()=>selectCommerceVariant(c,b,s),/kostenpflichtige Änderung.*derzeit noch nicht bestellbar.*Gestaltung bleibt erhalten/);
  b.priceMode='shopify-cart-transform';assert.throws(()=>validateCommerce(c,b),/nicht aktiviert/);b.cartTransformId='gid://shopify/CartTransform/1';validateCommerce(c,b);
  assert.equal(selectCommerceVariant(c,b,s).unitCents,3866);
  s.objects.pop();c.photo.extraPriceCents=500;s.objects.push({type:'image',uxUploadId:'one',uxUploadKind:'photo'},{type:'image',uxUploadId:'two',uxUploadKind:'photo'});
- const q=selectCommerceVariant(c,b,s,2);assert.equal(q.chargedUploads,1);assert.equal(q.unitCents,4197);assert.equal(q.totalCents,8394);b.priceMode='base-only';assert.throws(()=>selectCommerceVariant(c,b,s),/Aufpreisberechnung/);
+ const q=selectCommerceVariant(c,b,s,2);assert.equal(q.chargedUploads,1);assert.equal(q.unitCents,4197);assert.equal(q.totalCents,8394);b.priceMode='base-only';assert.throws(()=>selectCommerceVariant(c,b,s),/kostenpflichtige Änderung.*derzeit noch nicht bestellbar.*Gestaltung bleibt erhalten/);
+});
+
+test('included template motif remains orderable; changing it is blocked without surcharge support and restoring it recovers',()=>{
+ const c=config(),b=binding(c),original={id:'template-motif',type:'motif',motif:'original'};
+ c.extraMotifCents=169;c.motifCharge='additional';c.profile.designs[0].objects.push(original);
+ const s=state(c),before=structuredClone(s);
+ assert.equal(selectCommerceVariant(c,b,s).unitCents,3697);
+ s.objects.find(o=>o.id===original.id).motif='different';
+ const changed=structuredClone(s);assert.throws(()=>selectCommerceVariant(c,b,s),/Motiv der Vorlage/);assert.deepEqual(s,changed);
+ b.priceMode='shopify-cart-transform';b.cartTransformId='gid://shopify/CartTransform/1';
+ validateCommerce(c,b);assert.equal(selectCommerceVariant(c,b,s).unitCents,3866);
+ b.priceMode='base-only';s.objects.find(o=>o.id===original.id).motif=original.motif;
+ assert.equal(selectCommerceVariant(c,b,s).unitCents,3697);assert.deepEqual(s,before);
 });
 test('commerce rejects incomplete, duplicate and stale binding metadata',()=>{
  const c=config();for(const change of [b=>{delete b.variants;},b=>{b.variants.pop();},b=>{b.variants[0].priceCents=-1;},b=>{b.variants[1].id=b.variants[0].id;},b=>{b.revision='wrong';},b=>{b.designIds=[];}]){const b=binding(c);change(b);assert.throws(()=>validateCommerce(c,b));}

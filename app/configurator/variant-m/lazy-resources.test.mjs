@@ -7,6 +7,7 @@ import http from 'node:http';
 import {once} from 'node:events';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import vm from 'node:vm';
 import {build,LAZY,ROOT,HERE} from './build.mjs';
 import {createPreviewServer,acceptsGzip} from './server.mjs';
 import {fontFileName,startNeeds,draftNeeds,resourceNeeds,lazyUrls,libraryEntries,LAZY_BASE,productFontIndex} from './lazy-resources-model.mjs';
@@ -191,10 +192,30 @@ test('Kundenansicht verdrahtet: Reiter/Schritt Motive, Schriftauswahl, Text hinz
   assert.match(ux,/new MutationObserver\(\(\)=>\{if\(!panel\.hidden\)el\.uxEnsureMotifLibrary\(\)/);
   assert.match(ux,/async function openFonts\(\)\{[\s\S]*?await el\.uxEnsureFonts\(selectionIds\(el\.uxKnownFonts\(\),profileChoices\?\.fonts\)\)/);
   assert.match(ux,/if\(action==='add-text'\)\{const font=[^;]+;try\{await el\.uxEnsureFonts\?\./);
-  assert.match(ux,/if\(sessionGuard&&!config\?\.workbench&&el\.uxEnsureDraftResources\)\{const stored=sessionGuard\.read\(\);if\(stored\)try\{await el\.uxEnsureDraftResources\(stored\.draft\);\}catch\{\}\}\n  if\(sessionGuard&&!config\?\.workbench\)\{/);
+  assert.match(ux,/if\(sessionGuard&&!config\?\.workbench&&!pendingDesignTransfer&&el\.uxEnsureDraftResources\)\{const stored=sessionGuard\.read\(\);if\(stored\)try\{await el\.uxEnsureDraftResources\(stored\.draft\);\}catch\{\}\}\n  if\(sessionGuard&&!config\?\.workbench\)\{/);
   assert.match(read('account-drafts.mjs'),/await el\.uxEnsureDraftResources\?\.\(draft\);\n\s*restoreDraft\(draft\);/);
   assert.match(read('adapter.mjs'),/await this\.uxEnsureDraftResources\?\.\(input\);this\.restoreDraft\(input\);/);
   assert.match(read('print-export.mjs'),/await el\.uxEnsureDraftResources\?\.\(\{design:\{objects:el\.state\.objects\}\}\);\n\s*const fingerprint=/);
+});
+
+test('Sitzungsstart wartet auf Ressourcen vor Wiederherstellung; ausstehende Designübernahme lädt keine alten Sitzungsressourcen',async()=>{
+  const ux=fs.readFileSync(new URL('./ux.mjs',import.meta.url),'utf8').replaceAll('\r\n','\n');
+  const start=ux.indexOf('  const pendingDesignTransfer='),end=ux.indexOf('  }else sessionGuard=null;',start);
+  assert.ok(start>=0&&end>start,'echter Sitzungsstart ist eindeutig vorhanden');
+  const code=ux.slice(start,end+'  }else sessionGuard=null;'.length);
+  for(const pending of [false,true]){
+    const events=[],draft={design:{id:'saved',objects:[]}},banner={hidden:true};let finishLoad;
+    const loaded=new Promise(resolve=>{finishLoad=resolve;});
+    const env={config:{},initialDraft:null,$:()=>banner,say(){},
+      window:{parent:{GravuruShopEntry:{designGallery:{hasPendingTransfer:()=>pending}}},addEventListener(){}},
+      sessionGuard:{read(){events.push('read');return {draft};},recover(){events.push('recover');return {uploads:[]};},arm(){events.push('arm');}},
+      el:{state:{selected:'old'},draftPayload:()=>draft,sync(){events.push('sync');},async uxEnsureDraftResources(value){assert.equal(value,draft);events.push('load-start');await loaded;events.push('load-ready');}}};
+    const running=vm.runInNewContext('(async()=>{'+code+'})()',env);
+    if(!pending){assert.deepEqual(events,['read','load-start'],'keine Wiederherstellung solange Schriften/Motive fehlen');finishLoad();}
+    await running;
+    assert.deepEqual(events,pending?['arm']:['read','load-start','load-ready','recover','sync','arm']);
+    assert.equal(banner.hidden,pending);assert.equal(env.el.state.selected,pending?'old':null);
+  }
 });
 
 test('Produktschriften: eigener Nachlade-Index mit inhaltsadressierter URL; Schriftauswahl und Entwürfe laden sie nach',async()=>{

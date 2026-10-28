@@ -269,3 +269,24 @@ test('start ticket: fetched once per start address through the proxy, only edito
  time+=61*1000;answer=()=>({ok:true,json:async()=>({url:'https://app.example/y',expiresAt:new Date(time+4*3600e3).toISOString()})});assert.equal(await tickets.load(failing),'https://app.example/y');assert.equal(calls.length,before+2);
  assert.equal(await tickets.load(null),null);
 });
+
+test('shop embed safety net: own start link is always usable, ready/failed messages only from the frame, page fallback without window',async t=>{
+ const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-safe-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
+ fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
+ globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
+ const {unlockStartLink,pageStartUrl,acceptedMessage}=await import(path.join(dir,'shop-embed.mjs'));
+ const attrs=new Map([['disabled',''],['aria-disabled','true'],['tabindex','-1'],['href','/x']]),classes=new Set(['btn','disabled','btn--loading']);
+ const link={getAttribute:n=>attrs.has(n)?attrs.get(n):null,removeAttribute:n=>attrs.delete(n),classList:{contains:n=>classes.has(n),remove:n=>{if(!classes.has(n))throw Error('remove nur bei vorhandener Klasse (sonst Beobachter-Schleife)');classes.delete(n);}},style:{pointerEvents:'none',opacity:'.4'}};
+ unlockStartLink(link);
+ assert.deepEqual([...attrs.keys()],['href']);assert.deepEqual([...classes],['btn']);
+ assert.deepEqual(link.style,{pointerEvents:'auto',opacity:'1',touchAction:'manipulation',cursor:'pointer'});
+ assert.equal(pageStartUrl('https://shop.example/apps/konfigurator/start?product=5&variant=11&embed=1&format=json'),'https://shop.example/apps/konfigurator/start?product=5&variant=11');
+ assert.equal(pageStartUrl('kaputt'),null);
+ const frame={contentWindow:{}};
+ assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-ready'}},frame),{type:'ready'});
+ assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-failed',message:'x'.repeat(400)}},frame),{type:'failed',message:'x'.repeat(300)});
+ assert.equal(acceptedMessage({origin:'https://evil.example',source:frame.contentWindow,data:{type:'gravuru-shop-failed'}},frame),null);
+ assert.equal(acceptedMessage({origin:'https://app.example',source:{},data:{type:'gravuru-shop-ready'}},frame),null);
+});

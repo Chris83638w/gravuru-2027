@@ -10,7 +10,7 @@ const TOKEN=/^[a-f0-9]{64}$/;
 const STYLE=`.gv-embed{position:fixed;inset:0;z-index:2147483000;background:#fff;display:flex;flex-direction:column}
 .gv-embed[hidden]{display:none}
 .gv-embed.gv-embed--preload{visibility:hidden;pointer-events:none}
-.gv-embed__bar{display:flex;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid #dce5e1;background:#fff}
+.gv-embed__bar{position:relative;z-index:1;display:flex;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid #dce5e1;background:#fff}
 .gv-embed__close{font:inherit;font-size:15px;min-height:40px;padding:6px 14px;border:1px solid #c9d3cf;border-radius:8px;background:#fff;color:#243238;cursor:pointer}
 .gv-embed__frame{flex:1;width:100%;border:0;display:block}
 .gv-embed__status{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.94);padding:24px;text-align:center}
@@ -86,6 +86,8 @@ export function prepareProductPage(config,doc=globalThis.document){
   const fields=[...forms.flatMap(form=>[...form.querySelectorAll('[name="quantity"]')]),...[...doc.querySelectorAll('[name="quantity"][form]')].filter(q=>ids.has(q.getAttribute('form')))];
   for(const q of fields)(q.closest?.('.product__block,.product-form__quantity,quantity-input')||q).setAttribute('data-gravuru-hidden-buy','');
  }
+ // Eigener Knopf immer bedienbar (Chris 28.10.2026, iPhone: „ausgegraut, tut nichts“): Theme-Sperren entfernen.
+ for(const own of doc.querySelectorAll('[data-gravuru-personalisieren] a[data-gravuru-start]'))unlockStartLink(own);
  if(doc.querySelector('[data-gravuru-personalisieren]')||!forms.length)return null;
  const box=doc.createElement('div');box.className='gravuru-personalisieren';box.setAttribute('data-gravuru-personalisieren','');box.style.margin='12px 0 16px';
  const link=doc.createElement('a');link.className='btn btn--primary btn--gravuru-primary';link.setAttribute('data-gravuru-start','');link.rel='nofollow';link.textContent='Jetzt personalisieren';link.href=startHref(config,currentVariant(config,doc));
@@ -93,14 +95,26 @@ export function prepareProductPage(config,doc=globalThis.document){
  // Hauptformular: hat einen Kaufknopf (nicht das Ratenzahlungs-Formular im Preisblock) und liegt nicht in der Kaufleiste.
  const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
  const main=forms.find(form=>buy(form)&&!sticky(form))||forms.find(buy)||forms[0];
- box.append(link,note);main.after(box);return box;
+ unlockStartLink(link);box.append(link,note);main.after(box);return box;
 }
+
+export function unlockStartLink(link){
+ for(const name of ['disabled','aria-disabled','tabindex'])if(link.getAttribute?.(name)!==null&&link.getAttribute?.(name)!==undefined)link.removeAttribute?.(name);
+ for(const name of ['disabled','btn--disabled','is-disabled','loading','btn--loading'])if(link.classList?.contains?.(name))link.classList.remove(name);
+ // Nur bei Abweichung setzen (kein Endlosspiel mit dem Attribut-Beobachter).
+ if(link.style)for(const [key,value] of [['pointerEvents','auto'],['opacity','1'],['touchAction','manipulation'],['cursor','pointer']])if(link.style[key]!==value)link.style[key]=value;
+ return link;
+}
+// Ausweg ohne Fenster: dieselbe Startadresse als ganze Seite (normaler Konfigurator-Einstieg über den App-Proxy).
+export function pageStartUrl(key){try{const url=new URL(key);url.searchParams.delete('embed');url.searchParams.delete('format');return url.href;}catch{return null;}}
 
 // Nur Nachrichten genau dieses Konfigurator-Fensters vom Konfigurator-Host werden angenommen.
 export function acceptedMessage(event,frame){
  if(!frame||event.origin!==EDITOR_ORIGIN||event.source!==frame.contentWindow)return null;
  const data=event.data;
  if(data?.type==='gravuru-shop-close')return {type:'close'};
+ if(data?.type==='gravuru-shop-ready')return {type:'ready'};
+ if(data?.type==='gravuru-shop-failed')return {type:'failed',message:typeof data.message==='string'?data.message.slice(0,300):''};
  // cartImage: Platte mit Material, wie im Überblick des Konfigurators (nur Anzeige, sonst die Gravurvorschau).
  if(data?.type==='gravuru-shop-handoff'&&TOKEN.test(data.token||''))return {type:'handoff',token:data.token,image:cartImage(data.cartImage)};
  return null;
@@ -126,15 +140,25 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  const status=document.createElement('div');status.className='gv-embed__status';status.hidden=true;status.setAttribute('role','status');status.setAttribute('aria-live','polite');
  const box=document.createElement('div');box.className='gv-embed__box';status.append(box);
  shell.append(bar,status);document.body.append(shell);
- let frame=null,frameKey=null,busy=false,lastFocus=null;
+ let frame=null,frameKey=null,busy=false,lastFocus=null,watchdog=null,frameReady=false;
  const say=(text,{error=false}={})=>{box.replaceChildren(document.createTextNode(text));status.hidden=false;
   if(error){const again=document.createElement('button');again.type='button';again.textContent='Zurück zur Gestaltung';again.addEventListener('click',()=>{status.hidden=true;});
    const cart=document.createElement('a');cart.href=root+'cart';cart.textContent='Warenkorb öffnen';box.append(document.createElement('br'),again,cart);}};
  // `key` = Startadresse über den App-Proxy; geöffnet wird ggf. die Startkarte (direkt). Gleicher Schlüssel = gleiches Fenster.
  function load(url,key=url){
   frame?.remove();frame=document.createElement('iframe');frame.className='gv-embed__frame';frame.title='Produkt personalisieren';frame.setAttribute('allow','clipboard-write');
-  frame.src=url;frameKey=key;shell.append(frame);
+  frame.src=url;frameKey=key;frameReady=false;shell.append(frame);
  }
+ // Hinweis mit Ausweg, falls der Konfigurator nicht kommt (Netz, Browser-Einstellungen, Sperren im Fenster).
+ function trouble(text){
+  if(!frameKey)return;
+  box.replaceChildren(document.createTextNode(text));status.hidden=false;
+  const wait=document.createElement('button');wait.type='button';wait.textContent='Weiter warten';wait.addEventListener('click',()=>{status.hidden=true;arm(20000);});
+  const again=document.createElement('button');again.type='button';again.textContent='Neu laden';again.addEventListener('click',()=>{status.hidden=true;const key=frameKey;load(key,key);arm();});
+  const page=document.createElement('a');page.href=pageStartUrl(frameKey)||frameKey;page.target='_top';page.rel='nofollow';page.textContent='Ohne Fenster öffnen';
+  box.append(document.createElement('br'),wait,again,page);
+ }
+ function arm(ms=15000){clearTimeout(watchdog);watchdog=setTimeout(()=>{if(!frameReady&&!shell.hidden)trouble('Der Konfigurator braucht gerade ungewöhnlich lange. Du kannst weiter warten, neu laden oder ihn ohne Fenster öffnen.');},ms);}
  // Vorgeladen: unsichtbar, aber in voller Größe aufgebaut (sonst misst der Editor 0 px); nicht bedienbar, nicht fokussierbar.
  function preload(url){
   if(frame||!url)return;
@@ -143,6 +167,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  function open(url,key=url){
   lastFocus=document.activeElement;status.hidden=true;
   if(!frame||frameKey!==key)load(url,key);
+  if(!frameReady)arm();
   shell.classList.remove('gv-embed--preload');shell.removeAttribute('aria-hidden');shell.hidden=false;
   document.documentElement.classList.add('gv-embed-open');close.focus();
  }
@@ -172,6 +197,8 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  window.addEventListener('message',event=>{
   const message=acceptedMessage(event,frame);if(!message)return;
   if(message.type==='close')hide();
+  else if(message.type==='ready'){frameReady=true;clearTimeout(watchdog);}
+  else if(message.type==='failed'){frameReady=false;clearTimeout(watchdog);trouble((message.message?message.message+' ':'')+'Bitte neu laden oder den Konfigurator ohne Fenster öffnen.');}
   else handoff(message.token,event.source,message.image);
  });
  const config=pageConfig();
@@ -180,6 +207,8 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   // Varianten- und Abschnittswechsel des Themes bauen Kaufknöpfe neu auf: erneut ausblenden.
   const style=document.createElement('style');style.textContent='[data-gravuru-hidden-buy]{display:none!important}';document.head.append(style);
   let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;prepareProductPage(config);});}).observe(document.body,{childList:true,subtree:true});
+  // Sperrt das Theme den Knopf nachträglich (Klasse, Stil, disabled), sofort wieder freigeben.
+  new MutationObserver(records=>{for(const r of records)if(r.target?.matches?.('[data-gravuru-personalisieren] a[data-gravuru-start]'))unlockStartLink(r.target);}).observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style','disabled','aria-disabled','tabindex']});
  }
  // Fenster-Vorladen ist aus (Messung 27.10.2026, Chrome): ein unsichtbares Fenster lädt der Browser stark gebremst
  // und kostete nur Daten. Vorab kommt stattdessen nur die Startkarte (wenige Hundert Byte) nach dem Laden der Seite
@@ -189,15 +218,17 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  const fetchTicket=()=>{const link=ownLink();if(link&&!frame)tickets.load(startUrl(link));};
  connectOnIntent(document,EDITOR_ORIGIN,fetchTicket);
  if(config){const idle=()=>window.requestIdleCallback?window.requestIdleCallback(fetchTicket,{timeout:4000}):setTimeout(fetchTicket,1500);if(document.readyState==='complete')idle();else window.addEventListener('load',idle,{once:true});}
+ // Klick in der Einfangphase: Theme-Skripte (Kaufleiste, Akkordeons …) können ihn nicht vorher schlucken.
+ // Klappt das Fenster nicht, läuft der normale Link weiter (ganze Seite über den App-Proxy).
  document.addEventListener('click',event=>{
   const link=event.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]');
-  if(!link||event.defaultPrevented)return;
+  if(!link)return;
   // Gerade gewählte Variante übernehmen (auch für Strg-/Mittelklick, die normal weiterlaufen).
   if(config)link.href=startHref(config,currentVariant(config,document));
   if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
   const url=startUrl(link);if(!url)return;
-  event.preventDefault();open(tickets.get(url)||url,url);
- });
+  try{open(tickets.get(url)||url,url);event.preventDefault();event.stopPropagation();}catch{shell.hidden=true;document.documentElement.classList.remove('gv-embed-open');}
+ },true);
  return (window.__gravuruShopEmbed=Object.freeze({open,hide,preload}));
 }
 

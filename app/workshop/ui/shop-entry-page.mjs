@@ -32,6 +32,11 @@ try{
   // K8: Bearbeiten-Verweis aus dem Warenkorb (config, rev, line) unverändert an den Editor weiterreichen.
   const edit=new URLSearchParams();for(const key of ['config','rev','line'])if(fragment.has(key))edit.set(key,fragment.get(key));
   frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=data.editorPath+(edit.size?'?'+edit:'');
+  // Fenster-Modus: der Produktseite melden, dass der Konfigurator da ist (sonst zeigt sie nach einer Weile einen Hinweis).
+  if(embedded)frame.addEventListener('load',()=>window.parent.postMessage({type:'gravuru-shop-ready'},shopOrigin),{once:true});
   document.querySelector('#editor').append(frame);status.hidden=true;
   window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===frame.contentWindow&&event.data?.type==='gravuru-fk-close')leave();});
-}catch(error){status.hidden=false;status.textContent=error.message;}
+}catch(error){status.hidden=false;status.textContent=error.message;
+  // Fenster-Modus: Fehler auch der Produktseite melden (nur Typ und Text, keine Sitzungsdaten); sie bietet den Ausweg an.
+  if(fragment.get('embed')==='1'&&window.parent!==window)window.parent.postMessage({type:'gravuru-shop-failed',message:String(error?.message||'').slice(0,300)},'*');
+}

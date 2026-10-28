@@ -1,0 +1,148 @@
+{
+  "schema": "gravuru-ui-evidence/v1",
+  "date": "2026-10-28",
+  "basis": "87154acb81dc9961156cc5a4eb278890f618c9b1",
+  "localOnly": true,
+  "images": [
+    {
+      "file": "nachher-375-einpassen.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 27977,
+      "sha256": "fd4c467f4638f9c2d2a5d32db65244b0b16dad8fc4a5c977215d0bb2577323e3"
+    },
+    {
+      "file": "nachher-375-motive.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 29631,
+      "sha256": "72ce24a7876ecc2b9aa6a67407c55e14bed850c1bf27e12e70fa7ef24251d9fe"
+    },
+    {
+      "file": "nachher-375-optionen.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 28653,
+      "sha256": "50c685b9ec057f5043c18a42bdf140d87d43f37764a00fb3a56809e0f02ef4c3"
+    },
+    {
+      "file": "nachher-375-text.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 29840,
+      "sha256": "3a096032916581123f5103d07148b91e78dbc5b9b3eb8b1e9d4484ede43a352b"
+    },
+    {
+      "file": "nachher-375-vollbild-text.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 20258,
+      "sha256": "49db4298740d431890daa69f0da06b04b9a39932c5ef5cd2b773ca86a0c949d2"
+    },
+    {
+      "file": "nachher-375-zoom.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 32194,
+      "sha256": "39635ac46089103db7bba563772cf582d5ac897c238ca29b9c7bc1d27df451f4"
+    },
+    {
+      "file": "nachher-390-einpassen.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 32599,
+      "sha256": "1bede01cdf9514098bdce02e3b882f8df4c14ce2f440910ec8f08b1c362a504e"
+    },
+    {
+      "file": "nachher-390-motive.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 33270,
+      "sha256": "25387e7df218d9fd543ef89137f435a4ae35747ba07361b4b7079d717974049a"
+    },
+    {
+      "file": "nachher-390-optionen.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 33440,
+      "sha256": "1e8b7e18354c1f0230a51aad9364e5a140297b2cd7c86a6a37168d2964854b82"
+    },
+    {
+      "file": "nachher-390-text.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 32722,
+      "sha256": "bb64aa775daf8eca8507723e53342aa16b3f695b560c0ff9b04197f4e80f3e56"
+    },
+    {
+      "file": "nachher-390-vollbild-text.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 25664,
+      "sha256": "3b674983c759328176a45edc0d5a55a398dc5feb78f02618dff45d9bf57a8f99"
+    },
+    {
+      "file": "nachher-390-zoom.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 38691,
+      "sha256": "a3fa29ae2152f101342e38700ded5d487e67bd96ecdd4b0cd25cd7129c55cc87"
+    },
+    {
+      "file": "nachher-desktop.jpg",
+      "width": 1440,
+      "height": 900,
+      "bytes": 107179,
+      "sha256": "9237ca6457779907840f2e0f360c19c26f548cde6291c75a1a855618aaf3170c"
+    },
+    {
+      "file": "vorher-375-motive.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 24398,
+      "sha256": "4e360d20ed92fb3aff486de95498ddd7dbb0ed2d5412dc88d452f50e2dec4ffd"
+    },
+    {
+      "file": "vorher-375-optionen.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 22424,
+      "sha256": "a7799495fa58a4cf97f49bf3a1ee6f53521ac3ebdb3a7157592be048e773b116"
+    },
+    {
+      "file": "vorher-375-text.jpg",
+      "width": 375,
+      "height": 548,
+      "bytes": 22405,
+      "sha256": "1334c8909757814e9fed1702d5a1238e7ac8c7f666f11ab9775302afc6149038"
+    },
+    {
+      "file": "vorher-390-motive.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 31451,
+      "sha256": "919996ea486db2683cdc553e3f61fda078c983c746edb66e15379e2f25afba09"
+    },
+    {
+      "file": "vorher-390-optionen.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 31560,
+      "sha256": "df41d9b4b4298f7425ab50bd3bf3c41839fd69423bfcefb7293a657dee6fa49f"
+    },
+    {
+      "file": "vorher-390-text.jpg",
+      "width": 390,
+      "height": 664,
+      "bytes": 27771,
+      "sha256": "60c2c0831f237697369262c392736f1b7fcfa994c4b2bafa505a10fd72ac67ec"
+    },
+    {
+      "file": "vorher-desktop.jpg",
+      "width": 1440,
+      "height": 900,
+      "bytes": 106762,
+      "sha256": "b2df06a6017d3083ba39ad0662674e734b354d54ff838a50d5e26102e173d4f5"
+    }
+  ]
+}

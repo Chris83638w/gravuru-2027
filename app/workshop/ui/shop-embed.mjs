@@ -32,20 +32,22 @@ export function startUrl(link){
 // Produktseite holt sie über den App-Proxy nur die kleine Sitzungsantwort (`format=json`, kein Fenster, kein Modell).
 // Beim Klick öffnet das Fenster dann direkt den Konfigurator-Host – ohne Umweg über Shopify. Fehlt sie oder ist sie
 // fast abgelaufen, gilt der normale Start über den App-Proxy.
-export function createStartTickets({fetchImpl=globalThis.fetch,now=Date.now,marginMs=10*60*1000}={}){
+// Eine Karte gilt höchstens 30 min nach Abruf (die Sitzung läuft ab Ausstellung) und nie in den letzten 10 min;
+// ein Fehlschlag wird 60 s gemerkt (kein Abrufschwall beim Überfahren des Knopfs).
+export function createStartTickets({fetchImpl=globalThis.fetch,now=Date.now,marginMs=10*60*1000,maxAgeMs=30*60*1000,retryMs=60*1000}={}){
  const tickets=new Map();
  const get=key=>{const t=tickets.get(key);return t?.url&&now()<t.until?t.url:null;};
  function load(key){
   if(!key)return Promise.resolve(null);
-  const known=tickets.get(key);if(known?.pending)return known.pending;if(get(key))return Promise.resolve(get(key));
+  const known=tickets.get(key);if(known?.pending)return known.pending;if(get(key))return Promise.resolve(get(key));if(known&&now()<known.failedUntil)return Promise.resolve(null);
   if(tickets.size>=16)tickets.clear();
-  const entry={url:null,until:0,pending:null};tickets.set(key,entry);
+  const entry={url:null,until:0,failedUntil:0,pending:null},fetchedAt=now();tickets.set(key,entry);
   const request=new URL(key);request.searchParams.set('format','json');
   entry.pending=Promise.resolve().then(()=>fetchImpl(request.href,{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}})).then(async response=>{
-   const data=response.ok?await response.json():null,until=Date.parse(data?.expiresAt)-marginMs;
+   const data=response.ok?await response.json():null,until=Math.min(Date.parse(data?.expiresAt)-marginMs,fetchedAt+maxAgeMs);
    if(typeof data?.url!=='string'||!data.url.startsWith(EDITOR_ORIGIN+'/')||!(until>now()))throw Error('Startkarte ungültig');
    entry.url=data.url;entry.until=until;entry.pending=null;return entry.url;
-  }).catch(()=>{if(tickets.get(key)===entry)tickets.delete(key);return null;});
+  }).catch(()=>{entry.url=null;entry.pending=null;entry.failedUntil=now()+retryMs;return null;});
   return entry.pending;
  }
  return Object.freeze({get,load});

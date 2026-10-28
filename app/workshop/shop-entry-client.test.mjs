@@ -230,8 +230,13 @@ test('start resources: catalog fonts and library motifs of the start designs at 
  const catalog={motifs:{grund:'<g/>'},font_index:[{name:'Cinzel',file:'cinzel.json'},{name:'Raleway',file:'raleway.json'},{name:'Eigen',file:'eigen.json'},{name:'Böse',file:'a b.json'}],motif_index:[{key:'herz'},{key:'grund'},{key:'stern'}]};
  const universal={profile:{defaultDesignId:'d2',designs:[{id:'d1',objects:[{type:'text',font:'Cinzel'},{type:'motif',motif:'herz'},{type:'motif',motif:'grund'},{type:'motif',motif:'../x'}]},{id:'d2',objects:[{type:'text',font:'Raleway'},{type:'text',font:'Eigen'},{type:'text',font:'Unbekannt'},{type:'text',font:'Böse'},{type:'motif',motif:'stern'}]}]},localResources:{fonts:{Eigen:{}},motifs:[{key:'stern'}]}};
  const path='/_acryl-runtime/lazy/katalog-kern.json';
- assert.deepEqual(startResourceUrls(universal,catalog,path),['/_acryl-runtime/lazy/schriften/cinzel.json','/_acryl-runtime/lazy/motive/herz.json','/_acryl-runtime/lazy/schriften/raleway.json','/_acryl-runtime/lazy/schriften/a%20b.json']);
- assert.deepEqual(startResourceUrls({...universal,doorbell:{}},catalog,path),['/_acryl-runtime/lazy/schriften/raleway.json','/_acryl-runtime/lazy/schriften/a%20b.json'],'Funkklingel: nur Startdesign');
+ assert.deepEqual(startResourceUrls(universal,catalog,path),['/_acryl-runtime/lazy/schriften/cinzel.json','/_acryl-runtime/lazy/motive/herz.json','/_acryl-runtime/lazy/schriften/raleway.json'],'Böse (kein Slug, nicht zwischenspeicherbar) nicht vorab');
+ assert.deepEqual(startResourceUrls({...universal,doorbell:{}},catalog,path),['/_acryl-runtime/lazy/schriften/raleway.json'],'Funkklingel: nur Startdesign');
+ // Gleiche Adressen wie der Editor (lazyUrls) – sonst kein Treffer im Zwischenspeicher.
+ const {lazyUrls}=await import('../configurator/variant-m/lazy-resources-model.mjs');
+ assert.deepEqual(lazyUrls({fonts:['Cinzel','Raleway'],motifs:['herz']},{fontIndex:catalog.font_index,motifIndex:catalog.motif_index},'/_acryl-runtime/lazy/'),{fonts:[{name:'Cinzel',url:'/_acryl-runtime/lazy/schriften/cinzel.json'},{name:'Raleway',url:'/_acryl-runtime/lazy/schriften/raleway.json'}],motifs:[{key:'herz',url:'/_acryl-runtime/lazy/motive/herz.json'}]});
+ const {acrylCacheControl}=await import('./acryl-employee-host.mjs');
+ for(const url of startResourceUrls(universal,catalog,path))assert.equal(acrylCacheControl(url,200),'public, max-age=3600',url);
  assert.deepEqual(startResourceUrls(universal,null,path),[]);assert.deepEqual(startResourceUrls(universal,catalog,'/x.json'),[]);
  const warm=warmEditor(['/_merchant-acryl-editor.html',path],{fetchImpl:async url=>({ok:true,text:async()=>'',json:async()=>url===path?catalog:null})});
  assert.equal(warm.catalogPath,path);assert.deepEqual(await warm.catalog,catalog);
@@ -252,9 +257,15 @@ test('start ticket: fetched once per start address through the proxy, only edito
  assert.equal(a,'https://app.example/konfigurator/shop/#s=gse1.x&embed=1');assert.equal(b,a);
  assert.deepEqual(calls,[['https://shop.example/apps/konfigurator/start?product=5&variant=11&embed=1&format=json','same-origin','no-store']],'einmal, über den App-Proxy');
  assert.equal(tickets.get(key),a);assert.equal(await tickets.load(key),a);assert.equal(calls.length,1);
- time=Date.parse('2026-10-28T13:51:00Z');assert.equal(tickets.get(key),null,'10 min vor Ablauf nicht mehr verwendet');
+ time=Date.parse('2026-10-28T10:29:00Z');assert.equal(tickets.get(key),a);
+ time=Date.parse('2026-10-28T10:31:00Z');assert.equal(tickets.get(key),null,'höchstens 30 min nach Abruf (Sitzung läuft ab Ausstellung)');
+ const late=createStartTickets({fetchImpl:async()=>answer(),now:()=>Date.parse('2026-10-28T13:52:00Z')});assert.equal(await late.load(key),null,'in den letzten 10 min der Sitzung nicht verwendet');
  for(const bad of [()=>({ok:false,json:async()=>({})}),()=>({ok:true,json:async()=>({url:'https://evil.example/x',expiresAt:'2026-10-28T18:00:00Z'})}),()=>({ok:true,json:async()=>({url:'https://app.example/x',expiresAt:'kaputt'})}),()=>{throw Error('offline');}]){
   answer=bad;const other=key+'&n='+calls.length;assert.equal(await tickets.load(other),null);assert.equal(tickets.get(other),null);
  }
+ // Fehlschlag 60 s gemerkt: kein Abrufschwall beim Überfahren; danach neuer Versuch.
+ answer=()=>({ok:false,json:async()=>({})});const failing=key+'&f=1',before=calls.length;
+ await tickets.load(failing);await tickets.load(failing);await tickets.load(failing);assert.equal(calls.length,before+1);
+ time+=61*1000;answer=()=>({ok:true,json:async()=>({url:'https://app.example/y',expiresAt:new Date(time+4*3600e3).toISOString()})});assert.equal(await tickets.load(failing),'https://app.example/y');assert.equal(calls.length,before+2);
  assert.equal(await tickets.load(null),null);
 });

@@ -119,7 +119,8 @@ export function startResourceUrls(universal,catalog,catalogPath){
  if(!catalog||typeof catalogPath!=='string'||!/\/katalog-kern\.json$/.test(catalogPath))return [];
  const base=catalogPath.replace(/katalog-kern\.json$/,''),local=universal?.localResources||{};
  const localFonts=new Set(Object.keys(local.fonts||{})),skipMotifs=new Set([...(local.motifs||[]).map(m=>m?.key),...Object.keys(catalog.motifs||{})]);
- const files=new Map((catalog.font_index||[]).filter(f=>typeof f?.name==='string'&&typeof f.file==='string').map(f=>[f.name,f.file])),motifKeys=new Set((catalog.motif_index||[]).map(m=>m?.key));
+ // Nur Dateien, die der Host zwischenspeichern darf (acrylCacheControl: Slug-Namen); sonst wäre es ein Doppelabruf.
+ const files=new Map((catalog.font_index||[]).filter(f=>typeof f?.name==='string'&&f.url===undefined&&/^[a-z0-9-]{1,80}\.json$/.test(f.file||'')).map(f=>[f.name,f.file])),motifKeys=new Set((catalog.motif_index||[]).map(m=>m?.key));
  const designs=Array.isArray(universal?.profile?.designs)?universal.profile.designs:[];
  const initial=universal?.doorbell?[designs.find(d=>d?.id===universal.profile.defaultDesignId)||designs[0]].filter(Boolean):designs;
  const urls=new Set();

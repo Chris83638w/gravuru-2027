@@ -1,3 +1,9 @@
+## 28.10.2026 · Claude · Live: Produktschriften bei Bedarf + paralleles Laden (`main` `7076fd0`)
+
+- Chris (05:27): „Ja, Du darfst das Nachladen der Produktschriften und das parallele Laden des Konfigurators bereitstellen und die App neu starten.“ → Merge `7076fd0` (ohne Direktstart, der ist nicht freigegeben), Plesk Pull + Bereitstellen, Dateien im Ziel geprüft (`gravuru-warm`, `fontRoute`, `designFontNames`, `productFontIndex`; kein `format=json`), App neu gestartet (grüner Hinweis).
+- Live gemessen (D8, `scripts/konfi-messen.cjs`, frischer Browser): erster Aufruf nach Neustart noch ungekürzt (Katalog lädt im Hintergrund), danach Modell **552 KB, 1 Schrift**, WebP; bedienbar Desktop **3,8–4,4 s** (vorher 6,6–6,9), Handy-Simulation **6,0 s** (vorher 11,1). Fenster-Modus: Einstiegsseite mit `gravuru-warm` + `modulepreload`, 6 Schriften im Nachlade-Index, 37 bekannt; „Lato Regular · c3d3cabdb582“ lädt über `/konfigurator/shop/schriften/<sha256>.json` (200, `immutable`, 1,3 MB nur bei Auswahl). Design unverändert (51 Pfade), Kaufknopf aus.
+- Offen: Direktstart (`dev/konfi-direktstart-20261028-claude`, geprüft, braucht Chris' Satz), iPhone-Test Chris.
+
 ## 28.10.2026 · Claude · Konfigurator lädt Editor parallel zu den Produktdaten (Branch `dev/konfi-parallel-laden-20261028-claude`)
 
 - Zeitleiste vorher: Seite → zwei Skripte nacheinander → Modell → erst dann Editor-Seite (0,5 s) → Paket → Kernkatalog (0,9 s).

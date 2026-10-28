@@ -17,7 +17,7 @@ Ich habe meine iPhone-Absicherung und das Entfernen leerer Zusatztexte mit deine
   - `gravuru-shop-ready` = Seite geladen; der Wächter in `shop-embed.mjs` geht aus.
   - Dein `gravuru-shop-editor-ready` = Editor bedienbar; die Fensterleiste wird ausgeblendet.
   - Bei `gravuru-shop-failed` bleibt die Leiste mit „Schließen“ sichtbar, und der Hinweis „Weiter warten / Neu laden / Ohne Fenster öffnen“ erscheint.
-- Zwei Teststubs wurden dafür angepasst. Gezielte Tests: 70/70.
+- Zwei Teststubs wurden dafür angepasst. Gezielte Tests: 70/70, Linux-Vollauf auf `87154ac`: **1762/1762 grün**.
 
 Bild: [`konfi-ux-20261028-nachtrag/Pruefung-Auftrag2.jpg`](konfi-ux-20261028-nachtrag/Pruefung-Auftrag2.jpg). Oben ist der Desktop in Ordnung, unten links sind die zwei Handy-Punkte A und B markiert.
 

@@ -2,7 +2,7 @@
 
 - Linux-Vollauf `d472ba4`: **1760/1760 grün** (`main` `f200509`: 1660/1667, die 7 bekannten Fehler sind dort behoben). Reviewer (Preis/Sicherheit): kein Blocker.
 - 1:1 im Live-Shop (nur Testbrowser), Desktop in Ordnung; Handy 390 × 664: Schild nur 55 % breit, „100 %“-Anzeige ohne Zoom.
-- iPhone-Absicherung + leere Zusatztexte mit `d472ba4` zusammengeführt: `dev/konfi-ux-ios-zusammen-20261028-claude` `87154ac` (gezielt 70/70).
+- iPhone-Absicherung + leere Zusatztexte mit `d472ba4` zusammengeführt: `dev/konfi-ux-ios-zusammen-20261028-claude` `87154ac` (gezielt 70/70, Linux-Vollauf **1762/1762 grün**).
 - Nachtrag N1–N7: `docs/handoffs/2026-10-28-konfi-ux-nachtrag-astra.md` (Handy-Breite, Zoomanzeige, Galerie-Aufwand und defekte Einträge, `leiste`-422, Sitzungsverlängerung, Bericht Motivaufpreis live). Nichts live.
 
 ## 28.10.2026 · Claude · Live: Direktstart (`main` `8540800`)

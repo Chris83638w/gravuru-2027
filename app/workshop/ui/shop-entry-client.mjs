@@ -173,6 +173,16 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(result.mode!=='theme'||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents)||typeof result.handoffUrl!=='string')fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
     return result;
   }
-  return Object.freeze({request,loadModel,loadResources,submitCart,submitThemeCart});
+  async function loadDesignGallery(page=0){
+    if(!Number.isSafeInteger(page)||page<0||page>10000)fail('Diese Seite der Designauswahl gibt es nicht.');
+    return json(await fetchImpl(API+'design-gallery?page='+page,{credentials:'omit',cache:'no-store',headers:headers({})}));
+  }
+  async function designRequest(action,target){
+    if(typeof target!=='string'||target.length>4096)fail('Bitte ein Design aus der Auswahl wählen.');
+    return fetchImpl(API+action,{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json'}),body:JSON.stringify({target})});
+  }
+  async function loadDesignPreview(target){const response=await designRequest('design-gallery-preview',target);if(!response.ok)await json(response);return response.blob();}
+  async function switchDesign(target){return json(await designRequest('design-switch',target));}
+  return Object.freeze({request,loadModel,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
 }
 

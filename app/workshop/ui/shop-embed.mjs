@@ -68,8 +68,9 @@ export function pageConfig(doc=globalThis.document){
  const back=typeof raw.back==='string'&&/^\/(?!\/)[^\s]{0,300}$/.test(raw.back)?raw.back:'/';
  return {productId,variantId,variants,back};
 }
-export function startHref(config,variantId=config.variantId){
+export function startHref(config,variantId=config.variantId,search=globalThis.location?.search||''){
  const params=new URLSearchParams({product:config.productId,variant:config.variants.includes(String(variantId))?String(variantId):config.variantId,back:config.back});
+ const toolbar=new URLSearchParams(search).getAll('leiste');if(toolbar.length===1&&['a','b'].includes(toolbar[0]))params.set('leiste',toolbar[0]);
  return PROXY+'/start?'+params;
 }
 // Kaufformulare genau dieses Produkts (auch die mitlaufende Kaufleiste), nicht die anderer Produkte auf der Seite.

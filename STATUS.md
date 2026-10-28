@@ -1,3 +1,10 @@
+## 28.10.2026 · Codex / Astra · Nachtrag 4 zur Konfi-UX: Fokus, Lupe und mm-Hilfen (nur Review)
+
+- Eigener Branch `dev/konfi-zoom-fokus-20261028-astra`, Basis `main` `26952e48` (enthält `0643c70`). Mobile Fokusansicht bis 300 %, weiße Rückkehr, Desktop −/+/⤢, 110-px-Lupe mit echter Oberfläche, pinke Ausrichtung und physische Randabstände. Freie Doppeltipps zoomen, Textdoppeltipps bearbeiten; Zwei-Finger-Schutz bleibt. Tastatur scrollt nur die Eingabeliste, Vorschau und Preis bleiben im Bild.
+- Build 110 Module / 14 Styles. Windows-Vollauf Editor **412/418 erfolgreich**, dieselben 6 Umgebungsfehler (vorher 398/404); Werkstatt **1.207/1.372 erfolgreich**, dieselben 158 Fehler / 7 übersprungen. 31/31 gezielte Zoom-/Geometrie-/Lupe-Tests plus neuer Eingabelisten-Scrolltest bestanden; **146/146** gezielte Tests in separater gemeinsamer Kopie mit #42, kombinierter Build erfolgreich. Keine neue Fehlerkennung, Linux noch durch Claude zu prüfen. Bilder: lokaler gebauter Editor in 390×664, 375×548, 1440×900; synthetische Touch-/Tastaturereignisse, kein physischer Safari-Nachweis.
+- Zuerst Galerie-Nachtrag 3 [PR #42](https://github.com/Chris83638w/gravuru-2027/pull/42) prüfen: dort fehlt weiterhin der Nachweis mit aktueller Shop-/Katalogkopie; Zoom separat integrieren. D8-Preisvertrags-Probelauf separat offen. **Nicht gemergt, nichts live.** Nächster Schritt: Claude prüft Linux und kombinierte Branches; Chris entscheidet über Veröffentlichung.
+- [Bericht](docs/handoffs/2026-10-28-konfi-ux-nachtrag4-astra-bericht.md) · [Bilder und Prüfergebnisse](docs/handoffs/konfi-zoom-fokus-20261028-astra/README.md)
+
 ## 28.10.2026 · Claude · Live: PR #41 Kunden-Konfigurator UX + iPhone-Absicherung (`main` `0643c70`)
 
 - Chris (19:49): „Ja, Du darfst PR #41 (Stand 602a3ac) nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `0643c70` (Baum = `602a3ac`, Linux 1775/1775), Plesk Pull + Bereitstellen, Ziel geprüft (`shop-embed` mit `editor-ready`/`loaded`, `shop-design-gallery.mjs`, `view-zoom.mjs`), App neu gestartet; `shop-design-switch.mjs` 200, `/api/workshop/session` 401.

@@ -1,3 +1,9 @@
+## 28.10.2026 · Claude · Zweiter Auftrag an Astra zu PR #41 (nur Doku)
+
+- `docs/handoffs/2026-10-28-konfi-ux-auftrag2-astra.md` + Bilder `konfi-ux-20261028-auftrag2/`, alle Punkte mit Chris abgestimmt und 1:1 im Konfi geprüft (PR-Stand `458f56b8` im Live-Shop, nur Testbrowser).
+- Entscheidungen Chris: Vorlagenmotiv inklusive, anderes/zusätzliches Motiv 1,69 € (`motifCharge` zurück auf `additional`); Text-Leiste über dem Schild (B) mit Schalter A/B zum Testen; echter Zoom ins Schild (dunkelgrau); Griffe als kleinere Kästchen (~19 px, Tippfläche 44 px); F2b/c, F3, F4, F5, F7–F10; Designs aller Formen/Größen.
+- Offen bei Claude: iOS-Branch mit PR #41 zusammenführen, Warenkorbbild ohne Material (27), iPhone „Knopf grau“.
+
 ## 28.10.2026 · Claude · Live: Direktstart (`main` `8540800`)
 
 - Chris (07:49): „Ja, Du darfst den Direktstart des Konfigurators bereitstellen und die App neu starten.“ → Merge `8540800` (STATUS-Konflikt zusammengeführt, gezielte Tests grün), Plesk Pull + Bereitstellen, Ziel geprüft (`input.ticket`, `createStartTickets`/`failedUntil`, `startResourceUrls`), App neu gestartet (grüner Hinweis).

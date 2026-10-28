@@ -117,3 +117,10 @@ test('Nicht verbundene Vorschau bleibt gesperrt; bestehender Commerce-Knopf behÃ
  restore();assert.deepEqual(f.oldParent.children,[f.legacy,f.legacyStatus]);assert.equal(f.legacy.hidden,true);
  }
 });
+
+import {revealEditorField} from './mobile-steps.mjs';
+test('keyboard field reveal scrolls only the editor and never the plate shell',()=>{
+ let scrolled;const field={getBoundingClientRect:()=>({top:400,height:44}),scrollIntoView:()=>assert.fail('must not scroll parent preview')},editor={getBoundingClientRect:()=>({top:200}),clientHeight:100,scrollTop:80,scrollTo:value=>{scrolled=value;}};
+ revealEditorField(field,editor);assert.deepEqual(scrolled,{top:252,behavior:'smooth'});
+ field.getBoundingClientRect=()=>({top:0,height:44});revealEditorField(field,editor);assert.equal(scrolled.top,0);
+});

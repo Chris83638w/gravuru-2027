@@ -30,8 +30,9 @@ test('pinch preserves its midpoint and also supports two-finger panning at the z
 });
 test('small-object focus enlarges and centers only the view; large objects leave it unchanged',()=>{
  const before=fitView(),box={x:235,y:170,width:30,height:5},copy=structuredClone(box),focused=autoZoomView(before,box,bounds);
- assert.equal(focused.scale,4);close(projectView({x:250,y:172.5},focused,bounds),{x:250,y:175});assert.deepEqual(box,copy);assert.deepEqual(before,fitView());
- assert.equal(autoZoomView(before,{x:50,y:50,width:60,height:30},bounds),before);
+ assert.equal(focused.scale,3);close(projectView({x:250,y:172.5},focused,bounds),{x:250,y:175});assert.deepEqual(box,copy);assert.deepEqual(before,fitView());
+ assert.deepEqual(autoZoomView(before,{x:50,y:50,width:260,height:30},bounds),fitView());
+ const medium=autoZoomView(before,{x:150,y:100,width:200,height:30},bounds);assert.equal(medium.scale,1.75);assert.equal(200*medium.scale/bounds.viewport.width,.7);
 });
 test('autozoom interpolation approaches the target smoothly and retains exact endpoints',()=>{
  const from=fitView(),to={scale:4,x:100,y:-50};assert.deepEqual(interpolateView(from,to,0),from);assert.deepEqual(interpolateView(from,to,1),to);

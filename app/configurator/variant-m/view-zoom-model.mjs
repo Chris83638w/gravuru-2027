@@ -24,9 +24,9 @@ export function pinchView(view,start,current,bounds){
  const before=center(start),after=center(current),scale=viewScale(view.scale*distance(current)/Math.max(1,distance(start))),p=bounds.plate,c={x:p.x+p.width/2,y:p.y+p.height/2},ratio=scale/view.scale;
  return constrainView({scale,x:after.x-c.x-(before.x-c.x-view.x)*ratio,y:after.y-c.y-(before.y-c.y-view.y)*ratio},bounds);
 }
-export function autoZoomView(view,box,bounds,{threshold=24,target=44}={}){
- const small=Math.min(box.width,box.height);if(!(small>0)||small*view.scale>=threshold)return view;
- const scale=viewScale(Math.max(view.scale,target/small)),p=bounds.plate,c={x:p.x+p.width/2,y:p.y+p.height/2},v=bounds.viewport;
+export function autoZoomView(view,box,bounds){
+ const v=bounds.viewport;if(!(box.width>0)||box.width>=v.width*.5)return fitView();
+ const scale=Math.min(3,Math.max(1,Math.min(v.width*.7/box.width,v.height*.7/Math.max(1,box.height)))),p=bounds.plate,c={x:p.x+p.width/2,y:p.y+p.height/2};
  return constrainView({scale,x:v.x+v.width/2-c.x-(box.x+box.width/2-c.x)*scale,y:v.y+v.height/2-c.y-(box.y+box.height/2-c.y)*scale},bounds);
 }
 export function visibleViewRect(view,bounds){
@@ -36,7 +36,7 @@ export function visibleViewRect(view,bounds){
 
 // Gesture arbitration is shared by mouse/touch tests and the real event adapter.
 // A second touch cancels an unfinished object drag before changing the view.
-export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{},onTap=()=>{},photoActive=()=>false}){
+export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{},onTap=()=>{},onBlankTap=()=>{},photoActive=()=>false}){
  const pointers=new Map();let gesture=null;
  const handled=()=>gesture?.kind==='pan'||gesture?.kind==='pinch'||gesture?.kind==='wait';
  return {
@@ -62,6 +62,7 @@ export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{}
   },
   up(point,{cancelled=false}={}){
    const prior=pointers.get(point.id);if(!prior)return false;const used=!!handled();pointers.delete(point.id);
+   if(!cancelled&&!prior.moved&&Math.hypot(point.x-prior.start.x,point.y-prior.start.y)<=5&&prior.kind==='blank'&&(!used||gesture?.kind==='pan'))onBlankTap(prior);
    if(used)gesture=pointers.size?{kind:'wait'}:null;
    else if(!cancelled&&!prior.moved&&Math.hypot(point.x-prior.start.x,point.y-prior.start.y)<=5&&prior.kind==='object'&&prior.pointerType==='touch')onTap(prior.objectId);
    return used;

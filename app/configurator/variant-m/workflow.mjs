@@ -4,6 +4,9 @@ import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
 import {transformedCorners} from './usability-model.mjs';
 import {designArea} from './design-area.mjs';
+import {createDragSnap,nearestPlateEdge,alignmentLabel} from './drag-assistance-model.mjs';
+import {artworkViewport} from './print-geometry.mjs';
+import {surfaceGeometry} from './surfaces.mjs';
 import {fitText,freePlacement,transferTexts,changedCustomerTexts,alignGroup,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
 import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -21,11 +24,28 @@ export async function installWorkflow(api){
  // Guides no longer need a customer switch. Snapping is always available.
  $('.ux-guides-row').hidden=true;$('[data-setting=guides]').checked=false;$('[data-ux-guides]').checked=false;
  el.uxSuggestCenter=()=>{};$('.ux-center-proposal').hidden=true;
- let activeGuides=false;
- el.uxGuideGesture=active=>{activeGuides=active;};
- function guides(){const scene=$('.scene');if(!scene)return;scene.querySelectorAll('.ux-alignment-guides,.guided-alignment,.center-guides,[data-workflow-guides]').forEach(n=>n.remove());if(!activeGuides||!selected())return;
-  const o=selected(),targets=window.GravuruGuided.alignmentTargets({...el.state,objects:el.state.objects.filter(x=>!x.uxHidden)},o),ns='http://www.w3.org/2000/svg';const g=document.createElementNS(ns,'g');g.dataset.workflowGuides='';g.setAttribute('pointer-events','none');
-  for(const axis of ['x','y'])for(const t of targets[axis].filter(t=>t.key.startsWith('plate-')||Math.abs(t.value-o[axis])<.05)){const l=document.createElementNS(ns,'line'),vertical=axis==='x';for(const [k,v]of Object.entries({x1:vertical?t.line:0,y1:vertical?0:t.line,x2:vertical?t.line:el.state.width,y2:vertical?el.state.height:t.line,stroke:'#278a72','stroke-width':1,'stroke-dasharray':'4 3','vector-effect':'non-scaling-stroke'}))l.setAttribute(k,v);g.append(l);}maskContourGuides(g,surface());scene.append(g);
+ let activeGuides=false,guideDetails={};
+ el.uxGuideGesture=(active,details={})=>{activeGuides=active;guideDetails=details;};
+ const guideGeometry=()=>el.uxProfileGeometry?.()||profile.geometry;
+ const guideArea=()=>config?designArea(config,{geometry:guideGeometry()}):{left:surface().x,top:surface().y,right:surface().x+surface().width,bottom:surface().y+surface().height};
+ if(window.GravuruGuided)el.uxDragSnap=createDragSnap(window.GravuruGuided,guideArea,guideGeometry);
+ function guides(){
+  const scene=$('.scene');if(!scene)return;scene.querySelectorAll('.ux-alignment-guides,.guided-alignment,.center-guides,[data-workflow-guides]').forEach(n=>n.remove());if(!activeGuides||guideDetails.kind!=='move'||!selected())return;
+  const o=selected(),ns='http://www.w3.org/2000/svg',g=document.createElementNS(ns,'g');g.dataset.workflowGuides='';g.setAttribute('pointer-events','none');
+  const line=(a,b)=>{const l=document.createElementNS(ns,'line');for(const [k,v]of Object.entries({x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'#e0457b','stroke-width':1,'vector-effect':'non-scaling-stroke'}))l.setAttribute(k,v);g.append(l);};
+  const labels=[];
+  for(const axis of ['x','y']){const t=guideDetails.locks?.[axis];if(!t||Math.abs(t.value-o[axis])>.05)continue;line(axis==='x'?{x:t.line,y:0}:{x:0,y:t.line},axis==='x'?{x:t.line,y:el.state.height}:{x:el.state.width,y:t.line});labels.push({text:alignmentLabel(t),point:axis==='x'?{x:t.line,y:o.y+o.h/2+4}:{x:o.x,y:t.line-4}});}
+  const viewport=config?artworkViewport(config,el.state):{geometry:guideGeometry(),scale:1,x:0,y:0};if(el.state.uxSurface==='back')viewport.geometry=surfaceGeometry(viewport.geometry,'back');
+  const distance=nearestPlateEdge(o,viewport);line(distance.object,distance.edge);labels.push({text:distance.label,point:{x:(distance.object.x+distance.edge.x)/2,y:(distance.object.y+distance.edge.y)/2}});
+  maskContourGuides(g,surface());scene.append(g);
+  const matrix=scene.getScreenCTM();if(!matrix)return;const inverse=matrix.inverse(),px=Math.hypot(matrix.a,matrix.b)||1,s=$('.stage').getBoundingClientRect();
+  const point=(p,m)=>{const v=scene.createSVGPoint();v.x=p.x;v.y=p.y;return v.matrixTransform(m);};
+  for(let i=0;i<labels.length;i++){
+   const item=labels[i],width=Math.min(s.width-20,item.text.length*5.6+12),height=20,at=point(item.point,matrix);
+   const screen={x:Math.max(s.left+width/2+6,Math.min(s.right-width/2-6,at.x)),y:Math.max(s.top+65,Math.min(s.bottom-height-6,at.y+i*23))},p=point(screen,inverse);
+   const bg=document.createElementNS(ns,'rect');for(const [k,v]of Object.entries({x:p.x-width/2/px,y:p.y-height/2/px,width:width/px,height:height/px,rx:3/px,fill:'#c92d64'}))bg.setAttribute(k,v);g.append(bg);
+   const text=document.createElementNS(ns,'text');for(const [k,v]of Object.entries({x:p.x,y:p.y+3.5/px,'text-anchor':'middle','font-size':11/px,'font-family':'Arial,sans-serif',fill:'white'}))text.setAttribute(k,v);text.textContent=item.text;g.append(text);
+  }
  }
  // Capture before the old gesture listeners, including blank SVG/plate areas.
  r.addEventListener('pointerdown',e=>{if(e.button!==0||!e.target.closest('.stage,.c-large-preview'))return;if(e.target.closest('[data-object],[data-ux-handle],button,input,label,select,textarea,a'))return;el.state.selected=null;activeGuides=false;el.sync();},true);
@@ -33,7 +53,7 @@ export async function installWorkflow(api){
  function editText(id){if(el.uxEditText)return el.uxEditText(id);const o=el.state.objects.find(o=>o.id===id&&o.type==='text');if(!o||o.uxLocked)return;const full=$('.c-large-preview');if(full.open)full.close();showTab('text');el.state.selected=id;el.sync();const field=all('[data-ux-text]').find(f=>f.dataset.uxText===id);field?.scrollIntoView({block:'center',behavior:'smooth'});field?.focus({preventScroll:true});field?.setSelectionRange(0,field.value.length);}
  let tap=null;
  el.uxTextTap=id=>{const now=performance.now();if(tap?.id===id&&now-tap.time<900){tap=null;editText(id);}else tap={id,time:now};};
- r.addEventListener('dblclick',e=>{const id=e.target.closest('[data-object]')?.dataset.object||(e.target.closest('.plate-holder')?selected()?.id:null);if(id)editText(id);},true);
+ r.addEventListener('dblclick',e=>{const id=e.target.closest('[data-object]')?.dataset.object;if(id)editText(id);},true);
  // Direct group alignment, independent of guide visibility.
  $('[data-ux=multi-center]').insertAdjacentHTML('beforebegin',button('multi-left',alignmentContent('left'),'aria-label="Ausgewählte Texte links bündig ausrichten" disabled'));
  $('[data-ux=multi-center]').insertAdjacentHTML('afterend',button('multi-right',alignmentContent('right'),'aria-label="Ausgewählte Texte rechts bündig ausrichten" disabled'));

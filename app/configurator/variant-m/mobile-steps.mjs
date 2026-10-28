@@ -58,6 +58,12 @@ export function previewHeight({viewportHeight,keyboardOpen=false}){
   return Math.max(PREVIEW_MIN_PX,Math.round(Number(viewportHeight||0)*fraction));
 }
 
+// Scroll the input list, never the parent preview/step shell.
+export function revealEditorField(field,editor){
+ const f=field.getBoundingClientRect(),e=editor.getBoundingClientRect();
+ editor.scrollTo({top:Math.max(0,editor.scrollTop+f.top-e.top-(editor.clientHeight-f.height)/2),behavior:'smooth'});
+}
+
 const MATERIAL_NAMES={acrylic:'Acrylglas',acryl:'Acrylglas',steel:'Edelstahl',stainless:'Edelstahl',slate:'Schiefer',aluminium:'Alu-Dibond',alu:'Alu-Dibond',wood:'Holz',glass:'Glas'};
 export function materialLabel(material){
   if(!material)return '';
@@ -199,7 +205,7 @@ export async function installMobileSteps(api){
     r.host.style.setProperty('--ux-vv-height',Math.round(height)+'px');
     r.host.style.setProperty('--ux-vv-top',Math.round(top)+'px');
     r.host.style.setProperty('--ux-mobile-preview-h',previewHeight({viewportHeight:height,keyboardOpen})+'px');
-    r.host.dataset.uxKeyboard=String(keyboardOpen);
+    r.host.dataset.uxKeyboard=String(keyboardOpen);el.uxRefreshTextToolbar?.();if(keyboardOpen){const layout=$('.ux-layout');if(layout)layout.scrollTop=0;}
   }
   el.uxMobileSteps={get active(){return active;},get current(){return current;},get steps(){return steps.map(s=>s.id);},show:showStep,applyViewport:(override=null)=>{viewportOverride=override;applyViewport();}};
   const notes=new Map();
@@ -232,7 +238,7 @@ export async function installMobileSteps(api){
   r.addEventListener('focusin',e=>{if(!active)return;applyViewport();const field=e.target;
     // Direktbearbeitung auf der Platte (uxTextTap → uxEditText) gehört zum Schritt Text.
     if(field.closest('.ux-direct-input')&&!['text','media','motif'].includes(current))showStep('text',{scroll:false});
-    if(field.closest('.ux-editor')&&fieldFocused())setTimeout(()=>{if(r.activeElement===field)field.scrollIntoView({block:'center',behavior:'smooth'});},280);});
+    if(field.closest('.ux-editor')&&fieldFocused())setTimeout(()=>{if(r.activeElement===field)revealEditorField(field,editor);},280);});
   r.addEventListener('focusout',()=>{if(active)setTimeout(applyViewport,0);});
   r.addEventListener('click',e=>{
     if(!active)return;const b=e.target.closest('[data-ux]');if(!b||b.disabled)return;const key=b.dataset.ux;

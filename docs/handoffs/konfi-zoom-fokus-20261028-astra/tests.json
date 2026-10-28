@@ -1,0 +1,100 @@
+{
+  "base": "26952e48e857c9ad08b23bf4e8557f27dfdbc3eb",
+  "platform": "Windows",
+  "node": "24.20.0",
+  "editor": {
+    "before": {
+      "tests": 404,
+      "pass": 398,
+      "fail": 6,
+      "skipped": 0
+    },
+    "after": {
+      "tests": 418,
+      "pass": 412,
+      "fail": 6,
+      "skipped": 0
+    },
+    "sameFailureNames": true,
+    "failures": [
+      "Mimaki combined is one PDF page with white vector layer, no RDG_WHITE resource",
+      "Roland PDF has real spot resources, cut paths, bleed/trim boxes and actual four-channel CMYK artwork",
+      "Roland motif white is spot-color vector paint, without raster or soft-mask painting",
+      "ZIP keeps original image bytes and readable member names",
+      "original RT1/RT2 cut PDFs retain curved physical bounds and fixed drilling within 0.1 mm",
+      "separate Mimaki white is vector-only; no-white removes actual white paint"
+    ]
+  },
+  "workshop": {
+    "before": {
+      "tests": 1372,
+      "pass": 1207,
+      "fail": 158,
+      "skipped": 7
+    },
+    "after": {
+      "tests": 1372,
+      "pass": 1207,
+      "fail": 158,
+      "skipped": 7
+    },
+    "sameFailureNames": true
+  },
+  "targeted": {
+    "tests": 31,
+    "pass": 31,
+    "fail": 0
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 463769,
+    "lazyResources": {
+      "fonts": 30,
+      "motifs": 703
+    },
+    "bundle": {
+      "url": "/_bundle/editor-f603ddcaa4d41e36.mjs",
+      "modules": 110,
+      "styles": 14,
+      "bytes": 1173529,
+      "gzipBytes": 383851
+    }
+  },
+  "commands": [
+    "node --test --test-concurrency=4 app/configurator/variant-m/*.test.mjs",
+    "node --test app/workshop/*.test.mjs",
+    "node --test app/configurator/variant-m/view-zoom.test.mjs app/configurator/variant-m/view-zoom-model.test.mjs app/configurator/variant-m/drag-assistance.test.mjs",
+    "node app/configurator/variant-m/build.mjs"
+  ],
+  "limitations": [
+    "No Linux execution in this environment",
+    "Chrome viewport, synthetic touch/keyboard; not a physical Safari test",
+    "No live action"
+  ],
+  "combined": {
+    "galleryHead": "bfbd9188ac4446611bc5e71b55b74c804aec5767",
+    "zoom": "this commit",
+    "tests": 146,
+    "pass": 146,
+    "fail": 0,
+    "skipped": 0,
+    "build": {
+      "verifiedResources": 76,
+      "models": 1,
+      "editorBytes": 463769,
+      "lazyResources": {
+        "fonts": 30,
+        "motifs": 703
+      },
+      "bundle": {
+        "url": "/_bundle/editor-d75a7992108ad502.mjs",
+        "modules": 110,
+        "styles": 14,
+        "bytes": 1173901,
+        "gzipBytes": 383967
+      }
+    },
+    "scope": "31 zoom/geometry/loupe tests + 10 mobile-step tests + 105 gallery/binding/session/intake tests; separate combined copy, no merge"
+  }
+}

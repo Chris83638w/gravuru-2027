@@ -32,7 +32,7 @@ export function selectCommerceVariant(config,binding,state,quantity=1){
  const price=commercePrice(config,state,quantity),variant=binding.variants.find(v=>v.key===price.key);
  if(!variant)throw Error('Diese Ausführung ist derzeit nicht bestellbar.');
  if(variant.priceCents!==baseVariantPrice(config,price.options))throw Error('Der Shop-Preis passt nicht mehr zur gespeicherten Ausführung.');
- if(binding.priceMode!=='shopify-cart-transform'&&(price.additionalMotifs||price.chargedUploads||price.fieldCents))throw Error('Die Aufpreisberechnung ist noch nicht freigeschaltet.');
+ if(binding.priceMode!=='shopify-cart-transform'&&((price.chargedMotifs??price.additionalMotifs)||price.chargedUploads||price.fieldCents))throw Error('Die Aufpreisberechnung ist noch nicht freigeschaltet.');
  // Ein fester Variantenpreis kann keine Staffel abbilden; der Shop würde den Listenpreis berechnen.
  if(binding.priceMode!=='shopify-cart-transform'&&price.quantityTier)throw Error('Die Mengenstaffel ist im Shop-Warenkorb noch nicht freigeschaltet.');
  return {...price,variantId:variant.id,baseVariantCents:variant.priceCents};

@@ -37,3 +37,8 @@ test('Überlagerung aus der unveränderten Vorlage ist gewollt; nach Verschieben
  assert.equal(templateOverlap(['motiv-1','neu'],[...objects,{id:'neu',type:'motif',x:50,y:40,w:5,h:5}],design),false);
  assert.equal(templateOverlap(['motiv-1','text-1'],objects,null),false);
 });
+
+test('Wasser finds semantic marine motifs and ranks literal matches first',()=>{
+ for(const name of ['Wellen','Anker','Leuchtturm','Fische','Muschel'])assert.ok(motifScore({name},'Wasser')>0,name);
+ assert.equal(motifScore({name:'Pferd'},'Wasser'),0);assert.ok(motifScore({name:'Wasser'},'Wasser')>motifScore({name:'Leuchtturm'},'Wasser'));
+});

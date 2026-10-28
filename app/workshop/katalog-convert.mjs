@@ -136,11 +136,21 @@ export function parseDesignSvg(svgText){
   if(!m){notes.push('Ebene ohne Lieferform-2-Kennung übersprungen: <'+node.tag+(id?' id="'+id+'"':'')+'>');continue;}
   const kind=m[1],t=transformOf(node.attrs.transform);
   if(kind==='text'||(kind==='guide'&&find(node,'text'))){
-   const el=find(node,'text');if(!el)fail('Ebene „'+id+'“ enthält keinen <text>.');
-   const inner=transformOf(el.attrs.transform),content=textContent(el);
-   if(!content.text)fail('Ebene „'+id+'“: Text leer.');
-   const size=num(el.attrs['font-size'],'font-size von „'+id+'“');if(!(size>0))fail('Ebene „'+id+'“: font-size in mm fehlt.');
-   layers.push({id,kind,fieldKey:node.attrs['data-feld']||el.attrs['data-feld']||null,text:content.text,lines:content.lines,lineHeight:content.lineHeight??size*1.2,font:fontFamily(el.attrs['font-family'])||fail('Ebene „'+id+'“: font-family fehlt.'),size,x:(num(el.attrs.x,'x')??0)+t.dx+inner.dx,y:(content.firstY??num(el.attrs.y,'y')??0)+t.dy+inner.dy,anchor:el.attrs['text-anchor']||'start',letterSpacing:num(el.attrs['letter-spacing'],'letter-spacing')??0,fill:el.attrs.fill||node.attrs.fill||null,rotation:t.rotation+inner.rotation});
+   const textNodes=findAll(node,['text']);if(!textNodes.length)fail('Ebene „'+id+'“ enthält keinen <text>.');
+   if(textNodes.length>1&&findAll(node,['g']).some(g=>g!==node&&g.attrs.transform))fail('Ebene „'+id+'“: verschachtelte Texttransformationen benötigen eine Quellkorrektur.');
+   const rows=textNodes.map(el=>{
+    const inner=transformOf(el.attrs.transform),content=textContent(el),size=num(el.attrs['font-size'],'font-size von „'+id+'“');
+    if(!content.text||!(size>0))fail('Ebene „'+id+'“: Text oder font-size in mm fehlt.');
+    return {id,kind,fieldKey:node.attrs['data-feld']||el.attrs['data-feld']||null,text:content.text,lines:content.lines,lineHeight:content.lineHeight??size*1.2,font:fontFamily(el.attrs['font-family'])||fail('Ebene „'+id+'“: font-family fehlt.'),size,x:(num(el.attrs.x,'x')??0)+t.dx+inner.dx,y:(content.firstY??num(el.attrs.y,'y')??0)+t.dy+inner.dy,anchor:el.attrs['text-anchor']||'start',letterSpacing:num(el.attrs['letter-spacing'],'letter-spacing')??0,fill:el.attrs.fill||node.attrs.fill||null,rotation:t.rotation+inner.rotation};
+   });
+   const first=rows[0];
+   if(rows.length>1){
+    const keys=['fieldKey','font','size','x','anchor','letterSpacing','fill','rotation'];
+    if(rows.some(row=>row.lines!==1||keys.some(key=>row[key]!==first[key])))fail('Ebene „'+id+'“: zusammengehöriger Text braucht gleiche Schrift, Ausrichtung und Zeilenachse. Bitte die Quellgruppe prüfen.');
+    const step=rows[1].y-first.y;
+    if(!(step>0)||rows.slice(1).some((row,i)=>Math.abs(row.y-rows[i].y-step)>.000001))fail('Ebene „'+id+'“: ungleichmäßige Textzeilen benötigen eine Quellkorrektur.');
+    layers.push({...first,text:rows.map(row=>row.text).join('\n'),lines:rows.length,lineHeight:step});
+   }else layers.push(first);
   }else if(kind==='foto'){
    const mask=findAll(node,['rect','circle','ellipse','path']).find(n=>n.tag!=='path'||!n.attrs.d?.startsWith('M0'));
    if(!mask)fail('Ebene „'+id+'“: Fotofeld braucht eine Maske (rect, circle, ellipse oder path).');

@@ -1,3 +1,4 @@
+import {pathToFileURL} from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createShopEntryClient,mapWorkshopPath,shopUrl} from './ui/shop-entry-client.mjs';
@@ -124,9 +125,11 @@ test('shop embed accepts messages only from the editor host and this frame, and 
  globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;
  const savedLocation=globalThis.location;globalThis.location={href:'https://gravuru-design.myshopify.com/products/x',origin:'https://gravuru-design.myshopify.com'};
  t.after(()=>{globalThis.location=savedLocation;delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
- const {acceptedMessage,startUrl}=await import(path.join(dir,'shop-embed.mjs'));
+ const {acceptedMessage,startUrl}=await import(pathToFileURL(path.join(dir,'shop-embed.mjs')).href);
  const frame={contentWindow:{}},token='f'.repeat(64);
  assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-handoff',token}},frame),{type:'handoff',token,image:null});
+ assert.deepEqual(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-editor-ready'}},frame),{type:'ready'});
+ for(const event of [{origin:'https://foreign.example',source:frame.contentWindow},{origin:'https://app.example',source:{}}])assert.equal(acceptedMessage({...event,data:{type:'gravuru-shop-editor-ready'}},frame),null);
  // Warenkorbbild: nur JPEG/PNG bis 1,5 MB, sonst still verworfen (dann gilt die Gravurvorschau des Servers).
  const jpeg=new Blob([new Uint8Array(10)],{type:'image/jpeg'});
  assert.equal(acceptedMessage({origin:'https://app.example',source:frame.contentWindow,data:{type:'gravuru-shop-handoff',token,cartImage:jpeg}},frame).image,jpeg);
@@ -148,7 +151,7 @@ test('global shop embed: product data from the theme block, own start link, buy 
  const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
  fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
  globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
- const {pageConfig,startHref,productForms,prepareProductPage}=await import(path.join(dir,'shop-embed.mjs'));
+ const {pageConfig,startHref,productForms,prepareProductPage}=await import(pathToFileURL(path.join(dir,'shop-embed.mjs')).href);
  // Kleine Seiten-Nachbildung: nur was die Funktionen brauchen.
  const el=(tag,attrs={},children=[])=>{const node={tag,attrs:{...attrs},children,parent:null,style:{},textContent:attrs.text||'',
   setAttribute(k,v){this.attrs[k]=v;},getAttribute(k){return this.attrs[k]??null;},
@@ -215,7 +218,7 @@ test('shop embed opens a connection to the editor host once, only on intent towa
  const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
  fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
  globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
- const {connectOnIntent}=await import(path.join(dir,'shop-embed.mjs'));
+ const {connectOnIntent}=await import(pathToFileURL(path.join(dir,'shop-embed.mjs')).href);
  const listeners=[],head=[];const doc={addEventListener:(type,fn,options)=>listeners.push([type,options]),createElement:tag=>({tag}),head:{append:n=>head.push(n)}};
  const handler=connectOnIntent(doc);
  assert.deepEqual(listeners.map(([type])=>type),['pointerover','focusin','touchstart']);assert.ok(listeners.every(([,o])=>o.passive&&o.capture));
@@ -248,7 +251,7 @@ test('start ticket: fetched once per start address through the proxy, only edito
  const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
  fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
  globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
- const {createStartTickets}=await import(path.join(dir,'shop-embed.mjs'));
+ const {createStartTickets}=await import(pathToFileURL(path.join(dir,'shop-embed.mjs')).href);
  let time=Date.parse('2026-10-28T10:00:00Z');const calls=[];let answer=()=>({ok:true,json:async()=>({url:'https://app.example/konfigurator/shop/#s=gse1.x&embed=1',expiresAt:'2026-10-28T14:00:00.000Z'})});
  const tickets=createStartTickets({fetchImpl:async(url,options)=>{calls.push([url,options.credentials,options.cache]);return answer();},now:()=>time});
  const key='https://shop.example/apps/konfigurator/start?product=5&variant=11&embed=1';

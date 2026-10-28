@@ -9,7 +9,7 @@ const concepts = [
  ['liebe','hochzeit','herz','herzen','love','heart'],
  ['natur','wald','baum','baume','tree','blatt','blatter','leaf','zweig'],
  ['blume','blumen','blute','flower','floral','rose'],
- ['meer','maritim','anker','anchor','boot','schiff','segel'],
+ ['wasser','water','meer','see','strand','maritim','welle','wellen','wave','waves','anker','anchor','boot','schiff','segel','leuchtturm','lighthouse','fisch','fische','fish','muschel','muscheln','seestern'],
  ['vogel','vogel','bird','birds','taube'],
  ['pferd','pferde','horse','horses','reiten'],
  ['haus','zuhause','home','house','familie','family']
@@ -29,7 +29,7 @@ export function motifScore(entry, query, theme=null) {
  let score=0;
  for(const term of terms){if(name.includes(term)){score+=8;continue;}if(corpus.includes(term)){score+=4;continue;}
   const related=concepts.filter(group=>group.includes(term)).flat();
-  if(related.some(word=>corpus.includes(word)))score+=1;else return 0;
+  if(related.some(word=>corpus.split(/[^a-z0-9]+/).includes(word)))score+=1;else return 0;
  }return score+bonus;
 }
 export function editableTexts(objects){return objects.filter(o=>o.type==='text'&&!o.uxHidden&&!o.uxLocked&&!o.technicalLocked&&o.customerEditable!==false);}

@@ -45,6 +45,9 @@ export function prepareConfig(input) {
   const config = clone(input);
   if(isLayeredDoorbell(config)){validateDoorbellDefinition(config);config.profile=selectedDoorbellProfile(config);}
   const p = config.profile;
+  if(config.designSelection!==undefined&&config.designSelection!=='all-approved')fail('Designauswahl ist ungültig.');
+  if(config.motifCharge!==undefined&&!['additional','all'].includes(config.motifCharge))fail('Motiv-Preisregel ist ungültig.');
+  if(config.textRules!==undefined&&(!config.textRules||typeof config.textRules!=='object'||Array.isArray(config.textRules)||Object.keys(config.textRules).join(',')!=='maxCharsPerLine'||!Number.isInteger(config.textRules.maxCharsPerLine)||config.textRules.maxCharsPerLine<1||config.textRules.maxCharsPerLine>500))fail('Zeichenregel je Zeile ist ungültig.');
   if(config.sceneBackground!==undefined&&!validSurface(config.sceneBackground))fail('Ungültiges Szenenbild.');
   if(config.steelFormats){if(p.material?.kind!=='steel')fail('Edelstahlgrößen gehören zu einem Edelstahlschild.');validateSteelFormats(config);}
   const extraFontIds=localFontIds(config);
@@ -55,7 +58,7 @@ export function prepareConfig(input) {
   for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
     if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');
     if(o.required===true&&o.customerEditable===false)fail('Ein Pflichttext muss für Kunden bearbeitbar sein.');
-    const issue=textLimitIssue(o.text,textLimits(o,d,p));if(issue)fail((d.name||d.id)+': Mustertext – '+issue);
+    const issue=textLimitIssue(o.text,textLimits(o,d,p,config));if(issue)fail((d.name||d.id)+': Mustertext – '+issue);
   }
   for(const group of p.optionGroups||[])for(const value of group.values)validateOptionPresentation(value);
   validateOptionConditions(p); // K14 / Ü12.1: bedingte Gruppen und Zusatzfelder
@@ -176,9 +179,10 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   const included = new Map(design.objects.filter(o => o.type === 'motif').map(o => [o.id, o.motif]));
   const embeddedOnly=new Set((config.localResources?.motifs||[]).filter(m=>m.embeddedOnly===true).map(m=>m.key));
   const seen = new Set();
-  let additionalMotifs = 0;
+  let additionalMotifs = 0,visibleMotifs = 0;
   const lineKeys=new Set((design.marks||[]).map((_,i)=>'ux-line-'+design.id+'-'+i));
   for (const o of objects.filter(o => o.type === 'motif' && !o.uxHidden && !isGuideObject(o) && !(o.uxDecoration&&lineKeys.has(o.motif)&&o.id===o.motif))) {
+    visibleMotifs++;
     if(embeddedOnly.has(o.motif)&&(included.get(o.id)!==o.motif||o.templateOrigin!==true||seen.has(o.id)))fail('Vorlagenmotiv darf nicht zusätzlich eingefügt werden.');
     if (included.get(o.id) === o.motif && !seen.has(o.id)) seen.add(o.id);
     else additionalMotifs++;
@@ -189,7 +193,8 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   const fieldCents = optionFieldCents(config, options);
   // Rückseite gestalten (Ü15.1): Aufpreis je Stück, sobald die Rückseite gestaltet ist; offen = nicht buchbar.
   const backCents = backSurcharge(config, objects);
-  unitCents += additionalMotifs * config.extraMotifCents + fieldCents + backCents;
+  const chargedMotifs=config.motifCharge==='all'?visibleMotifs:additionalMotifs;
+  unitCents += chargedMotifs * config.extraMotifCents + fieldCents + backCents;
   if (!Number.isSafeInteger(unitCents)) fail('Ungültiger Gesamtpreis.');
   // Staffel (Ü11.1) serverseitig auf den Stückpreis; nur Produkte mit Staffelangabe
   // tragen die Zusatzfelder, damit bestehende Preisstände unverändert bleiben.
@@ -197,7 +202,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   unitCents = applyQuantityTier(listUnitCents, tier, config.basePriceCents);
   if (!Number.isSafeInteger(unitCents * quantity)) fail('Ungültiger Gesamtpreis.');
   const tiers = config.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents,...(config.quantityTierScope===undefined?{}:{quantityTierScope:config.quantityTierScope})};
-  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
+  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, ...(config.motifCharge==='all'?{chargedMotifs}:{}), options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
 }
 
 // `template:true` prüft eine Vorlage gegen sich selbst (Händler-Werkstatt):
@@ -258,7 +263,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     // Zeichen-/Zeilenlimit (Ü3.1) aus der Vorlage, nie aus dem Kundenobjekt.
     if(o.type==='text'){
       const raw=source.objects.find(r=>r.id===o.id&&r.type==='text');
-      if((raw??o).customerEditable!==false){const issue=textLimitIssue(o.text,textLimits(raw,source,config.profile));if(issue)fail(issue);}
+      if((raw??o).customerEditable!==false){const issue=textLimitIssue(o.text,textLimits(raw,source,config.profile,config));if(issue)fail(issue);}
     }
     if(o.uxPhotoCrop!==undefined){
       const c=o.uxPhotoCrop;

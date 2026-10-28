@@ -21,3 +21,9 @@ test('vor jedem Zeichnen begrenzt', () => {
   const el={state:{width:90,height:30,objects:[{x:100,y:15,w:10,h:4}]},render(){return 'ok';}};
   installEdgeClamp(el);assert.equal(el.render(),'ok');assert.equal(el.state.objects[0].x,85);
 });
+
+test('rounded corners and oval use actual contour on every geometry edit, keep dimensions and the other surface',()=>{
+ for(const geometry of [{shape:'rect',width:120,height:80,cornerRadiusMm:12},{shape:'ellipse',width:120,height:80}]){
+ const o={id:'m',type:'motif',x:1,y:1,w:10,h:10,rotation:0},back={...o,id:'back',surfaceId:'back',x:-20};
+ const el={state:{designId:'d',width:120,height:80,objects:[o,back]},uxProfileGeometry:()=>geometry,render(){}};installEdgeClamp(el);el.render();assert.ok(o.x>5&&o.y>5);assert.equal(o.w,10);assert.equal(back.x,-20);const first=[o.x,o.y];el.render();assert.deepEqual([o.x,o.y],first);}
+});

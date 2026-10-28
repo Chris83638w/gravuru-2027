@@ -213,7 +213,7 @@ export async function installMobileSteps(api){
     // Hinweise (Stand wiederhergestellt, Überlagerung …) nicht über/in der Platte, sondern oben im
     // Bearbeitungsbereich – sonst schrumpft die feste Platte auf einen Streifen (Fehler 20.10.2026).
     const editor=$('.ux-editor');
-    for(const node of [$('.ux-session-note'),$('.ux-conflict-hints')])if(node&&editor&&!notes.has(node)){notes.set(node,{parent:node.parentNode,next:node.nextSibling});editor.prepend(node);}
+    for(const node of [$('.ux-conflict-hints')])if(node&&editor&&!notes.has(node)){notes.set(node,{parent:node.parentNode,next:node.nextSibling});editor.prepend(node);}
     bar.hidden=false;renderSteps();current=stepForTab(steps,selectedTab())||steps[0]?.id||'options';
     showStep(current,{scroll:false});applyViewport();updateTotal();
   }

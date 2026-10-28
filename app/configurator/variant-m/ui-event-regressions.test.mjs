@@ -1,3 +1,5 @@
+import {customerFieldLabel} from './text-fields.mjs';
+import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {selectionScaleFactor} from './selection-arrows.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
 import test from 'node:test';
@@ -13,7 +15,7 @@ import {prepareConfig,validateDesign} from './contract.mjs';
 import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {rightForProperty} from './element-rights.mjs';
 import {emptyPhotoMarkup,decorateEmptyPhotoSlots,examplePhotoMarkup} from './photo-placeholder.mjs';
-import {textLimits,textLimitIssue,textLength,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
+import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
 
 // Execute the actual registered handlers from the presentation modules with
 // deterministic DOM ports. This covers event routing without claiming browser QA.
@@ -47,11 +49,11 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
  vm.runInContext(line('ux.mjs',"if(e.target.dataset.uxText)delete"),env);
   input.value='stale';await dispatch(r,'focusout',inertEvent(input));assert.equal(Number(input.value),12);
   env.profile={designs:[{id:'test-design',customerFields:[{id:'name',label:'Namen'}]}]};
-  env.el.state.designId='test-design';
+  env.el.state.designId='test-design';env.chosenProfile=()=>env.profile;
   vm.runInContext(line('ux.mjs','const esc=value=>'),env);
   vm.runInContext(line('ux.mjs','const fieldLabel='),env);
   // K1: Limits und Feldhinweise aus dem echten Modul, Vorlage mit Pflichtfeld und Thema.
-  Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,fontDisplayName,design:()=>env.profile.designs[0]});
+  Object.assign(env,{textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,fontDisplayName,customerFieldLabel,touchedText:new Set(),textValidationAttempted:false,textControls:{closest:()=>null},design:()=>env.profile.designs[0]});
   env.profile.designs[0].themes=['namensschilder'];env.profile.designs[0].objects=[{id:'name',type:'text',text:'Anna',required:true}];
   for(const marker of ['const templateText=','const limitsFor=','const textIndex='])vm.runInContext(line('ux.mjs',marker),env);
   vm.runInContext(block('ux.mjs','  function textFieldIssue(o){','\n  }'),env);
@@ -222,7 +224,7 @@ test('K10 / Ü1.2: changeObject refuses colour when the process profile has no c
 test('K10 / Ü1.2: engraving products build the text panel without a colour picker, print without a free picker when the palette is fixed; photo tool follows tools.photo',()=>{
  // Die Markup-Zeilen aus ux.mjs, mit den Closure-Werten des Verfahrensprofils ausgewertet.
  const markup=block('ux.mjs',"  $('#ux-panel-text').innerHTML=","mitgefertigt.</p></div>`;");
- const render=(freeColor,minTextMm)=>{const env={freeColor,minTextMm,icons:{},button:(k,l,extra='')=>`<button data-ux="${k}" ${extra}>${l}</button>`,config:null,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-text').innerHTML=",'out='),env);return env.out;};
+ const render=(freeColor,minTextMm)=>{const env={freeColor,minTextMm,alignmentContent,alignmentLabel,icons:{},button:(k,l,extra='')=>`<button data-ux="${k}" ${extra}>${l}</button>`,config:null,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-text').innerHTML=",'out='),env);return env.out;};
  assert.doesNotMatch(render(false,4),/data-ux-color/);assert.match(render(true,3),/data-ux-color/);
  assert.match(render(false,4),/id="ux-size" type="number" min="4"/);assert.match(render(true,3),/min="3"/);
  const photoLine=line('ux.mjs','const photoEnabled=config?config.photo.enabled&&process.tools.photo!==false:true');
@@ -338,7 +340,7 @@ test('Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten L
 });
 // Chris 22./23.10.2026: Befestigung bei Universal-/Katalogprodukten als Kacheln mit Icon, Bezeichnung und Aufpreis
 // („+2,99 €“ / „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount]; Auswahlhaken einheitlich wie bei Designs.
-test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und Aufpreis; Auswahlliste bleibt, Haken wie Designs',async()=>{
+test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und Aufpreis; interne Auswahlliste bleibt verborgen, Haken wie Designs',async()=>{
  const {optionTileIcon,optionTilePrice,MOUNT_ICONS,optionThumbnail}=await import('./option-media.mjs');
  const {money}=await import('./contract.mjs');
  const {familyProductConfig}=await import('../../workshop/product-families.mjs');
@@ -356,21 +358,24 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
  // Preistext wie in der Auswahlliste; Größen mit Komplettpreis zeigen den Preis selbst.
  assert.equal(optionTilePrice({priceCents:0},money),'ohne Aufpreis');assert.equal(optionTilePrice({priceCents:299},money),'+'+money(299));assert.equal(optionTilePrice({priceCents:1990},money,{fullPrice:true}),money(1990));
  // Der echte Kachelaufbau aus adapter.mjs: alle fünf Befestigungen, Kennung/Gruppe für die Auswahl, Bezeichnung + Aufpreis, aria-pressed.
- const env={pictures:{innerHTML:''},p,config,esc:escapeXml,money,optionTileIcon,optionTilePrice};vm.createContext(env);
- vm.runInContext(line('adapter.mjs','const tileValues=g=>'),env);vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
+ const env={pictures:{innerHTML:''},p,config,dynamicDoorbell:false,esc:escapeXml,money,optionTileIcon,optionTilePrice};vm.createContext(env);
+ vm.runInContext(line('adapter.mjs','const fullOptionPrice=g=>'),env);vm.runInContext(line('adapter.mjs','const tileValues=g=>'),env);vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
  const html=env.pictures.innerHTML;
  assert.equal((html.match(/<button type="button" class="m-option-tile" data-picture-group="mounting" data-picture-option="/g)||[]).length,5);
  assert.match(html,/<div role="group" aria-label="Befestigung">/);
  assert.match(html,/data-picture-option="K00" aria-pressed="false"><svg [^>]*>.*?<\/svg><strong>Ohne Bohrung<\/strong><small>ohne Aufpreis<\/small><\/button>/);
  assert.match(html,new RegExp('data-picture-option="KGL" aria-pressed="false"><svg .*?<strong>Selbstklebend – glatte Flächen</strong><small>\\+'+money(299).replace(/\s/g,'\\s')+'</small>'));
- assert.match(html,new RegExp('data-picture-option="B02S" aria-pressed="false"><img src="data:image/png;base64,[^"]+" alt=""><strong>Mit 2 Schrauben</strong><small>\\+'+money(269).replace(/\s/g,'\\s')+'</small>'));
+ assert.match(html,new RegExp('data-picture-option="B02S" aria-pressed="false"><svg .*?</svg><strong>Mit 2 Schrauben</strong><small>\\+'+money(269).replace(/\s/g,'\\s')+'</small>'));
  // Andere Gruppen (z. B. ohne Optionsbild) bekommen weiterhin keine Kacheln; Werte mit Bild schon.
  env.p={optionGroups:[{id:'size',name:'Größe',values:[{id:'a',label:'A',priceCents:100},{id:'b',label:'B',priceCents:0,thumbnail:'data:image/png;base64,AAAA'}]}]};
  vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
  assert.equal((env.pictures.innerHTML.match(/data-picture-option=/g)||[]).length,1);assert.match(env.pictures.innerHTML,/data-picture-option="b"[^>]*><img src="data:image\/png;base64,AAAA" alt=""><strong>B<\/strong><small>ohne Aufpreis<\/small>/);
  // Auswahlliste (select) bleibt als barrierefreie Alternative; Klick auf die Kachel setzt nur die Option (keine Preislogik hier).
  assert.match(source('adapter.mjs'),/picks\.innerHTML=\(p\.optionGroups\|\|\[\]\)\.map\(g=>'<label>'\+esc\(g\.name\)\+'<select data-m-option=/);
- assert.match(source('adapter.mjs'),/pictures\.addEventListener\('click',e=>\{const button=e\.target\.closest\('\[data-picture-option\]'\);if\(!button\)return;el\.record\(\);options=\{\.\.\.options,\[button\.dataset\.pictureGroup\]:button\.dataset\.pictureOption\};/);
+ const choices=[];env.changeOption=(group,value)=>choices.push([group,value]);env.pictures.addEventListener=(event,handler)=>{assert.equal(event,'click');env.selectPicture=handler;};
+ vm.runInContext(line('adapter.mjs',"pictures.addEventListener('click'"),env);
+ env.selectPicture({target:{closest:()=>({dataset:{pictureGroup:'mounting',pictureOption:'B02S'}})}});
+ assert.deepEqual(choices,[['mounting','B02S']],'Kachel nutzt denselben Änderungsweg wie die Auswahlliste');
  // Einheitlicher Auswahlhaken: completion.mjs markiert die Kacheln wie Designs und nutzt dieselben Symbole.
  assert.match(line('completion.mjs',"const choices='"),/\[data-ux=mount-choice\],\[data-picture-option\]'/);
  assert.match(source('completion.mjs'),/import \{MOUNT_ICONS,mountIconSvg\} from '\.\/option-media\.mjs'/);

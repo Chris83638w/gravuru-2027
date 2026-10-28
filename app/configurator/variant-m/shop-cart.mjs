@@ -42,7 +42,7 @@ export function installShopCart(api,footer,gate){
  let busy=false,save=null;
  const quantity=()=>Number(api.r.querySelector('[data-fk-quantity]')?.value||1);
  const say=text=>{status.textContent=text;status.hidden=!text;};
- const label=()=>{button.textContent=busy?'Wird vorbereitet …':api.el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'In den Warenkorb';button.disabled=busy;};
+ const label=()=>{button.textContent=busy?'Wird vorbereitet …':api.el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'Jetzt in den Warenkorb';button.disabled=busy;};
  button.addEventListener('click',async()=>{
   if(busy)return;busy=true;label();
   try{

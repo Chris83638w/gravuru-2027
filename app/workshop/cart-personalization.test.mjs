@@ -148,3 +148,15 @@ test('explicit tokenless transport preserves personalization through the persist
     assert.throws(()=>createStorefrontCartTransport({shopDomain:shop,apiVersion:'2026-07',...cfg}),e=>e.code==='storefront_config');
   }
 });
+
+test('all-motif revision prices template motifs through the secured snapshot and rejects count drift',t=>{
+ const f=fixture(t),config=f.record.document.config;config.motifCharge='all';
+ const original={id:'template-motif',type:'motif',motif:'test-motif',x:50,y:50,w:10,h:10};config.profile.designs[0].objects.push(original);
+ const contract=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ const price=commercePrice(config,{designId:'test',objects:[original],mOptions:{mounting:'none'}},2);
+ assert.equal(price.additionalMotifs,0);assert.equal(price.chargedMotifs,1);assert.equal(price.unitCents,2468);
+ const manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+ assert.equal(personalizationForSnapshot(contract,manifest).personalization.motifs,1);
+ for(const chargedMotifs of [undefined,-1,0,1.5,201])assert.throws(()=>personalizationForSnapshot(contract,{...manifest,selection:{price:{...price,chargedMotifs}}}));
+ const legacy={...contract};delete legacy.motifCharge;assert.throws(()=>personalizationForSnapshot(legacy,manifest));
+});

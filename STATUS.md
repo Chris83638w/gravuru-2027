@@ -1,3 +1,7 @@
+## 28.10.2026 – Codex/Astra: Kunden-Konfigurator als Entwurf zur Prüfung
+
+Branch `dev/konfi-ux-20261028-astra`, Basis `f200509`. Gemeinsames Desktop-/Handylayout, M2-Textleiste, Inline-Textoptionen, Konturbegrenzung, Motivsuche und Produkt-Erklärungen; 50 Zeichen je Zeile und jedes Motiv 169 Cent nur für neue Produktstände. SVG-/PDF-Mehrzeilentexte bleiben zusammen. Alle kompatiblen freigegebenen Ziel-Designs optional im Import; produktübergreifende Galerie noch offen in [Issue #40](https://github.com/Chris83638w/gravuru-2027/issues/40). Vollauf variant-m Windows vorher **329/342**, nachher **339/350**, dieselben elf Restfehler auf main (sechs Python-Startfehler, fünf bestehende andere Fälle). Gezielte Gruppen: 52/52, Import 33/33, PDF 11/11, Werkstatt 63/63, Vorschlagsplan 1/1, finale CSS/Build 8/8. Dry-run: 1 Produkt, 1 bereit, 0 gesperrt; kein Import. [Bericht und nächste Schritte](docs/handoffs/2026-10-28-konfi-ux-astra-bericht.md), [Screenshots](docs/handoffs/konfi-ux-20261028-astra/README.md). Kein Merge, kein Deploy, keine Live-Preisänderung. Nächster Schritt: Claude prüft Quellstand/Linux und klärt Issue #40; Chris nimmt Bilder ab.
+
 ## 28.10.2026 · Claude · Live: Direktstart (`main` `8540800`)
 
 - Chris (07:49): „Ja, Du darfst den Direktstart des Konfigurators bereitstellen und die App neu starten.“ → Merge `8540800` (STATUS-Konflikt zusammengeführt, gezielte Tests grün), Plesk Pull + Bereitstellen, Ziel geprüft (`input.ticket`, `createStartTickets`/`failedUntil`, `startResourceUrls`), App neu gestartet (grüner Hinweis).

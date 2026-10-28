@@ -253,3 +253,18 @@ test('explicit photo colour survives draft roundtrip and rejects invalid/non-pho
  for(const invalid of ['automatic',null,{},true]){photo.uxPhotoColor=invalid;assert.throws(()=>save(s),/Fotofarbe/);}
  delete photo.uxPhotoColor;s.objects.find(o=>o.type==='text').uxPhotoColor='original';assert.throws(()=>save(s),/Fotofarbe/);
 });
+
+test('new product rule charges every visible motif; historical revisions keep template credit',()=>{
+ const s=state(),original=s.objects.find(o=>o.type==='motif'),all=prepareConfig({...config,motifCharge:'all'});s.objects=[original];
+ assert.equal(quote(all,s.objects,s.designId).unitCents,3168);assert.equal(quote(all,s.objects,s.designId).chargedMotifs,1);assert.equal(quote(all,s.objects,s.designId).additionalMotifs,0);
+ s.objects.push({...original,id:'extra'});assert.equal(quote(all,s.objects,s.designId,{},2).totalCents,6674);assert.equal(quote(all,s.objects,s.designId).additionalMotifs,1);
+ original.uxHidden=true;assert.equal(quote(all,s.objects,s.designId).chargedMotifs,1);s.objects.at(-1).role='guide';assert.equal(quote(all,s.objects,s.designId).chargedMotifs,0);
+ assert.equal(quote(config,state().objects,s.designId).unitCents,2999);assert.equal(quote(config,[],s.designId).chargedMotifs,undefined);
+ assert.throws(()=>prepareConfig({...config,motifCharge:'free'}),/Motiv-Preisregel/);
+});
+test('server accepts fifty characters per line only with the saved new rule, rejects forged limits',()=>{
+ const old=themed({themes:['namensschilder']}),cfg=prepareConfig({...old,textRules:{maxCharsPerLine:50}}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');
+ Object.assign(name,{size:4,x:150,y:120,text:'I'.repeat(50)+'\n'+'I'.repeat(50)});assert.doesNotThrow(()=>themedSave(cfg,s));
+ name.text='I'.repeat(51);name.maxLength=500;assert.throws(()=>themedSave(cfg,s),/50 Zeichen/);assert.throws(()=>themedSave(old,s),/32 Zeichen/);
+ assert.throws(()=>prepareConfig({...cfg,textRules:{maxCharsPerLine:50,ignore:true}}),/Zeichenregel/);
+});

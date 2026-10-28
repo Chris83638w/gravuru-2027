@@ -84,7 +84,7 @@ export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
   const glyphs=o=>{if(o.type!=='text'||o.uxHidden||!String(o.text??'').trim()||!el.uxTextBounds)return null;try{return el.uxTextBounds(o);}catch{return null;}};
   const clampAll=self=>{const s=self.state;if(!s?.objects)return;
     const geometry=self.uxProfileGeometry?.();
-    if(geometry?.shape==='contour'){
+    if(geometry&&(geometry.shape==='contour'||geometry.shape==='ellipse'||geometry.cornerRadiusMm>0)){
       // uxProfileGeometry already faces the active side. Other surfaces must not move.
       const active=s.uxSurface==='back'?'back':'front',key=JSON.stringify(geometry);
       let cache=surfacePositions.get(active);

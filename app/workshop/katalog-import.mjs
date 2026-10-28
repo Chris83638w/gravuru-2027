@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {katalogDesignToTemplate,formatSeries,scaleTemplate,scaleEmbeddedMotifs,katalogFamilyToProduct,priceGaps} from './katalog-convert.mjs';
 import {approvedForFamily,assignTargetSeries,designTargetCompatibility} from './design-targets.mjs';
+import {customerUxConfig} from './customer-ux-policy.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {FAMILY_MATERIALS,familyReady} from './product-families.mjs';
 
@@ -45,10 +46,11 @@ export async function ensureFontSet(katalog,fontSet,{fontLibrary=null,profiles=n
  return {profileId:profile.id,profileRevision:profile.revision,items,missing,imported,available:fontSet.fonts.filter(n=>!missing.some(m=>m.startsWith(n+' ')))};
 }
 
-export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null,only=null,allDesigns=false,retainItems=true,reporter=null,onProgress=null}={}){
+export async function planKatalogImport(katalog,lineId,{repository,families,bestand=null,available={},converter=null,fontLibrary=null,profiles=null,assets=null,only=null,allDesigns=false,customerUx=false,retainItems=true,reporter=null,onProgress=null}={}){
  // `only`: {subcategories:[ids], sizes:[keys], mainProducts:[ids]} begrenzt den Lauf (z. B. ein Muster); ohne Angabe die ganze Linie.
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').');
  const report={line:{id:line.id,name:line.name,status:line.status??null,file:katalog.files.get('linie:'+line.id)},families:[],subcategories:[],designs:{masters:katalog.designs.masters.length,bestand:0,considered:0,withSeries:0,oldSize:[],withoutTheme:0,failed:[]},counts:{products:0,new:0,update:0,unchanged:0,blocked:0,templates:0,sizes:0,pricesOpen:0,designsWithoutSeries:0,fit:{passt:0,'prüfen':0,'passt nicht':0}},notes:[]};
+ if(customerUx)report.notes.push('Kunden-UX 28.10.: alle für das Ziel freigegebenen Designs, 50 Zeichen je Zeile, jedes sichtbare Motiv 1,69 EUR. Nur neue Produktstände; Form-, Größen-, Foto- und Freigaberegeln bleiben bindend.');
  if(!line.families.length)report.notes.push('Linie „'+line.id+'“ hat noch keine Familie (Status: '+(line.status??'offen')+').');
  // Ausgeblendete Master (`hidden: true` in design.json, gesetzt im Design-Dashboard) bleiben im Katalog, kommen aber nicht ins Produkt.
  const hidden=katalog.designs.masters.filter(d=>d.hidden).map(d=>d.id);
@@ -81,7 +83,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
    const theme=sub.themeId?katalog.theme(sub.themeId):null,fontSet=katalog.fontSet(sub,theme);
    const hasPhotoField=d=>Array.isArray(d.json?.photos)?d.json.photos.length>0:/class="[^"]*\bfoto\b/.test(d.svg?.()||'');
    const photoMatch=a=>sub.photoDesigns==null||(sub.photoDesigns==='mit')===hasPhotoField(a.design);
-   const themed=assigned.filter(a=>!a.oldSize&&(a.design.themes?a.design.themes.includes(sub.themeId):false)&&photoMatch(a));
+   const themed=assigned.filter(a=>!a.oldSize&&(customerUx||(a.design.themes?a.design.themes.includes(sub.themeId):false))&&photoMatch(a));
    const withoutTheme=assigned.filter(a=>!a.oldSize&&!a.design.themes).length;
    // Schrift-Set als Profil (nicht je Produkt eingebettet); Glyphen nur für Vorlagenschriften.
    const setKey=fontSet.id??'ohne';if(!fontSets.has(setKey))fontSets.set(setKey,await ensureFontSet(katalog,{id:setKey,fonts:fontSet.fonts},{fontLibrary,profiles,runtimeFonts:available}));
@@ -138,6 +140,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
     let item=null;
     try{
      const product=katalogFamilyToProduct(doc,line,effective,{size,theme,fontSet:{...fontSet,available:set.available},fontProfileId:set.profileId,fonts,templates,revision,mainProduct:main});
+     if(customerUx){product.document.config=customerUxConfig(product.document.config);product.document.config.designSelection='all-approved';}
      const prior=repository.importItem(key),current=prior?repository.get(prior.id):null;
      const action=!prior?'neu':JSON.stringify(current.document)===JSON.stringify(product.document)?'unverändert':'aktualisieren';
      Object.assign(entry,{action,productId:prior?.id??null,productRevision:current?.revision??null,name:product.document.name,fontsMissing:product.fontsMissing});

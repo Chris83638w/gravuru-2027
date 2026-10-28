@@ -10,6 +10,7 @@ const TOKEN=/^[a-f0-9]{64}$/;
 const STYLE=`.gv-embed{position:fixed;inset:0;z-index:2147483000;background:#fff;display:flex;flex-direction:column}
 .gv-embed[hidden]{display:none}
 .gv-embed.gv-embed--preload{visibility:hidden;pointer-events:none}
+.gv-embed__bar[hidden]{display:none}
 .gv-embed__bar{display:flex;justify-content:flex-end;padding:6px 8px;border-bottom:1px solid #dce5e1;background:#fff}
 .gv-embed__close{font:inherit;font-size:15px;min-height:40px;padding:6px 14px;border:1px solid #c9d3cf;border-radius:8px;background:#fff;color:#243238;cursor:pointer}
 .gv-embed__frame{flex:1;width:100%;border:0;display:block}
@@ -101,6 +102,7 @@ export function acceptedMessage(event,frame){
  if(!frame||event.origin!==EDITOR_ORIGIN||event.source!==frame.contentWindow)return null;
  const data=event.data;
  if(data?.type==='gravuru-shop-close')return {type:'close'};
+ if(data?.type==='gravuru-shop-editor-ready')return {type:'ready'};
  // cartImage: Platte mit Material, wie im Überblick des Konfigurators (nur Anzeige, sonst die Gravurvorschau).
  if(data?.type==='gravuru-shop-handoff'&&TOKEN.test(data.token||''))return {type:'handoff',token:data.token,image:cartImage(data.cartImage)};
  return null;
@@ -132,7 +134,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
    const cart=document.createElement('a');cart.href=root+'cart';cart.textContent='Warenkorb öffnen';box.append(document.createElement('br'),again,cart);}};
  // `key` = Startadresse über den App-Proxy; geöffnet wird ggf. die Startkarte (direkt). Gleicher Schlüssel = gleiches Fenster.
  function load(url,key=url){
-  frame?.remove();frame=document.createElement('iframe');frame.className='gv-embed__frame';frame.title='Produkt personalisieren';frame.setAttribute('allow','clipboard-write');
+  bar.hidden=false;frame?.remove();frame=document.createElement('iframe');frame.className='gv-embed__frame';frame.title='Produkt personalisieren';frame.setAttribute('allow','clipboard-write');
   frame.src=url;frameKey=key;shell.append(frame);
  }
  // Vorgeladen: unsichtbar, aber in voller Größe aufgebaut (sonst misst der Editor 0 px); nicht bedienbar, nicht fokussierbar.
@@ -172,6 +174,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  window.addEventListener('message',event=>{
   const message=acceptedMessage(event,frame);if(!message)return;
   if(message.type==='close')hide();
+  else if(message.type==='ready')bar.hidden=true;
   else handoff(message.token,event.source,message.image);
  });
  const config=pageConfig();

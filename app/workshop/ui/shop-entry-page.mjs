@@ -33,5 +33,9 @@ try{
   const edit=new URLSearchParams();for(const key of ['config','rev','line'])if(fragment.has(key))edit.set(key,fragment.get(key));
   frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=data.editorPath+(edit.size?'?'+edit:'');
   document.querySelector('#editor').append(frame);status.hidden=true;
-  window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===frame.contentWindow&&event.data?.type==='gravuru-fk-close')leave();});
+  window.addEventListener('message',event=>{
+    if(event.origin!==location.origin||event.source!==frame.contentWindow)return;
+    if(event.data?.type==='gravuru-fk-close')leave();
+    if(event.data?.type==='gravuru-ux-ready'){header.hidden=true;if(embedded)window.parent.postMessage({type:'gravuru-shop-editor-ready'},shopOrigin);}
+  });
 }catch(error){status.hidden=false;status.textContent=error.message;}

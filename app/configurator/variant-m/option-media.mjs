@@ -41,7 +41,22 @@ export const MOUNT_ICONS=Object.freeze({
 const MOUNT_ICON_ALIASES=Object.freeze({KGL:'KRA'});
 const attr=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const mountIconSvg=paths=>'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths+'</svg>';
-export function optionTileIcon(option){
+// Shop cards use line art for all mounting choices, derived from the actual holes.
+// Stored photos remain available to the workshop and to other option groups.
+export function mountingTileIcon(option){
+ const named=MOUNT_ICONS[option.id]||MOUNT_ICONS[MOUNT_ICON_ALIASES[option.id]];
+ const holes=(option.holes||[]).filter(h=>Number.isFinite(h.x)&&Number.isFinite(h.y));
+ if(!holes.length)return mountIconSvg(named||'<rect x="4" y="5" width="24" height="22" rx="2"/>');
+ const xs=holes.map(h=>h.x),ys=holes.map(h=>h.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+ const screws=option.mountingRule?.accessory==='screws',spacers=hasSpacers(option);
+ const point=(v,min,max)=>max===min?16:8+(v-min)/(max-min)*16;
+ return mountIconSvg('<rect x="3" y="3" width="26" height="26" rx="3"/>'+holes.map(h=>{
+  const x=point(h.x,minX,maxX),y=point(h.y,minY,maxY);
+  return '<circle cx="'+x+'" cy="'+y+'" r="'+(screws||spacers?3:1.7)+'"/>'+(screws?'<path d="M'+(x-1.4)+' '+(y+1.4)+'l2.8-2.8"/>':spacers?'<circle cx="'+x+'" cy="'+y+'" r="1"/>':'');
+ }).join(''));
+}
+export function optionTileIcon(option,{mounting=false}={}){
+  if(mounting)return mountingTileIcon(option);
   const image=optionThumbnail(option);
   if(image)return '<img src="'+attr(image)+'" alt="">';
   return mountIconSvg(MOUNT_ICONS[option.id]||MOUNT_ICONS[MOUNT_ICON_ALIASES[option.id]]||MOUNT_ICONS.K00);

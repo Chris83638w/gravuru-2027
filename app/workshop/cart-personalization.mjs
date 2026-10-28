@@ -43,6 +43,7 @@ export function capturePersonalization(pricing, {variantId, baseCents, document}
   if (withTiers && JSON.stringify(quantityTiers) !== JSON.stringify(checkoutTiers(document.config.quantityTiers))) fail();
   return {productId:pricing.productId, revision:String(pricing.revision), baseCents,
     extraMotifCents:pricing.extraMotifCents, extraPhotoCents:pricing.extraPhotoCents,
+    ...(document.config.motifCharge==='all'?{motifCharge:'all'}:{}),
     ...(withTiers ? {quantityTiers, quantityTierScope:'complete-unit'} : {})};
 }
 
@@ -55,8 +56,10 @@ export function personalizationForSnapshot(contract, manifest) {
   // The deployed v1 transform cannot price dynamic fields or a back surcharge.
   // Preserve their editor behavior, but never silently charge only the base price.
   if ((p.fieldCents !== undefined && p.fieldCents !== 0) || (p.backCents !== undefined && p.backCents !== 0)) fail();
+  const motifCount=contract.motifCharge==='all'?p.chargedMotifs:p.additionalMotifs;
+  if(!count(motifCount,200)||motifCount<p.additionalMotifs||contract.motifCharge!=='all'&&has(p,'chargedMotifs'))fail();
   const photoCents = p.chargedUploads * contract.extraPhotoCents;
-  const listCents = contract.baseCents + p.additionalMotifs * contract.extraMotifCents + photoCents;
+  const listCents = contract.baseCents + motifCount * contract.extraMotifCents + photoCents;
   if (!money(listCents) || !money(photoCents)) fail();
   let discountedCents = listCents;
   if (has(contract, 'quantityTiers')) {
@@ -71,7 +74,7 @@ export function personalizationForSnapshot(contract, manifest) {
   const unitCents = discountedCents;
   if (!money(unitCents) || p.unitCents !== unitCents || manifest.product?.basePriceCents !== unitCents ||
       p.totalCents !== unitCents * p.quantity) fail();
-  return {unitCents, personalization:{revision:contract.revision, motifs:p.additionalMotifs, uploads:p.chargedUploads,
+  return {unitCents, personalization:{revision:contract.revision, motifs:motifCount, uploads:p.chargedUploads,
     // An opaque reference to the privately stored editable original; no customer
     // text, media, download capability or draft token goes into cart attributes.
     designReference:`gravuru:${manifest.id}:${manifest.packageSha256}`}};

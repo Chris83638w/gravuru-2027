@@ -1,3 +1,4 @@
+import {insideContour} from './print-export-model.mjs';
 import {contourContainsPolygon} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {UV_PRINT_PALETTE} from '../../workshop/process-profiles.mjs';
 // Customer setting in nominal font millimetres, not the height of each glyph.
@@ -58,9 +59,11 @@ export function transformedCorners(object, bounds) {
 }
 
 export function fitsSurface(object, bounds, surface) {
+    surface={x:0,y:0,...surface};
   if(surface.shape==='contour')return contourContainsPolygon(surface.geometry||surface,transformedCorners(object,bounds));
   const epsilon = 0.001;
   return transformedCorners(object,bounds).every(({x,y})=>{
+      if(surface.cornerRadiusMm>0)return insideContour({...surface,holes:[]},x-surface.x,y-surface.y);
     if(surface.shape==='ellipse') {
       const rx=surface.width/2, ry=surface.height/2;
       return ((x-surface.x-rx)/rx)**2+((y-surface.y-ry)/ry)**2<=1+epsilon;

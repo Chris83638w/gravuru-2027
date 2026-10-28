@@ -1,3 +1,4 @@
+import {uiIcon} from './ui-icons.mjs';
 import {selectionArrowMarkup,positionSelectionArrows,selectionScaleFactor} from './selection-arrows.mjs';
 import {completePreviewMini} from './preview-feedback.mjs';
 import {installDirectEditing} from './direct-editing.mjs';
@@ -15,7 +16,7 @@ export async function installRefinements(api){
   const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/refinements.css').then(res=>{if(!res.ok)throw Error('Bedienoberfläche fehlt.');return res.text();});r.append(style);
   const icon=(path)=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
   const expand=icon('<path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M3 3l6 6m12-6-6 6M3 21l6-6m12 6-6-6"/>');
-  $('#ux-tab-options .ux-tab-icon').innerHTML=icon('<path d="m10 2-.6 2.1-2 .9-2-.7-2 3.4 1.5 1.6-.2 2.3L3 13l2 3.5 2.1-.5 1.8 1.3.6 2.2h4l.6-2.2 1.8-1.3 2.1.5 2-3.5-1.7-1.4-.2-2.3 1.5-1.6-2-3.4-2 .7-2-.9L14 2Z"/><circle cx="11.9" cy="10.8" r="3"/>');
+  $('#ux-tab-options .ux-tab-icon').innerHTML=uiIcon('sliders');
   const enlarge=$('[data-ux=enlarge]');enlarge.innerHTML=expand+'<span>Vollbild</span>';enlarge.className='ux-enlarge';$('[data-ux-stage]').append(enlarge);
   $('.ux-preview').dataset.dimensions='true';$('[data-ux-dimensions]').checked=true;$('[data-ux-dimensions]').closest('label').hidden=true;
   const guide=$('[data-ux-guides]').closest('label');guide.classList.add('ux-guides-row');$('.stage').append(guide);
@@ -94,7 +95,7 @@ export async function installRefinements(api){
   function areaResize(field){field.style.height='auto';field.style.height=Math.min(200,Math.max(44,field.scrollHeight))+'px';}
   r.addEventListener('focusin',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);});
   r.addEventListener('input',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);},true);
-  r.addEventListener('focusout',e=>{if(e.target.matches('[data-ux-text]')){e.target.style.height='40px';e.target.scrollTop=0;}});
+  r.addEventListener('focusout',e=>{if(e.target.matches('[data-ux-text]')){e.target.style.height='44px';e.target.scrollTop=0;}});
   r.addEventListener('click',async e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;
     if(key==='edit-upload'){select(e.target.closest('[data-id]').dataset.id);await editPhoto(selected());}
     if(key==='edit-photo')await editPhoto(selected());
@@ -119,7 +120,7 @@ export async function installRefinements(api){
     const categoryDialog=dialog('categories','Motivkategorie wählen','<div class="ux-category-list"></div>');
     const selector=document.createElement('div');selector.className='ux-category-control';selector.innerHTML=button('categories','Kategorie wählen');category.after(selector);category.hidden=true;
     function setCategory(index){const options=choices(),i=(index+options.length)%options.length;category.value=options[i].value;category.dispatchEvent(new Event('change',{bubbles:true}));refreshCategory();}
-    function refreshCategory(){const chosen=choices().find(o=>o.selected);$('[data-ux=categories]').innerHTML=`<span aria-hidden="true"><svg viewBox="0 0 100 100">${imageFor(chosen.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg></span>${esc(chosen.textContent)}<span aria-hidden="true">⌄</span>`;}
+    function refreshCategory(){const chosen=choices().find(o=>o.selected);$('[data-ux=categories]').innerHTML=`<span aria-hidden="true"><svg viewBox="0 0 100 100">${imageFor(chosen.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg></span>${esc(chosen.textContent)}${uiIcon('chevron')}`;}
     r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(!b)return;const key=b.dataset.ux;if(key==='category-prev'||key==='category-next')setCategory(category.selectedIndex+(key==='category-next'?1:-1));
       if(key==='categories'){$('.ux-category-list').innerHTML=choices().map((o,i)=>button('category-pick',`<svg viewBox="0 0 100 100" aria-hidden="true">${imageFor(o.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg><span>${esc(o.textContent)}</span>`,`data-index="${i}" aria-pressed="${o.selected}"`)).join('');categoryDialog.showModal();}
       if(key==='category-pick'){setCategory(Number(b.dataset.index));categoryDialog.close();}

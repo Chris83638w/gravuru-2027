@@ -96,7 +96,7 @@ export async function installUsability(api) {
   const total=Number($('[data-library-count]')?.textContent.match(/von\s+(\d+)/)?.[1]||0);
   const libraryHeading=$('#ux-panel-motif h3');if(libraryHeading)libraryHeading.textContent=`Alle ${total} Motive durchsuchen`;
   const motifFee=config?.extraMotifCents??profile.purchasing?.motifPriceCents??169;
-  const priceText=motifFee===0?'Motive sind im Preis enthalten.':`Vorlagenmotive sind enthalten. Jedes zusätzlich gewählte Motiv: +${money(motifFee)} je Produkt.`;
+  const priceText=config?.motifCharge==='all'?`Jedes sichtbare Motiv: +${money(motifFee)} je Produkt, auch Motive aus der Vorlage.`:motifFee===0?'Motive sind im Preis enthalten.':`Vorlagenmotive sind enthalten. Jedes zusätzlich gewählte Motiv: +${money(motifFee)} je Produkt.`;
   for(const p of all('#ux-panel-motif p'))if(/je Motiv|einzeln berechnet/.test(p.textContent))p.textContent=priceText;
   const priceNote=document.createElement('p');priceNote.className='ux-motif-pricing';priceNote.textContent=priceText;$('[data-bestsellers]').after(priceNote);
   const categoryIcon='<path d="M4 4h6v6H4Zm10 0h6v6h-6ZM4 14h6v6H4Zm10 0h6v6h-6Z" fill="none" stroke="currentColor" stroke-width="1.5"/>';

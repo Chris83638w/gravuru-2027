@@ -1,0 +1,47 @@
+[
+  {
+    "viewport": "1440x900",
+    "originalTouchTargetDetached": true,
+    "case": "simultaneous touch batch over selected Meyer",
+    "input": "TouchEvent with two contacts in the same event",
+    "beforeMm": 10,
+    "afterMm": 10,
+    "internalSizeBefore": 10.32,
+    "internalSizeAfter": 10.32,
+    "viewZoom": 1.9,
+    "allObjectsUnchanged": true,
+    "productionSvgUnchanged": true,
+    "undoUnchanged": true,
+    "pass": true
+  },
+  {
+    "viewport": "390x664",
+    "originalTouchTargetDetached": true,
+    "case": "simultaneous touch batch over selected Meyer",
+    "input": "TouchEvent with two contacts in the same event",
+    "beforeMm": 10,
+    "afterMm": 10,
+    "internalSizeBefore": 10.32,
+    "internalSizeAfter": 10.32,
+    "viewZoom": 1.9,
+    "allObjectsUnchanged": true,
+    "productionSvgUnchanged": true,
+    "undoUnchanged": true,
+    "pass": true
+  },
+  {
+    "viewport": "375x548",
+    "originalTouchTargetDetached": true,
+    "case": "simultaneous touch batch over selected Meyer",
+    "input": "TouchEvent with two contacts in the same event",
+    "beforeMm": 10,
+    "afterMm": 10,
+    "internalSizeBefore": 10.32,
+    "internalSizeAfter": 10.32,
+    "viewZoom": 1.9,
+    "allObjectsUnchanged": true,
+    "productionSvgUnchanged": true,
+    "undoUnchanged": true,
+    "pass": true
+  }
+]

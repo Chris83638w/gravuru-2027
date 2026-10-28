@@ -1,3 +1,9 @@
+## 28.10.2026 · Claude · PR #41 (`d472ba4`) + iPhone-Absicherung zusammengeführt (Branch `dev/konfi-ux-ios-zusammen-20261028-claude`)
+
+- Merge von `dev/konfi-ios-sicherheit-20261028-claude` auf Astras Stand `d472ba4`. Konflikte `shop-embed.mjs`, `shop-entry-page.mjs`, STATUS gelöst: zwei getrennte Meldungen aus dem Fenster – `gravuru-shop-ready` (Seite geladen → Wächter aus) und Astras `gravuru-shop-editor-ready` (Editor bedienbar → Fensterleiste aus); bei `failed` bleibt die Leiste mit „Schließen“ sichtbar. Designwechsel-Koordinator und A/B-Weitergabe unverändert.
+- Teststubs angepasst (Fenster-`postMessage`/`addEventListener`, neue Meldungsart). Gezielt 70/70 (Shop-Einstieg, Client, A/B-Weitergabe, Galerie, leere Zusatztexte, Workflow).
+- Nicht live. Bereitstellung nur mit Chris' Satz.
+
 ## 28.10.2026 – Codex/Astra: PR #41, zweiter UX-Auftrag umgesetzt
 
 Signierte Implementierungscommits `917ff907`, `d0b94899`, `37b9e624` (jeweils GitHub verified); Quellreadback **72/72 bytegleich, LF**. Auftrag `77fab45`, Fortsetzung auf `dev/konfi-ux-20261028-astra` ab `458f56b8`. Die neue Entscheidung ersetzt die frühere Preisregel: Vorlagenmotiv inklusive, nur zusätzliche/geänderte Motive je 169 Cent; bestehende Bestellstände unverändert. Standardleiste B über der Platte, A zum Vergleich, M2 auch im Handy-Vollbild, kleinere Pfeilgriffe, deutliche Auswahl, große Motivkacheln, kompakter Handykopf und echter Ansichtszoom. Produktübergreifende Galerie aus aktiven gebundenen Produktständen, neue Sitzung/Preis/Shopify-Variante beim Wechsel; vorherige Gestaltung bleibt erreichbar. Optionaler 50/50-Test bleibt aus.
@@ -9,6 +15,14 @@ Windows-Vollauf Editor: **393/399**, sechs bestehende Python-Startfehler; Werkst
 ## 28.10.2026 – Codex/Astra: Kunden-Konfigurator als Entwurf zur Prüfung
 
 Branch `dev/konfi-ux-20261028-astra`, Basis `f200509`. Gemeinsames Desktop-/Handylayout, M2-Textleiste, Inline-Textoptionen, Konturbegrenzung, Motivsuche und Produkt-Erklärungen; 50 Zeichen je Zeile und jedes Motiv 169 Cent nur für neue Produktstände. SVG-/PDF-Mehrzeilentexte bleiben zusammen. Alle kompatiblen freigegebenen Ziel-Designs optional im Import; produktübergreifende Galerie noch offen in [Issue #40](https://github.com/Chris83638w/gravuru-2027/issues/40). Vollauf variant-m Windows vorher **329/342**, nachher **339/350**, dieselben elf Restfehler auf main (sechs Python-Startfehler, fünf bestehende andere Fälle). Gezielte Gruppen: 52/52, Import 33/33, PDF 11/11, Werkstatt 63/63, Vorschlagsplan 1/1, finale CSS/Build 8/8. Dry-run: 1 Produkt, 1 bereit, 0 gesperrt; kein Import. [Bericht und nächste Schritte](docs/handoffs/2026-10-28-konfi-ux-astra-bericht.md), [Screenshots](docs/handoffs/konfi-ux-20261028-astra/README.md). Kein Merge, kein Deploy, keine Live-Preisänderung. Nächster Schritt: Claude prüft Quellstand/Linux und klärt Issue #40; Chris nimmt Bilder ab.
+
+## 28.10.2026 · Claude · iPhone-Absicherung + leere Zusatztexte (Branch `dev/konfi-ios-sicherheit-20261028-claude`)
+
+- Chris (iPhone/Safari): „Jetzt personalisieren“ ausgegraut, Tippen tut nichts, Neuladen hilft nicht; „das muss allgemein funktionieren … der Kunde muss einen Hinweis erhalten“. Nachstellung mit WebKit (iPhone 13) und Chromium: Knopf grün, Fenster öffnet, Konfigurator lädt – Ursache auf seinem Gerät noch unbekannt (Screenshot erbeten; Verdacht ältere Theme-Vorschau/Designer-Knopf).
+- `3928857` Absicherung (`shop-embed.mjs`, `shop-entry-page.mjs`): Theme-Sperren am eigenen Knopf werden entfernt (auch nachträglich per Attribut-Beobachter), Klick in der Einfangphase vor Theme-Skripten, bei Fehler normaler Link; Fenster meldet bereit/Fehler, nach 15 s ohne Rückmeldung oder bei Fehler Hinweis „Weiter warten / Neu laden / Ohne Fenster öffnen“; Schließen-Knopf über dem Hinweis. WebKit: normal, Theme-Sperre, Modellfehler, hängender Server geprüft.
+- Chris (Desktop): hinzugefügte, nicht ausgefüllte Texte („Dein Text“) blockieren den Warenkorb. Live nachgestellt (Hinweis „Element ragt über die Gestaltungsfläche“). Fix: „Gestaltung fertig – weiter“ entfernt leere/„Dein Text“-Zusatztexte (`added-texts.mjs`, rückgängig machbar); mit lokalem Editor-Paket gegen den Live-Shop geprüft → Überblick mit „In den Warenkorb“.
+- Tests: client 16/16, shop-entry 23/23, added-texts 1/1, workflow 9/9; ui-event-regressions nur die 2 bekannten Fehlschläge.
+- Live erst mit Chris' Satz.
 
 ## 28.10.2026 · Claude · Live: Direktstart (`main` `8540800`)
 

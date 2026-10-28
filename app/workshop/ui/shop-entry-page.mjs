@@ -37,10 +37,15 @@ try{
   const toolbar=fragment.getAll('leiste');if(embedded&&toolbar.length===1&&['a','b'].includes(toolbar[0]))edit.set('leiste',toolbar[0]);
   frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=data.editorPath+(edit.size?'?'+edit:'');
   createDesignSwitch({initial:{client,data,resources,frame},fragment,container:document.querySelector('#editor'),activate,toDataUrl});header.hidden=false;
+  // Fenster-Modus: der Produktseite melden, dass die Seite da ist (sonst zeigt sie nach einer Weile einen Hinweis mit Ausweg).
+  if(embedded)frame.addEventListener('load',()=>window.parent.postMessage({type:'gravuru-shop-ready'},shopOrigin),{once:true});
   document.querySelector('#editor').append(frame);status.hidden=true;
   window.addEventListener('message',event=>{
     if(event.origin!==location.origin||event.source!==frame.contentWindow)return;
     if(event.data?.type==='gravuru-fk-close')leave();
     if(event.data?.type==='gravuru-ux-ready'){header.hidden=true;if(embedded)window.parent.postMessage({type:'gravuru-shop-editor-ready'},shopOrigin);}
   });
-}catch(error){status.hidden=false;status.textContent=error.message;}
+}catch(error){status.hidden=false;status.textContent=error.message;
+  // Fenster-Modus: Fehler auch der Produktseite melden (nur Typ und Text, keine Sitzungsdaten); sie bietet den Ausweg an.
+  if(fragment.get('embed')==='1'&&window.parent!==window)window.parent.postMessage({type:'gravuru-shop-failed',message:String(error?.message||'').slice(0,300)},'*');
+}

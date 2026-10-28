@@ -1,0 +1,6 @@
+/* One stable thumbnail area, including while the lazy library is loading. */
+:host [data-motif]{min-width:0;overflow:hidden}
+:host [data-motif]>svg{display:block;width:64px!important;height:64px!important;min-height:64px;max-height:64px!important;max-width:100%;flex:none;margin:0 auto 6px!important;overflow:hidden}
+:host [data-motif][data-motif-pending]{opacity:1!important;cursor:wait}
+:host [data-motif][data-motif-pending]>svg{background:#e6e9e7;border-radius:8px;color:transparent}
+:host [data-motif][data-motif-pending]>svg>*{visibility:hidden}

@@ -72,7 +72,7 @@ test('Editor-Bündel enthält alle statisch erreichbaren Module unverändert (bi
     const neutral=code=>code.replace(/(['"])(?:gravuru-bundle:\d+|\.{1,2}\/[^'"\n]+|\/[^'"\n]+\.mjs)\1/g,'"§"').replace(/globalThis\.gravuruModules\.fetch\(/g,'fetch(').replace(/\n\/\/# sourceURL=.*\n$/,'');
     for(const m of modules)assert.equal(neutral(m.code),neutral(sourceOf(m.url).replace(/^﻿/,'')),m.url);
     // Stylesheets: genau die per fetch geladenen, Inhalt identisch.
-    assert.deepEqual(bundle.styles,['acrylic-scene','completion','customer-tools','layout','mobile','neutral-theme','refinements','usability','ux','workflow'].map(n=>'/configurator/variant-m/'+n+'.css'));
+    assert.deepEqual(bundle.styles,['acrylic-scene','completion','customer-tools','layout','mobile','motif-tile-fit','neutral-theme','product-design-gallery','refinements','usability','ux-details','ux','view-zoom','workflow'].map(n=>'/configurator/variant-m/'+n+'.css'));
     for(const href of bundle.styles)assert.equal(bundle.style(href),fs.readFileSync(fileForUrl(href),'utf8'));
     assert.equal(bundle.style('/configurator/variant-m/fehlt.css'),null);
     // Name = Inhalts-Hash; gzip daneben mit identischem Inhalt; erneuter Build ändert nichts.

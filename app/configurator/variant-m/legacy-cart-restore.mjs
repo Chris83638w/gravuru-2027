@@ -1,9 +1,11 @@
 import {readDraft,cleanObject,validatePhotoFile} from './contract.mjs';
+import {editorUi} from './toolbar-placement-model.mjs';
 
 export function legacyCartDraft(config,snapshot,commerceProductId){
  if(snapshot?.schema!=='gravuru-shopify-design/v1')throw Error('Unbekannter Warenkorbentwurf.');
  if(!commerceProductId||snapshot.productId!==commerceProductId||snapshot.profileId!==config.profile.id||snapshot.revision!==config.profile.revision)throw Error('Entwurf gehört zu einem anderen Produkt oder einer anderen Vorlagenrevision.');
- return {schema:'gravuru-universal-customer-draft/v1',productId:config.profile.binding.productId,profileId:snapshot.profileId,profileRevision:snapshot.revision,design:snapshot.design,options:snapshot.options};
+ const ui=editorUi(snapshot.ui);
+ return {schema:'gravuru-universal-customer-draft/v1',productId:config.profile.binding.productId,profileId:snapshot.profileId,profileRevision:snapshot.revision,design:snapshot.design,options:snapshot.options,...(ui?{ui}:{})};
 }
 export function legacyPhotoMappings(snapshot,photos){
  if(!Array.isArray(snapshot.uploads)||!Array.isArray(photos)||photos.length!==snapshot.uploads.length)throw Error('Die gespeicherten Fotos sind unvollständig.');

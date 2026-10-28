@@ -1,3 +1,4 @@
+import {textToolbarPosition} from './text-toolbar-position.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {fontDisplayName} from './font-display.mjs';
 import {measureText,textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -44,7 +45,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     .ux-direct-count{display:block;padding:0 0 4px;font:11px/1.2 sans-serif;color:#607068;text-align:right;font-variant-numeric:tabular-nums}.ux-direct-count:empty{display:none}
     .ux-direct-presets{display:flex;gap:4px;align-items:center}.ux-direct-edit .ux-direct-presets button{width:24px!important;min-width:24px!important;height:24px!important;min-height:24px!important;padding:0!important;background:var(--preset-color)!important;border:1px solid #afb4bb!important;border-radius:50%!important}.ux-direct-edit .ux-direct-presets button[aria-pressed=true]{outline:2px solid #555e68;outline-offset:2px}
     .ux-direct-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-    @media(max-width:480px){.ux-direct-edit{top:auto!important;bottom:8px;padding:4px;max-width:calc(100% - 16px)}.ux-direct-edit button{padding:4px 7px!important;font-size:11px!important}.ux-direct-actions,.ux-direct-edit [data-direct-confirm]{gap:1px}}
+    @media(max-width:480px){.ux-direct-edit{padding:4px;max-width:calc(100% - 16px)}.ux-direct-edit button{padding:4px 7px!important;font-size:11px!important}.ux-direct-actions,.ux-direct-edit [data-direct-confirm]{gap:1px}}
     /* Werkzeugleiste farbig hervorgehoben (Chris 20.10.2026): Markengrün, weiße Schrift */
     .ux-direct-edit{background:#17634d!important;border-color:#17634d!important;box-shadow:0 6px 22px #17634d4d!important;color:#fff!important}
     .ux-direct-edit button,.ux-direct-edit label,.ux-direct-edit input[type=number]{color:#fff!important}
@@ -67,7 +68,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const o=selected();if(editing&&o?.id!==editing.id)close();
     const text=o?.type==='text',photo=!!o?.uxUploadId,motif=o?.type==='motif';
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
-    if(panel.hidden){el.style.setProperty('--ux-textbar-h','0px');if(editing)close();return;}
+    if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space','0px');stage.style.setProperty('--ux-toolbar-space','0px');el.style.setProperty('--ux-textbar-h','0px');if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=text||!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent=fontDisplayName(o.font||'Schrift');font.title=font.textContent;
     if(text){try{const sample={...o,color:'#292d32',text:fontDisplayName(o.font),size:12,letterSpacing:0,lineHeight:14};measureText(sample,el.fontData);font.innerHTML='<svg data-direct-font-sample viewBox="'+(-sample.w/2-2)+' '+(-sample.h/2-2)+' '+(sample.w+4)+' '+(sample.h+4)+'" aria-hidden="true"><g>'+textPaths(sample,el.fontData)+'</g></svg>'+uiIcon('chevron');const ink=font.querySelector('g').getBBox();if(ink.width>0&&ink.height>0)font.querySelector('svg').setAttribute('viewBox',[ink.x-1,ink.y-1,ink.width+2,ink.height+2].join(' '));}catch{font.textContent=fontDisplayName(o.font);}}
     extras.hidden=!text;for(const b of extras.querySelectorAll('button'))b.disabled=!can(o,'move');
@@ -80,22 +81,33 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     panel.querySelector('[data-direct-size-label]').hidden=!text;
     size.disabled=!can(o,'scale');
     if(r.activeElement!==size)size.value=r.querySelector('#ux-size')?.value||Math.round(o.size||4);
-    const scene=r.querySelector('.scene'),bounds=scene?.getBoundingClientRect(),parent=stage.getBoundingClientRect();
-    if(!bounds)return;
-    const mobile=matchMedia('(max-width:767px)').matches&&!r.querySelector('.c-large-preview').open,preview=r.querySelector('.ux-preview'),home=mobile?preview:stage;
+    const scene=r.querySelector('.scene');if(!scene)return;
+    const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open,preview=r.querySelector('.ux-preview'),home=mobile&&!full?preview:stage;
     if(panel.parentNode!==home)home.append(panel);
-    panel.classList.toggle('is-docked',mobile);
-    const barHeight=mobile&&!panel.hidden?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
-    if(!mobile){const target=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]')?.getBoundingClientRect(),above=(target?.top??bounds.top)-parent.top-panel.offsetHeight-40,below=(target?.bottom??bounds.bottom)-parent.top+36;panel.style.left=Math.max(8,Math.min(parent.width-panel.offsetWidth-8,(target?target.left-parent.left+target.width/2:parent.width/2)-panel.offsetWidth/2))+'px';panel.style.top=Math.max(8,Math.min(parent.height-panel.offsetHeight-8,above>=8?above:below))+'px';}
+    panel.classList.toggle('is-docked',mobile);panel.classList.toggle('is-fullscreen-dock',mobile&&full);
+    const placement=el.state.ui?.textToolbarPlacement||'plate',scale=!mobile&&placement==='selection'?.78:1;
+    panel.dataset.placement=placement;panel.style.transform=scale===1?'':'scale('+scale+')';panel.style.transformOrigin='top left';
+    // Reserve space above the fitted plate; the toolbar never occupies artwork.
+    stage.style.setProperty('--ux-toolbar-space',!mobile?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
+    stage.style.setProperty('--ux-mobile-dock-space',mobile&&full?panel.offsetHeight+86+'px':'0px');
+    const barHeight=mobile&&!full&&!panel.hidden?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
+    const bounds=scene.getBoundingClientRect(),parent=stage.getBoundingClientRect();
+    if(!mobile){
+      const target=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]')?.getBoundingClientRect();
+      const pos=textToolbarPosition({stage:parent,plate:bounds,selection:target,width:panel.offsetWidth*scale,height:panel.offsetHeight*scale,placement,zoomed:(el.uxViewZoom?.()||1)>1});
+      panel.style.left=pos.left+'px';panel.style.top=pos.top+'px';
+    }else if(full){panel.style.left='0px';panel.style.setProperty('--ux-full-dock-top',Math.max(8,Math.min(parent.height-panel.offsetHeight-60,bounds.bottom-parent.top+34))+'px');}
     if(editing){
       const group=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]'),target=group?.getBoundingClientRect();
       const width=Math.min(parent.width-24,Math.max(260,(target?.width||160)+32));
       const center=target?target.left-parent.left+target.width/2:bounds.left-parent.left+o.x*bounds.width/el.state.width;
       box.style.width=width+'px';box.style.left=Math.max(12,Math.min(parent.width-width-12,center-width/2))+'px';
-      field.style.fontFamily='"'+String(o.font||'').replaceAll('"','')+'", serif';field.style.fontSize=Math.max(16,Math.min(26,o.size*bounds.width/el.state.width))+'px';field.style.color=o.color||'#293e34';field.style.fontWeight=o.bold?'700':'400';field.style.fontStyle=o.italic?'italic':'normal';
+      field.style.fontFamily='"'+String(o.font||'').replaceAll('"','')+'", serif';field.style.fontSize=Math.max(16,Math.min(26,o.size*bounds.width/el.state.width))+'px';field.style.color='#293e34';field.style.fontWeight=o.bold?'700':'400';field.style.fontStyle=o.italic?'italic':'normal';
       field.style.height='auto';field.style.height=Math.min(110,Math.max(32,field.scrollHeight))+'px';updateCount(o);
       const centerY=target?target.top-parent.top+target.height/2:bounds.top-parent.top+o.y*bounds.height/el.state.height;
-      box.style.top=Math.max(panel.offsetHeight+22,Math.min(parent.height-box.offsetHeight-8,centerY-box.offsetHeight/2))+'px';
+      const bottomGap=typeof el.uxViewZoom==='function'?60:8;
+      const maxTop=Math.max(8,parent.height-box.offsetHeight-bottomGap),minTop=mobile?8:Math.min(maxTop,(parseFloat(panel.style.top)||0)+panel.offsetHeight*scale+8);
+      box.style.top=Math.max(minTop,Math.min(maxTop,centerY-box.offsetHeight/2))+'px';
       if(group){group.style.visibility='hidden';group.dataset.directActive='';}
     }
 
@@ -143,5 +155,6 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     if(o?.uxUploadId&&can(o,'replace')){e.preventDefault();el.state.selected=o.id;el.sync();openPhoto(o);}
   },true);
   for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){const result=original.apply(this,args);update();return result;};}
+  el.uxRefreshTextToolbar=update;
   window.addEventListener('resize',update);new ResizeObserver(update).observe(stage);update();
 }

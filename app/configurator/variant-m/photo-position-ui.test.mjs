@@ -1,3 +1,4 @@
+import {textToolbarPosition} from './text-toolbar-position.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -13,7 +14,7 @@ import {fontDisplayName} from './font-display.mjs';
 // the unchanged shared configurator gesture registration, including capture order.
 const attrKey=value=>value.replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
 class Node {
-  constructor(tag){this.tagName=tag.toLowerCase();this.children=[];this.dataset={};this.style={};this.attributes={};this.listeners={};this.hidden=false;this.disabled=false;this.captured=new Set();}
+  constructor(tag){this.tagName=tag.toLowerCase();this.children=[];this.dataset={};this.style={setProperty(key,value){this[key]=String(value);}};this.attributes={};this.listeners={};this.hidden=false;this.disabled=false;this.captured=new Set();}
   getBoundingClientRect(){return {x:0,y:0,left:0,top:0,right:100,bottom:60,width:100,height:60};}
   get isConnected(){return this===document.body||!!this.parent?.isConnected;}
   set className(value){this.attributes.class=value;}
@@ -216,7 +217,7 @@ function floatingPhotoToolbar(h){
   const stage=h.r.querySelector('.stage');stage.getBoundingClientRect=()=>({width:320,height:240});
   h.r.querySelector('.scene').getBoundingClientRect=()=>({width:300,height:200});
   const fullscreen=new Node('dialog');fullscreen.className='c-large-preview';fullscreen.open=false;h.r.append(fullscreen);
-  const context={fontDisplayName,config:{profile:{designs:[]}},extras:new Node('div'),matchMedia:()=>({matches:false}),CSS:{escape:value=>value},el:h.el,r:h.r,selected:h.selected,stage,panel,color,openButton:new Node('button'),confirm:new Node('div'),font:new Node('button'),presets:new Node('div'),size:new Node('input'),freeColor:false,colorTool:false,paletteColors:[],editing:null,close(){},can:(o,right)=>o&&!o.uxLocked&&!o.uxHidden&&h.el.uxCanEdit?.(o,right)!==false};
+  const context={textToolbarPosition,fontDisplayName,config:{profile:{designs:[]}},extras:new Node('div'),matchMedia:()=>({matches:false}),CSS:{escape:value=>value},el:h.el,r:h.r,selected:h.selected,stage,panel,color,openButton:new Node('button'),confirm:new Node('div'),font:new Node('button'),presets:new Node('div'),size:new Node('input'),freeColor:false,colorTool:false,paletteColors:[],editing:null,close(){},can:(o,right)=>o&&!o.uxLocked&&!o.uxHidden&&h.el.uxCanEdit?.(o,right)!==false};
   vm.runInNewContext(source.slice(begin,end)+source.slice(wrap,source.indexOf("  window.addEventListener('resize',update)",wrap))+'update();',context);
   return panel;
 }

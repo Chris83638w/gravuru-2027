@@ -1,4 +1,4 @@
-import {alignmentContent} from './ui-icons.mjs';
+import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
@@ -15,10 +15,9 @@ export async function installWorkflow(api){
  const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
  const surface=()=>{const geometry=el.uxProfileGeometry?.()||profile.geometry;if(config?.doorbell?.schema==='gravuru-doorbell/v1'&&geometry.designArea){const a=geometry.designArea;return {...geometry,x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top};}return config?{x:0,y:0,...geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;};
  const obstacles=()=>{const bell=(el.uxProfileGeometry?.()||profile.geometry).bell;return (!config||config.doorbell)&&bell?[{x:bell.x+bell.width/2,y:bell.y+bell.height/2,w:bell.width,h:bell.height}]:[];};
- function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent='Ausführungen';const contents=$('[data-ux=contents]');if(contents)contents.innerHTML='Ebenenverwaltung <span data-ux-count>('+el.state.objects.length+')</span>';const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
+ function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent='Ausführungen';const contents=$('[data-ux=contents]');if(contents)contents.innerHTML=uiIcon('layers')+'<span class="ux-tool-label">Ebenen</span> <span data-ux-count>('+el.state.objects.length+')</span>';if(contents){contents.setAttribute('aria-label','Ebenen ('+el.state.objects.length+')');contents.title='Ebenen ('+el.state.objects.length+')';}const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
  rename();$('.fk-scope-note')?.setAttribute('hidden','');const mounting=$('[data-fk-mount-note]');if(mounting)mounting.classList.add('workflow-mount-note');
  const mountSelect=$('[data-fk-mount]');if(mountSelect){const label=mountSelect.closest('label');if(label){const caption=label.querySelector('span');if(caption)caption.textContent='Befestigungsart wählen';else if(label.firstChild?.nodeType===3)label.firstChild.textContent='Befestigungsart wählen ';}mountSelect.setAttribute('aria-label','Befestigungsart wählen');}
- $('.ux-preview-size>span:last-child').textContent='Zoom';$('.ux-preview-size input').setAttribute('aria-label','Zoom – Produktvorschau vergrößern');
  // Guides no longer need a customer switch. Snapping is always available.
  $('.ux-guides-row').hidden=true;$('[data-setting=guides]').checked=false;$('[data-ux-guides]').checked=false;
  el.uxSuggestCenter=()=>{};$('.ux-center-proposal').hidden=true;

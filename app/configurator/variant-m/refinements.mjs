@@ -48,8 +48,8 @@ export async function installRefinements(api){
     if(enabled){const a=(o.rotation||0)*Math.PI/180,scene=$('.scene').getBoundingClientRect(),ph=stage.getBoundingClientRect();
       const point=(dx,dy)=>({x:(scene.left-ph.left)+(o.x+dx*Math.cos(a)-dy*Math.sin(a))*scene.width/el.state.width,y:(scene.top-ph.top)+(o.y+dx*Math.sin(a)+dy*Math.cos(a))*scene.height/el.state.height});
       // Ecken-Pfeile sitzen an den Ecken des Auswahlrahmens (Chris 20.10.2026), diagonal nach außen: die innere
-      // Ecke des 28-px-Knopfs berührt die Rahmenecke, so verdeckt der Pfeil den Text nicht.
-      const margin=14*el.state.width/Math.max(1,scene.width);
+      // Ecke des sichtbaren 19-px-Knopfs berührt die Rahmenecke, so verdeckt der Pfeil den Text nicht.
+      const margin=9.5*el.state.width/Math.max(1,scene.width);
       positionSelectionArrows(handles,o,point,margin);
       const gap=36*el.state.width/Math.max(1,scene.width),p=point(0,-o.h/2-gap);const h=handles.querySelector('[data-ux-handle=rotate]');h.style.left=p.x+'px';h.style.top=p.y+'px';
       const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=d.x+'px';remove.style.top=d.y+'px';
@@ -58,6 +58,7 @@ export async function installRefinements(api){
     const scene=$('.scene');if(scene){const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('role');copy.removeAttribute('data-ux-namespace');copy.setAttribute('aria-hidden','true');copy.querySelectorAll('[data-object]').forEach(n=>n.removeAttribute('data-object'));$('[data-mini-art]').replaceChildren(api.config?.acrylic&&!mini.hidden?completePreviewMini(stage,$('[data-mini-art]')):copy);}
     for(const row of all('.ux-upload-row')){const id=row.querySelector('[data-ux=replace-upload]')?.dataset.id;if(id&&!row.querySelector('[data-ux=edit-upload]'))row.querySelector('.ux-upload-actions').insertAdjacentHTML('afterbegin',button('edit-upload','Bild bearbeiten',`data-id="${esc(id)}"`));}
   }
+  el.uxRefreshSelectionHandles=updateSelection;
   const render=el.render;el.render=function(...args){const result=render.apply(this,args);updateSelection();return result;};
   const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);updateSelection();return result;};
   let resize=null;
@@ -89,6 +90,7 @@ export async function installRefinements(api){
     el.normalize();el.render();
   },true);
   function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);cancel=cancel||!validPhotoGesture(prior);if(cancel){if(prior.object.type==='photoSlot')cancelPhotoGesture(prior);else el.state=prior.old;}else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
+  el.uxCancelObjectGesture=()=>{if(resize)finish({pointerId:resize.id,stopImmediatePropagation(){}},true);};
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);
   r.addEventListener('lostpointercapture',e=>{if(resize?.id===e.pointerId)finish(e,true);},true);
   r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate')o.rotation=(o.rotation||0)+direction;else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);

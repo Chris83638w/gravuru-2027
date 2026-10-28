@@ -190,12 +190,12 @@ export async function installMobileSteps(api){
   }).observe($('.ux-tabs'),{attributes:true,subtree:true,attributeFilter:['aria-selected']});
   // Sichtbarer Bereich (visualViewport): Shell folgt der Tastatur, Platte bleibt im Bild.
   const vv=window.visualViewport;
-  const fieldFocused=()=>{const node=r.activeElement;return !!node&&!!node.closest('.ux-editor')&&node.matches('textarea,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=color]):not([type=button])');};
+  const fieldFocused=()=>{const node=r.activeElement;return !!node&&!!node.closest('.ux-editor,.ux-direct-input,.ux-direct-edit')&&node.matches('textarea,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=color]):not([type=button])');};
   let viewportOverride=null;
   function applyViewport(){
     if(!active)return;
     const height=viewportOverride?.height??(vv?vv.height:window.innerHeight),top=viewportOverride?.top??(vv?vv.offsetTop:0);
-    const keyboardOpen=fieldFocused()||(viewportOverride?.keyboardOpen===true);
+    const keyboardOpen=(fieldFocused()&&height<window.innerHeight*.75)||(viewportOverride?.keyboardOpen===true);
     r.host.style.setProperty('--ux-vv-height',Math.round(height)+'px');
     r.host.style.setProperty('--ux-vv-top',Math.round(top)+'px');
     r.host.style.setProperty('--ux-mobile-preview-h',previewHeight({viewportHeight:height,keyboardOpen})+'px');

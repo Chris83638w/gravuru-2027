@@ -16,6 +16,7 @@ import {validateSteelFormats} from './steel-formats.mjs';
 import {textLimits,textLimitIssue,sameSampleText,requiredFieldMessage} from '../../workshop/theme-limits.mjs';
 import {optionFields,visibleBy,validateOptionConditions,fieldValue,fieldPrice,fieldRequiredMessage,fieldDisplay} from './option-fields.mjs';
 import {validateSurfaces,objectSurface,hasBack,backSurcharge,surfaceProcess} from './surfaces.mjs';
+import {editorUi,validateToolbarConfig} from './toolbar-placement-model.mjs';
 
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
@@ -43,6 +44,7 @@ export const money = cents => new Intl.NumberFormat('de-DE', {style:'currency', 
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
   const config = clone(input);
+  validateToolbarConfig(config);
   if(isLayeredDoorbell(config)){validateDoorbellDefinition(config);config.profile=selectedDoorbellProfile(config);}
   const p = config.profile;
   if(config.designSelection!==undefined&&config.designSelection!=='all-approved')fail('Designauswahl ist ungültig.');
@@ -327,8 +329,9 @@ export function designFromState(config, state, values=state.mOptions||{}) {
 export function saveDraft(config, state, options, fonts, motifs, {draft=false}={}) {
   const design = designFromState(config, state, options);
   validateDesign(config, design, options, fonts, motifs, {draft});
+  const ui=editorUi(state.ui);
   return {schema:DRAFT_SCHEMA, profileId:config.profile.id, profileRevision:config.profile.revision,
-    productId:config.profile.binding.productId, design, options:resolvedOptions(config, options)};
+    productId:config.profile.binding.productId, design, options:resolvedOptions(config, options),...(ui?{ui}:{})};
 }
 export function readDraft(config, input, fonts, motifs, {draft=false}={}) {
   if (new TextEncoder().encode(JSON.stringify(input)).length > 2_000_000) fail('Entwurfsdatei ist zu groß.');
@@ -336,7 +339,8 @@ export function readDraft(config, input, fonts, motifs, {draft=false}={}) {
   const design = {...clone(input.design), objects:(input.design?.objects || []).map(cleanObject)};
   const options = resolvedOptions(config, input.options);
   validateDesign(config, design, options, fonts, motifs, {draft});
-  return {design, options};
+  const ui=editorUi(input.ui);
+  return {design, options,...(ui?{ui}:{})};
 }
 // Gestaltungslinien einer Vorlage (`marks`) werden im Kundeneditor als
 // Motive `ux-line-<design>-<n>` registriert (ux.mjs addDecoration). Ein

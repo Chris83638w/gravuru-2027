@@ -2,9 +2,9 @@ import {maskContourGuides} from './contour-guides.mjs';
 import {textPaths,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
-import {money} from './contract.mjs';
 import {colorPalettes} from './profile-selection.mjs';
 import {objectSurface} from './surfaces.mjs';
+import {motifPriceDescription} from './decision-help.mjs';
 
 // The supplied geometry already faces the displayed side; inactive text is checked on its own side.
 export function surfaceTextIssues(objects,surfaceId,geometry,textBounds){
@@ -22,27 +22,17 @@ export async function installUsability(api) {
   if(!css.ok)throw Error('Bedienoberfläche fehlt.');
   const style=document.createElement('style');style.textContent=await css.text();r.append(style);
 
-  // The stage grows; the product always stays complete and uses its real aspect ratio.
+  // The fitted product keeps its real aspect ratio. View zoom has separate controls.
   const stage=$('.stage'),holder=$('.plate-holder'),title=$('.ux-heading h1');
   title.remove();
-  const sizing=document.createElement('label');sizing.className='ux-preview-size';
-  sizing.innerHTML='<span>Vorschaugröße</span><input type="range" min="0" max="100" step="1" value="0" aria-label="Gesamte Produktvorschau vergrößern"><span aria-hidden="true">− / +</span>';
-  stage.append(sizing);
-  let enlargement=0;
   function resizeStage(){
     const mobile=matchMedia('(max-width:900px)').matches;
     const base=32+(mobile?Math.max(340,Math.min(430,innerHeight*.48)):Math.max(480,Math.min(630,innerHeight*.78)));
-    const width=$('.ux-preview').getBoundingClientRect().width;
-    const maximum=Math.max(base,(width-104)*el.state.height/el.state.width+180);
-    // The fixed acrylic scene has no working enlargement range. Do not offer a dead slider.
-    sizing.hidden=!!config?.acrylic||maximum-base<16;
-    sizing.querySelector('input').disabled=sizing.hidden;
-    stage.style.setProperty('--ux-preview-height',(base+(maximum-base)*enlargement/100)+'px');
+    stage.style.setProperty('--ux-preview-height',base+'px');
     stage.style.setProperty('--ux-preview-ratio',el.state.width+'/'+el.state.height);
     stage.style.setProperty('--ux-product-width',el.state.width);
     stage.style.setProperty('--ux-product-height',el.state.height);
   }
-  sizing.querySelector('input').addEventListener('input',e=>{enlargement=Number(e.target.value);resizeStage();});
   new ResizeObserver(resizeStage).observe($('.ux-preview'));
   window.addEventListener('resize',resizeStage);resizeStage();
 
@@ -96,7 +86,7 @@ export async function installUsability(api) {
   const total=Number($('[data-library-count]')?.textContent.match(/von\s+(\d+)/)?.[1]||0);
   const libraryHeading=$('#ux-panel-motif h3');if(libraryHeading)libraryHeading.textContent=`Alle ${total} Motive durchsuchen`;
   const motifFee=config?.extraMotifCents??profile.purchasing?.motifPriceCents??169;
-  const priceText=config?.motifCharge==='all'?`Jedes sichtbare Motiv: +${money(motifFee)} je Produkt, auch Motive aus der Vorlage.`:motifFee===0?'Motive sind im Preis enthalten.':`Vorlagenmotive sind enthalten. Jedes zusätzlich gewählte Motiv: +${money(motifFee)} je Produkt.`;
+  const priceText=motifPriceDescription({...config,extraMotifCents:motifFee});
   for(const p of all('#ux-panel-motif p'))if(/je Motiv|einzeln berechnet/.test(p.textContent))p.textContent=priceText;
   const priceNote=document.createElement('p');priceNote.className='ux-motif-pricing';priceNote.textContent=priceText;$('[data-bestsellers]').after(priceNote);
   const categoryIcon='<path d="M4 4h6v6H4Zm10 0h6v6h-6ZM4 14h6v6H4Zm10 0h6v6h-6Z" fill="none" stroke="currentColor" stroke-width="1.5"/>';

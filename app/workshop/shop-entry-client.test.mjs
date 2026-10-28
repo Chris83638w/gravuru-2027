@@ -224,3 +224,37 @@ test('shop embed opens a connection to the editor host once, only on intent towa
  handler(on('[data-gravuru-personalisieren] a[data-gravuru-start]'));handler(on('[data-gravuru-personalisieren] a[data-gravuru-start]'));
  assert.deepEqual(head,[{tag:'link',rel:'preconnect',href:'https://app.example'}],'genau ein Verbindungshinweis');
 });
+
+test('start resources: catalog fonts and library motifs of the start designs at the editor addresses; doorbell only its start design',async()=>{
+ const {startResourceUrls,warmEditor}=await import('./ui/shop-entry-client.mjs');
+ const catalog={motifs:{grund:'<g/>'},font_index:[{name:'Cinzel',file:'cinzel.json'},{name:'Raleway',file:'raleway.json'},{name:'Eigen',file:'eigen.json'},{name:'Böse',file:'a b.json'}],motif_index:[{key:'herz'},{key:'grund'},{key:'stern'}]};
+ const universal={profile:{defaultDesignId:'d2',designs:[{id:'d1',objects:[{type:'text',font:'Cinzel'},{type:'motif',motif:'herz'},{type:'motif',motif:'grund'},{type:'motif',motif:'../x'}]},{id:'d2',objects:[{type:'text',font:'Raleway'},{type:'text',font:'Eigen'},{type:'text',font:'Unbekannt'},{type:'text',font:'Böse'},{type:'motif',motif:'stern'}]}]},localResources:{fonts:{Eigen:{}},motifs:[{key:'stern'}]}};
+ const path='/_acryl-runtime/lazy/katalog-kern.json';
+ assert.deepEqual(startResourceUrls(universal,catalog,path),['/_acryl-runtime/lazy/schriften/cinzel.json','/_acryl-runtime/lazy/motive/herz.json','/_acryl-runtime/lazy/schriften/raleway.json','/_acryl-runtime/lazy/schriften/a%20b.json']);
+ assert.deepEqual(startResourceUrls({...universal,doorbell:{}},catalog,path),['/_acryl-runtime/lazy/schriften/raleway.json','/_acryl-runtime/lazy/schriften/a%20b.json'],'Funkklingel: nur Startdesign');
+ assert.deepEqual(startResourceUrls(universal,null,path),[]);assert.deepEqual(startResourceUrls(universal,catalog,'/x.json'),[]);
+ const warm=warmEditor(['/_merchant-acryl-editor.html',path],{fetchImpl:async url=>({ok:true,text:async()=>'',json:async()=>url===path?catalog:null})});
+ assert.equal(warm.catalogPath,path);assert.deepEqual(await warm.catalog,catalog);
+ assert.equal(await warmEditor([]).catalog,null);
+});
+test('start ticket: fetched once per start address through the proxy, only editor-host addresses, dropped before expiry or on failure',async t=>{
+ const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-ticket-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
+ fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
+ globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
+ const {createStartTickets}=await import(path.join(dir,'shop-embed.mjs'));
+ let time=Date.parse('2026-10-28T10:00:00Z');const calls=[];let answer=()=>({ok:true,json:async()=>({url:'https://app.example/konfigurator/shop/#s=gse1.x&embed=1',expiresAt:'2026-10-28T14:00:00.000Z'})});
+ const tickets=createStartTickets({fetchImpl:async(url,options)=>{calls.push([url,options.credentials,options.cache]);return answer();},now:()=>time});
+ const key='https://shop.example/apps/konfigurator/start?product=5&variant=11&embed=1';
+ assert.equal(tickets.get(key),null);
+ const [a,b]=await Promise.all([tickets.load(key),tickets.load(key)]);
+ assert.equal(a,'https://app.example/konfigurator/shop/#s=gse1.x&embed=1');assert.equal(b,a);
+ assert.deepEqual(calls,[['https://shop.example/apps/konfigurator/start?product=5&variant=11&embed=1&format=json','same-origin','no-store']],'einmal, über den App-Proxy');
+ assert.equal(tickets.get(key),a);assert.equal(await tickets.load(key),a);assert.equal(calls.length,1);
+ time=Date.parse('2026-10-28T13:51:00Z');assert.equal(tickets.get(key),null,'10 min vor Ablauf nicht mehr verwendet');
+ for(const bad of [()=>({ok:false,json:async()=>({})}),()=>({ok:true,json:async()=>({url:'https://evil.example/x',expiresAt:'2026-10-28T18:00:00Z'})}),()=>({ok:true,json:async()=>({url:'https://app.example/x',expiresAt:'kaputt'})}),()=>{throw Error('offline');}]){
+  answer=bad;const other=key+'&n='+calls.length;assert.equal(await tickets.load(other),null);assert.equal(tickets.get(other),null);
+ }
+ assert.equal(await tickets.load(null),null);
+});

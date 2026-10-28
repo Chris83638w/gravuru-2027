@@ -2,14 +2,16 @@
 // (nie in Anfragen an fremde Hosts, nie im Referrer). Der Editor im iframe arbeitet wie in der Händler-
 // Kundenansicht über window.parent: Modell, private Designressourcen, Anfragefunktion und der Warenkorbzugang
 // (GravuruShopEntry, ausgewertet von shop-cart.mjs) liegen auf dieser Seite.
-import {createShopEntryClient,shopUrl,embeddedCart,previewJpeg,surfaceThumbnail,warmTargets,warmEditor} from './shop-entry-client.mjs';
+import {createShopEntryClient,shopUrl,embeddedCart,previewJpeg,surfaceThumbnail,warmTargets,warmEditor,startResourceUrls} from './shop-entry-client.mjs';
 const status=document.querySelector('#status'),header=document.querySelector('header'),back=document.querySelector('#back'),title=document.querySelector('#title');
 const fragment=new URLSearchParams(location.hash.replace(/^#/,''));
 const toDataUrl=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
 try{
   const client=createShopEntryClient({token:fragment.get('s')||''});
-  warmEditor(warmTargets(document,fragment.get('s')||''));
+  const warm=warmEditor(warmTargets(document,fragment.get('s')||''));
   const data=await client.loadModel(),model=data.model;
+  // Startschriften/-motive aus dem Katalog sofort holen (das Fenster liest sie dann aus dem Zwischenspeicher).
+  warm.catalog.then(catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath))fetch(url,{credentials:'same-origin'}).catch(()=>{});});
   window.GravuruPreviewResources=await client.loadResources(model.universal,toDataUrl);
   window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;
   window.GravuruWorkshopReview={productId:model.configuration.id,productRevision:model.configuration.revision};

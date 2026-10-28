@@ -28,6 +28,29 @@ export function startUrl(link){
  return url.href;
 }
 
+// Startkarte (Chris 27.10.2026: „wenn die seite geladen ist, kann der konfi bereits laden“): nach dem Laden der
+// Produktseite holt sie über den App-Proxy nur die kleine Sitzungsantwort (`format=json`, kein Fenster, kein Modell).
+// Beim Klick öffnet das Fenster dann direkt den Konfigurator-Host – ohne Umweg über Shopify. Fehlt sie oder ist sie
+// fast abgelaufen, gilt der normale Start über den App-Proxy.
+export function createStartTickets({fetchImpl=globalThis.fetch,now=Date.now,marginMs=10*60*1000}={}){
+ const tickets=new Map();
+ const get=key=>{const t=tickets.get(key);return t?.url&&now()<t.until?t.url:null;};
+ function load(key){
+  if(!key)return Promise.resolve(null);
+  const known=tickets.get(key);if(known?.pending)return known.pending;if(get(key))return Promise.resolve(get(key));
+  if(tickets.size>=16)tickets.clear();
+  const entry={url:null,until:0,pending:null};tickets.set(key,entry);
+  const request=new URL(key);request.searchParams.set('format','json');
+  entry.pending=Promise.resolve().then(()=>fetchImpl(request.href,{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}})).then(async response=>{
+   const data=response.ok?await response.json():null,until=Date.parse(data?.expiresAt)-marginMs;
+   if(typeof data?.url!=='string'||!data.url.startsWith(EDITOR_ORIGIN+'/')||!(until>now()))throw Error('Startkarte ungültig');
+   entry.url=data.url;entry.until=until;entry.pending=null;return entry.url;
+  }).catch(()=>{if(tickets.get(key)===entry)tickets.delete(key);return null;});
+  return entry.pending;
+ }
+ return Object.freeze({get,load});
+}
+
 // Global (Chris 27.10.2026: „universal, auch wenn ich ein neues Produkt anlege“): Ein Theme-Baustein im
 // Fußbereich schreibt auf jeder Produktseite mit Konfigurator-ID die Produktdaten als JSON (#gravuru-konfi).
 // Fehlt auf der Vorlage der eigene Knopf, setzt diese Datei ihn an die Stelle der Kaufknöpfe; die normalen
@@ -83,9 +106,11 @@ export function acceptedMessage(event,frame){
 
 // Absicht erkennbar (Zeiger über dem Knopf, Fokus, Berührung): Verbindung zum Konfigurator-Host schon aufbauen
 // (spart beim Klick DNS/TLS für die Weiterleitung). Einmal je Seite, ohne Datenabruf.
-export function connectOnIntent(doc=globalThis.document,origin=EDITOR_ORIGIN){
+export function connectOnIntent(doc=globalThis.document,origin=EDITOR_ORIGIN,onIntent=null){
  let done=false;
- const handler=event=>{if(done||!event?.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]'))return;done=true;
+ const handler=event=>{if(!event?.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]'))return;
+  try{onIntent?.();}catch{}
+  if(done)return;done=true;
   const hint=doc.createElement('link');hint.rel='preconnect';hint.href=origin;doc.head.append(hint);};
  for(const type of ['pointerover','focusin','touchstart'])doc.addEventListener(type,handler,{passive:true,capture:true});
  return handler;
@@ -99,22 +124,23 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  const status=document.createElement('div');status.className='gv-embed__status';status.hidden=true;status.setAttribute('role','status');status.setAttribute('aria-live','polite');
  const box=document.createElement('div');box.className='gv-embed__box';status.append(box);
  shell.append(bar,status);document.body.append(shell);
- let frame=null,frameUrl=null,busy=false,lastFocus=null;
+ let frame=null,frameKey=null,busy=false,lastFocus=null;
  const say=(text,{error=false}={})=>{box.replaceChildren(document.createTextNode(text));status.hidden=false;
   if(error){const again=document.createElement('button');again.type='button';again.textContent='Zurück zur Gestaltung';again.addEventListener('click',()=>{status.hidden=true;});
    const cart=document.createElement('a');cart.href=root+'cart';cart.textContent='Warenkorb öffnen';box.append(document.createElement('br'),again,cart);}};
- function load(url){
+ // `key` = Startadresse über den App-Proxy; geöffnet wird ggf. die Startkarte (direkt). Gleicher Schlüssel = gleiches Fenster.
+ function load(url,key=url){
   frame?.remove();frame=document.createElement('iframe');frame.className='gv-embed__frame';frame.title='Produkt personalisieren';frame.setAttribute('allow','clipboard-write');
-  frame.src=url;frameUrl=url;shell.append(frame);
+  frame.src=url;frameKey=key;shell.append(frame);
  }
  // Vorgeladen: unsichtbar, aber in voller Größe aufgebaut (sonst misst der Editor 0 px); nicht bedienbar, nicht fokussierbar.
  function preload(url){
   if(frame||!url)return;
   shell.classList.add('gv-embed--preload');shell.setAttribute('aria-hidden','true');shell.hidden=false;load(url);
  }
- function open(url){
+ function open(url,key=url){
   lastFocus=document.activeElement;status.hidden=true;
-  if(!frame||frameUrl!==url)load(url);
+  if(!frame||frameKey!==key)load(url,key);
   shell.classList.remove('gv-embed--preload');shell.removeAttribute('aria-hidden');shell.hidden=false;
   document.documentElement.classList.add('gv-embed-open');close.focus();
  }
@@ -153,10 +179,14 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   const style=document.createElement('style');style.textContent='[data-gravuru-hidden-buy]{display:none!important}';document.head.append(style);
   let queued=false;new MutationObserver(()=>{if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;prepareProductPage(config);});}).observe(document.body,{childList:true,subtree:true});
  }
- // Vorladen ist aus (Messung 27.10.2026, Chrome): ein unsichtbares Fenster lädt der Browser stark gebremst –
- // nach 10 s war noch nicht einmal das Modell da, nach dem Klick dauerte es so lange wie ohne Vorladen. Es kostete
- // nur Daten. Schneller wird das Öffnen über ein schlankeres Modell. preload() bleibt für spätere Versuche.
- connectOnIntent(document);
+ // Fenster-Vorladen ist aus (Messung 27.10.2026, Chrome): ein unsichtbares Fenster lädt der Browser stark gebremst
+ // und kostete nur Daten. Vorab kommt stattdessen nur die Startkarte (wenige Hundert Byte) nach dem Laden der Seite
+ // bzw. bei erkennbarer Absicht; preload() bleibt für spätere Versuche.
+ const tickets=createStartTickets();
+ const ownLink=()=>{const link=document.querySelector('[data-gravuru-personalisieren] a[data-gravuru-start]');if(link&&config)link.href=startHref(config,currentVariant(config,document));return link;};
+ const fetchTicket=()=>{const link=ownLink();if(link&&!frame)tickets.load(startUrl(link));};
+ connectOnIntent(document,EDITOR_ORIGIN,fetchTicket);
+ if(config){const idle=()=>window.requestIdleCallback?window.requestIdleCallback(fetchTicket,{timeout:4000}):setTimeout(fetchTicket,1500);if(document.readyState==='complete')idle();else window.addEventListener('load',idle,{once:true});}
  document.addEventListener('click',event=>{
   const link=event.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]');
   if(!link||event.defaultPrevented)return;
@@ -164,7 +194,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   if(config)link.href=startHref(config,currentVariant(config,document));
   if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
   const url=startUrl(link);if(!url)return;
-  event.preventDefault();open(url);
+  event.preventDefault();open(tickets.get(url)||url,url);
  });
  return (window.__gravuruShopEmbed=Object.freeze({open,hide,preload}));
 }

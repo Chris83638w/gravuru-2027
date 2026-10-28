@@ -1,3 +1,11 @@
+## 28.10.2026 · Claude · Direktstart ohne Shopify-Umweg + Startschriften vorwärmen (Branch `dev/konfi-direktstart-20261028-claude`, baut auf `dev/konfi-parallel-laden-…` auf)
+
+- Chris: „mach weiter“ (04:31). Rest-Zeitleiste: Klick → App-Proxy-Start 0,5–1,1 s → Seite → Modell → Editor; Editor-CPU nur noch ~1,2 s (Profil), `localFontIds` 52 ms.
+- Startkarte: `start?…&format=json` (signiert über den App-Proxy, eigenes Limit `ticket`, echte Starts unberührt) liefert dieselbe Zieladresse als JSON. `shop-embed.mjs` holt sie nach dem Laden der Produktseite im Leerlauf bzw. bei Absicht (`createStartTickets`, nur Adressen des Konfigurator-Hosts, 10 min vor Ablauf verworfen); der Klick öffnet das Fenster direkt auf dem Konfigurator-Host, sonst wie bisher über den Proxy. Gleicher Startschlüssel = gleiches Fenster (Schließen/Öffnen behält den Stand). Hinweis: Das Sitzungstoken ist damit für Skripte der Produktseite lesbar (gleiche Rechte wie ein Klick auf „Jetzt personalisieren“, kundengebunden).
+- Startschriften/-motive: Einstiegsseite holt nach dem Modell die Katalogdateien der Startdesigns (`startResourceUrls`, gleiche Adressen wie der Editor).
+- Prüfungen: gezielt 78/78 (shop-entry 23, client 15, flows 2, theme-cart 12, slim 5, routing 7, lazy-resources 14). Live-Shop D8 (Playwright, Fenster-Modus, 4 Paare alt/neu): Klick → bedienbar Ø 5,3 → 4,7 s; Fenster startet direkt auf `app-2027…/konfigurator/shop/`. Einstiegsseite mit Cache: Cinzel aus dem Zwischenspeicher, bedienbar 3,5 s (noch 3,8-MB-Modell).
+- Live erst mit Chris' Satz.
+
 ## 28.10.2026 · Claude · Konfigurator lädt Editor parallel zu den Produktdaten (Branch `dev/konfi-parallel-laden-20261028-claude`)
 
 - Zeitleiste vorher: Seite → zwei Skripte nacheinander → Modell → erst dann Editor-Seite (0,5 s) → Paket → Kernkatalog (0,9 s).

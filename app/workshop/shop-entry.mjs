@@ -153,14 +153,15 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   if((config===null)!==(rev===null)||(line!==null&&config===null))fail(422,'shop_entry_params','Der Bearbeiten-Verweis ist ungültig.');
   // Rücksprung nur als Pfad im Shop (keine fremden Adressen): /products/<handle> o. ä.
   const back=optional('back',v=>v.length<=512&&/^\/(?!\/)[A-Za-z0-9/_.~%-]*(?:\?[A-Za-z0-9=&_.~%-]*)?$/.test(v));
-  const embed=optional('embed',v=>v==='1')==='1';
-  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed};
+  const embed=optional('embed',v=>v==='1')==='1',ticket=optional('format',v=>v==='json')==='json';
+  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed,ticket};
  }
  function start(req,res,url){
   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
   const proxy=verifyProxy(url.searchParams),input=startParams(url.searchParams);
   // Erst nach gültiger App-Proxy-Signatur zählen: unsignierte Direktaufrufe sollen echte Starts nicht sperren (Review 23.10.).
-  if(!startLimiter('start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
+  // Startkarte (`format=json`, Vorabruf der Produktseite) zählt getrennt: Seitenaufrufe sperren keine echten Starts.
+  if(!startLimiter(input.ticket?'ticket':'start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const {store,binding}=resolve({shopifyProductId:input.shopifyProductId,shopifyVariantId:input.shopifyVariantId});
   modelFor(store,binding);
   const issued=sessions.issue(binding,{customerId:proxy.customerId});
@@ -169,6 +170,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   if(input.back)fragment.set('back',input.back);
   if(input.embed)fragment.set('embed','1');
   const target=origin+pagePath+'#'+fragment.toString();
+  // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.
+  if(input.ticket)return json(res,200,{url:target,expiresAt:issued.expiresAt});
   // Shopify reicht die Weiterleitung an den Browser durch; Meta-Refresh und Verweis sind der Rückfall.
   const html=Buffer.from(simplePage('Konfigurator wird geöffnet …','Einen Moment – der Konfigurator wird geöffnet.',{link:target}));
   res.writeHead(302,headersFor('text/html; charset=utf-8',{Location:target,'Content-Length':html.length}));res.end(html);

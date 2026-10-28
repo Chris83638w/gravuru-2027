@@ -336,3 +336,17 @@ test('own fonts no design uses are served as immutable files from the shop entry
  const slimmer=createModelSlimmer({fetchJson:async p=>{if(p.endsWith('katalog-kern.json'))return {font_index:[]};throw Error('404');},fontUrl:hash=>'/konfigurator/shop/schriften/'+hash+'.json',maxFontFiles:1});
  slimmer.load();f.options.modelSlimmer=slimmer;
 }));
+test('start ticket (format=json) returns the same target as the redirect and counts separately from real starts',()=>run(async(f,request)=>{
+ const base={product:f.ids.shopifyProductId.split('/').at(-1),variant:f.ids.shopifyVariantId.split('/').at(-1),back:'/products/x'};
+ const ticket=await request(proxyPath+'/start?'+signed(f,{...base,embed:'1',format:'json'}));
+ assert.equal(ticket.status,200);assert.match(ticket.headers['content-type'],/application\/json/);assert.equal(ticket.headers['cache-control'],'private, no-store');
+ const target=new URL(ticket.data.url);assert.equal(target.origin,origin);assert.equal(target.pathname,'/konfigurator/shop/');
+ const fragment=new URLSearchParams(target.hash.slice(1));assert.match(fragment.get('s'),/^gse1\./);assert.equal(fragment.get('embed'),'1');assert.equal(fragment.get('back'),'/products/x');
+ assert.ok(Date.parse(ticket.data.expiresAt)>f.now());
+ // Startkarte und echter Start zählen getrennt (Limit 1/min je Art): beide gehen.
+ const real=await request(proxyPath+'/start?'+signed(f,base));assert.equal(real.status,302);
+ assert.equal((await request(proxyPath+'/start?'+signed(f,{...base,format:'json'}))).status,429,'zweite Startkarte begrenzt');
+ assert.equal((await request(proxyPath+'/start?'+signed(f,{...base,format:'xml'}))).status,422);
+ const unsigned=new URLSearchParams({...base,format:'json',shop:shopDomain,timestamp:String(Math.floor(f.now()/1000))});
+ assert.equal((await request(proxyPath+'/start?'+unsigned)).status,401,'nur signiert über den App-Proxy');
+},f=>{f.options.limits={startPerMinute:1,requestsPerMinute:1000};}));

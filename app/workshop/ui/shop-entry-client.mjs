@@ -99,12 +99,36 @@ export function warmTargets(doc,token){
 }
 // Lädt die Ziele mit niedriger Priorität in den Browser-Zwischenspeicher (Editor-Seite 5 min, Paket/Katalog länger),
 // aus der Editor-Seite zusätzlich ihr gehashtes Editor-Paket. Das Fenster findet sie danach ohne Netzwartezeit.
+// Ergebnis: `catalog` = Promise auf den Kernkatalog (oder null), für startResourceUrls.
 export function warmEditor(targets,{fetchImpl=globalThis.fetch}={}){
  const get=path=>fetchImpl(path,{credentials:'same-origin',priority:'low'});
- for(const path of targets)get(path).then(async response=>{
-  if(!response.ok||!/\.html$/.test(path))return;
-  for(const bundle of new Set((await response.text()).match(/\/_[a-z-]*bundle\/[A-Za-z0-9_.-]+-[a-f0-9]{16}\.m?js/g)||[]))get(bundle).catch(()=>{});
- }).catch(()=>{});
+ let catalog=Promise.resolve(null),catalogPath=null;
+ for(const path of targets){
+  const request=get(path);
+  if(/\/katalog-kern\.json$/.test(path)){catalogPath=path;catalog=request.then(response=>response.ok?response.json():null).catch(()=>null);continue;}
+  request.then(async response=>{
+   if(!response.ok||!/\.html$/.test(path))return;
+   for(const bundle of new Set((await response.text()).match(/\/_[a-z-]*bundle\/[A-Za-z0-9_.-]+-[a-f0-9]{16}\.m?js/g)||[]))get(bundle).catch(()=>{});
+  }).catch(()=>{});
+ }
+ return {catalog,catalogPath};
+}
+// Schriften und Bibliotheksmotive, die die Startdesigns aus dem Katalog brauchen – gleiche Adressen wie der Editor
+// (lazy-resources-model: Kerndesigns, ohne Produktressourcen und Grundmotive; Funkklingel nur Startdesign).
+export function startResourceUrls(universal,catalog,catalogPath){
+ if(!catalog||typeof catalogPath!=='string'||!/\/katalog-kern\.json$/.test(catalogPath))return [];
+ const base=catalogPath.replace(/katalog-kern\.json$/,''),local=universal?.localResources||{};
+ const localFonts=new Set(Object.keys(local.fonts||{})),skipMotifs=new Set([...(local.motifs||[]).map(m=>m?.key),...Object.keys(catalog.motifs||{})]);
+ // Nur Dateien, die der Host zwischenspeichern darf (acrylCacheControl: Slug-Namen); sonst wäre es ein Doppelabruf.
+ const files=new Map((catalog.font_index||[]).filter(f=>typeof f?.name==='string'&&f.url===undefined&&/^[a-z0-9-]{1,80}\.json$/.test(f.file||'')).map(f=>[f.name,f.file])),motifKeys=new Set((catalog.motif_index||[]).map(m=>m?.key));
+ const designs=Array.isArray(universal?.profile?.designs)?universal.profile.designs:[];
+ const initial=universal?.doorbell?[designs.find(d=>d?.id===universal.profile.defaultDesignId)||designs[0]].filter(Boolean):designs;
+ const urls=new Set();
+ for(const o of initial.flatMap(d=>Array.isArray(d?.objects)?d.objects:[])){
+  if(o?.type==='text'&&files.has(o.font)&&!localFonts.has(o.font))urls.add(base+'schriften/'+encodeURIComponent(files.get(o.font)));
+  if(o?.type==='motif'&&typeof o.motif==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(o.motif)&&motifKeys.has(o.motif)&&!skipMotifs.has(o.motif))urls.add(base+'motive/'+o.motif+'.json');
+ }
+ return [...urls].slice(0,24);
 }
 export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
   if(typeof token!=='string'||!/^gse1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token))fail('Bitte öffne den Konfigurator über „Jetzt personalisieren“ auf der Produktseite.');

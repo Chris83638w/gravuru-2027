@@ -178,6 +178,15 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     });
   }
   function resolve(input){storedScope();const pair=ids(input),row=currentHead(pair.shopifyVariantId);if(!row||row.product_gid!==pair.shopifyProductId)fail('shop_binding_active_not_found','Keine ausdrückliche aktive Zuordnung für diese beiden Shopify-IDs.',404);return result(row);}
+  function listActive(){
+    storedScope();
+    const rows=db.prepare(`SELECT r.* FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r
+      ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision
+      WHERE h.tenant_id=? AND h.shop=? AND r.store_id=? ORDER BY r.cfg_id,r.variant_gid`).all(tenantId,shopDomain,storeId);
+    // The same document and immutable binding checks as an exact resolve. An
+    // archived record is unavailable; a corrupt binding must never become a card.
+    return rows.flatMap(row=>{try{return [result(row)];}catch(error){if(error.code==='shop_binding_cfg_changed')return [];throw error;}});
+  }
   function history(input){storedScope();const pair=ids(input);return db.prepare('SELECT * FROM shop_product_binding_revisions WHERE tenant_id=? AND shop=? AND variant_gid=? AND product_gid=? ORDER BY revision').all(tenantId,shopDomain,pair.shopifyVariantId,pair.shopifyProductId).map(row=>({...scope,shopifyProductId:row.product_gid,shopifyVariantId:row.variant_gid,assignmentRevision:row.revision,bindingId:row.binding_id,productId:row.cfg_id,productRevision:row.cfg_revision,documentSha256:row.document_sha256,evidenceReadAt:row.evidence_read_at,createdAt:row.created_at,productionReady:false}));}
-  return Object.freeze({...scope,persist,resolve,history});
+  return Object.freeze({...scope,persist,resolve,history,listActive});
 }

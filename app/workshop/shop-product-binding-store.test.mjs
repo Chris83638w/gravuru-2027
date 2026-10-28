@@ -170,3 +170,40 @@ test('evidence expiring during a synchronous write rolls back before commit',t=>
  f.orders.bindVariants=function(input){const result=original.call(this,input);f.advance(60001);return result;};
  const before=counts(f);assert.throws(()=>f.persist(plan),{code:'shop_binding_freshness'});assert.deepEqual(counts(f),before);
 });
+
+test('listActive returns only assignment heads, preserves pinned source revisions and copies option data',t=>{
+ const f=fixture(t,nativeDocument()),options={size:'large',base:'eiche',wall:'wall'};
+ assert.deepEqual(f.registry.listActive(),[]);f.persist(f.plan([{record:f.record,...pair(),options}]));
+ let listed=f.registry.listActive();assert.equal(listed.length,1);assert.deepEqual(listed[0],f.registry.resolve(pair()));
+ listed[0].options.base='forged';assert.deepEqual(f.registry.listActive()[0].options,options);
+ const document=structuredClone(f.record.document);document.name='New source name';const next=f.repository.save(f.record.id,document,1);
+ assert.equal(f.registry.listActive()[0].productRevision,1,'a newer repository source is not an implicit active assignment');
+ f.persist(f.plan([{record:next,...pair(),options}]),1);listed=f.registry.listActive();assert.equal(listed.length,1);assert.equal(listed[0].assignmentRevision,2);assert.equal(listed[0].productRevision,2);assert.equal(f.registry.history(pair()).length,2);
+});
+
+test('listActive excludes archived products while retaining other active records and all binding history',t=>{
+ const f=fixture(t),other=f.repository.create(formDocument());f.persist(f.plan([{record:f.record,...pair(),options:{}},{record:other,...pair(2),options:{}}]));
+ const before=counts(f);assert.equal(f.registry.listActive().length,2);f.repository.setArchived(f.record.id,{expectedRevision:1,archived:true});
+ const listed=f.registry.listActive();assert.equal(listed.length,1);assert.equal(listed[0].productId,other.id);assert.deepEqual(counts(f),before);assert.equal(f.registry.history(pair()).length,1);
+});
+
+test('listActive cannot leak a foreign tenant or shop and refuses a different store scope',t=>{
+ const f=fixture(t);f.persist();
+ // Deliberately construct foreign rows only in this disposable SQLite file.
+ // If query scoping regresses these rows either leak or fail the own-tenant read.
+ for(const [otherTenant,otherShop] of [['foreign',shopDomain],[tenantId,'foreign.myshopify.com']]){
+  f.db.prepare(`INSERT INTO shop_product_binding_revisions(tenant_id,shop,variant_gid,revision,product_gid,store_id,binding_id,cfg_id,cfg_revision,document_sha256,evidence_read_at,created_at)
+   SELECT ?,?,variant_gid,revision,product_gid,store_id,binding_id,cfg_id,cfg_revision,document_sha256,evidence_read_at,created_at FROM shop_product_binding_revisions WHERE tenant_id=? AND shop=?`).run(otherTenant,otherShop,tenantId,shopDomain);
+  f.db.prepare('INSERT INTO shop_product_binding_heads(tenant_id,shop,variant_gid,revision) VALUES(?,?,?,1)').run(otherTenant,otherShop,pair().shopifyVariantId);
+ }
+ assert.deepEqual(f.registry.listActive(),[f.registry.resolve(pair())]);
+ const wrongStore=f.orders.idBindings({storeId:'another-store',shopDomain,adapter:{...f.adapter,storeId:'another-store'}});assert.throws(()=>wrongStore.listActive(),{code:'shop_binding_store_scope'});
+});
+
+test('listActive fails closed for corrupted immutable source or binding identity, rather than returning a card',t=>{
+ const source=fixture(t);source.persist();source.db.exec('DROP TRIGGER immutable_revision_update');
+ source.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=? AND revision=1').run(JSON.stringify({...source.record.document,name:'Tampered bytes'}),source.record.id);
+ assert.throws(()=>source.registry.listActive(),{code:'shop_binding_active_integrity'});
+ const binding=fixture(t);binding.persist();binding.db.exec('DROP TRIGGER form_shop_binding_fixed');binding.db.exec("UPDATE form_shop_bindings SET variant_id='999999'");
+ assert.throws(()=>binding.registry.listActive(),{code:'shop_binding_active_integrity'});
+});

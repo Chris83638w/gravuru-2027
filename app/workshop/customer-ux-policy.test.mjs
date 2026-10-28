@@ -19,8 +19,18 @@ test('proposal validates complete product documents, counts blocked rows and pre
  const before=structuredClone(original),invalid=structuredClone(original);invalid.profileAssignments.fonts={mode:'override',profileId:null};
  const plan=customerUxPlan([original,invalid,null]);
  assert.deepEqual(plan.counts,{products:3,ready:1,blocked:2});
- assert.deepEqual(original,before);assert.equal(plan.rows[0].document.config.motifCharge,'all');assert.equal(plan.rows[0].document.config.extraMotifCents,169);
+ assert.deepEqual(original,before);assert.equal(plan.rows[0].document.config.motifCharge,'additional');assert.equal(plan.rows[0].document.config.extraMotifCents,169);
  assert.deepEqual(plan.rows[0].document.config.textRules,{maxCharsPerLine:50});
  assert.deepEqual(plan.rows[0].document.config.profile,before.config.profile);
  assert.ok(plan.rows[1].reason);assert.ok(plan.rows[2].reason);
+});
+
+test('a fresh proposal removes the withdrawn all-motif policy without rewriting its source',()=>{
+ const original=makeProductDocument({...native(),motifCharge:'all'}),before=structuredClone(original);
+ const plan=customerUxPlan([original]);
+ assert.deepEqual(plan.counts,{products:1,ready:1,blocked:0});
+ assert.equal(plan.rows[0].before.motifCharge,'all');
+ assert.equal(plan.rows[0].after.motifCharge,'additional');
+ assert.equal(plan.rows[0].document.config.motifCharge,'additional');
+ assert.deepEqual(original,before);
 });

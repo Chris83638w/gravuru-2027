@@ -16,6 +16,7 @@ import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 import {textsNearHoles} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
+import {editorUi} from '../configurator/variant-m/toolbar-placement-model.mjs';
 
 export const ACRYLIC_REVIEW='gravuru-acrylic-review/v1';
 const fail=message=>{throw Object.assign(Error(message),{status:422});};
@@ -28,7 +29,8 @@ const keys=(o,allowed)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.ke
 // come from the pinned server record. The submitted PNG is a visual reference,
 // explicitly not server-verified artwork or a production file.
 export function validateAcrylicReview(record,config,input){
- keys(input,['productId','productRevision','designId','objects','options','quantity','media','preview']);
+ keys(input,['productId','productRevision','designId','objects','options','quantity','media','preview','ui']);
+ const ui=editorUi(input.ui);
  if((!config.acrylic&&!config.doorbell&&!['slate','steel'].includes(config.profile?.material?.kind))||input.productId!==record.id||input.productRevision!==record.revision)fail('Produkt und feste Revision stimmen nicht überein.');
  if(!Number.isSafeInteger(input.quantity)||input.quantity<1||input.quantity>99)fail('Menge: 1 bis 99.');
  if(!Array.isArray(input.objects)||input.objects.length>120)fail('Ungültiger Elementumfang.');
@@ -44,7 +46,7 @@ export function validateAcrylicReview(record,config,input){
  if(!Array.isArray(input.media)||input.media.length!==used.size||used.size>4)fail('Alle verwendeten Originalbilder müssen mitgesichert werden.');
  const ids=new Set();for(const m of input.media){keys(m,['id','original','edited']);if(typeof m.id!=='string'||!used.has(m.id)||ids.has(m.id))fail('Bildzuordnung ist nicht eindeutig.');ids.add(m.id);}
  for(const o of design.objects)if(!o.uxHidden&&!isGuideObject(o)&&o.type==='photoSlot'&&o.required&&!o.uxUploadId)fail('Bitte das erforderliche eigene Foto hochladen.');
- return {design,options:resolved.resolvedOptions,geometry:resolved.physical,price};
+ return {design,options:resolved.resolvedOptions,geometry:resolved.physical,price,...(ui?{ui}:{})};
 }
 
 // Eingefrorene Konfiguratorquelle für genau diese Gestaltung. Fertigung, Bestellprodukt und

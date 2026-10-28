@@ -5,6 +5,7 @@ import {readReviewPackage} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {CART_CONFIG_ID} from './cart-configuration.mjs';
 import {DRAFT_SCHEMA} from '../configurator/variant-m/contract.mjs';
+import {editorUi} from '../configurator/variant-m/toolbar-placement-model.mjs';
 
 const fail = (status, code, message) => {throw Object.assign(new Error(message), {status, code});};
 const IMAGE_TYPES = {jpg: 'image/jpeg', png: 'image/png', webp: 'image/webp'};
@@ -39,13 +40,14 @@ export function loadCartRevision({drafts, repository, configId, rev, draftToken}
   const quantity=native ? state?.price?.quantity ?? manifest.selection?.price?.quantity ?? 1 :
     drafts.orderIntake.offerSummary({offerId:revision.offerId,snapshotId:revision.snapshotId,productId:draft.productId,productRevision:draft.productRevision}).quantity;
   if(!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(409,'cart_edit_unsupported','Die gespeicherte Bestellmenge ist nicht bestätigt.');
+  const ui=native?editorUi(state.ui):undefined;
   return {
     editorKind:native ? 'native' : 'form',
     configuration: {id: configId, rev, latestRev: latest.rev, cartLineId: revision.lineId},
     draft: {id: draft.id, revision: draft.revision, productId: draft.productId, productRevision: draft.productRevision, designId: draft.designId},
     quantity,
     ...(native ? {document: {schema: DRAFT_SCHEMA, profileId: profile.id, profileRevision: profile.revision, productId: profile.binding?.productId ?? null,
-      design: state.design, options: state.options}} : {product:input.product,customer:input.customer,designId:input.designId,profiles:input.profiles}),
+      design: state.design, options: state.options,...(ui?{ui}:{})}} : {product:input.product,customer:input.customer,designId:input.designId,profiles:input.profiles}),
     photos: (manifest.photos || []).map(p => native ? ({uploadId: p.uploadId, width: p.width, height: p.height,
       ...(p.edited ? {edited: {width: p.edited.width, height: p.edited.height}} : {})}) :
       ({uploadId:p.fieldId,fieldId:p.fieldId,mediaId:p.mediaId ?? input.customer.fields.find(f=>f.id===p.fieldId)?.mediaId,

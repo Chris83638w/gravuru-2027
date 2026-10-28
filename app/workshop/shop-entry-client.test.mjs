@@ -19,6 +19,16 @@ test('return address stays inside the shop',()=>{
  assert.equal(shopUrl('gravuru-design.myshopify.com','/products/tuerschild?variant=1'),'https://gravuru-design.myshopify.com/products/tuerschild?variant=1');
  for(const bad of [null,'','//evil.example/x','https://evil.example/','/\\evil.example','javascript:alert(1)'])assert.equal(shopUrl('gravuru-design.myshopify.com',bad),'https://gravuru-design.myshopify.com/');
 });
+
+test('product gallery uses private session headers and keeps signed choices out of URLs',async()=>{
+ const calls=[],target='sgt1.synthetic.signature';
+ const client=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});return url.endsWith('design-gallery-preview')?new Response('<svg/>',{headers:{'Content-Type':'image/svg+xml'}}):Response.json({items:[],token:'gse1.new.signature'});}});
+ await client.loadDesignGallery(2);assert.equal(await (await client.loadDesignPreview(target)).text(),'<svg/>');await client.switchDesign(target);
+ assert.deepEqual(calls.map(c=>c.url),['/api/shop-entry/design-gallery?page=2','/api/shop-entry/design-gallery-preview','/api/shop-entry/design-switch']);
+ for(const {url,options} of calls){assert.equal(options.headers['X-Gravuru-Shop-Session'],token);assert.equal(options.credentials,'omit');assert.equal(options.cache,'no-store');assert.ok(!url.includes(target));}
+ for(const c of calls.slice(1)){assert.equal(c.options.method,'POST');assert.deepEqual(JSON.parse(c.options.body),{target});}
+ await assert.rejects(client.loadDesignGallery(-1));await assert.rejects(client.switchDesign(null));
+});
 test('client sends the session only as a header, validates the model answer and the cart result',async()=>{
  const calls=[];
  const fetchImpl=async(url,options={})=>{

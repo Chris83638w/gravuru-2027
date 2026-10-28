@@ -4,7 +4,8 @@ import {prepareConfig} from '../configurator/variant-m/contract.mjs';
 // Chris, 28.10.2026. Applied only when preparing a new product revision.
 // Never infer this policy while reading an existing order, draft or live product.
 export function customerUxConfig(config){
- return prepareConfig({...structuredClone(config),textRules:{maxCharsPerLine:50},motifCharge:'all',extraMotifCents:169});
+ // Auftrag 2: the original motif stays included; only another or extra motif is charged.
+ return prepareConfig({...structuredClone(config),textRules:{maxCharsPerLine:50},motifCharge:'additional',extraMotifCents:169});
 }
 export function customerUxPlan(documents){
  const rows=documents.map((document,index)=>{

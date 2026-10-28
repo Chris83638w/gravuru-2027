@@ -54,7 +54,7 @@ test('catalogue arrows keep their screen offset while scaling and disappear for 
 
 test('shared Konfi arrows retain the final CSS cascade, four directions and radial resizing',()=>{
  for(const rotation of [0,90,180,270])assert.ok(selectionArrowStyles.includes('rotate('+rotation+'deg)'));
- assert.match(selectionArrowStyles,/width:26px!important/);assert.match(selectionArrowStyles,/width:18px!important/);assert.match(selectionArrowStyles,/inset:-8px/);assert.match(selectionArrowStyles,/#17634d/);assert.match(selectionArrowStyles,/#bad3c5/);
+ assert.match(selectionArrowStyles,/width:19px!important/);assert.match(selectionArrowStyles,/width:14px!important/);assert.match(selectionArrowStyles,/width:44px;height:44px;left:50%;top:50%;transform:translate\(-50%,-50%\);background:transparent/);assert.match(selectionArrowMarkup(),/stroke-width="2\.4"/);assert.match(selectionArrowStyles,/#17634d/);assert.match(selectionArrowStyles,/#bad3c5/);
  assert.equal(selectionScaleFactor({x:10,y:20},{x:13,y:24},{x:16,y:28}),2);
  assert.equal(selectionScaleFactor({x:10,y:20},{x:13,y:24},{x:6,y:23}),1,'a tangential pointer movement keeps the radial size');
  const konfi=fs.readFileSync(new URL('../configurator/variant-m/refinements.mjs',import.meta.url),'utf8'),editor=fs.readFileSync(new URL('./ui/product-editor-ui.mjs',import.meta.url),'utf8');

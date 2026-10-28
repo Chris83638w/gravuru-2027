@@ -87,6 +87,25 @@ async function json(response){
   return body;
 }
 
+// Vorwärmen: Ziele aus `<meta name="gravuru-warm">` für den Datenbereich (`st`) des Sitzungstokens.
+// Nur eigene, absolute Pfade; Fehler bedeuten einfach kein Vorwärmen.
+export function warmTargets(doc,token){
+ try{
+  const map=JSON.parse(doc.querySelector('meta[name="gravuru-warm"]')?.getAttribute('content')||'{}');
+  const body=String(token).split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+  const list=map[JSON.parse(atob(body+'='.repeat((4-body.length%4)%4))).st];
+  return Array.isArray(list)?list.filter(p=>typeof p==='string'&&/^\/[A-Za-z0-9_][A-Za-z0-9_\/.-]*$/.test(p)&&!p.includes('..')).slice(0,4):[];
+ }catch{return [];}
+}
+// Lädt die Ziele mit niedriger Priorität in den Browser-Zwischenspeicher (Editor-Seite 5 min, Paket/Katalog länger),
+// aus der Editor-Seite zusätzlich ihr gehashtes Editor-Paket. Das Fenster findet sie danach ohne Netzwartezeit.
+export function warmEditor(targets,{fetchImpl=globalThis.fetch}={}){
+ const get=path=>fetchImpl(path,{credentials:'same-origin',priority:'low'});
+ for(const path of targets)get(path).then(async response=>{
+  if(!response.ok||!/\.html$/.test(path))return;
+  for(const bundle of new Set((await response.text()).match(/\/_[a-z-]*bundle\/[A-Za-z0-9_.-]+-[a-f0-9]{16}\.m?js/g)||[]))get(bundle).catch(()=>{});
+ }).catch(()=>{});
+}
 export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
   if(typeof token!=='string'||!/^gse1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token))fail('Bitte öffne den Konfigurator über „Jetzt personalisieren“ auf der Produktseite.');
   const headers=extra=>({...extra,'X-Gravuru-Shop-Session':token});

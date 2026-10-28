@@ -20,6 +20,7 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 // keine Produktaufzählung, keine Preise aus dem Browser, keine Fertigungsfreigabe.
 const API='/api/shop-entry/';
 const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs'];
+const WARM_RUNTIME={'/_merchant-acryl-editor.html':['/_acryl-runtime/lazy/katalog-kern.json']};
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const gid=(value,kind)=>typeof value==='string'&&new RegExp('^gid://shopify/'+kind+'/[1-9][0-9]{0,19}$').test(value);
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
@@ -68,7 +69,10 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  const sessions=createShopEntrySessions({secret,clock,...(ttlMs===undefined?{}:{ttlMs})});
  const startLimiter=createWindowLimiter(limit.startPerMinute,clock),requestLimiter=createWindowLimiter(limit.requestsPerMinute,clock);
  // Seite und Skript sind statische Dateien; nur der konfigurierte Seitenpfad wird eingesetzt.
- const pageHtml=Buffer.from(fs.readFileSync(ui('shop-entry.html'),'utf8').replaceAll('/konfigurator/shop/',pagePath)),pageFiles=new Map(PAGE_FILES.map(name=>[pagePath+name,fs.readFileSync(ui(name))]));
+ // Vorwärmen (Chris 28.10.2026, schneller öffnen): Editor-Seite und Kernkatalog des Datenbereichs lädt die Seite
+ // parallel zu den Produktdaten mit niedriger Priorität in den Browser-Zwischenspeicher (`gravuru-warm`, je storeId).
+ const warm=Object.fromEntries(fixed.map(s=>[s.storeId,[s.nativeEditorPath,...(WARM_RUNTIME[s.nativeEditorPath]||[])]]));
+ const pageHtml=Buffer.from(fs.readFileSync(ui('shop-entry.html'),'utf8').replaceAll('/konfigurator/shop/',pagePath).replace('<meta name="robots"','<meta name="gravuru-warm" content="'+esc(JSON.stringify(warm))+'">\n  <meta name="robots"')),pageFiles=new Map(PAGE_FILES.map(name=>[pagePath+name,fs.readFileSync(ui(name))]));
  const cartContexts=new Map(),reviewJobs=new Set(),assetIndex=new Map();
  const startPath=proxyPath+'/start';
  const PAGE_CSP=pageCsp(shopDomain);

@@ -81,6 +81,15 @@ export function acceptedMessage(event,frame){
  return null;
 }
 
+// Absicht erkennbar (Zeiger über dem Knopf, Fokus, Berührung): Verbindung zum Konfigurator-Host schon aufbauen
+// (spart beim Klick DNS/TLS für die Weiterleitung). Einmal je Seite, ohne Datenabruf.
+export function connectOnIntent(doc=globalThis.document,origin=EDITOR_ORIGIN){
+ let done=false;
+ const handler=event=>{if(done||!event?.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]'))return;done=true;
+  const hint=doc.createElement('link');hint.rel='preconnect';hint.href=origin;doc.head.append(hint);};
+ for(const type of ['pointerover','focusin','touchstart'])doc.addEventListener(type,handler,{passive:true,capture:true});
+ return handler;
+}
 export function install({root=window.Shopify?.routes?.root||'/'}={}){
  if(window.__gravuruShopEmbed)return window.__gravuruShopEmbed;
  const style=document.createElement('style');style.textContent=STYLE;document.head.append(style);
@@ -147,6 +156,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  // Vorladen ist aus (Messung 27.10.2026, Chrome): ein unsichtbares Fenster lädt der Browser stark gebremst –
  // nach 10 s war noch nicht einmal das Modell da, nach dem Klick dauerte es so lange wie ohne Vorladen. Es kostete
  // nur Daten. Schneller wird das Öffnen über ein schlankeres Modell. preload() bleibt für spätere Versuche.
+ connectOnIntent(document);
  document.addEventListener('click',event=>{
   const link=event.target?.closest?.('[data-gravuru-personalisieren] a[data-gravuru-start]');
   if(!link||event.defaultPrevented)return;

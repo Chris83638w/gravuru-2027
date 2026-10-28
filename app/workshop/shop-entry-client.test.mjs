@@ -191,3 +191,36 @@ test('global shop embed: product data from the theme block, own start link, buy 
  }
  assert.equal(pageConfig({getElementById:()=>null}),null);
 });
+
+test('warm-up: targets come only from the page hint for the token store; editor page, then its hashed bundle, all low priority',async()=>{
+ const {warmTargets,warmEditor}=await import('./ui/shop-entry-client.mjs');
+ const token=st=>'gse1.'+Buffer.from(JSON.stringify({v:1,st})).toString('base64url')+'.sig';
+ const doc=content=>({querySelector:sel=>sel==='meta[name="gravuru-warm"]'&&content!==null?{getAttribute:()=>content}:null});
+ const hint=JSON.stringify({acryl:['/_merchant-acryl-editor.html','/_acryl-runtime/lazy/katalog-kern.json'],legacy:['/_merchant-editor.html','https://evil.example/x','//evil.example/x','/a/../b',5]});
+ assert.deepEqual(warmTargets(doc(hint),token('acryl')),['/_merchant-acryl-editor.html','/_acryl-runtime/lazy/katalog-kern.json']);
+ assert.deepEqual(warmTargets(doc(hint),token('legacy')),['/_merchant-editor.html'],'nur eigene absolute Pfade');
+ for(const bad of [token('fremd'),'gse1.%%%.x','',null])assert.deepEqual(warmTargets(doc(hint),bad),[]);
+ assert.deepEqual(warmTargets(doc(null),token('acryl')),[]);assert.deepEqual(warmTargets(doc('{'),token('acryl')),[]);
+ const calls=[];const html='<script type="module" src="/_acryl-bundle/editor-0123456789abcdef.mjs"></script><link href="/_acryl-bundle/editor-0123456789abcdef.mjs">';
+ const fetchImpl=async(url,options)=>{calls.push([url,options.priority,options.credentials]);if(url.endsWith('katalog-kern.json'))throw Error('offline');return {ok:true,text:async()=>html};};
+ warmEditor(['/_merchant-acryl-editor.html','/_acryl-runtime/lazy/katalog-kern.json'],{fetchImpl});
+ await new Promise(resolve=>setTimeout(resolve,10));
+ assert.deepEqual(calls,[['/_merchant-acryl-editor.html','low','same-origin'],['/_acryl-runtime/lazy/katalog-kern.json','low','same-origin'],['/_acryl-bundle/editor-0123456789abcdef.mjs','low','same-origin']],'Paket einmal, Fehler still');
+ const failed=[];warmEditor(['/_merchant-acryl-editor.html'],{fetchImpl:async url=>{failed.push(url);return {ok:false,text:async()=>html};}});
+ await new Promise(resolve=>setTimeout(resolve,10));assert.deepEqual(failed,['/_merchant-acryl-editor.html'],'Fehlerantwort: kein Paketabruf');
+});
+test('shop embed opens a connection to the editor host once, only on intent toward the own start link',async t=>{
+ const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-embed-intent-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
+ fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
+ globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
+ const {connectOnIntent}=await import(path.join(dir,'shop-embed.mjs'));
+ const listeners=[],head=[];const doc={addEventListener:(type,fn,options)=>listeners.push([type,options]),createElement:tag=>({tag}),head:{append:n=>head.push(n)}};
+ const handler=connectOnIntent(doc);
+ assert.deepEqual(listeners.map(([type])=>type),['pointerover','focusin','touchstart']);assert.ok(listeners.every(([,o])=>o.passive&&o.capture));
+ const on=sel=>({target:{closest:s=>s===sel?{}:null}});
+ handler(on('irgendwas'));handler({target:null});assert.equal(head.length,0,'fremde Elemente: nichts');
+ handler(on('[data-gravuru-personalisieren] a[data-gravuru-start]'));handler(on('[data-gravuru-personalisieren] a[data-gravuru-start]'));
+ assert.deepEqual(head,[{tag:'link',rel:'preconnect',href:'https://app.example'}],'genau ein Verbindungshinweis');
+});

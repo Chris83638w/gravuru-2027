@@ -10,9 +10,9 @@ export const MOBILE_QUERY='(max-width:'+MOBILE_MAX_WIDTH+'px)';
 export const PREVIEW_FRACTION=.4;
 export const PREVIEW_FRACTION_KEYBOARD=.25;
 export const PREVIEW_MIN_PX=120;
-// Kleine Bildschirme (z. B. Webansicht in einer App, < 760 px hoch): Platte etwas niedriger, damit der
-// Bearbeitungsbereich zwischen Platte und Schrittleiste bedienbar bleibt (Fehler 20.10.2026).
-export const PREVIEW_FRACTION_SMALL=.34;
+// Safari mit sichtbarer Browserleiste: auch auf kurzen Displays genügend Höhe
+// für 90 % Plattenbreite; der Bearbeitungsbereich bleibt separat scrollbar.
+export const PREVIEW_FRACTION_SMALL=.5;
 export const SMALL_VIEWPORT_PX=760;
 
 // Reihenfolge der geführten Schritte. `tabs` sind die Desktop-Reiter (`data-ux-tab`),

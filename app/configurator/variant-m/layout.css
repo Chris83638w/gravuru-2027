@@ -155,7 +155,8 @@
  :host([data-ux-layout]) .ux-preview .stage:not(.acryl-scene){padding:22px 5% 36px!important}
  :host([data-ux-layout]) .ux-preview .dimension-y{left:0!important}
  :host([data-ux-layout]) .ux-preview .dimension-y span{margin-left:0!important;font-size:10px!important}
- :host([data-ux-layout]) .ux-preview .dimension-x span{font-size:11px!important}
+ :host([data-ux-layout]) :is(.ux-preview,.c-large-preview) .dimension-x{bottom:-10px!important;height:6px!important}
+ :host([data-ux-layout]) :is(.ux-preview,.c-large-preview) .dimension-x span{font-size:11px!important;top:6px!important;line-height:12px!important}
  :host([data-ux-layout]) .ux-direct-edit.is-docked:not([hidden]){display:block!important}
 }
 
@@ -174,7 +175,13 @@
  :host([data-ux-layout]) .c-large-preview .ux-direct-edit.is-docked.is-fullscreen-dock{position:absolute!important;inset:auto!important;left:0!important;top:var(--ux-full-dock-top,auto)!important;width:100%!important;transform:none!important}
 }
 
-/* Keep the dark zoom controls below the fitted artwork at 100%. */
-:host([data-ux-layout]) .ux-preview .stage:not(.acryl-scene){padding-bottom:60px!important}
-:host([data-ux-layout]) .c-large-preview .stage:not(.acryl-scene){padding-bottom:60px!important}
-@media(max-width:767px){:host([data-ux-layout]) .c-large-preview .stage:not(.acryl-scene){padding-bottom:max(60px,var(--ux-mobile-dock-space,0px))!important}}
+/* Desktop: Maßstab und Zoom bekommen getrennten Platz. Auf dem Handy ist
+   die Zoomleiste bei 100 % verborgen; die Höhe gehört dort der Platte. */
+@media(min-width:768px){
+ :host([data-ux-layout]) .ux-preview .stage:not(.acryl-scene),
+ :host([data-ux-layout]) .c-large-preview .stage:not(.acryl-scene){padding-bottom:96px!important}
+}
+@media(max-width:767px){
+ :host([data-ux-layout]) .ux-preview .stage:not(.acryl-scene){padding-bottom:26px!important}
+ :host([data-ux-layout]) .c-large-preview .stage:not(.acryl-scene){padding-bottom:max(42px,var(--ux-mobile-dock-space,0px))!important}
+}

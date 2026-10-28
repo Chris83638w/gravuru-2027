@@ -1,3 +1,11 @@
+## 28.10.2026 · Claude · iPhone-Absicherung + leere Zusatztexte (Branch `dev/konfi-ios-sicherheit-20261028-claude`)
+
+- Chris (iPhone/Safari): „Jetzt personalisieren“ ausgegraut, Tippen tut nichts, Neuladen hilft nicht; „das muss allgemein funktionieren … der Kunde muss einen Hinweis erhalten“. Nachstellung mit WebKit (iPhone 13) und Chromium: Knopf grün, Fenster öffnet, Konfigurator lädt – Ursache auf seinem Gerät noch unbekannt (Screenshot erbeten; Verdacht ältere Theme-Vorschau/Designer-Knopf).
+- `3928857` Absicherung (`shop-embed.mjs`, `shop-entry-page.mjs`): Theme-Sperren am eigenen Knopf werden entfernt (auch nachträglich per Attribut-Beobachter), Klick in der Einfangphase vor Theme-Skripten, bei Fehler normaler Link; Fenster meldet bereit/Fehler, nach 15 s ohne Rückmeldung oder bei Fehler Hinweis „Weiter warten / Neu laden / Ohne Fenster öffnen“; Schließen-Knopf über dem Hinweis. WebKit: normal, Theme-Sperre, Modellfehler, hängender Server geprüft.
+- Chris (Desktop): hinzugefügte, nicht ausgefüllte Texte („Dein Text“) blockieren den Warenkorb. Live nachgestellt (Hinweis „Element ragt über die Gestaltungsfläche“). Fix: „Gestaltung fertig – weiter“ entfernt leere/„Dein Text“-Zusatztexte (`added-texts.mjs`, rückgängig machbar); mit lokalem Editor-Paket gegen den Live-Shop geprüft → Überblick mit „In den Warenkorb“.
+- Tests: client 16/16, shop-entry 23/23, added-texts 1/1, workflow 9/9; ui-event-regressions nur die 2 bekannten Fehlschläge.
+- Live erst mit Chris' Satz.
+
 ## 28.10.2026 · Claude · Live: Direktstart (`main` `8540800`)
 
 - Chris (07:49): „Ja, Du darfst den Direktstart des Konfigurators bereitstellen und die App neu starten.“ → Merge `8540800` (STATUS-Konflikt zusammengeführt, gezielte Tests grün), Plesk Pull + Bereitstellen, Ziel geprüft (`input.ticket`, `createStartTickets`/`failedUntil`, `startResourceUrls`), App neu gestartet (grüner Hinweis).

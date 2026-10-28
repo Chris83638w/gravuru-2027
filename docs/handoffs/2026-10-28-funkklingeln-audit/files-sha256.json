@@ -1,0 +1,47 @@
+{
+  "schema": "gravuru-audit-artifact-hashes/v1",
+  "files": {
+    "summary.json": {
+      "bytes": 2294,
+      "sha256": "2d6e1ef3686bfe9b357b95f0cc037caeb8957f1b3347aeeeb33bc38aa9f58c77"
+    },
+    "tests.json": {
+      "bytes": 395,
+      "sha256": "894f169de0cf2cfc18daeae9d0002937b397391c92e5d6d4b0d3f8d013e99df3"
+    },
+    "variant-deviations.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "products-126.csv": {
+      "bytes": 57748,
+      "sha256": "a8a7f52cd79602a5237721c2a3719ac6c902700839cc3e1588f72e7786d92c37"
+    },
+    "native-readonly-report.json": {
+      "bytes": 108485,
+      "sha256": "1e876717d566f3f38ab8240790071371c38ba43374900b1949aba11fa639f678"
+    },
+    "theme-evidence.json": {
+      "bytes": 39950,
+      "sha256": "da770c1dd3d19a1fa4527147a5ace280cdfaca560aafd0f939db81538cbd8d1b"
+    },
+    "pilot-one-product.json": {
+      "bytes": 79971,
+      "sha256": "234e746a69166f4587d94e516d340ceec42ff2d9a5b5d6a198a6e4ae87254262"
+    },
+    "variant-binding-plan-15120.csv.gz": {
+      "bytes": 296663,
+      "sha256": "47f6c352fc24253883a1515b840533e982a460ecd073abbbff63af39d87b846f"
+    },
+    "readonly-server-audit.mjs": {
+      "bytes": 7547,
+      "sha256": "0cab7b22ceebb8aa80b172873b5943f0797d8145dda72c6d0342403260887ec5"
+    }
+  },
+  "afterGzipExtraction": {
+    "variant-binding-plan-15120.csv": {
+      "bytes": 9830284,
+      "sha256": "b493daab4a5a7b8a6086fd2e2a983d39b700a604cca23aa2e56a6037dfb22b92"
+    }
+  }
+}

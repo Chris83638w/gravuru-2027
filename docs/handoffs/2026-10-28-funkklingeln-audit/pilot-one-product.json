@@ -1,0 +1,3024 @@
+{
+  "schema": "gravuru-doorbell-one-product-review/v1",
+  "mode": "review-only",
+  "applyAllowed": false,
+  "requires": "Chris explicit authorization; fresh evidence; one product only",
+  "shopDomain": "gravuru-design.myshopify.com",
+  "product": {
+    "modelKey": "aosu-pro-v8p1ax11-16x28",
+    "formatKey": "16x28",
+    "productId": "cfg_c3ee3fcf-bf87-42e3-af2a-98b680cdb576",
+    "productRevision": 1,
+    "shopifyProductId": "gid://shopify/Product/16124413084028",
+    "defaults": {
+      "format": "16x28",
+      "color": "schwarz",
+      "frame": "FK-RUNDUM",
+      "mounting": "K00",
+      "position": "standard",
+      "designId": "FK-RUNDUM"
+    },
+    "variants": [
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465408291196",
+        "sku": "FK-AV2A-16x28-0001",
+        "priceCents": 4999,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409634684",
+        "sku": "FK-AV2A-16x28-0002",
+        "priceCents": 5598,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409667452",
+        "sku": "FK-AV2A-16x28-0003",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409700220",
+        "sku": "FK-AV2A-16x28-0004",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409732988",
+        "sku": "FK-AV2A-16x28-0005",
+        "priceCents": 5368,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409765756",
+        "sku": "FK-AV2A-16x28-0006",
+        "priceCents": 4999,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409798524",
+        "sku": "FK-AV2A-16x28-0007",
+        "priceCents": 5598,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409831292",
+        "sku": "FK-AV2A-16x28-0008",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409864060",
+        "sku": "FK-AV2A-16x28-0009",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409896828",
+        "sku": "FK-AV2A-16x28-0010",
+        "priceCents": 5368,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409929596",
+        "sku": "FK-AV2A-16x28-0011",
+        "priceCents": 4999,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409962364",
+        "sku": "FK-AV2A-16x28-0012",
+        "priceCents": 5598,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465409995132",
+        "sku": "FK-AV2A-16x28-0013",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410027900",
+        "sku": "FK-AV2A-16x28-0014",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410060668",
+        "sku": "FK-AV2A-16x28-0015",
+        "priceCents": 5368,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410093436",
+        "sku": "FK-AV2A-16x28-0016",
+        "priceCents": 4999,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410126204",
+        "sku": "FK-AV2A-16x28-0017",
+        "priceCents": 5598,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410158972",
+        "sku": "FK-AV2A-16x28-0018",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410191740",
+        "sku": "FK-AV2A-16x28-0019",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410224508",
+        "sku": "FK-AV2A-16x28-0020",
+        "priceCents": 5368,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410257276",
+        "sku": "FK-AV2A-16x28-0021",
+        "priceCents": 4999,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410290044",
+        "sku": "FK-AV2A-16x28-0022",
+        "priceCents": 5598,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410322812",
+        "sku": "FK-AV2A-16x28-0023",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410355580",
+        "sku": "FK-AV2A-16x28-0024",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410388348",
+        "sku": "FK-AV2A-16x28-0025",
+        "priceCents": 5368,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410421116",
+        "sku": "FK-AV2A-16x28-0026",
+        "priceCents": 4999,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410453884",
+        "sku": "FK-AV2A-16x28-0027",
+        "priceCents": 5598,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410486652",
+        "sku": "FK-AV2A-16x28-0028",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410519420",
+        "sku": "FK-AV2A-16x28-0029",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410552188",
+        "sku": "FK-AV2A-16x28-0030",
+        "priceCents": 5368,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410584956",
+        "sku": "FK-AV2A-16x28-0031",
+        "priceCents": 4999,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410617724",
+        "sku": "FK-AV2A-16x28-0032",
+        "priceCents": 5598,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410650492",
+        "sku": "FK-AV2A-16x28-0033",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410683260",
+        "sku": "FK-AV2A-16x28-0034",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410716028",
+        "sku": "FK-AV2A-16x28-0035",
+        "priceCents": 5368,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410748796",
+        "sku": "FK-AV2A-16x28-0036",
+        "priceCents": 4999,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410781564",
+        "sku": "FK-AV2A-16x28-0037",
+        "priceCents": 5598,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410814332",
+        "sku": "FK-AV2A-16x28-0038",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410847100",
+        "sku": "FK-AV2A-16x28-0039",
+        "priceCents": 5498,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57465410879868",
+        "sku": "FK-AV2A-16x28-0040",
+        "priceCents": 5368,
+        "options": {
+          "format": "16x28",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752379260",
+        "sku": "FK-AV2A-24x20-1682",
+        "priceCents": 5999,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752412028",
+        "sku": "FK-AV2A-24x20-1683",
+        "priceCents": 6598,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752444796",
+        "sku": "FK-AV2A-24x20-1684",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752477564",
+        "sku": "FK-AV2A-24x20-1685",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752510332",
+        "sku": "FK-AV2A-24x20-1686",
+        "priceCents": 6368,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752543100",
+        "sku": "FK-AV2A-24x20-1687",
+        "priceCents": 5999,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752575868",
+        "sku": "FK-AV2A-24x20-1688",
+        "priceCents": 6598,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752608636",
+        "sku": "FK-AV2A-24x20-1689",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752641404",
+        "sku": "FK-AV2A-24x20-1690",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752674172",
+        "sku": "FK-AV2A-24x20-1691",
+        "priceCents": 6368,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752706940",
+        "sku": "FK-AV2A-24x20-1692",
+        "priceCents": 5999,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752739708",
+        "sku": "FK-AV2A-24x20-1693",
+        "priceCents": 6598,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752772476",
+        "sku": "FK-AV2A-24x20-1694",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752805244",
+        "sku": "FK-AV2A-24x20-1695",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752838012",
+        "sku": "FK-AV2A-24x20-1696",
+        "priceCents": 6368,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752870780",
+        "sku": "FK-AV2A-24x20-1697",
+        "priceCents": 5999,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752903548",
+        "sku": "FK-AV2A-24x20-1698",
+        "priceCents": 6598,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752936316",
+        "sku": "FK-AV2A-24x20-1699",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718752969084",
+        "sku": "FK-AV2A-24x20-1700",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753001852",
+        "sku": "FK-AV2A-24x20-1701",
+        "priceCents": 6368,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753034620",
+        "sku": "FK-AV2A-24x20-1702",
+        "priceCents": 5999,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753067388",
+        "sku": "FK-AV2A-24x20-1703",
+        "priceCents": 6598,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753100156",
+        "sku": "FK-AV2A-24x20-1704",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753132924",
+        "sku": "FK-AV2A-24x20-1705",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753165692",
+        "sku": "FK-AV2A-24x20-1706",
+        "priceCents": 6368,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753198460",
+        "sku": "FK-AV2A-24x20-1707",
+        "priceCents": 5999,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753231228",
+        "sku": "FK-AV2A-24x20-1708",
+        "priceCents": 6598,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753263996",
+        "sku": "FK-AV2A-24x20-1709",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753296764",
+        "sku": "FK-AV2A-24x20-1710",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753329532",
+        "sku": "FK-AV2A-24x20-1711",
+        "priceCents": 6368,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753362300",
+        "sku": "FK-AV2A-24x20-1712",
+        "priceCents": 5999,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753395068",
+        "sku": "FK-AV2A-24x20-1713",
+        "priceCents": 6598,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753427836",
+        "sku": "FK-AV2A-24x20-1714",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753460604",
+        "sku": "FK-AV2A-24x20-1715",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753493372",
+        "sku": "FK-AV2A-24x20-1716",
+        "priceCents": 6368,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753526140",
+        "sku": "FK-AV2A-24x20-1717",
+        "priceCents": 5999,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753558908",
+        "sku": "FK-AV2A-24x20-1718",
+        "priceCents": 6598,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753591676",
+        "sku": "FK-AV2A-24x20-1719",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753624444",
+        "sku": "FK-AV2A-24x20-1720",
+        "priceCents": 6498,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753657212",
+        "sku": "FK-AV2A-24x20-1721",
+        "priceCents": 6368,
+        "options": {
+          "format": "24x20",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "24 × 20 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753689980",
+        "sku": "FK-AV2A-35x18-1722",
+        "priceCents": 6999,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753722748",
+        "sku": "FK-AV2A-35x18-1723",
+        "priceCents": 7598,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753755516",
+        "sku": "FK-AV2A-35x18-1724",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753788284",
+        "sku": "FK-AV2A-35x18-1725",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753821052",
+        "sku": "FK-AV2A-35x18-1726",
+        "priceCents": 7368,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753853820",
+        "sku": "FK-AV2A-35x18-1727",
+        "priceCents": 6999,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753886588",
+        "sku": "FK-AV2A-35x18-1728",
+        "priceCents": 7598,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753919356",
+        "sku": "FK-AV2A-35x18-1729",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753952124",
+        "sku": "FK-AV2A-35x18-1730",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718753984892",
+        "sku": "FK-AV2A-35x18-1731",
+        "priceCents": 7368,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754017660",
+        "sku": "FK-AV2A-35x18-1732",
+        "priceCents": 6999,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754050428",
+        "sku": "FK-AV2A-35x18-1733",
+        "priceCents": 7598,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754083196",
+        "sku": "FK-AV2A-35x18-1734",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754115964",
+        "sku": "FK-AV2A-35x18-1735",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754148732",
+        "sku": "FK-AV2A-35x18-1736",
+        "priceCents": 7368,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754181500",
+        "sku": "FK-AV2A-35x18-1737",
+        "priceCents": 6999,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754214268",
+        "sku": "FK-AV2A-35x18-1738",
+        "priceCents": 7598,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754247036",
+        "sku": "FK-AV2A-35x18-1739",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754279804",
+        "sku": "FK-AV2A-35x18-1740",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754312572",
+        "sku": "FK-AV2A-35x18-1741",
+        "priceCents": 7368,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "schwarz",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Schwarz"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754345340",
+        "sku": "FK-AV2A-35x18-1742",
+        "priceCents": 6999,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754378108",
+        "sku": "FK-AV2A-35x18-1743",
+        "priceCents": 7598,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754410876",
+        "sku": "FK-AV2A-35x18-1744",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754443644",
+        "sku": "FK-AV2A-35x18-1745",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754476412",
+        "sku": "FK-AV2A-35x18-1746",
+        "priceCents": 7368,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-RUNDUM",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ganzer Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754509180",
+        "sku": "FK-AV2A-35x18-1747",
+        "priceCents": 6999,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754541948",
+        "sku": "FK-AV2A-35x18-1748",
+        "priceCents": 7598,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754574716",
+        "sku": "FK-AV2A-35x18-1749",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754607484",
+        "sku": "FK-AV2A-35x18-1750",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754640252",
+        "sku": "FK-AV2A-35x18-1751",
+        "priceCents": 7368,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-VERDECKT",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Ohne sichtbaren Rahmen"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754673020",
+        "sku": "FK-AV2A-35x18-1752",
+        "priceCents": 6999,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754705788",
+        "sku": "FK-AV2A-35x18-1753",
+        "priceCents": 7598,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754738556",
+        "sku": "FK-AV2A-35x18-1754",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754771324",
+        "sku": "FK-AV2A-35x18-1755",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754804092",
+        "sku": "FK-AV2A-35x18-1756",
+        "priceCents": 7368,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-SEITLICH",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen links & rechts"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754836860",
+        "sku": "FK-AV2A-35x18-1757",
+        "priceCents": 6999,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "K00"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Keine Befestigung"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754869628",
+        "sku": "FK-AV2A-35x18-1758",
+        "priceCents": 7598,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "GWS"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Verdeckte Bolzen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754902396",
+        "sku": "FK-AV2A-35x18-1759",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "KRA"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754935164",
+        "sku": "FK-AV2A-35x18-1760",
+        "priceCents": 7498,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "SIL"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Mit Silikon"
+          }
+        ]
+      },
+      {
+        "shopifyVariantId": "gid://shopify/ProductVariant/57718754967932",
+        "sku": "FK-AV2A-35x18-1761",
+        "priceCents": 7368,
+        "options": {
+          "format": "35x18",
+          "frame": "FK-OBENUNTEN",
+          "color": "anthrazit",
+          "mounting": "B04S"
+        },
+        "selectedOptions": [
+          {
+            "name": "Acrylfarbe",
+            "value": "Anthrazit"
+          },
+          {
+            "name": "Edelstahlrahmen",
+            "value": "35 × 18 cm · Rahmen oben & unten"
+          },
+          {
+            "name": "Befestigung",
+            "value": "Bohrlöcher mit Schrauben"
+          }
+        ]
+      }
+    ]
+  }
+}

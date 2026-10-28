@@ -1,3 +1,13 @@
+## 28.10.2026 · Codex/Astra · Funkklingeln: vollständiger lesender Bindungsprobelauf
+
+- Aufgabenbranch `dev/funkklingeln-anbindung-20261028-astra`, Basis `f200509`; Katalog `caf50a6`. [Übergabe und Belege](docs/handoffs/2026-10-28-funkklingeln-anbindung-audit.md).
+- Frischer vollständiger Shopabzug: 1.324 Produkte/26.655 Varianten. Funkklingeln: 126 ACTIVE Hauptprodukte, 15.120 Varianten; 42 Bestandsprodukte + 84 zuvor neu angelegte. Gegen den 126er Katalogplan fehlen 0.
+- Alle 15.120 Varianten und gespeicherten Bindungen stimmen bei IDs, Revision, SKU, Centpreis, Optionen und Dokument-SHA. 126/126 Importdokumente und Fingerprints unverändert, alle Revision 1. 17/17 gezielte bestehende Tests grün.
+- Offen: 42 veröffentlichte Produkte ohne natives Metafeld; 84 korrekt markierte Produkte unveröffentlicht. Globaler Einstieg bereits im MAIN-Footer vorhanden. Variantenwahl wird vom globalen Modul noch nicht ausgeblendet; Funkklingel-Vorlage gezielt bereinigen, keine alte gesamte Theme-Kopie publizieren.
+- Eigene App: ORDERS_PAID/UPDATED/CANCELLED vollständig gelesen, alle drei korrekt auf app-2027, jeweils keep. Keine Webhook-Mutation oder Testzustellung.
+- Nächster Schritt laut aktuellem Nutzerauftrag erst nach Chris’ ausdrücklichem Satz: **genau 1** AOSU-Pilotprodukt/120 Varianten, dann Warenkorb-Test mit Screenshot, erst danach übrige 125. Der vorhandene 3-Produkt-Pilot darf nicht unverändert angewandt werden.
+- Heute keine Live-Schreiboperation, kein Deployment/Neustart, keine Bestellung. Historische Freigaben vom 27.10. sind keine neue Freigabe.
+
 ## 28.10.2026 · Claude · Live: Direktstart (`main` `8540800`)
 
 - Chris (07:49): „Ja, Du darfst den Direktstart des Konfigurators bereitstellen und die App neu starten.“ → Merge `8540800` (STATUS-Konflikt zusammengeführt, gezielte Tests grün), Plesk Pull + Bereitstellen, Ziel geprüft (`input.ticket`, `createStartTickets`/`failedUntil`, `startResourceUrls`), App neu gestartet (grüner Hinweis).

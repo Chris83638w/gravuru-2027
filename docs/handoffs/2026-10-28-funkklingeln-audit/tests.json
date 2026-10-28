@@ -1,0 +1,11 @@
+{
+  "commit": "f200509ea106445f4dc86238ac99404b9d0cbca2",
+  "nodeVersion": "v24.19.0",
+  "sourceFilesByteVerified": 116,
+  "command": "node --test scripts/doorbell-shop-bind.test.mjs scripts/doorbell-pilot-bind.test.mjs scripts/doorbell-webhooks.test.mjs",
+  "tests": 17,
+  "passed": 17,
+  "failed": 0,
+  "durationMs": 10495.9478,
+  "scope": "Synthetic regression tests; not a live cart test"
+}

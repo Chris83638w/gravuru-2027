@@ -1,0 +1,71 @@
+{
+  "schema": "gravuru-doorbell-audit-summary/v1",
+  "generatedAt": "2026-10-28T11:59:27.835Z",
+  "mode": "dry-run",
+  "shopifyWrites": 0,
+  "bindingWrites": 0,
+  "publicationWrites": 0,
+  "webhookWrites": 0,
+  "codeCommit": "f200509ea106445f4dc86238ac99404b9d0cbca2",
+  "catalogCommit": "caf50a6151cb0251813e341193487b0d9c3a2be3",
+  "shopReadStartedAt": "2026-10-28T11:15:21.061Z",
+  "shopReadFinishedAt": "2026-10-28T11:30:03.107Z",
+  "nativeReadStartedAt": "2026-10-28T11:47:53.124Z",
+  "nativeReadFinishedAt": "2026-10-28T11:53:12.893Z",
+  "shopProducts": 1324,
+  "shopVariants": 26655,
+  "catalogModels": 42,
+  "products": 126,
+  "variants": 15120,
+  "existing": 42,
+  "created": 84,
+  "active": 126,
+  "published": 42,
+  "unpublished": 84,
+  "missingCatalogProducts": [],
+  "matchingVariants": 15120,
+  "mismatchedVariants": 0,
+  "missingMarkers": 42,
+  "correctMarkers": 84,
+  "wrongMarkers": 0,
+  "defaultVariantMismatches": 0,
+  "importDocumentMatches": 126,
+  "persistedBindingsMatching": 15120,
+  "nativeIssueProducts": 0,
+  "exportCheck": {
+    "products": 126,
+    "variants": 15120,
+    "exportedAt": "2026-10-28T11:15:21.061Z"
+  },
+  "webhooks": {
+    "schema": "gravuru-doorbell-webhooks/v1",
+    "shopDomain": "gravuru-design.myshopify.com",
+    "appId": "gid://shopify/App/423276544001",
+    "apiVersion": "2026-07",
+    "mode": "dry-run",
+    "existingTestSubscriptionId": "gid://shopify/WebhookSubscription/2149402706300",
+    "entries": [
+      {
+        "topic": "ORDERS_PAID",
+        "uri": "https://app-2027.gravuru-designwerkstatt.de/webhooks/shopify/orders-paid",
+        "action": "keep",
+        "id": "gid://shopify/WebhookSubscription/2157499449724"
+      },
+      {
+        "topic": "ORDERS_UPDATED",
+        "uri": "https://app-2027.gravuru-designwerkstatt.de/webhooks/shopify/doorbell-orders-status",
+        "action": "keep",
+        "id": "gid://shopify/WebhookSubscription/2157499515260"
+      },
+      {
+        "topic": "ORDERS_CANCELLED",
+        "uri": "https://app-2027.gravuru-designwerkstatt.de/webhooks/shopify/doorbell-orders-status",
+        "action": "keep",
+        "id": "gid://shopify/WebhookSubscription/2157499580796"
+      }
+    ],
+    "created": [],
+    "confirmed": false
+  },
+  "themeId": "gid://shopify/OnlineStoreTheme/185833718140"
+}

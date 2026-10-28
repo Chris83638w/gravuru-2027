@@ -1,0 +1,1176 @@
+{
+  "themeId": "gid://shopify/OnlineStoreTheme/185833718140",
+  "name": "gravuru-shopify-theme/production",
+  "files": [
+    {
+      "path": "sections/footer-group.json",
+      "checksumMd5": "b77cf71573dbcebf8d66d0c6d609cf08"
+    },
+    {
+      "path": "templates/product.funkklingeln-2027.json",
+      "checksumMd5": "a48cafbf0684dccfdf1fba2e0358742e"
+    },
+    {
+      "path": "templates/product.json",
+      "checksumMd5": "6dfa441f058120a62936bf9c231408b4"
+    }
+  ],
+  "entry": {
+    "sectionId": "custom_liquid_xCyNJV",
+    "metafield": "custom.customization_id",
+    "dataElement": "gravuru-konfi",
+    "module": "/apps/konfigurator/shop-embed.mjs"
+  },
+  "inventory": [
+    {
+      "id": "gid://shopify/Product/16124413084028",
+      "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126380212604",
+      "handle": "klingelschild-aosu-ultra-v8s1ax15-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126380573052",
+      "handle": "klingelschild-aqara-g4-svd-c03-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126380704124",
+      "handle": "klingelschild-arlo-akku-1-gen-avd2001-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126380867964",
+      "handle": "klingelschild-arlo-akku-2-gen-avd4001-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126381031804",
+      "handle": "klingelschild-arlo-kabel-avd1001-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126381130108",
+      "handle": "klingelschild-blink-1-gen-bdm01200u-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126381293948",
+      "handle": "klingelschild-blink-2-gen-bdm01300u-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126381490556",
+      "handle": "klingelschild-blink-kabel-2k-bdm01500u-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126381556092",
+      "handle": "klingelschild-boifun-bell-j1-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126381687164",
+      "handle": "klingelschild-cococam-doorbell-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126381818236",
+      "handle": "klingelschild-ctronics-ctsc-j6-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126382539132",
+      "handle": "klingelschild-eufy-1080p-t8220-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126382702972",
+      "handle": "klingelschild-eufy-1080p-t8222-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126382866812",
+      "handle": "klingelschild-eufy-2k-hd-t8210-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126383030652",
+      "handle": "klingelschild-eufy-c30-t8224-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126383194492",
+      "handle": "klingelschild-eufy-c31-t8223-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126383260028",
+      "handle": "klingelschild-eufy-dual-e340-t8214-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126383325564",
+      "handle": "klingelschild-eufy-hdr-2k-t8200-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126383423868",
+      "handle": "klingelschild-ezviz-db1-cs-db1c-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126383522172",
+      "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126383620476",
+      "handle": "klingelschild-google-nest-a0077-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126385160572",
+      "handle": "klingelschild-google-nest-akku-22lcur-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126385258876",
+      "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126385324412",
+      "handle": "klingelschild-philips-welcome-eye-531034-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126385389948",
+      "handle": "klingelschild-reolink-akku-2ayhe-2205b-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126385488252",
+      "handle": "klingelschild-reolink-poe-d340b-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126385586556",
+      "handle": "klingelschild-ring-1-5um5e5-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126386045308",
+      "handle": "klingelschild-ring-2-8vr1s7-0eu0-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126386405756",
+      "handle": "klingelschild-ring-3-5at3s9-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126386471292",
+      "handle": "klingelschild-ring-akku-pro-5f79e9-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126386569596",
+      "handle": "klingelschild-ring-battery-5f97f2-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126386897276",
+      "handle": "klingelschild-ring-plus-1-gen-5f77e9-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126386962812",
+      "handle": "klingelschild-ring-plus-2-gen-5dfya3-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126387028348",
+      "handle": "klingelschild-ring-pro2-5at2s2-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126387126652",
+      "handle": "klingelschild-ring-wired-5at3t5-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126387257724",
+      "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126387323260",
+      "handle": "klingelschild-tapo-d235-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126387388796",
+      "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126387454332",
+      "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126387585404",
+      "handle": "klingelschild-winees-m6p20ac-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16126387683708",
+      "handle": "klingelschild-wp-cardea-2-personalisiert",
+      "status": "ACTIVE",
+      "published": true,
+      "template": null,
+      "customizationId": null,
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182701621628",
+      "handle": "klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_d52f96e0-17e4-42b0-b496-74eaa24eaba5",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182702211452",
+      "handle": "klingelschild-aosu-pro-v8p1ax11-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_4dc5181c-d201-4802-8a4b-9500049ed6e5",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182861726076",
+      "handle": "klingelschild-aosu-ultra-v8s1ax15-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_1df891a8-61e8-4b6d-a830-a4431970bd3c",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182866346364",
+      "handle": "klingelschild-aosu-ultra-v8s1ax15-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_be8a9406-719d-4640-be12-f2ccf8b3653d",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182866444668",
+      "handle": "klingelschild-aqara-g4-svd-c03-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_cbb8b552-95b0-4f4d-af71-baf207435bf7",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182866542972",
+      "handle": "klingelschild-aqara-g4-svd-c03-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_864d49d6-d2de-4c3c-8ba3-2d378da42f90",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182866608508",
+      "handle": "klingelschild-arlo-akku-1-gen-avd2001-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_8ba1fd5f-a22d-4cbc-afbf-02032ca49332",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182866674044",
+      "handle": "klingelschild-arlo-akku-1-gen-avd2001-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_8a524ac8-29bb-448d-926e-f96ee723f86f",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182866772348",
+      "handle": "klingelschild-arlo-akku-2-gen-avd4001-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_bb02e8bb-0c15-4a09-841f-0fe5cc02d3f5",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182866936188",
+      "handle": "klingelschild-arlo-akku-2-gen-avd4001-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_a14d19dc-0790-48f4-b7f3-fa6ddf0ab366",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182867067260",
+      "handle": "klingelschild-arlo-kabel-avd1001-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_98afecac-8c6b-41b4-9231-c0963a18df3e",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182867231100",
+      "handle": "klingelschild-arlo-kabel-avd1001-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_e8e52312-746c-48f9-8efc-d82934fc2dd5",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182867329404",
+      "handle": "klingelschild-blink-1-gen-bdm01200u-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_f0279516-3562-4214-9bb1-6a5d29718b1d",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182867427708",
+      "handle": "klingelschild-blink-1-gen-bdm01200u-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_f32a701d-59c2-4d16-81b7-5d98c1124624",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182867558780",
+      "handle": "klingelschild-blink-2-gen-bdm01300u-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_a3806b1b-f013-4b57-9ff9-2269c98f8061",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182867722620",
+      "handle": "klingelschild-blink-2-gen-bdm01300u-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_f1312bc4-b8b2-41ec-841a-57e6862c5e7e",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182867820924",
+      "handle": "klingelschild-blink-kabel-2k-bdm01500u-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_5eb3cb00-8e51-4fd7-b43f-8f805c31bb54",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182868017532",
+      "handle": "klingelschild-blink-kabel-2k-bdm01500u-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_0e842ec2-41af-4ac3-9ca1-0265eaa75b71",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182868115836",
+      "handle": "klingelschild-boifun-bell-j1-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_bdf9d375-b42e-41d5-bc02-db0d55254015",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182868246908",
+      "handle": "klingelschild-boifun-bell-j1-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_b7025d97-d444-4ea1-a59e-b3be30a83402",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182868410748",
+      "handle": "klingelschild-cococam-doorbell-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_d96aa280-cbc7-4226-a210-e9df460c4b5f",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182868574588",
+      "handle": "klingelschild-cococam-doorbell-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_92968a74-c954-4e12-9cc9-1d208c78a25c",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182868705660",
+      "handle": "klingelschild-ctronics-ctsc-j6-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_7243cdea-9f3b-49be-85f0-f0f8dbb727a1",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182868836732",
+      "handle": "klingelschild-ctronics-ctsc-j6-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_0d41efed-27f6-4e7c-a58a-9a6b8df6c917",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182868902268",
+      "handle": "klingelschild-eufy-1080p-t8220-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_93b8ce67-3fb1-4cd1-b8b0-5fe048637c0f",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869033340",
+      "handle": "klingelschild-eufy-1080p-t8220-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_4a3a804a-db95-4020-9ca4-2cb0572a296f",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869131644",
+      "handle": "klingelschild-eufy-1080p-t8222-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_ea8512b4-04db-4cc9-a16f-7eb7e350d103",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869262716",
+      "handle": "klingelschild-eufy-1080p-t8222-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_185d3eb2-8016-4c19-87d0-7d2a2829392e",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869361020",
+      "handle": "klingelschild-eufy-2k-hd-t8210-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_5867e1f3-b143-4c2c-89ce-8b5294414c9d",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869492092",
+      "handle": "klingelschild-eufy-2k-hd-t8210-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_84381729-e448-4b30-a2c5-f3f6e59227d0",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869590396",
+      "handle": "klingelschild-eufy-c30-t8224-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_113ec6e7-9fb5-4d73-b237-16136cbaf1b3",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869688700",
+      "handle": "klingelschild-eufy-c30-t8224-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_aa38b863-7117-4e64-bae5-4eff0b875359",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869819772",
+      "handle": "klingelschild-eufy-c31-t8223-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_9b40606f-32c0-4934-b60c-a945bfe70482",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182869950844",
+      "handle": "klingelschild-eufy-c31-t8223-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_01ff32d8-f9b5-4a94-a969-55d550e6a060",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870049148",
+      "handle": "klingelschild-eufy-dual-e340-t8214-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_2fb99cc6-3511-4209-849b-f04c242ec0e4",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870212988",
+      "handle": "klingelschild-eufy-dual-e340-t8214-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_42d4b283-7920-4274-86be-43bf5a9ff6cc",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870311292",
+      "handle": "klingelschild-eufy-hdr-2k-t8200-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_d4fa2e5a-3b4d-485a-aead-a61c1b1375be",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870376828",
+      "handle": "klingelschild-eufy-hdr-2k-t8200-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_3ff9e140-ba67-4530-8521-3ac481fa24db",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870442364",
+      "handle": "klingelschild-ezviz-db1-cs-db1c-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_703bfa31-8fac-4f5f-bc92-968a12692571",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870638972",
+      "handle": "klingelschild-ezviz-db1-cs-db1c-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_083c6245-2de4-4679-b339-d7f7af44856e",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870770044",
+      "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_250136d9-5944-42ac-b31a-26897c3987b2",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870901116",
+      "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_43485adb-d770-428b-ab5c-0f16919480ba",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182870999420",
+      "handle": "klingelschild-google-nest-a0077-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_25606d7b-7bd6-4558-ae3a-0e93807873ae",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871097724",
+      "handle": "klingelschild-google-nest-a0077-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_763beaf6-0de4-4425-bcf3-95d868e0c79f",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871228796",
+      "handle": "klingelschild-google-nest-akku-22lcur-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_e279567e-c8b8-4727-a225-18cd2a4b141a",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871327100",
+      "handle": "klingelschild-google-nest-akku-22lcur-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_6c979f86-df42-490d-8aec-5d8ab48f5774",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871425404",
+      "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_e1a48474-0363-4286-aeb7-bbbf13b85604",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871490940",
+      "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_9aa5ee6a-6781-4b0f-81a7-06835b5e1dfc",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871556476",
+      "handle": "klingelschild-philips-welcome-eye-531034-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_79922eb1-693a-4e23-8a61-77c54ab1e81e",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871687548",
+      "handle": "klingelschild-philips-welcome-eye-531034-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_c69729d4-00ca-4b8a-8f78-4a4fbe0125de",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871818620",
+      "handle": "klingelschild-reolink-akku-2ayhe-2205b-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_6f492a9c-21f7-437a-ab94-da6957154e02",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871884156",
+      "handle": "klingelschild-reolink-akku-2ayhe-2205b-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_d51c7b68-f97e-4fbb-9068-739fe0733b40",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182871982460",
+      "handle": "klingelschild-reolink-poe-d340b-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_d5ab4c00-c9c4-40a5-bf65-3a43d95dc594",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872080764",
+      "handle": "klingelschild-reolink-poe-d340b-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_53df7a49-e1ab-4119-a756-7f693dbc70ae",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872179068",
+      "handle": "klingelschild-ring-1-5um5e5-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_b15cd9fe-9fa2-4dac-85d7-fbf5a531cce8",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872277372",
+      "handle": "klingelschild-ring-1-5um5e5-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_4ff0e799-493f-4371-960d-e8d7ed323282",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872375676",
+      "handle": "klingelschild-ring-2-8vr1s7-0eu0-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_38afa130-a34a-4c4d-89f5-6202129b4101",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872473980",
+      "handle": "klingelschild-ring-2-8vr1s7-0eu0-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_f4666874-e4e5-46ff-b99c-10395b4791c6",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872605052",
+      "handle": "klingelschild-ring-3-5at3s9-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_ce8de0a1-3b8e-4ac4-8f4f-65e0a2751dad",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872670588",
+      "handle": "klingelschild-ring-3-5at3s9-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_7e1529e2-2c6d-4d0a-9662-41a553b15a8d",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872768892",
+      "handle": "klingelschild-ring-akku-pro-5f79e9-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_9f2f4525-8d6d-4712-9d68-9a16dc35cc1e",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872899964",
+      "handle": "klingelschild-ring-akku-pro-5f79e9-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_bb30e76a-0449-452e-872d-5b532c594d44",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182872998268",
+      "handle": "klingelschild-ring-battery-5f97f2-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_e08f1eda-f872-43fe-b0bb-be9d371d4fd0",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182873129340",
+      "handle": "klingelschild-ring-battery-5f97f2-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_9816e793-9545-4ce6-918d-f612522b7c8e",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182873260412",
+      "handle": "klingelschild-ring-plus-1-gen-5f77e9-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_e6cf12e7-3aa9-45bf-80b3-613cb7883467",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182873358716",
+      "handle": "klingelschild-ring-plus-1-gen-5f77e9-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_5b77f065-d0ae-490d-8c77-7c8330c06431",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182873457020",
+      "handle": "klingelschild-ring-plus-2-gen-5dfya3-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_5afedd9b-aeea-4ca0-8516-ab992b7f8465",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182873522556",
+      "handle": "klingelschild-ring-plus-2-gen-5dfya3-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_f2d5ed63-c816-445b-92f6-e6ef9599eb07",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182873686396",
+      "handle": "klingelschild-ring-pro2-5at2s2-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_b9b38959-0191-441c-9478-d8d5bb3ab400",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182873751932",
+      "handle": "klingelschild-ring-pro2-5at2s2-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_a46510c3-2abb-47d7-b488-074fd145d7f9",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182873850236",
+      "handle": "klingelschild-ring-wired-5at3t5-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_1a40ec6c-5f8d-4ab1-84f0-3cd7c64c7a55",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874014076",
+      "handle": "klingelschild-ring-wired-5at3t5-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_4ef12caa-3da8-457f-a697-36a2ebb5668e",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874079612",
+      "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_9ee5f874-15e2-4b3f-ab18-6d32e2f7709b",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874210684",
+      "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_e24c4147-0416-4e08-9351-94e28f4c205c",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874276220",
+      "handle": "klingelschild-tapo-d235-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_d6103580-972c-440c-bb66-58497176bbf6",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874374524",
+      "handle": "klingelschild-tapo-d235-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_734d8109-9c46-4712-ac67-148c9e7a4145",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874505596",
+      "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_317cb0ca-92d5-4bcb-8653-8e83593509bb",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874603900",
+      "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_942f5233-326f-46ea-b129-1a5d1c4ccef5",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874734972",
+      "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_836eb42b-0c67-403b-8784-6c4ea15f7139",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874866044",
+      "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_48382dbd-8097-4d43-a8e6-bfdcb7a3949a",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182874997116",
+      "handle": "klingelschild-winees-m6p20ac-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_51058636-4f89-430d-9441-0ddc33c03ae2",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182875062652",
+      "handle": "klingelschild-winees-m6p20ac-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_59b524cb-5600-46d8-b181-5be3dd10e23a",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182875193724",
+      "handle": "klingelschild-wp-cardea-2-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_7e8b31c1-b95f-49bb-8a3d-fd44a158db98",
+      "variants": 120
+    },
+    {
+      "id": "gid://shopify/Product/16182875390332",
+      "handle": "klingelschild-wp-cardea-2-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "published": false,
+      "template": "funkklingeln-2027",
+      "customizationId": "cfg_70343415-6c58-49af-881d-02831f5979dc",
+      "variants": 120
+    }
+  ],
+  "browserChecks": [
+    {
+      "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+      "price": "49.99",
+      "entryVisible": false,
+      "nativeVariantPickerVisible": true,
+      "nativeCartButtonVisible": true
+    },
+    {
+      "handle": "tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8",
+      "price": "19.99",
+      "entryVisible": true,
+      "nativeCartButtonVisible": false,
+      "customizationId": "4100000"
+    }
+  ]
+}

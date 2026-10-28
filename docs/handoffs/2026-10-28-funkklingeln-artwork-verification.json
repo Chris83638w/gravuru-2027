@@ -1,0 +1,517 @@
+{
+  "at": "2026-10-28T13:21:55.272Z",
+  "liveBundle": "94b46d444695ff8a",
+  "pilotImportedArtwork": 18,
+  "invalidInActualLiveBundle": 18,
+  "invalidWithCorrection": 0,
+  "localImportedDocuments": 126,
+  "artworkReferences": 2268,
+  "invalidArtworkReferences": 0,
+  "inputsUnchanged": true,
+  "inputs": [
+    {
+      "file": "aosu-pro-v8p1ax11-16x28--16x28.json",
+      "sha256": "43259e5a601c9b0874be9f55f3559802fd10fd3d72d0dd27757f959d6d1064dd"
+    },
+    {
+      "file": "aosu-pro-v8p1ax11-16x28--24x20.json",
+      "sha256": "8fbd5346b45c7e2f3f7023e7e8092a7c664280e8a8e4f28fad49e8ccfb75c811"
+    },
+    {
+      "file": "aosu-pro-v8p1ax11-16x28--35x18.json",
+      "sha256": "435cb8b03deff096b1fb19a6bc8b8b1de9375551756f9c953cf08591a6cf43f6"
+    },
+    {
+      "file": "aosu-ultra-v8s1ax15-16x28--16x28.json",
+      "sha256": "0bef5a67b12faa9d3104d6d09e40a28652114769bac6df6d0ae325ae2f36f1c8"
+    },
+    {
+      "file": "aosu-ultra-v8s1ax15-16x28--24x20.json",
+      "sha256": "0def8a2305e3fd6a78d8d09ad5c4b1f280a58ad0a476f2e94faff0af45fa1fb5"
+    },
+    {
+      "file": "aosu-ultra-v8s1ax15-16x28--35x18.json",
+      "sha256": "5b6b28492487204d91eff77b086353103d5516af4875bb3fe2b48f0390c7bd10"
+    },
+    {
+      "file": "aqara-g4-svd-c03-16x28--16x28.json",
+      "sha256": "8219bd5486118d02580079b8d59ba33a00075aad70c04d401ac093a64bd808ba"
+    },
+    {
+      "file": "aqara-g4-svd-c03-16x28--24x20.json",
+      "sha256": "620ff41b1adee425dd04360af30906897a614eca214b0fcda3cbc875b3863fec"
+    },
+    {
+      "file": "aqara-g4-svd-c03-16x28--35x18.json",
+      "sha256": "8bd9fc2aed95be73b3418363952c3ac5840f8dcff57c7ce9b1a1b4f48fceba8e"
+    },
+    {
+      "file": "arlo-akku-1-gen-avd2001-16x28--16x28.json",
+      "sha256": "70f70de2efe8d014306ed04743614dfc9cf83d9680995c9b572292ad145dc8b8"
+    },
+    {
+      "file": "arlo-akku-1-gen-avd2001-16x28--24x20.json",
+      "sha256": "0898f68eb500d769a09716b228cc3804639cbdaf1d46b674132ca414dbd97ed9"
+    },
+    {
+      "file": "arlo-akku-1-gen-avd2001-16x28--35x18.json",
+      "sha256": "7cb9e3004d52cd49619ba9ea87a171f6ca52bf1514382eccfc6532fbe21785e7"
+    },
+    {
+      "file": "arlo-akku-2-gen-avd4001-16x28--16x28.json",
+      "sha256": "fe2a405a0dd359907174034dde4e3d75432d0e2f25c45e9e9df9b79f61dfae1d"
+    },
+    {
+      "file": "arlo-akku-2-gen-avd4001-16x28--24x20.json",
+      "sha256": "75aa4a93ce61cb13b7268515f626f74d5cecb5434faaea886e89c6815a2be6f4"
+    },
+    {
+      "file": "arlo-akku-2-gen-avd4001-16x28--35x18.json",
+      "sha256": "cd4ab77f5740005a222c45c3d1c958067ee91f452c6c263663adef9bc1d9d04d"
+    },
+    {
+      "file": "arlo-kabel-avd1001-16x28--16x28.json",
+      "sha256": "da0c734d697ae40334ba21c8213abef610e02424f06ffa5a96a45d9e59f1d856"
+    },
+    {
+      "file": "arlo-kabel-avd1001-16x28--24x20.json",
+      "sha256": "21f8e9da3dcb1af6c6906479220110cbafe617dec653a9565812e12ea9f86470"
+    },
+    {
+      "file": "arlo-kabel-avd1001-16x28--35x18.json",
+      "sha256": "7eea79f463ae5cba8031e9d021244e2dca3241c36065b82fb2cd3de5a9dea3cd"
+    },
+    {
+      "file": "blink-1-gen-bdm01200u-16x28--16x28.json",
+      "sha256": "f4eb2f04788b4cece1c686003325c3f73985eb81f5db2bd2063debd34a99f6bb"
+    },
+    {
+      "file": "blink-1-gen-bdm01200u-16x28--24x20.json",
+      "sha256": "48d9be40e9d726a8ed4ccedeecf9ed35f0bfad861f87ce27c8fa6d3480487c15"
+    },
+    {
+      "file": "blink-1-gen-bdm01200u-16x28--35x18.json",
+      "sha256": "a7414ca7786663080b89ce2e29d910fec141887a2db42caec50d57c79d658911"
+    },
+    {
+      "file": "blink-2-gen-bdm01300u-16x28--16x28.json",
+      "sha256": "46c2d40f9d597f0ddf25ffbc0cac277c5355471cf62c965f19bf4d2658bbe925"
+    },
+    {
+      "file": "blink-2-gen-bdm01300u-16x28--24x20.json",
+      "sha256": "8a7c014e68c2b7d62f81be4a7888fcb5b96afa17024ac43fc56ff3681c9a7876"
+    },
+    {
+      "file": "blink-2-gen-bdm01300u-16x28--35x18.json",
+      "sha256": "fe27ac954ed55f1c3973df1568160a6e6302de69cbaa60e8db5a7b6636ca35d3"
+    },
+    {
+      "file": "blink-kabel-2k-bdm01500u-16x28--16x28.json",
+      "sha256": "448e304b96fecf1720f0fb1aeb77c68b7beb35f7318e85108c26c11dfd469de0"
+    },
+    {
+      "file": "blink-kabel-2k-bdm01500u-16x28--24x20.json",
+      "sha256": "976a71dfdafe003d31cfaad16eba93bdbc5431e01b392e2ec09a97fa09aa83fb"
+    },
+    {
+      "file": "blink-kabel-2k-bdm01500u-16x28--35x18.json",
+      "sha256": "a69c0886c14ec8f88ceac1a17b094ad6502d6a1ea02dffa85df830cac503476f"
+    },
+    {
+      "file": "boifun-bell-j1-16x28--16x28.json",
+      "sha256": "e557df1abef471fa5b4cd9c4d2e771c321e640c37a9c5e17e5709027dbc871af"
+    },
+    {
+      "file": "boifun-bell-j1-16x28--24x20.json",
+      "sha256": "3795fe718f4086bb488870b4ffaffaeda05cfcb86c462d7e0c70c893b610c254"
+    },
+    {
+      "file": "boifun-bell-j1-16x28--35x18.json",
+      "sha256": "24ef9050e58e7f999dc078bcb8caeafbe499392720f7f0a109d0662c10829858"
+    },
+    {
+      "file": "cococam-doorbell-16x28--16x28.json",
+      "sha256": "4765e2f62b7d5a957d373997beff7773a8a717b36ce23be56600c49ce8c3ab21"
+    },
+    {
+      "file": "cococam-doorbell-16x28--24x20.json",
+      "sha256": "c52d3891753ffadea091061bd8a72e7782f1e2bd56a22612715adb76a5009421"
+    },
+    {
+      "file": "cococam-doorbell-16x28--35x18.json",
+      "sha256": "75a66b5caf558baa22d0df77447d4aa383419d6e5afa112a5d839a03e69f42dd"
+    },
+    {
+      "file": "ctronics-ctsc-j6-16x28--16x28.json",
+      "sha256": "ed9799a1bedae1026b71115d88c95f41a8231340815e69552c78a64458290ecd"
+    },
+    {
+      "file": "ctronics-ctsc-j6-16x28--24x20.json",
+      "sha256": "1c1a3055e53e71c9cd46ade57ae967be88935e439a71717652d3a86135062fb3"
+    },
+    {
+      "file": "ctronics-ctsc-j6-16x28--35x18.json",
+      "sha256": "527842ff37e867a19f58e720e08c5fa7b2c69a47cace131c11fdf277fcceab34"
+    },
+    {
+      "file": "eufy-1080p-t8220-16x28--16x28.json",
+      "sha256": "71ef020d03bb84f4a157ba8a22e7ba708d010c51527d981dd07d78812fe9aa4d"
+    },
+    {
+      "file": "eufy-1080p-t8220-16x28--24x20.json",
+      "sha256": "530e584a1dd0b9382c5a0db813640e63f4d3b57b2ef044a32206feb6947bef6f"
+    },
+    {
+      "file": "eufy-1080p-t8220-16x28--35x18.json",
+      "sha256": "00b944ef1365c61b956d6cac9ceb334b08a254451cedcfbf040df20c9630f4f3"
+    },
+    {
+      "file": "eufy-1080p-t8222-16x28--16x28.json",
+      "sha256": "173d36b38225d447dc2d4cb44681eb7d1af05f8ee048583cff09f0591000fc70"
+    },
+    {
+      "file": "eufy-1080p-t8222-16x28--24x20.json",
+      "sha256": "52d1f59bd607a9ecf24013a9c43fe4bc4bb35a426e513277918ffa2677b69556"
+    },
+    {
+      "file": "eufy-1080p-t8222-16x28--35x18.json",
+      "sha256": "8a04505bb2ae424a247086951ac18a5017b251f984b16bf4b8fac945289825df"
+    },
+    {
+      "file": "eufy-2k-hd-t8210-16x28--16x28.json",
+      "sha256": "a5d842418bf7d13c55e5777568eb7f9b9fd1244b51330cd876dd026469dc563b"
+    },
+    {
+      "file": "eufy-2k-hd-t8210-16x28--24x20.json",
+      "sha256": "9ba6344ad541168a46c8d81116fbad2dbb569d1d8526528105d94551d5e32b37"
+    },
+    {
+      "file": "eufy-2k-hd-t8210-16x28--35x18.json",
+      "sha256": "8de5365c7d2be1f1b5cd4fd489e9d7d157aee9626cc1a88d733532d8b1555535"
+    },
+    {
+      "file": "eufy-c30-t8224-16x28--16x28.json",
+      "sha256": "7cde4397282d3badecad42ab1469ef3e93642c8842a65b2c9b9c5f977c0e7c19"
+    },
+    {
+      "file": "eufy-c30-t8224-16x28--24x20.json",
+      "sha256": "8562c68a8d5886861defdb56e4f1e02a420091c23b9c9a142cb57cb75ba03b7f"
+    },
+    {
+      "file": "eufy-c30-t8224-16x28--35x18.json",
+      "sha256": "c346efadb855b787873b2006ed7722dedc68d7a7e3b3d12642dfa1ddb6b3816d"
+    },
+    {
+      "file": "eufy-c31-t8223-16x28--16x28.json",
+      "sha256": "22b7f0a60f247141a1995506372e9df7de5e79d9a2e594afed02a456bd18f28f"
+    },
+    {
+      "file": "eufy-c31-t8223-16x28--24x20.json",
+      "sha256": "f287c29468dda12fc17178cba15e9c5422540d0bd9030a53a5e12847c06a50a4"
+    },
+    {
+      "file": "eufy-c31-t8223-16x28--35x18.json",
+      "sha256": "fb395990876ed56db776e667bd541d54613668cbdcfc9f580d79fb0ac31257a9"
+    },
+    {
+      "file": "eufy-dual-e340-t8214-16x28--16x28.json",
+      "sha256": "5c791e23f4d76c5ca825ab2cefad61eddbf9a72f4e01a1e4e5c1176cea0016f2"
+    },
+    {
+      "file": "eufy-dual-e340-t8214-16x28--24x20.json",
+      "sha256": "6b367792808c57ab725a46aea30aef8796ba68694dc51381d26cf053fc57db52"
+    },
+    {
+      "file": "eufy-dual-e340-t8214-16x28--35x18.json",
+      "sha256": "2c499190857c0c441c1be4e77215589602b31179dde017ffa69ac6e5e93a2f1a"
+    },
+    {
+      "file": "eufy-hdr-2k-t8200-16x28--16x28.json",
+      "sha256": "e932829ea6317f25c1ab993ccfb0d7766979f90b5be3a4bddd0958cd8342766c"
+    },
+    {
+      "file": "eufy-hdr-2k-t8200-16x28--24x20.json",
+      "sha256": "b4e992c38a021acb0966e8060610bf8187005cea02863dd679df09c8d46bfaae"
+    },
+    {
+      "file": "eufy-hdr-2k-t8200-16x28--35x18.json",
+      "sha256": "cca85b484be2237b667ddfaea126128b0f1779932423c2eb73d31c6cb3e46b91"
+    },
+    {
+      "file": "ezviz-db1-cs-db1c-16x28--16x28.json",
+      "sha256": "87e875f09664f0e8a0c4d79786b2fd7eef91ca94f2007bd884ebc85fc2e5801c"
+    },
+    {
+      "file": "ezviz-db1-cs-db1c-16x28--24x20.json",
+      "sha256": "49e5250c9f5c77eebbb7585d3af55351398ea9f5d6848137784c515a450b3588"
+    },
+    {
+      "file": "ezviz-db1-cs-db1c-16x28--35x18.json",
+      "sha256": "2886182387c4c76abae1903b11b73173323a559fc86480ee46953888e50f8c41"
+    },
+    {
+      "file": "ezviz-ep8-ultra-cs-ep8-16x28--16x28.json",
+      "sha256": "74abf863d9a7f51936415e2f9d9812cd3696ecf65d9cc86332db3b5081296324"
+    },
+    {
+      "file": "ezviz-ep8-ultra-cs-ep8-16x28--24x20.json",
+      "sha256": "8c76d7567ce3a2a9adb2df7159e883311956b6f949ef3f790ee8ea41ec7c0fcf"
+    },
+    {
+      "file": "ezviz-ep8-ultra-cs-ep8-16x28--35x18.json",
+      "sha256": "79ffd7b6063088f811a1574d8ef76bc2c6527a001a94a9e66a145403b14e7426"
+    },
+    {
+      "file": "google-nest-a0077-16x28--16x28.json",
+      "sha256": "cba2044a52d8fdb8c10cadd74d610b073b2def6768952837393e7b0bfc2c5634"
+    },
+    {
+      "file": "google-nest-a0077-16x28--24x20.json",
+      "sha256": "63e831ac7f61905ded3ec9ce448ad1808888c7b0d58fe938624df852f50dad17"
+    },
+    {
+      "file": "google-nest-a0077-16x28--35x18.json",
+      "sha256": "1c8b2386f0a1a6facd8121e3502b2036238ee2777c38060be0f3b224840827e6"
+    },
+    {
+      "file": "google-nest-akku-22lcur-16x28--16x28.json",
+      "sha256": "e4ff6d4cf811c0bbe00cfa0bedc3bca605f01097dcb30784d3ab2569a78839da"
+    },
+    {
+      "file": "google-nest-akku-22lcur-16x28--24x20.json",
+      "sha256": "022e48ca1ea6976ba03ea8b431d9f7327acc6c7d45fd6bfc47e04f29ebc79f1a"
+    },
+    {
+      "file": "google-nest-akku-22lcur-16x28--35x18.json",
+      "sha256": "fb8e400ff32b01f93fa03f0aa5d8ed7c87bdfb1fa825264eaedc4ab48dcc1710"
+    },
+    {
+      "file": "hombli-smart-doorbell-2-hbdb-0200-16x28--16x28.json",
+      "sha256": "0530800674be9d27d011f5859a6a699925e1ffde4452e08b3f5db6d33937dd9d"
+    },
+    {
+      "file": "hombli-smart-doorbell-2-hbdb-0200-16x28--24x20.json",
+      "sha256": "93230858b5494a359aff75dcf686248418fdd0c7855225976d8a7a299c1fb158"
+    },
+    {
+      "file": "hombli-smart-doorbell-2-hbdb-0200-16x28--35x18.json",
+      "sha256": "1a5041055c647504365785dfc47efcbb4ad12771fff58079a18558b9cfcbe6b9"
+    },
+    {
+      "file": "philips-welcome-eye-531034-16x28--16x28.json",
+      "sha256": "8459339989016ed28d76e4398ddce373822ee4daf4e8e35a0f6896f54b3a7365"
+    },
+    {
+      "file": "philips-welcome-eye-531034-16x28--24x20.json",
+      "sha256": "93a87e58b67a696787bf813740bc9bc9d6829137abbc95d8dca422c49242f7b1"
+    },
+    {
+      "file": "philips-welcome-eye-531034-16x28--35x18.json",
+      "sha256": "fbdc00b381d24e5ca0b85b78d9c3506c5226e661ccd45487023762b67bb1c7c2"
+    },
+    {
+      "file": "reolink-akku-2ayhe-2205b-16x28--16x28.json",
+      "sha256": "a98090a09f364e494e06d956d21ebe6e6b9b6862bd44d372c1831cb237a86c4a"
+    },
+    {
+      "file": "reolink-akku-2ayhe-2205b-16x28--24x20.json",
+      "sha256": "9547341c51b5adbd750327aeb715d56dcb9304f0c7de5ae33c3a68060b82b16f"
+    },
+    {
+      "file": "reolink-akku-2ayhe-2205b-16x28--35x18.json",
+      "sha256": "04f4081fdab4145c00f08f6e9e21c14ae6ee8e25acf2dfb3f05480d69d0960f0"
+    },
+    {
+      "file": "reolink-poe-d340b-16x28--16x28.json",
+      "sha256": "df102a0a5602fd460e41176f396694d589142c76da88514b7884fd7ab699b2dd"
+    },
+    {
+      "file": "reolink-poe-d340b-16x28--24x20.json",
+      "sha256": "e5986c0027ab6f11795d0e1d9af555d305dfd561053a1422e6aa157429894e58"
+    },
+    {
+      "file": "reolink-poe-d340b-16x28--35x18.json",
+      "sha256": "c540c144d058059d6c9a1bff46dc4372897644956b833d8e3cf8079ce397d4b6"
+    },
+    {
+      "file": "ring-1-5um5e5-16x28--16x28.json",
+      "sha256": "a7b5efbcbad46b2561871163e6ef5ee65c28fec7e9ba351ec3404a160a6d651a"
+    },
+    {
+      "file": "ring-1-5um5e5-16x28--24x20.json",
+      "sha256": "011c592ec9b44e7248f418aa4be96d2f3f714f01760af8809214c093211ac7a8"
+    },
+    {
+      "file": "ring-1-5um5e5-16x28--35x18.json",
+      "sha256": "d2aeea03778f32ebe7bdb02f4f71f3b699fa1673dc2124110bf0940037563828"
+    },
+    {
+      "file": "ring-2-8vr1s7-0eu0-16x28--16x28.json",
+      "sha256": "be14bbe2efd7574ba8406b169c6c67dff6ca80a6fad0976a7d0694cbb541ecd1"
+    },
+    {
+      "file": "ring-2-8vr1s7-0eu0-16x28--24x20.json",
+      "sha256": "4e9f1775a8ba35ebd7b126f4dded4775ec44f1c35ae0fffa08a2fdbca4e022e9"
+    },
+    {
+      "file": "ring-2-8vr1s7-0eu0-16x28--35x18.json",
+      "sha256": "98cd36fb3a81c3b4bd5c3af6110f29159fa9503c9dd95470f8aea63a12d5e73e"
+    },
+    {
+      "file": "ring-3-5at3s9-16x28--16x28.json",
+      "sha256": "3bfa6f257deaea4993bce9365818006b277eef0162630d9f1ebda2d3484930b9"
+    },
+    {
+      "file": "ring-3-5at3s9-16x28--24x20.json",
+      "sha256": "8380a7fc1045caea78247d41030351c940128554b33de571d574d3f44794e97f"
+    },
+    {
+      "file": "ring-3-5at3s9-16x28--35x18.json",
+      "sha256": "5371ae31b2e01d6ab0933bd520bb38cf67199bbb827bb0143c8643d1cb1b0512"
+    },
+    {
+      "file": "ring-akku-pro-5f79e9-16x28--16x28.json",
+      "sha256": "c4bc86035370dbcaf4e14d2d85b824954467010349f448cce9f60c310af850c7"
+    },
+    {
+      "file": "ring-akku-pro-5f79e9-16x28--24x20.json",
+      "sha256": "5667f7463ebdb87edb9dc0fc19fdccfb0ac6b5fa9b9304e75f1196267516a172"
+    },
+    {
+      "file": "ring-akku-pro-5f79e9-16x28--35x18.json",
+      "sha256": "8af4b14b8d9ff62878bf33255b1720ea098bcc3e83e122b0091d9047180a0486"
+    },
+    {
+      "file": "ring-battery-5f97f2-16x28--16x28.json",
+      "sha256": "d0f7c0d97959b630cb30762952ba312c19f007e9f8dd7c10e3ffdcb59cf6feee"
+    },
+    {
+      "file": "ring-battery-5f97f2-16x28--24x20.json",
+      "sha256": "6c1058e1bfd86663d83ca3df18b06a67d16122a38730a24ea717c99750a279e8"
+    },
+    {
+      "file": "ring-battery-5f97f2-16x28--35x18.json",
+      "sha256": "35c039ce7af16262049675972ac299f775c21cd9e9af5253ec3c245c12d9a8b8"
+    },
+    {
+      "file": "ring-plus-1-gen-5f77e9-16x28--16x28.json",
+      "sha256": "e98f22451a4fbcfd71dbc0e2fa85939a324b1f878803d2c3d2726544cda0de60"
+    },
+    {
+      "file": "ring-plus-1-gen-5f77e9-16x28--24x20.json",
+      "sha256": "ca0bf22dda91cfe30cbb9debaac6281622d4db3fa33402f304d732a2dc509bf6"
+    },
+    {
+      "file": "ring-plus-1-gen-5f77e9-16x28--35x18.json",
+      "sha256": "69817ebde974db63311606b06b1595babb8c5be4afa66d8241db8b605c353ec7"
+    },
+    {
+      "file": "ring-plus-2-gen-5dfya3-16x28--16x28.json",
+      "sha256": "82c3a866a7f2c897ab54505e3a74cda773e1e6f8154aa96fd8fc4b8ef614eacf"
+    },
+    {
+      "file": "ring-plus-2-gen-5dfya3-16x28--24x20.json",
+      "sha256": "b8d51207e7e8f8a0d5e12fb04f218c258ef1a49b0e689e3170420d830943969c"
+    },
+    {
+      "file": "ring-plus-2-gen-5dfya3-16x28--35x18.json",
+      "sha256": "f244e15bde292dec5f773b7a1bf3ed8acace56ee3973a66b6e3a9784d5909275"
+    },
+    {
+      "file": "ring-pro2-5at2s2-16x28--16x28.json",
+      "sha256": "8e7555e449f21c0e8fad68710897f5fc4900ebedccb8bd1a4ae5644e8467f218"
+    },
+    {
+      "file": "ring-pro2-5at2s2-16x28--24x20.json",
+      "sha256": "2d89548cf3d5a1c888bb788455cdc8dc2a5b24dbc0a41c29dfb3e4d3929623ea"
+    },
+    {
+      "file": "ring-pro2-5at2s2-16x28--35x18.json",
+      "sha256": "44750893dab8f042d5ff4041a6c531296352668573f21dbd4f86293c97a0a7d5"
+    },
+    {
+      "file": "ring-wired-5at3t5-16x28--16x28.json",
+      "sha256": "e213bb4b37c84753b2cbdb1920f08f7c512da32fe1cafa7e93740333643c7089"
+    },
+    {
+      "file": "ring-wired-5at3t5-16x28--24x20.json",
+      "sha256": "01b262d55b7ae19d0368c77f29b44f93952c092fd326746be10c1b5a51f2d22a"
+    },
+    {
+      "file": "ring-wired-5at3t5-16x28--35x18.json",
+      "sha256": "4c6b37f44d6edf07fdaff3f0978adc55741ca26d210760dd48a4ac81428a9838"
+    },
+    {
+      "file": "ring-wired-pro-3-gen-5dfya2-16x28--16x28.json",
+      "sha256": "bee3a5d666b2101a1fe5c759111de980aaafa955a78f9337ef8c051ff46f77e1"
+    },
+    {
+      "file": "ring-wired-pro-3-gen-5dfya2-16x28--24x20.json",
+      "sha256": "510c49fd4b53fe74f2fae0e895008885425c9fd2983d294f651b9b1770c2a640"
+    },
+    {
+      "file": "ring-wired-pro-3-gen-5dfya2-16x28--35x18.json",
+      "sha256": "204e3b4675033536fd793b6801cbc047b768392699bf319aab9350a7fff8e3c5"
+    },
+    {
+      "file": "tapo-d235-16x28--16x28.json",
+      "sha256": "86454ed07387c91db9c6548783b6398a05b6d7a8deae8f5c2862b6aa4d4071c2"
+    },
+    {
+      "file": "tapo-d235-16x28--24x20.json",
+      "sha256": "1fa0421bf2fbb5ab89520673d261f78d10915c86aff368c16ee97c961b9a5932"
+    },
+    {
+      "file": "tapo-d235-16x28--35x18.json",
+      "sha256": "ea28e3c87e69be897d31b0ab851495ad6d4e978058f174f71b2c02d66f46a6b6"
+    },
+    {
+      "file": "tmezon-intercom-mz-vdp-ne120-16x28--16x28.json",
+      "sha256": "f6f33abffb4204571bcd509aab267db4ffb0570e0fd54008cedbb95a8d92eb42"
+    },
+    {
+      "file": "tmezon-intercom-mz-vdp-ne120-16x28--24x20.json",
+      "sha256": "c586db99549e977f0f40b3e20402a55f32bf01e0d65a7e031e589aeaab2e3c0c"
+    },
+    {
+      "file": "tmezon-intercom-mz-vdp-ne120-16x28--35x18.json",
+      "sha256": "82dbcb4e46eb9cf3cc23b0c8ec404acd404916253d2186c45abb7ba2f2b180fb"
+    },
+    {
+      "file": "tmezon-smart-home-bell-j7-plus-16x28--16x28.json",
+      "sha256": "b920bb0055efe916610e64d849dfae0baea029dd8d138997e9d87ea3a98fda9a"
+    },
+    {
+      "file": "tmezon-smart-home-bell-j7-plus-16x28--24x20.json",
+      "sha256": "93f6cee360c2d51cc85bd73f10a7a4484833afdfa84a81af3bc2fbe66dd692c9"
+    },
+    {
+      "file": "tmezon-smart-home-bell-j7-plus-16x28--35x18.json",
+      "sha256": "19caa94e9e8878809d6b996624617f79bc56da608dada17bb966a366db700d19"
+    },
+    {
+      "file": "winees-m6p20ac-16x28--16x28.json",
+      "sha256": "a5f4a8daf64afd43e04281f917a469bf4ed3f0dd417619cfef9f223c1d53d511"
+    },
+    {
+      "file": "winees-m6p20ac-16x28--24x20.json",
+      "sha256": "9fbfcd4336de233b91cbb87040631bac11fe80d9d58ece3f504bbe9586e9fd3b"
+    },
+    {
+      "file": "winees-m6p20ac-16x28--35x18.json",
+      "sha256": "ae6934e31fff49856f79d4808f73d5278896cfb2cb005142f7f425e75b365b4d"
+    },
+    {
+      "file": "wp-cardea-2-16x28--16x28.json",
+      "sha256": "efb08c854046fac1a60f48bc9da8cab77f9575e79a8b6bea09c235b22db77a42"
+    },
+    {
+      "file": "wp-cardea-2-16x28--24x20.json",
+      "sha256": "3dc731761813b3c158d94a2042bf4d69f4ce0667318565165607a0a803945d07"
+    },
+    {
+      "file": "wp-cardea-2-16x28--35x18.json",
+      "sha256": "f6ca1c0bd159e23352c818b2855170d18185adec6b3e8e8a5733615e2b88c162"
+    }
+  ]
+}

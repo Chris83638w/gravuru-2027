@@ -1,3 +1,7 @@
+## 28.10.2026 · Codex/Astra · Funkklingel-Pilot zurückgenommen; Anschluss an aktuellen Konfigurator geprüft
+
+Chris: „kannst du live stellen“, danach „wir haben doch jetzt was neues … Lies alles auf github“. Ein AOSU-Einstieg aktiviert, echter Editorstart scheitert an einem umgeschriebenen Designgrafikpfad; anschließend Metafeld/Vorlage auf Vorher-Zustand zurückgenommen und alle 120 Varianten unverändert nachgelesen. 0 weitere Produkt-/Veröffentlichungs-/Theme-/Webhook-/Warenkorbänderungen. Aktuelle Anschlussdocs und PR #41 gelesen (Entwurf, noch nicht main); derselbe App-2027-/Registry-Weg gilt weiter. Kleine kompatible Pfadkorrektur, 5/5 Regressionen; 18 reale AOSU-Grafiken vorher ungültig/nachher gültig, 2.268 Verweise in 126 Original-Importkopien grün. Noch kein Deploy oder erfolgreicher Warenkorbtest. [Ursache, neuer Anschlussweg, Rücknahme und nächste Schritte](docs/handoffs/2026-10-28-funkklingeln-neuer-anschluss-pilot.md).
+
 ## 28.10.2026 · Codex/Astra · Funkklingeln: vollständiger lesender Bindungsprobelauf
 
 - Aufgabenbranch `dev/funkklingeln-anbindung-20261028-astra`, Basis `f200509`; Katalog `caf50a6`. [Übergabe und Belege](docs/handoffs/2026-10-28-funkklingeln-anbindung-audit.md).

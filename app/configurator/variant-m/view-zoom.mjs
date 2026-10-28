@@ -51,27 +51,64 @@ export async function installViewZoom({el,r,selected}){
    for(const node of nodes)node.style.setProperty('transform','none','important');
    const sr=stage.getBoundingClientRect(),box=node=>{const b=node.getBoundingClientRect();return {x:b.left-sr.left,y:b.top-sr.top,width:b.width,height:b.height};};
    bounds={plate:box(holder),viewport:{x:0,y:0,width:sr.width,height:sr.height}};layers=nodes.map(node=>({node,box:box(node)}));
-   if(product!==identity()){cancelAnimation();product=identity();view=fitView();gesture.reset();}view=constrainView(view,bounds);rebuildMini();paint();
+   if(product!==identity()){cancelAnimation();product=identity();view=fitView();resetGestures();}view=constrainView(view,bounds);rebuildMini();paint();
   }finally{refreshing=false;}
  }
  const schedule=()=>{if(!pending)pending=requestAnimationFrame(refresh);};
  function autoFocus(id){cancelAnimation();const epoch=animationEpoch;focusFrame=requestAnimationFrame(()=>{focusFrame=0;if(epoch!==animationEpoch)return;const o=selected();if(!o||o.id!==id||!['text','motif','graphic'].includes(o.type)||photoActive()||!bounds)return;const scene=r.querySelector('.scene'),g=scene?.querySelector('[data-object="'+CSS.escape(id)+'"]');if(!g)return;const rect=g.getBoundingClientRect(),s=stage.getBoundingClientRect(),origin={x:bounds.plate.x+bounds.plate.width/2,y:bounds.plate.y+bounds.plate.height/2};const box={x:origin.x+(rect.left-s.left-origin.x-view.x)/view.scale,y:origin.y+(rect.top-s.top-origin.y-view.y)/view.scale,width:rect.width/view.scale,height:rect.height/view.scale};const next=autoZoomView(view,box,bounds);if(next!==view)animate(next);});}
- const gesture=createViewGesture({getView:()=>view,setView:change,getBounds:()=>bounds,photoActive,cancelObject:()=>{el.uxCancelObjectGesture?.();el.uxCancelPhotoTap?.();},onTap:autoFocus});
+ const cancelObject=()=>{el.uxCancelObjectGesture?.();el.uxCancelPhotoGesture?.();el.uxCancelPhotoTap?.();};
+ const gesture=createViewGesture({getView:()=>view,setView:change,getBounds:()=>bounds,photoActive,cancelObject,onTap:autoFocus});
+ // TouchEvent batches are authoritative for simultaneous contacts (Safari/iOS).
+ // Keep their gesture separate so the compatibility PointerEvents cannot also
+ // resize an object or apply the same zoom twice.
+ const touchGesture=createViewGesture({getView:()=>view,setView:change,getBounds:()=>bounds,cancelObject});
+ let touchView=false;const touchTargets=new Set();
+ const resetGestures=()=>{gesture.reset();touchGesture.reset();touchView=false;for(const node of touchTargets){node.removeEventListener('touchmove',touchMove,true);node.removeEventListener('touchend',touchFinished,true);node.removeEventListener('touchcancel',touchCancelled,true);}touchTargets.clear();};
  const path=e=>e.composedPath?.()||[e.target],target=e=>path(e).find(n=>n?.closest)||e.target;
  const onStage=e=>path(e).includes(stage)||stage.contains?.(target(e));
  const control=node=>!!node?.closest?.('button,input,textarea,select,label,a,summary,[data-ux-handle],.ux-direct-edit,.ux-direct-input,.ux-view-zoom');
  function point(e){const node=target(e),object=node?.closest?.('.scene [data-object]'),handle=node?.closest?.('[data-ux-handle]'),s=stage.getBoundingClientRect();return {id:e.pointerId,x:e.clientX-s.left,y:e.clientY-s.top,button:e.button,pointerType:e.pointerType,kind:handle?'handle':control(node)?'control':object?'object':'blank',objectId:object?.dataset.object};}
  const stop=e=>{e.preventDefault();e.stopImmediatePropagation();};
- el.addEventListener('pointerdown',e=>{cancelAnimation();if(!onStage(e)||!bounds)return;const used=gesture.down(point(e));if(used){stop(e);for(const id of gesture.ids())try{el.setPointerCapture(id);}catch{}}},true);
- el.addEventListener('pointermove',e=>{if(gesture.has(e.pointerId)&&gesture.move(point(e)))stop(e);},true);
- const end=(e,cancelled)=>{if(!gesture.has(e.pointerId))return;const used=gesture.up(point(e),{cancelled});if(used){stop(e);suppressUntil=performance.now()+500;}if(el.hasPointerCapture?.(e.pointerId))el.releasePointerCapture(e.pointerId);};
+ const touchPoint=t=>point({target:t.target,pointerId:t.identifier,pointerType:'touch',button:0,clientX:t.clientX,clientY:t.clientY});
+ el.addEventListener('touchstart',e=>{
+  if(!bounds)return;
+  const rect=stage.getBoundingClientRect();
+  const contacts=[...e.touches].filter(t=>(stage.contains(t.target)||onStage(e))&&t.clientX>=rect.left&&t.clientX<=rect.right&&t.clientY>=rect.top&&t.clientY<=rect.bottom);
+  if(!touchView&&contacts.length<2)return;
+  // Rendering replaces SVG nodes. Touch Events retain their original target,
+  // so retain a direct listener for the detached origin until the gesture ends.
+  const origin=path(e)[0];if(origin&&origin!==el&&!touchTargets.has(origin)){
+   touchTargets.add(origin);origin.addEventListener('touchmove',touchMove,{capture:true,passive:false});origin.addEventListener('touchend',touchFinished,{capture:true,passive:false});origin.addEventListener('touchcancel',touchCancelled,{capture:true,passive:false});
+  }
+  if(!touchView){
+   // One atomic handover before either contact can continue an object gesture.
+   touchView=true;cancelAnimation();cancelObject();gesture.reset();touchGesture.reset();
+   for(const t of contacts.slice(0,2))touchGesture.down({...touchPoint(t),kind:'object'});
+  }
+  stop(e);
+ },{capture:true,passive:false});
+ const touchMove=e=>{if(!touchView)return;stop(e);for(const t of e.touches)touchGesture.move(touchPoint(t));};
+ el.addEventListener('touchmove',touchMove,{capture:true,passive:false});
+ const touchEnd=(e,cancelled)=>{
+  if(!touchView)return;stop(e);for(const t of e.changedTouches)touchGesture.up(touchPoint(t),{cancelled});
+  suppressUntil=performance.now()+500;
+  // Swallow the remaining finger until all contacts end: never turn a pinch
+  // into a late text drag, tap, upload dialog or an undo entry.
+  if(!touchGesture.ids().length)resetGestures();
+ };
+ const touchFinished=e=>touchEnd(e,false),touchCancelled=e=>touchEnd(e,true);
+ el.addEventListener('touchend',touchFinished,{capture:true,passive:false});
+ el.addEventListener('touchcancel',touchCancelled,{capture:true,passive:false});
+ el.addEventListener('pointerdown',e=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}cancelAnimation();if(!onStage(e)||!bounds)return;const used=gesture.down(point(e));if(used){stop(e);for(const id of gesture.ids())try{el.setPointerCapture(id);}catch{}}},true);
+ el.addEventListener('pointermove',e=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}if(gesture.has(e.pointerId)&&gesture.move(point(e)))stop(e);},true);
+ const end=(e,cancelled)=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}if(!gesture.has(e.pointerId))return;const used=gesture.up(point(e),{cancelled});if(used){stop(e);suppressUntil=performance.now()+500;}if(el.hasPointerCapture?.(e.pointerId))el.releasePointerCapture(e.pointerId);};
  el.addEventListener('pointerup',e=>end(e,false),true);el.addEventListener('pointercancel',e=>end(e,true),true);
  el.addEventListener('lostpointercapture',e=>{if(path(e)[0]===el)end(e,true);},true);
  el.addEventListener('click',e=>{if(performance.now()<suppressUntil&&onStage(e)&&!control(target(e))){stop(e);suppressUntil=0;}},true);
  el.addEventListener('wheel',e=>{if(!bounds||!onStage(e)||control(target(e))||photoActive())return;cancelAnimation();stop(e);const p=point(e),delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?bounds.viewport.height:1);change(zoomViewAt(view,view.scale*Math.exp(-Math.max(-300,Math.min(300,delta))*.002),p,bounds));},{capture:true,passive:false});
- controls.addEventListener('click',e=>{const action=e.target.closest('[data-view-action]')?.dataset.viewAction;if(!action||!bounds)return;cancelAnimation();e.preventDefault();if(action==='fit'){gesture.reset();change(fitView());return;}const next=action==='plus'?view.scale+.25:action==='minus'?view.scale-.25:([1,1.5,2,3,4].find(n=>n>view.scale+.01)||1);change(zoomViewAt(view,next,center(),bounds));});
+ controls.addEventListener('click',e=>{const action=e.target.closest('[data-view-action]')?.dataset.viewAction;if(!action||!bounds)return;cancelAnimation();e.preventDefault();if(action==='fit'){resetGestures();change(fitView());return;}const next=action==='plus'?view.scale+.25:action==='minus'?view.scale-.25:([1,1.5,2,3,4].find(n=>n>view.scale+.01)||1);change(zoomViewAt(view,next,center(),bounds));});
  for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){if(animationFrame)cancelAnimation();const result=original.apply(this,args);schedule();return result;};}
- el.uxViewZoom=()=>view.scale;el.uxRefreshViewZoom=schedule;el.uxFitView=()=>{cancelAnimation();gesture.reset();change(fitView());};el.uxSetViewZoom=(value,anchor)=>{cancelAnimation();change(zoomViewAt(view,value,anchor||center(),bounds));};
- if(typeof ResizeObserver==='function')new ResizeObserver(schedule).observe(stage);window.addEventListener('resize',()=>{cancelAnimation();schedule();});window.addEventListener('pagehide',()=>{cancelAnimation();gesture.reset();clearTimeout(hintTimer);if(pending)cancelAnimationFrame(pending);},{once:true});
+ el.uxViewZoom=()=>view.scale;el.uxRefreshViewZoom=schedule;el.uxFitView=()=>{cancelAnimation();resetGestures();change(fitView());};el.uxSetViewZoom=(value,anchor)=>{cancelAnimation();change(zoomViewAt(view,value,anchor||center(),bounds));};
+ if(typeof ResizeObserver==='function')new ResizeObserver(schedule).observe(stage);window.addEventListener('resize',()=>{cancelAnimation();schedule();});window.addEventListener('pagehide',()=>{cancelAnimation();resetGestures();clearTimeout(hintTimer);if(pending)cancelAnimationFrame(pending);},{once:true});
  refresh();return {fit:el.uxFitView,zoom:el.uxSetViewZoom,refresh:schedule,view:()=>({...view}),gesture};
 }

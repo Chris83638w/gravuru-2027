@@ -8,6 +8,7 @@ class NodePort{
  setAttribute(key,value){this[key]=value;}
  removeAttribute(key){delete this[key];}querySelectorAll(){return [];}replaceChildren(...nodes){this.children=[];this.append(...nodes);}
  addEventListener(type,fn){(this.listeners[type]??=[]).push(fn);}
+ removeEventListener(type,fn){this.listeners[type]=(this.listeners[type]||[]).filter(f=>f!==fn);}
  dispatch(type,event){for(const fn of this.listeners[type]||[])fn(event);}
  setPointerCapture(id){this.capture.add(id);}hasPointerCapture(id){return this.capture.has(id);}releasePointerCapture(id){this.capture.delete(id);}
  set innerHTML(value){this.html=value;this.buttons=new Map([...value.matchAll(/data-view-action="([^"]+)"/g)].map(([,action])=>{const node=new NodePort();node.dataset.viewAction=action;node.control=true;return [action,node];}));}
@@ -57,4 +58,43 @@ test('small touch targets animate gently, refresh overlays each frame and stop o
  tap();f.frame(0);f.frame(16);const refreshed=f.handles;f.frame(106);assert.ok(f.el.uxViewZoom()>1&&f.el.uxViewZoom()<4);assert.ok(f.handles>refreshed);f.frame(196);assert.equal(f.el.uxViewZoom(),4);
  f.el.uxFitView();tap();f.frame(200);f.frame(216);f.frame(276);const stopped=f.api.view();f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:13}));f.frame(500);assert.deepEqual(f.api.view(),stopped);f.el.dispatch('pointerup',f.event(f.holder,{pointerId:13}));
  f.el.uxFitView();f.reduced(true);tap();f.frame(600);assert.equal(f.el.uxViewZoom(),4);assert.deepEqual(f.el.state,f.original);
+});
+
+function touchBatch(f,contacts,changed=contacts){return f.event(f.object,{touches:contacts,changedTouches:changed});}
+function contact(f,id,x,y=270){return {identifier:id,target:f.object,clientX:x,clientY:y};}
+test('two simultaneous contacts on selected text zoom the view, never the 10 mm text or saved geometry',async t=>{
+ const f=await runtime(t);Object.assign(f.el.state.objects[0],{text:'Meyer',size:10});const saved=structuredClone(f.el.state);
+ const start=touchBatch(f,[contact(f,31,360),contact(f,32,460)]);f.el.dispatch('touchstart',start);assert.equal(start.prevented,true);
+ const moved=touchBatch(f,[contact(f,31,315),contact(f,32,505)]);f.el.dispatch('touchmove',moved);assert.equal(moved.prevented,true);assert.equal(f.el.uxViewZoom(),1.9);
+ assert.deepEqual(f.el.state,saved);assert.equal(f.el.state.objects[0].size,10);
+ // Compatibility pointer events cannot hand either contact to the object handler.
+ for(const type of ['pointerdown','pointermove','pointerup']){const e=f.event(f.object,{pointerId:31,clientX:315});f.el.dispatch(type,e);assert.equal(e.stopped,true,type);}
+ f.el.dispatch('touchend',touchBatch(f,[contact(f,31,315)],[contact(f,32,505)]));
+ const late=touchBatch(f,[contact(f,31,200)]);f.el.dispatch('touchmove',late);assert.equal(late.stopped,true);assert.equal(f.el.uxViewZoom(),1.9);
+ f.el.dispatch('touchend',touchBatch(f,[contact(f,99,900)],[contact(f,31,200)]));assert.deepEqual(f.el.state,saved); // an unrelated finger elsewhere must not keep the view locked
+ const next=f.event(f.object,{pointerId:40});f.el.dispatch('pointerdown',next);assert.equal(next.prevented,undefined,'a new single-finger drag remains available');
+});
+test('simultaneous touch handover restores a started corner resize and does not create a late click',async t=>{
+ const f=await runtime(t);Object.assign(f.el.state.objects[0],{text:'Meyer',size:10});const saved=structuredClone(f.el.state);let cancelled=0;
+ f.el.uxCancelObjectGesture=()=>{cancelled++;f.el.state=structuredClone(saved);};
+ f.el.dispatch('pointerdown',f.event(f.object,{pointerId:41,clientX:360}));f.el.state.objects[0].size=19;f.el.state.objects[0].w*=1.9;
+ f.el.dispatch('touchstart',touchBatch(f,[contact(f,41,360),contact(f,42,460)]));assert.ok(cancelled>=1);assert.deepEqual(f.el.state,saved);
+ f.el.dispatch('touchmove',touchBatch(f,[contact(f,41,300),contact(f,42,520)]));assert.equal(f.el.uxViewZoom(),2.2);assert.deepEqual(f.el.state,saved);
+ f.el.dispatch('touchcancel',touchBatch(f,[],[contact(f,41,300),contact(f,42,520)]));
+ const click=f.event(f.object);f.el.dispatch('click',click);assert.equal(click.stopped,true);assert.deepEqual(f.el.state,saved);
+});
+test('two fingers also leave the customer photo crop unchanged; single-finger crop remains available',async t=>{
+ const f=await runtime(t);f.photo(true);const saved=structuredClone(f.el.state);let cancelled=0;f.el.uxCancelPhotoGesture=()=>cancelled++;
+ const one=touchBatch(f,[contact(f,51,360)]);f.el.dispatch('touchstart',one);assert.equal(one.prevented,undefined);
+ f.el.dispatch('touchstart',touchBatch(f,[contact(f,51,360),contact(f,52,460)]));assert.ok(cancelled>0);
+ f.el.dispatch('touchmove',touchBatch(f,[contact(f,51,310),contact(f,52,510)]));assert.equal(f.el.uxViewZoom(),2);assert.deepEqual(f.el.state,saved);
+ f.el.dispatch('touchend',touchBatch(f,[],[contact(f,51,310),contact(f,52,510)]));
+ const crop=f.event(f.object,{pointerId:53});f.el.dispatch('pointerdown',crop);assert.equal(crop.prevented,undefined);
+});
+
+test('touch batches continue on a replaced SVG target and remove direct listeners when complete',async t=>{
+ const f=await runtime(t),saved=structuredClone(f.el.state),start=[contact(f,61,360),contact(f,62,460)];f.el.dispatch('touchstart',touchBatch(f,start));
+ assert.equal(f.object.listeners.touchmove.length,1);
+ f.object.dispatch('touchmove',touchBatch(f,[contact(f,61,310),contact(f,62,510)]));assert.equal(f.el.uxViewZoom(),2);assert.deepEqual(f.el.state,saved);
+ f.object.dispatch('touchend',touchBatch(f,[],start));assert.equal(f.object.listeners.touchmove.length,0);assert.equal(f.object.listeners.touchend.length,0);assert.equal(f.object.listeners.touchcancel.length,0);
 });

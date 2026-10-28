@@ -25,6 +25,12 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   panel.querySelector('[data-direct-size-label]').before(extras);
   for(const [key,label,symbol] of [['smaller','Schrift verkleinern','−'],['bigger','Schrift vergrößern','+']]){const b=document.createElement('button');b.type='button';b.dataset.directStep=key;b.setAttribute('aria-label',label);b.textContent=symbol;const input=panel.querySelector('[data-direct-size-label]');key==='smaller'?input.before(b):input.after(b);}
   const tail=document.createElement('span');tail.className='ux-direct-tail';tail.innerHTML='<button type="button" data-direct-turn aria-label="Element um 15 Grad drehen">↻</button><button type="button" data-ux="delete" aria-label="Element löschen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/></svg></button>';panel.querySelector('.ux-direct-actions').append(tail);
+  // Two stable rows on narrow screens. Keep the same controls and rights; the
+  // optional print palette scrolls horizontally inside row two, never into row three.
+  const actions=panel.querySelector('.ux-direct-actions'),primary=document.createElement('div'),secondary=document.createElement('div');
+  primary.className='ux-direct-primary';secondary.className='ux-direct-secondary';
+  for(const node of [...actions.children])(node.matches('[data-direct-font],[data-direct-style]')||node===extras?primary:secondary).append(node);
+  actions.append(primary,secondary);
   const box=document.createElement('div');box.className='ux-direct-input';box.hidden=true;box.innerHTML='<textarea rows="1" aria-label="Text direkt im Design bearbeiten" spellcheck="false" aria-describedby="ux-direct-count"></textarea><small id="ux-direct-count" class="ux-direct-count" data-direct-count aria-live="polite"></small>';stage.append(box);
   const openButton=panel.querySelector('[data-direct-open]'),field=box.querySelector('textarea'),count=box.querySelector('[data-direct-count]'),size=panel.querySelector('[data-direct-size]'),font=panel.querySelector('[data-direct-font]'),color=panel.querySelector('[data-direct-color]'),confirm=panel.querySelector('[data-direct-confirm]');
   const style=document.createElement('style');style.textContent=`

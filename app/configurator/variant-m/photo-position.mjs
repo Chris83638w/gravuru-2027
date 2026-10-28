@@ -24,6 +24,7 @@ export function installPhotoPosition({el,r,files,selected,select,mutate,showTab,
     if(old.uxPhotoCrop===undefined)delete o.uxPhotoCrop;else o.uxPhotoCrop=structuredClone(old.uxPhotoCrop);
   }
   function cancel(){const prior=drag;drag=null;if(prior){restoreCrop(prior);if(stage.hasPointerCapture(prior.id))stage.releasePointerCapture(prior.id);}if(sliderStart)restoreCrop(sliderStart);sliderStart=null;}
+  el.uxCancelPhotoGesture=()=>{if(drag){cancel();el.sync();}};
   el.uxSetPhotoPositionMode=mode=>{const o=selected();if(!usable(o)||mode==='move'&&!movable(o))return false;cancel();modeKey=mode==='crop'?identity(o):null;el.sync();showTab('upload');return true;};
   function update(){
     if(updating)return;updating=true;

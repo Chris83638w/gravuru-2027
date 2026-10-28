@@ -108,13 +108,23 @@
 :host([data-ux-layout]) .ux-direct-edit [data-direct-font]>.ux-ui-icon{width:16px!important;height:16px!important}
 :host([data-ux-layout]) :is(.ux-direct-text-actions,.ux-direct-tail){display:flex;align-items:center;gap:2px}
 :host([data-ux-layout]) .ux-direct-tail svg{width:22px;height:22px;display:block}
+:host([data-ux-layout]) :is(.ux-direct-primary,.ux-direct-secondary){display:contents}
 :host([data-ux-layout]) .ux-direct-input{border-color:#59636f!important}
 :host([data-ux-layout]) .ux-delete-feedback:not([hidden]){display:flex;align-items:center;justify-content:center;gap:10px;padding:6px 12px;font-size:14px}
 @media(max-width:767px){
  :host([data-ux-layout]) .ux-preview{height:calc(var(--ux-mobile-preview-h,40dvh) + var(--ux-textbar-h,0px))!important}
  :host([data-ux-layout]) .ux-direct-edit.is-docked{position:static!important;inset:auto!important;transform:none!important;flex:none;width:100%!important;max-width:100%!important;margin:0!important;border-radius:0!important;border:0!important;border-top:1px solid var(--ux-border)!important;box-shadow:none!important}
- :host([data-ux-layout]) .ux-direct-edit.is-docked .ux-direct-actions{gap:2px;justify-content:center;flex-wrap:wrap}
- :host([data-ux-layout]) .ux-direct-edit.is-docked [data-direct-font]{max-width:138px!important}
+ /* The scroll boundary belongs above the fixed step/price bar. Tall content
+    stays in document flow and can never paint over those controls. */
+ :host([data-ux-layout]) .ux-layout{overflow:auto;overscroll-behavior:contain;isolation:isolate;gap:0;scrollbar-width:none}
+ :host([data-ux-layout]) .ux-editor{flex:1 0 96px}
+ :host([data-ux-layout]) .ux-direct-edit.is-docked .ux-direct-actions{display:flex;flex-direction:column;gap:2px;flex-wrap:nowrap;align-items:stretch}
+ :host([data-ux-layout]) .ux-direct-edit.is-docked :is(.ux-direct-primary,.ux-direct-secondary){display:flex;align-items:center;justify-content:safe center;gap:2px;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;min-width:0;scrollbar-width:none}
+ :host([data-ux-layout]) .ux-direct-edit.is-docked :is(.ux-direct-primary,.ux-direct-secondary)>*{flex:none}
+ :host([data-ux-layout]) .ux-direct-edit.is-docked [data-direct-font]{width:108px!important;max-width:108px!important}
+ :host([data-ux-layout]) .ux-direct-edit.is-docked [data-direct-font-sample]{width:80px!important;min-width:0}
+ :host([data-ux-layout]) .ux-direct-edit.is-docked [data-direct-confirm]{flex-wrap:nowrap}
+ :host([data-ux-layout]) .ux-direct-edit.is-docked .ux-direct-primary:empty{display:none}
  :host([data-ux-layout]) .ux-text-row{padding:8px 0}
 }
 

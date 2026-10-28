@@ -24,7 +24,7 @@ const digest = v => createHash('sha256').update(canonical(v)).digest('hex');
 const clone = value => structuredClone(value);
 function sync(fn,...args){const v=fn(...args);if(v&&typeof v.then==='function')fail('shop_binding_store_async','Die atomare Zuordnung benötigt synchrone Speicherzugriffe.',503);return v;}
 
-export function createShopProductBindingStore({database:db,orderIntake,tenantId,storeId,shopDomain,adapter,clock=Date.now,personalizationPricingFor,legacySingleStore=false}={}) {
+export function createShopProductBindingStore({database:db,orderIntake,tenantId,storeId,shopDomain,adapter,clock=Date.now,personalizationPricingFor,legacySingleStore=false,logger=entry=>console.warn('[shop-gallery]',JSON.stringify(entry))}={}) {
   if(!db||typeof db.prepare!=='function'||typeof db.exec!=='function'||!orderIntake||
     typeof orderIntake.bindVariants!=='function'||typeof orderIntake.bindings!=='function'||
     typeof tenantId!=='string'||!/^[a-z0-9][a-z0-9-]{0,39}$/.test(tenantId)||
@@ -91,7 +91,7 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       ON s.binding_id=b.id WHERE b.id=?`).get(id):db.prepare(`SELECT b.*,s.options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s
       ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.id=? AND b.tenant_id=?`).get(id,tenantId);
     if(!row)fail('shop_binding_active_integrity','Die feste Bindung fehlt.');
-    return {...row,options:row.options==null?{}:JSON.parse(row.options)};
+    return {...row,options:row.options==null?{}:parseDocument(row.options)};
   }
   function assertBinding(binding,entry){
     if(binding.shop!==shopDomain||binding.variant_id!==entry.shopifyVariantId.split('/').at(-1)||
@@ -99,10 +99,13 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       binding.unit_cents!==entry.baseUnitCents||!sameOptions(binding.options,entry.options))
       fail('shop_binding_active_integrity','Bindung, Ausführung und fester Produktstand stimmen nicht überein.');
   }
-  function result(row){
+  function parseDocument(text){try{return JSON.parse(text);}catch{fail('shop_binding_document','Der gespeicherte Produktbeleg ist ungültig.',422);}}
+  function result(row,records=new Map()){
     if(row.store_id!==storeId)fail('shop_binding_store_scope','Die Zuordnung gehört zu einem anderen Store.',503);
-    const source=productRow(row.cfg_id,row.cfg_revision),document=JSON.parse(source.document),bound=bindingFor(row.binding_id);
-    if(digest(document)!==row.document_sha256)fail('shop_binding_active_integrity','Der feste Produktbeleg wurde verändert.');
+    const key=row.cfg_id+'@'+row.cfg_revision;let record=records.get(key);
+    if(!record){const source=productRow(row.cfg_id,row.cfg_revision),document=parseDocument(source.document);record={document,digest:digest(document)};records.set(key,record);}
+    const {document}=record,bound=bindingFor(row.binding_id);
+    if(record.digest!==row.document_sha256)fail('shop_binding_active_integrity','Der feste Produktbeleg wurde verändert.');
     assertBinding(bound,{shopifyVariantId:row.variant_gid,productId:row.cfg_id,productRevision:row.cfg_revision,baseUnitCents:bound.unit_cents,options:bound.options});
     return {...scope,shopifyProductId:row.product_gid,shopifyVariantId:row.variant_gid,
       bindingId:row.binding_id,productId:row.cfg_id,productRevision:row.cfg_revision,
@@ -178,15 +181,47 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     });
   }
   function resolve(input){storedScope();const pair=ids(input),row=currentHead(pair.shopifyVariantId);if(!row||row.product_gid!==pair.shopifyProductId)fail('shop_binding_active_not_found','Keine ausdrückliche aktive Zuordnung für diese beiden Shopify-IDs.',404);return result(row);}
-  function listActive(){
+
+  function activeRows(){
     storedScope();
-    const rows=db.prepare(`SELECT r.* FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r
+    return db.prepare(`SELECT r.* FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r
       ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision
       WHERE h.tenant_id=? AND h.shop=? AND r.store_id=? ORDER BY r.cfg_id,r.variant_gid`).all(tenantId,shopDomain,storeId);
-    // The same document and immutable binding checks as an exact resolve. An
-    // archived record is unavailable; a corrupt binding must never become a card.
-    return rows.flatMap(row=>{try{return [result(row)];}catch(error){if(error.code==='shop_binding_cfg_changed')return [];throw error;}});
+  }
+  function galleryRevision(){
+    storedScope();
+    // No document bodies or customer data: only activation and product revision heads.
+    const tenantJoin=legacySingleStore?'':' AND p.tenant_id=r.tenant_id';
+    const revisionJoin=legacySingleStore?'':' AND pr.tenant_id=r.tenant_id';
+    const rows=db.prepare(`SELECT h.variant_gid,h.revision,r.cfg_id,r.cfg_revision,r.binding_id,
+      p.revision AS product_head,p.archived,p.kind,pr.status
+      FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r
+      ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision
+      LEFT JOIN products p ON p.id=r.cfg_id${tenantJoin}
+      LEFT JOIN product_revisions pr ON pr.product_id=r.cfg_id AND pr.revision=r.cfg_revision${revisionJoin}
+      WHERE h.tenant_id=? AND h.shop=? AND r.store_id=? ORDER BY h.variant_gid`).all(tenantId,shopDomain,storeId);
+    return createHash('sha256').update(JSON.stringify(rows)).digest('hex');
+  }
+  function galleryResult(row,records){
+    try{return result(row,records);}
+    catch(error){
+      if(!['shop_binding_cfg_changed','shop_binding_active_integrity','shop_binding_document'].includes(error.code))throw error;
+      // Fixed diagnostic codes only: never document text, tokens or customer fields.
+      logger({event:'shop_gallery_binding_skipped',storeId,code:error.code});
+      return null;
+    }
+  }
+  function listActive(){
+    const records=new Map();return activeRows().map(row=>galleryResult(row,records)).filter(Boolean);
+  }
+  async function listActiveForGallery(){
+    const rows=activeRows(),records=new Map(),bindings=[];
+    for(let i=0;i<rows.length;i++){
+      if(i%8===0)await new Promise(resolve=>setImmediate(resolve));
+      const binding=galleryResult(rows[i],records);if(binding)bindings.push(binding);
+    }
+    return bindings;
   }
   function history(input){storedScope();const pair=ids(input);return db.prepare('SELECT * FROM shop_product_binding_revisions WHERE tenant_id=? AND shop=? AND variant_gid=? AND product_gid=? ORDER BY revision').all(tenantId,shopDomain,pair.shopifyVariantId,pair.shopifyProductId).map(row=>({...scope,shopifyProductId:row.product_gid,shopifyVariantId:row.variant_gid,assignmentRevision:row.revision,bindingId:row.binding_id,productId:row.cfg_id,productRevision:row.cfg_revision,documentSha256:row.document_sha256,evidenceReadAt:row.evidence_read_at,createdAt:row.created_at,productionReady:false}));}
-  return Object.freeze({...scope,persist,resolve,history,listActive});
+  return Object.freeze({...scope,persist,resolve,history,listActive,galleryRevision,listActiveForGallery});
 }

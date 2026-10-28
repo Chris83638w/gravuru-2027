@@ -289,7 +289,7 @@ test('shop embed safety net: own start link is always usable, ready/failed messa
  const source=fs.readFileSync(new URL('./ui/shop-embed.mjs',import.meta.url),'utf8').replaceAll('__EDITOR_ORIGIN__','https://app.example').replaceAll('__PROXY_PATH__','/apps/konfigurator');
  fs.writeFileSync(path.join(dir,'shop-embed.mjs'),source);fs.copyFileSync(new URL('./ui/theme-cart-client.mjs',import.meta.url),path.join(dir,'theme-cart-client.mjs'));
  globalThis.GRAVURU_SHOP_EMBED_NO_AUTO=true;t.after(()=>{delete globalThis.GRAVURU_SHOP_EMBED_NO_AUTO;});
- const {unlockStartLink,pageStartUrl,acceptedMessage}=await import(path.join(dir,'shop-embed.mjs'));
+ const {unlockStartLink,pageStartUrl,acceptedMessage}=await import(pathToFileURL(path.join(dir,'shop-embed.mjs')).href);
  const attrs=new Map([['disabled',''],['aria-disabled','true'],['tabindex','-1'],['href','/x']]),classes=new Set(['btn','disabled','btn--loading']);
  const link={getAttribute:n=>attrs.has(n)?attrs.get(n):null,removeAttribute:n=>attrs.delete(n),classList:{contains:n=>classes.has(n),remove:n=>{if(!classes.has(n))throw Error('remove nur bei vorhandener Klasse (sonst Beobachter-Schleife)');classes.delete(n);}},style:{pointerEvents:'none',opacity:'.4'}};
  unlockStartLink(link);

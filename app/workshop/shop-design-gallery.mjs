@@ -12,7 +12,8 @@ const fields=['sid','storeId','productId','productRevision','bindingId','assignm
 // No catalogue imports or approvals happen here. Customer designs are taken
 // only from the fixed, already activated product model. Catalogue target
 // approval remains the importer's responsibility, just as for normal entry.
-export function createShopDesignGallery({secret,resolve,modelFor,allowedAssets}){
+export function createShopDesignGallery({secret,resolve,modelFor,allowedAssets,clock=Date.now,checkBinding=()=>{}}){
+ const cache=new Map();
  const key=createHmac('sha256',secret).update('gravuru-shop-design-target/v1').digest();
  const sign=s=>createHmac('sha256',key).update(s).digest('base64url');
  const issue=(session,binding,designId)=>{
@@ -39,32 +40,67 @@ export function createShopDesignGallery({secret,resolve,modelFor,allowedAssets})
   if(!input||Object.keys(input).length!==fields.length||fields.some(k=>!Object.hasOwn(input,k))||input.sid!==context.session.sid||input.storeId!==context.store.storeId)unavailable();
   const current=resolve(identity(input));checkScope(context,current.binding);
   if(current.store!==context.store||!fields.filter(k=>!['sid','designId'].includes(k)).every(k=>current.binding[k]===input[k]))unavailable();
-  const model=modelFor(current.store,current.binding),selected=selection(current.binding,model,input.designId);
+  const model=modelFor(current.store,current.binding);checkBinding(current.store,current.binding,model);
+  const selected=selection(current.binding,model,input.designId);
   return {...current,model,...selected};
  }
- function list(context,{page=0}={}){
-  if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
-  if(typeof context.store.registry.listActive!=='function')return {items:[],nextPage:null,total:0};
-  const candidates=context.store.registry.listActive().sort((a,b)=>a.productId.localeCompare(b.productId)||a.unitCents-b.unitCents||a.shopifyVariantId.localeCompare(b.shopifyVariantId));
-  const choices=new Map();let lastKey,model;
-  for(const candidate of candidates){
+
+ async function build(context,validated){
+  const registry=context.store.registry;
+  const candidates=(validated?await registry.listActiveForGallery():registry.listActive()).sort((a,b)=>a.productId.localeCompare(b.productId)||a.productRevision-b.productRevision||a.unitCents-b.unitCents||a.shopifyVariantId.localeCompare(b.shopifyVariantId));
+  const cards=[];let lastKey,model;
+  for(let i=0;i<candidates.length;i++){
+   if(i%8===0)await new Promise(resolve=>setImmediate(resolve));
+   const candidate=candidates[i];
    try{
-    checkScope(context,candidate);const current=resolve(identity(candidate));
+    checkScope(context,candidate);
+    // The registry's gallery snapshot already performs the exact immutable
+    // document/binding checks. Legacy registries retain the explicit check.
+    const current=validated?{store:context.store,binding:candidate}:resolve(identity(candidate));
     if(current.store!==context.store||!sameBinding(candidate,current.binding))continue;
     const binding=current.binding,key=binding.productId+':'+binding.productRevision;
     if(key!==lastKey){model=modelFor(current.store,binding);lastKey=key;}
+    // Variant-specific approval must not be bypassed by model reuse.
+    checkBinding(current.store,binding,model);
     const profile=selectedProfile(model.universal,binding.options);
     for(const design of profile.designs){
      let selected;try{selected=selection(binding,model,design.id);}catch{continue;}
      const {geometry,price}=selected,dedupe=JSON.stringify([binding.productId,design.id,geometry.width,geometry.height,geometry.shape]);
-     // One card per design/shape/size. Prefer the exact current variant; other
-     // products start at their cheapest explicitly bound option combination.
-     if(choices.has(dedupe)&&binding.shopifyVariantId!==context.binding.shopifyVariantId)continue;
-     choices.set(dedupe,{target:issue(context.session,binding,design.id),productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,current:binding.productId===context.binding.productId&&binding.shopifyVariantId===context.binding.shopifyVariantId});
+     cards.push({binding,designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
     }
    }catch(error){if([404,409,422,423].includes(error.status))continue;throw error;}
   }
-  const items=[...choices.values()],start=page*40;return {items:items.slice(start,start+40),nextPage:start+40<items.length?page+1:null,total:items.length};
+  return cards;
+ }
+ async function cachedCards(context){
+  const registry=context.store.registry;
+  if(typeof registry.galleryRevision!=='function'||typeof registry.listActiveForGallery!=='function')return build(context,false);
+  // One bounded LRU entry per configured store object. Tokens/current selection
+  // are generated per request and never kept in this shared cache.
+  for(let attempt=0;attempt<2;attempt++){
+   const revision=registry.galleryRevision(),now=clock();let entry=cache.get(context.store);
+   if(!entry||entry.revision!==revision||entry.expiresAt<=now){
+    entry={revision,expiresAt:now+10000,promise:build(context,true)};
+    cache.delete(context.store);if(cache.size>=8)cache.delete(cache.keys().next().value);cache.set(context.store,entry);
+   }else{cache.delete(context.store);cache.set(context.store,entry);}
+   let cards;try{cards=await entry.promise;}catch(error){if(cache.get(context.store)===entry)cache.delete(context.store);throw error;}
+   if(registry.galleryRevision()===revision)return cards;
+   if(cache.get(context.store)===entry)cache.delete(context.store);
+  }
+  unavailable();
+ }
+ async function list(context,{page=0}={}){
+  if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+  if(typeof context.store.registry.listActive!=='function')return {items:[],nextPage:null,total:0};
+  const choices=new Map();
+  for(const row of await cachedCards(context)){
+   const previous=choices.get(row.dedupe);
+   if(previous&&row.binding.shopifyVariantId!==context.binding.shopifyVariantId&&(previous.binding.shopifyVariantId===context.binding.shopifyVariantId||previous.card.unitCents<=row.card.unitCents))continue;
+   choices.set(row.dedupe,row);
+  }
+  const rows=[...choices.values()],start=page*40;
+  const items=rows.slice(start,start+40).map(({binding,designId,card})=>({...card,target:issue(context.session,binding,designId),current:binding.productId===context.binding.productId&&binding.shopifyVariantId===context.binding.shopifyVariantId}));
+  return {items,nextPage:start+40<rows.length?page+1:null,total:rows.length};
  }
  function preview(context,token){
   const t=target(context,token),model=structuredClone(t.model),allowed=allowedAssets(t.store,t.binding,model),assets=t.store.workshop.assets;

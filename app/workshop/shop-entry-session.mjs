@@ -31,8 +31,11 @@ export function createShopEntrySessions({secret,clock=Date.now,ttlMs=4*60*60*100
     ttlMs,
     // `binding` ist das Ergebnis von registry.resolve (storeId, shopifyProductId, shopifyVariantId, productId,
     // productRevision, bindingId, assignmentRevision). Nur diese Kennungen gelangen ins Token.
-    issue(binding,{customerId=null}={}){
-      const now=clock(),payload={v:1,st:binding.storeId,p:binding.shopifyProductId.split('/').at(-1),va:binding.shopifyVariantId.split('/').at(-1),c:binding.productId,r:binding.productRevision,b:binding.bindingId,a:binding.assignmentRevision,cu:customerId,sid:randomBytes(16).toString('hex'),iat:Math.floor(now/1000),exp:Math.floor((now+ttlMs)/1000)};
+    issue(binding,{customerId=null,expiresAt}={}){
+      const now=clock(),ceiling=expiresAt===undefined?now+ttlMs:Date.parse(expiresAt);
+      if(!Number.isFinite(ceiling))fail(503,'shop_entry_expiry','Die Sitzungsgrenze ist ungültig.');
+      if(Math.floor(ceiling/1000)<=Math.floor(now/1000))fail(403,'shop_entry_expired','Die Sitzung ist abgelaufen. Bitte die Produktseite neu öffnen.');
+      const payload={v:1,st:binding.storeId,p:binding.shopifyProductId.split('/').at(-1),va:binding.shopifyVariantId.split('/').at(-1),c:binding.productId,r:binding.productRevision,b:binding.bindingId,a:binding.assignmentRevision,cu:customerId,sid:randomBytes(16).toString('hex'),iat:Math.floor(now/1000),exp:Math.floor(Math.min(now+ttlMs,ceiling)/1000)};
       if(!check(payload))fail(503,'shop_entry_binding','Die Produktzuordnung ist für den Einstieg nicht vollständig.');
       const body=encode(payload);
       return {token:PREFIX+'.'+body+'.'+sign(body),expiresAt:new Date(payload.exp*1000).toISOString(),sid:payload.sid};

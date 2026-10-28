@@ -6,6 +6,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
 import {createShopEntrySessions} from './shop-entry-session.mjs';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {queueGalleryPreview} from './shop-gallery-preview-queue.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
@@ -147,7 +148,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   return copy;
  }
  function publicBinding(binding){return {shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision,options:structuredClone(binding.options||{})};}
- const designGallery=createShopDesignGallery({secret,resolve,modelFor,allowedAssets});
+ const designGallery=createShopDesignGallery({secret,resolve,modelFor,allowedAssets,clock,checkBinding:(store,binding,model)=>requireDoorbellApproval(store,binding,model.universal)});
  function startParams(params){
   const number=(name,kind)=>{const values=params.getAll(name);if(values.length!==1)fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');const v=values[0].replace('gid://shopify/'+kind+'/','');if(!/^[1-9][0-9]{0,19}$/.test(v))fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');return 'gid://shopify/'+kind+'/'+v;};
   const optional=(name,test)=>{const values=params.getAll(name);if(!values.length||values[0]==='')return null;if(values.length!==1||!test(values[0]))fail(422,'shop_entry_params','Der Bearbeiten-Verweis ist ungültig.');return values[0];};
@@ -155,7 +156,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   if((config===null)!==(rev===null)||(line!==null&&config===null))fail(422,'shop_entry_params','Der Bearbeiten-Verweis ist ungültig.');
   // Rücksprung nur als Pfad im Shop (keine fremden Adressen): /products/<handle> o. ä.
   const back=optional('back',v=>v.length<=512&&/^\/(?!\/)[A-Za-z0-9/_.~%-]*(?:\?[A-Za-z0-9=&_.~%-]*)?$/.test(v));
-  const embed=optional('embed',v=>v==='1')==='1',ticket=optional('format',v=>v==='json')==='json',leiste=optional('leiste',v=>v==='a'||v==='b');
+  const embed=optional('embed',v=>v==='1')==='1',ticket=optional('format',v=>v==='json')==='json';
+  const toolbar=params.getAll('leiste'),leiste=toolbar.length===1&&['a','b'].includes(toolbar[0])?toolbar[0]:null;
   return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed,ticket,leiste};
  }
  function start(req,res,url){
@@ -329,7 +331,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if([...url.searchParams.keys()].some(k=>k!=='page')||url.searchParams.getAll('page').length>1||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
      checkOrigin(req,{mutating:false});const context=active(req);modelFor(context.store,context.binding);
-     return json(res,200,designGallery.list(context,{page:Number(url.searchParams.get('page')||0)}));
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0)});active(req);
+     return json(res,200,result);
     }
     if(action==='design-gallery-preview'){
      if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -337,7 +340,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,8192);
      modelFor(context.store,context.binding);
      if(Object.keys(input).length!==1||typeof input.target!=='string')fail(422,'shop_gallery_fields','Bitte ein Design aus der Auswahl wählen.');
-     const bytes=Buffer.from(designGallery.preview(context,input.target));
+     const bytes=await queueGalleryPreview(()=>{if(req.aborted||res.destroyed)fail(409,'shop_gallery_cancelled','Vorschau abgebrochen.');const current=active(req);return Buffer.from(designGallery.preview(current,input.target));});
      res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}));return res.end(bytes);
     }
     if(action==='design-switch'){
@@ -346,7 +349,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,8192);
      modelFor(context.store,context.binding);
      if(Object.keys(input).length!==1||typeof input.target!=='string')fail(422,'shop_gallery_fields','Bitte ein Design aus der Auswahl wählen.');
-     const chosen=designGallery.target(context,input.target),issued=sessions.issue(chosen.binding,{customerId:context.session.customerId});
+     const chosen=designGallery.target(context,input.target),issued=sessions.issue(chosen.binding,{customerId:context.session.customerId,expiresAt:context.session.expiresAt});
      return json(res,200,{token:issued.token,expiresAt:issued.expiresAt,designId:chosen.design.id,binding:publicBinding(chosen.binding),widthMm:chosen.geometry.width,heightMm:chosen.geometry.height,unitCents:chosen.price.unitCents,currency:chosen.price.currency,productionReady:false});
     }
     const asset=action.match(/^design-assets\/([a-f0-9]{64})\/preview\.svg$/);

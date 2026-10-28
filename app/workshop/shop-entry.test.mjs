@@ -80,15 +80,15 @@ test('invalid, foreign-shop, expired and replayed-old signatures are refused bef
  assert.equal((await open()).status,302);assert.equal(lookups,1);
  assert.equal((await request(proxyPath+'/start?'+signed(f,base),'POST',{})).status,405);
 }));
-test('toolbar query crosses the signed start only for embedded windows and rejects invalid or duplicate values',()=>run(async(f,request,{open,token})=>{
+test('toolbar query crosses the signed start only for embedded windows and ignores invalid or duplicate cosmetic values',()=>run(async(f,request,{open,token})=>{
  for(const leiste of ['a','b']){
   const opened=await token({embed:'1',leiste});assert.equal(opened.fragment.get('leiste'),leiste);assert.equal(opened.fragment.get('embed'),'1');
   const ticket=await open({embed:'1',leiste,format:'json'});assert.equal(ticket.status,200);assert.equal(new URLSearchParams(new URL(ticket.data.url).hash.slice(1)).get('leiste'),leiste);
   assert.equal((await token({leiste})).fragment.get('leiste'),null,'normaler Seitenaufruf aktiviert keine Fenster-Variante');
  }
- for(const leiste of ['selection','plate','A','toString','a&other=x'])assert.equal((await open({embed:'1',leiste})).status,422);
+ for(const leiste of ['selection','plate','A','toString','a&other=x']){const opened=await token({embed:'1',leiste});assert.equal(opened.fragment.get('leiste'),null);assert.equal(opened.fragment.get('embed'),'1');}
  const repeated=signed(f,{product:f.ids.shopifyProductId.split('/').at(-1),variant:f.ids.shopifyVariantId.split('/').at(-1),embed:'1',leiste:'a'});repeated.append('leiste','b');repeated.set('signature',appProxySignature(repeated,secret));
- assert.equal((await request(proxyPath+'/start?'+repeated)).status,422);
+ const duplicate=await request(proxyPath+'/start?'+repeated);assert.equal(duplicate.status,302);assert.equal(new URLSearchParams(new URL(duplicate.headers.location).hash.slice(1)).get('leiste'),null);
 }));
 test('missing, duplicate and form bindings answer with a customer message instead of an editor',()=>run(async(f,request,{open})=>{
  const missing=await open({variant:'999'});assert.equal(missing.status,404);assert.match(missing.headers['content-type'],/text\/html/);assert.ok(missing.body.toString().includes('noch nicht für den Konfigurator eingerichtet'));
@@ -484,3 +484,17 @@ test('start ticket (format=json) returns the same target as the redirect and cou
  const unsigned=new URLSearchParams({...base,format:'json',shop:shopDomain,timestamp:String(Math.floor(f.now()/1000))});
  assert.equal((await request(proxyPath+'/start?'+unsigned)).status,401,'nur signiert über den App-Proxy');
 },f=>{f.options.limits={startPerMinute:1,requestsPerMinute:1000};}));
+
+test('repeated design switches cannot extend the original source session',()=>run(async(f,request,{token})=>{
+ let current=(await token()).token;
+ const deadline=JSON.parse(Buffer.from(current.split('.')[1],'base64url')).exp*1000;
+ for(const elapsed of [3600000,3600000,3599000]){
+  f.tick(elapsed);const card=await otherGalleryCard(f,request,current);
+  const switched=await request('/api/shop-entry/design-switch','POST',{target:card.target},session(current));
+  assert.equal(switched.status,200,switched.body.toString());assert.equal(Date.parse(switched.data.expiresAt),deadline);
+  current=switched.data.token;
+ }
+ f.tick(deadline-f.now());
+ const expired=await request('/api/shop-entry/design-gallery','GET',undefined,session(current));
+ assert.equal(expired.status,403);assert.equal(expired.data.error.code,'shop_entry_expired');
+},galleryEntryFixture));

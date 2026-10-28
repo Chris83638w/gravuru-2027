@@ -200,10 +200,24 @@ test('listActive cannot leak a foreign tenant or shop and refuses a different st
  const wrongStore=f.orders.idBindings({storeId:'another-store',shopDomain,adapter:{...f.adapter,storeId:'another-store'}});assert.throws(()=>wrongStore.listActive(),{code:'shop_binding_store_scope'});
 });
 
-test('listActive fails closed for corrupted immutable source or binding identity, rather than returning a card',t=>{
- const source=fixture(t);source.persist();source.db.exec('DROP TRIGGER immutable_revision_update');
- source.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=? AND revision=1').run(JSON.stringify({...source.record.document,name:'Tampered bytes'}),source.record.id);
- assert.throws(()=>source.registry.listActive(),{code:'shop_binding_active_integrity'});
- const binding=fixture(t);binding.persist();binding.db.exec('DROP TRIGGER form_shop_binding_fixed');binding.db.exec("UPDATE form_shop_bindings SET variant_id='999999'");
- assert.throws(()=>binding.registry.listActive(),{code:'shop_binding_active_integrity'});
+
+test('gallery skips broken documents/bindings, logs only fixed diagnostics, while exact resolution stays strict',async t=>{
+ for(const damage of ['digest','json','binding']){
+  const f=fixture(t),valid=f.repository.create(formDocument()),logs=[];
+  f.persist(f.plan([{record:f.record,...pair(),options:{}},{record:valid,...pair(2),options:{}}]));
+  const {createShopProductBindingStore}=await import('./shop-product-binding-store.mjs');
+  const registry=createShopProductBindingStore({database:f.db,orderIntake:f.orders,tenantId,storeId,shopDomain,adapter:f.adapter,clock:f.clock,logger:e=>logs.push(e)});
+  if(damage==='binding'){f.db.exec('DROP TRIGGER form_shop_binding_fixed');f.db.prepare("UPDATE form_shop_bindings SET variant_id='999999' WHERE product_id=?").run(f.record.id);}
+  else{f.db.exec('DROP TRIGGER immutable_revision_update');if(damage==='json')f.db.exec('PRAGMA ignore_check_constraints=ON');f.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=? AND revision=1').run(damage==='json'?'{invalid private text':JSON.stringify({...f.record.document,name:'private tampered content'}),f.record.id);}
+  const expected=damage==='json'?'shop_binding_document':'shop_binding_active_integrity';
+  assert.deepEqual(registry.listActive().map(b=>b.productId),[valid.id]);
+  assert.deepEqual((await registry.listActiveForGallery()).map(b=>b.productId),[valid.id]);
+  assert.throws(()=>registry.resolve(pair()),{code:expected});
+  assert.deepEqual(logs,[{event:'shop_gallery_binding_skipped',storeId,code:expected},{event:'shop_gallery_binding_skipped',storeId,code:expected}]);
+ }
+});
+test('gallery revision heads change on activation, new product revision and archive',t=>{
+ const f=fixture(t),empty=f.registry.galleryRevision();f.persist();const bound=f.registry.galleryRevision();assert.notEqual(bound,empty);
+ f.repository.save(f.record.id,{...f.record.document,name:'Next revision'},1);const next=f.registry.galleryRevision();assert.notEqual(next,bound);
+ f.repository.setArchived(f.record.id,{expectedRevision:2,archived:true});assert.notEqual(f.registry.galleryRevision(),next);
 });

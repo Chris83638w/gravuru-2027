@@ -1,3 +1,10 @@
+## 28.10.2026 · Claude · Live: PR #41 Kunden-Konfigurator UX + iPhone-Absicherung (`main` `0643c70`)
+
+- Chris (19:49): „Ja, Du darfst PR #41 (Stand 602a3ac) nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `0643c70` (Baum = `602a3ac`, Linux 1775/1775), Plesk Pull + Bereitstellen, Ziel geprüft (`shop-embed` mit `editor-ready`/`loaded`, `shop-design-gallery.mjs`, `view-zoom.mjs`), App neu gestartet; `shop-design-switch.mjs` 200, `/api/workshop/session` 401.
+- Live ohne Umleitung geprüft (D8): Desktop 1440 × 900, iPhone 13 390 × 664, iPhone SE 375 × 548 – Leiste über dem Schild, Griffe 19 px, Zoom, Vollbild, Handy 90 % Breite, 2 Finger auf Text = Ansichtszoom (10 mm bleibt), Preis 19,99 €, keine Seitenfehler.
+- **Fehler live:** „Designs ansehen“ (Galerie aller Formen/Größen) → nach 30 s 502 „upstream request failed“ (Plesk-Proxy-Zeitlimit); Kunde sieht „Der Konfigurator konnte nicht geladen werden.“, Editor bleibt bedienbar, Server bleibt ansprechbar (Messung 0,4–0,9 s während der Anfrage). Ursache: Kaltaufbau über alle aktiven Bindungen (`modelFor` je Produktstand) dauert mit Echtdaten > 30 s, Zwischenspeicher nur 10 s. → Nachtrag 3 an Astra.
+- Offen: echter iPhone-Test Chris; D8-Motivaufpreis (eigener Live-Schritt).
+
 ## 28.10.2026 – Astra: PR #41, Nachtrag 2 (S1/S2) und D8-Probelauf
 
 Mobile Textleiste jetzt maximal zwei Zeilen (99 px, 44-px-Steuerflächen), Schrittleiste und Preis bei **375 × 548 / 390 × 664** frei; Platte weiterhin 90 % breit. Zwei gleichzeitige Touch-Kontakte über ausgewähltem Text übernehmen ausschließlich den Ansichtszoom, auch nach SVG-Neuzeichnen; Objektgröße, Fotoausschnitt und Druckdaten bleiben unverändert. Browserbeleg auf drei Größen: Ansicht 100 → 190 %, Schriftanzeige 10 → 10 mm. Vier neue Regressionen: alter Adapter 4/8, neuer 8/8.

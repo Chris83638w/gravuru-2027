@@ -13,8 +13,9 @@ import {prepareShopProduct} from './shop-preparation.mjs';
 import {doorbellFixture} from './test-fixtures/doorbell-config.mjs';
 import {openWorkshopDb,checkSelections} from '../../scripts/shop-bind.mjs';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {shopGalleryModel} from './shop-gallery-model.mjs';
 
-test('150 active SQLite bindings: cold/warm first-page latency, event loop and one model read per revision',async t=>{
+test('150 active SQLite bindings: cold/warm first-page latency, event loop and lightweight reads only, including a restarted gallery',async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-gallery-load-')),filename=path.join(dir,'workshop.sqlite'),shopDomain='gallery-load.myshopify.com';
  const repository=createProductRepository({filename,tenantId:'gravuru'});
  const config=doorbellFixture();
@@ -36,7 +37,8 @@ test('150 active SQLite bindings: cold/warm first-page latency, event loop and o
  assert.equal(registry.listActive().length,150);
  const identity={shopifyProductId:selections[0].shopifyProductId,shopifyVariantId:selections[0].shopifyVariantId};
  const store={storeId:'acryl',workshop:{tenantId:'gravuru'},registry};let models=0,exactReads=0;
- const gallery=createShopDesignGallery({secret:'synthetic-gallery-load-secret',resolve:ids=>{exactReads++;return {store,binding:registry.resolve(ids)};},modelFor:(_s,b)=>{models++;const r=ws.adapter.getCurrentProduct(b.productId);return {key:'acryl',name:r.document.name,configuration:{id:r.id,revision:r.revision},universal:r.document.config};},allowedAssets:()=>new Set()});
+ const makeGallery=()=>createShopDesignGallery({secret:'synthetic-gallery-load-secret',resolve:ids=>{exactReads++;return {store,binding:registry.resolve(ids)};},modelFor:()=>{throw Error('Full model forbidden for gallery');},cardFor:(_s,b)=>{models++;return shopGalleryModel(ws.adapter.getCurrentProduct(b.productId));},allowedAssets:()=>new Set()});
+ let gallery=makeGallery();
  const server=http.createServer(async(req,res)=>{try{
   // Include the route's strict source-binding check on every request.
   const context={store,binding:registry.resolve(identity),session:{sid:'synthetic-source'}};
@@ -46,9 +48,17 @@ test('150 active SQLite bindings: cold/warm first-page latency, event loop and o
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
  const url='http://127.0.0.1:'+server.address().port,lag=monitorEventLoopDelay({resolution:1});
  lag.enable();await delay(15);lag.reset();
- const measure=async()=>{const start=performance.now(),r=await fetch(url),body=await r.json();assert.equal(r.status,200);assert.equal(body.items.length,40);return {ms:performance.now()-start,total:body.total};};
+ const measure=async()=>{
+  const start=performance.now(),r=await fetch(url);let body=await r.json();const ms=performance.now()-start,firstStatus=body.status||'ready';assert.equal(r.status,200);
+  if(body.status==='preparing'){
+   assert.deepEqual(body.items,[]);assert.equal(body.nextPage,0);assert.equal(body.total,null);assert.match(body.message,/Designs werden vorbereitet/);
+   await gallery.warm({store,binding:{shopDomain}});const retry=await fetch(url);assert.equal(retry.status,200);body=await retry.json();
+  }
+  assert.equal(body.items.length,40);assert.equal(body.status,undefined,'retry must return the complete ready first page');return {ms,total:body.total,firstStatus};
+ };
  const cold=await measure(),coldModels=models;await delay(5);
  const coldLag=lag.max/1e6;lag.reset();const warm=await measure();await delay(5);const warmLag=lag.max/1e6;lag.disable();
  assert.equal(models,coldModels,'warm page does not rebuild any product model');assert.equal(coldModels,2,'one model per product revision');assert.equal(exactReads,0,'registry-validated listing does not resolve all bindings a second time');assert.equal(warm.total,cold.total);
- t.diagnostic(JSON.stringify({activeBindings:150,sourceSurfaceBytes:Buffer.byteLength(config.materialSurface),cards:cold.total,coldFirstPageMs:+cold.ms.toFixed(2),warmFirstPageMs:+warm.ms.toFixed(2),coldEventLoopMaxMs:+coldLag.toFixed(2),warmEventLoopMaxMs:+warmLag.toFixed(2),modelsCold:coldModels,modelsAdditionalWarm:models-coldModels}));
+ gallery=makeGallery();const restarted=await measure();assert.equal(restarted.total,cold.total);assert.equal(models,4);for(const r of [cold,warm,restarted])assert.ok(r.ms<5000,JSON.stringify(r));
+ t.diagnostic(JSON.stringify({restartedFirstPageMs:+restarted.ms.toFixed(2),coldFirstStatus:cold.firstStatus,restartedFirstStatus:restarted.firstStatus,activeBindings:150,sourceSurfaceBytes:Buffer.byteLength(config.materialSurface),cards:cold.total,coldFirstPageMs:+cold.ms.toFixed(2),warmFirstPageMs:+warm.ms.toFixed(2),coldEventLoopMaxMs:+coldLag.toFixed(2),warmEventLoopMaxMs:+warmLag.toFixed(2),modelsCold:coldModels,lightweightReadsAdditionalRestart:models-coldModels}));
 });

@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
+import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
 import {createProductRepository} from './repository.mjs';
 import {createOrderIntake} from './order-intake.mjs';
 import {createShopBindingReadAdapter} from './shop-product-binding-adapter.mjs';
@@ -220,4 +221,24 @@ test('gallery revision heads change on activation, new product revision and arch
  const f=fixture(t),empty=f.registry.galleryRevision();f.persist();const bound=f.registry.galleryRevision();assert.notEqual(bound,empty);
  f.repository.save(f.record.id,{...f.record.document,name:'Next revision'},1);const next=f.registry.galleryRevision();assert.notEqual(next,bound);
  f.repository.setArchived(f.record.id,{expectedRevision:2,archived:true});assert.notEqual(f.registry.galleryRevision(),next);
+});
+
+
+test('read-only audit opens the existing registry without schema changes and cannot persist',async t=>{
+ const f=fixture(t);f.persist();const before=counts(f);
+ const db=new DatabaseSync(f.filename,{readOnly:true});
+ try{
+ const registry=createShopProductBindingStore({database:db,orderIntake:f.orders,adapter:f.adapter,tenantId,shopDomain,storeId,readOnly:true});
+ assert.deepEqual(registry.resolve(pair()),f.registry.resolve(pair()));assert.equal((await registry.listActiveForGallery()).length,1);assert.equal(registry.galleryRevision(),f.registry.galleryRevision());
+ assert.throws(()=>registry.persist({}),{code:'shop_binding_read_only',status:403});assert.deepEqual(counts(f),before);
+ }finally{db.close();} // Close before the fixture removes its directory on Windows.
+});
+
+
+test('benchmark reads a native copy cold and warm without changing any binding or product',async t=>{
+ const f=fixture(t,nativeDocument());f.persist(f.plan([{record:f.record,...pair(),options:prepareShopProduct(f.record).variants[0].options}]));const before=counts(f),source=f.repository.get(f.record.id);
+ const {benchmarkGalleryCopy}=await import('../../scripts/shop-gallery-benchmark.mjs');
+ const result=await benchmarkGalleryCopy({filename:f.filename,tenantId,storeId,shopDomain});
+ assert.equal(result.readOnly,true);assert.equal(result.cold.status,'ready');assert.equal(result.warm.status,'ready');assert.equal(result.activeBindings,1);assert.equal(result.lightweightProductReads,1);assert.equal(result.fullModelReads,0);assert.equal(result.assetReads,0);
+ assert.deepEqual(counts(f),before);assert.deepEqual(f.repository.get(f.record.id),source);
 });

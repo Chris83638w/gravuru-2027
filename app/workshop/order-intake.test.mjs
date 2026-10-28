@@ -96,3 +96,22 @@ test('status authentication, live rejection, currency, times and event collision
  assert.throws(()=>receive(f.intake,statusMessage(o.property.value,'refunded','2026-10-06T12:00:00Z','test-event-1234')),/Zahlungsnachricht/);
  const valid=statusMessage(o.property.value,'refunded');receive(f.intake,valid);assert.throws(()=>receive(f.intake,statusMessage(o.property.value,'paid')),/anderem Inhalt/);assert.throws(()=>receive(f.intake,sign(p,'status-event-1234')),/Statusnachricht/);
 });
+
+
+test('gallery approval batch checks every variant, reuses one document hash and reads fresh evidence on retry',async t=>{
+ const db=new DatabaseSync(':memory:');t.after(()=>db.close());let reads=0;
+ const connection=new Proxy(db,{get(target,key){if(key==='prepare')return sql=>{if(sql.startsWith('SELECT document FROM product_revisions'))reads++;return target.prepare(sql);};const value=Reflect.get(target,key,target);return typeof value==='function'?value.bind(target):value;}});
+ const intake=createOrderIntake({database:connection,snapshot:()=>{throw Error('No customer snapshot');}});
+ const productId='cfg_11111111-1111-4111-8111-111111111111',shopDomain='batch-test.myshopify.com',shopifyProductId='gid://shopify/Product/123';
+ const record={id:productId,revision:1,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:1999,designs:[{}]}};
+ for(const variantId of ['301','302','303'])intake.bind({shopDomain,variantId,record});
+ db.exec('CREATE TABLE product_revisions(tenant_id TEXT,product_id TEXT,revision INTEGER,document TEXT);CREATE TABLE doorbell_live_order_approvals(tenant_id TEXT,shop TEXT,product_gid TEXT,cfg_id TEXT,cfg_revision INTEGER,document_sha256 TEXT,variants_json TEXT,approval_id TEXT,approved_at TEXT);');
+ const body=JSON.stringify(record.document),{createHash}=await import('node:crypto');
+ db.prepare('INSERT INTO product_revisions VALUES(?,?,?,?)').run('gravuru',productId,1,body);
+ db.prepare('INSERT INTO doorbell_live_order_approvals VALUES(?,?,?,?,?,?,?,?,?)').run('gravuru',shopDomain,shopifyProductId,productId,1,createHash('sha256').update(body).digest('hex'),'["301","303"]','test-approval','2026-10-28');
+ const inputs=['301','302','303'].map(id=>({shopDomain,shopifyProductId,productId,productRevision:1,shopifyVariantId:'gid://shopify/ProductVariant/'+id}));
+ const result=await intake.doorbellGalleryApprovals(inputs);assert.deepEqual(result.map(r=>r?.id??null),['test-approval',null,'test-approval']);assert.equal(reads,1);
+ assert.equal(intake.doorbellLiveApproval(inputs[1]),null);
+ db.prepare('UPDATE product_revisions SET document=?').run(body+' ');
+ assert.deepEqual(await intake.doorbellGalleryApprovals(inputs),[null,null,null]);assert.equal(reads,2,'a second request must rehash the fixed document');
+});

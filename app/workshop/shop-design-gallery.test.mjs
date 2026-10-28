@@ -101,14 +101,15 @@ test('revision cache shares the cold build across sessions, keeps tokens private
  f.bindings.delete('gid://shopify/ProductVariant/102');revision='r2';
  assert.equal((await gallery.list(f.context)).total,150);assert.equal(reads,2);
 });
-test('cached lists expire and changed heads during construction never return stale cards',async()=>{
+test('cached lists survive elapsed time and changed heads during construction never return stale cards',async()=>{
  const f=fixture();let time=0,revision='r1',reads=0;
  f.store.registry.galleryRevision=()=>revision;
  f.store.registry.listActiveForGallery=async()=>{reads++;const rows=f.store.registry.listActive();if(reads===1){revision='r2';f.add(2);}return rows;};
  const gallery=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{throw Error('duplicate resolve');},modelFor:(_store,b)=>f.models.get(b.productId),allowedAssets:()=>new Set(),clock:()=>time});
  assert.equal((await gallery.list(f.context)).total,2);assert.equal(reads,2);
  time=9999;await gallery.list(f.context);assert.equal(reads,2);
- time=10000;await gallery.list(f.context);assert.equal(reads,3);
+ time=86400000;await gallery.list(f.context);assert.equal(reads,2);
+ revision='r3';await gallery.list(f.context);assert.equal(reads,3);
 });
 
 
@@ -121,4 +122,37 @@ test('model reuse still checks approval for every variant and the exact target a
  const gallery=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:ids=>({store:f.store,binding:f.bindings.get(ids.shopifyVariantId)}),modelFor:()=>{models++;return m;},allowedAssets:()=>new Set(),checkBinding:(_store,binding)=>{checks.push(binding.shopifyVariantId);if(!approved.has(binding.shopifyVariantId))throw Object.assign(Error('Not approved'),{status:404});}});
  const cards=(await gallery.list(f.context)).items;assert.equal(models,1);assert.deepEqual(checks,[b.shopifyVariantId,second.shopifyVariantId]);assert.equal(cards.length,1);assert.equal(cards[0].shopifyVariantId,second.shopifyVariantId);assert.equal(cards[0].unitCents,2248);
  approved.clear();assert.throws(()=>gallery.target(f.context,cards[0].target),/Not approved/);
+});
+
+
+test('cold deadline returns preparation status, shares the job and retry uses the finished cards',async t=>{
+ const f=fixture();let release,reads=0,models=0,cards=0;
+ const gate=new Promise(resolve=>{release=resolve;});
+ f.store.registry.galleryRevision=()=> 'fixed';
+ f.store.registry.listActiveForGallery=async()=>{reads++;await gate;return f.store.registry.listActive();};
+ const gallery=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{throw Error('no target lookup');},modelFor:()=>{models++;throw Error('full model forbidden for cards');},cardFor:(_s,b)=>{cards++;return f.models.get(b.productId);},allowedAssets:()=>new Set()});
+ t.mock.timers.enable({apis:['setTimeout']});
+ const warming=gallery.warm({store:f.store,binding:{shopDomain:f.context.binding.shopDomain}});
+ let answered=false;const first=gallery.list(f.context).then(r=>{answered=true;return r;});
+ await new Promise(resolve=>setImmediate(resolve));t.mock.timers.tick(3999);await Promise.resolve();assert.equal(answered,false);
+ t.mock.timers.tick(1);const pending=await first;
+ assert.equal(pending.status,'preparing');assert.equal(pending.nextPage,0);assert.equal(pending.total,null);assert.deepEqual(pending.items,[]);assert.match(pending.message,/Designs werden vorbereitet/);assert.equal(reads,1);
+ release();await warming;t.mock.timers.reset();
+ const ready=await gallery.list(f.context);assert.equal(ready.total,1);assert.equal(reads,1);assert.equal(cards,1);assert.equal(models,0);assert.ok(ready.items[0].target);
+});
+
+test('failed background build is handled and the next request retries without poisoning the cache',async()=>{
+ const f=fixture();let reads=0;
+ f.store.registry.galleryRevision=()=> 'fixed';f.store.registry.listActiveForGallery=async()=>{if(++reads===1)throw Error('temporary');return f.store.registry.listActive();};
+ const gallery=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{},modelFor:()=>{throw Error('full model');},cardFor:(_s,b)=>f.models.get(b.productId),allowedAssets:()=>new Set()});
+ await assert.rejects(gallery.warm(f.context),/temporary/);assert.equal((await gallery.list(f.context)).total,1);assert.equal(reads,2);
+});
+
+test('warm cards recheck revocation and resume per variant without rebuilding or losing a previously paused design',async()=>{
+ const f=fixture();let approved=false,reads=0;
+ f.store.registry.galleryRevision=()=> 'fixed';f.store.registry.listActiveForGallery=async()=>{reads++;return f.store.registry.listActive();};
+ const gallery=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{},modelFor:()=>{throw Error('full model');},cardFor:(_s,b)=>f.models.get(b.productId),allowedAssets:()=>new Set(),checkBinding:()=>{if(!approved)throw Object.assign(Error('paused'),{status:423});}});
+ await gallery.warm(f.context);assert.equal((await gallery.list(f.context)).total,0);
+ approved=true;assert.equal((await gallery.list(f.context)).total,1);
+ approved=false;assert.equal((await gallery.list(f.context)).total,0);assert.equal(reads,1);
 });

@@ -247,6 +247,7 @@ test('rate limits answer 429 and misconfiguration fails closed',()=>run(async(f,
 // Gallery tests retain historical Shopify identity/price evidence, but build
 // complete synthetic native models and use only the local HTTP server.
 function galleryEntryFixture(f){
+ f.store.workshop.galleryModel=(id,rev)=>f.store.workshop.model(id,rev);
  f.store.registry.listActive=()=>structuredClone([...f.bindings.values()]);
  for(const product of mapping.products){
   const c=f.models.get(product.localWorkshopRecord).universal,base=product.variants.find(v=>v.mountingKey==='K00').priceCents;
@@ -498,3 +499,22 @@ test('repeated design switches cannot extend the original source session',()=>ru
  const expired=await request('/api/shop-entry/design-gallery','GET',undefined,session(current));
  assert.equal(expired.status,403);assert.equal(expired.data.error.code,'shop_entry_expired');
 },galleryEntryFixture));
+
+
+test('startup warms the gallery without a customer and list never calls the full model builder',()=>run(async(f,request,{token})=>{
+ const {token:t}=await token();
+ for(let n=0;n<30&&f.cardReads()<3;n++)await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(f.cardReads(),3,'all three revisions warmed before first gallery request');
+ f.store.workshop.model=()=>{throw Error('Full model must not be loaded by gallery');};
+ const result=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));assert.equal(result.status,200,result.body.toString());assert.equal(result.data.total,3);
+ assert.equal(f.cardReads(),4,'only lightweight source check, no gallery rebuild');
+ const card=result.data.items.find(i=>i.current);f.paused.add(card.productId);
+ const paused=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));assert.equal(paused.status,423,'source pause is enforced even with warm cards');
+ f.paused.clear();const target=result.data.items.find(i=>i.productId!==f.first.localWorkshopRecord);f.paused.add(target.productId);
+ const filtered=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));assert.equal(filtered.data.total,2);assert.ok(!filtered.data.items.some(i=>i.productId===target.productId));
+ f.paused.clear();assert.equal((await request('/api/shop-entry/design-gallery','GET',undefined,session(t))).data.total,3);
+},f=>{
+ galleryEntryFixture(f);let reads=0;f.cardReads=()=>reads;f.paused=new Set();f.store.workshop.konfis={paused:id=>f.paused.has(id)};
+ f.store.workshop.galleryModel=(id,rev)=>{reads++;return structuredClone(f.models.get(id));};
+ f.store.registry.galleryRevision=()=> 'fixed';f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();
+}));

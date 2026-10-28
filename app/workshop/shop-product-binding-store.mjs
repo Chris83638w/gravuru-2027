@@ -24,7 +24,7 @@ const digest = v => createHash('sha256').update(canonical(v)).digest('hex');
 const clone = value => structuredClone(value);
 function sync(fn,...args){const v=fn(...args);if(v&&typeof v.then==='function')fail('shop_binding_store_async','Die atomare Zuordnung benötigt synchrone Speicherzugriffe.',503);return v;}
 
-export function createShopProductBindingStore({database:db,orderIntake,tenantId,storeId,shopDomain,adapter,clock=Date.now,personalizationPricingFor,legacySingleStore=false,logger=entry=>console.warn('[shop-gallery]',JSON.stringify(entry))}={}) {
+export function createShopProductBindingStore({database:db,orderIntake,tenantId,storeId,shopDomain,adapter,clock=Date.now,personalizationPricingFor,legacySingleStore=false,readOnly=false,logger=entry=>console.warn('[shop-gallery]',JSON.stringify(entry))}={}) {
   if(!db||typeof db.prepare!=='function'||typeof db.exec!=='function'||!orderIntake||
     typeof orderIntake.bindVariants!=='function'||typeof orderIntake.bindings!=='function'||
     typeof tenantId!=='string'||!/^[a-z0-9][a-z0-9-]{0,39}$/.test(tenantId)||
@@ -32,7 +32,7 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     typeof shopDomain!=='string'||!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(shopDomain)||
     !adapter||typeof adapter.getCurrentProduct!=='function'||typeof clock!=='function'||
     (personalizationPricingFor!==undefined&&typeof personalizationPricingFor!=='function')||
-    typeof legacySingleStore!=='boolean'||(legacySingleStore&&tenantId!=='gravuru'))
+    typeof readOnly!=='boolean'||typeof legacySingleStore!=='boolean'||(legacySingleStore&&tenantId!=='gravuru'))
     fail('shop_binding_store_configuration','Die private ID-Speicherung ist nicht eingerichtet.',503);
   const scope={tenantId,storeId,shopDomain};
   function ensureScope(){if(orderIntake.tenantId!==tenantId||Object.keys(scope).some(k=>adapter[k]!==scope[k]))fail('shop_binding_store_scope','Store, Shop und Mandant stimmen nicht überein.',503);}
@@ -50,7 +50,7 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     if(!columns.length||columns.includes('tenant_id')===legacySingleStore)
       fail('shop_binding_store_schema','Der Datenbestand entspricht nicht dem ausdrücklich festgelegten Store-Schema.',503);
   }
-  transaction(()=>db.exec(`
+  if(!readOnly)transaction(()=>db.exec(`
     CREATE TABLE IF NOT EXISTS shop_product_binding_revisions(
       tenant_id TEXT NOT NULL,shop TEXT NOT NULL,variant_gid TEXT NOT NULL,revision INTEGER NOT NULL CHECK(revision>0),
       product_gid TEXT NOT NULL,store_id TEXT NOT NULL,binding_id TEXT NOT NULL REFERENCES form_shop_bindings(id),
@@ -115,6 +115,7 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       productionReady:false,publicAccess:false,checkoutEnabled:false};
   }
   function persist({plan,expectedHeads}={}){
+    if(readOnly)fail('shop_binding_read_only','Diese Datenkopie ist nur lesbar.',403);
     storedScope();
     if(!plan||plan.purpose!=='id-binding'||!positive(plan.maxEvidenceAgeMs)||plan.maxEvidenceAgeMs>60000||!Array.isArray(plan.entries)||!plan.entries.length||plan.entries.length>100||
       !Array.isArray(expectedHeads)||expectedHeads.length!==plan.entries.length)

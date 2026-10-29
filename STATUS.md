@@ -1,3 +1,7 @@
+## 29.10.2026 · Astra · Türschilder: Bestand und Plan, noch keine Anbindung
+
+Nur lesend: Gesamtindex 1.324 Shopprodukte, Detailbestand 649 Produkte / 8.641 Varianten; eigener Branch dev/tuerschilder-anbindung-20261029-astra. 104 Edelstahl-Hauptprodukte vorhanden, 103 Startdesign-Freigaben offen; 410 Soll-Befestigungsvarianten fehlen. Acryl ohne Familien-/Hauptproduktzuordnung, aber 798 Serienvarianten (DRAFT). 15 von 29 Acryl-Shopmotiven weichen vom Original derselben Kennung ab. Preise, feste cfg-Revisionen und Preisvertrag vor Pilot klären. [Bericht mit Register, Motivvergleich, Belegen und Pilotplan](docs/handoffs/2026-10-29-tuerschilder-anbindung-bericht.md). Keine Shopify-Schreibaktion, Live-DB, Import/Bindung, Themewechsel oder Bereitstellung. Pilot erst nach Chris’ ausdrücklichem Satz.
+
 ## 28.10.2026 · Claude · Live: PR #41 Kunden-Konfigurator UX + iPhone-Absicherung (`main` `0643c70`)
 
 - Chris (19:49): „Ja, Du darfst PR #41 (Stand 602a3ac) nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `0643c70` (Baum = `602a3ac`, Linux 1775/1775), Plesk Pull + Bereitstellen, Ziel geprüft (`shop-embed` mit `editor-ready`/`loaded`, `shop-design-gallery.mjs`, `view-zoom.mjs`), App neu gestartet; `shop-design-switch.mjs` 200, `/api/workshop/session` 401.

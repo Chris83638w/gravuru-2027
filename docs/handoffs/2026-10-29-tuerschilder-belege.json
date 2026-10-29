@@ -1,0 +1,258 @@
+{
+  "schema": "gravuru-door-sign-audit-evidence/v1",
+  "readonly": true,
+  "code": "26952e48e857c9ad08b23bf4e8557f27dfdbc3eb",
+  "catalog": "caf50a6151cb0251813e341193487b0d9c3a2be3",
+  "allProductIndexCount": 1324,
+  "detailSummary": {
+    "readDate": "2026-10-29",
+    "code": "26952e48e857c9ad08b23bf4e8557f27dfdbc3eb",
+    "catalog": "caf50a6151cb0251813e341193487b0d9c3a2be3",
+    "products": 649,
+    "variants": 8641,
+    "groups": [
+      {
+        "scope": "Zuordnung offen",
+        "products": 4,
+        "variants": 4,
+        "shopStatus": {
+          "ACTIVE": 4
+        },
+        "status": {
+          "offen": 4
+        },
+        "prices": {
+          "ungeklaert": 4
+        }
+      },
+      {
+        "scope": "Andere Linie oder Verfahren",
+        "products": 362,
+        "variants": 1094,
+        "shopStatus": {
+          "ACTIVE": 334,
+          "DRAFT": 28
+        },
+        "status": {
+          "ausserhalb": 1094
+        },
+        "prices": {
+          "ungeklaert": 1094
+        }
+      },
+      {
+        "scope": "Edelstahl-Hauptprodukt",
+        "products": 104,
+        "variants": 120,
+        "shopStatus": {
+          "ACTIVE": 104
+        },
+        "status": {
+          "offen": 116,
+          "passt": 4
+        },
+        "prices": {
+          "abweichend": 100,
+          "gleich": 20
+        }
+      },
+      {
+        "scope": "Acryl-Bestandsmotiv",
+        "products": 29,
+        "variants": 29,
+        "shopStatus": {
+          "ACTIVE": 29
+        },
+        "status": {
+          "offen": 29
+        },
+        "prices": {
+          "abweichend": 25,
+          "ungeklaert": 4
+        }
+      },
+      {
+        "scope": "Edelstahl-GR-Serie",
+        "products": 141,
+        "variants": 5907,
+        "shopStatus": {
+          "ACTIVE": 141
+        },
+        "status": {
+          "offen": 5907
+        },
+        "prices": {
+          "abweichend": 4797,
+          "gleich": 1110
+        }
+      },
+      {
+        "scope": "Acryl-GR-Serie",
+        "products": 1,
+        "variants": 70,
+        "shopStatus": {
+          "ACTIVE": 1
+        },
+        "status": {
+          "offen": 70
+        },
+        "prices": {
+          "ungeklaert": 70
+        }
+      },
+      {
+        "scope": "Acryl-Formserie",
+        "products": 1,
+        "variants": 798,
+        "shopStatus": {
+          "DRAFT": 1
+        },
+        "status": {
+          "offen": 798
+        },
+        "prices": {
+          "gleich": 798
+        }
+      },
+      {
+        "scope": "Edelstahl-Testprodukt",
+        "products": 5,
+        "variants": 309,
+        "shopStatus": {
+          "UNLISTED": 4,
+          "ACTIVE": 1
+        },
+        "status": {
+          "offen": 309
+        },
+        "prices": {
+          "abweichend": 204,
+          "gleich": 105
+        }
+      },
+      {
+        "scope": "Edelstahl-Pruefentwurf",
+        "products": 1,
+        "variants": 1,
+        "shopStatus": {
+          "DRAFT": 1
+        },
+        "status": {
+          "offen": 1
+        },
+        "prices": {
+          "ungeklaert": 1
+        }
+      },
+      {
+        "scope": "Edelstahl-Variante-C",
+        "products": 1,
+        "variants": 309,
+        "shopStatus": {
+          "ACTIVE": 1
+        },
+        "status": {
+          "offen": 309
+        },
+        "prices": {
+          "abweichend": 204,
+          "gleich": 105
+        }
+      }
+    ],
+    "missingShop": 410,
+    "steelPlan": {
+      "unverändert": 1,
+      "update": 0,
+      "create": 0,
+      "konflikt": 0,
+      "offen": 103
+    }
+  },
+  "visual": {
+    "shopPhotos": 280,
+    "catalogAssociations": 133,
+    "acrylDifferences": 15,
+    "renderPurpose": "Nur Motivabgleich; keine Mass-, Schrift- oder Fertigungsfreigabe"
+  },
+  "basePath": "C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-10-23\\files-pasted-by-the-user-du\\outputs\\tuerschilder-anbindung-20261029",
+  "files": [
+    {
+      "file": "shop-gesamtindex.json",
+      "bytes": 615739,
+      "sha256": "48633ba3a45efc3da7afc9184737723d9500c16c97d747a992da27bba101b906"
+    },
+    {
+      "file": "shop-products-complete.json",
+      "bytes": 6372387,
+      "sha256": "ccca9bd28e6229dfbb37da509f408256851071add7caa7918d204676d6142fff"
+    },
+    {
+      "file": "shop-export-normalized.json",
+      "bytes": 6823290,
+      "sha256": "1f99f5f14ad669e5d4871c16a8facdcd930372e2bbcb5799b28a6680a5ac5e05"
+    },
+    {
+      "file": "varianten-plan.json",
+      "bytes": 9790352,
+      "sha256": "cd5db61f3782d15ee9106306ab9a527b68e686e5a6601390bc2daf657828e149"
+    },
+    {
+      "file": "varianten-plan.csv",
+      "bytes": 4972538,
+      "sha256": "dcd79762e57aca8681df0db7a6fae1e508649bf6f1ab76771efd179579dff703"
+    },
+    {
+      "file": "fehlende-shop-varianten.csv",
+      "bytes": 105141,
+      "sha256": "69372e06123adc7f1ec10eba4e039d77dd838cfdee83294fe155ddf47265ca29"
+    },
+    {
+      "file": "produkte.csv",
+      "bytes": 331689,
+      "sha256": "1231fc5dfd97f27084c42d9791b7bcc02d2f039d2a64b21cf2d2c8b644142158"
+    },
+    {
+      "file": "shop-sync-steel-plan.json",
+      "bytes": 192025,
+      "sha256": "869eb05132a2932d68c27c2dad622834cd1e45e10ebd92cda17a83230f5bf2a6"
+    },
+    {
+      "file": "shop-sync-acryl-plan.json",
+      "bytes": 710,
+      "sha256": "54021eaf47b45167c700d88dbcdc28c7ce41be095fa0fa46b8e163603c910348"
+    },
+    {
+      "file": "shop-bind-plan-ohne-db.json",
+      "bytes": 25553,
+      "sha256": "3e06801b2bd3f614c28bbf948b2f68845e43f2e73517e6326f27372a6b23cd34"
+    },
+    {
+      "file": "motiv-abgleich-acryl.json",
+      "bytes": 18601,
+      "sha256": "453ae6b1818c5ece0846a0525fa67f9c8911474aaf72ad8db6986d2ec1f0425c"
+    },
+    {
+      "file": "preisquellen-konflikte.json",
+      "bytes": 17472,
+      "sha256": "3ea0a77f52436093d9f5a65b8010b430ffef39b0120357ac941a4b2f67e300db"
+    },
+    {
+      "file": "theme-start-readback.json",
+      "bytes": 4068,
+      "sha256": "e1fc2d0c774a9b3569f5fcf95606ea7fd768e07783dcaad03baaa6cc59bef396"
+    },
+    {
+      "file": "bestand-tuerschilder-readback.json",
+      "bytes": 3509346,
+      "sha256": "d79c19c46ba909794e6647207ca382ac7e1cd7a8ab7af41337481fcb94eda1d2"
+    },
+    {
+      "file": "bildpruefung.json",
+      "bytes": 133247,
+      "sha256": "1406c9e030a1509d81651fa5f40e08a5097780536bb651eafcdadbc6911587d9"
+    }
+  ],
+  "liveDbRead": false,
+  "pricingContractReadAsOwningApp": false
+}

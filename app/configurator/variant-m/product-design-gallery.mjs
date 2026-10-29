@@ -1,10 +1,16 @@
 import {captureProductTexts,transferProductTexts} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
+import {isLayeredDoorbell} from './doorbell-selection.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
 
 export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
+ // Every native doorbell already carries all its designs for every selectable
+ // format. Use that existing gallery/selection path: the cross-product gallery
+ // repeats each design over three product entries and their three formats.
+ // Choosing locally also preserves color, frame, mounting and bell position.
+ if(isLayeredDoorbell(config))return;
  let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return;
  el.uxHasProductDesignGallery=true;
  const profile=()=>el.uxSelectedProfile?.()||config.profile;
@@ -62,3 +68,5 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
  window.addEventListener('pagehide',()=>{observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
  el.sync();
 }
+
+

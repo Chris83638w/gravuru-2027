@@ -16,6 +16,10 @@ export async function installWorkflow(api){
  const $=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/workflow.css').then(res=>{if(!res.ok)throw Error('Bedienung fehlt');return res.text();});r.append(style);
  const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
+ // Existing doorbell templates also place text beside/below the device. The
+ // largest free rectangle is for placing NEW objects, not the entire text area.
+ const textSurface=()=>config?.doorbell?.schema==='gravuru-doorbell/v1'
+  ? chosenProfile().frames.find(f=>f.key===el.state.mOptions.frame).acrylic : surface();
  const surface=()=>{const geometry=el.uxProfileGeometry?.()||profile.geometry;if(config?.doorbell?.schema==='gravuru-doorbell/v1'&&geometry.designArea){const a=geometry.designArea;return {...geometry,x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top};}return config?{x:0,y:0,...geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;};
  const obstacles=()=>{const bell=(el.uxProfileGeometry?.()||profile.geometry).bell;return (!config||config.doorbell)&&bell?[{x:bell.x+bell.width/2,y:bell.y+bell.height/2,w:bell.width,h:bell.height}]:[];};
  function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent='Ausführungen';const contents=$('[data-ux=contents]');if(contents)contents.innerHTML=uiIcon('layers')+'<span class="ux-tool-label">Ebenen</span> <span data-ux-count>('+el.state.objects.length+')</span>';if(contents){contents.setAttribute('aria-label','Ebenen ('+el.state.objects.length+')');contents.title='Ebenen ('+el.state.objects.length+')';}const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
@@ -66,7 +70,7 @@ export async function installWorkflow(api){
  // Ü3.2: Autofit verkleinert bis zur Mindestgröße (K10: minTextMm des Verfahrensprofils, sonst 4 mm;
  // im Werkstatt-Editor 1 mm). Reicht das nicht, bleibt die Mindestgröße stehen und das Feld meldet
  // „Text zu lang“ (uxTextOverflow='length').
- el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),surface(),min);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
+ el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),textSurface(),min);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
  r.addEventListener('input',e=>{if(e.target.dataset.uxText){const o=el.state.objects.find(o=>o.id===e.target.dataset.uxText);if(o)o.uxCustomerText=true;}},true);
  let placementJob=Promise.resolve();
  // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz – Suche über die ganze
@@ -153,7 +157,7 @@ export async function installWorkflow(api){
  let committed=thumbnailSignature(sourceTexts());
  el.uxThumbnailSignature=()=>{const live=thumbnailSignature(sourceTexts());if(live!==committed){clearTimeout(commitTimer);commitTimer=setTimeout(()=>{committed=live;refreshThumbnails();},250);}return committed;};
  el.uxThumbnailBudget=THUMBNAIL_BATCH;
- el.uxThumbnailDesign=design=>thumbnailDesign(design,sourceTexts(),o=>{measureText(o,el.fontData);try{const size=fitText(o,bounds(o),surface(),config?.workbench?.embedded?1:4/(el.uxTextScale?.()||1));if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,el.fontData);}}catch{}});
+ el.uxThumbnailDesign=design=>thumbnailDesign(design,sourceTexts(),o=>{measureText(o,el.fontData);try{const size=fitText(o,bounds(o),textSurface(),config?.workbench?.embedded?1:4/(el.uxTextScale?.()||1));if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,el.fontData);}}catch{}});
  el.uxThumbnailDeferred=card=>!seen.has(card);
  const watcher=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{let due=false;for(const entry of entries){if(entry.isIntersecting){seen.add(entry.target);due=true;}else seen.delete(entry.target);}if(due)refreshThumbnails();},{rootMargin:'160px'}):null;
  function watchCards(){for(const card of all('[data-c-design]')){if(watcher){if(!card.dataset.thumbWatched){card.dataset.thumbWatched='';watcher.observe(card);}}else seen.add(card);}}
@@ -175,4 +179,5 @@ export async function installWorkflow(api){
  await installCompletion(api);
  el.sync();
 }
+
 

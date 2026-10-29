@@ -9,6 +9,7 @@ const sha='f'.repeat(64),konfig='konfig_'+'1'.repeat(8)+'-1111-1111-1111-'+'1'.r
 test('editor paths of both store flavours map to the narrow customer routes; everything else is refused',()=>{
  for(const prefix of ['/api/workshop/','/api/workshop/acryl/']){
   assert.equal(mapWorkshopPath(prefix+'acrylic-drafts'),'/api/shop-entry/acrylic-drafts');
+  assert.equal(mapWorkshopPath(prefix+'customer-vector-logo/preview'),'/api/shop-entry/customer-vector-logo/preview');
   assert.equal(mapWorkshopPath(prefix+'acrylic-drafts/'+adraft),'/api/shop-entry/acrylic-drafts/'+adraft);
   assert.equal(mapWorkshopPath(prefix+'design-assets/'+sha+'/preview.svg'),'/api/shop-entry/design-assets/'+sha+'/preview.svg');
   assert.equal(mapWorkshopPath(prefix+'cart-configurations/'+konfig+'/3/photos/foto-1?edited=1'),'/api/shop-entry/cart-configurations/'+konfig+'/3/photos/foto-1?edited=1');

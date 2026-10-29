@@ -75,7 +75,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const o=selected();if(editing&&o?.id!==editing.id)close();
     const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open;
     const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full});
-    const text=o?.type==='text',photo=!!o?.uxUploadId,motif=o?.type==='motif';
+    const text=o?.type==='text',photo=!!o?.uxUploadId&&!o.uxVectorLogo,motif=o?.type==='motif';
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
     if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space','0px');stage.style.setProperty('--ux-toolbar-space','0px');el.style.setProperty('--ux-textbar-h','0px');if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=text||!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent=fontDisplayName(o.font||'Schrift');font.title=font.textContent;

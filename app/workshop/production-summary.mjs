@@ -11,6 +11,7 @@ import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {optionFieldEntries} from '../configurator/variant-m/contract.mjs';
 import {hasBack,objectSurface,producedSurfaces,surfaceLabel} from '../configurator/variant-m/surfaces.mjs';
+import {customerVectorLogoFragment} from './customer-vector-logo-media.mjs';
 
 // Werkstatt-Zusammenfassung je Fertigungspaket (Ü7.1). Alle Werte stammen aus dem
 // gesicherten Prüfstand und den Renderer-Metadaten; nichts wird neu berechnet,
@@ -52,6 +53,10 @@ function nativeDetails(files,manifest,targetDpi){
  const processing=getProcessingProfile(config.profile),material=config.profile.material||{};
  const resolution=Array.isArray(manifest.photoResolution)?manifest.photoResolution:[];
  const photos=(manifest.photos||[]).map((p,index)=>{const measured=resolution.find(r=>r.uploadId===p.uploadId),object=state.design.objects.find(o=>o.uxUploadId===p.uploadId),effectiveDpi=Number.isFinite(measured?.effectiveDpi)?measured.effectiveDpi:null,status=resolutionStatus(effectiveDpi,targetDpi);
+  if(p.kind==='vector-logo'){
+   customerVectorLogoFragment(p,object,files);
+   return {fieldId:object.id,label:object.label||'Kundenlogo',kind:'vector-logo',path:p.path,fileName:p.path.split('/').pop(),sha256:p.sha256,width:p.width,height:p.height,editedPath:p.edited.path,vectorLogo:p.vectorLogo,detailCheck:'manual-required',minFeatureUnits:null,effectiveDpi:null,targetDpi:null,status:'vektor',note:'Bestätigte schwarze Vektorflächen. Feine Details in der gewählten Größe manuell prüfen; keine automatische Mindeststärkenprüfung.'};
+  }
   return {fieldId:object?.id??null,label:object?.label??object?.fieldKey??measured?.label??('Foto '+(index+1)),path:p.path,fileName:p.path.split('/').pop(),sha256:p.sha256,width:p.width,height:p.height,editedPath:p.edited?.path??null,effectiveDpi,targetDpi,status,note:photoNote(status)};});
  return {product:{material:{kind:material.kind??null,label:MATERIAL_KINDS[material.kind]||material.kind||'offen',thicknessMm:round(material.thicknessMm,3),colorHex:material.color??null},
    widthMm:round(g.width,3),heightMm:round(g.height,3),shape:g.shape??'rect',cornerRadiusMm:round(g.cornerRadiusMm||0,3),

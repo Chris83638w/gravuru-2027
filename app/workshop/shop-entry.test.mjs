@@ -56,6 +56,18 @@ async function run(fn,mutate=()=>{}){
 }
 const session=t=>({'X-Gravuru-Shop-Session':t});
 
+test('customer logo conversion stays behind the shop session, same origin and exact product revision',()=>run(async(f,request,{token})=>{
+ const issued=await token(),headers=session(issued.token),input={productId:f.first.localWorkshopRecord,productRevision:3,name:'synthetic.svg',original:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="1" y="1" width="18" height="18" fill="red"/></svg>').toString('base64')};
+ const route='/api/shop-entry/customer-vector-logo/preview';
+ assert.equal((await request(route,'POST',input)).status,403);
+ assert.equal((await request(route,'POST',input,{...headers,Origin:'https://foreign.example'})).status,403);
+ assert.equal((await request(route,'POST',{...input,productRevision:2},headers)).status,409);
+ assert.equal((await request(route,'POST',{...input,productId:'cfg_foreign'},headers)).status,409);
+ const response=await request(route,'POST',input,headers);assert.equal(response.status,200,response.body.toString());
+ assert.match(Buffer.from(response.data.svg,'base64').toString(),/fill="#000000"/);assert.match(Buffer.from(response.data.preview,'base64').toString(),/fill="#ff0000"/);
+ assert.equal(response.headers['cache-control'],'private, no-store');assert.equal(response.data.version,'svg-black-v1');
+},f=>{for(const m of f.models.values()){m.universal.logo={enabled:true,vectorUpload:true,extraPriceCents:1299};m.universal.photo={enabled:false,mode:'upload-only'};m.universal.profile.material={kind:'steel',thicknessMm:1.5};m.universal.profile.processing={profileId:'steel-engraving'};}}));
+
 test('signed start resolves the binding through the registry and redirects with a session in the fragment',()=>run(async(f,request,{open,token})=>{
  const r=await open();
  assert.equal(r.status,302);assert.match(r.headers['content-type'],/text\/html/);assert.equal(r.headers['x-robots-tag'],'noindex, nofollow, noarchive');

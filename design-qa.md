@@ -1,3 +1,7 @@
+# Design QA — Kundenlogo-Vergleich
+
+Lokaler SVG-Upload auf gesonderter D8-Kopie geprüft: Originalfarben/Schwarz auf echter Platte, kontrollierte Bestätigung, Abbruch unverändert, 12,99 € separat im Gesamtpreis, keine Foto-Bildbearbeitung für geprüfte Vektoren. Neue Logo-Dialogschrift und Buttons werden auf 16 px gehalten; 390×664 und 375×548 sind innen scrollbar. [Bilder und vollständige Grenzen](docs/handoffs/2026-10-29-kundenlogos-gravur-astra.md). Die gesammelten weiteren Layoutwünsche bleiben ausdrücklich offen. Kein Live-/Safari-Nachweis.
+
 # Design QA — ausgewählte Richtung 6
 
 **Ergebnis: passed** für die lokale visuelle Umsetzung und die unten geprüften Interaktionen. Dies ist keine Freigabe für eine Live-Installation oder echtes iOS.

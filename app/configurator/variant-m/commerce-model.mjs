@@ -7,15 +7,16 @@ import {SURCHARGE_UNAVAILABLE_MESSAGE} from './surcharge-availability.mjs';
 const baseVariantPrice=(config,options)=>quote(config,[],config.profile.defaultDesignId,choiceOptions(config,resolvedOptions(config,options))).unitCents;
 export const variantKey=options=>JSON.stringify(Object.entries(options).sort());
 export function commercePrice(config,state,quantity=1){
- const q=quote(config,state.objects,state.designId,state.mOptions,quantity),photos=uploadQuote(state.objects,quantity,false,config.photo);
+ const q=quote(config,state.objects,state.designId,state.mOptions,quantity),photos=uploadQuote(state.objects,quantity,false,config.photo,config.logo);
+ const uploads={chargedUploads:photos.chargedUploads??(config.photo.extraPriceCents?photos.unitCents/config.photo.extraPriceCents:0),...(photos.chargedLogos===undefined?{}:{chargedLogos:photos.chargedLogos})};
  // Explicit new contract: discount the complete unit once, including all photos.
  // Older saved unscoped revisions remain readable with their original arithmetic.
  if(q.quantityTierScope==='complete-unit'){
   const listUnitCents=q.listUnitCents+photos.unitCents,unitCents=applyQuantityTier(listUnitCents,q.quantityTier);
   if(!Number.isSafeInteger(unitCents*quantity))throw Error('Ungültiger Gesamtpreis.');
-  return {...q,chargedUploads:config.photo.extraPriceCents?photos.unitCents/config.photo.extraPriceCents:0,listUnitCents,unitCents,totalCents:unitCents*quantity,quantityTierDiscountCents:listUnitCents-unitCents,key:variantKey(choiceOptions(config,q.options))};
+  return {...q,...uploads,listUnitCents,unitCents,totalCents:unitCents*quantity,quantityTierDiscountCents:listUnitCents-unitCents,key:variantKey(choiceOptions(config,q.options))};
  }
- return {...q,chargedUploads:config.photo.extraPriceCents?photos.unitCents/config.photo.extraPriceCents:0,unitCents:q.unitCents+photos.unitCents,totalCents:q.totalCents+photos.totalCents,...(q.listUnitCents!==undefined?{listUnitCents:q.listUnitCents+photos.unitCents}:{}),key:variantKey(choiceOptions(config,q.options))};
+ return {...q,...uploads,unitCents:q.unitCents+photos.unitCents,totalCents:q.totalCents+photos.totalCents,...(q.listUnitCents!==undefined?{listUnitCents:q.listUnitCents+photos.unitCents}:{}),key:variantKey(choiceOptions(config,q.options))};
 }
 export function validateCommerce(config,binding){
  if(binding?.schema!=='gravuru-shopify-commerce/v2'||!/^gid:\/\/shopify\/Product\/\d+$/.test(binding.productId)||binding.profileId!==config.profile.id||String(binding.revision)!==String(config.profile.revision)||binding.currency!=='EUR')throw Error('Shop-Produktzuordnung stimmt nicht mit dem Entwurf überein.');
@@ -33,7 +34,7 @@ export function selectCommerceVariant(config,binding,state,quantity=1){
  const price=commercePrice(config,state,quantity),variant=binding.variants.find(v=>v.key===price.key);
  if(!variant)throw Error('Diese Ausführung ist derzeit nicht bestellbar.');
  if(variant.priceCents!==baseVariantPrice(config,price.options))throw Error('Der Shop-Preis passt nicht mehr zur gespeicherten Ausführung.');
- if(binding.priceMode!=='shopify-cart-transform'&&((price.chargedMotifs??price.additionalMotifs)||price.chargedUploads||price.fieldCents))throw Error(SURCHARGE_UNAVAILABLE_MESSAGE);
+ if(binding.priceMode!=='shopify-cart-transform'&&((price.chargedMotifs??price.additionalMotifs)||price.chargedUploads||price.chargedLogos||price.fieldCents))throw Error(SURCHARGE_UNAVAILABLE_MESSAGE);
  // Ein fester Variantenpreis kann keine Staffel abbilden; der Shop würde den Listenpreis berechnen.
  if(binding.priceMode!=='shopify-cart-transform'&&price.quantityTier)throw Error('Die Mengenstaffel ist im Shop-Warenkorb noch nicht freigeschaltet.');
  return {...price,variantId:variant.id,baseVariantCents:variant.priceCents};

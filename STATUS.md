@@ -1,3 +1,7 @@
+## 2026-10-29 – Codex/Astra: Live-Freigabe der Funkklingel-Oberfläche
+
+Chris im Chat: „stell es live“. Revisionsvorbereitung ergänzt: vorhandenes Produktdokument, Geometrie, Preise, Ressourcen und SEO bleiben erhalten; Designs und ihre expliziten move/delete/replace-Rechte werden über neue Revisionen übernommen. 27/27 gezielte Tests lokal bestanden. Serverbasis der 16 geänderten Laufzeit-/Testdateien bytegenau gegen GitHub geprüft; isolierte Linux-Abnahme und private Sicherung laufen. Noch keine Aktivierung behauptet. Nächster Schritt: Linux-/Store-Abnahme, AOSU-Pilot, neue Bindungsrevisionen; keine zusätzlichen Shopify-Produktveröffentlichungen oder Themeänderungen im Rahmen dieser UI-Freigabe.
+
 ## 2026-10-29 – Codex/Astra: Format-/Positionsblöcke und bearbeitbare Designelemente (PR #60)
 
 Nutzerauftrag: Format und Position untereinander; Designtexte und Motive verschieb-/löschbar. Kompakte Auswahlzeilen und Rechte in vorbereiteten neuen Revisionen umgesetzt, ohne Frontend-Bypass. 14/14 Tests, Build, 126 Produktkopien / 42 Modelle / 30.240 Auswahlfälle sowie 47.628 Elementfälle für move/delete geprüft. Browser-Löschen, Rückgängig und unabhängiges Verschieben des Kreismotivs bestanden. Nur Vorschau/eigener Branch. Bericht: docs/handoffs/2026-10-29-funkklingeln-bloecke-elementrechte.md. Nächster Schritt: Revisionsänderung bei späterer Katalogübernahme mitführen; kein reines UI-Deployment als Rechtefreigabe ausgeben.

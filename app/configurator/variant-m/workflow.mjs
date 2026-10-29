@@ -143,7 +143,7 @@ export async function installWorkflow(api){
  const pricing=$('.ux-motif-pricing');if(pricing)entry.prepend(pricing);
  const extra=document.createElement('button');extra.type='button';extra.className='ux-extra-motif';extra.textContent='+ Weiteres Motiv auswählen';entry.append(extra);
  extra.hidden=config?.customerAdditions?.motifs===false||profile.features?.motifsAllowed===false;
- extra.addEventListener('click',()=>{motifMode='add';openBrowser();say('Wähle ein weiteres Motiv. Das vorhandene Motiv bleibt erhalten.');});
+ extra.addEventListener('click',()=>{motifMode='add';openBrowser();say('');});
  browser.addEventListener('close',()=>{if(!categoryDialog.open)motifMode='replace';});
  const grid=$('[data-library-grid]'),more=$('[data-library-more]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
  let browserScroll=0;browser.addEventListener('close',()=>{browserScroll=browser.scrollTop;});

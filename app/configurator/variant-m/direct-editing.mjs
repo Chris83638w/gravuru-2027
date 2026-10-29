@@ -108,8 +108,12 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
       const width=Math.min(parent.width-24,Math.max(260,(target?.width||160)+32));
       const center=target?target.left-parent.left+target.width/2:bounds.left-parent.left+o.x*bounds.width/el.state.width;
       box.style.width=width+'px';box.style.left=Math.max(12,Math.min(parent.width-width-12,center-width/2))+'px';
-      field.style.fontFamily='"'+String(o.font||'').replaceAll('"','')+'", serif';field.style.fontSize=Math.max(16,Math.min(26,o.size*bounds.width/el.state.width))+'px';field.style.color='#293e34';field.style.fontWeight=o.bold?'700':'400';field.style.fontStyle=o.italic?'italic':'normal';
-      field.style.height='auto';field.style.height=Math.min(110,Math.max(32,field.scrollHeight))+'px';updateCount(o);
+      // The general input font uses !important; keep the actual design font and
+      // a comfortable editing size without changing the engraved millimetres.
+      field.style.setProperty('font-family','"'+String(o.font||'').replaceAll('"','')+'", serif','important');
+      field.style.setProperty('font-size',Math.max(mobile?22:26,Math.min(mobile?32:42,o.size*bounds.width/el.state.width))+'px','important');
+      field.style.setProperty('font-weight',o.bold?'700':'400','important');field.style.setProperty('font-style',o.italic?'italic':'normal','important');field.style.color='#252a2e';
+      field.style.height='auto';field.style.height=Math.min(mobile?140:200,Math.max(32,field.scrollHeight))+'px';updateCount(o);
       const centerY=target?target.top-parent.top+target.height/2:bounds.top-parent.top+o.y*bounds.height/el.state.height;
       const bottomGap=typeof el.uxViewZoom==='function'?60:8;
       const maxTop=Math.max(8,parent.height-box.offsetHeight-bottomGap),minTop=mobile||inWorkbench?8:Math.min(maxTop,(parseFloat(panel.style.top)||0)+panel.offsetHeight*scale+8);

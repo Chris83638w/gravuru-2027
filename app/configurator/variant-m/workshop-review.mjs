@@ -55,7 +55,7 @@ export function installWorkshopReview(api,footer){
    if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
    const fingerprint=JSON.stringify(api.el.state),art=await printArtwork(api),used=new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)),media=[];
    for(const id of used)media.push(await logoMediaPayload(api.files.get(id),id));
-   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:Number(api.r.querySelector('[data-fk-quantity]').value||1),media,preview:await referencePng(art.svg,art.geometry)};
+   const payload={...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:Number(api.r.querySelector('[data-fk-quantity]').value||1),media,preview:await referencePng(art.svg,art.geometry)};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut sichern.');
    const session=await request('/api/workshop/session'),credentials=await session.json();if(!session.ok||!['local-operator','shopify-merchant-test'].includes(credentials.scope))throw Error('Die Werkstattprüfung benötigt eine geschützte Werkstattsitzung.');
    savePrivate??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:request});

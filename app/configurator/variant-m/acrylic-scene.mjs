@@ -3,6 +3,7 @@ import {ACRYLIC_BASES,acrylicSelection,acrylicOptions,containAcrylicObject} from
 import {money,quote} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
 import {PHOTO_ACCEPT} from './photo-upload.mjs';
+import {designPaintOrder} from '../../platform/sources/app/shared/models/design-layer-order.mjs';
 // Kundenansicht: WebP-Fassungen (customer-images.json); PNG-Originale bleiben für Fertigung/Referenz.
 const ROOT='/acrylic-assets/';
 export async function installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles}) {
@@ -93,7 +94,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    const uploaded=files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId);
    if(!uploaded)throw Error('Bitte zuerst das Beispielfoto durch dein eigenes Foto ersetzen.');
    let body='';const selectedId=el.state.selected;el.state.selected=null;
-   try{for(const o of el.state.objects.filter(o=>!o.uxHidden&&o.role!=='guide')){
+   try{for(const o of designPaintOrder({objects:el.state.objects,textOnTop:true}).filter(o=>!o.uxHidden&&o.role!=='guide')){
      const xml=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+el.objectSVG(o)+'</svg>','image/svg+xml');
      xml.querySelectorAll('[data-preview-only],[data-role="guide"],[data-resize],rect[fill="transparent"]').forEach(n=>n.remove());
      if(o.type==='motif'&&o.preserveColors===false){xml.querySelectorAll('filter').forEach(n=>n.remove());for(const n of xml.querySelectorAll('*')){n.removeAttribute('filter');for(const key of ['fill','stroke'])if(n.hasAttribute(key)&&n.getAttribute(key)!=='none')n.setAttribute(key,o.color);}}

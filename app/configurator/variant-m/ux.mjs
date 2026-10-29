@@ -1,3 +1,4 @@
+import {installReviewLayout} from './review-layout.mjs';
 import {installProductDesignGallery} from './product-design-gallery.mjs';
 import {installViewZoom} from './view-zoom.mjs';
 import {installMotifTileFit} from './motif-tile-fit.mjs';
@@ -289,7 +290,7 @@ export async function installUX(el,config,legacy){
     // dialog is visible, so Safari and Chromium measure a rendered SVG.
     for(const svg of all('.ux-font-grid svg')){const b=svg.querySelector('[data-font-ink]').getBBox();if(b.width>0&&b.height>0){const pad=Math.max(1,b.height*.12);svg.setAttribute('viewBox',`${b.x-pad} ${b.y-pad} ${b.width+2*pad} ${b.height+2*pad}`);}}
   }
-  function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=el.uxHasProductDesignGallery===true||profile.designs.length>1;tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note)note.hidden=true;}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
+  function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=el.uxHasProductDesignGallery===true||profile.designs.length>0;tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note)note.hidden=true;}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
   const designFor=id=>chosenProfile().designs.find(d=>d.id===id);
   function label(o){return o.uxDecoration?'Gestaltungslinie':o.uxUploadId?(o.uxUploadKind==='logo'?'Dein Logo':'Dein Foto'):o.type==='text'?(o.text||'Leerer Text'):o.type==='motif'?(el.catalog.motif_labels?.[o.motif]||'Motiv'):names[o.type]||'Element';}
   function renderContents(){if(!dialogs.contents.open||r.activeElement?.matches('[data-ux-content-prop]'))return;$('[data-ux-contents-list]').innerHTML=el.state.objects.map(o=>`<div class="ux-content-row">${button('select-content',`${esc(label(o))}<small>${o.uxHidden?'Ausgeblendet':'Auf deinem Produkt'}${o.uxLocked?' · gesperrt':''}</small>`,`data-id="${esc(o.id)}" aria-pressed="${o.id===el.state.selected}"`)}<label title="Anzeigen oder ausblenden"><input type="checkbox" data-ux-visible="${esc(o.id)}" aria-label="${esc(label(o))} anzeigen" ${o.uxHidden?'':'checked'}></label>${button('lock',o.uxLocked?'🔒':'🔓',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} ${o.uxLocked?'entsperren':'sperren'}" aria-pressed="${!!o.uxLocked}"`)}${button('remove-content',icons.delete||'×',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} löschen" ${o.uxLocked?'disabled':''}`)}</div>`).join('');
@@ -505,6 +506,7 @@ export async function installUX(el,config,legacy){
   el.addEventListener('gravuru-early-photo',takeEarlyPhoto);takeEarlyPhoto();
   if(config)installLegacyCartRestore({el,config,files});
   await installProductDesignGallery({el,r,config,say,dialog,esc});
+  installReviewLayout({el,r});
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).
   if(config)installBackgroundLoading({el,r,config});

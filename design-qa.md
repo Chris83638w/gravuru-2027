@@ -1,6 +1,10 @@
+# Design QA — Layoutnachtrag nach Richtung 6
+
+Neun gesammelte Punkte umgesetzt. Lokale Sichtprüfung Desktop 1440×900, iPhone-13-Viewport 390×664 und SE-Viewport 375×548. Heller Werkzeugblock oberhalb der Platte, dunkle Kopfzeile, pinke Griffe, sichtbare Designs und weitere Bibliotheksmotive. Direkteingabe tatsächlich 42 px / Cinzel und ohne Zweizeilen-Scrollbalken am Desktop; Gravurgröße unverändert 8 mm. Mobile Textleiste zweireihig, Schritte/Preis frei, kein horizontaler Hüllenüberlauf. Bestehende Nutzerentwürfe unangetastet. [Bilder und Grenzen](docs/handoffs/2026-10-30-konfi-layout-nachtrag-astra.md). Kein Live-/Safari-Nachweis; zusätzliche Bestseller-Dateien von Chris stehen aus.
+
 # Design QA — Kundenlogo-Vergleich
 
-Lokaler SVG-Upload auf gesonderter D8-Kopie geprüft: Originalfarben/Schwarz auf echter Platte, kontrollierte Bestätigung, Abbruch unverändert, 12,99 € separat im Gesamtpreis, keine Foto-Bildbearbeitung für geprüfte Vektoren. Neue Logo-Dialogschrift und Buttons werden auf 16 px gehalten; 390×664 und 375×548 sind innen scrollbar. [Bilder und vollständige Grenzen](docs/handoffs/2026-10-29-kundenlogos-gravur-astra.md). Die gesammelten weiteren Layoutwünsche bleiben ausdrücklich offen. Kein Live-/Safari-Nachweis.
+Lokaler SVG-Upload auf gesonderter D8-Kopie geprüft: Originalfarben/Schwarz auf echter Platte, kontrollierte Bestätigung, Abbruch unverändert, 12,99 € separat im Gesamtpreis, keine Foto-Bildbearbeitung für geprüfte Vektoren. Neue Logo-Dialogschrift und Buttons werden auf 16 px gehalten; 390×664 und 375×548 sind innen scrollbar. [Bilder und vollständige Grenzen](docs/handoffs/2026-10-29-kundenlogos-gravur-astra.md). Die damals gesammelten Layoutwünsche sind im Nachtrag vom 30.10. umgesetzt. Kein Live-/Safari-Nachweis.
 
 # Design QA — ausgewählte Richtung 6
 

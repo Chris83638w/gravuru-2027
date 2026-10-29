@@ -35,7 +35,7 @@ export async function installCustomerTools(api){
  });
 
  // Ask after applying the chosen font to the original text. Keep locked/hidden texts unchanged.
- const fontDialog=dialog('font-transfer','Schrift auf weitere Texte übertragen?', '<p>Wähle die Texte, die dieselbe Schrift erhalten sollen.</p><label class="ux-font-all"><input type="checkbox" data-font-all checked>Alle auswählen</label><div data-font-targets></div><div class="ux-font-transfer-actions">'+button('font-transfer-apply','Auf ausgewählte Texte übertragen','class="ux-primary"')+button('close','Nur diesen Text ändern')+'</div>');
+ const fontDialog=dialog('font-transfer','Schrift auf weitere Texte übertragen?', '<p>Wähle die Texte, die dieselbe Schrift erhalten sollen.</p><label class="ux-font-all"><input type="checkbox" data-font-all checked>Alle auswählen</label><div data-font-targets></div><div class="ux-font-transfer-actions">'+button('close','Nur diesen Text ändern')+button('font-transfer-apply','Auf ausgewählte Texte übertragen','class="ux-primary"')+'</div>');
  r.addEventListener('change',event=>{if(event.target.matches('[data-font-all]'))for(const input of all('[data-font-target]'))input.checked=event.target.checked;else if(event.target.matches('[data-font-target]')){const inputs=all('[data-font-target]'),selected=inputs.filter(input=>input.checked).length,master=$('[data-font-all]');master.checked=selected===inputs.length;master.indeterminate=selected>0&&selected<inputs.length;}});
  let transferFont='';
  r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;

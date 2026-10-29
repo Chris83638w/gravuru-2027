@@ -1,3 +1,7 @@
+## 30.10.2026 · Codex/Astra · Neun gesammelte Layoutpunkte umgesetzt (PR #58)
+
+Helle Textleiste direkt über der Platte, dunkler Kopf, größere Direkteingabe, getauschte Schriftübernahme-Buttons, sichtbare Designauswahl, weitere zwölf vorhandene Motive und pinke Auswahlrahmen. Neue Kundenstände speichern „Text immer oben“ ausdrücklich für Vorschau und Fertigung; historische Pakete behalten ihre Reihenfolge. **128/128 gezielte Tests plus 23/23 abschließende Nachprüfungen grün**, Desktop/390×664/375×548 lokal geprüft. [Bilder, Belege und offene Abnahme](docs/handoffs/2026-10-30-konfi-layout-nachtrag-astra.md). Chris' zusätzliche Bestseller-Motive stehen noch aus. Entwurfs-PR, nichts live; Linux/Safari und spätere Shop-/Logo-Installation bleiben offen.
+
 ## 29.10.2026 · Codex/Astra · Kundenlogos als schwarze Vektoren (PR #58)
 
 Chris bestätigt **12,99 € je Kundenlogo**. Neuer ausdrücklich freizugebender Edelstahl-Produktvertrag erlaubt SVG mit sicherem Original-/Schwarzvergleich, Bestätigung, echter Pfadvereinigung/Aussparungen und durchgängig gesichertem Original. Keine Fotos auf Edelstahl; alte Revisionen bleiben unverändert. **196/196 gezielte Tests grün**, echte Vektor-PDF und **6/6 lokale V2-WASM-Erwartungen** geprüft; Desktop/Handy und lokale Sicherung mit 32,98 € nachgewiesen. [Bericht, Bilder, offene Installation und gesammelte Layoutpunkte](docs/handoffs/2026-10-29-kundenlogos-gravur-astra.md). Entwurfs-PR, nichts live. Offen: Linux/Safari, aktive V2-Preisbindung/Function und echter Shop nach Freigabe sowie manuelle Prüfung feiner Details.

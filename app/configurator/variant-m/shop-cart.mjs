@@ -62,7 +62,7 @@ export function installShopCart(api,footer,gate){
     reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await api.el.png())
    });
    const ui=editorUi(api.el.state.ui);
-   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};
+   const payload={...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
    save??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:gate.request});
    say('2 von 3 · Gestaltung wird gesichert …');

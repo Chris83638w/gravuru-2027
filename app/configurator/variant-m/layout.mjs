@@ -17,7 +17,7 @@ export async function installLayout({el,r,config}){
  // Remove only this editor's legacy page gutters, not surrounding shop/admin UI.
  if(!document.querySelector('style[data-ux-workbench-frame]')){const frame=document.createElement('style');frame.dataset.uxWorkbenchFrame='';frame.textContent='@media(min-width:768px){main:has(>gravuru-configurator[data-ux-layout="compact"]),main.c-main:has(gravuru-configurator[data-ux-layout="compact"]){padding:0!important}}';document.head.append(frame);}
  const media=matchMedia('(max-width:767px)');
- function placeToolbar(){placePreviewToolbar({toolbar,workbench,heading:$('.ux-heading'),full,mobile:media.matches});el.uxRefreshTextToolbar?.();}
+ function placeToolbar(){placePreviewToolbar({toolbar,workbench,preview,heading:$('.ux-heading'),full,mobile:media.matches});el.uxRefreshTextToolbar?.();}
  media.addEventListener('change',placeToolbar);placeToolbar();
  new MutationObserver(placeToolbar).observe(full,{attributes:true,attributeFilter:['open']});full.addEventListener('close',placeToolbar);
  const heading=$('.ux-heading'),name=document.createElement('span');name.className='ux-product-title';name.textContent=config?.profile.name||'Deine Gestaltung';name.title=name.textContent;

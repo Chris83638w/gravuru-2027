@@ -1,0 +1,778 @@
+TAP version 13
+# Subtest: Konto-Client: Pfade, Fehlercodes und Anmeldelink ohne fremde Ziele
+ok 1 - Konto-Client: Pfade, Fehlercodes und Anmeldelink ohne fremde Ziele
+  ---
+  duration_ms: 6.7681
+  type: 'test'
+  ...
+# Subtest: Dialog „Deine Entwürfe“: ohne Konto Anmeldelink, ohne Anbindung Hinweis, mit Konto Liste mit Laden/Löschen
+ok 2 - Dialog „Deine Entwürfe“: ohne Konto Anmeldelink, ohne Anbindung Hinweis, mit Konto Liste mit Laden/Löschen
+  ---
+  duration_ms: 28.2972
+  type: 'test'
+  ...
+# Subtest: Modulgraph: Importformen, Reihenfolge Abhängigkeiten zuerst, Zyklen und fremde Angaben werden gemeldet
+ok 3 - Modulgraph: Importformen, Reihenfolge Abhängigkeiten zuerst, Zyklen und fremde Angaben werden gemeldet
+  ---
+  duration_ms: 1.8681
+  type: 'test'
+  ...
+# Subtest: Umschreiben: Modulangaben → Platzhalter, dynamische Importe → gravuruModules, Stylesheets → gebündelt
+ok 4 - Umschreiben: Modulangaben → Platzhalter, dynamische Importe → gravuruModules, Stylesheets → gebündelt
+  ---
+  duration_ms: 0.6126
+  type: 'test'
+  ...
+# Subtest: Editor-Bündel enthält alle statisch erreichbaren Module unverändert (bis auf Modulangaben) und die Stylesheets
+ok 5 - Editor-Bündel enthält alle statisch erreichbaren Module unverändert (bis auf Modulangaben) und die Stylesheets
+  ---
+  duration_ms: 338.1673
+  type: 'test'
+  ...
+# Subtest: Gebündelte Module verknüpfen sich als echte ES-Module und verhalten sich wie die Einzelmodule
+ok 6 - Gebündelte Module verknüpfen sich als echte ES-Module und verhalten sich wie die Einzelmodule
+  ---
+  duration_ms: 1846.5399
+  type: 'test'
+  ...
+# Subtest: Editor lädt das Bündel über den Lader; Einzelmodule bleiben als Entwicklungsmodus erreichbar
+ok 7 - Editor lädt das Bündel über den Lader; Einzelmodule bleiben als Entwicklungsmodus erreichbar
+  ---
+  duration_ms: 333.5034
+  type: 'test'
+  ...
+# Subtest: Server: Bündel mit langem Cache und gzip, unbekannte Namen und Pfadausbruch gesperrt
+ok 8 - Server: Bündel mit langem Cache und gzip, unbekannte Namen und Pfadausbruch gesperrt
+  ---
+  duration_ms: 347.3964
+  type: 'test'
+  ...
+# Subtest: native geometry, revisions and input remain unchanged
+ok 9 - native geometry, revisions and input remain unchanged
+  ---
+  duration_ms: 1.714
+  type: 'test'
+  ...
+# Subtest: five native processing profiles stay independent from photo setting
+ok 10 - five native processing profiles stay independent from photo setting
+  ---
+  duration_ms: 7.7243
+  type: 'test'
+  ...
+# Subtest: photo disabled only exposes templates without photo slots
+ok 11 - photo disabled only exposes templates without photo slots
+  ---
+  duration_ms: 1.018
+  type: 'test'
+  ...
+# Subtest: photo disabled does not silently publish mandatory-photo-only designs
+ok 12 - photo disabled does not silently publish mandatory-photo-only designs
+  ---
+  duration_ms: 1.2758
+  type: 'test'
+  ...
+# Subtest: all ten existing photo designs roundtrip with exact product binding
+ok 13 - all ten existing photo designs roundtrip with exact product binding
+  ---
+  duration_ms: 23.486
+  type: 'test'
+  ...
+# Subtest: modified text remains editable in saved draft
+ok 14 - modified text remains editable in saved draft
+  ---
+  duration_ms: 1.6835
+  type: 'test'
+  ...
+# Subtest: Local tinted logo keeps its upload reference without pretending to be published media
+ok 15 - Local tinted logo keeps its upload reference without pretending to be published media
+  ---
+  duration_ms: 4.5133
+  type: 'test'
+  ...
+# Subtest: new elements use actual product dimensions and native fonts, never doorbell coordinates
+ok 16 - new elements use actual product dimensions and native fonts, never doorbell coordinates
+  ---
+  duration_ms: 1.9755
+  type: 'test'
+  ...
+# Subtest: private data and transient UI state excluded from draft
+ok 17 - private data and transient UI state excluded from draft
+  ---
+  duration_ms: 1.0931
+  type: 'test'
+  ...
+# Subtest: foreign product, profile or revision fails closed
+ok 18 - foreign product, profile or revision fails closed
+  ---
+  duration_ms: 3.7819
+  type: 'test'
+  ...
+# Subtest: customer photo placement may move or be deleted; technical geometry stays in profile
+ok 19 - customer photo placement may move or be deleted; technical geometry stays in profile
+  ---
+  duration_ms: 1.7469
+  type: 'test'
+  ...
+# Subtest: unknown motif, option, malformed quantity and geometry rejected
+ok 20 - unknown motif, option, malformed quantity and geometry rejected
+  ---
+  duration_ms: 2.0597
+  type: 'test'
+  ...
+# Subtest: template motifs included once, extra copy costs 169 cents
+ok 21 - template motifs included once, extra copy costs 169 cents
+  ---
+  duration_ms: 0.512
+  type: 'test'
+  ...
+# Subtest: configured add-ons and quantity calculated in cents
+ok 22 - configured add-ons and quantity calculated in cents
+  ---
+  duration_ms: 0.3716
+  type: 'test'
+  ...
+# Subtest: selected holes preserve given diameter and coordinates without mutating source
+ok 23 - selected holes preserve given diameter and coordinates without mutating source
+  ---
+  duration_ms: 1.4051
+  type: 'test'
+  ...
+# Subtest: upload accepts only explicit raster types and positive sizes within limit
+ok 24 - upload accepts only explicit raster types and positive sizes within limit
+  ---
+  duration_ms: 0.2062
+  type: 'test'
+  ...
+# Subtest: text over theme limit is rejected in chars without surrounding spaces
+ok 25 - text over theme limit is rejected in chars without surrounding spaces
+  ---
+  duration_ms: 13.2983
+  type: 'test'
+  ...
+# Subtest: too many lines are rejected per theme
+ok 26 - too many lines are rejected per theme
+  ---
+  duration_ms: 5.3533
+  type: 'test'
+  ...
+# Subtest: object limit overrides theme and product theme; client-side limits are ignored
+ok 27 - object limit overrides theme and product theme; client-side limits are ignored
+  ---
+  duration_ms: 23.5822
+  type: 'test'
+  ...
+# Subtest: required text must differ from the template sample text
+ok 28 - required text must differ from the template sample text
+  ---
+  duration_ms: 5.7754
+  type: 'test'
+  ...
+# Subtest: required text filled in passes, roundtrips and stays required; template self-check only with explicit option
+ok 29 - required text filled in passes, roundtrips and stays required; template self-check only with explicit option
+  ---
+  duration_ms: 6.0167
+  type: 'test'
+  ...
+# Subtest: server gate (K2): element rights, additions and template layer order are enforced in saveDraft and readDraft
+ok 30 - server gate (K2): element rights, additions and template layer order are enforced in saveDraft and readDraft
+  ---
+  duration_ms: 29.2905
+  type: 'test'
+  ...
+# Subtest: photo background instructions roundtrip and reject invalid or misplaced values
+ok 31 - photo background instructions roundtrip and reject invalid or misplaced values
+  ---
+  duration_ms: 5.7966
+  type: 'test'
+  ...
+# Subtest: photo alignment survives the actual render/draft contract and rejects invalid payloads
+ok 32 - photo alignment survives the actual render/draft contract and rejects invalid payloads
+  ---
+  duration_ms: 5.2607
+  type: 'test'
+  ...
+# Subtest: K10 / Ü1.2 server gate: engraving rejects colour changes, print allows the profile palette plus a free colour (Chris 22./23.10.2026); a product selection stays binding
+ok 33 - K10 / Ü1.2 server gate: engraving rejects colour changes, print allows the profile palette plus a free colour (Chris 22./23.10.2026); a product selection stays binding
+  ---
+  duration_ms: 13.6134
+  type: 'test'
+  ...
+# Subtest: K10 / Ü1.1 server gate: text below the process minimum is rejected (engraving 3 mm since 20.10.2026, print 3 mm); templates and non-scalable texts are exempt
+ok 34 - K10 / Ü1.1 server gate: text below the process minimum is rejected (engraving 3 mm since 20.10.2026, print 3 mm); templates and non-scalable texts are exempt
+  ---
+  duration_ms: 7.947
+  type: 'test'
+  ...
+# Subtest: explicit photo colour survives draft roundtrip and rejects invalid/non-photo values
+ok 35 - explicit photo colour survives draft roundtrip and rejects invalid/non-photo values
+  ---
+  duration_ms: 9.3282
+  type: 'test'
+  ...
+# Subtest: withdrawn all-motif contract remains readable; additional policy retains template credit
+ok 36 - withdrawn all-motif contract remains readable; additional policy retains template credit
+  ---
+  duration_ms: 0.9304
+  type: 'test'
+  ...
+# Subtest: additional policy charges replacements and extra motifs once; restoring the same template id and motif is free
+ok 37 - additional policy charges replacements and extra motifs once; restoring the same template id and motif is free
+  ---
+  duration_ms: 0.5615
+  type: 'test'
+  ...
+# Subtest: server accepts fifty characters per line only with the saved new rule, rejects forged limits
+ok 38 - server accepts fifty characters per line only with the saved new rule, rejects forged limits
+  ---
+  duration_ms: 3.4365
+  type: 'test'
+  ...
+# Subtest: server accepts 80 total characters with multiple lines only in the new revision
+ok 39 - server accepts 80 total characters with multiple lines only in the new revision
+  ---
+  duration_ms: 6.3845
+  type: 'test'
+  ...
+# Subtest: Mehrfachzentrierung erhält Höhe, Abstand, Drehung und gesperrte Texte
+ok 40 - Mehrfachzentrierung erhält Höhe, Abstand, Drehung und gesperrte Texte
+  ---
+  duration_ms: 1.4479
+  type: 'test'
+  ...
+# Subtest: Motivsuche berücksichtigt verwandte deutsche und englische Begriffe und bevorzugt genaue Treffer
+ok 41 - Motivsuche berücksichtigt verwandte deutsche und englische Begriffe und bevorzugt genaue Treffer
+  ---
+  duration_ms: 0.5438
+  type: 'test'
+  ...
+# Subtest: Überlagerung beachtet Rotation, ausgeblendete Objekte und reine Randberührung
+ok 42 - Überlagerung beachtet Rotation, ausgeblendete Objekte und reine Randberührung
+  ---
+  duration_ms: 0.4293
+  type: 'test'
+  ...
+# Subtest: Bohrhinweise nur bei mechanischem Konflikt und aktivierten Schrauben
+ok 43 - Bohrhinweise nur bei mechanischem Konflikt und aktivierten Schrauben
+  ---
+  duration_ms: 0.3631
+  type: 'test'
+  ...
+# Subtest: Vollacryl ohne ausdrückliche Bohrregel bleibt ein Montagekonflikt
+ok 44 - Vollacryl ohne ausdrückliche Bohrregel bleibt ein Montagekonflikt
+  ---
+  duration_ms: 0.1142
+  type: 'test'
+  ...
+# Subtest: Ignorierter Hinweis gilt nur für dieselbe Geometrie und Konfiguration
+ok 45 - Ignorierter Hinweis gilt nur für dieselbe Geometrie und Konfiguration
+  ---
+  duration_ms: 0.1993
+  type: 'test'
+  ...
+# Subtest: Dekorative Gravur nahe Bohrloch löst keine mechanische Warnung aus, Kontur bleibt geprüft
+ok 46 - Dekorative Gravur nahe Bohrloch löst keine mechanische Warnung aus, Kontur bleibt geprüft
+  ---
+  duration_ms: 1.1267
+  type: 'test'
+  ...
+# Subtest: Master overlap warnings are engraving-only, independent of design
+ok 47 - Master overlap warnings are engraving-only, independent of design
+  ---
+  duration_ms: 0.5603
+  type: 'test'
+  ...
+# Subtest: Motivbibliothek: Kategorien des Themas liegen ohne Suchbegriff vorn, Suche bleibt maßgeblich
+ok 48 - Motivbibliothek: Kategorien des Themas liegen ohne Suchbegriff vorn, Suche bleibt maßgeblich
+  ---
+  duration_ms: 1.102
+  type: 'test'
+  ...
+# Subtest: Überlagerung aus der unveränderten Vorlage ist gewollt; nach Verschieben, Drehen oder Skalieren wieder ein Hinweis
+ok 49 - Überlagerung aus der unveränderten Vorlage ist gewollt; nach Verschieben, Drehen oder Skalieren wieder ein Hinweis
+  ---
+  duration_ms: 0.5529
+  type: 'test'
+  ...
+# Subtest: Wasser finds semantic marine motifs and ranks literal matches first
+ok 50 - Wasser finds semantic marine motifs and ranks literal matches first
+  ---
+  duration_ms: 0.2229
+  type: 'test'
+  ...
+# Subtest: Galerie: Designs des Produktthemas zuerst, Bestseller vorn, ohne Thema sichtbar, andere Themen unter „Weitere Designs“
+ok 51 - Galerie: Designs des Produktthemas zuerst, Bestseller vorn, ohne Thema sichtbar, andere Themen unter „Weitere Designs“
+  ---
+  duration_ms: 4.9048
+  type: 'test'
+  ...
+# Subtest: Galerie: Themen-IDs ohne Groß/Klein, Mehrfachthemen zählen, Produkt ohne Thema zeigt alle Designs ohne zweite Gruppe
+ok 52 - Galerie: Themen-IDs ohne Groß/Klein, Mehrfachthemen zählen, Produkt ohne Thema zeigt alle Designs ohne zweite Gruppe
+  ---
+  duration_ms: 0.378
+  type: 'test'
+  ...
+# Subtest: themen.json: Fixture wird geprüft, Themen-Definition des Produkts aus config.themes, Motivkategorien des Themas zuerst
+ok 53 - themen.json: Fixture wird geprüft, Themen-Definition des Produkts aus config.themes, Motivkategorien des Themas zuerst
+  ---
+  duration_ms: 0.9312
+  type: 'test'
+  ...
+# Subtest: Motivsuche: Themenkategorien liegen bei gleicher Trefferqualität vorn, Nicht-Treffer bleiben 0
+ok 54 - Motivsuche: Themenkategorien liegen bei gleicher Trefferqualität vorn, Nicht-Treffer bleiben 0
+  ---
+  duration_ms: 0.4274
+  type: 'test'
+  ...
+# Subtest: Miniaturen: nur geänderte Kundentexte werden per Feldschlüssel übernommen, Original bleibt unverändert
+ok 55 - Miniaturen: nur geänderte Kundentexte werden per Feldschlüssel übernommen, Original bleibt unverändert
+  ---
+  duration_ms: 0.6927
+  type: 'test'
+  ...
+# Subtest: Direktlink: gültiges Design, Größe als SKU/ID (auch ohne Groß/Klein) und Text werden erkannt
+ok 56 - Direktlink: gültiges Design, Größe als SKU/ID (auch ohne Groß/Klein) und Text werden erkannt
+  ---
+  duration_ms: 0.4069
+  type: 'test'
+  ...
+# Subtest: Direktlink: ungültiges Design oder Größe wird ignoriert und gemeldet, Text bleibt reiner Text
+ok 57 - Direktlink: ungültiges Design oder Größe wird ignoriert und gemeldet, Text bleibt reiner Text
+  ---
+  duration_ms: 0.291
+  type: 'test'
+  ...
+# Subtest: Direktlink-Text: erstes Pflichtfeld, sonst Namensfeld; Zeichen- und Zeilenlimit der Vorlage (K1) gelten
+ok 58 - Direktlink-Text: erstes Pflichtfeld, sonst Namensfeld; Zeichen- und Zeilenlimit der Vorlage (K1) gelten
+  ---
+  duration_ms: 0.5554
+  type: 'test'
+  ...
+# Subtest: Share-Link: enthält Design und Größe, nie den Kundentext; Parameter werden nach dem Laden entfernt
+ok 59 - Share-Link: enthält Design und Größe, nie den Kundentext; Parameter werden nach dem Laden entfernt
+  ---
+  duration_ms: 0.3972
+  type: 'test'
+  ...
+# Subtest: new designs paint text after logos/motifs without changing IDs, source order or relative text order
+ok 60 - new designs paint text after logos/motifs without changing IDs, source order or relative text order
+  ---
+  duration_ms: 1.2824
+  type: 'test'
+  ...
+# Subtest: historic snapshots keep their exact paint order
+ok 61 - historic snapshots keep their exact paint order
+  ---
+  duration_ms: 0.1429
+  type: 'test'
+  ...
+# Subtest: real universal SVG puts text on top only for an explicitly saved rule
+ok 62 - real universal SVG puts text on top only for an explicitly saved rule
+  ---
+  duration_ms: 1.3323
+  type: 'test'
+  ...
+# Subtest: Reihenfolge der geführten Schritte folgt Entscheidung A6; Grenze liegt unter 768 px
+ok 63 - Reihenfolge der geführten Schritte folgt Entscheidung A6; Grenze liegt unter 768 px
+  ---
+  duration_ms: 1.1705
+  type: 'test'
+  ...
+# Subtest: Versteckte Reiter lassen ihren Schritt weg; Foto/Motiv folgt den vorhandenen Reitern
+ok 64 - Versteckte Reiter lassen ihren Schritt weg; Foto/Motiv folgt den vorhandenen Reitern
+  ---
+  duration_ms: 0.6101
+  type: 'test'
+  ...
+# Subtest: Reiterwechsel aus ux.mjs landet im passenden Schritt; Weiter/Zurück sind begrenzt
+ok 65 - Reiterwechsel aus ux.mjs landet im passenden Schritt; Weiter/Zurück sind begrenzt
+  ---
+  duration_ms: 0.2648
+  type: 'test'
+  ...
+# Subtest: Platte oben: 40 % des sichtbaren Bereichs, bei Tastatur mindestens 25 %, nie unter 120 px
+ok 66 - Platte oben: 40 % des sichtbaren Bereichs, bei Tastatur mindestens 25 %, nie unter 120 px
+  ---
+  duration_ms: 0.1573
+  type: 'test'
+  ...
+# Subtest: Zusammenfassung für „Prüfen“: Größe, Material, Optionen, Preis aus dem Produktstand
+ok 67 - Zusammenfassung für „Prüfen“: Größe, Material, Optionen, Preis aus dem Produktstand
+  ---
+  duration_ms: 0.771
+  type: 'test'
+  ...
+# Subtest: Mobile nutzt den verbundenen Warenkorb statt des deaktivierten lokalen Knopfs; Listener bleibt einmalig
+ok 68 - Mobile nutzt den verbundenen Warenkorb statt des deaktivierten lokalen Knopfs; Listener bleibt einmalig
+  ---
+  duration_ms: 0.4517
+  type: 'test'
+  ...
+# Subtest: Speicherfortschritt und Fehler bleiben ohne sync sichtbar und überstehen den Wechsel zu Desktop
+ok 69 - Speicherfortschritt und Fehler bleiben ohne sync sichtbar und überstehen den Wechsel zu Desktop
+  ---
+  duration_ms: 0.1606
+  type: 'test'
+  ...
+# Subtest: Nicht verbundene Vorschau bleibt gesperrt; bestehender Commerce-Knopf behält seinen eigenen Handler
+ok 70 - Nicht verbundene Vorschau bleibt gesperrt; bestehender Commerce-Knopf behält seinen eigenen Handler
+  ---
+  duration_ms: 0.246
+  type: 'test'
+  ...
+# Subtest: keyboard field reveal scrolls only the editor and never the plate shell
+ok 71 - keyboard field reveal scrolls only the editor and never the plate shell
+  ---
+  duration_ms: 0.2235
+  type: 'test'
+  ...
+# Subtest: print settings keep cut size and independently bound color and white bleed
+ok 72 - print settings keep cut size and independently bound color and white bleed
+  ---
+  duration_ms: 2.9693
+  type: 'test'
+  ...
+# Subtest: white silhouette produces closed merged runs and preserves transparent holes
+ok 73 - white silhouette produces closed merged runs and preserves transparent holes
+  ---
+  duration_ms: 0.7342
+  type: 'test'
+  ...
+# Subtest: Roland PDF has real spot resources, cut paths, bleed/trim boxes and actual four-channel CMYK artwork
+ok 74 - Roland PDF has real spot resources, cut paths, bleed/trim boxes and actual four-channel CMYK artwork
+  ---
+  duration_ms: 2988.7342
+  type: 'test'
+  ...
+# Subtest: Mimaki combined is one PDF page with white vector layer, no RDG_WHITE resource
+ok 75 - Mimaki combined is one PDF page with white vector layer, no RDG_WHITE resource
+  ---
+  duration_ms: 2619.2179
+  type: 'test'
+  ...
+# Subtest: separate Mimaki white is vector-only; no-white removes actual white paint
+ok 76 - separate Mimaki white is vector-only; no-white removes actual white paint
+  ---
+  duration_ms: 5625.3404
+  type: 'test'
+  ...
+# Subtest: ZIP keeps original image bytes and readable member names
+ok 77 - ZIP keeps original image bytes and readable member names
+  ---
+  duration_ms: 141.0364
+  type: 'test'
+  ...
+# Subtest: Roland motif white is spot-color vector paint, without raster or soft-mask painting
+ok 78 - Roland motif white is spot-color vector paint, without raster or soft-mask painting
+  ---
+  duration_ms: 2580.8409
+  type: 'test'
+  ...
+# Subtest: generic CMYK separation preserves white, pure K neutrals and primary process inks
+ok 79 - generic CMYK separation preserves white, pure K neutrals and primary process inks
+  ---
+  duration_ms: 0.437
+  type: 'test'
+  ...
+# Subtest: 600 dpi advice considers actual text scale and explicit thin strokes but does not change defaults
+ok 80 - 600 dpi advice considers actual text scale and explicit thin strokes but does not change defaults
+  ---
+  duration_ms: 0.2863
+  type: 'test'
+  ...
+# Subtest: K8: only the cart line of the same draft is replaced; other drafts are added fresh
+ok 81 - K8: only the cart line of the same draft is replaced; other drafts are added fresh
+  ---
+  duration_ms: 2.3384
+  type: 'test'
+  ...
+# Subtest: the customer is only forwarded to the confirmed shop checkout
+ok 82 - the customer is only forwarded to the confirmed shop checkout
+  ---
+  duration_ms: 0.5997
+  type: 'test'
+  ...
+# Subtest: theme transfer accepts only this shop and its signed-proxy handoff path
+ok 83 - theme transfer accepts only this shop and its signed-proxy handoff path
+  ---
+  duration_ms: 0.4899
+  type: 'test'
+  ...
+# Subtest: theme edits carry the actual cart revision even after abandoned preparation
+ok 84 - theme edits carry the actual cart revision even after abandoned preparation
+  ---
+  duration_ms: 0.1523
+  type: 'test'
+  ...
+# Subtest: a new revision allows 50 characters on each line; old revisions keep their limits
+ok 85 - a new revision allows 50 characters on each line; old revisions keep their limits
+  ---
+  duration_ms: 1.1174
+  type: 'test'
+  ...
+# Subtest: customer labels use template semantics even after editing the customer text
+ok 86 - customer labels use template semantics even after editing the customer text
+  ---
+  duration_ms: 1.5996
+  type: 'test'
+  ...
+# Subtest: desktop tools sit above the plate; repeated placement preserves the original controls and listeners
+ok 87 - desktop tools sit above the plate; repeated placement preserves the original controls and listeners
+  ---
+  duration_ms: 1.4631
+  type: 'test'
+  ...
+# Subtest: mobile keeps general tools in the heading and the two-row text dock before the plate
+ok 88 - mobile keeps general tools in the heading and the two-row text dock before the plate
+  ---
+  duration_ms: 0.895
+  type: 'test'
+  ...
+# Subtest: fullscreen and viewport changes return both original bars to the correct hosts
+ok 89 - fullscreen and viewport changes return both original bars to the correct hosts
+  ---
+  duration_ms: 0.3046
+  type: 'test'
+  ...
+# Subtest: returning from canvas placement removes absolute offsets and scale; hidden state stays hidden
+ok 90 - returning from canvas placement removes absolute offsets and scale; hidden state stays hidden
+  ---
+  duration_ms: 0.159
+  type: 'test'
+  ...
+# Subtest: direct editing can initialise before the layout band has been installed
+ok 91 - direct editing can initialise before the layout band has been installed
+  ---
+  duration_ms: 0.1305
+  type: 'test'
+  ...
+# Subtest: large text: real input, focusout, field refresh and workflow sync all retain 12 mm
+ok 92 - large text: real input, focusout, field refresh and workflow sync all retain 12 mm
+  ---
+  duration_ms: 25.9517
+  type: 'test'
+  ...
+# Subtest: K1: actual text input handler keeps 32 chars / 2 lines and the direct editor clamps alike
+ok 93 - K1: actual text input handler keeps 32 chars / 2 lines and the direct editor clamps alike
+  ---
+  duration_ms: 26.4374
+  type: 'test'
+  ...
+# Subtest: large text: actual +/- click handlers operate in physical mm
+ok 94 - large text: actual +/- click handlers operate in physical mm
+  ---
+  duration_ms: 8.5677
+  type: 'test'
+  ...
+# Subtest: large text: layer size input uses the same mm conversion and size changes invalidate fit cache
+ok 95 - large text: layer size input uses the same mm conversion and size changes invalidate fit cache
+  ---
+  duration_ms: 15.6308
+  type: 'test'
+  ...
+# Subtest: large text: pointer, handle keyboard and toolbar shrink never enlarge a 4-mm text
+ok 96 - large text: pointer, handle keyboard and toolbar shrink never enlarge a 4-mm text
+  ---
+  duration_ms: 22.3302
+  type: 'test'
+  ...
+# Subtest: large text: actual fit action reaches physical 4 mm and reports that value
+ok 97 - large text: actual fit action reaches physical 4 mm and reports that value
+  ---
+  duration_ms: 21.6807
+  type: 'test'
+  ...
+# Subtest: fixed acrylic photo: actual editor apply keeps shape/geometry and remains contract-valid
+ok 98 - fixed acrylic photo: actual editor apply keeps shape/geometry and remains contract-valid
+  ---
+  duration_ms: 30.9311
+  type: 'test'
+  ...
+# Subtest: non-replaceable photo retains its artwork and is not redecorated as an unnamed upload button
+ok 99 - non-replaceable photo retains its artwork and is not redecorated as an unnamed upload button
+  ---
+  duration_ms: 4.9605
+  type: 'test'
+  ...
+# Subtest: imported acrylic photo: actual upload handler replaces semantic slot twice without appending an object
+ok 100 - imported acrylic photo: actual upload handler replaces semantic slot twice without appending an object
+  ---
+  duration_ms: 8.4673
+  type: 'test'
+  ...
+# Subtest: example photo shows upload hint only in preview markup with the original arch mask
+ok 101 - example photo shows upload hint only in preview markup with the original arch mask
+  ---
+  duration_ms: 1.0877
+  type: 'test'
+  ...
+# Subtest: customer size entry rounds mm without changing the plate or other text properties
+ok 102 - customer size entry rounds mm without changing the plate or other text properties
+  ---
+  duration_ms: 7.6936
+  type: 'test'
+  ...
+# Subtest: photo apply rejects an oversized edited PNG before changing the object or media
+ok 103 - photo apply rejects an oversized edited PNG before changing the object or media
+  ---
+  duration_ms: 1.5653
+  type: 'test'
+  ...
+# Subtest: K10 / Ü1.2: changeObject refuses colour when the process profile has no colour tool and clamps size to the profile minimum
+ok 104 - K10 / Ü1.2: changeObject refuses colour when the process profile has no colour tool and clamps size to the profile minimum
+  ---
+  duration_ms: 5.5507
+  type: 'test'
+  ...
+# Subtest: K10 / Ü1.2: engraving products build the text panel without a colour picker, print without a free picker when the palette is fixed; photo tool follows tools.photo
+ok 105 - K10 / Ü1.2: engraving products build the text panel without a colour picker, print without a free picker when the palette is fixed; photo tool follows tools.photo
+  ---
+  duration_ms: 8.855
+  type: 'test'
+  ...
+# Subtest: Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur Mindestgröße, sonst mittig mit Hinweis
+ok 106 - Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur Mindestgröße, sonst mittig mit Hinweis
+  ---
+  duration_ms: 70.6109
+  type: 'test'
+  ...
+# Subtest: Freie Farbe: Farbdruck zeigt Palette + Farbwähler, Gravur keine Farbwahl, Produktauswahl nur Palette
+ok 107 - Freie Farbe: Farbdruck zeigt Palette + Farbwähler, Gravur keine Farbwahl, Produktauswahl nur Palette
+  ---
+  duration_ms: 37.9837
+  type: 'test'
+  ...
+# Subtest: Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten Logos), mit Foto wie bisher
+ok 108 - Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten Logos), mit Foto wie bisher
+  ---
+  duration_ms: 12.7214
+  type: 'test'
+  ...
+# Subtest: Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und Aufpreis; interne Auswahlliste bleibt verborgen, Haken wie Designs
+ok 109 - Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und Aufpreis; interne Auswahlliste bleibt verborgen, Haken wie Designs
+  ---
+  duration_ms: 423.5517
+  type: 'test'
+  ...
+# Subtest: workflow glyph bounds and autofit caches distinguish catalogue typography
+ok 110 - workflow glyph bounds and autofit caches distinguish catalogue typography
+  ---
+  duration_ms: 6.1379
+  type: 'test'
+  ...
+# Subtest: LF2 customer size input and normalization preserve the source leading ratio
+ok 111 - LF2 customer size input and normalization preserve the source leading ratio
+  ---
+  duration_ms: 4.9081
+  type: 'test'
+  ...
+# Subtest: usability glyph cache distinguishes catalogue spacing and alignment for edge limits
+ok 112 - usability glyph cache distinguishes catalogue spacing and alignment for edge limits
+  ---
+  duration_ms: 1.5259
+  type: 'test'
+  ...
+# Subtest: motif UI uses the real array allowlist and frozen replace rights before changing a template
+ok 113 - motif UI uses the real array allowlist and frozen replace rights before changing a template
+  ---
+  duration_ms: 2.8891
+  type: 'test'
+  ...
+# Subtest: actual acrylic action guard obeys explicit motif deletion while retaining fixed geometry and old locks
+ok 114 - actual acrylic action guard obeys explicit motif deletion while retaining fixed geometry and old locks
+  ---
+  duration_ms: 1.2952
+  type: 'test'
+  ...
+# Subtest: hidden native photo originals and applied raster remain in the immutable package without entering the visible price
+ok 115 - hidden native photo originals and applied raster remain in the immutable package without entering the visible price
+  ---
+  duration_ms: 1455.4493
+  type: 'test'
+  ...
+# Subtest: native acrylic handoff pins rights, all 28 prices, originals and immutable snapshots; rejects forged requests
+ok 116 - native acrylic handoff pins rights, all 28 prices, originals and immutable snapshots; rejects forged requests
+  ---
+  duration_ms: 54739.896
+  type: 'test'
+  ...
+# Subtest: native full-area print extends only inked outer edges, keeps white inside and mirrors once
+ok 117 - native full-area print extends only inked outer edges, keeps white inside and mirrors once
+  ---
+  duration_ms: 15829.6832
+  type: 'test'
+  ...
+# Subtest: review package freezes only the fonts and motifs of this design and references the embedded material image by hash
+ok 118 - review package freezes only the fonts and motifs of this design and references the embedded material image by hash
+  ---
+  duration_ms: 1215.722
+  type: 'test'
+  ...
+# Subtest: profile fonts that are present in the product library are accepted on save; unknown fonts stay rejected
+ok 119 - profile fonts that are present in the product library are accepted on save; unknown fonts stay rejected
+  ---
+  duration_ms: 2161.9038
+  type: 'test'
+  ...
+# Subtest: server preview accepts only an explicitly enabled steel revision and returns two passive SVG views
+ok 120 - server preview accepts only an explicitly enabled steel revision and returns two passive SVG views
+  ---
+  duration_ms: 356.7042
+  type: 'test'
+  ...
+# Subtest: text-on-top survives immutable saving and production while historical packages retain their order
+ok 121 - text-on-top survives immutable saving and production while historical packages retain their order
+  ---
+  duration_ms: 1087.586
+  type: 'test'
+  ...
+# Subtest: immutable review, production and cart restore preserve approved vector bytes, placement, original and drilling
+ok 122 - immutable review, production and cart restore preserve approved vector bytes, placement, original and drilling
+  ---
+  duration_ms: 688.7677
+  type: 'test'
+  ...
+# Subtest: complete production PDF remains vector and the production archive keeps both immutable SVG versions
+ok 123 - complete production PDF remains vector and the production archive keeps both immutable SVG versions
+  ---
+  duration_ms: 11518.2574
+  type: 'test'
+  ...
+# Subtest: snapshot re-runs conversion and rejects changed source, changed black SVG, forged approval or mismatched media
+ok 124 - snapshot re-runs conversion and rejects changed source, changed black SVG, forged approval or mismatched media
+  ---
+  duration_ms: 602.1111
+  type: 'test'
+  ...
+# Subtest: account store accepts only sealed server conversion and restores SVG MIME plus approval without a database migration
+ok 125 - account store accepts only sealed server conversion and restores SVG MIME plus approval without a database migration
+  ---
+  duration_ms: 559.6975
+  type: 'test'
+  ...
+# Subtest: a historical raster-logo revision keeps its raster snapshot and photo tariff
+ok 126 - a historical raster-logo revision keeps its raster snapshot and photo tariff
+  ---
+  duration_ms: 69.0594
+  type: 'test'
+  ...
+# Subtest: workshop logo preview requires the existing CSRF session and pinned product revision
+ok 127 - workshop logo preview requires the existing CSRF session and pinned product revision
+  ---
+  duration_ms: 708.533
+  type: 'test'
+  ...
+# Subtest: signed account route verifies SVG before storage and bounds duplicate-media work before conversion
+ok 128 - signed account route verifies SVG before storage and bounds duplicate-media work before conversion
+  ---
+  duration_ms: 719.6239
+  type: 'test'
+  ...
+1..128
+# tests 128
+# suites 0
+# pass 128
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 112693.0474

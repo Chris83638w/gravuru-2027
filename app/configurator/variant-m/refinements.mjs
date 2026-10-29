@@ -70,7 +70,7 @@ export async function installRefinements(api){
     // its crop and a newly selected object.
     for(const key of ['x','y','w','h','rotation'])if(Object.hasOwn(prior.object,key))object[key]=prior.object[key];else delete object[key];
   }
-  for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){if(resize?.object.type==='photoSlot'&&!validPhotoGesture(resize)){const prior=resize;resize=null;cancelPhotoGesture(prior);if(prior.target.hasPointerCapture(prior.id))prior.target.releasePointerCapture(prior.id);el.uxGuideGesture?.(false);el.uxDragLens?.(null);}return original.apply(this,args);};}
+  for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){if(resize?.object.type==='photoSlot'&&!validPhotoGesture(resize)){const prior=resize;resize=null;cancelPhotoGesture(prior);if(prior.target.hasPointerCapture(prior.id))prior.target.releasePointerCapture(prior.id);el.uxGuideGesture?.(false);}return original.apply(this,args);};}
   r.addEventListener('pointerdown',e=>{
     const h=e.target.closest('[data-ux-handle]'),item=e.target.closest('.scene [data-object]');if((!h&&!item)||e.button!==0)return;
     const o=item?el.state.objects.find(o=>o.id===item.dataset.object):selected();if(!o||o.uxLocked||o.uxHidden||o.acrylicFixed)return;
@@ -88,9 +88,9 @@ export async function installRefinements(api){
     }
     else if(resize.kind==='rotate'){const from=Math.atan2(resize.start.y-start.y,resize.start.x-start.x),to=Math.atan2(p.y-start.y,p.x-start.x);o.rotation=Math.round((start.rotation||0)+(to-from)*180/Math.PI);}
     else{const factor=selectionScaleFactor(start,resize.start,p);Object.assign(o,scaleObject(start,factor,el.uxTextScale?.()||1,el.uxMinTextMm));}
-    el.uxGuideGesture?.(true,{kind:resize.kind,locks:resize.locks});el.normalize();el.render();el.uxDragLens?.({kind:resize.kind,clientX:e.clientX,clientY:e.clientY});
+    el.uxGuideGesture?.(true,{kind:resize.kind,locks:resize.locks});el.normalize();el.render();
   },true);
-  function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;el.uxDragLens?.(null);if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);cancel=cancel||!validPhotoGesture(prior);if(cancel){if(prior.object.type==='photoSlot')cancelPhotoGesture(prior);else el.state=prior.old;}else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
+  function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);cancel=cancel||!validPhotoGesture(prior);if(cancel){if(prior.object.type==='photoSlot')cancelPhotoGesture(prior);else el.state=prior.old;}else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
   el.uxCancelObjectGesture=()=>{if(resize)finish({pointerId:resize.id,stopImmediatePropagation(){}},true);};
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);
   r.addEventListener('lostpointercapture',e=>{if(resize?.id===e.pointerId)finish(e,true);},true);

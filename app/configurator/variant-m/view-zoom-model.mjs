@@ -24,12 +24,10 @@ export function pinchView(view,start,current,bounds){
  const before=center(start),after=center(current),scale=viewScale(view.scale*distance(current)/Math.max(1,distance(start))),p=bounds.plate,c={x:p.x+p.width/2,y:p.y+p.height/2},ratio=scale/view.scale;
  return constrainView({scale,x:after.x-c.x-(before.x-c.x-view.x)*ratio,y:after.y-c.y-(before.y-c.y-view.y)*ratio},bounds);
 }
-// Reserve the same 60 px gutter for every visual layer, including acrylic scenes.
-// Fit is only a display transform: physical millimetres and source SVG stay intact.
-export function fitViewFrame(plate,viewport,mobile){
- const gutter=mobile?0:60,scale=Math.max(1,viewport.width-gutter)/Math.max(1,viewport.width),origin={x:0,y:viewport.height/2};
- const point=(x,y)=>({x:origin.x+(x-origin.x)*scale,y:origin.y+(y-origin.y)*scale});
- return {plate:{...point(plate.x,plate.y),width:plate.width*scale,height:plate.height*scale},viewport:{x:0,y:0,width:viewport.width-gutter,height:viewport.height},fit:{scale,origin}};
+// No zoom controls reserve space: every visual layer uses the full stage.
+// Physical millimetres and source SVG stay intact.
+export function fitViewFrame(plate,viewport){
+ return {plate:{...plate},viewport:{x:0,y:0,width:viewport.width,height:viewport.height},fit:{scale:1,origin:{x:0,y:0}}};
 }
 export function viewLayerStyle(view,bounds,box){
  const fit=bounds.fit||{scale:1,origin:{x:0,y:0}},scale=fit.scale*view.scale,p=bounds.plate,center={x:p.x+p.width/2,y:p.y+p.height/2};

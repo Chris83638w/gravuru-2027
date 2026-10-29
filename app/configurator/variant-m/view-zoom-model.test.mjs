@@ -28,17 +28,16 @@ test('pinch preserves its midpoint and also supports two-finger panning at the z
  close(projectView({x:250,y:175},result,bounds),{x:260,y:200});
  const capped=pinchView({scale:4,x:0,y:0},start,[{x:60,y:185},{x:460,y:185}],bounds);assert.deepEqual(capped,{scale:4,x:10,y:10});
 });
-test('desktop fits every visual layer left of a 60 px gutter; mobile keeps the full stage',()=>{
- const raw={x:40,y:50,width:620,height:410},stage={width:700,height:600},desktop=fitViewFrame(raw,stage,false),mobile=fitViewFrame(raw,stage,true);
- assert.equal(desktop.viewport.width,640);close({scale:desktop.plate.width/raw.width},{scale:640/700});assert.ok(desktop.plate.x>30);assert.ok(desktop.plate.x+desktop.plate.width<640);assert.deepEqual(mobile.plate,raw);assert.equal(mobile.fit.scale,1);
- // A clip expressed in layer coordinates must remain exactly at the viewport,
- // even while panning at 400%; no plate, measurement or background enters the rail.
+test('all visual layers use the full stage with no desktop gutter or geometry change',()=>{
+ const raw={x:40,y:50,width:620,height:410},stage={width:700,height:600},before=structuredClone(raw);
+ const frame=fitViewFrame(raw,stage);assert.deepEqual(frame.plate,raw);assert.equal(frame.viewport.width,700);assert.equal(frame.fit.scale,1);
  for(const scale of [1,1.8,4])for(const box of [raw,{x:0,y:0,width:700,height:600}]){
-  const view=constrainView({scale,x:80,y:-40},desktop),style=viewLayerStyle(view,desktop,box),nums=style.transform.match(/-?[\d.]+/g).map(Number),clip=style.clipPath.match(/-?[\d.]+/g).map(Number);
-  close({x:box.x+nums[0]+clip[0]*nums[2],y:box.y+nums[1]+clip[1]*nums[2]},{x:0,y:0});close({x:box.x+nums[0]+clip[2]*nums[2],y:box.y+nums[1]+clip[5]*nums[2]},{x:640,y:600});
+  const view=constrainView({scale,x:80,y:-40},frame),style=viewLayerStyle(view,frame,box),nums=style.transform.match(/-?[\d.]+/g).map(Number),local={x:20,y:30};
+  assert.equal(style.clipPath,'none');
+  close({x:box.x+nums[0]+local.x*nums[2],y:box.y+nums[1]+local.y*nums[2]},projectView({x:box.x+local.x,y:box.y+local.y},view,frame));
  }
-});
-test('explicit Fit interpolation approaches the target smoothly and retains exact endpoints',()=>{
+ assert.deepEqual(raw,before);
+});test('explicit Fit interpolation approaches the target smoothly and retains exact endpoints',()=>{
  const from=fitView(),to={scale:4,x:100,y:-50};assert.deepEqual(interpolateView(from,to,0),from);assert.deepEqual(interpolateView(from,to,1),to);
  const middle=interpolateView(from,to,.5);assert.ok(middle.scale>1&&middle.scale<4);assert.ok(middle.x>0&&middle.x<100);assert.ok(middle.y<0&&middle.y>-50);assert.deepEqual(from,fitView());
 });

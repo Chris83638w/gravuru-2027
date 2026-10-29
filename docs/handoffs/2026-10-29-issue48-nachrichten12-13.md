@@ -84,3 +84,13 @@ Gebaute Anwendung auf localhost: B02S gewählt, Leuchtturm durch Haus ersetzt, �
 3. D8-Kandidat mit aktueller Produktrevision vergleichen; neue Revision/Bindung erst nach Chris' ausdrücklichem Live-Satz. Historische Bestellungen unverändert.
 4. Übrige Grenzen aus dem [D-Bericht](2026-10-29-issue48-kundenbedienung-bericht.md): echte Danke-Seite/E-Mail und Shopify-Zeitmessung unter 3 s. E bleibt Vorschlag in #59.
 5. Fachliche Rückfrage: Nach Entfernen sämtlicher Gestaltungselemente blockiert die bestehende Mindestinhaltprüfung weiterhin den Abschluss. Ob ein vollständig leeres Schild bestellt werden soll, ist hier nicht entschieden; D8 mit verbleibenden Texten ist davon nicht betroffen.
+
+## Zoom-Nachtrag von Chris, 29.10.2026
+
+Regel → Quelle: [Chris' Entscheidung im Chat, in Issue #48 festgehalten](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6501287270): keine Lupe; mobil Zwei-Finger-Zoom, Desktop Mausrad. Ersetzt die frühere Vorgabe für Lupe und Desktop-Zoomleiste. Keine neue Freigabe zur Installation.
+
+Lupe wird nicht mehr geladen/angeschlossen; keine Zoomleiste, Plus-/Minus- oder „Ganzes Schild“-Zoomknöpfe. Die Ansicht verwendet die volle Breite ohne 60-px-Reserve. Navigation setzt die Ansicht zurück; die Bearbeitungsgriffe und mm-Hilfen bleiben erhalten. Zoom verändert weiterhin weder Schrift-/Objektgrößen noch Fotos, gespeicherte Gestaltung oder Rückgängig-Verlauf.
+
+**57/57 gezielte Tests grün**, keine Fehler/Skips: view-zoom, view-zoom-model, drag-assistance, ui-event-regressions. Bestehende Tests für die entfernten Bedienelemente auf die neue Entscheidung umgestellt; Zwei-Finger-Schutz, Mausrad über Texten/Motiven, Koordinaten und unveränderte Gestaltung weiter geprüft. Der historische Hilfsmodultest für die nicht mehr eingebundene Lupe ist kein Nachweis eines aktiven Kundenelements. Kein weiterer Vollauf.
+
+Chris möchte die gemeinsame lokale Vorschau vor der Installation Schritt für Schritt prüfen. Die Vorschau ist keine Shopify-/Safari-/Installationsabnahme.

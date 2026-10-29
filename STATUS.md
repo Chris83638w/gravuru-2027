@@ -1,3 +1,7 @@
+## 29.10.2026 · Codex/Astra · Zoom ohne Lupe
+
+Chris: mobil nur Zwei-Finger-Zoom, Desktop Mausrad. Lupe und sämtliche Zoomknöpfe/-leiste aus der Kundenansicht entfernt, volle Ansichtsbreite; mm-Hilfen/Bearbeitungsgriffe bleiben. **57/57 gezielte Tests grün**, kein Vollauf. [Regelquelle und Nachweis](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). Gemeinsame lokale Sichtprüfung mit Chris vor Installation; nichts live.
+
 ## 29.10.2026 · Codex/Astra · Issue #48 Nachrichten 12–14
 
 Nachricht 12 zuerst behoben (f4136b0, 73/73 gezielte Tests). Danach Motivrechte an Chris' Regel ausgerichtet und sechs Erzeugungswege geprüft: Einzelmotive unabhängig von Bewegung ersetz-/löschbar; ganze Druck-Designs nur bei ausdrücklicher Kennzeichnung geschützt. **132/132 gezielte Tests**, Kennzeichnungsnachprüfung 1/1; kein weiterer Vollauf. D8-Folgerevision ausschließlich offline vorbereitet: zwei Rechte geändert, fünf Preise/Geometrien und zwei Originalarchive unverändert. Echter lokaler D8-Editor mit Haus, Entfernen/Rückgängig, Texteingabe und Schriftübernahme geprüft; Bilder Desktop/390 × 664/375 × 548 im [Nachtragsbericht](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). PR #58 bleibt Entwurf. Offen: echter Shop mit Browserumleitung, Safari, Linux für diesen Stand und aktueller D8-Revisionsabgleich. Keine Live-Änderung.

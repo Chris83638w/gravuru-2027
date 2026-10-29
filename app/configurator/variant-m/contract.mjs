@@ -243,7 +243,8 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     const matches=design.objects.filter(o=>o.id===raw.id),o=matches[0];
     // Removal is judged by the delete right in the element-rights gate below.
     if(!matches.length)continue;
-    if(matches.length!==1||o.uxHidden===true||fixedKeys.some(key=>o[key]!==raw[key]))fail('Ein fester Acrylglas-Vorlagenbereich wurde verändert.');
+    const replaceMotif=raw.type==='motif'&&config.workshopElementRights?.[source.id]?.[raw.id]?.replace===true;
+    if(matches.length!==1||o.uxHidden===true||fixedKeys.some(key=>!(key==='motif'&&replaceMotif)&&o[key]!==raw[key]))fail('Ein fester Acrylglas-Vorlagenbereich wurde verändert.');
   }
   for (const raw of source.objects.filter(o => o.technicalLocked === true)) {
     const o = design.objects.find(o => o.id === raw.id);

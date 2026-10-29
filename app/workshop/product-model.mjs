@@ -5,7 +5,8 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 import {isFormProduct,validateFormProduct} from './form-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {nativeSpecimenConfig} from './specimen-product.mjs';
-import {prepareConfig,resolvedOptions,selectedProfile,quote,validateDesign,cleanObject} from '../configurator/variant-m/contract.mjs';
+import {prepareConfig,resolvedOptions,selectedProfile,quote,validateDesign,cleanObject,productProcess} from '../configurator/variant-m/contract.mjs';
+import {applyNewMotifRights,checkWholePrintDesign} from '../configurator/variant-m/new-motif-rights.mjs';
 import {ACRYLIC_BASES,ACRYLIC_SIZES,acrylicSelection,acrylicOptions} from '../configurator/variant-m/acrylic-product.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
@@ -31,11 +32,11 @@ function jsonData(value,seen=new Set()){
   if((!Array.isArray(value)&&!record(value))||seen.has(value))fail('Das Produkt muss aus vollständigen JSON-Daten bestehen.');
   seen.add(value);for(const child of Object.values(value))jsonData(child,seen);seen.delete(value);
 }
-// Upper bound a document may grant: the legacy flags, except that deletion of a
-// non-technical element may be released explicitly.
-const capability=object=>({...legacyElementRights(object),delete:!object.technicalLocked});
+// Explicit motif replacement is independent of a fixed-size viewport. Stored
+// rights remain authoritative; reading a revision never enables new rights.
+const capability=object=>({...legacyElementRights(object),replace:legacyElementRights(object).replace||(object.type==='motif'&&object.role!=='guide'&&!object.technicalLocked&&!object.locked&&object.customerEditable!==false),delete:!object.technicalLocked});
 function initialRights(config){
-  return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,legacyElementRights(object)]))]));
+  return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,applyNewMotifRights(object,legacyElementRights(object),design)]))]));
 }
 
 // This first document model deliberately supports the existing rectangular
@@ -95,6 +96,7 @@ export function validateProductDocument(document){
   result.config=nativeConfig(result.config);
   keys(result.elementRights,result.config.profile.designs.map(design=>design.id),'Designrechte');
   for(const design of result.config.profile.designs){
+    checkWholePrintDesign(design,productProcess(result.config).method);
     if(design.customerFields!==undefined){
       if(!design.importedSource||!Array.isArray(design.customerFields)||design.customerFields.length>19)fail('Kundenfelder brauchen eine importierte Vorlage und höchstens 19 Zuordnungen.');
       const seen=new Set();
@@ -108,6 +110,7 @@ export function validateProductDocument(document){
     const designRights=result.elementRights[design.id];keys(designRights,design.objects.map(object=>object.id),'Elementrechte '+design.id);
     for(const object of design.objects){
       const rights=designRights[object.id],allowed=capability(object);keys(rights,RIGHTS,'Rechte '+object.id);
+      if(design.wholePrintDesign===true&&object.type==='motif'&&(rights.replace||rights.delete))fail('Ein als Einheit verkauftes Druck-Design bleibt vor Entfernen und Ersetzen geschützt.');
       if(RIGHTS.some(right=>typeof rights[right]!=='boolean'||rights[right]&&!allowed[right]))fail('Element '+object.id+': Rechte widersprechen dem Typ oder einem festen Vorlagenbereich.');
     }
   }

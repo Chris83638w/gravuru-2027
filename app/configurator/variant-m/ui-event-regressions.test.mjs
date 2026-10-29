@@ -433,4 +433,17 @@ test('motif UI uses the real array allowlist and frozen replace rights before ch
  el.add({type:'motif',motif:'foreign'});assert.deepEqual(object,original);assert.equal(records,0);
  el.add({type:'motif',motif:'allowed'});assert.deepEqual(object,original);assert.match(messages.at(-1),/nicht zum Ersetzen/);
  allowed=true;el.add({type:'motif',motif:'allowed'});assert.equal(object.motif,'allowed');assert.equal(el.state.objects.length,1);assert.equal(records,1);assert.equal(added,0);
+ Object.assign(object,original);env.may=(_o,right)=>right==='replace';el.add({type:'motif',motif:'allowed'});
+ assert.equal(object.motif,'allowed');assert.equal(object.w,original.w);assert.equal(object.h,original.h);assert.equal(object.x,original.x);assert.equal(object.y,original.y);
+});
+
+test('actual acrylic action guard obeys explicit motif deletion while retaining fixed geometry and old locks',()=>{
+ const o={id:'m',type:'motif',acrylicFixed:true},calls=[],config={workshopElementRights:{d:{m:{delete:false}}}},el={state:{designId:'d'},action:key=>calls.push(key)};
+ const env={config,el,selected:()=>o,isFixed:()=>true};vm.createContext(env);
+ vm.runInContext(line('acrylic-scene.mjs',' const canRemoveFixed='),env);
+ vm.runInContext(line('acrylic-scene.mjs',' const oldAction=el.action;'),env);
+ el.action('delete');assert.deepEqual(calls,[]);
+ config.workshopElementRights.d.m.delete=true;el.action('delete');assert.deepEqual(calls,['delete']);
+ for(const action of ['grow','shrink','center','duplicate'])el.action(action);assert.deepEqual(calls,['delete']);
+ o.type='photoSlot';el.action('delete');assert.deepEqual(calls,['delete']);
 });

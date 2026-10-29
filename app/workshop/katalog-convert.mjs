@@ -16,6 +16,7 @@ import {measureText} from '../platform/sources/app/shared/models/doorbell-previe
 import {validColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {escapeXml,validContentId} from '../platform/sources/app/shared/models/design-content.mjs';
 import {customerLayoutIssue} from '../configurator/variant-m/contract.mjs';
+import {applyNewMotifRights,checkWholePrintDesign} from '../configurator/variant-m/new-motif-rights.mjs';
 import {familyProductConfig,familyProcess,geometryOf,validateFamily,sizeQuantityTiers} from './product-families.mjs';
 import {quantityTiersIssue} from '../configurator/variant-m/contract.mjs';
 import fs from 'node:fs';
@@ -182,6 +183,7 @@ const samePlate=(a,b)=>Math.abs(a[0]-b[0])<0.5&&Math.abs(a[1]-b[1])<0.5;
 // Design verwendet; fehlt eine, bricht die Umwandlung mit „Schrift fehlt“ ab (nie Ersatz).
 export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={}){
  const process=familyProcess(family);if(!process)fail(design.id+': Verfahrensprofil der Familie „'+family.id+'“ ist offen.');
+ const motifPolicy={wholePrintDesign:design.json?.wholePrintDesign!==undefined?design.json.wholePrintDesign:design.wholePrintDesign};checkWholePrintDesign(motifPolicy,process.method);
  const parsed=parseDesignSvg(svgText??design.svg()),plate=design.plateMm||[parsed.widthMm,parsed.heightMm];
  if(!samePlate(plate,[parsed.widthMm,parsed.heightMm]))fail(design.id+': SVG-Maß '+parsed.widthMm+' × '+parsed.heightMm+' mm widerspricht dem Plattenmaß '+plate[0]+' × '+plate[1]+' mm.');
  const paint=(value)=>{const v=String(value);if(!/^(?:#[0-9a-f]{3}(?:[0-9a-f]{3})?|[a-z]+|rgba?\([\d\s.,%]+\))$/i.test(v))fail(design.id+': Druckfarbe enthält einen nicht unterstützten Wert: '+v);return escapeXml(v);};
@@ -229,13 +231,14 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:(print||movable)&&!guide};
    if(!o.customerEditable)o.locked=true;if(guide)o.role='guide';
    // Verschiebbare Motive auch skalierbar (Ecken-Pfeile; Chris 20.10.2026: „die Pfeile sind nicht an den Ecken“).
-   rights[id]={content:false,color:print&&!guide,replace:movable,move:movable,scale:movable,delete:movable};
+   rights[id]=applyNewMotifRights(o,{content:false,color:print&&!guide,replace:movable,move:movable,scale:movable,delete:movable},motifPolicy);
    objects.push(o);
   }
  }
  if(!objects.length)fail(design.id+': keine Ebenen text-/motiv-/deko-/foto- gefunden.');
  if(objects.length>20)fail(design.id+': höchstens 20 Elemente je Vorlage ('+objects.length+' gefunden).');
  const template={id:templateId,name:design.name,objects,marks:[],themes:design.themes??[],bestseller:design.bestseller===true,katalog:{designId:design.id,source:design.source,plateMm:[plate[0],plate[1]]}};
+ if(motifPolicy.wholePrintDesign!==undefined)template.wholePrintDesign=motifPolicy.wholePrintDesign;
  return {template,motifs,rights,photo,placeholders,fonts:[...usedFonts],notes,process:process.id};
 }
 

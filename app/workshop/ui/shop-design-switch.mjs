@@ -1,4 +1,4 @@
-import {preserveProductSelection} from '../../configurator/variant-m/product-design-transfer.mjs';
+import {copyProductSelection} from './shop-selection-transfer.mjs';
 import {createShopEntryClient} from './shop-entry-client.mjs';
 
 // A product switch starts a new customer session. Never carry the previous
@@ -38,7 +38,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
    try{
     const result=await entry.client.switchDesign(target),client=clientFactory({token:result.token});
     const data=switchedModel(await client.loadModel(),result);
-    const selection=preserveProductSelection(transfer?.selection,data.model.universal);
+    const selection=copyProductSelection(transfer?.selection,data.model.universal);
     const resources=await client.loadResources(data.model.universal,toDataUrl);
     const nextFragment=new URLSearchParams(entry.fragment);for(const key of ['config','rev','line'])nextFragment.delete(key);nextFragment.set('s',result.token);
     const frame=doc.createElement('iframe');frame.title=data.model.name+' personalisieren';frame.style.visibility='hidden';frame.style.position='absolute';frame.style.inset='0';

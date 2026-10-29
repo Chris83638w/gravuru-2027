@@ -30,6 +30,7 @@ sys.stdout.buffer.write(d.tobytes())`]);assert.equal(pdf.status,0);
  const before=JSON.stringify(original),prepared=await prepareEditableDesign(original,assets,'slate-test'),d=prepared.document.config.profile.designs[0];
  assert.equal(JSON.stringify(original),before);assert.ok(assets.read(a.assetId,true).equals(pdf.stdout));
  assert.equal(d.objects.length,3);assert.deepEqual(prepared.parts.map(p=>p.kind).sort(),['motif','photo','text']);
+ for(const o of d.objects.filter(o=>o.type==='motif'))assert.deepEqual(prepared.document.elementRights[d.id][o.id],{content:false,color:false,replace:true,move:false,scale:false,delete:true});
  assert.equal(prepared.document.config.basePriceCents,original.config.basePriceCents);
  const text=prepared.parts.find(p=>p.kind==='text');assert.equal(text.text,'My name');
  prepared.document.config.localResources.fonts['Open Sans']=workshopResources().fonts['Open Sans'];

@@ -1,3 +1,15 @@
+## 29.10.2026 · Codex/Astra · Zoom ohne Lupe
+
+Chris: mobil nur Zwei-Finger-Zoom, Desktop Mausrad. Lupe und sämtliche Zoomknöpfe/-leiste aus der Kundenansicht entfernt, volle Ansichtsbreite; mm-Hilfen/Bearbeitungsgriffe bleiben. **57/57 gezielte Tests grün**, kein Vollauf. [Regelquelle und Nachweis](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). Gemeinsame lokale Sichtprüfung mit Chris vor Installation; nichts live.
+
+## 29.10.2026 · Codex/Astra · Issue #48 Nachrichten 12–14
+
+Nachricht 12 zuerst behoben (f4136b0, 73/73 gezielte Tests). Danach Motivrechte an Chris' Regel ausgerichtet und sechs Erzeugungswege geprüft: Einzelmotive unabhängig von Bewegung ersetz-/löschbar; ganze Druck-Designs nur bei ausdrücklicher Kennzeichnung geschützt. **132/132 gezielte Tests**, Kennzeichnungsnachprüfung 1/1; kein weiterer Vollauf. D8-Folgerevision ausschließlich offline vorbereitet: zwei Rechte geändert, fünf Preise/Geometrien und zwei Originalarchive unverändert. Echter lokaler D8-Editor mit Haus, Entfernen/Rückgängig, Texteingabe und Schriftübernahme geprüft; Bilder Desktop/390 × 664/375 × 548 im [Nachtragsbericht](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). PR #58 bleibt Entwurf. Offen: echter Shop mit Browserumleitung, Safari, Linux für diesen Stand und aktueller D8-Revisionsabgleich. Keine Live-Änderung.
+
+## 29.10.2026 · Codex/Astra · Issue #48 Nachricht 12
+
+Shop-Einstieg vom Editor-Vertrag getrennt, gesamte Importkette gegen die tatsächliche Shop-Entry-Auslieferung geprüft. Neuer Regressionstest vor dem Fix rot, danach **73/73 gezielte Tests grün**, kein Vollauf. Gewählte Ausführung/Menge bleiben erhalten; vollständige Validierung unverändert im Editor/Server. [Regeln, Nachweise und offene Shop-Abnahme](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). PR #58 bleibt Entwurf, nichts live. Nächster Schritt: Nachricht 13, Motivrechte und neuer D8-Stand nur vorbereiten.
+
 ## 29.10.2026 – Codex/Astra: Issue #48 Teil D als Entwurf
 
 D1/D2/D7 zuerst umgesetzt, danach D3–D6 einschließlich endgültiger Bohrlochentscheidung (Nachricht 10). Optionen/Menge beim Designwechsel, stabile Textfelder, bedienbare Schriftoptionen, Motiv-Ersetzen/Entfernen mit gesicherten Rechten, Rand-/Gravurüberlagerungsprüfung, vollständiger Export über zukünftigen Bohrungen, Textzusammenfassung und parallele Warenkorbvorbereitung. 27/27 letzte gezielte UI-/Wechseltests. Abschließender Windows-Vollauf: **1846 / 1840 bestanden / 1 Fehler / 5 übersprungen**; einmaliger Python-Ausgabe-Lesefehler im PDF-Farbtest, unveränderter Einzeltest danach 1/1 grün, Ursache offen. Kein weiterer Vollauf. [Entwurfs-PR #58](https://github.com/Chris83638w/gravuru-2027/pull/58). [Bericht und echte lokale Screenshots](docs/handoffs/2026-10-29-issue48-kundenbedienung-bericht.md). Offen: Safari/WebKit, neue D8-Rechte-Revision, echte Danke-Seite/E-Mail, Live-Zeitmessung unter 3 s, Linux. Basis PR #54; kein Merge und keine Live-Änderung. Danach E nur als Vorschlag.

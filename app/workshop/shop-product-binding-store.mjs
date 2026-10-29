@@ -5,6 +5,8 @@ import {withBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs'
 import {isDeepStrictEqual} from 'node:util';
 import {resolveShopProductBinding} from './shop-product-binding-plan.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
+import {createShopGalleryCache} from './shop-gallery-cache.mjs';
+import {performance} from 'node:perf_hooks';
 
 const plain = v => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
 const positive = v => Number.isSafeInteger(v) && v > 0;
@@ -51,6 +53,7 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       fail('shop_binding_store_schema','Der Datenbestand entspricht nicht dem ausdrücklich festgelegten Store-Schema.',503);
   }
   if(!readOnly)transaction(()=>db.exec(`
+    CREATE INDEX IF NOT EXISTS shop_gallery_revision_status_v1 ON product_revisions(product_id,revision,${legacySingleStore?'':'tenant_id,'}status);
     CREATE TABLE IF NOT EXISTS shop_product_binding_revisions(
       tenant_id TEXT NOT NULL,shop TEXT NOT NULL,variant_gid TEXT NOT NULL,revision INTEGER NOT NULL CHECK(revision>0),
       product_gid TEXT NOT NULL,store_id TEXT NOT NULL,binding_id TEXT NOT NULL REFERENCES form_shop_bindings(id),
@@ -77,9 +80,10 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision
     WHERE h.tenant_id=? AND h.shop=? AND h.variant_gid=?`).get(tenantId,shopDomain,variant);
   function ids(value){if(!plain(value)||Object.keys(value).length!==2||!productGid.test(value.shopifyProductId)||!variantGid.test(value.shopifyVariantId))fail('shop_binding_identity','Beide vollständigen Shopify-IDs sind erforderlich.',422);return value;}
-  function productRow(id,revision,{requireHead=false}={}){
-    const row=legacySingleStore?db.prepare(`SELECT p.revision AS head,p.archived,p.kind,r.document,r.metadata,r.status
-      FROM products p JOIN product_revisions r ON r.product_id=p.id WHERE p.id=? AND r.revision=?`).get(id,revision):db.prepare(`SELECT p.revision AS head,p.archived,p.kind,r.document,r.metadata,r.status
+  function productRow(id,revision,{requireHead=false,withMetadata=true}={}){
+    const columns=`p.revision AS head,p.archived,p.kind,r.document,${withMetadata?'r.metadata,':''}r.status`;
+    const row=legacySingleStore?db.prepare(`SELECT ${columns}
+      FROM products p JOIN product_revisions r ON r.product_id=p.id WHERE p.id=? AND r.revision=?`).get(id,revision):db.prepare(`SELECT ${columns}
       FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id
       WHERE p.id=? AND p.tenant_id=? AND r.revision=?`).get(id,tenantId,revision);
     if(!row||row.archived||row.kind!=='product'||row.status==='archived'||(requireHead&&row.head!==revision))
@@ -100,18 +104,24 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       fail('shop_binding_active_integrity','Bindung, Ausführung und fester Produktstand stimmen nicht überein.');
   }
   function parseDocument(text){try{return JSON.parse(text);}catch{fail('shop_binding_document','Der gespeicherte Produktbeleg ist ungültig.',422);}}
-  function result(row,records=new Map()){
+  function result(row,records=new Map(),timings){
     if(row.store_id!==storeId)fail('shop_binding_store_scope','Die Zuordnung gehört zu einem anderen Store.',503);
     const key=row.cfg_id+'@'+row.cfg_revision;let record=records.get(key);
-    if(!record){const source=productRow(row.cfg_id,row.cfg_revision),document=parseDocument(source.document);record={document,digest:digest(document)};records.set(key,record);}
-    const {document}=record,bound=bindingFor(row.binding_id);
+    if(!record){
+      let at=performance.now();const source=productRow(row.cfg_id,row.cfg_revision,{withMetadata:false});if(timings)timings.documentReadMs+=performance.now()-at;
+      at=performance.now();const document=parseDocument(source.document);if(timings)timings.documentParseMs+=performance.now()-at;
+      at=performance.now();record={digest:digest(document),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released'};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
+      // Retain only the digest, never all parsed documents of a large catalogue.
+      records.set(key,record);
+    }
+    const at=performance.now(),bound=bindingFor(row.binding_id);if(timings)timings.bindingReadMs+=performance.now()-at;
     if(record.digest!==row.document_sha256)fail('shop_binding_active_integrity','Der feste Produktbeleg wurde verändert.');
     assertBinding(bound,{shopifyVariantId:row.variant_gid,productId:row.cfg_id,productRevision:row.cfg_revision,baseUnitCents:bound.unit_cents,options:bound.options});
     return {...scope,shopifyProductId:row.product_gid,shopifyVariantId:row.variant_gid,
       bindingId:row.binding_id,productId:row.cfg_id,productRevision:row.cfg_revision,
       options:clone(bound.options),unitCents:bound.unit_cents,assignmentRevision:row.revision,
       documentSha256:row.document_sha256,evidenceReadAt:row.evidence_read_at,createdAt:row.created_at,
-      productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released',
+      productionStatus:record.productionStatus,
       productionReady:false,publicAccess:false,checkoutEnabled:false};
   }
   function persist({plan,expectedHeads}={}){
@@ -189,6 +199,9 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision
       WHERE h.tenant_id=? AND h.shop=? AND r.store_id=? ORDER BY r.cfg_id,r.variant_gid`).all(tenantId,shopDomain,storeId);
   }
+  // SQLite otherwise prefers the unique revision key and reads overflow pages
+  // just to reach status behind the document body. Use the covering index.
+  const revisionIndex=db.prepare("SELECT 1 FROM sqlite_master WHERE type='index' AND name='shop_gallery_revision_status_v1'").get()?' INDEXED BY shop_gallery_revision_status_v1':'';
   function galleryRevision(){
     storedScope();
     // No document bodies or customer data: only activation and product revision heads.
@@ -199,12 +212,12 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r
       ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision
       LEFT JOIN products p ON p.id=r.cfg_id${tenantJoin}
-      LEFT JOIN product_revisions pr ON pr.product_id=r.cfg_id AND pr.revision=r.cfg_revision${revisionJoin}
+      LEFT JOIN product_revisions pr${revisionIndex} ON pr.product_id=r.cfg_id AND pr.revision=r.cfg_revision${revisionJoin}
       WHERE h.tenant_id=? AND h.shop=? AND r.store_id=? ORDER BY h.variant_gid`).all(tenantId,shopDomain,storeId);
     return createHash('sha256').update(JSON.stringify(rows)).digest('hex');
   }
-  function galleryResult(row,records){
-    try{return result(row,records);}
+  function galleryResult(row,records,timings){
+    try{return result(row,records,timings);}
     catch(error){
       if(!['shop_binding_cfg_changed','shop_binding_active_integrity','shop_binding_document'].includes(error.code))throw error;
       // Fixed diagnostic codes only: never document text, tokens or customer fields.
@@ -215,14 +228,16 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
   function listActive(){
     const records=new Map();return activeRows().map(row=>galleryResult(row,records)).filter(Boolean);
   }
-  async function listActiveForGallery(){
-    const rows=activeRows(),records=new Map(),bindings=[];
+  async function listActiveForGallery({onMeasure=()=>{}}={}){
+    const started=performance.now(),rows=activeRows(),records=new Map(),bindings=[];
+    const timings={activeRowsMs:performance.now()-started,documentReadMs:0,documentParseMs:0,documentHashMs:0,bindingReadMs:0,products:0,bindings:rows.length};
     for(let i=0;i<rows.length;i++){
       if(i%8===0)await new Promise(resolve=>setImmediate(resolve));
-      const binding=galleryResult(rows[i],records);if(binding)bindings.push(binding);
+      const binding=galleryResult(rows[i],records,timings);if(binding)bindings.push(binding);
     }
-    return bindings;
+    onMeasure({...timings,totalMs:performance.now()-started});return bindings;
   }
   function history(input){storedScope();const pair=ids(input);return db.prepare('SELECT * FROM shop_product_binding_revisions WHERE tenant_id=? AND shop=? AND variant_gid=? AND product_gid=? ORDER BY revision').all(tenantId,shopDomain,pair.shopifyVariantId,pair.shopifyProductId).map(row=>({...scope,shopifyProductId:row.product_gid,shopifyVariantId:row.variant_gid,assignmentRevision:row.revision,bindingId:row.binding_id,productId:row.cfg_id,productRevision:row.cfg_revision,documentSha256:row.document_sha256,evidenceReadAt:row.evidence_read_at,createdAt:row.created_at,productionReady:false}));}
-  return Object.freeze({...scope,persist,resolve,history,listActive,galleryRevision,listActiveForGallery});
+  const galleryCache=createShopGalleryCache({database:db,...scope,readOnly});
+  return Object.freeze({...scope,persist,resolve,history,listActive,galleryRevision,listActiveForGallery,galleryCache});
 }

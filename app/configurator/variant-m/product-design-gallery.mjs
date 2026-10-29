@@ -1,4 +1,5 @@
 import {captureProductTexts,transferProductTexts} from './product-design-transfer.mjs';
+import {designGalleryCount} from './product-design-gallery-label.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
@@ -48,7 +49,7 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
     card.onclick=()=>{chosen=item;confirm.querySelector('.ux-product-summary').textContent=item.designName+' – Neue Größe '+productChoiceInfo(item);confirm.showModal();};grid.append(card);
     img.previewRequest={item,img};if(observer)observer.observe(img);else queue.push({item,img});
    }
-   if(!observer)pump();status.textContent=result.total?`${result.total} verfügbare Designs`:'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=next===null;
+   if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=next===null;
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}finally{loading=false;more.disabled=false;themes.disabled=false;}
  }
  themes.onchange=()=>{observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;next=0;loaded=false;load();};

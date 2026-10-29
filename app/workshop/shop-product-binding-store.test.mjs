@@ -242,3 +242,22 @@ test('benchmark reads a native copy cold and warm without changing any binding o
  assert.equal(result.readOnly,true);assert.equal(result.cold.status,'ready');assert.equal(result.warm.status,'ready');assert.equal(result.activeBindings,1);assert.equal(result.lightweightProductReads,1);assert.equal(result.fullModelReads,0);assert.equal(result.assetReads,0);
  assert.deepEqual(counts(f),before);assert.deepEqual(f.repository.get(f.record.id),source);
 });
+
+
+test('covering revision index preserves all head checks and read-only older copies need no migration',t=>{
+ const f=fixture(t);f.persist();const expected=f.registry.galleryRevision();
+ const index=f.db.prepare("PRAGMA index_info(shop_gallery_revision_status_v1)").all().map(r=>r.name);
+ assert.deepEqual(index,['product_id','revision','tenant_id','status']);
+ f.db.exec('DROP INDEX shop_gallery_revision_status_v1');
+ const registry=createShopProductBindingStore({database:f.db,orderIntake:f.orders,adapter:f.adapter,tenantId,shopDomain,storeId,readOnly:true});
+ assert.equal(registry.galleryRevision(),expected);assert.equal(registry.resolve(pair()).productId,f.record.id);
+ assert.equal(f.db.prepare("SELECT count(*) n FROM sqlite_master WHERE name='shop_gallery_revision_status_v1'").get().n,0);
+});
+
+test('benchmark cache uses a separate file, survives reopening, and rejects the source as cache',async t=>{
+ const f=fixture(t,nativeDocument());f.persist(f.plan([{record:f.record,...pair(),options:prepareShopProduct(f.record).variants[0].options}]));
+ const {benchmarkGalleryCopy}=await import('../../scripts/shop-gallery-benchmark.mjs'),options={filename:f.filename,tenantId,storeId,shopDomain,cacheFilename:path.join(f.dir,'cache.sqlite')};
+ const first=await benchmarkGalleryCopy(options),next=await benchmarkGalleryCopy(options);
+ assert.equal(first.lightweightProductReads,1);assert.equal(next.lightweightProductReads,0);assert.equal(next.cold.status,'ready');assert.equal(next.cold.cards,first.cold.cards);assert.ok(next.cold.ms<4000);
+ await assert.rejects(()=>benchmarkGalleryCopy({...options,cacheFilename:f.filename}),{code:'cache_must_be_separate_from_source'});
+});

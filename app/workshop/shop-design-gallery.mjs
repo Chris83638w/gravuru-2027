@@ -3,6 +3,8 @@ import {createHmac,timingSafeEqual} from 'node:crypto';
 import {selectedProfile,quote} from '../configurator/variant-m/contract.mjs';
 import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
 import {productPreview} from './product-preview.mjs';
+import {gallerySnapshotCodec} from './shop-gallery-snapshot.mjs';
+import {performance} from 'node:perf_hooks';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const unavailable=()=>fail(409,'shop_gallery_changed','Dieses Design ist nicht mehr verfügbar. Bitte die Designauswahl neu öffnen.');
@@ -13,8 +15,10 @@ const fields=['sid','storeId','productId','productRevision','bindingId','assignm
 // No catalogue imports or approvals happen here. Customer designs are taken
 // only from the fixed, already activated product model. Catalogue target
 // approval remains the importer's responsibility, just as for normal entry.
-export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFor,allowedAssets,checkBinding=()=>{},checkBindings,waitMs=4000}){
+export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFor,allowedAssets,checkBinding=()=>{},checkBindings,waitMs=4000,onMeasure=()=>{}}){
  const cache=new Map();
+ const snapshots=gallerySnapshotCodec(secret);
+ const measure=(context,event,values={})=>{try{onMeasure({event,storeId:context.store.storeId,...values});}catch{}};
  const key=createHmac('sha256',secret).update('gravuru-shop-design-target/v1').digest();
  const sign=s=>createHmac('sha256',key).update(s).digest('base64url');
  const issue=(context,binding,designId,scope)=>{
@@ -53,8 +57,9 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
  }
 
  async function build(context,validated){
-  const registry=context.store.registry;
-  const candidates=(validated?await registry.listActiveForGallery():registry.listActive()).sort((a,b)=>a.productId.localeCompare(b.productId)||a.productRevision-b.productRevision||a.unitCents-b.unitCents||a.shopifyVariantId.localeCompare(b.shopifyVariantId));
+  const registry=context.store.registry,started=performance.now();
+  const candidates=(validated?await registry.listActiveForGallery({onMeasure:values=>measure(context,'shop_gallery_binding_measure',values)}):registry.listActive()).sort((a,b)=>a.productId.localeCompare(b.productId)||a.productRevision-b.productRevision||a.unitCents-b.unitCents||a.shopifyVariantId.localeCompare(b.shopifyVariantId));
+  const timings={registryMs:performance.now()-started,modelMs:0,profileMs:0,selectionMs:0,models:0,bindings:candidates.length,cards:0};
   const scopes=new Map(),sources=new Map();let lastKey,model;
   for(let i=0;i<candidates.length;i++){
    if(i%8===0)await new Promise(resolve=>setImmediate(resolve));
@@ -66,27 +71,46 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
     const current=validated?{store:context.store,binding:candidate}:resolve(identity(candidate));
     if(current.store!==context.store||!sameBinding(candidate,current.binding))continue;
     const binding=current.binding,key=binding.productId+':'+binding.productRevision;
-    if(key!==lastKey){model=cardFor(current.store,binding);lastKey=key;}
+    if(key!==lastKey){const at=performance.now();model=cardFor(current.store,binding);lastKey=key;timings.modelMs+=performance.now()-at;timings.models++;}
     // Availability is checked on every response, including cache hits.
     // A pause/resume or doorbell approval is not a product revision.
-    const profile=selectedProfile(model.universal,binding.options),scope=galleryScope(model,binding),process=galleryProcess(profile);
+    const profileAt=performance.now(),profile=selectedProfile(model.universal,binding.options),scope=galleryScope(model,binding),process=galleryProcess(profile);timings.profileMs+=performance.now()-profileAt;
     sources.set(binding.bindingId,{scope,process,theme:profile.themeId||null});
     if(!scopes.has(scope.key))scopes.set(scope.key,[]);const cards=scopes.get(scope.key);
     for(const design of profile.designs){
-     let selected;try{selected=selection(binding,model,design.id);}catch{continue;}
+     let selected;const at=performance.now();try{selected=selection(binding,model,design.id);}catch{continue;}finally{timings.selectionMs+=performance.now()-at;}
      const {geometry,price}=selected,dedupe=JSON.stringify([binding.productId,design.id,geometry.width,geometry.height,geometry.shape]);
      cards.push({binding,scope,process,design:{katalog:{target:design.katalog?.target}},availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+     timings.cards++;
     }
    }catch(error){if([404,409,422,423].includes(error.status))continue;throw error;}
   }
-  return {scopes,sources};
+  measure(context,'shop_gallery_build_measure',{...timings,totalMs:performance.now()-started});return {scopes,sources};
+ }
+ async function restoreOrBuild(context,revision){
+  const storage=context.store.registry.galleryCache,started=performance.now();
+  if(storage){
+   try{
+    const saved=await storage.read(revision),restored=snapshots.decode(context,revision,saved);
+    if(restored){measure(context,'shop_gallery_cache_hit',{ms:performance.now()-started});return restored;}
+    measure(context,saved?'shop_gallery_cache_invalid':'shop_gallery_cache_miss');
+   }catch{measure(context,'shop_gallery_cache_read_failed');}
+  }
+  const result=await build(context,true);
+  // Never label an in-flight mixed build with a revision that has moved on.
+  if(storage&&context.store.registry.galleryRevision()===revision){
+   const at=performance.now();
+   try{if(await storage.write(revision,snapshots.encode(context,revision,result))!==false)measure(context,'shop_gallery_cache_saved',{ms:performance.now()-at});}
+   catch{measure(context,'shop_gallery_cache_write_failed');}
+  }
+  return result;
  }
  function entryFor(context){
   const revision=context.store.registry.galleryRevision();let entry=cache.get(context.store);
   if(!entry||entry.revision!==revision){
    entry={revision};
    // Defer the cold work so startup/request handling can first return to the event loop.
-   entry.promise=new Promise(resolve=>setImmediate(resolve)).then(()=>build(context,true));
+   entry.promise=new Promise(resolve=>setImmediate(resolve)).then(()=>restoreOrBuild(context,revision));
    entry.promise.catch(()=>{if(cache.get(context.store)===entry)cache.delete(context.store);});
    cache.delete(context.store);if(cache.size>=8)cache.delete(cache.keys().next().value);cache.set(context.store,entry);
   }else{cache.delete(context.store);cache.set(context.store,entry);}

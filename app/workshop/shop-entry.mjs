@@ -178,7 +178,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   }
   return allowed;
  }
- const designGallery=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings});
+ const designGallery=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings,onMeasure:logger});
  // Warm each configured store after startup without creating a customer session.
  // A transient failure is retried on the next gallery request, never unhandled.
  for(const store of fixed)if(typeof store.registry.listActiveForGallery==='function'){

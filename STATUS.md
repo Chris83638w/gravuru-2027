@@ -6,6 +6,30 @@
 - [Übergabe, Quellen und Reproduktion](docs/handoffs/2026-10-29-rasse-schilder-astra.md). Eigene Katzenmotive samt Original-PNG/Prompt ausschließlich unter `motive-eigene/`; kein Kundenbibliotheks-, Live- oder Shopify-Schreiben, kein Merge. Review-Commits unsigned, da kein Signaturschlüssel eingerichtet.
 - Nächster Schritt: Chris prüft die Galerie und bestätigt Stil/Katzenauswahl; danach weitere Hunderassen gemäß Nachricht 1. Mindestlinienstärke und echte Gravurprobe vor Fertigungsfreigabe offen. Postfach-Issue 61 offen lassen.
 
+## 2026-10-29 – Codex/Astra: Live-Freigabe der Funkklingel-Oberfläche
+
+Chris im Chat: „stell es live“. Revisionsvorbereitung ergänzt: vorhandenes Produktdokument, Geometrie, Preise, Ressourcen und SEO bleiben erhalten; Designs und ihre expliziten move/delete/replace-Rechte werden über neue Revisionen übernommen. 27/27 gezielte Tests lokal bestanden. Serverbasis der 16 geänderten Laufzeit-/Testdateien bytegenau gegen GitHub geprüft; isolierte Linux-Abnahme und private Sicherung laufen. Noch keine Aktivierung behauptet. Nächster Schritt: Linux-/Store-Abnahme, AOSU-Pilot, neue Bindungsrevisionen; keine zusätzlichen Shopify-Produktveröffentlichungen oder Themeänderungen im Rahmen dieser UI-Freigabe.
+
+## 2026-10-29 – Codex/Astra: Format-/Positionsblöcke und bearbeitbare Designelemente (PR #60)
+
+Nutzerauftrag: Format und Position untereinander; Designtexte und Motive verschieb-/löschbar. Kompakte Auswahlzeilen und Rechte in vorbereiteten neuen Revisionen umgesetzt, ohne Frontend-Bypass. 14/14 Tests, Build, 126 Produktkopien / 42 Modelle / 30.240 Auswahlfälle sowie 47.628 Elementfälle für move/delete geprüft. Browser-Löschen, Rückgängig und unabhängiges Verschieben des Kreismotivs bestanden. Nur Vorschau/eigener Branch. Bericht: docs/handoffs/2026-10-29-funkklingeln-bloecke-elementrechte.md. Nächster Schritt: Revisionsänderung bei späterer Katalogübernahme mitführen; kein reines UI-Deployment als Rechtefreigabe ausgeben.
+
+## 2026-10-29 – Funkklingeln: kompakte Untertabs in Ausführungen (PR #60)
+
+Format & Position / Rahmen & Farbe / Befestigung als Untertabs; Hauptschritte unverändert. Kleinere Kacheln und deutliches Silikon-Tubensymbol. 15/15 gezielte Tests und Build erfolgreich; Desktop, mobile Vorschau, Tastatur, Auswahlpersistenz und SIL-Preis geprüft. Nur eigener Branch/lokale Vorschau, nichts live geändert. Bericht: docs/handoffs/2026-10-29-funkklingeln-ausfuehrung-untertabs.md.
+
+## 29.10.2026 · Codex/Astra · PR #60 nach Chris' Rückmeldung: AOSU-Auswahl und Materialien
+
+- Vier Schritte oben unverändert. Runde Farbfelder, kompakte Format-/Rahmensilhouetten gemäß AOSU-Referenz; große Produktkarten der Optionsauswahl zurückgenommen. Vorhandene leere Edelstahltextur, Acrylkante und dezenter Glanz nur in der Vorschau.
+- 24/24 gezielte Tests und Build grün; erneut 126 Produkte / 42 Modelle / 30.240 Auswahlfälle. Keine Daten-/Preisänderung und kein Livezugriff. [Nachtrag mit Quellen und aktuellen Bildern](docs/handoffs/2026-10-29-funkklingeln-aosu-auswahl-nachtrag.md).
+
+## 29.10.2026 · Codex/Astra · Funkklingel-Pilot: Vorschau/Bildauswahl korrigiert, nur Review
+
+- Eigener Branch `dev/funkklingeln-vorschau-bildauswahl-20261029-astra`, Basis `2717da5`. Große formatgerechte Platte und Maßlinien; Bildauswahl Format/Position/Rahmen/Farbe; 16 native Designs ohne wiederholte Produktkarten. Formatbezogene Rechte-Reparatur und Text-Einpassfläche korrigiert.
+- 50/50 gezielte Windows-Tests und Build grün. 126 Produkte / 42 Modelle / 30.240 Options-/Positionsfälle geprüft. Getrennter Katalogvorschlag: 42 Rezepte, 1.344 Zuordnungen, 8.064 Design-/Positionsprüfungen mit Originalmotiven. Chrome Desktop + 390×844 sichtbar geprüft.
+- Kein Livezugriff. Neue Katalogrevisionen, vollständige Kontaktbogenabnahme, Linux/iPhone und Pilot-Warenkorb bleiben offen. Katalog-PDF-Neubau lokal durch fehlendes cairosvg blockiert; kein vollständiger Build behauptet.
+- [Bericht, Quellen und Screenshots](docs/handoffs/2026-10-29-funkklingeln-vorschau-bildauswahl-astra.md). Nächster Schritt: Claude-Review in Issue #46 und getrennte Revisionsplanung, noch keine weiteren Shopify-Veröffentlichungen.
+
 ## 29.10.2026 · Claude als Operator · Live: PR #52 + PR #49 (`main` `62ead38`)
 
 - Chris (13:10): „Ja, Du darfst PR #52 nach main übernehmen, bereitstellen und die App zweimal neu starten.“ → Merge `3db5b7a` (Baum = PR-Stand, Linux **1816/1816**), Plesk Pull/Bereitstellen, Neustart 1 um 13:17.

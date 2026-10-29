@@ -3,10 +3,23 @@ import assert from 'node:assert/strict';
 import {crossStoreOrders,createCrossStoreOrders} from './cross-store-orders.mjs';
 import {orderKey,orderApi,orderPage,orderRequest,selectedOrder} from './ui/order-store-context.mjs';
 import {acrylAssetText,acrylRoute} from './acryl-employee-host.mjs';
+import {once} from 'node:events';
+import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 const shop='test.myshopify.com',origin='https://work.example';
 const row=(id,orderId)=>({id,orderId,shopDomain:shop,receivedAt:'2026-10-29T11:00:00Z',product:{name:'Test'},test:true});
 const store=(storeId,rows,errors=[])=>({storeId,apiPrefix:storeId==='acryl'?'/api/workshop/acryl/':'/api/workshop/',workshop:{sessionContext:{shopDomain:shop},orderIntake:{list:()=>rows,errors:()=>errors,status:id=>({label:storeId+' '+id})}}});
 const stores=()=>[store('legacy',[row('same','old')]),store('acryl',[row('same','new'),{...row('foreign','x'),shopDomain:'other.myshopify.com'}],[{...row('error','rejected'),intakeError:'Preis weicht ab'}])];
+
+test('orders page serves its complete browser module graph, including the scoped store helper',async t=>{
+ const server=createPreviewServer({workshop:{}});server.listen(0,'127.0.0.1');await once(server,'listening');
+ t.after(()=>new Promise(resolve=>server.close(resolve)));
+ const origin='http://127.0.0.1:'+server.address().port,queue=['/workshop-ui/orders-ui.mjs'],visited=new Set();
+ while(queue.length){const path=queue.shift();if(visited.has(path))continue;visited.add(path);
+  const response=await fetch(origin+path);assert.equal(response.status,200,path);assert.match(response.headers.get('content-type'),/javascript/,path);
+  const source=await response.text();for(const m of source.matchAll(/(?:from\s*|import\s*)['"](\.\.?\/[^'"]+)['"]/g)){const child=new URL(m[1],origin+path).pathname;if(child.startsWith('/workshop-ui/'))queue.push(child);}
+ }
+ assert.ok(visited.has('/workshop-ui/order-store-context.mjs'));assert.ok(visited.has('/workshop-ui/merchant-request.mjs'));
+});
 test('combined orders keep both stores, rejected lines, immutable IDs and independent statuses',()=>{
  const input=stores(),before=JSON.stringify(input),r=crossStoreOrders(input,{shopDomain:shop,enabled:true});
  assert.equal(r.orders.length,2);assert.deepEqual(new Set(r.orders.map(o=>o.orderId)),new Set(['old','new']));

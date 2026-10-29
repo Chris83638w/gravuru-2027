@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-29",
+  "scope": "local compiler and Function runner only; no deployment",
+  "apiVersion": "2026-07",
+  "cliVersion": "4.9.3",
+  "schemaBlob": "e98d5cbffc8eea3a1ec0795218d2b34c4f2dac24",
+  "priceSourceBlob": "a1a5146136c6d1f11ea93b07b5c8f64a3f5ab7d7",
+  "wasmBytes": 5301,
+  "wasmSha256": "1d064be2e70acac229970e77299797c356740d564de7a2d6e45d4246776afd68",
+  "cases": [
+    {
+      "name": "image without price contract",
+      "success": true,
+      "instructions": 386359,
+      "operations": [
+        "lineUpdate.image"
+      ],
+      "priceAdded": false
+    },
+    {
+      "name": "image with existing valid price contract",
+      "success": true,
+      "instructions": 551290,
+      "operations": [
+        "lineUpdate.image + lineUpdate.price"
+      ],
+      "amount": "21.69"
+    },
+    {
+      "name": "foreign image rejected",
+      "success": true,
+      "instructions": 345767,
+      "operations": []
+    }
+  ],
+  "activeFunctionVerified": false
+}

@@ -64,9 +64,13 @@ test('auto-placement uses exact contour and does not move other elements',()=>{
  const placed=freePlacement(text,surface,[motif,text],[],{minScale:.6});assert(placed);assert(placed.x-text.w*placed.scale/2>=10);assert.deepEqual(motif,before);
  assert.equal(freePlacement(text,{...surface,accepts:()=>false},[motif,text]),null);
 });
-test('template rotation starts disabled, explicit opt-in and customer additions remain usable',()=>{
+test('rotation is immediately available but still follows persisted movement rights',()=>{
  const config={profile:{designs:[{id:'d',objects:[text]}]}};
- assert.equal(rotationAllowed(config,'d',text),false);assert.equal(rotationAllowed(config,'d',text,new Set(['t'])),true);assert.equal(rotationAllowed(config,'d',{id:'new'}),true);
+ assert.equal(rotationAllowed(config,'d',text),true);assert.equal(rotationAllowed(config,'d',{id:'new'}),true);
+ for(const flag of ['locked','technicalLocked','acrylicFixed','uxLocked'])assert.equal(rotationAllowed(config,'d',{...text,[flag]:true}),false);
+ assert.equal(rotationAllowed({...config,workshopElementRights:{d:{t:{move:false}}}},'d',text),false);
+ assert.equal(rotationAllowed({...config,workshopElementRights:{d:{t:{move:true}}}},'d',text),true);
+ assert.equal(rotationAllowed(config,'d',null),false);
  assert.equal(rotationAllowed({...config,workbench:{embedded:true}},'d',text),true);
 });
 test('cart image preparation runs independent tasks concurrently and propagates any failure',async()=>{

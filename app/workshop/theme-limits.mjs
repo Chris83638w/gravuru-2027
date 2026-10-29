@@ -37,8 +37,14 @@ export function textLimits(object,design,product,config){
   if(!Number.isInteger(value)||value<min||value>max)fail((key==='maxLength'?'Zeichenlimit':'Zeilenlimit')+': ganze Zahl von '+min+' bis '+max+'.');
   result[key]=value;
  }
- // New product revisions opt into Chris' 50-character-per-line rule. Existing
- // saved revisions retain their original whole-field contract.
+ // Versioned rules: historical orders keep their original text contract.
+ // The 29.10. review uses 80 characters for the entire field, including
+ // line breaks. There is no separate line cap within this character budget.
+ if(config?.textRules?.maxCharsPerField!==undefined){
+  const max=config.textRules.maxCharsPerField;
+  if(!Number.isInteger(max)||max<1||max>500)fail('Zeichenlimit je Feld: ganze Zahl von 1 bis 500.');
+  return {maxLength:max,maxLines:Infinity,wholeField:true};
+ }
  if(config?.textRules?.maxCharsPerLine!==undefined){
   const max=config.textRules.maxCharsPerLine;
   if(!Number.isInteger(max)||max<1||max>500)fail('Zeichenlimit je Zeile: ganze Zahl von 1 bis 500.');
@@ -47,10 +53,10 @@ export function textLimits(object,design,product,config){
  return result;
 }
 export const longestTextLine=text=>Math.max(0,...String(text??'').replace(/\r\n?/g,'\n').split('\n').map(line=>[...line].length));
-export const textLimitCount=(text,limits)=>limits?.perLine?longestTextLine(text):textLength(text);
+export const textLimitCount=(text,limits)=>limits?.perLine?longestTextLine(text):limits?.wholeField?[...String(text??'').replace(/\r\n?/g,'\n')].length:textLength(text);
 export function textLimitIssue(text,limits){
  if(limits.perLine&&longestTextLine(text)>limits.maxLength)return 'Text zu lang: höchstens '+limits.maxLength+' Zeichen je Zeile.';
- if(!limits.perLine&&textLength(text)>limits.maxLength)return 'Text zu lang: höchstens '+limits.maxLength+' Zeichen.';
+ if(!limits.perLine&&textLimitCount(text,limits)>limits.maxLength)return 'Text zu lang: höchstens '+limits.maxLength+' Zeichen.';
  if(lineCount(text)>limits.maxLines)return 'Höchstens '+limits.maxLines+' Zeilen.';
  return '';
 }
@@ -61,7 +67,7 @@ export const FIELD_LABELS={heading:'Überschrift',names:'Namen',name:'Name',plac
 export const requiredFieldMessage=template=>'Bitte das Feld „'+(FIELD_LABELS[template.fieldKey]||template.fieldKey||template.id)+'“ ausfüllen.';
 // Editor-Eingabe: nie mehr Zeichen annehmen, zusätzliche Zeilen abweisen.
 export function clampText(value,limits,previous=''){
- const text=String(value??'');
+ const text=String(value??'').replace(/\r\n?/g,'\n');
  if(text.split('\n').length>limits.maxLines)return previous;
  if(limits.perLine)return text.replace(/\r\n?/g,'\n').split('\n').map(line=>[...line].slice(0,limits.maxLength).join('')).join('\n');
  const chars=[...text];

@@ -22,7 +22,7 @@ export function installTextFields({el,r,selected,select}){
   const object=selected();if(!object||object.type!=='text'||expanded&&object.id!==expanded)expanded=null;
   for(const row of fields.querySelectorAll('.ux-text-row')){
    let disclosure=row.querySelector('[data-text-options]');
-   if(!disclosure){disclosure=document.createElement('button');disclosure.type='button';disclosure.dataset.textOptions=row.dataset.uxRow;disclosure.className='ux-text-options';disclosure.innerHTML='<span class="ux-inline-chevron" aria-hidden="true"></span>Schrift · Größe';row.append(disclosure);}
+   if(!disclosure){disclosure=document.createElement('button');disclosure.type='button';disclosure.dataset.textOptions=row.dataset.uxRow;disclosure.className='ux-text-options';disclosure.innerHTML='<span class="ux-text-options-title">Schrift &amp; Größe</span><span class="ux-inline-chevron" aria-hidden="true"></span>';row.append(disclosure);}
    const open=expanded===row.dataset.uxRow;disclosure.setAttribute('aria-expanded',String(open));disclosure.setAttribute('aria-controls','ux-inline-text-controls');
    if(open&&controls.parentNode!==row)row.append(controls);
   }

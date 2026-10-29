@@ -3,6 +3,7 @@
 import assert from 'node:assert/strict';
 import {prepareDoorbellDesignRepair} from './prepare-doorbell-design-repair.mjs';
 import {validateProductDocument} from '../app/workshop/product-model.mjs';
+import {legacyElementRights} from '../app/configurator/variant-m/element-rights.mjs';
 
 export function prepareDoorbellDesignRevision(document){
  const result=structuredClone(document);
@@ -12,8 +13,9 @@ export function prepareDoorbellDesignRevision(document){
  // rights for matching elements, and grant only the requested move/delete/replace.
  const oldRights=document.elementRights;
  result.elementRights=Object.fromEntries(prepared.profile.designs.map(d=>[d.id,Object.fromEntries(d.objects.map(o=>{
-  const rights=oldRights[d.id]?.[o.id];
-  if(!rights)throw Error('Missing original element rights: '+d.id+'/'+o.id);
+  // Restoring a source motif that was missing in the landscape template also
+  // restores its native policy; there cannot be an old per-element entry for it.
+  const rights=oldRights[d.id]?.[o.id]??legacyElementRights(o);
   const editable=['text','motif'].includes(o.type)&&!o.technicalLocked&&!o.locked&&!o.acrylicFixed;
   return [o.id,editable?{...rights,move:true,delete:true,...(o.type==='motif'?{replace:true}:{})}:structuredClone(rights)];
  }))]));

@@ -59,6 +59,6 @@ test('150 active SQLite bindings: cold/warm first-page latency, event loop and l
  const cold=await measure(),coldModels=models;await delay(5);
  const coldLag=lag.max/1e6;lag.reset();const warm=await measure();await delay(5);const warmLag=lag.max/1e6;lag.disable();
  assert.equal(models,coldModels,'warm page does not rebuild any product model');assert.equal(coldModels,2,'one model per product revision');assert.equal(exactReads,0,'registry-validated listing does not resolve all bindings a second time');assert.equal(warm.total,cold.total);
- gallery=makeGallery();const restarted=await measure();assert.equal(restarted.total,cold.total);assert.equal(models,4);for(const r of [cold,warm,restarted])assert.ok(r.ms<5000,JSON.stringify(r));
+ gallery=makeGallery();const restarted=await measure();assert.equal(restarted.total,cold.total);assert.equal(models,2,'persisted snapshot avoids model reads after restart');assert.equal(restarted.firstStatus,'ready');assert.ok(restarted.ms<4000);for(const r of [cold,warm,restarted])assert.ok(r.ms<5000,JSON.stringify(r));
  t.diagnostic(JSON.stringify({restartedFirstPageMs:+restarted.ms.toFixed(2),coldFirstStatus:cold.firstStatus,restartedFirstStatus:restarted.firstStatus,activeBindings:150,sourceSurfaceBytes:Buffer.byteLength(config.materialSurface),cards:cold.total,coldFirstPageMs:+cold.ms.toFixed(2),warmFirstPageMs:+warm.ms.toFixed(2),coldEventLoopMaxMs:+coldLag.toFixed(2),warmEventLoopMaxMs:+warmLag.toFixed(2),modelsCold:coldModels,lightweightReadsAdditionalRestart:models-coldModels}));
 });

@@ -1,3 +1,8 @@
+import {DatabaseSync} from 'node:sqlite';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {createShopGalleryCache} from './shop-gallery-cache.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {doorbellFixture} from './test-fixtures/doorbell-config.mjs';
@@ -227,4 +232,66 @@ test('current topic ranks across pagination; Alle Themen retains every same-line
  assert.equal(new Set([...first.items,...next.items].map(c=>c.designId)).size,45);
  const all=await f.gallery.list(f.context,{theme:'all'});assert.equal(all.items[0].designId,'d0');assert.equal(all.total,45);
  await assert.rejects(f.gallery.list(f.context,{theme:'foreign-line'}),{code:'shop_gallery_theme'});
+});
+
+
+test('persisted SQLite snapshot survives reopening, partitions scope, rechecks availability and issues only fresh session tokens',async t=>{
+ const f=fixture(),dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-persist-gallery-')),filename=path.join(dir,'cache.sqlite');
+ let db=new DatabaseSync(filename),revision='r1',reads=0,allowed=true;
+ t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const scope={tenantId:'test-tenant',storeId:'test-store',shopDomain:'synthetic.myshopify.com'};
+ const connect=()=>{f.store.registry.galleryCache=createShopGalleryCache({database:db,...scope});};connect();
+ f.store.registry.galleryRevision=()=>revision;
+ f.store.registry.listActiveForGallery=async()=>{reads++;return f.store.registry.listActive();};
+ // A future accidental private field on a binding must not enter the cache.
+ f.bindings.values().next().value.customerDraft='PRIVATE_CUSTOMER_MARKER';
+ f.add(2);f.models.get('cfg_2').galleryCategoryIds=['linie-other'];
+ const options={secret:'synthetic-persist-secret',resolve:ids=>({store:f.store,binding:f.bindings.get(ids.shopifyVariantId)}),modelFor:(_s,b)=>f.models.get(b.productId),allowedAssets:()=>new Set(),checkBinding:()=>{if(!allowed)throw Object.assign(Error('paused'),{status:423});}};
+ const first=await createShopDesignGallery(options).list(f.context);assert.equal(first.total,1);assert.equal(reads,1);
+ const saved=db.prepare('SELECT * FROM shop_gallery_cache').get();
+ for(const privateValue of ['PRIVATE_CUSTOMER_MARKER','source-session','sgt1.','synthetic-persist-secret'])assert.ok(!saved.payload.includes(privateValue),privateValue);
+ assert.equal(createShopGalleryCache({database:db,...scope,storeId:'foreign'}).read(revision),null);
+ assert.equal(createShopGalleryCache({database:db,...scope,tenantId:'foreign'}).read(revision),null);
+ assert.equal(createShopGalleryCache({database:db,...scope,shopDomain:'foreign.myshopify.com'}).read(revision),null);
+ db.close();db=new DatabaseSync(filename);connect();
+ const gallery=createShopDesignGallery({...options,cardFor:()=>{throw Error('Cache hit must not read product models');}});
+ const context={...f.context,session:{sid:'new-session'}},restarted=await gallery.list(context);
+ assert.equal(reads,1);assert.equal(restarted.total,1);assert.notEqual(restarted.items[0].target,first.items[0].target);
+ allowed=false;assert.equal((await gallery.list(context)).total,0);allowed=true;assert.equal((await gallery.list(context)).total,1);
+ revision='r2';const next=await createShopDesignGallery(options).list(context);assert.equal(reads,2);assert.equal(next.total,1);
+ assert.equal(db.prepare('SELECT count(*) n FROM shop_gallery_cache WHERE store_id=?').get(scope.storeId).n,1);
+ assert.equal(f.store.registry.galleryCache.read('r1'),null);assert.ok(f.store.registry.galleryCache.read('r2'));
+});
+
+test('invalid signature, changed secret, wrong scope and cache I/O failures rebuild without using stale cards',async()=>{
+ for(const scenario of ['tampered','secret','scope','read-error','write-error']){
+  const f=fixture();let saved,reads=0;
+  f.store.registry.galleryRevision=()=> 'r1';f.store.registry.listActiveForGallery=async()=>{reads++;return f.store.registry.listActive();};
+  f.store.registry.galleryCache={read:()=>saved,write:(_r,value)=>{saved=value;}};
+  const options={secret:'cache-secret',resolve:()=>{},modelFor:(_s,b)=>f.models.get(b.productId),allowedAssets:()=>new Set()};
+  await createShopDesignGallery(options).list(f.context);assert.equal(reads,1);
+  if(scenario==='tampered')saved.payload=saved.payload.replace('Design 1','Forged design');
+  if(scenario==='secret')options.secret='rotated-secret';
+  if(scenario==='scope')f.store.storeId='another-store';
+  if(scenario==='read-error')f.store.registry.galleryCache.read=()=>{throw Error('storage unavailable');};
+  if(scenario==='write-error'){saved=null;f.store.registry.galleryCache.write=()=>{throw Error('read-only storage');};}
+  const result=await createShopDesignGallery(options).list(f.context);assert.equal(reads,2,scenario);assert.equal(result.total,scenario==='scope'?0:1);
+  assert.ok(result.items.every(i=>i.designName!=='Forged design'));
+ }
+});
+
+test('a revision changed during build is never persisted under the previous revision',async()=>{
+ const f=fixture();let revision='r1',reads=0;const writes=[];
+ f.store.registry.galleryRevision=()=>revision;f.store.registry.galleryCache={read:()=>null,write:(r,s)=>writes.push(r)};
+ f.store.registry.listActiveForGallery=async()=>{reads++;if(reads===1){revision='r2';f.add(2);}return f.store.registry.listActive();};
+ const options={secret:'cache-secret',resolve:()=>{},modelFor:(_s,b)=>f.models.get(b.productId),allowedAssets:()=>new Set()};
+ assert.equal((await createShopDesignGallery(options).list(f.context)).total,2);assert.deepEqual(writes,['r2']);
+});
+
+test('read-only storage without a cache table leaves the database unchanged',()=>{
+ const db=new DatabaseSync(':memory:');try{
+  const cache=createShopGalleryCache({database:db,tenantId:'tenant',storeId:'store',shopDomain:'shop.myshopify.com',readOnly:true});
+  assert.equal(cache.read('revision'),null);cache.write('revision',{payload:'{}',mac:'a'.repeat(64)});
+  assert.deepEqual(db.prepare('SELECT name FROM sqlite_master').all(),[]);
+ }finally{db.close();}
 });

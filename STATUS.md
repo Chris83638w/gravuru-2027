@@ -1,3 +1,7 @@
+## 29.10.2026 – Codex/Astra: Issue #48 Teil A als Entwurf
+
+Galerie-Stand revisionsgebunden und ohne Sitzungsdaten persistent; Verfügbarkeit bleibt frisch. Revisionsindex und begrenzte Dokumenthaltung reduzieren die synthetische 572-MB-Probe: Aufbau 9,261 → 6,120 s, nach Prozessneustart erste Karte 144 ms. 97 gezielte Tests grün, Build erfolgreich. Windows-Vollauf zunächst 1815 / 1737 bestanden / 73 python3-Umgebungsfehler / 5 übersprungen; abschließender Lauf mit vorhandenem Windows-Testadapter läuft. Aktuelle private Live-Kopie und Linux-/Proxy-Abnahme offen. [Bericht](docs/handoffs/2026-10-29-issue48-galerie-warm-bericht.md). Nichts installiert oder live geändert.
+
 ## 29.10.2026 · Claude als Operator · Live: PR #42 + #43 (`main` `6339961`)
 
 - Chris (11:47): „Ja, Du darfst PR #42 und PR #43 nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `6339961` (Baum = Prüfstand `b41c32a`), Plesk Pull + Bereitstellen + App neu starten 11:48–11:50.

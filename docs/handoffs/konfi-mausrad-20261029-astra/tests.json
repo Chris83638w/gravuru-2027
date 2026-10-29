@@ -1,0 +1,165 @@
+{
+  "date": "2026-10-29",
+  "environment": "Windows, Node test runner; GRAVURU_PYTHON and PYTHONPATH set; python3 Store alias unresolved",
+  "sourceBase": {
+    "pr42": "bfbd9188ac4446611bc5e71b55b74c804aec5767",
+    "pr43": "e741a51bc3031f1b2856b8cae8bd10ce8064749c"
+  },
+  "combinedTargeted": {
+    "tests": 122,
+    "pass": 122,
+    "fail": 0
+  },
+  "combinedFull": {
+    "tests": 1810,
+    "pass": 1731,
+    "fail": 74,
+    "skip": 5,
+    "durationMs": 602816.2118,
+    "command": "node --test --test-reporter=tap --test-concurrency=8 app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs",
+    "failureCauses": {
+      "python3AliasOrSpawn": 73,
+      "pythonCp1252Unicode": 1
+    },
+    "failedTestNames": [
+      "native engraving uses dark production paths and original photo grayscale, separate contour, no print white, one mirror",
+      "native vector engraving keeps paths and rejects incorrect package hashes",
+      "native engraving backend jobs cache unchanged bytes and reject the print endpoint",
+      "tinted SVG import preserves alpha, original bytes and motif-only white in native print PDF",
+      "imported PDF tint is included in the technical CMYK output without replacing its source",
+      "imported engraving follows the preview: white stays unengraved, colours become tones, no vectorization claim (P1-1)",
+      "native reuse keeps customer layout and deletions, resets template text and removes private photo/logo identities",
+      "native new product is private, idempotent across restart, immutable-source based and requires its preview token",
+      "native order reuse preserves manufacturing revision after newer archival, without private media or changed original order",
+      "native profile binding validates material, thickness, method and reference while preserving legacy documents",
+      "native print snapshot and output retain pinned profile defaults after profile edits and archive",
+      "native engraving uses the fixed vector/mirror profile and explicit output overrides",
+      "97 successful products survive restart; correction workbook imports only the three fixed failures",
+      "full report is a read-only fresh assessment and user formulas remain literal editable text",
+      "a correction export never refreshes a conflicting expected revision or changes the target ID",
+      "dashboard PDF-to-print flow: transparent design with customer text and photo",
+      "dashboard PDF-to-print flow: edge-to-edge color with mirrored bleed",
+      "existing acrylic configurator keeps selected base, wall option, customer media and vector white through the same export queue",
+      "obsolete failed print and engraving jobs recreate idempotently with frozen settings, without overwriting source jobs or packages",
+      "added elements survive frozen proof and CMYK/PDF white export; order reuse never leaks new private texts by default",
+      "a full-color imported form design prints both colors with white underneath, clear holes and optional edge bleed",
+      "correction workbook retains every child design of a failed product and excludes successful siblings",
+      "filled design Excel roundtrip edits names/defaults without exposing or altering source fields, rights or geometry",
+      "design export rejects invalid selection and supports 100 products with 30 design references each",
+      "private photo decoding preserves original bytes, respects EXIF and rejects active or invalid files",
+      "customer drafts enforce field rights and private photos, pin revisions, save conflicts and survive SQLite reopen",
+      "exact-size PDF placement tolerates point rounding without rescaling or admitting oversized art",
+      "engraving raster uses original photos, grayscale, holes and single mirror without print white or cutting paths",
+      "engraving vector preserves real source and text paths without images/fonts, grayscale and exact size",
+      "engraving uses persistent jobs, method-specific validation and byte-identical backend downloads",
+      "embedded raster design is refused as vector and remains usable as raster engraving",
+      "acrylic engraving appearance stays out of raster and vector output and preserves original photos",
+      "wood and leather preview tones do not alter photo originals or actual grayscale engraving pixels",
+      "free-form CMYK proof uses originals, leaves empty slots/holes transparent, defaults to motif white and 300 dpi",
+      "edge bleed follows the free outer contour and mirror transforms ink, hole and white once",
+      "backend print download enforces CSRF and settings and retains byte-identical cached PDF/ZIP",
+      "frozen multiline italic text remains identical vector outlines at 300/600 dpi with exact white paths and one mirror",
+      "photo and vector text retain saved paint order without duplicate raster text",
+      "acrylic scene, reflections and depth stay out of actual PDF ink and white separations",
+      "front UV texture and reverse gloss leave identical production pixels, white and geometry",
+      "Mimaki direct and queued downloads expose paired immutable PDFs, reject missing white and preserve older cached exports",
+      "saved variant checks and correction workbook resume only three failed groups with all their members",
+      "variant reports preserve literal labels, isolate snapshot types and reject ambiguous workbook data",
+      "filled Excel retains historical references, literal names, and round-trips mixed changed and unchanged groups",
+      "Excel export selection rejects archived, missing, duplicate or excessive groups and marks unavailable products",
+      "Excel export of 100 groups preserves all references and a stale edit never overwrites a newer group",
+      "Excel export API is read-only, CSRF/origin guarded and sends a non-cacheable XLSX attachment",
+      "Vertrag: role ist Vorlagenfeld – Kunde kann es weder setzen noch ändern; guide-Motive kosten nichts",
+      "Vorschau zeigt guide-Ebenen mit data-role, Fertigungs-SVG und Gravur-PDF lassen sie aus",
+      "Python-Worker entfernt data-role=\"guide\" generisch, auch wenn eine Hilfsebene in der SVG steht",
+      "Excel-Rundlauf: Zusatzfelder mit Art, Bedingung, Zeichenlimit und offenem Aufpreis",
+      "Prüfstand, Bestellposition und summary.json/summary.pdf tragen die sichtbaren Zusatzfelder",
+      "order layout becomes one editable design with original examples by default, without personal photos and without changing source",
+      "preview token, immutable source and font hashes protect reuse; repeated application survives restart without duplication",
+      "operator preview and apply enforce CSRF, use fixed order state, return reusable draft and create no shop binding",
+      "Acryl-Rückseite liefert die gespiegelte Datei, auch wenn der Client mirror:false sendet",
+      "Stahl-Gravur bleibt ungespiegelt, auch wenn der Client mirror:true sendet",
+      "Gebundenes Fertigungsprofil bestimmt die Spiegelung auch gegen den Produktvertrag",
+      "coverage agrees with independently rasterized real mask and photo transforms",
+      "grouped text entries stay two compound vector paths and never become bitmap images in Roland or Mimaki",
+      "Mimaki white carries identical vector outer and hole cut paths, page origin and mirror at both bleed sizes",
+      "saved Roland PDF renders isolated red artwork and white coverage with transparent empty area, without modifying PDF",
+      "Mimaki preview uses the exact separate archived white PDF and full white is visibly different from motif white",
+      "raster and vector engraving previews render the exact stored PDF on white without changing output or orientation",
+      "K10: family process profile – id validated, null stays open, engraving side sets the mirror, Excel round trip keeps the column",
+      "Form-Druckpaket enthält summary.pdf, summary.json und Originalfotos mit Manifest-Hashes; Textfelder in mm und Fotovermerk",
+      "Natives Gravurpaket: Bestellbezug, Optionen mit Preis, skalierte Textposition und Drehung, Fotoampel aus photoResolution",
+      "Natives Druckpaket ohne Foto: Ampel bleibt leer, Produktionsdateinamen unverändert, doppelte Namen abgelehnt",
+      "Excel-Rundlauf: Blatt „Staffel“ je Familie und Größe, leerer Rabatt bleibt offen",
+      "recovered specimens preserve geometry and originals, retain merchant edits on repeated import and save customer reviews",
+      "Familie: Flächen gehen ins Produkt, Briefing nennt Rückseite und offenen Aufpreis; Excel-Rundlauf",
+      "Fertigung: Rückseite erzeugt eigene Produktionsdatei mit -vorderseite/-rueckseite, ohne fremde Seite",
+      "Fertigung: zweiseitiges Produkt ohne gestaltete Rückseite behält die bisherigen Dateinamen",
+      "Fertigung Druck: je Seite Druck-, Weiß- und SVG-Datei; Weiß-Download der Vorderseite bleibt erreichbar"
+    ],
+    "newFailedNamesComparedWithPriorLogs": [],
+    "baselineComparison": "Name comparison against existing PR43 editor-full.log and PR42 workshop-verified.log, not a fresh Linux baseline run"
+  },
+  "performance150Bindings": {
+    "coldMs": 2462.07,
+    "warmMs": 46.61,
+    "restartedMs": 2750.02,
+    "itemsFirstPage": 40,
+    "lightModelReadsCold": 2,
+    "lightModelReadsRestart": 2,
+    "fullModelReadsForLists": 0,
+    "coldMaxLoopDelayMs": 147.46,
+    "warmMaxLoopDelayMs": 25.35,
+    "underConcurrentFullRun": true
+  },
+  "browser": {
+    "kind": "Local Chromium viewport checks, no Safari/device or live test",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 664
+      },
+      {
+        "width": 375,
+        "height": 548
+      }
+    ],
+    "gallery": "Mixed fixture: doors, house numbers, doorbell A/B; actual gallery list/target/preview functions; TEST device illustration",
+    "nativeWheel": {
+      "selectedText": {
+        "fromPercent": 100,
+        "toPercent": 182,
+        "mmBefore": 10,
+        "mmAfter": 10
+      },
+      "motif": {
+        "fromPercent": 100,
+        "toPercent": 182
+      },
+      "selectionHandle": {
+        "fromPercent": 100,
+        "toPercent": 182,
+        "mmBefore": 10,
+        "mmAfter": 10
+      }
+    }
+  },
+  "logs": {
+    "n6-vollauf-final.log": {
+      "bytes": 582356,
+      "sha256": "66d18bc5e7f9647e03542b6e72fe5df818d00241f7e6a966041373127195d00f"
+    },
+    "n6-combined-targeted.log": {
+      "bytes": 32780,
+      "sha256": "f7df5ccdc86592b2ad87303c7e4803d779d82fee57b65d78738dedebe5831e2c"
+    },
+    "n6-wheel-tests.log": {
+      "bytes": 6793,
+      "sha256": "84a2bfa80595625f0fc7bbeee8db252111fcb938997bcc2a4f92f21445eff695"
+    }
+  }
+}

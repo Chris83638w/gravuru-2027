@@ -60,6 +60,9 @@ export async function installViewZoom({el,r,selected}){
  const onStage=e=>path(e).includes(stage)||stage.contains?.(target(e));
  const control=node=>!!node?.closest?.('button,input,textarea,select,label,a,summary,[data-ux-handle],.ux-direct-edit,.ux-direct-input,.ux-view-zoom');
  function point(e){const node=target(e),object=node?.closest?.('.scene [data-object]'),handle=node?.closest?.('[data-ux-handle]'),s=stage.getBoundingClientRect();return {id:e.pointerId,x:e.clientX-s.left,y:e.clientY-s.top,button:e.button,pointerType:e.pointerType,kind:handle?'handle':control(node)?'control':object?'object':'blank',objectId:object?.dataset.object};}
+ // Wheel zoom belongs to the plate even over SVG artwork links and selection
+ // handles. Pointer drag and actual form/toolbar controls keep their own rules.
+ const wheelControl=node=>control(node)&&!node?.closest?.('.scene [data-object],[data-ux-handle]');
  const stop=e=>{e.preventDefault();e.stopImmediatePropagation();};
  const touchPoint=t=>point({target:t.target,pointerId:t.identifier,pointerType:'touch',button:0,clientX:t.clientX,clientY:t.clientY});
  el.addEventListener('touchstart',e=>{
@@ -97,7 +100,7 @@ export async function installViewZoom({el,r,selected}){
  el.addEventListener('pointerup',e=>end(e,false),true);el.addEventListener('pointercancel',e=>end(e,true),true);
  el.addEventListener('lostpointercapture',e=>{if(path(e)[0]===el)end(e,true);},true);
  el.addEventListener('click',e=>{if(performance.now()<suppressUntil&&onStage(e)&&!control(target(e))){stop(e);suppressUntil=0;}},true);
- el.addEventListener('wheel',e=>{if(mobile()||!bounds||!onStage(e)||control(target(e))||photoActive())return;cancelAnimation();stop(e);const p=point(e),delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?bounds.viewport.height:1);manual(zoomViewAt(view,view.scale*Math.exp(-Math.max(-300,Math.min(300,delta))*.002),p,bounds));},{capture:true,passive:false});
+ el.addEventListener('wheel',e=>{if(mobile()||!bounds||!onStage(e)||wheelControl(target(e))||photoActive())return;cancelAnimation();stop(e);const p=point(e),delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?bounds.viewport.height:1);manual(zoomViewAt(view,view.scale*Math.exp(-Math.max(-300,Math.min(300,delta))*.002),p,bounds));},{capture:true,passive:false});
  controls.addEventListener('click',e=>{const action=e.target.closest('[data-view-action]')?.dataset.viewAction;if(!['plus','minus','fit'].includes(action)||!bounds)return;cancelAnimation();e.preventDefault();if(action==='fit'){fit(true);return;}manual(zoomViewAt(view,view.scale+(action==='plus'?.25:-.25),center(),bounds));});
  controls.addEventListener('input',e=>{if(e.target.dataset.viewAction!=='range'||!bounds)return;cancelAnimation();manual(zoomViewAt(view,Number(e.target.value)/100,center(),bounds));});
  whole.addEventListener('click',()=>fit(true));

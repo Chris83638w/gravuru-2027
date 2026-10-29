@@ -1,3 +1,11 @@
+## 29.10.2026 · Claude als Operator · Live: PR #42 + #43 (`main` `6339961`)
+
+- Chris (11:47): „Ja, Du darfst PR #42 und PR #43 nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `6339961` (Baum = Prüfstand `b41c32a`), Plesk Pull + Bereitstellen + App neu starten 11:48–11:50.
+- Vorher Linux **1809/1809**, 1:1 Desktop: Mausrad über Text zoomt, Regler rechts.
+- Live (D8, Desktop, ohne Umleitung): „Designs deiner Produktlinie“, 1 Design, warm **0,56 s**; Session-API 401 (gesund).
+- **Befund:** Kaltstart nach Neustart ~6 min nur „Designs werden vorbereitet“ (Passenger beendet die App im Leerlauf → Cache weg). Sprachfehler „1 verfügbare Designs“. Beides an Astra 1, [Issue #48](https://github.com/Chris83638w/gravuru-2027/issues/48) Nachricht 1 (A), danach Acryl-Baustein Hausnummern (B).
+- Offen: echter iPhone-Test Chris, bezahlte Testbestellung, D8-Motivaufpreis (eigener Live-Schritt).
+
 ## 29.10.2026 · Codex / Astra · Mausrad über Text, Motiv und Griff (Ergänzung PR #43, nur Review)
 
 - Mausrad zoomt die Ansicht auch bei SVG-Bedienelementen innerhalb der Schildszene und Auswahlgriffen. Werkzeugleisten, Fotobearbeitung und Handy-Regeln unverändert. Native lokale Prüfung: 100 % → 182 %, Text bleibt 10 mm.

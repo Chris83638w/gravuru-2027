@@ -71,3 +71,10 @@
 
 :host([data-ux-layout][data-ux-neutral]) .ux-selection-handles .ux-handle-delete svg{color:#9d3429!important;stroke:#9d3429!important;fill:none!important}
 @media(min-width:768px){:host([data-ux-layout][data-ux-neutral]) .ux-direct-tail{display:none!important}}
+:host([data-ux-layout][data-ux-neutral]) .ux-selection-handles .ux-handle-delete::after{content:"";position:absolute;width:44px;height:44px;left:50%;top:50%;transform:translate(-50%,-50%);background:transparent;pointer-events:auto}
+@media(max-width:767px){
+ :host([data-ux-layout][data-ux-neutral]) .ux-preview{max-height:calc(100% - 120px)!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-editor{flex:1 0 120px}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text>p:first-of-type{display:none}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text>h2{margin:0 0 4px!important;font-size:18px}
+}

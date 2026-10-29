@@ -1,3 +1,11 @@
+## 29.10.2026 · Codex/Astra · Issue 47: Designressourcen + alle Funkklingelgrößen, nur Review
+
+- Eigener Branch `dev/funkklingeln-issue47-ressourcen-20261029-astra`, Basis `e48b7f3`. Kanonische Artwork-Pfade bleiben bei Acryl-Host-Umschreibung unverändert; bestehender Linien-/Modellfilter aus main unverändert übernommen.
+- Windows und isoliertes Linux: jeweils **47/47** gezielte Tests, beide Builds bestanden; Linux 871 Quelldateien gegen Basis-SHAs geprüft, Node 24.22.1. Vollständige lokale Importprüfung: **126 Hauptprodukte / 42 Modelle / 15.120 Preis-/Optionskombinationen / 2.268 gültige Artwork-Referenzen / 30.240 Positionsgeometrien**, Quellen unverändert.
+- Frischer Shopify-/Native-Leseabgleich 09:44–09:50 UTC: 126 ACTIVE und 15.120 passende Bindungen/Varianten; 42 veröffentlicht ohne Marker, 84 unveröffentlicht mit passendem Marker. Keine Live-Kundenabnahme.
+- Chris ergänzt ausdrücklich alle Modelle/Größen: vollständige 42×3-Matrix und **8 zusätzliche Gerätequellen mit 24 Größenvorbereitungen** dokumentiert. Zusatzgeräte bleiben bis zur belegten Modellidentität und Bild-/Ausschnittzuordnung gesperrt; keine Kompatibilität erfunden.
+- [Bericht und Rückweg](docs/handoffs/2026-10-29-funkklingeln-issue47-astra.md) · [Modellmatrix](docs/handoffs/issue47-20261029/models-formats-42.csv). Nur Review, kein Merge/Deployment/Shopify-Schreiben/Neustart. Nächster Schritt: Claude prüft gezielten PR; Bereitstellung und Ein-Produkt-Pilot erst mit Chris' ausdrücklicher Freigabe. Connector-Commits sind unsigned.
+
 ## 29.10.2026 – Codex/Astra: Issue #48 Teil A als Entwurf
 
 Galerie-Stand revisionsgebunden und ohne Sitzungsdaten persistent; Verfügbarkeit bleibt frisch. Revisionsindex und begrenzte Dokumenthaltung reduzieren die synthetische 572-MB-Probe: Aufbau 9,261 → 6,120 s, nach Prozessneustart erste Karte 144 ms. 97 gezielte Tests grün, Build erfolgreich. Windows-Vollauf zunächst 1815 / 1737 bestanden / 73 python3-Umgebungsfehler / 5 übersprungen; abschließender Lauf mit vorhandenem Windows-Testadapter: 1817 / 1811 bestanden / 1 Retro-PDF-Workerfehler / 5 übersprungen. Betroffenen Retro-Test unverändert einzeln wiederholt: 1/1 bestanden; kein pauschal grüner Vollauf. Aktuelle private Live-Kopie und Linux-/Proxy-Abnahme offen. [Bericht](docs/handoffs/2026-10-29-issue48-galerie-warm-bericht.md). Nichts installiert oder live geändert.

@@ -21,6 +21,27 @@ Diese Regeln beantragen keine selbstständigen Parallelagenten und ändern keine
 
 **Jedes Design und jeder Design-Auftrag – auch künftige und für jede KI – folgt dem [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) im Katalog-Repo:** Katalog-Vorlage 1:1 übernehmen, wenn sie zur Größe passt, sonst als sehr starke Referenz; 1–3 Schriften je Design aus allen 84 freigegebenen und innerhalb einer Serie variieren; das Motiv nie verlieren, austauschen oder verzerren (bei Platzmangel weicht der Text); Anordnung frei und nicht automatisch mittig, Ziel ist ein schönes Gesamtbild; Abnahme per Kontaktbogen mit Screenshots 1:1 aus dem echten Konfi, Vorlage daneben. Jeder neue Auftrag in `docs/handoffs/` verweist auf den Master.
 
+## Code-Prüfung (Chris, 29.10.2026)
+
+Prüfbefehle in Claude Code:
+
+| Befehl | Was er macht |
+|---|---|
+| `/code-review high app/configurator` | prüft einen Ordner auf Fehler, Stufe `low` bis `max` |
+| `/code-review high --fix` | prüft die aktuellen Änderungen und behebt die Fehler direkt |
+| `/security-review` | sucht Sicherheitslücken im Unterschied zu `main` |
+| `/simplify` | räumt geänderten Code auf |
+| `/ultrareview <PR oder Branch>` | gründliche Prüfung mit mehreren KIs in der Cloud |
+| `/engineering:tech-debt` | aus dem Engineering-Plugin: Liste der Altlasten im ganzen Projekt, nach Wichtigkeit sortiert |
+
+Verbindliches Vorgehen – für jede KI, auch Codex mit seinem eigenen Prüfbefehl:
+
+- **Erst nur prüfen, ohne `--fix`.** Ergebnis ist eine Befundliste (Datei:Zeile, Schwere, Begründung); dabei wird nichts geändert.
+- **Ordnerweise, nicht das ganze Repo auf einmal** (Token-Kosten): zuerst `app/configurator`, dann `app/workshop`, danach die übrigen Ordner unter `app/`.
+- **Die Liste geht an den Operator (Claude).** Ablage als `docs/reviews/<datum>-code-review-<ordner>.md`. Der Operator sortiert, prüft die Befunde an der Quelle und verteilt die Aufgaben über die Postfach-Issues (Konfigurator: Astra 1, #48).
+- **Umsetzung nur auf eigenem Branch** `dev/<thema>-<datum>` mit gezielten Tests und als Pull Request; Merge nach `main` macht der Operator.
+- **Nie `--fix` oder `/simplify` direkt auf `main`** – sonst entstehen Änderungen, die niemand geprüft hat. Auch auf dem Aufgabenbranch nur für Befunde aus der freigegebenen Liste.
+
 ## Zusammenarbeit mehrerer Accounts (Chris, 23.10.2026)
 
 Mehrere Claude- und ChatGPT-Accounts arbeiten am selben Projekt; der Operator-Account plant und baut, ein Upload-Account führt Shopify-/Matrixify-Schreibzugriffe aus, Codex-Läufe liefern lokale Ergebnisse. Damit sich alle verstehen:

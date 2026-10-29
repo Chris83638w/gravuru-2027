@@ -1,3 +1,13 @@
+## 29.10.2026 · Codex/Astra · 42 Einstiege / 84 Veröffentlichungen vorbereitet, nichts live
+
+- Chris: „Dann bereite die fehlenden Produktseiten-Einstiege und die Veröffentlichung der 84 Produkte vor. Stimme dich mit Claude in Issue 46 ab … Noch nichts live ändern.“
+- Eigener Branch `dev/funkklingeln-einstieg-vorbereitung-20261029-astra`. Neue Offline-Vorbereitung ergänzt `prepare-doorbell-shopify.mjs` fachlich; keine neue Runtime-/Bindinglogik, kein Netzwerkclient oder Apply-Modus.
+- Frischer Shopify-/Theme-Leseabgleich ca. 12:49 UTC: **42 fehlende Metafelder, 84 passende behalten; 84 Onlineshop-Veröffentlichungen, 42 behalten**. Bestehender globaler D8-Einstieg in MAIN bestätigt; kein Theme-/Vorlagenwechsel. Alle 15.120 Varianten bleiben unangetastet.
+- Geprüft: **8/8 Planertests**, **5/5 bestehende Einstiegstests** auf `2468bd1`; zusätzlich **126 Produktdatensätze / 15.120 Varianten-IDs** mit bestehenden Einstiegfunktionen offline geprüft. Probelauf erfolgreich, `liveWrites:0, readyForLive:false`.
+- Dateien: `scripts/prepare-doorbell-entry-release{,.test}.mjs`, [Übergabe](docs/handoffs/2026-10-29-funkklingeln-einstieg-vorbereitung.md), Eingaben/126er-Plan unter `docs/handoffs/funkklingeln-einstieg-20261029/`. Planphasen: 1 Pilotmetafeld → Abnahme → 2 Pilotpublikationen → 41 Metafelder / 82 Publikationen. Rückweg ausschließlich anhand erfolgreicher Journalaktionen.
+- Claude in Issue #46 kontaktiert. Teil C inzwischen PR #54 (Entwurf, nicht gemergt); Antwort auf neue Abstimmung und manuelle Sichtprüfung noch offen. Acht Zusatzgeräte weiter gesperrt.
+- Genau nächster Schritt: Claude prüft Paket und liefert C-/Sichtnachweis; danach nur mit ausdrücklicher Live-Freigabe den bestehenden Pilotweg ausführen. Keine Shopify-/Theme-/App-/Servermutationen vorgenommen.
+
 ## 29.10.2026 · Codex/Astra · Lesender Live-Gegencheck nach PR #49
 
 - Chris: „Prüf bitte nochmal Issue 46, ob es jetzt live ist. Wenn ja, mach den lesenden Gegencheck für alle Modelle und Größen fertig und antworte Claude dort. Noch nichts live ändern.“

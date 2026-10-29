@@ -37,7 +37,7 @@
 }
 
 /* Chris' joint review, 29.10.: compact frame and clearly separated editing. */
-:host([data-ux-layout][data-ux-neutral]) :is(.ux-shell,.ux-dialog,.ux-info-dialog,.c-large-preview) button{font-weight:600;line-height:1.25;text-align:center}
+:host([data-ux-layout][data-ux-neutral]) :is(.ux-shell,.ux-dialog,.ux-info-dialog,.c-large-preview) button{font-weight:600!important;line-height:1.25;text-align:center}
 :host([data-ux-layout][data-ux-neutral]) .ux-heading{padding-bottom:6px!important;margin-bottom:8px!important;gap:8px!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-heading button{min-height:44px!important;padding:6px 10px!important;display:inline-flex;align-items:center;justify-content:center;gap:7px}
 :host([data-ux-layout][data-ux-neutral]) .ux-canvas-toolbar{padding:4px 8px;gap:6px;background:#f4f6f5}

@@ -43,7 +43,7 @@ Von Claude (Operator). Chris möchte die **Acrylglas-Hausnummernschilder mit Abs
   - „Acryl-Gravurplatten haben noch kein natives Produktmodell“ – bitte prüfen, ob das inzwischen gelöst ist (Acryl-Store, `katalog-import.mjs`).
   - Die Rückplatte S/S erscheint noch nicht in der Konfi-Vorschau.
   - 8 von 11 Schriften aus den Beispielen fehlen in der Werkstatt (Michroma, Alex Brush, Rounded Elegance, Homage, Fjalla One, Champagne & Limousines …).
-  - Plattenmaß 190 × 80 mm gibt es in keiner Familie.
+  - ~~Plattenmaß 190 × 80 mm~~ – **entfällt** (Chris 29.10.): Das war nur das Plattenmaß der 19 Beispiel-Designs auf dem Bogen `Beispiele.pdf` vom 17.10., keine Produktgröße. Diese Designs auf die echten Familiengrößen einpassen; 190 × 80 nicht anlegen.
 
 ## Ziel
 
@@ -55,7 +55,7 @@ Die Hausnummernschilder AA/AS/S/S sind im neuen Konfigurator bestellbar wie D8 b
   - Abstandshalter sichtbar.
 - **Designs:** die vorhandenen Designs (D1–D16 aus Shopify/Corel + `Beispiele.pdf`), sauber auf alle passenden Größen eingepasst. Hausnummer und Straße/Name als sprechende Textfelder.
 - **Kunden-UX vom 28.10.:** `--kunden-ux-20261028`, Preisregel Vorlagenmotiv inklusive, Designs aller Formen/Größen.
-- **Preis:** nur aus Chris' Excel (siehe oben); AA/AS/S/S vollständig. Nichts schätzen.
+- **Preis:** nur aus Chris' Excel (siehe oben); AA/AS/S/S vollständig. **Chris 29.10.: Die Excel-Preise gelten**, auch wenn bestehende Shop-Produkte heute teurer sind (z. B. 30×20 heute 47,90 €). Shopify-Preise werden erst beim späteren Bindungsschritt angepasst, mit Chris' Satz.
 
 ## Vorgehen
 

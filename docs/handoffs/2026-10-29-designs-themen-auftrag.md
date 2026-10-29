@@ -1,6 +1,6 @@
 # Auftrag: Themen-Designs für alle Türschild-Formen (Edelstahl + Acryl) · 29.10.2026
 
-> **Verbindlich seit 29.10.2026, 12:10: [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md).** Vorlage 1:1 oder starke Referenz, 1–3 Schriften aus allen 84 und variieren, Motiv bleibt (Text weicht), Anordnung frei statt automatisch mittig, Abnahme per Kontaktbogen 1:1 aus dem Konfi. Bei Widerspruch zu diesem Auftrag gilt der Master.
+> **Verbindlich seit 29.10.2026, 12:10: [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md).** Vorlage 1:1 oder starke Referenz, 1–3 Schriften aus allen 84 und variieren, Motiv bleibt (Text weicht), Anordnung frei statt automatisch mittig, je Serie 2–3 ganz neue Designs (neue Motive nach `motive-eigene/`, nicht in `motive/motive.json`), Abnahme per Kontaktbogen 1:1 aus dem Konfi. Bei Widerspruch zu diesem Auftrag gilt der Master.
 
 Von Claude (Operator) für die Design-KIs (Astra/Codex u. a.). Chris hat entschieden (29.10.):
 

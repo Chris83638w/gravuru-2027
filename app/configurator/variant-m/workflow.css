@@ -37,3 +37,11 @@
 .c-design-card{position:relative}
 .c-design-card [data-design-bestseller]{position:absolute;top:6px;left:6px;z-index:1;padding:2px 7px;border-radius:999px;background:#c47a13;color:#fff;font-size:11px;font-weight:600;letter-spacing:.02em;pointer-events:none}
 .ux-design-link-dialog [data-design-link]{width:100%;box-sizing:border-box;margin:8px 0;padding:10px 12px;border:1px solid #c4cbc6;border-radius:8px;font:inherit;font-size:14px}
+
+/* D4/D6: explicit motif mode and a single loading signal on the next action. */
+.ux-motif-mode{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.ux-motif-mode button{min-height:44px}
+.ux-motif-mode [aria-pressed=true]{box-shadow:inset 0 0 0 2px #246c55}
+[data-loading=true]::before{content:'';display:inline-block;width:14px;height:14px;margin-right:7px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;vertical-align:middle;animation:ux-step-loading .8s linear infinite}
+@keyframes ux-step-loading{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){[data-loading=true]::before{animation:none}}

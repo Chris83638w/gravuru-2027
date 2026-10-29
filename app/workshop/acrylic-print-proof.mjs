@@ -7,7 +7,7 @@ import {geometryContourPdf} from './form-contour-pdf.mjs';
 import {exportSettings} from '../configurator/variant-m/print-export-model.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
-export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v6';
+export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v7';
 export const acrylicPrintKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_PRINT_RECIPE,settings:formPrintSettings(settings)}));
 export async function acrylicContourProof(archive,archiveHash){
  const a=await acrylicArtwork(archive,archiveHash);
@@ -16,7 +16,7 @@ export async function acrylicContourProof(archive,archiveHash){
 }
 // Druckdatei einer Fläche (Raster, Weiß, Kontur) aus der gesicherten Gestaltung.
 async function printSide(a,requested){
- const g=a.geometry,raw=await rasterizePrint({svg:a.svg,geometry:g,settings:requested,textFields:a.textFields,photoFields:a.photoFields,photos:a.photos});
+ const g=a.geometry,raw=await rasterizePrint({svg:a.svg,geometry:g,fillDrillHoles:true,settings:requested,textFields:a.textFields,photoFields:a.photoFields,photos:a.photos});
  const count=raw.width*raw.height;
  if(!Number.isInteger(raw.width)||!Number.isInteger(raw.height)||raw.width<1||raw.height<1||count>32000000)throw Error('Ungültige Rastermaße.');
  const pixels={width:raw.width,height:raw.height,...Object.fromEntries(['rgb','alpha','whiteAllowed','whiteAlpha'].map(k=>[k,new Uint8Array(Buffer.from(raw[k],'base64'))]))};

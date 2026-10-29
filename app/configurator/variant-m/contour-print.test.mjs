@@ -46,12 +46,12 @@ test('PDF encoding uses the shared commands, keeps cubic controls and converts q
  assert.match(pdf,/40 35 35 40 30 40 c/);assert.equal((pdf.match(/ c/g)||[]).length,7);
  assert.equal(contourPathCommands(d).filter(c=>c.command==='A').length,1);assert.doesNotMatch(pdf,/ re|NaN|Infinity/);
 });
-test('cut/white/containment use actual concave outline and holes; unsupported browser bleed fails closed',()=>{
+test('cut and preview retain holes; production white covers future drill holes and respects the outer outline',()=>{
  const g={shape:'contour',width:40,height:30,outlinePath:'M0 0H40V30H25V15H15V30H0Z',holes:[{x:7,y:10,diameter:4}]};
  assert.equal(insideContour(g,20,25),false);assert.equal(insideContour(g,7,10),false);assert.equal(insideContour(g,20,10),true);
  assert.equal(insideContour(g,14,25,-2),false);assert.equal(insideContour(g,10,20,-2),true);
  const s=exportSettings(g,{white:'full'}),mask=whiteMask({width:40,height:30,alpha:new Uint8Array(1200).fill(255)},s);
- assert.equal(mask[25*40+20],0);assert.equal(mask[10*40+7],0);assert.equal(mask[10*40+20],255);
+ assert.equal(mask[25*40+20],0);assert.equal(mask[10*40+7],255);assert.equal(mask[10*40+20],255);
  assert.deepEqual(boundarySample(g,20,25),[25,25]);assert.match(contourPath(g),/25 15 l/);
  assert.throws(()=>exportSettings(g,{bleedMm:1}),/Werkstatt/);assert.throws(()=>contourPath(g,1),/Werkstatt/);
  assert.throws(()=>exportSettings({...g,outlinePath:'M0 0H40V30H0'}),/Kontur/);

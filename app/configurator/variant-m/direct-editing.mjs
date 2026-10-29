@@ -82,7 +82,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     panel.querySelector('[data-direct-turn]').disabled=!can(o,'move');
     const original=config?.profile.designs.find(d=>d.id===el.state.designId)?.objects.find(v=>v.id===o.id);panel.querySelector('[data-ux=delete]').disabled=!!original?.required||!can(o,'delete');color.parentElement.hidden=!(text||motif)||!freeColor;color.parentElement.title=motif?'Motivfarbe':'Textfarbe';color.setAttribute('aria-label',motif?'Motivfarbe direkt ändern':'Textfarbe direkt ändern');color.disabled=!can(o,'color');if((text||motif)&&r.activeElement!==color)color.value=o.color||'#202824';
     for(const b of panel.querySelectorAll('[data-direct-style]')){b.hidden=!text;b.disabled=!can(o,'content')||(b.dataset.directStyle==='bold'&&!el.fontData?.[o.font]?.bold&&!o.bold);b.title=b.dataset.directStyle==='bold'?(b.disabled?'Für diese Schrift ist kein Fettschnitt verfügbar':'Fett'):'Kursiv – Schrift neigen';b.setAttribute('aria-pressed',!!o[b.dataset.directStyle]);}
-    for(const b of panel.querySelectorAll('[data-direct-motif]')){b.hidden=!motif;b.disabled=!can(o,b.dataset.directMotif==='rotate'?'move':'scale');}
+    for(const b of panel.querySelectorAll('[data-direct-motif]')){b.hidden=!motif||b.dataset.directMotif==='rotate'&&el.uxCanRotate?.(o)===false;b.disabled=!can(o,b.dataset.directMotif==='rotate'?'move':'scale');}
     presets.hidden=!colorTool||!(text||motif)||(paletteColors===null&&!motif);for(const b of presets.children){b.disabled=!can(o,'color');b.setAttribute('aria-pressed',String((o.color||'').toLowerCase()===b.dataset.directPreset));}
     panel.querySelector('[data-direct-size-label]').hidden=!text;
     size.disabled=!can(o,'scale');
@@ -144,11 +144,11 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   for(const b of panel.querySelectorAll('[data-direct-style]'))b.addEventListener('click',()=>{if(can(selected(),'content'))r.querySelector('[data-ux='+b.dataset.directStyle+']')?.click();});
   for(const b of panel.querySelectorAll('[data-direct-align]'))b.addEventListener('click',()=>{if(can(selected(),'move'))el.uxAlign?.(b.dataset.directAlign);});
   for(const b of panel.querySelectorAll('[data-direct-step]'))b.addEventListener('click',()=>{if(can(selected(),'scale'))r.querySelector('[data-ux='+b.dataset.directStep+']')?.click();});
-  panel.querySelector('[data-direct-turn]').addEventListener('click',()=>{const o=selected();if(can(o,'move'))changeObject('rotation',((o.rotation||0)+15)%360);});
+  panel.querySelector('[data-direct-turn]').addEventListener('click',()=>{const o=selected();if(can(o,'move')&&el.uxCanRotate?.(o)!==false)changeObject('rotation',((o.rotation||0)+15)%360);});
   panel.querySelector('[data-ux=delete]').addEventListener('click',()=>{r.querySelector('.ux-controls [data-ux=delete]')?.click();});
   font.addEventListener('click',()=>r.querySelector('[data-ux=fonts]')?.click());
   color.addEventListener('input',()=>{if(colorTool&&can(selected(),'color'))changeObject('color',color.value);});
-  for(const b of panel.querySelectorAll('[data-direct-motif]'))b.addEventListener('click',()=>{const o=selected(),action=b.dataset.directMotif;if(o?.type!=='motif'||!can(o,action==='rotate'?'move':'scale'))return;if(action==='rotate')changeObject('rotation',((o.rotation||0)+15)%360);else el.action(action);});
+  for(const b of panel.querySelectorAll('[data-direct-motif]'))b.addEventListener('click',()=>{const o=selected(),action=b.dataset.directMotif;if(action==='rotate'&&el.uxCanRotate?.(o)===false)return;if(o?.type!=='motif'||!can(o,action==='rotate'?'move':'scale'))return;if(action==='rotate')changeObject('rotation',((o.rotation||0)+15)%360);else el.action(action);});
   size.addEventListener('change',()=>{
     const o=selected();if(o?.type!=='text'||!can(o,'scale')||!Number.isFinite(size.valueAsNumber))return;
     const input=r.querySelector('#ux-size');input.value=Math.max(minTextMm,Math.min(100,Math.round(size.valueAsNumber)));

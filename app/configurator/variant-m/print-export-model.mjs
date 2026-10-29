@@ -92,14 +92,14 @@ export function boundarySample(g,x,y){
  return d?[cx+(x-cx)*r/d,cy+(y-cy)*r/d]:[x,y];
 }
 export function whiteMask(pixels,s){
- const {width:w,height:h,alpha}=pixels,mask=new Uint8Array(w*h);
+ const {width:w,height:h,alpha}=pixels,mask=new Uint8Array(w*h),artworkGeometry={...s.geometry,holes:[]};
  if(s.white==='none')return mask;
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
   const i=y*w+x;if(s.white==='motif'&&(pixels.whiteAlpha||alpha)[i]<128)continue;
   if(pixels.whiteAllowed){if(pixels.whiteAllowed.length!==w*h)throw Error('Ungültige Konturmaske.');if(pixels.whiteAllowed[i]>=128)mask[i]=255;continue;}
   let mx=(x+.5)*s.pageWidthMm/w-s.bleedMm;const my=(y+.5)*s.pageHeightMm/h-s.bleedMm;
   if(s.mirror)mx=s.geometry.width-mx;
-  if(insideContour(s.geometry,mx,my,s.whiteBleedMm))mask[i]=255;
+  if(insideContour(artworkGeometry,mx,my,s.whiteBleedMm))mask[i]=255;
  }
  return mask;
 }
@@ -123,7 +123,7 @@ class PDF{
 export async function printPDF({settings,pixels,kind='combined',paths=null,artwork=null}){
  const s=exportSettings(settings.geometry,settings),{width:w,height:h,rgb,alpha}=pixels;
  if(!Number.isInteger(w)||!Number.isInteger(h)||w<1||h<1||w*h>50000000||rgb.length!==w*h*3||alpha.length!==w*h||!['combined','color','color-cut','white','white-spot','white-spot-cut','cut'].includes(kind))throw Error('Ungültige Druckdaten.');
- if(paths){for(const key of ['cut','color','white'])if(typeof paths[key]!=='string'||paths[key].length>1000000||!paths[key].trim()||paths[key].replace(/-?\d+(?:\.\d+)?|[mlch]|\s/g,''))throw Error('Ungültige freie PDF-Kontur.');if(!pixels.whiteAllowed||pixels.whiteAllowed.length!==w*h)throw Error('Freie Kontur benötigt ihre Weißmaske.');}
+ if(paths){for(const key of ['cut','color','white',...(paths.artwork?['artwork']:[])])if(typeof paths[key]!=='string'||paths[key].length>1000000||!paths[key].trim()||paths[key].replace(/-?\d+(?:\.\d+)?|[mlch]|\s/g,''))throw Error('Ungültige freie PDF-Kontur.');if(!pixels.whiteAllowed||pixels.whiteAllowed.length!==w*h)throw Error('Freie Kontur benötigt ihre Weißmaske.');}
  if(artwork){
   const validPath=p=>typeof p==='string'&&p.length<=1000000&&p.trim()&&!p.replace(/-?\d+(?:\.\d+)?|[mlch]|\s/g,'');
   if(!paths||!Array.isArray(artwork)||artwork.length>100||!pixels.whiteAlpha||pixels.whiteAlpha.length!==w*h)throw Error('Ungültige Gestaltungsebenen.');
@@ -150,7 +150,7 @@ export async function printPDF({settings,pixels,kind='combined',paths=null,artwo
      // path. Avoid nested Form wrappers that importers may flatten.
      const runs=[];for(const p of l.paths){const color=[...rgbToCmyk(new Uint8Array(p.rgb))].map(v=>n(v/255)).join(' '),last=runs.at(-1);if(last?.color===color)last.paths.push(p.path);else runs.push({color,paths:[p.path]});}
      const ink=runs.map(r=>`${r.color} k\n${r.paths.join('\n')} f`).join('\n');
-     if(ink)paint.push(`q /GSArt gs ${geo}\n${paths.cut} W* n\n${ink} Q`);
+     if(ink)paint.push(`q /GSArt gs ${geo}\n${paths.artwork||paths.cut} W* n\n${ink} Q`);
     }else{
      const mask=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${l.width} /Height ${l.height} /ColorSpace /DeviceGray /BitsPerComponent 8`,l.alpha);
      const im=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${l.width} /Height ${l.height} /ColorSpace /DeviceCMYK /BitsPerComponent 8 /SMask ${mask} 0 R`,rgbToCmyk(l.rgb)),name='Art'+images.length;images.push(`/${name} ${im} 0 R`);
@@ -165,16 +165,16 @@ export async function printPDF({settings,pixels,kind='combined',paths=null,artwo
   const mask=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceGray /BitsPerComponent 8`,alpha);
   const im=await pdf.stream(`/Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceCMYK /BitsPerComponent 8 /SMask ${mask} 0 R`,rgbToCmyk(rgb));image=`/Art ${im} 0 R`;
   // Bitmap is already mirrored. Clip contour uses the same mirrored mechanical geometry.
-  layer('Farbmotiv',`/GSWhite gs q ${geo}\n${paths?.color||contourPath(s.geometry,bleed)} W* n\n${s.mirror?-1:1} 0 0 1 ${s.mirror?s.geometry.width+bleed:-bleed} ${-bleed} cm\n${W} 0 0 ${-H} 0 ${H} cm /Art Do Q`);
+  layer('Farbmotiv',`/GSWhite gs q ${geo}\n${paths?.color||contourPath({...s.geometry,holes:[]},bleed)} W* n\n${s.mirror?-1:1} 0 0 1 ${s.mirror?s.geometry.width+bleed:-bleed} ${-bleed} cm\n${W} 0 0 ${-H} 0 ${H} cm /Art Do Q`);
   }
  }
  if((kind==='combined'||kind==='white'||kind==='white-spot'||kind==='white-spot-cut')&&s.white!=='none'){
   let white;
-  if(s.white==='full')white=`${geo}\n${paths?.white||contourPath(s.geometry,s.whiteBleedMm)} f*`;
+  if(s.white==='full')white=`${geo}\n${paths?.white||contourPath({...s.geometry,holes:[]},s.whiteBleedMm)} f*`;
   else{
    const rects=maskRectangles(whiteMask(pixels,s),w,h); // Already mirrored and geometrically clipped.
    white=`q ${W/w} 0 0 ${H/h} 0 0 cm\n${rects.map(r=>`${r.x} ${r.y} ${r.w} ${r.h} re`).join('\n')}\nf Q`;
-   if(artwork)white+=`\nq ${geo}\n${paths.cut} W* n\n${artwork.filter(l=>l.type==='text').filter(l=>l.paths.length).map(l=>l.paths.map(p=>p.path).join('\n')+' f').join('\n')}\nQ`;
+   if(artwork)white+=`\nq ${geo}\n${paths.artwork||paths.cut} W* n\n${artwork.filter(l=>l.type==='text').filter(l=>l.paths.length).map(l=>l.paths.map(p=>p.path).join('\n')+' f').join('\n')}\nQ`;
   }
   const mimaki=s.profile==='mimaki'&&!['white-spot','white-spot-cut'].includes(kind);
   layer(kind==='white'||mimaki?'Weissersatz Vektor':'RDG_WHITE',(kind==='white'?'0 0 0 1 k':mimaki?'0 0 0 0 k':'/GSWhite gs /White cs 1 scn')+'\n'+white);

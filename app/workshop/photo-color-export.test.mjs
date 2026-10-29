@@ -34,7 +34,8 @@ test('already applied pixels, acrylic print and engraving production are never t
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey} from './acrylic-print-proof.mjs';
 import {digest} from './review-package.mjs';
 test('native photo colour output uses a new recipe cache key',()=>{
- assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v6');
+ assert.equal(ACRYLIC_PRINT_RECIPE,'gravuru-acrylic-print-proof/v7');
+ assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v6',settings:formPrintSettings({})})));
  assert.notEqual(acrylicPrintKey({}),digest(JSON.stringify({recipe:'gravuru-acrylic-print-proof/v5',settings:formPrintSettings({})})));
 });
 

@@ -423,3 +423,14 @@ test('usability glyph cache distinguishes catalogue spacing and alignment for ed
  const original=vm.runInContext('textBounds(object)',env);assert.equal(original.height,6);
  for(const change of [{lineHeight:20},{textAnchor:'start'},{letterSpacing:2},{w:30}]){env.changed={...object,...change};const before=renders,measured=vm.runInContext('textBounds(changed)',env);assert.equal(renders,before+1);assert.equal(vm.runInContext('textBounds({...changed})',env),measured);assert.equal(renders,before+1);if(change.lineHeight)assert.equal(measured.height,20);}
 });
+
+test('motif UI uses the real array allowlist and frozen replace rights before changing a template',async()=>{
+ const {replacedMotif}=await import('./motif-choice.mjs');
+ const original={id:'m',type:'motif',motif:'old',x:20,y:20,w:10,h:20},object={...original},messages=[];let allowed=false,added=0,records=0;
+ const el={state:{objects:[object],selected:'m'},uxMotifChoiceIds:['allowed'],catalog:{motif_bounds:{allowed:[0,0,10,10]}},add(){added++;},record(){records++;},normalize(){},sync(){}};
+ const env={el,motifMode:'replace',motifTarget:()=>object,may:()=>allowed,replacedMotif,say:s=>messages.push(s),place(){}};vm.createContext(env);
+ vm.runInContext(block('workflow.mjs',' const add=el.add;',' // Gate progression').replace(' // Gate progression',''),env);
+ el.add({type:'motif',motif:'foreign'});assert.deepEqual(object,original);assert.equal(records,0);
+ el.add({type:'motif',motif:'allowed'});assert.deepEqual(object,original);assert.match(messages.at(-1),/nicht zum Ersetzen/);
+ allowed=true;el.add({type:'motif',motif:'allowed'});assert.equal(object.motif,'allowed');assert.equal(el.state.objects.length,1);assert.equal(records,1);assert.equal(added,0);
+});

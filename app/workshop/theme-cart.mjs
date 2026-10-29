@@ -1,5 +1,6 @@
 // Prepares an ordinary Shopify theme cart line from the private immutable review.
 // No cart mutation or payment/production confirmation takes place here.
+import {customerTextLine} from '../configurator/variant-m/text-summary.mjs';
 import {prepareBoundCartOffer} from './bound-test-cart.mjs';
 import {readReviewPackage} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
@@ -13,7 +14,9 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  if(input.configId!==undefined&&(!known||known.id!==input.configId))fail(404,'cart_private','Diese Gestaltung gehört nicht zum zugänglichen Entwurf.');
  if(input.configId!==undefined&&(!Number.isSafeInteger(cartRevision)||cartRevision<1||ledger.revision(input.configId,cartRevision).draftId!==draft.id))fail(422,'theme_cart_revision','Bitte die ursprüngliche Warenkorbposition erneut öffnen.');
  const saved=readReviewPackage(workshop.customerDrafts.downloadSnapshot(manifest.id,'package'),manifest.packageSha256,NATIVE_REVIEW_SCHEMAS);
- const design=JSON.parse(saved.files.get('produkt-und-gestaltung.json')).state.design;
+ const source=JSON.parse(saved.files.get('produkt-und-gestaltung.json')),design=source.state.design;
+ const config=JSON.parse(saved.files.get('konfigurator-quellen.json'));
+ const template=config.profile.designs.find(d=>d.id===design.id);
  const preview=saved.files.get('gestaltung-kundenansicht.png')||saved.files.get('gestaltung-referenz.png');
  if(!preview||preview.length>6*1024*1024||!preview.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])))fail(422,'theme_cart_preview','Die gesicherte Gestaltungsvorschau fehlt.');
  const assigned=ledger.assign({draftId:draft.id,draftRevision:draft.revision,snapshotId:manifest.id,offerId:offer.id,productId:draft.productId});
@@ -21,7 +24,7 @@ export function prepareThemeCart({workshop,registry,shopDomain,proxyPath,custome
  const properties=Object.fromEntries(cartLineInput({...offer,configuration}).attributes.map(a=>[a.key,a.value]));
  properties.Design=String(design.name||design.id).slice(0,240);
  properties.Format=manifest.product.widthMm+' × '+manifest.product.heightMm+' mm';
- const text=design.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.role!=='guide').map(o=>o.text).join(' · ');
+ const text=customerTextLine(design.objects,template);
  // Full text remains in the private review; visible text properties are split, never silently truncated.
  const chunks=Array.from(text).reduce((a,c)=>{if(!a.length||Array.from(a.at(-1)).length>=240)a.push('');a[a.length-1]+=c;return a;},[]);
  if(chunks.length>50)fail(422,'theme_cart_text','Die Texte sind für die Warenkorbanzeige zu umfangreich.');

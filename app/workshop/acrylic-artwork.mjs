@@ -91,7 +91,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
   parts.push(`<g data-field="${field}" transform="${transform(o)}" fill="${esc(color)}">${body}</g>`);
  }
  if(design.marks?.length)fail('Diese Vorlage enthält noch nicht übernommene Gestaltungslinien. Bitte vor der Fertigung prüfen.');
- const clip=engraving?`<defs><clipPath id="native-engraving-contour"><path d="${geometry.contours.map(c=>c.d).join(' ')}" clip-rule="evenodd"/></clipPath></defs>`:'';
+ const clip=engraving?`<defs><clipPath id="native-engraving-contour"><path d="${geometry.contours.filter(c=>c.role==='outer').map(c=>c.d).join(' ')}" clip-rule="evenodd"/></clipPath></defs>`:'';
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${geometry.widthMm}mm" height="${geometry.heightMm}mm" viewBox="0 0 ${geometry.widthMm} ${geometry.heightMm}">${clip}<g data-native-design="true"${engraving?' clip-path="url(#native-engraving-contour)"':''}>${parts.join('')}</g></svg>`;
  return {files,manifest,svg,geometry,...(layers?{doorbellLayers:layers}:{}),geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields,surfaceId,surfaces:producedSurfaces(config.profile,design.objects),mirrorFor:front=>surfaceMirror(config,surfaceId,front)};
 }

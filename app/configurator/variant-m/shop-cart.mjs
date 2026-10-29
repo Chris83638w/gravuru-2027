@@ -2,6 +2,7 @@
 // Gestaltung mit Originalbildern als privaten Entwurf/Prüfstand (gleicher Weg wie die Werkstattprüfung) und
 // übergibt sie dem Server, der die echte Shopify-Variante, Menge und den geprüften Preis festlegt.
 // Im Shop-Einstieg überträgt die Shop-Seite Vorschau und Eigenschaften in den normalen Warenkorb und prüft ihn zurück.
+import {prepareCartImages} from './cart-preparation.mjs';
 import {cleanObject} from './contract.mjs';
 import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
@@ -43,23 +44,30 @@ export function installShopCart(api,footer,gate){
  let busy=false,save=null;
  const quantity=()=>Number(api.r.querySelector('[data-fk-quantity]')?.value||1);
  const say=text=>{status.textContent=text;status.hidden=!text;};
- const label=()=>{button.textContent=busy?'Wird vorbereitet …':api.el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'Jetzt in den Warenkorb';button.disabled=busy;};
+ const label=()=>{button.textContent=busy?'Bitte warten …':api.el.cartEdit?.cartLineId?'Warenkorb aktualisieren':'Jetzt in den Warenkorb';button.disabled=busy;};
  button.addEventListener('click',async()=>{
   if(busy)return;busy=true;label();
   try{
+   if(api.el.uxCheckLayout&&!await api.el.uxCheckLayout())return;
    if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
    const fingerprint=JSON.stringify(api.el.state),count=quantity();
    if(!Number.isSafeInteger(count)||count<1||count>99)throw Error('Bitte eine Menge zwischen 1 und 99 wählen.');
-   say('Deine Gestaltung wird gesichert …');
-   const art=await printArtwork(api),used=new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)),media=[];
-   for(const id of used){const asset=api.files.get(id);if(!asset?.file)throw Error('Ein Originalfoto fehlt. Bitte erneut hochladen.');media.push({id,original:await base64(asset.file),...(asset.blob?{edited:await base64(asset.blob)}:{})});}
+   say('1 von 3 · Bilder werden vorbereitet …');
+   await api.el.uxEnsureDraftResources?.({design:{objects:api.el.state.objects}});
+   const used=[...new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId))];
+   const prepared=await prepareCartImages({
+    artwork:()=>printArtwork(api),
+    media:()=>Promise.all(used.map(async id=>{const asset=api.files.get(id);if(!asset?.file)throw Error('Ein Originalfoto fehlt. Bitte erneut hochladen.');const [original,edited]=await Promise.all([base64(asset.file),asset.blob?base64(asset.blob):null]);return {id,original,...(edited?{edited}:{})};})),
+    reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await api.el.png())
+   });
    const ui=editorUi(api.el.state.ui);
-   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media,preview:await referencePng(art.svg,art.geometry),customerPreview:await base64(await api.el.png()),...(ui?{ui}:{})};
+   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
    save??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:gate.request});
+   say('2 von 3 · Gestaltung wird gesichert …');
    const saved=await save(payload,gate.csrfToken||'shop-entry');
    const body=shopCartRequest({saved,cartEdit:api.el.cartEdit,quantity:count});
-   say(body.cartLineId?'Deine Warenkorbposition wird mit dem neuen Stand ersetzt …':'Dein Warenkorb wird vorbereitet …');
+   say('3 von 3 · Warenkorb wird geprüft …');
    const result=await gate.submitCart(body,{draftToken:saved.draftToken});
    if(fingerprint!==JSON.stringify(api.el.state)||count!==quantity())throw Error('Die Gestaltung wurde während der Übergabe geändert. Bitte erneut in den Warenkorb legen.');
    const target=gate.cartMode==='theme'?themeCartTarget(result,gate.shopDomain,gate.themeCartPath):checkoutTarget(result,gate.shopDomain);

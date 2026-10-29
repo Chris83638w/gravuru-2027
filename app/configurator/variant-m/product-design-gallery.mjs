@@ -2,7 +2,6 @@ import {captureProductTexts,transferProductTexts} from './product-design-transfe
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
-const shapeName=item=>item.shape==='ellipse'?(item.widthMm===item.heightMm?'Rund':'Oval'):item.shape==='contour'?'Kontur':item.widthMm===item.heightMm?'Quadrat':'Rechteck';
 
 export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
  let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return;
@@ -11,7 +10,7 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
  const design=()=>profile().designs.find(d=>d.id===el.state.designId);
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/product-design-gallery.css').then(r=>{if(!r.ok)throw Error('Designauswahl konnte nicht geladen werden.');return r.text();});r.append(style);
  const section=document.createElement('section');section.className='ux-product-designs';
- section.innerHTML='<button type="button" class="ux-product-back" hidden>← Zur vorherigen Gestaltung</button><h3>Alle Formen und Größen</h3><p>Wähle ein Design. Größe und Produktpreis stehen direkt dabei.</p><button type="button" class="ux-product-open">Designs ansehen</button><p class="ux-product-result" role="status" hidden></p>';
+ section.innerHTML='<button type="button" class="ux-product-back" hidden>← Zur vorherigen Gestaltung</button><h3>Design auswählen</h3><button type="button" class="ux-product-open">Designs ansehen</button><p class="ux-product-result" role="status" hidden></p>';
  r.querySelector('#ux-panel-design')?.prepend(section);
  const back=section.querySelector('.ux-product-back');back.hidden=!api.canGoBack();back.onclick=()=>{try{api.back();}catch(error){say(error.message);}};
  const pending=api.takeTransfer();
@@ -45,8 +44,6 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
     const card=document.createElement('button');card.type='button';card.className='ux-product-card ux-choice-tile';card.setAttribute('aria-pressed',String(item.current&&item.designId===el.state.designId));
     const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;card.append(img);
     const title=document.createElement('strong');title.textContent=item.designName;card.append(title);
-    const info=document.createElement('span');info.textContent=shapeName(item)+' · '+productChoiceInfo(item);card.append(info);
-    const name=document.createElement('small');name.textContent=item.productName;card.append(name);
     const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');card.append(check);
     card.onclick=()=>{chosen=item;confirm.querySelector('.ux-product-summary').textContent=item.designName+' – Neue Größe '+productChoiceInfo(item);confirm.showModal();};grid.append(card);
     img.previewRequest={item,img};if(observer)observer.observe(img);else queue.push({item,img});

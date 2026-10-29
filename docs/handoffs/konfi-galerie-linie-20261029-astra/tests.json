@@ -161,5 +161,27 @@
       "bytes": 6793,
       "sha256": "84a2bfa80595625f0fc7bbeee8db252111fcb938997bcc2a4f92f21445eff695"
     }
+  },
+  "presentationFollowup": {
+    "request": "Design tiles show preview and design name only",
+    "tests": {
+      "pass": 8,
+      "fail": 0,
+      "files": [
+        "app/configurator/variant-m/product-design-transfer.test.mjs",
+        "app/workshop/shop-design-switch.test.mjs"
+      ]
+    },
+    "builds": [
+      "PR42",
+      "combined PR42/PR43"
+    ],
+    "browserViewports": [
+      "1440x900",
+      "390x664",
+      "375x548"
+    ],
+    "fullRunRepeated": false,
+    "earlierRunSource": "1b2df853ae626ef6d42c4a77ed7ff989c711061a + 1b8a1a786d8f8f925e2b4050528ad7ff0f0a378f"
   }
 }

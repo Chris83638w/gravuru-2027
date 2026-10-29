@@ -2,6 +2,12 @@
 
 Stand: 29.10.2026. Ergänzung zu PR #42 auf bfbd9188ac4446611bc5e71b55b74c804aec5767; gemeinsam mit der kleinen Mausrad-Korrektur für PR #43 geprüft. Nur Code, Tests und Dokumentation. Kein Import, keine Freigabe, keine Shopify-Änderung, kein Livegang.
 
+## Zusatzwunsch von Chris: reine Designkacheln
+
+29.10.2026: Die Kacheln zeigen nur Vorschau und Designname. Zusätzliche Preis-, Form-, Größen- und Produktzeilen entfallen; auch der Einstieg kündigt diese Angaben nicht mehr an. Preis-/Größeninformation bei der Bestätigung eines tatsächlichen Produktwechsels bleibt dort erhalten. Keine Preisberechnung oder Zielbindung geändert.
+
+Prüfung nach dieser kleinen Darstellungsänderung: 8/8 vorhandene Tests zu Textübernahme und Designwechsel bestanden; PR-42-Build und kombinierter Build erfolgreich. Desktop 1440 × 900 und Handy 390 × 664 / 375 × 548 erneut im lokalen Browser geprüft, Bilder ersetzt. Die vorherigen 122 gezielten Tests und der Vollauf unten beziehen sich auf den Stand vor dieser Textreduktion; kein erneuter Vollauf für diese reine Darstellungsänderung.
+
 ## Ergebnis
 
 - Normale Produkte werden über die gespeicherte Katalog-Kategorie linie-<id> zugeordnet. Namen, Shopify-Titel und Profilnamen werden nicht als Linienkennung geraten.

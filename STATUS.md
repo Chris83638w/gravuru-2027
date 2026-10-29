@@ -1,3 +1,8 @@
+## 29.10.2026 · Codex / Astra · PR #42: Designkacheln vereinfacht (Chris)
+
+- Kacheln nur mit Vorschau und Designname; zusätzliche Preis-, Form-, Größen- und Produkttexte entfernt. Einstiegstext angepasst. Keine Live-Änderung.
+- 8/8 vorhandene Textübernahme-/Designwechsel-Tests bestanden, PR-42- und kombinierter Build erfolgreich; sieben Desktop-/Handybilder aktualisiert. Frühere Vollauf-Zähler bleiben dem vorherigen Stand zugeordnet. [Bericht](docs/handoffs/2026-10-29-konfi-ux-nachtrag6-astra-bericht.md).
+
 ## 29.10.2026 · Codex / Astra · Nachtrag 6: Galerie je Linie und Klingelmodell (PR #42, nur Review)
 
 - Eigene Katalog-Linie; Funkklingeln nur innerhalb desselben gespeicherten Geräte-Modells. Material-/Verfahrenswechsel nur mit ausdrücklichem Paket-M-Zielbeleg. Themenpriorität und „Alle Themen“, signierte Quell-/Linienbindung und erneute Zielprüfung.

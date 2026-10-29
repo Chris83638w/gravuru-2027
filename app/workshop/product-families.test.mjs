@@ -312,7 +312,7 @@ test('M: target preview option supports print and acrylic without enabling a pro
 // ausschließende Gruppen; die verdeckte Gruppe wird weder angezeigt noch berechnet.
 test('family option groups: spacer colour per set, hidden group neither shown nor priced',async()=>{
  const {quote,resolvedOptions,variantCombinations}=await import('../configurator/variant-m/contract.mjs');
- const f=validateFamily(JSON.parse(fs.readFileSync(new URL('./fixtures/katalog/familien/acryl/acryl-ss-abstandshalter.json',import.meta.url),'utf8')));
+ const f=validateFamily(JSON.parse(fs.readFileSync(new URL('./fixtures/familien/acryl-ss-abstandshalter.json',import.meta.url),'utf8')));
  const size=key=>f.sizes.find(s=>s.key===key);
  for(const key of ['SS-RE-150X100','SS-RE-150X100-H']){
   const c=familyProductConfig(f,size(key),1,{previewOnly:true}),base=size(key).baseCents,price=o=>quote(c,[],'start',o).unitCents;

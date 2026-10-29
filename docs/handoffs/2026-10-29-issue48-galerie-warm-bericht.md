@@ -36,7 +36,7 @@ Zusätzliche ältere lokale 35,7-MB-Prüfdatenbank: erste Karte nach echtem Neus
 - 97 verschiedene gezielte Tests grün: 95er-Lauf (Galerie, Last, Projektion, Registry, Legacy, Shop-Einstieg, Einzahl); anschließend Registry 24/24 einschließlich zwei weiterer Index-/Benchmark-Tests.
 - Build erfolgreich: 111 Module, 14 Styles; Referenzressourcen geprüft.
 - Erster vollständiger Windows-Lauf vor dem abschließenden Index: 1815 Tests, 1737 bestanden, 73 fehlgeschlagen, 5 übersprungen. Die Fehler laufen über den nicht verfügbaren Windows-python3-Aufruf.
-- Abschließender Vollauf mit dem bereits vorhandenen Test-Interpreter-Adapter scripts/test-portability/full-tests-python-windows.mjs läuft; Ergebnis wird nachgetragen. Der Adapter ändert nur den Interpreter-Aufruf, keine Assertion.
+- Abschließender Windows-Vollauf mit dem vorhandenen Test-Interpreter-Adapter scripts/test-portability/full-tests-python-windows.mjs: **1817 Tests, 1811 bestanden, 1 fehlgeschlagen, 5 übersprungen**, 1278,468 s. Einziger Fehler: bestehender Retro-PDF-Test contour-production.test.mjs, Python-Ausgabe konnte nicht gelesen werden. Unverändert einzeln wiederholt: **1/1 bestanden**, 131,683 s. Das ist kein vollständig grüner Vollauf; die Ursache der einmaligen Worker-Ausgabe bleibt offen. Der Adapter ändert nur den Interpreter-Aufruf, keine Assertion.
 
 ## Wiederholen
 

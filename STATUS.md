@@ -1,6 +1,6 @@
 ## 29.10.2026 – Codex/Astra: Issue #48 Teil A als Entwurf
 
-Galerie-Stand revisionsgebunden und ohne Sitzungsdaten persistent; Verfügbarkeit bleibt frisch. Revisionsindex und begrenzte Dokumenthaltung reduzieren die synthetische 572-MB-Probe: Aufbau 9,261 → 6,120 s, nach Prozessneustart erste Karte 144 ms. 97 gezielte Tests grün, Build erfolgreich. Windows-Vollauf zunächst 1815 / 1737 bestanden / 73 python3-Umgebungsfehler / 5 übersprungen; abschließender Lauf mit vorhandenem Windows-Testadapter läuft. Aktuelle private Live-Kopie und Linux-/Proxy-Abnahme offen. [Bericht](docs/handoffs/2026-10-29-issue48-galerie-warm-bericht.md). Nichts installiert oder live geändert.
+Galerie-Stand revisionsgebunden und ohne Sitzungsdaten persistent; Verfügbarkeit bleibt frisch. Revisionsindex und begrenzte Dokumenthaltung reduzieren die synthetische 572-MB-Probe: Aufbau 9,261 → 6,120 s, nach Prozessneustart erste Karte 144 ms. 97 gezielte Tests grün, Build erfolgreich. Windows-Vollauf zunächst 1815 / 1737 bestanden / 73 python3-Umgebungsfehler / 5 übersprungen; abschließender Lauf mit vorhandenem Windows-Testadapter: 1817 / 1811 bestanden / 1 Retro-PDF-Workerfehler / 5 übersprungen. Betroffenen Retro-Test unverändert einzeln wiederholt: 1/1 bestanden; kein pauschal grüner Vollauf. Aktuelle private Live-Kopie und Linux-/Proxy-Abnahme offen. [Bericht](docs/handoffs/2026-10-29-issue48-galerie-warm-bericht.md). Nichts installiert oder live geändert.
 
 ## 29.10.2026 · Claude als Operator (Produktanlage) · Design-Master für alle KIs
 

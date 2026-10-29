@@ -1,3 +1,7 @@
+## 29.10.2026 · Codex / Sol · Größere Namen und Motive
+
+Alle 200 Boxenschildfassungen neu angeordnet; Namen um 12–78.3 % größer, Motive proportional vergrößert, weniger Leerraum. 32 unterschiedliche Beispieldatensätze / 1.000 Texte erhalten. 200 gültige native Konfigurationen, keine Warnungen/Konturprobleme/Textüberschneidungen; 44 aktuelle Konfiguratoransichten. Katalogbau erfolgreich. Freigaben offen, nichts live.
+
 ## 29.10.2026 · Codex/Astra · Ausgefüllte und unterschiedliche Beispieldaten
 
 Chris: „du solltest immer Daten Namen usw. ausfüllen und unterschiedliche Daten nutzen“. Alle 200 aktiven Boxenschildfassungen D74–D81 mit 32 fiktiven Pferdedatensätzen ausgefüllt: Name, Geburtsdatum, Abstammung und alle vorhandenen Besitzer-/Kontakt-/Tierarztfelder. 200/200 Import-/Passungsprüfungen; 44 aktuelle Konfiguratoransichten. Schriftarten/Motive/Geometrien unverändert. Vorgabe im Design-Master dokumentiert; keine Freigabe gesetzt, nichts live.

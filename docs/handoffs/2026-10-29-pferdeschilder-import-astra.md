@@ -82,3 +82,11 @@ Nach Abgleich mit dem aktuellen main erneut 74/74 Tests und Build bestanden. Sec
 ## Nutzerkorrektur: ausgefüllte Beispieldaten
 
 Alle 200 Katalogfassungen verwenden jetzt 32 unterschiedliche fiktive Pferdedatensätze. scripts/apply-box-sign-samples.mjs liest die expliziten Daten aus dem Katalog und ersetzt ausschließlich Texte/zugehörige Metadaten; Motive werden vor/nach byteinhaltlich über den SVG-Parser verglichen. Der Prüflauf kontrolliert vollständige Feldrollen und tatsächliche Werte, keine sichtbaren Platzhalter. D76 enthält auch Besitzer-/Tierarztkontakt. 200/200 gültig, 44 aktuelle Konfiguratoransichten, Familienkatalog erneut gebaut. Keine Schrift-/Geometrie-/Freigabeänderung und nichts live.
+
+## Layoutüberarbeitung mit Sol
+
+## 29.10.2026 · Codex / Sol · Größere Namen und Motive
+
+Alle 200 Boxenschildfassungen neu angeordnet; Namen um 12–78.3 % größer, Motive proportional vergrößert, weniger Leerraum. 32 unterschiedliche Beispieldatensätze / 1.000 Texte erhalten. 200 gültige native Konfigurationen, keine Warnungen/Konturprobleme/Textüberschneidungen; 44 aktuelle Konfiguratoransichten. Katalogbau erfolgreich. Freigaben offen, nichts live.
+
+Reproduzierbares Skript: scripts/refine-box-sign-layouts.mjs; Ausgangsbundle aus Katalogcommit 81a6a6a. Bericht im Katalog: auftraege/2026-10-29-pferdeschilder-astra/technik/LAYOUT-UEBERARBEITUNG.md.

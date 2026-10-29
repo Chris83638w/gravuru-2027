@@ -20,6 +20,7 @@ Chris hat die zuvor gesammelten neun Punkte mit „ändere bitte alles was ich v
 
 - **128/128 gezielte Tests bestanden**, 0 Fehler, 0 übersprungen: Werkzeugleisten, echte SVG-Reihenfolge, Vertragsprüfung, Textfelder, UI-Handler, mobile Schritte, Galerie, Druckexport, Entwürfe, Warenkorb, Bundle und unveränderliche Werkstattpakete. [Protokoll](issue48-layout-nachtrag-20261030/tests-128.tap).
 - Nach der abschließenden Eingabeschrift-/Exportkorrektur **23/23 gezielte Build-/Druck-/Werkzeugleisten-/Reihenfolgefälle bestanden**, 0 Fehler, 0 übersprungen. [Protokoll](issue48-layout-nachtrag-20261030/tests-23.tap). Dies sind Nachprüfungen mit Überschneidung, keine 151 unterschiedlichen Fälle.
+- **48/48 Integrationsfälle auf dem gemeinsamen Prüfstand `cff5042` bestanden**, 0 Fehler, 0 übersprungen; Vertragsprüfung, SVG-Reihenfolge, Werkstattpakete und Kundenlogos. [Protokoll](issue48-layout-nachtrag-20261030/tests-integration-48.tap). Die acht ersten Logo-Fehler waren ausschließlich ein fehlender lokaler Python-Paketpfad; mit den bereits installierten Logo-Paketen über `PYTHONPATH` ist derselbe Lauf grün. Keine Codeänderung dafür.
 - Der neue Produktionstest speichert ein echtes Paket und vergleicht die tatsächliche SVG-Reihenfolge mit und ohne `textOnTop`; Originalobjekt-Reihenfolge bleibt unverändert. Ungültige Kennzeichnung wird abgewiesen.
 - Lokale Bedienprüfung auf gesonderter D8-Kopie: 1440 × 900, 390 × 664 und 375 × 548. Kein horizontaler Überlauf in der Handyhülle. Textwerkzeuge enden bei y=168; Schrittleiste beginnt bei y=448 (SE) bzw. y=564 (13). Preis sichtbar, zwei Werkzeugzeilen.
 - Direkteingabe mit Cinzel: tatsächlich berechnete Schrift 42 px, zwei Zeilen mit 121 px Höhe ohne inneren Überlauf. Angezeigte Gravurhöhe weiterhin 8 mm. Schriftübernahme, Designs und Motivbibliothek bedient.
@@ -43,7 +44,7 @@ node --test --test-concurrency=1 app/configurator/variant-m/toolbar-hosts.test.m
 
 [Designauswahl am Handy](issue48-layout-nachtrag-20261030/designauswahl-iphone13.png).
 
-Gesonderte lokale Vorschau auf Port 8155; Chris' bisherige Tabs/Gestaltungen auf 8152/8153 wurden nicht neu geladen oder bearbeitet. Bilder sind tatsächliche Chromium-Aufnahmen, keine Hardware-iPhone-Prüfung. Nur eine echte Vorlage ist in der lokalen Produktkopie vorhanden; das ist keine Aussage über den live verfügbaren Katalog.
+Gesonderte lokale Vorschau auf Port 8155 läuft abschließend mit dem gemeinsamen Prüfstand `cff5042` (Integration der bisherigen Arbeit und dieses Nachtrags). [Abschließendes Desktopbild](issue48-layout-nachtrag-20261030/gemeinsamer-pruefstand-desktop.png). Der reine Nachtrags-Quellcommit ist `1d7ac23`; Chris' bisherige Tabs/Gestaltungen auf 8152/8153 wurden nicht neu geladen oder bearbeitet. Bilder sind tatsächliche Chromium-Aufnahmen, keine Hardware-iPhone-Prüfung. Nur eine echte Vorlage ist in der lokalen Produktkopie vorhanden; das ist keine Aussage über den live verfügbaren Katalog.
 
 ## Offen / Übergabe an Claude
 

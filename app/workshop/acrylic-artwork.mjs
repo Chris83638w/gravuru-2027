@@ -38,7 +38,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  const layered=isLayeredDoorbell(config);
  if(config.doorbell&&!layered)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
- if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
+ if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||!!config.familyAcrylic||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
  const design=validateProductDesign(saved.product,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  if(surfaceId!=='front'&&!(surfaceId==='back'&&hasBack(config.profile)))fail('Dieses Produkt hat keine solche Seite.');
  const layers=layered?doorbellSeparations(config,state.options):null;

@@ -6,7 +6,7 @@ import {holesFor,ruleFromHoles,keepoutZones} from '../platform/sources/app/share
 import {createDesignAssetStore} from './design-assets.mjs';
 import {createProductRepository} from './repository.mjs';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
-import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,geometryOf,familyGaps,familyProcess,familyBriefing} from './product-families.mjs';
+import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,geometryOf,familyGaps,familyReady,familyProcess,familyBriefing} from './product-families.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
@@ -167,7 +167,7 @@ test('memorial families 30 × 20: all materials validate, open values block gene
  assert.equal(p.material.kind,'slate');assert.equal(p.processing.profileId,'slate-engraving');assert.equal(doc.config.basePriceCents,2999);
  assert.deepEqual(p.optionGroups[0].values.map(v=>[v.id,v.priceCents,v.holes.map(h=>[h.x,h.y,h.diameter])]),[['K00',0,[]],['B02',299,[[12,100,5],[288,100,5]]],['B04',399,[[12,12,5],[288,12,5],[12,188,5],[288,188,5]]]]);
  const acryl=families.create(memorial('acryl-schwarz'));
- assert.equal(acryl.readiness.ready,false);assert.match(acryl.readiness.reason,/Acrylglas-Gravurplatten .* noch nicht/);
+ assert.equal(acryl.readiness.ready,false);assert.match(acryl.readiness.reason,/Stammdaten unvollständig/);assert.ok(acryl.readiness.gaps.includes('Materialstärke'));
  assert.throws(()=>families.generate(acryl.id,{expectedRevision:acryl.revision}),e=>e.status===422);
  const steel=families.create(memorial('edelstahl'));
  assert.deepEqual(steel.readiness.gaps,['Materialstärke','Gestaltungsrand','Bohrbild „4 Bohrlöcher“: Durchmesser und Randabstand']);
@@ -233,7 +233,8 @@ test('acrylic standoff families from the Corel drawing: per-size radius, standof
  assert.deepEqual(ss.sizes.slice(0,6).map(s=>s.key),['SS-RE-150X100','SS-RE-180X120','SS-RE-240X160','SS-RE-300X200','SS-RE-360X240','SS-RE-420X280']);assert.equal(ss.sizes.at(-1).key,'SS-R5-420X280');
  const svg=familyTemplate(ss,ee);assert.match(svg,/viewBox="-10 -10 230 160"/,'backing plate 10 mm around');assert.match(svg,/id="rueckplatte"[^>]*><path d="M14.8 0H215.2A14.8 14.8 0 0 0 230 14.8/,'backing with concave corners');assert.match(svg,/id="kontur"><path d="M13.5 0H196.5A13.5 13.5 0 0 0 210 13.5/,'plate with concave corners (sweep 0)');
  assert.match(familyTemplate(ss,ss.sizes.find(s=>s.key==='SS-R5-180X120')),/id="kontur"><path d="M5 0H175A5 5 0 0 1 180 5/,'rounded corners keep sweep 1');
- assert.ok(familyGaps(ss).some(g=>/eingezogene Ecken/.test(g)),'plaque shape is reported as not yet connected');
+ assert.ok(!familyGaps(ss).some(g=>/eingezogene Ecken/.test(g)),'acrylic concave shape uses the exact native contour');
+ assert.equal(familyReady(ss).ready,false,'historic open catalogue prices still block generation');
  assert.throws(()=>validateFamily({...ss,backing:{...ss.backing,offsetMm:-1}}),/Rückplatte/);
  const bad=structuredClone(ss);bad.sizes.find(s=>s.groupKey==='OV').cornerRadiusMm=5;assert.throws(()=>validateFamily(bad),/Eckenradius/);
  const noBacking=structuredClone(load('aa'));noBacking.sizes.find(s=>s.groupKey==='EE').backingCornerRadiusMm=12;assert.throws(()=>validateFamily(noBacking),/Rückplatte/);
@@ -331,8 +332,8 @@ test('family option groups: spacer colour per set, hidden group neither shown no
  // Größe ohne 4er-Set: die 4er-Farbgruppe entfällt ganz.
  const r5=familyProductConfig(f,size('SS-R5-150X100'),1,{previewOnly:true});
  assert.deepEqual(r5.profile.optionGroups.map(g=>g.id),['mounting','abstandshalter-farbe']);
- // „Eingezogene Ecken“ bleibt nur für Größen dieser Form offen.
- const ee=f.sizes.find(s=>s.groupKey==='EE');
- assert.throws(()=>familyProductConfig(f,ee,1,{previewOnly:true}),/eingezogene Ecken/);
- assert.throws(()=>familyProductConfig(f,size('SS-RE-150X100'),1),/Acrylglas/);
+ // Der Acryl-Anschluss ergänzt jetzt auch die unveränderte konkave Quellkontur.
+ const ee=f.sizes.find(s=>s.groupKey==='EE'),ec=familyProductConfig(f,ee,1,{previewOnly:true});
+ assert.equal(ec.profile.geometry.shape,'contour');assert.match(ec.profile.geometry.outlinePath,/A[0-9.]+ [0-9.]+ 0 0 0/);
+ assert.equal(familyProductConfig(f,size('SS-RE-150X100'),1).familyAcrylic.familyId,f.id);
 });

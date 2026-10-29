@@ -1,9 +1,10 @@
+import {updateBackingPreviewViewport} from './backing-preview-viewport.mjs';
 import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {contourGuides} from './contour-guides.mjs';
 import {spacerPreview,screwPreview,keepoutPreview,optionTileIcon,optionTilePrice} from './option-media.mjs';
 import {designAreaPreview} from './design-area.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
-import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
+import {studioSvg,universalPreviewViewport} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl,plateClipMarkup} from './material-surface.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
@@ -85,7 +86,7 @@ export function installUniversal(configInput) {
         const image = new Image(); image.src = url; await image.decode();
         const {width,height}=profile().geometry;
         const canvas = document.createElement('canvas'), scale = 1600 / Math.max(width, height);
-        const padding=dynamicDoorbell?16:Math.max(width,height)*.07;
+        const padding=p.backingPreview?-2*universalPreviewViewport(profile())[0]:dynamicDoorbell?16:Math.max(width,height)*.07;
         canvas.width = Math.round((width + padding) * scale);
         canvas.height = Math.round((height + padding) * scale);
         canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -292,6 +293,9 @@ export function installUniversal(configInput) {
       const d=current(), visible=new Set(filteredDesigns(p.designs,filters).map(d=>d.id));
       const physical=physicalGeometry(config,{mOptions:options});
       if(dynamicDoorbell)updateDoorbellViewport(el,physical);
+      // The legacy shell keeps only SVG children. Restore the outer viewport so the
+      // backing plate is fully visible; front geometry and pointer coordinates stay in mm.
+      updateBackingPreviewViewport(el,profile());
       $('.stage-top>span').textContent=(config.doorbell?'Edelstahl mit Acrylglasauflage':processing.name.replace('Gravur auf ',''))+' · '+physical.width+' × '+physical.height+' mm';
       if(config.steelFormats){for(const [selector,value] of [['.dimension-x span',physical.width],['.dimension-y span',physical.height]]){const node=$(selector);if(node)node.textContent=new Intl.NumberFormat('de-DE',{maximumFractionDigits:3}).format(value)+' mm';}}
       $('.c-preview-caption>span').textContent='';

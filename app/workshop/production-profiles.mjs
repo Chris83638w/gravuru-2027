@@ -23,11 +23,15 @@ export function productionProfileDocument(input){
 export function profileBlockers(profile){
  const d=profile.document;return [...(!d.machine?['Die konkrete Maschine ist noch nicht eingetragen.']:[]),...(d.method==='print'?['Gemessenes Druck-/Material-ICC-Profil ist noch nicht angebunden.']:[]),'Reale Maschinenprobe und Fertigungsfreigabe stehen aus.'];
 }
-// The native product contract is the existing clear-acrylic pilot, not arbitrary acrylic materials.
+// Native family acrylic retains its exact material and thickness; the pedestal pilot remains clear acrylic.
 export function productionSubject(document){
  if(document.schema==='gravuru-product/v1'){
   if(document.config?.profile?.material?.kind==='slate'&&document.config.profile.processing?.profileId==='slate-engraving')return {method:'engraving',materialId:'slate',thicknessMm:document.config.profile.material.thicknessMm};
   if(document.config?.profile?.material?.kind==='steel'&&document.config.profile.processing?.profileId==='steel-engraving')return {method:'engraving',materialId:'steel',thicknessMm:document.config.profile.material.thicknessMm};
+  if(document.config?.familyAcrylic?.schema==='gravuru-family-acrylic/v1'&&document.config.profile?.material?.kind==='acrylic'){
+   const materialId={anthrazit:'acrylic-anthracite',schwarz:'acrylic-black',satiniert:'acrylic-satin'}[document.config.profile.material.variant];if(!materialId)fail(422,'Unbekanntes Acryl-Familienmaterial.');
+   return {method:getProcessingProfile(document.config.profile).method,materialId,thicknessMm:document.config.profile.material.thicknessMm};
+  }
   if(document.config?.acrylic?.version!==1||document.config.profile?.material?.kind!=='acrylic')fail(422,'Dieses native Produkt unterstützt keine Fertigungsprofilzuordnung.');
   return {method:getProcessingProfile(document.config.profile).method,materialId:'acrylic-clear',thicknessMm:document.config.profile.material.thicknessMm};
  }

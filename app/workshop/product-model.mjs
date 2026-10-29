@@ -1,3 +1,4 @@
+import {nativeFamilyAcrylicConfig} from './family-acrylic-product.mjs';
 import {nativeDoorbellConfig} from './doorbell-product.mjs';
 import {workshopResources} from './catalog.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
@@ -65,7 +66,7 @@ function nativeAcrylicConfig(input){
   return validated;
 }
 
-const nativeConfig = input => isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
+const nativeConfig = input => input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
 
 export function makeProductDocument(input,{name,kind='product',masterId=null}={}){
   const config=nativeConfig(input),title=text(name??config.profile.name,1,200,'Produktname');

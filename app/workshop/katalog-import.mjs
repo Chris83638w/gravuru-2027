@@ -8,7 +8,7 @@ import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import {katalogDesignToTemplate,formatSeries,scaleTemplate,scaleEmbeddedMotifs,katalogFamilyToProduct,priceGaps} from './katalog-convert.mjs';
-import {approvedForFamily,assignTargetSeries,designTargetCompatibility} from './design-targets.mjs';
+import {resolveDesignTargets,approvedForFamily,assignTargetSeries,designTargetCompatibility} from './design-targets.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {FAMILY_MATERIALS,familyReady} from './product-families.mjs';
@@ -131,6 +131,8 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
       let scaledMotifs;const motifsForFit=()=>scaledMotifs??=scaleEmbeddedMotifs(t.motifs,scaled.katalog.scale);
       const fit=assessDesignTarget({master:a.design,template:scaled,family:doc,size,fonts,motifs:motifsForFit});entry.fit[fit.status]++;report.counts.fit[fit.status]++;
       if(fit.status==='passt nicht'){entry.excluded.push({design:a.design.id,issues:fit.issues});continue;}
+      const target=resolveDesignTargets(a.design,katalog);
+      scaled.katalog.target={lineId:line.id,familyId,explicit:target.source==='explicit',released:target.targets.some(t=>t.familie===familyId&&t.freigabe?.status==='freigegeben')};
       scaled.katalog.fit=fit.status;if(fit.issues.length)scaled.katalog.review=fit.issues;
       const motifs=motifsForFit();
       templates.push({template:scaled,motifs,rights:t.rights,examples:t.examples});entry.templates.push({design:a.design.id,fit:fit.status,issues:fit.issues});

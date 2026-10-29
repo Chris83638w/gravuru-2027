@@ -10,3 +10,5 @@
 :host([data-ux-layout]) button.ux-product-card:not([aria-pressed=true])>.completion-check{display:none!important}
 .ux-product-status,.ux-product-summary{font-size:14px;line-height:1.5}.ux-product-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap}.ux-product-actions [data-product-confirm]{background:#2f3437;color:#fff;border-color:#2f3437}.ux-product-result{padding:10px;background:#f4f5f5;border-radius:6px}
 @media(max-width:650px){.ux-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ux-product-card img{height:125px}.ux-product-card{padding:6px}.ux-product-designs-dialog{padding:14px}}
+
+.ux-product-themes{display:flex;align-items:center;gap:8px;font-size:14px}.ux-product-themes[hidden]{display:none!important}.ux-product-themes select{font:inherit;min-height:44px;max-width:100%;border:1px solid #bfc4c6;border-radius:8px;padding:8px;background:#fff;color:#2f3437}

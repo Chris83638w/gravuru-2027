@@ -12,9 +12,11 @@ const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anf
 for(const [name,config] of [['doorbell',doorbellFixture()],['acrylic',makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64))]]){
  test(name+': lightweight cards keep all exact option prices, geometry and design visibility without rendering resources',()=>{
   const document=makeProductDocument(config,{name:'Synthetic gallery '+name});
+  document.categoryIds=['linie-test-line','familie-test-family'];
   const full=resolveProduct(document).config;
   const record={id:'cfg_fixture',revision:7,document};
   const before=JSON.stringify(document),light=shopGalleryModel(record);
+  assert.deepEqual(light.galleryCategoryIds,document.categoryIds);assert.notEqual(light.galleryCategoryIds,document.categoryIds);
   assert.equal(light.configuration.revision,7);assert.equal(light.name,document.name);
   for(const option of variantCombinations(full)){
    const expected=selectedProfile(full,option),actual=selectedProfile(light.universal,option);

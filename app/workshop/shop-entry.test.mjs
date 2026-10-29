@@ -247,6 +247,7 @@ test('rate limits answer 429 and misconfiguration fails closed',()=>run(async(f,
 // Gallery tests retain historical Shopify identity/price evidence, but build
 // complete synthetic native models and use only the local HTTP server.
 function galleryEntryFixture(f){
+ for(const model of f.models.values())model.galleryCategoryIds=['linie-edelstahl-tuerschilder','familie-fixture'];
  f.store.workshop.galleryModel=(id,rev)=>f.store.workshop.model(id,rev);
  f.store.registry.listActive=()=>structuredClone([...f.bindings.values()]);
  for(const product of mapping.products){
@@ -265,7 +266,7 @@ async function otherGalleryCard(f,request,t){
 test('gallery endpoints require current authentication, correct origin and strictly shaped requests',()=>run(async(f,request,{token})=>{
  for(const [path,method,body] of [['design-gallery','GET'],['design-gallery-preview','POST',{target:'x'}],['design-switch','POST',{target:'x'}]]){const denied=await request('/api/shop-entry/'+path,method,body);assert.equal(denied.status,403);assert.equal(denied.data.error.code,'shop_entry_session');}
  const {token:t}=await token();
- for(const suffix of ['?page=-1','?page=1.5','?page=1&page=2','?page=10001','?product=1'])assert.equal((await request('/api/shop-entry/design-gallery'+suffix,'GET',undefined,session(t))).status,422);
+ for(const suffix of ['?page=-1','?page=1.5','?page=1&page=2','?page=10001','?product=1','?theme=foreign','?theme=all&theme=preferred'])assert.equal((await request('/api/shop-entry/design-gallery'+suffix,'GET',undefined,session(t))).status,422);
  assert.equal((await request('/api/shop-entry/design-gallery','POST',{},session(t))).status,405);
  for(const path of ['design-gallery-preview','design-switch']){
   assert.equal((await request('/api/shop-entry/'+path,'GET',undefined,session(t))).status,405);

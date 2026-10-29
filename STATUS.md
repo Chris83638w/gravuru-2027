@@ -1,3 +1,9 @@
+## 29.10.2026 · Claude als Operator (Produktanlage) · Design-Master für alle KIs
+
+- Chris (12:10): Alle KIs sollen mit den Schriften variieren, Katalog-Vorlagen 1:1 übernehmen oder sehr stark als Referenz nutzen; das Motiv darf nicht verloren gehen und wird proportional, nicht zwingend mittig gesetzt – „es soll ein schönes Gesamtbild entstehen“, auch für künftige Aufträge und KIs. Antworten: 1–3 Schriften je nach Text, Variation frei (nur nicht alle gleich), Vorlage 1:1 wenn passend sonst Referenz, Motiv bleibt und Text weicht, alle 84 Schriften frei, Anordnung überall, Motivgröße nach Sicht, Abnahme per Kontaktbogen 1:1 aus dem Konfi.
+- Katalog `main` `9629833` (signiert): `designs/DESIGN-MASTER.md`, Verweis in `AGENTS.md`, `CLAUDE.md`, `designs/README.md`. Hier: Verweis in `AGENTS.md`. Nur Dokumentation, kein Familien-/Design-JSON geändert.
+- Nächster Schritt: laufende Design-KIs über ihre Postfächer informieren; Kontaktbögen gegen den Master prüfen.
+
 ## 29.10.2026 · Claude als Operator · Live: PR #42 + #43 (`main` `6339961`)
 
 - Chris (11:47): „Ja, Du darfst PR #42 und PR #43 nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `6339961` (Baum = Prüfstand `b41c32a`), Plesk Pull + Bereitstellen + App neu starten 11:48–11:50.

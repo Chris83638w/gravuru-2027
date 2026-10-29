@@ -31,3 +31,10 @@ Mehrere Claude- und ChatGPT-Accounts arbeiten am selben Projekt; der Operator-Ac
 - **Entscheidungen** von Chris als GitHub-Issue in `gravuru-2027` (Label `entscheidung`), Antwort dort oder im Chat – dann in die Übergabe übernehmen.
 - **Rollen:** Live-Systeme (Shopify, Amazon, Plesk) werden vom Operator nur gelesen/exportiert; Uploads, Imports, Theme-/App-Versionen macht der Upload-Account nach ausdrücklicher Freigabe von Chris im selben Chat (mit Zählern). Nichts löschen ohne Ankündigung. Katalogdaten ändern sich nur im Katalog-Repo (JSON), nie durch Kopieren aus Shopify.
 - **Dashboard-Bearbeitungen** (Design-Dashboard, Katalogseite) schreiben in den Arbeitsbaum des Katalog-Repos mit Protokoll (`_aenderungen.jsonl`); wer sie committet, baut danach `build-katalog.py` und nennt das im Commit.
+
+## Fachlogik vor dem Programmieren prüfen (Chris, 29.10.2026)
+
+Vor jedem Bau eines Pakets die fachlichen Regeln, die der Code festlegt (Rechte, Sperren, Preise, Maße, Pflichtfelder, Standardwerte), **mit Quelle** auflisten: Entscheidung von Chris (Issue/Datum), Preis-Excel oder Katalog. Was keine Quelle hat, wird **nicht** als Regel oder Sperre eingebaut, sondern als offen gemeldet und vorher erfragt. Bestehende Standardwerte im Code sind keine Entscheidung.
+- Motive: **jedes Motiv ist löschbar und ersetzbar**; gesperrt sind nur ganze Druck-Designs, die als Einheit verkauft werden (z. B. Acrylglasbilder).
+- Preise und Lochabstände: **nur die Preis-Excel** zählt.
+- Bohrloch: Motive/Texte dürfen darüber; Export vollständig, nur die Vorschau zeigt Loch/Beschlag; Überlappungshinweis nur bei Gravur.

@@ -15,7 +15,7 @@ Von Claude (Operator). Chris möchte die **Acrylglas-Hausnummernschilder mit Abs
 
 - **Preise (Chris, Excel vom 26.10.):** [`hausnummern-abstandshalter-referenz/gravuru-preise-acryl-2026-10-26.xlsx`](hausnummern-abstandshalter-referenz/gravuru-preise-acryl-2026-10-26.xlsx), Blatt „Acryl 5 mm Abstandshalter“.
   - **AA und AS:** Preise für alle 33 Größen vorhanden, preisgleich.
-  - **S/S:** Spalte ist **leer**, also Preise offen. Bitte als offen melden, nicht schätzen.
+  - **S/S:** Chris 29.10.: überall **AA/AS-Preis + 2,00 €**. In der Excel eingetragen, mit Bemerkung je Zeile.
   - **Abstandshalter als Set mit dem Schild:** 2 Stück 1,99 €, 4 Stück 3,99 €; gilt für AA, AS und S/S.
   - „4 Abstandshalter möglich“: bei 10 Größen ja, bei 23 nein. Die Spalte gilt so, wie Chris sie ausgefüllt hat.
   - **24 × 8 cm statt 24 × 7 cm** (Chris 26.10.: passt in die Reihe 3 : 1, Bohrabstand wie 21 × 7). Die Familien entsprechend abgleichen.
@@ -55,7 +55,7 @@ Die Hausnummernschilder AA/AS/S/S sind im neuen Konfigurator bestellbar wie D8 b
   - Abstandshalter sichtbar.
 - **Designs:** die vorhandenen Designs (D1–D16 aus Shopify/Corel + `Beispiele.pdf`), sauber auf alle passenden Größen eingepasst. Hausnummer und Straße/Name als sprechende Textfelder.
 - **Kunden-UX vom 28.10.:** `--kunden-ux-20261028`, Preisregel Vorlagenmotiv inklusive, Designs aller Formen/Größen.
-- **Preis:** nur aus Chris' Excel (siehe oben). S/S ist offen; nichts schätzen.
+- **Preis:** nur aus Chris' Excel (siehe oben); AA/AS/S/S vollständig. Nichts schätzen.
 
 ## Vorgehen
 

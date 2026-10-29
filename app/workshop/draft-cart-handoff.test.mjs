@@ -167,13 +167,13 @@ test('a second private form design adds to a server-owned cart without merging e
  const second=await f.submit(input,context);assert.equal(second.mode,'add');assert.equal(second.cartId,first.cartId);assert.notEqual(second.configuration.id,first.configuration.id);assert.equal(f.cart.lines.length,2);assert.deepEqual(f.cart.lines.map(l=>l.quantity),[2,2]);
  assert.equal((await f.submit(input,context)).duplicate,true);assert.equal(f.calls,2);
 });
-test('first handoff carries a stable configuration ID, revision 1 and an optional visible edit link', async t => {
+test('first handoff carries a stable configuration ID, revision 1 and an optional private edit link', async t => {
   const f = setup(t), result = await f.submit(f.input, f.context, {editUrl: 'https://shop.example/products/tafel?size=m'});
   assert.match(result.configuration.id, /^konfig_[a-f0-9-]{36}$/); assert.equal(result.configuration.rev, 1);
   assert.match(result.lineId, /^gid:\/\/shopify\/CartLine\//); assert.equal(result.mode, 'create');
   const line = f.requests[0].variables.input.lines[0];
   assert.deepEqual(attribute(line, '_gravuru_config'), [result.configuration.id]); assert.deepEqual(attribute(line, '_gravuru_rev'), ['1']);
-  assert.deepEqual(attribute(line, 'Bearbeiten'), ['https://shop.example/products/tafel?size=m&config=' + result.configuration.id + '&rev=1']);
+  assert.deepEqual(attribute(line, '_gravuru_bearbeiten'), ['https://shop.example/products/tafel?size=m&config=' + result.configuration.id + '&rev=1']);
   for (const value of [f.draft.token, f.draft.id, f.offer.property.value]) assert.ok(!JSON.stringify(line.attributes.filter(a => a.key !== '_gravuru_offer')).includes(value));
   const stored = f.store.cartConfigurations.revision(result.configuration.id, 1);
   assert.equal(stored.snapshotId, f.manifest.id); assert.equal(stored.lineId, result.lineId); assert.equal(stored.cartId, result.cartId);

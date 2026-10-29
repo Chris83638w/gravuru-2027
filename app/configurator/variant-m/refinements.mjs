@@ -75,6 +75,7 @@ export async function installRefinements(api){
     const h=e.target.closest('[data-ux-handle]'),item=e.target.closest('.scene [data-object]');if((!h&&!item)||e.button!==0)return;
     const o=item?el.state.objects.find(o=>o.id===item.dataset.object):selected();if(!o||o.uxLocked||o.uxHidden||o.acrylicFixed)return;
     if(o.type==='photoSlot'&&(o.locked||o.technicalLocked||o.customerEditable===false||el.uxCanEdit?.(o,h?.dataset.uxHandle==='scale'?'scale':'move')===false))return;
+    if(h?.dataset.uxHandle==='rotate'&&el.uxCanRotate?.(o)===false)return;
     if(item&&el.uxToggleTextSelection?.(o.id)){e.preventDefault();e.stopImmediatePropagation();return;}
     e.preventDefault();e.stopImmediatePropagation();const old=structuredClone(el.state),point=el.point(e),target=h||holder;
     el.state.selected=o.id;el.uxGuideGesture?.(false);el.state.showHero=false;if(o.type==='text')showTab('text');el.sync();
@@ -93,7 +94,7 @@ export async function installRefinements(api){
   el.uxCancelObjectGesture=()=>{if(resize)finish({pointerId:resize.id,stopImmediatePropagation(){}},true);};
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);
   r.addEventListener('lostpointercapture',e=>{if(resize?.id===e.pointerId)finish(e,true);},true);
-  r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate')o.rotation=(o.rotation||0)+direction;else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
+  r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate'){if(el.uxCanRotate?.(o)===false)return;o.rotation=(o.rotation||0)+direction;}else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
   function areaResize(field){field.style.height='auto';field.style.height=Math.min(200,Math.max(44,field.scrollHeight))+'px';}
   r.addEventListener('focusin',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);});
   r.addEventListener('input',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);},true);
@@ -105,7 +106,7 @@ export async function installRefinements(api){
       if(key==='object-copy'&&!o.uxUploadId)await el.action('duplicate');
       if(key==='object-delete')await el.action('delete');
       if(key==='object-center')mutate(()=>o.x=el.state.width/2);
-      if(key==='object-turn')mutate(()=>o.rotation=(o.rotation||0)+15);
+      if(key==='object-turn'&&el.uxCanRotate?.(o)!==false)mutate(()=>o.rotation=(o.rotation||0)+15);
       if(key==='object-smaller'||key==='object-bigger')mutate(()=>Object.assign(o,scaleObject(o,key==='object-bigger'?1.1:1/1.1,el.uxTextScale?.()||1,el.uxMinTextMm)));
     }
   });

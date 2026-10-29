@@ -4,7 +4,7 @@ import {renderEngraving,formEngravingSettings} from './form-engraving-proof.mjs'
 import {digest} from './review-package.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
-export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v3';
+export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v4';
 export const acrylicEngravingKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_ENGRAVING_RECIPE,settings:formEngravingSettings(settings)}));
 export async function createAcrylicEngravingProof(archive,archiveHash,input={},context={}){
  const a=await acrylicArtwork(archive,archiveHash,{engraving:true});

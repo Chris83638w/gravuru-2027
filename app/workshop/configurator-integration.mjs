@@ -1,3 +1,4 @@
+import {createCrossStoreOrders} from './cross-store-orders.mjs';
 import {createHmac} from 'node:crypto';
 import {createShopifySessionVerifier} from './shopify-session.mjs';
 import {createShopBindingReadAdapter} from './shop-product-binding-adapter.mjs';
@@ -59,6 +60,7 @@ export function createConfiguratorIntegration({settings,legacy,acryl,origin,shop
  // Derselbe Store-Satz (Registry, Modell, bound-test-cart) wie das Gateway; eigene Routen, eigene Kundensitzung.
  const shopEntry=entry?createShopEntry({origin,shopDomain,secret:shopifySessions.secret,stores,proxyPath:entry.proxyPath,...(entry.pagePath===undefined?{}:{pagePath:entry.pagePath}),...(entry.ttlMs===undefined?{}:{ttlMs:entry.ttlMs})}):null;
  const statusWebhook=liveEnabled?createDoorbellStatusWebhookHandler({config:webhookConfig,intake:acryl.orderIntake}):null;
- return Object.freeze({gateway,webhook,statusWebhook,shopEntry});
+ const orders=createCrossStoreOrders({stores,origin,shopDomain,verifyMerchant:createShopifySessionVerifier(shopifySessions),enabled:Boolean(orderWebhook)});
+ return Object.freeze({gateway,webhook,statusWebhook,shopEntry,orders});
 }
 

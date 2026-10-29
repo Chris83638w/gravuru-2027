@@ -15,7 +15,7 @@ const cents = money => {
   if (!Number.isSafeInteger(n)) fail('Shoppreis nicht bestätigt.');
   return n;
 };
-// Sichtbare Bearbeiten-Adresse: nur HTTPS ohne Zugangsdaten; config/rev werden angehängt, nichts Privates.
+// Private Bearbeiten-Adresse: nur HTTPS ohne Zugangsdaten; config/rev werden angehängt, nichts Privates.
 export function editLink(editUrl, {id, rev}) {
   let url; try { url = new URL(editUrl); } catch { fail('Bearbeiten-Adresse ist ungültig.'); }
   if (url.protocol !== 'https:' || url.username || url.password || url.hash || editUrl.length > 1024) fail('Bearbeiten-Adresse ist ungültig.');
@@ -30,7 +30,7 @@ export function configurationAttributes(configuration) {
       !Number.isSafeInteger(configuration.rev) || configuration.rev < 1 ||
       (configuration.editUrl !== undefined && typeof configuration.editUrl !== 'string')) fail('Keine gültige Konfigurations-Revision.');
   return [{key:'_gravuru_config', value:configuration.id}, {key:'_gravuru_rev', value:String(configuration.rev)},
-    ...(configuration.editUrl === undefined ? [] : [{key:'Bearbeiten', value:editLink(configuration.editUrl, configuration)}])];
+    ...(configuration.editUrl === undefined ? [] : [{key:'_gravuru_bearbeiten', value:editLink(configuration.editUrl, configuration)}])];
 }
 // K14 / Ü12.1: sichtbare Zusatzfelder (ohne Unterstrich), nie technische oder reservierte Schlüssel.
 const RESERVED = ['Bearbeiten', 'Bearbeitbarer Entwurf'];

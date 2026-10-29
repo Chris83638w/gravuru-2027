@@ -46,11 +46,11 @@ test('fixed asymmetric holes use the object surface, without moving source holes
  assert.equal(JSON.stringify(p),before);
 });
 
-test('all front objects retain the exact old geometry policy',()=>{
+test('front geometry remains exact; customer artwork ignores only drill holes',()=>{
  for(const shape of ['rect','ellipse','contour'])for(const surfaceId of [undefined,'front'])for(const [x,y] of [[6,30],[84,30],[20,12],[70,12],[45,30]]){
   const p={kind:'universal-product',geometry:{...geometry,shape,holes}},o=object(x,y,surfaceId);if(surfaceId===undefined)delete o.surfaceId;
   assert.equal(surfaceObjectIssue(o,p),objectIssue(o,p));
-  const oldCustomerProfile=shape==='contour'?p:{...p,geometry:{...p.geometry,holes:[]}};
+  const oldCustomerProfile={...p,geometry:{...p.geometry,holes:[]}};
   assert.equal(customerLayoutIssue(o,p),objectIssue(o,oldCustomerProfile));
  }
 });
@@ -71,11 +71,14 @@ test('customer validation and frozen review preserve valid back geometry and rej
  assert.doesNotThrow(()=>validateProductDesign(document,design,{options}));
  const record={id:c.profile.id,revision:1,document,metadata:{}},input={productId:c.profile.id,productRevision:1,designId:design.id,objects:design.objects,options,quantity:1,media:[],preview:'fixture'};
  assert.doesNotThrow(()=>validateAcrylicReview(record,c,input));
- for(const [x,y] of [[84,30],[70,12]]){
+ for(const [x,y] of [[84,30]]){
   const invalid=structuredClone(design);Object.assign(invalid.objects[0],{x,y});
   assert.throws(()=>validateProductDesign(document,invalid,{options}),/Kontur|Bohrloch/);
   assert.throws(()=>validateAcrylicReview(record,c,{...input,objects:invalid.objects}),/Kontur|Bohrloch/);
  }
+ const acrossHole=structuredClone(design);Object.assign(acrossHole.objects[0],{x:70,y:12});
+ assert.doesNotThrow(()=>validateProductDesign(document,acrossHole,{options}));
+ assert.doesNotThrow(()=>validateAcrylicReview(record,c,{...input,objects:acrossHole.objects}));
  const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4////fwAJ+wP9KobjigAAAABJRU5ErkJggg==','base64');
  const frozen=await prepareAcrylicReview({record,config:c,input,preparePhoto:async()=>({preview:png,width:1,height:1})}),before=digest(frozen.package);
  const artwork=await acrylicArtwork(frozen.package,frozen.manifest.packageSha256,{engraving:true,surfaceId:'back'}),expected=surfaceGeometry(selectedProfile(c,options).geometry,'back');

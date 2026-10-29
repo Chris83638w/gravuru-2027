@@ -59,9 +59,11 @@ test('source Retro sheet names resolve only existing drawn contour sizes; other 
  const unknown={id:'old',plateMm:[90.6,61.3],json:{sizes:[],sizesOpen:['OTHER-9x6']}};
  assert.equal(assignSeries(f,[unknown])[0].oldSize,true);
 });
-test('unchanged basic-shape artwork policy stays distinct from explicit contour keepouts',()=>{
+test('customer artwork may cross drill holes for basic and contour shapes',()=>{
  const o={type:'motif',x:20,y:20,w:5,h:5,rotation:0};
  const base={width:90,height:60,shape:'rect',safeMarginMm:0,holeKeepoutMm:3,holes:[{x:20,y:20,diameter:4}]};
  assert.equal(customerLayoutIssue(o,{geometry:base}),'');
- assert.match(customerLayoutIssue(o,{geometry:{...base,shape:'contour',outlinePath:'M0 0H90V60H0Z'}}),/Schutzzone/);
+ assert.equal(customerLayoutIssue(o,{geometry:{...base,shape:'contour',outlinePath:'M0 0H90V60H0Z'}}),'');
+ assert.match(customerLayoutIssue({...o,x:-5},{geometry:{...base,shape:'contour',outlinePath:'M0 0H90V60H0Z'}}),/hinaus/);
+ assert.deepEqual(base.holes,[{x:20,y:20,diameter:4}]);
 });

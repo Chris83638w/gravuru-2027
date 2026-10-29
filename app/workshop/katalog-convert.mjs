@@ -229,7 +229,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:(print||movable)&&!guide};
    if(!o.customerEditable)o.locked=true;if(guide)o.role='guide';
    // Verschiebbare Motive auch skalierbar (Ecken-Pfeile; Chris 20.10.2026: „die Pfeile sind nicht an den Ecken“).
-   rights[id]={content:false,color:print&&!guide,replace:false,move:movable,scale:movable,delete:false};
+   rights[id]={content:false,color:print&&!guide,replace:movable,move:movable,scale:movable,delete:movable};
    objects.push(o);
   }
  }

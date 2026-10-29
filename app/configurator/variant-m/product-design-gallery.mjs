@@ -1,4 +1,4 @@
-import {captureProductTexts,transferProductTexts} from './product-design-transfer.mjs';
+import {captureProductTexts,transferProductTexts,preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
@@ -16,12 +16,15 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
  const back=section.querySelector('.ux-product-back');back.hidden=!api.canGoBack();back.onclick=()=>{try{api.back();}catch(error){say(error.message);}};
  const pending=api.takeTransfer();
  if(pending){
+  const selection=preserveProductSelection(pending.selection,config);
+  if(selection){el.state.mOptions=selection.options;const quantity=r.querySelector('[data-fk-quantity]');if(quantity)quantity.value=String(selection.quantity);}
   const result=transferProductTexts(pending.texts,el.state.objects,design(),config);el.state.selected=null;el.normalize();el.sync();
   const note=section.querySelector('.ux-product-result');note.hidden=false;
   const details=[`Neue Größe ${pending.sizeLabel||''}`,`${result.transferred.length} Text${result.transferred.length===1?'':'e'} übernommen.`];
   if(result.remaining.length)details.push('Bitte noch eintragen: '+result.remaining.map(t=>`${t.text} (${t.reason})`).join(' · '));
   if(pending.hasMedia)details.push('Dein Foto bleibt in der vorherigen Gestaltung. Hier kannst du es neu auswählen.');
   note.textContent=details.join(' ');say(details.join(' '));
+  r.querySelector('#ux-tab-design')?.click();el.uxMobileSteps?.show('design',{scroll:false});
  }
  const gallery=dialog('product-designs','Designs deiner Produktlinie','<label class="ux-product-themes" hidden>Themen <select aria-label="Themen"><option value="preferred">Passende Themen zuerst</option><option value="all">Alle Themen</option></select></label><p class="ux-product-status" role="status"></p><div class="ux-product-grid"></div><button type="button" class="ux-product-more" hidden>Weitere Designs</button>');
  const status=gallery.querySelector('.ux-product-status'),grid=gallery.querySelector('.ux-product-grid'),more=gallery.querySelector('.ux-product-more');
@@ -46,7 +49,7 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
     const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;card.append(img);
     const title=document.createElement('strong');title.textContent=item.designName;card.append(title);
     const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');card.append(check);
-    card.onclick=()=>{chosen=item;confirm.querySelector('.ux-product-summary').textContent=item.designName+' – Neue Größe '+productChoiceInfo(item);confirm.showModal();};grid.append(card);
+    card.onclick=()=>{if(item.current){gallery.close();if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}chosen=item;confirm.querySelector('.ux-product-summary').textContent=item.designName+' – Neue Größe '+productChoiceInfo(item);confirm.showModal();};grid.append(card);
     img.previewRequest={item,img};if(observer)observer.observe(img);else queue.push({item,img});
    }
    if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=next===null;
@@ -56,7 +59,7 @@ export async function installProductDesignGallery({el,r,config,say,dialog,esc}){
  section.querySelector('.ux-product-open').onclick=()=>{gallery.showModal();if(!loaded)load();};more.onclick=load;
  confirm.querySelector('[data-product-confirm]').onclick=async()=>{
   if(!chosen)return;const button=confirm.querySelector('[data-product-confirm]');button.disabled=true;
-  try{await api.choose(chosen.target,{texts:captureProductTexts(el.state.objects,design()),hasMedia:el.state.objects.some(o=>o.uxUploadId&&!o.uxHidden),sizeLabel:productChoiceInfo(chosen)});confirm.close();}
+  try{await api.choose(chosen.target,{selection:{options:structuredClone(el.state.mOptions||{}),quantity:Number(r.querySelector('[data-fk-quantity]')?.value||1)},texts:captureProductTexts(el.state.objects,design()),hasMedia:el.state.objects.some(o=>o.uxUploadId&&!o.uxHidden),sizeLabel:productChoiceInfo(chosen)});confirm.close();}
   catch(error){confirm.querySelector('.ux-product-summary').textContent=error.message;}finally{button.disabled=false;}
  };
  window.addEventListener('pagehide',()=>{observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});

@@ -1,3 +1,9 @@
+import {installRotationPolicy} from './rotation-policy.mjs';
+import {customerLayoutIssue} from './contract.mjs';
+import {canEditElement,legacyElementRights} from './element-rights.mjs';
+import {layoutReviewIssues} from './layout-review.mjs';
+import {objectSurface} from './surfaces.mjs';
+import {motifChoiceTarget,replacedMotif} from './motif-choice.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
@@ -15,6 +21,7 @@ export async function installWorkflow(api){
  const {el,r,profile,config,button,esc,mutate,selected,showTab,say,dialog}=api;
  const $=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/workflow.css').then(res=>{if(!res.ok)throw Error('Bedienung fehlt');return res.text();});r.append(style);
+ installRotationPolicy(api);
  const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
  const surface=()=>{const geometry=el.uxProfileGeometry?.()||profile.geometry;if(config?.doorbell?.schema==='gravuru-doorbell/v1'&&geometry.designArea){const a=geometry.designArea;return {...geometry,x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top};}return config?{x:0,y:0,...geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;};
  const obstacles=()=>{const bell=(el.uxProfileGeometry?.()||profile.geometry).bell;return (!config||config.doorbell)&&bell?[{x:bell.x+bell.width/2,y:bell.y+bell.height/2,w:bell.width,h:bell.height}]:[];};
@@ -80,7 +87,7 @@ export async function installWorkflow(api){
   const longest=Math.max(o.w||0,o.h||0)*physicalScale();return longest>0?Math.min(1,MOTIF_MIN_MM/longest):1;
  }
  // Gestaltungsfläche innerhalb des Randes (design-area.mjs); Klingelschild-Altpfad: Acrylfläche des Rahmens.
- function placementSurface(){if(!config)return surface();const current=el.uxProfileGeometry?.()||surface(),geometry={...current,shape:current.shape??profile.geometry.shape},a=designArea(config,{geometry});return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:geometry.shape,...(geometry.shape==='contour'?{geometry}:{})};}
+ function placementSurface(){if(!config)return surface();const current=el.uxProfileGeometry?.()||surface(),geometry={...current,holes:[],shape:current.shape??profile.geometry.shape},a=designArea(config,{geometry});return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:geometry.shape,...(geometry.shape==='contour'||geometry.cornerRadiusMm>0?{geometry}:{})};}
  function shrinkTo(o,scale){if(o.type==='text')setTextSize(o,o.size*scale);o.w*=scale;o.h*=scale;}
  function place(o){
   if(o.type==='motif'&&config){say('Freie Fläche für das Motiv wird gesucht …');placementJob=placementJob.then(()=>placeNewMotif({...api},o,{minScale:placementMinScale(o)})).catch(()=>say('Freie Fläche konnte nicht geprüft werden. Bitte die Motivposition prüfen.'));return;}
@@ -88,7 +95,37 @@ export async function installWorkflow(api){
   if(hit){o.x=hit.x;o.y=hit.y;if(hit.scale<1){shrinkTo(o,hit.scale);say((o.type==='text'?'Text':'Element')+' in einer freien Fläche platziert – dafür verkleinert.');}}
   else{const f=surface();o.x=f.x+f.width/2;o.y=f.y+f.height/2;el.state.selected=o.id;say(NO_FREE_SPACE_MESSAGE);}
  }
- const add=el.add;el.add=function(...args){const before=new Set(this.state.objects.map(o=>o.id));const result=add.apply(this,args);for(const o of this.state.objects.filter(o=>!before.has(o.id))){place(o);if(o.type==='text')o.uxCustomerText=true;}this.sync();return result;};
+ const may=(o,right)=>!o.uxLocked&&legacyElementRights(o)[right]&&canEditElement(config,el.state.designId,o,right);
+ let motifMode='replace';
+ const motifTarget=()=>motifChoiceTarget(el.state.objects,el.state.selected,chosenProfile().designs.find(d=>d.id===el.state.designId)?.objects);
+ const add=el.add;el.add=function(...args){
+  if(args[0]?.type==='motif'&&motifMode==='replace'){
+   if(Array.isArray(this.uxMotifChoiceIds)&&!this.uxMotifChoiceIds.includes(args[0].motif)){say('Dieses Motiv ist hier nicht verfügbar.');return;}
+   const target=motifTarget();
+   if(target){
+    if(!may(target,'replace')){say('Das Vorlagenmotiv ist in diesem Produktstand noch nicht zum Ersetzen freigegeben.');return;}
+    const replacement=replacedMotif(target,args[0].motif,this.catalog.motif_bounds[args[0].motif]);
+    this.record();Object.assign(target,replacement);this.state.selected=target.id;this.normalize();this.sync();say('Motiv ersetzt.');return;
+   }
+  }
+  const before=new Set(this.state.objects.map(o=>o.id));const result=add.apply(this,args);for(const o of this.state.objects.filter(o=>!before.has(o.id))){place(o);if(o.type==='text')o.uxCustomerText=true;}this.sync();return result;};
+ // Gate progression on the completed placement and the current geometry.
+ const layoutDialog=dialog('layout-check','Bitte Gestaltung prüfen','<div data-layout-problems></div>'+button('layout-fit','Automatisch einpassen')+button('close','Weiter bearbeiten'));
+ const reviewIssues=()=>layoutReviewIssues({config,profile:chosenProfile(),objects:el.state.objects,design:chosenProfile().designs.find(d=>d.id===el.state.designId),resources:{motifs:config?.localResources?.motifs||[]}});
+ el.uxCheckLayout=async()=>{await placementJob;const issues=config?reviewIssues():[];if(!issues.length)return true;$('[data-layout-problems]').innerHTML=issues.map(i=>'<p>'+esc(i.message)+'</p>').join('');if(!layoutDialog.open)layoutDialog.showModal();return false;};
+ r.addEventListener('click',event=>{if(event.target.closest('[data-ux=layout-fit]')){
+  const issues=reviewIssues(),copies=el.state.objects.map(o=>({...o})),changed=new Set();
+  // Keep motifs in place where possible: move text first; never rewrite the master.
+  const ids=[...new Set(issues.flatMap(i=>i.code==='overlap'?[i.ids.find(id=>copies.find(o=>o.id===id)?.type==='text')||i.ids.at(-1)]:i.ids))];
+  let failed=false;
+  for(const id of ids){const o=copies.find(o=>o.id===id);if(!o||!may(o,'move')){failed=true;break;}
+   const hit=freePlacement(o,placementSurface(),copies.filter(v=>objectSurface(v)===objectSurface(o)),obstacles(),{minScale:el.uxCanEdit?.(o,'scale')===false?1:placementMinScale(o)});
+   if(!hit){failed=true;break;}o.x=hit.x;o.y=hit.y;if(hit.scale<1)shrinkTo(o,hit.scale);changed.add(id);
+  }
+  if(failed)return say('Nicht alles passt automatisch. Bitte den Text kürzen oder einzelne Elemente verschieben.');
+  mutate(()=>{for(const o of el.state.objects)if(changed.has(o.id))Object.assign(o,copies.find(c=>c.id===o.id));});
+  if(!reviewIssues().length){layoutDialog.close();say('Gestaltung eingepasst. Bitte noch einmal prüfen.');}else say('Bitte die übrigen markierten Elemente prüfen.');
+ }});
  // New uploads use the same free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));
  const transfer=dialog('design-transfer','Design wechseln','<p>Deine Texte im neuen Design verwenden? Schrift und Anordnung kommen von der neuen Vorlage.</p>'+button('transfer-yes','Deine Texte übernehmen','class="ux-primary"')+button('transfer-no','Beispieltexte verwenden')+button('close','Abbrechen'));
@@ -102,6 +139,13 @@ export async function installWorkflow(api){
  const panel=$('#panel-motif'),home=panel.parentElement,bestsellers=$('[data-bestsellers]');
  const browser=dialog('motif-browser','Motive entdecken','<div class="workflow-motif-body"></div>');
  const entry=document.createElement('section');entry.className='workflow-motif-entry';entry.innerHTML='<h2>Dein passendes Motiv</h2><p>Suche nach einem Begriff oder entdecke die Kategorien.</p>'+button('discover-motifs','Alle Motive entdecken','class="ux-primary"');home.append(entry);const count=$('[data-library-count]')?.textContent.match(/von\s+(\d+)/)?.[1];if(count)entry.querySelector('button').textContent='Alle '+count+' Motive entdecken';if(bestsellers)entry.prepend(bestsellers);browser.querySelector('.workflow-motif-body').append(panel);
+ const mode=document.createElement('div');mode.className='ux-motif-mode';mode.setAttribute('role','group');mode.setAttribute('aria-label','Motiv verwenden');
+ mode.innerHTML=button('motif-replace','Ersetzen','aria-pressed="true"')+button('motif-add','Hinzufügen','aria-pressed="false"')+button('motif-none','Kein Motiv');
+ entry.prepend(mode);
+ r.addEventListener('click',event=>{const action=event.target.closest('[data-ux]')?.dataset.ux;
+  if(action==='motif-replace'||action==='motif-add'){motifMode=action==='motif-add'?'add':'replace';for(const b of mode.querySelectorAll('[aria-pressed]'))b.setAttribute('aria-pressed',String(b.dataset.ux==='motif-'+motifMode));}
+  if(action==='motif-none'){const target=motifTarget();if(!target)return;if(!may(target,'delete'))return say('Das Vorlagenmotiv ist in diesem Produktstand noch nicht zum Entfernen freigegeben.');mutate(()=>{el.state.objects=el.state.objects.filter(o=>o.id!==target.id);el.state.selected=null;});}
+ });
  const grid=$('[data-library-grid]'),more=$('[data-library-more]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
  let browserScroll=0;browser.addEventListener('close',()=>{browserScroll=browser.scrollTop;});
  const openBrowser=()=>{browser.showModal();requestAnimationFrame(()=>{browser.scrollTop=browserScroll;loadMore();});};

@@ -13,10 +13,10 @@ test('switch model must exactly match new session product, variant, revision and
  for(const field of ['productId','productRevision','shopifyProductId','shopifyVariantId'])assert.throws(()=>switchedModel(data(),{...result(),binding:{...binding,[field]:'foreign'}}));
  assert.throws(()=>switchedModel(data(),{...result(),designId:'unknown'}));
 });
-function fixture({fail=false}={}){
+function fixture({fail=false,model=data()}={}){
  const listeners=new Set(),frames=[],win={location:{origin:'https://test.example'},history:{replaceState(_s,_t,hash){win.hash=hash;}},addEventListener(_type,fn){listeners.add(fn);},removeEventListener(_type,fn){listeners.delete(fn);},setTimeout,clearTimeout};
  const makeFrame=()=>({style:{},contentWindow:{},remove(){this.removed=true;}}),old=makeFrame();old.photoFile={name:'customer-photo.png'};
- const nextClient={loadModel:async()=>{if(fail)throw Error('target-load-failed');return data();},loadResources:async()=>({target:true})};
+ const nextClient={loadModel:async()=>{if(fail)throw Error('target-load-failed');return model;},loadResources:async()=>({target:true})};
  const client={switchDesign:async()=>result(),loadDesignGallery:async()=>[],loadDesignPreview:async()=>new Blob()};
  let active,api;const backAtActivation=[];
  const coordinator=createDesignSwitch({initial:{client,data:{old:true},resources:{old:true},frame:old},fragment:new URLSearchParams('s=gse1.old.signature&config=old-config&rev=2&line=old-line'),container:{append(frame){frames.push(frame);queueMicrotask(()=>{for(const listen of listeners)listen({origin:win.location.origin,source:frame.contentWindow,data:{type:'gravuru-ux-ready'}});});}},activate(entry,gallery){active=entry;api=gallery;backAtActivation.push(gallery.canGoBack());},toDataUrl:async()=>'',win,doc:{createElement:makeFrame},clientFactory:()=>nextClient,timeoutMs:100});
@@ -31,4 +31,12 @@ test('successful switch uses new gateway; original live frame/photo survive and 
 });
 test('failed target load leaves original frame, photo, gateway and cart context intact',async()=>{
  const f=fixture({fail:true}),photo=f.old.photoFile;await assert.rejects(f.api.choose('signed-target',{}),/target-load-failed/);assert.equal(f.active.frame,f.old);assert.equal(f.old.photoFile,photo);assert.equal(f.old.removed,undefined);assert.equal(f.api.canGoBack(),false);assert.equal(f.win.hash,undefined);
+});
+
+test('switch validates and transfers options and quantity before replacing the original editor',async()=>{
+ const model=data();model.model.universal.profile.optionGroups=[{id:'mounting',defaultValueId:'K00',values:[{id:'K00',priceCents:0},{id:'B02S',priceCents:269}]}];
+ const good=fixture({model}),selection={options:{mounting:'B02S'},quantity:3};await good.api.choose('signed-target',{texts:[],selection});
+ assert.deepEqual(good.api.takeTransfer().selection,selection);
+ const bad=fixture({model});await assert.rejects(bad.api.choose('signed-target',{selection:{options:{mounting:'unknown'},quantity:3}}));
+ assert.equal(bad.active.frame,bad.old);assert.equal(bad.frames.length,0);assert.equal(bad.old.hidden,false);
 });

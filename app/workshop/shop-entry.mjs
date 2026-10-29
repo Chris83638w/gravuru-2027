@@ -1,3 +1,4 @@
+import {createCustomerDesignImages} from './customer-design-image.mjs';
 import fs from 'node:fs';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
@@ -80,6 +81,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  const startPath=proxyPath+'/start';
  const PAGE_CSP=pageCsp(shopDomain);
  // Shop-seitige Module über den App-Proxy; shop-embed.mjs kennt Konfigurator-Host und Proxy-Pfad fest.
+ const customerImages=createCustomerDesignImages({origin,shopDomain,secret,stores:fixed});
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
  const themeTransfers=new Map(),themePath=proxyPath+'/cart';
 
@@ -250,7 +252,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
    if(theme){
     for(const [token,t] of themeTransfers)if(t.expiresAt<=clock())themeTransfers.delete(token);
     if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
-    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath};
+    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
     const prepared=prepareThemeCart(args,binding,data,{draftToken}),token=randomBytes(32).toString('hex');
     themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(data),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
     return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});
@@ -328,10 +330,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  }
  return Object.freeze({
   pagePath,startPath,
-  matches:pathname=>fontRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
+  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
   async handle(req,res,url){
    try{
     if(req.headers.host!==address.host||req.headers['x-forwarded-proto']!=='https')fail(403,'shop_entry_host','Diese Anfrage ist nicht zulässig.');
+    if(customerImages.matches(url.pathname)){
+     if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'design_image_not_found','Gestaltungsbild nicht gefunden.');
+     const bytes=customerImages.read(url.pathname);res.writeHead(200,headersFor('image/png',{'Content-Length':bytes.length,'Cache-Control':'private, max-age=3600'}));return res.end(req.method==='HEAD'?undefined:bytes);
+    }
     const pathname=url.pathname;
     if(pathname===startPath)return start(req,res,url);
     if(pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname))return themeProxy(req,res,url);

@@ -21,9 +21,9 @@ import {editorUi,validateToolbarConfig} from './toolbar-placement-model.mjs';
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
 // A printed/engraved element does not obstruct a screw. Mechanical access belongs
-// to the model-bound plate assembly. Contour families explicitly carry hole
-// keepouts for every design object; preserve the existing policy for basic shapes.
-export const customerLayoutIssue=(object,profile,resources)=>profile.doorbellSchema===DOORBELL_SCHEMA?doorbellLayoutIssue(object,profile):surfaceObjectIssue(object,profile.geometry.shape==='contour'?profile:{...profile,geometry:{...profile.geometry,holes:[]}},resources);
+// to the model-bound plate assembly. Customer artwork may cross every drill
+// hole; the finished preview shows hardware, production drills after artwork.
+export const customerLayoutIssue=(object,profile,resources)=>profile.doorbellSchema===DOORBELL_SCHEMA?doorbellLayoutIssue(object,profile):surfaceObjectIssue(object,{...profile,geometry:{...profile.geometry,holes:[]}},resources);
 export const DRAFT_SCHEMA = 'gravuru-universal-customer-draft/v1';
 // Ü6.1: Ebenenrolle. 'guide' ist im Editor sichtbar, erscheint aber nie in der
 // Fertigungsausgabe. Standard ohne Angabe ist 'print'. Die Rolle ist ein

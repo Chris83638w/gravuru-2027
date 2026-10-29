@@ -1,3 +1,5 @@
+> **Für jede KI, die Designs anfasst (seit 29.10.2026):** [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) im Katalog-Repo lesen und befolgen – Vorlage 1:1 oder starke Referenz, 1–3 Schriften aus allen 84 und variieren, Motiv bleibt (Text weicht), nicht automatisch mittig, je Serie 2–3 ganz neue Designs (neue Motive nach `motive-eigene/`, nicht in den Kundenkonfi), Abnahme per Kontaktbogen 1:1 aus dem Konfi. Entscheidung #50.
+
 ## Projektüberblick und Claude-Prüfauftrag · 12.10.2026
 
 Für die unabhängige Prüfung zuerst die [vollständige Übersicht](docs/reviews/PROJEKTUEBERBLICK-CLAUDE-20261012.md) und das [aktuelle Prüfpaket](deliverables/claude-review-20261012/README.md) verwenden. Quellenbasis `9d388e3`, installierter Code `7a168bc`; `main` ist älter. Ziele, Umsetzung, Testarten, Sicherungen und offene Shopify-/Fertigungsabnahmen sind getrennt beschrieben. Heute 17 lesende HTTPS-Prüfungen bestanden; keine Anwendung oder Live-Daten für diese Übergabe geändert. Die nachfolgenden Abschnitte sind datierte Veröffentlichungsnachweise.

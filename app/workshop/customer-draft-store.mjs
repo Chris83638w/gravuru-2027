@@ -1,6 +1,7 @@
 import {randomUUID} from 'node:crypto';
 import {MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
 import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
+import {isVerifiedAccountVectorLogo,vectorLogoMetadata} from './customer-vector-logo-media.mjs';
 
 // Ü8.2 (K7): Entwürfe im Shopify-Kundenkonto. Verallgemeinerung des
 // Token-Entwurfs (acrylic-draft-store.mjs): Eigentümer ist der angemeldete
@@ -38,12 +39,18 @@ export function createCustomerDraftStore({database:db,clock=Date.now,tenantId}){
     return row;
   };
   const summary=row=>({id:row.id,title:row.title,productId:row.product_id,profileRevision:row.profile_revision,createdAt:row.created_at,updatedAt:row.updated_at,expiresAt:row.expires_at,photoCount:JSON.parse(row.photo_refs).length,previewAvailable:row.preview!==null});
-  const photoRefs=rows=>rows.map(r=>({uploadId:r.upload_id,kind:r.kind,name:r.name,mime:r.mime,edited:r.edited!==null}));
-  function checkPhotos(photos){
+  const photoRefs=(rows,draft)=>rows.map(r=>({uploadId:r.upload_id,kind:r.kind,name:r.name,mime:r.mime,edited:r.edited!==null,...(r.mime==='image/svg+xml'?{vectorLogo:vectorLogoMetadata(draft.design.objects.find(o=>o.uxUploadId===r.upload_id)?.uxVectorLogo)}:{})}));
+  function checkPhotos(photos,draft){
     if(photos===undefined)return [];
     if(!Array.isArray(photos)||photos.length>CUSTOMER_DRAFT_PHOTO_LIMIT)fail(422,'Höchstens vier Fotos oder Logos je Entwurf.');
     const seen=new Set();
     return photos.map(p=>{
+      if(p?.mime==='image/svg+xml'){
+        const objects=draft.design?.objects?.filter(o=>o.uxUploadId===p.uploadId)||[];
+        if(!UPLOAD.test(p.uploadId||'')||seen.has(p.uploadId)||p.kind!=='logo'||!isVerifiedAccountVectorLogo(p)||!objects.length||objects.some(o=>o.type!=='image'||o.uxUploadKind!=='logo'||JSON.stringify(vectorLogoMetadata(o.uxVectorLogo))!==JSON.stringify(vectorLogoMetadata(p.vectorLogo)))||typeof p.name!=='string'||p.name.length>160)fail(422,'Das Vektorlogo benötigt die bestätigte und serverseitig geprüfte Schwarzfassung.');
+        seen.add(p.uploadId);
+        return {uploadId:p.uploadId,kind:'logo',name:p.name.replace(/[\u0000-\u001f\u007f]/g,''),mime:p.mime,original:p.original,edited:p.edited};
+      }
       if(!p||typeof p!=='object'||!UPLOAD.test(p.uploadId||'')||seen.has(p.uploadId)||!['photo','logo'].includes(p.kind)||!Buffer.isBuffer(p.original)||!p.original.length||p.original.length>MAX_CUSTOMER_PHOTO||!MIME[p.mime]?.(p.original)||
         (p.edited!==undefined&&(!Buffer.isBuffer(p.edited)||!p.edited.length||p.edited.length>MAX_CUSTOMER_PHOTO||!isPng(p.edited)))||(p.name!==undefined&&(typeof p.name!=='string'||p.name.length>160)))fail(422,'Ungültiges Foto: JPG, PNG oder WebP bis 15 MB, bearbeitete Fassung als PNG.');
       seen.add(p.uploadId);
@@ -60,7 +67,7 @@ export function createCustomerDraftStore({database:db,clock=Date.now,tenantId}){
     const productId=text(input.productId,120,'Produkt fehlt.'),profileRevision=text(input.profileRevision,160,'Produktstand fehlt.');
     if(!input.draft||typeof input.draft!=='object'||Array.isArray(input.draft))fail(422,'Entwurf fehlt.');
     const draft=JSON.stringify(input.draft);if(Buffer.byteLength(draft)>2_000_000)fail(422,'Entwurf ist zu groß.');
-    return {productId,profileRevision,title:text(input.title,80,'Bitte einen Titel mit höchstens 80 Zeichen angeben.'),draft,photos:checkPhotos(input.photos),preview:checkPreview(input.preview)};
+    return {productId,profileRevision,title:text(input.title,80,'Bitte einen Titel mit höchstens 80 Zeichen angeben.'),draft,photos:checkPhotos(input.photos,input.draft),preview:checkPreview(input.preview)};
   }
   const usage=owner=>db.prepare('SELECT count(*) AS count FROM customer_drafts WHERE shop=? AND customer_id=? AND expires_at>? AND tenant_id=?').get(owner.shop,owner.customer,stamp(clock()),tenant).count;
   const bytes=(owner,except=null)=>db.prepare('SELECT coalesce(sum(length(p.original))+sum(coalesce(length(p.edited),0)),0) AS total FROM customer_draft_photos p JOIN customer_drafts d ON d.id=p.draft_id AND d.tenant_id=p.tenant_id WHERE d.tenant_id=? AND d.shop=? AND d.customer_id=? AND d.id IS NOT ?').get(tenant,owner.shop,owner.customer,except).total;
@@ -79,14 +86,15 @@ export function createCustomerDraftStore({database:db,clock=Date.now,tenantId}){
     },
     get(principal,id){
       const owner=principalOf(principal),row=own(owner,id);
-      return {...summary(row),draft:JSON.parse(row.draft),photos:photoRefs(db.prepare('SELECT upload_id,kind,name,mime,edited FROM customer_draft_photos WHERE draft_id=? AND tenant_id=? ORDER BY rowid').all(id,tenant))};
+      const draft=JSON.parse(row.draft);
+      return {...summary(row),draft,photos:photoRefs(db.prepare('SELECT upload_id,kind,name,mime,edited FROM customer_draft_photos WHERE draft_id=? AND tenant_id=? ORDER BY rowid').all(id,tenant),draft)};
     },
     preview(principal,id){const row=own(principalOf(principal),id);if(row.preview===null)hidden();return Buffer.from(row.preview);},
     photo(principal,id,uploadId,variant='original'){
       own(principalOf(principal),id);
       const row=UPLOAD.test(uploadId||'')&&db.prepare('SELECT * FROM customer_draft_photos WHERE draft_id=? AND upload_id=? AND tenant_id=?').get(id,uploadId,tenant);
       if(!row||!['original','edited'].includes(variant)||variant==='edited'&&row.edited===null)hidden();
-      return variant==='edited'?{mime:'image/png',bytes:Buffer.from(row.edited)}:{mime:row.mime,bytes:Buffer.from(row.original)};
+      return variant==='edited'?{mime:row.mime==='image/svg+xml'?'image/svg+xml':'image/png',bytes:Buffer.from(row.edited)}:{mime:row.mime,bytes:Buffer.from(row.original)};
     },
     create(principal,input){
       const owner=principalOf(principal),data=checkInput(input);

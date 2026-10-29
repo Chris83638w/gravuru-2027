@@ -1,5 +1,15 @@
 # Checkout-Bild – vorbereiteter Integrationsvorschlag, nicht installiert
 
+## Ergänzung 29.10.2026: Vektorlogos, Preisvertrag V2 (nur vorbereitet)
+
+Chris hat 12,99 € je hochgeladenem Kundenlogo entschieden. `cart_transform_run.mjs` enthält dafür einen getrennten, ausdrücklich aktivierten Vertrag `gravuru-personalization-pricing/v2` mit `extraLogoCents:1299` und dem Attribut `_gravuru_logos`. Alte V1-Produktstände und deren Rechnung bleiben erhalten. Die neue Query ergänzt `logos` und `quantity`; V2 berechnet bestätigte vollständige Mengenstaffeln inklusive Logoaufpreis. Der Werkstattserver akzeptiert V2 nur für eine neue Edelstahlgravur-Revision mit `logo:{enabled:true,vectorUpload:true,extraPriceCents:1299}` und `photo.enabled:false`. Ohne passenden Vertrag bleibt die Bestellung dieser Änderung gesperrt.
+
+Dieser neue V2-Zweig wurde mit synthetischen Node-Tests gegen den serverseitigen Preis, gesicherte Warenkorbangebote, Rückleseprüfung und signierten Test-Bestelleingang geprüft. Zusätzlich wurde die aktuelle Quelle mit Query in einer eigenen lokalen Extension kompiliert (CLI 4.9.3, `@shopify/shopify_function` 2.0.1, Schema 2026-07) und mit Function Runner 9.2.2 geprüft: **6/6 Fälle erfüllt** (drei richtige Preise einschließlich V1 und V2-Mengenstaffel; drei erwartete Ablehnungen bei altem Vertrag, fehlendem Zähler und falschem Logoaufpreis). [Quell-/WASM-Hashes und Ergebnisse](local-logo-v2-wasm-proof.json). Der frühere WASM-Nachweis unten bleibt auf seinen damaligen Bildzusatz beschränkt.
+
+Vor einer Installation: aktive externe Function-Quelle/Query lesen und vergleichen, Ergänzung dort übernehmen, neu kompilieren, den tatsächlichen Preisvertrag und Cart-Transform prüfen und nach Chris' Live-Freigabe den echten Warenkorb-/Bestelltest durchführen. Die lokale Ablehnung einer Function-Eingabe ist kein Nachweis einer Shopify-Checkout-Sperre. Bisher wurde nichts installiert oder in Shopify geändert. Rückweg bleibt die gesicherte vorherige Function und ihre Query; bestehende Produktrevisionen werden nicht überschrieben.
+
+## Bisheriger Bildzusatz
+
 Teil C von Issue #48. Das vorhandene Preisprogramm bekommt ausschließlich eine Bildoperation. Für D8 wird kein Preisvertrag und kein Motivpreis gesetzt.
 
 ## Quelle

@@ -227,7 +227,7 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  const render=(freeColor,minTextMm)=>{const env={freeColor,minTextMm,alignmentContent,alignmentLabel,icons:{},button:(k,l,extra='')=>`<button data-ux="${k}" ${extra}>${l}</button>`,config:null,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-text').innerHTML=",'out='),env);return env.out;};
  assert.doesNotMatch(render(false,4),/data-ux-color/);assert.match(render(true,3),/data-ux-color/);
  assert.match(render(false,4),/id="ux-size" type="number" min="4"/);assert.match(render(true,3),/min="3"/);
- const photoLine=line('ux.mjs','const photoEnabled=config?config.photo.enabled&&process.tools.photo!==false:true');
+ const photoLine=line('ux.mjs','const photoEnabled=config?');
  const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
 });
@@ -333,8 +333,10 @@ test('Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten L
  const kept=run(withSlot,true,false);assert.equal(kept.tab.hidden,false);assert.equal(kept.guide.hidden,false);assert.deepEqual(kept.shown,[]);
  // Reiter und Hilfe-Knopf werden gar nicht erst erzeugt, wenn kein Upload angeboten wird (uploadOffered).
  const offered=line('ux.mjs','const uploadOffered=');
- const offers=(photoEnabled,logoEnabled,config)=>{const env={photoEnabled,logoEnabled,config,designsHaveUploadLayer};vm.createContext(env);vm.runInContext(offered,env);return vm.runInContext('uploadOffered',env);};
+ const {vectorLogoEnabled}=await import('./logo-upload.mjs');
+ const offers=(photoEnabled,logoEnabled,config)=>{const env={photoEnabled,logoEnabled,config,designsHaveUploadLayer,vectorLogos:vectorLogoEnabled(config)};vm.createContext(env);vm.runInContext(offered,env);return vm.runInContext('uploadOffered',env);};
  assert.equal(offers(false,true,textOnly),false);assert.equal(offers(false,true,withSlot),true);assert.equal(offers(true,false,textOnly),true);assert.equal(offers(false,false,withSlot),false);
+ assert.equal(offers(false,true,{...textOnly,logo:{enabled:true,vectorUpload:true,extraPriceCents:1299}}),true,'expliziter neuer Vektorlogo-Produktstand zeigt den Upload');
  assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title,icon\]\)/,'Reiterleiste nutzt uploadOffered');
  assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title\]\)=>button\('guide-'/,'Hilfe-Dialog nutzt uploadOffered');
 });

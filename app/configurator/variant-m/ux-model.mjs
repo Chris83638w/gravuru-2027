@@ -1,9 +1,9 @@
 // Shared UI rules. These do not authorize a Shopify order or a paid download.
 import {cleanObject} from './contract.mjs';
 export {carryPersonalObjects,mapPersonalObjects} from './field-mapping.mjs';
-export const uploadAllowed=(config,kind)=>kind==='photo'?config?.photo?.enabled!==false:kind==='logo'?config?.logo?.enabled!==false:false;
+export const uploadAllowed=(config,kind)=>kind==='photo'?config?.logo?.vectorUpload!==true&&config?.photo?.enabled!==false:kind==='logo'?config?.logo?.enabled!==false:false;
 export function photoAvailableForDesign(config,designId){
-  if(config?.photo?.enabled===false)return false;
+  if(config?.logo?.vectorUpload===true||config?.photo?.enabled===false)return false;
   const design=config?.profile?.designs?.find(d=>d.id===designId);
   return !design?.importedSource||design.objects.some(o=>o.type==='photoSlot');
 }
@@ -14,6 +14,7 @@ export function photoAvailableForDesign(config,designId){
 // einen Fotobereich hat oder Logos erlaubt sind (Produkte mit Foto bleiben unverändert).
 export const designsHaveUploadLayer=config=>!!config?.profile?.designs?.some(d=>(d.objects||[]).some(o=>o.type==='photoSlot'||o.type==='image'));
 export function uploadTabVisible(config,designId,{photoEnabled=true,logoEnabled=true}={}){
+  if(logoEnabled&&config?.logo?.enabled===true&&config.logo.vectorUpload===true)return true;
   if(!photoEnabled&&!designsHaveUploadLayer(config))return false;
   return photoAvailableForDesign(config,designId)||logoEnabled;
 }
@@ -35,13 +36,22 @@ export function additionalMotifCount(objects,source) {
   }
   return count;
 }
-export function uploadQuote(objects, quantity=1, includeHidden=false, policy={includedCount:0,extraPriceCents:999}) {
+export function uploadQuote(objects, quantity=1, includeHidden=false, policy={includedCount:0,extraPriceCents:999}, logoPolicy) {
   if (!Number.isInteger(quantity) || quantity<1 || quantity>99) throw Error('Menge: 1 bis 99.');
   const uploads=uploadObjects(objects);
   if (new Set(uploads.map(o=>o.uxUploadId)).size>4) throw Error('Maximal vier Fotos und Logos zusammen.');
   const ids=new Set(uploads.filter(o=>includeHidden||!o.uxHidden).map(o=>o.uxUploadId));
   if(!Number.isSafeInteger(policy.includedCount)||policy.includedCount<0||policy.includedCount>4||!Number.isSafeInteger(policy.extraPriceCents)||policy.extraPriceCents<0)throw Error('Ungültige Fotopreisregel.');
   const photos=new Set(uploads.filter(o=>(includeHidden||!o.uxHidden)&&o.uxUploadKind!=='logo').map(o=>o.uxUploadId));
+  if(logoPolicy?.vectorUpload===true){
+    if(logoPolicy.enabled!==true||logoPolicy.extraPriceCents!==1299)throw Error('Ungültige Vektorlogo-Preisregel.');
+    const logos=new Set(uploads.filter(o=>(includeHidden||!o.uxHidden)&&o.uxUploadKind==='logo').map(o=>o.uxUploadId));
+    if([...logos].some(id=>photos.has(id)))throw Error('Eine Datei darf nicht zugleich Foto und Logo sein.');
+    const chargedUploads=Math.max(0,photos.size-policy.includedCount),chargedLogos=logos.size,logoUnitCents=chargedLogos*logoPolicy.extraPriceCents;
+    const unitCents=chargedUploads*policy.extraPriceCents+logoUnitCents;
+    if(!Number.isSafeInteger(unitCents*quantity))throw Error('Ungültiger Uploadpreis.');
+    return {count:ids.size,unitCents,totalCents:unitCents*quantity,chargedUploads,chargedLogos,logoUnitCents};
+  }
   const charged=ids.size-Math.min(photos.size,policy.includedCount),unitCents=charged*policy.extraPriceCents;
   return {count:ids.size, unitCents,totalCents:unitCents*quantity};
 }

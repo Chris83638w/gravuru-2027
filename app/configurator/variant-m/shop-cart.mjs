@@ -7,6 +7,7 @@ import {cleanObject} from './contract.mjs';
 import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
 import {editorUi} from './toolbar-placement-model.mjs';
+import {logoMediaPayload} from './logo-upload.mjs';
 
 const base64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Die Bilddatei konnte nicht gelesen werden.'));reader.readAsDataURL(blob);});
 async function referencePng(svg,geometry){
@@ -57,7 +58,7 @@ export function installShopCart(api,footer,gate){
    const used=[...new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId))];
    const prepared=await prepareCartImages({
     artwork:()=>printArtwork(api),
-    media:()=>Promise.all(used.map(async id=>{const asset=api.files.get(id);if(!asset?.file)throw Error('Ein Originalfoto fehlt. Bitte erneut hochladen.');const [original,edited]=await Promise.all([base64(asset.file),asset.blob?base64(asset.blob):null]);return {id,original,...(edited?{edited}:{})};})),
+    media:()=>Promise.all(used.map(id=>logoMediaPayload(api.files.get(id),id))),
     reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await api.el.png())
    });
    const ui=editorUi(api.el.state.ui);

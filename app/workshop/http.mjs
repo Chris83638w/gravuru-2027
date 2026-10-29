@@ -15,6 +15,7 @@ import {outputDownload,outputFormats} from './print-delivery.mjs';
 import {ACRYLIC_ENGRAVING_RECIPE,acrylicEngravingKey,createAcrylicEngravingProof} from './acrylic-engraving-proof.mjs';
 import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicContourProof} from './acrylic-print-proof.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
+import {customerVectorLogoPreview,VECTOR_LOGO_REQUEST_BYTES,verifyCustomerVectorLogoMedia,verifiedAccountVectorLogo} from './customer-vector-logo-media.mjs';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
 import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
@@ -259,7 +260,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   }
   // K7 (Ü8.2): GET/POST/DELETE /api/workshop/account-drafts[/:id[/preview.png|/photos/:uploadId]] hinter der Kundenprüfung.
   const base64Bytes=(value,label)=>{if(typeof value!=='string'||!value.length||value.length%4!==0||value.length>Math.ceil(MAX_CUSTOMER_PHOTO/3)*4||!/^[A-Za-z0-9+/]*={0,2}$/.test(value))fail(422,'customer_draft_media',label);const bytes=Buffer.from(value,'base64');if(bytes.toString('base64')!==value)fail(422,'customer_draft_media',label);return bytes;};
-  function validatedAccountDraft(data){
+  async function validatedAccountDraft(data){
     if(Object.keys(data).some(k=>!['title','draft','photos','preview'].includes(k)))fail(422,'customer_draft_fields','Nur Titel, Entwurf, Fotos und Vorschau übergeben.');
     const draft=data.draft;if(!draft||typeof draft!=='object'||Array.isArray(draft)||typeof draft.productId!=='string'||typeof draft.profileRevision!=='string')fail(422,'customer_draft_fields','Bitte den vollständigen Entwurf übergeben.');
     const [productId,revisionText]=draft.profileRevision.split(':');
@@ -272,11 +273,18 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     try{readDraft(universal,draft,universal.localResources.fonts,[...universal.localResources.motifs,...decorationMotifs(source)],{draft:true});}
     catch(error){fail(422,'customer_draft_invalid',error.message);}
     const uploadIds=new Set(draft.design.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId));
-    const photos=(Array.isArray(data.photos)?data.photos:data.photos===undefined?[]:fail(422,'customer_draft_media','Fotos als Liste übergeben.')).map(p=>{
-      if(!p||typeof p!=='object'||Object.keys(p).some(k=>!['uploadId','kind','name','mime','original','edited'].includes(k)))fail(422,'customer_draft_media','Ungültige Fotoangabe.');
+    const incomingPhotos=Array.isArray(data.photos)?data.photos:data.photos===undefined?[]:fail(422,'customer_draft_media','Fotos als Liste übergeben.');
+    if(incomingPhotos.length>4||new Set(incomingPhotos.map(p=>p?.uploadId)).size!==incomingPhotos.length)fail(422,'customer_draft_media','Höchstens vier eindeutig zugeordnete Fotos oder Logos je Entwurf.');
+    const photos=[];
+    for(const p of incomingPhotos){
+      if(!p||typeof p!=='object'||Object.keys(p).some(k=>!['uploadId','kind','name','mime','original','edited','vectorLogo'].includes(k)))fail(422,'customer_draft_media','Ungültige Fotoangabe.');
       if(!uploadIds.has(p.uploadId))fail(422,'customer_draft_media','Ein Foto gehört zu keinem Element des Entwurfs.');
-      return {uploadId:p.uploadId,kind:p.kind,name:p.name,mime:p.mime,original:base64Bytes(p.original,'Ungültiges Foto.'),...(p.edited!==undefined?{edited:base64Bytes(p.edited,'Ungültige bearbeitete Fotofassung.')}:{})};
-    });
+      const objects=draft.design.objects.filter(o=>o.uxUploadId===p.uploadId),object=objects[0];
+      if(p.mime==='image/svg+xml'||p.vectorLogo!==undefined||objects.some(o=>o.uxVectorLogo!==undefined)){
+        if(p.kind!=='logo'||p.mime!=='image/svg+xml'||objects.some(o=>o.type!=='image'||o.uxUploadKind!=='logo'||JSON.stringify(o.uxVectorLogo)!==JSON.stringify(object.uxVectorLogo)))fail(422,'customer_draft_media','Die SVG-Datei gehört nicht zu den Logo-Elementen.');
+        const result=await verifyCustomerVectorLogoMedia(universal,object,p);photos.push(verifiedAccountVectorLogo(p,result));
+      }else photos.push({uploadId:p.uploadId,kind:p.kind,name:p.name,mime:p.mime,original:base64Bytes(p.original,'Ungültiges Foto.'),...(p.edited!==undefined?{edited:base64Bytes(p.edited,'Ungültige bearbeitete Fotofassung.')}:{})});
+    }
     return {productId:record.id,profileRevision:universal.profile.revision,title:data.title,draft,photos,preview:data.preview===undefined?undefined:base64Bytes(data.preview,'Ungültige Vorschau.')};
   }
   async function accountDraftRoute(req,res,url,match){
@@ -285,7 +293,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     const principal=customerPrincipal(req,url),id=match[1];
     if(!id){
       if(method==='GET')return json(res,200,{drafts:store.list(principal),limit:store.limit,ttlDays:store.ttlDays});
-      if(method==='POST')return json(res,201,{draft:store.create(principal,validatedAccountDraft(await body(req,100*1024*1024)))});
+      if(method==='POST')return json(res,201,{draft:store.create(principal,await validatedAccountDraft(await body(req,100*1024*1024)))});
       fail(405,'method_not_allowed','Entwürfe mit GET lesen oder mit POST speichern.');
     }
     if(match[2]==='preview.png'){
@@ -297,11 +305,11 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(method!=='GET')fail(405,'method_not_allowed','Fotos nur lesen.');
       const variant=url.searchParams.get('variant')||'original';
       const photo=store.photo(principal,id,match[3],variant);
-      return res.writeHead(200,{'Content-Type':photo.mime,'Content-Length':photo.bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline'}).end(photo.bytes);
+      return res.writeHead(200,{'Content-Type':photo.mime,'Content-Length':photo.bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':photo.mime==='image/svg+xml'?'attachment':'inline','Content-Security-Policy':"default-src 'none'; sandbox"}).end(photo.bytes);
     }
     if(method==='GET')return json(res,200,store.get(principal,id));
     if(method==='DELETE')return json(res,200,store.remove(principal,id));
-    return json(res,200,{draft:store.save(principal,id,validatedAccountDraft(await body(req,100*1024*1024)))});
+    return json(res,200,{draft:store.save(principal,id,await validatedAccountDraft(await body(req,100*1024*1024)))});
   }
   // B1 Konfis: alle kundenfähigen Produkte des Mandanten mit Status, Shop-Verknüpfung (nur gelesen) und Klarnamen.
   function konfiItems(query=''){
@@ -360,6 +368,15 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/customer-vector-logo/preview'){
+        if(method!=='POST'||url.search)fail(405,'method_not_allowed','Die Logo-Vorschau benötigt POST.');
+        const input=await body(req,VECTOR_LOGO_REQUEST_BYTES);
+        if(!Number.isSafeInteger(input.productRevision)||input.productRevision<1)fail(422,'revision_required','Eine feste Produktrevision ist erforderlich.');
+        const record=repository.get(input.productId,{revision:input.productRevision});
+        if(isFormProduct(record.document)||record.status==='archived'||repository.get(record.id).status==='archived')fail(422,'customer_vector_logo','Dieses Produkt ist nicht mehr verfügbar.');
+        assertKonfiAvailable(record.id);
+        return json(res,200,await customerVectorLogoPreview(model(record.id,record.revision).universal,input));
+      }
       if(pathname==='/api/workshop/shop-product-bindings/check'){
         if(method!=='POST')fail(405,'method_not_allowed','Die ID-Prüfung benötigt POST.');
         if(!merchantSession)fail(503,'shop_binding_login_required','Die ID-Prüfung benötigt eine bestätigte Händleranmeldung.');

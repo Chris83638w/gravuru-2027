@@ -88,7 +88,7 @@ test('Sitzungsschutz: Foto-Referenzen bleiben, Bilder nicht – Hinweis zum erne
   assert.deepEqual(stored.uploads,[{objectId:slot.id,uploadId:'upload-1',kind:'photo',name:'oma.jpg'}]);
   const second=mountUx({config,resources,storage,timers});
   assert.equal(second.el.state.objects.find(o=>o.type==='photoSlot').uxUploadId,'upload-1');
-  assert.equal(second.files.size,0);assert.match(second.said.at(-1),/Foto bitte erneut hochladen/);
+  assert.equal(second.files.size,0);assert.match(second.said.at(-1),/Bitte fehlende Dateien erneut auswählen oder deinen gespeicherten Entwurf laden/);
 });
 
 test('Sitzungsschutz: laufende Designübernahme hat Vorrang; alte Sitzung bleibt bis zur nächsten gültigen Änderung erhalten',()=>{

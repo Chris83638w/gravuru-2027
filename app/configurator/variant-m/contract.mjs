@@ -35,6 +35,8 @@ export const productionObjects=objects=>objects.filter(o=>!o.uxHidden&&!isGuideO
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 // K10 / Ü1: Verfahrensprofil des Produkts (Werkzeuge, Palette, Mindestschriftgröße, Soll-DPI).
 export const productProcess=config=>processProfile(config.profile);
+// New product revisions opt in explicitly. Existing logo/photo pricing remains unchanged.
+export const vectorLogoAllowed=config=>config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&config?.photo?.enabled===false&&config?.profile?.material?.kind==='steel'&&productProcess(config).method==='engraving';
 // Physischer Maßstab der Gestaltung (Acryl: gewählte Größe / Designbreite, sonst 1).
 export function physicalScale(config, options={}) {
   return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
@@ -77,6 +79,8 @@ export function prepareConfig(input) {
       !Number.isSafeInteger(config.extraMotifCents) || config.extraMotifCents < 0)) fail('Verbindliche Centpreise fehlen.');
   if (typeof config.photo?.enabled !== 'boolean' || config.photo.mode !== 'upload-only') fail('Fotofunktion ausdrücklich festlegen.');
   if(config.logo!==undefined&&typeof config.logo.enabled!=='boolean')fail('Logofunktion ausdrücklich festlegen.');
+  if(config.logo?.vectorUpload!==undefined&&typeof config.logo.vectorUpload!=='boolean')fail('Vektorlogo-Funktion ausdrücklich festlegen.');
+  if(config.logo?.vectorUpload===true&&!vectorLogoAllowed(config))fail('Vektorlogos benötigen Edelstahlgravur ohne Fotoupload und einen ausdrücklichen Aufpreis von 12,99 € je Logo.');
   validateCustomerAdditions(config);
   if (!config.photo.enabled){p.designs = p.designs.filter(d => !d.objects.some(o => o.type === 'photoSlot'));if(config.localResources){config.localResources.photoPlaceholders=[];config.localResources.photoExamples=[];}}
   if (!p.designs.length) fail('Für dieses Produkt gibt es keine passende Vorlage ohne Fotobereich.');
@@ -278,6 +282,11 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     if (o.uxPhotoColor!==undefined && (o.type!=='photoSlot'||o.uxUploadKind!=='photo'||!o.uxUploadId||!['original','grayscale','sepia'].includes(o.uxPhotoColor))) fail('Ungültige Fotofarbe.');
     if (o.uxPhotoBackground!==undefined && (o.uxUploadKind!=='photo'||!o.uxUploadId||!['remove','keep'].includes(o.uxPhotoBackground))) fail('Ungültige Foto-Aufbereitung.');
     if (o.uxLogoTint!==undefined && (o.uxUploadKind!=='logo'||o.type!=='image'||typeof o.uxLogoTint!=='boolean')) fail('Einfarbige Vorschau ist nur für hochgeladene Logos möglich.');
+    if(o.uxVectorLogo!==undefined){
+      const v=o.uxVectorLogo;
+      if(!vectorLogoAllowed(config)||o.type!=='image'||o.uxUploadKind!=='logo'||!o.uxUploadId||!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==3||Object.keys(v).some(k=>!['version','sourceSha256','outputSha256'].includes(k))||v.version!=='svg-black-v1'||!['sourceSha256','outputSha256'].every(k=>typeof v[k]==='string'&&/^[a-f0-9]{64}$/.test(v[k]))||o.uxLogoTint!==undefined)fail('Vektorlogo muss als geprüfte schwarze Gravurfassung vorliegen.');
+    }
+    if(config.logo?.vectorUpload===true&&o.uxUploadKind==='logo'&&o.uxVectorLogo===undefined)fail('Für dieses Produkt bitte ein geprüftes SVG-Vektorlogo hochladen.');
     if (o.type === 'photoSlot' && !config.photo.enabled) fail('Fotobereich nicht freigegeben.');
     if (o.type === 'image' && !(o.uxUploadKind==='logo'&&o.uxUploadId&&config.logo?.enabled!==false)) fail('Eigene Bilder ausschließlich über den freigegebenen Upload hochladen.');
     if (o.type === 'motif') {
@@ -317,7 +326,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','italic','motif','fieldKey',
   'letterSpacing','textAnchor','lineHeight','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
-  'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxPhotoColor','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
+  'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxVectorLogo','uxPhotoBackground','uxPhotoCrop','uxPhotoColor','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){
  const source=selectedProfile(config,state.mOptions||{}).designs.find(d=>d.id===state.designId);

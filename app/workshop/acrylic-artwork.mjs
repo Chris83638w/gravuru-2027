@@ -7,6 +7,7 @@ import {readReviewPackage,digest} from './review-package.mjs';
 import {NATIVE_REVIEW,NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {validateProductDesign} from './product-model.mjs';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
+import {customerVectorLogoFragment} from './customer-vector-logo-media.mjs';
 import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../platform/sources/app/shared/models/photo-shape.mjs';
@@ -58,12 +59,17 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
   if(o.type==='text'){body=textPaths(o,config.localResources.fonts);if(!body&&o.text.trim())fail('Gesicherte Schriftpfade fehlen.');textFields.push(field);}
   else if(o.uxUploadId){
    const entry=manifest.photos.find(p=>p.uploadId===o.uxUploadId);if(!entry)fail('Ein Originalbild fehlt im gesicherten Stand.');
+   if(entry.kind==='vector-logo'||o.uxVectorLogo){
+    const logo=customerVectorLogoFragment(entry,o,files);
+    body=`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="0 0 ${logo.width} ${logo.height}" preserveAspectRatio="xMidYMid meet">${logo.fragment}</svg>`;
+   }else{
    const path=entry.edited?.path||entry.path,bytes=files.get(path);if(!bytes)fail('Die gespeicherte Bildfassung fehlt.');
    const photo=await prepareCustomerPhoto(bytes.toString('base64')),p=photoPlacement(o,photo),clip='native-photo-'+index;
    const image=`<g data-photo-pan="${field}"><image href="data:image/png;base64,${photo.preview.toString('base64')}" x="${o.type==='photoSlot'?p.x:-o.w/2}" y="${o.type==='photoSlot'?p.y:-o.h/2}" width="${o.type==='photoSlot'?p.w:o.w}" height="${o.type==='photoSlot'?p.h:o.h}" preserveAspectRatio="xMidYMid meet"${o.type==='photoSlot'?` transform="rotate(${p.angle} ${p.cx} ${p.cy})"`:''}/></g>`;
    const mask=maskFor(o,clip);
    body=o.type==='photoSlot'?`<defs>${mask.defs}</defs><g ${mask.attribute}>${image}</g>`:image;
    photos.push({fieldId:field,bytes:bytes.toString('base64'),width:photo.width,height:photo.height,...nativePhotoTreatment(config.profile,o,{edited:!!entry.edited,engraving}),...(o.uxUploadKind==='logo'&&o.uxLogoTint?{nativeTint:color}:{}),sourcePath:path});photoFields.push(field);
+   }
   }else if(o.type==='photoSlot'){
    const example=config.localResources.photoExamples?.find(e=>e.designId===design.id&&e.slotId===o.id);if(o.required&&!example)fail('Erforderliches eigenes Foto fehlt.');if(!example)continue;
    const bytes=files.get('quellen/'+example.assetId+'-vorschau.svg');if(!bytes)fail('Beispielfoto fehlt im gesicherten Stand.');const clip='native-example-'+index,mask=maskFor(o,clip);

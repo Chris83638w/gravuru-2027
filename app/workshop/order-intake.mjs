@@ -242,7 +242,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    const extra=contract?personalizationForSnapshot(contract,m):null,unit=extra?.unitCents??tierUnitCents(b.unit_cents,m);
    if(!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(422,'Menge: 1 bis 99.');
    if(m.product.id!==b.product_id||m.product.revision!==b.product_revision||m.product.basePriceCents!==unit||m.product.currency!=='EUR'){
-    const p=m.selection?.price,missingExtras=!contract&&isNativeReviewSchema(m.schema)&&m.product.id===b.product_id&&m.product.revision===b.product_revision&&m.product.currency==='EUR'&&m.product.basePriceCents===p?.unitCents&&p.unitCents>unit&&[p.additionalMotifs,p.chargedUploads,p.fieldCents,p.backCents].some(n=>Number.isFinite(n)&&n>0);
+    const p=m.selection?.price,missingExtras=!contract&&isNativeReviewSchema(m.schema)&&m.product.id===b.product_id&&m.product.revision===b.product_revision&&m.product.currency==='EUR'&&m.product.basePriceCents===p?.unitCents&&p.unitCents>unit&&[p.additionalMotifs,p.chargedUploads,p.chargedLogos,p.fieldCents,p.backCents].some(n=>Number.isFinite(n)&&n>0);
     fail(422,missingExtras?SURCHARGE_UNAVAILABLE_MESSAGE:'Prüfstand und Shop-/Preisbindung stimmen nicht überein.');
    }
    const chosen=selection(b.id);

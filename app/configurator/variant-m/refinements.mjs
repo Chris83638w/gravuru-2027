@@ -56,7 +56,7 @@ export async function installRefinements(api){
     }
     // Reuse the displayed scene and existing image URLs; no profile loading.
     const scene=$('.scene');if(scene){const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('role');copy.removeAttribute('data-ux-namespace');copy.setAttribute('aria-hidden','true');copy.querySelectorAll('[data-object]').forEach(n=>n.removeAttribute('data-object'));$('[data-mini-art]').replaceChildren(api.config?.acrylic&&!mini.hidden?completePreviewMini(stage,$('[data-mini-art]')):copy);}
-    for(const row of all('.ux-upload-row')){const id=row.querySelector('[data-ux=replace-upload]')?.dataset.id;if(id&&!row.querySelector('[data-ux=edit-upload]'))row.querySelector('.ux-upload-actions').insertAdjacentHTML('afterbegin',button('edit-upload','Bild bearbeiten',`data-id="${esc(id)}"`));}
+    for(const row of all('.ux-upload-row')){const id=row.querySelector('[data-ux=replace-upload]')?.dataset.id;if(id&&!el.state.objects.find(o=>o.id===id)?.uxVectorLogo&&!row.querySelector('[data-ux=edit-upload]'))row.querySelector('.ux-upload-actions').insertAdjacentHTML('afterbegin',button('edit-upload','Bild bearbeiten',`data-id="${esc(id)}"`));}
   }
   el.uxRefreshSelectionHandles=updateSelection;
   const render=el.render;el.render=function(...args){const result=render.apply(this,args);updateSelection();return result;};

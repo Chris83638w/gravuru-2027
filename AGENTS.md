@@ -17,6 +17,10 @@ Zuerst `START_HERE.md`, danach das aktive Paket in `UMSETZUNGSPAKETE.md` lesen. 
 
 Diese Regeln beantragen keine selbstständigen Parallelagenten und ändern keine Modellwahl. Der Nutzer legt fest, welches Modell arbeitet.
 
+## Design-Master (Chris, 29.10.2026)
+
+**Jedes Design und jeder Design-Auftrag – auch künftige und für jede KI – folgt dem [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) im Katalog-Repo:** Katalog-Vorlage 1:1 übernehmen, wenn sie zur Größe passt, sonst als sehr starke Referenz; 1–3 Schriften je Design aus allen 84 freigegebenen und innerhalb einer Serie variieren; das Motiv nie verlieren, austauschen oder verzerren (bei Platzmangel weicht der Text); Anordnung frei und nicht automatisch mittig, Ziel ist ein schönes Gesamtbild; Abnahme per Kontaktbogen mit Screenshots 1:1 aus dem echten Konfi, Vorlage daneben. Jeder neue Auftrag in `docs/handoffs/` verweist auf den Master.
+
 ## Zusammenarbeit mehrerer Accounts (Chris, 23.10.2026)
 
 Mehrere Claude- und ChatGPT-Accounts arbeiten am selben Projekt; der Operator-Account plant und baut, ein Upload-Account führt Shopify-/Matrixify-Schreibzugriffe aus, Codex-Läufe liefern lokale Ergebnisse. Damit sich alle verstehen:

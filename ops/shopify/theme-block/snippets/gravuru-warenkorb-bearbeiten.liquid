@@ -18,6 +18,15 @@
   if gv_legacy
     assign gv_preview = item.properties['Entwurf']
   endif
+  assign gv_saved = item.properties['_gravuru_bild']
+  assign gv_saved_root = 'https://app-2027.gravuru-designwerkstatt.de/gestaltung/'
+  assign gv_saved_prefix = gv_saved | slice: 0, gv_saved_root.size
+  assign gv_saved_ext = gv_saved | slice: -4, 4
+  assign gv_saved_valid = false
+  if gv_native and gv_saved_prefix == gv_saved_root and gv_saved_ext == '.png'
+    assign gv_preview = gv_saved
+    assign gv_saved_valid = true
+  endif
   assign gv_preview_prefix = gv_preview | slice: 0, 24
   assign gv_relative_prefix = gv_preview | slice: 0, 9
   assign gv_line = item.key
@@ -27,7 +36,7 @@
 -%}
 {%- if gv_native or gv_legacy -%}
   <div class="gravuru-cart-personalization">
-    {%- if gv_preview_prefix == 'https://cdn.shopify.com/' or gv_relative_prefix == '/uploads/' -%}
+    {%- if gv_saved_valid or gv_preview_prefix == 'https://cdn.shopify.com/' or gv_relative_prefix == '/uploads/' -%}
       <a class="gravuru-cart-preview-link" data-gravuru-preview data-close-label="{{ 'accessibility.close' | t | escape }}" href="{{ gv_preview | escape }}" target="_blank" rel="noopener">
         <img class="gravuru-cart-preview" src="{{ gv_preview | escape }}" alt="{{ item.product.title | escape }}"
              width="160" height="120" loading="lazy">

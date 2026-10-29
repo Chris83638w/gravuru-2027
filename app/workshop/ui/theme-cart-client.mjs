@@ -6,7 +6,7 @@ const configId=v=>typeof v==='string'&&/^konfig_[a-f0-9-]{36}$/.test(v);
 export function validateThemeCartPayload(p){
  if(p?.schema!=='gravuru-theme-cart/v1'||!/^[-a-z0-9]+\.myshopify\.com$/.test(p.shopDomain||'')||!/^\d{1,20}$/.test(p.variantId||'')||!/^\d{1,20}$/.test(p.productId||'')||!int(p.quantity)||p.quantity<1||p.quantity>99||!int(p.unitCents)||p.unitCents>100000000||p.totalCents!==p.unitCents*p.quantity||p.currency!=='EUR'||p.paymentConfirmed!==false||p.productionReady!==false||!configId(p.configuration?.id)||!Number.isSafeInteger(p.configuration.rev)||p.configuration.rev<1||!['create','update'].includes(p.mode))fail('Die gesicherte Warenkorbübergabe ist unvollständig.');
  if(!p.properties||Array.isArray(p.properties)||Object.keys(p.properties).length>80||Object.entries(p.properties).some(([k,v])=>!k||k.length>130||/[\x00-\x1f]/.test(k)||typeof v!=='string'||v.length>12000)||p.properties._gravuru_config!==p.configuration.id||p.properties._gravuru_rev!==String(p.configuration.rev)||!/^[a-f0-9]{64}$/.test(p.properties._gravuru_offer||'')||Object.hasOwn(p.properties,'_Entwurf'))fail('Die Gestaltungszuordnung ist unvollständig.');
- if(p.preview?.type!=='image/png'||typeof p.preview.base64!=='string'||p.preview.base64.length>4*1024*1024||!/^iVBORw0KGgo[A-Za-z0-9+/=]+$/.test(p.preview.base64))fail('Die Gestaltungsvorschau fehlt.');
+ if(p.preview?.type!=='image/png'||typeof p.preview.base64!=='string'||p.preview.base64.length>8*1024*1024||!/^iVBORw0KGgo[A-Za-z0-9+/=]+$/.test(p.preview.base64))fail('Die Gestaltungsvorschau fehlt.');
  if(p.mode==='update'&&(!Number.isSafeInteger(p.previousRevision)||p.previousRevision<1||p.previousRevision>=p.configuration.rev))fail('Der bisherige Gestaltungsstand ist unklar.');
  return p;
 }
@@ -69,7 +69,8 @@ export function createThemeCartClient({fetchImpl=globalThis.fetch,claim,root='/'
     if(bytes.length<8||bytes.slice(0,8).join(',')!=='137,80,78,71,13,10,26,10')fail('Die Gestaltungsvorschau ist ungültig.');
     const data=new FormData();data.set('items[0][id]',p.variantId);data.set('items[0][quantity]',String(p.quantity));
     for(const [k,v]of Object.entries(p.properties))data.set('items[0][properties]['+k+']',v);
-    const picture=cartImage(image);
+    // Modern handoffs bind the lossless PNG to the immutable saved review.
+    const picture=p.properties._gravuru_bild?null:cartImage(image);
     data.append('items[0][properties][_Entwurf]',picture||new Blob([bytes],{type:'image/png'}),picture?.type==='image/jpeg'?'gravuru-gestaltung.jpg':'gravuru-gestaltung.png');
     attempted=true;await claim();onProgress('Gestaltung und Vorschau an den Warenkorb übertragen …');
     let uploadError;try{await json('cart/add.js',{method:'POST',body:data});}catch(e){uploadError=e;}

@@ -39,7 +39,11 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  if(config.doorbell&&!layered)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
  if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
- const design=validateProductDesign(saved.product,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
+ // Profile fonts were frozen at checkout after the original product document.
+ // Validate against those hash-verified paths, just like validateAcrylicReview;
+ // never resolve a missing font from today's library or the browser.
+ const document={...saved.product,config:{...saved.product.config,localResources:{...saved.product.config.localResources,fonts:{...saved.product.config.localResources?.fonts,...config.localResources.fonts}}}};
+ const design=validateProductDesign(document,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  if(surfaceId!=='front'&&!(surfaceId==='back'&&hasBack(config.profile)))fail('Dieses Produkt hat keine solche Seite.');
  const layers=layered?doorbellSeparations(config,state.options):null;
  if(layers){if(surfaceId!=='front')fail('Die Funkklingel wird in einer gemeinsamen Vorderseitenregistrierung gefertigt.');let frozen;try{frozen=JSON.parse(files.get('funkklingel-fertigung.json'));}catch{fail('Die gesicherten Funkklingelkonturen fehlen.');}if(JSON.stringify(frozen)!==JSON.stringify(layers))fail('Die gesicherten Funkklingelkonturen stimmen nicht mit der Produktrevision überein.');}

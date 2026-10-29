@@ -171,6 +171,14 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  release=createProductionRelease({database:db,clock,line:lineOrRejected,shopStatus:line=>statuses.shopState(line),autoRelease,rejectedLines:()=>errorRows(),tenantId:tenant});
  const forSnapshot=snapshotId=>typeof snapshotId==='string'?db.prepare("SELECT document FROM form_order_lines WHERE json_extract(document,'$.snapshotId')=? AND tenant_id=? ORDER BY rowid").all(snapshotId,tenant).map(r=>JSON.parse(r.document)):[];
  return {tenantId:tenant,get,forSnapshot,doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
+  // Internal immutable display-image lookup, used only AFTER capability verification.
+  imageSnapshot(offerId,shopDomain){
+   if(typeof offerId!=='string'||!/^offer_[a-f0-9-]{36}$/.test(offerId)||!domain(shopDomain))fail(404,'Gestaltungsbild nicht gefunden.');
+   const row=db.prepare('SELECT o.snapshot_id,o.package_sha256 FROM form_order_offers o JOIN form_shop_bindings b ON b.id=o.binding_id AND b.tenant_id=o.tenant_id WHERE o.id=? AND o.tenant_id=? AND b.shop=?').get(offerId,tenant,shopDomain);
+   if(!row)fail(404,'Gestaltungsbild nicht gefunden.');const m=snapshot(row.snapshot_id);
+   if(m.packageSha256!==row.package_sha256)fail(409,'Gesicherter Gestaltungsstand stimmt nicht überein.');
+   return {snapshotId:row.snapshot_id,packageSha256:row.package_sha256};
+  },
   // Caller supplies the actual saved product record, never a browser price.
   idBindings({storeId,shopDomain,adapter,personalizationPricingFor}={}){
    return createShopProductBindingStore({database:db,orderIntake:this,tenantId:tenant,storeId,shopDomain,adapter,clock,personalizationPricingFor});

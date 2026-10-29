@@ -1,4 +1,4 @@
-import {merchantRequest} from './merchant-request.mjs';
+import {orderRequest} from './order-store-context.mjs';
 import {outputDate} from './output-summary.mjs';
 // Fertigungsfreigabe je Bestellposition (K5): Statusanzeige, Verlauf und Übergangsknöpfe.
 const ACTIONS=[['geprueft','Geprüft'],['freigegeben','Freigeben'],['in_fertigung','In Fertigung'],['fertig','Fertig'],['fehler','Fehler (Grund)']];
@@ -7,9 +7,9 @@ export function createProductionReleaseUI(){
  section.innerHTML='<h3>Fertigungsfreigabe</h3><p><span class="badge" id="production-state"></span> <span id="production-ready"></span></p><p role="status" aria-live="polite"></p><div class="downloads" id="production-actions"></div><p class="help">Übergänge werden nur angehängt, nie geändert. „Freigegeben“ setzt eine Person oder – bei Profil mit automatischer Freigabe – ein bestandener Prüfvermerk. Fertigungsbereit ist eine Position erst ab „Freigegeben“ und nur mit fehlerfreien Prüfvermerken. Storno oder Erstattung im Shop sperrt die Freigabe.</p><ol id="production-events"></ol>';
  document.querySelector('#order-output-section').before(section);
  const status=section.querySelector('[role=status]'),actions=section.querySelector('#production-actions'),events=section.querySelector('#production-events'),badge=section.querySelector('#production-state'),ready=section.querySelector('#production-ready');
- let row=null,serial=0,csrf='',busy=false;
+ let row=null,serial=0,busy=false;
  async function api(path,data){
-  const response=await merchantRequest('/api/workshop/'+path,data===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrf},body:JSON.stringify(data)});
+  const response=await orderRequest(row,path,data);
   const value=await response.json();if(!response.ok)throw Error(value.error?.message||'Freigabestand nicht erreichbar.');return value;
  }
  function render(p){
@@ -29,7 +29,7 @@ export function createProductionReleaseUI(){
  }
  return {async select(value){
   row=value;const ticket=++serial;actions.replaceChildren();events.replaceChildren();badge.textContent='';ready.textContent='';status.textContent='';if(!row)return;
-  try{const session=await api('session');if(ticket!==serial)return;csrf=session.csrfToken;const p=await api('orders/'+row.id+'/production');if(ticket!==serial)return;render(p);}
+  try{const session=await api('session');if(ticket!==serial)return;const p=await api('orders/'+row.id+'/production');if(ticket!==serial)return;render(p);}
   catch(error){if(ticket===serial)status.textContent=error.message;}
  }};
 }

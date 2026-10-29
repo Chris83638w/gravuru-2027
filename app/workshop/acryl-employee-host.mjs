@@ -15,6 +15,9 @@ export function acrylCacheControl(pathname,status){
  return null;
 }
 export function acrylRoute(pathname){
+ if(/^\/werkstatt\/bestellungen\/?$/.test(pathname))return '/werkstatt/bestellungen/';
+ const orderPage=pathname.match(/^\/werkstatt\/acryl\/(bestellungen|pruefstaende|ausgaben|formprodukt)\/?$/);
+ if(orderPage)return '/werkstatt/'+orderPage[1]+'/';
  if(/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(pathname))return pathname;
  if(/^\/werkstatt\/katalog\/?$/.test(pathname))return '/werkstatt/katalog/';
  if(/^\/werkstatt\/designs\/?$/.test(pathname))return '/werkstatt/designs/';
@@ -34,7 +37,7 @@ export function acrylRoute(pathname){
  if(/^\/werkstatt\/acryl(?:\/formen)?\/?$/.test(pathname))return pathname.endsWith('/')?pathname:pathname+'/';
  return null;
 }
-export function acrylAssetText(text,pathname=''){if(pathname==='/workshop-ui/configurator-test-client.mjs')return text;const pairs=[...rewrites,...nativeAssets,['/_merchant-editor.html','/_merchant-acryl-editor.html'],['/assistant.js','/acryl-assistant.js'],['/api/guides','/api/acryl-guides']],replacements=new Map(pairs),pattern=new RegExp(pairs.map(([from])=>[...from].map(c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('')).join('|'),'g');return text.replace(pattern,value=>replacements.get(value));}
+export function acrylAssetText(text,pathname=''){if(['/workshop-ui/configurator-test-client.mjs','/workshop-ui/orders-ui.mjs','/workshop-ui/order-store-context.mjs','/workshop-ui/order-product-ui.mjs','/workshop-ui/order-file-grants-ui.mjs','/workshop-ui/production-release-ui.mjs'].includes(pathname))return text;const pairs=[['/werkstatt/pruefstaende/','/werkstatt/acryl/pruefstaende/'],['/werkstatt/ausgaben/','/werkstatt/acryl/ausgaben/'],['/werkstatt/formprodukt/','/werkstatt/acryl/formprodukt/'],...rewrites,...nativeAssets,['/_merchant-editor.html','/_merchant-acryl-editor.html'],['/assistant.js','/acryl-assistant.js'],['/api/guides','/api/acryl-guides']],replacements=new Map(pairs),pattern=new RegExp(pairs.map(([from])=>[...from].map(c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('')).join('|'),'g');return text.replace(pattern,value=>replacements.get(value));}
 // Kundeneinstieg (App-Proxy), Händlertest-Gateway und Bestelleingang laufen nur, wenn der Start ausdrücklich
 // `customerIntegration` übergibt. Der Einstiegsskript-Aufruf leitet es aus GRAVURU_CUSTOMER_INTEGRATION ab:
 // leer/fehlend → null (nichts ändert sich), `merchant-test-only` → beide Stores + Einstieg `/apps/konfigurator`,
@@ -64,6 +67,7 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
  const port=inner.address().port,server=http.createServer((req,res)=>{
   let url;try{url=new URL(req.url,config.origin);}catch{return res.writeHead(400).end();}
   if(req.headers.host!==config.host||req.headers['x-forwarded-proto']!=='https'||!req.url.startsWith('/')||req.url.startsWith('//'))return res.writeHead(403).end();
+  if(integration?.orders?.matches(url.pathname))return void integration.orders.handle(req,res,url);
   if(integration?.gateway.matches(url.pathname))return void integration.gateway.handle(req,res,url);
   if(integration?.shopEntry?.matches(url.pathname))return void integration.shopEntry.handle(req,res,url);
   if(integration?.webhook&&url.pathname===ORDER_WEBHOOK_PATH)return void integration.webhook(req,res);

@@ -54,7 +54,7 @@ export function installShopCart(api,footer,gate){
    const art=await printArtwork(api),used=new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)),media=[];
    for(const id of used){const asset=api.files.get(id);if(!asset?.file)throw Error('Ein Originalfoto fehlt. Bitte erneut hochladen.');media.push({id,original:await base64(asset.file),...(asset.blob?{edited:await base64(asset.blob)}:{})});}
    const ui=editorUi(api.el.state.ui);
-   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media,preview:await referencePng(art.svg,art.geometry),...(ui?{ui}:{})};
+   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media,preview:await referencePng(art.svg,art.geometry),customerPreview:await base64(await api.el.png()),...(ui?{ui}:{})};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
    save??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:gate.request});
    const saved=await save(payload,gate.csrfToken||'shop-entry');

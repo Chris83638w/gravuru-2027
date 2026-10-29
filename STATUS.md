@@ -1,3 +1,10 @@
+## 29.10.2026 · Claude als Operator · Regeln zur Code-Prüfung
+
+- Chris (13:32): Prüfbefehle und Vorgehen ergänzen. → Neuer Abschnitt „Code-Prüfung“ in `AGENTS.md`: Befehlstabelle (`/code-review`, `/security-review`, `/simplify`, `/code-review ultra`, `/engineering:tech-debt`), an der offiziellen Claude-Code-Doku geprüft.
+- Korrigiert gegenüber der Vorlage: `/ultrareview` = `/code-review ultra`; ein Branchname ist dort die Vergleichsbasis, nicht das Ziel. `/simplify` ändert Code direkt und sucht keine Fehler. Ultra-Läufe kosten nach 3 Gratisläufen Usage Credits → nur mit Freigabe von Chris.
+- Vorgehen: erst ohne `--fix`, ordnerweise (`app/configurator`, dann `app/workshop`), Liste nach `docs/reviews/`, Verteilung über Postfach-Issues, Umsetzung auf eigenem Branch mit Tests, nie `--fix`/`/simplify` auf `main`.
+- Nur Dokumentation, kein Code geändert, nichts live. Nächster Schritt: Astra 1 im Postfach #48 informieren; erster Prüflauf `app/configurator` nach Startsignal von Chris.
+
 ## 29.10.2026 – Codex/Astra: Issue #48 Teil A als Entwurf
 
 Galerie-Stand revisionsgebunden und ohne Sitzungsdaten persistent; Verfügbarkeit bleibt frisch. Revisionsindex und begrenzte Dokumenthaltung reduzieren die synthetische 572-MB-Probe: Aufbau 9,261 → 6,120 s, nach Prozessneustart erste Karte 144 ms. 97 gezielte Tests grün, Build erfolgreich. Windows-Vollauf zunächst 1815 / 1737 bestanden / 73 python3-Umgebungsfehler / 5 übersprungen; abschließender Lauf mit vorhandenem Windows-Testadapter: 1817 / 1811 bestanden / 1 Retro-PDF-Workerfehler / 5 übersprungen. Betroffenen Retro-Test unverändert einzeln wiederholt: 1/1 bestanden; kein pauschal grüner Vollauf. Aktuelle private Live-Kopie und Linux-/Proxy-Abnahme offen. [Bericht](docs/handoffs/2026-10-29-issue48-galerie-warm-bericht.md). Nichts installiert oder live geändert.

@@ -23,21 +23,21 @@ Diese Regeln beantragen keine selbstständigen Parallelagenten und ändern keine
 
 ## Code-Prüfung (Chris, 29.10.2026)
 
-Prüfbefehle in Claude Code:
+Prüfbefehle in Claude Code (geprüft an der offiziellen Doku [code-review-local](https://code.claude.com/docs/en/code-review-local), [ultrareview](https://code.claude.com/docs/en/ultrareview), [commands](https://code.claude.com/docs/en/commands), Stand 29.10.2026):
 
 | Befehl | Was er macht |
 |---|---|
-| `/code-review high app/configurator` | prüft einen Ordner auf Fehler, Stufe `low` bis `max` |
-| `/code-review high --fix` | prüft die aktuellen Änderungen und behebt die Fehler direkt |
-| `/security-review` | sucht Sicherheitslücken im Unterschied zu `main` |
-| `/simplify` | räumt geänderten Code auf |
-| `/ultrareview <PR oder Branch>` | gründliche Prüfung mit mehreren KIs in der Cloud |
-| `/engineering:tech-debt` | aus dem Engineering-Plugin: Liste der Altlasten im ganzen Projekt, nach Wichtigkeit sortiert |
+| `/code-review high app/configurator` | prüft einen Ordner auf Fehler; Stufe `low` bis `max` (`low` = nur sichere Befunde, ab `medium` breiter). Reihenfolge: Stufe, Flags, Ziel. Ohne Stufe gilt die zuletzt getippte. |
+| `/code-review high --fix` | prüft den aktuellen Branch samt nicht committeter Änderungen und schreibt die Korrekturen direkt in den Arbeitsstand. Läuft im Hintergrund – dann holt `/rewind` nichts zurück, nur git. |
+| `/security-review` | sucht Sicherheitslücken (Injection, Anmeldung, offene Daten) im Unterschied zwischen aktuellem Branch und `main` auf `origin` |
+| `/simplify` | räumt geänderten Code auf und **ändert ihn direkt** (Wiederverwendung, Vereinfachung, Effizienz); sucht keine Fehler |
+| `/code-review ultra <PR-Nummer>` (= `/ultrareview`) | gründliche Prüfung durch mehrere Prüf-Agenten in der Cloud, jeder Befund wird nachgeprüft, ca. 15–25 Min. Ein **Branchname gilt als Vergleichsbasis**, nicht als Ziel: Branch auschecken, dann `/code-review ultra main`. Vorschau-Funktion; 3 Gratisläufe je Konto, danach ca. 5–25 USD je Lauf über Usage Credits – nur mit Freigabe von Chris. |
+| `/engineering:tech-debt` | aus dem Engineering-Plugin: Liste der Altlasten im Projekt, nach Wichtigkeit sortiert |
 
 Verbindliches Vorgehen – für jede KI, auch Codex mit seinem eigenen Prüfbefehl:
 
 - **Erst nur prüfen, ohne `--fix`.** Ergebnis ist eine Befundliste (Datei:Zeile, Schwere, Begründung); dabei wird nichts geändert.
-- **Ordnerweise, nicht das ganze Repo auf einmal** (Token-Kosten): zuerst `app/configurator`, dann `app/workshop`, danach die übrigen Ordner unter `app/`.
+- **Ordnerweise, nicht das ganze Repo auf einmal** (Token-Kosten): zuerst `app/configurator`, dann `app/workshop`, danach die übrigen Ordner unter `app/`. Das gilt auch für `/engineering:tech-debt`.
 - **Die Liste geht an den Operator (Claude).** Ablage als `docs/reviews/<datum>-code-review-<ordner>.md`. Der Operator sortiert, prüft die Befunde an der Quelle und verteilt die Aufgaben über die Postfach-Issues (Konfigurator: Astra 1, #48).
 - **Umsetzung nur auf eigenem Branch** `dev/<thema>-<datum>` mit gezielten Tests und als Pull Request; Merge nach `main` macht der Operator.
 - **Nie `--fix` oder `/simplify` direkt auf `main`** – sonst entstehen Änderungen, die niemand geprüft hat. Auch auf dem Aufgabenbranch nur für Befunde aus der freigegebenen Liste.

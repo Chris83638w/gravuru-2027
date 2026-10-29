@@ -1,3 +1,11 @@
+## 29.10.2026 · Claude als Operator · Live: PR #52 + PR #49 (`main` `62ead38`)
+
+- Chris (13:10): „Ja, Du darfst PR #52 nach main übernehmen, bereitstellen und die App zweimal neu starten.“ → Merge `3db5b7a` (Baum = PR-Stand, Linux **1816/1816**), Plesk Pull/Bereitstellen, Neustart 1 um 13:17.
+- Chris (13:12, aus dem Produktanlage-Chat): „Ja, Du darfst PR #49 nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `62ead38` auf `3db5b7a` (STATUS-Konflikt: beide Absätze erhalten), Linux **1819/1819**, Bereitstellen, Neustart 2 um 13:50.
+- Live geprüft (D8, Desktop, ohne Umleitung): nach Neustart 1 erster Aufbau ~6 min („vorbereitet“, einmal „nicht erreichbar“ um 13:19), ab 13:23 durchgehend Karten. **Nach Neustart 2 sofort Karten: 0,55 s**, „1 verfügbares Design“. Session-API 401.
+- Testbestellungen D8 #1027/#1028 (Test-Gateway): Webhook 200, aber nicht in der Werkstatt-Bestellansicht, keine Fertigungsdateien → Astra 1 Teil C ([Issue #48](https://github.com/Chris83638w/gravuru-2027/issues/48) Nachrichten 4–5). Shop hat nur das Test-Zahlungs-Gateway aktiv (vor Verkaufsstart echten Anbieter einrichten).
+- Bereit, nicht live: `dev/konfi-familie-optionsgruppen-20261029-claude` (`fa7eaae`, Linux 1810/1810): Halterfarbe je Set (`visibleIf`) aus Familien, EE-Lücke nur für EE-Größen.
+
 ## 29.10.2026 · Codex/Astra · Issue 47: Designressourcen + alle Funkklingelgrößen, nur Review
 
 - Eigener Branch `dev/funkklingeln-issue47-ressourcen-20261029-astra`, Basis `e48b7f3`. Kanonische Artwork-Pfade bleiben bei Acryl-Host-Umschreibung unverändert; bestehender Linien-/Modellfilter aus main unverändert übernommen.

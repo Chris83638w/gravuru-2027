@@ -1,3 +1,7 @@
+## 29.10.2026 · Codex/Astra · Gewählte Designrichtung 6 (PR #58)
+
+Chris hat aus sieben neutralen Entwürfen **Nummer 6, Werkzeugband** gewählt. Desktop: durchgehendes anthrazitfarbenes Werkzeugband, weiße Vorschau/Bearbeitung, kompakte Unterstrich-Reiter und Textfeld/Schriftwahl nebeneinander. Mobil: dunkle zweizeilige Textleiste unter der Platte, erstes Eingabefeld sichtbar, Schritte und Preis frei. Bestehende Bedienelemente werden verschoben, nicht ersetzt; Gestaltung und Originalgrafiken erhalten. **71/71 gezielte Tests auf dem gemeinsamen Prüfbranch**, Desktop/900 px/390×664/375×548 lokal geprüft; Schriftwahl-Klick und mobiler Papierkorb korrigiert. [Bilder, Prüfnachweis und offene Abnahme](docs/handoffs/2026-10-29-konfi-design-6-astra.md). PR bleibt Entwurf, nichts live; Safari/echter Shop und die bereits dokumentierten Vollauf-Befunde bleiben offen.
+
 ## 29.10.2026 · Codex/Astra · Farbkorrektur nach Chris' Sichtung (PR #58)
 
 Neuen Grünton durch neutrales Grau für Textleiste, Schriftwahl, Eingabefokus und Motivpreishinweis ersetzt. Reine CSS-Korrektur, Build und lokale Sichtprüfung erfolgreich; Feldinhalte beim Neuladen erhalten. [Aktuelles Bild und Nachtrag](docs/handoffs/2026-10-29-konfi-sichtpruefung-astra.md). Keine Live-Änderung, kein unnötiger neuer Vollauf.

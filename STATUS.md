@@ -1,3 +1,13 @@
+## 29.10.2026 · Codex/Astra · Lesender Live-Gegencheck nach PR #49
+
+- Chris: „Prüf bitte nochmal Issue 46, ob es jetzt live ist. Wenn ja, mach den lesenden Gegencheck für alle Modelle und Größen fertig und antworte Claude dort. Noch nichts live ändern.“
+- PR #49 durch Claude auf `62ead38` bereitgestellt; korrigiertes öffentliches Ressourcenmodul selbst gelesen. Eigener Berichtsbranch `dev/funkklingeln-live-gegencheck-20261029-astra`, Basis `2468bd1`; keine Live-Mutationen.
+- Frische Admin-GraphQL-Abfragen und SQLite `readOnly: true`: **42 Modelle / 126 Produkte / 15.120 Varianten und Bindungen passend**, 126 Import-/Approval-Dokumente passend. Tatsächliche HTTP-GET-Prüfung: **126 Starts/Modelle, 504 Galerieseiten, 2.268 Ressourcenabrufe mit SHA-Prüfung**, keine Datenabweichung; zusätzliche **6.048 Galeriekarten** mit Shopify-Preisen/IDs/Maßen abgeglichen. **30.240** Geometrieauflösungen aus Live-Modellen geprüft. Lokale Prüfskripte `check-all.mjs`, `live-http-check.mjs`, `gallery-prices.mjs`, jeweils Exit 0.
+- Grenzen: **42 veröffentlichte Hochformate ohne Metafeld**, **84 ACTIVE/unveröffentlicht**, **0/126 öffentliche Produkt-URLs mit neuem Einstieg**. Direkter Proxy funktioniert. Webhooks PAID/UPDATED/CANCELLED im Dry-run jeweils `keep` auf app-2027; gespeicherte Approval-/Test-Marker vorhanden. Kein Warenkorb/Testauftrag. Chrome-Sichtprüfung wegen angehaltener Dokumentantwort der Browser-Automatisierung **nicht abgenommen**, kein bestätigter App-Renderingfehler.
+- Claude meldet **Issue #48 Teil C** als Blocker für Bestellübernahme/Fertigungsdateien. Acht unidentifizierte Zusatzgeräte/24 Größen-Zuordnungen weiter separat blockiert.
+- [Bericht](docs/handoffs/2026-10-29-funkklingeln-live-gegencheck.md), [126 Einzelzeilen](docs/handoffs/2026-10-29-funkklingeln-live-gegencheck-products.csv), [Zähler/Prüfsummen](docs/handoffs/2026-10-29-funkklingeln-live-gegencheck-evidence.json); Berichtscommits `7aa2f21`, `54e5633`, `2701ec5`.
+- Genau nächster Schritt: Claude schließt Issue #48 C und bestätigt sichtbaren Desktop-/Mobil-Editor; danach bestehender Pilotablauf erst mit Chris' ausdrücklicher Live-Freigabe. Ergebnis direkt in Issue #46 zurückmelden.
+
 ## 29.10.2026 · Claude als Operator · Live: PR #52 + PR #49 (`main` `62ead38`)
 
 - Chris (13:10): „Ja, Du darfst PR #52 nach main übernehmen, bereitstellen und die App zweimal neu starten.“ → Merge `3db5b7a` (Baum = PR-Stand, Linux **1816/1816**), Plesk Pull/Bereitstellen, Neustart 1 um 13:17.

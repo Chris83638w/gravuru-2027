@@ -1,3 +1,7 @@
+## 29.10.2026 · Codex/Astra · Issue #48 B: Acryladapter zur Prüfung
+
+AA/AS/S/S aus Katalog 680f1744: 162 Größen / 630 Preis-Halter-Farbkombinationen, Rückplatte +10 mm, Hochformate, Quadrat und Spiegelung angeschlossen. Claudes Optionsgruppen samt Fixture-Korrektur fa7eaae und main 2468bd1 übernommen. 66 gezielte Tests und lokale Desktop-/390×664-/375×548-Bilder; vorheriger Vollauf 1809 bestanden / 2 Fehler / 5 übersprungen, abschließender Vollauf läuft. Desktop-S/S-Bild vor letztem Viewport-Fix historisch markiert; neue Aufnahme bei wieder verfügbarem Browser offen. Nur Entwurf, keine Freigabe/Live-/Shopify-/Katalogänderung. [Bericht](docs/handoffs/2026-10-29-issue48-acryl-bericht.md). C bleibt separat PR #54; Zusammenführung der zwei Änderungen in acrylic-artwork.mjs gezielt prüfen.
+
 ## 29.10.2026 · Claude als Operator · Live: PR #52 + PR #49 (`main` `62ead38`)
 
 - Chris (13:10): „Ja, Du darfst PR #52 nach main übernehmen, bereitstellen und die App zweimal neu starten.“ → Merge `3db5b7a` (Baum = PR-Stand, Linux **1816/1816**), Plesk Pull/Bereitstellen, Neustart 1 um 13:17.

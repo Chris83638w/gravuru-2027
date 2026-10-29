@@ -52,6 +52,12 @@ Von Claude (Operator). Chris möchte die **Acrylglas-Hausnummernschilder mit Abs
 - **Geometrie je Excel-Größe** (Außenkontur, Radien, Lochpositionen): aus der Corel-Zeichnung übernehmen, wo die Größe dort identisch vorkommt. Sonst nach Excel-Randabstand und Form konstruieren und im Bericht als „neu konstruiert, prüfen“ kennzeichnen, z. B. 24 × 8.
 - **Designs:** Aus dem Katalog nur die **Designs** nehmen, die 175 Hausnummern-Designs plus Beispielbogen, und auf die neuen Excel-Größen anpassen. Alte Plattengrößen der Designs gelten nicht.
 
+- **Hochformat (Chris 29.10.):** Alle **rechteckigen** Formen gibt es zusätzlich hochkant: Rechteck, abgerundete Ecken R5, eingezogene Ecken; Quadrat und Oval nicht.
+  - Hochkant ist ein **eigenes Produkt** (eigene Shopify-Produkte), nicht nur eine Variante.
+  - Maße, Randabstand, Abstandshalter und Preis wie die Querformat-Größe, gedreht. Lochpositionen drehen mit; 4er-Halter nur, wo die Excel „ja“ sagt.
+  - Die Designs werden für das Hochformat **eigens angepasst** (Aufbau übereinander, nicht nur gedreht).
+  - Schlüssel: Excel-Schlüssel + Kennung Hochformat, z. B. `RE-150X100-H`. Vorschlag im Bericht; die Excel selbst bleibt unverändert.
+
 ## Ziel
 
 Die Hausnummernschilder AA/AS/S/S sind im neuen Konfigurator bestellbar wie D8 bei Edelstahl:

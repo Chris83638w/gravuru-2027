@@ -25,7 +25,7 @@ export function installDragLoupe({el,r,stage}){
  const lens=document.createElement('div');lens.className='ux-drag-loupe';lens.hidden=true;lens.setAttribute('aria-hidden','true');stage.append(lens);
  el.uxDragLens=point=>{
   if(!point||!['move','scale'].includes(point.kind)){lens.hidden=true;lens.replaceChildren();return;}
-  const b=stage.getBoundingClientRect(),p={x:point.clientX-b.left,y:point.clientY-b.top},center=loupePosition(p,b),copy=cloneLoupeLayers(stage);
+  const b=stage.getBoundingClientRect(),p={x:point.clientX-b.left,y:point.clientY-b.top},center=loupePosition(p,el.uxViewViewport?.()||b),copy=cloneLoupeLayers(stage);
   copy.style.left=((LOUPE_SIZE/2-3)-p.x*LOUPE_SCALE)+'px';copy.style.top=((LOUPE_SIZE/2-3)-p.y*LOUPE_SCALE)+'px';copy.style.transform='scale('+LOUPE_SCALE+')';
   lens.style.left=(center.x-LOUPE_SIZE/2)+'px';lens.style.top=(center.y-LOUPE_SIZE/2)+'px';lens.replaceChildren(copy);lens.hidden=false;
  };

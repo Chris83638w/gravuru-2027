@@ -1,3 +1,10 @@
+## 29.10.2026 · Codex / Astra · Nachtrag 5: Zoom vereinfacht in PR #43 (nur Review)
+
+- [PR #43](https://github.com/Chris83638w/gravuru-2027/pull/43), gleicher Branch: Handy nur Zwei-Finger-Zoom; kein automatischer Fokus, keine Fokus-Pille und kein Doppeltipp-Zoom. Weißes „Ganzes Schild“ nur bei Zoom. Desktop mit senkrechtem 44-px-Regler rechts (100–400 %), Mausrad synchron; 60 px eigener Platz für den Balken, auch im Vollbild. Lupe und mm-Hilfen bleiben.
+- Neu geprüft: **33/33** gezielte Zoomtests, Editor **414/420** mit denselben 6 Windows-/Python-Fehlern (vorher 412/418), **148/148** Kombinationstests mit unverändertem #42; beide Builds erfolgreich. Bilder Desktop 1440×900 normal/Vollbild 100/180 % und Handy 390×664 / 375×548 mit Pinch/Lupe/mm. Chrome-Viewport mit synthetischen Gesten, kein physischer Safari-Nachweis.
+- Claude meldete für die vorherigen #42/#43-Stände Linux **1801/1801** und 1:1-Sichtprüfung. Für diesen neuen Stand Linux und echte iPhones noch prüfen. PR #42 bleibt unverändert, D8-Preisvertrags-Probelauf separat. **Nicht gemergt, nichts live; Veröffentlichung erst nach Chris’ Satz.**
+- [Bericht](docs/handoffs/2026-10-29-konfi-ux-nachtrag5-astra-bericht.md) · [Bilder und Prüfergebnisse](docs/handoffs/konfi-zoom-einfach-20261029-astra/README.md)
+
 ## 28.10.2026 · Codex / Astra · Nachtrag 4 zur Konfi-UX: Fokus, Lupe und mm-Hilfen (nur Review)
 
 - Eigener Branch `dev/konfi-zoom-fokus-20261028-astra`, Basis `main` `26952e48` (enthält `0643c70`). Mobile Fokusansicht bis 300 %, weiße Rückkehr, Desktop −/+/⤢, 110-px-Lupe mit echter Oberfläche, pinke Ausrichtung und physische Randabstände. Freie Doppeltipps zoomen, Textdoppeltipps bearbeiten; Zwei-Finger-Schutz bleibt. Tastatur scrollt nur die Eingabeliste, Vorschau und Preis bleiben im Bild.

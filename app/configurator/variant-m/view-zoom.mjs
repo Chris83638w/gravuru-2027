@@ -1,4 +1,4 @@
-import {fitView,constrainView,zoomViewAt,autoZoomView,interpolateView,createViewGesture} from './view-zoom-model.mjs';
+import {fitView,constrainView,zoomViewAt,fitViewFrame,viewLayerStyle,interpolateView,createViewGesture} from './view-zoom-model.mjs';
 import {installDragLoupe} from './view-loupe.mjs';
 
 // View state belongs only to this UI, never to saved objects, production or undo.
@@ -7,14 +7,13 @@ export async function installViewZoom({el,r,selected}){
  const response=await fetch('/configurator/variant-m/view-zoom.css');if(!response.ok)throw Error('Ansichtszoom konnte nicht geladen werden.');
  const style=document.createElement('style');style.textContent=await response.text();r.append(style);
  const controls=document.createElement('div');controls.className='ux-view-zoom';controls.setAttribute('aria-label','Produktansicht vergrößern');
- controls.innerHTML='<button type="button" data-view-action="minus" aria-label="Ansicht verkleinern">−</button><button type="button" data-view-action="plus" aria-label="Ansicht vergrößern">+</button><button type="button" data-view-action="fit" aria-label="Ganzes Schild" title="Ganzes Schild">⤢</button>';
+ controls.innerHTML='<button type="button" data-view-action="plus" aria-label="Ansicht vergrößern">+</button><input type="range" data-view-action="range" min="100" max="400" step="1" value="100" aria-label="Ansichtszoom in Prozent" aria-orientation="vertical"><button type="button" data-view-action="minus" aria-label="Ansicht verkleinern">−</button><output data-view-action="percent" aria-live="off">100 %</output><button type="button" data-view-action="fit" aria-label="Ganzes Schild" title="Ganzes Schild" hidden>⤢</button>';
  const whole=document.createElement('button');whole.type='button';whole.className='ux-view-whole';whole.textContent='⤢ Ganzes Schild';whole.hidden=true;
- const focusLabel=document.createElement('span');focusLabel.className='ux-view-focus';focusLabel.hidden=true;focusLabel.setAttribute('role','status');
- stage.append(focusLabel,whole,controls);stage.dataset.viewZoom='1';
- let view=fitView(),bounds=null,layers=[],pending=0,suppressUntil=0,refreshing=false,focusId=null,lastBlank=null,lastDouble=-Infinity;
- let animationFrame=0,focusFrame=0,animationEpoch=0;
+ stage.append(whole,controls);stage.dataset.viewZoom='1';
+ let view=fitView(),bounds=null,layers=[],pending=0,suppressUntil=0,refreshing=false;
+ let animationFrame=0,animationEpoch=0;
  const mobile=()=>matchMedia('(max-width:767px)').matches;
- function cancelAnimation(){animationEpoch++;if(animationFrame)cancelAnimationFrame(animationFrame);if(focusFrame)cancelAnimationFrame(focusFrame);animationFrame=focusFrame=0;}
+ function cancelAnimation(){animationEpoch++;if(animationFrame)cancelAnimationFrame(animationFrame);animationFrame=0;}
  function animate(next){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){change(next);return;}
   const from={...view},epoch=animationEpoch;let began=null;
@@ -24,51 +23,33 @@ export async function installViewZoom({el,r,selected}){
  const identity=()=>JSON.stringify([el.state.designId,el.state.width,el.state.height]);let product=identity();
  const photoActive=()=>!!el.uxPhotoPositionActive?.(selected());
  const center=()=>({x:bounds.viewport.x+bounds.viewport.width/2,y:bounds.viewport.y+bounds.viewport.height/2});
- function fieldName(id){const field=[...r.querySelectorAll('[data-ux-text]')].find(n=>n.dataset.uxText===id),o=selected();return field?.getAttribute('aria-label')||o?.label||({motif:'Motiv',photoSlot:'Foto',graphic:'Grafik'})[o?.type]||'Element';}
  function paint(){
   if(!bounds)return;
-  const origin={x:bounds.plate.x+bounds.plate.width/2,y:bounds.plate.y+bounds.plate.height/2};
-  for(const {node,box} of layers){node.style.setProperty('transform-origin',(origin.x-box.x)+'px '+(origin.y-box.y)+'px','important');node.style.setProperty('transform','translate('+view.x+'px,'+view.y+'px) scale('+view.scale+')','important');}
+  for(const {node,box} of layers){const style=viewLayerStyle(view,bounds,box);node.style.setProperty('transform-origin','0 0','important');node.style.setProperty('transform',style.transform,'important');node.style.setProperty('clip-path',style.clipPath,'important');}
   stage.dataset.viewZoom=String(view.scale);
   controls.querySelector('[data-view-action=minus]').disabled=view.scale<=1;controls.querySelector('[data-view-action=plus]').disabled=view.scale>=4;
-  whole.hidden=!mobile()||view.scale<=1;focusLabel.hidden=!mobile()||!focusId||view.scale<=1;
-  if(!focusLabel.hidden)focusLabel.textContent='Fokus: '+fieldName(focusId);
+  whole.hidden=!mobile()||view.scale<=1;
+  controls.querySelector('[data-view-action=range]').value=String(Math.round(view.scale*100));controls.querySelector('[data-view-action=percent]').textContent=Math.round(view.scale*100)+' %';controls.querySelector('[data-view-action=fit]').hidden=view.scale<=1;controls.style.setProperty('--ux-view-progress',((view.scale-1)/3*100)+'%');
   el.uxRefreshSelectionHandles?.();el.uxRefreshTextToolbar?.();
  }
  function change(next){view=constrainView(next,bounds);paint();}
- function manual(next){focusId=null;change(next);}
- function fit(smooth=false){cancelAnimation();focusId=null;lastBlank=null;resetGestures();el.uxDragLens?.(null);smooth?animate(fitView()):change(fitView());}
- function objectBox(id){
-  const scene=r.querySelector('.scene'),g=scene?.querySelector('[data-object="'+CSS.escape(id)+'"]');if(!g||!bounds)return null;
-  const rect=g.getBoundingClientRect(),s=stage.getBoundingClientRect(),origin={x:bounds.plate.x+bounds.plate.width/2,y:bounds.plate.y+bounds.plate.height/2};
-  return {x:origin.x+(rect.left-s.left-origin.x-view.x)/view.scale,y:origin.y+(rect.top-s.top-origin.y-view.y)/view.scale,width:rect.width/view.scale,height:rect.height/view.scale};
- }
+ function manual(next){change(next);}
+ function fit(smooth=false){cancelAnimation();resetGestures();el.uxDragLens?.(null);smooth?animate(fitView()):change(fitView());}
  function refresh(){
   pending=0;if(refreshing)return;refreshing=true;
   try{
    const nodes=[...stage.querySelectorAll(':scope > .plate-holder,:scope > .acryl-backdrop,:scope > .acryl-base')];if(!nodes.includes(holder))nodes.push(holder);
-   const previous=bounds;for(const node of nodes)node.style.setProperty('transform','none','important');
+   for(const node of nodes)node.style.setProperty('transform','none','important');
    const sr=stage.getBoundingClientRect(),box=node=>{const b=node.getBoundingClientRect();return {x:b.left-sr.left,y:b.top-sr.top,width:b.width,height:b.height};};
-   const heading=r.querySelector('.ux-heading')?.getBoundingClientRect(),covered=mobile()&&!stage.closest?.('.c-large-preview')&&heading?Math.max(0,Math.min(sr.height,heading.bottom-sr.top)):0,top=mobile()?Math.min(sr.height*.5,covered+44):0;stage.style.setProperty('--ux-view-safe-top',covered+'px');
-   bounds={plate:box(holder),viewport:{x:0,y:top,width:sr.width,height:sr.height-top}};layers=nodes.map(node=>({node,box:box(node)}));
-   if(product!==identity()){cancelAnimation();product=identity();view=fitView();focusId=null;resetGestures();}
+   const heading=r.querySelector('.ux-heading')?.getBoundingClientRect(),covered=mobile()&&!stage.closest?.('.c-large-preview')&&heading?Math.max(0,Math.min(sr.height,heading.bottom-sr.top)):0;stage.style.setProperty('--ux-view-safe-top',covered+'px');
+   bounds=fitViewFrame(box(holder),{width:sr.width,height:sr.height},mobile());layers=nodes.map(node=>({node,box:box(node)}));
+   if(product!==identity()){cancelAnimation();product=identity();view=fitView();resetGestures();}
    view=constrainView(view,bounds);paint();
-   // Keyboard/viewport changes recenter the same element in the newly visible stage.
-   if(focusId&&mobile()&&!animationFrame&&JSON.stringify(previous)!==JSON.stringify(bounds)){const box=objectBox(focusId);if(box)change(autoZoomView(view,box,bounds));}
   }finally{refreshing=false;}
  }
  const schedule=()=>{if(!pending)pending=requestAnimationFrame(refresh);};
- function autoFocus(id){
-  if(!mobile())return;cancelAnimation();const epoch=animationEpoch;
-  focusFrame=requestAnimationFrame(()=>{focusFrame=0;if(epoch!==animationEpoch)return;const o=selected();if(!o||o.id!==id||o.uxHidden||photoActive()||!bounds)return;const box=objectBox(id);if(!box)return;focusId=id;animate(autoZoomView(view,box,bounds));});
- }
- function blankTap(p){
-  const now=performance.now(),old=lastBlank;lastBlank={x:p.x,y:p.y,time:now,zoomed:view.scale>1};
-  if(old&&now-old.time<360&&Math.hypot(old.x-p.x,old.y-p.y)<24){cancelAnimation();focusId=null;lastBlank=null;lastDouble=now;animate(old.zoomed?fitView():zoomViewAt(view,2,p,bounds));}
-  else if(focusId){cancelAnimation();focusId=null;animate(fitView());}
- }
  const cancelObject=()=>{el.uxCancelObjectGesture?.();el.uxCancelPhotoGesture?.();el.uxCancelPhotoTap?.();el.uxDragLens?.(null);};
- const gesture=createViewGesture({getView:()=>view,setView:manual,getBounds:()=>bounds,photoActive,cancelObject,onTap:autoFocus,onBlankTap:blankTap});
+ const gesture=createViewGesture({getView:()=>view,setView:manual,getBounds:()=>bounds,photoActive,cancelObject});
  // TouchEvent batches are authoritative for simultaneous contacts (Safari/iOS).
  // Keep their gesture separate so the compatibility PointerEvents cannot also
  // resize an object or apply the same zoom twice.
@@ -110,24 +91,23 @@ export async function installViewZoom({el,r,selected}){
  const touchFinished=e=>touchEnd(e,false),touchCancelled=e=>touchEnd(e,true);
  el.addEventListener('touchend',touchFinished,{capture:true,passive:false});
  el.addEventListener('touchcancel',touchCancelled,{capture:true,passive:false});
- el.addEventListener('pointerdown',e=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}cancelAnimation();if(!onStage(e)||!bounds)return;const node=target(e);if(focusId&&!node?.closest?.('.plate-holder,.acryl-backdrop,.acryl-base')&&!control(node)){fit(true);return;}const used=gesture.down(point(e));if(used){stop(e);for(const id of gesture.ids())try{el.setPointerCapture(id);}catch{}}},true);
+ el.addEventListener('pointerdown',e=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}cancelAnimation();if(!onStage(e)||!bounds)return;const used=gesture.down(point(e));if(used){stop(e);for(const id of gesture.ids())try{el.setPointerCapture(id);}catch{}}},true);
  el.addEventListener('pointermove',e=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}if(gesture.has(e.pointerId)&&gesture.move(point(e)))stop(e);},true);
  const end=(e,cancelled)=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}if(!gesture.has(e.pointerId))return;const used=gesture.up(point(e),{cancelled});if(used){stop(e);suppressUntil=performance.now()+500;}if(el.hasPointerCapture?.(e.pointerId))el.releasePointerCapture(e.pointerId);};
  el.addEventListener('pointerup',e=>end(e,false),true);el.addEventListener('pointercancel',e=>end(e,true),true);
  el.addEventListener('lostpointercapture',e=>{if(path(e)[0]===el)end(e,true);},true);
  el.addEventListener('click',e=>{if(performance.now()<suppressUntil&&onStage(e)&&!control(target(e))){stop(e);suppressUntil=0;}},true);
- el.addEventListener('wheel',e=>{if(!bounds||!onStage(e)||control(target(e))||photoActive())return;cancelAnimation();stop(e);const p=point(e),delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?bounds.viewport.height:1);manual(zoomViewAt(view,view.scale*Math.exp(-Math.max(-300,Math.min(300,delta))*.002),p,bounds));},{capture:true,passive:false});
- controls.addEventListener('click',e=>{const action=e.target.closest('[data-view-action]')?.dataset.viewAction;if(!action||!bounds)return;cancelAnimation();e.preventDefault();if(action==='fit'){fit(true);return;}manual(zoomViewAt(view,view.scale+(action==='plus'?.25:-.25),center(),bounds));});
+ el.addEventListener('wheel',e=>{if(mobile()||!bounds||!onStage(e)||control(target(e))||photoActive())return;cancelAnimation();stop(e);const p=point(e),delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?bounds.viewport.height:1);manual(zoomViewAt(view,view.scale*Math.exp(-Math.max(-300,Math.min(300,delta))*.002),p,bounds));},{capture:true,passive:false});
+ controls.addEventListener('click',e=>{const action=e.target.closest('[data-view-action]')?.dataset.viewAction;if(!['plus','minus','fit'].includes(action)||!bounds)return;cancelAnimation();e.preventDefault();if(action==='fit'){fit(true);return;}manual(zoomViewAt(view,view.scale+(action==='plus'?.25:-.25),center(),bounds));});
+ controls.addEventListener('input',e=>{if(e.target.dataset.viewAction!=='range'||!bounds)return;cancelAnimation();manual(zoomViewAt(view,Number(e.target.value)/100,center(),bounds));});
  whole.addEventListener('click',()=>fit(true));
- r.addEventListener('focusin',e=>{const field=e.target.closest?.('[data-ux-text]');if(field)autoFocus(field.dataset.uxText);else if(e.target.closest?.('.ux-direct-input'))autoFocus(selected()?.id);});
- // Explicit navigation ends focus even if the same text remains selected.
+ // Navigation and an explicit Fit reset the view; selecting or editing never zooms.
  r.addEventListener('click',e=>{const node=e.target.closest?.('[data-ux],[data-ux-tab]');if(node?.dataset.uxTab||['mobile-prev','mobile-next','mobile-step'].includes(node?.dataset.ux))fit(true);},true);
- el.addEventListener('dblclick',e=>{const p=point(e);if(!onStage(e)||p.kind!=='blank'||!target(e)?.closest?.('.plate-holder')||photoActive())return;stop(e);if(performance.now()-lastDouble<450)return;cancelAnimation();focusId=null;animate(view.scale>1?fitView():zoomViewAt(view,2,p,bounds));lastDouble=performance.now();},true);
- for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){const result=original.apply(this,args);if(focusId&&!selected())fit(true);schedule();return result;};}
- el.uxViewZoom=()=>view.scale;el.uxRefreshViewZoom=schedule;el.uxFitView=()=>fit();el.uxFocusView=autoFocus;el.uxSetViewZoom=(value,anchor)=>{cancelAnimation();manual(zoomViewAt(view,value,anchor||center(),bounds));};
+ for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){const result=original.apply(this,args);schedule();return result;};}
+ el.uxViewZoom=()=>view.scale;el.uxRefreshViewZoom=schedule;el.uxFitView=()=>fit();el.uxViewViewport=()=>({...bounds.viewport});el.uxSetViewZoom=(value,anchor)=>{cancelAnimation();manual(zoomViewAt(view,value,anchor||center(),bounds));};
  if(typeof ResizeObserver==='function')new ResizeObserver(schedule).observe(stage);
- window.addEventListener('resize',()=>{cancelAnimation();if(!mobile())focusId=null;schedule();});
+ window.addEventListener('resize',()=>{cancelAnimation();schedule();});
  window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);
  window.addEventListener('pagehide',()=>{cancelAnimation();resetGestures();if(pending)cancelAnimationFrame(pending);},{once:true});
- installDragLoupe({el,r,stage});refresh();return {fit:el.uxFitView,zoom:el.uxSetViewZoom,focus:autoFocus,refresh:schedule,view:()=>({...view}),gesture};
+ installDragLoupe({el,r,stage});refresh();return {fit:el.uxFitView,zoom:el.uxSetViewZoom,refresh:schedule,view:()=>({...view}),gesture};
 }

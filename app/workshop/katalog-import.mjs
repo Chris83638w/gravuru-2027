@@ -50,7 +50,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
  // `only`: {subcategories:[ids], sizes:[keys], mainProducts:[ids]} begrenzt den Lauf (z. B. ein Muster); ohne Angabe die ganze Linie.
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').');
  const report={line:{id:line.id,name:line.name,status:line.status??null,file:katalog.files.get('linie:'+line.id)},families:[],subcategories:[],designs:{masters:katalog.designs.masters.length,bestand:0,considered:0,withSeries:0,oldSize:[],withoutTheme:0,failed:[]},counts:{products:0,new:0,update:0,unchanged:0,blocked:0,templates:0,sizes:0,pricesOpen:0,designsWithoutSeries:0,fit:{passt:0,'prüfen':0,'passt nicht':0}},notes:[]};
- if(customerUx)report.notes.push('Kunden-UX 28.10. Auftrag 2: alle für das Ziel freigegebenen Designs, 50 Zeichen je Zeile, Vorlagenmotiv enthalten; jedes weitere oder geänderte Motiv 1,69 EUR. Nur neue Produktstände; Form-, Größen-, Foto- und Freigaberegeln bleiben bindend.');
+ if(customerUx)report.notes.push('Kunden-UX 29.10. Sichtprüfung: alle für das Ziel freigegebenen Designs, 80 Zeichen je Feld mit Zeilenumbrüchen, Vorlagenmotiv enthalten; jedes weitere oder geänderte Motiv 1,69 EUR. Nur neue Produktstände; Form-, Größen-, Foto- und Freigaberegeln bleiben bindend.');
  if(!line.families.length)report.notes.push('Linie „'+line.id+'“ hat noch keine Familie (Status: '+(line.status??'offen')+').');
  // Ausgeblendete Master (`hidden: true` in design.json, gesetzt im Design-Dashboard) bleiben im Katalog, kommen aber nicht ins Produkt.
  const hidden=katalog.designs.masters.filter(d=>d.hidden).map(d=>d.id);

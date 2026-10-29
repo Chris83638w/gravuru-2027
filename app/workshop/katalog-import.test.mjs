@@ -285,7 +285,7 @@ test('opt-in customer UX includes other approved themes but preserves target, ph
  const scope={...writableOptions(ws),only:{subcategories:['namensschilder'],sizes:['TS-RE-90X60']}};
  const old=await planKatalogImport(k,'test-linie',scope);assert.ok(!old.report.subcategories[0].products[0].templates.some(t=>t.design==='test-herz'));
  const next=await planKatalogImport(k,'test-linie',{...scope,customerUx:true}),document=next.items[0].document;
- assert.ok(document.config.profile.designs.some(d=>d.id==='katalog-test-herz'));assert.equal(document.config.designSelection,'all-approved');assert.equal(document.config.motifCharge,'additional');assert.equal(document.config.extraMotifCents,169);assert.deepEqual(document.config.textRules,{maxCharsPerLine:50});assert.equal(ws.repository.list().length,1);
+ assert.ok(document.config.profile.designs.some(d=>d.id==='katalog-test-herz'));assert.equal(document.config.designSelection,'all-approved');assert.equal(document.config.motifCharge,'additional');assert.equal(document.config.extraMotifCents,169);assert.deepEqual(document.config.textRules,{maxCharsPerField:80});assert.equal(ws.repository.list().length,1);
  master.json={...master.json,ziele:[]};master.released=false;
  const closed=await planKatalogImport(k,'test-linie',{...scope,customerUx:true});assert.ok(!closed.report.subcategories[0].products[0].templates.some(t=>t.design==='test-herz'));
 });

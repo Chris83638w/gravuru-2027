@@ -1,0 +1,88 @@
+{
+  "startedAt": "2026-10-29T14:14:40.011Z",
+  "authorization": "Du darfst pr56 ausführen: genau 1 mETAFELD",
+  "scope": [
+    "gid://shopify/Product/16124413084028"
+  ],
+  "before": {
+    "id": "gid://shopify/Product/16124413084028",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+    "status": "ACTIVE",
+    "updatedAt": "2026-10-28T13:20:27Z",
+    "templateSuffix": "",
+    "publishedOnPublication": true,
+    "metafield": null
+  },
+  "requests": [
+    {
+      "metafields": [
+        {
+          "ownerId": "gid://shopify/Product/16124413084028",
+          "namespace": "custom",
+          "key": "customization_id",
+          "type": "single_line_text_field",
+          "value": "cfg_c3ee3fcf-bf87-42e3-af2a-98b680cdb576",
+          "compareDigest": null
+        }
+      ]
+    }
+  ],
+  "written": 1,
+  "finishedAt": "2026-10-29T14:15:16.693Z",
+  "userErrors": [],
+  "mutation": {
+    "metafields": [
+      {
+        "id": "gid://shopify/Metafield/200525930004860",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_c3ee3fcf-bf87-42e3-af2a-98b680cdb576",
+        "compareDigest": "fabd6e90538194fca2b543b720e87b42847843c0b97209b5df31d4e2beedf206"
+      }
+    ],
+    "userErrors": []
+  },
+  "after": {
+    "id": "gid://shopify/Product/16124413084028",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+    "status": "ACTIVE",
+    "updatedAt": "2026-10-29T14:14:46Z",
+    "templateSuffix": "",
+    "publishedOnPublication": true,
+    "metafield": {
+      "id": "gid://shopify/Metafield/200525930004860",
+      "namespace": "custom",
+      "key": "customization_id",
+      "type": "single_line_text_field",
+      "value": "cfg_c3ee3fcf-bf87-42e3-af2a-98b680cdb576",
+      "compareDigest": "fabd6e90538194fca2b543b720e87b42847843c0b97209b5df31d4e2beedf206"
+    }
+  },
+  "scopeReadback": {
+    "at": "2026-10-29T14:17:04.160Z",
+    "changes": [
+      {
+        "id": "gid://shopify/Product/16124413084028",
+        "marker": "cfg_c3ee3fcf-bf87-42e3-af2a-98b680cdb576",
+        "published": true
+      }
+    ],
+    "missingMarkers": 41,
+    "unpublished": 84
+  },
+  "storefront": {
+    "at": "2026-10-29T14:17:06.622Z",
+    "httpStatus": 200,
+    "configCount": 1,
+    "embedModule": true,
+    "productId": "16124413084028",
+    "variantId": "57465408291196",
+    "variants": 120,
+    "visibleButtons": 1,
+    "screenshotFile": "produktseite-einstieg.png",
+    "editorClicked": false,
+    "cartTest": false,
+    "mobileAcceptance": false
+  }
+}

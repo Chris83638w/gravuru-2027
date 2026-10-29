@@ -11,7 +11,7 @@ Oben eine 44 px hohe Kopfzeile mit Zurück, kurzem Produkttitel und Menü. Werkz
 | Zustand | 375 × 548 | 390 × 664 |
 | --- | --- | --- |
 | Einstieg | Kopf 44, Vorschau ca. 220, Abschlussleiste 56; übriger Raum für Optionen | Kopf 44, Vorschau ca. 260, Abschlussleiste 56 |
-| Bedienfeld gescrollt | Vorschau ca. 120; mindestens rund 300 px für Inhalt vor Innenabständen/Safe Area | Vorschau ca. 120; mindestens rund 410 px für Inhalt vor Innenabständen/Safe Area |
+| Bedienfeld gescrollt | Vorschau ca. 120; 328 px Bruttoraum für Feld **und unveränderte Werkzeugleiste**, vor Abständen/Safe Area | Vorschau ca. 120; 444 px Bruttoraum für Feld **und unveränderte Werkzeugleiste**, vor Abständen/Safe Area |
 | Tastatur offen | Tatsächlich verfügbare Höhe aus visualViewport; kleine Vorschau im Textbereich. Kein automatischer Sprung zur großen Platte | Gleiche Regel, keine feste angenommene Tastaturhöhe |
 
 Die vorhandene Schriftleiste und die Schriftoptionen direkt unter dem Textfeld bleiben funktional vollständig. Ob die obere Leiste im Schreibmodus anders angeordnet werden darf, entscheidet Chris; keine eigenmächtige Reduktion der Schriftwahl. Desktop bleibt bei großer Vorschau links, Bedienfeld rechts und Abschlussbereich unten.

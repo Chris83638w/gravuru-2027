@@ -14,6 +14,8 @@ export async function installLayout({el,r,config}){
  if(enlarge){enlarge.setAttribute('aria-label','Vollbild öffnen');toolbar.append(enlarge);}
  if(tools)toolbar.append(tools);preview.prepend(toolbar);
  const workbench=document.createElement('div');workbench.className='ux-workbench-toolbar';$('.ux-layout').before(workbench);
+ // Remove only this editor's legacy page gutters, not surrounding shop/admin UI.
+ if(!document.querySelector('style[data-ux-workbench-frame]')){const frame=document.createElement('style');frame.dataset.uxWorkbenchFrame='';frame.textContent='@media(min-width:768px){main:has(>gravuru-configurator[data-ux-layout="compact"]),main.c-main:has(gravuru-configurator[data-ux-layout="compact"]){padding:0!important}}';document.head.append(frame);}
  const media=matchMedia('(max-width:767px)');
  function placeToolbar(){placePreviewToolbar({toolbar,workbench,heading:$('.ux-heading'),full,mobile:media.matches});el.uxRefreshTextToolbar?.();}
  media.addEventListener('change',placeToolbar);placeToolbar();

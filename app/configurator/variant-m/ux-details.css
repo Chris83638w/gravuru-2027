@@ -103,6 +103,9 @@
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]{color-scheme:dark}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font]{border:1px solid var(--ux-workbench-line)!important;border-radius:8px!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font]>.ux-ui-icon{color:var(--ux-workbench-ink)!important}
+/* The glyph preview is refreshed during selection; the persistent button owns the click. */
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font] *{pointer-events:none}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-tail [data-ux=delete] svg{stroke:var(--ux-workbench-ink)!important;color:var(--ux-workbench-ink)!important}
 :host([data-ux-layout][data-ux-neutral]) .fk-buy-inner>.completion-finish{background:var(--ux-workbench)!important;border-color:var(--ux-workbench)!important;color:#fff!important;border-radius:8px!important}
 @media(min-width:768px){
  :host([data-ux-layout][data-ux-neutral]){padding:0!important}

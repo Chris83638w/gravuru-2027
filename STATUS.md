@@ -1,3 +1,18 @@
+## 29.10.2026 · Codex / Sol · Größere Namen und Motive
+
+Alle 200 Boxenschildfassungen neu angeordnet; Namen um 12–78.3 % größer, Motive proportional vergrößert, weniger Leerraum. 32 unterschiedliche Beispieldatensätze / 1.000 Texte erhalten. 200 gültige native Konfigurationen, keine Warnungen/Konturprobleme/Textüberschneidungen; 44 aktuelle Konfiguratoransichten. Katalogbau erfolgreich. Freigaben offen, nichts live.
+
+## 29.10.2026 · Codex/Astra · Ausgefüllte und unterschiedliche Beispieldaten
+
+Chris: „du solltest immer Daten Namen usw. ausfüllen und unterschiedliche Daten nutzen“. Alle 200 aktiven Boxenschildfassungen D74–D81 mit 32 fiktiven Pferdedatensätzen ausgefüllt: Name, Geburtsdatum, Abstammung und alle vorhandenen Besitzer-/Kontakt-/Tierarztfelder. 200/200 Import-/Passungsprüfungen; 44 aktuelle Konfiguratoransichten. Schriftarten/Motive/Geometrien unverändert. Vorgabe im Design-Master dokumentiert; keine Freigabe gesetzt, nichts live.
+
+## 29.10.2026 · Codex/Astra · Issue #63: Pferdeschilder-Import, nur Review
+
+- Nutzerauftrag im Chat: Katalogkennungen und Importfehler übernehmen, weitere Form-/Größendesigns, „Nichts live schalten“. Code-Branch `dev/pferdeschilder-import-20261029`, Basis `915c102`; Bereitstellung zur Durchsicht auf dem Aufgabenbranch.
+- Einzelne Motiv-/Dekoebenen bleiben nach SVG-Import lösch-/ersetzbar; Bewegung/Skalierung und Guides bleiben separat geregelt. Gravur erhält offene Konturen, Strichbreiten, Aussparungen und Deckkraft. Randrahmen werden nicht mehr wegen voller Hüllbox als Corel-Plattenfläche verworfen.
+- **74 gezielte Tests bestanden** (59 Import/Rechte + 15 Ressourcen; lokale Serverprobe nach anfänglichem `EACCES` unverändert erfolgreich wiederholt), Build erfolgreich, `git diff --check` sauber. Windows Node 24.19.0; kein Vollsuite- oder Live-Nachweis behauptet.
+- [Übergabe mit Quellen, Dateien und Prüfkommandos](docs/handoffs/2026-10-29-pferdeschilder-import-astra.md). 200 echte Katalogfassungen durch den korrigierten Importer geprüft: 0 Warnungen/0 Layoutprobleme, 44 native Browseransichten ohne Lade-/JavaScriptfehler. Reproduzierbarer Lauf: scripts/check-box-sign-import.mjs. Nächster Schritt: neue Kontaktbögen sichten. AB-Serienkontur, technische Zielfreigabe und reale Gravurprobe getrennt dokumentieren. Kein Merge, Deployment, Shopify-Schreiben oder Neustart.
+
 # 29.10.2026 — Codex: Live-Pilot, gezielter Warenkorb-Abgleich
 
 PR #60 bereitgestellt (092303d), Linux 28/28, 126/42/15.120 Store-Abgleich bestanden. Pilot AOSU Revision 2 / 120 Bindungen live; UI-Bedienprüfung einschließlich Löschen und Verschieben bestanden. Warenkorb erkennt getrennte Funkklingel-Fertigung noch nicht korrekt: Erzeuger/Prüfer widersprechen sich beim alten Fertigungsblocker. Minimalfix und Regression (sechs echte Format-/Positions-Prüfstände) lokal grün; vor Rest-Rollout Linux + echter Warenkorb wiederholen. Chris: „stell es live“. Bericht: docs/handoffs/2026-10-29-funkklingeln-live-warenkorb-astra.md .
@@ -2033,5 +2048,3 @@ Schritt 1 des Auftrags vom 22.10. (Warenkorb/Bestellung/Fertigung für die Acryl
 - Windows-Starter nutzt optional eine danebenliegende private `cdr-bridge-token.txt`, sonst verdeckte Eingabe. Das allgemeine Paket enthält keine Zugangsdaten; vorbereiteter Start mit Zugang ausschließlich im privaten Plesk-Bereich.
 - Grenze: 0 echte Firmen-CDRs übertragen; Windows-Starter hier nicht auf Windows ausgeführt. Größenlimit des vorgeschalteten Plesk-Proxys nicht mit großen Dateien geprüft. Keine Shopify-Schreibzugriffe.
 - Nächster Schritt: privates Startpaket auf dem Firmenrechner entpacken, `7x2-pruefen.cmd`, dann `7x2-senden.cmd` starten. Danach Originalbogen über `server_path` lesen, D5/D26/D35, grüne Überschriften und Gravurfassungen gemeinsam prüfen. ChatGPT-App-Werkzeugliste ggf. aktualisieren, da sie noch die früheren fünf Dateischemata zwischenspeichert.
-
-

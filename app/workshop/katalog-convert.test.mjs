@@ -39,7 +39,7 @@ test('parseDesignSvg liest Lieferform 2: Textebenen mit Zeilen, Motiv-/Deko-Pfad
  assert.match(parseDesignSvg('<svg viewBox="0 0 10 10"><g id="rand"><path d="M0 0 L1 1"/></g></svg>').notes[0],/ohne Lieferform-2-Kennung/);
 });
 
-test('Design → Vorlage: Kundenfelder aus text-Ebenen, gesperrte Motive, Rechte und Guide-Rolle',()=>{
+test('Design → Vorlage: Kundenfelder, austauschbare Motive, unabhängige Bewegungsrechte und gesperrte Guides',()=>{
  const k=katalog(),f=k.families.get('test-schilder'),theme=k.theme('namensschilder');
  const r=katalogDesignToTemplate(herz(k),f,theme,{fonts:fonts()});
  const t=r.template;
@@ -54,11 +54,12 @@ test('Design → Vorlage: Kundenfelder aus text-Ebenen, gesperrte Motive, Rechte
  assert.equal(zusatz.required,false);assert.equal(zusatz.maxLength,24);assert.equal(zusatz.maxLines,2);assert.equal(zusatz.text,'Herzlich\nwillkommen');
  assert.equal(zusatz.y,50-0.35*4+0.5*1.2*4,'zweizeilig: Mitte zwischen den Grundlinien');
  const motif=t.objects[0];
- assert.equal(motif.motif,'katalog-test-herz-motiv-1');assert.equal(motif.locked,true);assert.equal(motif.customerEditable,false);assert.deepEqual([motif.x,motif.y,motif.w,motif.h],[14,28,20,16],'Hüllbox aus Stütz- und Kontrollpunkten');
+ assert.equal(motif.motif,'katalog-test-herz-motiv-1');assert.equal(motif.locked,undefined);assert.equal(motif.customerEditable,true);assert.deepEqual([motif.x,motif.y,motif.w,motif.h],[14,28,20,16],'Hüllbox aus Stütz- und Kontrollpunkten');
  assert.equal(t.objects[4].role,'guide');assert.equal(t.objects[4].locked,true);
  assert.deepEqual(r.rights['text-1'],{content:true,color:false,replace:false,move:true,scale:true,delete:false});
  assert.deepEqual(r.rights['text-2'],{content:true,color:false,replace:false,move:true,scale:true,delete:true});
- assert.deepEqual(r.rights['motiv-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false},'Gravur: nicht einmal Farbe');
+ assert.deepEqual(r.rights['motiv-1'],{content:false,color:false,replace:true,move:false,scale:false,delete:true},'Motiv austausch-/löschbar; Gravurfarbe und feste Geometrie bleiben gebunden');
+ assert.deepEqual(r.rights['deko-1'],r.rights['motiv-1'],'Dekoration ist ebenfalls ein eigenständiges Motiv');
  assert.deepEqual(r.rights['guide-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});
  assert.equal(r.motifs.length,2);assert.equal(r.motifs[0].embeddedOnly,true);assert.deepEqual(r.motifs[0].bounds,[4,20,20,16]);
  assert.match(r.motifs[0].svgFragment,/^<path d="M14 36 L6 27 .* Z" fill="currentColor" fill-rule="nonzero"\/>$/);
@@ -140,14 +141,17 @@ test('Familie → Produkt: Preise in Cent mit Überschreibung, Thema, Rechte, Vo
  assert.deepEqual(Object.keys(c.localResources.fonts).sort(),['Cinzel','Montserrat'],'nur Vorlagenschriften eingebettet, das Set kommt als Profil');
  assert.deepEqual(p.fontsMissing,['Michroma','Lato']);
  assert.equal(c.localResources.motifs.length,2);assert.equal(c.photo.enabled,false);
- assert.deepEqual(d.elementRights['katalog-test-herz']['motiv-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});
+ assert.deepEqual(d.elementRights['katalog-test-herz']['motiv-1'],{content:false,color:false,replace:true,move:false,scale:false,delete:true});
  assert.deepEqual(d.elementRights['katalog-test-herz']['text-1'].content,true);
  assert.equal(localFontIds(c).length,2);
- // Das Produkt ist über den Vertrag nutzbar: Preis, Pflichtfeld, gesperrtes Motiv.
+ // Das Produkt ist über den Vertrag nutzbar: Preis, Pflichtfeld und unabhängige Motivrechte.
  const resolved=resolveProduct(d,{options:{mounting:'B02'}});assert.equal(resolved.price.unitCents,1398);assert.equal(resolved.physical.widthMm,90);
  const design=structuredClone(resolved.design);
  assert.throws(()=>validateProductDesign(d,design,{options:{mounting:'B02'}}),/Bitte das Feld „Name“ ausfüllen/);
  design.objects[2].text='Familie Koch';validateProductDesign(d,design,{options:{mounting:'B02'}});
+ const deleted=structuredClone(design);deleted.objects.splice(0,1);validateProductDesign(d,deleted,{options:{mounting:'B02'}});
+ const replaced=structuredClone(design);replaced.objects[0].motif='heart';validateProductDesign(d,replaced,{options:{mounting:'B02'},motifs:workshopResources(c.localResources).motifs});
+ const missingGuide=structuredClone(design);missingGuide.objects=missingGuide.objects.filter(o=>o.role!=='guide');assert.throws(()=>validateProductDesign(d,missingGuide,{options:{mounting:'B02'}}),/darf nicht entfernt/);
  design.objects[0].x+=5;assert.throws(()=>validateProductDesign(d,{...design},{options:{mounting:'B02'}}),/darf nicht verändert werden/);
  // Offener Preis blockiert, auch wenn die Größe angeboten wird; nicht angebotene Größe ebenso.
  assert.throws(()=>katalogFamilyToProduct(f,line,hunde,{size:f.sizes[2],fonts:fonts()}),/Preis offen: 6 × 4 cm$/);
@@ -172,9 +176,9 @@ test('Gedenktafel 22 × 14 (20.10.2026): movable verschiebt alle Elemente, Fotof
  assert.equal(r.rights['foto-1'].move,true);assert.equal(r.rights['foto-1'].replace,true);assert.equal(r.rights['foto-1'].scale,false);
  assert.equal(r.rights['motiv-1'].move,true);assert.equal(r.rights['motiv-1'].scale,true,'Ecken-Pfeile für verschiebbare Motive');const motif=r.template.objects.find(o=>o.type==='motif');assert.equal(motif.locked,undefined);assert.equal(motif.customerEditable,true);
  assert.equal(r.rights['text-1'].move,true);
- // Ohne movable bleibt alles wie bisher: Motiv gesperrt, Foto fest.
+ // Ohne movable bleiben Geometrie und Foto fest; Motive bleiben austausch-/löschbar.
  const fixed=katalogDesignToTemplate(design('pdf-b',false),f,k.theme('namensschilder'),{fonts:fonts()});
- assert.equal(fixed.rights['foto-1'].move,false);assert.equal(fixed.rights['motiv-1'].move,false);assert.equal(fixed.rights['motiv-1'].scale,false);assert.equal(fixed.template.objects.find(o=>o.type==='motif').locked,true);
+ assert.equal(fixed.rights['foto-1'].move,false);assert.equal(fixed.rights['motiv-1'].move,false);assert.equal(fixed.rights['motiv-1'].scale,false);assert.equal(fixed.rights['motiv-1'].replace,true);assert.equal(fixed.rights['motiv-1'].delete,true);assert.equal(fixed.template.objects.find(o=>o.type==='motif').locked,undefined);
  // Startdesign der Unterkategorie steht vorn; Platzhalter wird Beispielfoto ohne eigenen Hinweis.
  const t=(res,examples)=>({template:scaleTemplate(res.template,[90,60],[90,60],fonts()),motifs:res.motifs,rights:res.rights,examples});
  const asset='a'.repeat(64),sub={...namen,startDesign:'pdf-a'};
@@ -315,6 +319,35 @@ test('M: resizing a print motif scales painted stroke widths along with its path
   assert.deepEqual(pathBounds(d),expectedBounds);assert.deepEqual(motif.bounds,expectedBounds);assert.equal(Number(motif.svgFragment.match(/stroke-width="([^"]+)"/)[1]),expectedWidth);assert.match(motif.svgFragment,/stroke="#0066cc"/);assert.match(motif.svgFragment,/fill="none"/);
  }
  assert.deepEqual(converted.motifs,before);assert.equal(scaleEmbeddedMotifs(converted.motifs,1)[0].svgFragment.replace(/d="[^"]*"/,''),before[0].svgFragment.replace(/d="[^"]*"/,''),'identity scaling preserves every paint attribute; existing path whitespace normalization is unchanged');
+});
+
+test('Gravurimport erhält offene Konturen, Aussparungen und Deckkraft bis zum validierten Prüfprodukt',()=>{
+ const k=katalog(),family=k.families.get('test-schilder'),line=k.lines.get('test-linie');
+ const svg='<svg viewBox="0 0 90 60"><g id="motiv-1" fill="none" stroke="#0066cc" stroke-width="0.6" opacity="0.5"><path d="M10 10 L20 10 L20 20"/><path d="M22 10 L30 10 L30 20 Z" fill="#ff0000" fill-rule="evenodd" stroke="none" opacity="0"/><path d="M32 10 L40 10 L40 20" stroke-width="0" opacity="1"/></g><path id="guide-1" d="M5 5 L7 5 L7 7 Z"/></svg>';
+ const source={...herz(k),svg:()=>svg},converted=katalogDesignToTemplate(source,family,null,{fonts:fonts()}),fragment=converted.motifs[0].svgFragment;
+ assert.match(fragment,/<path d="M10 10 L20 10 L20 20" fill="none" fill-rule="nonzero" stroke="currentColor" stroke-width="0.6" opacity="0.5"\/>/,'offene Kontur wird nicht gefüllt und behält Strichstärke');
+ assert.match(fragment,/<path d="M22 10 L30 10 L30 20 Z" fill="currentColor" fill-rule="evenodd" opacity="0"\/>/,'Aussparungsregel, keine Kontur und explizite Unsichtbarkeit bleiben erhalten');
+ assert.match(fragment,/<path d="M32 10 L40 10 L40 20" fill="none" fill-rule="nonzero" stroke="currentColor" stroke-width="0"\/>/,'explizite Nullbreite überschreibt die Gruppe');
+ assert.doesNotMatch(fragment,/#0066cc|#ff0000/,'Gravurfarbe kommt weiterhin aus dem Verfahrensprofil');
+ assert.deepEqual(converted.rights['guide-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});assert.equal(converted.template.objects[1].locked,true);
+ const scaled=scaleEmbeddedMotifs(converted.motifs,2);assert.match(scaled[0].svgFragment,/stroke-width="1.2" opacity="0.5"/);assert.match(scaled[0].svgFragment,/fill-rule="evenodd" opacity="0"/);
+ const document=katalogFamilyToProduct(family,line,line.subcategories[0],{size:family.sizes[0],fonts:fonts(),templates:[converted]}).document;
+ assert.doesNotThrow(()=>validateProductDocument(document));assert.equal(document.config.localResources.motifs[0].svgFragment,fragment);
+ const invalid=structuredClone(document);invalid.config.localResources.motifs[0].svgFragment=fragment.replace('opacity="0.5"','opacity="2"');assert.throws(()=>localFontIds(invalid.config),/nicht erlaubte Inhalte/);
+ invalid.config.localResources.motifs[0].svgFragment=fragment.replace('opacity="0.5"','onload="alert(1)"');assert.throws(()=>localFontIds(invalid.config),/nicht erlaubte Inhalte/);
+ const tiny=structuredClone(document);tiny.config.localResources.motifs[0].svgFragment=fragment.replace('opacity="0.5"','opacity="1e-7"');assert.doesNotThrow(()=>localFontIds(tiny.config));
+ assert.throws(()=>katalogDesignToTemplate({...source,svg:()=>svg.replace('opacity="0.5"','opacity="1.1"')},family,null),/opacity muss zwischen 0 und 1/);
+ assert.throws(()=>katalogDesignToTemplate({...source,svg:()=>svg.replace('stroke-width="0.6"','stroke-width="-0.6"')},family,null),/stroke-width darf nicht negativ/);
+ assert.equal(source.svg(),svg,'Quell-SVG bleibt unverändert');
+});
+
+test('randlaufende Rahmen und Motive sind keine Corel-Plattenfläche (Issue 63: Gravur bis zum Rand)',()=>{
+ const k=katalog(),family=k.families.get('test-schilder'),convert=body=>katalogDesignToTemplate({...herz(k),svg:()=>'<svg viewBox="0 0 90 60">'+body+'</svg>'},family,null,{fonts:fonts()});
+ const frame=convert('<path id="deko-1" d="M0 0 L90 0 L90 60 L0 60 Z" fill="none" stroke="#000000" stroke-width="0.5"/>');
+ assert.equal(frame.template.objects.length,1);assert.deepEqual(frame.motifs[0].bounds,[0,0,90,60]);assert.match(frame.motifs[0].svgFragment,/fill="none".*stroke="currentColor"/);
+ const motif=convert('<path id="motiv-1" d="M0 60 L45 0 L90 60 Z" fill="#000000"/>');
+ assert.equal(motif.template.objects.length,1);assert.equal(motif.notes.length,0,'volle Hüllbox bedeutet nicht volle Fläche');
+ const translucent=convert('<path id="motiv-1" d="M0 0 L90 0 L90 60 L0 60 Z" opacity="0.5"/>');assert.equal(translucent.template.objects.length,1);
 });
 
 test('one source text group with several text nodes becomes one editable multiline field without dropping lines',()=>{

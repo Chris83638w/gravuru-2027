@@ -83,5 +83,5 @@
  :host([data-ux-layout][data-ux-neutral]) .completion-motif-nav [data-ux]{padding:6px!important;font-size:12px!important}
  :host([data-ux-layout][data-ux-neutral]) .workflow-motif-entry .ux-motif-pricing{margin:6px 0 8px!important;padding:6px 8px;font-size:12px;line-height:1.35}
  :host([data-ux-layout][data-ux-neutral]) .workflow-motif-entry [data-bestseller-grid]>button{min-height:88px!important;padding:4px!important;font-size:12px!important}
- :host([data-ux-layout][data-ux-neutral]) .workflow-motif-entry [data-bestseller-grid]>button>svg{width:48px!important;height:48px!important;max-height:48px!important}
+ :host([data-ux-layout][data-ux-neutral]) .workflow-motif-entry [data-bestseller-grid]>button>svg{width:48px!important;height:48px!important;min-height:48px!important;max-height:48px!important}
 }

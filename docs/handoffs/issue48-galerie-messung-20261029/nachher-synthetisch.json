@@ -1,0 +1,95 @@
+{
+  "schema": "gravuru-gallery-copy-benchmark/v1",
+  "sourceLabel": "synthetic-572MB-covering-index",
+  "measurement": "local gallery plus exact source-binding checks; no live HTTP/proxy proof",
+  "sha256": {
+    "db": "7646d397ba489e4031b857deb92c6d28edf3abe6a2dde77469a80f95fddeb12e"
+  },
+  "cold": {
+    "ms": 4148.9,
+    "status": "preparing",
+    "cards": null,
+    "firstPage": 0
+  },
+  "warm": {
+    "ms": 156.02,
+    "status": "ready",
+    "cards": 1,
+    "firstPage": 1
+  },
+  "preparationMs": 6119.6,
+  "measurements": [
+    {
+      "event": "shop_gallery_cache_miss",
+      "storeId": "synthetic"
+    },
+    {
+      "event": "shop_gallery_binding_measure",
+      "storeId": "synthetic",
+      "activeRowsMs": 0.25610000000000355,
+      "documentReadMs": 1059.9621999999981,
+      "documentParseMs": 383.6783999999989,
+      "documentHashMs": 2248.0781999999995,
+      "bindingReadMs": 13.981799999999623,
+      "products": 64,
+      "bindings": 64,
+      "totalMs": 3712.4886
+    },
+    {
+      "event": "shop_gallery_build_measure",
+      "storeId": "synthetic",
+      "registryMs": 3719.7358999999997,
+      "modelMs": 2211.4341000000013,
+      "profileMs": 12.21589999999378,
+      "selectionMs": 14.791800000007242,
+      "models": 64,
+      "bindings": 64,
+      "cards": 64,
+      "totalMs": 6023.1089
+    },
+    {
+      "event": "shop_gallery_cache_saved",
+      "storeId": "synthetic",
+      "ms": 12.024599999999737
+    }
+  ],
+  "revisionMs": 3.483099999999922,
+  "revisionReads": 7,
+  "peakRssMiB": 543.56,
+  "lightweightProductReads": 64,
+  "fullModelReads": 0,
+  "assetReads": 0,
+  "activeBindings": 64,
+  "readOnly": true,
+  "afterProcessRestart": {
+    "cold": {
+      "ms": 144.43,
+      "status": "ready",
+      "cards": 1,
+      "firstPage": 1
+    },
+    "warm": {
+      "ms": 144.54,
+      "status": "ready",
+      "cards": 1,
+      "firstPage": 1
+    },
+    "preparationMs": 145.13,
+    "measurements": [
+      {
+        "event": "shop_gallery_cache_hit",
+        "storeId": "synthetic",
+        "ms": 0.7692000000000121
+      }
+    ],
+    "revisionMs": 2.0032000000000494,
+    "revisionReads": 6,
+    "peakRssMiB": 298.78,
+    "lightweightProductReads": 0,
+    "fullModelReads": 0,
+    "assetReads": 0,
+    "activeBindings": 64,
+    "readOnly": true
+  },
+  "copyUnchanged": true
+}

@@ -39,7 +39,12 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
  :host([data-doorbell-presentation]) .m-options>label,
  :host([data-doorbell-presentation]) .m-option-fields [data-m-field-row="position"]{display:none!important}
  :host([data-doorbell-presentation]) .m-option-pictures>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 18px}
- :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="format"]{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="format"],:host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="position"]{grid-template-columns:minmax(0,1fr)!important;padding:12px;border:1px solid #dce0e4;border-radius:10px;background:#fff}
+ :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile[data-picture-group="format"],:host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile[data-picture-group="position"]{grid-template-columns:48px minmax(0,1fr) auto!important;grid-template-rows:auto auto;align-items:center;justify-items:start;min-height:56px!important;column-gap:12px!important;padding:7px 12px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] svg,:host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="position"] svg{grid-column:1;grid-row:1/3;width:48px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] strong,:host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="position"] strong{grid-column:2;grid-row:1;text-align:left}
+ :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] small{grid-column:2;grid-row:2}
+ :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] small:last-of-type{grid-column:3;grid-row:1/3;white-space:nowrap;padding-right:14px}
  :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="frame"]{grid-template-columns:repeat(4,minmax(0,1fr))!important}
  :host([data-doorbell-presentation]) .m-option-pictures h3{grid-column:1/-1;margin:0 0 2px;font-size:16px}
  :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile{padding:7px 5px!important;min-height:76px!important;border-radius:8px!important;gap:3px!important}
@@ -97,4 +102,5 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
   if(focus)pictures.querySelector('[data-picture-group="'+CSS.escape(focus.group)+'"][data-picture-option="'+CSS.escape(focus.value)+'"]')?.focus({preventScroll:true});
  };
 }
+
 

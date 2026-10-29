@@ -34,6 +34,16 @@ export function prepareDoorbellDesignRepair(input){
    return {...clone(old),objects,marks:[]};
   });
  }
+ // Chris, 29.10.2026: individual doorbell design elements may move/delete.
+ // Persist rights in the proposed revision, rather than bypassing client guards.
+ for(const f of result.doorbell.formats)for(const d of f.profile.designs)for(const o of d.objects){
+  if(!['text','motif'].includes(o.type)||o.technicalLocked||o.locked||o.acrylicFixed)continue;
+  o.customerEditable=true;
+  if(result.workshopElementRights){
+   const rights=result.workshopElementRights[d.id]??={};
+   rights[o.id]={...rights[o.id],move:true,delete:true,...(o.type==='motif'?{replace:true}:{})};
+  }
+ }
  result.profile.designs=clone(result.doorbell.formats.find(f=>f.key===result.doorbell.defaultFormatKey).profile.designs);
  return {input:result,mappings};
 }

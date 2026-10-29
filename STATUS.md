@@ -1,3 +1,7 @@
+## 2026-10-29 – Codex/Astra: Format-/Positionsblöcke und bearbeitbare Designelemente (PR #60)
+
+Nutzerauftrag: Format und Position untereinander; Designtexte und Motive verschieb-/löschbar. Kompakte Auswahlzeilen und Rechte in vorbereiteten neuen Revisionen umgesetzt, ohne Frontend-Bypass. 14/14 Tests, Build, 126 Produktkopien / 42 Modelle / 30.240 Auswahlfälle sowie 47.628 Elementfälle für move/delete geprüft. Browser-Löschen, Rückgängig und unabhängiges Verschieben des Kreismotivs bestanden. Nur Vorschau/eigener Branch. Bericht: docs/handoffs/2026-10-29-funkklingeln-bloecke-elementrechte.md. Nächster Schritt: Revisionsänderung bei späterer Katalogübernahme mitführen; kein reines UI-Deployment als Rechtefreigabe ausgeben.
+
 ## 2026-10-29 – Funkklingeln: kompakte Untertabs in Ausführungen (PR #60)
 
 Format & Position / Rahmen & Farbe / Befestigung als Untertabs; Hauptschritte unverändert. Kleinere Kacheln und deutliches Silikon-Tubensymbol. 15/15 gezielte Tests und Build erfolgreich; Desktop, mobile Vorschau, Tastatur, Auswahlpersistenz und SIL-Preis geprüft. Nur eigener Branch/lokale Vorschau, nichts live geändert. Bericht: docs/handoffs/2026-10-29-funkklingeln-ausfuehrung-untertabs.md.

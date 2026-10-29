@@ -1,3 +1,7 @@
+## 29.10.2026 · Codex/Astra · Farbkorrektur nach Chris' Sichtung (PR #58)
+
+Neuen Grünton durch neutrales Grau für Textleiste, Schriftwahl, Eingabefokus und Motivpreishinweis ersetzt. Reine CSS-Korrektur, Build und lokale Sichtprüfung erfolgreich; Feldinhalte beim Neuladen erhalten. [Aktuelles Bild und Nachtrag](docs/handoffs/2026-10-29-konfi-sichtpruefung-astra.md). Keine Live-Änderung, kein unnötiger neuer Vollauf.
+
 ## 29.10.2026 · Codex/Astra · Gemeinsame Sichtprüfung umgesetzt (PR #58)
 
 Chris' gesammelte Bedienwünsche umgesetzt: 80 Zeichen/Zeilenumbrüche in neuen Revisionen, wachsende Textfelder, D8 „Heimathafen / von“ als ein Feld im Offline-Kandidaten, Papierkorb/Drehgriff am Element, kompakte Leisten, drei Motivkacheln und sichtbarer Hinweis auf 1,69 € für weitere/geänderte Motive. Originalmotiv inklusive; alte Revisionen bleiben unverändert. **96/96 gezielte Abschlussfälle grün.** Vollauf während Umsetzung: **1868 / 1839 bestanden / 24 Fehler / 5 übersprungen**; eine veraltete Import-Erwartung korrigiert (Modul danach 15/15), die übrigen 23 auf unverändertem `5eeea7f` reproduziert. Kein grüner Vollauf behauptet. Build und lokale Bedienbilder Desktop/390×664/375×548 vorhanden. [Bericht, genaue Zähler und offene Abnahme](docs/handoffs/2026-10-29-konfi-sichtpruefung-astra.md). Neue getrennte Vorschau 8153, bisherige Gestaltung auf 8152 unangetastet. PR #58 bleibt Entwurf; nichts live. Offen: Chris' Sichtfreigabe, Safari, Ziehen am Drehgriff, Linux/Baseline-Befunde und späterer Preisbindungs-/Shop-Test.

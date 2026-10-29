@@ -226,10 +226,13 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    const key=templateId+'-'+id;
    motifs.push({key,svgFragment:layer.paths.map((d,i)=>{const a=layer.pathAttributes?.[i]||{};return '<path d="'+d+'" fill="'+(print?paint(a.fill??'#000000'):'currentColor')+'" fill-rule="'+(print&&a.evenodd?'evenodd':'nonzero')+'"'+(print&&a.stroke?' stroke="'+paint(a.stroke)+'" stroke-width="'+a.strokeMm+'"':'')+(print&&a.opacity!==undefined?' opacity="'+a.opacity+'"':'')+'/>';}).join(''),bounds:[round(bx),round(by),round(bw),round(bh)],embeddedOnly:true});
    const movable=movableAll(design)&&!guide;
-   const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:(print||movable)&&!guide};
+   // Chris 29.10.2026 (AGENTS.md, Issue 61): einzelne Gravurmotive sind immer
+   // löschbar/ersetzbar. Beweglichkeit, Druckdesigns und Hilfsebenen bleiben separat.
+   const editableMotif=!print&&!guide;
+   const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:(print||movable||editableMotif)&&!guide};
    if(!o.customerEditable)o.locked=true;if(guide)o.role='guide';
    // Verschiebbare Motive auch skalierbar (Ecken-Pfeile; Chris 20.10.2026: „die Pfeile sind nicht an den Ecken“).
-   rights[id]={content:false,color:print&&!guide,replace:false,move:movable,scale:movable,delete:false};
+   rights[id]={content:false,color:print&&!guide,replace:editableMotif,move:movable,scale:movable,delete:editableMotif};
    objects.push(o);
   }
  }

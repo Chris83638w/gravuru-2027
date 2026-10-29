@@ -1,3 +1,11 @@
+## 29.10.2026 · Codex/Astra · Issue 61: zwölf Rasse-Designs je Größe, 25 Katzenmuster
+
+- Nutzer: „je größe und rasse 12 verschiedene designs“, auf drei Katzenmuster „weit aus mehr“. Ausgeführt: **5 Hunde + 25 Katzen, 360 Rassenentwürfe / 8.100 SVG/JSON-Paare**, 675 Größen-/Formkombinationen mit je zwölf unterschiedlichen Layouts im Katalogbranch `dev/rasse-schilder-20261029-astra`.
+- Neue Generatoren, Herkunft/Matrix und nativer Prüfstand; Gravurmotive bei Lieferform-2-Import nun unabhängig von Beweglichkeit löschbar/ersetzbar. Guide-Sperren und Druckrechte unverändert. **40/40 gezielte Tests**, Build erfolgreich, **8.100/8.100 Passungen**; Quell-Hashes, Schriften, editierbare Texte und offene Freigaben geprüft.
+- **1.140 echte Konfiguratoraufnahmen / 95 Kontaktbögen**, null Browserfehler oder Textkasten-Überlappungen. Screenshotpixel in den Kontaktbögen rückgeprüft. Im Browser Name geändert, Porträt gelöscht und rückgängig gemacht; Ersetzrecht aktiv. Vollständiger Katalogbau: elf PDFs, elf PNGs, Excel acht Blätter, KATALOG.md inhaltlich identisch.
+- [Übergabe, Quellen und Reproduktion](docs/handoffs/2026-10-29-rasse-schilder-astra.md). Eigene Katzenmotive samt Original-PNG/Prompt ausschließlich unter `motive-eigene/`; kein Kundenbibliotheks-, Live- oder Shopify-Schreiben, kein Merge. Review-Commits unsigned, da kein Signaturschlüssel eingerichtet.
+- Nächster Schritt: Chris prüft die Galerie und bestätigt Stil/Katzenauswahl; danach weitere Hunderassen gemäß Nachricht 1. Mindestlinienstärke und echte Gravurprobe vor Fertigungsfreigabe offen. Postfach-Issue 61 offen lassen.
+
 ## 29.10.2026 · Claude als Operator · Live: PR #52 + PR #49 (`main` `62ead38`)
 
 - Chris (13:10): „Ja, Du darfst PR #52 nach main übernehmen, bereitstellen und die App zweimal neu starten.“ → Merge `3db5b7a` (Baum = PR-Stand, Linux **1816/1816**), Plesk Pull/Bereitstellen, Neustart 1 um 13:17.

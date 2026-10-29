@@ -1,3 +1,8 @@
+## 29.10.2026 · Codex/Astra · PR #60 nach Chris' Rückmeldung: AOSU-Auswahl und Materialien
+
+- Vier Schritte oben unverändert. Runde Farbfelder, kompakte Format-/Rahmensilhouetten gemäß AOSU-Referenz; große Produktkarten der Optionsauswahl zurückgenommen. Vorhandene leere Edelstahltextur, Acrylkante und dezenter Glanz nur in der Vorschau.
+- 24/24 gezielte Tests und Build grün; erneut 126 Produkte / 42 Modelle / 30.240 Auswahlfälle. Keine Daten-/Preisänderung und kein Livezugriff. [Nachtrag mit Quellen und aktuellen Bildern](docs/handoffs/2026-10-29-funkklingeln-aosu-auswahl-nachtrag.md).
+
 ## 29.10.2026 · Codex/Astra · Funkklingel-Pilot: Vorschau/Bildauswahl korrigiert, nur Review
 
 - Eigener Branch `dev/funkklingeln-vorschau-bildauswahl-20261029-astra`, Basis `2717da5`. Große formatgerechte Platte und Maßlinien; Bildauswahl Format/Position/Rahmen/Farbe; 16 native Designs ohne wiederholte Produktkarten. Formatbezogene Rechte-Reparatur und Text-Einpassfläche korrigiert.

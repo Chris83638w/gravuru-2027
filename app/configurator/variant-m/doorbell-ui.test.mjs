@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {designArea,designAreaOutline} from './design-area.mjs';
+import {DOORBELL_STEEL_SURFACE} from '../../platform/sources/app/shared/models/doorbell-material-preview.mjs';
 
 const design={id:'D1',name:'Formatvorschau',objects:[],marks:[]};
 test('native layered previews retain the original black and anthracite material gradients',()=>{
@@ -10,6 +11,19 @@ test('native layered previews retain the original black and anthracite material 
  assert.match(black,/<stop stop-color="#222426"\/><stop offset=".7" stop-color="#111214"\/><stop offset="1" stop-color="#1a1c1e"\/>/);
  assert.match(anthracite,/<stop stop-color="#474b50"\/><stop offset=".7" stop-color="#33383e"\/><stop offset="1" stop-color="#3e444a"\/>/);
  assert.match(black,/<stop stop-color="#f1f2f2"\/><stop offset=".25" stop-color="#b6bcc0"\/>/);
+});
+test('native materials use the empty steel reference and stored acrylic thickness without changing geometry',()=>{
+ for(const [w,h] of [[160,280],[240,200],[350,180]]){
+  const p=profile(w,h);p.doorbellSchema='gravuru-doorbell/v1';delete p.admin.steelImageUrl;p.frames[0].acrylic.thicknessMm=3;
+  const before=structuredClone(p),svg=studioSvg(p,design,{},{});
+  assert.ok(svg.includes('href="'+DOORBELL_STEEL_SURFACE+'"'));
+  assert.match(svg,/data-role="guide" data-doorbell-steel="textured"/);
+  assert.match(svg,/data-role="guide" data-doorbell-acrylic="polished"/);
+  assert.match(svg,/preserveAspectRatio="xMidYMid slice"/);
+  assert.doesNotMatch(svg,/steel-reference-v4|Heimathafen|Charlotte/);
+  assert.ok(svg.includes('x="10.75" y="11.14"'));
+  assert.deepEqual(p,before);
+ }
 });
 function profile(width,height,opposite=false){
  const bell={x:width>height?width-65:(width-50)/2,y:width>height?20:height-130,width:50,height:110};
@@ -50,4 +64,5 @@ test('New doorbell design bounds can be below or beside the device; legacy speci
  const old={doorbell:{schema:'gravuru-aosu-specimen/v1'},profile:{geometry:{width:160,height:280,bell:{y:145},safeMarginMm:2}}};
  assert.deepEqual(designArea(old),{left:2,top:2,right:158,bottom:143});
 });
+
 

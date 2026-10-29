@@ -13,6 +13,7 @@ export function doorbellChoiceGroups(config,options){
  return ['format','position','frame','color','mounting'].map(id=>id==='position'?position:groups.find(g=>g.id===id)).filter(Boolean);
 }
 export function doorbellChoicePreview(config,options,groupId,value){
+ if(groupId==='mounting'&&value.id==='SIL')return '<svg viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(24 24 24)" stroke="#48515a" stroke-width="1.4" stroke-linejoin="round"><path d="M22 3h4l3 12H19Z" fill="#f4f5f6"/><rect x="18" y="15" width="12" height="5" rx="1" fill="#ccd2d7"/><path d="M18 17h12"/><rect x="15" y="20" width="18" height="24" rx="2" fill="#fff"/><path d="M15 26h18v11H15Z" fill="#dde6e8"/><path d="M17 41h14"/><text x="24" y="33.7" text-anchor="middle" font-family="Arial,sans-serif" font-size="5.7" font-weight="700" fill="#48515a" stroke="none">SIL</text></g></svg>';
  if(groupId==='mounting')return optionTileIcon(value,{mounting:true});
  if(groupId==='color')return '<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="21" fill="'+(value.id==='anthrazit'?'#3b4046':'#151719')+'"/><path d="M8 14A17 17 0 0 1 34 10" fill="none" stroke="#fff" stroke-opacity=".22"/></svg>';
  const selected={...options,[groupId]:value.id},p=selectedDoorbellProfile(config,selected);
@@ -28,14 +29,24 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
  el.setAttribute('data-doorbell-presentation','');
  const style=document.createElement('style');
  style.textContent=`
+ :host([data-doorbell-presentation]) .doorbell-option-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;border-bottom:1px solid #dce0e4;margin:0 0 14px}
+ :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .doorbell-option-tabs button{min-height:44px!important;padding:8px 5px!important;font-size:13px!important;line-height:1.3!important;border:0!important;border-radius:6px 6px 0 0!important;background:transparent!important;color:#4c5359!important;box-shadow:none!important}
+ :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .doorbell-option-tabs button[aria-selected="true"]{background:#f0f2f3!important;color:#20272c!important;box-shadow:inset 0 -2px #485761!important;font-weight:600!important}
+ :host([data-doorbell-presentation]) .doorbell-option-tabs button:focus-visible{outline:2px solid #526573;outline-offset:2px}
+ :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="layout"]>[data-choice-group]:not([data-choice-group="format"]):not([data-choice-group="position"]),
+ :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="appearance"]>[data-choice-group]:not([data-choice-group="frame"]):not([data-choice-group="color"]),
+ :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="mounting"]>[data-choice-group]:not([data-choice-group="mounting"]){display:none!important}
  :host([data-doorbell-presentation]) .m-options>label,
  :host([data-doorbell-presentation]) .m-option-fields [data-m-field-row="position"]{display:none!important}
  :host([data-doorbell-presentation]) .m-option-pictures>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 18px}
  :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="format"]{grid-template-columns:repeat(3,minmax(0,1fr))!important}
  :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="frame"]{grid-template-columns:repeat(4,minmax(0,1fr))!important}
  :host([data-doorbell-presentation]) .m-option-pictures h3{grid-column:1/-1;margin:0 0 2px;font-size:16px}
- :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile{padding:8px 5px!important;min-height:96px!important;border-radius:8px!important;gap:5px!important}
- :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile svg{width:100%!important;height:48px!important;max-height:48px!important}
+ :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile{padding:7px 5px!important;min-height:76px!important;border-radius:8px!important;gap:3px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile svg{width:100%!important;height:36px!important;max-height:36px!important}
+ :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures [data-picture-group="mounting"]{grid-template-columns:44px 1fr;grid-template-rows:auto auto;justify-items:start;align-content:center;column-gap:8px!important;min-height:78px!important;padding:9px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="mounting"] svg{grid-row:1/3;width:44px!important;height:44px!important;max-height:44px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="mounting"] strong,:host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="mounting"] small{text-align:left}
  :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile strong{font-size:13px!important;font-weight:500!important}
  :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile small{font-size:12px!important}
  :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="color"]{display:flex!important;flex-wrap:wrap;gap:18px!important}
@@ -46,7 +57,6 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
  :host([data-doorbell-presentation]) .m-option-pictures .doorbell-color-choice[aria-pressed="true"]{outline:2px solid #526573;outline-offset:3px}
  :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .doorbell-color-choice{border-radius:50%!important;border:0!important;background:transparent!important;padding:0!important}
  :host([data-doorbell-presentation]) .doorbell-color-choice .completion-check{display:none!important}
- :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="mounting"] svg{width:36px!important;height:36px!important}
  :host([data-doorbell-presentation]) .m-option-pictures svg svg{width:revert!important;height:revert!important}
  :host([data-doorbell-presentation]) .m-option-pictures button[aria-pressed="true"]{border:2px solid #235f48;background:#f0f6f2}
  :host([data-doorbell-presentation]) .m-option-pictures button:focus-visible{outline:3px solid #235f48;outline-offset:3px}
@@ -54,6 +64,21 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
  :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .ux-design-reveal .c-gallery .c-design-card svg:not(svg svg){width:100%!important;height:155px!important;aspect-ratio:auto!important}
  `;
  el.shadowRoot.append(style);let previous='';
+ const sections=[['layout','Format & Position'],['appearance','Rahmen & Farbe'],['mounting','Befestigung']];
+ const tabs=document.createElement('nav');tabs.className='doorbell-option-tabs';tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','Ausführung auswählen');
+ tabs.innerHTML=sections.map(([key,label])=>'<button type="button" role="tab" id="doorbell-option-'+key+'" data-doorbell-option-tab="'+key+'" aria-controls="doorbell-options-panel">'+esc(label)+'</button>').join('');
+ pictures.before(tabs);pictures.id='doorbell-options-panel';pictures.setAttribute('role','tabpanel');
+ function showSection(key,focus=false){
+  pictures.dataset.optionSection=key;pictures.setAttribute('aria-labelledby','doorbell-option-'+key);
+  for(const b of tabs.children){const active=b.dataset.doorbellOptionTab===key;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;if(active&&focus)b.focus();}
+ }
+ tabs.addEventListener('click',e=>{const b=e.target.closest('[data-doorbell-option-tab]');if(b)showSection(b.dataset.doorbellOptionTab);});
+ tabs.addEventListener('keydown',e=>{
+  if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
+  const i=sections.findIndex(([key])=>key===e.target.dataset.doorbellOptionTab);if(i<0)return;
+  e.preventDefault();e.stopPropagation();const next=e.key==='Home'?0:e.key==='End'?sections.length-1:(i+(e.key==='ArrowRight'?1:-1)+sections.length)%sections.length;showSection(sections[next][0],true);
+ });
+ showSection('layout');
  return options=>{
   const signature=JSON.stringify(['format','position','frame','color','mounting'].map(k=>options[k]));
   if(previous===signature)return;previous=signature;

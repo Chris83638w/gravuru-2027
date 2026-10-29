@@ -1,3 +1,7 @@
+## 2026-10-29 – Funkklingeln: kompakte Untertabs in Ausführungen (PR #60)
+
+Format & Position / Rahmen & Farbe / Befestigung als Untertabs; Hauptschritte unverändert. Kleinere Kacheln und deutliches Silikon-Tubensymbol. 15/15 gezielte Tests und Build erfolgreich; Desktop, mobile Vorschau, Tastatur, Auswahlpersistenz und SIL-Preis geprüft. Nur eigener Branch/lokale Vorschau, nichts live geändert. Bericht: docs/handoffs/2026-10-29-funkklingeln-ausfuehrung-untertabs.md.
+
 ## 29.10.2026 · Codex/Astra · PR #60 nach Chris' Rückmeldung: AOSU-Auswahl und Materialien
 
 - Vier Schritte oben unverändert. Runde Farbfelder, kompakte Format-/Rahmensilhouetten gemäß AOSU-Referenz; große Produktkarten der Optionsauswahl zurückgenommen. Vorhandene leere Edelstahltextur, Acrylkante und dezenter Glanz nur in der Vorschau.

@@ -1,10 +1,15 @@
 // Imported designs are passive, immutable SVG images served by the workbench.
 // Never interpolate a uploaded SVG fragment into the customer's live DOM.
 const hash=value=>typeof value==='string'&&/^[a-f0-9]{64}$/.test(value);
+// This path belongs to the immutable product descriptor, not to the host's
+// transport namespace. Keep it unchanged when acrylAssetText rewrites the
+// delivered editor (including its bundle). The authenticated parent resolves
+// these canonical URLs through previewResourceMarkup / loadResources.
+const sourceAssetPath=['','api','workshop','design-assets'].join('/');
 export function artworkFragment(assetId,width=1,height=1){
   if(!hash(assetId))throw Error('Ungültige Designressource.');
   if(![width,height].every(v=>Number.isFinite(v)&&v>0&&v<=2000))throw Error('Ungültige Designabmessungen.');
-  return `<image href="/api/workshop/design-assets/${assetId}/preview.svg" width="${width}" height="${height}" preserveAspectRatio="none"/>`;
+  return `<image href="${sourceAssetPath}/${assetId}/preview.svg" width="${width}" height="${height}" preserveAspectRatio="none"/>`;
 }
 export function isArtworkResource(item){
   const a=item?.artwork;

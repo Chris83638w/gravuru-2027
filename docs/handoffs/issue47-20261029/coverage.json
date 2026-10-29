@@ -1,0 +1,33 @@
+{
+  "knownModels": 42,
+  "preparedMainProducts": 126,
+  "shopifyVariants": 15120,
+  "knownFormats": [
+    "16x28",
+    "24x20",
+    "35x18"
+  ],
+  "additionalSourceDevices": 8,
+  "additionalFormatPreparations": 24,
+  "additionalGroups": [
+    {
+      "devices": 3,
+      "formats": [
+        "17x30",
+        "26x22",
+        "38x20"
+      ]
+    },
+    {
+      "devices": 5,
+      "formats": [
+        "18x32",
+        "34x24",
+        "42x24"
+      ]
+    }
+  ],
+  "additionalNamesConfirmed": 0,
+  "readyForLive": false,
+  "liveChanges": 0
+}

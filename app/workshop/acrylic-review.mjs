@@ -30,7 +30,7 @@ const keys=(o,allowed)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.ke
 // come from the pinned server record. The submitted PNG is a visual reference,
 // explicitly not server-verified artwork or a production file.
 export function validateAcrylicReview(record,config,input){
- keys(input,['productId','productRevision','designId','objects','options','quantity','media','preview','customerPreview','ui']);
+ keys(input,['productId','productRevision','designId','objects','options','quantity','media','preview','customerPreview','ui','textOnTop']);
  const ui=editorUi(input.ui);
  if((!config.acrylic&&!config.doorbell&&!['slate','steel'].includes(config.profile?.material?.kind))||input.productId!==record.id||input.productRevision!==record.revision)fail('Produkt und feste Revision stimmen nicht überein.');
  if(!Number.isSafeInteger(input.quantity)||input.quantity<1||input.quantity>99)fail('Menge: 1 bis 99.');
@@ -39,7 +39,7 @@ export function validateAcrylicReview(record,config,input){
  // Schriften, die nativeReviewConfig für dieses Produkt freigegeben und mit Pfaden geladen hat (z. B. importierte
  // Profilschriften „Lato Regular · …“), gelten bei der Inhaltsprüfung als vorhanden – nur in diesem Prüfpfad.
  const document={...record.document,config:{...record.document.config,localResources:{...record.document.config.localResources,fonts:{...record.document.config.localResources?.fonts,...config.localResources.fonts}}}};
- const design=validateProductDesign(document,{...structuredClone(source),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
+ const design=validateProductDesign(document,{...structuredClone(source),...(input.textOnTop!==undefined?{textOnTop:input.textOnTop}:{}),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  const resolved=resolveProduct(record.document,{options:input.options,designId:source.id});
  const price=commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity);
  // Hidden layers remain editable; their originals belong to this immutable revision.

@@ -222,6 +222,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
 export function validateDesign(config, design, options, fonts, motifs, {template=false,draft=false}={}) {
   const source = selectedProfile(config,options).designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
+  if(design.textOnTop!==undefined&&typeof design.textOnTop!=='boolean')fail('Ungültige Textebenen-Regel.');
   if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
   validateDesignContent(design, {universal:true,extraFontIds:localFontIds(config)});
   // Local logo uploads carry an opaque upload id, like photo slots. They are not
@@ -337,7 +338,7 @@ export function editedDesignTexts(config,state){
 export function designFromState(config, state, values=state.mOptions||{}) {
   const source = selectedProfile(config,values).designs.find(d => d.id === state.designId);
   if (!source) fail('Unbekanntes Design.');
-  return {...clone(source), objects:state.objects.map(cleanObject)};
+  return {...clone(source), textOnTop:true, objects:state.objects.map(cleanObject)};
 }
 export function saveDraft(config, state, options, fonts, motifs, {draft=false}={}) {
   const design = designFromState(config, state, options);

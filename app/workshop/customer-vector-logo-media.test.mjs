@@ -52,6 +52,20 @@ test('server preview accepts only an explicitly enabled steel revision and retur
  await assert.rejects(()=>customerVectorLogoPreview(f.config,{name:'logo.svg',original:ORIGINAL.toString('base64'),priceCents:0}),/nur die SVG/);
 });
 
+test('text-on-top survives immutable saving and production while historical packages retain their order',async()=>{
+ const f=fixture(),{input}=await inputFor(f);
+ for(const textOnTop of [undefined,true]){
+  const bundle=await prepareAcrylicReview({...f,input:{...input,...(textOnTop?{textOnTop}:{})},assets:{},preparePhoto});
+  const saved=readReviewPackage(bundle.package,bundle.manifest.packageSha256,['gravuru-native-review/v1']);
+  const design=JSON.parse(saved.files.get('produkt-und-gestaltung.json')).state.design;
+  assert.equal(design.textOnTop,textOnTop);
+  assert.deepEqual(design.objects.map(o=>o.id),input.objects.map(o=>o.id));
+  const artwork=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256,{engraving:true});
+  assert.deepEqual([...artwork.svg.matchAll(/data-field="([^"]+)"/g)].map(m=>m[1]),textOnTop?['native-1','native-0']:['native-0','native-1']);
+ }
+ await assert.rejects(()=>prepareAcrylicReview({...f,input:{...input,textOnTop:'yes'},assets:{},preparePhoto}),/Textebenen/);
+});
+
 test('immutable review, production and cart restore preserve approved vector bytes, placement, original and drilling',async()=>{
  const f=fixture(),{input,media,object}=await inputFor(f);
  const bundle=await prepareAcrylicReview({...f,input,assets:{},preparePhoto}),saved=readReviewPackage(bundle.package,bundle.manifest.packageSha256,['gravuru-native-review/v1']),entry=saved.manifest.photos[0];

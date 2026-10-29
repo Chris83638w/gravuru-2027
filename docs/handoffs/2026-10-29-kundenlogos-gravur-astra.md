@@ -53,9 +53,9 @@ node --test --test-concurrency=1 app/configurator/variant-m/logo-upload.test.mjs
 4. Nach autorisierter Installation echter Warenkorb/Checkout und Wiederbearbeitung. Lokale Tests ersetzen diesen Nachweis nicht.
 5. **Mindeststärke und Gravurergebnis bleiben eine reale Werkstattprüfung.** Für beliebige gefüllte Pfade wird keine automatische 0,5-mm-Mindeststärkenmessung behauptet. Manifest/Produktionsbericht tragen `detailCheck:"manual-required"`, `minFeatureUnits:null`. Schmale Stege, Aussparungen und farblich getrennte Buchstaben in endgültiger Größe prüfen.
 
-## Gesammelte Layoutpunkte – noch nicht umgesetzt
+## Gesammelte Layoutpunkte – inzwischen umgesetzt
 
-Diese Rückmeldungen nach Wahl von Designrichtung 6 bleiben für die gemeinsame Besprechung erhalten:
+Diese Rückmeldungen nach Wahl von Designrichtung 6 wurden anschließend von Chris zur Umsetzung freigegeben. Umsetzung, Bilder und Prüfungen stehen im [Nachtrag vom 30.10.](2026-10-30-konfi-layout-nachtrag-astra.md). Die Liste bleibt als ursprüngliche Anforderung erhalten:
 
 1. Direktes Texteingabefeld auf der Platte moderner, Editiertext größer.
 2. Schriftübernahme-Dialog: „Nur diesen Text ändern“ links, „Auf ausgewählte Texte übertragen“ rechts.

@@ -1,3 +1,4 @@
+import {designPaintOrder} from '../platform/sources/app/shared/models/design-layer-order.mjs';
 import {doorbellSeparations} from './doorbell-artwork.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {photoColorMode} from '../platform/sources/app/shared/models/photo-color.mjs';
@@ -52,7 +53,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  if(geometry.widthMm!==manifest.product.widthMm||geometry.heightMm!==manifest.product.heightMm)fail('Das gesicherte Druckformat stimmt nicht überein.');
  const maskFor=(o,id)=>{const bytes=o.photoMaskAssetId&&files.get('quellen/'+o.photoMaskAssetId+'-vorschau.svg');if(o.photoShape==='template'&&!bytes)fail('Original-Fotomaske fehlt im gesicherten Stand.');const clip=photoClip(o,id,bytes?dataSvg(bytes):undefined);clip.defs=clip.defs.replace('<mask ',`<mask data-mask-scale="${viewport.scale}" `);return clip;};
  const transform=o=>`translate(${number(viewport.x)} ${number(viewport.y)}) scale(${number(viewport.scale)}) translate(${o.x} ${o.y}) rotate(${o.rotation||0})`;
- for(const [index,o] of design.objects.entries()){
+ for(const [index,o] of designPaintOrder(design).map(o=>[design.objects.indexOf(o),o])){
   if(o.uxHidden||isGuideObject(o))continue; // Ü6.1: Hilfsebenen sind Vorschau, nie Fertigung
   if(objectSurface(o)!==surfaceId)continue; // Ü15.1: je Fläche eine eigene Datei
   const field='native-'+index,color=engraving?'#000000':elementColor(config.profile,o);let body='';

@@ -95,7 +95,7 @@ export async function installWorkflow(api){
   if(hit){o.x=hit.x;o.y=hit.y;if(hit.scale<1){shrinkTo(o,hit.scale);say((o.type==='text'?'Text':'Element')+' in einer freien Fläche platziert – dafür verkleinert.');}}
   else{const f=surface();o.x=f.x+f.width/2;o.y=f.y+f.height/2;el.state.selected=o.id;say(NO_FREE_SPACE_MESSAGE);}
  }
- const may=(o,right)=>!o.uxLocked&&legacyElementRights(o)[right]&&canEditElement(config,el.state.designId,o,right);
+ const may=(o,right)=>!o.uxLocked&&(config?.workshopElementRights?canEditElement(config,el.state.designId,o,right):legacyElementRights(o)[right]);
  let motifMode='replace';
  const motifTarget=()=>motifChoiceTarget(el.state.objects,el.state.selected,chosenProfile().designs.find(d=>d.id===el.state.designId)?.objects);
  const add=el.add;el.add=function(...args){
@@ -105,6 +105,9 @@ export async function installWorkflow(api){
    if(target){
     if(!may(target,'replace')){say('Das Vorlagenmotiv ist in diesem Produktstand noch nicht zum Ersetzen freigegeben.');return;}
     const replacement=replacedMotif(target,args[0].motif,this.catalog.motif_bounds[args[0].motif]);
+    // Replacement is independent of scale. The renderer fits the new motif
+    // proportionally inside this unchanged viewport when size is fixed.
+    if(!may(target,'scale')){replacement.w=target.w;replacement.h=target.h;}
     this.record();Object.assign(target,replacement);this.state.selected=target.id;this.normalize();this.sync();say('Motiv ersetzt.');return;
    }
   }

@@ -1,3 +1,7 @@
+## 29.10.2026 · Codex/Astra · Issue #48 Nachrichten 12–14
+
+Nachricht 12 zuerst behoben (f4136b0, 73/73 gezielte Tests). Danach Motivrechte an Chris' Regel ausgerichtet und sechs Erzeugungswege geprüft: Einzelmotive unabhängig von Bewegung ersetz-/löschbar; ganze Druck-Designs nur bei ausdrücklicher Kennzeichnung geschützt. **132/132 gezielte Tests**, Kennzeichnungsnachprüfung 1/1; kein weiterer Vollauf. D8-Folgerevision ausschließlich offline vorbereitet: zwei Rechte geändert, fünf Preise/Geometrien und zwei Originalarchive unverändert. Echter lokaler D8-Editor mit Haus, Entfernen/Rückgängig, Texteingabe und Schriftübernahme geprüft; Bilder Desktop/390 × 664/375 × 548 im [Nachtragsbericht](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). PR #58 bleibt Entwurf. Offen: echter Shop mit Browserumleitung, Safari, Linux für diesen Stand und aktueller D8-Revisionsabgleich. Keine Live-Änderung.
+
 ## 29.10.2026 · Codex/Astra · Issue #48 Nachricht 12
 
 Shop-Einstieg vom Editor-Vertrag getrennt, gesamte Importkette gegen die tatsächliche Shop-Entry-Auslieferung geprüft. Neuer Regressionstest vor dem Fix rot, danach **73/73 gezielte Tests grün**, kein Vollauf. Gewählte Ausführung/Menge bleiben erhalten; vollständige Validierung unverändert im Editor/Server. [Regeln, Nachweise und offene Shop-Abnahme](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). PR #58 bleibt Entwurf, nichts live. Nächster Schritt: Nachricht 13, Motivrechte und neuer D8-Stand nur vorbereiten.

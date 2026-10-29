@@ -64,7 +64,7 @@ export function planCustomerFields(repository,assets,id,input){
   const svg=studioSvg(checked.config.profile,current,checked.config.localResources.fonts,{motifs:checked.config.localResources.motifs,handles:false});
   const token=sha256(JSON.stringify({id,expectedRevision:input.expectedRevision,document:checked}));
   return {document:checked,designId:design.id,expectedRevision:record.revision,token,svg,fields:current.customerFields,
-    warnings:['Die Originalgrafik bleibt unverändert. Bereits enthaltene Texte und Fotos werden nicht entfernt oder automatisch editierbar.','Die Originalgrafik und Fotomaske bleiben gesperrt. Textposition, Größenänderung und Entfernen werden je Feld im Backend freigegeben.']};
+    warnings:['Die Originalgrafik bleibt unverändert. Bereits enthaltene Texte und Fotos werden nicht entfernt oder automatisch editierbar.','Die gespeicherten Motivrechte und die Fotomaske bleiben erhalten. Textposition, Größenänderung und Entfernen werden je Feld im Backend freigegeben.']};
 }
 
 export function applyCustomerFields(repository,assets,id,input){

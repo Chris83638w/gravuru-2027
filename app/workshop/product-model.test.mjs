@@ -107,9 +107,9 @@ test('all 28 pilot variants resolve the same dimensions and prices as the existi
 test('fixed elements receive explicit separate rights without losing permitted photo or colour changes',()=>{
   const document=fixture(),table=rights(document);
   assert.deepEqual(table['photo-main'],{content:false,color:false,replace:true,move:false,scale:false,delete:false});
-  assert.deepEqual(table.heart,{content:false,color:true,replace:false,move:false,scale:false,delete:false});
+  assert.deepEqual(table.heart,{content:false,color:true,replace:true,move:false,scale:false,delete:true});
   assert.deepEqual(table.names,{content:true,color:true,replace:false,move:true,scale:true,delete:true});
-  for(const key of ['move','scale','replace']){
+  for(const key of ['move','scale']){
     const broken=structuredClone(document);rights(broken).heart[key]=true;
     assert.throws(()=>validateProductDocument(broken),/Rechte/);
   }
@@ -133,6 +133,29 @@ test('server-side design validator enforces each individually restricted right',
     (d,o)=>{o.x+=1;},(d,o)=>{o.w+=1;},(d,o)=>{o.uxHidden=true;},(d,o)=>{o.opacity=0;},
     (d,o)=>{o.acrylicFixed=false;},(d,o)=>{o.fieldKey='baby';},(d,o)=>{d.objects.push(structuredClone(o));}
   ])assert.throws(()=>checkedDesign(fixture(),design=>change(design,design.objects.find(o=>o.id==='photo-main'))));
+});
+
+test('new individual motifs replace/delete independently of movement; old revision rights stay authoritative',()=>{
+ const document=fixture(),d=first(document),original=structuredClone(document);
+ const replaced=structuredClone(d);replaced.objects.find(o=>o.id==='heart').motif='acryl-pin';
+ assert.doesNotThrow(()=>validateProductDesign(document,replaced));
+ const removed=structuredClone(d);removed.objects=removed.objects.filter(o=>o.id!=='heart');
+ assert.doesNotThrow(()=>validateProductDesign(document,removed));
+ for(const key of ['x','y','w','h','rotation']){const bad=structuredClone(replaced);bad.objects.find(o=>o.id==='heart')[key]+=1;assert.throws(()=>validateProductDesign(document,bad));}
+ const frozen=structuredClone(document);rights(frozen).heart.replace=false;rights(frozen).heart.delete=false;
+ assert.throws(()=>validateProductDesign(frozen,replaced));assert.throws(()=>validateProductDesign(frozen,removed));
+ assert.deepEqual(validateProductDocument(frozen).elementRights,frozen.elementRights,'reading a stored revision never grants the new defaults');
+ assert.deepEqual(document,original);
+});
+
+test('only an explicit whole print design keeps motif replacement and deletion locked',()=>{
+ const config=native();config.profile.designs[0].wholePrintDesign=true;
+ const document=makeProductDocument(config),d=first(document);
+ assert.equal(rights(document).heart.replace,false);assert.equal(rights(document).heart.delete,false);
+ for(const key of ['replace','delete']){const bad=structuredClone(document);rights(bad).heart[key]=true;assert.throws(()=>validateProductDocument(bad),/Einheit/);}
+ const changed=structuredClone(d);changed.wholePrintDesign=false;changed.objects=changed.objects.filter(o=>o.id!=='heart');
+ assert.throws(()=>validateProductDesign(document,changed),'customer cannot remove the trusted exception');
+ const malformed=structuredClone(document);first(malformed).wholePrintDesign='yes';assert.throws(()=>validateProductDocument(malformed),/Kennzeichnung/);
 });
 test('server validation preserves editable text and measures it when scaling is disallowed',()=>{
   const document=fixture();rights(document).place.scale=false;

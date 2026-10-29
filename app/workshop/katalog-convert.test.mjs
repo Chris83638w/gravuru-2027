@@ -39,7 +39,7 @@ test('parseDesignSvg liest Lieferform 2: Textebenen mit Zeilen, Motiv-/Deko-Pfad
  assert.match(parseDesignSvg('<svg viewBox="0 0 10 10"><g id="rand"><path d="M0 0 L1 1"/></g></svg>').notes[0],/ohne Lieferform-2-Kennung/);
 });
 
-test('Design → Vorlage: Kundenfelder aus text-Ebenen, gesperrte Motive, Rechte und Guide-Rolle',()=>{
+test('Design → Vorlage: Kundenfelder, separat ersetzbare Motive, Rechte und Guide-Rolle',()=>{
  const k=katalog(),f=k.families.get('test-schilder'),theme=k.theme('namensschilder');
  const r=katalogDesignToTemplate(herz(k),f,theme,{fonts:fonts()});
  const t=r.template;
@@ -54,11 +54,11 @@ test('Design → Vorlage: Kundenfelder aus text-Ebenen, gesperrte Motive, Rechte
  assert.equal(zusatz.required,false);assert.equal(zusatz.maxLength,24);assert.equal(zusatz.maxLines,2);assert.equal(zusatz.text,'Herzlich\nwillkommen');
  assert.equal(zusatz.y,50-0.35*4+0.5*1.2*4,'zweizeilig: Mitte zwischen den Grundlinien');
  const motif=t.objects[0];
- assert.equal(motif.motif,'katalog-test-herz-motiv-1');assert.equal(motif.locked,true);assert.equal(motif.customerEditable,false);assert.deepEqual([motif.x,motif.y,motif.w,motif.h],[14,28,20,16],'Hüllbox aus Stütz- und Kontrollpunkten');
+ assert.equal(motif.motif,'katalog-test-herz-motiv-1');assert.equal(motif.locked,undefined);assert.equal(motif.customerEditable,true);assert.deepEqual([motif.x,motif.y,motif.w,motif.h],[14,28,20,16],'Hüllbox aus Stütz- und Kontrollpunkten');
  assert.equal(t.objects[4].role,'guide');assert.equal(t.objects[4].locked,true);
  assert.deepEqual(r.rights['text-1'],{content:true,color:false,replace:false,move:true,scale:true,delete:false});
  assert.deepEqual(r.rights['text-2'],{content:true,color:false,replace:false,move:true,scale:true,delete:true});
- assert.deepEqual(r.rights['motiv-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false},'Gravur: nicht einmal Farbe');
+ assert.deepEqual(r.rights['motiv-1'],{content:false,color:false,replace:true,move:false,scale:false,delete:true},'Gravur: Motiv austauschbar, Farbe und Position unverändert');
  assert.deepEqual(r.rights['guide-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});
  assert.equal(r.motifs.length,2);assert.equal(r.motifs[0].embeddedOnly,true);assert.deepEqual(r.motifs[0].bounds,[4,20,20,16]);
  assert.match(r.motifs[0].svgFragment,/^<path d="M14 36 L6 27 .* Z" fill="currentColor" fill-rule="nonzero"\/>$/);
@@ -140,7 +140,7 @@ test('Familie → Produkt: Preise in Cent mit Überschreibung, Thema, Rechte, Vo
  assert.deepEqual(Object.keys(c.localResources.fonts).sort(),['Cinzel','Montserrat'],'nur Vorlagenschriften eingebettet, das Set kommt als Profil');
  assert.deepEqual(p.fontsMissing,['Michroma','Lato']);
  assert.equal(c.localResources.motifs.length,2);assert.equal(c.photo.enabled,false);
- assert.deepEqual(d.elementRights['katalog-test-herz']['motiv-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});
+ assert.deepEqual(d.elementRights['katalog-test-herz']['motiv-1'],{content:false,color:false,replace:true,move:false,scale:false,delete:true});
  assert.deepEqual(d.elementRights['katalog-test-herz']['text-1'].content,true);
  assert.equal(localFontIds(c).length,2);
  // Das Produkt ist über den Vertrag nutzbar: Preis, Pflichtfeld, gesperrtes Motiv.
@@ -174,7 +174,7 @@ test('Gedenktafel 22 × 14 (20.10.2026): movable verschiebt alle Elemente, Fotof
  assert.equal(r.rights['text-1'].move,true);
  // Ohne movable bleibt alles wie bisher: Motiv gesperrt, Foto fest.
  const fixed=katalogDesignToTemplate(design('pdf-b',false),f,k.theme('namensschilder'),{fonts:fonts()});
- assert.equal(fixed.rights['foto-1'].move,false);assert.equal(fixed.rights['motiv-1'].move,false);assert.equal(fixed.rights['motiv-1'].scale,false);assert.equal(fixed.template.objects.find(o=>o.type==='motif').locked,true);
+ assert.equal(fixed.rights['foto-1'].move,false);assert.equal(fixed.rights['motiv-1'].move,false);assert.equal(fixed.rights['motiv-1'].scale,false);assert.equal(fixed.template.objects.find(o=>o.type==='motif').locked,undefined);assert.equal(fixed.rights['motiv-1'].replace,true);assert.equal(fixed.rights['motiv-1'].delete,true);
  // Startdesign der Unterkategorie steht vorn; Platzhalter wird Beispielfoto ohne eigenen Hinweis.
  const t=(res,examples)=>({template:scaleTemplate(res.template,[90,60],[90,60],fonts()),motifs:res.motifs,rights:res.rights,examples});
  const asset='a'.repeat(64),sub={...namen,startDesign:'pdf-a'};
@@ -286,6 +286,15 @@ test('M: print motif preview preserves separate fills, strokes and transparency;
  assert.equal(source.svg(),svg);assert.equal(converted.template.objects[0].type,'motif');
  assert.throws(()=>katalogDesignToTemplate({...source,svg:()=>svg.replace('#ff0000','url(https://foreign.invalid/paint)')},family,k.theme('namensschilder'),{fonts:fonts()}),/Druckfarbe/);
  const engraved=katalogDesignToTemplate(source,k.families.get('test-schilder'),k.theme('namensschilder'),{fonts:fonts()});assert.doesNotMatch(engraved.motifs[0].svgFragment,/#ff0000|#0066cc/);assert.match(engraved.motifs[0].svgFragment,/currentColor/);
+});
+
+test('catalogue whole print design exception must be explicit; movement never decides replace/delete',()=>{
+ const k=katalog(),source=herz(k),family=structuredClone(k.families.get('test-schilder'));family.material.processingProfileId='color-print';
+ const whole={...source,json:{...source.json,wholePrintDesign:true}},fixed=katalogDesignToTemplate(whole,family,k.theme('namensschilder'),{fonts:fonts()});
+ for(const invalid of [null,'true',1])assert.throws(()=>katalogDesignToTemplate({...source,json:{...source.json,wholePrintDesign:invalid}},family,k.theme('namensschilder'),{fonts:fonts()}),/Kennzeichnung/);
+ assert.equal(fixed.template.wholePrintDesign,true);assert.equal(fixed.rights['motiv-1'].replace,false);assert.equal(fixed.rights['motiv-1'].delete,false);
+ assert.throws(()=>katalogDesignToTemplate(whole,k.families.get('test-schilder'),k.theme('namensschilder'),{fonts:fonts()}),/Druck-Design/);
+ for(const movable of [false,true]){const result=katalogDesignToTemplate({...source,json:{...source.json,movable}},family,k.theme('namensschilder'),{fonts:fonts()});assert.equal(result.rights['motiv-1'].replace,true);assert.equal(result.rights['motiv-1'].delete,true);assert.equal(result.rights['motiv-1'].move,movable);}
 });
 
 

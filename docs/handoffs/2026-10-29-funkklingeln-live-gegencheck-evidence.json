@@ -1,0 +1,114 @@
+{
+  "schema": "gravuru-doorbell-live-readback/v1",
+  "mode": "read-only",
+  "liveMutations": 0,
+  "reportedDeploymentCommit": "62ead38d1c2413ca208c7932c8eb6c3116a7914f",
+  "deploymentSource": "https://github.com/Chris83638w/gravuru-2027/issues/46#issuecomment-6495901678",
+  "shopify": {
+    "shopifyReadStartedAt": "2026-10-29T12:23:50.981Z",
+    "shopifyReadFinishedAt": "2026-10-29T12:28:21.779Z",
+    "expectedProducts": 126,
+    "products": 126,
+    "models": 42,
+    "brands": 18,
+    "active": 126,
+    "variants": 15120,
+    "variantMatches": 15120,
+    "issues": [],
+    "published": 42,
+    "missingMarkers": 42,
+    "correctMarkers": 84,
+    "wrongMarkers": 0,
+    "defaultMatches": 126,
+    "sourceSha256": "a655c943115b152219552e8023ba4213eea70959606661afc23739c7f09b89f6",
+    "historicalManifestSha256": "ac81822c0bc3d9903e7eb36219aa3bee239ca0268afa4f6fbcd51177dc9e6bdc"
+  },
+  "native": {
+    "startedAt": "2026-10-29T12:29:20.182Z",
+    "finishedAt": "2026-10-29T12:29:21.624Z",
+    "mode": "SQLite DatabaseSync readOnly=true; BEGIN/ROLLBACK; no migrations",
+    "products": 126,
+    "heads": 15120,
+    "matches": 15120,
+    "approvals": 126,
+    "imports": 126,
+    "issues": [],
+    "manifestRawSha256": "b5f592ee14419af648ee420e569badbe1ef9ca5099874b8c79809fdf5b1838d3"
+  },
+  "webhooks": {
+    "at": "2026-10-29T12:34:08.087Z",
+    "mode": "dry-run",
+    "entries": [
+      {
+        "topic": "ORDERS_PAID",
+        "action": "keep",
+        "host": "app-2027.gravuru-designwerkstatt.de"
+      },
+      {
+        "topic": "ORDERS_UPDATED",
+        "action": "keep",
+        "host": "app-2027.gravuru-designwerkstatt.de"
+      },
+      {
+        "topic": "ORDERS_CANCELLED",
+        "action": "keep",
+        "host": "app-2027.gravuru-designwerkstatt.de"
+      }
+    ],
+    "startupApproval": true,
+    "startupTestOnly": true,
+    "evidenceLimit": "Stored startup configuration read; no direct process-environment dump."
+  },
+  "http": {
+    "startedAt": "2026-10-29T12:28:22.742Z",
+    "mode": "GET-only",
+    "liveWrites": 0,
+    "errors": [],
+    "artworkModuleSha256": "8cde16fd0217005668b0cf4f65fd55d9502f42550d1f2f898bb635b057d6deb4",
+    "finishedAt": "2026-10-29T12:31:35.180Z",
+    "complete": true,
+    "productCount": 126,
+    "galleryPages": 504,
+    "galleryCards": 18144,
+    "artworkDownloads": 2268,
+    "artworkHashMatches": 2268,
+    "positionGeometries": 30240
+  },
+  "galleryPrices": {
+    "startedAt": "2026-10-29T12:35:12.050Z",
+    "models": 42,
+    "cards": 6048,
+    "issues": [],
+    "mode": "GET-only",
+    "finishedAt": "2026-10-29T12:35:49.843Z"
+  },
+  "publicPages": {
+    "checked": 126,
+    "withNewEntry": 0,
+    "redirectedHome": 84
+  },
+  "warmGalleryResponseMs": {
+    "min": 217,
+    "median": 382,
+    "p95": 494,
+    "max": 823,
+    "sample": 504,
+    "coldStartTest": false
+  },
+  "visual": {
+    "status": "inconclusive",
+    "reason": "Browser automation reported a paused document response for the editor iframe; blank iframe is not sufficient evidence of an application rendering defect.",
+    "screenshot": "aosu-hochformat-live.png",
+    "screenshotSha256": "c9763f35a39200173935c3888134f3059e91f522355f34c30533c396dfe9f67e"
+  },
+  "openGates": [
+    "42 published portrait products lack custom.customization_id",
+    "84 products ACTIVE but unpublished",
+    "0/126 public product URLs contain new configurator entry",
+    "Issue 48 part C order intake and manufacturing files unverified; Claude reports blocker",
+    "Manual desktop/mobile visible-editor check pending",
+    "8 additional unidentified devices / 24 size preparations excluded from ready catalog"
+  ],
+  "productEvidence": "2026-10-29-funkklingeln-live-gegencheck-products.csv"
+}
+

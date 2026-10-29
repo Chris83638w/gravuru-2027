@@ -15,8 +15,8 @@ Die Testvorlage „Familie Muster“ ist eine technische neutrale Anschlussvorla
 ## Prüfung
 
 - 66 verschiedene gezielte Tests bestanden (26 Familien/Anschluss, 21 UI, 16 Zoom, 3 Rückplatten-Viewport), nach letzter UI-Änderung 40/40.
-- Vorheriger Windows-Vollauf: 1816 gesamt, 1809 bestanden, 2 Fehler, 5 übersprungen. Fehler 1: gemeinsame S/S-Fixture verschob Katalogzählung. Claudes Korrektur fa7eaae jetzt übernommen, ursprüngliche Assertion unverändert. Fehler 2: Kontur-Worker im Excel-Export; erneute Prüfung noch laufend.
-- Abschließender Vollauf auf aktualisierter Basis wurde gestartet; Zähler werden in diesem Bericht nachgetragen. Kein grüner Abschluss behauptet, solange er fehlt.
+- Vorheriger Windows-Vollauf: 1816 gesamt, 1809 bestanden, 2 Fehler, 5 übersprungen. Fehler 1: gemeinsame S/S-Fixture verschob Katalogzählung. Claudes Korrektur fa7eaae jetzt übernommen, ursprüngliche Assertion unverändert. Fehler 2: Kontur-Worker im Excel-Export. Beide unveränderten Prüfungen sind im abschließenden Vollauf bestanden.
+- Abschließender Windows-Vollauf auf der aktualisierten Basis: **1829 gesamt / 1824 bestanden / 0 Fehler / 5 übersprungen**, 1028,127 s. Alle *.test.mjs aus app/configurator/variant-m und app/workshop, Node --test --test-concurrency=4 und vorhandener Windows-Python-Adapter scripts/test-portability/full-tests-python-windows.mjs. GRAVURU_PYTHON/PYTHONPATH auf den vorhandenen lokalen Interpreter und seine Pakete gesetzt. Keine Assertion abgeschwächt, kein Test entfernt.
 - Build nach dem Basisabgleich bestanden: 112 Module, 14 Styles, 1.178.685 Byte. Die Prüfstände verändern keine Katalogdatei, Bestellung oder Freigabe.
 
 ## Bilder und Grenzen
@@ -33,6 +33,6 @@ Alle Bilder in issue48-acryl-20261029 stammen aus dem echten lokalen Konfigurato
 
 ## Übergabe / nächster Schritt
 
-Claude prüft den Entwurf und Linux. Aktueller Testabschluss steht noch aus; Desktop-S/S-Abschlussbeleg jetzt vorhanden; danach Rechteck-Designpilot durch den Produktanlage-Chat. Keine Installationsfreigabe enthalten.
+Claude prüft den Entwurf und Linux. Windows-Abschluss und alle Bildschirmformate liegen vor; nach Linux-Prüfung Rechteck-Designpilot durch den Produktanlage-Chat. Keine Installationsfreigabe enthalten.
 
 C hat Vorrang und liegt separat in PR #54. B und C ändern beide acrylic-artwork.mjs: beim späteren Zusammenführen sowohl die familyAcrylic-Schemaerkennung aus B als auch die validierte eingefrorene Schriftliste aus C behalten. Lesender merge-tree-Test hat an dieser Stelle einen Konflikt bestätigt; kein main-Merge durchgeführt. Anschließend die Familien-/Schrift-/Fertigungstests gemeinsam laufen lassen.

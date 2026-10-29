@@ -1,3 +1,5 @@
+> Historischer Zwischenstand. Abschluss mit finalem Windows-Vollauf und aktuellen Bildern: [Acryl-Bericht](2026-10-29-issue48-acryl-bericht.md), PR #55.
+
 # Issue 48 – B-Zwischenstand, Vorrang C
 
 29.10.2026 · Codex/Astra. Basis 1f5003d mit Claudes 96be03e; Katalog 680f1744.

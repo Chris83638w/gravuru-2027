@@ -13,6 +13,17 @@ Von Claude (Operator). Chris möchte die **Acrylglas-Hausnummernschilder mit Abs
 
 ## Was schon da ist (bitte zuerst lesen)
 
+- **Preise (Chris, Excel vom 26.10.):** [`hausnummern-abstandshalter-referenz/gravuru-preise-acryl-2026-10-26.xlsx`](hausnummern-abstandshalter-referenz/gravuru-preise-acryl-2026-10-26.xlsx), Blatt „Acryl 5 mm Abstandshalter“.
+  - **AA und AS:** Preise für alle 33 Größen vorhanden, preisgleich.
+  - **S/S:** Spalte ist **leer**, also Preise offen. Bitte als offen melden, nicht schätzen.
+  - **Abstandshalter als Set mit dem Schild:** 2 Stück 1,99 €, 4 Stück 3,99 €; gilt für AA, AS und S/S.
+  - „4 Abstandshalter möglich“: bei 10 Größen ja, bei 23 nein. Die Spalte gilt so, wie Chris sie ausgefüllt hat.
+  - **24 × 8 cm statt 24 × 7 cm** (Chris 26.10.: passt in die Reihe 3 : 1, Bohrabstand wie 21 × 7). Die Familien entsprechend abgleichen.
+  - Die Schlüssel-Spalte (z. B. `RE-210X70`) ist der Rückimport-Schlüssel, nicht ändern.
+- **Designs im Katalog:** `gravuru-katalog./designs/bestand/hausnummern/` mit `HAUSNUMMERN-DESIGNS.xlsx`, `designs.json`, Übersicht und Ordner nach Zielgruppe (Allgemein, Familie, Tiere).
+  - Dort sind bereits **175 Hausnummern-Designs** erfasst, aus mehreren Reihen, z. B. auch `HNR3D` = 3D-Optik Acryl + Edelstahl.
+  - Für diesen Auftrag nur die Designs verwenden, die zu AA/AS/S/S gehören oder darauf übertragbar sind.
+  - **Diese Katalog-Designs sind die Hauptquelle.** D1–D16 aus Shopify und `Beispiele.pdf` nur ergänzend.
 - **Referenzbilder von Chris (29.10.):** [`hausnummern-abstandshalter-referenz/`](hausnummern-abstandshalter-referenz/README.md)
   - schwarze/anthrazitfarbene Platte = AA/AS;
   - zwei Platten mit satinierter Front auf schwarzer Rückplatte = S/S.
@@ -23,7 +34,7 @@ Von Claude (Operator). Chris möchte die **Acrylglas-Hausnummernschilder mit Abs
   - Rückplatte, Abstandshalter, Gravurseite;
   - Plattenkatalog-PDF;
   - Testlauf mit 19 Designs aus `Beispiele.pdf` (`scripts/split-corel-design-sheet.py`).
-- **Katalog:** Linie `acryl-schilder-abstandshalter`, Unterkategorie `hausnummern` (Schriftsatz `hausnummern`), Familien `acryl-aa-/as-/ss-abstandshalter`. Status „Familien da, **Preise offen**“.
+- **Katalog:** Linie `acryl-schilder-abstandshalter`, Unterkategorie `hausnummern` (Schriftsatz `hausnummern`), Familien `acryl-aa-/as-/ss-abstandshalter`. Status im Katalog noch „Familien da, Preise offen“; die Preise liefert jetzt die Excel (siehe unten).
 - **Shopify (gelesen 29.10.):**
   - viele aktive Produkte „Hausnummernschild Acrylglas personalisiert …“, 16×11 bis 42×28 cm, mit Designs **D1–D16** (Pusteblume, Leuchtturm, Eulen, Anker, Baum, Hundepfoten, Schmetterlinge …);
   - Handles enden auf `-d<n>`;
@@ -44,7 +55,7 @@ Die Hausnummernschilder AA/AS/S/S sind im neuen Konfigurator bestellbar wie D8 b
   - Abstandshalter sichtbar.
 - **Designs:** die vorhandenen Designs (D1–D16 aus Shopify/Corel + `Beispiele.pdf`), sauber auf alle passenden Größen eingepasst. Hausnummer und Straße/Name als sprechende Textfelder.
 - **Kunden-UX vom 28.10.:** `--kunden-ux-20261028`, Preisregel Vorlagenmotiv inklusive, Designs aller Formen/Größen.
-- **Preis:** nur aus Chris' Preisliste. Fehlt sie, als „offen“ melden, **nichts schätzen**.
+- **Preis:** nur aus Chris' Excel (siehe oben). S/S ist offen; nichts schätzen.
 
 ## Vorgehen
 

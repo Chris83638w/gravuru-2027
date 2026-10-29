@@ -18,3 +18,5 @@ Shopify Cart Transform API 2026-04 unterstützt lineUpdate.image für Plus. Das 
 6. Erst nach Chris' ausdrücklicher Freigabe veröffentlichen. Rückweg: zuvor gesicherte Function-Version und Query wieder aktivieren; keine Bestell-/Preisvertragsdaten ändern. Browserbild und E-Mail-Vorlage separat rücksetzbar.
 
 Node-Verhaltenstests: app/workshop/checkout-design-image.test.mjs. Keine Installation, Aktivierung oder Bestellung wurde damit ausgeführt.
+
+Lesender Kontrollversuch am 29.10.2026: Der verbundene Shopify-Zugang verweigert cartTransforms (fehlend: read_cart_transforms). Deshalb sind aktive Transform-ID, Function-Version und API-Version weiterhin unbestätigt. Keine Berechtigung geändert; kein Beleg für Abwesenheit einer Function.

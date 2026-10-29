@@ -13,6 +13,11 @@ Von Claude (Operator). Chris möchte die **Acrylglas-Hausnummernschilder mit Abs
 
 ## Was schon da ist (bitte zuerst lesen)
 
+- **Referenzbilder von Chris (29.10.):** [`hausnummern-abstandshalter-referenz/`](hausnummern-abstandshalter-referenz/README.md)
+  - schwarze/anthrazitfarbene Platte = AA/AS;
+  - zwei Platten mit satinierter Front auf schwarzer Rückplatte = S/S.
+  - Maßstab für die Anmutung der Konfi-Vorschau, noch zu bearbeiten.
+
 - [`docs/releases/20261017/acrylic-standoff/RELEASE.md`](../releases/20261017/acrylic-standoff/RELEASE.md):
   - Familien `aa.json`, `as.json`, `ss.json` mit je 33 Größen (Rechteck, oval, eingezogene Ecken, R5);
   - Rückplatte, Abstandshalter, Gravurseite;

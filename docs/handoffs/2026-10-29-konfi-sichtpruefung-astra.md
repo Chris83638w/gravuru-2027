@@ -3,6 +3,10 @@
 Auftrag: Chris im Chat, nach gemeinsamer Prüfung: „setze jetzt alles was wir gerade besprochen haben um“.
 Basis: PR #58 aaab570; gemeinsame Vorschau 5eeea7f. Änderungen zunächst nur lokal/PR, kein Livegang.
 
+## Farbnachtrag nach Chris' Sichtung
+
+Chris: „nicht so einen grünton“. Textleiste, Schriftwahl, Eingabefokus und Motivpreishinweis verwenden jetzt neutrales Grau statt des neuen Grüntons (`cafa3ab`). Die Textleiste hat Hintergrund #dedede und dunkelgraue Bedienelemente #292929. Reine CSS-Farbkorrektur, Build erfolgreich; sichtbare Feldinhalte vor/nach dem Neuladen identisch. Kein erneuter Testvollauf. [Aktueller Bildnachweis](issue48-d-20261029/sichtpruefung/neutral-grau.jpg); die sechs Abnahmebilder weiter unten zeigen den zuvor geprüften Aufbau vor dieser Farbkorrektur.
+
 ## Regeln und Quelle
 
 Alle folgenden Änderungen stammen aus Chris' Screenshots und Nachrichten dieser gemeinsamen Durchsicht vom 29.10.2026. Historische Aufträge mit gegenteiligen Angaben werden dadurch ersetzt.
@@ -28,7 +32,7 @@ Code auf PR #58, zuletzt `022f41d`. Gemeinsamer Prüfstand mit Claudes Integrati
 | Platz und Lesbarkeit | Kompakter Kopf, Werkzeug- und Preisleiste; einheitliche kräftigere Beschriftung. Berührungsflächen bleiben mindestens 44 px. |
 | Text | Neue Produktstände: 80 Unicode-Zeichen insgesamt je Feld, einschließlich Leerzeichen/Zeilenumbrüchen. CRLF wird vereinheitlicht, keine zusätzliche pauschale Zeilensperre. Anzeige, Eingabe und Server prüfen dieselbe Regel. |
 | Eingabefelder | Wachsen bei Fokus/Eingabe, fallen beim Verlassen auf eine kompakte Zeile zurück. Inhalt und Zeilenumbrüche bleiben erhalten. Physische Grenzen des Schildes werden weiterhin geprüft. |
-| Schrift und Größe | Neue deutlich erkennbare Aufklappfläche; Textleiste mit grünem Hintergrund, auf dem Handy höchstens zwei Reihen. |
+| Schrift und Größe | Neue deutlich erkennbare Aufklappfläche; Textleiste mit neutralgrauem Hintergrund, auf dem Handy höchstens zwei Reihen. |
 | Ausrichten | Numerische pinke Abstandsangabe entfernt; Ausrichtungshinweise und Plattenmaße bleiben. |
 | Motive | Ersetzen/Hinzufügen/Kein Motiv als Modusreihe entfernt. Auswahl ersetzt das ausgewählte/Vorlagenmotiv, „Weiteres Motiv auswählen“ öffnet die Bibliothek zum Ergänzen. Nach Abschluss wieder normale Auswahl. |
 | Übersicht | Drei Kacheln pro Reihe, bis zu zwölf verfügbare Motive bereits im Einstieg; D8 liefert acht. Auch auf 375×548 ist die erste Dreierreihe ohne Scrollen sichtbar. |

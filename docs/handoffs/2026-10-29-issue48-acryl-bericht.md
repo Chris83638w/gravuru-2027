@@ -21,11 +21,13 @@ Die Testvorlage „Familie Muster“ ist eine technische neutrale Anschlussvorla
 
 ## Bilder und Grenzen
 
-Alle Bilder in issue48-acryl-20261029 stammen aus dem echten lokalen Konfigurator mit der neutralen Prüfvorlage. Desktop 1280 × 720, iPhone 13 390 × 664, iPhone SE 375 × 548. Dateinamen benennen Material, Format und Auswahl. Die vorhandene Desktopaufnahme desktop-ss-4er-weiss-vor-viewport-fix.jpg ist ausdrücklich historisch vor dem letzten Rückplatten-Viewport-Fix und kein finaler Abnahmebeleg. Die aktuellen SE-/iPhone-Aufnahmen zeigen die korrigierte Fläche. Der lokale Browserzugriff ließ sich wiederherstellen. desktop-ss-4er-weiss-final.png zeigt den finalen Stand nach Neuladen: vollständige Rückplatte, Maßpfeile an der Front, vier weiße Halter, 29,98 €; 1280 × 720 Pixel.
+Alle Bilder in issue48-acryl-20261029 stammen aus dem echten lokalen Konfigurator mit der neutralen Prüfvorlage. Desktop 1280 × 720, iPhone 13 390 × 664, iPhone SE 375 × 548. Dateinamen benennen Material, Format und Auswahl. Die vorhandene Desktopaufnahme desktop-ss-4er-weiss-vor-viewport-fix.jpg ist ausdrücklich historisch vor dem letzten Rückplatten-Viewport-Fix und kein finaler Abnahmebeleg. Die aktuellen SE-/iPhone-Aufnahmen zeigen die korrigierte Fläche. Der lokale Browserzugriff ließ sich wiederherstellen. desktop-ss-4er-weiss-final.png zeigt den finalen Stand nach Neuladen: vollständige Rückplatte, Maßpfeile an der Front, vier weiße Halter, 29,98 €; 1280 × 720 Pixel. Zusätzlich derselbe aktuelle Rechteckstand unter iphone13-ss-rechteck-final.png (390 × 664) und iphonese-ss-rechteck-final.png (375 × 548); Rückplatte, Maßpfeile und Preis bleiben sichtbar.
 
 ![AA Desktop](issue48-acryl-20261029/desktop-aa-2er-schwarz.jpg)
 ![AS Hochformat Desktop](issue48-acryl-20261029/desktop-as-hochformat.jpg)
 ![S/S Desktop final](issue48-acryl-20261029/desktop-ss-4er-weiss-final.png)
+![S/S Rechteck iPhone 13 final](issue48-acryl-20261029/iphone13-ss-rechteck-final.png)
+![S/S Rechteck iPhone SE final](issue48-acryl-20261029/iphonese-ss-rechteck-final.png)
 ![S/S iPhone SE](issue48-acryl-20261029/iphonese-ss-eingezogene-ecken.jpg)
 ![AA iPhone 13](issue48-acryl-20261029/iphone13-aa-quadrat.jpg)
 

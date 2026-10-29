@@ -6,7 +6,7 @@ import {holesFor,ruleFromHoles,keepoutZones} from '../platform/sources/app/share
 import {createDesignAssetStore} from './design-assets.mjs';
 import {createProductRepository} from './repository.mjs';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
-import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,geometryOf,familyGaps,familyProcess,familyBriefing} from './product-families.mjs';
+import {createProductFamilies,validateFamily,familyProductConfig,familyTemplate,geometryOf,familyGaps,familyReady,familyProcess,familyBriefing} from './product-families.mjs';
 import {execFileSync} from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
@@ -167,7 +167,7 @@ test('memorial families 30 × 20: all materials validate, open values block gene
  assert.equal(p.material.kind,'slate');assert.equal(p.processing.profileId,'slate-engraving');assert.equal(doc.config.basePriceCents,2999);
  assert.deepEqual(p.optionGroups[0].values.map(v=>[v.id,v.priceCents,v.holes.map(h=>[h.x,h.y,h.diameter])]),[['K00',0,[]],['B02',299,[[12,100,5],[288,100,5]]],['B04',399,[[12,12,5],[288,12,5],[12,188,5],[288,188,5]]]]);
  const acryl=families.create(memorial('acryl-schwarz'));
- assert.equal(acryl.readiness.ready,false);assert.match(acryl.readiness.reason,/Acrylglas-Gravurplatten .* noch nicht/);
+ assert.equal(acryl.readiness.ready,false);assert.match(acryl.readiness.reason,/Stammdaten unvollständig/);assert.ok(acryl.readiness.gaps.includes('Materialstärke'));
  assert.throws(()=>families.generate(acryl.id,{expectedRevision:acryl.revision}),e=>e.status===422);
  const steel=families.create(memorial('edelstahl'));
  assert.deepEqual(steel.readiness.gaps,['Materialstärke','Gestaltungsrand','Bohrbild „4 Bohrlöcher“: Durchmesser und Randabstand']);
@@ -233,7 +233,8 @@ test('acrylic standoff families from the Corel drawing: per-size radius, standof
  assert.deepEqual(ss.sizes.slice(0,6).map(s=>s.key),['SS-RE-150X100','SS-RE-180X120','SS-RE-240X160','SS-RE-300X200','SS-RE-360X240','SS-RE-420X280']);assert.equal(ss.sizes.at(-1).key,'SS-R5-420X280');
  const svg=familyTemplate(ss,ee);assert.match(svg,/viewBox="-10 -10 230 160"/,'backing plate 10 mm around');assert.match(svg,/id="rueckplatte"[^>]*><path d="M14.8 0H215.2A14.8 14.8 0 0 0 230 14.8/,'backing with concave corners');assert.match(svg,/id="kontur"><path d="M13.5 0H196.5A13.5 13.5 0 0 0 210 13.5/,'plate with concave corners (sweep 0)');
  assert.match(familyTemplate(ss,ss.sizes.find(s=>s.key==='SS-R5-180X120')),/id="kontur"><path d="M5 0H175A5 5 0 0 1 180 5/,'rounded corners keep sweep 1');
- assert.ok(familyGaps(ss).some(g=>/eingezogene Ecken/.test(g)),'plaque shape is reported as not yet connected');
+ assert.ok(!familyGaps(ss).some(g=>/eingezogene Ecken/.test(g)),'acrylic concave shape uses the exact native contour');
+ assert.equal(familyReady(ss).ready,false,'historic open catalogue prices still block generation');
  assert.throws(()=>validateFamily({...ss,backing:{...ss.backing,offsetMm:-1}}),/Rückplatte/);
  const bad=structuredClone(ss);bad.sizes.find(s=>s.groupKey==='OV').cornerRadiusMm=5;assert.throws(()=>validateFamily(bad),/Eckenradius/);
  const noBacking=structuredClone(load('aa'));noBacking.sizes.find(s=>s.groupKey==='EE').backingCornerRadiusMm=12;assert.throws(()=>validateFamily(noBacking),/Rückplatte/);
@@ -305,4 +306,34 @@ test('M: target preview option supports print and acrylic without enabling a pro
  for(const [kind,process] of [['steel','color-print'],['acrylic','acrylic-engraving'],['slate','color-print']]){const family=structuredClone(steel);family.material.kind=kind;family.material.processingProfileId=process;family.groups=family.groups.filter(g=>g.key==='RE');family.sizes=family.sizes.filter(s=>s.groupKey==='RE');family.sizes.forEach(s=>s.baseCents=0);
  const c=familyProductConfig(family,family.sizes[0],1,{previewOnly:true});assert.equal(c.profile.material.kind,kind);assert.equal(c.profile.processing.profileId,process);assert.equal(c.reviewOnly,true);assert.equal(c.profile.features.orderEnabled,false);assert.throws(()=>familyProductConfig(family,family.sizes[0],1));
  family.material.thicknessMm=null;assert.throws(()=>familyProductConfig(family,family.sizes[0],1,{previewOnly:true}),e=>e.status===422&&/Materialstärke/.test(e.message));}
+});
+
+// Hausnummern AA/AS/S/S (Chris 29.10.2026): Abstandshalter-Farbe je Halterset als zwei sich
+// ausschließende Gruppen; die verdeckte Gruppe wird weder angezeigt noch berechnet.
+test('family option groups: spacer colour per set, hidden group neither shown nor priced',async()=>{
+ const {quote,resolvedOptions,variantCombinations}=await import('../configurator/variant-m/contract.mjs');
+ const f=validateFamily(JSON.parse(fs.readFileSync(new URL('./fixtures/familien/acryl-ss-abstandshalter.json',import.meta.url),'utf8')));
+ const size=key=>f.sizes.find(s=>s.key===key);
+ for(const key of ['SS-RE-150X100','SS-RE-150X100-H']){
+  const c=familyProductConfig(f,size(key),1,{previewOnly:true}),base=size(key).baseCents,price=o=>quote(c,[],'start',o).unitCents;
+  assert.deepEqual(c.profile.optionGroups.map(g=>[g.id,g.defaultValueId,g.visibleIf?.valueIds]),[['mounting','AH02',undefined],['abstandshalter-farbe','ES',['AH02']],['abstandshalter-farbe-ah04','ES',['AH04']]]);
+  assert.equal(price({mounting:'AH02'}),base+199);
+  assert.equal(price({mounting:'AH02','abstandshalter-farbe':'SW'}),base+299);
+  assert.equal(price({mounting:'AH04','abstandshalter-farbe-ah04':'WS'}),base+599);
+  assert.equal(price({mounting:'AH04','abstandshalter-farbe-ah04':'ES'}),base+399);
+  // Verdeckte Gruppe: ein mitgeschickter Wert wird verworfen und nicht berechnet.
+  assert.equal(price({mounting:'AH04','abstandshalter-farbe':'SW'}),base+399);
+  assert.deepEqual(Object.keys(resolvedOptions(c,{mounting:'AH04','abstandshalter-farbe':'SW'})),['mounting','abstandshalter-farbe-ah04']);
+  assert.equal(variantCombinations(c).length,6);
+  assert.equal(selectedProfile(c,{mounting:'AH04','abstandshalter-farbe-ah04':'SW'}).mountingPreview.finish,'black');
+  assert.equal(selectedProfile(c,{mounting:'AH02','abstandshalter-farbe':'WS'}).mountingPreview.finish,'white');
+  assert.equal(selectedProfile(c,{mounting:'AH02'}).mountingPreview.finish,'silver');
+ }
+ // Größe ohne 4er-Set: die 4er-Farbgruppe entfällt ganz.
+ const r5=familyProductConfig(f,size('SS-R5-150X100'),1,{previewOnly:true});
+ assert.deepEqual(r5.profile.optionGroups.map(g=>g.id),['mounting','abstandshalter-farbe']);
+ // Der Acryl-Anschluss ergänzt jetzt auch die unveränderte konkave Quellkontur.
+ const ee=f.sizes.find(s=>s.groupKey==='EE'),ec=familyProductConfig(f,ee,1,{previewOnly:true});
+ assert.equal(ec.profile.geometry.shape,'contour');assert.match(ec.profile.geometry.outlinePath,/A[0-9.]+ [0-9.]+ 0 0 0/);
+ assert.equal(familyProductConfig(f,size('SS-RE-150X100'),1).familyAcrylic.familyId,f.id);
 });

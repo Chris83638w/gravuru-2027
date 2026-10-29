@@ -1,3 +1,4 @@
+import {productPreviewSize} from './backing-preview-viewport.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
 import {textPaths,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
@@ -29,9 +30,10 @@ export async function installUsability(api) {
     const mobile=matchMedia('(max-width:900px)').matches;
     const base=32+(mobile?Math.max(340,Math.min(430,innerHeight*.48)):Math.max(480,Math.min(630,innerHeight*.78)));
     stage.style.setProperty('--ux-preview-height',base+'px');
-    stage.style.setProperty('--ux-preview-ratio',el.state.width+'/'+el.state.height);
-    stage.style.setProperty('--ux-product-width',el.state.width);
-    stage.style.setProperty('--ux-product-height',el.state.height);
+    const displayed=productPreviewSize(el);
+    stage.style.setProperty('--ux-preview-ratio',displayed.width+'/'+displayed.height);
+    stage.style.setProperty('--ux-product-width',displayed.width);
+    stage.style.setProperty('--ux-product-height',displayed.height);
   }
   new ResizeObserver(resizeStage).observe($('.ux-preview'));
   window.addEventListener('resize',resizeStage);resizeStage();

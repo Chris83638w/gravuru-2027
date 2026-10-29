@@ -156,11 +156,13 @@ export function variantCombinations(config) {
 export function selectedProfile(config, values = {}) {
   if(isLayeredDoorbell(config))return selectedDoorbellProfile(config,resolvedOptions(config,values));
   const profile = clone(config.profile), options = resolvedOptions(config, values);
-  let holeSelection = false;
+  let holeSelection = false, finish;
   delete profile.mountingPreview;
   for (const group of profile.optionGroups || []) {
     const value = group.values.find(v => v.id === options[group.id]);
     if (!value) continue; // unsichtbare Gruppe (visibleIf)
+    // Farbe der Abstandshalter aus einer eigenen, sichtbaren Gruppe (Familien: je Halterset).
+    if (value.holes === undefined && value.spacerFinish !== undefined) finish = value.spacerFinish;
     if (value.holes !== undefined) {
       if (holeSelection) fail('Mehrere Optionen bestimmen gleichzeitig das Bohrbild.');
       profile.geometry.holes = clone(value.holes); holeSelection = true;
@@ -168,6 +170,7 @@ export function selectedProfile(config, values = {}) {
       profile.mountingPreview={spacers:value.spacers===true||value.mountingRule?.accessory==='standoffs',screws:value.mountingRule?.accessory==='screws',diameter:12,finish:value.spacerFinish||'silver',...(Number.isFinite(value.mountingRule?.keepoutMm)?{keepoutMm:value.mountingRule.keepoutMm}:{})};
     }
   }
+  if (finish !== undefined && profile.mountingPreview?.spacers) profile.mountingPreview.finish = finish;
   return profile;
 }
 

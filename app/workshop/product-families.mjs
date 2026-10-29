@@ -10,6 +10,7 @@ import {escapeXml as esc} from '../platform/sources/app/shared/models/design-con
 import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 import {workshopResources} from './catalog.mjs';
 import {nativeSpecimenConfig,steelPreviewSurface} from './specimen-product.mjs';
+import {nativeFamilyAcrylicConfig} from './family-acrylic-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {nativeContour} from './acrylic-artwork.mjs';
@@ -31,7 +32,7 @@ const FAMILY_SCHEMAS=['gravuru-product-family/v1',FAMILY_SCHEMA];
 export const FAMILY_MATERIALS=Object.freeze({
  steel:{name:'Edelstahl',processing:'steel-engraving',ink:'Gravur erscheint dunkel auf dem Metall; Weiß bleibt ungraviert.',color:()=>'#bac2c4',adapter:'steel'},
  slate:{name:'Schiefer',processing:'slate-engraving',ink:'Gravur erscheint hell auf dem dunklen Stein; Weiß bleibt ungraviert.',color:()=>'#343b3d',adapter:'slate'},
- acrylic:{name:'Acrylglas',processing:'acrylic-engraving',ink:'Gravur erscheint hell (weiß) auf dem farbigen Acrylglas; Weiß bleibt ungraviert.',color:v=>v==='anthrazit'?'#33373a':'#17191b',adapter:null}
+ acrylic:{name:'Acrylglas',processing:'acrylic-engraving',ink:'Gravur erscheint hell (weiß) auf dem farbigen Acrylglas; Weiß bleibt ungraviert.',color:v=>v==='anthrazit'?'#33373a':v==='satiniert'?'#7b7d7e':'#17191b',adapter:'acrylic'}
 });
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const invalid=message=>fail(422,'family_invalid',message);
@@ -177,6 +178,7 @@ export function validateFamily(f){
  return f;
 }
 const OPTION_KINDS=['accessory','variant'],OPTION_SELECTIONS=['single','multiple'];
+const PLAQUE_GAP='Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)';
 export const FIELD_KINDS=['text','date','select','checkbox'];
 // Everything still "offen" in a family, in plain words. Products are generated
 // only when this list is empty and the material has a native adapter.
@@ -184,6 +186,7 @@ export function familyGaps(f){
  const gaps=[],m=FAMILY_MATERIALS[f.material.kind];
  if(open(f.material.processingProfileId))gaps.push('Verfahrensprofil');
  if(open(f.material.thicknessMm))gaps.push('Materialstärke');
+ if(f.backing&&open(f.backing.thicknessMm))gaps.push('Materialstärke der Rückplatte');
  if(open(f.designArea.marginMm))gaps.push('Gestaltungsrand');
  for(const r of f.mountingRules){if(!familyRuleComplete(f,r))gaps.push(`Bohrbild „${r.label}“: Durchmesser und Randabstand`);if(open(r.priceCents))gaps.push(`Aufpreis „${r.label}“`);}
  if(f.photo&&open(f.photo.extraPriceCents))gaps.push('Aufpreis weiteres Foto');
@@ -191,7 +194,7 @@ export function familyGaps(f){
  for(const g of f.options||[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
  if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
  if(f.backing?.offsetMm>0&&f.groups.some(g=>g.shape==='contour'))gaps.push('Rückplattenversatz der Kontur');
- if(f.groups.some(g=>g.shape==='plaque'))gaps.push('Form „eingezogene Ecken“ ist im Konfigurator noch nicht angeschlossen (Schablone und Katalog zeigen sie schon)');
+ if(f.material.kind!=='acrylic'&&f.groups.some(g=>g.shape==='plaque'))gaps.push(PLAQUE_GAP);
  return gaps;
 }
 export function familyReady(f){
@@ -209,30 +212,65 @@ const productKey=(f,s)=>'family:'+f.id+':'+s.key;
 // Native steel product for one size: mounting options carry computed holes and
 // the rule they came from; one neutral starter design until real designs are imported.
 export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
- const previewGaps=previewOnly?familyGaps(f).filter(g=>g!=='Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen'):[];
+ // Die Lücke „eingezogene Ecken“ betrifft nur Größen dieser Form; Rechteck-Größen derselben Familie bleiben in der Vorschau nutzbar.
+ const sizeGroup=f.groups.find(x=>x.key===s.groupKey);
+ const previewGaps=previewOnly?familyGaps(f).filter(g=>g!=='Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen'&&!(g===PLAQUE_GAP&&sizeGroup?.shape!=='plaque')):[];
  const ready=previewOnly?{ready:previewGaps.length===0,reason:'Vorschau offen: '+previewGaps.join(' · ')}:familyReady(f);if(!ready.ready)invalid(ready.reason);
- const {holesMm,...g}=geometryOf(f,s),group=f.groups.find(x=>x.key===s.groupKey),resources=workshopResources();
+ const {holesMm,...sourceGeometry}=geometryOf(f,s),g=f.material.kind==='acrylic'&&sourceGeometry.shape==='plaque'?{...sourceGeometry,shape:'contour',cornerRadiusMm:0,outlinePath:nativeContour({...sourceGeometry,holes:[]}).contours[0].d}:sourceGeometry,group=sizeGroup,resources=workshopResources();
  const font=f.fonts.find(x=>resources.fonts[x])||'Montserrat';
  const values=[];
  if(f.withoutMounting)values.push({id:'K00',label:'Ohne Bohrung',priceCents:0,currency:'EUR',holes:[]});
- for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:familyHoles(f,s,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,...(g.shape==='contour'?{fixed:true}:{edgeMm:r.edgeMm}),keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})}});}
+ for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:familyHoles(f,s,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,...(g.shape==='contour'?{fixed:true}:{edgeMm:r.edgeMm}),keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})},...(r.accessory==='standoffs'?{spacers:true}:{})});}
  if(new Set(values.map(v=>v.id)).size!==values.length)invalid(s.key+': zwei Befestigungen mit gleicher SKU-Endung.');
  const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(g.height*.22,14),x:g.width/2,y:g.height/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
  measureText(text,resources.fonts);if(text.w>g.width*.6){text.size*=g.width*.6/text.w;measureText(text,resources.fonts);}
  if(text.h>g.height*.3){text.size*=g.height*.3/text.h;measureText(text,resources.fonts);}
  const design={id:'start',name:'Startdesign · '+group.name,objects:[text],marks:[]};
- const profile={id:'family-'+f.id+'-'+s.key.toLowerCase().replace(/[^a-z0-9-]/g,'-'),revision:'family-'+f.id+'-r'+revision,schemaVersion:1,kind:'universal-product',name:f.name+' · '+group.name+' '+s.label,
+ const profile={id:'family-'+f.id+'-'+s.key.toLowerCase().replace(/[^a-z0-9-]/g,'-'),revision:'family-'+f.id+'-r'+revision,schemaVersion:1,kind:'universal-product',name:productName(f,s),
   binding:{kind:'local-review',productId:'local-'+s.key},geometry:{...g,safeMarginMm:f.designArea.marginMm,...(g.shape==='contour'?{holeKeepoutMm:f.designArea.keepoutMm}:{}),holes:[]},
-  material:{kind:f.material.kind,color:FAMILY_MATERIALS[f.material.kind].color(f.material.variant),thicknessMm:f.material.thicknessMm},processing:{profileId:f.material.processingProfileId},
+  material:{kind:f.material.kind,color:FAMILY_MATERIALS[f.material.kind].color(f.material.variant),thicknessMm:f.material.thicknessMm,...(f.material.kind==='acrylic'?{variant:f.material.variant,engravingSide:f.material.engravingSide??(familyProcess(f).mirror?'back':'front')}:{})},processing:{profileId:f.material.processingProfileId},
   features:{orderEnabled:false,productionConfirmed:false,motifsAllowed:true},designs:[design],defaultDesignId:design.id,
-  optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values}]};
+  optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values},...familyOptionGroups(f,s)]};
+ if(f.material.kind==='acrylic'){
+  if(f.backing){const o=f.backing.offsetMm,bg={...sourceGeometry,width:g.width+2*o,height:g.height+2*o,cornerRadiusMm:sourceGeometry.backingCornerRadiusMm??offsetRadius(sourceGeometry,o),holes:[]};profile.backingPreview={...structuredClone(f.backing),geometry:{width:bg.width,height:bg.height,shape:'contour',outlinePath:nativeContour(bg).contours[0].d,holes:[]}};}
+ }
  const fields=familyOptionFields(f,s);if(fields.length)profile.optionFields=fields;
  if(f.surfaces!==undefined)profile.surfaces=structuredClone(f.surfaces);
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:f.photo?.includedCount??0,extraPriceCents:f.photo?.extraPriceCents??0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
+ if(f.material.kind==='acrylic')c.familyAcrylic={schema:'gravuru-family-acrylic/v1',familyId:f.id,sizeKey:s.key,sourceShape:sourceGeometry.shape};
  const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
  if(previewOnly){if(f.material.kind==='steel')c.materialSurface=steelPreviewSurface();return prepareConfig(c);}
  if(f.material.kind==='steel'){c.materialSurface=steelPreviewSurface();return nativeSpecimenConfig(c);}
- return nativeSlateConfig(c);
+ return f.material.kind==='acrylic'?nativeFamilyAcrylicConfig(c):nativeSlateConfig(c);
+}
+
+
+// Auswahlgruppen der Familie (Varianten/Zubehör, Einzelauswahl) für eine Größe, z. B. die
+// Abstandshalter-Farbe je Halterset (Chris 29.10.2026: 2er Schwarz/Weiß +1 €, 4er +2 €).
+// `visibleIf` auf die Befestigung wird wie bei den Zusatzfeldern auf die SKU-Endungen dieser
+// Größe abgebildet; eine Gruppe, deren Bedingung bei dieser Größe nie eintritt, entfällt. Die
+// verdeckte Gruppe wird im Vertrag weder angezeigt noch berechnet (resolvedOptions/quote).
+// Farben der Abstandshalter steuern die Vorschau (spacerFinish). Mehrfachauswahl ist noch nicht
+// angeschlossen und bleibt wie bisher außen vor.
+const FINISH_OF_CHOICE=Object.freeze({edelstahl:'silver',silber:'silver',schwarz:'black',weiss:'white',rose:'rose-gold',rosegold:'rose-gold',bronze:'bronze'});
+export function familyOptionGroups(f,s){
+ const standoffs=s.mounting.some(rid=>ruleOf(f,rid)?.accessory==='standoffs');
+ const result=[];
+ for(const g of (f.options||[]).filter(g=>OPTION_KINDS.includes(g.kind)&&g.selection==='single')){
+  let visibleIf;
+  if(g.visibleIf){
+   const c=g.visibleIf;if(c.groupId!=='mounting')continue;
+   const valueIds=[...new Set(c.valueIds.filter(rid=>s.mounting.includes(rid)).map(rid=>ruleOf(f,rid).skuSuffix))];
+   if(!valueIds.length)continue;
+   visibleIf={groupId:'mounting',valueIds};
+  }
+  const finish=standoffs&&g.choices.every(c=>FINISH_OF_CHOICE[c.id]);
+  const values=g.choices.map(c=>({id:c.skuSuffix||c.id,label:c.label,priceCents:c.priceCents,currency:'EUR',...(finish?{spacerFinish:FINISH_OF_CHOICE[c.id]}:{})}));
+  if(new Set(values.map(v=>v.id)).size!==values.length)invalid(g.label+': zwei Auswahlen mit gleicher SKU-Endung.');
+  const start=g.choices.find(c=>c.default===true)||g.choices[0];
+  result.push({id:g.id,name:g.label,required:g.required===true,defaultValueId:start.skuSuffix||start.id,values,...(visibleIf?{visibleIf}:{})});
+ }
+ return result;
 }
 
 // K14 / Ü12.1: Zusatzfelder der Familie für eine Größe. Bedingung auf die Befestigung wird auf
@@ -313,7 +351,7 @@ ${f.briefingNotes.trim()||'Noch keine Stilnotizen hinterlegt.'}
 // categories and photos stay untouched when family changes are applied.
 const euroText=c=>c===null?'offen':(c/100).toFixed(2).replace('.',',')+' €';
 const mountingText=values=>values.map(v=>v.label+(v.holes?.length?' ('+v.holes.map(h=>h.x+'|'+h.y).join(', ')+')':'')+(v.priceCents?' +'+euroText(v.priceCents):'')).join('; ');
-const productName=(f,s)=>f.name+' · '+f.groups.find(g=>g.key===s.groupKey).name+' '+s.label;
+const productName=(f,s)=>{const name=f.groups.find(g=>g.key===s.groupKey).name;return f.name+' · '+(s.label.startsWith(name+' ')?s.label:name+' '+s.label);};
 export function familySyncTarget(document,f,s,revision){
  const t=familyProductConfig(f,s,revision),doc=structuredClone(document),p=doc.config.profile,mount=t.profile.optionGroups.find(g=>g.id==='mounting');
  doc.name=productName(f,s);doc.config.basePriceCents=t.basePriceCents;p.name=t.profile.name;p.revision=t.profile.revision;
@@ -382,7 +420,7 @@ export function createProductFamilies({filename,repository,tenantId}){
    const f=rec.document,wanted=sizeKeys===undefined?f.sizes:sizeKeys.map(k=>f.sizes.find(s=>s.key===k)||invalid('Unbekannte Größe '+k));
    const results=[];
    for(let i=0;i<wanted.length;i+=100){
-    const entries=wanted.slice(i,i+100).map(s=>{const key=productKey(f,s),document=makeProductDocument(familyProductConfig(f,s,rec.revision),{name:f.name+' · '+f.groups.find(g=>g.key===s.groupKey).name+' '+s.label,kind:'product'});document.categoryIds=['familie-'+f.id,'form-'+s.groupKey.toLowerCase()];return {key,fingerprint:sha(key),document};});
+    const entries=wanted.slice(i,i+100).map(s=>{const key=productKey(f,s),document=makeProductDocument(familyProductConfig(f,s,rec.revision),{name:productName(f,s),kind:'product'});document.categoryIds=['familie-'+f.id,'form-'+s.groupKey.toLowerCase()];return {key,fingerprint:sha(key),document};});
     results.push(...repository.importBatch(entries).map((r,j)=>({sizeKey:wanted[i+j].key,productId:r.id,created:r.created})));
    }
    return {familyId:fid,familyRevision:rec.revision,created:results.filter(r=>r.created).length,existing:results.filter(r=>!r.created).length,products:results};

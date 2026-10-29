@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {studioSvg} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {getProcessingProfile} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {selectedProfile,resolvedOptions} from '../configurator/variant-m/contract.mjs';
-import {keepoutPreview} from '../configurator/variant-m/option-media.mjs';
+import {keepoutPreview,spacerPreview} from '../configurator/variant-m/option-media.mjs';
 import {designAreaPreview} from '../configurator/variant-m/design-area.mjs';
 import {textsNearHoles,holeHintText} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {surfacePreview,scenePreview} from '../configurator/variant-m/material-surface.mjs';
@@ -60,6 +60,7 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
  let svg=studioSvg(p,d,previewFonts(c),{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');
  for(const e of examples)svg=svg.replaceAll('href="blob:workshop-'+e.assetId+'"','href="'+e.url+'"');
+ if(c.familyAcrylic)svg=spacerPreview(svg,p);
  if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(surfacePreview(svg,c.materialSurface,p.geometry),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
  backdrop??=image('scene-empty-v2.jpg');
  svg=svg.replace(/viewBox="[^"]+"/,'x="85.794" y="49.956" width="915.498" height="1196.048" viewBox="0 0 150 200"').replace('fill="url(#studio-product-card-surface)"','fill="transparent"');

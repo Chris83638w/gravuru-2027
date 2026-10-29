@@ -15,7 +15,7 @@ export function installWorkshopReview(api,footer){
  const request=window.parent.GravuruMerchantRequest||fetch;
  const testGate=window.parent.GravuruConfiguratorTest;
  const universalTest=()=>typeof testGate?.submitCart==='function'&&testGate.productId===binding.productId&&testGate.productRevision===binding.productRevision;
- if(!binding||(!api.config?.acrylic&&!api.config?.doorbell&&!['slate','steel'].includes(api.config?.profile?.material?.kind)))return;
+ if(!binding||(!api.config?.acrylic&&!api.config?.doorbell&&!api.config?.familyAcrylic&&!['slate','steel'].includes(api.config?.profile?.material?.kind)))return;
  // Öffentlicher Shop-Einstieg (SHOP-ENTRY.txt): Kunden sehen „In den Warenkorb“ statt der Werkstatt-/Testknöpfe.
  if(window.parent.GravuruShopEntry)return void installShopCart(api,footer,window.parent.GravuruShopEntry);
  const button=document.createElement('button'),status=document.createElement('p'),link=document.createElement('a');

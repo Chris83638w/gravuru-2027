@@ -9,6 +9,7 @@ from pathlib import Path
 from functools import lru_cache
 from svgpathtools import parse_path
 from fontTools.ttLib import TTFont
+from rasse_motif_sources import cat_motifs
 
 NS='{http://www.w3.org/2000/svg}'
 BREEDS=[
@@ -131,17 +132,22 @@ def main():
         if form=='OV' and abs(ratio-1.5)<.001 and s['widthMm']>300:continue
         sizes.setdefault((form,s['widthMm'],s['heightMm']),s)
     manifest={'schema':'gravuru-rasse-review/v1','date':'2026-10-29','sourceIssue':61,'status':'Muster – Freigabe offen','designsPerBreedSize':12,'catSelection':'Auf Nutzervorgabe „weit aus mehr“ auf 25 tatsächlich ausgearbeitete Rassevorschläge erweitert; endgültige Bibliotheksauswahl und Stilfreigabe offen.','sources':{'seriesSha256':digest(k/'serien/edelstahl-tuerschilder-2027.json'),'familySha256':digest(k/'familien/edelstahl/steel-door-signs.json'),'fontsSha256':digest(k/'schriften/schriften.json')},'breeds':[],'designs':[]}
+    manifest['schema']='gravuru-rasse-review/v2'
+    manifest['catMotifsPerBreed']=12
+    manifest['catMotifRequirement']='Nutzervorgabe: immer verschiedene Katzen gesichte / Motive. Zwölf eigenständig gezeichnete Motive pro Rasse; dieselben zwölf Motive in den Größenvarianten.'
+    cat_sources={b[0]:cat_motifs(k,b[0]) for b in BREEDS if b[4]=='cat'}
     selected=set(map(int,a.layouts.split(','))) if a.layouts else set(range(1,13))
     if not selected or not selected<=set(range(1,13)):raise ValueError('Layoutnummern müssen 1 bis 12 sein')
     if a.layouts:
         previous=json.loads((k/'auftraege/rasse-schilder-20261029/manifest.json').read_text(encoding='utf-8'))
-        if previous['sources']!=manifest['sources'] or any(digest(k/b['portrait'])!=b['sha256'] for b in previous['breeds']):raise ValueError('Quellen geändert: vollständigen Aufbau ohne --layouts ausführen')
+        if previous['sources']!=manifest['sources'] or previous.get('schema')!=manifest['schema'] or any(digest(k/p['portrait'])!=p['sha256'] for b in previous['breeds'] for p in b.get('motifs',[b])):raise ValueError('Quellen geändert: vollständigen Aufbau ohne --layouts ausführen')
         manifest['designs']=[d for d in previous['designs'] if d['layout'] not in selected]
     index={}
     for bi,(slug,label,pet,filename,animal) in enumerate(BREEDS):
         motif=k/('motive/hunderassen' if animal=='dog' else 'motive-eigene/rasse-schilder-20261029')/filename
         if not motif.exists():raise FileNotFoundError(motif)
         provenance={'breed':slug,'name':label,'animal':animal,'portrait':motif.relative_to(k).as_posix(),'sha256':digest(motif),'origin':'Katalogporträt, proportional unverändert; freundlichste passende Kopfvariante gewählt.' if animal=='dog' else 'Eigene Codex-ImageGen-Illustration, 29.10.2026; binär vektorisiert mit VTracer. Keine fremden Fotos/Stockbilder. Details in motive-eigene/rasse-schilder-20261029/herkunft.json.','sample':True}
+        if animal=='cat':provenance['motifs']=cat_sources[slug]
         manifest['breeds'].append(provenance)
         for (form,w,h),s in sizes.items():
             if animal=='cat' and abs(w/h-1.5)>.001:continue
@@ -152,6 +158,8 @@ def main():
             if not target:raise ValueError(f'Family target missing {form}/{w}/{h}')
             for li,layout in enumerate(LAYOUTS):
                 if li+1 not in selected:continue
+                source=cat_sources[slug][li] if animal=='cat' else provenance
+                motif=k/source['portrait']
                 number=1001+bi*12+li;did=f'{prefix}-V2A-{w/10:g}x{h/10:g}-D{number}'
                 folder=k/'designs'/row/did
                 if folder.exists() and not (folder/'design.json').exists():raise ValueError('Unexpected output collision '+str(folder))
@@ -176,14 +184,14 @@ def main():
                     fields[f'text-{ti}']={'required':False,'locked':False,'label':{'title':'Spruch','pet':'Tiername','breed':'Rasse / Zusatztext'}[key]}
                 parts.append(ornaments(layout['deco'],layout,scale,extra))
                 svg=f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:g}mm" height="{h:g}mm" viewBox="0 0 {w:g} {h:g}">\n<title>{esc(label+" · "+layout["name"])}</title>\n'+'\n'.join(parts)+'\n</svg>\n'
-                meta={'id':did,'name':label+' · '+layout['name'],'plateMm':[w,h],'material':'Edelstahl','process':'Gravur','form':{'OV':'Oval','RE':'Rechteck','AB':'Rechteck abgerundet'}[form],'themes':['hundeschilder' if animal=='dog' else 'katzenschilder'],'movable':True,'fonts':fonts,'fields':fields,'source':provenance['portrait'],'motifs':[provenance['portrait']],'freigabe':None,'ziele':[{'familie':'steel-door-signs','freigabe':None}],'katalog':{'series':row,'key':row+'-D'+str(number),'zielgruppe':'Tiere','unterkategorie':label},'rasseReview':{'breed':slug,'animal':animal,'layout':li+1,'layoutName':layout['name'],'mode':'neu','sampleOnly':True,'sourceVariant':s['skuRoot'],'familySizeKey':target['key'],'motifSha256':provenance['sha256'],'portraitBoxMm':portrait_box,'texts':text_boxes,'minStrokeMm':None,'machineApproval':'offen'}}
+                meta={'id':did,'name':label+' · '+layout['name'],'plateMm':[w,h],'material':'Edelstahl','process':'Gravur','form':{'OV':'Oval','RE':'Rechteck','AB':'Rechteck abgerundet'}[form],'themes':['hundeschilder' if animal=='dog' else 'katzenschilder'],'movable':True,'fonts':fonts,'fields':fields,'source':source['portrait'],'motifs':[source['portrait']],'freigabe':None,'ziele':[{'familie':'steel-door-signs','freigabe':None}],'katalog':{'series':row,'key':row+'-D'+str(number),'zielgruppe':'Tiere','unterkategorie':label},'rasseReview':{'breed':slug,'animal':animal,'layout':li+1,'layoutName':layout['name'],'mode':'neu','sampleOnly':True,'sourceVariant':s['skuRoot'],'familySizeKey':target['key'],'motifSha256':source['sha256'],'motifVariant':li+1 if animal=='cat' else 1,'motifName':source.get('name','Katalogporträt'),'portraitBoxMm':portrait_box,'texts':text_boxes,'minStrokeMm':None,'machineApproval':'offen'}}
                 # Shape/size derivatives keep their master D-number and provenance.
                 master=f'TRE-V2A-12x8-D{number}'
                 if did!=master:
                     meta['varianteVon']=master
                     meta['transfer']={'from':master,'fromKey':f'rasse-schilder-re-120x80-D{number}','scale':scale,'offsetMm':[extra*scale,0],'decided':'2026-10-29','by':'Codex/Astra, Nutzerauftrag Issue 61'}
                 folder.mkdir(parents=True,exist_ok=True);(folder/'design.svg').write_text(svg,encoding='utf-8');jsave(folder/'design.json',meta)
-                item={'id':did,'breed':slug,'animal':animal,'layout':li+1,'form':form,'plateMm':[w,h],'folder':folder.relative_to(k).as_posix(),'familySizeKey':target['key'],'svgSha256':digest(folder/'design.svg')}
+                item={'id':did,'breed':slug,'animal':animal,'layout':li+1,'form':form,'plateMm':[w,h],'folder':folder.relative_to(k).as_posix(),'familySizeKey':target['key'],'svgSha256':digest(folder/'design.svg'),'motifSource':source['portrait'],'motifSha256':source['sha256'],'motifVariant':li+1 if animal=='cat' else 1}
                 manifest['designs'].append(item);index.setdefault(row,[]).append({'id':did,'name':meta['name'],'plateMm':[w,h],'themes':meta['themes']})
     if a.layouts:
         index={}

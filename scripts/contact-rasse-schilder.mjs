@@ -18,7 +18,6 @@ for(const [key,entries]of groups){
  if(entries.length!==12)throw Error('Expected 12 designs for contact sheet: '+key);
  entries.sort((a,b)=>a.layout-b.layout);
  const meta=read(path.join(katalog,entries[0].folder,'design.json'));
- const portrait=await sharp(path.join(katalog,meta.source),{density:100}).resize(120,150,{fit:'contain',background:'#ffffff'}).png().toBuffer();
  const dims=await Promise.all(entries.map(e=>sharp(path.join(captures,e.file)).metadata()));
  const cw=Math.max(...dims.map(d=>d.width))+152,ch=Math.max(...dims.map(d=>d.height))+74,cols=3,rows=Math.ceil(entries.length/cols),width=cw*cols,height=rows*ch+114;
  const breed=meta.name.split(' · ')[0],form={OV:'Oval',RE:'Rechteck',AB:'Rechteck abgerundet'}[entries[0].form],title=breed+' · '+form+' · '+entries[0].plateMm.join(' × ')+' mm';
@@ -26,11 +25,12 @@ for(const [key,entries]of groups){
  const overlays=[{input:svgLabel(title,width,52,29),left:0,top:0},{input:svgLabel('12 Entwürfe · Konfigurator-Screenshots in Originalpixeln · Motivquelle jeweils links · Freigabe offen',width,44,19),left:0,top:54}];
  for(let i=0;i<entries.length;i++){
   const e=entries[i],m=read(path.join(katalog,e.folder,'design.json')),left=(i%cols)*cw,top=114+Math.floor(i/cols)*ch;
+  const portrait=await sharp(path.join(katalog,m.source),{density:100}).resize(120,150,{fit:'contain',background:'#ffffff'}).png().toBuffer();
   overlays.push({input:svgLabel(String(e.layout).padStart(2,'0')+'  '+m.rasseReview.layoutName,cw,32,18),left,top});
   overlays.push({input:portrait,left:left+10,top:top+62});
   overlays.push({input:svgLabel('Motivquelle',135,30,13),left,top:top+220});
   overlays.push({input:fs.readFileSync(path.join(captures,e.file)),left:left+140,top:top+35});
-  placements.push({id:e.id,svgSha256:e.svgSha256,screenshotSha256:e.sha256,rect:{left:left+140,top:top+35,width:dims[i].width,height:dims[i].height},pixelSha256:createHash('sha256').update(await sharp(path.join(captures,e.file)).removeAlpha().raw().toBuffer()).digest('hex')});
+  placements.push({id:e.id,motifSource:m.source,motifSha256:m.rasseReview.motifSha256,svgSha256:e.svgSha256,screenshotSha256:e.sha256,rect:{left:left+140,top:top+35,width:dims[i].width,height:dims[i].height},pixelSha256:createHash('sha256').update(await sharp(path.join(captures,e.file)).removeAlpha().raw().toBuffer()).digest('hex')});
   overlays.push({input:svgLabel(e.id+' · '+m.fonts.join(' / '),cw,30,13),left,top:top+ch-30});
  }
  const file=key+'.png';await sharp({create:{width,height,channels:3,background:'#ffffff'}}).composite(overlays).png().toFile(path.join(out,file));

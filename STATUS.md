@@ -1,3 +1,10 @@
+## 29.10.2026 · Codex/Astra · Katzen: zwölf verschiedene Motive je Rasse in Arbeit
+
+- Neue Nutzervorgabe: „immer verschiedene Katzen gesichte / Motive“. Bisher ein Porträt je Rasse; wird durch zwölf eigenständige Motive je Rasse ersetzt. Ziel 300 Katzenmotive in denselben 6.600 Katzenschildern. Native Einzelillustrationen mit Originalen/Prompts/Herkunft laufen.
+- Quellenvertrag und Generator verhindern Wiederverwendung fehlender Motive; vier Regressionstests bestanden. Kontaktbogen ordnet die jeweils tatsächliche Motivquelle zu; separate Motivgalerie vorbereitet. Gesamtprüfung und neue Kontaktbögen noch offen.
+- [Nachtrag und aktueller Stand](docs/handoffs/2026-10-29-katzen-motivkorrektur.md). Bestehende Draft-PRs Code #71 / Katalog #8 als laufende Überarbeitung markiert. Aktuellen main mit 5a37c81 eingebunden; Vorgängerstand weiter geprüft.
+- Nächster Schritt: 25 vollständige Motivserien fertigstellen, neu ableiten und im echten Konfigurator prüfen.
+
 ## 29.10.2026 · Codex/Astra · Issue 61: zwölf Rasse-Designs je Größe, 25 Katzenmuster
 
 - Nutzer: „je größe und rasse 12 verschiedene designs“, auf drei Katzenmuster „weit aus mehr“. Ausgeführt: **5 Hunde + 25 Katzen, 360 Rassenentwürfe / 8.100 SVG/JSON-Paare**, 675 Größen-/Formkombinationen mit je zwölf unterschiedlichen Layouts im Katalogbranch `dev/rasse-schilder-20261029-astra`.

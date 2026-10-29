@@ -250,6 +250,7 @@ function galleryEntryFixture(f){
  f.store.workshop.galleryModel=(id,rev)=>f.store.workshop.model(id,rev);
  f.store.registry.listActive=()=>structuredClone([...f.bindings.values()]);
  for(const product of mapping.products){
+  f.models.get(product.localWorkshopRecord).galleryProductLine=JSON.stringify(['line','linie-door-signs']);
   const c=f.models.get(product.localWorkshopRecord).universal,base=product.variants.find(v=>v.mountingKey==='K00').priceCents;
   c.basePriceCents=base;c.extraMotifCents=169;c.motifCharge='additional';c.photo={};
   Object.assign(c.profile,{kind:'universal-product',geometry:{shape:'rect',width:70,height:20,holes:[]},material:{kind:'steel'},processing:{method:'engraving'}});
@@ -261,6 +262,20 @@ async function otherGalleryCard(f,request,t){
  const response=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));assert.equal(response.status,200,response.body.toString());
  const card=response.data.items.find(i=>i.productId!==f.first.localWorkshopRecord);assert.ok(card,'another active product is available');return card;
 }
+
+test('HTTP gallery, preview and design-switch enforce the product line without creating a cart',()=>run(async(f,request,{token})=>{
+ const {token:t}=await token();
+ const card=await otherGalleryCard(f,request,t),destination=f.models.get(card.productId);
+ destination.galleryProductLine=JSON.stringify(['line','linie-other']);
+ const listing=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));
+ assert.equal(listing.status,200);assert.equal(listing.data.total,2);
+ assert.ok(!listing.data.items.some(i=>i.productId===card.productId));
+ for(const endpoint of ['design-gallery-preview','design-switch']){
+  const rejected=await request('/api/shop-entry/'+endpoint,'POST',{target:card.target},session(t));
+  assert.equal(rejected.status,409,rejected.body.toString());assert.equal(rejected.data.error.code,'shop_gallery_changed');
+ }
+ assert.equal(f.cartCalls.length,0);
+},galleryEntryFixture));
 
 test('gallery endpoints require current authentication, correct origin and strictly shaped requests',()=>run(async(f,request,{token})=>{
  for(const [path,method,body] of [['design-gallery','GET'],['design-gallery-preview','POST',{target:'x'}],['design-switch','POST',{target:'x'}]]){const denied=await request('/api/shop-entry/'+path,method,body);assert.equal(denied.status,403);assert.equal(denied.data.error.code,'shop_entry_session');}

@@ -9,6 +9,8 @@ const sameBinding=(a,b)=>['storeId','tenantId','shopDomain','shopifyProductId','
 const identity=b=>({shopifyProductId:b.shopifyProductId,shopifyVariantId:b.shopifyVariantId});
 const fields=['sid','storeId','productId','productRevision','bindingId','assignmentRevision','shopifyProductId','shopifyVariantId','designId'];
 
+const productLine=(model,binding)=>model.galleryProductLine||JSON.stringify(['product',binding.productId]);
+
 // No catalogue imports or approvals happen here. Customer designs are taken
 // only from the fixed, already activated product model. Catalogue target
 // approval remains the importer's responsibility, just as for normal entry.
@@ -40,6 +42,9 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   if(!input||Object.keys(input).length!==fields.length||fields.some(k=>!Object.hasOwn(input,k))||input.sid!==context.session.sid||input.storeId!==context.store.storeId)unavailable();
   const current=resolve(identity(input));checkScope(context,current.binding);
   if(current.store!==context.store||!fields.filter(k=>!['sid','designId'].includes(k)).every(k=>current.binding[k]===input[k]))unavailable();
+  // Re-check source and destination for old signed targets as well. Both
+  // preview and selection must obey the same boundary as the card list.
+  if(productLine(cardFor(context.store,context.binding),context.binding)!==productLine(cardFor(current.store,current.binding),current.binding))unavailable();
   const model=modelFor(current.store,current.binding);checkBinding(current.store,current.binding,model);
   const selected=selection(current.binding,model,input.designId);
   return {...current,model,...selected};
@@ -66,7 +71,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
     for(const design of profile.designs){
      let selected;try{selected=selection(binding,model,design.id);}catch{continue;}
      const {geometry,price}=selected,dedupe=JSON.stringify([binding.productId,design.id,geometry.width,geometry.height,geometry.shape]);
-     cards.push({binding,availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+     cards.push({binding,productLine:productLine(model,binding),availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
     }
    }catch(error){if([404,409,422,423].includes(error.status))continue;throw error;}
   }
@@ -97,7 +102,12 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
  // Catch at the caller; a failed build is discarded and the next call can retry.
  function warm(context){return cachedCards(context);}
  async function availableCards(context){
-  const cards=await cachedCards(context),unique=[...new Map(cards.map(row=>[row.binding.bindingId,row])).values()];
+  const all=await cachedCards(context);
+  // Keep the shared cache unfiltered for startup warming and other source
+  // products. Filter before approval checks, deduplication and pagination.
+  const source=all.find(row=>row.binding.productId===context.binding.productId&&row.binding.productRevision===context.binding.productRevision);
+  const line=source?.productLine??productLine(cardFor(context.store,context.binding),context.binding);
+  const cards=all.filter(row=>row.productLine===line),unique=[...new Map(cards.map(row=>[row.binding.bindingId,row])).values()];
   if(checkBindings){const allowed=await checkBindings(context.store,unique);return cards.filter(row=>allowed.has(row.binding.bindingId));}
   const allowed=new Set();
   for(let i=0;i<unique.length;i++){

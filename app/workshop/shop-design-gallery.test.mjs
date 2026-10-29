@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {galleryProductLine} from './shop-gallery-model.mjs';
 
 // Synthetic immutable-model transport only. Real quote, geometry, signing and
 // preview code run here; no Shopify connection or production data is opened.
@@ -9,13 +10,56 @@ function fixture(){
  const store={storeId:scope.storeId,workshop:{tenantId:scope.tenantId,assets:{read(){throw Error('Unexpected asset read');}}},registry:{listActive:()=>structuredClone([...bindings.values()])}};
  const add=(n,{price=1999,options={},designs=[{id:'d1',name:'Design '+n,objects:[]}]}={})=>{
   const b={...scope,shopifyProductId:'gid://shopify/Product/'+n,shopifyVariantId:'gid://shopify/ProductVariant/'+(100+n),productId:'cfg_'+n,productRevision:3,bindingId:'binding_'+n,assignmentRevision:2,options,unitCents:price};
-  bindings.set(b.shopifyVariantId,b);models.set(b.productId,{key:'acryl',name:'Product '+n,configuration:{id:b.productId,revision:3},universal:{basePriceCents:price,extraMotifCents:169,motifCharge:'additional',photo:{},profile:{kind:'universal-product',id:'profile-'+n,geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{method:'engraving'},optionGroups:[],defaultDesignId:designs[0]?.id,designs},localResources:{fonts:{},motifs:[],photoExamples:[]}}});return b;
+  bindings.set(b.shopifyVariantId,b);models.set(b.productId,{galleryProductLine:JSON.stringify(['line','linie-test']),key:'acryl',name:'Product '+n,configuration:{id:b.productId,revision:3},universal:{basePriceCents:price,extraMotifCents:169,motifCharge:'additional',photo:{},profile:{kind:'universal-product',id:'profile-'+n,geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{method:'engraving'},optionGroups:[],defaultDesignId:designs[0]?.id,designs},localResources:{fonts:{},motifs:[],photoExamples:[]}}});return b;
  };
  const current=add(1),context={store,binding:structuredClone(current),session:{sid:'source-session'}};
  const resolve=ids=>{const binding=bindings.get(ids.shopifyVariantId);if(!binding||binding.shopifyProductId!==ids.shopifyProductId)throw Object.assign(Error('Inactive'),{status:404});return {store,binding:structuredClone(binding)};};
  const gallery=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve,modelFor:(_store,b)=>structuredClone(models.get(b.productId)),allowedAssets:()=>new Set()});
  return {bindings,models,store,context,add,gallery};
 }
+
+test('line filter runs before pagination and never leaks another line through the shared warm cache',async()=>{
+ const f=fixture();for(let i=2;i<=46;i++)f.add(i);
+ const other=JSON.stringify(['line','linie-other']);
+ for(let i=2;i<=44;i++)f.models.get('cfg_'+i).galleryProductLine=other;
+ let reads=0;f.store.registry.galleryRevision=()=> 'fixed';
+ f.store.registry.listActiveForGallery=async()=>{reads++;return f.store.registry.listActive();};
+ const gallery=createShopDesignGallery({secret:'test',resolve:()=>{},modelFor:(_s,b)=>f.models.get(b.productId),allowedAssets:()=>new Set()});
+ await gallery.warm({store:f.store,binding:{shopDomain:f.context.binding.shopDomain}});
+ const a=await gallery.list(f.context);
+ assert.equal(a.total,3);assert.equal(a.nextPage,null);
+ assert.deepEqual(new Set(a.items.map(i=>i.productId)),new Set(['cfg_1','cfg_45','cfg_46']));
+ const context={...f.context,binding:f.bindings.get('gid://shopify/ProductVariant/102'),session:{sid:'other-source'}};
+ const b=await gallery.list(context);assert.equal(b.total,43);assert.equal(b.items.length,40);assert.equal(b.nextPage,1);
+ const end=await gallery.list(context,{page:1});assert.equal(end.items.length,3);assert.equal(end.nextPage,null);
+ assert.equal((await gallery.list(f.context)).total,3);assert.equal(reads,1);
+});
+
+test('missing line metadata allows only the source product, including its other variants',async()=>{
+ const f=fixture();f.add(2);for(const m of f.models.values())delete m.galleryProductLine;
+ const b=f.bindings.get(f.context.binding.shopifyVariantId);
+ f.bindings.set('gid://shopify/ProductVariant/103',{...b,bindingId:'other-variant',shopifyVariantId:'gid://shopify/ProductVariant/103'});
+ const result=await f.gallery.list(f.context);assert.equal(result.total,1);assert.equal(result.items[0].productId,b.productId);
+ // With no source card (hidden design), resolve its scope from the fixed model.
+ f.models.get('cfg_1').universal.profile.designs[0].hidden=true;
+ assert.equal((await f.gallery.list(f.context)).total,0);
+});
+
+test('doorbell formats stay within their exact model and ordinary lines cannot mix with them',async()=>{
+ const f=fixture();for(let i=2;i<=5;i++)f.add(i);
+ for(let i=1;i<=4;i++)f.models.get('cfg_'+i).galleryProductLine=galleryProductLine({id:'cfg_'+i,document:{categoryIds:['linie-doorbells'],config:{doorbell:{schema:'gravuru-doorbell/v1',modelKey:i===4?'another-model':'same-model'}}}});
+ f.models.get('cfg_5').galleryProductLine=JSON.stringify(['line','linie-doorbells']);
+ assert.deepEqual((await f.gallery.list(f.context)).items.map(i=>i.productId),['cfg_1','cfg_2','cfg_3']);
+});
+
+test('previously signed cross-line targets are rejected for selection and preview before loading assets',async()=>{
+ for(const sourceChanged of [false,true]){
+  const f=fixture(),b=f.add(2),token=(await f.gallery.list(f.context)).items.find(i=>i.productId===b.productId).target;
+  f.models.get(sourceChanged?'cfg_1':'cfg_2').galleryProductLine=JSON.stringify(['line','linie-other']);
+  assert.throws(()=>f.gallery.target(f.context,token),{code:'shop_gallery_changed'});
+  assert.throws(()=>f.gallery.preview(f.context,token),{code:'shop_gallery_changed'});
+ }
+});
 
 test('gallery cards and signed target resolve the exact product, variant, options, geometry and price',async()=>{
  const f=fixture(),b=f.add(2,{price:2499}),card=(await f.gallery.list(f.context)).items.find(i=>i.productId===b.productId);

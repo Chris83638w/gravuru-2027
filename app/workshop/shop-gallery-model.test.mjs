@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {shopGalleryModel} from './shop-gallery-model.mjs';
+import {shopGalleryModel,galleryProductLine} from './shop-gallery-model.mjs';
 import {makeProductDocument,resolveProduct} from './product-model.mjs';
 import {doorbellFixture} from './test-fixtures/doorbell-config.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
@@ -9,6 +9,23 @@ import {variantCombinations,selectedProfile,quote} from '../configurator/variant
 import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
 
 const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));
+test('line scope uses explicit immutable categories, never material, family or display names',()=>{
+ const record={id:'cfg_a',document:{name:'Same steel sign',categoryIds:['familie-42','linie-hausnummer','form-rectangle'],config:{}}};
+ assert.equal(galleryProductLine(record),JSON.stringify(['line','linie-hausnummer']));
+ for(const categoryIds of [undefined,[],['familie-42'],['linie-'],['linie-Hausnummer'],['linie-one','linie-two'],['linie-one','linie-']]){
+  assert.equal(galleryProductLine({...record,document:{...record.document,categoryIds}}),JSON.stringify(['product','cfg_a']));
+ }
+ assert.equal(galleryProductLine({...record,document:{...record.document,categoryIds:['linie-house','linie-house']}}),JSON.stringify(['line','linie-house']));
+});
+
+test('doorbell scope preserves formats of one exact model and fails closed for malformed model metadata',()=>{
+ const record={id:'cfg_portrait',document:{categoryIds:['linie-doorbells'],config:{doorbell:{schema:'gravuru-doorbell/v1',modelKey:'fixture-model'}}}};
+ assert.equal(galleryProductLine(record),galleryProductLine({...record,id:'cfg_landscape'}));
+ assert.notEqual(galleryProductLine(record),galleryProductLine({...record,document:{...record.document,config:{doorbell:{schema:'gravuru-doorbell/v1',modelKey:'another-model'}}}}));
+ for(const doorbell of [{},{schema:'gravuru-doorbell/v1'},{schema:'gravuru-doorbell/v1',modelKey:' '},{schema:'unknown',modelKey:'fixture-model'}]){
+  assert.equal(galleryProductLine({...record,document:{...record.document,config:{doorbell}}}),JSON.stringify(['product','cfg_portrait']));
+ }
+});
 for(const [name,config] of [['doorbell',doorbellFixture()],['acrylic',makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64))]]){
  test(name+': lightweight cards keep all exact option prices, geometry and design visibility without rendering resources',()=>{
   const document=makeProductDocument(config,{name:'Synthetic gallery '+name});

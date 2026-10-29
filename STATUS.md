@@ -1,3 +1,11 @@
+## 29.10.2026 · Codex/Astra · Issue 47: Designressourcen + alle Funkklingelgrößen, nur Review
+
+- Eigener Branch `dev/funkklingeln-issue47-ressourcen-20261029-astra`, Basis `e48b7f3`. Kanonische Artwork-Pfade bleiben bei Acryl-Host-Umschreibung unverändert; bestehender Linien-/Modellfilter aus main unverändert übernommen.
+- Windows und isoliertes Linux: jeweils **47/47** gezielte Tests, beide Builds bestanden; Linux 871 Quelldateien gegen Basis-SHAs geprüft, Node 24.22.1. Vollständige lokale Importprüfung: **126 Hauptprodukte / 42 Modelle / 15.120 Preis-/Optionskombinationen / 2.268 gültige Artwork-Referenzen / 30.240 Positionsgeometrien**, Quellen unverändert.
+- Frischer Shopify-/Native-Leseabgleich 09:44–09:50 UTC: 126 ACTIVE und 15.120 passende Bindungen/Varianten; 42 veröffentlicht ohne Marker, 84 unveröffentlicht mit passendem Marker. Keine Live-Kundenabnahme.
+- Chris ergänzt ausdrücklich alle Modelle/Größen: vollständige 42×3-Matrix und **8 zusätzliche Gerätequellen mit 24 Größenvorbereitungen** dokumentiert. Zusatzgeräte bleiben bis zur belegten Modellidentität und Bild-/Ausschnittzuordnung gesperrt; keine Kompatibilität erfunden.
+- [Bericht und Rückweg](docs/handoffs/2026-10-29-funkklingeln-issue47-astra.md) · [Modellmatrix](docs/handoffs/issue47-20261029/models-formats-42.csv). Nur Review, kein Merge/Deployment/Shopify-Schreiben/Neustart. Nächster Schritt: Claude prüft gezielten PR; Bereitstellung und Ein-Produkt-Pilot erst mit Chris' ausdrücklicher Freigabe. Connector-Commits sind unsigned.
+
 ## 29.10.2026 · Claude als Operator · Live: PR #42 + #43 (`main` `6339961`)
 
 - Chris (11:47): „Ja, Du darfst PR #42 und PR #43 nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `6339961` (Baum = Prüfstand `b41c32a`), Plesk Pull + Bereitstellen + App neu starten 11:48–11:50.

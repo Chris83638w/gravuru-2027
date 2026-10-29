@@ -285,3 +285,14 @@ export function ellipseEdgeDistance(x,y,a,b){
  const t=(low+high)/2;
  return Math.hypot(a*a*x/(t+a*a)-x,b*b*y/(t+b*b)-y);
 }
+
+// Nearest outer plate edge to a displayed object's bounding polygon. Shares the
+// same 0.002 mm outline subdivision as containment; holes are not plate edges.
+export function contourNearestPolygonBoundary(g,polygon){
+ if(!Array.isArray(polygon)||polygon.length<3||polygon.some(p=>!Array.isArray(p)||p.length!==2||p.some(v=>!Number.isFinite(v))))fail('Ungültiges Messpolygon.');
+ const {edges}=flattened(g.outlinePath);let best=null;
+ const project=(p,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],l=dx*dx+dy*dy,t=l?Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/l)):0;return [a[0]+t*dx,a[1]+t*dy];};
+ const add=(object,edge)=>{const distance=Math.hypot(object[0]-edge[0],object[1]-edge[1]);if(!best||distance<best.distance)best={object,edge,distance,toleranceMm:CONTOUR_TOLERANCE_MM};};
+ for(let i=0;i<polygon.length;i++){const a=polygon[i],b=polygon[(i+1)%polygon.length];for(const e of edges){const u=[b[0]-a[0],b[1]-a[1]],v=[e.b[0]-e.a[0],e.b[1]-e.a[1]],q=[e.a[0]-a[0],e.a[1]-a[1]],cross=(p,q)=>p[0]*q[1]-p[1]*q[0],den=cross(u,v);if(Math.abs(den)>1e-12){const t=cross(q,v)/den,s=cross(q,u)/den;if(t>=0&&t<=1&&s>=0&&s<=1){const p=[a[0]+t*u[0],a[1]+t*u[1]];add(p,p);return best;}}add(a,project(a,e.a,e.b));add(b,project(b,e.a,e.b));add(project(e.a,a,b),e.a);add(project(e.b,a,b),e.b);}}
+ return best;
+}

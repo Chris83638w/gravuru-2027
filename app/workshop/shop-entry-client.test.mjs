@@ -304,3 +304,20 @@ test('shop embed safety net: own start link is always usable, ready/failed messa
  assert.equal(acceptedMessage({origin:'https://evil.example',source:frame.contentWindow,data:{type:'gravuru-shop-failed'}},frame),null);
  assert.equal(acceptedMessage({origin:'https://app.example',source:{},data:{type:'gravuru-shop-ready'}},frame),null);
 });
+
+
+test('gallery replaces HTML 502, malformed JSON and network errors with its own recoverable message',async()=>{
+ for(const fetchImpl of [async()=>new Response('<html>upstream request failed</html>',{status:502}),async()=>Response.json({error:{message:'internal path secret'}},{status:500}),async()=>new Response('bad'),async()=>{throw new TypeError('Failed to fetch');}]){
+  const client=createShopEntryClient({token,fetchImpl});
+  await assert.rejects(client.loadDesignGallery(),e=>/Designauswahl.*erneut versuchen/.test(e.message)&&!e.message.includes('Der Konfigurator')&&!e.message.includes('secret'));
+ }
+ const expired=createShopEntryClient({token,fetchImpl:async()=>Response.json({error:{message:'Bitte die Produktseite neu öffnen.'}},{status:403})});
+ await assert.rejects(expired.loadDesignGallery(),/Produktseite neu öffnen/);
+});
+
+test('gallery client aborts a hanging proxy request at five seconds and a retry can succeed',async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});let signal,calls=0;
+ const client=createShopEntryClient({token,fetchImpl:async(_url,options)=>{signal=options.signal;if(++calls===1)return new Promise(()=>{});return Response.json({items:[],total:0,nextPage:null});}});
+ const first=client.loadDesignGallery();const rejected=assert.rejects(first,/Designauswahl/);t.mock.timers.tick(4999);assert.equal(signal.aborted,false);t.mock.timers.tick(1);await rejected;assert.equal(signal.aborted,true);t.mock.timers.reset();
+ assert.deepEqual(await client.loadDesignGallery(),{items:[],total:0,nextPage:null});
+});

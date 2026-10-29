@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-29",
+  "platform": "Windows",
+  "node": "v24.20.0",
+  "basePR43": "b5243df48f2bf2e9c0fd1c0b008bfc2068b1bd31",
+  "galleryPR42": "bfbd9188ac4446611bc5e71b55b74c804aec5767",
+  "targeted": {
+    "tests": 33,
+    "pass": 33,
+    "fail": 0,
+    "skip": 0
+  },
+  "editorBefore": {
+    "tests": 418,
+    "pass": 412,
+    "fail": 6,
+    "skip": 0
+  },
+  "editorAfter": {
+    "tests": 420,
+    "pass": 414,
+    "fail": 6,
+    "skip": 0
+  },
+  "sameFailureNames": true,
+  "failures": [
+    "Mimaki combined is one PDF page with white vector layer, no RDG_WHITE resource",
+    "Roland PDF has real spot resources, cut paths, bleed/trim boxes and actual four-channel CMYK artwork",
+    "Roland motif white is spot-color vector paint, without raster or soft-mask painting",
+    "ZIP keeps original image bytes and readable member names",
+    "original RT1/RT2 cut PDFs retain curved physical bounds and fixed drilling within 0.1 mm",
+    "separate Mimaki white is vector-only; no-white removes actual white paint"
+  ],
+  "combined": {
+    "tests": 148,
+    "pass": 148,
+    "fail": 0,
+    "skip": 0
+  },
+  "build": {
+    "standalone": "editor-f4762ac8afaac612.mjs",
+    "combined": "editor-2670d91e03cce893.mjs"
+  },
+  "limits": "Windows editor is not all green. Linux and physical Safari verification of this new revision remain open. No live changes. Full workshop run not repeated; source unchanged; workshop integration included in 148 combined tests.",
+  "lastAdjustment": "CSS only: fixed track length when hidden Fit appears; both builds and browser geometry checked afterwards."
+}

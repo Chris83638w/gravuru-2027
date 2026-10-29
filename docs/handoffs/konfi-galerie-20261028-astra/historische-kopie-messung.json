@@ -1,0 +1,48 @@
+{
+  "schema": "gravuru-gallery-copy-benchmark/v1",
+  "sourceLabel": "Zwei historische Produkt-Readbacks 26./27.10.; lokale Testbindungen, kein aktueller Live-Bestand",
+  "measurement": "local gallery plus exact source-binding checks; no live HTTP/proxy proof",
+  "sha256": {
+    "db": "82c697a315004d2860be3537efc4582a1201ab6c0f3f66b66ffb0c5b49c94aea",
+    "-wal": "498badead97d796099d44816a6d7d5525a13e82d158fc7fba6a418a169cf7d06"
+  },
+  "cold": {
+    "ms": 802.24,
+    "status": "ready",
+    "cards": 15,
+    "firstPage": 15
+  },
+  "warm": {
+    "ms": 425.28,
+    "status": "ready",
+    "cards": 15,
+    "firstPage": 15
+  },
+  "preparationMs": 843.64,
+  "lightweightProductReads": 2,
+  "fullModelReads": 0,
+  "assetReads": 0,
+  "activeBindings": 2,
+  "readOnly": true,
+  "afterProcessRestart": {
+    "cold": {
+      "ms": 786.98,
+      "status": "ready",
+      "cards": 15,
+      "firstPage": 15
+    },
+    "warm": {
+      "ms": 455.36,
+      "status": "ready",
+      "cards": 15,
+      "firstPage": 15
+    },
+    "preparationMs": 827.12,
+    "lightweightProductReads": 2,
+    "fullModelReads": 0,
+    "assetReads": 0,
+    "activeBindings": 2,
+    "readOnly": true
+  },
+  "copyUnchanged": true
+}

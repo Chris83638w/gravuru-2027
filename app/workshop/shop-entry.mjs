@@ -6,6 +6,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
 import {createShopEntrySessions} from './shop-entry-session.mjs';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {shopGalleryModel} from './shop-gallery-model.mjs';
 import {queueGalleryPreview} from './shop-gallery-preview-queue.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
@@ -52,7 +53,7 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer}){
+export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
@@ -148,7 +149,41 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   return copy;
  }
  function publicBinding(binding){return {shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision,options:structuredClone(binding.options||{})};}
- const designGallery=createShopDesignGallery({secret,resolve,modelFor,allowedAssets,clock,checkBinding:(store,binding,model)=>requireDoorbellApproval(store,binding,model.universal)});
+ function cardFor(store,binding){
+  // The separately installed legacy runtime has no galleryModel method yet.
+  // Its fixed document can use the same lightweight projection, never model().
+  const model=typeof store.workshop.galleryModel==='function'?store.workshop.galleryModel(binding.productId,binding.productRevision):shopGalleryModel(store.workshop.repository.get(binding.productId,{revision:binding.productRevision}));
+  if(model?.configuration?.id!==binding.productId||model?.configuration?.revision!==binding.productRevision)fail(409,'shop_entry_model','Das Modell gehört nicht zur festen Produktzuordnung.');
+  if(model.key!=='acryl'||!model.universal)fail(404,'shop_entry_form_pending',NOT_BOUND);
+  return model;
+ }
+ function checkGalleryBinding(store,binding,model){
+  if(store.workshop.konfis?.paused(binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
+  requireDoorbellApproval(store,binding,model.universal);
+ }
+ async function checkGalleryBindings(store,rows){
+  const allowed=new Set(),doorbells=[],paused=new Map();
+  for(const row of rows){
+   const b=row.binding;if(!paused.has(b.productId))paused.set(b.productId,store.workshop.konfis?.paused(b.productId)===true);
+   if(paused.get(b.productId))continue;
+   if(isLayeredDoorbell(row.availability.universal)){if(store.doorbellLiveOrders===true)doorbells.push(b);}
+   else allowed.add(b.bindingId);
+  }
+  if(doorbells.length){
+   const intake=store.workshop.orderIntake;
+   if(typeof intake.doorbellGalleryApprovals==='function'){
+    const approvals=await intake.doorbellGalleryApprovals(doorbells);
+    doorbells.forEach((b,i)=>{if(typeof approvals[i]?.id==='string'&&approvals[i].id)allowed.add(b.bindingId);});
+   }else for(const b of doorbells){await new Promise(resolve=>setImmediate(resolve));try{requireDoorbellApproval(store,b,{doorbell:{schema:'gravuru-doorbell/v1'}});allowed.add(b.bindingId);}catch(error){if(![404,409,422,423].includes(error.status))throw error;}}
+  }
+  return allowed;
+ }
+ const designGallery=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings});
+ // Warm each configured store after startup without creating a customer session.
+ // A transient failure is retried on the next gallery request, never unhandled.
+ for(const store of fixed)if(typeof store.registry.listActiveForGallery==='function'){
+  designGallery.warm({store,binding:{shopDomain}}).catch(error=>logger({event:'shop_gallery_warm_failed',storeId:store.storeId,code:error.code||'shop_gallery_build'}));
+ }
  function startParams(params){
   const number=(name,kind)=>{const values=params.getAll(name);if(values.length!==1)fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');const v=values[0].replace('gid://shopify/'+kind+'/','');if(!/^[1-9][0-9]{0,19}$/.test(v))fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');return 'gid://shopify/'+kind+'/'+v;};
   const optional=(name,test)=>{const values=params.getAll(name);if(!values.length||values[0]==='')return null;if(values.length!==1||!test(values[0]))fail(422,'shop_entry_params','Der Bearbeiten-Verweis ist ungültig.');return values[0];};
@@ -329,9 +364,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
-     if([...url.searchParams.keys()].some(k=>k!=='page')||url.searchParams.getAll('page').length>1||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
-     checkOrigin(req,{mutating:false});const context=active(req);modelFor(context.store,context.binding);
-     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0)});active(req);
+     if([...url.searchParams.keys()].some(k=>!['page','theme'].includes(k))||url.searchParams.getAll('page').length>1||url.searchParams.getAll('theme').length>1||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+     checkOrigin(req,{mutating:false});const context=active(req);checkGalleryBinding(context.store,context.binding,cardFor(context.store,context.binding));
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred'});active(req);
      return json(res,200,result);
     }
     if(action==='design-gallery-preview'){

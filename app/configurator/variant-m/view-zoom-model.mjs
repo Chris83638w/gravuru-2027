@@ -24,10 +24,18 @@ export function pinchView(view,start,current,bounds){
  const before=center(start),after=center(current),scale=viewScale(view.scale*distance(current)/Math.max(1,distance(start))),p=bounds.plate,c={x:p.x+p.width/2,y:p.y+p.height/2},ratio=scale/view.scale;
  return constrainView({scale,x:after.x-c.x-(before.x-c.x-view.x)*ratio,y:after.y-c.y-(before.y-c.y-view.y)*ratio},bounds);
 }
-export function autoZoomView(view,box,bounds,{threshold=24,target=44}={}){
- const small=Math.min(box.width,box.height);if(!(small>0)||small*view.scale>=threshold)return view;
- const scale=viewScale(Math.max(view.scale,target/small)),p=bounds.plate,c={x:p.x+p.width/2,y:p.y+p.height/2},v=bounds.viewport;
- return constrainView({scale,x:v.x+v.width/2-c.x-(box.x+box.width/2-c.x)*scale,y:v.y+v.height/2-c.y-(box.y+box.height/2-c.y)*scale},bounds);
+// Reserve the same 60 px gutter for every visual layer, including acrylic scenes.
+// Fit is only a display transform: physical millimetres and source SVG stay intact.
+export function fitViewFrame(plate,viewport,mobile){
+ const gutter=mobile?0:60,scale=Math.max(1,viewport.width-gutter)/Math.max(1,viewport.width),origin={x:0,y:viewport.height/2};
+ const point=(x,y)=>({x:origin.x+(x-origin.x)*scale,y:origin.y+(y-origin.y)*scale});
+ return {plate:{...point(plate.x,plate.y),width:plate.width*scale,height:plate.height*scale},viewport:{x:0,y:0,width:viewport.width-gutter,height:viewport.height},fit:{scale,origin}};
+}
+export function viewLayerStyle(view,bounds,box){
+ const fit=bounds.fit||{scale:1,origin:{x:0,y:0}},scale=fit.scale*view.scale,p=bounds.plate,center={x:p.x+p.width/2,y:p.y+p.height/2};
+ const offset=axis=>box[axis]*(scale-1)+fit.origin[axis]*(1-fit.scale)*view.scale+center[axis]*(1-view.scale)+view[axis];
+ const x=offset('x'),y=offset('y'),v=bounds.viewport,left=(v.x-box.x-x)/scale,top=(v.y-box.y-y)/scale,right=left+v.width/scale,bottom=top+v.height/scale;
+ return {transform:'translate('+x+'px,'+y+'px) scale('+scale+')',clipPath:fit.scale===1?'none':'polygon('+left+'px '+top+'px,'+right+'px '+top+'px,'+right+'px '+bottom+'px,'+left+'px '+bottom+'px)'};
 }
 export function visibleViewRect(view,bounds){
  const p=bounds.plate,v=bounds.viewport,a=unprojectView({x:v.x,y:v.y},view,bounds),b=unprojectView({x:v.x+v.width,y:v.y+v.height},view,bounds),x=Math.max(p.x,a.x),y=Math.max(p.y,a.y);
@@ -36,7 +44,7 @@ export function visibleViewRect(view,bounds){
 
 // Gesture arbitration is shared by mouse/touch tests and the real event adapter.
 // A second touch cancels an unfinished object drag before changing the view.
-export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{},onTap=()=>{},photoActive=()=>false}){
+export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{},onTap=()=>{},onBlankTap=()=>{},photoActive=()=>false}){
  const pointers=new Map();let gesture=null;
  const handled=()=>gesture?.kind==='pan'||gesture?.kind==='pinch'||gesture?.kind==='wait';
  return {
@@ -62,6 +70,7 @@ export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{}
   },
   up(point,{cancelled=false}={}){
    const prior=pointers.get(point.id);if(!prior)return false;const used=!!handled();pointers.delete(point.id);
+   if(!cancelled&&!prior.moved&&Math.hypot(point.x-prior.start.x,point.y-prior.start.y)<=5&&prior.kind==='blank'&&(!used||gesture?.kind==='pan'))onBlankTap(prior);
    if(used)gesture=pointers.size?{kind:'wait'}:null;
    else if(!cancelled&&!prior.moved&&Math.hypot(point.x-prior.start.x,point.y-prior.start.y)<=5&&prior.kind==='object'&&prior.pointerType==='touch')onTap(prior.objectId);
    return used;

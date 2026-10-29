@@ -13,7 +13,7 @@ export function contourGuides(base,getGeometry){
   },
   snap(state,object,tolerance,previous={}){
    const geometry=getGeometry();
-   if(geometry?.shape!=='contour')return base.snap.call(base,state,object,tolerance,previous);
+   if(geometry?.shape!=='contour')return base.snap.call(this,state,object,tolerance,previous);
    const result=base.snap.call(this,state,object,tolerance,previous);
    if(fits({...object,x:result.x,y:result.y},geometry))return result;
    // Two individually valid axis targets can combine into an invalid corner.

@@ -1,3 +1,38 @@
+## 29.10.2026 · Codex / Astra · Mausrad über Text, Motiv und Griff (Ergänzung PR #43, nur Review)
+
+- Mausrad zoomt die Ansicht auch bei SVG-Bedienelementen innerhalb der Schildszene und Auswahlgriffen. Werkzeugleisten, Fotobearbeitung und Handy-Regeln unverändert. Native lokale Prüfung: 100 % → 182 %, Text bleibt 10 mm.
+- Zoom 26/26, kombiniert mit Galerie-Nachtrag 6 (PR #42) 122/122 grün. Windows-Vollauf 1810 / 1731 bestanden / 74 bekannte Fehlertestnamen / 5 übersprungen; neuer Linux-Vollauf und echtes iPhone/Safari offen.
+- [Bericht](docs/handoffs/2026-10-29-konfi-mausrad-astra-bericht.md), [Desktop-/Handybilder](docs/handoffs/konfi-mausrad-20261029-astra/README.md). Kein Livegang ohne Chris' ausdrücklichen Satz.
+
+## 29.10.2026 · Codex / Astra · PR #42: Designkacheln vereinfacht (Chris)
+
+- Kacheln nur mit Vorschau und Designname; zusätzliche Preis-, Form-, Größen- und Produkttexte entfernt. Einstiegstext angepasst. Keine Live-Änderung.
+- 8/8 vorhandene Textübernahme-/Designwechsel-Tests bestanden, PR-42- und kombinierter Build erfolgreich; sieben Desktop-/Handybilder aktualisiert. Frühere Vollauf-Zähler bleiben dem vorherigen Stand zugeordnet. [Bericht](docs/handoffs/2026-10-29-konfi-ux-nachtrag6-astra-bericht.md).
+
+## 29.10.2026 · Codex / Astra · Nachtrag 6: Galerie je Linie und Klingelmodell (PR #42, nur Review)
+
+- Eigene Katalog-Linie; Funkklingeln nur innerhalb desselben gespeicherten Geräte-Modells. Material-/Verfahrenswechsel nur mit ausdrücklichem Paket-M-Zielbeleg. Themenpriorität und „Alle Themen“, signierte Quell-/Linienbindung und erneute Zielprüfung.
+- Cache nach Linie/Modell getrennt, kalter/wieder gestarteter Lasttest unter 4 s. Kombiniert mit der Mausrad-Ergänzung für PR #43: gezielt 122/122 grün, Windows-Vollauf 1810 / 1731 bestanden / 74 bekannte Fehlertestnamen / 5 übersprungen. 73 Python-Store-Alias/Spawn, 1 cp1252-Ausgabe; neuer Linux-Vollauf und echtes Safari noch offen.
+- [Bericht](docs/handoffs/2026-10-29-konfi-ux-nachtrag6-astra-bericht.md), [Desktop-/Handybilder und Prüfbelege](docs/handoffs/konfi-galerie-linie-20261029-astra/README.md). Kein Import, keine Shopify-Änderung, kein Merge, kein Livegang. Erst nach Chris' ausdrücklichem Satz.
+
+## 29.10.2026 · Codex / Astra · Nachtrag 5: Zoom vereinfacht in PR #43 (nur Review)
+
+- [PR #43](https://github.com/Chris83638w/gravuru-2027/pull/43), gleicher Branch: Handy nur Zwei-Finger-Zoom; kein automatischer Fokus, keine Fokus-Pille und kein Doppeltipp-Zoom. Weißes „Ganzes Schild“ nur bei Zoom. Desktop mit senkrechtem 44-px-Regler rechts (100–400 %), Mausrad synchron; 60 px eigener Platz für den Balken, auch im Vollbild. Lupe und mm-Hilfen bleiben.
+- Neu geprüft: **33/33** gezielte Zoomtests, Editor **414/420** mit denselben 6 Windows-/Python-Fehlern (vorher 412/418), **148/148** Kombinationstests mit unverändertem #42; beide Builds erfolgreich. Bilder Desktop 1440×900 normal/Vollbild 100/180 % und Handy 390×664 / 375×548 mit Pinch/Lupe/mm. Chrome-Viewport mit synthetischen Gesten, kein physischer Safari-Nachweis.
+- Claude meldete für die vorherigen #42/#43-Stände Linux **1801/1801** und 1:1-Sichtprüfung. Für diesen neuen Stand Linux und echte iPhones noch prüfen. PR #42 bleibt unverändert, D8-Preisvertrags-Probelauf separat. **Nicht gemergt, nichts live; Veröffentlichung erst nach Chris’ Satz.**
+- [Bericht](docs/handoffs/2026-10-29-konfi-ux-nachtrag5-astra-bericht.md) · [Bilder und Prüfergebnisse](docs/handoffs/konfi-zoom-einfach-20261029-astra/README.md)
+
+## 28.10.2026 · Codex / Astra · Nachtrag 4 zur Konfi-UX: Fokus, Lupe und mm-Hilfen (nur Review)
+
+- Eigener Branch `dev/konfi-zoom-fokus-20261028-astra`, Basis `main` `26952e48` (enthält `0643c70`). Mobile Fokusansicht bis 300 %, weiße Rückkehr, Desktop −/+/⤢, 110-px-Lupe mit echter Oberfläche, pinke Ausrichtung und physische Randabstände. Freie Doppeltipps zoomen, Textdoppeltipps bearbeiten; Zwei-Finger-Schutz bleibt. Tastatur scrollt nur die Eingabeliste, Vorschau und Preis bleiben im Bild.
+- Build 110 Module / 14 Styles. Windows-Vollauf Editor **412/418 erfolgreich**, dieselben 6 Umgebungsfehler (vorher 398/404); Werkstatt **1.207/1.372 erfolgreich**, dieselben 158 Fehler / 7 übersprungen. 31/31 gezielte Zoom-/Geometrie-/Lupe-Tests plus neuer Eingabelisten-Scrolltest bestanden; **146/146** gezielte Tests in separater gemeinsamer Kopie mit #42, kombinierter Build erfolgreich. Keine neue Fehlerkennung, Linux noch durch Claude zu prüfen. Bilder: lokaler gebauter Editor in 390×664, 375×548, 1440×900; synthetische Touch-/Tastaturereignisse, kein physischer Safari-Nachweis.
+- Zuerst Galerie-Nachtrag 3 [PR #42](https://github.com/Chris83638w/gravuru-2027/pull/42) prüfen: dort fehlt weiterhin der Nachweis mit aktueller Shop-/Katalogkopie; Zoom separat integrieren. D8-Preisvertrags-Probelauf separat offen. **Nicht gemergt, nichts live.** Nächster Schritt: Claude prüft Linux und kombinierte Branches; Chris entscheidet über Veröffentlichung.
+- [Bericht](docs/handoffs/2026-10-28-konfi-ux-nachtrag4-astra-bericht.md) · [Bilder und Prüfergebnisse](docs/handoffs/konfi-zoom-fokus-20261028-astra/README.md)
+
+## 28.10.2026 · Codex/Astra · Nachtrag 3: Design-Galerie, zur Prüfung vorbereitet
+
+Eigener Branch `dev/konfi-galerie-20261028-astra`, Basis `main 26952e4`. Karten ohne Vollmodell/Materialaufbereitung, Cache bis Revisionswechsel, Hintergrundaufbau, frische Pausen-/Freigabeprüfung mit anfrageweiser Dokumenthash-Wiederverwendung. Nach 4 s Vorbereitungsstatus; Client nach 5 s mit eigenem Galeriehinweis und Wiederholen. Gestaltung bleibt erhalten. Gezielt 105/105; Windows variant-m 398/404 (dieselben 6 Fehler), Werkstatt 1219/1384 (dieselben 158 Fehler, 7 Skips; vorher 1207/1372); Fehlernamen und führende Signaturen gleich. Build und Desktop-/Handy-Bedienprüfung bestanden. Historische reale Belege mit lokalen Testbindungen: 802,24 ms kalt / 425,28 ms warm, nach echtem Prozessneustart 786,98 / 455,36 ms, DB/WAL unverändert. **Aktuelle Store-Kopie mit Funkklingelmenge sowie Linux-Prüfung noch offen**, Rückfrage an Claude in PR #41. Bericht: [Nachtrag 3](docs/handoffs/2026-10-28-konfi-ux-nachtrag3-astra-bericht.md); lesendes Messskript `scripts/shop-gallery-benchmark.mjs`. Kein Merge, keine Live-Änderung; Chris' neue Bereitstellungsfreigabe erforderlich.
+
 ## 28.10.2026 · Claude · Live: PR #41 Kunden-Konfigurator UX + iPhone-Absicherung (`main` `0643c70`)
 
 - Chris (19:49): „Ja, Du darfst PR #41 (Stand 602a3ac) nach main übernehmen, bereitstellen und die App neu starten.“ → Merge `0643c70` (Baum = `602a3ac`, Linux 1775/1775), Plesk Pull + Bereitstellen, Ziel geprüft (`shop-embed` mit `editor-ready`/`loaded`, `shop-design-gallery.mjs`, `view-zoom.mjs`), App neu gestartet; `shop-design-switch.mjs` 200, `/api/workshop/session` 401.

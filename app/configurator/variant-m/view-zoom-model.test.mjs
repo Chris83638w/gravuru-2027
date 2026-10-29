@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {viewScale,fitView,constrainView,projectView,unprojectView,zoomViewAt,panView,pinchView,autoZoomView,interpolateView,visibleViewRect,createViewGesture} from './view-zoom-model.mjs';
+import {viewScale,fitView,constrainView,projectView,unprojectView,zoomViewAt,panView,pinchView,fitViewFrame,viewLayerStyle,interpolateView,visibleViewRect,createViewGesture} from './view-zoom-model.mjs';
 const bounds={plate:{x:50,y:25,width:400,height:300},viewport:{x:0,y:0,width:500,height:350}};
 const close=(a,b)=>{for(const key of Object.keys(b))assert.ok(Math.abs(a[key]-b[key])<1e-8,key+': '+a[key]+' != '+b[key]);};
 test('view zoom clamps to 100–400% and Fit restores the original view exactly',()=>{
@@ -28,12 +28,17 @@ test('pinch preserves its midpoint and also supports two-finger panning at the z
  close(projectView({x:250,y:175},result,bounds),{x:260,y:200});
  const capped=pinchView({scale:4,x:0,y:0},start,[{x:60,y:185},{x:460,y:185}],bounds);assert.deepEqual(capped,{scale:4,x:10,y:10});
 });
-test('small-object focus enlarges and centers only the view; large objects leave it unchanged',()=>{
- const before=fitView(),box={x:235,y:170,width:30,height:5},copy=structuredClone(box),focused=autoZoomView(before,box,bounds);
- assert.equal(focused.scale,4);close(projectView({x:250,y:172.5},focused,bounds),{x:250,y:175});assert.deepEqual(box,copy);assert.deepEqual(before,fitView());
- assert.equal(autoZoomView(before,{x:50,y:50,width:60,height:30},bounds),before);
+test('desktop fits every visual layer left of a 60 px gutter; mobile keeps the full stage',()=>{
+ const raw={x:40,y:50,width:620,height:410},stage={width:700,height:600},desktop=fitViewFrame(raw,stage,false),mobile=fitViewFrame(raw,stage,true);
+ assert.equal(desktop.viewport.width,640);close({scale:desktop.plate.width/raw.width},{scale:640/700});assert.ok(desktop.plate.x>30);assert.ok(desktop.plate.x+desktop.plate.width<640);assert.deepEqual(mobile.plate,raw);assert.equal(mobile.fit.scale,1);
+ // A clip expressed in layer coordinates must remain exactly at the viewport,
+ // even while panning at 400%; no plate, measurement or background enters the rail.
+ for(const scale of [1,1.8,4])for(const box of [raw,{x:0,y:0,width:700,height:600}]){
+  const view=constrainView({scale,x:80,y:-40},desktop),style=viewLayerStyle(view,desktop,box),nums=style.transform.match(/-?[\d.]+/g).map(Number),clip=style.clipPath.match(/-?[\d.]+/g).map(Number);
+  close({x:box.x+nums[0]+clip[0]*nums[2],y:box.y+nums[1]+clip[1]*nums[2]},{x:0,y:0});close({x:box.x+nums[0]+clip[2]*nums[2],y:box.y+nums[1]+clip[5]*nums[2]},{x:640,y:600});
+ }
 });
-test('autozoom interpolation approaches the target smoothly and retains exact endpoints',()=>{
+test('explicit Fit interpolation approaches the target smoothly and retains exact endpoints',()=>{
  const from=fitView(),to={scale:4,x:100,y:-50};assert.deepEqual(interpolateView(from,to,0),from);assert.deepEqual(interpolateView(from,to,1),to);
  const middle=interpolateView(from,to,.5);assert.ok(middle.scale>1&&middle.scale<4);assert.ok(middle.x>0&&middle.x<100);assert.ok(middle.y<0&&middle.y>-50);assert.deepEqual(from,fitView());
 });
@@ -42,9 +47,9 @@ function gestures(){let view=fitView(),cancelled=0,taps=[],paint=[];const design
  const point=(id,x,y,kind='object',pointerType='touch')=>({id,x,y,kind,objectId:'text',pointerType,button:0});
  return {gesture,point,design,saved,paint,taps,get view(){return view;},get cancelled(){return cancelled;},zoom:scale=>{view={scale,x:0,y:0};},photo:value=>{photo=value;}};
 }
-test('one-finger object drag remains available; a stationary touch alone requests autozoom',()=>{
+test('one-finger object drag and taps never change the view without an explicit gesture handler',()=>{
  const f=gestures(),p=f.point;assert.equal(f.gesture.down(p(1,200,175)),false);assert.equal(f.gesture.move(p(1,220,175)),false);assert.equal(f.gesture.up(p(1,220,175)),false);assert.equal(f.paint.length,0);assert.deepEqual(f.taps,[]);
- f.gesture.down(p(2,200,175));f.gesture.up(p(2,200,175));assert.deepEqual(f.taps,['text']);assert.deepEqual(f.design,f.saved);
+ f.gesture.down(p(2,200,175));f.gesture.up(p(2,200,175));assert.deepEqual(f.taps,['text']);assert.deepEqual(f.view,fitView());assert.equal(f.paint.length,0);assert.deepEqual(f.design,f.saved);
  f.gesture.down(p(3,200,175));f.gesture.up(p(3,230,175));assert.deepEqual(f.taps,['text'],'last movement in pointerup must not become a tap');
 });
 test('a second touch cancels the first object drag before pinch, with no late tap or one-finger mutation',()=>{

@@ -81,19 +81,27 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
 
  // Explicit, immutable release ledger in this existing store. It is created only by
  // the operator's approval command, never by receiving a webhook or opening a store.
- function liveApproval(shop,b,shopifyProductId){
+ function liveApproval(shop,b,shopifyProductId,records){
   if(!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='doorbell_live_order_approvals'").get())fail(422,'Dieses Funkklingelprodukt hat keine gespeicherte Live-Freigabe.');
   const row=db.prepare('SELECT * FROM doorbell_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenant,shop,shopifyProductId,b.product_id,b.product_revision);
   if(!row||!JSON.parse(row.variants_json).includes(b.variant_id))fail(422,'Produkt, Variante und fester Stand sind nicht für echte Funkklingelbestellungen freigegeben.');
-  const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenant,b.product_id,b.product_revision);
-  if(!source||sha(source.document)!==row.document_sha256)fail(409,'Der freigegebene Funkklingelstand stimmt nicht mehr überein.');
+  const key=b.product_id+':'+b.product_revision;let digest=records?.get(key);
+  if(digest===undefined){const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenant,b.product_id,b.product_revision);digest=source?sha(source.document):null;records?.set(key,digest);}
+  if(digest!==row.document_sha256)fail(409,'Der freigegebene Funkklingelstand stimmt nicht mehr überein.');
   return {id:row.approval_id,approvedAt:row.approved_at};
  }
- function doorbellLiveApproval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={}){
+ function doorbellLiveApproval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={},records){
   if(!domain(shopDomain)||!/^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/.test(shopifyProductId||'')||!/^gid:\/\/shopify\/ProductVariant\/[1-9][0-9]{0,19}$/.test(shopifyVariantId||'')||!/^cfg_[a-f0-9-]{36}$/.test(productId||'')||!Number.isSafeInteger(productRevision)||productRevision<1)return null;
   const b=db.prepare('SELECT * FROM form_shop_bindings WHERE tenant_id=? AND shop=? AND variant_id=? AND product_id=? AND product_revision=?').get(tenant,shopDomain,shopifyVariantId.split('/').at(-1),productId,productRevision);
   if(!b)return null;
-  try{return liveApproval(shopDomain,b,shopifyProductId);}catch(e){if([404,409,422].includes(e.status))return null;throw e;}
+  try{return liveApproval(shopDomain,b,shopifyProductId,records);}catch(e){if([404,409,422].includes(e.status))return null;throw e;}
+ }
+ // Request-local read reuse only: each variant keeps its exact ledger/binding
+ // checks, and the next request reads fresh approval/document evidence again.
+ async function doorbellGalleryApprovals(inputs){
+  const records=new Map(),results=[];
+  for(let i=0;i<inputs.length;i++){if(i%8===0)await new Promise(resolve=>setImmediate(resolve));results.push(doorbellLiveApproval(inputs[i],records));}
+  return results;
  }
  // Read-only routing probe after HMAC verification. A pending approved variant
  // gets a retry; unrelated shop orders must not create status rows or retries.
@@ -162,7 +170,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  const statuses=createOrderStatus({database:db,clock,production:(line,shop)=>release.state(line.id,{shop}),tenantId:tenant});
  release=createProductionRelease({database:db,clock,line:lineOrRejected,shopStatus:line=>statuses.shopState(line),autoRelease,rejectedLines:()=>errorRows(),tenantId:tenant});
  const forSnapshot=snapshotId=>typeof snapshotId==='string'?db.prepare("SELECT document FROM form_order_lines WHERE json_extract(document,'$.snapshotId')=? AND tenant_id=? ORDER BY rowid").all(snapshotId,tenant).map(r=>JSON.parse(r.document)):[];
- return {tenantId:tenant,get,forSnapshot,doorbellLiveApproval,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
+ return {tenantId:tenant,get,forSnapshot,doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
   // Caller supplies the actual saved product record, never a browser price.
   idBindings({storeId,shopDomain,adapter,personalizationPricingFor}={}){
    return createShopProductBindingStore({database:db,orderIntake:this,tenantId:tenant,storeId,shopDomain,adapter,clock,personalizationPricingFor});

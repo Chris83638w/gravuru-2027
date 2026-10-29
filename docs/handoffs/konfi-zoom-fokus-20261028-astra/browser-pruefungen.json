@@ -1,0 +1,712 @@
+{
+  "environment": "Local built editor; Chrome viewport; synthetic touch/pointer/keyboard events, not a physical iPhone",
+  "checks": [
+    {
+      "mode": "drag",
+      "width": 390,
+      "height": 664,
+      "zoom": 1,
+      "objectsUnchanged": false,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": true,
+      "guides": [
+        "Mitte",
+        "15 mm zum Rand"
+      ],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 390,
+        "height": 331,
+        "top": 53,
+        "right": 390,
+        "bottom": 384,
+        "left": 0
+      },
+      "selection": {
+        "x": 153.72064208984375,
+        "y": 253.40179443359375,
+        "width": 83.46429443359375,
+        "height": 39.72479248046875,
+        "top": 253.40179443359375,
+        "right": 237.1849365234375,
+        "bottom": 293.1265869140625,
+        "left": 153.72064208984375
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "double",
+      "width": 390,
+      "height": 664,
+      "zoom": 2,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799801635743,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": false,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 390,
+        "height": 331,
+        "top": 53,
+        "right": 390,
+        "bottom": 384,
+        "left": 0
+      },
+      "selection": {
+        "x": -33.5587158203125,
+        "y": 290.8035888671875,
+        "width": 166.9285888671875,
+        "height": 79.44955444335938,
+        "top": 290.8035888671875,
+        "right": 133.369873046875,
+        "bottom": 370.2531433105469,
+        "left": -33.5587158203125
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "fit",
+      "width": 390,
+      "height": 664,
+      "zoom": 1,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799865722656,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 390,
+        "height": 331,
+        "top": 53,
+        "right": 390,
+        "bottom": 384,
+        "left": 0
+      },
+      "selection": {
+        "x": 153.72064208984375,
+        "y": 253.40179443359375,
+        "width": 83.46429443359375,
+        "height": 39.72479248046875,
+        "top": 253.40179443359375,
+        "right": 237.1849365234375,
+        "bottom": 293.1265869140625,
+        "left": 153.72064208984375
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "focus",
+      "width": 375,
+      "height": 548,
+      "zoom": 3,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799865722656,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": false,
+      "wholeHidden": false,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 375,
+        "height": 273,
+        "top": 53,
+        "right": 375,
+        "bottom": 326,
+        "left": 0
+      },
+      "selection": {
+        "x": 67.11880493164062,
+        "y": 154.20468139648438,
+        "width": 240.76239013671875,
+        "height": 114.5906982421875,
+        "top": 154.20468139648438,
+        "right": 307.8811950683594,
+        "bottom": 268.7953796386719,
+        "left": 67.11880493164062
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "drag",
+      "width": 375,
+      "height": 548,
+      "zoom": 1,
+      "objectsUnchanged": false,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": true,
+      "guides": [
+        "Mitte",
+        "15 mm zum Rand"
+      ],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 375,
+        "height": 273,
+        "top": 53,
+        "right": 375,
+        "bottom": 326,
+        "left": 0
+      },
+      "selection": {
+        "x": 147.8083038330078,
+        "y": 222.9824981689453,
+        "width": 80.25413513183594,
+        "height": 38.19688415527344,
+        "top": 222.9824981689453,
+        "right": 228.06243896484375,
+        "bottom": 261.17938232421875,
+        "left": 147.8083038330078
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "double",
+      "width": 375,
+      "height": 548,
+      "zoom": 2,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": false,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 375,
+        "height": 273,
+        "top": 53,
+        "right": 375,
+        "bottom": 326,
+        "left": 0
+      },
+      "selection": {
+        "x": -32.383392333984375,
+        "y": 258.9649963378906,
+        "width": 160.50827026367188,
+        "height": 76.393798828125,
+        "top": 258.9649963378906,
+        "right": 128.1248779296875,
+        "bottom": 335.3587951660156,
+        "left": -32.383392333984375
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "fit",
+      "width": 375,
+      "height": 548,
+      "zoom": 1,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 375,
+        "height": 273,
+        "top": 53,
+        "right": 375,
+        "bottom": 326,
+        "left": 0
+      },
+      "selection": {
+        "x": 147.8083038330078,
+        "y": 222.9824981689453,
+        "width": 80.25413513183594,
+        "height": 38.19688415527344,
+        "top": 222.9824981689453,
+        "right": 228.06243896484375,
+        "bottom": 261.17938232421875,
+        "left": 147.8083038330078
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "keyboard",
+      "width": 375,
+      "height": 548,
+      "zoom": 3,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": false,
+      "wholeHidden": false,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 375,
+        "height": 119,
+        "top": 53,
+        "right": 375,
+        "bottom": 172,
+        "left": 0
+      },
+      "selection": {
+        "x": 149.5130615234375,
+        "y": 116.42012786865234,
+        "width": 75.97390747070312,
+        "height": 36.15973663330078,
+        "top": 116.42012786865234,
+        "right": 225.48696899414062,
+        "bottom": 152.57986450195312,
+        "left": 149.5130615234375
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "release",
+      "width": 375,
+      "height": 548,
+      "zoom": 1,
+      "objectsUnchanged": false,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 375,
+        "height": 273,
+        "top": 53,
+        "right": 375,
+        "bottom": 326,
+        "left": 0
+      },
+      "selection": {
+        "x": 147.8083038330078,
+        "y": 222.9824981689453,
+        "width": 80.25413513183594,
+        "height": 38.19688415527344,
+        "top": 222.9824981689453,
+        "right": 228.06243896484375,
+        "bottom": 261.17938232421875,
+        "left": 147.8083038330078
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "pinch",
+      "width": 375,
+      "height": 548,
+      "zoom": 4,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": false,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 375,
+        "height": 273,
+        "top": 53,
+        "right": 375,
+        "bottom": 326,
+        "left": 0
+      },
+      "selection": {
+        "x": 26.991729736328125,
+        "y": 135.106201171875,
+        "width": 321.01654052734375,
+        "height": 152.78759765625,
+        "top": 135.106201171875,
+        "right": 348.0082702636719,
+        "bottom": 287.893798828125,
+        "left": 26.991729736328125
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "focus",
+      "width": 1440,
+      "height": 900,
+      "zoom": 1,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 53,
+        "y": 158,
+        "width": 708.7265625,
+        "height": 585,
+        "top": 158,
+        "right": 761.7265625,
+        "bottom": 743,
+        "left": 53
+      },
+      "selection": {
+        "x": 333.45245361328125,
+        "y": 503.5762939453125,
+        "width": 149.45101928710938,
+        "height": 71.131103515625,
+        "top": 503.5762939453125,
+        "right": 482.9034729003906,
+        "bottom": 574.7073974609375,
+        "left": 333.45245361328125
+      },
+      "price": ""
+    },
+    {
+      "mode": "drag",
+      "width": 1440,
+      "height": 900,
+      "zoom": 1,
+      "objectsUnchanged": false,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": true,
+      "guides": [
+        "Mitte",
+        "15 mm zum Rand"
+      ],
+      "stage": {
+        "x": 53,
+        "y": 156,
+        "width": 708.7265625,
+        "height": 585,
+        "top": 156,
+        "right": 761.7265625,
+        "bottom": 741,
+        "left": 53
+      },
+      "selection": {
+        "x": 333.45245361328125,
+        "y": 501.5762939453125,
+        "width": 149.45101928710938,
+        "height": 71.131103515625,
+        "top": 501.5762939453125,
+        "right": 482.9034729003906,
+        "bottom": 572.7073974609375,
+        "left": 333.45245361328125
+      },
+      "price": ""
+    },
+    {
+      "mode": "double",
+      "width": 1440,
+      "height": 900,
+      "zoom": 2,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 53,
+        "y": 156,
+        "width": 708.7265625,
+        "height": 585,
+        "top": 156,
+        "right": 761.7265625,
+        "bottom": 741,
+        "left": 53
+      },
+      "selection": {
+        "x": -2.095123291015625,
+        "y": 568.152587890625,
+        "width": 298.9020690917969,
+        "height": 142.26226806640625,
+        "top": 568.152587890625,
+        "right": 296.80694580078125,
+        "bottom": 710.4148559570312,
+        "left": -2.095123291015625
+      },
+      "price": ""
+    },
+    {
+      "mode": "double-back",
+      "width": 1440,
+      "height": 900,
+      "zoom": 1,
+      "objectsUnchanged": true,
+      "sizeBefore": 10.32,
+      "sizeAfter": 10.32,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 28.2252,
+        "h": 12.384
+      },
+      "focus": "",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 53,
+        "y": 156,
+        "width": 708.7265625,
+        "height": 585,
+        "top": 156,
+        "right": 761.7265625,
+        "bottom": 741,
+        "left": 53
+      },
+      "selection": {
+        "x": 333.45245361328125,
+        "y": 501.5762939453125,
+        "width": 149.45101928710938,
+        "height": 71.131103515625,
+        "top": 501.5762939453125,
+        "right": 482.9034729003906,
+        "bottom": 572.7073974609375,
+        "left": 333.45245361328125
+      },
+      "price": ""
+    },
+    {
+      "mode": "scale",
+      "width": 390,
+      "height": 664,
+      "zoom": 1,
+      "objectsUnchanged": false,
+      "sizeBefore": 10.32,
+      "sizeAfter": 14.17,
+      "position": {
+        "x": 60,
+        "y": 58.80799999999999,
+        "w": 38.754949999999994,
+        "h": 17.003999999999998
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": true,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 390,
+        "height": 331,
+        "top": 53,
+        "right": 390,
+        "bottom": 384,
+        "left": 0
+      },
+      "selection": {
+        "x": 138.32089233398438,
+        "y": 246.64505004882812,
+        "width": 114.60163879394531,
+        "height": 54.544586181640625,
+        "top": 246.64505004882812,
+        "right": 252.9225311279297,
+        "bottom": 301.18963623046875,
+        "left": 138.32089233398438
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "cancel",
+      "width": 390,
+      "height": 664,
+      "zoom": 1,
+      "objectsUnchanged": true,
+      "sizeBefore": 14.17,
+      "sizeAfter": 14.17,
+      "position": {
+        "x": 54,
+        "y": 56.498000000000005,
+        "w": 38.754949999999994,
+        "h": 17.003999999999998
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": true,
+      "wholeHidden": true,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 390,
+        "height": 331,
+        "top": 53,
+        "right": 390,
+        "bottom": 384,
+        "left": 0
+      },
+      "selection": {
+        "x": 120.77088165283203,
+        "y": 239.8883056640625,
+        "width": 114.60164642333984,
+        "height": 54.544586181640625,
+        "top": 239.8883056640625,
+        "right": 235.37252807617188,
+        "bottom": 294.4328918457031,
+        "left": 120.77088165283203
+      },
+      "price": "19,99 €"
+    },
+    {
+      "mode": "focus",
+      "width": 390,
+      "height": 664,
+      "zoom": 2.3821647290435495,
+      "objectsUnchanged": true,
+      "sizeBefore": 14.17,
+      "sizeAfter": 14.17,
+      "position": {
+        "x": 54,
+        "y": 56.498000000000005,
+        "w": 38.754949999999994,
+        "h": 17.003999999999998
+      },
+      "focus": "Fokus: Nachname",
+      "focusHidden": false,
+      "wholeHidden": false,
+      "loupe": false,
+      "guides": [],
+      "stage": {
+        "x": 0,
+        "y": 53,
+        "width": 390,
+        "height": 331,
+        "top": 53,
+        "right": 390,
+        "bottom": 384,
+        "left": 0
+      },
+      "selection": {
+        "x": 58.5,
+        "y": 175.53292846679688,
+        "width": 272.9999694824219,
+        "height": 129.93417358398438,
+        "top": 175.53292846679688,
+        "right": 331.4999694824219,
+        "bottom": 305.46710205078125,
+        "left": 58.5
+      },
+      "price": "19,99 €"
+    }
+  ],
+  "errors": []
+}

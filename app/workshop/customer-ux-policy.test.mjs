@@ -20,7 +20,7 @@ test('proposal validates complete product documents, counts blocked rows and pre
  const plan=customerUxPlan([original,invalid,null]);
  assert.deepEqual(plan.counts,{products:3,ready:1,blocked:2});
  assert.deepEqual(original,before);assert.equal(plan.rows[0].document.config.motifCharge,'additional');assert.equal(plan.rows[0].document.config.extraMotifCents,169);
- assert.deepEqual(plan.rows[0].document.config.textRules,{maxCharsPerLine:50});
+ assert.deepEqual(plan.rows[0].document.config.textRules,{maxCharsPerField:80});
  assert.deepEqual(plan.rows[0].document.config.profile,before.config.profile);
  assert.ok(plan.rows[1].reason);assert.ok(plan.rows[2].reason);
 });

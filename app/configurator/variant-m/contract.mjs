@@ -49,7 +49,10 @@ export function prepareConfig(input) {
   const p = config.profile;
   if(config.designSelection!==undefined&&config.designSelection!=='all-approved')fail('Designauswahl ist ungültig.');
   if(config.motifCharge!==undefined&&!['additional','all'].includes(config.motifCharge))fail('Motiv-Preisregel ist ungültig.');
-  if(config.textRules!==undefined&&(!config.textRules||typeof config.textRules!=='object'||Array.isArray(config.textRules)||Object.keys(config.textRules).join(',')!=='maxCharsPerLine'||!Number.isInteger(config.textRules.maxCharsPerLine)||config.textRules.maxCharsPerLine<1||config.textRules.maxCharsPerLine>500))fail('Zeichenregel je Zeile ist ungültig.');
+  if(config.textRules!==undefined){
+    const rules=config.textRules,key=rules&&typeof rules==='object'&&!Array.isArray(rules)?Object.keys(rules).join(','):'';
+    if(!['maxCharsPerLine','maxCharsPerField'].includes(key)||!Number.isInteger(rules[key])||rules[key]<1||rules[key]>500)fail('Zeichenregel ist ungültig.');
+  }
   if(config.sceneBackground!==undefined&&!validSurface(config.sceneBackground))fail('Ungültiges Szenenbild.');
   if(config.steelFormats){if(p.material?.kind!=='steel')fail('Edelstahlgrößen gehören zu einem Edelstahlschild.');validateSteelFormats(config);}
   const extraFontIds=localFontIds(config);

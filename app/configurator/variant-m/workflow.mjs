@@ -10,9 +10,7 @@ import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
 import {transformedCorners} from './usability-model.mjs';
 import {designArea} from './design-area.mjs';
-import {createDragSnap,nearestPlateEdge,alignmentLabel} from './drag-assistance-model.mjs';
-import {artworkViewport} from './print-geometry.mjs';
-import {surfaceGeometry} from './surfaces.mjs';
+import {createDragSnap,alignmentLabel} from './drag-assistance-model.mjs';
 import {fitText,freePlacement,transferTexts,changedCustomerTexts,alignGroup,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
 import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -42,8 +40,6 @@ export async function installWorkflow(api){
   const line=(a,b)=>{const l=document.createElementNS(ns,'line');for(const [k,v]of Object.entries({x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'#e0457b','stroke-width':1,'vector-effect':'non-scaling-stroke'}))l.setAttribute(k,v);g.append(l);};
   const labels=[];
   for(const axis of ['x','y']){const t=guideDetails.locks?.[axis];if(!t||Math.abs(t.value-o[axis])>.05)continue;line(axis==='x'?{x:t.line,y:0}:{x:0,y:t.line},axis==='x'?{x:t.line,y:el.state.height}:{x:el.state.width,y:t.line});labels.push({text:alignmentLabel(t),point:axis==='x'?{x:t.line,y:o.y+o.h/2+4}:{x:o.x,y:t.line-4}});}
-  const viewport=config?artworkViewport(config,el.state):{geometry:guideGeometry(),scale:1,x:0,y:0};if(el.state.uxSurface==='back')viewport.geometry=surfaceGeometry(viewport.geometry,'back');
-  const distance=nearestPlateEdge(o,viewport);line(distance.object,distance.edge);labels.push({text:distance.label,point:{x:(distance.object.x+distance.edge.x)/2,y:(distance.object.y+distance.edge.y)/2}});
   maskContourGuides(g,surface());scene.append(g);
   const matrix=scene.getScreenCTM();if(!matrix)return;const inverse=matrix.inverse(),px=Math.hypot(matrix.a,matrix.b)||1,s=$('.stage').getBoundingClientRect();
   const point=(p,m)=>{const v=scene.createSVGPoint();v.x=p.x;v.y=p.y;return v.matrixTransform(m);};
@@ -111,7 +107,7 @@ export async function installWorkflow(api){
     this.record();Object.assign(target,replacement);this.state.selected=target.id;this.normalize();this.sync();say('Motiv ersetzt.');return;
    }
   }
-  const before=new Set(this.state.objects.map(o=>o.id));const result=add.apply(this,args);for(const o of this.state.objects.filter(o=>!before.has(o.id))){place(o);if(o.type==='text')o.uxCustomerText=true;}this.sync();return result;};
+  const before=new Set(this.state.objects.map(o=>o.id));const result=add.apply(this,args);for(const o of this.state.objects.filter(o=>!before.has(o.id))){place(o);if(o.type==='text')o.uxCustomerText=true;}if(args[0]?.type==='motif')motifMode='replace';this.sync();return result;};
  // Gate progression on the completed placement and the current geometry.
  const layoutDialog=dialog('layout-check','Bitte Gestaltung prüfen','<div data-layout-problems></div>'+button('layout-fit','Automatisch einpassen')+button('close','Weiter bearbeiten'));
  const reviewIssues=()=>layoutReviewIssues({config,profile:chosenProfile(),objects:el.state.objects,design:chosenProfile().designs.find(d=>d.id===el.state.designId),resources:{motifs:config?.localResources?.motifs||[]}});
@@ -142,13 +138,12 @@ export async function installWorkflow(api){
  const panel=$('#panel-motif'),home=panel.parentElement,bestsellers=$('[data-bestsellers]');
  const browser=dialog('motif-browser','Motive entdecken','<div class="workflow-motif-body"></div>');
  const entry=document.createElement('section');entry.className='workflow-motif-entry';entry.innerHTML='<h2>Dein passendes Motiv</h2><p>Suche nach einem Begriff oder entdecke die Kategorien.</p>'+button('discover-motifs','Alle Motive entdecken','class="ux-primary"');home.append(entry);const count=$('[data-library-count]')?.textContent.match(/von\s+(\d+)/)?.[1];if(count)entry.querySelector('button').textContent='Alle '+count+' Motive entdecken';if(bestsellers)entry.prepend(bestsellers);browser.querySelector('.workflow-motif-body').append(panel);
- const mode=document.createElement('div');mode.className='ux-motif-mode';mode.setAttribute('role','group');mode.setAttribute('aria-label','Motiv verwenden');
- mode.innerHTML=button('motif-replace','Ersetzen','aria-pressed="true"')+button('motif-add','Hinzufügen','aria-pressed="false"')+button('motif-none','Kein Motiv');
- entry.prepend(mode);
- r.addEventListener('click',event=>{const action=event.target.closest('[data-ux]')?.dataset.ux;
-  if(action==='motif-replace'||action==='motif-add'){motifMode=action==='motif-add'?'add':'replace';for(const b of mode.querySelectorAll('[aria-pressed]'))b.setAttribute('aria-pressed',String(b.dataset.ux==='motif-'+motifMode));}
-  if(action==='motif-none'){const target=motifTarget();if(!target)return;if(!may(target,'delete'))return say('Das Vorlagenmotiv ist in diesem Produktstand noch nicht zum Entfernen freigegeben.');mutate(()=>{el.state.objects=el.state.objects.filter(o=>o.id!==target.id);el.state.selected=null;});}
- });
+ // Normal choice replaces the selected/master motif. Extra motifs have one
+ // explicit entry into the library; deletion is at the selected element.
+ const pricing=$('.ux-motif-pricing');if(pricing)entry.prepend(pricing);
+ const extra=document.createElement('button');extra.type='button';extra.className='ux-extra-motif';extra.textContent='+ Weiteres Motiv auswählen';entry.append(extra);
+ extra.addEventListener('click',()=>{motifMode='add';browser.showModal();say('Wähle ein weiteres Motiv. Das vorhandene Motiv bleibt erhalten.');});
+ browser.addEventListener('close',()=>{motifMode='replace';});
  const grid=$('[data-library-grid]'),more=$('[data-library-more]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
  let browserScroll=0;browser.addEventListener('close',()=>{browserScroll=browser.scrollTop;});
  const openBrowser=()=>{browser.showModal();requestAnimationFrame(()=>{browser.scrollTop=browserScroll;loadMore();});};

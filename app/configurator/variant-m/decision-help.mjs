@@ -21,6 +21,7 @@ export function decisionHelp(kind,config,geometry=config.profile.geometry){
 export function installDecisionHelp({el,r,config}){
  if(!config)return;
  const dialog=document.createElement('dialog');dialog.className='ux-info-dialog';dialog.innerHTML='<h2></h2><p></p><button type="button">Verstanden</button>';r.append(dialog);dialog.querySelector('button').addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const b=dialog.getBoundingClientRect();if(event.clientX<b.left||event.clientX>b.right||event.clientY<b.top||event.clientY>b.bottom)dialog.close();});
  function info(kind){
   const b=document.createElement('button'),help=decisionHelp(kind,config);b.type='button';b.className='ux-info-button';b.textContent='ⓘ';b.dataset.uxInfo=kind;b.setAttribute('aria-label','Information zu '+help.title);
   b.addEventListener('click',()=>{const current=decisionHelp(kind,config,el.uxProfileGeometry?.()||config.profile.geometry);dialog.querySelector('h2').textContent=current.title;dialog.querySelector('p').textContent=current.text;dialog.showModal();});return b;

@@ -122,7 +122,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const o=el.state.objects.find(o=>o.id===id&&o.type==='text');if(!can(o,'content'))return;
     if(editing?.id===id){field.focus({preventScroll:true});return;}
     close();el.state.selected=id;el.sync();editing={id,text:o.text,size:o.size,lineHeight:o.lineHeight,customerText:o.uxCustomerText,font:o.font,bold:o.bold,italic:o.italic,color:o.color,recorded:false};
-    const limits=limitsOf(o);if(limits&&!limits.perLine)field.maxLength=limits.maxLength;else field.removeAttribute('maxlength');
+    const limits=limitsOf(o);if(limits&&!limits.perLine&&!limits.wholeField)field.maxLength=limits.maxLength;else field.removeAttribute('maxlength');
     field.value=o.text;box.hidden=false;update();field.focus({preventScroll:true});field.select();
   }
   el.uxEditText=openText;
@@ -137,7 +137,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const limits=limitsOf(o);if(limits){const next=clampText(field.value,limits,o.text);if(next!==field.value){const at=Math.min(field.selectionStart??next.length,next.length);field.value=next;try{field.setSelectionRange(at,at);}catch{}}}
     o.text=field.value;o.uxCustomerText=true;el.normalize();el.sync();
   });
-  field.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close(true);}else if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();close();}else if(e.key==='Enter'){const limits=limitsOf(selected());if(limits&&field.value.split('\n').length>=limits.maxLines)e.preventDefault();}});
+  field.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close(true);}else if(e.key==='Enter'&&(e.ctrlKey||e.metaKey||!e.shiftKey&&!limitsOf(selected())?.wholeField)){e.preventDefault();close();}else if(e.key==='Enter'){const limits=limitsOf(selected());if(limits&&field.value.split('\n').length>=limits.maxLines)e.preventDefault();}});
   openButton.addEventListener('click',()=>{const o=selected();if(o?.type==='text')openText(o.id);else if(o?.uxUploadId&&can(o,'replace'))openPhoto(o);});
   panel.querySelector('[data-direct-done]').addEventListener('click',()=>close());
   panel.querySelector('[data-direct-cancel]').addEventListener('click',()=>close(true));

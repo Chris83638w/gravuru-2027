@@ -13,7 +13,7 @@ class NodePort{
  setPointerCapture(id){this.capture.add(id);}hasPointerCapture(id){return this.capture.has(id);}releasePointerCapture(id){this.capture.delete(id);}
  set innerHTML(value){this.html=value;this.buttons=new Map([...value.matchAll(/data-view-action="([^"]+)"/g)].map(([,action])=>{const node=new NodePort();node.dataset.viewAction=action;node.control=true;return [action,node];}));}
  querySelector(selector){return this.buttons?.get(selector.match(/data-view-action=([^\]]+)/)?.[1])||null;}
- closest(selector){if(selector==='.plate-holder'||selector==='.plate-holder,.acryl-backdrop,.acryl-base')return this.plate?this:null;if(selector==='[data-view-action]')return this.dataset.viewAction?this:null;if(selector==='[data-ux-handle]')return null;if(selector==='.scene [data-object]')return this.object?this:null;if(selector.includes('button'))return this.control?this:null;return null;}
+ closest(selector){if(selector==='.plate-holder'||selector==='.plate-holder,.acryl-backdrop,.acryl-base')return this.plate?this:null;if(selector==='[data-view-action]')return this.dataset.viewAction?this:null;if(selector==='[data-ux-handle]')return null;if(selector==='.scene [data-object],[data-ux-handle]')return this.object||this.handle?this:null;if(selector==='.scene [data-object]')return this.object?this:null;if(selector.includes('button'))return this.control?this:null;return null;}
 }
 async function runtime(t){
  const saved=new Map(),frames=new Map(),windowPort=new NodePort();let frameId=0,reduced=false,mobile=false;
@@ -31,6 +31,20 @@ async function runtime(t){
  const frame=time=>{const current=[...frames];frames.clear();for(const [,fn]of current)fn(time);};
  return {el,r,stage,holder,object,original,api,controls,event,deselect:()=>{selected=false;},photo:value=>{photoMode=value;},reduced:value=>{reduced=value;},mobile:value=>{mobile=value;},frame,flush:()=>{let time=0;while(frames.size){assert.ok(time<10000,'animation must settle');frame(time+=16);}},get handles(){return handleRefresh;},get toolbar(){return toolbarRefresh;},get cancels(){return cancels;}};
 }
+test('wheel over text, motif artwork links and selection handles zooms only the view; toolbar controls remain native',async t=>{
+ const f=await runtime(t),before=structuredClone(f.el.state);
+ for(const type of ['text','motif','handle']){
+  f.el.state.objects[0].type=type==='handle'?'text':type;
+  const target=new NodePort();target.object=type!=='handle';target.handle=type==='handle';target.control=true;
+  const event=f.event(target,{deltaY:-80,pointerType:'mouse'}),zoom=f.api.view().scale;
+  f.el.dispatch('wheel',event);assert.equal(event.prevented,true,type);assert.ok(f.api.view().scale>zoom,type);
+ }
+ f.el.state.objects[0].type=before.objects[0].type;assert.deepEqual(f.el.state,before);
+ const input=new NodePort();input.control=true;const event=f.event(input,{deltaY:-80});
+ const zoom=f.api.view().scale;f.el.dispatch('wheel',event);assert.equal(event.prevented,undefined);assert.equal(f.api.view().scale,zoom);
+ f.mobile(true);const touchScreen=f.event(f.object,{deltaY:-80});f.el.dispatch('wheel',touchScreen);assert.equal(touchScreen.prevented,undefined);
+});
+
 test('real view adapter scales visual layers, refreshes unscaled overlays and never edits the saved design',async t=>{
  const f=await runtime(t);assert.equal(f.el.uxViewZoom(),1);assert.ok(f.holder.properties.get('transform').endsWith('scale(0.925)'));
  f.el.uxSetViewZoom(2);assert.equal(f.el.uxViewZoom(),2);assert.ok(f.holder.properties.get('transform').endsWith('scale(1.85)'));assert.ok(f.handles>=2&&f.toolbar>=2);

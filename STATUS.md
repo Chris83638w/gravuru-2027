@@ -1,3 +1,9 @@
+## 29.10.2026 · Codex / Astra · Mausrad über Text, Motiv und Griff (Ergänzung PR #43, nur Review)
+
+- Mausrad zoomt die Ansicht auch bei SVG-Bedienelementen innerhalb der Schildszene und Auswahlgriffen. Werkzeugleisten, Fotobearbeitung und Handy-Regeln unverändert. Native lokale Prüfung: 100 % → 182 %, Text bleibt 10 mm.
+- Zoom 26/26, kombiniert mit Galerie-Nachtrag 6 (PR #42) 122/122 grün. Windows-Vollauf 1810 / 1731 bestanden / 74 bekannte Fehlertestnamen / 5 übersprungen; neuer Linux-Vollauf und echtes iPhone/Safari offen.
+- [Bericht](docs/handoffs/2026-10-29-konfi-mausrad-astra-bericht.md), [Desktop-/Handybilder](docs/handoffs/konfi-mausrad-20261029-astra/README.md). Kein Livegang ohne Chris' ausdrücklichen Satz.
+
 ## 29.10.2026 · Codex / Astra · Nachtrag 5: Zoom vereinfacht in PR #43 (nur Review)
 
 - [PR #43](https://github.com/Chris83638w/gravuru-2027/pull/43), gleicher Branch: Handy nur Zwei-Finger-Zoom; kein automatischer Fokus, keine Fokus-Pille und kein Doppeltipp-Zoom. Weißes „Ganzes Schild“ nur bei Zoom. Desktop mit senkrechtem 44-px-Regler rechts (100–400 %), Mausrad synchron; 60 px eigener Platz für den Balken, auch im Vollbild. Lupe und mm-Hilfen bleiben.

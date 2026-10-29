@@ -32,8 +32,8 @@ async function runtime(t){
  return {el,r,stage,holder,object,original,api,controls,event,deselect:()=>{selected=false;},photo:value=>{photoMode=value;},reduced:value=>{reduced=value;},mobile:value=>{mobile=value;},frame,flush:()=>{let time=0;while(frames.size){assert.ok(time<10000,'animation must settle');frame(time+=16);}},get handles(){return handleRefresh;},get toolbar(){return toolbarRefresh;},get cancels(){return cancels;}};
 }
 test('real view adapter scales visual layers, refreshes unscaled overlays and never edits the saved design',async t=>{
- const f=await runtime(t);assert.equal(f.el.uxViewZoom(),1);assert.equal(f.holder.properties.get('transform'),'translate(0px,0px) scale(1)');
- f.el.uxSetViewZoom(2);assert.equal(f.el.uxViewZoom(),2);assert.equal(f.holder.properties.get('transform'),'translate(0px,0px) scale(2)');assert.ok(f.handles>=2&&f.toolbar>=2);
+ const f=await runtime(t);assert.equal(f.el.uxViewZoom(),1);assert.ok(f.holder.properties.get('transform').endsWith('scale(0.925)'));
+ f.el.uxSetViewZoom(2);assert.equal(f.el.uxViewZoom(),2);assert.ok(f.holder.properties.get('transform').endsWith('scale(1.85)'));assert.ok(f.handles>=2&&f.toolbar>=2);
  const wheel=f.event(f.holder,{deltaY:-120,clientX:450});f.el.dispatch('wheel',wheel);assert.equal(wheel.prevented,true);assert.ok(f.api.view().scale>2);assert.notEqual(f.api.view().x,0);
  f.controls.dispatch('click',f.event(f.controls.buttons.get('fit')));f.flush();assert.deepEqual(f.api.view(),{scale:1,x:0,y:0});assert.equal(f.controls.buttons.get('minus').disabled,true);
  f.controls.dispatch('click',f.event(f.controls.buttons.get('plus')));assert.equal(f.api.view().scale,1.25);assert.equal(f.controls.buttons.has('level'),false);
@@ -52,12 +52,12 @@ test('real pointer adapter captures blank pan and pinch, leaves object drag and 
 test('view resets on a different design or dimensions without putting zoom into undo/draft state',async t=>{
  const f=await runtime(t);f.el.uxSetViewZoom(4);f.el.state.designId='D2';f.el.render();f.flush();assert.equal(f.el.uxViewZoom(),1);assert.equal(Object.hasOwn(f.el.state,'zoom'),false);assert.deepEqual(f.el.state.objects,f.original.objects);assert.deepEqual(f.el.state.ui,f.original.ui);
 });
-test('small touch targets animate gently, refresh overlays each frame and stop on a new gesture; reduced motion jumps directly',async t=>{
- const f=await runtime(t),find=f.r.querySelector;f.mobile(true);const scene={isConnected:false,cloneNode:()=>new NodePort(),querySelector:()=>({getBoundingClientRect:()=>({left:395,top:267,width:30,height:6})})};f.r.querySelector=selector=>selector==='.scene'?scene:find(selector);
+test('explicit Fit animates, stops on a new gesture and obeys reduced motion; text taps never zoom',async t=>{
+ const f=await runtime(t);f.mobile(true);f.api.refresh();f.flush();f.el.uxSetViewZoom(3);
  const tap=()=>{f.el.dispatch('pointerdown',f.event(f.object,{pointerId:12}));f.el.dispatch('pointerup',f.event(f.object,{pointerId:12}));f.el.sync();};
- tap();f.frame(0);f.frame(16);const refreshed=f.handles;f.frame(106);assert.ok(f.el.uxViewZoom()>1&&f.el.uxViewZoom()<4);assert.ok(f.handles>refreshed);f.frame(266);assert.equal(f.el.uxViewZoom(),3);
- f.el.uxFitView();tap();f.frame(200);f.frame(216);f.frame(276);const stopped=f.api.view();f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:13}));f.frame(500);assert.deepEqual(f.api.view(),stopped);f.el.dispatch('pointerup',f.event(f.holder,{pointerId:13}));
- f.el.uxFitView();f.reduced(true);tap();f.frame(600);assert.equal(f.el.uxViewZoom(),3);assert.deepEqual(f.el.state,f.original);
+ tap();f.flush();assert.equal(f.el.uxViewZoom(),3);const whole=f.stage.children.find(n=>n.className==='ux-view-whole');whole.dispatch('click',{});f.frame(0);f.frame(125);assert.ok(f.el.uxViewZoom()>1&&f.el.uxViewZoom()<3);f.frame(250);assert.equal(f.el.uxViewZoom(),1);
+ f.el.uxSetViewZoom(3);whole.dispatch('click',{});f.frame(300);f.frame(400);const stopped=f.api.view();f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:13}));f.frame(600);assert.deepEqual(f.api.view(),stopped);f.el.dispatch('pointerup',f.event(f.holder,{pointerId:13}));
+ f.reduced(true);whole.dispatch('click',{});assert.equal(f.el.uxViewZoom(),1);tap();f.flush();assert.equal(f.el.uxViewZoom(),1);assert.deepEqual(f.el.state,f.original);
 });
 
 function touchBatch(f,contacts,changed=contacts){return f.event(f.object,{touches:contacts,changedTouches:changed});}
@@ -99,30 +99,23 @@ test('touch batches continue on a replaced SVG target and remove direct listener
  f.object.dispatch('touchend',touchBatch(f,[],start));assert.equal(f.object.listeners.touchmove.length,0);assert.equal(f.object.listeners.touchend.length,0);assert.equal(f.object.listeners.touchcancel.length,0);
 });
 
-test('focus is mobile-only; field focus, deselection and navigation leave no saved view state',async t=>{
- const f=await runtime(t),find=f.r.querySelector,scene={querySelector:()=>({getBoundingClientRect:()=>({left:395,top:267,width:30,height:6})})};f.r.querySelector=s=>s==='.scene'?scene:find(s);
- f.api.focus('text');f.flush();assert.equal(f.api.view().scale,1,'desktop must not auto-focus');
- f.mobile(true);f.reduced(true);f.r.dispatch('focusin',{target:{closest:()=>({dataset:{uxText:'text'}})}});f.flush();assert.equal(f.api.view().scale,3);
- const focus=f.stage.children.find(n=>n.className==='ux-view-focus');assert.equal(focus.hidden,false);
- f.r.dispatch('click',{target:{closest:()=>({dataset:{ux:'mobile-next'}})}});f.flush();assert.equal(f.api.view().scale,1);assert.equal(focus.hidden,true);assert.deepEqual(f.el.state,f.original);
+test('text field focus and selection never zoom on mobile or desktop; navigation still fits',async t=>{
+ const f=await runtime(t);for(const mobile of [false,true]){f.mobile(mobile);f.api.refresh();f.flush();f.r.dispatch('focusin',{target:{closest:()=>({dataset:{uxText:'text'}})}});f.flush();assert.equal(f.api.view().scale,1);f.el.uxSetViewZoom(2);f.r.dispatch('focusin',{target:{closest:()=>({dataset:{uxText:'text'}})}});f.flush();assert.equal(f.api.view().scale,2);f.api.fit();}
+ assert.equal(f.stage.children.some(n=>n.className==='ux-view-focus'),false);assert.equal(f.el.uxFocusView,undefined);
+ f.el.uxSetViewZoom(2);f.r.dispatch('click',{target:{closest:()=>({dataset:{ux:'mobile-next'}})}});f.flush();assert.equal(f.api.view().scale,1);assert.deepEqual(f.el.state,f.original);
 });
-test('free plate double-click toggles 200 percent; a text double-click passes through for editing',async t=>{
- const f=await runtime(t);f.reduced(true);
- const text=f.event(f.object);f.el.dispatch('dblclick',text);assert.equal(text.stopped,undefined);assert.equal(f.api.view().scale,1);
- const blank=f.event(f.holder);f.el.dispatch('dblclick',blank);assert.equal(blank.stopped,true);assert.equal(f.api.view().scale,2);assert.deepEqual(f.el.state,f.original);
+test('double-clicks on free plate never zoom and text double-clicks remain available for editing',async t=>{
+ const f=await runtime(t);for(const mobile of [false,true])for(const scale of [1,2]){f.mobile(mobile);f.el.uxSetViewZoom(scale);const text=f.event(f.object),blank=f.event(f.holder);f.el.dispatch('dblclick',text);f.el.dispatch('dblclick',blank);f.flush();assert.equal(text.stopped,undefined);assert.equal(blank.stopped,undefined);assert.equal(f.api.view().scale,scale);}
+ assert.deepEqual(f.el.state,f.original);
 });
-test('two stationary blank touches toggle zoom and do not consume a text edit',async t=>{
- const f=await runtime(t);f.mobile(true);f.reduced(true);
- for(const id of [101,102]){f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:id}));f.el.dispatch('pointerup',f.event(f.holder,{pointerId:id}));}
- assert.equal(f.api.view().scale,2);assert.deepEqual(f.el.state,f.original);
+test('two sequential blank taps do not zoom or reset an already zoomed view',async t=>{
+ const f=await runtime(t);f.mobile(true);for(const scale of [1,2]){f.el.uxSetViewZoom(scale);for(const id of [101,102]){f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:id}));f.el.dispatch('pointerup',f.event(f.holder,{pointerId:id}));}f.flush();assert.equal(f.api.view().scale,scale);assert.deepEqual(f.el.state,f.original);}
 });
 
-test('focus recenters when the keyboard changes the visible stage and fits on deselection',async t=>{
- const f=await runtime(t),find=f.r.querySelector;f.mobile(true);f.reduced(true);
- const scene={querySelector:()=>({getBoundingClientRect:()=>({left:395,top:267,width:30,height:6})})};f.r.querySelector=s=>s==='.scene'?scene:find(s);
- f.api.focus('text');f.flush();assert.equal(f.api.view().scale,3);const before=f.api.view();
- f.stage.getBoundingClientRect=()=>({left:10,top:20,right:810,bottom:250,width:800,height:230});f.api.refresh();f.flush();assert.notEqual(f.api.view().y,before.y);assert.equal(f.api.view().scale,3);assert.deepEqual(f.el.state,f.original);
- f.deselect();f.el.sync();f.flush();assert.deepEqual(f.api.view(),{scale:1,x:0,y:0});assert.equal(f.stage.children.find(n=>n.className==='ux-view-focus').hidden,true);assert.deepEqual(f.el.state,f.original);
+test('keyboard resize and deselection preserve manual zoom without changing saved geometry',async t=>{
+ const f=await runtime(t);f.mobile(true);f.api.refresh();f.flush();f.el.uxSetViewZoom(2);
+ f.stage.getBoundingClientRect=()=>({left:10,top:20,right:810,bottom:250,width:800,height:230});f.api.refresh();f.flush();assert.equal(f.api.view().scale,2);assert.deepEqual(f.el.state,f.original);
+ f.deselect();f.el.sync();f.flush();assert.equal(f.api.view().scale,2);assert.deepEqual(f.el.state,f.original);
 });
 
 test('drag loupe is an isolated display layer and hides immediately without model, undo or export calls',async t=>{
@@ -132,4 +125,17 @@ test('drag loupe is an isolated display layer and hides immediately without mode
  f.el.uxDragLens({kind:'move',clientX:410,clientY:270});assert.equal(lens.hidden,false);assert.equal(lens.children.length,1);assert.deepEqual(f.el.state,f.original);
  f.el.uxDragLens(null);assert.equal(lens.hidden,true);assert.equal(lens.children.length,0);
  f.el.uxDragLens({kind:'scale',clientX:410,clientY:270});assert.equal(lens.hidden,false);f.el.uxDragLens({kind:'rotate',clientX:410,clientY:270});assert.equal(lens.hidden,true);assert.deepEqual(f.el.state,f.original);
+});
+
+test('vertical slider, buttons and cursor-anchored wheel stay synchronized at 100–400 percent',async t=>{
+ const f=await runtime(t),range=f.controls.buttons.get('range'),percent=f.controls.buttons.get('percent'),fit=f.controls.buttons.get('fit');assert.equal(range.value,'100');assert.equal(percent.textContent,'100 %');assert.equal(fit.hidden,true);
+ range.value='180';f.controls.dispatch('input',{target:range});assert.equal(f.el.uxViewZoom(),1.8);assert.equal(percent.textContent,'180 %');assert.equal(fit.hidden,false);
+ f.el.dispatch('wheel',f.event(f.holder,{deltaY:-120,clientX:450}));assert.ok(f.el.uxViewZoom()>1.8);assert.equal(range.value,String(Math.round(f.el.uxViewZoom()*100)));assert.equal(percent.textContent,range.value+' %');
+ for(const [value,expected]of [['900',4],['0',1]]){range.value=value;f.controls.dispatch('input',{target:range});assert.equal(f.el.uxViewZoom(),expected);assert.equal(range.value,String(expected*100));}
+ f.controls.dispatch('click',f.event(f.controls.buttons.get('minus')));assert.equal(f.el.uxViewZoom(),1);f.el.uxSetViewZoom(4);f.controls.dispatch('click',f.event(f.controls.buttons.get('plus')));assert.equal(f.el.uxViewZoom(),4);assert.equal(f.controls.buttons.get('plus').disabled,true);assert.deepEqual(f.el.state,f.original);
+});
+test('mobile does not zoom via wheel and the whole-plate button appears only above 100 percent',async t=>{
+ const f=await runtime(t);f.mobile(true);f.api.refresh();f.flush();const whole=f.stage.children.find(n=>n.className==='ux-view-whole');assert.equal(whole.hidden,true);
+ const e=f.event(f.holder,{deltaY:-120});f.el.dispatch('wheel',e);assert.equal(f.el.uxViewZoom(),1);assert.equal(e.prevented,undefined);
+ f.el.uxSetViewZoom(2);assert.equal(whole.hidden,false);f.el.uxFitView();assert.equal(whole.hidden,true);assert.deepEqual(f.el.state,f.original);
 });

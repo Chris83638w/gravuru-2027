@@ -24,10 +24,18 @@ export function pinchView(view,start,current,bounds){
  const before=center(start),after=center(current),scale=viewScale(view.scale*distance(current)/Math.max(1,distance(start))),p=bounds.plate,c={x:p.x+p.width/2,y:p.y+p.height/2},ratio=scale/view.scale;
  return constrainView({scale,x:after.x-c.x-(before.x-c.x-view.x)*ratio,y:after.y-c.y-(before.y-c.y-view.y)*ratio},bounds);
 }
-export function autoZoomView(view,box,bounds){
- const v=bounds.viewport;if(!(box.width>0)||box.width>=v.width*.5)return fitView();
- const scale=Math.min(3,Math.max(1,Math.min(v.width*.7/box.width,v.height*.7/Math.max(1,box.height)))),p=bounds.plate,c={x:p.x+p.width/2,y:p.y+p.height/2};
- return constrainView({scale,x:v.x+v.width/2-c.x-(box.x+box.width/2-c.x)*scale,y:v.y+v.height/2-c.y-(box.y+box.height/2-c.y)*scale},bounds);
+// Reserve the same 60 px gutter for every visual layer, including acrylic scenes.
+// Fit is only a display transform: physical millimetres and source SVG stay intact.
+export function fitViewFrame(plate,viewport,mobile){
+ const gutter=mobile?0:60,scale=Math.max(1,viewport.width-gutter)/Math.max(1,viewport.width),origin={x:0,y:viewport.height/2};
+ const point=(x,y)=>({x:origin.x+(x-origin.x)*scale,y:origin.y+(y-origin.y)*scale});
+ return {plate:{...point(plate.x,plate.y),width:plate.width*scale,height:plate.height*scale},viewport:{x:0,y:0,width:viewport.width-gutter,height:viewport.height},fit:{scale,origin}};
+}
+export function viewLayerStyle(view,bounds,box){
+ const fit=bounds.fit||{scale:1,origin:{x:0,y:0}},scale=fit.scale*view.scale,p=bounds.plate,center={x:p.x+p.width/2,y:p.y+p.height/2};
+ const offset=axis=>box[axis]*(scale-1)+fit.origin[axis]*(1-fit.scale)*view.scale+center[axis]*(1-view.scale)+view[axis];
+ const x=offset('x'),y=offset('y'),v=bounds.viewport,left=(v.x-box.x-x)/scale,top=(v.y-box.y-y)/scale,right=left+v.width/scale,bottom=top+v.height/scale;
+ return {transform:'translate('+x+'px,'+y+'px) scale('+scale+')',clipPath:fit.scale===1?'none':'polygon('+left+'px '+top+'px,'+right+'px '+top+'px,'+right+'px '+bottom+'px,'+left+'px '+bottom+'px)'};
 }
 export function visibleViewRect(view,bounds){
  const p=bounds.plate,v=bounds.viewport,a=unprojectView({x:v.x,y:v.y},view,bounds),b=unprojectView({x:v.x+v.width,y:v.y+v.height},view,bounds),x=Math.max(p.x,a.x),y=Math.max(p.y,a.y);

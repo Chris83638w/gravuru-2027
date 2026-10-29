@@ -2,6 +2,7 @@ import {createHmac} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {createDraftCartHandoff} from './draft-cart-handoff.mjs';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
+import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code,retryable:false,paymentConfirmed:false});};
 const positive=n=>Number.isSafeInteger(n)&&n>0;
@@ -22,7 +23,7 @@ export function assertBoundTestReview(manifest,record,binding){
   expected=m.productionProfile?[...m.productionProfile.blockers]:['Ein freigegebenes Fertigungsprofil ist diesem Formprodukt noch nicht zugeordnet.',...(m.product.method==='print'?['Gemessenes Druck-/Material-ICC-Profil und Maschinenabnahme fehlen.']:[])];
  }else{
   if(m.capabilities?.cart!==false||!equal(m.selection?.options,binding.options))fail(409,'bound_test_selection','Die Ausführung gehört nicht zur festen Shop-Zuordnung.');
-  expected=[...(record.document.config?.doorbell?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),m.product.method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'];
+  expected=[...(record.document.config?.doorbell&&!isLayeredDoorbell(record.document.config)?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),m.product.method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'];
  }
  if(!equal(m.blockers,expected))fail(409,'bound_test_blockers','Dieser Prüfstand enthält weitere ungeklärte Sperrgründe.');
 }

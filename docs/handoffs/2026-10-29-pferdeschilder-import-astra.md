@@ -78,3 +78,7 @@ D74–D78 beruhen auf den fünf bestätigten Mustern, D79–D81 sind neue Vorsch
 Nächster Schritt: neue Kontaktbögen sichten, technische Serien-/Familienbindung und reale Gravurprobe abnehmen. Kein Merge nach main, Deployment, Shopify-Schreiben oder Neustart durch diesen Auftrag.
 
 Nach Abgleich mit dem aktuellen main erneut 74/74 Tests und Build bestanden. Sechs repräsentative Konfiguratoransichten erneut erfasst: keine Ladefehler, pixelgleich mit den vorhandenen Kontaktbögen. Neue parallele Statusabschnitte bleiben erhalten.
+
+## Nutzerkorrektur: ausgefüllte Beispieldaten
+
+Alle 200 Katalogfassungen verwenden jetzt 32 unterschiedliche fiktive Pferdedatensätze. scripts/apply-box-sign-samples.mjs liest die expliziten Daten aus dem Katalog und ersetzt ausschließlich Texte/zugehörige Metadaten; Motive werden vor/nach byteinhaltlich über den SVG-Parser verglichen. Der Prüflauf kontrolliert vollständige Feldrollen und tatsächliche Werte, keine sichtbaren Platzhalter. D76 enthält auch Besitzer-/Tierarztkontakt. 200/200 gültig, 44 aktuelle Konfiguratoransichten, Familienkatalog erneut gebaut. Keine Schrift-/Geometrie-/Freigabeänderung und nichts live.

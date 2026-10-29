@@ -43,7 +43,16 @@ for(const item of manifest.designs){
  const converted=katalogDesignToTemplate(design,family,{id:'pferdeschilder'},{fonts});
  const {template,motifs,rights}=converted;
  assert.equal(template.objects.length,parseDesignSvg(design.svg()).layers.length,'Layer lost during import');
- assert(template.objects.some(o=>o.text?.includes('Vater'))&&template.objects.some(o=>o.text?.includes('Mutter')),'Pedigree missing');
+ const sample=design.json.sampleData;
+ assert(sample,'Filled sample data required');
+ if(sample){
+  assert.equal(sample.fictional,true);
+  for(const role of ['horse','birthDate','sire','dam'])assert(Object.values(sample.roles).includes(role),'Missing field role: '+role);
+  for(const o of template.objects.filter(o=>o.type==='text')){
+   assert.equal(o.text,sample.values[o.id],'Sample field differs: '+o.id);
+   assert(!/Pferdename|Geburtsjahr|Dein Name|Dein Kontakt|von: Vater|aus der: Mutter/.test(o.text),'Unfilled placeholder');
+  }
+ }else assert(template.objects.some(o=>o.text?.includes('Vater'))&&template.objects.some(o=>o.text?.includes('Mutter')),'Pedigree missing');
  const config={profile:{schemaVersion:1,kind:'universal-product',id:'review-'+item.id,name:'Boxenschild '+design.name+' · '+item.form+' '+item.size+' cm',revision:'20261029-box-review',binding:{kind:'local-review',productId:'review-'+item.id},geometry,material:{kind:'steel',color:'#c9cdd0',thicknessMm:1.5},processing:{profileId:'steel-engraving'},features:{motifsAllowed:true,orderEnabled:false,productionConfirmed:false},optionGroups:[],designs:[template],defaultDesignId:template.id},reviewOnly:true,basePriceCents:null,extraMotifCents:null,photo:{enabled:false,mode:'upload-only',includedCount:0,extraPriceCents:0},logo:{enabled:false},localResources:{scope:'local-review-only',fonts,motifs},workshopElementRights:{[template.id]:rights}};
  const prepared=prepareConfig(config);
  const issues=template.objects.flatMap(o=>{const issue=customerLayoutIssue(o,prepared.profile,prepared.localResources);return issue?[{id:o.id,issue}]:[];});
@@ -56,7 +65,7 @@ for(const item of manifest.designs){
  // Share font glyphs once in the review bundle, not 200 times.
  delete prepared.localResources.fonts;
  configurations.push({id:item.id,muster:item.muster,form:item.form,size:item.size,config:prepared});
- checks.push({id:item.id,geometrySha256:source.geometrySha256,sizeKey:item.familySizeKey,objects:template.objects.length,motifs:motifs.length,fonts:converted.fonts,notes:converted.notes,layoutIssues:issues,minTextMm:Math.min(...template.objects.filter(o=>o.type==='text').map(o=>o.size)),motifsDeletableAndReplaceable:true,released:false});
+ checks.push({id:item.id,sampleSetId:sample.setId,fictionalSample:true,filledTextFields:Object.keys(sample.values).length,geometrySha256:source.geometrySha256,sizeKey:item.familySizeKey,objects:template.objects.length,motifs:motifs.length,fonts:converted.fonts,notes:converted.notes,layoutIssues:issues,minTextMm:Math.min(...template.objects.filter(o=>o.type==='text').map(o=>o.size)),motifsDeletableAndReplaceable:true,released:false});
 }
 fs.mkdirSync(out,{recursive:true});
 fs.writeFileSync(path.join(out,'review-bundle.json'),JSON.stringify({schema:'gravuru-box-sign-review/v1',reviewOnly:true,sharedResources:{fonts},configurations}));

@@ -1,3 +1,12 @@
+## 29.10.2026 · Codex/Astra · PR #56 Stufe 1 live, genau ein Metafeld
+
+- Chris konkretisiert: „Du darfst pr56 ausführen: genau 1 mETAFELD“. Ausschließlich Issue #57 Nachricht 1 umgesetzt, danach angehalten.
+- AOSU Pro Hochformat `16124413084028`: `custom.customization_id=cfg_c3ee3fcf-bf87-42e3-af2a-98b680cdb576`, `compareDigest:null`. Vorher ACTIVE/veröffentlicht/Metafeld null. **1 geschrieben / 0 Fehler**, 14:14:46 UTC, separater Readback bestätigt.
+- Öffentliche Seite HTTP 200, genau ein `#gravuru-konfi`, 120 Varianten; Chrome zeigt genau einen grünen „Jetzt personalisieren“-Button mit richtiger Produkt-/Variantenadresse. Screenshot lokal/Chat. Kein Editor-/Warenkorbtest behauptet.
+- Frischer Abgleich aller 126 Produkt-Metafelder/Veröffentlichungen: nur Pilot geändert. **41 Metafelder und 84 Veröffentlichungen weiterhin offen**, keine anderen Live-Schreibzugriffe.
+- [Bericht](docs/handoffs/2026-10-29-funkklingeln-stufe1-live.md), [Journal](docs/handoffs/funkklingeln-einstieg-20261029/stufe1-live-journal.json). Ergebnis in #57/#46 melden.
+- Genau nächster Schritt: Chris prüft PC/iPhone; Stufe 2/3 erst mit neuem Satz. Teil C / PR #54 bleibt offen.
+
 ## 29.10.2026 · Codex/Astra · 42 Einstiege / 84 Veröffentlichungen vorbereitet, nichts live
 
 - Chris: „Dann bereite die fehlenden Produktseiten-Einstiege und die Veröffentlichung der 84 Produkte vor. Stimme dich mit Claude in Issue 46 ab … Noch nichts live ändern.“

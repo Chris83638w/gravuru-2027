@@ -46,6 +46,7 @@ test('Dry-run: Bericht je Linie ohne Schreiben; Commit legt Familie, Schriftprof
  assert.deepEqual(namen.products.map(p=>[p.sizeKey,p.action,p.templates.map(x=>x.design+':'+x.fit)]),[['TS-RE-90X60','neu',['test-herz:prüfen']],['TS-RE-120X80','neu',['test-herz:prüfen']],['TS-RE-60X40','gesperrt',['test-herz:prüfen']],['TS-QU-80X80','neu',[]]]);
  assert.equal(namen.products[2].reason,'Preis offen: 6 × 4 cm');
  assert.ok([namen.products[0],namen.products[1],hunde.products[0]].every(p=>p.templates.find(x=>x.design==='test-herz').issues.some(issue=>/Bohrloch|gebohrt/.test(issue))),'all offered mounting choices retain their drilling warning');
+ for(const item of plan.items)for(const d of item.document.config.profile.designs)if(d.katalog)assert.deepEqual(d.katalog.target,{lineId:'test-linie',familyId:'test-schilder',explicit:true,released:true});
  assert.equal(plan.diagnosticOnly,false,'only a plan with explicit fixture approvals is applicable');
  assert.deepEqual(hunde.products.map(p=>[p.sizeKey,p.action,p.templates.map(x=>x.design+':'+x.fit)]),[['TS-RE-90X60','neu',['test-foto:prüfen','test-herz:prüfen']],['TS-RE-60X40','gesperrt',['test-foto:prüfen','test-herz:prüfen']]],'Bericht in Katalogreihenfolge; Fotogravur bleibt (tools.photo), ohne Fotoangabe der Familie „prüfen“');
  assert.ok(hunde.products.every(p=>!p.excluded.some(e=>e.design==='test-foto')),'Fotofeld auf einem Gravurziel mit Fotoverfahren wird nicht ausgeschlossen (Claude 25.10.: Fotogravur ist Produktwissen)');
@@ -257,6 +258,7 @@ test('family-target approval never opens another family; explicit [] overrides l
  const a=await plan(line.id),b=await plan(other.id);assert.equal(a.items.length,1);assert.deepEqual(a.items[0].document.config.profile.designs.map(d=>d.katalog.designId),['test-herz']);assert.equal(b.items.length,0);assert.match(b.report.subcategories[0].products[0].reason,/Keine freigegebenen Designs/);
  design.ziele[1].freigabe=release;save();assert.equal((await plan(other.id)).items.length,1,'only the separate target approval opens B');
  other.groups=other.groups.map(g=>({...g,shape:'ellipse'}));fs.writeFileSync(otherFile,JSON.stringify(other));const wrongShape=await plan(other.id);assert.equal(wrongShape.items.length,0);assert.match(wrongShape.report.subcategories[0].products[0].excluded[0].issues.join(' '),/Andere Form.*Variante/);
+ delete design.ziele;save();const legacy=await plan(line.id);assert.equal(legacy.items[0].document.config.profile.designs[0].katalog.target.explicit,false,'legacy approval is never a cross-material target');
  design.ziele=[];save();const empty=await plan(line.id);assert.equal(empty.items.length,0);assert.match(empty.report.subcategories[0].products[0].reason,/Keine freigegebenen Designs/);
  assert.equal(ws.repository.list().length,1,'all target checks are read-only plans');
 });

@@ -26,7 +26,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
  const show=entry=>{entry.frame.hidden=false;entry.frame.inert=false;entry.frame.style.display='';entry.frame.style.visibility='';entry.frame.style.position='';entry.frame.style.inset='';};
  const setFragment=entry=>win.history.replaceState(win.history.state,'','#'+entry.fragment);
  function api(entry){return Object.freeze({
-  load:page=>{check(entry);return entry.client.loadDesignGallery(page);},
+  load:(page,theme)=>{check(entry);return entry.client.loadDesignGallery(page,theme);},
   preview:target=>{check(entry);return entry.client.loadDesignPreview(target);},
   hasPendingTransfer:()=>!!entry.pending,
   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},

@@ -364,9 +364,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
-     if([...url.searchParams.keys()].some(k=>k!=='page')||url.searchParams.getAll('page').length>1||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+     if([...url.searchParams.keys()].some(k=>!['page','theme'].includes(k))||url.searchParams.getAll('page').length>1||url.searchParams.getAll('theme').length>1||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
      checkOrigin(req,{mutating:false});const context=active(req);checkGalleryBinding(context.store,context.binding,cardFor(context.store,context.binding));
-     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0)});active(req);
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred'});active(req);
      return json(res,200,result);
     }
     if(action==='design-gallery-preview'){

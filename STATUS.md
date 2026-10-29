@@ -1,3 +1,14 @@
+## 29.10.2026 · Codex / Astra · PR #42: Designkacheln vereinfacht (Chris)
+
+- Kacheln nur mit Vorschau und Designname; zusätzliche Preis-, Form-, Größen- und Produkttexte entfernt. Einstiegstext angepasst. Keine Live-Änderung.
+- 8/8 vorhandene Textübernahme-/Designwechsel-Tests bestanden, PR-42- und kombinierter Build erfolgreich; sieben Desktop-/Handybilder aktualisiert. Frühere Vollauf-Zähler bleiben dem vorherigen Stand zugeordnet. [Bericht](docs/handoffs/2026-10-29-konfi-ux-nachtrag6-astra-bericht.md).
+
+## 29.10.2026 · Codex / Astra · Nachtrag 6: Galerie je Linie und Klingelmodell (PR #42, nur Review)
+
+- Eigene Katalog-Linie; Funkklingeln nur innerhalb desselben gespeicherten Geräte-Modells. Material-/Verfahrenswechsel nur mit ausdrücklichem Paket-M-Zielbeleg. Themenpriorität und „Alle Themen“, signierte Quell-/Linienbindung und erneute Zielprüfung.
+- Cache nach Linie/Modell getrennt, kalter/wieder gestarteter Lasttest unter 4 s. Kombiniert mit der Mausrad-Ergänzung für PR #43: gezielt 122/122 grün, Windows-Vollauf 1810 / 1731 bestanden / 74 bekannte Fehlertestnamen / 5 übersprungen. 73 Python-Store-Alias/Spawn, 1 cp1252-Ausgabe; neuer Linux-Vollauf und echtes Safari noch offen.
+- [Bericht](docs/handoffs/2026-10-29-konfi-ux-nachtrag6-astra-bericht.md), [Desktop-/Handybilder und Prüfbelege](docs/handoffs/konfi-galerie-linie-20261029-astra/README.md). Kein Import, keine Shopify-Änderung, kein Merge, kein Livegang. Erst nach Chris' ausdrücklichem Satz.
+
 ## 29.10.2026 · Codex / Astra · Nachtrag 5: Zoom vereinfacht in PR #43 (nur Review)
 
 - [PR #43](https://github.com/Chris83638w/gravuru-2027/pull/43), gleicher Branch: Handy nur Zwei-Finger-Zoom; kein automatischer Fokus, keine Fokus-Pille und kein Doppeltipp-Zoom. Weißes „Ganzes Schild“ nur bei Zoom. Desktop mit senkrechtem 44-px-Regler rechts (100–400 %), Mausrad synchron; 60 px eigener Platz für den Balken, auch im Vollbild. Lupe und mm-Hilfen bleiben.

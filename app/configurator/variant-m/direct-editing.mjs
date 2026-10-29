@@ -1,4 +1,5 @@
 import {textToolbarPosition} from './text-toolbar-position.mjs';
+import {placeDirectToolbar} from './toolbar-hosts.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {fontDisplayName} from './font-display.mjs';
 import {measureText,textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -72,6 +73,8 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   }
   function update(){
     const o=selected();if(editing&&o?.id!==editing.id)close();
+    const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open;
+    const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full});
     const text=o?.type==='text',photo=!!o?.uxUploadId,motif=o?.type==='motif';
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
     if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space','0px');stage.style.setProperty('--ux-toolbar-space','0px');el.style.setProperty('--ux-textbar-h','0px');if(editing)close();return;}
@@ -88,17 +91,14 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     size.disabled=!can(o,'scale');
     if(r.activeElement!==size)size.value=r.querySelector('#ux-size')?.value||Math.round(o.size||4);
     const scene=r.querySelector('.scene');if(!scene)return;
-    const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open,preview=r.querySelector('.ux-preview'),home=mobile&&!full?preview:stage;
-    if(panel.parentNode!==home)home.append(panel);
-    panel.classList.toggle('is-docked',mobile);panel.classList.toggle('is-fullscreen-dock',mobile&&full);
-    const placement=el.state.ui?.textToolbarPlacement||'plate',scale=!mobile&&placement==='selection'?.78:1;
-    panel.dataset.placement=placement;panel.style.transform=scale===1?'':'scale('+scale+')';panel.style.transformOrigin='top left';
+    const placement=el.state.ui?.textToolbarPlacement||'plate',scale=!mobile&&!inWorkbench&&placement==='selection'?.78:1;
+    panel.dataset.placement=placement;panel.style.transform=scale===1?'':'scale('+scale+')';panel.style.transformOrigin=inWorkbench?'':'top left';
     // Reserve space above the fitted plate; the toolbar never occupies artwork.
-    stage.style.setProperty('--ux-toolbar-space',!mobile?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
+    stage.style.setProperty('--ux-toolbar-space',!mobile&&!inWorkbench?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
     stage.style.setProperty('--ux-mobile-dock-space',mobile&&full?panel.offsetHeight+86+'px':'0px');
     const barHeight=mobile&&!full&&!panel.hidden?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
     const bounds=scene.getBoundingClientRect(),parent=stage.getBoundingClientRect();
-    if(!mobile){
+    if(!mobile&&!inWorkbench){
       const target=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]')?.getBoundingClientRect();
       const pos=textToolbarPosition({stage:parent,plate:bounds,selection:target,width:panel.offsetWidth*scale,height:panel.offsetHeight*scale,placement,zoomed:(el.uxViewZoom?.()||1)>1});
       panel.style.left=pos.left+'px';panel.style.top=pos.top+'px';
@@ -112,7 +112,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
       field.style.height='auto';field.style.height=Math.min(110,Math.max(32,field.scrollHeight))+'px';updateCount(o);
       const centerY=target?target.top-parent.top+target.height/2:bounds.top-parent.top+o.y*bounds.height/el.state.height;
       const bottomGap=typeof el.uxViewZoom==='function'?60:8;
-      const maxTop=Math.max(8,parent.height-box.offsetHeight-bottomGap),minTop=mobile?8:Math.min(maxTop,(parseFloat(panel.style.top)||0)+panel.offsetHeight*scale+8);
+      const maxTop=Math.max(8,parent.height-box.offsetHeight-bottomGap),minTop=mobile||inWorkbench?8:Math.min(maxTop,(parseFloat(panel.style.top)||0)+panel.offsetHeight*scale+8);
       box.style.top=Math.max(minTop,Math.min(maxTop,centerY-box.offsetHeight/2))+'px';
       if(group){group.style.visibility='hidden';group.dataset.directActive='';}
     }

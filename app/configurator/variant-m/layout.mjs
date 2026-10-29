@@ -1,5 +1,6 @@
 import {uiIcon} from './ui-icons.mjs';
 import {installToolbarPlacementUi} from './toolbar-placement-ui.mjs';
+import {placePreviewToolbar} from './toolbar-hosts.mjs';
 // Layout only: move the existing controls, retaining their events and cart state.
 export async function installLayout({el,r,config}){
  let shopEntry=null,storage=null;try{shopEntry=window.parent.GravuruShopEntry;storage=window.localStorage;}catch{}
@@ -12,9 +13,9 @@ export async function installLayout({el,r,config}){
  const toolbar=document.createElement('div');toolbar.className='ux-canvas-toolbar';toolbar.setAttribute('role','toolbar');toolbar.setAttribute('aria-label','Vorschauwerkzeuge');
  if(enlarge){enlarge.setAttribute('aria-label','Vollbild öffnen');toolbar.append(enlarge);}
  if(tools)toolbar.append(tools);preview.prepend(toolbar);
- const home=document.createComment('preview toolbar');toolbar.before(home);
+ const workbench=document.createElement('div');workbench.className='ux-workbench-toolbar';$('.ux-layout').before(workbench);
  const media=matchMedia('(max-width:767px)');
- function placeToolbar(){if(full.open){const close=full.querySelector('.ux-preview-back');if(toolbar.parentNode!==full)close.after(toolbar);}else if(media.matches){if(toolbar.parentNode!==$('.ux-heading'))$('.ux-heading').append(toolbar);}else if(toolbar.parentNode!==preview)home.after(toolbar);}
+ function placeToolbar(){placePreviewToolbar({toolbar,workbench,heading:$('.ux-heading'),full,mobile:media.matches});el.uxRefreshTextToolbar?.();}
  media.addEventListener('change',placeToolbar);placeToolbar();
  new MutationObserver(placeToolbar).observe(full,{attributes:true,attributeFilter:['open']});full.addEventListener('close',placeToolbar);
  const heading=$('.ux-heading'),name=document.createElement('span');name.className='ux-product-title';name.textContent=config?.profile.name||'Deine Gestaltung';name.title=name.textContent;

@@ -306,3 +306,33 @@ test('M: target preview option supports print and acrylic without enabling a pro
  const c=familyProductConfig(family,family.sizes[0],1,{previewOnly:true});assert.equal(c.profile.material.kind,kind);assert.equal(c.profile.processing.profileId,process);assert.equal(c.reviewOnly,true);assert.equal(c.profile.features.orderEnabled,false);assert.throws(()=>familyProductConfig(family,family.sizes[0],1));
  family.material.thicknessMm=null;assert.throws(()=>familyProductConfig(family,family.sizes[0],1,{previewOnly:true}),e=>e.status===422&&/Materialstärke/.test(e.message));}
 });
+
+// Hausnummern AA/AS/S/S (Chris 29.10.2026): Abstandshalter-Farbe je Halterset als zwei sich
+// ausschließende Gruppen; die verdeckte Gruppe wird weder angezeigt noch berechnet.
+test('family option groups: spacer colour per set, hidden group neither shown nor priced',async()=>{
+ const {quote,resolvedOptions,variantCombinations}=await import('../configurator/variant-m/contract.mjs');
+ const f=validateFamily(JSON.parse(fs.readFileSync(new URL('./fixtures/katalog/familien/acryl/acryl-ss-abstandshalter.json',import.meta.url),'utf8')));
+ const size=key=>f.sizes.find(s=>s.key===key);
+ for(const key of ['SS-RE-150X100','SS-RE-150X100-H']){
+  const c=familyProductConfig(f,size(key),1,{previewOnly:true}),base=size(key).baseCents,price=o=>quote(c,[],'start',o).unitCents;
+  assert.deepEqual(c.profile.optionGroups.map(g=>[g.id,g.defaultValueId,g.visibleIf?.valueIds]),[['mounting','AH02',undefined],['abstandshalter-farbe','ES',['AH02']],['abstandshalter-farbe-ah04','ES',['AH04']]]);
+  assert.equal(price({mounting:'AH02'}),base+199);
+  assert.equal(price({mounting:'AH02','abstandshalter-farbe':'SW'}),base+299);
+  assert.equal(price({mounting:'AH04','abstandshalter-farbe-ah04':'WS'}),base+599);
+  assert.equal(price({mounting:'AH04','abstandshalter-farbe-ah04':'ES'}),base+399);
+  // Verdeckte Gruppe: ein mitgeschickter Wert wird verworfen und nicht berechnet.
+  assert.equal(price({mounting:'AH04','abstandshalter-farbe':'SW'}),base+399);
+  assert.deepEqual(Object.keys(resolvedOptions(c,{mounting:'AH04','abstandshalter-farbe':'SW'})),['mounting','abstandshalter-farbe-ah04']);
+  assert.equal(variantCombinations(c).length,6);
+  assert.equal(selectedProfile(c,{mounting:'AH04','abstandshalter-farbe-ah04':'SW'}).mountingPreview.finish,'black');
+  assert.equal(selectedProfile(c,{mounting:'AH02','abstandshalter-farbe':'WS'}).mountingPreview.finish,'white');
+  assert.equal(selectedProfile(c,{mounting:'AH02'}).mountingPreview.finish,'silver');
+ }
+ // Größe ohne 4er-Set: die 4er-Farbgruppe entfällt ganz.
+ const r5=familyProductConfig(f,size('SS-R5-150X100'),1,{previewOnly:true});
+ assert.deepEqual(r5.profile.optionGroups.map(g=>g.id),['mounting','abstandshalter-farbe']);
+ // „Eingezogene Ecken“ bleibt nur für Größen dieser Form offen.
+ const ee=f.sizes.find(s=>s.groupKey==='EE');
+ assert.throws(()=>familyProductConfig(f,ee,1,{previewOnly:true}),/eingezogene Ecken/);
+ assert.throws(()=>familyProductConfig(f,size('SS-RE-150X100'),1),/Acrylglas/);
+});

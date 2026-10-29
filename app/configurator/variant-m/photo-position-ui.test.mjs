@@ -1,4 +1,5 @@
 import {textToolbarPosition} from './text-toolbar-position.mjs';
+import {placeDirectToolbar} from './toolbar-hosts.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -217,7 +218,7 @@ function floatingPhotoToolbar(h){
   const stage=h.r.querySelector('.stage');stage.getBoundingClientRect=()=>({width:320,height:240});
   h.r.querySelector('.scene').getBoundingClientRect=()=>({width:300,height:200});
   const fullscreen=new Node('dialog');fullscreen.className='c-large-preview';fullscreen.open=false;h.r.append(fullscreen);
-  const context={textToolbarPosition,fontDisplayName,config:{profile:{designs:[]}},extras:new Node('div'),matchMedia:()=>({matches:false}),CSS:{escape:value=>value},el:h.el,r:h.r,selected:h.selected,stage,panel,color,openButton:new Node('button'),confirm:new Node('div'),font:new Node('button'),presets:new Node('div'),size:new Node('input'),freeColor:false,colorTool:false,paletteColors:[],editing:null,close(){},can:(o,right)=>o&&!o.uxLocked&&!o.uxHidden&&h.el.uxCanEdit?.(o,right)!==false};
+  const context={textToolbarPosition,placeDirectToolbar,fontDisplayName,config:{profile:{designs:[]}},extras:new Node('div'),matchMedia:()=>({matches:false}),CSS:{escape:value=>value},el:h.el,r:h.r,selected:h.selected,stage,panel,color,openButton:new Node('button'),confirm:new Node('div'),font:new Node('button'),presets:new Node('div'),size:new Node('input'),freeColor:false,colorTool:false,paletteColors:[],editing:null,close(){},can:(o,right)=>o&&!o.uxLocked&&!o.uxHidden&&h.el.uxCanEdit?.(o,right)!==false};
   vm.runInNewContext(source.slice(begin,end)+source.slice(wrap,source.indexOf("  window.addEventListener('resize',update)",wrap))+'update();',context);
   return panel;
 }

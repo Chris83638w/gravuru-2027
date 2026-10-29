@@ -85,3 +85,58 @@
  :host([data-ux-layout][data-ux-neutral]) .workflow-motif-entry [data-bestseller-grid]>button{min-height:88px!important;padding:4px!important;font-size:12px!important}
  :host([data-ux-layout][data-ux-neutral]) .workflow-motif-entry [data-bestseller-grid]>button>svg{width:48px!important;height:48px!important;min-height:48px!important;max-height:48px!important}
 }
+
+/* Selected direction 6: one charcoal workbench, white canvas and inspector. */
+:host([data-ux-layout][data-ux-neutral]){--ux-workbench:#252a2e;--ux-workbench-ink:#f7f7f7;--ux-workbench-line:#5c6267}
+:host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar[hidden]{display:none!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-text-row textarea{border:1px solid #c9ced2!important;border-radius:8px!important;background:#fff!important;color:#20262b}
+:host([data-ux-layout][data-ux-neutral]) .ux-text-options{border:1px solid #c9ced2!important;border-radius:8px!important;background:#fafafa!important;color:#20262b!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-text-options[aria-expanded=true]{background:#edf0f2!important;border-color:#79828a!important}
+:host([data-ux-layout][data-ux-neutral]) :is(.ux-preview,.c-large-preview) .ux-direct-edit,
+:host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar{background:var(--ux-workbench)!important;color:var(--ux-workbench-ink)!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit :is(button,label,input[type=number]),
+:host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar :is(button,.ux-canvas-help){color:var(--ux-workbench-ink)!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font-sample] :is(g,path){fill:var(--ux-workbench-ink)!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit button:is(:hover,[aria-pressed=true]),
+:host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar button:hover{background:#434a50!important;color:#fff!important}
+:host([data-ux-layout][data-ux-neutral]) :is(.ux-direct-edit,.ux-workbench-toolbar) button:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]{color-scheme:dark}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font]{border:1px solid var(--ux-workbench-line)!important;border-radius:8px!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font]>.ux-ui-icon{color:var(--ux-workbench-ink)!important}
+:host([data-ux-layout][data-ux-neutral]) .fk-buy-inner>.completion-finish{background:var(--ux-workbench)!important;border-color:var(--ux-workbench)!important;color:#fff!important;border-radius:8px!important}
+@media(min-width:768px){
+ :host([data-ux-layout][data-ux-neutral]) .ux-shell{max-width:none;padding:0 0 68px!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-heading{box-sizing:border-box;min-height:64px!important;margin:0!important;padding:8px 24px!important;border-bottom:0!important;gap:16px!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 20px;box-sizing:border-box;min-height:64px;padding:8px 24px;border:0;border-radius:0;box-shadow:none}
+ :host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar>.ux-canvas-toolbar{padding:0;gap:8px;border:0;border-radius:0;background:transparent;min-width:0}
+ :host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar .ux-canvas-toolbar :is(button,.ux-canvas-help){width:auto!important;min-width:44px!important;min-height:44px!important;border:0!important;border-radius:6px!important;background:transparent!important;font-size:14px!important;box-shadow:none!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar .ux-canvas-toolbar>.ux-preview-tools{gap:4px!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar .ux-enlarge{padding-right:16px!important;margin-right:4px!important;border-right:1px solid var(--ux-workbench-line)!important;border-radius:0!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar .ux-canvas-help{margin-left:4px!important;padding-left:16px!important;border-left:1px solid var(--ux-workbench-line)!important;border-radius:0!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-workbench{position:static!important;inset:auto!important;transform:none!important;flex:0 1 auto;max-width:100%!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;color:var(--ux-workbench-ink)!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-workbench .ux-direct-actions{flex-wrap:nowrap;gap:4px}
+ :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-workbench .ux-direct-text-actions{margin:0 4px;padding:0 8px;border-left:1px solid var(--ux-workbench-line);border-right:1px solid var(--ux-workbench-line)}
+ :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-workbench [data-direct-font]{margin-right:8px;min-width:132px!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-layout{grid-template-columns:minmax(0,1.38fr) minmax(360px,1fr);gap:0;align-items:stretch}
+ :host([data-ux-layout][data-ux-neutral]) .ux-shell .ux-preview{position:sticky!important;top:0!important;border:0!important;border-radius:0!important;background:#fff!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-preview .stage:not(.acryl-scene){height:calc(100dvh - 196px)!important;min-height:320px!important;padding:44px 52px 48px!important;background:#fff!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-editor{padding:0!important;border:0!important;border-left:1px solid #e7e9eb!important;border-radius:0!important;background:#fff!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-tabs{padding:0 16px!important;gap:8px!important;margin:0!important;border-bottom:1px solid #e7e9eb}
+ :host([data-ux-layout][data-ux-neutral]) .ux-tabs button{min-height:72px!important;padding:8px 4px!important;gap:3px!important;border:0!important;border-bottom:3px solid transparent!important;border-radius:0!important;background:#fff!important;box-shadow:none!important;font-size:14px!important;color:#20262b!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-tabs button[aria-selected=true]{border-bottom-color:var(--ux-workbench)!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-tabs button .ux-tab-icon{width:28px!important;height:28px!important;background:transparent!important;color:inherit!important;border-radius:0!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-tabs svg{width:24px!important;height:24px!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-panel{margin:0!important;padding:18px 24px!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text>h2{font-size:22px!important;margin:0 0 8px!important}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text>p:first-of-type{display:none}
+ :host([data-ux-layout][data-ux-neutral]) .ux-text-row{grid-template-columns:minmax(0,2fr) minmax(132px,1fr)!important;gap:0 10px!important;padding:12px 0!important;border-color:#e7e9eb}
+ :host([data-ux-layout][data-ux-neutral]) .ux-text-row>label{grid-column:1/-1;margin-bottom:8px}
+ :host([data-ux-layout][data-ux-neutral]) .ux-text-row>textarea{grid-column:1;grid-row:2;min-width:0;font-size:16px!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-text-row>.ux-text-options{grid-column:2;grid-row:2;align-self:start;min-width:0;gap:6px;padding:8px 12px!important;font-size:13px!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-text-row>.ux-text-meta{grid-column:1/-1;grid-row:3;margin-top:3px;font-size:11px;color:#626970}
+ :host([data-ux-layout][data-ux-neutral]) .ux-text-row>.ux-controls{grid-column:1/-1;grid-row:4;margin-top:8px}
+}
+@media(max-width:767px){
+ :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-docked{border-color:var(--ux-workbench-line)!important;box-shadow:none!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-docked .ux-direct-primary{border-bottom:1px solid var(--ux-workbench-line);padding-bottom:2px}
+}

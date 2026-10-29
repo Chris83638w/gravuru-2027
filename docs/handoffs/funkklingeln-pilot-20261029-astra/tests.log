@@ -1,0 +1,26 @@
+✔ pilot default is dry-run; approval requires explicit apply and no arbitrary scope flag exists (0.6518ms)
+✔ exact three fixed product identities retain 360 choices and each native format/color default (1011.5739ms)
+✔ dry-run reads current import journal and fresh Shopify evidence without mutating the product database (929.8395ms)
+✔ explicit apply reuses immutable registry and creates only three exact revision approvals, without webhook subscription changes (8753.7369ms)
+✔ 126 independent products preserve all 15,120 exact four-group choices; position never becomes a variant (429.7383ms)
+✔ complete export catches missing variants, SKU collisions, price and combined frame/format label mismatches (207.1896ms)
+✔ fresh Shopify evidence verifies SKU and options as well as numeric IDs, prices and all 120 variants (80.2408ms)
+✔ real binding registry and explicit persisted approval admit only the fixed native doorbell revision; test and production release stay separate (1965.7582ms)
+✔ default dry-run preserves existing paid test and foreign subscriptions and plans only three fixed live subscriptions (1.7982ms)
+✔ wrong owning app, API version, supported status and missing order scope stop before mutations (0.3865ms)
+✔ apply requires all126 release evidence and both deployed HMAC gates (0.547ms)
+✔ three creations use same owning app, retain test subscription, verify each readback and repeat idempotently (1.7673ms)
+✔ ambiguous prior outcomes are read back but never repeated blindly (0.5949ms)
+✔ same endpoint conflicts or a drifted test subscription stop without updating or deleting anything (0.7357ms)
+✔ owner inventory pagination is complete before planning and missing cursors are refused (0.1564ms)
+✔ apply checks all126 persisted source hashes, approval variants and current binding heads before connecting (1494.8284ms)
+✔ contradictory CLI modes are refused before reading credentials or contacting Shopify (0.4127ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10826.6831
+

@@ -1,0 +1,115 @@
+{
+  "data": {
+    "shop": {
+      "myshopifyDomain": "gravuru-design.myshopify.com",
+      "currencyCode": "EUR"
+    },
+    "products": {
+      "nodes": [
+        {
+          "id": "gid://shopify/Product/16124413084028",
+          "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+          "title": "Klingelschild für AOSU Pro V8P1AX11 · Hochformat 16 × 28 cm",
+          "status": "ACTIVE",
+          "templateSuffix": "",
+          "publishedOnPublication": true,
+          "metafield": null,
+          "variantsCount": {
+            "count": 120
+          }
+        },
+        {
+          "id": "gid://shopify/Product/16126380212604",
+          "handle": "klingelschild-aosu-ultra-v8s1ax15-personalisiert",
+          "title": "Klingelschild für AOSU Ultra V8S1AX15 · Hochformat 16 × 28 cm",
+          "status": "ACTIVE",
+          "templateSuffix": null,
+          "publishedOnPublication": true,
+          "metafield": null,
+          "variantsCount": {
+            "count": 120
+          }
+        },
+        {
+          "id": "gid://shopify/Product/16182701621628",
+          "handle": "klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+          "title": "Klingelschild für AOSU Pro V8P1AX11 · Querformat 24 × 20 cm",
+          "status": "ACTIVE",
+          "templateSuffix": "funkklingeln-2027",
+          "publishedOnPublication": false,
+          "metafield": {
+            "id": "gid://shopify/Metafield/200424359690620",
+            "type": "single_line_text_field",
+            "value": "cfg_d52f96e0-17e4-42b0-b496-74eaa24eaba5"
+          },
+          "variantsCount": {
+            "count": 120
+          }
+        },
+        {
+          "id": "gid://shopify/Product/16182702211452",
+          "handle": "klingelschild-aosu-pro-v8p1ax11-laenglich-35x18-personalisiert",
+          "title": "Klingelschild für AOSU Pro V8P1AX11 · Länglich 35 × 18 cm",
+          "status": "ACTIVE",
+          "templateSuffix": "funkklingeln-2027",
+          "publishedOnPublication": false,
+          "metafield": {
+            "id": "gid://shopify/Metafield/200424359657852",
+            "type": "single_line_text_field",
+            "value": "cfg_4dc5181c-d201-4802-8a4b-9500049ed6e5"
+          },
+          "variantsCount": {
+            "count": 120
+          }
+        },
+        {
+          "id": "gid://shopify/Product/16182861726076",
+          "handle": "klingelschild-aosu-ultra-v8s1ax15-querformat-24x20-personalisiert",
+          "title": "Klingelschild für AOSU Ultra V8S1AX15 · Querformat 24 × 20 cm",
+          "status": "ACTIVE",
+          "templateSuffix": "funkklingeln-2027",
+          "publishedOnPublication": false,
+          "metafield": {
+            "id": "gid://shopify/Metafield/200424359625084",
+            "type": "single_line_text_field",
+            "value": "cfg_1df891a8-61e8-4b6d-a830-a4431970bd3c"
+          },
+          "variantsCount": {
+            "count": 120
+          }
+        },
+        {
+          "id": "gid://shopify/Product/16182866346364",
+          "handle": "klingelschild-aosu-ultra-v8s1ax15-laenglich-35x18-personalisiert",
+          "title": "Klingelschild für AOSU Ultra V8S1AX15 · Länglich 35 × 18 cm",
+          "status": "ACTIVE",
+          "templateSuffix": "funkklingeln-2027",
+          "publishedOnPublication": false,
+          "metafield": {
+            "id": "gid://shopify/Metafield/200424359592316",
+            "type": "single_line_text_field",
+            "value": "cfg_be8a9406-719d-4640-be12-f2ccf8b3653d"
+          },
+          "variantsCount": {
+            "count": 120
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjoxNjE4Mjg2NjM0NjM2NCwibGFzdF92YWx1ZSI6MTYxODI4NjYzNDYzNjR9"
+      }
+    },
+    "product": {
+      "id": "gid://shopify/Product/16077798965628",
+      "handle": "tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8",
+      "templateSuffix": "test-temp-svenja-grid",
+      "metafield": {
+        "id": "gid://shopify/Metafield/200379936145788",
+        "type": "single_line_text_field",
+        "value": "4100000"
+      }
+    }
+  }
+}
+

@@ -1,0 +1,114 @@
+{
+  "startedAt": "2026-10-29T08:12:14.835Z",
+  "mode": "read-only",
+  "shopifyWrites": 0,
+  "bindingWrites": 0,
+  "themeWrites": 0,
+  "webhookWrites": 0,
+  "errors": [],
+  "sources": {
+    "scripts/doorbell-pilot-bind.mjs": {
+      "gitBlobSha": "89d44d72c31f190c9fc3922dccb49dd9c2603083",
+      "sha256": "f76bd877c7301508a6462ff58bd2bf258b6f5dc42135c2a4fa5b6d7a1501b6cd"
+    },
+    "scripts/doorbell-shop-bind.mjs": {
+      "gitBlobSha": "2704aa122dafeb71df0d3841b5a5f3b5c750f820",
+      "sha256": "02288fd78122e938c8c978c449c2ecf8c49e8c3ec551a3fa2e818a6237eff303"
+    },
+    "scripts/doorbell-webhooks.mjs": {
+      "gitBlobSha": "eb0e7ebdb229db7353b182a7a612d6ae6bbe2f4c",
+      "sha256": "d98bd46b0e4daeaaf20e78eb1b37e41ae87466aa5439fd5f442c1602beda471f"
+    },
+    "app/workshop/shop-product-binding-store.mjs": {
+      "gitBlobSha": "d892d1cc8502ba5945bb2b7b2b3aedf2fdff1fb9",
+      "sha256": "8c52b664174e7a5faf516bd988b28f628a38d728abd8015256243707e39a229e"
+    }
+  },
+  "runtime": {
+    "config": {
+      "GRAVURU_DOORBELL_LIVE_ORDERS": null,
+      "GRAVURU_CUSTOMER_INTEGRATION": null
+    },
+    "startup": {
+      "start-r5.cjs": {
+        "sha256": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd",
+        "liveOrdersApproved": false,
+        "merchantTestOnly": false,
+        "flagMentions": []
+      },
+      "app.cjs": {
+        "sha256": "a8eb28135d779941697325515eb801f267c5cda6f7aa6943c6925289f55fe30d",
+        "liveOrdersApproved": true,
+        "merchantTestOnly": true,
+        "flagMentions": [
+          "GRAVURU_DOORBELL_LIVE_ORDERS=\"approved-20261027\""
+        ]
+      }
+    }
+  },
+  "webhookError": {
+    "code": "token_network",
+    "message": "Token-Anfrage fehlgeschlagen: This operation was aborted"
+  },
+  "bindings": [
+    {
+      "shopifyProductId": "gid://shopify/Product/16124413084028",
+      "configId": "cfg_c3ee3fcf-bf87-42e3-af2a-98b680cdb576",
+      "revision": 1,
+      "documentSha256": "a0a4c3189dc0a754cc3e68dba1ec821b5d65f2a3b176782c644ec6c6c35b8629",
+      "canonicalDocumentSha256": "a7dd460eadbbc38d977194de9231bc74e7d28a0cc67e806aaa52d0963725fec1",
+      "heads": 120,
+      "matches": 120,
+      "issues": [],
+      "historicalApprovalId": "user-20261027-funkklingeln",
+      "historicalApprovalMatches": true
+    },
+    {
+      "shopifyProductId": "gid://shopify/Product/16182701621628",
+      "configId": "cfg_d52f96e0-17e4-42b0-b496-74eaa24eaba5",
+      "revision": 1,
+      "documentSha256": "101f2098f3ea28d33f10952aabda15780439a273fb89f64fe247de0d7d34c770",
+      "canonicalDocumentSha256": "ad5680db7204c8d95224b368dd23f743fe32058053ace523f242e400ec23f976",
+      "heads": 120,
+      "matches": 120,
+      "issues": [],
+      "historicalApprovalId": "user-20261027-funkklingeln",
+      "historicalApprovalMatches": true
+    },
+    {
+      "shopifyProductId": "gid://shopify/Product/16182702211452",
+      "configId": "cfg_4dc5181c-d201-4802-8a4b-9500049ed6e5",
+      "revision": 1,
+      "documentSha256": "e84b60fa062a7277f5beb4a5ea849624b06c59b77174cdd7062f132bb3b98989",
+      "canonicalDocumentSha256": "ffd95d2936f03b5908561057d7729d5c4502c1415ea9231f5c5457fc274b1ca9",
+      "heads": 120,
+      "matches": 120,
+      "issues": [],
+      "historicalApprovalId": "user-20261027-funkklingeln",
+      "historicalApprovalMatches": true
+    }
+  ],
+  "phase": "complete",
+  "pilot": {
+    "schema": "gravuru-doorbell-pilot-bind-report/v1",
+    "generatedAt": "2026-10-29T08:14:07.104Z",
+    "mode": "dry-run",
+    "shopDomain": "gravuru-design.myshopify.com",
+    "modelKey": "aosu-pro-v8p1ax11-16x28",
+    "products": 3,
+    "variants": 360,
+    "export": {
+      "products": 3,
+      "variants": 360,
+      "exportedAt": "2026-10-29T08:14:06.849Z"
+    },
+    "written": false,
+    "liveRelease": null,
+    "blocks": [],
+    "webhookSubscriptionsChanged": false,
+    "productionReady": false,
+    "shopVerified": true
+  },
+  "finishedAt": "2026-10-29T08:14:07.835Z"
+}
+

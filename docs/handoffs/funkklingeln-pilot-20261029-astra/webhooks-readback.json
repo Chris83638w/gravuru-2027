@@ -1,0 +1,41 @@
+{
+  "startedAt": "2026-10-29T08:18:37.401Z",
+  "attempts": [
+    {
+      "code": "token_http",
+      "message": "Token-Anfrage abgelehnt: HTTP 504"
+    }
+  ],
+  "writes": 0,
+  "report": {
+    "schema": "gravuru-doorbell-webhooks/v1",
+    "shopDomain": "gravuru-design.myshopify.com",
+    "appId": "gid://shopify/App/423276544001",
+    "apiVersion": "2026-07",
+    "mode": "dry-run",
+    "existingTestSubscriptionId": "gid://shopify/WebhookSubscription/2149402706300",
+    "entries": [
+      {
+        "topic": "ORDERS_PAID",
+        "uri": "https://app-2027.gravuru-designwerkstatt.de/webhooks/shopify/orders-paid",
+        "action": "keep",
+        "id": "gid://shopify/WebhookSubscription/2157499449724"
+      },
+      {
+        "topic": "ORDERS_UPDATED",
+        "uri": "https://app-2027.gravuru-designwerkstatt.de/webhooks/shopify/doorbell-orders-status",
+        "action": "keep",
+        "id": "gid://shopify/WebhookSubscription/2157499515260"
+      },
+      {
+        "topic": "ORDERS_CANCELLED",
+        "uri": "https://app-2027.gravuru-designwerkstatt.de/webhooks/shopify/doorbell-orders-status",
+        "action": "keep",
+        "id": "gid://shopify/WebhookSubscription/2157499580796"
+      }
+    ],
+    "created": [],
+    "confirmed": false
+  },
+  "finishedAt": "2026-10-29T08:18:54.023Z"
+}

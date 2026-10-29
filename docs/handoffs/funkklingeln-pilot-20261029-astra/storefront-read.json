@@ -1,0 +1,72 @@
+[
+  {
+    "id": "gid://shopify/Product/16124413084028",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+    "httpStatus": 200,
+    "finalUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-pro-v8p1ax11-personalisiert",
+    "jsonMarker": false,
+    "startPath": false,
+    "embedPath": false,
+    "at": "2026-10-29T07:58:51.936Z"
+  },
+  {
+    "id": "gid://shopify/Product/16126380212604",
+    "handle": "klingelschild-aosu-ultra-v8s1ax15-personalisiert",
+    "httpStatus": 200,
+    "finalUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-ultra-v8s1ax15-personalisiert",
+    "jsonMarker": false,
+    "startPath": false,
+    "embedPath": false,
+    "at": "2026-10-29T07:58:54.016Z"
+  },
+  {
+    "id": "gid://shopify/Product/16182701621628",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+    "httpStatus": 200,
+    "finalUrl": "https://gravuru-design.myshopify.com/",
+    "jsonMarker": false,
+    "startPath": false,
+    "embedPath": false,
+    "at": "2026-10-29T07:58:55.241Z"
+  },
+  {
+    "id": "gid://shopify/Product/16182702211452",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-laenglich-35x18-personalisiert",
+    "httpStatus": 200,
+    "finalUrl": "https://gravuru-design.myshopify.com/",
+    "jsonMarker": false,
+    "startPath": false,
+    "embedPath": false,
+    "at": "2026-10-29T07:58:56.255Z"
+  },
+  {
+    "id": "gid://shopify/Product/16182861726076",
+    "handle": "klingelschild-aosu-ultra-v8s1ax15-querformat-24x20-personalisiert",
+    "httpStatus": 200,
+    "finalUrl": "https://gravuru-design.myshopify.com/",
+    "jsonMarker": false,
+    "startPath": false,
+    "embedPath": false,
+    "at": "2026-10-29T07:58:57.203Z"
+  },
+  {
+    "id": "gid://shopify/Product/16182866346364",
+    "handle": "klingelschild-aosu-ultra-v8s1ax15-laenglich-35x18-personalisiert",
+    "httpStatus": 200,
+    "finalUrl": "https://gravuru-design.myshopify.com/",
+    "jsonMarker": false,
+    "startPath": false,
+    "embedPath": false,
+    "at": "2026-10-29T07:58:57.583Z"
+  },
+  {
+    "id": "gid://shopify/Product/16077798965628",
+    "handle": "tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8",
+    "httpStatus": 200,
+    "finalUrl": "https://gravuru-design.myshopify.com/products/tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8",
+    "jsonMarker": true,
+    "startPath": true,
+    "embedPath": true,
+    "at": "2026-10-29T07:58:58.435Z"
+  }
+]

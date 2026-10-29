@@ -1,0 +1,41 @@
+{
+  "sourceCommit": "26952e48e857c9ad08b23bf4e8557f27dfdbc3eb",
+  "theme": {
+    "id": "gid://shopify/OnlineStoreTheme/185833718140",
+    "name": "gravuru-shopify-theme/production",
+    "files": [
+      {
+        "filename": "sections/footer-group.json",
+        "checksumMd5": "b77cf71573dbcebf8d66d0c6d609cf08"
+      },
+      {
+        "filename": "templates/product.funkklingeln-2027.json",
+        "checksumMd5": "a48cafbf0684dccfdf1fba2e0358742e"
+      },
+      {
+        "filename": "templates/product.json",
+        "checksumMd5": "6dfa441f058120a62936bf9c231408b4"
+      },
+      {
+        "filename": "templates/product.test-temp-svenja-grid.json",
+        "checksumMd5": "0184b280e5800d5e3e6f91e5c107eb73"
+      }
+    ]
+  },
+  "pilotScript": {
+    "gitBlobSha": "89d44d72c31f190c9fc3922dccb49dd9c2603083",
+    "products": [
+      "16124413084028",
+      "16182701621628",
+      "16182702211452"
+    ]
+  },
+  "gallery": {
+    "pr": 42,
+    "head": "bfbd9188ac4446611bc5e71b55b74c804aec5767",
+    "draft": true,
+    "merged": false,
+    "productLineFilterConfirmed": false
+  }
+}
+

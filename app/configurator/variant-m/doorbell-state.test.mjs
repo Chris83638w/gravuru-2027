@@ -14,8 +14,8 @@ function profile(width,height,opposite=false){
 
 const styled=()=>({values:new Map(),setProperty(key,value){this.values.set(key,value);}});
 test('Viewport labels and CSS proportions refresh without touching design, undo or customer text',()=>{
- const rootStyle=styled(),previewStyle=styled(),x={},y={},standard={value:'standard'},opposite={value:'opposite'};
- const nodes={'.ux-preview':[{style:previewStyle}],'.dimension-x span':[x],'.dimension-y span':[y],'[data-m-field="position"] option':[standard,opposite]};
+ const rootStyle=styled(),previewStyle=styled(),stageStyle=styled(),x={},y={},standard={value:'standard'},opposite={value:'opposite'};
+ const nodes={'.ux-preview':[{style:previewStyle}],'.stage':[{style:stageStyle}],'.dimension-x span':[x],'.dimension-y span':[y],'[data-m-field="position"] option':[standard,opposite]};
  const state={objects:[{text:'Müller',x:80,y:65}],mOptions:{format:'16x28'}},history=[structuredClone(state)];
  const el={style:rootStyle,shadowRoot:{querySelectorAll:s=>nodes[s]||[]},state,history};
  const before=structuredClone({state,history});
@@ -23,6 +23,9 @@ test('Viewport labels and CSS proportions refresh without touching design, undo 
   updateDoorbellViewport(el,{width,height});
   assert.equal(rootStyle.values.get('--m-plate-width'),String(width));
   assert.equal(previewStyle.values.get('--ux-ratio'),width+'/'+height);
+  assert.equal(stageStyle.values.get('--ux-product-width'),String(width));
+  assert.equal(stageStyle.values.get('--ux-product-height'),String(height));
+  assert.equal(stageStyle.values.get('--ux-preview-ratio'),width+'/'+height);
   assert.equal(x.textContent,width+' mm');assert.equal(y.textContent,height+' mm');
   assert.deepEqual({standard:standard.textContent,opposite:opposite.textContent},doorbellPositionLabels({width,height}));
  }
@@ -60,4 +63,5 @@ test('Format and opposite choices preserve custom text, font, size, deletions an
  // viewport does not invoke the forward transition again.
  const undo=structuredClone(history.pop());assert.deepEqual(undo,before);
 });
+
 

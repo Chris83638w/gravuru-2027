@@ -1,3 +1,10 @@
+## 29.10.2026 · Codex/Astra · Funkklingel-Pilot: Vorschau/Bildauswahl korrigiert, nur Review
+
+- Eigener Branch `dev/funkklingeln-vorschau-bildauswahl-20261029-astra`, Basis `2717da5`. Große formatgerechte Platte und Maßlinien; Bildauswahl Format/Position/Rahmen/Farbe; 16 native Designs ohne wiederholte Produktkarten. Formatbezogene Rechte-Reparatur und Text-Einpassfläche korrigiert.
+- 50/50 gezielte Windows-Tests und Build grün. 126 Produkte / 42 Modelle / 30.240 Options-/Positionsfälle geprüft. Getrennter Katalogvorschlag: 42 Rezepte, 1.344 Zuordnungen, 8.064 Design-/Positionsprüfungen mit Originalmotiven. Chrome Desktop + 390×844 sichtbar geprüft.
+- Kein Livezugriff. Neue Katalogrevisionen, vollständige Kontaktbogenabnahme, Linux/iPhone und Pilot-Warenkorb bleiben offen. Katalog-PDF-Neubau lokal durch fehlendes cairosvg blockiert; kein vollständiger Build behauptet.
+- [Bericht, Quellen und Screenshots](docs/handoffs/2026-10-29-funkklingeln-vorschau-bildauswahl-astra.md). Nächster Schritt: Claude-Review in Issue #46 und getrennte Revisionsplanung, noch keine weiteren Shopify-Veröffentlichungen.
+
 ## 29.10.2026 · Claude als Operator · Live: PR #52 + PR #49 (`main` `62ead38`)
 
 - Chris (13:10): „Ja, Du darfst PR #52 nach main übernehmen, bereitstellen und die App zweimal neu starten.“ → Merge `3db5b7a` (Baum = PR-Stand, Linux **1816/1816**), Plesk Pull/Bereitstellen, Neustart 1 um 13:17.
@@ -2005,3 +2012,5 @@ Schritt 1 des Auftrags vom 22.10. (Warenkorb/Bestellung/Fertigung für die Acryl
 - Windows-Starter nutzt optional eine danebenliegende private `cdr-bridge-token.txt`, sonst verdeckte Eingabe. Das allgemeine Paket enthält keine Zugangsdaten; vorbereiteter Start mit Zugang ausschließlich im privaten Plesk-Bereich.
 - Grenze: 0 echte Firmen-CDRs übertragen; Windows-Starter hier nicht auf Windows ausgeführt. Größenlimit des vorgeschalteten Plesk-Proxys nicht mit großen Dateien geprüft. Keine Shopify-Schreibzugriffe.
 - Nächster Schritt: privates Startpaket auf dem Firmenrechner entpacken, `7x2-pruefen.cmd`, dann `7x2-senden.cmd` starten. Danach Originalbogen über `server_path` lesen, D5/D26/D35, grüne Überschriften und Gravurfassungen gemeinsam prüfen. ChatGPT-App-Werkzeugliste ggf. aktualisieren, da sie noch die früheren fünf Dateischemata zwischenspeichert.
+
+

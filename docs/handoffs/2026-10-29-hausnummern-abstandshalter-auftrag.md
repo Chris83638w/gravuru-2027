@@ -45,6 +45,13 @@ Von Claude (Operator). Chris möchte die **Acrylglas-Hausnummernschilder mit Abs
   - 8 von 11 Schriften aus den Beispielen fehlen in der Werkstatt (Michroma, Alex Brush, Rounded Elegance, Homage, Fjalla One, Champagne & Limousines …).
   - ~~Plattenmaß 190 × 80 mm~~ – **entfällt** (Chris 29.10.): Das war nur das Plattenmaß der 19 Beispiel-Designs auf dem Bogen `Beispiele.pdf` vom 17.10., keine Produktgröße. Diese Designs auf die echten Familiengrößen einpassen; 190 × 80 nicht anlegen.
 
+## Größen: nur die Excel zählt (Chris 29.10.)
+
+- **Sortiment = genau die 33 Größen/Formen aus der Excel**, Blatt „Acryl 5 mm Abstandshalter“: Schlüssel, Form, Breite/Höhe, Randabstand, „4 Abstandshalter möglich“ und Preise.
+- **Größen und Formen in den Katalogfamilien sind alt** (je 43 Zuordnungen inkl. historischer Maße, 24 × 7 usw.). Sie werden **nicht** übernommen. Die Familien AA/AS/S/S werden auf genau diese 33 Excel-Größen gebracht. Alte Einträge nicht stillschweigend löschen, sondern als „nicht im Sortiment“ markieren bzw. in einen Altstand verschieben, mit Liste im Bericht.
+- **Geometrie je Excel-Größe** (Außenkontur, Radien, Lochpositionen): aus der Corel-Zeichnung übernehmen, wo die Größe dort identisch vorkommt. Sonst nach Excel-Randabstand und Form konstruieren und im Bericht als „neu konstruiert, prüfen“ kennzeichnen, z. B. 24 × 8.
+- **Designs:** Aus dem Katalog nur die **Designs** nehmen, die 175 Hausnummern-Designs plus Beispielbogen, und auf die neuen Excel-Größen anpassen. Alte Plattengrößen der Designs gelten nicht.
+
 ## Ziel
 
 Die Hausnummernschilder AA/AS/S/S sind im neuen Konfigurator bestellbar wie D8 bei Edelstahl:

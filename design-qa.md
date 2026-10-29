@@ -1,3 +1,35 @@
+# Design QA — ausgewählte Richtung 6
+
+**Ergebnis: passed** für die lokale visuelle Umsetzung und die unten geprüften Interaktionen. Dies ist keine Freigabe für eine Live-Installation oder echtes iOS.
+
+Quelle: `docs/handoffs/issue48-d-20261029/sichtpruefung/variante-6-entwurf.png`, ursprünglich `outputs/konfi-design-20261029/06-werkzeugband.png`, 1672×941 px. Der Benutzer hat genau Nummer 6 gewählt. Tatsächliche Screenshots im selben Verzeichnis: `variante-6-desktop.jpg` (1280×720), `variante-6-iphone-13.jpg` (390×664), `variante-6-iphone-se.jpg` (375×548). Screenshot-Raster entspricht jeweils der angegebenen CSS-Viewportgröße, 1 Bildpixel je CSS-Pixel. Referenz zur Beurteilung proportional auf die Desktopansicht bezogen, nicht als Laufzeitbild verwendet.
+
+Zustand: lokaler D8-Kandidat, 120×80 mm, Hausmotiv und vier vorhandene Textfelder, ausgewählter Spruch `Heimathafen\nvon`, 8-mm-Anzeige, 21,68 €. Text-Reiter aktiv, keine offenen Dialoge. Quelle und gerenderter Desktop wurden im selben Vergleichsaufruf angezeigt; zusätzlich Fokus auf Werkzeugband, Tab-Unterstreichung, Textfelder und Preisleiste. Handyansichten separat auf sichtbare Fläche, Berührungsziele und Überdeckung geprüft.
+
+| Oberfläche | Abgleich |
+| --- | --- |
+| Layout und Proportionen | Weißer Kopf, vollständiges dunkles Band, ca. 58/42-Arbeitsbereich, senkrechter Trenner, kompakter Footer. Originalplatte bewusst ohne generierte Verzerrung. |
+| Typografie und Hierarchie | Bestehende UI-Schrift, deutlichere Buttongewichte, klare Feldlabels; echte Schriftprobe als vorhandene Glyphenpfade. |
+| Farben und Konturen | Anthrazit #252a2e mit heller Beschriftung; weiße Arbeitsflächen, neutrale Feldränder. Bestehende Funktionsfarben für Auswahl/Löschen bleiben. |
+| Assets und Inhalte | Originalgeometrie, Schriftpfade und Motiv unverändert; Designentwurf nur Referenz, keine generierten Assets im Produkt. |
+| Zustände und Bedienung | Desktop-Band, mobile zwei Reihen, Vollbild/Rückkehr, Eingabefokus und eingeklappte Felder geprüft; Schritte/Preis bleiben frei. |
+
+## Korrekturschleife
+
+1. Erste Umsetzung: Seitenränder der Legacy-Hülle und abgerundeter aktiver Tab wichen ab; gezielt auf den Editor begrenzt korrigiert. Textzeilen kompakter gemacht.
+2. Klick auf die während eines Updates neu gezeichnete Schriftprobe öffnete den Dialog nicht zuverlässig. Pointer-Ereignisse treffen jetzt den stabilen Button; tatsächlicher Klick Desktop/Handy öffnet den Dialog. Papierkorb auf dunkler mobiler Leiste hell eingefärbt.
+3. Unabhängige Sichtprüfung: keine P0/P1, zwei P2. Erstes Handyfeld war unter den sichtbaren Bereich gedrückt; mobile Überschrift/Abstände komprimiert, Feld vollständig sichtbar. Eingeklappter Spruch zeigte eine halbe Folgezeile; Zeilenhöhe/Überlauf korrigiert. Beide Ansichten danach neu erfasst. Keine offenen P0/P1/P2 für diesen Umfang.
+
+## Nachweise
+
+- 71/71 gezielte Tests auf dem gemeinsamen Prüfbranch; Liste und Umfang im [Bericht](docs/handoffs/2026-10-29-konfi-design-6-astra.md). Kein weiterer Vollauf behauptet.
+- 900×720: Band wechselt ohne horizontalen Überlauf auf zwei Reihen; 1280×720 auf eine Reihe zurück.
+- Schriftgröße 8→9, Rückgängig 8; Vollbild öffnen/schließen, Wechsel zu 375/390 und zurück; Schriftwahl per Klick und Feldoptionen auf/zu.
+- Mehrzeiliger Spruch fokussiert 66 px, eingeklappt 44 px. Vier Texte nach Neuladen erhalten. Keine neuen Warnungen/Fehler im Browserprotokoll.
+- Physisches Safari/iPhone, Bildschirmtastatur/Pinch und späterer echter Warenkorb bleiben gesondert offen. Kein Live-Zugriff.
+
+---
+
 # 11.10.2026 · Vorlagenabgleich: Originalfotomaske und M01/M02-Navigation
 
 Umfang dieses Durchlaufs: bewahrte Fotoform, verständliche Elemente, Hauptnavigation und wahrheitsgemäße Verbindungs-/Bestellanzeigen. Keine vollständige visuelle Abnahme aller historischen Produktdesigns.

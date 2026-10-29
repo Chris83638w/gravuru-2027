@@ -90,6 +90,7 @@
 :host([data-ux-layout][data-ux-neutral]){--ux-workbench:#252a2e;--ux-workbench-ink:#f7f7f7;--ux-workbench-line:#5c6267}
 :host([data-ux-layout][data-ux-neutral]) .ux-workbench-toolbar[hidden]{display:none!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-text-row textarea{border:1px solid #c9ced2!important;border-radius:8px!important;background:#fff!important;color:#20262b}
+:host([data-ux-layout][data-ux-neutral]) .ux-text-row textarea:not(:focus){line-height:26px!important;overflow-y:hidden}
 :host([data-ux-layout][data-ux-neutral]) .ux-text-options{border:1px solid #c9ced2!important;border-radius:8px!important;background:#fafafa!important;color:#20262b!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-text-options[aria-expanded=true]{background:#edf0f2!important;border-color:#79828a!important}
 :host([data-ux-layout][data-ux-neutral]) :is(.ux-preview,.c-large-preview) .ux-direct-edit,
@@ -143,4 +144,9 @@
 @media(max-width:767px){
  :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-docked{border-color:var(--ux-workbench-line)!important;box-shadow:none!important}
  :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-docked .ux-direct-primary{border-bottom:1px solid var(--ux-workbench-line);padding-bottom:2px}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text{margin:0!important;padding:0 8px 8px!important}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text>h2{min-height:44px;margin:0!important;font-size:17px!important;justify-content:flex-start!important;gap:4px}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text .ux-fields{margin-top:0!important}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text .ux-text-row{padding:0 0 8px!important;gap:2px!important}
+ :host([data-ux-layout][data-ux-neutral]) #ux-panel-text .ux-text-row>label{margin:0!important;line-height:20px}
 }

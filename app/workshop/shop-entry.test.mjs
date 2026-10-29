@@ -117,6 +117,31 @@ test('page and script are served with a strict policy and nothing else leaks',()
  assert.equal((await request('/api/shop-entry/model',undefined,undefined,{Host:'other.example'})).status,403);
  assert.equal((await request('/api/shop-entry/model',undefined,undefined,{'X-Forwarded-Proto':'http'})).status,403);
 }));
+
+test('complete shop entry module graph is served by the production shop-entry allowlist',()=>run(async(f,request,{entry})=>{
+ // The two-store host dispatches these paths through shopEntry.matches/handle
+ // before acrylRoute and the legacy runtime. Do not use the permissive preview
+ // server or omit imports that leave the page directory: that hid issue #48/12.
+ const queue=['/konfigurator/shop/shop-entry-page.mjs'],visited=new Set();
+ while(queue.length){
+  const pathname=queue.shift();if(visited.has(pathname))continue;visited.add(pathname);
+  assert.ok(entry.matches(pathname),'Production shop-entry route missing: '+pathname);
+  const response=await request(pathname,'GET',undefined,{'Sec-Fetch-Site':'same-origin'});
+  assert.equal(response.status,200,pathname);assert.match(response.headers['content-type'],/javascript/,pathname);
+  const source=response.body.toString();
+  const imports=[...source.matchAll(/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?)['"]([^'"]+)['"]/g)];
+  for(const match of imports){
+   assert.match(match[1],/^(?:\.\.?\/|\/)/,'Browser module specifier in '+pathname);
+   const target=new URL(match[1],origin+pathname);assert.equal(target.origin,origin);
+   queue.push(target.pathname);
+  }
+  assert.doesNotMatch(source,/\bimport\s*\(\s*[^\s'"]/,'Nonliteral imports need an explicit served-path test: '+pathname);
+ }
+ assert.ok(visited.has('/konfigurator/shop/shop-entry-client.mjs'));
+ assert.ok(visited.has('/konfigurator/shop/shop-design-switch.mjs'));
+ // These must not become new public paths just to satisfy the entry page.
+ for(const pathname of ['/workshop/process-profiles.mjs','/workshop/theme-limits.mjs','/platform/sources/app/shared/models/mounting-rules.mjs','/platform/sources/app/shared/models/contour-geometry.mjs'])assert.equal(entry.matches(pathname),false);
+}));
 test('model route serves only the bound product, preselects the shop variant and pins assignment revision',()=>run(async(f,request,{token})=>{
  const b02=f.first.variants.find(v=>v.mountingKey==='B02');
  const {token:t}=await token({variant:b02.shopifyVariantId.split('/').at(-1)});

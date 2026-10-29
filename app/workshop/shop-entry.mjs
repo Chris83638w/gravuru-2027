@@ -23,7 +23,7 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 // Warenkorb des vorhandenen Pfads (bound-test-cart → draft-cart-handoff). Keine Händleranmeldung,
 // Galerie nur nach Sitzungsprüfung im selben Datenbereich; keine Preise aus dem Browser, keine Fertigungsfreigabe.
 const API='/api/shop-entry/';
-const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs'];
+const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs','shop-selection-transfer.mjs'];
 const WARM_RUNTIME={'/_merchant-acryl-editor.html':['/_acryl-runtime/lazy/katalog-kern.json']};
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const gid=(value,kind)=>typeof value==='string'&&new RegExp('^gid://shopify/'+kind+'/[1-9][0-9]{0,19}$').test(value);

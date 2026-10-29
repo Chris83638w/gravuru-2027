@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createDesignSwitch,switchedEditorPath,switchedModel} from './ui/shop-design-switch.mjs';
+import {copyProductSelection} from './ui/shop-selection-transfer.mjs';
+import {preserveProductSelection} from '../configurator/variant-m/product-design-transfer.mjs';
 const binding={productId:'synthetic-target',productRevision:2,shopifyProductId:'gid://shopify/Product/2',shopifyVariantId:'gid://shopify/ProductVariant/22'};
 const data=()=>({editorPath:'/_merchant-editor.html',binding,model:{name:'Target',configuration:{id:binding.productId,revision:2},universal:{profile:{designs:[{id:'design-target'}]}},legacy:{}}});
 const result=()=>({token:'gse1.new.signature',binding,designId:'design-target'});
@@ -39,4 +41,18 @@ test('switch validates and transfers options and quantity before replacing the o
  assert.deepEqual(good.api.takeTransfer().selection,selection);
  const bad=fixture({model});await assert.rejects(bad.api.choose('signed-target',{selection:{options:{mounting:'unknown'},quantity:3}}));
  assert.equal(bad.active.frame,bad.old);assert.equal(bad.frames.length,0);assert.equal(bad.old.hidden,false);
+});
+
+test('entry transports raw choices; the receiving editor retains the full conditional validation',()=>{
+ const config={profile:{optionGroups:[{id:'mounting',defaultValueId:'K00',values:[{id:'K00'},{id:'B02S'}]},{id:'color',visibleIf:{groupId:'mounting',valueIds:['B02S']},defaultValueId:'silver',values:[{id:'silver'},{id:'black'}]}],optionFields:[{id:'message',kind:'text',label:'Beschriftung'}]}};
+ const source={quantity:2,options:{mounting:'B02S',color:'black',message:'Familie Müller'}};
+ const copy=copyProductSelection(source,config);assert.deepEqual(copy,source);assert.notEqual(copy.options,source.options);
+ assert.deepEqual(preserveProductSelection(copy,config),source);
+ const hidden=copyProductSelection({quantity:2,options:{mounting:'K00',color:'black'}},config);
+ assert.equal(hidden.options.color,'black','entry must not silently discard the chosen color');
+ assert.throws(()=>preserveProductSelection(hidden,config),/bisherige Gestaltung bleibt erhalten/);
+ for(const options of [[],{foreign:'x'},{mounting:'missing'}])assert.throws(()=>copyProductSelection({quantity:2,options},config));
+ for(const quantity of [0,100,1.5,NaN])assert.throws(()=>copyProductSelection({quantity,options:{}},config));
+ assert.equal(copyProductSelection(null,config),null);
+ assert.deepEqual(copyProductSelection({quantity:1,options:{}},config),{quantity:1,options:{}},'entry does not invent defaults');
 });

@@ -1,3 +1,7 @@
+# 29.10.2026 — Codex: Live-Pilot, gezielter Warenkorb-Abgleich
+
+PR #60 bereitgestellt (092303d), Linux 28/28, 126/42/15.120 Store-Abgleich bestanden. Pilot AOSU Revision 2 / 120 Bindungen live; UI-Bedienprüfung einschließlich Löschen und Verschieben bestanden. Warenkorb erkennt getrennte Funkklingel-Fertigung noch nicht korrekt: Erzeuger/Prüfer widersprechen sich beim alten Fertigungsblocker. Minimalfix und Regression (sechs echte Format-/Positions-Prüfstände) lokal grün; vor Rest-Rollout Linux + echter Warenkorb wiederholen. Chris: „stell es live“. Bericht: docs/handoffs/2026-10-29-funkklingeln-live-warenkorb-astra.md .
+
 ## 2026-10-29 – Codex/Astra: Live-Freigabe der Funkklingel-Oberfläche
 
 Chris im Chat: „stell es live“. Revisionsvorbereitung ergänzt: vorhandenes Produktdokument, Geometrie, Preise, Ressourcen und SEO bleiben erhalten; Designs und ihre expliziten move/delete/replace-Rechte werden über neue Revisionen übernommen. 27/27 gezielte Tests lokal bestanden. Serverbasis der 16 geänderten Laufzeit-/Testdateien bytegenau gegen GitHub geprüft; isolierte Linux-Abnahme und private Sicherung laufen. Noch keine Aktivierung behauptet. Nächster Schritt: Linux-/Store-Abnahme, AOSU-Pilot, neue Bindungsrevisionen; keine zusätzlichen Shopify-Produktveröffentlichungen oder Themeänderungen im Rahmen dieser UI-Freigabe.

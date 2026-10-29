@@ -57,7 +57,7 @@ if(process.argv.includes('--validate')){
  for(const e of manifest.designs){
   try{const {converted,fit}=convert(e);const motives=converted.template.objects.filter(o=>o.type==='motif');
    if(!motives.every(o=>converted.rights[o.id].delete&&converted.rights[o.id].replace))throw Error('Motif rights missing');
-   report.designs.push({id:e.id,fit,notes:converted.notes,texts:converted.template.objects.filter(o=>o.type==='text').length,motifs:motives.length});
+   report.designs.push({id:e.id,svgSha256:e.svgSha256,motifSha256:e.motifSha256,fit,notes:converted.notes,texts:converted.template.objects.filter(o=>o.type==='text').length,motifs:motives.length});
   }catch(err){report.errors.push({id:e.id,message:err.message});}
  }
  fs.writeFileSync(path.join(out,'validation.json'),JSON.stringify(report,null,2));

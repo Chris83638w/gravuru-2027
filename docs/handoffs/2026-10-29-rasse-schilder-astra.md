@@ -1,5 +1,7 @@
 # Rasse-Schilder – Musterauftrag, Codex/Astra, 29.10.2026
 
+**Aktueller Motivstand:** Die Ergänzung [zwölf eigenständige Katzenmotive je Rasse](2026-10-29-katzen-motivkorrektur.md) ersetzt die unten historisch genannten 25 einzelnen Katzenporträts durch 300 Motive. Auftrag, Größen, Rechte und offene Freigaben gelten weiter.
+
 ## Quellen und fachliche Regeln vor der Umsetzung
 
 - Auftrag: [Issue 61, Nachricht 1](https://github.com/Chris83638w/gravuru-2027/issues/61#issuecomment-6503468259), vollständige Übergabe `docs/handoffs/2026-10-29-rasse-schilder-auftrag.md` auf `dev/rasse-schilder-20261029-claude`; [Nachricht 2](https://github.com/Chris83638w/gravuru-2027/issues/61#issuecomment-6503583888) ergänzt eigene Katzenporträts.

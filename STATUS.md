@@ -1,9 +1,10 @@
-## 29.10.2026 · Codex/Astra · Katzen: zwölf verschiedene Motive je Rasse in Arbeit
+## 29.10.2026 · Codex/Astra · 300 eigenständige Katzenmotive umgesetzt
 
-- Neue Nutzervorgabe: „immer verschiedene Katzen gesichte / Motive“. Bisher ein Porträt je Rasse; wird durch zwölf eigenständige Motive je Rasse ersetzt. Ziel 300 Katzenmotive in denselben 6.600 Katzenschildern. Native Einzelillustrationen mit Originalen/Prompts/Herkunft laufen.
-- Quellenvertrag und Generator verhindern Wiederverwendung fehlender Motive; vier Regressionstests bestanden. Kontaktbogen ordnet die jeweils tatsächliche Motivquelle zu; separate Motivgalerie vorbereitet. Gesamtprüfung und neue Kontaktbögen noch offen.
-- [Nachtrag und aktueller Stand](docs/handoffs/2026-10-29-katzen-motivkorrektur.md). Bestehende Draft-PRs Code #71 / Katalog #8 als laufende Überarbeitung markiert. Aktuellen main mit 5a37c81 eingebunden; Vorgängerstand weiter geprüft.
-- Nächster Schritt: 25 vollständige Motivserien fertigstellen, neu ableiten und im echten Konfigurator prüfen.
+- Nutzer: „immer verschiedene Katzen gesichte / Motive“. **25 Rassen × zwölf eigene Motive**, eingesetzt in 6.600 Katzenschildern; mit fünf Hundemuster-Rassen insgesamt 8.100 SVG/JSON-Paare. Originale, exakte Prompts, Herkunft und Prüfsummen erhalten.
+- 300 Originale und alle 25 Motivübersichten geprüft; 550 Katzenkombinationen mit je zwölf verschiedenen Motiven. 8.100 native Passungen, 1.140 neue Konfiguratoraufnahmen / 95 Kontaktbögen ohne Browserfehler oder Textkasten-Überlappungen. Galerie mit 25 Motivbögen zusätzlich, alle Ansichten und mobile Breite geprüft.
+- 40/40 gezielte Softwaretests und 4/4 Motivquellentests bestanden; Textänderung/Motivlöschung/Rückgängig im Browser geprüft. Vollständiger Katalogbau: elf PDFs / 33 Seiten, elf PNGs, Excel acht Blätter; Stammdaten unverändert.
+- [Ergebnis, Nachweise und Reproduktion](docs/handoffs/2026-10-29-katzen-motivkorrektur.md). Draft-PRs Code #71 / Katalog #8 aktualisiert. Aktuellen main übernommen, kein Merge nach main oder Liveimport; Commits unsigned.
+- Nächster Schritt: Chris prüft Stil/Motive/Katzenauswahl in der Galerie. Mindestlinienstärke und Gravurprobe vor Fertigungsfreigabe offen; weitere Hunde nach Musterfreigabe. Postfach 61 bleibt offen.
 
 ## 29.10.2026 · Codex/Astra · Issue 61: zwölf Rasse-Designs je Größe, 25 Katzenmuster
 

@@ -17,6 +17,7 @@ def main():
     previous=json.loads(index.read_text(encoding='utf-8')) if index.exists() else []
     provenance=[]
     rasters=sorted(src.glob('*/??-source.png' if a.variants else '*-source.png'))
+    if not rasters:raise ValueError('No original motif PNGs found: '+str(src))
     for raster in rasters:
         breed=raster.parent.name if a.variants else raster.name.removesuffix('-source.png')
         variant=int(raster.name[:2]) if a.variants else 1
@@ -29,6 +30,10 @@ def main():
         sources.mkdir(parents=True,exist_ok=True)
         old=next((p for p in previous if p['breed']==breed and p.get('variant',1)==variant),None)
         if old and dest.exists() and old['sourceSha256']==sha(raster) and old['svgSha256']==sha(dest):
+            # Review notes/prompts may be completed after an otherwise unchanged PNG.
+            shutil.copyfile(raster,sources/raster.name)
+            for extra in raster.parent.glob(f'{variant:02d}-*' if a.variants else breed+'-*'):
+                if extra.suffix in ['.txt','.json']:shutil.copyfile(extra,sources/extra.name)
             provenance.append(old);continue
         with tempfile.TemporaryDirectory() as tmp:
             trace=Path(tmp)/'trace.svg'

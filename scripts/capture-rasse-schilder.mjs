@@ -13,6 +13,7 @@ fs.mkdirSync(out,{recursive:true});
 let entries=ready.designs.filter(e=>(e.plateMm[0]===120&&e.plateMm[1]===80)||(e.form==='OV'&&e.plateMm[0]===150&&e.plateMm[1]===80));
 if(arg('breed'))entries=entries.filter(e=>e.breed===arg('breed'));
 if(arg('form'))entries=entries.filter(e=>e.form===arg('form'));
+if(arg('layout'))entries=entries.filter(e=>e.layout===Number(arg('layout')));
 if(arg('limit'))entries=entries.slice(0,Number(arg('limit')));
 const browser=await chromium.launch({headless:true,...(process.env.GRAVURU_BROWSER?{executablePath:process.env.GRAVURU_BROWSER}:{})});
 const results=[];let index=0;

@@ -93,7 +93,7 @@ def place(file,box,scale=1):
     d=re.sub(r'-?\d*\.\d+(?:e[+-]?\d+)?',lambda m:format(float(m[0]),'.4f').rstrip('0').rstrip('.') or '0',d)
     return f'<g id="motiv-1"><path fill="#000000" d="{d}"/></g>',[dx+x0*factor,dy+y0*factor,(x1-x0)*factor,(y1-y0)*factor]
 
-def ornaments(style,layout,scale,extra):
+def ornaments(style,layout,scale,extra,wide_name=False):
     p=[]
     def rect(x,y,w,h):p.append(f'<rect x="{(x+extra)*scale:.3f}" y="{y*scale:.3f}" width="{w*scale:.3f}" height="{h*scale:.3f}" fill="#000000"/>')
     def dot(x,y,r):p.append(f'<circle cx="{(x+extra)*scale:.3f}" cy="{y*scale:.3f}" r="{r*scale:.3f}" fill="#000000"/>')
@@ -104,7 +104,10 @@ def ornaments(style,layout,scale,extra):
         for x in [28,92]:
             for y in [36,40,44]:dot(x,y,.65 if y==40 else .4)
     elif style=='nameplate':rect(tx-19,46.5,38,.4);dot(tx-21,46.7,.65);dot(tx+21,46.7,.65)
-    elif style=='sides':rect(27,62,11,.4);rect(82,62,11,.4)
+    elif style=='sides':
+        # Paired cat names use the full 60 mm text box; keep ornaments outside it.
+        if wide_name:rect(18,62,8,.4);rect(94,62,8,.4)
+        else:rect(27,62,11,.4);rect(82,62,11,.4)
     elif style=='leaf':
         # A simple authored sprig made of closed filled leaves, no clip/bitmap.
         for i in range(3):
@@ -136,6 +139,8 @@ def main():
     manifest['catMotifsPerBreed']=12
     manifest['catMotifRequirement']='Nutzervorgabe: immer verschiedene Katzen gesichte / Motive. Zwölf eigenständig gezeichnete Motive pro Rasse; dieselben zwölf Motive in den Größenvarianten.'
     cat_sources={b[0]:cat_motifs(k,b[0]) for b in BREEDS if b[4]=='cat'}
+    all_cat_motifs=[p for sources in cat_sources.values() for p in sources]
+    if len({p['sourceSha256'] for p in all_cat_motifs})!=len(all_cat_motifs) or len({p['sha256'] for p in all_cat_motifs})!=len(all_cat_motifs):raise ValueError('Katzenmotive werden rasseübergreifend wiederverwendet')
     selected=set(map(int,a.layouts.split(','))) if a.layouts else set(range(1,13))
     if not selected or not selected<=set(range(1,13)):raise ValueError('Layoutnummern müssen 1 bis 12 sein')
     if a.layouts:
@@ -146,7 +151,7 @@ def main():
     for bi,(slug,label,pet,filename,animal) in enumerate(BREEDS):
         motif=k/('motive/hunderassen' if animal=='dog' else 'motive-eigene/rasse-schilder-20261029')/filename
         if not motif.exists():raise FileNotFoundError(motif)
-        provenance={'breed':slug,'name':label,'animal':animal,'portrait':motif.relative_to(k).as_posix(),'sha256':digest(motif),'origin':'Katalogporträt, proportional unverändert; freundlichste passende Kopfvariante gewählt.' if animal=='dog' else 'Eigene Codex-ImageGen-Illustration, 29.10.2026; binär vektorisiert mit VTracer. Keine fremden Fotos/Stockbilder. Details in motive-eigene/rasse-schilder-20261029/herkunft.json.','sample':True}
+        provenance={'breed':slug,'name':label,'animal':animal,'portrait':motif.relative_to(k).as_posix(),'sha256':digest(motif),'origin':'Katalogporträt, proportional unverändert; freundlichste passende Kopfvariante gewählt.' if animal=='dog' else 'Eigene Codex-ImageGen-Illustration, 29.10.2026; binär vektorisiert mit VTracer. Keine fremden Fotos/Stockbilder. Details in motive-eigene/rasse-schilder-20261029/herkunft.json und varianten/herkunft.json.','sample':True}
         if animal=='cat':provenance['motifs']=cat_sources[slug]
         manifest['breeds'].append(provenance)
         for (form,w,h),s in sizes.items():
@@ -171,7 +176,8 @@ def main():
                 box=list(layout['portrait']);box[0]+=extra
                 portrait_markup,portrait_box=place(motif,tuple(box),scale)
                 parts=[portrait_markup];text_boxes=[];fonts=layout['fonts'];fields={}
-                for ti,(key,text,fname) in enumerate([('title',title,fonts[0]),('pet',pet,fonts[1]),('breed',label,fonts[0])],1):
+                pet_text=pet+' & Milo' if animal=='cat' and li==11 else pet
+                for ti,(key,text,fname) in enumerate([('title',title,fonts[0]),('pet',pet_text,fonts[1]),('breed',label,fonts[0])],1):
                     x,y,size,maxw=layout[key];x+=extra
                     # Bottom captions are raised into the oval; not every shape is a rectangle.
                     if y>75:y=75
@@ -182,7 +188,7 @@ def main():
                     text_boxes.append({'field':key,'text':text,'font':fname,'x':x,'baseline':y,'sizeMm':size,'widthMm':text_width(str(font_index[fname]),text,size)})
                     parts.append(f'<text id="text-{ti}" data-feld="'+('name' if key=='pet' else key)+f'" x="{x:.4f}" y="{y:.4f}" font-family="{esc(fname)}" font-size="{size:.4f}" text-anchor="middle" fill="#000000">{esc(text)}</text>')
                     fields[f'text-{ti}']={'required':False,'locked':False,'label':{'title':'Spruch','pet':'Tiername','breed':'Rasse / Zusatztext'}[key]}
-                parts.append(ornaments(layout['deco'],layout,scale,extra))
+                parts.append(ornaments(layout['deco'],layout,scale,extra,wide_name=animal=='cat' and li==11))
                 svg=f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:g}mm" height="{h:g}mm" viewBox="0 0 {w:g} {h:g}">\n<title>{esc(label+" · "+layout["name"])}</title>\n'+'\n'.join(parts)+'\n</svg>\n'
                 meta={'id':did,'name':label+' · '+layout['name'],'plateMm':[w,h],'material':'Edelstahl','process':'Gravur','form':{'OV':'Oval','RE':'Rechteck','AB':'Rechteck abgerundet'}[form],'themes':['hundeschilder' if animal=='dog' else 'katzenschilder'],'movable':True,'fonts':fonts,'fields':fields,'source':source['portrait'],'motifs':[source['portrait']],'freigabe':None,'ziele':[{'familie':'steel-door-signs','freigabe':None}],'katalog':{'series':row,'key':row+'-D'+str(number),'zielgruppe':'Tiere','unterkategorie':label},'rasseReview':{'breed':slug,'animal':animal,'layout':li+1,'layoutName':layout['name'],'mode':'neu','sampleOnly':True,'sourceVariant':s['skuRoot'],'familySizeKey':target['key'],'motifSha256':source['sha256'],'motifVariant':li+1 if animal=='cat' else 1,'motifName':source.get('name','Katalogporträt'),'portraitBoxMm':portrait_box,'texts':text_boxes,'minStrokeMm':None,'machineApproval':'offen'}}
                 # Shape/size derivatives keep their master D-number and provenance.

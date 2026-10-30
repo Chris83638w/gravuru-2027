@@ -1,3 +1,7 @@
+## 30.10.2026 – Codex: freigegebener Konfigurator-Master, Veröffentlichung vorbereitet
+
+Chris bestimmt den gemeinsam geprüften Stand als Master für alle Linien; nur Ausführungen sind linienabhängig. Unveränderlicher Abnahmetag: `konfigurator-master-20261030` (`ce7c866`). Für den Betrieb wurden bereits live vorhandene Funkklingel-Kompatibilitätsregeln erhalten; alle 926 aktiven Produkte einschließlich 126 Funkklingeln validieren. Preisfunktion mit unveränderter V1-Mengenrabattberechnung und V2-Logos: vier Quelltests und acht WASM-Fälle erfolgreich. App-Kandidat zunächst ohne Release, Backups vorhanden. Abschluss/Live-Nachweise siehe [Übergabe](docs/handoffs/2026-10-30-konfigurator-master-live.md).
+
 ## 30.10.2026 · Codex/Astra · Kopfbereich etwas heller (PR #58)
 
 Chris' Farbsichtung: Kopfbereich von `#252a2e` auf das etwas hellere Blaugrau `#343e46`. Helle Schrift und 4-px-Abstand bleiben erhalten. Build und Browser-Sichtprüfung bestanden; reine CSS-Farbe, kein neuer Funktionstestlauf. [Bild](docs/handoffs/issue48-orientierung-20261030/kopf-blaugrau-heller.png). Weiterhin lokale Vorschau, nichts live.

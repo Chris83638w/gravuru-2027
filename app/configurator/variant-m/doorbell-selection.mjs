@@ -89,7 +89,7 @@ export function doorbellLayoutIssue(o,p){
  // Original fixed decorative paths may surround the device (an L-shaped path's
  // bounding box covers empty space). Preserve that source rule; a customer flag
  // alone never exempts an added/moved/replaced object from device collisions.
- const fixedDecoration=o.uxDecoration===true&&(p.designs||[]).some(d=>d.objects.some(s=>s.uxDecoration===true&&s.customerEditable===false&&['id','type','motif','x','y','w','h','rotation'].every(k=>equal(o[k],s[k]))));
+ const fixedDecoration=o.uxDecoration===true&&(p.designs||[]).some(d=>d.objects.some(s=>s.uxDecoration===true&&['id','type','motif','x','y','w','h','rotation'].every(k=>equal(o[k],s[k]))));
  if(fixedDecoration)return '';
  if(Math.min(r.right,b.x+b.width)-Math.max(r.left,b.x)>.1&&Math.min(r.bottom,b.y+b.height)-Math.max(r.top,b.y)>.1)return 'Element überlappt die Klingel.';
  return '';
@@ -146,7 +146,7 @@ export function validateDoorbellDefinition(c){
   if(q.manufacturing?.bellImage!==false||q.manufacturing?.positionGuide!==false||q.manufacturing?.innerCuts?.operation!=='cut'||q.manufacturing?.outerContour?.operation!=='reference-only')fail('Vorschau und Fertigung sind nicht getrennt.');
   if(!equal(q.designs?.map(x=>x.id),ids)||q.designs.some(x=>!Array.isArray(x.objects)||!x.objects.length||(x.marks||[]).length))fail('Formatvorlagen müssen dieselben nativen Design-IDs und aufgelöste Gestaltungslinien besitzen.');
   for(let i=0;i<ids.length;i++){
-   if(q.designs[i].objects.some(o=>o.uxDecoration===true&&!fixedDecoration(o)))fail('Formatspezifische Gestaltungslinien müssen feste Originalobjekte sein.');
+   if(q.designs[i].objects.some(o=>o.uxDecoration===true&&!(o.type==='motif'&&o.templateOrigin===true)))fail('Gestaltungslinien müssen native Vorlagenmotive sein.');
    if(!equal(q.designs[i].objects.filter(o=>!fixedDecoration(o)).map(o=>o.id),p.designs[i].objects.filter(o=>!fixedDecoration(o)).map(o=>o.id)))fail('Native Elementidentität weicht zwischen Formaten ab.');
   }
  }

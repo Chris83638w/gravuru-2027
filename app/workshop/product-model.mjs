@@ -36,6 +36,10 @@ function jsonData(value,seen=new Set()){
 // rights remain authoritative; reading a revision never enables new rights.
 const capability=object=>({...legacyElementRights(object),replace:legacyElementRights(object).replace||(object.type==='motif'&&object.role!=='guide'&&!object.technicalLocked&&!object.locked&&object.customerEditable!==false),delete:!object.technicalLocked});
 function initialRights(config){
+  // Keep the released layered-doorbell authoring contract. Its format-specific
+  // originals are separate from the root selection and must not be changed only
+  // at the root when creating the immutable document.
+  if(isLayeredDoorbell(config))return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,legacyElementRights(object)]))]));
   return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,applyNewMotifRights(object,legacyElementRights(object),design)]))]));
 }
 

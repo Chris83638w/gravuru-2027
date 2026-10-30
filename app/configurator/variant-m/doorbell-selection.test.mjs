@@ -66,7 +66,20 @@ test('format-specific fixed decoration sets are replaced exactly while custom ob
  assert.deepEqual(back.objects.filter(o=>o.uxDecoration),source.objects.filter(o=>o.uxDecoration));
  assert.equal(back.objects[0].x,source.objects[0].x);assert.equal(back.objects.at(-1).id,'own');
  c.doorbell.formats[0].profile.designs[0].objects.at(-1).customerEditable=true;
- assert.throws(()=>validateDoorbellDefinition(c),/feste Originalobjekte/);
+ assert.throws(()=>validateDoorbellDefinition(c),/Native Elementidentität weicht zwischen Formaten ab/);
+});
+
+test('released editable template decorations remain valid only with matching native identities',()=>{
+ const c=doorbellFixture();
+ c.profile.designs[0].objects[1].customerEditable=true;
+ for(const format of c.doorbell.formats)format.profile.designs[0].objects[1].customerEditable=true;
+ assert.doesNotThrow(()=>validateDoorbellDefinition(c));
+ const p=selectedDoorbellProfile(c),original=p.designs[0].objects[1];
+ assert.equal(doorbellLayoutIssue(original,p),'');
+ const moved={...original,x:p.geometry.bell.x+10,y:p.geometry.bell.y+10};
+ assert.match(doorbellLayoutIssue(moved,p),/Klingel/);
+ c.doorbell.formats[0].profile.designs[0].objects[1].templateOrigin=false;
+ assert.throws(()=>validateDoorbellDefinition(c),/native Vorlagenmotive/);
 });
 test('absolute curves translate exactly while radii and winding remain intact',()=>{
  assert.equal(translateDoorbellPath('M 1 2 C 3 4 5 6 7 8 A 2 3 45 0 1 9 10 Z',10,-2),'M 11 0 C 13 2 15 4 17 6 A 2 3 45 0 1 19 8 Z');

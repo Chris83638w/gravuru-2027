@@ -53,3 +53,9 @@ Browserprüfung im lokalen Chromium: Desktop 1280 × 720, Handyansichten 390 × 
 ## Offen / nächster Schritt
 
 Chris prüft die lokale Vorschau weiter. Echte Safari-/iPhone-Bedienung, Linux-Vollauf und spätere Shop-Abnahme bleiben offen. Keine Live-Daten, Freigaben oder Preise geändert. Chris' zusätzliche Bestseller-Motive stehen noch aus. Katalog-/Design-Masterdaten wurden nicht verändert.
+
+## Feinschliff: Abstand unter dem Kopf
+
+Chris wünscht nur wenige Pixel zwischen dunklem Kopf und Vollbild-Zeile: **4 px Außenabstand** am Desktop ab 768 px. Build erfolgreich; im Browser Kopfende bei y=50 und Werkzeugzeile ab y=54 gemessen. Bemaßung und Preis sichtbar, mobile Regeln unverändert. Reine CSS-Anpassung, kein erneuter Funktionstestlauf. Weiterhin lokal/Entwurf, keine Veröffentlichung.
+
+![Vier Pixel Abstand](issue48-orientierung-20261030/kopf-abstand-4px.png)

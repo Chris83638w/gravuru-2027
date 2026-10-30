@@ -56,7 +56,7 @@ test('photo transfer carries original bytes and editing data, never ephemeral UR
  assert.throws(()=>capturePhotoFiles(content,new Map()),/Fotodatei/);
 });
 test('actual local design-switch handler retains all texts/photos and aborts before mutations on incompatibility',()=>{
- const code=fs.readFileSync(new URL('./workflow.mjs',import.meta.url),'utf8'),a=code.indexOf(' let changing=false;'),z=code.indexOf(' // Full motif browser',a);
+ const code=fs.readFileSync(new URL('./workflow.mjs',import.meta.url),'utf8'),a=code.indexOf(' let changing=false;'),z=code.indexOf(' // The existing library',a);assert(a>=0&&z>a);
  let records=0;const messages=[],el={state:{designId:'old',objects:edited()},id:()=> 'personal-new',chooseDesign(id){records++;this.state.designId=id;this.state.objects=structuredClone(next.objects);},normalize(){},sync(){}};
  const context={el,config,chosenProfile:()=>config.profile,captureDesignContent,carryDesignContent,place(){},say:s=>messages.push(s),known:new Set()};vm.createContext(context);vm.runInContext(code.slice(a,z),context);
  assert.equal(el.chooseDesign('next'),true);assert.equal(records,1);assert.equal(el.state.objects.find(o=>o.id==='new-photo').uxUploadId,'upload-1');assert.equal(el.state.objects.find(o=>o.id==='new-name').text,'Anna Müller');
@@ -65,7 +65,7 @@ test('actual local design-switch handler retains all texts/photos and aborts bef
 });
 test('screw preview uses 3.6-mm heads without changing drilling or adding engraving objects',()=>{
  const profile={geometry:{holes:[{x:12,y:20,diameter:4}]},mountingPreview:{screws:true}},before=structuredClone(profile);
- const svg=screwPreview('<svg><circle cx="12" cy="20" r="2"/></svg>',profile);assert.match(svg,/data-screw-head-mm="3.6"/);assert.match(svg,/r="1.8"/);assert.match(svg,/data-role="guide"/);assert.match(svg,/<circle cx="12" cy="20" r="2"/);assert.deepEqual(profile,before);
+ const svg=screwPreview('<svg><circle cx="12" cy="20" r="2"/></svg>',profile);assert.match(svg,/data-screw-head-mm="3.6"/);assert.match(svg,/x="-1.8" y="-1.8" width="3.6" height="3.6"/);assert.match(svg,/viewBox="10.5 10 380 380"/);assert.match(svg,/data-role="guide"/);assert.match(svg,/<circle cx="12" cy="20" r="2"/);assert.deepEqual(profile,before);
 });
 
 test('actual field UI moves its highlight and open font controls with selection and reveals it after resizing',()=>{

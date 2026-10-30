@@ -1,0 +1,125 @@
+{
+  "command": "node --max-old-space-size=2048 --test --test-concurrency=2 --test-timeout=60000 app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs",
+  "files": 264,
+  "tests": 1943,
+  "pass": 1845,
+  "fail": 89,
+  "cancelled": 2,
+  "skipped": 7,
+  "durationMs": 933121.7551,
+  "failureCategories": {
+    "python3 EACCES": 73,
+    "Timeout": 2,
+    "Logo-Python-Abhaengigkeiten": 16
+  },
+  "failureFiles": {
+    "app/workshop/acrylic-engraving.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/acrylic-import-tint.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/acrylic-order-product.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/acrylic-production-profiles.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/batch-report.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/contour-production.test.mjs": {
+      "Timeout": 1
+    },
+    "app/workshop/contours.test.mjs": {
+      "Timeout": 1
+    },
+    "app/workshop/customer-vector-logo-media.test.mjs": {
+      "Logo-Python-Abhaengigkeiten": 8
+    },
+    "app/workshop/customer-vector-logo.test.mjs": {
+      "Logo-Python-Abhaengigkeiten": 7
+    },
+    "app/workshop/dashboard-print-flow.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/export-recovery.test.mjs": {
+      "python3 EACCES": 1
+    },
+    "app/workshop/form-additions.test.mjs": {
+      "python3 EACCES": 1
+    },
+    "app/workshop/form-batch.test.mjs": {
+      "python3 EACCES": 4
+    },
+    "app/workshop/form-customer.test.mjs": {
+      "python3 EACCES": 2
+    },
+    "app/workshop/form-designs.test.mjs": {
+      "python3 EACCES": 1
+    },
+    "app/workshop/form-engraving-proof.test.mjs": {
+      "python3 EACCES": 6
+    },
+    "app/workshop/form-print-proof.test.mjs": {
+      "python3 EACCES": 8
+    },
+    "app/workshop/form-variants.test.mjs": {
+      "python3 EACCES": 6
+    },
+    "app/workshop/guide-layers.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/option-fields.test.mjs": {
+      "python3 EACCES": 2
+    },
+    "app/workshop/order-product-draft.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/output-orientation.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/photo-frame-coverage.test.mjs": {
+      "python3 EACCES": 1
+    },
+    "app/workshop/print-delivery-vector.test.mjs": {
+      "python3 EACCES": 2
+    },
+    "app/workshop/print-preview.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/production-summary.test.mjs": {
+      "python3 EACCES": 3
+    },
+    "app/workshop/quantity-tiers.test.mjs": {
+      "python3 EACCES": 1
+    },
+    "app/workshop/shop-entry.test.mjs": {
+      "Logo-Python-Abhaengigkeiten": 1
+    },
+    "app/workshop/specimen-product.test.mjs": {
+      "python3 EACCES": 1
+    },
+    "app/workshop/surfaces.test.mjs": {
+      "python3 EACCES": 4
+    }
+  },
+  "targetedFinal": {
+    "files": 17,
+    "tests": 168,
+    "pass": 168,
+    "fail": 0,
+    "skipped": 0
+  },
+  "afterRadioFocusFix": {
+    "tests": 30,
+    "pass": 30,
+    "fail": 0,
+    "skipped": 0
+  },
+  "limitations": [
+    "Windows; kein Linux-Vollauf",
+    "Vollauf vor letzter Standardmarkierung/Radio-Fokuskorrektur; gezielte Nachpruefungen enthalten diese Korrekturen",
+    "Kein kontrollierter Vollauf des unveraenderten Basisstands in dieser Umgebung"
+  ]
+}

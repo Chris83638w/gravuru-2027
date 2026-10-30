@@ -4,9 +4,10 @@ export {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTie
 import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions,designElementRights} from './element-rights.mjs';
 import {processProfile,processColorIssue} from '../../workshop/process-profiles.mjs';
 import {validateOptionPresentation} from './option-media.mjs';
+import {validateOptionImages} from './option-images.mjs';
 import {validateStudio} from '../../platform/sources/app/shared/models/studio-products.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
-import {validateDesignContent, surfaceObjectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {validateDesignContent, surfaceObjectIssue, DESIGN_LIMITS} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements} from '../../platform/sources/app/shared/models/universal-elements.mjs';
 import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {localFontIds} from './local-pilot.mjs';
@@ -60,7 +61,8 @@ export function prepareConfig(input) {
   const extraFontIds=localFontIds(config);
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
-  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[]});
+  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],allowOpenPrices:review&&config.basePriceCents===null,maxTextLength:Math.max(DESIGN_LIMITS.maxTextLength,config.textRules?.maxCharsPerField||0)});
+  validateOptionImages(config);
   // Themenlimits und Pflichtkennzeichen der Vorlage sind Produktregeln: ungültige Werte laden nicht.
   for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
     if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');
@@ -68,7 +70,7 @@ export function prepareConfig(input) {
     const issue=textLimitIssue(o.text,textLimits(o,d,p,config));if(issue)fail((d.name||d.id)+': Mustertext – '+issue);
   }
   for(const group of p.optionGroups||[])for(const value of group.values)validateOptionPresentation(value);
-  validateOptionConditions(p); // K14 / Ü12.1: bedingte Gruppen und Zusatzfelder
+  validateOptionConditions(p,{allowOpenPrices:review&&config.basePriceCents===null}); // K14 / Ü12.1: bedingte Gruppen und Zusatzfelder
   // K14 / Ü15.1: Flächen (Vorder-/Rückseite). Die Rückseite darf ein eigenes Verfahrensprofil
   // tragen, aber dasselbe Verfahren (Gravur/Druck): die Fertigungsausgabe erzeugt beide Dateien
   // im selben Lauf; ein Verfahrenswechsel je Seite ist noch nicht an die Ausgabe angeschlossen.
@@ -77,6 +79,8 @@ export function prepareConfig(input) {
   if (!p.binding?.productId || !p.id || !p.revision) fail('Produktbindung und feste Profilrevision fehlen.');
   if (!(review&&config.basePriceCents===null&&config.extraMotifCents===null)&&(!Number.isSafeInteger(config.basePriceCents) || config.basePriceCents < 0 ||
       !Number.isSafeInteger(config.extraMotifCents) || config.extraMotifCents < 0)) fail('Verbindliche Centpreise fehlen.');
+  if(config.photo?.allowOnAllDesigns!==undefined&&typeof config.photo.allowOnAllDesigns!=='boolean')fail('Fotoauswahl je Design ausdrücklich festlegen.');
+  if(config.photo?.allowOnAllDesigns===true&&(!config.photo.enabled||!productProcess(config).tools.photo||p.material.kind==='steel'))fail('Fotos sind für dieses Verfahren nicht freigegeben.');
   if (typeof config.photo?.enabled !== 'boolean' || config.photo.mode !== 'upload-only') fail('Fotofunktion ausdrücklich festlegen.');
   if(config.logo!==undefined&&typeof config.logo.enabled!=='boolean')fail('Logofunktion ausdrücklich festlegen.');
   if(config.logo?.vectorUpload!==undefined&&typeof config.logo.vectorUpload!=='boolean')fail('Vektorlogo-Funktion ausdrücklich festlegen.');
@@ -178,6 +182,7 @@ export function selectedProfile(config, values = {}) {
     }
   }
   if (finish !== undefined && profile.mountingPreview?.spacers) profile.mountingPreview.finish = finish;
+  if(profile.mountingPreview?.spacers&&config.spacerImages?.[profile.mountingPreview.finish])profile.mountingPreview.image=config.spacerImages[profile.mountingPreview.finish];
   return profile;
 }
 
@@ -226,8 +231,8 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   const source = selectedProfile(config,options).designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
   if(design.textOnTop!==undefined&&typeof design.textOnTop!=='boolean')fail('Ungültige Textebenen-Regel.');
-  if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
-  validateDesignContent(design, {universal:true,extraFontIds:localFontIds(config)});
+  if(source.importedSource&&config.photo.allowOnAllDesigns!==true&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
+  validateDesignContent(design, {universal:true,extraFontIds:localFontIds(config),maxTextLength:Math.max(DESIGN_LIMITS.maxTextLength,config.textRules?.maxCharsPerField||0)});
   // Local logo uploads carry an opaque upload id, like photo slots. They are not
   // published media resources; the production media validator stays unchanged.
   validateUniversalElements({...design,objects:design.objects.map(o=>

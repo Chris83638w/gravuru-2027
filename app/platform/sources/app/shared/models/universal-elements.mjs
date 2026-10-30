@@ -31,7 +31,7 @@ export function validateUniversalElements(design){
   }
  }
 }
-export function validateOptionGroups(groups){
+export function validateOptionGroups(groups,{allowOpenPrices=false}={}){
  if(groups===undefined)return;
  if(!Array.isArray(groups)||groups.length>20)throw Error('Höchstens 20 Gruppen für kaufbare Extras verwenden.');
  const ids=new Set();
@@ -43,7 +43,7 @@ export function validateOptionGroups(groups){
   for(const value of group.values){
    if(!value||!validContentId(value.id)||values.has(value.id)||typeof value.label!=='string'||!value.label.trim()||value.label.length>100)throw Error('Extras brauchen eindeutige Kennungen und Bezeichnungen.');
    values.add(value.id);
-   if(!Number.isSafeInteger(value.priceCents)||value.priceCents<0||value.priceCents>100000000||value.currency!=='EUR')throw Error('Aufpreise als ganze Centbeträge in EUR angeben.');
+   if((!(allowOpenPrices&&value.priceCents===null)&&(!Number.isSafeInteger(value.priceCents)||value.priceCents<0||value.priceCents>100000000))||value.currency!=='EUR')throw Error('Aufpreise als ganze Centbeträge in EUR angeben.');
   }
   if(!group.required&&!group.values.some(v=>v.priceCents===0))throw Error('Eine optionale Extragruppe braucht eine kostenlose Auswahl, zum Beispiel „Ohne Extra“.');
  }

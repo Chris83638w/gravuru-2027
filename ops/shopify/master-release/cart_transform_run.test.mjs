@@ -35,7 +35,46 @@ test('mixed carts preserve existing lines and add only trusted checkout images',
  const mixed={...old,cart:{lines:[...old.cart.lines,...added.cart.lines,{id:'normal',merchandise:{__typename:'ProductVariant',id:variantId,product:{id:productId}}}]}};
  assert.deepEqual(master(mixed).operations,[...live(old).operations,...master(added).operations]);
  const line=mixed.cart.lines[1];line.configuration={value:'konfig_aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'};line.configRevision={value:'1'};line.offer={value:'a'.repeat(64)};
- line.designImage={value:'https://cdn.shopify.com/s/files/1/0920/5550/3228/uploads/master_test.png'};
- assert.deepEqual(master(mixed).operations[1].lineUpdate.image,{url:line.designImage.value});
- line.designImage.value='https://example.org/private.png';assert.equal(master(mixed).operations[1].lineUpdate.image,undefined);
+ line.checkoutImage={value:'https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'a'.repeat(64)+'.png'};
+ assert.deepEqual(master(mixed).operations[1].lineUpdate.image,{url:line.checkoutImage.value});
+ line.checkoutImage.value='https://example.org/private.png';assert.equal(master(mixed).operations[1].lineUpdate.image,undefined);
+});
+
+function oldD8(){
+ const v=input({v2:true}),line=v.cart.lines[0];
+ for(const key of ['motifs','uploads','logos','revision','designFile'])delete line[key];
+ line.configuration={value:'konfig_aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'};
+ line.configRevision={value:'2'};line.offer={value:'c'.repeat(64)};
+ return v;
+}
+function registerOld(v){
+ const l=v.cart.lines[0];
+ l.merchandise.product.pricing.jsonValue.legacyOffers=[{offer:l.offer.value,config:l.configuration.value,revision:2,variantId:'57265913332092',quantity:1,unitCents:1999}];
+ return v;
+}
+test('pre-contract cart reproduces live failure; only an app-owned saved-offer match preserves it',()=>{
+ assert.throws(()=>master(oldD8()),/Invalid personalization quantity/);
+ const v=registerOld(oldD8());
+ assert.equal(master(v).operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'19.99');
+ const current=input({v2:true,logos:1,motifs:1});current.cart.lines[0].id='new-logo';
+ const photo=input({uploads:1,motifs:1});photo.cart.lines[0].id='existing-photo';
+ const combined={...v,cart:{lines:[...v.cart.lines,...current.cart.lines,...photo.cart.lines]}};
+ assert.deepEqual(master(combined).operations,[...master(current).operations,...live(photo).operations,...master(v).operations]);
+});
+test('legacy migration cannot authorize altered offers, designs, variants, quantity or new personalization',()=>{
+ const mutations=[
+  l=>l.offer.value='d'.repeat(64),l=>l.configuration.value='konfig_bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+  l=>l.configRevision.value='3',l=>l.quantity=2,l=>l.merchandise.id='gid://shopify/ProductVariant/9',
+  ...['motifs','uploads','logos','revision','designFile'].map(k=>l=>l[k]={value:'0'}),
+  l=>l.merchandise.product.id='gid://shopify/Product/9',
+  l=>l.merchandise.product.pricing.jsonValue.currency='USD',
+  l=>l.merchandise.product.pricing.jsonValue.legacyOffers.push(l.merchandise.product.pricing.jsonValue.legacyOffers[0]),
+  l=>l.merchandise.product.pricing.jsonValue.legacyOffers[0].unitCents=-1,
+  l=>l.merchandise.product.pricing.jsonValue.legacyOffers[0].quantity=1.5,
+  l=>l.merchandise.product.pricing.jsonValue.legacyOffers[0].extra='untrusted',
+ ];
+ for(const mutate of mutations){const v=registerOld(oldD8());mutate(v.cart.lines[0]);assert.throws(()=>master(v));}
+ const v=registerOld(oldD8());v.presentmentCurrencyRate='0';assert.throws(()=>master(v));
+ const current=input({v2:true,logos:1});current.cart.lines[0].merchandise.product.pricing.jsonValue.legacyOffers=registerOld(oldD8()).cart.lines[0].merchandise.product.pricing.jsonValue.legacyOffers;
+ assert.deepEqual(master(current),master(input({v2:true,logos:1})));
 });

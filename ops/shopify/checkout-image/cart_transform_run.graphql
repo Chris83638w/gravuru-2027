@@ -7,7 +7,7 @@ query CartTransformRunInput {
       configuration: attribute(key: "_gravuru_config") { value }
       configRevision: attribute(key: "_gravuru_rev") { value }
       offer: attribute(key: "_gravuru_offer") { value }
-      designImage: attribute(key: "_Entwurf") { value }
+      checkoutImage: attribute(key: "_gravuru_checkout_image") { value }
       motifs: attribute(key: "_gravuru_motifs") { value }
       uploads: attribute(key: "_gravuru_uploads") { value }
       logos: attribute(key: "_gravuru_logos") { value }

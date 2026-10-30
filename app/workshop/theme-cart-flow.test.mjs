@@ -55,7 +55,8 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
   return Response.json({data:{[update?'cartLinesUpdate':'cartCreate']:{userErrors:[],warnings:[],cart:{id:cart.id,checkoutUrl:'https://'+shopDomain+'/checkouts/cn/synthetic',lines:{pageInfo:{hasNextPage:false},nodes:update?cart.lines:[node]}}}}});
  };
  const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
- let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,modelSlimmer:null});
+ const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
+ let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,modelSlimmer:null,checkoutImage:async source=>{assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
  const server=http.createServer((req,res)=>entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
  const request=(pathname,method='GET',data,extra={})=>new Promise((resolve,reject)=>{
@@ -113,11 +114,13 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
  assert.equal((await proxyRequest('/cart/claim','POST',transferToken,{Origin:'https://evil.example'})).status,403);
  const wrongCustomer=signed();wrongCustomer.set('logged_in_customer_id','42');wrongCustomer.delete('signature');wrongCustomer.set('signature',appProxySignature(wrongCustomer,secret));
  assert.equal((await request(proxyPath+'/cart/data?'+wrongCustomer,'GET',undefined,{'X-Gravuru-Cart-Handoff':transferToken})).status,403);
- const data=await proxyRequest('/cart/data');assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
+ imagePending=true;const pendingImage=await proxyRequest('/cart/data');assert.equal(pendingImage.status,502);assert.equal(pendingImage.data.error.code,'checkout_image_pending');assert.equal(imageCalls,0);
+ imagePending=false;const data=await proxyRequest('/cart/data');assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
  assert.equal(p.variantId,product.variants[3].shopifyVariantId.split('/').at(-1));assert.equal(p.quantity,2);assert.equal(p.totalCents,chosen.priceCents*2);
  assert.equal(p.properties._gravuru_config,prepared.data.configuration.id);assert.equal(p.properties._gravuru_rev,'1');assert.ok(p.properties.Gravurtext);assert.equal(p.preview.type,'image/png');
  assert.ok(!JSON.stringify(p).includes(draft.token));assert.ok(!JSON.stringify(p).includes(token));assert.equal(new URL(p.properties._gravuru_bearbeiten).searchParams.get('line'),'theme');
  assert.equal(p.properties.Bearbeiten,undefined);
+ assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);
  const customerImagePath=new URL(p.properties._gravuru_bild).pathname;
  const customerImage=await request(customerImagePath);assert.equal(customerImage.status,200);assert.deepEqual(customerImage.body,Buffer.from(png,'base64'));
  assert.equal((await request(customerImagePath,'HEAD')).body.length,0);

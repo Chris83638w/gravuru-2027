@@ -25,6 +25,16 @@ function block(name,start,end){const text=source(name),i=text.indexOf(start);ass
 const eventTarget=()=>({listeners:{},addEventListener(type,fn){(this.listeners[type]||=[]).push(fn);}});
 const dispatch=async(target,type,event)=>{for(const fn of target.listeners[type]||[])await fn(event);};
 const inertEvent=target=>({target,preventDefault(){},stopImmediatePropagation(){}});
+test('accessory without/with radio tiles keep boolean values and ordinary selections keep strings',async()=>{
+ const fieldBox=eventTarget(),changes=[];
+ const env={fieldBox,changeOption:(key,value)=>changes.push([key,value])};vm.createContext(env);
+ vm.runInContext(line('adapter.mjs','const fieldInput=input=>'),env);
+ vm.runInContext(line('adapter.mjs',"fieldBox.addEventListener('change'"),env);
+ for(const value of ['true','false'])await dispatch(fieldBox,'change',{target:{type:'radio',value,dataset:{mField:'protector',fieldBoolean:'true'}}});
+ await dispatch(fieldBox,'change',{target:{type:'radio',value:'black',dataset:{mField:'stand'}}});
+ await dispatch(fieldBox,'change',{target:{type:'checkbox',checked:true,dataset:{mField:'legacy'}}});
+ assert.deepEqual(changes,[['protector',true],['protector',false],['stand','black'],['legacy',true]]);
+});
 function textEnvironment(){
  const object={id:'name',type:'text',text:'Anna',size:6,x:30,y:20,w:40,h:7},input={id:'ux-size',value:'12',dataset:{},matches(){return false;}},r=eventTarget();
  const noopNode={textContent:'',hidden:false,setAttribute(){},classList:{toggle(){}}};

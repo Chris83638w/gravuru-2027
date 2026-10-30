@@ -15,7 +15,7 @@ Stand 30.10.2026, Codex/Astra. Branch `dev/gedenktafeln-master-20261030-astra`, 
 
 ## Umsetzung
 
-Die bestehende Master-Oberfläche erhält Optionen über das vorhandene Profil und `optionFields`: Ohne Befestigung, 2/4 Bohrlöcher, 2/4 Abstandshalter oder Silikonkleber. Klarer/schwarzer Ständer sind eine separate Einzelauswahl, Imprägnierspray eine separate Checkbox. Die Zusammenfassung nennt beide zusätzlich zur Befestigung. Verdeckte Abstandshalterfarben erscheinen dort nicht.
+Die bestehende Master-Oberfläche erhält Optionen über das vorhandene Profil und `optionFields`: Ohne Befestigung, 2/4 Bohrlöcher, 2/4 Abstandshalter oder Silikonkleber. Klarer/schwarzer Ständer sind eine separate Einzelauswahl, Imprägnierspray eine separate Ohne/Mit-Auswahl. Die Zusammenfassung nennt beide zusätzlich zur Befestigung. Verdeckte Abstandshalterfarben erscheinen dort nicht.
 
 `optionImages` ordnet echte Produktbilder ausschließlich vorhandenen Auswahlkennungen zu. Vier originale Draufsichten erscheinen als 12-mm-Abstandshalter auf der Platte; Vorschauhardware gehört nicht zur Gravurgeometrie. Bildschirmbilder werden zwischengespeichert, damit große PNGs beim Bewegen nicht immer erneut in das SVG kopiert werden. Für Schwarz fehlt die Original-Draufsicht: dort bleibt ausdrücklich die vorhandene schematische Darstellung.
 
@@ -48,6 +48,18 @@ Desktop und emulierte Handy-Viewports (kein echtes Safari/iPhone):
 | Desktop 1440 × 1050 | [Vier goldene Abstandshalter](gedenktafeln-master-20261030/desktop-abstandshalter-gold.png) |
 | iPhone 13, 390 × 664 | [Befestigung](gedenktafeln-master-20261030/iphone13-befestigung.png) |
 | iPhone SE, 375 × 548 | [Befestigung](gedenktafeln-master-20261030/iphone-se-befestigung.png) |
+
+## Nachtrag 31.10.2026: Zubehörkacheln
+
+Chris' Sichtung umgesetzt: Der Auswahlpunkt bei „Ohne Acrylglasständer“ steht auf derselben oberen Höhe wie bei Klar und Schwarz; „Ohne“ und „Acrylglasständer“ sind zwei Zeilen. Das Imprägnierspray verwendet zwei gleichartige Kacheln „Ohne Imprägnierspray“ und „Mit Imprägnierspray“. Der Optionsvertrag bleibt boolesch (`false`/`true`), einschließlich wiederhergestellter Entwürfe; gewöhnliche Auswahlfelder bleiben Zeichenketten. Keine Preise oder Katalogregeln geändert.
+
+**37/37 gezielte Tests bestanden**, 0 Fehler/Abbrüche/Skips (`ui-event-regressions`, `option-fields`, `memorial-review`). Der neue Ereignistest prüft beide booleschen Werte, bestehende Auswahlfelder und bisherige Checkboxen. Kein neuer Vollauf. Desktop und 375 × 548 im separaten Prüftab kontrolliert; die Gestaltung im ursprünglichen Tab wurde nicht neu geladen. Auf dem kleinen Handy bleibt der vorhandene Optionsbereich scrollbar, die zwei Titelzeilen passen in die Kacheln.
+
+- [Desktop: Ständer und Spray](gedenktafeln-master-20261030/zubehoerkacheln-desktop-20261031.png)
+- [375 × 548: Ständerbeschriftung](gedenktafeln-master-20261030/zubehoerkacheln-staender-se-20261031.png)
+- [375 × 548: Spraybeschriftung](gedenktafeln-master-20261030/zubehoerkacheln-spray-se-20261031.png)
+
+Chris' Frage zu Farbaufpreisen: Die bereits geprüfte Excel nennt zusätzlich **1,00 EUR je Zweierset** bzw. **2,00 EUR je Viererset**, zuzüglich 5,90/9,90 EUR Grundaufpreis, also zusammen **6,90/11,90 EUR**. `Optionen!D8` lässt die konkreten betroffenen Farben ausdrücklich offen. Deshalb keine Farbzuordnung erfunden und weiterhin keine Preisanzeige/zahlbare Angebote in dieser lokalen Vorschau. Siehe [Quellenbeleg](2026-10-30-konfi-module-bestandsaufnahme.md#aktuelle-schiefer-zeichnungsübersicht).
 
 ## Lokal reproduzieren
 

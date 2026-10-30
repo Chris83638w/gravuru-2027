@@ -61,3 +61,16 @@ test('Format and opposite choices preserve custom text, font, size, deletions an
  const undo=structuredClone(history.pop());assert.deepEqual(undo,before);
 });
 
+
+test('format roundtrip keeps photo crop, upload IDs, logo proof and additional motifs',()=>{
+ const c=selectableConfig(),base={designId:'D1',objects:[
+  {...c.profile.designs[0].objects[0],text:'Eigener Text'},
+  {id:'photo',type:'photoSlot',x:70,y:80,w:20,h:25,rotation:7,uxUploadKind:'photo',uxUploadId:'photo-file',uxPhotoCrop:{zoom:1.5,x:.2,y:-.1,angle:0},uxPhotoColor:'grayscale',photoShape:'heart'},
+  {id:'logo',type:'image',x:50,y:60,w:20,h:10,rotation:12,uxUploadKind:'logo',uxUploadId:'logo-file',uxVectorLogo:{version:'svg-black-v1',sourceSha256:'a'.repeat(64),outputSha256:'b'.repeat(64)}},
+  {id:'motif',type:'motif',motif:'house',x:40,y:50,w:15,h:20,rotation:5}
+ ],mOptions:{format:'16x28',frame:'R10',color:'schwarz',mounting:'K00',position:'standard'}};
+ const before=structuredClone(base),landscape=doorbellOptionState(c,base,{format:'24x20'}),back=doorbellOptionState(c,landscape,{format:'16x28'});
+ assert.equal(landscape.objects.length,4);assert.equal(landscape.objects[1].uxUploadId,'photo-file');assert.deepEqual(landscape.objects[2].uxVectorLogo,base.objects[2].uxVectorLogo);
+ for(const source of base.objects){const object=back.objects.find(o=>o.id===source.id);assert.ok(Math.abs(object.x-source.x)<1e-8);assert.ok(Math.abs(object.y-source.y)<1e-8);assert.deepEqual({...object,x:source.x,y:source.y},source);}
+ assert.deepEqual(base,before);
+});

@@ -1,3 +1,4 @@
+import {installCustomerHelp} from './customer-help.mjs';
 import {installReviewLayout} from './review-layout.mjs';
 import {installProductDesignGallery} from './product-design-gallery.mjs';
 import {installViewZoom} from './view-zoom.mjs';
@@ -128,7 +129,7 @@ export async function installUX(el,config,legacy){
   dialog('contents','Ebenenverwaltung','<p>Alle Bestandteile deines Designs. Sichtbarkeit und Sperre lassen sich einzeln ändern.</p><div data-ux-contents-list></div><div data-ux-object-tools></div>');
   dialog('account','Deine Entwürfe','<div data-ux-account><div class="ux-account-note"><strong>Im Kundenkonto speichern</strong><p>Für dauerhaft gespeicherte Entwürfe meldest du dich in deinem Kundenkonto an.</p></div><p>Dein aktueller Stand bleibt auf diesem Gerät erhalten, auch nach einem Neuladen.</p></div><p class="ux-small">Downloads sind erst nach bezahltem Kauf im zugehörigen Kundenkonto vorgesehen.</p>');
   dialog('price','Dein Preis','<div data-ux-price-lines></div>');
-  dialog('help','Hilfe beim Gestalten',`<p>Ich zeige dir die wichtigsten Schritte.</p><div class="ux-actions">${[['text','Text ändern'],['font','Schrift & Größe'],['guides','Mittig ausrichten'],['motif','Motiv ändern'],['upload',photoEnabled&&logoEnabled?'Foto / Logo':photoEnabled?'Foto':'Logo'],['save','Entwurf speichern']].filter(([id])=>id!=='upload'||uploadOffered).map(([id,title])=>button('guide-'+id,title)).join('')}</div><div data-ux-help-content></div><p class="ux-small">Direkthilfe funktioniert hier lokal. Der persönliche KI-Chat wird beim Anschluss an den vorhandenen Chatserver ergänzt.</p>`);
+  dialog('help','Hilfe beim Gestalten','<div data-ux-help-content hidden></div>');
   // K14 / Ü11.1: Mengenstaffel neben der Menge („ab 5 Stück −10 %“); offene Staffel zeigt nichts.
   const tierNote=document.createElement('small');tierNote.className='ux-quantity-tiers';tierNote.dataset.uxTiers='';tierNote.hidden=true;
   {const tierLabels=config?quantityTierLabels(config):[];tierNote.textContent=tierLabels.join(' · ');tierNote.hidden=!tierLabels.length;const qtyLabel=$('label.fk-quantity')||$('[data-fk-quantity]')?.parentElement;if(qtyLabel)qtyLabel.after(tierNote);else $('[data-fk-total]').parentElement.append(tierNote);}
@@ -247,6 +248,7 @@ export async function installUX(el,config,legacy){
   const limitsFor=o=>textLimits(templateText(o),design(),profile,config);
   const touchedText=new Set();let textValidationAttempted=false;
   const textIndex=o=>el.state.objects.filter(v=>v.type==='text').indexOf(o);
+  el.uxTextLabel=o=>fieldLabel(o,textIndex(o));
   function textFieldIssue(o){
     const t=templateText(o);
     if(t?.required===true&&sameSampleText(o.text,t.text))return 'Pflichtfeld: Bitte den Beispieltext durch deinen eigenen ersetzen.';
@@ -332,6 +334,7 @@ export async function installUX(el,config,legacy){
   async function openFonts(){const o=selected();if(o?.type!=='text')return say('Bitte zuerst eine Textzeile auswählen.');fontObject=o.id;fontChoice=o.font;dialogs.font.showModal();
     if(el.uxEnsureFonts){$('.ux-font-grid').innerHTML='<p role="status">Schriften werden geladen …</p>';$('[data-ux=font-apply]').disabled=true;try{await el.uxEnsureFonts(selectionIds(el.uxKnownFonts(),profileChoices?.fonts));}catch{$('.ux-font-grid').innerHTML='<p role="status">Die Schriften konnten nicht geladen werden. Bitte erneut öffnen.</p>';return;}if(!dialogs.font.open||fontObject!==o.id)return;}
     renderFontPage();}
+  const questionHelp=installCustomerHelp({dialog:dialogs.help,context:()=>({photo:photoEnabled&&photoAvailableForDesign(config,el.state.designId),logo:logoEnabled&&uploadTabVisible(config,el.state.designId,{photoEnabled,logoEnabled}),vectorLogo:vectorLogos,logoCents:config?.logo?.extraPriceCents,minTextMm}),navigate:tab=>{showTab(tab);el.uxMobileSteps?.show(tab,{scroll:false});}});
   function guide(key){const content={text:['Text ändern','Tippe auf eine Textzeile und ersetze den Beispieltext. Alle Änderungen siehst du sofort auf deinem Produkt.'],font:['Schrift & Größe','Wähle eine Textzeile und danach „Schrift ändern“. Du siehst deinen eigenen Text in jeder Schrift. Mit Plus und Minus änderst du die Größe. Der Schriftgrößenwert beträgt mindestens '+String(minTextMm).replace('.',',')+' mm.'],guides:['Mittig ausrichten','Aktiviere „Hilfslinien“ unten links im Produktbild. Wähle deinen Text und tippe auf „Mitte“. Beim Ziehen rastet er auch an der Mitte und den Kanten anderer Texte ein. Ankerpunkte zeigen dir die Textmitten, damit du Texte untereinander setzen kannst. Gestrichelte Linie = Gestaltungsrand: Elemente bleiben innerhalb dieser Linie. Bohrungen und Beschläge zeigen das fertige Schild; sie sperren keine Gestaltung.'],motif:['Deine Motive',config?.acrylic?'Vorlagenmotive bleiben fest platziert; ihre Farbe kannst du ändern. Eigene zusätzliche Motive kannst du in der Motivbibliothek hinzufügen und bearbeiten.':'Wähle Motive aus Bestsellern oder Kategorien. In „Ebenenverwaltung“ kannst du ein freigegebenes Motiv bearbeiten.'],upload:['Fotos & Logos',vectorLogos?'Lade dein Logo als SVG hoch. Wir zeigen die Originalfarben neben der schwarzen Gravur auf deinem Schild. Prüfe die Aussparungen und bestätige erst dann. Je Logo '+money(config.logo.extraPriceCents)+'. Fotos sind auf Edelstahl nicht möglich.':config?.acrylic?'Ein Foto ist enthalten. Tippe auf das Beispielfoto, um dein eigenes Foto an derselben Position einzusetzen. Ein weiterer Upload ersetzt dieses Foto. Der Hintergrund bleibt erhalten.':(config?.reviewOnly&&config.basePriceCents===null)?'Du kannst bis zu vier Fotos und Logos testen. Die Preise für dieses Produkt sind noch offen. Dein Bild erscheint direkt in der Vorschau. Zuschneiden öffnet die Bildbearbeitung.':'Du kannst bis zu vier Fotos und Logos zusammen hinzufügen. '+uploadPriceSentence(config?.photo)+' Dein Bild erscheint direkt in der Vorschau. Über „Bild bearbeiten“ kannst du dein Foto zuschneiden, drehen oder spiegeln.'],save:['Entwurf speichern',config?.workbench?'Mit „Entwurf speichern“ sicherst du Text, Schrift und Positionen dauerhaft in der Produktanlage. Testfotos werden nicht als Vorlage gespeichert.':'Dein aktueller Stand bleibt auf diesem Gerät erhalten – auch wenn du die Seite neu lädst. Mit „Entwurf speichern“ legst du ihn mit Fotos für 90 Tage in deinem Kundenkonto ab und kannst ihn auf jedem Gerät wieder öffnen. Dafür meldest du dich kurz an oder registrierst dich. Nach dem bezahlten Kauf ist ein PNG-Download vorgesehen.']}[key];if(!content)return;
     if(['text','font','guides'].includes(key))showTab('text');else if(key==='motif')showTab('motif');else if(key==='upload')showTab('upload');
     $('[data-ux-help-content]').innerHTML=`<h3>${content[0]}</h3><p data-ux-guide-copy>${content[1]}</p>${button('speak','Erklärung anhören')}${button('stop-speaking','Stopp')}<p class="ux-small">Vorlesen mit der verfügbaren Gerätestimme.</p>`;
@@ -349,8 +352,8 @@ export async function installUX(el,config,legacy){
     if(action==='account'||action==='price'){dialogs[action].showModal();if(action==='account')accountDrafts?.refresh();return;}
     if(action==='session-dismiss'){$('[data-ux-session]').hidden=true;return;}
     if(action==='session-restart'){if(!sessionGuard)return;if(!initialDraft){sessionGuard.clear();location.reload();return;}try{sessionGuard.reset(()=>{restoreDraft(initialDraft);for(const asset of files.values())URL.revokeObjectURL(asset.url);files.clear();el.sync();});$('[data-ux-session]').hidden=true;say('Neu begonnen.');}catch(error){say(error.message);}return;}
-    if(action==='help'){for(const d of all('.ux-dialog[open]'))d.close();if(window.GravuruChat&&!$('.c-large-preview').open){window.GravuruChat.show(({options:'form',upload:'logo'})[activeTab]||activeTab);}else{guide(activeTab==='text'?'text':activeTab==='upload'?'upload':'guides');dialogs.help.showModal();}return;}
-    if(action==='alignment-help'){guide('guides');dialogs.help.showModal();return;}
+    if(action==='help'){for(const d of all('.ux-dialog[open]'))d.close();dialogs.help.showModal();return;}
+    if(action==='alignment-help'){questionHelp.ask('Text ausrichten');dialogs.help.showModal();return;}
     if(action.startsWith('guide-')){guide(action.slice(6));return;}
     if(action==='speak'){if(!('speechSynthesis'in window))return say('Vorlesen ist in diesem Browser nicht verfügbar.');speechSynthesis.cancel();const voice=new SpeechSynthesisUtterance($('[data-ux-guide-copy]').textContent);voice.lang='de-DE';voice.rate=.9;speechSynthesis.speak(voice);return;}
     if(action==='stop-speaking'){window.speechSynthesis?.cancel();return;}
@@ -505,7 +508,7 @@ export async function installUX(el,config,legacy){
   const takeEarlyPhoto=()=>{const early=el.uxEarlyPhoto;if(!early)return;el.uxEarlyPhoto=null;acceptCustomerFiles(early.files,'photo',early.slotId).catch(error=>say(error.message));};
   el.addEventListener('gravuru-early-photo',takeEarlyPhoto);takeEarlyPhoto();
   if(config)installLegacyCartRestore({el,config,files});
-  await installProductDesignGallery({el,r,config,say,dialog,esc});
+  await installProductDesignGallery({el,r,config,files,say,dialog,esc});
   installReviewLayout({el,r});
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).

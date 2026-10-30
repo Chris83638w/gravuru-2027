@@ -16,20 +16,25 @@ export function customerFieldLabel(object,index,design){
 }
 
 export function installTextFields({el,r,selected,select}){
- const fields=r.querySelector('.ux-fields'),controls=r.querySelector('.ux-controls');let expanded=null;
+ const fields=r.querySelector('.ux-fields'),controls=r.querySelector('.ux-controls');let expanded=null,lastSelected=null;
  const toggle=id=>{expanded=expanded===id?null:id;if(expanded)select(id);else update();};
+ function revealSelected(){const object=selected();if(object?.type!=='text')return;const field=[...fields.querySelectorAll('[data-ux-text]')].find(n=>n.dataset.uxText===object.id),editor=r.querySelector('.ux-editor');if(field&&editor&&!r.querySelector('#ux-panel-text')?.hidden){const f=field.getBoundingClientRect(),e=editor.getBoundingClientRect();if(f.top<e.top||f.bottom>e.bottom)editor.scrollTo({top:Math.max(0,editor.scrollTop+f.top-e.top-24),behavior:'auto'});}}
  function update(){
-  const object=selected();if(!object||object.type!=='text'||expanded&&object.id!==expanded)expanded=null;
+  const object=selected();if(!object||object.type!=='text')expanded=null;else if(expanded)expanded=object.id;
   for(const row of fields.querySelectorAll('.ux-text-row')){
    let disclosure=row.querySelector('[data-text-options]');
    if(!disclosure){disclosure=document.createElement('button');disclosure.type='button';disclosure.dataset.textOptions=row.dataset.uxRow;disclosure.className='ux-text-options';disclosure.innerHTML='<span class="ux-text-options-title">Schrift &amp; Größe</span><span class="ux-inline-chevron" aria-hidden="true"></span>';row.append(disclosure);}
    const open=expanded===row.dataset.uxRow;disclosure.setAttribute('aria-expanded',String(open));disclosure.setAttribute('aria-controls','ux-inline-text-controls');
+   const active=object?.type==='text'&&object.id===row.dataset.uxRow;row.classList.toggle('is-selected',active);if(active)row.setAttribute('aria-current','true');else row.removeAttribute('aria-current');
    if(open&&controls.parentNode!==row)row.append(controls);
   }
   controls.id='ux-inline-text-controls';controls.hidden=!expanded||object?.id!==expanded;
+  if(object?.type==='text'&&object.id!==lastSelected)requestAnimationFrame(revealSelected);
+  lastSelected=object?.id||null;
  }
  r.addEventListener('click',event=>{const disclosure=event.target.closest('[data-text-options]');if(disclosure)toggle(disclosure.dataset.textOptions);});
  // Disclosure state changes explicitly, never on blur. iOS does not always focus
  // a tapped button; closing on textarea blur can remove it before its click fires.
  el.uxUpdateTextUI=update;update();
+ const observer=new ResizeObserver(revealSelected);observer.observe(r.querySelector('.ux-editor'));window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
 }

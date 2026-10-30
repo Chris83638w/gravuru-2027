@@ -1,6 +1,7 @@
 import {uiIcon} from './ui-icons.mjs';
 import {installToolbarPlacementUi} from './toolbar-placement-ui.mjs';
 import {placePreviewToolbar} from './toolbar-hosts.mjs';
+import {customerHeading,customerSelectionHeading} from './customer-heading.mjs';
 // Layout only: move the existing controls, retaining their events and cart state.
 export async function installLayout({el,r,config}){
  let shopEntry=null,storage=null;try{shopEntry=window.parent.GravuruShopEntry;storage=window.localStorage;}catch{}
@@ -20,7 +21,10 @@ export async function installLayout({el,r,config}){
  function placeToolbar(){placePreviewToolbar({toolbar,workbench,preview,heading:$('.ux-heading'),full,mobile:media.matches});el.uxRefreshTextToolbar?.();}
  media.addEventListener('change',placeToolbar);placeToolbar();
  new MutationObserver(placeToolbar).observe(full,{attributes:true,attributeFilter:['open']});full.addEventListener('close',placeToolbar);
- const heading=$('.ux-heading'),name=document.createElement('span');name.className='ux-product-title';name.textContent=config?.profile.name||'Deine Gestaltung';name.title=name.textContent;
+ const heading=$('.ux-heading'),name=document.createElement('span');name.className='ux-product-title';
+ const title=document.createElement('strong'),features=document.createElement('span');features.className='ux-product-features';name.append(title,features);
+ function updateHeading(){const current=config?customerSelectionHeading(config,el.state):customerHeading({},el.uxProfileGeometry?.());title.textContent=current.title;features.textContent=current.features;document.title=current.title+' · Gravuru';if(!config?.workbench?.embedded)try{window.parent.document.title=document.title;if(window.frameElement)window.frameElement.title=current.title;window.parent.document.querySelector('#editor')?.setAttribute('aria-label',current.title);}catch{}}
+ const headingSync=el.sync;el.sync=function(...args){const result=headingSync.apply(this,args);updateHeading();return result;};updateHeading();
  heading.querySelector('[data-ux=back]').after(name);heading.append($('.ux-session-note'));
  const contents=$('[data-ux=contents]');if(contents){contents.classList.remove('ux-contents-bottom');toolbar.append(contents);}
  for(const [node,label,symbol] of [[$('[data-ux=back]'),'Zum Produkt','back'],[$('[data-ux=account]'),'Entwurf speichern','save'],[$('.ux-canvas-help'),'Hilfe','help']])if(node){node.setAttribute('aria-label',label);node.title=label;node.innerHTML=uiIcon(symbol)+'<span class="ux-tool-label">'+label+'</span>';}
@@ -37,5 +41,14 @@ export async function installLayout({el,r,config}){
  // The same safe return action closes the embedded shop window. Its outer header
  // is hidden only after this ready signal has reached the checked parent frame.
  if(window.parent.GravuruShopEntry){$('.ux-brand').hidden=true; $('.fk-order-status').hidden=true;}
+ // Reserve the actual toolbar and checkout heights, including their wrapped
+ // states. The dimension below the plate belongs inside this remaining space.
+ let roomFrame=0;
+ function fitStageRoom(){roomFrame=0;if(media.matches||full.open)return;const top=stage.getBoundingClientRect().top,dock=$('.fk-buy-dock'),height=dock&&!dock.hidden?dock.getBoundingClientRect().height:0;const room=Math.max(140,window.innerHeight-top-height-6);preview.style.setProperty('--ux-stage-room',Math.floor(room)+'px');}
+ const scheduleRoom=()=>{if(!roomFrame)roomFrame=requestAnimationFrame(fitStageRoom);};
+ const roomSync=el.sync;el.sync=function(...args){const result=roomSync.apply(this,args);scheduleRoom();return result;};
+ const roomObserver=new ResizeObserver(scheduleRoom);for(const node of [heading,toolbar,preview,$('.fk-buy-dock')])if(node)roomObserver.observe(node);
+ window.addEventListener('resize',scheduleRoom);full.addEventListener('close',scheduleRoom);scheduleRoom();
+ window.addEventListener('pagehide',()=>{roomObserver.disconnect();if(roomFrame)cancelAnimationFrame(roomFrame);},{once:true});
  el.uxLayoutReady=true;el.uxRefreshTextToolbar?.();
 }

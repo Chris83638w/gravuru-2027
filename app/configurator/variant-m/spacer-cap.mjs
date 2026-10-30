@@ -14,8 +14,8 @@ export function spacerCap(finishId='silver'){
 }
 
 
-// Customer-confirmed head diameter: 3.6 mm. Preview only; drilling stays source-bound.
-export function screwHead(diameterMm=3.6){
+// Customer-confirmed head diameter: 4.5 mm. Preview only; drilling stays source-bound.
+export function screwHead(diameterMm=4.5){
  // Original alpha bounds: (11,10)-(390,390). Square viewBox keeps proportions;
  // the visible head fits exactly in the requested physical diameter.
  return '<svg data-screw-head-mm="'+diameterMm+'" x="'+(-diameterMm/2)+'" y="'+(-diameterMm/2)+'" width="'+diameterMm+'" height="'+diameterMm+'" viewBox="10.5 10 380 380"><image width="400" height="400" href="'+SCREW_HEAD_IMAGE+'"/></svg>';

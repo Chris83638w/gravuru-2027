@@ -47,7 +47,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
    for(const item of result.items){
     const card=document.createElement('button');card.type='button';card.className='ux-product-card ux-choice-tile';card.setAttribute('aria-pressed',String(item.current&&item.designId===el.state.designId));
     const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;card.append(img);
-    const title=document.createElement('strong');title.textContent=item.designName;card.append(title);
+    card.setAttribute('aria-label','Design '+item.designName);
     const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');card.append(check);
     card.onclick=()=>{if(item.current){gallery.close();if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}chosen=item;confirm.querySelector('.ux-product-summary').textContent=item.designName+' – Neue Größe '+productChoiceInfo(item);confirm.showModal();};grid.append(card);
     img.previewRequest={item,img};if(observer)observer.observe(img);else queue.push({item,img});

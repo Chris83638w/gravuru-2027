@@ -166,8 +166,8 @@
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font-sample] :is(g,path){fill:#252a2e!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit button:is(:hover,[aria-pressed=true]){background:#dce1e5!important;color:#151a1e!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit button:focus-visible{outline:2px solid #343b42!important;outline-offset:-2px!important}
-:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]{color-scheme:light;background:transparent!important;appearance:auto!important;width:48px!important}
-:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]::-webkit-inner-spin-button{opacity:1;appearance:auto;margin:0;cursor:pointer}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]{color-scheme:light;background:transparent!important;appearance:textfield!important;width:32px!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]::-webkit-inner-spin-button{appearance:none!important;display:none!important;margin:0}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit :is([data-direct-font],[data-direct-size-label],.ux-direct-text-actions,.ux-direct-primary){border-color:#c3c9ce!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-ux=delete] svg{stroke:#343b42!important;color:#343b42!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-input{padding:8px 14px!important;border:1px solid #9ba4ac!important;border-radius:12px!important;background:#fffffffa!important;box-shadow:0 5px 20px #18232e26!important;outline:none!important}
@@ -244,3 +244,15 @@
  :host([data-ux-layout][data-ux-neutral]) .ux-direct-primary [data-direct-font] svg{max-width:70px}
  .ux-help-question>div{flex-direction:column}
 }
+
+/* Stable grey controls: do not expose OS-specific white spinner backgrounds. */
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-size-arrows{display:flex;flex-direction:column;flex:none;width:20px}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit .ux-direct-size-arrows button[data-size-arrow]{display:flex;align-items:center;justify-content:center;width:20px!important;min-width:20px!important;min-height:18px!important;height:18px!important;padding:0!important;margin:0!important;border:0!important;border-radius:3px!important;background:transparent!important;color:#596169!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit .ux-direct-size-arrows button[data-size-arrow]:hover{background:#dce1e5!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-size-arrows svg{width:12px!important;height:9px!important;flex:none}
+@media(max-width:767px){:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit .ux-direct-size-arrows button[data-size-arrow]{min-height:22px!important;height:22px!important}}
+/* Preview cards carry their names for assistive technology, without captions. */
+.ux-shell [data-c-design]>span:not([data-design-enlarge]):not(.completion-check):not([data-design-bestseller]){display:none!important}
+.workflow-motif-entry #panel-motif[hidden],.workflow-motif-entry [data-bestsellers][hidden]{display:none!important}
+.workflow-motif-entry .ux-motif-search-hint{margin:6px 0 14px;font-size:14px;line-height:1.45;color:#596169}
+.workflow-motif-entry :is([data-library-more],[data-library-less])[hidden]{display:none!important}

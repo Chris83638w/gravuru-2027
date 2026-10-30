@@ -1,3 +1,7 @@
+## 30.10.2026 · Codex/Astra · Motivsuche inline und Vorschau bereinigt (PR #58)
+
+Designbeschreibungen ausgeblendet; graue, dauerhaft sichtbare Größenpfeile ohne weißen Untergrund; vorhandene fotorealistische Schrauben mit **3,6 mm** Kopfmaß. Gesamte Motivbibliothek ersetzt die Bestseller inline, behält Suche/Kategorie/Treffer und ergänzt den verständlichen Suchhinweis. **84/84 gezielte Tests**, Build und lokale Desktop-/390×664-/375×548-Prüfung. [Bericht und Bilder](docs/handoffs/2026-10-30-konfi-inline-motive-astra.md). Bestehender Entwurf, nichts live. Weitere Sichtung mit Chris, keine neue Claude-Nachricht; Linux/Safari und die früheren Vollauf-Befunde bleiben offen.
+
 ## 30.10.2026 · Codex/Astra · Textleiste und Motivübersicht korrigiert (PR #58)
 
 Rosa Leistenrahmen zur Sichtung; graues Größenfeld mit dauerhaft sichtbaren Pfeilen. Motivübersicht wieder in einer Gruppe, drei Spalten, Startauswahl bis 18 vorhandene erlaubte Motive und nur ein unterer „Mehr anzeigen“-Knopf (zunächst zwölf sichtbar). Explizite Bestsellerlisten/Rankings unverändert. **34/34 gezielte Tests**, Build sowie Desktop/375×548 lokal geprüft. [Bilder und Grenzen](docs/handoffs/2026-10-30-konfi-leiste-motive-astra.md). Bestehender Entwurf, nichts live; weitere Sichtung mit Chris, keine neue Claude-Nachricht.

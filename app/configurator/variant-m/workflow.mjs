@@ -1,3 +1,4 @@
+import {installInlineMotifBrowser} from './inline-motif-browser.mjs';
 import {installRotationPolicy} from './rotation-policy.mjs';
 import {customerLayoutIssue} from './contract.mjs';
 import {canEditElement,legacyElementRights} from './element-rights.mjs';
@@ -128,21 +129,15 @@ export async function installWorkflow(api){
   try{choose.call(this,id,{carry:false});this.state.objects=next.objects;for(const key of next.added)place(this.state.objects.find(o=>o.id===key));known=new Set(this.state.objects.map(o=>o.id));this.normalize();this.sync();return true;}
   finally{changing=false;}
  };
- // Full motif browser: existing controls and event handlers move intact.
+ // The existing library replaces the Bestseller grid in the same panel.
  const panel=$('#panel-motif'),home=panel.parentElement,bestsellers=$('[data-bestsellers]');
- const browser=dialog('motif-browser','Motive entdecken','<div class="workflow-motif-body"></div>');
- const entry=document.createElement('section');entry.className='workflow-motif-entry';entry.innerHTML='<h2>Dein passendes Motiv</h2><p>Suche nach einem Begriff oder entdecke die Kategorien.</p>'+button('discover-motifs','Alle Motive entdecken','class="ux-primary"');home.append(entry);const count=$('[data-library-count]')?.textContent.match(/von\s+(\d+)/)?.[1];if(count)entry.querySelector('button').textContent='Alle '+count+' Motive entdecken';if(bestsellers)entry.prepend(bestsellers);browser.querySelector('.workflow-motif-body').append(panel);
- // Every motif choice adds an independent object. Deletion is at the element.
+ const entry=document.createElement('section');entry.className='workflow-motif-entry';entry.innerHTML='<h2>Dein passendes Motiv</h2><p>Suche nach einem Begriff oder entdecke die Kategorien.</p>'+button('discover-motifs','Alle Motive entdecken');home.append(entry);
+ const count=$('[data-library-count]')?.textContent.match(/von\s+(\d+)/)?.[1];if(count)entry.querySelector('button').textContent='Alle '+count+' Motive entdecken';
+ if(bestsellers)entry.prepend(bestsellers);panel.classList.add('workflow-motif-body');entry.append(panel);
  const pricing=$('.ux-motif-pricing');if(pricing)entry.prepend(pricing);
- const grid=$('[data-library-grid]'),more=$('[data-library-more]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
- let browserScroll=0;browser.addEventListener('close',()=>{browserScroll=browser.scrollTop;});
- const openBrowser=()=>{browser.showModal();requestAnimationFrame(()=>{browser.scrollTop=browserScroll;loadMore();});};
- const loadMore=()=>{if(browser.open&&!more.hidden&&browser.scrollTop+browser.clientHeight>=browser.scrollHeight-250)more.click();};
- browser.addEventListener('scroll',loadMore,{passive:true});let refill=false;new MutationObserver(()=>{if(refill)return;refill=true;requestAnimationFrame(()=>{refill=false;loadMore();});}).observe(grid,{childList:true});
- r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(key==='discover-motifs')openBrowser();if(key==='category-pick')browserScroll=0;if(e.target.closest('[data-motif]')&&browser.open){browser.close();el.state.selected=selected()?.id;el.sync();}});
- const categoryDialog=$('.ux-categories-dialog');
- // Category chooser temporarily replaces the browser; reopen it after selection/cancel.
- categoryDialog.addEventListener('close',()=>{if(home.closest('[hidden]'))return;openBrowser();});
+ const grid=$('[data-library-grid]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
+ panel.querySelector('.ux-list-edge')?.remove();const more=$('[data-library-more]');if(more)more.parentElement.hidden=false;
+ const search=$('[data-library-search]'),searchHint=document.createElement('p');searchHint.id='ux-motif-search-hint';searchHint.className='ux-motif-search-hint';searchHint.textContent='Beschreibe einfach, was du suchst – du musst den genauen Motivnamen nicht kennen.';search.after(searchHint);search.setAttribute('aria-describedby',searchHint.id);
  // Previews use existing rendered vectors, never newly generated design artwork.
  const designPreview=dialog('design-preview','Designvorschau','<div data-design-preview-art></div>'+button('preview-use','Dieses Design verwenden','class="ux-primary"'));
  let previewId=null,hoverTimer;const hover=document.createElement('div');hover.className='workflow-hover-preview';hover.hidden=true;r.append(hover);
@@ -203,8 +198,9 @@ export async function installWorkflow(api){
  });
  const render=el.render;el.render=function(...args){const v=render.apply(this,args);guides();return v;};
  const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId)place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
- for(const d of [browser,designPreview])d.addEventListener('click',e=>{if(e.target!==d)return;const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close();});
+ for(const d of [designPreview])d.addEventListener('click',e=>{if(e.target!==d)return;const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close();});
  await installCompletion(api);
+ installInlineMotifBrowser({root:r,panel,bestsellers});
  el.sync();
 }
 

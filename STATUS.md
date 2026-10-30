@@ -1,3 +1,7 @@
+# 30.10.2026 · Codex · Erstes Schiefer-Fotobeispiel Molly
+
+Originalfoto (800×800) bytegleich in eine SVG eingebettet; originale Herzmaske, Motive und Betsy Bailey erhalten, 22×14 ohne Bohrung, Außenkontur blau. Lokale Upload-/Download-Probe bestanden; Bedienhinweis nur HTML. Geometrischer nativer Check passt, aber Konfi-Leser wandelt Pfadmasken in Rechtecke um und ignoriert Data-URL-Musterbilder. SVG fertig, native Foto-Anbindung ausdrücklich offen; keine Freigabe und keine Serien-/Live-Änderung. [Übergabe](docs/handoffs/2026-10-30-schiefer-foto-beispiel-molly.md). Nächster Schritt: Sichtprüfung des Beispiels und anschließende Fotoserie.
+
 # 29.10.2026 — Codex/Astra: Funkklingel-Oberfläche und alle 126 Designrevisionen live
 
 Chris: „stell es live“. PR #60 (092303d) + gezielter Warenkorb-Abgleich PR #73 (915c102) bereitgestellt; Katalog-PR #7 gemergt. Linux 28/28 und Warenkorb-Paket 38/38 grün. Echter AOSU-Warenkorb 35×18 / Anthrazit / Seitenrahmen / Silikon / Gegenposition = 74,98 EUR; Bearbeiten und Produktseiten-Einstieg geprüft, Testartikel entfernt. Abschluss: 126 Konfigurationen, 42 Modelle, 15.120 aktive Bindungen auf Revision 2, 126 Freigaben, 126 alte Revisionen bytegleich, Optionen/Geometrie unverändert. Keine Shopify-Produkt-/Publikations-/Theme-/Webhook-/Schalteränderung. Warenkorbbild zeigt noch nur Gestaltungsebene; PR #54/Fertigungsabnahme bleiben separat. Restlauf war nicht atomar; Folge-Releases produktweise aktivieren. [Bericht und Screenshots](docs/handoffs/2026-10-29-funkklingeln-live-abschluss-astra.md).

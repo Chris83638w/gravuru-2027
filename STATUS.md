@@ -1,3 +1,7 @@
+## 30.10.2026 · Codex/Astra · Hinweis schmaler, Schraubenkopf 4,5 mm (PR #58)
+
+Überlagerungshinweis auf eine kompakte Desktopzeile mit „Anzeigen“/„Ignorieren“ reduziert; Kopfmaß der fotorealistischen Schrauben auf Chris' neue Vorgabe **4,5 mm** geändert. Bohrungen und Konflikterkennung unverändert. **21/21 gezielte Tests**, Build und Desktop-/375×548-Bedienprüfung bestanden. [Nachtrag und Bilder](docs/handoffs/2026-10-30-konfi-inline-motive-astra.md). Weiterhin Entwurf und lokale Sichtung, nichts live.
+
 ## 30.10.2026 · Codex/Astra · Motivsuche inline und Vorschau bereinigt (PR #58)
 
 Designbeschreibungen ausgeblendet; graue, dauerhaft sichtbare Größenpfeile ohne weißen Untergrund; vorhandene fotorealistische Schrauben mit **3,6 mm** Kopfmaß. Gesamte Motivbibliothek ersetzt die Bestseller inline, behält Suche/Kategorie/Treffer und ergänzt den verständlichen Suchhinweis. **84/84 gezielte Tests**, Build und lokale Desktop-/390×664-/375×548-Prüfung. [Bericht und Bilder](docs/handoffs/2026-10-30-konfi-inline-motive-astra.md). Bestehender Entwurf, nichts live. Weitere Sichtung mit Chris, keine neue Claude-Nachricht; Linux/Safari und die früheren Vollauf-Befunde bleiben offen.

@@ -256,3 +256,12 @@
 .workflow-motif-entry #panel-motif[hidden],.workflow-motif-entry [data-bestsellers][hidden]{display:none!important}
 .workflow-motif-entry .ux-motif-search-hint{margin:6px 0 14px;font-size:14px;line-height:1.45;color:#596169}
 .workflow-motif-entry :is([data-library-more],[data-library-less])[hidden]{display:none!important}
+
+/* Compact overlap notice; mechanical fastening warnings retain their full text. */
+.ux-conflict-compact{display:flex;align-items:center;gap:10px;min-width:0;padding:4px 8px;border:1px solid #ecd6ae;border-radius:8px;background:#fffbf2;text-align:left;font-size:12px;line-height:1.3}
+.ux-conflict-compact .ux-conflict-copy{display:flex;align-items:baseline;flex:1;min-width:0;gap:6px}
+.ux-conflict-compact strong{font-size:12px;white-space:nowrap}.ux-conflict-compact strong::after{content:':'}
+.ux-conflict-compact .ux-conflict-copy>span{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ux-conflict-compact .ux-conflict-actions{display:flex;flex:none;gap:6px}
+:host([data-ux-layout][data-ux-neutral]) .ux-conflict-hints .ux-conflict-compact .ux-conflict-actions button{width:auto!important;min-height:30px!important;height:30px!important;padding:3px 8px!important;margin:0!important;border-radius:6px!important;font-size:12px!important;line-height:1.2!important;font-weight:650!important;white-space:nowrap}
+@media(max-width:767px){.ux-conflict-compact{flex-wrap:wrap;gap:4px;padding:4px 6px}.ux-conflict-compact .ux-conflict-copy{flex-basis:100%}.ux-conflict-compact .ux-conflict-actions{margin-left:auto}:host([data-ux-layout][data-ux-neutral]) .ux-conflict-hints .ux-conflict-compact .ux-conflict-actions button{min-height:44px!important;height:44px!important}}

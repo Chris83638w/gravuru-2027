@@ -2,6 +2,16 @@
 
 Stand: 30.10.2026, Codex/Astra, bestehender Entwurfs-PR #58, Basis dieses Nachtrags `da7139f`. Chris hat die gesammelten Punkte mit „umsetzen“ freigegeben. Weiterhin nur lokale Prüfung, kein Merge nach main und keine Installation. Aktuell direkte Abstimmung mit Chris; keine neue Nachricht an Claude.
 
+## Nachtrag: schmaler Hinweis und 4,5-mm-Schrauben
+
+Chris: „Hinweis kleiner halten“, „schmaler“ und anschließend „Schraubenkopf auf 4,5mm machen“. Überlagerungen erscheinen jetzt als kompakte Zeile mit betroffenen Elementen und „Anzeigen“ / „Ignorieren“. Lange Namen werden platzsparend gekürzt, bleiben im zugänglichen Text und als Tooltip erhalten. Erkennung, Hervorheben, Ignorieren und Wiederanzeigen unverändert; mechanische Befestigungswarnungen behalten ihren vollständigen Text. Die vorhandene fotorealistische Schraubenvorschau hat jetzt **4,5 mm Kopfmaß**, Bohrungen bleiben unverändert. Damit ist die frühere 3,6-mm-Vorgabe dieses Berichts überholt.
+
+**21/21 bestehende gezielte Tests** (`customer-tools`, `customer-orientation`) und Build bestanden. Desktophinweis im echten Editor 40 px hoch; 375 × 548 mit zweizeiligem Hinweis, bedienbaren 44-px-Tasten und sichtbarem Preis geprüft. Anzeigen, Ignorieren und Wiederanzeigen mit einer echten Testüberlagerung bedient. Nur separates Testtab verändert; kein Live-Zugriff. Keine neue Claude-Nachricht während Chris' direkter Sichtung.
+
+![Schmaler Hinweis am Desktop](issue48-orientierung-20261030/hinweis-schmal-desktop.png)
+![Hinweis auf 375 × 548](issue48-orientierung-20261030/hinweis-schmal-375x548.png)
+
+
 ## Änderungen
 
 - Designkarten zeigen Vorschau und Auswahl, keine sichtbaren Beschreibungen. Der zugängliche Name bleibt erhalten, ebenso die Vergrößerung. Auch die produktübergreifende Galerie hat keine sichtbaren Titel mehr.

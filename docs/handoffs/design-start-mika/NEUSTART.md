@@ -62,6 +62,54 @@ Fehlt etwas davon: hier melden, nicht still neu machen.
 - Deine 10 Familien-Muster aus dem alten Ordner nach `gravuru-katalog-neu\designs\familie-mika-120x80\` **kopieren**, nicht verschieben. Der alte Ordner bleibt als Sicherung.
 - Ohne GitHub-Netz arbeitest Du mit der alten Kopie weiter. Das Prüfwerkzeug holst Du einzeln über den Connector.
 
+## 4a. Excel-Dateien und Größen (nur diese zählen)
+
+| Datei | Inhalt | Wo nach Abschnitt 4 |
+|---|---|---|
+| `gravuru-2027/docs/handoffs/design-start-mika/gravuru-preise-2026-10-29.xlsx` | **Preis-Excel** (Kopie): Acryl 3 mm mit Edelstahl-Grundpreisen, Aufpreise je Befestigung, Acryl 5 mm mit Abstandshaltern. **Preise und Lochabstände nur hieraus** | Code-Kopie |
+| `gravuru-2027/docs/handoffs/design-start-mika/schiefer/Schiefer-Gedenktafeln-Groessen-2026-10-29.xlsx` | **Schiefer final**: alle Formen, Größen, skalierbaren Reihen, Optionen, Lochbilder, Chris' Antworten | Code-Kopie |
+| `…/schiefer/konturen-und-loecher.json`, `Gedenktafeln_Schiefer.svg`, `Uebersicht.jpg`, `Gedenktafeln_Schiefer.cdr` | vermessene Konturen und Lochmitten (mm), Chris' Original-Zeichnung | Code-Kopie |
+| `gravuru-katalog./kataloge/Stammdaten-Gravuru.xlsx` | Stammdaten aller Familien (Größen, Formen, Preise, Bohrbilder) | Katalog-Kopie |
+| `gravuru-katalog./serien/edelstahl-tuerschilder-2027.json` | Edelstahl-Größen mit Grundpreisen (aus der Excel) | Katalog-Kopie |
+| `gravuru-katalog./linien/SOLL-BESTAND.xlsx` | Soll-Bestand je Linie und Unterkategorie | Katalog-Kopie |
+| `gravuru-katalog./schriften/sets.xlsx`, `schriften.json` | Schrift-Sets je Thema, die 84 freigegebenen Schriften | Katalog-Kopie |
+| `gravuru-katalog./designs/bestand/gedenktafeln/GEDENKTAFELN-DESIGNS.xlsx` | Altbestand Gedenktafeln (651+) | Katalog-Kopie |
+| `gravuru-katalog./designs/bestand/tuerschilder/TUERSCHILDER-DESIGNS.xlsx` | Altbestand Türschilder inkl. Familie | über den Connector lesen |
+
+**Größen Familienschilder (Edelstahl, ab 12 × 8 cm; Quelle `serien/edelstahl-tuerschilder-2027.json`):**
+
+| Reihe | Größen |
+|---|---|
+| Oval 3 : 2 | 12×8, 15×10, 18×12, 21×14, 24×16, 30×20 |
+| Oval 15 : 8 | 15×8, 22,5×12, 30×16 |
+| Rechteck 3 : 2, eckig **und** abgerundete Ecken | 12×8, 15×10, 18×12, 21×14, 24×16, 30×20, 42×28, 45×30 |
+
+Nicht: lange Streifen, Quadrate. Ein Design je Reihe skaliert auf alle Größen der Reihe. In `design.json` immer die **exakte Größenbindung `sizes`** angeben, zum Beispiel `["GR-ES-RE-120X80-T15"]`; die Schlüssel stehen in der Serie. Ohne `sizes` bietet der Konfi das Design auch auf zu kleinen Größen an.
+
+**Größen Schiefer (Quelle: finale Excel, `schiefer/AUFTRAG.md`):**
+
+| Nr | Reihe | Größen |
+|---|---|---|
+| 1 | 3 : 1 | 30×10, 38×13, 56×18 (Bruchkante); 30×10 (Kordel) |
+| 2 | 2 : 1 | 40×20, 60×30 (Bruchkante); 20×10 (Kordel, blau) |
+| 3 | 3 : 2 | 15×10, 22×14, 30×20 (Bruchkante); 30×20 (Premium); 22×14, 30×20 (Kordel) |
+| 4 | 2 : 3 | 20×30 (Bruchkante, Premium) |
+| 5 | 4 : 3 | 20×15 (Premium), 40×30 (Premium, Bruchkante) |
+| 6 | 3 : 4 | 15×20, 30×40 (Premium) |
+| 7 | 5 : 4 | 25×20 (Kordel, blau) |
+| 8 | 4 : 5 | 20×25 (Kordel, blau) |
+| 9 | Quadrat | 10×10, 13×13, 16×16, 20×20, 22×22, 25×25, 30×30 (Bruchkante); 20×20 (Kordel) |
+| 10 | Rund | Ø 20, 22, 28, 35,5 (Bruchkante) |
+| 11 | Herz | 10×10, 20×20, 25×25; 10×10 (Kordel, blau) |
+| 12 | Herz 24×19 | geschnitten |
+| 13 | Herz 22,5×26,7 | Kordel, blau |
+| 14 | Herz schief | 18×13, 26×19 (geschnitten) |
+| 15 | Kreuz | 21,5×30 (geschnitten), auch für Tiere |
+| 16 | Stern | ca. 20×19 (geschnitten), nur Sternenkinder |
+| 17 | Knochen | ca. 23×10,5 (geschnitten), nur Hunde |
+
+Je skalierbare Reihe 20 Designs. Welche Optionen (Löcher, Abstandshalter) eine Größe hat, steht nur in der Excel.
+
 ## 5. Regeln und Entscheidungen von Chris (alle gelten)
 
 **Allgemein**

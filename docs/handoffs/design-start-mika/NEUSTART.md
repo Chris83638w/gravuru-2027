@@ -42,9 +42,9 @@ Fehlt etwas davon: hier melden, nicht still neu machen.
 | 1 | `node -v` | `v24.x` (am 29.10. war es v24.22.1) |
 | 2 | `Get-ChildItem "C:\Users\Mikail Erdem\Documents\ChatGPT\Produkte Design\Produkte-Design"` | `gravuru-2027`, `gravuru-katalog` |
 | 3 | Pfade sind Windows-Pfade, **kein** `/workspace`, kein `/root/…` | Ja. Sonst bist Du in der Cloud: stoppen und melden |
-| 4 | `git ls-remote https://github.com/Chris83638w/gravuru-2027.git HEAD` | eine SHA (Netz zu GitHub ok) |
-| 5 | GitHub-Connector schreiben: Datei `auftraege/mika-neustart/schreibtest.txt` im Katalog-Branch `dev/familienschilder-20261029-astra-mika` anlegen | Commit-SHA, „Verified“ |
-| 6 | Prüfwerkzeug (Abschnitt 6), Probelauf: `--reihe=gedenktafeln-22x14` | `Fertig: {"passt":21,"prüfen":1,"FEHLER":2}` (die 2 FEHLER haben kein Ziel, das ist erwartet) |
+| 4 | `git -c http.sslBackend=openssl ls-remote https://github.com/Chris83638w/gravuru-2027.git HEAD` (`-c` gilt nur für diesen Befehl, keine Konfigänderung) | eine SHA. **Kein Blocker:** Ohne Git arbeitest Du mit der vorhandenen Kopie und holst Einzeldateien über den Connector |
+| 5 | GitHub-Connector schreiben, **signiert**: Datei `auftraege/mika-neustart/schreibtest-signiert.txt` per GraphQL `createCommitOnBranch` im Katalog-Branch `dev/familienschilder-20261029-astra-mika` anlegen. Nicht über die Git-Data-API (Blobs/Trees/Commits), die erzeugt unsignierte Commits | Commit-SHA, REST-Prüfung `verification.verified: true` |
+| 6 | Prüfwerkzeug (Abschnitt 6), Probelauf: `--reihe=gedenktafeln-22x14`. Voraussetzung: Python mit fontTools (`python -c "import fontTools"`), `$env:GRAVURU_PYTHON=(Get-Command python).Source`, und der Befehl darf Unterprozesse starten (bei `spawn EPERM` die Ausführung außerhalb der Sandbox anfragen; Chris bestätigt) | `Fertig: {"passt":21,"prüfen":1,"FEHLER":2}` (die 2 FEHLER haben kein Ziel, das ist erwartet) |
 | 7 | Kontaktbogen als **PNG-Datei** in den Chat hochladen | Chris sieht das Bild. Keine `sandbox:/C:/…`-Links |
 
 **Erst wenn 1–7 grün sind, wird gestaltet.** Bei Rot: Fehler wörtlich melden, nicht umgehen, keine Schutzregeln ändern.
@@ -207,7 +207,7 @@ Branches: `dev/schiefer-<thema>-20261029-astra-mika` (menschen, hunde, katzen, t
 **Weg A – Connector (bevorzugt):**
 - In Paketen von höchstens 40 Dateien je Commit.
 - Nach jedem Paket die Commit-SHA in `auftraege/<thema>/upload-protokoll.md` eintragen. Bei Abbruch dort weitermachen.
-- Commits über den Connector werden von GitHub signiert, das ist Pflicht.
+- Commits **nur** über GraphQL `createCommitOnBranch` (mehrere Dateien je Commit, von GitHub signiert). Nach jedem Commit `verification.verified` prüfen. Ist es `false`: stoppen und melden. Die Git-Data-API (Blobs/Trees/Commits) erzeugt unsignierte Commits und ist nicht erlaubt.
 - **Kein** lokales `git push` mit unsignierten Commits.
 
 **Weg B – wenn A scheitert:**

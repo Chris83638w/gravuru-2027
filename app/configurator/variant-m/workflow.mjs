@@ -134,9 +134,6 @@ export async function installWorkflow(api){
  const entry=document.createElement('section');entry.className='workflow-motif-entry';entry.innerHTML='<h2>Dein passendes Motiv</h2><p>Suche nach einem Begriff oder entdecke die Kategorien.</p>'+button('discover-motifs','Alle Motive entdecken','class="ux-primary"');home.append(entry);const count=$('[data-library-count]')?.textContent.match(/von\s+(\d+)/)?.[1];if(count)entry.querySelector('button').textContent='Alle '+count+' Motive entdecken';if(bestsellers)entry.prepend(bestsellers);browser.querySelector('.workflow-motif-body').append(panel);
  // Every motif choice adds an independent object. Deletion is at the element.
  const pricing=$('.ux-motif-pricing');if(pricing)entry.prepend(pricing);
- const extra=document.createElement('button');extra.type='button';extra.className='ux-extra-motif';extra.textContent='+ Weiteres Motiv auswählen';entry.append(extra);
- extra.hidden=config?.customerAdditions?.motifs===false||profile.features?.motifsAllowed===false;
- extra.addEventListener('click',()=>{openBrowser();say('');});
  const grid=$('[data-library-grid]'),more=$('[data-library-more]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
  let browserScroll=0;browser.addEventListener('close',()=>{browserScroll=browser.scrollTop;});
  const openBrowser=()=>{browser.showModal();requestAnimationFrame(()=>{browser.scrollTop=browserScroll;loadMore();});};

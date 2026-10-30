@@ -1,3 +1,7 @@
+## 30.10.2026 · Codex/Astra · Textleiste und Motivübersicht korrigiert (PR #58)
+
+Rosa Leistenrahmen zur Sichtung; graues Größenfeld mit dauerhaft sichtbaren Pfeilen. Motivübersicht wieder in einer Gruppe, drei Spalten, Startauswahl bis 18 vorhandene erlaubte Motive und nur ein unterer „Mehr anzeigen“-Knopf (zunächst zwölf sichtbar). Explizite Bestsellerlisten/Rankings unverändert. **34/34 gezielte Tests**, Build sowie Desktop/375×548 lokal geprüft. [Bilder und Grenzen](docs/handoffs/2026-10-30-konfi-leiste-motive-astra.md). Bestehender Entwurf, nichts live; weitere Sichtung mit Chris, keine neue Claude-Nachricht.
+
 ## 30.10.2026 · Codex/Astra · Orientierung, Übernahme und kompakte Vorschau (PR #58)
 
 Aktives Textfeld/Schildtext/Schriftleiste wechseln gemeinsam, kundenverständlicher flacher Kopf, vollständige Bemaßung und metallische **3,6-mm-Schraubenköpfe**. Motivklick fügt hinzu. Lokale Fragehilfe mit Fotoempfehlungen ohne feste DPI-Grenze. Beim Designwechsel bleiben eigene Texte/Fotos, beim Größenwechsel die vollständige Gestaltung erhalten; inkompatible Ziele brechen ohne Verlust ab. **146/146 gezielte Tests grün**, Build sowie Desktop/390×664/375×548 lokal geprüft. [Bericht, Bilder und offene Abnahme](docs/handoffs/2026-10-30-konfi-orientierung-astra.md). Bestehender Entwurf, nichts live. Linux/Safari, die früheren Vollauf-Befunde und spätere Shop-Abnahme bleiben offen. Aktuell direkte Abstimmung mit Chris, keine neue Claude-Nachricht.

@@ -159,14 +159,15 @@
 :host([data-ux-layout][data-ux-neutral]) .ux-heading button:focus-visible{outline:2px solid #fff!important;outline-offset:-3px!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-preview>.ux-canvas-toolbar{padding:4px 12px!important;background:#fff!important;border:0!important;border-radius:0!important;flex-wrap:wrap;gap:4px!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-design-entry{margin-left:auto!important;font-weight:700!important;border:1px solid #899198!important;border-radius:8px!important;background:#f1f3f5!important;white-space:nowrap}
-:host([data-ux-layout][data-ux-neutral]) :is(.ux-preview,.c-large-preview) .ux-direct-edit{background:#f4f5f6!important;color:#252a2e!important;border:1px solid #8d959c!important;border-radius:12px!important;box-shadow:0 3px 12px #17212a12!important}
+:host([data-ux-layout][data-ux-neutral]) :is(.ux-preview,.c-large-preview) .ux-direct-edit{background:#f4f5f6!important;color:#252a2e!important;border:2px solid var(--ux-selection)!important;border-radius:12px!important;box-shadow:0 3px 12px #17212a12!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-preview>.ux-direct-edit.is-workbench{width:calc(100% - 24px)!important;max-width:calc(100% - 24px)!important;margin:0 12px 8px!important;padding:6px 8px!important;box-sizing:border-box}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit :is(button,label,input[type=number]),
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font]>.ux-ui-icon{color:#252a2e!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-direct-font-sample] :is(g,path){fill:#252a2e!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit button:is(:hover,[aria-pressed=true]){background:#dce1e5!important;color:#151a1e!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit button:focus-visible{outline:2px solid #343b42!important;outline-offset:-2px!important}
-:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]{color-scheme:light;background:#fff!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]{color-scheme:light;background:transparent!important;appearance:auto!important;width:48px!important}
+:host([data-ux-layout][data-ux-neutral]) .ux-direct-edit input[type=number]::-webkit-inner-spin-button{opacity:1;appearance:auto;margin:0;cursor:pointer}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit :is([data-direct-font],[data-direct-size-label],.ux-direct-text-actions,.ux-direct-primary){border-color:#c3c9ce!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit [data-ux=delete] svg{stroke:#343b42!important;color:#343b42!important}
 :host([data-ux-layout][data-ux-neutral]) .ux-direct-input{padding:8px 14px!important;border:1px solid #9ba4ac!important;border-radius:12px!important;background:#fffffffa!important;box-shadow:0 5px 20px #18232e26!important;outline:none!important}

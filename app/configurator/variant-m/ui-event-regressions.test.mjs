@@ -338,7 +338,7 @@ test('Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten L
  assert.equal(offers(false,true,textOnly),false);assert.equal(offers(false,true,withSlot),true);assert.equal(offers(true,false,textOnly),true);assert.equal(offers(false,false,withSlot),false);
  assert.equal(offers(false,true,{...textOnly,logo:{enabled:true,vectorUpload:true,extraPriceCents:1299}}),true,'expliziter neuer Vektorlogo-Produktstand zeigt den Upload');
  assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title,icon\]\)/,'Reiterleiste nutzt uploadOffered');
- assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title\]\)=>button\('guide-'/,'Hilfe-Dialog nutzt uploadOffered');
+ assert.match(source('ux.mjs'),/photo:photoEnabled&&photoAvailableForDesign\(config,el.state.designId\)/,'question help respects current photo capabilities');
 });
 // Chris 22./23.10.2026: Befestigung bei Universal-/Katalogprodukten als Kacheln mit Icon, Bezeichnung und Aufpreis
 // („+2,99 €“ / „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount]; Auswahlhaken einheitlich wie bei Designs.
@@ -426,17 +426,15 @@ test('usability glyph cache distinguishes catalogue spacing and alignment for ed
  for(const change of [{lineHeight:20},{textAnchor:'start'},{letterSpacing:2},{w:30}]){env.changed={...object,...change};const before=renders,measured=vm.runInContext('textBounds(changed)',env);assert.equal(renders,before+1);assert.equal(vm.runInContext('textBounds({...changed})',env),measured);assert.equal(renders,before+1);if(change.lineHeight)assert.equal(measured.height,20);}
 });
 
-test('motif UI uses the real array allowlist and frozen replace rights before changing a template',async()=>{
- const {replacedMotif}=await import('./motif-choice.mjs');
- const original={id:'m',type:'motif',motif:'old',x:20,y:20,w:10,h:20},object={...original},messages=[];let allowed=false,added=0,records=0;
- const el={state:{objects:[object],selected:'m'},uxMotifChoiceIds:['allowed'],catalog:{motif_bounds:{allowed:[0,0,10,10]}},add(){added++;},record(){records++;},normalize(){},sync(){}};
- const env={el,motifMode:'replace',motifTarget:()=>object,may:()=>allowed,replacedMotif,say:s=>messages.push(s),place(){}};vm.createContext(env);
+test('motif UI checks the real allowlist and adds independent objects without replacing the selected template',()=>{
+ const original={id:'m',type:'motif',motif:'old',x:20,y:20,w:10,h:20,uxLocked:true},object={...original},messages=[],placed=[];let added=0;
+ const el={state:{objects:[object],selected:'m'},uxMotifChoiceIds:['allowed'],add(input){this.state.objects.push({...input,id:'new-'+(++added)});},sync(){}};
+ const env={el,say:s=>messages.push(s),place:o=>placed.push(o.id)};vm.createContext(env);
  vm.runInContext(block('workflow.mjs',' const add=el.add;',' // Gate progression').replace(' // Gate progression',''),env);
- el.add({type:'motif',motif:'foreign'});assert.deepEqual(object,original);assert.equal(records,0);
- el.add({type:'motif',motif:'allowed'});assert.deepEqual(object,original);assert.match(messages.at(-1),/nicht zum Ersetzen/);
- allowed=true;el.add({type:'motif',motif:'allowed'});assert.equal(object.motif,'allowed');assert.equal(el.state.objects.length,1);assert.equal(records,1);assert.equal(added,0);
- Object.assign(object,original);env.may=(_o,right)=>right==='replace';el.add({type:'motif',motif:'allowed'});
- assert.equal(object.motif,'allowed');assert.equal(object.w,original.w);assert.equal(object.h,original.h);assert.equal(object.x,original.x);assert.equal(object.y,original.y);
+ el.add({type:'motif',motif:'foreign'});assert.deepEqual(object,original);assert.equal(added,0);assert.match(messages.at(-1),/nicht verfügbar/);
+ for(let i=0;i<2;i++)el.add({type:'motif',motif:'allowed'});
+ assert.deepEqual(object,original);assert.equal(el.state.objects.length,3);assert.deepEqual(placed,['new-1','new-2']);
+ assert.deepEqual(el.state.objects.slice(1).map(o=>o.motif),['allowed','allowed']);
 });
 
 test('actual acrylic action guard obeys explicit motif deletion while retaining fixed geometry and old locks',()=>{

@@ -13,13 +13,16 @@ export function spacerCap(finishId='silver'){
 }
 
 
-// Schraubenkopf für die Vorschau (Kreuzschlitz, Edelstahl, ca. 8 mm). Nur Ansicht, nie Gravurgeometrie.
-export function screwHead(diameterMm=8){
- const r=diameterMm/2,c=r*.42,w=r*.16;
- return `<circle cy="${(r*.12).toFixed(3)}" r="${r}" fill="#000" opacity=".28"/>`
-  +`<circle r="${r}" fill="#6f7477"/><circle r="${(r*.94).toFixed(3)}" fill="#b9bec1"/>`
-  +`<circle r="${(r*.94).toFixed(3)}" fill="none" stroke="#eef1f2" stroke-width="${(r*.08).toFixed(3)}" stroke-dasharray="${(r*1.6).toFixed(3)} ${(r*4.3).toFixed(3)}" transform="rotate(200)" opacity=".8"/>`
-  +`<circle cx="${(-r*.28).toFixed(3)}" cy="${(-r*.3).toFixed(3)}" r="${(r*.42).toFixed(3)}" fill="#f4f6f7" opacity=".35"/>`
-  +`<path d="M${-c} ${-w}H${-w}V${-c}H${w}V${-w}H${c}V${w}H${w}V${c}H${-w}V${w}H${-c}Z" fill="#3b3f42"/>`
-  +`<path d="M${-c} ${w}H${-w}V${c}" fill="none" stroke="#e6e9ea" stroke-width="${(r*.05).toFixed(3)}" opacity=".7"/>`;
+// Customer-confirmed head diameter: 3.6 mm. Preview only; drilling stays source-bound.
+export function screwHead(diameterMm=3.6){
+ const r=diameterMm/2;let face='';
+ for(let i=0;i<100;i++){
+  const a=i*Math.PI/50,b=(i+1.12)*Math.PI/50,light=.5+.33*Math.cos(a*2-.7)+.09*Math.cos(a*6);
+  const color=light<.5?blend('#777d82','#c7cccf',light*2):blend('#c7cccf','#f8fafb',(light-.5)*2);
+  face+='<path d="M0 0L'+(r*.91*Math.cos(a)).toFixed(4)+' '+(r*.91*Math.sin(a)).toFixed(4)+'A'+r*.91+' '+r*.91+' 0 0 1 '+(r*.91*Math.cos(b)).toFixed(4)+' '+(r*.91*Math.sin(b)).toFixed(4)+'Z" fill="'+color+'"/>';
+ }
+ const cross='M-.13 -.55L.13 -.55 .1 -.16 .16 -.1 .55 -.13 .55 .13 .16 .1 .1 .16 .13 .55 -.13 .55 -.1 .16 -.16 .1 -.55 .13 -.55 -.13 -.16 -.1 -.1 -.16Z';
+ return '<g data-screw-head-mm="'+diameterMm+'"><circle cy="'+r*.06+'" r="'+r+'" fill="#000" opacity=".22"/><circle r="'+r+'" fill="#6c747a"/><circle r="'+r*.96+'" fill="#e9edef"/>'+face
+  +'<circle r="'+r*.9+'" fill="none" stroke="#fff" stroke-width="'+r*.025+'" opacity=".45"/>'
+  +'<g transform="scale('+r+') rotate(28)"><path d="'+cross+'" fill="#3a4147" stroke="#929ba1" stroke-width=".055" stroke-linejoin="round"/><path d="M-.08 -.45L-.06 -.08 -.45 -.06M.08 .45L.06 .08 .45 .06" fill="none" stroke="#151c22" stroke-width=".04"/><path d="M.1 -.43L.08 -.13 .43 -.1" fill="none" stroke="#f4f6f8" stroke-width=".025"/></g></g>';
 }

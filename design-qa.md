@@ -1,3 +1,7 @@
+# Design QA — Orientierung und sichtbare Bemaßung
+
+Lokale Sichtprüfung Desktop 1280×720, 390×664 und 375×548: flacher Kundenkopf, aktive Feld-/Objektmarkierung, Feldname in der Schriftleiste, mobile zwei Reihen mit vollständig sichtbarem Papierkorb, komplette Bemaßung und freier Preis. Schraubenköpfe metallisch und 3,6 mm, Bohrungen unverändert. Eigene Texte und synthetisches Foto nach Design-/Größenwechsel in separater Testkopie erhalten. 146/146 gezielte Tests und Build bestanden. [Bilder, genaue Regeln und Grenzen](docs/handoffs/2026-10-30-konfi-orientierung-astra.md). Kein Live-/Safari-/Linux-Nachweis; Nutzeroriginale unangetastet.
+
 # Design QA — Layoutnachtrag nach Richtung 6
 
 Neun gesammelte Punkte umgesetzt. Lokale Sichtprüfung Desktop 1440×900, iPhone-13-Viewport 390×664 und SE-Viewport 375×548. Heller Werkzeugblock oberhalb der Platte, dunkle Kopfzeile, pinke Griffe, sichtbare Designs und weitere Bibliotheksmotive. Direkteingabe tatsächlich 42 px / Cinzel und ohne Zweizeilen-Scrollbalken am Desktop; Gravurgröße unverändert 8 mm. Mobile Textleiste zweireihig, Schritte/Preis frei, kein horizontaler Hüllenüberlauf. Bestehende Nutzerentwürfe unangetastet. [Bilder und Grenzen](docs/handoffs/2026-10-30-konfi-layout-nachtrag-astra.md). Kein Live-/Safari-Nachweis; zusätzliche Bestseller-Dateien von Chris stehen aus.

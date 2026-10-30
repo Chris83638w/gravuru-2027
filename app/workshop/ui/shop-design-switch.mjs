@@ -45,7 +45,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
     candidate={client,data,resources,frame,fragment:nextFragment,pending:structuredClone({...transfer||{texts:[]},...(selection?{selection}:{})}),previous:entry};
     const ready=new Promise((resolve,reject)=>{
      const timer=win.setTimeout(()=>{removeListener();reject(Error('Das neue Design konnte nicht vollständig geladen werden. Deine vorherige Gestaltung bleibt erhalten.'));},timeoutMs);
-     const listener=event=>{if(event.origin===win.location.origin&&event.source===frame.contentWindow&&event.data?.type==='gravuru-ux-ready'){removeListener();resolve();}};
+     const listener=event=>{if(event.origin===win.location.origin&&event.source===frame.contentWindow&&['gravuru-ux-ready','gravuru-design-transfer-failed'].includes(event.data?.type)){removeListener();if(event.data.type==='gravuru-design-transfer-failed')reject(Error(event.data.message||'Die Gestaltung konnte nicht übernommen werden.'));else resolve();}};
      removeListener=()=>{win.clearTimeout(timer);win.removeEventListener('message',listener);};win.addEventListener('message',listener);
     });
     entry.frame.inert=true;current=candidate;activate(candidate,api(candidate));frame.src=switchedEditorPath(data,nextFragment);container.append(frame);

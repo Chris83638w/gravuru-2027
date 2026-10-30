@@ -3,7 +3,7 @@ import {customerLayoutIssue} from './contract.mjs';
 import {canEditElement,legacyElementRights} from './element-rights.mjs';
 import {layoutReviewIssues} from './layout-review.mjs';
 import {objectSurface} from './surfaces.mjs';
-import {motifChoiceTarget,replacedMotif} from './motif-choice.mjs';
+import {captureDesignContent,carryDesignContent} from './design-content-transfer.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
@@ -92,22 +92,11 @@ export async function installWorkflow(api){
   else{const f=surface();o.x=f.x+f.width/2;o.y=f.y+f.height/2;el.state.selected=o.id;say(NO_FREE_SPACE_MESSAGE);}
  }
  const may=(o,right)=>!o.uxLocked&&(config?.workshopElementRights?canEditElement(config,el.state.designId,o,right):legacyElementRights(o)[right]);
- let motifMode='replace';
- const motifTarget=()=>motifChoiceTarget(el.state.objects,el.state.selected,chosenProfile().designs.find(d=>d.id===el.state.designId)?.objects);
  const add=el.add;el.add=function(...args){
-  if(args[0]?.type==='motif'&&motifMode==='replace'){
-   if(Array.isArray(this.uxMotifChoiceIds)&&!this.uxMotifChoiceIds.includes(args[0].motif)){say('Dieses Motiv ist hier nicht verfügbar.');return;}
-   const target=motifTarget();
-   if(target){
-    if(!may(target,'replace')){say('Das Vorlagenmotiv ist in diesem Produktstand noch nicht zum Ersetzen freigegeben.');return;}
-    const replacement=replacedMotif(target,args[0].motif,this.catalog.motif_bounds[args[0].motif]);
-    // Replacement is independent of scale. The renderer fits the new motif
-    // proportionally inside this unchanged viewport when size is fixed.
-    if(!may(target,'scale')){replacement.w=target.w;replacement.h=target.h;}
-    this.record();Object.assign(target,replacement);this.state.selected=target.id;this.normalize();this.sync();say('Motiv ersetzt.');return;
-   }
-  }
-  const before=new Set(this.state.objects.map(o=>o.id));const result=add.apply(this,args);for(const o of this.state.objects.filter(o=>!before.has(o.id))){place(o);if(o.type==='text')o.uxCustomerText=true;}if(args[0]?.type==='motif')motifMode='replace';this.sync();return result;};
+  if(args[0]?.type==='motif'&&Array.isArray(this.uxMotifChoiceIds)&&!this.uxMotifChoiceIds.includes(args[0].motif)){say('Dieses Motiv ist hier nicht verfügbar.');return;}
+  const before=new Set(this.state.objects.map(o=>o.id));const result=add.apply(this,args);
+  for(const o of this.state.objects.filter(o=>!before.has(o.id))){place(o);if(o.type==='text')o.uxCustomerText=true;}
+  this.sync();return result;};
  // Gate progression on the completed placement and the current geometry.
  const layoutDialog=dialog('layout-check','Bitte Gestaltung prüfen','<div data-layout-problems></div>'+button('layout-fit','Automatisch einpassen')+button('close','Weiter bearbeiten'));
  const reviewIssues=()=>layoutReviewIssues({config,profile:chosenProfile(),objects:el.state.objects,design:chosenProfile().designs.find(d=>d.id===el.state.designId),resources:{motifs:config?.localResources?.motifs||[]}});
@@ -127,24 +116,27 @@ export async function installWorkflow(api){
  }});
  // New uploads use the same free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));
- const transfer=dialog('design-transfer','Design wechseln','<p>Deine Texte im neuen Design verwenden? Schrift und Anordnung kommen von der neuen Vorlage.</p>'+button('transfer-yes','Deine Texte übernehmen','class="ux-primary"')+button('transfer-no','Beispieltexte verwenden')+button('close','Abbrechen'));
- let requestedDesign=null,changing=false;
+ let changing=false;
  const choose=el.chooseDesign;
- function finishChange(carry){const source=changedCustomerTexts(el.state.objects,chosenProfile().designs.find(d=>d.id===el.state.designId)),id=requestedDesign;requestedDesign=null;if(!id)return;transfer.close();changing=true;try{choose.call(el,id,{carry:false});if(carry){const target=el.state.objects;const unmatched=transferTexts(source,target);const kept=[];for(const old of unmatched){let existing=target.find(o=>o.id===old.id);if(!existing){existing={...old,id:el.id(),uxPersonal:true,uxCustomerText:true};target.push(existing);place(existing);}kept.push(old.text);}if(kept.length)say('Zusätzliche Texte erhalten: '+kept.map(t=>'„'+t+'“').join(', ')+'. Bitte die Position prüfen.');}known=new Set(el.state.objects.map(o=>o.id));el.normalize();el.sync();}finally{changing=false;}}
- el.chooseDesign=function(id){if(id===this.state.designId)return;const template=chosenProfile().designs.find(d=>d.id===this.state.designId);const changed=changedCustomerTexts(this.state.objects,template).length>0;if(changed){requestedDesign=id;transfer.showModal();return;}changing=true;try{return choose.call(this,id);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=false;}};
- r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(key==='transfer-yes'||key==='transfer-no')finishChange(key==='transfer-yes');});
- transfer.addEventListener('close',()=>{requestedDesign=null;});
+ el.chooseDesign=function(id){
+  if(id===this.state.designId)return;
+  const template=chosenProfile().designs.find(d=>d.id===id);if(!template)return;
+  let next;
+  try{next=carryDesignContent(captureDesignContent(this.state.objects,chosenProfile().designs.find(d=>d.id===this.state.designId)),template,config,{id:()=>this.id()});}
+  catch(error){say(error.message);return false;}
+  changing=true;
+  try{choose.call(this,id,{carry:false});this.state.objects=next.objects;for(const key of next.added)place(this.state.objects.find(o=>o.id===key));known=new Set(this.state.objects.map(o=>o.id));this.normalize();this.sync();return true;}
+  finally{changing=false;}
+ };
  // Full motif browser: existing controls and event handlers move intact.
  const panel=$('#panel-motif'),home=panel.parentElement,bestsellers=$('[data-bestsellers]');
  const browser=dialog('motif-browser','Motive entdecken','<div class="workflow-motif-body"></div>');
  const entry=document.createElement('section');entry.className='workflow-motif-entry';entry.innerHTML='<h2>Dein passendes Motiv</h2><p>Suche nach einem Begriff oder entdecke die Kategorien.</p>'+button('discover-motifs','Alle Motive entdecken','class="ux-primary"');home.append(entry);const count=$('[data-library-count]')?.textContent.match(/von\s+(\d+)/)?.[1];if(count)entry.querySelector('button').textContent='Alle '+count+' Motive entdecken';if(bestsellers)entry.prepend(bestsellers);browser.querySelector('.workflow-motif-body').append(panel);
- // Normal choice replaces the selected/master motif. Extra motifs have one
- // explicit entry into the library; deletion is at the selected element.
+ // Every motif choice adds an independent object. Deletion is at the element.
  const pricing=$('.ux-motif-pricing');if(pricing)entry.prepend(pricing);
  const extra=document.createElement('button');extra.type='button';extra.className='ux-extra-motif';extra.textContent='+ Weiteres Motiv auswählen';entry.append(extra);
  extra.hidden=config?.customerAdditions?.motifs===false||profile.features?.motifsAllowed===false;
- extra.addEventListener('click',()=>{motifMode='add';openBrowser();say('');});
- browser.addEventListener('close',()=>{if(!categoryDialog.open)motifMode='replace';});
+ extra.addEventListener('click',()=>{openBrowser();say('');});
  const grid=$('[data-library-grid]'),more=$('[data-library-more]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
  let browserScroll=0;browser.addEventListener('close',()=>{browserScroll=browser.scrollTop;});
  const openBrowser=()=>{browser.showModal();requestAnimationFrame(()=>{browser.scrollTop=browserScroll;loadMore();});};
@@ -214,7 +206,7 @@ export async function installWorkflow(api){
  });
  const render=el.render;el.render=function(...args){const v=render.apply(this,args);guides();return v;};
  const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId)place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
- for(const d of [transfer,browser,designPreview])d.addEventListener('click',e=>{if(e.target!==d)return;const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close();});
+ for(const d of [browser,designPreview])d.addEventListener('click',e=>{if(e.target!==d)return;const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close();});
  await installCompletion(api);
  el.sync();
 }

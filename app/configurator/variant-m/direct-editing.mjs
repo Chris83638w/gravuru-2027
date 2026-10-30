@@ -32,6 +32,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   primary.className='ux-direct-primary';secondary.className='ux-direct-secondary';
   for(const node of [...actions.children])(node.matches('[data-direct-font],[data-direct-style]')||node===extras?primary:secondary).append(node);
   actions.append(primary,secondary);
+  const selectionName=document.createElement('span');selectionName.className='ux-direct-selection';selectionName.setAttribute('aria-live','polite');primary.prepend(selectionName);
   const box=document.createElement('div');box.className='ux-direct-input';box.hidden=true;box.innerHTML='<textarea rows="1" aria-label="Text direkt im Design bearbeiten" spellcheck="false" aria-describedby="ux-direct-count"></textarea><small id="ux-direct-count" class="ux-direct-count" data-direct-count aria-live="polite"></small>';stage.append(box);
   const openButton=panel.querySelector('[data-direct-open]'),field=box.querySelector('textarea'),count=box.querySelector('[data-direct-count]'),size=panel.querySelector('[data-direct-size]'),font=panel.querySelector('[data-direct-font]'),color=panel.querySelector('[data-direct-color]'),confirm=panel.querySelector('[data-direct-confirm]');
   const style=document.createElement('style');style.textContent=`
@@ -76,6 +77,10 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open;
     const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full});
     const text=o?.type==='text',photo=!!o?.uxUploadId&&!o.uxVectorLogo,motif=o?.type==='motif';
+    selectionName.hidden=!text;selectionName.textContent=text?(el.uxTextLabel?.(o)||'Text'):'';selectionName.title=selectionName.textContent;
+    panel.setAttribute('aria-label',text?selectionName.textContent+' bearbeiten':'Ausgewähltes Element bearbeiten');
+    const alignHost=mobile?secondary:primary;if(extras.parentNode!==alignHost){if(mobile)secondary.prepend(extras);else primary.append(extras);}
+    const deleteButton=panel.querySelector('[data-ux=delete]'),deleteHost=mobile?primary:tail;if(deleteButton.parentNode!==deleteHost)deleteHost.append(deleteButton);
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
     if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space','0px');stage.style.setProperty('--ux-toolbar-space','0px');el.style.setProperty('--ux-textbar-h','0px');if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=text||!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent=fontDisplayName(o.font||'Schrift');font.title=font.textContent;

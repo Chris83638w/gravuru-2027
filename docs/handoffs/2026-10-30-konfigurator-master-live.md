@@ -1,5 +1,7 @@
 # Verbindlicher Konfigurator-Master – 30.10.2026
 
+**Nachtrag:** Technischer Warenkorbhinweis inzwischen live ausgeblendet, main-Konflikte in PR #77 unter vollständigem Erhalt von `app/` aufgelöst. Gedenktafel-Migration nach Chris' neuer Entscheidung ausdrücklich vertagt. [Aktueller Abgleich und Nachweise](2026-10-30-master-abgleich-warenkorb.md). Die datierten Prüfungen unten bleiben historische Nachweise.
+
 ## Entscheidung von Chris
 
 „Unser ist der Master.“ Die gemeinsam geprüfte Oberfläche und Bedienung gilt für alle Produktlinien. Ausschließlich **Ausführungen** wird je Linie ergänzt (z. B. Funkklingel-Farbe und Klingelposition). Keine spätere Funkklingel-Oberfläche in den freigegebenen Master übernehmen. Chris hat die Veröffentlichung ausdrücklich freigegeben.
@@ -56,7 +58,7 @@ Private Screenshots und Prüfbelege sind gesichert. Kundenfoto, Originalmedien, 
 ## Offene Punkte und nächster Schritt
 
 - **Gedenktafel-Einstieg:** Das Produkt `gedenktafel-fuer-menschen-220x140` öffnet weiterhin eine ältere, separat eingebundene `produktvorschau`. Die Übernahme dieser Produktlinie in den Master muss ihren Foto-/Preis-/Bearbeitungsvertrag erhalten; sie ist noch nicht erfolgt. Nicht als bereits vollständig migriert ausgeben.
-- **Warenkorb-Darstellung:** Bei der nativen D8-Position zeigt das Theme noch die technische Eigenschaft „Bearbeitbarer Entwurf“. Der Bearbeiten-Link unter dem Bild funktioniert. Die technische Eigenschaft bei einer gezielten Theme-Korrektur ausblenden, nicht umbenennen/löschen: Die Preisfunktion benötigt sie weiterhin.
+- **Warenkorb-Darstellung erledigt:** „Bearbeitbarer Entwurf“ wird bei nativen Positionen im Live-Theme ausgeblendet; Daten und Preisvertrag bleiben erhalten. Beide Dateien exakt zurückgelesen, fünf Positionen/fünf Bearbeiten-Links/134,00 EUR nach Neuladen bestätigt. Siehe Nachtrag oben.
 - Echter iPhone-/Safari-Test mit Tastatur und Zweifingergeste sowie echte Bestellung, Danke-Seite/E-Mail und Fertigungs-/Maschinenabnahme bleiben offen. Desktop- und lokale Mobilansichten ersetzen diese Nachweise nicht.
 - Chris' angekündigte zusätzliche Bestseller-Dateien fehlen weiterhin; keine Bestseller-Rangfolge erfunden. Feine Logodetails unter 0,5 mm erfordern weiterhin manuelle Prüfung.
 - Nächster technischer Schritt: den dokumentierten Live-Branch prüfen und kontrolliert in die Repo-Hauptlinie übernehmen; keine fremde Funkklingel-Oberfläche hineinmischen. Anschließend die abweichenden Produkt-Einstiege und ausschließlich ihre Ausführungen separat anbinden.

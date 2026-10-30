@@ -1,5 +1,7 @@
 # Theme-App-Block „Jetzt personalisieren“
 
+**Live-Nachtrag 30.10.2026:** `cart-native-proof-visibility.patch` blendet ausschließlich die technische Eigenschaft „Bearbeitbarer Entwurf“ nativer Positionen in beiden Cart-Sections aus. Preisvertrag, Daten und Bearbeiten-Link bleiben erhalten. Im MAIN-Theme **185833718140** installiert und vollständig zurückgelesen; sechs Liquid-Fälle sowie bestehender Live-Warenkorb geprüft. [Prüfsummen, Sicherung, Rückweg und Grenzen](../../../docs/handoffs/2026-10-30-master-abgleich-warenkorb.md). Die nachfolgende Testtheme-Aussage vom 27.10. beschreibt den damaligen Stand.
+
 Quelle für die **bestehende** Theme-App-Erweiterung `gravuru-storefront` der App „Gravuru Konfigurator“ (Client-ID `9640dd7a6907f0c73e7013ea8c24869b`). Dieser Ordner ist **kein** eigenständiges Shopify-App-Projekt: Ein `shopify app deploy` aus einem unvollständigen Projekt entfernt nicht enthaltene Module. Die Dateien werden in das vollständige private Erweiterungsprojekt auf dem Host kopiert (siehe [SHOP-EINSTIEG.md](../SHOP-EINSTIEG.md)). Die bisherigen Blöcke `configurator.liquid` und `personalizer.liquid` bleiben unverändert erhalten.
 
 | Datei | Ziel in der Erweiterung | Zweck |

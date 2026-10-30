@@ -1,0 +1,18 @@
+diff --git a/sections/main-cart.liquid b/sections/main-cart.liquid
+--- a/sections/main-cart.liquid
++++ b/sections/main-cart.liquid
+@@ -263,2 +263,5 @@
+                                       {%- for property in item.properties -%}
++{%- if property.first == 'Bearbeitbarer Entwurf' and item.properties['_gravuru_config'] != blank and item.properties['_gravuru_rev'] != blank -%}
++  {%- continue -%}
++{%- endif -%}
+ {%- if item.properties['_Gravuru Vorgang'] != blank and item.properties['Bearbeitbarer Entwurf'] != blank -%}
+diff --git a/sections/cart-drawer.liquid b/sections/cart-drawer.liquid
+--- a/sections/cart-drawer.liquid
++++ b/sections/cart-drawer.liquid
+@@ -233,2 +233,5 @@
+                                   {%- for property in item.properties -%}
++{%- if property.first == 'Bearbeitbarer Entwurf' and item.properties['_gravuru_config'] != blank and item.properties['_gravuru_rev'] != blank -%}
++  {%- continue -%}
++{%- endif -%}
+ {%- if item.properties['_Gravuru Vorgang'] != blank and item.properties['Bearbeitbarer Entwurf'] != blank -%}

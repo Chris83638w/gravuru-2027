@@ -1,3 +1,7 @@
+## 30.10.2026 – Codex: Warenkorb bereinigt, Master mit main abgeglichen
+
+Nach Chris' „mach das . gedenk d sprechen wir ab“: Im MAIN-Theme 185833718140 nur `main-cart.liquid`/`cart-drawer.liquid` ergänzt, technische native Eigenschaft „Bearbeitbarer Entwurf“ ausgeblendet, Daten/Preisvertrag/Bearbeiten-Link erhalten. Beide Dateien exakt zurückgelesen, **6/6 Liquid-Fälle**; Live-Warenkorb fünf Positionen/fünf Bearbeiten-Links/unverändert **134,00 EUR**. Offizieller lokaler Theme-Validator mangels Paket nicht verfügbar. `main` b544f54d in PR #77 kontrolliert abgeglichen, gesamter Anwendungscode samt Tests exakt wie vorher auf 5db1e56; keine spätere Funkklingel-Oberfläche eingemischt. Unabhängige Offline-Hilfen **4/4** grün. Keine neue Laufzeit, keine Datenmigration, kein neuer Vollauf behauptet. PR bleibt offen; Gedenktafel ausdrücklich bis separater Abstimmung unverändert. [Prüfsummen, Grenzen, Rückweg und nächster Schritt](docs/handoffs/2026-10-30-master-abgleich-warenkorb.md).
+
 ## 30.10.2026 – Codex: freigegebener Master live, Warenkorbtests erfolgreich
 
 Nach Chris' ausdrücklicher Freigabe veröffentlicht: unveränderlicher Oberflächen-Tag `konfigurator-master-20261030` (`ce7c866`), Laufzeitquelle `5f69917` auf `dev/konfi-live-20261030-astra`, Shopify `gravuru-2027-master-20261030-v3`. Live-Bundle exakt gegengeprüft; D8-Revision 2 mit fünf Bindungen aktiv. Bestehende Staffel, historische Angebote und freigegebene Oberfläche erhalten. Shopify-Medienbildregistrierung und CRLF-tolerante Gravurtext-Rücklese beheben die letzten Warenkorbfehler. Linux-Vollauf vor Hotfixes **1928/1928**, danach gezielt **58/58** und final **83/83**, Windows-Client **13/13**, kompilierte Function **14/14**, jeweils keine Fehler/Skips in diesen Läufen (nicht addieren). Alle 926 aktiven Produkte einschließlich 126 Funkklingeln validieren. Echter D8-Warenkorb mit Haus/Logo samt Wiederbearbeitung **34,67 EUR**, bestehende vier Positionen erhalten; separater Gedenktafel-Test mit Foto/Haus **34,67 EUR** erfolgreich. Keine Bestellung/Zahlung. Offen: Gedenktafel noch auf älterem separatem Einstieg, technische D8-Eigenschaft im Theme ausblenden, echtes Safari und Bestell-/Fertigungsabnahme. Kein Merge nach `main` behauptet. [Vollständige Übergabe, Belege und Rückweg](docs/handoffs/2026-10-30-konfigurator-master-live.md).
@@ -69,6 +73,37 @@ Gemeinsame Bestellansicht mit getrennten Stores; eingefrorene Profilschrift korr
 ## 29.10.2026 · Codex/Astra · Issue #48 B: Acryladapter zur Prüfung
 
 AA/AS/S/S aus Katalog 680f1744: 162 Größen / 630 Preis-Halter-Farbkombinationen, Rückplatte +10 mm, Hochformate, Quadrat und Spiegelung angeschlossen. Claudes Optionsgruppen samt Fixture-Korrektur fa7eaae und main 2468bd1 übernommen. 66 gezielte Tests und lokale Desktop-/390×664-/375×548-Bilder; vorheriger Vollauf 1809 bestanden / 2 Fehler / 5 übersprungen; finaler Windows-Vollauf **1829 gesamt / 1824 bestanden / 0 Fehler / 5 übersprungen**, beide Fehler im vollständigen Lauf behoben. Build: 112 Module / 14 Styles. Desktop-S/S-Abschlussbeleg nach Browser-Wiederverbindung und Neuladen ergänzt; altes Bild historisch markiert. Nur Entwurf, keine Freigabe/Live-/Shopify-/Katalogänderung. [Bericht](docs/handoffs/2026-10-29-issue48-acryl-bericht.md). C bleibt separat PR #54; Zusammenführung der zwei Änderungen in acrylic-artwork.mjs gezielt prüfen.
+# 29.10.2026 — Codex/Astra: Funkklingel-Oberfläche und alle 126 Designrevisionen live
+
+Chris: „stell es live“. PR #60 (092303d) + gezielter Warenkorb-Abgleich PR #73 (915c102) bereitgestellt; Katalog-PR #7 gemergt. Linux 28/28 und Warenkorb-Paket 38/38 grün. Echter AOSU-Warenkorb 35×18 / Anthrazit / Seitenrahmen / Silikon / Gegenposition = 74,98 EUR; Bearbeiten und Produktseiten-Einstieg geprüft, Testartikel entfernt. Abschluss: 126 Konfigurationen, 42 Modelle, 15.120 aktive Bindungen auf Revision 2, 126 Freigaben, 126 alte Revisionen bytegleich, Optionen/Geometrie unverändert. Keine Shopify-Produkt-/Publikations-/Theme-/Webhook-/Schalteränderung. Warenkorbbild zeigt noch nur Gestaltungsebene; PR #54/Fertigungsabnahme bleiben separat. Restlauf war nicht atomar; Folge-Releases produktweise aktivieren. [Bericht und Screenshots](docs/handoffs/2026-10-29-funkklingeln-live-abschluss-astra.md).
+
+# 29.10.2026 — Codex: Live-Pilot, gezielter Warenkorb-Abgleich
+
+PR #60 bereitgestellt (092303d), Linux 28/28, 126/42/15.120 Store-Abgleich bestanden. Pilot AOSU Revision 2 / 120 Bindungen live; UI-Bedienprüfung einschließlich Löschen und Verschieben bestanden. Warenkorb erkennt getrennte Funkklingel-Fertigung noch nicht korrekt: Erzeuger/Prüfer widersprechen sich beim alten Fertigungsblocker. Minimalfix und Regression (sechs echte Format-/Positions-Prüfstände) lokal grün; vor Rest-Rollout Linux + echter Warenkorb wiederholen. Chris: „stell es live“. Bericht: docs/handoffs/2026-10-29-funkklingeln-live-warenkorb-astra.md .
+
+## 2026-10-29 – Codex/Astra: Live-Freigabe der Funkklingel-Oberfläche
+
+Chris im Chat: „stell es live“. Revisionsvorbereitung ergänzt: vorhandenes Produktdokument, Geometrie, Preise, Ressourcen und SEO bleiben erhalten; Designs und ihre expliziten move/delete/replace-Rechte werden über neue Revisionen übernommen. 27/27 gezielte Tests lokal bestanden. Serverbasis der 16 geänderten Laufzeit-/Testdateien bytegenau gegen GitHub geprüft; isolierte Linux-Abnahme und private Sicherung laufen. Noch keine Aktivierung behauptet. Nächster Schritt: Linux-/Store-Abnahme, AOSU-Pilot, neue Bindungsrevisionen; keine zusätzlichen Shopify-Produktveröffentlichungen oder Themeänderungen im Rahmen dieser UI-Freigabe.
+
+## 2026-10-29 – Codex/Astra: Format-/Positionsblöcke und bearbeitbare Designelemente (PR #60)
+
+Nutzerauftrag: Format und Position untereinander; Designtexte und Motive verschieb-/löschbar. Kompakte Auswahlzeilen und Rechte in vorbereiteten neuen Revisionen umgesetzt, ohne Frontend-Bypass. 14/14 Tests, Build, 126 Produktkopien / 42 Modelle / 30.240 Auswahlfälle sowie 47.628 Elementfälle für move/delete geprüft. Browser-Löschen, Rückgängig und unabhängiges Verschieben des Kreismotivs bestanden. Nur Vorschau/eigener Branch. Bericht: docs/handoffs/2026-10-29-funkklingeln-bloecke-elementrechte.md. Nächster Schritt: Revisionsänderung bei späterer Katalogübernahme mitführen; kein reines UI-Deployment als Rechtefreigabe ausgeben.
+
+## 2026-10-29 – Funkklingeln: kompakte Untertabs in Ausführungen (PR #60)
+
+Format & Position / Rahmen & Farbe / Befestigung als Untertabs; Hauptschritte unverändert. Kleinere Kacheln und deutliches Silikon-Tubensymbol. 15/15 gezielte Tests und Build erfolgreich; Desktop, mobile Vorschau, Tastatur, Auswahlpersistenz und SIL-Preis geprüft. Nur eigener Branch/lokale Vorschau, nichts live geändert. Bericht: docs/handoffs/2026-10-29-funkklingeln-ausfuehrung-untertabs.md.
+
+## 29.10.2026 · Codex/Astra · PR #60 nach Chris' Rückmeldung: AOSU-Auswahl und Materialien
+
+- Vier Schritte oben unverändert. Runde Farbfelder, kompakte Format-/Rahmensilhouetten gemäß AOSU-Referenz; große Produktkarten der Optionsauswahl zurückgenommen. Vorhandene leere Edelstahltextur, Acrylkante und dezenter Glanz nur in der Vorschau.
+- 24/24 gezielte Tests und Build grün; erneut 126 Produkte / 42 Modelle / 30.240 Auswahlfälle. Keine Daten-/Preisänderung und kein Livezugriff. [Nachtrag mit Quellen und aktuellen Bildern](docs/handoffs/2026-10-29-funkklingeln-aosu-auswahl-nachtrag.md).
+
+## 29.10.2026 · Codex/Astra · Funkklingel-Pilot: Vorschau/Bildauswahl korrigiert, nur Review
+
+- Eigener Branch `dev/funkklingeln-vorschau-bildauswahl-20261029-astra`, Basis `2717da5`. Große formatgerechte Platte und Maßlinien; Bildauswahl Format/Position/Rahmen/Farbe; 16 native Designs ohne wiederholte Produktkarten. Formatbezogene Rechte-Reparatur und Text-Einpassfläche korrigiert.
+- 50/50 gezielte Windows-Tests und Build grün. 126 Produkte / 42 Modelle / 30.240 Options-/Positionsfälle geprüft. Getrennter Katalogvorschlag: 42 Rezepte, 1.344 Zuordnungen, 8.064 Design-/Positionsprüfungen mit Originalmotiven. Chrome Desktop + 390×844 sichtbar geprüft.
+- Kein Livezugriff. Neue Katalogrevisionen, vollständige Kontaktbogenabnahme, Linux/iPhone und Pilot-Warenkorb bleiben offen. Katalog-PDF-Neubau lokal durch fehlendes cairosvg blockiert; kein vollständiger Build behauptet.
+- [Bericht, Quellen und Screenshots](docs/handoffs/2026-10-29-funkklingeln-vorschau-bildauswahl-astra.md). Nächster Schritt: Claude-Review in Issue #46 und getrennte Revisionsplanung, noch keine weiteren Shopify-Veröffentlichungen.
 
 ## 29.10.2026 · Claude als Operator · Live: PR #52 + PR #49 (`main` `62ead38`)
 

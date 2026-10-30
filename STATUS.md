@@ -1,3 +1,7 @@
+## 30.10.2026 · Codex/Astra · Kopfbereich etwas heller (PR #58)
+
+Chris' Farbsichtung: Kopfbereich von `#252a2e` auf das etwas hellere Blaugrau `#343e46`. Helle Schrift und 4-px-Abstand bleiben erhalten. Build und Browser-Sichtprüfung bestanden; reine CSS-Farbe, kein neuer Funktionstestlauf. [Bild](docs/handoffs/issue48-orientierung-20261030/kopf-blaugrau-heller.png). Weiterhin lokale Vorschau, nichts live.
+
 ## 30.10.2026 · Codex/Astra · Vier Pixel Abstand unter dem Kopf (PR #58)
 
 Chris' Feinschliff: 4 px zwischen dunklem Kopf und Vollbild-Werkzeugzeile am Desktop. Browser nachgemessen: Kopfende y=50, Werkzeugzeile y=54. Build bestanden, sichtbare Bemaßung/Preis geprüft; reine CSS-Änderung ohne neuen Testlauf. [Bild](docs/handoffs/issue48-orientierung-20261030/kopf-abstand-4px.png). Lokal im Entwurf, nichts live.

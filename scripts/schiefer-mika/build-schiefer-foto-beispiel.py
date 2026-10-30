@@ -91,6 +91,12 @@ for p in preview.iter():
     for k in ['fill','stroke']:
         if p.get(k)=='#111111':p.set(k,'#eeeeeb')
 write('vorschau.svg',dump(preview))
+with_hint=copy.deepcopy(preview)
+hint=el('g',{'id':'upload-hinweis','data-gravur':'nein','data-role':'upload-hinweis','aria-label':'Foto hochladen'})
+hint.append(el('rect',{'x':'42.5','y':'91.6','width':'40','height':'10','rx':'5','fill':'#ffffff','fill-opacity':'0.95','stroke':'#d4d7d2','stroke-width':'0.2'}))
+hint_text=el('text',{'x':'62.5','y':'97.9','text-anchor':'middle','font-family':'sans-serif','font-size':'3.2','fill':'#242627'})
+hint_text.text='＋ Foto hochladen';hint.append(hint_text);with_hint.append(hint)
+write('Molly-22x14-Vorschau-mit-Uploadhinweis.svg',dump(with_hint))
 shutil.copy2(SOURCE/'preview.png',OUT/'vorlage.png')
 shutil.copy2(photo_file,OUT/'originalfoto.jpg')
 metadata={
@@ -102,7 +108,7 @@ metadata={
  'transfer':{'scale':.7,'offsetMm':[5,0],'by':'Mikail: Originalfotos verlustfrei; Maske erhalten; Upload-Hinweis nur Bedienung'},
  'fonts':['Betsy Bailey'],'photos':[{'box':box,'file':'originalfoto.jpg','px':list(Image.open(photo_file).size),'originalSha256':sha(photo_bytes),'maskSvgPath':mask,'placeholder':True,'engrave':False,'embeddedByteIdentical':True}],
  'fields':{'foto-1':{'label':'Foto hochladen'}},
- 'delivery':{'singleFile':'Molly-22x14-mit-Foto.svg','textEditable':'design.svg','view':'vorschau.svg','buttonIsUiOnly':True,'productionNote':'Musterfoto als Original eingebettet; Kundenupload ersetzt nur Foto. SVG enthält keinen Upload-Hinweis.'}
+ 'delivery':{'singleFile':'Molly-22x14-mit-Foto.svg','textEditable':'design.svg','view':'Molly-22x14-Vorschau-mit-Uploadhinweis.svg','buttonIsUiOnly':True,'productionNote':'Musterfoto als Original eingebettet; Kundenupload ersetzt nur Foto. Ansicht enthält Upload-Hinweis; Gravur-SVG enthält keinen Upload-Hinweis.'}
 }
 write('design.json',json.dumps(metadata,ensure_ascii=False,indent=2))
 actual=ET.fromstring((OUT/'Molly-22x14-mit-Foto.svg').read_text('utf-8'))

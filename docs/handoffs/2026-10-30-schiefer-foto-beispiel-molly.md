@@ -4,10 +4,11 @@ Nutzerauftrag vom 30.10.2026: Hunde/Katzen künftig auch mit Foto, Originalfotos
 
 ## Dateien
 
+- `Molly-22x14-Vorschau-mit-Uploadhinweis.svg` / `molly-foto-mit-uploadhinweis.png`: korrigierte Kundenansicht mit sichtbarem „Foto hochladen“ direkt auf dem Foto. Foto und Maske unverändert; Hinweis als separate Vorschau-Ebene `data-gravur="nein"`.
 - `Molly-22x14-mit-Foto.svg`: eine eigenständige SVG-Datei mit unverändert eingebettetem JPEG, Vektor-Herzmaske, Originalmotiven und Schriftpfaden. Kein Upload-Button, keine externen Bild- oder Schriftdateien nötig. Schwarze Gravurvektoren, blaue Außenkontur, transparenter Hintergrund.
 - `design.svg`: editierbare Fassung mit echten Texten, derselben eingebetteten Originalbilddatei und derselben Vektormaske; Schrift Betsy Bailey aus dem freigegebenen Katalog erforderlich.
 - `vorschau.svg` / `beispiel-fertig.png`: Ansicht mit heller Gravurdarstellung auf einfarbigem dunklem Hintergrund. Keine Simulation eines konkreten Gravurergebnisses.
-- `BEISPIEL.html`: lokale Bedienprobe. Klick auf Foto oder Upload-Hinweis öffnet die Dateiauswahl. Das Foto wird ohne Neucodierung eingebettet, unverzerrt in der unveränderten Herzmaske dargestellt und kann als einzelne SVG heruntergeladen werden. Der Hinweis gehört ausschließlich zur HTML-Bedienoberfläche.
+- `BEISPIEL.html`: lokale Bedienprobe. Klick auf Foto oder Upload-Hinweis öffnet die Dateiauswahl. Das Foto wird ohne Neucodierung eingebettet, unverzerrt in der unveränderten Herzmaske dargestellt und kann als einzelne SVG heruntergeladen werden. Der Hinweis ist in der Bedienoberfläche und in der gesonderten Kundenansicht sichtbar; er wird nicht in die Gravur-Ausgabe übernommen.
 - `vorlage.png`, `originalfoto.jpg`: unveränderte Bestandsreferenzen.
 
 ## Herkunft und Gestaltung
@@ -31,6 +32,6 @@ Echter Konfi-Code in isolierter Prüffamilie: geometrische Prüfung `passt`, kei
 `konfi-unveraendert.svg`, `konfi-parser-pruefung.json` und `ergebnis.json` dokumentieren den nativen Stand unverändert. Keine App-, Familien-, Preis- oder Live-Änderung; vorhandene Serie ohne Foto bleibt erhalten. Die neue vollständige Fotoserie ist noch nicht erstellt. Nächster Schritt ist die Sichtprüfung dieses Beispiels; für die spätere Konfi-Anbindung müssen Originalbild und freie Maske durchgängig erhalten bleiben.
 
 
-Katalog: https://github.com/Chris83638w/gravuru-katalog./commit/7934edde637bba963814334b773039e9d723cba2 (verified true). Aufgabenbranch dev/schiefer-foto-beispiel-20261030-astra-mika. Lokal: outputs/schiefer-foto-beispiel-molly/.
+Katalog: https://github.com/Chris83638w/gravuru-katalog./commit/a175e7082ae6330a1772f88f6c67469d2a123b9b (verified true). Aufgabenbranch dev/schiefer-foto-beispiel-20261030-astra-mika. Lokal: outputs/schiefer-foto-beispiel-molly/.
 
 Reproduktion unter Windows: Projektstruktur aus NEUSTART verwenden; Skripte im Projektordner work/ ausfuehren. Python fontTools/Pillow, Node/Playwright und Chrome wie vorhanden. Reihenfolge build → check → render; render schreibt nur lokale Dateien.

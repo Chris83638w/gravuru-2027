@@ -10,6 +10,7 @@ import {createShopDesignGallery} from './shop-design-gallery.mjs';
 import {shopGalleryModel} from './shop-gallery-model.mjs';
 import {queueGalleryPreview} from './shop-gallery-preview-queue.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
+import {customerVectorLogoPreview,VECTOR_LOGO_REQUEST_BYTES} from './customer-vector-logo-media.mjs';
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
 import {PAUSED_MESSAGE} from './konfi-status.mjs';
@@ -23,7 +24,7 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 // Warenkorb des vorhandenen Pfads (bound-test-cart → draft-cart-handoff). Keine Händleranmeldung,
 // Galerie nur nach Sitzungsprüfung im selben Datenbereich; keine Preise aus dem Browser, keine Fertigungsfreigabe.
 const API='/api/shop-entry/';
-const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs'];
+const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs','shop-selection-transfer.mjs'];
 const WARM_RUNTIME={'/_merchant-acryl-editor.html':['/_acryl-runtime/lazy/katalog-kern.json']};
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const gid=(value,kind)=>typeof value==='string'&&new RegExp('^gid://shopify/'+kind+'/[1-9][0-9]{0,19}$').test(value);
@@ -373,6 +374,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      if([...url.searchParams.keys()].some(k=>!['page','theme'].includes(k))||url.searchParams.getAll('page').length>1||url.searchParams.getAll('theme').length>1||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
      checkOrigin(req,{mutating:false});const context=active(req);checkGalleryBinding(context.store,context.binding,cardFor(context.store,context.binding));
      const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred'});active(req);
+     return json(res,200,result);
+    }
+    if(action==='customer-vector-logo/preview'){
+     if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+     if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
+     checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,VECTOR_LOGO_REQUEST_BYTES);
+     if(input.productId!==context.session.productId||input.productRevision!==context.session.productRevision)fail(409,'shop_entry_product','Die Logodatei gehört nicht zu diesem Produktstand.');
+     const result=await customerVectorLogoPreview(modelFor(context.store,context.binding).universal,input);active(req);
      return json(res,200,result);
     }
     if(action==='design-gallery-preview'){

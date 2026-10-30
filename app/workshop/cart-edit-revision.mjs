@@ -8,7 +8,7 @@ import {DRAFT_SCHEMA} from '../configurator/variant-m/contract.mjs';
 import {editorUi} from '../configurator/variant-m/toolbar-placement-model.mjs';
 
 const fail = (status, code, message) => {throw Object.assign(new Error(message), {status, code});};
-const IMAGE_TYPES = {jpg: 'image/jpeg', png: 'image/png', webp: 'image/webp'};
+const IMAGE_TYPES = {jpg: 'image/jpeg', png: 'image/png', webp: 'image/webp',svg:'image/svg+xml'};
 
 function open({drafts, configId, rev, draftToken}) {
   if (typeof configId !== 'string' || !CART_CONFIG_ID.test(configId) || !Number.isSafeInteger(rev) || rev < 1) fail(404, 'cart_configuration', 'Diese Konfigurations-Revision ist nicht bekannt.');
@@ -49,6 +49,7 @@ export function loadCartRevision({drafts, repository, configId, rev, draftToken}
     ...(native ? {document: {schema: DRAFT_SCHEMA, profileId: profile.id, profileRevision: profile.revision, productId: profile.binding?.productId ?? null,
       design: state.design, options: state.options,...(ui?{ui}:{})}} : {product:input.product,customer:input.customer,designId:input.designId,profiles:input.profiles}),
     photos: (manifest.photos || []).map(p => native ? ({uploadId: p.uploadId, width: p.width, height: p.height,
+      ...(p.kind==='vector-logo'?{name:p.name||'logo.svg',mime:'image/svg+xml',vectorLogo:p.vectorLogo}:{}),
       ...(p.edited ? {edited: {width: p.edited.width, height: p.edited.height}} : {})}) :
       ({uploadId:p.fieldId,fieldId:p.fieldId,mediaId:p.mediaId ?? input.customer.fields.find(f=>f.id===p.fieldId)?.mediaId,
         width:p.width,height:p.height,crop:p.crop,tone:p.tone,hidden:input.customer.fields.find(f=>f.id===p.fieldId)?.deleted===true})),
@@ -64,6 +65,6 @@ export function loadCartRevisionPhoto({drafts, configId, rev, draftToken, upload
   const entry = edited ? photo?.edited : photo;
   if (!photo || !entry?.path) fail(404, 'cart_edit_photo', 'Dieses Bild gehört nicht zur Revision.');
   const bytes = files.get(entry.path), extension = entry.path.split('.').pop();
-  if (!bytes || !IMAGE_TYPES[extension]) fail(404, 'cart_edit_photo', 'Dieses Bild gehört nicht zur Revision.');
+  if (!bytes || !IMAGE_TYPES[extension] || extension==='svg'&&(!native||photo.kind!=='vector-logo'||!photo.vectorLogo)) fail(404, 'cart_edit_photo', 'Dieses Bild gehört nicht zur Revision.');
   return {bytes: Buffer.from(bytes), contentType: IMAGE_TYPES[extension], width: entry.width, height: entry.height};
 }

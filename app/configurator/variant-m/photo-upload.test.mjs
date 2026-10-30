@@ -74,7 +74,10 @@ test('Alle Foto-Eingabefelder des Kundeneditors: Galerie wählbar (JPG/PNG/WebP,
     const source=fs.readFileSync(path.join(HERE,file),'utf8');
     assert.doesNotMatch(source,/capture=|\.capture\s*=|setAttribute\('capture'/,file);
   }
-  assert.match(fs.readFileSync(path.join(HERE,'ux.mjs'),'utf8'),/accept="\$\{PHOTO_ACCEPT\}" data-ux-file/);
+  const acceptExpression=fs.readFileSync(path.join(HERE,'ux.mjs'),'utf8').match(/accept="\$\{([^}]+)\}" data-ux-file/)[1];
+  const accept=new Function('vectorLogos','VECTOR_LOGO_ACCEPT','PHOTO_ACCEPT','return '+acceptExpression);
+  assert.equal(accept(false,'.svg,image/svg+xml',PHOTO_ACCEPT),PHOTO_ACCEPT,'Fotoprodukte behalten ausschließlich JPG/PNG/WebP');
+  assert.equal(accept(true,'.svg,image/svg+xml',PHOTO_ACCEPT),'.svg,image/svg+xml','neuer Vektorlogo-Stand erlaubt keine Rasterbilder');
   assert.match(fs.readFileSync(path.join(HERE,'acrylic-scene.mjs'),'utf8'),/photoInput\.accept=PHOTO_ACCEPT/);
 });
 

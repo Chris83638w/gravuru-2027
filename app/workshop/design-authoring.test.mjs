@@ -18,6 +18,7 @@ test('merchant creates a separate design, edits native text/motif/photo, and pre
  let r=authorDesign(source,id,'new',{name:'Eigene Gestaltung',font:'Open Sans'});const added=r.designId;
  assert.deepEqual(source,original);assert.deepEqual(r.document.config.profile.designs[0],original.config.profile.designs[0]);
  r=authorDesign(r.document,added,'motif',{motif:await resource('heart')});const motifId=r.objectId;
+ assert.deepEqual(r.document.elementRights[added][motifId],{content:false,color:false,replace:true,move:false,scale:false,delete:true});
  r=authorDesign(r.document,added,'replace',{objectId:motifId,motif:await resource('tree')});
  r=authorDesign(r.document,added,'photo');const photoId=r.objectId;
  const photo=r.document.config.profile.designs.find(d=>d.id===added).objects.find(o=>o.id===photoId);Object.assign(photo,{x:70,y:70,w:30,h:35});check(r.document);

@@ -44,7 +44,7 @@ async function photoFile(request, endpoint, token, uploadId, edited) {
   const response = await request(endpoint + '/photos/' + encodeURIComponent(uploadId) + (edited ? '?edited=1' : ''), {headers: {'X-Gravuru-Draft': token}});
   if (!response.ok) throw Error('Ein gespeichertes Foto konnte nicht geladen werden. Bitte erneut hochladen.');
   const blob = await response.blob(), type = blob.type || 'image/png';
-  return new File([blob], (edited ? 'bearbeitet-' : 'original-') + uploadId + '.' + (type.split('/')[1] || 'png'), {type});
+  return new File([blob], (edited ? 'bearbeitet-' : 'original-') + uploadId + '.' + (type==='image/svg+xml'?'svg':type.split('/')[1] || 'png'), {type});
 }
 
 // Stellt Gestaltung, Ausführung, Menge und Fotos der Revision im Editor her. Passt der Produkt-/Profilstand nicht,
@@ -60,7 +60,7 @@ export async function installCartEdit(api, {request = window.parent?.GravuruMerc
     if (blocking.length) {say(blocking.join(' ')); return null;}
     for (const photo of loaded.photos) {
       const file = await photoFile(request, endpoint, loaded.token, photo.uploadId, false), url = URL.createObjectURL(file);
-      const entry = {file, url, editSourceUrl:url, width: photo.width, height: photo.height};
+      const entry = {file, url, editSourceUrl:url, width: photo.width, height: photo.height,...(photo.vectorLogo?{vectorLogo:photo.vectorLogo}:{})};
       if (photo.edited) {const blob = await photoFile(request, endpoint, loaded.token, photo.uploadId, true); Object.assign(entry, {blob, edited: true, originalUrl: url, url: URL.createObjectURL(blob), width: photo.edited.width, height: photo.edited.height});}
       api.files.set(photo.uploadId, entry);
     }

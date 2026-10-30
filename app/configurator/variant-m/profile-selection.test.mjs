@@ -41,3 +41,13 @@ test('preset colors normalize/dedupe while null inherits and empty has no preset
   assert.deepEqual(fallback, before);
   assert.throws(() => colorPalettes(fallback, ['red']), /Profilfarbe/);
 });
+
+test('starter grid fills from allowed existing motifs while preserving curated bestseller lists',()=>{
+ const available=Array.from({length:24},(_,i)=>({key:'motif-'+i})),fallback=[{key:'blocked'},{key:'motif-5'},{key:'motif-1'}];
+ const before=JSON.stringify({available,fallback}),filled=bestsellerChoices(available,fallback,null,{fillTo:18});
+ assert.equal(filled.length,18);assert.deepEqual(filled.slice(0,2),[{key:'motif-5'},{key:'motif-1'}]);assert.equal(new Set(filled.map(m=>m.key)).size,18);assert.ok(filled.every(m=>available.some(a=>a.key===m.key)));
+ assert.deepEqual(bestsellerChoices(available,fallback,[],{fillTo:18}),[]);
+ assert.deepEqual(bestsellerChoices(available,fallback,['motif-9','blocked','motif-2'],{fillTo:18}),[{key:'motif-9'},{key:'motif-2'}]);
+ assert.equal(bestsellerChoices(available.slice(0,3),fallback,null,{fillTo:18}).length,3);
+ assert.equal(JSON.stringify({available,fallback}),before);
+});

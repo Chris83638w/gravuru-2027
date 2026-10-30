@@ -1,0 +1,298 @@
+TAP version 13
+# Subtest: native geometry, revisions and input remain unchanged
+ok 1 - native geometry, revisions and input remain unchanged
+  ---
+  duration_ms: 1.2822
+  type: 'test'
+  ...
+# Subtest: five native processing profiles stay independent from photo setting
+ok 2 - five native processing profiles stay independent from photo setting
+  ---
+  duration_ms: 3.1244
+  type: 'test'
+  ...
+# Subtest: photo disabled only exposes templates without photo slots
+ok 3 - photo disabled only exposes templates without photo slots
+  ---
+  duration_ms: 0.7036
+  type: 'test'
+  ...
+# Subtest: photo disabled does not silently publish mandatory-photo-only designs
+ok 4 - photo disabled does not silently publish mandatory-photo-only designs
+  ---
+  duration_ms: 0.8493
+  type: 'test'
+  ...
+# Subtest: all ten existing photo designs roundtrip with exact product binding
+ok 5 - all ten existing photo designs roundtrip with exact product binding
+  ---
+  duration_ms: 15.4413
+  type: 'test'
+  ...
+# Subtest: modified text remains editable in saved draft
+ok 6 - modified text remains editable in saved draft
+  ---
+  duration_ms: 1.5742
+  type: 'test'
+  ...
+# Subtest: Local tinted logo keeps its upload reference without pretending to be published media
+ok 7 - Local tinted logo keeps its upload reference without pretending to be published media
+  ---
+  duration_ms: 1.8364
+  type: 'test'
+  ...
+# Subtest: new elements use actual product dimensions and native fonts, never doorbell coordinates
+ok 8 - new elements use actual product dimensions and native fonts, never doorbell coordinates
+  ---
+  duration_ms: 1.7276
+  type: 'test'
+  ...
+# Subtest: private data and transient UI state excluded from draft
+ok 9 - private data and transient UI state excluded from draft
+  ---
+  duration_ms: 1.5968
+  type: 'test'
+  ...
+# Subtest: foreign product, profile or revision fails closed
+ok 10 - foreign product, profile or revision fails closed
+  ---
+  duration_ms: 1.9881
+  type: 'test'
+  ...
+# Subtest: customer photo placement may move or be deleted; technical geometry stays in profile
+ok 11 - customer photo placement may move or be deleted; technical geometry stays in profile
+  ---
+  duration_ms: 1.5342
+  type: 'test'
+  ...
+# Subtest: unknown motif, option, malformed quantity and geometry rejected
+ok 12 - unknown motif, option, malformed quantity and geometry rejected
+  ---
+  duration_ms: 1.758
+  type: 'test'
+  ...
+# Subtest: template motifs included once, extra copy costs 169 cents
+ok 13 - template motifs included once, extra copy costs 169 cents
+  ---
+  duration_ms: 0.4026
+  type: 'test'
+  ...
+# Subtest: configured add-ons and quantity calculated in cents
+ok 14 - configured add-ons and quantity calculated in cents
+  ---
+  duration_ms: 0.3709
+  type: 'test'
+  ...
+# Subtest: selected holes preserve given diameter and coordinates without mutating source
+ok 15 - selected holes preserve given diameter and coordinates without mutating source
+  ---
+  duration_ms: 1.0856
+  type: 'test'
+  ...
+# Subtest: upload accepts only explicit raster types and positive sizes within limit
+ok 16 - upload accepts only explicit raster types and positive sizes within limit
+  ---
+  duration_ms: 0.1707
+  type: 'test'
+  ...
+# Subtest: text over theme limit is rejected in chars without surrounding spaces
+ok 17 - text over theme limit is rejected in chars without surrounding spaces
+  ---
+  duration_ms: 9.3481
+  type: 'test'
+  ...
+# Subtest: too many lines are rejected per theme
+ok 18 - too many lines are rejected per theme
+  ---
+  duration_ms: 3.1132
+  type: 'test'
+  ...
+# Subtest: object limit overrides theme and product theme; client-side limits are ignored
+ok 19 - object limit overrides theme and product theme; client-side limits are ignored
+  ---
+  duration_ms: 6.0916
+  type: 'test'
+  ...
+# Subtest: required text must differ from the template sample text
+ok 20 - required text must differ from the template sample text
+  ---
+  duration_ms: 3.773
+  type: 'test'
+  ...
+# Subtest: required text filled in passes, roundtrips and stays required; template self-check only with explicit option
+ok 21 - required text filled in passes, roundtrips and stays required; template self-check only with explicit option
+  ---
+  duration_ms: 3.8327
+  type: 'test'
+  ...
+# Subtest: server gate (K2): element rights, additions and template layer order are enforced in saveDraft and readDraft
+ok 22 - server gate (K2): element rights, additions and template layer order are enforced in saveDraft and readDraft
+  ---
+  duration_ms: 20.9653
+  type: 'test'
+  ...
+# Subtest: photo background instructions roundtrip and reject invalid or misplaced values
+ok 23 - photo background instructions roundtrip and reject invalid or misplaced values
+  ---
+  duration_ms: 2.1759
+  type: 'test'
+  ...
+# Subtest: photo alignment survives the actual render/draft contract and rejects invalid payloads
+ok 24 - photo alignment survives the actual render/draft contract and rejects invalid payloads
+  ---
+  duration_ms: 3.9373
+  type: 'test'
+  ...
+# Subtest: K10 / Ü1.2 server gate: engraving rejects colour changes, print allows the profile palette plus a free colour (Chris 22./23.10.2026); a product selection stays binding
+ok 25 - K10 / Ü1.2 server gate: engraving rejects colour changes, print allows the profile palette plus a free colour (Chris 22./23.10.2026); a product selection stays binding
+  ---
+  duration_ms: 9.6613
+  type: 'test'
+  ...
+# Subtest: K10 / Ü1.1 server gate: text below the process minimum is rejected (engraving 3 mm since 20.10.2026, print 3 mm); templates and non-scalable texts are exempt
+ok 26 - K10 / Ü1.1 server gate: text below the process minimum is rejected (engraving 3 mm since 20.10.2026, print 3 mm); templates and non-scalable texts are exempt
+  ---
+  duration_ms: 6.6775
+  type: 'test'
+  ...
+# Subtest: explicit photo colour survives draft roundtrip and rejects invalid/non-photo values
+ok 27 - explicit photo colour survives draft roundtrip and rejects invalid/non-photo values
+  ---
+  duration_ms: 6.591
+  type: 'test'
+  ...
+# Subtest: withdrawn all-motif contract remains readable; additional policy retains template credit
+ok 28 - withdrawn all-motif contract remains readable; additional policy retains template credit
+  ---
+  duration_ms: 0.9687
+  type: 'test'
+  ...
+# Subtest: additional policy charges replacements and extra motifs once; restoring the same template id and motif is free
+ok 29 - additional policy charges replacements and extra motifs once; restoring the same template id and motif is free
+  ---
+  duration_ms: 0.4626
+  type: 'test'
+  ...
+# Subtest: server accepts fifty characters per line only with the saved new rule, rejects forged limits
+ok 30 - server accepts fifty characters per line only with the saved new rule, rejects forged limits
+  ---
+  duration_ms: 2.6404
+  type: 'test'
+  ...
+# Subtest: server accepts 80 total characters with multiple lines only in the new revision
+ok 31 - server accepts 80 total characters with multiple lines only in the new revision
+  ---
+  duration_ms: 2.7307
+  type: 'test'
+  ...
+# Subtest: new designs paint text after logos/motifs without changing IDs, source order or relative text order
+ok 32 - new designs paint text after logos/motifs without changing IDs, source order or relative text order
+  ---
+  duration_ms: 0.904
+  type: 'test'
+  ...
+# Subtest: historic snapshots keep their exact paint order
+ok 33 - historic snapshots keep their exact paint order
+  ---
+  duration_ms: 0.0929
+  type: 'test'
+  ...
+# Subtest: real universal SVG puts text on top only for an explicitly saved rule
+ok 34 - real universal SVG puts text on top only for an explicitly saved rule
+  ---
+  duration_ms: 2.304
+  type: 'test'
+  ...
+# Subtest: hidden native photo originals and applied raster remain in the immutable package without entering the visible price
+ok 35 - hidden native photo originals and applied raster remain in the immutable package without entering the visible price
+  ---
+  duration_ms: 941.1509
+  type: 'test'
+  ...
+# Subtest: native acrylic handoff pins rights, all 28 prices, originals and immutable snapshots; rejects forged requests
+ok 36 - native acrylic handoff pins rights, all 28 prices, originals and immutable snapshots; rejects forged requests
+  ---
+  duration_ms: 31092.1991
+  type: 'test'
+  ...
+# Subtest: native full-area print extends only inked outer edges, keeps white inside and mirrors once
+ok 37 - native full-area print extends only inked outer edges, keeps white inside and mirrors once
+  ---
+  duration_ms: 10764.04
+  type: 'test'
+  ...
+# Subtest: review package freezes only the fonts and motifs of this design and references the embedded material image by hash
+ok 38 - review package freezes only the fonts and motifs of this design and references the embedded material image by hash
+  ---
+  duration_ms: 1076.8145
+  type: 'test'
+  ...
+# Subtest: profile fonts that are present in the product library are accepted on save; unknown fonts stay rejected
+ok 39 - profile fonts that are present in the product library are accepted on save; unknown fonts stay rejected
+  ---
+  duration_ms: 1782.9314
+  type: 'test'
+  ...
+# Subtest: server preview accepts only an explicitly enabled steel revision and returns two passive SVG views
+ok 40 - server preview accepts only an explicitly enabled steel revision and returns two passive SVG views
+  ---
+  duration_ms: 227.6779
+  type: 'test'
+  ...
+# Subtest: text-on-top survives immutable saving and production while historical packages retain their order
+ok 41 - text-on-top survives immutable saving and production while historical packages retain their order
+  ---
+  duration_ms: 730.4579
+  type: 'test'
+  ...
+# Subtest: immutable review, production and cart restore preserve approved vector bytes, placement, original and drilling
+ok 42 - immutable review, production and cart restore preserve approved vector bytes, placement, original and drilling
+  ---
+  duration_ms: 489.5351
+  type: 'test'
+  ...
+# Subtest: complete production PDF remains vector and the production archive keeps both immutable SVG versions
+ok 43 - complete production PDF remains vector and the production archive keeps both immutable SVG versions
+  ---
+  duration_ms: 8273.2953
+  type: 'test'
+  ...
+# Subtest: snapshot re-runs conversion and rejects changed source, changed black SVG, forged approval or mismatched media
+ok 44 - snapshot re-runs conversion and rejects changed source, changed black SVG, forged approval or mismatched media
+  ---
+  duration_ms: 585.2178
+  type: 'test'
+  ...
+# Subtest: account store accepts only sealed server conversion and restores SVG MIME plus approval without a database migration
+ok 45 - account store accepts only sealed server conversion and restores SVG MIME plus approval without a database migration
+  ---
+  duration_ms: 477.4726
+  type: 'test'
+  ...
+# Subtest: a historical raster-logo revision keeps its raster snapshot and photo tariff
+ok 46 - a historical raster-logo revision keeps its raster snapshot and photo tariff
+  ---
+  duration_ms: 77.9768
+  type: 'test'
+  ...
+# Subtest: workshop logo preview requires the existing CSRF session and pinned product revision
+ok 47 - workshop logo preview requires the existing CSRF session and pinned product revision
+  ---
+  duration_ms: 664.1765
+  type: 'test'
+  ...
+# Subtest: signed account route verifies SVG before storage and bounds duplicate-media work before conversion
+ok 48 - signed account route verifies SVG before storage and bounds duplicate-media work before conversion
+  ---
+  duration_ms: 622.6934
+  type: 'test'
+  ...
+1..48
+# tests 48
+# suites 0
+# pass 48
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 59156.0527

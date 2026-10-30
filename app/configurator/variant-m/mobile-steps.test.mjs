@@ -54,7 +54,7 @@ test('Zusammenfassung für „Prüfen“: Größe, Material, Optionen, Preis aus
   assert.equal(rows.Material,'Acrylglas · 3 mm');
   assert.equal(rows.Optionen,'Massiver Holzsockel · Eiche');
   assert.equal(rows.Design,'Unser Anfang');
-  assert.equal(rows.Texte,'Anna & Lukas');
+  assert.equal(rows.Texte,'Text 1: Anna & Lukas');
   assert.equal(rows['Fotos / Logos'],'1');
   assert.equal(rows.Menge,'2');
   assert.equal(rows.Preis,'29,98 €');

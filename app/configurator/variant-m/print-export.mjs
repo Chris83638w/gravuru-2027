@@ -1,3 +1,4 @@
+import {designPaintOrder} from '../../platform/sources/app/shared/models/design-layer-order.mjs';
 import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
@@ -17,7 +18,7 @@ export async function printArtwork({el,config,files}){
  try{
   el.state.selected=null;
   // K14 / Ü15.1: Der lokale Browser-Druckexport gibt nur die Vorderseite aus; die Rückseite erzeugt die Werkstatt-Ausgabe als eigene Datei.
-  for(const o of el.state.objects){if(o.uxHidden||isGuideObject(o)||objectSurface(o)!=='front')continue;if(o.type==='photoSlot'&&!o.uxUploadId){
+  for(const o of designPaintOrder({objects:el.state.objects,textOnTop:true})){if(o.uxHidden||isGuideObject(o)||objectSurface(o)!=='front')continue;if(o.type==='photoSlot'&&!o.uxUploadId){
     const example=config.localResources?.photoExamples?.find(e=>e.designId===el.state.designId&&e.slotId===o.id);
     if(example){const clip='print-example-'+o.id,mask=photoClip(o,clip,previewResourceURL(photoMaskURL(o)));markup.push(`<g transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><defs>${mask.defs}</defs><g ${mask.attribute}><image href="${previewResourceURL('/api/workshop/design-assets/'+example.assetId+'/preview.svg')}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g></g>`);examplePhotos.push(o.id);}
     else{const picture=el.uxObjectSVG(o);if(!picture&&o.required)throw Error('Bitte für den benötigten Fotobereich ein Foto hochladen.');markup.push(picture||'');if(picture)examplePhotos.push(o.id);}continue;
@@ -50,6 +51,7 @@ export async function printArtwork({el,config,files}){
 }
 export async function artworkPixels(svg,requested){
  let s=requested;
+ const artworkGeometry={...s.geometry,holes:[]}; // Drilling follows engraving/printing; only previews show holes.
  const scale=s.dpi/25.4,w=Math.round(s.geometry.width*scale),h=Math.round(s.geometry.height*scale);
  let W=Math.round(s.pageWidthMm*scale),H=Math.round(s.pageHeightMm*scale);
  if(W*H>50000000)throw Error('Das Druckformat überschreitet die Exportgrenze von 50 Megapixeln.');
@@ -61,8 +63,8 @@ export async function artworkPixels(svg,requested){
  const bx=Math.round((W-w)/2),by=Math.round((H-h)/2);
  const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');
  if(s.mirror){ctx.translate(W,0);ctx.scale(-1,1);}
- // Free contours are clipped with their original SVG path, including fixed holes.
- if(s.geometry.shape==='contour'){ctx.scale(w/s.geometry.width,h/s.geometry.height);ctx.clip(new Path2D(contourPathWithHoles(s.geometry)),'evenodd');ctx.scale(s.geometry.width/w,s.geometry.height/h);}
+ // Free contours are clipped with their original SVG path, with the complete artwork through future drill holes.
+ if(s.geometry.shape==='contour'){ctx.scale(w/s.geometry.width,h/s.geometry.height);ctx.clip(new Path2D(contourPathWithHoles(artworkGeometry)),'evenodd');ctx.scale(s.geometry.width/w,s.geometry.height/h);}
  // Repeat only the outermost artwork pixels into the bleed, never scale the design itself.
  const X=[[0,1,0,bx],[0,w,bx,w],[w-1,1,bx+w,W-bx-w]],Y=[[0,1,0,by],[0,h,by,h],[h-1,1,by+h,H-by-h]];
  for(const [sx,sw,dx,dw]of X)for(const [sy,sh,dy,dh]of Y)if(dw&&dh)ctx.drawImage(source,sx,sy,sw,sh,dx,dy,dw,dh);
@@ -72,16 +74,16 @@ export async function artworkPixels(svg,requested){
   for(let y=0;y<H;y++)for(let x=0;x<W;x++){
    let mx=(x+.5)*s.pageWidthMm/W-s.bleedMm;const my=(y+.5)*s.pageHeightMm/H-s.bleedMm;if(s.mirror)mx=s.geometry.width-mx;
    const target=(y*W+x)*4;
-   if(!insideContour(s.geometry,mx,my,s.bleedMm)){rgba[target+3]=0;continue;}
-   if(insideContour(s.geometry,mx,my))continue;
-   const [px,py]=boundarySample(s.geometry,mx,my),ix=Math.max(0,Math.min(w-1,Math.floor(px*w/s.geometry.width))),iy=Math.max(0,Math.min(h-1,Math.floor(py*h/s.geometry.height))),source=(iy*w+ix)*4;
+   if(!insideContour(artworkGeometry,mx,my,s.bleedMm)){rgba[target+3]=0;continue;}
+   if(insideContour(artworkGeometry,mx,my))continue;
+   const [px,py]=boundarySample(artworkGeometry,mx,my),ix=Math.max(0,Math.min(w-1,Math.floor(px*w/s.geometry.width))),iy=Math.max(0,Math.min(h-1,Math.floor(py*h/s.geometry.height))),source=(iy*w+ix)*4;
    for(let c=0;c<4;c++)rgba[target+c]=sourcePixels[source+c];
   }
  }
  for(let i=0;i<alpha.length;i++){rgb[i*3]=rgba[i*4];rgb[i*3+1]=rgba[i*4+1];rgb[i*3+2]=rgba[i*4+2];alpha[i]=rgba[i*4+3];}
  let whiteAllowed;
  if(s.geometry.shape==='contour'){
-  const mask=document.createElement('canvas');mask.width=W;mask.height=H;const mc=mask.getContext('2d');mc.scale(W/s.pageWidthMm,H/s.pageHeightMm);if(s.mirror){mc.translate(s.geometry.width,0);mc.scale(-1,1);}mc.fillStyle='white';mc.fill(new Path2D(contourPathWithHoles(s.geometry)),'evenodd');
+  const mask=document.createElement('canvas');mask.width=W;mask.height=H;const mc=mask.getContext('2d');mc.scale(W/s.pageWidthMm,H/s.pageHeightMm);if(s.mirror){mc.translate(s.geometry.width,0);mc.scale(-1,1);}mc.fillStyle='white';mc.fill(new Path2D(contourPathWithHoles(artworkGeometry)),'evenodd');
   const pixels=mc.getImageData(0,0,W,H).data;whiteAllowed=new Uint8Array(W*H);for(let i=0;i<whiteAllowed.length;i++)whiteAllowed[i]=pixels[i*4+3];
  }
  return {width:W,height:H,rgb,alpha,...(whiteAllowed?{whiteAllowed}:{}),settings:s,edgeInk,requestedBleedMm:requested.bleedMm};

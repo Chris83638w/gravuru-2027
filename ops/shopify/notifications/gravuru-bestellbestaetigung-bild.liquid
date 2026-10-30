@@ -19,6 +19,7 @@
     <img src="{{ gv_image | escape }}" alt="Ihre Gestaltung: {{ line.title | escape }}"
          width="160" style="display:block;width:160px;max-width:100%;height:auto;border:0;" />
   </a>
+  <p style="font-size:14px;line-height:1.4;">Bitte prüfe die Schreibweise.</p>
 {%- elsif line.image -%}
   <img src="{{ line | img_url: '320x' }}" alt="{{ line.title | escape }}"
        width="160" style="display:block;width:160px;max-width:100%;height:auto;border:0;" />

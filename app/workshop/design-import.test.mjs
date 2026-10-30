@@ -39,9 +39,19 @@ function setup(t){
 }
 async function inputFor(assets,record,bytes=source){
   const asset=await assets.import({name:'Gestaltung.svg',bytes:bytes.toString('base64')});
-  return {expectedRevision:record.revision,designId:record.document.config.profile.designs[0].id,assetId:asset.assetId,fit:'visible',originalName:'Gestaltung.svg'};
+  return {expectedRevision:record.revision,designId:record.document.config.profile.designs[0].id,assetId:asset.assetId,fit:'visible',originalName:'Gestaltung.svg',wholePrintDesign:true};
 }
 const hasCode=code=>error=>error.code===code;
+
+test('unmarked artwork import is replaceable without moving it; the whole-design exception is explicit and review-bound',async t=>{
+ const {assets,repository,record}=setup(t),input=await inputFor(assets,record);delete input.wholePrintDesign;
+ const before=structuredClone(record),plan=planDesignImport(repository,assets,record.id,input),d=plan.document.config.profile.designs[0],o=d.objects[0],r=plan.document.elementRights[d.id][o.id];
+ assert.deepEqual(r,{content:false,color:false,replace:true,move:false,scale:false,delete:true});
+ const changed=structuredClone(d);changed.objects[0].motif='acryl-heart';assert.doesNotThrow(()=>validateProductDesign(plan.document,changed));
+ changed.objects[0].x+=1;assert.throws(()=>validateProductDesign(plan.document,changed));
+ assert.throws(()=>applyDesignImport(repository,assets,record.id,{...input,wholePrintDesign:true,token:plan.token}),/erneut prüfen/);
+ assert.deepEqual(repository.get(record.id),before);
+});
 const bundled=join(homedir(),'.cache/codex-runtimes/codex-primary-runtime/dependencies/python',process.platform==='win32'?'python.exe':'bin/python3');
 const python=process.env.GRAVURU_PYTHON||(fs.existsSync(bundled)?bundled:process.platform==='win32'?'python':'python3');
 const pdfAvailable=spawnSync(python,['-c','import pymupdf; assert callable(pymupdf.open)'],{windowsHide:true,env:importEnvironment()}).status===0;
@@ -50,7 +60,7 @@ test('design replacement keeps other design, product identity, variant geometry 
   const {assets,repository,record}=setup(t),before=structuredClone(record),input=await inputFor(assets,record);
   const plan=planDesignImport(repository,assets,record.id,input);
   assert.deepEqual(repository.get(record.id),before,'preview must not save a revision');
-  assert.equal(plan.editableFields,0);assert.ok(plan.warnings.some(w=>/festes Design/.test(w)));
+  assert.equal(plan.editableFields,0);assert.ok(plan.warnings.some(w=>/als Einheit verkauft/.test(w)));
   const saved=applyDesignImport(repository,assets,record.id,{...input,token:plan.token});
   assert.equal(saved.id,record.id);assert.equal(saved.revision,2);
   const expected=structuredClone(record.document),actual=saved.document;

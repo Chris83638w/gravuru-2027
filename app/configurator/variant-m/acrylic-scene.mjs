@@ -3,6 +3,7 @@ import {ACRYLIC_BASES,acrylicSelection,acrylicOptions,containAcrylicObject} from
 import {money,quote} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
 import {PHOTO_ACCEPT} from './photo-upload.mjs';
+import {designPaintOrder} from '../../platform/sources/app/shared/models/design-layer-order.mjs';
 // Kundenansicht: WebP-Fassungen (customer-images.json); PNG-Originale bleiben für Fertigung/Referenz.
 const ROOT='/acrylic-assets/';
 export async function installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles}) {
@@ -45,21 +46,22 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  };
  const fixedSource=()=>config.profile.designs.find(design=>design.id===el.state.designId)?.objects.filter(object=>object.acrylicFixed)||[];
  const isFixed=o=>!!o&&fixedSource().some(source=>source.id===o.id);
+ const canRemoveFixed=o=>o?.type==='motif'&&config.workshopElementRights?.[el.state.designId]?.[o.id]?.delete===true;
  const photoInput=document.createElement('input');photoInput.type='file';photoInput.accept=PHOTO_ACCEPT;photoInput.hidden=true;r.append(photoInput);
  photoInput.addEventListener('change',async()=>{await acceptFiles(photoInput.files,'photo','photo-main');photoInput.value='';});
  r.addEventListener('click',e=>{if(e.target.closest('[data-object="photo-main"]')&&files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId)){e.preventDefault();e.stopImmediatePropagation();photoInput.click();}},true);
  r.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)&&e.target.closest('[data-object="photo-main"]')&&files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId)){e.preventDefault();e.stopImmediatePropagation();photoInput.click();}},true);
  r.addEventListener('pointerdown',e=>{const hit=e.target.closest('[data-object],[data-resize]');const o=el.state.objects.find(o=>o.id===(hit?.dataset.object||hit?.dataset.resize));if(!isFixed(o))return;e.preventDefault();e.stopImmediatePropagation();if(o.type!=='photoSlot')select(o.id);},true);
- r.addEventListener('click',e=>{const control=e.target.closest('[data-ux]');const object=control?.dataset.id?el.state.objects.find(o=>o.id===control.dataset.id):selected();if(isFixed(object)&&['lock','remove-content','delete','duplicate','layer-front','layer-back','original-colors'].includes(control?.dataset.ux)){e.preventDefault();e.stopImmediatePropagation();say('Dieses Element gehört fest zur Vorlage. Seine Farbe kannst du ändern.');}},true);
+ r.addEventListener('click',e=>{const control=e.target.closest('[data-ux]');const object=control?.dataset.id?el.state.objects.find(o=>o.id===control.dataset.id):selected();if(isFixed(object)&&!(canRemoveFixed(object)&&['remove-content','delete'].includes(control?.dataset.ux))&&['lock','remove-content','delete','duplicate','layer-front','layer-back','original-colors'].includes(control?.dataset.ux)){e.preventDefault();e.stopImmediatePropagation();say('Dieses Element gehört fest zur Vorlage. Seine Farbe kannst du ändern.');}},true);
  r.addEventListener('change',e=>{if(isFixed(selected())&&(e.target.dataset.uxContentProp||e.target.dataset.uxProp)){e.preventDefault();e.stopImmediatePropagation();el.sync();}},true);
- r.addEventListener('keydown',e=>{if(isFixed(selected())&&e.target.closest('.scene')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Delete','Backspace'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();}},true);
+ r.addEventListener('keydown',e=>{if(isFixed(selected())&&!(canRemoveFixed(selected())&&['Delete','Backspace'].includes(e.key))&&e.target.closest('.scene')&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Delete','Backspace'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();}},true);
  // Restore fixed geometry after any native transformation, including undo/import paths.
  const normalize=el.normalize;el.normalize=function(...args){const result=normalize.apply(this,args),geometry=new Map(fixedSource().map(o=>[o.id,{x:o.x,y:o.y,w:o.w,h:o.h,rotation:o.rotation}]));for(const o of this.state.objects){if(geometry.has(o.id)){Object.assign(o,geometry.get(o.id),{acrylicFixed:true,uxLocked:false,uxHidden:false});}else containAcrylicObject(o);}return result;};
- const oldAction=el.action;el.action=function(key,...args){if(isFixed(selected())&&['delete','duplicate','grow','shrink','center','centerX','up','down','resetRotation'].includes(key))return;return oldAction.call(this,key,...args);};
+ const oldAction=el.action;el.action=function(key,...args){if(isFixed(selected())&&!(key==='delete'&&canRemoveFixed(selected()))&&['delete','duplicate','grow','shrink','center','centerX','up','down','resetRotation'].includes(key))return;return oldAction.call(this,key,...args);};
  function updateScene(){
    const choice=acrylicSelection(acrylicOptions(el.state.mOptions),config.acrylic.pricing),b=choice.base;
    for(const o of el.state.objects)if(isFixed(o))o.acrylicFixed=true;
-   stage.dataset.fixedSelected=String(isFixed(selected())&&!el.uxCanPositionPhoto?.(selected()));
+   stage.dataset.fixedSelected=String(isFixed(selected())&&!canRemoveFixed(selected())&&!el.uxCanPositionPhoto?.(selected()));
    const mainPhoto=el.state.objects.find(o=>o.id==='photo-main');if(mainPhoto?.uxUploadId)mainPhoto.uxPhotoBackground='keep';
    const uploadCopy=$('#ux-panel-upload > p');if(uploadCopy)uploadCopy.textContent='Ein Foto inklusive. Neue Uploads ersetzen dein Foto. JPG, PNG oder WebP · bis 15 MB.';
    for(const layer of [base,baseBack])layer.hidden=!b.asset;
@@ -92,7 +94,7 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
    const uploaded=files.get(el.state.objects.find(o=>o.id==='photo-main')?.uxUploadId);
    if(!uploaded)throw Error('Bitte zuerst das Beispielfoto durch dein eigenes Foto ersetzen.');
    let body='';const selectedId=el.state.selected;el.state.selected=null;
-   try{for(const o of el.state.objects.filter(o=>!o.uxHidden&&o.role!=='guide')){
+   try{for(const o of designPaintOrder({objects:el.state.objects,textOnTop:true}).filter(o=>!o.uxHidden&&o.role!=='guide')){
      const xml=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+el.objectSVG(o)+'</svg>','image/svg+xml');
      xml.querySelectorAll('[data-preview-only],[data-role="guide"],[data-resize],rect[fill="transparent"]').forEach(n=>n.remove());
      if(o.type==='motif'&&o.preserveColors===false){xml.querySelectorAll('filter').forEach(n=>n.remove());for(const n of xml.querySelectorAll('*')){n.removeAttribute('filter');for(const key of ['fill','stroke'])if(n.hasAttribute(key)&&n.getAttribute(key)!=='none')n.setAttribute(key,o.color);}}

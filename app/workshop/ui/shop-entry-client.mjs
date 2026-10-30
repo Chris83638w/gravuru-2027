@@ -2,7 +2,7 @@
 // Abschluss und geht nur als Kopfzeile an /api/shop-entry/…; Editor-Anfragen an die Werkstatt-API (auch die
 // Acryl-Fassung /api/workshop/acryl/…) werden auf die schmalen Kundenrouten umgelegt, alles andere abgewiesen.
 const API='/api/shop-entry/',WORKSHOP='/api/workshop/',ACRYL=WORKSHOP+'acryl/';
-const ALLOWED=[/^acrylic-drafts(?:\/adraft_[a-f0-9-]{36})?$/,/^design-assets\/[a-f0-9]{64}\/preview\.svg$/,/^cart-configurations\/konfig_[a-f0-9-]{36}\/[1-9][0-9]{0,8}(?:\/photos\/[A-Za-z0-9_-]{1,100})?(?:\?edited=1)?$/];
+const ALLOWED=[/^acrylic-drafts(?:\/adraft_[a-f0-9-]{36})?$/,/^customer-vector-logo\/preview$/,/^design-assets\/[a-f0-9]{64}\/preview\.svg$/,/^cart-configurations\/konfig_[a-f0-9-]{36}\/[1-9][0-9]{0,8}(?:\/photos\/[A-Za-z0-9_-]{1,100})?(?:\?edited=1)?$/];
 const EDITORS=/^\/_merchant(?:-acryl)?-editor\.html$/;
 const fail=message=>{throw Error(message);};
 

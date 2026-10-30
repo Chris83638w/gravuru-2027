@@ -1,9 +1,10 @@
 import {fittedArtwork} from '../configurator/variant-m/design-area.mjs';
 import {validateProductDocument} from './product-model.mjs';
 import {sha256} from './design-assets.mjs';
+import {applyNewMotifRights} from '../configurator/variant-m/new-motif-rights.mjs';
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 
-export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible',originalName,marginMm}){
+export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible',originalName,marginMm,wholePrintDesign=false}){
   if(!['visible','original'].includes(fit))fail(422,'invalid_fit','Bitte eine gültige Platzierung auswählen.');
   const document=structuredClone(input),config=document.config,design=config.profile.designs.find(d=>d.id===designId);
   if(!design)fail(422,'design_missing','Dieses Design gehört nicht zur Konfiguration.');
@@ -16,8 +17,9 @@ export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible
   const asset=assets.get(assetId),{x,y,w,h,scale}=fittedArtwork(config,asset.widthMm,asset.heightMm,{original:fit==='original'});
   const object={id:'imported-artwork',type:'motif',motif:'artwork-'+assetId,x,y,w,h,rotation:0,color:'#000000',preserveColors:true,templateOrigin:true,customerEditable:false,locked:true,acrylicFixed:true};
   design.objects=[object];design.marks=[];delete design.customerFields;
+  design.wholePrintDesign=wholePrintDesign;
   design.importedSource={assetId,originalName,fit,scale};
-  document.elementRights[designId]={[object.id]:{content:false,color:false,replace:false,move:false,scale:false,delete:false}};
+  document.elementRights[designId]={[object.id]:applyNewMotifRights(object,{content:false,color:false,replace:false,move:false,scale:false,delete:false},design)};
   if(config.localResources.photoPlaceholders)config.localResources.photoPlaceholders=config.localResources.photoPlaceholders.filter(a=>a.designId!==designId);
   if(config.photo.hints)config.photo.hints=config.photo.hints.filter(h=>h.designId!==designId);
   if(config.localResources.photoExamples)config.localResources.photoExamples=config.localResources.photoExamples.filter(a=>a.designId!==designId);
@@ -25,14 +27,14 @@ export function replaceDesignArtwork(input,assets,{designId,assetId,fit='visible
   config.localResources.motifs=config.localResources.motifs.filter(m=>!m.artwork||used.has(m.key)).map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
   if(!config.localResources.motifs.some(m=>m.key===object.motif))config.localResources.motifs.push(assets.resource(assetId));
   const checked=validateProductDocument(document);assets.validateDocument(checked);
-  return {document:checked,asset,designId,designName:design.name,originalName,fit,...(marginMm!==undefined?{marginMm}:{}),placement:{x:object.x,y:object.y,widthMm:w,heightMm:h,scale},warnings:[...asset.warnings,'Die importierte Datei ist ein festes Design. Texte und Fotos darin sind noch keine einzeln bearbeitbaren Kundenfelder.'],editableFields:0};
+  return {document:checked,asset,designId,designName:design.name,originalName,fit,wholePrintDesign,...(marginMm!==undefined?{marginMm}:{}),placement:{x:object.x,y:object.y,widthMm:w,heightMm:h,scale},warnings:[...asset.warnings,wholePrintDesign?'Ganzes Druck-Design: als Einheit verkauft, nicht löschbar oder ersetzbar.':'Die importierte Grafik ist als Motiv löschbar und ersetzbar. Texte und Fotos darin sind noch keine einzeln bearbeitbaren Kundenfelder.'],editableFields:0};
 }
 
-export function planDesignImport(repository,assets,id,{expectedRevision,designId,assetId,fit='visible',originalName,marginMm}){
+export function planDesignImport(repository,assets,id,{expectedRevision,designId,assetId,fit='visible',originalName,marginMm,wholePrintDesign=false}){
   const record=repository.get(id);
   if(record.revision!==expectedRevision)fail(409,'stale_revision','Die Konfiguration wurde geändert. Bitte den aktuellen Stand laden.');
   if(record.status==='archived')fail(422,'archived_product','Bitte die Konfiguration zuerst wieder aktivieren.');
-  const plan=replaceDesignArtwork(record.document,assets,{designId,assetId,fit,originalName,marginMm});
+  const plan=replaceDesignArtwork(record.document,assets,{designId,assetId,fit,originalName,marginMm,wholePrintDesign});
   const token=sha256(JSON.stringify({id,expectedRevision,designId,assetId,fit,originalName,document:plan.document}));
   return {...plan,token,expectedRevision};
 }

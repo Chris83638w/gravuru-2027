@@ -49,7 +49,7 @@ export function installAccountDrafts({el,config,files,dialog,button,esc,say,rest
     for(const id of used){
       const asset=files.get(id),object=el.state.objects.find(o=>o.uxUploadId===id);
       if(!asset?.file)throw Error('Ein Foto fehlt auf diesem Gerät. Bitte erneut hochladen oder das Element entfernen.');
-      photos.push({uploadId:id,kind:object?.uxUploadKind==='logo'?'logo':'photo',name:asset.file.name||'',mime:asset.file.type,original:await base64(asset.file),...(asset.blob?{edited:await base64(asset.blob)}:{})});
+      photos.push({uploadId:id,kind:object?.uxUploadKind==='logo'?'logo':'photo',name:asset.file.name||'',mime:asset.vectorLogo?'image/svg+xml':asset.file.type,original:await base64(asset.file),...(asset.blob?{edited:await base64(asset.blob)}:{}),...(asset.vectorLogo?{vectorLogo:asset.vectorLogo}:{})});
     }
     return photos;
   }
@@ -78,7 +78,7 @@ export function installAccountDrafts({el,config,files,dialog,button,esc,say,rest
         const fetchBlob=async variant=>{const response=await fetch(client.photoUrl(id,photo.uploadId,variant),{credentials:'same-origin',cache:'no-store'});if(!response.ok)throw Error('Ein gespeichertes Foto konnte nicht geladen werden.');return response.blob();};
         const original=await fetchBlob('original'),file=new File([original],photo.name||'foto',{type:photo.mime||original.type});
         const edited=photo.edited?await fetchBlob('edited'):null,shown=await decodeImage(edited||file);
-        loaded.set(photo.uploadId,{file,url:shown.url,width:shown.width,height:shown.height,...(edited?{blob:edited,edited:true}:{})});
+        loaded.set(photo.uploadId,{file,url:shown.url,width:shown.width,height:shown.height,...(edited?{blob:edited,edited:true}:{}),...(photo.vectorLogo?{vectorLogo:photo.vectorLogo}:{})});
       }
       await el.uxEnsureDraftResources?.(draft);
       restoreDraft(draft);

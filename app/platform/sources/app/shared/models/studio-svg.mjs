@@ -1,3 +1,4 @@
+import {designPaintOrder} from './design-layer-order.mjs';
 import {contourPathWithHoles,contourSafeAreaSvg} from './contour-geometry.mjs';
 import {photoShape,photoClip,photoMaskURL} from './photo-shape.mjs';
 import {textPaths} from './doorbell-preview.mjs';
@@ -23,7 +24,7 @@ export function studioSvg(profile,design,fonts,{selected='',frameKey='',mounting
  const steelStops=native?'<stop stop-color="#f1f2f2"/><stop offset=".25" stop-color="#b6bcc0"/><stop offset=".6" stop-color="#f5f5f5"/><stop offset="1" stop-color="#a5adb2"/>':'<stop stop-color="#eaedef"/><stop offset=".27" stop-color="#aeb3b6"/><stop offset=".51" stop-color="#f4f5f5"/><stop offset="1" stop-color="#969fa6"/>';
  const acrylicStops=native?(color==='anthrazit'?'<stop stop-color="#474b50"/><stop offset=".7" stop-color="#33383e"/><stop offset="1" stop-color="#3e444a"/>':'<stop stop-color="#222426"/><stop offset=".7" stop-color="#111214"/><stop offset="1" stop-color="#1a1c1e"/>'):'<stop stop-color="'+(color==='anthrazit'?'#454a50':'#242629')+'"/><stop offset="1" stop-color="'+(color==='anthrazit'?'#34393f':'#101113')+'"/>';
  const image=profile.admin?.imageUrl;
- const items=design.objects.map(o=>{let inside='';
+ const items=designPaintOrder(design).map(o=>{let inside='';
   if(o.type==='text')inside=textPaths(o,fonts);
   if(o.type==='motif')inside=universalMotif(motifs.find(m=>m.key===o.motif),o,'#ffffff',{method:'engraving'},id+'-ink-'+o.id);
   if(o.type==='graphic')inside=graphicMarkup(o,'#ffffff');
@@ -88,7 +89,7 @@ function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleU
  const contour=shape==='contour'?contourPathWithHoles(p.geometry):null;
  const safe=contour&&guides?contourSafeAreaSvg(p.geometry,safeId+'-design-area'):null;
  const plate=contour?'<path d="'+esc(contour)+'" fill-rule="evenodd"':shape==='ellipse'?'<ellipse cx="'+w/2+'" cy="'+h/2+'" rx="'+w/2+'" ry="'+h/2+'"':'<rect width="'+w+'" height="'+h+'" rx="'+radius+'"';
- const objects=d.objects.map((o,index)=>{
+ const objects=designPaintOrder(d).map((o,index)=>{
   const key=safeId+'-element-'+index,color=elementColor(p,o);let content;
   if(o.type==='text')content=textPaths(o,fonts)||placeholder(o,'Schrift fehlt',stroke);
   else if(o.type==='motif')content=universalMotif(motifs.find(m=>m.key===o.motif),o,color,processing,key+'-ink');

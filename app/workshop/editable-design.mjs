@@ -1,5 +1,6 @@
 import {convertDesign} from './design-assets.mjs';
 import {validateProductDocument} from './product-model.mjs';
+import {applyNewMotifRights} from '../configurator/variant-m/new-motif-rights.mjs';
 
 // Preparing an editable draft does not save or replace any product revision.
 // Original glyph outlines remain exact until a merchant chooses editable text.
@@ -32,7 +33,7 @@ export async function prepareEditableDesign(document,assets,designId){
    Object.assign(o,{motif:motif.key,color:'#000000',preserveColors:true});
   }
   d.objects.push(o);d.sourceElements.push({id,kind:part.kind,label:(part.kind==='text'?'PDF-Text':part.kind==='photo'?'Musterfoto':'PDF-Motiv')+' '+(i+1),...(part.kind==='text'?{text:part.text}:{})});
-  draft.elementRights[d.id][id]={content:false,color:false,replace:o.type==='photoSlot',move:false,scale:false,delete:false};
+  draft.elementRights[d.id][id]=applyNewMotifRights(o,{content:false,color:false,replace:o.type==='photoSlot',move:false,scale:false,delete:false},d);
  }
  const checked=validateProductDocument(draft);assets.validateDocument(checked);
  return {document:checked,designId:d.id,parts:d.sourceElements,warnings:['Original und gespeicherte Fassungen bleiben erhalten.','PDF-Texte behalten zunächst ihre Originalkonturen. Über „Text bearbeiten“ eine vollständige Werkstatt-Schrift auswählen.','Texte innerhalb eines flachen Fotos sind nicht als Text erkennbar. Musterfotos und Fotoform vor dem Speichern prüfen.']};

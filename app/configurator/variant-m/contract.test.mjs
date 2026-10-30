@@ -277,3 +277,10 @@ test('server accepts fifty characters per line only with the saved new rule, rej
  name.text='I'.repeat(51);name.maxLength=500;assert.throws(()=>themedSave(cfg,s),/50 Zeichen/);assert.throws(()=>themedSave(old,s),/32 Zeichen/);
  assert.throws(()=>prepareConfig({...cfg,textRules:{maxCharsPerLine:50,ignore:true}}),/Zeichenregel/);
 });
+
+test('server accepts 80 total characters with multiple lines only in the new revision',()=>{
+ const old=themed({themes:['namensschilder']}),cfg=prepareConfig({...old,textRules:{maxCharsPerField:80}}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');
+ Object.assign(name,{size:4,x:150,y:120,text:[20,19,19,19].map(n=>'I'.repeat(n)).join('\n')});
+ assert.equal(name.text.length,80);assert.doesNotThrow(()=>themedSave(cfg,s));assert.throws(()=>themedSave(old,s),/32 Zeichen/);
+ name.text+='I';name.maxLength=500;name.maxLines=500;assert.throws(()=>themedSave(cfg,s),/80 Zeichen/);
+});

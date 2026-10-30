@@ -1,4 +1,5 @@
 import {textToolbarPosition} from './text-toolbar-position.mjs';
+import {placeDirectToolbar} from './toolbar-hosts.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {fontDisplayName} from './font-display.mjs';
 import {measureText,textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -24,6 +25,9 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   const extras=document.createElement('span');extras.className='ux-direct-text-actions';extras.innerHTML=['left','center','right'].map(mode=>'<button type="button" data-direct-align="'+mode+'" aria-label="'+({left:'Links',center:'Mittig',right:'Rechts'})[mode]+' auf dem Schild ausrichten">'+uiIcon(mode)+'</button>').join('');
   panel.querySelector('[data-direct-size-label]').before(extras);
   for(const [key,label,symbol] of [['smaller','Schrift verkleinern','−'],['bigger','Schrift vergrößern','+']]){const b=document.createElement('button');b.type='button';b.dataset.directStep=key;b.setAttribute('aria-label',label);b.textContent=symbol;const input=panel.querySelector('[data-direct-size-label]');key==='smaller'?input.before(b):input.after(b);}
+  const sizeArrows=document.createElement('span');sizeArrows.className='ux-direct-size-arrows';
+  sizeArrows.innerHTML=[['bigger','Schriftgröße um einen Schritt erhöhen','M2 7L6 2L10 7Z'],['smaller','Schriftgröße um einen Schritt verringern','M2 2L6 7L10 2Z']].map(([step,label,path])=>'<button type="button" data-direct-step="'+step+'" data-size-arrow aria-label="'+label+'"><svg viewBox="0 0 12 9" aria-hidden="true"><path d="'+path+'" fill="currentColor"/></svg></button>').join('');
+  panel.querySelector('[data-direct-size]').after(sizeArrows);
   const tail=document.createElement('span');tail.className='ux-direct-tail';tail.innerHTML='<button type="button" data-direct-turn aria-label="Element um 15 Grad drehen">↻</button><button type="button" data-ux="delete" aria-label="Element löschen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/></svg></button>';panel.querySelector('.ux-direct-actions').append(tail);
   // Two stable rows on narrow screens. Keep the same controls and rights; the
   // optional print palette scrolls horizontally inside row two, never into row three.
@@ -31,6 +35,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   primary.className='ux-direct-primary';secondary.className='ux-direct-secondary';
   for(const node of [...actions.children])(node.matches('[data-direct-font],[data-direct-style]')||node===extras?primary:secondary).append(node);
   actions.append(primary,secondary);
+  const selectionName=document.createElement('span');selectionName.className='ux-direct-selection';selectionName.setAttribute('aria-live','polite');primary.prepend(selectionName);
   const box=document.createElement('div');box.className='ux-direct-input';box.hidden=true;box.innerHTML='<textarea rows="1" aria-label="Text direkt im Design bearbeiten" spellcheck="false" aria-describedby="ux-direct-count"></textarea><small id="ux-direct-count" class="ux-direct-count" data-direct-count aria-live="polite"></small>';stage.append(box);
   const openButton=panel.querySelector('[data-direct-open]'),field=box.querySelector('textarea'),count=box.querySelector('[data-direct-count]'),size=panel.querySelector('[data-direct-size]'),font=panel.querySelector('[data-direct-font]'),color=panel.querySelector('[data-direct-color]'),confirm=panel.querySelector('[data-direct-confirm]');
   const style=document.createElement('style');style.textContent=`
@@ -72,7 +77,13 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   }
   function update(){
     const o=selected();if(editing&&o?.id!==editing.id)close();
-    const text=o?.type==='text',photo=!!o?.uxUploadId,motif=o?.type==='motif';
+    const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open;
+    const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full});
+    const text=o?.type==='text',photo=!!o?.uxUploadId&&!o.uxVectorLogo,motif=o?.type==='motif';
+    selectionName.hidden=!text;selectionName.textContent=text?(el.uxTextLabel?.(o)||'Text'):'';selectionName.title=selectionName.textContent;
+    panel.setAttribute('aria-label',text?selectionName.textContent+' bearbeiten':'Ausgewähltes Element bearbeiten');
+    const alignHost=mobile?secondary:primary;if(extras.parentNode!==alignHost){if(mobile)secondary.prepend(extras);else primary.append(extras);}
+    const deleteButton=panel.querySelector('[data-ux=delete]'),deleteHost=mobile?primary:tail;if(deleteButton.parentNode!==deleteHost)deleteHost.append(deleteButton);
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
     if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space','0px');stage.style.setProperty('--ux-toolbar-space','0px');el.style.setProperty('--ux-textbar-h','0px');if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=text||!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent=fontDisplayName(o.font||'Schrift');font.title=font.textContent;
@@ -82,23 +93,20 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     panel.querySelector('[data-direct-turn]').disabled=!can(o,'move');
     const original=config?.profile.designs.find(d=>d.id===el.state.designId)?.objects.find(v=>v.id===o.id);panel.querySelector('[data-ux=delete]').disabled=!!original?.required||!can(o,'delete');color.parentElement.hidden=!(text||motif)||!freeColor;color.parentElement.title=motif?'Motivfarbe':'Textfarbe';color.setAttribute('aria-label',motif?'Motivfarbe direkt ändern':'Textfarbe direkt ändern');color.disabled=!can(o,'color');if((text||motif)&&r.activeElement!==color)color.value=o.color||'#202824';
     for(const b of panel.querySelectorAll('[data-direct-style]')){b.hidden=!text;b.disabled=!can(o,'content')||(b.dataset.directStyle==='bold'&&!el.fontData?.[o.font]?.bold&&!o.bold);b.title=b.dataset.directStyle==='bold'?(b.disabled?'Für diese Schrift ist kein Fettschnitt verfügbar':'Fett'):'Kursiv – Schrift neigen';b.setAttribute('aria-pressed',!!o[b.dataset.directStyle]);}
-    for(const b of panel.querySelectorAll('[data-direct-motif]')){b.hidden=!motif;b.disabled=!can(o,b.dataset.directMotif==='rotate'?'move':'scale');}
+    for(const b of panel.querySelectorAll('[data-direct-motif]')){b.hidden=!motif||b.dataset.directMotif==='rotate'&&el.uxCanRotate?.(o)===false;b.disabled=!can(o,b.dataset.directMotif==='rotate'?'move':'scale');}
     presets.hidden=!colorTool||!(text||motif)||(paletteColors===null&&!motif);for(const b of presets.children){b.disabled=!can(o,'color');b.setAttribute('aria-pressed',String((o.color||'').toLowerCase()===b.dataset.directPreset));}
     panel.querySelector('[data-direct-size-label]').hidden=!text;
     size.disabled=!can(o,'scale');
     if(r.activeElement!==size)size.value=r.querySelector('#ux-size')?.value||Math.round(o.size||4);
     const scene=r.querySelector('.scene');if(!scene)return;
-    const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open,preview=r.querySelector('.ux-preview'),home=mobile&&!full?preview:stage;
-    if(panel.parentNode!==home)home.append(panel);
-    panel.classList.toggle('is-docked',mobile);panel.classList.toggle('is-fullscreen-dock',mobile&&full);
-    const placement=el.state.ui?.textToolbarPlacement||'plate',scale=!mobile&&placement==='selection'?.78:1;
-    panel.dataset.placement=placement;panel.style.transform=scale===1?'':'scale('+scale+')';panel.style.transformOrigin='top left';
+    const placement=el.state.ui?.textToolbarPlacement||'plate',scale=!mobile&&!inWorkbench&&placement==='selection'?.78:1;
+    panel.dataset.placement=placement;panel.style.transform=scale===1?'':'scale('+scale+')';panel.style.transformOrigin=inWorkbench?'':'top left';
     // Reserve space above the fitted plate; the toolbar never occupies artwork.
-    stage.style.setProperty('--ux-toolbar-space',!mobile?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
+    stage.style.setProperty('--ux-toolbar-space',!mobile&&!inWorkbench?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
     stage.style.setProperty('--ux-mobile-dock-space',mobile&&full?panel.offsetHeight+86+'px':'0px');
     const barHeight=mobile&&!full&&!panel.hidden?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
     const bounds=scene.getBoundingClientRect(),parent=stage.getBoundingClientRect();
-    if(!mobile){
+    if(!mobile&&!inWorkbench){
       const target=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]')?.getBoundingClientRect();
       const pos=textToolbarPosition({stage:parent,plate:bounds,selection:target,width:panel.offsetWidth*scale,height:panel.offsetHeight*scale,placement,zoomed:(el.uxViewZoom?.()||1)>1});
       panel.style.left=pos.left+'px';panel.style.top=pos.top+'px';
@@ -108,11 +116,15 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
       const width=Math.min(parent.width-24,Math.max(260,(target?.width||160)+32));
       const center=target?target.left-parent.left+target.width/2:bounds.left-parent.left+o.x*bounds.width/el.state.width;
       box.style.width=width+'px';box.style.left=Math.max(12,Math.min(parent.width-width-12,center-width/2))+'px';
-      field.style.fontFamily='"'+String(o.font||'').replaceAll('"','')+'", serif';field.style.fontSize=Math.max(16,Math.min(26,o.size*bounds.width/el.state.width))+'px';field.style.color='#293e34';field.style.fontWeight=o.bold?'700':'400';field.style.fontStyle=o.italic?'italic':'normal';
-      field.style.height='auto';field.style.height=Math.min(110,Math.max(32,field.scrollHeight))+'px';updateCount(o);
+      // The general input font uses !important; keep the actual design font and
+      // a comfortable editing size without changing the engraved millimetres.
+      field.style.setProperty('font-family','"'+String(o.font||'').replaceAll('"','')+'", serif','important');
+      field.style.setProperty('font-size',Math.max(mobile?22:26,Math.min(mobile?32:42,o.size*bounds.width/el.state.width))+'px','important');
+      field.style.setProperty('font-weight',o.bold?'700':'400','important');field.style.setProperty('font-style',o.italic?'italic':'normal','important');field.style.color='#252a2e';
+      field.style.height='auto';field.style.height=Math.min(mobile?140:200,Math.max(32,field.scrollHeight))+'px';updateCount(o);
       const centerY=target?target.top-parent.top+target.height/2:bounds.top-parent.top+o.y*bounds.height/el.state.height;
       const bottomGap=typeof el.uxViewZoom==='function'?60:8;
-      const maxTop=Math.max(8,parent.height-box.offsetHeight-bottomGap),minTop=mobile?8:Math.min(maxTop,(parseFloat(panel.style.top)||0)+panel.offsetHeight*scale+8);
+      const maxTop=Math.max(8,parent.height-box.offsetHeight-bottomGap),minTop=mobile||inWorkbench?8:Math.min(maxTop,(parseFloat(panel.style.top)||0)+panel.offsetHeight*scale+8);
       box.style.top=Math.max(minTop,Math.min(maxTop,centerY-box.offsetHeight/2))+'px';
       if(group){group.style.visibility='hidden';group.dataset.directActive='';}
     }
@@ -122,7 +134,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const o=el.state.objects.find(o=>o.id===id&&o.type==='text');if(!can(o,'content'))return;
     if(editing?.id===id){field.focus({preventScroll:true});return;}
     close();el.state.selected=id;el.sync();editing={id,text:o.text,size:o.size,lineHeight:o.lineHeight,customerText:o.uxCustomerText,font:o.font,bold:o.bold,italic:o.italic,color:o.color,recorded:false};
-    const limits=limitsOf(o);if(limits&&!limits.perLine)field.maxLength=limits.maxLength;else field.removeAttribute('maxlength');
+    const limits=limitsOf(o);if(limits&&!limits.perLine&&!limits.wholeField)field.maxLength=limits.maxLength;else field.removeAttribute('maxlength');
     field.value=o.text;box.hidden=false;update();field.focus({preventScroll:true});field.select();
   }
   el.uxEditText=openText;
@@ -137,18 +149,18 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const limits=limitsOf(o);if(limits){const next=clampText(field.value,limits,o.text);if(next!==field.value){const at=Math.min(field.selectionStart??next.length,next.length);field.value=next;try{field.setSelectionRange(at,at);}catch{}}}
     o.text=field.value;o.uxCustomerText=true;el.normalize();el.sync();
   });
-  field.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close(true);}else if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();close();}else if(e.key==='Enter'){const limits=limitsOf(selected());if(limits&&field.value.split('\n').length>=limits.maxLines)e.preventDefault();}});
+  field.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close(true);}else if(e.key==='Enter'&&(e.ctrlKey||e.metaKey||!e.shiftKey&&!limitsOf(selected())?.wholeField)){e.preventDefault();close();}else if(e.key==='Enter'){const limits=limitsOf(selected());if(limits&&field.value.split('\n').length>=limits.maxLines)e.preventDefault();}});
   openButton.addEventListener('click',()=>{const o=selected();if(o?.type==='text')openText(o.id);else if(o?.uxUploadId&&can(o,'replace'))openPhoto(o);});
   panel.querySelector('[data-direct-done]').addEventListener('click',()=>close());
   panel.querySelector('[data-direct-cancel]').addEventListener('click',()=>close(true));
   for(const b of panel.querySelectorAll('[data-direct-style]'))b.addEventListener('click',()=>{if(can(selected(),'content'))r.querySelector('[data-ux='+b.dataset.directStyle+']')?.click();});
   for(const b of panel.querySelectorAll('[data-direct-align]'))b.addEventListener('click',()=>{if(can(selected(),'move'))el.uxAlign?.(b.dataset.directAlign);});
   for(const b of panel.querySelectorAll('[data-direct-step]'))b.addEventListener('click',()=>{if(can(selected(),'scale'))r.querySelector('[data-ux='+b.dataset.directStep+']')?.click();});
-  panel.querySelector('[data-direct-turn]').addEventListener('click',()=>{const o=selected();if(can(o,'move'))changeObject('rotation',((o.rotation||0)+15)%360);});
+  panel.querySelector('[data-direct-turn]').addEventListener('click',()=>{const o=selected();if(can(o,'move')&&el.uxCanRotate?.(o)!==false)changeObject('rotation',((o.rotation||0)+15)%360);});
   panel.querySelector('[data-ux=delete]').addEventListener('click',()=>{r.querySelector('.ux-controls [data-ux=delete]')?.click();});
   font.addEventListener('click',()=>r.querySelector('[data-ux=fonts]')?.click());
   color.addEventListener('input',()=>{if(colorTool&&can(selected(),'color'))changeObject('color',color.value);});
-  for(const b of panel.querySelectorAll('[data-direct-motif]'))b.addEventListener('click',()=>{const o=selected(),action=b.dataset.directMotif;if(o?.type!=='motif'||!can(o,action==='rotate'?'move':'scale'))return;if(action==='rotate')changeObject('rotation',((o.rotation||0)+15)%360);else el.action(action);});
+  for(const b of panel.querySelectorAll('[data-direct-motif]'))b.addEventListener('click',()=>{const o=selected(),action=b.dataset.directMotif;if(action==='rotate'&&el.uxCanRotate?.(o)===false)return;if(o?.type!=='motif'||!can(o,action==='rotate'?'move':'scale'))return;if(action==='rotate')changeObject('rotation',((o.rotation||0)+15)%360);else el.action(action);});
   size.addEventListener('change',()=>{
     const o=selected();if(o?.type!=='text'||!can(o,'scale')||!Number.isFinite(size.valueAsNumber))return;
     const input=r.querySelector('#ux-size');input.value=Math.max(minTextMm,Math.min(100,Math.round(size.valueAsNumber)));

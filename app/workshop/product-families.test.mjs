@@ -264,7 +264,7 @@ test('contour family keeps exact outline and drawing holes independently of edge
  assert.deepEqual(p.geometry.holes,s.holesMm.map(h=>({x:h.x,y:h.y,diameter:h.diameterMm})));
  assert.equal(p.optionGroups[0].values.find(v=>v.id==='B02').mountingRule.fixed,true);
  assert.equal(p.optionGroups[0].values.find(v=>v.id==='B02').mountingRule.edgeMm,undefined,'no invented edge rule');
- assert.match(customerLayoutIssue({type:'motif',x:7.995,y:30,w:2,h:2,rotation:0},p),/Bohrloch/);
+ assert.equal(customerLayoutIssue({type:'motif',x:7.995,y:30,w:2,h:2,rotation:0},p),'','artwork crosses future drilling; physical hole stays in the profile');
  assert.equal(customerLayoutIssue({type:'motif',x:7.995,y:30,w:2,h:2,rotation:0},selectedProfile(c,{mounting:'K00'})),'');
  g.holesMm[0].x=999;assert.equal(s.holesMm[0].x,7.995,'geometry does not mutate drawing');
 });

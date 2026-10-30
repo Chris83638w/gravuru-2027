@@ -1,0 +1,27 @@
+// Move the original controls between layout hosts; never clone their state or listeners.
+export function placePreviewToolbar({toolbar,workbench,heading,preview,full,mobile}){
+  workbench.hidden=true;
+  const home=full.open?full:mobile?heading:preview;
+  if(toolbar.parentNode!==home){
+    if(full.open)full.querySelector('.ux-preview-back').after(toolbar);
+    else if(mobile)heading.append(toolbar);
+    else preview.prepend(toolbar);
+  }
+}
+
+export function placeDirectToolbar({panel,stage,preview,workbench,mobile,full}){
+  const inWorkbench=!!workbench&&!mobile&&!full;
+  const home=inWorkbench||mobile&&!full?preview:stage;
+  if(panel.parentNode!==home){
+    const canvas=!full&&preview.querySelector('[data-ux-stage]');
+    if(canvas)preview.insertBefore(panel,canvas);else home.append(panel);
+  }
+  panel.classList.toggle('is-workbench',inWorkbench);
+  panel.classList.toggle('is-docked',mobile);
+  panel.classList.toggle('is-fullscreen-dock',mobile&&full);
+  if(inWorkbench){
+    for(const property of ['left','top','transform','transformOrigin'])panel.style[property]='';
+    panel.style.removeProperty('--ux-full-dock-top');
+  }
+  return inWorkbench;
+}

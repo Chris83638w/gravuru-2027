@@ -1,3 +1,4 @@
+import {resolvedOptions} from './contract.mjs';
 import {textLimits,textLimitIssue} from '../../workshop/theme-limits.mjs';
 import {designElementRights} from './element-rights.mjs';
 
@@ -22,4 +23,19 @@ export function transferProductTexts(texts,objects,design,config){
   remaining.push({...source,reason});
  }
  return {transferred,remaining};
+}
+
+
+// Preserve every chosen option and quantity; a different target may not silently
+// replace an unsupported choice with its cheaper default. Server price/binding
+// validation is still authoritative when the resulting draft is saved.
+export function preserveProductSelection(selection,config){
+ if(!selection)return null;
+ const quantity=Number(selection.quantity);
+ if(!Number.isSafeInteger(quantity)||quantity<1||quantity>99)throw Error('Bitte eine Menge zwischen 1 und 99 wählen.');
+ const options=resolvedOptions(config,selection.options||{});
+ for(const [key,value] of Object.entries(selection.options||{})){
+  if(options[key]!==value)throw Error('Die gewählte Ausführung ist bei diesem Design nicht verfügbar. Deine bisherige Gestaltung bleibt erhalten.');
+ }
+ return {options,quantity};
 }

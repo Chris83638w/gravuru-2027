@@ -65,6 +65,7 @@ export function createPhotoEditor({el,r,config,dialog,button,files,selected,muta
     }
   });
   return async function open(o){
+    if(o?.uxVectorLogo){say('Das geprüfte Vektorlogo lässt sich am Rahmen verschieben, vergrößern und drehen. Zum Austauschen bitte „Ersetzen“ wählen.');return;}
     if(!o||o.uxLocked)return say('Bitte das Bild zuerst entsperren.');if(el.uxCanEdit?.(o,'replace')===false)return say('Dieses Bild ist fest vorgegeben.');source=files.get(o.uxUploadId);if(!source)return say('Bitte die Datei erneut auswählen.');
     try{inputColor=source.editSourceColor||(source.edited&&!source.photoEdit&&o.uxUploadKind==='photo'&&['original','grayscale','sepia'].includes(o.uxPhotoColor)?o.uxPhotoColor:'original');const urls=retainedPhotoUrls(source);source={...source,...urls};files.set(o.uxUploadId,source);objectId=o.id;fixedAspect=o.acrylicFixed?o.w/o.h:null;$('[data-photo-fixed]').hidden=!fixedAspect;$('[data-photo-shape]').closest('label').hidden=!!fixedAspect;$('[data-photo-shape]').disabled=!!fixedAspect;const image=new Image();image.src=source.editSourceUrl||source.url;await image.decode();fullSource=image;const size=fittedSize(image.naturalWidth,image.naturalHeight);working.width=size.width;working.height=size.height;wc.drawImage(image,0,0,size.width,size.height);
       baseline=document.createElement('canvas');baseline.width=size.width;baseline.height=size.height;baseline.getContext('2d').drawImage(working,0,0);

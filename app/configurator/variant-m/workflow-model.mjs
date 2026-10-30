@@ -1,3 +1,4 @@
+import {objectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {fitsSurface,transformedCorners} from './usability-model.mjs';
 import {overlaps} from './customer-tools-model.mjs';
 
@@ -36,9 +37,9 @@ export function freePosition(object,surface,objects,obstacles=[]){
  for(const y of ys)for(const x of xs)grid.push({x,y,d:(x-cx)**2+(y-cy)**2});
  grid.sort((a,b)=>a.d-b.d);
  // Rasterpunkte liegen bei rechteckiger Fläche und ungedrehtem Element konstruktionsbedingt innerhalb (keine Konturprüfung nötig).
- const gridFits=surface.shape!=='ellipse'&&surface.shape!=='contour'&&!(object.rotation||0);
+ const gridFits=!surface.accepts&&!surface.geometry&&surface.shape!=='ellipse'&&surface.shape!=='contour'&&!(object.rotation||0);
  for(const {x,y} of grid)candidates.push({x,y,grid:gridFits});
- for(const p of candidates){const next={...object,x:p.x,y:p.y};if(!p.grid&&!fitsSurface(next,bounds,surface))continue;if(blocked({...next,w:next.w+PLACEMENT_GAP_MM,h:next.h+PLACEMENT_GAP_MM}))continue;return {x:p.x,y:p.y};}return null;
+ for(const p of candidates){const next={...object,x:p.x,y:p.y};if(!p.grid&&(!fitsSurface(next,bounds,surface)||surface.accepts&&!surface.accepts(next)||surface.geometry&&objectIssue(next,{geometry:surface.geometry})))continue;if(blocked({...next,w:next.w+PLACEMENT_GAP_MM,h:next.h+PLACEMENT_GAP_MM}))continue;return {x:p.x,y:p.y};}return null;
 }
 // Platz mit schrittweiser Verkleinerung: Rückgabe {x,y,scale} (scale 1 = Originalgröße) oder null, wenn
 // selbst bei minScale (Mindestgröße / Originalgröße) kein Platz frei ist. minScale 1 = nicht verkleinern.

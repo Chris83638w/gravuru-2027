@@ -1,0 +1,13 @@
+# Schiefer Hunde/Katzen · 30.10.2026 · Codex
+
+Aktueller Nutzerauftrag: 30 Designs je Zielgruppe und bestätigter Größen-/Formreihe; skalierbare Größen gemeinsam, ohne Foto. Ohne Bohrung hat Vorrang. 20×30 Hochformat bleibt oben/unten laut Excel. Kordel ist festes Produkt, niemals zusätzliche Varianten. Herzen mit Bruchkante, geschnittene Herzen und Kordelherzen bleiben getrennt. Bei Widerspruch muss Excel passen, sonst auslassen und Claude fragen. Zwei ergänzende Katzen-Neuanordnungen mit Originalmotiven sind erlaubt; Rest Bestandsübernahme. Design-Master §§1–8 gilt.
+
+485 geometrische Master / 1360 Größenableitungen / 2310 logische Zuordnungen / 39 maßlich bestätigte Produkte / 27 Kontaktbögen. 30 Hunde-Bestandsvorlagen, 28 Katzen-Bestandsvorlagen + 2 neue Katzen-Anordnungen aus eigenen Motiven. Gleich nutzbare Designs sind gemeinsam geführt, keine unnötigen skalierbaren Designkopien. Alle Pfade/Texte erhalten; kein fehlender Font, keine Schrift unter 3 mm, keine Schriftüberstände; Lieferform-Parser 485/485. 5550 Schriftkontur-Ausführungen geprüft, zwei minimale Korrekturen. 22×14 native Prüfung 60 passt; neue Formen sind Lieferform 2, kein behaupteter Live-/Konfi-Anschluss. Stroke-/Evenodd-Altlast des Konfis separat dokumentiert, nicht im Motiv nachgebaut. Isolierter Katalogbau einer bestehenden Prüffamilie durchgeführt; keine produktive Familie geändert.
+
+Katalogbranch: Chris83638w/gravuru-katalog./tree/dev/schiefer-alle-groessen-20261030-astra-mika, Abschluss d1635470309e85d34a29030dc1cd0408bea03080 verified true. GitHub-Großdateitransport brach wiederholt mit HTTP 499 ab; deshalb Briefing-Weg B: vollständige lokale ZIP-Abgabe. GitHub-Masterpaket ist ausdrücklich als teilweise übertragen markiert. Kein main, kein Force-Push, nichts live.
+
+Lokal: C:\Users\Mikail Erdem\Documents\ChatGPT\Produkte Design\outputs\schiefer-alle-groessen\GALERIE.html, Kontaktboegen-Hunde-Katzen.zip, vollständiges SVG/JSON/PNG-ZIP (469,19 MiB). SHA256 b48a430480aed968c2c0331aad4e06481d73eb86d7418a7f6d34bb4d7198491a  Schiefer-Hunde-Katzen-alle-bestaetigten-Groessen.zip.
+
+Offen für Claude: R11/R12/R39/R40/R49 Herz-Maße widersprechen den tatsächlichen SVG-Kurvenmaßen (offenbar Kontrollpunkt-Hüllboxen statt tatsächliche Kurven). Diese fünf Produkte gemäß Nutzer ausgelassen. Vier feste blaue Kordelprodukte R42/R45/R47/R48 haben keine Lieferanten-Lochkoordinaten; Gestaltung/Außenkontur vorbereitet, Bohrschablone offen, keine Löcher erfunden. Nummerierte Fragen im Katalogpaket CLAUDE-FRAGEN.md und Issue #76.
+
+Nächster Schritt: Nutzer bewertet Kontaktbögen; Claude klärt nur die offenen Geometrie-/Lieferantenmaße. Danach die ausgelassenen Produkte ergänzen. Neue Serien-/Maschinenfreigaben bleiben offen.

@@ -1,3 +1,7 @@
+# 30.10.2026 · Codex · Schiefer-Fotos ohne schwarzen Vorschauhintergrund
+
+Nutzerkorrektur umgesetzt: 7140 SVG-Kundenansichten blenden Originalfotos per Screen auf die Materialfläche; Masken, Originalbilddaten, Upload-Hinweise und blaue Konturen bleiben erhalten. 11070 Gravur-/Editierdateien bytegleich. 810 Vorschaubilder und 27 Kontaktbögen neu gerendert, Pixelvergleich auf drei Materialtönen bestanden. Vollständige aktualisierte ZIPs lokal mit Zusatz `-ohne-Fotorand`; keine native/live Konfi-Installation behauptet. [Übergabe](docs/handoffs/2026-10-30-schiefer-foto-ohne-schwarzen-rand.md). Nächster Schritt: Foto-/Maskenimport im nativen Konfi einschließlich dieser Darstellungsregel integrieren.
+
 # 30.10.2026 · Codex · Hunde/Katzen-Fotoserie als SVG
 
 30 Bestandsdesigns je Zielgruppe; 810 Master, 2310 Größenableitungen, 27 Kontaktbögen. 17400 SVGs und Originalfoto-Hashes geprüft, 0 Fehler, Masken/Konturen erhalten. Native Prüfung 22×14: 41 passt, 19 passt nicht (Import-Begrenzungen), 0 FEHLER; 810 Master ohne Parserfehler. Freie Pfadmasken und eingebettete Fotos noch nicht nativ korrekt übernommen; keine Konfi-/Produktionsfreigabe. Fünf Herz-Maßkonflikte ausgelassen; vier feste Kordel-Lochbilder offen. Vollständiges SVG-ZIP lokal, Bericht/Kontaktbögen im eigenen Katalogbranch. [Übergabe](docs/handoffs/2026-10-30-schiefer-foto-alle-groessen.md). Nächster Schritt: Konfi-Fotoimport und native Passungsmeldungen prüfen; offene Excel-/Lieferantengeometrie klären.

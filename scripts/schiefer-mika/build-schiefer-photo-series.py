@@ -234,7 +234,8 @@ def render(art,p,preview=False,editable=False,holes=[]):
     if preview:out.append(f'<path id="ansicht-platte" d="{outline_d}" fill="#242627"/>')
     for i,photo in enumerate(art['photos'],1):
         mask=photo['mask'];defs.append(f'<clipPath id="clip-foto-{i}" clipPathUnits="userSpaceOnUse"><path d="{mask}"/></clipPath>');x,y,pw,ph=photo['imageBox'];info=photo['info']
-        out.append(f'<g id="foto-{i}" class="foto" data-platzhalter="ja" data-gravur="nein" data-original-sha256="{info["sha256"]}"><path d="{mask}" fill="none" stroke="none"/><image id="originalfoto-{i}" x="{x:.7f}" y="{y:.7f}" width="{pw:.7f}" height="{ph:.7f}" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip-foto-{i})" href="{info["uri"]}"/></g>')
+        photo_style=' style="mix-blend-mode:screen"' if preview else ''
+        out.append(f'<g id="foto-{i}" class="foto" data-platzhalter="ja" data-gravur="nein" data-original-sha256="{info["sha256"]}"><path d="{mask}" fill="none" stroke="none"/><image{photo_style} id="originalfoto-{i}" x="{x:.7f}" y="{y:.7f}" width="{pw:.7f}" height="{ph:.7f}" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip-foto-{i})" href="{info["uri"]}"/></g>')
     paths=art['paths']+[q for photo in art['photos'] for q in photo['frames']]
     for i,q in enumerate(paths,1):out.append(f'<path id="motiv-{i}" d="{q["d"]}" fill="{inkcolor if q["fill"] else "none"}" stroke="{inkcolor if q["stroke"] else "none"}" stroke-width="{q["strokeMm"]:.7f}"'+(' fill-rule="evenodd"' if q['evenodd'] else '')+'/>')
     used={};roles=collections.Counter()
@@ -256,7 +257,8 @@ def render(art,p,preview=False,editable=False,holes=[]):
             ix,iy,iw,ih=photo['imageBox'];ca,cb,cc,cd=photo['info']['contentBoxPx'];ipw,iph=photo['info']['px'];mx,my,mw,mh=photo['box'];x=max(mx,ix+ca/ipw*iw);y=max(my,iy+cb/iph*ih);pw=max(1,min(mx+mw,ix+(ca+cc)/ipw*iw)-x);ph=max(1,min(my+mh,iy+(cb+cd)/iph*ih)-y);bw=min(40,pw*.52);bh=bw*.25;cx=x+pw*.5;cy=y+ph*.77
             out.append(f'<g id="upload-hinweis-{i}" data-gravur="nein" clip-path="url(#clip-foto-{i})"><rect x="{cx-bw/2:.5f}" y="{cy-bh/2:.5f}" width="{bw:.5f}" height="{bh:.5f}" rx="{bh/2:.5f}" fill="#fff" fill-opacity=".95" stroke="#d4d7d2" stroke-width=".15"/><text x="{cx:.5f}" y="{cy+bh*.13:.5f}" text-anchor="middle" font-family="sans-serif" font-size="{bw*.08:.5f}" fill="#242627">＋ Foto hochladen</text></g>')
     out.append('<g id="kontur" fill="none" stroke="#0000ff" stroke-width="0.2"><path id="aussenkontur" d="'+outline_d+'"/>'+''.join(f'<circle cx="{a["x"]}" cy="{a["y"]}" r="{a["diameterMm"]/2}"/>' for a in holes)+'</g>')
-    return f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}mm" height="{h}mm" viewBox="0 0 {w} {h}"><title>{esc(art["name"])} · {esc(art["theme"])} · {w} × {h} mm</title><defs>'+''.join(defs)+'</defs>'+''.join(out)+'</svg>'
+    display_style=' style="isolation:isolate" data-foto-darstellung="screen"' if preview else ''
+    return f'<svg{display_style} xmlns="http://www.w3.org/2000/svg" width="{w}mm" height="{h}mm" viewBox="0 0 {w} {h}"><title>{esc(art["name"])} · {esc(art["theme"])} · {w} × {h} mm</title><defs>'+''.join(defs)+'</defs>'+''.join(out)+'</svg>'
 
 def audit_art(d,art,p):
     if ''.join(''.join(t['text'].split()) for t in d['texts'])!=''.join(''.join(t['text'].split()) for t in art['texts']):

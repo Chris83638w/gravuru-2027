@@ -25,5 +25,105 @@
     "sha256": "5fdd8ebab22f695d95848cdb598ce59fd24862e95a171b9ec9da4c428a2226e9",
     "source": "Chris, Chat-Anhang 30.10.2026",
     "status": "Unveränderte Bildreferenz; keine Produktanlage oder Live-Freigabe"
+  },
+  {
+    "name": "Abstandshalter Gold, Draufsicht",
+    "file": "abstandshalter-gold-oben.png",
+    "originalFilename": "AH Gold Oben.png",
+    "bytes": 335571,
+    "sha256": "f928ab30f8297c9a040fe91e6a877d5e5dacf5f78ce7a79a09ef6a13d5000364",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Draufsicht für Konfigurator-Vorschau",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Abstandshalter Edelstahl, Produktansicht",
+    "file": "abstandshalter-edelstahl.png",
+    "originalFilename": "AH Edelstahl.png",
+    "bytes": 284020,
+    "sha256": "93bd38684916eeaeeeac10ead7d2ce22cdfd2e1369f970b2587d28867d705d20",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Produktansicht",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Abstandshalter Weiß, Draufsicht",
+    "file": "abstandshalter-weiss-oben.png",
+    "originalFilename": "AH Weiß Oben.png",
+    "bytes": 226711,
+    "sha256": "264f20b9072bd6f1f646084ca297be52ed581f6275ed93618263f2e95873dfab",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Draufsicht für Konfigurator-Vorschau",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Abstandshalter Bronze, Draufsicht",
+    "file": "abstandshalter-bronze-oben.png",
+    "originalFilename": "AH Bronze Oben.png",
+    "bytes": 262037,
+    "sha256": "34d43c157188c6236383e845e2d201853af9e7a04e19c92cb7b1b5177de1a13d",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Draufsicht für Konfigurator-Vorschau",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Abstandshalter Weiß, Produktansicht",
+    "file": "abstandshalter-weiss.png",
+    "originalFilename": "AH Weiß.png",
+    "bytes": 216204,
+    "sha256": "6f3da8dc1d6ae3a2a721a87f684c95083c27c7f21f03caabf4da9cf1c7ff8816",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Produktansicht",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Abstandshalter Bronze, Produktansicht",
+    "file": "abstandshalter-bronze.png",
+    "originalFilename": "AH Bronze.png",
+    "bytes": 275221,
+    "sha256": "5ca13b4c0be1bcaed4de9a19fdd03e07a36fb988c8e24c0a35ea47b255c8c3b9",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Produktansicht",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Abstandshalter Edelstahl, Draufsicht",
+    "file": "abstandshalter-edelstahl-oben.png",
+    "originalFilename": "AH Edelstahl Oben.png",
+    "bytes": 316758,
+    "sha256": "05f491607b48e2e3841c2b4ccc4021b85c55bf24caf49745a4603952cc6314d6",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Draufsicht für Konfigurator-Vorschau",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Abstandshalter Gold, Produktansicht",
+    "file": "abstandshalter-gold.png",
+    "originalFilename": "AH Gold.png",
+    "bytes": 274884,
+    "sha256": "178de13948bb009148ffbf7be18580ad85107da205b721ca8d0b63a708227678",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Produktansicht",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Abstandshalter Schwarz, Vierergruppe",
+    "file": "abstandshalter-schwarz-vierergruppe.jpg",
+    "originalFilename": "Abstandshalter Gruppe 4 schwarz.jpg",
+    "bytes": 501576,
+    "sha256": "8bb758715940ab4deb2ca0eab991ad78f29a2e8158ac699fbb80b9c94b13cdf6",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Produktansicht; schwarze Draufsicht fehlt",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
+  },
+  {
+    "name": "Silikonkleber",
+    "file": "silikonkleber.png",
+    "originalFilename": "Icon_Silikon.png",
+    "bytes": 51041,
+    "sha256": "f8972cc82bbd20fb3e7fd2295ba45b540fdbc237939732e71803510a1bb3d2e7",
+    "source": "Chris, Chat-Anhang 30.10.2026",
+    "intendedUse": "Eigenes Zubehör, getrennt vom Imprägnierspray",
+    "status": "Unveränderte Originaldatei; noch nicht im Konfigurator eingebaut"
   }
 ]

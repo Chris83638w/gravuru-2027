@@ -5,7 +5,7 @@ export const uploadAllowed=(config,kind)=>kind==='photo'?config?.logo?.vectorUpl
 export function photoAvailableForDesign(config,designId){
   if(config?.logo?.vectorUpload===true||config?.photo?.enabled===false)return false;
   const design=config?.profile?.designs?.find(d=>d.id===designId);
-  return !design?.importedSource||design.objects.some(o=>o.type==='photoSlot');
+  return config?.photo?.allowOnAllDesigns===true||!design?.importedSource||design.objects.some(o=>o.type==='photoSlot');
 }
 // Foto-/Logo-Reiter (Chris 22./23.10.2026): Sieht das Produkt oder Verfahren kein Foto vor
 // (photoEnabled = config.photo.enabled && process.tools.photo) und hat kein Design des Produkts

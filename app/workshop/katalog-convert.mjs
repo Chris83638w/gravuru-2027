@@ -163,7 +163,7 @@ export function parseDesignSvg(svgText){
   }else{
    const parts=(node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node]).map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill||node.attrs.fill||null,fillRule:n.attrs['fill-rule']||node.attrs['fill-rule']||'nonzero',stroke:n.attrs.stroke||node.attrs.stroke||null,strokeMm:num(n.attrs['stroke-width']??node.attrs['stroke-width'],'stroke-width')??1,opacity:num(n.attrs.opacity??node.attrs.opacity,'opacity')??1,transform:transformOf(n===node?'':n.attrs.transform)})).filter(p=>p.d);
    if(!parts.length)fail('Ebene „'+id+'“ enthält keine Vektorpfade.');
-   for(const p of parts){if(p.transform.rotation)fail('Ebene „'+id+'“: gedrehte Einzelpfade werden nicht unterstützt.');if(p.transform.dx||p.transform.dy)fail('Ebene „'+id+'“: verschobene Einzelpfade werden nicht unterstützt.');if(!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+$/.test(p.d))fail('Ebene „'+id+'“: Pfad enthält nicht erlaubte Zeichen.');}
+   for(const p of parts){if(p.transform.rotation)fail('Ebene „'+id+'“: gedrehte Einzelpfade werden nicht unterstützt.');if(p.transform.dx||p.transform.dy)fail('Ebene „'+id+'“: verschobene Einzelpfade werden nicht unterstützt.');if(!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+$/.test(p.d))fail('Ebene „'+id+'“: Pfad enthält nicht erlaubte Zeichen.');if(p.strokeMm<0)fail('Ebene „'+id+'“: stroke-width darf nicht negativ sein.');if(p.opacity<0||p.opacity>1)fail('Ebene „'+id+'“: opacity muss zwischen 0 und 1 liegen.');}
    const nodes=node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node];
    const boxes=nodes.filter(n=>shapePath(n).trim()).map(shapeBounds),x0=Math.min(...boxes.map(b=>b[0])),y0=Math.min(...boxes.map(b=>b[1])),x1=Math.max(...boxes.map(b=>b[0]+b[2])),y1=Math.max(...boxes.map(b=>b[1]+b[3]));
    layers.push({id,kind,paths:parts.map(p=>p.d),pathAttributes:parts.map(p=>({fill:p.fill,evenodd:p.fillRule==='evenodd',stroke:p.stroke,strokeMm:p.strokeMm,opacity:p.opacity})),translation:[t.dx,t.dy],fill:parts.find(p=>p.fill&&p.fill!=='none')?.fill||null,bounds:[x0+t.dx,y0+t.dy,x1-x0,y1-y0].map(round),rotation:t.rotation});
@@ -178,6 +178,17 @@ const fieldRule=(design,layerId)=>{const f=design.fields?.[layerId];if(f===undef
 // verschiebbar – Texte wie bisher, dazu Motive und das Fotofeld (ohne Skalieren, Ersetzen bleibt beim Foto).
 const movableAll=design=>design.json?.movable===true||design.movable===true;
 const samePlate=(a,b)=>Math.abs(a[0]-b[0])<0.5&&Math.abs(a[1]-b[1])<0.5;
+
+// Die historische Corel-Plattenfläche ist ein einzelnes, deckendes Rechteck.
+// Eine volle Hüllbox allein ist kein Flächennachweis: auch Rahmen und randlaufende Motive haben sie.
+const isPlateArea=layer=>{
+ if(layer.paths.length!==1)return false;
+ const a=layer.pathAttributes[0];if(a.fill==='none'||a.stroke&&a.stroke!=='none'||a.opacity!==1)return false;
+ const tokens=layer.paths[0].match(/[A-Za-z]|[-+]?(?:\d+\.?\d*|\.\d+)(?:[eE][-+]?\d+)?/g)||[];
+ if(tokens.length!==13||[0,3,6,9,12].map(i=>tokens[i]).join('')!=='MLLLZ')return false;
+ const points=[1,4,7,10].map(i=>[Number(tokens[i]),Number(tokens[i+1])]);
+ return new Set(points.map(p=>p.join(','))).size===4&&points.every((p,i)=>{const q=points[(i+1)%4];return (p[0]===q[0])!==(p[1]===q[1]);});
+};
 
 // `fonts`: Glyphenressourcen (Name → {regular:{units,glyphs}}) aller Schriften, die das
 // Design verwendet; fehlt eine, bricht die Umwandlung mit „Schrift fehlt“ ab (nie Ersatz).
@@ -224,9 +235,13 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    if(layer.placeholder)placeholders.push({slotId:id,file:layer.placeholder,widthMm:round(bw),heightMm:round(bh)});
   }else{
    const [bx,by,bw,bh]=layer.bounds;
-   if(samePlate([bw,bh],plate)&&Math.abs(bx)<0.5&&Math.abs(by)<0.5){notes.push('Ebene „'+layer.id+'“ füllt die ganze Platte (Plattenfläche aus Corel) und wird nicht übernommen.');continue;}
+   if(samePlate([bw,bh],plate)&&Math.abs(bx)<0.5&&Math.abs(by)<0.5&&isPlateArea(layer)){notes.push('Ebene „'+layer.id+'“ füllt die ganze Platte (Plattenfläche aus Corel) und wird nicht übernommen.');continue;}
    const key=templateId+'-'+id;
-   motifs.push({key,svgFragment:layer.paths.map((d,i)=>{const a=layer.pathAttributes?.[i]||{};return '<path d="'+d+'" fill="'+(print?paint(a.fill??'#000000'):'currentColor')+'" fill-rule="'+(print&&a.evenodd?'evenodd':'nonzero')+'"'+(print&&a.stroke?' stroke="'+paint(a.stroke)+'" stroke-width="'+a.strokeMm+'"':'')+(print&&a.opacity!==undefined?' opacity="'+a.opacity+'"':'')+'/>';}).join(''),bounds:[round(bx),round(by),round(bw),round(bh)],embeddedOnly:true});
+   motifs.push({key,svgFragment:layer.paths.map((d,i)=>{
+    const a=layer.pathAttributes?.[i]||{},fill=print?paint(a.fill??'#000000'):a.fill==='none'?'none':'currentColor',stroke=a.stroke&&a.stroke!=='none'?(print?paint(a.stroke):'currentColor'):null;
+    // Gravur ersetzt nur die Farbe durch Profiltinte; Kontur, Aussparungen und Deckkraft bleiben Quelle.
+    return '<path d="'+d+'" fill="'+fill+'" fill-rule="'+(a.evenodd?'evenodd':'nonzero')+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+a.strokeMm+'"':'')+(a.opacity!==undefined&&(print||a.opacity!==1)?' opacity="'+a.opacity+'"':'')+'/>';
+   }).join(''),bounds:[round(bx),round(by),round(bw),round(bh)],embeddedOnly:true});
    const movable=movableAll(design)&&!guide;
    const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:(print||movable)&&!guide};
    if(!o.customerEditable)o.locked=true;if(guide)o.role='guide';

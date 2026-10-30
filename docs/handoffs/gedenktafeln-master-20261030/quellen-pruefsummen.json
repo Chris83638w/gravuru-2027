@@ -1,0 +1,73 @@
+{
+  "reviewOnly": true,
+  "designs": [
+    {
+      "id": "GT-S-22x14-D204",
+      "jsonSha256": "27fedaea0c888991b76021b48a3188a194a78c252a44b232e718a2a4728e2c13",
+      "svgSha256": "c350cdf037464204b5e54fb5f33a3b6082439c16377c69d5d6334ec17a30d205"
+    },
+    {
+      "id": "GT-S-22x14-D213",
+      "jsonSha256": "8c21ad37aba0a6befd1ea72dfc0ab3028dab8ee9535efc620f045b74991bf4db",
+      "svgSha256": "6e371cec7ec06dde4bdcb5e3b75c323f6188e0062f25b90c8557196b791184c2"
+    }
+  ],
+  "fonts": [
+    {
+      "name": "Betsy Bailey",
+      "sha256": "98d3e4494a8ccb878e661f4b2a0dc7fa4040e3db4683457ab3b791b8d427f493"
+    },
+    {
+      "name": "Poppins ExtraLight",
+      "sha256": "55c03314cc754e26f741f97890e5e9cbe3b3278fe3abcecfecafd60111b2643d"
+    },
+    {
+      "name": "Great Vibes",
+      "sha256": "d4b4126ed2028e7b6c68038e36334f13cd7c5286584951a3dfbfe9e64305e8a2"
+    },
+    {
+      "name": "Libre Baskerville",
+      "sha256": "4dada51e36cd8558d2b953d44dc9788f50a6ecbe36e0b413711cf48af8bebeec"
+    }
+  ],
+  "geometrySource": "docs/handoffs/design-start-mika/schiefer/konturen-und-loecher.json",
+  "pricesHidden": true,
+  "shopWrites": 0,
+  "catalogueSource": "Lokale Katalogkopie, keine aktuelle main-Revision oder Freigabe behauptet.",
+  "sourceFiles": {
+    "family": {
+      "name": "gedenktafel-22x14-schiefer-natur.json",
+      "sha256": "b5e3a526eb732babae1ca42bb0517fea00b3d359047a5e4657d8e85b46cc2e42"
+    },
+    "geometry": {
+      "name": "konturen-und-loecher.json",
+      "sha256": "dcb19742d6225cfb18ae0a6921fdf98ae8f8ece9e9212fd9fec9f30a93cc236e"
+    },
+    "surface": {
+      "name": "Schiefer-Grundplatte-kompakt.webp",
+      "sha256": "130cb6b9a76babd230c1389c2fab7553534c7d32d7333edd26c1e14d0fb8f1ed"
+    }
+  },
+  "photos": [
+    {
+      "design": "GT-S-22x14-D204",
+      "name": "foto-1.png",
+      "sha256": "a2c1b7291428f9d171249d74481d90b0356a5aef7830e0c9c6f954815f7c7d1c"
+    },
+    {
+      "design": "GT-S-22x14-D204",
+      "name": "original.png",
+      "sha256": "d9eb944cbefe823d89208d4509b12959f0535f22b430de60837f3300e15f2040"
+    },
+    {
+      "design": "GT-S-22x14-D213",
+      "name": "foto-1.png",
+      "sha256": "ef8452f41380bbd0dd4be5b692860e12d43a681f2029ee25aa7ae1373fcb69b1"
+    },
+    {
+      "design": "GT-S-22x14-D213",
+      "name": "original.png",
+      "sha256": "8f0c319570b3310c707dda56fb3699343147991ec94029abb37699fc650f8d99"
+    }
+  ]
+}

@@ -71,7 +71,7 @@ export function surfaceObjectIssue(object,profile,{motifs=[]}={}){
  }
  return issue;
 }
-export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
+export function validateDesignContent(d,{universal=false,extraFontIds=[],maxTextLength=DESIGN_LIMITS.maxTextLength}={}){
  if(!d||!validContentId(d.id))throw Error('Jedes Design benötigt eine gültige Kennung.');
  if(!Array.isArray(d.objects)||!d.objects.length||d.objects.length>DESIGN_LIMITS.maxObjects)throw Error('Jedes Design braucht 1 bis 20 Elemente.');
  if(d.category!==undefined&&(typeof d.category!=='string'||d.category.length>80))throw Error('Kategorie: höchstens 80 Zeichen.');
@@ -88,7 +88,7 @@ export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
   if(!Number.isFinite(o.w)||!Number.isFinite(o.h)||o.w<=0||o.h<=0)throw Error(name+': Breite und Höhe müssen größer als 0 mm sein.');
   if(!Number.isFinite(o.rotation)||Math.abs(o.rotation)>DESIGN_LIMITS.maxRotation)throw Error(name+': Drehung muss zwischen −360° und 360° liegen.');
   if(o.type==='text'){
-   if(typeof o.text!=='string'||!o.text.trim()||o.text.length>DESIGN_LIMITS.maxTextLength||/[\u0000-\u0009\u000b-\u001f\u007f]/.test(o.text))throw Error('Text: 1 bis 180 Zeichen ohne Steuerzeichen.');
+   if(typeof o.text!=='string'||!o.text.trim()||o.text.length>maxTextLength||/[\u0000-\u0009\u000b-\u001f\u007f]/.test(o.text))throw Error('Text: 1 bis '+maxTextLength+' Zeichen ohne Steuerzeichen.');
    if(!SUPPORTED_FONT_IDS.includes(o.font)&&!extraFontIds.includes(o.font))throw Error('Bitte eine vorhandene Schriftart auswählen.');
    if(!Number.isFinite(o.size)||o.size<DESIGN_LIMITS.minFontSize||o.size>DESIGN_LIMITS.maxFontSize)throw Error('Schriftgröße: 1 bis 100 mm.');
    if(o.bold!==undefined&&typeof o.bold!=='boolean')throw Error('Ungültiger Schriftschnitt.');

@@ -2,6 +2,7 @@ import {updateBackingPreviewViewport} from './backing-preview-viewport.mjs';
 import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {contourGuides} from './contour-guides.mjs';
 import {spacerPreview,screwPreview,keepoutPreview,optionTileIcon,optionTilePrice} from './option-media.mjs';
+import {optionImage,pricesHidden} from './option-images.mjs';
 import {designAreaPreview} from './design-area.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg,universalPreviewViewport} from '../../platform/sources/app/shared/models/studio-svg.mjs';
@@ -26,7 +27,7 @@ const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml')
 
 export function installUniversal(configInput) {
   const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
-  const dynamicDoorbell=isLayeredDoorbell(config);
+  const dynamicDoorbell=isLayeredDoorbell(config),hidePrices=pricesHidden(config);
   const originalPrepare = window.Funkklingel.prepare, originalFinish = window.Funkklingel.finish;
   let options = {}, quantity = 1, el, renderId = 0;
   const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
@@ -51,7 +52,7 @@ export function installUniversal(configInput) {
     // Rote Schutzringe um die Bohrlöcher zeigt der Kundeneditor nicht mehr (Chris 20.10.2026), und seit 22./23.10.2026
     // auch keinen Hinweis zu Texten nahe an Löchern (nur noch mechanische Prüfung). Schrauben/Abstandshalter
     // erscheinen, wenn die Befestigung sie enthält.
-    return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,profile(surface)),profile(surface)),profile(surface),{show:false,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
+    return scenePreview(designAreaPreview(keepoutPreview(screwPreview(spacerPreview(result,profile(surface),{screen:true}),profile(surface)),profile(surface),{show:false,emphasis:guides}),config,profile(surface),{show:keepout}),config.sceneBackground);
   };
   const locked = o => !!o?.uxLocked;
 
@@ -129,48 +130,57 @@ export function installUniversal(configInput) {
       options=next;Object.assign(el.state,state);el.sync();
     };
     el.uxChangeOption=changeOption;
-    picks.innerHTML=(p.optionGroups||[]).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(fullOptionPrice(g)?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
+    picks.innerHTML=(p.optionGroups||[]).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(hidePrices?'':fullOptionPrice(g)?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
     optionPanel.append(picks);
     // Chris 22./23.10.2026: Befestigung als Kacheln mit Icon, Bezeichnung und Aufpreis („+2,99 €“ oder
     // „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount] in completion.mjs; der Auswahlhaken kommt von
     // dort (completion-choice). Andere Gruppen zeigen weiterhin nur Werte mit hinterlegtem Optionsbild. Die
     // Auswahlliste darüber bleibt als barrierefreie Alternative. Preis- und Auswahllogik bleiben unverändert.
     const pictures=document.createElement('div');pictures.className='m-option-pictures';
-    const tileValues=g=>g.id==='mounting'?g.values:g.values.filter(v=>v.thumbnail);
-    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+optionTileIcon(v,{mounting:g.id==='mounting'})+'<strong>'+esc(v.label)+'</strong><small>'+esc(optionTilePrice(v,money,{fullPrice:!!fullOptionPrice(g)}))+'</small></button>').join('')+'</div>').join('');
+    const tileValues=g=>g.id==='mounting'?g.values:g.values.filter(v=>v.thumbnail||optionImage(config,g.id+':'+v.id));
+    const tileIcon=(g,v)=>{const image=optionImage(config,g.id+':'+v.id);return image?'<img class="m-product-option-image" src="'+esc(image)+'" alt="">':optionTileIcon(v,{mounting:g.id==='mounting'});};
+    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+(tileValues(g).length?'<h3>'+esc(g.name)+'</h3>':'')+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+tileIcon(g,v)+'<strong>'+esc(v.label)+'</strong><small>'+(hidePrices?'':esc(optionTilePrice(v,money,{fullPrice:!!fullOptionPrice(g)})))+'</small></button>').join('')+'</div>').join('');
     picks.append(pictures);
     style.textContent+='.m-option-pictures>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:6px 0 10px}.m-option-pictures>div:empty{display:none}.m-option-pictures button{display:grid;justify-items:center;align-content:center;gap:6px;min-height:110px;padding:12px 18px;border:1px solid #dce5df;border-radius:12px;background:#fff;color:#1c3327;position:relative}.m-option-pictures button[aria-pressed=true]{border-color:#17634d;background:#edf5f0}.m-option-pictures svg{width:32px;height:32px;display:block;flex:none}.m-option-pictures img{width:56px;height:40px;object-fit:contain;display:block;flex:none}.m-option-pictures strong{font-size:14px;font-weight:600;line-height:1.3;text-align:center}.m-option-pictures small{font-size:12px;color:#526b5d}@media(max-width:600px){.m-option-pictures button{min-height:95px}.m-option-pictures svg{width:27px;height:27px}}';
     pictures.addEventListener('click',e=>{const button=e.target.closest('[data-picture-option]');if(!button)return;changeOption(button.dataset.pictureGroup,button.dataset.pictureOption);});
     // K14 / Ü12.1: Zusatzfelder ohne Vorschau (Text, Datum, Auswahlliste, Ankreuzfeld) im Reiter „Optionen“.
     const fieldBox=document.createElement('div');fieldBox.className='m-option-fields';
-    const surcharge=c=>c?' · +'+money(c):'';
+    const surcharge=c=>!hidePrices&&c?' · +'+money(c):'';
+    const fieldImage=key=>{const src=optionImage(config,key);return src?'<img class="m-field-image" src="'+esc(src)+'" alt="">':'';};
     fieldBox.innerHTML=optionFields(p).map(f=>{
       const head=esc(f.label)+(f.required?' · erforderlich':' · optional'),note=f.note?'<small>'+esc(f.note)+'</small>':'',attr='data-m-field="'+esc(f.id)+'" aria-label="'+esc(f.label)+'"'+(f.required?' aria-required="true"':'');
-      if(f.kind==='checkbox')return '<label class="m-field-check" data-m-field-row="'+esc(f.id)+'"><input type="checkbox" '+attr+'><span>'+head+surcharge(f.priceCents)+'</span>'+note+'</label>';
+      if(f.kind==='checkbox'&&optionImage(config,f.id))return '<fieldset class="m-field-tiles m-field-binary" data-m-field-row="'+esc(f.id)+'"><legend>'+head+'</legend>'+[false,true].map(enabled=>'<label><input type="radio" name="m-field-'+esc(f.id)+'" data-m-field="'+esc(f.id)+'" data-field-boolean="true" value="'+enabled+'">'+(enabled?fieldImage(f.id):'')+'<strong'+(enabled?'':' class="m-field-none"')+'>'+(enabled?'Mit':'Ohne')+'<br>'+esc(f.label)+(enabled?surcharge(f.priceCents):'')+'</strong></label>').join('')+note+'</fieldset>';
+      if(f.kind==='checkbox')return '<label class="m-field-check" data-m-field-row="'+esc(f.id)+'"><input type="checkbox" '+attr+'><span>'+fieldImage(f.id)+head+surcharge(f.priceCents)+'</span>'+note+'</label>';
+      if(f.kind==='select'&&f.choices.some(c=>optionImage(config,f.id+':'+c.id)))return '<fieldset class="m-field-tiles" data-m-field-row="'+esc(f.id)+'"><legend>'+head+'</legend>'+[{id:'',label:'Ohne '+f.label},...f.choices].map(c=>'<label><input type="radio" name="m-field-'+esc(f.id)+'" data-m-field="'+esc(f.id)+'" value="'+esc(c.id)+'">'+fieldImage(f.id+':'+c.id)+'<strong'+(c.id?'':' class="m-field-none"')+'>'+(c.id?esc(c.label):'Ohne<br>'+esc(f.label))+surcharge(c.priceCents)+'</strong></label>').join('')+note+'</fieldset>';
       if(f.kind==='select')return '<label data-m-field-row="'+esc(f.id)+'"><span>'+head+'</span><select '+attr+'><option value="">Bitte wählen</option>'+f.choices.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.label)+surcharge(c.priceCents)+'</option>').join('')+'</select>'+note+'</label>';
       return '<label data-m-field-row="'+esc(f.id)+'"><span>'+head+surcharge(f.priceCents)+'</span><input type="'+(f.kind==='date'?'date':'text')+'" '+attr+(f.kind==='text'?' maxlength="'+(f.maxLength??FIELD_TEXT_DEFAULT_MAX)+'"':'')+(f.placeholder?' placeholder="'+esc(f.placeholder)+'"':'')+'>'+note+'</label>';
     }).join('');
     fieldBox.hidden=!fieldBox.childElementCount;picks.append(fieldBox);
+    style.textContent+='.m-option-pictures h3{grid-column:1/-1;margin:8px 0 0;font-size:16px}.m-option-pictures .m-product-option-image{width:100%;height:74px;object-fit:contain}.m-option-fields .m-field-image{display:block;width:90px;height:72px;object-fit:contain;margin:0 auto 6px}.m-field-tiles{border:0;padding:0;margin:10px 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.m-field-tiles legend{font-weight:650;margin-bottom:8px}.m-option-fields .m-field-tiles label{border:1px solid #ccd0d5;border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;align-content:center;position:relative;color:#343a40}.m-field-tiles label:has(input:checked){border:2px solid #343a40;background:#f3f4f5}.m-field-tiles input{accent-color:#343a40;justify-self:center;width:18px!important;height:18px!important;min-height:0!important;padding:0!important}.m-field-check input{width:18px!important;height:18px!important;min-height:0!important}.m-field-check>span{display:flex;align-items:center;gap:12px}.m-option-fields .m-field-check .m-field-image{margin:0;width:76px;height:68px}.m-field-tiles strong{font-size:14px;line-height:1.3}';
     style.textContent+='.m-option-fields{display:grid;gap:10px;margin:12px 0}.m-option-fields label{display:grid!important;gap:4px;margin:0!important}.m-option-fields .m-field-check{grid-template-columns:auto 1fr;align-items:center}.m-option-fields .m-field-check small{grid-column:1/-1}.m-option-fields input[type=text],.m-option-fields input[type=date],.m-option-fields select{width:100%;box-sizing:border-box;min-height:40px}.m-option-fields small{font-size:12px;color:#46574d}.m-options label[hidden],.m-option-fields[hidden],.m-option-pictures [hidden]{display:none!important}';
-    const fieldInput=input=>input.type==='checkbox'?input.checked:input.value;
-    fieldBox.addEventListener('focusin',e=>{if(e.target.dataset.mField&&e.target.type!=='checkbox'&&e.target.tagName!=='SELECT')el.record();});
-    fieldBox.addEventListener('input',e=>{const key=e.target.dataset.mField;if(!key||e.target.type==='checkbox'||e.target.tagName==='SELECT')return;changeOption(key,fieldInput(e.target),{record:false});});
-    fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;changeOption(key,fieldInput(e.target),{record:e.target.type==='checkbox'||e.target.tagName==='SELECT'});});
+    style.textContent+=':host([data-ux-neutral]) .m-option-pictures>div[hidden],.fk-options .m-option-fields>[hidden]{display:none!important}.fk-options .m-option-fields .m-field-tiles:not([hidden]){display:grid!important}';
+    style.textContent+='.m-field-tiles.m-field-binary{grid-template-columns:repeat(2,minmax(0,1fr))}.m-option-fields .m-field-tiles label{border-width:2px;padding:11px 7px;grid-template-rows:18px minmax(72px,1fr) auto;align-content:start}.m-field-tiles input{margin:0!important;align-self:start}.m-field-tiles label>strong{grid-row:3}.m-field-tiles label>.m-field-none{grid-row:2/4;align-self:center}.m-field-tiles .m-field-none{white-space:nowrap}@media(max-width:420px){.m-field-tiles:not(.m-field-binary) .m-field-none{font-size:11px}}';
+    const fieldInput=input=>input.dataset.fieldBoolean==='true'?input.value==='true':input.type==='checkbox'?input.checked:input.value;
+    fieldBox.addEventListener('focusin',e=>{if(e.target.dataset.mField&&!['checkbox','radio'].includes(e.target.type)&&e.target.tagName!=='SELECT')el.record();});
+    fieldBox.addEventListener('input',e=>{const key=e.target.dataset.mField;if(!key||['checkbox','radio'].includes(e.target.type)||e.target.tagName==='SELECT')return;changeOption(key,fieldInput(e.target),{record:false});});
+    fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;changeOption(key,fieldInput(e.target),{record:['checkbox','radio'].includes(e.target.type)||e.target.tagName==='SELECT'});});
     options={...Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId])),...(dynamicDoorbell?{position:config.doorbell.defaultPosition||'standard'}:{})};
     for(const select of picks.querySelectorAll('select[data-m-option]')) select.value=options[select.dataset.mOption];
     picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;changeOption(e.target.dataset.mOption,e.target.value);});
     // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.
     function updateOptionVisibility(){
       let shown;try{shown=resolvedOptions(config,options);}catch{shown=null;}
-      for(const select of picks.querySelectorAll('select[data-m-option]')){const g=(p.optionGroups||[]).find(x=>x.id===select.dataset.mOption),visible=!g?.visibleIf||(shown?shown[g.id]!==undefined:true);select.closest('label').hidden=!visible||g?.id==='mounting';}
+      for(const select of picks.querySelectorAll('select[data-m-option]')){const g=(p.optionGroups||[]).find(x=>x.id===select.dataset.mOption),visible=!g?.visibleIf||(shown?shown[g.id]!==undefined:true);select.closest('label').hidden=!visible||g?.id==='mounting'||!!g&&tileValues(g).length===g.values.length;}
       for(const group of pictures.querySelectorAll('[role=group]')){const id=group.querySelector('[data-picture-group]')?.dataset.pictureGroup;if(id)group.hidden=shown?shown[id]===undefined:false;}
       for(const f of optionFields(p)){
         const row=fieldBox.querySelector('[data-m-field-row="'+CSS.escape(f.id)+'"]'),input=row?.querySelector('[data-m-field]');if(!row)continue;
         // Sichtbar = Bedingung erfüllt (auch wenn das Feld noch leer ist).
         const cond=f.visibleIf,visible=!cond||(shown?shown[cond.groupId]!==undefined&&cond.valueIds.includes(shown[cond.groupId]):true);row.hidden=!visible;
         const value=options[f.id];if(r.activeElement===input)continue;
-        if(input.type==='checkbox')input.checked=value===true;else input.value=value??'';
+        if(input.type==='radio'){for(const radio of row.querySelectorAll('input'))radio.checked=radio.value===(f.kind==='checkbox'?String(value===true):value??'');}
+        else if(input.type==='checkbox')input.checked=value===true;else input.value=value??'';
       }
+      return shown;
     }
 
     const photoSection=document.createElement('section'); photoSection.className='m-photo';photoSection.setAttribute('aria-label','Foto hochladen');
@@ -310,9 +320,9 @@ export function installUniversal(configInput) {
       renderThumbnails();
       const name=current().name;$('.guided-review dl').innerHTML='<div><dt>Design</dt><dd>'+esc(name)+'</dd></div><div><dt>Material</dt><dd>'+esc(processing.name)+'</dd></div>';
       $('[data-setting=guides]').closest('.check-guide').hidden=false;
-      for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=options[select.dataset.mOption];
-      updateOptionVisibility();
-      for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
+      const selectedOptions=updateOptionVisibility()||options;
+      for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=selectedOptions[select.dataset.mOption];
+      for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(selectedOptions[button.dataset.pictureGroup]===button.dataset.pictureOption));
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
         $('[data-fk-total]').textContent=price?money(price.totalCents):'Preis noch offen';

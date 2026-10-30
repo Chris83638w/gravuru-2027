@@ -3,6 +3,7 @@
 // Der Desktop (≥ 768 px) behält die Reiter aus ux.mjs unverändert; dieses Modul
 // bildet die vorhandenen Reiter nur auf Schritte ab und verschiebt keine Logik.
 
+import {pricesHidden} from './option-images.mjs';
 import {customerTextLine} from './text-summary.mjs';
 import {visibleBy,optionFields,fieldValue,fieldDisplay} from './option-fields.mjs';
 
@@ -171,7 +172,7 @@ export async function installMobileSteps(api){
   function renderReview(){
     if(!active||current!=='review')return;
     const designName=profile?.designs?.find(d=>d.id===el.state.designId)?.name||'';
-    const quantity=$('[data-fk-quantity]')?.value||1,totalText=$('[data-fk-total]')?.textContent.trim()||'';
+    const quantity=$('[data-fk-quantity]')?.value||1,totalText=pricesHidden(config)?'':$('[data-fk-total]')?.textContent.trim()||'';
     const rows=summaryRows({profile,legacy,state:el.state,quantity,totalText,designName});
     review.querySelector('[data-ux-mobile-summary]').innerHTML=rows.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('');
     // K1-Hinweise (Pflichtfeld, Limit) und fehlendes Pflichtfoto sichtbar vor dem Warenkorb.

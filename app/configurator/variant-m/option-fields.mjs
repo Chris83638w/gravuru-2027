@@ -31,7 +31,8 @@ function checkCondition(condition,targets,what){
   if(!target)fail(what+': Bedingung verweist auf keine weiter oben stehende Gruppe oder Auswahlliste.');
   if(!Array.isArray(condition.valueIds)||!condition.valueIds.length||condition.valueIds.some(v=>!target.includes(v))||new Set(condition.valueIds).size!==condition.valueIds.length)fail(what+': Bedingung nennt unbekannte Werte.');
 }
-export function validateOptionConditions(profile){
+export function validateOptionConditions(profile,{allowOpenPrices=false}={}){
+  const validPrice=value=>cents(value)||(allowOpenPrices&&value===null);
   const groups=profile.optionGroups||[],fields=profile.optionFields,targets=new Map();
   for(const g of groups){checkCondition(g.visibleIf,targets,'Optionsgruppe '+g.name);targets.set(g.id,g.values.map(v=>v.id));}
   if(fields===undefined)return;
@@ -47,10 +48,10 @@ export function validateOptionConditions(profile){
     if(f.note!==undefined&&!label(f.note,400))fail(what+': Hinweis prüfen.');
     if(f.placeholder!==undefined&&!label(f.placeholder,80))fail(what+': Platzhalter prüfen.');
     if(f.maxLength!==undefined&&(f.kind!=='text'||!Number.isInteger(f.maxLength)||f.maxLength<1||f.maxLength>FIELD_TEXT_MAX))fail(what+': Zeichenlimit 1 bis '+FIELD_TEXT_MAX+' nur bei Textfeldern.');
-    if(f.priceCents!==undefined&&(f.kind==='select'||!cents(f.priceCents)))fail(what+': Aufpreis in ganzen Cent (Auswahllisten je Auswahl).');
+    if(f.priceCents!==undefined&&(f.kind==='select'||!validPrice(f.priceCents)))fail(what+': Aufpreis in ganzen Cent (Auswahllisten je Auswahl).');
     if(f.kind==='select'){
       if(!Array.isArray(f.choices)||!f.choices.length||f.choices.length>40)fail(what+': 1 bis 40 Auswahlen.');
-      const seen=new Set();for(const c of f.choices){if(!c||typeof c!=='object')fail(what+': Auswahl fehlt.');only(c,['id','label','priceCents'],what+' · Auswahl');if(!id(c.id)||seen.has(c.id)||!label(c.label)||(c.priceCents!==undefined&&!cents(c.priceCents)))fail(what+': Auswahl '+(c.id||'')+' prüfen.');seen.add(c.id);}
+      const seen=new Set();for(const c of f.choices){if(!c||typeof c!=='object')fail(what+': Auswahl fehlt.');only(c,['id','label','priceCents'],what+' · Auswahl');if(!id(c.id)||seen.has(c.id)||!label(c.label)||(c.priceCents!==undefined&&!validPrice(c.priceCents)))fail(what+': Auswahl '+(c.id||'')+' prüfen.');seen.add(c.id);}
     }else if(f.choices!==undefined)fail(what+': Auswahlen nur bei Auswahllisten.');
     checkCondition(f.visibleIf,targets,what);
     if(f.kind==='select')targets.set(f.id,f.choices.map(c=>c.id));
@@ -75,7 +76,12 @@ export function fieldValue(field,raw){
   const max=field.maxLength??FIELD_TEXT_DEFAULT_MAX;if([...value].length>max)fail(name+': höchstens '+max+' Zeichen.');
   return value;
 }
-export const fieldPrice=(field,value)=>value===undefined?0:field.kind==='select'?field.choices.find(c=>c.id===value)?.priceCents??0:field.priceCents??0;
+export function fieldPrice(field,value){
+  if(value===undefined)return 0;
+  const price=field.kind==='select'?field.choices.find(c=>c.id===value)?.priceCents:field.priceCents;
+  if(price===null)fail('Preis noch offen: '+field.label);
+  return price??0;
+}
 const VERB={text:'ausfüllen',date:'angeben',select:'auswählen',checkbox:'bestätigen'};
 export const fieldRequiredMessage=field=>'Bitte „'+field.label+'“ '+VERB[field.kind]+'.';
 // Anzeige: Datum deutsch, Auswahl mit Bezeichnung, Ankreuzfeld „ja“.

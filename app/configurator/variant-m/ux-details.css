@@ -222,7 +222,7 @@
 @media(min-width:768px){
  :host([data-ux-layout][data-ux-neutral]) .ux-heading{padding:3px 14px!important;min-height:48px!important;gap:12px!important}
  :host([data-ux-layout][data-ux-neutral]) .ux-heading button{min-height:38px!important;height:38px!important;padding:4px 10px!important}
- :host([data-ux-layout][data-ux-neutral]) .ux-preview>.ux-canvas-toolbar{padding:2px 10px!important}
+ :host([data-ux-layout][data-ux-neutral]) .ux-preview>.ux-canvas-toolbar{padding:2px 10px!important;margin-top:4px!important}
  :host([data-ux-layout][data-ux-neutral]) .ux-preview>.ux-canvas-toolbar :is(button,.ux-canvas-help){min-height:36px!important;height:36px!important;padding:5px 8px!important;font-size:13px!important}
  :host([data-ux-layout][data-ux-neutral]) .ux-preview>.ux-direct-edit.is-workbench{padding:3px 6px!important;margin:0 10px 4px!important;width:calc(100% - 20px)!important;max-width:calc(100% - 20px)!important;border-radius:9px!important}
  :host([data-ux-layout][data-ux-neutral]) .ux-direct-edit.is-workbench :is(button,input[type=number]){min-height:36px!important;height:36px!important;padding-top:3px!important;padding-bottom:3px!important}

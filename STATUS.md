@@ -1,3 +1,7 @@
+## 30.10.2026 · Codex/Astra · Vier Pixel Abstand unter dem Kopf (PR #58)
+
+Chris' Feinschliff: 4 px zwischen dunklem Kopf und Vollbild-Werkzeugzeile am Desktop. Browser nachgemessen: Kopfende y=50, Werkzeugzeile y=54. Build bestanden, sichtbare Bemaßung/Preis geprüft; reine CSS-Änderung ohne neuen Testlauf. [Bild](docs/handoffs/issue48-orientierung-20261030/kopf-abstand-4px.png). Lokal im Entwurf, nichts live.
+
 ## 30.10.2026 · Codex/Astra · Hinweis schmaler, Schraubenkopf 4,5 mm (PR #58)
 
 Überlagerungshinweis auf eine kompakte Desktopzeile mit „Anzeigen“/„Ignorieren“ reduziert; Kopfmaß der fotorealistischen Schrauben auf Chris' neue Vorgabe **4,5 mm** geändert. Bohrungen und Konflikterkennung unverändert. **21/21 gezielte Tests**, Build und Desktop-/375×548-Bedienprüfung bestanden. [Nachtrag und Bilder](docs/handoffs/2026-10-30-konfi-inline-motive-astra.md). Weiterhin Entwurf und lokale Sichtung, nichts live.

@@ -29,6 +29,21 @@ test('normal cart receives preview, text, exact price and saved reference while 
  assert.equal(r.cartUrl,'/de/cart');assert.equal(r.paymentConfirmed,false);assert.equal(f.claims(),1);assert.deepEqual(f.cart.items[0],before);assert.equal(f.cart.items.length,2);
  assert.equal(f.upload().get('items[0][properties][Gravurtext]'),'Familie Müller');assert.ok(f.calls.indexOf('/de/cart.js')<f.calls.indexOf('/de/cart/add.js'));
 });
+
+test('real multipart line endings keep multiline engraving text verifiable without accepting changed content',async()=>{
+ const p=payload();p.properties.Gravurtext='Spruch: Heimathafen\nvon · Nachname: Müller';p.properties['Gravurtext 2']='Straße 1\nBielefeld';
+ const multipart=new FormData();multipart.set('Gravurtext',p.properties.Gravurtext);
+ const transmitted=await new Response(multipart).formData();
+ assert.equal(transmitted.get('Gravurtext'),'Spruch: Heimathafen\r\nvon · Nachname: Müller');
+ const f=fixture(p,{alter:l=>{l.properties.Gravurtext=transmitted.get('Gravurtext');l.properties['Gravurtext 2']='Straße 1\r\nBielefeld';}});
+ await f.client.submit(p);await f.client.submit(p);assert.equal(f.claims(),1);assert.equal(f.cart.items.length,2);
+ for(const changed of ['Spruch: Heimathafen von · Nachname: Müller','Spruch: Heimathafen\n\nvon · Nachname: Müller','Spruch: Heimathafen\nvon · Nachname: Meier']){
+  const cart={currency:'EUR',items:[line(p)]};cart.items[0].properties.Gravurtext=changed;assert.throws(()=>verifyThemeCartLine(cart,p),/stimmen nicht/);
+ }
+ for(const key of ['Format','_gravuru_rev','_gravuru_offer']){
+  const cart={currency:'EUR',items:[line(p)]};cart.items[0].properties[key]+='\r\n';assert.throws(()=>verifyThemeCartLine(cart,p));
+ }
+});
 test('repeat click and lost successful POST reply recover by read-back without duplicate upload',async()=>{
  for(const lost of [false,true]){const p=payload(),f=fixture(p,{lost});await f.client.submit(p);await f.client.submit(p);assert.equal(f.claims(),1);assert.equal(f.calls.filter(x=>x.endsWith('add.js')).length,1);assert.equal(f.cart.items.length,2);}
 });

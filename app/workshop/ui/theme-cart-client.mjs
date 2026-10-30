@@ -26,11 +26,17 @@ function previewUrl(value,shop){
  if(typeof value!=='string')return false;
  try{const u=new URL(value,'https://'+shop);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&(u.hostname===shop||u.hostname==='cdn.shopify.com')&&(/\/uploads\//.test(u.pathname)||u.hostname==='cdn.shopify.com');}catch{return false;}
 }
+// Multipart form submission canonicalizes text line endings to CRLF. Compare
+// engraving text as lines; identifiers, URLs and all other properties stay exact.
+function sameProperty(key,actual,expected){
+ if(/^Gravurtext(?: [1-9]\d*)?$/.test(key)&&typeof actual==='string')return actual.replace(/\r\n?/g,'\n')===expected.replace(/\r\n?/g,'\n');
+ return actual===expected;
+}
 export function verifyThemeCartLine(cart,p){
  cartData(cart);const lines=current(cart,p);
  if(lines.length!==1)fail('Die Gestaltung wurde nicht eindeutig im Warenkorb bestätigt. Bitte den Warenkorb prüfen.');
  const line=lines[0];
- if(String(line.variant_id??line.id)!==p.variantId||String(line.product_id)!==p.productId||line.quantity!==p.quantity||line.original_price!==p.unitCents||line.original_line_price!==p.totalCents||!int(line.final_line_price)||line.final_line_price>p.totalCents||Object.entries(p.properties).some(([k,v])=>line.properties?.[k]!==v)||!previewUrl(line.properties?._Entwurf,p.shopDomain))fail('Gestaltung, Vorschau, Ausführung, Menge oder Preis im Warenkorb stimmen nicht überein. Bitte den Warenkorb prüfen.');
+ if(String(line.variant_id??line.id)!==p.variantId||String(line.product_id)!==p.productId||line.quantity!==p.quantity||line.original_price!==p.unitCents||line.original_line_price!==p.totalCents||!int(line.final_line_price)||line.final_line_price>p.totalCents||Object.entries(p.properties).some(([k,v])=>!sameProperty(k,line.properties?.[k],v))||!previewUrl(line.properties?._Entwurf,p.shopDomain))fail('Gestaltung, Vorschau, Ausführung, Menge oder Preis im Warenkorb stimmen nicht überein. Bitte den Warenkorb prüfen.');
  return line;
 }
 const previous=(cart,p)=>p.mode==='update'?own(cart,p).filter(l=>l.properties._gravuru_rev===String(p.previousRevision)):[];

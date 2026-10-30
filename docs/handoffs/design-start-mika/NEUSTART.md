@@ -35,6 +35,20 @@ Fehlt etwas davon: hier melden, nicht still neu machen.
 3. GitHub-Connector mit Zugriff auf **beide** Repos: `Chris83638w/gravuru-2027` und `Chris83638w/gravuru-katalog.` (mit Punkt am Ende).
 4. Keine Zugangsdaten in Chat, Repo oder Dateien schreiben.
 
+## 2a. So wurde es am 30.10. gelöst (für jeden neuen Chat)
+
+- Codex-Berechtigung des Projekts auf **Vollzugriff** (`danger-full-access`). In der eingeschränkten Windows-Sandbox scheiterten Unterprozesse (`spawn EPERM`), Git (`Win32 error 5`) und pip.
+- GitHub CLI (portable, SHA256 geprüft) mit Browser-Anmeldung. Git-Lesen mit `-c http.sslBackend=openssl`.
+- Signierte Commits per GraphQL `createCommitOnBranch`. Nachweis `dcad2fa` ist `verified: true`.
+- Python-Bibliotheken liegen projektlokal in `gravuru-2027\.local-data\python`.
+
+**Weil Vollzugriff und GitHub-Anmeldung jetzt weit reichen, gilt streng:**
+- nur eigene `dev/…-astra-mika`-Branches
+- nie `main`, nichts löschen, kein Force-Push
+- keine fremden Repos
+- nichts außerhalb des Projektordners ändern
+- keine Zugangsdaten ausgeben
+
 ## 3. Start-Check – Ergebnis wörtlich in Dein Postfach (Abschnitt 9)
 
 | Nr | Prüfung | Erwartet |

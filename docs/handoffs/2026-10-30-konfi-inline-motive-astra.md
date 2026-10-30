@@ -59,3 +59,9 @@ Chris prüft die lokale Vorschau weiter. Echte Safari-/iPhone-Bedienung, Linux-V
 Chris wünscht nur wenige Pixel zwischen dunklem Kopf und Vollbild-Zeile: **4 px Außenabstand** am Desktop ab 768 px. Build erfolgreich; im Browser Kopfende bei y=50 und Werkzeugzeile ab y=54 gemessen. Bemaßung und Preis sichtbar, mobile Regeln unverändert. Reine CSS-Anpassung, kein erneuter Funktionstestlauf. Weiterhin lokal/Entwurf, keine Veröffentlichung.
 
 ![Vier Pixel Abstand](issue48-orientierung-20261030/kopf-abstand-4px.png)
+
+## Feinschliff: helleres Blaugrau
+
+Chris: „da blau wieder ein wenig heller“. Der Kopfbereich verwendet jetzt `#343e46` statt `#252a2e`, mit heller Schrift `#f7f7f7`. Der 4-px-Abstand bleibt erhalten. Build bestanden; tatsächliche Browserfarbe `rgb(52, 62, 70)` und Lesbarkeit geprüft. Reine Farbänderung, kein weiterer Funktionstestlauf und nichts live.
+
+![Helleres Blaugrau](issue48-orientierung-20261030/kopf-blaugrau-heller.png)

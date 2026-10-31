@@ -29,7 +29,8 @@ export function clampToPlate(o,width,height,margin=0,bounds=null){
    x=loX>hiX?(loX+hiX)/2:Math.min(hiX,Math.max(loX,o.x));y=loY>hiY?(loY+hiY)/2:Math.min(hiY,Math.max(loY,o.y));
   }else{const b=boundingSize(o);x=clampAxis(o.x,b.w,width,margin);y=clampAxis(o.y,b.h,height,margin);}
   const moved=Math.abs(x-o.x)>1e-6||Math.abs(y-o.y)>1e-6;
-  if(moved){o.x=Math.round(x*100)/100;o.y=Math.round(y*100)/100;}
+  // Keep the geometric result: rounding can push an edge back outside the plate.
+  if(moved){o.x=x;o.y=y;}
   return moved;
 }
 
@@ -79,7 +80,7 @@ export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
     if(signature(o)!==original.signature||original.resource.svgFragment!==original.fragment||JSON.stringify(original.resource.bounds)!==original.bounds){original.changed=true;return false;}
     // Only the authentic, unchanged imported start position is preserved.
     // After the first geometry edit the existing customer clamp owns placement.
-    return embeddedMotifFits(o,geometry,original.resource)===true;
+    return embeddedMotifFits(o,{...geometry,safeMarginMm:geometry?.safeMarginMm??0,holes:[]},original.resource)===true;
   };
   const glyphs=o=>{if(o.type!=='text'||o.uxHidden||!String(o.text??'').trim()||!el.uxTextBounds)return null;try{return el.uxTextBounds(o);}catch{return null;}};
   const clampAll=self=>{const s=self.state;if(!s?.objects)return;

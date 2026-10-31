@@ -21,12 +21,15 @@ test('a fresh authentic design selection restores its own start after a previous
  const el=editor();el.render();el.state.objects[0].x-=5;el.render();el.chooseDesign('D1');el.chooseDesign('D12');sameGeometry(el.state.objects[0],fixture.object);
  const o=el.state.objects[0];o.x-=5;const expected=structuredClone(o);clampToContour(expected,el.geometry);el.render();sameGeometry(o,expected);
 });
-test('resizing and rotation end the start exception; changed geometry and holes are rechecked',()=>{
+test('resizing and rotation end the start exception; outer geometry is rechecked but holes may cross artwork',()=>{
  for(const change of [o=>o.w-=1,o=>o.rotation=2]){
   const el=editor();el.render();const o=el.state.objects[0];change(o);const expected=structuredClone(o);clampToContour(expected,el.geometry);el.render();sameGeometry(o,expected);
  }
- const el=editor();el.render();el.geometry.holes.push({x:32,y:32,diameter:20});const expected=structuredClone(el.state.objects[0]);clampToContour(expected,el.geometry);el.render();sameGeometry(el.state.objects[0],expected);
- assert.equal(embeddedMotifFits(fixture.object,el.geometry,fixture.resource),false);
+ const el=editor();el.render();el.geometry.holes.push({x:32,y:32,diameter:20});el.render();sameGeometry(el.state.objects[0],fixture.object);
+ assert.equal(embeddedMotifFits(fixture.object,el.geometry,fixture.resource),false,'physical low-level check still sees the hole');
+ el.geometry={shape:'contour',width:110,height:60,outlinePath:'M20 0H110V60H20Z',safeMarginMm:0,holes:[]};
+ const expected=structuredClone(el.state.objects[0]);assert.equal(clampToContour(expected,el.geometry),true);el.render();sameGeometry(el.state.objects[0],expected);
+ assert.notDeepEqual([expected.x,expected.y],[fixture.object.x,fixture.object.y],'changed outer contour still clamps');
 });
 test('changed resource bytes, missing resources and client template flags grant no start exception',()=>{
  const changed=structuredClone(fixture.resource),el=editor(changed);el.render();changed.bounds[0]+=1;const expected=structuredClone(el.state.objects[0]);clampToContour(expected,el.geometry);el.render();sameGeometry(el.state.objects[0],expected);

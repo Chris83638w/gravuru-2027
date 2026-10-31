@@ -1,5 +1,6 @@
 import {DOORBELL_SCHEMA,doorbellLayoutIssue} from '../../../../../configurator/variant-m/doorbell-selection.mjs';
 import {setTextSize} from './doorbell-preview.mjs';
+import {PROCESSING_PROFILES} from './processing-profiles.mjs';
 import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry,ellipseEdgeDistance} from './contour-geometry.mjs';
 import {embeddedMotifFits} from './embedded-motif-fit.mjs';
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
@@ -35,11 +36,15 @@ export const collections=designs=>[...new Set(designs.flatMap(d=>d.collections||
 export function filteredDesigns(designs,{search='',category='',collection=''}={}){return designs.filter(d=>(!category||(d.category||'Ohne Kategorie')===category)&&(!collection||(d.collections||[]).includes(collection))&&[d.name,d.category,...(d.collections||[])].join(' ').toLocaleLowerCase('de').includes(search.trim().toLocaleLowerCase('de')));}
 // Validate against an already oriented geometry. UI placement and preview use
 // this low-level function; they must not mirror from surfaceId a second time.
+function artworkMargin(profile){
+ const processing=PROCESSING_PROFILES.find(p=>p.id===(profile.processing?.profileId??`${profile.material?.kind}-engraving`));
+ return profile.geometry.safeMarginMm??(processing?.method==='engraving'?0:2);
+}
 export function objectIssue(o,profile){
  if(!o||!['x','y','w','h','rotation'].every(k=>Number.isFinite(o[k]))||o.w<=0||o.h<=0||Math.abs(o.rotation)>DESIGN_LIMITS.maxRotation)return 'Ungültige Maße.';
  if(profile.doorbellSchema===DOORBELL_SCHEMA)return doorbellLayoutIssue(o,profile);
  const a=o.rotation*Math.PI/180,w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a)),b=profile.geometry.bell;
- const doorbell=profile.kind==='layered-doorbell',width=doorbell?160:profile.geometry.width,height=doorbell?280:profile.geometry.height,margin=doorbell?10:profile.geometry.safeMarginMm??2;
+ const doorbell=profile.kind==='layered-doorbell',width=doorbell?160:profile.geometry.width,height=doorbell?280:profile.geometry.height,margin=doorbell?10:artworkMargin(profile);
  // A merchant-fixed template canvas drawn exactly in plate size (prepared 1:1
  // import) is clipped by the plate contour itself: transparent corners of an
  // oval or rounded plate are not ink. Only without margin; never customer content.
@@ -48,7 +53,8 @@ export function objectIssue(o,profile){
  if(b&&Math.min(o.x+w/2,b.x+b.width)-Math.max(o.x-w/2,b.x)>.1&&Math.min(o.y+h/2,b.y+b.height)-Math.max(o.y-h/2,b.y)>.1)return 'Element liegt unter der Klingel.';
  if(!doorbell&&profile.geometry.shape==='contour'){
   const corners=contourObjectCorners(o);
-  if(!contourContainsPolygon(profile.geometry,corners,{marginMm:margin}))return contourContainsPolygon(profile.geometry,corners,{marginMm:margin,holes:false})?'Element liegt in einer Bohrloch-Schutzzone.':'Element ragt über die Kontur-Gestaltungsfläche hinaus.';
+  // Artwork stays complete across drill holes; physical hole validation is separate.
+  if(!contourContainsPolygon(profile.geometry,corners,{marginMm:margin,holes:false}))return 'Element ragt über die Kontur-Gestaltungsfläche hinaus.';
  }
  // An ellipse with reduced axes is not a constant-distance inset. Check the
  // actual corner-to-contour distance to preserve the requested margin in mm.
@@ -65,9 +71,9 @@ export function surfaceObjectIssue(object,profile,{motifs=[]}={}){
  const issue=objectIssue(object,oriented);
  // A passing box remains the cheap prefilter. Only a geometric failure of a
  // known embedded template motif may be replaced by its actual painted paths.
- if(issue&&profile.kind!=='layered-doorbell'&&['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element liegt in einer Bohrloch-Schutzzone.'].includes(issue)){
+ if(issue&&profile.kind!=='layered-doorbell'&&['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.'].includes(issue)){
   const resources=typeof motifs==='function'?motifs():motifs;
-  if(embeddedMotifFits(object,oriented.geometry,resources.find(m=>m.key===object?.motif))===true)return '';
+  if(embeddedMotifFits(object,{...oriented.geometry,safeMarginMm:artworkMargin(oriented),holes:[]},resources.find(m=>m.key===object?.motif))===true)return '';
  }
  return issue;
 }

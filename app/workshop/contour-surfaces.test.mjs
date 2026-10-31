@@ -38,10 +38,11 @@ test('original-profile validation mirrors back exactly once; oriented UI objectI
  assert.equal(JSON.stringify(p),before,'no source geometry mutation');
 });
 
-test('fixed asymmetric holes use the object surface, without moving source holes',()=>{
+test('artwork may cross asymmetric holes; back drilling mirrors without moving source holes',()=>{
  const p={kind:'universal-product',geometry:{...geometry,holes:structuredClone(holes)}},before=JSON.stringify(p);
- assert.match(surfaceObjectIssue(object(70,12),p),/Bohrloch/);assert.equal(surfaceObjectIssue(object(20,12),p),'');
- assert.match(surfaceObjectIssue(object(20,12,'front'),p),/Bohrloch/);assert.equal(surfaceObjectIssue(object(70,12,'front'),p),'');
+ assert.equal(surfaceObjectIssue(object(70,12),p),'');assert.equal(surfaceObjectIssue(object(20,12),p),'');
+ assert.equal(surfaceObjectIssue(object(20,12,'front'),p),'');assert.equal(surfaceObjectIssue(object(70,12,'front'),p),'');
+ assert.match(surfaceObjectIssue(object(84,30),p),/Kontur/);assert.match(surfaceObjectIssue(object(6,30,'front'),p),/Kontur/);
  assert.deepEqual(surfaceGeometry(p.geometry,'back').holes,[{x:70,y:12,diameter:4},{x:32,y:45,diameter:4}]);
  assert.equal(JSON.stringify(p),before);
 });
@@ -55,13 +56,16 @@ test('front geometry remains exact; customer artwork ignores only drill holes',(
  }
 });
 
-test('studio and prepareConfig accept back x6, reject x84 and mirrored hole keepouts',()=>{
+test('studio and prepareConfig accept back x6 and hole overlap, reject outer-contour violation x84',()=>{
  const c=config(),p=selectedProfile(c,{mounting:'B02'});
  assert.doesNotThrow(()=>validateStudio(p,p));assert.doesNotThrow(()=>prepareConfig(c));
- for(const [x,y] of [[84,30],[70,12]]){
+ for(const [x,y] of [[84,30]]){
   const bad=structuredClone(p);Object.assign(bad.designs[0].objects[0],{x,y});
   assert.throws(()=>validateStudio(bad,bad),/Kontur|Bohrloch/);
  }
+ const overHole=structuredClone(c);Object.assign(overHole.profile.designs[0].objects[0],{x:70,y:12});
+ const holeProfile=selectedProfile(overHole,{mounting:'B02'});
+ assert.doesNotThrow(()=>validateStudio(holeProfile,holeProfile));assert.doesNotThrow(()=>prepareConfig(overHole));
  const bad=structuredClone(c);bad.profile.designs[0].objects[0].x=84;assert.throws(()=>prepareConfig(bad),/Kontur/);
 });
 
@@ -94,10 +98,12 @@ test('merchant and AI validation use each object surface with immutable source d
  const operation=(x,y)=>({action:'move',objectId:'object',text:null,font:null,size:null,x,y,w:null,h:null,color:null,motifKey:null}),request={designId:id,preserveText:true,preservePhotos:true};
  assert.doesNotThrow(()=>applyAiPlan(document,request,{summary:'Rückseite verschieben',operations:[operation(7,30)]}));
  assert.throws(()=>applyAiPlan(document,request,{summary:'Ungültige Rückseite',operations:[operation(84,30)]}),/Kontur/);
- // AI/merchant validate the profile's fixed hole state, as selected for this draft.
+ // Artwork may cross fixed holes; the immutable drilling geometry remains intact.
  const drilled=structuredClone(document);drilled.config.profile.geometry.holes=structuredClone(holes);
- assert.throws(()=>applyAiPlan(drilled,request,{summary:'Bohrschutz',operations:[operation(70,12)]}),/Bohrloch/);
+ const drilledBefore=JSON.stringify(drilled);
+ assert.doesNotThrow(()=>applyAiPlan(drilled,request,{summary:'Gestaltung über Bohrung',operations:[operation(70,12)]}));
  const hole=structuredClone(drilled);Object.assign(hole.config.profile.designs[0].objects[0],{x:70,y:12});
- assert.throws(()=>authorDesign(hole,id,'front',{objectId:'object'}),/Bohrloch/);
+ assert.doesNotThrow(()=>authorDesign(hole,id,'front',{objectId:'object'}));
+ assert.equal(JSON.stringify(drilled),drilledBefore);assert.deepEqual(hole.config.profile.geometry.holes,holes);
  assert.equal(JSON.stringify(document),before);
 });

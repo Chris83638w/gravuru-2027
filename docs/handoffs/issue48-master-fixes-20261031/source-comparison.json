@@ -1,0 +1,28 @@
+{
+  "baseCommit": "261532ef314bad494a53467613fed61bd71153cf",
+  "scope": "source comparison, not a screenshot or live check",
+  "stylesEqual": true,
+  "styles": {
+    "/configurator/variant-m/acrylic-scene.css": "597d501ce2cf1b235a9b0cdc956a1a6336a9fe5077d74eb7327c395401ba263a",
+    "/configurator/variant-m/completion.css": "10d9912e1d99d1bc0530f50537cda909f4016fcf4da9f8e245a7f07e18c1b572",
+    "/configurator/variant-m/customer-tools.css": "95209ed79095f824ae7105aff0e689d31d09aa1860053d12b8755e44d7c6c346",
+    "/configurator/variant-m/layout.css": "0e4a18dde61f854d20924a2673237c1a2d8d802cdb9a31add763fdd33ed78d6a",
+    "/configurator/variant-m/mobile.css": "45a96ce87b6edfb121108b901d5f1685b789a901e8418fd52fadc5359c0c8807",
+    "/configurator/variant-m/motif-tile-fit.css": "3e6b7a90615e305e5feef7b5753949abafb8153cb90625bf5a5019b8d8ecdd4f",
+    "/configurator/variant-m/neutral-theme.css": "c853f5c68929ba60d27480f737d34578500cd8a36faff4f1aeae2156c5605a10",
+    "/configurator/variant-m/product-design-gallery.css": "3af8283e8f9ef51ac88e3aeaf56221c65cb5419738006e0a964d829cae230f1a",
+    "/configurator/variant-m/refinements.css": "13e5420ebc17860f890d2570f4a7ab3f60bfa01b2d0b587e94e00dfdc64ceda3",
+    "/configurator/variant-m/usability.css": "976c809d6495286661487a13db18a35ed62830dfb7b44fab652d6f82451123be",
+    "/configurator/variant-m/ux-details.css": "7749935a0526e73fd012905b642cc50ffc4f19c66797904214249c1da1a54fad",
+    "/configurator/variant-m/ux.css": "85a9345eaf38cef203954b965e183b592165e7a9eab6cb732d0d88e7d6f32582",
+    "/configurator/variant-m/view-zoom.css": "7e8b08b70429e8ca61f4711731eb9586210151ca7588f7109ce7c92721f6b9a3",
+    "/configurator/variant-m/workflow.css": "947fd37483750f06d7701b06aa30eab4095d381e202bad76f3b76bef9cafa677"
+  },
+  "editorTemplateEqualExceptBundleFilename": true,
+  "editorTemplateSha256Normalized": "1be071a0258fd76da119676a07c630837cfff214283bd2d17a800bef9beb0ab2",
+  "localReviewModelsEqual": true,
+  "beforeBundle": "editor-af86a0f4cb283c9d.mjs",
+  "afterBundle": "editor-27590609a1d95821.mjs",
+  "browserReview": "not completed: URL recognition failure in Computer Use",
+  "productionDataChanged": false
+}

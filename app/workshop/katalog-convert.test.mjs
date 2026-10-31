@@ -15,6 +15,21 @@ const katalog=()=>openKatalog(FIXTURE);
 const fonts=()=>workshopResources().fonts;// Laufzeitschriften der Werkstatt (Montserrat, Cinzel …)
 const herz=k=>k.designs.masters.find(d=>d.id==='test-herz');
 
+test('engraving import retains unfilled full-plate frames, evenodd openings, strokes and opacity',()=>{
+ const k=katalog(),f=k.families.get('test-schilder');
+ const convert=paths=>katalogDesignToTemplate({id:'stroke-regression',name:'Rahmen',themes:[],fields:{}},f,null,{fonts:fonts(),svgText:`<svg viewBox="0 0 90 60"><g id="motiv-frame">${paths}</g><text id="text-name" x="45" y="30" font-family="Montserrat" font-size="8">Name</text></svg>`});
+ const r=convert('<path d="M0 0 L90 0 L90 60 L0 60 Z" fill="none" stroke="#fff" stroke-width="0.7" fill-rule="evenodd" opacity="0.5"/>');
+ assert.equal(r.motifs.length,1);assert.equal(r.notes.some(n=>n.includes('Plattenfläche')),false);
+ assert.match(r.motifs[0].svgFragment,/fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="0.7" opacity="0.5"/);
+ const diagonal=convert('<path d="M0 0 L90 60 L0 60 Z" fill="#fff"/>');
+ assert.equal(diagonal.motifs.length,1,'a full bounding box is not a plate background');
+ const hole=convert('<path d="M0 0 L90 0 L90 60 L0 60 Z M10 10 L10 50 L80 50 L80 10 Z" fill="#fff" fill-rule="evenodd"/>');
+ assert.equal(hole.motifs.length,1);assert.match(hole.motifs[0].svgFragment,/fill="currentColor" fill-rule="evenodd"/);
+ const background=convert('<path d="M0 0 L90 0 L90 60 L0 60 Z" fill="#fff"/>');
+ assert.equal(background.motifs.length,0,'only the opaque filled plate rectangle is removed');
+ for(const attributes of ['stroke-width="-1"','opacity="1.1"','opacity="-0.1"'])assert.throws(()=>convert(`<path d="M0 0 L20 20" fill="none" stroke="#000" ${attributes}/>`));
+});
+
 test('pathBounds: Hüllbox aus Stütz- und Kontrollpunkten, relative und absolute Befehle',()=>{
  assert.deepEqual(pathBounds('M10 10 L30 10 L30 20 Z'),[10,10,20,10]);
  assert.deepEqual(pathBounds('m10 10 l20 0 v10 h-20 z'),[10,10,20,10]);

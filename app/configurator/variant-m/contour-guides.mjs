@@ -1,9 +1,9 @@
-import {contourContainsPolygon,contourSafeAreaSvg} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
-import {transformedCorners} from './usability-model.mjs';
+import {contourSafeAreaSvg} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
+import {fitsSurface} from './usability-model.mjs';
 
-const fits=(object,geometry)=>contourContainsPolygon(geometry,transformedCorners(object,{x:-object.w/2,y:-object.h/2,width:object.w,height:object.h}));
+const fits=(object,geometry)=>fitsSurface(object,{x:-object.w/2,y:-object.h/2,width:object.w,height:object.h},geometry);
 // Keep the existing targets and hysteresis, but never snap an element across the
-// contour margin or into a fixed hole. The shared geometry decides every fit.
+// outer contour margin. Artwork may cover fixed holes, just like free placement.
 export function contourGuides(base,getGeometry){
  return {...base,
   alignmentTargets(state,object){

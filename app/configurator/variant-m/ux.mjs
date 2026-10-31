@@ -484,7 +484,7 @@ export async function installUX(el,config,legacy){
       if(!link.present)continue;
       if(link.designId&&link.designId!==el.state.designId)el.chooseDesign(link.designId);
       if(link.sizeId&&config){try{el.record?.();el.state.mOptions={...(el.state.mOptions||{}),size:link.sizeId};el.sync();}catch{link.notes.push('Die verlinkte Größe konnte nicht übernommen werden.');}}
-      if(link.text){const result=applyLinkText(el.state.objects,design(),profile,link.text);if(result){dirty=true;el.normalize();el.sync();if(result.truncated)link.notes.push('Der verlinkte Text wurde auf das Limit des Feldes gekürzt.');}else link.notes.push('Der verlinkte Text konnte keinem Textfeld zugeordnet werden.');}
+      if(link.text){const result=applyLinkText(el.state.objects,design(),profile,link.text,config);if(result){dirty=true;el.normalize();el.sync();if(result.truncated)link.notes.push('Der verlinkte Text wurde auf das Limit des Feldes gekürzt.');}else link.notes.push('Der verlinkte Text konnte keinem Textfeld zugeordnet werden.');}
       applied=link;break;
     }
     if(applied){for(const host of directLinkWindows()){try{const clean=withoutDirectLinkParams(host.location.href);if(clean)host.history.replaceState(host.history.state,'',clean);}catch{}}if(applied.notes.length)say(applied.notes.join(' '));}

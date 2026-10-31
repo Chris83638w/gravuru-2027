@@ -45,14 +45,15 @@ test('design area uses a true inward mask with hole protection and is absent fro
  assert.match(designAreaPreview('<svg></svg>',config),/data-m-design-area="true"/);
 });
 
-test('fitting rejects the concave bite and a hole enclosed by an element; free placement respects both',()=>{
+test('fitting rejects the concave bite but allows artwork over holes, including free placement',()=>{
  const safe={x:30,y:30,w:8,h:6,rotation:0},bite={...safe,x:6},hole={...safe,x:60,w:12,h:12};
  assert.equal(fitsSurface(safe,bounds(safe),geometry),true);
  assert.equal(fitsSurface(bite,bounds(bite),geometry),false);
- assert.equal(fitsSurface(hole,bounds(hole),geometry),false);
+ assert.equal(fitsSurface(hole,bounds(hole),geometry),true);
  const surface={x:2,y:2,width:86,height:56,shape:'contour',geometry};
  const p=freePosition(safe,surface,[]);assert.ok(p);assert.equal(fitsSurface({...safe,...p},bounds(safe),geometry),true);
- assert.equal(freePosition({...safe,w:5,h:5},{x:55,y:25,width:10,height:10,shape:'contour',geometry},[]),null);
+ const overHole={...safe,w:5,h:5},position=freePosition(overHole,{x:55,y:25,width:10,height:10,shape:'contour',geometry},[]);
+ assert.ok(position);assert.equal(fitsSurface({...overHole,...position},bounds(overHole),geometry),true);
 });
 
 test('dragging stops at the actual inset edge and never substitutes a rectangular boundary',()=>{
@@ -60,18 +61,21 @@ test('dragging stops at the actual inset edge and never substitutes a rectangula
  assert.equal(clampToContour(object,geometry,null,{x:30,y:30}),true);
  assert.ok(object.x>10&&object.x<20);assert.equal(object.y,30);
  assert.equal(contourContainsPolygon(geometry,transformedCorners(object,bounds(object))),true);
- const onHole={...object,x:60};assert.equal(clampToContour(onHole,geometry,null,object),true);
+ const onHole={...object,x:60};assert.equal(clampToContour(onHole,geometry,null,object),false);assert.equal(onHole.x,60);
  assert.equal(fitsSurface(onHole,bounds(onHole),geometry),true);
  const rectangle={x:-5,y:10,w:10,h:10};assert.equal(clampToPlate(rectangle,90,60),true);assert.equal(rectangle.x,5);
 });
 
 test('snapping filters unsafe targets and rejects an unsafe combination of valid axis targets',()=>{
- const g={width:100,height:100,shape:'contour',outlinePath:'M0 0H100V100H0Z',safeMarginMm:0,holeKeepoutMm:0,holes:[{x:51,y:51,diameter:3}]};
+ const g={width:100,height:100,shape:'contour',outlinePath:'M0 0H100V50H50V100H0Z',safeMarginMm:0,holeKeepoutMm:0,holes:[]};
  const base={alignmentTargets(){return {x:[{key:'x',value:50.8,line:50.8},{key:'outside',value:-1,line:-1}],y:[{key:'y',value:50.8,line:50.8}]};},snap(state,o){const t=this.alignmentTargets(state,o);return {x:t.x[0].value,y:t.y[0].value,locks:{x:t.x[0],y:t.y[0]}};}};
  const guided=contourGuides(base,()=>g),o={id:'a',type:'text',x:48,y:48,w:1,h:1,rotation:0};
  assert.deepEqual(guided.alignmentTargets({},o).x.map(t=>t.key),['x']);
  const result=guided.snap({},o,3);assert.equal(Object.keys(result.locks).length,1);
  assert.equal(fitsSurface({...o,...result},bounds(o),g),true);
+ const withHole={...g,outlinePath:'M0 0H100V100H0Z',holes:[{x:51,y:51,diameter:3}]};
+ const acrossHole=contourGuides(base,()=>withHole).snap({},o,3);
+ assert.equal(Object.keys(acrossHole.locks).length,2);assert.equal(fitsSurface({...o,...acrossHole},bounds(o),withHole),true);
 });
 
 test('existing workshop material preview renders the same curved outer path and physical opening',()=>{
@@ -94,12 +98,13 @@ test('catalog contour dimensions cannot be rescaled by the rectangular steel siz
  assert.throws(()=>steelPhysicalGeometry(invalid),/Konturmaße/);
 });
 
-test('workshop snapping also keeps the complete object clear of contour holes',()=>{
+test('workshop snapping also permits artwork over contour holes',()=>{
  const object={id:'a',x:49.3,y:48,w:1,h:1,rotation:0};
  const g={width:100,height:100,shape:'contour',outlinePath:'M0 0H100V100H0Z',safeMarginMm:0,holeKeepoutMm:0,holes:[{x:50,y:50,diameter:3}]};
  const result=alignedPosition(object,g,[],{threshold:3});
  assert.equal(fitsSurface(result.object,bounds(object),g),true);
- assert.notEqual(result.object.x===50&&result.object.y===50,true);
+ assert.deepEqual([result.object.x,result.object.y],[49.5,49.5]);
+ assert.equal(contourContainsPolygon(g,transformedCorners(result.object,bounds(object))),false,'physical hole check remains distinct');
  assert.deepEqual(object,{id:'a',x:49.3,y:48,w:1,h:1,rotation:0});
 });
 
@@ -132,8 +137,8 @@ test('switching contour surfaces preserves both designs; only the active object 
  assert.deepEqual(front,original[0],'moving back never changes front');
 });
 
-test('contour position anchors survive surface changes independently when the centre is protected',()=>{
- const g={...geometry,holes:[{x:45,y:30,diameter:4}]};
+test('contour position anchors survive surface changes independently when an outer cut removes the centre',()=>{
+ const g={...geometry,outlinePath:'M0 0H40V35H50V0H90V60H0V40Q16 30 0 20Z',holes:[]};
  const front={id:'front',x:84,y:30,w:2,h:4,rotation:0};
  const back={id:'back',surfaceId:'back',x:6,y:30,w:2,h:4,rotation:0};
  const el={state:{objects:[front,back],width:90,height:60,uxSurface:'front'},

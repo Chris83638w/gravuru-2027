@@ -107,3 +107,15 @@ test('Share-Link: enthält Design und Größe, nie den Kundentext; Parameter wer
  assert.equal(withoutDirectLinkParams(link),'https://shop.example/produkt?configuration=cfg_1');
  assert.equal(withoutDirectLinkParams('https://shop.example/produkt?configuration=cfg_1'),null);
 });
+
+test('direct link uses the same versioned field and line rules as editor input',()=>{
+ const p=profile('tiergedenktafeln'),d=p.designs[1];
+ for(const max of [80,500]){
+  const input='Name\n'+('Langer Spruch\n'.repeat(45));
+  const result=applyLinkText(structuredClone(d.objects),d,p,input,{textRules:{maxCharsPerField:max}});
+  assert.equal(result.text,[...sanitizeLinkText(input)].slice(0,max).join(''));
+  assert.ok(result.text.split('\n').length>4,'no obsolete four-line limit');
+ }
+ const lines=applyLinkText(structuredClone(d.objects),d,p,'x'.repeat(60)+'\n'+'y'.repeat(60),{textRules:{maxCharsPerLine:50}});
+ assert.equal(lines.text,'x'.repeat(50)+'\n'+'y'.repeat(50),'historical per-line policy stays distinct');
+});

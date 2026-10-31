@@ -1,4 +1,10 @@
 import {canEditElement,restoreElementRights,rightForProperty} from './element-rights.mjs';
+import {isLayeredDoorbell,selectedDoorbellProfile} from './doorbell-selection.mjs';
+
+export function customerRightsTemplate(config,state){
+ const profile=isLayeredDoorbell(config)?selectedDoorbellProfile(config,state.mOptions):config.profile;
+ return profile.designs.find(item=>item.id===state.designId);
+}
 
 // Install event guards before the legacy gesture handlers; finish after all
 // presentation adapters, so their normalizers cannot undo a persisted restriction.
@@ -67,14 +73,15 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
   function repair(){
     if(repairing)return;repairing=true;
     try{
-      const design=config.profile.designs.find(item=>item.id===el.state.designId);if(!design)return;
-      const result=restoreElementRights(design.objects,el.state.objects,config.workshopElementRights[design.id]||{},previous.get(design.id));
+      const design=customerRightsTemplate(config,el.state);if(!design)return;
+      const historyKey=isLayeredDoorbell(config)?JSON.stringify([design.id,el.state.mOptions?.format,el.state.mOptions?.position]):design.id;
+      const result=restoreElementRights(design.objects,el.state.objects,config.workshopElementRights[design.id]||{},previous.get(historyKey));
       if(result.blockedIds.length){
         const current=new Map(el.state.objects.map(object=>[object.id,object]));
         el.state.objects=result.objects.map(object=>{const existing=current.get(object.id);if(!existing)return object;for(const key of Object.keys(existing))if(!Object.hasOwn(object,key))delete existing[key];Object.assign(existing,object);return existing;});
         if(hasInteracted)say('Eine nicht freigegebene Änderung wurde zurückgesetzt.');
       }
-      previous.set(design.id,structuredClone(el.state.objects));
+      previous.set(historyKey,structuredClone(el.state.objects));
     }finally{repairing=false;}
   }
   function updateUI(){

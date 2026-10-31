@@ -12,6 +12,7 @@ import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
 import {transformedCorners} from './usability-model.mjs';
 import {designArea} from './design-area.mjs';
+import {doorbellTextSurface} from './doorbell-ui.mjs';
 import {createDragSnap,alignmentLabel} from './drag-assistance-model.mjs';
 import {fitText,freePlacement,transferTexts,changedCustomerTexts,alignGroup,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
@@ -23,6 +24,10 @@ export async function installWorkflow(api){
  const style=document.createElement('style');style.textContent=await fetch('/configurator/variant-m/workflow.css').then(res=>{if(!res.ok)throw Error('Bedienung fehlt');return res.text();});r.append(style);
  installRotationPolicy(api);
  const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
+ // Existing layouts also put house numbers beside the device. The largest
+ // free rectangle is an initial-placement aid, not the text resizing boundary.
+ const textSurface=()=>config?.doorbell?.schema==='gravuru-doorbell/v1'
+  ? doorbellTextSurface(chosenProfile()) : surface();
  const surface=()=>{const geometry=el.uxProfileGeometry?.()||profile.geometry;if(config?.doorbell?.schema==='gravuru-doorbell/v1'&&geometry.designArea){const a=geometry.designArea;return {...geometry,x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top};}return config?{x:0,y:0,...geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;};
  const obstacles=()=>{const bell=(el.uxProfileGeometry?.()||profile.geometry).bell;return (!config||config.doorbell)&&bell?[{x:bell.x+bell.width/2,y:bell.y+bell.height/2,w:bell.width,h:bell.height}]:[];};
  function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent='Ausführungen';const contents=$('[data-ux=contents]');if(contents)contents.innerHTML=uiIcon('layers')+'<span class="ux-tool-label">Ebenen</span> <span data-ux-count>('+el.state.objects.length+')</span>';if(contents){contents.setAttribute('aria-label','Ebenen ('+el.state.objects.length+')');contents.title='Ebenen ('+el.state.objects.length+')';}const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
@@ -71,7 +76,7 @@ export async function installWorkflow(api){
  // Ü3.2: Autofit verkleinert bis zur Mindestgröße (K10: minTextMm des Verfahrensprofils, sonst 4 mm;
  // im Werkstatt-Editor 1 mm). Reicht das nicht, bleibt die Mindestgröße stehen und das Feld meldet
  // „Text zu lang“ (uxTextOverflow='length').
- el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),surface(),min);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
+ el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),textSurface(),min);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
  r.addEventListener('input',e=>{if(e.target.dataset.uxText){const o=el.state.objects.find(o=>o.id===e.target.dataset.uxText);if(o)o.uxCustomerText=true;}},true);
  let placementJob=Promise.resolve();
  // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz – Suche über die ganze

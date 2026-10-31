@@ -44,3 +44,15 @@ Screenshots: [12a mit 17 mm](assets/2026-10-31-doorbell-master-repair/12a-17mm-d
 Eigene Kopie der aktuellen Laufzeit `private/konfigurator-master-20261031-fixes`, Abgleich aller app-Dateien mit main-Basis, danach nur die im Branch geänderten Dateien überlagern. Linux-Tests und Build vor dem Wechsel. Erst anschließend Startup-Zeiger gezielt auf die geprüfte neue Kopie ändern und Node-App neu starten. Vorherige Startdatei sichern; Rückweg: Startdatei wiederherstellen und App neu starten. Kein Import und keine Änderung an Katalog, Preisen, Produktrevisionen, Bindungen oder Shopify.
 
 Linux-Ergebnisse und tatsächlicher Live-Nachweis werden nach Ausführung ergänzt. Kein Safari-/Bestell-/Produktions-Endtest behauptet.
+
+## Linux-Abnahme und frischer Live-Bestand (31.10., 12:44 UTC)
+
+Neue getrennte Laufzeit `private/funkklingeln-master-reparatur-20261031`, Nachweisordner mit Suffix `-nachweis`. Aktive Basis vor dem Kopieren: alle 932 versionierten app-Dateien exakt wie `fe5eb947`; danach 925 bisherige app-Dateien unverändert und sieben gezielt angepasst, zusätzlich vier neue app-Module/Tests. Remote-Betriebsdateien mitkopiert, Startup noch unverändert.
+
+- Linux Node 24.22.1: **143/143 Tests in 30 Dateien, 0 Fehler, 0 Skips**, Build erfolgreich.
+- Frische aktive Produktrevisionen aus SQLite ausschließlich mit `readOnly:true` gelesen: **126 Produkte, 42 Modelle, alle Revision 2, 30.240 Ausführungs-/Positionskombinationen, 378 Designsätze, 1.512 bebilderte Auswahlgruppen**, 0 veränderte Quelldokumente/Shopify-Schreibvorgänge. Aktuelle Dokumentmenge SHA-256 `b867d3a007c50dea4c25a895ec8b0f9b954e87be7d94f9bf4f7ca361a76937d2`.
+- Prüfskript benötigt bei aktuellen Daten keine Import-/Reparaturwerkzeuge; optionaler historischer `--repair-proposal` lädt diese nur bei ausdrücklicher Offline-Anwendung.
+- Server-Git-Fetch meldete fehlende Hostkey-Verifikation. Keine SSH-/Zugriffseinstellungen geändert; statt dessen ausschließlich die zwölf geprüften, commitgenauen Änderungsdateien über die bestehende angemeldete Plesk-Oberfläche in den privaten Prüfbereich übertragen und per SHA geprüft.
+- Keine dauerhafte Aufgabe gespeichert. Erster abgetrennter Prüfprozess wurde vom Aufgabenhost beendet; derselbe Test lief anschließend als einmalige normale Aufgabe vollständig durch (12 Sekunden).
+
+Freigabe besteht aus Chris' „stell es live“ und dem aktuellen Reparaturauftrag; die erneute Anmeldung ersetzt keine Freigabe und beantragt keine neue. Nächster Schritt: PR #82 mit grünen Prüfungen integrieren, Startup kontrolliert wechseln, App neu starten und echten Shop-Einstieg abnehmen. Live-Nachweis folgt anschließend.

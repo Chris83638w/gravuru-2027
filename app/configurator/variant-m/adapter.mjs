@@ -20,6 +20,7 @@ import {objectSurface, surfaceGeometry} from './surfaces.mjs';
 import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
 import {doorbellOptionState,updateDoorbellViewport} from './doorbell-ui.mjs';
+import {installDoorbellPresentation} from './doorbell-presentation.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -157,6 +158,7 @@ export function installUniversal(configInput) {
     fieldBox.addEventListener('input',e=>{const key=e.target.dataset.mField;if(!key||e.target.type==='checkbox'||e.target.tagName==='SELECT')return;changeOption(key,fieldInput(e.target),{record:false});});
     fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;changeOption(key,fieldInput(e.target),{record:e.target.type==='checkbox'||e.target.tagName==='SELECT'});});
     options={...Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId])),...(dynamicDoorbell?{position:config.doorbell.defaultPosition||'standard'}:{})};
+    const updateDoorbellChoices=installDoorbellPresentation({el,config,picks,pictures});
     for(const select of picks.querySelectorAll('select[data-m-option]')) select.value=options[select.dataset.mOption];
     picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;changeOption(e.target.dataset.mOption,e.target.value);});
     // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.
@@ -312,6 +314,7 @@ export function installUniversal(configInput) {
       $('[data-setting=guides]').closest('.check-guide').hidden=false;
       for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=options[select.dataset.mOption];
       updateOptionVisibility();
+      updateDoorbellChoices(options);
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);

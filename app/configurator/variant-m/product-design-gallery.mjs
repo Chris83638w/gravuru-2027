@@ -1,11 +1,15 @@
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
 import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
+import {isLayeredDoorbell} from './doorbell-selection.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
 
 export async function installProductDesignGallery({el,r,config,files,say,dialog,esc}){
+ // These products already include their complete, format-specific design set.
+ // Use the native gallery without repeating it across three main products.
+ if(isLayeredDoorbell(config))return;
  let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return;
  el.uxHasProductDesignGallery=true;
  const profile=()=>el.uxSelectedProfile?.()||config.profile;

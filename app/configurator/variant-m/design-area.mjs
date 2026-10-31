@@ -42,6 +42,9 @@ export function designAreaOutline(config,profile=config.profile){
 // files – the production SVG is rendered without this layer (show=false).
 export function designAreaPreview(svg,config,profile=config.profile,{show=true}={}){
  if(!show)return svg;
+ // A doorbell's largest free rectangle only helps initial placement. Drawing
+ // it as a permanent border wrongly suggests the remaining acrylic is unusable.
+ if(config.doorbell?.schema==='gravuru-doorbell/v1')return svg;
  const outline=designAreaOutline(config,profile);if(!outline)return svg;
  const end=svg.lastIndexOf('</svg>');
  return end<0?svg:svg.slice(0,end)+'<g data-m-design-area="true" aria-label="Gestaltungsrand" pointer-events="none" fill="none" stroke="#a0a8a3" stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="1.5 1">'+outline.replace('/>',' vector-effect="non-scaling-stroke"/>')+'</g>'+svg.slice(end);

@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-10-31T10:25:31.576Z",
+  "origin": "https://app-2027.gravuru-designwerkstatt.de",
+  "results": [
+    {
+      "path": "/werkstatt/designs/",
+      "status": 200,
+      "bytes": 9059,
+      "sha256": "11348ef9de9cefe4e6ea22e4d7d41eee718f7ab8bb7565c3affb42e604896a4e"
+    },
+    {
+      "path": "/workshop-acryl-ui/design-quick-edit.mjs",
+      "status": 200,
+      "bytes": 11459,
+      "sha256": "2d3488409e84629853d79808c800f40f83c124489f85ebd4d0d4ebca36561d7c"
+    },
+    {
+      "path": "/api/workshop/session",
+      "status": 401,
+      "bytes": 121,
+      "sha256": "6e5a2e9ddb06353acd3d03d956016cf4db1644f50556e339605802f6f3b8c802"
+    },
+    {
+      "path": "/_acryl-bundle/editor-27590609a1d95821.mjs",
+      "status": 200,
+      "bytes": 1308806,
+      "sha256": "7490b68efd126d0603470b1ced8d38cf0ca742778a6aa00dd5581ff929b03ff7"
+    }
+  ]
+}

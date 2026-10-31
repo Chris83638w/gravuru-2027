@@ -25,7 +25,7 @@ Die gestrichelte Linie stammt aus `designAreaPreview`: Das größte freie Rechte
 
 ## Prüfung / Veröffentlichung
 
-In Arbeit. Noch kein neuer Live-Stand behauptet.
+**Live seit 31.10.2026, 12:47 UTC.** PR #82 gemergt; tatsächliche Shop- und Warenkorbprüfung siehe unten.
 
 ## Lokale Abnahme vor Serverprüfung
 
@@ -43,7 +43,7 @@ Screenshots: [12a mit 17 mm](assets/2026-10-31-doorbell-master-repair/12a-17mm-d
 
 Eigene Kopie der aktuellen Laufzeit `private/konfigurator-master-20261031-fixes`, Abgleich aller app-Dateien mit main-Basis, danach nur die im Branch geänderten Dateien überlagern. Linux-Tests und Build vor dem Wechsel. Erst anschließend Startup-Zeiger gezielt auf die geprüfte neue Kopie ändern und Node-App neu starten. Vorherige Startdatei sichern; Rückweg: Startdatei wiederherstellen und App neu starten. Kein Import und keine Änderung an Katalog, Preisen, Produktrevisionen, Bindungen oder Shopify.
 
-Linux-Ergebnisse und tatsächlicher Live-Nachweis werden nach Ausführung ergänzt. Kein Safari-/Bestell-/Produktions-Endtest behauptet.
+Linux-Ergebnisse und tatsächlicher Live-Nachweis stehen unten. Kein Safari-/Bestell-/Produktions-Endtest behauptet.
 
 ## Linux-Abnahme und frischer Live-Bestand (31.10., 12:44 UTC)
 
@@ -55,4 +55,24 @@ Neue getrennte Laufzeit `private/funkklingeln-master-reparatur-20261031`, Nachwe
 - Server-Git-Fetch meldete fehlende Hostkey-Verifikation. Keine SSH-/Zugriffseinstellungen geändert; statt dessen ausschließlich die zwölf geprüften, commitgenauen Änderungsdateien über die bestehende angemeldete Plesk-Oberfläche in den privaten Prüfbereich übertragen und per SHA geprüft.
 - Keine dauerhafte Aufgabe gespeichert. Erster abgetrennter Prüfprozess wurde vom Aufgabenhost beendet; derselbe Test lief anschließend als einmalige normale Aufgabe vollständig durch (12 Sekunden).
 
-Freigabe besteht aus Chris' „stell es live“ und dem aktuellen Reparaturauftrag; die erneute Anmeldung ersetzt keine Freigabe und beantragt keine neue. Nächster Schritt: PR #82 mit grünen Prüfungen integrieren, Startup kontrolliert wechseln, App neu starten und echten Shop-Einstieg abnehmen. Live-Nachweis folgt anschließend.
+Freigabe besteht aus Chris' „stell es live“ und dem aktuellen Reparaturauftrag; die erneute Anmeldung ersetzt keine Freigabe und beantragt keine neue. PR #82 wurde nach diesen Prüfungen integriert und die geprüfte Laufzeit aktiviert; Ergebnis siehe unten.
+
+## Tatsächlich live und im Shop abgenommen
+
+[PR #82](https://github.com/Chris83638w/gravuru-2027/pull/82) gemergt als `1da0c12f54d424a974482ab63ff4135e121cb91e`. Nur der Laufzeitpfad in `gravuru-2027-merchant/app.cjs` wurde kontrolliert geändert; alle Umgebungswerte und `start-r5.cjs` blieben erhalten. Plesk-App neu gestartet. Startup SHA vorher `a302bb3ce852a31202da9aa1914039b9a220268fc54c2ebb4383a199ec13ea3f`, nachher `b90c9bb777563f53aa3c4888cc0f26ed344d7d5cbb80930846a1c8dae851dd34`.
+
+Öffentliches Bundle `editor-abf5b412e64a4a3e.mjs`: **1.327.943 Bytes**, SHA-256 `5df34610cc56dae0de3042988960c0a66e720fa6b39c473c8108c9a1b3f4709c`, exakt wie geprüfte Fassung mit bestehenden Host-Pfadumschreibungen. Einstieg, Bundle, Edelstahlbild und Master-Quick-Edit liefern HTTP 200. [HTTP-Beleg](assets/2026-10-31-doorbell-master-repair/live-http.json).
+
+Echter AOSU-Einstieg über den Shopify-App-Proxy:
+
+- Untertabs und bebilderte Format-/Positionsblöcke sichtbar; bestehende Ausführungswahl erhalten. Edelstahltextur und Acrylreflex sichtbar; störende permanente Rechtecklinie fehlt.
+- Texttab: **12a von 40 auf 41 mm** vergrößert, beide Größenfelder synchron. Lokaler ergänzender Portrait-Regressionsnachweis: 15 auf 17 mm neben der Klingel.
+- Tatsächlicher Warenkorb mit **35×18 cm / Schwarz / Rahmen oben & unten / Silikon / gegenüberliegender Klingelposition / Design „Nummer im Kreis“**, Preis **74,98 EUR**, richtige Shopify-Variante `57718754279804`. Vorschau und Bearbeiten-Link vorhanden.
+- Über den echten Bearbeiten-Link erneut geöffnet: 35×18 cm, Gegenposition, Gestaltung und **41 mm** bleiben erhalten; Preis weiterhin 74,98 EUR.
+- Eigener einzelner Testartikel anschließend wieder entfernt, Warenkorb sichtbar leer. Keine Bestellung oder Zahlung. Der Test speichert wie vorgesehen einen synthetischen Kundenentwurf und ein Vorschaubild; keine Produkt-/Theme-/Katalog-/Preis-/Bindungsänderung.
+
+![12a im Live-Konfigurator](assets/2026-10-31-doorbell-master-repair/live-12a.png)
+
+[Material & Befestigung live](assets/2026-10-31-doorbell-master-repair/live-befestigung.png) · [Warenkorb](assets/2026-10-31-doorbell-master-repair/live-warenkorb.png) · [Wiederbearbeitung mit 41 mm](assets/2026-10-31-doorbell-master-repair/live-wiederbearbeitung.png).
+
+Rückweg: Im privaten Nachweisordner `app.cjs.before` zurück nach `gravuru-2027-merchant/app.cjs` kopieren (vorher aktuellen Zeiger auf zwischenzeitliche Änderungen prüfen) und Plesk **App neu starten**. Vorherige Laufzeit bleibt vollständig erhalten. Kein Katalog-Rollback nötig, da Katalog unangetastet. Offene eigenständige Master-Aufträge aus Issue #48 (insbesondere Glyphenumrisse an Ovalrändern, #78 und Foto-/Logo-Muster) gehören nicht zu dieser Funkklingel-Reparatur. Safari-/Bestell-/Fertigungsabnahme bleibt separat.

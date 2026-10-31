@@ -100,10 +100,10 @@ export function linkTextTarget(objects,design){
  return texts.find(o=>template(o.id)?.required===true)||texts.find(o=>['name','names','heading'].includes(o.fieldKey))||texts[0]||null;
 }
 // Übernimmt den Text in das Zielfeld; Zeichen- und Zeilenlimit der Vorlage gelten (K1).
-export function applyLinkText(objects,design,profile,text){
+export function applyLinkText(objects,design,profile,text,config){
  const target=linkTextTarget(objects,design);const clean=sanitizeLinkText(text);
  if(!target||!clean)return null;
- const template=design?.objects?.find(t=>t.id===target.id&&t.type==='text'),limits=textLimits(template,design,profile);
+ const template=design?.objects?.find(t=>t.id===target.id&&t.type==='text'),limits=textLimits(template,design,profile,config);
  const lines=clean.split('\n').slice(0,limits.maxLines).join('\n');
  const next=clampText(lines,limits,'');
  if(!next.trim())return null;

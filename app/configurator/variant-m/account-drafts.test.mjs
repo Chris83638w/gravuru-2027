@@ -5,6 +5,33 @@ import {installAccountDrafts} from './account-drafts.mjs';
 
 const response=(status,body)=>({ok:status>=200&&status<300,status,json:async()=>body});
 
+test('updating a named draft with a blank title preserves its title and content; new copies use the product default',async t=>{
+ const previous={document:globalThis.document,Image:globalThis.Image,FileReader:globalThis.FileReader};
+ Object.assign(globalThis,{
+  Image:class{naturalWidth=100;naturalHeight=80;async decode(){}},
+  FileReader:class{async readAsDataURL(blob){this.result='data:image/png;base64,'+Buffer.from(await blob.arrayBuffer()).toString('base64');this.onload();}},
+  document:{createElement:()=>({getContext:()=>({drawImage(){}}),toBlob:cb=>cb(new Blob(['preview'],{type:'image/png'}))})},
+ });
+ t.after(()=>Object.assign(globalThis,previous));
+ const input={value:''},status={},root={querySelector:s=>s==='[data-ux-account-title]'?input:status,contains:()=>true,set innerHTML(value){input.value='';this.html=value;}};
+ const dialog={querySelector:()=>root,addEventListener(){}},config={profile:{name:'Türschild',binding:{productId:'cfg_1'},revision:'cfg_1:3'}};
+ const draft={objects:[{id:'name',type:'text',text:'Unser Zuhause'}]},writes=[];
+ let savedTitle='Für Oma',fail=false;
+ const client={list:async()=>({drafts:[{id:'one',title:savedTitle,productId:'cfg_1',profileRevision:'cfg_1:3'}]}),previewUrl:()=>'/preview',get:async()=>({title:savedTitle,draft,photos:[]}),
+  update:async(id,payload)=>{if(fail)throw Error('offline');writes.push({id,payload});savedTitle=payload.title;return {draft:{id,title:savedTitle}};},
+  create:async payload=>{writes.push({id:'new',payload});return {draft:{id:'new',title:payload.title}};}};
+ const el={state:structuredClone(draft),sync(){},draftPayload:()=>structuredClone(el.state),png:async()=>new Blob(['full'],{type:'image/png'})};
+ const ui=installAccountDrafts({el,config,files:new Map(),dialog,button:()=>'',esc:String,say(){},restoreDraft:d=>{el.state=structuredClone(d);},clientFactory:()=>client});
+ await ui.refresh();await ui.load('one');await ui.save(false);
+ assert.equal(writes[0].payload.title,'Für Oma');assert.deepEqual(writes[0].payload.draft,draft);
+ assert.deepEqual(writes[0].payload.photos,[]);assert.equal(writes[0].payload.preview,Buffer.from('preview').toString('base64'));
+ input.value='  Unser Schild  ';await ui.save(false);await ui.save(false);
+ assert.deepEqual(writes.map(w=>w.payload.title),['Für Oma','Unser Schild','Unser Schild']);
+ fail=true;input.value='Nicht gespeichert';await ui.save(false);assert.equal(writes.length,3);
+ fail=false;input.value='';await ui.save(false);assert.equal(writes[3].payload.title,'Unser Schild');
+ await ui.save(true);assert.deepEqual([writes[4].id,writes[4].payload.title],['new','Türschild']);
+});
+
 test('Konto-Client: Pfade, Fehlercodes und Anmeldelink ohne fremde Ziele',async()=>{
   const calls=[];
   const client=createAccountDraftClient({base:'/apps/gravuru/',fetchImpl:async(url,init)=>{calls.push([url,init.method]);if(url.endsWith('/account-drafts'))return response(401,{error:{code:'customer_login_required',message:'Bitte anmelden.'}});return response(503,{error:{code:'customer_account_disabled',message:'Nicht eingerichtet.'}});}});

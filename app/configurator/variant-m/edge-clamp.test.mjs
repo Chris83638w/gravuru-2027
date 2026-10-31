@@ -1,6 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {clampToPlate,boundingSize,installEdgeClamp} from './edge-clamp.mjs';
+import {fitsSurface} from './usability-model.mjs';
+
+test('clamp never rounds a corrected rotated box or glyph bounds outside the plate',()=>{
+ for(const rotation of [0,13,45,90])for(const corner of [-100,1000])for(const bounds of [null,{x:-5.1234,y:-3.4321,width:12.3456,height:7.8912}]){
+  const o={x:corner,y:corner,w:12.3456,h:7.8912,rotation};
+  assert.equal(clampToPlate(o,100,80,0,bounds),true);
+  const box=bounds||{x:-o.w/2,y:-o.h/2,width:o.w,height:o.h};
+  assert.equal(fitsSurface(o,box,{shape:'rect',width:100,height:80}),true,JSON.stringify({o,bounds}));
+  assert.equal(clampToPlate(o,100,80,0,bounds),false,'second render must not move it again');
+ }
+});
 
 test('Elemente bis an den Rand, nicht darüber hinaus', () => {
   const o={x:-5,y:150,w:40,h:20,rotation:0};

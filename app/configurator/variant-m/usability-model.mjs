@@ -60,7 +60,7 @@ export function transformedCorners(object, bounds) {
 
 export function fitsSurface(object, bounds, surface) {
     surface={x:0,y:0,...surface};
-  if(surface.shape==='contour')return contourContainsPolygon(surface.geometry||surface,transformedCorners(object,bounds));
+  if(surface.shape==='contour'){const geometry=surface.geometry||surface;return contourContainsPolygon(geometry,transformedCorners(object,bounds),{holes:false,marginMm:geometry.safeMarginMm??0});}
   const epsilon = 0.001;
   return transformedCorners(object,bounds).every(({x,y})=>{
       if(surface.cornerRadiusMm>0)return insideContour({...surface,holes:[]},x-surface.x,y-surface.y);

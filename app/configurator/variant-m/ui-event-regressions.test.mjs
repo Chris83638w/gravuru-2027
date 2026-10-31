@@ -16,6 +16,7 @@ import {measureText,setTextSize} from '../../platform/sources/app/shared/models/
 import {rightForProperty} from './element-rights.mjs';
 import {emptyPhotoMarkup,decorateEmptyPhotoSlots,examplePhotoMarkup} from './photo-placeholder.mjs';
 import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
+import {applyLinkText} from './design-gallery-model.mjs';
 
 // Execute the actual registered handlers from the presentation modules with
 // deterministic DOM ports. This covers event routing without claiming browser QA.
@@ -25,6 +26,13 @@ function block(name,start,end){const text=source(name),i=text.indexOf(start);ass
 const eventTarget=()=>({listeners:{},addEventListener(type,fn){(this.listeners[type]||=[]).push(fn);}});
 const dispatch=async(target,type,event)=>{for(const fn of target.listeners[type]||[])await fn(event);};
 const inertEvent=target=>({target,preventDefault(){},stopImmediatePropagation(){}});
+
+test('direct-link UI passes the active text policy through to the real text importer',()=>{
+ const text='N'.repeat(100),object={id:'name',type:'text',text:'Name',required:true,maxLength:32},template={objects:[object],themes:['namensschilder']};
+ const env={link:{text,notes:[]},config:{textRules:{maxCharsPerField:80}},profile:{},design:()=>template,dirty:false,applyLinkText,el:{state:{objects:[{...object}]},normalize(){},sync(){}}};
+ vm.createContext(env);vm.runInContext(line('ux.mjs','if(link.text){const result=applyLinkText'),env);
+ assert.equal(env.el.state.objects[0].text,'N'.repeat(80));assert.equal(env.dirty,true);assert.equal(env.link.notes.length,1);
+});
 function textEnvironment(){
  const object={id:'name',type:'text',text:'Anna',size:6,x:30,y:20,w:40,h:7},input={id:'ux-size',value:'12',dataset:{},matches(){return false;}},r=eventTarget();
  const noopNode={textContent:'',hidden:false,setAttribute(){},classList:{toggle(){}}};

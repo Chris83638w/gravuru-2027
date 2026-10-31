@@ -6,7 +6,7 @@ export function alignedPosition(object,geometry,others,{threshold=1,snap=true}={
  for(const [axis,extent] of [['x',geometry.width],['y',geometry.height]]){
   const m=geometry.safeMarginMm??2,targets=[{value:extent/2,kind:'center'},{value:m,kind:'margin'},{value:extent-m,kind:'margin'},...others.filter(o=>o.id!==object.id&&!o.uxHidden).flatMap(o=>bounds(o)[axis].map(value=>({value,kind:'element'})))];
   let best=null;
-  for(const from of b[axis])for(const target of targets){const delta=target.value-from;if(geometry.shape==='contour'&&!contourContainsPolygon(geometry,contourObjectCorners({...result,[axis]:result[axis]+delta})))continue;if(Math.abs(delta)<=threshold&&(!best||Math.abs(delta)<Math.abs(best.delta)))best={...target,delta};}
+  for(const from of b[axis])for(const target of targets){const delta=target.value-from;if(geometry.shape==='contour'&&!contourContainsPolygon(geometry,contourObjectCorners({...result,[axis]:result[axis]+delta}),{holes:false,marginMm:geometry.safeMarginMm??0}))continue;if(Math.abs(delta)<=threshold&&(!best||Math.abs(delta)<Math.abs(best.delta)))best={...target,delta};}
   if(best){if(snap)result[axis]+=best.delta;lines.push({axis,value:best.value,kind:best.kind});}
  }
  return {object:result,lines};

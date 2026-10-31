@@ -22,7 +22,7 @@ export function installAccountDrafts({el,config,files,dialog,button,esc,say,rest
   const settings=config?.customerAccount||{};
   const client=clientFactory({base:settings.apiBase||''});
   const root=dialog.querySelector('[data-ux-account]');
-  let busy=false,drafts=[],mode='unknown',message='',activeId=null,limit=null;
+  let busy=false,drafts=[],mode='unknown',message='',activeId=null,activeTitle='',limit=null;
   const title=()=>root.querySelector('[data-ux-account-title]')?.value.trim()||'';
   function render(){
     const note='<div class="ux-account-note"><strong>Im Kundenkonto speichern</strong><p>Gespeicherte Entwürfe liegen 90 Tage in deinem Kundenkonto – mit Fotos, auf jedem Gerät.</p></div>';
@@ -58,10 +58,11 @@ export function installAccountDrafts({el,config,files,dialog,button,esc,say,rest
     busy=true;status('Entwurf wird gespeichert …');
     try{
       const draft=el.draftPayload({draft:true}),fingerprint=JSON.stringify(el.state);
-      const payload={title:title()||config.profile.name,draft,photos:await mediaPayload(),preview:await base64(await draftThumbnail(el))};
+      const payload={title:title()||(activeId&&!asNew?activeTitle:'')||config.profile.name,draft,photos:await mediaPayload(),preview:await base64(await draftThumbnail(el))};
       if(fingerprint!==JSON.stringify(el.state))throw Error('Die Gestaltung wurde während des Speicherns geändert. Bitte erneut speichern.');
       const result=activeId&&!asNew?await client.update(activeId,payload):await client.create(payload);
       activeId=result.draft?.id||activeId;
+      activeTitle=result.draft?.title||payload.title;
       await refresh();status('Entwurf gespeichert: '+(result.draft?.title||payload.title)+'.');say('Entwurf im Kundenkonto gespeichert.');
     }catch(error){
       if(loginRequired(error)){mode='login';render();}
@@ -83,7 +84,7 @@ export function installAccountDrafts({el,config,files,dialog,button,esc,say,rest
       await el.uxEnsureDraftResources?.(draft);
       restoreDraft(draft);
       for(const [uploadId,asset] of loaded)files.set(uploadId,asset);
-      el.sync();activeId=id;
+      el.sync();activeId=id;activeTitle=result.title||drafts.find(d=>d.id===id)?.title||'';
       const missing=el.state.objects.filter(o=>o.uxUploadId&&!files.get(o.uxUploadId)?.url).length;
       status('Entwurf geladen.'+(missing?' Ein Foto fehlt – bitte erneut hochladen.':''));say('Entwurf aus dem Kundenkonto geladen.');render();
     }catch(error){if(loginRequired(error)){mode='login';render();}else status(error.message);}
@@ -91,7 +92,7 @@ export function installAccountDrafts({el,config,files,dialog,button,esc,say,rest
   }
   async function remove(id){
     if(busy)return;busy=true;status('Entwurf wird gelöscht …');
-    try{await client.remove(id);if(activeId===id)activeId=null;await refresh();status('Entwurf gelöscht.');}
+    try{await client.remove(id);if(activeId===id){activeId=null;activeTitle='';}await refresh();status('Entwurf gelöscht.');}
     catch(error){if(loginRequired(error)){mode='login';render();}else status(error.message);}
     finally{busy=false;}
   }

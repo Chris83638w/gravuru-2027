@@ -677,3 +677,23 @@ test('R2 shows source-provided empty forms explicitly as family totals even unde
  await filter(h,'search','Design A','input');assert.match(h.element('target-form-summary').textContent,/Oval: 8 Designs/,'the labels clearly remain totals, not filtered counts');
  await filter(h,'target-family','slate');assert.doesNotMatch(h.element('target-form-summary').textContent,/Rund/);assert.match(h.element('target-form-summary').textContent,/Rechteck: 1 Design/);h.dispose();
 });
+
+test('Übersicht: Befunde je Größe/Befestigung stehen einmal in der Kachel, Nebenaktionen im Menü, Anpassen-Knopf vorhanden',async()=>{
+ const issues=['8 × 5 cm: Mit 2 Bohrlöchern: Der Text „Niedermeier“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt.','8 × 5 cm: Mit 2 Bohrlöchern: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt.','8 × 5 cm: Mit 2 Schrauben: Der Text „Niedermeier“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt.','9 × 6 cm: Mit 2 Bohrlöchern: Der Text „Niedermeier“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt.'];
+ const h=await harness({rows:[tileTargetRow('A')],width:390,onTargetPreview:call=>({...tileResult(call),fit:{status:'prüfen',issues},reviewFit:{status:'prüfen',issues}})});
+ const {surface}=await loadTile(h,'A');const card=surface.closest('.target-tile');
+ const lines=card.querySelectorAll('.issue-line').map(line=>line.textContent);
+ assert.deepEqual(lines,['Der Text „Niedermeier“, „Familie“ liegt im Bereich eines Bohrlochs. · 8 × 5 cm, 9 × 6 cm']);
+ assert.equal(card.querySelectorAll('.issue-details li').length,4,'alle Originalbefunde bleiben aufklappbar');
+ assert.equal(card.querySelector('.target-preview-status').textContent,'','kein zweites Mal unter dem Bild');
+ const menu=card.querySelector('.tile-more');assert.ok(menu);assert.ok(menu.querySelectorAll('button').some(b=>b.textContent==='Name ändern'));assert.ok(menu.querySelectorAll('button').some(b=>b.textContent==='Für anderes Ziel einpassen'));
+ assert.equal(card.querySelectorAll('.quick-start').length,1);h.dispose();
+});
+
+test('Dubletten sind standardmäßig ausgeblendet und per Häkchen einblendbar',async()=>{
+ const h=await harness({rows:[row('A'),row('A-DOPPELT2',{duplicate:{of:'A',identical:true}})]});
+ const ids=()=>h.element('rows').querySelectorAll('code').map(code=>code.textContent);
+ assert.deepEqual(ids(),['A']);
+ const box=h.element('filter-duplicates');box.checked=true;await box.emit('change',{target:box});
+ assert.deepEqual(ids(),['A','A-DOPPELT2']);assert.match(h.element('summary').textContent,/mit Dubletten/);h.dispose();
+});

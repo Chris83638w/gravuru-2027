@@ -1,5 +1,9 @@
 ## 31.10.2026 – Codex/Astra: #80 und Katalog #10 gemeinsam live
 
+## 31.10.2026 – Issue #48/Nachricht 34: Text an gekrümmten Rändern (Astra, PR zur Prüfung)
+
+Nur Chris’ Auftrag „nur 1“: gemeinsamer Glyphenpfad-Fallback für Oval/Kontur/Rundungen, einschließlich Einpassen und Randbegrenzung. Original D57 „Pielstädt“ passt; echter Überstand bleibt gesperrt. Master-Optik unverändert (1.116 SVG-Vergleiche bytegleich), 131/131 gezielte Tests und Build grün. Breiter Windows-Lauf unvollständig: 1.335 bestanden/190 Fehler, dann abgebrochen; Linux-Vollauf und 737er-Katalogprüfung bei Claude offen. Kein Merge/Live/Import. [Bericht](docs/handoffs/2026-10-31-text-konturrand-n34-astra.md).
+
 Chris' ausdrückliches „ja, live“ nach Claudes Nachricht 30 umgesetzt: Code #80 gemergt (`fe5eb947`), Katalog #10 gemergt (`72c654f8`). Neue getrennte Laufzeit `private/konfigurator-master-20261031-fixes`, 932/932 app-Dateien gegen Zielcommit geprüft, Plesk-App neu gestartet. 105/105 zusätzliche Server-Tests grün; Claudes Vollauf: 2028 gesamt, 2026 bestanden, 0 Fehler, 2 bekannte Echtkatalog-Skips. Master-Optik unverändert; D8 über normale Produktseite sichtbar, bestehende Gestaltung erhalten. Tatsächlicher Live-Katalog `private/gravuru-katalog`: gezielt fünf Familien bytegleich zu #10 übernommen (Rand 0 mm, Schutzzone 1 mm), vorhandene D22/D24-Bearbeitungen samt Protokoll per Hash erhalten; Checkout-HEAD bleibt caf50a6. Kein Import/DB-/Shopify-Schreibzugriff. Öffentliche Bundle-Prüfsumme und Serverprotokolle geprüft, Rückweg gesichert. Kein neuer iPhone-/Warenkorb-Endtest behauptet. #78 bleibt separat. [Live-Nachweis, Screenshot, Katalogpfad und Rückweg](docs/handoffs/2026-10-31-master-fixes-live.md); [Rückmeldung an Claude](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6542245168).
 
 ## 31.10.2026 – Codex/Astra: Review-Nachtrag zu #80, Nachrichten 27–29

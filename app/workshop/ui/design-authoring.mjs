@@ -5,14 +5,15 @@ import {surfaceObjectIssue} from '../../platform/sources/app/shared/models/desig
 import {applyNewMotifRights} from '../../configurator/variant-m/new-motif-rights.mjs';
 const uid=prefix=>prefix+'-'+crypto.randomUUID();
 // geometry is the original product geometry, never the active editor surface.
-export function fitPosition(object,geometry){
+export function fitPosition(object,geometry,resources){
+ if(object.type==='text'&&!surfaceObjectIssue(object,{kind:'universal-product',geometry},resources))return object;
  const a=(object.rotation||0)*Math.PI/180,halfW=(Math.abs(object.w*Math.cos(a))+Math.abs(object.h*Math.sin(a)))/2,halfH=(Math.abs(object.w*Math.sin(a))+Math.abs(object.h*Math.cos(a)))/2,m=geometry.safeMarginMm??2;
  if(halfW*2>geometry.width-2*m+.001||halfH*2>geometry.height-2*m+.001)throw Error('Das Element ist zu groß. Bitte Breite, Höhe oder Schriftgröße verkleinern.');
  object.x=Math.max(m+halfW,Math.min(geometry.width-m-halfW,object.x));object.y=Math.max(m+halfH,Math.min(geometry.height-m-halfH,object.y));
  if(geometry.shape==='ellipse'||geometry.cornerRadiusMm>m){
   const profile={kind:'universal-product',geometry},center={...object,x:geometry.width/2,y:geometry.height/2};
-  if(surfaceObjectIssue(center,profile))throw Error('Das Element ist für diese Kontur zu groß. Bitte verkleinern.');
-  if(surfaceObjectIssue(object,profile)){let low=0,high=1;const x=object.x,y=object.y;for(let i=0;i<55;i++){const v=(low+high)/2,test={...object,x:center.x+(x-center.x)*v,y:center.y+(y-center.y)*v};if(surfaceObjectIssue(test,profile))high=v;else low=v;}object.x=center.x+(x-center.x)*low;object.y=center.y+(y-center.y)*low;}
+  if(surfaceObjectIssue(center,profile,resources))throw Error('Das Element ist für diese Kontur zu groß. Bitte verkleinern.');
+  if(surfaceObjectIssue(object,profile,resources)){let low=0,high=1;const x=object.x,y=object.y;for(let i=0;i<55;i++){const v=(low+high)/2,test={...object,x:center.x+(x-center.x)*v,y:center.y+(y-center.y)*v};if(surfaceObjectIssue(test,profile,resources))high=v;else low=v;}object.x=center.x+(x-center.x)*low;object.y=center.y+(y-center.y)*low;}
  }
  return object;
 }
@@ -53,7 +54,7 @@ export function authorDesign(input,designId,action,value={}){
   }
   if(action==='motif')setMotif(c,object,value.motif);
   if(p.kind==='layered-doorbell')object.y=g.bell.y/2;
-  fitPosition(object,g);design.objects.push(object);
+  fitPosition(object,g,c.localResources);design.objects.push(object);
   rights[id]=applyNewMotifRights(object,{content:action==='text',color:false,replace:action==='photo',move:false,scale:false,delete:false},design);selectedId=id;
  }else if(action==='textify'){
   const font=c.localResources.fonts[value.font];
@@ -61,7 +62,7 @@ export function authorDesign(input,designId,action,value={}){
   const target={w:object.w,h:object.h},replacement={id:object.id,type:'text',text:value.text,font:value.font,size:Math.max(1,Math.min(100,Math.round(object.h))),x:object.x,y:object.y,w:1,h:1,rotation:object.rotation,fieldKey:object.id,color:object.color||'#000000',templateOrigin:true,customerEditable:true,bold:false,italic:false};
   measureText(replacement,c.localResources.fonts);
   while(replacement.size>1&&(replacement.w>target.w||replacement.h>target.h)){replacement.size--;measureText(replacement,c.localResources.fonts);}
-  fitPosition(replacement,p.geometry);design.objects[design.objects.indexOf(object)]=replacement;object=replacement;
+  fitPosition(replacement,p.geometry,c.localResources);design.objects[design.objects.indexOf(object)]=replacement;object=replacement;
   rights[object.id]={content:true,color:false,replace:false,move:false,scale:false,delete:false};
  }else if(action==='remove'){
   if(design.objects.length===1)throw Error('Füge zuerst ein Text-, Motiv- oder Fotofeld hinzu, bevor du das letzte Element entfernst.');
@@ -72,7 +73,7 @@ export function authorDesign(input,designId,action,value={}){
  }else if(action==='front'||action==='back'){
   design.objects=design.objects.filter(o=>o!==object);design.objects[action==='front'?'push':'unshift'](object);
  }else throw Error('Unbekannte Gestaltungsaktion.');
- const issue=object&&action!=='remove'?surfaceObjectIssue(object,p):'';if(issue)throw Error(issue);
+ const issue=object&&action!=='remove'?surfaceObjectIssue(object,p,c.localResources):'';if(issue)throw Error(issue);
  return {document,designId:design.id,objectId:selectedId};
 }
 function setMotif(config,object,motif){

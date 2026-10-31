@@ -60,7 +60,7 @@ export function prepareConfig(input) {
   const extraFontIds=localFontIds(config);
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
-  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[]});
+  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts});
   // Themenlimits und Pflichtkennzeichen der Vorlage sind Produktregeln: ungültige Werte laden nicht.
   for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
     if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');
@@ -303,7 +303,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
       if(!raster||raster.pixelWidth<Math.ceil(o.w*600/25.4)||raster.pixelHeight<Math.ceil(o.h*600/25.4))fail('Rastermotiv unterschreitet bei dieser Größe 600 dpi.');
     }
     const measured = o.type === 'text' ? measureText(clone(o), fonts) : o;
-    const issue = customerLayoutIssue(measured, p, {motifs:config.localResources?.motifs||[]}); if (issue) fail(issue);
+    const issue = customerLayoutIssue(measured, p, {motifs:config.localResources?.motifs||[],fonts}); if (issue) fail(issue);
   }
   // Element rights (rights document or legacy flags), fixed template layer order
   // and the product's addition policy, enforced for every server entry point
@@ -391,7 +391,7 @@ export function newEditableObject(config, input, id, fonts, motifs, options = {}
     const [,,w,h] = item.bounds || [0,0,100,100], scale = Math.min(width*.25/w, height*.25/h);
     o.w = w*scale; o.h = h*scale;
   }
-  const issue = customerLayoutIssue(o, p); if (issue) fail(issue);
+  const issue = customerLayoutIssue(o, p, {fonts,motifs:config.localResources?.motifs||[]}); if (issue) fail(issue);
   return o;
 }
 

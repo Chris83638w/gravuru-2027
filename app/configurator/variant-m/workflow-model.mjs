@@ -1,12 +1,19 @@
 import {objectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {fitsSurface,transformedCorners} from './usability-model.mjs';
 import {overlaps} from './customer-tools-model.mjs';
+import {textOutlineFits} from '../../platform/sources/app/shared/models/text-outline-fit.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 
-export function fitText(object,bounds,surface,min=4){
- if(fitsSurface(object,bounds,surface))return object.size;
+export function fitText(object,bounds,surface,min=4,fonts){
  const scaled=size=>Object.fromEntries(Object.entries(bounds).map(([k,v])=>[k,v*size/object.size]));
- if(!fitsSurface(object,scaled(min),surface))return null;
- let low=min,high=object.size;for(let n=0;n<40;n++){const mid=(low+high)/2;if(fitsSurface(object,scaled(mid),surface))low=mid;else high=mid;}
+ const fits=size=>{
+  if(fitsSurface(object,scaled(size),surface))return true;
+  if(!fonts)return false;
+  try{return textOutlineFits(measureText(setTextSize({...object},size),fonts),surface,fonts)===true;}catch{return false;}
+ };
+ if(fits(object.size))return object.size;
+ if(!fits(min))return null;
+ let low=min,high=object.size;for(let n=0;n<40;n++){const mid=(low+high)/2;if(fits(mid))low=mid;else high=mid;}
  return Math.floor(low*100)/100;
 }
 // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz. Bestehende Elemente werden nie

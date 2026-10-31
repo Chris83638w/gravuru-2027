@@ -61,7 +61,7 @@ export function applyAiPlan(original,request,plan){
   if(op.color!==null){if(!['text','motif','graphic'].includes(o.type)||!/^#[0-9a-fA-F]{6}$/.test(op.color))reject('Ungültige Elementfarbe.');o.color=op.color;if(o.type==='motif')o.preserveColors=false;}
   if(op.action==='color'&&op.color===null)reject('Die neue Farbe fehlt.');
   if(op.action==='remove')document=authorDesign(document,request.designId,'remove',{objectId:o.id}).document;
-  else {const issue=surfaceObjectIssue(o,document.config.profile);if(issue)reject(issue);}
+  else {const issue=surfaceObjectIssue(o,document.config.profile,document.config.localResources);if(issue)reject(issue);}
   changes.push({action:op.action,elementId:o.id});
  }
  if(aiDigest(document)===aiDigest(original))reject('Der Vorschlag enthält keine Änderung.');

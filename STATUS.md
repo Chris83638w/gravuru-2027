@@ -1,3 +1,7 @@
+## 31.10.2026 – Codex: Issue 85 Quellenprüfung, Aufteilung offen
+
+Nachrichten 1–4 vollständig gelesen. Rund-Auftrag läuft bereits parallel im Chat „Firmenschilder“; dessen Arbeit unverändert. Hier Quelleninventar für 163 Tier-/Hinweis-/Tür-/Hausnummern-Datensätze vorbereitet, mit festen Katalog-Quellen, IDs und Prüfsummen. TR-Kürzel im vorhandenen Serienabgleich belegt. Keine Designübernahme, keine Freigabe und kein Live-Schritt; Issue 85 nicht abgeschlossen. Aufteilung für ergänzende Hunde-/Katzen-Bearbeitung im Chat angefragt. [Quellenprüfung und nächster Schritt](docs/handoffs/2026-10-31-issue85-bestandspruefung.md).
+
 ## 31.10.2026 – Codex/Astra: Funkklingel-Reparatur #82 live abgenommen
 
 PR #82 gemergt (`1da0c12f`), getrennte geprüfte Laufzeit aktiviert und neu gestartet. Öffentliches Bundle exakt per SHA bestätigt. 143/143 Linux-Tests; aktuelle 126 Produkte / 42 Modelle / 30.240 Kombinationen lesend geprüft. Echte AOSU-Bedienung: bebilderte Untertabs, Materialdarstellung und 12a-Vergrößerung funktionieren. Warenkorb mit 35×18 / Schwarz / Rahmen oben & unten / Silikon / Gegenposition für 74,98 EUR, danach Wiederbearbeitung mit 41-mm-Hausnummer bestätigt; eigenen Testartikel wieder entfernt. Bestehende Master-Funktionen, Katalog, Produktrevisionen und Bindungen erhalten; kein Kauf. [Live-Belege, Screenshots und Rückweg](docs/handoffs/2026-10-31-funkklingeln-master-reparatur.md). Für diese Reparatur kein weiterer Live-Schritt offen; eigenständige Master-Aufträge bleiben separat.

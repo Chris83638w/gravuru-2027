@@ -1,0 +1,31 @@
+{
+  "at": "2026-10-31T12:47:00.475Z",
+  "results": [
+    {
+      "path": "/_merchant-acryl-editor.html",
+      "status": 200,
+      "bytes": 464079,
+      "sha256": "0256f6adee4dc3f07a8ad8de5793d9a52303dd79cda5d58b06202ae4fb2597d9",
+      "correctBundle": true
+    },
+    {
+      "path": "/_acryl-bundle/editor-abf5b412e64a4a3e.mjs",
+      "status": 200,
+      "bytes": 1327943,
+      "sha256": "5df34610cc56dae0de3042988960c0a66e720fa6b39c473c8108c9a1b3f4709c",
+      "exact": true
+    },
+    {
+      "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png",
+      "status": 200,
+      "bytes": 1440952,
+      "sha256": "74f75d42041d70b20bb559ebe317006c1058534bfedcb6fe0f490c872f44e3e6"
+    },
+    {
+      "path": "/workshop-acryl-ui/design-quick-edit.mjs",
+      "status": 200,
+      "bytes": 11459,
+      "sha256": "2d3488409e84629853d79808c800f40f83c124489f85ebd4d0d4ebca36561d7c"
+    }
+  ]
+}

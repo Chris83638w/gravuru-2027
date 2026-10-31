@@ -4,7 +4,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {selectedDoorbellProfile,doorbellLayoutIssue} from '../app/configurator/variant-m/doorbell-selection.mjs';
-import {prepareDoorbellDesignRepair} from '../scripts/prepare-doorbell-design-repair.mjs';
+
 import {doorbellOptionState} from '../app/configurator/variant-m/doorbell-ui.mjs';
 import {doorbellChoiceGroups,doorbellChoicePreview} from '../app/configurator/variant-m/doorbell-presentation.mjs';
 import {customerRightsTemplate} from '../app/configurator/variant-m/customer-rights.mjs';
@@ -12,6 +12,7 @@ import {restoreElementRights,designElementRights} from '../app/configurator/vari
 import {quote} from '../app/configurator/variant-m/contract.mjs';
 const dir=process.argv[2];if(!dir)throw Error('Exportordner mit modellbezogenen JSON-Dateien angeben.');
 const proposal=process.argv.includes('--repair-proposal');
+const prepareDoorbellDesignRepair=proposal?(await import('./prepare-doorbell-design-repair.mjs')).prepareDoorbellDesignRepair:null;
 const result={proposal,products:0,models:0,selections:0,uniqueDesignSets:0,pictureGroups:0,checkedProposalDesigns:0,changedSourceDocuments:0};const models=new Set();
 for(const file of fs.readdirSync(dir).filter(f=>f.endsWith('.json'))){
  let config=JSON.parse(fs.readFileSync(path.join(dir,file))).model?.universal;if(config?.doorbell?.schema!=='gravuru-doorbell/v1')continue;

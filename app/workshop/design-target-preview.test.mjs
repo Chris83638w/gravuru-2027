@@ -45,6 +45,18 @@ test('approval and withdrawal only change the addressed target, keep audit actor
  await assert.rejects(patchDesignWithTargetReview(f.root,{reihe:'test',designId:'T-D1',freigegeben:true},options),e=>e.status===422);await f.approve('slate-test');patchDesign(f.root,{reihe:'test',designId:'T-D1',familie:'test-schilder',freigegeben:false},{actor:'merchant:withdraw'});
  assert.equal(f.read().ziele[0].freigabe.status,'offen');assert.equal(f.read().ziele[1].freigabe.status,'freigegeben');const log=fs.readFileSync(path.join(f.root,'designs/test/_aenderungen.jsonl'),'utf8').trim().split('\n').map(JSON.parse);assert.equal(log.at(-1).actor,'merchant:withdraw');assert.ok(log.at(-1).changes.ziele);
 });
+
+test('explicit mounting affects only preview and cannot bypass the all-options review',async t=>{
+ const f=fixture(t),file='familien/edelstahl/test-schilder.json',family=read(f.root,file);
+ family.withoutMounting=true;const drilled=family.mountingRules.find(r=>r.id.startsWith('B'));
+ assert.ok(drilled);family.sizes.forEach(s=>s.mounting.push(drilled.id));write(f.root,file,family);
+ const input={reihe:'test',id:'T-D1',familie:'test-schilder'};
+ const normal=await targetDesignPreview(f.root,input,options),plain=await targetDesignPreview(f.root,{...input,mounting:'K00'},options),holes=await targetDesignPreview(f.root,{...input,mounting:drilled.skuSuffix},options);
+ assert.notEqual(plain.svg,holes.svg);assert.equal(normal.svg,holes.svg);
+ assert.deepEqual(plain.reviewFit,holes.reviewFit);assert.equal(plain.checksum,holes.checksum);
+ assert.equal(f.read().ziele[0].freigabe,null);
+ await assert.rejects(targetDesignPreview(f.root,{...input,mounting:'invented'},options),e=>e.status===422);
+});
 test('server revalidates raw color, missing fonts and all target sizes; client fit cannot bypass approval',async t=>{
  const f=fixture(t),file=path.join(f.root,f.base+'design.svg'),original=fs.readFileSync(file,'utf8');fs.writeFileSync(file,original.replace('font-size="5"','font-size="5" fill="#ff0000"'));await assert.rejects(f.approve('test-schilder'),e=>e.status===422&&/Farbe|farbig/i.test(e.message));assert.equal(f.read().ziele[0].freigabe,null);
  fs.writeFileSync(file,original.replace('Michroma','Missing'));await assert.rejects(f.preview('test-schilder'),e=>e.status===422&&/Schrift fehlt/.test(e.message));

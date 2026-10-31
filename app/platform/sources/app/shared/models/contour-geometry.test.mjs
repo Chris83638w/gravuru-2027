@@ -13,14 +13,14 @@ test('concave containment checks full element edges, not only the four corners',
  assert.match(objectIssue({x:50,y:80,w:40,h:10,rotation:0},{geometry:notch}),/Kontur/);
  assert.ok(contourContainsPolygon(notch,[[10,10],[90,10],[90,30],[10,30]]));
 });
-test('margin uses physical normal distance and selected hole keepouts for every object type',()=>{
+test('physical containment keeps normal margins and hole keepouts while customer artwork may cover holes',()=>{
  const diamond=geometry('M0 50L50 0L100 50L50 100Z');diamond.safeMarginMm=2;
  assert.equal(contourContainsPoint(diamond,2,50),false,'2 mm in x is less than 2 mm normal distance');
  assert.equal(contourContainsPoint(diamond,3,50),true);
  const g=geometry('M0 0H100V100H0Z');Object.assign(g,{safeMarginMm:2,holeKeepoutMm:3,holes:[{x:20,y:20,diameter:4}]});
  assert.equal(contourContainsPoint(g,24.9,20),false);assert.equal(contourContainsPoint(g,25.1,20),true);
  assert.equal(contourContainsPoint(g,20,20,{holes:false}),true);
- for(const type of ['text','motif','photoSlot','image','graphic'])assert.match(objectIssue({type,x:20,y:20,w:1,h:1,rotation:30},{geometry:g}),/Bohrloch/);
+ for(const type of ['text','motif','photoSlot','image','graphic'])assert.equal(objectIssue({type,x:20,y:20,w:1,h:1,rotation:30},{geometry:g}),'',type+' may cover a hole in the customer configurator');
  assert.equal(contourContainsPolygon(g,[[10,10],[30,10],[30,30],[10,30]]),false,'enclosed hole is caught even when all corners avoid it');
  assert.ok(contourContainsPolygon(g,[[10,10],[30,10],[30,30],[10,30]],{holes:false}));
 });
